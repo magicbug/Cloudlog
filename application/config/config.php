@@ -1,5 +1,12 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/* Logbook options */
+
+$config['table_name'] = "table_hrd_contacts_v01"; 
+$config['locator'] = "IO91JS"; 
+$config['display_freq'] = false; // hide and display freq input on Add QSO 
+$config['google_maps_api'] = "ABQIAAAA74tY2H5PTGpzLdnwXQmLXxTAaiXfF7TN3brq2P-N4wxlXpK9XRR0YWnumNpDAv2MVqJhk4dDpznb9A";
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -224,7 +231,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = 'flossie1234555541';
 
 /*
 |--------------------------------------------------------------------------
