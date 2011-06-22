@@ -18,29 +18,13 @@
 	});
 </script>
 	<style type="text/css" media="screen" >
-body {
-background-color: #e6e6e6;
-font-family: Arial, "Trebuchet MS", sans-serif;
-}
-
+body { background-color: #e6e6e6; font-family: Arial, "Trebuchet MS", sans-serif; }
 td { padding: 1px;}
-.tr1 td {
-background:none repeat scroll 0 0 #F0FFFF;
-}
+.tr1 td { background:none repeat scroll 0 0 #F0FFFF; }
 .partial td, .logbook td { padding: 5px; }
-#nav { 
-	background-image: url('/logger/images/nav_bg.gif');
-	height: 39px;
-	color: #ffffff;
-	border-bottom: 1px solid #9bc9ed;
-}
+#nav {  background-image: url('./images/nav_bg.gif'); height: 39px; color:#ffffff; border-bottom: 1px solid #9bc9ed; }
+.log_title { background-image: url('./images/grey_bg.png'); background-repeat: repeat-x; color: #439bf6; }
 
-.log_title {
-	background-image: url('/logger/images/grey_bg.png');
-	background-repeat: repeat-x;
-	color: #439bf6;
-	
-}
 /* Nav List CSS */
 ul#navlist { font: bold 15px "Trebuchet MS", sans-serif; list-style-type: none; margin: 0; margin-left: 10px; }
 ul#navlist li.active { float: left; background-image: none; background-color: #fff; margin: 2px 2px 0 3px; height:34px; text-align:center; }
@@ -54,14 +38,9 @@ ul#navlist li { float: left; margin: 2px 2px 0 3px; height:43px; border-bottom: 
 #footer { margin: 0 auto; width: 780px; text-align: center; padding-top: 5px; padding-bottom: 5px; font-size: 12px; }
 
 #message { margin: 0 auto; width: 770px; border: 1px solid #fcefa1; background-color: #fbfaf3; padding: 5px; margin-top: 5px; margin-bottom: 5px; font-weight: bold; font-size: 12px; }
-
 .clear { clear: both; }
 h2 { margin: 0 auto; width: 780px; font-weight: bold; font-size: 23px; margin-top: 5px; margin-bottom: 10px; }
-
-h3 {
-	font-weight: bold; font-size: 16px; margin: 5px;
-}
-
+h3 { font-weight: bold; font-size: 16px; margin: 5px; }
 table .titles { font-weight: bold; }
 #tabs { margin: 5px; }
 
@@ -69,27 +48,12 @@ table .titles { font-weight: bold; }
 #callsign { text-transform: uppercase; }
 .controls { margin: 5px; }
 .title { padding-top: 5px; padding-bottom: 5px; color: #0073EA; font-weight: bold; }
-
-#qso_input {
-	border: 1px solid #dddddd; margin: 5px; padding: 2px;
-}
-
-.input_date {
-	width: 70px;
-}
-.input_time {
-	width: 54px;
-}
-#locator {
-	width: 47px;
-	text-transform: uppercase;
-}
-#country {
-	border: none;
-}
-#locator_info {
-	font-size: 13px;
-}
+#qso_input { border: 1px solid #dddddd; margin: 5px; padding: 2px; }
+.input_date { width: 70px; }
+.input_time { width: 54px; }
+#locator { width: 47px; text-transform: uppercase; }
+#country { border: none; }
+#locator_info { font-size: 13px; }
 
 .dash_left { float: left; width: 430px; }
 .dash_sidebar { float: right; width: 350px; }
