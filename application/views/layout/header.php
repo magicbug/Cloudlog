@@ -22,8 +22,8 @@ body { background-color: #e6e6e6; font-family: Arial, "Trebuchet MS", sans-serif
 td { padding: 1px;}
 .tr1 td { background:none repeat scroll 0 0 #F0FFFF; }
 .partial td, .logbook td { padding: 5px; }
-#nav {  background-image: url('./images/nav_bg.gif'); height: 39px; color:#ffffff; border-bottom: 1px solid #9bc9ed; }
-.log_title { background-image: url('./images/grey_bg.png'); background-repeat: repeat-x; color: #439bf6; }
+#nav {  background-image: url('<?php echo base_url(); ?>/images/nav_bg.gif'); height: 39px; color:#ffffff; border-bottom: 1px solid #9bc9ed; }
+.log_title { background-image: url('<?php echo base_url(); ?>/images/grey_bg.png'); background-repeat: repeat-x; color: #439bf6; }
 
 /* Nav List CSS */
 ul#navlist { font: bold 15px "Trebuchet MS", sans-serif; list-style-type: none; margin: 0; margin-left: 10px; }
