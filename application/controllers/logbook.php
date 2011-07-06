@@ -33,6 +33,13 @@ class Logbook extends CI_Controller {
 		
 	}
 	
+	function view($id) {
+		$this->db->where('COL_PRIMARY_KEY', $id); 
+		$data['query'] = $this->db->get($this->config->item('table_name'));
+		
+		$this->load->view('view_log/qso', $data);
+	}
+	
 	function partial($id) {
 	
 		$this->db->like('COL_CALL', $id); 
