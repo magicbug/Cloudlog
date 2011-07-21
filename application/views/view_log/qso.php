@@ -6,13 +6,35 @@
 		body { font-family: Arial, "Trebuchet MS", sans-serif; }
 		h1 { font-weight: bold; font-size: 23px; margin-top: 5px; margin-bottom: 10px; }
 		
+		h2 { font-weight: bold; font-size: 18px; margin-top: 5px; margin-bottom: 10px; }
+		
+		.clear { clear: both }
 		#info { float: left; width: 50%; }
 		#stat { float: right; width: 50%; }
 		td { padding: 5px; }
 	</style>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
+
+						<script type="text/javascript"> 
+  function initialize() {
+	var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+	var myOptions = {
+	  zoom: 4,
+	  center: myLatlng,
+	  mapTypeId: google.maps.MapTypeId.ROADMAP
+	}
+	var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+	var marker = new google.maps.Marker({
+		position: myLatlng, 
+		map: map,
+		title:"Hello World!"
+	});   
+  }
+</script> 
 </head>
 
-<body>
+<body onload="initialize()">
 <?php if ($query->num_rows() > 0) {  foreach ($query->result() as $row) {
 ?>
 	<h1>QSO Information for <?php echo $row->COL_CALL; ?></h1>
@@ -35,7 +57,7 @@
 					<td><?php echo $row->COL_BAND; ?></td>
 				</tr>
 				
-				<?php if($row->COL_FREQ != null) { ?>
+				<?php if($this->config->item('display_freq') == true) { ?>
 				<tr>
 					<td>Freq:</td>
 					<td><?php echo $row->COL_FREQ; ?></td>
@@ -59,7 +81,7 @@
 				
 				<?php if($row->COL_GRIDSQUARE != null) { ?>
 				<tr>
-					<td>Comment</td>
+					<td>QRA</td>
 					<td><?php echo $row->COL_GRIDSQUARE; ?></td>
 				</tr>
 				<?php } ?>
@@ -94,10 +116,53 @@
 		</div>
 		
 		<div id="stat">
-			
+
+<div id="map_canvas" style="width: 420px; height: 300px"></div> 
+
+<?php
+
+	if($row->COL_GRIDSQUARE != null) {
+				$stn_loc = qra2latlong($row->COL_GRIDSQUARE);
+				
+				$lat = $stn_loc[0];
+				$lng = $stn_loc[1];
+			} else {
+				$query = $this->db->query('
+					SELECT *
+					FROM dxcc
+					WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
+					ORDER BY LENGTH( prefix ) DESC
+					LIMIT 1 
+				');
+
+				foreach ($query->result() as $dxcc) {
+					$lat = $dxcc->lat;
+					$lng = $dxcc->long;
+				}
+			}
+
+?>
+
+						<script type="text/javascript"> 
+  function initialize() {
+	var myLatlng = new google.maps.LatLng(<?php echo $lat; ?>,<?php echo $lng; ?>);
+	var myOptions = {
+	  zoom: 4,
+	  center: myLatlng,
+	  mapTypeId: google.maps.MapTypeId.ROADMAP
+	}
+	var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+	var marker = new google.maps.Marker({
+		position: myLatlng, 
+		map: map,
+		title:"<?php echo $row->COL_CALL; ?>"
+	});   
+  }
+</script> 
+
 		</div>
 	</div>
 <?php } } ?>
 </body>
-
 </html>

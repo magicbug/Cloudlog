@@ -9,7 +9,7 @@
 		$(document).ready(function() {
 			$(".qsobox").fancybox({
 				'width'				: '75%',
-				'height'			: '75%',
+				'height'			: '50%',
 				'autoScale'			: false,
 				'transitionIn'		: 'none',
 				'transitionOut'		: 'none',

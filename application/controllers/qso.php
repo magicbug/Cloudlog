@@ -59,6 +59,8 @@ class QSO extends CI_Controller {
 			$this->session->set_userdata('band', $this->input->post('band'));
 			$this->session->set_userdata('freq', $this->input->post('freq'));
 			$this->session->set_userdata('mode', $this->input->post('mode'));
+			$this->session->set_userdata('sat_name', $this->input->post('sat_name'));
+			$this->session->set_userdata('sat_mode', $this->input->post('sat_mode'));
 			 
 			 		  $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY');
 			$this->db->order_by("COL_TIME_ON", "desc"); 
