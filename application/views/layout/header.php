@@ -38,6 +38,7 @@ ul#navlist li { float: left; margin: 2px 2px 0 3px; height:43px; border-bottom: 
 #footer { margin: 0 auto; width: 780px; text-align: center; padding-top: 5px; padding-bottom: 5px; font-size: 12px; }
 
 #message { margin: 0 auto; width: 770px; border: 1px solid #fcefa1; background-color: #fbfaf3; padding: 5px; margin-top: 5px; margin-bottom: 5px; font-weight: bold; font-size: 12px; }
+#message p { line-height: 1.7; margin: 0px 0; }
 .clear { clear: both; }
 h2 { margin: 0 auto; width: 780px; font-weight: bold; font-size: 23px; margin-top: 5px; margin-bottom: 10px; }
 h3 { font-weight: bold; font-size: 16px; margin: 5px; }
@@ -51,15 +52,25 @@ table .titles { font-weight: bold; }
 #qso_input { border: 1px solid #dddddd; margin: 5px; padding: 2px; }
 .input_date { width: 70px; }
 .input_time { width: 54px; }
-#locator { width: 47px; text-transform: uppercase; }
+#locator { width: 55px; text-transform: uppercase; }
 #country { border: none; }
 #locator_info { font-size: 13px; }
+#comment { width: 145px; }
 
 .dash_left { float: left; width: 430px; }
 .dash_sidebar { float: right; width: 350px; }
 .note { padding: 5px; }
 #notes_add { padding: 5px; }
 #search_box { padding: 5px; }
+
+a { text-decoration: none; color: #000; } 
+a:hover { text-decoration: underline; }
+
+p {
+line-height: 1.7;
+margin: 10px 0;
+}
+
 	</style>
 	
 	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $this->config->item('google_maps_api'); ?>&sensor=true"

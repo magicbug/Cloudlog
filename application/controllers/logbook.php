@@ -86,12 +86,12 @@ class Logbook extends CI_Controller {
 	}
 	
 	function bearing($qra) {
-		$my = qra2latlong($this->config->item('locator'));
-		$stn = qra2latlong($qra);
-		
-		$bearing = bearing($my[0], $my[1], $stn[0], $stn[1]);
-		
-		echo $bearing;
+			$my = qra2latlong($this->config->item('locator'));
+			$stn = qra2latlong($qra);
+	
+			$bearing = bearing($my[0], $my[1], $stn[0], $stn[1]);
+	
+			echo $bearing;
 	} 
 }
 
@@ -140,9 +140,12 @@ function bearing($lat1, $lon1, $lat2, $lon2) {
 	#if ($rounded % 2 == 1)
 	#  $dir = $dirs[round_to_int($rounded/4) % 4] . "-" . $dir;
   }
-
+$var_dist = "";
   #return $dir;
-  return round($bearing, 0)."&#186; ".$dir." ".$dist." miles";
+  if (isset($dist)) {
+  	$var_dist = $dist." miles";
+  }
+  return round($bearing, 0)."&#186; ".$dir." ".$var_dist;
 }
 
 function qra2latlong($strQRA)

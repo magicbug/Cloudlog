@@ -93,7 +93,7 @@ class Logbook_model extends CI_Model {
     
     
     function total_ssb() {
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'ssb\' or COL_MODE = \'lsb\' or COL_MODE = \'usb\'');
+        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'SSB\' or COL_MODE = \'LSB\' or COL_MODE = \'USB\'');
 
         if ($query->num_rows() > 0)
         {
@@ -105,7 +105,7 @@ class Logbook_model extends CI_Model {
     }
 
     function total_cw() {
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'cw\'');
+        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'CW\'');
 
         if ($query->num_rows() > 0)
         {
@@ -117,7 +117,7 @@ class Logbook_model extends CI_Model {
     }
     
     function total_fm() {
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'fm\'');
+        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'FM\'');
 
         if ($query->num_rows() > 0)
         {
@@ -129,7 +129,7 @@ class Logbook_model extends CI_Model {
     }
 
     function total_digi() {
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'psk31\' or COL_MODE = \'rtty\' or COL_MODE = \'psk63\' or COL_MODE = \'psk125\' or COL_MODE = \'JT65\'');
+        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE != \'SSB\' or COL_MODE != \'LSB\' or COL_MODE = \'USB\' or COL_MODE = \'CW\' or COL_MODE = \'FM\'');
 
         if ($query->num_rows() > 0)
         {

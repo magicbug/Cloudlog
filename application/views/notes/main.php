@@ -19,4 +19,6 @@
 
 ?>
 
+<p><a href="<?php echo site_url('notes/add'); ?>" title="Add Note">Create a Note</a></p>
+
 </div>
