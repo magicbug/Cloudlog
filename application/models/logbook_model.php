@@ -8,6 +8,73 @@ class Logbook_model extends CI_Model {
         parent::__construct();
     }
 
+	/* Add QSO to Logbook */
+	function add() {
+		// Join date+time
+		$datetime = date('Y-m-d') ." ". $this->input->post('start_time');
+	
+		// Create array with QSO Data
+		$data = array(
+		   'COL_TIME_ON' => $datetime,
+		   'COL_TIME_OFF' => $datetime,
+		   'COL_CALL' => strtoupper($this->input->post('callsign')),
+		   'COL_BAND' => $this->input->post('band'),
+		   'COL_FREQ' => $this->input->post('freq'),
+		   'COL_MODE' => $this->input->post('mode'),
+		   'COL_RST_RCVD' => $this->input->post('rst_recv'),
+		   'COL_RST_SENT' => $this->input->post('rst_sent'),
+		   'COL_COMMENT' => $this->input->post('comment'),
+		   'COL_SAT_NAME' => $this->input->post('sat_name'),
+		   'COL_SAT_MODE' => $this->input->post('sat_mode'),
+		   'COL_GRIDSQUARE' => $this->input->post('locator'),
+		   'COL_COUNTRY' => $this->input->post('country'),
+		   'COL_MY_RIG' => $this->input->post('equipment'),
+		);
+
+		// Add QSO to database
+		$this->db->insert($this->config->item('table_name'), $data);
+	}
+
+	/* Edit QSO */
+	function edit() {
+	
+		$data = array(
+		   'COL_TIME_ON' => $this->input->post('time_on'),
+		   'COL_TIME_OFF' => $this->input->post('time_off'),
+		   'COL_CALL' => strtoupper($this->input->post('callsign')),
+		   'COL_BAND' => $this->input->post('band'),
+		   'COL_FREQ' => $this->input->post('freq'),
+		   'COL_MODE' => $this->input->post('mode'),
+		   'COL_RST_RCVD' => $this->input->post('rst_recv'),
+		   'COL_RST_SENT' => $this->input->post('rst_sent'),
+		   'COL_COMMENT' => $this->input->post('comment'),
+		   'COL_NAME' => $this->input->post('name'),
+		   'COL_SAT_NAME' => $this->input->post('sat_name'),
+		   'COL_SAT_MODE' => $this->input->post('sat_mode'),
+		);
+
+		$this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
+		$this->db->update($this->config->item('table_name'), $data); 
+	
+	}
+
+	/* Return last 10 QSOs */
+	function last_ten() {
+		$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY');
+		$this->db->order_by("COL_TIME_ON", "desc"); 
+		$this->db->limit(10);
+		
+		return $this->db->get($this->config->item('table_name'));
+	}
+	
+	/* Return QSO Info */
+	function qso_info($id) {
+		$this->db->where('COL_PRIMARY_KEY', $id); 
+		
+		return $this->db->get($this->config->item('table_name'));
+	}
+	
+
   function get_qsos($num, $offset) {
   $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY');
   $this->db->order_by("COL_TIME_ON", "desc"); 

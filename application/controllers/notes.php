@@ -5,8 +5,8 @@ class Notes extends CI_Controller {
 	/* Displays all notes in a list */
 	public function index()
 	{
-	
-		$data['notes'] = $this->db->get('notes');
+		$this->load->model('note');
+		$data['notes'] = $this->note->list_all();
 	
 		$this->load->view('layout/header');
 		$this->load->view('notes/main', $data);
@@ -15,6 +15,8 @@ class Notes extends CI_Controller {
 	
 	/* Provides function for adding notes to the system. */
 	function add() {
+	
+		$this->load->model('note');
 	
 		$this->load->library('form_validation');
 
@@ -29,14 +31,8 @@ class Notes extends CI_Controller {
 			$this->load->view('layout/footer');
 		}
 		else
-		{
-			$data = array(
-			   'cat' => $this->input->post('category'),
-			   'title' => $this->input->post('title'),
-			   'note' => $this->input->post('content')
-			);
-
-			$this->db->insert('notes', $data); 
+		{	
+			$this->note->add();
 			
 			redirect('notes');
 		}
@@ -44,9 +40,9 @@ class Notes extends CI_Controller {
 	
 	/* View Notes */
 	function view($id) {
-		// Get Note
-		$this->db->where('id', $id); 
-		$data['note'] = $this->db->get('notes');
+		$this->load->model('note');
+		
+		$data['note'] = $this->note->view($id);
 		
 		// Display
 		$this->load->view('layout/header');
@@ -56,10 +52,10 @@ class Notes extends CI_Controller {
 	
 	/* Edit Notes */
 	function edit($id) {
-	
+		$this->load->model('note');
 		$data['id'] = $id;
-		$this->db->where('id', $id); 
-		$data['note'] = $this->db->get('notes');
+		
+		$data['note'] = $this->note->view($id);
 			
 		$this->load->library('form_validation');
 
@@ -75,22 +71,17 @@ class Notes extends CI_Controller {
 		}
 		else
 		{
-			$data = array(
-			   'cat' => $this->input->post('category'),
-			   'title' => $this->input->post('title'),
-			   'note' => $this->input->post('content')
-			);
-
-			$this->db->where('id', $this->input->post('id'));
-			$this->db->update('notes', $data); 
-
+			$this->note->edit();
+			
 			redirect('notes');
 		}
 	}
 	
 	/* Delete Note */
 	function delete($id) {
-		$this->db->delete('notes', array('id' => $id)); 
+		$this->load->model('note');
+		$this->note->delete($id);
+		
 		redirect('notes');
 	}
 }
