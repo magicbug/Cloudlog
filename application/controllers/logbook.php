@@ -40,6 +40,27 @@ class Logbook extends CI_Controller {
 		$this->load->view('view_log/qso', $data);
 	}
 	
+	function callsign_qra($qra) {
+		$this->load->model('logbook_model');
+
+		echo $this->logbook_model->call_qra($qra);
+	}
+	
+	function callsign_name($callsign) {
+		$this->load->model('logbook_model');
+
+		echo $this->logbook_model->call_name($callsign);
+	}
+	
+	function test($callsign) {
+		$json = file_get_contents("http://callbytxt.org/db/".$callsign.".json");
+		
+		$obj = json_decode($json);
+		
+		$uppercase_name = strtolower($obj->{'calls'}->{'first_name'});
+		echo ucwords($uppercase_name);
+	}
+	
 	function partial($id) {
 	
 		$this->db->like('COL_CALL', $id); 

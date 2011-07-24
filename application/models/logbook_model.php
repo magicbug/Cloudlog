@@ -23,6 +23,7 @@ class Logbook_model extends CI_Model {
 		   'COL_MODE' => $this->input->post('mode'),
 		   'COL_RST_RCVD' => $this->input->post('rst_recv'),
 		   'COL_RST_SENT' => $this->input->post('rst_sent'),
+           'COL_NAME' => $this->input->post('name'),
 		   'COL_COMMENT' => $this->input->post('comment'),
 		   'COL_SAT_NAME' => $this->input->post('sat_name'),
 		   'COL_SAT_MODE' => $this->input->post('sat_mode'),
@@ -67,6 +68,54 @@ class Logbook_model extends CI_Model {
 		return $this->db->get($this->config->item('table_name'));
 	}
 	
+    /* Callsign QRA */
+    
+    function call_qra($callsign) {
+        $this->db->select('COL_CALL, COL_GRIDSQUARE, COL_TIME_ON');
+        $this->db->where('COL_CALL', $callsign);
+        $where = "COL_GRIDSQUARE != \"\"";
+    
+        $this->db->where($where);
+    
+        $this->db->order_by("COL_TIME_ON", "desc"); 
+        $this->db->limit(1);
+        $query = $this->db->get($this->config->item('table_name'));
+        $callsign = "";
+        if ($query->num_rows() > 0)
+        {
+            $data = $query->row(); 
+            $callsign = strtoupper($data->COL_GRIDSQUARE);
+        }
+    
+            return $callsign;
+    }
+    
+    function call_name($callsign) {
+        $this->db->select('COL_CALL, COL_NAME, COL_TIME_ON');
+        $this->db->where('COL_CALL', $callsign);
+        $where = "COL_NAME != \"\"";
+    
+        $this->db->where($where);
+    
+        $this->db->order_by("COL_TIME_ON", "desc"); 
+        $this->db->limit(1);
+        $query = $this->db->get($this->config->item('table_name'));
+        $name = "";
+        if ($query->num_rows() > 0)
+        {
+            $data = $query->row(); 
+            $name = $data->COL_NAME;
+        } else {
+            //$json = file_get_contents("http://callbytxt.org/db/".$callsign.".json");
+
+            //$obj = json_decode($json);
+            //$uppercase_name = strtolower($obj->{'calls'}->{'first_name'});
+           // $name = ucwords($uppercase_name);
+        }
+
+        return $name;
+    }
+    
 	/* Return QSO Info */
 	function qso_info($id) {
 		$this->db->where('COL_PRIMARY_KEY', $id); 
@@ -170,9 +219,16 @@ class Logbook_model extends CI_Model {
             }
         }
     }
+    
+   function total_sat() {
+        $query = $this->db->query('SELECT COL_SAT_NAME, COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_SAT_NAME != \'null\' GROUP BY COL_SAT_NAME');
+
+        return $query;
+    }
+    
 
     function total_cw() {
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'CW\'');
+        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'CW\' ');
 
         if ($query->num_rows() > 0)
         {

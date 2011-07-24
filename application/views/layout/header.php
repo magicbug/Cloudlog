@@ -55,7 +55,8 @@ table .titles { font-weight: bold; }
 #locator { width: 55px; text-transform: uppercase; }
 #country { border: none; }
 #locator_info { font-size: 13px; }
-#comment { width: 145px; }
+#name { width: 145px; }
+#comment { width: 89.5%; }
 
 .dash_left { float: left; width: 430px; }
 .dash_sidebar { float: right; width: 350px; }
@@ -65,6 +66,9 @@ table .titles { font-weight: bold; }
 
 a { text-decoration: none; color: #000; } 
 a:hover { text-decoration: underline; }
+
+
+ul.notes_list {list-style-type: circle; padding-left: 20px; }
 
 p {
 line-height: 1.7;
@@ -87,6 +91,7 @@ margin: 10px 0;
 			<li><a href="<?php echo site_url('search');?>" title="Search">Search</a></li>
 			<li><a href="<?php echo site_url('qso');?>" title="Add QSO">Add QSO</a></li>
 			<li><a href="<?php echo site_url('notes');?>" title="Notes">Notes</a></li>
+			<li><a href="<?php echo site_url('statistics');?>" title="statistics">Statistics</a></li>
 		</ul>
 	</div>
 <div class="clear"></div>

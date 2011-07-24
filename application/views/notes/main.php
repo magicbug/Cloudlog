@@ -1,11 +1,11 @@
 <h2>Note</h2>
-<div class="wrap_content">
+<div class="wrap_content note">
 
 <?php
 
 	if ($notes->num_rows() > 0)
 	{
-		echo "<ul>";
+		echo "<ul class=\"notes_list\">";
 		foreach ($notes->result() as $row)
 		{
 			echo "<li>";
