@@ -32,10 +32,9 @@ class QSO extends CI_Controller {
 		}
 		else
 		{
-			
 			// Add QSO
 			$this->logbook_model->add();
-
+			
 			// Store Basic QSO Info for reuse
 			$this->session->set_userdata('band', $this->input->post('band'));
 			$this->session->set_userdata('freq', $this->input->post('freq'));

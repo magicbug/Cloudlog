@@ -86,6 +86,13 @@
 				</tr>
 				<?php } ?>
 				
+				<?php if($row->COL_NAME != null) { ?>
+				<tr>
+					<td>Name</td>
+					<td><?php echo $row->COL_NAME; ?></td>
+				</tr>
+				<?php } ?>
+				
 				<?php if($row->COL_COMMENT != null) { ?>
 				<tr>
 					<td>Comment</td>

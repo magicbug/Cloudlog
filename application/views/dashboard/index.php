@@ -1,3 +1,26 @@
+	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+
+	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+			$(".qsobox").fancybox({
+				'width'				: '75%',
+				'height'			: '50%',
+				'autoScale'			: false,
+				'transitionIn'		: 'none',
+				'transitionOut'		: 'none',
+				'type'				: 'iframe'
+			});
+
+
+		});
+
+	</script>
+
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript">
 
@@ -77,7 +100,7 @@
 		<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
 		<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); ?></td>
 		<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
-		<td><?php echo strtoupper($row->COL_CALL); ?></td>
+		<td><a class="qsobox" href="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>"><?php echo strtoupper($row->COL_CALL); ?></a></td>
 		<td><?php echo $row->COL_MODE; ?></td>
 		<td><?php echo $row->COL_RST_SENT; ?></td>
 		<td><?php echo $row->COL_RST_RCVD; ?></td>

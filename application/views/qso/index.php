@@ -96,7 +96,7 @@ function settime () {
 		<td class="title">RST Recv</td>
 		<td class="title">QRA</td>
 <!-- 		<td class="title">Name</td> -->
-		<td class="title">Comment</td>
+		<td class="title">Name</td>
 	</tr>
 	
 	<tr>
@@ -160,10 +160,13 @@ function settime () {
 			<option value="59+30dB">59+30dB</option>
 		</select></td>
 		<td><input id="locator" type="text" name="locator" value="" size="7" /></td>
-<!-- 		<td><input type="text" name="name" value="" /></td> -->
-		<td><input id="comment" type="text" name="comment" value="" /></td>
+		<td><input id="name" type="text" name="name" value="" /></td>
 	</tr>
 	
+	
+	<tr>
+		<td colspan="9">Comment: <input id="comment" type="text" name="comment" value="" /></td>
+	</tr>
 </table>
 
 <div class="info">
@@ -230,6 +233,14 @@ $(document).ready(function(){
 	
 	$.get('logbook/find_dxcc/' + $(this).val(), function(result) {
 	$('#country').val(result);
+		});
+	
+	$.get('logbook/callsign_qra/' + $(this).val(), function(result) {
+	$('#locator').val(result);
+		});
+	
+	$.get('logbook/callsign_name/' + $(this).val(), function(result) {
+	$('#name').val(result);
 		});
 	}
 
