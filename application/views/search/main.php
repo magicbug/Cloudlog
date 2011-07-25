@@ -14,7 +14,7 @@ i=0;
 $(document).ready(function(){
   $("#callsign").keyup(function(){
 	if ($(this).val()) {
-	$('#partial_view').load("logbook/partial/" + $(this).val()).fadeIn("slow");
+	$('#partial_view').load("logbook/search_result/" + $(this).val()).fadeIn("slow");
 	}
 
   });

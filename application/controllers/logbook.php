@@ -64,6 +64,7 @@ class Logbook extends CI_Controller {
 	function partial($id) {
 	
 		$this->db->like('COL_CALL', $id); 
+		$this->db->limit(5);
 		$query = $this->db->get($this->config->item('table_name'));
 	
 		if ($query->num_rows() > 0)
@@ -86,6 +87,41 @@ class Logbook extends CI_Controller {
 					echo "<td>".$row->COL_RST_RCVD."</td>";
 					echo "<td>".$row->COL_BAND."</td>";
 					echo "<td>".$row->COL_MODE."</td>";
+				echo "</tr>";
+			}
+			echo "</table>";
+		} else {
+			echo "Unique Callsign: ".strtoupper($id);
+		}
+	}
+	
+	function search_result($id) {
+
+		$this->db->like('COL_CALL', $id); 
+		$query = $this->db->get($this->config->item('table_name'));
+
+		if ($query->num_rows() > 0)
+		{
+			echo "<table class=\"partial\" width=\"100%\">";
+				echo "<tr>";
+					echo "<td>Date</td>";
+					echo "<td>Callsign</td>";
+					echo "<td>RST Sent</td>";
+					echo "<td>RST Recv</td>";
+					echo "<td>Band</td>";
+					echo "<td>Mode</td>";
+					echo "<td></td>";
+				echo "</tr>";
+			foreach ($query->result() as $row)
+			{
+				echo "<tr>";
+					echo "<td>".$row->COL_TIME_ON."</td>";
+					echo "<td>".$row->COL_CALL."</td>";
+					echo "<td>".$row->COL_RST_SENT."</td>";
+					echo "<td>".$row->COL_RST_RCVD."</td>";
+					echo "<td>".$row->COL_BAND."</td>";
+					echo "<td>".$row->COL_MODE."</td>";
+					echo "<td><a href=\"".site_url('qso/edit')."/".$row->COL_PRIMARY_KEY."\" ><img src=\"".base_url()."/images/application_edit.png\" width=\"16\" height=\"16\" alt=\"Edit\" /></a></td>";
 				echo "</tr>";
 			}
 			echo "</table>";
