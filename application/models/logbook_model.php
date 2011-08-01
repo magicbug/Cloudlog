@@ -30,6 +30,12 @@ class Logbook_model extends CI_Model {
 		   'COL_GRIDSQUARE' => $this->input->post('locator'),
 		   'COL_COUNTRY' => $this->input->post('country'),
 		   'COL_MY_RIG' => $this->input->post('equipment'),
+           'COL_QSLSDATE' => date('Y-m-d'),
+           'COL_QSLRDATE' => date('Y-m-d'),
+           'COL_QSL_SENT' => $this->input->post('qsl_sent'),
+           'COL_QSL_RCVD' => $this->input->post('qsl_recv'),
+           'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
+           'COL_QSL_RCVD_VIA' => $this->input->post('qsl_recv_method'),
 		);
 
 		// Add QSO to database
@@ -52,6 +58,12 @@ class Logbook_model extends CI_Model {
 		   'COL_NAME' => $this->input->post('name'),
 		   'COL_SAT_NAME' => $this->input->post('sat_name'),
 		   'COL_SAT_MODE' => $this->input->post('sat_mode'),
+           'COL_QSLSDATE' => date('Y-m-d'),
+           'COL_QSLRDATE' => date('Y-m-d'),
+           'COL_QSL_SENT' => $this->input->post('qsl_sent'),
+           'COL_QSL_RCVD' => $this->input->post('qsl_recv'),
+           'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
+           'COL_QSL_RCVD_VIA' => $this->input->post('qsl_recv_method'),
 		);
 
 		$this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));

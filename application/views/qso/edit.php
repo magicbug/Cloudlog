@@ -1,5 +1,5 @@
 <h2>Add QSO</h2>
-<div class="wrap_content">
+<div class="wrap_content note">
 <?php echo validation_errors(); ?>
 
 <form method="post" action="<?php echo site_url('qso/edit'); ?>" name="qsos">
@@ -67,6 +67,43 @@
 	</tr>
 	
 </table>
+
+<h3>QSLing</h3>
+
+	<table>
+		<tr>
+			<td>Sent</td>
+			<td><select name="qsl_sent">
+				<option value="N" <?php if($COL_QSL_SENT == "N" || $COL_QSL_SENT == null) { echo "selected=\"selected\""; } ?>>No</option>
+				<option value="Y" <?php if($COL_QSL_SENT == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
+				<option value="R" <?php if($COL_QSL_SENT == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
+			</select></td>
+			<td>Recv</td>
+			<td><select name="qsl_recv">
+				<option value="N" <?php if($COL_QSL_RCVD == "N" || $COL_QSL_RCVD == null) { echo "selected=\"selected\""; } ?>>No</option>
+				<option value="Y" <?php if($COL_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
+				<option value="R" <?php if($COL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
+			</select></td>
+		</tr>
+		<tr>
+			<td></td>
+			
+			<?php if($COL_QSL_SENT_VIA == "") { echo "selected=\"selected\""; } ?>
+			
+			<td><select name="qsl_sent_method">
+				<option value="" <?php if($COL_QSL_SENT_VIA == "") { echo "selected=\"selected\""; } ?>>Method</option>
+				<option value="D" <?php if($COL_QSL_SENT_VIA == "D") { echo "selected=\"selected\""; } ?>>Direct</option>
+				<option value="B" <?php if($COL_QSL_SENT_VIA == "B") { echo "selected=\"selected\""; } ?>>Bureau</option>
+			</select></td>
+			<td></td>
+			<td><select name="qsl_recv_method">
+				<option value="" <?php if($COL_QSL_RCVD_VIA == "") { echo "selected=\"selected\""; } ?>>Method</option>
+				<option value="D" <?php if($COL_QSL_RCVD_VIA == "D") { echo "selected=\"selected\""; } ?>>Direct</option>
+				<option value="B" <?php if($COL_QSL_RCVD_VIA == "B") { echo "selected=\"selected\""; } ?>>Bureau</option>
+			</select></td>
+		</tr>
+	</table>
+
 <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 <div><input type="submit" value="Submit" /></div>
 
