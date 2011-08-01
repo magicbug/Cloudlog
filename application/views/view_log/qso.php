@@ -8,10 +8,16 @@
 		
 		h2 { font-weight: bold; font-size: 18px; margin-top: 5px; margin-bottom: 10px; }
 		
+		h3 { font-weight: bold; font-size: 14px; margin-top: 10px; margin-bottom: 10px; }
+		
 		.clear { clear: both }
 		#info { float: left; width: 50%; }
 		#stat { float: right; width: 50%; }
 		td { padding: 5px; }
+		p {
+line-height: 1.7;
+margin: 10px 0;
+}
 	</style>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
 
@@ -120,6 +126,23 @@
 				</tr>
 				<?php } ?>
 			</table>
+			<?php if($row->COL_QSL_SENT == "Y" || $row->COL_QSL_RCVD == "Y") { ?>
+				<h3>QSL Info</h3>
+				
+				<?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "B") { ?>
+				<p>QSL Card has been sent via the bureau</p>
+				<?php } ?>
+				<?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "D") { ?>
+				<p>QSL Card has been sent direct</p>
+				<?php } ?>
+				
+				<?php if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_RCVD_VIA == "B") { ?>
+				<p>QSL Card has been received via the bureau</p>
+				<?php } ?>
+				<?php if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_RCVD_VIA == "D") { ?>
+				<p>QSL Card has been received direct</p>
+				<?php } ?>
+			<?php } ?>
 		</div>
 		
 		<div id="stat">

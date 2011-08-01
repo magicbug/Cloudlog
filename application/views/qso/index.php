@@ -114,11 +114,13 @@ function settime () {
 			<option value="JT65B" <?php if($this->session->userdata('mode') == "JT65B") { echo "selected=\"selected\""; } ?>>JT65B</option>
 			<option value="JT6M" <?php if($this->session->userdata('mode') == "JT6M") { echo "selected=\"selected\""; } ?>>JT6M</option>
 			<option value="FSK441" <?php if($this->session->userdata('mode') == "FSK441") { echo "selected=\"selected\""; } ?>>FSK441</option>
+			<option value="PKT" <?php if($this->session->userdata('mode') == "PKT") { echo "selected=\"selected\""; } ?>>PKT</option>
 		</select></td> 
 		
 		<td><select name="band">
 			<option value="160m" <?php if($this->session->userdata('band') == "160m") { echo "selected=\"selected\""; } ?>>160m</option>
 			<option value="80m" <?php if($this->session->userdata('band') == "80m") { echo "selected=\"selected\""; } ?>>80m</option>
+			<option value="60m" <?php if($this->session->userdata('band') == "60m") { echo "selected=\"selected\""; } ?>>60m</option>
 			<option value="40m" <?php if($this->session->userdata('band') == "40m") { echo "selected=\"selected\""; } ?>>40m</option>
 			<option value="30m" <?php if($this->session->userdata('band') == "30m") { echo "selected=\"selected\""; } ?>>30m</option>
 			<option value="20m" <?php if($this->session->userdata('band') == "20m") { echo "selected=\"selected\""; } ?>>20m</option>
@@ -130,6 +132,8 @@ function settime () {
 			<option value="4m" <?php if($this->session->userdata('band') == "4m") { echo "selected=\"selected\""; } ?>>4m</option>
 			<option value="2m" <?php if($this->session->userdata('band') == "2m") { echo "selected=\"selected\""; } ?>>2m</option>
 			<option value="70cm" <?php if($this->session->userdata('band') == "70cm") { echo "selected=\"selected\""; } ?>>70cm</option>
+			<option value="33cm" <?php if($this->session->userdata('band') == "33cm") { echo "selected=\"selected\""; } ?>>33cm</option>
+			<option value="23cm" <?php if($this->session->userdata('band') == "23cm") { echo "selected=\"selected\""; } ?>>23cm</option>
 		</select></td>
 		<td><select name="rst_sent">
 			<option value="51">51</option>
@@ -180,6 +184,7 @@ function settime () {
 				<li><a href="#tabs-1">Logbook</a></li>
 				<li><a href="#tabs-2">Satellite</a></li>
 				<li><a href="#tabs-3">Station</a></li>
+				<li><a href="#tabs-4">QSL</a></li>
 			</ul>
 
 			<div id="tabs-1"><div id="partial_view">Partial Callsign Check</div></div>
@@ -212,6 +217,40 @@ function settime () {
 					<?php } ?>
 				</table>
 				
+			</div>
+
+			<div id="tabs-4">
+				<table>
+					<tr>
+						<td>Sent</td>
+						<td><select name="qsl_sent">
+							<option value="N" selected="selected">No</option>
+							<option value="Y">Yes</option>
+							<option value="R">Requested</option>
+						</select></td>
+						<td>Recv</td>
+						<td><select name="qsl_recv">
+							<option value="N" selected="selected">No</option>
+							<option value="Y">Yes</option>
+							<option value="R">Requested</option>
+						</select></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><select name="qsl_sent_method">
+							<option value="" selected="selected">Method</option>
+							<option value="D">Direct</option>
+							<option value="B">Bureau</option>
+						</select></td>
+						<td></td>
+						<td><select name="qsl_recv_method">
+							<option value="" selected="selected">Method</option>
+							<option value="D">Direct</option>
+							<option value="B">Bureau</option>
+						</select></td>
+					</tr>
+
+				</table>
 			</div>
 
 		</div>
