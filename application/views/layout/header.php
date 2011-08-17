@@ -75,6 +75,9 @@ line-height: 1.7;
 margin: 10px 0;
 }
 
+.contest_wrap { margin: 0 auto; width: 95%; }
+.contest_wrap h2 { margin: 0; width: 100%; font-weight: bold; font-size: 23px; margin-top: 5px; margin-bottom: 10px; }
+.contest_view { margin: 0 auto; width: 100%; border: 1px solid #d7d7d7; background-color: #ffffff; padding: 5px; }
 	</style>
 	
 	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $this->config->item('google_maps_api'); ?>&sensor=true"
@@ -90,6 +93,7 @@ margin: 10px 0;
 			<li><a href="<?php echo site_url('logbook');?>" title="View Log">View Log</a></li>
 			<li><a href="<?php echo site_url('search');?>" title="Search">Search</a></li>
 			<li><a href="<?php echo site_url('qso');?>" title="Add QSO">Add QSO</a></li>
+			<li><a href="<?php echo site_url('contest');?>" title="Contests">Contests</a></li>
 			<li><a href="<?php echo site_url('notes');?>" title="Notes">Notes</a></li>
 			<li><a href="<?php echo site_url('statistics');?>" title="statistics">Statistics</a></li>
 		</ul>
