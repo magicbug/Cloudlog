@@ -69,18 +69,17 @@
 </table>
 
 <h3>QSLing</h3>
-
 	<table>
 		<tr>
 			<td>Sent</td>
 			<td><select name="qsl_sent">
-				<option value="N" <?php if($COL_QSL_SENT == "N" || $COL_QSL_SENT == null) { echo "selected=\"selected\""; } ?>>No</option>
+				<option value="N" <?php if($COL_QSL_SENT == "N") { echo "selected=\"selected\""; } ?>>No</option>
 				<option value="Y" <?php if($COL_QSL_SENT == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 				<option value="R" <?php if($COL_QSL_SENT == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
 			</select></td>
 			<td>Recv</td>
 			<td><select name="qsl_recv">
-				<option value="N" <?php if($COL_QSL_RCVD == "N" || $COL_QSL_RCVD == null) { echo "selected=\"selected\""; } ?>>No</option>
+				<option value="N" <?php if($COL_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
 				<option value="Y" <?php if($COL_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 				<option value="R" <?php if($COL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
 			</select></td>

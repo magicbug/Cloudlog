@@ -74,7 +74,7 @@ class Logbook_model extends CI_Model {
 	/* Return last 10 QSOs */
 	function last_ten() {
 		$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY');
-		$this->db->order_by("COL_TIME_ON", "desc"); 
+		$this->db->order_by("COL_TIME_ON", "desc");
 		$this->db->limit(10);
 		
 		return $this->db->get($this->config->item('table_name'));
