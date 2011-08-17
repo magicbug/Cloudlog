@@ -281,6 +281,14 @@ class Logbook_model extends CI_Model {
         return $query;
     }
 
+	function api_search_query($query) {
+		$time_start = microtime(true);
+		$results = @$this->db->query($query);
+		$time_end = microtime(true);
+		$time = round($time_end - $time_start, 4);
+
+		return array('query' => $query, 'results' => $results, 'time' => $time);
+	}
 }
 
 ?>
