@@ -9,7 +9,7 @@ $config['google_maps_api'] = "ABQIAAAA74tY2H5PTGpzLdnwXQmLXxTAaiXfF7TN3brq2P-N4w
 
 /* User options */
 // Use authentication?
-$config['use_auth'] = FALSE;
+$config['use_auth'] = false;
 // User table
 $config['auth_table'] = "users";
 // Minimum user level required
@@ -36,7 +36,7 @@ $config['auth_level'][99] = "Administrator";
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/logger/';
+$config['base_url']	= 'http://localhost/logbook/';
 
 /*
 |--------------------------------------------------------------------------
