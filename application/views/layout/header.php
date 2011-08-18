@@ -105,9 +105,9 @@ margin: 10px 0;
 			<li><a href="<?php echo site_url('search');?>" title="Search">Search</a></li>
 			<?php if(!$this->config->item('use_auth') || $this->session->userdata('user_type') >= 2) { ?>
 			<li><a href="<?php echo site_url('qso');?>" title="Add QSO">Add QSO</a></li>
-			<?php } ?>
 			<li><a href="<?php echo site_url('contest');?>" title="Contests">Contests</a></li>
 			<li><a href="<?php echo site_url('notes');?>" title="Notes">Notes</a></li>
+			<?php } ?>
 			<li><a href="<?php echo site_url('statistics');?>" title="Statistics">Statistics</a></li>
 			<?php if($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) { ?>
 			<li><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
