@@ -5,7 +5,9 @@ class API extends CI_Controller {
 	// Do absolutely nothing
 	function index()
 	{
+		header("Location: ".$this->config->item('base_url'));
 		//load the model and get results
+		/*
 		$this->load->model('logbook_model');
 		$data['data'] = array();
 
@@ -13,6 +15,7 @@ class API extends CI_Controller {
 		//$this->load->view('layout/header');
 		$this->load->view('api/index', $data);
 		//$this->load->view('layout/footer');
+		*/
 	}
 
 	// FUNCTION: search()
@@ -63,7 +66,6 @@ class API extends CI_Controller {
 
 		Finally, once this has been done, each field name is translated to the MySQL column name.
 	*/
-
 	function search()
 	{
 		// Load the API and Logbook models
