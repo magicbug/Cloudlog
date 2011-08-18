@@ -25,7 +25,7 @@ class User_Model extends CI_Model {
 	}
 
 	function exists($username) {
-		if($this->get($username)->results()->num_rows == 0) {
+		if($this->get($username)->num_rows == 0) {
 			return 0;
 		} else {
 			return 1;
@@ -41,7 +41,7 @@ class User_Model extends CI_Model {
 				'user_type' => $type
 			);
 
-			$this->db->insert($this->config->item('auth_table'));
+			$this->db->insert($this->config->item('auth_table'), $data);
 			return 1;
 		} else {
 			return 0;

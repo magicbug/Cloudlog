@@ -14,42 +14,48 @@ class User extends CI_Controller {
 		$this->load->view('layout/footer');
 	}
 
-	/*
 	function add() {
-	
-		$this->load->model('note');
-	
+		$this->load->model('user_model');
+		
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('title', 'Note Title', 'required');
-		$this->form_validation->set_rules('content', 'Content', 'required');
-
+		$this->form_validation->set_rules('user_name', 'Username', 'required');
+		$this->form_validation->set_rules('user_email', 'E-mail', 'required');
+		$this->form_validation->set_rules('user_password', 'Password', 'required');
+		$this->form_validation->set_rules('user_type', 'Type', 'required');
 
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->load->view('layout/header');
-			$this->load->view('notes/add');
+			if($this->input->post('user_name'))
+			{
+				$data['user_name'] = $this->input->post('user_name');
+				$data['user_email'] = $this->input->post('user_email');
+				$data['user_password'] = $this->input->post('user_password');
+				$data['user_type'] = $this->input->post('user_type');
+				$this->load->view('user/add', $data);
+			} else {
+				$this->load->view('user/add');
+			}
 			$this->load->view('layout/footer');
 		}
 		else
-		{	
-			$this->note->add();
-			
-			redirect('notes');
+		{
+			if($this->user_model->add($this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'))) {
+				$this->session->set_flashdata('notice', 'User '.$this->input->post('user_name').' added');
+				redirect('user');
+			} else {
+				$this->load->view('layout/header');
+				$this->session->set_flashdata('notice', 'Problem adding user');
+				$data['user_name'] = $this->input->post('user_name');
+				$data['user_email'] = $this->input->post('user_email');
+				$data['user_password'] = $this->input->post('user_password');
+				$data['user_type'] = $this->input->post('user_type');
+				$this->load->view('user/add', $data);
+				$this->load->view('layout/footer');
+			}
 		}
 	}
-	
-	function view($id) {
-		$this->load->model('note');
-		
-		$data['note'] = $this->note->view($id);
-		
-		// Display
-		$this->load->view('layout/header');
-		$this->load->view('notes/view',$data);
-		$this->load->view('layout/footer');
-	}
-	*/
 
 	function edit() {
 		$this->load->model('user_model');

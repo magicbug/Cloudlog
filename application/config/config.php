@@ -15,6 +15,12 @@ $config['auth_table'] = "users";
 // Minimum user level required
 // 0 = anonymous, 1 = viewer, 2 = editor, 3 = api user, 99 = owner
 $config['auth_mode'] = "0";
+// User levels
+$config['auth_level'][0] = "Anonymous";
+$config['auth_level'][1] = "Viewer";
+$config['auth_level'][2] = "Editor";
+$config['auth_level'][3] = "API User";
+$config['auth_level'][99] = "Administrator";
 
 /*
 |--------------------------------------------------------------------------

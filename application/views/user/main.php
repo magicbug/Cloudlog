@@ -50,4 +50,5 @@
 		</tr>
 		<?php $i++; } ?>
 	</table>
+<div class="controls"><a href="<?php echo site_url('user/add'); ?>">Add user</a></div>
 </div>

@@ -16,7 +16,7 @@
 	
 	<tr>
 		<td>Password</td>
-		<td><input type="text" name="user_password" /><br><div class="small">Leave blank to keep existing password</div></td>
+		<td><input type="password" name="user_password" /><br><div class="small">Leave blank to keep existing password</div></td>
 	</tr>
 	
 	<tr>
