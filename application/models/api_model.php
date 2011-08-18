@@ -1,5 +1,11 @@
 <?php
 
+/* api_model.php
+ *
+ * Provides API functions to the web frontend
+ *
+ */
+
 class API_Model extends CI_Model {
 
     function __construct()
