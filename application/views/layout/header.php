@@ -21,9 +21,11 @@
 body { background-color: #e6e6e6; font-family: Arial, "Trebuchet MS", sans-serif; }
 td { padding: 1px;}
 .tr1 td { background:none repeat scroll 0 0 #F0FFFF; }
-.partial td, .logbook td { padding: 5px; }
+.partial td, .logbook td, .users td { padding: 5px; }
 #nav {  background-image: url('<?php echo base_url(); ?>/images/nav_bg.gif'); height: 39px; color:#ffffff; border-bottom: 1px solid #9bc9ed; }
 .log_title { background-image: url('<?php echo base_url(); ?>/images/grey_bg.png'); background-repeat: repeat-x; color: #439bf6; }
+.auth_title { background-image: url('<?php echo base_url(); ?>/images/grey_bg.png'); background-repeat: repeat-x; color: #439bf6; }
+.small { font-size: 9px; }
 
 /* Nav List CSS */
 ul#navlist { font: bold 15px "Trebuchet MS", sans-serif; list-style-type: none; margin: 0; margin-left: 10px; }
@@ -32,6 +34,14 @@ ul#navlist li { float: left; margin: 2px 2px 0 3px; height:43px; border-bottom: 
 #navlist .active a{ color: #ebebeb ; }
 #navlist a { float: left; display: block; color: #ebebeb; text-decoration: none; padding-top: 7px; padding-left: 6px; padding-right: 5px; text-align:center; }
 #navlist a:hover {  }
+
+ul#user { float: right; font: bold 15px "Trebuchet MS", sans-serif; list-style-type: none; margin: 0; margin-left: 10px; }
+ul#user li.active { background-image: none; background-color: #fff; margin: 2px 2px 0 3px; height:34px; text-align:center; }
+ul#user li { float: left; margin: 2px 2px 0 3px; height:43px; border-bottom: none; text-align:center; }
+#user .active a{ color: #ebebeb ; }
+#user a { float: left; display: block; color: #ebebeb; text-decoration: none; padding-top: 7px; padding-left: 6px; padding-right: 5px; text-align:center; }
+#user a:hover {  }
+
 
 .wrap_content { margin: 0 auto; width: 780px; border: 1px solid #d7d7d7; background-color: #ffffff; padding-bottom: 5px; }
 
@@ -61,6 +71,7 @@ table .titles { font-weight: bold; }
 .dash_left { float: left; width: 430px; }
 .dash_sidebar { float: right; width: 350px; }
 .note { padding: 5px; }
+.auth { padding: 5px; }
 #notes_add { padding: 5px; }
 #search_box { padding: 5px; }
 
@@ -92,10 +103,26 @@ margin: 10px 0;
 			<li><a href="<?php echo site_url();?> " title="Dashboard">Dashboard</a></li>
 			<li><a href="<?php echo site_url('logbook');?>" title="View Log">View Log</a></li>
 			<li><a href="<?php echo site_url('search');?>" title="Search">Search</a></li>
+			<?php if(!$this->config->item('use_auth') || $this->session->userdata('user_type') >= 2) { ?>
 			<li><a href="<?php echo site_url('qso');?>" title="Add QSO">Add QSO</a></li>
+			<?php } ?>
 			<li><a href="<?php echo site_url('contest');?>" title="Contests">Contests</a></li>
 			<li><a href="<?php echo site_url('notes');?>" title="Notes">Notes</a></li>
-			<li><a href="<?php echo site_url('statistics');?>" title="statistics">Statistics</a></li>
+			<li><a href="<?php echo site_url('statistics');?>" title="Statistics">Statistics</a></li>
+			<?php if($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) { ?>
+			<li><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
+			<?php } ?>
 		</ul>
+
+		<?php if($this->config->item('use_auth')) { ?>
+		<ul id="user">
+			<?php if($this->session->userdata('user_id')) { ?>
+			<li><a href="<?php echo site_url('user/account');?>"><?php echo $this->session->userdata('user_name'); ?></a></li>
+			<li><a href="<?php echo site_url('user/logout');?>">Logout</a></li>
+			<?php } else { ?>
+			<li><a href="<?php echo site_url('user/login');?>">Log in</a></li>
+			<?php } ?>
+		</ul>
+		<?php } ?>
 	</div>
 <div class="clear"></div>
