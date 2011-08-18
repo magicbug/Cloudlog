@@ -16,16 +16,19 @@
 	
 	<tr>
 		<td>Password</td>
-		<td><input type="text" name="user_password" /><br><div class="small">Leave blank to keep existing password</div><div class="small">For testing: <i><?php echo $user_password; ?></i></td>
+		<td><input type="text" name="user_password" /><br><div class="small">Leave blank to keep existing password</div></td>
 	</tr>
 	
 	<tr>
 		<td>Type</td>
 		<td><select name="user_type">
-				<option value="99" <?php if($user_type == "99") { echo "selected=\"selected\""; } ?>>Owner</option>
-				<option value="3" <?php if($user_type == "3") { echo "selected=\"selected\""; } ?>>Editor</option>
-				<option value="2" <?php if($user_type == "2") { echo "selected=\"selected\""; } ?>>API User</option>
-				<option value="1" <?php if($user_type == "1") { echo "selected=\"selected\""; } ?>>Viewer</option>
+				<?php
+				
+				$levels = $this->config->item('auth_level');
+				while (list($key, $val) = each($levels)) {
+				?>
+				<option value="<?php echo $key; ?>" <?php if($user_type == $key) { echo "selected=\"selected\""; } ?>><?php echo $val; ?></option>
+				<?php } ?>
 			</select>
 		</td>
 	</tr>
