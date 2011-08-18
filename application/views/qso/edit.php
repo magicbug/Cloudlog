@@ -87,7 +87,7 @@
 		<tr>
 			<td></td>
 			
-			<?php if($COL_QSL_SENT_VIA == "") { echo "selected=\"selected\""; } ?>
+			<!-- <?php if($COL_QSL_SENT_VIA == "") { echo "selected=\"selected\""; } ?> -->
 			
 			<td><select name="qsl_sent_method">
 				<option value="" <?php if($COL_QSL_SENT_VIA == "") { echo "selected=\"selected\""; } ?>>Method</option>
