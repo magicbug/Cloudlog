@@ -89,6 +89,11 @@ margin: 10px 0;
 .contest_wrap { margin: 0 auto; width: 95%; }
 .contest_wrap h2 { margin: 0; width: 100%; font-weight: bold; font-size: 23px; margin-top: 5px; margin-bottom: 10px; }
 .contest_view { margin: 0 auto; width: 100%; border: 1px solid #d7d7d7; background-color: #ffffff; padding: 5px; }
+.contest_sidebar {
+	width: 30%;
+	float: right;
+	margin: 0 auto;
+}
 	</style>
 	
 	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $this->config->item('google_maps_api'); ?>&sensor=true"
