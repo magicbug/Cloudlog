@@ -7,6 +7,15 @@ $config['locator'] = "IO91JS";
 $config['display_freq'] = false; // hide and display freq input on Add QSO 
 $config['google_maps_api'] = "ABQIAAAA74tY2H5PTGpzLdnwXQmLXxTAaiXfF7TN3brq2P-N4wxlXpK9XRR0YWnumNpDAv2MVqJhk4dDpznb9A";
 
+/* User options */
+// Use authentication?
+$config['use_auth'] = TRUE;
+// User table
+$config['auth_table'] = "users";
+// Minimum user level required
+// 0 = anonymous, 1 = viewer, 2 = editor, 3 = api user, 99 = owner
+$config['auth_mode'] = "0";
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -133,8 +142,7 @@ $config['subclass_prefix'] = 'MY_';
 | DO NOT CHANGE THIS UNLESS YOU FULLY UNDERSTAND THE REPERCUSSIONS!!
 |
 */
-$config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
-
+$config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-=[]()*,';
 
 /*
 |--------------------------------------------------------------------------
