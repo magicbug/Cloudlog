@@ -16,7 +16,8 @@
 		$("#tabs").tabs();
 		$( "button, input:submit", ".wrap_content" ).button();
 		$( "#admin" ).click(function() {
-			$( "#submenu" ).toggle( 'blind', null, 500 );
+			$( "#submenu" ).toggle( 'blinds', null, 500 );
+			$( "#clear" ).toggle( 'blinds', null, 500 );
 			return false;
 		});
 	});
@@ -26,7 +27,7 @@ body { background-color: #e6e6e6; font-family: Arial, "Trebuchet MS", sans-serif
 td { padding: 1px;}
 .tr1 td { background:none repeat scroll 0 0 #F0FFFF; }
 .partial td, .logbook td, .users td { padding: 5px; }
-#submenu { height: 30px; background-color: #ffd; color:#ffffff; border-bottom: 1px solid #9bc9ed; clear: both; <?php
+#submenu { height: 30px; color:#ffffff; clear: both; <?php
 
 switch ($this->uri->segment(1)) {
 	case "user":
@@ -54,7 +55,7 @@ ul#navlist li { float: left; margin: 2px 2px 0 3px; height:43px; border-bottom: 
 /* Submenu List CSS */
 ul#sublist { font: bold 15px "Trebuchet MS", sans-serif; list-style-type: none; margin: 0; margin-left: 10px; }
 ul#sublist li.active { float: left; background-image: none; background-color: #fff; margin: 2px 2px 0 3px; height:34px; text-align:center; }
-ul#sublist li { float: left; margin: 2px 2px 0 3px; height:43px; border-bottom: none; text-align:center; }
+ul#sublist li { float: left; margin: 2px 2px 0 3px; height:20px; border-bottom: none; text-align:center; background-color: #fff; padding: 3px;}
 #sublist .active a{ color: #ebebeb ; }
 #sublist a { float: left; display: block; color: #000; text-decoration: none; padding-top: 0px; padding-left: 6px; padding-right: 5px; text-align:center; }
 #sublist a:hover {  }
@@ -157,8 +158,9 @@ margin: 10px 0;
 	<div id="submenu">
 		<ul id="sublist">
 			<?php if($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) { ?>
-			<li><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
+			<li class="ui-corner-all"><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
+			<li><a href="<?php echo site_url('setup');?>" title="Setup">Setup</a></li>
 			<?php } ?>
 		</ul>
 	</div>
-<div class="clear"></div>
+<div id="clear" class="clear"></div>
