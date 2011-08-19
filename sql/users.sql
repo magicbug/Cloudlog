@@ -28,10 +28,14 @@ CREATE TABLE `users` (
   `user_password` varchar(64) NOT NULL COMMENT 'Password',
   `user_email` varchar(64) NOT NULL COMMENT 'E-mail address',
   `user_type` varchar(8) NOT NULL COMMENT 'User type',
+  `user_callsign` varchar(32) NOT NULL COMMENT 'User''s callsign',
+  `user_locator` varchar(16) NOT NULL COMMENT 'User''s locator',
+  `user_firstname` varchar(32) NOT NULL COMMENT 'User''s first name',
+  `user_lastname` varchar(32) NOT NULL COMMENT 'User''s last name',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name` (`user_name`),
   UNIQUE KEY `user_email` (`user_email`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -43,4 +47,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-08-18  1:36:03
+-- Dump completed on 2011-08-19 21:36:27
