@@ -159,8 +159,13 @@ class User extends CI_Controller {
 					break;
 				// All okay, return to user screen
 				case OK:
-					$this->session->set_flashdata('notice', 'User '.$this->input->post('user_name').' edited');
-					redirect('user');
+					if($this->session->userdata('user_id') == $this->input->post('id')) {
+						$this->session->set_flashdata('notice', 'User '.$this->input->post('user_name').' edited');
+						redirect('user/profile');
+					} else {
+						$this->session->set_flashdata('notice', 'User '.$this->input->post('user_name').' edited');
+						redirect('user');
+					}
 					return;
 			}
 			$this->load->view('layout/header');
