@@ -9,7 +9,7 @@ $config['google_maps_api'] = "ABQIAAAA74tY2H5PTGpzLdnwXQmLXxTAaiXfF7TN3brq2P-N4w
 
 /* User options */
 // Use authentication?
-$config['use_auth'] = false;
+$config['use_auth'] = true;
 // User table
 $config['auth_table'] = "users";
 // Minimum user level required
