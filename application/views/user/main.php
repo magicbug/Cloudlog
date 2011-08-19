@@ -37,6 +37,7 @@
 			<td>User</td>
 			<td>E-mail</td>
 			<td>Type</td>
+			<td>Options</td>
 		</tr>
 
 		<?php
@@ -46,7 +47,8 @@
 		<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
 			<td><a href="<?php echo site_url('user/edit')."/".$row->user_id; ?>"><?php echo $row->user_name; ?></a></td>
 			<td><?php echo $row->user_email; ?></td>
-			<td><?php echo $row->user_type; ?></td>
+			<td><?php $l = $this->config->item('auth_level'); echo $l[$row->user_type]; ?></td>
+			<td><a href="<?php echo site_url('user/delete')."/".$row->user_id; ?>">Delete</a></td>
 		</tr>
 		<?php $i++; } ?>
 	</table>
