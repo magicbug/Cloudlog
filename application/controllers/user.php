@@ -72,34 +72,81 @@ class User extends CI_Controller {
 
 	function edit() {
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		if((!$this->user_model->authorize(99)) && ($this->session->userdata('user_id') != $this->uri->segment(3))) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$query = $this->user_model->get_by_id($this->uri->segment(3));
 		
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('user_name', 'Username', 'required');
 		$this->form_validation->set_rules('user_email', 'E-mail', 'required');
-		$this->form_validation->set_rules('user_type', 'Type', 'required');
+		if($this->session->userdata('user_type') == 99)
+		{
+			$this->form_validation->set_rules('user_type', 'Type', 'required');
+		}
 
-		$data = $query->row();
 
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->load->view('layout/header');
-			if($this->input->post('user_name'))
-			{
+			$q = $query->row();
+
+			$data['id'] = $q->user_id;
+
+			if($this->input->post('user_name')) {
 				$data['user_name'] = $this->input->post('user_name');
-				$data['user_email'] = $this->input->post('user_email');
-				$data['user_password'] = $this->input->post('user_password');
-				$data['user_type'] = $this->input->post('user_type');
+			} else {
+				$data['user_name'] = $q->user_name;
 			}
+
+			if($this->input->post('user_email')) {
+				$data['user_email'] = $this->input->post('user_email');
+			} else {
+				$data['user_email'] = $q->user_email;
+			}
+
+			if($this->input->post('user_password')) {
+				$data['user_password'] = $this->input->post('user_password');
+			} else {
+				$data['user_password'] = $q->user_password;
+			}
+
+			if($this->input->post('user_type')) {
+				$data['user_type'] = $this->input->post('user_type');
+			} else {
+				$data['user_type'] = $q->user_type;
+			}
+
+			if($this->input->post('user_callsign')) {
+				$data['user_callsign'] = $this->input->post('user_callsign');
+			} else {
+				$data['user_callsign'] = $q->user_callsign;
+			}
+
+			if($this->input->post('user_locator')) {
+				$data['user_locator'] = $this->input->post('user_locator');
+			} else {
+				$data['user_locator'] = $q->user_locator;
+			}
+
+			if($this->input->post('user_firstname')) {
+				$data['user_firstname'] = $this->input->post('user_firstname');
+			} else {
+				$data['user_firstname'] = $q->user_firstname;
+			}
+
+			if($this->input->post('user_lastname')) {
+				$data['user_lastname'] = $this->input->post('user_lastname');
+			} else {
+				$data['user_lastname'] = $q->user_lastname;
+			}
+
 			$this->load->view('user/edit', $data);
 			$this->load->view('layout/footer');
 		}
 		else
 		{
 			unset($data);
-			switch($this->user_model->edit($this->input->post('id'), $this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'))) {
+			switch($this->user_model->edit($this->input->post())) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
 					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';
@@ -124,6 +171,16 @@ class User extends CI_Controller {
 			$this->load->view('user/edit', $data);
 			$this->load->view('layout/footer');
 		}
+	}
+
+	function profile() {
+		$this->load->model('user_model');
+		$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
+		
+		$this->load->view('layout/header');
+		$data = $query->row();
+		$this->load->view('user/profile', $data);
+		$this->load->view('layout/footer');
 	}
 
 	function delete() {
