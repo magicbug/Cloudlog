@@ -29,15 +29,17 @@ td { padding: 1px;}
 .partial td, .logbook td, .users td { padding: 5px; }
 #submenu { height: 30px; color:#ffffff; clear: both; <?php
 
-switch ($this->uri->segment(1)) {
-	case "user":
-		?> display: normal; <?php
-		break;
-	default:
-		?> display: none; <?php
-}
-
-?>}
+if($this->session->userdata('user_type') == 99) {
+	switch ($this->uri->segment(1)) {
+		case "user":
+			?> display: normal; <?php
+			break;
+		default:
+			?> display: none; <?php
+	}
+} else {
+			?> display: none; visibility: hidden; <?php
+}?> }
 #nav { background-image: url('<?php echo base_url(); ?>/images/nav_bg.gif'); height: 39px; color:#ffffff; border-bottom: 1px solid #9bc9ed; }
 .log_title { background-image: url('<?php echo base_url(); ?>/images/grey_bg.png'); background-repeat: repeat-x; color: #439bf6; }
 .auth_title { background-image: url('<?php echo base_url(); ?>/images/grey_bg.png'); background-repeat: repeat-x; color: #439bf6; }
