@@ -1,22 +1,34 @@
 <h2>Add user</h2>
 <div class="wrap_content user">
+<?php if($this->session->flashdata('notice')) { ?>
+    <div id="message" >
+        <?php echo $this->session->flashdata('notice'); ?>
+    </div>
+<?php } ?>
+
 <?php echo validation_errors(); ?>
 
 <form method="post" action="<?php echo site_url('user/add'); ?>" name="users">
 <table>
 	<tr>
 		<td>Username</td>
-		<td><input type="text" name="user_name" value="<?php if(isset($user_name)) { echo $user_name; } ?>" /></td>
+		<td><input type="text" name="user_name" value="<?php if(isset($user_name)) { echo $user_name; } ?>" />
+		<?php if(isset($username_error)) { echo "<div class=\"small error\">".$username_error."</div>"; } ?>
+		</td>
 	</tr>
 	
 	<tr>
 		<td>E-mail</td>
-		<td><input type="text" name="user_email" value="<?php if(isset($user_email)) { echo $user_email; } ?>" /></td>
+		<td><input type="text" name="user_email" value="<?php if(isset($user_email)) { echo $user_email; } ?>" />
+		<?php if(isset($email_error)) { echo "<div class=\"small error\">".$email_error."</div>"; } ?>
+		</td>
 	</tr>
 	
 	<tr>
 		<td>Password</td>
-		<td><input type="password" name="user_password" value="<?php if(isset($user_password)) { echo $user_password; } ?>" /></td>
+		<td><input type="password" name="user_password" value="<?php if(isset($user_password)) { echo $user_password; } ?>" />
+		<?php if(isset($password_error)) { echo "<div class=\"small error\">".$password_error."</div>"; } ?>
+		</td>
 	</tr>
 	
 	<tr>
