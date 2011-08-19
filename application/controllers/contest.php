@@ -6,15 +6,9 @@ class Contest extends CI_Controller {
 	// Displays available contests
 	public function index()
 	{
-        $this->load->model('user_model');
-        if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
-            if($this->user_model->validate_session()) {
-                $this->user_model->clear_session();
-                show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
-            } else {
-                redirect('user/login');
-            }
-        }
+		$this->load->model('logbook_model');
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		// Load database items
 		$this->load->model('contests');
@@ -30,15 +24,9 @@ class Contest extends CI_Controller {
 		Displays contest logging view based on the ID provided, allowing users to log in contest mode giving them serial numbers and scoring information.
 	*/
 	public function view($id) {
-        $this->load->model('user_model');
-        if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
-            if($this->user_model->validate_session()) {
-                $this->user_model->clear_session();
-                show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
-            } else {
-                redirect('user/login');
-            }
-        }
+		$this->load->model('logbook_model');
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		
 		// Load database information
 		$this->load->model('contests');
@@ -94,11 +82,10 @@ class Contest extends CI_Controller {
 		Create a contest, these are linked to templates for scoring information. contests are per entry like a weekly RSGB Club contest etc.
 	*/
 	public function create() {
-	
-		// Load database items
-		$this->load->model('contests');
+		$this->load->model('logbook_model');
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+	
 		$data['templates'] = $this->contests->list_templates();
 		
 		$this->load->helper(array('form', 'url'));
@@ -127,6 +114,7 @@ class Contest extends CI_Controller {
 	
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('form_validation');
 	

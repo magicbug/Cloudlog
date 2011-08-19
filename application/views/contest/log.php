@@ -198,10 +198,10 @@ function settime () {
 
 <?php echo validation_errors(); ?>
 
-<form class="contest_qso_box" method="post" action="<?php echo site_url('contest/view/'.$info->id); ?>" name="qsos">
+<div class="contest_qso_box">
+<form method="post" action="<?php echo site_url('contest/view/'.$info->id); ?>" name="qsos">
 
 <table>
-
 	<tr class="log_title">
 		<td class="title">Time</td>
 		<td class="title">Callsign</td>
@@ -295,22 +295,53 @@ function settime () {
 		</select></td>
 	
 		
-		<td><input type="text" name="sent_serial" value="<?php echo $new_serial; ?>" size="2" /></td>
+		<td><input type="text" name="sent_serial" value="<?php echo $new_serial; ?>" size="4" /></td>
 		
 		<td><input type="text" name="rst_recv" value="59" size="2" /></td>
-		<td><input type="text" name="recv_serial" value="" size="2" /></td>
+		<td><input type="text" name="recv_serial" value="" size="4" /></td>
 		
 		<?php if($info->qra == "Y") { ?>
-		<td><input id="locator" type="text" name="locator" value="" size="7" /></td>
+		<td><input id="locator" type="text" name="locator" value="" size="8" /></td>
 		<?php } ?>
 		<td><input type="submit" value="Add QSO" /></td>
 	</tr>
 </table>
 
+</form>
+
 <div class="info">
 	<input size="20" id="country" type="text" name="country" value="" /> <span id="locator_info"></span>
 </div>
 
-</form>
+</div>
+
+
+
 	</div>
 </div>
+
+<script type="text/javascript">
+i=0;
+$(document).ready(function(){
+	$("#locator").keyup(function(){
+		if ($(this).val()) {
+			$('#locator_info').load("<?php echo site_url(); ?>/logbook/bearing/" + $(this).val()).fadeIn("slow");
+		}
+	});
+
+  $("#callsign").keyup(function(){
+	if ($(this).val()) {
+	$('#partial_view').load("<?php echo site_url(); ?>//logbook/partial/" + $(this).val()).fadeIn("slow");
+
+	$.get('<?php echo site_url(); ?>/logbook/find_dxcc/' + $(this).val(), function(result) {
+	$('#country').val(result);
+		});
+
+	$.get('<?php echo site_url(); ?>/logbook/callsign_qra/' + $(this).val(), function(result) {
+	$('#locator').val(result);
+		});
+	}
+
+  });
+});
+</script>
