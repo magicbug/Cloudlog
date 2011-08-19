@@ -303,7 +303,7 @@ function settime () {
 		<?php if($info->qra == "Y") { ?>
 		<td><input id="locator" type="text" name="locator" value="" size="7" /></td>
 		<?php } ?>
-		<td><div class="controls"><input type="submit" value="Add QSO" /></div></td>
+		<td><input type="submit" value="Add QSO" /></td>
 	</tr>
 </table>
 
