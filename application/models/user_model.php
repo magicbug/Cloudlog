@@ -202,6 +202,8 @@ class User_Model extends CI_Model {
 			$user_hash = $this->session->userdata('user_hash');
 
 			if($this->_auth($user_id."-".$user_type, $user_hash)) {
+				// Freshen the session
+				$this->update_session($user_id);
 				return 1;
 			} else {
 				$this->clear_session();
@@ -229,7 +231,13 @@ class User_Model extends CI_Model {
 	// Checks a user's level of access against the given $level
 	function authorize($level) {
 		$u = $this->get_by_id($this->session->userdata('user_id'));
-		if(($this->validate_session()) && ($u->row()->user_type >= $level) || $this->config->item('use_auth') == FALSE) {
+		$l = $this->config->item('auth_mode');
+		// Check to see if the minimum level of access is higher than
+		// the user's own level. If it is, use that.
+		if($this->config->item('auth_mode') > $level) {
+			$level = $this->config->item('auth_mode');
+		}
+		if(($this->validate_session()) && ($u->row()->user_type >= $level) || $this->config->item('use_auth') == FALSE || $level == 0) {
 			return 1;
 		} else {
 			return 0;

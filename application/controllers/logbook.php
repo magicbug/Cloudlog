@@ -10,7 +10,16 @@ class Logbook extends CI_Controller {
 
 	function index()
 	{
-	
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
+            if($this->user_model->validate_session()) {
+                $this->user_model->clear_session();
+                show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
+            } else {
+                redirect('user/login');
+            }
+        }
+
 		$this->load->library('pagination');
 		$config['base_url'] = base_url().'index.php/logbook/index/';
 		$config['total_rows'] = $this->db->count_all($this->config->item('table_name'));
@@ -34,6 +43,9 @@ class Logbook extends CI_Controller {
 	}
 	
 	function view($id) {
+		$this->load->model('user_model');
+        if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+
 		$this->db->where('COL_PRIMARY_KEY', $id); 
 		$data['query'] = $this->db->get($this->config->item('table_name'));
 		
@@ -41,12 +53,18 @@ class Logbook extends CI_Controller {
 	}
 	
 	function callsign_qra($qra) {
+		$this->load->model('user_model');
+        if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+
 		$this->load->model('logbook_model');
 
 		echo $this->logbook_model->call_qra($qra);
 	}
 	
 	function callsign_name($callsign) {
+		$this->load->model('user_model');
+        if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+
 		$this->load->model('logbook_model');
 
 		echo $this->logbook_model->call_name($callsign);
@@ -62,6 +80,8 @@ class Logbook extends CI_Controller {
 	}
 	
 	function partial($id) {
+		$this->load->model('user_model');
+        if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 	
 		$this->db->like('COL_CALL', $id); 
 		$this->db->limit(5);
@@ -96,6 +116,8 @@ class Logbook extends CI_Controller {
 	}
 	
 	function search_result($id) {
+		$this->load->model('user_model');
+        if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
 		$this->db->like('COL_CALL', $id); 
 		$query = $this->db->get($this->config->item('table_name'));

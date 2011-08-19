@@ -14,6 +14,15 @@ class Dashboard extends CI_Controller {
 	
 		// Database connections
 		$this->load->model('logbook_model');
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
+			if($this->user_model->validate_session()) {
+				$this->user_model->clear_session();
+				show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
+			} else {
+				redirect('user/login');
+			}
+		}
 		
 		// Store info
 		$data['todays_qsos'] = $this->logbook_model->todays_qsos();
@@ -39,6 +48,7 @@ class Dashboard extends CI_Controller {
 	function todays_map() {
 	
 		$this->load->model('logbook_model');
+		// TODO: Auth
 		$qsos = $this->logbook_model->get_todays_qsos('');
 
 	
