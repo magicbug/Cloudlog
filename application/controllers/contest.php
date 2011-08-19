@@ -84,6 +84,7 @@ class Contest extends CI_Controller {
 	public function create() {
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
+		$this->load->model('contests');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	
 		$data['templates'] = $this->contests->list_templates();
