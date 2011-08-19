@@ -28,6 +28,7 @@ body { background-color: #e6e6e6; font-family: Arial, "Trebuchet MS", sans-serif
 td { padding: 1px;}
 .tr1 td { background:none repeat scroll 0 0 #F0FFFF; }
 .partial td, .logbook td, .users td { padding: 5px; }
+#subnav { height: 30px; color:#ffffff; clear: both; }
 #submenu { height: 30px; color:#ffffff; clear: both; <?php
 
 if($this->session->userdata('user_type') == 99) {
@@ -182,4 +183,14 @@ border-radius: 10px;
 			<?php } ?>
 		</ul>
 	</div>
+	
+	<?php if($this->uri->segment(1) == "contest" && $this->uri->segment(2) != "view") { ?>
+	<div id="subnav">
+		<ul id="sublist">
+			<li class="ui-corner-all"><a href="<?php echo site_url('contest');?>" title="View Contest Logs">Contest Logs</a></li>
+			<li><a href="<?php echo site_url('contest/create');?>" title="Create Contest">Create Contest</a></li>
+			<li><a href="<?php echo site_url('contest/add_template');?>" title="Create Template">Create Template</a></li>
+		</ul>
+	</div>
+	<?php } ?>
 <div id="clear" class="clear"></div>

@@ -65,7 +65,7 @@ function settime () {
 		<tr>
 			<td>Band</td>
 			<td>QSOs</td>
-			<td>Points</td>
+			<td></td>
 		</tr>
 		
 		<?php foreach ($summary->result() as $row) { ?>
