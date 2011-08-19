@@ -15,6 +15,10 @@
 		// Accordion
 		$("#tabs").tabs();
 		$( "button, input:submit", ".wrap_content" ).button();
+		$( "#admin" ).click(function() {
+			$( "#submenu" ).toggle( 'blind', null, 500 );
+			return false;
+		});
 	});
 </script>
 	<style type="text/css" media="screen" >
@@ -22,10 +26,22 @@ body { background-color: #e6e6e6; font-family: Arial, "Trebuchet MS", sans-serif
 td { padding: 1px;}
 .tr1 td { background:none repeat scroll 0 0 #F0FFFF; }
 .partial td, .logbook td, .users td { padding: 5px; }
-#nav {  background-image: url('<?php echo base_url(); ?>/images/nav_bg.gif'); height: 39px; color:#ffffff; border-bottom: 1px solid #9bc9ed; }
+#submenu { height: 30px; background-color: #ffd; color:#ffffff; border-bottom: 1px solid #9bc9ed; clear: both; <?php
+
+switch ($this->uri->segment(1)) {
+	case "user":
+		?> display: normal; <?php
+		break;
+	default:
+		?> display: none; <?php
+}
+
+?>}
+#nav { background-image: url('<?php echo base_url(); ?>/images/nav_bg.gif'); height: 39px; color:#ffffff; border-bottom: 1px solid #9bc9ed; }
 .log_title { background-image: url('<?php echo base_url(); ?>/images/grey_bg.png'); background-repeat: repeat-x; color: #439bf6; }
 .auth_title { background-image: url('<?php echo base_url(); ?>/images/grey_bg.png'); background-repeat: repeat-x; color: #439bf6; }
 .small { font-size: 9px; }
+.error { color: #a00; }
 
 /* Nav List CSS */
 ul#navlist { font: bold 15px "Trebuchet MS", sans-serif; list-style-type: none; margin: 0; margin-left: 10px; }
@@ -34,6 +50,14 @@ ul#navlist li { float: left; margin: 2px 2px 0 3px; height:43px; border-bottom: 
 #navlist .active a{ color: #ebebeb ; }
 #navlist a { float: left; display: block; color: #ebebeb; text-decoration: none; padding-top: 7px; padding-left: 6px; padding-right: 5px; text-align:center; }
 #navlist a:hover {  }
+
+/* Submenu List CSS */
+ul#sublist { font: bold 15px "Trebuchet MS", sans-serif; list-style-type: none; margin: 0; margin-left: 10px; }
+ul#sublist li.active { float: left; background-image: none; background-color: #fff; margin: 2px 2px 0 3px; height:34px; text-align:center; }
+ul#sublist li { float: left; margin: 2px 2px 0 3px; height:43px; border-bottom: none; text-align:center; }
+#sublist .active a{ color: #ebebeb ; }
+#sublist a { float: left; display: block; color: #000; text-decoration: none; padding-top: 0px; padding-left: 6px; padding-right: 5px; text-align:center; }
+#sublist a:hover {  }
 
 ul#user { float: right; font: bold 15px "Trebuchet MS", sans-serif; list-style-type: none; margin: 0; margin-left: 10px; }
 ul#user li.active { background-image: none; background-color: #fff; margin: 2px 2px 0 3px; height:34px; text-align:center; }
@@ -115,7 +139,7 @@ margin: 10px 0;
 			<?php } ?>
 			<li><a href="<?php echo site_url('statistics');?>" title="Statistics">Statistics</a></li>
 			<?php if($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) { ?>
-			<li><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
+			<li><a href="#" id="admin">Admin</a></li>
 			<?php } ?>
 		</ul>
 
@@ -129,5 +153,12 @@ margin: 10px 0;
 			<?php } ?>
 		</ul>
 		<?php } ?>
+	</div>
+	<div id="submenu">
+		<ul id="sublist">
+			<?php if($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) { ?>
+			<li><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
+			<?php } ?>
+		</ul>
 	</div>
 <div class="clear"></div>
