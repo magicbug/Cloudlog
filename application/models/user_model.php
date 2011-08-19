@@ -104,40 +104,53 @@ class User_Model extends CI_Model {
 
 	// FUNCTION: bool edit()
 	// Edit a user
-	function edit($id, $username, $password, $email, $type) {
+	function edit($fields) {
+
+		// Check user privileges
+		if(($this->session->userdata('user_type') == 99) || ($this->session->userdata('user_id') == $fields['id'])) {
+			if($this->exists_by_id($fields['id'])) {
+				$data = array(
+					'user_name' => $fields['user_name'],
+					'user_email' => $fields['user_email'],
+					'user_callsign' => $fields['user_callsign'],
+					'user_locator' => $fields['user_locator'],
+					'user_firstname' => $fields['user_firstname'],
+					'user_lastname' => $fields['user_lastname']
+				);
 	
-		if($this->exists_by_id($id)) {
-			$data = array(
-				'user_name' => $username,
-				'user_email' => $email,
-				'user_type' => $type
-			);
-
-			// Check to see if username is used already
-			if($this->exists($username) && $this->get($username)->row()->user_id != $id) {
-				return EUSERNAMEEXISTS;
-			}
-			// Check to see if email address is used already
-			if($this->exists_by_email($email) && $this->get_by_email($email)->row()->user_id != $id) {
-				return EEMAILEXISTS;
-			}
-
-			// Hash password
-			if($password != NULL)
-			{
-				$data['user_password'] = $this->_hash($password);
-				if($data['user_password'] == EPASSWORDINVALID) {
-					return EPASSWORDINVALID;
+				// Check to see if the user is allowed to change user levels
+				if($this->session->userdata('user_type') == 99) {
+					$data['user_type'] = $fields['user_type'];
 				}
-			}
+	
+				// Check to see if username is used already
+				if($this->exists($fields['user_name']) && $this->get($fields['user_name'])->row()->user_id != $fields['id']) {
+					return EUSERNAMEEXISTS;
+				}
+				// Check to see if email address is used already
+				if($this->exists_by_email($fields['user_email']) && $this->get_by_email($fields['user_email'])->row()->user_id != $fields['id']) {
+					return EEMAILEXISTS;
+				}
+	
+				// Hash password
+				if($fields['user_password'] != NULL)
+				{
+					$data['user_password'] = $this->_hash($fields['user_password']);
+					if($data['user_password'] == EPASSWORDINVALID) {
+						return EPASSWORDINVALID;
+					}
+				}
 
-			// Update the user
-			$this->db->where('user_id', $this->input->post('id'));
-			$this->db->update($this->config->item('auth_table'), $data);
-			return OK;
+				// Update the user
+				$this->db->where('user_id', $fields['id']);
+				$this->db->update($this->config->item('auth_table'), $data);
+				return OK;
+			} else {
+				return ENOSUCHUSER;
+			}
 		} else {
-			return 0;
-		}
+			return EFORBIDDEN;
+		}	
 	}
 
 	// FUNCTION: bool delete()

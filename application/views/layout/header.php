@@ -150,7 +150,7 @@ margin: 10px 0;
 		<?php if($this->config->item('use_auth')) { ?>
 		<ul id="user">
 			<?php if($this->session->userdata('user_id')) { ?>
-			<li><a href="<?php echo site_url('user/account');?>"><?php echo $this->session->userdata('user_name'); ?></a></li>
+			<li><a href="<?php echo site_url('user/profile');?>"><?php echo $this->session->userdata('user_name'); ?></a></li>
 			<li><a href="<?php echo site_url('user/logout');?>">Logout</a></li>
 			<?php } else { ?>
 			<li><a href="<?php echo site_url('user/login');?>">Log in</a></li>

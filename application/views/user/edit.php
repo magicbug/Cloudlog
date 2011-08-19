@@ -12,6 +12,26 @@
 	</tr>
 	
 	<tr>
+		<td>Level</td>
+		<td>
+		<?php if($this->session->userdata('user_type') == 99) { ?>
+		<select name="user_type">
+		<?php
+
+				$levels = $this->config->item('auth_level');
+				while (list($key, $val) = each($levels)) {
+				?>
+				<option value="<?php echo $key; ?>" <?php if($user_type == $key) { echo "selected=\"selected\""; } ?>><?php echo $val; ?></option>
+				<?php } ?>
+		</select>
+		<?php } else { 
+			$l = $this->config->item('auth_level');
+			echo $l[$user_type];
+		}?>
+		</td>
+	</tr>
+
+	<tr>
 		<td>E-mail</td>
 		<td><input type="text" name="user_email" value="<?php if(isset($user_email)) { echo $user_email; } ?>" />
 		<?php if(isset($email_error)) { echo "<div class=\"small error\">".$email_error."</div>"; } ?>
@@ -27,21 +47,36 @@
 	</tr>
 	
 	<tr>
-		<td>Type</td>
-		<td><select name="user_type">
-				<?php
-				
-				$levels = $this->config->item('auth_level');
-				while (list($key, $val) = each($levels)) {
-				?>
-				<option value="<?php echo $key; ?>" <?php if($user_type == $key) { echo "selected=\"selected\""; } ?>><?php echo $val; ?></option>
-				<?php } ?>
-			</select>
-		</td>
+		<td>Callsign</td>
+		<td><input type="text" name="user_callsign" value="<?php if(isset($user_callsign)) { echo $user_callsign; } ?>" />
+		<?php if(isset($callsign_error)) { echo "<div class=\"small error\">".$callsign_error."</div>"; } else { ?>
+		<?php } ?>
 	</tr>
+	
+	<tr>
+		<td>Locator</td>
+		<td><input type="text" name="user_locator" value="<?php if(isset($user_locator)) { echo $user_locator; } ?>" />
+		<?php if(isset($locator_error)) { echo "<div class=\"small error\">".$locator_error."</div>"; } else { ?>
+		<?php } ?>
+	</tr>
+	
+	<tr>
+		<td>First name</td>
+		<td><input type="text" name="user_firstname" value="<?php if(isset($user_firstname)) { echo $user_firstname; } ?>" />
+		<?php if(isset($firstname_error)) { echo "<div class=\"small error\">".$firstname_error."</div>"; } else { ?>
+		<?php } ?>
+	</tr>
+	
+	<tr>
+		<td>Last name</td>
+		<td><input type="text" name="user_lastname" value="<?php if(isset($user_lastname)) { echo $user_lastname; } ?>" />
+		<?php if(isset($lastname_error)) { echo "<div class=\"small error\">".$lastname_error."</div>"; } else { ?>
+		<?php } ?>
+	</tr>
+	
 </table>	
 <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
-<div><input type="submit" value="Submit" /></div>
+<div><input type="submit" value="Update profile" /></div>
 
 </form>
 

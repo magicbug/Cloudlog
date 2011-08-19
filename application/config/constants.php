@@ -41,6 +41,7 @@ define('EEMAILEXISTS',							'E-mail address already exists');
 define('EUSERNAMEEXISTS',						'Username already exists');
 define('EPASSWORDINVALID',						'Invalid password');
 define('ENOSUCHUSER',							'No such user');
+define('EFORBIDDEN',							'Forbidden');
 
 define('OK',									'OK');
 
