@@ -34,6 +34,14 @@ class User_Model extends CI_Model {
 		return $r;
 	}
 
+	// FUNCTION: object get_by_email($email)
+	// Retrieve a user by email address
+	function get_by_email($email) {
+		$this->db->where('user_email', $email);
+		$r = $this->db->get($this->config->item('auth_table'));
+		return $r;
+	}
+
 	// FUNCTION: bool exists($username)
 	// Check if a user exists (by username)
 	function exists($username) {
@@ -44,9 +52,30 @@ class User_Model extends CI_Model {
 		}
 	}
 
+	// FUNCTION: bool exists_by_id($id)
+	// Check if a user exists (by user ID)
+	function exists_by_id($id) {
+		if($this->get_by_id($id)->num_rows == 0) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
+	// FUNCTION: bool exists_by_email($email)
+	// Check if a user exists (by email address)
+	function exists_by_email($email) {
+		if($this->get_by_email($email)->num_rows == 0) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
 	// FUNCTION: bool add($username, $password, $email, $type)
 	// Add a user
 	function add($username, $password, $email, $type) {
+		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
 				'user_name' => $username,
@@ -55,32 +84,73 @@ class User_Model extends CI_Model {
 				'user_type' => $type
 			);
 
+			// Check the password is valid
+			if($data['user_password'] == EPASSWORDINVALID) {
+				return EPASSWORDINVALID;
+			}
+
+			// Check the email address isn't in use
+			if($this->exists_by_email($email)) {
+				return EEMAILEXISTS;
+			}
+
+			// Add user
 			$this->db->insert($this->config->item('auth_table'), $data);
-			return 1;
+			return OK;
+		} else {
+			return EUSERNAMEEXISTS;
+		}
+	}
+
+	// FUNCTION: bool edit()
+	// Edit a user
+	function edit($id, $username, $password, $email, $type) {
+	
+		if($this->exists_by_id($id)) {
+			$data = array(
+				'user_name' => $username,
+				'user_email' => $email,
+				'user_type' => $type
+			);
+
+			// Check to see if username is used already
+			if($this->exists($username) && $this->get($username)->row()->user_id != $id) {
+				return EUSERNAMEEXISTS;
+			}
+			// Check to see if email address is used already
+			if($this->exists_by_email($email) && $this->get_by_email($email)->row()->user_id != $id) {
+				return EEMAILEXISTS;
+			}
+
+			// Hash password
+			if($password != NULL)
+			{
+				$data['user_password'] = $this->_hash($password);
+				if($data['user_password'] == EPASSWORDINVALID) {
+					return EPASSWORDINVALID;
+				}
+			}
+
+			// Update the user
+			$this->db->where('user_id', $this->input->post('id'));
+			$this->db->update($this->config->item('auth_table'), $data);
+			return OK;
 		} else {
 			return 0;
 		}
 	}
 
-	// FUNCTION: void edit()
-	// Edit a user
-	// TODO: This should return bool TRUE/FALSE or 0/1
-	function edit() {
-		
-		$data = array(
-			'user_name' => $this->input->post('user_name'),
-			'user_email' => $this->input->post('user_email'),
-			'user_type' => $this->input->post('user_type')
-		);
+	// FUNCTION: bool delete()
+	// Deletes a user
+	function delete($user_id) {
 
-		if($this->input->post('user_password') != NULL)
-		{
-			$data['user_password'] = $this->_hash($this->input->post('user_password'));
+		if($this->exists_by_id($user_id)) {
+			$this->db->query("DELETE FROM ".$this->config->item('auth_table')." WHERE user_id = '".$user_id."'");
+
+			return 1;
+		} else {
+			return 0;
 		}
-
-		$this->db->where('user_id', $this->input->post('id'));
-		$this->db->update($this->config->item('auth_table'), $data);
-
 	}
 
 	// FUNCTION: bool login()
@@ -159,7 +229,7 @@ class User_Model extends CI_Model {
 	// Checks a user's level of access against the given $level
 	function authorize($level) {
 		$u = $this->get_by_id($this->session->userdata('user_id'));
-		if(($this->validate_session) && ($u->row()->user_type >= $level)) {
+		if(($this->validate_session()) && ($u->row()->user_type >= $level) || $this->config->item('use_auth') == FALSE) {
 			return 1;
 		} else {
 			return 0;
@@ -204,7 +274,7 @@ class User_Model extends CI_Model {
 		unset($h);
 
 		if(strlen($hash) < 20) {
-			return 0;
+			return EPASSWORDINVALID;
 		} else {
 			return $hash;
 		}
