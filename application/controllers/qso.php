@@ -13,6 +13,8 @@ class QSO extends CI_Controller {
 	public function index()
 	{
 		$this->load->model('logbook_model');
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		
 		$data['notice'] = false;
 		
@@ -58,6 +60,8 @@ class QSO extends CI_Controller {
 	function edit() {
 	
 		$this->load->model('logbook_model');
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$query = $this->logbook_model->qso_info($this->uri->segment(3));
 		
 		$this->load->library('form_validation');
