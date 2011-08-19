@@ -6,6 +6,16 @@ class Contest extends CI_Controller {
 	// Displays available contests
 	public function index()
 	{
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
+            if($this->user_model->validate_session()) {
+                $this->user_model->clear_session();
+                show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
+            } else {
+                redirect('user/login');
+            }
+        }
+
 		// Load database items
 		$this->load->model('contests');
 		$data['contests'] = $this->contests->list_contests();
@@ -20,6 +30,15 @@ class Contest extends CI_Controller {
 		Displays contest logging view based on the ID provided, allowing users to log in contest mode giving them serial numbers and scoring information.
 	*/
 	public function view($id) {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
+            if($this->user_model->validate_session()) {
+                $this->user_model->clear_session();
+                show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
+            } else {
+                redirect('user/login');
+            }
+        }
 		
 		// Load database information
 		$this->load->model('contests');

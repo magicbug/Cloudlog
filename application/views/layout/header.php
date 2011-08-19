@@ -130,18 +130,21 @@ margin: 10px 0;
 	<div id="nav">
 		
 		<ul id="navlist">
+			<?php if((($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= $this->config->item('auth_mode'))) || $this->config->item('use_auth') === FALSE) { ?>
 			<li><a href="<?php echo site_url();?> " title="Dashboard">Dashboard</a></li>
 			<li><a href="<?php echo site_url('logbook');?>" title="View Log">View Log</a></li>
 			<li><a href="<?php echo site_url('search');?>" title="Search">Search</a></li>
-			<?php if(!$this->config->item('use_auth') || $this->session->userdata('user_type') >= 2) { ?>
+			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 			<li><a href="<?php echo site_url('qso');?>" title="Add QSO">Add QSO</a></li>
+			<?php } ?>
 			<li><a href="<?php echo site_url('contest');?>" title="Contests">Contests</a></li>
+			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE){ ?>
 			<li><a href="<?php echo site_url('notes');?>" title="Notes">Notes</a></li>
 			<?php } ?>
 			<li><a href="<?php echo site_url('statistics');?>" title="Statistics">Statistics</a></li>
-			<?php if($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) { ?>
+			<?php if(($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) || $this->config->item('use_auth') === FALSE) { ?>
 			<li><a href="#" id="admin">Admin</a></li>
-			<?php } ?>
+			<?php }} ?>
 		</ul>
 
 		<?php if($this->config->item('use_auth')) { ?>
@@ -157,7 +160,7 @@ margin: 10px 0;
 	</div>
 	<div id="submenu">
 		<ul id="sublist">
-			<?php if($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) { ?>
+			<?php if(($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) || $this->config->item('use_auth') === FALSE){ ?>
 			<li class="ui-corner-all"><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
 			<li><a href="<?php echo site_url('setup');?>" title="Setup">Setup</a></li>
 			<?php } ?>
