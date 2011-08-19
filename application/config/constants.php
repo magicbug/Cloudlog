@@ -36,6 +36,14 @@ define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
+/* Error return codes */
+define('EEMAILEXISTS',							'E-mail address already exists');
+define('EUSERNAMEEXISTS',						'Username already exists');
+define('EPASSWORDINVALID',						'Invalid password');
+define('ENOSUCHUSER',							'No such user');
+
+define('OK',									'OK');
+
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
