@@ -18,10 +18,4 @@
 	}
 
 ?>
-
-<p>
-<a href="<?php echo site_url('contest/create'); ?>" title="Create Contest">Create a contest</a><br /><a href="<?php echo site_url('contest/add_template'); ?>" title="Create Template">Create a template</a>
-
-</p>
-
 </div>

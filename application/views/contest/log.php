@@ -8,9 +8,8 @@
 
 		$(document).ready(function() {
 			$(".qsobox").fancybox({
-				'width'				: '75%',
-				'height'			: '50%',
-				'autoScale'			: false,
+				'width'				: 849,
+				'autoScale'			: true,
 				'transitionIn'		: 'none',
 				'transitionOut'		: 'none',
 				'type'				: 'iframe'
