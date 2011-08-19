@@ -71,6 +71,8 @@ class API extends CI_Controller {
 		// Load the API and Logbook models
 		$this->load->model('api_model');
 		$this->load->model('logbook_model');
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(3)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		// Retrieve the arguments from the query string
 		$arguments = $this->_retrieve();

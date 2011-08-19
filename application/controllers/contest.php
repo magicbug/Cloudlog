@@ -78,6 +78,8 @@ class Contest extends CI_Controller {
 	
 		// Load database items
 		$this->load->model('contests');
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$data['templates'] = $this->contests->list_templates();
 		
 		$this->load->helper(array('form', 'url'));
@@ -104,6 +106,8 @@ class Contest extends CI_Controller {
 	*/
 	public function add_template() {
 	
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('form_validation');
 	
