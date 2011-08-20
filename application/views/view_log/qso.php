@@ -115,7 +115,7 @@ margin: 10px 0;
 				
 				<?php if($row->COL_SAT_MODE != null) { ?>
 				<tr>
-					<td>Sat Name:</td>
+					<td>Sat Mode:</td>
 					<td><?php echo $row->COL_SAT_MODE; ?></td>
 				</tr>
 				<?php } ?>
