@@ -23,7 +23,7 @@
 
 	</script>
 
-<div class="wrap_content">
+<div class="wrap_content user">
 
 
 <?php if($this->session->flashdata('notice')) { ?>
