@@ -144,6 +144,7 @@ class Contests extends CI_Model {
 		   'COL_QSLRDATE' => date('Y-m-d'),
 		   'COL_QSL_SENT' => 'N',
 		   'COL_QSL_RCVD' => 'N',
+		   'COL_OPERATOR' => $this->session->userdata('user_callsign'),
 		);
 
 		// Add QSO to database

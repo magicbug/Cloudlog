@@ -36,6 +36,7 @@ class Logbook_model extends CI_Model {
            'COL_QSL_RCVD' => $this->input->post('qsl_recv'),
            'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
            'COL_QSL_RCVD_VIA' => $this->input->post('qsl_recv_method'),
+           'COL_OPERATOR' => $this->session->userdata('user_callsign'),
 		);
 
 		// Add QSO to database
