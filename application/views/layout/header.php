@@ -71,6 +71,8 @@ ul#user li { float: left; margin: 2px 2px 0 3px; height:43px; border-bottom: non
 #user a { float: left; display: block; color: #ebebeb; text-decoration: none; padding-top: 7px; padding-left: 6px; padding-right: 5px; text-align:center; }
 #user a:hover {  }
 
+.user { padding: 5px; }
+
 
 .wrap_content { margin: 0 auto; width: 780px; border: 1px solid #d7d7d7; background-color: #ffffff; padding-bottom: 5px; }
 
