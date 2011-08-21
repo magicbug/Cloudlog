@@ -55,6 +55,7 @@ class Logbook_model extends CI_Model {
 		   'COL_MODE' => $this->input->post('mode'),
 		   'COL_RST_RCVD' => $this->input->post('rst_recv'),
 		   'COL_RST_SENT' => $this->input->post('rst_sent'),
+           'COL_GRIDSQUARE' => $this->input->post('locator'),
 		   'COL_COMMENT' => $this->input->post('comment'),
 		   'COL_NAME' => $this->input->post('name'),
 		   'COL_SAT_NAME' => $this->input->post('sat_name'),
