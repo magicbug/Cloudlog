@@ -47,6 +47,11 @@
 	</tr>
 	
 	<tr>
+		<td>Locator</td>
+		<td><input id="locator" type="text" name="locator" value="<?php echo $COL_GRIDSQUARE; ?>" size="7" /></td>
+	</tr>
+	
+	<tr>
 		<td>Name</td>
 		<td><input type="text" name="name" value="<?php echo $COL_NAME; ?>" /></td>
 	</tr>
