@@ -274,10 +274,12 @@ $(document).ready(function(){
 	$('#country').val(result);
 		});
 	
-	$.get('logbook/callsign_qra/' + $(this).val(), function(result) {
-	$('#locator').val(result);
+	if($('#locator').val() == "") {
+		$.get('logbook/callsign_qra/' + $(this).val(), function(result) {
+			$('#locator').val(result);
 		});
-	
+	}
+
 	$.get('logbook/callsign_name/' + $(this).val(), function(result) {
 	$('#name').val(result);
 		});
