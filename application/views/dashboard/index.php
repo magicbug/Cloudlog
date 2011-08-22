@@ -73,11 +73,12 @@
 	
 	</script>
 
-
-<div id="message" >
-	<p>You have had <?php echo $todays_qsos; ?> QSOs Today!</p>
-</div>
-
+<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
+	<div id="message" >
+		<p>You have had <?php echo $todays_qsos; ?> QSOs Today!</p>
+	</div>
+<?php } ?>
+<h2>Dashboard</h2>
 <div class="wrap_content">
 	<div class="dash_left">
 	
