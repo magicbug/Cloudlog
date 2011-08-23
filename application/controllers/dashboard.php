@@ -49,7 +49,7 @@ class Dashboard extends CI_Controller {
 	
 		$this->load->model('logbook_model');
 		// TODO: Auth
-		$qsos = $this->logbook_model->get_todays_qsos('');
+		$qsos = $this->logbook_model->get_this_weeks_qsos('');
 
 	
 		echo "{\"markers\": [";

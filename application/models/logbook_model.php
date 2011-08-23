@@ -191,6 +191,15 @@ class Logbook_model extends CI_Model {
         }
     }
     
+    function get_this_weeks_qsos() {
+        $morning = date('Y/m/d',time()+(1 - date('w'))*24*3600);
+        $night = date('Y/m/d',time()+( 7 - date('w'))*24*3600);
+        $query = $this->db->query('SELECT * FROM '.$this->config->item('table_name').' WHERE COL_TIME_ON between \''.$morning.'\' AND \''.$night.'\'');
+
+        return $query;
+    }
+    
+    
     function month_qsos() {
 
         $morning = date('Y-m-01 00:00:00');
