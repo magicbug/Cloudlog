@@ -115,7 +115,7 @@
 </table>
 
 	
-	<h3>Todays Mapped QSOs</h3>
+	<h3>This Weeks QSOs</h3>
 			   <div id="map" style="width: 420px; height: 300px"></div> 
 
 		<noscript><b>JavaScript must be enabled in order for you to use Google Maps.</b> 
