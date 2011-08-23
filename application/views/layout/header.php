@@ -99,8 +99,8 @@ table .titles { font-weight: bold; }
 #name { width: 145px; }
 #comment { width: 89.5%; }
 
-.dash_left { float: left; width: 430px; }
-.dash_sidebar { float: right; width: 350px; }
+.dash_left { float: left; width: 440px; }
+.dash_sidebar { float: right; width: 310px; }
 .note { padding: 5px; }
 .auth { padding: 5px; }
 #notes_add { padding: 5px; }
