@@ -70,7 +70,11 @@ function settime () {
 		<td><?php echo $row->COL_MODE; ?></td>
 		<td><?php echo $row->COL_RST_SENT; ?></td>
 		<td><?php echo $row->COL_RST_RCVD; ?></td>
+		<?php if($row->COL_SAT_NAME != null) { ?>
+		<td><?php echo $row->COL_SAT_NAME; ?></td>
+		<?php } else { ?>
 		<td><?php echo $row->COL_BAND; ?></td>
+		<?php } ?>
 	</tr>
 	<?php $i++; } ?>
 
