@@ -52,7 +52,11 @@
 		<td><?php echo $row->COL_MODE; ?></td>
 		<td><?php echo $row->COL_RST_SENT; ?></td>
 		<td><?php echo $row->COL_RST_RCVD; ?></td>
+		<?php if($row->COL_SAT_NAME != null) { ?>
+		<td><?php echo $row->COL_SAT_NAME; ?></td>
+		<?php } else { ?>
 		<td><?php echo $row->COL_BAND; ?></td>
+		<?php } ?>
 		<td><?php echo $row->COL_COUNTRY; ?></td>
 		<td><?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?><a href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" ><img src="<?php echo base_url(); ?>/images/application_edit.png" width="16" height="16" alt="Edit" /><?php } ?></a></td>
 	</tr>
