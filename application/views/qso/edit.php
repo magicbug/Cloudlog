@@ -1,7 +1,9 @@
 <h2>Add QSO</h2>
 <div class="wrap_content note">
 <?php echo validation_errors(); ?>
-
+<div style="float: right">
+	<p><a href="<?php echo site_url('qso/delete'); ?>/<?php echo $COL_PRIMARY_KEY; ?>" ><img src="<?php echo base_url(); ?>/images/delete.png" width="16" height="16" alt="Delete" /> Delete QSO</a></p>
+</div>
 <form method="post" action="<?php echo site_url('qso/edit'); ?>" name="qsos">
 <table>
 	<tr>
@@ -112,5 +114,4 @@
 <div><input type="submit" value="Submit" /></div>
 
 </form>
-
 </div>

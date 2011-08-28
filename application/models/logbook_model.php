@@ -300,6 +300,11 @@ class Logbook_model extends CI_Model {
 
 		return array('query' => $query, 'results' => $results, 'time' => $time);
 	}
+    
+    function delete($id) {
+        $this->db->where('COL_PRIMARY_KEY', $id);
+        $this->db->delete($this->config->item('table_name')); 
+    }
 }
 
 ?>
