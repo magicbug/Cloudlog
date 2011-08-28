@@ -84,6 +84,15 @@ class QSO extends CI_Controller {
 			$this->session->set_flashdata('notice', 'Record Updated');
 			redirect('logbook');
 		}
+	}
+	
+	/* Delete QSO */
+	function delete($id) {
+		$this->load->model('logbook_model');
 		
+		$this->logbook_model->delete($id);
+		
+		$this->session->set_flashdata('notice', 'QSO Deleted Successfully');
+		redirect('logbook');
 	}
 }
