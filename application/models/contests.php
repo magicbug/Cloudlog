@@ -11,7 +11,7 @@ class Contests extends CI_Model {
 	function information($id) {
 		$this->db->select('*');
 		$this->db->from('contests');
-		//$this->db->where('id', $id); 
+		$this->db->where('contests.template', $id); 
 		$this->db->join('contest_template', 'contest_template.id = contests.template');
 		$query = $this->db->get();
 		return $query->row(); 
@@ -116,6 +116,7 @@ class Contests extends CI_Model {
 		}
 		//$this->db->order_by("COL_PRIMARY_KEY", "asc");
 		$this->db->order_by("COL_TIME_ON", "desc");
+		//$this->db->order_by("COL_STX_STRING", "ASC"); 
 		$this->db->limit(10);
 		
 		return $this->db->get($this->config->item('table_name'));

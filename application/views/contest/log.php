@@ -22,11 +22,11 @@
 
 <?php
 			$serial_number = $info->serial_num + 1;
-			if($serial_number <= 49) { 
+			if($serial_number <= 009) { 
 				$new_serial = "00".$serial_number;
 			}
 			
-			if($serial_number >= 49 && $serial_number <= 100) {
+			if($serial_number >= 010 && $serial_number <= 100) {
 				$new_serial = "0".$serial_number;
 			}
 			
