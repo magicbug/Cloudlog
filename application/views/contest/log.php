@@ -306,12 +306,12 @@ function settime () {
 	</tr>
 </table>
 
-</form>
+
 
 <div class="info">
 	<input size="20" id="country" type="text" name="country" value="" /> <span id="locator_info"></span>
 </div>
-
+</form>
 </div>
 
 
@@ -331,6 +331,8 @@ $(document).ready(function(){
   $("#callsign").keyup(function(){
 	if ($(this).val()) {
 	$('#partial_view').load("<?php echo site_url(); ?>//logbook/partial/" + $(this).val()).fadeIn("slow");
+	
+	$('#locator_info').load("<?php echo site_url(); ?>/logbook/bearing/" + $(this).val()).fadeIn("slow");
 
 	$.get('<?php echo site_url(); ?>/logbook/find_dxcc/' + $(this).val(), function(result) {
 	$('#country').val(result);
