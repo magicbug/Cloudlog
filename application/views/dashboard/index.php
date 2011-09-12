@@ -115,7 +115,7 @@
 </table>
 
 	
-	<h3>This Weeks QSOs</h3>
+	<h3>Todays QSOs</h3>
 			   <div id="map" style="width: 420px; height: 300px"></div> 
 
 		<noscript><b>JavaScript must be enabled in order for you to use Google Maps.</b> 
@@ -184,7 +184,7 @@
 
 	  // ================================================================
 	  // === Fetch the JSON data file ====    
-	  GDownloadUrl("/logger/index.php/dashboard/todays_map", process_it);
+	  GDownloadUrl("<?php echo site_url('/dashboard/todays_map'); ?>", process_it);
 	  // ================================================================
 
 	}
