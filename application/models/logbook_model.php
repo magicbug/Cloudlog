@@ -12,7 +12,14 @@ class Logbook_model extends CI_Model {
 	function add() {
 		// Join date+time
 		$datetime = date('Y-m-d') ." ". $this->input->post('start_time');
-	
+	    
+        if($this->input->post('sat_name')) {
+            $prop_mode = "SAT";
+        } else {
+            $prop_mode = "";
+        }
+    
+    
 		// Create array with QSO Data
 		$data = array(
 		   'COL_TIME_ON' => $datetime,
@@ -37,6 +44,7 @@ class Logbook_model extends CI_Model {
            'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
            'COL_QSL_RCVD_VIA' => $this->input->post('qsl_recv_method'),
            'COL_OPERATOR' => $this->session->userdata('user_callsign'),
+           'COL_PROP_MODE' => $prop_mode,
 		);
 
 		// Add QSO to database
@@ -192,7 +200,7 @@ class Logbook_model extends CI_Model {
     }
     
     function get_this_weeks_qsos() {
-        $morning = date('Y/m/d',time()+(1 - date('w'))*24*3600);
+        $morning = date('Y/m/d',time()+(date('w'))*24*3600);
         $night = date('Y/m/d',time()+( 7 - date('w'))*24*3600);
         $query = $this->db->query('SELECT * FROM '.$this->config->item('table_name').' WHERE COL_TIME_ON between \''.$morning.'\' AND \''.$night.'\'');
 
@@ -232,7 +240,7 @@ class Logbook_model extends CI_Model {
     
     
     function total_ssb() {
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'SSB\' or COL_MODE = \'LSB\' or COL_MODE = \'USB\'');
+        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'SSB\' OR COL_MODE = \'LSB\' OR COL_MODE = \'USB\'');
 
         if ($query->num_rows() > 0)
         {
@@ -275,7 +283,7 @@ class Logbook_model extends CI_Model {
     }
 
     function total_digi() {
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE != \'SSB\' or COL_MODE != \'LSB\' or COL_MODE = \'USB\' or COL_MODE = \'CW\' or COL_MODE = \'FM\'');
+        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE != \'SSB\' AND (COL_MODE != \'LSB\' or COL_MODE != \'USB\' or COL_MODE != \'CW\' or COL_MODE != \'FM\')');
 
         if ($query->num_rows() > 0)
         {

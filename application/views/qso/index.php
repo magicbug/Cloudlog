@@ -282,6 +282,8 @@ $(document).ready(function(){
 		$.get('logbook/callsign_qra/' + $(this).val(), function(result) {
 			$('#locator').val(result);
 		});
+		
+		$('#locator_info').load("logbook/bearing/" + $(this).val()).fadeIn("slow");
 	}
 
 	$.get('logbook/callsign_name/' + $(this).val(), function(result) {
