@@ -95,4 +95,12 @@ class QSO extends CI_Controller {
 		$this->session->set_flashdata('notice', 'QSO Deleted Successfully');
 		redirect('logbook');
 	}
+	
+	
+	function freq() {
+		
+		$this->load->library('frequency');
+		
+		echo $this->frequency->convent_band('40m', 'SSB');
+	}
 }
