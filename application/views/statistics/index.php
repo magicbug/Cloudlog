@@ -22,7 +22,7 @@
 	  data.addRows([
 		['SSB', <?php echo $total_ssb; ?>],
 		['CW', <?php echo $total_cw; ?>],
-		['FM', <?php echo $total_ssb; ?>], 
+		['FM', <?php echo $total_fm; ?>], 
 		['Digi', <?php echo $total_digi; ?>],
 	  ]);
 
@@ -85,10 +85,8 @@
 			<ul>
 				<li><a href="#tabs-1">Main</a></li>
 				<li><a href="#tabs-2">Satellite</a></li>
-				<li><a href="#tabs-3">-</a></li>
 			</ul>
 			<div id="tabs-1"><div id="modechart_div"></div> <div id="bandchart_div"></div></div>
 			<div id="tabs-2"><div id="satchart_div"></div></div>
-			<div id="tabs-3"></div>
 		</div>
 </div>
