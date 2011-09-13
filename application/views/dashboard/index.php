@@ -43,7 +43,7 @@
 	  data.addRows([
 		['SSB', <?php echo $total_ssb; ?>],
 		['CW', <?php echo $total_cw; ?>],
-		['FM', <?php echo $total_ssb; ?>], 
+		['FM', <?php echo $total_fm; ?>], 
 		['Digi', <?php echo $total_digi; ?>],
 	  ]);
 
