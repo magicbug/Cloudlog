@@ -8,6 +8,7 @@
 	  google.setOnLoadCallback(drawModeChart);
 	  google.setOnLoadCallback(drawBandChart);
 	  google.setOnLoadCallback(drawSatChart);
+	  google.setOnLoadCallback(drawQSLChart);
 
 
 	  // Callback that creates and populates a data table, 
@@ -85,8 +86,10 @@
 			<ul>
 				<li><a href="#tabs-1">Main</a></li>
 				<li><a href="#tabs-2">Satellite</a></li>
+				<!-- <li><a href="#tabs-3">QSLing</a></li> -->
 			</ul>
 			<div id="tabs-1"><div id="modechart_div"></div> <div id="bandchart_div"></div></div>
 			<div id="tabs-2"><div id="satchart_div"></div></div>
+			<!-- <div id="tabs-3"><div id="qslchart_div"></div></div> -->
 		</div>
 </div>

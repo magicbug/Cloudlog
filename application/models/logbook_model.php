@@ -26,7 +26,7 @@ class Logbook_model extends CI_Model {
 		   'COL_TIME_OFF' => $datetime,
 		   'COL_CALL' => strtoupper($this->input->post('callsign')),
 		   'COL_BAND' => $this->input->post('band'),
-		   'COL_FREQ' => $this->input->post('freq'),
+		   'COL_FREQ' => $this->input->post('freq_display'),
 		   'COL_MODE' => $this->input->post('mode'),
 		   'COL_RST_RCVD' => $this->input->post('rst_recv'),
 		   'COL_RST_SENT' => $this->input->post('rst_sent'),

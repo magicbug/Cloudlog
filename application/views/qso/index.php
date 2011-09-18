@@ -107,13 +107,13 @@ function settime () {
 		<td><input class="input_date" type="text" name="start_date" value="<?php echo date('d-m-Y'); ?>" size="10" /></td>
 		<td><input class="input_time" type="text" name="start_time" value="" size="7" /></td>
 		<td><input size="10" id="callsign" type="text" name="callsign" value="" /></td>
-		<td><select name="mode">
+		<td><select name="mode" class="mode">
 			<option value="SSB" <?php if($this->session->userdata('mode') == "" || $this->session->userdata('mode') == "FM") { echo "selected=\"selected\""; } ?>>SSB</option>
 			<option value="FM" <?php if($this->session->userdata('mode') == "FM") { echo "selected=\"selected\""; } ?>>FM</option>
 			<option value="CW" <?php if($this->session->userdata('mode') == "CW") { echo "selected=\"selected\""; } ?>>CW</option>
 			<option value="RTTY" <?php if($this->session->userdata('mode') == "RTTY") { echo "selected=\"selected\""; } ?>>RTTY</option>
 			<option value="PSK31" <?php if($this->session->userdata('mode') == "PSK31") { echo "selected=\"selected\""; } ?>>PSK31</option>
-			<option value="PSK63" <?php if($this->session->userdata('mode') == "PSK63") { echo "selected=\"selected\""; } ?>>PSK31</option>
+			<option value="PSK63" <?php if($this->session->userdata('mode') == "PSK63") { echo "selected=\"selected\""; } ?>>PSK63</option>
 			<option value="JT65" <?php if($this->session->userdata('mode') == "JT65") { echo "selected=\"selected\""; } ?>>JT65</option>
 			<option value="JT65B" <?php if($this->session->userdata('mode') == "JT65B") { echo "selected=\"selected\""; } ?>>JT65B</option>
 			<option value="JT6M" <?php if($this->session->userdata('mode') == "JT6M") { echo "selected=\"selected\""; } ?>>JT6M</option>
@@ -121,7 +121,7 @@ function settime () {
 			<option value="PKT" <?php if($this->session->userdata('mode') == "PKT") { echo "selected=\"selected\""; } ?>>PKT</option>
 		</select></td> 
 		
-		<td><select name="band">
+		<td><select name="band" class="band">
 			<option value="160m" <?php if($this->session->userdata('band') == "160m") { echo "selected=\"selected\""; } ?>>160m</option>
 			<option value="80m" <?php if($this->session->userdata('band') == "80m") { echo "selected=\"selected\""; } ?>>80m</option>
 			<option value="60m" <?php if($this->session->userdata('band') == "60m") { echo "selected=\"selected\""; } ?>>60m</option>
@@ -213,12 +213,10 @@ function settime () {
 						<td>Radio</td>
 						<td><input type="text" name="equipment" value="" /></td>
 					</tr>
-					<?php if($this->config->item('display_freq') == true) { ?>
 					<tr>
 						<td>Frequnecy</td>
-						<td><input type="text" name="freq" value="<?php if($this->session->userdata('freq') != null) { echo $this->session->userdata('freq'); } ?>" /></td>
+						<td><input type="text" id="frequency" name="freq_display" value="" /></td>
 					</tr>
-					<?php } ?>
 				</table>
 				
 			</div>
@@ -262,37 +260,64 @@ function settime () {
 
 </form>
 <script type="text/javascript">
-i=0;
-$(document).ready(function(){
-	$("#locator").keyup(function(){
-		if ($(this).val()) {
-			$('#locator_info').load("logbook/bearing/" + $(this).val()).fadeIn("slow");
-		}
-	});
-
-  $("#callsign").keyup(function(){
-  	if ($(this).val()) {
-	$('#partial_view').load("logbook/partial/" + $(this).val()).fadeIn("slow");
+	i=0;
+	$(document).ready(function(){
 	
-	$.get('logbook/find_dxcc/' + $(this).val(), function(result) {
-	$('#country').val(result);
-		});
-	
-	if($('#locator').val() == "") {
-		$.get('logbook/callsign_qra/' + $(this).val(), function(result) {
-			$('#locator').val(result);
-		});
+		/* On Page Load */
 		
-		$('#locator_info').load("logbook/bearing/" + $(this).val()).fadeIn("slow");
-	}
-
-	$.get('logbook/callsign_name/' + $(this).val(), function(result) {
-	$('#name').val(result);
+		$.get('qso/band_to_freq/' + $('.band').val() + '/' + $('.mode').val(), function(result) {
+						$('#frequency').val(result);
+		});	
+	
+		/* Calculate Frequency */
+			/* on band change */
+			$('.band').change(function() {
+				$.get('qso/band_to_freq/' + $(this).val() + '/' + $('.mode').val(), function(result) {
+						$('#frequency').val(result);
+					});	
+			});
+			
+			/* on mode change */
+			$('.mode').change(function() {
+				$.get('qso/band_to_freq/' + $('.band').val() + '/' + $('.mode').val(), function(result) {
+						$('#frequency').val(result);
+					});	
+			});
+	
+		/* On Key up Calculate Bearing and Distance */
+		$("#locator").keyup(function(){
+			if ($(this).val()) {
+				$('#locator_info').load("logbook/bearing/" + $(this).val()).fadeIn("slow");
+			}
 		});
-	}
-
-  });
-});
+	
+		/* On Callsign Change */
+		$("#callsign").keyup(function(){
+			if ($(this).val()) {
+				/* Find Callsign Matches */
+				$('#partial_view').load("logbook/partial/" + $(this).val()).fadeIn("slow");
+	
+				/* Find and populate DXCC */
+				$.get('logbook/find_dxcc/' + $(this).val(), function(result) {
+					$('#country').val(result);
+				});
+	
+				/* Find Locator if the field is empty */
+				if($('#locator').val() == "") {
+					$.get('logbook/callsign_qra/' + $(this).val(), function(result) {
+						$('#locator').val(result);
+					});
+	
+					$('#locator_info').load("logbook/bearing/" + $(this).val()).fadeIn("slow");
+				}
+	
+				/* Find Operators Name */
+				$.get('logbook/callsign_name/' + $(this).val(), function(result) {
+					$('#name').val(result);
+				});
+			}
+		});
+	});
 </script>
 
 </div>

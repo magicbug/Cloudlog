@@ -2,140 +2,170 @@
 
 class Frequency {
 
+	/* Class to convert band and mode into a frequnecy in a format based on the specifications of the database table */
+
 	public function convent_band($band, $mode)
 	{
 	
 		if($band == "160m") {
 			if ($mode == "SSB") {
-				return "1.900";
+				return "1900000";
 			}elseif($mode == "CW") {
-				return "1.830";
-			}elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "1.838";
+				return "1830000";
+			}elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
+				return "1838000";
+			} else {
+				return "1900000";
 			}
 		}
 		if($band == "80m") {
 			if ($mode == "CW") {
-				return "3.550";
-			}elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "3.583";
+				return "3550000";
+			}elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
+				return "3583000";
 			}elseif($mode == "SSB") {
-				return "3.700";
+					return "3700000";
+			} else {
+				return "3700000";
 			}
 		}
 		if($band == "40m") {
 			if ($mode == "CW") {
-				return "7.020";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "7.040";
+				return "7020000";
+			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
+				return "7040000";
 			}elseif($mode == "SSB") {
-				return "7.100";
+				return "7100000";
+			} else {
+				return "7100000";
 			}
 		}
 		if($band == "30m") {
 			if ($mode == "CW") {
-				return "10.120";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "10.145";
+				return "10120000";
+			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
+				return "10145000";
+			} else {
+				return "10120000";
 			}
 		}
 		if($band == "20m") {
 			if ($mode == "CW") {
-				return "14.020";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "14.080";
+				return "14020000";
+			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
+				return "14080000";
 			}elseif($mode == "SSB") {
-				return "14.200";
-			}
+				return "14200000";
+			} else {
+				return "14200000";
+			} 
 		}
 		if($band == "17m") {
 			if ($mode == "CW") {
-				return "18.080";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "18.105";
+				return "18080000";
+			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
+				return "18105000";
 			}elseif($mode == "SSB") {
-				return "18.130";
+				return "18130000";
+			} else {
+				return "18130000";
 			}
 		}
 		if($band == "15m") {
 			if ($mode == "CW") {
-				return "21.020";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "21.080";
+				return "21020000";
+			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
+				return "21080000";
 			}elseif($mode == "SSB") {
-				return "21.300";
+				return "21300000";
+			} else {
+				return "21300000";
 			}
 		}
 		if($band == "12m") {
 			if ($mode == "CW") {
-				return "24.900";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "24.925";
+				return "24900000";
+			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
+				return "24925000";
 			}elseif($mode == "SSB") {
-				return "24.950";
+				return "24950000";
 			}
 		}
 		if($band == "10m") {
 			if ($mode == "CW") {
-				return "21.050";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "28.120";
+				return "21050000";
+			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
+				return "28120000";
 			}elseif($mode == "SSB") {
-				return "28.300";
+				return "28300000";
+			} else {
+				return "28300000";
 			}
 		}
 		if($band == "6m") {
 			if ($mode == "CW") {
-				return "50.090";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "50.230";
+				return "50090000";
+			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
+				return "50230000";
 			}elseif($mode == "SSB") {
-				return "50.150";
+				return "50150000";
+			} else {
+				return "50150000";
 			}
 		}
 		if($band == "4m") {
 			if ($mode == "CW") {
-				return "70.200";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "70.200";
+				return "70200000";
+			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
+				return "70200000";
 			}elseif($mode == "SSB") {
-				return "70.200";
+				return "70200000";
+			} else {
+				return "70200000";
 			}
 		}
 		if($band == "2m") {
 			if ($mode == "CW") {
-				return "144.050";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "144.370";
+				return "144.050000";
+			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
+				return "144370000";
 			}elseif($mode == "SSB") {
-				return "144.300";
+				return "144300000";
+			} else {
+				return "144300000";
 			}
 		}
 		if($band == "70cm") {
 			if ($mode == "CW") {
-				return "432.050";
+				return "432050000";
 			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "432.088";
+				return "432088000";
 			}elseif($mode == "SSB") {
-				return "432.200";
+				return "432200000";
+			} else {
+				return "432200000";
 			}
 		}
 		if($band == "70cm") {
 			if ($mode == "CW") {
-				return "432.050";
+				return "432050000";
 			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "432.088";
+				return "432088000";
 			}elseif($mode == "SSB") {
-				return "432.200";
+				return "432200000";
+			} else {
+				return "432200000";
 			}
 		}
 		if($band == "23cm") {
 			if ($mode == "CW") {
-				return "1296.000";
+				return "129600000";
 			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "1296.138";
+				return "1296138000";
 			}elseif($mode == "SSB") {
-				return "1296.000";
+				return "1296000000";
+			} else {
+				return "1296000000";
 			}
 		}
 	
