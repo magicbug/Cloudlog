@@ -97,10 +97,10 @@ class QSO extends CI_Controller {
 	}
 	
 	
-	function freq() {
+	function band_to_freq($band, $mode) {
 		
 		$this->load->library('frequency');
 		
-		echo $this->frequency->convent_band('40m', 'SSB');
+		echo $this->frequency->convent_band($band, $mode);
 	}
 }
