@@ -24,7 +24,7 @@
 	});
 </script>
 	<style type="text/css" media="screen" >
-body { background-color: #e6e6e6; font-family: Arial, "Trebuchet MS", sans-serif; }
+body { background-color: #e6e6e6; font-size: 15px; font-family: Arial, "Trebuchet MS", sans-serif; }
 td { padding: 1px;}
 .tr1 td { background:none repeat scroll 0 0 #F0FFFF; }
 .partial td, .logbook td, .users td { padding: 5px; }

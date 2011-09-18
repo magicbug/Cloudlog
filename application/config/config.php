@@ -22,6 +22,10 @@ $config['auth_level'][2] = "Editor";
 $config['auth_level'][3] = "API User";
 $config['auth_level'][99] = "Administrator";
 
+/* Beta Features */
+
+$config['beta'] = true;
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
