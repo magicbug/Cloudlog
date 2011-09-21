@@ -26,6 +26,9 @@ $config['auth_level'][99] = "Administrator";
 
 $config['beta'] = true;
 
+$config['app_name'] = "Web Logger";
+$config['app_version'] = "0.1";
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
