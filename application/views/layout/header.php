@@ -82,7 +82,7 @@ ul#user li { float: left; margin: 2px 2px 0 3px; height:43px; border-bottom: non
 #message p { line-height: 1.7; margin: 0px 0; }
 .clear { clear: both; }
 h2 { margin: 0 auto; width: 780px; font-weight: bold; font-size: 23px; margin-top: 5px; margin-bottom: 10px; }
-h3 { font-weight: bold; font-size: 16px; margin: 5px; }
+h3 { font-weight: bold; font-size: 16px; margin: 5px; margin-left: 0px; }
 table .titles { font-weight: bold; }
 #tabs { margin: 5px; }
 
@@ -99,8 +99,6 @@ table .titles { font-weight: bold; }
 #name { width: 145px; }
 #comment { width: 89.5%; }
 
-.dash_left { float: left; width: 440px; }
-.dash_sidebar { float: right; width: 310px; }
 .note { padding: 5px; }
 .auth { padding: 5px; }
 #notes_add { padding: 5px; }
@@ -138,9 +136,22 @@ border-radius: 10px;
 .contest_qso_box table {
 	width: 695px;
 }
+
+td.item {
+	padding-bottom: 5px;
+}
+
+.dashboard {
+	padding: 5px;
+}
+
+.dashboard_top { margin-top: 5px; }
+.dashboard_log { float: left; width: 440px; }
+.dashboard_breakdown { float: right; width: 310px; }
+.dashboard_bottom .chart { float: left; }
 	</style>
 	
-	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $this->config->item('google_maps_api'); ?>&sensor=true"
+	<script src="http://maps.google.com/maps?file=api&amp;v=3&amp;key=<?php echo $this->config->item('google_maps_api'); ?>&sensor=true"
 			type="text/javascript"></script>
 </head>
 

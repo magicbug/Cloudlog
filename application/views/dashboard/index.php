@@ -49,7 +49,7 @@
 
 	  // Instantiate and draw our chart, passing in some options.
 	  var chart = new google.visualization.PieChart(document.getElementById('modechart_div'));
-	  chart.draw(data, {width: 310, height: 240});
+	  chart.draw(data, {width: 280, height: 240, title: 'Total QSOs by Mode'});
 	}
 	
 	 function drawBandChart() {
@@ -68,7 +68,7 @@
 
 	  // Instantiate and draw our chart, passing in some options.
 	  var chart = new google.visualization.PieChart(document.getElementById('bandchart_div'));
-	  chart.draw(data, {width: 310, height: 240});
+	  chart.draw(data, {width: 280, height: 240, title: 'Total QSOs by Band'});
 	}
 	
 	</script>
@@ -79,50 +79,99 @@
 	</div>
 <?php } ?>
 <h2>Dashboard</h2>
-<div class="wrap_content">
+<div class="wrap_content dashboard">
+
+	<div id="map" style="width: 100%; height: 300px"></div> 
+
+
+	<div id="dashboard_container">
+		
+		<div class="dashboard_top">
+			
+			<div class="dashboard_log">
+				<table class="logbook" width="100%">
+					<tr class="log_title titles">
+						<td>Date</td>
+						<td>Time</td>
+						<td>Call</td>
+						<td>Mode</td>
+						<td>Sent</td>
+						<td>Recv</td>
+						<td>Band</td>
+					</tr>
+
+					<?php $i = 0; 
+					foreach ($last_five_qsos->result() as $row) { ?>
+						<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
+						<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); ?></td>
+						<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
+						<td><a class="qsobox" href="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>"><?php echo strtoupper($row->COL_CALL); ?></a></td>
+						<td><?php echo $row->COL_MODE; ?></td>
+						<td><?php echo $row->COL_RST_SENT; ?></td>
+						<td><?php echo $row->COL_RST_RCVD; ?></td>
+						<?php if($row->COL_SAT_NAME != null) { ?>
+						<td>SAT</td>
+						<?php } else { ?>
+						<td><?php echo $row->COL_BAND; ?></td>
+						<?php } ?>
+					</tr>
+					<?php $i++; } ?>
+
+				</table>
+
+			</div>
+			
+			<div class="dashboard_breakdown">
+				<table width="100%">
+					<tr class="dashboard_tr">
+						<td class="item">Total QSOs</td>
+						<td class="item"><?php echo $total_qsos; ?></td>
+					</tr>
+					<tr class="dashboard_tr">
+						<td class="item">QSOs This Year</td>
+						<td class="item"><?php echo $year_qsos; ?></td>
+					</tr>
+					<tr class="dashboard_tr">
+						<td class="item">QSOs This Month</td>
+						<td class="item"><?php echo $month_qsos; ?></td>
+					</tr>
+					<tr class="dashboard_tr">
+						<td class="item"> </td>
+						<td class="item"></td>
+					</tr>
+					<tr class="dashboard_tr">
+						<td class="item">Countrys Worked</td>
+						<td class="item"><?php echo $total_countrys; ?></td>
+					</tr>
+					<tr class="dashboard_tr">
+						<td class="item"> </td>
+						<td class="item"></td>
+					</tr>
+					<tr class="dashboard_tr">
+						<td class="item">QSL Cards Sent</td>
+						<td class="item"><?php echo $total_qsl_sent; ?></td>
+					</tr>
+					<tr class="dashboard_tr">
+						<td class="item">QSL Cards Received</td>
+						<td class="item"><?php echo $total_qsl_recv; ?></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="clear"></div>
+		</div>
+		
+		<!-- <div class="dashboard_bottom">
+			<div class="chart" id="modechart_div"></div>
+			<div class="chart" id="bandchart_div"></div>
+		</div> -->
+		
+	</div>
+
+	<div class="clear"></div>
+
 	<div class="dash_left">
 	
-	<h3>Latest QSOs</h3>
-	
-	<table class="logbook" width="100%">
-	<tr class="log_title titles">
-		<td>Date</td>
-		<td>Time</td>
-		<td>Call</td>
-		<td>Mode</td>
-		<td>Sent</td>
-		<td>Recv</td>
-		<td>Band</td>
-	</tr>
-
-	<?php $i = 0; 
- foreach ($last_five_qsos->result() as $row) { ?>
-		<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
-		<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); ?></td>
-		<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
-		<td><a class="qsobox" href="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>"><?php echo strtoupper($row->COL_CALL); ?></a></td>
-		<td><?php echo $row->COL_MODE; ?></td>
-		<td><?php echo $row->COL_RST_SENT; ?></td>
-		<td><?php echo $row->COL_RST_RCVD; ?></td>
-		<?php if($row->COL_SAT_NAME != null) { ?>
-		<td>SAT</td>
-		<?php } else { ?>
-		<td><?php echo $row->COL_BAND; ?></td>
-		<?php } ?>
-	</tr>
-	<?php $i++; } ?>
-
-</table>
-
-	
-	<h3>Todays QSOs</h3>
-			   <div id="map" style="width: 420px; height: 300px"></div> 
-
-		<noscript><b>JavaScript must be enabled in order for you to use Google Maps.</b> 
-	  However, it seems JavaScript is either disabled or not supported by your browser. 
-	  To view Google Maps, enable JavaScript by changing your browser options, and then 
-	  try again.
-	</noscript> 
 
 
 	<script type="text/javascript"> 
@@ -132,7 +181,7 @@
 	  var map = new GMap(document.getElementById("map"));
 	  map.addControl(new GLargeMapControl());
 	  map.addControl(new GMapTypeControl());
-	  map.setCenter(new GLatLng(33.137551,0.703125),1);
+	  map.setCenter(new GLatLng(33.137551,0.703125),2);
 
 	  // arrays to hold copies of the markers and html used by the side_bar
 	  // because the function closure trick doesnt work there
@@ -184,7 +233,7 @@
 
 	  // ================================================================
 	  // === Fetch the JSON data file ====    
-	  GDownloadUrl("<?php echo site_url('/dashboard/todays_map'); ?>", process_it);
+	  GDownloadUrl("<?php echo site_url('/dashboard/map'); ?>", process_it);
 	  // ================================================================
 
 	}
@@ -202,30 +251,7 @@
 	</script> 
 	
 	</div>
-	
-	<div class="dash_sidebar">
-	
-		<h3>Overview of QSOs</h3>
-		<table width="100%">
-			<tr>
-				<td>Total QSOs</td>
-				<td><?php echo $total_qsos; ?></td>
-			</tr>
-			<tr>
-				<td>QSOs This Month</td>
-				<td><?php echo $month_qsos; ?></td>
-			</tr>
-			<tr>
-				<td>QSOs This Year</td>
-				<td><?php echo $year_qsos; ?></td>
-			</tr>
-		</table>
-	
-		<h3>QSOs by Mode</h3>
-		<div id="modechart_div"></div>
-		<h3>QSOs by Band</h3>
-		<div id="bandchart_div"></div>
-	</div>
+
 	
 	<div class="clear"></div>
 </div>
