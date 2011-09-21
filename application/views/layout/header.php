@@ -114,7 +114,7 @@ ul.notes_list {list-style-type: circle; padding-left: 20px; }
 
 p {
 line-height: 1.7;
-margin: 10px 0;
+margin: 0px 0;
 }
 
 .contest_wrap { margin: 0 auto; width: 95%; }
@@ -151,7 +151,7 @@ border-radius: 10px;
 		<ul id="navlist">
 			<?php if((($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= $this->config->item('auth_mode'))) || $this->config->item('use_auth') === FALSE) { ?>
 			<li><a href="<?php echo site_url();?> " title="Dashboard">Dashboard</a></li>
-			<li><a href="<?php echo site_url('logbook');?>" title="View Log">View Log</a></li>
+			<li><a href="<?php echo site_url('logbook');?>" title="Logbook">Logbook</a></li>
 			<li><a href="<?php echo site_url('search');?>" title="Search">Search</a></li>
 			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 			<li><a href="<?php echo site_url('qso');?>" title="Add QSO">Add QSO</a></li>
@@ -182,6 +182,7 @@ border-radius: 10px;
 			<?php if(($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) || $this->config->item('use_auth') === FALSE){ ?>
 			<li class="ui-corner-all"><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
 			<li><a href="<?php echo site_url('setup');?>" title="Setup">Setup</a></li>
+			<li><a href="<?php echo site_url('adif/export');?>" title="ADIF Export">ADIF Export</a></li>
 			<?php } ?>
 		</ul>
 	</div>
