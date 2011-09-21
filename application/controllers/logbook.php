@@ -46,6 +46,8 @@ class Logbook extends CI_Controller {
 		$this->load->model('user_model');
         if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
+		$this->load->library('qra');
+
 		$this->db->where('COL_PRIMARY_KEY', $id); 
 		$data['query'] = $this->db->get($this->config->item('table_name'));
 		
