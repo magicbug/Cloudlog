@@ -199,10 +199,11 @@ class Logbook_model extends CI_Model {
         }
     }
     
-    function get_this_weeks_qsos() {
-        $morning = date('Y/m/d',time()+(date('w'))*24*3600);
-        $night = date('Y/m/d',time()+( 7 - date('w'))*24*3600);
-        $query = $this->db->query('SELECT * FROM '.$this->config->item('table_name').' WHERE COL_TIME_ON between \''.$morning.'\' AND \''.$night.'\'');
+    function map_week_qsos($start, $end) {
+    
+        $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
+        $this->db->order_by("COL_TIME_ON", "ASC"); 
+        $query = $this->db->get($this->config->item('table_name'));
 
         return $query;
     }
@@ -298,6 +299,36 @@ class Logbook_model extends CI_Model {
         $query = $this->db->query('SELECT DISTINCT (COL_BAND) AS band, count( * ) AS count FROM '.$this->config->item('table_name').' GROUP BY band ORDER BY count DESC');
 
         return $query;
+    }
+    
+    function total_qsl_sent() {
+        $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_SENT = "Y" GROUP BY band');
+
+        $row = $query->row();
+        
+        if($row == null) {
+            return 0;
+        } else {
+            return $row->count;
+        }
+    }
+    
+    function total_qsl_recv() {
+        $query = $this->db->query('SELECT DISTINCT (COL_QSL_RCVD) AS band, count(COL_QSL_RCVD) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_RCVD = "Y" GROUP BY band');
+
+        $row = $query->row();
+
+        if($row == null) {
+            return 0;
+        } else {
+            return $row->count;
+        }
+    }
+    
+    function total_countrys() {
+        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').'');
+
+        return $query->num_rows();
     }
 
 	function api_search_query($query) {
