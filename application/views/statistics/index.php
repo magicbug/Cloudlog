@@ -78,7 +78,7 @@
 
 <h2><?php echo $page_title; ?></h2>
 
-<div class="wrap_content note">
+<div class="wrap_content note stats">
 
 <p>Statistics built using information from the logbook.</p>
 

@@ -196,12 +196,12 @@ function settime () {
 			<div id="tabs-2">
 				<table>
 					<tr>
-						<td class="title">Sat Name</td>
+						<td>Sat Name</td>
 						<td><input type="text" name="sat_name" value="<?php echo $this->session->userdata('sat_name'); ?>" /></td>
 					</tr>
 	
 					<tr>
-						<td class="title">Sat Mode</td>
+						<td>Sat Mode</td>
 						<td><input type="text" name="sat_mode" value="<?php echo $this->session->userdata('sat_mode'); ?>" /></td>
 					</tr>
 				</table>

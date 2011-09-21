@@ -152,7 +152,7 @@ margin: 10px 0;
 <?php
 
 	if($row->COL_GRIDSQUARE != null) {
-				$stn_loc = qra2latlong($row->COL_GRIDSQUARE);
+				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
 				
 				$lat = $stn_loc[0];
 				$lng = $stn_loc[1];
