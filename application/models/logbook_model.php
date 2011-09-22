@@ -313,6 +313,18 @@ class Logbook_model extends CI_Model {
         }
     }
     
+    function total_qsl_requested() {
+        $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_SENT = "R" GROUP BY band');
+
+        $row = $query->row();
+
+        if($row == null) {
+            return 0;
+        } else {
+            return $row->count;
+        }
+    }
+    
     function total_qsl_recv() {
         $query = $this->db->query('SELECT DISTINCT (COL_QSL_RCVD) AS band, count(COL_QSL_RCVD) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_RCVD = "Y" GROUP BY band');
 

@@ -3,7 +3,7 @@
 	<title>View QSO Info</title>
 	<link rel="stylesheet" href="<?php echo base_url();?>css/reset.css" type="text/css" />
 	<style type="text/css" media="screen">
-		body { font-family: Arial, "Trebuchet MS", sans-serif; }
+		body { font-family: Arial, "Trebuchet MS", sans-serif; font-size: 12px;}
 		h1 { font-weight: bold; font-size: 23px; margin-top: 5px; margin-bottom: 10px; }
 		
 		h2 { font-weight: bold; font-size: 18px; margin-top: 5px; margin-bottom: 10px; }
@@ -147,7 +147,7 @@ margin: 10px 0;
 		
 		<div id="stat">
 
-<div id="map_canvas" style="width: 420px; height: 300px"></div> 
+<div id="map_canvas" style="width: 420px; height: 250px"></div> 
 
 <?php
 

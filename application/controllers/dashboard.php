@@ -39,6 +39,7 @@ class Dashboard extends CI_Controller {
 		
 		$data['total_qsl_sent'] = $this->logbook_model->total_qsl_sent();
 		$data['total_qsl_recv'] = $this->logbook_model->total_qsl_recv();
+		$data['total_qsl_requested'] = $this->logbook_model->total_qsl_requested();
 		
 		$data['total_bands'] = $this->logbook_model->total_bands();
 		

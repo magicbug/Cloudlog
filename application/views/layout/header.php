@@ -121,6 +121,7 @@
 		.dashboard_breakdown { float: right; width: 310px; }
 		.dashboard_bottom .chart { float: left; }
 		td.item { padding-bottom: 5px; }
+		.dashboard_breakdown .title { color: #439BF6; }
 
 		/* Tabs CSS */
 		.ui-widget-content { border: none; }
