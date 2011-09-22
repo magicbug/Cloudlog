@@ -124,15 +124,18 @@
 			<div class="dashboard_breakdown">
 				<table width="100%">
 					<tr class="dashboard_tr">
-						<td class="item">Total QSOs</td>
+						<td class="item title" colspan="2">QSOs</td>
+					</tr>
+					<tr class="dashboard_tr">
+						<td class="item">Total </td>
 						<td class="item"><?php echo $total_qsos; ?></td>
 					</tr>
 					<tr class="dashboard_tr">
-						<td class="item">QSOs This Year</td>
+						<td class="item">This Year</td>
 						<td class="item"><?php echo $year_qsos; ?></td>
 					</tr>
 					<tr class="dashboard_tr">
-						<td class="item">QSOs This Month</td>
+						<td class="item">This Month</td>
 						<td class="item"><?php echo $month_qsos; ?></td>
 					</tr>
 					<tr class="dashboard_tr">
@@ -140,20 +143,34 @@
 						<td class="item"></td>
 					</tr>
 					<tr class="dashboard_tr">
-						<td class="item">Countrys Worked</td>
+						<td class="item title" colspan="2">Countrys</td>
+					</tr>
+					<tr class="dashboard_tr">
+						<td class="item">Worked</td>
 						<td class="item"><?php echo $total_countrys; ?></td>
+					</tr>
+					<tr class="dashboard_tr">
+						<td class="item">Needed</td>
+						<td class="item"><?php $dxcc = 340 - $total_countrys; echo $dxcc; ?></td>
 					</tr>
 					<tr class="dashboard_tr">
 						<td class="item"> </td>
 						<td class="item"></td>
 					</tr>
 					<tr class="dashboard_tr">
-						<td class="item">QSL Cards Sent</td>
+						<td class="item title" colspan="2">QSL Cards</td>
+					</tr>
+					<tr class="dashboard_tr">
+						<td class="item">Sent</td>
 						<td class="item"><?php echo $total_qsl_sent; ?></td>
 					</tr>
 					<tr class="dashboard_tr">
-						<td class="item">QSL Cards Received</td>
+						<td class="item">Received</td>
 						<td class="item"><?php echo $total_qsl_recv; ?></td>
+					</tr>
+					<tr class="dashboard_tr">
+						<td class="item">Requested</td>
+						<td class="item"><?php echo $total_qsl_requested; ?></td>
 					</tr>
 				</table>
 			</div>
@@ -180,7 +197,7 @@
 	  // Display the map, with some controls
 	  var map = new GMap(document.getElementById("map"));
 	  map.addControl(new GLargeMapControl());
-	  map.addControl(new GMapTypeControl());
+	  //map.addControl(new GMapTypeControl());
 	  map.setCenter(new GLatLng(33.137551,0.703125),2);
 
 	  // arrays to hold copies of the markers and html used by the side_bar
