@@ -131,11 +131,11 @@
 						<td class="item"><?php echo $total_qsos; ?></td>
 					</tr>
 					<tr class="dashboard_tr">
-						<td class="item">This Year</td>
+						<td class="item">Year</td>
 						<td class="item"><?php echo $year_qsos; ?></td>
 					</tr>
 					<tr class="dashboard_tr">
-						<td class="item">This Month</td>
+						<td class="item">Month</td>
 						<td class="item"><?php echo $month_qsos; ?></td>
 					</tr>
 					<tr class="dashboard_tr">
