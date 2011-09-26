@@ -47,20 +47,6 @@
 	</tr>
 	
 	<tr>
-		<td>Callsign</td>
-		<td><input type="text" name="user_callsign" value="<?php if(isset($user_callsign)) { echo $user_callsign; } ?>" />
-		<?php if(isset($callsign_error)) { echo "<div class=\"small error\">".$callsign_error."</div>"; } else { ?>
-		<?php } ?>
-	</tr>
-	
-	<tr>
-		<td>Locator</td>
-		<td><input type="text" name="user_locator" value="<?php if(isset($user_locator)) { echo $user_locator; } ?>" />
-		<?php if(isset($locator_error)) { echo "<div class=\"small error\">".$locator_error."</div>"; } else { ?>
-		<?php } ?>
-	</tr>
-	
-	<tr>
 		<td>First name</td>
 		<td><input type="text" name="user_firstname" value="<?php if(isset($user_firstname)) { echo $user_firstname; } ?>" />
 		<?php if(isset($firstname_error)) { echo "<div class=\"small error\">".$firstname_error."</div>"; } else { ?>
@@ -71,6 +57,20 @@
 		<td>Last name</td>
 		<td><input type="text" name="user_lastname" value="<?php if(isset($user_lastname)) { echo $user_lastname; } ?>" />
 		<?php if(isset($lastname_error)) { echo "<div class=\"small error\">".$lastname_error."</div>"; } else { ?>
+		<?php } ?>
+	</tr>
+	
+	<tr>
+		<td>Callsign</td>
+		<td><input type="text" name="user_callsign" value="<?php if(isset($user_callsign)) { echo $user_callsign; } ?>" />
+		<?php if(isset($callsign_error)) { echo "<div class=\"small error\">".$callsign_error."</div>"; } else { ?>
+		<?php } ?>
+	</tr>
+	
+	<tr>
+		<td>Locator</td>
+		<td><input type="text" name="user_locator" value="<?php if(isset($user_locator)) { echo $user_locator; } ?>" />
+		<?php if(isset($locator_error)) { echo "<div class=\"small error\">".$locator_error."</div>"; } else { ?>
 		<?php } ?>
 	</tr>
 	

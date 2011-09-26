@@ -74,14 +74,18 @@ class User_Model extends CI_Model {
 
 	// FUNCTION: bool add($username, $password, $email, $type)
 	// Add a user
-	function add($username, $password, $email, $type) {
+	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
 				'user_name' => $username,
 				'user_password' => $this->_hash($password),
 				'user_email' => $email,
-				'user_type' => $type
+				'user_type' => $type,
+				'user_firstname' => $firstname,
+				'user_lastname' => $lastname,
+				'user_callsign' => $callsign,
+				'user_locator' => $locator
 			);
 
 			// Check the password is valid
