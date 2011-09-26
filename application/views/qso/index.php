@@ -189,6 +189,7 @@ function settime () {
 				<li><a href="#tabs-2">Satellite</a></li>
 				<li><a href="#tabs-3">Station</a></li>
 				<li><a href="#tabs-4">QSL</a></li>
+				<li><a href="#tabs-5">Awards</a></li>
 			</ul>
 
 			<div id="tabs-1"><div id="partial_view">Partial Callsign Check</div></div>
@@ -253,6 +254,17 @@ function settime () {
 					</tr>
 
 				</table>
+			</div>
+
+			<div id="tabs-5">
+				
+				<table>
+					<tr>
+						<td>IOTA</td>
+						<td><input type="text" name="iota_ref" value="" /></td>
+					</tr>
+				</table>
+				
 			</div>
 
 		</div>
