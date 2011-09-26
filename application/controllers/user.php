@@ -25,6 +25,10 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_email', 'E-mail', 'required');
 		$this->form_validation->set_rules('user_password', 'Password', 'required');
 		$this->form_validation->set_rules('user_type', 'Type', 'required');
+		$this->form_validation->set_rules('user_firstname', 'First name', 'required');
+		$this->form_validation->set_rules('user_lastname', 'Last name', 'required');
+		$this->form_validation->set_rules('user_callsign', 'Callsign', 'required');
+		$this->form_validation->set_rules('user_locator', 'Locator', 'required');
 
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -35,6 +39,10 @@ class User extends CI_Controller {
 				$data['user_email'] = $this->input->post('user_email');
 				$data['user_password'] = $this->input->post('user_password');
 				$data['user_type'] = $this->input->post('user_type');
+				$data['user_firstname'] = $this->input->post('user_firstname');
+				$data['user_lastname'] = $this->input->post('user_lastname');
+				$data['user_callsign'] = $this->input->post('user_callsign');
+				$data['user_locator'] = $this->input->post('user_locator');
 				$this->load->view('user/add', $data);
 			} else {
 				$this->load->view('user/add');
@@ -43,7 +51,7 @@ class User extends CI_Controller {
 		}
 		else
 		{
-			switch($this->user_model->add($this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'))) {
+			switch($this->user_model->add($this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'), $this->input->post('user_firstname'), $this->input->post('user_lastname'), $this->input->post('user_callsign'), $this->input->post('user_locator'))) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
 					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';
@@ -65,6 +73,10 @@ class User extends CI_Controller {
 			$data['user_email'] = $this->input->post('user_email');
 			$data['user_password'] = $this->input->post('user_password');
 			$data['user_type'] = $this->input->post('user_type');
+			$data['user_firstname'] = $this->input->post('user_firstname');
+			$data['user_lastname'] = $this->input->post('user_lastname');
+			$data['user_callsign'] = $this->input->post('user_callsign');
+			$data['user_locator'] = $this->input->post('user_locator');
 			$this->load->view('user/add', $data);
 			$this->load->view('layout/footer');
 		}
