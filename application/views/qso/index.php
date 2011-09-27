@@ -261,7 +261,7 @@ function settime () {
 				<table>
 					<tr>
 						<td>IOTA</td>
-						<td><input type="text" name="iota_ref" value="" /></td>
+						<td><input type="text" name="iota_ref" value="" /> e.g: EU-005</td>
 					</tr>
 				</table>
 				
