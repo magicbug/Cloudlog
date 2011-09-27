@@ -73,6 +73,11 @@
 		<td><input type="text" name="sat_mode" value="<?php echo $COL_SAT_MODE; ?>" /></td>
 	</tr>
 	
+	<tr>
+		<td>IOTA</td>
+		<td><input type="text" name="iota_ref" value="<?php echo $COL_IOTA; ?>" /></td>
+	</tr>
+	
 </table>
 
 <h3>QSLing</h3>
