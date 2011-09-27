@@ -65,5 +65,9 @@
 	
 </table>
 
-<?php echo $this->pagination->create_links(); ?>
+	<!-- Page Through the Logbook -->
+	<div class="pager">
+		<?php echo $this->pagination->create_links(); ?>
+	</div>
+
 </div>
