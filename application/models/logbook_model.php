@@ -18,6 +18,12 @@ class Logbook_model extends CI_Model {
         } else {
             $prop_mode = "";
         }
+        
+        if($this->session->userdata('user_locator')){
+                $locator = $this->session->userdata('user_locator');
+        } else {
+                $locator = $this->config->item('locator');
+        }
     
     
 		// Create array with QSO Data
@@ -46,6 +52,7 @@ class Logbook_model extends CI_Model {
            'COL_OPERATOR' => $this->session->userdata('user_callsign'),
            'COL_PROP_MODE' => $prop_mode,
            'COL_IOTA' => $this->input->post('iota_ref'),
+           'COL_MY_GRIDSQUARE' => $locator,
 		);
 
 		// Add QSO to database
