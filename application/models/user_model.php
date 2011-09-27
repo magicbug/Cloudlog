@@ -204,6 +204,7 @@ class User_Model extends CI_Model {
 			'user_name'		=> $u->row()->user_name,
 			'user_type'		=> $u->row()->user_type,
 			'user_callsign'		=> $u->row()->user_callsign,
+			'user_locator'		=> $u->row()->user_locator,
 			'user_hash'		=> $this->_hash($u->row()->user_id."-".$u->row()->user_type)
 		);
 
