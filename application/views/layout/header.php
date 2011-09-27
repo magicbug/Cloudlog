@@ -127,6 +127,19 @@
 		.ui-widget-content { border: none; }
 		.ui-widget-header { background: none; border: none; border-bottom: 1px solid #DDD; }
 
+		.pager {
+			margin-top: 5px;
+			margin-bottom: 5px;
+			font-size: 12px;
+		}
+		.pager a, strong {
+			border: 1px solid #D7D7D7;
+			padding: 5px;
+		}
+		.pager a:hover {
+			background-color: azure;
+		}
+
 	</style>
 	
 	<script src="http://maps.google.com/maps?file=api&amp;v=3&amp;key=<?php echo $this->config->item('google_maps_api'); ?>&sensor=true"
