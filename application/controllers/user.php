@@ -29,6 +29,10 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_lastname', 'Last name', 'required');
 		$this->form_validation->set_rules('user_callsign', 'Callsign', 'required');
 		$this->form_validation->set_rules('user_locator', 'Locator', 'required');
+		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
+
+		// Get timezones
+		$data['timezones'] = $this->user_model->timezones();
 
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -43,15 +47,16 @@ class User extends CI_Controller {
 				$data['user_lastname'] = $this->input->post('user_lastname');
 				$data['user_callsign'] = $this->input->post('user_callsign');
 				$data['user_locator'] = $this->input->post('user_locator');
+				$data['user_timezone'] = $this->input->post('user_timezone');
 				$this->load->view('user/add', $data);
 			} else {
-				$this->load->view('user/add');
+				$this->load->view('user/add', $data);
 			}
 			$this->load->view('layout/footer');
 		}
 		else
 		{
-			switch($this->user_model->add($this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'), $this->input->post('user_firstname'), $this->input->post('user_lastname'), $this->input->post('user_callsign'), $this->input->post('user_locator'))) {
+			switch($this->user_model->add($this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'), $this->input->post('user_firstname'), $this->input->post('user_lastname'), $this->input->post('user_callsign'), $this->input->post('user_locator'), $this->input->post('user_timezone'))) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
 					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';
@@ -95,7 +100,14 @@ class User extends CI_Controller {
 		{
 			$this->form_validation->set_rules('user_type', 'Type', 'required');
 		}
+		$this->form_validation->set_rules('user_firstname', 'First name', 'required');
+		$this->form_validation->set_rules('user_lastname', 'Last name', 'required');
+		$this->form_validation->set_rules('user_callsign', 'Callsign', 'required');
+		$this->form_validation->set_rules('user_locator', 'Locator', 'required');
+		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
 
+		// Get timezones
+		$data['timezones'] = $this->user_model->timezones();
 
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -152,6 +164,24 @@ class User extends CI_Controller {
 				$data['user_lastname'] = $q->user_lastname;
 			}
 
+			if($this->input->post('user_callsign')) {
+				$data['user_callsign'] = $this->input->post('user_callsign');
+			} else {
+				$data['user_callsign'] = $q->user_callsign;
+			}
+
+			if($this->input->post('user_locator')) {
+				$data['user_locator'] = $this->input->post('user_locator');
+			} else {
+				$data['user_locator'] = $q->user_locator;
+			}
+
+			if($this->input->post('user_timezone')) {
+				$data['user_timezone'] = $this->input->post('user_timezone');
+			} else {
+				$data['user_timezone'] = $q->user_timezone;
+			}
+
 			$this->load->view('user/edit', $data);
 			$this->load->view('layout/footer');
 		}
@@ -185,6 +215,11 @@ class User extends CI_Controller {
 			$data['user_email'] = $this->input->post('user_email');
 			$data['user_password'] = $this->input->post('user_password');
 			$data['user_type'] = $this->input->post('user_type');
+			$data['user_firstname'] = $this->input->post('user_firstname');
+			$data['user_lastname'] = $this->input->post('user_lastname');
+			$data['user_callsign'] = $this->input->post('user_callsign');
+			$data['user_locator'] = $this->input->post('user_locator');
+			$data['user_timezone'] = $this->input->post('user_timezone');
 			$this->load->view('user/edit', $data);
 			$this->load->view('layout/footer');
 		}

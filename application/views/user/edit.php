@@ -1,7 +1,11 @@
 <h2>Edit user</h2>
 <div class="wrap_content user">
 <?php echo validation_errors(); ?>
+<?php
 
+$this->load->helper('form');
+
+?>
 <form method="post" action="<?php echo site_url('user/edit')."/".$this->uri->segment(3); ?>" name="users">
 <table>
 	<tr>
@@ -73,6 +77,12 @@
 		<?php if(isset($locator_error)) { echo "<div class=\"small error\">".$locator_error."</div>"; } else { ?>
 		<?php } ?>
 	</tr>
+
+    <tr>
+		<td>Timezone</td>
+		<td><?php echo form_dropdown('user_timezone', $timezones, $user_timezone); ?></td>
+	</tr>
+
 	
 </table>	
 <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />

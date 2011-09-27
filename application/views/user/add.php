@@ -5,7 +5,11 @@
         <?php echo $this->session->flashdata('notice'); ?>
     </div>
 <?php } ?>
+<?php
 
+$this->load->helper('form');
+
+?>
 <?php echo validation_errors(); ?>
 
 <form method="post" action="<?php echo site_url('user/add'); ?>" name="users">
@@ -71,6 +75,11 @@
 		<td><input type="text" name="user_locator" value="<?php if(isset($user_locator)) { echo $user_locator; } ?>" />
 		<?php if(isset($locator_error)) { echo "<div class=\"small error\">".$locator_error."</div>"; } ?>
 		</td>
+	</tr>
+
+	<tr>
+		<td>Timezone</td>
+		<td><?php echo form_dropdown('user_timezone', $timezones, 0); ?></td>
 	</tr>
 	
 </table>	

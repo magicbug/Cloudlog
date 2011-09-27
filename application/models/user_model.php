@@ -74,7 +74,7 @@ class User_Model extends CI_Model {
 
 	// FUNCTION: bool add($username, $password, $email, $type)
 	// Add a user
-	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator) {
+	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -85,7 +85,8 @@ class User_Model extends CI_Model {
 				'user_firstname' => $firstname,
 				'user_lastname' => $lastname,
 				'user_callsign' => $callsign,
-				'user_locator' => $locator
+				'user_locator' => $locator,
+				'user_timezone' => $timezone
 			);
 
 			// Check the password is valid
@@ -119,7 +120,8 @@ class User_Model extends CI_Model {
 					'user_callsign' => $fields['user_callsign'],
 					'user_locator' => $fields['user_locator'],
 					'user_firstname' => $fields['user_firstname'],
-					'user_lastname' => $fields['user_lastname']
+					'user_lastname' => $fields['user_lastname'],
+					'user_timezone' => $fields['user_timezone']
 				);
 	
 				// Check to see if the user is allowed to change user levels
@@ -277,6 +279,17 @@ class User_Model extends CI_Model {
 	function users() {
 		$r = $this->db->get($this->config->item('auth_table'));
 		return $r;
+	}
+
+	// FUNCTION: array timezones()
+	// Returns a list of timezones
+	function timezones() {
+		$r = $this->db->query('SELECT id, name FROM timezones ORDER BY offset');
+		$ts = array();
+		foreach ($r->result_array() as $t) {
+			$ts[$t['id']] = $t['name'];
+		}
+		return $ts;
 	}
 
 	// FUNCTION: bool _auth($password, $hash)
