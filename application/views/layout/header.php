@@ -198,4 +198,15 @@
 		</ul>
 	</div>
 	<?php } ?>
+	
+	<?php if($this->uri->segment(1) == "notes") { ?>
+	<div id="subnav">
+		<ul id="sublist">
+			<li class="ui-corner-all"><a href="<?php echo site_url('notes');?>" title="Note">Notes</a></li>
+		</ul>
+		<ul id="sublist">
+			<li class="ui-corner-all"><a href="<?php echo site_url('notes/add');?>" title="Add a note">Add Note</a></li>
+		</ul>
+	</div>
+	<?php } ?>
 <div id="clear" class="clear"></div>

@@ -14,11 +14,9 @@
 		}
 		echo "</ul>";
 	} else {
-		echo "<p>You have no notes, why not create one!</p>";
+		echo "<p>You don’t currently have any notes, these are a fantastic way of storing data like ATU settings, beacons and general station notes and its better than paper as you can’t lose them!</p>";
 	}
 
 ?>
-
-<p><a href="<?php echo site_url('notes/add'); ?>" title="Add Note">Create a Note</a></p>
 
 </div>
