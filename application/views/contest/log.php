@@ -8,10 +8,11 @@
 
 		$(document).ready(function() {
 			$(".qsobox").fancybox({
-				'width'				: 849,
-				'autoScale'			: true,
-				'transitionIn'		: 'none',
-				'transitionOut'		: 'none',
+				'autoDimensions'	: false,
+				'width'         	: 700,
+				'height'        	: 300,
+				'transitionIn'		: 'fade',
+				'transitionOut'		: 'fade',
 				'type'				: 'iframe'
 			});
 
@@ -21,6 +22,7 @@
 	</script>
 
 <?php
+			$new_serial  = "";
 			$serial_number = $info->serial_num + 1;
 			if($serial_number <= 009) { 
 				$new_serial = "00".$serial_number;
