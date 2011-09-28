@@ -147,7 +147,7 @@ margin: 10px 0;
 		
 		<div id="stat">
 
-<div id="map_canvas" style="width: 420px; height: 250px"></div> 
+<div id="map_canvas" style="width: 340px; height: 250px"></div> 
 
 <?php
 
