@@ -63,12 +63,19 @@ class Dashboard extends CI_Controller {
 		$qsos = $this->logbook_model->map_week_qsos($mon, $sun);
 
 		echo "{\"markers\": [";
-
+		$count = 1;
 		foreach ($qsos->result() as $row) {
 			//print_r($row);
 			if($row->COL_GRIDSQUARE != null) {
 				$stn_loc = qra2latlong($row->COL_GRIDSQUARE);
-				echo "{\"point\":new GLatLng(".$stn_loc[0].",".$stn_loc[1]."), \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"},";
+				if($count != 1) {
+					echo ",";
+				}
+
+				echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+
+				$count++;
+
 			} else {
 				$query = $this->db->query('
 					SELECT *
@@ -79,7 +86,11 @@ class Dashboard extends CI_Controller {
 				');
 
 				foreach ($query->result() as $dxcc) {
-					echo "{\"point\":new GLatLng(".$dxcc->lat.",".$dxcc->long."), \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"},";
+					if($count != 1) {
+					echo ",";
+						}
+					echo "{\"lat\":\"".$dxcc->lat."\",\"lng\":\"".$dxcc->long."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					$count++;
 				}
 			}
 

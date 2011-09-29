@@ -142,11 +142,10 @@
 
 	</style>
 	
-	<script src="http://maps.google.com/maps?file=api&amp;v=3&amp;key=<?php echo $this->config->item('google_maps_api'); ?>&sensor=true"
-			type="text/javascript"></script>
+	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 </head>
 
-<body onunload="GUnload()"> 
+<body> 
 	
 	<div id="nav">
 		
