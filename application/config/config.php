@@ -5,7 +5,6 @@
 $config['table_name'] = "table_hrd_contacts_v01"; 
 $config['locator'] = "IO91JS"; 
 $config['display_freq'] = false; // hide and display freq input on Add QSO 
-$config['google_maps_api'] = "ABQIAAAA74tY2H5PTGpzLdnwXQmLXxTAaiXfF7TN3brq2P-N4wxlXpK9XRR0YWnumNpDAv2MVqJhk4dDpznb9A";
 
 /* User options */
 // Use authentication?
