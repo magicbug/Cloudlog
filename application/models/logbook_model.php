@@ -170,6 +170,18 @@ class Logbook_model extends CI_Model {
 		
 		return $query;
 	}
+
+    function get_date_qsos($date) {
+        $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
+        $this->db->order_by("COL_TIME_ON", "desc"); 
+        $start = $date." 00:00:00";
+        $end = $date." 23:59:59";
+
+        $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
+        $query = $this->db->get($this->config->item('table_name'));
+        
+        return $query;
+    }
 	
 	function get_todays_qsos() {
 
@@ -180,6 +192,7 @@ class Logbook_model extends CI_Model {
 		return $query;
 	}
   
+    /* Return total number of qsos */
      function total_qsos() {
         $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').'');
 
@@ -192,7 +205,7 @@ class Logbook_model extends CI_Model {
         }
     }
    
-  
+    /* Return number of QSOs had today */
     function todays_qsos() {
     
         $morning = date('Y-m-d 00:00:00');
@@ -208,6 +221,7 @@ class Logbook_model extends CI_Model {
         }
     }
     
+    /* Return QSOs over a period of days */
     function map_week_qsos($start, $end) {
     
         $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
@@ -216,8 +230,21 @@ class Logbook_model extends CI_Model {
 
         return $query;
     }
+
+    /* Returns QSOs for the date sent eg 2011-09-30 */
+    function map_day($date) {
     
+        $start = $date." 00:00:00";
+        $end = $date." 23:59:59";
+
+        $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
+        $this->db->order_by("COL_TIME_ON", "ASC"); 
+        $query = $this->db->get($this->config->item('table_name'));
+
+        return $query;
+    }
     
+    // Return QSOs made during the current month
     function month_qsos() {
 
         $morning = date('Y-m-01 00:00:00');
@@ -233,6 +260,7 @@ class Logbook_model extends CI_Model {
         }
     }
     
+    /* Return QSOs made during the current Year */
     function year_qsos() {
 
         $morning = date('Y-01-01 00:00:00');
@@ -248,7 +276,7 @@ class Logbook_model extends CI_Model {
         }
     }
     
-    
+    /* Return total amount of SSB QSOs logged */
     function total_ssb() {
         $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'SSB\' OR COL_MODE = \'LSB\' OR COL_MODE = \'USB\'');
 
@@ -260,14 +288,15 @@ class Logbook_model extends CI_Model {
             }
         }
     }
-    
+
+   /* Return total number of satellite QSOs */
    function total_sat() {
         $query = $this->db->query('SELECT COL_SAT_NAME, COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_SAT_NAME != \'null\' GROUP BY COL_SAT_NAME');
 
         return $query;
     }
     
-
+    /* Return total number of CW QSOs */
     function total_cw() {
         $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'CW\' ');
 
@@ -280,6 +309,7 @@ class Logbook_model extends CI_Model {
         }
     }
     
+    /* Return total number of FM QSOs */
     function total_fm() {
         $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'FM\'');
 
@@ -292,6 +322,7 @@ class Logbook_model extends CI_Model {
         }
     }
 
+    /* Return total number of Digital QSOs */
     function total_digi() {
         $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE != \'SSB\' AND (COL_MODE != \'LSB\' or COL_MODE != \'USB\' or COL_MODE != \'CW\' or COL_MODE != \'FM\')');
 
@@ -304,12 +335,14 @@ class Logbook_model extends CI_Model {
         }
     }
     
+    /* Return total number of QSOs per band */
    function total_bands() {
         $query = $this->db->query('SELECT DISTINCT (COL_BAND) AS band, count( * ) AS count FROM '.$this->config->item('table_name').' GROUP BY band ORDER BY count DESC');
 
         return $query;
     }
     
+    /* Return total number of QSL Cards sent */
     function total_qsl_sent() {
         $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_SENT = "Y" GROUP BY band');
 
@@ -322,6 +355,7 @@ class Logbook_model extends CI_Model {
         }
     }
     
+    /* Return total number of QSL Cards requested */
     function total_qsl_requested() {
         $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_SENT = "R" GROUP BY band');
 
@@ -334,6 +368,7 @@ class Logbook_model extends CI_Model {
         }
     }
     
+    /* Return total number of QSL Cards received */
     function total_qsl_recv() {
         $query = $this->db->query('SELECT DISTINCT (COL_QSL_RCVD) AS band, count(COL_QSL_RCVD) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_RCVD = "Y" GROUP BY band');
 
@@ -346,6 +381,7 @@ class Logbook_model extends CI_Model {
         }
     }
     
+    /* Return total number of countrys worked */
     function total_countrys() {
         $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').'');
 
@@ -361,6 +397,7 @@ class Logbook_model extends CI_Model {
 		return array('query' => $query, 'results' => $results, 'time' => $time);
 	}
     
+    /* Delete QSO based on the QSO ID */
     function delete($id) {
         $this->db->where('COL_PRIMARY_KEY', $id);
         $this->db->delete($this->config->item('table_name')); 
