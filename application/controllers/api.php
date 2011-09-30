@@ -18,6 +18,13 @@ class API extends CI_Controller {
 		*/
 	}
 
+	function help()
+	{
+		$this->load->view('layout/header');
+		$this->load->view('api/help');
+		$this->load->view('layout/footer');
+	}
+
 	// FUNCTION: search()
 	// Handle search requests
 	/*
@@ -78,7 +85,7 @@ class API extends CI_Controller {
 		$arguments = $this->_retrieve();
 	
 		// Call the parser within the API model to build the query
-		$query = $this->api_model->parse($arguments);
+		$query = $this->api_model->select_parse($arguments);
 
 		// Execute the query, and retrieve the results
 		$s = $this->logbook_model->api_search_query($query);
@@ -113,6 +120,50 @@ class API extends CI_Controller {
 		$data['data']['queryInfo']['executionTime'] = $s['time'];
 
 		// Load the XML output view
+		$this->load->view('api/index', $data);
+	}
+
+	function add()
+	{
+		// Load the API and Logbook models
+		$this->load->model('api_model');
+		$this->load->model('logbook_model');
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(3)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		// Retrieve the arguments from the query string
+		$arguments = $this->_retrieve();
+	
+		// Call the parser within the API model to build the query
+		$query = $this->api_model->insert_parse($arguments);
+
+		# Check for guessable fields
+		if(!isset($query['COL_TIME_ON']))
+		{
+			$query['COL_TIME_ON'] = date("Y-m-d H:i:s", time());
+		}
+		if(!isset($query['COL_TIME_OFF']))
+		{
+			$query['COL_TIME_OFF'] = date("Y-m-d H:i:s", time());
+		}
+
+		$data['data']['queryInfo']['dbQuery'] = "";
+		$data['data']['queryInfo']['executionTime'] = 0;
+
+		if(!isset($query['COL_CALL'])) {
+			$data['data']['add_Result']['results'] = array(0 => array('Result' => 'EMISSINGCALL'));
+		} else {
+			$s = $this->logbook_model->api_insert_query($query);
+			$data['data']['queryInfo']['dbQuery'] = $s['query'];
+			$data['data']['queryInfo']['executionTime'] = $s['time'];
+
+			$data['data']['add_Result']['results'] = array(0 => array('Result' => $s['result_string']));
+		}
+
+		// Add some debugging information to the XML output
+		$data['data']['queryInfo']['call'] = "add";
+		$data['data']['queryInfo']['numResults'] = 0;
+
 		$this->load->view('api/index', $data);
 	}
 

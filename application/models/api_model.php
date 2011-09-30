@@ -57,18 +57,31 @@ class API_Model extends CI_Model {
 		{
 			if($this->_columnName[key($this->_columnName)]['Name'] == $name)
 			{
-				return key($this->_columnName);
+				$a = key($this->_columnName);
+				reset($this->_columnName);
+				return $a;
 			}
 			next($this->_columnName);
 		}
 
+		reset($this->_columnName);
 		return 0;
 	}
 
-	// FUNCTION: string parse(array $arguments)
+	function insert_parse($arguments)
+	{
+#		$q = "INSERT INTO ".$this->config->item('table_name');
+
+		$f = explode(",", $arguments['query']);
+		$r = $this->_insert_field_translate($f);
+
+		return $r;
+	}
+
+	// FUNCTION: string select_parse(array $arguments)
 	// Converts an array of arguments into a MySQL query string
 	// See documentation for search() under the API controller for more details
-	function parse($arguments)
+	function select_parse($arguments)
 	{
 		// Initialise our string
 		$q = "SELECT ";
@@ -101,9 +114,59 @@ class API_Model extends CI_Model {
 		// clause.
 		// $s and $r can be refactored into single array definitions, but during
 		// development it's easier to list them in this way for quick reference.
+
 		if($arguments['query'] != "")
 		{
 			$q .= " WHERE ";
+			$q = $this->_query_parse($q, $arguments['query']);
+		}
+
+		// Parse any order arguments
+		if($arguments['order'] != "")
+		{
+			$q .= " ORDER BY ";
+
+			$s = null;
+			$r = null;
+			$s[0]   = '/&#40;/';
+			$s[1]	= '/&#41;/';
+			$s[2]	= '/([a-zA-Z0-9\-\_]+)([,\(]{1}|$)/';
+		    $s[3]   = '/\(asc\)/';
+	    	$s[4]   = '/\(desc\)/';
+			$s[5]	= '/,$/';
+
+			$r[0]	= '(';
+			$r[1]	= ')';
+			$r[2]	= '++$1++ $2';
+		    $r[3]   = ' ASC ';
+		    $r[4]   = ' DESC ';
+			$r[5]	= '';
+
+			$q .= preg_replace($s, $r, $arguments['order']);
+
+		}
+
+		$q = $this->_select_field_translate($q);
+
+		// Parse any limit arguments
+		if($arguments['limit'] != "")
+		{
+			// Add the limit arguments, removing any characters other than numbers and commas
+			$q .= " LIMIT " . preg_replace(array("/[^0-9\,]/","/,$/"), "", $arguments['limit']);
+		}
+		else
+		{
+			// If no limit argument is given, default to the first 20 results
+			$q .= " LIMIT 0,20";
+		}
+
+		return $q;
+	}
+
+	private function _query_parse($q, $qs)
+	{
+		if($qs != "")
+		{
 			$s = null;
 			$r = null;
 			// (and), becomes ' AND '
@@ -148,53 +211,33 @@ class API_Model extends CI_Model {
 			$r[13]  = '%';
 
 			// Bulk replace everything
-			$q .= preg_replace($s, $r, $arguments['query']);
+			$q .= preg_replace($s, $r, $qs);
 		}
 
-		// Parse any order arguments
-		if($arguments['order'] != "")
-		{
-			$q .= " ORDER BY ";
+		return $q;
+	}
 
-			$s = null;
-			$r = null;
-			$s[0]   = '/&#40;/';
-			$s[1]	= '/&#41;/';
-			$s[2]	= '/([a-zA-Z0-9\-\_]+)([,\(]{1}|$)/';
-		    $s[3]   = '/\(asc\)/';
-	    	$s[4]   = '/\(desc\)/';
-			$s[5]	= '/,$/';
-
-			$r[0]	= '(';
-			$r[1]	= ')';
-			$r[2]	= '++$1++ $2';
-		    $r[3]   = ' ASC ';
-		    $r[4]   = ' DESC ';
-			$r[5]	= '';
-
-			$q .= preg_replace($s, $r, $arguments['order']);
-
-		}
-
+	private function _select_field_translate($q)
+	{
 		// Do search/replace on field names, to convert from friendly names
 		// to MySQL column names
 		while (list($key, $val) = each($this->_columnName)) {
 			$q = str_replace("++".$val['Name']."++", $key, $q);
 		}
 
-		// Parse any limit arguments
-		if($arguments['limit'] != "")
-		{
-			// Add the limit arguments, removing any characters other than numbers and commas
-			$q .= " LIMIT " . preg_replace(array("/[^0-9\,]/","/,$/"), "", $arguments['limit']);
-		}
-		else
-		{
-			// If no limit argument is given, default to the first 20 results
-			$q .= " LIMIT 0,20";
-		}
-
 		return $q;
+	}
+
+	private function _insert_field_translate($q)
+	{
+		// Do search/replace on field names, to convert from friendly names
+		// to MySQL column names
+		$r = array();
+		while (list($key, $val) = each($q)) {
+			$f = explode('=', $val);
+			$r[$this->column($f[0])] = $f[1];
+		}
+		return $r;
 	}
 
 	// ARRAY: $_columnName

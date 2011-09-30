@@ -27,6 +27,7 @@
 		/* Base CSS */
 		body { background-color: #e6e6e6; font-size: 15px; font-family: Arial, "Trebuchet MS", sans-serif; }
 		td { padding: 1px;}
+		pre { font-family: Courier New; font-size: 11px;}
 		.tr1 td { background:none repeat scroll 0 0 #F0FFFF; }
 		.partial td, .logbook td, .users td { padding: 5px; }
 		#subnav { height: 30px; color:#ffffff; clear: both; }
@@ -184,6 +185,7 @@
 			<li class="ui-corner-all"><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
 			<li><a href="<?php echo site_url('setup');?>" title="Setup">Setup</a></li>
 			<li><a href="<?php echo site_url('adif/export');?>" title="ADIF Export">ADIF Export</a></li>
+			<li><a href="<?php echo site_url('api/help');?>" title="API">API</a></li>
 			<?php } ?>
 		</ul>
 	</div>

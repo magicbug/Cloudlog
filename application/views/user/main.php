@@ -48,7 +48,7 @@
 			<td><a href="<?php echo site_url('user/edit')."/".$row->user_id; ?>"><?php echo $row->user_name; ?></a></td>
 			<td><?php echo $row->user_email; ?></td>
 			<td><?php $l = $this->config->item('auth_level'); echo $l[$row->user_type]; ?></td>
-			<td><a href="<?php echo site_url('user/delete')."/".$row->user_id; ?>">Delete</a></td>
+			<td><a href="<?php echo site_url('user/edit')."/".$row->user_id; ?>">Edit</a> <a href="<?php echo site_url('user/delete')."/".$row->user_id; ?>">Delete</a></td>
 		</tr>
 		<?php $i++; } ?>
 	</table>
