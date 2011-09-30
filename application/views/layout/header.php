@@ -184,6 +184,7 @@
 			<?php if(($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) || $this->config->item('use_auth') === FALSE){ ?>
 			<li class="ui-corner-all"><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
 			<li><a href="<?php echo site_url('setup');?>" title="Setup">Setup</a></li>
+			<li><a href="<?php echo site_url('backup');?>" title="Backup">Backup</a></li>
 			<li><a href="<?php echo site_url('adif/export');?>" title="ADIF Export">ADIF Export</a></li>
 			<li><a href="<?php echo site_url('api/help');?>" title="API">API</a></li>
 			<?php } ?>
@@ -207,6 +208,14 @@
 		</ul>
 		<ul id="sublist">
 			<li class="ui-corner-all"><a href="<?php echo site_url('notes/add');?>" title="Add a note">Add Note</a></li>
+		</ul>
+	</div>
+	<?php } ?>
+
+	<?php if($this->uri->segment(1) == "backup") { ?>
+	<div id="subnav">
+		<ul id="sublist">
+			<li class="ui-corner-all"><a href="<?php echo site_url('backup/adif');?>" title="Note">Logbook</a></li>
 		</ul>
 	</div>
 	<?php } ?>
