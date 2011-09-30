@@ -171,6 +171,15 @@ class Logbook_model extends CI_Model {
 		return $query;
 	}
 
+    /* Get All QSOs with a Valid Grid */
+    function kml_get_all_qsos() {
+        $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_GRIDSQUARE');
+        $this->db->where('COL_GRIDSQUARE != \'null\'');
+        $query = $this->db->get($this->config->item('table_name'));
+        
+        return $query;
+    }
+
     function get_date_qsos($date) {
         $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
         $this->db->order_by("COL_TIME_ON", "desc"); 

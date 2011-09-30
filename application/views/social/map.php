@@ -80,7 +80,6 @@
 			<div class="dashboard_log">
 				<table class="logbook" width="100%">
 					<tr class="log_title titles">
-						<td>Date</td>
 						<td>Time</td>
 						<td>Call</td>
 						<td>Mode</td>
