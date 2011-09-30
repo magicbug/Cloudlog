@@ -36,6 +36,11 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/dashboard.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/dashboard/index.php",
+		"/C/wamp/www/m3php/data.html",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/header.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/config.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/index.php",
 		"/C/Users/Peter/AppData/Roaming/Sublime Text 2/Packages/Default/Base File.sublime-settings",
 		"/C/Users/Peter/AppData/Roaming/Sublime Text 2/Packages/User/Base File.sublime-settings"
@@ -137,6 +142,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 211.0,
 	"status_bar_visible": true
 }
