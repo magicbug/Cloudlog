@@ -188,7 +188,7 @@
 						<td class="item"></td>
 					</tr>
 					<tr class="dashboard_tr">
-						<td class="item title" colspan="2">Countrys</td>
+						<td class="item title" colspan="2">Countries</td>
 					</tr>
 					<tr class="dashboard_tr">
 						<td class="item">Worked</td>
