@@ -55,10 +55,14 @@ class Logbook_model extends CI_Model {
            'COL_MY_GRIDSQUARE' => $locator,
 		);
 
+		$this->add_qso($data);
+	}
+
+	function add_qso($data) {
 		// Add QSO to database
 		$this->db->insert($this->config->item('table_name'), $data);
 	}
-
+	
 	/* Edit QSO */
 	function edit() {
 	
@@ -360,7 +364,16 @@ class Logbook_model extends CI_Model {
 
 		return array('query' => $query, 'results' => $results, 'time' => $time);
 	}
-    
+
+	function api_insert_query($query) {
+		$time_start = microtime(true);
+		$results = $this->db->insert($this->config->item('table_name'), $query);
+		$time_end = microtime(true);
+		$time = round($time_end - $time_start, 4);
+
+		return array('query' => $this->db->queries[2], 'result_string' => $results, 'time' => $time);
+	}
+
     function delete($id) {
         $this->db->where('COL_PRIMARY_KEY', $id);
         $this->db->delete($this->config->item('table_name')); 

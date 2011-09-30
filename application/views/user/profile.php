@@ -1,7 +1,7 @@
 <h2><?php echo $this->session->userdata('user_name')."'s profile"; ?></h2>
 <div class="wrap_content user">
 
-<table>
+<table class="users">
 	<tr>
 		<td>Username</td>
 		<td><?php if(isset($user_name)) { echo $user_name; } ?></td>
