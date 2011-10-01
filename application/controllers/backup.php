@@ -9,10 +9,9 @@ class Backup extends CI_Controller {
 		$this->load->view('layout/header');
 		$this->load->view('backup/main');
 		$this->load->view('layout/footer');
-
-
 	}
 
+	/* Gets all QSOs and Dumps them to logbook.adi */
 	public function adif(){ 
 		$this->load->helper('file');
 		// Set memory limit to unlimited to allow heavy usage
@@ -33,6 +32,28 @@ class Backup extends CI_Controller {
 
 		$this->load->view('layout/header');
 		$this->load->view('backup/adif_view', $data);
+		$this->load->view('layout/footer');
+
+	}
+
+	/* Export the notes to XML */
+	public function notes() {
+		$this->load->helper('file');
+		$this->load->model('note');
+
+		$data['list_note'] = $this->note->list_all();
+
+		if ( ! write_file('backup/notes.xml', $this->load->view('backup/notes', $data, true)))
+		{
+		     $data['status'] = false;
+		}
+		else
+		{
+		      $data['status'] = true;
+		}
+
+		$this->load->view('layout/header');
+		$this->load->view('backup/notes_view', $data);
 		$this->load->view('layout/footer');
 
 	}

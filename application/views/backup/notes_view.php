@@ -1,9 +1,9 @@
-<h2>Backup - ADIF</h2>
+<h2>Backup - Notes XML</h2>
 <div class="wrap_content note">
 
 <?php if($status == true) { ?>
 
-<p>Backing up your log has been completed successfully and can be found at <a href="<?php echo base_url(); ?>backup/logbook.adi"><?php echo base_url(); ?>backup/logbook.adi</a></a></p>
+<p>Backing up your notes have been completed successfully and can be found at <a href="<?php echo base_url(); ?>backup/notes.xml"><?php echo base_url(); ?>backup/notes.xml</a></p>
 
 <p>You could automate this process by making it a cronjob.</p>
 

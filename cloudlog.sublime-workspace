@@ -12,46 +12,27 @@
 	"buffers":
 	[
 		{
-			"file": "application/controllers/social.php",
+			"file": "application/controllers/backup.php",
 			"settings":
 			{
-				"buffer_size": 1757,
+				"buffer_size": 879,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "application/controllers/dashboard.php",
+			"file": "application/views/backup/main.php",
 			"settings":
 			{
-				"buffer_size": 6056,
+				"buffer_size": 79,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "application/models/logbook_model.php",
+			"file": "application/views/layout/header.php",
 			"settings":
 			{
-				"buffer_size": 13676,
+				"buffer_size": 10575,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "	<script type=\"text/javascript\" src=\"<?php echo base_url() ;?>/fancybox/jquery.mousewheel-3.0.4.pack.js\"></script>\n\n	<script type=\"text/javascript\" src=\"<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.pack.js\"></script>\n\n	<link rel=\"stylesheet\" type=\"text/css\" href=\"<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.css\" media=\"screen\" />\n\n	<script type=\"text/javascript\">\n\n		$(document).ready(function() {\n			$(\".qsobox\").fancybox({\n				'autoDimensions'	: false,\n				'width'         	: 700,\n				'height'        	: 300,\n				'transitionIn'		: 'fade',\n				'transitionOut'		: 'fade',\n				'type'				: 'iframe'\n			});\n\n\n		});\n\n	</script>\n\n\n	\n	<script type=\"text/javascript\">\n	  function create_map() {\n	    var latlng = new google.maps.LatLng(40.313043, -32.695312);\n	    var myOptions = {\n	      zoom: 2,\n	      center: latlng,\n	      mapTypeId: google.maps.MapTypeId.ROADMAP\n	    };\n	    var infowindow = new google.maps.InfoWindow();\n\n	    var marker, i;\n\n	    /* Get QSO points via json*/\n		 $.getJSON(\"/logbook/index.php/social/json_map/<?php echo $date; ?>\", function(data) {\n		 	\n			$.each(data.markers, function(i, val) {\n				/* Create Markers */\n			    marker = new google.maps.Marker({\n		        	position: new google.maps.LatLng(this.lat, this.lng),\n		        	map: map\n		   		});\n		   		\n		   		/* Store Popup Text */\n		   		var content = this.html;\n		   	\n		   		/* Create Popups */\n		   		google.maps.event.addListener(marker, 'click', (function(marker, i) {\n		        	return function() {\n		        		infowindow.setContent(content);\n		          		infowindow.open(map, marker);\n		        	}\n				})(marker, i));\n			});\n		 });\n\n	    var map = new google.maps.Map(document.getElementById(\"map\"),\n	        myOptions);\n	  }\n\n	    $(document).ready(function(){\n			create_map();\n	  });\n	</script>\n\n<h2>Social Media Map - <?php echo $formated_date; ?></h2>\n<div class=\"wrap_content dashboard\">\n\n	<div id=\"map\" style=\"width: 100%; height: 300px\"></div> \n\n\n	<div id=\"dashboard_container\">\n		\n		<div class=\"dashboard_top\">\n			\n			<div class=\"dashboard_log\">\n				<table class=\"logbook\" width=\"100%\">\n					<tr class=\"log_title titles\">\n						<td>Time</td>\n						<td>Call</td>\n						<td>Mode</td>\n						<td>Sent</td>\n						<td>Recv</td>\n						<td>Band</td>\n					</tr>\n\n					<?php $i = 0; \n					foreach ($qsos->result() as $row) { ?>\n						<?php  echo '<tr class=\"tr'.($i & 1).'\">'; ?>\n						<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); ?></td>\n						<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>\n						<td><a class=\"qsobox\" href=\"<?php echo site_url('logbook/view').\"/\".$row->COL_PRIMARY_KEY; ?>\"><?php echo strtoupper($row->COL_CALL); ?></a></td>\n						<td><?php echo $row->COL_MODE; ?></td>\n						<td><?php echo $row->COL_RST_SENT; ?></td>\n						<td><?php echo $row->COL_RST_RCVD; ?></td>\n						<?php if($row->COL_SAT_NAME != null) { ?>\n						<td>SAT</td>\n						<?php } else { ?>\n						<td><?php echo $row->COL_BAND; ?></td>\n						<?php } ?>\n					</tr>\n					<?php $i++; } ?>\n\n				</table>\n\n			</div>\n			\n			<div class=\"clear\"></div>\n		</div>\n		\n		<!-- <div class=\"dashboard_bottom\">\n			<div class=\"chart\" id=\"modechart_div\"></div>\n			<div class=\"chart\" id=\"bandchart_div\"></div>\n		</div> -->\n		\n	</div>\n\n	<div class=\"clear\"></div>\n</div>",
-			"file": "application/views/social/map.php",
-			"file_size": 3479,
-			"file_write_time": 129618638065790029,
-			"settings":
-			{
-				"buffer_size": 3336,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/config/routes.php",
-			"settings":
-			{
-				"buffer_size": 1545,
-				"line_ending": "Unix"
 			}
 		}
 	],
@@ -87,12 +68,24 @@
 	},
 	"file_history":
 	[
-		"/C/Users/Peter/AppData/Roaming/Sublime Text 2/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/backup/adif_view.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/user.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/welcome.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/backup/exportall.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/adif.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/config.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/kml.php",
+		"/C/Users/Peter/Desktop/log.kml",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/models/logbook_model.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/dashboard.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/view_log/qso.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/routes.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/social/map.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/social.php",
+		"/C/Users/Peter/AppData/Roaming/Sublime Text 2/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/dashboard/index.php",
 		"/C/wamp/www/m3php/data.html",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/header.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/config.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/index.php",
 		"/C/Users/Peter/AppData/Roaming/Sublime Text 2/Packages/Default/Base File.sublime-settings",
 		"/C/Users/Peter/AppData/Roaming/Sublime Text 2/Packages/User/Base File.sublime-settings"
@@ -135,29 +128,28 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "application/controllers/social.php",
+					"file": "application/controllers/backup.php",
 					"settings":
 					{
-						"buffer_size": 1757,
+						"buffer_size": 879,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								392,
-								405
+								719,
+								719
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/PHP/PHP.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -167,100 +159,18 @@
 				},
 				{
 					"buffer": 1,
-					"file": "application/controllers/dashboard.php",
+					"file": "application/views/backup/main.php",
 					"settings":
 					{
-						"buffer_size": 6056,
+						"buffer_size": 79,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								307,
-								271
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 72.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "application/models/logbook_model.php",
-					"settings":
-					{
-						"buffer_size": 13676,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6092,
-								6105
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 4.0,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2712.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "application/views/social/map.php",
-					"settings":
-					{
-						"buffer_size": 3336,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2964,
-								2964
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1464.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "application/config/routes.php",
-					"settings":
-					{
-						"buffer_size": 1545,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1392,
-								1392
+								71,
+								71
 							]
 						],
 						"settings":
@@ -268,7 +178,34 @@
 							"syntax": "Packages/PHP/PHP.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 270.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "application/views/layout/header.php",
+					"settings":
+					{
+						"buffer_size": 10575,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9245,
+								9245
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3540.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

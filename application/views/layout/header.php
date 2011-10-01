@@ -215,7 +215,8 @@
 	<?php if($this->uri->segment(1) == "backup") { ?>
 	<div id="subnav">
 		<ul id="sublist">
-			<li class="ui-corner-all"><a href="<?php echo site_url('backup/adif');?>" title="Note">Logbook</a></li>
+			<li class="ui-corner-all"><a href="<?php echo site_url('backup/adif');?>" title="Backup Logbook">Logbook</a></li>
+			<li class="ui-corner-all"><a href="<?php echo site_url('backup/notes');?>" title="Backup Notes">Notes</a></li>
 		</ul>
 	</div>
 	<?php } ?>
