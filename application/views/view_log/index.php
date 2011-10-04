@@ -17,6 +17,50 @@
 		});
 	</script>
 	
+	<script type="text/javascript">
+	  function create_map() {
+	    var latlng = new google.maps.LatLng(40.313043, -32.695312);
+	    var myOptions = {
+	      zoom: 3,
+	      center: latlng,
+	      mapTypeId: google.maps.MapTypeId.ROADMAP
+	    };
+	    var infowindow = new google.maps.InfoWindow();
+
+	    var marker, i;
+
+	    /* Get QSO points via json*/
+		 $.getJSON("/logbook/index.php/logbook/qso_map/25/<?php echo $this->uri->segment(3); ?>", function(data) {
+		 	
+			$.each(data.markers, function(i, val) {
+				/* Create Markers */
+			    marker = new google.maps.Marker({
+		        	position: new google.maps.LatLng(this.lat, this.lng),
+		        	map: map
+		   		});
+		   		
+		   		/* Store Popup Text */
+		   		var content = this.html;
+		   	
+		   		/* Create Popups */
+		   		google.maps.event.addListener(marker, 'click', (function(marker, i) {
+		        	return function() {
+		        		infowindow.setContent(content);
+		          		infowindow.open(map, marker);
+		        	}
+				})(marker, i));
+			});
+		 });
+
+	    var map = new google.maps.Map(document.getElementById("map"),
+	        myOptions);
+	  }
+
+	    $(document).ready(function(){
+			create_map();
+	  });
+	</script>
+
 <h2>Logbook</h2>
 <?php if($this->session->flashdata('notice')) { ?>
 <div id="message" >
@@ -25,6 +69,8 @@
 <?php } ?>
 
 <div class="wrap_content">
+
+<div id="map" style="width: 100%; height: 300px"></div> 
 
 
 <table class="logbook" width="100%">

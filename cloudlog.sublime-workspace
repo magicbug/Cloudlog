@@ -11,30 +11,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "application/controllers/backup.php",
-			"settings":
-			{
-				"buffer_size": 879,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "application/views/backup/main.php",
-			"settings":
-			{
-				"buffer_size": 79,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/views/layout/header.php",
-			"settings":
-			{
-				"buffer_size": 10575,
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -68,13 +44,19 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/backup.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/header.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/backup/notes_view.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/backup/adif_view.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/backup/notes.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/kml.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/backup/exportall.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/models/note.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/backup/main.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/user.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/welcome.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/backup/exportall.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/adif.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/config.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/kml.php",
 		"/C/Users/Peter/Desktop/log.kml",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/models/logbook_model.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/dashboard.php",
@@ -85,7 +67,6 @@
 		"/C/Users/Peter/AppData/Roaming/Sublime Text 2/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/dashboard/index.php",
 		"/C/wamp/www/m3php/data.html",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/header.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/index.php",
 		"/C/Users/Peter/AppData/Roaming/Sublime Text 2/Packages/Default/Base File.sublime-settings",
 		"/C/Users/Peter/AppData/Roaming/Sublime Text 2/Packages/User/Base File.sublime-settings"
@@ -128,88 +109,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "application/controllers/backup.php",
-					"settings":
-					{
-						"buffer_size": 879,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								719,
-								719
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "application/views/backup/main.php",
-					"settings":
-					{
-						"buffer_size": 79,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								71,
-								71
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "application/views/layout/header.php",
-					"settings":
-					{
-						"buffer_size": 10575,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								9245,
-								9245
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3540.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
