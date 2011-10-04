@@ -160,7 +160,7 @@ class Logbook_model extends CI_Model {
 	
 
   function get_qsos($num, $offset) {
-  $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
+  $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_GRIDSQUARE');
   $this->db->order_by("COL_TIME_ON", "desc"); 
 	$query = $this->db->get($this->config->item('table_name'), $num, $offset);	
 	return $query;
