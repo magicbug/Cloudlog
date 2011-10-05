@@ -161,6 +161,7 @@
 			<?php } ?>
 			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE){ ?>
 			<li><a href="<?php echo site_url('notes');?>" title="Notes">Notes</a></li>
+			<li><a href="<?php echo site_url('qsl');?>" title="Notes">QSLing</a></li>
 			<?php } ?>
 			<li><a href="<?php echo site_url('statistics');?>" title="Statistics">Statistics</a></li>
 			<?php if(($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) || $this->config->item('use_auth') === FALSE) { ?>
@@ -217,6 +218,14 @@
 		<ul id="sublist">
 			<li class="ui-corner-all"><a href="<?php echo site_url('backup/adif');?>" title="Backup Logbook">Logbook</a></li>
 			<li class="ui-corner-all"><a href="<?php echo site_url('backup/notes');?>" title="Backup Notes">Notes</a></li>
+		</ul>
+	</div>
+	<?php } ?>
+
+	<?php if($this->uri->segment(1) == "qsl") { ?>
+	<div id="subnav">
+		<ul id="sublist">
+			<li class="ui-corner-all"><a href="<?php echo site_url('qsl/print');?>" title="Print QSL Labels">Print Labels</a></li>
 		</ul>
 	</div>
 	<?php } ?>
