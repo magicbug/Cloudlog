@@ -217,13 +217,13 @@ class Logbook extends CI_Controller {
 			$this->load->library('Qra');
 			
 			
-			if($this->session->userdata('user_locator')){
-				$locator = $this->session->userdata('user_locator');
+			if($this->session->userdata('user_locator') != null){
+				$mylocator = $this->session->userdata('user_locator');
 			} else {
-				$locator = $this->config->item('locator');
+				$mylocator = $this->config->item('locator');
 			}
 
-			$bearing = $this->qra->bearing($locator, $qra);
+			$bearing = $this->qra->bearing($mylocator, $qra);
 	
 			echo $bearing;
 	} 

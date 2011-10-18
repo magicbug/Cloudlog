@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"font",
+				"font: font-family: family"
+			],
+			[
 				"background",
 				"background: background-color: hex"
 			]
@@ -12,34 +16,10 @@
 	"buffers":
 	[
 		{
-			"file": "application/controllers/search.php",
+			"file": "application/views/layout/header.php",
 			"settings":
 			{
-				"buffer_size": 704,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/views/search/main.php",
-			"settings":
-			{
-				"buffer_size": 453,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/models/logbook_model.php",
-			"settings":
-			{
-				"buffer_size": 14475,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/controllers/logbook.php",
-			"settings":
-			{
-				"buffer_size": 6526,
+				"buffer_size": 5105,
 				"line_ending": "Windows"
 			}
 		}
@@ -76,13 +56,44 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/config.php",
+		"/C/Users/Peter/Desktop/index.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/libraries/Qra.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/logbook.php",
+		"/C/Users/Peter/Desktop/legal/legal.pages.inc",
+		"/C/Users/Peter/Desktop/legal/legal.module",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/system.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/views.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/views_handler_field_node_sexybookmarks.inc",
+		"/C/Users/Peter/Downloads/disable_messages-6.x-1.1/disable_messages/README.txt",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/sexybookmarks.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/shorten.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/link.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/nd.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/node.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/nodereference.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/page_title.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/block.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/bouncer.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/boxes.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/content.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/ctools.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/custom_formatters.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/formatter_settings.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/includes/help.inc",
+		"/C/Users/Peter/Desktop/sexybookmarks/sexybookmarks.module",
+		"/C/Users/Peter/Desktop/sexybookmarks/plugins/content_types/sexybookmarks.inc",
+		"/C/Users/Peter/Desktop/legal.html",
+		"/C/Users/Peter/git/HRD-Web-Frontend/css/global.css",
+		"/C/Users/Peter/git/HRD-Web-Frontend/js/global.js",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/header.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/search.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/search/main.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/models/logbook_model.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/qsl.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/qsl/main.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/header.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/dashboard.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/view_log/qso.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/logbook.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/models/logbook_model.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/view_log/index.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/dashboard/index.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/backup.php",
@@ -96,7 +107,6 @@
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/user.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/welcome.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/adif.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/config.php",
 		"/C/Users/Peter/Desktop/log.kml",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/routes.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/social/map.php",
@@ -126,6 +136,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"created",
+			"has been created",
+			"I agree with these terms",
 			"get_last_qsos",
 			"map_"
 		],
@@ -145,105 +158,23 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "application/controllers/search.php",
+					"file": "application/views/layout/header.php",
 					"settings":
 					{
-						"buffer_size": 704,
+						"buffer_size": 5105,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								683,
-								683
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 4.0,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "application/views/search/main.php",
-					"settings":
-					{
-						"buffer_size": 453,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								453,
-								453
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "application/models/logbook_model.php",
-					"settings":
-					{
-						"buffer_size": 14475,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 4.0,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "application/controllers/logbook.php",
-					"settings":
-					{
-						"buffer_size": 6526,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3945,
-								3945
+								2218,
+								2218
 							]
 						],
 						"settings":
@@ -252,7 +183,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2129.0,
+						"translation.y": 611.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

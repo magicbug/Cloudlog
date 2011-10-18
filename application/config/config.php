@@ -1,32 +1,55 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-/* Logbook options */
+
+/*
+|--------------------------------------------------------------------------
+| Install Options
+|--------------------------------------------------------------------------
+|
+|	'app_name'		Name of the App 'Cloudlog'
+|	'app_version'	Set by the dev team.
+|	'directory'		directory where cloudlog is installed eg "logger"
+*/
+
+$config['app_name'] = "Cloudlog";
+$config['app_version'] = "0.1";
+$config['directory'] = "logbook";
+
+/*
+|--------------------------------------------------------------------------
+| Logbook Options
+|--------------------------------------------------------------------------
+|
+| 	'table_name'	SQL table where log can be found
+|	'locator'		Default locator used to calculate bearings/distance
+|	'display_freq'	Show or Hide frequnecy info 
+*/
 
 $config['table_name'] = "table_hrd_contacts_v01"; 
 $config['locator'] = "IO91JS"; 
-$config['display_freq'] = false; // hide and display freq input on Add QSO 
+$config['display_freq'] = false;
 
-/* User options */
-// Use authentication?
+/*
+|--------------------------------------------------------------------------
+| Authentication
+|--------------------------------------------------------------------------
+|
+| 'use_auth'	False turns all authentication off, best used when setting up
+| 'auth_table'	MySQL Database Table defaults "users"
+| 'auth_mode'	Minimum user level required 0 = anonymous, 1 = viewer, 
+|				2 = editor, 3 = api user, 99 = owner
+| 'auth_level[]'	Defines level titles
+*/
+
 $config['use_auth'] = true;
-// User table
 $config['auth_table'] = "users";
-// Minimum user level required
-// 0 = anonymous, 1 = viewer, 2 = editor, 3 = api user, 99 = owner
 $config['auth_mode'] = "0";
-// User levels
+
 $config['auth_level'][0] = "Anonymous";
 $config['auth_level'][1] = "Viewer";
 $config['auth_level'][2] = "Editor";
 $config['auth_level'][3] = "API User";
 $config['auth_level'][99] = "Administrator";
-
-/* Beta Features */
-
-$config['beta'] = true;
-
-$config['app_name'] = "Web Logger";
-$config['app_version'] = "0.1";
 
 /*
 |--------------------------------------------------------------------------
