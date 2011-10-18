@@ -15,8 +15,6 @@
 				'transitionOut'		: 'fade',
 				'type'				: 'iframe'
 			});
-
-
 		});
 
 	</script>
