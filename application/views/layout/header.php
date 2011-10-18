@@ -41,11 +41,9 @@
 			<li><a href="<?php echo site_url('search');?>" title="Search">Search</a></li>
 			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 			<li><a href="<?php echo site_url('qso');?>" title="Add QSO">Add QSO</a></li>
-			<li><a href="<?php echo site_url('contest');?>" title="Contests">Contests</a></li>
 			<?php } ?>
 			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE){ ?>
 			<li><a href="<?php echo site_url('notes');?>" title="Notes">Notes</a></li>
-			<li><a href="<?php echo site_url('qsl');?>" title="Notes">QSLing</a></li>
 			<?php } ?>
 			<li><a href="<?php echo site_url('statistics');?>" title="Statistics">Statistics</a></li>
 			<?php if(($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) || $this->config->item('use_auth') === FALSE) { ?>

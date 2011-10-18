@@ -30,7 +30,7 @@
 	    var marker, i;
 
 	    /* Get QSO points via json*/
-		 $.getJSON("/logbook/index.php/logbook/qso_map/25/<?php echo $this->uri->segment(3); ?>", function(data) {
+		 $.getJSON("/<?php echo $this->config->item('directory'); ?>/index.php/logbook/qso_map/25/<?php echo $this->uri->segment(3); ?>", function(data) {
 		 	
 			$.each(data.markers, function(i, val) {
 				/* Create Markers */

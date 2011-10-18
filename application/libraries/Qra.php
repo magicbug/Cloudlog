@@ -10,7 +10,7 @@ class Qra {
 		return qra2latlong($strQRA);
 	}
 	
-	function bearing($rx, $tx) {
+	function bearing($tx, $rx) {
 		$my = qra2latlong($tx);
 		$stn = qra2latlong($rx);
 
