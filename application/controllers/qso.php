@@ -74,15 +74,15 @@ class QSO extends CI_Controller {
 		
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('layout/header');
+			$this->load->view('layout/mini_header');
 			$this->load->view('qso/edit', $data);
-			$this->load->view('layout/footer');
+			$this->load->view('layout/mini_footer');
 		}
 		else
 		{
 			$this->logbook_model->edit();
 			$this->session->set_flashdata('notice', 'Record Updated');
-			redirect('logbook');
+			redirect('qso/edit/'.$this->input->post('id'));
 		}
 	}
 	
@@ -93,7 +93,10 @@ class QSO extends CI_Controller {
 		$this->logbook_model->delete($id);
 		
 		$this->session->set_flashdata('notice', 'QSO Deleted Successfully');
-		redirect('logbook');
+		$data['message_title'] = "Deleted";
+		$data['message_contents'] = "QSO Deleted Successfully";
+		$this->load->view('messages/message', $data);
+
 	}
 	
 	
