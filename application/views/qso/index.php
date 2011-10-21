@@ -276,6 +276,43 @@ function settime () {
 	$(document).ready(function(){
 	
 		/* On Page Load */
+		var catcher = function() {
+		  var changed = false;
+		  $('form').each(function() {
+		    if ($(this).data('initialForm') != $(this).serialize()) {
+		      changed = true;
+		      $(this).addClass('changed');
+		    } else {
+		      $(this).removeClass('changed');
+		    }
+		  });
+		  if (changed) {
+		    return 'Unsaved QSO!';
+		  }
+		};
+
+		$(function() {
+		  $('form').each(function() {
+		    $(this).data('initialForm', $(this).serialize());
+		  }).submit(function(e) {
+		    var formEl = this;
+		    var changed = false;
+		    $('form').each(function() {
+		      if (this != formEl && $(this).data('initialForm') != $(this).serialize()) {
+		        changed = true;
+		        $(this).addClass('changed');
+		      } else {
+		        $(this).removeClass('changed');
+		      }
+		    });
+		    if (changed && !confirm('You have an unsaved QSO. Continue with QSO?')) {
+		      e.preventDefault();
+		    } else {
+		      $(window).unbind('beforeunload', catcher);
+		    }
+		  });
+		  $(window).bind('beforeunload', catcher);
+		});
 		
 		$.get('qso/band_to_freq/' + $('.band').val() + '/' + $('.mode').val(), function(result) {
 						$('#frequency').val(result);
