@@ -173,7 +173,7 @@ function settime () {
 	
 	
 	<tr>
-		<td colspan="9">Comment: <input id="comment" type="text" name="comment" value="" /></td>
+		<td colspan="9">QTH: <input id="qth" type"text" name"qth" value"" /> Comment: <input id="comment" type="text" name="comment" value="" /></td>
 	</tr>
 </table>
 
