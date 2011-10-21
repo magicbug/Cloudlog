@@ -53,6 +53,7 @@ class Logbook_model extends CI_Model {
            'COL_PROP_MODE' => $prop_mode,
            'COL_IOTA' => $this->input->post('iota_ref'),
            'COL_MY_GRIDSQUARE' => $locator,
+           'COL_DISTANCE' => 0
 		);
 
 		$this->add_qso($data);
