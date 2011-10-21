@@ -324,9 +324,12 @@ function settime () {
 				}
 	
 				/* Find Operators Name */
-				$.get('logbook/callsign_name/' + $(this).val(), function(result) {
-					$('#name').val(result);
-				});
+				if($('#name').val() == "") {
+					$.get('logbook/callsign_name/' + $(this).val(), function(result) {
+						$('#name').val(result);
+					});
+				}
+
 			}
 		});
 	});
