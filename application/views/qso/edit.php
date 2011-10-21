@@ -1,4 +1,4 @@
-<div style="float: right; padding-right: 10px;">
+<div style="float: right; padding-right: 60px; padding-top: 30px;">
 	<p><a href="<?php echo site_url('qso/delete'); ?>/<?php echo $COL_PRIMARY_KEY; ?>" >Delete QSO <img src="<?php echo base_url(); ?>/images/delete.png" width="16" height="16" alt="Delete" /></a></p>
 </div>
 <h2>Edit QSO</h2>
