@@ -50,10 +50,11 @@ class Logbook_model extends CI_Model {
            'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
            'COL_QSL_RCVD_VIA' => $this->input->post('qsl_recv_method'),
            'COL_OPERATOR' => $this->session->userdata('user_callsign'),
+           'COL_QTH' => $this->input->post('qth'),
            'COL_PROP_MODE' => $prop_mode,
            'COL_IOTA' => $this->input->post('iota_ref'),
            'COL_MY_GRIDSQUARE' => $locator,
-           'COL_DISTANCE' => 0
+           'COL_DISTANCE' => "0"
 		);
 
 		$this->add_qso($data);
@@ -88,6 +89,7 @@ class Logbook_model extends CI_Model {
            'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
            'COL_QSL_RCVD_VIA' => $this->input->post('qsl_recv_method'),
            'COL_IOTA' => $this->input->post('iota_ref'),
+           'COL_QTH' => $this->input->post('qth')
 		);
 
 		$this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));

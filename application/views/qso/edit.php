@@ -59,6 +59,12 @@
 	</tr>
 	
 	<tr>
+		<td>QTH</td>
+		<td><input type="text" name="qth" value="<?php echo $COL_QTH; ?>" /></td>
+	</tr>
+	
+
+	<tr>
 		<td>Comment</td>
 		<td><input type="text" name="comment" value="<?php echo $COL_COMMENT; ?>" /></td>
 	</tr>
