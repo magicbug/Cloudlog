@@ -19,7 +19,7 @@ $(document).ready(function(){
 	      // after load trigger your fancybox 
 	      	$(".editbox").fancybox({
 				'autoDimensions'	: false,
-				'width'         	: 700,
+				'width'         	: 450,
 				'height'        	: 550,
 				'transitionIn'		: 'fade',
 				'transitionOut'		: 'fade',
