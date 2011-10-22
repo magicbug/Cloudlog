@@ -108,7 +108,8 @@ function settime () {
 		<td><input class="input_time" type="text" name="start_time" value="" size="7" /></td>
 		<td><input size="10" id="callsign" type="text" name="callsign" value="" /></td>
 		<td><select name="mode" class="mode">
-			<option value="SSB" <?php if($this->session->userdata('mode') == "" || $this->session->userdata('mode') == "FM") { echo "selected=\"selected\""; } ?>>SSB</option>
+			<option value="SSB" <?php if($this->session->userdata('mode') == "" || $this->session->userdata('mode') == "SSB") { echo "selected=\"selected\""; } ?>>SSB</option>
+			<option value="AM" <?php if($this->session->userdata('mode') == "AM") { echo "selected=\"selected\""; } ?>>AM</option>
 			<option value="FM" <?php if($this->session->userdata('mode') == "FM") { echo "selected=\"selected\""; } ?>>FM</option>
 			<option value="CW" <?php if($this->session->userdata('mode') == "CW") { echo "selected=\"selected\""; } ?>>CW</option>
 			<option value="RTTY" <?php if($this->session->userdata('mode') == "RTTY") { echo "selected=\"selected\""; } ?>>RTTY</option>
