@@ -96,8 +96,8 @@ function settime () {
 		<?php } ?>
 		<td class="title">Mode</td>
 		<td class="title">Band</td>
-		<td class="title">RST Sent</td>
-		<td class="title">RST Recv</td>
+		<td class="title">RST(S)</td>
+		<td class="title">RST(R)</td>
 		<td class="title">QRA</td>
 <!-- 		<td class="title">Name</td> -->
 		<td class="title">Name</td>
@@ -140,34 +140,8 @@ function settime () {
 			<option value="33cm" <?php if($this->session->userdata('band') == "33cm") { echo "selected=\"selected\""; } ?>>33cm</option>
 			<option value="23cm" <?php if($this->session->userdata('band') == "23cm") { echo "selected=\"selected\""; } ?>>23cm</option>
 		</select></td>
-		<td><select name="rst_sent">
-			<option value="51">51</option>
-			<option value="52">52</option>
-			<option value="53">53</option>
-			<option value="54">54</option>
-			<option value="55">55</option>
-			<option value="56">56</option>
-			<option value="57">57</option>
-			<option value="58">58</option>
-			<option value="59" selected="selected">59</option>
-			<option value="59+10dB">59+10dB</option>
-			<option value="59+20dB">59+20dB</option>
-			<option value="59+30dB">59+30dB</option>
-		</select></td>
-		<td><select name="rst_recv">
-			<option value="51">51</option>
-			<option value="52">52</option>
-			<option value="53">53</option>
-			<option value="54">54</option>
-			<option value="55">55</option>
-			<option value="56">56</option>
-			<option value="57">57</option>
-			<option value="58">58</option>
-			<option value="59" selected="selected">59</option>
-			<option value="59+10dB">59+10dB</option>
-			<option value="59+20dB">59+20dB</option>
-			<option value="59+30dB">59+30dB</option>
-		</select></td>
+		<td><input class="rst" name="rst_sent" type="text" value="59"></td>
+		<td><input class="rst" name="rst_recv" type="text" value="59"></td>
 		<td><input id="locator" type="text" name="locator" value="" size="7" /></td>
 		<td><input id="name" type="text" name="name" value="" /></td>
 	</tr>

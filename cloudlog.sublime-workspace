@@ -19,7 +19,7 @@
 			"file": "application/views/qso/index.php",
 			"settings":
 			{
-				"buffer_size": 13125,
+				"buffer_size": 13248,
 				"line_ending": "Windows"
 			}
 		},
@@ -205,7 +205,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 5,
 			"sheets":
 			[
 				{
@@ -213,15 +213,15 @@
 					"file": "application/views/qso/index.php",
 					"settings":
 					{
-						"buffer_size": 13125,
+						"buffer_size": 13248,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								10966,
-								10966
+								3433,
+								3433
 							]
 						],
 						"settings":
@@ -230,7 +230,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 5454.0,
+						"translation.y": 1911.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -354,8 +354,8 @@
 						"selection":
 						[
 							[
-								1740,
-								1740
+								829,
+								829
 							]
 						],
 						"settings":
@@ -364,7 +364,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 540.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
