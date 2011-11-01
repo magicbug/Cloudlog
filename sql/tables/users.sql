@@ -32,6 +32,7 @@ CREATE TABLE `users` (
   `user_locator` varchar(16) NOT NULL COMMENT 'User''s locator',
   `user_firstname` varchar(32) NOT NULL COMMENT 'User''s first name',
   `user_lastname` varchar(32) NOT NULL COMMENT 'User''s last name',
+  `user_timezone` int(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name` (`user_name`),
   UNIQUE KEY `user_email` (`user_email`)
