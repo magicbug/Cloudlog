@@ -41,7 +41,7 @@ function settime () {
   var time = "";
 
   if(curhour == 0) curhour = 24;
-  time = (curhour > 24 ? curhour - 24 : curhour - 1) + ":" +
+  time = (curhour > 24 ? curhour - 24 : curhour) + ":" +
 		 (curmin < 10 ? "0" : "") + curmin + ":" +
 		 (cursec < 10 ? "0" : "") + cursec
 
