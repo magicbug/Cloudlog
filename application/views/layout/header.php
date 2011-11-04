@@ -2,7 +2,7 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-	<title>Web Logbook</title>
+	<title><?php echo $page_title; ?> - Cloudlog</title>
 	<link rel="stylesheet" href="<?php echo base_url();?>css/reset.css" type="text/css" />
 	<link type="text/css" href="<?php echo base_url(); ?>css/flick/jquery-ui-1.8.12.custom.css" rel="stylesheet" />	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/css/global.css">

@@ -15,6 +15,70 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "application/views/qso/index.php",
+			"settings":
+			{
+				"buffer_size": 12368,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/views/layout/header.php",
+			"settings":
+			{
+				"buffer_size": 5131,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/controllers/dashboard.php",
+			"settings":
+			{
+				"buffer_size": 4310,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/controllers/logbook.php",
+			"settings":
+			{
+				"buffer_size": 6594,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/controllers/search.php",
+			"settings":
+			{
+				"buffer_size": 752,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/controllers/qso.php",
+			"settings":
+			{
+				"buffer_size": 3303,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/controllers/user.php",
+			"settings":
+			{
+				"buffer_size": 11099,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/controllers/notes.php",
+			"settings":
+			{
+				"buffer_size": 1976,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -48,6 +112,7 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/config.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/qso/index.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/css/global.css",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/logbook.php",
@@ -58,7 +123,6 @@
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/search/main.php",
 		"/C/Users/Peter/Desktop/.htaccess",
 		"/C/Users/Peter/git/HRD-Web-Frontend/js/global.js",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/config.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/qso.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/mini_header.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/css/popup.css",
@@ -159,8 +223,226 @@
 	"groups":
 	[
 		{
+			"selected": 7,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "application/views/qso/index.php",
+					"settings":
+					{
+						"buffer_size": 12368,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2121,
+								2121
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 54.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "application/views/layout/header.php",
+					"settings":
+					{
+						"buffer_size": 5131,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								225,
+								225
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "application/controllers/dashboard.php",
+					"settings":
+					{
+						"buffer_size": 4310,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1671,
+								1589
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 477.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "application/controllers/logbook.php",
+					"settings":
+					{
+						"buffer_size": 6594,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1295,
+								1295
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3744.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "application/controllers/search.php",
+					"settings":
+					{
+						"buffer_size": 752,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								752,
+								752
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4.0,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "application/controllers/qso.php",
+					"settings":
+					{
+						"buffer_size": 3303,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2565,
+								2565
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1566.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "application/controllers/user.php",
+					"settings":
+					{
+						"buffer_size": 11099,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10382,
+								10382
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2960.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "application/controllers/notes.php",
+					"settings":
+					{
+						"buffer_size": 1976,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1227,
+								1227
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1157.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],

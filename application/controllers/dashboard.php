@@ -45,9 +45,10 @@ class Dashboard extends CI_Controller {
 		
 		$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('9');
 
-	
-		$this->load->view('layout/header');
-		$this->load->view('dashboard/index', $data);
+		$data['page_title'] = "Dashboard";
+
+		$this->load->view('layout/header', $data);
+		$this->load->view('dashboard/index');
 		$this->load->view('layout/footer');
 	}
 	

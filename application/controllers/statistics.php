@@ -37,8 +37,10 @@ class Statistics extends CI_Controller {
 		
 		$data['total_digi'] = $this->logbook_model->total_digi();
 	
-		$this->load->view('layout/header');
-		$this->load->view('statistics/index', $data);
+		$data['page_title'] = "Statistics";
+
+		$this->load->view('layout/header', $data);
+		$this->load->view('statistics/index');
 		$this->load->view('layout/footer');
 	}
 }

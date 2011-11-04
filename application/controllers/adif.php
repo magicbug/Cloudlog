@@ -6,7 +6,10 @@ class adif extends CI_Controller {
 	
 	/* Shows Export Views */
 	public function export() {
-		$this->load->view('layout/header');
+
+		$data['page_title'] = "ADIF Export";
+
+		$this->load->view('layout/header', $data);
 		$this->load->view('adif/main');
 		$this->load->view('layout/footer');
 	}

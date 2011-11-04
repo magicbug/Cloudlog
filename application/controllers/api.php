@@ -20,7 +20,10 @@ class API extends CI_Controller {
 
 	function help()
 	{
-		$this->load->view('layout/header');
+
+		$data['page_title'] = "API Help";
+
+		$this->load->view('layout/header', $data);
 		$this->load->view('api/help');
 		$this->load->view('layout/footer');
 	}

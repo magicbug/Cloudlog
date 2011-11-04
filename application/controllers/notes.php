@@ -7,9 +7,9 @@ class Notes extends CI_Controller {
 	{
 		$this->load->model('note');
 		$data['notes'] = $this->note->list_all();
-	
-		$this->load->view('layout/header');
-		$this->load->view('notes/main', $data);
+		$data['page_title'] = "Notes";
+		$this->load->view('layout/header', $data);
+		$this->load->view('notes/main');
 		$this->load->view('layout/footer');
 	}
 	
@@ -26,7 +26,8 @@ class Notes extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('layout/header');
+			$data['page_title'] = "Add Notes";
+			$this->load->view('layout/header', $data);
 			$this->load->view('notes/add');
 			$this->load->view('layout/footer');
 		}
@@ -45,8 +46,9 @@ class Notes extends CI_Controller {
 		$data['note'] = $this->note->view($id);
 		
 		// Display
-		$this->load->view('layout/header');
-		$this->load->view('notes/view',$data);
+		$data['page_title'] = "Note";
+		$this->load->view('layout/header', $data);
+		$this->load->view('notes/view');
 		$this->load->view('layout/footer');
 	}
 	
@@ -65,8 +67,9 @@ class Notes extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('layout/header');
-			$this->load->view('notes/edit', $data);
+			$data['page_title'] = "Edit Note";
+			$this->load->view('layout/header', $data);
+			$this->load->view('notes/edit');
 			$this->load->view('layout/footer');
 		}
 		else

@@ -6,7 +6,9 @@ class Backup extends CI_Controller {
 	public function index()
 	{
 
-		$this->load->view('layout/header');
+		$data['page_title'] = "Backup";
+
+		$this->load->view('layout/header', $data);
 		$this->load->view('backup/main');
 		$this->load->view('layout/footer');
 	}
@@ -30,8 +32,10 @@ class Backup extends CI_Controller {
 		      $data['status'] = true;
 		}
 
-		$this->load->view('layout/header');
-		$this->load->view('backup/adif_view', $data);
+		$data['page_title'] = "ADIF - Backup";
+
+		$this->load->view('layout/header', $data);
+		$this->load->view('backup/adif_view');
 		$this->load->view('layout/footer');
 
 	}
@@ -52,8 +56,10 @@ class Backup extends CI_Controller {
 		      $data['status'] = true;
 		}
 
-		$this->load->view('layout/header');
-		$this->load->view('backup/notes_view', $data);
+		$data['page_title'] = "Notes - Backup";
+
+		$this->load->view('layout/header', $data);
+		$this->load->view('backup/notes_view');
 		$this->load->view('layout/footer');
 
 	}

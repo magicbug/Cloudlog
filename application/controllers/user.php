@@ -10,8 +10,10 @@ class User extends CI_Controller {
 
 		$data['results'] = $this->user_model->users();
 
-		$this->load->view('layout/header');
-		$this->load->view('user/main', $data);
+		$data['page_title'] = "Users";
+
+		$this->load->view('layout/header', $data);
+		$this->load->view('user/main');
 		$this->load->view('layout/footer');
 	}
 
@@ -36,7 +38,9 @@ class User extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('layout/header');
+			$data['page_title'] = "Add User";
+
+			$this->load->view('layout/header', $data);
 			if($this->input->post('user_name'))
 			{
 				$data['user_name'] = $this->input->post('user_name');
@@ -48,7 +52,7 @@ class User extends CI_Controller {
 				$data['user_callsign'] = $this->input->post('user_callsign');
 				$data['user_locator'] = $this->input->post('user_locator');
 				$data['user_timezone'] = $this->input->post('user_timezone');
-				$this->load->view('user/add', $data);
+				$this->load->view('user/add');
 			} else {
 				$this->load->view('user/add', $data);
 			}
@@ -73,7 +77,9 @@ class User extends CI_Controller {
 					redirect('user');
 					return;
 			}
-			$this->load->view('layout/header');
+			$data['page_title'] = "Users";
+
+			$this->load->view('layout/header', $data);
 			$data['user_name'] = $this->input->post('user_name');
 			$data['user_email'] = $this->input->post('user_email');
 			$data['user_password'] = $this->input->post('user_password');
@@ -82,7 +88,7 @@ class User extends CI_Controller {
 			$data['user_lastname'] = $this->input->post('user_lastname');
 			$data['user_callsign'] = $this->input->post('user_callsign');
 			$data['user_locator'] = $this->input->post('user_locator');
-			$this->load->view('user/add', $data);
+			$this->load->view('user/add');
 			$this->load->view('layout/footer');
 		}
 	}
@@ -111,7 +117,9 @@ class User extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('layout/header');
+			$data['page_title'] = "Edit User";
+
+			$this->load->view('layout/header', $data);
 			$q = $query->row();
 
 			$data['id'] = $q->user_id;
@@ -210,7 +218,9 @@ class User extends CI_Controller {
 					}
 					return;
 			}
-			$this->load->view('layout/header');
+			$data['page_title'] = "Edit User";
+
+			$this->load->view('layout/header', $data);
 			$data['user_name'] = $this->input->post('user_name');
 			$data['user_email'] = $this->input->post('user_email');
 			$data['user_password'] = $this->input->post('user_password');
@@ -220,7 +230,7 @@ class User extends CI_Controller {
 			$data['user_callsign'] = $this->input->post('user_callsign');
 			$data['user_locator'] = $this->input->post('user_locator');
 			$data['user_timezone'] = $this->input->post('user_timezone');
-			$this->load->view('user/edit', $data);
+			$this->load->view('user/edit');
 			$this->load->view('layout/footer');
 		}
 	}
@@ -228,10 +238,10 @@ class User extends CI_Controller {
 	function profile() {
 		$this->load->model('user_model');
 		$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
-		
-		$this->load->view('layout/header');
 		$data = $query->row();
-		$this->load->view('user/profile', $data);
+
+		$this->load->view('layout/header', $data);
+		$this->load->view('user/profile');
 		$this->load->view('layout/footer');
 	}
 
@@ -248,8 +258,9 @@ class User extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('layout/header');
-			$this->load->view('user/delete', $data);
+
+			$this->load->view('layout/header', $data);
+			$this->load->view('user/delete');
 			$this->load->view('layout/footer');
 		}
 		else
@@ -276,10 +287,14 @@ class User extends CI_Controller {
 
 		$data = $query->row();
 
+
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('layout/header');
-			$this->load->view('user/login', $data);
+
+			$data['page_title'] = "Login";
+
+			$this->load->view('layout/header', $data);
+			$this->load->view('user/login');
 			$this->load->view('layout/footer');
 		}
 		else

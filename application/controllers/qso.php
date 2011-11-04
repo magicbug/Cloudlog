@@ -28,8 +28,10 @@ class QSO extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('layout/header');
-			$this->load->view('qso/index', $data);
+			$data['page_title'] = "Add QSO";
+
+			$this->load->view('layout/header', $data);
+			$this->load->view('qso/index');
 			$this->load->view('layout/footer');
 		}
 		else
@@ -51,8 +53,10 @@ class QSO extends CI_Controller {
 			$data['notice'] = "QSO Added";
 			
 			// Load view to create another contact
-			$this->load->view('layout/header');
-			$this->load->view('qso/index', $data);
+			$data['page_title'] = "Add QSO";
+
+			$this->load->view('layout/header', $data);
+			$this->load->view('qso/index');
 			$this->load->view('layout/footer');
 		}
 	}
@@ -74,8 +78,9 @@ class QSO extends CI_Controller {
 		
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('layout/mini_header');
-			$this->load->view('qso/edit', $data);
+			$data['page_title'] = "Edit";
+			$this->load->view('layout/mini_header', $data);
+			$this->load->view('qso/edit');
 			$this->load->view('layout/mini_footer');
 		}
 		else
