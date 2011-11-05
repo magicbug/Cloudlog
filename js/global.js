@@ -4,6 +4,7 @@
 
 		/* Theme buttons */
 		$( "button, input:submit", ".wrap_content" ).button();
+		$( "button, input:reset", ".wrap_content" ).button();
 		$( "button, input:submit", ".contest_wrap" ).button();
 
 		/* Subnav options */

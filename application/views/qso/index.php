@@ -246,7 +246,7 @@ function settime () {
 			</div>
 
 		</div>
-<div class="controls"><input type="submit" value="Add QSO" /></div>
+<div class="controls"><input type="submit" value="Add QSO" /> <input type="reset" value="Reset" /></div>
 
 </form>
 <script type="text/javascript">
