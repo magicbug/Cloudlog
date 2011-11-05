@@ -74,8 +74,8 @@ td.item { padding-bottom: 5px; }
 #country { border: none; }
 #locator_info { font-size: 13px; }
 #name { width: 208px; }
-#comment { width: 63.8%; }
-#qth { width: 20%; }
+#comment { width: 63.7%; }
+#qth { width: 19%; }
 .rst { width: 45px; }
 .partial td, .logbook td, .users td { padding: 5px; }
 .log_title { background-image: url('../images/grey_bg.png'); background-repeat: repeat-x; color: #439bf6; }
