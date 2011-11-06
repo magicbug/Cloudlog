@@ -83,7 +83,7 @@
         <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
         	<p class="pull-right">Logged in as <a href="#"><?php echo $this->session->userdata('user_callsign'); ?></a></p>
         <?php } else { ?>
-          <form action="<?php echo site_url('user/login'); ?>" class="pull-right">
+          <form method="post" action="<?php echo site_url('user/login'); ?>" class="pull-right">
             <input class="input-small" type="text" name="user_name" placeholder="Username">
             <input class="input-small" type="password" name="user_password" placeholder="Password">
             <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
