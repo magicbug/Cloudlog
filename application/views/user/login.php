@@ -1,5 +1,6 @@
+<div id="container">
 <h2>Log in</h2>
-<div class="wrap_content user">
+
 <?php echo validation_errors(); ?>
 
 <form method="post" action="<?php echo site_url('user/login'); ?>" name="users">

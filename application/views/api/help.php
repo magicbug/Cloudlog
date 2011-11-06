@@ -1,3 +1,5 @@
+<div id="container">
+
 <h2>API</h2>
 
 	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
@@ -23,7 +25,6 @@
 
 	</script>
 
-<div class="wrap_content user">
 
 
 <?php if($this->session->flashdata('notice')) { ?>

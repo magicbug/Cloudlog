@@ -43,7 +43,7 @@ class Dashboard extends CI_Controller {
 		
 		$data['total_bands'] = $this->logbook_model->total_bands();
 		
-		$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('9');
+		$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('11');
 
 		$data['page_title'] = "Dashboard";
 

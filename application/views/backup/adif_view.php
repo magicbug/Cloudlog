@@ -1,5 +1,7 @@
+<div id="container">
+
 <h2>Backup - ADIF</h2>
-<div class="wrap_content note">
+
 
 <?php if($status == true) { ?>
 

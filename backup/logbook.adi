@@ -7093,3 +7093,5 @@
 	
 	<call:5>M0VFC<band:4>160m<mode:3>SSB<freq:7>1900000<qso_date:8>20111023<time_on:4>1606<time_off:4>1606<rst_rcvd:2>58<rst_sent:2>55<qsl_rcvd:1>N<qsl_sent:1>N<country:7>England<eor>
 	
+	<call:5>TE1ST<band:4>160m<mode:3>SSB<freq:7>1900000<qso_date:8>20111105<time_on:4>2205<time_off:4>2205<rst_rcvd:2>59<rst_sent:2>59<qsl_rcvd:1>N<qsl_sent:1>N<country:10>Costa rica<eor>
+	

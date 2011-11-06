@@ -74,22 +74,18 @@
 
 	</script>
 
+<div id="container">
 
+	<h2><?php echo $page_title; ?></h2>
 
-<h2><?php echo $page_title; ?></h2>
+	<ul class="tabs">
+	  <li class="active"><a href="#home">General</a></li>
+	  <li><a href="#space">Satellite Contacts</a></li>
+	</ul>
+	 
+	<div class="pill-content">
+	  <div class="active" id="home"><div id="modechart_div"></div> <div id="bandchart_div"></div></div>
+	  <div id="space"><div id="satchart_div"></div></div>
+	</div>
 
-<div class="wrap_content note stats">
-
-<p>Statistics built using information from the logbook.</p>
-
-		<div id="tabs">
-			<ul>
-				<li><a href="#tabs-1">Main</a></li>
-				<li><a href="#tabs-2">Satellite</a></li>
-				<!-- <li><a href="#tabs-3">QSLing</a></li> -->
-			</ul>
-			<div id="tabs-1"><div id="modechart_div"></div> <div id="bandchart_div"></div></div>
-			<div id="tabs-2"><div id="satchart_div"></div></div>
-			<!-- <div id="tabs-3"><div id="qslchart_div"></div></div> -->
-		</div>
 </div>

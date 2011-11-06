@@ -1,5 +1,6 @@
+<div id="container">
 <h2>ADIF Export</h2>
-<div class="wrap_content note">
+
 
 <p>Exporting your log is simple you can either export the whole log or use the finer controls to set the date.</p>
 
@@ -23,7 +24,7 @@
 	
 	<tr>
 		<td></td>
-		<td><input type="submit" name="submit" value="Download" /></td>
+		<td><input class="btn primary" type="submit" name="submit" value="Download" /></td>
 	</tr>
 </table>
 </form>

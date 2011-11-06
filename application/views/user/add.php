@@ -1,5 +1,8 @@
+
+<div id="container">
+
 <h2>Add user</h2>
-<div class="wrap_content user">
+
 <?php if($this->session->flashdata('notice')) { ?>
     <div id="message" >
         <?php echo $this->session->flashdata('notice'); ?>
@@ -84,7 +87,7 @@ $this->load->helper('form');
 	
 </table>	
 <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
-<div><input type="submit" value="Submit" /></div>
+<div class="actions"><input class="btn primary" type="submit" value="Submit" /></div>
 
 </form>
 

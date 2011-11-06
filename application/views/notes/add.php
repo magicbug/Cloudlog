@@ -1,6 +1,12 @@
-<h2>Add Note</h2>
-<div class="wrap_content">
-<?php echo validation_errors(); ?>
+
+<div id="container">
+
+	<h2>Add Note</h2>
+
+	<div class="row show-grid">
+	  <div class="span13">
+	  
+		<?php echo validation_errors(); ?>
 <form method="post" action="<?php echo site_url('notes/add'); ?>" name="notes_add" id="notes_add">
 <table>
 	<tr>
@@ -23,11 +29,17 @@
 	</tr>
 </table>
 
-<div><input type="submit" value="Submit" /></div>
+<div class="actions"><input class="btn primary" type="submit" value="Submit" /></div>
 
-</form>
+
+
+	  </div>
+	  <div class="span2 offset1">
+	  </div>
+	</div>
 
 </div>
+
 <script type="text/javascript"> 
 <!--
 $(document).ready(function()	{

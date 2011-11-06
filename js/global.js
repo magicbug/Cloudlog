@@ -1,6 +1,10 @@
 	$(function(){
 		/* Load Tabs */
-		$("#tabs").tabs();
+		//$("#tabs").tabs();
+		$('#topbar').dropdown()
+
+		$('.tabs').tabs();
+		$('.qsos').tabs();
 
 		/* Theme buttons */
 		$( "button, input:submit", ".wrap_content" ).button();

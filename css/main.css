@@ -1,0 +1,45 @@
+#container {
+	padding-top: 50px;
+	width: 940px;
+	margin: 0 auto;
+}
+
+#footer { width: 940px; margin: 0 auto; text-align: right; }
+
+table .titles {
+	font-weight: bold;
+	color: #439BF6;
+}
+
+.markItUp {
+	width: 580px !important;	
+
+}
+
+.markItUpEditor {
+	width: 520px !important;
+
+}
+
+.rst { 
+	width: 50px !important;
+}
+
+
+.input_date {
+	width: 70px !important;
+}
+.input_time {
+	width: 55px !important;
+}
+
+.band {
+	width: 60px;
+}
+.mode {
+	width: 60px;
+}
+
+#callsign {
+	text-transform: uppercase;
+}

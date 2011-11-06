@@ -1,5 +1,7 @@
+<div id="container">
+
 <h2>Edit user</h2>
-<div class="wrap_content user">
+
 <?php echo validation_errors(); ?>
 <?php
 
@@ -86,7 +88,7 @@ $this->load->helper('form');
 	
 </table>	
 <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
-<div><input type="submit" value="Update profile" /></div>
+<div class="actions"><input class="btn primary" type="submit" value="Update profile" /></div>
 
 </form>
 

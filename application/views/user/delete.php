@@ -1,3 +1,5 @@
+<div id="container">
+
 <h2>Edit user</h2>
 <div class="wrap_content user">
 <?php echo validation_errors(); ?>
@@ -9,7 +11,7 @@
 		</tr>
 	</table>
 <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
-<div><input type="submit" value="Yes, delete this user" /> <a href="<?php echo site_url('user'); ?>">No, do not delete this user</a></div>
+<div class="actions"><input class="btn primary" type="submit" value="Yes, delete this user" /> <a href="<?php echo site_url('user'); ?>">No, do not delete this user</a></div>
 
 </form>
 

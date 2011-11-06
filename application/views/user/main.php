@@ -23,8 +23,10 @@
 
 	</script>
 
-<div class="wrap_content user">
+<div id="container">
 
+<div class="row show-grid">
+	  <div class="span13">
 
 <?php if($this->session->flashdata('notice')) { ?>
 	<div id="message" >
@@ -52,5 +54,10 @@
 		</tr>
 		<?php $i++; } ?>
 	</table>
-<div class="controls"><a href="<?php echo site_url('user/add'); ?>">Add user</a></div>
+	  </div>
+	  <div class="span2 offset1">
+	  <a class="btn primary" href="<?php echo site_url('user/add'); ?>">Add user</a>
+	  </div>
+	</div>
+
 </div>

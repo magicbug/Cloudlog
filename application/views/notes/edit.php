@@ -1,35 +1,49 @@
+<div id="container">
 <?php foreach ($note->result() as $row) { ?>
-<h2>Edit Note - <?php echo $row->title; ?></h2>
-<div class="wrap_content">
-<?php echo validation_errors(); ?>
-<form method="post" action="<?php echo site_url('notes/edit'); ?>/<?php echo $id; ?>" name="notes_add" id="notes_add">
-<table>
-	<tr>
-		<td><label for="title">Title</label></td>
-		<td><input type="text" name="title" value="<?php echo $row->title; ?>" /></td>
-	</tr>
+	<h2>Edit Note - <?php echo $row->title; ?></h2>
+
+	<div class="row show-grid">
+	  <div class="span13">
+	  
 	
-	<tr>
-		<td><label for="category">Category</label></td>
-		<td><select name="category">
-			<option value="General" selected="selected">General</option>
-			<option value="Antennas">Antennas</option>
-			<option value="Satellites">Satellites</option>
-		</select></td>
-	</tr>
-	
-	<tr>
-		<td><input type="hidden" name="id" value="<?php echo $id; ?>" /></td>
-		<td><textarea name="content" id="markItUp" rows="10" cols="10"><?php echo $row->note; ?></textarea></td>
-	</tr>
-</table>
+	<?php echo validation_errors(); ?>
+	<form method="post" action="<?php echo site_url('notes/edit'); ?>/<?php echo $id; ?>" name="notes_add" id="notes_add">
+	<table>
+		<tr>
+			<td><label for="title">Title</label></td>
+			<td><input type="text" name="title" value="<?php echo $row->title; ?>" /></td>
+		</tr>
+		
+		<tr>
+			<td><label for="category">Category</label></td>
+			<td><select name="category">
+				<option value="General" selected="selected">General</option>
+				<option value="Antennas">Antennas</option>
+				<option value="Satellites">Satellites</option>
+			</select></td>
+		</tr>
+		
+		<tr>
+			<td><input type="hidden" name="id" value="<?php echo $id; ?>" /></td>
+			<td><textarea name="content" id="markItUp" rows="10" cols="5"><?php echo $row->note; ?></textarea></td>
+		</tr>
+	</table>
 
-<div><input type="submit" value="Submit" /></div>
+	<div class="actions"><input class="btn primary" type="submit" value="Submit" /></div>
 
-</form>
+	</form>
 
-</div>
+
+	  </div>
+	  <div class="span2 offset1">
+	 	 <a class="btn primary" href="<?php echo site_url('notes/edit'); ?>/<?php echo $row->id; ?>">Edit Note</a>
+	 	 <br/><br/>
+	 	 <a class="btn" href="<?php echo site_url('notes/delete'); ?>/<?php echo $row->id; ?>">Delete Note</a>
+	  </div>
+	</div>
 <?php } ?>
+</div>
+
 <script type="text/javascript"> 
 <!--
 $(document).ready(function()	{

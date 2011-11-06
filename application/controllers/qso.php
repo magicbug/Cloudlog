@@ -78,7 +78,6 @@ class QSO extends CI_Controller {
 		
 		if ($this->form_validation->run() == FALSE)
 		{
-			$data['page_title'] = "Edit";
 			$this->load->view('layout/mini_header', $data);
 			$this->load->view('qso/edit');
 			$this->load->view('layout/mini_footer');
