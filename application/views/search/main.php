@@ -1,5 +1,7 @@
+<div id="container">
+
 <h2>Search</h2>
-<div class="wrap_content">
+
 <form method="post" action="" id="search_box" name="test">
 	Callsign: <input type="text" id="callsign" name="callsign" value="" />
 </form>
@@ -12,6 +14,19 @@
 <script type="text/javascript">
 i=0;
 $(document).ready(function(){
+
+	$('#partial_view').load("logbook/search_result/<?php echo $this->input->post('callsign'); ?>", function() {
+	      // after load trigger your fancybox 
+	      	$(".editbox").fancybox({
+				'autoDimensions'	: false,
+				'width'         	: 450,
+				'height'        	: 550,
+				'transitionIn'		: 'fade',
+				'transitionOut'		: 'fade',
+				'type'				: 'iframe',
+			});
+	});
+
   $("#callsign").keyup(function(){
 	if ($(this).val()) {
 

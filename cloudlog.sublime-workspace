@@ -5,7 +5,7 @@
 		[
 			[
 				"text",
-				"text: text-align: left/center/right"
+				"text: text-transform: capitalize/upper/lower"
 			],
 			[
 				"font",
@@ -31,7 +31,7 @@
 			"file": "application/views/qso/index.php",
 			"settings":
 			{
-				"buffer_size": 12968,
+				"buffer_size": 13016,
 				"line_ending": "Windows"
 			}
 		},
@@ -55,7 +55,15 @@
 			"file": "css/main.css",
 			"settings":
 			{
-				"buffer_size": 444,
+				"buffer_size": 483,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/views/layout/header.php",
+			"settings":
+			{
+				"buffer_size": 4384,
 				"line_ending": "Windows"
 			}
 		}
@@ -218,7 +226,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 5,
 			"sheets":
 			[
 				{
@@ -253,15 +261,15 @@
 					"file": "application/views/qso/index.php",
 					"settings":
 					{
-						"buffer_size": 12968,
+						"buffer_size": 13016,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2006,
-								2002
+								1875,
+								1883
 							]
 						],
 						"settings":
@@ -270,7 +278,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1193.0,
+						"translation.y": 1032.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -297,7 +305,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 864.0,
+						"translation.y": 18.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -334,23 +342,50 @@
 					"file": "css/main.css",
 					"settings":
 					{
-						"buffer_size": 444,
+						"buffer_size": 483,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								402,
-								402
+								62,
+								62
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/CSS/CSS.tmLanguage"
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 216.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "application/views/layout/header.php",
+					"settings":
+					{
+						"buffer_size": 4384,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4249,
+								4249
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1192.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

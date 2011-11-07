@@ -12,25 +12,6 @@
 
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/global.js"></script>
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
-	
-
-
-	<style type="text/css" media="screen" >
-		#submenu { height: 30px; color:#ffffff; clear: both; <?php
-	
-		if($this->session->userdata('user_type') == 99) {
-			switch ($this->uri->segment(1)) {
-				case "user":
-					?> display: normal; <?php
-					break;
-				default:
-					?> display: none; <?php
-			}
-		} else {
-					?> display: none; visibility: hidden; <?php
-		}?> }
-
-	</style>
 
 
 	<link rel="stylesheet" href="<?php echo base_url();?>css/bootcamp/bootstrap.css" type="text/css" />
@@ -78,7 +59,7 @@
 
           </ul>
 
-        <form action=""><input type="text" placeholder="Search Callsign"></form>
+        <form method="post" action="<?php echo site_url('search'); ?>"><input type="text" name="callsign" placeholder="Search Callsign"></form>
 
         <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
         	<p class="pull-right">Logged in as <a href="#"><?php echo $this->session->userdata('user_callsign'); ?></a></p>
