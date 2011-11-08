@@ -42,6 +42,70 @@
 				"buffer_size": 745,
 				"line_ending": "Windows"
 			}
+		},
+		{
+			"file": "application/views/dashboard/index.php",
+			"settings":
+			{
+				"buffer_size": 4476,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/views/qso/index.php",
+			"settings":
+			{
+				"buffer_size": 12955,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "css/main.css",
+			"settings":
+			{
+				"buffer_size": 565,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/controllers/logbook.php",
+			"settings":
+			{
+				"buffer_size": 7118,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/controllers/dashboard.php",
+			"settings":
+			{
+				"buffer_size": 4449,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/controllers/qso.php",
+			"settings":
+			{
+				"buffer_size": 3270,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/libraries/Qra.php",
+			"settings":
+			{
+				"buffer_size": 2333,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/libraries/callbytxt.php",
+			"settings":
+			{
+				"buffer_size": 849,
+				"line_ending": "Windows"
+			}
 		}
 	],
 	"build_system": "",
@@ -202,7 +266,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 6,
 			"sheets":
 			[
 				{
@@ -243,8 +307,8 @@
 						"selection":
 						[
 							[
-								346,
-								346
+								633,
+								633
 							]
 						],
 						"settings":
@@ -253,7 +317,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 810.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -271,6 +335,220 @@
 						[
 							[
 								20,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "application/views/dashboard/index.php",
+					"settings":
+					{
+						"buffer_size": 4476,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2332,
+								2365
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1096.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "application/views/qso/index.php",
+					"settings":
+					{
+						"buffer_size": 12955,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								12898,
+								12898
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 6688.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "css/main.css",
+					"settings":
+					{
+						"buffer_size": 565,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								565,
+								565
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "application/controllers/logbook.php",
+					"settings":
+					{
+						"buffer_size": 7118,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3710,
+								3710
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2244.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "application/controllers/dashboard.php",
+					"settings":
+					{
+						"buffer_size": 4449,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4449,
+								4449
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 182.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "application/controllers/qso.php",
+					"settings":
+					{
+						"buffer_size": 3270,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2568,
+								2568
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1408.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "application/libraries/Qra.php",
+					"settings":
+					{
+						"buffer_size": 2333,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1196,
+								1196
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 594.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "application/libraries/callbytxt.php",
+					"settings":
+					{
+						"buffer_size": 849,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
 								0
 							]
 						],

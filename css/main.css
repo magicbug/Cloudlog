@@ -16,4 +16,8 @@ table .title { font-weight: bold; color: #439BF6; }
 .mode { width: 80px; }
 #callsign { text-transform: uppercase; }
 
+input[type="text"] {
+	color: #000000 !important;
+}
+
 .pull-right { color: #fff; }

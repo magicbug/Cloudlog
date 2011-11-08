@@ -356,6 +356,12 @@
 					});
 				}
 
+				if($('#qth').val() == "") {
+					$.get('logbook/callsign_qth/' + $(this).val(), function(result) {
+						$('#qth').val(result);
+					});
+				}
+
 			}
 		});
 	});
