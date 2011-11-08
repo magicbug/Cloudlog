@@ -75,8 +75,8 @@
 <div id="map" style="width: 100%; height: 300px"></div>
 
 <!-- Log Data -->
-<div class="row show-grid">
-  <div class="span11">
+<div class="row" style="margin-top: 10px;">
+  <div class="span10" style="padding-left: 15px; padding-right: 25px; border-right: 1px solid #dfdfdf;">
     	<table width="100%" class="zebra-striped">
 			<tr class="titles">
 				<td>Date</td>

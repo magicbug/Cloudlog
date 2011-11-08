@@ -44,7 +44,7 @@
 
 <div id="container">
 
-	<h2>Add QSO</h2>
+
 
 <?php if($notice) { ?>
 <div class="alert-message info">
@@ -60,23 +60,23 @@
 
 	<div class="row show-grid">
 	  <div class="span6">
-
+	  	<h2>Add QSO</h2>
 		<form id="qso_input" method="post" action="<?php echo site_url('qso'); ?>" name="qsos">
 
-		<table>
+		<table style="margin-bottom: 0px;">
 
 			<tr>
-				<td>Date</td>
+				<td class="title">Date</td>
 				<td><input class="input_date" type="text" name="start_date" value="<?php echo date('d-m-Y'); ?>" size="10" /> - <input class="input_time" type="text" name="start_time" value="" size="7" /></td>
 			</tr>
 
 			<tr>
-				<td>Callsign</td>
+				<td class="title">Callsign</td>
 				<td><input size="10" id="callsign" type="text" name="callsign" value="" /></td>
 			</tr>	
 
 			<tr>
-				<td>Mode</td>
+				<td class="title">Mode</td>
 				<td><select name="mode" class="mode">
 				<option value="SSB" <?php if($this->session->userdata('mode') == "" || $this->session->userdata('mode') == "SSB") { echo "selected=\"selected\""; } ?>>SSB</option>
 				<option value="AM" <?php if($this->session->userdata('mode') == "AM") { echo "selected=\"selected\""; } ?>>AM</option>
@@ -95,7 +95,7 @@
 				<option value="PKT" <?php if($this->session->userdata('mode') == "PKT") { echo "selected=\"selected\""; } ?>>PKT</option>
 				</select>
 
-				Band
+				<span class="title">Band</span>
 				<select name="band" class="band">
 				<option value="160m" <?php if($this->session->userdata('band') == "160m") { echo "selected=\"selected\""; } ?>>160m</option>
 				<option value="80m" <?php if($this->session->userdata('band') == "80m") { echo "selected=\"selected\""; } ?>>80m</option>
@@ -117,27 +117,27 @@
 			</tr>
 
 			<tr>
-				<td>RST (S)</td>
-				<td><input class="rst" name="rst_sent" type="text" size="3" value="59"> RST (R) <input class="rst" name="rst_recv" type="text"  size="3"  value="59"></td>
+				<td class="title">RST (S)</td>
+				<td><input class="rst" name="rst_sent" type="text" size="3" value="59"> <span class="title">RST (R)</span> <input class="rst" name="rst_recv" type="text"  size="3"  value="59"></td>
 			</tr>
 
 			<tr>
-				<td>Name</td>
+				<td class="title">Name</td>
 				<td><input id="name" type="text" name="name" value="" /></td>
 			</tr>	
 
 			<tr>
-				<td>QTH</td>
+				<td class="title">QTH</td>
 				<td><input id="qth" type"text" name"qth" value"" /></td>
 			</tr>
 
 			<tr>
-				<td>QRA</td>
+				<td class="title">QRA</td>
 				<td><input id="locator" type="text" name="locator" value="" size="7" /></td>
 			</tr>
 
 			<tr>
-				<td>Comment</td>
+				<td class="title">Comment</td>
 				<td><input id="comment" type="text" name="comment" value="" /></td>
 			</tr>
 		</table>
@@ -197,22 +197,9 @@
 							<option value="Y">Yes</option>
 							<option value="R">Requested</option>
 						</select></td>
-						<td>Recv</td>
-						<td><select name="qsl_recv">
-							<option value="N" selected="selected">No</option>
-							<option value="Y">Yes</option>
-							<option value="R">Requested</option>
-						</select></td>
-					</tr>
 					<tr>
-						<td></td>
+						<td>Method</td>
 						<td><select name="qsl_sent_method">
-							<option value="" selected="selected">Method</option>
-							<option value="D">Direct</option>
-							<option value="B">Bureau</option>
-						</select></td>
-						<td></td>
-						<td><select name="qsl_recv_method">
 							<option value="" selected="selected">Method</option>
 							<option value="D">Direct</option>
 							<option value="B">Bureau</option>
@@ -229,7 +216,10 @@
 	  </div>
 	  <div class="span9 offset1">
 
-		 <div id="partial_view"><table class="zebra-striped" width="100%">
+		 <div id="partial_view">
+		 	<h2>Last 10 QSOs</h2>
+
+		 	<table class="zebra-striped" width="100%">
 				<tr class="log_title titles">
 					<td>Date</td>
 					<td>Time</td>
