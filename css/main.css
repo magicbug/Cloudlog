@@ -15,3 +15,5 @@ table .title { font-weight: bold; color: #439BF6; }
 .band { width: 80px; }
 .mode { width: 80px; }
 #callsign { text-transform: uppercase; }
+
+.pull-right { color: #fff; }
