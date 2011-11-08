@@ -330,7 +330,7 @@
 		});
 	
 		/* On Callsign Change */
-		$("#callsign").keyup(function(){
+		$("#callsign").focusout(function(){
 			if ($(this).val()) {
 				/* Find Callsign Matches */
 				$('#partial_view').load("logbook/partial/" + $(this).val()).fadeIn("slow");

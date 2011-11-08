@@ -137,5 +137,15 @@ class Dashboard extends CI_Controller {
 		echo "}";
 
 	}
+
+	function test() {
+		
+		$this->load->library('callbytxt');
+
+		$callbook = $this->callbytxt->callsign('m3ph');
+
+		print_r($callbook);
+
+	}
 	
 }
