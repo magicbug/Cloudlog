@@ -63,7 +63,7 @@
 			"file": "css/main.css",
 			"settings":
 			{
-				"buffer_size": 565,
+				"buffer_size": 617,
 				"line_ending": "Windows"
 			}
 		},
@@ -266,7 +266,7 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 5,
 			"sheets":
 			[
 				{
@@ -408,15 +408,15 @@
 					"file": "css/main.css",
 					"settings":
 					{
-						"buffer_size": 565,
+						"buffer_size": 617,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								565,
-								565
+								555,
+								555
 							]
 						],
 						"settings":
