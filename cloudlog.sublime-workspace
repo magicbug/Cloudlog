@@ -19,94 +19,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "application/views/layout/header.php",
-			"settings":
-			{
-				"buffer_size": 4064,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/views/search/main.php",
-			"settings":
-			{
-				"buffer_size": 2036,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/views/notes/main.php",
-			"settings":
-			{
-				"buffer_size": 745,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/views/dashboard/index.php",
-			"settings":
-			{
-				"buffer_size": 4476,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/views/qso/index.php",
-			"settings":
-			{
-				"buffer_size": 12955,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "css/main.css",
-			"settings":
-			{
-				"buffer_size": 617,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/controllers/logbook.php",
-			"settings":
-			{
-				"buffer_size": 7118,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/controllers/dashboard.php",
-			"settings":
-			{
-				"buffer_size": 4449,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/controllers/qso.php",
-			"settings":
-			{
-				"buffer_size": 3270,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/libraries/Qra.php",
-			"settings":
-			{
-				"buffer_size": 2333,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "application/libraries/callbytxt.php",
-			"settings":
-			{
-				"buffer_size": 849,
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -140,12 +52,18 @@
 	},
 	"file_history":
 	[
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/notes/main.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/qso/index.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/header.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/search/main.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/libraries/callbytxt.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/libraries/Qra.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/notes/main.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/qso.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/dashboard/index.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/dashboard.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/qso/index.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/logbook.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/css/main.css",
 		"/C/Users/Peter/git/HRD-Web-Frontend/js/global.js",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/qso.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/notes/add.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/api/help.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/adif/main.php",
@@ -160,14 +78,10 @@
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/user/login.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/user/delete.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/statistics/index.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/dashboard/index.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/notes/view.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/notes/edit.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/logbook.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/view_log/index.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/footer.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/dashboard.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/libraries/Qra.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/css/global.css",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/search.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/user.php",
@@ -179,7 +93,6 @@
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/config.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/models/logbook_model.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/qso/edit.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/search/main.php",
 		"/C/Users/Peter/Desktop/.htaccess",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/mini_header.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/css/popup.css",
@@ -266,303 +179,8 @@
 	"groups":
 	[
 		{
-			"selected": 5,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "application/views/layout/header.php",
-					"settings":
-					{
-						"buffer_size": 4064,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3125,
-								3125
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "application/views/search/main.php",
-					"settings":
-					{
-						"buffer_size": 2036,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								633,
-								633
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 810.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "application/views/notes/main.php",
-					"settings":
-					{
-						"buffer_size": 745,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								20,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "application/views/dashboard/index.php",
-					"settings":
-					{
-						"buffer_size": 4476,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2332,
-								2365
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1096.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "application/views/qso/index.php",
-					"settings":
-					{
-						"buffer_size": 12955,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								12898,
-								12898
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 6688.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "css/main.css",
-					"settings":
-					{
-						"buffer_size": 617,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								555,
-								555
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "application/controllers/logbook.php",
-					"settings":
-					{
-						"buffer_size": 7118,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3710,
-								3710
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2244.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "application/controllers/dashboard.php",
-					"settings":
-					{
-						"buffer_size": 4449,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4449,
-								4449
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 182.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "application/controllers/qso.php",
-					"settings":
-					{
-						"buffer_size": 3270,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2568,
-								2568
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1408.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "application/libraries/Qra.php",
-					"settings":
-					{
-						"buffer_size": 2333,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1196,
-								1196
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 594.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "application/libraries/callbytxt.php",
-					"settings":
-					{
-						"buffer_size": 849,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
