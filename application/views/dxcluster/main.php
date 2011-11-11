@@ -19,7 +19,7 @@
 			}, 4000); // refresh every 10000 milliseconds
 			</script>
 		<div class="contents">
-		<table cellspacing="0" class="spots">
+		<table cellspacing="0" class="spots zebra-striped">
 			<tr class="title">
 				<td>Date</td>
 				<td>Callsign</td>

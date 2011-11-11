@@ -19,6 +19,54 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "application/controllers/dxcluster.php",
+			"settings":
+			{
+				"buffer_size": 2101,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/views/layout/header.php",
+			"settings":
+			{
+				"buffer_size": 4405,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/views/dxcluster/custom.php",
+			"settings":
+			{
+				"buffer_size": 2048,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/views/dxcluster/main.php",
+			"settings":
+			{
+				"buffer_size": 2004,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "application/views/qso/index.php",
+			"settings":
+			{
+				"buffer_size": 12955,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Peter/Downloads/FT2000scripts/ClearRIT.wts",
+			"settings":
+			{
+				"buffer_size": 268,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -52,12 +100,15 @@
 	},
 	"file_history":
 	[
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/dxcluster/custom.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/libraries/callbytxt.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/dxcluster/main.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/notes/main.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/welcome.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/qso.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/header.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/search/main.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/libraries/callbytxt.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/libraries/Qra.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/notes/main.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/qso.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/dashboard/index.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/dashboard.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/qso/index.php",
@@ -128,7 +179,6 @@
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/kml.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/backup/exportall.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/models/note.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/welcome.php",
 		"/C/Users/Peter/Desktop/log.kml",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/routes.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/social/map.php",
@@ -179,8 +229,169 @@
 	"groups":
 	[
 		{
+			"selected": 5,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "application/controllers/dxcluster.php",
+					"settings":
+					{
+						"buffer_size": 2101,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1406,
+								1406
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "application/views/layout/header.php",
+					"settings":
+					{
+						"buffer_size": 4405,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2383,
+								2383
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 432.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "application/views/dxcluster/custom.php",
+					"settings":
+					{
+						"buffer_size": 2048,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2022,
+								2022
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 378.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "application/views/dxcluster/main.php",
+					"settings":
+					{
+						"buffer_size": 2004,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1978,
+								768
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 540.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "application/views/qso/index.php",
+					"settings":
+					{
+						"buffer_size": 12955,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11725,
+								11725
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 6083.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/C/Users/Peter/Downloads/FT2000scripts/ClearRIT.wts",
+					"settings":
+					{
+						"buffer_size": 268,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								268,
+								268
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
