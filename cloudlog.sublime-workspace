@@ -47,7 +47,7 @@
 			"file": "application/models/logbook_model.php",
 			"settings":
 			{
-				"buffer_size": 14679,
+				"buffer_size": 14741,
 				"line_ending": "Windows"
 			}
 		}
@@ -304,15 +304,15 @@
 					"file": "application/models/logbook_model.php",
 					"settings":
 					{
-						"buffer_size": 14679,
+						"buffer_size": 14741,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3752,
-								3752
+								2256,
+								2256
 							]
 						],
 						"settings":
@@ -322,7 +322,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 706.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
