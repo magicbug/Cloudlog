@@ -341,7 +341,7 @@
 				});
 	
 				/* Find Locator if the field is empty */
-				if($('#locator').val() != null) {
+				if($('#locator').val() == "") {
 					$.get('logbook/callsign_qra/' + $(this).val(), function(result) {
 						$('#locator').val(result);
 						$('#locator_info').load("logbook/bearing/" + result).fadeIn("slow");
