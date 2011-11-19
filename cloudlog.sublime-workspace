@@ -5,49 +5,145 @@
 		[
 			[
 				"text",
-				"text: text-transform: capitalize/upper/lower"
-			],
-			[
-				"font",
-				"font: font-weight: weight"
+				"text: text-align: left/center/right"
 			],
 			[
 				"background",
 				"background: background-color: hex"
+			],
+			[
+				"font",
+				"font: font-family: family"
+			],
+			[
+				"cursor",
+				"cursor: cursor: type"
+			],
+			[
+				"border",
+				"border: border: size style color"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "application/views/search/main.php",
+			"file": "application/libraries/Clublog.php",
 			"settings":
 			{
-				"buffer_size": 2036,
+				"buffer_size": 659,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "application/views/view_log/index.php",
+			"file": "/C/Users/Peter/Documents/Business/Client Work/Alpine Adventure/website/index.html",
 			"settings":
 			{
-				"buffer_size": 3756,
+				"buffer_size": 7810,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "application/controllers/logbook.php",
+			"file": "/C/Users/Peter/Documents/Business/Client Work/Alpine Adventure/email/index.html",
 			"settings":
 			{
-				"buffer_size": 7213,
+				"buffer_size": 2306,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "application/models/logbook_model.php",
+			"contents": "Last weekend I decided to have a little dabble in the WAE RTTY Contest, this wasn’t a serious effort; more a have a play and see what could be added to my logbook. Doing a little bit of search and pounce and in the end called CQ a few times, but only got very short runs on 20 and 80m (the only QSOs on the band).\n\nI found conditions hard going, but they didn’t look any different to the usual averages; so I’m guessing this was purely related to the antennas 1/2 G5RV and a 80m quarter wave L and the 50w from the Yaesu FT-950 none the less I had fun. This was also the first contest where I used Win-Test, for the whole operation with MMTTY and it worked pretty much flawlessly. Only one issue where clicking on the DX Cluster spots; it would switch the rig to LSB which got very annoying, but this was down to operating in AFSK I believe. \n\nTotal operating time was 7 hours 26 minutes according to Win-Test, and I can report some reasonable stuff worked including Japan and Mexico and lots of North America (All bands but 80m!) ending up with 200 QSOs. ",
 			"settings":
 			{
-				"buffer_size": 14741,
+				"buffer_size": 1056,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Peter/Desktop/nuke_users.csv",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Peter/git/aprs.bz/config/database.yml",
+			"settings":
+			{
+				"buffer_size": 353,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "ruby 1.9.3p0 (2011-10-30) [i386-mingw32]\n\nC:\\Users\\Peter>cd git\n\nC:\\Users\\Peter\\git>ls\n'ls' is not recognized as an internal or external command,\noperable program or batch file.\n\nC:\\Users\\Peter\\git>cd aprs.bz\n\nC:\\Users\\Peter\\git\\aprs.bz>bundle\n'bundle' is not recognized as an internal or external command,\noperable program or batch file.\n\nC:\\Users\\Peter\\git\\aprs.bz>gem install bundler\nFetching: bundler-1.0.21.gem (100%)\nSuccessfully installed bundler-1.0.21\n1 gem installed\nInstalling ri documentation for bundler-1.0.21...\nInstalling RDoc documentation for bundler-1.0.21...\n\nC:\\Users\\Peter\\git\\aprs.bz>bundle\nFetching source index for http://rubygems.org/\nUsing rake (0.9.2.2)\nInstalling multi_json (1.0.3)\nInstalling activesupport (3.1.2)\nInstalling builder (3.0.0)\nUsing i18n (0.6.0)\nInstalling activemodel (3.1.2)\nUsing erubis (2.7.0)\nInstalling rack (1.3.5)\nInstalling rack-cache (1.1)\nInstalling rack-mount (0.8.3)\nInstalling rack-test (0.6.1)\nInstalling hike (1.2.1)\nInstalling tilt (1.3.3)\nInstalling sprockets (2.1.0)\nInstalling actionpack (3.1.2)\nInstalling mime-types (1.17.2)\nInstalling polyglot (0.3.3)\nInstalling treetop (1.4.10)\nInstalling mail (2.3.0)\nInstalling actionmailer (3.1.2)\nInstalling arel (2.2.1)\nInstalling tzinfo (0.3.31)\nInstalling activerecord (3.1.2)\nInstalling activeresource (3.1.2)\nInstalling addressable (2.2.6)\nInstalling bcrypt-ruby (3.0.1)\nUsing bundler (1.0.21)\nInstalling nokogiri (1.5.0)\nUsing ffi (1.0.11)\nInstalling childprocess (0.2.2)\nInstalling json_pure (1.6.1)\nInstalling rubyzip (0.9.4)\nInstalling selenium-webdriver (2.13.0)\nInstalling xpath (0.1.4)\nInstalling capybara (1.1.2)\nInstalling coffee-script-source (1.1.3)\nInstalling execjs (1.2.9)\nInstalling coffee-script (2.2.0)\nInstalling rack-ssl (1.3.2)\nInstalling json (1.6.1)\nGem::InstallError: The 'json' native gem requires installed build tools.\n\nPlease update your PATH to include build tools or download the DevKit\nfrom 'http://rubyinstaller.org/downloads' and follow the instructions\nat 'http://github.com/oneclick/rubyinstaller/wiki/Development-Kit'\nAn error occured while installing json (1.6.1), and Bundler cannot continue.\nMake sure that `gem install json -v '1.6.1'` succeeds before bundling.\n\nC:\\Users\\Peter\\git\\aprs.bz>",
+			"settings":
+			{
+				"buffer_size": 2241,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "ruby 1.9.3p0 (2011-10-30) [i386-mingw32]\n\nC:\\Users\\Peter>cd git\n\nC:\\Users\\Peter\\git>ls\n'ls' is not recognized as an internal or external command,\noperable program or batch file.\n\nC:\\Users\\Peter\\git>cd aprs.bz\n\nC:\\Users\\Peter\\git\\aprs.bz>bundle\n'bundle' is not recognized as an internal or external command,\noperable program or batch file.\n\nC:\\Users\\Peter\\git\\aprs.bz>gem install bundler\nFetching: bundler-1.0.21.gem (100%)\nSuccessfully installed bundler-1.0.21\n1 gem installed\nInstalling ri documentation for bundler-1.0.21...\nInstalling RDoc documentation for bundler-1.0.21...\n\nC:\\Users\\Peter\\git\\aprs.bz>bundle\nFetching source index for http://rubygems.org/\nUsing rake (0.9.2.2)\nInstalling multi_json (1.0.3)\nInstalling activesupport (3.1.2)\nInstalling builder (3.0.0)\nUsing i18n (0.6.0)\nInstalling activemodel (3.1.2)\nUsing erubis (2.7.0)\nInstalling rack (1.3.5)\nInstalling rack-cache (1.1)\nInstalling rack-mount (0.8.3)\nInstalling rack-test (0.6.1)\nInstalling hike (1.2.1)\nInstalling tilt (1.3.3)\nInstalling sprockets (2.1.0)\nInstalling actionpack (3.1.2)\nInstalling mime-types (1.17.2)\nInstalling polyglot (0.3.3)\nInstalling treetop (1.4.10)\nInstalling mail (2.3.0)\nInstalling actionmailer (3.1.2)\nInstalling arel (2.2.1)\nInstalling tzinfo (0.3.31)\nInstalling activerecord (3.1.2)\nInstalling activeresource (3.1.2)\nInstalling addressable (2.2.6)\nInstalling bcrypt-ruby (3.0.1)\nUsing bundler (1.0.21)\nInstalling nokogiri (1.5.0)\nUsing ffi (1.0.11)\nInstalling childprocess (0.2.2)\nInstalling json_pure (1.6.1)\nInstalling rubyzip (0.9.4)\nInstalling selenium-webdriver (2.13.0)\nInstalling xpath (0.1.4)\nInstalling capybara (1.1.2)\nInstalling coffee-script-source (1.1.3)\nInstalling execjs (1.2.9)\nInstalling coffee-script (2.2.0)\nInstalling rack-ssl (1.3.2)\nInstalling json (1.6.1)\nGem::InstallError: The 'json' native gem requires installed build tools.\n\nPlease update your PATH to include build tools or download the DevKit\nfrom 'http://rubyinstaller.org/downloads' and follow the instructions\nat 'http://github.com/oneclick/rubyinstaller/wiki/Development-Kit'\nAn error occured while installing json (1.6.1), and Bundler cannot continue.\nMake sure that `gem install json -v '1.6.1'` succeeds before bundling.\n\nC:\\Users\\Peter\\git\\aprs.bz>gem install json -v '1.6.1'\nERROR:  Error installing json:\n        The 'json' native gem requires installed build tools.\n\nPlease update your PATH to include build tools or download the DevKit\nfrom 'http://rubyinstaller.org/downloads' and follow the instructions\nat 'http://github.com/oneclick/rubyinstaller/wiki/Development-Kit'\n\nC:\\Users\\Peter\\git\\aprs.bz>",
+			"settings":
+			{
+				"buffer_size": 2598,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Peter/git/aprs.bz/app/views/users/show.html.haml",
+			"settings":
+			{
+				"buffer_size": 67,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Peter/git/aprs.bz/app/views/home/index.html.haml",
+			"settings":
+			{
+				"buffer_size": 71,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Peter/git/aprs.bz/app/models/user.rb",
+			"settings":
+			{
+				"buffer_size": 1122,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Peter/git/aprs.bz/app/models/packet.rb",
+			"settings":
+			{
+				"buffer_size": 1506,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/VM/Ubuntu/Ubuntu.vmwarevm/Ubuntu.vmx",
+			"settings":
+			{
+				"buffer_size": 2095,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Peter/Documents/Virtual Machines/Ubuntu/Ubuntu.vmx",
+			"settings":
+			{
+				"buffer_size": 2044,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Peter/git/aprs.bz/db/schema.rb",
+			"settings":
+			{
+				"buffer_size": 2790,
 				"line_ending": "Windows"
 			}
 		}
@@ -84,22 +180,37 @@
 	},
 	"file_history":
 	[
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/search.php",
+		"/C/Users/Peter/Desktop/Thrus/website/index.html",
+		"/C/Users/Peter/Desktop/Thrus/email/Peugeot-email.html",
+		"/C/Users/Peter/Desktop/Thrus/emailnew/Peugeot-email.html",
+		"/C/Users/Peter/Desktop/email.html",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/dashboard.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/libraries/Clublog.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/models/logbook_model.php",
+		"/C/Users/Peter/Desktop/tma2.css",
+		"/C/Users/Peter/Desktop/standard/header.html",
+		"/C/Users/Peter/Desktop/standardwhite/header.html",
+		"/C/Users/Peter/Desktop/standardwhite/footer.html",
+		"/C/Users/Peter/Desktop/standard/styles_layout.css",
+		"/C/Users/Peter/Desktop/standard/styles_color.css",
+		"/C/Users/Peter/Desktop/standardwhite/gradients.css",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/autoload.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/qso/index.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/libraries/callbytxt.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/search/main.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/view_log/index.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/logbook.php",
+		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/search.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/dxcluster/main.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/dxcluster/custom.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/header.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/dxcluster.php",
 		"/C/Users/Peter/Downloads/FT2000scripts/ClearRIT.wts",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/libraries/callbytxt.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/notes/main.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/welcome.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/qso.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/search/main.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/libraries/Qra.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/dashboard/index.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/dashboard.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/logbook.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/css/main.css",
 		"/C/Users/Peter/git/HRD-Web-Frontend/js/global.js",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/notes/add.php",
@@ -118,7 +229,6 @@
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/statistics/index.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/notes/view.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/notes/edit.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/view_log/index.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/footer.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/css/global.css",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/user.php",
@@ -128,7 +238,6 @@
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/backup.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/controllers/api.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/config/config.php",
-		"/C/Users/Peter/git/HRD-Web-Frontend/application/models/logbook_model.php",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/qso/edit.php",
 		"/C/Users/Peter/Desktop/.htaccess",
 		"/C/Users/Peter/git/HRD-Web-Frontend/application/views/layout/mini_header.php",
@@ -191,6 +300,17 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Lebkuchen herz",
+			"What do you taste?",
+			".navbar",
+			"header",
+			"background-image",
+			"th.header, td.header, h1.header, h2.header, h3.header, div.header",
+			"th.header, td.header, h1.header, h2.header, h3.header, div.header {",
+			"h2.headingblock",
+			"header",
+			"th.header, td.header, h1.header, h2.header, h3.heade",
+			"body#site-index .headingblock, body#course-view .headingblock",
 			"rst",
 			"edit",
 			"created",
@@ -215,23 +335,23 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 12,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "application/views/search/main.php",
+					"file": "application/libraries/Clublog.php",
 					"settings":
 					{
-						"buffer_size": 2036,
+						"buffer_size": 659,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								542,
-								542
+								500,
+								500
 							]
 						],
 						"settings":
@@ -247,50 +367,50 @@
 				},
 				{
 					"buffer": 1,
-					"file": "application/views/view_log/index.php",
+					"file": "/C/Users/Peter/Documents/Business/Client Work/Alpine Adventure/website/index.html",
 					"settings":
 					{
-						"buffer_size": 3756,
+						"buffer_size": 7810,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3248,
-								3084
+								3094,
+								3094
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"syntax": "Packages/HTML/HTML.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1682.0,
+						"translation.y": 1239.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "application/controllers/logbook.php",
+					"file": "/C/Users/Peter/Documents/Business/Client Work/Alpine Adventure/email/index.html",
 					"settings":
 					{
-						"buffer_size": 7213,
+						"buffer_size": 2306,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								113,
-								113
+								243,
+								243
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"syntax": "Packages/HTML/HTML.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
@@ -301,28 +421,313 @@
 				},
 				{
 					"buffer": 3,
-					"file": "application/models/logbook_model.php",
 					"settings":
 					{
-						"buffer_size": 14741,
+						"buffer_size": 1056,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2256,
-								2256
+								1056,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/C/Users/Peter/Desktop/nuke_users.csv",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/C/Users/Peter/git/aprs.bz/config/database.yml",
+					"settings":
+					{
+						"buffer_size": 353,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								99,
+								99
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"settings":
+					{
+						"buffer_size": 2241,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2241,
+								2241
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 860.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"settings":
+					{
+						"buffer_size": 2598,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2507,
+								2568
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 68.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/C/Users/Peter/git/aprs.bz/app/views/users/show.html.haml",
+					"settings":
+					{
+						"buffer_size": 67,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								67,
+								67
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/Ruby Haml.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/C/Users/Peter/git/aprs.bz/app/views/home/index.html.haml",
+					"settings":
+					{
+						"buffer_size": 71,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								71,
+								71
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/Ruby Haml.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/C/Users/Peter/git/aprs.bz/app/models/user.rb",
+					"settings":
+					{
+						"buffer_size": 1122,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/C/Users/Peter/git/aprs.bz/app/models/packet.rb",
+					"settings":
+					{
+						"buffer_size": 1506,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								207,
+								207
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/C/VM/Ubuntu/Ubuntu.vmwarevm/Ubuntu.vmx",
+					"settings":
+					{
+						"buffer_size": 2095,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 14.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/C/Users/Peter/Documents/Virtual Machines/Ubuntu/Ubuntu.vmx",
+					"settings":
+					{
+						"buffer_size": 2044,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								2044
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 594.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/C/Users/Peter/git/aprs.bz/db/schema.rb",
+					"settings":
+					{
+						"buffer_size": 2790,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1513,
+								1513
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 706.0,
+						"translation.y": 352.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

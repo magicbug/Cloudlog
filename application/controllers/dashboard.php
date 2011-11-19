@@ -75,7 +75,11 @@ class Dashboard extends CI_Controller {
 					echo ",";
 				}
 
-				echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+				if($row->COL_SAT_NAME != null) { 
+						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+				} else {
+						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+				}
 
 				$count++;
 
@@ -140,11 +144,9 @@ class Dashboard extends CI_Controller {
 
 	function test() {
 		
-		$this->load->library('callbytxt');
+		$this->load->library('clublog');
 
-		$callbook = $this->callbytxt->callsign('m3ph');
-
-		print_r($callbook);
+		echo $this->clublog->send();
 
 	}
 	

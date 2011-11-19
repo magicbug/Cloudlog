@@ -55,7 +55,8 @@ class Logbook_model extends CI_Model {
            'COL_IOTA' => $this->input->post('iota_ref'),
            'COL_MY_GRIDSQUARE' => $locator,
            'COL_DISTANCE' => "0",
-           'COL_FREQ_RX' => '0',
+           'COL_FREQ_RX' => 0,
+           'COL_BAND_RX' => 0,
            'COL_ANT_AZ' => '0',
            'COL_ANT_EL' => '0',
 		);
