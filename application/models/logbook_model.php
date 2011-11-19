@@ -432,6 +432,105 @@ class Logbook_model extends CI_Model {
         $this->db->where('COL_PRIMARY_KEY', $id);
         $this->db->delete($this->config->item('table_name')); 
     }
+
+    function import($record) {
+        // Join date+time
+        //$datetime = date('Y-m-d') ." ". $this->input->post('start_time');
+        //$myDate = date('Y-m-d', $record['qso_date']);
+        $time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
+        $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_off']));
+        
+    
+        if(isset($record['freq'])) {
+            $freq = $record['freq'];
+        } else {
+            $freq = "0";
+        }
+        if(isset($record['name'])) {
+            $name = $record['name'];
+        } else {
+            $name = "";
+        }
+        if(isset($record['comment'])) {
+            $comment = $record['comment'];
+        } else {
+            $comment = "";
+        }
+
+        if(isset($record['sat_name'])) {
+            $sat_name = $record['sat_name'];
+        } else {
+            $sat_name = "";
+        }
+    
+        if(isset($record['sat_mode'])) {
+            $sat_mode = $record['sat_mode'];
+        } else {
+            $sat_mode = "";
+        }
+
+        if(isset($record['gridsquare'])) {
+            $gridsquare = $record['gridsquare'];
+        } else {
+            $gridsquare = "";
+        }
+    
+        if(isset($record['country'])) {
+            $country = $record['country'];
+        } else {
+
+            $country = "";
+
+        }
+
+        if(isset($record['qth'])) {
+            $qth = $record['qth'];
+        } else {
+            $qth = "";
+        }
+
+        if(isset($record['prop_mode'])) {
+            $prop_mode = $record['prop_mode'];
+        } else {
+            $prop_mode = "";
+        }
+
+
+        $this->db->where('COL_CALL', $record['call']);
+        $this->db->where('COL_TIME_ON', $time_on);
+        $check = $this->db->get($this->config->item('table_name'));
+
+        if ($check->num_rows() <= 0)
+        {
+            // Create array with QSO Data
+            $data = array(
+               'COL_TIME_ON' => $time_on,
+               'COL_TIME_OFF' => $time_off,
+               'COL_CALL' => strtoupper($record['call']),
+               'COL_BAND' => $record['band'],
+               'COL_FREQ' => $freq,
+               'COL_MODE' => $record['mode'],
+               'COL_RST_RCVD' => $record['rst_rcvd'],
+               'COL_RST_SENT' => $record['rst_sent'],
+               'COL_NAME' => $name,
+               'COL_COMMENT' => $comment,
+               'COL_SAT_NAME' => $sat_name,
+               'COL_SAT_MODE' => $sat_mode,
+               'COL_GRIDSQUARE' => $gridsquare,
+               'COL_COUNTRY' => $country,
+               'COL_QTH' =>$qth,
+               'COL_PROP_MODE' => $prop_mode,
+               'COL_DISTANCE' => 0,
+               'COL_FREQ_RX' => 0,
+               'COL_BAND_RX' => 0,
+               'COL_ANT_AZ' => 0,
+               'COL_ANT_EL' => 0,
+            );
+
+            $this->add_qso($data);
+        }
+    }
+
 }
 
 ?>

@@ -4,6 +4,12 @@ class adif extends CI_Controller {
 
 	/* Controls ADIF Import/Export Functions */
 	
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->helper(array('form', 'url'));
+	}
+
 	/* Shows Export Views */
 	public function export() {
 
@@ -38,10 +44,98 @@ class adif extends CI_Controller {
 		
 		$this->load->view('adif/data/exportall', $data);
 		
-		
 	}
 
-	
+	public function import() {	
+		$data['page_title'] = "ADIF Import";
+
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'adi|ADI';
+
+		$this->load->library('upload', $config);
+
+		if ( ! $this->upload->do_upload())
+		{
+			$data['error'] = $this->upload->display_errors();
+
+			$this->load->view('layout/header', $data);
+			$this->load->view('adif/import');
+			$this->load->view('layout/footer');
+		}
+		else
+		{
+
+			$data = array('upload_data' => $this->upload->data());
+
+			ini_set('memory_limit', '-1');
+			set_time_limit(0);
+
+			$this->load->model('logbook_model');
+
+			$this->load->library('adif_parser');
+
+			$this->adif_parser->load_from_file('./uploads/'.$data['upload_data']['file_name']);
+
+			$this->adif_parser->initialize();
+
+			while($record = $this->adif_parser->get_record())
+			{
+				if(count($record) == 0)
+				{
+					break;
+				};
+
+				//echo date('Y-m-d', strtotime($record['qso_date']))."<br>";
+				//echo date('H:m', strtotime($record['time_on']))."<br>";
+
+				$this->logbook_model->import($record);
+
+				//echo $record["call"]."<br>";
+				//print_r($record);
+			};
+
+			unlink('./uploads/'.$data['upload_data']['file_name']);
+
+			$data['page_title'] = "ADIF Imported";
+			$this->load->view('layout/header', $data);
+			$this->load->view('adif/import_success');
+			$this->load->view('layout/footer');
+
+		}
+	}
+
+
+	function test() {
+		// Set memory limit to unlimited to allow heavy usage
+		ini_set('memory_limit', '-1');
+		set_time_limit(0);
+
+		$this->load->model('logbook_model');
+
+		$this->load->library('adif_parser');
+
+		$this->adif_parser->load_from_file('./uploads/2e0sql.ADI');
+
+		$this->adif_parser->initialize();
+
+		while($record = $this->adif_parser->get_record())
+		{
+			if(count($record) == 0)
+			{
+				break;
+			};
+
+			//echo date('Y-m-d', strtotime($record['qso_date']))."<br>";
+			//echo date('H:m', strtotime($record['time_on']))."<br>";
+
+			$this->logbook_model->import($record);
+
+			//echo $record["call"]."<br>";
+			//print_r($record);
+		};
+
+	}
+
 }
 
 /* End of file welcome.php */
