@@ -438,11 +438,17 @@ class Logbook_model extends CI_Model {
         //$datetime = date('Y-m-d') ." ". $this->input->post('start_time');
         //$myDate = date('Y-m-d', $record['qso_date']);
         $time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
-        $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_off']));
+
+        if (isset($record['time_off'])) {
+            $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_off']));
+        } else {
+           $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));  
+        }
         
     
         if(isset($record['freq'])) {
-            $freq = $record['freq'];
+            $cleansedstring = preg_replace('#\W#', '', $record['freq']);
+            $freq = $cleansedstring."000";
         } else {
             $freq = "0";
         }
@@ -451,8 +457,8 @@ class Logbook_model extends CI_Model {
         } else {
             $name = "";
         }
-        if(isset($record['comment'])) {
-            $comment = $record['comment'];
+        if(isset($record['NOTES'])) {
+            $comment = $record['NOTES'];
         } else {
             $comment = "";
         }
@@ -478,9 +484,19 @@ class Logbook_model extends CI_Model {
         if(isset($record['country'])) {
             $country = $record['country'];
         } else {
+            $this->load->model('dxcc');
 
-            $country = "";
+            $dxccinfo = $this->dxcc->info($record['call']); 
 
+            if ($dxccinfo->num_rows() > 0)
+            {
+                foreach ($dxccinfo->result() as $row1)
+                {
+                    $country = ucfirst(strtolower($row1->name));
+                }
+            } else {
+                $country = "";
+            }
         }
 
         if(isset($record['qth'])) {
