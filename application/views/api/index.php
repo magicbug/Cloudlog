@@ -30,7 +30,7 @@ if(ENVIRONMENT == "development") {
 	$debugElement->setAttribute("dbQuery", $data['queryInfo']['dbQuery']);
 	$debugElement->setAttribute("clientVersion", $_SERVER['HTTP_USER_AGENT']);
 	$debugElement->setAttribute("requestURI", $_SERVER['REQUEST_URI']);
-	$debugElement->setAttribute("benchMark", $this->benchmark->marker['total_execution_time_start'].", ".$this->benchmark->marker['loading_time:_base_classes_start'].", ".$this->benchmark->marker['loading_time:_base_classes_end'].", ".$this->benchmark->marker['controller_execution_time_( api / add )_start']);
+#	$debugElement->setAttribute("benchMark", $this->benchmark->marker['total_execution_time_start'].", ".$this->benchmark->marker['loading_time:_base_classes_start'].", ".$this->benchmark->marker['loading_time:_base_classes_end'].", ".$this->benchmark->marker['controller_execution_time_( api / add )_start']);
 }
 $queryElement->setAttribute("executionTime", $data['queryInfo']['executionTime']);
 $queryElement->setAttribute("logbookURL", $this->config->item('base_url'));
