@@ -96,6 +96,7 @@ ul#user li { float: left; margin: 2px 2px 0 3px; height:43px; border-bottom: non
 #user a { float: left; display: block; color: #ebebeb; text-decoration: none; padding-top: 7px; padding-left: 6px; padding-right: 5px; text-align:center; }
 #user a:hover {  }
 .user { padding: 5px; }
+.profile { padding: 5px; }
 
 /* Pager */
 .pager { margin-top: 5px; margin-bottom: 5px; font-size: 12px; }

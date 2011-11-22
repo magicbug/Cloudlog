@@ -70,6 +70,7 @@
 	        	<li class="dropdown" data-dropdown="dropdown" >
 				    <a href="#" class="dropdown-toggle">Logged in as <?php echo $this->session->userdata('user_callsign'); ?></a>
 				    <ul class="dropdown-menu">
+				     <li><a href="<?php echo site_url('user/profile');?>" title="Profile">Profile</a></li>
 				     <li><a href="<?php echo site_url('user/logout');?>" title="Logout">Logout</a></li>
 				</ul>
 			</div>

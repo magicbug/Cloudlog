@@ -238,7 +238,15 @@ class User extends CI_Controller {
 	function profile() {
 		$this->load->model('user_model');
 		$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
-		$data = $query->row();
+    $q = $query->row();
+    $data['page_title'] = "Profile";
+    $data['user_name'] = $q->user_name;
+    $data['user_type'] = $q->user_type;
+    $data['user_email'] = $q->user_email;
+    $data['user_firstname'] = $q->user_firstname;
+    $data['user_lastname'] = $q->user_lastname;
+    $data['user_callsign'] = $q->user_callsign;
+    $data['user_locator'] = $q->user_locator;
 
 		$this->load->view('layout/header', $data);
 		$this->load->view('user/profile');
