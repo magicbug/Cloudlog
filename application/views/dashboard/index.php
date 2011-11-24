@@ -32,7 +32,7 @@
 	    var marker, i;
 
 	    /* Get QSO points via json*/
-		 $.getJSON("/<?php echo $this->config->item('directory'); ?>//index.php/dashboard/map", function(data) {
+		 $.getJSON("<?php echo site_url('dashboard/map'); ?>", function(data) {
 		 	
 			$.each(data.markers, function(i, val) {
 				/* Create Markers */
