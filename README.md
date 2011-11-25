@@ -1,8 +1,8 @@
-# HRD Web Frontend (Cloudlog)
+# Cloudlog
 
 Cloudlog is a self-hosted PHP application, which allows you to log your amateur radio contacts anywhere all you need is a web browser and and internet connection.
 
-Website: [Cloudlog](http://www.cloudlog.co.uk)
+Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 ## Setup
 
