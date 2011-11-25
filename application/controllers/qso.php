@@ -86,7 +86,7 @@ class QSO extends CI_Controller {
 		{
 			$this->logbook_model->edit();
 			$this->session->set_flashdata('notice', 'Record Updated');
-			redirect('qso/edit/'.$this->input->post('id'));
+			$this->load->view('qso/edit_done');
 		}
 	}
 	

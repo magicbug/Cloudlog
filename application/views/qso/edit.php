@@ -1,3 +1,4 @@
+
 <div style="float: right; padding-right: 60px; padding-top: 30px;">
 	<p><a href="<?php echo site_url('qso/delete'); ?>/<?php echo $COL_PRIMARY_KEY; ?>" >Delete QSO <img src="<?php echo base_url(); ?>/images/delete.png" width="16" height="16" alt="Delete" /></a></p>
 </div>
@@ -122,7 +123,7 @@
 	</table>
 
 <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
-<div><input type="submit" value="Submit" /></div>
+<div><input type="submit" value="Submit"  onclick="closeME();" /></div>
 
 </form>
 </div>
