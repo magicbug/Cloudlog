@@ -1,6 +1,12 @@
 # HRD Web Frontend (Cloudlog)
 
-Website front end to support Ham Radio Deluxe Logbooks MySQL backend Table to allow logging from any location.
+Cloudlog is a self-hosted PHP application, which allows you to log your amateur radio contacts anywhere all you need is a web browser and and internet connection.
+
+Website: [Cloudlog](http://www.cloudlog.co.uk)
+
+## Setup
+
+We're still working simplying the setup but you can check out the Wiki for some useful tips.
 
 ## Copyright
 
