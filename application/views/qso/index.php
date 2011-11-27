@@ -4,6 +4,8 @@
 
 	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 
+	<script type="text/javascript" src="<?php echo base_url() ;?>/js/jquery.jclock.js"></script>
+
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 
 	<script type="text/javascript">
@@ -18,28 +20,14 @@
 				'type'				: 'iframe'
 			});
 
-
+			$(function($) {
+		      var options = {
+		        utc: true
+		      }
+		      $('.input_time').jclock(options);
+		    });
 		});
 
-	</script>
-
-	<script type="text/javascript">
-	setInterval("settime()", 1000);
-
-	function settime () {
-	  var curtime = new Date();
-	  var curhour = curtime.getHours();
-	  var curmin = curtime.getMinutes();
-	  var cursec = curtime.getSeconds();
-	  var time = "";
-
-	  if(curhour == 0) curhour = 24;
-	  time = (curhour > 24 ? curhour - 24 : curhour) + ":" +
-			 (curmin < 10 ? "0" : "") + curmin + ":" +
-			 (cursec < 10 ? "0" : "") + cursec
-
-	  document.qsos.start_time.value = time;
-	}
 	</script>
 
 <div id="container">
