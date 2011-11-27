@@ -10,7 +10,7 @@ We're still working simplying the setup but you can check out the Wiki for some 
 
 ## Copyright
 
-Copyright (c) 2011 Peter Goodhall ([2E0SQL](http://www.m3php.com)). See LICENSE.txt for further details.
+Copyright (c) 2011 Peter Goodhall ([2E0SQL](http://www.m3php.com)).
 
 ## Credits
 
