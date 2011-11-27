@@ -6,7 +6,7 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 ## Setup
 
-We're still working simplying the setup but you can check out the Wiki for some useful tips.
+We're still working simplying the setup but you can check out the Wiki for some useful tips and howtos.
 
 ## Copyright
 
