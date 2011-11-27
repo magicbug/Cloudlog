@@ -11,3 +11,9 @@ We're still working simplying the setup but you can check out the Wiki for some 
 ## Copyright
 
 Copyright (c) 2011 Peter Goodhall (2E0SQL). See LICENSE.txt for further details.
+
+## Credits
+
+* Andy (M0VKG)		[http://m0vkg.org.uk](http://m0vkg.org.uk/)
+* Gavin (M1BXF)		[http://www.geekshed.co.uk](http://www.geekshed.co.uk/)
+* Graham (W5ISP)	[http://www.callbytxt.org](http://www.callbytxt.org)
