@@ -56,9 +56,7 @@
 			     <li><a href="<?php echo site_url('adif/export');?>" title="ADIF Export">ADIF Export</a></li>
 			     <li><a href="<?php echo site_url('api/help');?>" title="API">API</a></li>
 			</ul>
-
 			<?php } ?>
-
           </ul>
 
         <form method="post" action="<?php echo site_url('search'); ?>"><input type="text" name="callsign" placeholder="Search Callsign"></form>
