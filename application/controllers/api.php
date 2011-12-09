@@ -20,12 +20,46 @@ class API extends CI_Controller {
 
 	function help()
 	{
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+
+		$this->load->model('api_model');
+
+		$data['api_keys'] = $this->api_model->keys();
 
 		$data['page_title'] = "API Help";
 
 		$this->load->view('layout/header', $data);
 		$this->load->view('api/help');
 		$this->load->view('layout/footer');
+	}
+
+	function generate($rights) {
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+
+		$this->load->model('api_model');
+
+		$data['api_keys'] = $this->api_model->generate_key($rights);
+
+		redirect('api/help');
+	}
+
+	// Example of authing
+	function auth($key) {
+		$this->load->model('api_model');
+			header("Content-type: text/xml"); 
+		if($this->api_model->access($key) == "No Key Found" || $this->api_model->access($key) == "Key Disabled") {
+			echo "<auth>";
+			echo "<message>Key Invalid - either not found or disabled</message>";
+			echo "</auth>";
+		} else {
+			echo "<auth>";
+			echo "<status>Valid</status>";
+			echo "<rights>".$this->api_model->access($key)."</rights>";
+			echo "</auth>";
 	}
 
 	// FUNCTION: search()
@@ -82,7 +116,7 @@ class API extends CI_Controller {
 		$this->load->model('api_model');
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(3)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		//if(!$this->user_model->authorize(3)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		// Retrieve the arguments from the query string
 		$arguments = $this->_retrieve();

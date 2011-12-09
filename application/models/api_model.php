@@ -14,6 +14,50 @@ class API_Model extends CI_Model {
         parent::__construct();
     }
 
+    // GET API Keys
+    function keys() {
+    	return $this->db->get('api');
+    }
+
+    // Generate API Key
+    function generate_key($rights) {
+    	
+    	// Expects either rw (Read, Write) or r (read only)
+
+    	// Generate Unique Key
+    	$data['key'] = uniqid("cl");
+
+    	$data['rights'] = $rights;
+    	
+    	// Set API key to active
+    	$data['status'] = "active";
+
+    	$this->db->insert('api', $data); 
+
+    }
+
+    function access($key) {
+    	
+    	// Check that the key is valid
+    	$this->db->where('key', $key); 
+    	$query = $this->db->get('api');
+
+		if ($query->num_rows() > 0)
+		{
+		   foreach ($query->result() as $row)
+		   {
+		   		 if($row->status == "active") {
+		   		 	return $status = $row->rights;
+		   		 } else {
+		   		 	return $status = "Key Disabled";
+		   		 }
+
+		   }
+		} else {
+			return $status = "No Key Found";
+		}
+    }
+
 	// FUNCTION: string name(string $column)
 	// Converts a MySQL column name to a more friendly name
 	function name($col)
