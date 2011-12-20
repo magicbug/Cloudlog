@@ -299,7 +299,7 @@ class User extends CI_Controller {
 		if ($this->form_validation->run() == FALSE)
 		{
 
-			$data['page_title'] = "Login";
+			//$data['page_title'] = Login;
 
 			$this->load->view('layout/header', $data);
 			$this->load->view('user/login');

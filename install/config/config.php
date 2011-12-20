@@ -13,7 +13,7 @@
 
 $config['app_name'] = "Cloudlog";
 $config['app_version'] = "0.1";
-$config['directory'] = "mylog";
+$config['directory'] = "%directory%";
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ $config['directory'] = "mylog";
 */
 
 $config['table_name'] = "table_hrd_contacts_v01"; 
-$config['locator'] = "IO91JS"; 
+$config['locator'] = "%baselocator%"; 
 $config['display_freq'] = false;
 
 /*
@@ -65,7 +65,7 @@ $config['auth_level'][99] = "Administrator";
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/mylog';
+$config['base_url']	= '%websiteurl%';
 
 /*
 |--------------------------------------------------------------------------
