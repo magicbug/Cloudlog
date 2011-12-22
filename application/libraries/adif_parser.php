@@ -1,5 +1,4 @@
 <?php
-
 /*
    Copyright 2011 Jason Harris KJ4IWX
 
@@ -16,13 +15,13 @@
    limitations under the License.
 */
 
-
 class ADIF_Parser
 {
 
 	var $data; //the adif data
 	var $i; //the iterator
 	var $current_line; //stores information about the current qso
+	var $headers = array();
 	
 	public function initialize() //this function locates the <EOH>
 	{
@@ -32,6 +31,76 @@ class ADIF_Parser
 			echo "Error: Adif_Parser Already Initialized or No <EOH> in ADIF File";
 			return 0;
 		};
+		
+		
+		//get headers
+		
+		$this->i = 0;
+		$in_tag = false;
+		$tag = "";
+		$value_length = "";
+		$value = "";
+				
+		while($this->i < $pos)
+		{
+			//skip comments
+			if($this->data[$this->i] == "#")
+			{
+				while($this->i < $pos)
+				{
+					if($this->data[$this->i] == "\n")
+					{
+						break;
+					}
+				
+					$this->i++;
+				}
+			}else{
+				//find the beginning of a tag
+				if($this->data[$this->i] == "<")
+				{
+					$this->i++;
+					//record the key
+					while($this->data[$this->i] < $pos && $this->data[$this->i] != ':')
+					{
+						$tag = $tag.$this->data[$this->i];
+						$this->i++;
+					}
+					
+					$this->i++; //iterate past the :
+					
+					//find out how long the value is
+					
+					while($this->data[$this->i] < $pos && $this->data[$this->i] != '>')
+					{
+						$value_length = $value_length.$this->data[$this->i];
+						$this->i++;
+					}
+					
+					$this->i++; //iterate past the >
+					
+					$len = (int)$value_length;
+					//copy the value into the buffer
+					while($len > 0 && $this->i < $pos)
+					{
+						$value = $value.$this->data[$this->i];
+						$len--;
+						$this->i++;
+					};
+
+					$this->headers[strtolower(trim($tag))] = $value; //convert it to lowercase and trim it in case of \r
+					//clear all of our variables
+					$tag = "";
+					$value_length = "";
+					$value = "";
+					
+				}
+			}
+			
+			$this->i++;
+			
+		};
+		
 		$this->i = $pos+5; //iterate past the <eoh>
 		if($this->i >= strlen($this->data)) //is this the end of the file?
 		{
@@ -82,16 +151,27 @@ class ADIF_Parser
 						$a++;
 					};
 				};
-				$a++; //iterate over the >
 				$len = (int)$len_str;
 				while($len > 0)
 				{
+					$a++;
 					$value = $value.$record[$a];
 					$len--;
-					$a++;
 				};
 				$return[strtolower($tag_name)] = $value;
 			};
+			//skip comments
+			if($record[$a] == "#")
+			{
+				while($a < strlen($record))
+				{
+					if($record[$a] == "\n")
+					{
+						break;
+					}
+					$a++;
+				}
+			}
 		};
 		return $return;
 	}
@@ -113,5 +193,16 @@ class ADIF_Parser
 		$this->i = $end+5;
 		return $this->record_to_array($record); //process and return output
  	}
+	
+	public function get_header($key)
+	{
+		if(array_key_exists(strtolower($key), $this->headers))
+		{
+			return $this->headers[strtolower($key)];
+		}else{
+			return NULL;
+		}
+	}
+	
 }
 ?>

@@ -512,6 +512,19 @@ class Logbook_model extends CI_Model {
         }
 
 
+        if(isset($record['rst_rcvd'])) {
+                $rst_rx = $record['rst_rcvd'];
+        } else {
+                $rst_rx = "59"  ;
+        }
+        
+          if(isset($record['rst_sent'])) {
+                $rst_tx = $record['rst_sent'];
+        } else {
+                $rst_tx = "59"  ;
+        }
+
+
         $this->db->where('COL_CALL', $record['call']);
         $this->db->where('COL_TIME_ON', $time_on);
         $check = $this->db->get($this->config->item('table_name'));
@@ -526,8 +539,8 @@ class Logbook_model extends CI_Model {
                'COL_BAND' => $record['band'],
                'COL_FREQ' => $freq,
                'COL_MODE' => $record['mode'],
-               'COL_RST_RCVD' => $record['rst_rcvd'],
-               'COL_RST_SENT' => $record['rst_sent'],
+               'COL_RST_RCVD' => $rst_rx,
+               'COL_RST_SENT' => $rst_tx,
                'COL_NAME' => $name,
                'COL_COMMENT' => $comment,
                'COL_SAT_NAME' => $sat_name,
