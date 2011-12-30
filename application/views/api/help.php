@@ -81,12 +81,8 @@
 		<li><a href="<?php echo site_url('api/generate/rw'); ?>">Key with Read & Write Access</a></li>
 		<li><a href="<?php echo site_url('api/generate/r'); ?>">Key with Read Only Access</a></li>
 	</ul>
-
-<hr>
-
 There are a number of API calls you can make from other applications.
-
-<h3>search</h3>
+<h3>API Guide</h3>
 <h4>Description</h4>
 Query the logbook
 <h4>Syntax</h4>
@@ -94,6 +90,6 @@ Query the logbook
 <h4>Example</h4>
 Search for entries with a call beginning with <b>M0</b> and a locator beginning with <b>I</b> or <b>J</b>, show the callsign and locator fields, order it by callsign and limit the results to <b>10</b>.
 <li><pre>/search/query[Call~M0*(and)(Locator~I*(or)Locator~J*)]/limit[10]/fields[distinct(Call),Locator]/order[Call(asc)]</pre>
-<li><a href="/index.php/api/search/query[Call~M0*(and)(Locator~I*(or)Locator~J*)]/limit[10]/fields[distinct(Call),Locator]/order[Call(asc)]">Run it!</a>
+<li><a href="<?php echo site_url('/api/search/query[Call~M0*(and)(Locator~I*(or)Locator~J*)]/limit[10]/fields[distinct(Call),Locator]/order[Call(asc)]'); ?>">Run it!</a>
 
 </div>
