@@ -17,7 +17,12 @@ class Callbytxt {
 		if(isset($json_output)) {
 			$data['callsign'] = $json_output->calls->callsign;
 			$data['name'] = ucfirst(strtolower((current(explode(' ', $json_output->calls->first_name)))));
-			$data['gridsquare'] = ucfirst($json_output->calls->gridsquare);
+
+			if(strtoupper($json_output->calls->gridsquare) == "JJ00AA") {
+				$data['gridsquare'] = "";
+			} else {
+				$data['gridsquare'] = ucfirst($json_output->calls->gridsquare);	
+			}
 			
 			$data['city'] = ucfirst(strtolower(($json_output->calls->city)));
 			
