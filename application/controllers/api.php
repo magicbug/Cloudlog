@@ -148,6 +148,7 @@ class API extends CI_Controller {
 
 		// Retrieve the arguments from the query string
 		$arguments = $this->_retrieve();
+    $data['data']['format'] = $arguments['format'];
 	
 		// Call the parser within the API model to build the query
 		$query = $this->api_model->select_parse($arguments);
@@ -244,6 +245,7 @@ class API extends CI_Controller {
 		$limit = preg_grep("/^limit\[(.*)\]$/", $this->uri->segments);
 		$order = preg_grep("/^order\[(.*)\]$/", $this->uri->segments);
 		$fields = preg_grep("/^fields\[(.*)\]$/", $this->uri->segments);
+		$format = preg_grep("/^format\[(.*)\]$/", $this->uri->segments);
 
 		// Strip each argument
 		$arguments['query'] = substr(array_pop($query), 6);
@@ -254,6 +256,8 @@ class API extends CI_Controller {
 		$arguments['order'] = substr($arguments['order'], 0, strlen($arguments['order']) - 1);
 		$arguments['fields'] = substr(array_pop($fields), 7);
 		$arguments['fields'] = substr($arguments['fields'], 0, strlen($arguments['fields']) - 1);
+		$arguments['format'] = substr(array_pop($format), 7);
+		$arguments['format'] = substr($arguments['format'], 0, strlen($arguments['format']) - 1);
 
 		// Return the arguments
 		return $arguments;

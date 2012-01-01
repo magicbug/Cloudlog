@@ -1,8 +1,5 @@
 <?php
 
-// Set the content-type for browsers
-header("Content-type: text/xml");
-
 // Create the DOMDocument for the XML output
 $xmlDoc = new DOMDocument("1.0");
 // Add reference to the XSLT
@@ -70,8 +67,24 @@ if($output['results'])
 	}
 }
 
-// Output formatted XML
-echo formatXmlString($xmlDoc->saveXML());
+// Output
+
+// Check whether we want XML or JSON output
+if($data['format'] == "xml") {
+  // Set the content-type for browsers
+  header("Content-type: text/xml");
+  echo formatXmlString($xmlDoc->saveXML());
+} else if($data['format'] == "json") {
+  // Set the content-type for browsers
+  header("Content-type: application/json");
+  // For now, our JSON output is simply the XML re-parsed with SimpleXML and
+  // then re-encoded with json_encode
+  $x = simplexml_load_string($xmlDoc->saveXML());
+  $j = json_encode($x);
+  echo $j;
+} else {
+  echo "Error: Unknown format type '".$data['format']."'.";
+}
 
 // This function tidies up the outputted XML
 function formatXmlString($xml) {
