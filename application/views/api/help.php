@@ -64,7 +64,7 @@
 				?>
 
 			</td>
-			<td><?php echo ucfirst($row->status); ?></td>
+			<td><?php echo ucfirst($row->status); ?> - <a href="<?php echo site_url('/api/validate/key['.$row->key.']'); ?>">Test</td>
 		</tr>
 
 	<?php } ?>

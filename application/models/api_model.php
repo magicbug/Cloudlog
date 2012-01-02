@@ -38,25 +38,40 @@ class API_Model extends CI_Model {
 
     function access($key) {
     	
+      // No key = no access, mate
+      if(!$key) {
+        return $status = "No Key Found";
+      }
+
     	// Check that the key is valid
     	$this->db->where('key', $key); 
-    	$query = $this->db->get('api');
+     	$query = $this->db->get('api');
 
-		if ($query->num_rows() > 0)
-		{
-		   foreach ($query->result() as $row)
-		   {
-		   		 if($row->status == "active") {
-		   		 	return $status = $row->rights;
-		   		 } else {
-		   		 	return $status = "Key Disabled";
-		   		 }
-
-		   }
-		} else {
-			return $status = "No Key Found";
-		}
+		  if ($query->num_rows() > 0)
+  		{
+        foreach ($query->result() as $row)
+	      {
+	     	  if($row->status == "active") {
+	   	  	  return $status = $row->rights;
+	   		  } else {
+ 		   		 	return $status = "Key Disabled";
+  	   		}
+	      }
+		  } else {
+			  return $status = "No Key Found";
+  		}
     }
+
+  function authorize($key) {
+    $r = $this->access($key);
+    if($r == "rw") {
+      return 2;
+    } else if($r == "r") {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
 
 	// FUNCTION: string name(string $column)
 	// Converts a MySQL column name to a more friendly name

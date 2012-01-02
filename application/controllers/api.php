@@ -144,10 +144,14 @@ class API extends CI_Controller {
 		$this->load->model('api_model');
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
-		//if(!$this->user_model->authorize(3)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		$arguments = $this->_retrieve();
+
+		if((!$this->user_model->authorize(3)) && ($this->api_model->authorize($arguments['key']) == 0)) {
+      $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard');
+    }
 
 		// Retrieve the arguments from the query string
-		$arguments = $this->_retrieve();
     $data['data']['format'] = $arguments['format'];
 	
 		// Call the parser within the API model to build the query
@@ -189,6 +193,27 @@ class API extends CI_Controller {
 		$this->load->view('api/index', $data);
 	}
 
+  function validate()
+  {
+		// Load the API and Logbook models
+		$this->load->model('api_model');
+		$this->load->model('logbook_model');
+
+		// Retrieve the arguments from the query string
+		$arguments = $this->_retrieve();
+
+		// Add some debugging information to the XML output
+    $data['data'] = $arguments;
+		$data['data']['queryInfo']['call'] = "validate";
+		$data['data']['queryInfo']['dbQuery'] = "";
+		$data['data']['queryInfo']['numResults'] = 1;
+		$data['data']['queryInfo']['executionTime'] = 0;
+
+    $data['data']['validate_Result']['results'] = array(0 => array('Result' => $this->api_model->authorize($arguments['key'])));
+
+    $this->load->view('api/index', $data);
+  }
+    
 	function add()
 	{
 		// Load the API and Logbook models
@@ -246,6 +271,7 @@ class API extends CI_Controller {
 		$order = preg_grep("/^order\[(.*)\]$/", $this->uri->segments);
 		$fields = preg_grep("/^fields\[(.*)\]$/", $this->uri->segments);
 		$format = preg_grep("/^format\[(.*)\]$/", $this->uri->segments);
+		$key = preg_grep("/^key\[(.*)\]$/", $this->uri->segments);
 
 		// Strip each argument
 		$arguments['query'] = substr(array_pop($query), 6);
@@ -258,6 +284,13 @@ class API extends CI_Controller {
 		$arguments['fields'] = substr($arguments['fields'], 0, strlen($arguments['fields']) - 1);
 		$arguments['format'] = substr(array_pop($format), 7);
 		$arguments['format'] = substr($arguments['format'], 0, strlen($arguments['format']) - 1);
+		$arguments['key'] = substr(array_pop($key), 4);
+		$arguments['key'] = substr($arguments['key'], 0, strlen($arguments['key']) - 1);
+
+    // By default, assume XML for the format if not otherwise set
+    if($arguments['format'] == "") {
+      $arguments['format'] = "xml";
+    }
 
 		// Return the arguments
 		return $arguments;
