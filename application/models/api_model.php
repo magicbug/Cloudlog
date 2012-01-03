@@ -193,6 +193,8 @@ class API_Model extends CI_Model {
 		    $s[3]   = '/\(asc\)/';
 	    	$s[4]   = '/\(desc\)/';
 			$s[5]	= '/,$/';
+      $s[6] = '/\[/';
+      $s[7] = '/\]/';
 
 			$r[0]	= '(';
 			$r[1]	= ')';
@@ -200,6 +202,8 @@ class API_Model extends CI_Model {
 		    $r[3]   = ' ASC ';
 		    $r[4]   = ' DESC ';
 			$r[5]	= '';
+			$r[6]	= '';
+			$r[7]	= '';
 
 			$q .= preg_replace($s, $r, $arguments['order']);
 
@@ -258,8 +262,9 @@ class API_Model extends CI_Model {
 			$r[1]   = ' OR ';
 			$r[2]   = ' < ';
 			$r[3]   = ' > ';
-			$r[4]   = '[';
-			$r[5]   = ']';
+      // Strip out square brackets
+			$r[4]   = '';
+			$r[5]   = '';
 			$r[6]   = '++$1++ =';
 			$r[7]   = '= \'$1\'';
 			$r[8]   = 'UNIX_TIMESTAMP(NOW())';

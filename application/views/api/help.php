@@ -64,7 +64,7 @@
 				?>
 
 			</td>
-			<td><?php echo ucfirst($row->status); ?> - <a href="<?php echo site_url('/api/validate/key['.$row->key.']'); ?>">Test</td>
+			<td><?php echo ucfirst($row->status); ?> - <a href="<?php echo site_url('/api/validate/key='.$row->key.']'); ?>">Test</td>
 		</tr>
 
 	<?php } ?>
@@ -86,10 +86,10 @@ There are a number of API calls you can make from other applications, with outpu
 <h4>Description</h4>
 Query the logbook, and output in XML format.
 <h4>Syntax</h4>
-<li><pre>/search/format[xml]/query[&lt;field&gt;&lt;=|~&gt;&lt;value&gt;{(and|or)...]}/limit[&lt;num&gt;]/fields[&lt;field1&gt;,{&lt;field2&gt;}]/order[&lt;field&gt;]</pre>
+<li><pre>/search/format=&lt;format&gt;/query=&lt;field&gt;&lt;=|~&gt;&lt;value&gt;{(and|or)...}/limit=&lt;num&gt;/fields=&lt;field1&gt;,{&lt;field2&gt;/order=&lt;field&gt;</pre>
 <h4>Example</h4>
 Search for entries with a call beginning with <b>M0</b> and a locator beginning with <b>I</b> or <b>J</b>, show the callsign and locator fields, order it by callsign and limit the results to <b>10</b>.
-<li><pre>/search/format[xml]/query[Call~M0*(and)(Locator~I*(or)Locator~J*)]/limit[10]/fields[distinct(Call),Locator]/order[Call(asc)]</pre>
-<li><a href="<?php echo site_url('/api/search/format[xml]/query[Call~M0*(and)(Locator~I*(or)Locator~J*)]/limit[10]/fields[distinct(Call),Locator]/order[Call(asc)]'); ?>">Run it! (XML)</a> or <a href="<?php echo site_url('/api/search/format[json]/query[Call~M0*(and)(Locator~I*(or)Locator~J*)]/limit[10]/fields[distinct(Call),Locator]/order[Call(asc)]'); ?>">Run it! (JSON)</a>
+<li><pre>/search/format=xml/query=Call~M0*(and)(Locator~I*(or)Locator~J*)/limit=10/fields=distinct(Call),Locator/order=Call(asc)</pre>
+<li><a href="<?php echo site_url('/api/search/format=xml/query=Call~M0*(and)(Locator~I*(or)Locator~J*)/limit=10/fields=distinct(Call),Locator/order=Call(asc)]'); ?>">Run it! (XML)</a> or <a href="<?php echo site_url('/api/search/format=json/query=Call~M0*(and)(Locator~I*(or)Locator~J*)/limit=10/fields=distinct(Call),Locator/order=Call(asc)'); ?>">Run it! (JSON)</a>
 
 </div>

@@ -159,30 +159,36 @@ class API extends CI_Controller {
 
 		// Execute the query, and retrieve the results
 		$s = $this->logbook_model->api_search_query($query);
-		$results = $s['results'];
-
-		// Cycle through the results, and translate between MySQL column names
-		// and more friendly, descriptive names
 		$a = 0;
-		if($results->num_rows != 0)
-		{
-			foreach ($results->result() as $row) {
-				$record = (array)$row;
-				$r[$a]['rid'] = $a;
-				while (list($key, $val) = each($record)) {
-					$r[$a][$this->api_model->name($key)] = $val;
-				}
-       			$a++;
-			}
-			// Add the result record to the main results array
+
+    if(isset($s['results'])) {
+  		$results = $s['results'];
+
+	  	// Cycle through the results, and translate between MySQL column names
+  		// and more friendly, descriptive names
+  		if($results->num_rows != 0)
+  		{
+  			foreach ($results->result() as $row) {
+  				$record = (array)$row;
+  				$r[$a]['rid'] = $a;
+  				while (list($key, $val) = each($record)) {
+  					$r[$a][$this->api_model->name($key)] = $val;
+  				}
+    			$a++;
+  			}
+  			// Add the result record to the main results array
 	    	$data['data']['search_Result']['results'] = $r;
-		}
-		else
-		{
-			// We've got no results, so make this empty for completeness
-		    $data['data']['search_Result']['results'] = "";
-		}
-		
+  		}
+  		else
+  		{
+  			// We've got no results, so make this empty for completeness
+  	    $data['data']['search_Result']['results'] = "";
+  		}
+    } else {
+      $data['data']['error'] = $s['error'];
+      $data['data']['search_Result']['results'] = "";
+    }
+
 		// Add some debugging information to the XML output
 		$data['data']['queryInfo']['call'] = "search";
 		$data['data']['queryInfo']['dbQuery'] = $s['query'];
@@ -266,26 +272,26 @@ class API extends CI_Controller {
 		$arguments = array();
 
 		// Retrieve each arguments
-		$query = preg_grep("/^query\[(.*)\]$/", $this->uri->segments);
-		$limit = preg_grep("/^limit\[(.*)\]$/", $this->uri->segments);
-		$order = preg_grep("/^order\[(.*)\]$/", $this->uri->segments);
-		$fields = preg_grep("/^fields\[(.*)\]$/", $this->uri->segments);
-		$format = preg_grep("/^format\[(.*)\]$/", $this->uri->segments);
-		$key = preg_grep("/^key\[(.*)\]$/", $this->uri->segments);
+		$query = preg_grep("/^query=(.*)$/", $this->uri->segments);
+		$limit = preg_grep("/^limit=(.*)$/", $this->uri->segments);
+		$order = preg_grep("/^order=(.*)$/", $this->uri->segments);
+		$fields = preg_grep("/^fields=(.*)$/", $this->uri->segments);
+		$format = preg_grep("/^format=(.*)$/", $this->uri->segments);
+		$key = preg_grep("/^key=(.*)$/", $this->uri->segments);
 
 		// Strip each argument
 		$arguments['query'] = substr(array_pop($query), 6);
-		$arguments['query'] = substr($arguments['query'], 0, strlen($arguments['query']) - 1);
+		$arguments['query'] = substr($arguments['query'], 0, strlen($arguments['query']));
 		$arguments['limit'] = substr(array_pop($limit), 6);
-		$arguments['limit'] = substr($arguments['limit'], 0, strlen($arguments['limit']) - 1);
+		$arguments['limit'] = substr($arguments['limit'], 0, strlen($arguments['limit']));
 		$arguments['order'] = substr(array_pop($order), 6);
-		$arguments['order'] = substr($arguments['order'], 0, strlen($arguments['order']) - 1);
+		$arguments['order'] = substr($arguments['order'], 0, strlen($arguments['order']));
 		$arguments['fields'] = substr(array_pop($fields), 7);
-		$arguments['fields'] = substr($arguments['fields'], 0, strlen($arguments['fields']) - 1);
+		$arguments['fields'] = substr($arguments['fields'], 0, strlen($arguments['fields']));
 		$arguments['format'] = substr(array_pop($format), 7);
-		$arguments['format'] = substr($arguments['format'], 0, strlen($arguments['format']) - 1);
+		$arguments['format'] = substr($arguments['format'], 0, strlen($arguments['format']));
 		$arguments['key'] = substr(array_pop($key), 4);
-		$arguments['key'] = substr($arguments['key'], 0, strlen($arguments['key']) - 1);
+		$arguments['key'] = substr($arguments['key'], 0, strlen($arguments['key']));
 
     // By default, assume XML for the format if not otherwise set
     if($arguments['format'] == "") {
