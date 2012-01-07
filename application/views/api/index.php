@@ -1,17 +1,17 @@
 <?php
 
-// Set the content-type for browsers
-header("Content-type: text/xml");
-
 // Create the DOMDocument for the XML output
 $xmlDoc = new DOMDocument("1.0");
-// Add reference to the XSLT
-$xsl = $xmlDoc->createProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" href=\"/css/api.xsl\"");
-$xmlDoc->appendChild($xsl);
+
+if($data['format'] == "xml") {
+    // Add reference to the XSLT
+    $xsl = $xmlDoc->createProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" href=\"/css/api.xsl\"");
+    $xmlDoc->appendChild($xsl);
+}
 
 // Get the method called, and build the root node
 $call = $data['queryInfo']['call'];
-$rootNode = $xmlDoc->createElement("HRDWebLogbook-API");
+$rootNode = $xmlDoc->createElement("Cloudlog-API");
 $parentNode = $xmlDoc->appendChild($rootNode);
 
 // Get the results output
@@ -36,14 +36,14 @@ $queryElement->setAttribute("executionTime", $data['queryInfo']['executionTime']
 $queryElement->setAttribute("logbookURL", $this->config->item('base_url'));
 
 // Add the main results node
-$node = $xmlDoc->createElement("elements");
+$node = $xmlDoc->createElement("results");
 $elementsNode = $parentNode->appendChild($node);
 
 // Cycle through the results and add to the results node
 if($output['results'])
 {
 	foreach($output['results'] as $e) {
-		$node = $xmlDoc->createElement("element");
+		$node = $xmlDoc->createElement("result");
 		$element = $elementsNode->appendChild($node);
 
 		foreach($e as $attr) {
@@ -70,8 +70,34 @@ if($output['results'])
 	}
 }
 
-// Output formatted XML
-echo formatXmlString($xmlDoc->saveXML());
+if(isset($data['error']))
+{
+  $node = $xmlDoc->createElement("error");
+  $errorNode = $parentNode->appendChild($node);
+
+  $errorNode->setAttribute("id", $data['error']);
+}
+
+// Output
+
+// Check whether we want XML or JSON output
+if(($data['format'] == "xml") || ($data['format'] == "xmlp") || ($data['format'] == "xmlt")) {
+  if(($data['format'] == "xml") || ($data['format'] == "xmlp")) {
+    // Set the content-type for browsers
+    header("Content-type: text/xml");
+  }
+  echo formatXmlString($xmlDoc->saveXML());
+} else if($data['format'] == "json") {
+  // Set the content-type for browsers
+  header("Content-type: application/json");
+  // For now, our JSON output is simply the XML re-parsed with SimpleXML and
+  // then re-encoded with json_encode
+  $x = simplexml_load_string($xmlDoc->saveXML());
+  $j = json_encode($x);
+  echo $j;
+} else {
+  echo "Error: Unknown format type '".$data['format']."'.";
+}
 
 // This function tidies up the outputted XML
 function formatXmlString($xml) {

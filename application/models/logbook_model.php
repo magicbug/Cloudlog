@@ -411,7 +411,10 @@ class Logbook_model extends CI_Model {
 
 	function api_search_query($query) {
 		$time_start = microtime(true);
-		$results = @$this->db->query($query);
+		$results = $this->db->query($query);
+    if(!$results) {
+      return array('query' => $query, 'error' => $this->db->_error_number(), 'time' => 0);
+    }
 		$time_end = microtime(true);
 		$time = round($time_end - $time_start, 4);
 
@@ -421,6 +424,9 @@ class Logbook_model extends CI_Model {
 	function api_insert_query($query) {
 		$time_start = microtime(true);
 		$results = $this->db->insert($this->config->item('table_name'), $query);
+    if(!$results) {
+      return array('query' => $query, 'error' => $this->db->_error_number(), 'time' => 0);
+    }
 		$time_end = microtime(true);
 		$time = round($time_end - $time_start, 4);
 
