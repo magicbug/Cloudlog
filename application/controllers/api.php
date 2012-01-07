@@ -10,9 +10,9 @@ class API extends CI_Controller {
 
 
 	function search_callsign($callsign) {
-		$this->db->select('COL_PRIMARY_KEY, COL_CALL, COL_MODE, COL_BAND, COL_COUNTRY, COL_FREQ, COL_GRIDSQUARE, COL_RST_RCVD, COL_RST_SENT, COL_SAT_MODE, COL_SAT_NAME, COL_TIME_ON');
-		$this->db->select("DATE_FORMAT(COL_TIME_ON, '%H:%i') AS time_on", FALSE );
-		$this->db->select("DATE_FORMAT(COL_TIME_ON, '%d/%c/%Y') AS date_on", FALSE );
+		$this->db->select('COL_PRIMARY_KEY, COL_CALL, COL_MODE, COL_BAND, COL_COUNTRY, COL_FREQ, COL_GRIDSQUARE, COL_RST_RCVD, COL_RST_SENT, COL_SAT_MODE, COL_SAT_NAME');
+		//$this->db->select("DATE_FORMAT(COL_TIME_ON, '%H:%i') AS time_on", FALSE );
+		//$this->db->select("DATE_FORMAT(COL_TIME_ON, '%d/%c/%Y') AS date_on", FALSE );
 		$this->db->like('COL_CALL', $callsign);
 		$this->db->or_like('COL_GRIDSQUARE', $callsign); 
 		$query = $this->db->get($this->config->item('table_name'));
@@ -22,10 +22,15 @@ class API extends CI_Controller {
 
 		foreach ($query->result() as $result)
 		{
-			$results [] = $result;	
+			$results[] = $result;	
 		}
 
-		echo json_encode($results);
+		header('Content-type: application/json');  
+
+		//$arr = array ('a'=>1,'b'=>2,'c'=>3,'d'=>4,'e'=>5);
+		echo $_GET['jsoncallback'].'('.json_encode($results).')'; //assign resulting code to $_GET['jsoncallback].
+
+		//echo json_encode($results);
 
 	}
 
