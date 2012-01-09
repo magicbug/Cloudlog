@@ -3825,4 +3825,4 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`user_id`, `user_timezone`, `user_name`, `user_password`, `user_email`, `user_type`, `user_callsign`, `user_locator`, `user_firstname`, `user_lastname`) VALUES
-(4, '0', 'm0abc', '$2a$08$r9UF3YhipAY6htSQoZRjeOFDx3Yuh7Zjuh45vKyUN4gO8g5l.saES', 'demo@demo.com', '99', 'M0ABC', 'io91js', 'Demo', 'Account');
+(4, '0', 'm0abc', 'r9UF3YhipAY6htSQoZRjeOFDx3Yuh7Zjuh45vKyUN4g', 'demo@demo.com', '99', 'M0ABC', 'io91js', 'Demo', 'Account');
