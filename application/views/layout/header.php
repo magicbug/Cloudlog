@@ -7,6 +7,9 @@
 
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-1.5.1.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.8.12.custom.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.shortkeys.js"></script>
+	
+	
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-dropdown.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-tabs.js"></script>
 

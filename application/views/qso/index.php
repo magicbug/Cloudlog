@@ -116,7 +116,7 @@
 
 			<tr>
 				<td class="title">QTH</td>
-				<td><input id="qth" type"text" name"qth" value"" /></td>
+				<td><input id="qth" type="text" name"qth" value"" /></td>
 			</tr>
 
 			<tr>
@@ -245,13 +245,10 @@
 
 
 
-
-
-
 <script type="text/javascript">
 	i=0;
 	$(document).ready(function(){
-	
+
 		/* On Page Load */
 		var catcher = function() {
 		  var changed = false;
