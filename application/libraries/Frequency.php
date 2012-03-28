@@ -168,6 +168,54 @@ class Frequency {
 				return "1296000000";
 			}
 		}
+		
+		if($band == "13cm") {
+			if ($mode == "CW") {
+				return "232080000";
+			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
+				return "232080000";
+			}elseif($mode == "SSB") {
+				return "232080000";
+			} else {
+				return "232080000";
+			}
+		}
+		
+		if($band == "9cm") {
+			if ($mode == "CW") {
+				return "340000000";
+			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
+				return "341000000";
+			}elseif($mode == "SSB") {
+				return "341000000";
+			} else {
+				return "341000000";
+			}
+		}
+		
+		if($band == "6cm") {
+			if ($mode == "CW") {
+				return "567000000";
+			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
+				return "567000000";
+			}elseif($mode == "SSB") {
+				return "567000000";
+			} else {
+				return "567000000";
+			}
+		}
+		
+		if($band == "3cm") {
+			if ($mode == "CW") {
+				return "1022500000";
+			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
+				return "1022500000";
+			}elseif($mode == "SSB") {
+				return "1022500000";
+			} else {
+				return "1022500000";
+			}
+		}
 	
 	}
 }
