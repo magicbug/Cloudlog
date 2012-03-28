@@ -193,6 +193,11 @@
 							<option value="B">Bureau</option>
 						</select></td>
 					</tr>
+					
+					<tr>
+						<td>Via</td>
+						<td><input type="text" name="qsl_via" value="" /></td>
+					</tr>
 				</table>
 		  </div>
 		</div>
