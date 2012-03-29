@@ -13,10 +13,14 @@ class Logbook_model extends CI_Model {
 		// Join date+time
 		$datetime = date('Y-m-d') ." ". $this->input->post('start_time');
 	    
+		if ($this->input->post('prop_mode') != null) {
+			$prop_mode = $this->input->post('prop_mode');
+		} else {
+			$prop_mode = "";
+		}
+		
         if($this->input->post('sat_name')) {
             $prop_mode = "SAT";
-        } else {
-            $prop_mode = "";
         }
         
         if($this->session->userdata('user_locator')){

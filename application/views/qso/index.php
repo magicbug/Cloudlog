@@ -148,6 +148,31 @@
 		  <div class="active" id="home">
 				<table>
 					<tr>
+						<td>Propagation Mode</td>
+						<td>
+							<select name="prop_mode">
+								<option value="" selected="selected"></option>
+								<option value="AUR">Aurora</option>
+								<option value="AUE">Aurora-E</option>
+								<option value="BS">Back scatter</option>
+								<option value="ECH">EchoLink</option>
+								<option value="EME">Earth-Moon-Earth</option>
+								<option value="ES">Sporadic E</option>
+								<option value="FAI">Field Aligned Irregularities</option>
+								<option value="F2">F2 Reflection</option>
+								<option value="INTERNET">Internet-assisted</option>
+								<option value="ION">Ionoscatter</option>
+								<option value="IRL">IRLP</option>
+								<option value="MS">Meteor scatter</option>
+								<option value="RPT">Terrestrial or atmospheric repeater or transponder</option>
+								<option value="RS">Rain scatter</option>
+								<option value="SAT">Satellite</option>
+								<option value="TEP">Trans-equatorial</option>
+								<option value="TR">Tropospheric ducting</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
 						<td>IOTA</td>
 						<td><input type="text" name="iota_ref" value="" /> e.g: EU-005</td>
 					</tr>
