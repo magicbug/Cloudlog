@@ -364,7 +364,7 @@ class Logbook_model extends CI_Model {
 
     /* Return total number of Digital QSOs */
     function total_digi() {
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE != \'SSB\' AND (COL_MODE != \'LSB\' or COL_MODE != \'USB\' or COL_MODE != \'CW\' or COL_MODE != \'FM\')');
+        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE != \'SSB\' AND COL_MODE != \'LSB\' AND COL_MODE != \'USB\' AND COL_MODE != \'CW\' AND COL_MODE != \'FM\'');
 
         if ($query->num_rows() > 0)
         {
