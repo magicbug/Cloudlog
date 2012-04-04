@@ -22,3 +22,12 @@ input[type="text"] {
 }
 
 .pull-right { color: #fff; }
+
+/* Stats CSS */
+.type {
+	float: left;
+	width: 30%;
+	margin: 10px;
+}
+
+.clear {clear:both;}

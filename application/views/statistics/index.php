@@ -81,6 +81,7 @@
 	<ul class="tabs">
 	  <li class="active"><a href="#home">General</a></li>
 	  <li><a href="#space">Satellite Contacts</a></li>
+	  <li><a href="statistics/custom">Custom</a></li>
 	</ul>
 	 
 	<div class="pill-content">
