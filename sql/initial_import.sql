@@ -19,6 +19,16 @@
 -- Table structure for table `contest_template`
 --
 
+CREATE TABLE IF NOT EXISTS `cat` (
+  `id` int(11) NOT NULL auto_increment,
+  `radio` varchar(250) NOT NULL,
+  `frequency` int(11) NOT NULL,
+  `mode` varchar(10) NOT NULL,
+  `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
+
+
 DROP TABLE IF EXISTS `contest_template`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
