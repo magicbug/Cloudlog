@@ -306,4 +306,29 @@ class API extends CI_Controller {
 		// Return the arguments
 		return $arguments;
 	}
+	
+	/* ENDPOINT for Rig Control */
+	
+	function radio() {
+		header('Content-type: application/json');
+	
+		//$json = '{"radio":"FT-950","frequency":14075,"mode":"SSB","timestamp":"2012/04/07 16:47"}';
+		
+		$this->load->model('cat');
+	
+		//var_dump(file_get_contents("php://input"), true);
+	
+		// Decode JSON and store
+		$obj = json_decode(file_get_contents("php://input"), true);
+
+		// Store Result to Database		
+		$this->cat->update($obj);
+
+		// Return Message
+		
+		$arr = array('status' => 'success');
+
+		echo json_encode($arr);
+		
+	}
 }
