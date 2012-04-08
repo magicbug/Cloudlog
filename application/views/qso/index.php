@@ -182,7 +182,14 @@
 				<table>
 					<tr>
 						<td>Radio</td>
-						<td><input type="text" name="equipment" value="" /></td>
+						<td>
+							<select class="radios" name="radio">
+							<option value="0" selected="selected">None</option>
+							<?php foreach ($radios->result() as $row) { ?>
+							<option value="<?php echo $row->id; ?>" <?php if($this->session->userdata('radio') == $row->id) { echo "selected=\"selected\""; } ?>><?php echo $row->radio; ?></option>
+							<?php } ?>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td>Frequency</td>
@@ -280,6 +287,127 @@
 <script type="text/javascript">
 	i=0;
 	$(document).ready(function(){
+
+
+	/* Javascript for controlling rig frequency. */
+
+	// Update frequency every second
+	setInterval(function() {
+		if($('select.radios option:selected').val() != '0') {
+			// Get frequency
+			$.get('radio/frequency/' + $('select.radios option:selected').val(), function(result) {
+				$('#frequency').val(result);
+				if(result >= "100000" && result <= "200000") {
+					$(".band").val('160m');
+				}
+				if(result >= "300000" && result <= "400000") {
+					$(".band").val('80m');
+				}
+				if(result >= "525000" && result <= "54500") {
+					$(".band").val('60m');
+				}
+				if(result >= "700000" && result <= "750000") {
+					$(".band").val('40m');
+				}
+				if(result >= "1000000" && result <= "110000") {
+					$(".band").val('30m');
+				}
+				if(result >= "1400000" && result <= "1440000") {
+					$(".band").val('20m');
+				}
+				if(result >= "1800000" && result <= "1900000") {
+					$(".band").val('17m');
+				}
+				if(result >= "2100000" && result <= "2160000") {
+					$(".band").val('15m');
+				}
+				if(result >= "2400000" && result <= "2500000") {
+					$(".band").val('12m');
+				}
+				if(result >= "2800000" && result <= "3000000") {
+					$(".band").val('10m');
+				}
+				if(result >= "5000000" && result <= "5600000") {
+					$(".band").val('6m');
+				}
+				if(result >= "14400000" && result <= "14700000") {
+					$(".band").val('2m');
+				}
+				if(result >= "43000000" && result <= "44000000") {
+					$(".band").val('70cm');
+				}
+			});
+			
+			// Get Mode
+			$.get('radio/mode/' + $('select.radios option:selected').val(), function(result) {
+				if (result == "LSB" || result == "USB" || result == "SSB") {
+					$(".mode").val('SSB');
+				} else {
+					$(".mode").val(result);	
+				}
+			});
+		}			
+	}, 1000);
+
+
+	// If a radios selected from drop down select radio update.
+	$('.radios').change(function() {
+		if($('select.radios option:selected').val() != '0') {
+		// Get frequency
+			$.get('radio/frequency/' + $('select.radios option:selected').val(), function(result) {
+				$('#frequency').val(result);
+				if(result >= "100000" && result <= "200000") {
+					$(".band").val('160m');
+				}
+				if(result >= "300000" && result <= "400000") {
+					$(".band").val('80m');
+				}
+				if(result >= "525000" && result <= "54500") {
+					$(".band").val('60m');
+				}
+				if(result >= "700000" && result <= "750000") {
+					$(".band").val('40m');
+				}
+				if(result >= "1000000" && result <= "110000") {
+					$(".band").val('30m');
+				}
+				if(result >= "1400000" && result <= "1440000") {
+					$(".band").val('20m');
+				}
+				if(result >= "1800000" && result <= "1900000") {
+					$(".band").val('17m');
+				}
+				if(result >= "2100000" && result <= "2160000") {
+					$(".band").val('15m');
+				}
+				if(result >= "2400000" && result <= "2500000") {
+					$(".band").val('12m');
+				}
+				if(result >= "2800000" && result <= "3000000") {
+					$(".band").val('10m');
+				}
+				if(result >= "5000000" && result <= "5600000") {
+					$(".band").val('6m');
+				}
+				if(result >= "14400000" && result <= "14700000") {
+					$(".band").val('2m');
+				}
+				if(result >= "43000000" && result <= "44000000") {
+					$(".band").val('70cm');
+				}
+			});	
+			
+			// Get Mode
+			$.get('radio/mode/' + $('select.radios option:selected').val(), function(result) {
+				if (result == "LSB" || result == "USB" || result == "SSB") {
+					$(".mode").val('SSB');
+				} else {
+					$(".mode").val(result);	
+				}
+			});	
+	
+		}
+	});
 
 		/* On Page Load */
 		var catcher = function() {

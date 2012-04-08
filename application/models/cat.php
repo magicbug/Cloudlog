@@ -43,8 +43,34 @@
 		}
 	
 		function status() {
+			//$this->db->where('radio', $result['radio']); 
+			$this->db->limit(1);
+			$query = $this->db->get('cat');
 			
+			if ($query->num_rows() > 0)
+			{
+			   foreach ($query->result() as $row)
+				{
+					$data = array(
+				   		'radio' => $row->radio,
+						'frequency' => $row->frequency,
+						'mode' => $row->mode
+					);
+				}
+			}
+			
+			return $data;
 		}
+
+		/* Return list of radios */
+		function radios() {
+			$this->db->select('id, radio');
+			$query = $this->db->get('cat');
+			
+			return $query;
+		}
+		
+
 
 	}
 ?>

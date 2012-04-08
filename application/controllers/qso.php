@@ -12,12 +12,15 @@ class QSO extends CI_Controller {
 
 	public function index()
 	{
+	
+		$this->load->model('cat');
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		
-		$data['notice'] = false;
 		
+		$data['notice'] = false;
+		$data['radios'] = $this->cat->radios();
 		$data['query'] = $this->logbook_model->last_ten();
 		
 		$this->load->library('form_validation');
@@ -45,6 +48,7 @@ class QSO extends CI_Controller {
 			$this->session->set_userdata('mode', $this->input->post('mode'));
 			$this->session->set_userdata('sat_name', $this->input->post('sat_name'));
 			$this->session->set_userdata('sat_mode', $this->input->post('sat_mode'));
+			$this->session->set_userdata('radio', $this->input->post('radio'));
 			
 			// Get last Ten QSOs
 			$data['query'] = $this->logbook_model->last_ten();
