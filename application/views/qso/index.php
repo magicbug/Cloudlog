@@ -297,43 +297,43 @@
 			// Get frequency
 			$.get('radio/frequency/' + $('select.radios option:selected').val(), function(result) {
 				$('#frequency').val(result);
-				if(result >= 1400000 && result <= 1440000) {
+				if(result >= "1400000" && result <= "1440000") {
 					$(".band").val('20m');
 				}
-				else if(result >= 1800000 && result <= 1900000) {
+				else if(result >= "1800000" && result <= "1900000") {
 					$(".band").val('17m');
 				}
-				else if(result >= 181000 && result <= 200000) {
+				else if(result >= "181000" && result <= "200000") {
 					$(".band").val('160m');
 				}
-				else if(result >= 300000 && result <= 400000) {
+				else if(result >= "300000" && result <= "400000") {
 					$(".band").val('80m');
 				}
-				else if(result >= 525000 && result <= 54500) {
+				else if(result >= "525000" && result <= "545000") {
 					$(".band").val('60m');
 				}
-				else if(result >= 700000 && result <= 750000) {
+				else if(result >= "700000" && result <= "750000") {
 					$(".band").val('40m');
 				}
-				else if(result >= 1000000 && result <= 110000) {
+				else if(result >= "1000000" && result <= "110000") {
 					$(".band").val('30m');
 				}
-				else if(result >= 2100000 && result <= 2160000) {
+				else if(result >= "2100000" && result <= "2160000") {
 					$(".band").val('15m');
 				}
-				else if(result >= 2400000 && result <= 2500000) {
+				else if(result >= "2400000" && result <= "2500000") {
 					$(".band").val('12m');
 				}
-				else if(result >= 2800000 && result <= 3000000) {
+				else if(result >= "2800000" && result <= "3000000") {
 					$(".band").val('10m');
 				}
-				else if(result >= 5000000 && result <= 5600000) {
+				else if(result >= "5000000" && result <= "5600000") {
 					$(".band").val('6m');
 				}
-				else if(result >= 14400000 && result <= 14700000) {
+				else if(result >= "14400000" && result <= "14700000") {
 					$(".band").val('2m');
 				}
-				else if(result >= 43000000 && result <= 44000000) {
+				else if(result >= "43000000" && result <= "44000000") {
 					$(".band").val('70cm');
 				}
 			});
@@ -356,43 +356,43 @@
 		// Get frequency
 			$.get('radio/frequency/' + $('select.radios option:selected').val(), function(result) {
 				$('#frequency').val(result);
-				if(result >= 1400000 && result <= 1440000) {
+				if(result >= "1400000" && result <= "1440000") {
 					$(".band").val('20m');
 				}
-				else if(result >= 1800000 && result <= 1900000) {
+				else if(result >= "1800000" && result <= "1900000") {
 					$(".band").val('17m');
 				}
-				else if(result >= 181000 && result <= 200000) {
+				else if(result >= "181000" && result <= "200000") {
 					$(".band").val('160m');
 				}
-				else if(result >= 300000 && result <= 400000) {
+				else if(result >= "300000" && result <= "400000") {
 					$(".band").val('80m');
 				}
-				else if(result >= 525000 && result <= 54500) {
+				else if(result >= "525000" && result <= "545000") {
 					$(".band").val('60m');
 				}
-				else if(result >= 700000 && result <= 750000) {
+				else if(result >= "700000" && result <= "750000") {
 					$(".band").val('40m');
 				}
-				else if(result >= 1000000 && result <= 110000) {
+				else if(result >= "1000000" && result <= "110000") {
 					$(".band").val('30m');
 				}
-				else if(result >= 2100000 && result <= 2160000) {
+				else if(result >= "2100000" && result <= "2160000") {
 					$(".band").val('15m');
 				}
-				else if(result >= 2400000 && result <= 2500000) {
+				else if(result >= "2400000" && result <= "2500000") {
 					$(".band").val('12m');
 				}
-				else if(result >= 2800000 && result <= 3000000) {
+				else if(result >= "2800000" && result <= "3000000") {
 					$(".band").val('10m');
 				}
-				else if(result >= 5000000 && result <= 5600000) {
+				else if(result >= "5000000" && result <= "5600000") {
 					$(".band").val('6m');
 				}
-				else if(result >= 14400000 && result <= 14700000) {
+				else if(result >= "14400000" && result <= "14700000") {
 					$(".band").val('2m');
 				}
-				else if(result >= 43000000 && result <= 44000000) {
+				else if(result >= "43000000" && result <= "44000000") {
 					$(".band").val('70cm');
 				}
 			});	
