@@ -7,8 +7,6 @@
 
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-1.5.1.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.8.12.custom.min.js"></script>
-	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.shortkeys.js"></script>
-	
 	
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-dropdown.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-tabs.js"></script>
@@ -54,6 +52,7 @@
 			    <a href="#" class="dropdown-toggle">Admin</a>
 			    <ul class="dropdown-menu">
 			     <li><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
+				 <li><a href="<?php echo site_url('radio');?>" title="Backup">Radios</a></li>
 			     <li><a href="<?php echo site_url('backup');?>" title="Backup">Backup</a></li>
 			     <li><a href="<?php echo site_url('adif/import');?>" title="ADIF Import">ADIF Import</a></li>
 			     <li><a href="<?php echo site_url('adif/export');?>" title="ADIF Export">ADIF Export</a></li>

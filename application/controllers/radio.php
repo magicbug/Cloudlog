@@ -4,12 +4,40 @@
 
 	public function index()
 	{
-		
+		// load the view
+		$data['page_title'] = "Radio Status";
+
+		$this->load->view('layout/header', $data);
+		$this->load->view('radio/index');
+		$this->load->view('layout/footer');
 	}
 	
 	function status() {
 		$this->load->model('cat');
-		print_r($this->cat->status());
+		$query = $this->cat->status();
+		if ($query->num_rows() > 0)
+		{
+			echo "<tr>";
+				echo "<td>Radio</td>";
+				echo "<td>Frequency</td>";
+				echo "<td>Mode</td>";
+				echo "<td>Timestamp</td>" ;
+			echo "</tr>";
+			foreach ($query->result() as $row)
+			{
+				echo "<tr>";
+				echo "<td>".$row->radio."</td>";
+				echo "<td>".$row->frequency."</td>";
+				echo "<td>".$row->mode."</td>";
+				echo "<td>".$row->timestamp."</td>" ;
+				echo "</tr>";
+			}
+		} else {
+			echo "<tr>";
+				echo "<td colspan=\"4\">No CAT Interfaced radios found.</td>";
+			echo "</tr>";
+		}
+			
 	}
 	
 	function frequency($id) {
