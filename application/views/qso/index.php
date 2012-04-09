@@ -303,7 +303,7 @@
 				if(result >= 14000000 && result <= 14400000) {
 					$(".band").val('20m');
 				}
-				else if(result >= 18000000 && result <= 1900000) {
+				else if(result >= 180000000 && result <= 190000000) {
 					$(".band").val('17m');
 				}
 				else if(result >= 1810000 && result <= 2000000) {
@@ -318,7 +318,7 @@
 				else if(result >= 7000000 && result <= 7500000) {
 					$(".band").val('40m');
 				}
-				else if(result >= 10000000 && result <= 1100000) {
+				else if(result >= 100000000 && result <= 11000000) {
 					$(".band").val('30m');
 				}
 				else if(result >= 21000000 && result <= 21600000) {
@@ -333,7 +333,7 @@
 				else if(result >= 50000000 && result <= 56000000) {
 					$(".band").val('6m');
 				}
-				else if(result >= 144000000 && result <= 147000000) {
+				else if(result >= 144000000 && result <= 148000000) {
 					$(".band").val('2m');
 				}
 				else if(result >= 430000000 && result <= 440000000) {
@@ -364,7 +364,7 @@
 				if(result >= 14000000 && result <= 14400000) {
 					$(".band").val('20m');
 				}
-				else if(result >= 18000000 && result <= 1900000) {
+				else if(result >= 180000000 && result <= 190000000) {
 					$(".band").val('17m');
 				}
 				else if(result >= 1810000 && result <= 2000000) {
@@ -379,7 +379,7 @@
 				else if(result >= 7000000 && result <= 7500000) {
 					$(".band").val('40m');
 				}
-				else if(result >= 10000000 && result <= 1100000) {
+				else if(result >= 100000000 && result <= 11000000) {
 					$(".band").val('30m');
 				}
 				else if(result >= 21000000 && result <= 21600000) {
@@ -394,7 +394,7 @@
 				else if(result >= 50000000 && result <= 56000000) {
 					$(".band").val('6m');
 				}
-				else if(result >= 144000000 && result <= 147000000) {
+				else if(result >= 144000000 && result <= 148000000) {
 					$(".band").val('2m');
 				}
 				else if(result >= 430000000 && result <= 440000000) {
