@@ -118,7 +118,7 @@
 
 			<tr>
 				<td class="title">QTH</td>
-				<td><input id="qth" type="text" name"qth" value"" /></td>
+				<td><input id="qth" type="text" name="qth" value="" /></td>
 			</tr>
 
 			<tr>
