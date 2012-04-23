@@ -244,7 +244,7 @@
 	  <div class="span9 offset1">
 
 		 <div id="partial_view">
-		 	<h2>Last 10 QSOs</h2>
+		 	<h2>Last 16 QSOs</h2>
 
 		 	<table class="zebra-striped" width="100%">
 				<tr class="log_title titles">

@@ -21,7 +21,7 @@ class QSO extends CI_Controller {
 		
 		$data['notice'] = false;
 		$data['radios'] = $this->cat->radios();
-		$data['query'] = $this->logbook_model->last_ten();
+		$data['query'] = $this->logbook_model->last_custom('16');
 		
 		$this->load->library('form_validation');
 
