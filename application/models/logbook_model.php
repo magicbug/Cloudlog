@@ -130,6 +130,7 @@ class Logbook_model extends CI_Model {
 		return $this->db->get($this->config->item('table_name'));
 	}
 	
+	/* Show custom number of qsos */
 	function last_custom($num) {
 		$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
 		$this->db->order_by("COL_TIME_ON", "desc");
