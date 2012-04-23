@@ -62,6 +62,9 @@ class Statistics extends CI_Controller {
 
 		$this->load->library('form_validation');
 
+		$this->form_validation->set_rules('start_date', 'Start Date', 'required');
+		$this->form_validation->set_rules('end_date', 'End Date', 'required');
+
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->load->view('layout/header', $data);
@@ -70,7 +73,16 @@ class Statistics extends CI_Controller {
 		}
 		else
 		{
-			$this->load->view('formsuccess');
+		
+			$this->load->model('stats');
+	
+			$data['result'] = $this->stats->result();
+		
+			
+			$this->load->view('layout/header', $data);
+			$this->load->view('statistics/custom_result');
+			$this->load->view('layout/footer');
+	
 		}
 	
 	}
