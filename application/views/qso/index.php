@@ -120,7 +120,7 @@
 			</tr>	
 
 			<tr>
-				<td class="title">QTH</td>
+				<td class="title">Location</td>
 				<td><input id="qth" type="text" name="qth" value="" /></td>
 			</tr>
 
