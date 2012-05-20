@@ -57,7 +57,7 @@
 
 			<tr>
 				<td class="title">Date</td>
-				<td><input class="input_date" type="text" name="start_date" value="<?php echo date('d-m-Y'); ?>" size="10" /> - <input class="input_time" type="text" name="start_time" value="" size="7" /></td>
+				<td><input class="input_date" type="text" name="start_date" value="<?php echo date('d-m-Y'); ?>" size="10" /> <input class="input_time" type="text" name="start_time" value="" size="7" /></td>
 			</tr>
 
 			<tr>
@@ -125,7 +125,7 @@
 			</tr>
 
 			<tr>
-				<td class="title">QRA</td>
+				<td class="title">Locator</td>
 				<td><input id="locator" type="text" name="locator" value="" size="7" /></td>
 			</tr>
 
