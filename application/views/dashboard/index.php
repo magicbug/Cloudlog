@@ -110,7 +110,7 @@
   <div class="span5">
     	<table width="100%" class="zebra-striped">
 			<tr class="titles">
-				<td colspan="2">QSOs</td>
+				<td colspan="2"><span class="icon_stats">QSOs</span></td>
 			</tr>
 			
 			<tr>
@@ -153,7 +153,7 @@
 			</tr>
 					
 			<tr class="titles">
-				<td colspan="2">QSL Cards</td>
+				<td colspan="2"><span class="icon_qsl">QSL Cards</span></td>
 			</tr>
 			
 			<tr>

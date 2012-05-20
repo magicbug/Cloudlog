@@ -48,7 +48,9 @@
 
 	<div class="row show-grid">
 	  <div class="span6">
+	 
 	  	<h2>Add QSO</h2>
+		
 		<form id="qso_input" method="post" action="<?php echo site_url('qso'); ?>" name="qsos">
 
 		<table style="margin-bottom: 0px;">

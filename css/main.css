@@ -15,7 +15,6 @@ table .title { font-weight: bold; color: #439BF6; }
 .band { width: 80px; }
 .mode { width: 80px; }
 #callsign { text-transform: uppercase; }
-#country { border: none; width: 140px !important; }
 
 input[type="text"] {
 	color: #000000 !important;
@@ -23,11 +22,6 @@ input[type="text"] {
 
 .pull-right { color: #fff; }
 
-/* Stats CSS */
-.type {
-	float: left;
-	width: 30%;
-	margin: 10px;
-}
+.icon_qsl { background: transparent url('../images/icons/qslcard.png') no-repeat center left; padding-left: 20px; font-weight: bold; }
 
-.clear {clear:both;}
+.icon_stats { background: transparent url('../images/icons/stats.png') no-repeat center left; padding-left: 20px; font-weight: bold; }

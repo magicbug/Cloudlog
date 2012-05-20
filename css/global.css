@@ -71,7 +71,7 @@ td.item { padding-bottom: 5px; }
 .input_date { width: 70px; }
 .input_time { width: 54px; }
 #locator { width: 55px; text-transform: uppercase; }
-#country { border: none; width: 150px !important; }
+#country { border: none; }
 #locator_info { font-size: 13px; }
 #name { width: 208px; }
 #comment { width: 63.7%; }
@@ -96,7 +96,6 @@ ul#user li { float: left; margin: 2px 2px 0 3px; height:43px; border-bottom: non
 #user a { float: left; display: block; color: #ebebeb; text-decoration: none; padding-top: 7px; padding-left: 6px; padding-right: 5px; text-align:center; }
 #user a:hover {  }
 .user { padding: 5px; }
-.profile { padding: 5px; }
 
 /* Pager */
 .pager { margin-top: 5px; margin-bottom: 5px; font-size: 12px; }

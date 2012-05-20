@@ -9,7 +9,6 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.8.12.custom.min.js"></script>
 	
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-dropdown.js"></script>
-	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-tabs.js"></script>
 
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/global.js"></script>
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>

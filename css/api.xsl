@@ -11,11 +11,11 @@
   <h1>Output of '<xsl:value-of select="//queryInfo/@calledMethod"/>'</h1>
   <table id="results">
         <tr>
-        <xsl:for-each select="//results/result[1]/@*">
+        <xsl:for-each select="//elements/element[1]/@*">
           <th><b><xsl:value-of select="name()"/></b></th>
         </xsl:for-each>
         </tr>
-        <xsl:for-each select="//results/result">
+        <xsl:for-each select="//elements/element">
 		  <tr class="row{position() mod 2}">
           <xsl:for-each select="@*">
             <td><xsl:value-of select="."/></td>
