@@ -43,7 +43,7 @@ margin: 10px 0;
 <body onload="initialize()">
 <?php if ($query->num_rows() > 0) {  foreach ($query->result() as $row) {
 ?>
-	<h1>QSO Information for <?php echo $row->COL_CALL; ?></h1>
+	<h1>QSO with <?php echo $row->COL_CALL; ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></h1>
 	
 	<div id="wrap">
 		<div id="info">
