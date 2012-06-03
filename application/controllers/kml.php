@@ -74,9 +74,9 @@ class Kml extends CI_Controller {
 		}
 		else
 		{
-		     echo 'qsos.kml written! and can be found in /kml/qsos.kml';
+		    header("Content-Disposition: attachment; filename=\"qsos.kml\"");
+			echo $output;
 		}
-
 
 	}
 }

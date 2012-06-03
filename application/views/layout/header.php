@@ -55,7 +55,8 @@
 				 <li><a href="<?php echo site_url('radio');?>" title="Backup">Radios</a></li>
 			     <li><a href="<?php echo site_url('backup');?>" title="Backup">Backup</a></li>
 			     <li><a href="<?php echo site_url('adif/import');?>" title="ADIF Import">ADIF Import</a></li>
-			     <li><a href="<?php echo site_url('adif/export');?>" title="ADIF Export">ADIF Export</a></li>
+			     <!-- <li><a href="<?php echo site_url('adif/export');?>" title="ADIF Export">ADIF Export</a></li> -->
+				 <li><a href="<?php echo site_url('export');?>" title="Data Export">Data Export</a></li>
 			     <li><a href="<?php echo site_url('api/help');?>" title="API">API</a></li>
 			</ul>
 			<?php } ?>
