@@ -177,7 +177,7 @@
 					</tr>
 					<tr>
 						<td>IOTA</td>
-						<td><input type="text" name="iota_ref" value="" /> e.g: EU-005</td>
+						<td><input id="iota_ref" type="text" name="iota_ref" value="" /> e.g: EU-005</td>
 					</tr>
 				</table>
 		  </div>
@@ -204,12 +204,12 @@
 				<table>
 					<tr>
 						<td>Sat Name</td>
-						<td><input type="text" name="sat_name" value="<?php echo $this->session->userdata('sat_name'); ?>" /></td>
+						<td><input id="sat_name" type="text" name="sat_name" value="<?php echo $this->session->userdata('sat_name'); ?>" /></td>
 					</tr>
 	
 					<tr>
 						<td>Sat Mode</td>
-						<td><input type="text" name="sat_mode" value="<?php echo $this->session->userdata('sat_mode'); ?>" /></td>
+						<td><input id="sat_mode" type="text" name="sat_mode" value="<?php echo $this->session->userdata('sat_mode'); ?>" /></td>
 					</tr>
 				</table>
 		  </div>

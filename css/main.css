@@ -15,6 +15,10 @@ table .title { font-weight: bold; color: #439BF6; }
 .band { width: 80px; }
 .mode { width: 80px; }
 #callsign { text-transform: uppercase; }
+#locator { text-transform: uppercase; }
+#sat_name { text-transform: uppercase; }
+#sat_mode { text-transform: uppercase; }
+#iota_ref { text-transform: uppercase; }
 
 input[type="text"] {
 	color: #000000 !important;
