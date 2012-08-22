@@ -134,7 +134,7 @@
 			</tr>
 			
 			<tr class="titles">
-				<td colspan="2">Countries</td>
+				<td colspan="2"><span class="icon_world">Countries</span></td>
 			</tr>
 			
 			<tr>

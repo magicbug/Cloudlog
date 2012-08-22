@@ -30,6 +30,8 @@ input[type="text"] {
 
 .icon_stats { background: transparent url('../images/icons/stats.png') no-repeat center left; padding-left: 20px; font-weight: bold; }
 
+.icon_world { background: transparent url('../images/icons/world.png') no-repeat center left; padding-left: 20px; font-weight: bold; }
+
 .topbar input {
 	width: 100px !important;
 }
