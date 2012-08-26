@@ -4,6 +4,19 @@ class Dxcluster extends CI_Controller {
 
 	/* Controls the functions for interacting with the cluster */
 
+
+       public function __construct()
+	   {
+			parent::__construct();
+			
+			if (isDomainAvailible('http://www.dxcluster.co.uk')) {
+				// internet is available
+			}
+			else {
+				show_error('DX Cluster isnt available without internet access', '500');
+			}
+	   }
+
 	/* Loads default view */
 	public function index()
 	{
@@ -72,5 +85,32 @@ class Dxcluster extends CI_Controller {
 		}
 	}
 }
+
+function isDomainAvailible($domain)
+	   {
+			   //check, if a valid url is provided
+			   if(!filter_var($domain, FILTER_VALIDATE_URL))
+			   {
+					   return false;
+			   }
+
+			   //initialize curl
+			   $curlInit = curl_init($domain);
+			   curl_setopt($curlInit,CURLOPT_CONNECTTIMEOUT,10);
+			   curl_setopt($curlInit,CURLOPT_HEADER,true);
+			   curl_setopt($curlInit,CURLOPT_NOBODY,true);
+			   curl_setopt($curlInit,CURLOPT_RETURNTRANSFER,true);
+
+			   //get answer
+			   $response = curl_exec($curlInit);
+
+			   curl_close($curlInit);
+
+			   if ($response) return true;
+
+			   return false;
+	   }
+
+
 
 /* End of file dxcluster.php */
