@@ -65,6 +65,67 @@ class QSO extends CI_Controller {
 		}
 	}
 	
+	/* 
+		Function:	manual
+		Usage:		Post QSO Logging 
+	*/
+	
+	public function manual()
+	{
+	
+		$this->load->model('cat');
+		$this->load->model('logbook_model');
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		
+		
+		$data['notice'] = false;
+		$data['radios'] = $this->cat->radios();
+		$data['query'] = $this->logbook_model->last_custom('16');
+		
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('start_date', 'Date', 'required');
+		$this->form_validation->set_rules('start_time', 'Time', 'required');
+		$this->form_validation->set_rules('callsign', 'Callsign', 'required');
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$data['page_title'] = "Add QSO";
+
+			$this->load->view('layout/header', $data);
+			$this->load->view('qso/manual');
+			$this->load->view('layout/footer');
+		}
+		else
+		{
+			// Add QSO
+			$this->logbook_model->create_qso();
+			
+			// Store Basic QSO Info for reuse
+			$this->session->set_userdata('band', $this->input->post('band'));
+			$this->session->set_userdata('freq', $this->input->post('freq'));
+			$this->session->set_userdata('mode', $this->input->post('mode'));
+			$this->session->set_userdata('sat_name', $this->input->post('sat_name'));
+			$this->session->set_userdata('sat_mode', $this->input->post('sat_mode'));
+			$this->session->set_userdata('radio', $this->input->post('radio'));
+			
+			// Get last Ten QSOs
+			$data['query'] = $this->logbook_model->last_ten();
+			 
+			// Set Any Notice Messages
+			$data['notice'] = "QSO Added";
+			
+			// Load view to create another contact
+			$data['page_title'] = "Manual QSO";
+
+			$this->load->view('layout/header', $data);
+			$this->load->view('qso/manual');
+			$this->load->view('layout/footer');
+		}
+	}
+	
+	
 	function edit() {
 	
 		$this->load->model('logbook_model');
