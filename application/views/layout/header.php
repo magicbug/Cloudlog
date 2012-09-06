@@ -30,8 +30,16 @@
             <li class="active"><a href="<?php echo site_url('logbook');?>" title="Logbook">Logbook</a></li>
 
             <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
-			<li><a href="<?php echo site_url('qso');?>" title="Add QSO">Add QSO</a></li>
+			<li class="dropdown" data-dropdown="dropdown" >
+				<a href="#" class="dropdown-toggle">QSOs</a>
+				<ul class="dropdown-menu">
+				 <li><a href="<?php echo site_url('qso');?>" title="qso">Live QSOs</a></li>
+				  <li class="divider"></li>
+				  <li><a href="<?php echo site_url('qso/manual');?>" title="Notes">Post QSOs</a></li>
+			</ul>
+			
 			<?php } ?>
+		
 
 			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE){ ?>
 
