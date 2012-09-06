@@ -17,7 +17,8 @@
 
 	<link rel="stylesheet" href="<?php echo base_url();?>css/bootcamp/bootstrap.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo base_url();?>css/main.css" type="text/css" />
-
+	<link rel="icon" href="<?php echo base_url(); ?>/CloudLog.ico" type="image/x-icon" /> 
+	<link rel="shortcut icon" href="<?php echo base_url(); ?>/CloudLog.ico" type="image/x-icon" />
 </head>
 
 <body> 
