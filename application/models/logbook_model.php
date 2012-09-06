@@ -188,6 +188,7 @@ class Logbook_model extends CI_Model {
            'COL_IOTA' => $this->input->post('iota_ref'),
            'COL_QTH' => $this->input->post('qth'),
            'COL_FREQ_RX' => '0',
+           'COL_COUNTRY' => $this->input->post('country'),
 		);
 
 		$this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));

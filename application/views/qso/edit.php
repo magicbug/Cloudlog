@@ -85,6 +85,11 @@
 		<td><input type="text" name="iota_ref" value="<?php echo $COL_IOTA; ?>" /></td>
 	</tr>
 	
+	<tr>
+		<td>Country</td>
+		<td><input type="text" name="country" value="<?php echo $COL_COUNTRY; ?>" /></td>
+	</tr>
+	
 </table>
 
 <h3>QSLing</h3>
