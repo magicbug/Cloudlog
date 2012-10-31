@@ -291,7 +291,7 @@
 	i=0;
 	$(document).ready(function(){
 
-
+	$("#callsign").focus();
 	/* Javascript for controlling rig frequency. */
 
 	// Update frequency every second
