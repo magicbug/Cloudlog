@@ -652,7 +652,41 @@ class Logbook_model extends CI_Model {
         } else {
                 $band = null;
         }
+        
+        if(isset($record['iota'])) {
+                $iota = $record['iota'];
+        } else {
+                $iota = null;
+        }
 
+
+        // QSL Recv date
+        if(isset($record['qslrdate'])) {
+                $QSLRDATE = $record['qslrdate'];
+        } else {
+                $QSLRDATE = null;
+        }
+
+        // QSL Recv Status
+        if(isset($record['qsl_rcvd'])) {
+                $QSLRCVD = $record['qsl_rcvd'];
+        } else {
+                $QSLRCVD = null;
+        }
+        
+        // QSL Sent date
+        if(isset($record['qslsdate'])) {
+                $QSLSDATE = $record['qslsdate'];
+        } else {
+                $QSLSDATE = null;
+        }
+
+        // QSL Sent Status
+        if(isset($record['qsl_sent'])) {
+                $QSLSENT = $record['qsl_sent'];
+        } else {
+                $QSLSENT = null;
+        }
 
         $this->db->where('COL_CALL', $record['call']);
         $this->db->where('COL_TIME_ON', $time_on);
@@ -684,7 +718,12 @@ class Logbook_model extends CI_Model {
                'COL_ANT_AZ' => 0,
                'COL_ANT_EL' => 0,
                'COL_STX_STRING' => $record['stx'],
-               'COL_SRX_STRING' => $record['srx']
+               'COL_SRX_STRING' => $record['srx'],
+               'COL_IOTA' => $iota,
+               'COL_QSLRDATE' => $QSLRDATE, 
+               'COL_QSL_RCVD' => $QSLRCVD,
+               'COL_QSLSDATE' => $QSLSDATE,
+               'COL_QSL_SENT' => $QSLSENT
             );
 
             $this->add_qso($data);
