@@ -647,12 +647,14 @@ class Logbook_model extends CI_Model {
                 $rst_tx = "59"  ;
         }
 
+        // Store Band
         if(isset($record['band'])) {
                 $band = $record['band'];
         } else {
                 $band = null;
         }
         
+        // Store IOTA Ref if available
         if(isset($record['iota'])) {
                 $iota = $record['iota'];
         } else {
