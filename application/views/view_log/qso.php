@@ -77,12 +77,12 @@ margin: 10px 0;
 				
 				<tr>
 					<td>RST Sent</td>
-					<td><?php echo $row->COL_RST_SENT; ?></td>
+					<td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX_STRING) { ?>(<?php echo $row->COL_STX_STRING;?>)<?php } ?></td>
 				</tr>
 				
 				<tr>
 					<td>RST Recv</td>
-					<td><?php echo $row->COL_RST_RCVD; ?></td>
+					<td><?php echo $row->COL_RST_RCVD; ?> <?php if ($row->COL_SRX_STRING) { ?>(<?php echo $row->COL_SRX_STRING;?>)<?php } ?></td>
 				</tr>
 				
 				<?php if($row->COL_GRIDSQUARE != null) { ?>

@@ -91,7 +91,7 @@ class adif extends CI_Controller {
 				$this->logbook_model->import($record);
 
 				//echo $record["call"]."<br>";
-				//print_r($record);
+				print_r($record);
 			};
 
 			unlink('./uploads/'.$data['upload_data']['file_name']);

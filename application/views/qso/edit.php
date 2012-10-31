@@ -49,6 +49,20 @@
 		<td><input type="text" name="rst_recv" value="<?php echo $COL_RST_RCVD; ?>" /></td>
 	</tr>
 	
+	<?php if ($COL_STX_STRING) { ?>
+	<tr>
+		<td>TX Serial</td>
+		<td><input type="text" name="stx_string" value="<?php echo $COL_STX_STRING; ?>" /></td>
+	</tr>
+	<?php } ?>
+	
+	<?php if ($COL_SRX_STRING) { ?>
+	<tr>
+		<td>RX Serial</td>
+		<td><input type="text" name="srx_string" value="<?php echo $COL_SRX_STRING; ?>" /></td>
+	</tr>
+	<?php } ?>
+	
 	<tr>
 		<td>Locator</td>
 		<td><input id="locator" type="text" name="locator" value="<?php echo $COL_GRIDSQUARE; ?>" size="7" /></td>

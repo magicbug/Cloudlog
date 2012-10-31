@@ -35,8 +35,6 @@ class Contest extends CI_Controller {
 		$data['log'] = $this->contests->contest_log_view($data['info']->start, $data['info']->end, $data['info']);
 		$data['summary'] = $this->contests->contest_summary_bands($data['info']->start, $data['info']->end, $data['info']);
 		
-
-		
 		// Run validation checks on QSO submission
 		$this->load->library('form_validation');
 		

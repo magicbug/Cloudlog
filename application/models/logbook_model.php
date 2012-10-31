@@ -188,7 +188,8 @@ class Logbook_model extends CI_Model {
 		   'COL_IOTA' => $this->input->post('iota_ref'),
 		   'COL_QTH' => $this->input->post('qth'),
 		   'COL_FREQ_RX' => '0',
-		   'COL_COUNTRY' => $this->input->post('country'),
+		   'COL_STX_STRING' => $this->input->post('stx_string'),
+                   'COL_SRX_STRING' => $this->input->post('srx_string')
 		);
 
 		$this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
@@ -271,7 +272,7 @@ class Logbook_model extends CI_Model {
 	
 
 	function get_qsos($num, $offset) {
-		$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_GRIDSQUARE, COL_QSL_RCVD, COL_QSL_SENT');
+		$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_GRIDSQUARE, COL_QSL_RCVD, COL_QSL_SENT, COL_STX_STRING, COL_SRX_STRING');
 		$this->db->order_by("COL_TIME_ON", "desc"); 
 		
 		$query = $this->db->get($this->config->item('table_name'), $num, $offset);	
@@ -280,7 +281,7 @@ class Logbook_model extends CI_Model {
 	}
   
 	function get_last_qsos($num) {
-		$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
+		$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_STX_STRING, COL_SRX_STRING');
 		$this->db->order_by("COL_TIME_ON", "desc"); 
 		$this->db->limit($num);
 		$query = $this->db->get($this->config->item('table_name'));
@@ -556,42 +557,50 @@ class Logbook_model extends CI_Model {
            $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));  
         }
         
-    
+        // Store Freq
         if(isset($record['freq'])) {
             $cleansedstring = preg_replace('#\W#', '', $record['freq']);
             $freq = $cleansedstring."000";
         } else {
             $freq = "0";
         }
+        
+        // Store Name
         if(isset($record['name'])) {
             $name = $record['name'];
         } else {
             $name = "";
         }
+        
+        // Store Notes
         if(isset($record['NOTES'])) {
             $comment = $record['NOTES'];
         } else {
             $comment = "";
         }
 
+        // Store Sat Name
         if(isset($record['sat_name'])) {
             $sat_name = $record['sat_name'];
         } else {
             $sat_name = "";
         }
     
+        // Store Satellite Mode
         if(isset($record['sat_mode'])) {
             $sat_mode = $record['sat_mode'];
         } else {
             $sat_mode = "";
         }
 
+        // Store Gridsquare
         if(isset($record['gridsquare'])) {
             $gridsquare = $record['gridsquare'];
         } else {
             $gridsquare = "";
         }
     
+        // Store or find country name
         if(isset($record['country'])) {
             $country = $record['country'];
         } else {
@@ -610,29 +619,38 @@ class Logbook_model extends CI_Model {
             }
         }
 
+        // Store QTH
         if(isset($record['qth'])) {
             $qth = $record['qth'];
         } else {
             $qth = "";
         }
 
+        // Store Propagation Mode
         if(isset($record['prop_mode'])) {
             $prop_mode = $record['prop_mode'];
         } else {
             $prop_mode = "";
         }
 
-
+        // RST recevied
         if(isset($record['rst_rcvd'])) {
                 $rst_rx = $record['rst_rcvd'];
         } else {
                 $rst_rx = "59"  ;
         }
         
-          if(isset($record['rst_sent'])) {
+        // RST Sent
+        if(isset($record['rst_sent'])) {
                 $rst_tx = $record['rst_sent'];
         } else {
                 $rst_tx = "59"  ;
+        }
+
+        if(isset($record['band'])) {
+                $band = $record['band'];
+        } else {
+                $band = null;
         }
 
 
@@ -665,6 +683,8 @@ class Logbook_model extends CI_Model {
                'COL_BAND_RX' => 0,
                'COL_ANT_AZ' => 0,
                'COL_ANT_EL' => 0,
+               'COL_STX_STRING' => $record['stx'],
+               'COL_SRX_STRING' => $record['srx']
             );
 
             $this->add_qso($data);
