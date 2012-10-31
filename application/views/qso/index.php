@@ -291,6 +291,7 @@
 	i=0;
 	$(document).ready(function(){
 
+	// Set the focus input to the callsign field
 	$("#callsign").focus();
 	/* Javascript for controlling rig frequency. */
 
