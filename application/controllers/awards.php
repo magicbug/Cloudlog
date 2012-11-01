@@ -47,4 +47,21 @@ class Awards extends CI_Controller {
 		$this->load->view('layout/footer');
 	}
 	
+	/*
+		Handles showing worked WACRAL members (wacral.org)
+		Comment field - WACRAL:#
+	*/
+	public function wacral() {
+	
+		// Grab all worked wacral members
+		$this->load->model('wacral');
+		$data['wacral_all'] = $this->wacral->get_all();
+	
+		// Render page
+		$data['page_title'] = "Awards - WACRAL Members";
+		$this->load->view('layout/header', $data);
+		$this->load->view('awards/wacral/index');
+		$this->load->view('layout/footer');
+	}
+	
 }
