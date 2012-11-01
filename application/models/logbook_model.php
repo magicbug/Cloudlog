@@ -689,6 +689,18 @@ class Logbook_model extends CI_Model {
         } else {
                 $QSLSENT = null;
         }
+        
+        if(isset($record['stx'])) {
+                $stx = $record['stx'];
+        } else {
+                $stx = null;
+        }
+        
+        if(isset($record['srx'])) {
+                $srx = $record['srx'];
+        } else {
+                $srx = null;
+        }
 
         $this->db->where('COL_CALL', $record['call']);
         $this->db->where('COL_TIME_ON', $time_on);
@@ -719,8 +731,8 @@ class Logbook_model extends CI_Model {
                'COL_BAND_RX' => 0,
                'COL_ANT_AZ' => 0,
                'COL_ANT_EL' => 0,
-               'COL_STX_STRING' => $record['stx'],
-               'COL_SRX_STRING' => $record['srx'],
+               'COL_STX_STRING' => $stx,
+               'COL_SRX_STRING' => $srx,
                'COL_IOTA' => $iota,
                'COL_QSLRDATE' => $QSLRDATE, 
                'COL_QSL_RCVD' => $QSLRCVD,
