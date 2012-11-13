@@ -1,7 +1,9 @@
 <div id="container">
 <h2><?php echo $page_title; ?></h2>
 
-<?php echo $error;?>
+<p><span class="label important">Important</span> Log files must have the file type .adi</p>
+
+<?php echo $error; ?>
 
 <?php echo form_open_multipart('adif/import');?>
 
