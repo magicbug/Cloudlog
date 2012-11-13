@@ -57,6 +57,13 @@
 			return $query;
 		}
 		
+		function delete($id) {
+			$this->db->where('id', $id);
+			$this->db->delete('cat'); 
+			
+			return true;
+		}
+		
 
 
 	}

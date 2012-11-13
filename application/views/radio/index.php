@@ -13,10 +13,18 @@
 <div id="container">
 
 	<h2><?php echo $page_title; ?></h2>
+	
+	<?php if($this->session->flashdata('message')) { ?>
+	<!-- Display Message -->
+	<div class="alert-message error">
+	  <p><?php echo $this->session->flashdata('message'); ?></p>
+	</div>
+	<?php } ?>
 
 	<div class="row show-grid">
 	  <div class="span15">
-	  
+		
+		<!-- Display Radio Statuses -->	  
 		<table class="status">
 		
 		</table>
