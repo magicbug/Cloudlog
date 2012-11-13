@@ -177,6 +177,7 @@ class Logbook_model extends CI_Model {
 		   'COL_GRIDSQUARE' => $this->input->post('locator'),
 		   'COL_COMMENT' => $this->input->post('comment'),
 		   'COL_NAME' => $this->input->post('name'),
+                   'COL_COUNTRY' => $this->input->post('country'),
 		   'COL_SAT_NAME' => $this->input->post('sat_name'),
 		   'COL_SAT_MODE' => $this->input->post('sat_mode'),
 		   'COL_QSLSDATE' => date('Y-m-d'),
