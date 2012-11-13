@@ -9,11 +9,14 @@
 |	'app_name'		Name of the App 'Cloudlog'
 |	'app_version'	Set by the dev team.
 |	'directory'		directory where cloudlog is installed eg "logger"
+|	'callbook'		Selects which Callbook lookup to use defaults "callbytxt" but supports "qrz"
 */
 
 $config['app_name'] = "Cloudlog";
 $config['app_version'] = "0.1";
 $config['directory'] = "logbook";
+
+$config['callbook'] = "callbytxt"; // Options are qrz or callbytxt
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +53,18 @@ $config['auth_level'][1] = "Viewer";
 $config['auth_level'][2] = "Editor";
 $config['auth_level'][3] = "API User";
 $config['auth_level'][99] = "Administrator";
+
+/*
+|--------------------------------------------------------------------------
+| QRZ Subscription Information
+|--------------------------------------------------------------------------
+|
+| 	'username'		QRZ.com Username
+|	'password'		Default locator used to calculate bearings/distance
+*/
+
+$config['qrz_username'] = "";
+$config['qrz_password'] = "";
 
 /*
 |--------------------------------------------------------------------------

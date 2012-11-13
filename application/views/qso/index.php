@@ -515,6 +515,12 @@
 						$('#qth').val(result);
 					});
 				}
+		
+				if($('#qth').val() == "") {
+					$.get('logbook/callsign_iota/' + $(this).val(), function(result) {
+						$('#iota_ref').val(result);
+					});
+				}
 
 			}
 		});
