@@ -6,26 +6,26 @@
 | Install Options
 |--------------------------------------------------------------------------
 |
-|	'app_name'		Name of the App 'Cloudlog'
-|	'app_version'	Set by the dev team.
-|	'directory'		directory where cloudlog is installed eg "logger"
-|	'callbook'		Selects which Callbook lookup to use defaults "callbytxt" but supports "qrz"
+|  'app_name'    Name of the App 'Cloudlog'
+|  'app_version'  Set by the dev team.
+|  'directory'    directory where cloudlog is installed eg "logger"
+|  'callbook'    Selects which Callbook lookup to use defaults "hamio" but supports "qrz"
 */
 
 $config['app_name'] = "Cloudlog";
 $config['app_version'] = "0.1";
 $config['directory'] = "logbook";
 
-$config['callbook'] = "callbytxt"; // Options are qrz or callbytxt
+$config['callbook'] = "hamio"; // Options are hamio or qrz
 
 /*
 |--------------------------------------------------------------------------
 | Logbook Options
 |--------------------------------------------------------------------------
 |
-| 	'table_name'	SQL table where log can be found
-|	'locator'		Default locator used to calculate bearings/distance
-|	'display_freq'	Show or Hide frequnecy info 
+|   'table_name'  SQL table where log can be found
+|  'locator'    Default locator used to calculate bearings/distance
+|  'display_freq'  Show or Hide frequnecy info 
 */
 
 $config['table_name'] = "table_hrd_contacts_v01"; 
@@ -37,11 +37,11 @@ $config['display_freq'] = false;
 | Authentication
 |--------------------------------------------------------------------------
 |
-| 'use_auth'	False turns all authentication off, best used when setting up
-| 'auth_table'	MySQL Database Table defaults "users"
-| 'auth_mode'	Minimum user level required 0 = anonymous, 1 = viewer, 
-|				2 = editor, 3 = api user, 99 = owner
-| 'auth_level[]'	Defines level titles
+| 'use_auth'  False turns all authentication off, best used when setting up
+| 'auth_table'  MySQL Database Table defaults "users"
+| 'auth_mode'  Minimum user level required 0 = anonymous, 1 = viewer, 
+|        2 = editor, 3 = api user, 99 = owner
+| 'auth_level[]'  Defines level titles
 */
 
 $config['use_auth'] = true;
@@ -59,8 +59,8 @@ $config['auth_level'][99] = "Administrator";
 | QRZ Subscription Information
 |--------------------------------------------------------------------------
 |
-| 	'username'		QRZ.com Username
-|	'password'		Default locator used to calculate bearings/distance
+|  'username'    QRZ.com Username
+|  'password'    Default locator used to calculate bearings/distance
 */
 
 $config['qrz_username'] = "";
@@ -74,13 +74,13 @@ $config['qrz_password'] = "";
 | URL to your CodeIgniter root. Typically this will be your base URL,
 | WITH a trailing slash:
 |
-|	http://example.com/
+|  http://example.com/
 |
 | If this is not set then CodeIgniter will guess the protocol, domain and
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/logbook';
+$config['base_url']  = 'http://localhost/logbook';
 
 /*
 |--------------------------------------------------------------------------
@@ -103,14 +103,14 @@ $config['index_page'] = 'index.php';
 | URI string.  The default setting of 'AUTO' works for most servers.
 | If your links do not seem to work, try one of the other delicious flavors:
 |
-| 'AUTO'			Default - auto detects
-| 'PATH_INFO'		Uses the PATH_INFO
-| 'QUERY_STRING'	Uses the QUERY_STRING
-| 'REQUEST_URI'		Uses the REQUEST_URI
-| 'ORIG_PATH_INFO'	Uses the ORIG_PATH_INFO
+| 'AUTO'      Default - auto detects
+| 'PATH_INFO'    Uses the PATH_INFO
+| 'QUERY_STRING'  Uses the QUERY_STRING
+| 'REQUEST_URI'    Uses the REQUEST_URI
+| 'ORIG_PATH_INFO'  Uses the ORIG_PATH_INFO
 |
 */
-$config['uri_protocol']	= 'AUTO';
+$config['uri_protocol']  = 'AUTO';
 
 /*
 |--------------------------------------------------------------------------
@@ -135,7 +135,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'english';
+$config['language']  = 'english';
 
 /*
 |--------------------------------------------------------------------------
@@ -219,11 +219,11 @@ $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-=[]()*,';
 | use segment based URLs.
 |
 */
-$config['allow_get_array']		= TRUE;
+$config['allow_get_array']    = TRUE;
 $config['enable_query_strings'] = FALSE;
-$config['controller_trigger']	= 'c';
-$config['function_trigger']		= 'm';
-$config['directory_trigger']	= 'd'; // experimental not currently in use
+$config['controller_trigger']  = 'c';
+$config['function_trigger']    = 'm';
+$config['directory_trigger']  = 'd'; // experimental not currently in use
 
 /*
 |--------------------------------------------------------------------------
@@ -235,11 +235,11 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 | You can enable error logging by setting a threshold over zero. The
 | threshold determines what gets logged. Threshold options are:
 |
-|	0 = Disables logging, Error logging TURNED OFF
-|	1 = Error Messages (including PHP errors)
-|	2 = Debug Messages
-|	3 = Informational Messages
-|	4 = All Messages
+|  0 = Disables logging, Error logging TURNED OFF
+|  1 = Error Messages (including PHP errors)
+|  2 = Debug Messages
+|  3 = Informational Messages
+|  4 = All Messages
 |
 | For a live site you'll usually only enable Errors (1) to be logged otherwise
 | your log files will fill up very fast.
@@ -296,28 +296,28 @@ $config['encryption_key'] = 'flossie1234555541';
 | Session Variables
 |--------------------------------------------------------------------------
 |
-| 'sess_cookie_name'		= the name you want for the cookie
-| 'sess_expiration'			= the number of SECONDS you want the session to last.
+| 'sess_cookie_name'    = the name you want for the cookie
+| 'sess_expiration'      = the number of SECONDS you want the session to last.
 |   by default sessions last 7200 seconds (two hours).  Set to zero for no expiration.
-| 'sess_expire_on_close'	= Whether to cause the session to expire automatically
+| 'sess_expire_on_close'  = Whether to cause the session to expire automatically
 |   when the browser window is closed
-| 'sess_encrypt_cookie'		= Whether to encrypt the cookie
-| 'sess_use_database'		= Whether to save the session data to a database
-| 'sess_table_name'			= The name of the session database table
-| 'sess_match_ip'			= Whether to match the user's IP address when reading the session data
-| 'sess_match_useragent'	= Whether to match the User Agent when reading the session data
-| 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
+| 'sess_encrypt_cookie'    = Whether to encrypt the cookie
+| 'sess_use_database'    = Whether to save the session data to a database
+| 'sess_table_name'      = The name of the session database table
+| 'sess_match_ip'      = Whether to match the user's IP address when reading the session data
+| 'sess_match_useragent'  = Whether to match the User Agent when reading the session data
+| 'sess_time_to_update'    = how many seconds between CI refreshing Session Information
 |
 */
-$config['sess_cookie_name']		= 'ci_cloudlog';
-$config['sess_expiration']		= 0;
-$config['sess_expire_on_close']	= FALSE;
-$config['sess_encrypt_cookie']	= FALSE;
-$config['sess_use_database']	= FALSE;
-$config['sess_table_name']		= 'ci_sessions';
-$config['sess_match_ip']		= FALSE;
-$config['sess_match_useragent']	= TRUE;
-$config['sess_time_to_update']	= 300;
+$config['sess_cookie_name']    = 'ci_cloudlog';
+$config['sess_expiration']    = 0;
+$config['sess_expire_on_close']  = FALSE;
+$config['sess_encrypt_cookie']  = FALSE;
+$config['sess_use_database']  = FALSE;
+$config['sess_table_name']    = 'ci_sessions';
+$config['sess_match_ip']    = FALSE;
+$config['sess_match_useragent']  = TRUE;
+$config['sess_time_to_update']  = 300;
 
 /*
 |--------------------------------------------------------------------------
@@ -330,10 +330,10 @@ $config['sess_time_to_update']	= 300;
 | 'cookie_secure' =  Cookies will only be set if a secure HTTPS connection exists.
 |
 */
-$config['cookie_prefix']	= "";
-$config['cookie_domain']	= "";
-$config['cookie_path']		= "/";
-$config['cookie_secure']	= FALSE;
+$config['cookie_prefix']  = "";
+$config['cookie_domain']  = "";
+$config['cookie_path']    = "/";
+$config['cookie_secure']  = FALSE;
 
 /*
 |--------------------------------------------------------------------------
