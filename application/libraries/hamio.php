@@ -15,7 +15,7 @@ class Hamio {
     $json_output = json_decode($json);
 
     if(isset($json_output)) {
-      $data['callsign'] = $json_outputign;
+      $data['callsign'] = $callsign;
       $data['name'] = "$json_output->first_name $json_output->last_name";
       $data['gridsquare'] = $json_output->gridsquare;
       $data['city'] = ucfirst(strtolower(($json_output->city)));
