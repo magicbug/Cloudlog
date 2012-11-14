@@ -5,13 +5,11 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->library('qrz');
-
-		$qrz_session_key = $this->qrz->set_session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+				$this->load->library('callbytxt');
 		
-		echo $this->session->userdata('qrz_session_key');
-
-		$data['callsign'] = $this->qrz->search("m3php", $this->session->userdata('qrz_session_key'));
+				$callbook = $this->callbytxt->callsign('m3php');
+				
+				print_r($callbook);
 
 	}
 }

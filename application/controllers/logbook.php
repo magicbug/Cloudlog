@@ -152,7 +152,7 @@ class Logbook extends CI_Controller {
 				// Lookup using Callbytxt
 				$this->load->library('callbytxt');
 		
-				$callbook = $this->callbytxt->callsign($qra);
+				$callbook = $this->callbytxt->callsign($callsign);
 
 				echo $callbook['city'];	
 			}
@@ -200,7 +200,7 @@ class Logbook extends CI_Controller {
 				// Lookup using Callbytxt
 				$this->load->library('callbytxt');
 		
-				$callbook = $this->callbytxt->callsign($qra);
+				$callbook = $this->callbytxt->callsign($callsign);
 
 				echo $callbook['name'];	
 			}

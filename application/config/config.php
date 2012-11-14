@@ -16,7 +16,7 @@ $config['app_name'] = "Cloudlog";
 $config['app_version'] = "0.1";
 $config['directory'] = "logbook";
 
-$config['callbook'] = "qrz"; // Options are qrz or callbytxt
+$config['callbook'] = "callbytxt"; // Options are qrz or callbytxt
 
 /*
 |--------------------------------------------------------------------------
