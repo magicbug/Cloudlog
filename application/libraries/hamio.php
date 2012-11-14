@@ -15,12 +15,12 @@ class Hamio {
     $json_output = json_decode($json);
 
     if(isset($json_output)) {
-      $data['callsign'] = $json_output->calls->callsign;
-      $data['name'] = "$json_output->calls->first_name $json_output->calls->last_name";
-      $data['gridsquare'] = $json_output->calls->gridsquare;
-      $data['city'] = ucfirst(strtolower(($json_output->calls->city)));
-      $data['lat'] = ucfirst($json_output->calls->latitude);
-      $data['long'] = ucfirst($json_output->calls->longitude);
+      $data['callsign'] = $json_outputign;
+      $data['name'] = "$json_output->first_name $json_output->last_name";
+      $data['gridsquare'] = $json_output->gridsquare;
+      $data['city'] = ucfirst(strtolower(($json_output->city)));
+      $data['lat'] = ucfirst($json_output->latitude);
+      $data['long'] = ucfirst($json_output->longitude);
       
       return $data;
     }
