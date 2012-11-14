@@ -5,24 +5,13 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-		//$this->load->view('welcome_message');
+		$this->load->library('qrz');
+
+		$qrz_session_key = $this->qrz->set_session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
 		
-		
-		// URL to the XML Source
-		$xml_feed_url = 'http://xmldata.qrz.com/xml/current/?username='.$username.';password='.$password.';agent=cloudlog';
-		
-		// CURL Functions
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $xml_feed_url);
-		curl_setopt($ch, CURLOPT_HEADER, false);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$xml = curl_exec($ch);
-		curl_close($ch);
-		
-		// Create XML object
-		$xml = simplexml_load_string($xml);
-		
-		print_r($xml);
+		echo $this->session->userdata('qrz_session_key');
+
+		$data['callsign'] = $this->qrz->search("m3php", $this->session->userdata('qrz_session_key'));
 
 	}
 }
