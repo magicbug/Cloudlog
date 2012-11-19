@@ -18,6 +18,4 @@ Copyright (c) 2011 Peter Goodhall ([2E0SQL](http://www.m3php.com)).
 * Gavin (M1BXF)   [http://www.geekshed.co.uk](http://www.geekshed.co.uk/)
 * Graham (W5ISP)  [http://ham.io](http://ham.io)
 
-http://cloudlog.co.uk/github/clublog_web.png
-
-![Clublog Logo](http://cloudlog.co.uk/github/clublog_web.png "Clublog Logo")	We use the cty.xml to power the dxcc lookup functions.
+![Clublog Logo](http://cloudlog.co.uk/github/clublog_web.png "Clublog Logo")	We use the Clublog cty.xml to power the dxcc lookup functions.
