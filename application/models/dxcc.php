@@ -36,5 +36,9 @@ class DXCC extends CI_Model {
 			return $query;
 		}
 	}
+	
+	function empty_table($table) {
+		$this->db->empty_table($table); 
+	}
 }
 ?>

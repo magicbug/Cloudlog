@@ -16,7 +16,7 @@ $config['app_name'] = "Cloudlog";
 $config['app_version'] = "0.1";
 $config['directory'] = "logbook";
 
-$config['callbook'] = "hamio"; // Options are hamio or qrz
+$config['callbook'] = "qrz"; // Options are hamio or qrz
 
 /*
 |--------------------------------------------------------------------------
