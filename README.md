@@ -19,4 +19,5 @@ Copyright (c) 2011 Peter Goodhall ([2E0SQL](http://www.m3php.com)).
 * Graham (W5ISP)  [http://ham.io](http://ham.io)
 
 ![Clublog Logo](http://cloudlog.co.uk/github/clublog_web.png "Clublog Logo")
+
 We use the [Clublog](http://www.clublog.org/) cty.xml to power the dxcc lookup functions.
