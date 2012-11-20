@@ -17,6 +17,11 @@ class Awards extends CI_Controller {
 		$this->load->view('layout/footer');
 	}
 	
+	public function dxcc ()
+	{
+		echo "Needs Developed";
+	}
+	
 	/*
 		Handles Displaying of WAB Squares worked.
 		Comment field - WAB:#
