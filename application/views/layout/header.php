@@ -57,6 +57,14 @@
 			<li><a href="<?php echo site_url('dxcluster');?>" title="DX Cluster">Cluster</a></li>
 
 			<?php if(($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) || $this->config->item('use_auth') === FALSE) { ?>
+			
+			<li class="dropdown" data-dropdown="dropdown" >
+				<a href="#" class="dropdown-toggle">Tools</a>
+				<ul class="dropdown-menu">
+				 <li><a href="<?php echo site_url('awards');?>" title="">Awards</a></li>
+				</ul>
+			</li>
+			
 			<li class="dropdown" data-dropdown="dropdown" >
 			    <a href="#" class="dropdown-toggle">Admin</a>
 			    <ul class="dropdown-menu">

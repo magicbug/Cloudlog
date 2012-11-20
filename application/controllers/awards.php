@@ -10,7 +10,11 @@ class Awards extends CI_Controller {
 
 	public function index()
 	{
-		echo "This is the index page";
+		// Render Page
+		$data['page_title'] = "Awards";
+		$this->load->view('layout/header', $data);
+		$this->load->view('awards/index');
+		$this->load->view('layout/footer');
 	}
 	
 	/*
