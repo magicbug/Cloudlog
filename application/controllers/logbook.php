@@ -258,38 +258,10 @@ class Logbook extends CI_Controller {
 
     if ($query->num_rows() > 0)
     {
-      echo "<table class=\"partial\" width=\"100%\">";
-        echo "<tr>";
-          echo "<td>Date</td>";
-          echo "<td>Callsign</td>";
-          echo "<td>RST Sent</td>";
-          echo "<td>RST Recv</td>";
-          echo "<td>Band</td>";
-          echo "<td>Mode</td>";
-          echo "<td></td>";
-        echo "</tr>";
-      foreach ($query->result() as $row)
-      {
-        echo "<tr>";
-          echo "<td>".$row->COL_TIME_ON."</td>";
-          echo "<td>".$row->COL_CALL."</td>";
-          echo "<td>".$row->COL_RST_SENT."</td>";
-          echo "<td>".$row->COL_RST_RCVD."</td>";
 
-          if($row->COL_SAT_NAME != null) { 
-            echo "<td>".$row->COL_SAT_NAME."</td>";
-          } else {
-            echo "<td>".$row->COL_BAND."</td>";
-          }
-          echo "<td>".$row->COL_MODE."</td>";
-          if($this->user_model->authorize(2)) {
-            echo "<td><a class=\"editbox\" href=\"".site_url('qso/edit')."/".$row->COL_PRIMARY_KEY."\" ><img src=\"".base_url()."/images/application_edit.png\" width=\"16\" height=\"16\" alt=\"Edit\" /></a></td>";
-          } else {
-            echo "<td></td>";
-          }
-        echo "</tr>";
-      }
-      echo "</table>";
+        $data['results'] = $query;    
+
+         $this->load->view('search/result_search.php', $data);
     } else {
       if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
         // Lookup using QRZ
