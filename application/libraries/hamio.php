@@ -14,20 +14,46 @@ class Hamio {
     $json = @file_get_contents($jsonurl,0,null,null);
     $json_output = json_decode($json);
     
-    //print_r($json_output->$callsign);
-    
-    
-    
     if(isset($json_output)) {
     
       foreach ($json_output as $name => $callsign) {
       
-        $data['callsign'] = (string) strtoupper($name);
-        $data['name'] = $callsign->first_name;
-        $data['gridsquare'] = $callsign->gridsquare;
-        $data['city'] = ucfirst(strtolower(($callsign->city)));
-        $data['lat'] = ucfirst($callsign->latitude);
-        $data['long'] = ucfirst($callsign->longitude);
+        if(isset($name)) {
+          $data['callsign'] = strtoupper($name);
+        } else {
+           $data['callsign'] = $callsign;
+        }
+        
+        if (isset($callsign->first_name)) { 
+          $data['name'] = $callsign->first_name;        
+        } else {
+          $data['name'] = "";
+        }
+
+        
+        if(isset($callsign->gridsquare)) {
+          $data['gridsquare'] = $callsign->gridsquare;
+        } else {
+          $data['gridsquare'] = "";
+        }
+        
+        if(isset($callsign->city)) {
+           $data['city'] = ucfirst(strtolower(($callsign->city)));
+        } else {
+           $data['city'] = "";
+        }
+  
+        if (isset($callsign->latitude)) {
+          $data['lat'] = ucfirst($callsign->latitude);
+        } else {
+          $data['lat'] = "";
+        }
+        
+        if (isset($callsign->longitude)) {
+          $data['long'] = ucfirst($callsign->longitude);
+        } else {
+           $data['long'] = "";
+        }
         
         return $data;
     }
