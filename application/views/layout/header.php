@@ -3,20 +3,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 	<title><?php echo $page_title; ?> - Cloudlog</title>
-	<link type="text/css" href="<?php echo base_url(); ?>css/flick/jquery-ui-1.8.12.custom.css" rel="stylesheet" />	
-
+	
+	<!-- Javascript -->
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-1.5.1.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.8.12.custom.min.js"></script>
-	
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-dropdown.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-tabs.js"></script>
-
+	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-tabs.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/global.js"></script>
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 
-
+	<!-- CSS Files -->
+	<link type="text/css" href="<?php echo base_url(); ?>css/flick/jquery-ui-1.8.12.custom.css" rel="stylesheet" />	
 	<link rel="stylesheet" href="<?php echo base_url();?>css/bootcamp/bootstrap.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo base_url();?>css/main.css" type="text/css" />
+	
+	<!-- Theming Code Goes Here -->
+	
 	<link rel="icon" href="<?php echo base_url(); ?>/CloudLog.ico" type="image/x-icon" /> 
 	<link rel="shortcut icon" href="<?php echo base_url(); ?>/CloudLog.ico" type="image/x-icon" />
 </head>
