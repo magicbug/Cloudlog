@@ -19,6 +19,7 @@
 	
 	<!-- Theming Code Goes Here -->
 	
+	<!-- Icons -->
 	<link rel="icon" href="<?php echo base_url(); ?>/CloudLog.ico" type="image/x-icon" /> 
 	<link rel="shortcut icon" href="<?php echo base_url(); ?>/CloudLog.ico" type="image/x-icon" />
 </head>
