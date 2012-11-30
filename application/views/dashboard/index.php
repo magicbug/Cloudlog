@@ -21,7 +21,13 @@
 	
 	<script type="text/javascript">
 	  function create_map() {
-	    var latlng = new google.maps.LatLng(40.313043, -32.695312);
+	  
+	  	<?php if($qra == "set") { ?>
+		var latlng = new google.maps.LatLng(<?php echo $qra_lat; ?>, <?php echo $qra_lng; ?>);	
+		<?php } else { ?>
+		var latlng = new google.maps.LatLng(40.313043, -32.695312);
+		<?php } ?>
+	  
 	    var myOptions = {
 	      zoom: 3,
 	      center: latlng,

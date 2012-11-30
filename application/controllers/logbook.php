@@ -30,6 +30,18 @@ class Logbook extends CI_Controller {
     $this->load->model('logbook_model');
     $data['results'] = $this->logbook_model->get_qsos($config['per_page'],$this->uri->segment(3));
 
+    // Calculate Lat/Lng from Locator to use on Maps
+    if($this->session->userdata('user_locator')) {
+        $this->load->library('qra');
+        $qra_position = $this->qra->qra2latlong($this->session->userdata('user_locator'));
+        $data['qra'] = "set";
+        $data['qra_lat'] = $qra_position[0];
+        $data['qra_lng'] = $qra_position[1];   
+    } else {
+        $data['qra'] = "none";
+    }
+                
+  
   
     // load the view
     $data['page_title'] = "Logbook";
