@@ -26,6 +26,8 @@
 
 <body> 
 
+	<!-- Header -->
+
     <div class="topbar">
       <div class="fill">
         <div class="container">
@@ -82,9 +84,11 @@
 			<?php } ?>
           </ul>
 
+		<!-- Search Form -->
         <form method="post" action="<?php echo site_url('search'); ?>"><input type="text" name="callsign" placeholder="Search Callsign"></form>
 
         <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
+		<!-- Profile Dropdown -->
         	<div class="pull-right">
 	        	<ul>
 	        	<li class="dropdown" data-dropdown="dropdown" >
@@ -95,6 +99,7 @@
 				</ul>
 			</div>
         <?php } else { ?>
+		<!-- Login Form  -->
           <form method="post" action="<?php echo site_url('user/login'); ?>" class="pull-right">
             <input class="input-small" type="text" name="user_name" placeholder="Username">
             <input class="input-small" type="password" name="user_password" placeholder="Password">
