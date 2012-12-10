@@ -322,13 +322,23 @@ class API extends CI_Controller {
 		$obj = json_decode(file_get_contents("php://input"), true);
 
 		// Store Result to Database		
-		$this->cat->update($obj);
+		$this->cat->cat_status($obj);
 
 		// Return Message
 		
 		$arr = array('status' => 'success');
 
 		echo json_encode($arr);
+		
+	}
+	
+	function cat_status () {
+		header('Content-type: application/json');
+		
+		$this->load->model('cat');	
+		
+		// Decode JSON and store
+		$obj = json_decode(file_get_contents("php://input"), true);
 		
 	}
 }
