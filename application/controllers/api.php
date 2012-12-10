@@ -322,7 +322,7 @@ class API extends CI_Controller {
 		$obj = json_decode(file_get_contents("php://input"), true);
 
 		// Store Result to Database		
-		$this->cat->cat_status($obj);
+		$this->cat->update($obj);
 
 		// Return Message
 		
@@ -339,6 +339,14 @@ class API extends CI_Controller {
 		
 		// Decode JSON and store
 		$obj = json_decode(file_get_contents("php://input"), true);
+
+		// Store Result to Database		
+		$this->cat->cat_status($obj);
+
+		// Return Message
 		
+		$arr = array('status' => 'success');
+
+		echo json_encode($arr);
 	}
 }
