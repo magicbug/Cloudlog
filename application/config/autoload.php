@@ -27,6 +27,34 @@
 |
 */
 
+
+	switch (ENVIRONMENT)
+    {
+        case 'development':
+            require( __DIR__ . '/../php_error.php' );
+              
+            \php_error\reportErrors( array(
+                    'application_folders' => 'application',
+                    'ignore_folders' => 'system'
+            ) );
+        break;
+    
+        case 'testing':
+            require( __DIR__ . '/../php_error.php' );
+              
+            \php_error\reportErrors( array(
+                    'application_folders' => 'application',
+                    'ignore_folders' => 'system'
+            ) );
+        break;
+        
+        case 'production':
+        default:
+            exit('The application environment is not set correctly.');
+    }
+
+
+
 /*
 | -------------------------------------------------------------------
 |  Auto-load Packges
