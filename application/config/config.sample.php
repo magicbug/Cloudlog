@@ -28,9 +28,9 @@ $config['callbook'] = "qrz"; // Options are hamio or qrz
 |  'display_freq'  Show or Hide frequnecy info 
 */
 
-$config['table_name'] = "table_hrd_contacts_v01"; 
-$config['locator'] = "IO91JS"; 
-$config['display_freq'] = false;
+$config['table_name'] = "TABLE_HRD_CONTACTS_V01"; 
+$config['locator'] = ""; 
+$config['display_freq'] = true;
 
 /*
 |--------------------------------------------------------------------------

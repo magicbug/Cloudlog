@@ -1,10 +1,9 @@
 <!-- JS -->
 
 	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-
 	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-
 	<script type="text/javascript" src="<?php echo base_url() ;?>/js/jquery.jclock.js"></script>
+	<script type="text/javascript" src="<?php echo base_url() ;?>/js/radiohelpers.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 
@@ -295,54 +294,12 @@
 	$("#callsign").focus();
 	/* Javascript for controlling rig frequency. */
 
-	// Update frequency every second
-	setInterval(function() {
+	var updateFromCAT = function() {
 		if($('select.radios option:selected').val() != '0') {
 			// Get frequency
 			$.get('radio/frequency/' + $('select.radios option:selected').val(), function(result) {
 				$('#frequency').val(result);
-				
-				result = parseInt(result);
-				
-				if(result >= 14000000 && result <= 14400000) {
-					$(".band").val('20m');
-				}
-				else if(result >= 18000000 && result <= 19000000) {
-					$(".band").val('17m');
-				}
-				else if(result >= 1810000 && result <= 2000000) {
-					$(".band").val('160m');
-				}
-				else if(result >= 3000000 && result <= 4000000) {
-					$(".band").val('80m');
-				}
-				else if(result >= 5250000 && result <= 5450000) {
-					$(".band").val('60m');
-				}
-				else if(result >= 7000000 && result <= 7500000) {
-					$(".band").val('40m');
-				}
-				else if(result >= 10000000 && result <= 11000000) {
-					$(".band").val('30m');
-				}
-				else if(result >= 21000000 && result <= 21600000) {
-					$(".band").val('15m');
-				}
-				else if(result >= 24000000 && result <= 25000000) {
-					$(".band").val('12m');
-				}
-				else if(result >= 28000000 && result <= 30000000) {
-					$(".band").val('10m');
-				}
-				else if(result >= 50000000 && result <= 56000000) {
-					$(".band").val('6m');
-				}
-				else if(result >= 144000000 && result <= 148000000) {
-					$(".band").val('2m');
-				}
-				else if(result >= 430000000 && result <= 440000000) {
-					$(".band").val('70cm');
-				}
+				$(".band").val(frequencyToBand(result));
 			});
 			
 			// Get Mode
@@ -353,70 +310,14 @@
 					$(".mode").val(result);	
 				}
 			});
-		}			
-	}, 1000);
+		}
+	};
 
+	// Update frequency every second
+	setInterval(updateFromCAT, 1000);
 
 	// If a radios selected from drop down select radio update.
-	$('.radios').change(function() {
-		if($('select.radios option:selected').val() != '0') {
-		// Get frequency
-			$.get('radio/frequency/' + $('select.radios option:selected').val(), function(result) {
-				$('#frequency').val(result);
-				result = parseInt(result);
-				
-				if(result >= 14000000 && result <= 14400000) {
-					$(".band").val('20m');
-				}
-				else if(result >= 18000000 && result <= 19000000) {
-					$(".band").val('17m');
-				}
-				else if(result >= 1810000 && result <= 2000000) {
-					$(".band").val('160m');
-				}
-				else if(result >= 3000000 && result <= 4000000) {
-					$(".band").val('80m');
-				}
-				else if(result >= 5250000 && result <= 5450000) {
-					$(".band").val('60m');
-				}
-				else if(result >= 7000000 && result <= 7500000) {
-					$(".band").val('40m');
-				}
-				else if(result >= 10000000 && result <= 11000000) {
-					$(".band").val('30m');
-				}
-				else if(result >= 21000000 && result <= 21600000) {
-					$(".band").val('15m');
-				}
-				else if(result >= 24000000 && result <= 25000000) {
-					$(".band").val('12m');
-				}
-				else if(result >= 28000000 && result <= 30000000) {
-					$(".band").val('10m');
-				}
-				else if(result >= 50000000 && result <= 56000000) {
-					$(".band").val('6m');
-				}
-				else if(result >= 144000000 && result <= 148000000) {
-					$(".band").val('2m');
-				}
-				else if(result >= 430000000 && result <= 440000000) {
-					$(".band").val('70cm');
-				}
-			});	
-			
-			// Get Mode
-			$.get('radio/mode/' + $('select.radios option:selected').val(), function(result) {
-				if (result == "LSB" || result == "USB" || result == "SSB") {
-					$(".mode").val('SSB');
-				} else {
-					$(".mode").val(result);	
-				}
-			});	
-	
-		}
-	});
+	$('.radios').change(updateFromCAT);
 
 		/* On Page Load */
 		var catcher = function() {
