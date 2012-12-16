@@ -2,11 +2,10 @@
 
 	header("content-type: plain/text"); 
 	header('Content-Disposition: attachment; filename="export_log.adi"')
-
 ?>
 <ADIF_VERS:3>2.2
-<PROGRAMID:14><?php echo $this->config->item('app_name')."\n"; ?>
-<PROGRAMVERSION:22>Version <?php echo $this->config->item('app_version')."\n"; ?>
+<PROGRAMID:<?php echo strlen($this->config->item('app_name')); ?>><?php echo $this->config->item('app_name')."\n"; ?>
+<PROGRAMVERSION:<?php echo strlen($this->config->item('app_version')); ?>>Version <?php echo $this->config->item('app_version')."\n"; ?>
 <EOH>
 
 <?php foreach ($qsos->result() as $qso) { //print_r($qso);?>
