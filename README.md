@@ -8,15 +8,20 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 We're still working simplying the setup but you can check out the Wiki for some useful tips and howtos.
 
+## CAT Control
+
+Its possible to interact with your radio if you have a K3, FT-950 or a ICOM radio using a nice application that Rob (M0VFC) has put together called [CloudlogCAT](https://github.com/rmc47/CloudlogCAT). The application is still in active development and lots of new features are due.
+
 ## Copyright
 
-Copyright (c) 2011 Peter Goodhall ([2E0SQL](http://www.m3php.com)).
+Copyright (c) 2011 Peter Goodhall ([2E0SQL](http://www.2e0sql.co.uk)).
 
 ## Credits
 
 * Andy (M0VKG)    [http://m0vkg.org.uk](http://m0vkg.org.uk/)
 * Gavin (M1BXF)   [http://www.geekshed.co.uk](http://www.geekshed.co.uk/)
 * Graham (W5ISP)  [http://ham.io](http://ham.io)
+* Robert (M0VFC)  [http://codeandcarriers.co.uk](http://codeandcarriers.co.uk)
 
 ![Clublog Logo](http://cloudlog.co.uk/github/clublog_web.png "Clublog Logo")
 
