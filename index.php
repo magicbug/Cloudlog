@@ -19,7 +19,17 @@
  *
  */
 	define('ENVIRONMENT', 'development');
+	
+/*
+ *---------------------------------------------------------------
+ * Default Time Zone
+ *---------------------------------------------------------------
+ *
+ * As amateur radio generally works by UTC this is stored by default.
+ * It is not recommended that you hcange this setting.
+ */
 	date_default_timezone_set('UTC');
+	
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
