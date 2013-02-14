@@ -107,6 +107,7 @@
 </table>
 
 <h3>QSLing</h3>
+<h4>Paper</h4>
 	<table>
 		<tr>
 			<td>Sent</td>
@@ -114,12 +115,16 @@
 				<option value="N" <?php if($COL_QSL_SENT == "N") { echo "selected=\"selected\""; } ?>>No</option>
 				<option value="Y" <?php if($COL_QSL_SENT == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 				<option value="R" <?php if($COL_QSL_SENT == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
+				<option value="Q" <?php if($COL_QSL_SENT == "Q") { echo "selected=\"selected\""; } ?>>Queued</option>
+				<option value="I" <?php if($COL_QSL_SENT == "I") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
 			</select></td>
 			<td>Recv</td>
 			<td><select name="qsl_recv">
 				<option value="N" <?php if($COL_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
 				<option value="Y" <?php if($COL_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 				<option value="R" <?php if($COL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
+				<option value="Q" <?php if($COL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
+				<option value="I" <?php if($COL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Verified (Match)</option>
 			</select></td>
 		</tr>
 		<tr>
@@ -131,12 +136,61 @@
 				<option value="" <?php if($COL_QSL_SENT_VIA == "") { echo "selected=\"selected\""; } ?>>Method</option>
 				<option value="D" <?php if($COL_QSL_SENT_VIA == "D") { echo "selected=\"selected\""; } ?>>Direct</option>
 				<option value="B" <?php if($COL_QSL_SENT_VIA == "B") { echo "selected=\"selected\""; } ?>>Bureau</option>
+				<option value="E" <?php if($COL_QSL_SENT_VIA == "E") { echo "selected=\"selected\""; } ?>>Electronic</option>
+				<option value="M" <?php if($COL_QSL_SENT_VIA == "M") { echo "selected=\"selected\""; } ?>>Manager</option>
 			</select></td>
 			<td></td>
 			<td><select name="qsl_recv_method">
 				<option value="" <?php if($COL_QSL_RCVD_VIA == "") { echo "selected=\"selected\""; } ?>>Method</option>
 				<option value="D" <?php if($COL_QSL_RCVD_VIA == "D") { echo "selected=\"selected\""; } ?>>Direct</option>
 				<option value="B" <?php if($COL_QSL_RCVD_VIA == "B") { echo "selected=\"selected\""; } ?>>Bureau</option>
+				<option value="E" <?php if($COL_QSL_RCVD_VIA == "E") { echo "selected=\"selected\""; } ?>>Electronic</option>
+				<option value="M" <?php if($COL_QSL_RCVD_VIA == "M") { echo "selected=\"selected\""; } ?>>Manager</option>
+			</select></td>
+		</tr>
+	</table>
+</div>
+
+<h4>eQSL.cc</h4>
+	<table>
+		<tr>
+			<td>Sent</td>
+			<td><select name="eqsl_sent">
+				<option value="N" <?php if($COL_EQSL_QSL_SENT == "N") { echo "selected=\"selected\""; } ?>>No</option>
+				<option value="Y" <?php if($COL_EQSL_QSL_SENT == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
+				<option value="R" <?php if($COL_EQSL_QSL_SENT == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
+				<option value="Q" <?php if($COL_EQSL_QSL_SENT == "Q") { echo "selected=\"selected\""; } ?>>Queued</option>
+				<option value="I" <?php if($COL_EQSL_QSL_SENT == "I") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
+			</select></td>
+			<td>Recv</td>
+			<td><select name="eqsl_recv">
+				<option value="N" <?php if($COL_EQSL_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
+				<option value="Y" <?php if($COL_EQSL_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
+				<option value="R" <?php if($COL_EQSL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
+				<option value="Q" <?php if($COL_EQSL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
+				<option value="I" <?php if($COL_EQSL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Verified (Match)</option>
+			</select></td>
+		</tr>
+	</table>
+
+<h4>LOTW</h4>
+	<table>
+		<tr>
+			<td>Sent</td>
+			<td><select name="lotw_sent">
+				<option value="N" <?php if($COL_LOTW_QSL_SENT == "N") { echo "selected=\"selected\""; } ?>>No</option>
+				<option value="Y" <?php if($COL_LOTW_QSL_SENT == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
+				<option value="R" <?php if($COL_LOTW_QSL_SENT == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
+				<option value="Q" <?php if($COL_LOTW_QSL_SENT == "Q") { echo "selected=\"selected\""; } ?>>Queued</option>
+				<option value="I" <?php if($COL_LOTW_QSL_SENT == "I") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
+			</select></td>
+			<td>Recv</td>
+			<td><select name="lotw_recv">
+				<option value="N" <?php if($COL_LOTW_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
+				<option value="Y" <?php if($COL_LOTW_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
+				<option value="R" <?php if($COL_LOTW_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
+				<option value="Q" <?php if($COL_LOTW_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
+				<option value="I" <?php if($COL_LOTW_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Verified (Match)</option>
 			</select></td>
 		</tr>
 	</table>
