@@ -27,24 +27,6 @@
 |
 */
 
-
-	switch (ENVIRONMENT)
-    {
-        case 'development':
-            require( __DIR__ . '/../php_error.php' );
-        break;
-    
-        case 'testing':
-            require( __DIR__ . '/../php_error.php' );
-        break;
-        
-        case 'production':
-        default:
-            exit('The application environment is not set correctly.');
-    }
-
-
-
 /*
 | -------------------------------------------------------------------
 |  Auto-load Packges
