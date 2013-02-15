@@ -20,24 +20,6 @@ margin: 10px 0;
 }
 	</style>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
-
-						<script type="text/javascript"> 
-  function initialize() {
-	var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
-	var myOptions = {
-	  zoom: 4,
-	  center: myLatlng,
-	  mapTypeId: google.maps.MapTypeId.ROADMAP
-	}
-	var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-
-	var marker = new google.maps.Marker({
-		position: myLatlng, 
-		map: map,
-		title:"Hello World!"
-	});   
-  }
-</script> 
 </head>
 
 <body onload="initialize()">
@@ -150,27 +132,24 @@ margin: 10px 0;
 <div id="map_canvas" style="width: 340px; height: 250px"></div> 
 
 <?php
-
 	if($row->COL_GRIDSQUARE != null) {
-				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
-				
-				$lat = $stn_loc[0];
-				$lng = $stn_loc[1];
-			} else {
-				$query = $this->db->query('
-					SELECT *
-					FROM dxcc
-					WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
-					ORDER BY LENGTH( prefix ) DESC
-					LIMIT 1 
-				');
+		$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);			
+		$lat = $stn_loc[0];
+		$lng = $stn_loc[1];
+	} else {
+		$query = $this->db->query('
+			SELECT *
+			FROM dxcc
+			WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
+			ORDER BY LENGTH( prefix ) DESC
+			LIMIT 1 
+		');
 
-				foreach ($query->result() as $dxcc) {
-					$lat = $dxcc->lat;
-					$lng = $dxcc->long;
-				}
-			}
-
+		foreach ($query->result() as $dxcc) {
+			$lat = $dxcc->lat;
+			$lng = $dxcc->long;
+		}
+	}
 ?>
 
 						<script type="text/javascript"> 
