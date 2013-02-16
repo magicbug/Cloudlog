@@ -77,7 +77,7 @@
 	  google.setOnLoadCallback(barchart);
 	  function barchart() {
 		var data = google.visualization.arrayToDataTable([
-		  ['Year', 'QSO'],
+		  ['Year', 'QSOs'],
 		  <?php foreach($totals_year->result() as $qso_numbers) { ?>
 		  ['<?php echo $qso_numbers->year; ?>',  <?php echo $qso_numbers->total; ?>],
 		  <?php } ?>
