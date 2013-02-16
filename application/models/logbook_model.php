@@ -309,15 +309,23 @@ class Logbook_model extends CI_Model {
         return $query;
     }
   
-  function get_todays_qsos() {
+	function get_todays_qsos() {
+		$morning = date('Y-m-d 00:00:00');
+		$night = date('Y-m-d 23:59:59');
+		$query = $this->db->query('SELECT * FROM '.$this->config->item('table_name').' WHERE COL_TIME_ON between \''.$morning.'\' AND \''.$night.'\'');
+		return $query;
+	}
 
-    $morning = date('Y-m-d 00:00:00');
-    $night = date('Y-m-d 23:59:59');
-    $query = $this->db->query('SELECT * FROM '.$this->config->item('table_name').' WHERE COL_TIME_ON between \''.$morning.'\' AND \''.$night.'\'');
-
-    return $query;
-  }
-  
+	function totals_year() {
+		$query = $this->db->query('
+		SELECT DATE_FORMAT(COL_TIME_ON, \'%Y\') as \'year\',
+		COUNT(COL_PRIMARY_KEY) as \'total\'
+		FROM '.$this->config->item('table_name').'
+		GROUP BY DATE_FORMAT(COL_TIME_ON, \'%Y\')
+		');
+		return $query;
+	}
+	  
     /* Return total number of qsos */
      function total_qsos() {
         $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').'');

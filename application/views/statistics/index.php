@@ -73,6 +73,27 @@
 	}
 
 	</script>
+	<script type="text/javascript">
+	  google.setOnLoadCallback(barchart);
+	  function barchart() {
+		var data = google.visualization.arrayToDataTable([
+		  ['Year', 'QSO'],
+		  <?php foreach($totals_year->result() as $qso_numbers) { ?>
+		  ['<?php echo $qso_numbers->year; ?>',  <?php echo $qso_numbers->total; ?>],
+		  <?php } ?>
+		]);
+
+		var options = {
+		  title: 'Total QSOs Per Year',
+		  vAxis: {title: 'QSOs',  titleTextStyle: {color: 'black'}},
+		  hAxis: {title: 'Year', titleTextStyle: {color: 'black'}}
+
+		};
+
+		var chart = new google.visualization.ColumnChart(document.getElementById('totals_year'));
+		chart.draw(data, options);
+	  }
+	</script>
 
 <div id="container">
 
@@ -85,7 +106,8 @@
 	</ul>
 	 
 	<div class="pill-content">
-	  <div class="active" id="home"><div id="modechart_div"></div> <div id="bandchart_div"></div></div>
+	  <div class="active" id="home">
+	<div id="totals_year" style="width: 900px; height: 500px;"></div><div id="modechart_div"></div> <div id="bandchart_div"></div></div>
 	  <div id="space"><div id="satchart_div"></div></div>
 	</div>
 
