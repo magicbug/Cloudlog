@@ -71,18 +71,19 @@
 			</li>
 			
 			<li class="dropdown" data-dropdown="dropdown" >
-			    <a href="#" class="dropdown-toggle">Admin</a>
-			    <ul class="dropdown-menu">
-			     <li><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
-				 <li><a href="<?php echo site_url('radio');?>" title="Backup">Radios</a></li>
-			     <li><a href="<?php echo site_url('backup');?>" title="Backup">Backup</a></li>
-			     <li><a href="<?php echo site_url('adif/import');?>" title="ADIF Import">ADIF Import</a></li>
-			     <!-- <li><a href="<?php echo site_url('adif/export');?>" title="ADIF Export">ADIF Export</a></li> -->
-				 <li><a href="<?php echo site_url('export');?>" title="Data Export">Data Export</a></li>
-			     <li><a href="<?php echo site_url('api/help');?>" title="API">API</a></li>
-			</ul>
+				<a href="#" class="dropdown-toggle">Admin</a>
+				<ul class="dropdown-menu">
+					<li><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
+					<li><a href="<?php echo site_url('radio');?>" title="Backup">Radios</a></li>
+					<li><a href="<?php echo site_url('backup');?>" title="Backup">Backup</a></li>
+					<li><a href="<?php echo site_url('adif/import');?>" title="ADIF Import">ADIF Import</a></li>
+					<!-- <li><a href="<?php echo site_url('adif/export');?>" title="ADIF Export">ADIF Export</a></li> -->
+					<li><a href="<?php echo site_url('export');?>" title="Data Export">Data Export</a></li>
+					<li><a href="<?php echo site_url('api/help');?>" title="API">API</a></li>
+					<li><a href="<?php echo site_url('lotw/import');?>" title="LoTW Import">LoTW Import</a></li>
+				</ul>
 			<?php } ?>
-          </ul>
+        	</ul>
 
 		<!-- Search Form -->
         <form method="post" action="<?php echo site_url('search'); ?>"><input type="text" name="callsign" placeholder="Search Callsign"></form>
