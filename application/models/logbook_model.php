@@ -551,6 +551,39 @@ class Logbook_model extends CI_Model {
         $this->db->where('COL_PRIMARY_KEY', $id);
         $this->db->delete($this->config->item('table_name')); 
     }
+    
+	/* Used to check if the qso is already in the database */
+    function import_check($datetime, $callsign, $band) {
+		
+		$this->db->select('COL_TIME_ON, COL_CALL, COL_BAND');
+		$this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"'); 
+		$this->db->where('COL_CALL', $callsign);
+		$this->db->where('COL_BAND', $band); 
+		
+		$query = $this->db->get($this->config->item('table_name'));
+		
+		if ($query->num_rows() > 0)
+		{
+			return "Found";
+		} else {
+			return "No Match";
+		}
+	}
+	
+	function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status) {
+		$data = array(
+			   'COL_LOTW_QSLRDATE' => $qsl_date,
+			   'COL_LOTW_QSL_RCVD' => $qsl_status
+		);
+
+		$this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"'); 
+		$this->db->where('COL_CALL', $callsign);
+		$this->db->where('COL_BAND', $band); 
+		
+		$this->db->update($this->config->item('table_name'), $data); 
+		
+		return "Updated";
+	}
 
     function import($record) {
         // Join date+time
