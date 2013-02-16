@@ -125,6 +125,11 @@ margin: 10px 0;
 				<p>QSL Card has been received direct</p>
 				<?php } ?>
 			<?php } ?>
+			
+				<h3>LoTW</h3>
+				<?php if($row->COL_LOTW_QSL_RCVD == "Y") { ?>
+					<p>This QSO is confirmed on Lotw</p>
+				<?php } ?>
 		</div>
 		
 		<div id="stat">
