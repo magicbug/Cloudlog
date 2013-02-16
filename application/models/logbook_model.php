@@ -108,7 +108,7 @@ class Logbook_model extends CI_Model {
                         $data = array(
                                 'COL_TIME_ON' => $datetime,
                                 'COL_TIME_OFF' => $datetime,
-                                'COL_CALL' => strtoupper($this->input->post('callsign')),
+                                'COL_CALL' => strtoupper(trim($this->input->post('callsign'))),
                                 'COL_BAND' => $this->input->post('band'),
                                 'COL_FREQ' => $this->input->post('freq_display'),
                                 'COL_MODE' => $this->input->post('mode'),
@@ -131,7 +131,7 @@ class Logbook_model extends CI_Model {
                                 'COL_OPERATOR' => $this->session->userdata('user_callsign'),
                                 'COL_QTH' => $this->input->post('qth'),
                                 'COL_PROP_MODE' => $prop_mode,
-                                'COL_IOTA' => $this->input->post('iota_ref'),
+                                'COL_IOTA' => trim($this->input->post('iota_ref')),
                                 'COL_MY_GRIDSQUARE' => $locator,
                                 'COL_DISTANCE' => "0",
                                 'COL_FREQ_RX' => 0,
