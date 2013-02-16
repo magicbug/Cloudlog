@@ -35,3 +35,7 @@ input[type="text"] {
 .topbar input {
 	width: 100px !important;
 }
+
+input#country {
+	width: 180px;
+}
