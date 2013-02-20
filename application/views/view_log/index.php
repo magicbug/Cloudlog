@@ -17,7 +17,7 @@
 
 			$(".editbox").fancybox({
 				'autoDimensions'	: false,
-				'width'         	: 450,
+				'width'         	: 600,
 				'height'        	: 550,
 				'transitionIn'		: 'fade',
 				'transitionOut'		: 'fade',
