@@ -121,7 +121,9 @@ class User_Model extends CI_Model {
 					'user_locator' => $fields['user_locator'],
 					'user_firstname' => $fields['user_firstname'],
 					'user_lastname' => $fields['user_lastname'],
-					'user_timezone' => $fields['user_timezone']
+					'user_timezone' => $fields['user_timezone'],
+					'user_lotw_name' => $fields['user_lotw_name'],
+					'user_lotw_password' => $fields['user_lotw_password']
 				);
 	
 				// Check to see if the user is allowed to change user levels
