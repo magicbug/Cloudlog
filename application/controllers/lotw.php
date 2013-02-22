@@ -31,7 +31,16 @@ class Lotw extends CI_Controller {
 		}
 		else
 		{
-			if ($this->input->post('lotwimport') == 'upload')
+			if ($this->input->post('lotwimport') == 'fetch')
+			{
+				// Probably need something like
+				// $this->load->library('arrl_lotw');
+				// $this->arrl_lotw->fetch_report(someargs)
+				// Then dump that file into the uploads directory
+				// Then continue on with the below code using the file that
+				// got fetched instead of the uploaded one.
+			}
+			else
 			{
 				$data = array('upload_data' => $this->upload->data());
 			
