@@ -19,6 +19,9 @@ class Lotw extends CI_Controller {
 		$config['allowed_types'] = 'adi|ADI';
 
 		$this->load->library('upload', $config);
+		
+		$this->load->model('logbook_model');
+		
 		if ($this->input->post('lotwimport') == 'fetch')
 		{			
 			$file = $config['upload_path'] . 'lotwreport_download.adi';
@@ -29,23 +32,39 @@ class Lotw extends CI_Controller {
     		$data['user_lotw_name'] = $q->user_lotw_name;
 			$data['user_lotw_password'] = $q->user_lotw_password;
 			
-			// TODO: Validate that LoTW credentials are not empty
-			// TODO: Query the logbook to determine when the last LoTW confirmation was
-			// TODO: Build the URL to download a report file that matches the format of one that a user would download themselves
+			// Validate that LoTW credentials are not empty
+			// TODO: We don't actually see the error message
+			if ($data['user_lotw_name'] == '' || $data['user_lotw_password'] == '')
+			{
+				$this->session->set_flashdata('warning', 'You have not defined your ARRL LoTW credentials!'); redirect('dashboard');
+			}
+			
+			// Query the logbook to determine when the last LoTW confirmation was
+			$lotw_last_qsl_date = $this->logbook_model->lotw_last_qsl_date();
+						
 			// TODO: Consolidate code
+			// TODO: Specifiy in config file whether we want LoTW confirms as V or Y. Both are acceptable under ADIF specification. HRD seems to use V. Everyone else that I've used uses Y.
 			
 			// Build URL for LoTW report file
 			$lotw_url = "https://p1k.arrl.org/lotwuser/lotwreport.adi?";
 			$lotw_url .= "login=" . $data['user_lotw_name'];
 			$lotw_url .= "&password=" . $data['user_lotw_password'];
-			$lotw_url .= "&qso_query=1";
+			$lotw_url .= "&qso_query=1&qso_qsl='yes'";
+			
+			//TODO: Option to specifiy whether we download location data from LoTW or not
+			//$lotw_url .= "&qso_qsldetail=\"yes\";
+			
+			$lotw_url .= "&qso_qslsince=";
+			$lotw_url .= "$lotw_last_qsl_date";
+			
+			// Only pull back entries that belong to this callsign
+			$lotw_call = $this->session->userdata('user_callsign');
+			$lotw_url .= "&qso_owncall=$lotw_call";
 			
 			file_put_contents($file, file_get_contents($lotw_url));
 			
 			ini_set('memory_limit', '-1');
 			set_time_limit(0);
-
-			$this->load->model('logbook_model');
 
 			$this->load->library('adif_parser');
 
@@ -124,8 +143,6 @@ class Lotw extends CI_Controller {
 		
 				ini_set('memory_limit', '-1');
 				set_time_limit(0);
-
-				$this->load->model('logbook_model');
 
 				$this->load->library('adif_parser');
 
