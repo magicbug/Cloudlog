@@ -19,44 +19,51 @@ class Lotw extends CI_Controller {
 		$config['allowed_types'] = 'adi|ADI';
 
 		$this->load->library('upload', $config);
-
-		if ( ! $this->upload->do_upload())
+		if ($this->input->post('lotwimport') == 'fetch')
 		{
+			// Probably need something like
+			// $this->load->library('arrl_lotw');
+			// $this->arrl_lotw->fetch_report(someargs)
+			// Then dump that file into the uploads directory
+			// Then continue on with the below code using the file that
+			// got fetched instead of the uploaded one.
+			// $xml = file_get_contents("http://www.example.com/file.xml");
+			// http://us.php.net/manual/en/function.file.php
 			
-			$data['error'] = $this->upload->display_errors();
-
-			$this->load->view('layout/header', $data);
-			$this->load->view('lotw/import');
-			$this->load->view('layout/footer');
+			$file = $config['upload_path'] . 'lotwreport_download.adi';
+			
+			file_put_contents($file, file_get_contents("https://p1k.arrl.org/lotwuser/lotwreport.adi?login=______&password=______&qso_query=1"));
+			
+			
 		}
 		else
 		{
-			if ($this->input->post('lotwimport') == 'fetch')
+			if ( ! $this->upload->do_upload())
 			{
-				// Probably need something like
-				// $this->load->library('arrl_lotw');
-				// $this->arrl_lotw->fetch_report(someargs)
-				// Then dump that file into the uploads directory
-				// Then continue on with the below code using the file that
-				// got fetched instead of the uploaded one.
+			
+				$data['error'] = $this->upload->display_errors();
+
+				$this->load->view('layout/header', $data);
+				$this->load->view('lotw/import');
+				$this->load->view('layout/footer');
 			}
 			else
 			{
 				$data = array('upload_data' => $this->upload->data());
-			
+		
 				ini_set('memory_limit', '-1');
 				set_time_limit(0);
-	
+
 				$this->load->model('logbook_model');
-	
+
 				$this->load->library('adif_parser');
 
 				$this->adif_parser->load_from_file('./uploads/'.$data['upload_data']['file_name']);
-	
+
 				$this->adif_parser->initialize();
-	
+
 				$table = "<table>";
-			
+		
 				while($record = $this->adif_parser->get_record())
 				{
 					if(count($record) == 0)
@@ -64,7 +71,7 @@ class Lotw extends CI_Controller {
 						break;
 					};
 
-				
+			
 
 					//echo date('Y-m-d', strtotime($record['qso_date']))."<br>";
 					//echo date('H:m', strtotime($record['time_on']))."<br>";
@@ -73,9 +80,9 @@ class Lotw extends CI_Controller {
 
 					//echo $record["call"]."<br>";
 					//print_r($record->);
-				
+			
 					$time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
-				
+			
 					$qsl_date = date('Y-m-d', strtotime($record['qslrdate'])) ." ".date('H:i', strtotime($record['qslrdate']));
 
 					if (isset($record['time_off'])) {
@@ -83,10 +90,10 @@ class Lotw extends CI_Controller {
 					} else {
 					   $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));  
 					}
-				
+			
 					$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
 					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd']);
-				
+			
 					$table .= "<tr>";
 						$table .= "<td>".$time_on."</td>";
 						$table .= "<td>".$record['call']."</td>";
@@ -97,21 +104,18 @@ class Lotw extends CI_Controller {
 						$table .= "<td>LoTW Record: ".$lotw_status."</td>";
 					$table .= "<tr>";
 				};
-			
+		
 				$table .= "</table>";
 
 				unlink('./uploads/'.$data['upload_data']['file_name']);
 
 				$data['lotw_table'] = $table;
-			
+		
 				$data['page_title'] = "LoTW ADIF Information";
 				$this->load->view('layout/header', $data);
 				$this->load->view('lotw/analysis');
 				$this->load->view('layout/footer');
 			}
-
 		}
-	}
-
-
-}
+	} // end function
+} // end class
