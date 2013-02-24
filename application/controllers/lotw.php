@@ -14,7 +14,7 @@ class Lotw extends CI_Controller {
 	
 	private function loadFromFile($filepath)
 	{
-	ini_set('memory_limit', '-1');
+		ini_set('memory_limit', '-1');
 		set_time_limit(0);
 
 		$this->load->library('adif_parser');
@@ -68,7 +68,7 @@ class Lotw extends CI_Controller {
 
 		$table .= "</table>";
 
-		unlink('./uploads/'.$data['upload_data']['file_name']);
+		unlink($filepath);
 
 		$data['lotw_table'] = $table;
 
@@ -130,7 +130,7 @@ class Lotw extends CI_Controller {
 			file_put_contents($file, file_get_contents($lotw_url));
 			
 			ini_set('memory_limit', '-1');
-			loadFromFile($file);
+			$this->loadFromFile($file);
 		}
 		else
 		{
@@ -147,7 +147,7 @@ class Lotw extends CI_Controller {
 			{
 				$data = array('upload_data' => $this->upload->data());
 		
-				loadFromFile('./uploads/'.$data['upload_data']['file_name']);
+				$this->loadFromFile('./uploads/'.$data['upload_data']['file_name']);
 			}
 		}
 	} // end function
