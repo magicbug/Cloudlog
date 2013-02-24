@@ -51,7 +51,13 @@ class Lotw extends CI_Controller {
 			} else {
 			   $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));  
 			}
-	
+			
+			// If defined in the config file that we want a V (for Verified) instead of a Y (for Yes), use that
+			if ($this->config->item('lotw_rcvd_mark') != "Y" && $record['qsl_rcvd'] == "Y")
+			{
+				$record['qsl_rcvd'] = "V";
+			}
+			
 			$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
 			$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd']);
 	
@@ -112,7 +118,7 @@ class Lotw extends CI_Controller {
 			// TODO: Specifiy in config file whether we want LoTW confirms as V or Y. Both are acceptable under ADIF specification. HRD seems to use V. Everyone else that I've used uses Y.
 			
 			// Build URL for LoTW report file
-			$lotw_url = "https://p1k.arrl.org/lotwuser/lotwreport.adi?";
+			$lotw_url = $this->config->item('lotw_download_url') . "?";
 			$lotw_url .= "login=" . $data['user_lotw_name'];
 			$lotw_url .= "&password=" . $data['user_lotw_password'];
 			$lotw_url .= "&qso_query=1&qso_qsl='yes'";
