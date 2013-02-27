@@ -4,7 +4,8 @@ class Migration_add_config_table extends CI_Migration {
 
         public function up()
         {
-
+				$this->dbforge->add_field('id');
+				
                 $this->dbforge->add_field(array(
                         'lotw_download_url' => array(
                                 'type' => 'VARCHAR',
@@ -19,6 +20,7 @@ class Migration_add_config_table extends CI_Migration {
                                 'constraint' => 1,
                         ),
                 ));
+				
 				
                 $this->dbforge->create_table('config');
 				
