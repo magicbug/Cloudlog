@@ -14,6 +14,11 @@ class Lotw extends CI_Controller {
 	
 	private function loadFromFile($filepath)
 	{
+		// Figure out how we should be marking QSLs confirmed via LoTW
+		$query = $query = $this->db->query('SELECT lotw_rcvd_mark FROM config');
+		$q = $query->row();
+		$config['lotw_rcvd_mark'] = $q->lotw_rcvd_mark;
+	
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
 
@@ -52,10 +57,10 @@ class Lotw extends CI_Controller {
 			   $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));  
 			}
 			
-			// If defined in the config file that we want a V (for Verified) instead of a Y (for Yes), use that
-			if ($this->config->item('lotw_rcvd_mark') != "Y" && $record['qsl_rcvd'] == "Y")
+			// If we have a positive match from LoTW, record it in the DB according to the user's preferences
+			if ($record['qsl_rcvd'] == "Y")
 			{
-				$record['qsl_rcvd'] = "V";
+				$record['qsl_rcvd'] = $config['lotw_rcvd_mark'];
 			}
 			
 			$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
@@ -89,7 +94,7 @@ class Lotw extends CI_Controller {
 
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'adi|ADI';
-
+		
 		$this->load->library('upload', $config);
 		
 		$this->load->model('logbook_model');
@@ -103,6 +108,11 @@ class Lotw extends CI_Controller {
     		$q = $query->row();
     		$data['user_lotw_name'] = $q->user_lotw_name;
 			$data['user_lotw_password'] = $q->user_lotw_password;
+			
+			// Get URL for downloading LoTW
+			$query = $query = $this->db->query('SELECT lotw_download_url FROM config');
+			$q = $query->row();
+			$lotw_url = $q->lotw_download_url;
 			
 			// Validate that LoTW credentials are not empty
 			// TODO: We don't actually see the error message
@@ -118,7 +128,7 @@ class Lotw extends CI_Controller {
 			// TODO: Specifiy in config file whether we want LoTW confirms as V or Y. Both are acceptable under ADIF specification. HRD seems to use V. Everyone else that I've used uses Y.
 			
 			// Build URL for LoTW report file
-			$lotw_url = $this->config->item('lotw_download_url') . "?";
+			$lotw_url .= "?";
 			$lotw_url .= "login=" . $data['user_lotw_name'];
 			$lotw_url .= "&password=" . $data['user_lotw_password'];
 			$lotw_url .= "&qso_query=1&qso_qsl='yes'";

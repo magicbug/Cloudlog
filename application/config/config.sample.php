@@ -68,20 +68,6 @@ $config['qrz_password'] = "";
 
 /*
 |--------------------------------------------------------------------------
-| Logbook of The World (LoTW) Options
-|--------------------------------------------------------------------------
-|
-|  'lotw_download_url'    Download URL
-|  'lotw_upload_url'	  Upload URL
-|  'lotw_rcvd_mark'       How to mark LoTW confirmations ('Y' or 'V')
-*/
-
-$config['lotw_download_url'] = "https://p1k.arrl.org/lotwuser/lotwreport.adi";
-$config['lotw_upload_url'] = "https://p1k.arrl.org/lotwuser/upload";
-$config['lotw_rcvd_mark'] = "Y";
-
-/*
-|--------------------------------------------------------------------------
 | Base Site URL
 |--------------------------------------------------------------------------
 |
