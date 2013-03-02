@@ -11,7 +11,10 @@ class Dashboard extends CI_Controller {
 
 	public function index()
 	{
-	
+		// Check our version and run any migrations
+		$this->load->library('Migration');
+		$this->migration->current();	
+		
 		// Database connections
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');

@@ -60,7 +60,7 @@ $config['auth_level'][99] = "Administrator";
 |--------------------------------------------------------------------------
 |
 |  'username'    QRZ.com Username
-|  'password'    Default locator used to calculate bearings/distance
+|  'password'    QRZ.com Password
 */
 
 $config['qrz_username'] = "";

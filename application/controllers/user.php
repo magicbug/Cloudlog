@@ -190,6 +190,18 @@ class User extends CI_Controller {
 				$data['user_timezone'] = $q->user_timezone;
 			}
 
+			if($this->input->post('user_lotw_name')) {
+				$data['user_lotw_name'] = $this->input->post('user_lotw_name');
+			} else {
+				$data['user_lotw_name'] = $q->user_lotw_name;
+			}
+			
+			if($this->input->post('user_lotw_password')) {
+				$data['user_lotw_password'] = $this->input->post('user_lotw_password');
+			} else {
+				$data['user_lotw_password'] = $q->user_lotw_password;
+			}
+			
 			$this->load->view('user/edit', $data);
 			$this->load->view('layout/footer');
 		}

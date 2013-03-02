@@ -85,6 +85,20 @@ $this->load->helper('form');
 		<td><?php echo form_dropdown('user_timezone', $timezones, $user_timezone); ?></td>
 	</tr>
 
+	<tr>
+		<td>Logbook of The World (LoTW) Username</td>
+		<td><input type="text" name="user_lotw_name" value="<?php if(isset($user_lotw_name)) { echo $user_lotw_name; } ?>" />
+		<?php if(isset($userlotwname_error)) { echo "<div class=\"small error\">".$userlotwname_error."</div>"; } ?>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>Logbook of The World (LoTW) Password</td>
+		<td><input type="password" name="user_lotw_password" />
+		<?php if(isset($lotwpassword_error)) { echo "<div class=\"small error\">".$lotwpassword_error."</div>"; } else { ?>
+		<div class="small">Leave blank to keep existing password</div></td>
+		<?php } ?>
+	</tr>
 	
 </table>	
 <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
