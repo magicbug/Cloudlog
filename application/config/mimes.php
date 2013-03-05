@@ -101,6 +101,8 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 				'json' => array('application/json', 'text/json'),
 				'adi'	=>	'application/octet-stream',
 				'ADI'	=>	'application/octet-stream',
+				'tq8'	=>	'application/octet-stream',
+				'TQ8'	=>	'application/octet-stream',
 			);
 
 
