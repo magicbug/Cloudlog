@@ -167,4 +167,43 @@ class Lotw extends CI_Controller {
 			}
 		}
 	} // end function
+	
+	public function export() {	
+	$data['page_title'] = "LoTW .TQ8 Upload";
+
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'tq8|TQ8';
+
+		$this->load->library('upload', $config);
+
+		if ( ! $this->upload->do_upload())
+		{
+			$data['error'] = $this->upload->display_errors();
+
+			$this->load->view('layout/header', $data);
+			$this->load->view('lotw/export');
+			$this->load->view('layout/footer');
+		}
+		else
+		{
+
+			$data = array('upload_data' => $this->upload->data());
+			
+			// Curl stuff goes here
+			
+			//unlink('./uploads/'.$data['upload_data']['file_name']);
+
+			$data['page_title'] = "LoTW .TQ8 Sent";
+			$this->load->view('layout/header', $data);
+			
+			//Perhaps return some sort of success page
+			$this->load->view('lotw/analysis');
+			$this->load->view('layout/footer');
+
+
+		}
+		
+		
+	}
+	
 } // end class
