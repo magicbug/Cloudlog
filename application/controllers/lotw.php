@@ -123,9 +123,6 @@ class Lotw extends CI_Controller {
 			
 			// Query the logbook to determine when the last LoTW confirmation was
 			$lotw_last_qsl_date = $this->logbook_model->lotw_last_qsl_date();
-						
-			// TODO: Consolidate code
-			// TODO: Specifiy in config file whether we want LoTW confirms as V or Y. Both are acceptable under ADIF specification. HRD seems to use V. Everyone else that I've used uses Y.
 			
 			// Build URL for LoTW report file
 			$lotw_url .= "?";
@@ -189,15 +186,89 @@ class Lotw extends CI_Controller {
 
 			$data = array('upload_data' => $this->upload->data());
 			
+			// Figure out how we should be marking QSLs confirmed via LoTW
+			$query = $query = $this->db->query('SELECT lotw_login_url FROM config');
+			$q = $query->row();
+			$config['lotw_login_url'] = $q->lotw_login_url;
+			
+			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
+    		$q = $query->row();
+    		$config['user_lotw_name'] = $q->user_lotw_name;
+			$config['user_lotw_password'] = $q->user_lotw_password;
+			
 			// Curl stuff goes here
 			
-			//unlink('./uploads/'.$data['upload_data']['file_name']);
+			// First we need to get a cookie
+
+			// options
+			$LOGIN            = $config['user_lotw_name'];
+			$PASSWORD         = $config['user_lotw_password'];
+			$cookie_file_path = "./uploads/cookies.txt";
+			$LOGINURL         = $config['lotw_login_url']; 
+			$agent            = "Mozilla/4.0 (compatible;)";
+
+
+			// begin script
+			$ch = curl_init(); 
+
+			// extra headers
+			$headers[] = "Accept: */*";
+			$headers[] = "Connection: Keep-Alive";
+
+			// basic curl options for all requests
+			curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
+			curl_setopt($ch, CURLOPT_HEADER,  0);
+			
+			// TODO: These SSL things should probably be set to true :)
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);         
+			curl_setopt($ch, CURLOPT_USERAGENT, $agent); 
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); 
+			curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file_path); 
+			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path); 
+
+			// Set login URL
+			curl_setopt($ch, CURLOPT_URL, $LOGINURL);
+			
+			$fields['login'] = $LOGIN;
+			$fields['password'] = $PASSWORD;
+			$fields['acct_sel'] = "";
+			
+			// set postfields using what we extracted from the form
+			$POSTFIELDS = http_build_query($fields); 
+
+			// set post options
+			curl_setopt($ch, CURLOPT_POST, 1); 
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $POSTFIELDS); 
+
+			// perform login
+			// TODO: probably should look at result at some point to verify that our login worked.
+			$result = curl_exec($ch);  
+			
+			// Now we need to use that cookie and upload the file
+			// change URL to upload destination URL
+			curl_setopt($ch, CURLOPT_URL, $config['lotw_login_url']);
+			
+			// Grab the file
+			$postfile = array(
+        		"upfile"=>"@./uploads/".$data['upload_data']['file_name'],
+    		);
+    		
+    		//Upload it
+    		//TODO: Read the output
+    		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfile); 
+    		$response = curl_exec($ch);
+			 
+			// Now we need to clean up
+			unlink($cookie_file_path);
+			unlink('./uploads/'.$data['upload_data']['file_name']);
 
 			$data['page_title'] = "LoTW .TQ8 Sent";
 			$this->load->view('layout/header', $data);
 			
 			//Perhaps return some sort of success page
-			$this->load->view('lotw/analysis');
+			$this->load->view('lotw/export');
 			$this->load->view('layout/footer');
 
 
