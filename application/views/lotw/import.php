@@ -4,7 +4,7 @@
 <?php echo form_open_multipart('lotw/import');?>
 <table>
 	<tr>
-		<td><input type="radio" name="lotwimport" id="upload" value="upload" checked <?=set_radio('lotwimport','upload') ?> /> Upload a file</td>
+		<td><input type="radio" name="lotwimport" id="upload" value="upload" checked /> Upload a file</td>
 		<td>
 			<p>Upload the Exported ADIF file from LoTW from the <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a> Area, to mark QSOs as confirmed on LOTW.</p>
 			<p><span class="label important">Important</span> Log files must have the file type .adi</p>
@@ -12,7 +12,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><input type="radio" name="lotwimport" id="fetch" value="fetch" <?=set_radio('lotwimport','fetch') ?> /> Pull LoTW data for me</td>
+		<td><input type="radio" name="lotwimport" id="fetch" value="fetch" /> Pull LoTW data for me</td>
 		<td>
 			<p>Cloudlog will use the LoTW username an password stored in your user profile to download a report from LoTW for you. The report Cloudlog downloads will have all confirmations since your last LoTW confirmation, up until now.</p>
 		</td>
