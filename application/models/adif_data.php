@@ -31,6 +31,15 @@ class adif_data extends CI_Model {
         
         return $query;
     }
+    
+    function mark_lotw_sent($id) {
+       $data = array(
+       		'COL_LOTW_QSL_SENT' => 'Y'
+    	  );
+
+    	$this->db->where('COL_PRIMARY_KEY', $id);
+    	$this->db->update($this->config->item('table_name'), $data); 
+    }
 }
 
 ?>

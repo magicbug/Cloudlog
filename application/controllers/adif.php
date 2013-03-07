@@ -59,6 +59,11 @@ class adif extends CI_Controller {
 		$data['qsos'] = $this->adif_data->export_lotw();
 
 		$this->load->view('adif/data/exportall', $data);
+		
+		foreach ($data['qsos']->result() as $qso)
+		{
+			$this->adif_data->mark_lotw_sent($qso->COL_PRIMARY_KEY);
+		}
 	}
 	
 	public function import() {	
