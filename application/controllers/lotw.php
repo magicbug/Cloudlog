@@ -118,7 +118,7 @@ class Lotw extends CI_Controller {
 			// TODO: We don't actually see the error message
 			if ($data['user_lotw_name'] == '' || $data['user_lotw_password'] == '')
 			{
-				$this->session->set_flashdata('warning', 'You have not defined your ARRL LoTW credentials!'); redirect('dashboard');
+				$this->session->set_flashdata('warning', 'You have not defined your ARRL LoTW credentials!'); redirect('lotw/import');
 			}
 			
 			// Query the logbook to determine when the last LoTW confirmation was
@@ -182,8 +182,7 @@ class Lotw extends CI_Controller {
 			$this->load->view('layout/footer');
 		}
 		else
-		{
-
+		{	
 			$data = array('upload_data' => $this->upload->data());
 			
 			// Figure out how we should be marking QSLs confirmed via LoTW
@@ -191,22 +190,25 @@ class Lotw extends CI_Controller {
 			$q = $query->row();
 			$config['lotw_login_url'] = $q->lotw_login_url;
 			
+			// Set some fields that we're going to need for ARRL login
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
     		$q = $query->row();
-    		$config['user_lotw_name'] = $q->user_lotw_name;
-			$config['user_lotw_password'] = $q->user_lotw_password;
+    		$fields['login'] = $q->user_lotw_name;
+			$fields['password'] = $q->user_lotw_password;
+			$fields['acct_sel'] = "";
 			
+			if ($fields['login'] == '' || $fields['password'] == '')
+			{
+				$this->session->set_flashdata('warning', 'You have not defined your ARRL LoTW credentials!'); redirect('lotw/status');
+			}
+				
 			// Curl stuff goes here
 			
 			// First we need to get a cookie
 
 			// options
-			$LOGIN            = $config['user_lotw_name'];
-			$PASSWORD         = $config['user_lotw_password'];
 			$cookie_file_path = "./uploads/cookies.txt";
-			$LOGINURL         = $config['lotw_login_url']; 
 			$agent            = "Mozilla/4.0 (compatible;)";
-
 
 			// begin script
 			$ch = curl_init(); 
@@ -229,11 +231,7 @@ class Lotw extends CI_Controller {
 			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path); 
 
 			// Set login URL
-			curl_setopt($ch, CURLOPT_URL, $LOGINURL);
-			
-			$fields['login'] = $LOGIN;
-			$fields['password'] = $PASSWORD;
-			$fields['acct_sel'] = "";
+			curl_setopt($ch, CURLOPT_URL, $config['lotw_login_url']);
 			
 			// set postfields using what we extracted from the form
 			$POSTFIELDS = http_build_query($fields); 
@@ -243,8 +241,12 @@ class Lotw extends CI_Controller {
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $POSTFIELDS); 
 
 			// perform login
-			// TODO: probably should look at result at some point to verify that our login worked.
 			$result = curl_exec($ch);  
+			if (stristr($result, "Username/password incorrect"))
+			{
+			   $this->session->set_flashdata('warning', 'Your ARRL username and/or password is incorrect.'); redirect('lotw/status');
+			}
+			
 			
 			// Now we need to use that cookie and upload the file
 			// change URL to upload destination URL
@@ -256,25 +258,34 @@ class Lotw extends CI_Controller {
     		);
     		
     		//Upload it
-    		//TODO: Read the output
     		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfile); 
     		$response = curl_exec($ch);
-			 
+			if (stristr($response, "accepted"))
+			{
+			   $this->session->set_flashdata('lotw_status', 'accepted');
+			   $data['page_title'] = "LoTW .TQ8 Sent";
+			} 
+			elseif (stristr($response, "rejected"))
+			{
+					$this->session->set_flashdata('lotw_status', 'rejected');
+					$data['page_title'] = "LoTW .TQ8 Sent";
+			}
+			else
+			{
+				// If we're here, we didn't find what we're looking for in the ARRL response
+				// and LoTW is probably down or broken.
+				$this->session->set_flashdata('warning', 'Did not receive proper response from LoTW. Try again later.');
+				$data['page_title'] = "LoTW .TQ8 Not Sent";
+			}
+			
 			// Now we need to clean up
 			unlink($cookie_file_path);
 			unlink('./uploads/'.$data['upload_data']['file_name']);
-
-			$data['page_title'] = "LoTW .TQ8 Sent";
-			$this->load->view('layout/header', $data);
 			
-			//Perhaps return some sort of success page
-			$this->load->view('lotw/export');
+			$this->load->view('layout/header', $data);
+			$this->load->view('lotw/status');
 			$this->load->view('layout/footer');
-
-
-		}
-		
-		
+		}	
 	}
 	
 } // end class
