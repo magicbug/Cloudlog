@@ -49,6 +49,23 @@ class adif extends CI_Controller {
 		
 	}
 
+	public function export_lotw()
+	{
+		// Set memory limit to unlimited to allow heavy usage
+		ini_set('memory_limit', '-1');
+		
+		$this->load->model('adif_data');
+
+		$data['qsos'] = $this->adif_data->export_lotw();
+
+		$this->load->view('adif/data/exportall', $data);
+		
+		foreach ($data['qsos']->result() as $qso)
+		{
+			$this->adif_data->mark_lotw_sent($qso->COL_PRIMARY_KEY);
+		}
+	}
+	
 	public function import() {	
 		$data['page_title'] = "ADIF Import";
 
