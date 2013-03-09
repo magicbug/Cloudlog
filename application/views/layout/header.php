@@ -81,6 +81,7 @@
 					<li><a href="<?php echo site_url('export');?>" title="Data Export">Data Export</a></li>
 					<li><a href="<?php echo site_url('api/help');?>" title="API">API</a></li>
 					<li><a href="<?php echo site_url('lotw/import');?>" title="LoTW Import">LoTW Import</a></li>
+					<li><a href="<?php echo site_url('lotw/export');?>" title="LoTW Export">LoTW Export</a></li>
 				</ul>
 			<?php } ?>
         	</ul>
