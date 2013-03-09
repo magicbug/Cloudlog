@@ -36,7 +36,8 @@ class adif_data extends CI_Model {
        $data = array(
        		'COL_LOTW_QSL_SENT' => 'Y'
     	  );
-
+	
+		$this->db->set('COL_LOTW_QSLSDATE', 'CURDATE()', FALSE); 
     	$this->db->where('COL_PRIMARY_KEY', $id);
     	$this->db->update($this->config->item('table_name'), $data); 
     }
