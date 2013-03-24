@@ -5,27 +5,6 @@
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 
-	<script type="text/javascript">
-
-		$(document).ready(function() {
-			$(".qsobox").fancybox({
-				'autoDimensions'	: false,
-				'width'         	: 700,
-				'height'        	: 300,
-				'transitionIn'		: 'fade',
-				'transitionOut'		: 'fade',
-				'type'				: 'iframe'
-			});
-
-			$(function($) {
-		      var options = {
-		        utc: true
-		      }
-		      $('.input_time').jclock(options);
-		    });
-		});
-
-	</script>
 
 <div id="container">
 
