@@ -2,8 +2,6 @@
 
 	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-	<script type="text/javascript" src="<?php echo base_url() ;?>/js/jquery.jclock.js"></script>
-	<script type="text/javascript" src="<?php echo base_url() ;?>/js/radiohelpers.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 
