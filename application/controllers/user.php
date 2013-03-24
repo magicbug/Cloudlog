@@ -305,12 +305,11 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_name', 'Username', 'required');
 		$this->form_validation->set_rules('user_password', 'Password', 'required');
 
+		$data['user'] = $query->row();
 
 		if ($this->form_validation->run() == FALSE)
 		{
-
 			$data['page_title'] = "Login";
-
 			$this->load->view('layout/header', $data);
 			$this->load->view('user/login');
 			$this->load->view('layout/footer');
@@ -319,7 +318,7 @@ class User extends CI_Controller {
 		{
 			if($this->user_model->login() == 1) {
 				$this->session->set_flashdata('notice', 'User logged in');
-				$this->user_model->update_session($data->user_id);
+				$this->user_model->update_session($data['user']->user_id);
 				redirect('dashboard');
 			} else {
 				$this->session->set_flashdata('error', 'Incorrect username or password!');
