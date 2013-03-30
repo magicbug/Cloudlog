@@ -1,11 +1,7 @@
 <div id="container">
-<h2><?php echo $page_title; ?></h2>
 
-	<?php if($this->session->flashdata('warning')) { ?>
-    <div id="message" >
-        <?php echo $this->session->flashdata('warning'); ?>
-    </div>
-	<?php } ?>
+<h2><?php echo $page_title; ?></h2>
+<?php $this->load->view('layout/messages'); ?>
 
 	<h4>Step 1</h4>
 		<a href="<?php echo site_url('adif/export_lotw'); ?>" title="Export LoTW" target="_blank">Export an ADIF</a> file of QSOs that have not been uploaded to LoTW.

@@ -1,7 +1,7 @@
 <div id="container">
-<h2>Log in</h2>
 
-<?php echo validation_errors(); ?>
+<h2>Log in</h2>
+<?php $this->load->view('layout/messages'); ?>
 
 <form method="post" action="<?php echo site_url('user/login'); ?>" name="users">
 <table>

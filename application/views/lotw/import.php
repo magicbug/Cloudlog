@@ -1,5 +1,6 @@
 <div id="container">
 <h2><?php echo $page_title; ?></h2>
+<?php $this->load->view('layout/messages'); ?>
 
 <?php echo form_open_multipart('lotw/import');?>
 <table>
