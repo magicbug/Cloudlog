@@ -1,7 +1,7 @@
 <?php
 
 
-$db_config_path = '../application/config/database.php';
+$db_config_path = '../application/config/';
 
 // Only load the classes in case the user submitted the form
 if($_POST) {
@@ -92,7 +92,7 @@ if($_POST) {
 	<body>
 
     <h1>Install Cloudlog</h1>
-    <?php if(is_writable($db_config_path)):?>
+   <?php if(is_writable($db_config_path)):?>
 
 		  <?php if(isset($message)) {echo '<p class="error">' . $message . '</p>';}?>
 
@@ -126,9 +126,9 @@ if($_POST) {
 
 		  	<p>When you login create a new admin account and delete the m0abc user account.</p>
 
-	  <?php else: ?>
-      <p class="error">Please make the /application/config/database.php file writable. <strong>Example</strong>:<br /><br /><code>chmod 777 /application/config/database.php</code></p>
-	  <?php endif; ?>
+	 <?php else: ?>
+     <p class="error">Please make the /application/config/database.php file writable. <strong>Example</strong>:<br /><br /><code>chmod 777 /application/config/database.php</code></p>
+	 <?php endif; ?>
 
 	</body>
 </html>
