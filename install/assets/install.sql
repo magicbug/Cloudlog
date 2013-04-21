@@ -42,6 +42,22 @@ CREATE TABLE IF NOT EXISTS `api` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cat`
+--
+
+CREATE TABLE IF NOT EXISTS `cat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `radio` varchar(250) NOT NULL,
+  `frequency` int(11) NOT NULL,
+  `mode` varchar(10) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `contests`
 --
 
