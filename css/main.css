@@ -1,6 +1,13 @@
+html, body {height: 100%;}
+
+#wrap {min-height: 100%;}
+
+#main {overflow:auto; padding-bottom: 3em; /* must be same height as the footer */ }  
+	
 #container { padding-top: 50px; width: 940px; margin: 0 auto; }
 
-#footer { width: 940px; margin: 0 auto; text-align: right; }
+#footer { width: 940px; margin: -3em auto; text-align: right; position: relative; clear:both; height: 3em;
+/* margin-top must be the negative value of footer height */ }
 
 table .titles { font-weight: bold; color: #439BF6; }
 table .title { font-weight: bold; color: #439BF6; }
