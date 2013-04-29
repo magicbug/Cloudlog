@@ -1,7 +1,7 @@
 <?php
 
 
-$db_config_path = '../application/config/database.php';
+$db_config_path = '../application/config/';
 
 // Only load the classes in case the user submitted the form
 if($_POST) {
@@ -92,7 +92,7 @@ if($_POST) {
 	<body>
 
     <h1>Install Cloudlog</h1>
-    <?php if(is_writable($db_config_path)):?>
+   <?php if(is_writable($db_config_path)):?>
 
 		  <?php if(isset($message)) {echo '<p class="error">' . $message . '</p>';}?>
 
@@ -100,8 +100,8 @@ if($_POST) {
 
 		  <fieldset>
 		  	<legend>Configuration Settings</legend>
-		  	<label for="directory">Directory</label><input type="text" id="directory" value="cloudlog" class="input_text" name="directory" />
-		  	<label for="websiteurl">Website URL</label><input type="text" id="websiteurl" value="http://localhost/cloudlog" class="input_text" name="websiteurl" />
+		  	<label for="directory">Directory</label><input type="text" id="directory" value="<?php echo str_replace("/install/", "", $_SERVER['REQUEST_URI']); ?>" class="input_text" name="directory" />
+		  	<label for="websiteurl">Website URL</label><input type="text" id="websiteurl" value="http://<?php echo $_SERVER['HTTP_HOST'].str_replace("/install/", "", $_SERVER['REQUEST_URI']); ?>" class="input_text" name="websiteurl" />
 		  	<label for="locator">Default Gridsquare</label><input type="text" id="locator" value="IO91JS" class="input_text" name="locator" />
 		  </fieldset>
 
@@ -126,9 +126,9 @@ if($_POST) {
 
 		  	<p>When you login create a new admin account and delete the m0abc user account.</p>
 
-	  <?php else: ?>
-      <p class="error">Please make the /application/config/database.php file writable. <strong>Example</strong>:<br /><br /><code>chmod 777 /application/config/database.php</code></p>
-	  <?php endif; ?>
+	 <?php else: ?>
+     <p class="error">Please make the /application/config/database.php file writable. <strong>Example</strong>:<br /><br /><code>chmod 777 /application/config/database.php</code></p>
+	 <?php endif; ?>
 
 	</body>
 </html>
