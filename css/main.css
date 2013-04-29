@@ -2,7 +2,7 @@ html, body {height: 100%;}
 
 #wrap {min-height: 100%;}
 
-#main {overflow:auto; padding-bottom: 3em; /* must be same height as the footer */ }  
+#main {overflow:hidden; padding-bottom: 3em; /* must be same height as the footer */ }  
 	
 #container { padding-top: 50px; width: 940px; margin: 0 auto; }
 
