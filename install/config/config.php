@@ -25,7 +25,7 @@ $config['directory'] = "%directory%";
 |	'display_freq'	Show or Hide frequnecy info 
 */
 
-$config['table_name'] = "table_hrd_contacts_v01"; 
+$config['table_name'] = "TABLE_HRD_CONTACTS_V01"; 
 $config['locator'] = "%baselocator%"; 
 $config['display_freq'] = false;
 

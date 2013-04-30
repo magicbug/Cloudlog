@@ -17,6 +17,13 @@
 	<link rel="stylesheet" href="<?php echo base_url();?>css/bootcamp/bootstrap.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo base_url();?>css/main.css" type="text/css" />
 	
+	<!-- Sticky Footer IE -->
+	<!--[if !IE 7]>
+	<style type="text/css">
+		#wrap {display:table;height:100%}
+	</style>
+	<![endif]-->
+	
 	<!-- Theming Code Goes Here -->
 	
 	<!-- Icons -->
@@ -117,3 +124,4 @@
     </div>
 
 <div id="clear" class="clear"></div>
+<div id="wrap">

@@ -42,6 +42,22 @@ CREATE TABLE IF NOT EXISTS `api` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cat`
+--
+
+CREATE TABLE IF NOT EXISTS `cat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `radio` varchar(250) NOT NULL,
+  `frequency` int(11) NOT NULL,
+  `mode` varchar(10) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `contests`
 --
 
@@ -3563,10 +3579,10 @@ CREATE TABLE IF NOT EXISTS `notes` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `table_hrd_contacts_v01`
+-- Table structure for table `TABLE_HRD_CONTACTS_V01`
 --
 
-CREATE TABLE IF NOT EXISTS `table_hrd_contacts_v01` (
+CREATE TABLE IF NOT EXISTS `TABLE_HRD_CONTACTS_V01` (
   `COL_PRIMARY_KEY` int(11) NOT NULL AUTO_INCREMENT,
   `COL_ADDRESS` varchar(255) DEFAULT NULL,
   `COL_AGE` int(11) DEFAULT NULL,
@@ -3815,8 +3831,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_locator` varchar(255) NOT NULL,
   `user_firstname` varchar(255) NOT NULL,
   `user_lastname` varchar(255) NOT NULL,
-  `user_lotw_name` varchar(32) NULL COMMENT 'LoTW Username',
-  `user_lotw_password` varchar(64) NULL COMMENT 'LoTW Password',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name` (`user_name`),
   UNIQUE KEY `user_email` (`user_email`)
