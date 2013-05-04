@@ -78,7 +78,7 @@
 				<option value="JT65B" <?php if($this->session->userdata('mode') == "JT65B") { echo "selected=\"selected\""; } ?>>JT65B</option>
 				<option value="JT6C" <?php if($this->session->userdata('mode') == "JT6C") { echo "selected=\"selected\""; } ?>>JT6C</option>
 				<option value="JT6M" <?php if($this->session->userdata('mode') == "JT6M") { echo "selected=\"selected\""; } ?>>JT6M</option>
-				<option value="JT9" <?php if($this->session->userdata('mode') == "JT9") { echo "selected=\"selected\""; } ?>>JT9</option>
+				<option value="JT9-1" <?php if($this->session->userdata('mode') == "JT9-1") { echo "selected=\"selected\""; } ?>>JT9-1</option>
 				<option value="FSK441" <?php if($this->session->userdata('mode') == "FSK441") { echo "selected=\"selected\""; } ?>>FSK441</option>
 				<option value="JTMS" <?php if($this->session->userdata('mode') == "JTMS") { echo "selected=\"selected\""; } ?>>JTMS</option>
 				<option value="ISCAT" <?php if($this->session->userdata('mode') == "ISCAT") { echo "selected=\"selected\""; } ?>>ISCAT</option>
@@ -111,7 +111,7 @@
 
 			<tr>
 				<td class="title">RST (S)</td>
-				<td><input class="rst" name="rst_sent" type="text" size="3" value="59"> <span class="title">RST (R)</span> <input class="rst" name="rst_recv" type="text"  size="3"  value="59"></td>
+				<td><input id="rst_sent" class="rst" name="rst_sent" type="text" size="3" value="59"> <span class="title">RST (R)</span> <input id="rst_recv" class="rst" name="rst_recv" type="text"  size="3"  value="59"></td>
 			</tr>
 
 			<tr>
@@ -425,6 +425,18 @@
 				}
 
 			}
+		});
+		
+		
+		// Change report based on mode
+		$('.mode').change(function(){
+		  if($(this).val() == 'JT65' || $(this).val() == 'JT65B' || $(this).val() == 'JT6C' || $(this).val() == 'JT6M' || $(this).val() == 'FSK441' || $(this).val() == 'JTMS' || $(this).val() == 'ISCAT'){ // or this.value == 'volvo'
+			$('#rst_sent').val('-5');
+			$('#rst_recv').val('-5');
+		  } else {
+		  	$('#rst_sent').val('59');
+			$('#rst_recv').val('59');
+		  }
 		});
 	});
 </script>
