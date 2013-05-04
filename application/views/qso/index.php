@@ -433,6 +433,9 @@
 		  if($(this).val() == 'JT65' || $(this).val() == 'JT65B' || $(this).val() == 'JT6C' || $(this).val() == 'JT6M' || $(this).val() == 'FSK441' || $(this).val() == 'JTMS' || $(this).val() == 'ISCAT'){ // or this.value == 'volvo'
 			$('#rst_sent').val('-5');
 			$('#rst_recv').val('-5');
+		  } else if ($(this).val() == 'CW') {
+		  	$('#rst_sent').val('599');
+			$('#rst_recv').val('599');
 		  } else {
 		  	$('#rst_sent').val('59');
 			$('#rst_recv').val('59');
