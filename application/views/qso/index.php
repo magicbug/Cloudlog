@@ -262,7 +262,6 @@
 
 				<?php $i = 0; 
 			 foreach ($query->result() as $row) { ?>
-
 					<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
 					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); ?></td>
 					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>

@@ -224,7 +224,7 @@ class Logbook extends CI_Controller {
         if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
   
     $this->db->like('COL_CALL', $id); 
-    $this->db->limit(5);
+    $this->db->limit(16);
     $query = $this->db->get($this->config->item('table_name'));
   
     if ($query->num_rows() > 0)
@@ -246,7 +246,11 @@ class Logbook extends CI_Controller {
           echo "<td>".$row->COL_CALL."</td>";
           echo "<td>".$row->COL_RST_SENT."</td>";
           echo "<td>".$row->COL_RST_RCVD."</td>";
-          echo "<td>".$row->COL_BAND."</td>";
+          if($row->COL_SAT_NAME != null) {
+                  echo "<td>".$row->COL_SAT_NAME."</td>";
+          } else {
+                echo "<td>".$row->COL_BAND."</td>";
+          }
           echo "<td>".$row->COL_MODE."</td>";
         echo "</tr>";
       }
