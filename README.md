@@ -4,6 +4,11 @@ Cloudlog is a self-hosted PHP application, which allows you to log your amateur 
 
 Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
+## Versions
+
+* Master - Current working copy
+* Version2 - Future release highly broken and unstable
+
 ## Setup
 
 We're still working simplying the setup but you can check out the Wiki for some useful tips and howtos.
