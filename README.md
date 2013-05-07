@@ -26,7 +26,7 @@ Copyright (c) 2011 Peter Goodhall ([2E0SQL](http://www.2e0sql.co.uk)).
 * Andy (M0VKG)    [http://m0vkg.org.uk](http://m0vkg.org.uk/)
 * Gavin (M1BXF)   [http://www.geekshed.co.uk](http://www.geekshed.co.uk/)
 * Graham (W5ISP)  [http://ham.io](http://ham.io)
-* Robert (M0VFC)  [http://github.com/rmc47]https://github.com/rmc47)
+* Robert (M0VFC)  [http://github.com/rmc47](https://github.com/rmc47)
 
 ![Clublog Logo](http://www.clublog.org/images/clublog.png "Clublog Logo")
 
