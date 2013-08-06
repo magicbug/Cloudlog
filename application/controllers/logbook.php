@@ -277,31 +277,44 @@ class Logbook extends CI_Controller {
 
         $data['results'] = $query;    
 
-         $this->load->view('search/result_search.php', $data);
+        $this->load->view('search/result_search.php', $data);
     } else {
-      if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
-        // Lookup using QRZ
-        
-        $this->load->library('qrz');
-        
-        if(!$this->session->userdata('qrz_session_key')) {
-          $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));      
-          $this->session->set_userdata('qrz_session_key', $qrz_session_key);
-        }
     
-        $data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'));
-
-        
+      $this->load->model('search');
+    
+      $iota_search = $this->search->callsign_iota($id);
+      
+      
+      if ($iota_search->num_rows() > 0)
+      {
+        $data['results'] = $iota_search; 
+        $this->load->view('search/result_search.php', $data);
       } else {
-        // Lookup using hamio
-        $this->load->library('hamio');
-    
-        $data['callsign'] = $this->hamio->callsign($id);
-      }
-        
-      $data['id'] = strtoupper($id);
+             if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
+                // Lookup using QRZ
+                
+                $this->load->library('qrz');
+                
+                if(!$this->session->userdata('qrz_session_key')) {
+                  $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));      
+                  $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+                }
+            
+                $data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'));
 
-      $this->load->view('search/result', $data);
+                
+              } else {
+                // Lookup using hamio
+                $this->load->library('hamio');
+            
+                $data['callsign'] = $this->hamio->callsign($id);
+              }     
+              
+              
+              $data['id'] = strtoupper($id);
+
+              $this->load->view('search/result', $data);  
+      }
     }
   }
   
