@@ -134,6 +134,13 @@
 			</td>
 			<td><a class="editbox" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" ><img src="<?php echo base_url(); ?>/images/application_edit.png" width="16" height="16" alt="Edit" />
 			</a></td>
+			<?php if($this->config->item('callsign_tags') == true) { ?>
+				<?php if($row->COL_STATION_CALLSIGN	 != null) { ?>
+				<td><span class="label notice"><?php echo $row->COL_STATION_CALLSIGN; ?></span></td>
+				<?php } elseif($row->COL_OPERATOR != null) { ?>
+				<td><span class="label notice"><?php echo $row->COL_OPERATOR; ?></span></td>
+				<?php } ?>
+			<?php } ?>
 			<?php } ?>
 		</tr>
 		<?php $i++; } ?>
