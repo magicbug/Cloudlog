@@ -600,6 +600,8 @@ class Logbook_model extends CI_Model {
   	}
 
     function import($record) {
+        $CI =& get_instance();
+        $CI->load->library('frequency');
         // Join date+time
         //$datetime = date('Y-m-d') ." ". $this->input->post('start_time');
         //$myDate = date('Y-m-d', $record['qso_date']);
@@ -705,7 +707,9 @@ class Logbook_model extends CI_Model {
         if(isset($record['band'])) {
                 $band = $record['band'];
         } else {
-                $band = null;
+                $myfreq = str_replace(array('.', ','), '' , $record['freq'].'0');
+        
+                $band = $CI->frequency->GetBand($myfreq);
         }
         
         // Store IOTA Ref if available
@@ -755,6 +759,7 @@ class Logbook_model extends CI_Model {
         } else {
                 $srx = null;
         }
+        
 
         $this->db->where('COL_CALL', $record['call']);
         $this->db->where('COL_TIME_ON', $time_on);
@@ -767,7 +772,7 @@ class Logbook_model extends CI_Model {
                'COL_TIME_ON' => $time_on,
                'COL_TIME_OFF' => $time_off,
                'COL_CALL' => strtoupper($record['call']),
-               'COL_BAND' => $record['band'],
+               'COL_BAND' => $band,
                'COL_FREQ' => $freq,
                'COL_MODE' => $record['mode'],
                'COL_RST_RCVD' => $rst_rx,

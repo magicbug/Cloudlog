@@ -66,7 +66,8 @@ class adif extends CI_Controller {
 		}
 	}
 	
-	public function import() {	
+	public function import() {
+	
 		$data['page_title'] = "ADIF Import";
 
 		$config['upload_path'] = './uploads/';
