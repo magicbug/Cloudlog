@@ -15,14 +15,10 @@ class Migration_add_eQSL_login_and_url extends CI_Migration {
 		$this->dbforge->add_column('config', $config_fields);
 		
 		$sql = "UPDATE config SET eqsl_download_url = 'http://www.eqsl.cc/qslcard/DownloadInBox.cfm' WHERE id=1";
-		$data = array(
-   					'eqsl_download_url' => 'http://www.eqsl.cc/qslcard/DownloadInBox.cfm',
-   					'eqsl_rcvd_mark' => 'Y'
-				);
-
-		$this->db->insert('config', $data); 
+		$this->db->query($sql);
 		
-		
+		$sql = "UPDATE config SET eqsl_rcvd_mark = 'Y' WHERE id=1";
+		$this->db->query($sql);
 	}
 
 	public function down()
