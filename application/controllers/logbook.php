@@ -224,6 +224,7 @@ class Logbook extends CI_Controller {
         if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
   
     $this->db->like('COL_CALL', $id); 
+    $this->db->order_by("COL_TIME_ON", "desc"); 
     $this->db->limit(16);
     $query = $this->db->get($this->config->item('table_name'));
   
@@ -270,6 +271,7 @@ class Logbook extends CI_Controller {
 
     $this->db->like('COL_CALL', $id);
     $this->db->or_like('COL_GRIDSQUARE', $id); 
+    $this->db->order_by("COL_TIME_ON", "desc"); 
     $query = $this->db->get($this->config->item('table_name'));
 
     if ($query->num_rows() > 0)
