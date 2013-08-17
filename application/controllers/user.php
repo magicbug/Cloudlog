@@ -202,6 +202,18 @@ class User extends CI_Controller {
 				$data['user_lotw_password'] = $q->user_lotw_password;
 			}
 			
+			if($this->input->post('user_eqsl_name')) {
+				$data['user_eqsl_name'] = $this->input->post('user_eqsl_name');
+			} else {
+				$data['user_eqsl_name'] = $q->user_eqsl_name;
+			}
+			
+			if($this->input->post('user_eqsl_password')) {
+				$data['user_eqsl_password'] = $this->input->post('user_eqsl_password');
+			} else {
+				$data['user_eqsl_password'] = $q->user_eqsl_password;
+			}
+			
 			$this->load->view('user/edit', $data);
 			$this->load->view('layout/footer');
 		}
