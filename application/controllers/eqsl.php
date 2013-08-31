@@ -38,14 +38,6 @@ class eqsl extends CI_Controller {
 			};
 	
 			$time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
-	
-			$qsl_date = date('Y-m-d', strtotime($record['qslrdate'])) ." ".date('H:i', strtotime($record['qslrdate']));
-
-			if (isset($record['time_off'])) {
-				$time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_off']));
-			} else {
-			   $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));  
-			}
 			
 			// The report from eQSL should only contain entries that have been confirmed via eQSL
 			// If there's a match for the QSO from the report in our log, it's confirmed via eQSL.
@@ -53,21 +45,32 @@ class eqsl extends CI_Controller {
 			// If we have a positive match from LoTW, record it in the DB according to the user's preferences
 			if ($record['qsl_sent'] == "Y")
 			{
-				$record['qsl_sent'] = $config['lotw_rcvd_mark'];
+				$record['qsl_sent'] = $config['eqsl_rcvd_mark'];
 			}
 			
 			$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
-			//////////////////////////////////////////////
-			$eqsl_status = $this->logbook_model->eqsl_update($time_on, $record['call'], $record['band'], $record['qsl_rcvd']);
-	
+			if ($status == "Found")
+			{
+				$dupe = $this->logbook_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
+				if ($dupe == false)
+				{
+					$eqsl_status = $this->logbook_model->eqsl_update($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
+				}
+				else
+				{
+					$eqsl_status = "Already recived an eQSL for this QSO.";
+				}
+			}
+			else
+			{
+				$eqsl_status = "QSO not found";
+			}
 			$table .= "<tr>";
 				$table .= "<td>".$time_on."</td>";
 				$table .= "<td>".$record['call']."</td>";
 				$table .= "<td>".$record['mode']."</td>";
-				$table .= "<td>".$record['qsl_rcvd']."</td>";
-				$table .= "<td>".$qsl_date."</td>";
 				$table .= "<td>QSO Record: ".$status."</td>";
-				$table .= "<td>eQSL Record: ".$lotw_status."</td>";
+				$table .= "<td>eQSL Record: ".$eqsl_status."</td>";
 			$table .= "<tr>";
 		};
 
@@ -75,7 +78,7 @@ class eqsl extends CI_Controller {
 
 		unlink($filepath);
 
-		$data['lotw_table'] = $table;
+		$data['eqsl_table'] = $table;
 
 		$data['page_title'] = "eQSL ADIF Information";
 		$this->load->view('layout/header', $data);
@@ -132,6 +135,11 @@ class eqsl extends CI_Controller {
 			// Adapted from Original PHP code by Chirp Internet: www.chirp.com.au
 			
  			$input = @file_get_contents($eqsl_url) or die("Could not access file: $eqsl_url");
+ 			
+ 			// We need to make sure the ADI file has been built before we download it.
+			// Look for "Your ADIF log file has been built"
+ 			
+ 			// Get all the links on the page and grab the URL for the ADI file.
 			$regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
 			if(preg_match_all("/$regexp/siU", $input, $matches)) {
 				foreach( $matches[2] as $match )
@@ -140,14 +148,18 @@ class eqsl extends CI_Controller {
 					if (substr($match, -4, 4) == ".adi")
 					{
 						file_put_contents($file, file_get_contents("http://eqsl.cc/qslcard/" . $match));
+						ini_set('memory_limit', '-1');
+						$this->loadFromFile($file);
+						break;
 					}
+					
+					// Produce and error if we don't find the link we need.
     			}
 			}
 			
 			
 			
-			ini_set('memory_limit', '-1');
-			//$this->loadFromFile($file);
+			
 		}
 		else
 		{

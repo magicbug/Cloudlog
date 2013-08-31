@@ -605,7 +605,7 @@ class Logbook_model extends CI_Model {
 	// http://www.eqsl.cc/qslcard/ImportADIF.txt
 	function eqsl_update($datetime, $callsign, $band, $qsl_status) {
 		$data = array(
-			   'COL_EQSL_QSLRDATE' => CURRENT_TIMESTAMP, // eQSL doesn't give us a date, so let's use current
+			   'COL_EQSL_QSLRDATE' => 'CURRENT_TIMESTAMP', // eQSL doesn't give us a date, so let's use current
 			   'COL_EQSL_QSL_RCVD' => $qsl_status,
 		);
 
@@ -631,17 +631,26 @@ class Logbook_model extends CI_Model {
    		return $row->COL_EQSL_QSLRDATE;
   	}
   	
-  	// Determine if we've already received an eQSL for this QSO.. this needs writing.
+  	// Determine if we've already received an eQSL for this QSO
   	function eqsl_dupe_check($datetime, $callsign, $band, $qsl_status) {
-    	$this->db->select('COL_LOTW_QSLRDATE');
-    	$this->db->where('COL_LOTW_QSLRDATE IS NOT NULL');
-   		$this->db->order_by("COL_LOTW_QSLRDATE", "desc");
+    	$this->db->select('COL_EQSL_QSLRDATE');
+    	$this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
+    	$this->db->where('COL_CALL', $callsign);
+    	$this->db->where('COL_BAND', $band);
+    	$this->db->where('COL_EQSL_QSL_RCVD', $qsl_status);
     	$this->db->limit(1);
     	
     	$query = $this->db->get($this->config->item('table_name'));
     	$row = $query->row();
     
-   		return $row->COL_LOTW_QSLRDATE;
+   		if ($row != null)
+   		{
+   			return true;
+   		}
+   		else
+   		{
+   			return false;
+   		}
   	}
   	
     function import($record) {
