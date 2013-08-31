@@ -58,7 +58,7 @@ class eqsl extends CI_Controller {
 				}
 				else
 				{
-					$eqsl_status = "Already recived an eQSL for this QSO.";
+					$eqsl_status = "Already received an eQSL for this QSO.";
 				}
 			}
 			else
@@ -80,7 +80,7 @@ class eqsl extends CI_Controller {
 
 		$data['eqsl_table'] = $table;
 
-		$data['page_title'] = "eQSL ADIF Information";
+		$data['page_title'] = "eQSL Import Information";
 		$this->load->view('layout/header', $data);
 		$this->load->view('eqsl/analysis');
 		$this->load->view('layout/footer');
