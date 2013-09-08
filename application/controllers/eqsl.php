@@ -100,7 +100,7 @@ class eqsl extends CI_Controller {
 		{			
 			$file = $config['upload_path'] . 'eqslreport_download.adi';
 			
-			// Get credentials for LoTW
+			// Get credentials for eQSL
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
     		$q = $query->row();
     		$data['user_eqsl_name'] = $q->user_eqsl_name;
@@ -182,23 +182,63 @@ class eqsl extends CI_Controller {
 	} // end function
 	
 	public function export() {	
-	$data['page_title'] = "eQSL Report Upload";
-
-		$config['upload_path'] = './uploads/';
-		$config['allowed_types'] = 'tq8|TQ8';
-
-		$this->load->library('upload', $config);
-
-		if ( ! $this->upload->do_upload())
+		$this->load->model('logbook_model');
+		
+		$data['page_title'] = "eQSL QSO Upload";
+		
+		if ($this->input->post('eqslexport') == "export")
 		{
-			$data['error'] = $this->upload->display_errors();
-
-			$this->load->view('layout/header', $data);
-			$this->load->view('eqsl/export');
-			$this->load->view('layout/footer');
+			// Check for credentials
+			
+			// Grab the list of QSOs to send information about
+			// perform an HTTP get on each one, and grab the status back
+			$qslsnotsent = $this->logbook_model->eqsl_not_yet_sent();
+			
+			// Build out the ADIF info string
+			$adif = "";
+			foreach ($qslsnotsent->result_array() as $qsl)
+			{
+			
+			}
+			// Perform a big HTTP POST with the ADIF information at the back
+			// http://www.eqsl.cc/qslcard/ImportADIF.txt
+			
+			// Dump out a table with the results
 		}
 		else
-		{	
+		{
+			$qslsnotsent = $this->logbook_model->eqsl_not_yet_sent();
+		
+			if ($qslsnotsent->num_rows() > 0)
+			{
+				$table = "<table>";
+					$table .= "<tr class=\"titles\">";
+						$table .= "<td>Date</td>";
+						$table .= "<td>Call</td>";
+						$table .= "<td>Mode</td>";
+						$table .= "<td>Band</td>";
+					$table .= "<tr>";
+				
+				foreach ($qslsnotsent->result_array() as $qsl)
+				{
+					$table .= "<tr>";
+						$table .= "<td>".$qsl['COL_TIME_ON']."</td>";
+						$table .= "<td><a class=\"qsobox\" href=\"".site_url('qso/edit')."/".$qsl['COL_PRIMARY_KEY']."\">".strtoupper($qsl['COL_CALL'])."</a></td>";
+						$table .= "<td>".$qsl['COL_MODE']."</td>";
+						$table .= "<td>".$qsl['COL_BAND']."</td>";
+					$table .= "<tr>";
+				}
+				$table .= "</table>";
+		
+				$data['eqsl_table'] = $table;
+			}
+		}
+		
+		$this->load->view('layout/header', $data);
+		$this->load->view('eqsl/export');
+		$this->load->view('layout/footer');
+		
+		/* OLD STUFF from LOTW
 			$data = array('upload_data' => $this->upload->data());
 			
 			// Figure out how we should be marking QSLs confirmed via LoTW
@@ -230,7 +270,6 @@ class eqsl extends CI_Controller {
 			$ch = curl_init(); 
 
 			// extra headers
-			$headers[] = "Accept: */*";
 			$headers[] = "Connection: Keep-Alive";
 
 			// basic curl options for all requests
@@ -297,11 +336,11 @@ class eqsl extends CI_Controller {
 			// Now we need to clean up
 			unlink($cookie_file_path);
 			unlink('./uploads/'.$data['upload_data']['file_name']);
-			
+		
 			$this->load->view('layout/header', $data);
 			$this->load->view('eqsl/status');
 			$this->load->view('layout/footer');
-		}	
+		*/	
 	}
 	
 } // end class
