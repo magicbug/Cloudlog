@@ -34,7 +34,7 @@
 <body> 
 
 	<!-- Header -->
-
+<div id="wrap">
     <div class="topbar">
       <div class="fill">
         <div class="container">
@@ -124,4 +124,3 @@
     </div>
 
 <div id="clear" class="clear"></div>
-<div id="wrap">
