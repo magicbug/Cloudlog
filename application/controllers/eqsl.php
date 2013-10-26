@@ -188,22 +188,148 @@ class eqsl extends CI_Controller {
 		
 		if ($this->input->post('eqslexport') == "export")
 		{
-			// Check for credentials
+			// Get credentials for eQSL
+			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
+    		$q = $query->row();
+    		$data['user_eqsl_name'] = $q->user_eqsl_name;
+			$data['user_eqsl_password'] = $q->user_eqsl_password;
+			
+			// Validate that eQSL credentials are not empty
+			if ($data['user_eqsl_name'] == '' || $data['user_eqsl_password'] == '')
+			{
+				$this->session->set_flashdata('warning', 'You have not defined your eQSL.cc credentials!'); redirect('eqsl/import');
+			}
 			
 			// Grab the list of QSOs to send information about
 			// perform an HTTP get on each one, and grab the status back
 			$qslsnotsent = $this->logbook_model->eqsl_not_yet_sent();
 			
-			// Build out the ADIF info string
-			$adif = "";
+			$table = "<table>";
+					$table .= "<tr class=\"titles\">";
+						$table .= "<td>String</td>";
+						$table .= "<td>Result</td>";
+					$table .= "<tr>";
+			// Build out the ADIF info string according to specs http://eqsl.cc/qslcard/ADIFContentSpecs.cfm
 			foreach ($qslsnotsent->result_array() as $qsl)
 			{
+				$COL_QSO_DATE = date('Ymd',strtotime($qsl['COL_TIME_ON']));
+				$COL_TIME_ON = date('Hi',strtotime($qsl['COL_TIME_ON']));
+				
+				# Set up the single record file
+				$adif = "http://www.eqsl.cc/qslcard/importADIF.cfm?";
+				$adif .= "ADIFData=CloudlogUpload%20";
+				
+				/* Handy reference of escaping chars
+					"<" = 3C
+					">" = 3E
+					":" = 3A
+					" " = 20
+					"_" = 5F
+					"-" = 2D
+					"." = 2E
+				*/
+				
+				$adif .= "%3C";
+				$adif .= "ADIF%5FVER";
+				$adif .= "%3A";
+				$adif .= "4";
+				$adif .= "%3E";
+				$adif .= "1%2E00 ";
+				$adif .= "%20";
+				
+				$adif .= "%3C";
+				$adif .= "EQSL%5FUSER";
+				$adif .= "%3A";
+				$adif .= strlen($data['user_eqsl_name']);
+				$adif .= "%3E";
+				$adif .= $data['user_eqsl_name'];
+				$adif .= "%20";
+				
+				$adif .= "%3C";
+				$adif .= "EQSL%5FPSWD";
+				$adif .= "%3A";
+				$adif .= strlen($data['user_eqsl_password']);
+				$adif .= "%3E";
+				$adif .= $data['user_eqsl_password'];
+				$adif .= "%20";
+				
+				$adif .= "%3C";
+				$adif .= "EOH";
+				$adif .= "%3E";
+				
+				# Lay out the required fields
+				$adif .= "%3C";
+				$adif .= "QSO%5FDATE";
+				$adif .= "%3A";
+				$adif .= "8";
+				$adif .= "%3E";
+				$adif .= $COL_QSO_DATE;
+				$adif .= "%20";
+				
+				$adif .= "%3C";
+				$adif .= "TIME%5FON";
+				$adif .= "%3A";
+				$adif .= "4";
+				$adif .= "%3E";
+				$adif .= $COL_TIME_ON;
+				$adif .= "%20";
+				
+				$adif .= "%3C";
+				$adif .= "CALL";
+				$adif .= "%3A";
+				$adif .= strlen($qsl['COL_CALL']);
+				$adif .= "%3E";
+				$adif .= $qsl['COL_CALL'];
+				$adif .= "%20";
+				
+				$adif .= "%3C";
+				$adif .= "MODE";
+				$adif .= "%3A";
+				$adif .= strlen($qsl['COL_MODE']);
+				$adif .= "%3E";
+				$adif .= $qsl['COL_MODE'];
+				$adif .= "%20";
+				
+				$adif .= "%3C";
+				$adif .= "BAND";
+				$adif .= "%3A";
+				$adif .= strlen($qsl['COL_BAND']);
+				$adif .= "%3E";
+				$adif .= $qsl['COL_BAND'];
+				$adif .= "%20";
+				
+				# End all the required fields
+				
+				
+				# Tie a bow on it!
+				$adif .= "%3C";
+				$adif .= "EOR";
+				$adif .= "%3E";
+				
+				$table .= "<tr>";
+						$table .= "<td>".$adif."</td>";
+						//$result = http_parse_message(http_get($adif))->body;
+						$table .= "<td>Result</td>";
+				$table .= "<tr>";
 			
 			}
 			// Perform a big HTTP POST with the ADIF information at the back
 			// http://www.eqsl.cc/qslcard/ImportADIF.txt
 			
 			// Dump out a table with the results
+			$data['eqsl_table'] = $table;
+			
+			
+			// Things we might get back
+			// Result: 0 out of 0 records added -> eQSL didn't understand the format
+			// Result: 1 out of 1 records added -> Fantastic
+			// Error: No match on eQSL_User/eQSL_Pswd -> eQSL credentials probably wrong
+			// Warning: Y=2013 M=08 D=11 F6ARS 15M JT65 Bad record: Duplicate
+			//  Result: 0 out of 1 records added -> Dupe, OM!
+			
+			$this->load->view('layout/header', $data);
+			$this->load->view('eqsl/analysis');
+			$this->load->view('layout/footer');
 		}
 		else
 		{
