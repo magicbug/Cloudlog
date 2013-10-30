@@ -760,6 +760,15 @@ class Logbook_model extends CI_Model {
                 $srx = null;
         }
         
+        // Filter Modes if not apart of ADIF spec
+        if($record['mode'] == "RTTY75") {
+            // Set RTTY75 to just RTTY
+                $mode = "RTTY"; 
+        } else {
+            // If no other rules just plain mode that adif includes
+                $mode = $record['mode'];
+        }
+        
 
         $this->db->where('COL_CALL', $record['call']);
         $this->db->where('COL_TIME_ON', $time_on);
@@ -774,7 +783,7 @@ class Logbook_model extends CI_Model {
                'COL_CALL' => strtoupper($record['call']),
                'COL_BAND' => $band,
                'COL_FREQ' => $freq,
-               'COL_MODE' => $record['mode'],
+               'COL_MODE' => $mode,
                'COL_RST_RCVD' => $rst_rx,
                'COL_RST_SENT' => $rst_tx,
                'COL_NAME' => $name,
