@@ -1,7 +1,7 @@
 <?php
 
 	header("content-type: plain/text"); 
-	header('Content-Disposition: attachment; filename="export_log.adi"')
+	header('Content-Disposition: attachment; filename="'.$this->session->userdata('user_callsign').'-'.date('dmY-Hi').'.adi"')
 ?>
 <ADIF_VERS:3>2.2
 <PROGRAMID:<?php echo strlen($this->config->item('app_name')); ?>><?php echo $this->config->item('app_name')."\n"; ?>
