@@ -619,6 +619,20 @@ class Logbook_model extends CI_Model {
 		return "Updated";
 	}
 	
+	// Mark the QSO as sent to eQSL
+	function eqsl_mark_sent($primarykey) {
+		$data = array(
+			   'COL_EQSL_QSLSDATE' => 'CURRENT_TIMESTAMP', // eQSL doesn't give us a date, so let's use current
+			   'COL_EQSL_QSL_SENT' => 'Y',
+		);
+
+		$this->db->where('COL_PRIMARY_KEY', $primarykey);
+		
+		$this->db->update($this->config->item('table_name'), $data); 
+		
+		return "eQSL Sent";
+	}
+	
 	// Get the last date we received an eQSL
 	function eqsl_last_qsl_rcvd_date() {
     	$this->db->select("DATE_FORMAT(COL_EQSL_QSLRDATE,'%Y%m%d') AS COL_EQSL_QSLRDATE", FALSE);

@@ -15,7 +15,15 @@
 	}
 	else
 	{
-		echo "<p>There are no QSOs that need to be sent to eQSL.cc at this time. Go log some more QSOs!</p>";
+		if (isset($eqsl_results_table))
+		{
+			echo "<p>The following QSOs were sent to eQSL.cc</p>";
+			echo $eqsl_results_table;
+		}
+		else
+		{
+			echo "<p>There are no QSOs that need to be sent to eQSL.cc at this time. Go log some more QSOs!</p>";
+		}
 	}
 ?>
 </div>

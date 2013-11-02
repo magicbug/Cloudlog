@@ -206,7 +206,10 @@ class eqsl extends CI_Controller {
 			
 			$table = "<table>";
 					$table .= "<tr class=\"titles\">";
-						$table .= "<td>String</td>";
+						$table .= "<td>Date</td>";
+						$table .= "<td>Call</td>";
+						$table .= "<td>Mode</td>";
+						$table .= "<td>Band</td>";
 						$table .= "<td>Result</td>";
 					$table .= "<tr>";
 			// Build out the ADIF info string according to specs http://eqsl.cc/qslcard/ADIFContentSpecs.cfm
@@ -306,30 +309,100 @@ class eqsl extends CI_Controller {
 				$adif .= "EOR";
 				$adif .= "%3E";
 				
+				# Make sure we don't have any spaces
+				$adif = str_replace(" ", '%20', $adif);
+				
+				$status = "Unknown";
+				
+				// begin script
+				$ch = curl_init(); 
+
+				// basic curl options for all requests
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+				curl_setopt($ch, CURLOPT_HEADER, 1);
+				
+				// use the URL we built
+				curl_setopt($ch, CURLOPT_URL, $adif);
+				
+				$result = curl_exec($ch);  
+				$chi = curl_getinfo($ch);
+				curl_close($ch);
+				
+				/* Time for some error handling
+				   Things we might get back
+				   Result: 0 out of 0 records added -> eQSL didn't understand the format
+				   Result: 1 out of 1 records added -> Fantastic
+				   Error: No match on eQSL_User/eQSL_Pswd -> eQSL credentials probably wrong
+				   Warning: Y=2013 M=08 D=11 F6ARS 15M JT65 Bad record: Duplicate
+				   Result: 0 out of 1 records added -> Dupe, OM!
+				*/
+				
+				if ($chi['http_code'] == "200")
+				{
+					if (stristr($result, "Result: 1 out of 1 records added"))
+					{
+						$status = "Sent";
+						$this->logbook_model->eqsl_mark_sent($qsl['COL_PRIMARY_KEY']);
+					}
+					else
+					{
+						if (stristr($result, "Error: No match on eQSL_User/eQSL_Pswd"))
+						{
+							$this->session->set_flashdata('warning', 'Your eQSL username and/or password is incorrect.'); redirect('eqsl/export');
+						}
+						else
+						{
+							if (stristr($result, "Result: 0 out of 0 records added"))
+							{
+								$this->session->set_flashdata('warning', 'Something went wrong with eQSL.cc!'); redirect('eqsl/export');
+							}
+							else
+							{
+								if (stristr($result, "Bad record: Duplicate"))
+								{
+									$status = "Duplicate";
+									
+									# Mark the QSL as sent if this is a dupe.
+									$this->logbook_model->eqsl_mark_sent($qsl['COL_PRIMARY_KEY']);
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					if ($chi['http_code'] == "500")
+					{
+						$this->session->set_flashdata('warning', 'eQSL.cc is experiencing issues. Please try exporting QSOs later.'); redirect('eqsl/export');
+					}
+					else
+					{
+						if ($chi['http_code'] == "400")
+						{
+							$this->session->set_flashdata('warning', 'There was an error in one of the QSOs. You might want to manually upload them.'); redirect('eqsl/export');
+							$status = "Error";
+						}
+						else
+						{
+							if ($chi['http_code'] == "404")
+							{
+								$this->session->set_flashdata('warning', 'It seems that the eQSL site has changed. Please open up an issue on GitHub.'); redirect('eqsl/export');
+							}
+						}
+					}
+				}
 				$table .= "<tr>";
-						$table .= "<td>".$adif."</td>";
-						//$result = http_parse_message(http_get($adif))->body;
-						$table .= "<td>Result</td>";
+						$table .= "<td>".$qsl['COL_TIME_ON']."</td>";
+						$table .= "<td>".$qsl['COL_CALL']."</td>";
+						$table .= "<td>".$qsl['COL_MODE']."</td>";
+						$table .= "<td>".$qsl['COL_BAND']."</td>";
+						$table .= "<td>".$status."</td>";
 				$table .= "<tr>";
-			
 			}
-			// Perform a big HTTP POST with the ADIF information at the back
-			// http://www.eqsl.cc/qslcard/ImportADIF.txt
+			$table .= "</table>";
 			
 			// Dump out a table with the results
-			$data['eqsl_table'] = $table;
-			
-			
-			// Things we might get back
-			// Result: 0 out of 0 records added -> eQSL didn't understand the format
-			// Result: 1 out of 1 records added -> Fantastic
-			// Error: No match on eQSL_User/eQSL_Pswd -> eQSL credentials probably wrong
-			// Warning: Y=2013 M=08 D=11 F6ARS 15M JT65 Bad record: Duplicate
-			//  Result: 0 out of 1 records added -> Dupe, OM!
-			
-			$this->load->view('layout/header', $data);
-			$this->load->view('eqsl/analysis');
-			$this->load->view('layout/footer');
+			$data['eqsl_results_table'] = $table;
 		}
 		else
 		{
@@ -363,110 +436,6 @@ class eqsl extends CI_Controller {
 		$this->load->view('layout/header', $data);
 		$this->load->view('eqsl/export');
 		$this->load->view('layout/footer');
-		
-		/* OLD STUFF from LOTW
-			$data = array('upload_data' => $this->upload->data());
-			
-			// Figure out how we should be marking QSLs confirmed via LoTW
-			$query = $query = $this->db->query('SELECT lotw_login_url FROM config');
-			$q = $query->row();
-			$config['lotw_login_url'] = $q->lotw_login_url;
-			
-			// Set some fields that we're going to need for ARRL login
-			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
-    		$q = $query->row();
-    		$fields['login'] = $q->user_lotw_name;
-			$fields['password'] = $q->user_lotw_password;
-			$fields['acct_sel'] = "";
-			
-			if ($fields['login'] == '' || $fields['password'] == '')
-			{
-				$this->session->set_flashdata('warning', 'You have not defined your ARRL LoTW credentials!'); redirect('lotw/status');
-			}
-				
-			// Curl stuff goes here
-			
-			// First we need to get a cookie
-
-			// options
-			$cookie_file_path = "./uploads/cookies.txt";
-			$agent            = "Mozilla/4.0 (compatible;)";
-
-			// begin script
-			$ch = curl_init(); 
-
-			// extra headers
-			$headers[] = "Connection: Keep-Alive";
-
-			// basic curl options for all requests
-			curl_setopt($ch, CURLOPT_HTTPHEADER,  $headers);
-			curl_setopt($ch, CURLOPT_HEADER,  0);
-			
-			// TODO: These SSL things should probably be set to true :)
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);         
-			curl_setopt($ch, CURLOPT_USERAGENT, $agent); 
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); 
-			curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file_path); 
-			curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path); 
-
-			// Set login URL
-			curl_setopt($ch, CURLOPT_URL, $config['lotw_login_url']);
-			
-			// set postfields using what we extracted from the form
-			$POSTFIELDS = http_build_query($fields); 
-
-			// set post options
-			curl_setopt($ch, CURLOPT_POST, 1); 
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $POSTFIELDS); 
-
-			// perform login
-			$result = curl_exec($ch);  
-			if (stristr($result, "Username/password incorrect"))
-			{
-			   $this->session->set_flashdata('warning', 'Your ARRL username and/or password is incorrect.'); redirect('lotw/status');
-			}
-			
-			
-			// Now we need to use that cookie and upload the file
-			// change URL to upload destination URL
-			curl_setopt($ch, CURLOPT_URL, $config['lotw_login_url']);
-			
-			// Grab the file
-			$postfile = array(
-        		"upfile"=>"@./uploads/".$data['upload_data']['file_name'],
-    		);
-    		
-    		//Upload it
-    		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfile); 
-    		$response = curl_exec($ch);
-			if (stristr($response, "accepted"))
-			{
-			   $this->session->set_flashdata('lotw_status', 'accepted');
-			   $data['page_title'] = "eQSL Logs Sent";
-			} 
-			elseif (stristr($response, "rejected"))
-			{
-					$this->session->set_flashdata('lotw_status', 'rejected');
-					$data['page_title'] = "LoTW .TQ8 Sent";
-			}
-			else
-			{
-				// If we're here, we didn't find what we're looking for in the ARRL response
-				// and LoTW is probably down or broken.
-				$this->session->set_flashdata('warning', 'Did not receive proper response from LoTW. Try again later.');
-				$data['page_title'] = "LoTW .TQ8 Not Sent";
-			}
-			
-			// Now we need to clean up
-			unlink($cookie_file_path);
-			unlink('./uploads/'.$data['upload_data']['file_name']);
-		
-			$this->load->view('layout/header', $data);
-			$this->load->view('eqsl/status');
-			$this->load->view('layout/footer');
-		*/	
 	}
 	
 } // end class
