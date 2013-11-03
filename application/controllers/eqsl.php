@@ -32,11 +32,11 @@ class eqsl extends CI_Controller {
 
 		while($record = $this->adif_parser->get_record())
 		{
-			if(count($record) == 0)
+			/*if(count($record) == 0)
 			{
 				break;
 			};
-	
+	*/
 			$time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
 			
 			// The report from eQSL should only contain entries that have been confirmed via eQSL
@@ -76,7 +76,7 @@ class eqsl extends CI_Controller {
 
 		$table .= "</table>";
 
-		unlink($filepath);
+		//unlink($filepath);
 
 		$data['eqsl_table'] = $table;
 
@@ -132,30 +132,75 @@ class eqsl extends CI_Controller {
 			
  			// At this point, what we get isn't the ADI file we need, but rather
 			// an HTML page, which contains a link to the generated ADI file that we want.
-			// Adapted from Original PHP code by Chirp Internet: www.chirp.com.au
+			// Adapted from Original PHP code by Chirp Internet: www.chirp.com.au (regex)
 			
- 			$input = @file_get_contents($eqsl_url) or die("Could not access file: $eqsl_url");
+			// Let's use cURL instead of file_get_contents
+			// begin script
+			$ch = curl_init(); 
+
+			// basic curl options for all requests
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+			curl_setopt($ch, CURLOPT_HEADER, 1);
+			
+			// use the URL we built
+			curl_setopt($ch, CURLOPT_URL, $eqsl_url);
+			
+			$input = curl_exec($ch);  
+			$chi = curl_getinfo($ch);
+
+ 			// "You have no log entries" -> Nothing else to do here
+ 			// "Your ADIF log file has been built" -> We've got an ADIF file we need to grab.
  			
- 			// We need to make sure the ADI file has been built before we download it.
-			// Look for "Your ADIF log file has been built"
- 			
- 			// Get all the links on the page and grab the URL for the ADI file.
-			$regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
-			if(preg_match_all("/$regexp/siU", $input, $matches)) {
-				foreach( $matches[2] as $match )
+ 			if ($chi['http_code'] == "200")
+			{
+				if (stristr($input, "You have no log entries"))
 				{
-					// Look for the link that has the .adi file, and download it to $file
-					if (substr($match, -4, 4) == ".adi")
+					$this->session->set_flashdata('success', 'There are no QSLs waiting for download at eQSL.cc.'); redirect('eqsl/import');
+					/*$data['page_title'] = "eQSL Up to Date";
+					$this->load->view('layout/header', $data);
+					$this->load->view('eqsl/import');
+					$this->load->view('layout/footer');*/
+				}
+				else
+				{
+					if (stristr($result, "Your ADIF log file has been built"))
 					{
-						file_put_contents($file, file_get_contents("http://eqsl.cc/qslcard/" . $match));
-						ini_set('memory_limit', '-1');
-						$this->loadFromFile($file);
-						break;
+						// Get all the links on the page and grab the URL for the ADI file.
+						$regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
+						if(preg_match_all("/$regexp/siU", $input, $matches)) {
+							foreach( $matches[2] as $match )
+							{
+								// Look for the link that has the .adi file, and download it to $file
+								if (substr($match, -4, 4) == ".adi")
+								{
+									file_put_contents($file, file_get_contents("http://eqsl.cc/qslcard/" . $match));
+									ini_set('memory_limit', '-1');
+									$this->loadFromFile($file);
+									break;
+								}
+							}
+						}
 					}
-					
-					// Produce and error if we don't find the link we need.
-    			}
+				}
 			}
+			else
+			{
+				if ($chi['http_code'] == "500")
+				{
+					$this->session->set_flashdata('warning', 'eQSL.cc is experiencing issues. Please try importing QSOs later.'); redirect('eqsl/import');
+				}
+				else
+				{
+					if ($chi['http_code'] == "404")
+					{
+						$this->session->set_flashdata('warning', 'It seems that the eQSL site has changed. Please open up an issue on GitHub.'); redirect('eqsl/import');
+					}
+				}
+			}
+ 			
+			
+			// Close cURL handle
+			curl_close($ch);
 			
 			
 			
