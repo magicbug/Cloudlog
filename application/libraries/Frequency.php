@@ -218,6 +218,69 @@ class Frequency {
 		}
 	
 	}
+	
+public function GetBand($Frequency) {
+		$Band = NULL;
+
+		if ($Frequency > 1000000 && $Frequency < 2000000) {
+			$Band = "160m";
+		} else if ($Frequency > 3000000 && $Frequency < 4000000) {
+			$Band = "80m";
+		} else if ($Frequency > 6000000 && $Frequency < 8000000) {
+			$Band = "40m";
+		} else if ($Frequency > 9000000 && $Frequency < 11000000) {
+			$Band = "30m";
+		} else if ($Frequency > 13000000 && $Frequency < 15000000) {
+			$Band = "20m";
+		} else if ($Frequency > 17000000 && $Frequency < 19000000) {
+			$Band = "17m";
+		} else if ($Frequency > 20000000 && $Frequency < 22000000) {
+			$Band = "15m";
+		} else if ($Frequency > 23000000 && $Frequency < 25000000) {
+			$Band = "12m";
+		} else if ($Frequency > 27000000 && $Frequency < 30000000) {
+			$Band = "10m";
+		} else if ($Frequency > 49000000 && $Frequency < 52000000) {
+			$Band = "6m";
+		} else if ($Frequency > 69000000 && $Frequency < 71000000) {
+			$Band = "4m";
+		} else if ($Frequency > 140000000 && $Frequency < 150000000) {
+			$Band = "2m";
+		} else if ($Frequency > 218000000 && $Frequency < 226000000) {
+			$Band = "1.25m";
+		} else if ($Frequency > 430000000 && $Frequency < 440000000) {
+			$Band = "70cm";
+		} else if ($Frequency > 900000000 && $Frequency < 930000000) {
+			$Band = "33cm";
+		} else if ($Frequency > 1200000000 && $Frequency < 1300000000) {
+			$Band = "23cm";
+		} else if ($Frequency > 2200000000 && $Frequency < 2600000000) {
+			$Band = "13cm";
+		} else if ($Frequency > 3000000000 && $Frequency < 4000000000) {
+			$Band = "9cm";
+		} else if ($Frequency > 5000000000 && $Frequency < 6000000000) {
+			$Band = "6cm";
+		} else if ($Frequency > 9000000000 && $Frequency < 11000000000) {
+			$Band = "3cm";
+		} else if ($Frequency > 23000000000 && $Frequency < 25000000000) {
+			$Band = "1.2cm";
+		} else if ($Frequency > 46000000000 && $Frequency < 55000000000) {
+			$Band = "6mm";
+		} else if ($Frequency > 75000000000 && $Frequency < 82000000000) {
+			$Band = "4mm";
+		} else if ($Frequency > 120000000000 && $Frequency < 125000000000) {
+			$Band = "2.5mm";
+		} else if ($Frequency > 133000000000 && $Frequency < 150000000000) {
+			$Band = "2mm";
+		} else if ($Frequency > 240000000000 && $Frequency < 250000000000) {
+			$Band = "1mm";
+		} else if ($Frequency >= 250000000000) {
+			$Band = "<1mm";
+		}
+
+		return $Band;
+	}
+	
 }
 
 /* End of file Frequency.php */
