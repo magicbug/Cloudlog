@@ -4,6 +4,13 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 
 <!-- Display Notices -->
+<?php if($this->session->flashdata('success') != '') { ?>
+<div class="alert-message success">
+        <?php echo $this->session->flashdata('success'); ?>
+</div>
+<?php } ?>
+
+<!-- Display Notices -->
 <?php if($this->session->flashdata('notice') != '') { ?>
 <div class="alert-message info">
         <?php echo $this->session->flashdata('notice'); ?>
