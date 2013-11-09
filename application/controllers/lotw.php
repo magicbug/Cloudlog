@@ -29,6 +29,13 @@ class Lotw extends CI_Controller {
 		$this->adif_parser->initialize();
 
 		$table = "<table>";
+			$table .= "<tr class=\"titles\">";
+				$table .= "<td>Date</td>";
+				$table .= "<td>Call</td>";
+				$table .= "<td>Mode</td>";
+				$table .= "<td>Log Status</td>";
+				$table .= "<td>LoTW Status</td>";
+			$table .= "<tr>";
 
 		while($record = $this->adif_parser->get_record())
 		{

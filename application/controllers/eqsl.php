@@ -33,7 +33,7 @@ class eqsl extends CI_Controller {
 		if (count($records) > 0)
 		{
 			$table = "<table>";
-			$table .= "<tr>";
+			$table .= "<tr class=\"titles\">";
 					$table .= "<td>Date</td>";
 					$table .= "<td>Call</td>";
 					$table .= "<td>Mode</td>";
