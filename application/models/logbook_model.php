@@ -606,11 +606,12 @@ class Logbook_model extends CI_Model {
 	// http://www.eqsl.cc/qslcard/ImportADIF.txt
 	function eqsl_update($datetime, $callsign, $band, $qsl_status) {
 		$data = array(
-			   'COL_EQSL_QSLRDATE' => 'CURRENT_TIMESTAMP', // eQSL doesn't give us a date, so let's use current
-			   'COL_EQSL_QSL_RCVD' => $qsl_status,
+			   'COL_EQSL_QSLRDATE' => date('Y-m-d'), // eQSL doesn't give us a date, so let's use current
+			   'COL_EQSL_QSL_RCVD' => $qsl_status
 		);
 
-		$this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"'); 
+		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
+		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
 		$this->db->where('COL_CALL', $callsign);
 		$this->db->where('COL_BAND', $band); 
 		
@@ -622,7 +623,7 @@ class Logbook_model extends CI_Model {
 	// Mark the QSO as sent to eQSL
 	function eqsl_mark_sent($primarykey) {
 		$data = array(
-			   'COL_EQSL_QSLSDATE' => 'CURRENT_TIMESTAMP', // eQSL doesn't give us a date, so let's use current
+			   'COL_EQSL_QSLSDATE' => date('Y-m-d'), // eQSL doesn't give us a date, so let's use current
 			   'COL_EQSL_QSL_SENT' => 'Y',
 		);
 
@@ -649,7 +650,8 @@ class Logbook_model extends CI_Model {
   	// Determine if we've already received an eQSL for this QSO
   	function eqsl_dupe_check($datetime, $callsign, $band, $qsl_status) {
     	$this->db->select('COL_EQSL_QSLRDATE');
-    	$this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
+    	$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
+		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
     	$this->db->where('COL_CALL', $callsign);
     	$this->db->where('COL_BAND', $band);
     	$this->db->where('COL_EQSL_QSL_RCVD', $qsl_status);
