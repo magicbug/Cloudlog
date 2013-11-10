@@ -87,8 +87,11 @@
 					<!-- <li><a href="<?php echo site_url('adif/export');?>" title="ADIF Export">ADIF Export</a></li> -->
 					<li><a href="<?php echo site_url('export');?>" title="Data Export">Data Export</a></li>
 					<li><a href="<?php echo site_url('api/help');?>" title="API">API</a></li>
+					<li><a href="<?php echo site_url('eqsl/import');?>" title="eQSL Import">eQSL Import</a></li>
+					<li><a href="<?php echo site_url('eqsl/export');?>" title="eQSL Import">eQSL Export</a></li>
 					<li><a href="<?php echo site_url('lotw/import');?>" title="LoTW Import">LoTW Import</a></li>
 					<li><a href="<?php echo site_url('lotw/export');?>" title="LoTW Export">LoTW Export</a></li>
+				</ul>
 				</ul>
 			<?php } ?>
         	</ul>

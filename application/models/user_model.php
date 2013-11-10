@@ -123,7 +123,7 @@ class User_Model extends CI_Model {
 					'user_lastname' => $fields['user_lastname'],
 					'user_timezone' => $fields['user_timezone'],
 					'user_lotw_name' => $fields['user_lotw_name'],
-					'user_lotw_password' => $fields['user_lotw_password']
+					'user_eqsl_name' => $fields['user_eqsl_name']
 				);
 	
 				// Check to see if the user is allowed to change user levels
@@ -149,6 +149,16 @@ class User_Model extends CI_Model {
 					}
 				}
 
+				if($fields['user_lotw_password'] != NULL)
+				{
+					$data['user_lotw_password'] = $fields['user_lotw_password'];
+				}
+				
+				if($fields['user_eqsl_password'] != NULL)
+				{
+					$data['user_eqsl_password'] = $fields['user_eqsl_password'];
+				}
+				
 				// Update the user
 				$this->db->where('user_id', $fields['id']);
 				$this->db->update($this->config->item('auth_table'), $data);

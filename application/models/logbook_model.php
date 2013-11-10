@@ -557,7 +557,8 @@ class Logbook_model extends CI_Model {
     function import_check($datetime, $callsign, $band) {
 		
 		$this->db->select('COL_TIME_ON, COL_CALL, COL_BAND');
-		$this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"'); 
+		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
+		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
 		$this->db->where('COL_CALL', $callsign);
 		$this->db->where('COL_BAND', $band); 
 		
@@ -599,6 +600,85 @@ class Logbook_model extends CI_Model {
    		return $row->COL_LOTW_QSLRDATE;
   	}
 
+//////////////////////////////	
+	// Update a QSO with eQSL QSL info
+	// We could also probably use this use this: http://eqsl.cc/qslcard/VerifyQSO.txt
+	// http://www.eqsl.cc/qslcard/ImportADIF.txt
+	function eqsl_update($datetime, $callsign, $band, $qsl_status) {
+		$data = array(
+			   'COL_EQSL_QSLRDATE' => date('Y-m-d'), // eQSL doesn't give us a date, so let's use current
+			   'COL_EQSL_QSL_RCVD' => $qsl_status
+		);
+
+		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
+		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
+		$this->db->where('COL_CALL', $callsign);
+		$this->db->where('COL_BAND', $band); 
+		
+		$this->db->update($this->config->item('table_name'), $data); 
+		
+		return "Updated";
+	}
+	
+	// Mark the QSO as sent to eQSL
+	function eqsl_mark_sent($primarykey) {
+		$data = array(
+			   'COL_EQSL_QSLSDATE' => date('Y-m-d'), // eQSL doesn't give us a date, so let's use current
+			   'COL_EQSL_QSL_SENT' => 'Y',
+		);
+
+		$this->db->where('COL_PRIMARY_KEY', $primarykey);
+		
+		$this->db->update($this->config->item('table_name'), $data); 
+		
+		return "eQSL Sent";
+	}
+	
+	// Get the last date we received an eQSL
+	function eqsl_last_qsl_rcvd_date() {
+    	$this->db->select("DATE_FORMAT(COL_EQSL_QSLRDATE,'%Y%m%d') AS COL_EQSL_QSLRDATE", FALSE);
+    	$this->db->where('COL_EQSL_QSLRDATE IS NOT NULL');
+   		$this->db->order_by("COL_EQSL_QSLRDATE", "desc");
+    	$this->db->limit(1);
+    	
+    	$query = $this->db->get($this->config->item('table_name'));
+    	$row = $query->row();
+    
+   		return $row->COL_EQSL_QSLRDATE;
+  	}
+  	
+  	// Determine if we've already received an eQSL for this QSO
+  	function eqsl_dupe_check($datetime, $callsign, $band, $qsl_status) {
+    	$this->db->select('COL_EQSL_QSLRDATE');
+    	$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
+		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
+    	$this->db->where('COL_CALL', $callsign);
+    	$this->db->where('COL_BAND', $band);
+    	$this->db->where('COL_EQSL_QSL_RCVD', $qsl_status);
+    	$this->db->limit(1);
+    	
+    	$query = $this->db->get($this->config->item('table_name'));
+    	$row = $query->row();
+    
+   		if ($row != null)
+   		{
+   			return true;
+   		}
+   		else
+   		{
+   			return false;
+   		}
+  	}
+  	
+  	// Show all QSOs we need to send to eQSL
+  	function eqsl_not_yet_sent() {
+  		//$this->db->select("COL_PRIMARY_KEY, DATE_FORMAT(COL_TIME_ON,\'%Y%m%d\') AS COL_QSO_DATE, DATE_FORMAT(COL_TIME_ON,\'%H%i\') AS TIME_ON, COL_CALL, COL_MODE, COL_BAND");
+  		$this->db->select("COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_MODE, COL_BAND");
+  		$this->db->where('COL_EQSL_QSL_SENT', 'N');
+  		
+  		return $this->db->get($this->config->item('table_name'));
+  	}
+  	
     function import($record) {
         $CI =& get_instance();
         $CI->load->library('frequency');

@@ -100,6 +100,21 @@ $this->load->helper('form');
 		<?php } ?>
 	</tr>
 	
+	<tr>
+		<td>eQSL.cc Username</td>
+		<td><input type="text" name="user_eqsl_name" value="<?php if(isset($user_eqsl_name)) { echo $user_eqsl_name; } ?>" />
+		<?php if(isset($usereqslname_error)) { echo "<div class=\"small error\">".$usereqslname_error."</div>"; } ?>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>eQSL.cc Password</td>
+		<td><input type="password" name="user_eqsl_password" />
+		<?php if(isset($eqslpassword_error)) { echo "<div class=\"small error\">".$eqslpassword_error."</div>"; } else { ?>
+		<div class="small">Leave blank to keep existing password</div></td>
+		<?php } ?>
+	</tr>
+	
 </table>	
 <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 <div class="actions"><input class="btn primary" type="submit" value="Update profile" /></div>
