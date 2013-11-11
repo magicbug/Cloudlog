@@ -30,9 +30,11 @@ class Lotw extends CI_Controller {
 
 		$table = "<table>";
 			$table .= "<tr class=\"titles\">";
-				$table .= "<td>Date</td>";
+				$table .= "<td>QSO Date</td>";
 				$table .= "<td>Call</td>";
 				$table .= "<td>Mode</td>";
+				$table .= "<td>LoTW QSL Received</td>";
+				$table .= "<td>Date LoTW Confirmed</td>";
 				$table .= "<td>Log Status</td>";
 				$table .= "<td>LoTW Status</td>";
 			$table .= "<tr>";
