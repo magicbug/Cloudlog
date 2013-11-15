@@ -28,67 +28,59 @@ class Lotw extends CI_Controller {
 
 		$this->adif_parser->initialize();
 
-		$table = "<table>";
-			$table .= "<tr class=\"titles\">";
-				$table .= "<td>Date</td>";
-				$table .= "<td>Call</td>";
-				$table .= "<td>Mode</td>";
-				$table .= "<td>Log Status</td>";
-				$table .= "<td>LoTW Status</td>";
-			$table .= "<tr>";
+		$tableheaders = "<table>";
+			$tableheaders .= "<tr class=\"titles\">";
+				$tableheaders .= "<td>QSO Date</td>";
+				$tableheaders .= "<td>Call</td>";
+				$tableheaders .= "<td>Mode</td>";
+				$tableheaders .= "<td>LoTW QSL Received</td>";
+				$tableheaders .= "<td>Date LoTW Confirmed</td>";
+				$tableheaders .= "<td>Log Status</td>";
+				$tableheaders .= "<td>LoTW Status</td>";
+			$tableheaders .= "<tr>";
 
-		while($record = $this->adif_parser->get_record())
-		{
-			if(count($record) == 0)
+			$table = "";
+			while($record = $this->adif_parser->get_record())
 			{
-				break;
-			};
-
 	
-
-			//echo date('Y-m-d', strtotime($record['qso_date']))."<br>";
-			//echo date('H:m', strtotime($record['time_on']))."<br>";
-
-			//$this->logbook_model->import($record);
-
-			//echo $record["call"]."<br>";
-			//print_r($record->);
+				$time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
 	
-			$time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
-	
-			$qsl_date = date('Y-m-d', strtotime($record['qslrdate'])) ." ".date('H:i', strtotime($record['qslrdate']));
+				$qsl_date = date('Y-m-d', strtotime($record['qslrdate'])) ." ".date('H:i', strtotime($record['qslrdate']));
 
-			if (isset($record['time_off'])) {
-				$time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_off']));
-			} else {
-			   $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));  
+				if (isset($record['time_off'])) {
+					$time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_off']));
+				} else {
+				   $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));  
+				}
+			
+				// If we have a positive match from LoTW, record it in the DB according to the user's preferences
+				if ($record['qsl_rcvd'] == "Y")
+				{
+					$record['qsl_rcvd'] = $config['lotw_rcvd_mark'];
+				}
+			
+				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
+				$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd']);
+	
+				$table .= "<tr>";
+					$table .= "<td>".$time_on."</td>";
+					$table .= "<td>".$record['call']."</td>";
+					$table .= "<td>".$record['mode']."</td>";
+					$table .= "<td>".$record['qsl_rcvd']."</td>";
+					$table .= "<td>".$qsl_date."</td>";
+					$table .= "<td>QSO Record: ".$status."</td>";
+					$table .= "<td>LoTW Record: ".$lotw_status."</td>";
+				$table .= "<tr>";
 			}
 			
-			// If we have a positive match from LoTW, record it in the DB according to the user's preferences
-			if ($record['qsl_rcvd'] == "Y")
+			if ($table != "")
 			{
-				$record['qsl_rcvd'] = $config['lotw_rcvd_mark'];
-			}
-			
-			$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
-			$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd']);
-	
-			$table .= "<tr>";
-				$table .= "<td>".$time_on."</td>";
-				$table .= "<td>".$record['call']."</td>";
-				$table .= "<td>".$record['mode']."</td>";
-				$table .= "<td>".$record['qsl_rcvd']."</td>";
-				$table .= "<td>".$qsl_date."</td>";
-				$table .= "<td>QSO Record: ".$status."</td>";
-				$table .= "<td>LoTW Record: ".$lotw_status."</td>";
-			$table .= "<tr>";
-		};
-
-		$table .= "</table>";
-
+				$table .= "</table>";
+				$data['lotw_table_headers'] = $tableheaders;
+				$data['lotw_table'] = $table;
+		}
+		
 		unlink($filepath);
-
-		$data['lotw_table'] = $table;
 
 		$data['page_title'] = "LoTW ADIF Information";
 		$this->load->view('layout/header', $data);

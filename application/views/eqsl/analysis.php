@@ -4,9 +4,10 @@
 <?php $this->load->view('layout/messages'); ?>
 
 <?php
-	if (isset($eqsl_results_table))
+	if (isset($eqsl_results_table_headers))
 	{
-    	echo "<p>The following QSOs have been received from eQSL.cc</p>";
+    	echo "<p>The following QSLs have been received from eQSL.cc</p>";
+    	echo $eqsl_results_table_headers;
     	echo $eqsl_results_table;
     }
     else
