@@ -27,61 +27,59 @@ class eqsl extends CI_Controller {
 		$this->adif_parser->load_from_file($filepath);
 
 		$this->adif_parser->initialize();
-
-		$records = $this->adif_parser->get_record();
 		
-		if (count($records) > 0)
+		$tableheaders = "<table>";
+			$tableheaders .= "<tr class=\"titles\">";
+				$tableheaders .= "<td>Date</td>";
+				$tableheaders .= "<td>Call</td>";
+				$tableheaders .= "<td>Mode</td>";
+				$tableheaders .= "<td>Log Status</td>";
+				$tableheaders .= "<td>eQSL Status</td>";
+			$tableheaders .= "<tr>";
+		$table = "";		
+		while ($record = $this->adif_parser->get_record())
 		{
-			$table = "<table>";
-			$table .= "<tr class=\"titles\">";
-					$table .= "<td>Date</td>";
-					$table .= "<td>Call</td>";
-					$table .= "<td>Mode</td>";
-					$table .= "<td>Log Status</td>";
-					$table .= "<td>eQSL Status</td>";
-				$table .= "<tr>";
-			while($record = $this->adif_parser->get_record())
+			$time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
+	
+			// The report from eQSL should only contain entries that have been confirmed via eQSL
+			// If there's a match for the QSO from the report in our log, it's confirmed via eQSL.
+	
+			// If we have a positive match from LoTW, record it in the DB according to the user's preferences
+			if ($record['qsl_sent'] == "Y")
 			{
-				$time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
-		
-				// The report from eQSL should only contain entries that have been confirmed via eQSL
-				// If there's a match for the QSO from the report in our log, it's confirmed via eQSL.
-		
-				// If we have a positive match from LoTW, record it in the DB according to the user's preferences
-				if ($record['qsl_sent'] == "Y")
+				$record['qsl_sent'] = $config['eqsl_rcvd_mark'];
+			}
+	
+			$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
+			if ($status == "Found")
+			{
+				$dupe = $this->logbook_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
+				if ($dupe == false)
 				{
-					$record['qsl_sent'] = $config['eqsl_rcvd_mark'];
-				}
-		
-				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
-				if ($status == "Found")
-				{
-					$dupe = $this->logbook_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
-					if ($dupe == false)
-					{
-						$eqsl_status = $this->logbook_model->eqsl_update($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
-					}
-					else
-					{
-						$eqsl_status = "Already received an eQSL for this QSO.";
-					}
+					$eqsl_status = $this->logbook_model->eqsl_update($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
 				}
 				else
 				{
-					$eqsl_status = "QSO not found";
+					$eqsl_status = "Already received an eQSL for this QSO.";
 				}
-				$table .= "<tr>";
-					$table .= "<td>".$time_on."</td>";
-					$table .= "<td>".$record['call']."</td>";
-					$table .= "<td>".$record['mode']."</td>";
-					$table .= "<td>QSO Record: ".$status."</td>";
-					$table .= "<td>eQSL Record: ".$eqsl_status."</td>";
-				$table .= "<tr>";
 			}
-			
+			else
+			{
+				$eqsl_status = "QSO not found";
+			}
+			$table .= "<tr>";
+				$table .= "<td>".$time_on."</td>";
+				$table .= "<td>".$record['call']."</td>";
+				$table .= "<td>".$record['mode']."</td>";
+				$table .= "<td>QSO Record: ".$status."</td>";
+				$table .= "<td>eQSL Record: ".$eqsl_status."</td>";
+			$table .= "<tr>";
+		}
+		if ($table != "")
+		{	
 			$table .= "</table>";
+			$data['eqsl_results_table_headers'] = $tableheaders;
 			$data['eqsl_results_table'] = $table;
-			
 		}
 
 		unlink($filepath);
