@@ -106,7 +106,7 @@
 					<?php if($row->COL_SAT_NAME != null) { ?>
 					<td><?php echo $row->COL_SAT_NAME; ?></td>
 					<?php } else { ?>
-					<td><?php echo $row->COL_BAND; ?></td>
+					<td><?php echo strtolower($row->COL_BAND); ?></td>
 					<?php } ?>
 				</tr>
 			<?php $i++; } ?>

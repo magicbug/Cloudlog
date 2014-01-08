@@ -112,7 +112,7 @@
 			<?php if($row->COL_SAT_NAME != null) { ?>
 			<td><?php echo $row->COL_SAT_NAME; ?></td>
 			<?php } else { ?>
-			<td><?php echo $row->COL_BAND; ?></td>
+			<td><?php echo strtolower($row->COL_BAND); ?></td>
 			<?php } ?>
 			<td><?php echo $row->COL_COUNTRY; ?></td>
 			<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
