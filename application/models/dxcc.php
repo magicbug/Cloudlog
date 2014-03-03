@@ -28,7 +28,7 @@ class DXCC extends CI_Model {
 			$query = $this->db->query('
 					SELECT *
 					FROM dxcc
-					WHERE prefix = SUBSTRING( \''.$callsign.'\', 1, LENGTH( prefix ) )
+					WHERE prefix = SUBSTRING( \''.$callsign.'\', 1, LENGTH( prefix ) ) AND end_date = "0000-00-00 00:00:00"
 					ORDER BY LENGTH( prefix ) DESC
 					LIMIT 1 
 				');
