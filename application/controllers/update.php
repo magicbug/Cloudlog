@@ -12,11 +12,7 @@ class Update extends CI_Controller {
 	{
 		echo 'show fancy html page';
 	}
-
-
-	public function download() {
-	}
-
+	
 	// Updates the DXCC
 	public function dxcc() {
 	
