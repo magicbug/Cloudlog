@@ -5,23 +5,23 @@ class Update extends CI_Controller {
 		Controls Updating Elements of Cloudlog
 		Functions:
 			dxcc
-			dxcc_exceptions
 	*/
 	
 	public function index()
 	{
-		echo 'show fancy html page';
+		// Create frontend pages.
 	}
 	
-	// Updates the DXCC
+	// Updates the DXCC & Exceptions from the Clublog Cty.xml file.
 	public function dxcc() {
 	
-	$this->load->library('migration');
+		// Load Migration data if any.
+		$this->load->library('migration');
 
-	if ( ! $this->migration->latest())
-	{
-		show_error($this->migration->error_string());
-	}
+		if ( ! $this->migration->latest())
+		{
+			show_error($this->migration->error_string());
+		}
 	
 		// Download latest file.
 		$url = "https://secure.clublog.org/cty.php?api=a11c3235cd74b88212ce726857056939d52372bd";
@@ -33,9 +33,7 @@ class Update extends CI_Controller {
 		}
 		gzclose($gz);
 		
-		
 		file_put_contents('./updates/cty.xml', $data);
-	
 	
 		// Set timeout to unlimited
 		set_time_limit(0);
@@ -96,60 +94,71 @@ class Update extends CI_Controller {
 			}
 		}
 		echo "<table>";
-	}
-
-	public function dxcc_exceptions()
-	{
-		set_time_limit(0);
-		// Load Database connectors
-		$this->load->model('dxcc');
-
-		// Load the cty file
-		$xml_data = simplexml_load_file("updates/cty.xml");
-
-		// empty table
+		
+				// empty table
 		$this->dxcc->empty_table("dxccexceptions");
 		
 		echo "<h2>Exceptions</h2>";
+		
+		echo "<table>";
+		
 		foreach ($xml_data->exceptions as $exceptions) {
 			foreach ($exceptions->exception as $callsign) {
-				echo $callsign->call." ".$callsign->entity;
 			
+			echo "<tr>";
+				echo "<td>".$callsign->call."</td>";
+				echo "<td>".$callsign->entity."</td>";
+			echo "</tr>";
+
 				
 				if(!$callsign->start) {
 					$data = array(
-					   'prefix' => (string)  $callsign->call,
-					   'name' =>  (string) $callsign->entity,
-					   'cqz' => $callsign->cqz,
-					   'ituz' => $callsign->ituz,
-					   'cont' => (string) $callsign->cont,
-					   'long' => $callsign->long,
-					   'lat' => $callsign->lat
+						'prefix' => (string)  $callsign->call,
+						'name' =>  (string) $callsign->entity,
+						'cqz' => (string) $callsign->cqz,
+						'ituz' => (string) $callsign->ituz,
+						'cont' => (string) $callsign->cont,
+						'long' => (string) $callsign->long,
+						'lat' => (string) $callsign->lat
 					);	
 				} else {
 				
-					$start = date('Y-m-d h:i', $timestamp);
-					$end = date('Y-m-d h:i', $timestamp);
+					$startinfo = strtotime($callsign->start);
+				
+					if($startinfo) {
+						$start = date('Y-m-d H:i:s',$startinfo);
+					} else {
+						$start = "";
+					}
+				
+					$endinfo = strtotime($callsign->end);
+				
+					if($endinfo) {
+						$end = date('Y-m-d H:i:s',$endinfo);
+					} else {
+						$end = "";
+					}
 				
 					$data = array(
-					   'prefix' => (string) $callsign->call,
-					   'name' =>  (string) $callsign->entity,
-					   'cqz' => $callsign->cqz,
-					   'ituz' => $callsign->ituz,
-					   'cont' => (string) $callsign->cont,
-					   'long' => $callsign->long,
-					   'lat' => $callsign->lat,
-					   'start' => $start,
-					   'end' => $end
+						'prefix' => (string) $callsign->call,
+						'name' =>  (string) $callsign->entity,
+						'cqz' => (string) $callsign->cqz,
+						'ituz' => (string) $callsign->ituz,
+						'cont' => (string) $callsign->cont,
+						'long' => (string) $callsign->long,
+						'lat' => (string) $callsign->lat,
+						'start' => $start,
+						'end' => $end
 					);	
 				}
 
 				$this->db->insert('dxccexceptions', $data); 
-
-				echo " Inserted <br />";
 				
 			}
 		}
+		
+		echo "<table>";
+		
 	}
 }
 ?>
