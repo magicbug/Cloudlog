@@ -14,8 +14,33 @@ class Update extends CI_Controller {
 	}
 
 
+	public function download() {
+	}
+
 	// Updates the DXCC
 	public function dxcc() {
+	
+	$this->load->library('migration');
+
+	if ( ! $this->migration->latest())
+	{
+		show_error($this->migration->error_string());
+	}
+	
+		// Download latest file.
+		$url = "https://secure.clublog.org/cty.php?api=a11c3235cd74b88212ce726857056939d52372bd";
+		
+		$gz = gzopen($url, 'r');
+		$data = "";
+		while (!gzeof($gz)) {
+		  $data .= gzgetc($gz);
+		}
+		gzclose($gz);
+		
+		
+		file_put_contents('./updates/cty.xml', $data);
+	
+	
 		// Set timeout to unlimited
 		set_time_limit(0);
 	
@@ -28,32 +53,53 @@ class Update extends CI_Controller {
 		$this->dxcc->empty_table("dxcc");
 		
 		echo "<h2>Prefix List</h2>";
+		
+		echo "<table>";
+		echo "<tr>";
+		echo "<td>Prefix</td>";
+		echo "<td>Country Name</td>";
+		echo "<td>DXCC Expire Date</td>";
+		echo "</tr>";
+		
 		foreach ($xml_data->prefixes as $prefixs) {
 			foreach ($prefixs->prefix as $callsign) {
-				echo $callsign->call." ".$callsign->entity;
+				$endinfo = strtotime($callsign->end);
 				
+				if($endinfo) {
+					$end_date = date('Y-m-d H:i:s',$endinfo);
+				} else {
+					$end_date = "";
+				}
+			
 				if(!$callsign->cqz) {
 					$data = array(
-					   'prefix' => (string)  $callsign->call,
+					   'prefix' => (string) $callsign->call,
 					   'name' =>  (string) $callsign->entity,
 					);
 				} else {
 					$data = array(
 					   'prefix' => (string)  $callsign->call,
 					   'name' =>  (string) $callsign->entity,
-					   'cqz' => $callsign->cqz,
-					   'ituz' => $callsign->ituz,
+					   'cqz' => (string) $callsign->cqz,
+					   'ituz' => (string) $callsign->ituz,
 					   'cont' => (string) $callsign->cont,
-					   'long' => $callsign->long,
-					   'lat' => $callsign->lat
+					   'long' => (string) $callsign->long,
+					   'lat' => (string) $callsign->lat,
+						 'end_date' => $end_date,
 					);	
 				}
+			
+				echo "<tr>";
+				echo "<td>".$callsign->call."</td>";
+				echo "<td>".ucwords(strtolower($callsign->entity))."</td>";
+				echo "<td>".$end_date."</td>";
+				echo "<td>".$callsign->deleted."</td>";
+				echo "</tr>";
 
 				$this->db->insert('dxcc', $data); 
-
-				echo " Inserted <br />";
 			}
 		}
+		echo "<table>";
 	}
 
 	public function dxcc_exceptions()
