@@ -10,7 +10,7 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-dropdown.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-tabs.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/global.js"></script>
-	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
 
 	<!-- CSS Files -->
 	<link type="text/css" href="<?php echo base_url(); ?>css/flick/jquery-ui-1.8.12.custom.css" rel="stylesheet" />	
