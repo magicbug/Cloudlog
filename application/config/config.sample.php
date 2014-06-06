@@ -9,14 +9,14 @@
 |  'app_name'    Name of the App 'Cloudlog'
 |  'app_version'  Set by the dev team.
 |  'directory'    directory where cloudlog is installed eg "logger"
-|  'callbook'    Selects which Callbook lookup to use defaults "hamio" but supports "qrz"
+|  'callbook'    Selects which Callbook lookup to use defaults "hamli" but supports "qrz"
 */
 
 $config['app_name'] = "Cloudlog";
 $config['app_version'] = "0.1";
 $config['directory'] = "logbook";
 
-$config['callbook'] = "qrz"; // Options are hamio or qrz
+$config['callbook'] = "qrz"; // Options are hamli or qrz
 
 /*
 |--------------------------------------------------------------------------
@@ -25,11 +25,11 @@ $config['callbook'] = "qrz"; // Options are hamio or qrz
 |
 |   'table_name'  SQL table where log can be found
 |  'locator'    Default locator used to calculate bearings/distance
-|  'display_freq'  Show or Hide frequnecy info 
+|  'display_freq'  Show or Hide frequnecy info
 */
 
-$config['table_name'] = "TABLE_HRD_CONTACTS_V01"; 
-$config['locator'] = ""; 
+$config['table_name'] = "TABLE_HRD_CONTACTS_V01";
+$config['locator'] = "";
 $config['display_freq'] = true;
 
 /*
@@ -39,7 +39,7 @@ $config['display_freq'] = true;
 |
 | 'use_auth'  False turns all authentication off, best used when setting up
 | 'auth_table'  MySQL Database Table defaults "users"
-| 'auth_mode'  Minimum user level required 0 = anonymous, 1 = viewer, 
+| 'auth_mode'  Minimum user level required 0 = anonymous, 1 = viewer,
 |        2 = editor, 3 = api user, 99 = owner
 | 'auth_level[]'  Defines level titles
 */
