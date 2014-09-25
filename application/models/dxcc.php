@@ -17,28 +17,28 @@ class DXCC extends CI_Model {
 				SELECT *
 				FROM `dxccexceptions`
 				WHERE `prefix` = \''.$callsign.'\'
-				LIMIT 1 
+				LIMIT 1
 			');
-		
+
 		if ($exceptions->num_rows() > 0)
 		{
 			return $exceptions;
 		} else {
-			
+
 			$query = $this->db->query('
 					SELECT *
 					FROM dxcc
-					WHERE prefix = SUBSTRING( \''.$callsign.'\', 1, LENGTH( prefix ) ) AND end_date = "0000-00-00 00:00:00"
+					WHERE prefix = SUBSTRING( \''.$callsign.'\', 1, LENGTH( prefix ) )
 					ORDER BY LENGTH( prefix ) DESC
-					LIMIT 1 
+					LIMIT 1
 				');
-			
+
 			return $query;
 		}
 	}
-	
+
 	function empty_table($table) {
-		$this->db->empty_table($table); 
+		$this->db->empty_table($table);
 	}
 }
 ?>

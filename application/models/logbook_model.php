@@ -12,25 +12,25 @@ class Logbook_model extends CI_Model {
   function add() {
     // Join date+time
     $datetime = date('Y-m-d') ." ". $this->input->post('start_time');
-      
+
     if ($this->input->post('prop_mode') != null) {
       $prop_mode = $this->input->post('prop_mode');
     } else {
       $prop_mode = "";
     }
-    
+
         if($this->input->post('sat_name')) {
             $prop_mode = "SAT";
         }
-        
+
         if($this->session->userdata('user_locator')){
             $locator = $this->session->userdata('user_locator');
         } else {
             $locator = $this->config->item('locator');
         }
-        
+
     // Create array with QSO Data
-    
+
     $data = array(
       'COL_TIME_ON' => $datetime,
       'COL_TIME_OFF' => $datetime,
@@ -93,19 +93,19 @@ class Logbook_model extends CI_Model {
                 } else {
                         $prop_mode = "";
                 }
-                
+
                 if($this->input->post('sat_name')) {
                     $prop_mode = "SAT";
                 }
-                
+
                 if($this->session->userdata('user_locator')){
                     $locator = $this->session->userdata('user_locator');
                 } else {
                     $locator = $this->config->item('locator');
                 }
-                
+
                         // Create array with QSO Data
-                        
+
                         $data = array(
                                 'COL_TIME_ON' => $datetime,
                                 'COL_TIME_OFF' => $datetime,
@@ -162,10 +162,10 @@ class Logbook_model extends CI_Model {
     // Add QSO to database
     $this->db->insert($this->config->item('table_name'), $data);
   }
-  
+
   /* Edit QSO */
   function edit() {
-  
+
     $data = array(
        'COL_TIME_ON' => $this->input->post('time_on'),
        'COL_TIME_OFF' => $this->input->post('time_off'),
@@ -199,8 +199,8 @@ class Logbook_model extends CI_Model {
     );
 
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
-    $this->db->update($this->config->item('table_name'), $data); 
-  
+    $this->db->update($this->config->item('table_name'), $data);
+
   }
 
   /* Return last 10 QSOs */
@@ -208,84 +208,84 @@ class Logbook_model extends CI_Model {
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
     $this->db->order_by("COL_TIME_ON", "desc");
     $this->db->limit(10);
-    
+
     return $this->db->get($this->config->item('table_name'));
   }
-  
+
   /* Show custom number of qsos */
   function last_custom($num) {
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
     $this->db->order_by("COL_TIME_ON", "desc");
     $this->db->limit($num);
-    
+
     return $this->db->get($this->config->item('table_name'));
   }
-  
+
     /* Callsign QRA */
-    
+
     function call_qra($callsign) {
         $this->db->select('COL_CALL, COL_GRIDSQUARE, COL_TIME_ON');
         $this->db->where('COL_CALL', $callsign);
         $where = "COL_GRIDSQUARE != \"\"";
-    
+
         $this->db->where($where);
-    
-        $this->db->order_by("COL_TIME_ON", "desc"); 
+
+        $this->db->order_by("COL_TIME_ON", "desc");
         $this->db->limit(1);
         $query = $this->db->get($this->config->item('table_name'));
         $callsign = "";
         if ($query->num_rows() > 0)
         {
-            $data = $query->row(); 
+            $data = $query->row();
             $callsign = strtoupper($data->COL_GRIDSQUARE);
         }
-    
+
             return $callsign;
     }
-    
+
     function call_name($callsign) {
         $this->db->select('COL_CALL, COL_NAME, COL_TIME_ON');
         $this->db->where('COL_CALL', $callsign);
         $where = "COL_NAME != \"\"";
-    
+
         $this->db->where($where);
-    
-        $this->db->order_by("COL_TIME_ON", "desc"); 
+
+        $this->db->order_by("COL_TIME_ON", "desc");
         $this->db->limit(1);
         $query = $this->db->get($this->config->item('table_name'));
         $name = "";
         if ($query->num_rows() > 0)
         {
-            $data = $query->row(); 
+            $data = $query->row();
             $name = $data->COL_NAME;
         }
 
         return $name;
     }
-    
+
   /* Return QSO Info */
   function qso_info($id) {
-    $this->db->where('COL_PRIMARY_KEY', $id); 
-    
+    $this->db->where('COL_PRIMARY_KEY', $id);
+
     return $this->db->get($this->config->item('table_name'));
   }
-  
+
 
   function get_qsos($num, $offset) {
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_GRIDSQUARE, COL_QSL_RCVD, COL_QSL_SENT, COL_STX_STRING, COL_SRX_STRING, COL_OPERATOR, COL_STATION_CALLSIGN');
-    $this->db->order_by("COL_TIME_ON", "desc"); 
-    
-    $query = $this->db->get($this->config->item('table_name'), $num, $offset);  
-    
+    $this->db->order_by("COL_TIME_ON", "desc");
+
+    $query = $this->db->get($this->config->item('table_name'), $num, $offset);
+
     return $query;
   }
-  
+
   function get_last_qsos($num) {
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_STX_STRING, COL_SRX_STRING');
-    $this->db->order_by("COL_TIME_ON", "desc"); 
+    $this->db->order_by("COL_TIME_ON", "desc");
     $this->db->limit($num);
     $query = $this->db->get($this->config->item('table_name'));
-    
+
     return $query;
   }
 
@@ -294,22 +294,22 @@ class Logbook_model extends CI_Model {
         $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_GRIDSQUARE');
         $this->db->where('COL_GRIDSQUARE != \'null\'');
         $query = $this->db->get($this->config->item('table_name'));
-        
+
         return $query;
     }
 
     function get_date_qsos($date) {
         $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
-        $this->db->order_by("COL_TIME_ON", "desc"); 
+        $this->db->order_by("COL_TIME_ON", "desc");
         $start = $date." 00:00:00";
         $end = $date." 23:59:59";
 
         $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
         $query = $this->db->get($this->config->item('table_name'));
-        
+
         return $query;
     }
-  
+
 	function get_todays_qsos() {
 		$morning = date('Y-m-d 00:00:00');
 		$night = date('Y-m-d 23:59:59');
@@ -326,7 +326,7 @@ class Logbook_model extends CI_Model {
 		');
 		return $query;
 	}
-	  
+
     /* Return total number of qsos */
      function total_qsos() {
         $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').'');
@@ -339,14 +339,14 @@ class Logbook_model extends CI_Model {
             }
         }
     }
-   
+
     /* Return number of QSOs had today */
     function todays_qsos() {
-    
+
         $morning = date('Y-m-d 00:00:00');
         $night = date('Y-m-d 23:59:59');
         $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_TIME_ON between \''.$morning.'\' AND \''.$night.'\'');
-        
+
         if ($query->num_rows() > 0)
         {
             foreach ($query->result() as $row)
@@ -355,12 +355,12 @@ class Logbook_model extends CI_Model {
             }
         }
     }
-    
+
     /* Return QSOs over a period of days */
     function map_week_qsos($start, $end) {
-    
+
         $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
-        $this->db->order_by("COL_TIME_ON", "ASC"); 
+        $this->db->order_by("COL_TIME_ON", "ASC");
         $query = $this->db->get($this->config->item('table_name'));
 
         return $query;
@@ -368,17 +368,17 @@ class Logbook_model extends CI_Model {
 
     /* Returns QSOs for the date sent eg 2011-09-30 */
     function map_day($date) {
-    
+
         $start = $date." 00:00:00";
         $end = $date." 23:59:59";
 
         $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
-        $this->db->order_by("COL_TIME_ON", "ASC"); 
+        $this->db->order_by("COL_TIME_ON", "ASC");
         $query = $this->db->get($this->config->item('table_name'));
 
         return $query;
     }
-    
+
     // Return QSOs made during the current month
     function month_qsos() {
 
@@ -394,7 +394,7 @@ class Logbook_model extends CI_Model {
             }
         }
     }
-    
+
     /* Return QSOs made during the current Year */
     function year_qsos() {
 
@@ -410,7 +410,7 @@ class Logbook_model extends CI_Model {
             }
         }
     }
-    
+
     /* Return total amount of SSB QSOs logged */
     function total_ssb() {
         $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'SSB\' OR COL_MODE = \'LSB\' OR COL_MODE = \'USB\'');
@@ -430,7 +430,7 @@ class Logbook_model extends CI_Model {
 
         return $query;
     }
-    
+
     /* Return total number of CW QSOs */
     function total_cw() {
         $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'CW\' ');
@@ -443,7 +443,7 @@ class Logbook_model extends CI_Model {
             }
         }
     }
-    
+
     /* Return total number of FM QSOs */
     function total_fm() {
         $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE COL_MODE = \'FM\'');
@@ -469,27 +469,27 @@ class Logbook_model extends CI_Model {
             }
         }
     }
-    
+
     /* Return total number of QSOs per band */
    function total_bands() {
         $query = $this->db->query('SELECT DISTINCT (COL_BAND) AS band, count( * ) AS count FROM '.$this->config->item('table_name').' GROUP BY band ORDER BY count DESC');
 
         return $query;
     }
-    
+
     /* Return total number of QSL Cards sent */
     function total_qsl_sent() {
         $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_SENT = "Y" GROUP BY band');
 
         $row = $query->row();
-        
+
         if($row == null) {
             return 0;
         } else {
             return $row->count;
         }
     }
-    
+
     /* Return total number of QSL Cards requested */
     function total_qsl_requested() {
         $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_SENT = "R" GROUP BY band');
@@ -502,7 +502,7 @@ class Logbook_model extends CI_Model {
             return $row->count;
         }
     }
-    
+
     /* Return total number of QSL Cards received */
     function total_qsl_recv() {
         $query = $this->db->query('SELECT DISTINCT (COL_QSL_RCVD) AS band, count(COL_QSL_RCVD) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_RCVD = "Y" GROUP BY band');
@@ -515,7 +515,7 @@ class Logbook_model extends CI_Model {
             return $row->count;
         }
     }
-    
+
     /* Return total number of countrys worked */
     function total_countrys() {
         $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').'');
@@ -550,20 +550,20 @@ class Logbook_model extends CI_Model {
     /* Delete QSO based on the QSO ID */
     function delete($id) {
         $this->db->where('COL_PRIMARY_KEY', $id);
-        $this->db->delete($this->config->item('table_name')); 
+        $this->db->delete($this->config->item('table_name'));
     }
-    
+
 	/* Used to check if the qso is already in the database */
     function import_check($datetime, $callsign, $band) {
-		
+
 		$this->db->select('COL_TIME_ON, COL_CALL, COL_BAND');
 		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
 		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
 		$this->db->where('COL_CALL', $callsign);
-		$this->db->where('COL_BAND', $band); 
-		
+		$this->db->where('COL_BAND', $band);
+
 		$query = $this->db->get($this->config->item('table_name'));
-		
+
 		if ($query->num_rows() > 0)
 		{
 			return "Found";
@@ -571,7 +571,7 @@ class Logbook_model extends CI_Model {
 			return "No Match";
 		}
 	}
-	
+
 	function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status) {
 		$data = array(
 			   'COL_LOTW_QSLRDATE' => $qsl_date,
@@ -579,28 +579,28 @@ class Logbook_model extends CI_Model {
 			   'COL_LOTW_QSL_SENT' => 'Y'
 		);
 
-		$this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"'); 
+		$this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
 		$this->db->where('COL_CALL', $callsign);
-		$this->db->where('COL_BAND', $band); 
-		
-		$this->db->update($this->config->item('table_name'), $data); 
-		
+		$this->db->where('COL_BAND', $band);
+
+		$this->db->update($this->config->item('table_name'), $data);
+
 		return "Updated";
 	}
-	
+
 	function lotw_last_qsl_date() {
     	$this->db->select('COL_LOTW_QSLRDATE');
     	$this->db->where('COL_LOTW_QSLRDATE IS NOT NULL');
    		$this->db->order_by("COL_LOTW_QSLRDATE", "desc");
     	$this->db->limit(1);
-    	
+
     	$query = $this->db->get($this->config->item('table_name'));
     	$row = $query->row();
-    
+
    		return $row->COL_LOTW_QSLRDATE;
   	}
 
-//////////////////////////////	
+//////////////////////////////
 	// Update a QSO with eQSL QSL info
 	// We could also probably use this use this: http://eqsl.cc/qslcard/VerifyQSO.txt
 	// http://www.eqsl.cc/qslcard/ImportADIF.txt
@@ -613,13 +613,13 @@ class Logbook_model extends CI_Model {
 		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
 		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
 		$this->db->where('COL_CALL', $callsign);
-		$this->db->where('COL_BAND', $band); 
-		
-		$this->db->update($this->config->item('table_name'), $data); 
-		
+		$this->db->where('COL_BAND', $band);
+
+		$this->db->update($this->config->item('table_name'), $data);
+
 		return "Updated";
 	}
-	
+
 	// Mark the QSO as sent to eQSL
 	function eqsl_mark_sent($primarykey) {
 		$data = array(
@@ -628,25 +628,25 @@ class Logbook_model extends CI_Model {
 		);
 
 		$this->db->where('COL_PRIMARY_KEY', $primarykey);
-		
-		$this->db->update($this->config->item('table_name'), $data); 
-		
+
+		$this->db->update($this->config->item('table_name'), $data);
+
 		return "eQSL Sent";
 	}
-	
+
 	// Get the last date we received an eQSL
 	function eqsl_last_qsl_rcvd_date() {
     	$this->db->select("DATE_FORMAT(COL_EQSL_QSLRDATE,'%Y%m%d') AS COL_EQSL_QSLRDATE", FALSE);
     	$this->db->where('COL_EQSL_QSLRDATE IS NOT NULL');
    		$this->db->order_by("COL_EQSL_QSLRDATE", "desc");
     	$this->db->limit(1);
-    	
+
     	$query = $this->db->get($this->config->item('table_name'));
     	$row = $query->row();
-    
+
    		return $row->COL_EQSL_QSLRDATE;
   	}
-  	
+
   	// Determine if we've already received an eQSL for this QSO
   	function eqsl_dupe_check($datetime, $callsign, $band, $qsl_status) {
     	$this->db->select('COL_EQSL_QSLRDATE');
@@ -656,10 +656,10 @@ class Logbook_model extends CI_Model {
     	$this->db->where('COL_BAND', $band);
     	$this->db->where('COL_EQSL_QSL_RCVD', $qsl_status);
     	$this->db->limit(1);
-    	
+
     	$query = $this->db->get($this->config->item('table_name'));
     	$row = $query->row();
-    
+
    		if ($row != null)
    		{
    			return true;
@@ -669,16 +669,16 @@ class Logbook_model extends CI_Model {
    			return false;
    		}
   	}
-  	
+
   	// Show all QSOs we need to send to eQSL
   	function eqsl_not_yet_sent() {
   		//$this->db->select("COL_PRIMARY_KEY, DATE_FORMAT(COL_TIME_ON,\'%Y%m%d\') AS COL_QSO_DATE, DATE_FORMAT(COL_TIME_ON,\'%H%i\') AS TIME_ON, COL_CALL, COL_MODE, COL_BAND");
   		$this->db->select("COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_MODE, COL_BAND");
   		$this->db->where('COL_EQSL_QSL_SENT', 'N');
-  		
+
   		return $this->db->get($this->config->item('table_name'));
   	}
-  	
+
     function import($record) {
         $CI =& get_instance();
         $CI->load->library('frequency');
@@ -690,24 +690,29 @@ class Logbook_model extends CI_Model {
         if (isset($record['time_off'])) {
             $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_off']));
         } else {
-           $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));  
+           $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
         }
-        
+
         // Store Freq
-        if(isset($record['freq'])) {
+        $cleanfreq = preg_replace('#\W#', '', $record['freq']);
+        $freqlng = strlen($cleanfreq);
+        if(isset($record['freq']) && $freqlng < 7 ) {
             $cleansedstring = preg_replace('#\W#', '', $record['freq']);
             $freq = $cleansedstring."000";
+        } elseif($freqlng >= 7) {
+            $cleansedstring = preg_replace('#\W#', '', $record['freq']);
+            $freq = $cleansedstring;
         } else {
             $freq = "0";
         }
-        
+
         // Store Name
         if(isset($record['name'])) {
             $name = $record['name'];
         } else {
             $name = "";
         }
-        
+
         // Store Notes
         if(isset($record['notes'])) {
             $comment = $record['notes'];
@@ -721,7 +726,7 @@ class Logbook_model extends CI_Model {
         } else {
             $sat_name = "";
         }
-    
+
         // Store Satellite Mode
         if(isset($record['sat_mode'])) {
             $sat_mode = $record['sat_mode'];
@@ -735,25 +740,28 @@ class Logbook_model extends CI_Model {
         } else {
             $gridsquare = "";
         }
-    
+
         // Store or find country name
         if(isset($record['country'])) {
             $country = $record['country'];
         } else {
             $this->load->model('dxcc');
 
-            $dxccinfo = $this->dxcc->info($record['call']); 
-
+            $dxccinfo = $this->dxcc->info($record['call']);
+            echo "find dxcc<br>";
             if ($dxccinfo->num_rows() > 0)
             {
                 foreach ($dxccinfo->result() as $row1)
                 {
+                    print_r($row1);
                     $country = ucfirst(strtolower($row1->name));
                 }
             } else {
                 $country = "";
             }
         }
+
+        echo $country;
 
         // Store QTH
         if(isset($record['qth'])) {
@@ -775,7 +783,7 @@ class Logbook_model extends CI_Model {
         } else {
                 $rst_rx = "59"  ;
         }
-        
+
         // RST Sent
         if(isset($record['rst_sent'])) {
                 $rst_tx = $record['rst_sent'];
@@ -788,10 +796,10 @@ class Logbook_model extends CI_Model {
                 $band = $record['band'];
         } else {
                 $myfreq = str_replace(array('.', ','), '' , $record['freq'].'0');
-        
+
                 $band = $CI->frequency->GetBand($myfreq);
         }
-        
+
         // Store IOTA Ref if available
         if(isset($record['iota'])) {
                 $iota = $record['iota'];
@@ -813,7 +821,7 @@ class Logbook_model extends CI_Model {
         } else {
                 $QSLRCVD = null;
         }
-        
+
         // QSL Sent date
         if(isset($record['qslsdate'])) {
                 $QSLSDATE = $record['qslsdate'];
@@ -827,28 +835,28 @@ class Logbook_model extends CI_Model {
         } else {
                 $QSLSENT = null;
         }
-        
+
         if(isset($record['stx'])) {
                 $stx = $record['stx'];
         } else {
                 $stx = null;
         }
-        
+
         if(isset($record['srx'])) {
                 $srx = $record['srx'];
         } else {
                 $srx = null;
         }
-        
+
         // Filter Modes if not apart of ADIF spec
         if($record['mode'] == "RTTY75") {
             // Set RTTY75 to just RTTY
-                $mode = "RTTY"; 
+                $mode = "RTTY";
         } else {
             // If no other rules just plain mode that adif includes
                 $mode = $record['mode'];
         }
-        
+
 
         $this->db->where('COL_CALL', $record['call']);
         $this->db->where('COL_TIME_ON', $time_on);
@@ -882,7 +890,7 @@ class Logbook_model extends CI_Model {
                'COL_STX_STRING' => $stx,
                'COL_SRX_STRING' => $srx,
                'COL_IOTA' => $iota,
-               'COL_QSLRDATE' => $QSLRDATE, 
+               'COL_QSLRDATE' => $QSLRDATE,
                'COL_QSL_RCVD' => $QSLRCVD,
                'COL_QSLSDATE' => $QSLSDATE,
                'COL_QSL_SENT' => $QSLSENT
