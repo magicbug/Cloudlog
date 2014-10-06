@@ -748,20 +748,17 @@ class Logbook_model extends CI_Model {
             $this->load->model('dxcc');
 
             $dxccinfo = $this->dxcc->info($record['call']);
-            echo "find dxcc<br>";
+
             if ($dxccinfo->num_rows() > 0)
             {
                 foreach ($dxccinfo->result() as $row1)
                 {
-                    print_r($row1);
                     $country = ucfirst(strtolower($row1->name));
                 }
             } else {
                 $country = "";
             }
         }
-
-        echo $country;
 
         // Store QTH
         if(isset($record['qth'])) {
