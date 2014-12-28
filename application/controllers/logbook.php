@@ -267,7 +267,8 @@ class Logbook extends CI_Controller {
 
   function search_result($id) {
     $this->load->model('user_model');
-        if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+
+    if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
     $this->db->like('COL_CALL', $id);
     $this->db->or_like('COL_GRIDSQUARE', $id);
@@ -276,46 +277,38 @@ class Logbook extends CI_Controller {
 
     if ($query->num_rows() > 0)
     {
-
-        $data['results'] = $query;
-
-        $this->load->view('search/result_search.php', $data);
+      $data['results'] = $query;
+      $this->load->view('search/result_search.php', $data);
     } else {
-
       $this->load->model('search');
 
       $iota_search = $this->search->callsign_iota($id);
-
 
       if ($iota_search->num_rows() > 0)
       {
         $data['results'] = $iota_search;
         $this->load->view('search/result_search.php', $data);
       } else {
-             if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
-                // Lookup using QRZ
+        if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
+          // Lookup using QRZ
+          $this->load->library('qrz');
 
-                $this->load->library('qrz');
+          if(!$this->session->userdata('qrz_session_key')) {
+            $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+            $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+          }
 
-                if(!$this->session->userdata('qrz_session_key')) {
-                  $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
-                  $this->session->set_userdata('qrz_session_key', $qrz_session_key);
-                }
+          $data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'));
+        } else {
+          // Lookup using hamli
+          $this->load->library('hamli');
 
-                $data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'));
+          $data['callsign'] = $this->hamli->callsign($id);
+        }
 
+        $data['id'] = strtoupper($id);
 
-              } else {
-                // Lookup using hamli
-                $this->load->library('hamli');
-
-                $data['callsign'] = $this->hamli->callsign($id);
-              }
-
-
-              $data['id'] = strtoupper($id);
-
-              $this->load->view('search/result', $data);
+        $this->load->view('search/result', $data);
       }
     }
   }
