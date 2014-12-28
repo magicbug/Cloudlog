@@ -322,14 +322,13 @@ class Logbook extends CI_Controller {
 
   // Find DXCC
   function find_dxcc($callsign) {
-      $this->load->model('dxcc');
+    // Live lookup against Clublogs API
+    $url = "https://secure.clublog.org/dxcc?call=".$callsign."&api=a11c3235cd74b88212ce726857056939d52372bd&full=1";
 
-      $dxccinfo = $this->dxcc->info($callsign);
+    $json = file_get_contents($url);
+    $data = json_decode($json, TRUE);
 
-      foreach ($dxccinfo->result() as $row)
-      {
-        echo ucfirst(strtolower($row->name));
-      }
+    echo ucfirst(strtolower($data['Name']));
   }
 
   /* return station bearing */
