@@ -1,17 +1,18 @@
 # Cloudlog
 
-Cloudlog is a self-hosted PHP application, which allows you to log your amateur radio contacts anywhere all you need is a web browser and and internet connection.
+Cloudlog is a self-hosted PHP application, which allows you to log your amateur radio contacts anywhere all you need is a web browser and active internet connection.
 
 Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 ## Versions
 
 * Master - Current working copy
-* Version2 - Future release highly broken and unstable
 
 ## Setup
 
-We're still working simplying the setup but you can check out the Wiki for some useful tips and howtos.
+You can setup the basics of Cloudlog by opening /install in your browser, however please note theres an issue with the demo account creation (passwords invalid) so after this process you must disable auth via the config.php file and manually create yourself a user till this issue is fixed.
+
+More information can be found in the wiki.
 
 ## CAT Control
 
@@ -47,8 +48,8 @@ SOFTWARE.
 * Gavin (M1BXF)   [http://www.geekshed.co.uk](http://www.geekshed.co.uk/)
 * Graham (W5ISP)  [http://www.w5isp.com](http://w5isp.com)
 * Robert (M0VFC)  [http://github.com/rmc47](https://github.com/rmc47)
-* Corby (KØSKW)	  [http://www.k0skw.net/](http://www.k0skw.net/)
+* Corby (Kï¿½SKW)	  [http://www.k0skw.net/](http://www.k0skw.net/)
 
 ![Clublog Logo](http://www.clublog.org/images/clublog.png "Clublog Logo")
 
-We use the [Clublog](http://www.clublog.org/) cty.xml to power the dxcc lookup functions.
+We use the [Clublog](http://www.clublog.org/) cty.xml and APIs within the DXCC elements of Cloudlog, if your not already a member of Clublog we recommend you go sign up!
