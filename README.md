@@ -1,6 +1,6 @@
 # Cloudlog
 
-Cloudlog is a self-hosted PHP application, which allows you to log your amateur radio contacts anywhere all you need is a web browser and active internet connection.
+Cloudlog is a self-hosted PHP application that allows you to log your amateur radio contacts anywhere. All you need is a web browser and active internet connection.
 
 Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
@@ -10,7 +10,7 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 ## Setup
 
-You can setup the basics of Cloudlog by opening /install in your browser, however please note theres an issue with the demo account creation (passwords invalid) so after this process you must disable auth via the config.php file and manually create yourself a user till this issue is fixed.
+You can set up the basics of Cloudlog by opening /install in your browser. Please note theres an issue with the demo account creation (password invalid,) so after this process you must disable auth via the config.php file and manually create yourself a user untill this issue is fixed.
 
 More information can be found in the wiki.
 
@@ -48,8 +48,8 @@ SOFTWARE.
 * Gavin (M1BXF)   [http://www.geekshed.co.uk](http://www.geekshed.co.uk/)
 * Graham (W5ISP)  [http://www.w5isp.com](http://w5isp.com)
 * Robert (M0VFC)  [http://github.com/rmc47](https://github.com/rmc47)
-* Corby (K�SKW)	  [http://www.k0skw.net/](http://www.k0skw.net/)
+* Corby (K0SKW)	  [http://www.k0skw.net/](http://www.k0skw.net/)
 
 ![Clublog Logo](http://www.clublog.org/images/clublog.png "Clublog Logo")
 
-We use the [Clublog](http://www.clublog.org/) cty.xml and APIs within the DXCC elements of Cloudlog, if your not already a member of Clublog we recommend you go sign up!
+We use the [Clublog](http://www.clublog.org/) cty.xml and APIs within the DXCC elements of Cloudlog. If you're not already a member of Clublog, we recommend you go sign up!
