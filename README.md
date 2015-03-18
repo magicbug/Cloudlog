@@ -44,7 +44,7 @@ SOFTWARE.
 
 ## Credits
 
-* Andy (M0VKG)    [http://m0vkg.org.uk](http://m0vkg.org.uk/)
+* Andy (VE7CXZ)    [http://ve7cxz.ca](http://ve7cxz.ca/)
 * Gavin (M1BXF)   [http://www.geekshed.co.uk](http://www.geekshed.co.uk/)
 * Graham (W5ISP)  [http://www.w5isp.com](http://w5isp.com)
 * Robert (M0VFC)  [http://github.com/rmc47](https://github.com/rmc47)
