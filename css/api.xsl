@@ -5,17 +5,70 @@
   <html>
   <head>
   <title><xsl:value-of select="//queryInfo/@calledMethod"/></title>
-  <link rel="stylesheet" href="/css/api.css" type="text/css" />
+  <style>
+    body {
+      background: #eee;
+      font-family: Verdana, sans-serif;
+      font-size: 8px;
+    }
+    #results table {
+      border: 0px solid #000;
+      border-collapse: collapse;
+    }
+    #results th {
+      padding: 4px;
+      border: 1px solid #000;
+      background-color: #6AA57B;
+      font-size: 11px;
+    }
+    #results td {
+      padding: 4px;
+      border: 1px solid #000;
+      font-size: 11px;
+    }
+    #results tr.row0 {
+      background-color: #A3BDF5;
+    }
+    #results tr.row1 {
+      background-color: #9ADF9A;
+    }
+    img {
+      border: 0px;
+    }
+    #footer {
+      font-size: 8px;
+    }
+    #debug {
+      border: 1px dotted #fff;
+      background-color: #c00;
+      color: #fff;
+      font-size: 8px;
+    }
+    #debug td {
+      padding: 4px;
+      color: #fff;
+      font-size: 10px;
+    }
+    .blank {
+      background-color: transparent;
+    }
+    .sub {
+      background-color: #cfc;
+    }
+    .subattr {
+      background-color: #cfc;
+    }
+  </style>
   </head>
   <body>
   <h1>Output of '<xsl:value-of select="//queryInfo/@calledMethod"/>'</h1>
   <table id="results">
         <tr>
-        <xsl:for-each select="//elements/element[1]/@*">
+        <xsl:for-each select="//results/result[1]/@*">
           <th><b><xsl:value-of select="name()"/></b></th>
         </xsl:for-each>
         </tr>
-        <xsl:for-each select="//elements/element">
+        <xsl:for-each select="//results/result">
 		  <tr class="row{position() mod 2}">
           <xsl:for-each select="@*">
             <td><xsl:value-of select="."/></td>
