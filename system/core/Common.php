@@ -241,7 +241,10 @@
 			}
 		}
 
-		return $_config[0] =& $config;
+    # Fix irritating PHP error
+    # see http://stackoverflow.com/questions/28348879/only-variable-references-should-be-returned-by-reference-codeigniter
+		$_config[0] =& $config;
+    return $_config[0];
 	}
 
 // ------------------------------------------------------------------------
