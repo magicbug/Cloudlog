@@ -43,12 +43,20 @@ class QSO extends CI_Controller {
 			$this->logbook_model->add();
 			
 			// Store Basic QSO Info for reuse
-			$this->session->set_userdata('band', $this->input->post('band'));
-			$this->session->set_userdata('freq', $this->input->post('freq'));
-			$this->session->set_userdata('mode', $this->input->post('mode'));
-			$this->session->set_userdata('sat_name', $this->input->post('sat_name'));
-			$this->session->set_userdata('sat_mode', $this->input->post('sat_mode'));
-			$this->session->set_userdata('radio', $this->input->post('radio'));
+      // Put data in an array first, then call set_userdata once.
+      // This solves the problem of CI dumping out the session
+      // cookie each time set_userdata is called.
+      // For more info, see http://bizhole.com/codeigniter-nginx-error-502-bad-gateway/
+      $qso_data = [
+        'band' => $this->input->post('band'),
+        'freq' => $this->input->post('freq'),
+        'mode' => $this->input->post('mode'),
+        'sat_name' => $this->input->post('sat_name'),
+        'sat_mode' => $this->input->post('sat_mode'),
+        'radio' => $this->input->post('radio')
+      ];
+
+      $this->session->set_userdata($qso_data);
 			
 			// Get last Ten QSOs
 			$data['query'] = $this->logbook_model->last_ten();
@@ -103,12 +111,16 @@ class QSO extends CI_Controller {
 			$this->logbook_model->create_qso();
 			
 			// Store Basic QSO Info for reuse
-			$this->session->set_userdata('band', $this->input->post('band'));
-			$this->session->set_userdata('freq', $this->input->post('freq'));
-			$this->session->set_userdata('mode', $this->input->post('mode'));
-			$this->session->set_userdata('sat_name', $this->input->post('sat_name'));
-			$this->session->set_userdata('sat_mode', $this->input->post('sat_mode'));
-			$this->session->set_userdata('radio', $this->input->post('radio'));
+      $qso_data = [
+        'band' => $this->input->post('band'),
+        'freq' => $this->input->post('freq'),
+        'mode' => $this->input->post('mode'),
+        'sat_name' => $this->input->post('sat_name'),
+        'sat_mode' => $this->input->post('sat_mode'),
+        'radio' => $this->input->post('radio')
+      ];
+
+      $this->session->set_userdata($qso_data);
 			
 			// Get last Ten QSOs
 			$data['query'] = $this->logbook_model->last_ten();
