@@ -833,6 +833,20 @@ class Logbook_model extends CI_Model {
                 $QSLSENT = null;
         }
 
+        //LOTW QSL Recv
+        if(isset($record['lotw_qsl_rcvd'])) {
+                $LOTWQSLRCVD = $record['lotw_qsl_rcvd'];
+        } else {
+                $LOTWQSLRCVD = null;
+        }
+
+        //LOTW QSL Sent
+        if(isset($record['lotw_qsl_sent'])) {
+                $LOTWQSLSENT = $record['lotw_qsl_sent'];
+        } else {
+                $LOTWQSLSENT = null;
+        }
+
         if(isset($record['stx'])) {
                 $stx = $record['stx'];
         } else {
@@ -890,7 +904,9 @@ class Logbook_model extends CI_Model {
                'COL_QSLRDATE' => $QSLRDATE,
                'COL_QSL_RCVD' => $QSLRCVD,
                'COL_QSLSDATE' => $QSLSDATE,
-               'COL_QSL_SENT' => $QSLSENT
+               'COL_QSL_SENT' => $QSLSENT,
+               'COL_LOTW_QSL_SENT' => $LOTWQSLSENT,
+               'COL_LOTW_QSL_RCVD' => $LOTWQSLRCVD
             );
 
             $this->add_qso($data);
