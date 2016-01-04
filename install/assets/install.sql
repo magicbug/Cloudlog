@@ -3831,6 +3831,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_locator` varchar(255) NOT NULL,
   `user_firstname` varchar(255) NOT NULL,
   `user_lastname` varchar(255) NOT NULL,
+  `user_lotw_name` varchar(32) DEFAULT NULL,
+  `user_lotw_password` varchar(64) DEFAULT NULL,
+  `user_eqsl_name` varchar(32) DEFAULT NULL,
+  `user_eqsl_password` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name` (`user_name`),
   UNIQUE KEY `user_email` (`user_email`)

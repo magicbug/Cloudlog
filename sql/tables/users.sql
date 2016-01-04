@@ -33,6 +33,10 @@ CREATE TABLE `users` (
   `user_firstname` varchar(32) NOT NULL COMMENT 'User''s first name',
   `user_lastname` varchar(32) NOT NULL COMMENT 'User''s last name',
   `user_timezone` int(3) NOT NULL DEFAULT '0',
+  `user_lotw_name` varchar(32) DEFAULT NULL,
+  `user_lotw_password` varchar(64) DEFAULT NULL,
+  `user_eqsl_name` varchar(32) DEFAULT NULL,
+  `user_eqsl_password` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name` (`user_name`),
   UNIQUE KEY `user_email` (`user_email`)
