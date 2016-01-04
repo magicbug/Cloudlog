@@ -3846,3 +3846,21 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`user_id`, `user_timezone`, `user_name`, `user_password`, `user_email`, `user_type`, `user_callsign`, `user_locator`, `user_firstname`, `user_lastname`) VALUES
 (4, '0', 'm0abc', '$2a$08$r9UF3YhipAY6htSQoZRjeOFDx3Yuh7Zjuh45vKyUN4gO8g5l.saES', 'demo@demo.com', '99', 'M0ABC', 'io91js', 'Demo', 'Account');
+
+CREATE TABLE IF NOT EXISTS `config` (
+  `id` int(9) NOT NULL AUTO_INCREMENT,
+  `lotw_download_url` varchar(255) DEFAULT NULL,
+  `lotw_upload_url` varchar(255) DEFAULT NULL,
+  `lotw_rcvd_mark` varchar(1) DEFAULT NULL,
+  `lotw_login_url` varchar(244) DEFAULT NULL,
+  `eqsl_download_url` varchar(244) DEFAULT NULL,
+  `eqsl_rcvd_mark` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `config`
+--
+
+INSERT INTO `config` (`id`, `lotw_download_url`, `lotw_upload_url`, `lotw_rcvd_mark`, `lotw_login_url`, `eqsl_download_url`, `eqsl_rcvd_mark`) VALUES
+(1, 'https://p1k.arrl.org/lotwuser/lotwreport.adi', 'https://p1k.arrl.org/lotwuser/upload', 'Y', 'https://p1k.arrl.org/lotwuser/default', 'http://www.eqsl.cc/qslcard/DownloadInBox.cfm', 'Y');
