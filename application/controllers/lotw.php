@@ -37,7 +37,7 @@ class Lotw extends CI_Controller {
 				$tableheaders .= "<td>Date LoTW Confirmed</td>";
 				$tableheaders .= "<td>Log Status</td>";
 				$tableheaders .= "<td>LoTW Status</td>";
-			$tableheaders .= "<tr>";
+			$tableheaders .= "</tr>";
 
 			$table = "";
 			while($record = $this->adif_parser->get_record())
