@@ -1,111 +1,116 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
-		
+
 		<!-- JS  -->
 		<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-1.5.1.min.js"></script>
 		<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.8.12.custom.min.js"></script>
 		<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-dropdown.js"></script>
 		<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-tabs.js"></script>
-		
+
 		<script type="text/javascript">
 		  $(function () {
 			$('.tabs').tabs()
 		  })
 		</script>
-		
+
 		<!-- CSS Files -->
-		<link type="text/css" href="<?php echo base_url(); ?>css/flick/jquery-ui-1.8.12.custom.css" rel="stylesheet" />	
+		<link type="text/css" href="<?php echo base_url(); ?>css/flick/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
 		<link rel="stylesheet" href="<?php echo base_url();?>css/bootcamp/bootstrap.css" type="text/css" />
 	</head>
-	
+
 	<body>
-	
+
 		<!-- Option to Delete QSO -->
 		<div style="float: right; padding-right: 60px; padding-top: 30px;">
 			<p><a href="<?php echo site_url('qso/delete'); ?>/<?php echo $COL_PRIMARY_KEY; ?>" >Delete QSO <img src="<?php echo base_url(); ?>/images/delete.png" width="16" height="16" alt="Delete" /></a></p>
 		</div>
-		
+
 		<?php echo validation_errors(); ?>
 		<form method="post" action="<?php echo site_url('qso/edit'); ?>" name="qsos">
-		
+
 		<table>
 			<tr>
 				<td>Start Date</td>
 				<td>End Date</td>
 			</tr>
-			
+
 			<tr>
 				<td><input type="text" name="time_on" value="<?php echo $COL_TIME_ON; ?>" /></td>
-				<td><input type="text" name="time_off" value="<?php echo $COL_TIME_OFF; ?>" /></td>				
+				<td><input type="text" name="time_off" value="<?php echo $COL_TIME_OFF; ?>" /></td>
 			</tr>
 		</table>
-		
+
 		<table>
 			<tr>
 				<td>Callsign</td>
 				<td><input type="text" name="callsign" value="<?php echo $COL_CALL; ?>" /></td>
 			</tr>
-			
+
 			<?php if($COL_FREQ) { ?>
 			<tr>
 				<td>Freq</td>
 				<td><input type="text" name="freq" value="<?php echo $COL_FREQ; ?>" /></td>
 			</tr>
 			<?php } ?>
-			
+
 			<tr>
 				<td>Mode</td>
 				<td><input type="text" name="mode" value="<?php echo $COL_MODE; ?>" /></td>
 			</tr>
-			
+
 			<tr>
 				<td>Band</td>
 				<td><input type="text" name="band" value="<?php echo $COL_BAND; ?>" /></td>
 			</tr>
-			
+
 			<tr>
 				<td>RST Sent</td>
 				<td><input type="text" name="rst_sent" value="<?php echo $COL_RST_SENT; ?>" /></td>
 			</tr>
-			
+
 			<tr>
 				<td>RST Recv</td>
 				<td><input type="text" name="rst_recv" value="<?php echo $COL_RST_RCVD; ?>" /></td>
 			</tr>
-			
+
 			<?php if ($COL_STX_STRING) { ?>
 			<tr>
 				<td>TX Serial</td>
 				<td><input type="text" name="stx_string" value="<?php echo $COL_STX_STRING; ?>" /></td>
 			</tr>
 			<?php } ?>
-			
+
 			<?php if ($COL_SRX_STRING) { ?>
 			<tr>
 				<td>RX Serial</td>
 				<td><input type="text" name="srx_string" value="<?php echo $COL_SRX_STRING; ?>" /></td>
 			</tr>
 			<?php } ?>
-			
+
 			<tr>
 				<td>Locator</td>
 				<td><input id="locator" type="text" name="locator" value="<?php echo $COL_GRIDSQUARE; ?>" size="7" /></td>
 			</tr>
-			
+
 			<tr>
 				<td>Name</td>
 				<td><input type="text" name="name" value="<?php echo $COL_NAME; ?>" /></td>
 			</tr>
-			
+
 			<tr>
 				<td>QTH</td>
 				<td><input type="text" name="qth" value="<?php echo $COL_QTH; ?>" /></td>
 			</tr>
-			
+
 
 			<tr>
 				<td>Comment</td>
 				<td><input type="text" name="comment" value="<?php echo $COL_COMMENT; ?>" /></td>
+			</tr>
+
+			<tr>
+				<td>Propagation Mode</td>
+				<td><input type="text" name="prop_mode" value="<?php echo $COL_PROP_MODE; ?>" /></td>
 			</tr>
 		</table>
 
@@ -114,10 +119,10 @@
 				<td>Sat Name</td>
 				<td>Sat Mode</td>
 			</tr>
-			
+
 			<tr>
 				<td><input type="text" name="sat_name" value="<?php echo $COL_SAT_NAME; ?>" /></td>
-				<td><input type="text" name="sat_mode" value="<?php echo $COL_SAT_MODE; ?>" /></td>				
+				<td><input type="text" name="sat_mode" value="<?php echo $COL_SAT_MODE; ?>" /></td>
 			</tr>
 		</table>
 
@@ -126,22 +131,22 @@
 				<td>IOTA</td>
 				<td><input type="text" name="iota_ref" value="<?php echo $COL_IOTA; ?>" /></td>
 			</tr>
-			
+
 			<tr>
 				<td>Country</td>
 				<td><input type="text" name="country" value="<?php echo $COL_COUNTRY; ?>" /></td>
 			</tr>
-			
+
 		</table>
-		
+
 		<h3>QSLing</h3>
-		
+
 		<ul class="tabs">
 		  <li class="active"><a href="#paper">Paper</a></li>
 		  <li><a href="#eqsl">eQSL</a></li>
 		  <li><a href="#lotw">LoTW</a></li>
 		</ul>
-		 
+
 		<div class="pill-content">
 		  <div class="active" id="paper">
 		<table>
@@ -165,9 +170,9 @@
 			</tr>
 			<tr>
 				<td></td>
-				
+
 				<!-- <?php if($COL_QSL_SENT_VIA == "") { echo "selected=\"selected\""; } ?> -->
-				
+
 				<td><select name="qsl_sent_method">
 					<option value="" <?php if($COL_QSL_SENT_VIA == "") { echo "selected=\"selected\""; } ?>>Method</option>
 					<option value="D" <?php if($COL_QSL_SENT_VIA == "D") { echo "selected=\"selected\""; } ?>>Direct</option>
@@ -185,7 +190,7 @@
 				</select></td>
 			</tr>
 		</table>
-			
+
 		  </div>
 		  <div id="eqsl">
 			<table>
