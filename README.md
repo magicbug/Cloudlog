@@ -22,7 +22,7 @@ Its possible to interact with your radio if you have a K3, FT-950 or a ICOM radi
 
 The MIT License (MIT)
 
-Copyright (c) 2014 Peter Goodhall, 2E0SQL
+Copyright (c) 2016 Peter Goodhall, 2E0SQL
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
