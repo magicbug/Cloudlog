@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 	<title><?php echo $page_title; ?> - Cloudlog</title>
-	
+
 	<!-- Javascript -->
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-1.5.1.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.8.12.custom.min.js"></script>
@@ -13,25 +13,25 @@
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
 
 	<!-- CSS Files -->
-	<link type="text/css" href="<?php echo base_url(); ?>css/flick/jquery-ui-1.8.12.custom.css" rel="stylesheet" />	
+	<link type="text/css" href="<?php echo base_url(); ?>css/flick/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
 	<link rel="stylesheet" href="<?php echo base_url();?>css/bootcamp/bootstrap.css" type="text/css" />
 	<link rel="stylesheet" href="<?php echo base_url();?>css/main.css" type="text/css" />
-	
+
 	<!-- Sticky Footer IE -->
 	<!--[if !IE 7]>
 	<style type="text/css">
 		#wrap {display:table;height:100%}
 	</style>
 	<![endif]-->
-	
+
 	<!-- Theming Code Goes Here -->
-	
+
 	<!-- Icons -->
-	<link rel="icon" href="<?php echo base_url(); ?>/CloudLog.ico" type="image/x-icon" /> 
+	<link rel="icon" href="<?php echo base_url(); ?>/CloudLog.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="<?php echo base_url(); ?>/CloudLog.ico" type="image/x-icon" />
 </head>
 
-<body> 
+<body>
 
 	<!-- Header -->
 <div id="wrap">
@@ -50,9 +50,9 @@
 				  <li class="divider"></li>
 				  <li><a href="<?php echo site_url('qso/manual');?>" title="Notes">Post QSOs</a></li>
 			</ul>
-			
+
 			<?php } ?>
-		
+
 
 			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE){ ?>
 
@@ -66,17 +66,17 @@
 
 			<?php } ?>
 			<li><a href="<?php echo site_url('statistics');?>" title="Statistics">Statistics</a></li>
-			<li><a href="<?php echo site_url('dxcluster');?>" title="DX Cluster">Cluster</a></li>
+<!--			<li><a href="<?php echo site_url('dxcluster');?>" title="DX Cluster">Cluster</a></li>-->
 
 			<?php if(($this->config->item('use_auth') && $this->session->userdata('user_type') >= 99) || $this->config->item('use_auth') === FALSE) { ?>
-			
+
 			<li class="dropdown" data-dropdown="dropdown" >
 				<a href="#" class="dropdown-toggle">Tools</a>
 				<ul class="dropdown-menu">
 				 <li><a href="<?php echo site_url('awards');?>" title="">Awards</a></li>
 				</ul>
 			</li>
-			
+
 			<li class="dropdown" data-dropdown="dropdown" >
 				<a href="#" class="dropdown-toggle">Admin</a>
 				<ul class="dropdown-menu">
