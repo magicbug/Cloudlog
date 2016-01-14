@@ -25,6 +25,8 @@
 
 <div id="container">
 
+<h2>Cloudlog Users</h2>
+
 <div class="row show-grid">
 	  <div class="span13">
 
