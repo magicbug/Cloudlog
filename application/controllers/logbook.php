@@ -202,7 +202,7 @@ class Logbook extends CI_Controller {
           $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
         }
 
-        $callbook = $this->hamqth->search($qra, $this->session->userdata('hamqth_session_key'));
+        $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
         echo $callbook['iota'];
 
       }
@@ -238,7 +238,7 @@ class Logbook extends CI_Controller {
           $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
         }
 
-        $callbook = $this->hamqth->search($qra, $this->session->userdata('hamqth_session_key'));
+        $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
         echo $callbook['name'];
 
       }
