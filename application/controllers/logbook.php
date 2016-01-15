@@ -164,13 +164,18 @@ class Logbook extends CI_Controller {
         $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'));
         echo $callbook['city'];
 
-      } else {
-        // Lookup using hamli
-        $this->load->library('hamli');
+      } elseif ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
+        // Load the HamQTH library
+        $this->load->library('hamqth');
 
-        $callbook = $this->hamli->callsign($callsign);
+        if(!$this->session->userdata('hamqth_session_key')) {
+          $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+          $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+        }
 
+        $callbook = $this->hamqth->search($qra, $this->session->userdata('hamqth_session_key'));
         echo $callbook['city'];
+
       }
   }
 
@@ -186,6 +191,18 @@ class Logbook extends CI_Controller {
         }
 
         $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'));
+        echo $callbook['iota'];
+
+      } elseif ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
+        // Load the HamQTH library
+        $this->load->library('hamqth');
+
+        if(!$this->session->userdata('hamqth_session_key')) {
+          $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+          $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+        }
+
+        $callbook = $this->hamqth->search($qra, $this->session->userdata('hamqth_session_key'));
         echo $callbook['iota'];
 
       }
@@ -212,13 +229,18 @@ class Logbook extends CI_Controller {
 
         $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'));
         echo $callbook['name'];
-      } else {
-        // Lookup using hamli
-        $this->load->library('hamli');
+      }  elseif ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
+        // Load the HamQTH library
+        $this->load->library('hamqth');
 
-        $callbook = $this->hamli->callsign($callsign);
+        if(!$this->session->userdata('hamqth_session_key')) {
+          $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+          $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+        }
 
+        $callbook = $this->hamqth->search($qra, $this->session->userdata('hamqth_session_key'));
         echo $callbook['name'];
+
       }
     }
   }
