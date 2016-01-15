@@ -124,7 +124,6 @@ class Logbook extends CI_Controller {
     } else {
       if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
         // Lookup using QRZ
-
         $this->load->library('qrz');
 
         if(!$this->session->userdata('qrz_session_key')) {
@@ -135,13 +134,18 @@ class Logbook extends CI_Controller {
         $callbook = $this->qrz->search($qra, $this->session->userdata('qrz_session_key'));
         echo $callbook['gridsquare'];
 
-      } else {
-        // Lookup using hamli
-        $this->load->library('hamli');
+      } elseif ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
+        // Load the HamQTH library
+        $this->load->library('hamqth');
 
-        $callbook = $this->hamli->callsign($qra);
+        if(!$this->session->userdata('hamqth_session_key')) {
+          $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+          $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+        }
 
+        $callbook = $this->hamqth->search($qra, $this->session->userdata('hamlib_session_key'));
         echo $callbook['gridsquare'];
+
       }
     }
   }
