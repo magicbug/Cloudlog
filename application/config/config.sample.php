@@ -16,7 +16,7 @@ $config['app_name'] = "Cloudlog";
 $config['app_version'] = "1.1";
 $config['directory'] = "logbook";
 
-$config['callbook'] = "qrz"; // Options are hamli or qrz
+$config['callbook'] = "hamqth"; // Options are hamqth or qrz
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +66,18 @@ $config['auth_level'][99] = "Administrator";
 $config['qrz_username'] = "";
 $config['qrz_password'] = "";
 
+
+/*
+|--------------------------------------------------------------------------
+| HamQTH Login Information
+|--------------------------------------------------------------------------
+|
+| 'username'		HamQTH Username
+|	'password'		HamQTH Password
+*/
+
+$config['hamqth_username'] = "";
+$config['hamqth_password'] = "";
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
