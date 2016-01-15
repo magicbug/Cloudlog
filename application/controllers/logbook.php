@@ -122,7 +122,6 @@ class Logbook extends CI_Controller {
     if($this->logbook_model->call_qra($qra)) {
       echo $this->logbook_model->call_qra($qra);
     } else {
-      echo "callbook info:";
       if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
         // Lookup using QRZ
         $this->load->library('qrz');
@@ -145,7 +144,6 @@ class Logbook extends CI_Controller {
         }
 
         $callbook = $this->hamqth->search($qra, $this->session->userdata('hamqth_session_key'));
-        echo "hamqth info:";
         echo $callbook['gridsquare'];
 
       }
