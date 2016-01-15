@@ -144,6 +144,7 @@ class Logbook extends CI_Controller {
         }
 
         $callbook = $this->hamqth->search($qra, $this->session->userdata('hamqth_session_key'));
+        echo "hamqth info:";
         echo $callbook['gridsquare'];
 
       }
