@@ -14,7 +14,7 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 ## Setup
 
-You can set up the basics of Cloudlog by opening /install in your browser. Please note theres an issue with the demo account creation (password invalid,) so after this process you must disable auth via the config.php file and manually create yourself a user untill this issue is fixed.
+You can set up the basics of Cloudlog by opening /install in your browser. Please note theres an issue with the demo account creation (password invalid) so after this process you must disable auth via the config.php file and manually create yourself a user in till this issue is fixed.
 
 More information can be found in the wiki.
 
