@@ -695,8 +695,13 @@ class Logbook_model extends CI_Model {
         }
 
         // Store Freq
-        $cleanfreq = preg_replace('#\W#', '', $record['freq']);
-        $freqlng = strlen($cleanfreq);
+        // Check if 'freq' is defined in the import?
+        if (isset($record['freq'])){
+            $cleanfreq = preg_replace('#\W#', '', $record['freq']);
+            $freqlng = strlen($cleanfreq);
+        }else{
+            $freqlng = 0;
+        }
         if(isset($record['freq']) && $freqlng < 7 ) {
             $cleansedstring = preg_replace('#\W#', '', $record['freq']);
             $freq = $cleansedstring."000";
