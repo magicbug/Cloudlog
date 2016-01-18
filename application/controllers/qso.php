@@ -47,14 +47,17 @@ class QSO extends CI_Controller {
       // This solves the problem of CI dumping out the session
       // cookie each time set_userdata is called.
       // For more info, see http://bizhole.com/codeigniter-nginx-error-502-bad-gateway/
-      $qso_data = [
+      // $qso_data = [
+      // 18-Jan-2016 - make php v5.3 friendly!
+      $sqo_data = array(
         'band' => $this->input->post('band'),
         'freq' => $this->input->post('freq'),
         'mode' => $this->input->post('mode'),
         'sat_name' => $this->input->post('sat_name'),
         'sat_mode' => $this->input->post('sat_mode'),
         'radio' => $this->input->post('radio')
-      ];
+      );
+      // ];
 
       $this->session->set_userdata($qso_data);
 			
@@ -111,14 +114,17 @@ class QSO extends CI_Controller {
 			$this->logbook_model->create_qso();
 			
 			// Store Basic QSO Info for reuse
-      $qso_data = [
+      //$qso_data = [
+      // 18-Jan-2016 - make php v5.3 friendly!
+      $qso_data = array(
         'band' => $this->input->post('band'),
         'freq' => $this->input->post('freq'),
         'mode' => $this->input->post('mode'),
         'sat_name' => $this->input->post('sat_name'),
         'sat_mode' => $this->input->post('sat_mode'),
         'radio' => $this->input->post('radio')
-      ];
+      );
+      //];
 
       $this->session->set_userdata($qso_data);
 			
