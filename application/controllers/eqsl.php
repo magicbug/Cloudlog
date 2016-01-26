@@ -353,8 +353,6 @@ class eqsl extends CI_Controller {
 				
 				# End all the required fields
 				
-				
-				// CHANGE START - aw - 26-jan-2010
                 // adding comment as QSLMSG
 				$adif .= "%3C";
 				$adif .= "QSLMSG";
@@ -372,7 +370,6 @@ class eqsl extends CI_Controller {
 				$adif .= "%3E";
 				$adif .= $qsl['COL_RST_SENT'];
 				$adif .= "%20";
-				// CHANGE END
 
 				# Tie a bow on it!
 				$adif .= "%3C";
