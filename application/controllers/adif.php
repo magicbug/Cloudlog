@@ -106,13 +106,8 @@ class adif extends CI_Controller {
 					break;
 				};
 
-				//echo date('Y-m-d', strtotime($record['qso_date']))."<br>";
-				//echo date('H:m', strtotime($record['time_on']))."<br>";
-
 				$this->logbook_model->import($record);
 
-				//echo $record["call"]."<br>";
-				//print_r($record);
 			};
 
 			unlink('./uploads/'.$data['upload_data']['file_name']);
@@ -124,39 +119,6 @@ class adif extends CI_Controller {
 
 		}
 	}
-
-
-	function test() {
-		// Set memory limit to unlimited to allow heavy usage
-		ini_set('memory_limit', '-1');
-		set_time_limit(0);
-
-		$this->load->model('logbook_model');
-
-		$this->load->library('adif_parser');
-
-		$this->adif_parser->load_from_file('./uploads/2e0sql.ADI');
-
-		$this->adif_parser->initialize();
-
-		while($record = $this->adif_parser->get_record())
-		{
-			if(count($record) == 0)
-			{
-				break;
-			};
-
-			//echo date('Y-m-d', strtotime($record['qso_date']))."<br>";
-			//echo date('H:m', strtotime($record['time_on']))."<br>";
-
-			$this->logbook_model->import($record);
-
-			//echo $record["call"]."<br>";
-			//print_r($record);
-		};
-
-	}
-
 }
 
 /* End of file adif.php */
