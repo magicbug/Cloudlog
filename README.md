@@ -61,3 +61,7 @@ SOFTWARE.
 ![Clublog Logo](http://www.clublog.org/images/clublog.png "Clublog Logo")
 
 We use the [Clublog](http://www.clublog.org/) cty.xml and APIs within the DXCC elements of Cloudlog. If you're not already a member of Clublog, we recommend you go sign up!
+
+![HamQTH Logo](https://www.hamqth.com/images/hamqth_125x125.png "HamQTH Logo")
+
+Cloudlog supports using the callsign lookup service from [HamQTH](https://www.hamqth.com)
