@@ -353,7 +353,24 @@ class eqsl extends CI_Controller {
 				
 				# End all the required fields
 				
-				
+                // adding comment as QSLMSG
+				$adif .= "%3C";
+				$adif .= "QSLMSG";
+				$adif .= "%3A";
+				$adif .= strlen($qsl['COL_COMMENT']);
+				$adif .= "%3E";
+				$adif .= $qsl['COL_COMMENT'];
+				$adif .= "%20";
+
+				// adding RST_Sent
+				$adif .= "%3C";
+				$adif .= "RST%5FSENT";
+				$adif .= "%3A";
+				$adif .= strlen($qsl['COL_RST_SENT']);
+				$adif .= "%3E";
+				$adif .= $qsl['COL_RST_SENT'];
+				$adif .= "%20";
+
 				# Tie a bow on it!
 				$adif .= "%3C";
 				$adif .= "EOR";
