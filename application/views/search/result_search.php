@@ -13,6 +13,9 @@
 			<?php if($this->session->userdata('user_eqsl_name') != "") { ?>
 			<td>eQSL</td>
 			<?php } ?>
+			<?php if($this->session->userdata('user_lotw_name') != "") { ?>
+			<td>LoTW</td>
+			<?php } ?>
 			<td></td>
 			<?php } ?>
 		</tr>
@@ -54,6 +57,12 @@
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
 			</td>
 			<?php } ?>
+			<?php if ($this->session->userdata('user_lotw_name') != "" && $row->COL_EQSL_QSL_SENT != ''){ ?>
+			<td class="lotw">
+			    <span class="lotw-<?php echo ($row->COL_LOTW_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
+			    <span class="lotw-<?php echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
+			</td>
+			<?php } ?>
 			<td><a class="editbox" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" ><img src="<?php echo base_url(); ?>/images/application_edit.png" width="16" height="16" alt="Edit" />
 			</a></td>
 			<?php } ?>
@@ -76,3 +85,16 @@ TD.eqsl{
     color: #F00;
     font-size: 1.1em;
 }
+TD.lotw{
+    width: 33px;
+}
+.lotw-green{
+    color: #00A000;
+    font-size: 1.1em;
+}
+.lotw-red{
+    color: #F00;
+    font-size: 1.1em;
+}
+
+</style>
