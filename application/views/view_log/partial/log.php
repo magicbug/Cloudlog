@@ -47,7 +47,7 @@
 				<?php } ?>
 			</td>
 			<td class="eqsl">
-			    <?php if ($row->COL_EQSL_QSL_SENT != ''){ ?>
+			    <?php if ($row->COL_EQSL_QSL_SENT != '' || $row->COL_EQSL_QSL_SENT != 'N'){ ?>
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
 			    <?php } ?>
