@@ -10,7 +10,9 @@
 			<td>Country</td>
 			<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
 			<td>QSL</td>
+			<?php if($this->session->userdata('user_eqsl_name') != "") { ?>
 			<td>eQSL</td>
+			<?php } ?>
 			<td></td>
 			<?php } ?>
 		</tr>
