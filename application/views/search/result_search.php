@@ -58,19 +58,23 @@
 					<img src="<?php echo base_url();?>images/icons/qslcard_sent.png" alt="QSL Cards sent" title="QSL Cards sent" />
 				<?php } ?>
 			</td>
-			<td class="eqsl">
+
 			<?php if ($this->session->userdata('user_eqsl_name') != "" && $row->COL_EQSL_QSL_SENT != ''){ ?>
+			<td class="eqsl">
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
-			<?php } ?>
 			</td>
-			
+			<?php } ?>
+
+			<?php if($this->session->userdata('user_lotw_name') != "") { ?>
 			<td class="lotw">
-				<?php if ($this->session->userdata('user_lotw_name') != "" && $row->COL_LOTW_QSL_SENT != ''){ ?>
+				<?php if ($row->COL_LOTW_QSL_SENT != ''){ ?>
 			    <span class="lotw-<?php echo ($row->COL_LOTW_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
 			    <span class="lotw-<?php echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
 			    <?php } ?>
 			</td>
+			<?php } ?>
+
 			<td><a class="editbox" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" ><img src="<?php echo base_url(); ?>/images/application_edit.png" width="16" height="16" alt="Edit" />
 			</a></td>
 			<?php } ?>
