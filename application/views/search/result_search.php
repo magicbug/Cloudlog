@@ -1,4 +1,4 @@
-	<?php print_r($this->session->userdata); ?>
+	<?php echo $this->session->userdata('user_lotw_name'); ?>
 	<table width="100%">
 		<tr class="titles">
 			<td>Date</td>
