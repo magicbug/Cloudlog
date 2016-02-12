@@ -47,7 +47,7 @@
 				<?php } ?>
 			</td>
 			<td class="eqsl">
-			    <?php if ($row->COL_EQSL_QSL_SENT != '' || $row->COL_EQSL_QSL_SENT != 'N'){ ?>
+			    <?php if ($this->session->userdata('user_eqsl_name') != "" && $row->COL_EQSL_QSL_SENT != ''){ ?>
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
 			    <?php } ?>
