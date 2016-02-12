@@ -41,6 +41,8 @@
 	  	<h2>Manual QSO</h2>
 		
 		<form id="qso_input" method="post" action="<?php echo site_url('qso/manual'); ?>" name="qsos">
+			<input type="hidden" id="dxcc_id" name="dxcc_id" value=""/>
+			<input type="hidden" id="cqz" name="cqz" value="" />
 
 		<table style="margin-bottom: 0px;">
 
@@ -482,7 +484,11 @@
 	
 				/* Find and populate DXCC */
 				$.get('<?php echo site_url('logbook/find_dxcc'); ?>/' + $(this).val(), function(result) {
-					$('#country').val(result);
+					//$('#country').val(result);
+					obj = JSON.parse(result);
+					$('#country').val(convert_case(obj.Name));
+					$('#dxcc_id').val(obj.DXCC);
+					$('#cqz').val(obj.CQZ);
 				});
 	
 				/* Find Locator if the field is empty */
@@ -510,4 +516,11 @@
 			}
 		});
 	});
+
+	function convert_case(str) {
+	  var lower = str.toLowerCase();
+	  return lower.replace(/(^| )(\w)/g, function(x) {
+	    return x.toUpperCase();
+	  });
+	}
 </script>

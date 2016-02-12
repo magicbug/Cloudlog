@@ -7,6 +7,43 @@ class DXCC extends CI_Model {
 		// Call the Model constructor
 		parent::__construct();
 	}
+
+	function show_stats(){
+
+        $data = $this->db->query(
+            "select COL_COUNTRY, COL_MODE, lcase(COL_BAND) as COL_BAND, count(COL_COUNTRY) as cnt
+            from TABLE_HRD_CONTACTS_V01 
+            group by COL_COUNTRY, COL_MODE, COL_BAND"
+            );
+
+        $results = array();
+        $last_country = "";
+        foreach($data->result() as $row){
+            if ($last_country != $row->COL_COUNTRY){
+                // new row
+                $results[$row->COL_COUNTRY] = array("160m"=>0, 
+                                                "80m"=>0, 
+                                                "40m"=>0, 
+                                                "30m"=>0, 
+                                                "20m"=>0, 
+                                                "17m"=>0, 
+                                                "15m"=>0, 
+                                                "12m"=>0, 
+                                                "10m"=>0, 
+                                                "6m"=>0, 
+                                                "2m"=>0);
+                $last_country = $row->COL_COUNTRY;
+            }
+
+            // update stats
+            $results[$row->COL_COUNTRY][$row->COL_BAND] = $row->cnt;
+        }
+
+        //print_r($results);
+
+        return $results;
+	}
+
 	/**
 	*	Function: mostactive
 	*	Information: Returns the most active band
