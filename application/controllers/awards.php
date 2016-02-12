@@ -19,16 +19,7 @@ class Awards extends CI_Controller {
 	
 	public function dxcc ()
 	{
-		//echo "Needs Developed";
-		$this->load->model('dxcc');
-		$data['dxcc'] = $this->dxcc->show_stats();
-
-		// Render Page
-		$data['page_title'] = "Awards - DXCC";
-		$this->load->view('layout/header', $data);
-		$this->load->view('awards/dxcc/index');
-		$this->load->view('layout/footer');
-
+		echo "Needs Developed";
 	}
 	
 	/*

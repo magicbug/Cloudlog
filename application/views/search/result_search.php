@@ -9,8 +9,7 @@
 			<td>Band</td>
 			<td>Country</td>
 			<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-			<td>QSL</td>
-			<td>eQSL</td>
+			<td></td>
 			<td></td>
 			<?php } ?>
 		</tr>
@@ -46,12 +45,6 @@
 					<img src="<?php echo base_url();?>images/icons/qslcard_sent.png" alt="QSL Cards sent" title="QSL Cards sent" />
 				<?php } ?>
 			</td>
-			<td class="eqsl">
-			    <?php if ($row->COL_EQSL_QSL_SENT != ''){ ?>
-			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
-			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
-			    <?php } ?>
-			</td>
 			<td><a class="editbox" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" ><img src="<?php echo base_url(); ?>/images/application_edit.png" width="16" height="16" alt="Edit" />
 			</a></td>
 			<?php } ?>
@@ -59,18 +52,3 @@
 		<?php $i++; } ?>
 		
 	</table>
-<style>
-TD.qsl{
-    width: 20px;
-}
-TD.eqsl{
-    width: 33px;
-}
-.eqsl-green{
-    color: #00A000;
-    font-size: 1.1em;
-}
-.eqsl-red{
-    color: #F00;
-    font-size: 1.1em;
-}

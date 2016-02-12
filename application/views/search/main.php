@@ -17,15 +17,6 @@ $(document).ready(function(){
 
 	$('#partial_view').load("logbook/search_result/<?php echo $this->input->post('callsign'); ?>", function() {
 	      // after load trigger your fancybox 
-			$(".qsobox").fancybox({
-				'autoDimensions'	: false,
-				'width'         	: 700,
-				'height'        	: 300,
-				'transitionIn'		: 'fade',
-				'transitionOut'		: 'fade',
-				'type'				: 'iframe'
-			});
-
 	      	$(".editbox").fancybox({
 				'autoDimensions'	: false,
 				'width'         	: 450,
@@ -39,26 +30,18 @@ $(document).ready(function(){
   $("#callsign").keyup(function(){
 	if ($(this).val()) {
 
-		$('#partial_view').load("logbook/search_result/" + $(this).val(), function() {
-				$(".qsobox").fancybox({
-					'autoDimensions'	: false,
-					'width'         	: 700,
-					'height'        	: 300,
-					'transitionIn'		: 'fade',
-					'transitionOut'		: 'fade',
-					'type'				: 'iframe'
-				});
-	 
-		      // after load trigger your fancybox 
-		      	$(".editbox").fancybox({
-					'autoDimensions'	: false,
-					'width'         	: 450,
-					'height'        	: 550,
-					'transitionIn'		: 'fade',
-					'transitionOut'		: 'fade',
-					'type'				: 'iframe',
-				});
-		});
+	$('#partial_view').load("logbook/search_result/" + $(this).val(), function() {
+	      // after load trigger your fancybox 
+	      	$(".editbox").fancybox({
+				'autoDimensions'	: false,
+				'width'         	: 450,
+				'height'        	: 550,
+				'transitionIn'		: 'fade',
+				'transitionOut'		: 'fade',
+				'type'				: 'iframe',
+			});
+	});
+
 	}
 
   });
@@ -71,3 +54,28 @@ $(document).ready(function(){
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".qsobox").fancybox({
+				'autoDimensions'	: false,
+				'width'         	: 700,
+				'height'        	: 300,
+				'transitionIn'		: 'fade',
+				'transitionOut'		: 'fade',
+				'type'				: 'iframe'
+			});
+
+			$(".editbox").fancybox({
+				'autoDimensions'	: false,
+				'width'         	: 700,
+				'height'        	: 550,
+				'transitionIn'		: 'fade',
+				'transitionOut'		: 'fade',
+				'type'				: 'iframe',
+				onCleanup   : function() {
+                return window.location.reload();
+            	}
+			});
+
+		});
+	</script>
