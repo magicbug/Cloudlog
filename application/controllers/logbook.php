@@ -347,8 +347,7 @@ class Logbook extends CI_Controller {
     $json = file_get_contents($url);
     $data = json_decode($json, TRUE);
 
-    // echo ucfirst(strtolower($data['Name']));
-    echo $json;
+    echo ucfirst(strtolower($data['Name']));
   }
 
   /* return station bearing */
