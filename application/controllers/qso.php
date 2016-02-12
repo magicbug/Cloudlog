@@ -40,7 +40,9 @@ class QSO extends CI_Controller {
 		else
 		{
 			// Add QSO
-			$this->logbook_model->add();
+			// $this->logbook_model->add();
+		//change to create_qso function as add and create_qso duplicate functionality
+		$this->logbook_model->create_qso();
 			
 			// Store Basic QSO Info for reuse
       // Put data in an array first, then call set_userdata once.
@@ -49,7 +51,7 @@ class QSO extends CI_Controller {
       // For more info, see http://bizhole.com/codeigniter-nginx-error-502-bad-gateway/
       // $qso_data = [
       // 18-Jan-2016 - make php v5.3 friendly!
-      $sqo_data = array(
+      $qso_data = array(
         'band' => $this->input->post('band'),
         'freq' => $this->input->post('freq'),
         'mode' => $this->input->post('mode'),
