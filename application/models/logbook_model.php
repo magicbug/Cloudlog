@@ -882,6 +882,13 @@ class Logbook_model extends CI_Model {
                 $srx = null;
         }
 
+        // MY_RIG
+        if (isset($record['my_rig'])) {
+            $my_rig = $record['my_rig'];
+        } else {
+            $my_rig = null;
+        }
+
         // Filter Modes if not apart of ADIF spec
         if($record['mode'] == "RTTY75") {
             // Set RTTY75 to just RTTY
@@ -929,7 +936,8 @@ class Logbook_model extends CI_Model {
                'COL_QSLSDATE' => $QSLSDATE,
                'COL_QSL_SENT' => $QSLSENT,
                'COL_LOTW_QSL_SENT' => $LOTWQSLSENT,
-               'COL_LOTW_QSL_RCVD' => $LOTWQSLRCVD
+               'COL_LOTW_QSL_RCVD' => $LOTWQSLRCVD,
+               'COL_MY_RIG' => $my_rig
             );
 
             // if eQSL username set, default SENT & RCVD to 'N' else leave as null
