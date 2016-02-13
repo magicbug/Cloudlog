@@ -25,24 +25,11 @@
         <td>12m</td>
         <td>10m</td>
         <td>6m</td>
+        <td>4m</td>
         <td>2m</td>
         </tr>
     </thead>
     <tbody>
-	<tr>
-	<td>Country</td>
-	<td>160m</td>
-	<td>80m</td>
-	<td>40m</td>
-	<td>30m</td>
-	<td>20m</td>
-	<td>17m</td>
-	<td>15m</td>
-	<td>12m</td>
-	<td>10m</td>
-	<td>6m</td>
-	<td>2m</td>
-	</tr>
     <?php
 
         foreach($dxcc as $country=>$val){

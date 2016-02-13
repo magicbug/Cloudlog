@@ -158,6 +158,12 @@ class Logbook_model extends CI_Model {
             'COL_CQZ' => $this->input->post('cqz'),
     );
 
+    // if eQSL username set, default SENT & RCVD to 'N' else leave as null
+    if ($this->session->userdata('user_eqsl_name')){
+        $data['COL_EQSL_QSL_SENT'] = 'N';
+        $data['COL_EQSL_QSL_RCVD'] = 'N';
+    }
+
     $this->add_qso($data);
   }
 
@@ -923,6 +929,12 @@ class Logbook_model extends CI_Model {
                'COL_LOTW_QSL_SENT' => $LOTWQSLSENT,
                'COL_LOTW_QSL_RCVD' => $LOTWQSLRCVD
             );
+
+            // if eQSL username set, default SENT & RCVD to 'N' else leave as null
+            if ($this->session->userdata('user_eqsl_name')){
+                $data['COL_EQSL_QSL_SENT'] = 'N';
+                $data['COL_EQSL_QSL_RCVD'] = 'N';
+            }
 
             $this->add_qso($data);
         }
