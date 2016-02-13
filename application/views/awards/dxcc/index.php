@@ -27,6 +27,7 @@
         <td>6m</td>
         <td>4m</td>
         <td>2m</td>
+        <td>70cm</td>
         </tr>
     </thead>
     <tbody>
