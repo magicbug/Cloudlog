@@ -52,12 +52,17 @@
 				<?php } ?>
 			</td>
 			
-			<?php if ($this->session->userdata('user_eqsl_name') != "" && $row->COL_EQSL_QSL_SENT != ''){ ?>
+			<?php if ($this->session->userdata('user_eqsl_name') != ""){
+  			        if ($row->COL_EQSL_QSL_SENT != '') { ?>
 			<td class="eqsl">
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
 			</td>
-			<?php } ?>
+			<?php   }else{ ?>
+            <td class="eqsl">&nbsp;</td>
+			<?php   }
+			    }
+			?>
 
 			<?php if($this->session->userdata('user_lotw_name') != "") { ?>
 			<td class="lotw">
