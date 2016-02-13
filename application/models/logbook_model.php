@@ -735,7 +735,9 @@ class Logbook_model extends CI_Model {
         }
 
         // Store Notes
-        if(isset($record['notes'])) {
+        if (isset($record['comment'])) {
+            $comment = $record['comment'];
+        } else if (isset($record['notes'])) {
             $comment = $record['notes'];
         } else {
             $comment = "";
