@@ -889,6 +889,20 @@ class Logbook_model extends CI_Model {
             $my_rig = null;
         }
 
+        // TX_PWR
+        if (isset($record['tx_pwr'])) {
+            $tx_pwr = $record['tx_pwr'];
+        } else {
+            $tx_pwr = 0.0;
+        }
+
+        // MY_GRIDSQUARE
+        if (isset($record['my_gridsquare'])) {
+            $my_gridsquare = $record['my_gridsquare'];
+        } else {
+            $my_gridsquare = null;
+        }
+
         // Filter Modes if not apart of ADIF spec
         if($record['mode'] == "RTTY75") {
             // Set RTTY75 to just RTTY
@@ -937,7 +951,9 @@ class Logbook_model extends CI_Model {
                'COL_QSL_SENT' => $QSLSENT,
                'COL_LOTW_QSL_SENT' => $LOTWQSLSENT,
                'COL_LOTW_QSL_RCVD' => $LOTWQSLRCVD,
-               'COL_MY_RIG' => $my_rig
+               'COL_MY_RIG' => $my_rig,
+               'COL_TX_PWR' => $tx_pwr,
+               'COL_MY_GRIDSQUARE' => $my_gridsquare
             );
 
             // if eQSL username set, default SENT & RCVD to 'N' else leave as null
