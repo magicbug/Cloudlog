@@ -88,9 +88,11 @@
 		
 	</table>
 
+    <?php if (isset($this->pagination)){ ?>
 	<div class="pagination">
 		<?php echo $this->pagination->create_links(); ?>
 	</div>
+	<?php } ?>
 
 </div>
 

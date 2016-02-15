@@ -41,7 +41,8 @@ class DXCC extends CI_Model {
             $results[$row->COL_COUNTRY][$row->COL_BAND] = $row->cnt;
         }
 
-        //print_r($results);
+        // print_r($results);
+        // return;
 
         return $results;
 	}
@@ -75,6 +76,11 @@ class DXCC extends CI_Model {
 			return $query;
 		}
 	}
+
+    function search(){
+        print_r($this->input->get());
+        return;
+    }
 
 	function empty_table($table) {
 		$this->db->empty_table($table);

@@ -151,13 +151,15 @@ class API extends CI_Controller {
 		$this->load->model('user_model');
 
 		$arguments = $this->_retrieve();
+		print_r($arguments);
+		return;
 
 		if((!$this->user_model->authorize(3)) && ($this->api_model->authorize($arguments['key']) == 0)) {
-      $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard');
-    }
+            $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard');
+        }
 
 		// Retrieve the arguments from the query string
-    $data['data']['format'] = $arguments['format'];
+        $data['data']['format'] = $arguments['format'];
 	
 		// Call the parser within the API model to build the query
 		$query = $this->api_model->select_parse($arguments);
@@ -166,33 +168,45 @@ class API extends CI_Controller {
 		$s = $this->logbook_model->api_search_query($query);
 		$a = 0;
 
-    if(isset($s['results'])) {
-  		$results = $s['results'];
+        // Print query results using original column names and exit
+        if ($arguments['format'] == 'original'){
+            $results = array();
+            foreach($s['results']->result() as $row){
+                //print_r($row);
+                array_push($results,  $row);
+            }
 
-	  	// Cycle through the results, and translate between MySQL column names
-  		// and more friendly, descriptive names
-  		if($results->num_rows != 0)
-  		{
-  			foreach ($results->result() as $row) {
-  				$record = (array)$row;
-  				$r[$a]['rid'] = $a;
-  				while (list($key, $val) = each($record)) {
-  					$r[$a][$this->api_model->name($key)] = $val;
-  				}
-    			$a++;
-  			}
-  			// Add the result record to the main results array
-	    	$data['data']['search_Result']['results'] = $r;
-  		}
-  		else
-  		{
-  			// We've got no results, so make this empty for completeness
-  	    $data['data']['search_Result']['results'] = "";
-  		}
-    } else {
-      $data['data']['error'] = $s['error'];
-      $data['data']['search_Result']['results'] = "";
-    }
+            print json_encode($results);
+            return;
+		}
+
+        if(isset($s['results'])) {
+            $results = $s['results'];
+
+            // Cycle through the results, and translate between MySQL column names
+            // and more friendly, descriptive names
+            if($results->num_rows != 0)
+            {
+                foreach ($results->result() as $row) {
+                    $record = (array)$row;
+                    $r[$a]['rid'] = $a;
+                    while (list($key, $val) = each($record)) {
+                        $r[$a][$this->api_model->name($key)] = $val;
+                    }
+                    $a++;
+                }
+                // Add the result record to the main results array
+                $data['data']['search_Result']['results'] = $r;
+            }
+            else
+            {
+                // We've got no results, so make this empty for completeness
+            $data['data']['search_Result']['results'] = "";
+            }
+        } else {
+            $data['data']['error'] = $s['error'];
+            $data['data']['search_Result']['results'] = "";
+        }
 
 		// Add some debugging information to the XML output
 		$data['data']['queryInfo']['call'] = "search";
@@ -202,6 +216,31 @@ class API extends CI_Controller {
 
 		// Load the XML output view
 		$this->load->view('api/index', $data);
+	}
+
+	/*
+	 * version of search that is callable internally
+	 * $arguments is an array of columns to query
+	 */
+	function api_search($arguments){
+		// Load the API and Logbook models
+		$this->load->model('api_model');
+		$this->load->model('logbook_model');
+		$this->load->model('user_model');
+
+		if((!$this->user_model->authorize(3)) && ($this->api_model->authorize($arguments['key']) == 0)) {
+            $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard');
+        }
+
+		// Retrieve the arguments from the query string
+        $data['data']['format'] = $arguments['format'];
+	
+		// Call the parser within the API model to build the query
+		$query = $this->api_model->select_parse($arguments);
+
+		// Execute the query, and retrieve the results
+		$s = $this->logbook_model->api_search_query($query);
+		return $s;
 	}
 
   function validate()

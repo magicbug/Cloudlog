@@ -30,6 +30,41 @@ class Awards extends CI_Controller {
 		$this->load->view('layout/footer');
 
 	}
+
+	public function dxcc_details(){
+        $a = $this->input->get();
+        $q = "";
+        foreach ($a as $key => $value) {
+        	$q .= $key."=".$value.("&#40;and&#41;");
+        }
+        $q = substr($q, 0, strlen($q)-13);
+
+        $arguments["query"] = $q;
+        $arguments["fields"] = '';
+        $arguments["format"] = "json";
+        $arguments["limit"] = '';
+        $arguments["order"] = '';
+
+        // print_r($arguments);
+        // return;
+
+		// Load the API and Logbook models
+		$this->load->model('api_model');
+		$this->load->model('logbook_model');
+
+		// Call the parser within the API model to build the query
+		$query = $this->api_model->select_parse($arguments);
+
+		// Execute the query, and retrieve the results
+		$data = $this->logbook_model->api_search_query($query);
+
+		// Render Page
+		$data['page_title'] = "Log View - DXCC";
+		$data['filter'] = $a["Country"] . " and " . $a["Band"];
+		$this->load->view('layout/header', $data);
+		$this->load->view('awards/dxcc/details');
+		$this->load->view('layout/footer');
+	}
 	
 	/*
 		Handles Displaying of WAB Squares worked.
