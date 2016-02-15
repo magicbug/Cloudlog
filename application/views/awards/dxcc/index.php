@@ -35,8 +35,11 @@
         foreach($dxcc as $country=>$val){
             print("<tr><td>$country</td>");
             foreach($val as $band=>$count){
-                $count = ($count == 0)?"&nbsp;":$count;
-                print("<td>$count</td>");
+                if ($count == 0){
+                    print("<td>&nbsp;</td>");
+                }else{
+                    printf("<td><a href='dxcc_details?Country=\"%s\"&Band=\"%s\"'>%d</a></td>", $country, $band, $count);
+                }
             }
             print("</tr>");
         }

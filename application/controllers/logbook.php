@@ -291,7 +291,7 @@ class Logbook extends CI_Controller {
     }
   }
 
-  function search_result($id) {
+  function search_result($id="") {
     $this->load->model('user_model');
 
     if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
@@ -304,7 +304,7 @@ class Logbook extends CI_Controller {
     if ($query->num_rows() > 0)
     {
       $data['results'] = $query;
-      $this->load->view('search/result_search.php', $data);
+      $this->load->view('view_log/partial/log.php', $data);
     } else {
       $this->load->model('search');
 
@@ -313,7 +313,7 @@ class Logbook extends CI_Controller {
       if ($iota_search->num_rows() > 0)
       {
         $data['results'] = $iota_search;
-        $this->load->view('search/result_search.php', $data);
+        $this->load->view('view_log/partial/log.php', $data);
       } else {
         if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
           // Lookup using QRZ
