@@ -205,7 +205,7 @@ class Logbook_model extends CI_Model {
        'COL_PROP_MODE' => $this->input->post('prop_mode'),
        'COL_FREQ_RX' => '0',
        'COL_STX_STRING' => $this->input->post('stx_string'),
-                   'COL_SRX_STRING' => $this->input->post('srx_string')
+       'COL_SRX_STRING' => $this->input->post('srx_string')
     );
 
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
