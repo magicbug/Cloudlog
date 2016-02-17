@@ -90,7 +90,7 @@
 					<li><a href="<?php echo site_url('eqsl/import');?>" title="eQSL Import">eQSL Import</a></li>
 					<li><a href="<?php echo site_url('eqsl/export');?>" title="eQSL Import">eQSL Export</a></li>
 					<li><a href="<?php echo site_url('lotw/import');?>" title="LoTW Import">LoTW Import</a></li>
-					<li><a href="<?php echo site_url('lotw/export');?>" title="LoTW Export">LoTW Export</a></li>
+					<li><a href="<?php echo site_url('update');?>" title="Update Tools">Update Tools</a></li>
 				</ul>
 				</ul>
 			<?php } ?>
