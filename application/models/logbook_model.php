@@ -940,6 +940,53 @@ class Logbook_model extends CI_Model {
         }
     }
 
+
+    private function check_dxcc_table($call){
+        global $con;
+        $len = strlen($call);
+
+        // query the table, removing a character from the right until a match
+        for ($i = $len; $i > 0; $i--){
+            //printf("searching for %s\n", substr($call, 0, $i));
+            $dxcc_result = $this->db->query("select `call`, `entity`, `adif` from dxcc_prefixes where `call` = '".substr($call, 0, $i) ."'");
+
+
+            if ($dxcc_result->num_rows() > 0){
+                $row = $dxcc_result->row_array();
+                return array($row['adif'], $row['entity']);
+            }
+        }
+
+        return array("Not Found", "Not Found");
+    }
+
+    public function check_missing_dxcc_id(){
+        // get all records with no COL_DXCC
+        $this->db->select("COL_PRIMARY_KEY, COL_CALL");
+        $this->db->where("COL_DXCC is NULL");
+        $r = $this->db->get($this->config->item('table_name'));
+
+        $count = 0;
+        $this->db->trans_start();
+        //query dxcc_prefixes
+        if ($r->num_rows() > 0){
+            foreach($r->result_array() as $row){
+                $d = $this->check_dxcc_table($row['COL_CALL']);
+                if ($d[0] != 'Not Found'){
+                    $sql = sprintf("update %s set COL_COUNTRY = '%s', COL_DXCC='%s' where COL_PRIMARY_KEY=%d",
+                                    $this->config->item('table_name'), $d[1], $d[0], $row['COL_PRIMARY_KEY']);
+                    $this->db->query($sql);
+                    //print($sql."\n");
+                    printf("Updating %s to %s and %s\n<br/>", $row['COL_PRIMARY_KEY'], $d[1], $d[0]);
+                    $count++;
+                }
+            }
+        }
+        $this->db->trans_complete();
+
+        print("$count updated\n");
+    }
+
 }
 
 ?>

@@ -7,6 +7,8 @@
     <div id="dxcc_update_status">
     Status:</br>
     </div>
+<br/>
+    <a href="update/check_missing_dxcc">Check missing DXCC/Countries values</a>
 </div>
 
 <style>
@@ -35,3 +37,6 @@ $(document).ready(function(){
 
 });
 </script>
+
+
+
