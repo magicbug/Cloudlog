@@ -1000,7 +1000,7 @@ class Logbook_model extends CI_Model {
                 $d = $this->check_dxcc_table($row['COL_CALL']);
                 if ($d[0] != 'Not Found'){
                     $sql = sprintf("update %s set COL_COUNTRY = '%s', COL_DXCC='%s' where COL_PRIMARY_KEY=%d",
-                                    $this->config->item('table_name'), $d[1], $d[0], $row['COL_PRIMARY_KEY']);
+                                    $this->config->item('table_name'), addslashes($d[1]), $d[0], $row['COL_PRIMARY_KEY']);
                     $this->db->query($sql);
                     //print($sql."\n");
                     printf("Updating %s to %s and %s\n<br/>", $row['COL_PRIMARY_KEY'], $d[1], $d[0]);
