@@ -206,6 +206,12 @@ class Update extends CI_Controller {
         }
 	}
 	
+	public function check_missing_dxcc(){
+	    $this->load->model('logbook_model');
+        $this->logbook_model->check_missing_dxcc_id();
+
+	}
+
 	public function lotw_users() {
 		// Load Database connectors
 		$this->load->model('lotw');
