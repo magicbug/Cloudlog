@@ -941,15 +941,22 @@ class Logbook_model extends CI_Model {
     }
 
 
-    private function check_dxcc_table($call){
-        global $con;
+    private function check_dxcc_table($call, $date){
         $len = strlen($call);
 
         // query the table, removing a character from the right until a match
         for ($i = $len; $i > 0; $i--){
             //printf("searching for %s\n", substr($call, 0, $i));
-            $dxcc_result = $this->db->query("select `call`, `entity`, `adif` from dxcc_prefixes where `call` = '".substr($call, 0, $i) ."'");
+            $dxcc_result = $this->db->select('`call`, `entity`, `adif`')
+                                    ->where('call', substr($call, 0, $i))
+                                    ->where('(start <= ', $date)
+                                    ->or_where("start = '0000-00-00')", NULL, false)
+                                    ->where('(end >= ', $date)
+                                    ->or_where("end = '0000-00-00')", NULL, false)
+                                    ->get('dxcc_prefixes');
 
+            //$dxcc_result = $this->db->query("select `call`, `entity`, `adif` from dxcc_prefixes where `call` = '".substr($call, 0, $i) ."'");
+            //print $this->db->last_query();
 
             if ($dxcc_result->num_rows() > 0){
                 $row = $dxcc_result->row_array();
@@ -960,10 +967,15 @@ class Logbook_model extends CI_Model {
         return array("Not Found", "Not Found");
     }
 
-    public function check_missing_dxcc_id(){
+    public function check_missing_dxcc_id($all){
         // get all records with no COL_DXCC
-        $this->db->select("COL_PRIMARY_KEY, COL_CALL");
-        $this->db->where("COL_DXCC is NULL");
+        $this->db->select("COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_TIME_OFF");
+
+        // check which to update - records with no dxcc or all records
+        if (! isset($all)){
+            $this->db->where("COL_DXCC is NULL");
+        }
+
         $r = $this->db->get($this->config->item('table_name'));
 
         $count = 0;
@@ -971,13 +983,17 @@ class Logbook_model extends CI_Model {
         //query dxcc_prefixes
         if ($r->num_rows() > 0){
             foreach($r->result_array() as $row){
-                $d = $this->check_dxcc_table($row['COL_CALL']);
+                $qso_date = $row['COL_TIME_OFF']=='' ? $row['COL_TIME_ON'] : $row['COL_TIME_ON'];
+                $qso_date = strftime("%Y-%m-%d", strtotime($qso_date));
+
+                $d = $this->check_dxcc_table($row['COL_CALL'], $qso_date);
+
                 if ($d[0] != 'Not Found'){
                     $sql = sprintf("update %s set COL_COUNTRY = '%s', COL_DXCC='%s' where COL_PRIMARY_KEY=%d",
-                                    $this->config->item('table_name'), addslashes($d[1]), $d[0], $row['COL_PRIMARY_KEY']);
+                                    $this->config->item('table_name'), addslashes(ucwords(strtolower($d[1]))), $d[0], $row['COL_PRIMARY_KEY']);
                     $this->db->query($sql);
                     //print($sql."\n");
-                    printf("Updating %s to %s and %s\n<br/>", $row['COL_PRIMARY_KEY'], $d[1], $d[0]);
+                    printf("Updating %s to %s and %s\n<br/>", $row['COL_PRIMARY_KEY'], ucwords(strtolower($d[1])), $d[0]);
                     $count++;
                 }
             }

@@ -9,6 +9,7 @@
     </div>
 <br/>
     <a href="update/check_missing_dxcc">Check missing DXCC/Countries values</a>
+    <a href="update/check_missing_dxcc/all">[Re-Check ALL]</a>
 </div>
 
 <style>
