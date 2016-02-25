@@ -30,8 +30,10 @@ class Update extends CI_Controller {
 
         $count = 0;
 		foreach ($xml_data->entities->entity as $entity) {
-            $endinfo = strtotime($entity->end);
+			$startinfo = strtotime($record->start);
+            $endinfo = strtotime($record->end);
             
+            $start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : "";
             $end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : "";
         
             if(!$entity->cqz) {
@@ -48,6 +50,7 @@ class Update extends CI_Controller {
                     'cont' => (string) $entity->cont,
                     'long' => (float) $entity->long,
                     'lat' => (float) $entity->lat,
+                	'start' => $start_date,
                     'end' => $end_date,
                 );	
             }
@@ -113,6 +116,12 @@ class Update extends CI_Controller {
 		
         $count = 0;
 		foreach ($xml_data->prefixes->prefix as $record) {
+			$startinfo = strtotime($record->start);
+            $endinfo = strtotime($record->end);
+            
+            $start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : "";
+            $end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : "";
+            
             $data = array(
             	'record' => (int) $record->attributes()->record,
             	'call' => (string) $record->call,
@@ -122,6 +131,8 @@ class Update extends CI_Controller {
                 'cont' => (string) $record->cont,
                 'long' => (float) $record->long,
                 'lat' => (float) $record->lat,
+                'start' => $start_date,
+                'end' => $end_date,
             );
        
             $this->db->insert('dxcc_prefixes', $data); 
@@ -206,9 +217,9 @@ class Update extends CI_Controller {
         }
 	}
 	
-	public function check_missing_dxcc(){
+	public function check_missing_dxcc($all = false){
 	    $this->load->model('logbook_model');
-        $this->logbook_model->check_missing_dxcc_id();
+        $this->logbook_model->check_missing_dxcc_id($all);
 
 	}
 
