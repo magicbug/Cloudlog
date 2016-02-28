@@ -762,24 +762,29 @@ class Logbook_model extends CI_Model {
             $gridsquare = "";
         }
 
+        // DXCC id
+        $dxcc = $this->check_dxcc_table($record['call'], $time_off);
+
         // Store or find country name
         if(isset($record['country'])) {
             $country = $record['country'];
         } else {
-            $this->load->model('dxcc');
+            // $this->load->model('dxcc');
 
-            $dxccinfo = $this->dxcc->info($record['call']);
+            // $dxccinfo = $this->dxcc->info($record['call']);
 
-            if ($dxccinfo->num_rows() > 0)
-            {
-                foreach ($dxccinfo->result() as $row1)
-                {
-                    $country = ucfirst(strtolower($row1->name));
-                }
-            } else {
-                $country = "";
-            }
+            // if ($dxccinfo->num_rows() > 0)
+            // {
+            //     foreach ($dxccinfo->result() as $row1)
+            //     {
+            //         $country = ucfirst(strtolower($row1->name));
+            //     }
+            // } else {
+            //     $country = "";
+            // }
+            $country = ucwords(strtolower($dxcc[1]));
         }
+
 
         // Store QTH
         if(isset($record['qth'])) {
@@ -889,7 +894,6 @@ class Logbook_model extends CI_Model {
                 $mode = $record['mode'];
         }
 
-
         $this->db->where('COL_CALL', $record['call']);
         $this->db->where('COL_TIME_ON', $time_on);
         $check = $this->db->get($this->config->item('table_name'));
@@ -927,7 +931,8 @@ class Logbook_model extends CI_Model {
                'COL_QSLSDATE' => $QSLSDATE,
                'COL_QSL_SENT' => $QSLSENT,
                'COL_LOTW_QSL_SENT' => $LOTWQSLSENT,
-               'COL_LOTW_QSL_RCVD' => $LOTWQSLRCVD
+               'COL_LOTW_QSL_RCVD' => $LOTWQSLRCVD,
+               'COL_DXCC' => $dxcc[0],
             );
 
             // if eQSL username set, default SENT & RCVD to 'N' else leave as null
@@ -941,6 +946,9 @@ class Logbook_model extends CI_Model {
     }
 
 
+    /*
+     * Check the dxxc_prefixes table and return (dxcc, country)
+     */
     private function check_dxcc_table($call, $date){
         $len = strlen($call);
 
