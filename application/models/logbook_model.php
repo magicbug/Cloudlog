@@ -967,6 +967,21 @@ class Logbook_model extends CI_Model {
         return array("Not Found", "Not Found");
     }
 
+    /*
+     * Same as check_dxcc_table, but the functionality is in 
+     * a stored procedure which we call
+     */
+    public function check_dxcc_stored_proc($call, $date){
+        $this->db->query("call find_country('".$call."','".$date."', @country, @adif)");
+        $res = $this->db->query("select @country as country, @adif as adif");
+        $d = $res->result_array();
+
+        // Should only be one result.
+        // NOTE: might cause unexpected data if there's an 
+        // error with clublog.org data.
+        return $d[0];
+    }
+
     public function check_missing_dxcc_id($all){
         // get all records with no COL_DXCC
         $this->db->select("COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_TIME_OFF");
@@ -986,7 +1001,11 @@ class Logbook_model extends CI_Model {
                 $qso_date = $row['COL_TIME_OFF']=='' ? $row['COL_TIME_ON'] : $row['COL_TIME_ON'];
                 $qso_date = strftime("%Y-%m-%d", strtotime($qso_date));
 
+                // Manual call
                 $d = $this->check_dxcc_table($row['COL_CALL'], $qso_date);
+
+                // Stored procedure call
+                //$d = $this->check_dxcc_stored_proc($row["COL_CALL"], $qso_date);
 
                 if ($d[0] != 'Not Found'){
                     $sql = sprintf("update %s set COL_COUNTRY = '%s', COL_DXCC='%s' where COL_PRIMARY_KEY=%d",

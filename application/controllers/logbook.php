@@ -351,6 +351,19 @@ class Logbook extends CI_Controller {
     echo $json;
   }
 
+  /*
+   * Provide a dxcc search, returning results json encoded
+   */
+  function local_find_dxcc($call = "", $date = "") {
+    $this->load->model("logbook_model");
+    if ($date == ''){
+      $date = date("Y-m-d");
+    }
+    $ans = $this->logbook_model->check_dxcc_stored_proc($call, $date);
+    print json_encode($ans);
+  }
+
+
   /* return station bearing */
   function bearing() {
       $this->load->library('Qra');
