@@ -37,7 +37,7 @@ class DXCC extends CI_Model {
             }
 
             // update stats
-            $results[$row->COL_COUNTRY][$row->COL_BAND] = $row->cnt;
+            $results[$row->COL_COUNTRY][$row->COL_BAND] += $row->cnt;
         }
 
         // print_r($results);
