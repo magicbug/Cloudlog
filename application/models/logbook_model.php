@@ -567,8 +567,8 @@ class Logbook_model extends CI_Model {
     function import_check($datetime, $callsign, $band) {
 
 		$this->db->select('COL_TIME_ON, COL_CALL, COL_BAND');
-		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
-		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
+		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
+		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
 		$this->db->where('COL_CALL', $callsign);
 		$this->db->where('COL_BAND', $band);
 
@@ -620,8 +620,8 @@ class Logbook_model extends CI_Model {
 			   'COL_EQSL_QSL_RCVD' => $qsl_status
 		);
 
-		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
-		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
+		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
+		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
 		$this->db->where('COL_CALL', $callsign);
 		$this->db->where('COL_BAND', $band);
 
@@ -666,8 +666,8 @@ class Logbook_model extends CI_Model {
   	// Determine if we've already received an eQSL for this QSO
   	function eqsl_dupe_check($datetime, $callsign, $band, $qsl_status) {
     	$this->db->select('COL_EQSL_QSLRDATE');
-    	$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
-		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
+    	$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
+		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
     	$this->db->where('COL_CALL', $callsign);
     	$this->db->where('COL_BAND', $band);
     	$this->db->where('COL_EQSL_QSL_RCVD', $qsl_status);
@@ -738,7 +738,12 @@ class Logbook_model extends CI_Model {
         if(isset($record['notes'])) {
             $comment = $record['notes'];
         } else {
-            $comment = "";
+            // Try 'comment'
+            if(isset($record['comment'])){
+                $comment = $record['comment'];
+            }else{
+                $comment = "";
+            }
         }
 
         // Store Sat Name
