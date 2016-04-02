@@ -14,6 +14,7 @@ class Update extends CI_Controller {
 	    $this->load->view('layout/header', $data);
 	    $this->load->view('update/index');
 	    $this->load->view('layout/footer');
+
 	}
 
     /*
