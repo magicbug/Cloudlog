@@ -22,10 +22,10 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `table_hrd_contacts_v01`
+-- Table structure for table `TABLE_HRD_CONTACTS_V01`
 --
 
-CREATE TABLE IF NOT EXISTS `table_hrd_contacts_v01` (
+CREATE TABLE IF NOT EXISTS `TABLE_HRD_CONTACTS_V01` (
   `COL_PRIMARY_KEY` int(11) NOT NULL AUTO_INCREMENT,
   `COL_ADDRESS` varchar(255) DEFAULT NULL,
   `COL_AGE` int(11) DEFAULT NULL,
