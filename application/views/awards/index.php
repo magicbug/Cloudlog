@@ -7,6 +7,7 @@
 	  <li><a href="<?php echo site_url('awards/wab'); ?>">WAB</a></li>
 	  <li><a href="<?php echo site_url('awards/sota'); ?>">SOTA</a></li>
 	  <li><a href="<?php echo site_url('awards/wacral'); ?>">WACRAL</a></li>
+	  <li><a href="<?php echo site_url('awards/cq'); ?>">CQ</a></li>
 	</ul>
 
 </div>

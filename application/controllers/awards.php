@@ -117,4 +117,18 @@ class Awards extends CI_Controller {
 		$this->load->view('layout/footer');
 	}
 	
+	public function cq(){
+        $this->load->model('cq');
+        $zones = array();
+        foreach($this->cq->get_zones() as $row){
+            array_push($zones, intval($row->COL_CQZ));
+        }
+        $data['cqz'] = $zones;
+
+        // Render page
+        $data['page_title'] = "Awards - CQ Magazine";
+		$this->load->view('layout/header', $data);
+		$this->load->view('awards/cq/index');
+		$this->load->view('layout/footer');
+	}
 }
