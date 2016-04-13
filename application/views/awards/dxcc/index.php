@@ -4,12 +4,7 @@
 
 	<!-- Sub Nav for Awards -->
 	
-	<ul class="tabs">
-	  <li class="active"><a href="<?php echo site_url('awards/dxcc'); ?>">DXCC</a></li>
-	  <li><a href="<?php echo site_url('awards/wab'); ?>">WAB</a></li>
-	  <li><a href="<?php echo site_url('awards/sota'); ?>">SOTA</a></li>
-	  <li><a href="<?php echo site_url('awards/wacral'); ?>">WACRAL</a></li>
-	</ul>
+    <?php $this->load->view("awards/nav_bar")?>
 
 	<table width="100%" class="zebra-striped">
 	<thead>

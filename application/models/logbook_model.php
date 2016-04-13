@@ -938,6 +938,7 @@ class Logbook_model extends CI_Model {
                'COL_LOTW_QSL_SENT' => $LOTWQSLSENT,
                'COL_LOTW_QSL_RCVD' => $LOTWQSLRCVD,
                'COL_DXCC' => $dxcc[0],
+               'COL_CQZ' => $dxcc[2],
             );
 
             // if eQSL username set, default SENT & RCVD to 'N' else leave as null
@@ -954,13 +955,13 @@ class Logbook_model extends CI_Model {
     /*
      * Check the dxxc_prefixes table and return (dxcc, country)
      */
-    private function check_dxcc_table($call, $date){
+    public function check_dxcc_table($call, $date){
         $len = strlen($call);
 
         // query the table, removing a character from the right until a match
         for ($i = $len; $i > 0; $i--){
             //printf("searching for %s\n", substr($call, 0, $i));
-            $dxcc_result = $this->db->select('`call`, `entity`, `adif`')
+            $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`')
                                     ->where('call', substr($call, 0, $i))
                                     ->where('(start <= ', $date)
                                     ->or_where("start = '0000-00-00')", NULL, false)
@@ -973,7 +974,7 @@ class Logbook_model extends CI_Model {
 
             if ($dxcc_result->num_rows() > 0){
                 $row = $dxcc_result->row_array();
-                return array($row['adif'], $row['entity']);
+                return array($row['adif'], $row['entity'], $row['cqz']);
             }
         }
 
@@ -985,8 +986,8 @@ class Logbook_model extends CI_Model {
      * a stored procedure which we call
      */
     public function check_dxcc_stored_proc($call, $date){
-        $this->db->query("call find_country('".$call."','".$date."', @country, @adif)");
-        $res = $this->db->query("select @country as country, @adif as adif");
+        $this->db->query("call find_country('".$call."','".$date."', @country, @adif, @cqz)");
+        $res = $this->db->query("select @country as country, @adif as adif, @cqz as cqz");
         $d = $res->result_array();
 
         // Should only be one result.
