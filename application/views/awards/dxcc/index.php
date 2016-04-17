@@ -51,6 +51,7 @@
             top: 40px;
             display: none;
             background-color: white;
+            border: 1px solid black;
         }
 	</style>
 	<script>

@@ -60,7 +60,7 @@ class Awards extends CI_Controller {
 
 		// Render Page
 		$data['page_title'] = "Log View - DXCC";
-		$data['filter'] = $a["Country"] . " and " . $a["Band"];
+		$data['filter'] = str_replace("&#40;and&#41;", ", ", $q);//implode(", ", array_keys($a));
 		$this->load->view('layout/header', $data);
 		$this->load->view('awards/dxcc/details');
 		$this->load->view('layout/footer');
