@@ -439,10 +439,10 @@
 		
 		// Change report based on mode
 		$('.mode').change(function(){
-		  if($(this).val() == 'JT65' || $(this).val() == 'JT65B' || $(this).val() == 'JT6C' || $(this).val() == 'JT6M' || $(this).val() == 'JTMS' || $(this).val() == 'ISCAT' || $(this).val() == 'MSK144' || $(this).val() == 'JTMSK' || $(this).val() == 'QRA64'){
+		  if($(this).val() == 'JT65' || $(this).val() == 'JT65B' || $(this).val() == 'JT6C' || $(this).val() == 'JTMS' || $(this).val() == 'ISCAT' || $(this).val() == 'MSK144' || $(this).val() == 'JTMSK' || $(this).val() == 'QRA64'){
 			$('#rst_sent').val('-5');
 			$('#rst_recv').val('-5');
-		  } else if ($(this).val() == 'FSK441') {
+		  } else if ($(this).val() == 'FSK441' || $(this).val() == 'JT6M') {
 		  	$('#rst_sent').val('26');
 			$('#rst_recv').val('26');
 		  } else if ($(this).val() == 'CW') {
