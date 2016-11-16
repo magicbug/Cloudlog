@@ -15,27 +15,59 @@
 			
 			if ($query->num_rows() > 0)
 			{
-				// Update the record
-				foreach ($query->result() as $row)
-				{
-					$radio_id = $row->id;
-					
-					$data = array(
-					   'frequency' => $result['frequency'],
-					   'mode' => $result['mode']
-					);
+				if($result['radio'] == "SatPC32") {
+					// Update the record
+					foreach ($query->result() as $row)
+					{
+						$radio_id = $row->id;
+						
+						$data = array(
+							'sat_name' => $result['sat_name'],
+							'downlink_freq' => $result['downlink_freq'],
+							'uplink_freq' => $result['uplink_freq'],
+							'downlink_mode' => $result['downlink_mode'],
+							'uplink_mode' => $result['uplink_mode'],
+						);
 
-					$this->db->where('id', $radio_id);
-					$this->db->update('cat', $data); 
+						$this->db->where('id', $radio_id);
+						$this->db->update('cat', $data); 
+					}
+				} else {
+					// Update the record
+					foreach ($query->result() as $row)
+					{
+						$radio_id = $row->id;
+					
+						$data = array(
+						'frequency' => $result['frequency'],
+						'mode' => $result['mode'],
+						);
+
+						$this->db->where('id', $radio_id);
+						$this->db->update('cat', $data); 
+					}
 				}
 			} else {
 				// Add a new record
 				
-				$data = array(
-				   'radio' => $result['radio'],
-					'frequency' => $result['frequency'],
-					'mode' => $result['mode']
-				);
+				if($result['radio'] == "SatPC32") {
+					$data = array(
+						'radio' => $result['radio'],
+						'frequency' => $result['frequency'],
+						'mode' => $result['mode'],
+						'sat_name' => $result['sat_name'],
+						'downlink_freq' => $result['downlink_freq'],
+						'uplink_freq' => $result['uplink_freq'],
+						'downlink_mode' => $result['downlink_mode'],
+						'uplink_mode' => $result['uplink_mode'],
+					);
+				} else {
+					$data = array(
+						'radio' => $result['radio'],
+						'frequency' => $result['frequency'],
+						'mode' => $result['mode']
+					);
+				}
 
 				$this->db->insert('cat', $data); 
 

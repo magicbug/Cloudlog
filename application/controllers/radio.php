@@ -66,7 +66,21 @@
 			{
 			   foreach ($query->result() as $row)
 				{
-					echo $row->frequency;
+					if( $row->frequency == "0") {
+						$this->db->select('uplink_freq');
+						$this->db->where('id', $id); 
+						$query = $this->db->get('cat');
+						
+						if ($query->num_rows() > 0)
+						{
+						foreach ($query->result() as $row)
+							{
+								echo strtoupper($row->uplink_freq);
+							}
+						}
+					} else {
+						echo $row->frequency;	
+					}
 				}
 			}
 	}
@@ -78,7 +92,7 @@
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		//$this->db->where('radio', $result['radio']); 
-			$this->db->select('mode');
+			$this->db->select('mode, radio, uplink_mode');
 			$this->db->where('id', $id); 
 			$query = $this->db->get('cat');
 			
@@ -86,7 +100,68 @@
 			{
 			   foreach ($query->result() as $row)
 				{
-					echo strtoupper($row->mode);
+					if($row->radio != "SatPC32") {
+						echo strtoupper($row->mode);
+					} else {
+						echo strtoupper($row->uplink_mode);
+					}
+				}
+			}
+	}
+
+	function satname($id) {
+	
+		// Check Auth
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		//$this->db->where('radio', $result['radio']); 
+			$this->db->select('sat_name');
+			$this->db->where('id', $id); 
+			$query = $this->db->get('cat');
+			
+			if ($query->num_rows() > 0)
+			{
+			   foreach ($query->result() as $row)
+				{
+					echo strtoupper($row->sat_name);
+				}
+			}
+	}
+
+	function satmode($id) {
+	
+		// Check Auth
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		//$this->db->where('radio', $result['radio']); 
+			$this->db->select('uplink_freq, downlink_freq');
+			$this->db->where('id', $id); 
+			$query = $this->db->get('cat');
+			
+			if ($query->num_rows() > 0)
+			{
+			   foreach ($query->result() as $row)
+				{
+
+					if ($row->uplink_freq > 144000000 && $row->uplink_freq < 147000000) {
+						$uplink_mode = "V";
+					} elseif ($row->uplink_freq > 432000000 && $row->uplink_freq < 438000000) {
+						$uplink_mode = "U";
+					} elseif ($row->uplink_freq > 28000000 && $row->uplink_freq < 30000000) {
+						$uplink_mode = "A";
+					}
+
+					if ($row->downlink_freq > 144000000 && $row->downlink_freq < 147000000) {
+						$downlink_mode = "V";
+					} elseif ($row->downlink_freq > 432000000 && $row->downlink_freq < 438000000) {
+						$downlink_mode = "U";
+					} elseif ($row->downlink_freq > 28000000 && $row->downlink_freq < 30000000) {
+						$downlink_mode = "A";
+					}
+
+					echo $uplink_mode."/".$downlink_mode;
 				}
 			}
 	}

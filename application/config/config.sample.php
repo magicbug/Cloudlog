@@ -13,7 +13,7 @@
 */
 
 $config['app_name'] = "Cloudlog";
-$config['app_version'] = "1.1";
+$config['app_version'] = "1.5";
 $config['directory'] = "logbook";
 
 $config['callbook'] = "hamqth"; // Options are hamqth or qrz

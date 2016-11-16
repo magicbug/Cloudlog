@@ -209,12 +209,12 @@
 				<table>
 					<tr>
 						<td>Sat Name</td>
-						<td><input id="sat_name" type="text" name="sat_name" value="<?php echo $this->session->userdata('sat_name'); ?>" /></td>
+						<td><input id="sat_name" type="text" name="sat_name" class="sat_name" value="<?php echo $this->session->userdata('sat_name'); ?>" /></td>
 					</tr>
 	
 					<tr>
 						<td>Sat Mode</td>
-						<td><input id="sat_mode" type="text" name="sat_mode" value="<?php echo $this->session->userdata('sat_mode'); ?>" /></td>
+						<td><input id="sat_mode" type="text" name="sat_mode" class="sat_mode" value="<?php echo $this->session->userdata('sat_mode'); ?>" /></td>
 					</tr>
 				</table>
 		  </div>
@@ -303,8 +303,12 @@
 		if($('select.radios option:selected').val() != '0') {
 			// Get frequency
 			$.get('radio/frequency/' + $('select.radios option:selected').val(), function(result) {
-				$('#frequency').val(result);
-				$(".band").val(frequencyToBand(result));
+
+				if(result == "0") {
+				} else {
+					$('#frequency').val(result);
+					$(".band").val(frequencyToBand(result));
+				}
 			});
 			
 			// Get Mode
@@ -314,6 +318,16 @@
 				} else {
 					$(".mode").val(result);	
 				}
+			});
+
+			// Get SAT_Name
+			$.get('radio/satname/' + $('select.radios option:selected').val(), function(result) {
+					$(".sat_name").val(result);	
+			});
+
+			// Get SAT_Name
+			$.get('radio/satmode/' + $('select.radios option:selected').val(), function(result) {
+					$(".sat_mode").val(result);	
 			});
 		}
 	};
