@@ -101,9 +101,17 @@
 			   foreach ($query->result() as $row)
 				{
 					if($row->radio != "SatPC32") {
-						echo strtoupper($row->mode);
+						if(strtoupper($row->mode) == "FMN"){
+							echo "FM";
+						} else {
+							echo strtoupper($row->mode);
+						}
 					} else {
-						echo strtoupper($row->uplink_mode);
+						if(strtoupper($row->uplink_mode) == "FMN"){
+							echo "FM";
+						} else {
+							echo strtoupper($row->uplink_mode);
+						}
 					}
 				}
 			}
