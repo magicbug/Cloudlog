@@ -146,17 +146,6 @@ class Frequency {
 				return "432200000";
 			}
 		}
-		if($band == "70cm") {
-			if ($mode == "CW") {
-				return "432050000";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "432088000";
-			}elseif($mode == "SSB") {
-				return "432200000";
-			} else {
-				return "432200000";
-			}
-		}
 		if($band == "23cm") {
 			if ($mode == "CW") {
 				return "129600000";
