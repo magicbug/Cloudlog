@@ -91,6 +91,8 @@
 				<option value="SSTV" <?php if($this->session->userdata('mode') == "SSTV") { echo "selected=\"selected\""; } ?>>SSTV</option>
 				<option value="HELL" <?php if($this->session->userdata('mode') == "HELL") { echo "selected=\"selected\""; } ?>>HELL</option>
 				<option value="HELL80" <?php if($this->session->userdata('mode') == "HELL80") { echo "selected=\"selected\""; } ?>>HELL80</option>
+				<option value="DSTAR" <?php if($this->session->userdata('mode') == "DSTAR") { echo "selected=\"selected\""; } ?>>DSTAR</option>
+				<option value="DIGITALVOICE" <?php if($this->session->userdata('mode') == "DIGITALVOICE") { echo "selected=\"selected\""; } ?>>DIGITALVOICE</option>
 				</select>
 
 				<span class="title">Band</span>
