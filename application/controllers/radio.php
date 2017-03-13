@@ -132,7 +132,13 @@
 			{
 			   foreach ($query->result() as $row)
 				{
-					echo strtoupper($row->sat_name);
+					if($row->sat_name == "AO-07") {
+						echo "AO-7";
+					} elseif ($row->sat_name == "LILACSAT") {
+						echo "CAS-3H";
+					} else {
+						echo strtoupper($row->sat_name);
+					}
 				}
 			}
 	}
