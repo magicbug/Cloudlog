@@ -480,6 +480,12 @@ class Logbook_model extends CI_Model {
         }
     }
 
+    /* Return the list of modes in the logbook */
+    function get_modes(){
+        $query = $this->db->query('select distinct(COL_MODE) from '.$this->config->item('table_name').' order by COL_MODE');
+        return $query;
+    }
+
     /* Return total number of QSOs per band */
    function total_bands() {
         $query = $this->db->query('SELECT DISTINCT (COL_BAND) AS band, count( * ) AS count FROM '.$this->config->item('table_name').' GROUP BY band ORDER BY count DESC');
@@ -689,7 +695,7 @@ class Logbook_model extends CI_Model {
   	// Show all QSOs we need to send to eQSL
   	function eqsl_not_yet_sent() {
   		//$this->db->select("COL_PRIMARY_KEY, DATE_FORMAT(COL_TIME_ON,\'%Y%m%d\') AS COL_QSO_DATE, DATE_FORMAT(COL_TIME_ON,\'%H%i\') AS TIME_ON, COL_CALL, COL_MODE, COL_BAND");
-  		$this->db->select("COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_MODE, COL_BAND, COL_COMMENT, COL_RST_SENT");
+  		$this->db->select("COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_MODE, COL_BAND, COL_COMMENT, COL_RST_SENT, COL_PROP_MODE");
   		$this->db->where('COL_EQSL_QSL_SENT', 'N');
 
   		return $this->db->get($this->config->item('table_name'));
