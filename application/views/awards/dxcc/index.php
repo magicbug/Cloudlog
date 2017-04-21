@@ -11,7 +11,7 @@
 	<table width="100%" class="zebra-striped">
 	<thead>
         <tr>
-        <td style="width:225px">Country</td>
+        <td style="width:225px">Country (<?php echo count($dxcc)?>)</td>
         <td>160m</td>
         <td>80m</td>
         <td>40m</td>
@@ -24,6 +24,7 @@
         <td>6m</td>
         <td>4m</td>
         <td>2m</td>
+        <td>70cm</td>
         </tr>
     </thead>
     <tbody>
