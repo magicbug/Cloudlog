@@ -8,7 +8,8 @@
  
 
 // Uses 'phpass' from http://www.openwall.com/phpass/ to implement password hashing
-require_once('application/third_party/PasswordHash.php');
+// TODO migration away from this?
+//require_once('application/third_party/PasswordHash.php');
 
 class User_Model extends CI_Model {
 
@@ -188,7 +189,7 @@ class User_Model extends CI_Model {
 	// Validates a username/password combination
 	// This is really just a wrapper around User_Model::authenticate
 	function login() {
-		
+
 		$username = $this->input->post('user_name');
 		$password = $this->input->post('user_password');
 
@@ -201,7 +202,7 @@ class User_Model extends CI_Model {
 	// login session *will* be cleared, no matter what state it is in
 	function clear_session() {
 	
-		$this->session->unset_userdata(array('user_id' => '', 'user_type' => '', 'user_email' => '', 'user_hash' => ''));
+		$this->session->sess_destroy();
 	}
 		
 	// FUNCTION: void update_session()
@@ -253,7 +254,7 @@ class User_Model extends CI_Model {
 	// Authenticate a user against the users table
 	function authenticate($username, $password) {
 		$u = $this->get($username);
-		if($u->num_rows != 0)
+		if($u->num_rows() != 0)
 		{
 			if($this->_auth($password, $u->row()->user_password)) {
 				return 1;
@@ -310,8 +311,7 @@ class User_Model extends CI_Model {
 	// FUNCTION: bool _auth($password, $hash)
 	// Checks a password against the stored hash
 	private function _auth($password, $hash) {
-		$h = new PasswordHash(8, FALSE);
-		if($h->CheckPassword($password, $hash)) {
+		if(password_verify($password, $hash)) {
 			return 1;
 		} else {
 			return 0;
@@ -323,9 +323,7 @@ class User_Model extends CI_Model {
 	// Will return '0' in the event of problems with the
 	// hashing function
 	private function _hash($password) {
-		$h = new PasswordHash(8, FALSE);
-		$hash = $h->HashPassword($password);
-		unset($h);
+        $hash = password_hash($password, PASSWORD_DEFAULT); 
 
 		if(strlen($hash) < 20) {
 			return EPASSWORDINVALID;
