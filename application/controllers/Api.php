@@ -14,7 +14,7 @@ class API extends CI_Controller {
 		//$this->db->select("DATE_FORMAT(COL_TIME_ON, '%H:%i') AS time_on", FALSE );
 		//$this->db->select("DATE_FORMAT(COL_TIME_ON, '%d/%c/%Y') AS date_on", FALSE );
 		$this->db->like('COL_CALL', $callsign);
-		$this->db->or_like('COL_GRIDSQUARE', $callsign); 
+		$this->db->or_like('COL_GRIDSQUARE', $callsign);
 		$query = $this->db->get($this->config->item('table_name'));
 
 
@@ -22,10 +22,10 @@ class API extends CI_Controller {
 
 		foreach ($query->result() as $result)
 		{
-			$results[] = $result;	
+			$results[] = $result;
 		}
 
-		header('Content-type: application/json');  
+		header('Content-type: application/json');
 
 		//$arr = array ('a'=>1,'b'=>2,'c'=>3,'d'=>4,'e'=>5);
 		echo $_GET['jsoncallback'].'('.json_encode($results).')'; //assign resulting code to $_GET['jsoncallback].
@@ -82,7 +82,7 @@ class API extends CI_Controller {
 	// Example of authing
 	function auth($key) {
 		$this->load->model('api_model');
-			header("Content-type: text/xml"); 
+			header("Content-type: text/xml");
 		if($this->api_model->access($key) == "No Key Found" || $this->api_model->access($key) == "Key Disabled") {
 			echo "<auth>";
 			echo "<message>Key Invalid - either not found or disabled</message>";
@@ -160,7 +160,7 @@ class API extends CI_Controller {
 
 		// Retrieve the arguments from the query string
         $data['data']['format'] = $arguments['format'];
-	
+
 		// Call the parser within the API model to build the query
 		$query = $this->api_model->select_parse($arguments);
 
@@ -185,7 +185,7 @@ class API extends CI_Controller {
 
             // Cycle through the results, and translate between MySQL column names
             // and more friendly, descriptive names
-            if($results->num_rows != 0)
+            if($results->num_rows() != 0)
             {
                 foreach ($results->result() as $row) {
                     $record = (array)$row;
@@ -234,7 +234,7 @@ class API extends CI_Controller {
 
 		// Retrieve the arguments from the query string
         $data['data']['format'] = $arguments['format'];
-	
+
 		// Call the parser within the API model to build the query
 		$query = $this->api_model->select_parse($arguments);
 
@@ -263,7 +263,7 @@ class API extends CI_Controller {
 
     $this->load->view('api/index', $data);
   }
-    
+
 	function add()
 	{
 		// Load the API and Logbook models
@@ -274,7 +274,7 @@ class API extends CI_Controller {
 
 		// Retrieve the arguments from the query string
 		$arguments = $this->_retrieve();
-	
+
 		// Call the parser within the API model to build the query
 		$query = $this->api_model->insert_parse($arguments);
 
@@ -345,45 +345,45 @@ class API extends CI_Controller {
 		// Return the arguments
 		return $arguments;
 	}
-	
+
 	/* ENDPOINT for Rig Control */
-	
+
 	function radio() {
 		header('Content-type: application/json');
-	
+
 		//$json = '{"radio":"FT-950","frequency":14075,"mode":"SSB","timestamp":"2012/04/07 16:47"}';
-		
+
 		$this->load->model('cat');
-	
+
 		//var_dump(file_get_contents("php://input"), true);
-	
+
 		// Decode JSON and store
 		$obj = json_decode(file_get_contents("php://input"), true);
 
-		// Store Result to Database		
+		// Store Result to Database
 		$this->cat->update($obj);
 
 		// Return Message
-		
+
 		$arr = array('status' => 'success');
 
 		echo json_encode($arr);
-		
+
 	}
-	
+
 	function cat_status () {
 		header('Content-type: application/json');
-		
-		$this->load->model('cat');	
-		
+
+		$this->load->model('cat');
+
 		// Decode JSON and store
 		$obj = json_decode(file_get_contents("php://input"), true);
 
-		// Store Result to Database		
+		// Store Result to Database
 		$this->cat->cat_status($obj);
 
 		// Return Message
-		
+
 		$arr = array('status' => 'success');
 
 		echo json_encode($arr);

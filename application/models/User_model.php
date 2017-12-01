@@ -46,7 +46,7 @@ class User_Model extends CI_Model {
 	// FUNCTION: bool exists($username)
 	// Check if a user exists (by username)
 	function exists($username) {
-		if($this->get($username)->num_rows == 0) {
+		if($this->get($username)->num_rows() == 0) {
 			return 0;
 		} else {
 			return 1;
@@ -56,7 +56,7 @@ class User_Model extends CI_Model {
 	// FUNCTION: bool exists_by_id($id)
 	// Check if a user exists (by user ID)
 	function exists_by_id($id) {
-		if($this->get_by_id($id)->num_rows == 0) {
+		if($this->get_by_id($id)->num_rows() == 0) {
 			return 0;
 		} else {
 			return 1;
@@ -66,7 +66,7 @@ class User_Model extends CI_Model {
 	// FUNCTION: bool exists_by_email($email)
 	// Check if a user exists (by email address)
 	function exists_by_email($email) {
-		if($this->get_by_email($email)->num_rows == 0) {
+		if($this->get_by_email($email)->num_rows() == 0) {
 			return 0;
 		} else {
 			return 1;
