@@ -7,10 +7,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Install Options
 |--------------------------------------------------------------------------
 |
-|  'app_name'    Name of the App 'Cloudlog'
-|  'app_version'  Set by the dev team.
-|  'directory'    directory where cloudlog is installed eg "logger"
-|  'callbook'    Selects which Callbook lookup to use defaults "hamli" but supports "qrz"
+|	'app_name'		Name of the App 'Cloudlog'
+|	'app_version'	Set by the dev team.
+|	'directory'		directory where cloudlog is installed eg "logger"
+|	'callbook'		Selects which Callbook lookup to use defaults "hamqth" but supports "qrz"
 */
 
 $config['app_name'] = "Cloudlog";
@@ -24,9 +24,9 @@ $config['callbook'] = "hamqth"; // Options are hamqth or qrz
 | Logbook Options
 |--------------------------------------------------------------------------
 |
-|   'table_name'  SQL table where log can be found
-|  'locator'    Default locator used to calculate bearings/distance
-|  'display_freq'  Show or Hide frequnecy info
+| 	'table_name'	SQL table where log can be found
+|	'locator'		Default locator used to calculate bearings/distance
+|	'display_freq'	Show or Hide frequnecy info 
 */
 
 $config['table_name'] = "TABLE_HRD_CONTACTS_V01";
@@ -38,11 +38,11 @@ $config['display_freq'] = true;
 | Authentication
 |--------------------------------------------------------------------------
 |
-| 'use_auth'  False turns all authentication off, best used when setting up
-| 'auth_table'  MySQL Database Table defaults "users"
-| 'auth_mode'  Minimum user level required 0 = anonymous, 1 = viewer,
-|        2 = editor, 3 = api user, 99 = owner
-| 'auth_level[]'  Defines level titles
+| 'use_auth'	False turns all authentication off, best used when setting up
+| 'auth_table'	MySQL Database Table defaults "users"
+| 'auth_mode'	Minimum user level required 0 = anonymous, 1 = viewer, 
+|				2 = editor, 3 = api user, 99 = owner
+| 'auth_level[]'	Defines level titles
 */
 
 $config['use_auth'] = true;
