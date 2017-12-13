@@ -7,7 +7,7 @@
 	<tr>
 		<td><input type="radio" name="lotwimport" id="upload" value="upload" checked /> Upload a file</td>
 		<td>
-			<p>Upload the Exported ADIF file from LoTW from the <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a> Area, to mark QSOs as confirmed on LOTW.</p>
+			<p>Upload the Exported ADIF file from LoTW from the <a href="https://lotw.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a> Area, to mark QSOs as confirmed on LOTW.</p>
 			<p><span class="label important">Important</span> Log files must have the file type .adi</p>
 			<input type="file" name="userfile" size="20" />
 		</td>

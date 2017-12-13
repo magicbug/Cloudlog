@@ -126,14 +126,14 @@ class Lotw extends CI_Controller {
 			// Build URL for LoTW report file
 			$lotw_url .= "?";
 			$lotw_url .= "login=" . $data['user_lotw_name'];
-			$lotw_url .= "&password=" . $data['user_lotw_password'];
+			$lotw_url .= "&password=" . urlencode($data['user_lotw_password']);
 			$lotw_url .= "&qso_query=1&qso_qsl='yes'";
 
 			//TODO: Option to specifiy whether we download location data from LoTW or not
 			//$lotw_url .= "&qso_qsldetail=\"yes\";
 
 			$lotw_url .= "&qso_qslsince=";
-			$lotw_url .= "$lotw_last_qsl_date";
+			$lotw_url .= urlencode("$lotw_last_qsl_date");
 
 			// Only pull back entries that belong to this callsign
 			$lotw_call = $this->session->userdata('user_callsign');
