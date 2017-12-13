@@ -3805,6 +3805,6 @@ CREATE TABLE IF NOT EXISTS `config` (
 --
 
 INSERT INTO `config` (`id`, `lotw_download_url`, `lotw_upload_url`, `lotw_rcvd_mark`, `lotw_login_url`, `eqsl_download_url`, `eqsl_rcvd_mark`) VALUES
-(1, 'https://p1k.arrl.org/lotwuser/lotwreport.adi', 'https://p1k.arrl.org/lotwuser/upload', 'Y', 'https://p1k.arrl.org/lotwuser/default', 'http://www.eqsl.cc/qslcard/DownloadInBox.cfm', 'Y');
+(1, 'https://lotw.arrl.org/lotwuser/lotwreport.adi', 'https://lotw.arrl.org/lotwuser/upload', 'Y', 'https://lotw.arrl.org/lotwuser/default', 'http://www.eqsl.cc/qslcard/DownloadInBox.cfm', 'Y');
 
 ALTER TABLE `cat` ADD `downlink_freq` INT(11) NOT NULL AFTER `mode`, ADD `uplink_freq` INT(11) NOT NULL AFTER `downlink_freq`, ADD `downlink_mode` VARCHAR(255) NOT NULL AFTER `uplink_freq`, ADD `uplink_mode` VARCHAR(255) NOT NULL AFTER `downlink_mode`, ADD `sat_name` VARCHAR(255) NOT NULL AFTER `uplink_mode`;

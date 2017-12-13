@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `config` (
 --
 
 INSERT INTO `config` (`id`, `lotw_download_url`, `lotw_upload_url`, `lotw_rcvd_mark`, `lotw_login_url`, `eqsl_download_url`, `eqsl_rcvd_mark`) VALUES
-(1, 'https://p1k.arrl.org/lotwuser/lotwreport.adi', 'https://p1k.arrl.org/lotwuser/upload', 'Y', 'https://p1k.arrl.org/lotwuser/default', 'http://www.eqsl.cc/qslcard/DownloadInBox.cfm', 'Y');
+(1, 'https://lotw.arrl.org/lotwuser/lotwreport.adi', 'https://lotw.arrl.org/lotwuser/upload', 'Y', 'https://lotw.arrl.org/lotwuser/default', 'http://www.eqsl.cc/qslcard/DownloadInBox.cfm', 'Y');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
