@@ -6,7 +6,7 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 ## Requirements
 
-* PHP 5 & MySQL
+* PHP & MySQL
 
 ## Versions
 
