@@ -70,7 +70,7 @@ class adif extends CI_Controller {
 
 		$data['page_title'] = "ADIF Import";
 
-		$config['upload_path'] = 'uploads/';
+		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'adi|ADI|adif|ADIF';
 
 		$this->load->library('upload', $config);
