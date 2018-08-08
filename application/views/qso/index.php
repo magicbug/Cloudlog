@@ -84,8 +84,16 @@
 				<option value="FSK441" <?php if($this->session->userdata('mode') == "FSK441") { echo "selected=\"selected\""; } ?>>FSK441</option>
 				<option value="JTMS" <?php if($this->session->userdata('mode') == "JTMS") { echo "selected=\"selected\""; } ?>>JTMS</option>
 				<option value="ISCAT" <?php if($this->session->userdata('mode') == "ISCAT") { echo "selected=\"selected\""; } ?>>ISCAT</option>
+				<option value="MSK144" <?php if($this->session->userdata('mode') == "MSK144") { echo "selected=\"selected\""; } ?>>MSK144</option>
+				<option value="JTMSK" <?php if($this->session->userdata('mode') == "JTMSK") { echo "selected=\"selected\""; } ?>>JTMSK</option>
+				<option value="QRA64" <?php if($this->session->userdata('mode') == "QRA64") { echo "selected=\"selected\""; } ?>>QRA64</option>
 				<option value="PKT" <?php if($this->session->userdata('mode') == "PKT") { echo "selected=\"selected\""; } ?>>PKT</option>
+				<option value="FT8" <?php if($this->session->userdata('mode') == "FT8") { echo "selected=\"selected\""; } ?>>FT8</option>
 				<option value="SSTV" <?php if($this->session->userdata('mode') == "SSTV") { echo "selected=\"selected\""; } ?>>SSTV</option>
+				<option value="HELL" <?php if($this->session->userdata('mode') == "HELL") { echo "selected=\"selected\""; } ?>>HELL</option>
+				<option value="HELL80" <?php if($this->session->userdata('mode') == "HELL80") { echo "selected=\"selected\""; } ?>>HELL80</option>
+				<option value="DSTAR" <?php if($this->session->userdata('mode') == "DSTAR") { echo "selected=\"selected\""; } ?>>DSTAR</option>
+				<option value="DIGITALVOICE" <?php if($this->session->userdata('mode') == "DIGITALVOICE") { echo "selected=\"selected\""; } ?>>DIGITALVOICE</option>
 				</select>
 
 				<span class="title">Band</span>
@@ -206,12 +214,12 @@
 				<table>
 					<tr>
 						<td>Sat Name</td>
-						<td><input id="sat_name" type="text" name="sat_name" value="<?php echo $this->session->userdata('sat_name'); ?>" /></td>
+						<td><input id="sat_name" type="text" name="sat_name" class="sat_name" value="<?php echo $this->session->userdata('sat_name'); ?>" /></td>
 					</tr>
 	
 					<tr>
 						<td>Sat Mode</td>
-						<td><input id="sat_mode" type="text" name="sat_mode" value="<?php echo $this->session->userdata('sat_mode'); ?>" /></td>
+						<td><input id="sat_mode" type="text" name="sat_mode" class="sat_mode" value="<?php echo $this->session->userdata('sat_mode'); ?>" /></td>
 					</tr>
 				</table>
 		  </div>
@@ -300,8 +308,12 @@
 		if($('select.radios option:selected').val() != '0') {
 			// Get frequency
 			$.get('radio/frequency/' + $('select.radios option:selected').val(), function(result) {
-				$('#frequency').val(result);
-				$(".band").val(frequencyToBand(result));
+
+				if(result == "0") {
+				} else {
+					$('#frequency').val(result);
+					$(".band").val(frequencyToBand(result));
+				}
 			});
 			
 			// Get Mode
@@ -311,6 +323,16 @@
 				} else {
 					$(".mode").val(result);	
 				}
+			});
+
+			// Get SAT_Name
+			$.get('radio/satname/' + $('select.radios option:selected').val(), function(result) {
+					$(".sat_name").val(result);	
+			});
+
+			// Get SAT_Name
+			$.get('radio/satmode/' + $('select.radios option:selected').val(), function(result) {
+					$(".sat_mode").val(result);	
 			});
 		}
 	};
@@ -436,9 +458,12 @@
 		
 		// Change report based on mode
 		$('.mode').change(function(){
-		  if($(this).val() == 'JT65' || $(this).val() == 'JT65B' || $(this).val() == 'JT6C' || $(this).val() == 'JT6M' || $(this).val() == 'FSK441' || $(this).val() == 'JTMS' || $(this).val() == 'ISCAT'){ // or this.value == 'volvo'
+		  if($(this).val() == 'JT65' || $(this).val() == 'JT65B' || $(this).val() == 'JT6C' || $(this).val() == 'JTMS' || $(this).val() == 'ISCAT' || $(this).val() == 'MSK144' || $(this).val() == 'JTMSK' || $(this).val() == 'QRA64'){
 			$('#rst_sent').val('-5');
 			$('#rst_recv').val('-5');
+		  } else if ($(this).val() == 'FSK441' || $(this).val() == 'JT6M') {
+		  	$('#rst_sent').val('26');
+			$('#rst_recv').val('26');
 		  } else if ($(this).val() == 'CW') {
 		  	$('#rst_sent').val('599');
 			$('#rst_recv').val('599');
@@ -447,8 +472,6 @@
 			$('#rst_recv').val('59');
 		  }
 		});
-
-
 	});
 
 

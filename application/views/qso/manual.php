@@ -74,6 +74,10 @@
 				<option value="FSK441" <?php if($this->session->userdata('mode') == "FSK441") { echo "selected=\"selected\""; } ?>>FSK441</option>
 				<option value="JTMS" <?php if($this->session->userdata('mode') == "JTMS") { echo "selected=\"selected\""; } ?>>JTMS</option>
 				<option value="ISCAT" <?php if($this->session->userdata('mode') == "ISCAT") { echo "selected=\"selected\""; } ?>>ISCAT</option>
+				<option value="MSK144" <?php if($this->session->userdata('mode') == "MSK144") { echo "selected=\"selected\""; } ?>>MSK144</option>
+				<option value="JTMSK" <?php if($this->session->userdata('mode') == "JTMSK") { echo "selected=\"selected\""; } ?>>JTMSK</option>
+				<option value="QRA64" <?php if($this->session->userdata('mode') == "QRA64") { echo "selected=\"selected\""; } ?>>QRA64</option>
+				<option value="FT8" <?php if($this->session->userdata('mode') == "FT8") { echo "selected=\"selected\""; } ?>>FT8</option>
 				<option value="PKT" <?php if($this->session->userdata('mode') == "PKT") { echo "selected=\"selected\""; } ?>>PKT</option>
 				<option value="SSTV" <?php if($this->session->userdata('mode') == "SSTV") { echo "selected=\"selected\""; } ?>>SSTV</option>
 				</select>

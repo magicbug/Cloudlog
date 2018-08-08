@@ -6,3 +6,5 @@ CREATE TABLE IF NOT EXISTS `cat` (
   `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ;
+
+ALTER TABLE `cat` ADD `downlink_freq` INT(11) NOT NULL AFTER `mode`, ADD `uplink_freq` INT(11) NOT NULL AFTER `downlink_freq`, ADD `downlink_mode` VARCHAR(255) NOT NULL AFTER `uplink_freq`, ADD `uplink_mode` VARCHAR(255) NOT NULL AFTER `downlink_mode`, ADD `sat_name` VARCHAR(255) NOT NULL AFTER `uplink_mode`;

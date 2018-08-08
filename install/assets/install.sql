@@ -54,64 +54,6 @@ CREATE TABLE IF NOT EXISTS `cat` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-
--- --------------------------------------------------------
-
---
--- Table structure for table `contests`
---
-
-CREATE TABLE IF NOT EXISTS `contests` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `start` datetime NOT NULL,
-  `end` datetime NOT NULL,
-  `template` int(11) NOT NULL,
-  `serial_num` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `contests`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `contest_template`
---
-
-CREATE TABLE IF NOT EXISTS `contest_template` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `band_160` varchar(20) NOT NULL,
-  `band_80` varchar(20) NOT NULL,
-  `band_40` varchar(20) NOT NULL,
-  `band_20` varchar(20) NOT NULL,
-  `band_15` varchar(20) NOT NULL,
-  `band_10` varchar(20) NOT NULL,
-  `band_6m` varchar(20) NOT NULL,
-  `band_4m` varchar(20) NOT NULL,
-  `band_2m` varchar(20) NOT NULL,
-  `band_70cm` varchar(20) NOT NULL,
-  `band_23cm` varchar(20) NOT NULL,
-  `mode_ssb` varchar(20) NOT NULL,
-  `mode_cw` varchar(20) NOT NULL,
-  `serial` varchar(20) NOT NULL,
-  `point_per_km` int(20) NOT NULL,
-  `qra` varchar(20) NOT NULL,
-  `other_exch` varchar(255) NOT NULL,
-  `scoring` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `contest_template`
---
-
-
 -- --------------------------------------------------------
 
 --
@@ -3864,3 +3806,5 @@ CREATE TABLE IF NOT EXISTS `config` (
 
 INSERT INTO `config` (`id`, `lotw_download_url`, `lotw_upload_url`, `lotw_rcvd_mark`, `lotw_login_url`, `eqsl_download_url`, `eqsl_rcvd_mark`) VALUES
 (1, 'https://p1k.arrl.org/lotwuser/lotwreport.adi', 'https://p1k.arrl.org/lotwuser/upload', 'Y', 'https://p1k.arrl.org/lotwuser/default', 'http://www.eqsl.cc/qslcard/DownloadInBox.cfm', 'Y');
+
+ALTER TABLE `cat` ADD `downlink_freq` INT(11) NOT NULL AFTER `mode`, ADD `uplink_freq` INT(11) NOT NULL AFTER `downlink_freq`, ADD `downlink_mode` VARCHAR(255) NOT NULL AFTER `uplink_freq`, ADD `uplink_mode` VARCHAR(255) NOT NULL AFTER `downlink_mode`, ADD `sat_name` VARCHAR(255) NOT NULL AFTER `uplink_mode`;

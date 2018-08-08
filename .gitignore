@@ -1,10 +1,10 @@
 /application/config/database.php
 /application/config/config.php
-/application/logs/*
+/application/logs/*.php
 /uploads/*.adi
 /uploads/*.ADI
 /uploads/*.tq8
 /uploads/*.TQ8
 /install/*
 /updates/*
-/logs/*
+.idea/*
