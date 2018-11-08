@@ -101,7 +101,7 @@ if($_POST) {
 		  <fieldset>
 		  	<legend>Configuration Settings</legend>
 		  	<label for="directory">Directory</label><input type="text" id="directory" value="<?php echo str_replace("/install/", "", $_SERVER['REQUEST_URI']); ?>" class="input_text" name="directory" />
-		  	<label for="websiteurl">Website URL</label><input type="text" id="websiteurl" value="http://<?php echo $_SERVER['HTTP_HOST'].str_replace("/install/", "", $_SERVER['REQUEST_URI']); ?>" class="input_text" name="websiteurl" />
+		  	<label for="websiteurl">Website URL</label><input type="text" id="websiteurl" value="<?php echo $_SERVER['REQUEST_SCHEME']; ?>://<?php echo $_SERVER['HTTP_HOST'].str_replace("/install/", "", $_SERVER['REQUEST_URI']); ?>" class="input_text" name="websiteurl" />
 		  	<label for="locator">Default Gridsquare</label><input type="text" id="locator" value="IO91JS" class="input_text" name="locator" />
 		  </fieldset>
 
