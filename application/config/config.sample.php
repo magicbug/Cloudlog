@@ -35,6 +35,16 @@ $config['display_freq'] = true;
 
 /*
 |--------------------------------------------------------------------------
+| Google Maps JavaScript API Key
+|--------------------------------------------------------------------------
+| visit https://developers.google.com/maps/documentation/javascript/get-api-key
+|
+| 'gmaps_api_key'	API key from Google Cloud Plattform
+*/
+$config['gmaps_api_key'] = "";
+
+/*
+|--------------------------------------------------------------------------
 | Authentication
 |--------------------------------------------------------------------------
 |
