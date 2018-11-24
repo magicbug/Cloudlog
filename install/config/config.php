@@ -34,6 +34,16 @@ $config['display_freq'] = false;
 
 /*
 |--------------------------------------------------------------------------
+| Google Maps JavaScript API Key
+|--------------------------------------------------------------------------
+| visit https://developers.google.com/maps/documentation/javascript/get-api-key
+|
+| 'gmaps_api_key'	API key from Google Cloud Plattform
+*/
+$config['gmaps_api_key'] = "";
+
+/*
+|--------------------------------------------------------------------------
 | Authentication
 |--------------------------------------------------------------------------
 |
@@ -541,7 +551,8 @@ $config['compress_output'] = FALSE;
 | helper' page of the user guide for information regarding date handling.
 |
 */
-$config['time_reference'] = 'local';
+$config['time_reference'] = 'UTC';
+date_default_timezone_set ( $config['time_reference'] );
 
 /*
 |--------------------------------------------------------------------------
