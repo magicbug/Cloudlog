@@ -30,15 +30,15 @@ class DXCC extends CI_Model {
                                                 "15m"=>0, 
                                                 "12m"=>0, 
                                                 "10m"=>0, 
-                                                "4m" =>0,
-                                                "6m" =>0, 
+                                                "6m" =>0,
+                                                "4m" =>0, 
                                                 "2m" =>0,
-                                                "70cm" =>0);
+                                                "70cm"=>0);
                 $last_country = $row->COL_COUNTRY;
             }
 
             // update stats
-            $results[$row->COL_COUNTRY][$row->COL_BAND] = $row->cnt;
+            $results[$row->COL_COUNTRY][$row->COL_BAND] += $row->cnt;
         }
 
         // print_r($results);

@@ -4,17 +4,14 @@
 
 	<!-- Sub Nav for Awards -->
 	
-	<ul class="tabs">
-	  <li class="active"><a href="<?php echo site_url('awards/dxcc'); ?>">DXCC</a></li>
-	  <li><a href="<?php echo site_url('awards/wab'); ?>">WAB</a></li>
-	  <li><a href="<?php echo site_url('awards/sota'); ?>">SOTA</a></li>
-	  <li><a href="<?php echo site_url('awards/wacral'); ?>">WACRAL</a></li>
-	</ul>
+    <?php $this->load->view("awards/nav_bar")?>
+    
+    <table id="table-fixed"></table>
 
 	<table width="100%" class="zebra-striped">
 	<thead>
         <tr>
-        <td>Country</td>
+        <td style="width:225px">Country (<?php echo count($dxcc)?>)</td>
         <td>160m</td>
         <td>80m</td>
         <td>40m</td>
@@ -49,4 +46,30 @@
     </tbody>
 
 	</table>
+	<style>
+        #table-fixed{
+            position: fixed;
+            top: 40px;
+            display: none;
+            background-color: white;
+            border: 1px solid black;
+        }
+	</style>
+	<script>
+	var tableOffset = $(".zebra-striped").offset().top-40;
+	$('#table-fixed').width($(".zebra-striped").width());
+	var $header = $(".zebra-striped > thead").clone();
+	var $fixedHeader = $("#table-fixed").append($header);
+
+	$(window).bind("scroll", function() {
+	    var offset = $(this).scrollTop();
+
+        if (offset >= tableOffset && $fixedHeader.is(":hidden")) {
+	        $fixedHeader.show();
+	    }
+	    else if (offset < tableOffset) {
+	        $fixedHeader.hide();
+	    }
+	});
+	</script>
 </div>

@@ -480,6 +480,12 @@ class Logbook_model extends CI_Model {
         }
     }
 
+    /* Return the list of modes in the logbook */
+    function get_modes(){
+        $query = $this->db->query('select distinct(COL_MODE) from '.$this->config->item('table_name').' order by COL_MODE');
+        return $query;
+    }
+
     /* Return total number of QSOs per band */
    function total_bands() {
         $query = $this->db->query('SELECT DISTINCT (COL_BAND) AS band, count( * ) AS count FROM '.$this->config->item('table_name').' GROUP BY band ORDER BY count DESC');
@@ -567,8 +573,8 @@ class Logbook_model extends CI_Model {
     function import_check($datetime, $callsign, $band) {
 
 		$this->db->select('COL_TIME_ON, COL_CALL, COL_BAND');
-		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
-		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
+		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
+		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
 		$this->db->where('COL_CALL', $callsign);
 		$this->db->where('COL_BAND', $band);
 
@@ -620,8 +626,8 @@ class Logbook_model extends CI_Model {
 			   'COL_EQSL_QSL_RCVD' => $qsl_status
 		);
 
-		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
-		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
+		$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
+		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
 		$this->db->where('COL_CALL', $callsign);
 		$this->db->where('COL_BAND', $band);
 
@@ -666,8 +672,8 @@ class Logbook_model extends CI_Model {
   	// Determine if we've already received an eQSL for this QSO
   	function eqsl_dupe_check($datetime, $callsign, $band, $qsl_status) {
     	$this->db->select('COL_EQSL_QSLRDATE');
-    	$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -5 MINUTE )');
-		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 5 MINUTE )');
+    	$this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
+		$this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
     	$this->db->where('COL_CALL', $callsign);
     	$this->db->where('COL_BAND', $band);
     	$this->db->where('COL_EQSL_QSL_RCVD', $qsl_status);
@@ -689,7 +695,7 @@ class Logbook_model extends CI_Model {
   	// Show all QSOs we need to send to eQSL
   	function eqsl_not_yet_sent() {
   		//$this->db->select("COL_PRIMARY_KEY, DATE_FORMAT(COL_TIME_ON,\'%Y%m%d\') AS COL_QSO_DATE, DATE_FORMAT(COL_TIME_ON,\'%H%i\') AS TIME_ON, COL_CALL, COL_MODE, COL_BAND");
-  		$this->db->select("COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_MODE, COL_BAND, COL_COMMENT, COL_RST_SENT");
+  		$this->db->select("COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_MODE, COL_BAND, COL_COMMENT, COL_RST_SENT, COL_PROP_MODE");
   		$this->db->where('COL_EQSL_QSL_SENT', 'N');
 
   		return $this->db->get($this->config->item('table_name'));
@@ -740,7 +746,12 @@ class Logbook_model extends CI_Model {
         } else if (isset($record['notes'])) {
             $comment = $record['notes'];
         } else {
-            $comment = "";
+            // Try 'comment'
+            if(isset($record['comment'])){
+                $comment = $record['comment'];
+            }else{
+                $comment = "";
+            }
         }
 
         // Store Sat Name
@@ -764,24 +775,29 @@ class Logbook_model extends CI_Model {
             $gridsquare = "";
         }
 
+        // DXCC id
+        $dxcc = $this->check_dxcc_table($record['call'], $time_off);
+
         // Store or find country name
         if(isset($record['country'])) {
             $country = $record['country'];
         } else {
-            $this->load->model('dxcc');
+            // $this->load->model('dxcc');
 
-            $dxccinfo = $this->dxcc->info($record['call']);
+            // $dxccinfo = $this->dxcc->info($record['call']);
 
-            if ($dxccinfo->num_rows() > 0)
-            {
-                foreach ($dxccinfo->result() as $row1)
-                {
-                    $country = ucfirst(strtolower($row1->name));
-                }
-            } else {
-                $country = "";
-            }
+            // if ($dxccinfo->num_rows() > 0)
+            // {
+            //     foreach ($dxccinfo->result() as $row1)
+            //     {
+            //         $country = ucfirst(strtolower($row1->name));
+            //     }
+            // } else {
+            //     $country = "";
+            // }
+            $country = ucwords(strtolower($dxcc[1]));
         }
+
 
         // Store QTH
         if(isset($record['qth'])) {
@@ -912,7 +928,6 @@ class Logbook_model extends CI_Model {
                 $mode = $record['mode'];
         }
 
-
         $this->db->where('COL_CALL', $record['call']);
         $this->db->where('COL_TIME_ON', $time_on);
         $check = $this->db->get($this->config->item('table_name'));
@@ -951,6 +966,8 @@ class Logbook_model extends CI_Model {
                'COL_QSL_SENT' => $QSLSENT,
                'COL_LOTW_QSL_SENT' => $LOTWQSLSENT,
                'COL_LOTW_QSL_RCVD' => $LOTWQSLRCVD,
+               'COL_DXCC' => $dxcc[0],
+               'COL_CQZ' => $dxcc[2],
                'COL_MY_RIG' => $my_rig,
                'COL_TX_PWR' => $tx_pwr,
                'COL_MY_GRIDSQUARE' => $my_gridsquare
@@ -967,13 +984,16 @@ class Logbook_model extends CI_Model {
     }
 
 
-    private function check_dxcc_table($call, $date){
+    /*
+     * Check the dxxc_prefixes table and return (dxcc, country)
+     */
+    public function check_dxcc_table($call, $date){
         $len = strlen($call);
 
         // query the table, removing a character from the right until a match
         for ($i = $len; $i > 0; $i--){
             //printf("searching for %s\n", substr($call, 0, $i));
-            $dxcc_result = $this->db->select('`call`, `entity`, `adif`')
+            $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`')
                                     ->where('call', substr($call, 0, $i))
                                     ->where('(start <= ', $date)
                                     ->or_where("start = '0000-00-00')", NULL, false)
@@ -986,11 +1006,26 @@ class Logbook_model extends CI_Model {
 
             if ($dxcc_result->num_rows() > 0){
                 $row = $dxcc_result->row_array();
-                return array($row['adif'], $row['entity']);
+                return array($row['adif'], $row['entity'], $row['cqz']);
             }
         }
 
         return array("Not Found", "Not Found");
+    }
+
+    /*
+     * Same as check_dxcc_table, but the functionality is in 
+     * a stored procedure which we call
+     */
+    public function check_dxcc_stored_proc($call, $date){
+        $this->db->query("call find_country('".$call."','".$date."', @country, @adif, @cqz)");
+        $res = $this->db->query("select @country as country, @adif as adif, @cqz as cqz");
+        $d = $res->result_array();
+
+        // Should only be one result.
+        // NOTE: might cause unexpected data if there's an 
+        // error with clublog.org data.
+        return $d[0];
     }
 
     public function check_missing_dxcc_id($all){
@@ -1012,7 +1047,11 @@ class Logbook_model extends CI_Model {
                 $qso_date = $row['COL_TIME_OFF']=='' ? $row['COL_TIME_ON'] : $row['COL_TIME_ON'];
                 $qso_date = strftime("%Y-%m-%d", strtotime($qso_date));
 
+                // Manual call
                 $d = $this->check_dxcc_table($row['COL_CALL'], $qso_date);
+
+                // Stored procedure call
+                //$d = $this->check_dxcc_stored_proc($row["COL_CALL"], $qso_date);
 
                 if ($d[0] != 'Not Found'){
                     $sql = sprintf("update %s set COL_COUNTRY = '%s', COL_DXCC='%s' where COL_PRIMARY_KEY=%d",

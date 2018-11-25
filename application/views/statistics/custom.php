@@ -54,6 +54,11 @@
 					<input type="checkbox" name="mode_data" value="data" /> Data
 					<input type="checkbox" name="mode_fm" value="FM" /> FM
 					<input type="checkbox" name="mode_am" value="AM" /> AM
+				<?php
+				foreach($modes->result() as $row){
+                    printf('<input type="checkbox" name="mode_%s" value="%s" />%s',  $row->COL_MODE, $row->COL_MODE, $row->COL_MODE);
+				}
+				?>
 			</div>
 			
 			<div class="type">

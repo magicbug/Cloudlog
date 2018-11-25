@@ -58,7 +58,10 @@ class Statistics extends CI_Controller {
 			}
 		}
 	
+	    $this->load->model('logbook_model');
+
 		$data['page_title'] = "Custom Statistics";
+		$data['modes'] = $this->logbook_model->get_modes();
 	
 		$this->load->helper(array('form', 'url'));
 
@@ -70,7 +73,7 @@ class Statistics extends CI_Controller {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->load->view('layout/header', $data);
-			$this->load->view('statistics/custom');
+			$this->load->view('statistics/custom', $data);
 			$this->load->view('layout/footer');
 		}
 		else
@@ -80,7 +83,6 @@ class Statistics extends CI_Controller {
 	
 			$data['result'] = $this->stats->result();
 		
-			
 			$this->load->view('layout/header', $data);
 			$this->load->view('statistics/custom_result');
 			$this->load->view('layout/footer');

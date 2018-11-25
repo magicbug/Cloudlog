@@ -1,5 +1,6 @@
 /application/config/database.php
 /application/config/config.php
+/application/logs/*.php
 /uploads/*.adi
 /uploads/*.ADI
 /uploads/*.tq8

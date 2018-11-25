@@ -60,7 +60,7 @@ class Awards extends CI_Controller {
 
 		// Render Page
 		$data['page_title'] = "Log View - DXCC";
-		$data['filter'] = $a["Country"] . " and " . $a["Band"];
+		$data['filter'] = str_replace("&#40;and&#41;", ", ", $q);//implode(", ", array_keys($a));
 		$this->load->view('layout/header', $data);
 		$this->load->view('awards/dxcc/details');
 		$this->load->view('layout/footer');
@@ -117,4 +117,18 @@ class Awards extends CI_Controller {
 		$this->load->view('layout/footer');
 	}
 	
+	public function cq(){
+        $this->load->model('cq');
+        $zones = array();
+        foreach($this->cq->get_zones() as $row){
+            array_push($zones, intval($row->COL_CQZ));
+        }
+        $data['cqz'] = $zones;
+
+        // Render page
+        $data['page_title'] = "Awards - CQ Magazine";
+		$this->load->view('layout/header', $data);
+		$this->load->view('awards/cq/index');
+		$this->load->view('layout/footer');
+	}
 }
