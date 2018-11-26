@@ -23,6 +23,7 @@ class Social extends CI_Controller {
 
 	function json_map($date) {
 		$this->load->model('logbook_model');
+		$this->load->library('qra');
 
 		$qsos = $this->logbook_model->map_day($date);
 

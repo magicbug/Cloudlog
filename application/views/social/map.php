@@ -23,47 +23,17 @@
 
 
 	
+	<script type="text/javascript" src="<?php echo base_url();?>js/leaflet/leafembed.js"></script>
 	<script type="text/javascript">
-	  function create_map() {
-	    var latlng = new google.maps.LatLng(40.313043, -32.695312);
-	    var myOptions = {
-	      zoom: 2,
-	      center: latlng,
-	      mapTypeId: google.maps.MapTypeId.ROADMAP
-	    };
-	    var infowindow = new google.maps.InfoWindow();
+	  
+		var q_lat = 40.313043;
+		var q_lng = -32.695312;
+		var q_zoom = 2;
 
-	    var marker, i;
+		var qso_loc = '<?php echo site_url("social/json_map/" . $date); ?>';
 
-	    /* Get QSO points via json*/
-		 $.getJSON("/logbook/index.php/social/json_map/<?php echo $date; ?>", function(data) {
-		 	
-			$.each(data.markers, function(i, val) {
-				/* Create Markers */
-			    marker = new google.maps.Marker({
-		        	position: new google.maps.LatLng(this.lat, this.lng),
-		        	map: map
-		   		});
-		   		
-		   		/* Store Popup Text */
-		   		var content = this.html;
-		   	
-		   		/* Create Popups */
-		   		google.maps.event.addListener(marker, 'click', (function(marker, i) {
-		        	return function() {
-		        		infowindow.setContent(content);
-		          		infowindow.open(map, marker);
-		        	}
-				})(marker, i));
-			});
-		 });
-
-	    var map = new google.maps.Map(document.getElementById("map"),
-	        myOptions);
-	  }
-
-	    $(document).ready(function(){
-			create_map();
+	  $(document).ready(function(){
+			initmap();
 	  });
 	</script>
 

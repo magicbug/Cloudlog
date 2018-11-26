@@ -1,8 +1,8 @@
-	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+	<script type="text/javascript" src="<?php echo base_url() ;?>fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 
-	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+	<script type="text/javascript" src="<?php echo base_url() ;?>fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 
 	<script type="text/javascript">
 
@@ -19,53 +19,22 @@
 
 	</script>
 	
+	<script type="text/javascript" src="<?php echo base_url();?>js/leaflet/leafembed.js"></script>
 	<script type="text/javascript">
-	  function create_map() {
 	  
 	  	<?php if($qra == "set") { ?>
-		var latlng = new google.maps.LatLng(<?php echo $qra_lat; ?>, <?php echo $qra_lng; ?>);	
+		var q_lat = <?php echo $qra_lat; ?>;
+		var q_lng = <?php echo $qra_lng; ?>;	
 		<?php } else { ?>
-		var latlng = new google.maps.LatLng(40.313043, -32.695312);
+		var q_lat = 40.313043;
+		var q_lng = -32.695312;
 		<?php } ?>
-	  
-	    var myOptions = {
-	      zoom: 3,
-	      center: latlng,
-	      mapTypeId: google.maps.MapTypeId.ROADMAP
-	    };
-	    var infowindow = new google.maps.InfoWindow();
 
-	    var marker, i;
+		var qso_loc = '<?php echo site_url('dashboard/map');?>';
+		var q_zoom = 2;
 
-	    /* Get QSO points via json*/
-		 $.getJSON("<?php echo site_url('dashboard/map'); ?>", function(data) {
-		 	
-			$.each(data.markers, function(i, val) {
-				/* Create Markers */
-			    marker = new google.maps.Marker({
-		        	position: new google.maps.LatLng(this.lat, this.lng),
-		        	map: map
-		   		});
-		   		
-		   		/* Store Popup Text */
-		   		var content = this.html;
-		   	
-		   		/* Create Popups */
-		   		google.maps.event.addListener(marker, 'click', (function(marker, i) {
-		        	return function() {
-		        		infowindow.setContent(content);
-		          		infowindow.open(map, marker);
-		        	}
-				})(marker, i));
-			});
-		 });
-
-	    var map = new google.maps.Map(document.getElementById("map"),
-	        myOptions);
-	  }
-
-	    $(document).ready(function(){
-			create_map();
+	  $(document).ready(function(){
+			initmap();
 	  });
 	</script>
 
