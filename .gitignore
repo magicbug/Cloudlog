@@ -6,5 +6,6 @@
 /uploads/*.tq8
 /uploads/*.TQ8
 /install/*
-/updates/*
+/updates/*.xml
+/updates/*.html
 .idea/*
