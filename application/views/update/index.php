@@ -8,8 +8,8 @@
     Status:</br>
     </div>
 <br/>
-    <a href="<?php echo site_url('check_missing_dxcc');?>">Check missing DXCC/Countries values</a>
-    <a href="<?php echo site_url('check_missing_dxcc/all');?>">[Re-Check ALL]</a>
+    <a href="<?php echo site_url('update/check_missing_dxcc');?>">Check missing DXCC/Countries values</a>
+    <a href="<?php echo site_url('update/check_missing_dxcc/all');?>">[Re-Check ALL]</a>
 </div>
 
 <style>
