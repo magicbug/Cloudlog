@@ -19,10 +19,12 @@ line-height: 1.7;
 margin: 10px 0;
 }
 	</style>
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false&key=<?php echo $this->config->item('gmaps_api_key');?>"></script> 
+	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-1.5.1.min.js"></script>	
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>js/leaflet/leaflet.css" />
+	<script type="text/javascript" src="<?php echo base_url(); ?>js/leaflet/leaflet.js"></script>
 </head>
 
-<body onload="initialize()">
+<body>
 <?php if ($query->num_rows() > 0) {  foreach ($query->result() as $row) {
 ?>
 	<h1>QSO with <?php echo $row->COL_CALL; ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></h1>
@@ -134,7 +136,7 @@ margin: 10px 0;
 		
 		<div id="stat">
 
-<div id="map_canvas" style="width: 340px; height: 250px"></div> 
+<div id="map" style="width: 340px; height: 250px"></div> 
 
 <?php
 	if($row->COL_GRIDSQUARE != null) {
@@ -157,23 +159,20 @@ margin: 10px 0;
 	}
 ?>
 
-<script type="text/javascript"> 
-  function initialize() {
-	var myLatlng = new google.maps.LatLng(<?php echo $lat; ?>,<?php echo $lng; ?>);
-	var myOptions = {
-	  zoom: 4,
-	  center: myLatlng,
-	  mapTypeId: google.maps.MapTypeId.ROADMAP
-	}
-	var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
-	var marker = new google.maps.Marker({
-		position: myLatlng, 
-		map: map,
-		title:"<?php echo $row->COL_CALL; ?>"
-	});   
-  }
-</script> 
+	<script type="text/javascript" src="<?php echo base_url();?>js/leaflet/leafembed.js"></script>
+	<script type="text/javascript">
+	  
+		var q_lat = <?php echo $lat; ?>;
+		var q_lng = <?php echo $lng; ?>;
+
+		var qso_loc = '<?php echo site_url('dashboard/map');?>';
+		var q_zoom = 6;
+
+	  $(document).ready(function(){
+			initmap();
+	  });
+	</script>
 
 		</div>
 	</div>

@@ -31,6 +31,7 @@
 		<?php } ?>
 
 		var qso_loc = '<?php echo site_url('dashboard/map');?>';
+		var q_zoom = 2;
 
 	  $(document).ready(function(){
 			initmap();

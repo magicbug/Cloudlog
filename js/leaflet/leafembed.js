@@ -22,7 +22,7 @@ function initmap() {
     var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});        
 
     // start the map in South-East England
-    map.setView(new L.LatLng(q_lat, q_lng), 2);
+    map.setView(new L.LatLng(q_lat, q_lng), q_zoom);
     map.addLayer(osm);
 
 	askForPlots();
