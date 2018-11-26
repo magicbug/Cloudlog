@@ -1,227 +1,92 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
-
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Frequency {
 
+  public $defaultFrequencies = array(
+	'160m'=>array(
+	  	'SSB'=>"1900000",
+  		'DATA'=>"1838000",
+  		'CW'=>"1830000"),
+	'80m'=>array(
+  		'SSB'=>"3700000",
+  		'DATA'=>"3583000",
+  		"CW"=>"3550000"),
+	'40m'=>array(
+  		'SSB'=>"7100000",
+  		'DATA'=>"7040000",
+  		'CW'=>"7020000"),
+	'30m'=>array(
+  		'SSB'=>"10120000",
+  		'DATA'=>"10145000",
+  		'CW'=>"10120000"),
+	'20m'=>array(
+  		'SSB'=>"14200000",
+  		'DATA'=>"14080000",
+  		'CW'=>"14020000"),
+	'17m'=>array(
+  		'SSB'=>"18130000",
+  		'DATA'=>"18105000",
+  		'CW'=>"18080000"),
+	'15m'=>array(
+  		'SSB'=>"21300000",
+  		'DATA'=>"21080000",
+  		'CW'=>"21020000"),
+	'12m'=>array(
+  		'SSB'=>"24950000",
+  		'DATA'=>"24925000",
+  		'CW'=>"24900000"),
+	'10m'=>array(
+  		'SSB'=>"28300000",
+  		'DATA'=>"28120000",
+  		'CW'=>"21050000"),
+	'6m'=>array(
+  		'SSB'=>"50150000",
+  		'DATA'=>"50230000",
+  		'CW'=>"50090000"),
+	'4m'=>array(
+  		'SSB'=>"70200000",
+  		'DATA'=>"70200000",
+  		'CW'=>"70200000"),
+	'2m'=>array(
+  		'SSB'=>"144300000",
+  		'DATA'=>"144370000",
+  		'CW'=>"144.050000"),
+	'70cm'=>array(
+  		'SSB'=>"432200000",
+  		'DATA'=>"432088000",
+  		'CW'=>"432050000"),
+	'23cm'=>array(
+  		'SSB'=>"1296000000",
+  		'DATA'=>"1296138000",
+  		'CW'=>"129600000"),
+	'13cm'=>array(
+  		'SSB'=>"232080000",
+  		'DATA'=>"232080000",
+  		'CW'=>"232080000"),
+	'9cm'=>array(
+  		'SSB'=>"341000000",
+  		'DATA'=>"341000000",
+  		'CW'=>"340000000"),
+	'6cm'=>array(
+  		'SSB'=>"567000000",
+  		'DATA'=>"567000000",
+  		'CW'=>"567000000"),
+	'3cm'=>array(
+  		'SSB'=>"1022500000",
+  		'DATA'=>"1022500000",
+  		'CW'=>"1022500000")
+		);
 	/* Class to convert band and mode into a frequnecy in a format based on the specifications of the database table */
-
-	public function convent_band($band, $mode)
+	public function convent_band($band, $mode='SSB')
 	{
-	
-		if($band == "160m") {
-			if ($mode == "SSB") {
-				return "1900000";
-			}elseif($mode == "CW") {
-				return "1830000";
-			}elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
-				return "1838000";
-			} else {
-				return "1900000";
-			}
-		}
-		if($band == "80m") {
-			if ($mode == "CW") {
-				return "3550000";
-			}elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
-				return "3583000";
-			}elseif($mode == "SSB") {
-					return "3700000";
-			} else {
-				return "3700000";
-			}
-		}
-		if($band == "40m") {
-			if ($mode == "CW") {
-				return "7020000";
-			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
-				return "7040000";
-			}elseif($mode == "SSB") {
-				return "7100000";
-			} else {
-				return "7100000";
-			}
-		}
-		if($band == "30m") {
-			if ($mode == "CW") {
-				return "10120000";
-			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
-				return "10145000";
-			} else {
-				return "10120000";
-			}
-		}
-		if($band == "20m") {
-			if ($mode == "CW") {
-				return "14020000";
-			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
-				return "14080000";
-			}elseif($mode == "SSB") {
-				return "14200000";
-			} else {
-				return "14200000";
-			} 
-		}
-		if($band == "17m") {
-			if ($mode == "CW") {
-				return "18080000";
-			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
-				return "18105000";
-			}elseif($mode == "SSB") {
-				return "18130000";
-			} else {
-				return "18130000";
-			}
-		}
-		if($band == "15m") {
-			if ($mode == "CW") {
-				return "21020000";
-			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
-				return "21080000";
-			}elseif($mode == "SSB") {
-				return "21300000";
-			} else {
-				return "21300000";
-			}
-		}
-		if($band == "12m") {
-			if ($mode == "CW") {
-				return "24900000";
-			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
-				return "24925000";
-			}elseif($mode == "SSB") {
-				return "24950000";
-			}
-		}
-		if($band == "10m") {
-			if ($mode == "CW") {
-				return "21050000";
-			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
-				return "28120000";
-			}elseif($mode == "SSB") {
-				return "28300000";
-			} else {
-				return "28300000";
-			}
-		}
-		if($band == "6m") {
-			if ($mode == "CW") {
-				return "50090000";
-			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
-				return "50230000";
-			}elseif($mode == "SSB") {
-				return "50150000";
-			} else {
-				return "50150000";
-			}
-		}
-		if($band == "4m") {
-			if ($mode == "CW") {
-				return "70200000";
-			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
-				return "70200000";
-			}elseif($mode == "SSB") {
-				return "70200000";
-			} else {
-				return "70200000";
-			}
-		}
-		if($band == "2m") {
-			if ($mode == "CW") {
-				return "144.050000";
-			} elseif($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65") {
-				return "144370000";
-			}elseif($mode == "SSB") {
-				return "144300000";
-			} else {
-				return "144300000";
-			}
-		}
-		if($band == "70cm") {
-			if ($mode == "CW") {
-				return "432050000";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "432088000";
-			}elseif($mode == "SSB") {
-				return "432200000";
-			} else {
-				return "432200000";
-			}
-		}
-		if($band == "70cm") {
-			if ($mode == "CW") {
-				return "432050000";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "432088000";
-			}elseif($mode == "SSB") {
-				return "432200000";
-			} else {
-				return "432200000";
-			}
-		}
-		if($band == "23cm") {
-			if ($mode == "CW") {
-				return "129600000";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "1296138000";
-			}elseif($mode == "SSB") {
-				return "1296000000";
-			} else {
-				return "1296000000";
-			}
-		}
-		
-		if($band == "13cm") {
-			if ($mode == "CW") {
-				return "232080000";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "232080000";
-			}elseif($mode == "SSB") {
-				return "232080000";
-			} else {
-				return "232080000";
-			}
-		}
-		
-		if($band == "9cm") {
-			if ($mode == "CW") {
-				return "340000000";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "341000000";
-			}elseif($mode == "SSB") {
-				return "341000000";
-			} else {
-				return "341000000";
-			}
-		}
-		
-		if($band == "6cm") {
-			if ($mode == "CW") {
-				return "567000000";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "567000000";
-			}elseif($mode == "SSB") {
-				return "567000000";
-			} else {
-				return "567000000";
-			}
-		}
-		
-		if($band == "3cm") {
-			if ($mode == "CW") {
-				return "1022500000";
-			} elseif($mode == "PSK31" || $mode == "RTTY" || $mode == "JT65") {
-				return "1022500000";
-			}elseif($mode == "SSB") {
-				return "1022500000";
-			} else {
-				return "1022500000";
-			}
-		}
-	
-	}
-	
+	    if($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65"){
+  		$mode= "DATA";
+	    }
+
+			return $this->defaultFrequencies[$band][$mode];
+
+}
 public function GetBand($Frequency) {
 		$Band = NULL;
-
 		if ($Frequency > 1000000 && $Frequency < 2000000) {
 			$Band = "160m";
 		} else if ($Frequency > 3000000 && $Frequency < 4000000) {
@@ -277,10 +142,7 @@ public function GetBand($Frequency) {
 		} else if ($Frequency >= 250000000000) {
 			$Band = "<1mm";
 		}
-
 		return $Band;
 	}
-	
 }
-
 /* End of file Frequency.php */
