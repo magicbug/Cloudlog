@@ -160,19 +160,21 @@ margin: 10px 0;
 ?>
 
 
-	<script type="text/javascript" src="<?php echo base_url();?>js/leaflet/leafembed.js"></script>
-	<script type="text/javascript">
-	  
-		var q_lat = <?php echo $lat; ?>;
-		var q_lng = <?php echo $lng; ?>;
+<script>
 
-		var qso_loc = '<?php echo site_url('dashboard/map');?>';
-		var q_zoom = 6;
+	var mymap = L.map('map').setView([<?php echo $lat; ?>,<?php echo $lng; ?>], 7);
 
-	  $(document).ready(function(){
-			initmap();
-	  });
-	</script>
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+
+	L.marker([<?php echo $lat; ?>,<?php echo $lng; ?>]).addTo(mymap)
+		.bindPopup("<?php echo $row->COL_CALL; ?>");
+
+	mymap.on('click', onMapClick);
+
+</script>
 
 		</div>
 	</div>
