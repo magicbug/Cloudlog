@@ -41,7 +41,7 @@
 		var q_lng = -32.695312;
 		<?php } ?>
 
-		var qso_loc = '<?php echo site_url('dashboard/map');?>';
+		var qso_loc = '<?php echo site_url('logbook/qso_map/25/'.$this->uri->segment(3)); ?>';
 		var q_zoom = 2;
 
 	  $(document).ready(function(){
