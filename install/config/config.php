@@ -32,15 +32,18 @@ $config['table_name'] = "TABLE_HRD_CONTACTS_V01";
 $config['locator'] = "%baselocator%"; 
 $config['display_freq'] = false;
 
+
 /*
 |--------------------------------------------------------------------------
-| Google Maps JavaScript API Key
+| QRZ Login Options
 |--------------------------------------------------------------------------
-| visit https://developers.google.com/maps/documentation/javascript/get-api-key
 |
-| 'gmaps_api_key'	API key from Google Cloud Plattform
+| 	'qrz_username'	QRZ.com user login
+|	'qrz_password'	QRZ.com user password
 */
-$config['gmaps_api_key'] = "";
+
+$config['qrz_username'] = "";
+$config['qrz_password'] = "";
 
 /*
 |--------------------------------------------------------------------------
