@@ -285,9 +285,12 @@ class API_Model extends CI_Model {
 	{
 		// Do search/replace on field names, to convert from friendly names
 		// to MySQL column names
-		while (list($key, $val) = each($this->_columnName)) {
+
+		foreach($this->_columnName as $key => $val) {
 			$q = str_replace("++".$val['Name']."++", $key, $q);
 		}
+
+
 
 		return $q;
 	}
@@ -297,10 +300,12 @@ class API_Model extends CI_Model {
 		// Do search/replace on field names, to convert from friendly names
 		// to MySQL column names
 		$r = array();
-		while (list($key, $val) = each($q)) {
+
+		foreach($q as $key => $val) {
 			$f = explode('=', $val);
 			$r[$this->column($f[0])] = $f[1];
 		}
+
 		return $r;
 	}
 
