@@ -169,6 +169,11 @@ class Update extends CI_Controller {
 		}
 		gzclose($gz);
 		
+		if (!file_exists("./updates/"))
+		{
+			mkdir("./updates");
+		}
+		
 		file_put_contents('./updates/cty.xml', $data);
 	
 	    // Clear the tables, ready for new data
