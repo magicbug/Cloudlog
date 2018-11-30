@@ -106,9 +106,10 @@ class eqsl extends CI_Controller {
 			
 			// Get credentials for eQSL
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
-    		$q = $query->row();
-    		$data['user_eqsl_name'] = $q->user_eqsl_name;
+			$q = $query->row();
+			$data['user_eqsl_name'] = $q->user_eqsl_name;
 			$data['user_eqsl_password'] = $q->user_eqsl_password;
+			$data['user_eqsl_qth_nickname'] = $q->user_eqsl_qth_nickname;
 			
 			// Get URL for downloading the eqsl.cc inbox
 			$query = $query = $this->db->query('SELECT eqsl_download_url FROM config');
@@ -128,6 +129,11 @@ class eqsl extends CI_Controller {
 			$eqsl_url .= "?";
 			$eqsl_url .= "UserName=" . $data['user_eqsl_name'];
 			$eqsl_url .= "&Password=" . $data['user_eqsl_password'];
+
+			if ($data['user_eqsl_qth_nickname'] != '')
+			{
+				$eqsl_url .= "&QTHNickname=" . $data['user_eqsl_qth_nickname'];
+			}
 			
 			$eqsl_url .= "&RcvdSince=" . $eqsl_last_qsl_date;
 			

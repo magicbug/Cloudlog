@@ -15,7 +15,7 @@
 	<tr>
 		<td><input type="radio" name="lotwimport" id="fetch" value="fetch" /> Pull LoTW data for me</td>
 		<td>
-			<p>Cloudlog will use the LoTW username an password stored in your user profile to download a report from LoTW for you. The report Cloudlog downloads will have all confirmations since your last LoTW confirmation, up until now.</p>
+			<p>Cloudlog will use the LoTW username and password stored in your user profile to download a report from LoTW for you. The report Cloudlog downloads will have all confirmations since your last LoTW confirmation, up until now.</p>
 		</td>
 	</tr>
 </table>

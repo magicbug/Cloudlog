@@ -115,6 +115,12 @@ $this->load->helper('form');
 		<?php } ?>
 	</tr>
 	
+	<tr>
+		<td>eQSL.cc QTH Nickname</td>
+		<td><input type="text" name="user_eqsl_qth_nickname" value="<?php if(isset($user_eqsl_qth_nickname)) { echo $user_eqsl_qth_nickname; } ?>" />
+		</td>
+	</tr>
+	
 </table>	
 <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 <div class="actions"><input class="btn primary" type="submit" value="Update profile" /></div>
