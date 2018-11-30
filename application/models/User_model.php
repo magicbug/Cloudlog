@@ -124,7 +124,8 @@ class User_Model extends CI_Model {
 					'user_lastname' => $fields['user_lastname'],
 					'user_timezone' => $fields['user_timezone'],
 					'user_lotw_name' => $fields['user_lotw_name'],
-					'user_eqsl_name' => $fields['user_eqsl_name']
+					'user_eqsl_name' => $fields['user_eqsl_name'],
+					'user_eqsl_qth_nickname' => $fields['user_eqsl_qth_nickname']
 				);
 	
 				// Check to see if the user is allowed to change user levels
@@ -213,14 +214,15 @@ class User_Model extends CI_Model {
 		$u = $this->get_by_id($id);
 
 		$userdata = array(
-			'user_id'		=> $u->row()->user_id,
-			'user_name'		=> $u->row()->user_name,
-			'user_type'		=> $u->row()->user_type,
-			'user_callsign'		=> $u->row()->user_callsign,
-			'user_locator'		=> $u->row()->user_locator,
-			'user_lotw_name'	=> $u->row()->user_lotw_name,
-			'user_eqsl_name'	=> $u->row()->user_eqsl_name,
-			'user_hash'		=> $this->_hash($u->row()->user_id."-".$u->row()->user_type)
+			'user_id'		 => $u->row()->user_id,
+			'user_name'		 => $u->row()->user_name,
+			'user_type'		 => $u->row()->user_type,
+			'user_callsign'		 => $u->row()->user_callsign,
+			'user_locator'		 => $u->row()->user_locator,
+			'user_lotw_name'	 => $u->row()->user_lotw_name,
+			'user_eqsl_name'	 => $u->row()->user_eqsl_name,
+			'user_eqsl_qth_nickname' => $u->row()->user_eqsl_qth_nickname,
+			'user_hash'		 => $this->_hash($u->row()->user_id."-".$u->row()->user_type)
 		);
 
 		$this->session->set_userdata($userdata);

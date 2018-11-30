@@ -214,6 +214,12 @@ class User extends CI_Controller {
 				$data['user_eqsl_password'] = $q->user_eqsl_password;
 			}
 			
+			if($this->input->post('user_eqsl_qth_nickname')) {
+				$data['user_eqsl_qth_nickname'] = $this->input->post('user_eqsl_qth_nickname');
+			} else {
+				$data['user_eqsl_qth_nickname'] = $q->user_eqsl_qth_nickname;
+			}
+			
 			$this->load->view('user/edit', $data);
 			$this->load->view('layout/footer');
 		}
