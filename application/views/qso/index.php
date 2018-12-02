@@ -325,15 +325,16 @@
 				}
 			});
 
-			// Get SAT_Name
+				// Get SAT_Name
 			$.get('radio/satname/' + $('select.radios option:selected').val(), function(result) {
-					$(".sat_name").val(result);	
+				$(".sat_name").val(result);	
 			});
 
-			// Get SAT_Name
+				// Get SAT_Name
 			$.get('radio/satmode/' + $('select.radios option:selected').val(), function(result) {
-					$(".sat_mode").val(result);	
+				$(".sat_mode").val(result);	
 			});
+
 		}
 	};
 
@@ -342,6 +343,14 @@
 
 	// If a radios selected from drop down select radio update.
 	$('.radios').change(updateFromCAT);
+
+	// If radio isn't SatPC32 clear sat_name and sat_mode
+	$( ".radios" ).change(function() {
+	  	if ($("#yourdropdownid option:selected").text() != "SatPC32") {
+	  		$(".sat_name").val("");	
+	  		$(".sat_mode").val("");	
+	  	}
+	});
 
 		/* On Page Load */
 		var catcher = function() {
