@@ -42,7 +42,7 @@
 
 <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 <div class="alert-message success">
-	  <p>You have had <strong><?php echo $todays_qsos; ?></strong> QSOs Today!</p>
+	  <p>You have had <strong><?php echo $todays_qsos; ?></strong> QSO<?php echo ( $todays_qsos != 1  ? "s" : "" ); ?> today!</p>
 </div>
 <?php } ?>
 
