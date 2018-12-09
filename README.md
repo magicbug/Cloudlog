@@ -36,7 +36,7 @@ I've started building out some scripts to generate labels for sticking on QSL Ca
 
 If you would like to contributing in anyway to Cloudlog then its most appreciated, this has been developed in free time, help coding new features or writing documentation is always useful.
 
-Please note that Cloudlog was built using [Codeigniter](https://ellislab.com/codeigniter/user-guide/) version 2 and uses a rather old version of the Bootstrap UI v1.4.0 documentation is available for this when building components.
+Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses a rather old version of the Bootstrap UI v1.4.0 documentation is available for this when building components.
 
 If you are writing code all javascript and css should be pleased within the js & css folders not within the views where possible. 
 
@@ -44,7 +44,7 @@ If you are writing code all javascript and css should be pleased within the js &
 
 The MIT License (MIT)
 
-Copyright (c) 2016 Peter Goodhall, 2E0SQL
+Copyright (c) 2018 Peter Goodhall, 2M0SQL
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -71,6 +71,8 @@ SOFTWARE.
 * Graham (W5ISP)  [http://www.w5isp.com](http://w5isp.com)
 * Robert (M0VFC)  [http://github.com/rmc47](https://github.com/rmc47)
 * Corby (K0SKW)	  [http://www.k0skw.net/](http://www.k0skw.net/)
+
+## Third Party Interfaces
 
 ![Clublog Logo](http://www.clublog.org/images/clublog.png "Clublog Logo")
 
