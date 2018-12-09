@@ -1,8 +1,9 @@
 <!-- JS -->
 
 	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-
 	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+	<script type="text/javascript" src="<?php echo base_url() ;?>/js/jquery.jclock.js"></script>
+	<script type="text/javascript" src="<?php echo base_url() ;?>/js/radiohelpers.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 
@@ -17,11 +18,20 @@
 				'transitionOut'		: 'fade',
 				'type'				: 'iframe'
 			});
-		});
+
+      /* $(function($) {
+		      var options = {
+		        utc: true
+		      }
+		      $('.input_time').jclock(options);
+      }); */
+    }); 
 
 	</script>
 
 <div id="container">
+
+
 
 <?php if($notice) { ?>
 <div class="alert-message info">
@@ -38,7 +48,7 @@
 	<div class="row show-grid">
 	  <div class="span6">
 	 
-	  	<h2>Manual QSO</h2>
+	  	<h2>Add QSO</h2>
 		
 		<form id="qso_input" method="post" action="<?php echo site_url('qso/manual'); ?>" name="qsos">
 			<input type="hidden" id="dxcc_id" name="dxcc_id" value=""/>
@@ -48,7 +58,7 @@
 
 			<tr>
 				<td class="title">Date</td>
-				<td><input class="input_date" type="text" name="start_date" value="<?php echo date('d-m-Y'); ?>" size="10" /> <input class="input_time" type="text" name="start_time" value="<?php echo date('H:i'); ?>" size="7" /></td>
+        <td><input class="input_date" type="text" name="start_date" value="<?php echo date('d-m-Y'); ?>" size="10" /> <input class="input_time" type="text" name="start_time" value="<?php echo date('H:i'); ?>" size="7" /></td>
 			</tr>
 
 			<tr>
@@ -77,9 +87,13 @@
 				<option value="MSK144" <?php if($this->session->userdata('mode') == "MSK144") { echo "selected=\"selected\""; } ?>>MSK144</option>
 				<option value="JTMSK" <?php if($this->session->userdata('mode') == "JTMSK") { echo "selected=\"selected\""; } ?>>JTMSK</option>
 				<option value="QRA64" <?php if($this->session->userdata('mode') == "QRA64") { echo "selected=\"selected\""; } ?>>QRA64</option>
-				<option value="FT8" <?php if($this->session->userdata('mode') == "FT8") { echo "selected=\"selected\""; } ?>>FT8</option>
 				<option value="PKT" <?php if($this->session->userdata('mode') == "PKT") { echo "selected=\"selected\""; } ?>>PKT</option>
+				<option value="FT8" <?php if($this->session->userdata('mode') == "FT8") { echo "selected=\"selected\""; } ?>>FT8</option>
 				<option value="SSTV" <?php if($this->session->userdata('mode') == "SSTV") { echo "selected=\"selected\""; } ?>>SSTV</option>
+				<option value="HELL" <?php if($this->session->userdata('mode') == "HELL") { echo "selected=\"selected\""; } ?>>HELL</option>
+				<option value="HELL80" <?php if($this->session->userdata('mode') == "HELL80") { echo "selected=\"selected\""; } ?>>HELL80</option>
+				<option value="DSTAR" <?php if($this->session->userdata('mode') == "DSTAR") { echo "selected=\"selected\""; } ?>>DSTAR</option>
+				<option value="DIGITALVOICE" <?php if($this->session->userdata('mode') == "DIGITALVOICE") { echo "selected=\"selected\""; } ?>>DIGITALVOICE</option>
 				</select>
 
 				<span class="title">Band</span>
@@ -107,7 +121,7 @@
 
 			<tr>
 				<td class="title">RST (S)</td>
-				<td><input class="rst" name="rst_sent" type="text" size="3" value="59"> <span class="title">RST (R)</span> <input class="rst" name="rst_recv" type="text"  size="3"  value="59"></td>
+				<td><input id="rst_sent" class="rst" name="rst_sent" type="text" size="3" value="59"> <span class="title">RST (R)</span> <input id="rst_recv" class="rst" name="rst_recv" type="text"  size="3"  value="59"></td>
 			</tr>
 
 			<tr>
@@ -200,12 +214,12 @@
 				<table>
 					<tr>
 						<td>Sat Name</td>
-						<td><input id="sat_name" type="text" name="sat_name" value="<?php echo $this->session->userdata('sat_name'); ?>" /></td>
+						<td><input id="sat_name" type="text" name="sat_name" class="sat_name" value="<?php echo $this->session->userdata('sat_name'); ?>" /></td>
 					</tr>
 	
 					<tr>
 						<td>Sat Mode</td>
-						<td><input id="sat_mode" type="text" name="sat_mode" value="<?php echo $this->session->userdata('sat_mode'); ?>" /></td>
+						<td><input id="sat_mode" type="text" name="sat_mode" class="sat_mode" value="<?php echo $this->session->userdata('sat_mode'); ?>" /></td>
 					</tr>
 				</table>
 		  </div>
@@ -247,8 +261,7 @@
 
 		 	<table class="zebra-striped" width="100%">
 				<tr class="log_title titles">
-					<td>Date</td>
-					<td>Time</td>
+					<td>Date/Time</td>
 					<td>Call</td>
 					<td>Mode</td>
 					<td>Sent</td>
@@ -258,10 +271,8 @@
 
 				<?php $i = 0; 
 			 foreach ($query->result() as $row) { ?>
-
 					<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
-					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); ?></td>
-					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
+					<td><?php echo $row->COL_TIME_ON; ?></td>
 					<td><a class="qsobox" href="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>"><?php echo strtoupper($row->COL_CALL); ?></a></td>
 					<td><?php echo $row->COL_MODE; ?></td>
 					<td><?php echo $row->COL_RST_SENT; ?></td>
@@ -284,135 +295,73 @@
 
 
 <script type="text/javascript">
+
+	function delay(callback, ms) {
+		var timer = 0;
+		return function() {
+			var context = this, args = arguments;
+			clearTimeout(timer);
+			timer = setTimeout(function () {
+				callback.apply(context, args);
+			}, ms || 0);
+		};
+	}
+
 	i=0;
+  typeDelay=1000;
+
 	$(document).ready(function(){
 
 	// Set the focus input to the callsign field
 	$("#callsign").focus();
-
 	/* Javascript for controlling rig frequency. */
 
-	// Update frequency every second
-	setInterval(function() {
+	var updateFromCAT = function() {
 		if($('select.radios option:selected').val() != '0') {
 			// Get frequency
-			$.get('<?php echo site_url('radio/frequency');?>/' + $('select.radios option:selected').val(), function(result) {
-				$('#frequency').val(result);
-				
-				result = parseInt(result);
-				
-				if(result >= 14000000 && result <= 14400000) {
-					$(".band").val('20m');
-				}
-				else if(result >= 18000000 && result <= 19000000) {
-					$(".band").val('17m');
-				}
-				else if(result >= 1810000 && result <= 2000000) {
-					$(".band").val('160m');
-				}
-				else if(result >= 3000000 && result <= 4000000) {
-					$(".band").val('80m');
-				}
-				else if(result >= 5250000 && result <= 5450000) {
-					$(".band").val('60m');
-				}
-				else if(result >= 7000000 && result <= 7500000) {
-					$(".band").val('40m');
-				}
-				else if(result >= 10000000 && result <= 11000000) {
-					$(".band").val('30m');
-				}
-				else if(result >= 21000000 && result <= 21600000) {
-					$(".band").val('15m');
-				}
-				else if(result >= 24000000 && result <= 25000000) {
-					$(".band").val('12m');
-				}
-				else if(result >= 28000000 && result <= 30000000) {
-					$(".band").val('10m');
-				}
-				else if(result >= 50000000 && result <= 56000000) {
-					$(".band").val('6m');
-				}
-				else if(result >= 144000000 && result <= 148000000) {
-					$(".band").val('2m');
-				}
-				else if(result >= 430000000 && result <= 440000000) {
-					$(".band").val('70cm');
+			$.get('../radio/frequency/' + $('select.radios option:selected').val(), function(result) {
+
+				if(result == "0") {
+				} else {
+					$('#frequency').val(result);
+					$(".band").val(frequencyToBand(result));
 				}
 			});
 			
 			// Get Mode
-			$.get('<?php echo site_url('radio/mode');?>/' + $('select.radios option:selected').val(), function(result) {
+			$.get('../radio/mode/' + $('select.radios option:selected').val(), function(result) {
 				if (result == "LSB" || result == "USB" || result == "SSB") {
 					$(".mode").val('SSB');
 				} else {
 					$(".mode").val(result);	
 				}
 			});
-		}			
-	}, 1000);
 
+				// Get SAT_Name
+			$.get('../radio/satname/' + $('select.radios option:selected').val(), function(result) {
+				$(".sat_name").val(result);	
+			});
+
+				// Get SAT_Name
+			$.get('../radio/satmode/' + $('select.radios option:selected').val(), function(result) {
+				$(".sat_mode").val(result);	
+			});
+
+		}
+	};
+
+	// Update frequency every second
+	setInterval(updateFromCAT, 1000);
 
 	// If a radios selected from drop down select radio update.
-	$('.radios').change(function() {
-		if($('select.radios option:selected').val() != '0') {
-		// Get frequency
-			$.get('<?php echo site_url('radio/frequency');?>/' + $('select.radios option:selected').val(), function(result) {
-				$('#frequency').val(result);
-				result = parseInt(result);
-				
-				if(result >= 14000000 && result <= 14400000) {
-					$(".band").val('20m');
-				}
-				else if(result >= 18000000 && result <= 19000000) {
-					$(".band").val('17m');
-				}
-				else if(result >= 1810000 && result <= 2000000) {
-					$(".band").val('160m');
-				}
-				else if(result >= 3000000 && result <= 4000000) {
-					$(".band").val('80m');
-				}
-				else if(result >= 5250000 && result <= 5450000) {
-					$(".band").val('60m');
-				}
-				else if(result >= 7000000 && result <= 7500000) {
-					$(".band").val('40m');
-				}
-				else if(result >= 10000000 && result <= 11000000) {
-					$(".band").val('30m');
-				}
-				else if(result >= 21000000 && result <= 21600000) {
-					$(".band").val('15m');
-				}
-				else if(result >= 24000000 && result <= 25000000) {
-					$(".band").val('12m');
-				}
-				else if(result >= 28000000 && result <= 30000000) {
-					$(".band").val('10m');
-				}
-				else if(result >= 50000000 && result <= 56000000) {
-					$(".band").val('6m');
-				}
-				else if(result >= 144000000 && result <= 148000000) {
-					$(".band").val('2m');
-				}
-				else if(result >= 430000000 && result <= 440000000) {
-					$(".band").val('70cm');
-				}
-			});	
-			
-			// Get Mode
-			$.get('<?php echo site_url('radio/mode');?>/' + $('select.radios option:selected').val(), function(result) {
-				if (result == "LSB" || result == "USB" || result == "SSB") {
-					$(".mode").val('SSB');
-				} else {
-					$(".mode").val(result);	
-				}
-			});	
-	
-		}
+	$('.radios').change(updateFromCAT);
+
+	// If radio isn't SatPC32 clear sat_name and sat_mode
+	$( ".radios" ).change(function() {
+	  	if ($("#yourdropdownid option:selected").text() != "SatPC32") {
+	  		$(".sat_name").val("");	
+	  		$(".sat_mode").val("");	
+	  	}
 	});
 
 		/* On Page Load */
@@ -454,21 +403,21 @@
 		  $(window).bind('beforeunload', catcher);
 		});
 		
-		$.get('<?php echo site_url('qso/band_to_freq'); ?>/' + $('.band').val() + '/' + $('.mode').val(), function(result) {
+		$.get('../qso/band_to_freq/' + $('.band').val() + '/' + $('.mode').val(), function(result) {
 						$('#frequency').val(result);
 		});	
 	
 		/* Calculate Frequency */
 			/* on band change */
 			$('.band').change(function() {
-				$.get('<?php echo site_url('qso/band_to_freq'); ?>/' + $(this).val() + '/' + $('.mode').val(), function(result) {
+				$.get('../qso/band_to_freq/' + $(this).val() + '/' + $('.mode').val(), function(result) {
 						$('#frequency').val(result);
 					});	
 			});
 			
 			/* on mode change */
 			$('.mode').change(function() {
-				$.get('<?php echo site_url('qso/band_to_freq'); ?>/' + $('.band').val() + '/' + $('.mode').val(), function(result) {
+				$.get('../qso/band_to_freq/' + $('.band').val() + '/' + $('.mode').val(), function(result) {
 						$('#frequency').val(result);
 					});	
 			});
@@ -476,50 +425,85 @@
 		/* On Key up Calculate Bearing and Distance */
 		$("#locator").keyup(function(){
 			if ($(this).val()) {
-				$('#locator_info').load("<?php echo site_url('logbook/bearing'); ?>/" + $(this).val()).fadeIn("slow");
+				$('#locator_info').load("../logbook/bearing/" + $(this).val()).fadeIn("slow");
 			}
 		});
 	
 		/* On Callsign Change */
-		$("#callsign").focusout(function(){
+		$("#callsign").keyup(delay(function(){
 			if ($(this).val()) {
-				/* Find Callsign Matches */
-				$('#partial_view').load("<?php echo site_url('logbook/partial'); ?>/" + $(this).val()).fadeIn("slow");
-	
 				/* Find and populate DXCC */
-				$.get('<?php echo site_url('logbook/find_dxcc'); ?>/' + $(this).val(), function(result) {
+				$.get('../logbook/find_dxcc/' + $(this).val(), function(result) {
 					//$('#country').val(result);
 					obj = JSON.parse(result);
 					$('#country').val(convert_case(obj.Name));
 					$('#dxcc_id').val(obj.DXCC);
 					$('#cqz').val(obj.CQZ);
+
 				});
 	
 				/* Find Locator if the field is empty */
 				if($('#locator').val() == "") {
-					$.get('<?php echo site_url('logbook/callsign_qra'); ?>/' + $(this).val(), function(result) {
+					$.get('../logbook/callsign_qra/' + $(this).val(), function(result) {
 						$('#locator').val(result);
-						$('#locator_info').load("<?php echo site_url('logbook/bearing'); ?>/" + result).fadeIn("slow");
+						$('#locator_info').load("../logbook/bearing/" + result).fadeIn("slow");
 					});
 
 				}
 	
 				/* Find Operators Name */
 				if($('#name').val() == "") {
-					$.get('<?php echo site_url('logbook/callsign_name'); ?>/' + $(this).val(), function(result) {
+					$.get('../logbook/callsign_name/' + $(this).val(), function(result) {
 						$('#name').val(result);
 					});
 				}
 
 				if($('#qth').val() == "") {
-					$.get('<?php echo site_url('logbook/callsign_qth'); ?>/' + $(this).val(), function(result) {
+					$.get('../logbook/callsign_qth/' + $(this).val(), function(result) {
 						$('#qth').val(result);
 					});
 				}
+		
+				if($('#qth').val() == "") {
+					$.get('../logbook/callsign_iota/' + $(this).val(), function(result) {
+						$('#iota_ref').val(result);
+					});
+				}
 
+				/* Find Callsign Matches */
+				$('#partial_view').load("../logbook/partial/" + $(this).val()).fadeIn("slow");
+	
+			} else {
+				/* Reset fields ... */
+				$('#country').val("");
+				$('#dxcc_id').val("");
+				$('#cqz').val("");
+				$('#name').val("");
+				$('#qth').val("");
+				$('#iota_ref').val("");
+				$('#partial_view').load("../logbook/partial/");
 			}
+		}, typeDelay));
+		
+		
+		// Change report based on mode
+		$('.mode').change(function(){
+		  if($(this).val() == 'JT65' || $(this).val() == 'JT65B' || $(this).val() == 'JT6C' || $(this).val() == 'JTMS' || $(this).val() == 'ISCAT' || $(this).val() == 'MSK144' || $(this).val() == 'JTMSK' || $(this).val() == 'QRA64'){
+			$('#rst_sent').val('-5');
+			$('#rst_recv').val('-5');
+		  } else if ($(this).val() == 'FSK441' || $(this).val() == 'JT6M') {
+		  	$('#rst_sent').val('26');
+			$('#rst_recv').val('26');
+		  } else if ($(this).val() == 'CW') {
+		  	$('#rst_sent').val('599');
+			$('#rst_recv').val('599');
+		  } else {
+		  	$('#rst_sent').val('59');
+			$('#rst_recv').val('59');
+		  }
 		});
 	});
+
 
 	function convert_case(str) {
 	  var lower = str.toLowerCase();
@@ -527,4 +511,6 @@
 	    return x.toUpperCase();
 	  });
 	}
+
+
 </script>

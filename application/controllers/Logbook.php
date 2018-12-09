@@ -245,7 +245,7 @@ class Logbook extends CI_Controller {
     }
   }
 
-  function partial($id) {
+  function partial($id="") {
     $this->load->model('user_model');
         if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
@@ -256,21 +256,26 @@ class Logbook extends CI_Controller {
 
     if ($query->num_rows() > 0)
     {
-      echo "<h2>QSOs Matches with ".strtoupper($id)."</h2>";
-      echo "<table class=\"partial\" width=\"100%\">";
-        echo "<tr>";
-          echo "<td>Date</td>";
-          echo "<td>Callsign</td>";
-          echo "<td>RST Sent</td>";
-          echo "<td>RST Recv</td>";
-          echo "<td>Band</td>";
+      if ( ! $id ) {
+        echo "<h2>Last 16 QSOs</h2>";
+      } else {
+        echo "<h2>Partial matches for " . strtoupper($id) . "</h2>";
+      }
+      echo "<table class=\"zebra-striped\" width=\"100%\">";
+        echo "<tr class=\"log_title titles\">";
+          echo "<td>Date/Time</td>";
+          echo "<td>Call</td>";
           echo "<td>Mode</td>";
+          echo "<td>Sent</td>";
+          echo "<td>Recv</td>";
+          echo "<td>Band</td>";
         echo "</tr>";
       foreach ($query->result() as $row)
       {
-        echo "<tr>";
+        echo "<tr class=\"tr\">";
           echo "<td>".$row->COL_TIME_ON."</td>";
           echo "<td>".$row->COL_CALL."</td>";
+          echo "<td>".$row->COL_MODE."</td>";
           echo "<td>".$row->COL_RST_SENT."</td>";
           echo "<td>".$row->COL_RST_RCVD."</td>";
           if($row->COL_SAT_NAME != null) {
@@ -278,7 +283,6 @@ class Logbook extends CI_Controller {
           } else {
                 echo "<td>".$row->COL_BAND."</td>";
           }
-          echo "<td>".$row->COL_MODE."</td>";
         echo "</tr>";
       }
       echo "</table>";
