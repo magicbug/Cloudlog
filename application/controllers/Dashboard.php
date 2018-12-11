@@ -78,48 +78,34 @@ class Dashboard extends CI_Controller {
 		$mon = date('Y-m-d', $raw);
 		$sun = date('Y-m-d', strtotime('Sunday this week'));
 
-		$qsos = $this->logbook_model->map_week_qsos($mon, $sun);
+//		$qsos = $this->logbook_model->map_week_qsos($mon, $sun);
+//		$qsos = $this->logbook_model->map_all_qsos();
+
+		$qsos = $this->logbook_model->map_all_countries();
 
 		echo "{\"markers\": [";
 		$count = 1;
 		foreach ($qsos->result() as $row) {
 			//print_r($row);
-			if($row->COL_GRIDSQUARE != null) {
-				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
-				if($count != 1) {
-					echo ",";
-				}
 
-				if($row->COL_SAT_NAME != null) { 
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
-				} else {
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
-				}
-
-				$count++;
-
-			} else {
-				$query = $this->db->query('
-					SELECT *
-					FROM dxcc
-					WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
-					ORDER BY LENGTH( prefix ) DESC
-					LIMIT 1 
-				');
-
-				foreach ($query->result() as $dxcc) {
-					if($count != 1) {
-					echo ",";
-						}
-					echo "{\"lat\":\"".$dxcc->lat."\",\"lng\":\"".$dxcc->long."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
-					$count++;
-				}
+			if($count != 1) {
+			  echo ",";
 			}
+
+      echo '{"lat":"'   . $row->dxcc_lat . '",' . 
+            '"lng":"'   . $row->dxcc_long . '",' .
+            '"label":"' . $row->dxcc_name . '",' .
+            '"html":"' .
+              '<b>DXCC Entity ID: </b>'        . $row->dxcc_entity_id . '<br>' .
+              '<b>First worked: </b>'      . date('D j M Y', strtotime($row->dxcc_first_date)) . '<br>' .
+              '<b>eQSL: </b>'              . ($row->dxcc_eqsl_cfm ? "Confirmed" : "") . '<br>' .
+              '<b>LoTW: </b>'              . ($row->dxcc_lotw_cfm ? "Confirmed" : "") . 
+      '"}';
+			$count++;
 
 		}
 		echo "]";
 		echo "}";
-
 	}
 	
 	

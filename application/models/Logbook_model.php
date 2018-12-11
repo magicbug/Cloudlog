@@ -376,6 +376,33 @@ class Logbook_model extends CI_Model {
         return $query;
     }
 
+    /* Return a result for each country worked */
+    function map_all_countries() {
+      $query = $this->db->query('SELECT DISTINCT a.COL_DXCC as dxcc_entity_id, 
+                                                 a.COL_COUNTRY as dxcc_name, 
+                                                 MIN(a.COL_TIME_ON) as dxcc_first_date,
+                                                 b.lat as dxcc_lat, 
+                                                 b.long as dxcc_long,
+                                                 MIN(a.COL_EQSL_QSLRDATE) as dxcc_eqsl_cfm,
+                                                 MIN(a.COL_LOTW_QSLRDATE) as dxcc_lotw_cfm
+                                 FROM            TABLE_HRD_CONTACTS_V01 a, 
+                                                 dxcc_entities b
+                                 WHERE           a.COL_DXCC = b.adif
+                                 GROUP BY    1
+                                 ORDER BY        2');
+
+      return $query;
+    }
+
+
+    /* Just map everything! */
+    function map_all_qsos() {
+        $this->db->order_by("COL_TIME_ON", "ASC");
+        $query = $this->db->get($this->config->item('table_name'));
+
+        return $query;
+    }
+
     /* Returns QSOs for the date sent eg 2011-09-30 */
     function map_day($date) {
 
