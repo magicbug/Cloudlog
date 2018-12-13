@@ -1,29 +1,63 @@
-
-
 var map;
 var ajaxRequest;
 var plotlist;
 var plotlayers=[];
 
 function initmap() {
-    // set up AJAX request
-    ajaxRequest=getXmlHttpObject();
-    if (ajaxRequest==null) {
-        alert ("This browser does not support HTTP Request");
-        return;
-    }
+  // set up AJAX request
+  ajaxRequest=getXmlHttpObject();
+  if (ajaxRequest==null) {
+    alert ("This browser does not support HTTP Request");
+    return;
+  }
     
-    // set up the map
-    map = new L.Map('map');
+  // create the tile layer with correct attribution
 
-    // create the tile layer with correct attribution
-    var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});        
+  var osmUrl            = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  var osmAttrib         = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
-    // start the map in South-East England
-    map.setView(new L.LatLng(q_lat, q_lng), q_zoom);
-    map.addLayer(osm);
+  var osmBWUrl          = 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png';
+  var osmBWAttrib       = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+
+  var esriImageryUrl    = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+  var esriImageryAttrib = 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+
+  var osm = new L.tileLayer(osmUrl, {
+    name: "osm",
+    minZoom: 1, 
+    maxZoom: 9, 
+    attribution: osmAttrib
+  });        
+    
+  var osmBW = new L.tileLayer(osmBWUrl, {
+    name: "osmBW",
+    minZoom: 1, 
+    maxZoom: 9, 
+    attribution: osmBWAttrib
+  });        
+
+  var esriImagery = new L.tileLayer(esriImageryUrl, {
+    name: "esriImagery",
+    minZoom: 1, 
+    maxZoom: 9, 
+    attribution: esriImageryAttrib
+  });        
+
+  // start the map in South-East England
+  map = new L.map('map', {
+    center: [q_lat, q_lng],
+    zoom: q_zoom,
+    fullscreenControl: true,
+    layers: [osm]
+  });
+
+  var baseMaps= {
+    "Colour": osm,
+    "Grayscale": osmBW,
+    "Satellite": esriImagery
+  };
+
+  L.control.layers(baseMaps).addTo(map);
 
 	askForPlots();
 	map.on('moveend', onMapMove);
