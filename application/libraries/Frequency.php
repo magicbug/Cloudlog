@@ -1,6 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Frequency {
 
+  const modes = array('SSB','FM','AM','CW','DSTAR','F4M','DMR','DIGITALVOICE',
+                   'PSK31','PSK63','RTTY',
+                   'JT65','JT65B','JT6C','JT9-1','JT9','FT8',
+                   'FSK441','JTMS','ISCAT','MSK144','JTMSK',
+                   'QRA64','PKT','SSTV','HELL','HELL80');
+
   public $defaultFrequencies = array(
 	'160m'=>array(
 	  	'SSB'=>"1900000",
@@ -75,17 +81,34 @@ class Frequency {
   		'DATA'=>"1022500000",
   		'CW'=>"1022500000")
 		);
+
 	/* Class to convert band and mode into a frequnecy in a format based on the specifications of the database table */
 	public function convent_band($band, $mode='SSB')
 	{
-	    if($mode == "PSK31" || $mode == "PSK63" || $mode == "RTTY" || $mode == "JT65"){
-  		$mode= "DATA";
+	    // Modes for which we've set a frequency
+        $known_modes = array('SSB', 'DATA', 'CW');
+        
+		// Data modes that are being treated as 'DATA' for frequency lookup
+        $data_modes = array('PSK31','PSK63','RTTY',
+                            'JT65','JT65B','JT6C','JT9-1','JT9','FT8',
+                            'FSK441','JTMS','ISCAT','MSK144','JTMSK',
+                            'QRA64','PKT','SSTV','HELL','HELL80');
+        
+        // Use 'DATA' for any of the data modes
+	    if(in_array($mode, $data_modes)){
+     		$mode= "DATA";
 	    }
 
-			return $this->defaultFrequencies[$band][$mode];
+	    // If the mode isn't listed, default to SSB frequency
+	    if (!in_array($mode, $known_modes)){
+	        $mode = 'SSB';
+	    }
 
-}
-public function GetBand($Frequency) {
+		return $this->defaultFrequencies[$band][$mode];
+
+	}
+
+	public function GetBand($Frequency) {
 		$Band = NULL;
 		if ($Frequency > 1000000 && $Frequency < 2000000) {
 			$Band = "160m";
