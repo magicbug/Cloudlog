@@ -132,8 +132,12 @@ class Lotw extends CI_Controller {
 			//TODO: Option to specifiy whether we download location data from LoTW or not
 			//$lotw_url .= "&qso_qsldetail=\"yes\";
 
-			$lotw_url .= "&qso_qslsince=";
-			$lotw_url .= "$lotw_last_qsl_date";
+      /*
+       * TODO: (G0WFV) commented this out as it's causing a crash (needs investigation)
+       *
+       * $lotw_url .= "&qso_qslsince=";
+       * $lotw_url .= "$lotw_last_qsl_date";
+       */
 
 			// Only pull back entries that belong to this callsign
 			$lotw_call = $this->session->userdata('user_callsign');
