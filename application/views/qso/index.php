@@ -312,8 +312,9 @@
 
   // Set the focus input to the callsign field
   $("#callsign").focus();
-  /* Javascript for controlling rig frequency. */
 
+  /* Javascript for controlling rig frequency. */
+<?php if ( $_GET['manual'] == 0 ) { ?>
   var updateFromCAT = function() {
     if($('select.radios option:selected').val() != '0') {
       // Get frequency
@@ -361,6 +362,8 @@
         $(".sat_mode").val("");  
       }
   });
+
+<?php } ?>
 
     /* On Page Load */
     var catcher = function() {
