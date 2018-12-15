@@ -164,6 +164,12 @@ class Logbook_model extends CI_Model {
         $data['COL_EQSL_QSL_RCVD'] = 'N';
     }
 
+    // if LoTW username set, default SENT & RCVD to 'N' else leave as null
+    if ($this->session->userdata('user_lotw_name')){
+        $data['COL_LOTW_QSL_SENT'] = 'N';
+        $data['COL_LOTW_QSL_RCVD'] = 'N';
+    }
+
     $this->add_qso($data);
   }
 
