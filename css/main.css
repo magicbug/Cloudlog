@@ -22,7 +22,7 @@ table .title { font-weight: bold; color: #439BF6; }
 /* Add QSO CSS */
 .rst { width: 50px !important; }
 .input_date { width: 70px !important; }
-.input_time { width: 55px !important; }
+.input_time { width: 32px !important; }
 .band { width: 80px; }
 .mode { width: 80px; }
 #callsign { text-transform: uppercase; }
