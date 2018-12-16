@@ -481,6 +481,7 @@
         $('#cqz').val("");
         $('#name').val("");
         $('#qth').val("");
+        $('#locator').val("");
         $('#iota_ref').val("");
         $('#partial_view').load("logbook/partial/");
       }
