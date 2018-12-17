@@ -2,6 +2,12 @@
 
 class API extends CI_Controller {
 
+	// Do absolutely nothing
+	function index()
+	{
+	}
+
+
 	/*
 		TODOs
 		- Search Callsign (Return Json)
@@ -32,22 +38,6 @@ class API extends CI_Controller {
 
 		//echo json_encode($results);
 
-	}
-
-	// Do absolutely nothing
-	function index()
-	{
-		header("Location: ".$this->config->item('base_url'));
-		//load the model and get results
-		/*
-		$this->load->model('logbook_model');
-		$data['data'] = array();
-
-		// load the view
-		//$this->load->view('layout/header');
-		$this->load->view('api/index', $data);
-		//$this->load->view('layout/footer');
-		*/
 	}
 
 	function help()
@@ -376,23 +366,5 @@ class API extends CI_Controller {
 
 		echo json_encode($arr);
 
-	}
-
-	function cat_status () {
-		header('Content-type: application/json');
-
-		$this->load->model('cat');
-
-		// Decode JSON and store
-		$obj = json_decode(file_get_contents("php://input"), true);
-
-		// Store Result to Database
-		$this->cat->cat_status($obj);
-
-		// Return Message
-
-		$arr = array('status' => 'success');
-
-		echo json_encode($arr);
 	}
 }

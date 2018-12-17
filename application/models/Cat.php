@@ -74,38 +74,6 @@
 			}
 		}
 		
-		
-		function cat_status($result) {
-		
-			$this->db->where('profile_name', $result['profile_name']); 
-			$query = $this->db->get('cat');
-			
-			if ($query->num_rows() > 0)
-			{
-				// Update the record
-				foreach ($query->result() as $row)
-				{
-					$radio_id = $row->id;
-					
-					$data = array(
-					   'profile_name' => $result['profile_name'],
-					   'profile_url' => $result['profile_url']
-					);
-
-					$this->db->where('id', $radio_id);
-					$this->db->update('cat', $data); 
-				}
-			} else {
-				// Add a new record
-				$data = array(
-					'profile_name' => $result['profile_name'],
-					'profile_url' => $result['profile_url']
-				);
-
-				$this->db->insert('cat', $data); 
-
-			}
-		}
 	
 		function status() {
 			//$this->db->where('radio', $result['radio']); 
