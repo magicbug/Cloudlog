@@ -20,17 +20,21 @@ More information can be found in the [wiki](https://github.com/magicbug/Cloudlog
 
 ## CAT Control
 
-Its possible to interact with your radio if you have a K3, FT-950 or a ICOM radio using a nice application that Rob (M0VFC) has put together called [CloudlogCAT](https://github.com/rmc47/CloudlogCAT). The application is still in active development and lots of new features are due.
+Cloudlog supports pushing radio information just like you would with a desktop operating system this is via a desktop app called [CloudlogCAT](https://github.com/magicbug/CloudlogCAT/releases) this application uses Omni-Rig thus supports most of the radios on the market.
+
+If you use Linux, Mac, just hate Omni-Rig then Tobias (DL4TMA) has made a script called [cloudlog-rigctl-interface](https://github.com/rmc47/CloudlogCAT) this interfaces rigctl to Cloudlogs CAT API. 
 
 ## SatPC32 Interface
 
 If your into satellite operations I have written a application [SatPC32 to Cloud Interface](https://github.com/magicbug/SatPC32-To-Cloudlog) which allows automatic population of satellite fields, Cloudlog just sees this as another radio interface.
 
-Code for this is BETA feel free to make modifications and do PRs.
-
 ## QSL Card Labels
 
 I've started building out some scripts to generate labels for sticking on QSL Cards, at the moment it supports 24 label sheets, but theres no reason for it not to support more, these can be found at [Cloudlog-Labels](https://github.com/magicbug/cloudlog-labels)
+
+## Want Cloudlog Hosting?
+
+If you would prefer not to setup Cloudlog yourself [magicbug](https://magicbug.co.uk) offer hosted solutions, this is priced at £3 a month at the moment and they take care of keeping it updated.
 
 ## Contributing
 
@@ -71,6 +75,9 @@ SOFTWARE.
 * Graham (W5ISP)  [http://www.w5isp.com](http://w5isp.com)
 * Robert (M0VFC)  [http://github.com/rmc47](https://github.com/rmc47)
 * Corby (K0SKW)	  [http://www.k0skw.net/](http://www.k0skw.net/)
+* Andy (GI0VGV)
+* Tobias (DL4TMA)
+* Tony (G0WFV)
 
 ## Third Party Interfaces
 
