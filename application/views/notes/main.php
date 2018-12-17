@@ -18,7 +18,7 @@
 				}
 				echo "</ul>";
 			} else {
-				echo "<p>You don’t currently have any notes, these are a fantastic way of storing data like ATU settings, beacons and general station notes and its better than paper as you can’t lose them!</p>";
+				echo "<p>You don't currently have any notes, these are a fantastic way of storing data like ATU settings, beacons and general station notes and its better than paper as you can't lose them!</p>";
 			}
 
 		?>
