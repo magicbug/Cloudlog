@@ -22,7 +22,7 @@ More information can be found in the [wiki](https://github.com/magicbug/Cloudlog
 
 Cloudlog supports pushing radio information just like you would with a desktop operating system this is via a desktop app called [CloudlogCAT](https://github.com/magicbug/CloudlogCAT/releases) this application uses Omni-Rig thus supports most of the radios on the market.
 
-If you use Linux, Mac, just hate Omni-Rig then Tobias (DL4TMA) has made a script called [cloudlog-rigctl-interface](https://github.com/rmc47/CloudlogCAT) this interfaces rigctl to Cloudlogs CAT API. 
+If you use Linux, Mac, just hate Omni-Rig then Tobias (DL4TMA) has made a script called [cloudlog-rigctl-interface](https://github.com/Manawyrm/cloudlog-rigctl-interface) this interfaces rigctl to Cloudlogs CAT API. 
 
 ## SatPC32 Interface
 
@@ -76,7 +76,7 @@ SOFTWARE.
 * Robert (M0VFC)  [http://github.com/rmc47](https://github.com/rmc47)
 * Corby (K0SKW)	  [http://www.k0skw.net/](http://www.k0skw.net/)
 * Andy (GI0VGV)
-* Tobias (DL4TMA)
+* Tobias (DL4TMA) [https://tbspace.de/](https://tbspace.de/)
 * Tony (G0WFV)
 
 ## Third Party Interfaces
