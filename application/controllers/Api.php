@@ -351,6 +351,8 @@ class API extends CI_Controller {
 	function radio() {
 		header('Content-type: application/json');
 
+		$this->load->model('api_model');
+
 		//$json = '{"radio":"FT-950","frequency":14075,"mode":"SSB","timestamp":"2012/04/07 16:47"}';
 
 		$this->load->model('cat');
@@ -359,6 +361,11 @@ class API extends CI_Controller {
 
 		// Decode JSON and store
 		$obj = json_decode(file_get_contents("php://input"), true);
+
+		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
+		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
+		   die();
+		}
 
 		// Store Result to Database
 		$this->cat->update($obj);
