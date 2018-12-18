@@ -45,7 +45,7 @@
 
 				if($row->mode != "non") {
 					echo "<td>".$row->mode."</td>";
-				} else{
+				} else {
 					echo "<td>".$row->uplink_mode."</td>";
 				}
 				$phpdate = strtotime($row->timestamp);
