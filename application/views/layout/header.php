@@ -49,9 +49,9 @@
 			<li class="dropdown" data-dropdown="dropdown" >
 				<a href="#" class="dropdown-toggle">QSOs</a>
 				<ul class="dropdown-menu">
-				 <li><a href="<?php echo site_url('qso');?>" title="qso">Live QSOs</a></li>
+				 <li><a href="<?php echo site_url('qso?manual=0');?>" title="Live QSOs">Live QSOs</a></li>
 				  <li class="divider"></li>
-				  <li><a href="<?php echo site_url('qso/manual');?>" title="Notes">Post QSOs</a></li>
+				  <li><a href="<?php echo site_url('qso?manual=1');?>" title="Post QSOs">Post QSOs</a></li>
 			</ul>
 
 			<?php } ?>

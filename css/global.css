@@ -69,7 +69,7 @@ td.item { padding-bottom: 5px; }
 .title { padding-top: 5px; padding-bottom: 5px; color: #0073EA; font-weight: bold; }
 #qso_input { border: 1px solid #dddddd; margin: 5px; padding: 2px; }
 .input_date { width: 70px; }
-.input_time { width: 54px; }
+.input_time { width: 32px; }
 #locator { width: 55px; text-transform: uppercase; }
 #country { border: none; }
 #locator_info { font-size: 13px; }

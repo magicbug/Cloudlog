@@ -1,4 +1,4 @@
-	<table width="100%">
+	<table class="zebra-striped" width="100%">
 		<tr class="titles">
 			<td>Date</td>
 			<td>Time</td>
