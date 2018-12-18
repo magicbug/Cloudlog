@@ -37,9 +37,19 @@
 			{
 				echo "<tr>";
 				echo "<td>".$row->radio."</td>";
-				echo "<td>".$row->frequency."</td>";
-				echo "<td>".$row->mode."</td>";
-				echo "<td>".$row->timestamp."</td>" ;
+				if($row->frequency != "0") {
+					echo "<td>".$row->frequency."</td>";
+				} else {
+					echo "<td>".$row->downlink_freq." / ".$row->uplink_freq."</td>";
+				}
+
+				if($row->mode != "non") {
+					echo "<td>".$row->mode."</td>";
+				} else{
+					echo "<td>".$row->uplink_mode."</td>";
+				}
+				$phpdate = strtotime($row->timestamp);
+				echo "<td>".date('H:i:s d-m-y', $phpdate)."</td>" ;
 				echo "<td><a href=\"".site_url('radio/delete')."/".$row->id."\" ><img src=\"".base_url()."/images/delete.png\" width=\"16\" height=\"16\" alt=\"Delete\" /></a></td>" ;
 				echo "</tr>";
 			}
