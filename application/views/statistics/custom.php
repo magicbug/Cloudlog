@@ -30,12 +30,12 @@
 				<table>
 					<tr>
 						<td>Start</td>
-						<td><input type="text" id="start_date" name="start_date" value="" /></td>
+						<td><input type="text" id="start_date" name="start_date" value="" autocomplete="off"/></td>
 					</tr>
 					
 					<tr>
 						<td>End</td>
-						<td><input type="text" id="end_date" name="end_date" value="" /></td>
+						<td><input type="text" id="end_date" name="end_date" value="" autocomplete="off"/></td>
 					</tr>
 				</table>
 			</div>
