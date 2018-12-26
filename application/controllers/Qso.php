@@ -63,8 +63,8 @@ class QSO extends CI_Controller {
 
       $this->session->set_userdata($qso_data);
 			
-			// Get last Ten QSOs
-			$data['query'] = $this->logbook_model->last_ten();
+			// Get last 16 qsos
+			$data['query'] = $this->logbook_model->last_custom('16');
 			 
 			// Set Any Notice Messages
 			$data['notice'] = "QSO Added";
