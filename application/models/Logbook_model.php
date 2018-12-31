@@ -44,7 +44,6 @@ class Logbook_model extends CI_Model {
       'COL_COMMENT' => $this->input->post('comment'),
       'COL_SAT_NAME' => strtoupper($this->input->post('sat_name')),
       'COL_SAT_MODE' => strtoupper($this->input->post('sat_mode')),
-      'COL_GRIDSQUARE' => strtoupper(trim($this->input->post('locator'))),
       'COL_COUNTRY' => $this->input->post('country'),
       'COL_MY_RIG' => $this->input->post('equipment'),
       'COL_QSLSDATE' => date('Y-m-d'),
@@ -83,6 +82,13 @@ class Logbook_model extends CI_Model {
       'COL_CQZ' => $this->input->post('cqz'),
     );
 
+    if (strpos(trim($this->input->post('locator')), ',') !== false) {
+      $data['COL_VUCC_GRIDS'] = strtoupper(trim($this->input->post('locator')));
+    } else {
+      $data['COL_GRIDSQUARE'] = strtoupper(trim($this->input->post('locator')));
+    }
+
+
     $this->add_qso($data);
   }
 
@@ -106,6 +112,7 @@ class Logbook_model extends CI_Model {
         $locator = $this->config->item('locator');
     }
 
+
     // Create array with QSO Data
     $data = array(
             'COL_TIME_ON' => $datetime,
@@ -120,7 +127,6 @@ class Logbook_model extends CI_Model {
             'COL_COMMENT' => $this->input->post('comment'),
             'COL_SAT_NAME' => strtoupper($this->input->post('sat_name')),
             'COL_SAT_MODE' => strtoupper($this->input->post('sat_mode')),
-            'COL_GRIDSQUARE' => strtoupper(trim($this->input->post('locator'))),
             'COL_COUNTRY' => $this->input->post('country'),
             'COL_MY_RIG' => $this->input->post('equipment'),
             'COL_QSLSDATE' => date('Y-m-d'),
@@ -158,6 +164,12 @@ class Logbook_model extends CI_Model {
             'COL_CQZ' => $this->input->post('cqz'),
     );
 
+    if (strpos(trim($this->input->post('locator')), ',') !== false) {
+      $data['COL_VUCC_GRIDS'] = strtoupper(trim($this->input->post('locator')));
+    } else {
+      $data['COL_GRIDSQUARE'] = strtoupper(trim($this->input->post('locator')));
+    }
+
     // if eQSL username set, default SENT & RCVD to 'N' else leave as null
     if ($this->session->userdata('user_eqsl_name')){
         $data['COL_EQSL_QSL_SENT'] = 'N';
@@ -191,6 +203,7 @@ class Logbook_model extends CI_Model {
        'COL_RST_RCVD' => $this->input->post('rst_recv'),
        'COL_RST_SENT' => $this->input->post('rst_sent'),
        'COL_GRIDSQUARE' => strtoupper(trim($this->input->post('locator'))),
+       'COL_VUCC_GRIDS' => strtoupper(trim($this->input->post('vucc_grids'))),
        'COL_COMMENT' => $this->input->post('comment'),
        'COL_NAME' => $this->input->post('name'),
        'COL_COUNTRY' => $this->input->post('country'),
