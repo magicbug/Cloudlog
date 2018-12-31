@@ -75,6 +75,14 @@ margin: 10px 0;
 					<td><?php echo $row->COL_GRIDSQUARE; ?></td>
 				</tr>
 				<?php } ?>
+
+				<?php if($row->COL_VUCC_GRIDS != null) { ?>
+				<tr>
+					<td>QRA</td>
+					<td><?php echo $row->COL_VUCC_GRIDS; ?></td>
+				</tr>
+				<?php } ?>
+				
 				
 				<?php if($row->COL_NAME != null) { ?>
 				<tr>
