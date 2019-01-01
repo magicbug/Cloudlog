@@ -192,6 +192,17 @@
       <div id="station">
         <table>
           <tr>
+            <td>Station Profile</td>
+            <td>
+              <select class="station_profile" name="station_profile">
+              <option value="0" selected="selected">None</option>
+              <?php foreach ($stations->result() as $stationrow) { ?>
+              <option value="<?php echo $stationrow->station_id; ?>" <?php if($this->session->userdata('station_profile_id') == $stationrow->station_id) { echo "selected=\"selected\""; } ?>><?php echo $stationrow->station_profile_name; ?></option>
+              <?php } ?>
+              </select>
+            </td>
+          </tr>
+          <tr>
             <td>Radio</td>
             <td>
               <select class="radios" name="radio">

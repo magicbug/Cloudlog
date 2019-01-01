@@ -112,7 +112,6 @@ class Logbook_model extends CI_Model {
         $locator = $this->config->item('locator');
     }
 
-
     // Create array with QSO Data
     $data = array(
             'COL_TIME_ON' => $datetime,
@@ -164,6 +163,29 @@ class Logbook_model extends CI_Model {
             'COL_CQZ' => $this->input->post('cqz'),
     );
 
+    // If station profile has been provided fill in the fields
+    if($this->input->post('station_profile') != "0") {
+      $station = $this->check_station($this->input->post('station_profile'));
+
+      if (strpos(trim($station['station_gridsquare']), ',') !== false) {
+        $data['COL_MY_VUCC_GRIDS'] = strtoupper(trim($station['station_gridsquare']));
+      } else {
+        $data['COL_MY_GRIDSQUARE'] = strtoupper(trim($station['station_gridsquare']));
+      }
+
+      $data['COL_MY_CITY'] = strtoupper(trim($station['station_city']));
+      $data['COL_MY_IOTA'] = strtoupper(trim($station['station_iota']));
+      $data['COL_MY_SOTA_REF'] = strtoupper(trim($station['station_sota']));
+      
+      $data['COL_STATION_CALLSIGN'] = strtoupper(trim($station['station_callsign']));
+      $data['COL_MY_DXCC'] = strtoupper(trim($station['station_dxcc']));
+      $data['COL_MY_COUNTRY'] = strtoupper(trim($station['station_country']));
+      $data['COL_MY_CNTY'] = strtoupper(trim($station['station_cnty']));
+      $data['COL_MY_CQ_ZONE'] = strtoupper(trim($station['station_cq']));
+      $data['COL_MY_ITU_ZONE'] = strtoupper(trim($station['station_itu']));
+    }
+
+    // Decide whether its single gridsquare or a multi which makes it vucc_grids
     if (strpos(trim($this->input->post('locator')), ',') !== false) {
       $data['COL_VUCC_GRIDS'] = strtoupper(trim($this->input->post('locator')));
     } else {
@@ -183,6 +205,17 @@ class Logbook_model extends CI_Model {
     }
 
     $this->add_qso($data);
+  }
+
+  public function check_station($id){
+
+    $this->db->where('station_id', $id); 
+    $query = $this->db->get('station_profile');
+
+    if ($query->num_rows() > 0) {
+      $row = $query->row_array();
+        return($row);
+    }
   }
 
   function add_qso($data) {

@@ -85,5 +85,10 @@ class DXCC extends CI_Model {
 	function empty_table($table) {
 		$this->db->empty_table($table);
 	}
+
+	function list() {
+		$this->db->order_by('name', 'ASC');
+		return $this->db->get('dxcc_entities');
+	}
 }
 ?>
