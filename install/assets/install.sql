@@ -3819,7 +3819,11 @@ CREATE TABLE `station_profile` (
   `station_gridsquare` varchar(100) NOT NULL,
   `station_city` varchar(100) NOT NULL,
   `station_iota` varchar(100) NOT NULL,
-  `station_sota` varchar(10) NOT NULL
+  `station_sota` varchar(10) NOT NULL,
+  `station_callsign` varchar(50) DEFAULT NULL,
+  `station_dxcc` int(10) DEFAULT NULL,
+  `station_country` varchar(255) DEFAULT NULL,
+  `station_cnty` varchar(200) DEFAULT NULL,
+  `station_cq` int(5) DEFAULT NULL,
+  `station_itu` int(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-ALTER TABLE `station_profile` ADD `station_callsign` VARCHAR(50) NULL DEFAULT NULL AFTER `station_sota`, ADD `station_dxcc` INT(10) NULL DEFAULT NULL AFTER `station_callsign`, ADD `station_country` VARCHAR(255) NULL DEFAULT NULL AFTER `station_dxcc`, ADD `station_cnty` VARCHAR(200) NULL DEFAULT NULL AFTER `station_country`, ADD `station_cq` INT(5) NULL DEFAULT NULL AFTER `station_cnty`, ADD `station_itu` INT(5) NULL DEFAULT NULL AFTER `station_cq`;
