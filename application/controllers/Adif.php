@@ -36,6 +36,20 @@ class adif extends CI_Controller {
 		$this->load->view('adif/data/exportall', $data);
 	}
 
+
+	// Export all QSO Data in ASC Order of Date.
+	public function exportsat()
+	{
+		// Set memory limit to unlimited to allow heavy usage
+		ini_set('memory_limit', '-1');
+
+		$this->load->model('adif_data');
+
+		$data['qsos'] = $this->adif_data->export_all();
+
+		$this->load->view('adif/data/exportsat', $data);
+	}
+
 	public function export_custom() {
 
 		// Set memory limit to unlimited to allow heavy usage
