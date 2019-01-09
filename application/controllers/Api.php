@@ -50,11 +50,11 @@ class API extends CI_Controller {
 
 		$data['api_keys'] = $this->api_model->keys();
 
-		$data['page_title'] = "API Help";
+		$data['page_title'] = "API Options";
 
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('api/help');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 
 	function generate($rights) {

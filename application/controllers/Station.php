@@ -24,9 +24,9 @@ class Station extends CI_Controller {
 
 		// Render Page
 		$data['page_title'] = "Station Profiles";
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('station_profile/index');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 
 	public function create() 
@@ -43,9 +43,9 @@ class Station extends CI_Controller {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$data['page_title'] = "Create Station Profile";
-			$this->load->view('layout/header', $data);
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('station_profile/create');
-			$this->load->view('layout/footer');
+			$this->load->view('interface_assets/footer');
 		}
 		else
 		{	
