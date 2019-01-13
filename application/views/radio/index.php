@@ -1,35 +1,26 @@
-<script type="text/javascript">
-	$(document).ready(function(){
-		setInterval(function() {
-			// Get Mode
-			$.get('radio/status/', function(result) {
-					//$('.status').append(result);
-					$('.status').html(result);
-			});		
-		}, 1000);
- });
-</script>
+<div class="container">
 
-<div id="container">
+	<br>
 
-	<h2><?php echo $page_title; ?></h2>
-	
-	<?php if($this->session->flashdata('message')) { ?>
-	<!-- Display Message -->
-	<div class="alert-message error">
-	  <p><?php echo $this->session->flashdata('message'); ?></p>
-	</div>
-	<?php } ?>
+		<?php if($this->session->flashdata('message')) { ?>
+			<!-- Display Message -->
+			<div class="alert-message error">
+			  <p><?php echo $this->session->flashdata('message'); ?></p>
+			</div>
+		<?php } ?>
 
-	<div class="row show-grid">
-	  <div class="span15">
-		
-		<!-- Display Radio Statuses -->	  
-		<table class="status">
-		
-		</table>
+	<div class="card">
+	  <div class="card-header">
+	    <?php echo $page_title; ?>
+	  </div>
+	  <div class="card-body">
+	    <h5 class="card-title"></h5>
+	    <p class="card-text"></p>
 
-
+	    <div class="table-responsive">
+		    <!-- Display Radio Statuses -->	  
+				<table class="table table-striped"></table>
+			</div>
 	  </div>
 	</div>
 

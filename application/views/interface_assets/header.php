@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">
 
     <title><?php if(isset($page_title)) { echo $page_title; } ?> - Cloudlog</title>
   </head>
@@ -60,11 +60,11 @@
 							<div class="dropdown-divider"></div>		
 							<a class="dropdown-item" href="<?php echo site_url('radio');?>" title="External Radios"><i class="fas fa-broadcast-tower"></i> Radio Interface</a>
 							<div class="dropdown-divider"></div>	
-							<a class="dropdown-item" href="" title="ADIF Import/Export"><i class="fas fa-sync"></i> ADIF Import/Export</a>
+							<a class="dropdown-item" href="<?php echo site_url('adif/import');?>" title="ADIF Import/Export"><i class="fas fa-sync"></i> ADIF Import/Export</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="" title="LoTW Import/Export"><i class="fas fa-sync"></i> LoTW Import/Export</a>
+							<a class="dropdown-item" href="<?php echo site_url('lotw');?>" title="LoTW Import/Export"><i class="fas fa-sync"></i> LoTW Import/Export</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="" title="eQSL Import/Export"><i class="fas fa-sync"></i> eQSL Import/Export</a>
+							<a class="dropdown-item" href="<?php echo site_url('eqsl');?>" title="eQSL Import/Export"><i class="fas fa-sync"></i> eQSL Import/Export</a>
 
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('backup');?>" title="Backup Cloudlog"><i class="fas fa-save"></i> Backup</a>

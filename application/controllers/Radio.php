@@ -11,9 +11,9 @@
 		// load the view
 		$data['page_title'] = "Radio Status";
 
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('radio/index');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 	
 	function status() {
