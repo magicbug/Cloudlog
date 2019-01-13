@@ -1,16 +1,39 @@
-<div id="container">
-<h2><?php echo $page_title; ?></h2>
 
-<p><span class="label important">Important</span> Log files must have the file type .adi</p>
+<div class="container">
 
-<?php echo form_open_multipart('adif/import');?>
+	<h1>ADIF Functions</h1>
 
-<input type="file" name="userfile" size="20" />
+	<div class="card">
+	  <div class="card-header">
+	    <?php echo $page_title; ?>
+	  </div>
+	  <div class="card-body">
+	    <h5 class="card-title"></h5>
+	    <p class="card-text"></p>
 
-<br /><br />
+	    <p><span class="label important">Important</span> Log files must have the file type .adi</p>
 
-<input class="btn primary" type="submit" value="Upload" />
+		<form class="form-inline" action="<?php echo site_url('adif/import'); ?>" method="post" enctype="multipart/form-data">
+		  <label class="sr-only" for="inlineFormInputName2">ADIF file</label>
+		  <input class="file-input mb-2 mr-sm-2" type="file" name="userfile" size="20" />
 
-</form>
+		  <button type="submit" class="btn btn-primary mb-2" value="Upload">Upload</button>
+		</form>
+	  </div>
+	</div>
+
+<br>
+
+<div class="card">
+  <div class="card-header">
+    ADIF Export
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Take your logbook file anywhere!</h5>
+    <p class="card-text">Exporting ADIFs allows you to import contacts into third party applications like LoTW, Awards or just for keeping a backup.</p>
+    <a href="<?php echo site_url('adif/exportall'); ?>" title="Export All" target="_blank" class="btn btn-outline-secondary btn-sm">Export All QSOs</a>
+  </div>
+</div>
 
 </div>
+

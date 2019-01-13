@@ -95,9 +95,9 @@ class adif extends CI_Controller {
 		    //exit(0);
 			$data['error'] = $this->upload->display_errors();
 
-			$this->load->view('layout/header', $data);
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('adif/import');
-			$this->load->view('layout/footer');
+			$this->load->view('interface_assets/footer');
 		}
 		else
 		{
@@ -129,9 +129,9 @@ class adif extends CI_Controller {
 			unlink('./uploads/'.$data['upload_data']['file_name']);
 
 			$data['page_title'] = "ADIF Imported";
-			$this->load->view('layout/header', $data);
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('adif/import_success');
-			$this->load->view('layout/footer');
+			$this->load->view('interface_assets/footer');
 
 		}
 	}
