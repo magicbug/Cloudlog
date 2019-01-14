@@ -83,9 +83,9 @@ class Lotw extends CI_Controller {
 		unlink($filepath);
 
 		$data['page_title'] = "LoTW ADIF Information";
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('lotw/analysis');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 
 	public function import() {
@@ -151,9 +151,9 @@ class Lotw extends CI_Controller {
 
 				$data['error'] = $this->upload->display_errors();
 
-				$this->load->view('layout/header', $data);
+				$this->load->view('interface_assets/header', $data);
 				$this->load->view('lotw/import');
-				$this->load->view('layout/footer');
+				$this->load->view('interface_assets/footer');
 			}
 			else
 			{
@@ -176,9 +176,9 @@ class Lotw extends CI_Controller {
 		{
 			$data['error'] = $this->upload->display_errors();
 
-			$this->load->view('layout/header', $data);
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('lotw/export');
-			$this->load->view('layout/footer');
+			$this->load->view('interface_assets/footer');
 		}
 		else
 		{
@@ -281,9 +281,9 @@ class Lotw extends CI_Controller {
 			unlink($cookie_file_path);
 			unlink('./uploads/'.$data['upload_data']['file_name']);
 
-			$this->load->view('layout/header', $data);
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('lotw/status');
-			$this->load->view('layout/footer');
+			$this->load->view('interface_assets/footer');
 		}
 	}
 

@@ -1,4 +1,4 @@
-<div id="container">
+<div class="container">
 <h2><?php echo $page_title; ?></h2>
 
 <?php if($this->session->flashdata('warning')) { ?>
