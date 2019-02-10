@@ -12,9 +12,9 @@ class Awards extends CI_Controller {
 	{
 		// Render Page
 		$data['page_title'] = "Awards";
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/index');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 	
 	public function dxcc ()
@@ -25,9 +25,9 @@ class Awards extends CI_Controller {
 
 		// Render Page
 		$data['page_title'] = "Awards - DXCC";
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/dxcc/index');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 
 	}
 
@@ -61,9 +61,9 @@ class Awards extends CI_Controller {
 		// Render Page
 		$data['page_title'] = "Log View - DXCC";
 		$data['filter'] = str_replace("&#40;and&#41;", ", ", $q);//implode(", ", array_keys($a));
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/dxcc/details');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 	
 	/*
@@ -78,9 +78,9 @@ class Awards extends CI_Controller {
 	
 		// Render Page
 		$data['page_title'] = "Awards - WAB";
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/wab/index');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 	
 	/*
@@ -95,9 +95,9 @@ class Awards extends CI_Controller {
 	
 		// Render page
 		$data['page_title'] = "Awards - SOTA";
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/sota/index');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 	
 	/*
@@ -112,9 +112,9 @@ class Awards extends CI_Controller {
 	
 		// Render page
 		$data['page_title'] = "Awards - WACRAL Members";
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/wacral/index');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 	
 	public function cq(){
@@ -127,8 +127,8 @@ class Awards extends CI_Controller {
 
         // Render page
         $data['page_title'] = "Awards - CQ Magazine";
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/cq/index');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 }
