@@ -8,9 +8,9 @@ class Backup extends CI_Controller {
 
 		$data['page_title'] = "Backup";
 
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('backup/main');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 
 	/* Gets all QSOs and Dumps them to logbook.adi */
@@ -34,9 +34,9 @@ class Backup extends CI_Controller {
 
 		$data['page_title'] = "ADIF - Backup";
 
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('backup/adif_view');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 
 	}
 
@@ -58,9 +58,9 @@ class Backup extends CI_Controller {
 
 		$data['page_title'] = "Notes - Backup";
 
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('backup/notes_view');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 
 	}
 }

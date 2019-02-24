@@ -31,22 +31,11 @@ class Update extends CI_Controller {
 
         $count = 0;
 		foreach ($xml_data->entities->entity as $entity) {
-
-			if(isset($record->start)) {
-				$startinfo = strtotime($record->start);
-				$start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : "";
-			} else {
-				$start_date = NULL;
-			}
-			
-			if (isset($record->end)) {
-				$endinfo = strtotime($record->end);
-				$end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : "";
-			} else {
-				$end_date = NULL;
-			}     
-
+			$startinfo = strtotime($record->start);
+            $endinfo = strtotime($record->end);
             
+            $start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : "";
+            $end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : "";
         
             if(!$entity->cqz) {
                 $data = array(
@@ -88,19 +77,11 @@ class Update extends CI_Controller {
 		
         $count = 0;
 		foreach ($xml_data->exceptions->exception as $record) {
-			if(isset($record->start)) {
-				$startinfo = strtotime($record->start);
-				$start_date = date('Y-m-d H:i:s',$startinfo);
-			} else {
-				$start_date = NULL;
-			}
-			
-			if (isset($record->end)) {
-				$endinfo = strtotime($record->end);
-				$end_date = date('Y-m-d H:i:s',$endinfo);
-			} else {
-				$end_date = NULL;
-			}     
+			$startinfo = strtotime($record->start);
+            $endinfo = strtotime($record->end);
+            
+            $start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : "";
+            $end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : "";
 
             $data = array(
             	'record' => (int) $record->attributes()->record,
@@ -116,7 +97,6 @@ class Update extends CI_Controller {
             );
        
             $this->db->insert('dxcc_exceptions', $data); 
-
             $count += 1;
             if ($count % 10  == 0)
                 $this->update_status();
@@ -137,20 +117,11 @@ class Update extends CI_Controller {
 		
         $count = 0;
 		foreach ($xml_data->prefixes->prefix as $record) {
-			if(isset($record->start)) {
-				$startinfo = strtotime($record->start);
-				$start_date = date('Y-m-d H:i:s',$startinfo);
-			} else {
-				$start_date = NULL;
-			}
-			
-			if (isset($record->end)) {
-				$endinfo = strtotime($record->end);
-				$end_date = date('Y-m-d H:i:s',$endinfo);
-			} else {
-				$end_date = NULL;
-			}       
-
+			$startinfo = strtotime($record->start);
+            $endinfo = strtotime($record->end);
+            
+            $start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : "";
+            $end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : "";
             
             $data = array(
             	'record' => (int) $record->attributes()->record,
@@ -197,11 +168,6 @@ class Update extends CI_Controller {
 		  $data .= gzgetc($gz);
 		}
 		gzclose($gz);
-		
-		if (!file_exists("./updates/"))
-		{
-			mkdir("./updates");
-		}
 		
 		file_put_contents('./updates/cty.xml', $data);
 	

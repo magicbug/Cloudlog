@@ -88,8 +88,19 @@
 			<?php } ?>
 
 			<tr>
-				<td>Locator</td>
-				<td><input id="locator" type="text" name="locator" value="<?php echo $COL_GRIDSQUARE; ?>" size="7" /></td>
+				<td>Gridsquare</td>
+				<td>
+					<input id="locator" type="text" name="locator" value="<?php echo $COL_GRIDSQUARE; ?>" size="7" />
+					<p>For single Gridsquares</p>
+				</td>
+			</tr>
+
+			<tr>
+				<td>VUCC Gridsquare</td>
+				<td>
+					<input id="locator" type="text" name="vucc_grids" value="<?php echo $COL_VUCC_GRIDS; ?>" size="7" />			
+					<p>Used for VUCC MultiGrids</p>
+				</td>
 			</tr>
 
 			<tr>

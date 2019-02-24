@@ -14,12 +14,14 @@ class QSO extends CI_Controller {
 	{
 	
 		$this->load->model('cat');
+		$this->load->model('stations');
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		
 		
 		$data['notice'] = false;
+		$data['stations'] = $this->stations->all();
 		$data['radios'] = $this->cat->radios();
 		$data['query'] = $this->logbook_model->last_custom('16');
 		
@@ -57,14 +59,15 @@ class QSO extends CI_Controller {
         'mode' => $this->input->post('mode'),
         'sat_name' => $this->input->post('sat_name'),
         'sat_mode' => $this->input->post('sat_mode'),
-        'radio' => $this->input->post('radio')
+        'radio' => $this->input->post('radio'),
+        'station_profile_id' => $this->input->post('station_profile')
       );
       // ];
 
       $this->session->set_userdata($qso_data);
 			
-			// Get last Ten QSOs
-			$data['query'] = $this->logbook_model->last_ten();
+			// Get last 16 qsos
+			$data['query'] = $this->logbook_model->last_custom('16');
 			 
 			// Set Any Notice Messages
 			$data['notice'] = "QSO Added";

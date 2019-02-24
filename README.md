@@ -22,7 +22,7 @@ More information can be found in the [wiki](https://github.com/magicbug/Cloudlog
 
 Cloudlog supports pushing radio information just like you would with a desktop operating system this is via a desktop app called [CloudlogCAT](https://github.com/magicbug/CloudlogCAT/releases) this application uses Omni-Rig thus supports most of the radios on the market.
 
-If you use Linux, Mac, just hate Omni-Rig then Tobias (DL4TMA) has made a script called [cloudlog-rigctl-interface](https://github.com/Manawyrm/cloudlog-rigctl-interface) this interfaces rigctl to Cloudlogs CAT API. 
+If you use Linux, Mac or just hate Omni-Rig then Tobias (DL4TMA) has made a script called [cloudlog-rigctl-interface](https://github.com/Manawyrm/cloudlog-rigctl-interface) this interfaces rigctl to Cloudlogs CAT API. This script requires PHP-CLI to be installed.  If you would like a pure Bash version, Tony (G0WFV) has you covered with [CloudlogBashCat](https://github.com/g0wfv/CloudlogBashCat) which also synchronises Cloudlog with rigctld.
 
 ## SatPC32 Interface
 

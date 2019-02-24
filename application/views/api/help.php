@@ -1,95 +1,66 @@
-<div id="container">
+<div class="container">
 
-<h2>API</h2>
-
-	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-
-	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-
-	<script type="text/javascript">
-
-		$(document).ready(function() {
-			$(".qsobox").fancybox({
-				'width'				: '75%',
-				'height'			: '50%',
-				'autoScale'			: false,
-				'transitionIn'		: 'none',
-				'transitionOut'		: 'none',
-				'type'				: 'iframe'
-			});
-
-
-		});
-
-	</script>
-
-
-
+<br>
 <?php if($this->session->flashdata('notice')) { ?>
 	<div id="message" >
     	<?php echo $this->session->flashdata('notice'); ?>
 	</div>
 <?php } ?>
 
-<h3>API Keys</h3>
+<div class="card">
+  <div class="card-header">
+    <?php echo $page_title; ?>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">API or Application Programming Interface lets third party systems access Cloudlog</h5>
+    <p class="card-text">You will need to generate API keys if you wish to use tools like CloudlogCAT.</p>
 
-<?php if ($api_keys->num_rows() > 0) { ?>
+		<?php if ($api_keys->num_rows() > 0) { ?>
 
-	<table>
+		<table class="table table-striped">
+		  <thead>
+		    <tr>
+		      <th scope="col">API Key</th>
+		      <th scope="col">Rights</th>
+		      <th scope="col">Status</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+			<?php foreach ($api_keys->result() as $row) { ?>
+				<tr>
+					<td><?php echo $row->key; ?></td>
+					<td>
+						<?php
+							
+							if($row->rights == "rw") {
+								echo "Read & Write";
+							} elseif($row->rights == "r") {
+								echo "Read Only";
+							} else {
+								echo "Unknown";
+							}
+			
+						?>
 
-	<tr>
-		<td>API Key</td>
-		<td>Rights</td>
-		<td>Status</td>
-	</tr>
+					</td>
+					<td><span class="btn btn-outline-primary btn-sm"><?php echo ucfirst($row->status); ?></span> - <a href="<?php echo site_url('/api/validate/key='.$row->key.']'); ?>" class="btn btn-success btn-sm">Test</td>
+				</tr>
 
-	<?php foreach ($api_keys->result() as $row) { ?>
+			<?php } ?>
 
-		<tr>
-			<td><?php echo $row->key; ?></td>
-			<td>
+		</table>	
 
-				<?php
-					
-					if($row->rights == "rw") {
-						echo "Read & Write";
-					} elseif($row->rights == "r") {
-						echo "Read Only";
-					} else {
-						echo "Unknown";
-					}
-	
-				?>
+		<?php } else { ?>
+			<p>You have no API Keys.</p>
+		<?php } ?>
 
-			</td>
-			<td><?php echo ucfirst($row->status); ?> - <a href="<?php echo site_url('/api/validate/key='.$row->key.']'); ?>">Test</td>
-		</tr>
+		<p>
+			<a href="<?php echo site_url('api/generate/rw'); ?>" class="btn btn-outline-primary btn-sm">Generate Key with Read & Write Access</a>
+			<a href="<?php echo site_url('api/generate/r'); ?>" class="btn btn-outline-primary btn-sm">Generate Key with Read Only Access</a>
+		</p>
 
-	<?php } ?>
-
-	</table>	
-
-<?php } else { ?>
-	<p>You have no API Keys.</p>
-<?php } ?>
-
-	<h4>Generate API Key</h4>
-
-	<ul>
-		<li><a href="<?php echo site_url('api/generate/rw'); ?>">Key with Read & Write Access</a></li>
-		<li><a href="<?php echo site_url('api/generate/r'); ?>">Key with Read Only Access</a></li>
-	</ul>
-There are a number of API calls you can make from other applications, with output available in either XML or JSON.
-<h3>API Guide</h3>
-<h4>Description</h4>
-Query the logbook, and output in XML format.
-<h4>Syntax</h4>
-<li><pre>/search/format=&lt;format&gt;/query=&lt;field&gt;&lt;=|~&gt;&lt;value&gt;{(and|or)...}/limit=&lt;num&gt;/fields=&lt;field1&gt;,{&lt;field2&gt;/order=&lt;field&gt;</pre>
-<h4>Example</h4>
-Search for entries with a call beginning with <b>M0</b> and a locator beginning with <b>I</b> or <b>J</b>, show the callsign and locator fields, order it by callsign and limit the results to <b>10</b>.
-<li><pre>/search/format=xml/query=Call~M0*(and)(Locator~I*(or)Locator~J*)/limit=10/fields=distinct(Call),Locator/order=Call(asc)</pre>
-<li><a href="<?php echo site_url('/api/search/format=xml/query=Call~M0*(and)(Locator~I*(or)Locator~J*)/limit=10/fields=distinct(Call),Locator/order=Call(asc)]'); ?>">Run it! (XML)</a> or <a href="<?php echo site_url('/api/search/format=json/query=Call~M0*(and)(Locator~I*(or)Locator~J*)/limit=10/fields=distinct(Call),Locator/order=Call(asc)'); ?>">Run it! (JSON)</a>
+  </div>
+</div>
 
 </div>
+

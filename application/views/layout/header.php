@@ -79,6 +79,7 @@
 				<a href="#" class="dropdown-toggle">Admin</a>
 				<ul class="dropdown-menu">
 					<li><a href="<?php echo site_url('user');?>" title="Users">Users</a></li>
+					<li><a href="<?php echo site_url('station');?>" title="Station Profile">Station Profile</a></li>
 					<li><a href="<?php echo site_url('radio');?>" title="Backup">Radios</a></li>
 					<li><a href="<?php echo site_url('backup');?>" title="Backup">Backup</a></li>
 					<li><a href="<?php echo site_url('adif/import');?>" title="ADIF Import">ADIF Import</a></li>

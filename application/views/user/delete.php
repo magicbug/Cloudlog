@@ -1,18 +1,18 @@
-<div id="container">
+<div class="container">
+<br>
+	<div class="card">
+	  <div class="card-header">
+	    Delete User Account <?php echo $user_name; ?>
+	  </div>
+	  <div class="card-body">
+	    <h5 class="card-title"></h5>
 
-<h2>Edit user</h2>
-<div class="wrap_content user">
-<?php echo validation_errors(); ?>
+	    <p class="card-text">Are you sure you want to delete the user account <b><?php echo $user_name; ?></b>?</p>
 
-<form method="post" action="<?php echo site_url('user/delete')."/".$this->uri->segment(3); ?>" name="users">
-	<table>
-		<tr>
-			<td style="padding: 10px;">Are you sure you want to delete <?php echo $user_name; ?>?</td>
-		</tr>
-	</table>
-<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
-<div class="actions"><input class="btn primary" type="submit" value="Yes, delete this user" /> <a href="<?php echo site_url('user'); ?>">No, do not delete this user</a></div>
-
-</form>
-
+	    <form method="post" action="<?php echo site_url('user/delete')."/".$this->uri->segment(3); ?>" name="users">
+	    <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
+			<input class="btn btn-danger" type="submit" value="Yes, delete this user" /> <a href="<?php echo site_url('user'); ?>" class="btn btn-success">No, do not delete this user</a>
+			</form>
+	  </div>
+	</div>
 </div>

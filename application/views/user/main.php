@@ -1,65 +1,50 @@
-<h2>Users</h2>
+<div class="container">
 
-	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-
-	<script type="text/javascript" src="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-
-	<script type="text/javascript">
-
-		$(document).ready(function() {
-			$(".qsobox").fancybox({
-				'width'				: '75%',
-				'height'			: '50%',
-				'autoScale'			: false,
-				'transitionIn'		: 'none',
-				'transitionOut'		: 'none',
-				'type'				: 'iframe'
-			});
-
-
-		});
-
-	</script>
-
-<div id="container">
-
-<h2>Cloudlog Users</h2>
-
-<div class="row show-grid">
-	  <div class="span13">
-
+<br>
 <?php if($this->session->flashdata('notice')) { ?>
 	<div id="message" >
     	<?php echo $this->session->flashdata('notice'); ?>
 	</div>
 <?php } ?>
 
-	<table class="users" width="100%">
-		<tr class="user_title titles">
-			<td>User</td>
-			<td>E-mail</td>
-			<td>Type</td>
-			<td>Options</td>
-		</tr>
+<div class="card">
+  <div class="card-header">
+    <?php echo $page_title; ?>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Cloudlog Needs Users You make them here.</h5>
+    <p class="card-text"></p>
+    <div class="table-responsive">
+		<table class="table table-striped">
+		  <thead>
+		    <tr>
+		      <th scope="col">User</th>
+		      <th scope="col">E-mail</th>
+		      <th scope="col">Type</th>
+		      <th scope="col">Options</th>
+		    </tr>
+		  </thead>
+		  <tbody>
 
-		<?php
+				<?php
 
-		$i = 0;
-		foreach ($results->result() as $row) { ?>
-		<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
-			<td><a href="<?php echo site_url('user/edit')."/".$row->user_id; ?>"><?php echo $row->user_name; ?></a></td>
-			<td><?php echo $row->user_email; ?></td>
-			<td><?php $l = $this->config->item('auth_level'); echo $l[$row->user_type]; ?></td>
-			<td><a href="<?php echo site_url('user/edit')."/".$row->user_id; ?>">Edit</a> <a href="<?php echo site_url('user/delete')."/".$row->user_id; ?>">Delete</a></td>
-		</tr>
-		<?php $i++; } ?>
-	</table>
-	  </div>
-	  <div class="span2 offset1">
-	  <a class="btn primary" href="<?php echo site_url('user/add'); ?>">Add user</a>
-	  </div>
+				$i = 0;
+				foreach ($results->result() as $row) { ?>
+				<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
+					<td><a href="<?php echo site_url('user/edit')."/".$row->user_id; ?>"><?php echo $row->user_name; ?></a></td>
+					<td><?php echo $row->user_email; ?></td>
+					<td><?php $l = $this->config->item('auth_level'); echo $l[$row->user_type]; ?></td>
+					<td><a href="<?php echo site_url('user/edit')."/".$row->user_id; ?>" class="btn btn-primary btn-sm"><i class="fas fa-user-edit"></i> Edit</a> <a href="<?php echo site_url('user/delete')."/".$row->user_id; ?>" class="btn btn-danger btn-sm"><i class="fas fa-user-minus"></i> Delete</a></td>
+				</tr>
+				<?php $i++; } ?>
+			</tbody>
+		</table>
 	</div>
+		<p>
+			<a class="btn btn-primary" href="<?php echo site_url('user/add'); ?>">Add user</a>
+		</p>
+  </div>
+</div>
+
 
 </div>

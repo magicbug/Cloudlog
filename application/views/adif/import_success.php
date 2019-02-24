@@ -1,6 +1,21 @@
-<div id="container">
-<h2>ADIF Imported</h2>
+<div class="container">
+<br>
+	<?php if($this->session->flashdata('message')) { ?>
+		<!-- Display Message -->
+		<div class="alert-message error">
+		  <p><?php echo $this->session->flashdata('message'); ?></p>
+		</div>
+	<?php } ?>
 
-<p>The ADIF File has been imported, and any dupes skipped.</p>
+<div class="card">
+  <div class="card-header">
+    ADIF Imported
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Yay, its imported!</h5>
+    <p class="card-text"><p>The ADIF File has been imported, and any dupes skipped.</p></p>
+  </div>
+</div>
+
 
 </div>

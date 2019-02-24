@@ -85,9 +85,9 @@ class eqsl extends CI_Controller {
 		unlink($filepath);
 
 		$data['page_title'] = "eQSL Import Information";
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('eqsl/analysis');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 
 	public function import() {	
@@ -224,9 +224,9 @@ class eqsl extends CI_Controller {
 			
 				$data['error'] = $this->upload->display_errors();
 
-				$this->load->view('layout/header', $data);
+				$this->load->view('interface_assets/header', $data);
 				$this->load->view('eqsl/import');
-				$this->load->view('layout/footer');
+				$this->load->view('interface_assets/footer');
 			}
 			else
 			{
@@ -517,9 +517,9 @@ class eqsl extends CI_Controller {
 			}
 		}
 		
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('eqsl/export');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 	
 } // end class

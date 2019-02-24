@@ -283,8 +283,23 @@ class Logbook extends CI_Controller {
       }
       echo "</table>";
     } else {
-        $this->load->library('hamli');
-        $data['callsign'] = $this->hamli->callsign($id);
+        if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
+          // Lookup using QRZ
+          $this->load->library('qrz');
+
+          if(!$this->session->userdata('qrz_session_key')) {
+            $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+            $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+          }
+
+          $data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'));
+        } else {
+          // Lookup using hamli
+          $this->load->library('hamli');
+
+          $data['callsign'] = $this->hamli->callsign($id);
+        }
+
         $data['id'] = strtoupper($id);
 
         $this->load->view('search/result', $data);
