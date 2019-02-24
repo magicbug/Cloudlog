@@ -50,9 +50,14 @@ margin: 10px 0;
 				<?php if($this->config->item('display_freq') == true) { ?>
 				<tr>
 					<td>Freq:</td>
-					<td><?php echo $row->COL_FREQ; ?></td>
+					<td><?php echo frequency_display_string($row->COL_FREQ); ?></td>
 				</tr>
-				<?php } ?>
+				<?php if($row->COL_FREQ_RX != 0) { ?>
+				<tr>
+					<td>Freq (RX):</td>
+					<td><?php echo frequency_display_string($row->COL_FREQ_RX); ?></td>
+				</tr>
+				<?php }} ?>
 				
 				<tr>
 					<td>Mode</td>
@@ -191,3 +196,10 @@ margin: 10px 0;
 <?php } } ?>
 </body>
 </html>
+<?php 
+  // converts a frequency in Hz (e.g. 3650) to 3.650 MHz 
+  function frequency_display_string($frequency)
+  {
+    return number_format (($frequency / 1000 / 1000), 3) . " MHz";
+  }
+?>
