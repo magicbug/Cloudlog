@@ -332,41 +332,33 @@
 <?php if ( $_GET['manual'] == 0 ) { ?>
   var updateFromCAT = function() {
     if($('select.radios option:selected').val() != '0') {
-      // Get frequency
-      $.get('radio/frequency/' + $('select.radios option:selected').val(), function(result) {
+      radioID = $('select.radios option:selected').val(); 
+      $.getJSON( "radio/json/" + radioID, function( data ) {
+          /* {
+              "uplink_freq": "2400210000",
+              "downlink_freq": "10489710000",
+              "mode": "SSB",
+              "satmode": "",
+              "satname": "ES'HAIL-2"
+          }  */
+          if (data.downlink_freq != "")
+          {
+            $('#frequency').val(data.downlink_freq);
+            $(".band").val(frequencyToBand(data.downlink_freq));
+          }
+          if (data.uplink_freq != "")
+          {
+            $('#frequency_rx').val(data.uplink_freq);
+          }
+          if (data.mode == "LSB" || data.mode == "USB" || data.mode == "SSB") {
+            $(".mode").val('SSB');
+          } else {
+            $(".mode").val(data.mode);  
+          }
 
-        if(result == "0") {
-        } else {
-          $('#frequency').val(result);
-          $(".band").val(frequencyToBand(result));
-        }
+          $(".sat_name").val(data.satname);  
+          $(".sat_mode").val(data.satmode);  
       });
-      $.get('radio/frequency_downlink/' + $('select.radios option:selected').val(), function(result) {
-      if(result == "0") {
-      } else {
-        $('#frequency_rx').val(result);
-      }
-      });
-            
-      // Get Mode
-      $.get('radio/mode/' + $('select.radios option:selected').val(), function(result) {
-        if (result == "LSB" || result == "USB" || result == "SSB") {
-          $(".mode").val('SSB');
-        } else {
-          $(".mode").val(result);  
-        }
-      });
-
-        // Get SAT_Name
-      $.get('radio/satname/' + $('select.radios option:selected').val(), function(result) {
-        $(".sat_name").val(result);  
-      });
-
-        // Get SAT_Name
-      $.get('radio/satmode/' + $('select.radios option:selected').val(), function(result) {
-        $(".sat_mode").val(result);  
-      });
-
     }
   };
 
