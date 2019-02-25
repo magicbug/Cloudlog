@@ -63,21 +63,18 @@
 	
 	function json($id)
 	{
+		$frequency = $this->frequency($id); 
+
 		echo json_encode(array(
-			"uplink_freq" => $this->frequency($id, false),
-			"downlink_freq" => $this->frequency($id, true),
+			"uplink_freq" => $frequency['uplink_freq'],
+			"downlink_freq" => $frequency['downlink_freq'],
 			"mode" => $this->mode($id),
 			"satmode" => $this->satmode($id),
 			"satname" => $this->satname($id),
 		), JSON_PRETTY_PRINT);
 	}
 
-
-	function frequency_downlink($id) {
-		return $this->frequency($id, true);
-	}
-
-	function frequency($id, $downlink = false) {
+	function frequency($id) {
 
 		// Check Auth
 		$this->load->model('user_model');
@@ -101,21 +98,15 @@
 						{
 							foreach ($query->result() as $row)
 							{
-								if ($downlink)
-									return strtoupper($row->downlink_freq);
-								else	
-									return strtoupper($row->uplink_freq);
+								return array("downlink_freq" => strtoupper($row->downlink_freq), "uplink_freq" => strtoupper($row->uplink_freq));
 							}
 						}
 					} else {
-						if ($downlink)
-							return "";
-						else	
-							return strtoupper($row->frequency);	
+						return array("downlink_freq" => "", "uplink_freq" => strtoupper($row->frequency));	
 					}
 				}
 			}
-		return ""; 
+		return array("downlink_freq" => "", "uplink_freq" => ""); 
 	}
 	
 	function mode($id) {
@@ -193,25 +184,9 @@
 			{
 			   foreach ($query->result() as $row)
 				{
-					$uplink_mode = ""; 
-					$downlink_mode = ""; 
+					$uplink_mode = $this->get_mode_designator($row->uplink_freq); 
+					$downlink_mode = $this->get_mode_designator($row->downlink_freq); 
 
-					if ($row->uplink_freq > 144000000 && $row->uplink_freq < 147000000) {
-						$uplink_mode = "V";
-					} elseif ($row->uplink_freq > 432000000 && $row->uplink_freq < 438000000) {
-						$uplink_mode = "U";
-					} elseif ($row->uplink_freq > 28000000 && $row->uplink_freq < 30000000) {
-						$uplink_mode = "A";
-					}
-
-					if ($row->downlink_freq > 144000000 && $row->downlink_freq < 147000000) {
-						$downlink_mode = "V";
-					} elseif ($row->downlink_freq > 432000000 && $row->downlink_freq < 438000000) {
-						$downlink_mode = "U";
-					} elseif ($row->downlink_freq > 28000000 && $row->downlink_freq < 30000000) {
-						$downlink_mode = "A";
-					}
-					
 					if ($uplink_mode != "" && $downlink_mode != "")
 						return $uplink_mode."/".$downlink_mode;
 				}
@@ -220,6 +195,34 @@
 			return ""; 
 	}
 	
+	function get_mode_designator($frequency)
+	{
+		if ($frequency > 21000000 && $frequency < 22000000)
+			return "H";
+		if ($frequency > 28000000 && $frequency < 30000000)
+			return "A";
+		if ($frequency > 144000000 && $frequency < 147000000)
+			return "V";
+		if ($frequency > 432000000 && $frequency < 438000000)
+			return "U";
+		if ($frequency > 1240000000 && $frequency < 1300000000)
+			return "L";
+		if ($frequency > 2320000000 && $frequency < 2450000000)
+			return "S";
+		if ($frequency > 3400000000 && $frequency < 3475000000)
+			return "S2";
+		if ($frequency > 5650000000 && $frequency < 5850000000)
+			return "C";
+		if ($frequency > 10000000000 && $frequency < 10500000000)
+			return "X";
+		if ($frequency > 24000000000 && $frequency < 24250000000)
+			return "K";
+		if ($frequency > 47000000000 && $frequency < 47200000000)
+			return "R";
+
+		return "";
+	}
+
 	function delete($id) {
 		// Check Auth
 		$this->load->model('user_model');

@@ -341,14 +341,14 @@
               "satmode": "",
               "satname": "ES'HAIL-2"
           }  */
-          if (data.downlink_freq != "")
-          {
-            $('#frequency').val(data.downlink_freq);
-            $(".band").val(frequencyToBand(data.downlink_freq));
-          }
           if (data.uplink_freq != "")
           {
-            $('#frequency_rx').val(data.uplink_freq);
+            $('#frequency').val(data.uplink_freq);
+            $(".band").val(frequencyToBand(data.uplink_freq));
+          }
+          if (data.downlink_freq != "")
+          {
+            $('#frequency_rx').val(data.downlink_freq);
           }
           if (data.mode == "LSB" || data.mode == "USB" || data.mode == "SSB") {
             $(".mode").val('SSB');
