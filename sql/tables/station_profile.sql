@@ -12,3 +12,7 @@ CREATE TABLE `station_profile` (
   `station_cq` int(5) DEFAULT NULL,
   `station_itu` int(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `station_profile`
+MODIFY COLUMN `station_id`  int(11) UNSIGNED NOT NULL AUTO_INCREMENT FIRST ,
+ADD PRIMARY KEY (`station_id`);
