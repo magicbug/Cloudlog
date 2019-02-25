@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `config` (
   `eqsl_download_url` varchar(244) DEFAULT NULL,
   `eqsl_rcvd_mark` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utfmb4 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `config`

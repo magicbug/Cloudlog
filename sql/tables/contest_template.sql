@@ -45,7 +45,7 @@ CREATE TABLE `contest_template` (
   `scoring` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utfmb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

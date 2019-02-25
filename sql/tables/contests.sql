@@ -30,7 +30,7 @@ CREATE TABLE `contests` (
   `template` int(11) NOT NULL,
   `serial_num` tinyint(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utfmb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
