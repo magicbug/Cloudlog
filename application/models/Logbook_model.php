@@ -36,7 +36,7 @@ class Logbook_model extends CI_Model {
       'COL_TIME_OFF' => $datetime,
       'COL_CALL' => strtoupper(trim($this->input->post('callsign'))),
       'COL_BAND' => trim($this->input->post('band')),
-      'COL_FREQ' => $this->input->post('freq_display'),
+      'COL_FREQ' => $this->parse_frequency($this->input->post('freq_display')),
       'COL_MODE' => $this->input->post('mode'),
       'COL_RST_RCVD' => $this->input->post('rst_recv'),
       'COL_RST_SENT' => $this->input->post('rst_sent'),
@@ -60,7 +60,7 @@ class Logbook_model extends CI_Model {
       'COL_IOTA' => trim($this->input->post('iota_ref')),
       'COL_MY_GRIDSQUARE' => strtoupper($locator),
       'COL_DISTANCE' => "0",
-      'COL_FREQ_RX' => $this->input->post('freq_display_rx'),
+      'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
       'COL_BAND_RX' => null,
       'COL_ANT_AZ' => null,
       'COL_ANT_EL' => null,
@@ -118,7 +118,7 @@ class Logbook_model extends CI_Model {
             'COL_TIME_OFF' => $datetime,
             'COL_CALL' => strtoupper(trim($this->input->post('callsign'))),
             'COL_BAND' => $this->input->post('band'),
-            'COL_FREQ' => $this->input->post('freq_display'),
+            'COL_FREQ' => $this->parse_frequency($this->input->post('freq_display')),
             'COL_MODE' => $this->input->post('mode'),
             'COL_RST_RCVD' => $this->input->post('rst_recv'),
             'COL_RST_SENT' => $this->input->post('rst_sent'),
@@ -141,7 +141,7 @@ class Logbook_model extends CI_Model {
             'COL_IOTA' => trim($this->input->post('iota_ref')),
             'COL_MY_GRIDSQUARE' => $locator,
             'COL_DISTANCE' => "0",
-            'COL_FREQ_RX' => $this->input->post('freq_display_rx'),
+            'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
             'COL_BAND_RX' => null,
             'COL_ANT_AZ' => null,
             'COL_ANT_EL' => null,
@@ -231,7 +231,7 @@ class Logbook_model extends CI_Model {
        'COL_TIME_OFF' => $this->input->post('time_off'),
        'COL_CALL' => strtoupper(trim($this->input->post('callsign'))),
        'COL_BAND' => $this->input->post('band'),
-       'COL_FREQ' => $this->input->post('freq'),
+       'COL_FREQ' => $this->parse_frequency($this->input->post('freq')),
        'COL_MODE' => $this->input->post('mode'),
        'COL_RST_RCVD' => $this->input->post('rst_recv'),
        'COL_RST_SENT' => $this->input->post('rst_sent'),
@@ -255,7 +255,7 @@ class Logbook_model extends CI_Model {
        'COL_IOTA' => $this->input->post('iota_ref'),
        'COL_QTH' => $this->input->post('qth'),
        'COL_PROP_MODE' => $this->input->post('prop_mode'),
-       'COL_FREQ_RX' => $this->input->post('freq_display_rx'),
+       'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
        'COL_STX_STRING' => $this->input->post('stx_string'),
        'COL_SRX_STRING' => $this->input->post('srx_string')
     );
@@ -1082,7 +1082,25 @@ class Logbook_model extends CI_Model {
 
         print("$count updated\n");
     }
-
+    public function parse_frequency($frequency)
+    {
+      if (is_int($frequency))
+        return $frequency; 
+    
+      if (is_string($frequency))
+      {
+        $frequency = strtoupper($frequency);
+        $frequency = str_replace(" ", "", $frequency);
+        $frequency = str_replace("HZ", "", $frequency); 
+        $frequency = str_replace(["K", "M", "G", "T"], ["E3", "E6", "E9", "E12"], $frequency);
+    
+        // this double conversion will take a string like "3700e3" and convert it into 3700000
+        return (int)(float) $frequency;
+      }
+    
+      return 0;
+    }
+    
 }
 
 ?>
