@@ -61,7 +61,11 @@
 			
 	}
 	
-	function frequency($id) {
+	function frequency_downlink($id) {
+		return $this->frequency($id, true);
+	}
+
+	function frequency($id, $downlink = false) {
 
 		// Check Auth
 		$this->load->model('user_model');
@@ -77,19 +81,25 @@
 			   foreach ($query->result() as $row)
 				{
 					if( $row->frequency == "0") {
-						$this->db->select('uplink_freq');
+						$this->db->select('uplink_freq, downlink_freq');
 						$this->db->where('id', $id); 
 						$query = $this->db->get('cat');
 						
 						if ($query->num_rows() > 0)
 						{
-						foreach ($query->result() as $row)
+							foreach ($query->result() as $row)
 							{
-								echo strtoupper($row->uplink_freq);
+								if ($downlink)
+									echo strtoupper($row->downlink_freq);
+								else	
+									echo strtoupper($row->uplink_freq);
 							}
 						}
 					} else {
-						echo $row->frequency;	
+						if ($downlink)
+							echo "";
+						else	
+							echo strtoupper($row->frequency);	
 					}
 				}
 			}
@@ -168,6 +178,8 @@
 			{
 			   foreach ($query->result() as $row)
 				{
+					$uplink_mode = ""; 
+					$downlink_mode = ""; 
 
 					if ($row->uplink_freq > 144000000 && $row->uplink_freq < 147000000) {
 						$uplink_mode = "V";
@@ -184,8 +196,9 @@
 					} elseif ($row->downlink_freq > 28000000 && $row->downlink_freq < 30000000) {
 						$downlink_mode = "A";
 					}
-
-					echo $uplink_mode."/".$downlink_mode;
+					
+					if ($uplink_mode != "" && $downlink_mode != "")
+						echo $uplink_mode."/".$downlink_mode;
 				}
 			}
 	}
