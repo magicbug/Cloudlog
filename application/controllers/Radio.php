@@ -180,7 +180,7 @@
 				{
 					$uplink_mode = ""; 
 					$downlink_mode = ""; 
-					
+
 					if ($row->uplink_freq > 144000000 && $row->uplink_freq < 147000000) {
 						$uplink_mode = "V";
 					} elseif ($row->uplink_freq > 432000000 && $row->uplink_freq < 438000000) {
@@ -196,8 +196,9 @@
 					} elseif ($row->downlink_freq > 28000000 && $row->downlink_freq < 30000000) {
 						$downlink_mode = "A";
 					}
-
-					echo $uplink_mode."/".$downlink_mode;
+					
+					if ($uplink_mode != "" && $downlink_mode != "")
+						echo $uplink_mode."/".$downlink_mode;
 				}
 			}
 	}
