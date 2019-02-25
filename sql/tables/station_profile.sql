@@ -11,4 +11,4 @@ CREATE TABLE `station_profile` (
   `station_cnty` varchar(200) DEFAULT NULL,
   `station_cq` int(5) DEFAULT NULL,
   `station_itu` int(5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utfmb4;

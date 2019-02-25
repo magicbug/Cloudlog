@@ -13,7 +13,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utfmb4 */;
 
 --
 -- Database: `hrd_2e0sql`
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `dxcc` (
   `lat` float NOT NULL,
   PRIMARY KEY  (`prefix`),
   KEY `prefix` (`prefix`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utfmb4;
 
 --
 -- Dumping data for table `dxcc`
@@ -3291,7 +3291,7 @@ CREATE TABLE IF NOT EXISTS `dxccexceptions` (
   `start` datetime NOT NULL,
   `end` datetime NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=166 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utfmb4 AUTO_INCREMENT=166 ;
 
 --
 -- Dumping data for table `dxccexceptions`
