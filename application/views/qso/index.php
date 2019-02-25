@@ -215,7 +215,11 @@
           </tr>
           <tr>
             <td>Frequency</td>
-            <td><input type="text" id="frequency" name="freq_display" value="" /></td>
+            <td><input type="text" id="frequency" name="freq_display" value="<?php echo $this->session->userdata('freq'); ?>" /></td>
+          </tr>
+          <tr>
+            <td>Frequency (RX)</td>
+            <td><input type="text" id="frequency_rx" name="freq_display_rx" value="<?php echo $this->session->userdata('freq_rx'); ?>" /></td>
           </tr>
         </table>
       </div>
@@ -337,7 +341,13 @@
           $(".band").val(frequencyToBand(result));
         }
       });
-      
+      $.get('radio/frequency_downlink/' + $('select.radios option:selected').val(), function(result) {
+      if(result == "0") {
+      } else {
+        $('#frequency_rx').val(result);
+      }
+      });
+            
       // Get Mode
       $.get('radio/mode/' + $('select.radios option:selected').val(), function(result) {
         if (result == "LSB" || result == "USB" || result == "SSB") {
@@ -415,15 +425,21 @@
       $(window).bind('beforeunload', catcher);
     });
     
-    $.get('qso/band_to_freq/' + $('.band').val() + '/' + $('.mode').val(), function(result) {
+    // Only set the frequency when not set by userdata/PHP.
+    if ($('#frequency').val() == "")
+    {
+      $.get('qso/band_to_freq/' + $('.band').val() + '/' + $('.mode').val(), function(result) {
             $('#frequency').val(result);
-    });  
+            $('#frequency_rx').val("");
+      });
+    } 
   
     /* Calculate Frequency */
       /* on band change */
       $('.band').change(function() {
         $.get('qso/band_to_freq/' + $(this).val() + '/' + $('.mode').val(), function(result) {
             $('#frequency').val(result);
+            $('#frequency_rx').val("");
           });  
       });
       
@@ -431,9 +447,9 @@
       $('.mode').change(function() {
         $.get('qso/band_to_freq/' + $('.band').val() + '/' + $('.mode').val(), function(result) {
             $('#frequency').val(result);
+            $('#frequency_rx').val("");
           });  
-      });
-  
+      });  
     /* On Key up Calculate Bearing and Distance */
     $("#locator").keyup(function(){
       if ($(this).val()) {

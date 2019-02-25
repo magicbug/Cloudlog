@@ -60,7 +60,7 @@ class Logbook_model extends CI_Model {
       'COL_IOTA' => trim($this->input->post('iota_ref')),
       'COL_MY_GRIDSQUARE' => strtoupper($locator),
       'COL_DISTANCE' => "0",
-      'COL_FREQ_RX' => 0,
+      'COL_FREQ_RX' => $this->input->post('freq_display_rx'),
       'COL_BAND_RX' => null,
       'COL_ANT_AZ' => null,
       'COL_ANT_EL' => null,
@@ -141,7 +141,7 @@ class Logbook_model extends CI_Model {
             'COL_IOTA' => trim($this->input->post('iota_ref')),
             'COL_MY_GRIDSQUARE' => $locator,
             'COL_DISTANCE' => "0",
-            'COL_FREQ_RX' => 0,
+            'COL_FREQ_RX' => $this->input->post('freq_display_rx'),
             'COL_BAND_RX' => null,
             'COL_ANT_AZ' => null,
             'COL_ANT_EL' => null,
@@ -255,7 +255,7 @@ class Logbook_model extends CI_Model {
        'COL_IOTA' => $this->input->post('iota_ref'),
        'COL_QTH' => $this->input->post('qth'),
        'COL_PROP_MODE' => $this->input->post('prop_mode'),
-       'COL_FREQ_RX' => '0',
+       'COL_FREQ_RX' => $this->input->post('freq_display_rx'),
        'COL_STX_STRING' => $this->input->post('stx_string'),
        'COL_SRX_STRING' => $this->input->post('srx_string')
     );
