@@ -61,6 +61,18 @@
 			
 	}
 	
+	function json($id)
+	{
+		echo json_encode(array(
+			"uplink_freq" => $this->frequency($id, false),
+			"downlink_freq" => $this->frequency($id, true),
+			"mode" => $this->mode($id),
+			"satmode" => $this->satmode($id),
+			"satname" => $this->satname($id),
+		), JSON_PRETTY_PRINT);
+	}
+
+
 	function frequency_downlink($id) {
 		return $this->frequency($id, true);
 	}
@@ -90,19 +102,20 @@
 							foreach ($query->result() as $row)
 							{
 								if ($downlink)
-									echo strtoupper($row->downlink_freq);
+									return strtoupper($row->downlink_freq);
 								else	
-									echo strtoupper($row->uplink_freq);
+									return strtoupper($row->uplink_freq);
 							}
 						}
 					} else {
 						if ($downlink)
-							echo "";
+							return "";
 						else	
-							echo strtoupper($row->frequency);	
+							return strtoupper($row->frequency);	
 					}
 				}
 			}
+		return ""; 
 	}
 	
 	function mode($id) {
@@ -122,19 +135,20 @@
 				{
 					if($row->radio != "SatPC32") {
 						if(strtoupper($row->mode) == "FMN"){
-							echo "FM";
+							return "FM";
 						} else {
-							echo strtoupper($row->mode);
+							return strtoupper($row->mode);
 						}
 					} else {
 						if(strtoupper($row->uplink_mode) == "FMN"){
-							echo "FM";
+							return "FM";
 						} else {
-							echo strtoupper($row->uplink_mode);
+							return strtoupper($row->uplink_mode);
 						}
 					}
 				}
 			}
+		return "";
 	}
 
 	function satname($id) {
@@ -153,14 +167,15 @@
 			   foreach ($query->result() as $row)
 				{
 					if($row->sat_name == "AO-07") {
-						echo "AO-7";
+						return "AO-7";
 					} elseif ($row->sat_name == "LILACSAT") {
-						echo "CAS-3H";
+						return "CAS-3H";
 					} else {
-						echo strtoupper($row->sat_name);
+						return strtoupper($row->sat_name);
 					}
 				}
 			}
+		return "";
 	}
 
 	function satmode($id) {
@@ -198,9 +213,11 @@
 					}
 					
 					if ($uplink_mode != "" && $downlink_mode != "")
-						echo $uplink_mode."/".$downlink_mode;
+						return $uplink_mode."/".$downlink_mode;
 				}
 			}
+
+			return ""; 
 	}
 	
 	function delete($id) {
