@@ -110,10 +110,13 @@ class Logbook extends CI_Controller {
 		$callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
 	}
 
-	$return['callsign_name'] = $callbook['name'];
-	$return['callsign_qra'] = $callbook['gridsquare'];
-	$return['callsign_qth'] = $callbook['city'];
-	$return['callsign_iota'] = $callbook['iota'];
+	if (isset($callbook))
+	{
+		$return['callsign_name'] = $callbook['name'];
+		$return['callsign_qra'] = $callbook['gridsquare'];
+		$return['callsign_qth'] = $callbook['city'];
+		$return['callsign_iota'] = $callbook['iota'];
+	}
 	$return['bearing'] = $this->bearing($return['callsign_qra']);
 
 	echo json_encode($return, JSON_PRETTY_PRINT);
