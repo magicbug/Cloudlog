@@ -321,7 +321,7 @@
   }
 
   i=0;
-  typeDelay=1000;
+  typeDelay=500;
 
   $(document).ready(function(){
 
@@ -453,46 +453,35 @@
     $("#callsign").keyup(delay(function(){
       if ($(this).val()) {
         /* Find and populate DXCC */
-        $.get('logbook/find_dxcc/' + $(this).val(), function(result) {
+        $.getJSON('logbook/json/' + $(this).val(), function(result)
+        {
           //$('#country').val(result);
-          obj = JSON.parse(result);
-          $('#country').val(convert_case(obj.Name));
-          $('#dxcc_id').val(obj.DXCC);
-          $('#cqz').val(obj.CQZ);
+          $('#country').val(convert_case(result.dxcc.Name));
+          $('#dxcc_id').val(result.dxcc.DXCC);
+          $('#cqz').val(result.dxcc.CQZ);
 
-        });
-  
         /* Find Locator if the field is empty */
         if($('#locator').val() == "") {
-          $.get('logbook/callsign_qra/' + $(this).val(), function(result) {
-            $('#locator').val(result);
-            $('#locator_info').load("logbook/bearing/" + result).fadeIn("slow");
-          });
-
+            $('#locator').val(result.callsign_qra);
+            $('#locator_info').html(result.bearing);
         }
-  
+
         /* Find Operators Name */
         if($('#name').val() == "") {
-          $.get('logbook/callsign_name/' + $(this).val(), function(result) {
-            $('#name').val(result);
-          });
+            $('#name').val(result.callsign_name);
         }
 
         if($('#qth').val() == "") {
-          $.get('logbook/callsign_qth/' + $(this).val(), function(result) {
-            $('#qth').val(result);
-          });
-        }
-    
-        if($('#qth').val() == "") {
-          $.get('logbook/callsign_iota/' + $(this).val(), function(result) {
-            $('#iota_ref').val(result);
-          });
+            $('#qth').val(result.callsign_qth);
         }
 
-        /* Find Callsign Matches */
-        $('#partial_view').load("logbook/partial/" + $(this).val()).fadeIn("slow");
-  
+        if($('#qth').val() == "") {
+            $('#iota_ref').val(result.callsign_iota);
+        }
+
+        /* display past QSOs */
+        $('#partial_view').html(result.partial);
+        });
       } else {
         /* Reset fields ... */
         $('#country').val("");
@@ -502,7 +491,7 @@
         $('#qth').val("");
         $('#locator').val("");
         $('#iota_ref').val("");
-        $('#partial_view').load("logbook/partial/");
+
       }
     }, typeDelay));
     
