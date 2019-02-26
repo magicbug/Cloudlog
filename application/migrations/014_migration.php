@@ -68,6 +68,23 @@ class Migration_migration extends CI_Migration {
 		  PRIMARY KEY (id)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 
+		$this->db->query("CREATE TABLE IF NOT EXISTS `station_profile` (
+		  `station_id` int(11) NOT NULL AUTO_INCREMENT,
+		  `station_profile_name` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+		  `station_gridsquare` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
+		  `station_city` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
+		  `station_iota` varchar(100) CHARACTER SET utf8mb4 NOT NULL,
+		  `station_sota` varchar(10) CHARACTER SET utf8mb4 NOT NULL,
+		  `station_callsign` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL,
+		  `station_dxcc` int(10) DEFAULT NULL,
+		  `station_country` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+		  `station_cnty` varchar(200) CHARACTER SET utf8mb4 DEFAULT NULL,
+		  `station_cq` int(5) DEFAULT NULL,
+		  `station_itu` int(5) DEFAULT NULL,
+		  PRIMARY KEY (`station_id`)
+		) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+			");
+
 		$this->db->query("ALTER TABLE ".$this->config->item('table_name')." CHANGE COLUMN COL_FREQ_RX COL_FREQ_RX bigint(13) DEFAULT NULL; # was int(11) DEFAULT NULL");
 		$this->db->query("ALTER TABLE ".$this->config->item('table_name')." CHANGE COLUMN COL_FREQ COL_FREQ bigint(13) DEFAULT NULL; # was int(11) DEFAULT NULL");
 		$this->db->query("ALTER TABLE ".$this->config->item('table_name')." ENGINE=MyISAM DEFAULT CHARSET=utf8mb4; # was ENGINE=MyISAM DEFAULT CHARSET=latin1");
