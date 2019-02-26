@@ -30,9 +30,16 @@ table .title { font-weight: bold; color: #439BF6; }
 #sat_name { text-transform: uppercase; }
 #sat_mode { text-transform: uppercase; }
 #iota_ref { text-transform: uppercase; }
-
+.workedGrid {
+    background-color: #B33A3A;
+    color: #FFF !important;
+}
+.newGrid {
+	background-color: #4BB543;
+	color: #FFF !important;
+}
 input[type="text"] {
-	color: #000000 !important;
+	color: #000000;
 }
 
 .pull-right { color: #fff; }

@@ -62,12 +62,13 @@ class Logbook extends CI_Controller {
 
 	  $return = [
   		"dxcc" => false,
-		"callsign_name" => "",
-		"callsign_qra"  => "",
-		"callsign_qth"  => "",
-		"callsign_iota" => "",
-		"bearing" 		=> ""
-	];
+  		"callsign_name" => "",
+  		"callsign_qra"  => "",
+  		"callsign_qth"  => "",
+  		"callsign_iota" => "",
+  		"bearing" 		=> "",
+      "workedBefore" => false
+  	];
 
   	$return['dxcc'] = $this->find_dxcc($callsign);
   	$return['partial'] = $this->partial($callsign);
@@ -80,6 +81,7 @@ class Logbook extends CI_Controller {
 		$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
 		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
 		$return['bearing'] = $this->bearing($return['callsign_qra']);
+    $return['workedBefore'] = $this->worked_grid_before($return['callsign_qra']);
 		echo json_encode($return, JSON_PRETTY_PRINT);
 		return;
 	}
@@ -116,12 +118,28 @@ class Logbook extends CI_Controller {
 		$return['callsign_qra'] = $callbook['gridsquare'];
 		$return['callsign_qth'] = $callbook['city'];
 		$return['callsign_iota'] = $callbook['iota'];
+    $return['workedBefore'] = $this->worked_grid_before($return['callsign_qra']);
 	}
 	$return['bearing'] = $this->bearing($return['callsign_qra']);
 
 	echo json_encode($return, JSON_PRETTY_PRINT);
 	return;
   }
+
+  function worked_grid_before($gridsquare)
+  {
+    if (strlen($gridsquare) < 4)
+      return false; 
+
+    $this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($gridsquare, 0, 4));
+    $query = $this->db->get($this->config->item('table_name'), 1, 0);
+    foreach ($query->result() as $workedBeforeRow)
+    {
+      return true;
+    }
+    return false;
+  }
+
 
   /* Used to generate maps for displaying on /logbook/ */
   function qso_map() {
