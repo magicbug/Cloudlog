@@ -285,46 +285,85 @@ class Logbook_model extends CI_Model {
 
     /* Callsign QRA */
 
-    function call_qra($callsign) {
-        $this->db->select('COL_CALL, COL_GRIDSQUARE, COL_TIME_ON');
-        $this->db->where('COL_CALL', $callsign);
-        $where = "COL_GRIDSQUARE != \"\"";
+	function call_qra($callsign) {
+		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_TIME_ON');
+		$this->db->where('COL_CALL', $callsign);
+		$where = "COL_GRIDSQUARE != \"\"";
 
-        $this->db->where($where);
+		$this->db->where($where);
 
-        $this->db->order_by("COL_TIME_ON", "desc");
-        $this->db->limit(1);
-        $query = $this->db->get($this->config->item('table_name'));
-        $callsign = "";
-        if ($query->num_rows() > 0)
-        {
-            $data = $query->row();
-            $callsign = strtoupper($data->COL_GRIDSQUARE);
-        }
+		$this->db->order_by("COL_TIME_ON", "desc");
+		$this->db->limit(1);
+		$query = $this->db->get($this->config->item('table_name'));
+		$callsign = "";
+		if ($query->num_rows() > 0)
+		{
+			$data = $query->row();
+			$callsign = strtoupper($data->COL_GRIDSQUARE);
+		}
 
-            return $callsign;
-    }
+		return $callsign;
+	}
 
-    function call_name($callsign) {
-        $this->db->select('COL_CALL, COL_NAME, COL_TIME_ON');
-        $this->db->where('COL_CALL', $callsign);
-        $where = "COL_NAME != \"\"";
+	function call_name($callsign) {
+		$this->db->select('COL_CALL, COL_NAME, COL_TIME_ON');
+		$this->db->where('COL_CALL', $callsign);
+		$where = "COL_NAME != \"\"";
 
-        $this->db->where($where);
+		$this->db->where($where);
 
-        $this->db->order_by("COL_TIME_ON", "desc");
-        $this->db->limit(1);
-        $query = $this->db->get($this->config->item('table_name'));
-        $name = "";
-        if ($query->num_rows() > 0)
-        {
-            $data = $query->row();
-            $name = $data->COL_NAME;
-        }
+		$this->db->order_by("COL_TIME_ON", "desc");
+		$this->db->limit(1);
+		$query = $this->db->get($this->config->item('table_name'));
+		$name = "";
+		if ($query->num_rows() > 0)
+		{
+			$data = $query->row();
+			$name = $data->COL_NAME;
+		}
 
-        return $name;
-    }
+		return $name;
+	}
 
+	function call_qth($callsign) {
+		$this->db->select('COL_CALL, COL_QTH, COL_TIME_ON');
+		$this->db->where('COL_CALL', $callsign);
+		$where = "COL_QTH != \"\"";
+
+		$this->db->where($where);
+
+		$this->db->order_by("COL_TIME_ON", "desc");
+		$this->db->limit(1);
+		$query = $this->db->get($this->config->item('table_name'));
+		$name = "";
+		if ($query->num_rows() > 0)
+		{
+			$data = $query->row();
+			$name = $data->COL_QTH;
+		}
+
+		return $name;
+	}
+
+	function call_iota($callsign) {
+		$this->db->select('COL_CALL, COL_IOTA, COL_TIME_ON');
+		$this->db->where('COL_CALL', $callsign);
+		$where = "COL_IOTA != \"\"";
+
+		$this->db->where($where);
+
+		$this->db->order_by("COL_TIME_ON", "desc");
+		$this->db->limit(1);
+		$query = $this->db->get($this->config->item('table_name'));
+		$name = "";
+		if ($query->num_rows() > 0)
+		{
+			$data = $query->row();
+			$name = $data->COL_IOTA;
+		}
+
+		return $name;
+	}
   /* Return QSO Info */
   function qso_info($id) {
     $this->db->where('COL_PRIMARY_KEY', $id);

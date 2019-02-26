@@ -1,5 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+
 class Logbook extends CI_Controller {
 
   function index()
@@ -50,6 +51,73 @@ class Logbook extends CI_Controller {
     $this->load->view('view_log/index');
     $this->load->view('layout/footer');
 
+  }
+
+  function json($callsign)
+  {
+	  $this->load->model('user_model');
+	  if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+
+	  $this->load->model('logbook_model');
+
+	  $return = [
+  		"dxcc" => false,
+		"callsign_name" => "",
+		"callsign_qra"  => "",
+		"callsign_qth"  => "",
+		"callsign_iota" => "",
+		"bearing" 		=> ""
+	];
+
+  	$return['dxcc'] = $this->find_dxcc($callsign);
+  	$return['partial'] = $this->partial($callsign);
+
+	// Do we have local data for the Callsign?
+	if($this->logbook_model->call_name($callsign) != null)
+	{
+		$return['callsign_name'] = $this->logbook_model->call_name($callsign);
+		$return['callsign_qra'] = $this->logbook_model->call_qra($callsign);
+		$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
+		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
+		$return['bearing'] = $this->bearing($return['callsign_qra']);
+		echo json_encode($return, JSON_PRETTY_PRINT);
+		return;
+	}
+
+	if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null)
+	{
+		// Lookup using QRZ
+		$this->load->library('qrz');
+
+		if(!$this->session->userdata('qrz_session_key')) {
+			$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+			$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+		}
+
+		$callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'));
+	}
+
+	if ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null)
+	{
+		// Load the HamQTH library
+		$this->load->library('hamqth');
+
+		if(!$this->session->userdata('hamqth_session_key')) {
+		  $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+		  $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+		}
+
+		$callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+	}
+
+	$return['callsign_name'] = $callbook['name'];
+	$return['callsign_qra'] = $callbook['gridsquare'];
+	$return['callsign_qth'] = $callbook['city'];
+	$return['callsign_iota'] = $callbook['iota'];
+	$return['bearing'] = $this->bearing($return['callsign_qra']);
+
+	echo json_encode($return, JSON_PRETTY_PRINT);
+	return;
   }
 
   /* Used to generate maps for displaying on /logbook/ */
@@ -113,142 +181,11 @@ class Logbook extends CI_Controller {
     $this->load->view('view_log/qso', $data);
   }
 
-  function callsign_qra($qra) {
-    $this->load->model('user_model');
-        if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
-
-    $this->load->model('logbook_model');
-
-    if($this->logbook_model->call_qra($qra)) {
-      echo $this->logbook_model->call_qra($qra);
-    } else {
-      if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
-        // Lookup using QRZ
-        $this->load->library('qrz');
-
-        if(!$this->session->userdata('qrz_session_key')) {
-          $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
-          $this->session->set_userdata('qrz_session_key', $qrz_session_key);
-        }
-
-        $callbook = $this->qrz->search($qra, $this->session->userdata('qrz_session_key'));
-        echo $callbook['gridsquare'];
-
-      } elseif ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
-        // Load the HamQTH library
-        $this->load->library('hamqth');
-
-        if(!$this->session->userdata('hamqth_session_key')) {
-          $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
-          $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-        }
-
-        $callbook = $this->hamqth->search($qra, $this->session->userdata('hamqth_session_key'));
-        echo $callbook['gridsquare'];
-
-      }
-    }
-  }
-
-  function callsign_qth($callsign) {
-      if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
-        // Lookup using QRZ
-
-        $this->load->library('qrz');
-
-        if(!$this->session->userdata('qrz_session_key')) {
-          $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
-          $this->session->set_userdata('qrz_session_key', $qrz_session_key);
-        }
-
-        $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'));
-        echo $callbook['city'];
-
-      } elseif ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
-        // Load the HamQTH library
-        $this->load->library('hamqth');
-
-        if(!$this->session->userdata('hamqth_session_key')) {
-          $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
-          $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-        }
-
-        $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
-        echo $callbook['city'];
-
-      }
-  }
-
-  function callsign_iota($callsign) {
-      if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
-        // Lookup using QRZ
-
-        $this->load->library('qrz');
-
-        if(!$this->session->userdata('qrz_session_key')) {
-          $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
-          $this->session->set_userdata('qrz_session_key', $qrz_session_key);
-        }
-
-        $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'));
-        echo $callbook['iota'];
-
-      } elseif ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
-        // Load the HamQTH library
-        $this->load->library('hamqth');
-
-        if(!$this->session->userdata('hamqth_session_key')) {
-          $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
-          $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-        }
-
-        $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
-        echo $callbook['iota'];
-
-      }
-  }
-
-  function callsign_name($callsign) {
-    $this->load->model('user_model');
-        if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
-
-    $this->load->model('logbook_model');
-
-    if($this->logbook_model->call_name($callsign) != null) {
-      echo $this->logbook_model->call_name($callsign);
-    } else {
-      if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
-        // Lookup using QRZ
-
-        $this->load->library('qrz');
-
-        if(!$this->session->userdata('qrz_session_key')) {
-          $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
-          $this->session->set_userdata('qrz_session_key', $qrz_session_key);
-        }
-
-        $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'));
-        echo $callbook['name'];
-      }  elseif ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
-        // Load the HamQTH library
-        $this->load->library('hamqth');
-
-        if(!$this->session->userdata('hamqth_session_key')) {
-          $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
-          $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-        }
-
-        $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
-        echo $callbook['name'];
-
-      }
-    }
-  }
-
   function partial($id) {
     $this->load->model('user_model');
         if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
-
+        
+    $html = "";     
     $this->db->like('COL_CALL', $id);
     $this->db->order_by("COL_TIME_ON", "desc");
     $this->db->limit(16);
@@ -256,32 +193,33 @@ class Logbook extends CI_Controller {
 
     if ($query->num_rows() > 0)
     {
-      echo "<h2>QSOs Matches with ".strtoupper($id)."</h2>";
-      echo "<table class=\"partial\" width=\"100%\">";
-        echo "<tr>";
-          echo "<td>Date</td>";
-          echo "<td>Callsign</td>";
-          echo "<td>RST Sent</td>";
-          echo "<td>RST Recv</td>";
-          echo "<td>Band</td>";
-          echo "<td>Mode</td>";
-        echo "</tr>";
+      $html .= "<h2>QSOs Matches with ".strtoupper($id)."</h2>";
+      $html .= "<table class=\"partial\" width=\"100%\">";
+        $html .= "<tr>";
+          $html .= "<td>Date</td>";
+          $html .= "<td>Callsign</td>";
+          $html .= "<td>RST Sent</td>";
+          $html .= "<td>RST Recv</td>";
+          $html .= "<td>Band</td>";
+          $html .= "<td>Mode</td>";
+        $html .= "</tr>";
       foreach ($query->result() as $row)
       {
-        echo "<tr>";
-          echo "<td>".$row->COL_TIME_ON."</td>";
-          echo "<td>".$row->COL_CALL."</td>";
-          echo "<td>".$row->COL_RST_SENT."</td>";
-          echo "<td>".$row->COL_RST_RCVD."</td>";
+        $html .= "<tr>";
+          $html .= "<td>".$row->COL_TIME_ON."</td>";
+          $html .= "<td>".$row->COL_CALL."</td>";
+          $html .= "<td>".$row->COL_RST_SENT."</td>";
+          $html .= "<td>".$row->COL_RST_RCVD."</td>";
           if($row->COL_SAT_NAME != null) {
-                  echo "<td>".$row->COL_SAT_NAME."</td>";
+                  $html .= "<td>".$row->COL_SAT_NAME."</td>";
           } else {
-                echo "<td>".$row->COL_BAND."</td>";
+                $html .= "<td>".$row->COL_BAND."</td>";
           }
-          echo "<td>".$row->COL_MODE."</td>";
-        echo "</tr>";
+          $html .= "<td>".$row->COL_MODE."</td>";
+        $html .= "</tr>";
       }
-      echo "</table>";
+      $html .= "</table>";
+      return $html;
     } else {
         if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
           // Lookup using QRZ
@@ -293,16 +231,19 @@ class Logbook extends CI_Controller {
           }
 
           $data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'));
-        } else {
+        }
+
+        // There's no hamli integration? Disabled for now.
+        /*else {
           // Lookup using hamli
           $this->load->library('hamli');
 
           $data['callsign'] = $this->hamli->callsign($id);
-        }
+        }*/
 
         $data['id'] = strtoupper($id);
 
-        $this->load->view('search/result', $data);
+        return $this->load->view('search/result', $data, true);
     }
   }
 
@@ -363,7 +304,7 @@ class Logbook extends CI_Controller {
     $data = json_decode($json, TRUE);
 
     // echo ucfirst(strtolower($data['Name']));
-    echo $json;
+    return $data;
   }
 
   /*
@@ -380,19 +321,20 @@ class Logbook extends CI_Controller {
 
 
   /* return station bearing */
-  function bearing() {
+  function bearing($locator) {
       $this->load->library('Qra');
 
-      if($this->uri->segment(3) != null) {
+      if($locator != null) {
         if($this->session->userdata('user_locator') != null){
           $mylocator = $this->session->userdata('user_locator');
         } else {
           $mylocator = $this->config->item('locator');
         }
 
-        $bearing = $this->qra->bearing($mylocator, $this->uri->segment(3));
+        $bearing = $this->qra->bearing($mylocator, $locator);
 
-        echo $bearing;
+        return $bearing;
       }
+      return "";
   }
 }
