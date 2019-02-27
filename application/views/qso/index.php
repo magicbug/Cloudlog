@@ -464,6 +464,27 @@
         if($('#locator').val() == "") {
             $('#locator').val(result.callsign_qra);
             $('#locator_info').html(result.bearing);
+
+            if (result.callsign_qra != "")
+            {
+              if (result.workedBefore)
+              {
+                $('#locator').addClass("workedGrid");
+                $('#locator').attr('title', 'Grid was already worked in the past');
+              }
+              else
+              {
+                $('#locator').addClass("newGrid");
+                $('#locator').attr('title', 'New grid!');
+              }
+            }
+            else
+            {
+              $('#locator').removeClass("workedGrid");
+              $('#locator').removeClass("newGrid");
+              $('#locator').attr('title', '');
+            }
+            
         }
 
         /* Find Operators Name */
