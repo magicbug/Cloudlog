@@ -3903,3 +3903,62 @@ CREATE TABLE `users` (
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES ('4', 'm0abc', '$2a$08$r9UF3YhipAY6htSQoZRjeOFDx3Yuh7Zjuh45vKyUN4gO8g5l.saES', 'demo@demo.com', '99', 'M0ABC', 'io91js', 'Demo', 'Account', '0', null, null, null, null, null);
+
+
+
+CREATE TABLE `dxcc_entities` (
+  `adif` smallint(6) NOT NULL,
+  `name` varchar(150) DEFAULT NULL,
+  `prefix` varchar(10) NOT NULL,
+  `cqz` smallint(6) NOT NULL,
+  `ituz` smallint(6) NOT NULL,
+  `cont` varchar(5) NOT NULL,
+  `long` float NOT NULL,
+  `lat` float NOT NULL,
+  `end` date DEFAULT NULL,
+  `start` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `dxcc_exceptions` (
+  `record` int(11) NOT NULL,
+  `call` varchar(10) DEFAULT NULL,
+  `entity` varchar(255) NOT NULL,
+  `adif` smallint(6) NOT NULL,
+  `cqz` smallint(6) NOT NULL,
+  `cont` varchar(5) NOT NULL,
+  `long` float NOT NULL,
+  `lat` float NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `dxcc_prefixes` (
+  `record` int(11) NOT NULL,
+  `call` varchar(10) DEFAULT NULL,
+  `entity` varchar(255) NOT NULL,
+  `adif` smallint(6) NOT NULL,
+  `cqz` smallint(6) NOT NULL,
+  `cont` varchar(5) NOT NULL,
+  `long` float NOT NULL,
+  `lat` float NOT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for table `dxcc_entities`
+--
+ALTER TABLE `dxcc_entities`
+  ADD PRIMARY KEY (`adif`);
+
+--
+-- Indexes for table `dxcc_exceptions`
+--
+ALTER TABLE `dxcc_exceptions`
+  ADD PRIMARY KEY (`record`);
+
+--
+-- Indexes for table `dxcc_prefixes`
+--
+ALTER TABLE `dxcc_prefixes`
+  ADD PRIMARY KEY (`record`);
