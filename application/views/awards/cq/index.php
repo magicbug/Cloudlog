@@ -1,4 +1,5 @@
-<div id="container">
+<div class="container">
+  <br><br><br>
   <h1><?php echo $page_title?></h1>
 
   <?php $this->load->view("awards/nav_bar")?>

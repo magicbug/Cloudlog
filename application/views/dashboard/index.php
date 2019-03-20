@@ -1,67 +1,37 @@
-	<script type="text/javascript" src="<?php echo base_url() ;?>fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-
-	<script type="text/javascript" src="<?php echo base_url() ;?>fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url() ;?>fancybox/jquery.fancybox-1.3.4.css" media="screen" />
-
-	<script type="text/javascript">
-
-		$(document).ready(function() {
-			$(".qsobox").fancybox({
-				'autoDimensions'	: false,
-				'width'         	: 700,
-				'height'        	: 300,
-				'transitionIn'		: 'fade',
-				'transitionOut'		: 'fade',
-				'type'				: 'iframe'
-			});
-		});
-
-	</script>
-	
-	<script type="text/javascript" src="<?php echo base_url();?>js/leaflet/leafembed.js"></script>
-	<script type="text/javascript">
-	  
-	  	<?php if($qra == "set") { ?>
-		var q_lat = <?php echo $qra_lat; ?>;
-		var q_lng = <?php echo $qra_lng; ?>;	
-		<?php } else { ?>
-		var q_lat = 40.313043;
-		var q_lng = -32.695312;
-		<?php } ?>
-
-		var qso_loc = '<?php echo site_url('dashboard/map');?>';
-		var q_zoom = 2;
-
-	  $(document).ready(function(){
-			initmap();
-	  });
-	</script>
-
-<div id="container">
-
+<div class="container">
+<br><br><br>
 <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
-<div class="alert-message success">
-	  <p>You have had <strong><?php echo $todays_qsos; ?></strong> QSOs Today!</p>
-</div>
+
+	<?php if($todays_qsos >= 1) { ?>
+		<div class="alert alert-success" role="alert">
+			  You have had <strong><?php echo $todays_qsos; ?></strong> QSOs Today!
+		</div>
+	<?php } else { ?>
+		<div class="alert alert-danger" role="alert">
+			  You have made no QSOs today, time to turn on the radio!
+		</div>
+	<?php } ?>
 <?php } ?>
 
 <!-- Map -->
 <div id="map" style="width: 100%; height: 300px"></div>
 
 <!-- Log Data -->
-<div class="row" style="margin-top: 10px;">
-  <div class="span10" style="padding-left: 15px; padding-right: 25px; border-right: 1px solid #dfdfdf;">
-    	<table width="100%" class="zebra-striped">
-			<tr class="titles">
-				<td>Date</td>
-				<td>Time</td>
-				<td>Call</td>
-				<td>Mode</td>
-				<td>Sent</td>
-				<td>Recv</td>
-				<td>Band</td>
-			</tr>
+<div class="row">
+  <div class="col-8" style="padding-left: 15px; padding-right: 25px; border-right: 1px solid #dfdfdf;">
+    	<table class="table table-striped table-hover">
+
+    		<thead>
+				<tr class="titles">
+					<th>Date</th>
+					<th>Time</th>
+					<th>Call</th>
+					<th>Mode</th>
+					<th>Sent</th>
+					<th>Recv</th>
+					<th>Band</th>
+				</tr>
+			</thead>
 
 			<?php $i = 0; 
 			foreach ($last_five_qsos->result() as $row) { ?>
@@ -82,10 +52,10 @@
 		</table>
   </div>
 
-  <div class="span5">
-    	<table width="100%" class="zebra-striped">
+  <div class="col-4">
+    	<table class="table table-striped table-hover">
 			<tr class="titles">
-				<td colspan="2"><span class="icon_stats">QSOs</span></td>
+				<td colspan="2"><i class="fas fa-chart-bar"></i> QSOs</td>
 			</tr>
 			
 			<tr>
@@ -109,7 +79,7 @@
 			</tr>
 			
 			<tr class="titles">
-				<td colspan="2"><span class="icon_world">Countries</span></td>
+				<td colspan="2"><i class="fas fa-globe-europe"></i> Countries</td>
 			</tr>
 			
 			<tr>
@@ -128,7 +98,7 @@
 			</tr>
 					
 			<tr class="titles">
-				<td colspan="2"><span class="icon_qsl">QSL Cards</span></td>
+				<td colspan="2"><i class="fas fa-envelope"></i>QSL Cards</td>
 			</tr>
 			
 			<tr>

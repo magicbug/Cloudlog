@@ -9,11 +9,14 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">
 
+    <!-- Maps -->
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>js/leaflet/leaflet.css" />
+
     <title><?php if(isset($page_title)) { echo $page_title; } ?> - Cloudlog</title>
   </head>
   <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="<?php echo site_url(); ?>">Cloudlog</a>
 
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>

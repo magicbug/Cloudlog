@@ -33,7 +33,8 @@ class DXCC extends CI_Model {
                                                 "6m" =>0,
                                                 "4m" =>0, 
                                                 "2m" =>0,
-                                                "70cm"=>0);
+                                                "70cm"=>0,
+                                            	"23cm"=>0);
                 $last_country = $row->COL_COUNTRY;
             }
 

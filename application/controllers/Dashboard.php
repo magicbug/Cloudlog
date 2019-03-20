@@ -62,9 +62,9 @@ class Dashboard extends CI_Controller {
 
 		$data['page_title'] = "Dashboard";
 
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('dashboard/index');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 	
 	function map() {

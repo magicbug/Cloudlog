@@ -4,6 +4,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
 
+    <script type="text/javascript" src="<?php echo base_url(); ?>js/leaflet/leaflet.js"></script>
+
 <script>
 $(document).ready(function() {
 	$('#create_station_profile #country').val($("#dxcc_select option:selected").text());
@@ -12,6 +14,27 @@ $(document).ready(function() {
 	});
 });
 </script>
+
+    
+    <script type="text/javascript" src="<?php echo base_url();?>js/leaflet/leafembed.js"></script>
+    <script type="text/javascript">
+      
+        <?php if($qra == "set") { ?>
+        var q_lat = <?php echo $qra_lat; ?>;
+        var q_lng = <?php echo $qra_lng; ?>;    
+        <?php } else { ?>
+        var q_lat = 40.313043;
+        var q_lng = -32.695312;
+        <?php } ?>
+
+        var qso_loc = '<?php echo site_url('dashboard/map');?>';
+        var q_zoom = 2;
+
+      $(document).ready(function(){
+            initmap();
+      });
+    </script>
+
 
 
 <?php if ($this->uri->segment(1) == "radio") { ?>

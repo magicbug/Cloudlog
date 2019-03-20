@@ -1,14 +1,14 @@
 
-<div id="container">
+<div class="container">
+    <br><br><br>
 	<h1><?php echo $page_title; ?></h1>
 
 	<!-- Sub Nav for Awards -->
 	
     <?php $this->load->view("awards/nav_bar")?>
     
-    <table id="table-fixed"></table>
 
-	<table width="100%" class="zebra-striped">
+	<table class="table table-striped table-hover">
 	<thead>
         <tr>
         <td style="width:225px">Country (<?php echo count($dxcc)?>)</td>
@@ -25,6 +25,7 @@
         <td>4m</td>
         <td>2m</td>
         <td>70cm</td>
+        <td>23cm</td>
         </tr>
     </thead>
     <tbody>

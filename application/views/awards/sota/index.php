@@ -1,11 +1,13 @@
-<div id="container">
+<div class="container">
+
+	<br><br><br>
 	<h1><?php echo $page_title; ?></h1>
 	
 	<!-- Sub Nav for Awards -->
 	
     <?php $this->load->view("awards/nav_bar")?>
 	
-	<table width="100%" class="zebra-striped">
+	<table class="table table-striped table-hover">
 		
 	<tr>
 		<td>Reference</td>
