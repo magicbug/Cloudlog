@@ -101,7 +101,7 @@
 			</tr>
 					
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-envelope"></i>QSL Cards</td>
+				<td colspan="2"><i class="fas fa-envelope"></i> QSL Cards</td>
 			</tr>
 			
 			<tr>

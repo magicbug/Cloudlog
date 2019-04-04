@@ -1,6 +1,5 @@
 <div class="container">
 
-<br><br><br>
 <h2><?php echo $page_title; ?></h2>
 
 
