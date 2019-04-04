@@ -32,7 +32,7 @@
 	
 
 <div class="container">
-	<br><br><br>
+
 	<h2>Logbook</h2>
 
 	<h3>Filtering on <?php echo $filter ?></h3>
