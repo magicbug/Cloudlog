@@ -1,3 +1,6 @@
+.container {
+	margin-top: 25px;
+}
 .fancybox-content {
     width  : 710px !important;
     height : 310px !important;
