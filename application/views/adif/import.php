@@ -9,7 +9,7 @@
 	  </div>
 	  <div class="card-body">
 	    <h5 class="card-title"></h5>
-	    <p class="card-text"></p>
+	    <p class="card-text">Please make sure there is no extra text at the top of the ADIF file as the import will fail.</p>
 
 	    <p><span class="label important">Important</span> Log files must have the file type .adi</p>
 
