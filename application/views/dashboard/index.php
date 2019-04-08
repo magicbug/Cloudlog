@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container dashboard">
 <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 
 	<?php if($todays_qsos >= 1) { ?>
@@ -16,8 +16,10 @@
 <div id="map" style="width: 100%; height: 300px"></div>
 
 <!-- Log Data -->
-<div class="row">
-  <div class="col-8" style="padding-left: 15px; padding-right: 25px; border-right: 1px solid #dfdfdf;">
+<div class="row logdata">
+  <div class="col-sm-8">
+
+  	<div class="table-responsive">
     	<table class="table table-striped table-hover">
 
     		<thead>
@@ -53,9 +55,11 @@
 				</tr>
 			<?php $i++; } ?>
 		</table>
+	</div>
   </div>
 
-  <div class="col-4">
+  <div class="col-sm-4">
+  	<div class="table-responsive">
     	<table class="table table-striped table-hover">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-chart-bar"></i> QSOs</td>
@@ -119,6 +123,7 @@
 				<td><?php echo $total_qsl_requested; ?></td>
 			</tr>
 		</table>
+	</div>
   </div>
 </div>
 

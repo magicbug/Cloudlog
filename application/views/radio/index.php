@@ -19,7 +19,7 @@
 
 	    <div class="table-responsive">
 		    <!-- Display Radio Statuses -->	  
-				<table class="table table-striped"></table>
+				<table class="table table-striped status"></table>
 			</div>
 	  </div>
 	</div>

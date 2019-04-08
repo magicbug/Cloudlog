@@ -15,6 +15,26 @@ class adif_data extends CI_Model {
         
         return $query;
     }
+
+    function satellte() {
+        $this->db->where('COL_PROP_MODE', 'SAT');
+        $this->db->order_by("COL_TIME_ON", "ASC"); 
+        $query = $this->db->get($this->config->item('table_name'));
+        
+        return $query;
+    }
+
+    function satellte_lotw() {
+        $this->db->where('COL_PROP_MODE', 'SAT');
+
+        $where = "COL_LOTW_QSLRDATE != ''";
+        $this->db->where($where);
+
+        $this->db->order_by("COL_TIME_ON", "ASC"); 
+        $query = $this->db->get($this->config->item('table_name'));
+        
+        return $query;
+    }
     
     function export_custom($from, $to) {
         $this->db->where("COL_TIME_ON BETWEEN '".$from."' AND '".$to."'");

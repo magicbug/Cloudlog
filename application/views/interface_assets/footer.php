@@ -27,7 +27,8 @@ $(document).ready(function() {
     });
 });
 </script>
-    
+
+<?php if ($this->uri->segment(1) == "") { ?>
     <script type="text/javascript" src="<?php echo base_url();?>js/leaflet/leafembed.js"></script>
     <script type="text/javascript">
       
@@ -46,6 +47,7 @@ $(document).ready(function() {
             initmap();
       });
     </script>
+<?php } ?>
 
 
 

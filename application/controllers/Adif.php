@@ -45,7 +45,20 @@ class adif extends CI_Controller {
 
 		$this->load->model('adif_data');
 
-		$data['qsos'] = $this->adif_data->export_all();
+		$data['qsos'] = $this->adif_data->satellite();
+
+		$this->load->view('adif/data/exportsat', $data);
+	}
+
+	// Export all QSO Data in ASC Order of Date.
+	public function exportsatlotw()
+	{
+		// Set memory limit to unlimited to allow heavy usage
+		ini_set('memory_limit', '-1');
+
+		$this->load->model('adif_data');
+
+		$data['qsos'] = $this->adif_data->satellte_lotw();
 
 		$this->load->view('adif/data/exportsat', $data);
 	}
