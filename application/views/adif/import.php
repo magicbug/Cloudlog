@@ -34,6 +34,7 @@
     
     <a href="<?php echo site_url('adif/exportall'); ?>" title="Export All" target="_blank" class="btn btn-outline-secondary btn-sm">Export All QSOs</a>
     
+    <br><br>
 
     <h6>Export Satellite Only QSOs</h6>
     <a href="<?php echo site_url('adif/exportsat'); ?>" title="Export All Satellite Contacts" target="_blank" class="btn btn-outline-secondary btn-sm">Export All Satellite QSOs</a>
