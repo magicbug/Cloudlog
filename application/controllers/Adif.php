@@ -45,7 +45,7 @@ class adif extends CI_Controller {
 
 		$this->load->model('adif_data');
 
-		$data['qsos'] = $this->adif_data->satellite();
+		$data['qsos'] = $this->adif_data->sat_all();
 
 		$this->load->view('adif/data/exportsat', $data);
 	}
