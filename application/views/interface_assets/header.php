@@ -77,7 +77,7 @@
 							<a class="dropdown-item" href="<?php echo site_url('backup');?>" title="Backup Cloudlog"><i class="fas fa-save"></i> Backup</a>
 
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('backup');?>" title="Update Country Files"><i class="fas fa-sync"></i> Update Country Files</a>
+							<a class="dropdown-item" href="<?php echo site_url('update');?>" title="Update Country Files"><i class="fas fa-sync"></i> Update Country Files</a>
 						</div>
         	</li>
 
