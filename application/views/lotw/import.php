@@ -16,6 +16,8 @@
 		<td><input type="radio" name="lotwimport" id="fetch" value="fetch" /> Pull LoTW data for me</td>
 		<td>
 			<p>Cloudlog will use the LoTW username and password stored in your user profile to download a report from LoTW for you. The report Cloudlog downloads will have all confirmations since your last LoTW confirmation, up until now.</p>
+
+			<p><span class="badge badge-info">Important</span> You must have QSOs in the logbook before this option works, it will not populate your log from empty based on LoTW QSOs yet.</p>
 		</td>
 	</tr>
 </table>
