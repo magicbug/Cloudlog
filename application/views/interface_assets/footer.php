@@ -28,7 +28,7 @@ $(document).ready(function() {
 });
 </script>
 
-<?php if ($this->uri->segment(1) == "") { ?>
+<?php if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "dashboard" ) { ?>
     <script type="text/javascript" src="<?php echo base_url();?>js/leaflet/leafembed.js"></script>
     <script type="text/javascript">
       
