@@ -127,7 +127,7 @@ if($_POST) {
 		  	<p>When you login create a new admin account and delete the m0abc user account.</p>
 
 	 <?php else: ?>
-     <p class="error">Please make the /application/config/database.php file writable. <strong>Example</strong>:<br /><br /><code>chmod 777 /application/config/database.php</code></p>
+     <p class="error">Please make the /application/config/ folder writable. <strong>Example</strong>:<br /><br /><code>chmod -R 777 /application/config/</code><br /><br /><i>Don't forget to restore the permissions afterwards.</i></p>
 	 <?php endif; ?>
 
 	</body>
