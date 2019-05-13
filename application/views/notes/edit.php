@@ -1,11 +1,11 @@
-<div id="container">
+<div class="container notes">
 <?php foreach ($note->result() as $row) { ?>
-	<h2>Edit Note - <?php echo $row->title; ?></h2>
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">Edit Note - <?php echo $row->title; ?></h2>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 
-	<div class="row show-grid">
-	  <div class="span13">
-	  
-	
+
 	<?php echo validation_errors(); ?>
 	<form method="post" action="<?php echo site_url('notes/edit'); ?>/<?php echo $id; ?>" name="notes_add" id="notes_add">
 	<table>
@@ -25,62 +25,21 @@
 		
 		<tr>
 			<td><input type="hidden" name="id" value="<?php echo $id; ?>" /></td>
-			<td><textarea name="content" id="markItUp" rows="10" cols="5"><?php echo $row->note; ?></textarea></td>
+			<td><textarea name="content" id="markItUp" rows="10" cols="75"><?php echo $row->note; ?></textarea></td>
 		</tr>
 	</table>
 
 	<div class="actions"><input class="btn primary" type="submit" value="Submit" /></div>
 
 	</form>
+  </div>
+</div>
+	  
+	
 
 
 	  </div>
-	  <div class="span2 offset1">
-	 	 <a class="btn primary" href="<?php echo site_url('notes/edit'); ?>/<?php echo $row->id; ?>">Edit Note</a>
-	 	 <br/><br/>
-	 	 <a class="btn" href="<?php echo site_url('notes/delete'); ?>/<?php echo $row->id; ?>">Delete Note</a>
-	  </div>
+
 	</div>
 <?php } ?>
 </div>
-
-<script type="text/javascript"> 
-<!--
-$(document).ready(function()	{
-	// Add markItUp! to your textarea in one line
-	// $('textarea').markItUp( { Settings }, { OptionalExtraSettings } );
-	$('#markItUp').markItUp(mySettings);
-
-	// You can add content from anywhere in your page
-	// $.markItUp( { Settings } );	
-	$('.add').click(function() {
-		$.markItUp( { 	openWith:'<opening tag>',
-						closeWith:'<\/closing tag>',
-						placeHolder:"New content"
-					}
-				);
-		return false;
-	});
-
-	// And you can add/remove markItUp! whenever you want
-	// $(textarea).markItUpRemove();
-	$('.toggle').click(function() {
-		if ($("#markItUp.markItUpEditor").length === 1) {
-			$("#markItUp").markItUpRemove();
-			$("span", this).text("get markItUp! back");
-		} else {
-			$('#markItUp').markItUp(mySettings);
-			$("span", this).text("remove markItUp!");
-		}
-		return false;
-	});
-});
--->
-</script> 
-<script type="text/javascript" src="<?php echo base_url(); ?>markitup/jquery.markitup.js"></script> 
-<!-- markItUp! toolbar settings --> 
-<script type="text/javascript" src="<?php echo base_url(); ?>markitup/sets/html/set.js"></script> 
-<!-- markItUp! skin --> 
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>markitup/skins/markitup/style.css" /> 
-<!--  markItUp! toolbar skin --> 
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>markitup/sets/html/style.css" /> 

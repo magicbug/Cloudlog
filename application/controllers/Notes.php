@@ -8,9 +8,9 @@ class Notes extends CI_Controller {
 		$this->load->model('note');
 		$data['notes'] = $this->note->list_all();
 		$data['page_title'] = "Notes";
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('notes/main');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 	
 	/* Provides function for adding notes to the system. */
@@ -27,9 +27,9 @@ class Notes extends CI_Controller {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$data['page_title'] = "Add Notes";
-			$this->load->view('layout/header', $data);
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('notes/add');
-			$this->load->view('layout/footer');
+			$this->load->view('interface_assets/footer');
 		}
 		else
 		{	
@@ -47,9 +47,9 @@ class Notes extends CI_Controller {
 		
 		// Display
 		$data['page_title'] = "Note";
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('notes/view');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 	
 	/* Edit Notes */
@@ -68,9 +68,9 @@ class Notes extends CI_Controller {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$data['page_title'] = "Edit Note";
-			$this->load->view('layout/header', $data);
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('notes/edit');
-			$this->load->view('layout/footer');
+			$this->load->view('interface_assets/footer');
 		}
 		else
 		{

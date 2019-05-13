@@ -1,11 +1,10 @@
 
-<div id="container">
+<div class="container notes">
 
-	<h2>Add Note</h2>
+<div class="card">
+  <div class="card-body">
+    <h2 class="card-title">Create Note</h2>
 
-	<div class="row show-grid">
-	  <div class="span13">
-	  
 		<?php echo validation_errors(); ?>
 		<form method="post" action="<?php echo site_url('notes/add'); ?>" name="notes_add" id="notes_add">
 		<table>
@@ -25,58 +24,13 @@
 			
 			<tr>
 				<td></td>
-				<td><textarea name="content" id="markItUp" rows="10" cols="10"></textarea></td>
+				<td><textarea name="content" id="markItUp" rows="10" cols="70"></textarea></td>
 			</tr>
 		</table>
 
 		<div class="actions"><input class="btn primary" type="submit" value="Submit" /></div>
 
-
-
-	  </div>
-	  <div class="span2 offset1">
-	  </div>
-	</div>
-
+  </div>
 </div>
 
-<script type="text/javascript"> 
-<!--
-$(document).ready(function()	{
-	// Add markItUp! to your textarea in one line
-	// $('textarea').markItUp( { Settings }, { OptionalExtraSettings } );
-	$('#markItUp').markItUp(mySettings);
-
-	// You can add content from anywhere in your page
-	// $.markItUp( { Settings } );	
-	$('.add').click(function() {
-		$.markItUp( { 	openWith:'<opening tag>',
-						closeWith:'<\/closing tag>',
-						placeHolder:"New content"
-					}
-				);
-		return false;
-	});
-
-	// And you can add/remove markItUp! whenever you want
-	// $(textarea).markItUpRemove();
-	$('.toggle').click(function() {
-		if ($("#markItUp.markItUpEditor").length === 1) {
-			$("#markItUp").markItUpRemove();
-			$("span", this).text("get markItUp! back");
-		} else {
-			$('#markItUp').markItUp(mySettings);
-			$("span", this).text("remove markItUp!");
-		}
-		return false;
-	});
-});
--->
-</script> 
-<script type="text/javascript" src="<?php echo base_url(); ?>markitup/jquery.markitup.js"></script> 
-<!-- markItUp! toolbar settings --> 
-<script type="text/javascript" src="<?php echo base_url(); ?>markitup/sets/html/set.js"></script> 
-<!-- markItUp! skin --> 
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>markitup/skins/markitup/style.css" /> 
-<!--  markItUp! toolbar skin --> 
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>markitup/sets/html/style.css" /> 
+</div>
