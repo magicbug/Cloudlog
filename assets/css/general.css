@@ -6,3 +6,10 @@
     height : 310px !important;
     margin: 0;
 }
+
+.dashboard {
+	padding-top: 15px;
+}
+.row.logdata {
+	padding-top: 15px;
+}

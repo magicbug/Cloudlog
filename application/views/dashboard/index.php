@@ -28,8 +28,8 @@
 					<th>Time</th>
 					<th>Call</th>
 					<th>Mode</th>
-					<th>Sent</th>
-					<th>Recv</th>
+					<th class="d-none d-sm-table-cell">Sent</th>
+					<th class="d-none d-sm-table-cell">Recv</th>
 					<th>Band</th>
 				</tr>
 			</thead>
@@ -45,8 +45,8 @@
 						</a>
 					</td>
 					<td><?php echo $row->COL_MODE; ?></td>
-					<td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX_STRING) { ?><span class="label"><?php echo $row->COL_STX_STRING;?></span><?php } ?></td>
-					<td><?php echo $row->COL_RST_RCVD; ?> <?php if ($row->COL_SRX_STRING) { ?><span class="label"><?php echo $row->COL_SRX_STRING;?></span><?php } ?></td>
+					<td class="d-none d-sm-table-cell"><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX_STRING) { ?><span class="label"><?php echo $row->COL_STX_STRING;?></span><?php } ?></td>
+					<td  class="d-none d-sm-table-cell"><?php echo $row->COL_RST_RCVD; ?> <?php if ($row->COL_SRX_STRING) { ?><span class="label"><?php echo $row->COL_SRX_STRING;?></span><?php } ?></td>
 					<?php if($row->COL_SAT_NAME != null) { ?>
 					<td><?php echo $row->COL_SAT_NAME; ?></td>
 					<?php } else { ?>
@@ -60,9 +60,9 @@
 
   <div class="col-sm-4">
   	<div class="table-responsive">
-    	<table class="table table-striped table-hover">
+    	<table class="table table-striped">
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-chart-bar"></i> QSOs</td>
+				<td colspan="2"><i class="fas fa-chart-bar"></i> QSOs Breakdown</td>
 			</tr>
 			
 			<tr>
@@ -79,14 +79,13 @@
 				<td>Month</td>
 				<td><?php echo $month_qsos; ?></td>
 			</tr>
+		</table>
 
-			<tr>
-				<td></td>
-				<td></td>
-			</tr>
-			
+
+
+		<table class="table table-striped">
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-globe-europe"></i> Countries</td>
+				<td colspan="2"><i class="fas fa-globe-europe"></i> Countries Breakdown</td>
 			</tr>
 			
 			<tr>
@@ -103,7 +102,10 @@
 				<td></td>
 				<td></td>
 			</tr>
-					
+		</table>
+
+		<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
+		<table class="table table-striped">	
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-envelope"></i> QSL Cards</td>
 			</tr>
@@ -123,6 +125,7 @@
 				<td><?php echo $total_qsl_requested; ?></td>
 			</tr>
 		</table>
+		<?php } ?>
 	</div>
   </div>
 </div>
