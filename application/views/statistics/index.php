@@ -95,20 +95,42 @@
 	  }
 	</script>
 
-<div id="container">
+<div class="container statistics">
 
-	<h2><?php echo $page_title; ?></h2>
 
-	<ul class="tabs">
-	  <li class="active"><a href="#home">General</a></li>
-	  <li><a href="#space">Satellite Contacts</a></li>
-	  <li><a href="statistics/custom">Custom</a></li>
-	</ul>
-	 
-	<div class="pill-content">
-	  <div class="active" id="home">
-	<div id="totals_year" style="width: 900px; height: 500px;"></div><div id="modechart_div"></div> <div id="bandchart_div"></div></div>
-	  <div id="space"><div id="satchart_div"></div></div>
-	</div>
+<h2>
+  <?php echo $page_title; ?>
+  <small class="text-muted">Explore the logbook.</small>
+</h2>
+
+
+<br>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">General</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Satellites</a>
+  </li>
+  <li class="nav-item">
+    <a href="/index.php/statistics/custom" class="nav-link" role="tab">Custom</a>
+  </li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+  	<div id="totals_year" style="width: 900px; height: 500px;"></div>
+	<div id="modechart_div"></div>
+	<div id="bandchart_div"></div>
+  </div>
+  
+  <div class="tab-pane fade" id="satellite" role="tabpanel" aria-labelledby="satellite-tab">
+  	<div id="satchart_div"></div>
+  </div>
+  
+</div>
+
+
 
 </div>

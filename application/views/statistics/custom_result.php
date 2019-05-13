@@ -5,15 +5,13 @@
 	});
 </script>
 
-<div id="container">
+<div class="container statistics_custom">
 
-	<h2><?php echo $page_title; ?></h2>
+<h2>
+  <?php echo $page_title; ?>
+  <small class="text-muted">Explore the logbook.</small>
+</h2>
 
-	<ul class="tabs">
-	  <li><a href="<?php echo site_url('statistics');?>#home">General</a></li>
-	  <li><a href="<?php echo site_url('statistics');?>#space">Satellite Contacts</a></li>
-	  <li class="active"><a href="<?php echo site_url('statistics');?>/custom">Custom</a></li>
-	</ul>
 	
 		<p>This is a work in-progress</p>
 		

@@ -39,11 +39,15 @@ class Statistics extends CI_Controller {
 		
 		$data['totals_year'] = $this->logbook_model->totals_year();
 	
-		$data['page_title'] = "Statistics";
+		// Render User Interface
 
-		$this->load->view('layout/header', $data);
+		// Set Page Title
+		$data['page_title'] = "Statistics";
+		
+		// Load Views
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('statistics/index');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 	
 	function custom() {
@@ -72,9 +76,9 @@ class Statistics extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->load->view('layout/header', $data);
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('statistics/custom', $data);
-			$this->load->view('layout/footer');
+			$this->load->view('interface_assets/footer');
 		}
 		else
 		{
@@ -83,10 +87,9 @@ class Statistics extends CI_Controller {
 	
 			$data['result'] = $this->stats->result();
 		
-			$this->load->view('layout/header', $data);
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('statistics/custom_result');
-			$this->load->view('layout/footer');
-	
+			$this->load->view('interface_assets/footer');
 		}
 	
 	}
