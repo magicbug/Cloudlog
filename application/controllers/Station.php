@@ -1,9 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /*
-	Handles Displaying of information for awards.
-	
-	These are taken from comments fields or ADIF fields 
+	Handles Displaying of information for station tools.
 */
 
 class Station extends CI_Controller {
