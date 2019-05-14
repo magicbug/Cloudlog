@@ -47,9 +47,9 @@ class Logbook extends CI_Controller {
 		// load the view
 		$data['page_title'] = "Logbook";
 
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('view_log/index');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 
 	}
 

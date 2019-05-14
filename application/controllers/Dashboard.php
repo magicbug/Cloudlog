@@ -2,13 +2,6 @@
 
 class Dashboard extends CI_Controller {
 
-	/*
-		TODO
-			- DXCLuster Spots
-			- Breakdown of QSOs per band/mode
-			- Countries worked
-	*/
-
 	public function index()
 	{
 		// Check our version and run any migrations

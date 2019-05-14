@@ -87,5 +87,25 @@ $(document).ready(function(){
 </script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "logbook") { ?>
+    <script type="text/javascript" src="<?php echo base_url();?>js/leaflet/leafembed.js"></script>
+    <script type="text/javascript">
+      
+        <?php if($qra == "set") { ?>
+        var q_lat = <?php echo $qra_lat; ?>;
+        var q_lng = <?php echo $qra_lng; ?>;    
+        <?php } else { ?>
+        var q_lat = 40.313043;
+        var q_lng = -32.695312;
+        <?php } ?>
+
+        var qso_loc = '<?php echo site_url('logbook/qso_map/25/'.$this->uri->segment(3)); ?>';
+        var q_zoom = 2;
+
+        initmap();
+
+    </script>
+<?php } ?>
+
   </body>
 </html>

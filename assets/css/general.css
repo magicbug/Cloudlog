@@ -29,3 +29,33 @@
 .search {
 	padding-top: 15px;
 }
+
+.logbook {
+	padding-top: 15px;
+}
+
+TD.qsl{
+    width: 20px;
+}
+TD.eqsl{
+    width: 33px;
+}
+.eqsl-green{
+    color: #00A000;
+    font-size: 1.1em;
+}
+.eqsl-red{
+    color: #F00;
+    font-size: 1.1em;
+}
+TD.lotw{
+    width: 33px;
+}
+.lotw-green{
+    color: #00A000;
+    font-size: 1.1em;
+}
+.lotw-red{
+    color: #F00;
+    font-size: 1.1em;
+}
