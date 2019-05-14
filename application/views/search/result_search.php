@@ -1,4 +1,6 @@
-	<table width="100%">
+
+	<div class="table-responsive">
+	<table class="table table-striped table-hover">
 		<tr class="titles">
 			<td>Date</td>
 			<td>Time</td>
@@ -82,6 +84,7 @@
 		<?php $i++; } ?>
 		
 	</table>
+</div>
 <style>
 TD.qsl{
     width: 20px;

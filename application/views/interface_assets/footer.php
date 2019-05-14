@@ -66,5 +66,26 @@ $(document).ready(function() {
 </script>
 <?php } ?>
 
+
+<?php if ($this->uri->segment(1) == "search") { ?>
+<script type="text/javascript">
+i=0;
+$(document).ready(function(){
+
+    $('#partial_view').load("logbook/search_result/<?php echo $this->input->post('callsign'); ?>", function() {
+    });
+
+  $("#callsign").keyup(function(){
+    if ($(this).val()) {
+
+        $('#partial_view').load("logbook/search_result/" + $(this).val(), function() {
+        });
+    }
+
+  });
+});
+</script>
+<?php } ?>
+
   </body>
 </html>

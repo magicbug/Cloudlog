@@ -1,4 +1,5 @@
-	<table class="zebra-striped" width="100%">
+<div class="table-responsive">
+	<table class="table table-striped table-hover">
 		<tr class="titles">
 			<td>Date</td>
 			<td>Time</td>
@@ -24,7 +25,7 @@
 			<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
 			<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); ?></td>
 			<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
-			<td><a class="qsobox" href="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>"><?php echo strtoupper($row->COL_CALL); ?></a></td>
+			<td><a data-fancybox data-type="iframe" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;"><?php echo strtoupper($row->COL_CALL); ?></a></td>
 			<td><?php echo $row->COL_MODE; ?></td>
 			<td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX_STRING) { ?><span class="label"><?php echo $row->COL_STX_STRING;?></span><?php } ?></td>
 			<td><?php echo $row->COL_RST_RCVD; ?> <?php if ($row->COL_SRX_STRING) { ?><span class="label"><?php echo $row->COL_SRX_STRING;?></span><?php } ?></td>
@@ -73,8 +74,7 @@
 			</td>
 			<?php } ?>
 
-			<td><a class="editbox" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" ><img src="<?php echo base_url(); ?>/images/application_edit.png" width="16" height="16" alt="Edit" />
-			</a></td>
+			<td><a class="btn btn-primary" role="button" data-fancybox data-type="iframe" data-src="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit</a></td>
 			<?php if($this->config->item('callsign_tags') == true) { ?>
 				<?php if($row->COL_STATION_CALLSIGN	 != null) { ?>
 				<td><span class="label notice"><?php echo $row->COL_STATION_CALLSIGN; ?></span></td>
@@ -94,6 +94,7 @@
 	</div>
 	<?php } ?>
 
+</div>
 </div>
 
 <style>
