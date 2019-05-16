@@ -26,7 +26,7 @@
 		  <button type="submit" class="btn btn-primary mb-2" value="Upload">Upload</button>
 		</form>
 
-		<p><span class="badge badge-warning">Warning</span> Maximum file upload size is <?php echo $max_upload; ?> Megabytes.</p>
+		<p><span class="badge badge-warning">Warning</span> Maximum file upload size is <?php echo $max_upload; ?> MB.</p>
 
 	  </div>
 	</div>
