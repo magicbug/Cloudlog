@@ -813,6 +813,7 @@ class Logbook_model extends CI_Model {
         }else{
             $freqlng = 0;
         }
+
         if(isset($record['freq']) && $freqlng < 7 ) {
             $cleansedstring = preg_replace('#\W#', '', $record['freq']);
             $freq = $cleansedstring."000";
@@ -853,18 +854,22 @@ class Logbook_model extends CI_Model {
         if(isset($record['band'])) {
                 $band = $record['band'];
         } else {
+                if (isset($record['freq'])){
                 $myfreq = str_replace(array('.', ','), '' , $record['freq'].'0');
 
                 $band = $CI->frequency->GetBand($myfreq);
+              }
         }
 
 
         if(isset($record['band_rx'])) {
                 $band_rx = $record['band_rx'];
         } else {
-                $myfreq = str_replace(array('.', ','), '' , $record['freq'].'0');
+                if (isset($record['freq'])){
+                  $myfreq = str_replace(array('.', ','), '' , $record['freq'].'0');
 
-                $band_rx = $CI->frequency->GetBand($myfreq);
+                  $band_rx = $CI->frequency->GetBand($myfreq);
+                }
         }
 
 
