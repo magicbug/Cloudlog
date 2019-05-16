@@ -874,6 +874,13 @@ class Logbook_model extends CI_Model {
                 }
         }
 
+        if(isset($record['CQZ'])) {
+          $cq_zone = $record['CQZ'];
+        } elseif(isset($dxcc[2])) {
+          $cq_zone = $dxcc[2];
+        } else {
+          $cq_zone = "";
+        }
 
         $this->db->where('COL_CALL', $record['call']);
         $this->db->where('COL_TIME_ON', $time_on);
@@ -909,7 +916,7 @@ class Logbook_model extends CI_Model {
                 'COL_CONTEST_ID' => (!empty($record['contest_id'])) ? $record['contest_id'] : '',
                 'COL_COUNTRY' => (!empty($record['country'])) ? $record['country'] : '',
                 'COL_COUNTRY_INTL' => (!empty($record['country_intl'])) ? $record['country_intl'] : '',
-                'COL_CQZ' => $dxcc[2],
+                'COL_CQZ' => $cq_zone,
                 'COL_CREDIT_GRANTED' => (!empty($record['credit_granted'])) ? $record['credit_granted'] : '',
                 'COL_CREDIT_SUBMITTED' => (!empty($record['credit_submitted'])) ? $record['credit_submitted'] : '',
                 'COL_DARC_DOK' => (!empty($record['darc_dok'])) ? $record['darc_dok'] : '',
