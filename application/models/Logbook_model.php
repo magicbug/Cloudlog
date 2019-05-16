@@ -869,6 +869,8 @@ class Logbook_model extends CI_Model {
                   $myfreq = str_replace(array('.', ','), '' , $record['freq'].'0');
 
                   $band_rx = $CI->frequency->GetBand($myfreq);
+                } else {
+                  $band_rx = "";
                 }
         }
 
