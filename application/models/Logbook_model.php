@@ -882,6 +882,8 @@ class Logbook_model extends CI_Model {
           $cq_zone = "";
         }
 
+        exit;
+
         $this->db->where('COL_CALL', $record['call']);
         $this->db->where('COL_TIME_ON', $time_on);
         $check = $this->db->get($this->config->item('table_name'));
@@ -914,7 +916,7 @@ class Logbook_model extends CI_Model {
                 'COL_CONT' => (!empty($record['cont'])) ? $record['cont'] : '',
                 'COL_CONTACTED_OP' => (!empty($record['contacted_op'])) ? $record['contacted_op'] : '',
                 'COL_CONTEST_ID' => (!empty($record['contest_id'])) ? $record['contest_id'] : '',
-                'COL_COUNTRY' => (!empty($record['country'])) ? $record['country'] : '',
+                'COL_COUNTRY' => $country,
                 'COL_COUNTRY_INTL' => (!empty($record['country_intl'])) ? $record['country_intl'] : '',
                 'COL_CQZ' => $cq_zone,
                 'COL_CREDIT_GRANTED' => (!empty($record['credit_granted'])) ? $record['credit_granted'] : '',
