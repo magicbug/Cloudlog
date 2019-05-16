@@ -882,8 +882,6 @@ class Logbook_model extends CI_Model {
           $cq_zone = "";
         }
 
-        exit;
-
         $this->db->where('COL_CALL', $record['call']);
         $this->db->where('COL_TIME_ON', $time_on);
         $check = $this->db->get($this->config->item('table_name'));
