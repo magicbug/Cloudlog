@@ -34,6 +34,11 @@
 	padding-top: 15px;
 }
 
+.adif .alert p {
+    margin-bottom: 0rem;
+}
+
+
 TD.qsl{
     width: 20px;
 }
