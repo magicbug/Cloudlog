@@ -43,7 +43,7 @@
 						?>
 
 					</td>
-					<td><span class="btn btn-outline-primary btn-sm"><?php echo ucfirst($row->status); ?></span> - <a href="<?php echo site_url('/api/validate/?key='.$row->key); ?>" class="btn btn-success btn-sm">Test</td>
+					<td><span class="btn btn-outline-primary btn-sm"><?php echo ucfirst($row->status); ?></span> <a href="<?php echo site_url('/api/validate/?key='.$row->key); ?>" class="btn btn-success btn-sm">Test</td>
 				</tr>
 
 			<?php } ?>
