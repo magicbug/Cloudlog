@@ -106,10 +106,7 @@ class adif extends CI_Controller {
 		{
 			$data['error'] = $this->upload->display_errors();
 
-			$max_upload = min(ini_get('post_max_size'), ini_get('upload_max_filesize'));
-			$max_upload = str_replace('M', '', $max_upload);
-
-			$data['max_upload'] = $max_upload * 1024;
+			$data['max_upload'] = ini_get('upload_max_filesize');
 
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('adif/import');
