@@ -34,8 +34,8 @@ class Update extends CI_Controller {
 			$startinfo = strtotime($record->start);
             $endinfo = strtotime($record->end);
             
-            $start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : "";
-            $end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : "";
+            $start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : null;
+            $end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : null;
         
             if(!$entity->cqz) {
                 $data = array(
@@ -47,6 +47,7 @@ class Update extends CI_Controller {
                     'adif' => (int) $entity->adif,
                     'name' =>  (string) $entity->name,
                     'prefix' => (string)  $entity->prefix,
+                    'ituz' => (float) $entity->ituz,
                     'cqz' => (int) $entity->cqz,
                     'cont' => (string) $entity->cont,
                     'long' => (float) $entity->long,
@@ -80,8 +81,8 @@ class Update extends CI_Controller {
 			$startinfo = strtotime($record->start);
             $endinfo = strtotime($record->end);
             
-            $start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : "";
-            $end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : "";
+            $start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : null;
+            $end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : null;
 
             $data = array(
             	'record' => (int) $record->attributes()->record,
@@ -120,8 +121,8 @@ class Update extends CI_Controller {
 			$startinfo = strtotime($record->start);
             $endinfo = strtotime($record->end);
             
-            $start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : "";
-            $end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : "";
+            $start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : null;
+            $end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : null;
             
             $data = array(
             	'record' => (int) $record->attributes()->record,
