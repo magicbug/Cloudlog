@@ -90,7 +90,7 @@ $(document).ready(function(){
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "logbook") { ?>
-    <script type="text/javascript" src="<?php echo base_url();?>js/leaflet/leafembed.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js"></script>
     <script type="text/javascript">
       
         <?php if($qra == "set") { ?>
