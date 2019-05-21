@@ -16,6 +16,8 @@
     <!-- Maps -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/leaflet/leaflet.css" />
 
+    <link rel="icon" href="<?php echo base_url(); ?>/favicon.ico">
+
     <title><?php if(isset($page_title)) { echo $page_title; } ?> - Cloudlog</title>
   </head>
   <body>
