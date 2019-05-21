@@ -209,13 +209,13 @@ class Logbook extends CI_Controller {
 		$html = "";     
 		$this->db->like('COL_CALL', $id);
 		$this->db->order_by("COL_TIME_ON", "desc");
-		$this->db->limit(16);
+		$this->db->limit(5);
 		$query = $this->db->get($this->config->item('table_name'));
 
 		if ($query->num_rows() > 0)
 		{
-			$html .= "<h2>QSOs Matches with ".strtoupper($id)."</h2>";
-			$html .= "<table class=\"partial\" width=\"100%\">";
+			$html .= "<div class=\"table-responsive\">";
+			$html .= "<table class=\"table\">";
 				$html .= "<tr>";
 					$html .= "<td>Date</td>";
 					$html .= "<td>Callsign</td>";
@@ -240,6 +240,7 @@ class Logbook extends CI_Controller {
 				$html .= "</tr>";
 			}
 			$html .= "</table>";
+			$html .= "</div>";
 			return $html;
 		} else {
 				if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
@@ -342,8 +343,9 @@ class Logbook extends CI_Controller {
 
 
 	/* return station bearing */
-	function bearing($locator) {
+	function searchbearing($locator) {
 			$this->load->library('Qra');
+
 
 			if($locator != null) {
 				if($this->session->userdata('user_locator') != null){
@@ -351,6 +353,29 @@ class Logbook extends CI_Controller {
 				} else {
 					$mylocator = $this->config->item('locator');
 				}
+
+
+
+				$bearing = $this->qra->bearing($mylocator, $locator);
+
+				echo $bearing;
+			}
+			return "";
+	}
+
+	/* return station bearing */
+	function bearing($locator) {
+			$this->load->library('Qra');
+
+
+			if($locator != null) {
+				if($this->session->userdata('user_locator') != null){
+					$mylocator = $this->session->userdata('user_locator');
+				} else {
+					$mylocator = $this->config->item('locator');
+				}
+
+
 
 				$bearing = $this->qra->bearing($mylocator, $locator);
 

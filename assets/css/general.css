@@ -39,6 +39,31 @@
 }
 
 
+.qso_panel {
+    padding-top: 25px;
+}
+
+.qso_panel #callsign {
+    text-transform: uppercase;
+}
+
+.qso_panel #locator {
+    text-transform: uppercase;
+}
+
+.workedGrid {
+    border-color: green;
+}
+
+.newGrid {
+    border-color: red;
+    border-width: 2px;
+}
+
+#country {
+    border: none;
+}
+
 TD.qsl{
     width: 20px;
 }

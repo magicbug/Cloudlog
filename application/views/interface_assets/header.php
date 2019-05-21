@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css">
 
     <!-- Maps -->
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>js/leaflet/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/leaflet/leaflet.css" />
 
     <title><?php if(isset($page_title)) { echo $page_title; } ?> - Cloudlog</title>
   </head>

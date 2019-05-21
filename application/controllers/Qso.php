@@ -23,7 +23,7 @@ class QSO extends CI_Controller {
 		$data['notice'] = false;
 		$data['stations'] = $this->stations->all();
 		$data['radios'] = $this->cat->radios();
-		$data['query'] = $this->logbook_model->last_custom('16');
+		$data['query'] = $this->logbook_model->last_custom('5');
 		
 		$this->load->library('form_validation');
 
@@ -35,9 +35,9 @@ class QSO extends CI_Controller {
 		{
 			$data['page_title'] = "Add QSO";
 
-			$this->load->view('layout/header', $data);
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('qso/index');
-			$this->load->view('layout/footer');
+			$this->load->view('interface_assets/footer');
 		}
 		else
 		{
@@ -67,8 +67,8 @@ class QSO extends CI_Controller {
 
 			$this->session->set_userdata($qso_data);
 				
-			// Get last 16 qsos
-			$data['query'] = $this->logbook_model->last_custom('16');
+			// Get last 5 qsos
+			$data['query'] = $this->logbook_model->last_custom('5');
 			 
 			// Set Any Notice Messages
 			$data['notice'] = "QSO Added";
@@ -76,9 +76,9 @@ class QSO extends CI_Controller {
 			// Load view to create another contact
 			$data['page_title'] = "Add QSO";
 
-			$this->load->view('layout/header', $data);
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('qso/index');
-			$this->load->view('layout/footer');
+			$this->load->view('interface_assets/footer');
 		}
 	}
 	
