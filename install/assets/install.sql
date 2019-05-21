@@ -115,7 +115,7 @@ CREATE TABLE `contests` (
 -- ----------------------------
 DROP TABLE IF EXISTS `dxcc`;
 CREATE TABLE `dxcc` (
-                      `prefix` varchar(10) NOT NULL,
+                      `prefix` varchar(32) NOT NULL,
                       `name` varchar(150) DEFAULT NULL,
                       `cqz` float NOT NULL,
                       `ituz` float NOT NULL,
@@ -3555,7 +3555,7 @@ CREATE TABLE `migrations` (
 -- ----------------------------
 -- Records of migrations
 -- ----------------------------
-INSERT INTO `migrations` VALUES ('14');
+INSERT INTO `migrations` VALUES ('15');
 
 -- ----------------------------
 -- Table structure for notes
@@ -3909,7 +3909,7 @@ INSERT INTO `users` VALUES ('4', 'm0abc', '$2a$08$r9UF3YhipAY6htSQoZRjeOFDx3Yuh7
 CREATE TABLE `dxcc_entities` (
   `adif` smallint(6) NOT NULL,
   `name` varchar(150) DEFAULT NULL,
-  `prefix` varchar(10) NOT NULL,
+  `prefix` varchar(32) NOT NULL,
   `cqz` smallint(6) NOT NULL,
   `ituz` smallint(6) NOT NULL,
   `cont` varchar(5) NOT NULL,
@@ -3921,7 +3921,7 @@ CREATE TABLE `dxcc_entities` (
 
 CREATE TABLE `dxcc_exceptions` (
   `record` int(11) NOT NULL,
-  `call` varchar(10) DEFAULT NULL,
+  `call` varchar(32) DEFAULT NULL,
   `entity` varchar(255) NOT NULL,
   `adif` smallint(6) NOT NULL,
   `cqz` smallint(6) NOT NULL,
@@ -3934,7 +3934,7 @@ CREATE TABLE `dxcc_exceptions` (
 
 CREATE TABLE `dxcc_prefixes` (
   `record` int(11) NOT NULL,
-  `call` varchar(10) DEFAULT NULL,
+  `call` varchar(32) DEFAULT NULL,
   `entity` varchar(255) NOT NULL,
   `adif` smallint(6) NOT NULL,
   `cqz` smallint(6) NOT NULL,
