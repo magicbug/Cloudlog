@@ -1,19 +1,16 @@
 <div class="container qso_panel">
 
-
 <?php if($notice) { ?>
-<div class="alert-message info">
-        <?php echo $notice; ?>
+<div class="alert alert-info" role="alert">
+  <?php echo $notice; ?>
 </div>
 <?php } ?>
 
 <?php if(validation_errors()) { ?>
-<div class="alert-message error">
-        <?php echo validation_errors(); ?>
+<div class="alert alert-warning" role="alert">
+  <?php echo validation_errors(); ?>
 </div>
 <?php } ?>
-
-
 
 <div class="row">
   
