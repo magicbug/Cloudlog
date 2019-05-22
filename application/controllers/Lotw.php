@@ -60,7 +60,14 @@ class Lotw extends CI_Controller {
 				}
 
 				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
-				$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd']);
+
+				if($status == "No Match") {
+					// Create the Entry
+					$this->logbook_model->import($record);
+				} else {
+					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd']);
+				}
+
 
 				$table .= "<tr>";
 					$table .= "<td>".$time_on."</td>";
