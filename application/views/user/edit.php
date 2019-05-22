@@ -107,7 +107,7 @@
 
 			<div class="form-group">
 				<label>eQSL.cc Username</label>
-				<input class="form-control" type="password" name="user_lotw_password" />
+				<input class="form-control" type="text" name="user_lotw_password" />
 					<?php if(isset($lotwpassword_error)) { echo "<div class=\"small error\">".$lotwpassword_error."</div>"; } else { ?>
 					<div class="small">Leave blank to keep existing password</div></td>
 					<?php } ?>
