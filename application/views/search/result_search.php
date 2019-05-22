@@ -45,20 +45,8 @@
 			<td><?php echo $row->COL_COUNTRY; ?></td>
 			<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
 			<td>
-				<?php
-					if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_SENT == "Y") 
-					{
-				?>
-					<img src="<?php echo base_url();?>images/icons/qslcard.png" alt="QSL Cards Both sent and received" title="QSL Cards Both sent and received" />
-				<?php
-					} elseif($row->COL_QSL_RCVD == "Y") {
-				?>
-					<img src="<?php echo base_url();?>images/icons/qslcard_in.png" alt="QSL Cards received" title="QSL Cards received" />
-				<?php
-					} elseif($row->COL_QSL_SENT == "Y") {
-				?>
-					<img src="<?php echo base_url();?>images/icons/qslcard_sent.png" alt="QSL Cards sent" title="QSL Cards sent" />
-				<?php } ?>
+				<span class="qsl-<?php echo ($row->COL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
+				<span class="qsl-<?php echo ($row->COL_QSL_RCVD=='Y')?'green':'red'?>">&#9650;</span>
 			</td>
 
 			<?php if ($this->session->userdata('user_eqsl_name')){ ?>
