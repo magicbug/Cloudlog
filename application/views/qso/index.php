@@ -69,7 +69,7 @@
               <!-- Callsign Input -->
               <div class="form-group">
                 <label for="callsign">Callsign</label>
-                <input type="text" class="form-control" id="callsign" name="callsign">
+                <input type="text" class="form-control" id="callsign" name="callsign" required>
                 <small id="callsign_info" class="form-text text-muted"></small>
               </div>
 
