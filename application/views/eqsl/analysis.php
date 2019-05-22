@@ -32,12 +32,3 @@
 </div>
 
 </div>
-
-
-
-<div class="container">
-<h2><?php echo $page_title; ?></h2>
-
-
-
-</div>
