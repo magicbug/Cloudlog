@@ -52,12 +52,12 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="start_date">Date</label>
-                  <input type="text" class="form-control" name="start_date" id="start_date" value="<?php echo date('d-m-Y'); ?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
+                  <input type="text" class="form-control form-control-sm" name="start_date" id="start_date" value="<?php echo date('d-m-Y'); ?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
                 </div>
 
                 <div class="form-group col-md-6">
                   <label for="start_time">Time</label>
-                  <input type="text" class="form-control" name="start_time" id="start_time" value="<?php echo date('H:i'); ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
+                  <input type="text" class="form-control form-control-sm" name="start_time" id="start_time" value="<?php echo date('H:i'); ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
                 </div>
 
                 <?php if ( $_GET['manual'] == 0 ) { ?>
@@ -77,7 +77,7 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="mode">Mode</label>
-                  <select id="mode" class="custom-select mode" name="mode">
+                  <select id="mode" class="form-control mode form-control-sm" name="mode">
                   <?php
                       $this->load->library('frequency');
                       foreach(Frequency::modes as $mode){
@@ -90,7 +90,7 @@
                 <div class="form-group col-md-6">
                   <label for="band">Band</label>
 
-                  <select id="band" class="custom-select" name="band">
+                  <select id="band" class="form-control form-control-sm" name="band">
                       <option value="160m" <?php if($this->session->userdata('band') == "160m") { echo "selected=\"selected\""; } ?>>160m</option>
                       <option value="80m" <?php if($this->session->userdata('band') == "80m") { echo "selected=\"selected\""; } ?>>80m</option>
                       <option value="60m" <?php if($this->session->userdata('band') == "60m") { echo "selected=\"selected\""; } ?>>60m</option>
@@ -117,33 +117,33 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="rst_sent">RST (S)</label>
-                  <input type="text" class="form-control" name="rst_sent" id="rst_sent" value="59">
+                  <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
                 </div>
 
                 <div class="form-group col-md-6">
                   <label for="rst_recv">RST (R)</label>
-                  <input type="text" class="form-control" name="rst_recv" id="rst_recv" value="59">
+                  <input type="text" class="form-control form-control-sm" name="rst_recv" id="rst_recv" value="59">
                 </div>
               </div>
 
               <div class="form-group row">
                   <label for="name" class="col-sm-3 col-form-label">Name</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" name="name" id="name" value="">
+                    <input type="text" class="form-control form-control-sm" name="name" id="name" value="">
                 </div>
               </div>
 
               <div class="form-group row">
                 <label for="qth" class="col-sm-3 col-form-label">Location</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" name="qth" id="qth" value="">
+                    <input type="text" class="form-control form-control-sm" name="qth" id="qth" value="">
                 </div>
               </div>
 
               <div class="form-group row">
                   <label for="locator" class="col-sm-3 col-form-label">Locator</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" name="locator" id="locator" value="">
+                    <input type="text" class="form-control form-control-sm" name="locator" id="locator" value="">
                     <small id="locator_info" class="form-text text-muted"></small>
                 </div>
               </div>
@@ -151,7 +151,7 @@
               <div class="form-group row">
                   <label for="comment" class="col-sm-3 col-form-label">Comment</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" name="comment" id="comment" value="">
+                    <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
                 </div>
               </div>
           </div>
