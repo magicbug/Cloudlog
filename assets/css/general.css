@@ -73,7 +73,7 @@
 }
 
 TD.qsl{
-    width: 20px;
+    width: 33px;
 }
 TD.eqsl{
     width: 33px;
@@ -83,6 +83,14 @@ TD.eqsl{
     font-size: 1.1em;
 }
 .eqsl-red{
+    color: #F00;
+    font-size: 1.1em;
+}
+.qsl-green{
+    color: #00A000;
+    font-size: 1.1em;
+}
+.qsl-red{
     color: #F00;
     font-size: 1.1em;
 }
