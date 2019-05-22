@@ -14,6 +14,9 @@ class eqsl extends CI_Controller {
 	
 	private function loadFromFile($filepath)
 	{
+		ini_set('memory_limit', '-1');
+		set_time_limit(0);
+		
 		// Figure out how we should be marking QSLs confirmed via eQSL
 		$query = $query = $this->db->query('SELECT eqsl_rcvd_mark FROM config');
 		$q = $query->row();
@@ -90,7 +93,10 @@ class eqsl extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-	public function import() {	
+	public function import() {
+		ini_set('memory_limit', '-1');
+		set_time_limit(0);
+	
 		$data['page_title'] = "eQSL Import";
 
 		$config['upload_path'] = './uploads/';
@@ -238,6 +244,8 @@ class eqsl extends CI_Controller {
 	} // end function
 	
 	public function export() {	
+		ini_set('memory_limit', '-1');
+		set_time_limit(0);
 		$this->load->model('logbook_model');
 		
 		$data['page_title'] = "eQSL QSO Upload";
