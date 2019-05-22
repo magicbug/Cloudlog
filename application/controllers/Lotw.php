@@ -127,7 +127,7 @@ class Lotw extends CI_Controller {
 			$lotw_url .= "?";
 			$lotw_url .= "login=" . $data['user_lotw_name'];
 			$lotw_url .= "&password=" . $data['user_lotw_password'];
-			$lotw_url .= "&qso_query=1&qso_qsl='yes'";
+			$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
 
 			//TODO: Option to specifiy whether we download location data from LoTW or not
 			//$lotw_url .= "&qso_qsldetail=\"yes\";
