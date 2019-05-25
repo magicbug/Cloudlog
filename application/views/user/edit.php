@@ -15,7 +15,7 @@
   <div class="card-body">
     <h5 class="card-title"></h5>
     <p class="card-text"></p>
-
+ 
 		<?php echo validation_errors(); ?>
 		<?php $this->load->helper('form'); ?>
 		
@@ -107,8 +107,8 @@
 
 			<div class="form-group">
 				<label>eQSL.cc Username</label>
-				<input class="form-control" type="text" name="user_lotw_password" />
-					<?php if(isset($lotwpassword_error)) { echo "<div class=\"small error\">".$lotwpassword_error."</div>"; } else { ?>
+				<input class="form-control" type="text" name="user_eqsl_name" />
+					<?php if(isset($eqslusername_error)) { echo "<div class=\"small error\">".$eqslusername_error."</div>"; } else { ?>
 					<div class="small">Leave blank to keep existing password</div></td>
 					<?php } ?>
 			</div>
