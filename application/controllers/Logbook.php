@@ -189,7 +189,7 @@ class Logbook extends CI_Controller {
 		echo "]";
 		echo "}";
 	}
-
+ 
 	function view($id) {
 		$this->load->model('user_model');
 				if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
@@ -198,8 +198,10 @@ class Logbook extends CI_Controller {
 
 		$this->db->where('COL_PRIMARY_KEY', $id);
 		$data['query'] = $this->db->get($this->config->item('table_name'));
-
-		$this->load->view('view_log/qso', $data);
+		
+		$this->load->view('interface_assets/mini_header', $data);
+		$this->load->view('view_log/qso');
+		$this->load->view('interface_assets/footer');
 	}
 
 	function partial($id) {

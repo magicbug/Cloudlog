@@ -22,6 +22,7 @@
   </head>
   <body>
 
+
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="<?php echo site_url(); ?>">Cloudlog</a>
 
