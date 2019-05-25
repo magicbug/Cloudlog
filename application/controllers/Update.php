@@ -11,9 +11,9 @@ class Update extends CI_Controller {
 	public function index()
 	{
 	    $data['page_title'] = "Updates";
-	    $this->load->view('layout/header', $data);
+	    $this->load->view('interface_assets/header', $data);
 	    $this->load->view('update/index');
-	    $this->load->view('layout/footer');
+	    $this->load->view('interface_assets/footer');
 
 	}
 
