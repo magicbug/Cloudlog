@@ -52,7 +52,7 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="start_date">Date</label>
-                  <input type="text" class="form-control form-control-sm" name="start_date" id="start_date" value="<?php echo date('d-m-Y'); ?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
+                  <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php echo date('d-m-Y'); ?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
                 </div>
 
                 <div class="form-group col-md-6">
@@ -65,6 +65,8 @@
                   <input class="input_date" type="hidden" id="start_date" name="start_date" value="<?php echo date('d-m-Y'); ?>" />
                 <?php } ?>
               </div>
+
+
 
               <!-- Callsign Input -->
               <div class="form-group">

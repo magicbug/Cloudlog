@@ -168,6 +168,14 @@ $(document).ready(function(){
           }
           $('.input_time').jclock(options);
         });
+
+        $(function($) {
+          var options = {
+            utc: true,
+            format: '%d-%m-%Y'
+          }
+          $('.input_date').jclock(options);
+        });
       }
     });
 
