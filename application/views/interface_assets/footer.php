@@ -166,7 +166,7 @@ $(document).ready(function(){
             utc: true,
             format: '%H:%M'
           }
-          $('#start_time').jclock(options);
+          $('.input_time').jclock(options);
         });
       }
     });

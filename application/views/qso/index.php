@@ -57,7 +57,7 @@
 
                 <div class="form-group col-md-6">
                   <label for="start_time">Time</label>
-                  <input type="text" class="form-control form-control-sm" name="start_time" id="start_time" value="<?php echo date('H:i'); ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
+                  <input type="text" class="form-control form-control-sm input_time" name="start_time" id="start_time" value="<?php echo date('H:i'); ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
                 </div>
 
                 <?php if ( $_GET['manual'] == 0 ) { ?>
