@@ -40,9 +40,9 @@ If you would prefer not to setup Cloudlog yourself [magicbug](https://magicbug.c
 
 If you would like to contributing in anyway to Cloudlog then its most appreciated, this has been developed in free time, help coding new features or writing documentation is always useful.
 
-Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses a rather old version of the Bootstrap UI v1.4.0 documentation is available for this when building components.
+Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses Bootstrap 4 for the user CSS framework documentation is available for this when building components.
 
-If you are writing code all javascript and css should be pleased within the js & css folders not within the views where possible. 
+If you are writing code all javascript and css should be placed within the assets/js or assets/css folders not within the views where possible. 
 
 ## Copyright / Licence
 
@@ -83,7 +83,7 @@ SOFTWARE.
 
 ![Clublog Logo](http://www.clublog.org/images/clublog.png "Clublog Logo")
 
-We use the [Clublog](http://www.clublog.org/) cty.xml and APIs within the DXCC elements of Cloudlog. If you're not already a member of Clublog, we recommend you go sign up!
+We use the [Clublog](http://www.clublog.org/) cty.xml and APIs within the DXCC elements of Cloudlog.
 
 ![HamQTH Logo](https://www.hamqth.com/images/hamqth_125x125.png "HamQTH Logo")
 
