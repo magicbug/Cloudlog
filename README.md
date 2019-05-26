@@ -6,7 +6,7 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 ## Requirements
 
-* PHP & MySQL
+* PHP (Version 7 or higher is recommended) & MySQL
 
 ## Versions
 
@@ -17,6 +17,10 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 You can set up the basics of Cloudlog by opening /install in your browser. Please note theres an issue with the demo account creation (password invalid) so after this process you must disable auth via the config.php file and manually create yourself a user in till this issue is fixed.
 
 More information can be found in the [wiki](https://github.com/magicbug/Cloudlog/wiki).
+
+## Support
+
+Issues with GitHub are handled via Issues feature on GitHub only.
 
 ## CAT Control
 
