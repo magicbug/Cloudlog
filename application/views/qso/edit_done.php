@@ -2,12 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title></title>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+
+	<script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 	<script type="text/javascript">
 		$(function () {
-			parent.$.fancybox.close();
+			parent.jQuery.fancybox.getInstance().close();
+			parent.location.reload(true); 
 		});
 	</script>
 </body>
