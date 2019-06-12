@@ -36,7 +36,7 @@
                 if ($count == 0){
                     print("<td>&nbsp;</td>");
                 }else{
-                    printf("<td><a href='dxcc_details?Country=\"%s\"&Band=\"%s\"'>%d</a></td>", $country, $band, $count);
+                    printf("<td><a href='dxcc_details?Country=\"%s\"&Band=\"%s\"'>%d</a></td>", str_replace("&", "%26", $country), $band, $count);
                 }
             }
             print("</tr>");
