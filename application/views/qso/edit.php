@@ -144,6 +144,11 @@
 			</tr>
 
 			<tr>
+				<td>SOTA</td>
+				<td><input type="text" name="sota_ref" value="<?php echo $COL_SOTA_REF; ?>" /></td>
+			</tr>
+
+			<tr>
 				<td>Country</td>
 				<td><input type="text" name="country" value="<?php echo $COL_COUNTRY; ?>" /></td>
 			</tr>

@@ -59,6 +59,14 @@
     text-transform: uppercase;
 }
 
+.qso_panel .iota_ref {
+    text-transform: uppercase;
+}
+
+.qso_panel .sota_ref {
+    text-transform: uppercase;
+}
+
 .workedGrid {
     border-color: green;
 }
@@ -111,3 +119,4 @@ TD.lotw{
 .previous-qsos .card-title {
     margin-bottom: 0px;
 }
+

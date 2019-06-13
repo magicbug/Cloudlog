@@ -209,6 +209,11 @@
               <label for="iota_ref">IOTA Reference</label>
               <input class="form-control" id="iota_ref" type="text" name="iota_ref" value="" /> e.g: EU-005
             </div>
+
+            <div class="form-group">
+              <label for="sota_ref">SOTA Reference</label>
+              <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" /> e.g: GM/NS-001
+            </div>
           </div>
           
           <!-- Satellite Panel -->

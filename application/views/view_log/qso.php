@@ -98,6 +98,21 @@
 					<td><?php echo $row->COL_COUNTRY; ?></td>
 				</tr>
 				<?php } ?>
+
+				<?php if($row->COL_IOTA != null) { ?>
+				<tr>
+					<td>IOTA Ref:</td>
+					<td><?php echo $row->COL_IOTA; ?></td>
+				</tr>
+				<?php } ?>
+
+				<?php if($row->COL_SOTA_REF != null) { ?>
+				<tr>
+					<td>SOTA Ref:</td>
+					<td><?php echo $row->COL_SOTA_REF; ?></td>
+				</tr>
+				<?php } ?>
+
 			</table>
 			<?php if($row->COL_QSL_SENT == "Y" || $row->COL_QSL_RCVD == "Y") { ?>
 				<h3>QSL Info</h3>
