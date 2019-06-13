@@ -110,11 +110,25 @@ $(document).ready(function(){
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
+
+<script>
+  var markers = L.layerGroup();
+  var mymap = L.map('qsomap').setView([51.505, -0.09], 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+      '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+      'Created by Cloudlog',
+    id: 'mapbox.streets'
+  }).addTo(mymap);
+
+</script>
+
+
   <script type="text/javascript">
 
     var manual = <?php echo $_GET['manual']; ?>;
-
-    console.log(manual);
 
     $(document).ready(function() {
 
@@ -197,6 +211,8 @@ $(document).ready(function(){
       $('#iota_ref').val("");
       $("#locator").removeClass("workedGrid");
       $("#locator").removeClass("newGrid");
+      mymap.setView([51.505, -0.09], 13);
+      mymap.removeLayer(markers);
     }
   });
 });
@@ -208,10 +224,25 @@ $(document).ready(function(){
             $.getJSON('logbook/json/' + $(this).val(), function(result)
             {
               //$('#country').val(result);
-              $('#country').val(convert_case(result.dxcc.Name));
-              $('#callsign_info').text(convert_case(result.dxcc.Name));
-              $('#dxcc_id').val(result.dxcc.DXCC);
-              $('#cqz').val(result.dxcc.CQZ);
+              $('#country').val(convert_case(result.dxcc.entity));
+              $('#callsign_info').text(convert_case(result.dxcc.entity));
+              $('#dxcc_id').val(result.dxcc.adif);
+              $('#cqz').val(result.dxcc.cqz);
+
+
+
+              // Set Map to Lat/Long
+              markers.clearLayers();
+              if (typeof result.latlng !== "undefined") {
+                console.log("defined!");
+                var marker = L.marker([result.latlng[0], result.latlng[1]]);
+                mymap.setView([result.latlng[0], result.latlng[1]], 8);
+              } else {
+                var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
+                mymap.setView([result.dxcc.lat, result.dxcc.long], 8);
+              }
+
+              markers.addLayer(marker).addTo(mymap);
 
             /* Find Locator if the field is empty */
             if($('#locator').val() == "") {
@@ -301,6 +332,22 @@ $(document).ready(function(){
       /* On Key up Calculate Bearing and Distance */
     $("#locator").keyup(function(){
       if ($(this).val()) {
+         $.getJSON('logbook/qralatlngjson/' + $(this).val(), function(result)
+         {
+            console.log(result[0]);
+
+              // Set Map to Lat/Long
+              markers.clearLayers();
+              if (typeof result !== "undefined") {
+                console.log("defined!");
+                var marker = L.marker([result[0], result[1]]);
+                mymap.setView([result[0], result[1]], 8);
+              }
+
+              markers.addLayer(marker).addTo(mymap);
+
+         })
+
         $('#locator_info').load("logbook/searchbearing/" + $(this).val()).fadeIn("slow");
       }
     });

@@ -1087,6 +1087,34 @@ class Logbook_model extends CI_Model {
         return array("Not Found", "Not Found");
     }
 
+    public function dxcc_lookup($call, $date){
+        $len = strlen($call);
+
+        // query the table, removing a character from the right until a match
+        for ($i = $len; $i > 0; $i--){
+            //printf("searching for %s\n", substr($call, 0, $i));
+            $dxcc_result = $this->db->select('*')
+                                    ->where('call', substr($call, 0, $i))
+                                    ->where('(start <= ', $date)
+                                    ->or_where("start = '0000-00-00'", NULL, false)
+                                    ->or_where("start is null)", NULL, false)
+                                    ->where('(end >= ', $date)
+                                    ->or_where("end = '0000-00-00'", NULL, false)
+                                    ->or_where("end is null)", NULL, false)
+                                    ->get('dxcc_prefixes');
+
+            //$dxcc_result = $this->db->query("select `call`, `entity`, `adif` from dxcc_prefixes where `call` = '".substr($call, 0, $i) ."'");
+            //print $this->db->last_query();
+
+            if ($dxcc_result->num_rows() > 0){
+                $row = $dxcc_result->row_array();
+                return $row;
+            }
+        }
+
+        return array("Not Found", "Not Found");
+    }
+
     /*
      * Same as check_dxcc_table, but the functionality is in 
      * a stored procedure which we call

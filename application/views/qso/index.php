@@ -292,6 +292,12 @@
 </div>
 <?php } ?>
 
+    <div class="card qso-map">
+        <div class="card-header"><h4 class="card-title">QSO Map</h4></div>
+
+            <div id="qsomap" style="width: 100%; height: 200px;"></div>
+    </div>
+
     <div class="card previous-qsos">
       <div class="card-header"><h4 class="card-title">Previous Contacts</h4></div>
       <div class="card-body">
@@ -329,6 +335,7 @@
         </div>
       </div>
     </div>    
+
   </div>
 
 </div>
