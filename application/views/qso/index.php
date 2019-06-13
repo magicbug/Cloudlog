@@ -1,17 +1,5 @@
 <div class="container qso_panel">
 
-<?php if($notice) { ?>
-<div class="alert alert-info" role="alert">
-  <?php echo $notice; ?>
-</div>
-<?php } ?>
-
-<?php if(validation_errors()) { ?>
-<div class="alert alert-warning" role="alert">
-  <?php echo validation_errors(); ?>
-</div>
-<?php } ?>
-
 <div class="row">
   
   <div class="col-sm-5">
@@ -287,10 +275,20 @@
 
   <div class="col-sm-7">
 
+<?php if($notice) { ?>
+<div class="alert alert-info" role="alert">
+  <?php echo $notice; ?>
+</div>
+<?php } ?>
 
+<?php if(validation_errors()) { ?>
+<div class="alert alert-warning" role="alert">
+  <?php echo validation_errors(); ?>
+</div>
+<?php } ?>
 
     <div class="card previous-qsos">
-      <div class="card-header"><h2 class="card-title">Previous Contacts</h2></div>
+      <div class="card-header"><h4 class="card-title">Previous Contacts</h4></div>
       <div class="card-body">
 
         <div id="partial_view">

@@ -107,3 +107,7 @@ TD.lotw{
 .qso-edit-box {
     padding: 10px;
 }
+
+.previous-qsos .card-title {
+    margin-bottom: 0px;
+}
