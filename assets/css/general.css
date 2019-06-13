@@ -103,3 +103,7 @@ TD.lotw{
     color: #F00;
     font-size: 1.1em;
 }
+
+.qso-edit-box {
+    padding: 10px;
+}
