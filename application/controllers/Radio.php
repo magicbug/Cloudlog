@@ -50,7 +50,7 @@
 				}
 				$phpdate = strtotime($row->timestamp);
 				echo "<td>".date('H:i:s d-m-y', $phpdate)."</td>" ;
-				echo "<td><a href=\"".site_url('radio/delete')."/".$row->id."\" ><img src=\"".base_url()."/images/delete.png\" width=\"16\" height=\"16\" alt=\"Delete\" /></a></td>" ;
+				echo "<td><a href=\"".site_url('radio/delete')."/".$row->id."\" class=\"btn btn-danger\"> <i class=\"fas fa-trash-alt\"></i> Delete</a></td>" ;
 				echo "</tr>";
 			}
 		} else {

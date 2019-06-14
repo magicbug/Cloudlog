@@ -1,17 +1,5 @@
 <div class="container qso_panel">
 
-<?php if($notice) { ?>
-<div class="alert alert-info" role="alert">
-  <?php echo $notice; ?>
-</div>
-<?php } ?>
-
-<?php if(validation_errors()) { ?>
-<div class="alert alert-warning" role="alert">
-  <?php echo validation_errors(); ?>
-</div>
-<?php } ?>
-
 <div class="row">
   
   <div class="col-sm-5">
@@ -72,7 +60,7 @@
               <div class="form-group">
                 <label for="callsign">Callsign</label>
                 <input type="text" class="form-control" id="callsign" name="callsign" required>
-                <small id="callsign_info" class="form-text text-muted"></small>
+                <small id="callsign_info" class="badge badge-primary"></small>
               </div>
 
 
@@ -221,6 +209,11 @@
               <label for="iota_ref">IOTA Reference</label>
               <input class="form-control" id="iota_ref" type="text" name="iota_ref" value="" /> e.g: EU-005
             </div>
+
+            <div class="form-group">
+              <label for="sota_ref">SOTA Reference</label>
+              <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" /> e.g: GM/NS-001
+            </div>
           </div>
           
           <!-- Satellite Panel -->
@@ -287,10 +280,26 @@
 
   <div class="col-sm-7">
 
+<?php if($notice) { ?>
+<div class="alert alert-info" role="alert">
+  <?php echo $notice; ?>
+</div>
+<?php } ?>
 
+<?php if(validation_errors()) { ?>
+<div class="alert alert-warning" role="alert">
+  <?php echo validation_errors(); ?>
+</div>
+<?php } ?>
+
+    <div class="card qso-map">
+        <div class="card-header"><h4 class="card-title">QSO Map</h4></div>
+
+            <div id="qsomap" style="width: 100%; height: 200px;"></div>
+    </div>
 
     <div class="card previous-qsos">
-      <div class="card-header"><h2 class="card-title">Previous Contacts</h2></div>
+      <div class="card-header"><h4 class="card-title">Previous Contacts</h4></div>
       <div class="card-body">
 
         <div id="partial_view">
@@ -326,6 +335,7 @@
         </div>
       </div>
     </div>    
+
   </div>
 
 </div>

@@ -70,7 +70,7 @@ class Logbook extends CI_Controller {
 			"workedBefore" => false
 		];
 
-		$return['dxcc'] = $this->find_dxcc($callsign);
+		$return['dxcc'] = $this->dxcheck($callsign);
 		$return['partial'] = $this->partial($callsign);
 
 	// Do we have local data for the Callsign?
@@ -82,6 +82,11 @@ class Logbook extends CI_Controller {
 		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
 		$return['bearing'] = $this->bearing($return['callsign_qra']);
 		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra']);
+
+		if ($return['callsign_qra'] != "") {
+			$return['latlng'] = $this->qralatlng($return['callsign_qra']);
+		}
+
 		echo json_encode($return, JSON_PRETTY_PRINT);
 		return;
 	}
@@ -118,6 +123,9 @@ class Logbook extends CI_Controller {
 		$return['callsign_qra'] = $callbook['gridsquare'];
 		$return['callsign_qth'] = $callbook['city'];
 		$return['callsign_iota'] = $callbook['iota'];
+		if ($return['callsign_qra'] != "") {
+			$return['latlng'] = $this->qralatlng($return['callsign_qra']);
+		}
 		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra']);
 	}
 	$return['bearing'] = $this->bearing($return['callsign_qra']);
@@ -343,6 +351,15 @@ class Logbook extends CI_Controller {
 		print json_encode($ans);
 	}
 
+	function dxcheck($call = "", $date = "") {
+		$this->load->model("logbook_model");
+		if ($date == ''){
+			$date = date("Y-m-d");
+		}
+		$ans = $this->logbook_model->dxcc_lookup($call, $date);
+		return $ans;
+	}
+
 
 	/* return station bearing */
 	function searchbearing($locator) {
@@ -384,5 +401,17 @@ class Logbook extends CI_Controller {
 				return $bearing;
 			}
 			return "";
+	}
+
+	function qralatlng($qra) {
+		$this->load->library('Qra');
+		$latlng = $this->qra->qra2latlong($qra);
+		return $latlng;
+	}
+
+	function qralatlngjson($qra) {
+		$this->load->library('Qra');
+		$latlng = $this->qra->qra2latlong($qra);
+		print json_encode($latlng);
 	}
 }

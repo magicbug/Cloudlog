@@ -1,28 +1,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
 
-		<!-- JS  -->
-		<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-1.5.1.min.js"></script>
-		<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.8.12.custom.min.js"></script>
-		<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-dropdown.js"></script>
-		<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-tabs.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-		<script type="text/javascript">
-		  $(function () {
-			$('.tabs').tabs()
-		  })
-		</script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">
 
-		<!-- CSS Files -->
-		<link type="text/css" href="<?php echo base_url(); ?>css/flick/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
-		<link rel="stylesheet" href="<?php echo base_url();?>css/bootcamp/bootstrap.css" type="text/css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css">
+
+  <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
+
 	</head>
 
-	<body>
+	<body class="qso-edit-box">
 
 		<!-- Option to Delete QSO -->
 		<div style="float: right; padding-right: 60px; padding-top: 30px;">
-			<p><a href="<?php echo site_url('qso/delete'); ?>/<?php echo $COL_PRIMARY_KEY; ?>" >Delete QSO <img src="<?php echo base_url(); ?>/images/delete.png" width="16" height="16" alt="Delete" /></a></p>
+			<p><a class="btn btn-danger" href="<?php echo site_url('qso/delete'); ?>/<?php echo $COL_PRIMARY_KEY; ?>" ><i class="fas fa-trash-alt"></i> Delete QSO</a></p>
 		</div>
 
 		<?php echo validation_errors(); ?>
@@ -144,6 +144,11 @@
 			</tr>
 
 			<tr>
+				<td>SOTA</td>
+				<td><input type="text" name="sota_ref" value="<?php echo $COL_SOTA_REF; ?>" /></td>
+			</tr>
+
+			<tr>
 				<td>Country</td>
 				<td><input type="text" name="country" value="<?php echo $COL_COUNTRY; ?>" /></td>
 			</tr>
@@ -152,102 +157,132 @@
 
 		<h3>QSLing</h3>
 
-		<ul class="tabs">
-		  <li class="active"><a href="#paper">Paper</a></li>
-		  <li><a href="#eqsl">eQSL</a></li>
-		  <li><a href="#lotw">LoTW</a></li>
-		</ul>
-
-		<div class="pill-content">
-		  <div class="active" id="paper">
-		<table>
-			<tr>
-				<td>Sent</td>
-				<td><select name="qsl_sent">
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">QSL Card</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">eQSL</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">LOTW</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="form-group row">
+              <label for="sent" class="col-sm-3 col-form-label">Sent</label>
+              <div class="col-sm-9">
+                <select class="custom-select" name="qsl_sent">
 					<option value="N" <?php if($COL_QSL_SENT == "N") { echo "selected=\"selected\""; } ?>>No</option>
 					<option value="Y" <?php if($COL_QSL_SENT == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 					<option value="R" <?php if($COL_QSL_SENT == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
 					<option value="Q" <?php if($COL_QSL_SENT == "Q") { echo "selected=\"selected\""; } ?>>Queued</option>
 					<option value="I" <?php if($COL_QSL_SENT == "I") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
-				</select></td>
-				<td>Recv</td>
-				<td><select name="qsl_recv">
-					<option value="N" <?php if($COL_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
-					<option value="Y" <?php if($COL_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
-					<option value="R" <?php if($COL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
-					<option value="Q" <?php if($COL_QSL_RCVD == "I") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
-					<option value="I" <?php if($COL_QSL_RCVD == "V") { echo "selected=\"selected\""; } ?>>Verified (Match)</option>
-				</select></td>
-			</tr>
-			<tr>
-				<td></td>
+				</select>
+              </div>
+            </div>
 
-				<!-- <?php if($COL_QSL_SENT_VIA == "") { echo "selected=\"selected\""; } ?> -->
-
-				<td><select name="qsl_sent_method">
+            <div class="form-group row">
+              <label for="sent-method" class="col-sm-3 col-form-label">Sent Method</label>
+              <div class="col-sm-9">
+                <select class="custom-select" name="qsl_sent_method">
 					<option value="" <?php if($COL_QSL_SENT_VIA == "") { echo "selected=\"selected\""; } ?>>Method</option>
 					<option value="D" <?php if($COL_QSL_SENT_VIA == "D") { echo "selected=\"selected\""; } ?>>Direct</option>
 					<option value="B" <?php if($COL_QSL_SENT_VIA == "B") { echo "selected=\"selected\""; } ?>>Bureau</option>
 					<option value="E" <?php if($COL_QSL_SENT_VIA == "E") { echo "selected=\"selected\""; } ?>>Electronic</option>
 					<option value="M" <?php if($COL_QSL_SENT_VIA == "M") { echo "selected=\"selected\""; } ?>>Manager</option>
-				</select></td>
-				<td></td>
-				<td><select name="qsl_recv_method">
+				</select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="qsl-via" class="col-sm-2 col-form-label">Sent Via</label>
+              <div class="col-sm-10">
+                <input type="text" id="qsl-via" class="form-control" name="qsl_via_callsign" value="<?php echo $COL_QSL_VIA; ?>" />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="sent-method" class="col-sm-3 col-form-label">Received</label>
+              <div class="col-sm-9">
+                <select class="custom-select" name="qsl_recv">
+					<option value="N" <?php if($COL_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
+					<option value="Y" <?php if($COL_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
+					<option value="R" <?php if($COL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
+					<option value="Q" <?php if($COL_QSL_RCVD == "I") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
+					<option value="I" <?php if($COL_QSL_RCVD == "V") { echo "selected=\"selected\""; } ?>>Verified (Match)</option>
+				</select>
+			  </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="sent-method" class="col-sm-3 col-form-label">Received Method</label>
+              <div class="col-sm-9">
+                <select class="custom-select" name="qsl_recv_method">
 					<option value="" <?php if($COL_QSL_RCVD_VIA == "") { echo "selected=\"selected\""; } ?>>Method</option>
 					<option value="D" <?php if($COL_QSL_RCVD_VIA == "D") { echo "selected=\"selected\""; } ?>>Direct</option>
 					<option value="B" <?php if($COL_QSL_RCVD_VIA == "B") { echo "selected=\"selected\""; } ?>>Bureau</option>
 					<option value="E" <?php if($COL_QSL_RCVD_VIA == "E") { echo "selected=\"selected\""; } ?>>Electronic</option>
 					<option value="M" <?php if($COL_QSL_RCVD_VIA == "M") { echo "selected=\"selected\""; } ?>>Manager</option>
-				</select></td>
-			</tr>
-		</table>
+				</select>
+			  </div>
+            </div>
+  </div>
 
-		  </div>
-		  <div id="eqsl">
-			<table>
-				<tr>
-					<td>Sent</td>
-					<td><select name="eqsl_sent">
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="form-group row">
+              <label for="sent" class="col-sm-3 col-form-label">Sent</label>
+              <div class="col-sm-9">
+              <select class="custom-select" name="eqsl_sent">
 						<option value="N" <?php if($COL_EQSL_QSL_SENT == "N") { echo "selected=\"selected\""; } ?>>No</option>
 						<option value="Y" <?php if($COL_EQSL_QSL_SENT == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 						<option value="R" <?php if($COL_EQSL_QSL_SENT == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
 						<option value="Q" <?php if($COL_EQSL_QSL_SENT == "Q") { echo "selected=\"selected\""; } ?>>Queued</option>
 						<option value="I" <?php if($COL_EQSL_QSL_SENT == "I") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
-					</select></td>
-					<td>Recv</td>
-					<td><select name="eqsl_recv">
+					</select>
+					</div>
+            </div>
+
+            <div class="form-group row">
+              <label for="sent" class="col-sm-3 col-form-label">Received</label>
+              <div class="col-sm-9">
+              <select class="custom-select" name="eqsl_recv">
 						<option value="N" <?php if($COL_EQSL_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
 						<option value="Y" <?php if($COL_EQSL_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 						<option value="R" <?php if($COL_EQSL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
 						<option value="I" <?php if($COL_EQSL_QSL_RCVD == "I") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
 						<option value="V" <?php if($COL_EQSL_QSL_RCVD == "V") { echo "selected=\"selected\""; } ?>>Verified (Match)</option>
-					</select></td>
-				</tr>
-			</table>
-		  </div>
-		  <div id="lotw">
-			<table>
-				<tr>
-					<td>Sent</td>
-					<td><select name="lotw_sent">
+					</select></div>
+            </div>  	
+  </div>
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+  	        <div class="form-group row">
+              <label for="sent" class="col-sm-3 col-form-label">Sent</label>
+              <div class="col-sm-9">
+              <select class="custom-select" name="lotw_sent">
 						<option value="N" <?php if($COL_LOTW_QSL_SENT == "N") { echo "selected=\"selected\""; } ?>>No</option>
 						<option value="Y" <?php if($COL_LOTW_QSL_SENT == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 						<option value="R" <?php if($COL_LOTW_QSL_SENT == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
 						<option value="Q" <?php if($COL_LOTW_QSL_SENT == "Q") { echo "selected=\"selected\""; } ?>>Queued</option>
 						<option value="I" <?php if($COL_LOTW_QSL_SENT == "I") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
-					</select></td>
-					<td>Recv</td>
-					<td><select name="lotw_recv">
+					</select></div>
+            </div>
+
+            <div class="form-group row">
+              <label for="sent" class="col-sm-3 col-form-label">Received</label>
+              <div class="col-sm-9">
+              <select class="custom-select" name="lotw_recv">
 						<option value="N" <?php if($COL_LOTW_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
 						<option value="Y" <?php if($COL_LOTW_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 						<option value="R" <?php if($COL_LOTW_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
 						<option value="I" <?php if($COL_LOTW_QSL_RCVD == "I") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
 						<option value="V" <?php if($COL_LOTW_QSL_RCVD == "V") { echo "selected=\"selected\""; } ?>>Verified (Match)</option>
-					</select></td>
-				</tr>
-			</table>
-		  </div>
-		</div>
+					</select></div>
+            </div>
+  </div>
+</div>
+
 
 		<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 

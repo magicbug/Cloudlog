@@ -80,6 +80,7 @@ class Logbook_model extends CI_Model {
       'COL_LON' => null,
       'COL_DXCC' => $this->input->post('dxcc_id'),
       'COL_CQZ' => $this->input->post('cqz'),
+      'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
     );
 
     if (strpos(trim($this->input->post('locator')), ',') !== false) {
@@ -161,6 +162,7 @@ class Logbook_model extends CI_Model {
             'COL_LON' => null,
             'COL_DXCC' => $this->input->post('dxcc_id'),
             'COL_CQZ' => $this->input->post('cqz'),
+            'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
     );
 
     // If station profile has been provided fill in the fields
@@ -253,11 +255,13 @@ class Logbook_model extends CI_Model {
        'COL_LOTW_QSL_SENT' => $this->input->post('lotw_sent'),
        'COL_LOTW_QSL_RCVD' => $this->input->post('lotw_recv'),
        'COL_IOTA' => $this->input->post('iota_ref'),
+       'COL_SOTA_REF' => $this->input->post('sota_ref'),
        'COL_QTH' => $this->input->post('qth'),
        'COL_PROP_MODE' => $this->input->post('prop_mode'),
        'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
        'COL_STX_STRING' => $this->input->post('stx_string'),
-       'COL_SRX_STRING' => $this->input->post('srx_string')
+       'COL_SRX_STRING' => $this->input->post('srx_string'),
+       'COL_QSL_VIA' => $this->input->post('qsl_via_callsign')
     );
 
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
@@ -1077,6 +1081,34 @@ class Logbook_model extends CI_Model {
             if ($dxcc_result->num_rows() > 0){
                 $row = $dxcc_result->row_array();
                 return array($row['adif'], $row['entity'], $row['cqz']);
+            }
+        }
+
+        return array("Not Found", "Not Found");
+    }
+
+    public function dxcc_lookup($call, $date){
+        $len = strlen($call);
+
+        // query the table, removing a character from the right until a match
+        for ($i = $len; $i > 0; $i--){
+            //printf("searching for %s\n", substr($call, 0, $i));
+            $dxcc_result = $this->db->select('*')
+                                    ->where('call', substr($call, 0, $i))
+                                    ->where('(start <= ', $date)
+                                    ->or_where("start = '0000-00-00'", NULL, false)
+                                    ->or_where("start is null)", NULL, false)
+                                    ->where('(end >= ', $date)
+                                    ->or_where("end = '0000-00-00'", NULL, false)
+                                    ->or_where("end is null)", NULL, false)
+                                    ->get('dxcc_prefixes');
+
+            //$dxcc_result = $this->db->query("select `call`, `entity`, `adif` from dxcc_prefixes where `call` = '".substr($call, 0, $i) ."'");
+            //print $this->db->last_query();
+
+            if ($dxcc_result->num_rows() > 0){
+                $row = $dxcc_result->row_array();
+                return $row;
             }
         }
 
