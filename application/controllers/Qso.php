@@ -109,6 +109,29 @@ class QSO extends CI_Controller {
 		}
 	}
 	
+	function qsl_rcvd() {
+	
+		$this->load->model('logbook_model');
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		$query = $this->logbook_model->qso_info($this->uri->segment(3));
+		
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('id', 'ID', 'required');
+
+		$data = $query->row(); 
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->load->view('qso/qsl_rcvd', $data);
+		}
+		else
+		{
+			$this->logbook_model->qsl_rcvd();
+			$this->session->set_flashdata('notice', 'QSL registered');
+			$this->load->view('qso/qsl_rcvd_done');
+		}
+	}
+	
 	/* Delete QSO */
 	function delete($id) {
 		$this->load->model('logbook_model');
