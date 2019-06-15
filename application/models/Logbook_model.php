@@ -278,6 +278,20 @@ class Logbook_model extends CI_Model {
 
   }
 
+
+  /* QSL received */
+  function qsl_rcvd() {
+
+    $data = array(
+       'COL_QSLRDATE' => date('Y-m-d'),
+       'COL_QSL_RCVD' => "Y"
+    );
+
+    $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
+    $this->db->update($this->config->item('table_name'), $data);
+
+  }
+
   /* Return last 10 QSOs */
   function last_ten() {
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
