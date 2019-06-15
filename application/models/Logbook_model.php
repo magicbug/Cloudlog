@@ -221,6 +221,15 @@ class Logbook_model extends CI_Model {
   }
 
   function add_qso($data) {
+
+    if ($data['COL_DXCC'] == "Not Found"){
+      $data['COL_DXCC'] = NULL;
+    }
+
+    if (!is_null($data['COL_RX_PWR'])) {
+      $data['COL_RX_PWR'] = str_replace("W", "", $data['COL_RX_PWR']);
+    }
+
     // Add QSO to database
     $this->db->insert($this->config->item('table_name'), $data);
   }
@@ -844,7 +853,11 @@ class Logbook_model extends CI_Model {
 
 
         // DXCC id
-        $dxcc = $this->check_dxcc_table($record['call'], $time_off);
+        if (isset($record['call'])){
+          $dxcc = $this->check_dxcc_table($record['call'], $time_off);
+        } else {
+          $dxcc = NULL;
+        }
 
         // Store or find country name
         if(isset($record['country'])) {
@@ -897,10 +910,13 @@ class Logbook_model extends CI_Model {
         } elseif(isset($dxcc[2])) {
           $cq_zone = $dxcc[2];
         } else {
-          $cq_zone = "";
+          //$cq_zone = "";
+          $cq_zone = NULL;
         }
 
-        $this->db->where('COL_CALL', $record['call']);
+        if (isset($record['call'])){
+          $this->db->where('COL_CALL', $record['call']);
+        }
         $this->db->where('COL_TIME_ON', $time_on);
         $check = $this->db->get($this->config->item('table_name'));
         
