@@ -126,10 +126,12 @@ class Logbook extends CI_Controller {
 
 	if (isset($callbook))
 	{
+
 		$return['callsign_name'] = $callbook['name'];
 		$return['callsign_qra'] = $callbook['gridsquare'];
 		$return['callsign_qth'] = $callbook['city'];
 		$return['callsign_iota'] = $callbook['iota'];
+		$return['qsl_manager'] = $callbook['qslmgr'];
 		if ($return['callsign_qra'] != "") {
 			$return['latlng'] = $this->qralatlng($return['callsign_qra']);
 		}

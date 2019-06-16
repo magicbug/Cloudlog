@@ -255,9 +255,9 @@
             </div>
 
             <div class="form-group row">
-              <label for="qsl-via" class="col-sm-2 col-form-label">Via</label>
+              <label for="qsl_via" class="col-sm-2 col-form-label">Via</label>
               <div class="col-sm-10">
-                <input type="text" id="qsl-via" class="form-control" name="qsl_via" value="" />
+                <input type="text" id="qsl_via" class="form-control" name="qsl_via" value="" />
               </div>
             </div>
 

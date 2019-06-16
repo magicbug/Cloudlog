@@ -79,6 +79,7 @@ class Qrz {
 		$data['lat'] = (string) $xml->Callsign->lat;
 		$data['long'] = (string) $xml->Callsign->lon;
 		$data['iota'] = (string) $xml->Callsign->iota;
+		$data['qslmgr'] = (string) $xml->Callsign->qslmgr;
 		
 		return $data;
 	}

@@ -248,6 +248,7 @@ $(document).ready(function(){
               }
 
               markers.addLayer(marker).addTo(mymap);
+        
 
             /* Find Locator if the field is empty */
             if($('#locator').val() == "") {
@@ -277,6 +278,11 @@ $(document).ready(function(){
             }
 
             /* Find Operators Name */
+            if($('#qsl_via').val() == "") {
+                $('#qsl_via').val(result.qsl_manager);
+            }
+
+                        /* Find Operators Name */
             if($('#name').val() == "") {
                 $('#name').val(result.callsign_name);
             }
