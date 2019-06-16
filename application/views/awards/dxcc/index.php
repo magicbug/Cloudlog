@@ -13,6 +13,7 @@
         <td style="width:225px">Country (<?php echo count($dxcc)?>)</td>
         <td>160m</td>
         <td>80m</td>
+        <td>60m</td>
         <td>40m</td>
         <td>30m</td>
         <td>20m</td>
@@ -25,6 +26,11 @@
         <td>2m</td>
         <td>70cm</td>
         <td>23cm</td>
+        <td>13cm</td>
+        <td>9cm</td>
+        <td>6cm</td>
+        <td>3cm</td>
+        <td>1.25cm</td>
         </tr>
     </thead>
     <tbody>

@@ -23,6 +23,7 @@ class DXCC extends CI_Model {
                 // new row
                 $results[$row->COL_COUNTRY] = array("160m"=>0, 
                                                 "80m"=>0, 
+                                                "60m"=>0, 
                                                 "40m"=>0, 
                                                 "30m"=>0, 
                                                 "20m"=>0, 
@@ -37,7 +38,9 @@ class DXCC extends CI_Model {
                                             	"23cm"=>0,
                                             	"13cm"=>0,
                                             	"9cm"=>0,
-                                            	"3cm"=>0);
+                                            	"6cm"=>0,
+                                            	"3cm"=>0,
+                                            	"1.25cm"=>0);
                 $last_country = $row->COL_COUNTRY;
             }
 
