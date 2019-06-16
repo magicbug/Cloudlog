@@ -18,6 +18,7 @@
 			<td>LoTW</td>
 			<?php } ?>
 			<td></td>
+			<td></td>
 			<?php } ?>
 		</tr>
 		
@@ -58,6 +59,7 @@
 			<?php } ?>
 
 			<td><a class="btn btn-primary" role="button" data-fancybox data-type="iframe" data-src="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit</a></td>
+			<td><a class="btn btn-primary" role="button" data-fancybox data-type="iframe" data-src="<?php echo site_url('qso/qsl_rcvd'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> QSL RCVD</a></td>
 			<?php if($this->config->item('callsign_tags') == true) { ?>
 				<?php if($row->COL_STATION_CALLSIGN	 != null) { ?>
 				<td><span class="label notice"><?php echo $row->COL_STATION_CALLSIGN; ?></span></td>
