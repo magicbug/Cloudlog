@@ -18,7 +18,6 @@
 			<td>LoTW</td>
 			<?php } ?>
 			<td></td>
-			<td></td>
 			<?php } ?>
 		</tr>
 		
@@ -58,8 +57,23 @@
 			</td>
 			<?php } ?>
 
-			<td><a class="btn btn-primary" role="button" data-fancybox data-type="iframe" data-src="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit</a></td>
-			<td><a class="btn btn-primary" role="button" data-fancybox data-type="iframe" data-src="<?php echo site_url('qso/qsl_rcvd'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> QSL RCVD</a></td>
+			<td>
+				<div class="dropdown">
+				  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    <i class="fas fa-cog"></i>
+				  </a>
+
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+				  	<a class="dropdown-item" data-fancybox data-type="iframe" data-src="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a>
+				  	<div class="dropdown-divider"></div>	
+
+				  	<?php if($row->COL_QSL_RCVD !='Y') { ?> 
+				    <a class="dropdown-item" href="<?php echo site_url('qso/qsl_rcvd'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>/B" ><i class="fas fa-envelope"></i> Mark QSL Received (Bureau)</a>
+				    <a class="dropdown-item" href="<?php echo site_url('qso/qsl_rcvd'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>/D" ><i class="fas fa-envelope"></i> Mark QSL Received (Direct)</a>
+					<?php } ?>
+				  </div>
+				</div>
+			</td>
 			<?php if($this->config->item('callsign_tags') == true) { ?>
 				<?php if($row->COL_STATION_CALLSIGN	 != null) { ?>
 				<td><span class="label notice"><?php echo $row->COL_STATION_CALLSIGN; ?></span></td>

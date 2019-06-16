@@ -399,6 +399,20 @@ class Logbook_model extends CI_Model {
   }
 
 
+  // Set Paper to recived
+  function paperqsl_update($qso_id, $method) {
+    $data = array(
+         'COL_QSLRDATE' => date('Y-m-d'),
+         'COL_QSL_RCVD' => 'Y',
+         'COL_QSL_RCVD_VIA' => $method
+    );
+
+    $this->db->where('COL_PRIMARY_KEY', $qso_id);
+
+    $this->db->update($this->config->item('table_name'), $data);
+  }
+
+
   function get_qsos($num, $offset) {
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_GRIDSQUARE, COL_QSL_RCVD, COL_EQSL_QSL_RCVD, COL_EQSL_QSL_SENT, COL_QSL_SENT, COL_STX_STRING, COL_SRX_STRING, COL_OPERATOR, COL_STATION_CALLSIGN, COL_LOTW_QSL_SENT, COL_LOTW_QSL_RCVD');
     $this->db->order_by("COL_TIME_ON", "desc");
