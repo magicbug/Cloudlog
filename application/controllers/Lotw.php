@@ -324,6 +324,9 @@ class Lotw extends CI_Controller {
 	*/
 	function lotw_usercheck($callsign) {
 		$this->load->model('lotw_user');
+ 
+
+		$lotw_user_result = $this->lotw_user->check($callsign);
 
 
 	}

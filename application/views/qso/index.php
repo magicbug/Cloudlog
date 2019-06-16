@@ -60,7 +60,7 @@
               <div class="form-group">
                 <label for="callsign">Callsign</label>
                 <input type="text" class="form-control" id="callsign" name="callsign" required>
-                <small id="callsign_info" class="badge badge-primary"></small>
+                <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-light"></small>
               </div>
 
 

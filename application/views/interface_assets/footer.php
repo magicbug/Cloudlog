@@ -203,6 +203,7 @@ $(document).ready(function(){
       $('#callsign_info').text("");
       $('#locator_info').text("");
       $('#country').val("");
+      $('#lotw_info').text("");
       $('#dxcc_id').val("");
       $('#cqz').val("");
       $('#name').val("");
@@ -223,9 +224,13 @@ $(document).ready(function(){
             /* Find and populate DXCC */
             $.getJSON('logbook/json/' + $(this).val(), function(result)
             {
-              //$('#country').val(result);
+              //$('#country').val(result); lotw_info
               $('#country').val(convert_case(result.dxcc.entity));
               $('#callsign_info').text(convert_case(result.dxcc.entity));
+
+              if(result.lotw_member == "active") {
+                $('#lotw_info').text("LoTW");
+              }
               $('#dxcc_id').val(result.dxcc.adif);
               $('#cqz').val(result.dxcc.cqz);
 
