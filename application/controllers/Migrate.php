@@ -7,6 +7,7 @@
     if ( ! $this->migration->latest()) {
       show_error($this->migration->error_string());
     }
+
   }
 
 } ?>
