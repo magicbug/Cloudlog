@@ -9,8 +9,8 @@ class Lotw_user extends CI_Model {
 	}
 
 	
-	function empty_table($table) {
-		$this->db->empty_table($table); 
+	function empty_table() {
+		$this->db->empty_table('lotw_userlist'); 
 	}
 
 	function add_lotwuser($callsign, $date) {
