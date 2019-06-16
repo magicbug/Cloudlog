@@ -212,6 +212,8 @@ $(document).ready(function(){
       $('#iota_ref').val("");
       $("#locator").removeClass("workedGrid");
       $("#locator").removeClass("newGrid");
+      $('#qsl_via').val("");
+
       mymap.setView([51.505, -0.09], 13);
       mymap.removeLayer(markers);
     }
@@ -291,7 +293,7 @@ $(document).ready(function(){
                 $('#qth').val(result.callsign_qth);
             }
 
-            if($('#qth').val() == "") {
+            if($('#iota_ref').val() == "") {
                 $('#iota_ref').val(result.callsign_iota);
             }
 
