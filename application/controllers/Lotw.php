@@ -294,4 +294,38 @@ class Lotw extends CI_Controller {
 		}
 	}
 
+	/*
+		Load the ARRL LOTW User Activity CSV into LOTW User Table for cross checking when logging
+	*/
+	function load_users() {
+		set_time_limit(0);
+		$this->load->model('lotw_user');
+
+		$row = 1;
+		if (($handle = fopen("https://lotw.arrl.org/lotw-user-activity.csv", "r")) !== FALSE) {
+		    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+		        $num = count($data);
+		        $row++;
+
+		        if(isset($data[2])) {
+		        	$callsign = $data[0];
+		        	$upload_date = $data[1]." ".$data[2];
+		        	$this->lotw_user->add_lotwuser($callsign, $upload_date);
+		    	}
+
+		    }
+		    fclose($handle);
+		}
+
+	}
+
+	/*
+		Check if callsign is an active LOTW user and return whether its true or not
+	*/
+	function lotw_usercheck($callsign) {
+		$this->load->model('lotw_user');
+
+
+	}
+
 } // end class
