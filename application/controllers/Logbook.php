@@ -58,6 +58,11 @@ class Logbook extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
+		$this->load->model('lotw_user');
+		 
+		$lotw_member = $this->lotw_user->check($callsign);
+
+
 		$this->load->model('logbook_model');
 
 		$return = [
@@ -67,7 +72,8 @@ class Logbook extends CI_Controller {
 			"callsign_qth"  => "",
 			"callsign_iota" => "",
 			"bearing" 		=> "",
-			"workedBefore" => false
+			"workedBefore" => false,
+			"lotw_member" => $lotw_member,
 		];
 
 		$return['dxcc'] = $this->dxcheck($callsign);
@@ -90,6 +96,7 @@ class Logbook extends CI_Controller {
 		echo json_encode($return, JSON_PRETTY_PRINT);
 		return;
 	}
+
 
 	if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null)
 	{
@@ -119,10 +126,12 @@ class Logbook extends CI_Controller {
 
 	if (isset($callbook))
 	{
+
 		$return['callsign_name'] = $callbook['name'];
 		$return['callsign_qra'] = $callbook['gridsquare'];
 		$return['callsign_qth'] = $callbook['city'];
 		$return['callsign_iota'] = $callbook['iota'];
+		$return['qsl_manager'] = $callbook['qslmgr'];
 		if ($return['callsign_qra'] != "") {
 			$return['latlng'] = $this->qralatlng($return['callsign_qra']);
 		}
@@ -131,6 +140,7 @@ class Logbook extends CI_Controller {
 	$return['bearing'] = $this->bearing($return['callsign_qra']);
 
 	echo json_encode($return, JSON_PRETTY_PRINT);
+
 	return;
 	}
 

@@ -301,6 +301,8 @@ class Lotw extends CI_Controller {
 		set_time_limit(0);
 		$this->load->model('lotw_user');
 
+		$this->lotw_user->empty_table();
+
 		$row = 1;
 		if (($handle = fopen("https://lotw.arrl.org/lotw-user-activity.csv", "r")) !== FALSE) {
 		    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
@@ -324,6 +326,9 @@ class Lotw extends CI_Controller {
 	*/
 	function lotw_usercheck($callsign) {
 		$this->load->model('lotw_user');
+ 
+
+		$lotw_user_result = $this->lotw_user->check($callsign);
 
 
 	}
