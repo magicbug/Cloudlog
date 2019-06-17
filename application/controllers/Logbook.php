@@ -172,7 +172,6 @@ class Logbook extends CI_Controller {
 		echo "{\"markers\": [";
 		$count = 1;
 		foreach ($data['qsos']->result() as $row) {
-			//print_r($row);
 			if($row->COL_GRIDSQUARE != null) {
 				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
 				if($count != 1) {

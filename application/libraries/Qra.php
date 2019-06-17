@@ -92,5 +92,4 @@ function qra2latlong($strQRA)
 		return($arLatLong);
 
 }
-
 /* End of file Qra.php */

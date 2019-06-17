@@ -163,6 +163,8 @@
 	}
 ?>
 
+
+
 <script>
 var lat = <?php echo $lat; ?>;
 var long = <?php echo $lng; ?>;
