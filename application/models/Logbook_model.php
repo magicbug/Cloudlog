@@ -352,6 +352,26 @@ class Logbook_model extends CI_Model {
 		return $name;
 	}
 
+  function call_qslvia($callsign) {
+    $this->db->select('COL_CALL, COL_QSL_VIA, COL_TIME_ON');
+    $this->db->where('COL_CALL', $callsign);
+    $where = "COL_NAME != \"\"";
+
+    $this->db->where($where);
+
+    $this->db->order_by("COL_TIME_ON", "desc");
+    $this->db->limit(1);
+    $query = $this->db->get($this->config->item('table_name'));
+    $name = "";
+    if ($query->num_rows() > 0)
+    {
+      $data = $query->row();
+      $qsl_via = $data->COL_QSL_VIA;
+    }
+
+    return $qsl_via;
+  }
+
 	function call_qth($callsign) {
 		$this->db->select('COL_CALL, COL_QTH, COL_TIME_ON');
 		$this->db->where('COL_CALL', $callsign);

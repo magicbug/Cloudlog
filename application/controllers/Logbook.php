@@ -71,6 +71,7 @@ class Logbook extends CI_Controller {
 			"callsign_qra"  => "",
 			"callsign_qth"  => "",
 			"callsign_iota" => "",
+			"qsl_manager" => "",
 			"bearing" 		=> "",
 			"workedBefore" => false,
 			"lotw_member" => $lotw_member,
@@ -86,6 +87,7 @@ class Logbook extends CI_Controller {
 		$return['callsign_qra'] = $this->logbook_model->call_qra($callsign);
 		$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
 		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
+		$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
 		$return['bearing'] = $this->bearing($return['callsign_qra']);
 		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra']);
 
