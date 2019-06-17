@@ -32,7 +32,7 @@ class DXCC extends CI_Model {
 	function get_worked_bands() {
 		// get all worked slots from database
 		$data = $this->db->query(
-			"SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `TABLE_HRD_CONTACTS_V01`"
+			"SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `".$this->config->item('table_name')."`"
 		);
 		$worked_slots = array();
 		foreach($data->result() as $row){
@@ -54,7 +54,7 @@ class DXCC extends CI_Model {
 
         $data = $this->db->query(
             "select COL_COUNTRY, COL_MODE, lcase(COL_BAND) as COL_BAND, count(COL_COUNTRY) as cnt
-            from TABLE_HRD_CONTACTS_V01 
+            from ".$this->config->item('table_name')." 
             group by COL_COUNTRY, COL_MODE, COL_BAND"
             );
 
