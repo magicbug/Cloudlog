@@ -372,7 +372,7 @@ class API extends CI_Controller {
 				$this->logbook_model->import($record);
 
 			};
-			http_response_code(201 );
+			http_response_code(201);
 			echo json_encode(['status' => 'created', 'type' => $obj['type'], 'string' => $obj['string']]);
 
 		}
