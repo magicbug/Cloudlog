@@ -22,6 +22,7 @@ class Awards extends CI_Controller {
 		//echo "Needs Developed";
 		$this->load->model('dxcc');
 		$data['dxcc'] = $this->dxcc->show_stats();
+		$data['worked_bands'] = $this->dxcc->get_worked_bands();
 
 		// Render Page
 		$data['page_title'] = "Awards - DXCC";
