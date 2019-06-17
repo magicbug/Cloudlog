@@ -6,44 +6,29 @@
 	
     <?php $this->load->view("awards/nav_bar")?>
     
-
 	<table class="table table-striped table-hover">
 	<thead>
         <tr>
         <td style="width:225px">Country (<?php echo count($dxcc)?>)</td>
-        <td>160m</td>
-        <td>80m</td>
-        <td>60m</td>
-        <td>40m</td>
-        <td>30m</td>
-        <td>20m</td>
-        <td>17m</td>
-        <td>15m</td>
-        <td>12m</td>
-        <td>10m</td>
-        <td>6m</td>
-        <td>4m</td>
-        <td>2m</td>
-        <td>70cm</td>
-        <td>23cm</td>
-        <td>13cm</td>
-        <td>9cm</td>
-        <td>6cm</td>
-        <td>3cm</td>
-        <td>1.25cm</td>
+    <?php
+	foreach ($worked_bands as $slot) {
+		echo "          <td>$slot</td>\n";
+	}
+    ?>
         </tr>
     </thead>
     <tbody>
     <?php
-
         foreach($dxcc as $country=>$val){
             print("<tr><td>$country</td>");
             foreach($val as $band=>$count){
-                if ($count == 0){
-                    print("<td>&nbsp;</td>");
-                }else{
-                    printf("<td><a href='dxcc_details?Country=\"%s\"&Band=\"%s\"'>%d</a></td>", str_replace("&", "%26", $country), $band, $count);
-                }
+		if (in_array($band, $worked_bands)) {
+	                if ($count == 0){
+	      	             print("<td>&nbsp;</td>");
+	                }else{
+	                    printf("<td><a href='dxcc_details?Country=\"%s\"&Band=\"%s\"'>%d</a></td>", str_replace("&", "%26", $country), $band, $count);
+	                }
+		} 
             }
             print("</tr>");
         }
