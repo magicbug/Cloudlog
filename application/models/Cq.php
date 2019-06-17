@@ -11,7 +11,7 @@ class CQ extends CI_Model{
     function get_zones(){
         $data = $this->db->query(
             "select COL_CQZ, count(COL_CQZ)
-            from TABLE_HRD_CONTACTS_V01
+            from ".$this->config->item('table_name')."
             where COL_CQZ is not null
             group by COL_CQZ order by COL_CQZ"
         );
