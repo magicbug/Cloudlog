@@ -336,6 +336,49 @@ class API extends CI_Controller {
 		return $arguments;
 	}
 
+
+	function qso() {
+		header('Content-type: application/json');
+
+		$this->load->model('api_model');
+
+		// Decode JSON and store
+		$obj = json_decode(file_get_contents("php://input"), true);
+
+		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
+		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
+		   die();
+		}
+
+		if($obj['type'] == "adif" && $obj['string'] != "") {
+			// Load the logbook model for adding QSO records
+			$this->load->model('logbook_model');
+
+			// Load ADIF Parser
+			$this->load->library('adif_parser');
+
+			// Feed in the ADIF string
+			$this->adif_parser->feed($obj['string']);
+
+			// Create QSO Record
+			while($record = $this->adif_parser->get_record())
+			{
+				if(count($record) == 0)
+				{
+					break;
+				};
+
+				$this->logbook_model->import($record);
+
+			};
+
+			echo json_encode(['status' => 'success', 'type' => $obj['type'], 'string' => $obj['string']]);
+
+		}
+
+	}
+
+
 	/* ENDPOINT for Rig Control */
 
 	function radio() {
