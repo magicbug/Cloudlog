@@ -376,15 +376,12 @@ class Logbook extends CI_Controller {
 	function searchbearing($locator) {
 			$this->load->library('Qra');
 
-
 			if($locator != null) {
 				if($this->session->userdata('user_locator') != null){
 					$mylocator = $this->session->userdata('user_locator');
 				} else {
 					$mylocator = $this->config->item('locator');
 				}
-
-
 
 				$bearing = $this->qra->bearing($mylocator, $locator);
 
@@ -425,4 +422,6 @@ class Logbook extends CI_Controller {
 		$latlng = $this->qra->qra2latlong($qra);
 		print json_encode($latlng);
 	}
+
+
 }
