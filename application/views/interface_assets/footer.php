@@ -404,12 +404,30 @@ $(document).ready(function(){
           {
             $('#frequency_rx').val(data.downlink_freq);
           }
+
+          old_mode = $(".mode").val();
           if (data.mode == "LSB" || data.mode == "USB" || data.mode == "SSB") {
             $(".mode").val('SSB');
           } else {
             $(".mode").val(data.mode);  
           }
 
+          if (old_mode !== $(".mode").val()) {
+            // Update RST on mode change via CAT
+            if(data.mode == 'JT65' || data.mode == 'JT65B' || data.mode == 'JT6C' || data.mode == 'JTMS' || data.mode == 'ISCAT' || data.mode == 'MSK144' || data.mode == 'JTMSK' || data.mode == 'QRA64'){
+            $('#rst_sent').val('-5');
+            $('#rst_recv').val('-5');
+            } else if (data.mode == 'FSK441' || data.mode == 'JT6M') {
+              $('#rst_sent').val('26');
+            $('#rst_recv').val('26');
+            } else if (data.mode == 'CW') {
+              $('#rst_sent').val('599');
+            $('#rst_recv').val('599');
+            } else {
+              $('#rst_sent').val('59');
+            $('#rst_recv').val('59');
+            }
+          }
           $("#sat_name").val(data.satname);  
           $("#sat_mode").val(data.satmode);  
       });
