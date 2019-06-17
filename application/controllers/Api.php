@@ -346,6 +346,7 @@ class API extends CI_Controller {
 		$obj = json_decode(file_get_contents("php://input"), true);
 
 		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
+		   http_response_code(401);
 		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
 		   die();
 		}
@@ -371,8 +372,8 @@ class API extends CI_Controller {
 				$this->logbook_model->import($record);
 
 			};
-
-			echo json_encode(['status' => 'success', 'type' => $obj['type'], 'string' => $obj['string']]);
+			http_response_code(201 );
+			echo json_encode(['status' => 'created', 'type' => $obj['type'], 'string' => $obj['string']]);
 
 		}
 
