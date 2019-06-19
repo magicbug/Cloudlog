@@ -19,7 +19,7 @@
 		<?php echo validation_errors(); ?>
 		<?php $this->load->helper('form'); ?>
 		
-		<form method="post" action="<?php echo site_url('user/edit')."/".$this->uri->segment(3); ?>" name="users">
+		<form method="post" action="<?php echo site_url('user/edit')."/".$this->uri->segment(3); ?>" name="users" autocomplete="off">
 			<div class="form-group">
 				<label>Username</label>
 				<input class="form-control" type="text" name="user_name" value="<?php if(isset($user_name)) { echo $user_name; } ?>" />
@@ -124,6 +124,27 @@
 			<div class="form-group">
 				<label>eQSL.cc QTH Nickname</label>
 				<input class="form-control" type="text" name="user_eqsl_qth_nickname" value="<?php if(isset($user_eqsl_qth_nickname)) { echo $user_eqsl_qth_nickname; } ?>" />
+			</div>
+
+
+			<div class="form-group">
+				<label>Clublog Username</label>
+				<input class="form-control" type="text" name="user_clublog_name" value="<?php if(isset($user_clublog_name)) { echo $user_clublog_name; } ?>" />
+					<?php if(isset($userclublogname_error)) { echo "<div class=\"small error\">".$userclublogname_error."</div>"; } ?>
+			</div>
+
+			<div class="form-group">
+				<label>Clublog Password</label>
+				<input class="form-control" type="password" name="user_clublog_password" />
+					<?php if(isset($clublogpassword_error)) { echo "<div class=\"small error\">".$clublogpassword_error."</div>"; } else { ?>
+					<div class="small">Leave blank to keep existing password</div></td>
+					<?php } ?>
+			</div>
+
+			<div class="form-group">
+				<label>Clublog Callsign</label>
+				<input class="form-control" type="text" name="user_clublog_callsign" value="<?php if(isset($user_clublog_callsign)) { echo $user_clublog_callsign; } ?>" />
+					<?php if(isset($userclublogcallsign_error)) { echo "<div class=\"small error\">".$userclublogcallsign_error."</div>"; } ?>
 			</div>
 
 			<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />

@@ -195,7 +195,25 @@ class User extends CI_Controller {
 			} else {
 				$data['user_lotw_name'] = $q->user_lotw_name;
 			}
+
+			if($this->input->post('user_clublog_name')) {
+				$data['user_clublog_name'] = $this->input->post('user_clublog_name');
+			} else {
+				$data['user_clublog_name'] = $q->user_clublog_name;
+			}
 			
+			if($this->input->post('user_clublog_password')) {
+				$data['user_clublog_password'] = $this->input->post('user_clublog_password');
+			} else {
+				$data['user_clublog_password'] = $q->user_clublog_password;
+			}
+
+			if($this->input->post('user_clublog_callsign')) {
+				$data['user_clublog_callsign'] = $this->input->post('user_clublog_callsign');
+			} else {
+				$data['user_clublog_callsign'] = $q->user_clublog_callsign;
+			}
+
 			if($this->input->post('user_lotw_password')) {
 				$data['user_lotw_password'] = $this->input->post('user_lotw_password');
 			} else {
