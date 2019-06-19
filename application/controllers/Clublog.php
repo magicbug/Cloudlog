@@ -45,6 +45,12 @@ class Clublog extends CI_Controller {
 		// initialise the curl request
 		$request = curl_init('https://clublog.org/putlogs.php');
 
+		if (function_exists('curl_file_create')) { // php 5.5+
+		  $cFile = curl_file_create($_SERVER['DOCUMENT_ROOT']."/".$file_info['server_path']);
+		} else { // 
+		  $cFile = '@' . realpath($_SERVER['DOCUMENT_ROOT']."/".$file_info['server_path']);
+		}
+
 		// send a file
 		curl_setopt($request, CURLOPT_POST, true);
 		curl_setopt(
@@ -54,8 +60,8 @@ class Clublog extends CI_Controller {
 		      'email' => $clublog_info['user_clublog_name'],
 		      'password' => $clublog_info['user_clublog_password'],
 		      'callsign' => $clublog_info['user_clublog_callsign'],
-		      'api' => "",
-		      'file' => '@' . $file_info['server_path']
+		      'api' => "a11c3235cd74b88212ce726857056939d52372bd",
+		      'file' => $cFile
 		    ));
 
 		// output the response
