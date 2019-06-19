@@ -12,11 +12,23 @@ class Clublog extends CI_Controller {
 	}
 
 	// Upload ADIF to Clublog
-	public function upload() {
+	public function upload($username) {
 		$this->load->helper('file');
 
 		$this->load->model('logbook_model');
-		
+
+		$this->load->model('clublog_model');
+
+		$clublog_info = $this->clublog_model->get_clublog_auth_info($username);
+
+		if(!isset($clublog_info['user_name'])) {
+			echo "Username unknown";
+			exit;
+		}
+
+
+		print_r($clublog_info);
+
 		$data['qsos'] = $this->logbook_model->get_clublog_qsos();
 
 		// Create ADIF File of contacts not uploaded to Clublog
