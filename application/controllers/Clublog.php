@@ -13,6 +13,7 @@ class Clublog extends CI_Controller {
 
 	// Upload ADIF to Clublog
 	public function upload($username) {
+		ini_set('memory_limit', '-1');
 		$this->load->helper('file');
 
 		$this->load->model('logbook_model');
