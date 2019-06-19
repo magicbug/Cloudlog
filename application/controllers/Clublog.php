@@ -84,10 +84,8 @@ class Clublog extends CI_Controller {
 				}
 				curl_close ($request);  
 
-				$check = strpos($response, 'accepted');
-
 				// If Clublog Accepts mark the QSOs
-				if ($check !== false) {
+				if (preg_match('/\baccepted\b/', $response)) {
 					$this->clublog_model->mark_qsos_sent();
 
 					echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog";
@@ -99,6 +97,10 @@ class Clublog extends CI_Controller {
 			echo "Nothing awaiting upload to clublog";
 		}
 
+	}
+
+	function markqso() {
+		$this->clublog_model->mark_qsos_sent();
 	}
 	
 	
