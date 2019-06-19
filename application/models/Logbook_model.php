@@ -442,6 +442,15 @@ class Logbook_model extends CI_Model {
     return $query;
   }
 
+  function get_clublog_qsos(){
+    $this->db->where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "");
+    $this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "N");
+
+    $query = $this->db->get($this->config->item('table_name'));
+
+    return $query;
+  }
+
   function get_last_qsos($num) {
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_STX_STRING, COL_SRX_STRING');
     $this->db->order_by("COL_TIME_ON", "desc");
