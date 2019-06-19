@@ -55,8 +55,6 @@ class Clublog extends CI_Controller {
 					 $filepath = $_SERVER['DOCUMENT_ROOT']."/".$file_info['server_path'];
 				}
 
-				echo $filepath; exit;
-
 				if (function_exists('curl_file_create')) { // php 5.5+
 				  $cFile = curl_file_create($filepath);
 				} else { // 
