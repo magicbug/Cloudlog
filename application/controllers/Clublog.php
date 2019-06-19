@@ -8,11 +8,12 @@ class Clublog extends CI_Controller {
 
 	// Show frontend if there is one
 	public function index() {
-
+		$this->config->load('config');
 	}
 
 	// Upload ADIF to Clublog
 	public function upload($username) {
+		$this->config->load('config');
 		ini_set('memory_limit', '-1');
 		ini_set('display_errors', 1);
 		ini_set('display_startup_errors', 1);
@@ -48,10 +49,18 @@ class Clublog extends CI_Controller {
 				// initialise the curl request
 				$request = curl_init('https://clublog.org/putlogs.php');
 
+				if($this->config->item('directory') != "") {
+					 $filepath = $_SERVER['DOCUMENT_ROOT']."/".$this->config->item('directory')."/".$file_info['server_path'];
+				} else {
+					 $filepath = $_SERVER['DOCUMENT_ROOT']."/".$file_info['server_path'];
+				}
+
+				echo $filepath; exit;
+
 				if (function_exists('curl_file_create')) { // php 5.5+
-				  $cFile = curl_file_create($_SERVER['DOCUMENT_ROOT']."/".$file_info['server_path']);
+				  $cFile = curl_file_create($filepath);
 				} else { // 
-				  $cFile = '@' . realpath($_SERVER['DOCUMENT_ROOT']."/".$file_info['server_path']);
+				  $cFile = '@' . realpath($filepath);
 				}
 
 				// send a file
