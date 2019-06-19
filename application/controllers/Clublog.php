@@ -66,13 +66,12 @@ class Clublog extends CI_Controller {
 				curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 				echo curl_exec($request);
 
-				$results = $request;
+				$results = strval($request);
 
-				// close the session
-				curl_close($request);
+				$check = strpos($results, 'accepted');
 
 				// If Clublog Accepts mark the QSOs
-				if (strpos($results, 'accepted') !== false) {
+				if ($check !== false) {
 					$this->clublog_model->mark_qsos_sent();
 
 					echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog";
