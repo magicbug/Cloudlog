@@ -28,8 +28,7 @@ class Clublog extends CI_Controller {
 
 		$data['qsos'] = $this->logbook_model->get_clublog_qsos();
 
-		if($data['qsos']->num_rows()){
-			// Create ADIF File of contacts not uploaded to Clublog
+		// Create ADIF File of contacts not uploaded to Clublog
 			$string = $this->load->view('adif/data/clublog', $data, TRUE);
 
 			if ( ! write_file('uploads/clublog.adi', $string)) {
@@ -80,7 +79,4 @@ class Clublog extends CI_Controller {
 			echo "Nothing awaiting upload to clublog";
 		}
 
-	}
-	
-	
 }
