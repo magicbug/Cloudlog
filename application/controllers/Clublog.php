@@ -76,16 +76,15 @@ class Clublog extends CI_Controller {
 
 				// output the response
 				curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-				echo curl_exec($request);
+				$response = curl_exec($request);
+				$info = curl_getinfo($request);
 
 				if(curl_errno($request)) {
 				    echo 'Curl error: '.curl_error($request);
 				}
 				curl_close ($request);  
 
-				$results = strval($request);
-
-				$check = strpos($results, 'accepted');
+				$check = strpos($response, 'accepted');
 
 				// If Clublog Accepts mark the QSOs
 				if ($check !== false) {
