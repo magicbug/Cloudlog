@@ -17,7 +17,7 @@ class Clublog extends CI_Controller {
 		ini_set('display_errors', 1);
 		ini_set('display_startup_errors', 1);
 		error_reporting(E_ALL);
-		
+
 		$this->load->helper('file');
 
 		$this->load->model('logbook_model');
@@ -80,7 +80,9 @@ class Clublog extends CI_Controller {
 					$this->clublog_model->mark_qsos_sent();
 
 					echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog";
-				}   
+				} else {
+					echo "some other issue";
+				}
 			}
 		} else {
 			echo "Nothing awaiting upload to clublog";
