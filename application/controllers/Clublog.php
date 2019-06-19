@@ -71,6 +71,11 @@ class Clublog extends CI_Controller {
 				curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 				echo curl_exec($request);
 
+				if(curl_errno($ch)) {
+				    echo 'Curl error: '.curl_error($ch);
+				}
+				curl_close ($ch);  
+
 				$results = strval($request);
 
 				$check = strpos($results, 'accepted');
