@@ -72,7 +72,7 @@ class Clublog extends CI_Controller {
 				echo curl_exec($request);
 
 				if(curl_errno($request)) {
-				    echo 'Curl error: '.curl_error($ch);
+				    echo 'Curl error: '.curl_error($request);
 				}
 				curl_close ($request);  
 
