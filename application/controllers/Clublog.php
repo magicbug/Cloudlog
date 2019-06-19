@@ -28,7 +28,8 @@ class Clublog extends CI_Controller {
 
 		$data['qsos'] = $this->logbook_model->get_clublog_qsos();
 
-		// Create ADIF File of contacts not uploaded to Clublog
+		if($data['qsos']->num_rows()){
+			// Create ADIF File of contacts not uploaded to Clublog
 			$string = $this->load->view('adif/data/clublog', $data, TRUE);
 
 			if ( ! write_file('uploads/clublog.adi', $string)) {
@@ -63,15 +64,23 @@ class Clublog extends CI_Controller {
 				curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 				echo curl_exec($request);
 
+				$results = $request;
+
 				// close the session
 				curl_close($request);
 
-
 				// If Clublog Accepts mark the QSOs
-				$this->clublog_model->mark_qsos_sent();
+				if (strpos($results, 'accepted') !== false) {
+					$this->clublog_model->mark_qsos_sent();
 
-				echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog";
+					echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog";
+				}   
 			}
-	}
+		} else {
+			echo "Nothing awaiting upload to clublog";
+		}
 
+	}
+	
+	
 }
