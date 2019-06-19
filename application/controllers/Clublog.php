@@ -62,9 +62,9 @@ class Clublog extends CI_Controller {
 
 				// output the response
 				curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-				$results = curl_exec($request);
+				echo curl_exec($request);
 
-				echo $results;
+				$results = $request;
 
 				// close the session
 				curl_close($request);
