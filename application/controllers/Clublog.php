@@ -26,7 +26,6 @@ class Clublog extends CI_Controller {
 			exit;
 		}
 
-
 		print_r($clublog_info);
 
 		$data['qsos'] = $this->logbook_model->get_clublog_qsos();
@@ -40,6 +39,31 @@ class Clublog extends CI_Controller {
 		else {
 		    echo "uploads/clublog.adi file created.";
 		}
+
+		$file_info = get_file_info('uploads/clublog.adi');
+
+		// initialise the curl request
+		$request = curl_init('https://clublog.org/putlogs.php');
+
+		// send a file
+		curl_setopt($request, CURLOPT_POST, true);
+		curl_setopt(
+		    $request,
+		    CURLOPT_POSTFIELDS,
+		    array(
+		      'email' => $clublog_info['user_clublog_name'],
+		      'password' => $clublog_info['user_clublog_password'],
+		      'callsign' => $clublog_info['user_clublog_callsign'],
+		      'api' => "",
+		      'file' => '@' . $file_info['server_path']
+		    ));
+
+		// output the response
+		curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+		echo curl_exec($request);
+
+		// close the session
+		curl_close($request);
 
 
 	}
