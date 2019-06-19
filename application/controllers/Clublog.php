@@ -75,8 +75,6 @@ class Clublog extends CI_Controller {
 					echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog";
 				}   
 			}
-		} else {
-			echo "Nothing awaiting upload to clublog";
-		}
+	}
 
 }
