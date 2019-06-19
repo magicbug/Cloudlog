@@ -68,6 +68,8 @@ class Clublog extends CI_Controller {
 				// close the session
 				curl_close($request);
 
+
+				print_r($results);
 				// If Clublog Accepts mark the QSOs
 				if (strpos($results, 'accepted') !== false) {
 					$this->clublog_model->mark_qsos_sent();
