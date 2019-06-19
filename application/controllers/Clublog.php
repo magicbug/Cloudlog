@@ -85,7 +85,7 @@ class Clublog extends CI_Controller {
 
 				$results = strval($request);
 
-				$check = strpos($results, 'accepted');
+				$check = strpos($request, 'accepted');
 
 				// If Clublog Accepts mark the QSOs
 				if ($check !== false) {
