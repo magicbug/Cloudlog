@@ -32,11 +32,13 @@ class Clublog extends CI_Controller {
 			// Create ADIF File of contacts not uploaded to Clublog
 			$string = $this->load->view('adif/data/clublog', $data, TRUE);
 
-			if ( ! write_file('uploads/clublog.adi', $string)) {
+			$ranid = uniqid();
+			if ( ! write_file('uploads/clublog'.$ranid.'.adi', $string)) {
 			     echo 'Unable to write the file - Make the folder Upload folder has write permissions.';
 			}
 			else {
-				$file_info = get_file_info('uploads/clublog.adi');
+
+				$file_info = get_file_info('uploads/clublog'.$ranid.'.adi');
 
 				// initialise the curl request
 				$request = curl_init('https://clublog.org/putlogs.php');
