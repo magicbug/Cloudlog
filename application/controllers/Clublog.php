@@ -80,9 +80,10 @@ class Clublog extends CI_Controller {
 				$info = curl_getinfo($request);
 
 				if(curl_errno($request)) {
-				    echo 'Curl error: '.curl_error($request);
+				    $catch_error = curl_error($request);
 				}
-				curl_close ($request);  
+				curl_close ($request); 
+
 
 				// If Clublog Accepts mark the QSOs
 				if (preg_match('/\baccepted\b/', $response)) {
@@ -90,8 +91,10 @@ class Clublog extends CI_Controller {
 
 					echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog";
 				} else {
-					echo "some other issue";
+					echo $catch_error;
+
 				}
+
 			}
 		} else {
 			echo "Nothing awaiting upload to clublog";
