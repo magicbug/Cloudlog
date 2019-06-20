@@ -106,6 +106,11 @@ class Clublog extends CI_Controller {
 		$this->load->model('clublog_model');
 		$this->clublog_model->mark_qsos_sent();
 	}
+
+	function markallnotsent() {
+		$this->load->model('clublog_model');
+		$this->clublog_model->mark_all_qsos_notsent();
+	}
 	
 	
 }

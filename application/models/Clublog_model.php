@@ -25,6 +25,16 @@ class Clublog_model extends CI_Model {
     	$this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "N");
 		$this->db->update($this->config->item('table_name'), $data);
 	}
+
+	function mark_all_qsos_notsent() {
+		$data = array(
+	        'COL_CLUBLOG_QSO_UPLOAD_DATE' => null,
+	        'COL_CLUBLOG_QSO_UPLOAD_STATUS' => "N",
+		);
+
+		$this->db->where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "Y");
+		$this->db->update($this->config->item('table_name'), $data);
+	}
 }
 
 ?>
