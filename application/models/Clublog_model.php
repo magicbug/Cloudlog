@@ -21,6 +21,7 @@ class Clublog_model extends CI_Model {
 		);
 
 		$this->db->where("COL_CLUBLOG_QSO_UPLOAD_STATUS", null);
+		$this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "");
     	$this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "N");
 		$this->db->update($this->config->item('table_name'), $data);
 	}
