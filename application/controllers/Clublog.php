@@ -80,7 +80,7 @@ class Clublog extends CI_Controller {
 				$info = curl_getinfo($request);
 
 				if(curl_errno($request)) {
-				    $catch_error = curl_error($request);
+				    echo curl_error($request);
 				}
 				curl_close ($request); 
 
@@ -92,7 +92,7 @@ class Clublog extends CI_Controller {
 					$this->load->model('clublog_model');
 					$this->clublog_model->mark_qsos_sent();
 				} else {
-					echo $catch_error;
+					echo "Error";
 				}
 
 			}
