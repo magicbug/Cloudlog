@@ -10,7 +10,11 @@
 			<table width="100%">
 				<tr>
 					<td>Date/Time</td>
+					<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></td>
+					<?php } else { ?>
+					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at **:**"; ?></td>
+					<?php } ?>
 				</tr>
 				
 				<tr>
