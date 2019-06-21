@@ -406,9 +406,6 @@ CREATE TABLE `users` (
                        `user_timezone` int(3) NOT NULL DEFAULT 0,
                        `user_lotw_name` varchar(32) DEFAULT NULL,
                        `user_lotw_password` varchar(64) DEFAULT NULL,
-                       `user_clublog_name` varchar(255) DEFAULT NULL,
-                       `user_clublog_password` varchar(255) DEFAULT NULL,
-                       `user_clublog_callsign` varchar(255) DEFAULT NULL,
                        `user_eqsl_name` varchar(32) DEFAULT NULL,
                        `user_eqsl_password` varchar(64) DEFAULT NULL,
                        `user_eqsl_qth_nickname` varchar(32) DEFAULT NULL,
@@ -480,22 +477,3 @@ ALTER TABLE `dxcc_exceptions`
 --
 ALTER TABLE `dxcc_prefixes`
   ADD PRIMARY KEY (`record`);
-
---
--- Table structure for table `station_profile`
---
-
-CREATE TABLE `station_profile` (
-  `station_id` int(11) NOT NULL,
-  `station_profile_name` varchar(200) CHARACTER SET latin1 NOT NULL,
-  `station_gridsquare` varchar(100) CHARACTER SET latin1 NOT NULL,
-  `station_city` varchar(200) CHARACTER SET latin1 NOT NULL,
-  `station_iota` varchar(255) CHARACTER SET latin1 NOT NULL,
-  `station_sota` varchar(10) CHARACTER SET latin1 NOT NULL,
-  `station_callsign` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
-  `station_dxcc` int(10) DEFAULT NULL,
-  `station_country` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
-  `station_cnty` varchar(200) CHARACTER SET latin1 DEFAULT NULL,
-  `station_cq` int(5) DEFAULT NULL,
-  `station_itu` int(5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
