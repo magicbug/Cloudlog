@@ -20,7 +20,7 @@ class API_Model extends CI_Model {
     }
 
     function delete_key($key) {
-    	$this->db->where('id', $key);
+    	$this->db->where('key', $key);
 		$this->db->delete('api');
     }
     // Generate API Key

@@ -2,9 +2,9 @@
 
 <br>
 <?php if($this->session->flashdata('notice')) { ?>
-	<div id="message" >
-    	<?php echo $this->session->flashdata('notice'); ?>
-	</div>
+<div class="alert alert-success" role="alert">
+	<?php echo $this->session->flashdata('notice'); ?>
+</div>
 <?php } ?>
 
 <div class="card">
@@ -43,7 +43,11 @@
 						?>
 
 					</td>
-					<td><span class="badge badge-pill badge-light"><?php echo ucfirst($row->status); ?></span>  <a href="<?php echo site_url('api/auth/'.$row->key); ?>" target="_blank" class="btn btn-primary btn-sm">Test</td>
+					<td><span class="badge badge-pill badge-light"><?php echo ucfirst($row->status); ?></span>
+						<a href="<?php echo site_url('api/auth/'.$row->key); ?>" target="_blank" class="btn btn-primary btn-sm">Test</a>
+
+						<a href="<?php echo site_url('api/delete/'.$row->key); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete API Key <?php echo $row->key; ?>?');">Delete</a>
+					</td>
 				</tr>
 
 			<?php } ?>

@@ -69,6 +69,20 @@ class API extends CI_Controller {
 		redirect('api/help');
 	}
 
+	function delete($key) {
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+
+		$this->load->model('api_model');
+
+		$this->api_model->delete_key($key);
+
+		$this->session->set_flashdata('notice', 'API Key <b>'.$key."</b> has been deleted");
+
+		redirect('api/help');
+	}
+
 	// Example of authing
 	function auth($key) {
 		$this->load->model('api_model');
