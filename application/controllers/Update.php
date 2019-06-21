@@ -225,25 +225,5 @@ class Update extends CI_Controller {
 
 	}
 
-	public function lotw_users() {
-		// Load Database connectors
-		$this->load->model('lotw');
-		
-		$this->lotw->empty_table("lotw_list");
-		
-		$lines = file('http://www.hb9bza.net/lotw/lotw1.txt');
-
-		// Loop through our array, show HTML source as HTML source; and line numbers too.
-		foreach ($lines as $line_num => $line) {
-			 echo "Line #<b>{$line_num}</b> : " . htmlspecialchars($line) . "<br />\n";
-			 
-			 $data = array(
-					'Callsign' => $line,
-				);
-
-			$this->db->insert('lotw_list', $data); 
-			 
-		}
-	}
 }
 ?>
