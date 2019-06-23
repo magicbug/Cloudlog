@@ -22,7 +22,7 @@
 
 		<!-- Option to Delete QSO -->
 		<div style="float: right; padding-right: 60px; padding-top: 30px;">
-			<p><a class="btn btn-danger" href="<?php echo site_url('qso/delete'); ?>/<?php echo $COL_PRIMARY_KEY; ?>" ><i class="fas fa-trash-alt"></i> Delete QSO</a></p>
+			<p><a class="btn btn-danger" href="<?php echo site_url('qso/delete'); ?>/<?php echo $COL_PRIMARY_KEY; ?>" onclick="return confirm('Are you sure you want the delete QSO?');"><i class="fas fa-trash-alt"></i> Delete QSO</a></p>
 		</div>
 
 		<?php echo validation_errors(); ?>
