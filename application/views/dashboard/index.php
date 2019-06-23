@@ -38,7 +38,11 @@
 			foreach ($last_five_qsos->result() as $row) { ?>
 				<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
 					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); ?></td>
+					<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
 					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
+					<?php } else { ?>
+					<td>**:**</td>
+					<?php } ?>
 					<td>
 						<a data-fancybox data-type="iframe" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;">
 							<?php echo strtoupper($row->COL_CALL); ?>
