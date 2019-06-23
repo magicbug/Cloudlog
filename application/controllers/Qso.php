@@ -133,6 +133,11 @@ class QSO extends CI_Controller {
 		$data['message_contents'] = "QSO Deleted Successfully";
 		$this->load->view('messages/message', $data);
 
+
+		// If deletes from /logbook dropdown redirect
+		if (strpos($_SERVER['HTTP_REFERER'], '/logbook') !== false) {
+		    redirect($_SERVER['HTTP_REFERER']);
+		}
 	}
 	
 	
