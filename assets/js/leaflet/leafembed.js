@@ -23,11 +23,19 @@ function initmap(ShowGrid = 'No') {
 
     // start the map in South-East England
     map.setView(new L.LatLng(q_lat, q_lng), q_zoom);
-    map.addLayer(osm);
-
+	
+	map.addLayer(osm);
 	askForPlots();
+
 	map.on('moveend', onMapMove);
 
+	if(ShowGrid == "Yes") {
+		var maidenhead = L.maidenhead().addTo(map);
+	}
+
+	var layerControl = new L.Control.Layers(null, {
+    'Gridsquares': maidenhead = L.maidenhead()
+	}).addTo(map);
 }
 
 function getXmlHttpObject() {
