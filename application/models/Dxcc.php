@@ -103,7 +103,7 @@ class DXCC extends CI_Model {
 
 			$query = $this->db->query('
 					SELECT *
-					FROM dxcc
+					FROM dxcc_entities
 					WHERE prefix = SUBSTRING( \''.$callsign.'\', 1, LENGTH( prefix ) )
 					ORDER BY LENGTH( prefix ) DESC
 					LIMIT 1
