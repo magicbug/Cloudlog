@@ -345,23 +345,22 @@ $(document).ready(function(){
       /* On Key up Calculate Bearing and Distance */
     $("#locator").keyup(function(){
       if ($(this).val()) {
-         $.getJSON('logbook/qralatlngjson/' + $(this).val(), function(result)
-         {
-            console.log(result[0]);
+        var qra_input = $(this).val();
 
-              // Set Map to Lat/Long
-              markers.clearLayers();
-              if (typeof result !== "undefined") {
-                console.log("defined!");
-                var marker = L.marker([result[0], result[1]]);
-                mymap.setView([result[0], result[1]], 8);
-              }
-
-              markers.addLayer(marker).addTo(mymap);
-
-         })
-
-        $('#locator_info').load("logbook/searchbearing/" + $(this).val()).fadeIn("slow");
+        if(qra_input.length > 3) {
+          $.getJSON('logbook/qralatlngjson/' + $(this).val(), function(result)
+          {
+            // Set Map to Lat/Long
+            markers.clearLayers();
+            if (typeof result !== "undefined") {
+              var marker = L.marker([result[0], result[1]]);
+              mymap.setView([result[0], result[1]], 8);
+            }
+            markers.addLayer(marker).addTo(mymap);
+          })
+          
+          $('#locator_info').load("logbook/searchbearing/" + $(this).val()).fadeIn("slow");
+        }
       }
     });
 
