@@ -139,6 +139,13 @@
               </div>
 
               <div class="form-group row">
+                  <label for="darc_dok" class="col-sm-3 col-form-label">DOK</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm" name="darc_dok" id="darc_dok" value="">
+                </div>
+              </div>
+
+              <div class="form-group row">
                   <label for="comment" class="col-sm-3 col-form-label">Comment</label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">

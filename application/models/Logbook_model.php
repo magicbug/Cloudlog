@@ -81,6 +81,7 @@ class Logbook_model extends CI_Model {
       'COL_DXCC' => $this->input->post('dxcc_id'),
       'COL_CQZ' => $this->input->post('cqz'),
       'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
+      'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
     );
 
     if (strpos(trim($this->input->post('locator')), ',') !== false) {
@@ -163,6 +164,7 @@ class Logbook_model extends CI_Model {
             'COL_DXCC' => $this->input->post('dxcc_id'),
             'COL_CQZ' => $this->input->post('cqz'),
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
+			'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
     );
 
     // If station profile has been provided fill in the fields

@@ -79,6 +79,13 @@
 				</tr>
 				<?php } ?>
 				
+				<?php if($row->COL_DARC_DOK != null) { ?>
+				<tr>
+					<td>DOK</td>
+					<td><?php echo $row->COL_DARC_DOK; ?></td>
+				</tr>
+				<?php } ?>
+				
 				<?php if($row->COL_COMMENT != null) { ?>
 				<tr>
 					<td>Comment</td>
