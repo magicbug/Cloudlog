@@ -27,9 +27,6 @@ function initmap(ShowGrid = 'No') {
 
 	askForPlots();
 	map.on('moveend', onMapMove);
-	
-	var maidenhead = L.maidenhead().addTo(map);
-
 
 }
 
