@@ -27,14 +27,9 @@ function initmap(ShowGrid = 'No') {
 
 	askForPlots();
 	map.on('moveend', onMapMove);
-
-	if(ShowGrid == "Yes") {
-		var maidenhead = L.maidenhead().addTo(map);
-	}
 	
-	var layerControl = new L.Control.Layers(null, {
-    'Gridsquares': maidenhead = L.maidenhead()
-	}).addTo(map);
+	var maidenhead = L.maidenhead().addTo(map);
+
 
 }
 
