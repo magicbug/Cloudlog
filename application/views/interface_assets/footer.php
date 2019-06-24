@@ -193,7 +193,7 @@ $(document).ready(function(){
       }
     });
 
-
+  /* Function: reset_fields is used to reset the fields on the QSO page */
   function reset_fields() {
       $('#callsign_info').text("");
       $('#locator_info').text("");
