@@ -270,7 +270,7 @@
           <input size="20" id="country" type="hidden" name="country" value="" />
         </div>
         
-        <button type="reset" class="btn btn-light">Reset</button>
+        <button type="reset" class="btn btn-light" onclick="reset_fields()">Reset</button>
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save QSO</button>
       </div>
     </form>

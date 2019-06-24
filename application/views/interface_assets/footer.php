@@ -193,13 +193,8 @@ $(document).ready(function(){
       }
     });
 
-  jQuery(function($) {
-  var input = $('#callsign');
-  input.on('keydown', function() {
-    var key = event.keyCode || event.charCode;
 
-    if( key == 8 || key == 46 ) {
-      console.log("trigger");
+  function reset_fields() {
       $('#callsign_info').text("");
       $('#locator_info').text("");
       $('#country').val("");
@@ -216,6 +211,15 @@ $(document).ready(function(){
 
       mymap.setView([51.505, -0.09], 13);
       mymap.removeLayer(markers);
+  }
+
+  jQuery(function($) {
+  var input = $('#callsign');
+  input.on('keydown', function() {
+    var key = event.keyCode || event.charCode;
+
+    if( key == 8 || key == 46 ) {
+      reset_fields();
     }
   });
 });
@@ -241,7 +245,6 @@ $(document).ready(function(){
               // Set Map to Lat/Long
               markers.clearLayers();
               if (typeof result.latlng !== "undefined") {
-                console.log("defined!");
                 var marker = L.marker([result.latlng[0], result.latlng[1]]);
                 mymap.setView([result.latlng[0], result.latlng[1]], 8);
               } else {
