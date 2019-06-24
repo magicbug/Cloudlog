@@ -17,3 +17,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['show_time'] = FALSE;
+
+/*
+|--------------------------------------------------------------------------
+| Configure the measurement base distance is measured in
+|--------------------------------------------------------------------------
+| 
+| Here you can configure different measurement bases to be used on
+| distance caculations. Valid values are:
+| M: miles
+| K: kilometers
+| N: nautic miles
+| 
+| Default is: M
+|
+*/
+$config['measurement_base'] = 'M';
