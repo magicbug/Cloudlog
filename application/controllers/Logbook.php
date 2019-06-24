@@ -88,7 +88,7 @@ class Logbook extends CI_Controller {
 		$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
 		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
 		$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
-		$return['bearing'] = $this->bearing($return['callsign_qra']);
+		$return['bearing'] = $this->bearing($return['callsign_qra'], $this->config->item('measurement_base'));
 		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra']);
 
 		if ($return['callsign_qra'] != "") {
@@ -139,7 +139,7 @@ class Logbook extends CI_Controller {
 		}
 		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra']);
 	}
-	$return['bearing'] = $this->bearing($return['callsign_qra']);
+	$return['bearing'] = $this->bearing($return['callsign_qra'], $this->config->item('measurement_base'));
 
 	echo json_encode($return, JSON_PRETTY_PRINT);
 
@@ -383,7 +383,7 @@ class Logbook extends CI_Controller {
 					$mylocator = $this->config->item('locator');
 				}
 
-				$bearing = $this->qra->bearing($mylocator, $locator);
+				$bearing = $this->qra->bearing($mylocator, $locator, $this->config->item('measurement_base'));
 
 				echo $bearing;
 			}
@@ -391,7 +391,7 @@ class Logbook extends CI_Controller {
 	}
 
 	/* return station bearing */
-	function bearing($locator) {
+	function bearing($locator, $unit = 'M') {
 			$this->load->library('Qra');
 
 
@@ -404,7 +404,7 @@ class Logbook extends CI_Controller {
 
 
 
-				$bearing = $this->qra->bearing($mylocator, $locator);
+				$bearing = $this->qra->bearing($mylocator, $locator, $unit);
 
 				return $bearing;
 			}

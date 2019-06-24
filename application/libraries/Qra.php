@@ -10,11 +10,11 @@ class Qra {
 		return qra2latlong($strQRA);
 	}
 	
-	function bearing($tx, $rx) {
+	function bearing($tx, $rx, $unit = 'M') {
 		$my = qra2latlong($tx);
 		$stn = qra2latlong($rx);
 
-		$bearing = bearing($my[0], $my[1], $stn[0], $stn[1]);
+		$bearing = bearing($my[0], $my[1], $stn[0], $stn[1], $unit);
 		
 		return $bearing;
 	}
@@ -46,7 +46,7 @@ cos(deg2rad($theta));
   return round($dist, 1);
 }
 
-function bearing($lat1, $lon1, $lat2, $lon2) {
+function bearing($lat1, $lon1, $lat2, $lon2, $unit = 'M') {
   if (round($lon1, 1) == round($lon2, 1)) {
 	if ($lat1 < $lat2) {
 	  $bearing = 0;
@@ -54,7 +54,7 @@ function bearing($lat1, $lon1, $lat2, $lon2) {
 	  $bearing = 180;
 	}
   } else {
-	$dist = distance($lat1, $lon1, $lat2, $lon2, 'N');
+	$dist = distance($lat1, $lon1, $lat2, $lon2, $unit);
 	$arad = acos((sin(deg2rad($lat2)) - sin(deg2rad($lat1)) * cos(deg2rad($dist / 60))) / (sin(deg2rad($dist
 / 60)) * cos(deg2rad($lat1))));
 	$bearing = $arad * 180 / pi();
@@ -77,7 +77,18 @@ function bearing($lat1, $lon1, $lat2, $lon2) {
 $var_dist = "";
   #return $dir;
   if (isset($dist)) {
-	$var_dist = $dist." miles";
+	$var_dist = $dist;
+	switch ($unit) {
+		case 'M':
+			$var_dist .= " miles";
+			break;
+		case 'N':
+			$var_dist .= " nautic miles";
+			break;
+		case 'K':
+			$var_dist .= " kilometers";
+			break;
+	}
   }
   return round($bearing, 0)."&#186; ".$dir." ".$var_dist;
 }
