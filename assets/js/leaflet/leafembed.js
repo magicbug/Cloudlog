@@ -5,7 +5,7 @@ var ajaxRequest;
 var plotlist;
 var plotlayers=[];
 
-function initmap() {
+function initmap(ShowGrid = 'No') {
     // set up AJAX request
     ajaxRequest=getXmlHttpObject();
     if (ajaxRequest==null) {
@@ -27,6 +27,15 @@ function initmap() {
 
 	askForPlots();
 	map.on('moveend', onMapMove);
+
+	if(ShowGrid == "Yes") {
+		var maidenhead = L.maidenhead().addTo(map);
+	}
+	
+	var layerControl = new L.Control.Layers(null, {
+    'Gridsquares': maidenhead = L.maidenhead()
+	}).addTo(map);
+
 }
 
 function getXmlHttpObject() {

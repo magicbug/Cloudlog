@@ -31,6 +31,7 @@ $(document).ready(function() {
 </script>
 
 <?php if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "dashboard" ) { ?>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js"></script>
     <script type="text/javascript">
       
@@ -45,8 +46,17 @@ $(document).ready(function() {
         var qso_loc = '<?php echo site_url('dashboard/map');?>';
         var q_zoom = 2;
 
+
+
+
       $(document).ready(function(){
-            initmap();
+            <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
+              var grid = "Yes";
+            <?php } else { ?>
+              var grid = "No";
+            <?php } ?>
+            initmap(grid);
+
       });
     </script>
 <?php } ?>

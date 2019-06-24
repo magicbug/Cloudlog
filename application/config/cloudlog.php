@@ -33,3 +33,16 @@ $config['show_time'] = FALSE;
 |
 */
 $config['measurement_base'] = 'M';
+
+/*
+|--------------------------------------------------------------------------
+| Show Gridsquares on Maps
+|--------------------------------------------------------------------------
+| 
+| You can turn on whether gridsquares are shown on maps automatically else 
+| you have to turn them on via the layer control
+|
+| Default is: FALSE
+|
+*/
+$config['map_gridsquares'] = FALSE;
