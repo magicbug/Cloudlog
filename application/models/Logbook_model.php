@@ -267,6 +267,7 @@ class Logbook_model extends CI_Model {
        'COL_LOTW_QSL_RCVD' => $this->input->post('lotw_recv'),
        'COL_IOTA' => $this->input->post('iota_ref'),
        'COL_SOTA_REF' => $this->input->post('sota_ref'),
+       'COL_DARC_DOK' => $this->input->post('darc_dok'),
        'COL_QTH' => $this->input->post('qth'),
        'COL_PROP_MODE' => $this->input->post('prop_mode'),
        'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
