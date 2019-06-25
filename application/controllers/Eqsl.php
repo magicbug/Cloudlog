@@ -53,13 +53,13 @@ class eqsl extends CI_Controller {
 				$record['qsl_sent'] = $config['eqsl_rcvd_mark'];
 			}
 	
-			$status = $this->logbook_model->import_check($time_on, str_replace("0","&Oslash;",$record['call']), $record['band']);
+			$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
 			if ($status == "Found")
 			{
-				$dupe = $this->logbook_model->eqsl_dupe_check($time_on, str_replace("0","&Oslash;",$record['call']), $record['band'], $config['eqsl_rcvd_mark']);
+				$dupe = $this->logbook_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
 				if ($dupe == false)
 				{
-					$eqsl_status = $this->logbook_model->eqsl_update($time_on, str_replace("0","&Oslash;",$record['call']), $record['band'], $config['eqsl_rcvd_mark']);
+					$eqsl_status = $this->logbook_model->eqsl_update($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
 				}
 				else
 				{
