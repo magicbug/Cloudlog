@@ -164,7 +164,7 @@
 	} else {
 		$query = $this->db->query('
 			SELECT *
-			FROM dxcc
+			FROM dxcc_entities
 			WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
 			ORDER BY LENGTH( prefix ) DESC
 			LIMIT 1 
