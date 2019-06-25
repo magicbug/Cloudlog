@@ -47,7 +47,7 @@
 					<?php } ?>
 					<td>
 						<a data-fancybox data-type="iframe" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;">
-							<?php echo strtoupper($row->COL_CALL); ?>
+							<?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?>
 						</a>
 					</td>
 					<td><?php echo $row->COL_MODE; ?></td>

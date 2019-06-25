@@ -53,13 +53,13 @@ class eqsl extends CI_Controller {
 				$record['qsl_sent'] = $config['eqsl_rcvd_mark'];
 			}
 	
-			$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
+			$status = $this->logbook_model->import_check($time_on, str_replace("0","&Oslash;",$record['call']), $record['band']);
 			if ($status == "Found")
 			{
-				$dupe = $this->logbook_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
+				$dupe = $this->logbook_model->eqsl_dupe_check($time_on, str_replace("0","&Oslash;",$record['call']), $record['band'], $config['eqsl_rcvd_mark']);
 				if ($dupe == false)
 				{
-					$eqsl_status = $this->logbook_model->eqsl_update($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
+					$eqsl_status = $this->logbook_model->eqsl_update($time_on, str_replace("0","&Oslash;",$record['call']), $record['band'], $config['eqsl_rcvd_mark']);
 				}
 				else
 				{
@@ -72,7 +72,7 @@ class eqsl extends CI_Controller {
 			}
 			$table .= "<tr>";
 				$table .= "<td>".$time_on."</td>";
-				$table .= "<td>".$record['call']."</td>";
+				$table .= "<td>".str_replace("0","&Oslash;",$record['call'])."</td>";
 				$table .= "<td>".$record['mode']."</td>";
 				$table .= "<td>QSO Record: ".$status."</td>";
 				$table .= "<td>eQSL Record: ".$eqsl_status."</td>";
@@ -485,7 +485,7 @@ class eqsl extends CI_Controller {
 				}
 				$table .= "<tr>";
 						$table .= "<td>".$qsl['COL_TIME_ON']."</td>";
-						$table .= "<td>".$qsl['COL_CALL']."</td>";
+						$table .= "<td>".str_replace("0","&Oslash;",$qsl['COL_CALL'])."</td>";
 						$table .= "<td>".$qsl['COL_MODE']."</td>";
 						$table .= "<td>".$qsl['COL_BAND']."</td>";
 						$table .= "<td>".$status."</td>";
@@ -514,7 +514,7 @@ class eqsl extends CI_Controller {
 				{
 					$table .= "<tr>";
 						$table .= "<td>".$qsl['COL_TIME_ON']."</td>";
-						$table .= "<td><a class=\"qsobox\" href=\"".site_url('qso/edit')."/".$qsl['COL_PRIMARY_KEY']."\">".strtoupper($qsl['COL_CALL'])."</a></td>";
+						$table .= "<td><a class=\"qsobox\" href=\"".site_url('qso/edit')."/".$qsl['COL_PRIMARY_KEY']."\">".str_replace("0","&Oslash;",strtoupper($qsl['COL_CALL']))."</a></td>";
 						$table .= "<td>".$qsl['COL_MODE']."</td>";
 						$table .= "<td>".$qsl['COL_BAND']."</td>";
 					$table .= "<tr>";
