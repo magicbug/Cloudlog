@@ -2,9 +2,9 @@
 <?php if ($query->num_rows() > 0) {  foreach ($query->result() as $row) {
 ?>
 	<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-	<h4>QSO with <?php echo $row->COL_CALL; ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></h4>
+	<h4>QSO with <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></h4>
 	<?php } else { ?>
-	<h4>QSO with <?php echo $row->COL_CALL; ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp);?></h4>
+	<h4>QSO with <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp);?></h4>
 	<?php } ?>
 	
 	<div class="row">
@@ -22,7 +22,7 @@
 				
 				<tr>
 					<td>Callsign:</td>
-					<td><?php echo $row->COL_CALL; ?></td>
+					<td><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></td>
 				</tr>
 				
 				<tr>

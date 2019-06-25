@@ -249,7 +249,7 @@ class Logbook extends CI_Controller {
 			{
 				$html .= "<tr>";
 					$html .= "<td>".$row->COL_TIME_ON."</td>";
-					$html .= "<td>".$row->COL_CALL."</td>";
+					$html .= "<td>".str_replace("0","&Oslash;",strtoupper($row->COL_CALL))."</td>";
 					$html .= "<td>".$row->COL_RST_SENT."</td>";
 					$html .= "<td>".$row->COL_RST_RCVD."</td>";
 					if($row->COL_SAT_NAME != null) {
