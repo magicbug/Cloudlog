@@ -113,7 +113,6 @@
 				<td><input type="text" name="qth" value="<?php echo $COL_QTH; ?>" /></td>
 			</tr>
 
-
 			<tr>
 				<td>Comment</td>
 				<td><input type="text" name="comment" value="<?php echo $COL_COMMENT; ?>" /></td>
@@ -146,6 +145,11 @@
 			<tr>
 				<td>SOTA</td>
 				<td><input type="text" name="sota_ref" value="<?php echo $COL_SOTA_REF; ?>" /></td>
+			</tr>
+
+			<tr>
+				<td>DOK</td>
+				<td><input type="text" name="darc_dok" value="<?php echo $COL_DARC_DOK; ?>" /></td>
 			</tr>
 
 			<tr>

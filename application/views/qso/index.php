@@ -214,6 +214,11 @@
               <label for="sota_ref">SOTA Reference</label>
               <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" /> e.g: GM/NS-001
             </div>
+
+            <div class="form-group">
+              <label for="sota_ref">DOK</label>
+              <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" /> e.g: Q03
+            </div>
           </div>
           
           <!-- Satellite Panel -->
