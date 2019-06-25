@@ -12,7 +12,7 @@
 			
 			<table width="100%">
 				<tr>
-					<td>Date/Time</td>
+					<td>Date/Time:</td>
 					<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
 					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></td>
 					<?php } else { ?>
@@ -21,12 +21,12 @@
 				</tr>
 				
 				<tr>
-					<td>Callsign</td>
+					<td>Callsign:</td>
 					<td><?php echo $row->COL_CALL; ?></td>
 				</tr>
 				
 				<tr>
-					<td>Band</td>
+					<td>Band:</td>
 					<td><?php echo $row->COL_BAND; ?></td>
 				</tr>
 				
@@ -43,30 +43,30 @@
 				<?php }} ?>
 				
 				<tr>
-					<td>Mode</td>
+					<td>Mode:</td>
 					<td><?php echo $row->COL_MODE; ?></td>
 				</tr>
 				
 				<tr>
-					<td>RST Sent</td>
+					<td>RST Sent:</td>
 					<td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX_STRING) { ?>(<?php echo $row->COL_STX_STRING;?>)<?php } ?></td>
 				</tr>
 				
 				<tr>
-					<td>RST Recv</td>
+					<td>RST Recv:</td>
 					<td><?php echo $row->COL_RST_RCVD; ?> <?php if ($row->COL_SRX_STRING) { ?>(<?php echo $row->COL_SRX_STRING;?>)<?php } ?></td>
 				</tr>
 				
 				<?php if($row->COL_GRIDSQUARE != null) { ?>
 				<tr>
-					<td>Gridsquare</td>
+					<td>Gridsquare:</td>
 					<td><?php echo $row->COL_GRIDSQUARE; ?></td>
 				</tr>
 				<?php } ?>
 
 				<?php if($row->COL_VUCC_GRIDS != null) { ?>
 				<tr>
-					<td>Gridsquare (Multi)</td>
+					<td>Gridsquare (Multi):</td>
 					<td><?php echo $row->COL_VUCC_GRIDS; ?></td>
 				</tr>
 				<?php } ?>
@@ -74,21 +74,14 @@
 				
 				<?php if($row->COL_NAME != null) { ?>
 				<tr>
-					<td>Name</td>
+					<td>Name:</td>
 					<td><?php echo $row->COL_NAME; ?></td>
-				</tr>
-				<?php } ?>
-				
-				<?php if($row->COL_DARC_DOK != null) { ?>
-				<tr>
-					<td>DOK</td>
-					<td><?php echo $row->COL_DARC_DOK; ?></td>
 				</tr>
 				<?php } ?>
 				
 				<?php if($row->COL_COMMENT != null) { ?>
 				<tr>
-					<td>Comment</td>
+					<td>Comment:</td>
 					<td><?php echo $row->COL_COMMENT; ?></td>
 				</tr>
 				<?php } ?>
@@ -126,10 +119,17 @@
 					<td><?php echo $row->COL_SOTA_REF; ?></td>
 				</tr>
 				<?php } ?>
+				
+				<?php if($row->COL_DARC_DOK != null) { ?>
+				<tr>
+					<td>DOK:</td>
+					<td><a href="https://www.darc.de/<?php echo $row->COL_DARC_DOK; ?>" target="_new"><?php echo $row->COL_DARC_DOK; ?></a></td>
+				</tr>
+				<?php } ?>
 
 			</table>
 			<?php if($row->COL_QSL_SENT == "Y" || $row->COL_QSL_RCVD == "Y") { ?>
-				<h3>QSL Info</h3>
+				<h3>QSL Info:</h3>
 				
 				<?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "B") { ?>
 				<p>QSL Card has been sent via the bureau</p>
@@ -147,7 +147,7 @@
 			<?php } ?>
 				
 				<?php if($row->COL_LOTW_QSL_RCVD == "Y") { ?>
-				<h3>LoTW</h3>
+				<h3>LoTW:</h3>
 					<p>This QSO is confirmed on Lotw</p>
 				<?php } ?>
 

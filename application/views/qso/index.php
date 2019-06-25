@@ -139,13 +139,6 @@
               </div>
 
               <div class="form-group row">
-                  <label for="darc_dok" class="col-sm-3 col-form-label">DOK</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="darc_dok" id="darc_dok" value="">
-                </div>
-              </div>
-
-              <div class="form-group row">
                   <label for="comment" class="col-sm-3 col-form-label">Comment</label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
@@ -220,6 +213,11 @@
             <div class="form-group">
               <label for="sota_ref">SOTA Reference</label>
               <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" /> e.g: GM/NS-001
+            </div>
+
+            <div class="form-group">
+              <label for="sota_ref">DOK</label>
+              <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" /> e.g: Q03
             </div>
           </div>
           
