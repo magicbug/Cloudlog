@@ -63,6 +63,9 @@ class QSO extends CI_Controller {
 				'station_profile_id' => $this->input->post('station_profile')
 			);
 			// ];
+			
+			setcookie("radio", $qso_data['radio'], time()+3600*24*99);
+			setcookie("station_profile_id", $qso_data['station_profile_id'], time()+3600*24*99);
 
 			$this->session->set_userdata($qso_data);
 				
