@@ -154,7 +154,8 @@
 		</div>
 		<div class="col">
 			
-			<div id="map" style="width: 340px; height: 250px"></div> 
+
+		<div id="map" style="width: 340px; height: 250px"></div> 
 
 <?php
 	if($row->COL_GRIDSQUARE != null) {
