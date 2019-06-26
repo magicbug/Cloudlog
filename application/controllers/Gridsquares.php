@@ -8,6 +8,15 @@
 
 class Gridsquares extends CI_Controller {
 
+    /*
+    *   TODO List
+    *   - Show squares that have been worked and confirmed in green
+    *   - Create index page
+    *   - Band page provide a band dropdown list
+    *   - Find somewhere in the main menu to add a button to it
+    */
+
+
 	public function index() {
 		$data['page_title'] = "Gridsquare Map";
 
