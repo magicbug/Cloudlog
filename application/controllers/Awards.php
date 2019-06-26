@@ -17,6 +17,56 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 	
+	public function dok ()
+	{
+		//echo "Needs Developed";
+		$this->load->model('dok');
+		$data['doks'] = $this->dok->show_stats();
+		$data['worked_bands'] = $this->dok->get_worked_bands();
+
+		// Render Page
+		$data['page_title'] = "Awards - DOK";
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('awards/dok/index');
+		$this->load->view('interface_assets/footer');
+
+	}
+	
+	public function dok_details(){
+        $a = $this->input->get();
+        $q = "";
+        foreach ($a as $key => $value) {
+        	$q .= $key."=".$value.("&#40;and&#41;");
+        }
+        $q = substr($q, 0, strlen($q)-13);
+
+        $arguments["query"] = $q;
+        $arguments["fields"] = '';
+        $arguments["format"] = "json";
+        $arguments["limit"] = '';
+        $arguments["order"] = '';
+
+        // print_r($arguments);
+        // return;
+
+		// Load the API and Logbook models
+		$this->load->model('api_model');
+		$this->load->model('logbook_model');
+
+		// Call the parser within the API model to build the query
+		$query = $this->api_model->select_parse($arguments);
+
+		// Execute the query, and retrieve the results
+		$data = $this->logbook_model->api_search_query($query);
+
+		// Render Page
+		$data['page_title'] = "Log View - DOK";
+		$data['filter'] = str_replace("&#40;and&#41;", ", ", $q);//implode(", ", array_keys($a));
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('awards/dok/details');
+		$this->load->view('interface_assets/footer');
+	}
+	
 	public function dxcc ()
 	{
 		//echo "Needs Developed";
