@@ -25,7 +25,7 @@ class Awards extends CI_Controller {
 		$data['worked_bands'] = $this->dok->get_worked_bands();
 
 		// Render Page
-		$data['page_title'] = "Awards - DXCC";
+		$data['page_title'] = "Awards - DOK";
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/dok/index');
 		$this->load->view('interface_assets/footer');
