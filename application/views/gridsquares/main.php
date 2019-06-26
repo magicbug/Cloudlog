@@ -12,7 +12,7 @@
 	<h2><?php echo $page_title; ?></h2>
 
 	<nav class="nav">
-	  <a class="nav-link" href="<?php echo site_url('gridsquares/satellite'); ?>">Satellites</a>
+	  <a class="nav-link" href="<?php echo site_url('gridsquares/satellites'); ?>">Satellites</a>
 	  <a class="nav-link" href="<?php echo site_url('gridsquares/band/2m'); ?>">Band</a>
 	</nav>
 </div>
