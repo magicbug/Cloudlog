@@ -55,7 +55,15 @@
 						</div>
         	</li>
 
-        	<a class="nav-link" href="<?php echo site_url('statistics');?>">Statistics</a>
+        	<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Analytics</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" href="<?php echo site_url('statistics');?>" title="Statistics">Statistics</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="<?php echo site_url('gridsquares');?>" title="Gridsquares">Gridsquares</a>
+				</div>
+        	</li>
+
         	<a class="nav-link" href="<?php echo site_url('awards/dxcc');?>">Awards</a>
 
         	
