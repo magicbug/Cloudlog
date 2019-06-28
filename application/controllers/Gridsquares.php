@@ -35,9 +35,43 @@ class Gridsquares extends CI_Controller {
 		$array_grid_2char = array();
 		$array_grid_4char = array();
 
+
+		$array_confirmed_grid_2char = array();
+		$array_confirmed_grid_4char = array();
+
 		$grid_2char = "";
 		$grid_4char = "";
 
+		$grid_2char_confirmed = "";
+		$grid_4char_confirmed = "";
+
+
+		// Get Confirmed LOTW & Paper Squares (non VUCC)
+		$query = $this->gridsquares_model->get_confirmed_sat_squares();
+
+		if ($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $row)
+			{
+
+				$grid_2char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,2));
+				$grid_4char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,4));
+
+				// Check if 2 Char is in array
+				if(!in_array($grid_2char_confirmed, $array_confirmed_grid_2char)){
+					array_push($array_confirmed_grid_2char, $grid_2char_confirmed);	
+				}
+
+
+				if(!in_array($grid_4char_confirmed, $array_confirmed_grid_4char)){
+					array_push($array_confirmed_grid_4char, $grid_4char_confirmed);	
+				}
+
+
+			}
+		}
+
+		// Get worked squares
 		$query = $this->gridsquares_model->get_worked_sat_squares();
 
 		if ($query->num_rows() > 0)
@@ -88,6 +122,33 @@ class Gridsquares extends CI_Controller {
 			}
 		}
 
+		// Confirmed Squares
+		$query_vucc = $this->gridsquares_model->get_confirmed_sat_vucc_squares();
+
+		if ($query_vucc->num_rows() > 0)
+		{
+			foreach ($query_vucc->result() as $row)
+			{
+
+				$grids = explode(",", $row->COL_VUCC_GRIDS);
+
+				foreach($grids as $key) {    
+				    $grid_2char_confirmed = strtoupper(substr($key,0,2));
+					$grid_4char_confirmed = strtoupper(substr($key,0,4));
+
+					// Check if 2 Char is in array
+					if(!in_array($grid_2char_confirmed, $array_confirmed_grid_2char)){
+						array_push($array_confirmed_grid_2char, $grid_2char_confirmed);	
+					}
+
+
+					if(!in_array($grid_2char_confirmed, $array_confirmed_grid_4char)){
+						array_push($array_confirmed_grid_4char, $grid_2char_confirmed);	
+					}
+				}
+			}
+		}
+
 
 		function js_str($s)
 		{
@@ -100,6 +161,9 @@ class Gridsquares extends CI_Controller {
 		    return '[' . implode(',', $temp) . ']';
 		}
 
+
+		$data['grid_2char_confirmed'] = js_array($array_confirmed_grid_2char);
+		$data['grid_4char_confirmed'] = js_array($array_confirmed_grid_4char);
 
 		$data['grid_2char'] = js_array($array_grid_2char);
 		$data['grid_4char'] = js_array($array_grid_4char);
@@ -118,12 +182,37 @@ class Gridsquares extends CI_Controller {
 
 		$data['page_title'] = "Gridsquare Map";
 
-
 		$array_grid_2char = array();
 		$array_grid_4char = array();
 
+		$array_grid_2char_confirmed = array();
+		$array_grid_4char_confirmed = array();
+
 		$grid_2char = "";
 		$grid_4char = "";
+
+		$grid_2char_confirmed = "";
+		$grid_4char_confirmed = "";
+
+		$query = $this->gridsquares_model->get_band_confirmed($band);
+
+		if ($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $row)
+			{
+				$grid_2char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,2));
+				$grid_4char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,4));
+
+				// Check if 2 Char is in array
+				if(!in_array($grid_2char_confirmed, $array_grid_2char_confirmed)){
+					array_push($array_grid_2char_confirmed, $grid_2char_confirmed);	
+				}
+
+				if(!in_array($grid_4char_confirmed, $array_grid_4char_confirmed)){
+					array_push($array_grid_4char_confirmed, $grid_4char_confirmed);	
+				}
+			}
+		}
 
 		$query = $this->gridsquares_model->get_band($band);
 
@@ -160,6 +249,8 @@ class Gridsquares extends CI_Controller {
 		    return '[' . implode(',', $temp) . ']';
 		}
 
+		$data['grid_2char_confirmed'] = js_array($array_grid_2char_confirmed);
+		$data['grid_4char_confirmed'] = js_array($array_grid_4char_confirmed);
 
 		$data['grid_2char'] = js_array($array_grid_2char);
 		$data['grid_4char'] = js_array($array_grid_4char);
