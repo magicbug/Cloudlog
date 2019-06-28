@@ -550,6 +550,36 @@ $(document).ready(function(){
 
   var maidenhead = L.maidenhead().addTo(map);
 
+<?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
+
+  var bands_available = <?php echo $bands_available; ?>;
+
+  $.each(bands_available, function(key, value) {   
+     $('#gridsquare_bands')
+         .append($("<option></option>")
+                    .attr("value",value)
+                    .text(value)); 
+  });
+  
+  var num = "<?php echo $this->uri->segment(3);?>";
+    $("#gridsquare_bands option").each(function(){
+        if($(this).val()==num){ // EDITED THIS LINE
+            $(this).attr("selected","selected");    
+        }
+    });
+
+  $(function(){
+      // bind change event to select
+      $('#gridsquare_bands').on('change', function () {
+          var url = $(this).val(); // get selected value
+          if (url) { // require a URL
+              window.location = "<?php echo site_url('gridsquares/band/');?>" + url
+          }
+          return false;
+      });
+    });
+<?php } ?>
+
 </script>
 <?php } ?>
 

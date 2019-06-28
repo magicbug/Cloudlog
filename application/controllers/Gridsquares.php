@@ -10,7 +10,6 @@ class Gridsquares extends CI_Controller {
 
     /*
     *   TODO List
-    *   - Show squares that have been worked and confirmed in green
     *   - Create index page
     *   - Band page provide a band dropdown list
     *   - Find somewhere in the main menu to add a button to it
@@ -255,7 +254,7 @@ class Gridsquares extends CI_Controller {
 		$data['grid_2char'] = js_array($array_grid_2char);
 		$data['grid_4char'] = js_array($array_grid_4char);
 
-
+		$data['bands_available'] = js_array($this->config->item('bands_available'));
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('gridsquares/index.php');
