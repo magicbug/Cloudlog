@@ -36,6 +36,7 @@ class Gridsquares_model extends CI_Model {
             AND COL_PROP_MODE != "INTERNET"
             AND COL_PROP_MODE != "ECH"
             AND COL_PROP_MODE != "RPT"
+            AND COL_SAT_NAME = "" 
             ');
     }
 
@@ -45,6 +46,7 @@ class Gridsquares_model extends CI_Model {
             AND COL_PROP_MODE != "INTERNET"
             AND COL_PROP_MODE != "ECH"
             AND COL_PROP_MODE != "RPT"
+            AND COL_SAT_NAME = ""
             AND (COL_LOTW_QSL_RCVD = "Y" OR COL_QSL_RCVD = "Y")
             ');
     }
