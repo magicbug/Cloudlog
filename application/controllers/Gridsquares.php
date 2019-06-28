@@ -18,7 +18,7 @@ class Gridsquares extends CI_Controller {
 
 
 	public function index() {
-		$data['page_title'] = "Gridsquare Map";
+		$data['page_title'] = "Satellite Gridsquare Map";
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('gridsquares/main.php');
@@ -180,7 +180,7 @@ class Gridsquares extends CI_Controller {
 	{
 		$this->load->model('gridsquares_model');
 
-		$data['page_title'] = "Gridsquare Map";
+		$data['page_title'] = strtoupper($band)." Gridsquare Map";
 
 		$array_grid_2char = array();
 		$array_grid_4char = array();
