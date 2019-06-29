@@ -49,18 +49,18 @@
         	<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Notes</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="<?php echo site_url('notes');?>" title="Notes"><i class="fas fa-sticky-note"></i> Notes</a>
+							<a class="dropdown-item" href="<?php echo site_url('notes');?>" title="Notes">Notes</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('notes/add');?>" title="Create Note"><i class="fas fa-plus-square"></i> Create Note</a>
+							<a class="dropdown-item" href="<?php echo site_url('notes/add');?>" title="Create Note">Create Note</a>
 						</div>
         	</li>
 
         	<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Analytics</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="<?php echo site_url('statistics');?>" title="Statistics"><i class="fas fa-chart-bar"></i> Statistics</a>
+					<a class="dropdown-item" href="<?php echo site_url('statistics');?>" title="Statistics">Statistics</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="<?php echo site_url('gridsquares');?>" title="Gridsquares"><i class="fas fa-map"></i> Gridsquares</a>
+					<a class="dropdown-item" href="<?php echo site_url('gridsquares');?>" title="Gridsquares">Gridsquares</a>
 				</div>
         	</li>
 
