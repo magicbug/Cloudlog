@@ -899,6 +899,25 @@ class Logbook_model extends CI_Model {
         }
 
 
+        // Check for RX Freq
+        // Check if 'freq' is defined in the import?
+        if (isset($record['freq_rx'])){
+            $cleanfreqRX = preg_replace('#\W#', '', $record['freq_rx']);
+            $freqlngRX = strlen($cleanfreqRX);
+        }else{
+            $freqlngRX = 0;
+        }
+
+        if(isset($record['freq_rx']) && $freqlngRX < 7 ) {
+            $cleansedstringRX = preg_replace('#\W#', '', $record['freq_rx']);
+            $freqRX = $cleansedstringRX."000";
+        } elseif($freqlngRX >= 7) {
+            $cleansedstringRX = preg_replace('#\W#', '', $record['freq_rx']);
+            $freqRX = $cleansedstringRX;
+        } else {
+            $freqRX = NULL;
+        }
+
         // DXCC id
         if (isset($record['call'])){
           $dxcc = $this->check_dxcc_table($record['call'], $time_off);
@@ -933,7 +952,9 @@ class Logbook_model extends CI_Model {
                 $band = $record['band'];
         } else {
             if (isset($record['freq'])){
-              $band = $CI->frequency->GetBand($freq);
+              if($freq != "0") {
+                $band = $CI->frequency->GetBand($freq);
+              }
             }
         }
 
@@ -941,8 +962,10 @@ class Logbook_model extends CI_Model {
         if(isset($record['band_rx'])) {
                 $band_rx = $record['band_rx'];
         } else {
-                if (isset($record['freq'])){
-                  $band_rx = $CI->frequency->GetBand($freq);
+                if (isset($record['freq_rx'])){
+                  if($freq != "0") {
+                    $band_rx = $CI->frequency->GetBand($freqRX);
+                  }
                 } else {
                   $band_rx = "";
                 }
@@ -1010,7 +1033,7 @@ class Logbook_model extends CI_Model {
                 'COL_FISTS_CC' => (!empty($record['fists_cc'])) ? $record['fists_cc'] : null,
                 'COL_FORCE_INIT' => (!empty($record['force_init'])) ? $record['force_init'] : null,
                 'COL_FREQ' => $freq,
-                'COL_FREQ_RX' => (!empty($record['freq_rx'])) ? $record['freq_rx'] : null,
+                'COL_FREQ_RX' => (!empty($record['freq_rx'])) ? $freqRX : null,
                 'COL_GRIDSQUARE' => (!empty($record['gridsquare'])) ? $record['gridsquare'] : '',
                 'COL_HEADING' => (!empty($record['heading'])) ? $record['heading'] : null,
                 'COL_HRDLOG_QSO_UPLOAD_DATE' => (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null,
