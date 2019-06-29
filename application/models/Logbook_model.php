@@ -918,25 +918,23 @@ class Logbook_model extends CI_Model {
         if(isset($record['rst_rcvd'])) {
                 $rst_rx = $record['rst_rcvd'];
         } else {
-                $rst_rx = "59"  ;
+                $rst_rx = "59";
         }
 
         // RST Sent
         if(isset($record['rst_sent'])) {
                 $rst_tx = $record['rst_sent'];
         } else {
-                $rst_tx = "59"  ;
+                $rst_tx = "59";
         }
 
         // Store Band
         if(isset($record['band'])) {
                 $band = $record['band'];
         } else {
-                if (isset($record['freq'])){
-                $myfreq = str_replace(array('.', ','), '' , $record['freq'].'0');
-
-                $band = $CI->frequency->GetBand($myfreq);
-              }
+            if (isset($record['freq'])){
+              $band = $CI->frequency->GetBand($freq);
+            }
         }
 
 
@@ -944,9 +942,7 @@ class Logbook_model extends CI_Model {
                 $band_rx = $record['band_rx'];
         } else {
                 if (isset($record['freq'])){
-                  $myfreq = str_replace(array('.', ','), '' , $record['freq'].'0');
-
-                  $band_rx = $CI->frequency->GetBand($myfreq);
+                  $band_rx = $CI->frequency->GetBand($freq);
                 } else {
                   $band_rx = "";
                 }
