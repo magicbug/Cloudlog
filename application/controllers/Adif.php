@@ -93,6 +93,14 @@ class adif extends CI_Controller {
 		}
 	}
 
+	public function index() {
+		$data['page_title'] = "ADIF Import";
+		$data['max_upload'] = ini_get('upload_max_filesize');
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('adif/import');
+		$this->load->view('interface_assets/footer');
+	}
+
 	public function import() {
 
 		$data['page_title'] = "ADIF Import";

@@ -78,7 +78,7 @@
 							<div class="dropdown-divider"></div>		
 							<a class="dropdown-item" href="<?php echo site_url('radio');?>" title="External Radios"><i class="fas fa-broadcast-tower"></i> Radio Interface</a>
 							<div class="dropdown-divider"></div>	
-							<a class="dropdown-item" href="<?php echo site_url('adif/import');?>" title="ADIF Import/Export"><i class="fas fa-sync"></i> ADIF Import/Export</a>
+							<a class="dropdown-item" href="<?php echo site_url('adif');?>" title="ADIF Import/Export"><i class="fas fa-sync"></i> ADIF Import/Export</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('lotw/import');?>" title="LoTW Import/Export"><i class="fas fa-sync"></i> LoTW Import/Export</a>
 							<div class="dropdown-divider"></div>
