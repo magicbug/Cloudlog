@@ -297,6 +297,7 @@ class Logbook extends CI_Controller {
 
 		$this->db->like('COL_CALL', $id);
 		$this->db->or_like('COL_GRIDSQUARE', $id);
+		$this->db->or_like('COL_VUCC_GRIDS', $id);
 		$this->db->order_by("COL_TIME_ON", "desc");
 		$query = $this->db->get($this->config->item('table_name'));
 
