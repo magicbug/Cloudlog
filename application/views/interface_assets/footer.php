@@ -32,7 +32,6 @@ $(document).ready(function() {
 
 <?php if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "dashboard" ) { ?>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.KML.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js"></script>
     <script type="text/javascript">
       
