@@ -117,7 +117,7 @@ class ADIF_Parser
 	
 	public function load_from_file($fname) //allows the user to accept a filename as input
 	{
-		$this->data = file_get_contents($fname);
+		$this->data = $string = mb_convert_encoding(file_get_contents($fname), "UTF-8");
 	}
 	
 	//the following function does the processing of the array into its key and value pairs

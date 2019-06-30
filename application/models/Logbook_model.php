@@ -877,6 +877,7 @@ class Logbook_model extends CI_Model {
     function import($record) {
         $CI =& get_instance();
         $CI->load->library('frequency');
+
         // Join date+time
 
         $time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
