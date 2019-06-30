@@ -273,7 +273,15 @@ class Logbook_model extends CI_Model {
        'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
        'COL_STX_STRING' => $this->input->post('stx_string'),
        'COL_SRX_STRING' => $this->input->post('srx_string'),
-       'COL_QSL_VIA' => $this->input->post('qsl_via_callsign')
+       'COL_QSL_VIA' => $this->input->post('qsl_via_callsign'),
+       'COL_MY_COUNTRY' => $this->input->post('station_country'),
+       'COL_MY_GRIDSQUARE' => $this->input->post('station_gridsquare'),
+       'COL_MY_CITY' => $this->input->post('station_city'),
+       'COL_MY_IOTA' => $this->input->post('station_iota'),
+       'COL_MY_SOTA_REF' => $this->input->post('station_sota'),
+       'COL_MY_CNTY' => $this->input->post('station_cnty'),
+       'COL_MY_CQ_ZONE' => $this->input->post('station_cq'),
+       'COL_MY_ITU_ZONE' => $this->input->post('station_itu'),
     );
 
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
