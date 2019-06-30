@@ -45,6 +45,19 @@ $config['display_freq'] = true;
 $config['qrz_username'] = "";
 $config['qrz_password'] = "";
 
+
+/*
+|--------------------------------------------------------------------------
+| HamQTH Login Options
+|--------------------------------------------------------------------------
+|
+| 	'hamqth_username'	HamQTH user login
+|	'hamqth_password'	HamQTH user password
+*/
+$config['hamqth_username'] = "";
+$config['hamqth_password'] = "";
+
+
 /*
 |--------------------------------------------------------------------------
 | Authentication
