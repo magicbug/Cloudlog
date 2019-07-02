@@ -63,7 +63,7 @@
 
 	            <?php if($COL_FREQ) { ?>
 	            <div class="form-group">
-	            	<label for="freq">Frequnecy</label>
+	            	<label for="freq">Frequency</label>
 	                <input type="text" class="form-control" id="freq" name="freq" value="<?php echo $COL_FREQ; ?>">
 	            </div>
 	            <?php } ?>
