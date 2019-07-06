@@ -46,3 +46,17 @@ $config['measurement_base'] = 'M';
 |
 */
 $config['map_gridsquares'] = FALSE;
+
+/*
+|--------------------------------------------------------------------------
+| CAT Timeout Warning Inverval
+|--------------------------------------------------------------------------
+| 
+| The external CAT applications can obviously stop working for various reasons 
+| this interval is used for displaying a warning on the QSO Panel
+|
+| Default is: 300 seconds (5 minutes)
+|
+*/
+
+$config['cat_timeout_interval'] = 300;
