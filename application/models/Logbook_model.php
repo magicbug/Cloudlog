@@ -274,14 +274,14 @@ class Logbook_model extends CI_Model {
        'COL_STX_STRING' => $this->input->post('stx_string'),
        'COL_SRX_STRING' => $this->input->post('srx_string'),
        'COL_QSL_VIA' => $this->input->post('qsl_via_callsign'),
-       'COL_MY_COUNTRY' => $this->input->post('station_country'),
-       'COL_MY_GRIDSQUARE' => $this->input->post('station_gridsquare'),
-       'COL_MY_CITY' => $this->input->post('station_city'),
-       'COL_MY_IOTA' => $this->input->post('station_iota'),
-       'COL_MY_SOTA_REF' => $this->input->post('station_sota'),
-       'COL_MY_CNTY' => $this->input->post('station_cnty'),
-       'COL_MY_CQ_ZONE' => $this->input->post('station_cq'),
-       'COL_MY_ITU_ZONE' => $this->input->post('station_itu'),
+       'COL_MY_COUNTRY' => (!empty($this->input->post('station_country'))) ? $this->input->post('station_country') : null,
+       'COL_MY_GRIDSQUARE' => (!empty($this->input->post('station_gridsquare'))) ? $this->input->post('station_gridsquare') : null,
+       'COL_MY_CITY' => (!empty($this->input->post('station_city'))) ? $this->input->post('station_city') : null,
+       'COL_MY_IOTA' => (!empty($this->input->post('station_iota'))) ? $this->input->post('station_iota') : null,
+       'COL_MY_SOTA_REF' => (!empty($this->input->post('station_sota'))) ? $this->input->post('station_sota') : null,
+       'COL_MY_CNTY' => (!empty($this->input->post('station_cnty'))) ? $this->input->post('station_cnty') : null,
+       'COL_MY_CQ_ZONE' => (!empty($this->input->post('station_cq'))) ? $this->input->post('station_cq') : null,
+       'COL_MY_ITU_ZONE' => (!empty($this->input->post('station_itu'))) ? $this->input->post('station_itu') : null,
     );
 
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
