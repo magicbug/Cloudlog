@@ -9,3 +9,4 @@
 /updates/*.xml
 /updates/*.html
 .idea/*
+.DS_Store
