@@ -141,8 +141,8 @@ class Gridsquares extends CI_Controller {
 					}
 
 
-					if(!in_array($grid_2char_confirmed, $array_confirmed_grid_4char)){
-						array_push($array_confirmed_grid_4char, $grid_2char_confirmed);	
+					if(!in_array($grid_4char_confirmed, $array_confirmed_grid_4char)){
+						array_push($array_confirmed_grid_4char, $grid_4char_confirmed);	
 					}
 				}
 			}
