@@ -172,10 +172,7 @@ class eqsl extends CI_Controller {
 				if (stristr($input, "You have no log entries"))
 				{
 					$this->session->set_flashdata('success', 'There are no QSLs waiting for download at eQSL.cc.'); redirect('eqsl/import');
-					/*$data['page_title'] = "eQSL Up to Date";
-					$this->load->view('layout/header', $data);
-					$this->load->view('eqsl/import');
-					$this->load->view('layout/footer');*/
+
 				}
 				else
 				{

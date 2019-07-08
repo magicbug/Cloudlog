@@ -2,7 +2,7 @@
 
 class User extends CI_Controller {
 
-	/* Displays all notes in a list */
+
 	public function index()
 	{
 		$this->load->model('user_model');
@@ -346,9 +346,10 @@ class User extends CI_Controller {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$data['page_title'] = "Login";
-			$this->load->view('layout/header', $data);
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('user/login');
-			$this->load->view('layout/footer');
+			$this->load->view('interface_assets/footer');
+
 		}
 		else
 		{

@@ -19,9 +19,9 @@ class adif extends CI_Controller {
 
 		$data['page_title'] = "ADIF Export";
 
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('adif/main');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	}
 
 	// Export all QSO Data in ASC Order of Date.

@@ -10,9 +10,9 @@ class Export extends CI_Controller {
 	
 		$data['page_title'] = "Data Export";
 
-		$this->load->view('layout/header', $data);
+		$this->load->view('interface_assets/header', $data);
 		$this->load->view('export/index');
-		$this->load->view('layout/footer');
+		$this->load->view('interface_assets/footer');
 	
 	}
 }
