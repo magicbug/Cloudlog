@@ -55,22 +55,6 @@
 <area href="dxcc_details?CQZone=40" title="zone_40" class="zone_40" shape="poly" coords="480,0,480,14,477,15,471,16,461,19,461,21,485,39,486,40,490,46,491,48,494,53,495,61,517,53,524,51,524,0">
 </map>
 <img class="map" src="<?php echo site_url("../images/CQzone.gif"); ?>" usemap="#CQ" border="0">
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script> -->
-  <script src="<?php echo site_url("../js/jquery.maphilight.min.js");?>"></script>
-  <script>
-    var zones=<?php echo json_encode($cqz) ?>;
-
-    $(function() {
-  		$('.map').maphilight({
-        fillOpacity: 0.25,
-        neverOn: true
-      });
-      zones.forEach(hi_lite);
-  	});
-    function hi_lite(el, index, array){
-      $('.zone_'+el).data('maphilight', {'alwaysOn':true}).trigger('alwaysOn.maphilight');
-    }
-  </script>
 
   Maps from <a href="http://www4.plala.or.jp/nomrax/hammaps.htm">JF9EXF</a> site.
   <h4>Notes:</h4>
