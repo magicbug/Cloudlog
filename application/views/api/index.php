@@ -5,7 +5,7 @@ $xmlDoc = new DOMDocument("1.0");
 
 if($data['format'] == "xml") {
     // Add reference to the XSLT
-    $xsl = $xmlDoc->createProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" href=\"".base_url()."css/api.xsl\"");
+    $xsl = $xmlDoc->createProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" href=\"".base_url()."assets/api.xsl\"");
     $xmlDoc->appendChild($xsl);
 }
 
