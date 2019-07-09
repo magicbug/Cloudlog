@@ -76,4 +76,4 @@ SOFTWARE.
 
 ## Credits
 
-Thanks to Andy (VE7CXZ), Gavin (M1BXF), Graham (W5ISP) Robert (M0VFC), Corby (K0SKW), Andy (GI0VGV), Tobias (DL4TMA), Tony (G0WFV), Kim (DG9VH) for contributing code or help to Cloudlog.
+Thanks to Andy (VE7CXZ), Gavin (M1BXF), Graham (W5ISP), Robert (M0VFC), Corby (K0SKW), Andy (GI0VGV), Tobias (DL4TMA), Tony (G0WFV), Kim (DG9VH) for contributing code or help to Cloudlog.
