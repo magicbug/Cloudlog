@@ -21,6 +21,7 @@
 		  <thead>
 		    <tr>
 		      <th scope="col">API Key</th>
+		      <th scope="col">Description</th>
 		      <th scope="col">Rights</th>
 		      <th scope="col">Status</th>
 		    </tr>
@@ -29,6 +30,7 @@
 			<?php foreach ($api_keys->result() as $row) { ?>
 				<tr>
 					<td><?php echo $row->key; ?></td>
+					<td><?php echo $row->description; ?></td>
 					<td>
 						<?php
 							
@@ -44,6 +46,9 @@
 
 					</td>
 					<td><span class="badge badge-pill badge-light"><?php echo ucfirst($row->status); ?></span>
+
+						<a href="<?php echo site_url('api/edit'); ?>/<?php echo $row->key; ?>" class="btn btn-outline-primary btn-sm">Edit</a>
+
 						<a href="<?php echo site_url('api/auth/'.$row->key); ?>" target="_blank" class="btn btn-primary btn-sm">Test</a>
 
 						<a href="<?php echo site_url('api/delete/'.$row->key); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete API Key <?php echo $row->key; ?>?');">Delete</a>

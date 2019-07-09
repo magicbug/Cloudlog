@@ -57,6 +57,44 @@ class API extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
+
+	function edit($key) {
+		$this->load->model('user_model');
+		
+		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		$this->load->model('api_model');
+
+		$this->load->helper(array('form', 'url'));
+
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('api_desc', 'API Description', 'required');
+        $this->form_validation->set_rules('api_key', 'API Key is required do not change this field', 'required');
+
+        $data['api_info'] = $this->api_model->key_description($key);
+
+        if ($this->form_validation->run() == FALSE)
+        {
+  	      	$data['page_title'] = "Edit API Description";
+
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('api/description');
+			$this->load->view('interface_assets/footer');
+		}
+		else
+		{
+			// Success!
+
+			$this->api_model->update_key_description($this->input->post('api_key'), $this->input->post('api_desc'));
+
+			$this->session->set_flashdata('notice', 'API Key <b>'.$this->input->post('api_key')."</b> description has been updated.");
+
+			redirect('api/help');
+		}
+
+	}
+
 	function generate($rights) {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }

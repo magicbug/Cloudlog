@@ -19,6 +19,25 @@ class API_Model extends CI_Model {
     	return $this->db->get('api');
     }
 
+    function key_description($key) {
+    	$this->db->where('key', $key); 
+    	$query = $this->db->get('api');
+
+    	return $query->result_array()[0];
+    }
+
+
+    function update_key_description($key, $description) {
+    	
+    	$data = array(
+        'description' => $description,
+		);
+
+		$this->db->where('key', $key);
+		$this->db->update('api', $data);
+
+    }
+
     function delete_key($key) {
     	$this->db->where('key', $key);
 		$this->db->delete('api');
