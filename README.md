@@ -18,9 +18,11 @@ You can set up the basics of Cloudlog by opening /install in your browser. Pleas
 
 More information can be found in the [wiki](https://github.com/magicbug/Cloudlog/wiki).
 
+Cloudlog now has a [Change Log](https://github.com/magicbug/Cloudlog/wiki/Change-Log) to go along with the commit history please consult this when updating.
+
 ## Support
 
-Issues with GitHub are handled via Issues feature on GitHub only.
+Issues with Cloudlog are handled via Issues feature on GitHub only.
 
 ## CAT Control
 
@@ -46,7 +48,7 @@ If you would like to contributing in anyway to Cloudlog then its most appreciate
 
 Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses Bootstrap 4 for the user CSS framework documentation is available for this when building components.
 
-If you are writing code all javascript and css should be placed within the assets/js or assets/css folders not within the views where possible. 
+If you'd like to donate to Cloudlog to help allow @magicbug spend less time doing commerical work and more time coding Cloudlog then you can donate via [PayPal](https://paypal.me/PGoodhall)
 
 ## Copyright / Licence
 
@@ -74,21 +76,4 @@ SOFTWARE.
 
 ## Credits
 
-* Andy (VE7CXZ)    [http://ve7cxz.ca](http://ve7cxz.ca/)
-* Gavin (M1BXF)   [http://www.geekshed.co.uk](http://www.geekshed.co.uk/)
-* Graham (W5ISP)  [http://www.w5isp.com](http://w5isp.com)
-* Robert (M0VFC)  [http://github.com/rmc47](https://github.com/rmc47)
-* Corby (K0SKW)	  [http://www.k0skw.net/](http://www.k0skw.net/)
-* Andy (GI0VGV)
-* Tobias (DL4TMA) [https://tbspace.de/](https://tbspace.de/)
-* Tony (G0WFV)
-
-## Third Party Interfaces
-
-![Clublog Logo](http://www.clublog.org/images/clublog.png "Clublog Logo")
-
-We use the [Clublog](http://www.clublog.org/) cty.xml and APIs within the DXCC elements of Cloudlog.
-
-![HamQTH Logo](https://www.hamqth.com/images/hamqth_125x125.png "HamQTH Logo")
-
-Cloudlog supports using the callsign lookup service from [HamQTH](https://www.hamqth.com)
+Thanks to Andy (VE7CXZ), Gavin (M1BXF), Graham (W5ISP), Robert (M0VFC), Corby (K0SKW), Andy (GI0VGV), Tobias (DL4TMA), Tony (G0WFV), Kim (DG9VH) for contributing code or help to Cloudlog.
