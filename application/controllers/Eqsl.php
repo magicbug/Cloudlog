@@ -393,6 +393,29 @@ class eqsl extends CI_Controller {
                     $adif .= "%20";
 				}
 
+				// adding sat name if it isn't blank
+				if ($qsl['COL_SAT_NAME'] = ''){
+                    $adif .= "%3C";
+                    $adif .= "SAT_NAME";
+                    $adif .= "%3A";
+                    $adif .= strlen($qsl['COL_SAT_NAME']);
+                    $adif .= "%3E";
+                    $adif .= $qsl['COL_SAT_NAME'];
+                    $adif .= "%20";
+				}
+
+				// adding sat mode if it isn't blank
+				if ($qsl['COL_SAT_MODE'] = ''){
+                    $adif .= "%3C";
+                    $adif .= "SAT_MODE";
+                    $adif .= "%3A";
+                    $adif .= strlen($qsl['COL_SAT_MODE']);
+                    $adif .= "%3E";
+                    $adif .= $qsl['COL_SAT_MODE'];
+                    $adif .= "%20";
+				}
+
+
 				# Tie a bow on it!
 				$adif .= "%3C";
 				$adif .= "EOR";
