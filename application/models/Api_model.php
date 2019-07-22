@@ -60,9 +60,9 @@ class API_Model extends CI_Model {
     function gridsquare_worked($gridsquare, $band, $mode){
 
     	if($mode != NULL) {
-    		$query = $this->db->query('SELECT COUNT(1) as count FROM '.$this->config->item('table_name').' WHERE COL_GRIDSQUARE = "'.$gridsquare.'" AND COL_BAND = "'.$band.'" AND COL_MODE = "'.$mode.'"');
+    		$query = $this->db->query('SELECT COUNT(1) as count FROM '.$this->config->item('table_name').' WHERE COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" AND COL_BAND = "'.$band.'" AND COL_MODE = "'.$mode.'"');
     	} else {
-    		$query = $this->db->query('SELECT COUNT(1) as count FROM '.$this->config->item('table_name').' WHERE COL_GRIDSQUARE = "'.$gridsquare.'" AND COL_BAND ="'.$band.'"');
+    		$query = $this->db->query('SELECT COUNT(1) as count FROM '.$this->config->item('table_name').' WHERE COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" AND COL_BAND ="'.$band.'"');
     	}
 
     	if ($query->num_rows() > 0)
