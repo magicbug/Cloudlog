@@ -431,6 +431,12 @@ class API extends CI_Controller {
 
 	}
 
+	function country_worked($dxcc_num, $band, $mode = NULL) {
+		$this->load->model('api_model');
+
+		echo $this->api_model->country_worked($dxcc_num, $band, $mode);
+	}
+
 
 	/* ENDPOINT for Rig Control */
 
