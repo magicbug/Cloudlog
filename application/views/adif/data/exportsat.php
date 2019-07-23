@@ -1,6 +1,5 @@
 <?php
-
-	header("content-type: plain/text"); 
+	header('Content-Type: text/plain; charset=utf-8');
 	header('Content-Disposition: attachment; filename="'.$this->session->userdata('user_callsign').'-'.date('dmY-Hi').'.adi"')
 ?>
 <ADIF_VERS:3>2.2
