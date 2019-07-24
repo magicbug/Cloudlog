@@ -19,7 +19,7 @@ class Migration_forceint_wrongtype extends CI_Migration {
                                 'constraint' => '2',
                         ),
                 );
-                $this->dbforge->modify_column('TABLE_HRD_CONTACTS_V01', $fields);
+                $this->dbforge->modify_column($this->config->item('table_name'), $fields);
         }
 
         public function down()
