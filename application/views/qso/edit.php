@@ -354,7 +354,7 @@
 		<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 
 		<div class="actions">
-			<input type="submit" class="btn primary" value="Save changes" onclick="closeME();">
+			<input type="submit" class="btn btn-success" value="Save changes" onclick="closeME();">
 			<a class="btn btn-danger float-right" href="<?php echo site_url('qso/delete'); ?>/<?php echo $COL_PRIMARY_KEY; ?>" onclick="return confirm('Are you sure you want the delete QSO?');"><i class="fas fa-trash-alt"></i> Delete QSO</a>
 		</div>
 	</div>
