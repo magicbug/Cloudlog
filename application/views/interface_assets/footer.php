@@ -257,7 +257,7 @@ $(document).ready(function(){
 
               // Set Map to Lat/Long
               markers.clearLayers();
-              if (typeof result.latlng !== "undefined") {
+              if (typeof result.latlng !== "undefined" && result.latlng !== false) {
                 var marker = L.marker([result.latlng[0], result.latlng[1]]);
                 mymap.setView([result.latlng[0], result.latlng[1]], 8);
               } else {
