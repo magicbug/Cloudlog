@@ -208,7 +208,7 @@ $(document).ready(function(){
 
   /* Function: reset_fields is used to reset the fields on the QSO page */
   function reset_fields() {
-      $('#callsign_info').text("");
+
       $('#locator_info').text("");
       $('#country').val("");
       $('#lotw_info').text("");
@@ -221,6 +221,7 @@ $(document).ready(function(){
       $("#locator").removeClass("workedGrid");
       $("#locator").removeClass("newGrid");
       $('#qsl_via').val("");
+      $('#callsign_info').text("");
 
       mymap.setView([51.505, -0.09], 13);
       mymap.removeLayer(markers);
@@ -239,7 +240,7 @@ $(document).ready(function(){
 
 
     $("#callsign").focusout(function() {
-        if ($(this).val()) {
+        if ($(this).val().length >= 3) {
             /* Find and populate DXCC */
             $.getJSON('logbook/json/' + $(this).val(), function(result)
             {
