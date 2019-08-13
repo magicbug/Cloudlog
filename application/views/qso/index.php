@@ -303,6 +303,12 @@
             <div id="qsomap" style="width: 100%; height: 200px;"></div>
     </div>
 
+    <div class="card callsign-suggest">
+        <div class="card-header"><h4 class="card-title">Suggestions</h4></div>
+
+        <div class="card-body callsign-suggestions"></div>
+    </div>
+
     <div class="card previous-qsos">
       <div class="card-header"><h4 class="card-title">Previous Contacts</h4></div>
       <div class="card-body">

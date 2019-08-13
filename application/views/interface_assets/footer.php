@@ -239,10 +239,24 @@ $(document).ready(function(){
 });
 
 
+    // On Key up check and suggest callsigns
+    $("#callsign").keyup(function() {
+    if ($(this).val().length >= 3) {
+      $('.callsign-suggest').show();
+      $.get('lookup/scp/' + $(this).val().toUpperCase(), function(result) {
+
+        $('.callsign-suggestions').text(result);
+      });
+    }
+    });
+
     $("#callsign").focusout(function() {
+
         if ($(this).val().length >= 3) {
             /* Find and populate DXCC */
-            $.getJSON('logbook/json/' + $(this).val(), function(result)
+            $('.callsign-suggest').hide();
+
+            $.getJSON('logbook/json/' + $(this).val().toUpperCase(), function(result)
             {
               //$('#country').val(result); lotw_info
               if(result.dxcc.entity != undefined) {
