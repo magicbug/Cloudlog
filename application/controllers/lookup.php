@@ -13,22 +13,30 @@ class Lookup extends CI_Controller {
 
 	}
 
-	public function scp($string) {
+	public function scp($call) {
+		
+		// SCP results from logbook
+		$this->load->model('logbook_model');
+
+		$log_calls = $this->logbook_model->get_callsigns($call);
+
+		if($log_calls != "") {
+			echo $log_calls."<br><br>";
+		}
+
+
+
+		// SCP results from master scp db
 		$file = 'updates/masterscp.txt';
 
 		$lines = file($file, FILE_IGNORE_NEW_LINES);
 
-		$input = preg_quote($string, '~');
+		$input = preg_quote($call, '~');
 
 		$result = preg_grep('~' . $input . '~', $lines, 0);
 
-		$copy = $result;
 		foreach ($result as &$value) {
-		    echo $value;
-
-		    if (next($copy )) {
-		        echo ', '; // Add comma for all elements instead of last
-		    }
+		    echo " ".$value. " ";
 		}
 	}
 

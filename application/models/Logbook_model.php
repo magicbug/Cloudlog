@@ -222,6 +222,26 @@ class Logbook_model extends CI_Model {
     }
   }
 
+  public function get_callsigns($callsign){
+    $this->db->select('COL_CALL');
+    $this->db->distinct();
+    $this->db->like('COL_CALL', $callsign);
+
+    $query = $this->db->get($this->config->item('table_name'));
+
+    $result = "";
+
+    foreach ($query->result() as $row)
+    {
+
+      $result = $result." ".$row->COL_CALL;
+
+    }
+
+    return $result;
+
+  }
+
   function add_qso($data) {
 
     if ($data['COL_DXCC'] == "Not Found"){
