@@ -145,6 +145,8 @@ $(document).ready(function(){
 
     $(document).ready(function() {
 
+    $('.callsign-suggest').hide();    
+
     /* On Page Load */
     var catcher = function() {
       var changed = false;
