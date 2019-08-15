@@ -29,15 +29,18 @@ class Lookup extends CI_Controller {
 		// SCP results from master scp db
 		$file = 'updates/masterscp.txt';
 
-		$lines = file($file, FILE_IGNORE_NEW_LINES);
+		if (is_readable($file)) {
 
-		$input = preg_quote($call, '~');
+			$lines = file($file, FILE_IGNORE_NEW_LINES);
+			$input = preg_quote($call, '~');
 
-		$result = preg_grep('~' . $input . '~', $lines, 0);
+			$result = preg_grep('~' . $input . '~', $lines, 0);
 
-		foreach ($result as &$value) {
-		    echo " ".$value. " ";
+			foreach ($result as &$value) {
+				echo " ".$value. " ";
+			}
 		}
+		
 	}
 
 }
