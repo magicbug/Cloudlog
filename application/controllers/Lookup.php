@@ -21,7 +21,7 @@ class Lookup extends CI_Controller {
 		$log_calls = $this->logbook_model->get_callsigns($call);
 
 		if($log_calls != "") {
-			echo $log_calls."<br><br>";
+			echo $log_calls ." ";
 		}
 
 
