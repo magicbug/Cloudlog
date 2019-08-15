@@ -227,6 +227,7 @@ $(document).ready(function(){
 
       mymap.setView([51.505, -0.09], 13);
       mymap.removeLayer(markers);
+      $('.callsign-suggest').hide();
   }
 
   jQuery(function($) {
