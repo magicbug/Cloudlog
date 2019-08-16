@@ -161,6 +161,38 @@ class Logbook extends CI_Controller {
 		return false;
 	}
 
+	/*
+	*	Function: jsonlookupgrid
+	*
+	* 	Usage: Used to look up gridsquares when creating a QSO to check whether its needed or not 
+	*/
+	function jsonlookupgrid($gridsquare, $type, $band, $mode) {
+		$return = [
+			"workedBefore" => false,
+		];
+
+		if($type == "SAT") {
+			$this->db->where('COL_PROP_MODE', 'SAT'); 
+		} else {
+			$this->db->where('COL_MODE', $mode); 
+			$this->db->where('COL_BAND', $band); 
+			$this->db->where('COL_PROP_MODE !=','SAT');
+
+		}
+
+		$this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($gridsquare, 0, 4));
+		$query = $this->db->get($this->config->item('table_name'), 1, 0);
+		foreach ($query->result() as $workedBeforeRow)
+		{
+			$return['workedBefore'] = true;
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode($return, JSON_PRETTY_PRINT);
+
+		return;
+	}
+
 
 	/* Used to generate maps for displaying on /logbook/ */
 	function qso_map() {

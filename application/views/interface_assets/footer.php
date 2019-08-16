@@ -384,7 +384,56 @@ $(document).ready(function(){
       if ($(this).val()) {
         var qra_input = $(this).val();
 
-        if(qra_input.length > 3) {
+        var qra_lookup = qra_input.substring(0, 4);
+
+        if(qra_lookup.length >= 4) {
+          
+          // Check Log if satname is provided
+          if($("#sat_name" ).val() != "") {
+
+            //logbook/jsonlookupgrid/io77/SAT/0/0
+
+            $.getJSON('logbook/jsonlookupgrid/' + qra_lookup.toUpperCase() + '/SAT/0/0', function(result)
+            {
+              // Reset CSS values before updating
+              $('#locator').removeClass("workedGrid");
+              $('#locator').removeClass("newGrid");
+              $('#locator').attr('title', '');
+
+              if (result.workedBefore)
+              {
+                $('#locator').addClass("workedGrid");
+                $('#locator').attr('title', 'Grid was already worked in the past');
+              }
+              else
+              {
+                $('#locator').addClass("newGrid");
+                $('#locator').attr('title', 'New grid!');
+              }
+            })
+          } else {
+            $.getJSON('logbook/jsonlookupgrid/' + qra_lookup.toUpperCase() + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
+            {
+              // Reset CSS values before updating
+              $('#locator').removeClass("workedGrid");
+              $('#locator').removeClass("newGrid");
+              $('#locator').attr('title', '');
+
+              if (result.workedBefore)
+              {
+                $('#locator').addClass("workedGrid");
+                $('#locator').attr('title', 'Grid was already worked in the past');
+              }
+              else
+              {
+                $('#locator').addClass("newGrid");
+                $('#locator').attr('title', 'New grid!');
+              }
+            })
+          }
+        }
+
+        if(qra_input.length >= 4) {
           $.getJSON('logbook/qralatlngjson/' + $(this).val(), function(result)
           {
             // Set Map to Lat/Long
