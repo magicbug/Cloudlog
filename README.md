@@ -8,6 +8,10 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 * PHP (Version 7 or higher is recommended) & MySQL
 
+You will also needthe following PHP modules installed
+
+php-curl, php-mbstrings, php-xml
+
 ## Versions
 
 * Master - Current working copy
