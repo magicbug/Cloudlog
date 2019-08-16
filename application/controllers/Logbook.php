@@ -53,7 +53,7 @@ class Logbook extends CI_Controller {
 
 	}
 
-	function json($callsign)
+	function json($callsign, $type, $band, $mode)
 	{
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
@@ -89,7 +89,7 @@ class Logbook extends CI_Controller {
 		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
 		$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
 		$return['bearing'] = $this->bearing($return['callsign_qra'], $this->config->item('measurement_base'));
-		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra']);
+		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
 
 		if ($return['callsign_qra'] != "") {
 			$return['latlng'] = $this->qralatlng($return['callsign_qra']);
@@ -138,7 +138,7 @@ class Logbook extends CI_Controller {
 		if ($return['callsign_qra'] != "") {
 			$return['latlng'] = $this->qralatlng($return['callsign_qra']);
 		}
-		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra']);
+		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
 	}
 	$return['bearing'] = $this->bearing($return['callsign_qra'], $this->config->item('measurement_base'));
 
@@ -147,10 +147,20 @@ class Logbook extends CI_Controller {
 	return;
 	}
 
-	function worked_grid_before($gridsquare)
+	function worked_grid_before($gridsquare, $type, $band, $mode)
 	{
 		if (strlen($gridsquare) < 4)
 			return false; 
+
+
+		if($type == "SAT") {
+			$this->db->where('COL_PROP_MODE', 'SAT'); 
+		} else {
+			$this->db->where('COL_MODE', $mode); 
+			$this->db->where('COL_BAND', $band); 
+			$this->db->where('COL_PROP_MODE !=','SAT');
+
+		}
 
 		$this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($gridsquare, 0, 4));
 		$query = $this->db->get($this->config->item('table_name'), 1, 0);
@@ -374,17 +384,7 @@ class Logbook extends CI_Controller {
 		}
 	}
 
-	// Find DXCC
-	function find_dxcc($callsign) {
-		// Live lookup against Clublogs API
-		$url = "https://secure.clublog.org/dxcc?call=".$callsign."&api=a11c3235cd74b88212ce726857056939d52372bd&full=1";
 
-		$json = file_get_contents($url);
-		$data = json_decode($json, TRUE);
-
-		// echo ucfirst(strtolower($data['Name']));
-		return $data;
-	}
 
 	/*
 	 * Provide a dxcc search, returning results json encoded

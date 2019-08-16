@@ -259,7 +259,18 @@ $(document).ready(function(){
             /* Find and populate DXCC */
             $('.callsign-suggest').hide();
 
-            $.getJSON('logbook/json/' + $(this).val().toUpperCase(), function(result)
+            if($("#sat_name").val() != ""){
+              var sat_type = "SAT";
+              var json_band = "0";
+              var json_mode = "0";
+            } else {
+              var sat_type = "0";
+              var json_band = $("#band").val();
+              var json_mode = $("#mode").val();
+            }
+
+
+            $.getJSON('logbook/json/' + $(this).val().toUpperCase() + '/' + sat_type + '/' + json_band + '/' + json_mode, function(result)
             {
               //$('#country').val(result); lotw_info
               if(result.dxcc.entity != undefined) {
