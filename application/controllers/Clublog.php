@@ -111,6 +111,18 @@ class Clublog extends CI_Controller {
 		$this->load->model('clublog_model');
 		$this->clublog_model->mark_all_qsos_notsent();
 	}
+
+	// Find DXCC
+	function find_dxcc($callsign) {
+		// Live lookup against Clublogs API
+		$url = "https://secure.clublog.org/dxcc?call=".$callsign."&api=a11c3235cd74b88212ce726857056939d52372bd&full=1";
+
+		$json = file_get_contents($url);
+		$data = json_decode($json, TRUE);
+
+		// echo ucfirst(strtolower($data['Name']));
+		return $data;
+	}
 	
 	
 }

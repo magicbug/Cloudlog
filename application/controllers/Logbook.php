@@ -165,6 +165,8 @@ class Logbook extends CI_Controller {
 	*	Function: jsonlookupgrid
 	*
 	* 	Usage: Used to look up gridsquares when creating a QSO to check whether its needed or not 
+	*	the $type variable is only used for satellites, set this to SAT.
+	*
 	*/
 	function jsonlookupgrid($gridsquare, $type, $band, $mode) {
 		$return = [
