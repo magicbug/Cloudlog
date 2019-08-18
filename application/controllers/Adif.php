@@ -144,6 +144,7 @@ class adif extends CI_Controller {
 					break;
 				};
 
+
 				$this->logbook_model->import($record);
 
 			};

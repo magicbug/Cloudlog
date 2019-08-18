@@ -25,7 +25,16 @@ class ADIF_Parser
 	
 	public function initialize() //this function locates the <EOH>
 	{
-		$pos = stripos($this->data, "<eoh>");
+
+
+		$eoh_upper = stripos($this->data, "<EOH>");
+
+		if($eoh_upper == true) {
+			$pos = stripos($this->data, "<EOH>");;
+		} else {
+			$pos = stripos($this->data, "<eoh>");
+		}
+
 		if($pos == false) //did we find the end of headers?
 		{
 			echo "Error: Adif_Parser Already Initialized or No <EOH> in ADIF File";
