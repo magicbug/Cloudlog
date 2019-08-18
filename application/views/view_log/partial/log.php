@@ -31,8 +31,15 @@
 			<?php } ?>
 			<td><a data-fancybox data-type="iframe" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a></td>
 			<td><?php echo $row->COL_MODE; ?></td>
-			<td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX_STRING) { ?><span class="label"><?php echo $row->COL_STX_STRING;?></span><?php } ?></td>
-			<td><?php echo $row->COL_RST_RCVD; ?> <?php if ($row->COL_SRX_STRING) { ?><span class="label"><?php echo $row->COL_SRX_STRING;?></span><?php } ?></td>
+			<td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX) { ?><span class="badge badge-light"><?php echo $row->COL_STX;?></span><?php } ?><?php if ($row->COL_STX_STRING) { ?><span class="badge badge-light"><?php echo $row->COL_STX_STRING;?></span><?php } ?>
+
+			</td>
+			<td><?php echo $row->COL_RST_RCVD; ?> 
+			
+			<?php if ($row->COL_SRX) { ?><span class="badge badge-light"><?php echo $row->COL_SRX;?></span><?php } ?>
+			<?php if ($row->COL_SRX_STRING) { ?><span class="badge badge-light"><?php echo $row->COL_SRX_STRING;?></span><?php } ?>
+
+			</td>
 			<?php if($row->COL_SAT_NAME != null) { ?>
 			<td><?php echo $row->COL_SAT_NAME; ?></td>
 			<?php } else { ?>
