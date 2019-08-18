@@ -469,8 +469,8 @@ $(document).ready(function(){
       } else if ($(this).val() == 'FSK441' || $(this).val() == 'JT6M') {
         $('#rst_sent').val('26');
       $('#rst_recv').val('26');
-      } else if ($(this).val() == 'CW') {
-        $('#rst_sent').val('599');
+      } else if ($(this).val() == 'CW' || $(this).val() == 'RTTY' || $(this).val() == 'PSK31' !! $(this).val() == 'PSK63') {
+      $('#rst_sent').val('599');
       $('#rst_recv').val('599');
       } else {
         $('#rst_sent').val('59');
