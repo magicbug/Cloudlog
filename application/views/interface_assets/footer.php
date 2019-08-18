@@ -539,9 +539,10 @@ $(document).ready(function(){
   // If radio isn't SatPC32 clear sat_name and sat_mode
   $( ".radios" ).change(function() {
       if ($(".radios option:selected").text() != "SatPC32") {
-        console.log("not satPC32");
         $("#sat_name").val("");  
         $("#sat_mode").val("");  
+        $("#frequency").val("");  
+        $("#frequency_rx").val(""); 
       }
   });
 
