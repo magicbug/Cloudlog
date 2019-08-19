@@ -98,6 +98,7 @@ class Logbook_model extends CI_Model {
   function create_qso() {
     // Join date+time
     $datetime = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('start_time');
+    
     if ($this->input->post('prop_mode') != null) {
             $prop_mode = $this->input->post('prop_mode');
     } else {
