@@ -45,7 +45,7 @@
 					<td><?php echo $row->station_cnty;?></td>
 					<td><?php echo $row->station_cq;?></td>
 					<td><?php echo $row->station_itu;?></td>
-					<td><a href="<?php echo site_url('station/delete')."/".$row->station_id; ?>" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</a></td>
+					<td><a href="<?php echo site_url('station/delete')."/".$row->station_id; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want delete QSO <?php echo $row->station_profile_name; ?>?');"><i class="fas fa-trash-alt"></i> Delete</a></td>
 				</tr>	
 				<?php } ?>
 			</tbody>
