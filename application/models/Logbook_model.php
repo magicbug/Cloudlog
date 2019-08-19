@@ -917,9 +917,10 @@ class Logbook_model extends CI_Model {
       return $this->db->get($this->config->item('table_name'));
     }
 
-    function import($record) {
+    function import($record, $station_id = "0") {
         $CI =& get_instance();
         $CI->load->library('frequency');
+
 
         // Join date+time
 
@@ -1196,6 +1197,33 @@ class Logbook_model extends CI_Model {
                 'COL_VUCC_GRIDS' =>((!empty($record['vucc_grids']))) ? $record['vucc_grids'] : '',
                 'COL_WEB' => (!empty($record['web'])) ? $record['web'] : ''
             );
+
+            if($station_id != "0") {
+              $station_result = $this->db->where('station_id', $station_id)
+                                ->get('station_profile');
+
+
+                if ($station_result->num_rows() > 0){
+                    $row = $station_result->row_array();
+
+                    if (strpos(trim($row['station_gridsquare']), ',') !== false) {
+                      $data['COL_MY_VUCC_GRIDS'] = strtoupper(trim($row['station_gridsquare']));
+                    } else {
+                      $data['COL_MY_GRIDSQUARE'] = strtoupper(trim($row['station_gridsquare']));
+                    }
+
+                    $data['COL_MY_CITY'] = strtoupper(trim($row['station_city']));
+                    $data['COL_MY_IOTA'] = strtoupper(trim($row['station_iota']));
+                    $data['COL_MY_SOTA_REF'] = strtoupper(trim($row['station_sota']));
+                    
+                    $data['COL_STATION_CALLSIGN'] = strtoupper(trim($row['station_callsign']));
+                    $data['COL_MY_DXCC'] = strtoupper(trim($row['station_dxcc']));
+                    $data['COL_MY_COUNTRY'] = strtoupper(trim($row['station_country']));
+                    $data['COL_MY_CNTY'] = strtoupper(trim($row['station_cnty']));
+                    $data['COL_MY_CQ_ZONE'] = strtoupper(trim($row['station_cq']));
+                    $data['COL_MY_ITU_ZONE'] = strtoupper(trim($row['station_itu']));
+                }
+            }
 
 
             $this->add_qso($data);

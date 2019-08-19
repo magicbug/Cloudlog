@@ -12,6 +12,11 @@ class Stations extends CI_Model {
 		return $this->db->get('station_profile');
 	}
 
+	function profile($id) {
+		$this->db->where('station_id', $id);
+		return $this->db->get('station_profile');
+	}
+
 
 	function add() {
 		$data = array(

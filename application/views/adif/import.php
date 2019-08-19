@@ -19,7 +19,13 @@
 
 	    <p><span class="label important">Important</span> Log files must have the file type .adi</p>
 
-		<form class="form-inline" action="<?php echo site_url('adif/import'); ?>" method="post" enctype="multipart/form-data">
+		<form class="form" action="<?php echo site_url('adif/import'); ?>" method="post" enctype="multipart/form-data">
+		    <select name="station_profile" class="custom-select mb-2 mr-sm-2" style="width: 20%;">
+			<option value="0">Select Station Profile</option>
+			<?php foreach ($station_profile->result() as $station) { ?>
+			<option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
+			<?php } ?>
+		    </select>
 		  <label class="sr-only" for="inlineFormInputName2">ADIF file</label>
 		  <input class="file-input mb-2 mr-sm-2" type="file" name="userfile" size="20" />
 
