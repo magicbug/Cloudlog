@@ -942,7 +942,7 @@ class Logbook_model extends CI_Model {
 
         if(isset($record['freq']) && $freqlng < 7 ) {
             $cleansedstring = preg_replace('#\W#', '', $record['freq']);
-            $freq = $cleansedstring."000";
+            $freq = $cleansedstring."0";
         } elseif($freqlng >= 7) {
             $cleansedstring = preg_replace('#\W#', '', $record['freq']);
             $freq = $cleansedstring;
@@ -962,7 +962,7 @@ class Logbook_model extends CI_Model {
 
         if(isset($record['freq_rx']) && $freqlngRX < 7 ) {
             $cleansedstringRX = preg_replace('#\W#', '', $record['freq_rx']);
-            $freqRX = $cleansedstringRX."000";
+            $freqRX = $cleansedstringRX."0";
         } elseif($freqlngRX >= 7) {
             $cleansedstringRX = preg_replace('#\W#', '', $record['freq_rx']);
             $freqRX = $cleansedstringRX;
