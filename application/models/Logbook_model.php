@@ -912,7 +912,7 @@ class Logbook_model extends CI_Model {
       //$this->db->select("COL_PRIMARY_KEY, DATE_FORMAT(COL_TIME_ON,\'%Y%m%d\') AS COL_QSO_DATE, DATE_FORMAT(COL_TIME_ON,\'%H%i\') AS TIME_ON, COL_CALL, COL_MODE, COL_BAND");
       $this->db->select("COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_MODE, COL_BAND, COL_COMMENT, COL_RST_SENT, COL_PROP_MODE");
       $this->db->where('COL_EQSL_QSL_SENT  !=', 'Y');
-      %this->db->or_where('COL_EQSL_QSL_SENT IS NULL');
+      $this->db->or_where('COL_EQSL_QSL_SENT IS NULL');
 
       return $this->db->get($this->config->item('table_name'));
     }
