@@ -114,6 +114,27 @@ class Logbook_model extends CI_Model {
         $locator = $this->config->item('locator');
     }
 
+    if($this->input->post('country') == "") {
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $country = ucwords(strtolower($dxcc[1]));
+    } else {
+      $country = $this->input->post('country');
+    }
+
+    if($this->input->post('cqz') == "") {
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $cqz = $dxcc[2];
+    } else {
+      $cqz = $this->input->post('cqz');
+    }
+
+    if($this->input->post('dxcc_id') == "") {
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc_id = $dxcc[0];
+    } else {
+      $dxcc_id = $this->input->post('dxcc_id');
+    }
+
     // Create array with QSO Data
     $data = array(
             'COL_TIME_ON' => $datetime,
@@ -128,7 +149,7 @@ class Logbook_model extends CI_Model {
             'COL_COMMENT' => $this->input->post('comment'),
             'COL_SAT_NAME' => strtoupper($this->input->post('sat_name')),
             'COL_SAT_MODE' => strtoupper($this->input->post('sat_mode')),
-            'COL_COUNTRY' => $this->input->post('country'),
+            'COL_COUNTRY' => $country,
             'COL_MY_RIG' => $this->input->post('equipment'),
             'COL_QSLSDATE' => date('Y-m-d'),
             'COL_QSLRDATE' => date('Y-m-d'),
@@ -161,10 +182,10 @@ class Logbook_model extends CI_Model {
             'COL_RX_PWR' => null,
             'COL_LAT' => null,
             'COL_LON' => null,
-            'COL_DXCC' => $this->input->post('dxcc_id'),
-            'COL_CQZ' => $this->input->post('cqz'),
+            'COL_DXCC' => $dxcc_id,
+            'COL_CQZ' => $cqz,
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
-			'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
+			      'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
     );
 
     // If station profile has been provided fill in the fields
