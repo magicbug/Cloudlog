@@ -291,10 +291,10 @@ $(document).ready(function(){
               markers.clearLayers();
               if (typeof result.latlng !== "undefined" && result.latlng !== false) {
                 var marker = L.marker([result.latlng[0], result.latlng[1]]);
-                mymap.setView([result.latlng[0], result.latlng[1]], 8);
+                mymap.panTo([result.latlng[0], result.latlng[1]], 8);
               } else {
                 var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
-                mymap.setView([result.dxcc.lat, result.dxcc.long], 8);
+                mymap.panTo([result.dxcc.lat, result.dxcc.long], 8);
               }
 
               markers.addLayer(marker).addTo(mymap);
