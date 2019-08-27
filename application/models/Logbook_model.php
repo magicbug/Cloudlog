@@ -124,14 +124,24 @@ class Logbook_model extends CI_Model {
 
     if($this->input->post('cqz') == "") {
       $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
-      $cqz = $dxcc[2];
+      if (empty($dxcc[2])) {
+        $cqz = null;
+      } else {
+        $cqz = $dxcc[2];
+      }
     } else {
       $cqz = $this->input->post('cqz');
     }
 
     if($this->input->post('dxcc_id') == "") {
+      
       $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
-      $dxcc_id = $dxcc[0];
+      if (empty($dxcc[0])) {
+        $dxcc_id = null;
+      } else {
+       $dxcc_id = $dxcc[0];
+      }
+
     } else {
       $dxcc_id = $this->input->post('dxcc_id');
     }
