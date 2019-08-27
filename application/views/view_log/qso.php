@@ -2,9 +2,9 @@
 <?php if ($query->num_rows() > 0) {  foreach ($query->result() as $row) {
 ?>
 	<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-	<h4>QSO with <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></h4>
+	<h1 style="font-size: 28px;">QSO with <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></h1>
 	<?php } else { ?>
-	<h4>QSO with <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp);?></h4>
+	<h1 style="font-size: 28px;">QSO with <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp);?></h1>
 	<?php } ?>
 	
 	<div class="row">
@@ -151,6 +151,22 @@
 					<p>This QSO is confirmed on Lotw</p>
 				<?php } ?>
 
+			<h2 style="font-size: 22px;">Station Information</h2>
+
+			<table width="100%">
+				<tr>
+					<td>Station Callsign</td>
+					<td><?php echo $row->COL_STATION_CALLSIGN; ?></td>
+				</tr>
+				<tr>
+					<td>Station Gridsquare</td>
+					<td><?php echo $row->COL_MY_GRIDSQUARE; ?></td>
+				</tr>
+				<tr>
+					<td>Station Operator</td>
+					<td><?php echo $row->COL_OPERATOR; ?></td>
+				</tr>
+			</table>
 		</div>
 		<div class="col">
 			
