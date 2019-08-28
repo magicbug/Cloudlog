@@ -32,7 +32,7 @@ $config['show_time'] = FALSE;
 | Default is: M
 |
 */
-$config['measurement_base'] = 'M';
+$config['measurement_base'] = 'K';
 
 /*
 |--------------------------------------------------------------------------

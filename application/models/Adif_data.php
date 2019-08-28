@@ -16,6 +16,14 @@ class adif_data extends CI_Model {
         return $query;
     }
 
+    function export_printrequested() {
+        $this->db->where('COL_QSL_SENT', 'R');
+        $this->db->order_by("COL_TIME_ON", "ASC"); 
+        $query = $this->db->get($this->config->item('table_name'));
+        
+        return $query;
+    }
+
     function sat_all() {
         $this->db->where('COL_PROP_MODE', 'SAT');
         $this->db->order_by("COL_TIME_ON", "ASC"); 

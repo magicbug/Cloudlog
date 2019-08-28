@@ -83,6 +83,8 @@
 							<a class="dropdown-item" href="<?php echo site_url('lotw/import');?>" title="LoTW Import/Export"><i class="fas fa-sync"></i> LoTW Import/Export</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('eqsl/import');?>" title="eQSL Import/Export"><i class="fas fa-sync"></i> eQSL Import/Export</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
 
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('backup');?>" title="Backup Cloudlog"><i class="fas fa-save"></i> Backup</a>

@@ -1,0 +1,4 @@
+COL_CALL;COL_QSL_VIA;COL_TIME_ON;COL_MODE;COL_FREQ;COL_BAND;COL_RST_SENT;COL_SAT_NAME;COL_SAT_MODE;COL_QSL_RCVD;COL_ROUTING;ADIF;ENTITY;
+<?php foreach ($qsos->result() as $qso) { ?>
+<?php echo $qso->COL_CALL; ?>;<?php echo $qso->COL_QSL_VIA; ?>;<?php echo $qso->COL_TIME_ON; ?>;<?php echo $qso->COL_MODE; ?>;<?php echo $qso->COL_FREQ; ?>;<?php echo $qso->COL_BAND; ?>;<?php echo $qso->COL_RST_SENT; ?>;<?php echo $qso->COL_SAT_NAME; ?>;<?php echo $qso->COL_SAT_MODE; ?>;<?php echo $qso->COL_QSL_RCVD; ?>;<?php echo $qso->COL_ROUTING; ?>;<?php echo $qso->ADIF; ?>;<?php echo $qso->ENTITY; ?>;
+<?php } ?>
