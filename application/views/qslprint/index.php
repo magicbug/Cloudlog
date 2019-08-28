@@ -25,17 +25,7 @@
     <a href="<?php echo site_url('qslprint/exportadif'); ?>" title="Export ADIF" target="_blank" class="btn btn-outline-secondary btn-sm">Export requested QSLs to ADIF-file</a>
 
     <a href="<?php echo site_url('qslprint/qsl_printed'); ?>" title="Mark QSLs as printed" target="_blank" class="btn btn-outline-secondary btn-sm">Mark requested QSLs as sent</a>
-
-<!--
-	    <div class="table-responsive">
-		    <! -- Display Radio Statuses -- >	  
-			<table class="table table-striped status"></table>
-		</div>
-
-		<p class="card-text">
-	    	<span class="badge badge-info">Info</span> You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Radio-Interface" target="_blank">radio functons</a> in the wiki.</a>
-	    </p>
--->
+ 
 	  </div>
 	</div>
 
