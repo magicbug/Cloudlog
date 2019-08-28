@@ -496,8 +496,7 @@ class Logbook_model extends CI_Model {
   }
 
   function get_qsos_for_printing() {
-	$query = $this->db->query('SELECT COL_PRIMARY_KEY, COL_CALL, COL_QSL_VIA, COL_TIME_ON, COL_MODE, COL_FREQ, UPPER(COL_BAND) as COL_BAND, COL_RST_SENT, COL_SAT_NAME, COL_SAT_MODE, COL_QSL_RCVD, (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) AS COL_ROUTING, ADIF, ENTITY FROM '.$this->config->item('table_name').', dxcc_prefixes WHERE COL_QSL_SENT LIKE \'R\' and (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) like CONCAT(dxcc_prefixes.call,\'%\') and (end is null or end > now()) ORDER BY adif, col_routing');
-    //$query = $this->db->query('SELECT * FROM '.$this->config->item('table_name').' WHERE COL_TIME_ON between \''.$morning.'\' AND \''.$night.'\'');
+    $query = $this->db->query('SELECT COL_PRIMARY_KEY, COL_CALL, COL_QSL_VIA, COL_TIME_ON, COL_MODE, COL_FREQ, UPPER(COL_BAND) as COL_BAND, COL_RST_SENT, COL_SAT_NAME, COL_SAT_MODE, COL_QSL_RCVD, (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) AS COL_ROUTING, ADIF, ENTITY FROM '.$this->config->item('table_name').', dxcc_prefixes WHERE COL_QSL_SENT LIKE \'R\' and (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) like CONCAT(dxcc_prefixes.call,\'%\') and (end is null or end > now()) ORDER BY adif, col_routing');
     return $query;
   }
 
