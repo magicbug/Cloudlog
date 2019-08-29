@@ -495,6 +495,10 @@ class Logbook_model extends CI_Model {
     $this->db->update($this->config->item('table_name'), $data);
   }
 
+  function get_qsos_for_printing() {
+    $query = $this->db->query('SELECT COL_PRIMARY_KEY, COL_CALL, COL_QSL_VIA, COL_TIME_ON, COL_MODE, COL_FREQ, UPPER(COL_BAND) as COL_BAND, COL_RST_SENT, COL_SAT_NAME, COL_SAT_MODE, COL_QSL_RCVD, (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) AS COL_ROUTING, ADIF, ENTITY FROM '.$this->config->item('table_name').', dxcc_prefixes WHERE COL_QSL_SENT LIKE \'R\' and (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) like CONCAT(dxcc_prefixes.call,\'%\') and (end is null or end > now()) ORDER BY adif, col_routing');
+    return $query;
+  }
 
   function get_qsos($num, $offset) {
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_GRIDSQUARE, COL_QSL_RCVD, COL_EQSL_QSL_RCVD, COL_EQSL_QSL_SENT, COL_QSL_SENT, COL_STX, COL_STX_STRING, COL_SRX, COL_SRX_STRING, COL_OPERATOR, COL_STATION_CALLSIGN, COL_LOTW_QSL_SENT, COL_LOTW_QSL_RCVD, COL_VUCC_GRIDS');
