@@ -1,6 +1,26 @@
+.navbar {
+    margin: 0 auto;
+    width: 100%;
+    border-radius: 10px;
+    position: relative;
+}
+
 .container {
 	margin-top: 55px;
 }
+
+#nav-container {
+	margin-top: 0;
+	position: sticky;
+	top: 0;
+}
+
+thead > tr > td {
+	position: sticky;
+	top: 45px;
+	background-color: aliceblue;
+}
+
 .fancybox-content {
     width  : 710px !important;
     height : 310px !important;
