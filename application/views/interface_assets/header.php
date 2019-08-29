@@ -22,7 +22,7 @@
   </head>
   <body>
 
-
+<div class="container" id="nav-container">
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="<?php echo site_url(); ?>">Cloudlog</a>
 
@@ -128,3 +128,4 @@
 		<?php } ?>
   </div>
 </nav>
+</div>
