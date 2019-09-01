@@ -925,8 +925,7 @@ class Logbook_model extends CI_Model {
     function eqsl_not_yet_sent() {
       $this->db->select("COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_MODE, COL_BAND, COL_COMMENT, COL_RST_SENT, COL_PROP_MODE");
       $this->db->where('COL_EQSL_QSL_SENT !=', 'Y');
-      $this->db->or_where('COL_EQSL_QSL_SENT IS NULL');
-      $this->db->or_where('COL_EQSL_QSL_SENT !=', 'I');
+      $this->db->where('COL_EQSL_QSL_SENT !=', 'I');
 
       return $this->db->get($this->config->item('table_name'));
     }
