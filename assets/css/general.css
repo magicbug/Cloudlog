@@ -162,3 +162,7 @@ TD.lotw{
 #search_box #callsign {
     text-transform: uppercase;
 }
+
+#nav-bar-search-input:focus {
+    text-transform: uppercase;
+}
