@@ -18,6 +18,25 @@
 	    <h5 class="card-title">Explore & Poke the Logbook</h5>
 	    <p class="card-text">
 	    	Select functions go here
+
+	    	<form>
+
+
+<div class="form-group">
+    <label for="columnName">Select Column</label>
+    <select class="form-control" id="columnName">
+	    <?php foreach ($get_table_names->result() as $row) { ?>
+	    	<?php 
+	    	$value_name = str_replace("COL_", "", $row->Field);
+	    	if ($value_name != "PRIMARY_KEY") { ?>
+	    		<option value="<?php echo $row->Field; ?>"><?php echo $value_name; ?></option>
+	    	<?php } ?>
+        <?php } ?>
+    </select>
+  </div>
+
+
+	    	</form>
 	    </p>
 
 		<p class="card-text">

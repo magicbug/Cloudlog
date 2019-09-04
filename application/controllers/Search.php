@@ -39,6 +39,12 @@ class Search extends CI_Controller {
 
         $this->load->library('form_validation');
 
+        $this->load->model('Search_filter');
+
+        $data['get_table_names'] = $this->Search_filter->get_table_columns();
+
+        //print_r($this->Search_filter->get_table_columns());
+
         if ($this->form_validation->run() == FALSE)
         {
             $this->load->view('interface_assets/header', $data);
