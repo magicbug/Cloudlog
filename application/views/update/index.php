@@ -2,6 +2,14 @@
 	<h2><?php echo $page_title; ?></h2>
 
 
+<?php if(!extension_loaded('xml')) { ?>
+
+<div class="alert alert-danger" role="alert">
+  You must install php-xml for this to work.
+</div>
+
+<?php } else { ?>
+
     <input type="submit" id="btn_update_dxcc" value="Update Dxcc" />
 
     <div id="dxcc_update_status">
@@ -18,5 +26,7 @@
 }
 
 </style>
+<?php } ?>
+</div>
 
 
