@@ -79,19 +79,35 @@ $(document).ready(function() {
 <?php if ($this->uri->segment(1) == "search") { ?>
 <script type="text/javascript">
 i=0;
+
+function searchButtonPress(){
+    event.preventDefault()
+    if ($('#callsign').val()) {
+      $('#partial_view').load("logbook/search_result/" + $('#callsign').val(), function() {});
+    }
+}
+
 $(document).ready(function(){
 
+  <?php if($this->input->post('callsign') != "") { ?>
     $('#partial_view').load("logbook/search_result/<?php echo $this->input->post('callsign'); ?>", function() {
     });
+  <?php } ?>
+    
+$(document).on('keypress',function(e) { 
+  if(e.which == 13) {
 
-  $("#callsign").keyup(function(){
-    if ($(this).val()) {
-
-        $('#partial_view').load("logbook/search_result/" + $(this).val(), function() {
-        });
+    if ($('#callsign').val()) {
+      $('#partial_view').load("logbook/search_result/" + $('#callsign').val(), function() {});
     }
 
-  });
+
+     event.preventDefault();
+        return false;
+  }
+});
+
+
 });
 </script>
 <?php } ?>

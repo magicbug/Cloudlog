@@ -159,4 +159,6 @@ TD.lotw{
 }
 
 
-
+#search_box #callsign {
+    text-transform: uppercase;
+}
