@@ -546,8 +546,8 @@ $(document).on('keypress',function(e) {
     }
   };
 
-  // Update frequency every second
-  setInterval(updateFromCAT, 2000);
+  // Update frequency every five second
+  setInterval(updateFromCAT, 5000);
 
   // If a radios selected from drop down select radio update.
   $('.radios').change(updateFromCAT);
