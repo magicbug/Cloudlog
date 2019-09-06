@@ -63,136 +63,72 @@
 	
 	function json($id)
 	{
-		$frequency = $this->frequency($id); 
 
-		echo json_encode(array(
-			"uplink_freq" => $frequency['uplink_freq'],
-			"downlink_freq" => $frequency['downlink_freq'],
-			"mode" => $this->mode($id),
-			"satmode" => $this->satmode($id),
-			"satname" => $this->satname($id),
-		), JSON_PRETTY_PRINT);
-	}
+		header('Content-Type: application/json');
+		
+		$this->load->model('cat');
 
-	function frequency($id) {
+		$query = $this->cat->radio_status($id);
 
-		// Check Auth
-		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-
-		//$this->db->where('radio', $result['radio']); 
-			$this->db->select('frequency');
-			$this->db->where('id', $id); 
-			$query = $this->db->get('cat');
-			
-			if ($query->num_rows() > 0)
+		if ($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $row)
 			{
-			   foreach ($query->result() as $row)
-				{
-					if( $row->frequency == "0") {
-						$this->db->select('uplink_freq, downlink_freq');
-						$this->db->where('id', $id); 
-						$query = $this->db->get('cat');
-						
-						if ($query->num_rows() > 0)
-						{
-							foreach ($query->result() as $row)
-							{
-								return array("downlink_freq" => strtoupper($row->downlink_freq), "uplink_freq" => strtoupper($row->uplink_freq));
-							}
-						}
+
+				if($row->sat_name != "") {
+					$uplink_freq = $row->uplink_freq;
+					$downlink_freq = $row->downlink_freq;
+
+					// Check Mode
+					if(strtoupper($row->uplink_mode) == "FMN"){
+						$mode = "FM";
 					} else {
-						return array("downlink_freq" => "", "uplink_freq" => strtoupper($row->frequency));	
+						$mode = strtoupper($row->uplink_mode);
 					}
-				}
-			}
-		return array("downlink_freq" => "", "uplink_freq" => ""); 
-	}
-	
-	function mode($id) {
-	
-		// Check Auth
-		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
-		//$this->db->where('radio', $result['radio']); 
-			$this->db->select('mode, radio, uplink_mode');
-			$this->db->where('id', $id); 
-			$query = $this->db->get('cat');
-			
-			if ($query->num_rows() > 0)
-			{
-			   foreach ($query->result() as $row)
-				{
-					if($row->radio != "SatPC32") {
-						if(strtoupper($row->mode) == "FMN"){
-							return "FM";
-						} else {
-							return strtoupper($row->mode);
-						}
-					} else {
-						if(strtoupper($row->uplink_mode) == "FMN"){
-							return "FM";
-						} else {
-							return strtoupper($row->uplink_mode);
-						}
-					}
-				}
-			}
-		return "";
-	}
-
-	function satname($id) {
-	
-		// Check Auth
-		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-
-		//$this->db->where('radio', $result['radio']); 
-			$this->db->select('sat_name');
-			$this->db->where('id', $id); 
-			$query = $this->db->get('cat');
-			
-			if ($query->num_rows() > 0)
-			{
-			   foreach ($query->result() as $row)
-				{
+					// Get Satellite Name
 					if($row->sat_name == "AO-07") {
-						return "AO-7";
+						$sat_name = "AO-7";
 					} elseif ($row->sat_name == "LILACSAT") {
-						return "CAS-3H";
+						$sat_name = "CAS-3H";
 					} else {
-						return strtoupper($row->sat_name);
+						$sat_name =  strtoupper($row->sat_name);
 					}
-				}
-			}
-		return "";
-	}
 
-	function satmode($id) {
-	
-		// Check Auth
-		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-
-		//$this->db->where('radio', $result['radio']); 
-			$this->db->select('uplink_freq, downlink_freq');
-			$this->db->where('id', $id); 
-			$query = $this->db->get('cat');
-			
-			if ($query->num_rows() > 0)
-			{
-			   foreach ($query->result() as $row)
-				{
+					// Get Satellite Mode
 					$uplink_mode = $this->get_mode_designator($row->uplink_freq); 
 					$downlink_mode = $this->get_mode_designator($row->downlink_freq); 
 
-					if ($uplink_mode != "" && $downlink_mode != "")
-						return $uplink_mode."/".$downlink_mode;
-				}
-			}
+					if ($uplink_mode != "" && $downlink_mode != "") {
+						$sat_mode = $uplink_mode."/".$downlink_mode;
+					}
 
-			return ""; 
+				} else {
+					$uplink_freq = $row->frequency;
+					$downlink_freq = "";
+
+					// Check Mode
+					if(strtoupper($row->mode) == "FMN"){
+						$mode = "FM";
+					} else {
+						$mode = strtoupper($mode);
+					}
+
+					$sat_name = "";
+					$sat_mode = "";
+				}
+
+
+				echo json_encode(array(
+					"uplink_freq" => $uplink_freq,
+					"downlink_freq" => $downlink_freq,
+					"mode" => $mode,
+					"satmode" => $sat_mode,
+					"satname" => $sat_name,
+				), JSON_PRETTY_PRINT);
+			}
+		}
+
 	}
 	
 	function get_mode_designator($frequency)
