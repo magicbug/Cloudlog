@@ -77,7 +77,7 @@
                                        ."QSOHour=$hour&"
                                        ."QSOMinute=$min";
                                 ?>
-		                    <span class="eqsl-green"><a href="<?php echo $url?>" target="_blank">&#9993;</a></span>
+		                    <span class="eqsl-green"><a href="<?php echo $url?>" target="_blank"><i class="fas fa-envelope"></i></a></span>
                                 <?php
                             }
                             ?>
