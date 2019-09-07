@@ -14,6 +14,12 @@ class Search extends CI_Model {
 		return $query;
 	}
 
+	function get_table_columns() {
+		$query = $this->db->query('DESCRIBE '.$this->config->item('table_name'));
+
+		return $query;
+	}
+
 }
 
 ?>

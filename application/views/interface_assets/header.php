@@ -95,7 +95,7 @@
         	</li>
 
 				<form method="post" action="<?php echo site_url('search'); ?>" class="form-inline my-2 my-lg-0">
-					<input class="form-control mr-sm-2" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search">
+					<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Search</button>
 				</form>
 

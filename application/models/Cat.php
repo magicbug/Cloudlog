@@ -90,6 +90,16 @@
 			return $query;
 		}
 		
+
+		function radio_status($id) {
+			$this->db->select('*');
+			$this->db->where('id', $id);
+			$query = $this->db->get('cat');
+			
+			return $query;
+		}
+
+
 		function delete($id) {
 			$this->db->where('id', $id);
 			$this->db->delete('cat'); 
