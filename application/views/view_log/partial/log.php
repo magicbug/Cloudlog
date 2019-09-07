@@ -49,7 +49,39 @@
 			<td class="eqsl">
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
-			</td>
+                            <?php
+                            if($row->COL_EQSL_QSL_RCVD=='Y')
+                            {
+                                $query = $this->user_model->get_by_id($this->session->userdata('user_id'));
+                                $q = $query->row();
+                                $user  = $q->user_eqsl_name;
+                                $pass  = $q->user_eqsl_password;
+                                $from  = $row->COL_CALL;
+                                $band  = strtoupper($row->COL_BAND);
+                                $mode  = $row->COL_MODE;
+                                $year  = date('Y', $timestamp);
+                                $month = date('n', $timestamp);
+                                $day   = intval(date('d', $timestamp));
+                                $hour  = date('G', $timestamp);
+                                $min   = intval(date('i', $timestamp));
+
+                                $url = "https://www.eqsl.cc/qslcard/GeteQSL.cfm?"
+                                       ."Username=$user&"
+                                       ."Password=$pass&"
+                                       ."CallsignFrom=$from&"
+                                       ."QSOBand=$band&"
+                                       ."QSOMode=$mode&"
+                                       ."QSOYear=$year&"
+                                       ."QSOMonth=$month&"
+                                       ."QSODay=$day&"
+                                       ."QSOHour=$hour&"
+                                       ."QSOMinute=$min";
+                                ?>
+		                    <span class="eqsl-green"><a href="<?php echo $url?>" target="_blank">&#9993;</a></span>
+                                <?php
+                            }
+                            ?>
+                        </td>
 			<?php } ?>
 
 			<?php if($this->session->userdata('user_lotw_name') != "") { ?>
