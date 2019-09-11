@@ -15,31 +15,15 @@
 	    <?php echo $page_title; ?>
 	  </div>
 	  <div class="card-body">
-	    <h5 class="card-title">Explore & Poke the Logbook</h5>
-	    <p class="card-text">
-	    	Select functions go here
 
-	    	<form>
-
-
-<div class="form-group">
-    <label for="columnName">Select Column</label>
-    <select class="form-control" id="columnName">
-	    <?php foreach ($get_table_names->result() as $row) { ?>
-	    	<?php 
-	    	$value_name = str_replace("COL_", "", $row->Field);
-	    	if ($value_name != "PRIMARY_KEY") { ?>
-	    		<option value="<?php echo $row->Field; ?>"><?php echo $value_name; ?></option>
-	    	<?php } ?>
-        <?php } ?>
-    </select>
-  </div>
-
-
-	    	</form>
-	    </p>
-
+		<div class="card-text" id="builder"></div>
+		
 		<p class="card-text">
+		<button class="btn btn-primary" id="btn-get">Search</button>
+
+		<button class="btn btn-warning" id="btn-reset">Reset</button>
+		</p>
+
 	    	<span class="badge badge-info">Info</span> You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Search-Filter" target="_blank">search filter functons</a> in the wiki.</a>
 	    </p>
 
@@ -49,15 +33,44 @@
 	<br>
 
 	<!-- Search Results here -->
-	<div class="card">
+	<div class="card search-results-box">
 	  <div class="card-header">
 	    Search Results
 	  </div>
 	  <div class="card-body">
-	    <h5 class="card-title">This is what we found</h5>
-	    <p class="card-text">
-	    	Table here
-	    </p>
+
+		<div class="table-responsive">
+			<table id="results" class="table table-striped table-hover">
+				<tr class="titles">
+					<td>Date</td>
+					<td>Time</td>
+					<td>Call</td>
+					<td>Mode</td>
+					<td>Sent</td>
+					<td>Recv</td>
+					<td>Band</td>
+					<td>Country</td>
+					<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
+					<td>QSL</td>
+					
+					<?php if($this->session->userdata('user_eqsl_name') != "") { ?>
+						<td>eQSL</td>
+					<?php } else { ?>
+						<td></td>
+					<?php } ?>
+
+					<?php if($this->session->userdata('user_lotw_name') != "") { ?>
+						<td>LoTW</td>
+					<?php } else { ?>
+						<td></td>
+					<?php } ?>
+
+					<td></td>
+					<?php } ?>
+				</tr>
+	    	</table>
+	    </div>
+
 	  </div>
 	</div>
 

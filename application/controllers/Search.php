@@ -48,4 +48,56 @@ class Search extends CI_Controller {
             $this->load->view('interface_assets/footer');
         }
     }
+
+    function json_result() {
+
+          if(isset($_POST['search'])) {
+            $json = $_POST['search'];
+
+            $search_items = json_decode($json, true);
+
+            $search_type = "";
+
+            foreach($search_items as $key=>$value){
+
+
+                if($value == "AND") {
+                    $search_type = "AND";
+                }
+                if ($value == "OR") {
+                    $search_type = "OR";
+                }
+
+                if(is_array($value)) {
+                    foreach($value as $values)
+                    {
+                        //print_r($values['field']);
+                        if($values['operator'] == "equal") {
+                            if($search_type == "AND") {
+                                $this->db->where($values['field'], $values['value']); 
+                            } else {
+                                $this->db->or_where($values['field'], $values['value']); 
+                            }
+                        }
+
+                        if($values['operator'] == "not_equal") {
+                            if($search_type == "AND") {
+                               $this->db->where($values['field'].' !=', $name);
+                            } else {
+                               $this->db->or_where($values['field'].' !=', $name);
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            $query = $this->db->get($this->config->item('table_name'));
+
+            echo json_encode($query->result_array());
+          } else {
+            echo "Noooooooob";
+          }
+
+    }
 }

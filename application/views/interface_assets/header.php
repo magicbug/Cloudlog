@@ -16,6 +16,10 @@
     <!-- Maps -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/leaflet/leaflet.css" />
 
+    <?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/query-builder.default.min.css" />
+	<?php } ?>
+	
     <link rel="icon" href="<?php echo base_url(); ?>/favicon.ico">
 
     <title><?php if(isset($page_title)) { echo $page_title; } ?> - Cloudlog</title>

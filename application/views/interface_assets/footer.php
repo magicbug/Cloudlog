@@ -9,6 +9,69 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
     <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
 
+
+<?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
+
+<script type="text/javascript" src="<?php echo base_url() ;?>assets/js/query-builder.standalone.min.js"></script>
+
+<script type="text/javascript">
+
+$(".search-results-box").hide();
+
+    $('#builder').queryBuilder({
+    filters: [
+      <?php foreach ($get_table_names->result() as $row) {
+        $value_name = str_replace("COL_", "", $row->Field);
+        if ($value_name != "PRIMARY_KEY") { ?>
+        {
+          id: '<?php echo $row->Field; ?>',
+          label: '<?php echo $value_name; ?>',
+          type: 'string',
+          operators: ['equal', 'not_equal']
+        },
+        <?php } ?>
+      <?php } ?>
+    ]
+  });
+
+  $('#btn-get').on('click', function() {
+    var result = $('#builder').queryBuilder('getRules');
+    if (!$.isEmptyObject(result)) {
+      //alert(JSON.stringify(result, null, 2));
+
+      $.post( "<?php echo site_url('search/json_result');?>", { search: JSON.stringify(result, null, 2), temp: "testvar" })
+      .done(function( data ) {
+        //console.log(data)
+        //alert( "Data Loaded: " + data );
+        $('.qso').remove();
+        $(".search-results-box").show();
+
+        $.each(JSON.parse(data), function(i, item) {
+            $('#results').append('<tr class="qso"><td>' + item.COL_TIME_ON + '</td><td>' + item.COL_TIME_ON + '</td><td>' + item.COL_CALL + '</td><td>' + item.COL_MODE + '</td><td>' + item.COL_RST_SENT + '</td><td>' + item.COL_RST_RCVD + '</td><td>' + item.COL_BAND + '</td><td>' + item.COL_COUNTRY + '</td><td>' + item.COL_QSL_SENT + '</td><td>' + item.COL_EQSL_QSL_SENT + '</td><td></td><td></td></tr>');
+        });
+
+      });
+    }
+    else{
+      console.log("invalid object :");
+    }
+  });
+
+  $('#btn-set').on('click', function() {
+    //$('#builder').queryBuilder('setRules', rules_basic);
+    var result = $('#builder').queryBuilder('getRules');
+    if (!$.isEmptyObject(result)) {
+      rules_basic = result;
+    }
+  });
+
+  //When rules changed :
+  $('#builder').on('getRules.queryBuilder.filter', function(e) {
+    //$log.info(e.value);
+  });
+</script>
+<?php } ?>
+
 <script>
 $(document).ready(function() {
 	$('#create_station_profile #country').val($("#dxcc_select option:selected").text());
