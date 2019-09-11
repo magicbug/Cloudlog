@@ -60,3 +60,17 @@ $config['map_gridsquares'] = FALSE;
 */
 
 $config['cat_timeout_interval'] = 300;
+
+/*
+|--------------------------------------------------------------------------
+| Public Search
+|--------------------------------------------------------------------------
+| 
+| Setting this to TRUE makes the search bar at the top of the display 
+| visable and usable to all users and visitors
+|
+| Default is: FALSE
+|
+*/
+
+$config['public_search'] = FALSE;

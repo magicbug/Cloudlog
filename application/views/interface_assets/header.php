@@ -68,64 +68,93 @@
 
         	
         	<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="<?php echo site_url('user');?>" title="Accounts"><i class="fas fa-user"></i> Accounts</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('api/help');?>" title="API Interface"><i class="fas fa-key"></i> API</a>
-							<div class="dropdown-divider"></div>					
-							<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Station Profiles"><i class="fas fa-home"></i> Station Profiles</a>
-							<div class="dropdown-divider"></div>		
-							<a class="dropdown-item" href="<?php echo site_url('radio');?>" title="External Radios"><i class="fas fa-broadcast-tower"></i> Radio Interface</a>
-							<div class="dropdown-divider"></div>	
-							<a class="dropdown-item" href="<?php echo site_url('adif');?>" title="ADIF Import/Export"><i class="fas fa-sync"></i> ADIF Import/Export</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('lotw/import');?>" title="LoTW Import/Export"><i class="fas fa-sync"></i> LoTW Import/Export</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('eqsl/import');?>" title="eQSL Import/Export"><i class="fas fa-sync"></i> eQSL Import/Export</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
+				
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" href="<?php echo site_url('user');?>" title="Accounts"><i class="fas fa-user"></i> Accounts</a>
+					
+					<div class="dropdown-divider"></div>
+					
+					<a class="dropdown-item" href="<?php echo site_url('api/help');?>" title="API Interface"><i class="fas fa-key"></i> API</a>
+					
+					<div class="dropdown-divider"></div>					
+					
+					<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Station Profiles"><i class="fas fa-home"></i> Station Profiles</a>
+					
+					<div class="dropdown-divider"></div>		
+					
+					<a class="dropdown-item" href="<?php echo site_url('radio');?>" title="External Radios"><i class="fas fa-broadcast-tower"></i> Radio Interface</a>
+					
+					<div class="dropdown-divider"></div>	
+					
+					<a class="dropdown-item" href="<?php echo site_url('adif');?>" title="ADIF Import/Export"><i class="fas fa-sync"></i> ADIF Import/Export</a>
+					
+					<div class="dropdown-divider"></div>
+					
+					<a class="dropdown-item" href="<?php echo site_url('lotw/import');?>" title="LoTW Import/Export"><i class="fas fa-sync"></i> LoTW Import/Export</a>
+					
+					<div class="dropdown-divider"></div>
+					
+					<a class="dropdown-item" href="<?php echo site_url('eqsl/import');?>" title="eQSL Import/Export"><i class="fas fa-sync"></i> eQSL Import/Export</a>
+					
+					<div class="dropdown-divider"></div>
+					
+					<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
 
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('backup');?>" title="Backup Cloudlog"><i class="fas fa-save"></i> Backup</a>
+					<div class="dropdown-divider"></div>
+					
+					<a class="dropdown-item" href="<?php echo site_url('backup');?>" title="Backup Cloudlog"><i class="fas fa-save"></i> Backup</a>
 
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('update');?>" title="Update Country Files"><i class="fas fa-sync"></i> Update Country Files</a>
-						</div>
+					<div class="dropdown-divider"></div>
+					
+					<a class="dropdown-item" href="<?php echo site_url('update');?>" title="Update Country Files"><i class="fas fa-sync"></i> Update Country Files</a>
+				</div>
         	</li>
-
-				<form method="post" action="<?php echo site_url('search'); ?>" class="form-inline my-2 my-lg-0">
-					<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search">
-					<button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Search</button>
-				</form>
-
-        <!-- Logged in As -->
-        <li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Logged in as <?php echo $this->session->userdata('user_callsign'); ?></a>
-					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="<?php echo site_url('user/profile');?>" title="Profile"><i class="far fa-user"></i> Profile</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" target="_blank" href="https://github.com/magicbug/Cloudlog/wiki" title="Help"><i class="fas fa-question"></i> Help</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="<?php echo site_url('user/logout');?>" title="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-					</div>
-        </li>
-
         <?php } ?>
-      </li>
     </ul>
 
-    <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
+     <?php if($this->config->item('public_search') == TRUE || $this->session->userdata('user_type') >= 2) { ?>
+		<form method="post" action="<?php echo site_url('search'); ?>" class="form-inline">
+		<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search">
+		
+		<button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Search</button>
+		</form>
+	<?php } ?>
+
+	<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
     	<!-- Logged in Content-->
     <?php } else { ?>
     <!-- Not Logged In-->
-		<form method="post" action="<?php echo site_url('user/login'); ?>" class="form-inline my-2 my-lg-0">
+	<form method="post" action="<?php echo site_url('user/login'); ?>" style="padding-left: 5px;" class="form-inline">
 			<input class="form-control mr-sm-2" type="text" name="user_name" placeholder="Username" aria-label="Username">
 			<input class="form-control mr-sm-2" type="password" name="user_password" placeholder="Password" aria-label="Password">
 			<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-		</form>
-		<?php } ?>
+      <button class="btn btn-outline-success mr-sm-2" type="submit">Login</button>
+	</form>
+	<?php } ?>
+
+		<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
+        <ul class="navbar-nav">
+        <!-- Logged in As -->
+        <li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Logged in as <?php echo $this->session->userdata('user_callsign'); ?></a>
+			
+			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				<a class="dropdown-item" href="<?php echo site_url('user/profile');?>" title="Profile"><i class="far fa-user"></i> Profile</a>
+				
+				<div class="dropdown-divider"></div>
+				
+				<a class="dropdown-item" target="_blank" href="https://github.com/magicbug/Cloudlog/wiki" title="Help"><i class="fas fa-question"></i> Help</a>
+				
+				<div class="dropdown-divider"></div>
+				
+				<a class="dropdown-item" href="<?php echo site_url('user/logout');?>" title="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+			</div>
+        </li>
+    	</ul>
+
+        <?php } ?>
+
   </div>
 </div>
 </nav>
