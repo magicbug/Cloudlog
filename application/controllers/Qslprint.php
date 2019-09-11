@@ -46,15 +46,15 @@ class QSLPrint extends CI_Controller {
 		$myData = $this->logbook_model->get_qsos_for_printing();
 
 		// file name
-        $filename = 'qsl_export.csv';
-        header("Content-Description: File Transfer");
-        header("Content-Disposition: attachment; filename=$filename");
-        header("Content-Type: application/csv;charset=iso-8859-1");
+		$filename = 'qsl_export.csv';
+		header("Content-Description: File Transfer");
+		header("Content-Disposition: attachment; filename=$filename");
+		header("Content-Type: application/csv;charset=iso-8859-1");
  
-        // file creation
-        $file = fopen('php://output', 'w');
+		// file creation
+		$file = fopen('php://output', 'w');
  
-        $header = array("COL_CALL", 
+		$header = array("COL_CALL", 
 						"COL_QSL_VIA", 
 						"COL_TIME_ON", 
 						"COL_MODE", 
@@ -67,9 +67,8 @@ class QSLPrint extends CI_Controller {
 						"COL_ROUTING", 
 						"ADIF", 
 						"ENTITY");
-		
 
-        fputcsv($file, $header);
+		fputcsv($file, $header);
  
 		foreach ($myData->result() as $qso) {
 			fputcsv($file, 
@@ -87,9 +86,9 @@ class QSLPrint extends CI_Controller {
 				$qso->ADIF, 
 				$qso->ENTITY));
 		}
-		
-        fclose($file);
-        exit;
+
+		fclose($file);
+		exit;
 	}
 	
 	function qsl_printed() {
