@@ -91,7 +91,7 @@ class Search extends CI_Controller {
                     }
                 }
             }
-
+            $this->db->order_by('COL_TIME_ON', 'DESC');
             $query = $this->db->get($this->config->item('table_name'));
 
             echo json_encode($query->result_array());
