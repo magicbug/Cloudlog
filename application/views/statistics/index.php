@@ -113,9 +113,6 @@
   <li class="nav-item">
     <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Satellites</a>
   </li>
-  <li class="nav-item">
-    <a href="/index.php/statistics/custom" class="nav-link" role="tab">Custom</a>
-  </li>
 </ul>
 
 <div class="tab-content" id="myTabContent">
