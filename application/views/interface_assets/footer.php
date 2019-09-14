@@ -22,12 +22,23 @@ $(".search-results-box").hide();
     filters: [
       <?php foreach ($get_table_names->result() as $row) {
         $value_name = str_replace("COL_", "", $row->Field);
-        if ($value_name != "PRIMARY_KEY") { ?>
+        if ($value_name != "PRIMARY_KEY" && strpos($value_name, '_INTL') == false) { ?>
         {
           id: '<?php echo $row->Field; ?>',
           label: '<?php echo $value_name; ?>',
+          <?php if (strpos($row->Type, 'int(') !== false) { ?>
+          type: 'integer',
+          operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal']
+          <?php } elseif(strpos($row->Type, 'double') !== false) { ?>
+          type: 'double',
+          operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal']
+          <?php } elseif(strpos($row->Type, 'datetime') !== false) { ?>
+          type: 'datetime',
+          operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal']
+          <?php } else { ?>
           type: 'string',
           operators: ['equal', 'not_equal']
+          <?php } ?>
         },
         <?php } ?>
       <?php } ?>
