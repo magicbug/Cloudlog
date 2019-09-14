@@ -1,6 +1,9 @@
-<div class="container">
+<div class="container search">
 
-	<br>
+	<h1>
+		Advanced Search
+		<small class="text-muted"></small>
+	</h1>
 
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
@@ -12,7 +15,14 @@
 	<!-- Filter options here -->
 	<div class="card">
 	  <div class="card-header">
-	    <?php echo $page_title; ?>
+	    <ul class="nav nav-tabs card-header-tabs">
+	      <li class="nav-item">
+	        <a class="nav-link" href="<?php echo site_url('search'); ?>">Search</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link active" href="<?php echo site_url('search/filter'); ?>">Advanced Search</a>
+	      </li>
+	    </ul>
 	  </div>
 	  <div class="card-body">
 

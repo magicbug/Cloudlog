@@ -1,19 +1,37 @@
 <div class="container search">
 
-	<h2>Search</h2>
+	<h1>
+		Search
+		<small class="text-muted">Ready to find a QSO?</small>
+	</h1>
 
-	<form method="post" action="" id="search_box" name="test">
-	  <div class="form-group row">
-	    <label for="callsign" class="col-sm-2 col-form-label">Callsign</label>
-	    <div class="col-sm-8">
-	      <input type="text" class="form-control" id="callsign" value="">
-	    </div>
-	    <div class="col-sm-2">
-	    	<button onclick="searchButtonPress()" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Search</button>
-	    </div>
+	<div class="card text-center">
+	  <div class="card-header">
+	    <ul class="nav nav-tabs card-header-tabs">
+	      <li class="nav-item">
+	        <a class="nav-link active" href="<?php echo site_url('search'); ?>">Search</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="<?php echo site_url('search/filter'); ?>">Advanced Search</a>
+	      </li>
+	    </ul>
 	  </div>
-	</form>
+	  <div class="card-body">
+	  	<form method="post" action="" id="search_box" name="test">
+		  <div class="form-group row">
+		    <label for="callsign" class="col-sm-2 col-form-label">Callsign / Gridsquare</label>
+		    <div class="col-sm-8">
+		      <input type="text" class="form-control" id="callsign" value="">
+		    </div>
+		    <div class="col-sm-2">
+		    	<button onclick="searchButtonPress()" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Search</button>
+		    </div>
+		  </div>
+		</form>
 
-	<div id="partial_view"></div>
+		<div id="partial_view"></div>
+
+	  </div>
+	</div>
 
 </div>
