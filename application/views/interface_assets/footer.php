@@ -52,7 +52,7 @@ $(".search-results-box").hide();
 
       $.post( "<?php echo site_url('search/json_result');?>", { search: JSON.stringify(result, null, 2), temp: "testvar" })
       .done(function( data ) {
-        console.log(data)
+        //console.log(data)
         //alert( "Data Loaded: " + data );
         $('.qso').remove();
         $(".search-results-box").show();
