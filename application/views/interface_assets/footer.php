@@ -52,19 +52,29 @@ $(".search-results-box").hide();
 
       $.post( "<?php echo site_url('search/json_result');?>", { search: JSON.stringify(result, null, 2), temp: "testvar" })
       .done(function( data ) {
-        //console.log(data)
+        console.log(data)
         //alert( "Data Loaded: " + data );
         $('.qso').remove();
         $(".search-results-box").show();
 
         $.each(JSON.parse(data), function(i, item) {
-            $('#results').append('<tr class="qso"><td>' + item.COL_TIME_ON + '</td><td>' + item.COL_TIME_ON + '</td><td>' + item.COL_CALL + '</td><td>' + item.COL_MODE + '</td><td>' + item.COL_RST_SENT + '</td><td>' + item.COL_RST_RCVD + '</td><td>' + item.COL_BAND + '</td><td>' + item.COL_COUNTRY + '</td><td>' + item.COL_QSL_SENT + '</td><td>' + item.COL_EQSL_QSL_SENT + '</td><td></td><td></td></tr>');
+
+          var band = "";
+          if(item.COL_SAT_NAME != "") {
+            band = item.COL_SAT_NAME;
+          } else {
+            band = item.COL_BAND;
+          }
+
+          var callsign = '<a data-fancybox data-type="iframe" data-src="<?php echo site_url('logbook/view');?>/' + item.COL_PRIMARY_KEY + '" data-src="" href="javascript:;">' + item.COL_CALL + '</a>';
+
+          $('#results').append('<tr class="qso"><td>' + item.COL_TIME_ON + '</td><td>' + callsign + '</td><td>' + item.COL_MODE + '</td><td>' + item.COL_RST_SENT + '</td><td>' + item.COL_RST_RCVD + '</td><td>' + band + '</td><td>' + item.COL_COUNTRY + '</td><td></td></tr>');
         });
 
       });
     }
     else{
-      console.log("invalid object :");
+      //console.log("invalid object :");
     }
   });
 

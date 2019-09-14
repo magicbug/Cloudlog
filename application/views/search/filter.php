@@ -52,31 +52,14 @@
 		<div class="table-responsive">
 			<table id="results" class="table table-striped table-hover">
 				<tr class="titles">
-					<td>Date</td>
-					<td>Time</td>
+					<td>Date/Time</td>
 					<td>Call</td>
 					<td>Mode</td>
 					<td>Sent</td>
 					<td>Recv</td>
 					<td>Band</td>
 					<td>Country</td>
-					<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-					<td>QSL</td>
-					
-					<?php if($this->session->userdata('user_eqsl_name') != "") { ?>
-						<td>eQSL</td>
-					<?php } else { ?>
-						<td></td>
-					<?php } ?>
-
-					<?php if($this->session->userdata('user_lotw_name') != "") { ?>
-						<td>LoTW</td>
-					<?php } else { ?>
-						<td></td>
-					<?php } ?>
-
 					<td></td>
-					<?php } ?>
 				</tr>
 	    	</table>
 	    </div>

@@ -71,61 +71,125 @@ class Search extends CI_Controller {
                 if(is_array($value)) {
                     foreach($value as $values)
                     {
-                        //print_r($values['field']);
-                        if($values['operator'] == "equal") {
-                            if($search_type == "AND") {
-                                $this->db->where($values['field'], $values['value']); 
+
+                        if(isset($values['rules'])) {
+                            if($values['condition'] == "AND") {
+                                $this->db->group_start();
                             } else {
-                                $this->db->or_where($values['field'], $values['value']); 
+                                $this->db->or_group_start();
+                            }
+                            foreach($values['rules'] as $group_value)
+                            {
+                                if($group_value['operator'] == "equal") {
+                                    if($values['condition'] == "AND") {
+                                        $this->db->where($group_value['field'], $group_value['value']); 
+                                    } else {
+                                        $this->db->or_where($group_value['field'], $group_value['value']); 
+                                    }
+                                }
+
+                                if($group_value['operator'] == "not_equal") {
+                                    if($values['condition'] == "AND") {
+                                       $this->db->where($group_value['field'].' !=', $group_value['value']);
+                                    } else {
+                                       $this->db->or_where($group_value['field'].' !=', $group_value['value']);
+                                    }
+                                }
+
+                                if($group_value['operator'] == "less") {
+                                    if($values['condition'] == "AND") {
+                                       $this->db->where($group_value['field'].' <', $group_value['value']);
+                                    } else {
+                                       $this->db->or_where($group_value['field'].' <', $group_value['value']);
+                                    }
+                                }
+
+                                if($group_value['operator'] == "less_or_equal") {
+                                    if($values['condition'] == "AND") {
+                                       $this->db->where($group_value['field'].' <=', $group_value['value']);
+                                    } else {
+                                       $this->db->or_where($group_value['field'].' <=', $group_value['value']);
+                                    }
+                                }
+
+                                if($group_value['operator'] == "greater") {
+                                    if($values['condition'] == "AND") {
+                                       $this->db->where($group_value['field'].' >', $group_value['value']);
+                                    } else {
+                                       $this->db->or_where($group_value['field'].' >', $group_value['value']);
+                                    }
+                                }
+
+                                if($group_value['operator'] == "greater_or_equal") {
+                                    if($values['condition'] == "AND") {
+                                       $this->db->where($group_value['field'].' >=', $group_value['value']);
+                                    } else {
+                                       $this->db->or_where($group_value['field'].' >=', $group_value['value']);
+                                    }
+                                }
+
+                            }
+                            $this->db->group_end();
+                        } else {
+                            //print_r($values['field']);
+                            if(isset($values['operator'])) {
+
+                            }
+                            if($values['operator'] == "equal") {
+                                if($search_type == "AND") {
+                                    $this->db->where($values['field'], $values['value']); 
+                                } else {
+                                    $this->db->or_where($values['field'], $values['value']); 
+                                }
+                            }
+
+                            if($values['operator'] == "not_equal") {
+                                if($search_type == "AND") {
+                                   $this->db->where($values['field'].' !=', $values['value']);
+                                } else {
+                                   $this->db->or_where($values['field'].' !=', $values['value']);
+                                }
+                            }
+
+                            if($values['operator'] == "less") {
+                                if($search_type == "AND") {
+                                   $this->db->where($values['field'].' <', $values['value']);
+                                } else {
+                                   $this->db->or_where($values['field'].' <', $values['value']);
+                                }
+                            }
+
+                            if($values['operator'] == "less_or_equal") {
+                                if($search_type == "AND") {
+                                   $this->db->where($values['field'].' <=', $values['value']);
+                                } else {
+                                   $this->db->or_where($values['field'].' <=', $values['value']);
+                                }
+                            }
+
+                            if($values['operator'] == "greater") {
+                                if($search_type == "AND") {
+                                   $this->db->where($values['field'].' >', $values['value']);
+                                } else {
+                                   $this->db->or_where($values['field'].' >', $values['value']);
+                                }
+                            }
+
+                            if($values['operator'] == "greater_or_equal") {
+                                if($search_type == "AND") {
+                                   $this->db->where($values['field'].' >=', $values['value']);
+                                } else {
+                                   $this->db->or_where($values['field'].' >=', $values['value']);
+                                }
                             }
                         }
-
-                        if($values['operator'] == "not_equal") {
-                            if($search_type == "AND") {
-                               $this->db->where($values['field'].' !=', $name);
-                            } else {
-                               $this->db->or_where($values['field'].' !=', $name);
-                            }
-                        }
-
-                        if($values['operator'] == "less") {
-                            if($search_type == "AND") {
-                               $this->db->where($values['field'].' <', $name);
-                            } else {
-                               $this->db->or_where($values['field'].' <', $name);
-                            }
-                        }
-
-                        if($values['operator'] == "less_or_equal") {
-                            if($search_type == "AND") {
-                               $this->db->where($values['field'].' <=', $name);
-                            } else {
-                               $this->db->or_where($values['field'].' <=', $name);
-                            }
-                        }
-
-                        if($values['operator'] == "greater") {
-                            if($search_type == "AND") {
-                               $this->db->where($values['field'].' >', $name);
-                            } else {
-                               $this->db->or_where($values['field'].' >', $name);
-                            }
-                        }
-
-                        if($values['operator'] == "greater_or_equal") {
-                            if($search_type == "AND") {
-                               $this->db->where($values['field'].' >=', $name);
-                            } else {
-                               $this->db->or_where($values['field'].' >=', $name);
-                            }
-                        }
-
+                        
                     }
                 }
             }
             $this->db->order_by('COL_TIME_ON', 'DESC');
             $query = $this->db->get($this->config->item('table_name'));
-
+            //echo $this->db->last_query();
             echo json_encode($query->result_array());
           } else {
             echo "Noooooooob";
