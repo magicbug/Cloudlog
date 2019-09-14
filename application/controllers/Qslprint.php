@@ -43,9 +43,52 @@ class QSLPrint extends CI_Controller {
 
 		$this->load->model('logbook_model');
 
-		$data['qsos'] = $this->logbook_model->get_qsos_for_printing();
+		$myData = $this->logbook_model->get_qsos_for_printing();
 
-		$this->load->view('qslprint/data/csv', $data);
+		// file name
+		$filename = 'qsl_export.csv';
+		header("Content-Description: File Transfer");
+		header("Content-Disposition: attachment; filename=$filename");
+		header("Content-Type: application/csv;charset=iso-8859-1");
+ 
+		// file creation
+		$file = fopen('php://output', 'w');
+ 
+		$header = array("COL_CALL", 
+						"COL_QSL_VIA", 
+						"COL_TIME_ON", 
+						"COL_MODE", 
+						"COL_FREQ", 
+						"COL_BAND", 
+						"COL_RST_SENT", 
+						"COL_SAT_NAME", 
+						"COL_SAT_MODE", 
+						"COL_QSL_RCVD", 
+						"COL_ROUTING", 
+						"ADIF", 
+						"ENTITY");
+
+		fputcsv($file, $header);
+ 
+		foreach ($myData->result() as $qso) {
+			fputcsv($file, 
+				array(str_replace("0", "Ø", $qso->COL_CALL), 
+				$qso->COL_QSL_VIA!=""?"Via ".str_replace("0", "Ø", $qso->COL_QSL_VIA):"", 
+				$qso->COL_TIME_ON, 
+				$qso->COL_MODE, 
+				$qso->COL_FREQ, 
+				$qso->COL_BAND, 
+				$qso->COL_RST_SENT, 
+				$qso->COL_SAT_NAME, 
+				$qso->COL_SAT_MODE, 
+				$qso->COL_QSL_RCVD =='Y'?'TNX QSL':'PSE QSL', 
+				$qso->COL_ROUTING,
+				$qso->ADIF, 
+				$qso->ENTITY));
+		}
+
+		fclose($file);
+		exit;
 	}
 	
 	function qsl_printed() {
@@ -63,5 +106,5 @@ class QSLPrint extends CI_Controller {
 	}
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* End of file Qslprint.php */
+/* Location: ./application/controllers/Qslprint.php */
