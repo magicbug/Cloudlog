@@ -88,6 +88,38 @@ class Search extends CI_Controller {
                             }
                         }
 
+                        if($values['operator'] == "less") {
+                            if($search_type == "AND") {
+                               $this->db->where($values['field'].' <', $name);
+                            } else {
+                               $this->db->or_where($values['field'].' <', $name);
+                            }
+                        }
+
+                        if($values['operator'] == "less_or_equal") {
+                            if($search_type == "AND") {
+                               $this->db->where($values['field'].' <=', $name);
+                            } else {
+                               $this->db->or_where($values['field'].' <=', $name);
+                            }
+                        }
+
+                        if($values['operator'] == "greater") {
+                            if($search_type == "AND") {
+                               $this->db->where($values['field'].' >', $name);
+                            } else {
+                               $this->db->or_where($values['field'].' >', $name);
+                            }
+                        }
+
+                        if($values['operator'] == "greater_or_equal") {
+                            if($search_type == "AND") {
+                               $this->db->where($values['field'].' >=', $name);
+                            } else {
+                               $this->db->or_where($values['field'].' >=', $name);
+                            }
+                        }
+
                     }
                 }
             }
