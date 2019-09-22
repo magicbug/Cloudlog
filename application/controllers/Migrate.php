@@ -4,7 +4,7 @@
   {
     $this->load->library('Migration');
 
-    if ( ! $this->migration->latest()) {
+    if (!$this->migration->latest()) {
       show_error($this->migration->error_string());
     }
 

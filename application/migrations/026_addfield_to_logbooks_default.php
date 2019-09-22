@@ -15,6 +15,6 @@ class Migration_addfield_to_logbooks_default extends CI_Migration {
 
         public function down()
         {
-                $this->dbforge->drop_column('default_logbook', 'logbooks');
+                echo "not possible";
         }
 }

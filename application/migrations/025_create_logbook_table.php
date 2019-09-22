@@ -28,6 +28,6 @@ class Migration_create_logbook_table extends CI_Migration {
 
         public function down()
         {
-                $this->dbforge->drop_table('logbooks');
+                echo "not possible";
         }
 }
