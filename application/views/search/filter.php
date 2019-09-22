@@ -34,7 +34,7 @@
 		<button class="btn btn-warning" id="btn-reset">Reset</button>
 		</p>
 
-	    	<span class="badge badge-info">Info</span> You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Search----Filter" target="_blank">search filter functons</a> in the wiki.</a>
+	    	<span class="badge badge-info">Info</span> You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Search----Filter" target="_blank">search filter functions</a> in the wiki.</a>
 	    </p>
 
 	  </div>
