@@ -15,6 +15,6 @@ class Migration_add_column_logbookid extends CI_Migration {
 
         public function down()
         {
-                echo "Not possible, sorry.";
+                $this->dbforge->drop_column('logbook_id', $this->config->item('table_name'));
         }
 }
