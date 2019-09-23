@@ -18,7 +18,11 @@ class Station extends CI_Controller {
 	public function index()
 	{
 		$this->load->model('stations');
+		$this->load->model('Logbook_model');
+
 		$data['stations'] = $this->stations->all();
+		$data['current_active'] = $this->stations->find_active();
+		$data['is_there_qsos_with_no_station_id'] = $this->Logbook_model->check_for_station_id();
 
 		// Render Page
 		$data['page_title'] = "Station Profiles";
@@ -32,7 +36,6 @@ class Station extends CI_Controller {
 		$this->load->model('stations');
 		$this->load->model('dxcc');
 		$data['dxcc_list'] = $this->dxcc->list();
-
 
 		$this->load->library('form_validation');
 
@@ -56,6 +59,23 @@ class Station extends CI_Controller {
 	public function edit()
 	{
 
+	}
+
+	function reassign_profile($id) {
+		// $id is the profile that needs reassigned to QSOs
+		$this->load->model('stations');
+		$this->stations->reassign($id);
+		
+		//$this->stations->logbook_session_data();
+		redirect('station');
+	}
+
+	function set_active($current, $new) {
+		$this->load->model('stations');
+		$this->stations->set_active($current, $new);
+		
+		//$this->stations->logbook_session_data();
+		redirect('station');
 	}
 
 	public function delete($id) {

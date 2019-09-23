@@ -59,6 +59,81 @@ class Stations extends CI_Model {
 		$this->db->delete('station_profile', array('station_id' => $id)); 
 	}
 
+	function set_active($current, $new) {
+        // Deselect current default
+		$current_default = array(
+				'station_active' => null,
+		);
+		$this->db->where('station_id', $current);
+		$this->db->update('station_profile', $current_default);
+		
+		// Deselect current default	
+		$newdefault = array(
+			'station_active' => 1,
+		);
+		$this->db->where('station_id', $new);
+		$this->db->update('station_profile', $newdefault);
+    }
+
+    public function find_active() {
+        $this->db->where('station_active', 1);
+       	$query = $this->db->get('station_profile');
+        
+        if($query->num_rows() >= 1) {
+        	foreach ($query->result() as $row)
+			{
+				return $row->station_id;
+			}
+       	} else {
+			return "0";
+		}
+    }
+
+    public function reassign($id) {
+    	$this->db->where('station_id', $id);
+		$query = $this->db->get('station_profile');
+
+		$row = $query->row();
+
+		//print_r($row);
+
+		$data = array(
+		        'station_id' => $id,
+		);
+
+		$this->db->where('COL_STATION_CALLSIGN', $row->station_callsign);
+		
+		if($row->station_iota != "") {
+			$this->db->where('COL_MY_IOTA', $row->station_country);
+		}
+
+		if($row->station_sota != "") {
+			$this->db->where('COL_MY_SOTA_REF', $row->station_sota);
+		}
+
+		$this->db->where('COL_MY_COUNTRY', $row->station_country);
+
+		if( strpos($row->station_gridsquare, ',') !== false ) {
+		     $this->db->where('COL_MY_VUCC_GRIDS', $row->station_gridsquare);
+		} else {
+			$this->db->where('COL_MY_GRIDSQUARE', $row->station_gridsquare);
+		}
+
+		$this->db->update($this->config->item('table_name'), $data);
+
+		$str = $this->db->last_query();
+
+    }
+
+    function profile_exists() {
+	    $query = $this->db->get('station_profile');
+		if($query->num_rows() >= 1) {
+	    	return 1;
+	    } else {
+	    	return 0;
+	    }        	
+    }
+
 }
 
 ?>

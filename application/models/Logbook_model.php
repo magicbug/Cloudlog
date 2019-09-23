@@ -1371,6 +1371,17 @@ class Logbook_model extends CI_Model {
 
         print("$count updated\n");
     }
+
+    public function check_for_station_id() {
+      $this->db->where('station_id !=', "");
+      $query = $this->db->get($this->config->item('table_name'));
+      if($query->num_rows() >= 1) {
+        return 1;
+      } else {
+        return 0;
+      }        
+    }
+
     public function parse_frequency($frequency)
     {
       if (is_int($frequency))
