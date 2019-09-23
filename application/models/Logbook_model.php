@@ -161,7 +161,6 @@ class Logbook_model extends CI_Model {
             'COL_SAT_NAME' => strtoupper($this->input->post('sat_name')),
             'COL_SAT_MODE' => strtoupper($this->input->post('sat_mode')),
             'COL_COUNTRY' => $country,
-            'COL_MY_RIG' => $this->input->post('equipment'),
             'COL_QSLSDATE' => date('Y-m-d'),
             'COL_QSLRDATE' => date('Y-m-d'),
             'COL_QSL_SENT' => $this->input->post('qsl_sent'),
@@ -173,7 +172,6 @@ class Logbook_model extends CI_Model {
             'COL_QTH' => $this->input->post('qth'),
             'COL_PROP_MODE' => $prop_mode,
             'COL_IOTA' => trim($this->input->post('iota_ref')),
-            'COL_MY_GRIDSQUARE' => $locator,
             'COL_DISTANCE' => "0",
             'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
             'COL_BAND_RX' => null,
@@ -199,9 +197,17 @@ class Logbook_model extends CI_Model {
 			      'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
     );
 
+    $station_id = $this->input->post('station_profile');
+
+    if($station_id == "" || $station_id == "0") {
+      $CI =& get_instance();
+      $CI->load->model('Stations');
+      $station_id = $CI->Stations->find_active();
+    }
+
     // If station profile has been provided fill in the fields
-    if($this->input->post('station_profile') != "0") {
-      $station = $this->check_station($this->input->post('station_profile'));
+    if($station_id != "0") {
+      $station = $this->check_station($station_id);
 
       if (strpos(trim($station['station_gridsquare']), ',') !== false) {
         $data['COL_MY_VUCC_GRIDS'] = strtoupper(trim($station['station_gridsquare']));
@@ -1211,12 +1217,20 @@ class Logbook_model extends CI_Model {
                 'COL_WEB' => (!empty($record['web'])) ? $record['web'] : ''
             );
 
+            if($station_id == "" || $station_id == "0") {
+              $CI =& get_instance();
+              $CI->load->model('Stations');
+              $station_id = $CI->Stations->find_active();
+            }
+
             if($station_id != "0") {
               $station_result = $this->db->where('station_id', $station_id)
                                 ->get('station_profile');
 
 
                 if ($station_result->num_rows() > 0){
+                    $data['station_id'] = $station_id;
+
                     $row = $station_result->row_array();
 
                     if (strpos(trim($row['station_gridsquare']), ',') !== false) {
@@ -1225,7 +1239,7 @@ class Logbook_model extends CI_Model {
                       $data['COL_MY_GRIDSQUARE'] = strtoupper(trim($row['station_gridsquare']));
                     }
 
-                    $data['COL_MY_CITY'] = strtoupper(trim($row['station_city']));
+                    $data['COL_MY_CITY'] = trim($row['station_city']);
                     $data['COL_MY_IOTA'] = strtoupper(trim($row['station_iota']));
                     $data['COL_MY_SOTA_REF'] = strtoupper(trim($row['station_sota']));
                     
