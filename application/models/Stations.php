@@ -104,7 +104,7 @@ class Stations extends CI_Model {
 		$this->db->where('COL_STATION_CALLSIGN', $row->station_callsign);
 		
 		if($row->station_iota != "") {
-			$this->db->where('COL_MY_IOTA', $row->station_country);
+			$this->db->where('COL_MY_IOTA', $row->station_iota);
 		}
 
 		if($row->station_sota != "") {
