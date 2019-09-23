@@ -67,7 +67,7 @@ class Station extends CI_Controller {
 		$this->stations->reassign($id);
 		
 		//$this->stations->logbook_session_data();
-		//redirect('station');
+		redirect('station');
 	}
 
 	function set_active($current, $new) {
