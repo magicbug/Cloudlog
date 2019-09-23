@@ -123,6 +123,8 @@ class Stations extends CI_Model {
 
 		$str = $this->db->last_query();
 
+		echo $str;
+
     }
 
     function profile_exists() {
