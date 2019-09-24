@@ -19,6 +19,7 @@ class adif extends CI_Controller {
 
 		$data['page_title'] = "ADIF Export";
 
+
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('adif/main');
 		$this->load->view('interface_assets/footer');
@@ -96,9 +97,16 @@ class adif extends CI_Controller {
 
 	public function index() {
 		$this->load->model('stations');
-		$data['station_profile'] = $this->stations->all();
+
 		$data['page_title'] = "ADIF Import";
 		$data['max_upload'] = ini_get('upload_max_filesize');
+
+		$data['station_profile'] = $this->stations->all();
+        $active_station_id = $this->stations->find_active();
+        $station_profile = $this->stations->profile($active_station_id);
+
+		$data['active_station_info'] = $station_profile->row();
+
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('adif/import');
 		$this->load->view('interface_assets/footer');
@@ -107,6 +115,11 @@ class adif extends CI_Controller {
 	public function import() {
 		$this->load->model('stations');
 		$data['station_profile'] = $this->stations->all();
+
+        $active_station_id = $this->stations->find_active();
+        $station_profile = $this->stations->profile($active_station_id);
+
+		$data['active_station_info'] = $station_profile->row();
 
 		$data['page_title'] = "ADIF Import";
 

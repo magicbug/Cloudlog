@@ -44,6 +44,10 @@
     ADIF Export
   </div>
 
+	<div class="alert alert-warning" role="alert">
+ 		Exporting QSOs from the Active Station Profile Name <span class="badge badge-danger"><?php echo $active_station_info->station_profile_name;?></span> with the station callsign <span class="badge badge-danger"><?php echo $active_station_info->station_callsign;?></span>
+	</div>
+
   <div class="card-body">
     <h5 class="card-title">Take your logbook file anywhere!</h5>
     <p class="card-text">Exporting ADIFs allows you to import contacts into third party applications like LoTW, Awards or just for keeping a backup.</p>

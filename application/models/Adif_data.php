@@ -9,7 +9,10 @@ class adif_data extends CI_Model {
     }
 
     function export_all() {
-        //$this->db->limit(5);
+        $this->load->model('stations');
+        $active_station_id = $this->stations->find_active();
+
+        $this->db->where('station_id', $active_station_id);
         $this->db->order_by("COL_TIME_ON", "ASC"); 
         $query = $this->db->get($this->config->item('table_name'));
         
@@ -17,6 +20,10 @@ class adif_data extends CI_Model {
     }
 
     function export_printrequested() {
+        $this->load->model('stations');
+        $active_station_id = $this->stations->find_active();
+
+        $this->db->where('station_id', $active_station_id);
         $this->db->where('COL_QSL_SENT', 'R');
         $this->db->order_by("COL_TIME_ON", "ASC"); 
         $query = $this->db->get($this->config->item('table_name'));
@@ -25,6 +32,10 @@ class adif_data extends CI_Model {
     }
 
     function sat_all() {
+        $this->load->model('stations');
+        $active_station_id = $this->stations->find_active();
+
+        $this->db->where('station_id', $active_station_id);
         $this->db->where('COL_PROP_MODE', 'SAT');
         $this->db->order_by("COL_TIME_ON", "ASC"); 
         $query = $this->db->get($this->config->item('table_name'));
@@ -33,6 +44,10 @@ class adif_data extends CI_Model {
     }
 
     function satellte_lotw() {
+        $this->load->model('stations');
+        $active_station_id = $this->stations->find_active();
+
+        $this->db->where('station_id', $active_station_id);
         $this->db->where('COL_PROP_MODE', 'SAT');
 
         $where = "COL_LOTW_QSLRDATE != ''";
@@ -45,6 +60,9 @@ class adif_data extends CI_Model {
     }
     
     function export_custom($from, $to) {
+        $this->load->model('stations');
+        $active_station_id = $this->stations->find_active();
+        $this->db->where('station_id', $active_station_id);
         $this->db->where("COL_TIME_ON BETWEEN '".$from."' AND '".$to."'");
         $this->db->order_by("COL_TIME_ON", "ASC"); 
         $query = $this->db->get($this->config->item('table_name'));
@@ -53,6 +71,9 @@ class adif_data extends CI_Model {
     }
     
     function export_lotw() {
+        $this->load->model('stations');
+        $active_station_id = $this->stations->find_active();
+        $this->db->where('station_id', $active_station_id);
         $this->db->where("COL_LOTW_QSL_SENT != 'Y'");
         $this->db->order_by("COL_TIME_ON", "ASC"); 
         $query = $this->db->get($this->config->item('table_name'));
