@@ -156,16 +156,33 @@
 			<table width="100%">
 				<tr>
 					<td>Station Callsign</td>
-					<td><?php echo $row->COL_STATION_CALLSIGN; ?></td>
+					<td><?php echo $row->station_callsign; ?></td>
 				</tr>
 				<tr>
 					<td>Station Gridsquare</td>
-					<td><?php echo $row->COL_MY_GRIDSQUARE; ?></td>
+					<td><?php echo $row->station_gridsquare; ?></td>
 				</tr>
+
+				<?php if($row->station_city) { ?>
+				<tr>
+					<td>Station City:</td>
+					<td><?php echo $row->station_city; ?></td>
+				</tr>
+				<?php } ?>
+
+				<?php if($row->station_country) { ?>
+				<tr>
+					<td>Station Country:</td>
+					<td><?php echo $row->station_country; ?></td>
+				</tr>
+				<?php } ?>
+
+				<?php if($row->COL_OPERATOR) { ?>
 				<tr>
 					<td>Station Operator</td>
 					<td><?php echo $row->COL_OPERATOR; ?></td>
 				</tr>
+				<?php } ?>
 			</table>
 		</div>
 		<div class="col">

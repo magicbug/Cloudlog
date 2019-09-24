@@ -260,8 +260,8 @@ class Logbook extends CI_Controller {
 
 		$this->load->library('qra');
 
-		$this->db->where('COL_PRIMARY_KEY', $id);
-		$data['query'] = $this->db->get($this->config->item('table_name'));
+		$this->load->model('logbook_model');
+		$data['query'] = $this->logbook_model->get_qso($id);
 		
 		$this->load->view('interface_assets/mini_header', $data);
 		$this->load->view('view_log/qso');
@@ -340,11 +340,17 @@ class Logbook extends CI_Controller {
 
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
-		$this->db->like('COL_CALL', $id);
-		$this->db->or_like('COL_GRIDSQUARE', $id);
-		$this->db->or_like('COL_VUCC_GRIDS', $id);
-		$this->db->order_by("COL_TIME_ON", "desc");
-		$query = $this->db->get($this->config->item('table_name'));
+   		$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_NAME, '.$this->config->item('table_name').'.COL_COUNTRY, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
+    
+    	$this->db->from($this->config->item('table_name'));
+
+    	$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+    		
+		$this->db->like(''.$this->config->item('table_name').'.COL_CALL', $id);
+		$this->db->or_like(''.$this->config->item('table_name').'.COL_GRIDSQUARE', $id);
+		$this->db->or_like(''.$this->config->item('table_name').'.COL_VUCC_GRIDS', $id);
+		$this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', 'desc');
+		$query = $this->db->get();
 
 		if ($query->num_rows() > 0)
 		{
