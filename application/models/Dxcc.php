@@ -27,12 +27,17 @@ class DXCC extends CI_Model {
 	{
 		// Call the Model constructor
 		parent::__construct();
+
 	}
 
 	function get_worked_bands() {
+		$CI =& get_instance();
+      	$CI->load->model('Stations');
+      	$station_id = $CI->Stations->find_active();
+
 		// get all worked slots from database
 		$data = $this->db->query(
-			"SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `".$this->config->item('table_name')."`"
+			"SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `".$this->config->item('table_name')."` WHERE station_id = ".$station_id.""
 		);
 		$worked_slots = array();
 		foreach($data->result() as $row){
@@ -51,10 +56,14 @@ class DXCC extends CI_Model {
 	}
 
 	function show_stats(){
+		$CI =& get_instance();
+      	$CI->load->model('Stations');
+      	$station_id = $CI->Stations->find_active();
 
         $data = $this->db->query(
             "select COL_COUNTRY, COL_MODE, lcase(COL_BAND) as COL_BAND, count(COL_COUNTRY) as cnt
-            from ".$this->config->item('table_name')." 
+            from ".$this->config->item('table_name')."
+            where station_id = ".$station_id."
             group by COL_COUNTRY, COL_MODE, COL_BAND"
             );
 

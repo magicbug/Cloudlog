@@ -30,9 +30,13 @@ class DOK extends CI_Model {
 	}
 
 	function get_worked_bands() {
+		$CI =& get_instance();
+      	$CI->load->model('Stations');
+      	$station_id = $CI->Stations->find_active();
+
 		// get all worked slots from database
 		$data = $this->db->query(
-			"SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `".$this->config->item('table_name')."` WHERE COL_DARC_DOK IS NOT NULL AND COL_DARC_DOK != ''  AND COL_DXCC = 230 "
+			"SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `".$this->config->item('table_name')."` WHERE station_id = ".$station_id." AND COL_DARC_DOK IS NOT NULL AND COL_DARC_DOK != ''  AND COL_DXCC = 230 "
 		);
 		$worked_slots = array();
 		foreach($data->result() as $row){
@@ -51,10 +55,13 @@ class DOK extends CI_Model {
 	}
 
 	function show_stats(){
+		$CI =& get_instance();
+      	$CI->load->model('Stations');
+      	$station_id = $CI->Stations->find_active();
 
         $data = $this->db->query(
             "select upper(COL_DARC_DOK) as COL_DARC_DOK, COL_MODE, lcase(COL_BAND) as COL_BAND, count(COL_DARC_DOK) as cnt
-            from ".$this->config->item('table_name')." WHERE COL_DARC_DOK IS NOT NULL AND COL_DARC_DOK != '' AND COL_DXCC = 230
+            from ".$this->config->item('table_name')." WHERE station_id = ".$station_id." AND COL_DARC_DOK IS NOT NULL AND COL_DARC_DOK != '' AND COL_DXCC = 230
             group by COL_DARC_DOK, COL_MODE, COL_BAND"
             );
 
