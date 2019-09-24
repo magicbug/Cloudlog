@@ -19,6 +19,7 @@
 			<?php if($this->session->userdata('user_lotw_name') != "") { ?>
 			<td>LoTW</td>
 			<?php } ?>
+			<td>Station</td>
 			<td></td>
 			<?php } ?>
 		</tr>
@@ -61,6 +62,14 @@
 			</td>
 			<?php } ?>
 
+			<?php if($this->config->item('callsign_tags') == true) { ?>
+				<?php if($row->station_callsign	 != null) { ?>
+				<td>
+					<span class="badge badge-light"><?php echo $row->station_callsign; ?></span>
+				</td>
+				<?php } ?>
+			<?php } ?>
+
 			<td>
 				<div class="dropdown">
 				  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -83,13 +92,6 @@
 				  </div>
 				</div>
 			</td>
-			<?php if($this->config->item('callsign_tags') == true) { ?>
-				<?php if($row->COL_STATION_CALLSIGN	 != null) { ?>
-				<td><span class="label notice"><?php echo $row->COL_STATION_CALLSIGN; ?></span></td>
-				<?php } elseif($row->COL_OPERATOR != null) { ?>
-				<td><span class="label notice"><?php echo $row->COL_OPERATOR; ?></span></td>
-				<?php } ?>
-			<?php } ?>
 			<?php } ?>
 		</tr>
 		<?php $i++; } ?>

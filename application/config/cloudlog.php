@@ -74,3 +74,5 @@ $config['cat_timeout_interval'] = 300;
 */
 
 $config['public_search'] = FALSE;
+
+$config['callsign_tags'] = TRUE;
