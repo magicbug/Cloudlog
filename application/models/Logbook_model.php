@@ -9,92 +9,6 @@ class Logbook_model extends CI_Model {
   }
 
   /* Add QSO to Logbook */
-  function add() {
-    // Join date+time
-    $datetime = date('Y-m-d') ." ". $this->input->post('start_time');
-
-    if ($this->input->post('prop_mode') != null) {
-      $prop_mode = $this->input->post('prop_mode');
-    } else {
-      $prop_mode = "";
-    }
-
-        if($this->input->post('sat_name')) {
-            $prop_mode = "SAT";
-        }
-
-        if($this->session->userdata('user_locator')){
-            $locator = $this->session->userdata('user_locator');
-        } else {
-            $locator = $this->config->item('locator');
-        }
-
-    // Create array with QSO Data
-
-    $data = array(
-      'COL_TIME_ON' => $datetime,
-      'COL_TIME_OFF' => $datetime,
-      'COL_CALL' => strtoupper(trim($this->input->post('callsign'))),
-      'COL_BAND' => trim($this->input->post('band')),
-      'COL_FREQ' => $this->parse_frequency($this->input->post('freq_display')),
-      'COL_MODE' => $this->input->post('mode'),
-      'COL_RST_RCVD' => $this->input->post('rst_recv'),
-      'COL_RST_SENT' => $this->input->post('rst_sent'),
-      'COL_NAME' => $this->input->post('name'),
-      'COL_COMMENT' => $this->input->post('comment'),
-      'COL_SAT_NAME' => strtoupper($this->input->post('sat_name')),
-      'COL_SAT_MODE' => strtoupper($this->input->post('sat_mode')),
-      'COL_COUNTRY' => $this->input->post('country'),
-      'COL_MY_RIG' => $this->input->post('equipment'),
-      'COL_QSLSDATE' => date('Y-m-d'),
-      'COL_QSLRDATE' => date('Y-m-d'),
-      'COL_QSL_SENT' => $this->input->post('qsl_sent'),
-      'COL_QSL_RCVD' => $this->input->post('qsl_recv'),
-      'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
-      'COL_QSL_RCVD_VIA' => $this->input->post('qsl_recv_method'),
-      'COL_QSL_VIA' => $this->input->post('qsl_via'),
-      'COL_OPERATOR' => $this->session->userdata('user_callsign'),
-      'COL_STATION_CALLSIGN' => $this->session->userdata('user_callsign'),
-      'COL_QTH' => $this->input->post('qth'),
-      'COL_PROP_MODE' => $prop_mode,
-      'COL_IOTA' => trim($this->input->post('iota_ref')),
-      'COL_MY_GRIDSQUARE' => strtoupper($locator),
-      'COL_DISTANCE' => "0",
-      'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
-      'COL_BAND_RX' => null,
-      'COL_ANT_AZ' => null,
-      'COL_ANT_EL' => null,
-      'COL_A_INDEX' => null,
-      'COL_AGE' => null,
-      'COL_TEN_TEN' => null,
-      'COL_TX_PWR' => null,
-      'COL_STX' => null,
-      'COL_SRX' => null,
-      'COL_NR_BURSTS' => null,
-      'COL_NR_PINGS' => null,
-      'COL_MAX_BURSTS' => null,
-      'COL_K_INDEX' => null,
-      'COL_SFI' => null,
-      'COL_RX_PWR' => null,
-      'COL_LAT' => null,
-      'COL_LON' => null,
-      'COL_DXCC' => $this->input->post('dxcc_id'),
-      'COL_CQZ' => $this->input->post('cqz'),
-      'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
-      'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
-    );
-
-    if (strpos(trim($this->input->post('locator')), ',') !== false) {
-      $data['COL_VUCC_GRIDS'] = strtoupper(trim($this->input->post('locator')));
-    } else {
-      $data['COL_GRIDSQUARE'] = strtoupper(trim($this->input->post('locator')));
-    }
-
-
-    $this->add_qso($data);
-  }
-
-  /* Add QSO to Logbook */
   function create_qso() {
     // Join date+time
     $datetime = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('start_time');
@@ -208,6 +122,7 @@ class Logbook_model extends CI_Model {
     // If station profile has been provided fill in the fields
     if($station_id != "0") {
       $station = $this->check_station($station_id);
+        $data['station_id'] = $station_id;
 
       if (strpos(trim($station['station_gridsquare']), ',') !== false) {
         $data['COL_MY_VUCC_GRIDS'] = strtoupper(trim($station['station_gridsquare']));
