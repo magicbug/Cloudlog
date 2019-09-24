@@ -42,6 +42,7 @@
 					<th scope="col">SOTA</th>
 					<th scope="col">CQ</th>
 					<th scope="col">ITU</th>
+					<th scope="col">QSO Count</th>
 					<th></th>
 					<th scope="col"></th>
 				</tr>
@@ -58,6 +59,7 @@
 					<td><?php echo $row->station_sota;?></td>
 					<td><?php echo $row->station_cq;?></td>
 					<td><?php echo $row->station_itu;?></td>
+					<td><?php echo $row->qso_total;?></td>
 					<td>
 						<?php if($row->station_active != 1) { ?>			
 							<a href="<?php echo site_url('station/set_active/').$current_active."/".$row->station_id; ?>" class="btn btn-outline-secondary btn-sm btn-sm" onclick="return confirm('Are you sure you want to make logbook <?php echo $row->station_profile_name; ?> the active logbook?');">Set Active</a>

@@ -9,7 +9,12 @@ class Stations extends CI_Model {
     }
 
     function all() {
-		return $this->db->get('station_profile');
+
+		$this->db->select('station_profile.*, count('.$this->config->item('table_name').'.station_id) as qso_total');
+        $this->db->from('station_profile');
+        $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id','left');
+       	$this->db->group_by('station_profile.station_id');
+        return $this->db->get();
 	}
 
 	function profile($id) {
