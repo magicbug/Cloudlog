@@ -22,7 +22,7 @@ $(".search-results-box").hide();
     filters: [
       <?php foreach ($get_table_names->result() as $row) {
         $value_name = str_replace("COL_", "", $row->Field);
-        if ($value_name != "PRIMARY_KEY" && strpos($value_name, '_INTL') == false) { ?>
+        if ($value_name != "PRIMARY_KEY" && strpos($value_name, 'MY_') === false && strpos($value_name, '_INTL') == false) { ?>
         {
           id: '<?php echo $row->Field; ?>',
           label: '<?php echo $value_name; ?>',
