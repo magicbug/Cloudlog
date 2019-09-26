@@ -444,7 +444,8 @@ class Logbook_model extends CI_Model {
     return $this->db->get();
   }
 
-  function get_clublog_qsos(){
+  function get_clublog_qsos($station_id){
+    $this->db->where('station_id', $station_id);
     $this->db->where("COL_CLUBLOG_QSO_UPLOAD_STATUS", null);
     $this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "");
     $this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "N");
