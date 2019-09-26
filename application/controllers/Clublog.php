@@ -106,7 +106,7 @@ class Clublog extends CI_Controller {
 						}
 
 					} else {
-							echo "Nothing awaiting upload to clublog";
+							echo "Nothing awaiting upload to clublog for ".$station_row->station_callsign;
 					}
 				}
 			}
