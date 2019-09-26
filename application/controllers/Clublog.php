@@ -47,12 +47,12 @@ class Clublog extends CI_Controller {
 
 					$ranid = uniqid();
 
-					if ( ! write_file('uploads/clublog'.$ranid.'-'.$station_row->station_id.'.adi', $string)) {
+					if ( ! write_file('uploads/clublog'.$ranid.'.adi', $string)) {
 					     echo 'Unable to write the file - Make the folder Upload folder has write permissions.';
 					}
 					else {
-						
-						$file_info = get_file_info('uploads/clublog'.'-'.$station_row->station_id.'.adi');
+
+						$file_info = get_file_info('uploads/clublog'.$ranid.'.adi');
 
 						// initialise the curl request
 						$request = curl_init('https://clublog.org/putlogs.php');
