@@ -162,6 +162,12 @@ class Logbook extends CI_Controller {
 
 		}
 
+
+		$CI =& get_instance();
+    	$CI->load->model('Stations');
+    	$station_id = $CI->Stations->find_active();
+
+    	$this->db->where('station_id', $station_id); 
 		$this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($gridsquare, 0, 4));
 		$query = $this->db->get($this->config->item('table_name'), 1, 0);
 		foreach ($query->result() as $workedBeforeRow)
@@ -191,7 +197,12 @@ class Logbook extends CI_Controller {
 			$this->db->where('COL_PROP_MODE !=','SAT');
 
 		}
+		$CI =& get_instance();
+    	$CI->load->model('Stations');
+    	$station_id = $CI->Stations->find_active();
 
+    	$this->db->where('station_id', $station_id); 
+    	
 		$this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($gridsquare, 0, 4));
 		$query = $this->db->get($this->config->item('table_name'), 1, 0);
 		foreach ($query->result() as $workedBeforeRow)
