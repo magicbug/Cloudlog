@@ -48,6 +48,7 @@ class Gridsquares extends CI_Controller {
 		// Get Confirmed LOTW & Paper Squares (non VUCC)
 		$query = $this->gridsquares_model->get_confirmed_sat_squares();
 
+
 		if ($query->num_rows() > 0)
 		{
 			foreach ($query->result() as $row)
