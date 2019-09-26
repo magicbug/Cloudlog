@@ -455,7 +455,13 @@ class Logbook_model extends CI_Model {
   }
 
   function get_last_qsos($num) {
+
+    $CI =& get_instance();
+    $CI->load->model('Stations');
+    $station_id = $CI->Stations->find_active();
+
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_STX_STRING, COL_SRX_STRING');
+    $this->db->where("station_id", $station_id);
     $this->db->order_by("COL_TIME_ON", "desc");
     $this->db->limit($num);
     $query = $this->db->get($this->config->item('table_name'));
@@ -546,8 +552,12 @@ class Logbook_model extends CI_Model {
 
     /* Return QSOs over a period of days */
     function map_week_qsos($start, $end) {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
 
         $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
+        $this->db->where("station_id", $station_id);
         $this->db->order_by("COL_TIME_ON", "ASC");
         $query = $this->db->get($this->config->item('table_name'));
 
@@ -556,11 +566,15 @@ class Logbook_model extends CI_Model {
 
     /* Returns QSOs for the date sent eg 2011-09-30 */
     function map_day($date) {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
 
         $start = $date." 00:00:00";
         $end = $date." 23:59:59";
 
         $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
+        $this->db->where("station_id", $station_id);
         $this->db->order_by("COL_TIME_ON", "ASC");
         $query = $this->db->get($this->config->item('table_name'));
 
@@ -711,7 +725,12 @@ class Logbook_model extends CI_Model {
 
     /* Return total number of QSL Cards sent */
     function total_qsl_sent() {
-        $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_SENT = "Y" GROUP BY band');
+
+      $CI =& get_instance();
+      $CI->load->model('Stations');
+      $station_id = $CI->Stations->find_active();
+
+        $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_SENT = "Y" GROUP BY band');
 
         $row = $query->row();
 
@@ -724,7 +743,12 @@ class Logbook_model extends CI_Model {
 
     /* Return total number of QSL Cards requested */
     function total_qsl_requested() {
-        $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_SENT = "R" GROUP BY band');
+
+      $CI =& get_instance();
+      $CI->load->model('Stations');
+      $station_id = $CI->Stations->find_active();
+
+        $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_SENT = "R" GROUP BY band');
 
         $row = $query->row();
 
@@ -737,7 +761,12 @@ class Logbook_model extends CI_Model {
 
     /* Return total number of QSL Cards received */
     function total_qsl_recv() {
-        $query = $this->db->query('SELECT DISTINCT (COL_QSL_RCVD) AS band, count(COL_QSL_RCVD) AS count FROM '.$this->config->item('table_name').' WHERE COL_QSL_RCVD = "Y" GROUP BY band');
+
+      $CI =& get_instance();
+      $CI->load->model('Stations');
+      $station_id = $CI->Stations->find_active();
+
+        $query = $this->db->query('SELECT DISTINCT (COL_QSL_RCVD) AS band, count(COL_QSL_RCVD) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_RCVD = "Y" GROUP BY band');
 
         $row = $query->row();
 
@@ -750,7 +779,11 @@ class Logbook_model extends CI_Model {
 
     /* Return total number of countrys worked */
     function total_countrys() {
-        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').'');
+      $CI =& get_instance();
+      $CI->load->model('Stations');
+      $station_id = $CI->Stations->find_active();
+
+        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.'');
 
         return $query->num_rows();
     }
