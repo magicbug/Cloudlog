@@ -105,9 +105,9 @@ class Clublog extends CI_Controller {
 
 					}
 				}
-			} else {
-				echo "Nothing awaiting upload to clublog";
 			}
+		} else {
+				echo "Nothing awaiting upload to clublog";
 		}
 	}
 
