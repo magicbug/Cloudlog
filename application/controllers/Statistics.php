@@ -34,9 +34,7 @@ class Statistics extends CI_Controller {
 		$data['total_sat'] = $this->logbook_model->total_sat();
 		
 		$data['page_title'] = "Statistics"; 
-		
-		$data['total_digi'] = $this->logbook_model->total_digi();
-		
+				
 		$data['totals_year'] = $this->logbook_model->totals_year();
 	
 		// Render User Interface
