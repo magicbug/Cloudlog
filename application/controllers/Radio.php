@@ -111,7 +111,7 @@
 					if(strtoupper($row->mode) == "FMN"){
 						$mode = "FM";
 					} else {
-						$mode = strtoupper($mode);
+						$mode = strtoupper($row->mode);
 					}
 
 					$sat_name = "";
