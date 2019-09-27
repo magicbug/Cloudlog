@@ -32,7 +32,7 @@ $config['show_time'] = FALSE;
 | Default is: M
 |
 */
-$config['measurement_base'] = 'M';
+$config['measurement_base'] = 'K';
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +73,6 @@ $config['cat_timeout_interval'] = 300;
 |
 */
 
-$config['public_search'] = FALSE;
+$config['public_search'] = TRUE;
 
 $config['callsign_tags'] = TRUE;
