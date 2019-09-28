@@ -16,7 +16,7 @@
 	  <div class="card-body">
 	    <h5 class="card-title"></h5>
 	    <p class="card-text">
-	    	Here you can export requested QSLs as CSV-file or ADIF and mark them as sent via buro in a mass transaction if you like.
+	    	Here you can export requested QSLs as CSV-file or ADIF and mark them as sent via buro in a mass transaction if you like. The considered QSOs for this functions would be those of the active station profile.
 	    </p>
 		
 		    

@@ -8,6 +8,10 @@ class Qslprint_model extends CI_Model {
 	}
 
 	function mark_qsos_printed() {
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
+		
 		$data = array(
 	        'COL_QSLSDATE' => date('Y-m-d'),
 	        'COL_QSL_SENT' => "Y",
@@ -15,6 +19,7 @@ class Qslprint_model extends CI_Model {
 		);
 
 		$this->db->where("COL_QSL_SENT", "R");
+		$this->db->where("station_id", $station_id);
 		$this->db->update($this->config->item('table_name'), $data);
 	}
 }

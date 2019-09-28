@@ -404,7 +404,8 @@ class Logbook_model extends CI_Model {
 
 
   // Set Paper to recived
-  function paperqsl_update($qso_id, $method) {
+  function paperqsl_update($qso_id, $method) {  
+	
     $data = array(
          'COL_QSLRDATE' => date('Y-m-d'),
          'COL_QSL_RCVD' => 'Y',
@@ -417,7 +418,34 @@ class Logbook_model extends CI_Model {
   }
 
   function get_qsos_for_printing() {
-    $query = $this->db->query('SELECT COL_PRIMARY_KEY, COL_CALL, COL_QSL_VIA, COL_TIME_ON, COL_MODE, COL_FREQ, UPPER(COL_BAND) as COL_BAND, COL_RST_SENT, COL_SAT_NAME, COL_SAT_MODE, COL_QSL_RCVD, (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) AS COL_ROUTING, ADIF, ENTITY FROM '.$this->config->item('table_name').', dxcc_prefixes WHERE COL_QSL_SENT LIKE \'R\' and (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) like CONCAT(dxcc_prefixes.call,\'%\') and (end is null or end > now()) ORDER BY adif, col_routing');
+	$CI =& get_instance();
+    $CI->load->model('Stations');
+    $station_id = $CI->Stations->find_active();
+	
+    $query = $this->db->query('SELECT 
+								STATION_CALLSIGN,
+								COL_PRIMARY_KEY, 
+								COL_CALL,  
+								COL_QSL_VIA, 
+								COL_TIME_ON, 
+								COL_MODE, 
+								COL_FREQ, 
+								UPPER(COL_BAND) as COL_BAND, 
+								COL_RST_SENT, 
+								COL_SAT_NAME, 
+								COL_SAT_MODE, 
+								COL_QSL_RCVD, 
+								(CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) AS COL_ROUTING, 
+								ADIF, 
+								ENTITY 
+								FROM '.$this->config->item('table_name').', dxcc_prefixes, station_profile 
+								WHERE 
+								COL_QSL_SENT LIKE \'R\' 
+								and (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) like CONCAT(dxcc_prefixes.call,\'%\') 
+								and (end is null or end > now()) 
+								and '.$this->config->item('table_name').'.station_id = '.$station_id.'
+								and '.$this->config->item('table_name').'.station_id = station_profile.station_id
+								ORDER BY adif, col_routing');
     return $query;
   }
 
