@@ -122,6 +122,10 @@ TD.eqsl{
     color: #F00;
     font-size: 1.1em;
 }
+.qsl-yellow{
+    color: #d39e00;
+    font-size: 1.1em;
+}
 TD.lotw{
     width: 33px;
 }
