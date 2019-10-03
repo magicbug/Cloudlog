@@ -56,9 +56,37 @@ class Station extends CI_Controller {
 		}
 	}
 
-	public function edit()
+	public function edit($id)
 	{
+		$this->load->library('form_validation');
 
+		$this->load->model('stations');
+		$this->load->model('dxcc');
+
+		$station_profile_query = $this->stations->profile($id);
+
+		$data['my_station_profile'] = $station_profile_query->row();
+		
+		$data['dxcc_list'] = $this->dxcc->list();
+
+		$data['page_title'] = "Edit Station Profile";
+
+		$this->form_validation->set_rules('station_profile_name', 'Station Profile Name', 'required');
+
+        if ($this->form_validation->run() == FALSE)
+        {
+        	$this->load->view('interface_assets/header', $data);
+            $this->load->view('station_profile/edit');
+            $this->load->view('interface_assets/footer');
+        }
+        else
+        {
+            $this->stations->edit();
+
+            $data['notice'] = "Station Profile ".$this->input->post('station_profile_name')." Updated";
+
+            redirect('station');
+        }
 	}
 
 	function reassign_profile($id) {

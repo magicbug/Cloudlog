@@ -58,6 +58,7 @@ class Stations extends CI_Model {
 			'station_cnty' => $this->input->post('station_cnty'),
 			'station_cq' => $this->input->post('station_cq'),
 			'station_itu' => $this->input->post('station_itu'),
+			'eqslqthnickname' => $this->input->post('eqslnickname'),
 		);
 
 		$this->db->where('station_id', $this->input->post('station_id'));
