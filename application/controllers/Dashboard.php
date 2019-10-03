@@ -31,6 +31,9 @@ class Dashboard extends CI_Controller {
 		} else {
 				$data['qra'] = "none";
 		}
+
+		$this->load->model('stations');
+		$data['current_active'] = $this->stations->find_active();
 		
 		// Store info
 		$data['todays_qsos'] = $this->logbook_model->todays_qsos();

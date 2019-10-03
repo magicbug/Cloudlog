@@ -10,6 +10,13 @@
 			  <span class="badge badge-info">Important</span> <i class="fas fa-broadcast-tower"></i> You have made no QSOs today, time to turn on the radio!
 		</div>
 	<?php } ?>
+
+	<?php if($current_active == 0) { ?>
+		<div class="alert alert-danger" role="alert">
+		  Attention you need to set an active station profile.
+		</div>
+	<?php } ?>
+
 <?php } ?>
 
 <!-- Map -->

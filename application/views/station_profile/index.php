@@ -24,9 +24,11 @@
 		</div>
 		<?php } ?>
 
-		<?php if($is_there_qsos_with_no_station_id == 0) { ?>
+		<?php if($is_there_qsos_with_no_station_id >= 1) { ?>
 			<div class="alert alert-danger" role="alert">
 		  		<span class="badge badge-pill badge-warning">Warning</span> Due to recent changes within Cloudlog you need to reassign QSOs to your station profiles.
+
+		  		If you haven't any station profiles, create a profile then <a href="<?php echo site_url('station/assign_all/'); ?>" class="btn btn-danger" onclick="return confirm('Assign All QSOs to Default Station ID"><i class="fas fa-trash-alt"></i> Press this Button to assign all QSOs to the the #1 station ID</a>
 			</div>
 		<?php } ?>
 
@@ -78,6 +80,7 @@
 			</tbody>
 		<table>
 		<?php } ?>
+
 
 		<p><a href="<?php echo site_url('station/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Station Profile</a></p>
   </div>

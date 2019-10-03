@@ -78,6 +78,13 @@ class Station extends CI_Controller {
 		redirect('station');
 	}
 
+	function assign_all() {
+		$this->load->model('Logbook_model');
+		$this->Logbook_model->update_all_station_ids();
+		
+		redirect('station');
+	}
+
 	public function delete($id) {
 		$this->load->model('stations');
 		$this->stations->delete($id);
