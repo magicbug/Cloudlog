@@ -56,7 +56,7 @@
 
 			<div class="form-group">
 		    <label for="stationCityInput">Station City</label>
-		    <input type="text" class="form-control" name="city" id="stationCityInput" aria-describedby="stationCityInputHelp" value="<?php if(set_value('stationCityInput') != "") { echo set_value('stationCityInput'); } else { echo $my_station_profile->station_city; } ?>" required>
+		    <input type="text" class="form-control" name="city" id="stationCityInput" aria-describedby="stationCityInputHelp" value="<?php if(set_value('city') != "") { echo set_value('city'); } else { echo $my_station_profile->station_city; } ?>" required>
 		    <small id="stationCityInputHelp" class="form-text text-muted">Station City for example Inverness</small>
 		  </div>
 
