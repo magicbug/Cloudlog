@@ -102,7 +102,7 @@
 		    <small id="eqslhelp" class="form-text text-muted">eQSL QTH Nickname.</small>
 		  </div>
 
-			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Create Station Profile</button>
+			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Update Station Profile</button>
 
 		</form>
   </div>
