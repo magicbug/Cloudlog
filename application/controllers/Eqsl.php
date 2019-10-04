@@ -264,7 +264,7 @@ class eqsl extends CI_Controller {
 			// Grab the list of QSOs to send information about
 			// perform an HTTP get on each one, and grab the status back
 			$qslsnotsent = $this->logbook_model->eqsl_not_yet_sent();
-			
+			 
 			$table = "<table>";
 					$table .= "<tr class=\"titles\">";
 						$table .= "<td>Date</td>";
@@ -415,6 +415,27 @@ class eqsl extends CI_Controller {
                     $adif .= "%20";
 				}
 
+				if ($qsl['eqslqthnickname'] = ''){
+                    $adif .= "%3C";
+                    $adif .= "APP_EQSL_QTH_NICKNAME";
+                    $adif .= "%3A";
+                    $adif .= strlen($qsl['eqslqthnickname']);
+                    $adif .= "%3E";
+                    $adif .= $qsl['eqslqthnickname'];
+                    $adif .= "%20";
+				}
+
+				// adding sat mode if it isn't blank
+				if ($qsl['station_gridsquare'] = ''){
+                    $adif .= "%3C";
+                    $adif .= "MY_GRIDSQUARE";
+                    $adif .= "%3A";
+                    $adif .= strlen($qsl['station_gridsquare']);
+                    $adif .= "%3E";
+                    $adif .= $qsl['station_gridsquare'];
+                    $adif .= "%20";
+				}
+
 
 				# Tie a bow on it!
 				$adif .= "%3C";
@@ -522,12 +543,13 @@ class eqsl extends CI_Controller {
 		
 			if ($qslsnotsent->num_rows() > 0)
 			{
-				$table = "<table>";
+				$table = "<table width=\"100%\">";
 					$table .= "<tr class=\"titles\">";
 						$table .= "<td>Date</td>";
 						$table .= "<td>Call</td>";
 						$table .= "<td>Mode</td>";
 						$table .= "<td>Band</td>";
+						$table .= "<td>eQSL QTH Nickname</td>";
 					$table .= "<tr>";
 				
 				foreach ($qslsnotsent->result_array() as $qsl)
@@ -537,6 +559,7 @@ class eqsl extends CI_Controller {
 						$table .= "<td><a class=\"qsobox\" href=\"".site_url('qso/edit')."/".$qsl['COL_PRIMARY_KEY']."\">".str_replace("0","&Oslash;",strtoupper($qsl['COL_CALL']))."</a></td>";
 						$table .= "<td>".$qsl['COL_MODE']."</td>";
 						$table .= "<td>".$qsl['COL_BAND']."</td>";
+						$table .= "<td>".$qsl['eqslqthnickname']."</td>";
 					$table .= "<tr>";
 				}
 				$table .= "</table>";

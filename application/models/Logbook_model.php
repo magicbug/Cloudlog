@@ -972,11 +972,16 @@ class Logbook_model extends CI_Model {
 
     // Show all QSOs we need to send to eQSL
     function eqsl_not_yet_sent() {
-      $this->db->select("COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_MODE, COL_BAND, COL_COMMENT, COL_RST_SENT, COL_PROP_MODE");
-      $this->db->where('COL_EQSL_QSL_SENT !=', 'Y');
-      $this->db->where('COL_EQSL_QSL_SENT !=', 'I');
 
-      return $this->db->get($this->config->item('table_name'));
+
+      $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE');
+      $this->db->from('station_profile');
+      $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id','left');
+      $this->db->where('station_profile.eqslqthnickname !=', '');
+      $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'Y');
+      $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'I');
+      return $this->db->get();
+
     }
 
     function import($record, $station_id = "0") {

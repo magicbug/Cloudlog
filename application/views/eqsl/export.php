@@ -19,7 +19,12 @@
 <?php
 	if (isset($eqsl_table))
 	{
-    	echo "<p>The following QSOs have not been sent to eQSL.cc</p>";
+?>
+    	<p>The following QSOs have not been sent to eQSL.cc</p>
+
+    	<p>Please make sure you have defined the eQSL QTH Nickname in the Station Profile this matches the QTH Nickname you used within eQSL.</p>
+ <?php
+
     	echo $eqsl_table;
     	echo "<p>Clicking \"Upload QSOs\" will send QSO information to eQSL.cc.</p>";
 		echo form_open('eqsl/export');
