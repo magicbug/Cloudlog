@@ -125,9 +125,7 @@ class User_Model extends CI_Model {
 					'user_timezone' => $fields['user_timezone'],
 					'user_lotw_name' => $fields['user_lotw_name'],
 					'user_eqsl_name' => $fields['user_eqsl_name'],
-					'user_eqsl_qth_nickname' => $fields['user_eqsl_qth_nickname'],
 					'user_clublog_name' => $fields['user_clublog_name'],
-					'user_clublog_callsign' => $fields['user_clublog_callsign'],
 				);
 	
 				// Check to see if the user is allowed to change user levels

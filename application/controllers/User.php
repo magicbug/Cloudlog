@@ -208,12 +208,6 @@ class User extends CI_Controller {
 				$data['user_clublog_password'] = $q->user_clublog_password;
 			}
 
-			if($this->input->post('user_clublog_callsign')) {
-				$data['user_clublog_callsign'] = $this->input->post('user_clublog_callsign');
-			} else {
-				$data['user_clublog_callsign'] = $q->user_clublog_callsign;
-			}
-
 			if($this->input->post('user_lotw_password')) {
 				$data['user_lotw_password'] = $this->input->post('user_lotw_password');
 			} else {
@@ -231,12 +225,7 @@ class User extends CI_Controller {
 			} else {
 				$data['user_eqsl_password'] = $q->user_eqsl_password;
 			}
-			
-			if($this->input->post('user_eqsl_qth_nickname')) {
-				$data['user_eqsl_qth_nickname'] = $this->input->post('user_eqsl_qth_nickname');
-			} else {
-				$data['user_eqsl_qth_nickname'] = $q->user_eqsl_qth_nickname;
-			}
+		
 			
 			$this->load->view('user/edit', $data);
 			$this->load->view('interface_assets/footer');
