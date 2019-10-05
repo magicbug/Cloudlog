@@ -9,7 +9,7 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
     <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
 
-<?php if ($this->uri->segment(1) == "notes") { ?>
+<?php if ($this->uri->segment(1) == "notes" && ($this->uri->segment(2) == "add" || $this->uri->segment(2) == "edit") ) { ?>
     <script src="<?php echo base_url() ;?>assets/plugins/quill/quill.min.js"></script>
     
     <script>
