@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container settings">
 
 	<div class="row">
 		<!-- Nav Start -->
-		<div class="col-3">
+		<div class="col-md-3">
 			<ul class="nav flex-column settings-nav">
 				<li class="nav-item">
 					<a class="nav-link active" href="#">Active</a>
@@ -20,7 +20,7 @@
 		<!-- Nav End -->
 
 		<!-- Content -->
-		<div class="col-9">
+		<div class="col-md-9">
 		2 of 2
 		</div>
 	</div>

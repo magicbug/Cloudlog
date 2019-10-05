@@ -170,3 +170,26 @@ TD.lotw{
 #nav-bar-search-input:focus {
     text-transform: uppercase;
 }
+
+.settings {
+    padding-top: 15px;
+}
+
+.settings-nav {
+    margin-bottom: 15px;
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid #d1d5da;
+    border-radius: 3px;
+}
+
+.settings-nav .nav-link {
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid #d1d5da;
+}
+
+.settings-nav .nav-link:hover {
+    background-color: #e1e4e8;
+
+}
