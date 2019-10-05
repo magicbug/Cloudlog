@@ -3,7 +3,15 @@
 
 <div class="card">
   <div class="card-header">
-    Create Note
+    <h2 class="card-title">Create Note</h2>
+    <ul class="nav nav-tabs card-header-tabs">
+	    <li class="nav-item">
+	    	<a class="nav-link" href="<?php echo site_url('notes'); ?>">Notes</a>
+	    </li>
+	    <li class="nav-item">
+	    	<a class="nav-link active" href="<?php echo site_url('notes/add'); ?>">Create Note</a>
+	    </li>
+	</ul>
   </div>
 
   <div class="card-body">
