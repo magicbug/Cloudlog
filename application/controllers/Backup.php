@@ -1,7 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Backup extends CI_Controller {
+	function __construct()
+	{
+		parent::__construct();
 
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+	}
+	
 	/* User Facing Links to Backup URLs */
 	public function index()
 	{

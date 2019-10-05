@@ -236,21 +236,21 @@ class User extends CI_Controller {
 			switch($this->user_model->edit($this->input->post())) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
-					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';
+					$data['username_error'] = 'Username <b>'.$this->input->post('user_name', true).'</b> already in use!';
 					break;
 				case EEMAILEXISTS:
-					$data['email_error'] = 'E-mail address <b>'.$this->input->post('user_email').'</b> already in use!';
+					$data['email_error'] = 'E-mail address <b>'.$this->input->post('user_email', true).'</b> already in use!';
 					break;
 				case EPASSWORDINVALID:
 					$data['password_error'] = 'Invalid password!';
 					break;
 				// All okay, return to user screen
 				case OK:
-					if($this->session->userdata('user_id') == $this->input->post('id')) {
-						$this->session->set_flashdata('notice', 'User '.$this->input->post('user_name').' edited');
+					if($this->session->userdata('user_id') == $this->input->post('id', true)) {
+						$this->session->set_flashdata('notice', 'User '.$this->input->post('user_name', true).' edited');
 						redirect('user/profile');
 					} else {
-						$this->session->set_flashdata('notice', 'User '.$this->input->post('user_name').' edited');
+						$this->session->set_flashdata('notice', 'User '.$this->input->post('user_name', true).' edited');
 						redirect('user');
 					}
 					return;

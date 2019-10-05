@@ -22,15 +22,21 @@ class User_Model extends CI_Model {
 	// FUNCTION: object get($username)
 	// Retrieve a user
 	function get($username) {
-		$this->db->where('user_name', $username);
+		// Clean ID
+		$clean_username = $this->security->xss_clean($username);
+
+		$this->db->where('user_name', $clean_username);
 		$r = $this->db->get($this->config->item('auth_table'));
 		return $r;
-	}
+	} 
 
 	// FUNCTION: object get_by_id($id)
 	// Retrieve a user by user ID
 	function get_by_id($id) {
-		$this->db->where('user_id', $id);
+				// Clean ID
+		$clean_id = $this->security->xss_clean($id);
+
+		$this->db->where('user_id', $clean_id);
 		$r = $this->db->get($this->config->item('auth_table'));
 		return $r;
 	}
@@ -38,7 +44,10 @@ class User_Model extends CI_Model {
 	// FUNCTION: object get_by_email($email)
 	// Retrieve a user by email address
 	function get_by_email($email) {
-		$this->db->where('user_email', $email);
+
+		$clean_email = $this->security->xss_clean($email);
+
+		$this->db->where('user_email', $clean_email);
 		$r = $this->db->get($this->config->item('auth_table'));
 		return $r;
 	}
@@ -46,7 +55,8 @@ class User_Model extends CI_Model {
 	// FUNCTION: bool exists($username)
 	// Check if a user exists (by username)
 	function exists($username) {
-		if($this->get($username)->num_rows() == 0) {
+		$clean_username = $this->security->xss_clean($username);
+		if($this->get($clean_username)->num_rows() == 0) {
 			return 0;
 		} else {
 			return 1;
@@ -56,7 +66,9 @@ class User_Model extends CI_Model {
 	// FUNCTION: bool exists_by_id($id)
 	// Check if a user exists (by user ID)
 	function exists_by_id($id) {
-		if($this->get_by_id($id)->num_rows() == 0) {
+		$clean_id = $this->security->xss_clean($id);
+
+		if($this->get_by_id($clean_id)->num_rows() == 0) {
 			return 0;
 		} else {
 			return 1;
@@ -196,8 +208,8 @@ class User_Model extends CI_Model {
 	// This is really just a wrapper around User_Model::authenticate
 	function login() {
 
-		$username = $this->input->post('user_name');
-		$password = $this->input->post('user_password');
+		$username = $this->input->post('user_name', true);
+		$password = $this->input->post('user_password', true);
 
 		return $this->authenticate($username, $password);
 	}
