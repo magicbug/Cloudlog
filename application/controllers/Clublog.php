@@ -13,6 +13,9 @@ class Clublog extends CI_Controller {
 
 	// Upload ADIF to Clublog
 	public function upload($username) {
+
+		$clean_username = $this->security->xss_clean($username);
+
 		$this->config->load('config');
 		ini_set('memory_limit', '-1');
 		ini_set('display_errors', 1);
@@ -27,7 +30,7 @@ class Clublog extends CI_Controller {
 
 		$this->load->model('clublog_model');
 
-		$clublog_info = $this->clublog_model->get_clublog_auth_info($username);
+		$clublog_info = $this->clublog_model->get_clublog_auth_info($clean_username);
 
 		if(!isset($clublog_info['user_name'])) {
 			echo "Username unknown";
@@ -117,19 +120,22 @@ class Clublog extends CI_Controller {
 	}
 
 	function markqso($station_id) {
+		$clean_station_id = $this->security->xss_clean($station_id);
 		$this->load->model('clublog_model');
-		$this->clublog_model->mark_qsos_sent($station_id);
+		$this->clublog_model->mark_qsos_sent($clean_station_id);
 	}
 
 	function markallnotsent() {
+		$clean_station_id = $this->security->xss_clean($station_id);
 		$this->load->model('clublog_model');
-		$this->clublog_model->mark_all_qsos_notsent($station_id);
+		$this->clublog_model->mark_all_qsos_notsent($clean_station_id);
 	}
 
 	// Find DXCC
 	function find_dxcc($callsign) {
+		$clean_callsign = $this->security->xss_clean($callsign);
 		// Live lookup against Clublogs API
-		$url = "https://secure.clublog.org/dxcc?call=".$callsign."&api=a11c3235cd74b88212ce726857056939d52372bd&full=1";
+		$url = "https://secure.clublog.org/dxcc?call=".$clean_callsign."&api=a11c3235cd74b88212ce726857056939d52372bd&full=1";
 
 		$json = file_get_contents($url);
 		$data = json_decode($json, TRUE);
