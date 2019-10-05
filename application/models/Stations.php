@@ -22,24 +22,28 @@ class Stations extends CI_Model {
 	}
 
 	function profile($id) {
-		$this->db->where('station_id', $id);
+		// Clean ID
+		$clean_id = $this->security->xss_clean($id);
+
+
+		$this->db->where('station_id', $clean_id);
 		return $this->db->get('station_profile');
 	}
 
 
 	function add() {
 		$data = array(
-			'station_profile_name' => $this->input->post('station_profile_name'),
-			'station_gridsquare' => strtoupper($this->input->post('gridsquare')),
-			'station_city' => $this->input->post('city'),
-			'station_iota' => strtoupper($this->input->post('iota')),
-			'station_sota' => strtoupper($this->input->post('sota')),
-			'station_callsign' => $this->input->post('station_callsign'),
-			'station_dxcc' => $this->input->post('dxcc'),
-			'station_country' => $this->input->post('station_country'),
-			'station_cnty' => $this->input->post('station_cnty'),
-			'station_cq' => $this->input->post('station_cq'),
-			'station_itu' => $this->input->post('station_itu'),
+			'station_profile_name' => $this->input->post('station_profile_name', true),
+			'station_gridsquare' => strtoupper($this->input->post('gridsquare', true)),
+			'station_city' => $this->input->post('city', true),
+			'station_iota' => strtoupper($this->input->post('iota', true)),
+			'station_sota' => strtoupper($this->input->post('sota', true)),
+			'station_callsign' => $this->input->post('station_callsign', true),
+			'station_dxcc' => $this->input->post('dxcc', true),
+			'station_country' => $this->input->post('station_country', true),
+			'station_cnty' => $this->input->post('station_cnty', true),
+			'station_cq' => $this->input->post('station_cq', true),
+			'station_itu' => $this->input->post('station_itu', true),
 		);
 
 		$this->db->insert('station_profile', $data); 
@@ -47,41 +51,50 @@ class Stations extends CI_Model {
 
 	function edit() {
 		$data = array(
-			'station_profile_name' => $this->input->post('station_profile_name'),
-			'station_gridsquare' => $this->input->post('gridsquare'),
-			'station_city' => $this->input->post('city'),
-			'station_iota' => $this->input->post('iota'),
-			'station_sota' => $this->input->post('sota'),
-			'station_callsign' => $this->input->post('station_callsign'),
-			'station_dxcc' => $this->input->post('dxcc'),
-			'station_country' => $this->input->post('station_country'),
-			'station_cnty' => $this->input->post('station_cnty'),
-			'station_cq' => $this->input->post('station_cq'),
-			'station_itu' => $this->input->post('station_itu'),
-			'eqslqthnickname' => $this->input->post('eqslnickname'),
+			'station_profile_name' => $this->input->post('station_profile_name', true),
+			'station_gridsquare' => $this->input->post('gridsquare', true),
+			'station_city' => $this->input->post('city', true),
+			'station_iota' => $this->input->post('iota', true),
+			'station_sota' => $this->input->post('sota', true),
+			'station_callsign' => $this->input->post('station_callsign', true),
+			'station_dxcc' => $this->input->post('dxcc', true),
+			'station_country' => $this->input->post('station_country', true),
+			'station_cnty' => $this->input->post('station_cnty', true),
+			'station_cq' => $this->input->post('station_cq', true),
+			'station_itu' => $this->input->post('station_itu', true),
+			'eqslqthnickname' => $this->input->post('eqslnickname', true),
 		);
 
-		$this->db->where('station_id', $this->input->post('station_id'));
+		$this->db->where('station_id', $this->input->post('station_id', true));
 		$this->db->update('station_profile', $data); 
 	}
 
 	function delete($id) {
-		$this->db->delete('station_profile', array('station_id' => $id)); 
+		// Clean ID
+		$clean_id = $this->security->xss_clean($id);
+
+		$this->db->delete('station_profile', array('station_id' => $clean_id)); 
 	}
 
 	function set_active($current, $new) {
+
+		// Clean inputs
+
+		$clean_current = $this->security->xss_clean($current);
+		$clean_new = $this->security->xss_clean($new);
+
         // Deselect current default
 		$current_default = array(
 				'station_active' => null,
 		);
-		$this->db->where('station_id', $current);
+		$this->db->where('station_id', $clean_current);
 		$this->db->update('station_profile', $current_default);
 		
 		// Deselect current default	
 		$newdefault = array(
 			'station_active' => 1,
 		);
-		$this->db->where('station_id', $new);
+		$this->db->where('station_id', $clean_new);
 		$this->db->update('station_profile', $newdefault);
     }
 
@@ -100,7 +113,10 @@ class Stations extends CI_Model {
     }
 
     public function reassign($id) {
-    	$this->db->where('station_id', $id);
+		// Clean ID
+		$clean_id = $this->security->xss_clean($id);
+
+    	$this->db->where('station_id', $clean_id);
 		$query = $this->db->get('station_profile');
 
 		$row = $query->row();

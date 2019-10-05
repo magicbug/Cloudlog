@@ -63,7 +63,9 @@ class Station extends CI_Controller {
 		$this->load->model('stations');
 		$this->load->model('dxcc');
 
-		$station_profile_query = $this->stations->profile($id);
+		$item_id_clean = $this->security->xss_clean($id);
+
+		$station_profile_query = $this->stations->profile($item_id_clean);
 
 		$data['my_station_profile'] = $station_profile_query->row();
 		
@@ -83,7 +85,7 @@ class Station extends CI_Controller {
         {
             $this->stations->edit();
 
-            $data['notice'] = "Station Profile ".$this->input->post('station_profile_name')." Updated";
+            $data['notice'] = "Station Profile ".$this->security->xss_clean($this->input->post('station_profile_name', true))." Updated";
 
             redirect('station');
         }
