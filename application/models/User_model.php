@@ -91,15 +91,15 @@ class User_Model extends CI_Model {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
-				'user_name' => $username,
+				'user_name' => xss_clean($username),
 				'user_password' => $this->_hash($password),
-				'user_email' => $email,
-				'user_type' => $type,
-				'user_firstname' => $firstname,
-				'user_lastname' => $lastname,
-				'user_callsign' => $callsign,
-				'user_locator' => $locator,
-				'user_timezone' => $timezone
+				'user_email' => xss_clean($email),
+				'user_type' => xss_clean($type),
+				'user_firstname' => xss_clean($firstname),
+				'user_lastname' => xss_clean($lastname),
+				'user_callsign' => xss_clean($callsign),
+				'user_locator' => xss_clean($locator),
+				'user_timezone' => xss_clean($timezone)
 			);
 
 			// Check the password is valid
