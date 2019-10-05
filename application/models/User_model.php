@@ -128,16 +128,16 @@ class User_Model extends CI_Model {
 		if(($this->session->userdata('user_type') == 99) || ($this->session->userdata('user_id') == $fields['id'])) {
 			if($this->exists_by_id($fields['id'])) {
 				$data = array(
-					'user_name' => $fields['user_name'],
-					'user_email' => $fields['user_email'],
-					'user_callsign' => $fields['user_callsign'],
-					'user_locator' => $fields['user_locator'],
-					'user_firstname' => $fields['user_firstname'],
-					'user_lastname' => $fields['user_lastname'],
-					'user_timezone' => $fields['user_timezone'],
-					'user_lotw_name' => $fields['user_lotw_name'],
-					'user_eqsl_name' => $fields['user_eqsl_name'],
-					'user_clublog_name' => $fields['user_clublog_name'],
+					'user_name' => xss_clean($fields['user_name']),
+					'user_email' => xss_clean($fields['user_email']),
+					'user_callsign' => xss_clean($fields['user_callsign']),
+					'user_locator' => xss_clean($fields['user_locator']),
+					'user_firstname' => xss_clean($fields['user_firstname']),
+					'user_lastname' => xss_clean($fields['user_lastname']),
+					'user_timezone' => xss_clean($fields['user_timezone']),
+					'user_lotw_name' => xss_clean($fields['user_lotw_name']),
+					'user_eqsl_name' => xss_clean($fields['user_eqsl_name']),
+					'user_clublog_name' => xss_clean($fields['user_clublog_name']),
 				);
 	
 				// Check to see if the user is allowed to change user levels

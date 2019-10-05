@@ -1,9 +1,19 @@
 <div class="container notes">
 
 	<div class="card">
+	  <div class="card-header">
+	  	<h2 class="card-title">Notes</h2>
+	    <ul class="nav nav-tabs card-header-tabs">
+	      <li class="nav-item">
+	        <a class="nav-link active" href="<?php echo site_url('notes'); ?>">Notes</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="<?php echo site_url('notes/add'); ?>">Create Note</a>
+	      </li>
+	    </ul>
+	  </div>
+
 	  <div class="card-body">
-	    <h2 class="card-title">Notes</h2>
-	    <p class="card-body"><a href="<?php echo site_url('notes/add'); ?>" class="btn btn-primary">Create a Note</a><p>
 
 	    		<?php
 

@@ -2,34 +2,43 @@
 <div class="container notes">
 
 <div class="card">
+  <div class="card-header">
+    Create Note
+  </div>
+
   <div class="card-body">
-    <h2 class="card-title">Create Note</h2>
 
-		<?php echo validation_errors(); ?>
-		<form method="post" action="<?php echo site_url('notes/add'); ?>" name="notes_add" id="notes_add">
-		<table>
-			<tr>
-				<td><label for="title">Title</label></td>
-				<td><input type="text" name="title" value="" /></td>
-			</tr>
-			
-			<tr>
-				<td><label for="category">Category</label></td>
-				<td><select name="category">
-					<option value="General" selected="selected">General</option>
-					<option value="Antennas">Antennas</option>
-					<option value="Satellites">Satellites</option>
-				</select></td>
-			</tr>
-			
-			<tr>
-				<td></td>
-				<td><textarea name="content" id="markItUp" rows="10" cols="70"></textarea></td>
-			</tr>
-		</table>
+  	<?php if (!empty(validation_errors())): ?>
+    <div class="alert alert-danger">
+        <a class="close" data-dismiss="alert" title="close">x</a>
+        <ul><?php echo (validation_errors('<li>', '</li>')); ?></ul>
+    </div>
+	<?php endif; ?>
 
-		<div class="actions"><input class="btn primary" type="submit" value="Submit" /></div>
+    <form method="post" action="<?php echo site_url('notes/add'); ?>" name="notes_add" id="notes_add">
 
+	<div class="form-group">
+		<label for="inputTitle">Title</label>
+		<input type="text" name="title" class="form-control" id="inputTitle">
+	</div>
+
+	<div class="form-group">
+	   <label for="catSelect">Pick Category</label>
+	   <select name="category" class="form-control" id="catSelect">
+	   	<option value="General" selected="selected">General</option>
+		<option value="Antennas">Antennas</option>
+		<option value="Satellites">Satellites</option>
+	   </select>
+	</div>
+
+	<div class="form-group">
+		<label for="inputTitle">Note Contents</label>
+		<div id="quillArea"></div>
+		<textarea name="content" style="display:none" id="hiddenArea"></textarea>
+	</div>
+
+	<button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+	</form>
   </div>
 </div>
 
