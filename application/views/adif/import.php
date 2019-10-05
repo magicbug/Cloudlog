@@ -5,12 +5,12 @@
 
 	<div class="card">
 	  <div class="card-header">
-	    <?php echo $page_title; ?>
+	    <h5 class="card-title"><?php echo $page_title; ?></h5>
 	  </div>
-	  <div class="card-body">
-	    <h5 class="card-title"></h5>
-	    <p class="card-text">Please make sure there is no extra text at the top of the ADIF file as the import will fail.</p>
 
+	  <div class="alert alert-danger" role="alert">Please make sure there is no extra text at the top of the ADIF file as the import will fail.</div>
+
+	  <div class="card-body">
 	    <?php if(isset($error)) { ?>
 			<div class="alert alert-danger" role="alert">
 			  <?php echo $error; ?>
@@ -41,7 +41,7 @@
 
 <div class="card">
   <div class="card-header">
-    ADIF Export
+    <h5 class="card-title">ADIF Export</h5>
   </div>
 
 	<div class="alert alert-warning" role="alert">
