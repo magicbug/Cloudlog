@@ -4,7 +4,7 @@ class Migration_col_mode_tooshort extends CI_Migration {
         public function up()
         {
                 $fields = array(
-                        'COL_EMAIL' => array(
+                        'COL_MODE' => array(
                                 'name' => 'COL_MODE',
                                 'type' => 'VARCHAR',
                                 'constraint' => '12',
