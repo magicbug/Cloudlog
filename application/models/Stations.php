@@ -33,17 +33,17 @@ class Stations extends CI_Model {
 
 	function add() {
 		$data = array(
-			'station_profile_name' => $this->input->post('station_profile_name', true),
-			'station_gridsquare' => strtoupper($this->input->post('gridsquare', true)),
-			'station_city' => $this->input->post('city', true),
-			'station_iota' => strtoupper($this->input->post('iota', true)),
-			'station_sota' => strtoupper($this->input->post('sota', true)),
-			'station_callsign' => $this->input->post('station_callsign', true),
-			'station_dxcc' => $this->input->post('dxcc', true),
-			'station_country' => $this->input->post('station_country', true),
-			'station_cnty' => $this->input->post('station_cnty', true),
-			'station_cq' => $this->input->post('station_cq', true),
-			'station_itu' => $this->input->post('station_itu', true),
+			'station_profile_name' => xss_clean($this->input->post('station_profile_name', true)),
+			'station_gridsquare' =>  xss_clean(strtoupper($this->input->post('gridsquare', true))),
+			'station_city' =>  xss_clean($this->input->post('city', true)),
+			'station_iota' =>  xss_clean(strtoupper($this->input->post('iota', true))),
+			'station_sota' =>  xss_clean(strtoupper($this->input->post('sota', true))),
+			'station_callsign' =>  xss_clean($this->input->post('station_callsign', true)),
+			'station_dxcc' =>  xss_clean($this->input->post('dxcc', true)),
+			'station_country' =>  xss_clean($this->input->post('station_country', true)),
+			'station_cnty' =>  xss_clean($this->input->post('station_cnty', true)),
+			'station_cq' =>  xss_clean($this->input->post('station_cq', true)),
+			'station_itu' =>  xss_clean($this->input->post('station_itu', true)),
 		);
 
 		$this->db->insert('station_profile', $data); 
@@ -51,21 +51,21 @@ class Stations extends CI_Model {
 
 	function edit() {
 		$data = array(
-			'station_profile_name' => $this->input->post('station_profile_name', true),
-			'station_gridsquare' => $this->input->post('gridsquare', true),
-			'station_city' => $this->input->post('city', true),
-			'station_iota' => $this->input->post('iota', true),
-			'station_sota' => $this->input->post('sota', true),
-			'station_callsign' => $this->input->post('station_callsign', true),
-			'station_dxcc' => $this->input->post('dxcc', true),
-			'station_country' => $this->input->post('station_country', true),
-			'station_cnty' => $this->input->post('station_cnty', true),
-			'station_cq' => $this->input->post('station_cq', true),
-			'station_itu' => $this->input->post('station_itu', true),
-			'eqslqthnickname' => $this->input->post('eqslnickname', true),
+			'station_profile_name' => xss_clean($this->input->post('station_profile_name', true)),
+			'station_gridsquare' => xss_clean($this->input->post('gridsquare', true)),
+			'station_city' => xss_clean($this->input->post('city', true)),
+			'station_iota' => xss_clean($this->input->post('iota', true)),
+			'station_sota' => xss_clean($this->input->post('sota', true)),
+			'station_callsign' => xss_clean($this->input->post('station_callsign', true)),
+			'station_dxcc' => xss_clean($this->input->post('dxcc', true)),
+			'station_country' => xss_clean($this->input->post('station_country', true)),
+			'station_cnty' => xss_clean($this->input->post('station_cnty', true)),
+			'station_cq' => xss_clean($this->input->post('station_cq', true)),
+			'station_itu' => xss_clean($this->input->post('station_itu', true)),
+			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
 		);
 
-		$this->db->where('station_id', $this->input->post('station_id', true));
+		$this->db->where('station_id', xss_clean($this->input->post('station_id', true)));
 		$this->db->update('station_profile', $data); 
 	}
 
