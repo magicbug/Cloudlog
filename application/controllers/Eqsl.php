@@ -377,7 +377,7 @@ class eqsl extends CI_Controller {
 				$adif .= "%20";
 
 				// adding prop mode if it isn't blank
-				if ($qsl['COL_PROP_MODE'] = ''){
+				if ($qsl['COL_PROP_MODE']){
                     $adif .= "%3C";
                     $adif .= "PROP_MODE";
                     $adif .= "%3A";
