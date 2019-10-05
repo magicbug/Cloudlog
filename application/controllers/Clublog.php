@@ -103,6 +103,9 @@ class Clublog extends CI_Controller {
 							} else {
 								echo "Error ".$response;
 							}
+
+							// Delete the ADIF file used for clublog
+							unlink('uploads/clublog'.$ranid.$station_row->station_id.'.adi');
 						}
 
 					} else {
