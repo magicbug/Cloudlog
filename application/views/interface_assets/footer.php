@@ -24,6 +24,17 @@
     </script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "qso") { ?>
+<script src="<?php echo base_url() ;?>assets/plugins/select2/js/select2.full.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#mode').select2();
+    $('#band').select2();
+});
+
+</script>
+<?php } ?>
 
 <?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
 

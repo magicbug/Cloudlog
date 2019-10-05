@@ -23,6 +23,10 @@
 <?php if ($this->uri->segment(1) == "notes" && ($this->uri->segment(2) == "add" || $this->uri->segment(2) == "edit") ) { ?>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/quill/quill.snow.css" />
 <?php } ?>
+
+<?php if ($this->uri->segment(1) == "qso") { ?>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/select2/css/select2.min.css" />
+<?php } ?>
 	
     <link rel="icon" href="<?php echo base_url(); ?>/favicon.ico">
 
