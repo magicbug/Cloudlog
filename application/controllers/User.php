@@ -323,7 +323,7 @@ class User extends CI_Controller {
 
 	function login() {
 		$this->load->model('user_model');
-		$query = $this->user_model->get($this->input->post('user_name'));
+		$query = $this->user_model->get($this->input->post('user_name', true));
 
 		$this->load->library('form_validation');
 
