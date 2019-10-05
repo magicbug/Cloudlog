@@ -30,11 +30,11 @@ class API_Model extends CI_Model {
     function update_key_description($key, $description) {
     	
     	$data = array(
-        'description' => $description,
+        'description' => xss_clean($description),
 		);
 
-		$this->db->where('key', $key);
-		$this->db->update('api', $data);
+		$this->db->where('key', xss_clean($key));
+		$this->db->update('api', xss_clean($data));
 
     }
 
@@ -93,7 +93,7 @@ class API_Model extends CI_Model {
 
 
     function delete_key($key) {
-    	$this->db->where('key', $key);
+    	$this->db->where('key', xss_clean($key));
 		$this->db->delete('api');
     }
     // Generate API Key
