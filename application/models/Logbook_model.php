@@ -972,8 +972,8 @@ class Logbook_model extends CI_Model {
       $this->db->from('station_profile');
       $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id','left');
       $this->db->where('station_profile.eqslqthnickname !=', '');
-      $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'Y');
-      $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'I');
+      $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'Y');
+      $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'I');
       $this->db->or_where(array($this->config->item('table_name').'.COL_EQSL_QSL_SENT' => NULL));
       return $this->db->get();
 
