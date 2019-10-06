@@ -65,6 +65,7 @@ class QSLPrint extends CI_Controller {
 						"COL_SAT_NAME", 
 						"COL_SAT_MODE", 
 						"COL_QSL_RCVD", 
+						"COL_COMMENT",
 						"COL_ROUTING", 
 						"ADIF", 
 						"ENTITY");
@@ -84,6 +85,7 @@ class QSLPrint extends CI_Controller {
 				$qso->COL_SAT_NAME, 
 				$qso->COL_SAT_MODE, 
 				$qso->COL_QSL_RCVD =='Y'?'TNX QSL':'PSE QSL', 
+				$qso->COL_COMMENT, 
 				$qso->COL_ROUTING,
 				$qso->ADIF, 
 				$qso->ENTITY));

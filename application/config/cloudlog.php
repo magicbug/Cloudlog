@@ -75,4 +75,16 @@ $config['cat_timeout_interval'] = 300;
 
 $config['public_search'] = FALSE;
 
+/*
+|--------------------------------------------------------------------------
+| Callsign Tags
+|--------------------------------------------------------------------------
+| 
+| Setting this to TRUE switches on the visibility of the callsign-labels  
+| within the log-table
+|
+| Default is: TRUE
+|
+*/
+
 $config['callsign_tags'] = TRUE;
