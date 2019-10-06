@@ -305,47 +305,23 @@
 
 			<!-- Station Panel Contents -->
 			<div class="tab-pane fade" id="nav-station" role="tabpanel" aria-labelledby="nav-station-tab">
-				<p>These items relate to Your station.</p>
 
-				<div class="form-group col-md-6">
-                  <label for="station_country">Station Country</label>
-                  <input type="text" class="form-control form-control-sm" name="station_country" id="station_country" value="<?php echo $COL_MY_COUNTRY; ?>">
-                </div>
+		<?php
+				$CI =& get_instance();
+				$CI->load->model('stations');
+				$my_stations = $CI->stations->all();
+		 ?>
 
-                <div class="form-group col-md-6">
-                  <label for="station_gridsquare">Station Gridsquare</label>
-                  <input type="text" class="form-control form-control-sm" name="station_gridsquare" id="station_gridsquare" value="<?php echo $COL_MY_GRIDSQUARE; ?>">
-                </div>
+	            <div class="form-group">
+	              <label for="inputStationProfile">Change Station Profile</label>
+	              <select id="stationProfile" class="custom-select" name="station_profile">
+	                <option value="0" selected="selected">None</option>
+	                <?php foreach ($my_stations->result() as $stationrow) { ?>
+	                <option value="<?php echo $stationrow->station_id; ?>" <?php if($station_id == $stationrow->station_id) { echo "selected=\"selected\""; } ?>><?php echo $stationrow->station_profile_name; ?></option>
+	                <?php } ?>
+	              </select>
+	            </div>
 
-                <div class="form-group col-md-6">
-                  <label for="station_city">Station City</label>
-                  <input type="text" class="form-control form-control-sm" name="station_city" id="station_city" value="<?php echo $COL_MY_CITY; ?>">
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label for="station_iota">Station IOTA</label>
-                  <input type="text" class="form-control form-control-sm" name="station_iota" id="station_iota" value="<?php echo $COL_MY_IOTA; ?>">
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label for="station_sota">Station SOTA</label>
-                  <input type="text" class="form-control form-control-sm" name="station_sota" id="station_sota" value="<?php echo $COL_MY_SOTA_REF; ?>">
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label for="station_cnty">Station Cnty</label>
-                  <input type="text" class="form-control form-control-sm" name="station_cnty" id="station_cnty" value="<?php echo $COL_MY_CNTY; ?>">
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label for="station_cq">Station CQ</label>
-                  <input type="text" class="form-control form-control-sm" name="station_cq" id="station_cq" value="<?php echo $COL_MY_CQ_ZONE; ?>">
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label for="station_itu">Station ITU Zone</label>
-                  <input type="text" class="form-control form-control-sm" name="station_itu" id="station_itu" value="<?php echo $COL_MY_ITU_ZONE; ?>">
-                </div>
 
 			</div>
 
