@@ -129,15 +129,13 @@ $(document).ready(function() {
 </script>
 
 <script>
-$(document).ready(function() {
-    $('.fancybox').fancybox({
-      toolbar  : false,
-      smallBtn : true,
-      iframe : {
-        preload : false
-      }
-    });
-});
+$('[data-fancybox]').fancybox({
+  toolbar  : false,
+  smallBtn : true,
+  iframe : {
+    preload : false
+  }
+})
 </script>
 
 <?php if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "dashboard" ) { ?>
@@ -319,7 +317,7 @@ $(document).on('keypress',function(e) {
         $(function($) {
           var options = {
             utc: true,
-            format: '%H:%M'
+            format: '%H:%M:%S'
           }
           $('.input_time').jclock(options);
         });
