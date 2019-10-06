@@ -319,7 +319,7 @@ class Logbook extends CI_Controller {
 			foreach ($query->result() as $row)
 			{
 				$html .= "<tr>";
-					$html .= "<td>".$row->COL_TIME_ON."</td>";
+					$html .= "<td>".date('d/m/y H:i',strtotime($row->COL_TIME_ON))."</td>";
 					$html .= "<td>".str_replace("0","&Oslash;",strtoupper($row->COL_CALL))."</td>";
 					$html .= "<td>".$row->COL_RST_SENT."</td>";
 					$html .= "<td>".$row->COL_RST_RCVD."</td>";
