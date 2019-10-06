@@ -322,6 +322,11 @@
 	              </select>
 	            </div>
 
+	             <div class="form-group">
+				    <label for="operatorCallsign">Operator Callsign</label>
+				    <input type="text" id="operatorCallsign" class="form-control" name="operator_callsign" value="<?php echo $COL_OPERATOR; ?>" />
+				</div>
+
 
 			</div>
 

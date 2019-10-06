@@ -248,6 +248,7 @@ class Logbook_model extends CI_Model {
        'COL_SRX_STRING' => $this->input->post('srx_string'),
        'COL_QSL_VIA' => $this->input->post('qsl_via_callsign'),
        'station_id' => $this->input->post('station_profile'),
+       'COL_OPERATOR' => $this->input->post('operator_callsign'),
     );
 
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
