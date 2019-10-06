@@ -429,6 +429,7 @@ class Logbook_model extends CI_Model {
 								COL_SAT_NAME, 
 								COL_SAT_MODE, 
 								COL_QSL_RCVD, 
+								COL_COMMENT,
 								(CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) AS COL_ROUTING, 
 								ADIF, 
 								ENTITY 
