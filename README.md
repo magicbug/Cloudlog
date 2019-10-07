@@ -5,8 +5,9 @@ Cloudlog is a self-hosted PHP application that allows you to log your amateur ra
 Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 ## Requirements
-
-* PHP (Version 7 or higher is recommended) & MySQL
+* Linux based Operating System
+* Apache (Nignx should work)
+* PHP (Version 7 or higher) & MySQL
 
 You will also needthe following PHP modules installed
 
