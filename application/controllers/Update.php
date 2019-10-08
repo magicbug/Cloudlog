@@ -148,7 +148,7 @@ class Update extends CI_Controller {
 	    return $count;	
 	}
 
-	// Updates the DXCC & Exceptions from the Clublog Cty.xml file.
+	// Updates the DXCC & Exceptions from the Club Log Cty.xml file.
 	public function dxcc() {
 	    $this->update_status("Downloading file");
 
@@ -161,7 +161,7 @@ class Update extends CI_Controller {
 		$this->migration->latest();
 
 		// Download latest file.
-		$url = "https://secure.clublog.org/cty.php?api=a11c3235cd74b88212ce726857056939d52372bd";
+		$url = "https://cdn.clublog.org/cty.php?api=a11c3235cd74b88212ce726857056939d52372bd";
 		
 		$gz = gzopen($url, 'r');
 		$data = "";
