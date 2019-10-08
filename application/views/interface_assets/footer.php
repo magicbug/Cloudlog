@@ -135,7 +135,8 @@ $('[data-fancybox]').fancybox({
   iframe : {
     preload : false
   }
-})
+});
+
 </script>
 
 <?php if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "dashboard" ) { ?>

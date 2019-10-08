@@ -99,7 +99,7 @@
 				  </a>
 
 				  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-				  	<a class="dropdown-item" data-fancybox data-type="iframe" data-src="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a>
+				  	<a class="dropdown-item" id="edit_qso" data-fancybox data-type="iframe" data-src="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a>
 				  	
 				  	<div class="dropdown-divider"></div>	
 
