@@ -122,15 +122,15 @@
 			</div>
 
 			<div class="form-group">
-				<label>Clublog Email/Callsign</label>
+				<label>Club Log Email/Callsign</label>
 				<input class="form-control" type="text" name="user_clublog_name" value="<?php if(isset($user_clublog_name)) { echo $user_clublog_name; } ?>" />
-					<div class="small">This is the Email or Callsign you use to login to Clublog</div></td>
+					<div class="small">This is the Email or Callsign you use to login to Club Log</div></td>
 					<?php if(isset($userclublogname_error)) { echo "<div class=\"small error\">".$userclublogname_error."</div>"; } ?>
 
 			</div>
 
 			<div class="form-group">
-				<label>Clublog Password</label>
+				<label>Club Log Password</label>
 				<input class="form-control" type="password" name="user_clublog_password" />
 					<?php if(isset($clublogpassword_error)) { echo "<div class=\"small error\">".$clublogpassword_error."</div>"; } else { ?>
 					<div class="small">Leave blank to keep existing password</div></td>
