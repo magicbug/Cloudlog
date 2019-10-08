@@ -193,3 +193,9 @@ TD.lotw{
     background-color: #e1e4e8;
 
 }
+
+/* QSL Card Management CSS */
+
+.qsl_management {
+    padding-top: 15px;
+}

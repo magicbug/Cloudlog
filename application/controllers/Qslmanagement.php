@@ -11,6 +11,10 @@ class Qslmanagement extends CI_Controller {
 
         public function index()
         {
-                echo 'Functions to come';
+			$data['page_title'] = "QSL Card Management";
+
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('qslmanagement/index');
+			$this->load->view('interface_assets/footer');
         }
 }
