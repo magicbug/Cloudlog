@@ -51,7 +51,7 @@ $(".search-results-box").hide();
           operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal']
           <?php } else { ?>
           type: 'string',
-          operators: ['equal', 'not_equal']
+          operators: ['equal', 'not_equal', 'begins_with', 'contains', 'ends_with', 'is_empty', 'is_not_empty', 'is_null', 'is_not_null']
           <?php } ?>
         },
         <?php } ?>

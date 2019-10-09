@@ -95,6 +95,63 @@ class Search extends CI_Controller {
                                        $this->db->or_where($group_value['field'].' !=', $group_value['value']);
                                     }
                                 }
+								
+								if($group_value['operator'] == "begins_with") {
+                                    if($values['condition'] == "AND") {
+                                       $this->db->where($group_value['field'].' like ', $group_value['value']."%");
+                                    } else {
+                                       $this->db->or_where($group_value['field'].' like ', $group_value['value']."%");
+                                    }
+                                }
+								
+								if($group_value['operator'] == "contains") {
+                                    if($values['condition'] == "AND") {
+                                       $this->db->where($group_value['field'].' like ', "%".$group_value['value']."%");
+                                    } else {
+                                       $this->db->or_where($group_value['field'].' like ', "%".$group_value['value']."%");
+                                    }
+                                }
+								
+								if($group_value['operator'] == "ends_with") {
+                                    if($values['condition'] == "AND") {
+                                       $this->db->where($group_value['field'].' like ', "%".$group_value['value']);
+                                    } else {
+                                       $this->db->or_where($group_value['field'].' like ', "%".$group_value['value']);
+                                    }
+                                }
+								
+								if($group_value['operator'] == "is_empty") {
+                                    if($values['condition'] == "AND") {
+                                       $this->db->where($group_value['field'], "''");
+                                    } else {
+                                       $this->db->or_where($group_value['field'], "''");
+                                    }
+                                }
+								
+                                if($group_value['operator'] == "is_not_empty") {
+                                    if($values['condition'] == "AND") {
+                                       $this->db->where($group_value['field'].' !=', "''");
+                                    } else {
+                                       $this->db->or_where($group_value['field'].' !=', "''");
+                                    }
+                                }
+								
+								if($group_value['operator'] == "is_null") {
+                                    if($values['condition'] == "AND") {
+                                       $this->db->where($group_value['field'].' is ', NULL);
+                                    } else {
+                                       $this->db->or_where($group_value['field'].' is ', NULL);
+                                    }
+                                }
+								
+                                if($group_value['operator'] == "is_not_null") {
+                                    if($values['condition'] == "AND") {
+                                       $this->db->where($group_value['field'].' is not ', NULL);
+                                    } else {
+                                       $this->db->or_where($group_value['field'].' is not ', NULL);
+                                    }
+                                }
+
 
                                 if($group_value['operator'] == "less") {
                                     if($values['condition'] == "AND") {
@@ -150,6 +207,62 @@ class Search extends CI_Controller {
                                    $this->db->or_where($values['field'].' !=', $values['value']);
                                 }
                             }
+							
+							if($values['operator'] == "begins_with") {
+                                if($search_type == "AND") {
+								   $this->db->where($values['field'].' like ', $values['value']."%");
+								} else {
+								   $this->db->or_where($values['field'].' like ', $values['value']."%");
+								}
+							}
+							
+							if($values['operator'] == "contains") {
+                                if($search_type == "AND") {
+								   $this->db->where($values['field'].' like ', "%".$values['value']."%");
+								} else {
+								   $this->db->or_where($values['field'].' like ', "%".$values['value']."%");
+								}
+							}
+							
+							if($values['operator'] == "ends_with") {
+                                if($search_type == "AND") {
+								   $this->db->where($values['field'].' like ', "%".$values['value']);
+								} else {
+								   $this->db->or_where($values['field'].' like ', "%".$values['value']);
+								}
+							}
+							
+							if($values['operator'] == "is_empty") {
+                                if($search_type == "AND") {
+								   $this->db->where($values['field'], "");
+								} else {
+								   $this->db->or_where($values['field'], "");
+								}
+							}
+							
+							if($values['operator'] == "is_not_empty") {
+                                if($search_type == "AND") {
+								   $this->db->where($values['field'].' !=', "");
+								} else {
+								   $this->db->or_where($values['field'].' !=', "");
+								}
+							}
+							
+							if($values['operator'] == "is_null") {
+                                if($search_type == "AND") {
+								   $this->db->where($values['field'].' is ', NULL);
+								} else {
+								   $this->db->or_where($values['field'].' is ', NULL);
+								}
+							}
+							
+							if($values['operator'] == "is_not_null") {
+                                if($search_type == "AND") {
+								   $this->db->where($values['field'].' is not ', NULL);
+								} else {
+								   $this->db->or_where($values['field'].' is not ', NULL);
+								}
+							}
 
                             if($values['operator'] == "less") {
                                 if($search_type == "AND") {
@@ -189,10 +302,9 @@ class Search extends CI_Controller {
             }
             $this->db->order_by('COL_TIME_ON', 'DESC');
             $query = $this->db->get($this->config->item('table_name'));
-            //echo $this->db->last_query();
             echo json_encode($query->result_array());
-          } else {
-            echo "Noooooooob";
+            } else {
+				echo "Noooooooob";
           }
 
     }
