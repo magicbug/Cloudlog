@@ -103,16 +103,22 @@ class Clublog extends CI_Controller {
 
 								$this->load->model('clublog_model');
 								$this->clublog_model->mark_qsos_sent($station_row->station_id);
+								echo "Clublog upload for ".$station_row->station_callsign;
+								log_message('info', 'Clublog upload for '.$station_row->station_callsign.' successfully sent.');
 							} else {
 								echo "Error ".$response;
+								log_message('error', 'Clublog upload for '.$station_row->station_callsign.' failed reason '.$response);
 							}
 
 							// Delete the ADIF file used for clublog
 							unlink('uploads/clublog'.$ranid.$station_row->station_id.'.adi');
+
 						}
 
 					} else {
-							echo "Nothing awaiting upload to clublog for ".$station_row->station_callsign;
+						echo "Nothing awaiting upload to clublog for ".$station_row->station_callsign;
+						
+						log_message('info', 'Nothing awaiting upload to clublog for '.$station_row->station_callsign);
 					}
 				}
 			}
