@@ -180,18 +180,7 @@ class Logbook_model extends CI_Model {
     $this->db->distinct();
     $this->db->like('COL_CALL', $callsign);
 
-    $query = $this->db->get($this->config->item('table_name'));
-
-    $result = "";
-
-    foreach ($query->result() as $row)
-    {
-
-      $result = $result." ".$row->COL_CALL;
-
-    }
-
-    return $result;
+    return $this->db->get($this->config->item('table_name'));
 
   }
 

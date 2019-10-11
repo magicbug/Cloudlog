@@ -225,5 +225,36 @@ class Update extends CI_Controller {
 
 	}
 
+    public function update_clublog_scp() {
+        $strFile = "./updates/clublog_scp.txt";
+        $url = "https://cdn.clublog.org/clublog.scp.gz";
+        set_time_limit(300);
+        $this->update_status("Downloading Club Log SCP file");
+        $gz = gzopen($url, 'r');
+        if ($gz)
+        {
+            $data = "";
+            while (!gzeof($gz)) {
+                $data .= gzgetc($gz);
+            }
+            gzclose($gz);
+            file_put_contents($strFile, $data);
+            if (file_exists($strFile))
+            {
+                $nCount = count(file($strFile));
+                if ($nCount > 0)
+                {
+                    $this->update_status("DONE: " . number_format($nCount) . " callsigns loaded" );
+                } else {
+                    $this->update_status("FAILED: Empty file");
+                }
+            } else {
+                $this->update_status("FAILED: Could not create Club Log SCP file locally");
+            }
+        } else {
+            $this->update_status("FAILED: Could not connect to Club Log");
+        }
+    }
+
 }
 ?>

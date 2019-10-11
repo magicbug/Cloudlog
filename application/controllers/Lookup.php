@@ -24,30 +24,60 @@ class Lookup extends CI_Controller {
 
 	public function scp($call) {
 		
+		if($call) {
+			$uppercase_callsign = strtoupper($call);
+		}
+
 		// SCP results from logbook
 		$this->load->model('logbook_model');
 
-		$log_calls = $this->logbook_model->get_callsigns($call);
+		$arCalls = array();
 
-		if($log_calls != "") {
-			echo $log_calls ." ";
-		}
+		$query = $this->logbook_model->get_callsigns($uppercase_callsign);
 
+		foreach ($query->result() as $row)
+	    {
+	    	if (in_array($row->COL_CALL, $arCalls) == false)
+			{
+					$arCalls[] = $row->COL_CALL;
+			}
+	    }
 
 
 		// SCP results from master scp db
+		$file = 'updates/clublog_scp.txt';
+
+		if (is_readable($file)) {
+			$lines = file($file, FILE_IGNORE_NEW_LINES);
+			$input = preg_quote($uppercase_callsign, '~');
+			$result = preg_grep('~' . $input . '~', $lines, 0);
+			foreach ($result as &$value) {
+				if (in_array($value, $arCalls) == false)
+				{
+					$arCalls[] = $value;
+				}
+			}
+		}
+
 		$file = 'updates/masterscp.txt';
 
 		if (is_readable($file)) {
-
 			$lines = file($file, FILE_IGNORE_NEW_LINES);
-			$input = preg_quote($call, '~');
-
+			$input = preg_quote($uppercase_callsign, '~');
 			$result = preg_grep('~' . $input . '~', $lines, 0);
-
 			foreach ($result as &$value) {
-				echo " ".$value. " ";
+				if (in_array($value, $arCalls) == false)
+				{
+					$arCalls[] = $value;
+				}
 			}
+		}
+
+		sort($arCalls);
+
+		foreach ($arCalls as $strCall)
+		{
+			echo " " . $strCall . " ";
 		}
 		
 	}
