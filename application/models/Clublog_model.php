@@ -27,6 +27,17 @@ class Clublog_model extends CI_Model {
 		$this->db->update($this->config->item('table_name'), $data);
 	}
 
+	function get_last_five($station_id) {
+		$this->db->where('station_id', $station_id);
+	    $this->db->where("COL_CLUBLOG_QSO_UPLOAD_STATUS", null);
+	    $this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "");
+	    $this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "N");
+	    $this->db->limit(5); 
+	    $query = $this->db->get($this->config->item('table_name'));
+
+	    return $query;
+	}
+
 	function mark_all_qsos_notsent($station_id) {
 		$data = array(
 	        'COL_CLUBLOG_QSO_UPLOAD_DATE' => null,

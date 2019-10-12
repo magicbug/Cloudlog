@@ -137,6 +137,31 @@ class Clublog extends CI_Controller {
 		$this->clublog_model->mark_all_qsos_notsent($clean_station_id);
 	}
 
+
+	function realtime() {
+		$this->load->model('stations');
+		$this->load->model('clublog_model');
+
+		$station_profiles = $this->stations->all_with_count();
+
+		// if station profiles exist
+		if($station_profiles->num_rows()){
+			// Loop through station profiles
+			foreach ($station_profiles->result() as $station_row)
+			{
+				// if the station profile has more than 1 qso
+				if($station_row->qso_total > 0) {
+					$qsos = $this->clublog_model->get_last_five($station_row->station_id);
+
+					foreach ($qsos->result() as $qso)
+					{
+						print_r($qso);
+					}
+				}
+			}
+		}
+	}
+
 	// Find DXCC
 	function find_dxcc($callsign) {
 		$clean_callsign = $this->security->xss_clean($callsign);
