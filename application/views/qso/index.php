@@ -322,7 +322,6 @@
 
     <div class="card previous-qsos">
       <div class="card-header"><h4 class="card-title">Previous Contacts</h4></div>
-      <div class="card-body">
 
         <div id="partial_view">
 
@@ -353,7 +352,6 @@
                 </tr>
             <?php $i++; } ?>
           </table>
-        </div>
         </div>
       </div>
     </div>    
