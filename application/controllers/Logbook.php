@@ -314,6 +314,7 @@ class Logbook extends CI_Controller {
 					$html .= "<td>RST (R)</td>";
 					$html .= "<td>Band</td>";
 					$html .= "<td>Mode</td>";
+					$html .= "<td>QSL</td>";
 					$html .= "<td></td>";
 				$html .= "</tr>";
 			foreach ($query->result() as $row)
@@ -329,6 +330,32 @@ class Logbook extends CI_Controller {
 								$html .= "<td>".$row->COL_BAND."</td>";
 					}
 					$html .= "<td>".$row->COL_MODE."</td>";
+					$html .= "<td class=\"qsl\">";
+					$html .= "<span class=\"qsl-";
+					switch ($row->COL_QSL_SENT) {
+						case "Y":
+							$html .= "green";
+							break;
+						case "R":
+							$html .= "yellow";
+							break;
+						default:
+						   $html .= "red";
+					}
+					$html .= "\">&#9650;</span>";
+					$html .= "<span class=\"qsl-";
+					switch ($row->COL_QSL_RCVD) {
+						case "Y":
+							$html .= "green";
+							break;
+						case "R":
+							$html .= "yellow";
+							break;
+						default:
+						   $html .= "red";
+					}
+					$html .= "\">&#9660;</span>";
+					$html .= "</td>";
 					$html .= "<td><span class=\"badge badge-info\">".$row->station_callsign."</span></td>";
 				$html .= "</tr>";
 			}
