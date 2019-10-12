@@ -12,7 +12,6 @@ class Logbook_model extends CI_Model {
   function create_qso() {
     // Join date+time
     $datetime = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('start_time');
-
     if ($this->input->post('prop_mode') != null) {
             $prop_mode = $this->input->post('prop_mode');
     } else {
@@ -971,11 +970,8 @@ class Logbook_model extends CI_Model {
         $CI =& get_instance();
         $CI->load->library('frequency');
 
-
         // Join date+time
-
         $time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
-
         if (isset($record['time_off'])) {
             $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_off']));
         } else {
@@ -1083,6 +1079,7 @@ class Logbook_model extends CI_Model {
           $cq_zone = NULL;
         }
 
+        
         if (isset($record['call'])){
           $this->db->where('COL_CALL', $record['call']);
         }

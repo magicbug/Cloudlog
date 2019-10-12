@@ -43,7 +43,6 @@ class Lookup extends CI_Controller {
 			}
 	    }
 
-
 		// SCP results from master scp db
 		$file = 'updates/clublog_scp.txt';
 
