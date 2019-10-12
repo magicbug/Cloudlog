@@ -1,3 +1,4 @@
+<div class="card-body">
 <h2>Results for <?php echo $id; ?></h2>
 
 <p>Sorry, but we didn't find any past QSOs with <?php echo $id; ?></p>
@@ -30,3 +31,4 @@
 </table>
 
 <?php } ?>
+</div>
