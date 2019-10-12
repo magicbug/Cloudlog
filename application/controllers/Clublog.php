@@ -138,9 +138,18 @@ class Clublog extends CI_Controller {
 	}
 
 
-	function realtime() {
+	function realtime($username) {
+		$clean_username = $this->security->xss_clean($username);
+
 		$this->load->model('stations');
 		$this->load->model('clublog_model');
+
+		$clublog_info = $this->clublog_model->get_clublog_auth_info($clean_username);
+
+		if(!isset($clublog_info['user_name'])) {
+			echo "Username unknown";
+			exit;
+		}
 
 		$station_profiles = $this->stations->all_with_count();
 
@@ -151,12 +160,39 @@ class Clublog extends CI_Controller {
 			{
 				// if the station profile has more than 1 qso
 				if($station_row->qso_total > 0) {
-					$qsos = $this->clublog_model->get_last_five($station_row->station_id);
+					$myqsos = $this->clublog_model->get_last_five($station_row->station_id);
 
-					foreach ($qsos->result() as $qso)
+					foreach ($myqsos->result() as $qso)
 					{
-						print_r($qso);
+						$data['qso'] = $qso;
+						$adif_string = $this->load->view('adif/data/clublog_realtime', $data, true);
 					}
+
+					// initialise the curl request
+					$request = curl_init('https://clublog.org/realtime.php');
+
+					curl_setopt($request, CURLOPT_POST, true);
+					curl_setopt(
+						$request,
+						CURLOPT_POSTFIELDS,
+							array(
+							      'email' => $clublog_info['user_clublog_name'],
+							      'password' => $clublog_info['user_clublog_password'],
+							      'callsign' => $station_row->station_callsign,
+							      'adif' => $adif_string,
+							      'api' => "a11c3235cd74b88212ce726857056939d52372bd",
+							   ));
+
+					// output the response
+					curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+					$response = curl_exec($request);
+					$info = curl_getinfo($request);
+
+					if(curl_errno($request)) {
+						echo curl_error($request);
+					}
+					curl_close ($request); 
+					
 				}
 			}
 		}
