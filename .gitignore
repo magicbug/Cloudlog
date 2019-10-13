@@ -8,6 +8,7 @@
 /install/*
 /updates/*.xml
 /updates/*.html
+/updates/clublog_scp.txt
 .idea/*
 .DS_Store
 sync.sh
