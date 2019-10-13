@@ -337,6 +337,10 @@ $(document).on('keypress',function(e) {
       $("#locator").removeClass("newGrid");
       $("#callsign").removeClass("workedGrid");
       $("#callsign").removeClass("newGrid");
+	  $('#callsign_info').removeClass("badge-secondary");
+	  $('#callsign_info').removeClass("badge-success");
+	  $('#callsign_info').removeClass("badge-danger");
+
       $('#qsl_via').val("");
       $('#callsign_info').text("");
 
@@ -561,6 +565,9 @@ $(document).on('keypress',function(e) {
             $("#locator").removeClass("newGrid");
             $("#callsign").removeClass("workedGrid");
             $("#callsign").removeClass("newGrid");
+			$('#callsign_info').removeClass("badge-secondary");
+			$('#callsign_info').removeClass("badge-success");
+			$('#callsign_info').removeClass("badge-danger");
         }  
     })
 
