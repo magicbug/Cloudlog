@@ -166,33 +166,42 @@ class Clublog extends CI_Controller {
 					{
 						$data['qso'] = $qso;
 						$adif_string = $this->load->view('adif/data/clublog_realtime', $data, true);
+
+						// initialise the curl request
+						$request = curl_init('https://clublog.org/realtime.php');
+
+						curl_setopt($request, CURLOPT_POST, true);
+						curl_setopt(
+							$request,
+							CURLOPT_POSTFIELDS,
+								array(
+								      'email' => $clublog_info['user_clublog_name'],
+								      'password' => $clublog_info['user_clublog_password'],
+								      'callsign' => $station_row->station_callsign,
+								      'adif' => $adif_string,
+								      'api' => "a11c3235cd74b88212ce726857056939d52372bd",
+								   ));
+
+						// output the response
+						curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+						$response = curl_exec($request);
+						$info = curl_getinfo($request);
+
+						if(curl_errno($request)) {
+							echo curl_error($request);
+						}
+
+					// If Clublog Accepts mark the QSOs
+						if (preg_match('/\baccepted\b/', $response)) {
+							echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog";
+
+							$this->clublog_model->mark_qso_sent($qso->COL_PRIMARY_KEY);
+							echo "Clublog upload for ".$station_row->station_callsign;
+						} else {
+							echo "Error ".$response;
+						}
+						curl_close ($request); 
 					}
-
-					// initialise the curl request
-					$request = curl_init('https://clublog.org/realtime.php');
-
-					curl_setopt($request, CURLOPT_POST, true);
-					curl_setopt(
-						$request,
-						CURLOPT_POSTFIELDS,
-							array(
-							      'email' => $clublog_info['user_clublog_name'],
-							      'password' => $clublog_info['user_clublog_password'],
-							      'callsign' => $station_row->station_callsign,
-							      'adif' => $adif_string,
-							      'api' => "a11c3235cd74b88212ce726857056939d52372bd",
-							   ));
-
-					// output the response
-					curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-					$response = curl_exec($request);
-					$info = curl_getinfo($request);
-
-					if(curl_errno($request)) {
-						echo curl_error($request);
-					}
-					curl_close ($request); 
-					
 				}
 			}
 		}
