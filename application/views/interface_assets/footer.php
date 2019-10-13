@@ -439,14 +439,20 @@ $(document).on('keypress',function(e) {
 					//logbook/jsonlookupgrid/io77/SAT/0/0
 					$.getJSON('logbook/jsonlookupdxcc/' + convert_case(result.dxcc.entity) + '/SAT/0/0', function(result)
 					{
+					  
+					  $('#callsign_info').removeClass("badge-secondary");
+					  $('#callsign_info').removeClass("badge-success");
+					  $('#callsign_info').removeClass("badge-danger");
 					  $('#callsign_info').attr('title', '');
 
 					  if (result.workedBefore)
 					  {
+						$('#callsign_info').addClass("badge-success");
 						$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
 					  }
 					  else
 					  {
+						$('#callsign_info').addClass("badge-danger");
 						$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
 					  }
 					})
@@ -458,10 +464,12 @@ $(document).on('keypress',function(e) {
 
 					  if (result.workedBefore)
 					  {
+						$('#callsign_info').addClass("badge-success");
 						$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
 					  }
 					  else
 					  {
+						$('#callsign_info').addClass("badge-danger");
 						$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
 					  }
 					})
