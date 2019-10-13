@@ -138,7 +138,7 @@ class Clublog extends CI_Controller {
 	}
 
 
-	function realtime($username) {
+	public function realtime($username) {
 		$clean_username = $this->security->xss_clean($username);
 
 		$this->load->model('stations');
