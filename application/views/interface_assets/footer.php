@@ -335,6 +335,8 @@ $(document).on('keypress',function(e) {
       $('#iota_ref').val("");
       $("#locator").removeClass("workedGrid");
       $("#locator").removeClass("newGrid");
+      $("#callsign").removeClass("workedGrid");
+      $("#callsign").removeClass("newGrid");
       $('#qsl_via').val("");
       $('#callsign_info').text("");
 
@@ -549,6 +551,8 @@ $(document).on('keypress',function(e) {
             $('#iota_ref').val("");
             $("#locator").removeClass("workedGrid");
             $("#locator").removeClass("newGrid");
+            $("#callsign").removeClass("workedGrid");
+            $("#callsign").removeClass("newGrid");
         }  
     })
 
