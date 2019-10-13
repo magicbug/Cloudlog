@@ -203,6 +203,8 @@ class Clublog extends CI_Controller {
 						curl_close ($request); 
 					}
 				}
+			} else {
+				echo "Nothing to Send";
 			}
 		}
 	}
