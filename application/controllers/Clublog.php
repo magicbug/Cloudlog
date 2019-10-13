@@ -189,12 +189,12 @@ class Clublog extends CI_Controller {
 
 					// If Clublog Accepts mark the QSOs
 						if (preg_match('/\bOK\b/', $response)) {
-							echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog";
+							echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog<br>";
 
 							$this->clublog_model->mark_qso_sent($qso->COL_PRIMARY_KEY);
-							echo "Clublog upload for ".$station_row->station_callsign;
+							echo "Clublog upload for ".$station_row->station_callsign."<br>";
 						} else {
-							echo "Error ".$response;
+							echo "Error ".$response."<br>";
 						}
 						curl_close ($request); 
 					}
