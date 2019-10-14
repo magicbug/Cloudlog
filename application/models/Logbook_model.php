@@ -1079,6 +1079,13 @@ class Logbook_model extends CI_Model {
           $cq_zone = NULL;
         }
 
+        if (isset($record['TX_PWR'])){
+            $tx_pwr =  filter_var($record['TX_PWR'],FILTER_SANITIZE_NUMBER_INT);;
+        }else{
+            $tx_pwr = NULL;
+        }
+
+
         
         if (isset($record['call'])){
           $this->db->where('COL_CALL', $record['call']);
@@ -1238,7 +1245,7 @@ class Logbook_model extends CI_Model {
                 'COL_TEN_TEN' => (!empty($record['ten_ten'])) ? $record['ten_ten'] : null,
                 'COL_TIME_ON' => $time_on,
                 'COL_TIME_OFF' => $time_off,
-                'COL_TX_PWR' => (!empty($record['tx_pwr'])) ? $record['tx_pwr'] : null,
+                'COL_TX_PWR' => (!empty($tx_pwr)) ? $tx_pwr : null,
                 'COL_UKSMG' => (!empty($record['uksmg'])) ? $record['uksmg'] : '',
                 'COL_USACA_COUNTIES' => (!empty($record['usaca_counties'])) ? $record['usaca_counties'] : '',
                 'COL_VUCC_GRIDS' =>((!empty($record['vucc_grids']))) ? $record['vucc_grids'] : '',
