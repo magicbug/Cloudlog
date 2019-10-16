@@ -27,7 +27,7 @@ Cloudlog now has a [Change Log](https://github.com/magicbug/Cloudlog/wiki/Change
 
 ## Support
 
-Issues with Cloudlog are handled via Issues feature on GitHub only.
+Cloudlog support is handled via Issues on GitHub.
 
 ## CAT Control
 
@@ -45,7 +45,7 @@ I've started building out some scripts to generate labels for sticking on QSL Ca
 
 ## Want Cloudlog Hosting?
 
-If you would prefer not to setup Cloudlog yourself [magicbug](https://magicbug.co.uk) offer hosted solutions, this is priced at £3 a month at the moment and they take care of keeping it updated.
+If you would prefer not to setup Cloudlog yourself [magicbug](https://magicbug.co.uk) offer hosted solutions, this is priced at £4 a month at the moment and they take care of keeping it updated.
 
 ## Contributing
 
@@ -53,39 +53,14 @@ If you would like to contributing in anyway to Cloudlog then its most appreciate
 
 Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses Bootstrap 4 for the user CSS framework documentation is available for this when building components.
 
-
-## Copyright / Licence
-
-The MIT License (MIT)
-
-Copyright (c) 2018 Peter Goodhall, 2M0SQL
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
 ## Credits
 
-Thanks to Andy (VE7CXZ), Gavin (M1BXF), Graham (W5ISP), Robert (M0VFC), Corby (K0SKW), Andy (GI0VGV), Tobias (DL4TMA), Tony (G0WFV), Kim (DG9VH) for contributing code or help to Cloudlog.
+Thanks to Andy (VE7CXZ), Gavin (M1BXF), Graham (W5ISP), Robert (M0VFC), Corby (K0SKW), Andy (GI0VGV), Tobias (DL4TMA), Tony (G0WFV), Kim (DG9VH), Michael (G7VJR) for contributing code or help to Cloudlog.
 
 ## Patreons & Donors
 
 Cloudlog is supported by Patreon and donations via PayPal, thanks to the following people:
 
-Paul (M0TZO), Tim (G4VXE), Paul (N8HM), Michelle (W5NYV), Mitchell (AD0HJ), Dan (M0TCB), Martin (DK3ML), Juan Carlos (EA5WA)
+Paul (M0TZO), Tim (G4VXE), Paul (N8HM), Michelle (W5NYV), Mitchell (AD0HJ), Dan (M0TCB), Martin (DK3ML), Juan Carlos (EA5WA), Iain (M0PCB)
 
 If you'd like to donate to Cloudlog to help allow @magicbug spend less time doing commerical work and more time coding Cloudlog then you can donate via [PayPal](https://paypal.me/PGoodhall) or become a [Patreon](https://www.patreon.com/2m0sql)
