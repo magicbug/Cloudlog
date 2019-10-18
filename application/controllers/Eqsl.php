@@ -131,6 +131,8 @@ class eqsl extends CI_Controller {
 			}
 
 			$this->load->model('stations');
+			$active_station_id = $this->stations->find_active();
+        	$station_profile = $this->stations->profile($active_station_id);
 			$active_station_info = $station_profile->row();
 			// Query the logbook to determine when the last LoTW confirmation was
 			$eqsl_last_qsl_date = $this->logbook_model->eqsl_last_qsl_rcvd_date();
