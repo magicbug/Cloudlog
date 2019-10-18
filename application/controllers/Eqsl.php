@@ -108,13 +108,16 @@ class eqsl extends CI_Controller {
 		
 		if ($this->input->post('eqslimport') == 'fetch')
 		{			
+			echo "import from clublog ADIF";
 			$file = $config['upload_path'] . 'eqslreport_download.adi';
-			
+			echo "Download File: ".$file;
 			// Get credentials for eQSL
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
 			$q = $query->row();
 			$data['user_eqsl_name'] = $q->user_eqsl_name;
 			$data['user_eqsl_password'] = $q->user_eqsl_password;
+
+			echo "Username".$data['user_eqsl_name'];
 			
 			// Get URL for downloading the eqsl.cc inbox
 			$query = $query = $this->db->query('SELECT eqsl_download_url FROM config');
