@@ -108,16 +108,16 @@ class eqsl extends CI_Controller {
 		
 		if ($this->input->post('eqslimport') == 'fetch')
 		{			
-			echo "import from clublog ADIF<br>";
+			//echo "import from clublog ADIF<br>";
 			$file = $config['upload_path'] . 'eqslreport_download.adi';
-			echo "<br>Download File: ".$file."<br>";
+			//echo "<br>Download File: ".$file."<br>";
 			// Get credentials for eQSL
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
 			$q = $query->row();
 			$data['user_eqsl_name'] = $q->user_eqsl_name;
 			$data['user_eqsl_password'] = $q->user_eqsl_password;
 
-			echo "<br>Username".$data['user_eqsl_name']."<br>";
+			//echo "<br>Username".$data['user_eqsl_name']."<br>";
 			
 			// Get URL for downloading the eqsl.cc inbox
 			$query = $query = $this->db->query('SELECT eqsl_download_url FROM config');
@@ -148,7 +148,7 @@ class eqsl extends CI_Controller {
 			// Pull back only confirmations
 			$eqsl_url .= "&ConfirmedOnly=1";
 
-			echo "<br><br>".$eqsl_url."<br><br>";
+			//echo "<br><br>".$eqsl_url."<br><br>";
 			
  			// At this point, what we get isn't the ADI file we need, but rather
 			// an HTML page, which contains a link to the generated ADI file that we want.
