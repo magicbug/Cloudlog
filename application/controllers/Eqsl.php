@@ -142,6 +142,8 @@ class eqsl extends CI_Controller {
 			
 			// Pull back only confirmations
 			$eqsl_url .= "&ConfirmedOnly=1";
+
+			echo "<br><br>".$eqsl_url."<br><br>";
 			
  			// At this point, what we get isn't the ADI file we need, but rather
 			// an HTML page, which contains a link to the generated ADI file that we want.
