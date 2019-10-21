@@ -1079,8 +1079,37 @@ class Logbook_model extends CI_Model {
           $cq_zone = NULL;
         }
 
+        // Sanitise lat input to make sure its 11 chars
+        if (isset($record['lat'])){
+            $input_lat = mb_strimwidth($record['lat'], 0, 11);
+        }else{
+            $input_lat = NULL;
+        }
+
+        // Sanitise lon input to make sure its 11 chars
+        if (isset($record['lon'])){
+            $input_lon = mb_strimwidth($record['lon'], 0, 11);
+        }else{
+            $input_lon = NULL;
+        }
+
+        // Sanitise my_lat input to make sure its 11 chars
+        if (isset($record['my_lat'])){
+            $input_my_lat = mb_strimwidth($record['my_lat'], 0, 11);
+        }else{
+            $input_my_lat = NULL;
+        }
+
+        // Sanitise my_lon input to make sure its 11 chars
+        if (isset($record['my_lon'])){
+            $input_my_lon = mb_strimwidth($record['my_lon'], 0, 11);
+        }else{
+            $input_my_lon = NULL;
+        }
+
+        // Sanitise TX_POWER
         if (isset($record['TX_PWR'])){
-            $tx_pwr =  filter_var($record['TX_PWR'],FILTER_SANITIZE_NUMBER_INT);;
+            $tx_pwr =  filter_var($record['TX_PWR'],FILTER_SANITIZE_NUMBER_INT);
         }else{
             $tx_pwr = NULL;
         }
@@ -1148,8 +1177,8 @@ class Logbook_model extends CI_Model {
                 'COL_IOTA' => (!empty($record['iota'])) ? $record['iota'] : '',
                 'COL_ITUZ' => (!empty($record['ituz'])) ? $record['ituz'] : null,
                 'COL_K_INDEX' => (!empty($record['k_index'])) ? $record['k_index'] : null,
-                'COL_LAT' => (!empty($record['lat'])) ? $record['lat'] : null,
-                'COL_LON' => (!empty($record['lon'])) ? $record['lon'] : null,
+                'COL_LAT' => $input_lat,
+                'COL_LON' => $input_lon,
                 'COL_LOTW_QSL_RCVD' => (!empty($record['lotw_qsl_rcvd'])) ? $record['lotw_qsl_rcvd'] : '',
                 'COL_LOTW_QSL_SENT' => (!empty($record['lotw_qsl_sent'])) ? $record['lotw_qsl_sent'] : '',
                 'COL_LOTW_QSLRDATE' => (!empty($record['lotw_qslrdate'])) ? $record['lotw_qslrdate'] : null,
@@ -1172,8 +1201,8 @@ class Logbook_model extends CI_Model {
                 'COL_MY_IOTA' => (!empty($record['my_iota'])) ? $record['my_iota'] : '',
                 'COL_MY_IOTA_ISLAND_ID' => (!empty($record['my_iota_island_id'])) ? $record['my_iota_island_id'] : '',
                 'COL_MY_ITU_ZONE' => (!empty($record['my_itu_zone'])) ? $record['my_itu_zone'] : null,
-                'COL_MY_LAT' => (!empty($record['my_lat'])) ? $record['my_lat'] : null,
-                'COL_MY_LON' => (!empty($record['my_lon'])) ? $record['my_lon'] : null,
+                'COL_MY_LAT' => $input_my_lat,
+                'COL_MY_LON' => $input_my_lon,
                 'COL_MY_NAME' => (!empty($record['my_name'])) ? $record['my_name'] : '',
                 'COL_MY_NAME_INTL' => (!empty($record['my_name_intl'])) ? $record['my_name_intl'] : '',
                 'COL_MY_POSTAL_CODE' => (!empty($record['my_postal_code'])) ? $record['my_postal_code'] : '',
