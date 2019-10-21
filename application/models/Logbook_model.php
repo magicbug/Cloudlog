@@ -1170,7 +1170,7 @@ class Logbook_model extends CI_Model {
               $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the qslsdate is invalid (YYYYMMDD): ".$record['qslsdate']."<br>";
             }
         } else {
-            $input_qslrdate = NULL;
+            $input_qslsdate = NULL;
         }
 
         if (isset($record['qsl_rcvd'])){
