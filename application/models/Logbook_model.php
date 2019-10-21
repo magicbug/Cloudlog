@@ -1109,9 +1109,39 @@ class Logbook_model extends CI_Model {
 
         // Sanitise TX_POWER
         if (isset($record['TX_PWR'])){
-            $tx_pwr =  filter_var($record['TX_PWR'],FILTER_SANITIZE_NUMBER_INT);
+            $tx_pwr = filter_var($record['TX_PWR'],FILTER_SANITIZE_NUMBER_INT);
         }else{
             $tx_pwr = NULL;
+        }
+
+        if (isset($record['a_index'])){
+            $input_a_index = filter_var($record['a_index'],FILTER_SANITIZE_NUMBER_INT);
+        } else {
+            $input_a_index = NULL;
+        }
+
+        if (isset($record['age'])){
+            $input_age = filter_var($record['age'],FILTER_SANITIZE_NUMBER_INT);
+        } else {
+            $input_age = NULL;
+        }
+
+        if (isset($record['ant_az'])){
+            $input_ant_az = filter_var($record['ant_az'],FILTER_SANITIZE_NUMBER_INT);
+        } else {
+            $input_ant_az = NULL;
+        }
+
+        if (isset($record['ant_el'])){
+            $input_ant_el = filter_var($record['ant_el'],FILTER_SANITIZE_NUMBER_INT);
+        } else {
+            $input_ant_el = NULL;
+        }
+
+        if (isset($record['ant_path'])){
+            $input_ant_path = mb_strimwidth($record['ant_path'], 0, 1);
+        } else {
+            $input_ant_path = NULL;
         }
 
 
@@ -1126,13 +1156,13 @@ class Logbook_model extends CI_Model {
         {
             // Create array with QSO Data use ?:
             $data = array(
-                'COL_A_INDEX' => (!empty($record['a_index'])) ? $record['a_index']: null,
+                'COL_A_INDEX' => $input_a_index,
                 'COL_ADDRESS' => (!empty($record['address'])) ? $record['address'] : '',
                 'COL_ADDRESS_INTL' => (!empty($record['address_intl'])) ? $record['address_intl'] : '',
-                'COL_AGE' => (!empty($record['age'])) ? $record['age'] : null,
-                'COL_ANT_AZ' => (!empty($record['ant_az'])) ? $record['ant_az'] : null,
-                'COL_ANT_EL' => (!empty($record['ant_el'])) ? $record['ant_el'] : null,
-                'COL_ANT_PATH' => (!empty($record['ant_path'])) ? $record['ant_path'] : '',
+                'COL_AGE' => $input_age,
+                'COL_ANT_AZ' => $input_ant_az,
+                'COL_ANT_EL' => $input_ant_el,
+                'COL_ANT_PATH' => $input_ant_path,
                 'COL_ARRL_SECT' => (!empty($record['arrl_sect'])) ? $record['arrl_sect'] : '',
                 'COL_AWARD_GRANTED' => (!empty($record['award_granted'])) ? $record['award_granted'] : '',
                 'COL_AWARD_SUMMITED' => (!empty($record['award_submitted'])) ? $record['award_submitted'] : '',
