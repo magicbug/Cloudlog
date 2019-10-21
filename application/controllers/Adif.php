@@ -13,6 +13,15 @@ class adif extends CI_Controller {
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
 
+	public function test() {
+		if(validateADIFDate('20120228') == true){
+			echo "valid date";
+		} else {
+			echo "date incorrect";
+		}
+
+
+	}
 
 	/* Shows Export Views */
 	public function export() {
@@ -153,7 +162,7 @@ class adif extends CI_Controller {
 			$this->adif_parser->load_from_file('./uploads/'.$data['upload_data']['file_name']);
 
 			$this->adif_parser->initialize();
-
+			$custom_errors = "";
 			while($record = $this->adif_parser->get_record())
 			{
 				if(count($record) == 0)
@@ -162,9 +171,11 @@ class adif extends CI_Controller {
 				};
 
 
-				$this->logbook_model->import($record, $this->input->post('station_profile'));
+				$custom_errors .= $this->logbook_model->import($record, $this->input->post('station_profile'));
 
 			};
+
+			$data['adif_errors'] = $custom_errors; 
 
 			unlink('./uploads/'.$data['upload_data']['file_name']);
 

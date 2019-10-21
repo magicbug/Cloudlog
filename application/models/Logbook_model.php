@@ -969,9 +969,10 @@ class Logbook_model extends CI_Model {
     function import($record, $station_id = "0") {
         $CI =& get_instance();
         $CI->load->library('frequency');
-
+        $my_error = "";
         // Join date+time
         $time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
+        
         if (isset($record['time_off'])) {
             $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_off']));
         } else {
@@ -1144,6 +1145,96 @@ class Logbook_model extends CI_Model {
             $input_ant_path = NULL;
         }
 
+        /*
+          Validate QSL Fields
+         qslrdate, qslsdate
+        */
+
+
+        if (isset($record['qslrdate'])){
+            if(validateADIFDate($record['qslrdate']) == true){
+              $input_qslrdate = $record['qslrdate'];
+            } else {
+              $input_qslrdate = NULL;
+              $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the qslrdate is invalid (YYYYMMDD): ".$record['qslrdate']."<br>";
+            }
+        } else {
+            $input_qslrdate = NULL;
+        }
+
+        if (isset($record['qslsdate'])){
+            if(validateADIFDate($record['qslsdate']) == true){
+              $input_qslsdate = $record['qslsdate'];
+            } else {
+              $input_qslsdate = NULL;
+              $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the qslsdate is invalid (YYYYMMDD): ".$record['qslsdate']."<br>";
+            }
+        } else {
+            $input_qslrdate = NULL;
+        }
+
+        if (isset($record['qsl_rcvd'])){
+            $input_qsl_rcvd = mb_strimwidth($record['qsl_rcvd'], 0, 1);
+        } else {
+            $input_qsl_rcvd = "N";
+        }
+
+        if (isset($record['qsl_rcvd_via'])){
+            $input_qsl_rcvd_via = mb_strimwidth($record['qsl_rcvd_via'], 0, 1);
+        } else {
+            $input_qsl_rcvd_via = "";
+        }
+
+        if (isset($record['qsl_sent'])){
+            $input_qsl_sent = mb_strimwidth($record['qsl_sent'], 0, 1);
+        } else {
+            $input_qsl_sent = "N";
+        }
+
+        if (isset($record['qsl_sent_via'])){
+            $input_qsl_sent_via = mb_strimwidth($record['qsl_sent_via'], 0, 1);
+        } else {
+            $input_qsl_sent_via = "";
+        }
+
+        /*
+          Validate LOTW Fields
+        */
+
+        if (isset($record['lotw_qsl_rcvd'])){
+            $input_lotw_qsl_rcvd = mb_strimwidth($record['lotw_qsl_rcvd'], 0, 1);
+        } else {
+            $input_lotw_qsl_rcvd = "";
+        }
+
+        if (isset($record['lotw_qsl_sent'])){
+            $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
+        } else {
+            $input_lotw_qsl_sent = "";
+        }
+
+        if (isset($record['lotw_qslrdate'])){
+            if(validateADIFDate($record['lotw_qslrdate']) == true){
+              $input_lotw_qslrdate = $record['lotw_qslrdate'];
+            } else {
+              $input_lotw_qslrdate = NULL;
+              $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the lotw_qslrdate is invalid (YYYYMMDD): ".$record['lotw_qslrdate']."<br>";
+            }
+        } else {
+            $input_lotw_qslrdate = NULL;
+        }
+
+        if (isset($record['lotw_qslsdate'])){
+            if(validateADIFDate($record['lotw_qslsdate']) == true){
+              $input_lotw_qslsdate = $record['lotw_qslsdate'];
+            } else {
+              $input_lotw_qslsdate = NULL;
+              $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the lotw_qslsdate is invalid (YYYYMMDD): ".$record['lotw_qslsdate']."<br>";
+            }
+        } else {
+            $input_lotw_qslsdate = NULL;
+        }
+
 
         
         if (isset($record['call'])){
@@ -1209,10 +1300,10 @@ class Logbook_model extends CI_Model {
                 'COL_K_INDEX' => (!empty($record['k_index'])) ? $record['k_index'] : null,
                 'COL_LAT' => $input_lat,
                 'COL_LON' => $input_lon,
-                'COL_LOTW_QSL_RCVD' => (!empty($record['lotw_qsl_rcvd'])) ? $record['lotw_qsl_rcvd'] : '',
-                'COL_LOTW_QSL_SENT' => (!empty($record['lotw_qsl_sent'])) ? $record['lotw_qsl_sent'] : '',
-                'COL_LOTW_QSLRDATE' => (!empty($record['lotw_qslrdate'])) ? $record['lotw_qslrdate'] : null,
-                'COL_LOTW_QSLSDATE' => (!empty($record['lotw_qslsdate'])) ? $record['lotw_qslsdate'] : null,
+                'COL_LOTW_QSL_RCVD' => $input_lotw_qsl_rcvd,
+                'COL_LOTW_QSL_SENT' => $input_lotw_qsl_sent,
+                'COL_LOTW_QSLRDATE' => $input_lotw_qslrdate,
+                'COL_LOTW_QSLSDATE' => $input_lotw_qslsdate,
                 'COL_LOTW_STATUS' => (!empty($record['lotw_status'])) ? $record['lotw_status'] : '',
                 'COL_MAX_BURSTS' => (!empty($record['max_bursts'])) ? $record['max_bursts'] : null,
                 'COL_MODE' => (!empty($record['mode'])) ? $record['mode'] : '',
@@ -1263,14 +1354,14 @@ class Logbook_model extends CI_Model {
                 'COL_PUBLIC_KEY' => (!empty($record['public_key'])) ? $record['public_key'] : '',
                 'COL_QRZCOM_QSO_UPLOAD_DATE' => (!empty($record['qrzcom_qso_upload_date'])) ? $record['qrzcom_qso_upload_date'] : null,
                 'COL_QRZCOM_QSO_UPLOAD_STATUS' => (!empty($record['qrzcom_qso_upload_status'])) ? $record['qrzcom_qso_upload_status'] : '',
-                'COL_QSL_RCVD' => (!empty($record['qsl_rcvd'])) ? $record['qsl_rcvd'] : '',
-                'COL_QSL_RCVD_VIA' => (!empty($record['qsl_rcvd_via'])) ? $record['qsl_rcvd_via'] : '',
-                'COL_QSL_SENT' => (!empty($record['qsl_sent'])) ? $record['qsl_sent'] : '',
-                'COL_QSL_SENT_VIA' => (!empty($record['qsl_sent_via'])) ? $record['qsl_sent_via'] : '',
+                'COL_QSL_RCVD' => $input_qsl_rcvd,
+                'COL_QSL_RCVD_VIA' => $input_qsl_rcvd_via,
+                'COL_QSL_SENT' => $input_qsl_sent,
+                'COL_QSL_SENT_VIA' => $input_qsl_sent_via,
                 'COL_QSL_VIA' => (!empty($record['qsl_via'])) ? $record['qsl_via'] : '',
                 'COL_QSLMSG' => (!empty($record['qslmsg'])) ? $record['qslmsg'] : '',
-                'COL_QSLRDATE' => (!empty($record['qslrdate'])) ? $record['qslrdate']: null,
-                'COL_QSLSDATE' => (!empty($record['qslsdate'])) ? $record['qslsdate'] : null,
+                'COL_QSLRDATE' => $input_qslrdate,
+                'COL_QSLSDATE' => $input_qslsdate,
                 'COL_QSO_COMPLETE' => (!empty($record['qso_complete'])) ? $record['qso_complete'] : '',
                 'COL_QSO_DATE' => (!empty($record['qso_date'])) ? $record['qso_date'] : null,
                 'COL_QSO_DATE_OFF' => (!empty($record['qso_date_off'])) ? $record['qso_date_off'] : null,
@@ -1350,6 +1441,8 @@ class Logbook_model extends CI_Model {
             $this->add_qso($data);
 
         }
+
+        return $my_error;
     }
 
 
@@ -1522,5 +1615,12 @@ class Logbook_model extends CI_Model {
     }
     
 }
+
+function validateADIFDate($date, $format = 'Ymd')
+{
+  $d = DateTime::createFromFormat($format, $date);
+  return $d && $d->format($format) == $date;
+}
+
 
 ?>
