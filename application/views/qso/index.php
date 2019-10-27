@@ -161,7 +161,7 @@
           <div class="tab-pane fade" id="station" role="tabpanel" aria-labelledby="station-tab">
             <div class="form-group">
               <label for="inputStationProfile">Station Profile</label>
-              <select id="stationProfile" class="custom-select" name="station_profile">
+              <select id="stationProfile" class="custom-select" name="station_profile" onchange="this.form.submit()">
                 <option value="0" selected="selected">None</option>
                 <?php foreach ($stations->result() as $stationrow) { ?>
                 <option value="<?php echo $stationrow->station_id; ?>" <?php if($this->session->userdata('station_profile_id') == $stationrow->station_id) { echo "selected=\"selected\""; } ?>><?php echo $stationrow->station_profile_name; ?></option>
@@ -321,7 +321,13 @@
     </div>
 
     <div class="card previous-qsos">
-      <div class="card-header"><h4 class="card-title">Previous Contacts</h4></div>
+      <div class="card-header"><h4 class="card-title">Previous Contacts
+      <?php { 
+          foreach ($active_station->result() as $row) {; 
+                echo " of station '" . $row->station_profile_name . "'";
+          }
+      }?>
+      </h4></div>
 
         <div id="partial_view">
 
