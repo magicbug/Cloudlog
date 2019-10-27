@@ -41,8 +41,19 @@ class Logbook extends CI_Controller {
 		} else {
 				$data['qra'] = "none";
 		}
-
-
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
+        $this->db->where('station_id',$station_id);
+        $query = $this->db->get('station_profile');
+        if($query->num_rows() >= 1) {
+            foreach ($query->result() as $row)
+            {
+                $data['title']  = "Logbook of station '" . $row->station_profile_name ."'";
+            }
+        } else {
+            $data['title'] = "Logbook";
+        }
 
 		// load the view
 		$data['page_title'] = "Logbook";

@@ -20,6 +20,7 @@
 			<td>LoTW</td>
 			<?php } ?>
 			<td>Station</td>
+			<td>Operator</td>
 			<td></td>
 			<?php } ?>
 		</tr>
@@ -83,7 +84,7 @@
 			    <?php } ?>
 			</td>
 			<?php } ?>
-
+			
 			<?php if($this->config->item('callsign_tags') == true) { ?>
 				<?php if(isset($row->station_callsign)) { ?>
 				<td>
@@ -91,7 +92,9 @@
 				</td>
 				<?php } ?>
 			<?php } ?>
-
+			<td>
+				<span class="badge badge-light"><?php echo $row->COL_OPERATOR; ?></span>
+			</td>
 			<td>
 				<div class="dropdown">
 				  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
