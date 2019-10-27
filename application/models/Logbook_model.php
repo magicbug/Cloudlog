@@ -268,8 +268,11 @@ class Logbook_model extends CI_Model {
   }
 
   /* Show custom number of qsos */
-  function last_custom($num) {
+  function last_custom($num,$station_profile_id) {
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
+    if ($station_profile_id > 0) {
+       $this->db->where('station_id',$station_profile_id);
+    }
     $this->db->order_by("COL_TIME_ON", "desc");
     $this->db->limit($num);
 
@@ -433,10 +436,20 @@ class Logbook_model extends CI_Model {
   }
 
   function get_qsos($num, $offset) {
-    $this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_NAME, '.$this->config->item('table_name').'.COL_COUNTRY, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
+    $CI =& get_instance();
+    $CI->load->model('Stations');
+    $station_id = $CI->Stations->find_active();
+    //$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_NAME, '.$this->config->item('table_name').'.COL_COUNTRY, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
+    $table = $this->config->item('table_name');
+    $this->db->select("$table.COL_CALL, $table.COL_BAND, $table.COL_TIME_ON, $table.COL_RST_RCVD, $table.COL_RST_SENT, $table.COL_MODE, " .
+        "$table.COL_NAME, $table.COL_COUNTRY, $table.COL_PRIMARY_KEY, $table.COL_SAT_NAME, $table.COL_GRIDSQUARE, " .
+        "$table.COL_QSL_RCVD, $table.COL_EQSL_QSL_RCVD, $table.COL_EQSL_QSL_SENT, $table.COL_QSL_SENT, $table.COL_STX, " .
+        "$table.COL_STX_STRING, $table.COL_SRX, $table.COL_SRX_STRING, $table.COL_LOTW_QSL_SENT, $table.COL_LOTW_QSL_RCVD, " .
+        "$table.COL_VUCC_GRIDS, $table.COL_OPERATOR, station_profile.*");
     $this->db->from($this->config->item('table_name'));
 
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+    $this->db->where('station_profile.station_id',$station_id);
     $this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', "desc");
 
     $this->db->limit($num);

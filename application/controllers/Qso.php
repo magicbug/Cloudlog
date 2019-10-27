@@ -22,7 +22,24 @@ class QSO extends CI_Controller {
 		$data['notice'] = false;
 		$data['stations'] = $this->stations->all();
 		$data['radios'] = $this->cat->radios();
-		$data['query'] = $this->logbook_model->last_custom('5');
+		//if (isset($_COOKIE['station_profile_id'])) {
+		//    $station_profile_id = $_COOKIE['station_profile_id'];
+		//    $data['active_station'] = $this->stations->profile($station_profile_id);
+		//} else {
+		//    $station_profile_id = 0;
+		//}
+		//$station_profile_id = isset($_COOKIE['station_profile_id']) ? $_COOKIE['station_profile_id'] : 0;
+		$station_profile_id = $this->stations->find_active();
+		$station_changed = false;
+		$new_station = $this->security->xss_clean($this->input->post('station_profile'));
+		if (($new_station != "") && ($new_station != $station_profile_id )) {
+		    //station changed, activate the new one
+		    $station_profile_id = $new_station;
+		    $this->stations->set_active(0,$station_profile_id);
+		    $station_changed = true;
+		}
+		$data['active_station'] = $this->stations->profile($station_profile_id);
+		$data['query'] = $this->logbook_model->last_custom('5',$station_profile_id);
 		
 		$this->load->library('form_validation');
 
@@ -30,7 +47,7 @@ class QSO extends CI_Controller {
 		$this->form_validation->set_rules('start_time', 'Time', 'required');
 		$this->form_validation->set_rules('callsign', 'Callsign', 'required');
 
-		if ($this->form_validation->run() == FALSE)
+		if ($station_changed || $this->form_validation->run() == FALSE)
 		{
 			$data['page_title'] = "Add QSO";
 
@@ -66,11 +83,12 @@ class QSO extends CI_Controller {
 			
 			setcookie("radio", $qso_data['radio'], time()+3600*24*99);
 			setcookie("station_profile_id", $qso_data['station_profile_id'], time()+3600*24*99);
-
+            
 			$this->session->set_userdata($qso_data);
-				
+			$this->stations->set_active(0,$qso_data['station_profile_id']);
+			$data['active_station'] = $this->stations->profile($qso_data['station_profile_id']);
 			// Get last 5 qsos
-			$data['query'] = $this->logbook_model->last_custom('5');
+			$data['query'] = $this->logbook_model->last_custom('5',$qso_data['station_profile_id']);
 			 
 			// Set Any Notice Messages
 			$data['notice'] = "QSO Added";

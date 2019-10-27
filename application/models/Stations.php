@@ -84,24 +84,34 @@ class Stations extends CI_Model {
 		$clean_new = $this->security->xss_clean($new);
 
         // Deselect current default
-		$current_default = array(
-				'station_active' => null,
-		);
-		$this->db->where('station_id', $clean_current);
-		$this->db->update('station_profile', $current_default);
-		
+		//$current_default = array(
+		//		'station_active' => null,
+		//);
+		//$this->db->where('station_id', $clean_current);
+		//$this->db->update('station_profile', $current_default);
+		//
 		// Deselect current default	
-		$newdefault = array(
-			'station_active' => 1,
+		//$newdefault = array(
+		//	'station_active' => 1,
+		//);
+		//$this->db->where('station_id', $clean_new);
+		//$this->db->update('station_profile', $newdefault);
+		$newstation = array(
+		    'user_station_id' => $clean_new,
 		);
-		$this->db->where('station_id', $clean_new);
-		$this->db->update('station_profile', $newdefault);
+		$this->db->where('user_id',$this->session->userdata('user_id'));
+		$this->db->update('users',$newstation);
+		$this->session->set_userdata('station_profile_id',$clean_new);
     }
 
     public function find_active() {
-        $this->db->where('station_active', 1);
-       	$query = $this->db->get('station_profile');
-        
+        //$this->db->where('station_active', 1);
+       	//$query = $this->db->get('station_profile');
+        $this->db->select('station_profile.*');
+        $this->db->from('users');
+        $this->db->join('station_profile','users.user_station_id = station_profile.station_id');
+        $this->db->where('users.user_id',$this->session->userdata('user_id'));
+        $query = $this->db->get();
         if($query->num_rows() >= 1) {
         	foreach ($query->result() as $row)
 			{

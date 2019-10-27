@@ -241,7 +241,8 @@ class User_Model extends CI_Model {
 			'user_eqsl_qth_nickname' => $u->row()->user_eqsl_qth_nickname,
 			'user_hash'		 => $this->_hash($u->row()->user_id."-".$u->row()->user_type),
 			'radio' => isset($_COOKIE["radio"])?$_COOKIE["radio"]:"",
-			'station_profile_id' => isset($_COOKIE["station_profile_id"])?$_COOKIE["station_profile_id"]:""
+			//'station_profile_id' => isset($_COOKIE["station_profile_id"])?$_COOKIE["station_profile_id"]:""
+		    'station_profile_id' => $u->row()->user_station_id
 		);
 
 		$this->session->set_userdata($userdata);

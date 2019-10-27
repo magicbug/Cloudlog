@@ -56,7 +56,7 @@
 					<td><?php echo $row->station_city;?></td>	
 					<td><?php echo $row->qso_total;?></td>
 					<td>
-						<?php if($row->station_active != 1) { ?>			
+						<?php if ($row->station_id != $current_active) { ?>			
 							<a href="<?php echo site_url('station/set_active/').$current_active."/".$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('Are you sure you want to make logbook <?php echo $row->station_profile_name; ?> the active logbook?');">Set Active</a>
 						<?php } else { ?>
 							<span class="badge badge-success">Active Logbook</span>
