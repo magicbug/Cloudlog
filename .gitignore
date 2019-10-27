@@ -12,3 +12,6 @@
 .idea/*
 .DS_Store
 sync.sh
+/.buildpath
+/.project
+/.dbeaver
