@@ -79,11 +79,13 @@
 				</tr>
 				<?php } ?>
 				
+				<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 				<?php if($row->COL_COMMENT != null) { ?>
 				<tr>
 					<td>Comment:</td>
 					<td><?php echo $row->COL_COMMENT; ?></td>
 				</tr>
+				<?php } ?>
 				<?php } ?>
 				
 				<?php if($row->COL_SAT_NAME != null) { ?>
