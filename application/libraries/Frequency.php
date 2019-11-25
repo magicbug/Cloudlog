@@ -3,7 +3,7 @@ class Frequency {
 
   const modes = array('SSB','FM','AM','CW','DSTAR','F4M','DMR','DIGITALVOICE',
                       'PSK31','PSK63','RTTY','JT65','JT65B','JT6C','JT9-1', 
-                      'JT9','FT8','FSK441','JTMS','ISCAT','MSK144','JTMSK', 
+                      'JT9','FT4','FT8','FSK441','JTMS','ISCAT','MSK144','JTMSK', 
                       'QRA64','PKT','SSTV','HELL','HELL80');
 
   public $defaultFrequencies = array(
@@ -93,7 +93,7 @@ class Frequency {
     
     // Data modes that are being treated as 'DATA' for frequency lookup
     $data_modes = array('PSK31','PSK63','RTTY',
-                        'JT65','JT65B','JT6C','JT9-1','JT9','FT8',
+                        'JT65','JT65B','JT6C','JT9-1','JT9','FT4','FT8',
                         'FSK441','JTMS','ISCAT','MSK144','JTMSK',
                         'QRA64','PKT','SSTV','HELL','HELL80');
     
