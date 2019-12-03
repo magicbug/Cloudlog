@@ -70,7 +70,7 @@
 						<a href="<?php echo site_url('station/edit')."/".$row->station_id; ?>" class="btn btn-info btn-sm"><i class="fas fa-edit-alt"></i> Edit</a>
 					</td>
 					<td>
-						<a href="<?php echo site_url('station/delete')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete QSO <?php echo $row->station_profile_name; ?>?');"><i class="fas fa-trash-alt"></i> Delete</a></td>
+						<a href="<?php echo site_url('station/delete')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete station profile <?php echo $row->station_profile_name; ?> this will delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i> Delete</a></td>
 				</tr>
 
 				<?php } ?>

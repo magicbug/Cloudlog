@@ -73,6 +73,11 @@ class Stations extends CI_Model {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
 
+		// Delete QSOs
+		$this->db->where('station_id', $id);
+		$this->db->delete($this->config->item('table_name'));
+
+		// Delete Station Profile
 		$this->db->delete('station_profile', array('station_id' => $clean_id)); 
 	}
 
