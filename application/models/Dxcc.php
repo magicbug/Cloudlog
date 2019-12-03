@@ -103,7 +103,7 @@ class DXCC extends CI_Model {
             "select COL_COUNTRY, COL_MODE, COL_PROP_MODE as COL_PROP_MODE, count(COL_COUNTRY) as cnt
 				from ".$this->config->item('table_name')."
 				where station_id = ".$station_id." AND COL_PROP_MODE = \"SAT\"
-				group by COL_COUNTRY, COL_PROP_MODE"
+				group by COL_COUNTRY"
             );
 
             foreach($satellite_data->result() as $row){
