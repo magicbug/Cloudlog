@@ -174,6 +174,22 @@ class Logbook_model extends CI_Model {
     }
   }
 
+  public function dxcc_qso_details($country, $band){
+    $CI =& get_instance();
+    $CI->load->model('Stations');
+    $station_id = $CI->Stations->find_active();
+
+    $this->db->where('station_id', $station_id); 
+    $this->db->where('COL_COUNTRY', $country);
+    if($band != "SAT") {
+      $this->db->where('COL_BAND', $band);
+    } else {
+      $this->db->where('COL_PROP_MODE', "SAT");
+    }
+
+    return $this->db->get($this->config->item('table_name'));
+  }
+
   public function get_callsigns($callsign){
     $this->db->select('COL_CALL');
     $this->db->distinct();

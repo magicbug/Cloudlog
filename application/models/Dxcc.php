@@ -21,7 +21,9 @@ class DXCC extends CI_Model {
                            "9cm"=>0,
                            "6cm"=>0,
                            "3cm"=>0,
-                           "1.25cm"=>0);
+                           "1.25cm"=>0,
+                           "SAT"=>0,
+                       );
 
 	function __construct()
 	{
@@ -37,11 +39,19 @@ class DXCC extends CI_Model {
 
 		// get all worked slots from database
 		$data = $this->db->query(
-			"SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `".$this->config->item('table_name')."` WHERE station_id = ".$station_id.""
+			"SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `".$this->config->item('table_name')."` WHERE station_id = ".$station_id." AND COL_PROP_MODE != \"SAT\""
 		);
 		$worked_slots = array();
 		foreach($data->result() as $row){
 			array_push($worked_slots, $row->COL_BAND);
+		}
+
+		$SAT_data = $this->db->query(
+			"SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `".$this->config->item('table_name')."` WHERE station_id = ".$station_id." AND COL_PROP_MODE = \"SAT\""
+		);
+
+		foreach($SAT_data->result() as $row){
+			array_push($worked_slots, strtoupper($row->COL_PROP_MODE));
 		}
 
 
@@ -52,6 +62,7 @@ class DXCC extends CI_Model {
 				array_push($results, $slot);
 			} 
 		}
+
 		return $results;
 	}
 
@@ -63,7 +74,7 @@ class DXCC extends CI_Model {
         $data = $this->db->query(
             "select COL_COUNTRY, COL_MODE, lcase(COL_BAND) as COL_BAND, count(COL_COUNTRY) as cnt
             from ".$this->config->item('table_name')."
-            where station_id = ".$station_id."
+            where station_id = ".$station_id." AND COL_PROP_MODE != \"SAT\"
             group by COL_COUNTRY, COL_MODE, COL_BAND"
             );
 
@@ -84,6 +95,32 @@ class DXCC extends CI_Model {
                 $results[$row->COL_COUNTRY][$row->COL_BAND] = 0; 
 
             $results[$row->COL_COUNTRY][$row->COL_BAND] += $row->cnt;
+        }
+
+        // Satellite DXCC
+
+            $satellite_data = $this->db->query(
+            "select COL_COUNTRY, COL_MODE, COL_PROP_MODE as COL_PROP_MODE, count(COL_COUNTRY) as cnt
+				from ".$this->config->item('table_name')."
+				where station_id = ".$station_id." AND COL_PROP_MODE = \"SAT\"
+				group by COL_COUNTRY, COL_PROP_MODE"
+            );
+
+            foreach($satellite_data->result() as $row){
+            if ($last_country != $row->COL_COUNTRY){
+                // new row
+                $results[$row->COL_COUNTRY] = $this->bandslots;
+                $last_country = $row->COL_COUNTRY;
+            }
+
+            // update stats
+            if (!isset($results[$row->COL_COUNTRY]))
+                $results[$row->COL_COUNTRY] = []; 
+
+            if (!isset($results[$row->COL_COUNTRY][$row->COL_PROP_MODE]))
+                $results[$row->COL_COUNTRY][$row->COL_PROP_MODE] = 0; 
+
+            $results[$row->COL_COUNTRY][$row->COL_PROP_MODE] += $row->cnt;
         }
 
         // print_r($results);
