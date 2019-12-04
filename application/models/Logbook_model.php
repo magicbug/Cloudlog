@@ -847,7 +847,7 @@ class Logbook_model extends CI_Model {
     }
 
   /* Used to check if the qso is already in the database */
-    function import_check($datetime, $callsign, $band) {
+  function import_check($datetime, $callsign, $band) {
 
     $this->db->select('COL_TIME_ON, COL_CALL, COL_BAND');
     $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
@@ -1251,12 +1251,17 @@ class Logbook_model extends CI_Model {
             $input_lotw_qslsdate = NULL;
         }
 
-
+        if($station_id == "" || $station_id == "0") {
+          $CI =& get_instance();
+          $CI->load->model('Stations');
+          $station_id = $CI->Stations->find_active();
+        }
         
         if (isset($record['call'])){
           $this->db->where('COL_CALL', $record['call']);
         }
         $this->db->where('COL_TIME_ON', $time_on);
+        $this->db->where('station_id', $station_id);
         $check = $this->db->get($this->config->item('table_name'));
         
         if ($check->num_rows() <= 0)
@@ -1417,12 +1422,6 @@ class Logbook_model extends CI_Model {
                 'COL_VUCC_GRIDS' =>((!empty($record['vucc_grids']))) ? $record['vucc_grids'] : '',
                 'COL_WEB' => (!empty($record['web'])) ? $record['web'] : ''
             );
-
-            if($station_id == "" || $station_id == "0") {
-              $CI =& get_instance();
-              $CI->load->model('Stations');
-              $station_id = $CI->Stations->find_active();
-            }
 
             if($station_id != "0") {
               $station_result = $this->db->where('station_id', $station_id)
