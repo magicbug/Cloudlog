@@ -203,18 +203,13 @@
 		$lat = $stn_loc[0];
 		$lng = $stn_loc[1];
 	} else {
-		$query = $this->db->query('
-			SELECT *
-			FROM dxcc_entities
-			WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
-			ORDER BY LENGTH( prefix ) DESC
-			LIMIT 1 
-		');
 
-		foreach ($query->result() as $dxcc) {
-			$lat = $dxcc->lat;
-			$lng = $dxcc->long;
-		}
+		$CI =& get_instance();
+		$CI->load->model('Logbook_model');
+
+		$result = $CI->Logbook_model->dxcc_lookup($row->COL_CALL, $row->COL_TIME_ON);
+			$lat = $result['lat'];
+			$lng = $result['long'];
 	}
 ?>
 
