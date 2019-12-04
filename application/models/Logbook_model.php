@@ -1251,19 +1251,23 @@ class Logbook_model extends CI_Model {
             $input_lotw_qslsdate = NULL;
         }
 
+        // Get active station_id from station profile if one hasn't been provided
         if($station_id == "" || $station_id == "0") {
           $CI =& get_instance();
           $CI->load->model('Stations');
           $station_id = $CI->Stations->find_active();
         }
         
+        // Check if QSO is already in the database
         if (isset($record['call'])){
           $this->db->where('COL_CALL', $record['call']);
         }
         $this->db->where('COL_TIME_ON', $time_on);
+        $this->db->where('COL_BAND', $band);
         $this->db->where('station_id', $station_id);
         $check = $this->db->get($this->config->item('table_name'));
         
+        // If QSO is not in the database add it
         if ($check->num_rows() <= 0)
         {
             // Create array with QSO Data use ?:
@@ -1423,10 +1427,10 @@ class Logbook_model extends CI_Model {
                 'COL_WEB' => (!empty($record['web'])) ? $record['web'] : ''
             );
 
+            // Collect field information from the station profile table thats required for the QSO.
             if($station_id != "0") {
               $station_result = $this->db->where('station_id', $station_id)
                                 ->get('station_profile');
-
 
                 if ($station_result->num_rows() > 0){
                     $data['station_id'] = $station_id;
@@ -1452,9 +1456,10 @@ class Logbook_model extends CI_Model {
                 }
             }
 
-
+            // Save QSO
             $this->add_qso($data);
-
+        } else {
+          $my_error .= "Date/Time: ".$time_on." Callsign: ".$record['call']." Band: ".$band."  Duplicate<br>";
         }
 
         return $my_error;
