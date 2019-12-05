@@ -15,7 +15,8 @@ php-curl, php-mbstrings, php-xml
 
 ## Versions
 
-* Master - Current working copy
+* Master - Current working copy (Commit wise frozen till v2 is ready for release, unless bug fixes needed)
+* cloudlog-v2 - This is the current development copy, while to work on bringing multiclient to Cloudlog without breaking users stable coplies, master now has a freeze on it.
 
 ## Setup
 
