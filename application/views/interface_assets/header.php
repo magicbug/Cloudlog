@@ -126,18 +126,6 @@
 		</form>
 	<?php } ?>
 
-	<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-    	<!-- Logged in Content-->
-    <?php } else { ?>
-    <!-- Not Logged In-->
-	<form method="post" action="<?php echo site_url('user/login'); ?>" style="padding-left: 5px;" class="form-inline">
-			<input class="form-control mr-sm-2" type="text" name="user_name" placeholder="Username" aria-label="Username">
-			<input class="form-control mr-sm-2" type="password" name="user_password" placeholder="Password" aria-label="Password">
-			<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
-      <button class="btn btn-outline-success mr-sm-2" type="submit">Login</button>
-	</form>
-	<?php } ?>
-
 		<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
         <ul class="navbar-nav">
         <!-- Logged in As -->

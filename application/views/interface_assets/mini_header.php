@@ -9,9 +9,13 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
 
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css">
+    
+    <?php if ($this->uri->segment(1) == "login" || $this->uri->segment(2) == "login") { ?>
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/login.css">
+    <?php } ?>
 
     <!-- Maps -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/leaflet/leaflet.css" />

@@ -335,9 +335,9 @@ class User extends CI_Controller {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$data['page_title'] = "Login";
-			$this->load->view('interface_assets/header', $data);
-			$this->load->view('user/login');
-			$this->load->view('interface_assets/footer');
+
+			$this->load->view('interface_assets/mini_header.php', $data);
+			$this->load->view('authentication/login/login.php');
 
 		}
 		else
@@ -361,6 +361,6 @@ class User extends CI_Controller {
 		$this->user_model->clear_session();
 
 		$this->session->set_flashdata('notice', 'User '.$user_name.' logged out.');
-		redirect('dashboard');
+		redirect('login');
 	}
 }
