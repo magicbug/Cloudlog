@@ -56,9 +56,37 @@
 				</div>
 			</div>
 
+
+			<ul>
+				<li>Country Name</li>
+				<li>CQ Zone</li>
+				<li>ITU Zone</li>
+			</ul>
+
+			<h4 class="mb-3">Legal</h4>
+
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input" id="termsandconditions" required>
+			    <label class="custom-control-label" for="termsandconditions">You agree to the Terms & Conditions</label>
+			</div>
+
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input" id="termsandconditions" required>
+			    <label class="custom-control-label" for="termsandconditions">You are to us contacting you regarding Cloudlog</label>
+			</div>
+
 			<hr class="mb-4">
 
 			<button class="btn btn-primary btn-lg btn-block" type="submit">Create an account</button>
 		</div>
 	</div>
 </div>
+
+<footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; <?php echo date("Y");?> Cloudlog</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="#">Privacy</a></li>
+      <li class="list-inline-item"><a href="#">Terms</a></li>
+      <li class="list-inline-item"><a href="#">Support</a></li>
+    </ul>
+</footer>
