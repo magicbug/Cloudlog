@@ -47,6 +47,7 @@ class Dashboard extends CI_Controller {
 		$data['total_digi'] = $this->logbook_model->total_digi();
 		
 		$data['total_countrys'] = $this->logbook_model->total_countrys();
+		$data['total_countrys_confirmed'] = $this->logbook_model->total_countrys_confirmed();
 		
 		$data['total_qsl_sent'] = $this->logbook_model->total_qsl_sent();
 		$data['total_qsl_recv'] = $this->logbook_model->total_qsl_recv();

@@ -816,6 +816,17 @@ class Logbook_model extends CI_Model {
         return $query->num_rows();
     }
 
+    /* Return total number of countrys confirmed with paper QSL */
+    function total_countrys_confirmed() {
+      $CI =& get_instance();
+      $CI->load->model('Stations');
+      $station_id = $CI->Stations->find_active();
+
+        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_RCVD =\'Y\'');
+
+        return $query->num_rows();
+    }
+
   function api_search_query($query) {
     $time_start = microtime(true);
     $results = $this->db->query($query);
