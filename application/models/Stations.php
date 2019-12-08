@@ -49,7 +49,7 @@ class Stations extends CI_Model {
 		$this->db->insert('station_profile', $data); 
 	}
 
-	function create_basic_profile($station_profile_name, $station_gridsquare, $station_callsign, $station_dxcc, $station_country, $station_cq, $station_itu) {
+	function create_basic_profile($station_profile_name, $station_gridsquare, $station_callsign, $station_dxcc, $station_country, $station_cq, $station_itu, $user_id) {
 		$data = array(
 			'station_profile_name' => $station_profile_name,
 			'station_gridsquare' => $station_gridsquare,
@@ -59,6 +59,7 @@ class Stations extends CI_Model {
 			'station_cq' =>  $station_cq,
 			'station_itu' =>  $station_itu,
 			'station_active' => 1,
+			'user_id' => $user_id
 		);
 
 		$this->db->insert('station_profile', $data); 

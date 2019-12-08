@@ -71,14 +71,11 @@ class Register extends CI_Controller {
         	// Get User account details
         	$user_details = $this->user_model->get_user_details($account_data['username']);
 
-        	print_r($user_details);
-        	
-
         	// Load Stations model
         	$this->load->model('stations');
 
         	// Create a basic station profile
-        	$this->stations->create_basic_profile("Home QTH", $account_data['gridsquare'], $account_data['callsign'], $account_data['dxcc_adif_value'], $account_data['station_country'], $account_data['cq_zone'], $account_data['itu_zone']);
+        	$this->stations->create_basic_profile("Home QTH", $account_data['gridsquare'], $account_data['callsign'], $account_data['dxcc_adif_value'], $account_data['station_country'], $account_data['cq_zone'], $account_data['itu_zone'], $user_details->user_id);
 
         	// Send Email to User
 
