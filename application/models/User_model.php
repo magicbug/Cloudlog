@@ -30,6 +30,16 @@ class User_Model extends CI_Model {
 		return $r;
 	} 
 
+	function get_user_details($username) {
+		// Clean ID
+		$clean_username = $this->security->xss_clean($username);
+
+		$this->db->where('user_name', $clean_username);
+		$r = $this->db->get($this->config->item('auth_table'));
+		return $r->row();
+	} 
+
+
 	// FUNCTION: object get_by_id($id)
 	// Retrieve a user by user ID
 	function get_by_id($id) {
@@ -105,11 +115,6 @@ class User_Model extends CI_Model {
 			// Check the password is valid
 			if($data['user_password'] == EPASSWORDINVALID) {
 				return EPASSWORDINVALID;
-			}
-
-			// Check the email address isn't in use
-			if($this->exists_by_email($email)) {
-				return EEMAILEXISTS;
 			}
 
 			// Add user

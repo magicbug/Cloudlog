@@ -33,8 +33,7 @@ class Register extends CI_Controller {
 
         	/*
 				Todo
-				- Create User Account
-				- Create Station Profile
+				- Need to create fields for legal in table
 				- Assign Station Profile to user
 				- Send confirmation email to user
         	*/
@@ -46,8 +45,8 @@ class Register extends CI_Controller {
         	$account_data['email'] = $this->input->post('email');
         	$account_data['password'] = $this->input->post('password');
 
-        	$account_data['callsign'] = $this->input->post('callsign');
-        	$account_data['gridsquare'] = $this->input->post('gridsquare');
+        	$account_data['callsign'] = strtoupper($this->input->post('callsign'));
+        	$account_data['gridsquare'] = strtoupper($this->input->post('gridsquare'));
         	$account_data['dxcc_adif_value'] = $this->input->post('dxcc');
         	$account_data['station_country'] = $this->input->post('station_country');
         	$account_data['cq_zone'] = $this->input->post('cq_zone');
@@ -60,9 +59,26 @@ class Register extends CI_Controller {
 
         	$this->load->model('user_model');
 
-        	$this->user_model->add($account_data['username'], $account_data['password'], $account_data['email'], 5, $account_data['firstname'], $account_data['lastname'], $account_data['callsign'], $account_data['gridsquare'], 0);
+        	// Create User Account
+        	$user_create_results = $this->user_model->add($account_data['username'], $account_data['password'], $account_data['email'], 5, $account_data['firstname'], $account_data['lastname'], $account_data['callsign'], $account_data['gridsquare'], 0);
 
-        	echo $this->db->last_query();
+        	// If account creation failed then go back to register
+        	if($user_create_results != "OK") {
+        		$this->session->set_flashdata('Error', 'Account creation failed contact support');
+        		redirect('register');
+        	}
+
+        	// Get User account details
+        	$user_details = $this->user_model->get_user_details($account_data['username']);
+
+        	print_r($user_details);
+        	
+
+        	// Load Stations model
+        	$this->load->model('stations');
+
+        	// Create a basic station profile
+        	$this->stations->create_basic_profile("Home QTH", $account_data['gridsquare'], $account_data['callsign'], $account_data['dxcc_adif_value'], $account_data['station_country'], $account_data['cq_zone'], $account_data['itu_zone']);
         }
 	}
 	

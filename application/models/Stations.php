@@ -49,6 +49,21 @@ class Stations extends CI_Model {
 		$this->db->insert('station_profile', $data); 
 	}
 
+	function create_basic_profile($station_profile_name, $station_gridsquare, $station_callsign, $station_dxcc, $station_country, $station_cq, $station_itu) {
+		$data = array(
+			'station_profile_name' => $station_profile_name,
+			'station_gridsquare' => $station_gridsquare,
+			'station_callsign' =>  $station_callsign,
+			'station_dxcc' =>  $station_dxcc,
+			'station_country' =>  $station_country,
+			'station_cq' =>  $station_cq,
+			'station_itu' =>  $station_itu,
+			'station_active' => 1,
+		);
+
+		$this->db->insert('station_profile', $data); 
+	}
+
 	function edit() {
 		$data = array(
 			'station_profile_name' => xss_clean($this->input->post('station_profile_name', true)),
