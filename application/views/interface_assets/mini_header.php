@@ -17,6 +17,10 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/login.css">
     <?php } ?>
 
+    <?php if ($this->uri->segment(1) == "register") { ?>
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/register.css">
+    <?php } ?>
+
     <!-- Maps -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/leaflet/leaflet.css" />
 

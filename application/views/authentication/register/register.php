@@ -2,27 +2,35 @@
 	<div class="py-5 text-center">
 		<h2>Create a Cloudlog Account</h2>
  
- 		<p class="lead">Before you use Cloudlog, you must create an account and provide us with some information about your station location before you can add some QSOs. This is completely free.</p>
+ 		<p class="lead">Before you use Cloudlog, you must create an account and provide us with some information about your station location before you can add some QSOs.</p>
 	</div>
 
+	<?php if (!empty(validation_errors())): ?>
+    <div class="alert alert-danger">
+        <a class="close" data-dismiss="alert" title="close">x</a>
+        <ul><?php echo (validation_errors('<li>', '</li>')); ?></ul>
+    </div>
+	<?php endif; ?>
+
+	<?php echo form_open('register'); ?>
 	<div class="row">
 		<div class="col-md-8 order-md-1">
 			<h4 class="mb-3">Personal Information</h4>
 			<div class="row">
 				<div class="col-md-6 mb-3">
 					<label for="firstName">First name</label>
-					<input type="text" class="form-control" id="firstName" placeholder="" value="">
+					<input type="text" class="form-control" name="firstname" id="firstName" placeholder="" value="" required>
 				</div>
 
 				<div class="col-md-6 mb-3">
 			    	<label for="lastName">Last name</label>
-			    	<input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
+			    	<input type="text" class="form-control" name="lastname" id="lastName" placeholder="" value="" required="">
 				</div>
 			</div>
 
 			<div class="mb-3">
 			    <label for="email">Email</label>
-			    <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+			    <input type="email" class="form-control" name="email" id="email" placeholder="you@example.com" required>
 			</div>
 
 			<div class="mb-3">
@@ -31,13 +39,13 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text">@</span>
 					</div>
-					<input type="text" class="form-control" id="username" placeholder="Username" required="">
+					<input type="text" class="form-control" name="username" id="username" placeholder="Username" required="">
 				</div>
 			</div>
 
 			<div class="mb-3">
 			    <label for="password">Password</label>
-			    <input type="password" class="form-control" id="password" required>
+			    <input type="password" class="form-control" name="password" id="password" required>
 			</div>
 
 			<h4 class="mb-3">Station Information</h4>
@@ -45,12 +53,12 @@
 			<div class="row">
 				<div class="col-md-6 mb-3">
 					<label for="callsign">Callsign</label>
-					<input type="text" class="form-control" id="Callsign" placeholder="" value="">
+					<input type="text" class="form-control" name="callsign" id="Callsign" placeholder="" value="" required>
 				</div>
 
 				<div class="col-md-6 mb-3">
 			    	<label for="gridsquare">Gridsquare</label>
-			    	<input type="text" class="form-control" id="gridsquare" placeholder="" value="" required="">
+			    	<input type="text" class="form-control" name="gridsquare" id="gridsquare" placeholder="" value="" required>
 				</div>
 			</div>
 
@@ -63,7 +71,7 @@
 					<?php } ?>
 					</select>
 					<?php } ?>
-					<input type="text" id="country" name="station_country" value="" required />
+					<input type="hidden" id="country" name="station_country" value="" required />
 				</div>
 
 			<div class="row">
@@ -81,19 +89,21 @@
 			<h4 class="mb-3">Legal</h4>
 
 			<div class="custom-control custom-checkbox">
-				<input type="checkbox" class="custom-control-input" id="termsandconditions" required>
+				<input type="checkbox" name="terms" class="custom-control-input" id="termsandconditions" required>
 			    <label class="custom-control-label" for="termsandconditions">You agree to the Terms & Conditions</label>
 			</div>
 
 			<div class="custom-control custom-checkbox">
-				<input type="checkbox" class="custom-control-input" id="termsandconditions" required>
-			    <label class="custom-control-label" for="termsandconditions">You are to us contacting you regarding Cloudlog</label>
+				<input type="checkbox" name="marketing" class="custom-control-input" id="marketing" required>
+			    <label class="custom-control-label" for="marketing">Allow us to contact you with news regarding Cloudlog like issues & features.</label>
 			</div>
 
 			<hr class="mb-4">
 
 			<button class="btn btn-primary btn-lg btn-block" type="submit">Create an account</button>
 		</div>
+
+		</form>
 	</div>
 </div>
 

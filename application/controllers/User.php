@@ -363,4 +363,16 @@ class User extends CI_Controller {
 		$this->session->set_flashdata('notice', 'User '.$user_name.' logged out.');
 		redirect('login');
 	}
+
+	function username_check($username) {
+		$this->load->model('user_model');
+		$result = $this->user_model->exists($username);
+
+		header("Content-Type: application/json; charset=UTF-8");
+		if($result != 1) {
+			echo json_encode(array('Status' => 'Available'));
+		} else {
+			echo json_encode(array('Status' => 'Taken'));
+		}
+	}
 }
