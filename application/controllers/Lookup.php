@@ -22,6 +22,19 @@ class Lookup extends CI_Controller {
 
 	}
 
+	public function dxcc($callsign, $date)
+	{
+		$this->load->model('dxcc');
+		$result = $this->dxcc->dxcc_lookup($callsign, $date);
+
+		header("Content-Type: application/json; charset=UTF-8");
+		if($result != "error") {
+			echo json_encode($result);
+		} else {
+			echo json_encode(array('Error' => 'Callsign Not Found'));
+		}
+	}
+
 	public function scp($call) {
 		
 		if($call) {

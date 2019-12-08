@@ -1,7 +1,5 @@
 <div class="container">
 	<div class="py-5 text-center">
-		<img class="d-block mx-auto mb-4" src="/docs/4.4/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-
 		<h2>Create a Cloudlog Account</h2>
  
  		<p class="lead">Before you use Cloudlog, you must create an account and provide us with some information about your station location before you can add some QSOs. This is completely free.</p>
@@ -56,12 +54,29 @@
 				</div>
 			</div>
 
+				<div class="mb-3">
+				    <label for="dxcc_name">Country (DXCC)</label>
+				    <?php if ($dxcc_list->num_rows() > 0) { ?>
+					<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
+					<?php foreach ($dxcc_list->result() as $dxcc) { ?>
+					<option value="<?php echo $dxcc->adif; ?>"><?php echo $dxcc->name; ?></option>
+					<?php } ?>
+					</select>
+					<?php } ?>
+					<input type="text" id="country" name="station_country" value="" required />
+				</div>
 
-			<ul>
-				<li>Country Name</li>
-				<li>CQ Zone</li>
-				<li>ITU Zone</li>
-			</ul>
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<label for="cq_zone">CQ Zone</label>
+					<input type="text" name="cq_zone" class="form-control" id="cq_zone" placeholder="" value="">
+				</div>
+
+				<div class="col-md-6 mb-3">
+			    	<label for="itu_zone">ITU Zone</label>
+			    	<input type="text" class="form-control" name="itu_zone" id="itu_zone" placeholder="" value="" required="">
+				</div>
+			</div>
 
 			<h4 class="mb-3">Legal</h4>
 

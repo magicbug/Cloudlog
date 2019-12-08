@@ -172,5 +172,46 @@ class DXCC extends CI_Model {
 		$this->db->order_by('name', 'ASC');
 		return $this->db->get('dxcc_entities');
 	}
+
+	public function dxcc_lookup($call, $date){
+        $len = strlen($call);
+
+        $this->db->where('call', $call);
+        $this->db->where('CURDATE() between start and end');
+
+        $query = $this->db->get('dxcc_exceptions');
+
+
+        if ($query->num_rows() > 0){
+
+                $row = $query->row_array();
+
+                return $row;
+        } else {
+          // query the table, removing a character from the right until a match
+          for ($i = $len; $i > 0; $i--){
+              //printf("searching for %s\n", substr($call, 0, $i));
+              $dxcc_result = $this->db->select('*')
+                                      ->where('call', substr($call, 0, $i))
+                                      ->where('(start <= ', $date)
+                                      ->or_where("start = '0000-00-00'", NULL, false)
+                                      ->or_where("start is null)", NULL, false)
+                                      ->where('(end >= ', $date)
+                                      ->or_where("end = '0000-00-00'", NULL, false)
+                                      ->or_where("end is null)", NULL, false)
+                                      ->get('dxcc_prefixes');
+
+              //$dxcc_result = $this->db->query("select `call`, `entity`, `adif` from dxcc_prefixes where `call` = '".substr($call, 0, $i) ."'");
+              //print $this->db->last_query();
+
+              if ($dxcc_result->num_rows() > 0){
+                  $row = $dxcc_result->row_array();
+                  return $row;
+              }
+          }
+        }
+
+        return "error";
+    }
 }
 ?>

@@ -6,7 +6,10 @@
   <label for="inputPassword" class="sr-only">Password</label>
   <input type="password" name="user_password" id="inputPassword" class="form-control" placeholder="Password" required>
   <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-  <p class="mt-5 mb-3 text-muted">&copy; <?php echo date('Y'); ?> Cloudlog</p>
+
+  <p>Need an account? <a href="<?php echo site_url('register'); ?>">Register</a></p>
+
+  <p class="mt-5 mb-3 text-muted"><p class="mb-1">&copy; <?php echo date("Y");?> Cloudlog</p></p>
 </form>
 </body>
 </html>
