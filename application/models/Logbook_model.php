@@ -817,12 +817,34 @@ class Logbook_model extends CI_Model {
     }
 
     /* Return total number of countrys confirmed with paper QSL */
-    function total_countrys_confirmed() {
+    function total_countrys_confirmed_paper() {
       $CI =& get_instance();
       $CI->load->model('Stations');
       $station_id = $CI->Stations->find_active();
 
         $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_RCVD =\'Y\'');
+
+        return $query->num_rows();
+    }
+
+    /* Return total number of countrys confirmed with eQSL */
+    function total_countrys_confirmed_eqsl() {
+      $CI =& get_instance();
+      $CI->load->model('Stations');
+      $station_id = $CI->Stations->find_active();
+
+        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_EQSL_QSL_RCVD =\'Y\'');
+
+        return $query->num_rows();
+    }
+
+    /* Return total number of countrys confirmed with LoTW */
+    function total_countrys_confirmed_lotw() {
+      $CI =& get_instance();
+      $CI->load->model('Stations');
+      $station_id = $CI->Stations->find_active();
+
+        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_LOTW_QSL_RCVD =\'Y\'');
 
         return $query->num_rows();
     }

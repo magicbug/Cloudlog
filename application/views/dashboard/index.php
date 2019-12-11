@@ -106,16 +106,16 @@
 				<td><?php echo $total_countrys; ?></td>
 			</tr>
 			<tr>
-				<td>Confirmed</td>
-				<td><?php echo $total_countrys_confirmed; ?></td>
+				<td>Confirmed (paper/eQSL/LoTW)</td>
+				<td><?php 
+echo $total_countrys_confirmed_paper; ?>/<?php
+echo $total_countrys_confirmed_eqsl; ?>/<?php
+echo $total_countrys_confirmed_lotw; ?></td>
 			</tr>
 			
 			<tr>
 				<td>Needed</td>
-				<td><?php 
-					$dxcc = 340 - $total_countrys; 
-					$dxcc_cfm = 340 - $total_countrys_confirmed; 
-					echo $dxcc." (".$dxcc_cfm.")"; ?></td>
+				<td><?php $dxcc = 340 - $total_countrys; echo $dxcc; ?></td>
 			</tr>
 			
 			<tr>
