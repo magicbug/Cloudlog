@@ -86,18 +86,6 @@
 				</div>
 			</div>
 
-			<h4 class="mb-3">Legal</h4>
-
-			<div class="custom-control custom-checkbox">
-				<input type="checkbox" name="terms" class="custom-control-input" id="termsandconditions" required>
-			    <label class="custom-control-label" for="termsandconditions">You agree to the Terms & Conditions</label>
-			</div>
-
-			<div class="custom-control custom-checkbox">
-				<input type="checkbox" name="marketing" class="custom-control-input" id="marketing" required>
-			    <label class="custom-control-label" for="marketing">Allow us to contact you with news regarding Cloudlog like issues & features.</label>
-			</div>
-
 			<hr class="mb-4">
 
 			<button class="btn btn-primary btn-lg btn-block" type="submit">Create an account</button>

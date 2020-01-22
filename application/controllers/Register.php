@@ -6,7 +6,7 @@
 
 class Register extends CI_Controller {
 
-	public function index()
+    public function index()
 	{
 		// Load DXCC Model
 		$this->load->model('dxcc');
@@ -52,11 +52,6 @@ class Register extends CI_Controller {
         	$account_data['cq_zone'] = $this->input->post('cq_zone');
         	$account_data['itu_zone'] = $this->input->post('itu_zone');
 
-        	$account_data['legal_terms'] = $this->input->post('terms');
-        	$account_data['legal_marketing'] = $this->input->post('marketing');
-
-        	print_r($account_data);
-
         	$this->load->model('user_model');
 
         	// Create User Account
@@ -89,5 +84,17 @@ class Register extends CI_Controller {
         	// Display confirmation page
         }
 	}
+
+    function username_check($username) {
+        $this->load->model('user_model');
+        $result = $this->user_model->exists($username);
+
+        header("Content-Type: application/json; charset=UTF-8");
+        if($result != 1) {
+            echo json_encode(array('Status' => 'Available'));
+        } else {
+            echo json_encode(array('Status' => 'Taken'));
+        }
+    }
 	
 }

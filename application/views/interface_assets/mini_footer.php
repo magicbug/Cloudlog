@@ -36,9 +36,16 @@
 		});
 	});
 
+
+	$('#country').val($("#dxcc_select option:selected").text());
+	$("#dxcc_select" ).change(function() {
+	  $('#country').val($("#dxcc_select option:selected").text());
+	});
+
+
 		$("#username").keyup(function() {
 		// Call API to lookup dxcc information
-	    $.getJSON( "<?php echo site_url('user/username_check/'); ?>" + $("#username").val(), function( data ) {
+	    $.getJSON( "<?php echo site_url('register/username_check/'); ?>" + $("#username").val(), function( data ) {
 	    	console.log(data);
 			$.each( data, function( key, val ) {
 				if(key == "Status") {

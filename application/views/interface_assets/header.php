@@ -141,7 +141,7 @@
 				
 				<div class="dropdown-divider"></div>
 				
-				<a class="dropdown-item" href="<?php echo site_url('user/logout');?>" title="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+				<a class="dropdown-item" href="<?php echo site_url('logout');?>" title="Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
 			</div>
         </li>
     	</ul>
