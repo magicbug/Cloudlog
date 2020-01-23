@@ -143,7 +143,7 @@ class eqsl extends CI_Controller {
 			$eqsl_url .= "&Password=" . $data['user_eqsl_password'];
 			
 			$eqsl_url .= "&RcvdSince=" . $eqsl_last_qsl_date;
-			$eqsl_url .= "&QTHNickname=" . $active_station_info->eqslqthnickname;
+			$eqsl_url .= "&QTHNickname=" . urlencode($active_station_info->eqslqthnickname);
 			
 			// Pull back only confirmations
 			$eqsl_url .= "&ConfirmedOnly=1";
