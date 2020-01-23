@@ -43,7 +43,7 @@ class API extends CI_Controller {
 	function help()
 	{
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		if(!$this->user_model->authorize(1)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 
 		$this->load->model('api_model');
@@ -61,7 +61,7 @@ class API extends CI_Controller {
 	function edit($key) {
 		$this->load->model('user_model');
 		
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		if(!$this->user_model->authorize(1)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		$this->load->model('api_model');
 
@@ -97,7 +97,7 @@ class API extends CI_Controller {
 
 	function generate($rights) {
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		if(!$this->user_model->authorize(1)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 
 		$this->load->model('api_model');
@@ -109,7 +109,7 @@ class API extends CI_Controller {
 
 	function delete($key) {
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		if(!$this->user_model->authorize(1)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 
 		$this->load->model('api_model');
@@ -196,7 +196,7 @@ class API extends CI_Controller {
 		print_r($arguments);
 		return;
 
-		if((!$this->user_model->authorize(3)) && ($this->api_model->authorize($arguments['key']) == 0)) {
+		if((!$this->user_model->authorize(1)) && ($this->api_model->authorize($arguments['key']) == 0)) {
             $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard');
         }
 
