@@ -29,7 +29,7 @@ class Station extends CI_Controller {
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('station_profile/index');
 		$this->load->view('interface_assets/footer');
-	}
+	} 
 
 	public function create() 
 	{

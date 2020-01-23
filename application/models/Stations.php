@@ -13,11 +13,13 @@ class Stations extends CI_Model {
 		$this->db->select('station_profile.*, count('.$this->config->item('table_name').'.station_id) as qso_total');
         $this->db->from('station_profile');
         $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id','left');
+        $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
        	$this->db->group_by('station_profile.station_id');
         return $this->db->get();
-	}
+	} 
 
 	function all() {
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		return $this->db->get('station_profile');
 	}
 
@@ -25,7 +27,7 @@ class Stations extends CI_Model {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
 
-
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', $clean_id);
 		return $this->db->get('station_profile');
 	}
@@ -81,6 +83,7 @@ class Stations extends CI_Model {
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
 		);
 
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', xss_clean($this->input->post('station_id', true)));
 		$this->db->update('station_profile', $data); 
 	}
@@ -90,6 +93,7 @@ class Stations extends CI_Model {
 		$clean_id = $this->security->xss_clean($id);
 
 		// Delete QSOs
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', $id);
 		$this->db->delete($this->config->item('table_name'));
 
@@ -115,11 +119,13 @@ class Stations extends CI_Model {
 		$newdefault = array(
 			'station_active' => 1,
 		);
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', $clean_new);
 		$this->db->update('station_profile', $newdefault);
     }
 
     public function find_active() {
+    	$this->db->where('user_id', $this->session->userdata('user_id'));
         $this->db->where('station_active', 1);
        	$query = $this->db->get('station_profile');
         
@@ -165,7 +171,7 @@ class Stations extends CI_Model {
 		} else {
 			$this->db->where('COL_MY_GRIDSQUARE', $row->station_gridsquare);
 		}
-
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->update($this->config->item('table_name'), $data);
 
 		$str = $this->db->last_query();
@@ -173,6 +179,7 @@ class Stations extends CI_Model {
     }
 
     function profile_exists() {
+    	$this->db->where('user_id', $this->session->userdata('user_id'));
 	    $query = $this->db->get('station_profile');
 		if($query->num_rows() >= 1) {
 	    	return 1;
