@@ -76,13 +76,9 @@
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
 				
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="<?php echo site_url('user');?>" title="Accounts"><i class="fas fa-user"></i> Accounts</a>
+					<a class="dropdown-item" href="<?php echo site_url('settings');?>" title="API Interface"><i class="fas fa-key"></i> Settings</a>
 					
-					<div class="dropdown-divider"></div>
-					
-					<a class="dropdown-item" href="<?php echo site_url('api/help');?>" title="API Interface"><i class="fas fa-key"></i> API</a>
-					
-					<div class="dropdown-divider"></div>					
+					<div class="dropdown-divider"></div>				
 					
 					<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Station Profiles"><i class="fas fa-home"></i> Station Profiles</a>
 					

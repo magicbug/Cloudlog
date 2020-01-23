@@ -2,12 +2,6 @@
 
 class API extends CI_Controller {
 
-	// Do absolutely nothing
-	function index()
-	{
-	}
-
-
 	/*
 		TODOs
 		- Search Callsign (Return Json)
@@ -40,7 +34,7 @@ class API extends CI_Controller {
 
 	}
 
-	function help()
+	function index()
 	{
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(1)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
@@ -50,10 +44,10 @@ class API extends CI_Controller {
 
 		$data['api_keys'] = $this->api_model->keys();
 
-		$data['page_title'] = "API Options";
+		$data['page_title'] = "API Keys";
 
 		$this->load->view('interface_assets/header', $data);
-		$this->load->view('api/help');
+		$this->load->view('settings/api_panel');
 		$this->load->view('interface_assets/footer');
 	}
 
@@ -90,7 +84,7 @@ class API extends CI_Controller {
 
 			$this->session->set_flashdata('notice', 'API Key <b>'.$this->input->post('api_key')."</b> description has been updated.");
 
-			redirect('api/help');
+			redirect('api');
 		}
 
 	}
@@ -104,7 +98,7 @@ class API extends CI_Controller {
 
 		$data['api_keys'] = $this->api_model->generate_key($rights);
 
-		redirect('api/help');
+		redirect('api');
 	}
 
 	function delete($key) {
@@ -118,7 +112,7 @@ class API extends CI_Controller {
 
 		$this->session->set_flashdata('notice', 'API Key <b>'.$key."</b> has been deleted");
 
-		redirect('api/help');
+		redirect('api');
 	}
 
 	// Example of authing
