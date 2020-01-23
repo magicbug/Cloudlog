@@ -1,12 +1,12 @@
 <?php
 
-	class Cat extends CI_Model {
+class Cat extends CI_Model {
 
-		function __construct()
-		{
-			// Call the Model constructor
-			parent::__construct();
-		}
+	function __construct()
+	{
+		// Call the Model constructor
+		parent::__construct();
+	}
 
 		function update($result) {
 		
@@ -43,6 +43,7 @@
 						'mode' => $result['mode'],
 						);
 
+
 						$this->db->where('id', $radio_id);
 						$this->db->update('cat', $data); 
 					}
@@ -77,6 +78,7 @@
 	
 		function status() {
 			//$this->db->where('radio', $result['radio']); 
+			$this->db->where('user_id', $this->session->userdata('user_id'));
 			$query = $this->db->get('cat');
 			
 			return $query;
@@ -85,6 +87,7 @@
 		/* Return list of radios */
 		function radios() {
 			$this->db->select('id, radio');
+			$this->db->where('user_id', $this->session->userdata('user_id'));
 			$query = $this->db->get('cat');
 			
 			return $query;
@@ -93,6 +96,7 @@
 
 		function radio_status($id) {
 			$this->db->select('*');
+			$this->db->where('user_id', $this->session->userdata('user_id'));
 			$this->db->where('id', $id);
 			$query = $this->db->get('cat');
 			
@@ -101,6 +105,7 @@
 
 
 		function delete($id) {
+			$this->db->where('user_id', $this->session->userdata('user_id'));
 			$this->db->where('id', $id);
 			$this->db->delete('cat'); 
 			
