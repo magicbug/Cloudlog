@@ -358,6 +358,13 @@ $(document).on('keypress',function(e) {
       reset_fields();
     }
   });
+  
+  $(document).keyup(function(e) {
+     if (e.key === "Escape") { // escape key maps to keycode `27`
+       reset_fields();
+	   $('#callsign').val("");
+    }
+});
 });
 
 
