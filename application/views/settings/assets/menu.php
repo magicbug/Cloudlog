@@ -4,9 +4,13 @@
 			<span data-feather="home"></span>
 			<a class="nav-link active" href="#">Active</a>
 		</li>
+
+		<li class="nav-item">
+			<a class="nav-link" href="<?php echo site_url('station'); ?>">Station Profiles</a>
+		</li>
 						
 		<li class="nav-item">
-			<a class="nav-link" href="#">Radio Interfaces</a>
+			<a class="nav-link" href="<?php echo site_url('radio'); ?>">Radio Interfaces</a>
 		</li>
 
 		<li class="nav-item">

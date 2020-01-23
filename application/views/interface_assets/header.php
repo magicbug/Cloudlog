@@ -76,12 +76,9 @@
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
 				
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="<?php echo site_url('settings');?>" title="API Interface"><i class="fas fa-key"></i> Settings</a>
+					<a class="dropdown-item" href="<?php echo site_url('settings');?>" title="Settings"><i class="fas fa-key"></i> Settings</a>
 					
-					<div class="dropdown-divider"></div>				
-					
-					<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Station Profiles"><i class="fas fa-home"></i> Station Profiles</a>
-					
+
 					<div class="dropdown-divider"></div>		
 					
 					<a class="dropdown-item" href="<?php echo site_url('radio');?>" title="External Radios"><i class="fas fa-broadcast-tower"></i> Radio Interface</a>
@@ -101,10 +98,6 @@
 					<div class="dropdown-divider"></div>
 					
 					<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
-
-					<div class="dropdown-divider"></div>
-					
-					<a class="dropdown-item" href="<?php echo site_url('backup');?>" title="Backup Cloudlog"><i class="fas fa-save"></i> Backup</a>
 
 					<div class="dropdown-divider"></div>
 					
