@@ -8,8 +8,6 @@
 	    <h5 class="card-title"><?php echo $page_title; ?></h5>
 	  </div>
 
-	  <div class="alert alert-danger" role="alert">Please make sure there is no extra text at the top of the ADIF file as the import will fail.</div>
-
 	  <div class="card-body">
 	    <?php if(isset($error)) { ?>
 			<div class="alert alert-danger" role="alert">

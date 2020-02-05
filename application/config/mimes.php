@@ -180,10 +180,10 @@ return array(
 	'odm'	=>	'application/vnd.oasis.opendocument.text-master',
 	'ott'	=>	'application/vnd.oasis.opendocument.text-template',
 	'oth'	=>	'application/vnd.oasis.opendocument.text-web',
-	'adi'   =>  array('application/octet-stream','text/plain'),
-	'adif'  =>  array('application/octet-stream','text/plain'),
-	'ADI'   =>  array('application/octet-stream','text/plain'),
-	'ADIF'  =>  array('application/octet-stream','text/plain'),
+	'adi'   =>  array('application/octet-stream','text/plain', 'audio/x-hx-aac-adif'),
+	'adif'  =>  array('application/octet-stream','text/plain', 'audio/x-hx-aac-adif'),
+	'ADI'   =>  array('application/octet-stream','text/plain', 'audio/x-hx-aac-adif'),
+	'ADIF'  =>  array('application/octet-stream','text/plain', 'audio/x-hx-aac-adif'),
 	'tq8'   =>  'application/octet-stream',
 	'TQ8'   =>  'application/octet-stream'
 );
