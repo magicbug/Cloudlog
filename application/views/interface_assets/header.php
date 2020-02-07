@@ -27,7 +27,9 @@
 <?php if ($this->uri->segment(1) == "qso") { ?>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/select2/css/select2.min.css" />
 <?php } ?>
-	
+  <?php if ($this->uri->segment(1) == "adif") { ?>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+  <?php } ?>
     <link rel="icon" href="<?php echo base_url(); ?>/favicon.ico">
 
     <title><?php if(isset($page_title)) { echo $page_title; } ?> - Cloudlog</title>
