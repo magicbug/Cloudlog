@@ -122,4 +122,11 @@ class Station extends CI_Controller {
 		redirect('station');
 	}
 
+    public function deletelog($id) {
+        $this->load->model('stations');
+        $this->stations->deletelog($id);
+
+        redirect('station');
+    }
+
 }

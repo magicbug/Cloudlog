@@ -47,12 +47,35 @@
 	</div>
 
   <div class="card-body">
+      <form class="form" action="<?php echo site_url('adif/export_custom'); ?>" method="post" enctype="multipart/form-data">
     <h5 class="card-title">Take your logbook file anywhere!</h5>
     <p class="card-text">Exporting ADIFs allows you to import contacts into third party applications like LoTW, Awards or just for keeping a backup.</p>
 
-    
-    <a href="<?php echo site_url('adif/exportall'); ?>" title="Export All" target="_blank" class="btn btn-outline-secondary btn-sm">Export All QSOs</a>
-    
+          <p class="card-text">From date:</p>
+          <div class="row">
+              <div class="input-group date col-md-3" id="datetimepicker1" data-target-input="nearest">
+                  <input name="from" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+                  <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  </div>
+              </div>
+          </div>
+          <p class="card-text">To date:</p>
+          <div class="row">
+
+          <div class="input-group date col-md-3" id="datetimepicker2" data-target-input="nearest">
+              <input name="to" "totype="text" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+              <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+              </div>
+          </div>
+          </div>
+
+
+
+    <br>
+    <button type="submit" class="btn btn-outline-secondary btn-sm" value="Export">Export QSOs</button>
+      </form>
     <br><br>
 
     <h6>Export Satellite Only QSOs</h6>
@@ -63,4 +86,5 @@
 </div>
 
 </div>
+
 

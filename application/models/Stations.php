@@ -81,6 +81,12 @@ class Stations extends CI_Model {
 		$this->db->delete('station_profile', array('station_id' => $clean_id)); 
 	}
 
+	function deletelog($id) {
+        // Delete QSOs
+        $this->db->where('station_id', $id);
+        $this->db->delete($this->config->item('table_name'));
+    }
+
 	function set_active($current, $new) {
 
 		// Clean inputs

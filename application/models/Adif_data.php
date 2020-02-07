@@ -63,8 +63,19 @@ class adif_data extends CI_Model {
         $this->load->model('stations');
         $active_station_id = $this->stations->find_active();
         $this->db->where('station_id', $active_station_id);
-        $this->db->where("COL_TIME_ON BETWEEN '".$from."' AND '".$to."'");
-        $this->db->order_by("COL_TIME_ON", "ASC"); 
+
+        // If date is set, we format the date and add it to the where-statement
+        if ($from != 0) {
+            $from = DateTime::createFromFormat('d/m/Y', $from);
+            $from = $from->format('Y-m-d');
+            $this->db->where("date(COL_TIME_ON) >= '".$from."'");
+        }
+        if ($to != 0) {
+            $to = DateTime::createFromFormat('d/m/Y', $to);
+            $to = $to->format('Y-m-d');
+            $this->db->where("date(COL_TIME_ON) <= '".$to."'");
+        }
+        $this->db->order_by("COL_TIME_ON", "ASC");
         $query = $this->db->get($this->config->item('table_name'));
 
         return $query;
