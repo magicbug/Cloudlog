@@ -190,6 +190,34 @@ class Logbook_model extends CI_Model {
     return $this->db->get($this->config->item('table_name'));
   }
 
+    public function cq_qso_details($cqzone){
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        $this->db->where('station_id', $station_id);
+        $this->db->where('COL_CQZ', $cqzone);
+
+        return $this->db->get($this->config->item('table_name'));
+    }
+
+    public function was_qso_details($state, $band){
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        $this->db->where('station_id', $station_id);
+        $this->db->where('COL_STATE', $state);
+        $this->db->where_in('COL_DXCC', ['291', '6', '110']);
+        if($band != "SAT") {
+            $this->db->where('COL_BAND', $band);
+        } else {
+            $this->db->where('COL_PROP_MODE', "SAT");
+        }
+
+        return $this->db->get($this->config->item('table_name'));
+    }
+
   public function get_callsigns($callsign){
     $this->db->select('COL_CALL');
     $this->db->distinct();
