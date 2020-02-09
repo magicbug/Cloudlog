@@ -75,8 +75,7 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 	
-	public function dxcc ()
-	{
+	public function dxcc ()	{
 		//echo "Needs Developed";
 		$this->load->model('dxcc');
 		$data['dxcc'] = $this->dxcc->show_stats();
@@ -94,7 +93,6 @@ class Awards extends CI_Controller {
  
 		$this->load->model('logbook_model');
 
-
 		$country = str_replace('"', "", $this->input->get("Country"));
 		$band = str_replace('"', "", $this->input->get("Band"));
 		$data['results'] = $this->logbook_model->dxcc_qso_details($country, $band);
@@ -106,7 +104,7 @@ class Awards extends CI_Controller {
 		$this->load->view('awards/dxcc/details');
 		$this->load->view('interface_assets/footer');
 	}
-	
+
 	/*
 		Handles Displaying of WAB Squares worked.
 		Comment field - WAB:#
@@ -172,4 +170,46 @@ class Awards extends CI_Controller {
 		$this->load->view('awards/cq/index');
 		$this->load->view('interface_assets/footer');
 	}
+
+    public function cq_details(){
+        $this->load->model('logbook_model');
+
+        $cqzone = str_replace('"', "", $this->input->get("CQZone"));
+        $data['results'] = $this->logbook_model->cq_qso_details($cqzone);
+
+        // Render Page
+        $data['page_title'] = "Log View - DXCC";
+        $data['filter'] = "CQZone ".$cqzone;
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/cq/details');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function was() {
+        $this->load->model('was');
+        $data['was'] = $this->was->show_stats();
+        $data['worked_bands'] = $this->was->get_worked_bands();
+
+        // Render Page
+        $data['page_title'] = "Awards - WAS (Worked all states)";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/was/index');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function was_details() {
+        $this->load->model('logbook_model');
+
+        $state = str_replace('"', "", $this->input->get("State"));
+        $band = str_replace('"', "", $this->input->get("Band"));
+        $data['results'] = $this->logbook_model->was_qso_details($state, $band);
+
+        // Render Page
+        $data['page_title'] = "Log View - WAS";
+        $data['filter'] = "state ".$state. " and ".$band;
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/was/details');
+        $this->load->view('interface_assets/footer');
+    }
+
 }
