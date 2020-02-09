@@ -105,6 +105,13 @@
 				<td>Worked</td>
 				<td><?php echo $total_countrys; ?></td>
 			</tr>
+			<tr>
+				<td>Confirmed (paper/eQSL/LoTW)</td>
+				<td><?php 
+echo $total_countrys_confirmed_paper; ?>/<?php
+echo $total_countrys_confirmed_eqsl; ?>/<?php
+echo $total_countrys_confirmed_lotw; ?></td>
+			</tr>
 			
 			<tr>
 				<td>Needed</td>
