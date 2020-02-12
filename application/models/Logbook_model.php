@@ -1539,10 +1539,8 @@ class Logbook_model extends CI_Model {
             $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`')
                                     ->where('call', substr($call, 0, $i))
                                     ->where('(start <= ', $date)
-                                    ->or_where("start = '0000-00-00'", NULL, false)
                                     ->or_where("start is null)", NULL, false)
                                     ->where('(end >= ', $date)
-                                    ->or_where("end = '0000-00-00'", NULL, false)
                                     ->or_where("end is null)", NULL, false)
                                     ->get('dxcc_prefixes');
 
@@ -1579,10 +1577,8 @@ class Logbook_model extends CI_Model {
               $dxcc_result = $this->db->select('*')
                                       ->where('call', substr($call, 0, $i))
                                       ->where('(start <= ', $date)
-                                      ->or_where("start = '0000-00-00'", NULL, false)
                                       ->or_where("start is null)", NULL, false)
                                       ->where('(end >= ', $date)
-                                      ->or_where("end = '0000-00-00'", NULL, false)
                                       ->or_where("end is null)", NULL, false)
                                       ->get('dxcc_prefixes');
 
