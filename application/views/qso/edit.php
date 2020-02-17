@@ -315,7 +315,6 @@
 	            <div class="form-group">
 	              <label for="inputStationProfile">Change Station Profile</label>
 	              <select id="stationProfile" class="custom-select" name="station_profile">
-	                <option value="0" selected="selected">None</option>
 	                <?php foreach ($my_stations->result() as $stationrow) { ?>
 	                <option value="<?php echo $stationrow->station_id; ?>" <?php if($station_id == $stationrow->station_id) { echo "selected=\"selected\""; } ?>><?php echo $stationrow->station_profile_name; ?></option>
 	                <?php } ?>
