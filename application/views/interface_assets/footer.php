@@ -950,7 +950,7 @@ $(document).ready(function(){
                       },
                       yAxis: {
                           title: {
-                              text: '# QSOes'
+                              text: '# QSOs'
                           }
                       },
                       navigator: {
@@ -971,7 +971,7 @@ $(document).ready(function(){
                               if(this.point) {
                                   return "Distance: " + options.xAxis.categories[this.point.x] +
                                       "<br />Callsign(s) worked (max 5 shown): " + myComments[this.point.x] +
-                                      "<br />Number of qsoes: <strong>" + series.data[this.point.x] + "</strong>";
+                                      "<br />Number of QSOs: <strong>" + series.data[this.point.x] + "</strong>";
                               }
                           }
                       },
@@ -987,16 +987,16 @@ $(document).ready(function(){
                   $.each(tmp.qsodata, function(){
                       myComments.push(this.calls);
                       options.xAxis.categories.push(this.dist);
-                      series.name = 'Number of qsoes';
+                      series.name = 'Number of QSOs';
                       series.data.push(this.count);
 
                   });
 
                   options.series.push(series);
 
-                  $('#information').html(tmp.qrb.Qsoes + " contacts were plotted.<br /> Your longest contact was " + tmp.qrb.Callsign
-                      + " in locator "+ tmp.qrb.Grid
-                      +" and the distance was "
+                  $('#information').html(tmp.qrb.Qsoes + " contacts were plotted.<br /> Your furthest contact was " + tmp.qrb.Callsign
+                      + " in gridsquare "+ tmp.qrb.Grid
+                      +" the distance was "
                       +tmp.qrb.Distance +"km.");
 
                   var chart = new Highcharts.Chart(options);
