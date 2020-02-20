@@ -68,6 +68,8 @@
 					<a class="dropdown-item" href="<?php echo site_url('statistics');?>" title="Statistics">Statistics</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="<?php echo site_url('gridsquares');?>" title="Gridsquares">Gridsquares</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('distances');?>" title="Distances">Distances worked</a>
 				</div>
         	</li>
 

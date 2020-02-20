@@ -900,5 +900,120 @@ $(document).ready(function(){
 </script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "distances") { ?>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script>
+
+  var bands_available = <?php echo $bands_available; ?>;
+
+  $.each(bands_available, function(key, value) {
+     $('#distplot_bands')
+         .append($("<option></option>")
+                    .attr("value",value)
+                    .text(value));
+  });
+
+  var num = "<?php echo $this->uri->segment(3);?>";
+    $("#distplot_bands option").each(function(){
+        if($(this).val()==num){ // EDITED THIS LINE
+            $(this).attr("selected","selected");
+        }
+    });
+
+  function distPlot(form) {
+      $(".alert").remove();
+      var baseURL= "<?php echo base_url();?>";
+      $.ajax({
+          url: baseURL+'index.php/distances/get_distances',
+          type: 'post',
+          data: {'locator': 'JP50HP', 'band': form.distplot_bands.value},
+          success: function(tmp) {
+              if (tmp.ok == 'OK') {
+                  if (!($('#information').length > 0))
+                      $("#distances_div").append('<div id="information"></div><div id="graphcontainer" style="height: 600px; margin: 0 auto"></div>');
+                  var options = {
+                      chart: {
+                          type: 'column',
+                          zoomType: 'xy',
+                          renderTo: 'graphcontainer'
+                      },
+                      title: {
+                          text: 'Mode distribution'
+                      },
+                      xAxis: {
+                          categories: [],
+                          crosshair: true,
+                          type: "category",
+                          min:0,
+                          max:100
+
+                      },
+                      yAxis: {
+                          title: {
+                              text: '# QSOes'
+                          }
+                      },
+                      navigator: {
+                          enabled: true,
+                          xAxis: {
+                              labels: {
+                                  formatter: function() {
+                                      return this.value * '50' + ' km';
+                                  }
+                              }
+                          }
+                      },
+                      rangeSelector: {
+                          selected: 1
+                      },
+                      tooltip: {
+                          formatter: function () {
+                              if(this.point) {
+                                  return "Distance: " + options.xAxis.categories[this.point.x] +
+                                      "<br />Callsign(s) worked (max 5 shown): " + myComments[this.point.x] +
+                                      "<br />Number of qsoes: <strong>" + series.data[this.point.x] + "</strong>";
+                              }
+                          }
+                      },
+                      series: []
+                  };
+                  var myComments=[];
+
+                  var series = {
+                      data: [],
+                      showInNavigator: true
+                  };
+
+                  $.each(tmp.qsodata, function(){
+                      myComments.push(this.calls);
+                      options.xAxis.categories.push(this.dist);
+                      series.name = 'Number of qsoes';
+                      series.data.push(this.count);
+
+                  });
+
+                  options.series.push(series);
+
+                  $('#information').html(tmp.qrb.Qsoes + " contacts were plotted.<br /> Your longest contact was " + tmp.qrb.Callsign
+                      + " in locator "+ tmp.qrb.Grid
+                      +" and the distance was "
+                      +tmp.qrb.Distance +"km.");
+
+                  var chart = new Highcharts.Chart(options);
+              }
+              else {
+                  if (($('#information').length > 0)) {
+                      $("#information").remove();
+                      $("#graphcontainer").remove();
+                  }
+                  $("#distances_div").append('<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + tmp.Error + '</div>');
+              }
+          }
+      });
+  }
+
+</script>
+<?php } ?>
+
   </body>
 </html>
