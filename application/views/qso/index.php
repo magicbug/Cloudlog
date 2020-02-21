@@ -338,7 +338,7 @@
             <?php $i = 0; 
             foreach ($query->result() as $row) { ?>
                   <?php  echo '<tr class="tr'.($i & 1).'">'; ?>
-                  <td><?php echo date('d/m/y H:i',strtotime($row->COL_TIME_ON)); ?></td>
+                  <td><?php echo date($this->config->item('qso_date_format').' H:i',strtotime($row->COL_TIME_ON)); ?></td>
                   <td><a class="qsobox" data-fancybox data-type="iframe" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a></td>
                   <td><?php echo $row->COL_MODE; ?></td>
                   <td><?php echo $row->COL_RST_SENT; ?></td>

@@ -88,3 +88,24 @@ $config['public_search'] = FALSE;
 */
 
 $config['callsign_tags'] = TRUE;
+
+/*
+|--------------------------------------------------------------------------
+| Date Format
+|--------------------------------------------------------------------------
+|
+| QSO Date format allows you to change the frontend display date to something 
+| that suits your region or operating style better.
+|
+| It uses the php date format so see https://www.php.net/manual/en/function.date.php
+| for information on the layout.
+|
+|	Example
+|	d/m/y = day/month/year
+| 	Y/m/d = 2020/02/21
+|
+| Default is: d/m/y
+|
+*/
+
+$config['qso_date_format'] = "d/m/y";
