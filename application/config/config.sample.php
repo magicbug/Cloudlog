@@ -82,30 +82,6 @@ $config['auth_level'][99] = "Administrator";
 
 /*
 |--------------------------------------------------------------------------
-| QRZ Subscription Information
-|--------------------------------------------------------------------------
-|
-|  'username'    QRZ.com Username
-|  'password'    QRZ.com Password
-*/
-
-$config['qrz_username'] = "";
-$config['qrz_password'] = "";
-
-
-/*
-|--------------------------------------------------------------------------
-| HamQTH Login Information
-|--------------------------------------------------------------------------
-|
-| 'username'		HamQTH Username
-|	'password'		HamQTH Password
-*/
-
-$config['hamqth_username'] = "";
-$config['hamqth_password'] = "";
-/*
-|--------------------------------------------------------------------------
 | Base Site URL
 |--------------------------------------------------------------------------
 |
