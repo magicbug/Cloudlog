@@ -107,21 +107,17 @@
 				<td><?php echo $total_countrys; ?></td>
 			</tr>
 			<tr>
-				<td>Confirmed (paper/eQSL/LoTW)</td>
-				<td><?php 
-echo $total_countrys_confirmed_paper; ?>/<?php
-echo $total_countrys_confirmed_eqsl; ?>/<?php
-echo $total_countrys_confirmed_lotw; ?></td>
+				<td><a href="#" onclick="return false" data-original-title="QSL Cards / eQSL / LoTW" data-toggle="tooltip">Confirmed</a></td>
+				<td>
+					<?php echo $total_countrys_confirmed_paper; ?> /
+					<?php echo $total_countrys_confirmed_eqsl; ?> /
+					<?php echo $total_countrys_confirmed_lotw; ?>	
+				</td>
 			</tr>
 			
 			<tr>
 				<td>Needed</td>
 				<td><?php $dxcc = 340 - $total_countrys; echo $dxcc; ?></td>
-			</tr>
-			
-			<tr>
-				<td></td>
-				<td></td>
 			</tr>
 		</table>
 
