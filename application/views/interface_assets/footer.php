@@ -151,7 +151,8 @@ $('[data-fancybox]').fancybox({
     <script type="text/javascript">
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
-      })
+      });
+
         <?php if($qra == "set") { ?>
         var q_lat = <?php echo $qra_lat; ?>;
         var q_lng = <?php echo $qra_lng; ?>;    
