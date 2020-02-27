@@ -3,7 +3,7 @@
     <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
@@ -149,7 +149,9 @@ $('[data-fancybox]').fancybox({
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js"></script>
     <script type="text/javascript">
-      
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
         <?php if($qra == "set") { ?>
         var q_lat = <?php echo $qra_lat; ?>;
         var q_lng = <?php echo $qra_lng; ?>;    
