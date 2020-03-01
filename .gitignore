@@ -8,6 +8,7 @@
 /install/*
 /updates/*.xml
 /updates/*.html
+/images/eqsl_card_images/*.jpg
 /updates/clublog_scp.txt
 .idea/*
 .DS_Store
