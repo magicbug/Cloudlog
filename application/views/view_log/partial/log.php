@@ -31,7 +31,8 @@
 			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
 				<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
 			<?php } ?>
-			<td><a data-fancybox data-type="iframe" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a></td>
+			<td><a data-fancybox data-type="iframe" data-width="750" data-height="350" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
+			</td>
 			<td><?php echo $row->COL_MODE; ?></td>
 			<td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX) { ?><span class="badge badge-light"><?php echo $row->COL_STX;?></span><?php } ?><?php if ($row->COL_STX_STRING) { ?><span class="badge badge-light"><?php echo $row->COL_STX_STRING;?></span><?php } ?></td>
 			<td><?php echo $row->COL_RST_RCVD; ?> <?php if ($row->COL_SRX) { ?><span class="badge badge-light"><?php echo $row->COL_SRX;?></span><?php } ?><?php if ($row->COL_SRX_STRING) { ?><span class="badge badge-light"><?php echo $row->COL_SRX_STRING;?></span><?php } ?></td>
@@ -74,7 +75,7 @@
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">
 			    	<?php if($row->COL_EQSL_QSL_RCVD =='Y') { ?>
-			    	<a style="color: green" data-fancybox="images" data-width="528" data-height="336" href="<?php echo site_url("eqsl/image/".$row->COL_PRIMARY_KEY."/".$row->COL_CALL."/".$row->COL_MODE."/".$row->COL_BAND."/".date('H', $timestamp)."/".date('i', $timestamp)."/".date('d', $timestamp)."/".date('m', $timestamp)."/".date('Y', $timestamp)); ?>">&#9660;</a>
+			    	<a style="color: green" href="<?php echo site_url("eqsl/image/".$row->COL_PRIMARY_KEY."/".$row->COL_CALL."/".$row->COL_MODE."/".$row->COL_BAND."/".date('H', $timestamp)."/".date('i', $timestamp)."/".date('d', $timestamp)."/".date('m', $timestamp)."/".date('Y', $timestamp)); ?>" data-fancybox="images" data-width="528" data-height="336">&#9660;</a>
 			    	<?php } else { ?>
 			    		&#9660;
 			    	<?php } ?>
@@ -106,7 +107,7 @@
 				  </a>
 
 				  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-				  	<a class="dropdown-item" id="edit_qso" data-fancybox data-type="iframe" data-src="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a>
+				  	<a class="dropdown-item" id="edit_qso" data-fancybox data-type="iframe" data-src="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" data-width="600" data-height="600" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a>
 				  	
 				  	<div class="dropdown-divider"></div>	
 

@@ -583,7 +583,6 @@ class eqsl extends CI_Controller {
 			$image_url = $this->eqsl_library->card_image($username, $password, $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
 			$file = file_get_contents($image_url, true);
 
-
 			$dom = new domDocument; 
 			$dom->loadHTML($file); 
 			$dom->preserveWhiteSpace = false;

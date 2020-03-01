@@ -18,12 +18,6 @@ thead > tr > td {
 	background-color: aliceblue;
 }
 
-.fancybox-content {
-    width  : 710px !important;
-    height : 310px !important;
-    margin: 0;
-}
-
 .dashboard {
 	padding-top: 15px;
 }
