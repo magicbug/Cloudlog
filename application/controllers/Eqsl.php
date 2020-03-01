@@ -588,6 +588,11 @@ class eqsl extends CI_Controller {
 			$dom->preserveWhiteSpace = false;
 			$images = $dom->getElementsByTagName('img');
 
+			if(!isset($images)) {
+				echo $file;
+				exit;
+			}
+
 			foreach ($images as $image) 
 			{ 
 			 header('Content-Type: image/jpg');
