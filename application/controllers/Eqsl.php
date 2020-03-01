@@ -570,7 +570,7 @@ class eqsl extends CI_Controller {
 	}
 
 	function image($id, $callsign, $mode, $band, $hour, $minute, $day, $month, $year) {
-		$this->load->library('Eqsl_library');
+		$this->load->library('electronicqsl');
 		$this->load->model('Eqsl_images');
 
 		if($this->Eqsl_images->get_image($id) == "No Image") {
@@ -580,7 +580,7 @@ class eqsl extends CI_Controller {
 			$password = $q->user_eqsl_password;
 
 
-			$image_url = $this->Eqsl_library->card_image($username, $password, $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
+			$image_url = $this->electronicqsl->card_image($username, $password, $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
 			$file = file_get_contents($image_url, true);
 
 			$dom = new domDocument; 
