@@ -76,7 +76,7 @@
 			    	<?php if($row->COL_EQSL_QSL_RCVD =='Y') { ?>
 			    	<a style="color: green" data-fancybox="images" data-width="528" data-height="336" href="<?php echo site_url("eqsl/image/".$row->COL_PRIMARY_KEY."/".$row->COL_CALL."/".$row->COL_MODE."/".$row->COL_BAND."/".date('H', $timestamp)."/".date('i', $timestamp)."/".date('d', $timestamp)."/".date('m', $timestamp)."/".date('Y', $timestamp)); ?>">&#9660;</a>
 			    	<?php } else { ?>
-			    		<a style="color: green" data-fancybox="images" data-width="528" data-height="336" href="<?php echo site_url("eqsl/image/".$row->COL_PRIMARY_KEY."/".$row->COL_CALL."/".$row->COL_MODE."/".$row->COL_BAND."/".date('H', $timestamp)."/".date('i', $timestamp)."/".date('d', $timestamp)."/".date('m', $timestamp)."/".date('Y', $timestamp)); ?>">&#9660;</a>
+			    		&#9660;
 			    	<?php } ?>
 			    </span>
 			</td>
