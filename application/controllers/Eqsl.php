@@ -570,7 +570,7 @@ class eqsl extends CI_Controller {
 	}
 
 	function image($id, $callsign, $mode, $band, $hour, $minute, $day, $month, $year) {
-		$this->load->library('electronicqsl');
+		$this->load->library('Electronicqsl');
 		$this->load->model('Eqsl_images');
 
 		if($this->Eqsl_images->get_image($id) == "No Image") {
