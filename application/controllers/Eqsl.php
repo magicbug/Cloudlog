@@ -589,7 +589,7 @@ class eqsl extends CI_Controller {
 			$images = $dom->getElementsByTagName('img');
 
 			if(!isset($images)) {
-				echo $file;
+				echo "Rate Limited";
 				exit;
 			}
 
@@ -609,13 +609,6 @@ class eqsl extends CI_Controller {
 			readfile($image_url); 
 		}
 
-	}
-
-	function image_check($id) {
-		$this->load->model('Eqsl_images');
-
-
-		echo $this->Eqsl_images->get_image($id);
 	}
 	
 } // end class
