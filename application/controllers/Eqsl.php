@@ -568,5 +568,31 @@ class eqsl extends CI_Controller {
 		$this->load->view('eqsl/export');
 		$this->load->view('interface_assets/footer');
 	}
+
+	function image($callsign, $mode, $band, $hour, $minute, $day, $month, $year) {
+		$this->load->library('eqsl_library');
+
+		$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
+		$q = $query->row();
+		$username = $q->user_eqsl_name;
+		$password = $q->user_eqsl_password;
+
+
+		$image_url = $this->eqsl_library->card_image($username, $password, $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
+		$file = file_get_contents($image_url, true);
+
+
+		$dom = new domDocument; 
+		$dom->loadHTML($file); 
+		$dom->preserveWhiteSpace = false;
+		$images = $dom->getElementsByTagName('img');
+
+		foreach ($images as $image) 
+		{ 
+		 header('Content-Type: image/jpg');
+		 readfile ("https://www.eqsl.cc".$image->getAttribute('src')); 
+		}
+
+	}
 	
 } // end class

@@ -71,7 +71,13 @@
 			<?php if ($this->session->userdata('user_eqsl_name') != ""){ ?>
 			<td class="eqsl">
 			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
-			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
+			    <span class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">
+			    	<?php if($row->COL_EQSL_QSL_RCVD =='Y') { ?>
+			    	<a style="color: green" data-fancybox="gallery"  href="<?php echo site_url("eqsl/image/".$row->COL_CALL."/".$row->COL_MODE."/".$row->COL_BAND."/".date('H', $timestamp)."/".date('i', $timestamp)."/".date('d', $timestamp)."/".date('m', $timestamp)."/".date('Y', $timestamp)); ?>">&#9660;</a>
+			    	<?php } else { ?>
+			    		<a style="color: green" data-fancybox="gallery"  href="<?php echo site_url("eqsl/image/".$row->COL_CALL."/".$row->COL_MODE."/".$row->COL_BAND."/".date('H', $timestamp)."/".date('i', $timestamp)."/".date('d', $timestamp)."/".date('m', $timestamp)."/".date('Y', $timestamp)); ?>">&#9660;</a>
+			    	<?php } ?>
+			    </span>
 			</td>
 			<?php } ?>
 
