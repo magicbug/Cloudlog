@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
-class eqsl_library {
+class Eqsl_library {
 
 	// Return formatted URL to get the eQSL card image
 	public function card_image($username, $password, $callsign, $band, $mode, $year, $month, $day, $hour, $minute)
