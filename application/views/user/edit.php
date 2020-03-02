@@ -108,9 +108,7 @@
 			<div class="form-group">
 				<label>eQSL.cc Username</label>
 				<input class="form-control" type="text" name="user_eqsl_name" value="<?php if(isset($user_eqsl_name)) { echo $user_eqsl_name; } ?>" />
-					<?php if(isset($eqslusername_error)) { echo "<div class=\"small error\">".$eqslusername_error."</div>"; } else { ?>
-					<div class="small">Leave blank to keep existing password</div></td>
-					<?php } ?>
+					<?php if(isset($eqslusername_error)) { echo "<div class=\"small error\">".$eqslusername_error."</div>"; } ?>
 			</div>
 
 			<div class="form-group">
