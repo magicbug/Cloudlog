@@ -18,16 +18,14 @@
 
 	</head>
 
-	<body class="qso-edit-box">
+	<body class="container-fluid qso-edit-box">
 
-		<!-- Option to Delete QSO -->
-		<div style="float: right; padding-right: 60px; padding-top: 30px;">
-			<p></p>
-		</div>
-
+<div class="container-fluid">
+	<div class="row">
+		<div class="col">
 		<?php echo validation_errors(); ?>
 		<form method="post" action="<?php echo site_url('qso/edit'); ?>" name="qsos">
-<div class="card">
+	<div class="card">
 	<div class="card-header"> 
 		<nav class="card-header-tabs">
 			<div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -340,7 +338,11 @@
 	</div>
 </div>
 
-	</form>
+	</form>			
+		</div>
+	</div>
+</div>
+
 	</body>
 </html>
 

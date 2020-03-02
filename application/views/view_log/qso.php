@@ -1,11 +1,14 @@
-
-<?php if ($query->num_rows() > 0) {  foreach ($query->result() as $row) {
-?>
-	<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-	<h1 style="font-size: 28px;">QSO with <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></h1>
-	<?php } else { ?>
-	<h1 style="font-size: 28px;">QSO with <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp);?></h1>
-	<?php } ?>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col">
+			<?php if ($query->num_rows() > 0) {  foreach ($query->result() as $row) { ?>
+			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
+			<h1 style="font-size: 28px;">QSO with <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></h1>
+			<?php } else { ?>
+			<h1 style="font-size: 28px;">QSO with <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp);?></h1>
+			<?php } ?>
+		</div>
+	</div>
 	
 	<div class="row">
 		<div class="col">
@@ -196,6 +199,9 @@
 			
 
 		<div id="map" style="width: 340px; height: 250px"></div> 
+		</div>
+	</div>
+</div>
 
 <?php
 	if($row->COL_GRIDSQUARE != null) {

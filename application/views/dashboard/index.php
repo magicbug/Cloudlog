@@ -54,7 +54,7 @@
 					<?php } else { ?>
 					<?php } ?>
 					<td>
-						<a data-fancybox data-type="iframe" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;">
+						<a data-fancybox data-type="iframe" data-width="800" data-height="520" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;">
 							<?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?>
 						</a>
 					</td>
