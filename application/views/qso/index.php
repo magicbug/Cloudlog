@@ -194,24 +194,24 @@
             <div class="form-group">
               <label for="selectPropagation">Propagation Mode</label>
               <select class="custom-select" id="selectPropagation" name="prop_mode">
-                <option value="" selected="selected"></option>
-                <option value="AUR">Aurora</option>
-                <option value="AUE">Aurora-E</option>
-                <option value="BS">Back scatter</option>
-                <option value="ECH">EchoLink</option>
-                <option value="EME">Earth-Moon-Earth</option>
-                <option value="ES">Sporadic E</option>
-                <option value="FAI">Field Aligned Irregularities</option>
-                <option value="F2">F2 Reflection</option>
-                <option value="INTERNET">Internet-assisted</option>
-                <option value="ION">Ionoscatter</option>
-                <option value="IRL">IRLP</option>
-                <option value="MS">Meteor scatter</option>
-                <option value="RPT">Terrestrial or atmospheric repeater or transponder</option>
-                <option value="RS">Rain scatter</option>
-                <option value="SAT">Satellite</option>
-                <option value="TEP">Trans-equatorial</option>
-                <option value="TR">Tropospheric ducting</option>
+                <option value="" <?php if(!empty($this->session->userdata('prop_mode'))) { echo "selected=\"selected\""; } ?>></option>
+                <option value="AUR" <?php if($this->session->userdata('prop_mode') == "AUR") { echo "selected=\"selected\""; } ?>>Aurora</option>
+                <option value="AUE" <?php if($this->session->userdata('prop_mode') == "AUE") { echo "selected=\"selected\""; } ?>>Aurora-E</option>
+                <option value="BS" <?php if($this->session->userdata('prop_mode') == "BS") { echo "selected=\"selected\""; } ?>>Back scatter</option>
+                <option value="ECH" <?php if($this->session->userdata('prop_mode') == "ECH") { echo "selected=\"selected\""; } ?>>EchoLink</option>
+                <option value="EME" <?php if($this->session->userdata('prop_mode') == "EME") { echo "selected=\"selected\""; } ?>>Earth-Moon-Earth</option>
+                <option value="ES" <?php if($this->session->userdata('prop_mode') == "ES") { echo "selected=\"selected\""; } ?>>Sporadic E</option>
+                <option value="FAI" <?php if($this->session->userdata('prop_mode') == "FAI") { echo "selected=\"selected\""; } ?>>Field Aligned Irregularities</option>
+                <option value="F2" <?php if($this->session->userdata('prop_mode') == "F2") { echo "selected=\"selected\""; } ?>>F2 Reflection</option>
+                <option value="INTERNET" <?php if($this->session->userdata('prop_mode') == "INTERNET") { echo "selected=\"selected\""; } ?>>Internet-assisted</option>
+                <option value="ION" <?php if($this->session->userdata('prop_mode') == "ION") { echo "selected=\"selected\""; } ?>>Ionoscatter</option>
+                <option value="IRL" <?php if($this->session->userdata('prop_mode') == "IRL") { echo "selected=\"selected\""; } ?>>IRLP</option>
+                <option value="MS" <?php if($this->session->userdata('prop_mode') == "AUR") { echo "selected=\"selected\""; } ?>>Meteor scatter</option>
+                <option value="RPT" <?php if($this->session->userdata('prop_mode') == "RPT") { echo "selected=\"selected\""; } ?>>Terrestrial or atmospheric repeater or transponder</option>
+                <option value="RS" <?php if($this->session->userdata('prop_mode') == "RS") { echo "selected=\"selected\""; } ?>>Rain scatter</option>
+                <option value="SAT" <?php if($this->session->userdata('prop_mode') == "SAT") { echo "selected=\"selected\""; } ?>>Satellite</option>
+                <option value="TEP" <?php if($this->session->userdata('prop_mode') == "TEP") { echo "selected=\"selected\""; } ?>>Trans-equatorial</option>
+                <option value="TR" <?php if($this->session->userdata('prop_mode') == "TR") { echo "selected=\"selected\""; } ?>>Tropospheric ducting</option>
               </select>
             </div>
 

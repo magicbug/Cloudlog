@@ -20,7 +20,7 @@ class Logbook_model extends CI_Model {
 
     if($this->input->post('sat_name')) {
         $prop_mode = "SAT";
-    }
+    } 
 
     if($this->session->userdata('user_locator')){
         $locator = $this->session->userdata('user_locator');

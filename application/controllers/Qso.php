@@ -59,6 +59,7 @@ class QSO extends CI_Controller {
 				'mode' => $this->input->post('mode'),
 				'sat_name' => $this->input->post('sat_name'),
 				'sat_mode' => $this->input->post('sat_mode'),
+				'prop_mode' => $this->input->post('prop_mode'),
 				'radio' => $this->input->post('radio'),
 				'station_profile_id' => $this->input->post('station_profile')
 			);
@@ -68,6 +69,11 @@ class QSO extends CI_Controller {
 			setcookie("station_profile_id", $qso_data['station_profile_id'], time()+3600*24*99);
 
 			$this->session->set_userdata($qso_data);
+
+			// If SAT name is set make it session set to sat
+			if($this->input->post('sat_name')) {
+        		$this->session->set_userdata('prop_mode', 'SAT');
+    		}
 				
 			// Get last 5 qsos
 			$data['query'] = $this->logbook_model->last_custom('5');
