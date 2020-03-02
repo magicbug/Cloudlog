@@ -780,6 +780,7 @@ $(document).on('keypress',function(e) {
         $("#sat_mode").val("");  
         $("#frequency").val("");  
         $("#frequency_rx").val(""); 
+        $("#selectPropagation").val($("#selectPropagation option:first").val());
       }
   });
 
