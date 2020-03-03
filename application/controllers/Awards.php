@@ -76,17 +76,64 @@ class Awards extends CI_Controller {
 	}
 	
 	public function dxcc ()	{
-		//echo "Needs Developed";
 		$this->load->model('dxcc');
-		$data['dxcc'] = $this->dxcc->show_stats();
-		$data['worked_bands'] = $this->dxcc->get_worked_bands();
+        $data['worked_bands'] = $this->dxcc->get_worked_bands(); // Used in the view for band select
+
+        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
+            if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
+                $bands = $data['worked_bands'];
+            }
+            else {
+                $bands[] = $this->input->post('band');
+            }
+        }
+        else {
+            $bands = $data['worked_bands'];
+        }
+
+        $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
+
+        if($this->input->method() === 'post') {
+            $postdata['lotw'] = $this->input->post('lotw');
+            $postdata['qsl'] = $this->input->post('qsl');
+            $postdata['worked'] = $this->input->post('worked');
+            $postdata['confirmed'] = $this->input->post('confirmed');
+            $postdata['notworked'] = $this->input->post('notworked');
+            $postdata['deleted'] = $this->input->post('deleted');
+            $postdata['Africa'] = $this->input->post('Africa');
+            $postdata['Asia'] = $this->input->post('Asia');
+            $postdata['Europe'] = $this->input->post('Europe');
+            $postdata['NorthAmerica'] = $this->input->post('NorthAmerica');
+            $postdata['SouthAmerica'] = $this->input->post('SouthAmerica');
+            $postdata['Oceania'] = $this->input->post('Oceania');
+            $postdata['Antarctica'] = $this->input->post('Antarctica');
+            $postdata['band'] = $this->input->post('band');
+        }
+        else { // Setting default values at first load of page
+            $postdata['lotw'] = 1;
+            $postdata['qsl'] = 1;
+            $postdata['worked'] = 1;
+            $postdata['confirmed'] = 1;
+            $postdata['notworked'] = 1;
+            $postdata['deleted'] = 1;
+            $postdata['Africa'] = 1;
+            $postdata['Asia'] = 1;
+            $postdata['Europe'] = 1;
+            $postdata['NorthAmerica'] = 1;
+            $postdata['SouthAmerica'] = 1;
+            $postdata['Oceania'] = 1;
+            $postdata['Antarctica'] = 1;
+            $postdata['band'] = 'All';
+        }
+
+		$dxcclist = $this->dxcc->fetchdxcc($postdata);
+        $data['dxcc_array'] = $this->dxcc->get_dxcc_array($dxcclist, $bands, $postdata);
 
 		// Render Page
 		$data['page_title'] = "Awards - DXCC";
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/dxcc/index');
 		$this->load->view('interface_assets/footer');
-
 	}
 
 	public function dxcc_details(){

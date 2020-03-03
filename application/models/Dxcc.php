@@ -172,5 +172,289 @@ class DXCC extends CI_Model {
 		$this->db->order_by('name', 'ASC');
 		return $this->db->get('dxcc_entities');
 	}
+
+	function get_dxcc_array($dxccArray, $bands, $postdata) {
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
+
+		foreach ($bands as $band) {             	// Looping through bands and entities to generate the array needed for display
+			foreach ($dxccArray as $dxcc) {
+				$dxccMatrix[$dxcc->adif]['name'] = $dxcc->name;
+				$dxccMatrix[$dxcc->adif]['Dxccprefix'] = $dxcc->prefix;
+				$dxccMatrix[$dxcc->adif]['Deleted'] = isset($dxcc->Enddate) ? "<div class='alert-danger'>Y</div>" : '';
+				$dxccMatrix[$dxcc->adif][$band] = '-';
+			}
+
+			// If worked is checked, we add worked entities to the array
+			if ($postdata['worked'] != NULL) {
+				$workedDXCC = $this->getDxccBandWorked($station_id, $band, $postdata);
+				foreach ($workedDXCC as $wdxcc) {
+					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="alert-danger"><a href=\'dxcc_details?Country="'.$wdxcc->name.'"&Band="'. $band . '"\'>W</a></div>';;
+				}
+			}
+
+			// If confirmed is checked, we add confirmed entities to the array
+			if ($postdata['confirmed'] != NULL) {
+				$confirmedDXCC = $this->getDxccBandConfirmed($station_id, $band, $postdata);
+				foreach ($confirmedDXCC as $cdxcc) {
+					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="alert-success"><a href=\'dxcc_details?Country="'.$cdxcc->name.'"&Band="'. $band . '"\'>C</a></div>';;
+				}
+			}
+		}
+
+		// We want to remove the worked dxcc's in the list, since we do not want to display them
+		if ($postdata['worked'] == NULL) {
+			$workedDxcc = $this->getDxccWorked($station_id, $postdata);
+			foreach ($workedDxcc as $wdxcc) {
+				if (array_key_exists($wdxcc->dxcc, $dxccMatrix)) {
+					unset($dxccMatrix[$wdxcc->dxcc]);
+				}
+			}
+		}
+
+		// We want to remove the confirmed dxcc's in the list, since we do not want to display them
+		if ($postdata['confirmed'] == NULL) {
+			$confirmedDxcc = $this->getDxccConfirmed($station_id, $postdata);
+			foreach ($confirmedDxcc as $cdxcc) {
+				if (array_key_exists($cdxcc->dxcc, $dxccMatrix)) {
+					unset($dxccMatrix[$cdxcc->dxcc]);
+				}
+			}
+		}
+
+		if ($dxccMatrix) {
+			return $dxccMatrix;
+		}
+		else {
+			return 0;
+		}
+	}
+
+	function getDxccBandConfirmed($station_id, $band, $postdata) {
+		$sql = "select adif as dxcc, name from dxcc_entities
+				join (
+					select col_dxcc from table_hrd_contacts_v01 thcv
+					where station_id = " . $station_id .
+				  " and col_dxcc > 0";
+
+		if ($band == 'SAT') {
+			$sql .= " and col_prop_mode ='" . $band . "'";
+		}
+		else {
+			$sql .= " and col_band ='" . $band . "'";
+		}
+
+		$sql .= $this->addQslToQuery($postdata);
+
+		$sql .= " group by col_dxcc
+				) x on dxcc_entities.adif = x.col_dxcc";
+
+		if ($postdata['deleted'] == NULL) {
+			$sql .= " and dxcc_entities.end is null";
+		}
+
+		$sql .= $this->addContinentsToQuery($postdata);
+
+		$query = $this->db->query($sql);
+
+		return $query->result();
+	}
+
+	function getDxccBandWorked($station_id, $band, $postdata) {
+		$sql = "select adif as dxcc, name from dxcc_entities
+				join (
+					select col_dxcc from table_hrd_contacts_v01 thcv
+					where station_id = " . $station_id .
+					" and col_dxcc > 0";
+
+		if ($band == 'SAT') {
+			$sql .= " and col_prop_mode ='" . $band . "'";
+		}
+		else {
+			$sql .= " and col_band ='" . $band . "'";
+		}
+
+		$sql .= " group by col_dxcc
+				) x on dxcc_entities.adif = x.col_dxcc";;
+
+		if ($postdata['deleted'] == NULL) {
+			$sql .= " and dxcc_entities.end is null";
+		}
+
+		$sql .= $this->addContinentsToQuery($postdata);
+
+		$query = $this->db->query($sql);
+
+		return $query->result();
+	}
+
+	function fetchDxcc($postdata) {
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
+
+		$sql = "select adif, prefix, name, date(end) Enddate, date(start) Startdate 
+            from dxcc_entities";
+
+		if ($postdata['notworked'] == NULL) {
+			$sql .= " join (select col_dxcc from table_hrd_contacts_v01 where station_id = $station_id";
+
+			if ($postdata['band'] != 'All') {
+				if ($postdata['band'] == 'SAT') {
+					$sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
+				}
+				else {
+					$sql .= " and col_band ='" . $postdata['band'] . "'";
+				}
+			}
+
+			$sql .= ' group by col_dxcc) x on dxcc_entities.adif = x.col_dxcc';
+		}
+
+		$sql .= " where 1 = 1";
+
+		if ($postdata['deleted'] == NULL) {
+			$sql .= " and end is null";
+		}
+
+		$sql .= $this->addContinentsToQuery($postdata);
+
+		$sql .= ' order by prefix';
+		$query = $this->db->query($sql);
+
+		return $query->result();
+	}
+
+	function getDxccWorked($station_id, $postdata) {
+		$sql = "SELECT adif as dxcc FROM dxcc_entities
+        join (
+            select col_dxcc 
+            from table_hrd_contacts_v01 thcv
+            where station_id = " . $station_id .
+              " and col_dxcc > 0";
+
+		if ($postdata['band'] != 'All') {
+			if ($postdata['band'] == 'SAT') {
+				$sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
+			}
+			else {
+				$sql .= " and col_band ='" . $postdata['band'] . "'";
+			}
+		}
+
+		$sql .= " and not exists (select 1 from table_hrd_contacts_v01 where station_id = $station_id and col_dxcc = thcv.col_dxcc";
+
+		if ($postdata['band'] != 'All') {
+			if ($postdata['band'] == 'SAT') {
+				$sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
+			}
+			else {
+				$sql .= " and col_band ='" . $postdata['band'] . "'";
+			}
+		}
+
+		$sql .= $this->addQslToQuery($postdata);
+
+		$sql .= ')';
+
+		$sql .= " group by col_dxcc
+            ) ll on dxcc_entities.adif = ll.col_dxcc
+            where 1=1";
+
+		if ($postdata['deleted'] == 'false') {
+			$sql .= " and dxcc_entities.end is null";
+		}
+
+		$sql .= $this->addContinentsToQuery($postdata);
+
+		$query = $this->db->query($sql);
+
+		return $query->result();
+	}
+
+	function getDxccConfirmed($station_id, $postdata) {
+		$sql = "SELECT adif as dxcc FROM dxcc_entities
+            join (
+                select col_dxcc 
+                from table_hrd_contacts_v01 thcv
+                where station_id = ". $station_id .
+                    " and col_dxcc > 0";
+
+		if ($postdata['band'] != 'All') {
+			if ($postdata['band'] == 'SAT') {
+				$sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
+			}
+			else {
+				$sql .= " and col_band ='" . $postdata['band'] . "'";
+			}
+		}
+
+		$sql .= $this->addQslToQuery($postdata);
+
+		$sql .= " group by col_dxcc
+            ) ll on dxcc_entities.adif = ll.col_dxcc
+            where 1=1";
+
+		if ($postdata['deleted'] == 'false') {
+			$sql .= " and dxcc_entities.end is null";
+		}
+
+		$sql .= $this->addContinentsToQuery($postdata);
+
+		$query = $this->db->query($sql);
+
+		return $query->result();
+	}
+
+	// Made function instead of repeating this several times
+	function addQslToQuery($postdata) {
+		$sql = '';
+		if ($postdata['lotw'] != NULL and $postdata['qsl'] == NULL) {
+			$sql .= " and col_lotw_qsl_rcvd = 'Y'";
+		}
+
+		if ($postdata['qsl'] != NULL and $postdata['lotw'] == NULL) {
+			$sql .= " and col_qsl_rcvd = 'Y'";
+		}
+
+		if ($postdata['qsl'] != NULL && $postdata['lotw'] != NULL) {
+			$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+		}
+		return $sql;
+	}
+
+	// Made function instead of repeating this several times
+	function addContinentsToQuery($postdata) {
+		$sql = '';
+		if ($postdata['Africa'] == NULL) {
+			$sql .= " and cont <> 'AF'";
+		}
+
+		if ($postdata['Europe'] == NULL) {
+			$sql .= " and cont <> 'EU'";
+		}
+
+		if ($postdata['Asia'] == NULL) {
+			$sql .= " and cont <> 'AS'";
+		}
+
+		if ($postdata['SouthAmerica'] == NULL) {
+			$sql .= " and cont <> 'SA'";
+		}
+
+		if ($postdata['NorthAmerica'] == NULL) {
+			$sql .= " and cont <> 'NA'";
+		}
+
+		if ($postdata['Oceania'] == NULL) {
+			$sql .= " and cont <> 'OC'";
+		}
+
+		if ($postdata['Antarctica'] == NULL) {
+			$sql .= " and cont <> 'AN'";
+		}
+		return $sql;
+	}
 }
 ?>

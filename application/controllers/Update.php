@@ -31,8 +31,8 @@ class Update extends CI_Controller {
 
         $count = 0;
 		foreach ($xml_data->entities->entity as $entity) {
-			$startinfo = strtotime($record->start);
-            $endinfo = strtotime($record->end);
+			$startinfo = strtotime($entity->start);
+            $endinfo = strtotime($entity->end);
             
             $start_date = ($startinfo) ? date('Y-m-d H:i:s',$startinfo) : null;
             $end_date = ($endinfo) ? date('Y-m-d H:i:s',$endinfo) : null;
