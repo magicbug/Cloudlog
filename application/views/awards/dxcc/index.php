@@ -5,36 +5,142 @@
 	<!-- Sub Nav for Awards -->
 	
     <?php $this->load->view("awards/nav_bar")?>
-    
-	<table class="table table-striped table-hover">
-	<thead>
-        <tr>
-        <td style="width:225px">Country (<?php echo count($dxcc)?>)</td>
-    <?php
-	foreach ($worked_bands as $slot) {
-		echo "          <td>$slot</td>\n";
-	}
-    ?>
-        </tr>
-    </thead>
-    <tbody>
-    <?php
-        foreach($dxcc as $country=>$val){
-            print("<tr><td>$country</td>");
-            foreach($val as $band=>$count){
-		if (in_array($band, $worked_bands)) {
-	                if ($count == 0){
-	      	             print("<td>&nbsp;</td>");
-	                }else{
-	                    printf("<td><a href='dxcc_details?Country=\"%s\"&Band=\"%s\"'>%d</a></td>", str_replace("&", "%26", $country), $band, $count);
-	                }
-		} 
-            }
-            print("</tr>");
-        }
+    <form class="form" action="<?php echo site_url('awards/dxcc'); ?>" method="post" enctype="multipart/form-data">
+        <fieldset>
 
-    ?>
-    </tbody>
+            <!-- Multiple Checkboxes (inline) -->
+            <div class="form-group row">
+                <div class="col-md-2 control-label" for="checkboxes">Deleted dxcc</div>
+                <div class="col-md-10">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="includedeleted" id="includedeleted" value="1" checked="1">
+                        <label class="form-check-label" for="includedeleted">Include Deleted</label>
+                    </div>
+                </div>
+            </div>
 
-	</table>
+            <!-- Multiple Checkboxes (inline) -->
+            <div class="form-group row">
+                <div class="col-md-2" for="checkboxes">Worked / confirmed</div>
+                <div class="col-md-10">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="worked" id="worked" value="1" checked="1">
+                        <label class="form-check-label" for="worked">Show worked</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="confirmed" id="confirmed" value="1" checked="1">
+                        <label class="form-check-label" for="confirmed">Show confirmed</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="notworked" id="notworked" value="1" checked="1">
+                        <label class="form-check-label" for="notworked">Show not worked</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-2">QSL / LoTW</div>
+                <div class="col-md-10">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="qsl" value="1" checked="1" id="qsl">
+                        <label class="form-check-label" for="qsl">QSL</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="lotw" value="1" checked="1" id="lotw">
+                        <label class="form-check-label" for="lotw">LoTW</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-2">Continents</div>
+                <div class="col-md-10">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="Antarctica" id="Antarctica" value="1" checked="1">
+                        <label class="form-check-label" for="Antarctica">Antarctica</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input"  type="checkbox" name="Africa" id="Africa" value="1" checked="1">
+                        <label class="form-check-label" for="Africa">Africa</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input"  type="checkbox" name="Asia" id="Asia" value="1" checked="1">
+                        <label class="form-check-label" for="Asia">Asia</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input"  type="checkbox" name="Europe" id="Europe" value="1" checked="1">
+                        <label class="form-check-label" for="Europe">Europe</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input"  type="checkbox" name="NorthAmerica" id="NorthAmerica" value="1" checked="1">
+                        <label class="form-check-label" for="NorthAmerica">North America</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input"  type="checkbox" name="SouthAmerica" id="SouthAmerica" value="1" checked="1">
+                        <label class="form-check-label" for="SouthAmerica">South America</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input"  type="checkbox" name="Oceania" id="Oceania" value="1" checked="1">
+                        <label class="form-check-label" for="Oceania">Oceania</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Select Basic -->
+            <div class="form-group row">
+                <label class="col-md-2 control-label" for="band">Band</label>
+                <div class="col-md-2">
+                    <select id="band2" name="band" class="form-control">
+                        <option value="All" selected>Every band</option>
+                        <?php foreach($worked_bands as $band) {
+                            echo '<option value="' . $band . '">' . $band . '</option>';
+                        } ?>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Button (Double) -->
+            <div class="form-group row">
+                <label class="col-md-2 control-label" for="button1id"></label>
+                <div class="col-md-10">
+                    <button id="button2id" type="reset" name="button2id" class="btn btn-danger">Reset</button>
+                    <button id="button1id" type="submit" name="button1id" class="btn btn-success btn-primary">Show</button>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+<?php
+    $i = 1;
+    if ($dxcc_array) {
+        echo '
+                
+                <table class="table table-bordered table-hover table-striped table-condensed text-center">
+                    <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>DXCCName</td>
+                        <td>Prefix</td>
+                        <td>Deleted</td>';
+                    foreach($bands as $band) {
+                        echo '<td>' . $band . '</td>';
+                        }
+                        echo '</tr>
+                    </thead>
+                    <tbody>';
+                    foreach ($dxcc_array as $dxcc => $value) {      // Fills the table with the data
+                        echo '<tr>
+                        <td>'. $i++ .'</td>';
+                        foreach ($value  as $key) {
+                            echo '<td style="text-align: center">' . $key . '</td>';
+                        }
+                        echo '</tr>';
+                    }
+                        echo '</tfoot></table></div>';
+
+    }
+    else {
+        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+    }
+?>
 </div>
