@@ -234,7 +234,7 @@ class DXCC extends CI_Model {
 	function getDxccBandConfirmed($station_id, $band, $postdata) {
 		$sql = "select adif as dxcc, name from dxcc_entities
 				join (
-					select col_dxcc from table_hrd_contacts_v01 thcv
+					select col_dxcc from ".$this->config->item('table_name')." thcv
 					where station_id = " . $station_id .
 				  " and col_dxcc > 0";
 
@@ -264,7 +264,7 @@ class DXCC extends CI_Model {
 	function getDxccBandWorked($station_id, $band, $postdata) {
 		$sql = "select adif as dxcc, name from dxcc_entities
 				join (
-					select col_dxcc from table_hrd_contacts_v01 thcv
+					select col_dxcc from ".$this->config->item('table_name')." thcv
 					where station_id = " . $station_id .
 					" and col_dxcc > 0";
 
@@ -298,7 +298,7 @@ class DXCC extends CI_Model {
             from dxcc_entities";
 
 		if ($postdata['notworked'] == NULL) {
-			$sql .= " join (select col_dxcc from table_hrd_contacts_v01 where station_id = $station_id";
+			$sql .= " join (select col_dxcc from ".$this->config->item('table_name')." where station_id = $station_id";
 
 			if ($postdata['band'] != 'All') {
 				if ($postdata['band'] == 'SAT') {
@@ -330,7 +330,7 @@ class DXCC extends CI_Model {
 		$sql = "SELECT adif as dxcc FROM dxcc_entities
         join (
             select col_dxcc 
-            from table_hrd_contacts_v01 thcv
+            from ".$this->config->item('table_name')." thcv
             where station_id = " . $station_id .
               " and col_dxcc > 0";
 
@@ -343,7 +343,7 @@ class DXCC extends CI_Model {
 			}
 		}
 
-		$sql .= " and not exists (select 1 from table_hrd_contacts_v01 where station_id = $station_id and col_dxcc = thcv.col_dxcc";
+		$sql .= " and not exists (select 1 from ".$this->config->item('table_name')." where station_id = $station_id and col_dxcc = thcv.col_dxcc";
 
 		if ($postdata['band'] != 'All') {
 			if ($postdata['band'] == 'SAT') {
@@ -377,7 +377,7 @@ class DXCC extends CI_Model {
 		$sql = "SELECT adif as dxcc FROM dxcc_entities
             join (
                 select col_dxcc 
-                from table_hrd_contacts_v01 thcv
+                from ".$this->config->item('table_name')." thcv
                 where station_id = ". $station_id .
                     " and col_dxcc > 0";
 
