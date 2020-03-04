@@ -79,6 +79,7 @@ class Hamqth {
 		$data['lat'] = (string) $xml->search->latitude;
 		$data['long'] = (string) $xml->search->longitude;
 		$data['iota'] = (string) $xml->search->iota;
+		$data['error'] = (string) $xml->session->error;
 
 		return $data;
 	}
