@@ -182,7 +182,7 @@ class DXCC extends CI_Model {
 			foreach ($dxccArray as $dxcc) {
 				$dxccMatrix[$dxcc->adif]['name'] = $dxcc->name;
 				$dxccMatrix[$dxcc->adif]['Dxccprefix'] = $dxcc->prefix;
-				$dxccMatrix[$dxcc->adif]['Deleted'] = isset($dxcc->Enddate) ? "<div class='alert-danger'>Y</div>" : '';
+				$dxccMatrix[$dxcc->adif]['Deleted'] = isset($dxcc->Enddate) ? "Y" : '';
 				$dxccMatrix[$dxcc->adif][$band] = '-';
 			}
 

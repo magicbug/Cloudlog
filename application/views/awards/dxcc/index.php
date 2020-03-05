@@ -134,7 +134,10 @@
                         echo '<tr>
                         <td>'. $i++ .'</td>';
                         foreach ($value  as $key) {
-                            echo '<td style="text-align: center">' . $key . '</td>';
+                            echo '<td style="text-align: center">';
+                            if ($key == "Y")
+                                echo '<div class=\'alert-danger\'>';
+                            echo $key . '</td>';
                         }
                         echo '</tr>';
                     }
