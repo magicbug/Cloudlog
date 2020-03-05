@@ -156,6 +156,11 @@
 			<!-- Awards Panel Contents -->
 			<div class="tab-pane fade" id="nav-awards" role="tabpanel" aria-labelledby="nav-awards-tab">
 				<div class="form-group">
+	            	<label for="usa_state">USA State</label>
+	                <input type="text" class="form-control" id="usa_state" name="usa_state" value="<?php echo $COL_STATE; ?>">
+	            </div>
+
+				<div class="form-group">
 	            	<label for="iota_ref">IOTA</label>
 	                <input type="text" class="form-control" id="iota_ref" name="iota_ref" value="<?php echo $COL_IOTA; ?>">
 	            </div>
