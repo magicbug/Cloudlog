@@ -223,7 +223,7 @@ class DXCC extends CI_Model {
 			}
 		}
 
-		if ($dxccMatrix) {
+		if (isset($dxccMatrix)) {
 			return $dxccMatrix;
 		}
 		else {
