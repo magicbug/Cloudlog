@@ -99,7 +99,7 @@ class Awards extends CI_Controller {
             $postdata['worked'] = $this->input->post('worked');
             $postdata['confirmed'] = $this->input->post('confirmed');
             $postdata['notworked'] = $this->input->post('notworked');
-            $postdata['deleted'] = $this->input->post('deleted');
+            $postdata['includedeleted'] = $this->input->post('includedeleted');
             $postdata['Africa'] = $this->input->post('Africa');
             $postdata['Asia'] = $this->input->post('Asia');
             $postdata['Europe'] = $this->input->post('Europe');
@@ -115,7 +115,7 @@ class Awards extends CI_Controller {
             $postdata['worked'] = 1;
             $postdata['confirmed'] = 1;
             $postdata['notworked'] = 1;
-            $postdata['deleted'] = 1;
+            $postdata['includedeleted'] = 1;
             $postdata['Africa'] = 1;
             $postdata['Asia'] = 1;
             $postdata['Europe'] = 1;

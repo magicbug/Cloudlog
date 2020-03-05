@@ -250,7 +250,7 @@ class DXCC extends CI_Model {
 		$sql .= " group by col_dxcc
 				) x on dxcc_entities.adif = x.col_dxcc";
 
-		if ($postdata['deleted'] == NULL) {
+		if ($postdata['includedeleted'] == NULL) {
 			$sql .= " and dxcc_entities.end is null";
 		}
 
@@ -278,7 +278,7 @@ class DXCC extends CI_Model {
 		$sql .= " group by col_dxcc
 				) x on dxcc_entities.adif = x.col_dxcc";;
 
-		if ($postdata['deleted'] == NULL) {
+		if ($postdata['includedeleted'] == NULL) {
 			$sql .= " and dxcc_entities.end is null";
 		}
 
@@ -314,7 +314,7 @@ class DXCC extends CI_Model {
 
 		$sql .= " where 1 = 1";
 
-		if ($postdata['deleted'] == NULL) {
+		if ($postdata['includedeleted'] == NULL) {
 			$sql .= " and end is null";
 		}
 
@@ -362,7 +362,7 @@ class DXCC extends CI_Model {
             ) ll on dxcc_entities.adif = ll.col_dxcc
             where 1=1";
 
-		if ($postdata['deleted'] == 'false') {
+		if ($postdata['includedeleted'] == 'false') {
 			$sql .= " and dxcc_entities.end is null";
 		}
 
@@ -396,7 +396,7 @@ class DXCC extends CI_Model {
             ) ll on dxcc_entities.adif = ll.col_dxcc
             where 1=1";
 
-		if ($postdata['deleted'] == 'false') {
+		if ($postdata['includedeleted'] == 'false') {
 			$sql .= " and dxcc_entities.end is null";
 		}
 
