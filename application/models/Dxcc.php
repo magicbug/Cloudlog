@@ -182,7 +182,8 @@ class DXCC extends CI_Model {
 			foreach ($dxccArray as $dxcc) {
 				$dxccMatrix[$dxcc->adif]['name'] = $dxcc->name;
 				$dxccMatrix[$dxcc->adif]['Dxccprefix'] = $dxcc->prefix;
-				$dxccMatrix[$dxcc->adif]['Deleted'] = isset($dxcc->Enddate) ? "<div class='alert-danger'>Y</div>" : '';
+				if ($postdata['includedeleted'])
+					$dxccMatrix[$dxcc->adif]['Deleted'] = isset($dxcc->Enddate) ? "<div class='alert-danger'>Y</div>" : '';
 				$dxccMatrix[$dxcc->adif][$band] = '-';
 			}
 
@@ -223,7 +224,7 @@ class DXCC extends CI_Model {
 			}
 		}
 
-		if ($dxccMatrix) {
+		if (isset($dxccMatrix)) {
 			return $dxccMatrix;
 		}
 		else {
@@ -250,7 +251,7 @@ class DXCC extends CI_Model {
 		$sql .= " group by col_dxcc
 				) x on dxcc_entities.adif = x.col_dxcc";
 
-		if ($postdata['deleted'] == NULL) {
+		if ($postdata['includedeleted'] == NULL) {
 			$sql .= " and dxcc_entities.end is null";
 		}
 
@@ -278,7 +279,7 @@ class DXCC extends CI_Model {
 		$sql .= " group by col_dxcc
 				) x on dxcc_entities.adif = x.col_dxcc";;
 
-		if ($postdata['deleted'] == NULL) {
+		if ($postdata['includedeleted'] == NULL) {
 			$sql .= " and dxcc_entities.end is null";
 		}
 
@@ -314,7 +315,7 @@ class DXCC extends CI_Model {
 
 		$sql .= " where 1 = 1";
 
-		if ($postdata['deleted'] == NULL) {
+		if ($postdata['includedeleted'] == NULL) {
 			$sql .= " and end is null";
 		}
 
@@ -362,7 +363,7 @@ class DXCC extends CI_Model {
             ) ll on dxcc_entities.adif = ll.col_dxcc
             where 1=1";
 
-		if ($postdata['deleted'] == 'false') {
+		if ($postdata['includedeleted'] == 'false') {
 			$sql .= " and dxcc_entities.end is null";
 		}
 
@@ -396,7 +397,7 @@ class DXCC extends CI_Model {
             ) ll on dxcc_entities.adif = ll.col_dxcc
             where 1=1";
 
-		if ($postdata['deleted'] == 'false') {
+		if ($postdata['includedeleted'] == 'false') {
 			$sql .= " and dxcc_entities.end is null";
 		}
 
