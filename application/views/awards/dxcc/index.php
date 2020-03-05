@@ -122,7 +122,9 @@
                     <tr>
                         <td>#</td>
                         <td>DXCCName</td>
-                        <td>Prefix</td>
+                        <td>Prefix</td>';
+        if ($this->input->post('includedeleted') || $this->input->method() !== 'post')
+            echo '
                         <td>Deleted</td>';
                     foreach($bands as $band) {
                         echo '<td>' . $band . '</td>';
