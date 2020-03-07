@@ -217,7 +217,7 @@
 
             <div class="form-group">
               <label for="usa_state">USA State</label>
-              <select class="custom-select" name="usa_state">
+              <select class="custom-select" id="input_usa_state" name="usa_state">
                 <option value=""></option>
                 <option value="AL">Alabama (AL)</option>
                 <option value="AK">Alaska (AK)</option>

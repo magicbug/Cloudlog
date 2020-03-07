@@ -71,6 +71,7 @@ class Logbook extends CI_Controller {
 			"callsign_qra"  => "",
 			"callsign_qth"  => "",
 			"callsign_iota" => "",
+			"callsign_state" => "",
 			"qsl_manager" => "",
 			"bearing" 		=> "",
 			"workedBefore" => false,
@@ -139,6 +140,8 @@ class Logbook extends CI_Controller {
 		$return['callsign_qra'] = $callbook['gridsquare'];
 		$return['callsign_qth'] = $callbook['city'];
 		$return['callsign_iota'] = $callbook['iota'];
+		$return['callsign_state'] = $callbook['state'];
+
 		if(isset($callbook['qslmgr'])) {
 			$return['qsl_manager'] = $callbook['qslmgr'];
 		}

@@ -357,12 +357,12 @@ $(document).on('keypress',function(e) {
       $("#locator").removeClass("newGrid");
       $("#callsign").removeClass("workedGrid");
       $("#callsign").removeClass("newGrid");
-	  $('#callsign_info').removeClass("badge-secondary");
-	  $('#callsign_info').removeClass("badge-success");
-	  $('#callsign_info').removeClass("badge-danger");
-
+      $('#callsign_info').removeClass("badge-secondary");
+      $('#callsign_info').removeClass("badge-success");
+      $('#callsign_info').removeClass("badge-danger");
       $('#qsl_via').val("");
       $('#callsign_info').text("");
+      $('#input_usa_state').val("");
 
       mymap.setView([51.505, -0.09], 13);
       mymap.removeLayer(markers);
@@ -564,7 +564,7 @@ $(document).on('keypress',function(e) {
                 $('#qsl_via').val(result.qsl_manager);
             }
 
-                        /* Find Operators Name */
+            /* Find Operators Name */
             if($('#name').val() == "") {
                 $('#name').val(result.callsign_name);
             }
@@ -572,6 +572,14 @@ $(document).on('keypress',function(e) {
             if($('#qth').val() == "") {
                 $('#qth').val(result.callsign_qth);
             }
+
+            /*
+            * Update state with returned value
+            */
+            if($("#input_usa_state").val() == "") {
+              $("#input_usa_state").val(result.callsign_state).trigger('change');
+            }
+
 
             if($('#iota_ref').val() == "") {
                 $('#iota_ref').val(result.callsign_iota);
@@ -595,9 +603,10 @@ $(document).on('keypress',function(e) {
             $("#locator").removeClass("newGrid");
             $("#callsign").removeClass("workedGrid");
             $("#callsign").removeClass("newGrid");
-			$('#callsign_info').removeClass("badge-secondary");
-			$('#callsign_info').removeClass("badge-success");
-			$('#callsign_info').removeClass("badge-danger");
+			      $('#callsign_info').removeClass("badge-secondary");
+			      $('#callsign_info').removeClass("badge-success");
+			      $('#callsign_info').removeClass("badge-danger");
+            $('#input_usa_state').val("");
         }  
     })
 
