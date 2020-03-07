@@ -79,7 +79,17 @@ class Hamqth {
 		$data['lat'] = (string) $xml->search->latitude;
 		$data['long'] = (string) $xml->search->longitude;
 		$data['iota'] = (string) $xml->search->iota;
+		$data['us_state'] = (string) $xml->search->us_state;
+		$data['us_county'] = (string) $xml->search->us_county;
 		$data['error'] = (string) $xml->session->error;
+
+		if($xml->search->country == "United States") {
+			$data['state'] = (string) $xml->search->us_state;
+			$data['us_county'] = (string) $xml->search->us_county;	
+		} else {
+			$data['state'] = null;
+			$data['us_county'] = null;		
+		}
 
 		return $data;
 	}

@@ -83,8 +83,10 @@ class Qrz {
 
 		if($xml->Callsign->country == "United States") {
 			$data['state'] = (string) $xml->Callsign->state;
+			$data['us_county'] = (string) $xml->Callsign->county;
 		} else {
 			$data['state'] = null; 
+			$data['us_county'] = null; 
 		}
 
 		
