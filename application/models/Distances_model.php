@@ -14,6 +14,7 @@ class Distances_model extends CI_Model
         $CI =& get_instance();
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
+        
         $station_gridsquare = $CI->Stations->find_gridsquare();
         $gridsquare = explode(',', $station_gridsquare); // We need to convert to an array, since a user can enter several gridsquares
 
@@ -26,7 +27,7 @@ class Distances_model extends CI_Model
         else {
             $this->db->where('col_band', $postdata['band']);
         }
-
+        $this->db->where('station_id', $station_id);
         $dataarrayata = $this->db->get($this->config->item('table_name'));
         $this->plot($dataarrayata->result_array(), $gridsquare);
     }
