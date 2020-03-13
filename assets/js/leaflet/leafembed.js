@@ -12,6 +12,8 @@ var jt65icon;
 var psk31icon;
 var ssbicon;
 var digicon;
+var iconbaseurl = window.location.origin + "/" + window.location.pathname.split("/")[1] + "/assets/js/leaflet/images/";
+
 
 function initmap(ShowGrid = 'No') {
     // set up AJAX request
@@ -24,51 +26,51 @@ function initmap(ShowGrid = 'No') {
     // set up the map
     map = new L.Map('map');
     amicon = L.icon({
-        iconUrl: '../assets/js/leaflet/images/icon-am.png',
+        iconUrl: iconbaseurl + 'icon-am.png',
         iconSize: [25,41],
         iconAnchor: [12,40],
         popupAnchor: [0,-41],
-        shadowUrl: '..assets/js/leaflet/images/marker-shadow.png',
+        shadowUrl: iconbaseurl + 'marker-shadow.png',
         shadowSize: [41,41]
     });
     cwicon = L.icon({
-        iconUrl: '../assets/js/leaflet/images/icon-cw.png',
+        iconUrl: iconbaseurl + 'icon-cw.png',
         iconSize: [25,41],
         iconAnchor: [12,40],
         popupAnchor: [0,-41],
-        shadowUrl: '../assets/js/leaflet/images/marker-shadow.png',
+        shadowUrl: iconbaseurl + 'marker-shadow.png',
         shadowSize: [41,41]
     });
     fmicon = L.icon({
-        iconUrl: '../assets/js/leaflet/images/icon-fm.png',
+        iconUrl: iconbaseurl + 'icon-fm.png',
         iconSize: [25,41],
         iconAnchor: [12,40],
         popupAnchor: [0,-41],
-        shadowUrl: '../assets/js/leaflet/images/marker-shadow.png',
+        shadowUrl: iconbaseurl + 'marker-shadow.png',
         shadowSize: [41,41]
     });
     ft4icon = L.icon({
-        iconUrl: '../assets/js/leaflet/images/icon-ft4.png',
+        iconUrl: iconbaseurl + 'icon-ft4.png',
         iconSize: [25,41],
         iconAnchor: [12,40],
         popupAnchor: [0,-41],
-        shadowUrl: '../assets/js/leaflet/images/marker-shadow.png',
+        shadowUrl: iconbaseurl + 'marker-shadow.png',
         shadowSize: [41,41]
     });
     ft8icon = L.icon({
-        iconUrl: '../assets/js/leaflet/images/icon-ft8.png',
+        iconUrl: iconbaseurl + 'icon-ft8.png',
         iconSize: [25,41],
         iconAnchor: [12,40],
         popupAnchor: [0,-41],
-        shadowUrl: '../assets/js/leaflet/images/marker-shadow.png',
+        shadowUrl: iconbaseurl + 'marker-shadow.png',
         shadowSize: [41,41]
     });
     jt9icon = L.icon({
-        iconUrl: '../assets/js/leaflet/images/icon-jt9.png',
+        iconUrl: iconbaseurl + 'icon-jt9.png',
         iconSize: [25,41],
         iconAnchor: [12,40],
         popupAnchor: [0,-41],
-        shadowUrl: '../assets/js/leaflet/images/marker-shadow.png',
+        shadowUrl: iconbaseurl + 'marker-shadow.png',
         shadowSize: [41,41]
     });
     jt65icon = L.icon({
@@ -80,19 +82,19 @@ function initmap(ShowGrid = 'No') {
         shadowSize: [41,41]
     });
     psk31icon = L.icon({
-        iconUrl: '../assets/js/leaflet/images/icon-psk31.png',
+        iconUrl: iconbaseurl + 'icon-psk31.png',
         iconSize: [25,41],
         iconAnchor: [12,40],
         popupAnchor: [0,-41],
-        shadowUrl: '../assets/js/leaflet/images/marker-shadow.png',
+        shadowUrl: iconbaseurl + 'marker-shadow.png',
         shadowSize: [41,41]
     });
     ssbicon = L.icon({
-        iconUrl: '../assets/js/leaflet/images/icon-ssb.png',
+        iconUrl: iconbaseurl + 'icon-ssb.png',
         iconSize: [25,41],
         iconAnchor: [12,40],
         popupAnchor: [0,-41],
-        shadowUrl: '../assets/js/leaflet/images/marker-shadow.png',
+        shadowUrl: iconbaseurl + 'marker-shadow.png',
         shadowSize: [41,41]
     });
 
