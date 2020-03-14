@@ -879,6 +879,17 @@ $(document).ready(function(){
 
   var maidenhead = L.maidenhead().addTo(map);
 
+  map.on('click', onMapClick);
+
+  function onMapClick(event) {
+    var LatLng = event.latlng;
+    var lat = LatLng.lat; 
+    var lng = LatLng.lng;           
+    var locator = LatLng2Loc(lat,lng, 10);
+
+    console.log(locator);
+  };
+
 <?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
 
   var bands_available = <?php echo $bands_available; ?>;
