@@ -886,8 +886,8 @@ $(document).ready(function(){
     var lat = LatLng.lat; 
     var lng = LatLng.lng;           
     var locator = LatLng2Loc(lat,lng, 10);
-
-    console.log(locator);
+    var loc_4char = locator.substring(0, 4);
+    console.log(loc_4char);
   };
 
 <?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
