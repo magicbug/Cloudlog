@@ -47,23 +47,16 @@
         </button>
       </div>
       <div class="modal-body">
-		<table class="table table-sm">
+		<table id="grid_results" class="table table-sm">
 		  <thead class="thead-dark">
 		    <tr>
 		      <th scope="col">Date/Time</th>
 		      <th scope="col">Callsign</th>
 		      <th scope="col">Mode</th>
 		      <th scope="col">Band</th>
-		      <th scope="col">Confirmation</th>
 		    </tr>
 		  </thead>
 		  <tbody>
-		    <tr>
-		      <th scope="row"></th>
-		      <td></td>
-		      <td></td>
-		      <td></td>
-		    </tr>
 		  </tbody>
 		</table>
       </div>

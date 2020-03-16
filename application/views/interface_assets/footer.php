@@ -889,7 +889,38 @@ $(document).ready(function(){
     var loc_4char = locator.substring(0, 4);
     console.log(loc_4char);
     console.log(map.getZoom());
+
     if(map.getZoom() > 5) {
+      var search_type = "<?php echo $this->uri->segment(2); ?>";
+      if(search_type == "satellites") {
+        console.log("satellites search");
+        var search_tags = "search_sat/" + loc_4char;
+      } else {
+        var band = "<?php echo $this->uri->segment(3); ?>";
+        console.log(band);
+        var search_tags = "search_band/" + band + "/" + loc_4char;
+      }
+
+      $.getJSON( "<?php echo site_url('gridsquares/');?>" + search_tags, function( data ) {
+        var items = [];
+        $.each( data, function( i, item ) {
+          console.log(item.COL_CALL + item.COL_SAT_NAME);
+          if(item.COL_SAT_NAME != undefined) {
+            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_SAT_NAME + "</td></tr>" );
+          } else {
+            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_BAND + "</td></tr>" );
+          }
+        });
+       
+        $( "<table>", {
+          "class": "my-new-list",
+          html: items.join( "" )
+        }).appendTo( "body" );
+
+        $("#grid_results tbody").append(items.join( "" )); 
+
+      });
+
       $('#square_number').text(loc_4char);
       $('#exampleModal').modal('show');
     }
