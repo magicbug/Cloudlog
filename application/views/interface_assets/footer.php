@@ -888,6 +888,11 @@ $(document).ready(function(){
     var locator = LatLng2Loc(lat,lng, 10);
     var loc_4char = locator.substring(0, 4);
     console.log(loc_4char);
+    console.log(map.getZoom());
+    if(map.getZoom() > 5) {
+      $('#square_number').text(loc_4char);
+      $('#exampleModal').modal('show');
+    }
   };
 
 <?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
