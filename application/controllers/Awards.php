@@ -152,6 +152,48 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
+    public function vucc()	{
+        $this->load->model('vucc');
+        $data['worked_bands'] = $this->vucc->get_worked_bands();
+
+        $data['vucc_array'] = $this->vucc->get_vucc_array($data);
+
+        // Render Page
+        $data['page_title'] = "Awards - VUCC";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/vucc/index');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function vucc_band(){
+        $this->load->model('vucc');
+        $band = str_replace('"', "", $this->input->get("Band"));
+        $data['vucc_array'] = $this->vucc->vucc_details($band);
+
+        // Render Page
+        $data['page_title'] = "VUCC - band";
+        $data['filter'] = "band ".$band;
+        $data['band'] = $band;
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/vucc/band');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function vucc_details(){
+        $this->load->model('logbook_model');
+
+        $gridsquare = str_replace('"', "", $this->input->get("Gridsquare"));
+        $band = str_replace('"', "", $this->input->get("Band"));
+        $data['results'] = $this->logbook_model->vucc_qso_details($gridsquare, $band);
+
+        // Render Page
+        $data['page_title'] = "Log View - VUCC";
+        $data['filter'] = "vucc " . $gridsquare . " and band ".$band;
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/vucc/details');
+        $this->load->view('interface_assets/footer');
+    }
+
 	/*
 		Handles Displaying of WAB Squares worked.
 		Comment field - WAB:#
