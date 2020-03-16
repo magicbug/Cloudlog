@@ -197,7 +197,7 @@ class VUCC extends CI_Model
         $station_id = $this->get_station_id();
         $sql = "select distinct upper(substring(col_gridsquare, 1, 4)) gridsquare
             from " . $this->config->item('table_name') .
-            " where station_id =" . $station_id .
+            " where col_prop_mode != 'SAT' AND station_id =" . $station_id .
             " and (LENGTH(col_gridsquare) > 0)";
 
         if ($confirmationMethod == 'both') {
