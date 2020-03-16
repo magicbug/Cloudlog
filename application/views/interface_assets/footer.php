@@ -911,12 +911,8 @@ $(document).ready(function(){
             items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_BAND + "</td></tr>" );
           }
         });
-       
-        $( "<table>", {
-          "class": "my-new-list",
-          html: items.join( "" )
-        }).appendTo( "body" );
 
+        $("#grid_results tbody").empty(); 
         $("#grid_results tbody").append(items.join( "" )); 
 
       });
