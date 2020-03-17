@@ -201,6 +201,7 @@ class Logbook_model extends CI_Model {
             if ($band == 'SAT') {
                 $sql .= " and col_prop_mode ='" . $band . "'";
             } else {
+                $sql .= " and col_prop_mode !='SAT'";
                 $sql .= " and col_band ='" . $band . "'";
             }
         }
@@ -212,6 +213,7 @@ class Logbook_model extends CI_Model {
             if ($band == 'SAT') {
                 $sql .= " and col_prop_mode ='" . $band . "'";
             } else {
+                $sql .= " and col_prop_mode !='SAT'";
                 $sql .= " and col_band ='" . $band . "'";
             }
         }
