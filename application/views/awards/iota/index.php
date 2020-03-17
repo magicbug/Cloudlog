@@ -10,7 +10,7 @@
 
             <!-- Multiple Checkboxes (inline) -->
             <div class="form-group row">
-                <div class="col-md-2 control-label" for="checkboxes">Deleted DXCC</div>
+                <div class="col-md-2 control-label" for="checkboxes">Deleted IOTA</div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="includedeleted" id="includedeleted" value="1" <?php if ($this->input->post('includedeleted') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
