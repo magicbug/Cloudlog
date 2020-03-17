@@ -12,8 +12,7 @@ var jt65icon;
 var psk31icon;
 var ssbicon;
 var digicon;
-var iconbaseurl = window.location.origin + "/" + window.location.pathname.split("/")[1] + "/assets/js/leaflet/images/";
-
+var iconbaseurl = baseURL + 'assets/js/leaflet/images/'
 
 function initmap(ShowGrid = 'No') {
     // set up AJAX request
@@ -74,11 +73,11 @@ function initmap(ShowGrid = 'No') {
         shadowSize: [41,41]
     });
     jt65icon = L.icon({
-        iconUrl: '../assets/js/leaflet/images/icon-jt65.png',
+        iconUrl: iconbaseurl + 'icon-jt65.png',
         iconSize: [25,41],
         iconAnchor: [12,40],
         popupAnchor: [0,-41],
-        shadowUrl: '../assets/js/leaflet/images/marker-shadow.png',
+        shadowUrl: iconbaseurl + 'marker-shadow.png',
         shadowSize: [41,41]
     });
     psk31icon = L.icon({

@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
   <?php } ?>
     <link rel="icon" href="<?php echo base_url(); ?>/favicon.ico">
-
+    <script>var baseURL = "<?php echo base_url();?>";</script>
     <title><?php if(isset($page_title)) { echo $page_title; } ?> - Cloudlog</title>
   </head>
   <body>
