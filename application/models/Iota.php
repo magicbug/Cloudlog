@@ -29,7 +29,6 @@ class IOTA extends CI_Model {
     {
         // Call the Model constructor
         parent::__construct();
-
     }
 
     function get_worked_bands() {
@@ -54,7 +53,6 @@ class IOTA extends CI_Model {
             array_push($worked_slots, strtoupper($row->COL_PROP_MODE));
         }
 
-
         // bring worked-slots in order of defined $bandslots
         $results = array();
         foreach(array_keys($this->bandslots) as $slot) {
@@ -70,11 +68,10 @@ class IOTA extends CI_Model {
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        foreach ($bands as $band) {             	// Looping through bands and entities to generate the array needed for display
+        foreach ($bands as $band) {             	// Looping through bands and iota to generate the array needed for display
             foreach ($iotaArray as $iota) {
                 $iotaMatrix[$iota->tag]['prefix'] = $iota->prefix;
                 $iotaMatrix[$iota->tag]['name'] = $iota->name;
-                //$iotaMatrix[$iota->tag]['status'] = $iota->status;
                 if ($postdata['includedeleted'])
                     $iotaMatrix[$iota->tag]['Deleted'] = isset($iota->status) && $iota->status == 'D' ? "<div class='alert-danger'>Y</div>" : '';
                 $iotaMatrix[$iota->tag][$band] = '-';
@@ -136,11 +133,8 @@ class IOTA extends CI_Model {
             $sql .= " and col_prop_mode ='" . $band . "'";
         }
         else {
+            $sql .= " and col_prop_mode !='SAT'";
             $sql .= " and col_band ='" . $band . "'";
-        }
-
-        if ($postdata['includedeleted'] == NULL) {
-            $sql .= " and coalesce(iota.status, '') <> 'D'";
         }
 
         if ($postdata['includedeleted'] == NULL) {
@@ -164,6 +158,7 @@ class IOTA extends CI_Model {
             $sql .= " and col_prop_mode ='" . $band . "'";
         }
         else {
+            $sql .= " and col_prop_mode !='SAT'";
             $sql .= " and col_band ='" . $band . "'";
         }
 
@@ -198,6 +193,7 @@ class IOTA extends CI_Model {
                     $sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
                 }
                 else {
+                    $sql .= " and col_prop_mode !='SAT'";
                     $sql .= " and col_band ='" . $postdata['band'] . "'";
                 }
             }
@@ -223,6 +219,7 @@ class IOTA extends CI_Model {
                 $sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
             }
             else {
+                $sql .= " and col_prop_mode !='SAT'";
                 $sql .= " and col_band ='" . $postdata['band'] . "'";
             }
         }
@@ -234,6 +231,7 @@ class IOTA extends CI_Model {
                 $sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
             }
             else {
+                $sql .= " and col_prop_mode !='SAT'";
                 $sql .= " and col_band ='" . $postdata['band'] . "'";
             }
         }
@@ -267,15 +265,10 @@ class IOTA extends CI_Model {
                 $sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
             }
             else {
+                $sql .= " and col_prop_mode !='SAT'";
                 $sql .= " and col_band ='" . $postdata['band'] . "'";
             }
         }
-
-        if ($postdata['includedeleted'] == NULL) {
-            $sql .= " and coalesce(iota.status, '') <> 'D'";
-        }
-
-        $sql .= $this->addContinentsToQuery($postdata);
 
         $query = $this->db->query($sql);
 
