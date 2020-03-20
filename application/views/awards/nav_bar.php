@@ -14,6 +14,10 @@
   <li class="nav-item">
     <a class="nav-link" href="<?php echo site_url('awards/cq'); ?>">CQ</a>
   </li>
+  
+  <li class="nav-item">
+    <a class="nav-link" href="<?php echo site_url('awards/iota'); ?>">IOTA</a>
+  </li>
 
   <li class="nav-item">
     <a class="nav-link" href="<?php echo site_url('awards/wab'); ?>">WAB</a>

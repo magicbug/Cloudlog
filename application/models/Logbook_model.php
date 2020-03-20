@@ -191,6 +191,23 @@ class Logbook_model extends CI_Model {
     return $this->db->get($this->config->item('table_name'));
   }
 
+    public function iota_qso_details($iota, $band){
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        $this->db->where('station_id', $station_id);
+        $this->db->where('COL_IOTA', $iota);
+        if($band != "SAT") {
+            $this->db->where('COL_BAND !=', 'SAT');
+            $this->db->where('COL_BAND', $band);
+        } else {
+            $this->db->where('COL_PROP_MODE', "SAT");
+        }
+
+        return $this->db->get($this->config->item('table_name'));
+    }
+  
     public function vucc_qso_details($gridsquare, $band) {
         $CI =& get_instance();
         $CI->load->model('Stations');

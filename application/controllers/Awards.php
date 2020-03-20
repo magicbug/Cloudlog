@@ -301,4 +301,75 @@ class Awards extends CI_Controller {
         $this->load->view('interface_assets/footer');
     }
 
+    public function iota ()	{
+        $this->load->model('iota');
+        $data['worked_bands'] = $this->iota->get_worked_bands(); // Used in the view for band select
+
+        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
+            if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
+                $bands = $data['worked_bands'];
+            }
+            else {
+                $bands[] = $this->input->post('band');
+            }
+        }
+        else {
+            $bands = $data['worked_bands'];
+        }
+
+        $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
+
+        if($this->input->method() === 'post') {
+            $postdata['worked'] = $this->input->post('worked');
+            $postdata['confirmed'] = $this->input->post('confirmed');
+            $postdata['notworked'] = $this->input->post('notworked');
+            $postdata['includedeleted'] = $this->input->post('includedeleted');
+            $postdata['Africa'] = $this->input->post('Africa');
+            $postdata['Asia'] = $this->input->post('Asia');
+            $postdata['Europe'] = $this->input->post('Europe');
+            $postdata['NorthAmerica'] = $this->input->post('NorthAmerica');
+            $postdata['SouthAmerica'] = $this->input->post('SouthAmerica');
+            $postdata['Oceania'] = $this->input->post('Oceania');
+            $postdata['Antarctica'] = $this->input->post('Antarctica');
+            $postdata['band'] = $this->input->post('band');
+        }
+        else { // Setting default values at first load of page
+            $postdata['worked'] = 1;
+            $postdata['confirmed'] = 1;
+            $postdata['notworked'] = 1;
+            $postdata['includedeleted'] = 1;
+            $postdata['Africa'] = 1;
+            $postdata['Asia'] = 1;
+            $postdata['Europe'] = 1;
+            $postdata['NorthAmerica'] = 1;
+            $postdata['SouthAmerica'] = 1;
+            $postdata['Oceania'] = 1;
+            $postdata['Antarctica'] = 1;
+            $postdata['band'] = 'All';
+        }
+
+        $iotalist = $this->iota->fetchIota($postdata);
+        $data['iota_array'] = $this->iota->get_iota_array($iotalist, $bands, $postdata);
+
+        // Render Page
+        $data['page_title'] = "Awards - IOTA (Islands On The Air)";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/iota/index');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function iota_details(){
+        $this->load->model('logbook_model');
+
+        $iota = str_replace('"', "", $this->input->get("Iota"));
+        $band = str_replace('"', "", $this->input->get("Band"));
+        $data['results'] = $this->logbook_model->iota_qso_details($iota, $band);
+
+        // Render Page
+        $data['page_title'] = "Log View - IOTA";
+        $data['filter'] = "iota ".$iota. " and ".$band;
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/iota/details');
+        $this->load->view('interface_assets/footer');
+    }
 }
