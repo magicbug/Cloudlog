@@ -357,12 +357,12 @@ $(document).on('keypress',function(e) {
       $("#locator").removeClass("newGrid");
       $("#callsign").removeClass("workedGrid");
       $("#callsign").removeClass("newGrid");
-	  $('#callsign_info').removeClass("badge-secondary");
-	  $('#callsign_info').removeClass("badge-success");
-	  $('#callsign_info').removeClass("badge-danger");
-
+      $('#callsign_info').removeClass("badge-secondary");
+      $('#callsign_info').removeClass("badge-success");
+      $('#callsign_info').removeClass("badge-danger");
       $('#qsl_via').val("");
       $('#callsign_info').text("");
+      $('#input_usa_state').val("");
 
       mymap.setView([51.505, -0.09], 13);
       mymap.removeLayer(markers);
@@ -564,7 +564,7 @@ $(document).on('keypress',function(e) {
                 $('#qsl_via').val(result.qsl_manager);
             }
 
-                        /* Find Operators Name */
+            /* Find Operators Name */
             if($('#name').val() == "") {
                 $('#name').val(result.callsign_name);
             }
@@ -572,6 +572,14 @@ $(document).on('keypress',function(e) {
             if($('#qth').val() == "") {
                 $('#qth').val(result.callsign_qth);
             }
+
+            /*
+            * Update state with returned value
+            */
+            if($("#input_usa_state").val() == "") {
+              $("#input_usa_state").val(result.callsign_state).trigger('change');
+            }
+
 
             if($('#iota_ref').val() == "") {
                 $('#iota_ref').val(result.callsign_iota);
@@ -595,9 +603,10 @@ $(document).on('keypress',function(e) {
             $("#locator").removeClass("newGrid");
             $("#callsign").removeClass("workedGrid");
             $("#callsign").removeClass("newGrid");
-			$('#callsign_info').removeClass("badge-secondary");
-			$('#callsign_info').removeClass("badge-success");
-			$('#callsign_info').removeClass("badge-danger");
+			      $('#callsign_info').removeClass("badge-secondary");
+			      $('#callsign_info').removeClass("badge-success");
+			      $('#callsign_info').removeClass("badge-danger");
+            $('#input_usa_state').val("");
         }  
     })
 
@@ -869,6 +878,49 @@ $(document).ready(function(){
   var grid_four_confirmed = <?php echo $grid_4char_confirmed; ?>;
 
   var maidenhead = L.maidenhead().addTo(map);
+
+  map.on('click', onMapClick);
+
+  function onMapClick(event) {
+    var LatLng = event.latlng;
+    var lat = LatLng.lat; 
+    var lng = LatLng.lng;           
+    var locator = LatLng2Loc(lat,lng, 10);
+    var loc_4char = locator.substring(0, 4);
+    console.log(loc_4char);
+    console.log(map.getZoom());
+
+    if(map.getZoom() > 5) {
+      var search_type = "<?php echo $this->uri->segment(2); ?>";
+      if(search_type == "satellites") {
+        console.log("satellites search");
+        var search_tags = "search_sat/" + loc_4char;
+      } else {
+        var band = "<?php echo $this->uri->segment(3); ?>";
+        console.log(band);
+        var search_tags = "search_band/" + band + "/" + loc_4char;
+      }
+
+      $.getJSON( "<?php echo site_url('gridsquares/');?>" + search_tags, function( data ) {
+        var items = [];
+        $.each( data, function( i, item ) {
+          console.log(item.COL_CALL + item.COL_SAT_NAME);
+          if(item.COL_SAT_NAME != undefined) {
+            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_SAT_NAME + "</td></tr>" );
+          } else {
+            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_BAND + "</td></tr>" );
+          }
+        });
+
+        $("#grid_results tbody").empty(); 
+        $("#grid_results tbody").append(items.join( "" )); 
+
+      });
+
+      $('#square_number').text(loc_4char);
+      $('#exampleModal').modal('show');
+    }
+  };
 
 <?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
 

@@ -106,6 +106,7 @@ class Logbook_model extends CI_Model {
             'COL_LON' => null,
             'COL_DXCC' => $dxcc_id,
             'COL_CQZ' => $cqz,
+            'COL_STATE' => trim($this->input->post('usa_state')),
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
 			      'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
     );
@@ -206,6 +207,36 @@ class Logbook_model extends CI_Model {
 
         return $this->db->get($this->config->item('table_name'));
     }
+  
+    public function vucc_qso_details($gridsquare, $band) {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+        $sql = "select * from " . $this->config->item('table_name') . " where station_id =" . $station_id . " and col_gridsquare like '" . $gridsquare. "%'";
+
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+
+        $sql .= " union ";
+        $sql .= "select * from " . $this->config->item('table_name') . " where station_id =" . $station_id . " and col_vucc_grids like '%" . $gridsquare. "%'";
+
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+
+        return $this->db->query($sql);
+    }
 
     public function cq_qso_details($cqzone){
         $CI =& get_instance();
@@ -298,6 +329,7 @@ class Logbook_model extends CI_Model {
        'COL_QSL_VIA' => $this->input->post('qsl_via_callsign'),
        'station_id' => $this->input->post('station_profile'),
        'COL_OPERATOR' => $this->input->post('operator_callsign'),
+       'COL_STATE' =>$this->input->post('usa_state')
     );
 
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));

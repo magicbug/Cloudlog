@@ -57,7 +57,7 @@ CREATE TABLE `config` (
 -- ----------------------------
 -- Records of config
 -- ----------------------------
-INSERT INTO `config` VALUES ('1', 'https://p1k.arrl.org/lotwuser/lotwreport.adi', 'https://p1k.arrl.org/lotwuser/upload', 'Y', 'https://p1k.arrl.org/lotwuser/default', 'http://www.eqsl.cc/qslcard/DownloadInBox.cfm', 'Y');
+INSERT INTO `config` VALUES ('1', 'https://lotw.arrl.org/lotwuser/lotwreport.adi', 'https://lotw.arrl.org/lotwuser/upload', 'Y', 'https://lotw.arrl.org/lotwuser/default', 'http://www.eqsl.cc/qslcard/DownloadInBox.cfm', 'Y');
 
 -- ----------------------------
 -- Table structure for migrations

@@ -73,6 +73,13 @@
 					<td><?php echo $row->COL_VUCC_GRIDS; ?></td>
 				</tr>
 				<?php } ?>
+
+				<?php if($row->COL_STATE != null) { ?>
+				<tr>
+					<td>USA State:</td>
+					<td><?php echo $row->COL_STATE; ?></td>
+				</tr>
+				<?php } ?>
 				
 				
 				<?php if($row->COL_NAME != null) { ?>

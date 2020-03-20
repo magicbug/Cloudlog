@@ -261,5 +261,21 @@ class Gridsquares extends CI_Controller {
 		$this->load->view('gridsquares/index.php');
 		$this->load->view('interface_assets/footer');
 	}
+
+	function search_band($band, $gridsquare){
+		$this->load->model('gridsquares_model');
+		header('Content-Type: application/json');
+		$result = $this->gridsquares_model->search_band($band, $gridsquare);
+
+		echo $result;
+	}
+
+	function search_sat($gridsquare){
+		$this->load->model('gridsquares_model');
+		header('Content-Type: application/json');
+		$result = $this->gridsquares_model->search_sat($gridsquare);
+
+		echo $result;
+	}
 	
 }

@@ -1,0 +1,68 @@
+{
+  "QO-100": {
+    "Modes": ["S/X"]
+  },
+  "AO-7": {
+    "Modes": ["U/V", "V/A"]
+  },
+  "AO-73": {
+    "Modes": ["U/V"]
+  },
+  "FO-29": {
+    "Modes": ["V/U"]
+  },
+  "XW-2A": {
+    "Modes": ["U/V"]
+  },
+  "XW-2B": {
+    "Modes": ["U/V"]
+  },
+  "XW-2C": {
+    "Modes": ["U/V"]
+  },
+  "XW-2D": {
+    "Modes": ["U/V"]
+  },
+  "XW-2E": {
+    "Modes": ["U/V"]
+  },
+  "CAS-4A": {
+    "Modes": ["U/V"]
+  },
+  "CAS-4B": {
+    "Modes": ["U/V"]
+  },
+  "EO-88": {
+    "Modes": ["U/V"]
+  },
+  "FO-99": {
+    "Modes": ["V/U"]
+  },
+  "AO-91": {
+    "Modes": ["U/V"]
+  },
+  "AO-92": {
+    "Modes": ["U/V", "L/V"]
+  },
+  "SO-50": {
+    "Modes": ["V/U"]
+  },
+  "Lilacsat-1": {
+    "Modes": ["V/U"]
+  },
+  "PO-101": {
+    "Modes": ["U/v"]
+  },
+  "AISAT-1": {
+    "Modes": ["V"]
+  },
+  "NO-84": {
+    "Modes": ["A/U", "V"]
+  },
+  "NO-104": {
+    "Modes": ["A/U", "V"]
+  },
+  "ARISS": {
+    "Modes": ["V"]
+  }
+}

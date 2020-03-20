@@ -1,10 +1,33 @@
+<ul class="nav nav-underline">
+  <li class="nav-item">
+    <a class="nav-link" href="<?php echo site_url('awards/dxcc'); ?>">DXCC</a>
+  </li>
 
-<nav class="nav">
-  <a class="nav-link" href="<?php echo site_url('awards/dxcc'); ?>">DXCC</a>
-  <a class="nav-link" href="<?php echo site_url('awards/wab'); ?>">WAB</a>
-  <a class="nav-link" href="<?php echo site_url('awards/was'); ?>">WAS</a>
-  <a class="nav-link" href="<?php echo site_url('awards/sota'); ?>">SOTA</a>
-  <a class="nav-link" href="<?php echo site_url('awards/cq'); ?>">CQ</a>
-  <a class="nav-link" href="<?php echo site_url('awards/dok'); ?>">DOK</a>
-  <a class="nav-link" href="<?php echo site_url('awards/iota'); ?>">IOTA</a>
-</nav>
+  <li class="nav-item">
+    <a class="nav-link" href="<?php echo site_url('awards/vucc'); ?>">VUCC</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="<?php echo site_url('awards/was'); ?>">WAS</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="<?php echo site_url('awards/cq'); ?>">CQ</a>
+  </li>
+  
+  <li class="nav-item">
+    <a class="nav-link" href="<?php echo site_url('awards/iota'); ?>">iota</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="<?php echo site_url('awards/wab'); ?>">WAB</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="<?php echo site_url('awards/sota'); ?>">SOTA</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="<?php echo site_url('awards/dok'); ?>">DOK</a>
+  </li>
+</ul>
