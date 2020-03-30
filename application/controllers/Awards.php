@@ -276,8 +276,40 @@ class Awards extends CI_Controller {
 
     public function was() {
         $this->load->model('was');
-        $data['was'] = $this->was->show_stats();
         $data['worked_bands'] = $this->was->get_worked_bands();
+
+        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
+            if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
+                $bands = $data['worked_bands'];
+            }
+            else {
+                $bands[] = $this->input->post('band');
+            }
+        }
+        else {
+            $bands = $data['worked_bands'];
+        }
+
+        $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
+
+        if($this->input->method() === 'post') {
+            $postdata['lotw'] = $this->input->post('lotw');
+            $postdata['qsl'] = $this->input->post('qsl');
+            $postdata['worked'] = $this->input->post('worked');
+            $postdata['confirmed'] = $this->input->post('confirmed');
+            $postdata['notworked'] = $this->input->post('notworked');
+            $postdata['band'] = $this->input->post('band');
+        }
+        else { // Setting default values at first load of page
+            $postdata['lotw'] = 1;
+            $postdata['qsl'] = 1;
+            $postdata['worked'] = 1;
+            $postdata['confirmed'] = 1;
+            $postdata['notworked'] = 1;
+            $postdata['band'] = 'All';
+        }
+
+        $data['was_array'] = $this->was->get_was_array($bands, $postdata);
 
         // Render Page
         $data['page_title'] = "Awards - WAS (Worked all states)";
