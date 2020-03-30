@@ -238,10 +238,17 @@ class Logbook_model extends CI_Model {
         return $this->db->query($sql);
     }
 
-    public function cq_qso_details($cqzone){
+    public function cq_qso_details($cqzone, $band){
         $CI =& get_instance();
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
+
+        if ($band == 'SAT') {
+            $this->db->where('col_prop_mode', $band);
+        } else if ($band != '') {
+            $this->db->where('col_prop_mode !=', 'SAT');
+            $this->db->where('col_band', $band);
+        }
 
         $this->db->where('station_id', $station_id);
         $this->db->where('COL_CQZ', $cqzone);

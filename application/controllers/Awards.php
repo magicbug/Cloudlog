@@ -253,6 +253,41 @@ class Awards extends CI_Controller {
         }
         $data['cqz'] = $zones;
 
+        $data['worked_bands'] = $this->cq->get_worked_bands();
+
+        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
+            if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
+                $bands = $data['worked_bands'];
+            }
+            else {
+                $bands[] = $this->input->post('band');
+            }
+        }
+        else {
+            $bands = $data['worked_bands'];
+        }
+
+        $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
+
+        if($this->input->method() === 'post') {
+            $postdata['lotw'] = $this->input->post('lotw');
+            $postdata['qsl'] = $this->input->post('qsl');
+            $postdata['worked'] = $this->input->post('worked');
+            $postdata['confirmed'] = $this->input->post('confirmed');
+            $postdata['notworked'] = $this->input->post('notworked');
+            $postdata['band'] = $this->input->post('band');
+        }
+        else { // Setting default values at first load of page
+            $postdata['lotw'] = 1;
+            $postdata['qsl'] = 1;
+            $postdata['worked'] = 1;
+            $postdata['confirmed'] = 1;
+            $postdata['notworked'] = 1;
+            $postdata['band'] = 'All';
+        }
+
+        $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata);
+
         // Render page
         $data['page_title'] = "Awards - CQ Magazine";
 		$this->load->view('interface_assets/header', $data);
@@ -264,7 +299,8 @@ class Awards extends CI_Controller {
         $this->load->model('logbook_model');
 
         $cqzone = str_replace('"', "", $this->input->get("CQZone"));
-        $data['results'] = $this->logbook_model->cq_qso_details($cqzone);
+        $band = str_replace('"', "", $this->input->get("Band"));
+        $data['results'] = $this->logbook_model->cq_qso_details($cqzone, $band);
 
         // Render Page
         $data['page_title'] = "Log View - DXCC";
