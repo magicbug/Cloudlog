@@ -74,10 +74,14 @@ class was extends CI_Model {
 
         $states = array(); // Used for keeping track of which states that are not worked
 
+        foreach ($stateArray as $state) {                   // Generating array for use in the table
+            $states[$state]['count'] = 0;                   // Inits each state's count
+        }
+
+
         foreach ($bands as $band) {
             foreach ($stateArray as $state) {                   // Generating array for use in the table
                 $bandWas[$state][$band] = '-';                  // Sets all to dash to indicate no result
-                $states[$state]['count'] = 0;                   // Inits each state's count
             }
 
             if ($postdata['worked'] != NULL) {

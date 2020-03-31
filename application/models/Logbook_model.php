@@ -266,7 +266,7 @@ class Logbook_model extends CI_Model {
         $this->db->where('COL_STATE', $state);
         $this->db->where_in('COL_DXCC', ['291', '6', '110']);
         if($band != "SAT") {
-            $this->db->where('COL_BAND !=', 'SAT');
+            $this->db->where('COL_PROP_MODE !=', 'SAT');
             $this->db->where('COL_BAND', $band);
         } else {
             $this->db->where('COL_PROP_MODE', "SAT");
