@@ -703,7 +703,12 @@ class Logbook_model extends CI_Model {
       $station_id = $CI->Stations->find_active();
 
         $morning = date('Y-m-01 00:00:00');
-        $night = date('Y-m-30 23:59:59');
+
+        $date = new DateTime('now');
+        $date->modify('last day of this month');
+        
+        $night = $date->format('Y-m-d')." 23:59:59";
+
         $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_TIME_ON between \''.$morning.'\' AND \''.$night.'\'');
 
         if ($query->num_rows() > 0)
