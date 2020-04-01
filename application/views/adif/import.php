@@ -60,23 +60,55 @@
                   </div>
               </div>
           </div>
+
           <p class="card-text">To date:</p>
           <div class="row">
+              <div class="input-group date col-md-3" id="datetimepicker2" data-target-input="nearest">
+                  <input name="to" "totype="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+                  <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  </div>
+              </div>
+          </div>
+            <br>
+          <div class="form-group row">
+              <div class="col-md-10">
+                  <div class="form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="markLotw" value="1" id="markLotw">
+                      <label class="form-check-label" for="markLotw">Mark exported QSOs as uploaded to LoTW</label>
+                  </div>
+              </div>
+          </div>
 
-          <div class="input-group date col-md-3" id="datetimepicker2" data-target-input="nearest">
+    <button type="submit" class="btn btn-outline-secondary btn-sm" value="Export">Export QSOs</button>
+      </form>
+
+    <br><br>
+      <h6>Logbook of The World</h6>
+      <p>If no date are chosen, that means all QSOs will be marked!</p>
+      <form class="form" action="<?php echo site_url('adif/mark_lotw'); ?>" method="post" enctype="multipart/form-data">
+          <p class="card-text">From date:</p>
+          <div class="row">
+              <div class="input-group date col-md-3" id="datetimepicker3" data-target-input="nearest">
+                  <input name="from" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+                  <div class="input-group-append"  data-target="#datetimepicker3" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  </div>
+              </div>
+          </div>
+      <p class="card-text">To date:</p>
+      <div class="row">
+          <div class="input-group date col-md-3" id="datetimepicker4" data-target-input="nearest">
               <input name="to" "totype="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
-              <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+              <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
                   <div class="input-group-text"><i class="fa fa-calendar"></i></div>
               </div>
           </div>
-          </div>
-
-
-
-    <br>
-    <button type="submit" class="btn btn-outline-secondary btn-sm" value="Export">Export QSOs</button>
+      </div>
+      <br>
+      <button type="submit" class="btn btn-outline-secondary btn-sm" value="Export">Mark QSOs as exported to LoTW</button>
       </form>
-    <br><br>
+      <br><br>
 
     <h6>Export Satellite Only QSOs</h6>
     <a href="<?php echo site_url('adif/exportsat'); ?>" title="Export All Satellite Contacts" target="_blank" class="btn btn-outline-secondary btn-sm">Export All Satellite QSOs</a>
