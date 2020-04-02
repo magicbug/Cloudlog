@@ -58,9 +58,9 @@ L.Maidenhead = L.LayerGroup.extend({
 			for (var lat = bottom; lat < top; lat += unit) {
 			var bounds = [[lat,lon],[lat+unit,lon+(unit*2)]];
 	
-			if(grid_two.includes(this._getLocator(lon,lat)) || grid_four.includes(this._getLocator(lon,lat))) {
+			if(grid_two.includes(this._getLocator(lon,lat)) || grid_four.includes(this._getLocator(lon,lat)) || grid_six.includes(this._getLocator(lon,lat))) {
 
-				if(grid_two_confirmed.includes(this._getLocator(lon,lat)) || grid_four_confirmed.includes(this._getLocator(lon,lat))) {
+				if(grid_two_confirmed.includes(this._getLocator(lon,lat)) || grid_four_confirmed.includes(this._getLocator(lon,lat)) || grid_six_confirmed.includes(this._getLocator(lon,lat))) {
 					
 					this.addLayer(L.rectangle(bounds, {color: 'rgb(144,238,144)', weight: 1, fillOpacity: 0.6, fill:true, interactive: false}));
 				} else {

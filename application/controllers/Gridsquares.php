@@ -33,16 +33,20 @@ class Gridsquares extends CI_Controller {
 
 		$array_grid_2char = array();
 		$array_grid_4char = array();
+		$array_grid_6char = array();
 
 
 		$array_confirmed_grid_2char = array();
 		$array_confirmed_grid_4char = array();
+		$array_confirmed_grid_6char = array();
 
 		$grid_2char = "";
 		$grid_4char = "";
+		$grid_6char = "";
 
 		$grid_2char_confirmed = "";
 		$grid_4char_confirmed = "";
+		$grid_6char_confirmed = "";
 
 
 		// Get Confirmed LOTW & Paper Squares (non VUCC)
@@ -56,6 +60,9 @@ class Gridsquares extends CI_Controller {
 
 				$grid_2char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,2));
 				$grid_4char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,4));
+				if ($this->config->item('map_6digit_grids')) {
+					$grid_6char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,6));
+				}
 
 				// Check if 2 Char is in array
 				if(!in_array($grid_2char_confirmed, $array_confirmed_grid_2char)){
@@ -65,6 +72,13 @@ class Gridsquares extends CI_Controller {
 
 				if(!in_array($grid_4char_confirmed, $array_confirmed_grid_4char)){
 					array_push($array_confirmed_grid_4char, $grid_4char_confirmed);	
+				}
+
+
+				if ($this->config->item('map_6digit_grids')) {
+					if(!in_array($grid_6char_confirmed, $array_confirmed_grid_6char)){
+						array_push($array_confirmed_grid_6char, $grid_6char_confirmed);	
+					}
 				}
 
 
@@ -81,6 +95,9 @@ class Gridsquares extends CI_Controller {
 
 				$grid_two = strtoupper(substr($row->SAT_SQUARE,0,2));
 				$grid_four = strtoupper(substr($row->SAT_SQUARE,0,4));
+				if ($this->config->item('map_6digit_grids')) {
+					$grid_six = strtoupper(substr($row->SAT_SQUARE,0,6));
+				}
 
 				// Check if 2 Char is in array
 				if(!in_array($grid_two, $array_grid_2char)){
@@ -90,6 +107,13 @@ class Gridsquares extends CI_Controller {
 
 				if(!in_array($grid_four, $array_grid_4char)){
 					array_push($array_grid_4char, $grid_four);	
+				}
+
+
+				if ($this->config->item('map_6digit_grids')) {
+					if(!in_array($grid_six, $array_grid_6char)){
+						array_push($array_grid_6char, $grid_six);	
+					}
 				}
 
 
@@ -106,7 +130,7 @@ class Gridsquares extends CI_Controller {
 				$grids = explode(",", $row->COL_VUCC_GRIDS);
 
 				foreach($grids as $key) {    
-				    $grid_two = strtoupper(substr($key,0,2));
+					$grid_two = strtoupper(substr($key,0,2));
 					$grid_four = strtoupper(substr($key,0,4));
 
 					// Check if 2 Char is in array
@@ -133,7 +157,7 @@ class Gridsquares extends CI_Controller {
 				$grids = explode(",", $row->COL_VUCC_GRIDS);
 
 				foreach($grids as $key) {    
-				    $grid_2char_confirmed = strtoupper(substr($key,0,2));
+					$grid_2char_confirmed = strtoupper(substr($key,0,2));
 					$grid_4char_confirmed = strtoupper(substr($key,0,4));
 
 					// Check if 2 Char is in array
@@ -164,10 +188,11 @@ class Gridsquares extends CI_Controller {
 
 		$data['grid_2char_confirmed'] = js_array($array_confirmed_grid_2char);
 		$data['grid_4char_confirmed'] = js_array($array_confirmed_grid_4char);
+		$data['grid_6char_confirmed'] = js_array($array_confirmed_grid_6char);
 
 		$data['grid_2char'] = js_array($array_grid_2char);
 		$data['grid_4char'] = js_array($array_grid_4char);
-
+		$data['grid_6char'] = js_array($array_grid_6char);
 
 
 		$this->load->view('interface_assets/header', $data);
@@ -184,15 +209,19 @@ class Gridsquares extends CI_Controller {
 
 		$array_grid_2char = array();
 		$array_grid_4char = array();
+		$array_grid_6char = array();
 
 		$array_grid_2char_confirmed = array();
 		$array_grid_4char_confirmed = array();
+		$array_grid_6char_confirmed = array();
 
 		$grid_2char = "";
 		$grid_4char = "";
+		$grid_6char = "";
 
 		$grid_2char_confirmed = "";
 		$grid_4char_confirmed = "";
+		$grid_6char_confirmed = "";
 
 		$query = $this->gridsquares_model->get_band_confirmed($band);
 
@@ -202,6 +231,9 @@ class Gridsquares extends CI_Controller {
 			{
 				$grid_2char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,2));
 				$grid_4char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,4));
+				if ($this->config->item('map_6digit_grids')) {
+					$grid_6char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,6));
+				}
 
 				// Check if 2 Char is in array
 				if(!in_array($grid_2char_confirmed, $array_grid_2char_confirmed)){
@@ -210,6 +242,12 @@ class Gridsquares extends CI_Controller {
 
 				if(!in_array($grid_4char_confirmed, $array_grid_4char_confirmed)){
 					array_push($array_grid_4char_confirmed, $grid_4char_confirmed);	
+				}
+
+				if ($this->config->item('map_6digit_grids')) {
+					if(!in_array($grid_6char_confirmed, $array_grid_6char_confirmed)){
+						array_push($array_grid_6char_confirmed, $grid_6char_confirmed);	
+					}
 				}
 			}
 		}
@@ -223,6 +261,9 @@ class Gridsquares extends CI_Controller {
 
 				$grid_two = strtoupper(substr($row->GRID_SQUARES,0,2));
 				$grid_four = strtoupper(substr($row->GRID_SQUARES,0,4));
+				if ($this->config->item('map_6digit_grids')) {
+					$grid_six = strtoupper(substr($row->GRID_SQUARES,0,6));
+				}
 
 				// Check if 2 Char is in array
 				if(!in_array($grid_two, $array_grid_2char)){
@@ -232,6 +273,13 @@ class Gridsquares extends CI_Controller {
 
 				if(!in_array($grid_four, $array_grid_4char)){
 					array_push($array_grid_4char, $grid_four);	
+				}
+
+
+				if ($this->config->item('map_6digit_grids')) {
+					if(!in_array($grid_six, $array_grid_6char)){
+						array_push($array_grid_6char, $grid_six);	
+					}
 				}
 
 
@@ -251,9 +299,11 @@ class Gridsquares extends CI_Controller {
 
 		$data['grid_2char_confirmed'] = js_array($array_grid_2char_confirmed);
 		$data['grid_4char_confirmed'] = js_array($array_grid_4char_confirmed);
+		$data['grid_6char_confirmed'] = js_array($array_grid_6char_confirmed);
 
 		$data['grid_2char'] = js_array($array_grid_2char);
 		$data['grid_4char'] = js_array($array_grid_4char);
+		$data['grid_6char'] = js_array($array_grid_6char);
 
 		$data['bands_available'] = js_array($this->config->item('bands_available'));
 
