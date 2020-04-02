@@ -15,7 +15,7 @@ class Gridsquares_model extends CI_Model {
 
         $this->db->where("station_id", $station_id);
 
-        return $this->db->query('SELECT distinct substring(COL_GRIDSQUARE,1,4) as SAT_SQUARE, COL_SAT_NAME FROM '.$this->config->item('table_name').' WHERE station_id = "'.$station_id.'" AND COL_GRIDSQUARE != "" AND COL_SAT_NAME != ""');
+        return $this->db->query('SELECT distinct substring(COL_GRIDSQUARE,1,6) as SAT_SQUARE, COL_SAT_NAME FROM '.$this->config->item('table_name').' WHERE station_id = "'.$station_id.'" AND COL_GRIDSQUARE != "" AND COL_SAT_NAME != ""');
 	}
 
 
@@ -24,7 +24,7 @@ class Gridsquares_model extends CI_Model {
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        return $this->db->query('SELECT distinct substring(COL_GRIDSQUARE,1,4) as SAT_SQUARE, COL_SAT_NAME FROM '.$this->config->item('table_name').' WHERE station_id = "'.$station_id.'" AND COL_GRIDSQUARE != "" AND COL_SAT_NAME != "" AND (COL_LOTW_QSL_RCVD = "Y" OR COL_QSL_RCVD = "Y")');
+        return $this->db->query('SELECT distinct substring(COL_GRIDSQUARE,1,6) as SAT_SQUARE, COL_SAT_NAME FROM '.$this->config->item('table_name').' WHERE station_id = "'.$station_id.'" AND COL_GRIDSQUARE != "" AND COL_SAT_NAME != "" AND (COL_LOTW_QSL_RCVD = "Y" OR COL_QSL_RCVD = "Y")');
     }
 
     function get_confirmed_sat_vucc_squares() {
@@ -51,7 +51,7 @@ class Gridsquares_model extends CI_Model {
         $CI =& get_instance();
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
-        return $this->db->query('SELECT distinct substring(COL_GRIDSQUARE,1,4) as GRID_SQUARES, COL_BAND FROM '.$this->config->item('table_name').'
+        return $this->db->query('SELECT distinct substring(COL_GRIDSQUARE,1,6) as GRID_SQUARES, COL_BAND FROM '.$this->config->item('table_name').'
             WHERE station_id = "'.$station_id.'" AND COL_GRIDSQUARE != "" 
             AND COL_BAND = "'.$band.'"
             AND COL_PROP_MODE != "SAT"
@@ -67,7 +67,7 @@ class Gridsquares_model extends CI_Model {
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        return $this->db->query('SELECT distinct substring(COL_GRIDSQUARE,1,4) as GRID_SQUARES, COL_BAND FROM '.$this->config->item('table_name').' WHERE station_id = "'.$station_id.'" AND COL_GRIDSQUARE != "" AND COL_BAND = "'.$band.'" 
+        return $this->db->query('SELECT distinct substring(COL_GRIDSQUARE,1,6) as GRID_SQUARES, COL_BAND FROM '.$this->config->item('table_name').' WHERE station_id = "'.$station_id.'" AND COL_GRIDSQUARE != "" AND COL_BAND = "'.$band.'" 
             AND COL_PROP_MODE != "SAT"
             AND COL_PROP_MODE != "INTERNET"
             AND COL_PROP_MODE != "ECH"

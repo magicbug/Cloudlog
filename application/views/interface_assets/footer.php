@@ -885,9 +885,11 @@ $(document).ready(function(){
   
   var grid_two = <?php echo $grid_2char; ?>;
   var grid_four = <?php echo $grid_4char; ?>;
+  var grid_six = <?php echo $grid_6char; ?>;
 
   var grid_two_confirmed = <?php echo $grid_2char_confirmed; ?>;
   var grid_four_confirmed = <?php echo $grid_4char_confirmed; ?>;
+  var grid_six_confirmed = <?php echo $grid_6char_confirmed; ?>;
 
   var maidenhead = L.maidenhead().addTo(map);
 
