@@ -475,4 +475,24 @@ class API extends CI_Controller {
 		echo json_encode($arr);
 
 	}
+
+	/*
+	*
+	*	Stats API function calls
+	*
+	*/
+
+	function statistics() {
+		header('Content-type: application/json');
+		$this->load->model('logbook_model');
+
+		$data['todays_qsos'] = $this->logbook_model->todays_qsos();
+		$data['total_qsos'] = $this->logbook_model->total_qsos();
+		$data['month_qsos'] = $this->logbook_model->month_qsos();
+		$data['year_qsos'] = $this->logbook_model->year_qsos();
+
+		http_response_code(201);
+		echo json_encode(['Today' => $data['todays_qsos'], 'total_qsos' => $data['total_qsos'], 'month_qsos' => $data['month_qsos'], 'year_qsos' => $data['year_qsos']]);
+
+	}
 }
