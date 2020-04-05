@@ -1095,8 +1095,6 @@ class Logbook_model extends CI_Model {
 
     // Show all QSOs we need to send to eQSL
     function eqsl_not_yet_sent() {
-
-
       $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE');
       $this->db->from('station_profile');
       $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id AND station_profile.eqslqthnickname != ""','left');
@@ -1106,7 +1104,7 @@ class Logbook_model extends CI_Model {
       return $this->db->get();
     }
 
-    function import($record, $station_id = "0") {
+    function import($record, $station_id = "0", $skipDuplicate, $markLotw, $dxccAdif) {
         $CI =& get_instance();
         $CI->load->library('frequency');
         $my_error = "";
@@ -1116,7 +1114,7 @@ class Logbook_model extends CI_Model {
         if (isset($record['time_off'])) {
             $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_off']));
         } else {
-           $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
+          $time_off = $time_on;
         }
 
         // Store Freq
@@ -1137,7 +1135,6 @@ class Logbook_model extends CI_Model {
         } else {
             $freq = "0";
         }
-
 
         // Check for RX Freq
         // Check if 'freq' is defined in the import?
@@ -1160,10 +1157,18 @@ class Logbook_model extends CI_Model {
 
         // DXCC id
         if (isset($record['call'])){
-          $dxcc = $this->check_dxcc_table($record['call'], $time_off);
-        } else {
-          $dxcc = NULL;
-        }
+          if ($dxccAdif != NULL) {
+              if (isset($record['dxcc'])) {
+                  $dxcc = array($record['dxcc'], $this->get_entity($record['dxcc']));
+              } else {
+                  $dxcc = NULL;
+              }
+          } else {
+            $dxcc = $this->check_dxcc_table($record['call'], $time_off);
+          }
+      } else {
+        $dxcc = NULL;
+      }
 
         // Store or find country name
         if(isset($record['country'])) {
@@ -1171,7 +1176,6 @@ class Logbook_model extends CI_Model {
         } else {
             $country = ucwords(strtolower($dxcc[1]));
         }
-
 
         // RST recevied
         if(isset($record['rst_rcvd'])) {
@@ -1198,7 +1202,6 @@ class Logbook_model extends CI_Model {
             }
         }
 
-
         if(isset($record['band_rx'])) {
                 $band_rx = $record['band_rx'];
         } else {
@@ -1216,7 +1219,6 @@ class Logbook_model extends CI_Model {
         } elseif(isset($dxcc[2])) {
           $cq_zone = $dxcc[2];
         } else {
-          //$cq_zone = "";
           $cq_zone = NULL;
         }
 
@@ -1290,7 +1292,6 @@ class Logbook_model extends CI_Model {
          qslrdate, qslsdate
         */
 
-
         if (isset($record['qslrdate'])){
             if(validateADIFDate($record['qslrdate']) == true){
               $input_qslrdate = $record['qslrdate'];
@@ -1340,7 +1341,6 @@ class Logbook_model extends CI_Model {
         /*
           Validate LOTW Fields
         */
-
         if (isset($record['lotw_qsl_rcvd'])){
             $input_lotw_qsl_rcvd = mb_strimwidth($record['lotw_qsl_rcvd'], 0, 1);
         } else {
@@ -1348,10 +1348,12 @@ class Logbook_model extends CI_Model {
         }
 
         if (isset($record['lotw_qsl_sent'])){
-            $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
-        } else {
-            $input_lotw_qsl_sent = "";
-        }
+          $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
+      } else if ($markLotw != NULL) {
+          $input_lotw_qsl_sent = "Y";
+      } else {
+          $input_lotw_qsl_sent = "";
+      }
 
         if (isset($record['lotw_qslrdate'])){
             if(validateADIFDate($record['lotw_qslrdate']) == true){
@@ -1371,9 +1373,17 @@ class Logbook_model extends CI_Model {
               $input_lotw_qslsdate = NULL;
               $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the lotw_qslsdate is invalid (YYYYMMDD): ".$record['lotw_qslsdate']."<br>";
             }
+        } else if ($markLotw != NULL) {
+            $input_lotw_qslsdate = $date = date("Y-m-d H:i:s", strtotime("now"));
         } else {
             $input_lotw_qslsdate = NULL;
         }
+
+        if (isset($record['mode'])) {
+          $input_mode = $record['mode'];
+      } else {
+          $input_mode = '';
+      }
 
         // Get active station_id from station profile if one hasn't been provided
         if($station_id == "" || $station_id == "0") {
@@ -1383,16 +1393,27 @@ class Logbook_model extends CI_Model {
         }
         
         // Check if QSO is already in the database
-        if (isset($record['call'])){
-          $this->db->where('COL_CALL', $record['call']);
+        if ($skipDuplicate != NULL) {
+            $skip = false;
+        } else {
+            if (isset($record['call'])){
+                $this->db->where('COL_CALL', $record['call']);
+            }
+            $this->db->where('COL_TIME_ON', $time_on);
+            $this->db->where('COL_BAND', $band);
+            $this->db->where('COL_MODE', $input_mode);
+            $this->db->where('station_id', $station_id);
+            $check = $this->db->get($this->config->item('table_name'));
+
+            // If dupe is not found, set variable to add QSO
+            if ($check->num_rows() <= 0) {
+                $skip = false;
+            } else {
+                $skip = true;
+            }
         }
-        $this->db->where('COL_TIME_ON', $time_on);
-        $this->db->where('COL_BAND', $band);
-        $this->db->where('station_id', $station_id);
-        $check = $this->db->get($this->config->item('table_name'));
-        
-        // If QSO is not in the database add it
-        if ($check->num_rows() <= 0)
+
+        if (!$skip)
         {
             // Create array with QSO Data use ?:
             $data = array(
@@ -1455,7 +1476,7 @@ class Logbook_model extends CI_Model {
                 'COL_LOTW_QSLSDATE' => $input_lotw_qslsdate,
                 'COL_LOTW_STATUS' => (!empty($record['lotw_status'])) ? $record['lotw_status'] : '',
                 'COL_MAX_BURSTS' => (!empty($record['max_bursts'])) ? $record['max_bursts'] : null,
-                'COL_MODE' => (!empty($record['mode'])) ? $record['mode'] : '',
+                'COL_MODE' => $input_mode,
                 'COL_MS_SHOWER' => (!empty($record['ms_shower'])) ? $record['ms_shower'] : '',
                 'COL_MY_ANTENNA' => (!empty($record['my_antenna'])) ? $record['my_antenna'] : '',
                 'COL_MY_ANTENNA_INTL' => (!empty($record['my_antenna_intl'])) ? $record['my_antenna_intl'] : '',
@@ -1656,6 +1677,17 @@ class Logbook_model extends CI_Model {
         }
 
         return array("Not Found", "Not Found");
+    }
+
+    public function get_entity($dxcc){
+      $sql = "select name from dxcc_entities where adif = " . $dxcc;
+      $query = $this->db->query($sql);
+
+      if ($query->result() > 0){
+          $row = $query->row_array();
+          return $row['name'];
+      }
+      return '';
     }
 
     /*

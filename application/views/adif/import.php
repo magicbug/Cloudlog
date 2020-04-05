@@ -27,6 +27,33 @@
 		  <label class="sr-only" for="inlineFormInputName2">ADIF file</label>
 		  <input class="file-input mb-2 mr-sm-2" type="file" name="userfile" size="20" />
 
+            <div class="form-group row">
+                <div class="col-md-10">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="skipDuplicate" value="1" id="skipDuplicate">
+                        <label class="form-check-label" for="skipDuplicate">Skip duplicate QSO check</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-10">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="markLotw" value="1" id="markLotw">
+                        <label class="form-check-label" for="markLotw">Mark imported QSOs as uploaded to LoTW (use if ADIF does not contain this information)</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-10">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="dxccAdif" value="1" id="dxccAdif">
+                        <label class="form-check-label" for="dxccAdif">Use DXCC set in ADIF (Cloudlog tries to determine DXCC if not checked)</label>
+                    </div>
+                </div>
+            </div>
+
 		  <button type="submit" class="btn btn-primary mb-2" value="Upload">Upload</button>
 		</form>
 
