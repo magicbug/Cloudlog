@@ -913,7 +913,7 @@ class Logbook_model extends CI_Model {
       $CI->load->model('Stations');
       $station_id = $CI->Stations->find_active();
 
-        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_RCVD =\'Y\'');
+        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE COL_COUNTRY != "Invalid" AND station_id = '.$station_id.' AND COL_QSL_RCVD =\'Y\'');
 
         return $query->num_rows();
     }
@@ -924,7 +924,7 @@ class Logbook_model extends CI_Model {
       $CI->load->model('Stations');
       $station_id = $CI->Stations->find_active();
 
-        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_EQSL_QSL_RCVD =\'Y\'');
+        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE COL_COUNTRY != "Invalid" AND station_id = '.$station_id.' AND COL_EQSL_QSL_RCVD =\'Y\'');
 
         return $query->num_rows();
     }
@@ -935,7 +935,7 @@ class Logbook_model extends CI_Model {
       $CI->load->model('Stations');
       $station_id = $CI->Stations->find_active();
 
-        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_LOTW_QSL_RCVD =\'Y\'');
+        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE COL_COUNTRY != "Invalid" AND station_id = '.$station_id.' AND COL_LOTW_QSL_RCVD =\'Y\'');
 
         return $query->num_rows();
     }
