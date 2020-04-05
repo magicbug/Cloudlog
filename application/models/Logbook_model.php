@@ -902,7 +902,7 @@ class Logbook_model extends CI_Model {
       $CI->load->model('Stations');
       $station_id = $CI->Stations->find_active();
 
-        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.'');
+        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE COL_COUNTRY != "Invalid" AND station_id = '.$station_id.'');
 
         return $query->num_rows();
     }
