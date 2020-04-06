@@ -617,6 +617,8 @@ class API extends CI_Controller {
 				$return['location'] = $call_lookup_results->COL_QTH;
 				$return['iota_ref'] = $call_lookup_results->COL_IOTA;
 				$return['qsl_manager'] = $call_lookup_results->COL_QSL_VIA;
+				$return['state'] = $call_lookup_results->COL_STATE;
+				$return['us_county'] = $call_lookup_results->COL_CNTY;
 
 				if ($return['gridsquare'] != "") {
 					$return['latlng'] = $this->qralatlng($return['gridsquare']);
