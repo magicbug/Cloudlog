@@ -421,7 +421,7 @@ class API extends CI_Controller {
 					break;
 				};
 
-				$this->logbook_model->import($record);
+				$this->logbook_model->import($record, 0, NULL, NULL, NULL);
 
 			};
 			http_response_code(201);
