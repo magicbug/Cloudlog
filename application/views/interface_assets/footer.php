@@ -375,6 +375,8 @@ $(document).on('keypress',function(e) {
       $('#qsl_via').val("");
       $('#callsign_info').text("");
       $('#input_usa_state').val("");
+      $('#qso-last-table').show();
+      $('#partial_view').hide();
 
       mymap.setView([51.505, -0.09], 13);
       mymap.removeLayer(markers);
@@ -596,7 +598,9 @@ $(document).on('keypress',function(e) {
             if($('#iota_ref').val() == "") {
                 $('#iota_ref').val(result.callsign_iota);
             }
-
+            // Hide the last QSO table
+            $('#qso-last-table').hide();
+            $('#partial_view').show();
             /* display past QSOs */
             $('#partial_view').html(result.partial);
             });

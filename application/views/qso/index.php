@@ -382,39 +382,41 @@
     <div class="card previous-qsos">
       <div class="card-header"><h4 class="card-title">Previous Contacts</h4></div>
 
-        <div id="partial_view">
+        <div id="partial_view"></div>
 
-        <div class="table-responsive">
-          <table class="table">
-            <tr class="log_title titles">
-              <td>Date/Time</td>
-              <td>Call</td>
-              <td>Mode</td>
-              <td>Sent</td>
-              <td>Recv</td>
-              <td>Band</td>
-            </tr>
+        <div id="qso-last-table">
 
-            <?php $i = 0; 
-            foreach ($query->result() as $row) { ?>
-                  <?php  echo '<tr class="tr'.($i & 1).'">'; ?>
-                  <td><?php echo date($this->config->item('qso_date_format').' H:i',strtotime($row->COL_TIME_ON)); ?></td>
-                  <td><a class="qsobox" data-fancybox data-type="iframe" data-width="750" data-height="520" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a></td>
-                  <td><?php echo $row->COL_MODE; ?></td>
-                  <td><?php echo $row->COL_RST_SENT; ?></td>
-                  <td><?php echo $row->COL_RST_RCVD; ?></td>
-                  <?php if($row->COL_SAT_NAME != null) { ?>
-                  <td><?php echo $row->COL_SAT_NAME; ?></td>
-                  <?php } else { ?>
-                  <td><?php echo $row->COL_BAND; ?></td>
-                  <?php } ?>
-                </tr>
-            <?php $i++; } ?>
-          </table>
+          <div class="table-responsive">
+            <table class="table">
+              <tr class="log_title titles">
+                <td>Date/Time</td>
+                <td>Call</td>
+                <td>Mode</td>
+                <td>Sent</td>
+                <td>Recv</td>
+                <td>Band</td>
+              </tr>
+
+              <?php $i = 0; 
+              foreach ($query->result() as $row) { ?>
+                    <?php  echo '<tr class="tr'.($i & 1).'">'; ?>
+                    <td><?php echo date($this->config->item('qso_date_format').' H:i',strtotime($row->COL_TIME_ON)); ?></td>
+                    <td><a class="qsobox" data-fancybox data-type="iframe" data-width="750" data-height="520" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a></td>
+                    <td><?php echo $row->COL_MODE; ?></td>
+                    <td><?php echo $row->COL_RST_SENT; ?></td>
+                    <td><?php echo $row->COL_RST_RCVD; ?></td>
+                    <?php if($row->COL_SAT_NAME != null) { ?>
+                    <td><?php echo $row->COL_SAT_NAME; ?></td>
+                    <?php } else { ?>
+                    <td><?php echo $row->COL_BAND; ?></td>
+                    <?php } ?>
+                  </tr>
+              <?php $i++; } ?>
+            </table>
+          </div>
         </div>
       </div>
     </div>    
-
   </div>
 
 </div>
