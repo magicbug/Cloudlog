@@ -378,8 +378,33 @@ class Logbook_model extends CI_Model {
     return $this->db->get($this->config->item('table_name'));
   }
 
-    /* Callsign QRA */
+  /*
+  *
+  * Function: call_lookup_result
+  *
+  * Usage: Callsign lookup data for the QSO panel and API/callsign_lookup
+  *
+  */
+  function call_lookup_result($callsign) {
+    $this->db->select('COL_CALL, COL_NAME, COL_QSL_VIA, COL_GRIDSQUARE, COL_QTH, COL_IOTA, COL_TIME_ON');
+    $this->db->where('COL_CALL', $callsign);
+    $where = "COL_NAME != \"\"";
 
+    $this->db->where($where);
+
+    $this->db->order_by("COL_TIME_ON", "desc");
+    $this->db->limit(1);
+    $query = $this->db->get($this->config->item('table_name'));
+    $name = "";
+    if ($query->num_rows() > 0)
+    {
+      $data = $query->row();
+    }
+
+    return $data;
+  }
+
+  /* Callsign QRA */
 	function call_qra($callsign) {
 		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_TIME_ON');
 		$this->db->where('COL_CALL', $callsign);

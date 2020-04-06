@@ -497,6 +497,8 @@ class API extends CI_Controller {
 	}
 
 	function lookup() {
+		// start benchmarking
+		$this->output->enable_profiler(TRUE);
 		/*
 		*
 		*	Callsign lookup function for Cloudlogs logging page or thirdparty systems
@@ -606,14 +608,15 @@ class API extends CI_Controller {
 		*	Pool any local data we have for a callsign
 		*
 		*/
+			$call_lookup_results = $this->logbook_model->call_lookup_result($lookup_callsign);
 
-			if($this->logbook_model->call_name($lookup_callsign) != null)
+			if($call_lookup_results != null)
 			{
-				$return['name'] = $this->logbook_model->call_name($lookup_callsign);
-				$return['gridsquare'] = $this->logbook_model->call_qra($lookup_callsign);
-				$return['location'] = $this->logbook_model->call_qth($lookup_callsign);
-				$return['iota_ref'] = $this->logbook_model->call_iota($lookup_callsign);
-				$return['qsl_manager'] = $this->logbook_model->call_qslvia($lookup_callsign);
+				$return['name'] = $call_lookup_results->COL_NAME;
+				$return['gridsquare'] = $call_lookup_results->COL_GRIDSQUARE;
+				$return['location'] = $call_lookup_results->COL_QTH;
+				$return['iota_ref'] = $call_lookup_results->COL_IOTA;
+				$return['qsl_manager'] = $call_lookup_results->COL_QSL_VIA;
 
 				if ($return['gridsquare'] != "") {
 					$return['latlng'] = $this->qralatlng($return['gridsquare']);
@@ -644,6 +647,8 @@ class API extends CI_Controller {
 		echo json_encode($return, JSON_PRETTY_PRINT);
 		return;
 
+		// End benchmarking
+		$this->output->enable_profiler(FALSE);
 	}
 
 	function qralatlng($qra) {
