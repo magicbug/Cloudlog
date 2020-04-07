@@ -421,7 +421,7 @@ class API extends CI_Controller {
 					break;
 				};
 
-				$this->logbook_model->import($record);
+				$this->logbook_model->import($record, 0, NULL, NULL, NULL);
 
 			};
 			http_response_code(201);
@@ -474,5 +474,188 @@ class API extends CI_Controller {
 
 		echo json_encode($arr);
 
+	}
+
+	/*
+	*
+	*	Stats API function calls
+	*
+	*/
+
+	function statistics() {
+		header('Content-type: application/json');
+		$this->load->model('logbook_model');
+
+		$data['todays_qsos'] = $this->logbook_model->todays_qsos();
+		$data['total_qsos'] = $this->logbook_model->total_qsos();
+		$data['month_qsos'] = $this->logbook_model->month_qsos();
+		$data['year_qsos'] = $this->logbook_model->year_qsos();
+
+		http_response_code(201);
+		echo json_encode(['Today' => $data['todays_qsos'], 'total_qsos' => $data['total_qsos'], 'month_qsos' => $data['month_qsos'], 'year_qsos' => $data['year_qsos']]);
+
+	}
+
+	function lookup() {
+		// start benchmarking
+		$this->output->enable_profiler(TRUE);
+		/*
+		*
+		*	Callsign lookup function for Cloudlogs logging page or thirdparty systems
+		*	which want to show previous QSO data on their system.
+		*
+		*	TODO
+		*	- Local data make one database call ONLY
+		*	- Add eQSL status
+		*	- Add Callbook returned data
+		*	- Add QSO before data array
+		*	- Add options for checking based on band/mode/sat
+		*
+		*/
+
+
+		// Make sure users logged in
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+
+
+		$this->load->model("logbook_model");
+		$date = date("Y-m-d");
+
+		// Return Array
+		$return = [
+			"callsign" => "",
+			"dxcc" => false,
+			"dxcc_lat" => "",
+			"dxcc_long" => "",
+			"dxcc_cqz" => "",
+			"name" => "",
+			"gridsquare"  => "",
+			"location"  => "",
+			"iota_ref" => "",
+			"state" => "",
+			"us_county" => "",
+			"qsl_manager" => "",
+			"bearing" 		=> "",
+			"workedBefore" => false,
+			"lotw_member" => false,
+			"suffix_slash" => "", // Suffix Slash aka Portable
+		];
+
+
+		/*
+		*
+		*	Handle POST data being sent to check lookups
+		*
+		*/
+			$raw_input = json_decode(file_get_contents("php://input"), true);
+
+			$lookup_callsign = strtoupper($raw_input['callsign']);
+
+
+		/*
+		*
+		*	Handle Callsign field
+		*
+		*/
+			$return['callsign'] = $lookup_callsign;
+
+		/*
+		*
+		*	Lookup DXCC and Suffix information
+		*
+		*/
+
+			$callsign_dxcc_lookup = $this->logbook_model->dxcc_lookup($lookup_callsign, $date);
+
+			$last_slash_pos = strrpos($lookup_callsign, '/');
+
+			if(isset($last_slash_pos) && $last_slash_pos > 4) {
+				$suffix_slash = $last_slash_pos === false ? $lookup_callsign : substr($lookup_callsign, $last_slash_pos + 1);
+				switch ($suffix_slash) {
+				    case "P":
+				        $suffix_slash_item = "Portable";
+				        break;
+				    case "M":
+				        $suffix_slash_item = "Mobile";
+				    case "MM":
+				        $suffix_slash_item =  "Maritime Mobile";
+				        break;
+				    default:
+				    	// If its not one of the above suffix slashes its likely dxcc
+				    	$ans2 = $this->logbook_model->dxcc_lookup($suffix_slash, $date);
+				    	$suffix_slash_item = null;
+				}
+
+				$return['suffix_slash'] = $suffix_slash_item;
+			}
+
+			// If the final slash is a DXCC then find it!
+			if (isset($ans2['call'])) {
+				$return['dxcc'] = $ans2['entity'];
+				$return['dxcc_lat'] = $ans2['lat'];
+				$return['dxcc_long'] = $ans2['long'];
+				$return['dxcc_cqz'] = $ans2['cqz'];
+			} else {
+				$return['dxcc'] = $callsign_dxcc_lookup['entity'];
+				$return['dxcc_lat'] = $callsign_dxcc_lookup['lat'];
+				$return['dxcc_long'] = $callsign_dxcc_lookup['long'];
+				$return['dxcc_cqz'] = $callsign_dxcc_lookup['cqz'];
+			}
+
+		/*
+		*
+		*	Pool any local data we have for a callsign
+		*
+		*/
+			$call_lookup_results = $this->logbook_model->call_lookup_result($lookup_callsign);
+
+			if($call_lookup_results != null)
+			{
+				$return['name'] = $call_lookup_results->COL_NAME;
+				$return['gridsquare'] = $call_lookup_results->COL_GRIDSQUARE;
+				$return['location'] = $call_lookup_results->COL_QTH;
+				$return['iota_ref'] = $call_lookup_results->COL_IOTA;
+				$return['qsl_manager'] = $call_lookup_results->COL_QSL_VIA;
+				$return['state'] = $call_lookup_results->COL_STATE;
+				$return['us_county'] = $call_lookup_results->COL_CNTY;
+
+				if ($return['gridsquare'] != "") {
+					$return['latlng'] = $this->qralatlng($return['gridsquare']);
+				}
+
+			}
+
+
+		/*
+		*
+		*	Check if callsign is active on LOTW
+		*
+		*/
+			$this->load->model('lotw_user');
+		 
+			$lotw_member = $this->lotw_user->check($lookup_callsign);
+			if($lotw_member == "not found") {
+				$return['lotw_member'] = false;
+			} else {
+				$return['lotw_member'] = true;
+			}
+
+		/*
+		*
+		*	Output Returned data
+		*
+		*/
+		echo json_encode($return, JSON_PRETTY_PRINT);
+		return;
+
+		// End benchmarking
+		$this->output->enable_profiler(FALSE);
+	}
+
+	function qralatlng($qra) {
+		$this->load->library('Qra');
+		$latlng = $this->qra->qra2latlong($qra);
+		return $latlng;
 	}
 }

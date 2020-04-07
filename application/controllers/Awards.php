@@ -152,6 +152,48 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
+    public function vucc()	{
+        $this->load->model('vucc');
+        $data['worked_bands'] = $this->vucc->get_worked_bands();
+
+        $data['vucc_array'] = $this->vucc->get_vucc_array($data);
+
+        // Render Page
+        $data['page_title'] = "Awards - VUCC";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/vucc/index');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function vucc_band(){
+        $this->load->model('vucc');
+        $band = str_replace('"', "", $this->input->get("Band"));
+        $data['vucc_array'] = $this->vucc->vucc_details($band);
+
+        // Render Page
+        $data['page_title'] = "VUCC - band";
+        $data['filter'] = "band ".$band;
+        $data['band'] = $band;
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/vucc/band');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function vucc_details(){
+        $this->load->model('logbook_model');
+
+        $gridsquare = str_replace('"', "", $this->input->get("Gridsquare"));
+        $band = str_replace('"', "", $this->input->get("Band"));
+        $data['results'] = $this->logbook_model->vucc_qso_details($gridsquare, $band);
+
+        // Render Page
+        $data['page_title'] = "Log View - VUCC";
+        $data['filter'] = "vucc " . $gridsquare . " and band ".$band;
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/vucc/details');
+        $this->load->view('interface_assets/footer');
+    }
+
 	/*
 		Handles Displaying of WAB Squares worked.
 		Comment field - WAB:#
@@ -211,6 +253,41 @@ class Awards extends CI_Controller {
         }
         $data['cqz'] = $zones;
 
+        $data['worked_bands'] = $this->cq->get_worked_bands();
+
+        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
+            if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
+                $bands = $data['worked_bands'];
+            }
+            else {
+                $bands[] = $this->input->post('band');
+            }
+        }
+        else {
+            $bands = $data['worked_bands'];
+        }
+
+        $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
+
+        if($this->input->method() === 'post') {
+            $postdata['lotw'] = $this->input->post('lotw');
+            $postdata['qsl'] = $this->input->post('qsl');
+            $postdata['worked'] = $this->input->post('worked');
+            $postdata['confirmed'] = $this->input->post('confirmed');
+            $postdata['notworked'] = $this->input->post('notworked');
+            $postdata['band'] = $this->input->post('band');
+        }
+        else { // Setting default values at first load of page
+            $postdata['lotw'] = 1;
+            $postdata['qsl'] = 1;
+            $postdata['worked'] = 1;
+            $postdata['confirmed'] = 1;
+            $postdata['notworked'] = 1;
+            $postdata['band'] = 'All';
+        }
+
+        $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata);
+
         // Render page
         $data['page_title'] = "Awards - CQ Magazine";
 		$this->load->view('interface_assets/header', $data);
@@ -222,7 +299,8 @@ class Awards extends CI_Controller {
         $this->load->model('logbook_model');
 
         $cqzone = str_replace('"', "", $this->input->get("CQZone"));
-        $data['results'] = $this->logbook_model->cq_qso_details($cqzone);
+        $band = str_replace('"', "", $this->input->get("Band"));
+        $data['results'] = $this->logbook_model->cq_qso_details($cqzone, $band);
 
         // Render Page
         $data['page_title'] = "Log View - DXCC";
@@ -234,8 +312,40 @@ class Awards extends CI_Controller {
 
     public function was() {
         $this->load->model('was');
-        $data['was'] = $this->was->show_stats();
         $data['worked_bands'] = $this->was->get_worked_bands();
+
+        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
+            if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
+                $bands = $data['worked_bands'];
+            }
+            else {
+                $bands[] = $this->input->post('band');
+            }
+        }
+        else {
+            $bands = $data['worked_bands'];
+        }
+
+        $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
+
+        if($this->input->method() === 'post') {
+            $postdata['lotw'] = $this->input->post('lotw');
+            $postdata['qsl'] = $this->input->post('qsl');
+            $postdata['worked'] = $this->input->post('worked');
+            $postdata['confirmed'] = $this->input->post('confirmed');
+            $postdata['notworked'] = $this->input->post('notworked');
+            $postdata['band'] = $this->input->post('band');
+        }
+        else { // Setting default values at first load of page
+            $postdata['lotw'] = 1;
+            $postdata['qsl'] = 1;
+            $postdata['worked'] = 1;
+            $postdata['confirmed'] = 1;
+            $postdata['notworked'] = 1;
+            $postdata['band'] = 'All';
+        }
+
+        $data['was_array'] = $this->was->get_was_array($bands, $postdata);
 
         // Render Page
         $data['page_title'] = "Awards - WAS (Worked all states)";
@@ -259,4 +369,75 @@ class Awards extends CI_Controller {
         $this->load->view('interface_assets/footer');
     }
 
+    public function iota ()	{
+        $this->load->model('iota');
+        $data['worked_bands'] = $this->iota->get_worked_bands(); // Used in the view for band select
+
+        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
+            if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
+                $bands = $data['worked_bands'];
+            }
+            else {
+                $bands[] = $this->input->post('band');
+            }
+        }
+        else {
+            $bands = $data['worked_bands'];
+        }
+
+        $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
+
+        if($this->input->method() === 'post') {
+            $postdata['worked'] = $this->input->post('worked');
+            $postdata['confirmed'] = $this->input->post('confirmed');
+            $postdata['notworked'] = $this->input->post('notworked');
+            $postdata['includedeleted'] = $this->input->post('includedeleted');
+            $postdata['Africa'] = $this->input->post('Africa');
+            $postdata['Asia'] = $this->input->post('Asia');
+            $postdata['Europe'] = $this->input->post('Europe');
+            $postdata['NorthAmerica'] = $this->input->post('NorthAmerica');
+            $postdata['SouthAmerica'] = $this->input->post('SouthAmerica');
+            $postdata['Oceania'] = $this->input->post('Oceania');
+            $postdata['Antarctica'] = $this->input->post('Antarctica');
+            $postdata['band'] = $this->input->post('band');
+        }
+        else { // Setting default values at first load of page
+            $postdata['worked'] = 1;
+            $postdata['confirmed'] = 1;
+            $postdata['notworked'] = 1;
+            $postdata['includedeleted'] = 1;
+            $postdata['Africa'] = 1;
+            $postdata['Asia'] = 1;
+            $postdata['Europe'] = 1;
+            $postdata['NorthAmerica'] = 1;
+            $postdata['SouthAmerica'] = 1;
+            $postdata['Oceania'] = 1;
+            $postdata['Antarctica'] = 1;
+            $postdata['band'] = 'All';
+        }
+
+        $iotalist = $this->iota->fetchIota($postdata);
+        $data['iota_array'] = $this->iota->get_iota_array($iotalist, $bands, $postdata);
+
+        // Render Page
+        $data['page_title'] = "Awards - IOTA (Islands On The Air)";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/iota/index');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function iota_details(){
+        $this->load->model('logbook_model');
+
+        $iota = str_replace('"', "", $this->input->get("Iota"));
+        $band = str_replace('"', "", $this->input->get("Band"));
+        $data['results'] = $this->logbook_model->iota_qso_details($iota, $band);
+
+        // Render Page
+        $data['page_title'] = "Log View - IOTA";
+        $data['filter'] = "iota ".$iota. " and ".$band;
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/iota/details');
+        $this->load->view('interface_assets/footer');
+    }
 }

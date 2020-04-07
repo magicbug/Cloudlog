@@ -109,3 +109,18 @@ $config['callsign_tags'] = TRUE;
 */
 
 $config['qso_date_format'] = "d/m/y";
+
+/*
+|--------------------------------------------------------------------------
+| Show 6-digit Grid Squares on Maps
+|--------------------------------------------------------------------------
+|
+| Setting this to TRUE allows the map functions to also show worked and
+| confirmed 6-digit grid squares. As this may consume much memory with large
+| logs this is disabled by default. Use at your own risk.
+|
+| Default is: FALSE
+|
+*/
+
+$config['map_6digit_grids'] = FALSE;
