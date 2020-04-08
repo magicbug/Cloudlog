@@ -15,7 +15,7 @@ class adif_data extends CI_Model {
         $this->db->where('station_id', $active_station_id);
         $this->db->order_by("COL_TIME_ON", "ASC"); 
         $query = $this->db->get($this->config->item('table_name'));
-        
+
         return $query;
     }
 
@@ -82,7 +82,6 @@ class adif_data extends CI_Model {
         $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-        $this->db->limit(4);
 
         return $this->db->get();
     }
@@ -90,12 +89,18 @@ class adif_data extends CI_Model {
     function export_lotw() {
         $this->load->model('stations');
         $active_station_id = $this->stations->find_active();
-        $this->db->where('station_id', $active_station_id);
-        $this->db->where("COL_LOTW_QSL_SENT != 'Y'");
-        $this->db->order_by("COL_TIME_ON", "ASC"); 
-        $query = $this->db->get($this->config->item('table_name'));
+
         
-        return $query;
+        $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
+        $this->db->from($this->config->item('table_name'));
+        $this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
+        $this->db->where($this->config->item('table_name').".COL_LOTW_QSL_SENT != 'Y'");
+
+        $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
+
+        $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+
+        return $this->db->get();
     }
     
     function mark_lotw_sent($id) {
