@@ -44,6 +44,7 @@ class Stations extends CI_Model {
 			'station_cnty' =>  xss_clean($this->input->post('station_cnty', true)),
 			'station_cq' =>  xss_clean($this->input->post('station_cq', true)),
 			'station_itu' =>  xss_clean($this->input->post('station_itu', true)),
+			'state' =>  xss_clean($this->input->post('station_state', true)),
 		);
 
 		$this->db->insert('station_profile', $data); 
@@ -62,6 +63,7 @@ class Stations extends CI_Model {
 			'station_cnty' => xss_clean($this->input->post('station_cnty', true)),
 			'station_cq' => xss_clean($this->input->post('station_cq', true)),
 			'station_itu' => xss_clean($this->input->post('station_itu', true)),
+			'state' => xss_clean($this->input->post('station_state', true)),
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
 		);
 
