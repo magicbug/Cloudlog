@@ -117,7 +117,7 @@
 		    <small id="StateHelp" class="form-text text-muted">Select Station State</small>
 		  </div>
 
-		  <div class="form-group">
+		  <div style="display: none" class="form-group">
 		    <label for="stationCntyInput">Station Cnty</label>
 		    <input type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp">
 		    <small id="stationCntyInputHelp" class="form-text text-muted">Station Cnty #get def from ADIF Spec#</small>
