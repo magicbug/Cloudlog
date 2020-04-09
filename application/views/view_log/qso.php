@@ -195,6 +195,14 @@
 					<td><?php echo $row->COL_OPERATOR; ?></td>
 				</tr>
 				<?php } ?>
+
+				<?php if($row->COL_TX_PWR) { ?>
+				<tr>
+					<td>Station Transmit Power</td>
+					<td><?php echo $row->COL_TX_PWR; ?></td>
+				</tr>
+				<?php } ?>
+
 				<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 				<tr>
 					<td><a href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a></td>
