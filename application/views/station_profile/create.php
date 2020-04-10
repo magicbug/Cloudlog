@@ -144,7 +144,7 @@
 		  <div class="form-group">
 		    <label for="stationIOTAInput">IOTA Reference</label>
 		    <input type="text" class="form-control" name="iota" id="stationIOTAInput" aria-describedby="stationIOTAInputHelp" placeholder="EU-005">
-		    <small id="stationIOTAInputHelp" class="form-text text-muted">Station IOTA Reference for example EU-005.</small>
+		    <small id="stationIOTAInputHelp" class="form-text text-muted">Station IOTA Reference for example EU-005, You can lookup IOTA References at the <a target="_blank" href="https://www.iota-world.org/iota-directory/annex-f-short-title-iota-reference-number-list.html">IOTA World</a> website.</small>
 		  </div>
 
 		  <div class="form-group">
