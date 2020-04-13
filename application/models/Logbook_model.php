@@ -56,7 +56,7 @@ class Logbook_model extends CI_Model {
       }
 
     } else {
-      $dxcc_id = $this->input->post('dxcc_id');
+        $dxcc_id = $this->input->post('dxcc_id');
     }
 
     // Create array with QSO Data
@@ -1184,7 +1184,8 @@ class Logbook_model extends CI_Model {
         if (isset($record['call'])){
           if ($dxccAdif != NULL) {
               if (isset($record['dxcc'])) {
-                  $dxcc = array($record['dxcc'], $this->get_entity($record['dxcc']));
+                  $entity = $this->get_entity($record['dxcc']);
+                  $dxcc = array($record['dxcc'], $entity['name']);
               } else {
                   $dxcc = NULL;
               }
@@ -1705,12 +1706,12 @@ class Logbook_model extends CI_Model {
     }
 
     public function get_entity($dxcc){
-      $sql = "select name from dxcc_entities where adif = " . $dxcc;
+      $sql = "select name, cqz, lat, `long` from dxcc_entities where adif = " . $dxcc;
       $query = $this->db->query($sql);
 
       if ($query->result() > 0){
           $row = $query->row_array();
-          return $row['name'];
+          return $row;
       }
       return '';
     }
@@ -1810,6 +1811,15 @@ class Logbook_model extends CI_Model {
     
       return 0;
     }
+
+    function fetchDxcc() {
+        $sql = "select adif, prefix, name, date(end) Enddate, date(start) Startdate from dxcc_entities";
+
+        $sql .= ' order by prefix';
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
     
 }
 
@@ -1818,6 +1828,8 @@ function validateADIFDate($date, $format = 'Ymd')
   $d = DateTime::createFromFormat($format, $date);
   return $d && $d->format($format) == $date;
 }
+
+
 
 
 ?>
