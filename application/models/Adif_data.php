@@ -63,7 +63,6 @@ class adif_data extends CI_Model {
 
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-        $this->db->limit(15);
 
         return $this->db->get();
     }
