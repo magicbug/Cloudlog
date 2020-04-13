@@ -298,7 +298,16 @@
 
             <div class="form-group">
               <label for="iota_ref">IOTA Reference</label>
-              <input class="form-control" id="iota_ref" type="text" name="iota_ref" value="" /> e.g: EU-005
+                    <select class="form-control" id="iota_Ref" name="iota_ref">
+                        <option value =""></option>
+
+                        <?php
+                        foreach($iota as $i){
+                            echo '<option value=' . $i->tag . '>' . $i->tag . ' - ' . $i->name . '</option>';
+                        }
+                        ?>
+
+                    </select>
             </div>
 
             <div class="form-group">

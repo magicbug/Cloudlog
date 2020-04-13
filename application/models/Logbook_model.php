@@ -1820,6 +1820,15 @@ class Logbook_model extends CI_Model {
 
         return $query->result();
     }
+
+    function fetchIota() {
+        $sql = "select tag, name from iota";
+
+        $sql .= ' order by tag';
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
     
 }
 
