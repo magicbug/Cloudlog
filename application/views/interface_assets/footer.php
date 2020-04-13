@@ -426,12 +426,13 @@ $(document).on('keypress',function(e) {
                 $('#callsign_info').attr('title', '');
                 $('#callsign_info').text(convert_case(result.dxcc.name));
 
-                // Set Map to Lat/Long
-                markers.clearLayers();
-                var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
-                mymap.panTo([result.dxcc.lat, result.dxcc.long], 8);
-
-                markers.addLayer(marker).addTo(mymap);
+                // Set Map to Lat/Long it locator is not empty
+                if($('#locator').val() == "") {
+                    markers.clearLayers();
+                    var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
+                    mymap.panTo([result.dxcc.lat, result.dxcc.long], 8);
+                    markers.addLayer(marker).addTo(mymap);
+                }
             }
         });
     });

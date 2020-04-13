@@ -153,31 +153,6 @@
                 </div>
               </div>
 
-              <div class="form-group">
-                  <label for="dxcc_id">DXCC</label>
-                  <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
-
-                      <?php
-                      foreach($dxcc as $d){
-                          echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . $d->name . '</option>';
-                      }
-                      ?>
-
-                  </select>
-              </div>
-              <div class="form-row">
-                  <div class="form-group col-md-6">
-                      <label for="cqz">CQ Zone</label>
-                      <select class="custom-select" id="cqz" name="cqz" required>
-                          <?php
-                          for ($i = 1; $i<=40; $i++) {
-                              echo '<option value="'. $i . '">'. $i .'</option>';
-                          }
-                          ?>
-                      </select>
-                  </div>
-
-              </div>
           </div>
 
           <!-- Station Panel Data -->
@@ -214,6 +189,29 @@
 
           <!-- General Items -->
           <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
+              <div class="form-group">
+                  <label for="dxcc_id">DXCC</label>
+                  <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
+
+                      <?php
+                      foreach($dxcc as $d){
+                          echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . $d->name . '</option>';
+                      }
+                      ?>
+
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label for="cqz">CQ Zone</label>
+                  <select class="custom-select" id="cqz" name="cqz" required>
+                      <?php
+                      for ($i = 1; $i<=40; $i++) {
+                          echo '<option value="'. $i . '">'. $i .'</option>';
+                      }
+                      ?>
+                  </select>
+              </div>
+
             <div class="form-group">
               <label for="selectPropagation">Propagation Mode</label>
               <select class="custom-select" id="selectPropagation" name="prop_mode">
@@ -298,7 +296,7 @@
 
             <div class="form-group">
               <label for="iota_ref">IOTA Reference</label>
-                    <select class="custom-select" id="iota_Ref" name="iota_ref">
+                    <select class="custom-select" id="iota_ref" name="iota_ref">
                         <option value =""></option>
 
                         <?php
