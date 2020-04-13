@@ -155,7 +155,7 @@
 
               <div class="form-group">
                   <label for="dxcc_id">DXCC</label>
-                  <select class="form-control" id="dxcc_id" name="dxcc_id" required>
+                  <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
 
                       <?php
                       foreach($dxcc as $d){
@@ -168,7 +168,7 @@
               <div class="form-row">
                   <div class="form-group col-md-6">
                       <label for="cqz">CQ Zone</label>
-                      <select class="form-control" id="cqz" name="cqz" required>
+                      <select class="custom-select" id="cqz" name="cqz" required>
                           <?php
                           for ($i = 1; $i<=40; $i++) {
                               echo '<option value="'. $i . '">'. $i .'</option>';
@@ -298,7 +298,7 @@
 
             <div class="form-group">
               <label for="iota_ref">IOTA Reference</label>
-                    <select class="form-control" id="iota_Ref" name="iota_ref">
+                    <select class="custom-select" id="iota_Ref" name="iota_ref">
                         <option value =""></option>
 
                         <?php
