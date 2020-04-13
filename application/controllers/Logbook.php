@@ -58,6 +58,7 @@ class Logbook extends CI_Controller {
         if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
         $return['dxcc'] = $this->getentity($adif);
+        header('Content-Type: application/json');
         echo json_encode($return, JSON_PRETTY_PRINT);
     }
 
