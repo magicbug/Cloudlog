@@ -61,7 +61,8 @@ class QSO extends CI_Controller {
 				'sat_mode' => $this->input->post('sat_mode'),
 				'prop_mode' => $this->input->post('prop_mode'),
 				'radio' => $this->input->post('radio'),
-				'station_profile_id' => $this->input->post('station_profile')
+				'station_profile_id' => $this->input->post('station_profile'),
+				'transmit_power' => $this->input->post('transmit_power')
 			);
 			// ];
 			

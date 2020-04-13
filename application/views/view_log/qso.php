@@ -199,7 +199,7 @@
 				<?php if($row->COL_TX_PWR) { ?>
 				<tr>
 					<td>Station Transmit Power</td>
-					<td><?php echo $row->COL_TX_PWR; ?></td>
+					<td><?php echo $row->COL_TX_PWR; ?>w</td>
 				</tr>
 				<?php } ?>
 

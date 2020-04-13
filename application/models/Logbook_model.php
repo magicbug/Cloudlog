@@ -93,7 +93,7 @@ class Logbook_model extends CI_Model {
             'COL_A_INDEX' => null,
             'COL_AGE' => null,
             'COL_TEN_TEN' => null,
-            'COL_TX_PWR' => null,
+            'COL_TX_PWR' => trim($this->input->post('transmit_power')),
             'COL_STX' => null,
             'COL_SRX' => null,
             'COL_NR_BURSTS' => null,

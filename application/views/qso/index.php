@@ -187,6 +187,12 @@
               <label for="frequency_rx">Frequency (RX)</label>
               <input type="text" class="form-control" id="frequency_rx" name="freq_display_rx" value="<?php echo $this->session->userdata('freq_rx'); ?>" />
             </div>
+
+            <div class="form-group">
+              <label for="transmit_power">Transmit Power (Watts)</label>
+              <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php echo $this->session->userdata('transmit_power'); ?>" />
+              <small id="powerHelp" class="form-text text-muted">Power is in watts only include numbers in the input.</small>
+            </div>
           </div>
 
           <!-- General Items -->
