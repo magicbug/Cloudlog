@@ -28,6 +28,12 @@ class Logbook_model extends CI_Model {
         $locator = $this->config->item('locator');
     }
 
+    if($this->input->post('transmit_power')) {
+        $tx_power = $this->input->post('transmit_power');
+    } else {
+        $tx_power = null;
+    }
+
     if($this->input->post('country') == "") {
       $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
       $country = ucwords(strtolower($dxcc[1]));
@@ -93,7 +99,7 @@ class Logbook_model extends CI_Model {
             'COL_A_INDEX' => null,
             'COL_AGE' => null,
             'COL_TEN_TEN' => null,
-            'COL_TX_PWR' => trim($this->input->post('transmit_power')),
+            'COL_TX_PWR' => $tx_power,
             'COL_STX' => null,
             'COL_SRX' => null,
             'COL_NR_BURSTS' => null,
