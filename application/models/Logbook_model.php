@@ -301,6 +301,9 @@ class Logbook_model extends CI_Model {
   /* Edit QSO */
   function edit() {
 
+      $entity = $this->get_entity($this->input->post('dxcc_id'));
+      $country = $entity['name'];
+
     $data = array(
        'COL_TIME_ON' => $this->input->post('time_on'),
        'COL_TIME_OFF' => $this->input->post('time_off'),
@@ -314,7 +317,9 @@ class Logbook_model extends CI_Model {
        'COL_VUCC_GRIDS' => strtoupper(trim($this->input->post('vucc_grids'))),
        'COL_COMMENT' => $this->input->post('comment'),
        'COL_NAME' => $this->input->post('name'),
-       'COL_COUNTRY' => $this->input->post('country'),
+       'COL_COUNTRY' => $country,
+       'COL_DXCC'=> $this->input->post('dxcc_id'),
+       'COL_CQZ' => $this->input->post('cqz'),
        'COL_SAT_NAME' => $this->input->post('sat_name'),
        'COL_SAT_MODE' => $this->input->post('sat_mode'),
        'COL_QSLSDATE' => date('Y-m-d'),
