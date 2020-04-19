@@ -397,6 +397,7 @@ $(document).on('keypress',function(e) {
      if (e.key === "Escape") { // escape key maps to keycode `27`
        reset_fields();
 	   $('#callsign').val("");
+	   $("#callsign").focus();
     }
 });
 });
