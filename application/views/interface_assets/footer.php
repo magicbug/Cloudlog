@@ -935,6 +935,11 @@ $(document).ready(function(){
         });
 
         $('#qso_count').text(count);
+        if (count > 1) {
+           $('#gt1_qso').text("s");
+        } else {
+           $('#gt1_qso').text("");
+        }
         $("#grid_results tbody").empty(); 
         $("#grid_results tbody").append(items.join( "" )); 
 
