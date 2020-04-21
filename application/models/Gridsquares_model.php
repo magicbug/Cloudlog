@@ -82,7 +82,7 @@ class Gridsquares_model extends CI_Model {
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        $result = $this->db->query('SELECT COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE FROM '.$this->config->item('table_name').' WHERE station_id = "'.$station_id.'" AND COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" AND COL_BAND = "'.$band.'" 
+        $result = $this->db->query('SELECT COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_GRIDSQUARE FROM '.$this->config->item('table_name').' WHERE station_id = "'.$station_id.'" AND COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" AND COL_BAND = "'.$band.'" 
             AND COL_PROP_MODE != "SAT"
             AND COL_PROP_MODE != "INTERNET"
             AND COL_PROP_MODE != "ECH"
@@ -99,7 +99,7 @@ class Gridsquares_model extends CI_Model {
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        $result = $this->db->query('SELECT COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_SAT_NAME FROM '.$this->config->item('table_name').' WHERE station_id = "'.$station_id.'" AND COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" AND COL_PROP_MODE = "SAT"');
+        $result = $this->db->query('SELECT COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_SAT_NAME, COL_GRIDSQUARE FROM '.$this->config->item('table_name').' WHERE station_id = "'.$station_id.'" AND COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" AND COL_PROP_MODE = "SAT"');
 
         //print_r($result);
         return json_encode($result->result());

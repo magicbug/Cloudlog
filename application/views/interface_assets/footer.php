@@ -906,6 +906,7 @@ $(document).ready(function(){
     var lng = LatLng.lng;           
     var locator = LatLng2Loc(lat,lng, 10);
     var loc_4char = locator.substring(0, 4);
+    var count = 0;
     console.log(loc_4char);
     console.log(map.getZoom());
 
@@ -921,16 +922,24 @@ $(document).ready(function(){
       }
 
       $.getJSON( "<?php echo site_url('gridsquares/');?>" + search_tags, function( data ) {
+        count = Object.keys(data).length;
+        console.log("Count: " + count);
         var items = [];
         $.each( data, function( i, item ) {
           console.log(item.COL_CALL + item.COL_SAT_NAME);
           if(item.COL_SAT_NAME != undefined) {
-            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_SAT_NAME + "</td></tr>" );
+            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_SAT_NAME + "</td><td>" + item.COL_GRIDSQUARE + "</td></tr>" );
           } else {
-            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_BAND + "</td></tr>" );
+            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_BAND + "</td><td>" + item.COL_GRIDSQUARE + "</td></tr>" );
           }
         });
 
+        $('#qso_count').text(count);
+        if (count > 1) {
+           $('#gt1_qso').text("s");
+        } else {
+           $('#gt1_qso').text("");
+        }
         $("#grid_results tbody").empty(); 
         $("#grid_results tbody").append(items.join( "" )); 
 

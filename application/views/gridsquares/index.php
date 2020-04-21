@@ -41,7 +41,7 @@
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">QSOs in Square: <span id="square_number"></span></h5>
+        <h5 class="modal-title" id="exampleModalLabel"><span id="qso_count"></span> QSO<span id="gt1_qso"></span> in Square: <span id="square_number"></span></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -54,6 +54,7 @@
 		      <th scope="col">Callsign</th>
 		      <th scope="col">Mode</th>
 		      <th scope="col">Band</th>
+		      <th scope="col">Locator</th>
 		    </tr>
 		  </thead>
 		  <tbody>
