@@ -6,8 +6,6 @@
     <div class="card">
         
     <form id="qso_input" method="post" action="<?php echo site_url('qso') . "?manual=" . $_GET['manual']; ?>" name="qsos">
-      <input type="hidden" id="dxcc_id" name="dxcc_id" value=""/>
-      <input type="hidden" id="cqz" name="cqz" value=""/>
 
       <div class="card-header"> 
         <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
@@ -62,7 +60,6 @@
                 <input type="text" class="form-control" id="callsign" name="callsign" required>
                 <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-light"></small>
               </div>
-
 
               <div class="form-row">
                 <div class="form-group col-md-6">
@@ -155,6 +152,7 @@
                     <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
                 </div>
               </div>
+
           </div>
 
           <!-- Station Panel Data -->
@@ -197,6 +195,29 @@
 
           <!-- General Items -->
           <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
+              <div class="form-group">
+                  <label for="dxcc_id">DXCC</label>
+                  <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
+
+                      <?php
+                      foreach($dxcc as $d){
+                          echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . $d->name . '</option>';
+                      }
+                      ?>
+
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label for="cqz">CQ Zone</label>
+                  <select class="custom-select" id="cqz" name="cqz" required>
+                      <?php
+                      for ($i = 1; $i<=40; $i++) {
+                          echo '<option value="'. $i . '">'. $i .'</option>';
+                      }
+                      ?>
+                  </select>
+              </div>
+
             <div class="form-group">
               <label for="selectPropagation">Propagation Mode</label>
               <select class="custom-select" id="selectPropagation" name="prop_mode">
@@ -281,7 +302,16 @@
 
             <div class="form-group">
               <label for="iota_ref">IOTA Reference</label>
-              <input class="form-control" id="iota_ref" type="text" name="iota_ref" value="" /> e.g: EU-005
+                    <select class="custom-select" id="iota_ref" name="iota_ref">
+                        <option value =""></option>
+
+                        <?php
+                        foreach($iota as $i){
+                            echo '<option value=' . $i->tag . '>' . $i->tag . ' - ' . $i->name . '</option>';
+                        }
+                        ?>
+
+                    </select>
             </div>
 
             <div class="form-group">

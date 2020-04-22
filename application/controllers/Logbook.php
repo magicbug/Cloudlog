@@ -53,6 +53,15 @@ class Logbook extends CI_Controller {
 
 	}
 
+	function jsonentity($adif) {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+
+        $return['dxcc'] = $this->getentity($adif);
+        header('Content-Type: application/json');
+        echo json_encode($return, JSON_PRETTY_PRINT);
+    }
+
 	function json($callsign, $type, $band, $mode)
 	{
 		$this->load->model('user_model');
@@ -546,6 +555,13 @@ class Logbook extends CI_Controller {
 		$ans = $this->logbook_model->dxcc_lookup($call, $date);
 		return $ans;
 	}
+
+    function getentity($adif) {
+        $this->load->model("logbook_model");
+
+        $entity = $this->logbook_model->get_entity($adif);
+        return $entity;
+    }
 
 
 	/* return station bearing */

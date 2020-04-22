@@ -414,6 +414,76 @@ $(document).on('keypress',function(e) {
     }
     });
 
+    $('#dxcc_id').on('change', function() {
+        $.getJSON('logbook/jsonentity/' + $(this).val(), function (result) {
+            if (result.dxcc.name != undefined) {
+
+                $('#country').val(convert_case(result.dxcc.name));
+                $('#cqz').val(convert_case(result.dxcc.cqz));
+
+                $('#callsign_info').removeClass("badge-secondary");
+                $('#callsign_info').removeClass("badge-success");
+                $('#callsign_info').removeClass("badge-danger");
+                $('#callsign_info').attr('title', '');
+                $('#callsign_info').text(convert_case(result.dxcc.name));
+
+                changebadge(result.dxcc.name);
+
+                // Set Map to Lat/Long it locator is not empty
+                if($('#locator').val() == "") {
+                    markers.clearLayers();
+                    var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
+                    mymap.panTo([result.dxcc.lat, result.dxcc.long], 8);
+                    markers.addLayer(marker).addTo(mymap);
+                }
+            }
+        });
+    });
+
+    function changebadge(entityname) {
+        if($("#sat_name" ).val() != "") {
+            $.getJSON('logbook/jsonlookupdxcc/' + convert_case(entityname) + '/SAT/0/0', function(result)
+            {
+
+                $('#callsign_info').removeClass("badge-secondary");
+                $('#callsign_info').removeClass("badge-success");
+                $('#callsign_info').removeClass("badge-danger");
+                $('#callsign_info').attr('title', '');
+
+                if (result.workedBefore)
+                {
+                    $('#callsign_info').addClass("badge-success");
+                    $('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
+                }
+                else
+                {
+                    $('#callsign_info').addClass("badge-danger");
+                    $('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
+                }
+            })
+        } else {
+            $.getJSON('logbook/jsonlookupdxcc/' + convert_case(entityname) + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
+            {
+                // Reset CSS values before updating
+                $('#callsign_info').removeClass("badge-secondary");
+                $('#callsign_info').removeClass("badge-success");
+                $('#callsign_info').removeClass("badge-danger");
+                $('#callsign_info').attr('title', '');
+
+                if (result.workedBefore)
+                {
+                    $('#callsign_info').addClass("badge-success");
+                    $('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
+                }
+                else
+                {
+                    $('#callsign_info').addClass("badge-danger");
+                    $('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
+                }
+            })
+        }
+    }
+
     $("#callsign").focusout(function() {
 
         if ($(this).val().length >= 3) {
@@ -478,51 +548,8 @@ $(document).on('keypress',function(e) {
 					  }
 					})
 				  }
-				
-			  
-				
-				if($("#sat_name" ).val() != "") {
-					//logbook/jsonlookupgrid/io77/SAT/0/0
-					$.getJSON('logbook/jsonlookupdxcc/' + convert_case(result.dxcc.entity) + '/SAT/0/0', function(result)
-					{
-					  
-					  $('#callsign_info').removeClass("badge-secondary");
-					  $('#callsign_info').removeClass("badge-success");
-					  $('#callsign_info').removeClass("badge-danger");
-					  $('#callsign_info').attr('title', '');
 
-					  if (result.workedBefore)
-					  {
-						$('#callsign_info').addClass("badge-success");
-						$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
-					  }
-					  else
-					  {
-						$('#callsign_info').addClass("badge-danger");
-						$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
-					  }
-					})
-				  } else {
-					$.getJSON('logbook/jsonlookupdxcc/' + convert_case(result.dxcc.entity) + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
-					{
-					  // Reset CSS values before updating
-					  $('#callsign_info').removeClass("badge-secondary");
-					  $('#callsign_info').removeClass("badge-success");
-					  $('#callsign_info').removeClass("badge-danger");
-					  $('#callsign_info').attr('title', '');
-
-					  if (result.workedBefore)
-					  {
-						$('#callsign_info').addClass("badge-success");
-						$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
-					  }
-					  else
-					  {
-						$('#callsign_info').addClass("badge-danger");
-						$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
-					  }
-					})
-				  }
+                  changebadge(result.dxcc.entity);
               }
 
               if(result.lotw_member == "active") {
@@ -531,6 +558,7 @@ $(document).on('keypress',function(e) {
 
               $('#dxcc_id').val(result.dxcc.adif);
               $('#cqz').val(result.dxcc.cqz);
+              $('#ituz').val(result.dxcc.ituz);
 
 
 

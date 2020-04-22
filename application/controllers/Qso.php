@@ -23,6 +23,8 @@ class QSO extends CI_Controller {
 		$data['stations'] = $this->stations->all();
 		$data['radios'] = $this->cat->radios();
 		$data['query'] = $this->logbook_model->last_custom('5');
+		$data['dxcc'] = $this->logbook_model->fetchDxcc();
+        $data['iota'] = $this->logbook_model->fetchIota();
 
 		$this->load->library('form_validation');
 
