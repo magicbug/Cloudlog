@@ -906,7 +906,6 @@ $(document).ready(function(){
     var lng = LatLng.lng;           
     var locator = LatLng2Loc(lat,lng, 10);
     var loc_4char = locator.substring(0, 4);
-    var count = 0;
     console.log(loc_4char);
     console.log(map.getZoom());
 
@@ -922,7 +921,7 @@ $(document).ready(function(){
       }
 
       $.getJSON( "<?php echo site_url('gridsquares/');?>" + search_tags, function( data ) {
-        count = Object.keys(data).length;
+        var count = Object.keys(data).length;
         console.log("Count: " + count);
         var items = [];
         $.each( data, function( i, item ) {
@@ -940,13 +939,16 @@ $(document).ready(function(){
         } else {
            $('#gt1_qso').text("");
         }
+
         $("#grid_results tbody").empty(); 
-        $("#grid_results tbody").append(items.join( "" )); 
+        if (count > 0) {
+          $("#grid_results tbody").append(items.join( "" ));
+
+          $('#square_number').text(loc_4char);
+          $('#exampleModal').modal('show');
+        }
 
       });
-
-      $('#square_number').text(loc_4char);
-      $('#exampleModal').modal('show');
     }
   };
 
