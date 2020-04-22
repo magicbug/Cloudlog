@@ -106,7 +106,9 @@ class QSO extends CI_Controller {
 		$this->form_validation->set_rules('time_off', 'End Date', 'required');
 		$this->form_validation->set_rules('callsign', 'Callsign', 'required');
 
-		$data = $query->row(); 
+        $data['qso'] = $query->row();
+        $data['dxcc'] = $this->logbook_model->fetchDxcc();
+        $data['iota'] = $this->logbook_model->fetchIota();
 		
 		if ($this->form_validation->run() == FALSE)
 		{
