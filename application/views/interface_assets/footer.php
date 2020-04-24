@@ -1013,6 +1013,47 @@ $(document).ready(function(){
 </script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "dayswithqso") { ?>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var baseURL= "<?php echo base_url();?>";
+        $.ajax({
+            url: baseURL+'index.php/dayswithqso/get_days',
+            success: function(data) {
+                var labels = [];
+                var dataDxcc = [];
+                $.each(data, function(){
+                    labels.push(this.Year);
+                    dataDxcc.push(this.Days);
+                });
+                var ctx = document.getElementById("myChartDiff").getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Days with QSOs',
+                            data: dataDxcc,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                beginAtZero:true
+                                }
+                            }]
+                        },
+                    }
+                });
+            }
+        });
+    </script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "distances") { ?>
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
 <script>
