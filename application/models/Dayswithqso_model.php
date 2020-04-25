@@ -23,8 +23,6 @@ class Dayswithqso_model extends CI_Model
 
         $query = $this->db->query($sql);
 
-        print_r($query->result());
-
         return $query->result();
     }
 
