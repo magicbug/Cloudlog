@@ -1144,6 +1144,7 @@ class Logbook_model extends CI_Model {
         $CI =& get_instance();
         $CI->load->library('frequency');
         $my_error = "";
+
         // Join date+time
         $time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
         
@@ -1251,8 +1252,8 @@ class Logbook_model extends CI_Model {
                 }
         }
 
-        if(isset($record['CQZ'])) {
-          $cq_zone = $record['CQZ'];
+        if(isset($record['cqz'])) {
+          $cq_zone = $record['cqz'];
         } elseif(isset($dxcc[2])) {
           $cq_zone = $dxcc[2];
         } else {
@@ -1288,8 +1289,8 @@ class Logbook_model extends CI_Model {
         }
 
         // Sanitise TX_POWER
-        if (isset($record['TX_PWR'])){
-            $tx_pwr = filter_var($record['TX_PWR'],FILTER_SANITIZE_NUMBER_INT);
+        if (isset($record['tx_pwr'])){
+            $tx_pwr = filter_var($record['tx_pwr'],FILTER_SANITIZE_NUMBER_INT);
         }else{
             $tx_pwr = NULL;
         }
