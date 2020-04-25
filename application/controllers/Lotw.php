@@ -111,8 +111,8 @@ class Lotw extends CI_Controller {
 
 			// Get credentials for LoTW
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
-    	$q = $query->row();
-    	$data['user_lotw_name'] = $q->user_lotw_name;
+    	    $q = $query->row();
+    	    $data['user_lotw_name'] = $q->user_lotw_name;
 			$data['user_lotw_password'] = $q->user_lotw_password;
 
 			// Get URL for downloading LoTW
@@ -127,8 +127,17 @@ class Lotw extends CI_Controller {
 				$this->session->set_flashdata('warning', 'You have not defined your ARRL LoTW credentials!'); redirect('lotw/import');
 			}
 
-			// Query the logbook to determine when the last LoTW confirmation was
-			$lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date()));
+            $customDate = $this->input->post('from');
+
+			if ($customDate != NULL) {
+                $customDate = DateTime::createFromFormat('d/m/Y', $customDate);
+                $customDate = $customDate->format('Y-m-d');
+                $lotw_last_qsl_date = date($customDate);
+            }
+            else {
+                // Query the logbook to determine when the last LoTW confirmation was
+                $lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date()));
+            }
 
 			// Build URL for LoTW report file
 			$lotw_url .= "?";
@@ -139,8 +148,8 @@ class Lotw extends CI_Controller {
 			//TODO: Option to specifiy whether we download location data from LoTW or not
 			//$lotw_url .= "&qso_qsldetail=\"yes\";
 
-      $lotw_url .= "&qso_qslsince=";
-      $lotw_url .= "$lotw_last_qsl_date";
+            $lotw_url .= "&qso_qslsince=";
+            $lotw_url .= "$lotw_last_qsl_date";
 
 			// Only pull back entries that belong to this callsign
 			$lotw_call = $this->session->userdata('user_callsign');

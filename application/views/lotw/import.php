@@ -27,9 +27,17 @@
 			<input type="radio" name="lotwimport" id="fetch" class="custom-control-input" value="fetch" />
 			<label class="custom-control-label" for="fetch">Pull LoTW data for me</label>
 		</div>
+      <p class="card-text">From date:</p>
+      <div class="row">
+          <div class="input-group date col-md-3" id="datetimepicker1" data-target-input="nearest">
+              <input name="from" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+              <div class="input-group-append"  data-target="#datetimepicker1" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+              </div>
+          </div>
+      </div>
 
-
-		<p class="form-text text-muted">Cloudlog will use the LoTW username and password stored in your user profile to download a report from LoTW for you. The report Cloudlog downloads will have all confirmations since your last LoTW confirmation, up until now.</p>
+		<p class="form-text text-muted">Cloudlog will use the LoTW username and password stored in your user profile to download a report from LoTW for you. The report Cloudlog downloads will have all confirmations since chosen date, or since your last LoTW confirmation (fetched from your log), up until now.</p>
 
 		<p class="form-text text-muted"><span class="badge badge-info">Important</span> You must have QSOs in the logbook before this option works, it will not populate your log from empty based on LoTW QSOs yet.</p>
 
