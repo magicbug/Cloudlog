@@ -290,7 +290,9 @@ $(document).on('keypress',function(e) {
 
     $(document).ready(function() {
 
-    $('.callsign-suggest').hide();    
+    $('.callsign-suggest').hide();
+
+    setRst($(".mode").val());
 
     /* On Page Load */
     var catcher = function() {
@@ -754,20 +756,25 @@ $(document).on('keypress',function(e) {
 
     // Change report based on mode
     $('.mode').change(function(){
-      if($(this).val() == 'JT65' || $(this).val() == 'JT65B' || $(this).val() == 'JT6C' || $(this).val() == 'JTMS' || $(this).val() == 'ISCAT' || $(this).val() == 'MSK144' || $(this).val() == 'JTMSK' || $(this).val() == 'QRA64'){
-      $('#rst_sent').val('-5');
-      $('#rst_recv').val('-5');
-      } else if ($(this).val() == 'FSK441' || $(this).val() == 'JT6M') {
-        $('#rst_sent').val('26');
-      $('#rst_recv').val('26');
-      } else if ($(this).val() == 'CW' || $(this).val() == 'RTTY' || $(this).val() == 'PSK31' || $(this).val() == 'PSK63') {
-      $('#rst_sent').val('599');
-      $('#rst_recv').val('599');
-      } else {
-        $('#rst_sent').val('59');
-      $('#rst_recv').val('59');
-      }
+      setRst($('.mode') .val());
     });
+
+    function setRst(mode) {
+        if(mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1'){
+            $('#rst_sent').val('-5');
+            $('#rst_recv').val('-5');
+        } else if (mode == 'FSK441' || mode == 'JT6M') {
+            $('#rst_sent').val('26');
+            $('#rst_recv').val('26');
+        } else if (mode == 'CW' || mode == 'RTTY' || mode == 'PSK31' || mode == 'PSK63') {
+            $('#rst_sent').val('599');
+            $('#rst_recv').val('599');
+        } else {
+            $('#rst_sent').val('59');
+            $('#rst_recv').val('59');
+        }
+    }
+
 
   /* Javascript for controlling rig frequency. */
 <?php if ( $_GET['manual'] == 0 ) { ?>
@@ -801,19 +808,7 @@ $(document).on('keypress',function(e) {
 
           if (old_mode !== $(".mode").val()) {
             // Update RST on mode change via CAT
-            if(data.mode == 'JT65' || data.mode == 'JT65B' || data.mode == 'JT6C' || data.mode == 'JTMS' || data.mode == 'ISCAT' || data.mode == 'MSK144' || data.mode == 'JTMSK' || data.mode == 'QRA64'){
-              $('#rst_sent').val('-5');
-              $('#rst_recv').val('-5');
-            } else if (data.mode == 'FSK441' || data.mode == 'JT6M') {
-              $('#rst_sent').val('26');
-              $('#rst_recv').val('26');
-            } else if (data.mode == 'CW') {
-              $('#rst_sent').val('599');
-              $('#rst_recv').val('599');
-            } else {
-              $('#rst_sent').val('59');
-              $('#rst_recv').val('59');
-            }
+            setRst($(".mode").val());
           }
           $("#sat_name").val(data.satname);  
           $("#sat_mode").val(data.satmode);  
