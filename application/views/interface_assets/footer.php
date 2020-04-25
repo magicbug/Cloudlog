@@ -983,8 +983,8 @@ $(document).ready(function(){
 <?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
 
   var bands_available = <?php echo $bands_available; ?>;
-
-  $.each(bands_available, function(key, value) {   
+  $('#gridsquare_bands').append('<option value="All">All</option>')
+  $.each(bands_available, function(key, value) {
      $('#gridsquare_bands')
          .append($("<option></option>")
                     .attr("value",value)
