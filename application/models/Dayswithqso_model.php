@@ -15,11 +15,15 @@ class Dayswithqso_model extends CI_Model
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        $sql = "select year(COL_TIME_ON) Year, count(distinct COL_TIME_ON) Days from "
+
+
+        $sql = "select year(COL_TIME_ON) Year, COUNT(DISTINCT TO_DAYS(COL_TIME_ON)) as Days from "
             .$this->config->item('table_name'). " thcv
             where station_id = " . $station_id . " and COL_TIME_ON is not null group by year";
 
         $query = $this->db->query($sql);
+
+        print_r($query->result());
 
         return $query->result();
     }
