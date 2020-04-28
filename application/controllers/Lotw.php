@@ -63,7 +63,8 @@ class Lotw extends CI_Controller {
 
 				if($status == "No Match") {
 					// Create the Entry
-					$this->logbook_model->import($record);
+                    $station_id = $this->input->post('station_profile');
+					$this->logbook_model->import($record, $station_id, NULL, NULL, NULL);
 				} else {
 					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd']);
 				}
