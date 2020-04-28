@@ -263,6 +263,26 @@ class Logbook_model extends CI_Model {
         return $this->db->get($this->config->item('table_name'));
     }
 
+    public function timeline_qso_details($adif, $band){
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $this->db->where('col_prop_mode', $band);
+            } else {
+                $this->db->where('COL_PROP_MODE !=', 'SAT');
+                $this->db->where('col_band', $band);
+            }
+        }
+
+        $this->db->where('station_id', $station_id);
+        $this->db->where('COL_DXCC', $adif);
+
+        return $this->db->get($this->config->item('table_name'));
+    }
+
     public function was_qso_details($state, $band){
         $CI =& get_instance();
         $CI->load->model('Stations');
