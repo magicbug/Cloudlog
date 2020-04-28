@@ -62,6 +62,6 @@ Thanks to Andy (VE7CXZ), Gavin (M1BXF), Graham (W5ISP), Robert (M0VFC), Corby (K
 
 Cloudlog is supported by Patreon and donations via PayPal, thanks to the following people:
 
-Paul (M0TZO), Tim (G4VXE), Paul (N8HM), Michelle (W5NYV), Mitchell (AD0HJ), Dan (M0TCB), Martin (DK3ML), Juan Carlos (EA5WA), Iain (M0PCB)
+Paul (M0TZO), Tim (G4VXE), Paul (N8HM), Michelle (W5NYV), Mitchell (AD0HJ), Dan (M0TCB), Martin (DK3ML), Juan Carlos (EA5WA), Iain (M0PCB), Charlie (GM1TGY)
 
 If you'd like to donate to Cloudlog to help allow @magicbug spend less time doing commerical work and more time coding Cloudlog then you can donate via [PayPal](https://paypal.me/PGoodhall) or become a [Patreon](https://www.patreon.com/2m0sql)
