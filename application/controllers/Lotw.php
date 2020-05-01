@@ -60,11 +60,21 @@ class Lotw extends CI_Controller {
 				}
 
 				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
+				$skipNewQso = $this->input->post('importMissing'); // If import missing was checked
 
-				if($status == "No Match") {
-					// Create the Entry
-                    $station_id = $this->input->post('station_profile');
-					$this->logbook_model->import($record, $station_id, NULL, NULL, NULL);
+				if($status == "No Match" && $skipNewQso != NULL) {
+
+                    $station_id = $this->logbook_model->find_correct_station_id($record['station_callsign'], $record['my_gridsquare']);
+
+                    if ($station_id != NULL) {
+                        $result = $this->logbook_model->import($record, $station_id, NULL, NULL, NULL);  // Create the Entry
+                        if ($result == "") {
+                            $lotw_status = 'QSO imported';
+                        } else {
+                            $lotw_status = $result;
+                        }
+                    }
+
 				} else {
 					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd']);
 				}

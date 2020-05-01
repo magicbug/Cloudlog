@@ -36,6 +36,15 @@
               </div>
           </div>
       </div>
+      <br/>
+      <div class="form-group row">
+          <div class="col-md-10">
+              <div class="form-check-inline">
+                  <input class="form-check-input" type="checkbox" name="importMissing" value="1" id="importMissing">
+                  <label class="form-check-label" for="importMissing">Import missing QSOs into the log. Call and gridsquare will be checked to try to find the correct profile to import the QSO into. If not found, the QSO will be skipped.</label>
+              </div>
+          </div>
+      </div>
 
 		<p class="form-text text-muted">Cloudlog will use the LoTW username and password stored in your user profile to download a report from LoTW for you. The report Cloudlog downloads will have all confirmations since chosen date, or since your last LoTW confirmation (fetched from your log), up until now.</p>
 
