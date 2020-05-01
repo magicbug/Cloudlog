@@ -1844,6 +1844,9 @@ class Logbook_model extends CI_Model {
       return 0;
     }
 
+    /*
+     * This function returns the the whole list of dxcc_entities used in various places
+     */
     function fetchDxcc() {
         $sql = "select adif, prefix, name, date(end) Enddate, date(start) Startdate from dxcc_entities";
 
@@ -1853,6 +1856,9 @@ class Logbook_model extends CI_Model {
         return $query->result();
     }
 
+    /*
+     * This function returns the whole list of iotas used in various places
+     */
     function fetchIota() {
         $sql = "select tag, name from iota";
 
@@ -1860,6 +1866,28 @@ class Logbook_model extends CI_Model {
         $query = $this->db->query($sql);
 
         return $query->result();
+    }
+
+    /*
+     * This function tries to locate the correct station_id used for importing QSOs from the downloaded LoTWreport
+     * $station_callsign is the call listed for the qso in lotwreport
+     * $my_gridsquare is the gridsquare listed for the qso in lotwreport
+     * Returns station_id if found
+     */
+    function find_correct_station_id($station_callsign, $my_gridsquare) {
+        $sql = 'select station_id from station_profile
+            where station_callsign = "' . $station_callsign . '" and station_gridsquare like "%' . substr($my_gridsquare,0, 4) . '%"';
+
+        $query = $this->db->query($sql);
+
+        $result = $query->row();
+
+        if ($result) {
+            return $result->station_id;
+        }
+        else {
+            return null;
+        }
     }
     
 }
@@ -1869,8 +1897,4 @@ function validateADIFDate($date, $format = 'Ymd')
   $d = DateTime::createFromFormat($format, $date);
   return $d && $d->format($format) == $date;
 }
-
-
-
-
 ?>
