@@ -55,6 +55,8 @@ class QSO extends CI_Controller {
 			// $qso_data = [
 			// 18-Jan-2016 - make php v5.3 friendly!
 			$qso_data = array(
+                'start_date' => $this->input->post('start_date'),
+                'start_time' => $this->input->post('start_time'),
 				'band' => $this->input->post('band'),
 				'freq' => $this->input->post('freq_display'),
 				'freq_rx' => $this->input->post('freq_display_rx'),

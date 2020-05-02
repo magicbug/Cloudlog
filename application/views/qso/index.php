@@ -1,3 +1,4 @@
+<?php var_dump($this->session); ?>
 <div class="container qso_panel">
 
 <div class="row">
@@ -38,12 +39,12 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="start_date">Date</label>
-                  <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php echo date('d-m-Y'); ?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
+                  <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if ($this->session->userdata('start_date') != NULL) {echo $this->session->userdata('start_date');} else {echo date('d-m-Y');} ?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
                 </div>
 
                 <div class="form-group col-md-6">
                   <label for="start_time">Time</label>
-                  <input type="text" class="form-control form-control-sm input_time" name="start_time" id="start_time" value="<?php echo date('H:i'); ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
+                  <input type="text" class="form-control form-control-sm input_time" name="start_time" id="start_time" value="<?php if ($this->session->userdata('start_time') != NULL) {echo $this->session->userdata('start_time');} else {echo date('H:i');} ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
                 </div>
 
                 <?php if ( $_GET['manual'] == 0 ) { ?>
