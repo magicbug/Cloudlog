@@ -1,4 +1,3 @@
-<?php var_dump($this->session); ?>
 <div class="container qso_panel">
 
 <div class="row">
