@@ -4,7 +4,7 @@ class Frequency {
   const modes = array('SSB','FM','AM','CW','DSTAR','F4M','DMR','DIGITALVOICE',
                       'PSK31','PSK63','RTTY','JT65','JT65B','JT6C','JT9-1', 
                       'JT9','FT4','FT8','JS8','FSK441','JTMS','ISCAT','MSK144','JTMSK', 
-                      'QRA64','PKT','SSTV','HELL','HELL80');
+                      'QRA64','PKT','SSTV','HELL','HELL80','MFSK16');
 
   public $defaultFrequencies = array(
 	'160m'=>array(
@@ -95,7 +95,7 @@ class Frequency {
     $data_modes = array('PSK31','PSK63','RTTY',
                         'JT65','JT65B','JT6C','JT9-1','JT9','FT4','FT8', 'JS8',
                         'FSK441','JTMS','ISCAT','MSK144','JTMSK',
-                        'QRA64','PKT','SSTV','HELL','HELL80');
+                        'QRA64','PKT','SSTV','HELL','HELL80','MFSK16');
     
     // Use 'DATA' for any of the data modes
     if(in_array($mode, $data_modes)){
