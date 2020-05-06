@@ -52,6 +52,9 @@
 					case "R":
 						echo "yellow";
 						break;
+					case "I":
+						echo "grey";
+						break;
 					default:
 					   echo "red";
 				}
@@ -63,6 +66,9 @@
 						break;
 					case "R":
 						echo "yellow";
+						break;
+					case "I":
+						echo "grey";
 						break;
 					default:
 					   echo "red";
