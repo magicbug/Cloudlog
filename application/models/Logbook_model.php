@@ -114,7 +114,7 @@ class Logbook_model extends CI_Model {
             'COL_CQZ' => $cqz,
             'COL_STATE' => trim($this->input->post('usa_state')),
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
-			      'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
+            'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
     );
 
     $station_id = $this->input->post('station_profile');
@@ -135,6 +135,10 @@ class Logbook_model extends CI_Model {
       } else {
         $data['COL_MY_GRIDSQUARE'] = strtoupper(trim($station['station_gridsquare']));
       }
+
+    if ($this->exists_qrz_api_key($station_id)) {
+        $data['COL_QRZCOM_QSO_UPLOAD_STATUS '] = 'N';
+    }
 
       $data['COL_MY_CITY'] = strtoupper(trim($station['station_city']));
       $data['COL_MY_IOTA'] = strtoupper(trim($station['station_iota']));
@@ -320,13 +324,16 @@ class Logbook_model extends CI_Model {
       $data['COL_RX_PWR'] = str_replace("W", "", $data['COL_RX_PWR']);
     }
 
-    // Add QSO to database
-    $this->db->insert($this->config->item('table_name'), $data);
-
     // Push qso to qrz if apikey is set
     if ($apikey = $this->exists_qrz_api_key($data['station_id'])) {
-        $this->push_qso_to_qrz($data, $apikey);
+        IF ($this->push_qso_to_qrz($data, $apikey)) {
+            $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'Y';
+            $data['COL_QRZCOM_QSO_UPLOAD_DATE'] = date("Y-m-d H:i:s", strtotime("now"));
+        }
     }
+
+      // Add QSO to database
+      $this->db->insert($this->config->item('table_name'), $data);
   }
 
   function exists_qrz_api_key($station_id) {
@@ -361,10 +368,19 @@ class Logbook_model extends CI_Model {
       curl_setopt( $ch, CURLOPT_HEADER, 0);
       curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
 
-      //var_dump($adif);
-      //var_dump($data);
-      $response = curl_exec( $ch );
-      //var_dump($response);
+      $content = curl_exec($ch);
+      if ($content){
+          if (stristr($content,'RESULT=OK')) {
+            return true;
+          }
+          else {
+            return false;
+          }
+      }
+      if(curl_errno($ch)){
+          return false;
+      }
+      curl_close($ch);
   }
 
   function create_adif_from_data($data) {
@@ -526,11 +542,14 @@ class Logbook_model extends CI_Model {
        'COL_STATE' =>$this->input->post('usa_state')
     );
 
+    if ($this->exists_qrz_api_key($data['station_id'])) {
+        $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
+    }
+
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
     $this->db->update($this->config->item('table_name'), $data);
 
   }
-
 
   /* QSL received */
   function qsl_rcvd() {
