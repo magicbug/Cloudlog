@@ -153,6 +153,18 @@
 		    <small id="stationSOTAInputHelp" class="form-text text-muted">Station SOTA Reference.</small>
 		  </div>
 
+            <div class="form-group">
+                <label for="eqslNickname">eQSL QTH Nickname</label>
+                <input type="text" class="form-control" name="eqslnickname" id="eqslNickname" aria-describedby="eqslhelp">
+                <small id="eqslhelp" class="form-text text-muted">eQSL QTH Nickname.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="qrzApiKey">QRZ.com logbook api key</label>
+                <input type="text" class="form-control" name="qrzapikey" id="qrzApiKey" aria-describedby="qrzApiKeyHelp">
+                <small id="qrzApiKeyHelp" class="form-text text-muted">QRZ.com logbook api key</small>
+            </div>
+
 			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Create Station Profile</button>
 
 		</form>
