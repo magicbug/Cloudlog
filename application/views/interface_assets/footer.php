@@ -486,7 +486,7 @@ $(document).on('keypress',function(e) {
             })
         }
     }
-
+<?php if ($this->config->item('qso_auto_qth')) { ?>
     $('#qth').focusout(function() {
     	if ($('#locator').val() === '') {
 			var lat = 0;
@@ -548,8 +548,8 @@ $(document).on('keypress',function(e) {
 		if (num >= 8) qthloc += ' ' + String.fromCharCode(yn[6] + 0x30) + String.fromCharCode(yn[7] + 0x30);
 		if (num >= 10) qthloc += String.fromCharCode(yn[8] + 0x61) + String.fromCharCode(yn[9] + 0x61);
 		return qthloc;
-
 	}
+	<?php } ?>
 
     $("#callsign").focusout(function() {
 

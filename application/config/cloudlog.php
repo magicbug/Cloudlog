@@ -124,3 +124,19 @@ $config['qso_date_format'] = "d/m/y";
 */
 
 $config['map_6digit_grids'] = FALSE;
+
+
+/*
+|--------------------------------------------------------------------------
+| Automatically populate the QTH
+|--------------------------------------------------------------------------
+|
+| Setting this to TRUE allows the QTH locator to be pre-filled
+| based on the person's location when creating new QSO.
+| OSM's Nominatim API is being used for that purpose
+|
+| Default is: TRUE
+|
+*/
+
+$config['qso_auto_qth'] = TRUE;
