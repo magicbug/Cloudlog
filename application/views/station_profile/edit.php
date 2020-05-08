@@ -161,9 +161,9 @@
 		  </div>
 
             <div class="form-group">
-                <label for="qrzApiKey">QRZ.com logbook api key</label>
+                <label for="qrzApiKey">QRZ.com Logbook API Key</label>
                 <input type="text" class="form-control" name="qrzapikey" id="qrzApiKey" aria-describedby="qrzApiKeyHelp" value="<?php if(set_value('qrzapikey') != "") { echo set_value('qrzapikey'); } else { echo $my_station_profile->qrzapikey; } ?>">
-                <small id="qrzApiKeyHelp" class="form-text text-muted">QRZ.com logbook api key</small>
+                <small id="qrzApiKeyHelp" class="form-text text-muted">Your QRZ.com Logbook API can be found in the <a href="https://logbook.qrz.com/logbook" target="_blank">settings page</a></small>
             </div>
 
 			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Update Station Profile</button>
