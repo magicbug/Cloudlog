@@ -135,7 +135,7 @@ $config['map_6digit_grids'] = FALSE;
 | based on the person's location when creating new QSO.
 | OSM's Nominatim API is being used for that purpose
 |
-| Default is: TRUE
+| Default is: FALSE
 |
 */
 
