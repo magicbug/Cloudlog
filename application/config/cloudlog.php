@@ -139,4 +139,4 @@ $config['map_6digit_grids'] = FALSE;
 |
 */
 
-$config['qso_auto_qth'] = TRUE;
+$config['qso_auto_qth'] = FALSE;
