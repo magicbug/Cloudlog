@@ -435,7 +435,8 @@ $(document).on('keypress',function(e) {
                 if($('#locator').val() == "") {
                     markers.clearLayers();
                     var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
-                    mymap.panTo([result.dxcc.lat, result.dxcc.long], 8);
+					mymap.setZoom(8);
+					mymap.panTo([result.dxcc.lat, result.dxcc.long]);
                     markers.addLayer(marker).addTo(mymap);
                 }
             }
@@ -485,6 +486,70 @@ $(document).on('keypress',function(e) {
             })
         }
     }
+<?php if ($this->config->item('qso_auto_qth')) { ?>
+    $('#qth').focusout(function() {
+    	if ($('#locator').val() === '') {
+			var lat = 0;
+			var lon = 0;
+			$.ajax({
+				async: false,
+				type: 'GET',
+				dataType: "json",
+				url: "https://nominatim.openstreetmap.org/search/?city=" + $(this).val() + "&format=json&addressdetails=1&limit=1",
+				data: {},
+				success: function (data) {
+					if (typeof data[0].lat !== 'undefined') {
+						lat = parseFloat(data[0].lat);
+					}
+					if (typeof data[0].lon !== 'undefined') {
+						lon = parseFloat(data[0].lon);
+					}
+				},
+			});
+			if (lat !== 0 && lon !== 0) {
+				var qthloc = LatLng2Loc(lat, lon, 10);
+				if (qthloc.length > 0) {
+					$('#locator').val(qthloc.substr(0, 6)).trigger('focusout');
+				}
+			}
+		}
+	});
+
+	LatLng2Loc = function(y, x, num) {
+		if (x < -180) {
+			x = x + 360;
+		}
+		if (x > 180) {
+			x = x - 360;
+		}
+		var yqth, yi, yk, ydiv, yres, ylp, y;
+		var ycalc = new Array(0, 0, 0);
+		var yn = new Array(0, 0, 0, 0, 0, 0, 0);
+
+		var ydiv_arr = new Array(10, 1, 1 / 24, 1 / 240, 1 / 240 / 24);
+		ycalc[0] = (x + 180) / 2;
+		ycalc[1] = y + 90;
+
+		for (yi = 0; yi < 2; yi++) {
+			for (yk = 0; yk < 5; yk++) {
+				ydiv = ydiv_arr[yk];
+				yres = ycalc[yi] / ydiv;
+				ycalc[yi] = yres;
+				if (ycalc[yi] > 0) ylp = Math.floor(yres); else ylp = Math.ceil(yres);
+				ycalc[yi] = (ycalc[yi] - ylp) * ydiv;
+				yn[2 * yk + yi] = ylp;
+			}
+		}
+
+		var qthloc = "";
+		if (num >= 2) qthloc += String.fromCharCode(yn[0] + 0x41) + String.fromCharCode(yn[1] + 0x41);
+		if (num >= 4) qthloc += String.fromCharCode(yn[2] + 0x30) + String.fromCharCode(yn[3] + 0x30);
+		if (num >= 6) qthloc += String.fromCharCode(yn[4] + 0x41) + String.fromCharCode(yn[5] + 0x41);
+		if (num >= 8) qthloc += ' ' + String.fromCharCode(yn[6] + 0x30) + String.fromCharCode(yn[7] + 0x30);
+		if (num >= 10) qthloc += String.fromCharCode(yn[8] + 0x61) + String.fromCharCode(yn[9] + 0x61);
+		return qthloc;
+	}
+	<?php } ?>
 
     $("#callsign").focusout(function() {
 
@@ -566,12 +631,13 @@ $(document).on('keypress',function(e) {
 
               // Set Map to Lat/Long
               markers.clearLayers();
+				mymap.setZoom(8);
               if (typeof result.latlng !== "undefined" && result.latlng !== false) {
                 var marker = L.marker([result.latlng[0], result.latlng[1]]);
-                mymap.panTo([result.latlng[0], result.latlng[1]], 8);
+                mymap.panTo([result.latlng[0], result.latlng[1]]);
               } else {
                 var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
-                mymap.panTo([result.dxcc.lat, result.dxcc.long], 8);
+                mymap.panTo([result.dxcc.lat, result.dxcc.long]);
               }
 
               markers.addLayer(marker).addTo(mymap);
@@ -737,14 +803,15 @@ $(document).on('keypress',function(e) {
           }
         }
 
-        if(qra_input.length >= 4) {
+        if(qra_input.length >= 4 && $(this).val().length > 0) {
           $.getJSON('logbook/qralatlngjson/' + $(this).val(), function(result)
           {
             // Set Map to Lat/Long
             markers.clearLayers();
             if (typeof result !== "undefined") {
               var marker = L.marker([result[0], result[1]]);
-              mymap.setView([result[0], result[1]], 8);
+              mymap.setZoom(8);
+              mymap.panTo([result[0], result[1]]);
             }
             markers.addLayer(marker).addTo(mymap);
           })
