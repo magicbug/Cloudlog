@@ -326,7 +326,8 @@ class Logbook_model extends CI_Model {
 
     // Push qso to qrz if apikey is set
     if ($apikey = $this->exists_qrz_api_key($data['station_id'])) {
-        IF ($this->push_qso_to_qrz($data, $apikey)) {
+        $adif = $this->create_adif_from_data($data);
+        IF ($this->push_qso_to_qrz($apikey, $adif)) {
             $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'Y';
             $data['COL_QRZCOM_QSO_UPLOAD_DATE'] = date("Y-m-d H:i:s", strtotime("now"));
         }
@@ -336,6 +337,9 @@ class Logbook_model extends CI_Model {
       $this->db->insert($this->config->item('table_name'), $data);
   }
 
+  /*
+   * Function checks if a QRZ API Key exists in the table with the given station id
+  */
   function exists_qrz_api_key($station_id) {
       $sql = 'select qrzapikey from station_profile
             where station_id = ' . $station_id;
@@ -352,10 +356,12 @@ class Logbook_model extends CI_Model {
       }
   }
 
-  function push_qso_to_qrz($data, $apikey) {
+  /*
+   * Function uploads a QSO to QRZ with the API given.
+   * $adif contains a line with the QSO in the ADIF format. QSO ends with an <eor>
+   */
+  function push_qso_to_qrz($apikey, $adif) {
       $url = 'http://logbook.qrz.com/api'; // TODO: Move this to database
-
-      $adif = $this->create_adif_from_data($data);
 
       $post_data['KEY'] = $apikey;
       $post_data['ACTION'] = 'INSERT';
@@ -383,6 +389,26 @@ class Logbook_model extends CI_Model {
       curl_close($ch);
   }
 
+  /*
+   * Function marks QSOs as uploaded to QRZ.
+   * $primarykey is the unique id for that QSO in the logbook
+   */
+    function mark_qrz_qsos_sent($primarykey) {
+        $data = array(
+         'COL_QRZCOM_QSO_UPLOAD_DATE' => date("Y-m-d H:i:s", strtotime("now")),
+         'COL_QRZCOM_QSO_UPLOAD_STATUS' => 'Y',
+        );
+
+        $this->db->where('COL_PRIMARY_KEY', $primarykey);
+
+        $this->db->update($this->config->item('table_name'), $data);
+
+        return true;
+    }
+
+    /*
+     * Function is used to build an ADIF string from an array that contains the QSO data
+     */
   function create_adif_from_data($data) {
       $adif = '<call:' . strlen($data['COL_CALL']) . '>' . $data['COL_CALL'];
       $adif .= '<band:' . strlen($data['COL_BAND']) . '>' . $data['COL_BAND'];
@@ -796,6 +822,41 @@ class Logbook_model extends CI_Model {
 
     return $query;
   }
+
+    /*
+     * Function returns the QSOs from the logbook, which have not been either marked as uploaded to qrz, or has been modified with an edit
+     */
+    function get_qrz_qsos($station_id){
+        $sql = 'select * from ' . $this->config->item('table_name') .
+            ' where station_id = ' . $station_id .
+            ' and (COL_QRZCOM_QSO_UPLOAD_STATUS = NULL
+            or COL_QRZCOM_QSO_UPLOAD_STATUS = ""
+            or COL_QRZCOM_QSO_UPLOAD_STATUS = "M"
+            or COL_QRZCOM_QSO_UPLOAD_STATUS = "N")';
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    /*
+     * Function returns all the station_id's with QRZ API Key's
+     */
+    function get_station_id_with_qrz_api() {
+        $sql = 'select station_id from station_profile
+            where coalesce(qrzapikey, "") <> ""';
+
+        $query = $this->db->query($sql);
+
+        $result = $query->row();
+
+        if ($result) {
+            return $result;
+        }
+        else {
+            return null;
+        }
+    }
+
+
 
   function get_last_qsos($num) {
 
