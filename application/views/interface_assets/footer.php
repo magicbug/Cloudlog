@@ -879,6 +879,20 @@ $(document).on('keypress',function(e) {
           }
           $("#sat_name").val(data.satname);  
           $("#sat_mode").val(data.satmode);  
+
+          // Display CAT Timeout warnng based on the figure given in the config file
+            var minutes = Math.floor(<?php echo $this->config->item('cat_timeout_interval'); ?> / 60);
+
+            if(data.updated_minutes_ago > minutes) {
+              if($('.radio_timeout_error').length == 0) {
+                $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio Connection Error: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');  
+              } else {
+                $('.radio_timeout_error').text('Radio Connection Error: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');    
+              }
+            } else {
+              $(".radio_timeout_error" ).remove();
+            }
+
       });
     }
   };
@@ -898,6 +912,11 @@ $(document).on('keypress',function(e) {
         $("#frequency_rx").val(""); 
         $("#selectPropagation").val($("#selectPropagation option:first").val());
       }
+
+      if ($(".radios option:selected").text() == "None") {
+        $(".radio_timeout_error" ).remove();
+      }
+
   });
 
 <?php } ?>

@@ -92,11 +92,9 @@
 		
 
 		function radio_status($id) {
-			$this->db->select('*');
-			$this->db->where('id', $id);
-			$query = $this->db->get('cat');
-			
-			return $query;
+
+			return $this->db->query('SELECT *, CONVERT_TZ(`timestamp`, @@session.time_zone, \'+00:00\' ) as newtime FROM `cat` WHERE 1');
+
 		}
 
 
