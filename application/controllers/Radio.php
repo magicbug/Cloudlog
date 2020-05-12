@@ -123,7 +123,12 @@
 				$datetime1 = new DateTime(); // Today's Date/Time
 				$datetime2 = new DateTime($row->newtime);
 				$interval = $datetime1->diff($datetime2);
-				$updated_at = $interval->format('%i');
+
+				$minutes = $interval->days * 24 * 60;
+				$minutes += $interval->h * 60;
+				$minutes += $interval->i;
+				
+				$updated_at = $minutes;
 
 				// Return Json data
 				echo json_encode(array(
