@@ -322,6 +322,10 @@ class User extends CI_Controller {
 	}
 
 	function login() {
+		// Check our version and run any migrations
+		$this->load->library('Migration');
+		$this->migration->current();	
+		
 		$this->load->model('user_model');
 		$query = $this->user_model->get($this->input->post('user_name', true));
 
