@@ -94,7 +94,11 @@
 					
 					<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Station Profiles"><i class="fas fa-home"></i> Station Profiles</a>
 					
-					<div class="dropdown-divider"></div>		
+					<div class="dropdown-divider"></div>
+					
+					<a class="dropdown-item" href="<?php echo site_url('mode');?>" title="QSO Modes"><i class="fas fa-broadcast-tower"></i> QSO Modes</a>
+					
+					<div class="dropdown-divider"></div>
 					
 					<a class="dropdown-item" href="<?php echo site_url('radio');?>" title="External Radios"><i class="fas fa-broadcast-tower"></i> Radio Interface</a>
 					

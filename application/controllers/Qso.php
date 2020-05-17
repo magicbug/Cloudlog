@@ -16,7 +16,8 @@ class QSO extends CI_Controller {
 		$this->load->model('stations');
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		$this->load->model('modes');
+        if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		
 		$data['active_station_profile'] = $this->stations->find_active();
 		$data['notice'] = false;
@@ -24,7 +25,9 @@ class QSO extends CI_Controller {
 		$data['radios'] = $this->cat->radios();
 		$data['query'] = $this->logbook_model->last_custom('5');
 		$data['dxcc'] = $this->logbook_model->fetchDxcc();
-        $data['iota'] = $this->logbook_model->fetchIota();
+		$data['iota'] = $this->logbook_model->fetchIota();
+		$data['modes'] = $this->modes->active();
+		
 
 		$this->load->library('form_validation');
 
