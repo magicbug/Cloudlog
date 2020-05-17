@@ -33,7 +33,7 @@ If you would prefer not to setup Cloudlog yourself [magicbug](https://magicbug.c
 
 If you would like to contributing in anyway to Cloudlog then its most appreciated, this has been developed in free time, help coding new features or writing documentation is always useful.
 
-Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses Bootstrap 4 for the user CSS framework documentation is available for this when building components.
+Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses Bootstrap 4 for the user CSS framework documentation is available for this when building components, code will also only be accepted for PR with comments.
 
 ## Credits
 
