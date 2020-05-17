@@ -102,6 +102,7 @@ class QSO extends CI_Controller {
 	
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
+		$this->load->model('modes');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$query = $this->logbook_model->qso_info($this->uri->segment(3));
 		
@@ -114,6 +115,7 @@ class QSO extends CI_Controller {
         $data['qso'] = $query->row();
         $data['dxcc'] = $this->logbook_model->fetchDxcc();
         $data['iota'] = $this->logbook_model->fetchIota();
+		$data['modes'] = $this->modes->all();
 		
 		if ($this->form_validation->run() == FALSE)
 		{
