@@ -28,7 +28,7 @@ Cloudlog now has a [Change Log](https://github.com/magicbug/Cloudlog/wiki/Change
 
 ## Support
 
-Cloudlog support is handled via Issues on GitHub.
+Cloudlog has two support systems for code issues use Github issues, however if you have general issues with setting up your server please use our genereal discussion forum [https://forum.cloudlog.co.uk](https://forum.cloudlog.co.uk).
 
 ## CAT Control
 
