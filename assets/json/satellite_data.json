@@ -3,10 +3,26 @@
     "Modes": ["S/X"]
   },
   "AO-7": {
-    "Modes": ["U/V", "V/A"]
+    "Modes":
+      {
+        "U/V":
+        [
+          { "Uplink_Mode": "LSB", "Uplink_Freq": "432151000", "Downlink_Mode": "USB", "Downlink_Freq": "145950000" }
+        ],
+        "V/A":
+        [
+          { "Uplink_Mode": "USB", "Uplink_Freq": "145900000", "Downlink_Mode": "USB", "Downlink_Freq": "29450000" }
+        ]
+    }
   },
   "AO-73": {
-    "Modes": ["U/V"]
+    "Modes":
+      {
+        "U/V":
+        [
+          { "Uplink_Mode": "LSB", "Uplink_Freq": "435150000", "Downlink_Mode": "USB", "Downlink_Freq": "145960000" }
+        ]
+    }
   },
   "FO-29": {
     "Modes": ["V/U"]
@@ -39,7 +55,13 @@
     "Modes": ["V/U"]
   },
   "AO-91": {
-    "Modes": ["U/V"]
+    "Modes":
+      {
+        "U/V":
+        [
+          { "Uplink_Mode": "FM", "Uplink_Freq": "435250000", "Downlink_Mode": "FM", "Downlink_Freq": "145960000" }
+        ]
+    }
   },
   "AO-92": {
     "Modes": ["U/V", "L/V"]
