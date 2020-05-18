@@ -1,90 +1,298 @@
 {
-  "QO-100": {
-    "Modes": ["S/X"]
-  },
-  "AO-7": {
-    "Modes":
-      {
-        "U/V":
-        [
-          { "Uplink_Mode": "LSB", "Uplink_Freq": "432151000", "Downlink_Mode": "USB", "Downlink_Freq": "145950000" }
-        ],
-        "V/A":
-        [
-          { "Uplink_Mode": "USB", "Uplink_Freq": "145900000", "Downlink_Mode": "USB", "Downlink_Freq": "29450000" }
-        ]
-    }
-  },
-  "AO-73": {
-    "Modes":
-      {
-        "U/V":
-        [
-          { "Uplink_Mode": "LSB", "Uplink_Freq": "435150000", "Downlink_Mode": "USB", "Downlink_Freq": "145960000" }
-        ]
-    }
-  },
-  "FO-29": {
-    "Modes": ["V/U"]
-  },
-  "XW-2A": {
-    "Modes": ["U/V"]
-  },
-  "XW-2B": {
-    "Modes": ["U/V"]
-  },
-  "XW-2C": {
-    "Modes": ["U/V"]
-  },
-  "XW-2D": {
-    "Modes": ["U/V"]
-  },
-  "XW-2E": {
-    "Modes": ["U/V"]
-  },
-  "CAS-4A": {
-    "Modes": ["U/V"]
-  },
-  "CAS-4B": {
-    "Modes": ["U/V"]
-  },
-  "EO-88": {
-    "Modes": ["U/V"]
-  },
-  "FO-99": {
-    "Modes": ["V/U"]
-  },
-  "AO-91": {
-    "Modes":
-      {
-        "U/V":
-        [
-          { "Uplink_Mode": "FM", "Uplink_Freq": "435250000", "Downlink_Mode": "FM", "Downlink_Freq": "145960000" }
-        ]
-    }
-  },
-  "AO-92": {
-    "Modes": ["U/V", "L/V"]
-  },
-  "SO-50": {
-    "Modes": ["V/U"]
-  },
-  "Lilacsat-1": {
-    "Modes": ["V/U"]
-  },
-  "PO-101": {
-    "Modes": ["U/v"]
-  },
-  "AISAT-1": {
-    "Modes": ["V"]
-  },
-  "NO-84": {
-    "Modes": ["A/U", "V"]
-  },
-  "NO-104": {
-    "Modes": ["A/U", "V"]
-  },
-  "ARISS": {
-    "Modes": ["V"]
-  }
+   "QO-100":{
+      "Modes":{
+         "S/X":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"2400175000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"110489675000"
+            }
+         ]
+      }
+   },
+   "AO-7":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"432150000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145950000"
+            }
+         ],
+         "V/A":[
+            {
+               "Uplink_Mode":"USB",
+               "Uplink_Freq":"145900000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"29450000"
+            }
+         ]
+      }
+   },
+   "AO-73":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435140000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145960000"
+            }
+         ]
+      }
+   },
+   "FO-29":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"145950000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"435850000"
+            }
+         ]
+      }
+   },
+   "XW-2A":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435040000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145675000"
+            }
+         ]
+      }
+   },
+   "XW-2B":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435100000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145675000"
+            }
+         ]
+      }
+   },
+   "XW-2C":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435160000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145805000"
+            }
+         ]
+      }
+   },
+   "XW-2D":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435220000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145870000"
+            }
+         ]
+      }
+   },
+   "XW-2F":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435340000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145990000"
+            }
+         ]
+      }
+   },
+   "CAS-4A":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435220000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145870000"
+            }
+         ]
+      }
+   },
+   "CAS-4B":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435280000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145925000"
+            }
+         ]
+      }
+   },
+   "EO-88":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435030000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145975000"
+            }
+         ]
+      }
+   },
+   "FO-99":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"145915000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"435895000"
+            }
+         ]
+      }
+   },
+   "AO-91":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"435250000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"145960000"
+            }
+         ]
+      }
+   },
+   "AO-92":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"435350000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"145880000"
+            }
+         ],
+         "L/V":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"1267350000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"145880000"
+            }
+         ]
+      }
+   },
+   "SO-50":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145850000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"436795000"
+            }
+         ]
+      }
+   },
+   "Lilacsat-1":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"144350000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"437200000"
+            }
+         ]
+      }
+   },
+   "PO-101":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"437500000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"145900000"
+            }
+         ]
+      }
+   },
+   "AISAT-1":{
+      "Modes":{
+         "V":[
+            {
+               "Uplink_Mode":"PKT",
+               "Uplink_Freq":"145825000",
+               "Downlink_Mode":"PKT",
+               "Downlink_Freq":"145825000"
+            }
+         ]
+      }
+   },
+   "NO-84":{
+      "Modes":{
+         "A/U":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"28120000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"435350000"
+            }
+         ],
+         "V":[
+            {
+               "Uplink_Mode":"PKT",
+               "Uplink_Freq":"145825000",
+               "Downlink_Mode":"PKT",
+               "Downlink_Freq":"145825000"
+            }
+         ]
+      }
+   },
+   "NO-104":{
+      "Modes":{
+         "A/U":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"29481500",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"435350000"
+            }
+         ],
+         "V":[
+            {
+               "Uplink_Mode":"PKT",
+               "Uplink_Freq":"145825000",
+               "Downlink_Mode":"PKT",
+               "Downlink_Freq":"145825000"
+            }
+         ]
+      }
+   },
+   "ARISS":{
+      "Modes":{
+         "V":[
+            {
+               "Uplink_Mode":"PKT",
+               "Uplink_Freq":"145825000",
+               "Downlink_Mode":"PKT",
+               "Downlink_Freq":"145825000"
+            }
+         ]
+      }
+   }
 }
