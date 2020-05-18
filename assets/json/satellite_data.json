@@ -50,7 +50,7 @@
                "Uplink_Mode":"LSB",
                "Uplink_Freq":"145950000",
                "Downlink_Mode":"USB",
-               "Downlink_Freq":"435.850000"
+               "Downlink_Freq":"435850000"
             }
          ]
       }
@@ -235,9 +235,9 @@
       "Modes":{
          "V":[
             {
-               "Uplink_Mode":"FM",
+               "Uplink_Mode":"PKT",
                "Uplink_Freq":"145825000",
-               "Downlink_Mode":"FM",
+               "Downlink_Mode":"PKT",
                "Downlink_Freq":"145825000"
             }
          ]
@@ -255,9 +255,9 @@
          ],
          "V":[
             {
-               "Uplink_Mode":"FM",
+               "Uplink_Mode":"PKT",
                "Uplink_Freq":"145825000",
-               "Downlink_Mode":"FM",
+               "Downlink_Mode":"PKT",
                "Downlink_Freq":"145825000"
             }
          ]
@@ -275,9 +275,9 @@
          ],
          "V":[
             {
-               "Uplink_Mode":"FM",
+               "Uplink_Mode":"PKT",
                "Uplink_Freq":"145825000",
-               "Downlink_Mode":"FM",
+               "Downlink_Mode":"PKT",
                "Downlink_Freq":"145825000"
             }
          ]
@@ -287,9 +287,9 @@
       "Modes":{
          "V":[
             {
-               "Uplink_Mode":"FM",
+               "Uplink_Mode":"PKT",
                "Uplink_Freq":"145825000",
-               "Downlink_Mode":"FM",
+               "Downlink_Mode":"PKT",
                "Downlink_Freq":"145825000"
             }
          ]
