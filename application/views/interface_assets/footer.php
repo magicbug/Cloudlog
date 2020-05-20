@@ -1262,5 +1262,35 @@ $(document).ready(function(){
         </script>
     <?php } ?>
 
+    <?php if ($this->uri->segment(1) == "qrz") { ?>
+        <script>
+            function ExportQrz(station_id) {
+                $(".ld-ext-right").addClass('running');
+                $(".ld-ext-right").prop('disabled', true);
+                var baseURL= "<?php echo base_url();?>";
+                $.ajax({
+                    url: baseURL + 'index.php/qrz/upload_station',
+                    type: 'post',
+                    data: {'station_id': station_id},
+                    success: function (data) {
+                        $(".ld-ext-right").removeClass('running');
+                        $(".ld-ext-right").prop('disabled', false);
+                        if (data.status == 'OK') {
+                            $.each(data.info, function(index, value){
+                                $('#modcount'+value.station_id).html(value.modcount);
+                                $('#notcount'+value.station_id).html(value.notcount);
+                                $('#totcount'+value.station_id).html(value.totcount);
+                            });
+                            $(".card-body").append('<div class="alert alert-success" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + data.infomessage + '</div>');
+                        }
+                        else {
+                            $(".card-body").append('<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + data.info + '</div>');
+                        }
+                    }
+                });
+            }
+
+        </script>
+    <?php } ?>
   </body>
 </html>
