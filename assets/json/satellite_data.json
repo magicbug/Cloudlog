@@ -43,6 +43,66 @@
          ]
       }
    },
+   "RS-44":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"145965000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"435640000"
+            }
+         ]
+      }
+   },
+   "HO-107":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435925000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145925000"
+            }
+         ]
+      }
+   },
+   "AO-27":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145850000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"436795000"
+            }
+         ]
+      }
+   },
+   "FS-3":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"PKT",
+               "Uplink_Freq":"145840000",
+               "Downlink_Mode":"PKT",
+               "Downlink_Freq":"435103000"
+            }
+         ]
+      }
+   },
+   "IO-86":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145880000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"435880000"
+            }
+         ]
+      }
+   },
    "FO-29":{
       "Modes":{
          "V/U":[
