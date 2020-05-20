@@ -24,7 +24,12 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/quill/quill.snow.css" />
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "qso") { ?>
+<?php if ($this->uri->segment(1) == "qrz") { ?>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/loading.min.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/ldbtn.min.css" />
+<?php } ?>
+
+      <?php if ($this->uri->segment(1) == "qso") { ?>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/select2/css/select2.min.css" />
 <?php } ?>
   <?php if ($this->uri->segment(1) == "adif") { ?>
@@ -111,6 +116,10 @@
 					<a class="dropdown-item" href="<?php echo site_url('eqsl/import');?>" title="eQSL Import/Export"><i class="fas fa-sync"></i> eQSL Import/Export</a>
 					
 					<div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="<?php echo site_url('qrz/export');?>" title="QRZ.com Export"><i class="fas fa-sync"></i> QRZ.com export</a>
+
+                    <div class="dropdown-divider"></div>
 					
 					<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
 

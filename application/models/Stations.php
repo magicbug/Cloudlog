@@ -190,6 +190,34 @@ class Stations extends CI_Model {
 	    }        	
     }
 
+    function stations_with_qrz_api_key() {
+       $sql = "select station_profile.station_id, station_profile.station_profile_name, station_profile.station_callsign, modc.modcount, notc.notcount, totc.totcount
+                from station_profile
+                left outer join (
+                            select count(*) modcount, station_id
+                    from ". $this->config->item('table_name') .
+                    " where COL_QRZCOM_QSO_UPLOAD_STATUS = 'M'
+                    group by station_id
+                ) as modc on station_profile.station_id = modc.station_id
+                left outer join (
+                            select count(*) notcount, station_id
+                    from " . $this->config->item('table_name') .
+                    " where (coalesce(COL_QRZCOM_QSO_UPLOAD_STATUS, '') = ''
+                    or COL_QRZCOM_QSO_UPLOAD_STATUS = 'N')
+                    group by station_id
+                ) as notc on station_profile.station_id = notc.station_id
+                left outer join (
+                    select count(*) totcount, station_id
+                    from " . $this->config->item('table_name') .
+                    " where COL_QRZCOM_QSO_UPLOAD_STATUS = 'Y'
+                    group by station_id
+                ) as totc on station_profile.station_id = totc.station_id
+                where coalesce(station_profile.qrzapikey, '') <> ''";
+        $query = $this->db->query($sql);
+
+        return $query;
+    }
+
 }
 
 ?>
