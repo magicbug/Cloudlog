@@ -6,13 +6,13 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 ## Requirements
 * Linux based Operating System
-* Apache (Nignx should work)
+* Apache (Nginx should work)
 * PHP (Version 7 or higher) & MySQL
 
 ## Versions
 
 * **Master** - Current working branch
-* cloudlog-v2 - This is the current development copy, while to work on bringing multiclient to Cloudlog without breaking users stable coplies. 
+* cloudlog-v2 - This is the current development copy, while to work on bringing multiclient to Cloudlog without breaking users stable copies. 
 
 ## Setup
 
@@ -22,7 +22,7 @@ Cloudlog now has a [Change Log](https://github.com/magicbug/Cloudlog/wiki/Change
 
 ## Support
 
-Cloudlog has two support systems for code issues use Github issues, however if you have general issues with setting up your server please use our genereal discussion forum [https://forum.cloudlog.co.uk](https://forum.cloudlog.co.uk).
+Cloudlog has two support systems for code issues use Github issues, however if you have general issues with setting up your server please use our general discussion forum [https://forum.cloudlog.co.uk](https://forum.cloudlog.co.uk).
 
 
 ## Want Cloudlog Hosting?
@@ -31,7 +31,7 @@ If you would prefer not to setup Cloudlog yourself [magicbug](https://magicbug.c
 
 ## Contributing
 
-If you would like to contributing in anyway to Cloudlog then its most appreciated, this has been developed in free time, help coding new features or writing documentation is always useful.
+If you would like to contribute in any way to Cloudlog, it is most appreciated. This has been developed in free time, help coding new features or writing documentation is always useful.
 
 Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses Bootstrap 4 for the user CSS framework documentation is available for this when building components, code will also only be accepted for PR with comments.
 
@@ -45,4 +45,4 @@ Cloudlog is supported by Patreon and donations via PayPal, thanks to the followi
 
 Paul (M0TZO), Tim (G4VXE), Paul (N8HM), Michelle (W5NYV), Mitchell (AD0HJ), Dan (M0TCB), Martin (DK3ML), Juan Carlos (EA5WA), Iain (M0PCB), Charlie (GM1TGY), Ondrej (OK1CDJ).
 
-If you'd like to donate to Cloudlog to help allow @magicbug spend less time doing commerical work and more time coding Cloudlog then you can donate via [PayPal](https://paypal.me/PGoodhall) or become a [Patreon](https://www.patreon.com/2m0sql)
+If you'd like to donate to Cloudlog to help allow @magicbug spend less time doing commercial work and more time coding Cloudlog then you can donate via [PayPal](https://paypal.me/PGoodhall) or become a [Patreon](https://www.patreon.com/2m0sql)
