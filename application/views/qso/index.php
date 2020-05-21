@@ -329,12 +329,18 @@
           <div class="tab-pane fade" id="satellite" role="tabpanel" aria-labelledby="satellite-tab">
             <div class="form-group">
               <label for="inputSatName">Satellite Name</label>
-              <input id="sat_name" type="text" name="sat_name" class="form-control" value="<?php echo $this->session->userdata('sat_name'); ?>" />
+
+              <input list="satellite_names" id="sat_name" type="text" name="sat_name" class="form-control" value="<?php echo $this->session->userdata('sat_name'); ?>">
+
+              <datalist id="satellite_names" class="satellite_names_list"></datalist>
             </div>
 
             <div class="form-group">
               <label for="inputSatMode">Satellite Mode</label>
-              <input id="sat_mode" type="text" name="sat_mode" class="form-control" value="<?php echo $this->session->userdata('sat_mode'); ?>" />
+
+              <input list="satellite_modes" id="sat_mode" type="text" name="sat_mode" class="form-control" value="<?php echo $this->session->userdata('sat_mode'); ?>">
+
+              <datalist id="satellite_modes" class="satellite_modes_list"></datalist>
             </div>
           </div>
           

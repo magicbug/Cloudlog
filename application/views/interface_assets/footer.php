@@ -269,6 +269,100 @@ $(document).on('keypress',function(e) {
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
 
+<script type="text/javascript">
+$( document ).ready(function() {
+  /*
+    Populate the Satellite Names Field on the QSO Panel
+  */
+  $.getJSON( "<?php echo base_url();?>assets/json/satellite_data.json", function( data ) {
+
+    // Build the options array
+    var items = [];
+    $.each( data, function( key, val ) {
+      items.push(
+        '<option value="' + key + '">' + key + '</option>'
+        );
+    });
+
+    // Add to the datalist
+    $('.satellite_names_list').append(items.join( "" ));
+  });
+
+});
+
+var selected_sat;
+var selected_sat_mode;
+
+$(document).on('change', 'input', function(){
+    var optionslist = $('.satellite_names_list')[0].options;
+    var value = $(this).val();
+    for (var x=0;x<optionslist.length;x++){
+       if (optionslist[x].value === value) {
+          $("#sat_mode").val(""); 
+          $('.satellite_modes_list').find('option').remove().end();
+          selected_sat = value;
+          // get Json file
+          $.getJSON( "<?php echo base_url();?>assets/json/satellite_data.json", function( data ) {
+
+          // Build the options array
+          var sat_modes = [];
+          $.each( data, function( key, val ) {
+            if (key == value) {
+              $.each( val.Modes, function( key1, val2 ) {
+                  //console.log (key1);
+                  sat_modes.push('<option value="' + key1 + '">' + key1 + '</option>');
+              });
+            }
+          });
+
+          // Add to the datalist
+          $('.satellite_modes_list').append(sat_modes.join( "" ));
+
+        });
+       }
+    }
+});
+
+$(document).on('change', 'input', function(){
+    var optionslist = $('.satellite_modes_list')[0].options;
+    var value = $(this).val();
+    for (var x=0;x<optionslist.length;x++){
+       if (optionslist[x].value === value) {
+
+          // Store selected sat mode
+          selected_sat_mode = value;
+
+          // get Json file
+          $.getJSON( "<?php echo base_url();?>assets/json/satellite_data.json", function( data ) {
+
+          // Build the options array
+          var sat_modes = [];
+          $.each( data, function( key, val ) {
+            if (key == selected_sat) {
+              $.each( val.Modes, function( key1, val2 ) {
+                  if(key1 == selected_sat_mode) {
+  
+                    if (val2[0].Uplink_Mode == "LSB" || val2[0].Uplink_Mode == "USB") {
+                      $("#mode").val("SSB");  
+                    } else {
+                      $("#mode").val(val2[0].Uplink_Mode);  
+                    }
+                    $("#band").val(frequencyToBand(val2[0].Uplink_Freq));
+                    $("#frequency").val(val2[0].Uplink_Freq);  
+                    $("#frequency_rx").val(val2[0].Downlink_Freq); 
+                    $("#selectPropagation").val('SAT');
+                  }
+              });
+            }
+          });
+
+        });
+       }
+    }
+});
+
+</script>
+
 <script>
   var markers = L.layerGroup();
   var mymap = L.map('qsomap').setView([51.505, -0.09], 13);
