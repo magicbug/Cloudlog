@@ -66,9 +66,8 @@
                   <label for="mode">Mode</label>
                   <select id="mode" class="form-control mode form-control-sm" name="mode">
                   <?php
-                      $this->load->library('frequency');
-                      foreach(Frequency::modes as $mode){
-                          printf("<option value=\"%s\" %s>%s</option>", $mode, $this->session->userdata('mode')==$mode?"selected=\"selected\"":"",$mode);
+                      foreach($modes->result() as $mode){
+                        printf("<option value=\"%s\" %s>%s</option>", $mode->mode, $this->session->userdata('mode')==$mode->mode?"selected=\"selected\"":"",$mode->mode);
                       }
                   ?>
                   </select>
