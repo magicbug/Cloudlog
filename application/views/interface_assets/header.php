@@ -109,7 +109,7 @@
 					
 					<div class="dropdown-divider"></div>
 					
-					<a class="dropdown-item" href="<?php echo site_url('lotw/import');?>" title="LoTW Import/Export"><i class="fas fa-sync"></i> LoTW Import/Export</a>
+					<a class="dropdown-item" href="<?php echo site_url('lotw/import');?>" title="LoTW Import"><i class="fas fa-sync"></i> LoTW Import</a>
 					
 					<div class="dropdown-divider"></div>
 					
