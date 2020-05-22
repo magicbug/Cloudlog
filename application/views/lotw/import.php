@@ -24,7 +24,7 @@
 		<br><br>
 
 		<div class="custom-control custom-radio">
-			<input type="radio" name="lotwimport" id="fetch" class="custom-control-input" value="fetch" />
+			<input type="radio" name="lotwimport" id="fetch" class="custom-control-input" value="fetch" checked="checked" />
 			<label class="custom-control-label" for="fetch">Pull LoTW data for me</label>
 		</div>
       <p class="card-text">From date:</p>
