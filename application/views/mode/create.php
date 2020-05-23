@@ -33,6 +33,12 @@
 		    <input type="text" class="form-control" name="mode" id="modeInput" aria-describedby="modeInputHelp" required>
 		    <small id="modeInputHelp" class="form-text text-muted">Name of mode in ADIF-specification</small>
 		  </div>
+		  
+		  <div class="form-group">
+		    <label for="submodeInput">ADIF Sub-Mode</label>
+		    <input type="text" class="form-control" name="submode" id="submodeInput" aria-describedby="submodeInputHelp">
+		    <small id="submodeInputHelp" class="form-text text-muted">Name of sub-mode in ADIF-specification</small>
+		  </div>
 
 			<div class="form-group">
 		    <label for="qrgmodeInput">SSB/CW/DATA</label>

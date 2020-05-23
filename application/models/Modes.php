@@ -9,11 +9,15 @@ class Modes extends CI_Model {
     }
 
 	function all() {
+		$this->db->order_by('mode', 'ASC');
+		$this->db->order_by('submode', 'ASC');
 		return $this->db->get('adif_modes');
 	}
 	
 	function active() {
 		$this->db->where('active', 1);
+		$this->db->order_by('mode', 'ASC');
+		$this->db->order_by('submode', 'ASC');
 		return $this->db->get('adif_modes');
 	}
 
@@ -28,8 +32,14 @@ class Modes extends CI_Model {
 
 
 	function add() {
+		if ($this->input->post('submode', true) == "")
+			$submode = null;
+		else
+			$submode = xss_clean($this->input->post('submode', true));
+		
 		$data = array(
 			'mode' => xss_clean($this->input->post('mode', true)),
+			'submode' => $submode,
 			'qrgmode' =>  xss_clean(strtoupper($this->input->post('qrgmode', true))),
 			'active' =>  xss_clean($this->input->post('active', true)),
 		);

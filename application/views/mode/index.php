@@ -18,6 +18,7 @@
 			<thead>
 				<tr>
 					<th scope="col">Mode</th>
+					<th scope="col">Sub-Mode</th>
 					<th scope="col">SSB/DATA/CW</th>
 					<th scope="col">Active</th>
 					<th scope="col"></th>
@@ -27,7 +28,8 @@
 			<tbody>
 				<?php foreach ($modes->result() as $row) { ?>
 				<tr>
-					<td><?php echo $row->mode;?> (#<?php echo $row->id;?>)</td>
+					<td><?php echo $row->mode;?></td>
+					<td><?php echo $row->submode;?></td>
 					<td><?php echo $row->qrgmode;?></td>
 					<td><?php if ($row->active == 1) { echo "active";} else { echo "not active";};?></td>
 					<td>

@@ -35,6 +35,12 @@
 		    <small id="modeInputHelp" class="form-text text-muted">Name of mode in ADIF-specification</small>
 		  </div>
 
+		  <div class="form-group">
+		    <label for="modeInput">ADIF Sub-Mode</label>
+		    <input type="text" class="form-control" name="submode" id="submodeInput" aria-describedby="submodeInputHelp" value="<?php if(set_value('submode') != "") { echo set_value('submode'); } else { echo $my_mode->submode; } ?>">
+		    <small id="submodeInputHelp" class="form-text text-muted">Name of sub-mode in ADIF-specification</small>
+		  </div>
+
 			<div class="form-group">
 		    <label for="qrgmodeInput">SSB/CW/DATA</label>
 			<select id="qrgmodeInput" class="form-control mode form-control-sm" name="qrgmode">
