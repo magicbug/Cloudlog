@@ -67,6 +67,34 @@
 				</tr>
 				<?php } ?>
 
+				<?php if($row->COL_GRIDSQUARE != null) { ?>
+				<!-- Total Distance Between the Station Profile Gridsquare and Logged Square -->
+				<tr>
+					<td>Total Distance</td>
+					<td>	
+						<?php 
+							// Load the QRA Library
+							$CI =& get_instance();
+							$CI->load->library('qra');
+
+							// Cacluate Distance
+							echo $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, 'M');
+							switch ($this->config->item('measurement_base')) {
+							    case 'M':
+							        echo "mi";
+							        break;
+							    case 'K':
+							        echo "km";
+							        break;
+							    case 'N':
+							        echo "nmi";
+							        break;
+							}
+						?>
+					</td>
+				</tr>
+				<?php } ?>
+
 				<?php if($row->COL_VUCC_GRIDS != null) { ?>
 				<tr>
 					<td>Gridsquare (Multi):</td>
