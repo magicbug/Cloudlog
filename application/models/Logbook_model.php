@@ -850,7 +850,7 @@ class Logbook_model extends CI_Model {
     function get_qrz_qsos($station_id){
         $sql = 'select * from ' . $this->config->item('table_name') .
             ' where station_id = ' . $station_id .
-            ' and (COL_QRZCOM_QSO_UPLOAD_STATUS = NULL
+            ' and (COL_QRZCOM_QSO_UPLOAD_STATUS is NULL
             or COL_QRZCOM_QSO_UPLOAD_STATUS = ""
             or COL_QRZCOM_QSO_UPLOAD_STATUS = "M"
             or COL_QRZCOM_QSO_UPLOAD_STATUS = "N")';
