@@ -22,7 +22,7 @@
 				
 				<tr>
 					<td>Callsign:</td>
-					<td><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></td>
+					<td><b><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></b></td>
 				</tr>
 				
 				<tr>
