@@ -30,7 +30,7 @@
 	<?php } ?>
 
  	<?php if ($this->uri->segment(1) == "adif") { ?>
-  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+  	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
   	<?php } ?>
     <link rel="icon" href="<?php echo base_url(); ?>/favicon.ico">
 
