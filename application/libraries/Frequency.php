@@ -1,6 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Frequency {
 
+<<<<<<< HEAD
+=======
+  const modes = array('SSB','FM','AM','CW','DSTAR','C4FM','DMR','DIGITALVOICE',
+                      'PSK31','PSK63','RTTY','JT65','JT65B','JT6C','JT9-1', 
+                      'JT9','FT4','FT8','JS8','FSK441','JTMS','ISCAT','MSK144','JTMSK', 
+                      'QRA64','PKT','SSTV','HELL','HELL80','MFSK16', 'JT6M', 'ROS');
+
+>>>>>>> 2ea3233ee2a0eae45f596e44c6841846cc2b1a7b
   public $defaultFrequencies = array(
 	'160m'=>array(
 	  	'SSB'=>"1900000",

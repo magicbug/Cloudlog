@@ -16,7 +16,7 @@ class API extends CI_Controller {
 
 
 	function search_callsign($callsign) {
-		$this->db->select('COL_PRIMARY_KEY, COL_CALL, COL_MODE, COL_BAND, COL_COUNTRY, COL_FREQ, COL_GRIDSQUARE, COL_RST_RCVD, COL_RST_SENT, COL_SAT_MODE, COL_SAT_NAME');
+		$this->db->select('COL_PRIMARY_KEY, COL_CALL, COL_MODE, COL_SUBMODE, COL_BAND, COL_COUNTRY, COL_FREQ, COL_GRIDSQUARE, COL_RST_RCVD, COL_RST_SENT, COL_SAT_MODE, COL_SAT_NAME');
 		//$this->db->select("DATE_FORMAT(COL_TIME_ON, '%H:%i') AS time_on", FALSE );
 		//$this->db->select("DATE_FORMAT(COL_TIME_ON, '%d/%c/%Y') AS date_on", FALSE );
 		$this->db->like('COL_CALL', $callsign);

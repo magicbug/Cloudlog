@@ -47,7 +47,7 @@
 				
 				<tr>
 					<td>Mode:</td>
-					<td><?php echo $row->COL_MODE; ?></td>
+					<td><?php echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; ?></td>
 				</tr>
 				
 				<tr>
@@ -64,6 +64,34 @@
 				<tr>
 					<td>Gridsquare:</td>
 					<td><?php echo $row->COL_GRIDSQUARE; ?></td>
+				</tr>
+				<?php } ?>
+
+				<?php if($row->COL_GRIDSQUARE != null) { ?>
+				<!-- Total Distance Between the Station Profile Gridsquare and Logged Square -->
+				<tr>
+					<td>Total Distance</td>
+					<td>	
+						<?php 
+							// Load the QRA Library
+							$CI =& get_instance();
+							$CI->load->library('qra');
+
+							// Cacluate Distance
+							echo $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, 'M');
+							switch ($this->config->item('measurement_base')) {
+							    case 'M':
+							        echo "mi";
+							        break;
+							    case 'K':
+							        echo "km";
+							        break;
+							    case 'N':
+							        echo "nmi";
+							        break;
+							}
+						?>
+					</td>
 				</tr>
 				<?php } ?>
 
