@@ -114,6 +114,7 @@ class Logbook_model extends CI_Model {
             'COL_CQZ' => $cqz,
             'COL_STATE' => trim($this->input->post('usa_state')),
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
+            'COL_COTA_REF' => trim($this->input->post('cota_ref')),
             'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
     );
 
@@ -143,6 +144,7 @@ class Logbook_model extends CI_Model {
       $data['COL_MY_CITY'] = strtoupper(trim($station['station_city']));
       $data['COL_MY_IOTA'] = strtoupper(trim($station['station_iota']));
       $data['COL_MY_SOTA_REF'] = strtoupper(trim($station['station_sota']));
+      $data['COL_MY_COTA_REF'] = strtoupper(trim($station['station_cota']));
       
       $data['COL_STATION_CALLSIGN'] = strtoupper(trim($station['station_callsign']));
       $data['COL_MY_DXCC'] = strtoupper(trim($station['station_dxcc']));
@@ -457,6 +459,10 @@ class Logbook_model extends CI_Model {
           $adif .= '<SOTA_REF:' . strlen($data['COL_SOTA_REF']) . '>' . $data['COL_SOTA_REF'];
       }
 
+      if($data['COL_COTA_REF']) {
+          $adif .= '<COTA_REF:' . strlen($data['COL_COTA_REF']) . '>' . $data['COL_COTA_REF'];
+      }
+
       if($data['COL_SAT_NAME']) {
           if($data['COL_SAT_MODE'] != 0 || $data['COL_SAT_MODE'] !="") {
               $adif .= '<sat_mode:' . strlen($data['COL_SAT_MODE']) . '>' . $data['COL_SAT_MODE'];
@@ -498,6 +504,10 @@ class Logbook_model extends CI_Model {
 
       if($data['COL_MY_SOTA_REF']) {
         $adif .= '<MY_SOTA_REF:' . strlen($data['COL_MY_SOTA_REF']) . '>' . $data['COL_MY_SOTA_REF'];
+      }
+
+      if($data['COL_MY_COTA_REF']) {
+        $adif .= '<MY_COTA_REF:' . strlen($data['COL_MY_COTA_REF']) . '>' . $data['COL_MY_COTA_REF'];
       }
 
       if($data['COL_MY_CQ_ZONE']) {
@@ -556,6 +566,7 @@ class Logbook_model extends CI_Model {
        'COL_LOTW_QSL_RCVD' => $this->input->post('lotw_recv'),
        'COL_IOTA' => $this->input->post('iota_ref'),
        'COL_SOTA_REF' => $this->input->post('sota_ref'),
+       'COL_COTA_REF' => $this->input->post('cota_ref'),
        'COL_DARC_DOK' => $this->input->post('darc_dok'),
        'COL_QTH' => $this->input->post('qth'),
        'COL_PROP_MODE' => $this->input->post('prop_mode'),
@@ -1797,6 +1808,7 @@ class Logbook_model extends CI_Model {
                 'COL_MY_SIG_INFO_INTL' => (!empty($record['my_sig_info_intl'])) ? $record['my_sig_info_intl'] : '',
                 'COL_MY_SIG_INTL' => (!empty($record['my_sig_intl'])) ? $record['my_sig_intl'] : '',
                 'COL_MY_SOTA_REF' => (!empty($record['my_sota_ref'])) ? $record['my_sota_ref'] : '',
+                'COL_MY_COTA_REF' => (!empty($record['my_cota_ref'])) ? $record['my_cota_ref'] : '',
                 'COL_MY_STATE' => (!empty($record['my_state'])) ? $record['my_state'] : '',
                 'COL_MY_STREET' =>  (!empty($record['my_street'])) ? $record['my_street'] : '',
                 'COL_MY_STREET_INTL' => (!empty($record['my_street_intl'])) ? $record['my_street_intl'] : '',
@@ -1846,6 +1858,7 @@ class Logbook_model extends CI_Model {
                 'COL_SILENT_KEY' => (!empty($record['silent_key'])) ? $record['silent_key'] : '',
                 'COL_SKCC' => (!empty($record['skcc'])) ? $record['skcc'] : '',
                 'COL_SOTA_REF' => (!empty($record['sota_ref'])) ? $record['sota_ref'] : '',
+                'COL_COTA_REF' => (!empty($record['cota_ref'])) ? $record['cota_ref'] : '',
                 'COL_SRX' => (!empty($record['srx'])) ? $record['srx'] : null,
                 'COL_SRX_STRING' => (!empty($record['srx_string'])) ? $record['srx_string'] : '',
                 'COL_STATE' => (!empty($record['state'])) ? $record['state'] : '',
@@ -1883,6 +1896,7 @@ class Logbook_model extends CI_Model {
                     $data['COL_MY_CITY'] = trim($row['station_city']);
                     $data['COL_MY_IOTA'] = strtoupper(trim($row['station_iota']));
                     $data['COL_MY_SOTA_REF'] = strtoupper(trim($row['station_sota']));
+                    $data['COL_MY_COTA_REF'] = strtoupper(trim($row['station_cota']));
                     
                     $data['COL_STATION_CALLSIGN'] = strtoupper(trim($row['station_callsign']));
                     $data['COL_MY_DXCC'] = strtoupper(trim($row['station_dxcc']));

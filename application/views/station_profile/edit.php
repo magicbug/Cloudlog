@@ -155,6 +155,12 @@
 		  </div>
 
 		  <div class="form-group">
+		    <label for="stationCOTAInput">COTA Reference</label>
+		    <input type="text" class="form-control" name="cota" id="stationCOTAInput" aria-describedby="stationCOTAInputHelp" value="<?php if(set_value('cota') != "") { echo set_value('cota'); } else { echo $my_station_profile->station_cota; } ?>">
+		    <small id="stationCOTAInputHelp" class="form-text text-muted">Station COTA Reference.</small>
+		  </div>
+
+		  <div class="form-group">
 		    <label for="eqslNickname">eQSL QTH Nickname</label>
 		    <input type="text" class="form-control" name="eqslnickname" id="eqslNickname" aria-describedby="eqslhelp" value="<?php if(set_value('eqslnickname') != "") { echo set_value('eqslnickname'); } else { echo $my_station_profile->eqslqthnickname; } ?>">
 		    <small id="eqslhelp" class="form-text text-muted">eQSL QTH Nickname.</small>

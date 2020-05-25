@@ -82,6 +82,10 @@ thead > tr > td {
     text-transform: uppercase;
 }
 
+.qso_panel .cota_ref {
+    text-transform: uppercase;
+}
+
 .workedGrid {
     border-color: green;
 }

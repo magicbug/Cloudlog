@@ -327,6 +327,11 @@
 	            </div>
 
 	            <div class="form-group">
+	            	<label for="cota_ref">COTA</label>
+	                <input type="text" class="form-control" id="cota_ref" name="cota_ref" value="<?php echo $qso->COL_COTA_REF; ?>">
+	            </div>
+
+	            <div class="form-group">
 	            	<label for="darc_dok">DOK</label>
 	                <input type="text" class="form-control" id="darc_dok" name="darc_dok" value="<?php echo $qso->COL_DARC_DOK; ?>">
 	            </div>

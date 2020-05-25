@@ -28,6 +28,10 @@
   </li>
 
   <li class="nav-item">
+    <a class="nav-link" href="<?php echo site_url('awards/cota'); ?>">COTA</a>
+  </li>
+
+  <li class="nav-item">
     <a class="nav-link" href="<?php echo site_url('awards/dok'); ?>">DOK</a>
   </li>
 </ul>

@@ -38,6 +38,7 @@ class Stations extends CI_Model {
 			'station_city' =>  xss_clean($this->input->post('city', true)),
 			'station_iota' =>  xss_clean(strtoupper($this->input->post('iota', true))),
 			'station_sota' =>  xss_clean(strtoupper($this->input->post('sota', true))),
+			'station_cota' =>  xss_clean(strtoupper($this->input->post('cota', true))),
 			'station_callsign' =>  xss_clean($this->input->post('station_callsign', true)),
 			'station_dxcc' =>  xss_clean($this->input->post('dxcc', true)),
 			'station_country' =>  xss_clean($this->input->post('station_country', true)),
@@ -59,6 +60,7 @@ class Stations extends CI_Model {
 			'station_city' => xss_clean($this->input->post('city', true)),
 			'station_iota' => xss_clean($this->input->post('iota', true)),
 			'station_sota' => xss_clean($this->input->post('sota', true)),
+			'station_cota' => xss_clean($this->input->post('cota', true)),
 			'station_callsign' => xss_clean($this->input->post('station_callsign', true)),
 			'station_dxcc' => xss_clean($this->input->post('dxcc', true)),
 			'station_country' => xss_clean($this->input->post('station_country', true)),
@@ -165,6 +167,10 @@ class Stations extends CI_Model {
 
 		if($row->station_sota != "") {
 			$this->db->where('COL_MY_SOTA_REF', $row->station_sota);
+		}
+
+		if($row->station_cota != "") {
+			$this->db->where('COL_MY_COTA_REF', $row->station_cota);
 		}
 
 		$this->db->where('COL_MY_COUNTRY', $row->station_country);

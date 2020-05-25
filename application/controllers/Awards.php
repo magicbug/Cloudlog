@@ -227,6 +227,23 @@ class Awards extends CI_Controller {
 		$this->load->view('awards/sota/index');
 		$this->load->view('interface_assets/footer');
 	}
+
+	/*
+		Handles showing worked COTAs
+		Comment field - COTA:#
+	*/
+	public function cota() {
+	
+		// Grab all worked cota stations
+		$this->load->model('cota');
+		$data['cota_all'] = $this->cota->get_all();
+	
+		// Render page
+		$data['page_title'] = "Awards - COTA";
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('awards/cota/index');
+		$this->load->view('interface_assets/footer');
+	}
 	
 	/*
 		Handles showing worked WACRAL members (wacral.org)

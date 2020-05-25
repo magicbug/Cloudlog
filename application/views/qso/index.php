@@ -320,6 +320,11 @@
             </div>
 
             <div class="form-group">
+              <label for="cota_ref">COTA Reference</label>
+              <input class="form-control" id="cota_ref" type="text" name="cota_ref" value="" /> e.g: PB-111
+            </div>
+
+            <div class="form-group">
               <label for="sota_ref">DOK</label>
               <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" /> e.g: Q03
             </div>

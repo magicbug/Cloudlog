@@ -156,6 +156,13 @@
 					<td><?php echo $row->COL_SOTA_REF; ?></td>
 				</tr>
 				<?php } ?>
+
+				<?php if($row->COL_COTA_REF != null) { ?>
+				<tr>
+					<td>COTA Ref:</td>
+					<td><?php echo $row->COL_COTA_REF; ?></td>
+				</tr>
+				<?php } ?>
 				
 				<?php if($row->COL_DARC_DOK != null) { ?>
 				<tr>

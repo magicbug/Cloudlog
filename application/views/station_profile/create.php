@@ -153,6 +153,12 @@
 		    <small id="stationSOTAInputHelp" class="form-text text-muted">Station SOTA Reference.</small>
 		  </div>
 
+		  <div class="form-group">
+		    <label for="stationCOTAInput">COTA Reference</label>
+		    <input type="text" class="form-control" name="cota" id="stationCOTAInput" aria-describedby="stationCOTAInputHelp">
+		    <small id="stationCOTAInputHelp" class="form-text text-muted">Station COTA Reference.</small>
+		  </div>
+
             <div class="form-group">
                 <label for="eqslNickname">eQSL QTH Nickname</label>
                 <input type="text" class="form-control" name="eqslnickname" id="eqslNickname" aria-describedby="eqslhelp">
