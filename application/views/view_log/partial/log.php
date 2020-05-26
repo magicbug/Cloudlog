@@ -49,6 +49,9 @@
 					case "Y":
 						echo "green";
 						break;
+					case "Q":
+						echo "yellow";
+						break;
 					case "R":
 						echo "yellow";
 						break;
@@ -63,6 +66,9 @@
 				switch ($row->COL_QSL_RCVD) {
 					case "Y":
 						echo "green";
+						break;
+					case "Q":
+						echo "yellow";
 						break;
 					case "R":
 						echo "yellow";
