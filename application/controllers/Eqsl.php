@@ -140,7 +140,7 @@ class eqsl extends CI_Controller {
 			// Build URL for eQSL inbox file
 			$eqsl_url .= "?";
 			$eqsl_url .= "UserName=" . $data['user_eqsl_name'];
-			$eqsl_url .= "&Password=" . $data['user_eqsl_password'];
+			$eqsl_url .= "&Password=" . urlencode($data['user_eqsl_password']);
 			
 			$eqsl_url .= "&RcvdSince=" . $eqsl_last_qsl_date;
 			$eqsl_url .= "&QTHNickname=" . urlencode($active_station_info->eqslqthnickname);
@@ -172,11 +172,15 @@ class eqsl extends CI_Controller {
  			// "Your ADIF log file has been built" -> We've got an ADIF file we need to grab.
  			
  			if ($chi['http_code'] == "200")
-			{
+			 {
 				if (stristr($input, "You have no log entries"))
 				{
 					$this->session->set_flashdata('success', 'There are no QSLs waiting for download at eQSL.cc.'); redirect('eqsl/import');
-
+				}
+				else if (stristr($input, "Error: No such Username/Password found")) 
+				{
+					$this->session->set_flashdata('warning', 'No such Username/Password found This could mean the wrong callsign or the wrong password, or the user does not exist.'); 
+					redirect('eqsl/import');
 				}
 				else
 				{
