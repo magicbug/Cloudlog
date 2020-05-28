@@ -6,11 +6,6 @@
 	margin-top: 0px;
 }
 
-nav {
-    max-height: 100vh;
-    overflow: auto;
-}
-
 #nav-container {
 	margin-top: 0;
 	position: sticky;
