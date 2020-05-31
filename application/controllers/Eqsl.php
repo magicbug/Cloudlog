@@ -322,7 +322,7 @@ class eqsl extends CI_Controller {
 				$adif .= "%3A";
 				$adif .= strlen($data['user_eqsl_password']);
 				$adif .= "%3E";
-				$adif .= $data['user_eqsl_password'];
+				$adif .= urlencode($data['user_eqsl_password']);
 				$adif .= "%20";
 				
 				$adif .= "%3C";
@@ -583,8 +583,7 @@ class eqsl extends CI_Controller {
 			$username = $q->user_eqsl_name;
 			$password = $q->user_eqsl_password;
 
-
-			$image_url = $this->electronicqsl->card_image($username, $password, $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
+			$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
 			$file = file_get_contents($image_url, true);
 
 			$dom = new domDocument; 
