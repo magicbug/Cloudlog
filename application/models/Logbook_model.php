@@ -801,7 +801,7 @@ class Logbook_model extends CI_Model {
 								ENTITY 
 								FROM '.$this->config->item('table_name').', dxcc_prefixes, station_profile 
 								WHERE 
-								COL_QSL_SENT LIKE \'R\' 
+								COL_QSL_SENT in (\'R\', \'Q\')
 								and (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) like CONCAT(dxcc_prefixes.call,\'%\') 
 								and (end is null or end > now()) 
 								and '.$this->config->item('table_name').'.station_id = '.$station_id.'
