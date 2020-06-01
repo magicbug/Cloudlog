@@ -1693,10 +1693,24 @@ class Logbook_model extends CI_Model {
         }
 
         if (isset($record['mode'])) {
-          $input_mode = $record['mode'];
-      } else {
-          $input_mode = '';
-      }
+            $input_mode = $record['mode'];
+        } else {
+            $input_mode = '';
+        }
+
+        $mode = $this->get_main_mode_if_submode($input_mode);
+        if ($mode == null) {
+            $submode = null;
+        } else {
+            $submode = $input_mode;
+            $input_mode = $mode;
+        }
+
+        if (empty($submode)) {
+            $input_submode = (!empty($record['submode'])) ? $record['submode'] : '';
+        } else {
+            $input_submode = $submode;
+        }
 
         // Get active station_id from station profile if one hasn't been provided
         if($station_id == "" || $station_id == "0") {
@@ -1873,7 +1887,7 @@ class Logbook_model extends CI_Model {
                 'COL_STATION_CALLSIGN' => (!empty($record['station_callsign'])) ? $record['station_callsign'] : '',
                 'COL_STX' => (!empty($record['stx'])) ? $record['stx'] : null,
                 'COL_STX_STRING' => (!empty($record['stx_string'])) ? $record['stx_string'] : '',
-                'COL_SUBMODE' => (!empty($record['submode'])) ? $record['submode'] : '',
+                'COL_SUBMODE' => $input_submode,
                 'COL_SWL' => (!empty($record['swl'])) ? $record['swl'] : null,
                 'COL_TEN_TEN' => (!empty($record['ten_ten'])) ? $record['ten_ten'] : null,
                 'COL_TIME_ON' => $time_on,
