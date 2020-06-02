@@ -17,3 +17,5 @@ class Logbooks extends CI_Controller {
     {
     	echo 'Functions to come';
 	}
+
+}
