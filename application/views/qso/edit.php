@@ -32,6 +32,7 @@
 				<a class="nav-item nav-link active" id="nav-qso-tab" data-toggle="tab" href="#nav-qso" role="tab" aria-controls="nav-qso" aria-selected="true">QSO</a>
 				<a class="nav-item nav-link" id="nav-satellites-tab" data-toggle="tab" href="#nav-satellites" role="tab" aria-controls="nav-awards" aria-selected="true">Sats</a>
 				<a class="nav-item nav-link" id="nav-awards-tab" data-toggle="tab" href="#nav-awards" role="tab" aria-controls="nav-awards" aria-selected="true">Awards</a>
+				<a class="nav-item nav-link" id="nav-notes-tab" data-toggle="tab" href="#nav-notes" role="tab" aria-controls="nav-notes" aria-selected="false">Notes</a>
 				<a class="nav-item nav-link" id="nav-qsl-tab" data-toggle="tab" href="#nav-qsl" role="tab" aria-controls="nav-qsl" aria-selected="false">QSL</a>
 				<a class="nav-item nav-link" id="nav-station-tab" data-toggle="tab" href="#nav-station" role="tab" aria-controls="nav-station" aria-selected="false">Station</a>
 			</div>
@@ -330,6 +331,14 @@
 	            	<label for="darc_dok">DOK</label>
 	                <input type="text" class="form-control" id="darc_dok" name="darc_dok" value="<?php echo $qso->COL_DARC_DOK; ?>">
 	            </div>
+			</div>
+
+			<!-- Notes Panel Contents -->
+			<div class="tab-pane fade" id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
+				<div class="form-group">
+					<label for="notes">Notes (for internal usage only)</label>
+					<textarea  type="text" class="form-control" id="notes" name="notes" rows="10"><?php echo $qso->COL_NOTES; ?></textarea>
+				</div>
 			</div>
 
 			<!-- QSL Panel Contents -->
