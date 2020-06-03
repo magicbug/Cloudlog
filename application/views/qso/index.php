@@ -24,6 +24,10 @@
           <li class="nav-item">
             <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Satellite</a>
           </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notes</a>
+          </li>
 
           <li class="nav-item">
             <a class="nav-link" id="qsl-tab" data-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false">QSLing</a>
@@ -341,6 +345,14 @@
               <input list="satellite_modes" id="sat_mode" type="text" name="sat_mode" class="form-control" value="<?php echo $this->session->userdata('sat_mode'); ?>">
 
               <datalist id="satellite_modes" class="satellite_modes_list"></datalist>
+            </div>
+          </div>
+          
+          <!-- Notes Panel Contents -->
+          <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+           <div class="form-group">
+              <label for="notes">Notes (for internal usage only)</label>
+              <textarea  type="text" class="form-control" id="notes" name="notes" rows="10"></textarea>
             </div>
           </div>
           
