@@ -115,6 +115,7 @@ class Logbook_model extends CI_Model {
             'COL_STATE' => trim($this->input->post('usa_state')),
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
             'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
+	    'COL_NOTES' => $this->input->post('notes'),
     );
 
     $station_id = $this->input->post('station_profile');
@@ -548,6 +549,7 @@ class Logbook_model extends CI_Model {
        'COL_CQZ' => $this->input->post('cqz'),
        'COL_SAT_NAME' => $this->input->post('sat_name'),
        'COL_SAT_MODE' => $this->input->post('sat_mode'),
+       'COL_NOTES' => $this->input->post('notes'),
        'COL_QSLSDATE' => date('Y-m-d'),
        'COL_QSLRDATE' => date('Y-m-d'),
        'COL_QSL_SENT' => $this->input->post('qsl_sent'),
