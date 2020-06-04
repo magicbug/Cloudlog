@@ -54,14 +54,19 @@ class Qrz extends CI_Controller {
      * Adif is build for each qso, and then uploaded, one at a time
      */
     function mass_upload_qsos($station_id, $qrz_api_key) {
-
         $i = 0;
         $data['qsos'] = $this->logbook_model->get_qrz_qsos($station_id);
 
         if ($data['qsos']) {
             foreach ($data['qsos'] as $qso) {
                 $adif = $this->logbook_model->create_adif_from_data($qso);
-                $result = $this->logbook_model->push_qso_to_qrz($qrz_api_key, $adif);
+
+                if ($qso['COL_QRZCOM_QSO_UPLOAD_STATUS'] == 'M') {
+                    $result = $this->logbook_model->push_qso_to_qrz($qrz_api_key, $adif, true);
+                } else {
+                    $result = $this->logbook_model->push_qso_to_qrz($qrz_api_key, $adif);
+                }
+
                 if ($result) {
                     $this->markqso($qso['COL_PRIMARY_KEY']);
                     $i++;
@@ -112,7 +117,6 @@ class Qrz extends CI_Controller {
 
         header('Content-type: application/json');
         if ($i = $this->mass_upload_qsos($postData['station_id'], $qrz_api_key)) {
-
             $stationinfo = $this->stations->stations_with_qrz_api_key();
             $info = $stationinfo->result();
 

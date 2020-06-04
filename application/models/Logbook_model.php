@@ -360,12 +360,16 @@ class Logbook_model extends CI_Model {
    * Function uploads a QSO to QRZ with the API given.
    * $adif contains a line with the QSO in the ADIF format. QSO ends with an <eor>
    */
-  function push_qso_to_qrz($apikey, $adif) {
+  function push_qso_to_qrz($apikey, $adif, $replaceoption = false) {
       $url = 'http://logbook.qrz.com/api'; // TODO: Move this to database
 
       $post_data['KEY'] = $apikey;
       $post_data['ACTION'] = 'INSERT';
       $post_data['ADIF'] = $adif;
+
+      if ($replaceoption) {
+          $post_data['OPTION'] = 'REPLACE';
+      }
 
       $ch = curl_init( $url );
       curl_setopt( $ch, CURLOPT_POST, true);
@@ -376,7 +380,7 @@ class Logbook_model extends CI_Model {
 
       $content = curl_exec($ch);
       if ($content){
-          if (stristr($content,'RESULT=OK')) {
+          if (stristr($content,'RESULT=OK') || stristr($content,'RESULT=REPLACE')) {
             return true;
           }
           else {
