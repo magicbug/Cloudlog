@@ -60,7 +60,7 @@
 		}
 			
 	}
-	
+
 	function json($id)
 	{
 
@@ -74,6 +74,7 @@
 		{
 			foreach ($query->result() as $row)
 			{
+
 
 				if($row->sat_name != "") {
 					$uplink_freq = $row->uplink_freq;
@@ -118,13 +119,25 @@
 					$sat_mode = "";
 				}
 
+				// Calculate how old the data is in minutes 
+				$datetime1 = new DateTime(); // Today's Date/Time
+				$datetime2 = new DateTime($row->newtime);
+				$interval = $datetime1->diff($datetime2);
 
+				$minutes = $interval->days * 24 * 60;
+				$minutes += $interval->h * 60;
+				$minutes += $interval->i;
+				
+				$updated_at = $minutes;
+
+				// Return Json data
 				echo json_encode(array(
 					"uplink_freq" => $uplink_freq,
 					"downlink_freq" => $downlink_freq,
 					"mode" => $mode,
 					"satmode" => $sat_mode,
 					"satname" => $sat_name,
+					"updated_minutes_ago" => $updated_at,
 				), JSON_PRETTY_PRINT);
 			}
 		}
@@ -174,5 +187,6 @@
 
 	}
 }
+
 
 ?>

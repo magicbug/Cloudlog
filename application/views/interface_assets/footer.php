@@ -269,6 +269,100 @@ $(document).on('keypress',function(e) {
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
 
+<script type="text/javascript">
+$( document ).ready(function() {
+  /*
+    Populate the Satellite Names Field on the QSO Panel
+  */
+  $.getJSON( "<?php echo base_url();?>assets/json/satellite_data.json", function( data ) {
+
+    // Build the options array
+    var items = [];
+    $.each( data, function( key, val ) {
+      items.push(
+        '<option value="' + key + '">' + key + '</option>'
+        );
+    });
+
+    // Add to the datalist
+    $('.satellite_names_list').append(items.join( "" ));
+  });
+
+});
+
+var selected_sat;
+var selected_sat_mode;
+
+$(document).on('change', 'input', function(){
+    var optionslist = $('.satellite_names_list')[0].options;
+    var value = $(this).val();
+    for (var x=0;x<optionslist.length;x++){
+       if (optionslist[x].value === value) {
+          $("#sat_mode").val(""); 
+          $('.satellite_modes_list').find('option').remove().end();
+          selected_sat = value;
+          // get Json file
+          $.getJSON( "<?php echo base_url();?>assets/json/satellite_data.json", function( data ) {
+
+          // Build the options array
+          var sat_modes = [];
+          $.each( data, function( key, val ) {
+            if (key == value) {
+              $.each( val.Modes, function( key1, val2 ) {
+                  //console.log (key1);
+                  sat_modes.push('<option value="' + key1 + '">' + key1 + '</option>');
+              });
+            }
+          });
+
+          // Add to the datalist
+          $('.satellite_modes_list').append(sat_modes.join( "" ));
+
+        });
+       }
+    }
+});
+
+$(document).on('change', 'input', function(){
+    var optionslist = $('.satellite_modes_list')[0].options;
+    var value = $(this).val();
+    for (var x=0;x<optionslist.length;x++){
+       if (optionslist[x].value === value) {
+
+          // Store selected sat mode
+          selected_sat_mode = value;
+
+          // get Json file
+          $.getJSON( "<?php echo base_url();?>assets/json/satellite_data.json", function( data ) {
+
+          // Build the options array
+          var sat_modes = [];
+          $.each( data, function( key, val ) {
+            if (key == selected_sat) {
+              $.each( val.Modes, function( key1, val2 ) {
+                  if(key1 == selected_sat_mode) {
+  
+                    if (val2[0].Uplink_Mode == "LSB" || val2[0].Uplink_Mode == "USB") {
+                      $("#mode").val("SSB");  
+                    } else {
+                      $("#mode").val(val2[0].Uplink_Mode);  
+                    }
+                    $("#band").val(frequencyToBand(val2[0].Uplink_Freq));
+                    $("#frequency").val(val2[0].Uplink_Freq);  
+                    $("#frequency_rx").val(val2[0].Downlink_Freq); 
+                    $("#selectPropagation").val('SAT');
+                  }
+              });
+            }
+          });
+
+        });
+       }
+    }
+});
+
+</script>
+
 <script>
   var markers = L.layerGroup();
   var mymap = L.map('qsomap').setView([51.505, -0.09], 13);
@@ -290,7 +384,9 @@ $(document).on('keypress',function(e) {
 
     $(document).ready(function() {
 
-    $('.callsign-suggest').hide();    
+    $('.callsign-suggest').hide();
+
+    setRst($(".mode").val());
 
     /* On Page Load */
     var catcher = function() {
@@ -397,6 +493,7 @@ $(document).on('keypress',function(e) {
      if (e.key === "Escape") { // escape key maps to keycode `27`
        reset_fields();
 	   $('#callsign').val("");
+	   $("#callsign").focus();
     }
 });
 });
@@ -412,6 +509,141 @@ $(document).on('keypress',function(e) {
       });
     }
     });
+
+    $('#dxcc_id').on('change', function() {
+        $.getJSON('logbook/jsonentity/' + $(this).val(), function (result) {
+            if (result.dxcc.name != undefined) {
+
+                $('#country').val(convert_case(result.dxcc.name));
+                $('#cqz').val(convert_case(result.dxcc.cqz));
+
+                $('#callsign_info').removeClass("badge-secondary");
+                $('#callsign_info').removeClass("badge-success");
+                $('#callsign_info').removeClass("badge-danger");
+                $('#callsign_info').attr('title', '');
+                $('#callsign_info').text(convert_case(result.dxcc.name));
+
+                changebadge(result.dxcc.name);
+
+                // Set Map to Lat/Long it locator is not empty
+                if($('#locator').val() == "") {
+                    markers.clearLayers();
+                    var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
+					mymap.setZoom(8);
+					mymap.panTo([result.dxcc.lat, result.dxcc.long]);
+                    markers.addLayer(marker).addTo(mymap);
+                }
+            }
+        });
+    });
+
+    function changebadge(entityname) {
+        if($("#sat_name" ).val() != "") {
+            $.getJSON('logbook/jsonlookupdxcc/' + convert_case(entityname) + '/SAT/0/0', function(result)
+            {
+
+                $('#callsign_info').removeClass("badge-secondary");
+                $('#callsign_info').removeClass("badge-success");
+                $('#callsign_info').removeClass("badge-danger");
+                $('#callsign_info').attr('title', '');
+
+                if (result.workedBefore)
+                {
+                    $('#callsign_info').addClass("badge-success");
+                    $('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
+                }
+                else
+                {
+                    $('#callsign_info').addClass("badge-danger");
+                    $('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
+                }
+            })
+        } else {
+            $.getJSON('logbook/jsonlookupdxcc/' + convert_case(entityname) + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
+            {
+                // Reset CSS values before updating
+                $('#callsign_info').removeClass("badge-secondary");
+                $('#callsign_info').removeClass("badge-success");
+                $('#callsign_info').removeClass("badge-danger");
+                $('#callsign_info').attr('title', '');
+
+                if (result.workedBefore)
+                {
+                    $('#callsign_info').addClass("badge-success");
+                    $('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
+                }
+                else
+                {
+                    $('#callsign_info').addClass("badge-danger");
+                    $('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
+                }
+            })
+        }
+    }
+<?php if ($this->config->item('qso_auto_qth')) { ?>
+    $('#qth').focusout(function() {
+    	if ($('#locator').val() === '') {
+			var lat = 0;
+			var lon = 0;
+			$.ajax({
+				async: false,
+				type: 'GET',
+				dataType: "json",
+				url: "https://nominatim.openstreetmap.org/search/?city=" + $(this).val() + "&format=json&addressdetails=1&limit=1",
+				data: {},
+				success: function (data) {
+					if (typeof data[0].lat !== 'undefined') {
+						lat = parseFloat(data[0].lat);
+					}
+					if (typeof data[0].lon !== 'undefined') {
+						lon = parseFloat(data[0].lon);
+					}
+				},
+			});
+			if (lat !== 0 && lon !== 0) {
+				var qthloc = LatLng2Loc(lat, lon, 10);
+				if (qthloc.length > 0) {
+					$('#locator').val(qthloc.substr(0, 6)).trigger('focusout');
+				}
+			}
+		}
+	});
+
+	LatLng2Loc = function(y, x, num) {
+		if (x < -180) {
+			x = x + 360;
+		}
+		if (x > 180) {
+			x = x - 360;
+		}
+		var yqth, yi, yk, ydiv, yres, ylp, y;
+		var ycalc = new Array(0, 0, 0);
+		var yn = new Array(0, 0, 0, 0, 0, 0, 0);
+
+		var ydiv_arr = new Array(10, 1, 1 / 24, 1 / 240, 1 / 240 / 24);
+		ycalc[0] = (x + 180) / 2;
+		ycalc[1] = y + 90;
+
+		for (yi = 0; yi < 2; yi++) {
+			for (yk = 0; yk < 5; yk++) {
+				ydiv = ydiv_arr[yk];
+				yres = ycalc[yi] / ydiv;
+				ycalc[yi] = yres;
+				if (ycalc[yi] > 0) ylp = Math.floor(yres); else ylp = Math.ceil(yres);
+				ycalc[yi] = (ycalc[yi] - ylp) * ydiv;
+				yn[2 * yk + yi] = ylp;
+			}
+		}
+
+		var qthloc = "";
+		if (num >= 2) qthloc += String.fromCharCode(yn[0] + 0x41) + String.fromCharCode(yn[1] + 0x41);
+		if (num >= 4) qthloc += String.fromCharCode(yn[2] + 0x30) + String.fromCharCode(yn[3] + 0x30);
+		if (num >= 6) qthloc += String.fromCharCode(yn[4] + 0x41) + String.fromCharCode(yn[5] + 0x41);
+		if (num >= 8) qthloc += ' ' + String.fromCharCode(yn[6] + 0x30) + String.fromCharCode(yn[7] + 0x30);
+		if (num >= 10) qthloc += String.fromCharCode(yn[8] + 0x61) + String.fromCharCode(yn[9] + 0x61);
+		return qthloc;
+	}
+	<?php } ?>
 
     $("#callsign").focusout(function() {
 
@@ -477,51 +709,8 @@ $(document).on('keypress',function(e) {
 					  }
 					})
 				  }
-				
-			  
-				
-				if($("#sat_name" ).val() != "") {
-					//logbook/jsonlookupgrid/io77/SAT/0/0
-					$.getJSON('logbook/jsonlookupdxcc/' + convert_case(result.dxcc.entity) + '/SAT/0/0', function(result)
-					{
-					  
-					  $('#callsign_info').removeClass("badge-secondary");
-					  $('#callsign_info').removeClass("badge-success");
-					  $('#callsign_info').removeClass("badge-danger");
-					  $('#callsign_info').attr('title', '');
 
-					  if (result.workedBefore)
-					  {
-						$('#callsign_info').addClass("badge-success");
-						$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
-					  }
-					  else
-					  {
-						$('#callsign_info').addClass("badge-danger");
-						$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
-					  }
-					})
-				  } else {
-					$.getJSON('logbook/jsonlookupdxcc/' + convert_case(result.dxcc.entity) + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
-					{
-					  // Reset CSS values before updating
-					  $('#callsign_info').removeClass("badge-secondary");
-					  $('#callsign_info').removeClass("badge-success");
-					  $('#callsign_info').removeClass("badge-danger");
-					  $('#callsign_info').attr('title', '');
-
-					  if (result.workedBefore)
-					  {
-						$('#callsign_info').addClass("badge-success");
-						$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
-					  }
-					  else
-					  {
-						$('#callsign_info').addClass("badge-danger");
-						$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
-					  }
-					})
-				  }
+                  changebadge(result.dxcc.entity);
               }
 
               if(result.lotw_member == "active") {
@@ -530,17 +719,19 @@ $(document).on('keypress',function(e) {
 
               $('#dxcc_id').val(result.dxcc.adif);
               $('#cqz').val(result.dxcc.cqz);
+              $('#ituz').val(result.dxcc.ituz);
 
 
 
               // Set Map to Lat/Long
               markers.clearLayers();
+				mymap.setZoom(8);
               if (typeof result.latlng !== "undefined" && result.latlng !== false) {
                 var marker = L.marker([result.latlng[0], result.latlng[1]]);
-                mymap.panTo([result.latlng[0], result.latlng[1]], 8);
+                mymap.panTo([result.latlng[0], result.latlng[1]]);
               } else {
                 var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
-                mymap.panTo([result.dxcc.lat, result.dxcc.long], 8);
+                mymap.panTo([result.dxcc.lat, result.dxcc.long]);
               }
 
               markers.addLayer(marker).addTo(mymap);
@@ -706,14 +897,15 @@ $(document).on('keypress',function(e) {
           }
         }
 
-        if(qra_input.length >= 4) {
+        if(qra_input.length >= 4 && $(this).val().length > 0) {
           $.getJSON('logbook/qralatlngjson/' + $(this).val(), function(result)
           {
             // Set Map to Lat/Long
             markers.clearLayers();
             if (typeof result !== "undefined") {
               var marker = L.marker([result[0], result[1]]);
-              mymap.setView([result[0], result[1]], 8);
+              mymap.setZoom(8);
+              mymap.panTo([result[0], result[1]]);
             }
             markers.addLayer(marker).addTo(mymap);
           })
@@ -725,20 +917,25 @@ $(document).on('keypress',function(e) {
 
     // Change report based on mode
     $('.mode').change(function(){
-      if($(this).val() == 'JT65' || $(this).val() == 'JT65B' || $(this).val() == 'JT6C' || $(this).val() == 'JTMS' || $(this).val() == 'ISCAT' || $(this).val() == 'MSK144' || $(this).val() == 'JTMSK' || $(this).val() == 'QRA64'){
-      $('#rst_sent').val('-5');
-      $('#rst_recv').val('-5');
-      } else if ($(this).val() == 'FSK441' || $(this).val() == 'JT6M') {
-        $('#rst_sent').val('26');
-      $('#rst_recv').val('26');
-      } else if ($(this).val() == 'CW' || $(this).val() == 'RTTY' || $(this).val() == 'PSK31' || $(this).val() == 'PSK63') {
-      $('#rst_sent').val('599');
-      $('#rst_recv').val('599');
-      } else {
-        $('#rst_sent').val('59');
-      $('#rst_recv').val('59');
-      }
+      setRst($('.mode') .val());
     });
+
+    function setRst(mode) {
+        if(mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS'){
+            $('#rst_sent').val('-5');
+            $('#rst_recv').val('-5');
+        } else if (mode == 'FSK441' || mode == 'JT6M') {
+            $('#rst_sent').val('26');
+            $('#rst_recv').val('26');
+        } else if (mode == 'CW' || mode == 'RTTY' || mode == 'PSK31' || mode == 'PSK63') {
+            $('#rst_sent').val('599');
+            $('#rst_recv').val('599');
+        } else {
+            $('#rst_sent').val('59');
+            $('#rst_recv').val('59');
+        }
+    }
+
 
   /* Javascript for controlling rig frequency. */
 <?php if ( $_GET['manual'] == 0 ) { ?>
@@ -772,22 +969,24 @@ $(document).on('keypress',function(e) {
 
           if (old_mode !== $(".mode").val()) {
             // Update RST on mode change via CAT
-            if(data.mode == 'JT65' || data.mode == 'JT65B' || data.mode == 'JT6C' || data.mode == 'JTMS' || data.mode == 'ISCAT' || data.mode == 'MSK144' || data.mode == 'JTMSK' || data.mode == 'QRA64'){
-              $('#rst_sent').val('-5');
-              $('#rst_recv').val('-5');
-            } else if (data.mode == 'FSK441' || data.mode == 'JT6M') {
-              $('#rst_sent').val('26');
-              $('#rst_recv').val('26');
-            } else if (data.mode == 'CW') {
-              $('#rst_sent').val('599');
-              $('#rst_recv').val('599');
-            } else {
-              $('#rst_sent').val('59');
-              $('#rst_recv').val('59');
-            }
+            setRst($(".mode").val());
           }
           $("#sat_name").val(data.satname);  
           $("#sat_mode").val(data.satmode);  
+
+          // Display CAT Timeout warnng based on the figure given in the config file
+            var minutes = Math.floor(<?php echo $this->config->item('cat_timeout_interval'); ?> / 60);
+
+            if(data.updated_minutes_ago > minutes) {
+              if($('.radio_timeout_error').length == 0) {
+                $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio Connection Error: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');  
+              } else {
+                $('.radio_timeout_error').text('Radio Connection Error: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');    
+              }
+            } else {
+              $(".radio_timeout_error" ).remove();
+            }
+
       });
     }
   };
@@ -807,6 +1006,11 @@ $(document).on('keypress',function(e) {
         $("#frequency_rx").val(""); 
         $("#selectPropagation").val($("#selectPropagation option:first").val());
       }
+
+      if ($(".radios option:selected").text() == "None") {
+        $(".radio_timeout_error" ).remove();
+      }
+
   });
 
 <?php } ?>
@@ -920,31 +1124,42 @@ $(document).ready(function(){
       }
 
       $.getJSON( "<?php echo site_url('gridsquares/');?>" + search_tags, function( data ) {
+        var count = Object.keys(data).length;
+        console.log("Count: " + count);
         var items = [];
         $.each( data, function( i, item ) {
           console.log(item.COL_CALL + item.COL_SAT_NAME);
           if(item.COL_SAT_NAME != undefined) {
-            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_SAT_NAME + "</td></tr>" );
+            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_SAT_NAME + "</td><td>" + item.COL_GRIDSQUARE + "</td></tr>" );
           } else {
-            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_BAND + "</td></tr>" );
+            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_BAND + "</td><td>" + item.COL_GRIDSQUARE + "</td></tr>" );
           }
         });
 
+        $('#qso_count').text(count);
+        if (count > 1) {
+           $('#gt1_qso').text("s");
+        } else {
+           $('#gt1_qso').text("");
+        }
+
         $("#grid_results tbody").empty(); 
-        $("#grid_results tbody").append(items.join( "" )); 
+        if (count > 0) {
+          $("#grid_results tbody").append(items.join( "" ));
+
+          $('#square_number').text(loc_4char);
+          $('#exampleModal').modal('show');
+        }
 
       });
-
-      $('#square_number').text(loc_4char);
-      $('#exampleModal').modal('show');
     }
   };
 
 <?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
 
   var bands_available = <?php echo $bands_available; ?>;
-
-  $.each(bands_available, function(key, value) {   
+  $('#gridsquare_bands').append('<option value="All">All</option>')
+  $.each(bands_available, function(key, value) {
      $('#gridsquare_bands')
          .append($("<option></option>")
                     .attr("value",value)
@@ -971,6 +1186,47 @@ $(document).ready(function(){
 <?php } ?>
 
 </script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "dayswithqso") { ?>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var baseURL= "<?php echo base_url();?>";
+        $.ajax({
+            url: baseURL+'index.php/dayswithqso/get_days',
+            success: function(data) {
+                var labels = [];
+                var dataDxcc = [];
+                $.each(data, function(){
+                    labels.push(this.Year);
+                    dataDxcc.push(this.Days);
+                });
+                var ctx = document.getElementById("myChartDiff").getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Days with QSOs',
+                            data: dataDxcc,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                beginAtZero:true
+                                }
+                            }]
+                        },
+                    }
+                });
+            }
+        });
+    </script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "distances") { ?>
@@ -1088,5 +1344,47 @@ $(document).ready(function(){
 </script>
 <?php } ?>
 
+    <?php if ($this->uri->segment(2) == "import") { ?>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+                    format: 'DD/MM/YYYY',
+                });
+            });
+        </script>
+    <?php } ?>
+
+    <?php if ($this->uri->segment(1) == "qrz") { ?>
+        <script>
+            function ExportQrz(station_id) {
+                $(".ld-ext-right").addClass('running');
+                $(".ld-ext-right").prop('disabled', true);
+                var baseURL= "<?php echo base_url();?>";
+                $.ajax({
+                    url: baseURL + 'index.php/qrz/upload_station',
+                    type: 'post',
+                    data: {'station_id': station_id},
+                    success: function (data) {
+                        $(".ld-ext-right").removeClass('running');
+                        $(".ld-ext-right").prop('disabled', false);
+                        if (data.status == 'OK') {
+                            $.each(data.info, function(index, value){
+                                $('#modcount'+value.station_id).html(value.modcount);
+                                $('#notcount'+value.station_id).html(value.notcount);
+                                $('#totcount'+value.station_id).html(value.totcount);
+                            });
+                            $(".card-body").append('<div class="alert alert-success" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + data.infomessage + '</div>');
+                        }
+                        else {
+                            $(".card-body").append('<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + data.info + '</div>');
+                        }
+                    }
+                });
+            }
+
+        </script>
+    <?php } ?>
   </body>
 </html>

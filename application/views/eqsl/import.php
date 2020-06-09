@@ -25,7 +25,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td><input type="radio" name="eqslimport" id="fetch" value="fetch" /> Pull eQSL data for me</td>
+				<td><input type="radio" name="eqslimport" id="fetch" value="fetch"  checked="checked"/> Pull eQSL data for me</td>
 				<td>
 					<p>Cloudlog will use the eQSL username and password stored in your user profile to download confirmations from eQSL for you. We will only download confirmations received since your last eQSL confirmed QSO.</p>
 				</td>

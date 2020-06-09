@@ -76,7 +76,10 @@
 
 		  <div class="form-group">
 		    <label>Timezone</label>
-		    <?php echo form_dropdown('user_timezone', $timezones, 0); ?>
+			<?php 
+				if(!isset($user_timezone)) { $user_timezone = 0; }
+				echo form_dropdown('user_timezone', $timezones, $user_timezone); 
+			?>
 		  </div>
 
 		  <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />

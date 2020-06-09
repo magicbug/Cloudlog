@@ -52,7 +52,7 @@ class User extends CI_Controller {
 				$data['user_callsign'] = $this->input->post('user_callsign');
 				$data['user_locator'] = $this->input->post('user_locator');
 				$data['user_timezone'] = $this->input->post('user_timezone');
-				$this->load->view('user/add');
+				$this->load->view('user/add', $data);
 			} else {
 				$this->load->view('user/add', $data);
 			}
@@ -88,7 +88,7 @@ class User extends CI_Controller {
 			$data['user_lastname'] = $this->input->post('user_lastname');
 			$data['user_callsign'] = $this->input->post('user_callsign');
 			$data['user_locator'] = $this->input->post('user_locator');
-			$this->load->view('user/add');
+			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
 		}
 	}
@@ -322,6 +322,10 @@ class User extends CI_Controller {
 	}
 
 	function login() {
+		// Check our version and run any migrations
+		$this->load->library('Migration');
+		$this->migration->current();	
+		
 		$this->load->model('user_model');
 		$query = $this->user_model->get($this->input->post('user_name', true));
 

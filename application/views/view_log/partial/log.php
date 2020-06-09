@@ -49,8 +49,14 @@
 					case "Y":
 						echo "green";
 						break;
+					case "Q":
+						echo "yellow";
+						break;
 					case "R":
 						echo "yellow";
+						break;
+					case "I":
+						echo "grey";
 						break;
 					default:
 					   echo "red";
@@ -61,8 +67,14 @@
 					case "Y":
 						echo "green";
 						break;
+					case "Q":
+						echo "yellow";
+						break;
 					case "R":
 						echo "yellow";
+						break;
+					case "I":
+						echo "grey";
 						break;
 					default:
 					   echo "red";

@@ -23,6 +23,8 @@ class QSO extends CI_Controller {
 		$data['stations'] = $this->stations->all();
 		$data['radios'] = $this->cat->radios();
 		$data['query'] = $this->logbook_model->last_custom('5');
+		$data['dxcc'] = $this->logbook_model->fetchDxcc();
+        $data['iota'] = $this->logbook_model->fetchIota();
 
 		$this->load->library('form_validation');
 
@@ -53,6 +55,9 @@ class QSO extends CI_Controller {
 			// $qso_data = [
 			// 18-Jan-2016 - make php v5.3 friendly!
 			$qso_data = array(
+                'start_date' => $this->input->post('start_date'),
+                'start_time' => $this->input->post('start_time'),
+				'time_stamp' => time(),
 				'band' => $this->input->post('band'),
 				'freq' => $this->input->post('freq_display'),
 				'freq_rx' => $this->input->post('freq_display_rx'),
@@ -61,7 +66,8 @@ class QSO extends CI_Controller {
 				'sat_mode' => $this->input->post('sat_mode'),
 				'prop_mode' => $this->input->post('prop_mode'),
 				'radio' => $this->input->post('radio'),
-				'station_profile_id' => $this->input->post('station_profile')
+				'station_profile_id' => $this->input->post('station_profile'),
+				'transmit_power' => $this->input->post('transmit_power')
 			);
 			// ];
 			
@@ -103,7 +109,9 @@ class QSO extends CI_Controller {
 		$this->form_validation->set_rules('time_off', 'End Date', 'required');
 		$this->form_validation->set_rules('callsign', 'Callsign', 'required');
 
-		$data = $query->row(); 
+        $data['qso'] = $query->row();
+        $data['dxcc'] = $this->logbook_model->fetchDxcc();
+        $data['iota'] = $this->logbook_model->fetchIota();
 		
 		if ($this->form_validation->run() == FALSE)
 		{

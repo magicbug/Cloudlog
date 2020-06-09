@@ -20,16 +20,18 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/query-builder.default.min.css" />
 	<?php } ?>
 
-<?php if ($this->uri->segment(1) == "notes" && ($this->uri->segment(2) == "add" || $this->uri->segment(2) == "edit") ) { ?>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/quill/quill.snow.css" />
-<?php } ?>
+	<?php if ($this->uri->segment(1) == "notes" && ($this->uri->segment(2) == "add" || $this->uri->segment(2) == "edit") ) { ?>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/quill/quill.snow.css" />
+	<?php } ?>
 
-<?php if ($this->uri->segment(1) == "qso") { ?>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/select2/css/select2.min.css" />
-<?php } ?>
-  <?php if ($this->uri->segment(1) == "adif") { ?>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
-  <?php } ?>
+	<?php if ($this->uri->segment(1) == "qrz") { ?>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/loading.min.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/ldbtn.min.css" />
+	<?php } ?>
+
+ 	<?php if ($this->uri->segment(1) == "adif") { ?>
+  	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
+  	<?php } ?>
     <link rel="icon" href="<?php echo base_url(); ?>/favicon.ico">
     <script>var baseURL = "<?php echo base_url();?>";</script>
     <title><?php if(isset($page_title)) { echo $page_title; } ?> - Cloudlog</title>
@@ -70,6 +72,10 @@
 					<a class="dropdown-item" href="<?php echo site_url('gridsquares');?>" title="Gridsquares">Gridsquares</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('distances');?>" title="Distances">Distances worked</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('dayswithqso');?>" title="Dayswithqso">Days with QSOs</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('timeline');?>" title="Dxcctimeline">DXCC Timeline</a>
 				</div>
         	</li>
 
@@ -100,13 +106,17 @@
 					
 					<div class="dropdown-divider"></div>
 					
-					<a class="dropdown-item" href="<?php echo site_url('lotw/import');?>" title="LoTW Import/Export"><i class="fas fa-sync"></i> LoTW Import/Export</a>
+					<a class="dropdown-item" href="<?php echo site_url('lotw/import');?>" title="LoTW Import"><i class="fas fa-sync"></i> LoTW Import</a>
 					
 					<div class="dropdown-divider"></div>
 					
 					<a class="dropdown-item" href="<?php echo site_url('eqsl/import');?>" title="eQSL Import/Export"><i class="fas fa-sync"></i> eQSL Import/Export</a>
 					
 					<div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="<?php echo site_url('qrz/export');?>" title="QRZ.com Export"><i class="fas fa-sync"></i> QRZ.com Export</a>
+
+                    <div class="dropdown-divider"></div>
 					
 					<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
 
@@ -154,6 +164,10 @@
 				<div class="dropdown-divider"></div>
 				
 				<a class="dropdown-item" target="_blank" href="https://github.com/magicbug/Cloudlog/wiki" title="Help"><i class="fas fa-question"></i> Help</a>
+				
+				<div class="dropdown-divider"></div>
+
+				<a class="dropdown-item" target="_blank" href="https://forum.cloudlog.co.uk" title="Forum"><i class="fas fa-question"></i> Forum</a>
 				
 				<div class="dropdown-divider"></div>
 				

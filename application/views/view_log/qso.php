@@ -1,18 +1,15 @@
-<div class="container-fluid">
+<?php if ($query->num_rows() > 0) {  foreach ($query->result() as $row) { ?>
+<div class="container-fluid">	
+
 	<div class="row">
 		<div class="col">
-			<?php if ($query->num_rows() > 0) {  foreach ($query->result() as $row) { ?>
-			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-			<h1 style="font-size: 28px;">QSO with <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></h1>
-			<?php } else { ?>
-			<h1 style="font-size: 28px;">QSO with <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?> on the <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp);?></h1>
-			<?php } ?>
+			<h3>QSO Details</h3>
 		</div>
 	</div>
-	
+
 	<div class="row">
 		<div class="col">
-			
+					
 			<table width="100%">
 				<tr>
 					<td>Date/Time:</td>
@@ -25,7 +22,7 @@
 				
 				<tr>
 					<td>Callsign:</td>
-					<td><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></td>
+					<td><b><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></b></td>
 				</tr>
 				
 				<tr>
@@ -64,6 +61,34 @@
 				<tr>
 					<td>Gridsquare:</td>
 					<td><?php echo $row->COL_GRIDSQUARE; ?></td>
+				</tr>
+				<?php } ?>
+
+				<?php if($row->COL_GRIDSQUARE != null) { ?>
+				<!-- Total Distance Between the Station Profile Gridsquare and Logged Square -->
+				<tr>
+					<td>Total Distance</td>
+					<td>	
+						<?php 
+							// Load the QRA Library
+							$CI =& get_instance();
+							$CI->load->library('qra');
+
+							// Cacluate Distance
+							echo $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, 'M');
+							switch ($this->config->item('measurement_base')) {
+							    case 'M':
+							        echo "mi";
+							        break;
+							    case 'K':
+							        echo "km";
+							        break;
+							    case 'N':
+							        echo "nmi";
+							        break;
+							}
+						?>
+					</td>
 				</tr>
 				<?php } ?>
 
@@ -195,17 +220,24 @@
 					<td><?php echo $row->COL_OPERATOR; ?></td>
 				</tr>
 				<?php } ?>
-				<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
+
+				<?php if($row->COL_TX_PWR) { ?>
 				<tr>
-					<td><a href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a></td>
+					<td>Station Transmit Power</td>
+					<td><?php echo $row->COL_TX_PWR; ?>w</td>
 				</tr>
 				<?php } ?>
 			</table>
 		</div>
 		<div class="col">
 			
+			<div id="map" style="width: 340px; height: 250px"></div> 
+			
+			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
+				<br>
+				<p><a class="btn btn-success" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a></p>
+			<?php } ?>
 
-		<div id="map" style="width: 340px; height: 250px"></div> 
 		</div>
 	</div>
 </div>

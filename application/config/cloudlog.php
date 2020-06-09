@@ -55,11 +55,10 @@ $config['map_gridsquares'] = FALSE;
 | The external CAT applications can obviously stop working for various reasons 
 | this interval is used for displaying a warning on the QSO Panel
 |
-| Default is: 300 seconds (5 minutes)
+| Default is: 1800 seconds (30 minutes)
 |
 */
-
-$config['cat_timeout_interval'] = 300;
+$config['cat_timeout_interval'] = 1800;
 
 /*
 |--------------------------------------------------------------------------
@@ -124,3 +123,19 @@ $config['qso_date_format'] = "d/m/y";
 */
 
 $config['map_6digit_grids'] = FALSE;
+
+
+/*
+|--------------------------------------------------------------------------
+| Automatically populate the QTH
+|--------------------------------------------------------------------------
+|
+| Setting this to TRUE allows the QTH locator to be pre-filled
+| based on the person's location when creating new QSO.
+| OSM's Nominatim API is being used for that purpose
+|
+| Default is: FALSE
+|
+*/
+
+$config['qso_auto_qth'] = FALSE;

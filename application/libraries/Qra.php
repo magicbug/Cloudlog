@@ -2,14 +2,26 @@
 
 class Qra {
 
-	// Name: QRA
+	/*
+	*	Class Description: QRA handles manipulation of the Gridsquares used within amateur radio
+	*
+	*	Units of measurement are the following
+	*
+	*	Info: Distance Function
+	*
+	*	M = Miles
+	*	K = Kilometers
+	*	N = Nautical Miles
+	*/
+	
+	// Name: qra2latlong
 	// Task: convert qra to lat/long
-
 	function qra2latlong($strQRA)
 	{
 		return qra2latlong($strQRA);
 	}
 	
+	// calculate  the bearing between two squares
 	function bearing($tx, $rx, $unit = 'M') {
 		$my = qra2latlong($tx);
 		$stn = qra2latlong($rx);
@@ -18,16 +30,27 @@ class Qra {
 		
 		return $bearing;
 	}
+
+	/*
+	* Function: calculate the distance between two gridsqaures
+	*
+	*	Inputs are QRA's TX and TX and the unit
+	*
+	*/
+	function distance($tx, $rx, $unit = 'M') {
+		// Calc LatLongs
+		$my = qra2latlong($tx);
+		$stn = qra2latlong($rx);
+
+		// Feed in Lat Longs plus the unit type
+		$total_distance = distance($my[0], $my[1], $stn[0], $stn[1], $unit);
+		
+		// Return the distance
+		return $total_distance;
+	}
 }
 
 
-/*
-	Info: Distance Function
-
-	M = Miles
-	K = Kilometers
-	N = Nautical Miles
-*/
 
 function distance($lat1, $lon1, $lat2, $lon2, $unit = 'M') {
   $theta = $lon1 - $lon2;

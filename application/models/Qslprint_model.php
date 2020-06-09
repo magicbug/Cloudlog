@@ -18,7 +18,7 @@ class Qslprint_model extends CI_Model {
 	        'COL_QSL_SENT_VIA' => "B",
 		);
 
-		$this->db->where("COL_QSL_SENT", "R");
+		$this->db->where_in("COL_QSL_SENT", array("R","Q"));
 		$this->db->where("station_id", $station_id);
 		$this->db->update($this->config->item('table_name'), $data);
 	}

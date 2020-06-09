@@ -6,8 +6,6 @@
     <div class="card">
         
     <form id="qso_input" method="post" action="<?php echo site_url('qso') . "?manual=" . $_GET['manual']; ?>" name="qsos">
-      <input type="hidden" id="dxcc_id" name="dxcc_id" value=""/>
-      <input type="hidden" id="cqz" name="cqz" value=""/>
 
       <div class="card-header"> 
         <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
@@ -26,6 +24,10 @@
           <li class="nav-item">
             <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Satellite</a>
           </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notes</a>
+          </li>
 
           <li class="nav-item">
             <a class="nav-link" id="qsl-tab" data-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false">QSLing</a>
@@ -40,12 +42,12 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="start_date">Date</label>
-                  <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php echo date('d-m-Y'); ?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
+                  <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_date'); } else { echo date('d-m-Y');}?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
                 </div>
 
                 <div class="form-group col-md-6">
                   <label for="start_time">Time</label>
-                  <input type="text" class="form-control form-control-sm input_time" name="start_time" id="start_time" value="<?php echo date('H:i'); ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
+                  <input type="text" class="form-control form-control-sm input_time" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_time'); } else {echo date('H:i'); } ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
                 </div>
 
                 <?php if ( $_GET['manual'] == 0 ) { ?>
@@ -62,7 +64,6 @@
                 <input type="text" class="form-control" id="callsign" name="callsign" required>
                 <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-light"></small>
               </div>
-
 
               <div class="form-row">
                 <div class="form-group col-md-6">
@@ -155,6 +156,7 @@
                     <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
                 </div>
               </div>
+
           </div>
 
           <!-- Station Panel Data -->
@@ -187,10 +189,39 @@
               <label for="frequency_rx">Frequency (RX)</label>
               <input type="text" class="form-control" id="frequency_rx" name="freq_display_rx" value="<?php echo $this->session->userdata('freq_rx'); ?>" />
             </div>
+
+            <div class="form-group">
+              <label for="transmit_power">Transmit Power (Watts)</label>
+              <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php echo $this->session->userdata('transmit_power'); ?>" />
+              <small id="powerHelp" class="form-text text-muted">Power is in watts only include numbers in the input.</small>
+            </div>
           </div>
 
           <!-- General Items -->
           <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
+              <div class="form-group">
+                  <label for="dxcc_id">DXCC</label>
+                  <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
+
+                      <?php
+                      foreach($dxcc as $d){
+                          echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . $d->name . '</option>';
+                      }
+                      ?>
+
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label for="cqz">CQ Zone</label>
+                  <select class="custom-select" id="cqz" name="cqz" required>
+                      <?php
+                      for ($i = 1; $i<=40; $i++) {
+                          echo '<option value="'. $i . '">'. $i .'</option>';
+                      }
+                      ?>
+                  </select>
+              </div>
+
             <div class="form-group">
               <label for="selectPropagation">Propagation Mode</label>
               <select class="custom-select" id="selectPropagation" name="prop_mode">
@@ -206,7 +237,7 @@
                 <option value="INTERNET" <?php if($this->session->userdata('prop_mode') == "INTERNET") { echo "selected=\"selected\""; } ?>>Internet-assisted</option>
                 <option value="ION" <?php if($this->session->userdata('prop_mode') == "ION") { echo "selected=\"selected\""; } ?>>Ionoscatter</option>
                 <option value="IRL" <?php if($this->session->userdata('prop_mode') == "IRL") { echo "selected=\"selected\""; } ?>>IRLP</option>
-                <option value="MS" <?php if($this->session->userdata('prop_mode') == "AUR") { echo "selected=\"selected\""; } ?>>Meteor scatter</option>
+                <option value="MS" <?php if($this->session->userdata('prop_mode') == "MS") { echo "selected=\"selected\""; } ?>>Meteor scatter</option>
                 <option value="RPT" <?php if($this->session->userdata('prop_mode') == "RPT") { echo "selected=\"selected\""; } ?>>Terrestrial or atmospheric repeater or transponder</option>
                 <option value="RS" <?php if($this->session->userdata('prop_mode') == "RS") { echo "selected=\"selected\""; } ?>>Rain scatter</option>
                 <option value="SAT" <?php if($this->session->userdata('prop_mode') == "SAT") { echo "selected=\"selected\""; } ?>>Satellite</option>
@@ -275,7 +306,16 @@
 
             <div class="form-group">
               <label for="iota_ref">IOTA Reference</label>
-              <input class="form-control" id="iota_ref" type="text" name="iota_ref" value="" /> e.g: EU-005
+                    <select class="custom-select" id="iota_ref" name="iota_ref">
+                        <option value =""></option>
+
+                        <?php
+                        foreach($iota as $i){
+                            echo '<option value=' . $i->tag . '>' . $i->tag . ' - ' . $i->name . '</option>';
+                        }
+                        ?>
+
+                    </select>
             </div>
 
             <div class="form-group">
@@ -293,12 +333,26 @@
           <div class="tab-pane fade" id="satellite" role="tabpanel" aria-labelledby="satellite-tab">
             <div class="form-group">
               <label for="inputSatName">Satellite Name</label>
-              <input id="sat_name" type="text" name="sat_name" class="form-control" value="<?php echo $this->session->userdata('sat_name'); ?>" />
+
+              <input list="satellite_names" id="sat_name" type="text" name="sat_name" class="form-control" value="<?php echo $this->session->userdata('sat_name'); ?>">
+
+              <datalist id="satellite_names" class="satellite_names_list"></datalist>
             </div>
 
             <div class="form-group">
               <label for="inputSatMode">Satellite Mode</label>
-              <input id="sat_mode" type="text" name="sat_mode" class="form-control" value="<?php echo $this->session->userdata('sat_mode'); ?>" />
+
+              <input list="satellite_modes" id="sat_mode" type="text" name="sat_mode" class="form-control" value="<?php echo $this->session->userdata('sat_mode'); ?>">
+
+              <datalist id="satellite_modes" class="satellite_modes_list"></datalist>
+            </div>
+          </div>
+          
+          <!-- Notes Panel Contents -->
+          <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+           <div class="form-group">
+              <label for="notes">Notes (for internal usage only)</label>
+              <textarea  type="text" class="form-control" id="notes" name="notes" rows="10"></textarea>
             </div>
           </div>
           
