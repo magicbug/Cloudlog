@@ -1156,14 +1156,14 @@ class Logbook_model extends CI_Model {
         }
     }
 
-    /* Return total number of QSL Cards requested */
+    /* Return total number of QSL Cards requested for printing - that means "requested" or "queued" */
     function total_qsl_requested() {
 
       $CI =& get_instance();
       $CI->load->model('Stations');
       $station_id = $CI->Stations->find_active();
 
-        $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_SENT = "R" GROUP BY band');
+        $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_SENT in ("Q", "R") GROUP BY band');
 
         $row = $query->row();
 
