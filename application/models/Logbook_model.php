@@ -1156,14 +1156,14 @@ class Logbook_model extends CI_Model {
         }
     }
 
-    /* Return total number of QSL Cards requested */
+    /* Return total number of QSL Cards requested for printing - that means "requested" or "queued" */
     function total_qsl_requested() {
 
       $CI =& get_instance();
       $CI->load->model('Stations');
       $station_id = $CI->Stations->find_active();
 
-        $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_SENT = "R" GROUP BY band');
+        $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_SENT in ("Q", "R") GROUP BY band');
 
         $row = $query->row();
 
@@ -1915,6 +1915,18 @@ class Logbook_model extends CI_Model {
     public function check_dxcc_table($call, $date){
         $len = strlen($call);
 
+	$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
+             ->where('call', $call)
+             ->where('(start <= ', $date)
+             ->or_where('start is null)', NULL, false)
+             ->where('(end >= ', $date)
+             ->or_where('end is null)', NULL, false)
+             ->get('dxcc_exceptions');
+
+        if ($dxcc_exceptions->num_rows() > 0){
+            $row = $dxcc_exceptions->row_array();
+            return array($row['adif'], $row['entity'], $row['cqz']);
+        }
         // query the table, removing a character from the right until a match
         for ($i = $len; $i > 0; $i--){
             //printf("searching for %s\n", substr($call, 0, $i));
@@ -1940,18 +1952,19 @@ class Logbook_model extends CI_Model {
 
     public function dxcc_lookup($call, $date){
         $len = strlen($call);
+	    
+	$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
+            ->where('call', $call)
+            ->where('(start <= CURDATE()')
+            ->or_where('start is null', NULL, false)
+            ->where('end >= CURDATE()')
+            ->or_where('end is null)', NULL, false)
+            ->get('dxcc_exceptions');
 
-        $this->db->where('call', $call);
-        $this->db->where('CURDATE() between start and end');
 
-        $query = $this->db->get('dxcc_exceptions');
-
-
-        if ($query->num_rows() > 0){
-
-                $row = $query->row_array();
-
-                return $row;
+        if ($dxcc_exceptions->num_rows() > 0){
+            $row = $dxcc_exceptions->row_array();
+            return $row;
         } else {
           // query the table, removing a character from the right until a match
           for ($i = $len; $i > 0; $i--){
