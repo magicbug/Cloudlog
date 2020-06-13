@@ -99,6 +99,18 @@
          ]
       }
    },
+   "CAS-3H":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"144350000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"437200000"
+            }
+         ]
+      }
+   },
    "CAS-4A":{
       "Modes":{
          "U/V":[
