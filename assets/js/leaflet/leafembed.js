@@ -5,6 +5,11 @@ var ajaxRequest;
 var plotlist;
 var plotlayers=[];
 
+var greenIcon = L.icon({
+    iconUrl: icon_dot_url,
+    iconSize:     [10, 10], // size of the icon
+});
+
 function initmap(ShowGrid = 'No') {
     // set up AJAX request
     ajaxRequest=getXmlHttpObject();
@@ -61,7 +66,7 @@ function stateChanged() {
 			removeMarkers();
 			for (i=0;i<plotlist.length;i++) {
 				var plotll = new L.LatLng(plotlist[i].lat,plotlist[i].lng, true);
-				var plotmark = new L.Marker(plotll);
+				var plotmark = new L.Marker(plotll, {icon: greenIcon});
 				plotmark.data=plotlist[i];
 				map.addLayer(plotmark);
 				plotmark.bindPopup("<h3>"+plotlist[i].label+"</h3>"+plotlist[i].html);
