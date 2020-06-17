@@ -1042,7 +1042,13 @@ $(document).on('change', 'input', function(){
     id: 'mapbox.streets'
   }).addTo(mymap);
 
-  L.marker([lat,long]).addTo(mymap)
+
+  var redIcon = L.icon({
+      iconUrl: icon_dot_url,
+      iconSize:     [18, 18], // size of the icon
+  });
+
+  L.marker([lat,long], {icon: redIcon}).addTo(mymap)
     .bindPopup(callsign);
 
   mymap.on('click', onMapClick);
