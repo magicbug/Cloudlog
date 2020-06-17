@@ -10,16 +10,20 @@
 
     <?php echo form_open_multipart('lotw/import');?>
 
-		<div class="custom-control custom-radio">
-			<input type="radio" id="lotwimport" name="lotwimport" class="custom-control-input">
-			<label class="custom-control-label" for="lotwimport">Upload a file</label>
-			<p>Upload the Exported ADIF file from LoTW from the <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a> Area, to mark QSOs as confirmed on LOTW.</p>
-			<p><span class="label important">Important</span> Log files must have the file type .adi</p>
-			<div class="custom-file">
-			  	<input type="file" class="custom-file-input" id="adiffile" name="userfile" size="20" />
-			  <label class="custom-file-label" for="adiffile">Choose file</label>
-			</div>
-		</div>
+    <div class="form-check">
+      <input type="radio" id="lotwimport" name="lotwimport" class="form-check-input">
+      <label class="form-check-label" for="lotwimport">Upload a file</label>
+
+      <p>Upload the Exported ADIF file from LoTW from the <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a> Area, to mark QSOs as confirmed on LOTW.</p>
+      <p><span class="label important">Important</span> Log files must have the file type .adi</p>
+      
+      <div class="custom-file">
+          <input type="file" class="custom-file-input" id="adiffile" name="userfile" size="20" />
+        <label class="custom-file-label" for="adiffile">Choose file</label>
+      </div>
+
+    </div>
+
 
 		<br><br>
 
