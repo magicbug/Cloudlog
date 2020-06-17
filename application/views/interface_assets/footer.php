@@ -531,10 +531,15 @@ $(document).on('change', 'input', function(){
 
                 // Set Map to Lat/Long it locator is not empty
                 if($('#locator').val() == "") {
+                    var redIcon = L.icon({
+                        iconUrl: icon_dot_url,
+                        iconSize:     [18, 18], // size of the icon
+                    });
+
                     markers.clearLayers();
-                    var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
-					mymap.setZoom(8);
-					mymap.panTo([result.dxcc.lat, result.dxcc.long]);
+                    var marker = L.marker([result.dxcc.lat, result.dxcc.long], {icon: redIcon});
+					          mymap.setZoom(8);
+					          mymap.panTo([result.dxcc.lat, result.dxcc.long]);
                     markers.addLayer(marker).addTo(mymap);
                 }
             }
@@ -726,15 +731,19 @@ $(document).on('change', 'input', function(){
               $('#ituz').val(result.dxcc.ituz);
 
 
+              var redIcon = L.icon({
+                iconUrl: icon_dot_url,
+                iconSize:     [18, 18], // size of the icon
+              });
 
               // Set Map to Lat/Long
               markers.clearLayers();
-				mymap.setZoom(8);
+				      mymap.setZoom(8);
               if (typeof result.latlng !== "undefined" && result.latlng !== false) {
-                var marker = L.marker([result.latlng[0], result.latlng[1]]);
+                var marker = L.marker([result.latlng[0], result.latlng[1]], {icon: redIcon});
                 mymap.panTo([result.latlng[0], result.latlng[1]]);
               } else {
-                var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
+                var marker = L.marker([result.dxcc.lat, result.dxcc.long], {icon: redIcon});
                 mymap.panTo([result.dxcc.lat, result.dxcc.long]);
               }
 
@@ -907,7 +916,12 @@ $(document).on('change', 'input', function(){
             // Set Map to Lat/Long
             markers.clearLayers();
             if (typeof result !== "undefined") {
-              var marker = L.marker([result[0], result[1]]);
+              var redIcon = L.icon({
+                        iconUrl: icon_dot_url,
+                        iconSize:     [18, 18], // size of the icon
+                    });
+
+              var marker = L.marker([result[0], result[1]], {icon: redIcon});
               mymap.setZoom(8);
               mymap.panTo([result[0], result[1]]);
             }
