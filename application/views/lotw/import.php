@@ -1,7 +1,7 @@
 <div class="container lotw">
 
 	<h1>LOTW Import</h1>
-
+  
 <div class="card">
 	<div class="card-header">Import Options</div>
   <div class="card-body">
@@ -48,9 +48,7 @@
 
 		<p class="form-text text-muted">Cloudlog will use the LoTW username and password stored in your user profile to download a report from LoTW for you. The report Cloudlog downloads will have all confirmations since chosen date, or since your last LoTW confirmation (fetched from your log), up until now.</p>
 
-		<p class="form-text text-muted"><span class="badge badge-info">Important</span> You must have QSOs in the logbook before this option works, it will not populate your log from empty based on LoTW QSOs yet.</p>
-
-		<input class="btn primary" type="submit" value="Import" />
+		<input class="btn btn-primary" type="submit" value="Import LoTW Matches" />
 
 	</form>
   </div>
