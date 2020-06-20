@@ -135,6 +135,18 @@
          ]
       }
    },
+   "CAS-6":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435280000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145925000"
+            }
+         ]
+      }
+   },
    "EO-88":{
       "Modes":{
          "U/V":[
