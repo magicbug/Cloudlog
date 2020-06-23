@@ -82,7 +82,14 @@ class adif extends CI_Controller {
 
 		$this->load->model('adif_data');
 
-		$data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'));
+		// Used for exporting QSOs not previously exported to LoTW
+        if ($this->input->post('exportLotw') == 1) {
+            $exportLotw = true;
+        } else {
+            $exportLotw = false;
+        }
+
+		$data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'), $exportLotw);
 
 		$this->load->view('adif/data/exportall', $data);
 
