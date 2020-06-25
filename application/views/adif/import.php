@@ -106,6 +106,14 @@
                   </div>
               </div>
           </div>
+          <div class="form-group row">
+              <div class="col-md-10">
+                  <div class="form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="exportLotw" value="1" id="exportLotw">
+                      <label class="form-check-label" for="exportLotw">Export QSOs not uploaded to LoTW</label>
+                  </div>
+              </div>
+          </div>
 
     <button type="submit" class="btn btn-outline-secondary btn-sm" value="Export">Export QSOs</button>
       </form>
