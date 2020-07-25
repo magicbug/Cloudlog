@@ -109,6 +109,7 @@
                     </optgroup>
 
                     <optgroup label="Microwave">
+                      <option value="6cm" <?php if($this->session->userdata('band') == "6cm") { echo "selected=\"selected\""; } ?>>6cm</option>
                       <option value="3cm" <?php if($this->session->userdata('band') == "3cm") { echo "selected=\"selected\""; } ?>>3cm</option>
                     </optgroup>
                   </select>
