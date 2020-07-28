@@ -45,9 +45,9 @@
 
 <?php if ($this->uri->segment(1) == "notes" && ($this->uri->segment(2) == "add" || $this->uri->segment(2) == "edit") ) { ?>
     <script src="<?php echo base_url() ;?>assets/plugins/quill/quill.min.js"></script>
-    
+
     <script>
-      var quill = new Quill('#quillArea', { 
+      var quill = new Quill('#quillArea', {
         placeholder: 'Compose an epic...',
         theme: 'snow'
       });
@@ -171,7 +171,7 @@ $('[data-fancybox]').fancybox({
 
         <?php if($qra == "set") { ?>
         var q_lat = <?php echo $qra_lat; ?>;
-        var q_lng = <?php echo $qra_lng; ?>;    
+        var q_lng = <?php echo $qra_lng; ?>;
         <?php } else { ?>
         var q_lat = 40.313043;
         var q_lng = -32.695312;
@@ -227,8 +227,8 @@ $(document).ready(function(){
     $('#partial_view').load("logbook/search_result/<?php echo $this->input->post('callsign'); ?>", function() {
     });
   <?php } ?>
-    
-$(document).on('keypress',function(e) { 
+
+$(document).on('keypress',function(e) {
   if(e.which == 13) {
 
     if ($('#callsign').val()) {
@@ -252,7 +252,7 @@ $(document).on('keypress',function(e) {
     <script type="text/javascript">
         <?php if($qra == "set") { ?>
         var q_lat = <?php echo $qra_lat; ?>;
-        var q_lng = <?php echo $qra_lng; ?>;    
+        var q_lng = <?php echo $qra_lng; ?>;
         <?php } else { ?>
         var q_lat = 40.313043;
         var q_lng = -32.695312;
@@ -302,7 +302,7 @@ $(document).on('change', 'input', function(){
     var value = $(this).val();
     for (var x=0;x<optionslist.length;x++){
        if (optionslist[x].value === value) {
-          $("#sat_mode").val(""); 
+          $("#sat_mode").val("");
           $('.satellite_modes_list').find('option').remove().end();
           selected_sat = value;
           // get Json file
@@ -345,15 +345,15 @@ $(document).on('change', 'input', function(){
             if (key == selected_sat) {
               $.each( val.Modes, function( key1, val2 ) {
                   if(key1 == selected_sat_mode) {
-  
+
                     if (val2[0].Uplink_Mode == "LSB" || val2[0].Uplink_Mode == "USB") {
-                      $("#mode").val("SSB");  
+                      $("#mode").val("SSB");
                     } else {
-                      $("#mode").val(val2[0].Uplink_Mode);  
+                      $("#mode").val(val2[0].Uplink_Mode);
                     }
                     $("#band").val(frequencyToBand(val2[0].Uplink_Freq));
-                    $("#frequency").val(val2[0].Uplink_Freq);  
-                    $("#frequency_rx").val(val2[0].Downlink_Freq); 
+                    $("#frequency").val(val2[0].Uplink_Freq);
+                    $("#frequency_rx").val(val2[0].Downlink_Freq);
                     $("#selectPropagation").val('SAT');
                   }
               });
@@ -392,47 +392,10 @@ $(document).on('change', 'input', function(){
 
     setRst($(".mode").val());
 
-    /* On Page Load */
-    var catcher = function() {
-      var changed = false;
-      $('form').each(function() {
-        if ($(this).data('initialForm') != $(this).serialize()) {
-          changed = true;
-          $(this).addClass('changed');
-        } else {
-          $(this).removeClass('changed');
-        }
-      });
-      if (changed) {
-        return 'Unsaved QSO!';
-      }
-    };
 
-    $(function() {
-      $('form').each(function() {
-        $(this).data('initialForm', $(this).serialize());
-      }).submit(function(e) {
-        var formEl = this;
-        var changed = false;
-        $('form').each(function() {
-          if (this != formEl && $(this).data('initialForm') != $(this).serialize()) {
-            changed = true;
-            $(this).addClass('changed');
-          } else {
-            $(this).removeClass('changed');
-          }
-        });
-        if (changed && !confirm('You have an unsaved QSO. Continue with QSO?')) {
-          e.preventDefault();
-        } else {
-          $(window).unbind('beforeunload', catcher);
-        }
-      });
-      $(window).bind('beforeunload', catcher);
-    });
 
      // Callsign always has focus on load
-      $("#callsign").focus();  
+      $("#callsign").focus();
 
       if ( ! manual ) {
         $(function($) {
@@ -455,6 +418,7 @@ $(document).on('change', 'input', function(){
 
   /* Function: reset_fields is used to reset the fields on the QSO page */
   function reset_fields() {
+      console.log('Reset fields called');
 
       $('#locator_info').text("");
       $('#country').val("");
@@ -492,7 +456,7 @@ $(document).on('change', 'input', function(){
       reset_fields();
     }
   });
-  
+
   $(document).keyup(function(e) {
      if (e.key === "Escape") { // escape key maps to keycode `27`
        reset_fields();
@@ -656,6 +620,8 @@ $(document).on('change', 'input', function(){
 
     $("#callsign").focusout(function() {
 
+        console.log('Callsign focusout')
+
         if ($(this).val().length >= 3) {
             /* Find and populate DXCC */
             $('.callsign-suggest').hide();
@@ -677,7 +643,7 @@ $(document).on('change', 'input', function(){
               if(result.dxcc.entity != undefined) {
                 $('#country').val(convert_case(result.dxcc.entity));
                 $('#callsign_info').text(convert_case(result.dxcc.entity));
-				
+
 				if($("#sat_name" ).val() != "") {
 					//logbook/jsonlookupgrid/io77/SAT/0/0
 					$.getJSON('logbook/jsonlookupcallsign/' + $("#callsign").val().toUpperCase() + '/SAT/0/0', function(result)
@@ -748,7 +714,7 @@ $(document).on('change', 'input', function(){
               }
 
               markers.addLayer(marker).addTo(mymap);
-        
+
 
             /* Find Locator if the field is empty */
             if($('#locator').val() == "") {
@@ -774,7 +740,7 @@ $(document).on('change', 'input', function(){
                   $('#locator').removeClass("newGrid");
                   $('#locator').attr('title', '');
                 }
-                
+
             }
 
             /* Find Operators Name */
@@ -827,7 +793,7 @@ $(document).on('change', 'input', function(){
 			      $('#callsign_info').removeClass("badge-success");
 			      $('#callsign_info').removeClass("badge-danger");
             $('#input_usa_state').val("");
-        }  
+        }
     })
 
         // Only set the frequency when not set by userdata/PHP.
@@ -837,15 +803,15 @@ $(document).on('change', 'input', function(){
             $('#frequency').val(result);
             $('#frequency_rx').val("");
       });
-    } 
+    }
 
     /* on mode change */
     $('.mode').change(function() {
         $.get('qso/band_to_freq/' + $('#band').val() + '/' + $('.mode').val(), function(result) {
             $('#frequency').val(result);
             $('#frequency_rx').val("");
-          });  
-      });  
+          });
+      });
 
     /* Calculate Frequency */
       /* on band change */
@@ -853,9 +819,9 @@ $(document).on('change', 'input', function(){
         $.get('qso/band_to_freq/' + $(this).val() + '/' + $('.mode').val(), function(result) {
             $('#frequency').val(result);
             $('#frequency_rx').val("");
-          });  
+          });
       });
-  
+
       /* On Key up Calculate Bearing and Distance */
     $("#locator").keyup(function(){
       if ($(this).val()) {
@@ -864,7 +830,7 @@ $(document).on('change', 'input', function(){
         var qra_lookup = qra_input.substring(0, 4);
 
         if(qra_lookup.length >= 4) {
-          
+
           // Check Log if satname is provided
           if($("#sat_name" ).val() != "") {
 
@@ -927,7 +893,7 @@ $(document).on('change', 'input', function(){
             }
             markers.addLayer(marker).addTo(mymap);
           })
-          
+
           $('#locator_info').load("logbook/searchbearing/" + $(this).val()).fadeIn("slow");
         }
       }
@@ -959,7 +925,7 @@ $(document).on('change', 'input', function(){
 <?php if ( $_GET['manual'] == 0 ) { ?>
   var updateFromCAT = function() {
     if($('select.radios option:selected').val() != '0') {
-      radioID = $('select.radios option:selected').val(); 
+      radioID = $('select.radios option:selected').val();
       $.getJSON( "radio/json/" + radioID, function( data ) {
           /* {
               "uplink_freq": "2400210000",
@@ -982,24 +948,24 @@ $(document).on('change', 'input', function(){
           if (data.mode == "LSB" || data.mode == "USB" || data.mode == "SSB") {
             $(".mode").val('SSB');
           } else {
-            $(".mode").val(data.mode);  
+            $(".mode").val(data.mode);
           }
 
           if (old_mode !== $(".mode").val()) {
             // Update RST on mode change via CAT
             setRst($(".mode").val());
           }
-          $("#sat_name").val(data.satname);  
-          $("#sat_mode").val(data.satmode);  
+          $("#sat_name").val(data.satname);
+          $("#sat_mode").val(data.satmode);
 
           // Display CAT Timeout warnng based on the figure given in the config file
             var minutes = Math.floor(<?php echo $this->config->item('cat_timeout_interval'); ?> / 60);
 
             if(data.updated_minutes_ago > minutes) {
               if($('.radio_timeout_error').length == 0) {
-                $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio Connection Error: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');  
+                $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio Connection Error: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
               } else {
-                $('.radio_timeout_error').text('Radio Connection Error: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');    
+                $('.radio_timeout_error').text('Radio Connection Error: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
               }
             } else {
               $(".radio_timeout_error" ).remove();
@@ -1018,10 +984,10 @@ $(document).on('change', 'input', function(){
   // If radio isn't SatPC32 clear sat_name and sat_mode
   $( ".radios" ).change(function() {
       if ($(".radios option:selected").text() != "SatPC32") {
-        $("#sat_name").val("");  
-        $("#sat_mode").val("");  
-        $("#frequency").val("");  
-        $("#frequency_rx").val(""); 
+        $("#sat_name").val("");
+        $("#sat_mode").val("");
+        $("#frequency").val("");
+        $("#frequency_rx").val("");
         $("#selectPropagation").val($("#selectPropagation option:first").val());
       }
 
@@ -1114,7 +1080,7 @@ $(document).ready(function(){
     center: [19, 0],
     zoom: 2
   });
-  
+
   var grid_two = <?php echo $grid_2char; ?>;
   var grid_four = <?php echo $grid_4char; ?>;
   var grid_six = <?php echo $grid_6char; ?>;
@@ -1129,8 +1095,8 @@ $(document).ready(function(){
 
   function onMapClick(event) {
     var LatLng = event.latlng;
-    var lat = LatLng.lat; 
-    var lng = LatLng.lng;           
+    var lat = LatLng.lat;
+    var lng = LatLng.lng;
     var locator = LatLng2Loc(lat,lng, 10);
     var loc_4char = locator.substring(0, 4);
     console.log(loc_4char);
@@ -1167,7 +1133,7 @@ $(document).ready(function(){
            $('#gt1_qso').text("");
         }
 
-        $("#grid_results tbody").empty(); 
+        $("#grid_results tbody").empty();
         if (count > 0) {
           $("#grid_results tbody").append(items.join( "" ));
 
@@ -1187,13 +1153,13 @@ $(document).ready(function(){
      $('#gridsquare_bands')
          .append($("<option></option>")
                     .attr("value",value)
-                    .text(value)); 
+                    .text(value));
   });
-  
+
   var num = "<?php echo $this->uri->segment(3);?>";
     $("#gridsquare_bands option").each(function(){
         if($(this).val()==num){ // EDITED THIS LINE
-            $(this).attr("selected","selected");    
+            $(this).attr("selected","selected");
         }
     });
 
@@ -1410,5 +1376,76 @@ $(document).ready(function(){
 
         </script>
     <?php } ?>
+
+<script>
+    /* On Page Load */
+    var catcher = function() {
+      var changed = false;
+
+      $('form').each(function() {
+        var _form = this
+
+        $(_form).find('select').each(function () {
+            var _select = this
+            if ($(_select).prop('required') && !$(_select).val()) {
+                $(_select).val($(_select).find('option').val());
+            }
+        });
+
+        if ($(_form).attr('initial-form') != $(_form).serialize()) {
+          changed = true;
+
+          console.log('changed', $(_form).attr('initial-form'), $(_form).serialize())
+
+          $(_form).addClass('changed');
+        } else {
+          $(_form).removeClass('changed');
+        }
+      });
+
+      if (changed) {
+        return 'Unsaved QSO!';
+      }
+    };
+
+    $(function() {
+      setTimeout(function() {
+        $('form').each(function() {
+          var _form = this
+          $(_form).find('select').each(function () {
+              var _select = this
+              if ($(_select).prop('required') && !$(_select).val()) {
+                  $(_select).val($(_select).find('option').val());
+              }
+          });
+
+          $(_form).attr('initial-form', $(_form).serialize());
+
+          console.log('set', $(_form).serialize())
+        }).submit(function(e) {
+          var formEl  = this;
+          var changed = false;
+
+          $('form').each(function() {
+            var _form = this
+            if (_form != formEl && $(_form).attr('initial-form') != $(_form).serialize()) {
+              changed = true;
+              $(_form).addClass('changed');
+            } else {
+              $(_form).removeClass('changed');
+            }
+          });
+
+          if (changed && !confirm('You have an unsaved QSO. Continue with QSO?')) {
+            e.preventDefault();
+          } else {
+            $(window).unbind('beforeunload', catcher);
+          }
+        });
+
+        $(window).bind('beforeunload', catcher);
+      }, 100)
+    });
+</script>
   </body>
 </html>
