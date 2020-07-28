@@ -1,13 +1,13 @@
 <div class="container qso_panel">
 
 <div class="row">
-  
+
   <div class="col-sm-5">
     <div class="card">
-        
+
     <form id="qso_input" method="post" action="<?php echo site_url('qso') . "?manual=" . $_GET['manual']; ?>" name="qsos">
 
-      <div class="card-header"> 
+      <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
           <li class="nav-item">
            <a class="nav-link active" id="qsp-tab" data-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true">QSO</a>
@@ -24,7 +24,7 @@
           <li class="nav-item">
             <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Satellite</a>
           </li>
-          
+
           <li class="nav-item">
             <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notes</a>
           </li>
@@ -41,18 +41,35 @@
                       <!-- HTML for Date/Time -->
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="start_date">Date</label>
-                  <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_date'); } else { echo date('d-m-Y');}?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
+                  <label for="start_date">Start Date</label>
+                  <input type="text" class="form-control form-control-sm" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_date'); } else { echo date('d-m-Y');}?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label for="start_time">Time</label>
-                  <input type="text" class="form-control form-control-sm input_time" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_time'); } else {echo date('H:i'); } ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
+                  <label for="start_time">Start Time</label>
+                  <input type="text" class="form-control form-control-sm" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_time'); } else {echo date('H:i:s'); } ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
                 </div>
 
                 <?php if ( $_GET['manual'] == 0 ) { ?>
-                  <input class="input_time" type="hidden" id="start_time"  name="start_time"value="<?php echo date('H:i'); ?>" />
+                  <input class="input_time" type="hidden" id="start_time"  name="start_time"value="<?php echo date('H:i:s'); ?>" />
                   <input class="input_date" type="hidden" id="start_date" name="start_date" value="<?php echo date('d-m-Y'); ?>" />
+                <?php } ?>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="end_date">End Date</label>
+                  <input type="text" class="form-control form-control-sm input_date" name="end_date" id="end_date" value="<?php if (($this->session->userdata('end_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('end_date'); } else { echo date('d-m-Y');}?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label for="edit_time">End Time</label>
+                  <input type="text" class="form-control form-control-sm input_time" name="end_time" id="end_time" value="<?php if (($this->session->userdata('end_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('end_time'); } else {echo date('H:i:s'); } ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
+                </div>
+
+                <?php if ( $_GET['manual'] == 0 ) { ?>
+                  <input class="input_time" type="hidden" id="end_time"  name="end_time"value="<?php echo date('H:i'); ?>" />
+                  <input class="input_date" type="hidden" id="end_date" name="end_date" value="<?php echo date('d-m-Y'); ?>" />
                 <?php } ?>
               </div>
 
@@ -329,7 +346,7 @@
               <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" /> e.g: Q03
             </div>
           </div>
-          
+
           <!-- Satellite Panel -->
           <div class="tab-pane fade" id="satellite" role="tabpanel" aria-labelledby="satellite-tab">
             <div class="form-group">
@@ -348,7 +365,7 @@
               <datalist id="satellite_modes" class="satellite_modes_list"></datalist>
             </div>
           </div>
-          
+
           <!-- Notes Panel Contents -->
           <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
            <div class="form-group">
@@ -356,10 +373,10 @@
               <textarea  type="text" class="form-control" id="notes" name="notes" rows="10"></textarea>
             </div>
           </div>
-          
+
           <!-- QSL Tab -->
           <div class="tab-pane fade" id="qsl" role="tabpanel" aria-labelledby="qsl-tab">
-            
+
             <div class="form-group row">
               <label for="sent" class="col-sm-3 col-form-label">Sent</label>
               <div class="col-sm-9">
@@ -392,12 +409,12 @@
           </div>
         </div>
 
-        
+
 
         <div class="info">
           <input size="20" id="country" type="hidden" name="country" value="" />
         </div>
-        
+
         <button type="reset" class="btn btn-light" onclick="reset_fields()">Reset</button>
         <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save QSO</button>
       </div>
@@ -452,7 +469,7 @@
                 <td>Band</td>
               </tr>
 
-              <?php $i = 0; 
+              <?php $i = 0;
               foreach ($query->result() as $row) { ?>
                     <?php  echo '<tr class="tr'.($i & 1).'">'; ?>
                     <td><?php echo date($this->config->item('qso_date_format').' H:i',strtotime($row->COL_TIME_ON)); ?></td>
@@ -471,7 +488,7 @@
           </div>
         </div>
       </div>
-    </div>    
+    </div>
   </div>
 
 </div>

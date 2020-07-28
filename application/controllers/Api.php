@@ -60,7 +60,7 @@ class API extends CI_Controller {
 
 	function edit($key) {
 		$this->load->model('user_model');
-		
+
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		$this->load->model('api_model');
@@ -468,6 +468,9 @@ class API extends CI_Controller {
 		// Store Result to Database
 		$this->cat->update($obj);
 
+		/* Set transmit power */
+		$this->session->set_userdata('transmit_power', $obj['rfpower']);
+
 		// Return Message
 
 		$arr = array('status' => 'success');
@@ -633,7 +636,7 @@ class API extends CI_Controller {
 		*
 		*/
 			$this->load->model('lotw_user');
-		 
+
 			$lotw_member = $this->lotw_user->check($lookup_callsign);
 			if($lotw_member == "not found") {
 				$return['lotw_member'] = false;

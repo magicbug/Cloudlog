@@ -400,7 +400,7 @@ $(document).on('change', 'input', function(){
       if ( ! manual ) {
         $(function($) {
           var options = {
-            utc: true,
+            // utc: true,
             format: '%H:%M:%S'
           }
           $('.input_time').jclock(options);
@@ -408,7 +408,7 @@ $(document).on('change', 'input', function(){
 
         $(function($) {
           var options = {
-            utc: true,
+            // utc: true,
             format: '%d-%m-%Y'
           }
           $('.input_date').jclock(options);
@@ -418,8 +418,6 @@ $(document).on('change', 'input', function(){
 
   /* Function: reset_fields is used to reset the fields on the QSO page */
   function reset_fields() {
-      console.log('Reset fields called');
-
       $('#locator_info').text("");
       $('#country').val("");
       $('#lotw_info').text("");
@@ -1383,19 +1381,17 @@ $(document).ready(function(){
       var changed = false;
 
       $('form').each(function() {
-        var _form = this
+        var _form = this;
 
         $(_form).find('select').each(function () {
-            var _select = this
-            if ($(_select).prop('required') && !$(_select).val()) {
-                $(_select).val($(_select).find('option').val());
-            }
+          var _select = this;
+          if ($(_select).prop('required') && !$(_select).val()) {
+            $(_select).val($(_select).find('option').val());
+          }
         });
 
-        if ($(_form).attr('initial-form') != $(_form).serialize()) {
+        if ($(_form).attr('initial-form') != $(_form).serialize() && !window.location.pathname.match(/qso\/edit/)) {
           changed = true;
-
-          console.log('changed', $(_form).attr('initial-form'), $(_form).serialize())
 
           $(_form).addClass('changed');
         } else {
@@ -1411,24 +1407,22 @@ $(document).ready(function(){
     $(function() {
       setTimeout(function() {
         $('form').each(function() {
-          var _form = this
+          var _form = this;
           $(_form).find('select').each(function () {
-              var _select = this
-              if ($(_select).prop('required') && !$(_select).val()) {
-                  $(_select).val($(_select).find('option').val());
-              }
+            var _select = this;
+            if ($(_select).prop('required') && !$(_select).val()) {
+              $(_select).val($(_select).find('option').val());
+            }
           });
 
           $(_form).attr('initial-form', $(_form).serialize());
-
-          console.log('set', $(_form).serialize())
         }).submit(function(e) {
           var formEl  = this;
           var changed = false;
 
           $('form').each(function() {
-            var _form = this
-            if (_form != formEl && $(_form).attr('initial-form') != $(_form).serialize()) {
+            var _form = this;
+            if (_form != formEl && $(_form).attr('initial-form') != $(_form).serialize() && !window.location.pathname.match(/qso\/edit/)) {
               changed = true;
               $(_form).addClass('changed');
             } else {
