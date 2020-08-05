@@ -258,7 +258,7 @@ $(document).on('keypress',function(e) {
         var q_lng = -32.695312;
         <?php } ?>
 
-        var qso_loc = '<?php echo site_url('logbook/qso_map/25/'.$this->uri->segment(3)); ?>';
+        var qso_loc = '<?php echo site_url('logbook/qso_map/10000/'.$this->uri->segment(3)); ?>';
         var q_zoom = 2;
 
         <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
