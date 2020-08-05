@@ -1420,6 +1420,11 @@ $(document).ready(function(){
           var formEl  = this;
           var changed = false;
 
+          $('#start_date_val').val($('#start_date').val());
+          $('#start_time_val').val($('#start_time').val());
+          $('#end_date_val').val($('#end_date').val());
+          $('#end_time_val').val($('#end_time').val());
+
           $('form').each(function() {
             var _form = this;
             if (_form != formEl && $(_form).attr('initial-form') != $(_form).serialize() && !window.location.pathname.match(/qso\/edit/)) {

@@ -51,8 +51,8 @@
                 </div>
 
                 <?php if ( $_GET['manual'] == 0 ) { ?>
-                  <input class="input_time" type="hidden" id="start_time"  name="start_time"value="<?php echo date('H:i:s'); ?>" />
-                  <input class="input_date" type="hidden" id="start_date" name="start_date" value="<?php echo date('d-m-Y'); ?>" />
+                  <input type="hidden" id="start_time_val"  name="start_time"value="<?php echo date('H:i:s'); ?>" />
+                  <input type="hidden" id="start_date_val" name="start_date" value="<?php echo date('d-m-Y'); ?>" />
                 <?php } ?>
               </div>
 
@@ -68,8 +68,8 @@
                 </div>
 
                 <?php if ( $_GET['manual'] == 0 ) { ?>
-                  <input class="input_time" type="hidden" id="end_time"  name="end_time"value="<?php echo date('H:i'); ?>" />
-                  <input class="input_date" type="hidden" id="end_date" name="end_date" value="<?php echo date('d-m-Y'); ?>" />
+                  <input type="hidden" id="end_time_val" name="end_time"value="<?php echo date('H:i'); ?>" />
+                  <input type="hidden" id="end_date_val" name="end_date" value="<?php echo date('d-m-Y'); ?>" />
                 <?php } ?>
               </div>
 
