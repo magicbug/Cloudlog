@@ -582,6 +582,25 @@ class Logbook_model extends CI_Model {
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
     $this->db->update($this->config->item('table_name'), $data);
 
+    $_SESSION['_just_added'] = 1;
+
+    echo "
+        <script>
+           var parent = window.parent;
+           var jq     = parent.$;
+
+           setTimeout(function() {
+              parent.isReloadNeeded = true;
+
+              parent.location.reload();
+
+              console.log(111, parent.location);
+
+              jq('.fancybox-container.fancybox-is-open').find('.fancybox-button.fancybox-close-small').click();
+           }, 100);
+        </script>
+    ";
+    die();
   }
 
   /* QSL received */
