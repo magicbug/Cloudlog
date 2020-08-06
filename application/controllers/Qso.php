@@ -163,6 +163,24 @@ class QSO extends CI_Controller {
 		if (strpos($_SERVER['HTTP_REFERER'], '/logbook') !== false) {
 		    redirect($_SERVER['HTTP_REFERER']);
 		}
+
+		echo "
+	        <script>
+	           var parent = window.parent;
+	           var jq     = parent.$;
+
+	           setTimeout(function() {
+	              parent.isReloadNeeded = true;
+
+	              parent.location.reload();
+
+	              console.log(111, parent.location);
+
+	              jq('.fancybox-container.fancybox-is-open').find('.fancybox-button.fancybox-close-small').click();
+	           }, 100);
+	        </script>
+	    ";
+	    die();
 	}
 
 
