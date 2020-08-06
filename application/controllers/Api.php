@@ -451,7 +451,7 @@ class API extends CI_Controller {
 
 		$this->load->model('api_model');
 
-		//$json = '{"radio":"FT-950","frequency":14075,"mode":"SSB","timestamp":"2012/04/07 16:47"}';
+		//$json = '{"radio":"FT-950","frequency":14075,"mode":"SSB","timestamp":"2012/04/07 16:47","rfpower":0.00,"rxfreq":0}';
 
 		$this->load->model('cat');
 

@@ -938,6 +938,11 @@ $(document).on('change', 'input', function(){
               $('#transmit_power').val(parseFloat(data.rfpower));
           }
 
+          if (data.rxfreq != "")
+          {
+              $('#frequency_rx').val(parseInt(data.rxfreq));
+          }
+
           if (data.uplink_freq != "")
           {
             $('#frequency').val(data.uplink_freq);

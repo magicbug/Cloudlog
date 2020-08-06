@@ -137,6 +137,7 @@
 					"satname"             => $sat_name,
 					"updated_minutes_ago" => $updated_at,
 					"rfpower"			  => $row->tx_power ?: 0,
+					"rxfreq"			  => $row->rx_frequency ?: 0,
 				), JSON_PRETTY_PRINT);
 			}
 		}

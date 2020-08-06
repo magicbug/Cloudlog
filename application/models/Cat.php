@@ -27,7 +27,8 @@
 							'uplink_freq'   => $result['uplink_freq'],
 							'downlink_mode' => $result['downlink_mode'],
 							'uplink_mode'   => $result['uplink_mode'],
-							'tx_power'		=> isset($result['rfpower']) ? $result['rfpower'] : 0,
+							'tx_power'      => isset($result['rfpower']) ? $result['rfpower'] : 0,
+							'rx_frequency'  => isset($result['rxfreq']) ? $result['rxfreq'] : 0,
 						);
 
 						$this->db->where('id', $radio_id);
@@ -40,9 +41,10 @@
 						$radio_id = $row->id;
 
 						$data = array(
-						'frequency' => $result['frequency'],
-						'mode'      => $result['mode'],
-						'tx_power'  => isset($result['rfpower']) ? $result['rfpower'] : 0,
+							'frequency'    => $result['frequency'],
+							'mode'         => $result['mode'],
+							'tx_power'     => isset($result['rfpower']) ? $result['rfpower'] : 0,
+							'rx_frequency' => isset($result['rxfreq'])  ? $result['rxfreq']  : 0,
 						);
 
 						$this->db->where('id', $radio_id);
@@ -61,15 +63,17 @@
 						'downlink_freq' => $result['downlink_freq'],
 						'uplink_freq'   => $result['uplink_freq'],
 						'downlink_mode' => $result['downlink_mode'],
-						'tx_power'		=> isset($result['rfpower']) ? $result['rfpower'] : 0,
+						'tx_power'      => isset($result['rfpower']) ? $result['rfpower'] : 0,
+						'rx_frequency'  => isset($result['rxfreq'])  ? $result['rxfreq']  : 0,
 						'uplink_mode'   => $result['uplink_mode'],
 					);
 				} else {
 					$data = array(
-						'radio'     => $result['radio'],
-						'frequency' => $result['frequency'],
-						'mode'      => $result['mode'],
-						'tx_power'  => isset($result['rfpower']) ? $result['rfpower'] : 0,
+						'radio'        => $result['radio'],
+						'frequency'    => $result['frequency'],
+						'mode'         => $result['mode'],
+						'tx_power'     => isset($result['rfpower']) ? $result['rfpower'] : 0,
+						'rx_frequency' => isset($result['rxfreq']) ? $result['rxfreq'] : 0,
 					);
 				}
 
