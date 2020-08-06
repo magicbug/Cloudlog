@@ -34,7 +34,7 @@ class QSO extends CI_Controller {
 		$this->form_validation->set_rules('end_time', 'End Time', 'required');
 		$this->form_validation->set_rules('callsign', 'Callsign', 'required');
 
-		if ($this->form_validation->run() == FALSE || ($_SESSION['_just_added'] ?? null))
+		if ($this->form_validation->run() == FALSE || isset($_SESSION['_just_added']))
 		{
 			$data['page_title'] = "Add QSO";
 
@@ -42,7 +42,7 @@ class QSO extends CI_Controller {
 			$this->load->view('qso/index');
 			$this->load->view('interface_assets/footer');
 		}
-		elseif (count($_POST) && !($_SESSION['_just_added'] ?? null))
+		elseif (count($_POST) && !isset($_SESSION['_just_added']))
 		{
 			// Add QSO
 			// $this->logbook_model->add();
@@ -99,7 +99,7 @@ class QSO extends CI_Controller {
 			$this->load->view('interface_assets/footer');
 		}
 
-		if ($_SESSION['_just_added'] ?? null) {
+		if (isset($_SESSION['_just_added'])) {
 			unset($_SESSION['_just_added']);
 		}
 	}
