@@ -7,13 +7,13 @@ class Lotw extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
-
-		$this->load->model('user_model');
-		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
 
 	private function loadFromFile($filepath)
 	{
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
 		// Figure out how we should be marking QSLs confirmed via LoTW
 		$query = $query = $this->db->query('SELECT lotw_rcvd_mark FROM config');
 		$q = $query->row();
@@ -107,6 +107,9 @@ class Lotw extends CI_Controller {
 	}
 
 	public function import() {
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
 		$data['page_title'] = "LoTW ADIF Import";
 
 		$config['upload_path'] = './uploads/';
@@ -192,6 +195,9 @@ class Lotw extends CI_Controller {
 	} // end function
 
 	public function export() {
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
 	$data['page_title'] = "LoTW .TQ8 Upload";
 
 		$config['upload_path'] = './uploads/';
