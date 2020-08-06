@@ -469,7 +469,7 @@ class API extends CI_Controller {
 		$this->cat->update($obj);
 
 		/* Set transmit power */
-		$this->session->set_userdata('transmit_power', $obj['rfpower']);
+		// $this->session->set_userdata('transmit_power', $obj['rfpower']);
 
 		// Return Message
 

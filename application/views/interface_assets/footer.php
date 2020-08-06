@@ -932,6 +932,12 @@ $(document).on('change', 'input', function(){
               "satmode": "",
               "satname": "ES'HAIL-2"
           }  */
+
+          if (data.rfpower != "")
+          {
+              $('#transmit_power').val(parseFloat(data.rfpower));
+          }
+
           if (data.uplink_freq != "")
           {
             $('#frequency').val(data.uplink_freq);

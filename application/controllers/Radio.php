@@ -74,8 +74,6 @@
 		{
 			foreach ($query->result() as $row)
 			{
-
-
 				if($row->sat_name != "") {
 					$uplink_freq = $row->uplink_freq;
 					$downlink_freq = $row->downlink_freq;
@@ -132,12 +130,13 @@
 
 				// Return Json data
 				echo json_encode(array(
-					"uplink_freq" => $uplink_freq,
-					"downlink_freq" => $downlink_freq,
-					"mode" => $mode,
-					"satmode" => $sat_mode,
-					"satname" => $sat_name,
+					"uplink_freq"         => $uplink_freq,
+					"downlink_freq"       => $downlink_freq,
+					"mode"                => $mode,
+					"satmode"             => $sat_mode,
+					"satname"             => $sat_name,
 					"updated_minutes_ago" => $updated_at,
+					"rfpower"			  => $row->tx_power ?: 0,
 				), JSON_PRETTY_PRINT);
 			}
 		}
