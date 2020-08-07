@@ -13,3 +13,7 @@
 .idea/*
 .DS_Store
 sync.sh
+dwsync.xml
+/favicons/*
+favicon.icoold
+updates/cty.xml.gz
