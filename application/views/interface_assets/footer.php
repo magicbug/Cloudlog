@@ -1383,6 +1383,12 @@ $(document).ready(function(){
     <?php if ($this->uri->segment(1) == "qrz") { ?>
         <script>
             function ExportQrz(station_id) {
+                if ($(".alert").length > 0) {
+                    $(".alert").remove();
+                }
+                if ($(".errormessages").length > 0) {
+                    $(".errormessages").remove();
+                }
                 $(".ld-ext-right").addClass('running');
                 $(".ld-ext-right").prop('disabled', true);
                 var baseURL= "<?php echo base_url();?>";
@@ -1403,6 +1409,22 @@ $(document).ready(function(){
                         }
                         else {
                             $(".card-body").append('<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + data.info + '</div>');
+                        }
+
+                        if (data.errormessages.length > 0) {
+                            $(".card-body").append('' +
+                                '<div class="errormessages"><p>\n' +
+                                '                            <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">\n' +
+                                '                                Show error messages\n' +
+                                '                            </button>\n' +
+                                '                            </p>\n' +
+                                '                            <div class="collapse" id="collapseExample">\n' +
+                                '                                <div class="card card-body"><div class="errors"></div>\n' +
+                                '                            </div>\n' +
+                                '                            </div></div>');
+                            $.each(data.errormessages, function(index, value) {
+                                $(".errors").append('<li>' + value);
+                            });
                         }
                     }
                 });
