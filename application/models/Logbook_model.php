@@ -328,7 +328,8 @@ class Logbook_model extends CI_Model {
     // Push qso to qrz if apikey is set
     if ($apikey = $this->exists_qrz_api_key($data['station_id'])) {
         $adif = $this->create_adif_from_data($data);
-        IF ($this->push_qso_to_qrz($apikey, $adif)) {
+        $result = $this->push_qso_to_qrz($apikey, $adif);
+        IF ($result['status'] == 'OK') {
             $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'Y';
             $data['COL_QRZCOM_QSO_UPLOAD_DATE'] = date("Y-m-d H:i:s", strtotime("now"));
         }
@@ -382,14 +383,19 @@ class Logbook_model extends CI_Model {
       $content = curl_exec($ch);
       if ($content){
           if (stristr($content,'RESULT=OK') || stristr($content,'RESULT=REPLACE')) {
-            return true;
+              $result['status'] = 'OK';
+              return $result;
           }
           else {
-            return false;
+              $result['status'] = 'error';
+              $result['message'] = $content;
+              return $result;
           }
       }
       if(curl_errno($ch)){
-          return false;
+          $result['status'] = 'error';
+          $result['message'] = 'Curl error: '. curl_errno($ch);
+          return $result;
       }
       curl_close($ch);
   }

@@ -36,7 +36,7 @@ class Qrz extends CI_Controller {
             }
         } else {
             echo "No station_id's with a QRZ API Key found";
-            log_message('info', "No station_id's with a QRZ API Key found");
+            log_message('error', "No station_id's with a QRZ API Key found");
         }
 
     }
@@ -67,9 +67,12 @@ class Qrz extends CI_Controller {
                     $result = $this->logbook_model->push_qso_to_qrz($qrz_api_key, $adif);
                 }
 
-                if ($result) {
+                if ($result['status'] == 'OK') {
                     $this->markqso($qso['COL_PRIMARY_KEY']);
                     $i++;
+                } else {
+                    log_message('error', 'QRZ upload failed for qso: ' .$adif);
+                    log_message('error', 'QRZ upload failed with the following message: ' .$result['message']);
                 }
             }
         return $i;
