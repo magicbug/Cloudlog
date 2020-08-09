@@ -1839,7 +1839,6 @@ class Logbook_model extends CI_Model {
                 'COL_QSO_COMPLETE' => (!empty($record['qso_complete'])) ? $record['qso_complete'] : '',
                 'COL_QSO_DATE' => (!empty($record['qso_date'])) ? $record['qso_date'] : null,
                 'COL_QSO_DATE_OFF' => (!empty($record['qso_date_off'])) ? $record['qso_date_off'] : null,
-                'COL_QSO_RANDOM' => (!empty($record['qso_random'])) ? $record['qso_random'] : null,
                 'COL_QTH' => (!empty($record['qth'])) ? $record['qth'] : '',
                 'COL_QTH_INTL' => (!empty($record['qth_intl'])) ? $record['qth_intl'] : '',
                 'COL_REGION' => (!empty($record['region'])) ? $record['region'] : '',
