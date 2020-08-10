@@ -1859,7 +1859,7 @@ class Logbook_model extends CI_Model {
                 'COL_SOTA_REF' => (!empty($record['sota_ref'])) ? $record['sota_ref'] : '',
                 'COL_SRX' => (!empty($record['srx'])) ? $record['srx'] : null,
                 'COL_SRX_STRING' => (!empty($record['srx_string'])) ? $record['srx_string'] : '',
-                'COL_STATE' => (!empty($record['state'])) ? $record['state'] : '',
+                'COL_STATE' => (!empty($record['state'])) ? strtoupper($record['state']) : '',
                 'COL_STATION_CALLSIGN' => (!empty($record['station_callsign'])) ? $record['station_callsign'] : '',
                 'COL_STX' => (!empty($record['stx'])) ? $record['stx'] : null,
                 'COL_STX_STRING' => (!empty($record['stx_string'])) ? $record['stx_string'] : '',
