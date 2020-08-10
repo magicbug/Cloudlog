@@ -1556,7 +1556,7 @@ class Logbook_model extends CI_Model {
 
         // Sanitise TX_POWER
         if (isset($record['tx_pwr'])){
-            $tx_pwr = filter_var($record['tx_pwr'],FILTER_SANITIZE_NUMBER_INT);
+            $tx_pwr = filter_var($record['tx_pwr'],FILTER_VALIDATE_FLOAT);
         }else{
             $tx_pwr = NULL;
         }
