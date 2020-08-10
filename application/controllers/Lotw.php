@@ -28,13 +28,14 @@ class Lotw extends CI_Controller {
 
 		$this->adif_parser->initialize();
 
-		$tableheaders = "<table>";
+		$tableheaders = "<table width=\"100%\">";
 			$tableheaders .= "<tr class=\"titles\">";
 				$tableheaders .= "<td>QSO Date</td>";
 				$tableheaders .= "<td>Call</td>";
 				$tableheaders .= "<td>Mode</td>";
 				$tableheaders .= "<td>LoTW QSL Received</td>";
 				$tableheaders .= "<td>Date LoTW Confirmed</td>";
+				$tableheaders .= "<td>State</td>";
 				$tableheaders .= "<td>Log Status</td>";
 				$tableheaders .= "<td>LoTW Status</td>";
 			$tableheaders .= "</tr>";
@@ -76,7 +77,13 @@ class Lotw extends CI_Controller {
                     }
 
 				} else {
-					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd']);
+					if (isset($record['state'])) {
+						$state = $record['state'];
+					} else {
+						$state = "";
+					}
+
+					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state);
 				}
 
 
@@ -86,6 +93,7 @@ class Lotw extends CI_Controller {
 					$table .= "<td>".$record['mode']."</td>";
 					$table .= "<td>".$record['qsl_rcvd']."</td>";
 					$table .= "<td>".$qsl_date."</td>";
+					$table .= "<td>".$state."</td>";
 					$table .= "<td>QSO Record: ".$status."</td>";
 					$table .= "<td>LoTW Record: ".$lotw_status."</td>";
 				$table .= "</tr>";

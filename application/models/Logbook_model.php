@@ -1291,12 +1291,22 @@ class Logbook_model extends CI_Model {
     }
   }
 
-  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status) {
-    $data = array(
-         'COL_LOTW_QSLRDATE' => $qsl_date,
-         'COL_LOTW_QSL_RCVD' => $qsl_status,
-         'COL_LOTW_QSL_SENT' => 'Y'
-    );
+  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state) {
+    
+    if($state != "") {
+      $data = array(
+           'COL_LOTW_QSLRDATE' => $qsl_date,
+           'COL_LOTW_QSL_RCVD' => $qsl_status,
+           'COL_LOTW_QSL_SENT' => 'Y',
+           'COL_STATE' => $state
+      );
+    } else {
+      $data = array(
+           'COL_LOTW_QSLRDATE' => $qsl_date,
+           'COL_LOTW_QSL_RCVD' => $qsl_status,
+           'COL_LOTW_QSL_SENT' => 'Y'
+      ); 
+    }
 
     $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
     $this->db->where('COL_CALL', $callsign);
