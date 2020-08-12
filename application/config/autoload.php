@@ -80,7 +80,7 @@ $autoload['helper'] = array('url', 'security');
 |
 */
 
-$autoload['config'] = array('cloudlog', 'bands');
+$autoload['config'] = array('cloudlog', 'bands', 'lotw');
 
 
 /*
