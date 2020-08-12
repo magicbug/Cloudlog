@@ -367,4 +367,22 @@ class Lotw extends CI_Controller {
 
 	}
 
+	function signlog() {
+
+	$plaintext = "14IO87IPEU-0052770CM2MG0IIQ435.355562145.878136FMSAT2020-08-1212:10:53ZAO-92";
+
+	$pkeyid = openssl_pkey_get_private('file:///mnt/c/lotw/lotw-2m0sql.key', 'peter');
+	//openssl_sign($plaintext, $signature, $pkeyid, OPENSSL_ALGO_SHA1 );
+	//openssl_free_key($pkeyid);
+
+
+	if(openssl_sign($plaintext, $signature, $pkeyid, OPENSSL_ALGO_SHA1)) {
+	  openssl_free_key($pkeyid);
+	  $signature_b64 = base64_encode($signature);
+	  echo($signature_b64."\n");
+	}
+
+
+	}
+
 } // end class
