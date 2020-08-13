@@ -34,6 +34,25 @@ class Lotw extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
+	public function key() {
+		$results = array();
+		$password = "";
+		$filename = file_get_contents('file:///mnt/c/lotw/php/');
+		$worked = openssl_pkcs12_read($filename, $results, $password);
+		if($worked) {
+		    $new_password = "peter";
+			$result = null;
+			$worked = openssl_pkey_export($results['pkey'], $result, $new_password);
+			if($worked) {
+			    echo "<pre>Your new pkey is:\n", $result, '</pre>';
+			} else {
+			    echo openssl_error_string();
+			}
+		} else {
+		    echo openssl_error_string();
+		}
+	}
+
 	private function loadFromFile($filepath)
 	{
 		$this->load->model('user_model');
@@ -394,18 +413,20 @@ class Lotw extends CI_Controller {
 
 	function signlog() {
 
-	$plaintext = "14IO87IPEU-0052770CM2MG0IIQ435.355562145.878136FMSAT2020-08-1212:10:53ZAO-92";
+		$qso_string = "14IO87IPEU-0052770CM2MG0IIQ435.355562145.878136FMSAT2020-08-1212:10:53ZAO-92";
 
-	$pkeyid = openssl_pkey_get_private('file:///mnt/c/lotw/lotw-2m0sql.key', 'peter');
-	//openssl_sign($plaintext, $signature, $pkeyid, OPENSSL_ALGO_SHA1 );
-	//openssl_free_key($pkeyid);
+		$key = "";
+
+		$pkeyid = openssl_pkey_get_private($key, 'peter');
+		//openssl_sign($plaintext, $signature, $pkeyid, OPENSSL_ALGO_SHA1 );
+		//openssl_free_key($pkeyid);
 
 
-	if(openssl_sign($plaintext, $signature, $pkeyid, OPENSSL_ALGO_SHA1)) {
-	  openssl_free_key($pkeyid);
-	  $signature_b64 = base64_encode($signature);
-	  echo($signature_b64."\n");
-	}
+		if(openssl_sign($qso_string, $signature, $pkeyid, OPENSSL_ALGO_SHA1)) {
+		  openssl_free_key($pkeyid);
+		  $signature_b64 = base64_encode($signature);
+		  echo($signature_b64."\n");
+		}
 
 
 	}
