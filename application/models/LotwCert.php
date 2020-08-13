@@ -8,6 +8,14 @@ class LotwCert extends CI_Model {
 		parent::__construct();
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Function: lotw_certs
+	|--------------------------------------------------------------------------
+	| 
+	| Returns all lotw_certs for a selected user via the $user_id parameter
+	|
+	*/
 	function lotw_certs($user_id) {
 		$this->db->where('user_id', $user_id);
 		$query = $this->db->get('lotw_certs');

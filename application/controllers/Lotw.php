@@ -9,15 +9,26 @@ class Lotw extends CI_Controller {
 		$this->load->helper(array('form', 'url'));
 	}
 
-
+	/*
+	|--------------------------------------------------------------------------
+	| Function: index
+	|--------------------------------------------------------------------------
+	| 
+	| Default function for the controller which loads when doing /lotw
+	| this shows all the uploaded lotw p12 certificates the user has uploaded
+	|
+	*/
 	public function index() {
-
+		// Load required models for page generation
 		$this->load->model('LotwCert');
 
+		// Get Array of the logged in users LOTW certs.
 		$data['lotw_cert_results'] = $this->LotwCert->lotw_certs($this->session->userdata('user_id'));
 
+		// Set Page Title
 		$data['page_title'] = "Logbook of the World";
 
+		// Load Views
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('lotw_views/index');
 		$this->load->view('interface_assets/footer');
