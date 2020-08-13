@@ -9,6 +9,20 @@ class Lotw extends CI_Controller {
 		$this->load->helper(array('form', 'url'));
 	}
 
+
+	public function index() {
+
+		$this->load->model('LotwCert');
+
+		$data['lotw_cert_results'] = $this->LotwCert->lotw_certs($this->session->userdata('user_id'));
+
+		$data['page_title'] = "Logbook of the World";
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('lotw_views/index');
+		$this->load->view('interface_assets/footer');
+	}
+
 	private function loadFromFile($filepath)
 	{
 		$this->load->model('user_model');
@@ -206,7 +220,7 @@ class Lotw extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
-	$data['page_title'] = "LoTW .TQ8 Upload";
+		$data['page_title'] = "LoTW .TQ8 Upload";
 
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'tq8|TQ8';
