@@ -37,20 +37,34 @@ class Lotw extends CI_Controller {
 	public function key() {
 		$results = array();
 		$password = "";
-		$filename = file_get_contents('file:///mnt/c/lotw/php/');
+		$filename = file_get_contents('file:///mnt/c/lotw/php/file-to-read.p12');
 		$worked = openssl_pkcs12_read($filename, $results, $password);
 		if($worked) {
-		    $new_password = "peter";
+			// Reading p12 successful
+		    $new_password = "cloudlog"; // set default password
 			$result = null;
 			$worked = openssl_pkey_export($results['pkey'], $result, $new_password);
 			if($worked) {
-			    echo "<pre>Your new pkey is:\n", $result, '</pre>';
+				// Store PEM Key in Array
+			    $data['pem_key'] = $result;
 			} else {
 			    echo openssl_error_string();
 			}
 		} else {
+			// Reading p12 failed
 		    echo openssl_error_string();
 		}
+
+		// Read Cert Data
+		$certdata= openssl_x509_parse($results['cert'],0);
+
+		// Store Variables
+		$data['issued_callsign'] = $certdata['subject']['undefined'];
+		$data['issued_name'] = $certdata['subject']['commonName'];
+		$data['validFrom_Date'] = date("d-m-Y H:i:s", strtotime($certdata['validFrom']));
+		$data['validTo_Date'] =  date("d-m-Y H:i:s", strtotime($certdata['validTo']));
+
+		print_r($data);
 	}
 
 	private function loadFromFile($filepath)
@@ -417,7 +431,7 @@ class Lotw extends CI_Controller {
 
 		$key = "";
 
-		$pkeyid = openssl_pkey_get_private($key, 'peter');
+		$pkeyid = openssl_pkey_get_private($key, 'cloudlog');
 		//openssl_sign($plaintext, $signature, $pkeyid, OPENSSL_ALGO_SHA1 );
 		//openssl_free_key($pkeyid);
 
