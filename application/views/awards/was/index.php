@@ -69,10 +69,12 @@
     </form>
 <?php
     if ($was_array) {
+        $i = 1;
     echo '
     <table class="table table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr>
+            <td>#</td>
             <td>State</td>';
         foreach($bands as $band) {
             echo '<td>' . $band . '</td>';
@@ -80,8 +82,10 @@
             echo '</tr>
         </thead>
         <tbody>';
+
         foreach ($was_array as $was => $value) {      // Fills the table with the data
         echo '<tr>
+            <td>' . $i++ . '</td>
             <td>'. $was .'</td>';
             foreach ($value  as $key) {
             echo '<td style="text-align: center">' . $key . '</td>';
