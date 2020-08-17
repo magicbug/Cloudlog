@@ -61,6 +61,12 @@
 									<?php } else { ?>
 										<span class="badge badge-dark">Expired</span>
 									<?php } ?>
+
+									<?php if ($row->last_upload) { ?>
+										<span class="badge badge-success"><?php echo $row->last_upload; ?></span>
+									<?php } else { ?>
+										<span class="badge badge-warning">Not Synced</span>
+									<?php } ?>
 								</td>
 								<td>
 									<a class="btn btn-primary btn-sm" href="<?php echo site_url('lotw/delete_cert/'.$row->lotw_cert_id); ?>" role="button"><i class="far fa-trash-alt"></i> Delete</a>
