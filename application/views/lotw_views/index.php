@@ -5,7 +5,7 @@
 	<!-- Card Starts -->
 	<div class="card">
 		<div class="card-header">
-			<a class="btn btn-success btn-sm float-right" href="<?php echo site_url('/lotw/cert_upload'); ?>" role="button"><i class="fas fa-cloud-upload-alt"></i> Upload Certificate</a>Available Certificates
+			<a class="btn btn-success btn-sm float-right" href="<?php echo site_url('/lotw/cert_upload'); ?>" role="button"><i class="fas fa-cloud-upload-alt"></i> Upload Certificate</a><i class="fab fa-expeditedssl"></i> Available Certificates
 		</div>
 
 		<div class="card-body">
