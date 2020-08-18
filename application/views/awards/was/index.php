@@ -92,8 +92,37 @@
             }
             echo '</tr>';
         }
-        echo '</tfoot></table></div>';
+        echo '</table>
 
+        <h1>Summary</h1>
+
+        <table class="table table-bordered table-hover table-striped table-condensed text-center">
+        <thead>
+        <tr><td></td>';
+
+        foreach ($was_summary as $was) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $was->col_band . '</td>';
+        }
+
+        echo '</tr>
+        </thead>
+        <tbody>
+
+        <tr><td>Total worked</td>';
+
+        foreach ($was_summary as $was) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $was->count . '</td>';
+        }
+
+        echo '</tr><tr>
+        <td>Total confirmed</td>';
+        foreach ($was_summary as $was) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $was->cfmwas . '</td>';
+        }
+
+        echo '</tr>
+        </table>
+        </div>';
     }
     else {
         echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
