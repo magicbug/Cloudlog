@@ -70,9 +70,12 @@
                   <label for="mode">Mode</label>
                   <select id="mode" class="form-control mode form-control-sm" name="mode">
                   <?php
-                      $this->load->library('frequency');
-                      foreach(Frequency::modes as $mode){
-                          printf("<option value=\"%s\" %s>%s</option>", $mode, $this->session->userdata('mode')==$mode?"selected=\"selected\"":"",$mode);
+                      foreach($modes->result() as $mode){
+                        if ($mode->submode == null) {
+                          printf("<option value=\"%s\" %s>%s</option>", $mode->mode, $this->session->userdata('mode')==$mode->mode?"selected=\"selected\"":"",$mode->mode);
+                        } else {
+                          printf("<option value=\"%s\" %s>&rArr; %s</option>", $mode->submode, $this->session->userdata('mode')==$mode->submode?"selected=\"selected\"":"",$mode->submode);
+                        } 
                       }
                   ?>
                   </select>
@@ -457,7 +460,7 @@
                     <?php  echo '<tr class="tr'.($i & 1).'">'; ?>
                     <td><?php echo date($this->config->item('qso_date_format').' H:i',strtotime($row->COL_TIME_ON)); ?></td>
                     <td><a class="qsobox" data-fancybox data-type="iframe" data-width="750" data-height="520" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a></td>
-                    <td><?php echo $row->COL_MODE; ?></td>
+                    <td><?php echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; ?></td>
                     <td><?php echo $row->COL_RST_SENT; ?></td>
                     <td><?php echo $row->COL_RST_RCVD; ?></td>
                     <?php if($row->COL_SAT_NAME != null) { ?>

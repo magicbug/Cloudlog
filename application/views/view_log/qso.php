@@ -44,7 +44,7 @@
 				
 				<tr>
 					<td>Mode:</td>
-					<td><?php echo $row->COL_MODE; ?></td>
+					<td><?php echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; ?></td>
 				</tr>
 				
 				<tr>

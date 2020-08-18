@@ -71,12 +71,16 @@
                     <div class="form-group col-sm-6">
                         <label for="freq">Mode</label>
                             <select id="mode" class="form-control mode form-control-sm" name="mode">
-                                <?php
-                                $this->load->library('frequency');
-                                foreach(Frequency::modes as $mode){
-                                    printf("<option value=\"%s\" %s>%s</option>", $mode, $qso->COL_MODE==$mode?"selected=\"selected\"":"",$mode);
-                                }
-                                ?>
+                  <?php
+                      foreach($modes->result() as $mode){
+						var_dump($mode);
+                        if ($mode->submode == null) {
+                          printf("<option value=\"%s\" %s>%s</option>", $mode->mode, $qso->COL_MODE==$mode->mode?"selected=\"selected\"":"",$mode->mode);
+                        } else {
+                          printf("<option value=\"%s\" %s>&rArr; %s</option>", $mode->submode, $qso->COL_SUBMODE==$mode->submode?"selected=\"selected\"":"",$mode->submode);
+                        } 
+                      }
+                  ?>
                             </select>
                     </div>
 
