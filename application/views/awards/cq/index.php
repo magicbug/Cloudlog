@@ -143,11 +143,13 @@
         </fieldset>
     </form>
 <?php
+    $i = 1;
     if ($cq_array) {
     echo '
     <table class="table table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr>
+            <td>#</td>
             <td>CQ Zone</td>';
         foreach($bands as $band) {
             echo '<td>' . $band . '</td>';
@@ -157,6 +159,7 @@
         <tbody>';
         foreach ($cq_array as $cq => $value) {      // Fills the table with the data
         echo '<tr>
+            <td>' . $i++ . '</td>
             <td>'. $cq .'</td>';
             foreach ($value  as $key) {
             echo '<td style="text-align: center">' . $key . '</td>';

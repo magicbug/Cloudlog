@@ -123,6 +123,7 @@ class Logbook_model extends CI_Model {
             'COL_STATE' => trim($this->input->post('usa_state')),
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
             'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
+	    'COL_NOTES' => $this->input->post('notes'),
     );
 
     $station_id = $this->input->post('station_profile');
@@ -335,7 +336,8 @@ class Logbook_model extends CI_Model {
     // Push qso to qrz if apikey is set
     if ($apikey = $this->exists_qrz_api_key($data['station_id'])) {
         $adif = $this->create_adif_from_data($data);
-        IF ($this->push_qso_to_qrz($apikey, $adif)) {
+        $result = $this->push_qso_to_qrz($apikey, $adif);
+        IF ($result['status'] == 'OK') {
             $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'Y';
             $data['COL_QRZCOM_QSO_UPLOAD_DATE'] = date("Y-m-d H:i:s", strtotime("now"));
         }
@@ -368,12 +370,16 @@ class Logbook_model extends CI_Model {
    * Function uploads a QSO to QRZ with the API given.
    * $adif contains a line with the QSO in the ADIF format. QSO ends with an <eor>
    */
-  function push_qso_to_qrz($apikey, $adif) {
+  function push_qso_to_qrz($apikey, $adif, $replaceoption = false) {
       $url = 'http://logbook.qrz.com/api'; // TODO: Move this to database
 
       $post_data['KEY'] = $apikey;
       $post_data['ACTION'] = 'INSERT';
       $post_data['ADIF'] = $adif;
+
+      if ($replaceoption) {
+          $post_data['OPTION'] = 'REPLACE';
+      }
 
       $ch = curl_init( $url );
       curl_setopt( $ch, CURLOPT_POST, true);
@@ -384,15 +390,20 @@ class Logbook_model extends CI_Model {
 
       $content = curl_exec($ch);
       if ($content){
-          if (stristr($content,'RESULT=OK')) {
-            return true;
+          if (stristr($content,'RESULT=OK') || stristr($content,'RESULT=REPLACE')) {
+              $result['status'] = 'OK';
+              return $result;
           }
           else {
-            return false;
+              $result['status'] = 'error';
+              $result['message'] = $content;
+              return $result;
           }
       }
       if(curl_errno($ch)){
-          return false;
+          $result['status'] = 'error';
+          $result['message'] = 'Curl error: '. curl_errno($ch);
+          return $result;
       }
       curl_close($ch);
   }
@@ -564,6 +575,7 @@ class Logbook_model extends CI_Model {
        'COL_CQZ' => $this->input->post('cqz'),
        'COL_SAT_NAME' => $this->input->post('sat_name'),
        'COL_SAT_MODE' => $this->input->post('sat_mode'),
+       'COL_NOTES' => $this->input->post('notes'),
        'COL_QSLSDATE' => date('Y-m-d'),
        'COL_QSLRDATE' => date('Y-m-d'),
        'COL_QSL_SENT' => $this->input->post('qsl_sent'),
@@ -1160,7 +1172,7 @@ class Logbook_model extends CI_Model {
       $CI->load->model('Stations');
       $station_id = $CI->Stations->find_active();
 
-        $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_SENT = "Y" GROUP BY band');
+        $query = $this->db->query('SELECT count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_SENT = "Y"');
 
         $row = $query->row();
 
@@ -1171,14 +1183,14 @@ class Logbook_model extends CI_Model {
         }
     }
 
-    /* Return total number of QSL Cards requested */
+    /* Return total number of QSL Cards requested for printing - that means "requested" or "queued" */
     function total_qsl_requested() {
 
       $CI =& get_instance();
       $CI->load->model('Stations');
       $station_id = $CI->Stations->find_active();
 
-        $query = $this->db->query('SELECT DISTINCT (COL_QSL_SENT) AS band, count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_SENT = "R" GROUP BY band');
+        $query = $this->db->query('SELECT count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_SENT in ("Q", "R")');
 
         $row = $query->row();
 
@@ -1196,7 +1208,7 @@ class Logbook_model extends CI_Model {
       $CI->load->model('Stations');
       $station_id = $CI->Stations->find_active();
 
-        $query = $this->db->query('SELECT DISTINCT (COL_QSL_RCVD) AS band, count(COL_QSL_RCVD) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_RCVD = "Y" GROUP BY band');
+        $query = $this->db->query('SELECT count(COL_QSL_RCVD) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_RCVD = "Y"');
 
         $row = $query->row();
 
@@ -1300,12 +1312,22 @@ class Logbook_model extends CI_Model {
     }
   }
 
-  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status) {
-    $data = array(
-         'COL_LOTW_QSLRDATE' => $qsl_date,
-         'COL_LOTW_QSL_RCVD' => $qsl_status,
-         'COL_LOTW_QSL_SENT' => 'Y'
-    );
+  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state) {
+    
+    if($state != "") {
+      $data = array(
+           'COL_LOTW_QSLRDATE' => $qsl_date,
+           'COL_LOTW_QSL_RCVD' => $qsl_status,
+           'COL_LOTW_QSL_SENT' => 'Y',
+           'COL_STATE' => $state
+      );
+    } else {
+      $data = array(
+           'COL_LOTW_QSLRDATE' => $qsl_date,
+           'COL_LOTW_QSL_RCVD' => $qsl_status,
+           'COL_LOTW_QSL_SENT' => 'Y'
+      ); 
+    }
 
     $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
     $this->db->where('COL_CALL', $callsign);
@@ -1565,7 +1587,7 @@ class Logbook_model extends CI_Model {
 
         // Sanitise TX_POWER
         if (isset($record['tx_pwr'])){
-            $tx_pwr = filter_var($record['tx_pwr'],FILTER_SANITIZE_NUMBER_INT);
+            $tx_pwr = filter_var($record['tx_pwr'],FILTER_VALIDATE_FLOAT);
         }else{
             $tx_pwr = NULL;
         }
@@ -1862,7 +1884,6 @@ class Logbook_model extends CI_Model {
                 'COL_QSO_COMPLETE' => (!empty($record['qso_complete'])) ? $record['qso_complete'] : '',
                 'COL_QSO_DATE' => (!empty($record['qso_date'])) ? $record['qso_date'] : null,
                 'COL_QSO_DATE_OFF' => (!empty($record['qso_date_off'])) ? $record['qso_date_off'] : null,
-                'COL_QSO_RANDOM' => (!empty($record['qso_random'])) ? $record['qso_random'] : null,
                 'COL_QTH' => (!empty($record['qth'])) ? $record['qth'] : '',
                 'COL_QTH_INTL' => (!empty($record['qth_intl'])) ? $record['qth_intl'] : '',
                 'COL_REGION' => (!empty($record['region'])) ? $record['region'] : '',
@@ -1883,7 +1904,7 @@ class Logbook_model extends CI_Model {
                 'COL_SOTA_REF' => (!empty($record['sota_ref'])) ? $record['sota_ref'] : '',
                 'COL_SRX' => (!empty($record['srx'])) ? $record['srx'] : null,
                 'COL_SRX_STRING' => (!empty($record['srx_string'])) ? $record['srx_string'] : '',
-                'COL_STATE' => (!empty($record['state'])) ? $record['state'] : '',
+                'COL_STATE' => (!empty($record['state'])) ? strtoupper($record['state']) : '',
                 'COL_STATION_CALLSIGN' => (!empty($record['station_callsign'])) ? $record['station_callsign'] : '',
                 'COL_STX' => (!empty($record['stx'])) ? $record['stx'] : null,
                 'COL_STX_STRING' => (!empty($record['stx_string'])) ? $record['stx_string'] : '',
@@ -1956,6 +1977,18 @@ class Logbook_model extends CI_Model {
     public function check_dxcc_table($call, $date){
         $len = strlen($call);
 
+	$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
+             ->where('call', $call)
+             ->where('(start <= ', $date)
+             ->or_where('start is null)', NULL, false)
+             ->where('(end >= ', $date)
+             ->or_where('end is null)', NULL, false)
+             ->get('dxcc_exceptions');
+
+        if ($dxcc_exceptions->num_rows() > 0){
+            $row = $dxcc_exceptions->row_array();
+            return array($row['adif'], $row['entity'], $row['cqz']);
+        }
         // query the table, removing a character from the right until a match
         for ($i = $len; $i > 0; $i--){
             //printf("searching for %s\n", substr($call, 0, $i));
@@ -1981,18 +2014,19 @@ class Logbook_model extends CI_Model {
 
     public function dxcc_lookup($call, $date){
         $len = strlen($call);
+	    
+	$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
+            ->where('call', $call)
+            ->where('(start <= CURDATE()')
+            ->or_where('start is null', NULL, false)
+            ->where('end >= CURDATE()')
+            ->or_where('end is null)', NULL, false)
+            ->get('dxcc_exceptions');
 
-        $this->db->where('call', $call);
-        $this->db->where('CURDATE() between start and end');
 
-        $query = $this->db->get('dxcc_exceptions');
-
-
-        if ($query->num_rows() > 0){
-
-                $row = $query->row_array();
-
-                return $row;
+        if ($dxcc_exceptions->num_rows() > 0){
+            $row = $dxcc_exceptions->row_array();
+            return $row;
         } else {
           // query the table, removing a character from the right until a match
           for ($i = $len; $i > 0; $i--){

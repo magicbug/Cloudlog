@@ -133,6 +133,39 @@ class was extends CI_Model {
     }
 
     /*
+     * Function gets worked and confirmed summary on each band on the active stationprofile
+     */
+    function get_was_summary() {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        $stateArray = explode(',', $this->stateString);
+
+        $states = array(); // Used for keeping track of which states that are not worked
+
+        $sql = "SELECT thcv.col_band, count(distinct thcv.col_state) as count, coalesce (cfmwas.count, 0) as cfmwas FROM " . $this->config->item('table_name') . " thcv";
+
+        $sql .= " left outer join (
+                    select col_band, count(distinct col_state) as count from " . $this->config->item('table_name') . " thcv";
+        $sql .= " where station_id = " . $station_id;
+        $sql .= $this->addStateToQuery();
+
+        $sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')
+                group by col_band";
+        $sql .= ") cfmwas on thcv.col_band = cfmwas.col_band ";
+
+        $sql .= " where station_id = " . $station_id;
+
+        $sql .= $this->addStateToQuery();
+        $sql .= " group by thcv.col_band order by thcv.col_band+0 desc";
+
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+
+    /*
      * Function returns all worked, but not confirmed states
      * $postdata contains data from the form, in this case Lotw or QSL are used
      */

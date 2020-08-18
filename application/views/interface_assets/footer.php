@@ -9,6 +9,10 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
     <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
 
+<script type="text/javascript">
+  var icon_dot_url = "<?php echo base_url();?>assets/images/dot.png";
+</script>
+
     <?php if ($this->uri->segment(1) == "adif") { ?>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
@@ -529,10 +533,15 @@ $(document).on('change', 'input', function(){
 
                 // Set Map to Lat/Long it locator is not empty
                 if($('#locator').val() == "") {
+                    var redIcon = L.icon({
+                        iconUrl: icon_dot_url,
+                        iconSize:     [18, 18], // size of the icon
+                    });
+
                     markers.clearLayers();
-                    var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
-					mymap.setZoom(8);
-					mymap.panTo([result.dxcc.lat, result.dxcc.long]);
+                    var marker = L.marker([result.dxcc.lat, result.dxcc.long], {icon: redIcon});
+					          mymap.setZoom(8);
+					          mymap.panTo([result.dxcc.lat, result.dxcc.long]);
                     markers.addLayer(marker).addTo(mymap);
                 }
             }
@@ -724,15 +733,19 @@ $(document).on('change', 'input', function(){
               $('#ituz').val(result.dxcc.ituz);
 
 
+              var redIcon = L.icon({
+                iconUrl: icon_dot_url,
+                iconSize:     [18, 18], // size of the icon
+              });
 
               // Set Map to Lat/Long
               markers.clearLayers();
-				mymap.setZoom(8);
+				      mymap.setZoom(8);
               if (typeof result.latlng !== "undefined" && result.latlng !== false) {
-                var marker = L.marker([result.latlng[0], result.latlng[1]]);
+                var marker = L.marker([result.latlng[0], result.latlng[1]], {icon: redIcon});
                 mymap.panTo([result.latlng[0], result.latlng[1]]);
               } else {
-                var marker = L.marker([result.dxcc.lat, result.dxcc.long]);
+                var marker = L.marker([result.dxcc.lat, result.dxcc.long], {icon: redIcon});
                 mymap.panTo([result.dxcc.lat, result.dxcc.long]);
               }
 
@@ -905,7 +918,12 @@ $(document).on('change', 'input', function(){
             // Set Map to Lat/Long
             markers.clearLayers();
             if (typeof result !== "undefined") {
-              var marker = L.marker([result[0], result[1]]);
+              var redIcon = L.icon({
+                        iconUrl: icon_dot_url,
+                        iconSize:     [18, 18], // size of the icon
+                    });
+
+              var marker = L.marker([result[0], result[1]], {icon: redIcon});
               mymap.setZoom(8);
               mymap.panTo([result[0], result[1]]);
             }
@@ -1040,7 +1058,13 @@ $(document).on('change', 'input', function(){
     id: 'mapbox.streets'
   }).addTo(mymap);
 
-  L.marker([lat,long]).addTo(mymap)
+
+  var redIcon = L.icon({
+      iconUrl: icon_dot_url,
+      iconSize:     [18, 18], // size of the icon
+  });
+
+  L.marker([lat,long], {icon: redIcon}).addTo(mymap)
     .bindPopup(callsign);
 
   mymap.on('click', onMapClick);
@@ -1361,6 +1385,12 @@ $(document).ready(function(){
     <?php if ($this->uri->segment(1) == "qrz") { ?>
         <script>
             function ExportQrz(station_id) {
+                if ($(".alert").length > 0) {
+                    $(".alert").remove();
+                }
+                if ($(".errormessages").length > 0) {
+                    $(".errormessages").remove();
+                }
                 $(".ld-ext-right").addClass('running');
                 $(".ld-ext-right").prop('disabled', true);
                 var baseURL= "<?php echo base_url();?>";
@@ -1381,6 +1411,22 @@ $(document).ready(function(){
                         }
                         else {
                             $(".card-body").append('<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + data.info + '</div>');
+                        }
+
+                        if (data.errormessages.length > 0) {
+                            $(".card-body").append('' +
+                                '<div class="errormessages"><p>\n' +
+                                '                            <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">\n' +
+                                '                                Show error messages\n' +
+                                '                            </button>\n' +
+                                '                            </p>\n' +
+                                '                            <div class="collapse" id="collapseExample">\n' +
+                                '                                <div class="card card-body"><div class="errors"></div>\n' +
+                                '                            </div>\n' +
+                                '                            </div></div>');
+                            $.each(data.errormessages, function(index, value) {
+                                $(".errors").append('<li>' + value);
+                            });
                         }
                     }
                 });

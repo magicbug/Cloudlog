@@ -39,8 +39,8 @@
             <div class="form-group row">
                 <div class="col-md-10">
                     <div class="form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="markLotw" value="1" id="markLotw">
-                        <label class="form-check-label" for="markLotw">Mark imported QSOs as uploaded to LoTW (use if ADIF does not contain this information)</label>
+                        <input class="form-check-input" type="checkbox" name="markLotw" value="1" id="markLotwImport">
+                        <label class="form-check-label" for="markLotwImport">Mark imported QSOs as uploaded to LoTW (use if ADIF does not contain this information)</label>
                     </div>
                 </div>
             </div>
@@ -101,8 +101,16 @@
           <div class="form-group row">
               <div class="col-md-10">
                   <div class="form-check-inline">
-                      <input class="form-check-input" type="checkbox" name="markLotw" value="1" id="markLotw">
-                      <label class="form-check-label" for="markLotw">Mark exported QSOs as uploaded to LoTW</label>
+                      <input class="form-check-input" type="checkbox" name="markLotw" value="1" id="markLotwExport">
+                      <label class="form-check-label" for="markLotwExport">Mark exported QSOs as uploaded to LoTW</label>
+                  </div>
+              </div>
+          </div>
+          <div class="form-group row">
+              <div class="col-md-10">
+                  <div class="form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="exportLotw" value="1" id="exportLotw">
+                      <label class="form-check-label" for="exportLotw">Export QSOs not uploaded to LoTW</label>
                   </div>
               </div>
           </div>
