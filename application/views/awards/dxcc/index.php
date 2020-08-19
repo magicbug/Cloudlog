@@ -140,37 +140,7 @@
                         }
                         echo '</tr>';
                     }
-                        echo '</table>
-        <h1>Summary</h1>
-
-        <table class="table table-bordered table-hover table-striped table-condensed text-center">
-        <thead>
-        <tr><td></td>';
-
-        foreach($bands as $band) {
-            echo '<td>' . $band . '</td>';
-        }
-        echo '</tr>';
-
-        echo '</tr>
-        </thead>
-        <tbody>
-
-        <tr><td>Total worked</td>';
-
-        foreach ($dxcc_summary['worked'] as $dxcc) {      // Fills the table with the data
-            echo '<td style="text-align: center">' . $dxcc . '</td>';
-        }
-
-        echo '</tr><tr>
-        <td>Total confirmed</td>';
-        foreach ($dxcc_summary['confirmed'] as $dxcc) {      // Fills the table with the data
-            echo '<td style="text-align: center">' . $dxcc . '</td>';
-        }
-
-        echo '</tr>
-        </table>
-        </div>';
+                        echo '</tfoot></table></div>';
 
     }
     else {

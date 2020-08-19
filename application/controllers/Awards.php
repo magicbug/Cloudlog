@@ -128,7 +128,6 @@ class Awards extends CI_Controller {
 
 		$dxcclist = $this->dxcc->fetchdxcc($postdata);
         $data['dxcc_array'] = $this->dxcc->get_dxcc_array($dxcclist, $bands, $postdata);
-        $data['dxcc_summary'] = $this->dxcc->get_dxcc_summary($bands);
 
 		// Render Page
 		$data['page_title'] = "Awards - DXCC";
