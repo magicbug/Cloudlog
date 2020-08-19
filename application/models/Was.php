@@ -135,30 +135,58 @@ class was extends CI_Model {
     /*
      * Function gets worked and confirmed summary on each band on the active stationprofile
      */
-    function get_was_summary() {
+    function get_was_summary($bands)
+    {
         $CI =& get_instance();
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        $stateArray = explode(',', $this->stateString);
+        foreach ($bands as $band) {
+            $worked = $this->getSummaryByBand($band, $station_id);
+            $confirmed = $this->getSummaryByBandConfirmed($band, $station_id);
+            $wasSummary['worked'][$band] = $worked[0]->count;
+            $wasSummary['confirmed'][$band] = $confirmed[0]->count;
+        }
 
-        $states = array(); // Used for keeping track of which states that are not worked
+        return $wasSummary;
+    }
 
-        $sql = "SELECT thcv.col_band, count(distinct thcv.col_state) as count, coalesce (cfmwas.count, 0) as cfmwas FROM " . $this->config->item('table_name') . " thcv";
+    function getSummaryByBand($band, $station_id)
+    {
+        $sql = "SELECT thcv.col_band, count(distinct thcv.col_state) as count FROM " . $this->config->item('table_name') . " thcv";
 
-        $sql .= " left outer join (
-                    select col_band, count(distinct col_state) as count from " . $this->config->item('table_name') . " thcv";
         $sql .= " where station_id = " . $station_id;
+
+        if ($band == 'SAT') {
+            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+        } else {
+            $sql .= " and thcv.col_prop_mode !='SAT'";
+            $sql .= " and thcv.col_band ='" . $band . "'";
+        }
+
         $sql .= $this->addStateToQuery();
 
-        $sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')
-                group by col_band";
-        $sql .= ") cfmwas on thcv.col_band = cfmwas.col_band ";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+
+    function getSummaryByBandConfirmed($band, $station_id)
+    {
+        $sql = "SELECT thcv.col_band, count(distinct thcv.col_state) as count FROM " . $this->config->item('table_name') . " thcv";
 
         $sql .= " where station_id = " . $station_id;
 
+        if ($band == 'SAT') {
+            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+        } else {
+            $sql .= " and thcv.col_prop_mode !='SAT'";
+            $sql .= " and thcv.col_band ='" . $band . "'";
+        }
+
         $sql .= $this->addStateToQuery();
-        $sql .= " group by thcv.col_band order by thcv.col_band+0 desc";
+
+        $sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
 
         $query = $this->db->query($sql);
 
