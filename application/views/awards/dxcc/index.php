@@ -1,9 +1,9 @@
 
 <div class="container">
-    <h1><?php echo $page_title; ?></h1>
+	<h1><?php echo $page_title; ?></h1>
 
-    <!-- Sub Nav for Awards -->
-
+	<!-- Sub Nav for Awards -->
+	
     <?php $this->load->view("awards/nav_bar")?>
     <form class="form" action="<?php echo site_url('awards/dxcc'); ?>" method="post" enctype="multipart/form-data">
         <fieldset>
@@ -93,9 +93,9 @@
                     <select id="band2" name="band" class="form-control">
                         <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >Every band</option>
                         <?php foreach($worked_bands as $band) {
-                            echo '<option value="' . $band . '"';
-                            if ($this->input->post('band') == $band) echo ' selected';
-                            echo '>' . $band . '</option>'."\n";
+                        echo '<option value="' . $band . '"';
+                        if ($this->input->post('band') == $band) echo ' selected';
+                        echo '>' . $band . '</option>'."\n";
                         } ?>
                     </select>
                 </div>
@@ -112,7 +112,7 @@
 
         </fieldset>
     </form>
-    <?php
+<?php
     $i = 1;
     if ($dxcc_array) {
         echo '
@@ -126,55 +126,25 @@
         if ($this->input->post('includedeleted') || $this->input->method() !== 'post')
             echo '
                         <td>Deleted</td>';
-        foreach($bands as $band) {
-            echo '<td>' . $band . '</td>';
-        }
-        echo '</tr>
+                    foreach($bands as $band) {
+                        echo '<td>' . $band . '</td>';
+                        }
+                        echo '</tr>
                     </thead>
                     <tbody>';
-        foreach ($dxcc_array as $dxcc => $value) {      // Fills the table with the data
-            echo '<tr>
+                    foreach ($dxcc_array as $dxcc => $value) {      // Fills the table with the data
+                        echo '<tr>
                         <td>'. $i++ .'</td>';
-            foreach ($value  as $key) {
-                echo '<td style="text-align: center">' . $key . '</td>';
-            }
-            echo '</tr>';
-        }
-        echo '</table>
-        <h1>Summary</h1>
-
-        <table class="table table-bordered table-hover table-striped table-condensed text-center">
-        <thead>
-        <tr><td></td>';
-
-        foreach($bands as $band) {
-            echo '<td>' . $band . '</td>';
-        }
-        echo '</tr>';
-
-        echo '</tr>
-        </thead>
-        <tbody>
-
-        <tr><td>Total worked</td>';
-
-        foreach ($dxcc_summary['worked'] as $dxcc) {      // Fills the table with the data
-            echo '<td style="text-align: center">' . $dxcc . '</td>';
-        }
-
-        echo '</tr><tr>
-        <td>Total confirmed</td>';
-        foreach ($dxcc_summary['confirmed'] as $dxcc) {      // Fills the table with the data
-            echo '<td style="text-align: center">' . $dxcc . '</td>';
-        }
-
-        echo '</tr>
-        </table>
-        </div>';
+                        foreach ($value  as $key) {
+                            echo '<td style="text-align: center">' . $key . '</td>';
+                        }
+                        echo '</tr>';
+                    }
+                        echo '</tfoot></table></div>';
 
     }
     else {
         echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
     }
-    ?>
+?>
 </div>
