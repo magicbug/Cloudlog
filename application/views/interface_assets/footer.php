@@ -1432,5 +1432,41 @@ $(document).ready(function(){
 
         </script>
     <?php } ?>
+
+    <?php if ($this->uri->segment(2) == "was") { ?>
+            <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
+        <script>
+        function displayWasContacts(was, band) {
+        $.ajax({
+        url: 'include/get/getContacts.php',
+        type: 'post',
+        data: {'was': was,
+        'band': band
+        },
+        success: function(html) {
+        BootstrapDialog.show({
+        onshown: function (dialogRef) {
+        $('.qsotable').DataTable({
+        "pageLength": 10,
+        responsive: true,
+        ordering: false
+        });
+        },
+        title: 'QSO Data',
+        size: BootstrapDialog.SIZE_WIDE,
+        nl2br: false,
+        message: html,
+        buttons: [{
+        label: 'Close',
+        action: function (dialogItself) {
+        dialogItself.close();
+        }
+        }]
+        });
+        }
+        });
+        }
+        </script>
+    <?php } ?>
   </body>
 </html>
