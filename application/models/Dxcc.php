@@ -1,29 +1,30 @@
 <?php
 
-class DXCC extends CI_Model {
+class DXCC extends CI_Model
+{
 
-	public $bandslots = array("160m"=>0,
-                           "80m"=>0,
-                           "60m"=>0,
-                           "40m"=>0,
-                           "30m"=>0,
-                           "20m"=>0,
-                           "17m"=>0,
-                           "15m"=>0,
-                           "12m"=>0,
-                           "10m"=>0,
-                           "6m" =>0,
-                           "4m" =>0,
-                           "2m" =>0,
-                           "70cm"=>0,
-                           "23cm"=>0,
-                           "13cm"=>0,
-                           "9cm"=>0,
-                           "6cm"=>0,
-                           "3cm"=>0,
-                           "1.25cm"=>0,
-                           "SAT"=>0,
-                       );
+	public $bandslots = array("160m" => 0,
+		"80m" => 0,
+		"60m" => 0,
+		"40m" => 0,
+		"30m" => 0,
+		"20m" => 0,
+		"17m" => 0,
+		"15m" => 0,
+		"12m" => 0,
+		"10m" => 0,
+		"6m" => 0,
+		"4m" => 0,
+		"2m" => 0,
+		"70cm" => 0,
+		"23cm" => 0,
+		"13cm" => 0,
+		"9cm" => 0,
+		"6cm" => 0,
+		"3cm" => 0,
+		"1.25cm" => 0,
+		"SAT" => 0,
+	);
 
 	function __construct()
 	{
@@ -32,125 +33,126 @@ class DXCC extends CI_Model {
 
 	}
 
-	function get_worked_bands() {
+	function get_worked_bands()
+	{
 		$CI =& get_instance();
-      	$CI->load->model('Stations');
-      	$station_id = $CI->Stations->find_active();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
 
 		// get all worked slots from database
 		$data = $this->db->query(
-			"SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `".$this->config->item('table_name')."` WHERE station_id = ".$station_id." AND COL_PROP_MODE != \"SAT\""
+			"SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `" . $this->config->item('table_name') . "` WHERE station_id = " . $station_id . " AND COL_PROP_MODE != \"SAT\""
 		);
 		$worked_slots = array();
-		foreach($data->result() as $row){
+		foreach ($data->result() as $row) {
 			array_push($worked_slots, $row->COL_BAND);
 		}
 
 		$SAT_data = $this->db->query(
-			"SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `".$this->config->item('table_name')."` WHERE station_id = ".$station_id." AND COL_PROP_MODE = \"SAT\""
+			"SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `" . $this->config->item('table_name') . "` WHERE station_id = " . $station_id . " AND COL_PROP_MODE = \"SAT\""
 		);
 
-		foreach($SAT_data->result() as $row){
+		foreach ($SAT_data->result() as $row) {
 			array_push($worked_slots, strtoupper($row->COL_PROP_MODE));
 		}
 
 
 		// bring worked-slots in order of defined $bandslots
 		$results = array();
-		foreach(array_keys($this->bandslots) as $slot) {
-			if(in_array($slot, $worked_slots)) {
+		foreach (array_keys($this->bandslots) as $slot) {
+			if (in_array($slot, $worked_slots)) {
 				array_push($results, $slot);
-			} 
+			}
 		}
 
 		return $results;
 	}
 
-	function show_stats(){
+	function show_stats()
+	{
 		$CI =& get_instance();
-      	$CI->load->model('Stations');
-      	$station_id = $CI->Stations->find_active();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
 
-        $data = $this->db->query(
-            "select COL_COUNTRY, COL_MODE, lcase(COL_BAND) as COL_BAND, count(COL_COUNTRY) as cnt
-            from ".$this->config->item('table_name')."
-            where station_id = ".$station_id." AND COL_PROP_MODE != \"SAT\"
+		$data = $this->db->query(
+			"select COL_COUNTRY, COL_MODE, lcase(COL_BAND) as COL_BAND, count(COL_COUNTRY) as cnt
+            from " . $this->config->item('table_name') . "
+            where station_id = " . $station_id . " AND COL_PROP_MODE != \"SAT\"
             group by COL_COUNTRY, COL_MODE, COL_BAND"
-            );
+		);
 
-        $results = array();
-        $last_country = "";
-        foreach($data->result() as $row){
-            if ($last_country != $row->COL_COUNTRY){
-                // new row
-                $results[$row->COL_COUNTRY] = $this->bandslots;
-                $last_country = $row->COL_COUNTRY;
-            }
+		$results = array();
+		$last_country = "";
+		foreach ($data->result() as $row) {
+			if ($last_country != $row->COL_COUNTRY) {
+				// new row
+				$results[$row->COL_COUNTRY] = $this->bandslots;
+				$last_country = $row->COL_COUNTRY;
+			}
 
-            // update stats
-            if (!isset($results[$row->COL_COUNTRY]))
-                $results[$row->COL_COUNTRY] = []; 
+			// update stats
+			if (!isset($results[$row->COL_COUNTRY]))
+				$results[$row->COL_COUNTRY] = [];
 
-            if (!isset($results[$row->COL_COUNTRY][$row->COL_BAND]))
-                $results[$row->COL_COUNTRY][$row->COL_BAND] = 0; 
+			if (!isset($results[$row->COL_COUNTRY][$row->COL_BAND]))
+				$results[$row->COL_COUNTRY][$row->COL_BAND] = 0;
 
-            $results[$row->COL_COUNTRY][$row->COL_BAND] += $row->cnt;
-        }
+			$results[$row->COL_COUNTRY][$row->COL_BAND] += $row->cnt;
+		}
 
-        // Satellite DXCC
+		// Satellite DXCC
 
-            $satellite_data = $this->db->query(
-            "select COL_COUNTRY, COL_PROP_MODE as COL_PROP_MODE, count(COL_COUNTRY) as cnt
-				from ".$this->config->item('table_name')."
-				where station_id = ".$station_id." AND COL_PROP_MODE = \"SAT\"
+		$satellite_data = $this->db->query(
+			"select COL_COUNTRY, COL_PROP_MODE as COL_PROP_MODE, count(COL_COUNTRY) as cnt
+				from " . $this->config->item('table_name') . "
+				where station_id = " . $station_id . " AND COL_PROP_MODE = \"SAT\"
 				group by COL_COUNTRY"
-            );
+		);
 
-            foreach($satellite_data->result() as $row){
-            if ($last_country != $row->COL_COUNTRY){
-                // new row
-                $results[$row->COL_COUNTRY] = $this->bandslots;
-                $last_country = $row->COL_COUNTRY;
-            }
+		foreach ($satellite_data->result() as $row) {
+			if ($last_country != $row->COL_COUNTRY) {
+				// new row
+				$results[$row->COL_COUNTRY] = $this->bandslots;
+				$last_country = $row->COL_COUNTRY;
+			}
 
-            // update stats
-            if (!isset($results[$row->COL_COUNTRY]))
-                $results[$row->COL_COUNTRY] = []; 
+			// update stats
+			if (!isset($results[$row->COL_COUNTRY]))
+				$results[$row->COL_COUNTRY] = [];
 
-            if (!isset($results[$row->COL_COUNTRY][$row->COL_PROP_MODE]))
-                $results[$row->COL_COUNTRY][$row->COL_PROP_MODE] = 0; 
+			if (!isset($results[$row->COL_COUNTRY][$row->COL_PROP_MODE]))
+				$results[$row->COL_COUNTRY][$row->COL_PROP_MODE] = 0;
 
-            $results[$row->COL_COUNTRY][$row->COL_PROP_MODE] += $row->cnt;
-        }
+			$results[$row->COL_COUNTRY][$row->COL_PROP_MODE] += $row->cnt;
+		}
 
-        // print_r($results);
-        // return;
+		// print_r($results);
+		// return;
 
-        return $results;
+		return $results;
 	}
 
 	/**
-	*	Function: mostactive
-	*	Information: Returns the most active band
-	**/
+	 *    Function: mostactive
+	 *    Information: Returns the most active band
+	 **/
 	function info($callsign)
 	{
 		$exceptions = $this->db->query('
 				SELECT *
 				FROM `dxccexceptions`
-				WHERE `prefix` = \''.$callsign.'\'
+				WHERE `prefix` = \'' . $callsign . '\'
 				LIMIT 1
 			');
 
-		if ($exceptions->num_rows() > 0)
-		{
+		if ($exceptions->num_rows() > 0) {
 			return $exceptions;
 		} else {
 
 			$query = $this->db->query('
 					SELECT *
 					FROM dxcc_entities
-					WHERE prefix = SUBSTRING( \''.$callsign.'\', 1, LENGTH( prefix ) )
+					WHERE prefix = SUBSTRING( \'' . $callsign . '\', 1, LENGTH( prefix ) )
 					ORDER BY LENGTH( prefix ) DESC
 					LIMIT 1
 				');
@@ -159,26 +161,30 @@ class DXCC extends CI_Model {
 		}
 	}
 
-    function search(){
-        print_r($this->input->get());
-        return;
-    }
+	function search()
+	{
+		print_r($this->input->get());
+		return;
+	}
 
-	function empty_table($table) {
+	function empty_table($table)
+	{
 		$this->db->empty_table($table);
 	}
 
-	function list() {
+	function list()
+	{
 		$this->db->order_by('name', 'ASC');
 		return $this->db->get('dxcc_entities');
 	}
 
-	function get_dxcc_array($dxccArray, $bands, $postdata) {
+	function get_dxcc_array($dxccArray, $bands, $postdata)
+	{
 		$CI =& get_instance();
 		$CI->load->model('Stations');
 		$station_id = $CI->Stations->find_active();
 
-		foreach ($bands as $band) {             	// Looping through bands and entities to generate the array needed for display
+		foreach ($bands as $band) {                // Looping through bands and entities to generate the array needed for display
 			foreach ($dxccArray as $dxcc) {
 				$dxccMatrix[$dxcc->adif]['name'] = $dxcc->name;
 				$dxccMatrix[$dxcc->adif]['Dxccprefix'] = $dxcc->prefix;
@@ -191,7 +197,7 @@ class DXCC extends CI_Model {
 			if ($postdata['worked'] != NULL) {
 				$workedDXCC = $this->getDxccBandWorked($station_id, $band, $postdata);
 				foreach ($workedDXCC as $wdxcc) {
-					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="alert-danger"><a href=\'dxcc_details?Country="'.str_replace("&", "%26", $wdxcc->name).'"&Band="'. $band . '"\'>W</a></div>';;
+					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="alert-danger"><a href=\'dxcc_details?Country="' . str_replace("&", "%26", $wdxcc->name) . '"&Band="' . $band . '"\'>W</a></div>';;
 				}
 			}
 
@@ -199,7 +205,7 @@ class DXCC extends CI_Model {
 			if ($postdata['confirmed'] != NULL) {
 				$confirmedDXCC = $this->getDxccBandConfirmed($station_id, $band, $postdata);
 				foreach ($confirmedDXCC as $cdxcc) {
-					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="alert-success"><a href=\'dxcc_details?Country="'.str_replace("&", "%26", $cdxcc->name).'"&Band="'. $band . '"\'>C</a></div>';;
+					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="alert-success"><a href=\'dxcc_details?Country="' . str_replace("&", "%26", $cdxcc->name) . '"&Band="' . $band . '"\'>C</a></div>';;
 				}
 			}
 		}
@@ -226,23 +232,22 @@ class DXCC extends CI_Model {
 
 		if (isset($dxccMatrix)) {
 			return $dxccMatrix;
-		}
-		else {
+		} else {
 			return 0;
 		}
 	}
 
-	function getDxccBandConfirmed($station_id, $band, $postdata) {
+	function getDxccBandConfirmed($station_id, $band, $postdata)
+	{
 		$sql = "select adif as dxcc, name from dxcc_entities
 				join (
-					select col_dxcc from ".$this->config->item('table_name')." thcv
+					select col_dxcc from " . $this->config->item('table_name') . " thcv
 					where station_id = " . $station_id .
-				  " and col_dxcc > 0";
+			" and col_dxcc > 0";
 
 		if ($band == 'SAT') {
 			$sql .= " and col_prop_mode ='" . $band . "'";
-		}
-		else {
+		} else {
 			$sql .= " and col_prop_mode !='SAT'";
 			$sql .= " and col_band ='" . $band . "'";
 		}
@@ -263,17 +268,17 @@ class DXCC extends CI_Model {
 		return $query->result();
 	}
 
-	function getDxccBandWorked($station_id, $band, $postdata) {
+	function getDxccBandWorked($station_id, $band, $postdata)
+	{
 		$sql = "select adif as dxcc, name from dxcc_entities
 				join (
-					select col_dxcc from ".$this->config->item('table_name')." thcv
+					select col_dxcc from " . $this->config->item('table_name') . " thcv
 					where station_id = " . $station_id .
-					" and col_dxcc > 0";
+			" and col_dxcc > 0";
 
 		if ($band == 'SAT') {
 			$sql .= " and col_prop_mode ='" . $band . "'";
-		}
-		else {
+		} else {
 			$sql .= " and col_prop_mode !='SAT'";
 			$sql .= " and col_band ='" . $band . "'";
 		}
@@ -292,7 +297,8 @@ class DXCC extends CI_Model {
 		return $query->result();
 	}
 
-	function fetchDxcc($postdata) {
+	function fetchDxcc($postdata)
+	{
 		$CI =& get_instance();
 		$CI->load->model('Stations');
 		$station_id = $CI->Stations->find_active();
@@ -301,13 +307,12 @@ class DXCC extends CI_Model {
             from dxcc_entities";
 
 		if ($postdata['notworked'] == NULL) {
-			$sql .= " join (select col_dxcc from ".$this->config->item('table_name')." where station_id = $station_id";
+			$sql .= " join (select col_dxcc from " . $this->config->item('table_name') . " where station_id = $station_id";
 
 			if ($postdata['band'] != 'All') {
 				if ($postdata['band'] == 'SAT') {
 					$sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
-				}
-				else {
+				} else {
 					$sql .= " and col_prop_mode !='SAT'";
 					$sql .= " and col_band ='" . $postdata['band'] . "'";
 				}
@@ -330,31 +335,30 @@ class DXCC extends CI_Model {
 		return $query->result();
 	}
 
-	function getDxccWorked($station_id, $postdata) {
+	function getDxccWorked($station_id, $postdata)
+	{
 		$sql = "SELECT adif as dxcc FROM dxcc_entities
         join (
             select col_dxcc 
-            from ".$this->config->item('table_name')." thcv
+            from " . $this->config->item('table_name') . " thcv
             where station_id = " . $station_id .
-              " and col_dxcc > 0";
+			" and col_dxcc > 0";
 
 		if ($postdata['band'] != 'All') {
 			if ($postdata['band'] == 'SAT') {
 				$sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
-			}
-			else {
+			} else {
 				$sql .= " and col_prop_mode !='SAT'";
 				$sql .= " and col_band ='" . $postdata['band'] . "'";
 			}
 		}
 
-		$sql .= " and not exists (select 1 from ".$this->config->item('table_name')." where station_id = $station_id and col_dxcc = thcv.col_dxcc";
+		$sql .= " and not exists (select 1 from " . $this->config->item('table_name') . " where station_id = $station_id and col_dxcc = thcv.col_dxcc";
 
 		if ($postdata['band'] != 'All') {
 			if ($postdata['band'] == 'SAT') {
 				$sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
-			}
-			else {
+			} else {
 				$sql .= " and col_prop_mode !='SAT'";
 				$sql .= " and col_band ='" . $postdata['band'] . "'";
 			}
@@ -379,19 +383,19 @@ class DXCC extends CI_Model {
 		return $query->result();
 	}
 
-	function getDxccConfirmed($station_id, $postdata) {
+	function getDxccConfirmed($station_id, $postdata)
+	{
 		$sql = "SELECT adif as dxcc FROM dxcc_entities
             join (
                 select col_dxcc 
-                from ".$this->config->item('table_name')." thcv
-                where station_id = ". $station_id .
-                    " and col_dxcc > 0";
+                from " . $this->config->item('table_name') . " thcv
+                where station_id = " . $station_id .
+			" and col_dxcc > 0";
 
 		if ($postdata['band'] != 'All') {
 			if ($postdata['band'] == 'SAT') {
 				$sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
-			}
-			else {
+			} else {
 				$sql .= " and col_prop_mode !='SAT'";
 				$sql .= " and col_band ='" . $postdata['band'] . "'";
 			}
@@ -415,7 +419,8 @@ class DXCC extends CI_Model {
 	}
 
 	// Made function instead of repeating this several times
-	function addQslToQuery($postdata) {
+	function addQslToQuery($postdata)
+	{
 		$sql = '';
 		if ($postdata['lotw'] != NULL and $postdata['qsl'] == NULL) {
 			$sql .= " and col_lotw_qsl_rcvd = 'Y'";
@@ -432,7 +437,8 @@ class DXCC extends CI_Model {
 	}
 
 	// Made function instead of repeating this several times
-	function addContinentsToQuery($postdata) {
+	function addContinentsToQuery($postdata)
+	{
 		$sql = '';
 		if ($postdata['Africa'] == NULL) {
 			$sql .= " and cont <> 'AF'";
@@ -462,6 +468,57 @@ class DXCC extends CI_Model {
 			$sql .= " and cont <> 'AN'";
 		}
 		return $sql;
+	}
+
+	/*
+     * Function gets worked and confirmed summary on each band on the active stationprofile
+     */
+	function get_dxcc_summary($bands)
+	{
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
+
+		foreach ($bands as $band) {
+			$result = $this->getSummaryByBand($band, $station_id);
+			$dxccSummary['worked'][$band] = $result[0]->count;
+			$dxccSummary['confirmed'][$band] = $result[0]->cfmdxcc;
+		}
+
+		return $dxccSummary;
+	}
+
+	function getSummaryByBand($band, $station_id)
+	{
+		$sql = "SELECT thcv.col_band, count(distinct thcv.col_dxcc) as count, coalesce (cfmdxcc.count, 0) as cfmdxcc FROM " . $this->config->item('table_name') . " thcv";
+
+		$sql .= " left outer join (
+                    select col_band, count(distinct col_dxcc) as count from " . $this->config->item('table_name') . " thcv";
+		$sql .= " where station_id = " . $station_id;
+
+		if ($band == 'SAT') {
+			$sql .= " and col_prop_mode ='" . $band . "'";
+		} else {
+			$sql .= " and col_prop_mode !='SAT'";
+			$sql .= " and col_band ='" . $band . "'";
+		}
+
+		$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+
+		$sql .= ") cfmdxcc on thcv.col_band = cfmdxcc.col_band ";
+
+		$sql .= " where station_id = " . $station_id;
+
+		if ($band == 'SAT') {
+			$sql .= " and thcv.col_prop_mode ='" . $band . "'";
+		} else {
+			$sql .= " and thcv.col_prop_mode !='SAT'";
+			$sql .= " and thcv.col_band ='" . $band . "'";
+
+		}
+		$query = $this->db->query($sql);
+
+		return $query->result();
 	}
 }
 ?>
