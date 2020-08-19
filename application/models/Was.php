@@ -153,7 +153,7 @@ class was extends CI_Model {
 
     function getSummaryByBand($band, $station_id)
     {
-        $sql = "SELECT thcv.col_band, count(distinct thcv.col_state) as count FROM " . $this->config->item('table_name') . " thcv";
+        $sql = "SELECT count(distinct thcv.col_state) as count FROM " . $this->config->item('table_name') . " thcv";
 
         $sql .= " where station_id = " . $station_id;
 
@@ -173,7 +173,7 @@ class was extends CI_Model {
 
     function getSummaryByBandConfirmed($band, $station_id)
     {
-        $sql = "SELECT thcv.col_band, count(distinct thcv.col_state) as count FROM " . $this->config->item('table_name') . " thcv";
+        $sql = "SELECT count(distinct thcv.col_state) as count FROM " . $this->config->item('table_name') . " thcv";
 
         $sql .= " where station_id = " . $station_id;
 
