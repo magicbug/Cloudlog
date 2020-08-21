@@ -34,7 +34,7 @@ class Dashboard extends CI_Controller {
  
 		$this->load->model('stations');
 		$data['current_active'] = $this->stations->find_active();
-		
+		 
 		// Store info
 		$data['todays_qsos'] = $this->logbook_model->todays_qsos();
 		$data['total_qsos'] = $this->logbook_model->total_qsos();
@@ -146,14 +146,6 @@ class Dashboard extends CI_Controller {
 		}
 		echo "]";
 		echo "}";
-
-	}
-
-	function test() {
-		
-		$this->load->library('clublog');
-
-		echo $this->clublog->send();
 
 	}
 	
