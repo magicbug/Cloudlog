@@ -31,7 +31,7 @@ class Dashboard extends CI_Controller {
 		} else {
 				$data['qra'] = "none";
 		}
-
+ 
 		$this->load->model('stations');
 		$data['current_active'] = $this->stations->find_active();
 		
@@ -41,11 +41,6 @@ class Dashboard extends CI_Controller {
 		$data['month_qsos'] = $this->logbook_model->month_qsos();
 		$data['year_qsos'] = $this->logbook_model->year_qsos();
 		
-		$data['total_ssb'] = $this->logbook_model->total_ssb();
-		$data['total_cw'] = $this->logbook_model->total_cw();
-		$data['total_fm'] = $this->logbook_model->total_fm();
-		$data['total_digi'] = $this->logbook_model->total_digi();
-		
 		$data['total_countrys'] = $this->logbook_model->total_countrys();
 		$data['total_countrys_confirmed_paper'] = $this->logbook_model->total_countrys_confirmed_paper();
 		$data['total_countrys_confirmed_eqsl'] = $this->logbook_model->total_countrys_confirmed_eqsl();
@@ -54,9 +49,7 @@ class Dashboard extends CI_Controller {
 		$data['total_qsl_sent'] = $this->logbook_model->total_qsl_sent();
 		$data['total_qsl_recv'] = $this->logbook_model->total_qsl_recv();
 		$data['total_qsl_requested'] = $this->logbook_model->total_qsl_requested();
-		
-		$data['total_bands'] = $this->logbook_model->total_bands();
-		
+				
 		$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('11');
 
 		$data['page_title'] = "Dashboard";
