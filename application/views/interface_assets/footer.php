@@ -182,7 +182,7 @@ $('[data-fancybox]').fancybox({
         <?php } ?>
 
         var qso_loc = '<?php echo site_url('dashboard/map');?>';
-        var q_zoom = 2;
+        var q_zoom = 3;
 
       $(document).ready(function(){
             <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
