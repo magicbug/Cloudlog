@@ -8,7 +8,7 @@
     <form id="qso_input" method="post" action="<?php echo site_url('qso') . "?manual=" . $_GET['manual']; ?>" name="qsos">
 
       <div class="card-header"> 
-        <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
+        <ul style="font-size: 15px;" class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
           <li class="nav-item">
            <a class="nav-link active" id="qsp-tab" data-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true">QSO</a>
           </li>
@@ -22,7 +22,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Satellite</a>
+            <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Sat</a>
           </li>
           
           <li class="nav-item">
@@ -30,7 +30,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" id="qsl-tab" data-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false">QSLing</a>
+            <a class="nav-link" id="qsl-tab" data-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false">QSL</a>
           </li>
         </ul>
       </div>
