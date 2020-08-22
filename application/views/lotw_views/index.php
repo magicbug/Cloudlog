@@ -1,6 +1,6 @@
 <div class="container lotw">
-
-	<h1><?php echo $page_title; ?></h1>
+<br>
+	<a class="btn btn-success btn-sm float-right" href="<?php echo site_url('/lotw/import'); ?>" role="button"><i class="fas fa-cloud-upload-alt"></i> LoTW Import</a><h1><?php echo $page_title; ?></h1>
 
 	<!-- Card Starts -->
 	<div class="card">

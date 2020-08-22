@@ -136,6 +136,49 @@ class Lotw extends CI_Controller {
         }
     }
 
+    /*
+	|--------------------------------------------------------------------------
+	| Function: lotw_upload
+	|--------------------------------------------------------------------------
+	| 
+	| This function Uploads to LOTW
+	|
+	*/
+	public function lotw_upload() {
+		// Get Station Profile Data
+			$this->load->model('Stations');
+
+			$station_profiles = $this->Stations->all();
+
+			if ($station_profiles->num_rows() >= 1) {
+				foreach ($station_profiles->result() as $station_profile)
+				{
+					print_r($station_profile);
+
+					// Get Certificate Data
+					$this->load->model('LotwCert');
+
+					$lotw_cert_info = $this->LotwCert->lotw_cert_details($station_profile->station_callsign, $this->session->userdata('user_id'));
+
+					print_r($lotw_cert_info);
+				}
+			} else {
+				echo "No Station Profiles";
+			}
+
+		// Get Certificate Data
+			$this->load->model('LotwCert');
+		// Set QSOs for Station Profile that havent been uploaded
+
+		// Build ADIF file
+
+		// Save TQ8
+
+		// Upload TQ8
+
+		// Destory TQ8
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Function: delete_cert

@@ -25,6 +25,14 @@ class LotwCert extends CI_Model {
 		return $query;
 	}
 
+	function lotw_cert_details($callsign, $user_id) {
+		$this->db->where('user_id', $user_id);
+		$this->db->where('callsign', $callsign);
+		$query = $this->db->get('lotw_certs');
+
+		return $query->row();
+	}
+
 	function find_cert($callsign, $user_id) {
 		$this->db->where('user_id', $user_id);
 		$this->db->where('callsign', $callsign);
