@@ -354,8 +354,11 @@
           
           <!-- Notes Panel Contents -->
           <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+            <div class="alert alert-info" role="alert">
+              Internal usage only, not exported.
+            </div>
            <div class="form-group">
-              <label for="notes">Notes (for internal usage only)</label>
+              <label for="notes">Notes</label>
               <textarea  type="text" class="form-control" id="notes" name="notes" rows="10"></textarea>
             </div>
           </div>
