@@ -1116,7 +1116,7 @@ $(document).ready(function(){
   var map = L.map('map', {
     layers: [layer],
     center: [19, 0],
-    zoom: 2
+    zoom: 3
   });
   
   var grid_two = <?php echo $grid_2char; ?>;
