@@ -263,7 +263,7 @@ $(document).on('keypress',function(e) {
         <?php } ?>
 
         var qso_loc = '<?php echo site_url('logbook/qso_map/25/'.$this->uri->segment(3)); ?>';
-        var q_zoom = 2;
+        var q_zoom = 3;
 
         <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
               var grid = "Yes";
