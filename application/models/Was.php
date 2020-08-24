@@ -133,6 +133,67 @@ class was extends CI_Model {
     }
 
     /*
+     * Function gets worked and confirmed summary on each band on the active stationprofile
+     */
+    function get_was_summary($bands)
+    {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        foreach ($bands as $band) {
+            $worked = $this->getSummaryByBand($band, $station_id);
+            $confirmed = $this->getSummaryByBandConfirmed($band, $station_id);
+            $wasSummary['worked'][$band] = $worked[0]->count;
+            $wasSummary['confirmed'][$band] = $confirmed[0]->count;
+        }
+
+        return $wasSummary;
+    }
+
+    function getSummaryByBand($band, $station_id)
+    {
+        $sql = "SELECT count(distinct thcv.col_state) as count FROM " . $this->config->item('table_name') . " thcv";
+
+        $sql .= " where station_id = " . $station_id;
+
+        if ($band == 'SAT') {
+            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+        } else {
+            $sql .= " and thcv.col_prop_mode !='SAT'";
+            $sql .= " and thcv.col_band ='" . $band . "'";
+        }
+
+        $sql .= $this->addStateToQuery();
+
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+
+    function getSummaryByBandConfirmed($band, $station_id)
+    {
+        $sql = "SELECT count(distinct thcv.col_state) as count FROM " . $this->config->item('table_name') . " thcv";
+
+        $sql .= " where station_id = " . $station_id;
+
+        if ($band == 'SAT') {
+            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+        } else {
+            $sql .= " and thcv.col_prop_mode !='SAT'";
+            $sql .= " and thcv.col_band ='" . $band . "'";
+        }
+
+        $sql .= $this->addStateToQuery();
+
+        $sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+
+    /*
      * Function returns all worked, but not confirmed states
      * $postdata contains data from the form, in this case Lotw or QSL are used
      */
