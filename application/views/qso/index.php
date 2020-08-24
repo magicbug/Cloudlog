@@ -8,7 +8,7 @@
     <form id="qso_input" method="post" action="<?php echo site_url('qso') . "?manual=" . $_GET['manual']; ?>" name="qsos">
 
       <div class="card-header"> 
-        <ul class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
+        <ul style="font-size: 15px;" class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
           <li class="nav-item">
            <a class="nav-link active" id="qsp-tab" data-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true">QSO</a>
           </li>
@@ -22,7 +22,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Satellite</a>
+            <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Sat</a>
           </li>
           
           <li class="nav-item">
@@ -30,7 +30,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" id="qsl-tab" data-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false">QSLing</a>
+            <a class="nav-link" id="qsl-tab" data-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false">QSL</a>
           </li>
         </ul>
       </div>
@@ -70,9 +70,12 @@
                   <label for="mode">Mode</label>
                   <select id="mode" class="form-control mode form-control-sm" name="mode">
                   <?php
-                      $this->load->library('frequency');
-                      foreach(Frequency::modes as $mode){
-                          printf("<option value=\"%s\" %s>%s</option>", $mode, $this->session->userdata('mode')==$mode?"selected=\"selected\"":"",$mode);
+                      foreach($modes->result() as $mode){
+                        if ($mode->submode == null) {
+                          printf("<option value=\"%s\" %s>%s</option>", $mode->mode, $this->session->userdata('mode')==$mode->mode?"selected=\"selected\"":"",$mode->mode);
+                        } else {
+                          printf("<option value=\"%s\" %s>&rArr; %s</option>", $mode->submode, $this->session->userdata('mode')==$mode->submode?"selected=\"selected\"":"",$mode->submode);
+                        } 
                       }
                   ?>
                   </select>
@@ -351,8 +354,11 @@
           
           <!-- Notes Panel Contents -->
           <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+            <div class="alert alert-info" role="alert">
+              Internal usage only, not exported.
+            </div>
            <div class="form-group">
-              <label for="notes">Notes (for internal usage only)</label>
+              <label for="notes">Notes</label>
               <textarea  type="text" class="form-control" id="notes" name="notes" rows="10"></textarea>
             </div>
           </div>
@@ -457,7 +463,7 @@
                     <?php  echo '<tr class="tr'.($i & 1).'">'; ?>
                     <td><?php echo date($this->config->item('qso_date_format').' H:i',strtotime($row->COL_TIME_ON)); ?></td>
                     <td><a class="qsobox" data-fancybox data-type="iframe" data-width="750" data-height="520" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a></td>
-                    <td><?php echo $row->COL_MODE; ?></td>
+                    <td><?php echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; ?></td>
                     <td><?php echo $row->COL_RST_SENT; ?></td>
                     <td><?php echo $row->COL_RST_RCVD; ?></td>
                     <?php if($row->COL_SAT_NAME != null) { ?>

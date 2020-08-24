@@ -18,9 +18,11 @@
 			  <p><?php echo $this->session->flashdata('message'); ?></p>
 			</div>
 		<?php } ?>
+</div>
 
 	<div id="map" style="width: 100%; height: 800px"></div>
 
+<div class="container">
 	<?php if ($this->uri->segment(2) == "satellites") { ?>
 		<div class="alert alert-success" role="alert">
 			Confirmed is Green | Worked but not confirmed is Red

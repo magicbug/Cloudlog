@@ -115,8 +115,12 @@ $(".search-results-box").hide();
           }
 
           var callsign = '<a data-fancybox data-type="iframe" data-src="<?php echo site_url('logbook/view');?>/' + item.COL_PRIMARY_KEY + '" data-src="" href="javascript:;">' + item.COL_CALL + '</a>';
-
-          $('#results').append('<tr class="qso"><td>' + item.COL_TIME_ON + '</td><td>' + callsign + '</td><td>' + item.COL_MODE + '</td><td>' + item.COL_RST_SENT + '</td><td>' + item.COL_RST_RCVD + '</td><td>' + band + '</td><td>' + item.COL_COUNTRY + '</td><td></td></tr>');
+          if (item.COL_SUBMODE == null) {
+            $('#results').append('<tr class="qso"><td>' + item.COL_TIME_ON + '</td><td>' + callsign + '</td><td>' + item.COL_MODE + '</td><td>' + item.COL_RST_SENT + '</td><td>' + item.COL_RST_RCVD + '</td><td>' + band + '</td><td>' + item.COL_COUNTRY + '</td><td></td></tr>');
+          }
+          else {
+            $('#results').append('<tr class="qso"><td>' + item.COL_TIME_ON + '</td><td>' + callsign + '</td><td>' + item.COL_SUBMODE + '</td><td>' + item.COL_RST_SENT + '</td><td>' + item.COL_RST_RCVD + '</td><td>' + band + '</td><td>' + item.COL_COUNTRY + '</td><td></td></tr>');
+          }
         });
 
       });
@@ -178,7 +182,7 @@ $('[data-fancybox]').fancybox({
         <?php } ?>
 
         var qso_loc = '<?php echo site_url('dashboard/map');?>';
-        var q_zoom = 2;
+        var q_zoom = 3;
 
       $(document).ready(function(){
             <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
@@ -259,7 +263,7 @@ $(document).on('keypress',function(e) {
         <?php } ?>
 
         var qso_loc = '<?php echo site_url('logbook/qso_map/25/'.$this->uri->segment(3)); ?>';
-        var q_zoom = 2;
+        var q_zoom = 3;
 
         <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
               var grid = "Yes";
@@ -1112,7 +1116,7 @@ $(document).ready(function(){
   var map = L.map('map', {
     layers: [layer],
     center: [19, 0],
-    zoom: 2
+    zoom: 3
   });
   
   var grid_two = <?php echo $grid_2char; ?>;
