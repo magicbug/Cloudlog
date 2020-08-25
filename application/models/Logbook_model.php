@@ -2157,7 +2157,20 @@ class Logbook_model extends CI_Model {
             return null;
         }
     }
-    
+ 
+  function get_lotw_qsos_to_upload($station_id) {
+
+    $this->db->select('COL_CALL, COL_BAND, COL_BAND_RX, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_FREQ, COL_FREQ_RX, COL_GRIDSQUARE, COL_SAT_NAME, COL_PROP_MODE');
+
+    $this->db->where("station_id", 1);
+
+    $this->db->order_by("COL_TIME_ON", "desc");
+    $this->db->limit(1);
+    $query = $this->db->get($this->config->item('table_name'));
+
+    return $query;
+  }
+
 }
 
 function validateADIFDate($date, $format = 'Ymd')

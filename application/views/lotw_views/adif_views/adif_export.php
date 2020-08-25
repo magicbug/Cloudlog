@@ -1,11 +1,16 @@
 <?php
 	header('Content-Type: text/plain; charset=utf-8');
 ?>
+<?php 
+$cert1 = str_replace("-----BEGIN ENCRYPTED PRIVATE KEY-----", "", $lotw_cert_info->cert_key);
+$cert2 = str_replace("-----END ENCRYPTED PRIVATE KEY-----", "", $cert1);
+?>
 <TQSL_IDENT:54>TQSL V2.5.4 Lib: V2.5 Config: V11.12 AllowDupes: false
 
 <Rec_Type:5>tCERT
 <CERT_UID:1>1
-<CERTIFICATE:<?php echo strlen($lotw_cert_info->cert_key); ?>><?php echo $lotw_cert_info->cert_key; ?>
+<CERTIFICATE:<?php echo strlen(trim($cert2)); ?>><?php echo trim($cert2); ?>
+
 <eor>
 
 <Rec_Type:8>tSTATION
@@ -24,3 +29,103 @@
 <?php if(isset($station_profile->station_iota)) { ?><IOTA:<?php echo strlen($station_profile->station_iota); ?>><?php echo $station_profile->station_iota; ?><?php } ?>
 
 <eor>
+
+<?php foreach ($qsos->result() as $qso) { ?>
+<Rec_Type:8>tCONTACT
+<STATION_UID:1>1
+<CALL:<?php echo strlen($qso->COL_CALL); ?>><?php echo $qso->COL_CALL; ?>
+
+<BAND:<?php echo strlen($qso->COL_BAND); ?>><?php echo strtoupper($qso->COL_BAND); ?>
+
+<MODE:<?php echo strlen($qso->COL_MODE); ?>><?php echo strtoupper($qso->COL_MODE); ?>
+
+<?php if($qso->COL_FREQ != "0") { ?><?php $freq_in_mhz = $qso->COL_FREQ / 1000000; ?><FREQ:<?php echo strlen($freq_in_mhz); ?>><?php echo $freq_in_mhz; ?><?php } ?>
+
+<?php if($qso->COL_FREQ_RX) { ?><?php $freq_in_mhz_rx = $qso->COL_FREQ_RX / 1000000; ?><FREQ_RX:<?php echo strlen($freq_in_mhz_rx); ?>><?php echo $freq_in_mhz_rx; ?><?php } ?>
+
+<PROP_MODE:<?php echo strlen($qso->COL_PROP_MODE); ?>><?php echo strtoupper($qso->COL_PROP_MODE); ?>
+
+<SAT_NAME:<?php echo strlen($qso->COL_SAT_NAME); ?>><?php echo strtoupper($qso->COL_SAT_NAME); ?>
+
+<?php if($qso->COL_BAND_RX) { ?><BAND_RX:<?php echo strlen($qso->COL_BAND_RX); ?>><?php echo strtoupper($qso->COL_BAND_RX); ?><?php } ?>
+
+<?php $date_on = strtotime($qso->COL_TIME_ON); $new_date = date('Y-m-d', $date_on); ?>
+<QSO_DATE:<?php echo strlen($new_date); ?>><?php echo $new_date; ?>
+
+<?php $time_on = strtotime($qso->COL_TIME_ON); $new_on = date('H:i:s', $time_on); ?>
+<QSO_TIME:<?php echo strlen($new_on."Z"); ?>><?php echo $new_on."Z"; ?>
+
+<?php 
+
+
+$sign_string = "";
+
+// Add CQ Zone
+if($station_profile->station_cq) {
+	$sign_string .= $station_profile->station_cq;
+}
+
+// Add Gridsquare
+if($station_profile->station_gridsquare) {
+	$sign_string .= strtoupper($station_profile->station_gridsquare);
+}
+
+if($station_profile->station_iota) {
+	$sign_string .= strtoupper($station_profile->station_iota);
+}
+
+if($station_profile->station_itu) {
+	$sign_string .= $station_profile->station_itu;
+}
+
+if($qso->COL_BAND) {
+	$sign_string .= strtoupper($qso->COL_BAND);
+}
+
+if($qso->COL_BAND_RX) {
+	$sign_string .= strtoupper($qso->COL_BAND_RX);
+}
+
+if($qso->COL_CALL) {
+	$sign_string .= strtoupper($qso->COL_CALL);
+}
+
+if($freq_in_mhz) {
+	$sign_string .= strtoupper($freq_in_mhz);
+}
+
+if($freq_in_mhz_rx) {
+	$sign_string .= strtoupper($freq_in_mhz_rx);
+}
+
+if($qso->COL_MODE) {
+	$sign_string .= strtoupper($qso->COL_MODE);
+}
+
+
+if($qso->COL_PROP_MODE) {
+	$sign_string .= strtoupper($qso->COL_PROP_MODE);
+}
+
+$sign_string .= $new_date;
+
+$sign_string .= $new_on."Z";
+
+if($qso->COL_SAT_NAME) {
+	$sign_string .= strtoupper($qso->COL_SAT_NAME);
+}
+
+ ?>
+<?php 
+    $CI =& get_instance();
+    $signed_item = $CI->signlog($lotw_cert_info->cert_key, $sign_string);
+
+?>
+<SIGN_LOTW_V2.0:<?php echo strlen($signed_item); ?>:6><?php echo $signed_item; ?>
+
+<SIGNDATA:<?php echo strlen($sign_string); ?>><?php echo $sign_string; ?>
+
+<eor>
+
+<?php } ?>
+

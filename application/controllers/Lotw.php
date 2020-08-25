@@ -162,6 +162,12 @@ class Lotw extends CI_Controller {
 					$this->load->model('Dxcc');
 					$data['station_profile_dxcc'] = $this->Dxcc->lookup_country($data['lotw_cert_info']->cert_dxcc);
 
+					// Get QSOs
+
+					$this->load->model('Logbook_model');
+
+					$data['qsos'] = $this->Logbook_model->get_lotw_qsos_to_upload($data['station_profile']->station_id);
+
 					$this->load->view('lotw_views/adif_views/adif_export', $data);
 				}
 			} else {
@@ -626,13 +632,13 @@ class Lotw extends CI_Controller {
 
 	}
 
-	function signlog() {
+	function signlog($sign_key, $string) {
 
-		$qso_string = "14IO87IPEU-0052770CM2MG0IIQ435.355562145.878136FMSAT2020-08-1212:10:53ZAO-92";
+		$qso_string = $string;
 
-		$key = "";
+		$key = $sign_key;
 
-		$pkeyid = openssl_pkey_get_private($key, 'peter');
+		$pkeyid = openssl_pkey_get_private($key, 'cloudlog');
 		//openssl_sign($plaintext, $signature, $pkeyid, OPENSSL_ALGO_SHA1 );
 		//openssl_free_key($pkeyid);
 
@@ -640,7 +646,7 @@ class Lotw extends CI_Controller {
 		if(openssl_sign($qso_string, $signature, $pkeyid, OPENSSL_ALGO_SHA1)) {
 		  openssl_free_key($pkeyid);
 		  $signature_b64 = base64_encode($signature);
-		  echo($signature_b64."\n");
+		  return $signature_b64;
 		}
 
 
