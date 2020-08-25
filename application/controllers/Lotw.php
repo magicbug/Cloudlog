@@ -153,14 +153,16 @@ class Lotw extends CI_Controller {
 			if ($station_profiles->num_rows() >= 1) {
 				foreach ($station_profiles->result() as $station_profile)
 				{
-					print_r($station_profile);
 
 					// Get Certificate Data
 					$this->load->model('LotwCert');
+					$data['station_profile'] = $station_profile;
+					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign);
 
-					$lotw_cert_info = $this->LotwCert->lotw_cert_details($station_profile->station_callsign, $this->session->userdata('user_id'));
+					$this->load->model('Dxcc');
+					$data['station_profile_dxcc'] = $this->Dxcc->lookup_country($data['lotw_cert_info']->cert_dxcc);
 
-					print_r($lotw_cert_info);
+					$this->load->view('lotw_views/adif_views/adif_export', $data);
 				}
 			} else {
 				echo "No Station Profiles";

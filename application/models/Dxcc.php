@@ -463,5 +463,19 @@ class DXCC extends CI_Model {
 		}
 		return $sql;
 	}
+
+	function lookup_country($country)
+	{
+		$query = $this->db->query('
+					SELECT *
+					FROM dxcc_entities
+					WHERE name = "'.$country.'"
+					ORDER BY LENGTH( prefix ) DESC
+					LIMIT 1
+				');
+
+		return $query->row();
+	}
+
 }
 ?>
