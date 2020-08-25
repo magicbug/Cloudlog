@@ -129,30 +129,31 @@ class QSO extends CI_Controller {
 
         $this->load->model('logbook_model');
         $this->load->model('user_model');
-        if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-        $id = str_replace('"', "", $this->input->post("id"));
-        $query = $this->logbook_model->qso_info($id);
 
         $this->load->library('form_validation');
 
-        $this->form_validation->set_rules('time_on', 'Start Date', 'required');
-        $this->form_validation->set_rules('time_off', 'End Date', 'required');
-        $this->form_validation->set_rules('callsign', 'Callsign', 'required');
+        if(!$this->user_model->authorize(2)) {
+            $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard');
+        }
+
+        $id = str_replace('"', "", $this->input->post("id"));
+        $query = $this->logbook_model->qso_info($id);
 
         $data['qso'] = $query->row();
         $data['dxcc'] = $this->logbook_model->fetchDxcc();
         $data['iota'] = $this->logbook_model->fetchIota();
 
-        if ($this->form_validation->run() == FALSE)
-        {
-            $this->load->view('qso/edit', $data);
+        $this->load->view('qso/edit_ajax', $data);
+    }
+
+    function qso_save_ajax() {
+        $this->load->model('logbook_model');
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(2)) {
+            $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard');
         }
-        else
-        {
-            $this->logbook_model->edit();
-            $this->session->set_flashdata('notice', 'Record Updated');
-            $this->load->view('qso/edit_done');
-        }
+
+        $this->logbook_model->edit();
     }
 	
 	function qsl_rcvd($id, $method) {
