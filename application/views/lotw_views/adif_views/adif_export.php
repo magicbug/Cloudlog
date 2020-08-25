@@ -5,7 +5,7 @@
 $cert1 = str_replace("-----BEGIN ENCRYPTED PRIVATE KEY-----", "", $lotw_cert_info->cert_key);
 $cert2 = str_replace("-----END ENCRYPTED PRIVATE KEY-----", "", $cert1);
 ?>
-<TQSL_IDENT:54>TQSL V2.5.4 Lib: V2.5 Config: V11.12 AllowDupes: false
+<TQSL_IDENT:53>TQSL V2.5.1 Lib: V2.5 Config: V11.9 AllowDupes: false
 
 <Rec_Type:5>tCERT
 <CERT_UID:1>1
