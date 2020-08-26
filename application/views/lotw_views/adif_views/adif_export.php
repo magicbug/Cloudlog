@@ -1,6 +1,3 @@
-<?php
-	header('Content-Type: text/plain; charset=utf-8');
-?>
 <?php 
 $clean_cert = trim($lotw_cert_info->cert);
 $cert1 = str_replace("-----BEGIN CERTIFICATE-----", "", $clean_cert);
@@ -21,7 +18,7 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 <DXCC:<?php echo strlen($station_profile_dxcc->adif); ?>><?php echo $station_profile_dxcc->adif; ?>
 
-<GRIDSQUARE:<?php echo strlen($station_profile->station_gridsquare); ?>><?php echo $station_profile->station_gridsquare; ?>
+<?php if(isset($station_profile->station_gridsquare)) { ?><GRIDSQUARE:<?php echo strlen($station_profile->station_gridsquare); ?>><?php echo $station_profile->station_gridsquare; ?><?php } ?>
 
 <?php if(isset($station_profile->station_itu)) { ?><ITUZ:<?php echo strlen($station_profile->station_itu); ?>><?php echo $station_profile->station_itu; ?><?php } ?>
 
@@ -42,11 +39,11 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 <?php if($qso->COL_FREQ != "0") { ?><?php $freq_in_mhz = $qso->COL_FREQ / 1000000; ?><FREQ:<?php echo strlen($freq_in_mhz); ?>><?php echo $freq_in_mhz; ?><?php } ?>
 
-<?php if($qso->COL_FREQ_RX) { ?><?php $freq_in_mhz_rx = $qso->COL_FREQ_RX / 1000000; ?><FREQ_RX:<?php echo strlen($freq_in_mhz_rx); ?>><?php echo $freq_in_mhz_rx; ?><?php } ?>
+<?php if($qso->COL_FREQ_RX != "" || $qso->COL_FREQ_RX != "0") { ?><?php $freq_in_mhz_rx = $qso->COL_FREQ_RX / 1000000; ?><FREQ_RX:<?php echo strlen($freq_in_mhz_rx); ?>><?php echo $freq_in_mhz_rx; ?><?php } ?>
 
-<PROP_MODE:<?php echo strlen($qso->COL_PROP_MODE); ?>><?php echo strtoupper($qso->COL_PROP_MODE); ?>
+<?php if($qso->COL_PROP_MODE) { ?><PROP_MODE:<?php echo strlen($qso->COL_PROP_MODE); ?>><?php echo strtoupper($qso->COL_PROP_MODE); ?><?php } ?>
 
-<SAT_NAME:<?php echo strlen($qso->COL_SAT_NAME); ?>><?php echo strtoupper($qso->COL_SAT_NAME); ?>
+<?php if($qso->COL_SAT_NAME) { ?><SAT_NAME:<?php echo strlen($qso->COL_SAT_NAME); ?>><?php echo strtoupper($qso->COL_SAT_NAME); ?><?php } ?>
 
 <?php if($qso->COL_BAND_RX) { ?><BAND_RX:<?php echo strlen($qso->COL_BAND_RX); ?>><?php echo strtoupper($qso->COL_BAND_RX); ?><?php } ?>
 
@@ -95,7 +92,7 @@ if($freq_in_mhz) {
 	$sign_string .= strtoupper($freq_in_mhz);
 }
 
-if($freq_in_mhz_rx) {
+if($qso->COL_FREQ_RX != "" || $qso->COL_FREQ_RX != "0") {
 	$sign_string .= strtoupper($freq_in_mhz_rx);
 }
 

@@ -150,7 +150,12 @@ class Lotw extends CI_Controller {
 
 			$station_profiles = $this->Stations->all();
 
+			// Array of QSO IDs being Uploaded
+
+			$qso_id_array = array();
+
 			if ($station_profiles->num_rows() >= 1) {
+
 				foreach ($station_profiles->result() as $station_profile)
 				{
 
@@ -168,7 +173,94 @@ class Lotw extends CI_Controller {
 
 					$data['qsos'] = $this->Logbook_model->get_lotw_qsos_to_upload($data['station_profile']->station_id);
 
-					$this->load->view('lotw_views/adif_views/adif_export', $data);
+					foreach ($data['qsos']->result() as $temp_qso) { 
+						array_push($qso_id_array, $temp_qso->COL_PRIMARY_KEY);
+					}
+
+					//$this->load->view('lotw_views/adif_views/adif_export', $data);
+
+
+					// Build File to save
+					$adif_to_save = $this->load->view('lotw_views/adif_views/adif_export', $data, TRUE);
+
+					// Build Filename
+
+					$filename_for_saving = $data['lotw_cert_info']->callsign."-".date("Y-m-d-H-i-s")."-cloudlog.tq8";
+
+					$gzdata = gzencode($adif_to_save, 9);
+					$fp = fopen($filename_for_saving, "w");
+					fwrite($fp, $gzdata);
+					fclose($fp);
+
+					//The URL that accepts the file upload.
+					$url = 'https://lotw.arrl.org/lotw/upload';
+					 
+					//The name of the field for the uploaded file.
+					$uploadFieldName = 'upfile';
+					 
+					//The full path to the file that you want to upload
+					$filePath = realpath($filename_for_saving);
+					 
+					//Initiate cURL
+					$ch = curl_init();
+					 
+					//Set the URL
+					curl_setopt($ch, CURLOPT_URL, $url);
+					 
+					//Set the HTTP request to POST
+					curl_setopt($ch, CURLOPT_POST, true);
+					 
+					//Tell cURL to return the output as a string.
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					 
+					//If the function curl_file_create exists
+					if(function_exists('curl_file_create')){
+					    //Use the recommended way, creating a CURLFile object.
+					    $filePath = curl_file_create($filePath);
+					} else{
+					    //Otherwise, do it the old way.
+					    //Get the canonicalized pathname of our file and prepend
+					    //the @ character.
+					    $filePath = '@' . realpath($filePath);
+					    //Turn off SAFE UPLOAD so that it accepts files
+					    //starting with an @
+					    curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
+					}
+					 
+					//Setup our POST fields
+					$postFields = array(
+					    $uploadFieldName => $filePath
+					);
+					 
+					curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+					 
+					//Execute the request
+					$result = curl_exec($ch);
+					 
+					//If an error occured, throw an exception
+					//with the error message.
+					if(curl_errno($ch)){
+					    throw new Exception(curl_error($ch));
+					}
+					 
+					$pos = strpos($result, "<!-- .UPL.  accepted -->");
+
+					if ($pos === false) {
+						// Upload of TQ8 Failed for unknown reason
+					    echo "Upload Failed";
+					} else {
+						// Upload of TQ8 was successfull
+
+					    echo "Upload Successful - ".$filename_for_saving;
+
+					    // Mark QSOs as Sent
+					    foreach ($qso_id_array as $qso_number) {
+					    	$this->Logbook_model->mark_lotw_sent($qso_number);
+					    }
+					}
+
+					// Delete TQ8 File - This is done regardless of whether upload was succcessful
+					unlink(realpath($filename_for_saving));
 				}
 			} else {
 				echo "No Station Profiles";

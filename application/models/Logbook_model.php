@@ -2160,10 +2160,11 @@ class Logbook_model extends CI_Model {
  
   function get_lotw_qsos_to_upload($station_id) {
 
-    $this->db->select('COL_CALL, COL_BAND, COL_BAND_RX, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_FREQ, COL_FREQ_RX, COL_GRIDSQUARE, COL_SAT_NAME, COL_PROP_MODE');
+    $this->db->select('COL_PRIMARY_KEY,COL_CALL, COL_BAND, COL_BAND_RX, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_FREQ, COL_FREQ_RX, COL_GRIDSQUARE, COL_SAT_NAME, COL_PROP_MODE, COL_LOTW_QSL_SENT, station_id');
 
     $this->db->where("station_id", 1);
-
+    $this->db->where('COL_LOTW_QSL_SENT !=', "Y");
+    $this->db->where('COL_PROP_MODE !=', "INTERNET");
     $this->db->order_by("COL_TIME_ON", "desc");
     $this->db->limit(1);
     $query = $this->db->get($this->config->item('table_name'));
@@ -2171,6 +2172,20 @@ class Logbook_model extends CI_Model {
     return $query;
   }
 
+  function mark_lotw_sent($qso_id) {
+
+      $data = array(
+           'COL_LOTW_QSLSDATE' => date("Y-m-d H:i:s"),
+           'COL_LOTW_QSL_SENT' => 'Y',
+      );
+
+
+    $this->db->where('COL_PRIMARY_KEY', $qso_id);
+
+    $this->db->update($this->config->item('table_name'), $data);
+
+    return "Updated";
+  }
 }
 
 function validateADIFDate($date, $format = 'Ymd')
