@@ -26,6 +26,8 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 <?php if(isset($station_profile->station_iota)) { ?><IOTA:<?php echo strlen($station_profile->station_iota); ?>><?php echo $station_profile->station_iota; ?><?php } ?>
 
+<?php if(isset($station_profile->state) && $station_profile->station_country = "UNITED STATES OF AMERICA") { ?><US_STATE:<?php echo strlen($station_profile->state); ?>><?php echo $station_profile->state; ?><?php } ?>
+
 <eor>
 
 <?php foreach ($qsos->result() as $qso) { ?>
@@ -74,6 +76,10 @@ if($station_profile->station_iota) {
 
 if($station_profile->station_itu) {
 	$sign_string .= $station_profile->station_itu;
+}
+
+if(isset($station_profile->state) && $station_profile->station_country = "UNITED STATES OF AMERICA") {
+	$sign_string .= strtoupper($station_profile->state);
 }
 
 if($qso->COL_BAND) {
