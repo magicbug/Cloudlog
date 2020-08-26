@@ -103,14 +103,14 @@ class Lotw extends CI_Controller {
         		// New Certificate Store in Database
 
         		// Store Certificate Data into MySQL
-        		$this->LotwCert->store_certficiate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key']);
+        		$this->LotwCert->store_certficiate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
         		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certficiate Imported.');
         	} else {
         		// Certficiate is in the system time to update
 
-				$this->LotwCert->update_certficiate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key']);
+				$this->LotwCert->update_certficiate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
         		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certficiate Updated.');
@@ -237,11 +237,16 @@ class Lotw extends CI_Controller {
 		$password = $password; // Only needed if 12 has a password set
 		$filename = file_get_contents('file://'.$file);
 		$worked = openssl_pkcs12_read($filename, $results, $password);
+
+		$data['general_cert'] = $results['cert'];
+
+
 		if($worked) {
 			// Reading p12 successful
 		    $new_password = "cloudlog"; // set default password
 			$result = null;
 			$worked = openssl_pkey_export($results['pkey'], $result, $new_password);
+
 			if($worked) {
 				// Store PEM Key in Array
 			    $data['pem_key'] = $result;

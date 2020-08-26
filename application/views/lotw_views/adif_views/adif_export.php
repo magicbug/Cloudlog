@@ -2,14 +2,15 @@
 	header('Content-Type: text/plain; charset=utf-8');
 ?>
 <?php 
-$cert1 = str_replace("-----BEGIN ENCRYPTED PRIVATE KEY-----", "", $lotw_cert_info->cert_key);
-$cert2 = str_replace("-----END ENCRYPTED PRIVATE KEY-----", "", $cert1);
+$clean_cert = trim($lotw_cert_info->cert);
+$cert1 = str_replace("-----BEGIN CERTIFICATE-----", "", $clean_cert);
+$cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 ?>
-<TQSL_IDENT:53>TQSL V2.5.1 Lib: V2.5 Config: V11.9 AllowDupes: false
+<TQSL_IDENT:54>TQSL V2.5.4 Lib: V2.5 Config: V11.12 AllowDupes: false
 
 <Rec_Type:5>tCERT
 <CERT_UID:1>1
-<CERTIFICATE:<?php echo strlen(trim($cert2)); ?>><?php echo trim($cert2); ?>
+<CERTIFICATE:<?php echo strlen(trim($cert2)) + 1; ?>><?php echo trim($cert2); ?>
 
 <eor>
 
@@ -121,7 +122,7 @@ if($qso->COL_SAT_NAME) {
     $signed_item = $CI->signlog($lotw_cert_info->cert_key, $sign_string);
 
 ?>
-<SIGN_LOTW_V2.0:<?php echo strlen($signed_item); ?>:6><?php echo $signed_item; ?>
+<SIGN_LOTW_V2.0:<?php echo strlen($signed_item)+1; ?>:6><?php echo $signed_item; ?>
 
 <SIGNDATA:<?php echo strlen($sign_string); ?>><?php echo $sign_string; ?>
 
