@@ -1,6 +1,22 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Lotw extends CI_Controller {
+ /*
+	|--------------------------------------------------------------------------
+	| Controller: Lotw
+	|--------------------------------------------------------------------------
+	| 
+	| This Controller handles all things LOTW, upload and download.
+	|
+	|
+	|	Note:
+	|	If you plan on using any of the code within this class please credit
+	| 	Cloudlog or Peter, 2M0SQL, a lot of hard work went into building the
+	|	signing of files.
+	|
+	|	Big Thanks to Rodrigo PY2RAF for all the help and information about OpenSSL
+	|
+	*/
 
 	/* Controls who can access the controller and its functions */
 	function __construct()
