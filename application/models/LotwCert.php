@@ -73,6 +73,20 @@ class LotwCert extends CI_Model {
 		$this->db->where('user_id', $user_id);
 		$this->db->delete('lotw_certs');
 	}
+
+	function last_upload($certID) {
+
+      $data = array(
+           'last_upload' => date("Y-m-d H:i:s"),
+      );
+
+
+    $this->db->where('lotw_cert_id', $certID);
+
+    $this->db->update('lotw_certs', $data);
+
+    return "Updated";
+  }
 	
 	function empty_table($table) {
 		$this->db->empty_table($table); 

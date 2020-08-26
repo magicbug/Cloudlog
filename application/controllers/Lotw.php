@@ -253,6 +253,8 @@ class Lotw extends CI_Controller {
 
 					    echo "Upload Successful - ".$filename_for_saving;
 
+					    $this->LotwCert->last_upload($data['lotw_cert_info']->lotw_cert_id);
+
 					    // Mark QSOs as Sent
 					    foreach ($qso_id_array as $qso_number) {
 					    	$this->Logbook_model->mark_lotw_sent($qso_number);
