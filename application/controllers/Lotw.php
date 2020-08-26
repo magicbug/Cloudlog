@@ -268,17 +268,6 @@ class Lotw extends CI_Controller {
 				echo "No Station Profiles";
 			}
 
-		// Get Certificate Data
-			$this->load->model('LotwCert');
-		// Set QSOs for Station Profile that havent been uploaded
-
-		// Build ADIF file
-
-		// Save TQ8
-
-		// Upload TQ8
-
-		// Destory TQ8
 	}
 
 	/*
