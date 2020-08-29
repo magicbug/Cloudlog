@@ -146,7 +146,7 @@ class Logbook_model extends CI_Model {
       }
 
     if ($this->exists_qrz_api_key($station_id)) {
-        $data['COL_QRZCOM_QSO_UPLOAD_STATUS '] = 'N';
+        $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'N';
     }
 
       $data['COL_MY_CITY'] = strtoupper(trim($station['station_city']));
