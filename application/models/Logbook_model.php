@@ -1528,7 +1528,7 @@ class Logbook_model extends CI_Model {
 
         // Store Band
         if(isset($record['band'])) {
-                $band = $record['band'];
+                $band = strtok($record['band']);
         } else {
             if (isset($record['freq'])){
               if($freq != "0") {
