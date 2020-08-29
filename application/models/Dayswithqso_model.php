@@ -80,7 +80,7 @@ class Dayswithqso_model extends CI_Model
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        $sql = "select distinct cast(col_time_on as date) as date from "
+        $sql = "select col_time_on, distinct cast(col_time_on as date) as date from "
             .$this->config->item('table_name'). " thcv
             where station_id = " . $station_id . " order by col_time_on asc";
 
