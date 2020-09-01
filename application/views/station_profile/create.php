@@ -53,7 +53,7 @@
 		    <small id="stationDXCCInputHelp" class="form-text text-muted">Station DXCC</small>
 		  </div>
 
-			<div class="form-group">
+		  <div class="form-group">
 		    <label for="stationCityInput">Station City</label>
 		    <input type="text" class="form-control" name="city" id="stationCityInput" aria-describedby="stationCityInputHelp" required>
 		    <small id="stationCityInputHelp" class="form-text text-muted">Station City for example Inverness</small>
