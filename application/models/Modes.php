@@ -48,8 +48,14 @@ class Modes extends CI_Model {
 	}
 
 	function edit() {
+		if ($this->input->post('submode', true) == "")
+			$submode = null;
+		else
+			$submode = xss_clean($this->input->post('submode', true));
+		
 		$data = array(
 			'mode' => xss_clean($this->input->post('mode', true)),
+			'submode' => $submode,
 			'qrgmode' =>  xss_clean(strtoupper($this->input->post('qrgmode', true))),
 			'active' =>  xss_clean($this->input->post('active', true)),
 		);
