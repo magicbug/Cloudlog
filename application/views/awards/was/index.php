@@ -69,10 +69,12 @@
     </form>
 <?php
     if ($was_array) {
+        $i = 1;
     echo '
     <table class="table table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr>
+            <td>#</td>
             <td>State</td>';
         foreach($bands as $band) {
             echo '<td>' . $band . '</td>';
@@ -80,16 +82,48 @@
             echo '</tr>
         </thead>
         <tbody>';
+
         foreach ($was_array as $was => $value) {      // Fills the table with the data
         echo '<tr>
+            <td>' . $i++ . '</td>
             <td>'. $was .'</td>';
             foreach ($value  as $key) {
             echo '<td style="text-align: center">' . $key . '</td>';
             }
             echo '</tr>';
         }
-        echo '</tfoot></table></div>';
+        echo '</table>
 
+        <h1>Summary</h1>
+
+        <table class="table table-bordered table-hover table-striped table-condensed text-center">
+        <thead>
+        <tr><td></td>';
+
+        foreach($bands as $band) {
+            echo '<td>' . $band . '</td>';
+        }
+        echo '</tr>';
+
+        echo '</tr>
+        </thead>
+        <tbody>
+
+        <tr><td>Total worked</td>';
+
+        foreach ($was_summary['worked'] as $was) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $was . '</td>';
+        }
+
+        echo '</tr><tr>
+        <td>Total confirmed</td>';
+        foreach ($was_summary['confirmed'] as $was) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $was . '</td>';
+        }
+
+        echo '</tr>
+        </table>
+        </div>';
     }
     else {
         echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
