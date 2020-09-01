@@ -18,6 +18,19 @@ class Update extends CI_Controller {
 	}
 
     /*
+     * Create a path to a file in the updates folder, respecting the datadir
+     * configuration option.
+     */
+    private function make_update_path($path) {
+        $path = "updates/" . $path;
+        $datadir = $this->config->item('datadir');
+        if(!$datadir) {
+            return $path;
+        }
+        return $datadir . "/" . $path;
+    }
+
+    /*
      * Load the dxcc entities
      */
 	public function dxcc_entities() {
@@ -25,7 +38,7 @@ class Update extends CI_Controller {
 		$this->load->model('dxcc_entities');
 
 		// Load the cty file
-		$xml_data = simplexml_load_file("updates/cty.xml");
+		$xml_data = simplexml_load_file($this->make_update_path("cty.xml"));
 		
 		//$xml_data->entities->entity->count();
 
@@ -74,7 +87,7 @@ class Update extends CI_Controller {
 		// Load Database connectors
 		$this->load->model('dxcc_exceptions');
 		// Load the cty file
-		$xml_data = simplexml_load_file("updates/cty.xml");
+		$xml_data = simplexml_load_file($this->make_update_path("cty.xml"));
 		
         $count = 0;
 		foreach ($xml_data->exceptions->exception as $record) {
@@ -114,7 +127,7 @@ class Update extends CI_Controller {
 		// Load Database connectors
 		$this->load->model('dxcc_prefixes');
 		// Load the cty file
-		$xml_data = simplexml_load_file("updates/cty.xml");
+		$xml_data = simplexml_load_file($this->make_update_path("cty.xml"));
 		
         $count = 0;
 		foreach ($xml_data->prefixes->prefix as $record) {
@@ -169,8 +182,8 @@ class Update extends CI_Controller {
 		  $data .= gzgetc($gz);
 		}
 		gzclose($gz);
-		
-		file_put_contents('./updates/cty.xml', $data);
+
+		file_put_contents($this->make_update_path("cty.xml"), $data);
 	
 	    // Clear the tables, ready for new data
 		$this->db->empty_table("dxcc_entities");
@@ -203,7 +216,7 @@ class Update extends CI_Controller {
             $html = $done."....<br/>";
         }
 
-        file_put_contents('./updates/status.html', $html);
+        file_put_contents($this->make_update_path("status.html"), $html);
 	}
 
 
@@ -226,7 +239,7 @@ class Update extends CI_Controller {
 	}
 
     public function update_clublog_scp() {
-        $strFile = "./updates/clublog_scp.txt";
+        $strFile = $this->make_update_path("clublog_scp.txt");
         $url = "https://cdn.clublog.org/clublog.scp.gz";
         set_time_limit(300);
         $this->update_status("Downloading Club Log SCP file");
