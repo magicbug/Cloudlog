@@ -1,12 +1,381 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Lotw extends CI_Controller {
+ /*
+	|--------------------------------------------------------------------------
+	| Controller: Lotw
+	|--------------------------------------------------------------------------
+	| 
+	| This Controller handles all things LOTW, upload and download.
+	|
+	|
+	|	Note:
+	|	If you plan on using any of the code within this class please credit
+	| 	Cloudlog or Peter, 2M0SQL, a lot of hard work went into building the
+	|	signing of files.
+	|
+	|	Big Thanks to Rodrigo PY2RAF for all the help and information about OpenSSL
+	|
+	*/
 
 	/* Controls who can access the controller and its functions */
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Function: index
+	|--------------------------------------------------------------------------
+	| 
+	| Default function for the controller which loads when doing /lotw
+	| this shows all the uploaded lotw p12 certificates the user has uploaded
+	|
+	*/
+	public function index() {
+		// Load required models for page generation
+		$this->load->model('LotwCert');
+
+		// Get Array of the logged in users LOTW certs.
+		$data['lotw_cert_results'] = $this->LotwCert->lotw_certs($this->session->userdata('user_id'));
+
+		// Set Page Title
+		$data['page_title'] = "Logbook of the World";
+
+		// Load Views
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('lotw_views/index');
+		$this->load->view('interface_assets/footer');
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Function: cert_upload
+	|--------------------------------------------------------------------------
+	| 
+	| Nothing fancy just shows the cert_upload form for uploading p12 files
+	|
+	*/
+	public function cert_upload() {
+		// Set Page Title
+		$data['page_title'] = "Logbook of the World";
+
+		// Load Views
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('lotw_views/upload_cert', array('error' => ' ' ));
+		$this->load->view('interface_assets/footer');		
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Function: do_cert_upload
+	|--------------------------------------------------------------------------
+	| 
+	| do_cert_upload is called from cert_upload form submit and handles uploading
+	| and processing of p12 files and storing the data into mysql
+	|
+	*/
+	public function do_cert_upload()
+    {
+		$config['upload_path']          = './uploads/lotw/certs';
+    	$config['allowed_types']        = 'p12';
+
+		$this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload('userfile'))
+        {
+        	// Upload of P12 Failed
+            $error = array('error' => $this->upload->display_errors());
+
+	        	// Set Page Title
+			$data['page_title'] = "Logbook of the World";
+
+			// Load Views
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('lotw_views/upload_cert', $error);
+			$this->load->view('interface_assets/footer');	
+        }
+        else
+        {
+        	// Load database queries
+        	$this->load->model('LotwCert');
+
+        	//Upload of P12 successful
+        	$data = array('upload_data' => $this->upload->data());
+
+        	$info = $this->decrypt_key($data['upload_data']['full_path']);
+
+        	// Check to see if certificate is already in the system
+        	$new_certficiate = $this->LotwCert->find_cert($info['issued_callsign'], $this->session->userdata('user_id'));
+
+        	// Check DXCC & Store Country Name
+        	$this->load->model('Logbook_model');
+        	$dxcc_check = $this->Logbook_model->check_dxcc_table($info['issued_callsign'], $info['validFrom']);
+        	$dxcc = $dxcc_check[1];
+
+        	if($new_certficiate == 0) {
+        		// New Certificate Store in Database
+
+        		// Store Certificate Data into MySQL
+        		$this->LotwCert->store_certficiate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
+
+        		// Cert success flash message
+        		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certficiate Imported.');
+        	} else {
+        		// Certficiate is in the system time to update
+
+				$this->LotwCert->update_certficiate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
+
+        		// Cert success flash message
+        		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certficiate Updated.');
+
+        	}
+
+        	// p12 certificate processed time to delete the file
+        	unlink($data['upload_data']['full_path']);
+
+			// Get Array of the logged in users LOTW certs.
+			$data['lotw_cert_results'] = $this->LotwCert->lotw_certs($this->session->userdata('user_id'));
+
+	        // Set Page Title
+			$data['page_title'] = "Logbook of the World";
+
+			// Load Views
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('lotw_views/index');
+			$this->load->view('interface_assets/footer');
+
+
+
+        }
+    }
+
+    /*
+	|--------------------------------------------------------------------------
+	| Function: lotw_upload
+	|--------------------------------------------------------------------------
+	| 
+	| This function Uploads to LOTW
+	|
+	*/
+	public function lotw_upload() {
+		// Get Station Profile Data
+			$this->load->model('Stations');
+
+			$station_profiles = $this->Stations->all();
+
+			// Array of QSO IDs being Uploaded
+
+			$qso_id_array = array();
+
+			if ($station_profiles->num_rows() >= 1) {
+
+				foreach ($station_profiles->result() as $station_profile)
+				{
+
+					// Get Certificate Data
+					$this->load->model('LotwCert');
+					$data['station_profile'] = $station_profile;
+					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign);
+
+					$this->load->model('Dxcc');
+					$data['station_profile_dxcc'] = $this->Dxcc->lookup_country($data['lotw_cert_info']->cert_dxcc);
+
+					// Get QSOs
+
+					$this->load->model('Logbook_model');
+
+					$data['qsos'] = $this->Logbook_model->get_lotw_qsos_to_upload($data['station_profile']->station_id, $data['lotw_cert_info']->date_created, $data['lotw_cert_info']->date_expires);
+
+					foreach ($data['qsos']->result() as $temp_qso) { 
+						array_push($qso_id_array, $temp_qso->COL_PRIMARY_KEY);
+					}
+
+					//$this->load->view('lotw_views/adif_views/adif_export', $data);
+
+
+					// Build File to save
+					$adif_to_save = $this->load->view('lotw_views/adif_views/adif_export', $data, TRUE);
+
+					// Build Filename
+
+					$filename_for_saving = $data['lotw_cert_info']->callsign."-".date("Y-m-d-H-i-s")."-cloudlog.tq8";
+
+					$gzdata = gzencode($adif_to_save, 9);
+					$fp = fopen($filename_for_saving, "w");
+					fwrite($fp, $gzdata);
+					fclose($fp);
+
+					//The URL that accepts the file upload.
+					$url = 'https://lotw.arrl.org/lotw/upload';
+					 
+					//The name of the field for the uploaded file.
+					$uploadFieldName = 'upfile';
+					 
+					//The full path to the file that you want to upload
+					$filePath = realpath($filename_for_saving);
+					 
+					//Initiate cURL
+					$ch = curl_init();
+					 
+					//Set the URL
+					curl_setopt($ch, CURLOPT_URL, $url);
+					 
+					//Set the HTTP request to POST
+					curl_setopt($ch, CURLOPT_POST, true);
+					 
+					//Tell cURL to return the output as a string.
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					 
+					//If the function curl_file_create exists
+					if(function_exists('curl_file_create')){
+					    //Use the recommended way, creating a CURLFile object.
+					    $filePath = curl_file_create($filePath);
+					} else{
+					    //Otherwise, do it the old way.
+					    //Get the canonicalized pathname of our file and prepend
+					    //the @ character.
+					    $filePath = '@' . realpath($filePath);
+					    //Turn off SAFE UPLOAD so that it accepts files
+					    //starting with an @
+					    curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
+					}
+					 
+					//Setup our POST fields
+					$postFields = array(
+					    $uploadFieldName => $filePath
+					);
+					 
+					curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+					 
+					//Execute the request
+					$result = curl_exec($ch);
+					 
+					//If an error occured, throw an exception
+					//with the error message.
+					if(curl_errno($ch)){
+					    throw new Exception(curl_error($ch));
+					}
+					 
+					$pos = strpos($result, "<!-- .UPL.  accepted -->");
+
+					if ($pos === false) {
+						// Upload of TQ8 Failed for unknown reason
+					    echo "Upload Failed";
+					} else {
+						// Upload of TQ8 was successfull
+
+					    echo "Upload Successful - ".$filename_for_saving;
+
+					    $this->LotwCert->last_upload($data['lotw_cert_info']->lotw_cert_id);
+
+					    // Mark QSOs as Sent
+					    foreach ($qso_id_array as $qso_number) {
+					    	$this->Logbook_model->mark_lotw_sent($qso_number);
+					    }
+					}
+
+					// Delete TQ8 File - This is done regardless of whether upload was succcessful
+					unlink(realpath($filename_for_saving));
+				}
+			} else {
+				echo "No Station Profiles";
+			}
+
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Function: delete_cert
+	|--------------------------------------------------------------------------
+	| 
+	| Deletes LOTW certificate from the MySQL table
+	|
+	*/
+    public function delete_cert($cert_id) {
+    	$this->load->model('LotwCert');
+
+    	$this->LotwCert->delete_certficiate($this->session->userdata('user_id'), $cert_id);
+
+    	$this->session->set_flashdata('Success', 'Certficiate Deleted.');
+
+    	redirect('/lotw/');
+    }
+
+	/*
+	|--------------------------------------------------------------------------
+	| Function: peter
+	|--------------------------------------------------------------------------
+	| 
+	| Temp function to test development bits
+	|
+	*/
+    public function peter() {
+    	$this->load->model('LotwCert');
+    	$this->load->model('Logbook_model');
+		$dxcc = $this->Logbook_model->check_dxcc_table("2M0SQL", "2020-05-07 17:20:27");
+
+		print_r($dxcc);
+		// Get Array of the logged in users LOTW certs.
+		echo $this->LotwCert->find_cert($this->session->userdata('user_id'), "2M0SQL");
+    }
+
+	/*
+	|--------------------------------------------------------------------------
+	| Function: decrypt_key
+	|--------------------------------------------------------------------------
+	| 
+	| Accepts p12 file and optional password and encrypts the file returning
+	| the required fields for LOTW and the PEM Key
+	|
+	*/
+	public function decrypt_key($file, $password = "") {
+		$results = array();
+		$password = $password; // Only needed if 12 has a password set
+		$filename = file_get_contents('file://'.$file);
+		$worked = openssl_pkcs12_read($filename, $results, $password);
+
+		$data['general_cert'] = $results['cert'];
+
+
+		if($worked) {
+			// Reading p12 successful
+		    $new_password = "cloudlog"; // set default password
+			$result = null;
+			$worked = openssl_pkey_export($results['pkey'], $result, $new_password);
+
+			if($worked) {
+				// Store PEM Key in Array
+			    $data['pem_key'] = $result;
+			} else {
+				// Error Log Error Message
+			    log_message('error', openssl_error_string());
+
+			    // Set warning message redirect to LOTW main page
+			    $this->session->set_flashdata('Warning', openssl_error_string());
+				redirect('/lotw/');
+			}
+		} else {
+			// Reading p12 failed log error message
+			log_message('error', openssl_error_string());
+
+			// Set warning message redirect to LOTW main page
+			$this->session->set_flashdata('Warning', openssl_error_string());
+			redirect('/lotw/');
+		}
+
+		// Read Cert Data
+		$certdata= openssl_x509_parse($results['cert'],0);
+
+		// Store Variables
+		$data['issued_callsign'] = $certdata['subject']['undefined'];
+		$data['issued_name'] = $certdata['subject']['commonName'];
+		$data['validFrom'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.2'];
+		$data['validTo_Date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.3'];
+
+		return $data;
 	}
 
 	private function loadFromFile($filepath)
@@ -206,7 +575,7 @@ class Lotw extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
-	$data['page_title'] = "LoTW .TQ8 Upload";
+		$data['page_title'] = "LoTW .TQ8 Upload";
 
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'tq8|TQ8';
@@ -363,6 +732,26 @@ class Lotw extends CI_Controller {
  
 
 		$lotw_user_result = $this->lotw_user->check($callsign);
+
+
+	}
+
+	function signlog($sign_key, $string) {
+
+		$qso_string = $string;
+
+		$key = $sign_key;
+
+		$pkeyid = openssl_pkey_get_private($key, 'cloudlog');
+		//openssl_sign($plaintext, $signature, $pkeyid, OPENSSL_ALGO_SHA1 );
+		//openssl_free_key($pkeyid);
+
+
+		if(openssl_sign($qso_string, $signature, $pkeyid, OPENSSL_ALGO_SHA1)) {
+		  openssl_free_key($pkeyid);
+		  $signature_b64 = base64_encode($signature);
+		  return $signature_b64;
+		}
 
 
 	}

@@ -2209,7 +2209,37 @@ class Logbook_model extends CI_Model {
             return null;
         }
     }
-    
+ 
+  function get_lotw_qsos_to_upload($station_id, $start_date, $end_date) {
+
+    $this->db->select('COL_PRIMARY_KEY,COL_CALL, COL_BAND, COL_BAND_RX, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_FREQ, COL_FREQ_RX, COL_GRIDSQUARE, COL_SAT_NAME, COL_PROP_MODE, COL_LOTW_QSL_SENT, station_id');
+
+    $this->db->where("station_id", $station_id);
+    $this->db->where('COL_LOTW_QSL_SENT !=', "Y");
+    $this->db->where('COL_PROP_MODE !=', "INTERNET");
+    $this->db->where('COL_TIME_ON >=', $start_date);
+    $this->db->where('COL_TIME_ON <=', $end_date);
+    $this->db->order_by("COL_TIME_ON", "desc");
+
+    $query = $this->db->get($this->config->item('table_name'));
+
+    return $query;
+  }
+
+  function mark_lotw_sent($qso_id) {
+
+      $data = array(
+           'COL_LOTW_QSLSDATE' => date("Y-m-d H:i:s"),
+           'COL_LOTW_QSL_SENT' => 'Y',
+      );
+
+
+    $this->db->where('COL_PRIMARY_KEY', $qso_id);
+
+    $this->db->update($this->config->item('table_name'), $data);
+
+    return "Updated";
+  }
 }
 
 function validateADIFDate($date, $format = 'Ymd')

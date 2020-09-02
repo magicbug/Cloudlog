@@ -463,7 +463,7 @@ class DXCC extends CI_Model {
 		}
 		return $sql;
 	}
-
+  
 	/*
      * Function gets worked and confirmed summary on each band on the active stationprofile
      */
@@ -519,6 +519,19 @@ class DXCC extends CI_Model {
 		$query = $this->db->query($sql);
 
 		return $query->result();
+	}
+  
+  function lookup_country($country)
+	{
+		$query = $this->db->query('
+					SELECT *
+					FROM dxcc_entities
+					WHERE name = "'.$country.'"
+					ORDER BY LENGTH( prefix ) DESC
+					LIMIT 1
+				');
+
+		return $query->row();
 	}
 }
 ?>
