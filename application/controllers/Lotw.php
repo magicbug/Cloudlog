@@ -50,6 +50,12 @@ class Lotw extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
+	public function test1() {
+		if (!file_exists('./uploads/lotw/certs')) {
+		    mkdir('./uploads/lotw/certs', 0777, true);
+		}
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Function: cert_upload
@@ -79,6 +85,12 @@ class Lotw extends CI_Controller {
 	*/
 	public function do_cert_upload()
     {
+
+    	// create folder to store certs while processing
+    	if (!file_exists('./uploads/lotw/certs')) {
+		    mkdir('./uploads/lotw/certs', 0755, true);
+		}
+
 		$config['upload_path']          = './uploads/lotw/certs';
     	$config['allowed_types']        = 'p12';
 
