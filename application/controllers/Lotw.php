@@ -35,6 +35,9 @@ class Lotw extends CI_Controller {
 	|
 	*/
 	public function index() {
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		
 		// Load required models for page generation
 		$this->load->model('LotwCert');
 
@@ -50,12 +53,6 @@ class Lotw extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-	public function test1() {
-		if (!file_exists('./uploads/lotw/certs')) {
-		    mkdir('./uploads/lotw/certs', 0777, true);
-		}
-	}
-
 	/*
 	|--------------------------------------------------------------------------
 	| Function: cert_upload
@@ -65,6 +62,9 @@ class Lotw extends CI_Controller {
 	|
 	*/
 	public function cert_upload() {
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
 		// Set Page Title
 		$data['page_title'] = "Logbook of the World";
 
@@ -85,6 +85,8 @@ class Lotw extends CI_Controller {
 	*/
 	public function do_cert_upload()
     {
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
     	// create folder to store certs while processing
     	if (!file_exists('./uploads/lotw/certs')) {
@@ -317,6 +319,9 @@ class Lotw extends CI_Controller {
 	|
 	*/
     public function delete_cert($cert_id) {
+    	$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
     	$this->load->model('LotwCert');
 
     	$this->LotwCert->delete_certficiate($this->session->userdata('user_id'), $cert_id);
@@ -326,23 +331,6 @@ class Lotw extends CI_Controller {
     	redirect('/lotw/');
     }
 
-	/*
-	|--------------------------------------------------------------------------
-	| Function: peter
-	|--------------------------------------------------------------------------
-	| 
-	| Temp function to test development bits
-	|
-	*/
-    public function peter() {
-    	$this->load->model('LotwCert');
-    	$this->load->model('Logbook_model');
-		$dxcc = $this->Logbook_model->check_dxcc_table("2M0SQL", "2020-05-07 17:20:27");
-
-		print_r($dxcc);
-		// Get Array of the logged in users LOTW certs.
-		echo $this->LotwCert->find_cert($this->session->userdata('user_id'), "2M0SQL");
-    }
 
 	/*
 	|--------------------------------------------------------------------------
@@ -354,6 +342,9 @@ class Lotw extends CI_Controller {
 	|
 	*/
 	public function decrypt_key($file, $password = "") {
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
 		$results = array();
 		$password = $password; // Only needed if 12 has a password set
 		$filename = file_get_contents('file://'.$file);

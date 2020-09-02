@@ -92,4 +92,17 @@
 	</div>
 	<!-- Card Ends -->
 
+	<br>
+
+	<!-- Card Starts -->
+	<div class="card">
+		<div class="card-header">
+			Information
+		</div>
+
+		<div class="card-body">
+			<p>You can run the LoTW upload script manually using <a href="<?php echo site_url('lotw/lotw_upload'); ?>"><?php echo site_url('lotw/lotw_upload'); ?></a>, this should be run as a cron task hourly or greater not in real time.</p>
+		</div>
+	</div>
+
 </div>
