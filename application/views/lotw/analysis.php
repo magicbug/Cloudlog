@@ -5,7 +5,7 @@
 if (isset ($lotw_table_headers)) {
 	echo $lotw_table_headers;
 } else {
-	echo 'No data imported. please check selected date. must be in the past!';
+	echo 'No data imported. please check selected date. Must be in the past!';
 }
 ?>
 <?php if (isset ($lotw_table)) {echo $lotw_table;} ?>
