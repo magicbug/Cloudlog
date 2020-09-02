@@ -180,7 +180,7 @@ class Lotw extends CI_Controller {
 					$data['station_profile'] = $station_profile;
 					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign);
 
-					if(!iset($data['lotw_cert_info']->cert_dxcc)) {
+					if(!isset($data['lotw_cert_info']->cert_dxcc)) {
 						continue;
 					}
 
