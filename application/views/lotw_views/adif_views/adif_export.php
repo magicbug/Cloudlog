@@ -80,6 +80,10 @@ if($station_profile->station_itu) {
 	$sign_string .= $station_profile->station_itu;
 }
 
+if($station_profile->station_cnty != "" && $station_profile->station_country = "UNITED STATES OF AMERICA") {
+	$sign_string .= strtoupper($station_profile->station_cnty);
+}
+
 if($station_profile->state != "" && $station_profile->station_country = "UNITED STATES OF AMERICA") {
 	$sign_string .= strtoupper($station_profile->state);
 }
