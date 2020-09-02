@@ -187,7 +187,7 @@ class Lotw extends CI_Controller {
 
 					$this->load->model('Logbook_model');
 
-					$data['qsos'] = $this->Logbook_model->get_lotw_qsos_to_upload($data['station_profile']->station_id);
+					$data['qsos'] = $this->Logbook_model->get_lotw_qsos_to_upload($data['station_profile']->station_id, $data['lotw_cert_info']->date_created, $data['lotw_cert_info']->date_expires);
 
 					foreach ($data['qsos']->result() as $temp_qso) { 
 						array_push($qso_id_array, $temp_qso->COL_PRIMARY_KEY);
