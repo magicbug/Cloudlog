@@ -180,6 +180,7 @@ class Lotw extends CI_Controller {
 					$data['station_profile'] = $station_profile;
 					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign);
 
+					// If Station Profile has no LOTW Cert continue on.
 					if(!isset($data['lotw_cert_info']->cert_dxcc)) {
 						continue;
 					}
@@ -192,6 +193,11 @@ class Lotw extends CI_Controller {
 					$this->load->model('Logbook_model');
 
 					$data['qsos'] = $this->Logbook_model->get_lotw_qsos_to_upload($data['station_profile']->station_id, $data['lotw_cert_info']->date_created, $data['lotw_cert_info']->date_expires);
+
+					// Nothing to upload
+					if(empty($data['qsos']->result())){
+					    continue;
+					} 
 
 					foreach ($data['qsos']->result() as $temp_qso) { 
 						array_push($qso_id_array, $temp_qso->COL_PRIMARY_KEY);
@@ -267,11 +273,11 @@ class Lotw extends CI_Controller {
 
 					if ($pos === false) {
 						// Upload of TQ8 Failed for unknown reason
-					    echo "Upload Failed";
+					    echo "Upload Failed"."<br>";
 					} else {
 						// Upload of TQ8 was successfull
 
-					    echo "Upload Successful - ".$filename_for_saving;
+					    echo "Upload Successful - ".$filename_for_saving."<br>";
 
 					    $this->LotwCert->last_upload($data['lotw_cert_info']->lotw_cert_id);
 
