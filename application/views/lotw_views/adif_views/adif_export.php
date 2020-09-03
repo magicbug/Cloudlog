@@ -26,9 +26,9 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 <?php if(isset($station_profile->station_iota)) { ?><IOTA:<?php echo strlen($station_profile->station_iota); ?>><?php echo $station_profile->station_iota; ?><?php } ?>
 
-<?php if($station_profile->state != "" && $station_profile->station_country = "UNITED STATES OF AMERICA") { ?><US_STATE:<?php echo strlen($station_profile->state); ?>><?php echo $station_profile->state; ?><?php } ?>
+<?php if($station_profile->state != "" && $station_profile->station_country == "UNITED STATES OF AMERICA") { ?><US_STATE:<?php echo strlen($station_profile->state); ?>><?php echo $station_profile->state; ?><?php } ?>
 
-<?php if($station_profile->station_cnty != ""  && $station_profile->station_country = "UNITED STATES OF AMERICA") { ?><US_COUNTY:<?php echo strlen($station_profile->station_cnty); ?>><?php echo $station_profile->station_cnty; ?><?php } ?>
+<?php if($station_profile->station_cnty != ""  && $station_profile->station_country == "UNITED STATES OF AMERICA") { ?><US_COUNTY:<?php echo strlen($station_profile->station_cnty); ?>><?php echo $station_profile->station_cnty; ?><?php } ?>
 
 <eor>
 
@@ -80,11 +80,11 @@ if($station_profile->station_itu) {
 	$sign_string .= $station_profile->station_itu;
 }
 
-if($station_profile->station_cnty != "" && $station_profile->station_country = "UNITED STATES OF AMERICA") {
+if($station_profile->station_cnty != "" && $station_profile->station_country == "UNITED STATES OF AMERICA") {
 	$sign_string .= strtoupper($station_profile->station_cnty);
 }
 
-if($station_profile->state != "" && $station_profile->station_country = "UNITED STATES OF AMERICA") {
+if($station_profile->state != "" && $station_profile->station_country == "UNITED STATES OF AMERICA") {
 	$sign_string .= strtoupper($station_profile->state);
 }
 
