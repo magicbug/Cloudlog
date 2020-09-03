@@ -219,6 +219,18 @@
          ]
       }
    },
+   "ISS":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145990000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"437800000"
+            }
+         ]
+      }
+   },
    "Lilacsat-1":{
       "Modes":{
          "V/U":[
