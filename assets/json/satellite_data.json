@@ -20,6 +20,14 @@
                "Downlink_Mode":"PKT",
                "Downlink_Freq":"145825000"
             }
+         ],
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145990000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"437800000"
+            }
          ]
       }
    },
