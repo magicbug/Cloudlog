@@ -37,7 +37,7 @@ class Lotw extends CI_Controller {
 	public function index() {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-		
+
 		// Load required models for page generation
 		$this->load->model('LotwCert');
 
@@ -767,6 +767,35 @@ class Lotw extends CI_Controller {
 		}
 
 
+	}
+
+	public function sat() {
+		$satellite_name_check = $this->lotw_satellite_map('ISS');
+
+		if($satellite_name_check != FALSE) {
+			echo $satellite_name_check;
+		} else {
+			echo "no match";
+		}
+	}
+
+	/*
+	|	Function: lotw_satellite_map
+	|	Requires: OSCAR Satellite name $satname
+	|
+	|	Outputs if LOTW uses a different satellite name
+	|
+	*/
+	function lotw_satellite_map($satname) {
+		$arr = array(
+			"ARISS"		=>	"ISS",
+			"UKUBE1"	=>	"UKUBE-1",
+			"KEDR"		=>	"ARISSAT-1",
+			"TO-108"	=>	"CAS-6",
+			"TAURUS"	=>	"TAURUS-1",
+		);
+
+		return array_search(strtoupper($satname),$arr,true);
 	}
 
 } // end class
