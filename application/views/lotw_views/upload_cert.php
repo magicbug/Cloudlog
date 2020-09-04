@@ -19,8 +19,8 @@
 		    	<h5>Export .p12 File Instructions</h5>
 
 		    	<ul>
-		    		<li>Open TQSL & go to the Callsign Certificates Tab</li>
-		    		<li>Right Flick on desired Callsign</li>
+		    		<li>Open TQSL &amp; go to the Callsign Certificates Tab</li>
+		    		<li>Right click on desired Callsign</li>
 		    		<li>Click "Save Callsign Certificate File" and do not add a password</li>
 		    		<li>Upload File below.</li>
 		    	</ul>
