@@ -12,7 +12,6 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 ## Versions
 
 * **Master** - Current working branch
-* cloudlog-v2 - This is the current development copy, while to work on bringing multiclient to Cloudlog without breaking users stable copies. 
 
 ## Setup
 
