@@ -190,16 +190,17 @@ class Lotw extends CI_Controller {
 		if (!extension_loaded('openssl')) {
 			echo "You must install php OpenSSL for LoTW functions to work";
 		}
-		
+
 		// Get Station Profile Data
-			$this->load->model('Stations');
+		$this->load->model('Stations');
 
-			$station_profiles = $this->Stations->all();
+		$station_profiles = $this->Stations->all();
 
-			// Array of QSO IDs being Uploaded
+		// Array of QSO IDs being Uploaded
 
-			$qso_id_array = array();
+		$qso_id_array = array();
 
+		// Build TQ8 Outputs
 			if ($station_profiles->num_rows() >= 1) {
 
 				foreach ($station_profiles->result() as $station_profile)
