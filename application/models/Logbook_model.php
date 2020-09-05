@@ -1458,40 +1458,18 @@ class Logbook_model extends CI_Model {
 
         // Store Freq
         // Check if 'freq' is defined in the import?
-        if (isset($record['freq'])){
-            $cleanfreq = preg_replace('#\W#', '', $record['freq']);
-            $freqlng = strlen($cleanfreq);
-        }else{
-            $freqlng = 0;
-        }
-
-        if(isset($record['freq']) && $freqlng < 7 ) {
-            $cleansedstring = preg_replace('#\W#', '', $record['freq']);
-            $freq = $cleansedstring."0";
-        } elseif($freqlng >= 7) {
-            $cleansedstring = preg_replace('#\W#', '', $record['freq']);
-            $freq = $cleansedstring;
+        if (isset($record['freq'])){ // record[freq] in MHz
+          $freq = floatval($record['freq']) * 1E6; // store in Hz
         } else {
-            $freq = "0";
+          $freq = 0;
         }
 
         // Check for RX Freq
         // Check if 'freq' is defined in the import?
-        if (isset($record['freq_rx'])){
-            $cleanfreqRX = preg_replace('#\W#', '', $record['freq_rx']);
-            $freqlngRX = strlen($cleanfreqRX);
-        }else{
-            $freqlngRX = 0;
-        }
-
-        if(isset($record['freq_rx']) && $freqlngRX < 7 ) {
-            $cleansedstringRX = preg_replace('#\W#', '', $record['freq_rx']);
-            $freqRX = $cleansedstringRX."0";
-        } elseif($freqlngRX >= 7) {
-            $cleansedstringRX = preg_replace('#\W#', '', $record['freq_rx']);
-            $freqRX = $cleansedstringRX;
+        if (isset($record['freq_rx'])){ // record[freq] in MHz
+          $freqRX = floatval($record['freq_rx']) * 1E6; // store in Hz
         } else {
-            $freqRX = NULL;
+          $freqRX = NULL;
         }
 
         // DXCC id
