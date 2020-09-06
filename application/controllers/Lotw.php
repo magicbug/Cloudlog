@@ -410,8 +410,6 @@ class Lotw extends CI_Controller {
 
 	private function loadFromFile($filepath)
 	{
-		$this->load->model('user_model');
-		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		// Figure out how we should be marking QSLs confirmed via LoTW
 		$query = $query = $this->db->query('SELECT lotw_rcvd_mark FROM config');
