@@ -414,7 +414,7 @@ class Lotw extends CI_Controller {
 		return $data;
 	}
 
-	private function loadFromFile($filepath, $display_view == "TRUE")
+	private function loadFromFile($filepath, $display_view = "TRUE")
 	{
 
 		// Figure out how we should be marking QSLs confirmed via LoTW
