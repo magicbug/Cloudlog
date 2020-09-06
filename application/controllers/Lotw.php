@@ -511,7 +511,7 @@ class Lotw extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-	public function lotw_download() {
+	public function lotw_download($user_id) {
 		$this->load->model('user_model');
 		$this->load->model('logbook_model');
 
