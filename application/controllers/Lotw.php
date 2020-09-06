@@ -413,7 +413,17 @@ class Lotw extends CI_Controller {
 
 		return $data;
 	}
-
+	
+	/*
+	|--------------------------------------------------------------------------
+	| Function: loadFromFile
+	|--------------------------------------------------------------------------
+	| 
+	|	$filepath is the ADIF file, $display_view is used to hide the output if its internal script
+	|
+	|	Internal function that takes the LoTW ADIF and imports into the log
+	|
+	*/
 	private function loadFromFile($filepath, $display_view = "TRUE")
 	{
 
@@ -527,6 +537,15 @@ class Lotw extends CI_Controller {
 		}
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Function: lotw_download
+	|--------------------------------------------------------------------------
+	| 
+	|	Collects users with LoTW usernames and passwords and runs through them 
+	|	downloading matching QSOs.
+	|
+	*/
 	function lotw_download() {
 		$this->load->model('user_model');
 		$this->load->model('logbook_model');
@@ -852,16 +871,6 @@ class Lotw extends CI_Controller {
 		}
 
 
-	}
-
-	public function sat() {
-		$satellite_name_check = $this->lotw_satellite_map('ISS');
-
-		if($satellite_name_check != FALSE) {
-			echo $satellite_name_check;
-		} else {
-			echo "no match";
-		}
 	}
 
 	/*
