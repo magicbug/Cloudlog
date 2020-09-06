@@ -239,8 +239,7 @@ class Lotw extends CI_Controller {
 
 					// Build File to save
 					$adif_to_save = $this->load->view('lotw_views/adif_views/adif_export', $data, TRUE);
-					echo $adif_to_save;
-					exit;
+
 					// Build Filename
 
 					$filename_for_saving = $data['lotw_cert_info']->callsign."-".date("Y-m-d-H-i-s")."-cloudlog.tq8";
