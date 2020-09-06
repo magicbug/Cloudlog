@@ -325,6 +325,12 @@ class Lotw extends CI_Controller {
 				echo "No Station Profiles";
 			}
 
+			/*
+			|	Download QSO Matches from LoTW
+			*/
+
+			$this->lotw_download();
+
 	}
 
 	/*
@@ -513,7 +519,7 @@ class Lotw extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-	public function lotw_download() {
+	function lotw_download() {
 		$this->load->model('user_model');
 		$this->load->model('logbook_model');
 
