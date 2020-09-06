@@ -125,8 +125,8 @@ $sign_string .= $new_on."Z";
 
 if($qso->COL_SAT_NAME) {
 	$satellite_name_check = $CI->lotw_satellite_map(strtoupper($qso->COL_SAT_NAME)); if($satellite_name_check != FALSE) { $satname = $satellite_name_check; } else { $satname = $qso->COL_SAT_NAME; }
-	
-	$sign_string .= strtoupper($qso->satname);
+
+	$sign_string .= strtoupper($satname);
 }
 
  ?>
