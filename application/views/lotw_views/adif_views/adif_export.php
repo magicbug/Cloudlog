@@ -66,6 +66,7 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 $sign_string = "";
 
+// Adds CA Prov
 if($station_profile->state != "" && $station_profile->station_country == "CANADA") {
 	$sign_string .= strtoupper($station_profile->state);
 }
