@@ -27,6 +27,8 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 <?php if(isset($station_profile->station_iota)) { ?><IOTA:<?php echo strlen($station_profile->station_iota); ?>><?php echo $station_profile->station_iota; ?><?php } ?>
 
+<?php if($station_profile->state != "" && $station_profile->station_country == "CANADA") { ?><CA_PROVINCE:<?php echo strlen($station_profile->state); ?>><?php echo $station_profile->state; ?><?php } ?>
+
 <?php if($station_profile->state != "" && $station_profile->station_country == "UNITED STATES OF AMERICA") { ?><US_STATE:<?php echo strlen($station_profile->state); ?>><?php echo $station_profile->state; ?><?php } ?>
 
 <?php if($station_profile->station_cnty != ""  && $station_profile->station_country == "UNITED STATES OF AMERICA") { ?><US_COUNTY:<?php echo strlen($station_profile->station_cnty); ?>><?php echo $station_profile->station_cnty; ?><?php } ?>
@@ -63,6 +65,10 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 
 $sign_string = "";
+
+if($station_profile->state != "" && $station_profile->station_country == "CANADA") {
+	$sign_string .= strtoupper($station_profile->state);
+}
 
 // Add CQ Zone
 if($station_profile->station_cq) {
