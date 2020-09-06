@@ -515,8 +515,6 @@ class Lotw extends CI_Controller {
 		$this->load->model('user_model');
 		$this->load->model('logbook_model');
 
-		$file = $config['upload_path'] . 'lotwreport_download.adi';
-
 		// Get credentials for LoTW
 		$query = $this->user_model->get_by_id($user_id);
     	$q = $query->row();
