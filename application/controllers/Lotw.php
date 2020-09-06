@@ -578,8 +578,8 @@ class Lotw extends CI_Controller {
 			// Get credentials for LoTW
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
     	    $q = $query->row();
-    	    $data['user_lotw_name'] = $q->user_lotw_name;
-			$data['user_lotw_password'] = $q->user_lotw_password;
+    	    $data['user_lotw_name'] = rawurlencode($q->user_lotw_name);
+			$data['user_lotw_password'] = rawurlencode($q->user_lotw_password);
 
 			// Get URL for downloading LoTW
 			$query = $query = $this->db->query('SELECT lotw_download_url FROM config');
