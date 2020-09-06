@@ -41,6 +41,14 @@ class User_Model extends CI_Model {
 		return $r;
 	}
 
+	// FUNCTION: object get_all_lotw_users
+	// Returns all users with lotw details
+	function get_all_lotw_users() {
+		$this->db->where('user_lotw_name !=', null);
+		$r = $this->db->get($this->config->item('auth_table'));
+		return $r;
+	}
+
 	// FUNCTION: object get_by_email($email)
 	// Retrieve a user by email address
 	function get_by_email($email) {

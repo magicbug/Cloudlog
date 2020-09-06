@@ -513,49 +513,58 @@ class Lotw extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-	public function lotw_download($user_id) {
+	public function lotw_download() {
 		$this->load->model('user_model');
 		$this->load->model('logbook_model');
 
-		$config['upload_path'] = './uploads/';
-		$file = $config['upload_path'] . 'lotwreport_download.adi';
+		$query = $this->user_model->get_all_lotw_users();
 
-		// Get credentials for LoTW
-		$query = $this->user_model->get_by_id($user_id);
-    	$q = $query->row();
-    	$data['user_lotw_name'] = rawurlencode($q->user_lotw_name);
-		$data['user_lotw_password'] = rawurlencode($q->user_lotw_password);
+		if ($query->num_rows() >= 1) {
 
-		// Get URL for downloading LoTW
-		$query = $query = $this->db->query('SELECT lotw_download_url FROM config');
-		$q = $query->row();
-		$lotw_url = $q->lotw_download_url;
+			foreach ($query->result() as $user)
+			{
 
-		// Validate that LoTW credentials are not empty
-		// TODO: We don't actually see the error message
-		if ($data['user_lotw_name'] == '' || $data['user_lotw_password'] == '')
-		{
-			$this->session->set_flashdata('warning', 'You have not defined your ARRL LoTW credentials!'); redirect('lotw/import');
+				$config['upload_path'] = './uploads/';
+				$file = $config['upload_path'] . 'lotwreport_download.adi';
+
+				// Get credentials for LoTW
+		    	$data['user_lotw_name'] = rawurlencode($user->user_lotw_name);
+				$data['user_lotw_password'] = rawurlencode($user->user_lotw_password);
+
+				// Get URL for downloading LoTW
+				$query = $query = $this->db->query('SELECT lotw_download_url FROM config');
+				$q = $query->row();
+				$lotw_url = $q->lotw_download_url;
+
+				// Validate that LoTW credentials are not empty
+				// TODO: We don't actually see the error message
+				if ($data['user_lotw_name'] == '' || $data['user_lotw_password'] == '')
+				{
+					$this->session->set_flashdata('warning', 'You have not defined your ARRL LoTW credentials!'); redirect('lotw/import');
+				}
+
+		        $lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date()));
+
+				// Build URL for LoTW report file
+				$lotw_url .= "?";
+				$lotw_url .= "login=" . $data['user_lotw_name'];
+				$lotw_url .= "&password=" . $data['user_lotw_password'];
+				$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
+
+				//TODO: Option to specifiy whether we download location data from LoTW or not
+				//$lotw_url .= "&qso_qsldetail=\"yes\";
+
+		        $lotw_url .= "&qso_qslsince=";
+		        $lotw_url .= "$lotw_last_qsl_date";
+
+				file_put_contents($file, file_get_contents($lotw_url));
+
+				ini_set('memory_limit', '-1');
+				$this->loadFromFile($file);
+			}
+		} else {
+			echo "No users found";
 		}
-
-        $lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date()));
-
-		// Build URL for LoTW report file
-		$lotw_url .= "?";
-		$lotw_url .= "login=" . $data['user_lotw_name'];
-		$lotw_url .= "&password=" . $data['user_lotw_password'];
-		$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
-
-		//TODO: Option to specifiy whether we download location data from LoTW or not
-		//$lotw_url .= "&qso_qsldetail=\"yes\";
-
-        $lotw_url .= "&qso_qslsince=";
-        $lotw_url .= "$lotw_last_qsl_date";
-
-		file_put_contents($file, file_get_contents($lotw_url));
-
-		ini_set('memory_limit', '-1');
-		$this->loadFromFile($file);
 	}
 
 	public function import() {
