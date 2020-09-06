@@ -414,7 +414,7 @@ class Lotw extends CI_Controller {
 		return $data;
 	}
 
-	private function loadFromFile($filepath)
+	private function loadFromFile($filepath, $display_view == "TRUE")
 	{
 
 		// Figure out how we should be marking QSLs confirmed via LoTW
@@ -514,10 +514,14 @@ class Lotw extends CI_Controller {
 		unlink($filepath);
 
 		if(isset($data['lotw_table_headers'])) {
-			$data['page_title'] = "LoTW ADIF Information";
-			$this->load->view('interface_assets/header', $data);
-			$this->load->view('lotw/analysis');
-			$this->load->view('interface_assets/footer');
+			if($display_view == TRUE) {
+				$data['page_title'] = "LoTW ADIF Information";
+				$this->load->view('interface_assets/header', $data);
+				$this->load->view('lotw/analysis');
+				$this->load->view('interface_assets/footer');
+			} else {
+				return $lotw_table_headers.$table;
+			}
 		} else {
 			echo "LoTW Downloading failed either due to it being down or incorrect logins.";
 		}
@@ -570,7 +574,7 @@ class Lotw extends CI_Controller {
 				file_put_contents($file, file_get_contents($lotw_url));
 
 				ini_set('memory_limit', '-1');
-				$this->loadFromFile($file);
+				$this->loadFromFile($file, false);
 			}
 		} else {
 			echo "No users found";
