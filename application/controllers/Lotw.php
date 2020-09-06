@@ -520,7 +520,7 @@ class Lotw extends CI_Controller {
 				$this->load->view('lotw/analysis');
 				$this->load->view('interface_assets/footer');
 			} else {
-				return $lotw_table_headers.$table;
+				return $tableheaders.$table;
 			}
 		} else {
 			echo "LoTW Downloading failed either due to it being down or incorrect logins.";
