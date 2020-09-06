@@ -427,6 +427,7 @@ class Lotw extends CI_Controller {
 
 		$tableheaders = "<table width=\"100%\">";
 			$tableheaders .= "<tr class=\"titles\">";
+				$tableheaders .= "<td>Station Callsign</td>";
 				$tableheaders .= "<td>QSO Date</td>";
 				$tableheaders .= "<td>Call</td>";
 				$tableheaders .= "<td>Mode</td>";
@@ -485,6 +486,7 @@ class Lotw extends CI_Controller {
 
 
 				$table .= "<tr>";
+					$table .= "<td>".$record['station_callsign']."</td>";
 					$table .= "<td>".$time_on."</td>";
 					$table .= "<td>".$record['call']."</td>";
 					$table .= "<td>".$record['mode']."</td>";
