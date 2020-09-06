@@ -513,10 +513,14 @@ class Lotw extends CI_Controller {
 
 		unlink($filepath);
 
-		$data['page_title'] = "LoTW ADIF Information";
-		$this->load->view('interface_assets/header', $data);
-		$this->load->view('lotw/analysis');
-		$this->load->view('interface_assets/footer');
+		if(isset($data['lotw_table_headers']) {
+			$data['page_title'] = "LoTW ADIF Information";
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('lotw/analysis');
+			$this->load->view('interface_assets/footer');
+		} else {
+			echo "LoTW Downloading failed either due to it being down or incorrect logins.";
+		}
 	}
 
 	function lotw_download() {
