@@ -322,7 +322,7 @@ class Lotw extends CI_Controller {
 					unlink(realpath($filename_for_saving));
 				}
 			} else {
-				echo "No Station Profiles";
+				echo "No Station Profiles found to upload to LOTW";
 			}
 
 			/*
@@ -599,7 +599,7 @@ class Lotw extends CI_Controller {
 				return $results;
 			}
 		} else {
-			echo "No users found";
+			return "No LOTW User details found to carry out matches.";
 		}
 	}
 
