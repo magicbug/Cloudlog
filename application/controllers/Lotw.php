@@ -242,7 +242,7 @@ class Lotw extends CI_Controller {
 
 					// Build Filename
 
-					$filename_for_saving = $data['lotw_cert_info']->callsign."-".date("Y-m-d-H-i-s")."-cloudlog.tq8";
+					$filename_for_saving = preg_replace('/[^a-z0-9]+/', '-', strtolower($data['lotw_cert_info']->callsign))."-".date("Y-m-d-H-i-s")."-cloudlog.tq8";
 
 					$gzdata = gzencode($adif_to_save, 9);
 					$fp = fopen($filename_for_saving, "w");
@@ -328,8 +328,8 @@ class Lotw extends CI_Controller {
 			/*
 			|	Download QSO Matches from LoTW
 			*/
-
-			$this->lotw_download();
+			echo "<br><br>";
+			echo $this->lotw_download();
 
 	}
 
