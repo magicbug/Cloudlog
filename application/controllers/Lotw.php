@@ -329,6 +329,7 @@ class Lotw extends CI_Controller {
 			|	Download QSO Matches from LoTW
 			*/
 			echo "<br><br>";
+			echo "LoTW Matches<br>";
 			echo $this->lotw_download();
 
 	}
@@ -573,7 +574,7 @@ class Lotw extends CI_Controller {
 				// TODO: We don't actually see the error message
 				if ($data['user_lotw_name'] == '' || $data['user_lotw_password'] == '')
 				{
-					$this->session->set_flashdata('warning', 'You have not defined your ARRL LoTW credentials!'); redirect('lotw/import');
+					echo "You have not defined your ARRL LoTW credentials!";
 				}
 
 		        $lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date()));
