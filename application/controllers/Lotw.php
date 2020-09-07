@@ -594,7 +594,9 @@ class Lotw extends CI_Controller {
 				file_put_contents($file, file_get_contents($lotw_url));
 
 				ini_set('memory_limit', '-1');
-				$this->loadFromFile($file, false);
+				$results = $this->loadFromFile($file, false);
+
+				return $results;
 			}
 		} else {
 			echo "No users found";
