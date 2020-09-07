@@ -45,6 +45,7 @@ class User_Model extends CI_Model {
 	// Returns all users with lotw details
 	function get_all_lotw_users() {
 		$this->db->where('user_lotw_name !=', null);
+		$this->db->where('user_lotw_name !=', "");
 		$r = $this->db->get($this->config->item('auth_table'));
 		return $r;
 	}
