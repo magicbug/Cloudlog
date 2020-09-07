@@ -305,7 +305,7 @@ class Lotw extends CI_Controller {
 
 					if ($pos === false) {
 						// Upload of TQ8 Failed for unknown reason
-					    echo "Upload Failed"."<br>";
+					    echo $station_profile->station_callsign." (".$station_profile->station_profile_name.") Upload Failed"."<br>";
 					} else {
 						// Upload of TQ8 was successfull
 
