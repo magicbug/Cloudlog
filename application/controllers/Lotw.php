@@ -227,6 +227,7 @@ class Lotw extends CI_Controller {
 
 					// Nothing to upload
 					if(empty($data['qsos']->result())){
+						echo $station_profile->station_callsign." No QSOs to Upload <br>";
 					    continue;
 					} 
 
