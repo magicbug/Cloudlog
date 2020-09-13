@@ -179,6 +179,16 @@
                 <small id="qrzApiKeyHelp" class="form-text text-muted">Your QRZ.com Logbook API can be found in the <a href="https://logbook.qrz.com/logbook" target="_blank">settings page</a></small>
             </div>
 
+            <div class="form-group">
+                <label for="measurement_base">Measurement preference</label>
+                <select class="custom-select" id="measurement_base" name="measurement_base" required>
+                    <option value='K' <?php if ($my_station_profile->measurement_base == "K") { echo " selected=\"selected\""; } ?>>Kilometers</option>
+                    <option value='M' <?php if ($my_station_profile->measurement_base == "M") { echo " selected=\"selected\""; } ?>>Miles</option>
+                    <option value='N' <?php if ($my_station_profile->measurement_base == "N") { echo " selected=\"selected\""; } ?>>Nautical miles</option>
+                </select>
+                <small id="measurement_base_Help" class="form-text text-muted">Choose which unit distances will be shown in.</small>
+            </div>
+
 			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Update Station Profile</button>
 
 		</form>
