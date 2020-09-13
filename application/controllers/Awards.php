@@ -371,6 +371,19 @@ class Awards extends CI_Controller {
         $this->load->view('interface_assets/footer');
     }
 
+    public function was_details_ajax() {
+        $this->load->model('logbook_model');
+
+        $state = str_replace('"', "", $this->input->post("State"));
+        $band = str_replace('"', "", $this->input->post("Band"));
+        $data['results'] = $this->logbook_model->was_qso_details($state, $band);
+
+        // Render Page
+        $data['page_title'] = "Log View - WAS";
+        $data['filter'] = "state ".$state. " and ".$band;
+        $this->load->view('awards/was/details_ajax', $data);
+    }
+
     public function iota ()	{
         $this->load->model('iota');
         $data['worked_bands'] = $this->iota->get_worked_bands(); // Used in the view for band select

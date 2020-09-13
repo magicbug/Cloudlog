@@ -1436,5 +1436,122 @@ $(document).ready(function(){
 
         </script>
     <?php } ?>
+
+    <?php if ($this->uri->segment(2) == "was") { ?>
+            <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
+        <script>
+        function displayWasContacts(was, band) {
+            var baseURL= "<?php echo base_url();?>";
+            $.ajax({
+                url: baseURL + 'index.php/awards/was_details_ajax',
+                type: 'post',
+                data: {'State': was,
+                    'Band': band
+                },
+                success: function(html) {
+                    BootstrapDialog.show({
+                        title: 'QSO Data',
+                        size: BootstrapDialog.SIZE_WIDE,
+                        cssClass: 'qso-dialog',
+                        nl2br: false,
+                        message: html,
+                        buttons: [{
+                            label: 'Close',
+                            action: function (dialogItself) {
+                            dialogItself.close();
+                            }
+                        }]
+                    });
+                }
+            });
+        }
+
+        function qsl_rcvd(id, method) {
+            var baseURL= "<?php echo base_url();?>";
+            $.ajax({
+                url: baseURL + 'index.php/qso/qsl_rcvd_ajax',
+                type: 'post',
+                data: {'id': id,
+                    'method': method
+                },
+                success: function(data) {
+                    if (data.message == 'OK') {
+                        $("#qso_" + id).find("td:eq(8)").find("span:eq(1)").attr('class', 'qsl-green'); // Paints arrow green
+                        $(".qsl_" + id).remove(); // removes choice from menu
+                    }
+                    else {
+                        $(".bootstrap-dialog-message").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You are not allowed to update QSL status!</div>');
+                    }
+                }
+            });
+        }
+
+        function qso_delete(id, call) {
+            BootstrapDialog.confirm({
+                title: 'DANGER',
+                message: 'Warning! Are you sure you want delete QSO with ' + call + '?' ,
+                type: BootstrapDialog.TYPE_DANGER,
+                closable: true,
+                draggable: true,
+                btnOKClass: 'btn-danger',
+                callback: function(result) {
+                    if(result) {
+                        $(".edit-dialog").modal('hide');
+                        var baseURL= "<?php echo base_url();?>";
+                        $.ajax({
+                            url: baseURL + 'index.php/qso/delete_ajax',
+                            type: 'post',
+                            data: {'id': id
+                            },
+                            success: function(data) {
+                                $(".alert").remove();
+                                $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The contact with ' + call + ' has been deleted!</div>');
+                                $("#qso_" + id).remove(); // removes qso from table in dialog
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        function qso_edit(id) {
+            var baseURL= "<?php echo base_url();?>";
+            $.ajax({
+                url: baseURL + 'index.php/qso/edit_ajax',
+                type: 'post',
+                data: {'id': id
+                },
+                success: function(html) {
+                    BootstrapDialog.show({
+                        title: 'QSO Data',
+                        cssClass: 'edit-dialog',
+                        size: BootstrapDialog.SIZE_WIDE,
+                        nl2br: false,
+                        message: html,
+                    });
+                }
+            });
+        }
+
+        function qso_save() {
+            var baseURL= "<?php echo base_url();?>";
+            var myform = document.getElementById("qsoform");
+            var fd = new FormData(myform);
+            $.ajax({
+                url: baseURL + 'index.php/qso/qso_save_ajax',
+                data: fd,
+                cache: false,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function (dataofconfirm) {
+                    $(".edit-dialog").modal('hide');
+                    $(".qso-dialog").modal('hide');
+                    location.reload();
+                }
+            });
+        }
+        </script>
+    <?php } ?>
   </body>
 </html>
