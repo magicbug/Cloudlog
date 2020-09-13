@@ -99,7 +99,7 @@ class Logbook extends CI_Controller {
 		$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
 		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
 		$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
-		$return['bearing'] = $this->bearing($return['callsign_qra'], $this->config->item('measurement_base'));
+		$return['bearing'] = $this->bearing($return['callsign_qra'], $this->getMeasurementBase());
 		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
 
 		if ($return['callsign_qra'] != "") {
@@ -161,7 +161,7 @@ class Logbook extends CI_Controller {
 		}
 		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
 	}
-	$return['bearing'] = $this->bearing($return['callsign_qra'], $this->config->item('measurement_base'));
+	$return['bearing'] = $this->bearing($return['callsign_qra'], $this->getMeasurementBase());
 
 	echo json_encode($return, JSON_PRETTY_PRINT);
 
@@ -367,7 +367,8 @@ class Logbook extends CI_Controller {
 
 		$this->load->model('logbook_model');
 		$data['query'] = $this->logbook_model->get_qso($id);
-		
+		$data['measurement_base'] = $this->getMeasurementBase();
+
 		$this->load->view('interface_assets/mini_header', $data);
 		$this->load->view('view_log/qso');
 		$this->load->view('interface_assets/footer');
@@ -590,7 +591,7 @@ class Logbook extends CI_Controller {
 					$mylocator = $this->config->item('locator');
 				}
 
-				$bearing = $this->qra->bearing($mylocator, $locator, $this->config->item('measurement_base'));
+				$bearing = $this->qra->bearing($mylocator, $locator, $this->getMeasurementBase());
 
 				echo $bearing;
 			}
@@ -629,6 +630,38 @@ class Logbook extends CI_Controller {
 		$latlng = $this->qra->qra2latlong($qra);
 		print json_encode($latlng);
 	}
+
+	function getMeasurementBase() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        $this->db->select('measurement_base');
+
+        $this->db->from('station_profile');
+
+        $this->db->where('station_id', $station_id);
+
+        $result = $this->db->get();
+
+        return $result->row()->measurement_base;
+    }
+
+    function get_qsos($num, $offset) {
+        $this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_NAME, '.$this->config->item('table_name').'.COL_COUNTRY, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
+        $this->db->from($this->config->item('table_name'));
+
+        $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', "desc");
+
+        $this->db->limit($num);
+        $this->db->offset($offset);
+
+        return $this->db->get();
+    }
 
 
 }

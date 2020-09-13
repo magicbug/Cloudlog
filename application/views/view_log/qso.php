@@ -75,8 +75,9 @@
 							$CI->load->library('qra');
 
 							// Cacluate Distance
-							echo $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $this->config->item('measurement_base'));
-							switch ($this->config->item('measurement_base')) {
+							echo $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
+
+                            switch ($measurement_base) {
 							    case 'M':
 							        echo "mi";
 							        break;
