@@ -14,6 +14,7 @@
   </div>
   <div class="card-body">
     <p class="card-text">This is the place you can customize your modes-list by activating/deactivating modes to be shown in the select-list.</p>
+    <div class="table-responsive">
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -42,7 +43,9 @@
 				<?php } ?>
 			</tbody>
 		<table>
-		<p><a href="<?php echo site_url('mode/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Mode</a></p>
+	</table>
+	
+	<p><a href="<?php echo site_url('mode/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Mode</a></p>
   </div>
 </div>
 

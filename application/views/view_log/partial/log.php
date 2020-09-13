@@ -41,7 +41,7 @@
 			<?php } else { ?>
 			<td><?php echo strtolower($row->COL_BAND); ?></td>
 			<?php } ?>
-			<td><?php echo $row->COL_COUNTRY; ?></td>
+			<td><?php echo ucwords(strtolower(($row->COL_COUNTRY))); ?></td>
 			<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
 			<td class="qsl">
 				<span class="qsl-<?php

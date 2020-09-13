@@ -137,17 +137,39 @@
 		    <small id="stationCntyInputHelp" class="form-text text-muted">Station Cnty #get def from ADIF Spec#</small>
 		  </div>
 
-		  <div class="form-group">
-		    <label for="stationCQZoneInput">CQ Zone</label>
-		    <input type="text" class="form-control" name="station_cq" id="stationCQZoneInput" aria-describedby="stationCQInputHelp" value="<?php if(set_value('station_cq') != "") { echo set_value('station_cq'); } else { echo $my_station_profile->station_cq; } ?>" required>
-		    <small id="stationCQInputHelp" class="form-text text-muted">If you do not know your CQ Zone <a href="http://www4.plala.or.jp/nomrax/CQ/" target="_blank">click Here to find it!</a></small>
-		  </div>
+            <div class="form-row">
+                <div class="form-group col-sm-6">
+                    <label for="stationCQZoneInput">CQ Zone</label>
+                    <select class="custom-select" id="stationCQZoneInput" name="station_cq" required>
+                        <?php
+                        for ($i = 1; $i<=40; $i++) {
+                            echo '<option value='. $i;
+                            if ($my_station_profile->station_cq == $i) {
+                                echo " selected=\"selected\"";
+                            }
+                            echo '>'. $i .'</option>';
+                        }
+                        ?>
+                    </select>
+                    <small id="stationCQInputHelp" class="form-text text-muted">If you do not know your CQ Zone <a href="http://www4.plala.or.jp/nomrax/CQ/" target="_blank">click Here to find it!</a></small>
+                </div>
 
-		  <div class="form-group">
-		    <label for="stationITUZoneInput">ITU Zone</label>
-		    <input type="text" class="form-control" name="station_itu" id="stationITUZoneInput" aria-describedby="stationITUInputHelp" value="<?php if(set_value('station_itu') != "") { echo set_value('station_itu'); } else { echo $my_station_profile->station_itu; } ?>" required>
-		    <small id="stationITUInputHelp" class="form-text text-muted">If you do not know your ITU Zone <a href="http://www4.plala.or.jp/nomrax/ITU/" target="_blank">click Here to find it!</a></small>
-		  </div>
+                <div class="form-group col-sm-6">
+                    <label for="stationITUZoneInput">ITU Zone</label>
+                    <select class="custom-select" id="stationITUZoneInput" name="station_itu" required>
+                        <?php
+                        for ($i = 1; $i<=90; $i++) {
+                            echo '<option value='. $i;
+                            if ($my_station_profile->station_itu == $i) {
+                                echo " selected=\"selected\"";
+                            }
+                            echo '>'. $i .'</option>';
+                        }
+                        ?>
+                    </select>
+                    <small id="stationITUInputHelp" class="form-text text-muted">If you do not know your ITU Zone <a href="http://www4.plala.or.jp/nomrax/ITU/" target="_blank">click Here to find it!</a></small>
+                </div>
+            </div>
 
 		  <div class="form-group">
 		    <label for="stationGridsquareInput">Gridsquare</label>
