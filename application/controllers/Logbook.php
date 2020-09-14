@@ -94,12 +94,19 @@ class Logbook extends CI_Controller {
 	// Do we have local data for the Callsign?
 	if($this->logbook_model->call_name($callsign) != null)
 	{
+        if ($this->session->userdata('user_measurement_base') == NULL) {
+             $measurement_base = $this->config->item('measurement_base');
+        }
+        else {
+            $measurement_base = $this->session->userdata('user_measurement_base');
+        }
+
 		$return['callsign_name'] = $this->logbook_model->call_name($callsign);
 		$return['callsign_qra'] = $this->logbook_model->call_qra($callsign);
 		$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
 		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
 		$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
-		$return['bearing'] = $this->bearing($return['callsign_qra'], $this->session->userdata('user_measurement_base'));
+		$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base);
 		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
 
 		if ($return['callsign_qra'] != "") {
@@ -161,7 +168,15 @@ class Logbook extends CI_Controller {
 		}
 		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
 	}
-	$return['bearing'] = $this->bearing($return['callsign_qra'], $this->session->userdata('user_measurement_base'));
+
+    if ($this->session->userdata('user_measurement_base') == NULL) {
+        $measurement_base = $this->config->item('measurement_base');
+    }
+    else {
+        $measurement_base = $this->session->userdata('user_measurement_base');
+    }
+
+	$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base);
 
 	echo json_encode($return, JSON_PRETTY_PRINT);
 
@@ -367,7 +382,13 @@ class Logbook extends CI_Controller {
 
 		$this->load->model('logbook_model');
 		$data['query'] = $this->logbook_model->get_qso($id);
-		$data['measurement_base'] = $this->session->userdata('user_measurement_base');
+
+        if ($this->session->userdata('user_measurement_base') == NULL) {
+            $data['measurement_base'] = $this->config->item('measurement_base');
+        }
+        else {
+            $data['measurement_base'] = $this->session->userdata('user_measurement_base');
+        }
 
 		$this->load->view('interface_assets/mini_header', $data);
 		$this->load->view('view_log/qso');
@@ -591,7 +612,14 @@ class Logbook extends CI_Controller {
 					$mylocator = $this->config->item('locator');
 				}
 
-				$bearing = $this->qra->bearing($mylocator, $locator, $this->session->userdata('user_measurement_base'));
+                if ($this->session->userdata('user_measurement_base') == NULL) {
+                    $measurement_base = $this->config->item('measurement_base');
+                }
+                else {
+                    $measurement_base = $this->session->userdata('user_measurement_base');
+                }
+
+				$bearing = $this->qra->bearing($mylocator, $locator, $measurement_base);
 
 				echo $bearing;
 			}
