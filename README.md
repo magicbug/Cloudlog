@@ -7,12 +7,11 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 ## Requirements
 * Linux based Operating System
 * Apache (Nginx should work)
-* PHP (Version 7 or higher) & MySQL
+* PHP (Version 7 or higher) & MySQL (MySQL 5.7 or higher)
 
 ## Versions
 
 * **Master** - Current working branch
-* cloudlog-v2 - This is the current development copy, while to work on bringing multiclient to Cloudlog without breaking users stable copies. 
 
 ## Setup
 
@@ -33,7 +32,9 @@ If you would prefer not to setup Cloudlog yourself [magicbug](https://magicbug.c
 
 If you would like to contribute in any way to Cloudlog, it is most appreciated. This has been developed in free time, help coding new features or writing documentation is always useful.
 
-Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses Bootstrap 4 for the user CSS framework documentation is available for this when building components, code will also only be accepted for PR with comments.
+Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses Bootstrap 4 for the user CSS framework documentation is available for this when building components.
+
+When submitting PRs please make sure code is commented and includes one feature only, multiple features or bug fixes will not be accepted.
 
 ## Credits
 

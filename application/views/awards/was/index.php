@@ -100,9 +100,10 @@
         <thead>
         <tr><td></td>';
 
-        foreach ($was_summary as $was) {      // Fills the table with the data
-            echo '<td style="text-align: center">' . $was->col_band . '</td>';
+        foreach($bands as $band) {
+            echo '<td>' . $band . '</td>';
         }
+        echo '</tr>';
 
         echo '</tr>
         </thead>
@@ -110,14 +111,14 @@
 
         <tr><td>Total worked</td>';
 
-        foreach ($was_summary as $was) {      // Fills the table with the data
-            echo '<td style="text-align: center">' . $was->count . '</td>';
+        foreach ($was_summary['worked'] as $was) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $was . '</td>';
         }
 
         echo '</tr><tr>
         <td>Total confirmed</td>';
-        foreach ($was_summary as $was) {      // Fills the table with the data
-            echo '<td style="text-align: center">' . $was->cfmwas . '</td>';
+        foreach ($was_summary['confirmed'] as $was) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $was . '</td>';
         }
 
         echo '</tr>

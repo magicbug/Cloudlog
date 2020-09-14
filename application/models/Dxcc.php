@@ -463,5 +463,75 @@ class DXCC extends CI_Model {
 		}
 		return $sql;
 	}
+  
+	/*
+     * Function gets worked and confirmed summary on each band on the active stationprofile
+     */
+	function get_dxcc_summary($bands)
+	{
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
+
+		foreach ($bands as $band) {
+			$worked = $this->getSummaryByBand($band, $station_id);
+			$confirmed = $this->getSummaryByBandConfirmed($band, $station_id);
+			$dxccSummary['worked'][$band] = $worked[0]->count;
+			$dxccSummary['confirmed'][$band] = $confirmed[0]->count;
+		}
+
+		return $dxccSummary;
+	}
+
+	function getSummaryByBand($band, $station_id)
+	{
+		$sql = "SELECT count(distinct thcv.col_dxcc) as count FROM " . $this->config->item('table_name') . " thcv";
+
+		$sql .= " where station_id = " . $station_id;
+
+		if ($band == 'SAT') {
+			$sql .= " and thcv.col_prop_mode ='" . $band . "'";
+		} else {
+			$sql .= " and thcv.col_prop_mode !='SAT'";
+			$sql .= " and thcv.col_band ='" . $band . "'";
+
+		}
+		$query = $this->db->query($sql);
+
+		return $query->result();
+	}
+
+	function getSummaryByBandConfirmed($band, $station_id)
+	{
+		$sql = "SELECT count(distinct thcv.col_dxcc) as count FROM " . $this->config->item('table_name') . " thcv";
+
+		$sql .= " where station_id = " . $station_id;
+
+		if ($band == 'SAT') {
+			$sql .= " and thcv.col_prop_mode ='" . $band . "'";
+		} else {
+			$sql .= " and thcv.col_prop_mode !='SAT'";
+			$sql .= " and thcv.col_band ='" . $band . "'";
+		}
+
+		$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+
+		$query = $this->db->query($sql);
+
+		return $query->result();
+	}
+  
+  function lookup_country($country)
+	{
+		$query = $this->db->query('
+					SELECT *
+					FROM dxcc_entities
+					WHERE name = "'.$country.'"
+					ORDER BY LENGTH( prefix ) DESC
+					LIMIT 1
+				');
+
+		return $query->row();
+	}
 }
 ?>
