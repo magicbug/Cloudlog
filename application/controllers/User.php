@@ -52,6 +52,7 @@ class User extends CI_Controller {
 				$data['user_callsign'] = $this->input->post('user_callsign');
 				$data['user_locator'] = $this->input->post('user_locator');
 				$data['user_timezone'] = $this->input->post('user_timezone');
+                $data['user_measurement_base'] = $this->input->post('user_measurement_base');
 				$this->load->view('user/add', $data);
 			} else {
 				$this->load->view('user/add', $data);
@@ -88,6 +89,7 @@ class User extends CI_Controller {
 			$data['user_lastname'] = $this->input->post('user_lastname');
 			$data['user_callsign'] = $this->input->post('user_callsign');
 			$data['user_locator'] = $this->input->post('user_locator');
+            $data['user_measurement_base'] = $this->input->post('user_measurement_base');
 			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -225,6 +227,12 @@ class User extends CI_Controller {
 			} else {
 				$data['user_eqsl_password'] = $q->user_eqsl_password;
 			}
+
+            if($this->input->post('user_measurement_base')) {
+                $data['user_measurement_base'] = $this->input->post('user_measurement_base', true);
+            } else {
+                $data['user_measurement_base'] = $q->user_measurement_base;
+            }
 		
 			
 			$this->load->view('user/edit', $data);
