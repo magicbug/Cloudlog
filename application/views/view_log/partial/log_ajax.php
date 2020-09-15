@@ -31,7 +31,8 @@
             <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
                 <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
             <?php } ?>
-            <td><a data-fancybox data-type="iframe" data-width="750" data-height="520" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
+            <td>
+                <a id="edit_qso" href="javascript:qso_edit(<?php echo $row->COL_PRIMARY_KEY; ?>)"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
             </td>
             <td><?php echo $row->COL_MODE; ?></td>
             <td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX) { ?><span class="badge badge-light"><?php echo $row->COL_STX;?></span><?php } ?><?php if ($row->COL_STX_STRING) { ?><span class="badge badge-light"><?php echo $row->COL_STX_STRING;?></span><?php } ?></td>
