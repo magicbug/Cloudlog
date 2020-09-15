@@ -122,7 +122,7 @@
 					
 					<div class="dropdown-divider"></div>
 
-                    <a class="dropdown-item" href="<?php echo site_url('qrz/export');?>" title="QRZ.com Export"><i class="fas fa-sync"></i> QRZ.com Export</a>
+                    <a class="dropdown-item" href="<?php echo site_url('qrz/export');?>" title="QRZ.com Export"><i class="fas fa-sync"></i> QRZ Logbook</a>
 
                     <div class="dropdown-divider"></div>
 					

@@ -102,7 +102,7 @@ class Qrz extends CI_Controller {
     public function export() {
         $this->load->model('stations');
 
-        $data['page_title'] = "QRZ.com Export";
+        $data['page_title'] = "QRZ Logbook";
 
         $data['station_profile'] = $this->stations->stations_with_qrz_api_key();
         $active_station_id = $this->stations->find_active();
