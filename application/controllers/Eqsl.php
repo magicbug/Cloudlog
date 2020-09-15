@@ -94,12 +94,13 @@ class eqsl extends CI_Controller {
 	}
 
 	public function import() {
-		$this->load->model('stations');
 
-		if($this->stations->are_eqsl_nicks_defined() == 0) {
-			show_error('eQSL Nicknames in Station Profiles arent defined');
-			exit;
-		}
+		// Check if eQSL Nicknames have been defined
+			$this->load->model('stations');
+			if($this->stations->are_eqsl_nicks_defined() == 0) {
+				show_error('eQSL Nicknames in Station Profiles arent defined');
+				exit;
+			}
 
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
@@ -255,11 +256,13 @@ class eqsl extends CI_Controller {
 		}
 	} // end function
 	
-	public function export() {	
-		if($this->stations->are_eqsl_nicks_defined() == 0) {
-			show_error('eQSL Nicknames in Station Profiles arent defined');
-			exit;
-		}
+	public function export() {
+		// Check if eQSL Nicknames have been defined
+			$this->load->model('stations');
+			if($this->stations->are_eqsl_nicks_defined() == 0) {
+				show_error('eQSL Nicknames in Station Profiles arent defined');
+				exit;
+			}
 
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
