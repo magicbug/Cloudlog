@@ -82,6 +82,16 @@
 			?>
 		  </div>
 
+        <div class="form-group">
+            <label for="user_measurement_base">Measurement preference</label>
+            <select class="custom-select" id="user_measurement_base" name="user_measurement_base" required>
+                <option value='K' <?php if($measurement_base == "K") { echo "selected=\"selected\""; } ?>>Kilometers</option>
+                <option value='M' <?php if($measurement_base == "M") { echo "selected=\"selected\""; } ?>>Miles</option>
+                <option value='N' <?php if($measurement_base == "N") { echo "selected=\"selected\""; } ?>>Nautical miles</option>
+            </select>
+            <small id="user_measurement_base_Help" class="form-text text-muted">Choose which unit distances will be shown in.</small>
+        </div>
+
 		  <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 			<button type="submit" class="btn btn-primary">Create Account</button>
     </form>

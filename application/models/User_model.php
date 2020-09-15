@@ -147,6 +147,7 @@ class User_Model extends CI_Model {
 					'user_lotw_name' => xss_clean($fields['user_lotw_name']),
 					'user_eqsl_name' => xss_clean($fields['user_eqsl_name']),
 					'user_clublog_name' => xss_clean($fields['user_clublog_name']),
+					'user_measurement_base' => xss_clean($fields['user_measurement_base']),
 				);
 	
 				// Check to see if the user is allowed to change user levels
@@ -250,7 +251,8 @@ class User_Model extends CI_Model {
 			'user_eqsl_qth_nickname' => $u->row()->user_eqsl_qth_nickname,
 			'user_hash'		 => $this->_hash($u->row()->user_id."-".$u->row()->user_type),
 			'radio' => isset($_COOKIE["radio"])?$_COOKIE["radio"]:"",
-			'station_profile_id' => isset($_COOKIE["station_profile_id"])?$_COOKIE["station_profile_id"]:""
+			'station_profile_id' => isset($_COOKIE["station_profile_id"])?$_COOKIE["station_profile_id"]:"",
+			'user_measurement_base' => $u->row()->user_measurement_base,
 		);
 
 		$this->session->set_userdata($userdata);
