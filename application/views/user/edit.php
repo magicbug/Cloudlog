@@ -134,8 +134,19 @@
 					</div>
 
 					<div class="form-group">
+					<label for="SelectDateFormat">Date Format</label>
+						<select name="user_date_format" class="form-control" id="SelectDateFormat" aria-describedby="SelectDateFormatHelp">
+							<option value="d/m/y" <?php if($user_date_format == "d/m/y") { echo "selected=\"selected\""; } ?>><?php echo date('d/m/y'); ?></option>
+							<option value="d/m/Y" <?php if($user_date_format == "d/m/Y") { echo "selected=\"selected\""; } ?>><?php echo date('d/m/Y'); ?></option>
+							<option value="m/d/y" <?php if($user_date_format == "m/d/y") { echo "selected=\"selected\""; } ?>><?php echo date('m/d/y'); ?></option>
+							<option value="m/d/Y" <?php if($user_date_format == "m/d/Y") { echo "selected=\"selected\""; } ?>><?php echo date('m/d/Y'); ?></option>
+						</select>
+						<small id="SelectDateFormatHelp" class="form-text text-muted">Select how you would like dates shown when logged into your account.</small>
+					</div>
+
+					<div class="form-group">
 		                <label for="user_measurement_base">Measurement preference</label>
-		                <select class="custom-select" id="user_measurement_base" name="user_measurement_base" required>
+		                <select class="custom-select" id="user_measurement_base" name="user_measurement_base" aria-describedby="user_measurement_base_Help" required>
 		                    <option value='K' <?php if($user_measurement_base == "K") { echo "selected=\"selected\""; } ?>>Kilometers</option>
 		                    <option value='M' <?php if($user_measurement_base == "M") { echo "selected=\"selected\""; } ?>>Miles</option>
 		                    <option value='N' <?php if($user_measurement_base == "N") { echo "selected=\"selected\""; } ?>>Nautical miles</option>

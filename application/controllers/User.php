@@ -235,6 +235,12 @@ class User extends CI_Controller {
                 $data['user_measurement_base'] = $q->user_measurement_base;
             }
 		
+
+			if($this->input->post('user_date_format')) {
+                $data['user_date_format'] = $this->input->post('user_date_format', true);
+            } else {
+                $data['user_date_format'] = $q->user_date_format;
+            }
 			
 			$this->load->view('user/edit', $data);
 			$this->load->view('interface_assets/footer');

@@ -32,6 +32,18 @@
     <canvas id="myChartDiff" width="400" height="150"></canvas>
     <h2>Longest streak with QSOs in the log</h2>
     <p>A maximum of the 10 longest streaks are shown!</p>
+
+    <?php 
+    // Get Date format
+    if($this->session->userdata('user_date_format')) {
+        // If Logged in and session exists
+        $custom_date_format = $this->session->userdata('user_date_format');
+    } else {
+        // Get Default date format from /config/cloudlog.php
+        $custom_date_format = $this->config->item('qso_date_format');
+    }
+    ?>
+
     <?php
     if (is_array($streaks)) {
         echo '<div id="streaks" class="table-responsive"><table class="qsotable table table-bordered table-hover table-striped table-condensed">';
@@ -45,8 +57,10 @@
             foreach ($streaks as $streak) {
                 echo '<tr>';
                 echo '<td style=\'text-align: center\'>' . $streak['highstreak'] . '</td>';
-                echo '<td style=\'text-align: center\'>' . $streak['beginstreak'] . '</td>';
-                echo '<td style=\'text-align: center\'>' . $streak['endstreak'] . '</td>';
+                $beginstreak_newdate = strtotime($streak['beginstreak']);
+                echo '<td style=\'text-align: center\'>' . date($custom_date_format, $beginstreak_newdate) . '</td>';
+                $endstreak_newdate = strtotime($streak['endstreak']);
+                echo '<td style=\'text-align: center\'>' . date($custom_date_format, $endstreak_newdate) . '</td>';
                 echo '</tr>';
             }
 

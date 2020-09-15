@@ -148,6 +148,7 @@ class User_Model extends CI_Model {
 					'user_eqsl_name' => xss_clean($fields['user_eqsl_name']),
 					'user_clublog_name' => xss_clean($fields['user_clublog_name']),
 					'user_measurement_base' => xss_clean($fields['user_measurement_base']),
+					'user_date_format' => xss_clean($fields['user_date_format']),
 				);
 	
 				// Check to see if the user is allowed to change user levels
@@ -253,6 +254,7 @@ class User_Model extends CI_Model {
 			'radio' => isset($_COOKIE["radio"])?$_COOKIE["radio"]:"",
 			'station_profile_id' => isset($_COOKIE["station_profile_id"])?$_COOKIE["station_profile_id"]:"",
 			'user_measurement_base' => $u->row()->user_measurement_base,
+			'user_date_format' => $u->row()->user_date_format,
 		);
 
 		$this->session->set_userdata($userdata);

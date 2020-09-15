@@ -29,6 +29,17 @@
         </fieldset>
     </form>
 
+    <?php 
+    // Get Date format
+    if($this->session->userdata('user_date_format')) {
+        // If Logged in and session exists
+        $custom_date_format = $this->session->userdata('user_date_format');
+    } else {
+        // Get Default date format from /config/cloudlog.php
+        $custom_date_format = $this->config->item('qso_date_format');
+    }
+    ?>
+
     <?php
     $i = count($dxcc_timeline_array);
     if ($dxcc_timeline_array) {
@@ -47,9 +58,10 @@
                 <tbody>';
 
         foreach ($dxcc_timeline_array as $line) {
+            $date_as_timestamp = strtotime($line->date);
             echo '<tr>
                 <td>' . $i-- . '</td>
-                <td>' . $line->date . '</td>
+                <td>' . date($custom_date_format, $date_as_timestamp) . '</td>
                 <td>' . $line->prefix . '</td>
                 <td>' . $line->col_country . '</td>
                 <td>';

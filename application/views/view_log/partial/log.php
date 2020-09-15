@@ -25,9 +25,18 @@
 		</tr>
 		
 		<?php  $i = 0;  foreach ($results->result() as $row) { ?>
-
+			<?php 
+				// Get Date format
+				if($this->session->userdata('user_date_format')) {
+					// If Logged in and session exists
+					$custom_date_format = $this->session->userdata('user_date_format');
+				} else {
+					// Get Default date format from /config/cloudlog.php
+					$custom_date_format = $this->config->item('qso_date_format');
+				}
+			?>
 			<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
-			<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($this->config->item('qso_date_format'), $timestamp); ?></td>
+			<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); ?></td>
 			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
 				<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
 			<?php } ?>
