@@ -10,6 +10,13 @@
     <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
 
 <script type="text/javascript">
+  /*
+  *
+  * Define global javascript variables
+  *
+  */
+  var base_url = "<?php echo base_url(); ?>"; // Base URL
+  var site_url = "<?php echo site_url(); ?>"; // Site URL
   var icon_dot_url = "<?php echo base_url();?>assets/images/dot.png";
 </script>
 
