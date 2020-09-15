@@ -39,6 +39,7 @@ class User extends CI_Controller {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$data['page_title'] = "Add User";
+            $data['measurement_base'] = $this->config->item('measurement_base');
 
 			$this->load->view('interface_assets/header', $data);
 			if($this->input->post('user_name'))
