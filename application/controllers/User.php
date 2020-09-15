@@ -170,7 +170,7 @@ class User extends CI_Controller {
 			}
 
 			if($this->input->post('user_lastname', true)) {
-				$data['user_lastname'] = $this->input->post('user_lastname', tue);
+				$data['user_lastname'] = $this->input->post('user_lastname', true);
 			} else {
 				$data['user_lastname'] = $q->user_lastname;
 			}
