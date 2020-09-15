@@ -11,7 +11,7 @@ class eqsl extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
-	
+
 	private function loadFromFile($filepath)
 	{
 		ini_set('memory_limit', '-1');
@@ -94,6 +94,13 @@ class eqsl extends CI_Controller {
 	}
 
 	public function import() {
+		$this->load->model('stations');
+
+		if($this->stations->are_eqsl_nicks_defined() == 0) {
+			show_error('eQSL Nicknames in Station Profiles arent defined');
+			exit;
+		}
+
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
 	
@@ -249,6 +256,11 @@ class eqsl extends CI_Controller {
 	} // end function
 	
 	public function export() {	
+		if($this->stations->are_eqsl_nicks_defined() == 0) {
+			show_error('eQSL Nicknames in Station Profiles arent defined');
+			exit;
+		}
+
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
 		$this->load->model('logbook_model');

@@ -30,8 +30,12 @@ class Stations extends CI_Model {
 		return $this->db->get('station_profile');
 	}
 
-
+	/*
+	*	Function: add
+	*	Adds post material into the station profile table.
+	*/
 	function add() {
+		// Create data array with field values
 		$data = array(
 			'station_profile_name' => xss_clean($this->input->post('station_profile_name', true)),
 			'station_gridsquare' =>  xss_clean(strtoupper($this->input->post('gridsquare', true))),
@@ -49,6 +53,7 @@ class Stations extends CI_Model {
             'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
 		);
 
+		// Insert Records
 		$this->db->insert('station_profile', $data); 
 	}
 
@@ -216,6 +221,20 @@ class Stations extends CI_Model {
         $query = $this->db->query($sql);
 
         return $query;
+    }
+
+    /*
+	*	Function: are_eqsl_nicks_defined
+	*	Description: Returns number of station profiles with eqslnicknames
+    */
+    function are_eqsl_nicks_defined() {
+    	$this->db->select('eqslqthnickname');
+    	$this->db->where('eqslqthnickname IS NOT NULL');
+    	$this->db->where('eqslqthnickname !=', '');
+		$this->db->from('station_profile');
+		$query = $this->db->get();
+
+		return $query->num_rows();
     }
 
 }
