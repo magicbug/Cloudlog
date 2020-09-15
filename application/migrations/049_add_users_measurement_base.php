@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_add_stationprofile_measurement_base extends CI_Migration {
+class Migration_add_users_measurement_base extends CI_Migration {
 
     public function up()
     {
