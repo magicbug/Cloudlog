@@ -84,6 +84,7 @@
 		<div class="form-group">
         	<label for="SelectDateFormat">Date Format</label>
             <select name="user_date_format" class="custom-select" id="SelectDateFormat" aria-describedby="SelectDateFormatHelp">
+            	<option value="">Select Format</option>
             	<option value="d/m/y"><?php echo date('d/m/y'); ?></option>
             	<option value="d/m/Y"><?php echo date('d/m/Y'); ?></option>
             	<option value="m/d/y"><?php echo date('m/d/y'); ?></option>
