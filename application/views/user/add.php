@@ -82,6 +82,21 @@
 			?>
 		  </div>
 
+
+                                        <div class="form-group">
+                                        <label for="SelectDateFormat">Date Format</label>
+                                                <select name="user_date_format" class="custom-select" id="SelectDateFormat" aria-describedby="SelectDateFormatHelp">
+                                                        <option value="d/m/y"><?php echo date('d/m/y'); ?></option>
+                                                        <option value="d/m/Y"><?php echo date('d/m/Y'); ?></option>
+                                                        <option value="m/d/y"><?php echo date('m/d/y'); ?></option>
+                                                        <option value="m/d/Y"><?php echo date('m/d/Y'); ?></option>
+                                                        <option value="d.m.Y"><?php echo date('d.m.Y'); ?></option>
+                                                        <option value="Y-m-d"><?php echo date('Y-m-d'); ?></option>
+                                                </select>
+                                                <small id="SelectDateFormatHelp" class="form-text text-muted">Select how you would like dates shown when logged into your account.</small>
+                                        </div>
+
+
         <div class="form-group">
             <label for="user_measurement_base">Measurement preference</label>
             <select class="custom-select" id="user_measurement_base" name="user_measurement_base" required>
