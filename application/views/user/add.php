@@ -27,7 +27,7 @@
 
 		  <div class="form-group">
 		    <label>User Role</label>
-		    <select class="form-control" name="user_type">
+		    <select class="custom-select" name="user_type">
 						<?php
 						
 						$levels = $this->config->item('auth_level');
