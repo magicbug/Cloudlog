@@ -96,7 +96,7 @@ class User_Model extends CI_Model {
 
 	// FUNCTION: bool add($username, $password, $email, $type)
 	// Add a user
-	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone) {
+	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone, $measurement, $user_date_format) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -108,7 +108,9 @@ class User_Model extends CI_Model {
 				'user_lastname' => xss_clean($lastname),
 				'user_callsign' => xss_clean($callsign),
 				'user_locator' => xss_clean($locator),
-				'user_timezone' => xss_clean($timezone)
+				'user_timezone' => xss_clean($timezone),
+				'user_measurement_base' => xss_clean($measurement),
+				'user_date_format' => xss_clean($user_date_format),
 			);
 
 			// Check the password is valid
