@@ -147,7 +147,8 @@
 					<div class="form-group">
 		                <label for="user_measurement_base">Measurement preference</label>
 		                <select class="custom-select" id="user_measurement_base" name="user_measurement_base" aria-describedby="user_measurement_base_Help" required>
-		                    <option value='K' <?php if($user_measurement_base == "K") { echo "selected=\"selected\""; } ?>>Kilometers</option>
+		                    <option value ''></option>
+                            <option value='K' <?php if($user_measurement_base == "K") { echo "selected=\"selected\""; } ?>>Kilometers</option>
 		                    <option value='M' <?php if($user_measurement_base == "M") { echo "selected=\"selected\""; } ?>>Miles</option>
 		                    <option value='N' <?php if($user_measurement_base == "N") { echo "selected=\"selected\""; } ?>>Nautical miles</option>
 		                </select>
