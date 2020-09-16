@@ -64,7 +64,7 @@
 						<label>Level</label>
 						
 						<?php if($this->session->userdata('user_type') == 99) { ?>
-						<select class="form-control" name="user_type">
+						<select class="custom-select" name="user_type">
 						<?php
 							$levels = $this->config->item('auth_level');
 							while (list($key, $val) = each($levels)) {
@@ -135,7 +135,7 @@
 
 					<div class="form-group">
 					<label for="SelectDateFormat">Date Format</label>
-						<select name="user_date_format" class="form-control" id="SelectDateFormat" aria-describedby="SelectDateFormatHelp">
+						<select name="user_date_format" class="custom-select" id="SelectDateFormat" aria-describedby="SelectDateFormatHelp">
 							<option value="d/m/y" <?php if($user_date_format == "d/m/y") { echo "selected=\"selected\""; } ?>><?php echo date('d/m/y'); ?></option>
 							<option value="d/m/Y" <?php if($user_date_format == "d/m/Y") { echo "selected=\"selected\""; } ?>><?php echo date('d/m/Y'); ?></option>
 							<option value="m/d/y" <?php if($user_date_format == "m/d/y") { echo "selected=\"selected\""; } ?>><?php echo date('m/d/y'); ?></option>
