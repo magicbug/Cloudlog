@@ -298,7 +298,7 @@
                "Uplink_Mode":"LSB",
                "Uplink_Freq":"2400175000",
                "Downlink_Mode":"USB",
-               "Downlink_Freq":"110489675000"
+               "Downlink_Freq":"10489675000"
             }
          ]
       }
