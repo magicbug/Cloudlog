@@ -29,9 +29,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/ldbtn.min.css" />
 	<?php } ?>
 
-      <?php if ($this->uri->segment(2) == "was") { ?>
-          <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/bootstrapdialog/css/bootstrap-dialog.min.css" />
-      <?php } ?>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/bootstrapdialog/css/bootstrap-dialog.min.css" />
 
  	<?php if ($this->uri->segment(1) == "adif") { ?>
   	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
