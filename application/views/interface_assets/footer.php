@@ -1440,7 +1440,6 @@ $(document).ready(function(){
                                     id: 'mapbox.streets'
                                 }).addTo(mymap);
 
-
                                 var redIcon = L.icon({
                                     iconUrl: icon_dot_url,
                                     iconSize:     [18, 18], // size of the icon
@@ -1486,6 +1485,37 @@ $(document).ready(function(){
         }
 
     <?php } ?>
+
+            <?php if ($this->uri->segment(2) == "cq") { ?>
+
+            function displayCqContacts(cqzone, band) {
+                var baseURL= "<?php echo base_url();?>";
+                $.ajax({
+                    url: baseURL + 'index.php/awards/cq_details_ajax',
+                    type: 'post',
+                    data: {'CQZone': cqzone,
+                        'Band': band
+                    },
+                    success: function(html) {
+                        BootstrapDialog.show({
+                            title: 'QSO Data',
+                            size: BootstrapDialog.SIZE_WIDE,
+                            cssClass: 'qso-cq-dialog',
+                            nl2br: false,
+                            message: html,
+                            buttons: [{
+                                label: 'Close',
+                                action: function (dialogItself) {
+                                    dialogItself.close();
+                                }
+                            }]
+                        });
+                    }
+                });
+            }
+
+            <?php } ?>
+
     <?php if ($this->uri->segment(2) == "was") { ?>
         function displayWasContacts(was, band) {
             var baseURL= "<?php echo base_url();?>";
@@ -1513,6 +1543,7 @@ $(document).ready(function(){
             });
         }
     <?php } ?>
+
         function qsl_rcvd(id, method) {
             var baseURL= "<?php echo base_url();?>";
             $.ajax({

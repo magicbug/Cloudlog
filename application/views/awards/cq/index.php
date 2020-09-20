@@ -11,12 +11,12 @@
             <a class="nav-link active" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="true">Table</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="map-tab" data-toggle="tab" href="#map" role="tab" aria-controls="home" aria-selected="false">Map</a>
+            <a class="nav-link" id="map-tab" data-toggle="tab" href="#cqmap" role="tab" aria-controls="home" aria-selected="false">Map</a>
         </li>
     </ul>
 
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade" id="map" role="tabpanel" aria-labelledby="home-tab">
+        <div class="tab-pane fade" id="cqmap" role="tabpanel" aria-labelledby="home-tab">
     <br />
             <map name="CQ">
                 <area href="cq_details?CQZone=1" title="zone_1" class="zone_1" shape="poly" coords="306,0,306,25,322,37,322,41,291,62,291,76,291,84,364,84,364,67,368,64,373,60,378,60,378,57,377,57,372,52,366,52,366,51,393,51,419,51,419,37,422,35,422,33,420,33,417,30,417,26,408,17,408,0">

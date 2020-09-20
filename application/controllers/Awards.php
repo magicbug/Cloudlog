@@ -324,6 +324,19 @@ class Awards extends CI_Controller {
         $this->load->view('interface_assets/footer');
     }
 
+    public function cq_details_ajax(){
+        $this->load->model('logbook_model');
+
+        $cqzone = str_replace('"', "", $this->input->post("CQZone"));
+        $band = str_replace('"', "", $this->input->post("Band"));
+        $data['results'] = $this->logbook_model->cq_qso_details($cqzone, $band);
+
+        // Render Page
+        $data['page_title'] = "Log View - DXCC";
+        $data['filter'] = "CQZone ".$cqzone. " and ".$band;;
+        $this->load->view('awards/cq/details_ajax', $data);
+    }
+
     public function was() {
         $this->load->model('was');
         $data['worked_bands'] = $this->was->get_worked_bands();
