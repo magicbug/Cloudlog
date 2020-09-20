@@ -26,7 +26,7 @@
 	                if ($count == 0){
 	      	             print("<td>&nbsp;</td>");
 	                }else{
-	                    printf("<td><a href='dok_details?Dok=\"%s\"&Band=\"%s\"'>%d</a></td>", str_replace("&", "%26", $dok), $band, $count);
+	                    printf("<td><a href='javascript:displayDokContacts(\"%s\",\"%s\")'>%d</a></td>", str_replace("&", "%26", $dok), $band, $count);
 	                }
 		} 
             }
