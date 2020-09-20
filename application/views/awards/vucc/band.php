@@ -18,7 +18,7 @@
         foreach ($vucc_array as $vucc => $value) {      // Fills the table with the data
             echo '<tr>
             <td>'. $i++ .'</td>
-            <td><a href=\'vucc_details?Gridsquare="'. $vucc .'"&Band="'. $band . '"\'>'. $vucc .'</td>
+            <td><a href=\'javascript:displayVuccContacts("'. $vucc .'","'. $band . '")\'>'. $vucc .'</td>
             <td>'. $value['qsl'] . '</td>
             <td>'. $value['lotw'] .'</td>
         </tr>';

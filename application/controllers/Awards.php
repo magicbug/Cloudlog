@@ -243,6 +243,19 @@ class Awards extends CI_Controller {
         $this->load->view('interface_assets/footer');
     }
 
+    public function vucc_details_ajax(){
+        $this->load->model('logbook_model');
+
+        $gridsquare = str_replace('"', "", $this->input->post("Gridsquare"));
+        $band = str_replace('"', "", $this->input->post("Band"));
+        $data['results'] = $this->logbook_model->vucc_qso_details($gridsquare, $band);
+
+        // Render Page
+        $data['page_title'] = "Log View - VUCC";
+        $data['filter'] = "vucc " . $gridsquare . " and band ".$band;
+        $this->load->view('awards/vucc/details_ajax', $data);
+    }
+
 	/*
 		Handles Displaying of WAB Squares worked.
 		Comment field - WAB:#
