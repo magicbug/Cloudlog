@@ -1457,6 +1457,35 @@ $(document).ready(function(){
                 });
             }
 
+    <?php if ($this->uri->segment(2) == "dxcc") { ?>
+
+        function displayDxccContacts(country, band) {
+            var baseURL= "<?php echo base_url();?>";
+            $.ajax({
+                url: baseURL + 'index.php/awards/dxcc_details_ajax',
+                type: 'post',
+                data: {'Country': country,
+                    'Band': band
+                },
+                success: function(html) {
+                    BootstrapDialog.show({
+                        title: 'QSO Data',
+                        size: BootstrapDialog.SIZE_WIDE,
+                        cssClass: 'qso-dxcc-dialog',
+                        nl2br: false,
+                        message: html,
+                        buttons: [{
+                            label: 'Close',
+                            action: function (dialogItself) {
+                                dialogItself.close();
+                            }
+                        }]
+                    });
+                }
+            });
+        }
+
+    <?php } ?>
     <?php if ($this->uri->segment(2) == "was") { ?>
         function displayWasContacts(was, band) {
             var baseURL= "<?php echo base_url();?>";
