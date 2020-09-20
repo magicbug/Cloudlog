@@ -81,7 +81,7 @@ class IOTA extends CI_Model {
             if ($postdata['worked'] != NULL) {
                 $workedIota = $this->getIotaBandWorked($station_id, $band, $postdata);
                 foreach ($workedIota as $wiota) {
-                    $iotaMatrix[$wiota->tag][$band] = '<div class="alert-danger"><a href=\'iota_details?Iota="'.$wiota->tag.'"&Band="'. $band . '"\'>W</a></div>';;
+                    $iotaMatrix[$wiota->tag][$band] = '<div class="alert-danger"><a href=\'javascript:displayIotaContacts("'.$wiota->tag.'","'. $band . '")\'>W</a></div>';
                 }
             }
 
@@ -89,7 +89,7 @@ class IOTA extends CI_Model {
             if ($postdata['confirmed'] != NULL) {
                 $confirmedIota = $this->getIotaBandConfirmed($station_id, $band, $postdata);
                 foreach ($confirmedIota as $ciota) {
-                    $iotaMatrix[$ciota->tag][$band] = '<div class="alert-success"><a href=\'iota_details?Iota="'.$ciota->tag.'"&Band="'. $band . '"\'>C</a></div>';;
+                    $iotaMatrix[$ciota->tag][$band] = '<div class="alert-success"><a href=\'javascript:displayIotaContacts("'.$ciota->tag.'","'. $band . '")\'>C</a></div>';
                 }
             }
         }

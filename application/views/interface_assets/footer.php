@@ -1486,6 +1486,36 @@ $(document).ready(function(){
 
     <?php } ?>
 
+        <?php if ($this->uri->segment(2) == "iota") { ?>
+
+        function displayIotaContacts(iota, band) {
+            var baseURL= "<?php echo base_url();?>";
+            $.ajax({
+                url: baseURL + 'index.php/awards/iota_details_ajax',
+                type: 'post',
+                data: {'Iota': iota,
+                    'Band': band
+                },
+                success: function(html) {
+                    BootstrapDialog.show({
+                        title: 'QSO Data',
+                        size: BootstrapDialog.SIZE_WIDE,
+                        cssClass: 'qso-iota-dialog',
+                        nl2br: false,
+                        message: html,
+                        buttons: [{
+                            label: 'Close',
+                            action: function (dialogItself) {
+                                dialogItself.close();
+                            }
+                        }]
+                    });
+                }
+            });
+        }
+
+        <?php } ?>
+
             <?php if ($this->uri->segment(2) == "cq") { ?>
 
             function displayCqContacts(cqzone, band) {

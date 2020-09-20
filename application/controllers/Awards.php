@@ -481,4 +481,17 @@ class Awards extends CI_Controller {
         $this->load->view('awards/iota/details');
         $this->load->view('interface_assets/footer');
     }
+
+    public function iota_details_ajax(){
+        $this->load->model('logbook_model');
+
+        $iota = str_replace('"', "", $this->input->post("Iota"));
+        $band = str_replace('"', "", $this->input->post("Band"));
+        $data['results'] = $this->logbook_model->iota_qso_details($iota, $band);
+
+        // Render Page
+        $data['page_title'] = "Log View - IOTA";
+        $data['filter'] = "iota ".$iota. " and ".$band;
+        $this->load->view('awards/iota/details_ajax', $data);
+    }
 }
