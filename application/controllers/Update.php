@@ -256,5 +256,39 @@ class Update extends CI_Controller {
         }
     }
 
+    public function download_lotw_users() {
+
+
+
+        $contents = file_get_contents('https://lotw.arrl.org/lotw-user-activity.csv', true);
+
+        if($contents === FALSE) { 
+            echo "something went wrong";
+        } else {
+            $file = './updates/lotw_users.csv';
+
+            if(!is_file($file)){        // Some simple example content.
+                file_put_contents($file, $contents);     // Save our content to the file.
+            }
+
+            echo "LoTW User Data Saved.";
+        }
+
+    }
+
+    public function lotw_check() {
+        $f = fopen('./updates/lotw_users.csv', "r");
+        $result = false;
+        while ($row = fgetcsv($f)) {
+            if ($row[0] == '2M0SQL/MM') {
+                $result = $row[0];
+                echo "found";
+                break;
+            }
+        }
+        fclose($f);
+    }
+
+
 }
 ?>

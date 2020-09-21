@@ -67,11 +67,32 @@ class Logbook extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
-		$this->load->model('lotw_user');
-		 
-		$lotw_member = $this->lotw_user->check($callsign);
+		// Check if callsign is an LOTW User
+			$lotw_member = "";
+			$lotw_file_name = "./updates/lotw_users.csv";
+
+			if (file_exists($lotw_file_name)) {
+				$f = fopen($lotw_file_name, "r");
+		        $result = false;
+		        while ($row = fgetcsv($f)) {
+		            if ($row[0] == strtoupper($callsign)) {
+		                $result = $row[0];
+		                $lotw_member = "active";
+		                break;
+		            }
+		        }
+
+		        if($lotw_member != "active") {
+		        	$lotw_member = "not found";
+		        }
+		        fclose($f);
+			} else {
+			    $lotw_member = "not found";
+			}
 
 
+
+		// Check Database for all other data
 		$this->load->model('logbook_model');
 
 		$return = [

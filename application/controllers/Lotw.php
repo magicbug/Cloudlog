@@ -819,42 +819,41 @@ class Lotw extends CI_Controller {
 	}
 
 	/*
-		Load the ARRL LOTW User Activity CSV into LOTW User Table for cross checking when logging
-	*/
-	function load_users() {
-		set_time_limit(0);
-		$this->load->model('lotw_user');
+		Load the ARRL LOTW User Activity CSV and saves into uploads/lotw_users.csv
+	*/ 
+	public function load_users() {
+		$contents = file_get_contents('https://lotw.arrl.org/lotw-user-activity.csv', true);
 
-		$this->lotw_user->empty_table();
+        if($contents === FALSE) { 
+            echo "something went wrong";
+        } else {
+            $file = './updates/lotw_users.csv';
 
-		$row = 1;
-		if (($handle = fopen("https://lotw.arrl.org/lotw-user-activity.csv", "r")) !== FALSE) {
-		    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-		        $num = count($data);
-		        $row++;
+            if(!is_file($file)){        // Some simple example content.
+                file_put_contents($file, $contents);     // Save our content to the file.
+            }
 
-		        if(isset($data[2])) {
-		        	$callsign = $data[0];
-		        	$upload_date = $data[1]." ".$data[2];
-		        	$this->lotw_user->add_lotwuser($callsign, $upload_date);
-		    	}
-
-		    }
-		    fclose($handle);
-		}
-
+            echo "LoTW User Data Saved.";
+        }
 	}
 
 	/*
 		Check if callsign is an active LOTW user and return whether its true or not
 	*/
 	function lotw_usercheck($callsign) {
-		$this->load->model('lotw_user');
- 
-
-		$lotw_user_result = $this->lotw_user->check($callsign);
-
-
+		$f = fopen('./updates/lotw_users.csv', "r");
+        $result = false;
+        while ($row = fgetcsv($f)) {
+            if ($row[0] == strtoupper($callsign)) {
+                $result = $row[0];
+                echo "Found";
+                break;
+            } else {
+            	echo "Not Found"
+            	break;
+            }
+        }
+        fclose($f);
 	}
 
 	function signlog($sign_key, $string) {
