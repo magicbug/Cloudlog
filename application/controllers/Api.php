@@ -632,14 +632,7 @@ class API extends CI_Controller {
 		*	Check if callsign is active on LOTW
 		*
 		*/
-			$this->load->model('lotw_user');
-		 
-			$lotw_member = $this->lotw_user->check($lookup_callsign);
-			if($lotw_member == "not found") {
-				$return['lotw_member'] = false;
-			} else {
-				$return['lotw_member'] = true;
-			}
+
 
 		/*
 		*
