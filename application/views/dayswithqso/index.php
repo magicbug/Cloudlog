@@ -70,4 +70,52 @@
         echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>No streak found!</div>';
     }
     ?>
+
+    <h2>Current streak with QSOs in the log</h2>
+    <?php
+    if (is_array($currentstreak)) {
+        echo '<div id="streaks" class="table-responsive"><table class="qsotable table table-bordered table-hover table-striped table-condensed">';
+
+        echo '<tr>';
+        echo '<th style=\'text-align: center\'>Current Streak (Continues days with QSOs)</th>';
+        echo '<th style=\'text-align: center\'>Begin date</th>';
+        echo '<th style=\'text-align: center\'>End date</th>';
+        echo '</tr>';
+
+            echo '<tr>';
+            echo '<td style=\'text-align: center\'>' . $currentstreak['highstreak'] . '</td>';
+            $beginstreak_newdate = strtotime($currentstreak['beginstreak']);
+            echo '<td style=\'text-align: center\'>' . date($custom_date_format, $beginstreak_newdate) . '</td>';
+            $endstreak_newdate = strtotime($currentstreak['endstreak']);
+            echo '<td style=\'text-align: center\'>' . date($custom_date_format, $endstreak_newdate) . '</td>';
+            echo '</tr>';
+
+        echo '</table></div>';
+    }
+    elseif (is_array($almostcurrentstreak)) {
+        ?>
+        <p>If you make a QSO today, you can continue to extend your streak, else your current streak will be broken!</p>
+        <?php
+        echo '<div id="streaks" class="table-responsive"><table class="qsotable table table-bordered table-hover table-striped table-condensed">';
+
+        echo '<tr>';
+        echo '<th style=\'text-align: center\'>Current Streak (Continues days with QSOs)</th>';
+        echo '<th style=\'text-align: center\'>Begin date</th>';
+        echo '<th style=\'text-align: center\'>End date</th>';
+        echo '</tr>';
+
+        echo '<tr>';
+        echo '<td style=\'text-align: center\'>' . $almostcurrentstreak['highstreak'] . '</td>';
+        $beginstreak_newdate = strtotime($almostcurrentstreak['beginstreak']);
+        echo '<td style=\'text-align: center\'>' . date($custom_date_format, $beginstreak_newdate) . '</td>';
+        $endstreak_newdate = strtotime($almostcurrentstreak['endstreak']);
+        echo '<td style=\'text-align: center\'>' . date($custom_date_format, $endstreak_newdate) . '</td>';
+        echo '</tr>';
+
+        echo '</table></div>';
+    }
+    else {
+        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>No current streak found!</div>';
+    }
+    ?>
 </div>
