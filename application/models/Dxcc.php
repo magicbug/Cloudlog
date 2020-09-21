@@ -191,7 +191,7 @@ class DXCC extends CI_Model {
 			if ($postdata['worked'] != NULL) {
 				$workedDXCC = $this->getDxccBandWorked($station_id, $band, $postdata);
 				foreach ($workedDXCC as $wdxcc) {
-					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="alert-danger"><a href=\'dxcc_details?Country="'.str_replace("&", "%26", $wdxcc->name).'"&Band="'. $band . '"\'>W</a></div>';;
+					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="alert-danger"><a href=\'javascript:displayDxccContacts("'.str_replace("&", "%26", $wdxcc->name).'","'. $band . '")\'>W</a></div>';
 				}
 			}
 
@@ -199,7 +199,7 @@ class DXCC extends CI_Model {
 			if ($postdata['confirmed'] != NULL) {
 				$confirmedDXCC = $this->getDxccBandConfirmed($station_id, $band, $postdata);
 				foreach ($confirmedDXCC as $cdxcc) {
-					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="alert-success"><a href=\'dxcc_details?Country="'.str_replace("&", "%26", $cdxcc->name).'"&Band="'. $band . '"\'>C</a></div>';;
+					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="alert-success"><a href=\'javascript:displayDxccContacts("'.str_replace("&", "%26", $cdxcc->name).'","'. $band . '")\'>C</a></div>';
 				}
 			}
 		}

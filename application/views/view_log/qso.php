@@ -249,7 +249,7 @@
 			
 			<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 				<br>
-				<p><a class="btn btn-success" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a></p>
+                    <p class="editButton"><a class="btn btn-success" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a></p>
 			<?php } ?>
 
 		</div>
@@ -279,6 +279,10 @@ var lat = <?php echo $lat; ?>;
 var long = <?php echo $lng; ?>;
 var callsign = "<?php echo $row->COL_CALL; ?>";
 </script>
+    <div hidden id ='lat'><?php echo $lat; ?></div>
+    <div hidden id ='long'><?php echo $lng; ?></div>
+    <div hidden id ='callsign'><?php echo $row->COL_CALL; ?></div>
+    <div hidden id ='qsoid'><?php echo $row->COL_PRIMARY_KEY; ?></div>
 
 <?php } } ?>
 <?php 
