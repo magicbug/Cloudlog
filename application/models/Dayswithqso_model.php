@@ -25,6 +25,82 @@ class Dayswithqso_model extends CI_Model
     }
 
     /*
+     * Function returns current streak
+     */
+    function getCurrentStreak() {
+        $dates = $this->getDates();
+        $dates = array_reverse($dates);
+        $streak = 1;
+        $firstrun = true;
+
+        $dateprev = date_create(date('Y-m-d'));
+
+        foreach($dates as $date) {      // Loop through the result set
+            $datecurr = date_create($date->date);
+            $diff = $dateprev->diff($datecurr)->format("%a"); // Getting date difference between current date and previous date in array
+
+            if ($diff == 0) {
+                $streaks['highstreak'] = $streak;
+                $streaks['endstreak'] = $datecurr->format('Y-m-d');
+                $streaks['beginstreak'] = $datecurr->format('Y-m-d');
+                $firstrun = false;
+            }
+            else if ($diff == 1 and !$firstrun) {   // If diff = 1, means that we are on a streak
+                $streaks['highstreak'] = ++$streak;
+                $streaks['beginstreak'] = $datecurr->sub(new DateInterval('P'.($streak-1).'D'))->format('Y-m-d');
+            } else {
+                break;
+            }
+            $dateprev = date_create($date->date);
+        }
+
+        if (isset($streaks) && is_array($streaks)) {
+            return $streaks;
+        } else {
+            return null;
+        }
+    }
+
+    /*
+     * Function returns streak that ended yesterday, but can be continued if a qso is made today
+     */
+    function getAlmostCurrentStreak() {
+        $dates = $this->getDates();
+        $dates = array_reverse($dates);
+        $streak = 1;
+        $firstrun = true;
+
+        $dateprev = date_create(date('Y-m-d'));
+
+        foreach($dates as $date) {      // Loop through the result set
+            $datecurr = date_create($date->date);
+            $diff = $dateprev->diff($datecurr)->format("%a"); // Getting date difference between current date and previous date in array
+
+            if ($diff == 1 && $firstrun == true) {
+                $streaks['highstreak'] = $streak++;
+                $streaks['endstreak'] = $datecurr->format('Y-m-d');
+                $streaks['beginstreak'] = $datecurr->format('Y-m-d');
+                $firstrun = false;
+            }
+            else if ($diff == 1 && $firstrun == false) {
+                    $streaks['highstreak'] = $streak++;
+                    $streaks['beginstreak'] = $datecurr->format('Y-m-d');
+            } else {
+                //$streaks['highstreak'] = $streak;
+                //$streaks['beginstreak'] = $datecurr->format('Y-m-d');
+                break;
+            }
+            $dateprev = date_create($date->date);
+        }
+
+        if (isset($streaks) && is_array($streaks)) {
+            return $streaks;
+        } else {
+            return null;
+        }
+    }
+
+    /*
      * Function returns the 10 longest streaks of QSOs based on all QSO dates in the log on active station profile
      */
     function getLongestStreak() {
