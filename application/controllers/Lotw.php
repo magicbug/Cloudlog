@@ -842,18 +842,18 @@ class Lotw extends CI_Controller {
 	*/
 	function lotw_usercheck($callsign) {
 		$f = fopen('./updates/lotw_users.csv', "r");
-        $result = false;
-        while ($row = fgetcsv($f)) {
-            if ($row[0] == strtoupper($callsign)) {
-                $result = $row[0];
-                echo "Found";
-                break;
-            } else {
-            	echo "Not Found"
-            	break;
-            }
-        }
-        fclose($f);
+		$result = false;
+		while ($row = fgetcsv($f)) {
+		    if ($row[0] == strtoupper($callsign)) {
+			$result = $row[0];
+			echo "Found";
+			break;
+		    } else {
+			echo "Not Found";
+			break;
+		    }
+		}
+		fclose($f);
 	}
 
 	function signlog($sign_key, $string) {
