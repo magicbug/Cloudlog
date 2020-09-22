@@ -1,6 +1,6 @@
 
 <div class="container">
-    <h1><?php echo $page_title; ?></h1>
+    <h2><?php echo $page_title; ?></h2>
 
     <!-- Sub Nav for Awards -->
 
@@ -8,7 +8,6 @@
     <form class="form" action="<?php echo site_url('awards/dxcc'); ?>" method="post" enctype="multipart/form-data">
         <fieldset>
 
-            <!-- Multiple Checkboxes (inline) -->
             <div class="form-group row">
                 <div class="col-md-2 control-label" for="checkboxes">Deleted DXCC</div>
                 <div class="col-md-10">
@@ -116,8 +115,7 @@
     $i = 1;
     if ($dxcc_array) {
         echo '
-                
-                <table class="table table-bordered table-hover table-striped table-condensed text-center">
+                <table class="table-sm table tabledxcc table-bordered table-hover table-striped table-condensed text-center">
                     <thead>
                     <tr>
                         <td>#</td>
@@ -141,9 +139,9 @@
             echo '</tr>';
         }
         echo '</table>
-        <h1>Summary</h1>
+        <h2>Summary</h2>
 
-        <table class="table table-bordered table-hover table-striped table-condensed text-center">
+        <table class="table-sm table table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr><td></td>';
 

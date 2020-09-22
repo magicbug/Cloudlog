@@ -1,6 +1,6 @@
 <div class="container">
 
-  <h1><?php echo $page_title?></h1>
+  <h2><?php echo $page_title?></h2>
 
   <?php $this->load->view("awards/nav_bar")?>
 
@@ -146,7 +146,7 @@
     $i = 1;
     if ($cq_array) {
     echo '
-    <table class="table table-bordered table-hover table-striped table-condensed text-center">
+    <table class="table table-sm table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr>
             <td>#</td>
