@@ -1,6 +1,6 @@
 
 <div class="container">
-    <h1><?php echo $page_title; ?></h1>
+    <h2><?php echo $page_title; ?></h2>
 
     <!-- Sub Nav for Awards -->
 
@@ -71,7 +71,7 @@
     if ($was_array) {
         $i = 1;
     echo '
-    <table class="table table-bordered table-hover table-striped table-condensed text-center">
+    <table class="table table-sm table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr>
             <td>#</td>
@@ -94,9 +94,9 @@
         }
         echo '</table>
 
-        <h1>Summary</h1>
+        <h2>Summary</h2>
 
-        <table class="table table-bordered table-hover table-striped table-condensed text-center">
+        <table class="table table-sm table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr><td></td>';
 
