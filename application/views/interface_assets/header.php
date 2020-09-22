@@ -31,6 +31,10 @@
 
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/bootstrapdialog/css/bootstrap-dialog.min.css" />
 
+      <?php if ($this->uri->segment(1) == "awards") { ?>
+          <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.22/fc-3.3.1/fh-3.1.7/r-2.2.6/sc-2.0.3/datatables.min.css"/>
+      <?php } ?>
+
  	<?php if ($this->uri->segment(1) == "adif") { ?>
   	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
   	<?php } ?>
