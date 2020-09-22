@@ -40,7 +40,7 @@
   </head>
   <body>
 
-<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light main-nav">
+<nav class="navbar navbar-expand-lg navbar-light bg-light main-nav">
 <div class="container">
 		<a class="navbar-brand" href="<?php echo site_url(); ?>">Cloudlog</a>
 
