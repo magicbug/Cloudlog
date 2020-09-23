@@ -54,6 +54,7 @@ class User extends CI_Controller {
 				$data['user_locator'] = $this->input->post('user_locator');
 				$data['user_timezone'] = $this->input->post('user_timezone');
                 $data['user_measurement_base'] = $this->input->post('user_measurement_base');
+                $data['user_stylesheet'] = $this->input->post('user_stylesheet');
 				$this->load->view('user/add', $data);
 			} else {
 				$this->load->view('user/add', $data);
@@ -62,7 +63,7 @@ class User extends CI_Controller {
 		}
 		else
 		{
-			switch($this->user_model->add($this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'), $this->input->post('user_firstname'), $this->input->post('user_lastname'), $this->input->post('user_callsign'), $this->input->post('user_locator'), $this->input->post('user_timezone'), $this->input->post('user_measurement_base'), $this->input->post('user_date_format'))) {
+			switch($this->user_model->add($this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'), $this->input->post('user_firstname'), $this->input->post('user_lastname'), $this->input->post('user_callsign'), $this->input->post('user_locator'), $this->input->post('user_timezone'), $this->input->post('user_measurement_base'), $this->input->post('user_date_format'), $this->input->post('user_stylesheet'))) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
 					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';
@@ -91,6 +92,7 @@ class User extends CI_Controller {
 			$data['user_callsign'] = $this->input->post('user_callsign');
 			$data['user_locator'] = $this->input->post('user_locator');
             $data['user_measurement_base'] = $this->input->post('user_measurement_base');
+            $data['user_stylesheet'] = $this->input->post('user_stylesheet');
 			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -234,12 +236,17 @@ class User extends CI_Controller {
             } else {
                 $data['user_measurement_base'] = $q->user_measurement_base;
             }
-		
 
 			if($this->input->post('user_date_format')) {
                 $data['user_date_format'] = $this->input->post('user_date_format', true);
             } else {
                 $data['user_date_format'] = $q->user_date_format;
+            }
+
+            if($this->input->post('user_stylesheet')) {
+                $data['user_stylesheet'] = $this->input->post('user_stylesheet', true);
+            } else {
+                $data['user_stylesheet'] = $q->user_stylesheet;
             }
 			
 			$this->load->view('user/edit', $data);
@@ -282,6 +289,7 @@ class User extends CI_Controller {
 			$data['user_callsign'] = $this->input->post('user_callsign', true);
 			$data['user_locator'] = $this->input->post('user_locator', true);
 			$data['user_timezone'] = $this->input->post('user_timezone', true);
+            $data['user_stylesheet'] = $this->input->post('user_stylesheet');
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}

@@ -96,7 +96,7 @@ class User_Model extends CI_Model {
 
 	// FUNCTION: bool add($username, $password, $email, $type)
 	// Add a user
-	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone, $measurement, $user_date_format) {
+	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone, $measurement, $user_date_format, $user_stylesheet) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -111,6 +111,7 @@ class User_Model extends CI_Model {
 				'user_timezone' => xss_clean($timezone),
 				'user_measurement_base' => xss_clean($measurement),
 				'user_date_format' => xss_clean($user_date_format),
+				'user_stylesheet' => xss_clean($user_stylesheet),
 			);
 
 			// Check the password is valid
@@ -151,6 +152,7 @@ class User_Model extends CI_Model {
 					'user_clublog_name' => xss_clean($fields['user_clublog_name']),
 					'user_measurement_base' => xss_clean($fields['user_measurement_base']),
 					'user_date_format' => xss_clean($fields['user_date_format']),
+					'user_stylesheet' => xss_clean($fields['user_stylesheet']),
 				);
 	
 				// Check to see if the user is allowed to change user levels
@@ -257,6 +259,7 @@ class User_Model extends CI_Model {
 			'station_profile_id' => isset($_COOKIE["station_profile_id"])?$_COOKIE["station_profile_id"]:"",
 			'user_measurement_base' => $u->row()->user_measurement_base,
 			'user_date_format' => $u->row()->user_date_format,
+			'user_stylesheet' => $u->row()->user_stylesheet,
 		);
 
 		$this->session->set_userdata($userdata);

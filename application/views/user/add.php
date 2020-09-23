@@ -108,6 +108,14 @@
             <small id="user_measurement_base_Help" class="form-text text-muted">Choose which unit distances will be shown in.</small>
         </div>
 
+        <div class="form-group">
+            <label for="user_stylesheet">Theme</label>
+            <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
+                <option value='bootstrap.min.css' selected="selected">Standard theme</option>
+                <option value='bootstrap-dark.css'>Dark theme</option>
+            </select>
+        </div>
+
 		<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 		<button type="submit" class="btn btn-primary">Create Account</button>
     </form>

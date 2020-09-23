@@ -80,6 +80,24 @@
 				</div>
 			</div>
 	    </div>
+
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Theme
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Stylesheet</label>
+
+                        <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
+                            <option value='bootstrap.min.css' <?php if($user_stylesheet == "bootstrap.min.css") { echo "selected=\"selected\""; } ?>>Standard theme</option>
+                            <option value='bootstrap-dark.css' <?php if($user_stylesheet == "bootstrap-dark.css") { echo "selected=\"selected\""; } ?>>Dark theme</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
 
 	<br>
