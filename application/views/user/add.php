@@ -113,6 +113,7 @@
             <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
                 <option value='bootstrap.min.css' selected="selected">Standard theme</option>
                 <option value='bootstrap-dark.css'>Dark theme</option>
+                <option value='bootstrap-blue.css'>Blue theme</option>
             </select>
         </div>
 

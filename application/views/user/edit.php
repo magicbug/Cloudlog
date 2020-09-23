@@ -93,6 +93,7 @@
                         <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
                             <option value='bootstrap.min.css' <?php if($user_stylesheet == "bootstrap.min.css") { echo "selected=\"selected\""; } ?>>Standard theme</option>
                             <option value='bootstrap-dark.css' <?php if($user_stylesheet == "bootstrap-dark.css") { echo "selected=\"selected\""; } ?>>Dark theme</option>
+                            <option value='bootstrap-blue.css' <?php if($user_stylesheet == "bootstrap-blue.css") { echo "selected=\"selected\""; } ?>>Blue theme</option>
                         </select>
                     </div>
                 </div>
