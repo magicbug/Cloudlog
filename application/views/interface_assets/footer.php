@@ -6,7 +6,7 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
-
+<script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
 <script type="text/javascript">
   /*
   *
@@ -29,6 +29,10 @@
     <!-- Javascript used for Notes Area -->
     <script src="<?php echo base_url() ;?>assets/plugins/quill/quill.min.js"></script>
     <script src="<?php echo base_url() ;?>assets/js/sections/notes.js"></script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "awards") { ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
@@ -1410,8 +1414,6 @@ $(document).ready(function(){
         </script>
     <?php } ?>
 
-
-    <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
         <script>
             function displayQso(id) {
                 var baseURL= "<?php echo base_url();?>";
@@ -1455,18 +1457,31 @@ $(document).ready(function(){
                     }
                 });
             }
+            </script>
 
-    <?php if ($this->uri->segment(2) == "dxcc") { ?>
+
+<?php if ($this->uri->segment(2) == "dxcc") { ?>
+<script>
+    $('.tabledxcc').DataTable({
+        "pageLength": 25,
+        responsive: false,
+        ordering: false,
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "scrollX": true
+    });
 
         function displayDxccContacts(country, band) {
-            var baseURL= "<?php echo base_url();?>";
+            var baseURL = "<?php echo base_url();?>";
             $.ajax({
                 url: baseURL + 'index.php/awards/dxcc_details_ajax',
                 type: 'post',
-                data: {'Country': country,
+                data: {
+                    'Country': country,
                     'Band': band
                 },
-                success: function(html) {
+                success: function (html) {
                     BootstrapDialog.show({
                         title: 'QSO Data',
                         size: BootstrapDialog.SIZE_WIDE,
@@ -1483,10 +1498,20 @@ $(document).ready(function(){
                 }
             });
         }
-
+ </script>
     <?php } ?>
 
-            <?php if ($this->uri->segment(2) == "vucc_band") { ?>
+<?php if ($this->uri->segment(2) == "vucc_band") { ?>
+    <script>
+    $('.tablevucc').DataTable({
+        "pageLength": 25,
+        responsive: false,
+        ordering: false,
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "scrollX": true
+    });
 
             function displayVuccContacts(gridsquare, band) {
                 var baseURL= "<?php echo base_url();?>";
@@ -1513,12 +1538,12 @@ $(document).ready(function(){
                     }
                 });
             }
+    </script>
+<?php } ?>
 
-            <?php } ?>
 
-
-        <?php if ($this->uri->segment(2) == "dok") { ?>
-
+<?php if ($this->uri->segment(2) == "dok") { ?>
+    <script>
         function displayDokContacts(dok, band) {
             var baseURL= "<?php echo base_url();?>";
             $.ajax({
@@ -1544,10 +1569,21 @@ $(document).ready(function(){
                 }
             });
         }
+    </script>
+<?php } ?>
 
-        <?php } ?>
+<?php if ($this->uri->segment(2) == "iota") { ?>
+    <script>
 
-        <?php if ($this->uri->segment(2) == "iota") { ?>
+        $('.tableiota').DataTable({
+            "pageLength": 25,
+            responsive: false,
+            ordering: false,
+            "scrollY":        "400px",
+            "scrollCollapse": true,
+            "paging":         false,
+            "scrollX": true
+        });
 
         function displayIotaContacts(iota, band) {
             var baseURL= "<?php echo base_url();?>";
@@ -1574,11 +1610,12 @@ $(document).ready(function(){
                 }
             });
         }
+    </script>
 
-        <?php } ?>
+<?php } ?>
 
-            <?php if ($this->uri->segment(2) == "cq") { ?>
-
+<?php if ($this->uri->segment(2) == "cq") { ?>
+    <script>
             function displayCqContacts(cqzone, band) {
                 var baseURL= "<?php echo base_url();?>";
                 $.ajax({
@@ -1604,10 +1641,11 @@ $(document).ready(function(){
                     }
                 });
             }
+    </script>
+<?php } ?>
 
-            <?php } ?>
-
-    <?php if ($this->uri->segment(2) == "was") { ?>
+<?php if ($this->uri->segment(2) == "was") { ?>
+    <script>
         function displayWasContacts(was, band) {
             var baseURL= "<?php echo base_url();?>";
             $.ajax({
@@ -1633,8 +1671,10 @@ $(document).ready(function(){
                 }
             });
         }
-    <?php } ?>
+    </script>
+<?php } ?>
 
+<script>
         function qsl_rcvd(id, method) {
             var baseURL= "<?php echo base_url();?>";
             $.ajax({

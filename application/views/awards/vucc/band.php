@@ -1,11 +1,11 @@
 <div class="container">
-    <h1><?php echo $page_title; ?></h1>
+    <h2><?php echo $page_title; ?></h2>
 
     <h3>Filtering on <?php echo $filter ?></h3>
     <?php
     $i = 1;
     if ($vucc_array) {
-        echo '<table class="table table-sm tablevucc table-bordered table-hover table-striped table-condensed text-center">
+        echo '<table style="width:100%" class="table table-sm tablevucc table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr>
             <td>#</td>
