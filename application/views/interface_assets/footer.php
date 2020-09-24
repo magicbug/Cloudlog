@@ -1431,7 +1431,7 @@ $(document).ready(function(){
                                 var lat = $("#lat").text();
                                 var long = $("#long").text();
                                 var callsign = $("#callsign").text();
-                                var mymap = L.map('map').setView([lat,long], 5);
+                                var mymap = L.map('mapqso').setView([lat,long], 5);
 
                                 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
                                     maxZoom: 18,

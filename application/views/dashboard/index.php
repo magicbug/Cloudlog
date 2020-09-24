@@ -71,9 +71,7 @@
 					<?php } else { ?>
 					<?php } ?>
 					<td>
-						<a data-fancybox data-type="iframe" data-width="800" data-height="520" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;">
-							<?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?>
-						</a>
+                        <a id="edit_qso" href="javascript:displayQso(<?php echo $row->COL_PRIMARY_KEY; ?>)"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
 					</td>
 					<td><?php echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; ?></td>
 					<td class="d-none d-sm-table-cell"><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX_STRING) { ?><span class="label"><?php echo $row->COL_STX_STRING;?></span><?php } ?></td>
