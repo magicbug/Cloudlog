@@ -32,7 +32,7 @@
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "awards") { ?>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.22/fc-3.3.1/fh-3.1.7/r-2.2.6/sc-2.0.3/datatables.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
