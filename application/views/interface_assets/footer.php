@@ -1720,6 +1720,36 @@ $(document).ready(function(){
             });
         }
         </script>
+    <?php if ($this->uri->segment(1) == "timeline") { ?>
+        <script>
+            function displayTimelineContacts(adif, band) {
+                var baseURL= "<?php echo base_url();?>";
+                $.ajax({
+                    url: baseURL + 'index.php/timeline/details',
+                    type: 'post',
+                    data: {'Adif': adif,
+                        'Band': band
+                    },
+                    success: function(html) {
+                        BootstrapDialog.show({
+                            title: 'QSO Data',
+                            size: BootstrapDialog.SIZE_WIDE,
+                            cssClass: 'qso-was-dialog',
+                            nl2br: false,
+                            message: html,
+                            buttons: [{
+                                label: 'Close',
+                                action: function (dialogItself) {
+                                    dialogItself.close();
+                                }
+                            }]
+                        });
+                    }
+                });
+            }
+        </script>
+        <?php } ?>
+
 
   </body>
 </html>

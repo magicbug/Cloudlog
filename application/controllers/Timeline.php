@@ -37,9 +37,9 @@ class Timeline extends CI_Controller {
     public function details() {
         $this->load->model('logbook_model');
 
-        $adif = str_replace('"', "", $this->input->get("Adif"));
+        $adif = str_replace('"', "", $this->input->post("Adif"));
         $country = $this->logbook_model->get_entity($adif);
-        $band = str_replace('"', "", $this->input->get("Band"));
+        $band = str_replace('"', "", $this->input->post("Band"));
         $data['results'] = $this->logbook_model->timeline_qso_details($adif, $band);
 
         // Render Page
@@ -50,9 +50,7 @@ class Timeline extends CI_Controller {
             $data['filter'] .= " and " . $band;
         }
 
-        $this->load->view('interface_assets/header', $data);
-        $this->load->view('timeline/details');
-        $this->load->view('interface_assets/footer');
+        $this->load->view('timeline/details', $data);
     }
 
 }
