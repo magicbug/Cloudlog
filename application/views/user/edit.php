@@ -25,7 +25,7 @@
 
 	<br>
 	<div class="row">
-	    <div class="col">
+	    <div class="col-md">
 	    	<div class="card">
 		    	<div class="card-header">
 				   	 Account Information
@@ -54,7 +54,7 @@
 			</div>
 	    </div>
 
-	    <div class="col">
+	    <div class="col-md">
 	    	<div class="card">
 		    	<div class="card-header">
 				   	 Roles
@@ -81,7 +81,7 @@
 			</div>
 	    </div>
 
-        <div class="col">
+        <div class="col-md">
             <div class="card">
                 <div class="card-header">
                     Theme
@@ -104,7 +104,7 @@
 	<br>
 	<div class="row">
 	 	<!-- Personal Information -->
-	    <div class="col">
+	    <div class="col-md">
 	    	<div class="card">
 				<div class="card-header">
 			   	 Personal Information
@@ -141,7 +141,7 @@
 			</div>
 	    </div>
 
-	    <div class="col">
+	    <div class="col-md">
 	    	<div class="card">
 				<div class="card-header">
 			   	 Cloudlog Preferences
@@ -183,7 +183,7 @@
 	<br>
 	<div class="row">
 	 	<!-- Logbook of the World -->
-	    <div class="col">
+	    <div class="col-md">
 			<div class="card">
 				<div class="card-header">
 			   	 Logbook of the World
@@ -207,7 +207,7 @@
 	    </div>
 
 	    <!-- eQSL -->
-	    <div class="col">
+	    <div class="col-md">
 			<div class="card">
 				<div class="card-header">
 			   	 eQSL
@@ -234,7 +234,7 @@
 	<br>
 	<div class="row">
 	 	<!-- Logbook of the World -->
-	    <div class="col">
+	    <div class="col-md">
 	    	<div class="card">
 				<div class="card-header">
 			   		Clublog
