@@ -68,7 +68,7 @@
             if (!empty($line->end)) echo 'Yes';
             echo '</td>
                 <td>' . $line->end . '</td>
-                <td><a href=\'timeline\details?Adif="' . $line->adif . '"&Band="'. $bandselect . '"\'>Show</a></td>
+                <td><a href=javascript:displayTimelineContacts("' . $line->adif . '","'. $bandselect . '")>Show</a></td>
                </tr>';
         }
         echo '</tfoot></table></div>';
