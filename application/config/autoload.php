@@ -96,7 +96,7 @@ $autoload['config'] = array('cloudlog', 'bands', 'lotw');
 |
 */
 
-$autoload['language'] = array();
+$autoload['language'] = array('general_words');
 
 
 /*
