@@ -55,18 +55,19 @@
                                         <input type="text" class="form-control form-control-sm input_time" name="time_off" id="time_off" value="<?php echo $qso->COL_TIME_OFF; ?>">
                                     </div>
                                 </div>
-
-                                <div class="form-group">
+                                <div class="form-row">
+                                <div class="form-group col-sm-6">
                                     <label for="callsign">Callsign</label>
                                     <input type="text" class="form-control" id="callsign" name="callsign" value="<?php echo $qso->COL_CALL; ?>">
                                 </div>
 
                                 <?php if($qso->COL_FREQ) { ?>
-                                    <div class="form-group">
+                                    <div class="form-group col-sm-6">
                                         <label for="freq">Frequency</label>
                                         <input type="text" class="form-control" id="freq" name="freq" value="<?php echo $qso->COL_FREQ; ?>">
                                     </div>
                                 <?php } ?>
+                                </div>
                                 <div class="form-row">
                                     <div class="form-group col-sm-6">
                                         <label for="freq">Mode</label>
@@ -158,14 +159,16 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" value="<?php echo $qso->COL_NAME; ?>">
-                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" value="<?php echo $qso->COL_NAME; ?>">
+                                    </div>
 
-                                <div class="form-group">
-                                    <label for="qth">QTH</label>
-                                    <input type="text" class="form-control" id="qth" name="qth" value="<?php echo $qso->COL_QTH; ?>">
+                                    <div class="form-group col-sm-6">
+                                        <label for="qth">QTH</label>
+                                        <input type="text" class="form-control" id="qth" name="qth" value="<?php echo $qso->COL_QTH; ?>">
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -173,47 +176,49 @@
                                     <input type="text" class="form-control" id="comment" name="comment" value="<?php echo $qso->COL_COMMENT; ?>">
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="prop_mode">Propagation Mode</label>
-                                    <select class="custom-select" id="prop_mode" name="prop_mode">
-                                        <option value="" <?php if($qso->COL_PROP_MODE == "") { echo "selected=\"selected\""; } ?>></option>
-                                        <option value="AUR" <?php if($qso->COL_PROP_MODE == "AUR") { echo "selected=\"selected\""; } ?>>Aurora</option>
-                                        <option value="AUE" <?php if($qso->COL_PROP_MODE == "AUE") { echo "selected=\"selected\""; } ?>>Aurora-E</option>
-                                        <option value="BS" <?php if($qso->COL_PROP_MODE == "BS") { echo "selected=\"selected\""; } ?>>Back scatter</option>
-                                        <option value="ECH" <?php if($qso->COL_PROP_MODE == "ECH") { echo "selected=\"selected\""; } ?>>EchoLink</option>
-                                        <option value="EME" <?php if($qso->COL_PROP_MODE == "EME") { echo "selected=\"selected\""; } ?>>Earth-Moon-Earth</option>
-                                        <option value="ES" <?php if($qso->COL_PROP_MODE == "ES") { echo "selected=\"selected\""; } ?>>Sporadic E</option>
-                                        <option value="FAI" <?php if($qso->COL_PROP_MODE == "FAI") { echo "selected=\"selected\""; } ?>>Field Aligned Irregularities</option>
-                                        <option value="F2" <?php if($qso->COL_PROP_MODE == "F2") { echo "selected=\"selected\""; } ?>>F2 Reflection</option>
-                                        <option value="INTERNET" <?php if($qso->COL_PROP_MODE == "INTERNET") { echo "selected=\"selected\""; } ?>>Internet-assisted</option>
-                                        <option value="ION" <?php if($qso->COL_PROP_MODE == "ION") { echo "selected=\"selected\""; } ?>>Ionoscatter</option>
-                                        <option value="IRL" <?php if($qso->COL_PROP_MODE == "IRL") { echo "selected=\"selected\""; } ?>>IRLP</option>
-                                        <option value="MS" <?php if($qso->COL_PROP_MODE == "MS") { echo "selected=\"selected\""; } ?>>Meteor scatter</option>
-                                        <option value="RPT" <?php if($qso->COL_PROP_MODE == "RPT") { echo "selected=\"selected\""; } ?>>Terrestrial or atmospheric repeater or transponder</option>
-                                        <option value="RS" <?php if($qso->COL_PROP_MODE == "RS") { echo "selected=\"selected\""; } ?>>Rain scatter</option>
-                                        <option value="SAT" <?php if($qso->COL_PROP_MODE == "SAT") { echo "selected=\"selected\""; } ?>>Satellite</option>
-                                        <option value="TEP" <?php if($qso->COL_PROP_MODE == "TEP") { echo "selected=\"selected\""; } ?>>Trans-equatorial</option>
-                                        <option value="TR" <?php if($qso->COL_PROP_MODE == "TR") { echo "selected=\"selected\""; } ?>>Tropospheric ducting</option>
-                                    </select>
-                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="prop_mode">Propagation Mode</label>
+                                        <select class="custom-select" id="prop_mode" name="prop_mode">
+                                            <option value="" <?php if($qso->COL_PROP_MODE == "") { echo "selected=\"selected\""; } ?>></option>
+                                            <option value="AUR" <?php if($qso->COL_PROP_MODE == "AUR") { echo "selected=\"selected\""; } ?>>Aurora</option>
+                                            <option value="AUE" <?php if($qso->COL_PROP_MODE == "AUE") { echo "selected=\"selected\""; } ?>>Aurora-E</option>
+                                            <option value="BS" <?php if($qso->COL_PROP_MODE == "BS") { echo "selected=\"selected\""; } ?>>Back scatter</option>
+                                            <option value="ECH" <?php if($qso->COL_PROP_MODE == "ECH") { echo "selected=\"selected\""; } ?>>EchoLink</option>
+                                            <option value="EME" <?php if($qso->COL_PROP_MODE == "EME") { echo "selected=\"selected\""; } ?>>Earth-Moon-Earth</option>
+                                            <option value="ES" <?php if($qso->COL_PROP_MODE == "ES") { echo "selected=\"selected\""; } ?>>Sporadic E</option>
+                                            <option value="FAI" <?php if($qso->COL_PROP_MODE == "FAI") { echo "selected=\"selected\""; } ?>>Field Aligned Irregularities</option>
+                                            <option value="F2" <?php if($qso->COL_PROP_MODE == "F2") { echo "selected=\"selected\""; } ?>>F2 Reflection</option>
+                                            <option value="INTERNET" <?php if($qso->COL_PROP_MODE == "INTERNET") { echo "selected=\"selected\""; } ?>>Internet-assisted</option>
+                                            <option value="ION" <?php if($qso->COL_PROP_MODE == "ION") { echo "selected=\"selected\""; } ?>>Ionoscatter</option>
+                                            <option value="IRL" <?php if($qso->COL_PROP_MODE == "IRL") { echo "selected=\"selected\""; } ?>>IRLP</option>
+                                            <option value="MS" <?php if($qso->COL_PROP_MODE == "MS") { echo "selected=\"selected\""; } ?>>Meteor scatter</option>
+                                            <option value="RPT" <?php if($qso->COL_PROP_MODE == "RPT") { echo "selected=\"selected\""; } ?>>Terrestrial or atmospheric repeater or transponder</option>
+                                            <option value="RS" <?php if($qso->COL_PROP_MODE == "RS") { echo "selected=\"selected\""; } ?>>Rain scatter</option>
+                                            <option value="SAT" <?php if($qso->COL_PROP_MODE == "SAT") { echo "selected=\"selected\""; } ?>>Satellite</option>
+                                            <option value="TEP" <?php if($qso->COL_PROP_MODE == "TEP") { echo "selected=\"selected\""; } ?>>Trans-equatorial</option>
+                                            <option value="TR" <?php if($qso->COL_PROP_MODE == "TR") { echo "selected=\"selected\""; } ?>>Tropospheric ducting</option>
+                                        </select>
+                                    </div>
 
-                                <input type="hidden" class="form-control" id="country" name="country" value="<?php echo $qso->COL_COUNTRY; ?>">
+                                    <input type="hidden" class="form-control" id="country" name="country" value="<?php echo $qso->COL_COUNTRY; ?>">
 
-                                <div class="form-group">
-                                    <label for="dxcc_id">DXCC</label>
-                                    <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
+                                    <div class="form-group col-sm-6">
+                                        <label for="dxcc_id">DXCC</label>
+                                        <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
 
-                                        <?php
-                                        foreach($dxcc as $d){
-                                            echo '<option value=' . $d->adif;
-                                            if ($qso->COL_DXCC == $d->adif) {
-                                                echo " selected=\"selected\"";
+                                            <?php
+                                            foreach($dxcc as $d){
+                                                echo '<option value=' . $d->adif;
+                                                if ($qso->COL_DXCC == $d->adif) {
+                                                    echo " selected=\"selected\"";
+                                                }
+                                                echo '>' . $d->prefix . ' - ' . $d->name . '</option>';
                                             }
-                                            echo '>' . $d->prefix . ' - ' . $d->name . '</option>';
-                                        }
-                                        ?>
+                                            ?>
 
-                                    </select>
+                                        </select>
+                                    </div>
                                 </div>
 
                             </div>
