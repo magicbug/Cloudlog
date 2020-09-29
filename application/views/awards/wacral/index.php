@@ -1,10 +1,6 @@
 <div id="container">
 	<h1><?php echo $page_title; ?></h1>
 
-	<!-- Sub Nav for Awards -->
-	
-    <?php $this->load->view("awards/nav_bar")?>
-
 	<?php if ($wacral_all->num_rows() > 0) { ?>
 	<table width="100%" class="zebra-striped">
 		

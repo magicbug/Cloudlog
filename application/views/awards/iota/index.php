@@ -2,9 +2,6 @@
 <div class="container">
     <h2><?php echo $page_title; ?></h2>
 
-    <!-- Sub Nav for Awards -->
-
-    <?php $this->load->view("awards/nav_bar")?>
     <form class="form" action="<?php echo site_url('awards/iota'); ?>" method="post" enctype="multipart/form-data">
         <fieldset>
 

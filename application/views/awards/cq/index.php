@@ -2,8 +2,6 @@
 
   <h2><?php echo $page_title?></h2>
 
-  <?php $this->load->view("awards/nav_bar")?>
-
 <h3>CQ Zones worked:</h3>
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
