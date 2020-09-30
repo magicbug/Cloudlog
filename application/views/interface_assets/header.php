@@ -89,8 +89,26 @@
 				</div>
         	</li>
 
-        	<a class="nav-link" href="<?php echo site_url('awards/dxcc');?>">Awards</a>
-
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Awards</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        	        <a class="dropdown-item" href="<?php echo site_url('awards/dxcc');?>">DXCC</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/vucc');?>">VUCC</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/was');?>">WAS</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/cq');?>">CQ</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/iota');?>">IOTA</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/wab');?>">WAB</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/sota');?>">SOTA</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/dok');?>">DOK</a>
+                </div>
+            </li>
         	
         	<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
