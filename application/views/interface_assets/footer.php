@@ -1755,7 +1755,7 @@ $(document).ready(function(){
                 success: function (dataofconfirm) {
                     $(".edit-dialog").modal('hide');
                     $(".qso-dialog").modal('hide');
-                    location.reload();
+                    <?php if ($this->uri->segment(1) != "search" && $this->uri->segment(2) != "filter") { ?>location.reload();<?php } ?>
                 }
             });
         }
