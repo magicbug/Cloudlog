@@ -47,7 +47,7 @@ class Dayswithqso_model extends CI_Model
             }
             else if ($diff == 1 and !$firstrun) {   // If diff = 1, means that we are on a streak
                 $streaks['highstreak'] = ++$streak;
-                $streaks['beginstreak'] = $datecurr->sub(new DateInterval('P'.($streak-1).'D'))->format('Y-m-d');
+                $streaks['beginstreak'] = date_create($streaks['endstreak'])->sub(new DateInterval('P'.($streak-1).'D'))->format('Y-m-d');
             } else {
                 break;
             }
@@ -84,10 +84,8 @@ class Dayswithqso_model extends CI_Model
             }
             else if ($diff == 1 && $firstrun == false) {
                     $streaks['highstreak'] = $streak++;
-                    $streaks['beginstreak'] = $datecurr->format('Y-m-d');
+                    $streaks['beginstreak'] = date_create($streaks['endstreak'])->sub(new DateInterval('P'.($streak-2).'D'))->format('Y-m-d');
             } else {
-                //$streaks['highstreak'] = $streak;
-                //$streaks['beginstreak'] = $datecurr->format('Y-m-d');
                 break;
             }
             $dateprev = date_create($date->date);

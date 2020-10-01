@@ -6,7 +6,7 @@
 
     <?php
     if (is_array($result)) {
-    echo '<div id="diffDays" class="table-responsive"><table class="qsotable table table-bordered table-hover table-striped table-condensed">';
+    echo '<div id="diffDays" class="table-responsive"><table class="qsotable table table-sm table-bordered table-hover table-striped table-condensed">';
 
             echo '<tr>';
                 echo '<th style=\'text-align: center\'>Year</th>';
@@ -46,7 +46,7 @@
 
     <?php
     if (is_array($streaks)) {
-        echo '<div id="streaks" class="table-responsive"><table class="qsotable table table-bordered table-hover table-striped table-condensed">';
+        echo '<div id="streaks" class="table-responsive"><table class="qsotable table table-sm table-bordered table-hover table-striped table-condensed">';
 
             echo '<tr>';
                 echo '<th style=\'text-align: center\'>Streak (Continues days with QSOs)</th>';
@@ -74,7 +74,7 @@
     <h2>Current streak with QSOs in the log</h2>
     <?php
     if (is_array($currentstreak)) {
-        echo '<div id="streaks" class="table-responsive"><table class="qsotable table table-bordered table-hover table-striped table-condensed">';
+        echo '<div id="streaks" class="table-responsive"><table class="qsotable table table-sm table-bordered table-hover table-striped table-condensed">';
 
         echo '<tr>';
         echo '<th style=\'text-align: center\'>Current Streak (Continues days with QSOs)</th>';
