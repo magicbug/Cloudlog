@@ -96,7 +96,7 @@
         ?>
         <p>If you make a QSO today, you can continue to extend your streak, else your current streak will be broken!</p>
         <?php
-        echo '<div id="streaks" class="table-responsive"><table class="qsotable table table-bordered table-hover table-striped table-condensed">';
+        echo '<div id="streaks" class="table-responsive"><table class="qsotable table table-sm table-bordered table-hover table-striped table-condensed">';
 
         echo '<tr>';
         echo '<th style=\'text-align: center\'>Current Streak (Continues days with QSOs)</th>';
