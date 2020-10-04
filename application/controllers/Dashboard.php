@@ -68,7 +68,7 @@ class Dashboard extends CI_Controller {
 		$raw = strtotime('Monday last week');
 		
 		$mon = date('Y-m-d', $raw);
-		$sun = date('Y-m-d', strtotime('Sunday this week'));
+		$sun = date('Y-m-d', strtotime('Monday next week'));
 
 		$qsos = $this->logbook_model->map_week_qsos($mon, $sun);
 
