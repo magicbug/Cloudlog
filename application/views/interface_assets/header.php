@@ -86,6 +86,8 @@
                     <a class="dropdown-item" href="<?php echo site_url('dayswithqso');?>" title="Dayswithqso">Days with QSOs</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('timeline');?>" title="Dxcctimeline">DXCC Timeline</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('accumulated');?>" title="Dxcctimeline">Accumulated statistics</a>
 				</div>
         	</li>
 
