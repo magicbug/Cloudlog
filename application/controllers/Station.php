@@ -21,7 +21,8 @@ class Station extends CI_Controller {
 		$this->load->model('Logbook_model');
 
 		$data['stations'] = $this->stations->all_with_count();
-		$data['current_active'] = $this->stations->find_active();
+		//$data['current_active'] = $this->stations->find_active();
+		$data['current_active'] = $this->user_model->get_station_profile();
 		$data['is_there_qsos_with_no_station_id'] = $this->Logbook_model->check_for_station_id();
 
 		// Render Page

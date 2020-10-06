@@ -96,7 +96,7 @@ class User_Model extends CI_Model {
 
 	// FUNCTION: bool add($username, $password, $email, $type)
 	// Add a user
-	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone, $measurement, $user_date_format, $user_stylesheet) {
+	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone, $measurement, $user_date_format, $user_stylesheet, $station_profile_id) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -112,6 +112,7 @@ class User_Model extends CI_Model {
 				'user_measurement_base' => xss_clean($measurement),
 				'user_date_format' => xss_clean($user_date_format),
 				'user_stylesheet' => xss_clean($user_stylesheet),
+				'station_profile_id' => xss_clean($station_profile_id),
 			);
 
 			// Check the password is valid
@@ -153,6 +154,7 @@ class User_Model extends CI_Model {
 					'user_measurement_base' => xss_clean($fields['user_measurement_base']),
 					'user_date_format' => xss_clean($fields['user_date_format']),
 					'user_stylesheet' => xss_clean($fields['user_stylesheet']),
+					'station_profile_id' => xss_clean($fields['station_profile_id']),
 				);
 	
 				// Check to see if the user is allowed to change user levels
@@ -256,7 +258,8 @@ class User_Model extends CI_Model {
 			'user_eqsl_qth_nickname' => $u->row()->user_eqsl_qth_nickname,
 			'user_hash'		 => $this->_hash($u->row()->user_id."-".$u->row()->user_type),
 			'radio' => isset($_COOKIE["radio"])?$_COOKIE["radio"]:"",
-			'station_profile_id' => isset($_COOKIE["station_profile_id"])?$_COOKIE["station_profile_id"]:"",
+			//'station_profile_id' => isset($_COOKIE["station_profile_id"])?$_COOKIE["station_profile_id"]:"",
+			'station_profile_id' => $u->row()->station_profile_id,
 			'user_measurement_base' => $u->row()->user_measurement_base,
 			'user_date_format' => $u->row()->user_date_format,
 			'user_stylesheet' => $u->row()->user_stylesheet,
@@ -345,6 +348,25 @@ class User_Model extends CI_Model {
 			$ts[$t['id']] = $t['name'];
 		}
 		return $ts;
+	}
+
+	// FUNCTION: array station_profiles()
+	// Returns a list of timezones
+	function station_profiles() {
+		$r = $this->db->query('SELECT station_id, station_profile_name FROM station_profile');
+		$sp = array();
+		foreach ($r->result_array() as $s) {
+			$sp[$s['station_id']] = $s['station_profile_name'];
+		}
+		return $sp;
+	}
+	
+	function get_station_profile() {
+		if($this->session->userdata('user_id')) {
+			return $station_profile_id = $this->session->userdata('station_profile_id');
+		} else {
+			return null;
+		}
 	}
 
 	// FUNCTION: bool _auth($password, $hash)

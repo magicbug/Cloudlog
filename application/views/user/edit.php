@@ -175,6 +175,11 @@
 		                </select>
 		                <small id="user_measurement_base_Help" class="form-text text-muted">Choose which unit distances will be shown in.</small>
 		            </div>
+					
+					<div class="form-group">
+						<label>Station Profile</label>
+						<?php echo form_dropdown('station_profile_id', $station_profiles, $station_profile_id); ?>
+					</div>
 				</div>
 			</div>
 	    </div>
@@ -258,6 +263,7 @@
 				</div>
 			</div>
 	    </div>
+	
 	</div>
 
 	<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />

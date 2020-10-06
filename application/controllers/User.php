@@ -35,6 +35,9 @@ class User extends CI_Controller {
 
 		// Get timezones
 		$data['timezones'] = $this->user_model->timezones();
+		
+		// Get station profiles
+		$data['station_profiles'] = $this->user_model->station_profiles();
 
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -55,6 +58,7 @@ class User extends CI_Controller {
 				$data['user_timezone'] = $this->input->post('user_timezone');
                 $data['user_measurement_base'] = $this->input->post('user_measurement_base');
                 $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+                $data['station_profile_id'] = $this->input->post('station_profile_id');
 				$this->load->view('user/add', $data);
 			} else {
 				$this->load->view('user/add', $data);
@@ -63,7 +67,7 @@ class User extends CI_Controller {
 		}
 		else
 		{
-			switch($this->user_model->add($this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'), $this->input->post('user_firstname'), $this->input->post('user_lastname'), $this->input->post('user_callsign'), $this->input->post('user_locator'), $this->input->post('user_timezone'), $this->input->post('user_measurement_base'), $this->input->post('user_date_format'), $this->input->post('user_stylesheet'))) {
+			switch($this->user_model->add($this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'), $this->input->post('user_firstname'), $this->input->post('user_lastname'), $this->input->post('user_callsign'), $this->input->post('user_locator'), $this->input->post('user_timezone'), $this->input->post('user_measurement_base'), $this->input->post('user_date_format'), $this->input->post('user_stylesheet'), $this->input->post('station_profile_id'))) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
 					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';
@@ -93,6 +97,7 @@ class User extends CI_Controller {
 			$data['user_locator'] = $this->input->post('user_locator');
             $data['user_measurement_base'] = $this->input->post('user_measurement_base');
             $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+            $data['station_profile_id'] = $this->input->post('station_profile_id');
 			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -119,6 +124,9 @@ class User extends CI_Controller {
 
 		// Get timezones
 		$data['timezones'] = $this->user_model->timezones();
+		
+		// Get station_profiles
+		$data['station_profiles'] = $this->user_model->station_profiles();
 
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -248,6 +256,12 @@ class User extends CI_Controller {
             } else {
                 $data['user_stylesheet'] = $q->user_stylesheet;
             }
+
+            if($this->input->post('station_profile_id')) {
+                $data['station_profile_id'] = $this->input->post('station_profile_id', true);
+            } else {
+                $data['station_profile_id'] = $q->station_profile_id;
+            }
 			
 			$this->load->view('user/edit', $data);
 			$this->load->view('interface_assets/footer');
@@ -290,6 +304,7 @@ class User extends CI_Controller {
 			$data['user_locator'] = $this->input->post('user_locator', true);
 			$data['user_timezone'] = $this->input->post('user_timezone', true);
             $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+            $data['station_profile_id'] = $this->input->post('station_profile_id');
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}

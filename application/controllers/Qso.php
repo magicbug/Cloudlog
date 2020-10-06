@@ -19,7 +19,8 @@ class QSO extends CI_Controller {
 		$this->load->model('modes');
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		
-		$data['active_station_profile'] = $this->stations->find_active();
+		//$data['active_station_profile'] = $this->stations->find_active();
+		$data['active_station_profile'] = $this->user_model->get_station_profile();
 		$data['notice'] = false;
 		$data['stations'] = $this->stations->all();
 		$data['radios'] = $this->cat->radios();

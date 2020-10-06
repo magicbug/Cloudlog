@@ -117,6 +117,14 @@
             </select>
         </div>
 
+        <div class="form-group">
+            <label for="station_profile_id">Station Profile</label>
+			<?php 
+				if(!isset($station_profile_id)) { $station_profile_id = 0; }
+				echo form_dropdown('station_profile_id', $station_profiles, $station_profile_id); 
+			?>
+        </div>
+
 		<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 		<button type="submit" class="btn btn-primary">Create Account</button>
     </form>
