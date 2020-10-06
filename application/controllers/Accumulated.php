@@ -18,39 +18,26 @@ class Accumulated extends CI_Controller {
 
         $this->load->model('Accumulate_model');
 
-        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
-            $band = $this->input->post('band');
-        }
-        else {
-            $band = 'All';
-        }
-
-        $data['accumulated_dxcc_array'] = $this->Accumulate_model->get_accumulated_dxcc($band);
         $data['worked_bands'] = $this->Accumulate_model->get_worked_bands();
-        $data['bandselect'] = $band;
 
         $this->load->view('interface_assets/header', $data);
         $this->load->view('accumulate/index');
         $this->load->view('interface_assets/footer');
     }
 
-    public function details() {
-        $this->load->model('logbook_model');
+    /*
+     * Used for ajax-call in javascript to fetch the data and insert into table and chart
+     */
+    public function get_accumulated_data(){
+        //load model
+        $this->load->model('accumulate_model');
+        $band = $this->input->post('Band');
+        $award = $this->input->post('Award');
 
-        $adif = str_replace('"', "", $this->input->post("Adif"));
-        $country = $this->logbook_model->get_entity($adif);
-        $band = str_replace('"', "", $this->input->post("Band"));
-        $data['results'] = $this->logbook_model->timeline_qso_details($adif, $band);
-
-        // Render Page
-        $data['page_title'] = "Log View - DXCC";
-        $data['filter'] = "country ". $country['name'];
-
-        if ($band != "All") {
-            $data['filter'] .= " and " . $band;
-        }
-
-        $this->load->view('timeline/details', $data);
+        // get data
+        $data = $this->accumulate_model->get_accumulated_data($band, $award);
+        header('Content-Type: application/json');
+        echo json_encode($data);
     }
 
 }

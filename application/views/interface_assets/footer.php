@@ -1790,6 +1790,112 @@ $(document).ready(function(){
         </script>
         <?php } ?>
 
+<?php if ($this->uri->segment(1) == "accumulated") { ?>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        function accumulatePlot(form) {
+            // using this to change color of legend and label according to background color
+            var background = $('body').css( "background-color");
+            var color = 'grey';
+            if (background != ('rgb(255, 255, 255)')) {
+                color = 'white';
+            }
+
+            var baseURL= "<?php echo base_url();?>";
+            var award = form.awardradio.value;
+            $.ajax({
+                url: baseURL+'index.php/accumulated/get_accumulated_data',
+                type: 'post',
+                data: {'Band': form.band.value, 'Award': award},
+                success: function(data) {
+                    // used for switching award text in the table and the chart
+                    switch(award) {
+                        case 'dxcc': var awardtext = "DXCC\'s"; break;
+                        case 'was':  var awardtext = "states";break;
+                        case 'iota': var awardtext = "IOTA\'s";break;
+                        case 'waz':  var awardtext = "CQ zones"; break;
+                    }
+
+                    // removing the old chart so that it will not interefere when loading chart again
+                    $("#accumulateContainer").empty();
+                    $("#accumulateContainer").append("<canvas id=\"myChartAccumulate\" width=\"400\" height=\"150\"></canvas><div id=\"accumulateTable\"></div>");
+
+                    // appending table to hold the data
+                    $("#accumulateTable").append('<table class="accutable table table-sm table-bordered table-hover table-striped table-condensed text-center"><thead>' +
+                        '<tr>' +
+                        '<td>#</td>' +
+                        '<td>Year</td>' +
+                        '<td>Accumulated # of ' + awardtext + ' worked </td>'+
+                        '</tr>' +
+                        '</thead>' +
+                        '<tbody></tbody></table>');
+                    var labels = [];
+                    var dataDxcc = [];
+
+                    var $myTable = $('.accutable');
+                    var i = 1;
+
+                    // building the rows in the table
+                    var rowElements = data.map(function ( row ) {
+
+                        var $row = $('<tr></tr>');
+
+                        var $iterator = $('<td></td>').html(i++);
+                        var $type = $('<td></td>').html(row.year);
+                        var $content = $('<td></td>').html(row.total);
+
+                        $row.append($iterator, $type, $content);
+
+                        return $row;
+                    });
+
+                    // finally inserting the rows
+                    $myTable.append(rowElements);
+
+                    $.each(data, function(){
+                        labels.push(this.year);
+                        dataDxcc.push(this.total);
+                    });
+
+                    var ctx = document.getElementById("myChartAccumulate").getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Accumulated number of ' + awardtext + ' worked each year',
+                                data: dataDxcc,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 2,
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true,
+                                        fontColor: color
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        fontColor: color
+                                    }
+                                }]
+                            },
+                            legend: {
+                                labels: {
+                                    fontColor: color,
+                                }
+                            },
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+<?php } ?>
 
   </body>
 </html>

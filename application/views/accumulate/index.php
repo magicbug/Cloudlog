@@ -1,59 +1,62 @@
 <div class="container">
     <h2><?php echo $page_title; ?></h1>
 
-        <form class="form" action="<?php echo site_url('accumulated'); ?>" method="post" enctype="multipart/form-data">
-            <fieldset>
+        <form class="form">
+
                 <!-- Select Basic -->
                 <div class="form-group row">
                     <label class="col-md-1 control-label" for="band">Band</label>
                     <div class="col-md-2">
-                        <select id="band2" name="band" class="form-control">
-                            <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >All</option>
+                        <select id="band" name="band" class="form-control custom-select">
+                            <option value="All">All</option>
                             <?php foreach($worked_bands as $band) {
-                                echo '<option value="' . $band . '"';
-                                if ($this->input->post('band') == $band) echo ' selected';
-                                echo '>' . $band . '</option>'."\n";
+                                echo '<option value="' . $band . '">' . $band . '</option>'."\n";
                             } ?>
                         </select>
                     </div>
                 </div>
-
-                <!-- Button (Double) -->
-                <div class="form-group row">
-                    <label class="col-md-1 control-label" for="button1id"></label>
-                    <div class="col-md-10">
-                        <button id="button1id" type="submit" name="button1id" class="btn btn-success btn-primary">Show</button>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="awardradio" id="dxcc" value="dxcc" checked>
+                        <label class="form-check-label" for="dxcc">
+                            DX Century Club (DXCC)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="awardradio" id="was" value="was">
+                        <label class="form-check-label" for="was">
+                            Worked all states (WAS)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="awardradio" id="iota" value="iota">
+                        <label class="form-check-label" for="iota">
+                            Islands on the air (IOTA)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="awardradio" id="waz" value="waz">
+                        <label class="form-check-label" for="waz">
+                            Worked all zones (WAZ)
+                        </label>
                     </div>
                 </div>
 
-            </fieldset>
+
+                <!-- Button (Double) -->
+                <div class="form-group row">
+                    <div class="col-md-10">
+                        <button id="button1id" type="button" name="button1id" class="btn btn-success btn-primary" onclick="accumulatePlot(this.form)">Show</button>
+                    </div>
+                </div>
+
+
         </form>
 
-        <?php
-        $i = 1;
-        if ($accumulated_dxcc_array) {
-            echo '<table class="table table-sm table-bordered table-hover table-striped table-condensed text-center">
-              <thead>
-                    <tr>
-                        <td>#</td>
-                        <td>Year</td>
-                        <td>Accumulated # of DXCC\'s worked</td>
-                    </tr>
-                </thead>
-                <tbody>';
+        <div id="accumulateContainer">
+        <canvas id="myChartAccumulate" width="400" height="150"></canvas>
+        <div id="accumulateTable"></div>
+        </div>
 
-            foreach ($accumulated_dxcc_array as $line) {
-                echo '<tr>
-                <td>' . $i++ . '</td>
-                <td>' . $line->year . '</td>
-                <td>' . $line->total . '</td>
-               </tr>';
-            }
-            echo '</tfoot></table></div>';
-        }
-        else {
-            echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
-        }
-        ?>
 </div>
 
