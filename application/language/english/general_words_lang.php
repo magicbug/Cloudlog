@@ -2,9 +2,9 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['error_no_active_station_profile'] = 'Attention you need to set an active station profile.';
+$lang['error_no_active_station_profile'] = 'Attention: you need to set an active station profile.';
 
-$lang['notice_turn_the_radio_on'] = 'You have made no QSOs today, time to turn on the radio!';
+$lang['notice_turn_the_radio_on'] = 'You have made no QSOs today; time to turn on the radio!';
 
 $lang['general_word_important'] = 'Important';
 
