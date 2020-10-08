@@ -9,24 +9,34 @@ class Accumulate_model extends CI_Model
         parent::__construct();
     }
 
-    function get_accumulated_data($band, $award) {
+    function get_accumulated_data($band, $award, $mode, $period) {
         $CI =& get_instance();
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
         switch ($award) {
-            case 'dxcc': $result = $this->get_accumulated_dxcc($band, $station_id); break;
-            case 'was':  $result = $this->get_accumulated_was($band, $station_id);  break;
-            case 'iota': $result = $this->get_accumulated_iota($band, $station_id); break;
-            case 'waz':  $result = $this->get_accumulated_waz($band, $station_id);  break;
+            case 'dxcc': $result = $this->get_accumulated_dxcc($band, $mode, $period, $station_id); break;
+            case 'was':  $result = $this->get_accumulated_was($band, $mode, $period, $station_id);  break;
+            case 'iota': $result = $this->get_accumulated_iota($band, $mode, $period, $station_id); break;
+            case 'waz':  $result = $this->get_accumulated_waz($band, $mode, $period, $station_id);  break;
         }
 
         return $result;
     }
 
-    function get_accumulated_dxcc($band, $station_id) {
-        $sql = "SELECT year(col_time_on) as year,
-            (select count(distinct b.col_dxcc) from " . $this->config->item('table_name') . " as b where year(col_time_on) <= year and b.station_id = ". $station_id;
+    function get_accumulated_dxcc($band, $mode, $period, $station_id) {
+        if ($period == "year") {
+            $sql = "SELECT year(col_time_on) as year,
+                (select count(distinct b.col_dxcc) from " .
+                $this->config->item('table_name') .
+                " as b where year(col_time_on) <= year and b.station_id = ". $station_id;
+        }
+        else if ($period == "month") {
+            $sql = "SELECT date_format(col_time_on, '%Y%m') as year,
+                (select count(distinct b.col_dxcc) from " .
+                $this->config->item('table_name') .
+                " as b where date_format(col_time_on, '%Y%m') <= year and b.station_id = ". $station_id;
+        }
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -35,6 +45,10 @@ class Accumulate_model extends CI_Model
                 $sql .= " and col_prop_mode !='SAT'";
                 $sql .= " and col_band ='" . $band . "'";
             }
+        }
+
+        if ($mode != 'All') {
+            $sql .= " and col_mode ='" . $mode . "'";
         }
 
         $sql .=") total  from " . $this->config->item('table_name') . " as a
@@ -49,17 +63,37 @@ class Accumulate_model extends CI_Model
             }
         }
 
-        $sql .= " group by year(a.col_time_on) 
+        if ($mode != 'All') {
+            $sql .= " and col_mode ='" . $mode . "'";
+        }
+
+        if ($period == "year") {
+            $sql .= " group by year(a.col_time_on) 
                     order by year(a.col_time_on)";
+        }
+        else if ($period == "month") {
+            $sql .= " group by date_format(a.col_time_on, '%Y%m') 
+                    order by date_format(a.col_time_on, '%Y%m')";
+        }
 
         $query = $this->db->query($sql);
 
         return $query->result();
     }
 
-    function get_accumulated_was($band, $station_id) {
-        $sql = "SELECT year(col_time_on) as year,
-            (select count(distinct b.col_state) from " . $this->config->item('table_name') . " as b where year(col_time_on) <= year and b.station_id = ". $station_id;
+    function get_accumulated_was($band, $mode, $period, $station_id) {
+        if ($period == "year") {
+            $sql = "SELECT year(col_time_on) as year,
+                (select count(distinct b.col_state) from " .
+                $this->config->item('table_name') .
+                " as b where year(col_time_on) <= year and b.station_id = ". $station_id;
+        }
+        else if ($period == "month") {
+            $sql = "SELECT date_format(col_time_on, '%Y%m') as year,
+                (select count(distinct b.col_state) from " .
+                $this->config->item('table_name') .
+                " as b where date_format(col_time_on, '%Y%m') <= year and b.station_id = ". $station_id;
+        }
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -68,6 +102,10 @@ class Accumulate_model extends CI_Model
                 $sql .= " and col_prop_mode !='SAT'";
                 $sql .= " and col_band ='" . $band . "'";
             }
+        }
+
+        if ($mode != 'All') {
+            $sql .= " and col_mode ='" . $mode . "'";
         }
 
         $sql .= " and COL_DXCC in ('291', '6', '110')";
@@ -85,20 +123,40 @@ class Accumulate_model extends CI_Model
             }
         }
 
+        if ($mode != 'All') {
+            $sql .= " and col_mode ='" . $mode . "'";
+        }
+
         $sql .= " and COL_DXCC in ('291', '6', '110')";
         $sql .= " and COL_STATE in ('AK','AL','AR','AZ','CA','CO','CT','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY')";
 
-        $sql .= " group by year(a.col_time_on) 
+        if ($period == "year") {
+            $sql .= " group by year(a.col_time_on) 
                     order by year(a.col_time_on)";
+        }
+        else if ($period == "month") {
+            $sql .= " group by date_format(a.col_time_on, '%Y%m') 
+                    order by date_format(a.col_time_on, '%Y%m')";
+        }
 
         $query = $this->db->query($sql);
 
         return $query->result();
     }
 
-    function get_accumulated_iota($band, $station_id) {
-        $sql = "SELECT year(col_time_on) as year,
-            (select count(distinct b.col_iota) from " . $this->config->item('table_name') . " as b where year(col_time_on) <= year and b.station_id = ". $station_id;
+    function get_accumulated_iota($band, $mode, $period, $station_id) {
+        if ($period == "year") {
+            $sql = "SELECT year(col_time_on) as year,
+                (select count(distinct b.col_iota) from " .
+                $this->config->item('table_name') .
+                " as b where year(col_time_on) <= year and b.station_id = ". $station_id;
+        }
+        else if ($period == "month") {
+            $sql = "SELECT date_format(col_time_on, '%Y%m') as year,
+                (select count(distinct b.col_iota) from " .
+                $this->config->item('table_name') .
+                " as b where date_format(col_time_on, '%Y%m') <= year and b.station_id = ". $station_id;
+        }
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -107,6 +165,10 @@ class Accumulate_model extends CI_Model
                 $sql .= " and col_prop_mode !='SAT'";
                 $sql .= " and col_band ='" . $band . "'";
             }
+        }
+
+        if ($mode != 'All') {
+            $sql .= " and col_mode ='" . $mode . "'";
         }
 
         $sql .=") total  from " . $this->config->item('table_name') . " as a
@@ -121,17 +183,37 @@ class Accumulate_model extends CI_Model
             }
         }
 
-        $sql .= " group by year(a.col_time_on) 
+        if ($mode != 'All') {
+            $sql .= " and col_mode ='" . $mode . "'";
+        }
+
+        if ($period == "year") {
+            $sql .= " group by year(a.col_time_on) 
                     order by year(a.col_time_on)";
+        }
+        else if ($period == "month") {
+            $sql .= " group by date_format(a.col_time_on, '%Y%m') 
+                    order by date_format(a.col_time_on, '%Y%m')";
+        }
 
         $query = $this->db->query($sql);
 
         return $query->result();
     }
 
-    function get_accumulated_waz($band, $station_id) {
-        $sql = "SELECT year(col_time_on) as year,
-            (select count(distinct b.col_cqz) from " . $this->config->item('table_name') . " as b where year(col_time_on) <= year and b.station_id = ". $station_id;
+    function get_accumulated_waz($band, $mode, $period, $station_id) {
+        if ($period == "year") {
+            $sql = "SELECT year(col_time_on) as year,
+                (select count(distinct b.col_cqz) from " .
+                $this->config->item('table_name') .
+                " as b where year(col_time_on) <= year and b.station_id = ". $station_id;
+        }
+        else if ($period == "month") {
+            $sql = "SELECT date_format(col_time_on, '%Y%m') as year,
+                (select count(distinct b.col_cqz) from " .
+                $this->config->item('table_name') .
+                " as b where date_format(col_time_on, '%Y%m') <= year and b.station_id = ". $station_id;
+        }
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -140,6 +222,10 @@ class Accumulate_model extends CI_Model
                 $sql .= " and col_prop_mode !='SAT'";
                 $sql .= " and col_band ='" . $band . "'";
             }
+        }
+
+        if ($mode != 'All') {
+            $sql .= " and col_mode ='" . $mode . "'";
         }
 
         $sql .=") total  from " . $this->config->item('table_name') . " as a
@@ -154,8 +240,18 @@ class Accumulate_model extends CI_Model
             }
         }
 
-        $sql .= " group by year(a.col_time_on) 
+        if ($mode != 'All') {
+            $sql .= " and col_mode ='" . $mode . "'";
+        }
+
+        if ($period == "year") {
+            $sql .= " group by year(a.col_time_on) 
                     order by year(a.col_time_on)";
+        }
+        else if ($period == "month") {
+            $sql .= " group by date_format(a.col_time_on, '%Y%m') 
+                    order by date_format(a.col_time_on, '%Y%m')";
+        }
 
         $query = $this->db->query($sql);
 

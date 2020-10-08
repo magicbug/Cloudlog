@@ -6,7 +6,7 @@
                 <!-- Select Basic -->
                 <div class="form-group row">
                     <label class="col-md-1 control-label" for="band">Band</label>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <select id="band" name="band" class="form-control custom-select">
                             <option value="All">All</option>
                             <?php foreach($worked_bands as $band) {
@@ -14,31 +14,68 @@
                             } ?>
                         </select>
                     </div>
+
+                    <label class="col-md-1 control-label" for="mode">Mode</label>
+                    <div class="col-md-3">
+                        <select id="mode" name="mode" class="form-control custom-select">
+                            <option value="All">All</option>
+                            <?php
+                            foreach($modes->result() as $mode){
+                                if ($mode->submode == null) {
+                                    printf("<option value=\"%s\">%s</option>", $mode->mode, $mode->mode);
+                                } else {
+                                    printf("<option value=\"%s\">&rArr; %s</option>", $mode->submode, $mode->submode);
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="awardradio" id="dxcc" value="dxcc" checked>
-                        <label class="form-check-label" for="dxcc">
-                            DX Century Club (DXCC)
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="awardradio" id="was" value="was">
-                        <label class="form-check-label" for="was">
-                            Worked all states (WAS)
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="awardradio" id="iota" value="iota">
-                        <label class="form-check-label" for="iota">
-                            Islands on the air (IOTA)
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="awardradio" id="waz" value="waz">
-                        <label class="form-check-label" for="waz">
-                            Worked all zones (WAZ)
-                        </label>
+
+                <div class="form-group row">
+
+                        <label class="col-md-1 control-label" for="radio">Award</label>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="awardradio" id="dxcc" value="dxcc" checked>
+                                <label class="form-check-label" for="dxcc">
+                                    DX Century Club (DXCC)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="awardradio" id="was" value="was">
+                                <label class="form-check-label" for="was">
+                                    Worked all states (WAS)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="awardradio" id="iota" value="iota">
+                                <label class="form-check-label" for="iota">
+                                    Islands on the air (IOTA)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="awardradio" id="waz" value="waz">
+                                <label class="form-check-label" for="waz">
+                                    Worked all zones (WAZ)
+                                </label>
+                            </div>
+                        </div>
+
+                    <label class="col-md-1 control-label" for="radio">Period</label>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="periodradio" id="yearly" value="year" checked>
+                            <label class="form-check-label" for="yearly">
+                                Yearly
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="periodradio" id="monthly" value="month">
+                            <label class="form-check-label" for="monthly">
+                                Monthly
+                            </label>
+                        </div>
                     </div>
                 </div>
 

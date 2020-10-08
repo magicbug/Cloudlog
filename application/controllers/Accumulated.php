@@ -20,6 +20,10 @@ class Accumulated extends CI_Controller {
 
         $data['worked_bands'] = $this->Accumulate_model->get_worked_bands();
 
+        $this->load->model('modes');
+
+        $data['modes'] = $this->modes->active();
+
         $this->load->view('interface_assets/header', $data);
         $this->load->view('accumulate/index');
         $this->load->view('interface_assets/footer');
@@ -33,9 +37,11 @@ class Accumulated extends CI_Controller {
         $this->load->model('accumulate_model');
         $band = $this->input->post('Band');
         $award = $this->input->post('Award');
+        $mode = $this->input->post('Mode');
+        $period = $this->input->post('Period');
 
         // get data
-        $data = $this->accumulate_model->get_accumulated_data($band, $award);
+        $data = $this->accumulate_model->get_accumulated_data($band, $award, $mode, $period);
         header('Content-Type: application/json');
         echo json_encode($data);
     }

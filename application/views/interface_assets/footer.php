@@ -1803,10 +1803,12 @@ $(document).ready(function(){
 
             var baseURL= "<?php echo base_url();?>";
             var award = form.awardradio.value;
+            var mode = form.mode.value;
+            var period = form.periodradio.value;
             $.ajax({
                 url: baseURL+'index.php/accumulated/get_accumulated_data',
                 type: 'post',
-                data: {'Band': form.band.value, 'Award': award},
+                data: {'Band': form.band.value, 'Award': award, 'Mode': mode, 'Period': period},
                 success: function(data) {
                     // used for switching award text in the table and the chart
                     switch(award) {
@@ -1816,7 +1818,11 @@ $(document).ready(function(){
                         case 'waz':  var awardtext = "CQ zones"; break;
                     }
 
-                    // removing the old chart so that it will not interefere when loading chart again
+                    var periodtext = 'Year';
+                    if (period == 'month') {
+                        periodtext += ' + month';
+                    }
+                    // removing the old chart so that it will not interfere when loading chart again
                     $("#accumulateContainer").empty();
                     $("#accumulateContainer").append("<canvas id=\"myChartAccumulate\" width=\"400\" height=\"150\"></canvas><div id=\"accumulateTable\"></div>");
 
@@ -1824,7 +1830,7 @@ $(document).ready(function(){
                     $("#accumulateTable").append('<table class="accutable table table-sm table-bordered table-hover table-striped table-condensed text-center"><thead>' +
                         '<tr>' +
                         '<td>#</td>' +
-                        '<td>Year</td>' +
+                        '<td>' + periodtext + '</td>' +
                         '<td>Accumulated # of ' + awardtext + ' worked </td>'+
                         '</tr>' +
                         '</thead>' +
@@ -1863,7 +1869,7 @@ $(document).ready(function(){
                         data: {
                             labels: labels,
                             datasets: [{
-                                label: 'Accumulated number of ' + awardtext + ' worked each year',
+                                label: 'Accumulated number of ' + awardtext + ' worked each ' + period,
                                 data: dataDxcc,
                                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                                 borderColor: 'rgba(54, 162, 235, 1)',
