@@ -31,9 +31,7 @@
     <script src="<?php echo base_url() ;?>assets/js/sections/notes.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "awards") { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
-<?php } ?>
 
 <?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
 
@@ -1794,6 +1792,9 @@ $(document).ready(function(){
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script>
         function accumulatePlot(form) {
+            $(".ld-ext-right").addClass('running');
+            $(".ld-ext-right").prop('disabled', true);
+
             // using this to change color of legend and label according to background color
             var background = $('body').css( "background-color");
             var color = 'grey';
@@ -1827,7 +1828,7 @@ $(document).ready(function(){
                     $("#accumulateContainer").append("<canvas id=\"myChartAccumulate\" width=\"400\" height=\"150\"></canvas><div id=\"accumulateTable\"></div>");
 
                     // appending table to hold the data
-                    $("#accumulateTable").append('<table class="accutable table table-sm table-bordered table-hover table-striped table-condensed text-center"><thead>' +
+                    $("#accumulateTable").append('<table style="width:100%" class="accutable table table-sm table-bordered table-hover table-striped table-condensed text-center"><thead>' +
                         '<tr>' +
                         '<td>#</td>' +
                         '<td>' + periodtext + '</td>' +
@@ -1896,6 +1897,16 @@ $(document).ready(function(){
                                 }
                             },
                         }
+                    });
+                    $(".ld-ext-right").removeClass('running');
+                    $(".ld-ext-right").prop('disabled', false);
+                    $('.accutable').DataTable({
+                        responsive: false,
+                        ordering: false,
+                        "scrollY":        "400px",
+                        "scrollCollapse": true,
+                        "paging":         false,
+                        "scrollX": true
                     });
                 }
             });

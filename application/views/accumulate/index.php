@@ -83,7 +83,7 @@
                 <!-- Button (Double) -->
                 <div class="form-group row">
                     <div class="col-md-10">
-                        <button id="button1id" type="button" name="button1id" class="btn btn-success btn-primary" onclick="accumulatePlot(this.form)">Show</button>
+                        <button id="button1id" type="button" name="button1id" class="btn btn-success btn-primary ld-ext-right" onclick="accumulatePlot(this.form)">Show<div class="ld ld-ring ld-spin"></div></button>
                     </div>
                 </div>
 

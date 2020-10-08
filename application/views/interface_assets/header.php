@@ -28,16 +28,14 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/quill/quill.snow.css" />
 	<?php } ?>
 
-	<?php if ($this->uri->segment(1) == "qrz") { ?>
+	<?php if ($this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "accumulated") { ?>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/loading.min.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/ldbtn.min.css" />
 	<?php } ?>
 
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/bootstrapdialog/css/bootstrap-dialog.min.css" />
 
-      <?php if ($this->uri->segment(1) == "awards") { ?>
-          <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datatables.min.css"/>
-      <?php } ?>
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datatables.min.css"/>
 
  	<?php if ($this->uri->segment(1) == "adif") { ?>
   	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
