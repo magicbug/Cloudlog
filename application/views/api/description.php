@@ -25,7 +25,7 @@
 	  <div class="form-group">
 	    <label for="APIDescription">API Description</label>
 	    <input type="text" class="form-control" name="api_desc" id="APIDescription" aria-describedby="APIDescriptionHelp" value="<?php echo $api_info['description']; ?>">
-	    <small id="APIDescriptionHelp" class="form-text text-muted">Simple name to describle what you use this API for.</small>
+	    <small id="APIDescriptionHelp" class="form-text text-muted">Simple name to describe what you use this API for.</small>
 	  </div>
 
 	  <input type="hidden" name="api_key" value="<?php echo $api_info['key']; ?>">
