@@ -349,6 +349,7 @@ class Awards extends CI_Controller {
         }
 
         $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata);
+        $data['cq_summary'] = $this->cq->get_cq_summary($bands);
 
         // Render page
         $data['page_title'] = "Awards - CQ Magazine";

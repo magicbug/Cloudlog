@@ -164,7 +164,37 @@
             }
             echo '</tr>';
         }
-        echo '</tfoot></table></div>';
+        echo '</table>
+        <h2>Summary</h2>
+
+        <table class="table-sm table table-bordered table-hover table-striped table-condensed text-center">
+        <thead>
+        <tr><td></td>';
+
+        foreach($bands as $band) {
+            echo '<td>' . $band . '</td>';
+        }
+        echo '</tr>';
+
+        echo '</tr>
+        </thead>
+        <tbody>
+
+        <tr><td>Total worked</td>';
+
+        foreach ($cq_summary['worked'] as $dxcc) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $dxcc . '</td>';
+        }
+
+        echo '</tr><tr>
+        <td>Total confirmed</td>';
+        foreach ($cq_summary['confirmed'] as $dxcc) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $dxcc . '</td>';
+        }
+
+        echo '</tr>
+        </table>
+        </div>';
 
     }
     else {
