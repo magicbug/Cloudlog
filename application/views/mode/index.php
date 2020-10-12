@@ -32,12 +32,20 @@
 					<td><?php echo $row->mode;?></td>
 					<td><?php echo $row->submode;?></td>
 					<td><?php echo $row->qrgmode;?></td>
-					<td><?php if ($row->active == 1) { echo "active";} else { echo "not active";};?></td>
+                    <td class='mode_<?php echo $row->id ?>'><?php if ($row->active == 1) { echo "active";} else { echo "not active";};?></td>
+                    <td>
+                        <?php if ($row->active == 1) {
+                            echo "<button onclick='javascript:deactivateMode(". $row->id . ")' class='btn_" . $row->id . " btn btn-success btn-sm'><i class='fas fa-edit-alt'></i> Deactivate</button>";
+                        } else {
+                            echo "<button onclick='javascript:activateMode(". $row->id . ")' class='btn_" . $row->id . " btn btn-success btn-sm'><i class='fas fa-edit-alt'></i> Activate</button>";
+                        };?>
+                    </td>
 					<td>
 						<a href="<?php echo site_url('mode/edit')."/".$row->id; ?>" class="btn btn-info btn-sm"><i class="fas fa-edit-alt"></i> Edit</a>
 					</td>
 					<td>
-						<a href="<?php echo site_url('mode/delete')."/".$row->id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete mode <?php echo $row->mode; ?> ');"><i class="fas fa-trash-alt"></i> Delete</a></td>
+						<a href="<?php echo site_url('mode/delete')."/".$row->id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete mode <?php echo $row->mode; ?> ');"><i class="fas fa-trash-alt"></i> Delete</a>
+                    </td>
 				</tr>
 
 				<?php } ?>
