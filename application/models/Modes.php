@@ -72,6 +72,36 @@ class Modes extends CI_Model {
 		$this->db->delete('adif_modes', array('id' => $clean_id)); 
 	}
 
+    function activate($id) {
+        // Clean ID
+        $clean_id = $this->security->xss_clean($id);
+
+        $data = array(
+            'active' => '1',
+        );
+
+        $this->db->where('id', $clean_id);
+
+        $this->db->update('adif_modes', $data);
+
+        return true;
+    }
+
+    function deactivate($id) {
+        // Clean ID
+        $clean_id = $this->security->xss_clean($id);
+
+        $data = array(
+            'active' => '0',
+        );
+
+        $this->db->where('id', $clean_id);
+
+        $this->db->update('adif_modes', $data);
+
+        return true;
+    }
+
 }
 
 ?>

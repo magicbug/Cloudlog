@@ -283,6 +283,7 @@ class Awards extends CI_Controller {
         }
 
         $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata);
+        $data['cq_summary'] = $this->cq->get_cq_summary($bands);
 
         // Render page
         $data['page_title'] = "Awards - CQ Magazine";
@@ -411,6 +412,7 @@ class Awards extends CI_Controller {
 
         $iotalist = $this->iota->fetchIota($postdata);
         $data['iota_array'] = $this->iota->get_iota_array($iotalist, $bands, $postdata);
+        $data['iota_summary'] = $this->iota->get_iota_summary($bands);
 
         // Render Page
         $data['page_title'] = "Awards - IOTA (Islands On The Air)";

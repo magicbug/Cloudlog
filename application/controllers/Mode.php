@@ -90,4 +90,22 @@ class Mode extends CI_Controller {
 		
 		redirect('mode');
 	}
+
+	public function activate() {
+        $id = $this->input->post('id');
+        $this->load->model('modes');
+        $this->modes->activate($id);
+        header('Content-Type: application/json');
+        echo json_encode(array('message' => 'OK'));
+        return;
+    }
+
+    public function deactivate() {
+	    $id = $this->input->post('id');
+        $this->load->model('modes');
+        $this->modes->deactivate($id);
+        header('Content-Type: application/json');
+        echo json_encode(array('message' => 'OK'));
+        return;
+    }
 }

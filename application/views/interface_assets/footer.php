@@ -1809,6 +1809,38 @@ $(document).ready(function(){
         </script>
         <?php } ?>
 
+    <?php if ($this->uri->segment(1) == "mode") { ?>
+        <script>
+            function deactivateMode(modeid) {
+                var baseURL= "<?php echo base_url();?>";
+                $.ajax({
+                    url: baseURL + 'index.php/mode/deactivate',
+                    type: 'post',
+                    data: {'id': modeid },
+                    success: function(html) {
+                        $(".mode_" + modeid).text('not active');
+                        $('.btn_'+modeid).html('Activate');
+                        $('.btn_'+modeid).attr('onclick', 'activateMode('+modeid+')')
+                    }
+                });
+            }
+
+            function activateMode(modeid) {
+                var baseURL= "<?php echo base_url();?>";
+                $.ajax({
+                    url: baseURL + 'index.php/mode/activate',
+                    type: 'post',
+                    data: {'id': modeid },
+                    success: function(html) {
+                        $('.mode_'+modeid).text('active');
+                        $('.btn_'+modeid).html('Deactivate');
+                        $('.btn_'+modeid).attr('onclick', 'deactivateMode('+modeid+')')
+                    }
+                });
+            }
+        </script>
+    <?php } ?>
+
 <?php if ($this->uri->segment(1) == "accumulated") { ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script>
