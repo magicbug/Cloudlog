@@ -177,11 +177,24 @@
 		    <small id="stationGridInputHelp" class="form-text text-muted">Station Gridsquare for example IO87IP, if you are at a gridline enter the gridsquare with a comma for example IO77,IO78,IO87,IO88.</small>
 		  </div>
 
-		  <div class="form-group">
-		    <label for="stationIOTAInput">IOTA Reference</label>
-		    <input type="text" class="form-control" name="iota" id="stationIOTAInput" aria-describedby="stationIOTAInputHelp" value="<?php if(set_value('iota') != "") { echo set_value('iota'); } else { echo $my_station_profile->station_iota; } ?>">
-		    <small id="stationIOTAInputHelp" class="form-text text-muted">Station IOTA Reference for example EU-005, You can lookup IOTA References at the <a target="_blank" href="https://www.iota-world.org/iota-directory/annex-f-short-title-iota-reference-number-list.html">IOTA World</a> website.</small>
-		  </div>
+            <div class="form-group">
+                <label for="stationIOTAInput">IOTA Reference</label>
+                <select class="custom-select" name="iota" id="stationIOTAInput" aria-describedby="stationIOTAInputHelp" placeholder="EU-005">
+                    <option value =""></option>
+
+                    <?php
+                    foreach($iota_list as $i){
+                        echo '<option value=' . $i->tag;
+                        if ($my_station_profile->station_iota == $i->tag) {
+                            echo " selected =\"selected\"";
+                        }
+                        echo '>' . $i->tag . ' - ' . $i->name . '</option>';
+                    }
+                    ?>
+
+                </select>
+                <small id="stationIOTAInputHelp" class="form-text text-muted">Station IOTA Reference for example EU-005, You can lookup IOTA References at the <a target="_blank" href="https://www.iota-world.org/iota-directory/annex-f-short-title-iota-reference-number-list.html">IOTA World</a> website.</small>
+            </div>
 
 		  <div class="form-group">
 		    <label for="stationSOTAInput">SOTA Reference</label>

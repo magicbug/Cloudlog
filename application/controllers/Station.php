@@ -37,6 +37,9 @@ class Station extends CI_Controller {
 		$this->load->model('dxcc');
 		$data['dxcc_list'] = $this->dxcc->list();
 
+        $this->load->model('logbook_model');
+        $data['iota_list'] = $this->logbook_model->fetchIota();
+
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('station_profile_name', 'Station Profile Name', 'required');
@@ -62,6 +65,9 @@ class Station extends CI_Controller {
 
 		$this->load->model('stations');
 		$this->load->model('dxcc');
+        $this->load->model('logbook_model');
+
+        $data['iota_list'] = $this->logbook_model->fetchIota();
 
 		$item_id_clean = $this->security->xss_clean($id);
 
