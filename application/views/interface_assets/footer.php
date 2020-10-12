@@ -1613,6 +1613,16 @@ $(document).ready(function(){
 
 <?php if ($this->uri->segment(2) == "cq") { ?>
     <script>
+        $('.tablecq').DataTable({
+            "pageLength": 25,
+            responsive: false,
+            ordering: false,
+            "scrollY":        "400px",
+            "scrollCollapse": true,
+            "paging":         false,
+            "scrollX": true
+        });
+
             function displayCqContacts(cqzone, band) {
                 var baseURL= "<?php echo base_url();?>";
                 $.ajax({
@@ -1643,6 +1653,16 @@ $(document).ready(function(){
 
 <?php if ($this->uri->segment(2) == "was") { ?>
     <script>
+        $('.tablewas').DataTable({
+            "pageLength": 25,
+            responsive: false,
+            ordering: false,
+            "scrollY":        "400px",
+            "scrollCollapse": true,
+            "paging":         false,
+            "scrollX": true
+        });
+
         function displayWasContacts(was, band) {
             var baseURL= "<?php echo base_url();?>";
             $.ajax({

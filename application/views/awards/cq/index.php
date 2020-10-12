@@ -145,7 +145,7 @@
     $i = 1;
     if ($cq_array) {
     echo '
-    <table class="table table-sm table-bordered table-hover table-striped table-condensed text-center">
+    <table style="width:100%" class="table tablecq table-sm table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr>
             <td>#</td>
