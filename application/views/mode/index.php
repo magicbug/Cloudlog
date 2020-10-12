@@ -14,14 +14,16 @@
   </div>
   <div class="card-body">
     <p class="card-text">This is the place you can customize your modes-list by activating/deactivating modes to be shown in the select-list.</p>
+      <p><a href="<?php echo site_url('mode/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Mode</a></p>
     <div class="table-responsive">
-		<table class="table table-striped">
+		<table style="width:100%" class="modetable table table-striped">
 			<thead>
 				<tr>
 					<th scope="col">Mode</th>
 					<th scope="col">Sub-Mode</th>
 					<th scope="col">SSB/DATA/CW</th>
 					<th scope="col">Active</th>
+                    <th scope="col"></th>
 					<th scope="col"></th>
 					<th scope="col"></th>
 				</tr>
@@ -53,7 +55,7 @@
 		<table>
 	</table>
 	
-	<p><a href="<?php echo site_url('mode/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Mode</a></p>
+
   </div>
 </div>
 

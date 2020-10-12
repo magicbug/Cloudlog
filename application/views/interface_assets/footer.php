@@ -1811,6 +1811,16 @@ $(document).ready(function(){
 
     <?php if ($this->uri->segment(1) == "mode") { ?>
         <script>
+            $('.modetable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: false,
+                "scrollY":        "500px",
+                "scrollCollapse": true,
+                "paging":         false,
+                "scrollX": true
+            });
+
             function deactivateMode(modeid) {
                 var baseURL= "<?php echo base_url();?>";
                 $.ajax({
