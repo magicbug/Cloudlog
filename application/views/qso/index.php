@@ -209,7 +209,7 @@
 
                       <?php
                       foreach($dxcc as $d){
-                          echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . $d->name . '</option>';
+                          echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name))) . '</option>';
                       }
                       ?>
 
