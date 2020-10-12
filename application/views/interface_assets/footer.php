@@ -1259,7 +1259,7 @@ $(document).ready(function(){
       $.ajax({
           url: baseURL+'index.php/distances/get_distances',
           type: 'post',
-          data: {'locator': 'JP50HP', 'band': form.distplot_bands.value},
+          data: {'band': form.distplot_bands.value},
           success: function(tmp) {
               if (tmp.ok == 'OK') {
                   if (!($('#information').length > 0))
@@ -1271,7 +1271,7 @@ $(document).ready(function(){
                           renderTo: 'graphcontainer'
                       },
                       title: {
-                          text: 'Mode distribution'
+                          text: 'Distance distribution'
                       },
                       xAxis: {
                           categories: [],
