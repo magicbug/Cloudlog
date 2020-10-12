@@ -263,11 +263,13 @@ class Logbook_model extends CI_Model {
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        if ($band == 'SAT') {
-            $this->db->where('col_prop_mode', $band);
-        } else if ($band != '') {
-            $this->db->where('col_prop_mode !=', 'SAT');
-            $this->db->where('col_band', $band);
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $this->db->where('col_prop_mode', $band);
+            } else if ($band != '') {
+                $this->db->where('col_prop_mode !=', 'SAT');
+                $this->db->where('col_band', $band);
+            }
         }
 
         $this->db->where('station_id', $station_id);

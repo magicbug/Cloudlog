@@ -1705,6 +1705,7 @@ $(document).ready(function(){
                 callback: function(result) {
                     if(result) {
                         $(".edit-dialog").modal('hide');
+                        $(".qso-dialog").modal('hide');
                         var baseURL= "<?php echo base_url();?>";
                         $.ajax({
                             url: baseURL + 'index.php/qso/delete_ajax',
