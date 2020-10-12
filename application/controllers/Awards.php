@@ -412,6 +412,7 @@ class Awards extends CI_Controller {
 
         $iotalist = $this->iota->fetchIota($postdata);
         $data['iota_array'] = $this->iota->get_iota_array($iotalist, $bands, $postdata);
+        $data['iota_summary'] = $this->iota->get_iota_summary($bands);
 
         // Render Page
         $data['page_title'] = "Awards - IOTA (Islands On The Air)";
