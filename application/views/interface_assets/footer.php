@@ -1811,6 +1811,56 @@ $(document).ready(function(){
 
     <?php if ($this->uri->segment(1) == "mode") { ?>
         <script>
+            $('.modetable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: false,
+                "scrollY":        "500px",
+                "scrollCollapse": true,
+                "paging":         false,
+                "scrollX": true
+            });
+
+            function createModeDialog() {
+                var baseURL= "<?php echo base_url();?>";
+                $.ajax({
+                    url: baseURL + 'index.php/mode/create',
+                    type: 'post',
+                    success: function(html) {
+                        BootstrapDialog.show({
+                            title: 'Create mode',
+                            size: BootstrapDialog.SIZE_WIDE,
+                            cssClass: 'create-mode-dialog',
+                            nl2br: false,
+                            message: html,
+                            buttons: [{
+                                label: 'Close',
+                                action: function (dialogItself) {
+                                    dialogItself.close();
+                                }
+                            }]
+                        });
+                    }
+                });
+            }
+
+            function createMode(form) {
+                var baseURL= "<?php echo base_url();?>";
+                if (form.mode.value != '') {
+                    $.ajax({
+                        url: baseURL + 'index.php/mode/create',
+                        type: 'post',
+                        data: {'mode': form.mode.value,
+                            'submode': form.submode.value,
+                            'qrgmode': form.qrgmode.value,
+                            'active': form.active.value},
+                        success: function(html) {
+                            location.reload();
+                        }
+                    });
+                }
+            }
+
             function deactivateMode(modeid) {
                 var baseURL= "<?php echo base_url();?>";
                 $.ajax({
@@ -1835,6 +1885,31 @@ $(document).ready(function(){
                         $('.mode_'+modeid).text('active');
                         $('.btn_'+modeid).html('Deactivate');
                         $('.btn_'+modeid).attr('onclick', 'deactivateMode('+modeid+')')
+                    }
+                });
+            }
+
+            function deleteMode(id, mode) {
+                BootstrapDialog.confirm({
+                    title: 'DANGER',
+                    message: 'Warning! Are you sure you want to delete the following mode: ' + mode + '?'  ,
+                    type: BootstrapDialog.TYPE_DANGER,
+                    closable: true,
+                    draggable: true,
+                    btnOKClass: 'btn-danger',
+                    callback: function(result) {
+                        if(result) {
+                            var baseURL= "<?php echo base_url();?>";
+                            $.ajax({
+                                url: baseURL + 'index.php/mode/delete',
+                                type: 'post',
+                                data: {'id': id
+                                },
+                                success: function(data) {
+                                    $(".mode_" + id).parent("tr:first").remove(); // removes mode from table
+                                }
+                            });
+                        }
                     }
                 });
             }

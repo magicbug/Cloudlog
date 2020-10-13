@@ -39,15 +39,11 @@ class Mode extends CI_Controller {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$data['page_title'] = "Create Mode";
-			$this->load->view('interface_assets/header', $data);
-			$this->load->view('mode/create');
-			$this->load->view('interface_assets/footer');
+			$this->load->view('mode/create', $data);
 		}
 		else
 		{	
 			$this->modes->add();
-			
-			redirect('mode');
 		}
 	}
 
@@ -84,11 +80,10 @@ class Mode extends CI_Controller {
         }
 	}
 
-	public function delete($id) {
+	public function delete() {
+	    $id = $this->input->post('id');
 		$this->load->model('modes');
 		$this->modes->delete($id);
-		
-		redirect('mode');
 	}
 
 	public function activate() {

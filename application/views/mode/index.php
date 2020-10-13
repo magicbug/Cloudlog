@@ -14,14 +14,16 @@
   </div>
   <div class="card-body">
     <p class="card-text">This is the place you can customize your modes-list by activating/deactivating modes to be shown in the select-list.</p>
+      <p><button onclick="createModeDialog();" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Mode</button></p>
     <div class="table-responsive">
-		<table class="table table-striped">
+		<table style="width:100%" class="modetable table table-striped">
 			<thead>
 				<tr>
 					<th scope="col">Mode</th>
 					<th scope="col">Sub-Mode</th>
 					<th scope="col">SSB/DATA/CW</th>
 					<th scope="col">Active</th>
+                    <th scope="col"></th>
 					<th scope="col"></th>
 					<th scope="col"></th>
 				</tr>
@@ -44,7 +46,7 @@
 						<a href="<?php echo site_url('mode/edit')."/".$row->id; ?>" class="btn btn-info btn-sm"><i class="fas fa-edit-alt"></i> Edit</a>
 					</td>
 					<td>
-						<a href="<?php echo site_url('mode/delete')."/".$row->id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete mode <?php echo $row->mode; ?> ');"><i class="fas fa-trash-alt"></i> Delete</a>
+						<a href="javascript:deleteMode('<?php echo $row->id; ?>', '<?php echo $row->mode; ?>');" class="btn btn-danger btn-sm" ><i class="fas fa-trash-alt"></i> Delete</a>
                     </td>
 				</tr>
 
@@ -53,7 +55,7 @@
 		<table>
 	</table>
 	
-	<p><a href="<?php echo site_url('mode/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Mode</a></p>
+
   </div>
 </div>
 
