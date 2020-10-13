@@ -1821,6 +1821,46 @@ $(document).ready(function(){
                 "scrollX": true
             });
 
+            function createModeDialog() {
+                var baseURL= "<?php echo base_url();?>";
+                $.ajax({
+                    url: baseURL + 'index.php/mode/create',
+                    type: 'post',
+                    success: function(html) {
+                        BootstrapDialog.show({
+                            title: 'Create mode',
+                            size: BootstrapDialog.SIZE_WIDE,
+                            cssClass: 'create-mode-dialog',
+                            nl2br: false,
+                            message: html,
+                            buttons: [{
+                                label: 'Close',
+                                action: function (dialogItself) {
+                                    dialogItself.close();
+                                }
+                            }]
+                        });
+                    }
+                });
+            }
+
+            function createMode(form) {
+                var baseURL= "<?php echo base_url();?>";
+                if (form.mode.value != '') {
+                    $.ajax({
+                        url: baseURL + 'index.php/mode/create',
+                        type: 'post',
+                        data: {'mode': form.mode.value,
+                            'submode': form.submode.value,
+                            'qrgmode': form.qrgmode.value,
+                            'active': form.active.value},
+                        success: function(html) {
+                            location.reload();
+                        }
+                    });
+                }
+            }
+
             function deactivateMode(modeid) {
                 var baseURL= "<?php echo base_url();?>";
                 $.ajax({
