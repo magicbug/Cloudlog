@@ -80,11 +80,10 @@ class Mode extends CI_Controller {
         }
 	}
 
-	public function delete($id) {
+	public function delete() {
+	    $id = $this->input->post('id');
 		$this->load->model('modes');
 		$this->modes->delete($id);
-		
-		redirect('mode');
 	}
 
 	public function activate() {

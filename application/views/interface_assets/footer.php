@@ -1888,6 +1888,31 @@ $(document).ready(function(){
                     }
                 });
             }
+
+            function deleteMode(id, mode) {
+                BootstrapDialog.confirm({
+                    title: 'DANGER',
+                    message: 'Warning! Are you sure you want to delete the following mode: ' + mode + '?'  ,
+                    type: BootstrapDialog.TYPE_DANGER,
+                    closable: true,
+                    draggable: true,
+                    btnOKClass: 'btn-danger',
+                    callback: function(result) {
+                        if(result) {
+                            var baseURL= "<?php echo base_url();?>";
+                            $.ajax({
+                                url: baseURL + 'index.php/mode/delete',
+                                type: 'post',
+                                data: {'id': id
+                                },
+                                success: function(data) {
+                                    $(".mode_" + id).parent("tr:first").remove(); // removes mode from table
+                                }
+                            });
+                        }
+                    }
+                });
+            }
         </script>
     <?php } ?>
 

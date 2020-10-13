@@ -46,7 +46,7 @@
 						<a href="<?php echo site_url('mode/edit')."/".$row->id; ?>" class="btn btn-info btn-sm"><i class="fas fa-edit-alt"></i> Edit</a>
 					</td>
 					<td>
-						<a href="<?php echo site_url('mode/delete')."/".$row->id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete mode <?php echo $row->mode; ?> ');"><i class="fas fa-trash-alt"></i> Delete</a>
+						<a href="javascript:deleteMode('<?php echo $row->id; ?>', '<?php echo $row->mode; ?>');" class="btn btn-danger btn-sm" ><i class="fas fa-trash-alt"></i> Delete</a>
                     </td>
 				</tr>
 
