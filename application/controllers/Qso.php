@@ -19,7 +19,6 @@ class QSO extends CI_Controller {
 		$this->load->model('modes');
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		
-		//$data['active_station_profile'] = $this->stations->find_active();
 		$data['active_station_profile'] = $this->user_model->get_station_profile();
 		$data['notice'] = false;
 		$data['stations'] = $this->stations->all();
@@ -47,7 +46,6 @@ class QSO extends CI_Controller {
 		else
 		{
 			// Add QSO
-			// $this->logbook_model->add();
 			//change to create_qso function as add and create_qso duplicate functionality
 			$this->logbook_model->create_qso();
 				
@@ -73,7 +71,6 @@ class QSO extends CI_Controller {
 				'station_profile_id' => $this->input->post('station_profile'),
 				'transmit_power' => $this->input->post('transmit_power')
 			);
-			// ];
 			
 			setcookie("radio", $qso_data['radio'], time()+3600*24*99);
 			setcookie("station_profile_id", $qso_data['station_profile_id'], time()+3600*24*99);

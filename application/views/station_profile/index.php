@@ -56,17 +56,6 @@
 					<td><?php echo $row->station_gridsquare;?></td>
 					<td><?php echo $row->station_city;?></td>	
 					<td><?php echo $row->qso_total;?></td>
-					<!--<td>
-						<?php if($row->station_active != 1) { ?>			
-							<a href="<?php echo site_url('station/set_active/').$current_active."/".$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('Are you sure you want to make logbook <?php echo $row->station_profile_name; ?> the active logbook?');">Set Active</a>
-						<?php } else { ?>
-							<span class="badge badge-success">Active Logbook</span>
-						<?php } ?>
-
-						<?php if($is_there_qsos_with_no_station_id >= 1) { ?>
-							<a href="<?php echo site_url('station/reassign_profile/').$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('Are you sure you want to reassign QSOs to the <?php echo $row->station_profile_name; ?> profile?');">Reassign</a>
-						<?php } ?>
-					</td>-->
 					<td>
 						<a href="<?php echo site_url('station/edit')."/".$row->station_id; ?>" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Edit</a>
 					</td>
