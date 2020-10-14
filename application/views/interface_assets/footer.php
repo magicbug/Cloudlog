@@ -1781,6 +1781,16 @@ $(document).ready(function(){
         </script>
     <?php if ($this->uri->segment(1) == "timeline") { ?>
         <script>
+            $('.timelinetable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: false,
+                "scrollY":        "500px",
+                "scrollCollapse": true,
+                "paging":         false,
+                "scrollX": true
+            });
+
             function displayTimelineContacts(adif, band) {
                 var baseURL= "<?php echo base_url();?>";
                 $.ajax({

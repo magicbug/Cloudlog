@@ -43,7 +43,7 @@
     <?php
     $i = count($dxcc_timeline_array);
     if ($dxcc_timeline_array) {
-        echo '<table class="table table-bordered table-hover table-striped table-condensed text-center">
+        echo '<table style="width:100%" class="table timelinetable table-bordered table-hover table-striped table-condensed text-center">
               <thead>
                     <tr>
                         <td>#</td>
