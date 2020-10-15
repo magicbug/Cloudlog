@@ -227,6 +227,12 @@ class CQ extends CI_Model{
             $cqSummary['confirmed'][$band] = $confirmed[0]->count;
         }
 
+        $workedTotal = $this->getSummaryByBand('All', $station_id);
+        $confirmedTotal = $this->getSummaryByBandConfirmed('All', $station_id);
+
+        $cqSummary['worked']['Total'] = $workedTotal[0]->count;
+        $cqSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
+
         return $cqSummary;
     }
 
@@ -237,6 +243,8 @@ class CQ extends CI_Model{
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+        } else if ($band == 'All') {
+            $sql .= " and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
@@ -254,6 +262,8 @@ class CQ extends CI_Model{
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+        } else if ($band == 'All') {
+            $sql .= " and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
