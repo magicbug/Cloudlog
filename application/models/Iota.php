@@ -324,6 +324,12 @@ class IOTA extends CI_Model {
             $iotaSummary['confirmed'][$band] = $confirmed[0]->count;
         }
 
+        $workedTotal = $this->getSummaryByBand('All', $station_id);
+        $confirmedTotal = $this->getSummaryByBandConfirmed('All', $station_id);
+
+        $iotaSummary['worked']['Total'] = $workedTotal[0]->count;
+        $iotaSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
+
         return $iotaSummary;
     }
 
@@ -335,6 +341,8 @@ class IOTA extends CI_Model {
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+        } else if ($band == 'All') {
+            $sql .= " and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
@@ -353,6 +361,8 @@ class IOTA extends CI_Model {
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+        } else if ($band == 'All') {
+            $sql .= " and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
