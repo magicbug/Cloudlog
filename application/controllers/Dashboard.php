@@ -50,10 +50,10 @@ class Dashboard extends CI_Controller {
 			$data['month_qsos'] = $this->logbook_model->month_qsos();
 			$data['year_qsos'] = $this->logbook_model->year_qsos();
 			
-			$data['total_countrys'] = $this->logbook_model->total_countrys();
-			$data['total_countrys_confirmed_paper'] = $this->logbook_model->total_countrys_confirmed_paper();
-			$data['total_countrys_confirmed_eqsl'] = $this->logbook_model->total_countrys_confirmed_eqsl();
-			$data['total_countrys_confirmed_lotw'] = $this->logbook_model->total_countrys_confirmed_lotw();
+			$data['total_countries'] = $this->logbook_model->total_countries();
+			$data['total_countries_confirmed_paper'] = $this->logbook_model->total_countries_confirmed_paper();
+			$data['total_countries_confirmed_eqsl'] = $this->logbook_model->total_countries_confirmed_eqsl();
+			$data['total_countries_confirmed_lotw'] = $this->logbook_model->total_countries_confirmed_lotw();
 			
 			$data['total_qsl_sent'] = $this->logbook_model->total_qsl_sent();
 			$data['total_qsl_recv'] = $this->logbook_model->total_qsl_recv();
@@ -62,6 +62,13 @@ class Dashboard extends CI_Controller {
 			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('11');
 
 			$data['page_title'] = "Dashboard";
+
+			$this->load->model('dxcc');
+			$dxcc = $this->dxcc->list_current();
+
+			$current = $this->logbook_model->total_countries_current();
+
+			$data['total_countries_needed'] = count($dxcc->result()) - $current;
 
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('dashboard/index');

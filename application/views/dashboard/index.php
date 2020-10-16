@@ -119,20 +119,20 @@
 			
 			<tr>
 				<td><?php echo $this->lang->line('general_word_worked'); ?></td>
-				<td><?php echo $total_countrys; ?></td>
+				<td><?php echo $total_countries; ?></td>
 			</tr>
 			<tr>
 				<td><a href="#" onclick="return false" data-original-title="QSL Cards / eQSL / LoTW" data-toggle="tooltip"><?php echo $this->lang->line('general_word_confirmed'); ?></a></td>
 				<td>
-					<?php echo $total_countrys_confirmed_paper; ?> /
-					<?php echo $total_countrys_confirmed_eqsl; ?> /
-					<?php echo $total_countrys_confirmed_lotw; ?>	
+					<?php echo $total_countries_confirmed_paper; ?> /
+					<?php echo $total_countries_confirmed_eqsl; ?> /
+					<?php echo $total_countries_confirmed_lotw; ?>
 				</td>
 			</tr>
 			
 			<tr>
 				<td><?php echo $this->lang->line('general_word_needed'); ?></td>
-				<td><?php $dxcc = 340 - $total_countrys; echo $dxcc; ?></td>
+				<td><?php echo $total_countries_needed; ?></td>
 			</tr>
 		</table>
 
