@@ -75,23 +75,8 @@
                                     <input type="text" class="form-control" id="freq" name="freq_display_rx" value="<?php if($qso->COL_FREQ_RX != "0") { echo $qso->COL_FREQ_RX; } ?>">
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col-sm-6">
-                                        <label for="freq">Mode</label>
-                                        <select id="mode" class="form-control mode form-control-sm" name="mode">
-                                            <?php
-                                            foreach($modes->result() as $mode){
-                                                var_dump($mode);
-                                                if ($mode->submode == null) {
-                                                    printf("<option value=\"%s\" %s>%s</option>", $mode->mode, $qso->COL_MODE==$mode->mode?"selected=\"selected\"":"",$mode->mode);
-                                                } else {
-                                                    printf("<option value=\"%s\" %s>&rArr; %s</option>", $mode->submode, $qso->COL_SUBMODE==$mode->submode?"selected=\"selected\"":"",$mode->submode);
-                                                }
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
 
+                                <div class="form-row">
                                     <div class="form-group col-sm-6">
                                         <label for="freq">Band</label>
                                         <select id="band" class="form-control form-control-sm" name="band">
@@ -124,6 +109,60 @@
                                             <optgroup label="Microwave">
                                                 <option value="3cm" <?php if($qso->COL_BAND == "3cm") { echo "selected=\"selected\""; } ?>>3cm</option>
                                             </optgroup>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <label for="freq">RX Band</label>
+                                        <select id="band_rx" class="form-control form-control-sm" name="band_rx">
+                                            <option value="" <?php if(strtolower($qso->COL_BAND_RX == "")) { echo "selected=\"selected\""; } ?>></option>
+                                            <optgroup label="HF">
+                                                <option value="160m" <?php if(strtolower($qso->COL_BAND_RX == "160m")) { echo "selected=\"selected\""; } ?>>160m</option>
+                                                <option value="80m" <?php if(strtolower($qso->COL_BAND_RX == "80m")) { echo "selected=\"selected\""; } ?>>80m</option>
+                                                <option value="60m" <?php if(strtolower($qso->COL_BAND_RX == "60m")) { echo "selected=\"selected\""; } ?>>60m</option>
+                                                <option value="40m" <?php if(strtolower($qso->COL_BAND_RX == "40m")) { echo "selected=\"selected\""; } ?>>40m</option>
+                                                <option value="30m" <?php if(strtolower($qso->COL_BAND_RX == "30m")) { echo "selected=\"selected\""; } ?>>30m</option>
+                                                <option value="20m" <?php if(strtolower($qso->COL_BAND_RX == "20m")) { echo "selected=\"selected\""; } ?>>20m</option>
+                                                <option value="17m" <?php if(strtolower($qso->COL_BAND_RX == "17m")) { echo "selected=\"selected\""; } ?>>17m</option>
+                                                <option value="15m" <?php if(strtolower($qso->COL_BAND_RX == "15m")) { echo "selected=\"selected\""; } ?>>15m</option>
+                                                <option value="12m" <?php if(strtolower($qso->COL_BAND_RX == "12m")) { echo "selected=\"selected\""; } ?>>12m</option>
+                                                <option value="10m" <?php if(strtolower($qso->COL_BAND_RX == "10m")) { echo "selected=\"selected\""; } ?>>10m</option>
+                                            </optgroup>
+
+                                            <optgroup label="VHF">
+                                                <option value="6m" <?php if(strtolower($qso->COL_BAND_RX == "6m")) { echo "selected=\"selected\""; } ?>>6m</option>
+                                                <option value="4m" <?php if(strtolower($qso->COL_BAND_RX == "4m")) { echo "selected=\"selected\""; } ?>>4m</option>
+                                                <option value="2m" <?php if(strtolower($qso->COL_BAND_RX == "2m")) { echo "selected=\"selected\""; } ?>>2m</option>
+                                            </optgroup>
+
+                                            <optgroup label="UHF">
+                                                <option value="70cm" <?php if(strtolower($qso->COL_BAND_RX == "70cm")) { echo "selected=\"selected\""; } ?>>70cm</option>
+                                                <option value="23cm" <?php if(strtolower($qso->COL_BAND_RX == "23cm")) { echo "selected=\"selected\""; } ?>>23cm</option>
+                                                <option value="13cm" <?php if(strtolower($qso->COL_BAND_RX == "13cm")) { echo "selected=\"selected\""; } ?>>13cm</option>
+                                                <option value="9cm" <?php if(strtolower($qso->COL_BAND_RX == "9cm")) { echo "selected=\"selected\""; } ?>>9cm</option>
+                                            </optgroup>
+
+                                            <optgroup label="Microwave">
+                                                <option value="3cm" <?php if($qso->COL_BAND_RX == "3cm") { echo "selected=\"selected\""; } ?>>3cm</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="freq">Mode</label>
+                                        <select id="mode" class="form-control mode form-control-sm" name="mode">
+                                            <?php
+                                            foreach($modes->result() as $mode){
+                                                var_dump($mode);
+                                                if ($mode->submode == null) {
+                                                    printf("<option value=\"%s\" %s>%s</option>", $mode->mode, $qso->COL_MODE==$mode->mode?"selected=\"selected\"":"",$mode->mode);
+                                                } else {
+                                                    printf("<option value=\"%s\" %s>&rArr; %s</option>", $mode->submode, $qso->COL_SUBMODE==$mode->submode?"selected=\"selected\"":"",$mode->submode);
+                                                }
+                                            }
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
