@@ -168,7 +168,19 @@ class DXCC extends CI_Model {
 		$this->db->empty_table($table);
 	}
 
+	/*
+	 * Fethes a list of all dxcc's, both current and deleted
+	 */
 	function list() {
+		$this->db->order_by('name', 'ASC');
+		return $this->db->get('dxcc_entities');
+	}
+
+	/*
+	 * Fetches a list of all current dxcc's (non-deleted)
+	 */
+	function list_current() {
+		$this->db->where('end', null);
 		$this->db->order_by('name', 'ASC');
 		return $this->db->get('dxcc_entities');
 	}

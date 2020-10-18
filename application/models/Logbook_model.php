@@ -1226,46 +1226,84 @@ class Logbook_model extends CI_Model {
         }
     }
 
-    /* Return total number of countrys worked */
-    function total_countrys() {
+    /* Return total number of countries worked */
+    function total_countries() {
       $CI =& get_instance();
       $CI->load->model('Stations');
       $station_id = $CI->Stations->find_active();
 
-        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE COL_COUNTRY != "Invalid" AND station_id = '.$station_id.'');
+      $sql = 'SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' 
+                WHERE COL_COUNTRY != "Invalid"
+                AND col_dxcc > 0 
+                AND station_id = '.$station_id ;
+
+      $query = $this->db->query($sql);
 
         return $query->num_rows();
     }
 
-    /* Return total number of countrys confirmed with paper QSL */
-    function total_countrys_confirmed_paper() {
-      $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+    /* Return total number of countries worked */
+    function total_countries_current() {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
 
-        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE COL_COUNTRY != "Invalid" AND station_id = '.$station_id.' AND COL_QSL_RCVD =\'Y\'');
+        $sql = 'SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' thcv 
+        join dxcc_entities on thcv.col_dxcc = dxcc_entities.adif
+        WHERE COL_COUNTRY != "Invalid" 
+        AND dxcc_entities.end is null
+        AND station_id = '.$station_id;
 
-        return $query->num_rows();
-    }
-
-    /* Return total number of countrys confirmed with eQSL */
-    function total_countrys_confirmed_eqsl() {
-      $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
-
-        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE COL_COUNTRY != "Invalid" AND station_id = '.$station_id.' AND COL_EQSL_QSL_RCVD =\'Y\'');
+        $query = $this->db->query($sql);
 
         return $query->num_rows();
     }
 
-    /* Return total number of countrys confirmed with LoTW */
-    function total_countrys_confirmed_lotw() {
+    /* Return total number of countries confirmed with paper QSL */
+    function total_countries_confirmed_paper() {
       $CI =& get_instance();
       $CI->load->model('Stations');
       $station_id = $CI->Stations->find_active();
 
-        $query = $this->db->query('SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' WHERE COL_COUNTRY != "Invalid" AND station_id = '.$station_id.' AND COL_LOTW_QSL_RCVD =\'Y\'');
+      $sql = 'SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' 
+                WHERE COL_COUNTRY != "Invalid"
+                AND COL_DXCC > 0 
+                AND station_id = '.$station_id.' AND COL_QSL_RCVD =\'Y\'';
+
+        $query = $this->db->query($sql);
+
+        return $query->num_rows();
+    }
+
+    /* Return total number of countries confirmed with eQSL */
+    function total_countries_confirmed_eqsl() {
+      $CI =& get_instance();
+      $CI->load->model('Stations');
+      $station_id = $CI->Stations->find_active();
+
+      $sql = 'SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' 
+                WHERE COL_COUNTRY != "Invalid"
+                AND COL_DXCC > 0 
+                AND station_id = '.$station_id.' AND COL_EQSL_QSL_RCVD =\'Y\'';
+
+        $query = $this->db->query($sql);
+
+        return $query->num_rows();
+    }
+
+    /* Return total number of countries confirmed with LoTW */
+    function total_countries_confirmed_lotw() {
+      $CI =& get_instance();
+      $CI->load->model('Stations');
+      $station_id = $CI->Stations->find_active();
+
+      $sql = 'SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' 
+                  WHERE COL_COUNTRY != "Invalid" 
+                  AND COL_DXCC > 0
+                  AND station_id = '.$station_id.' 
+                  AND COL_LOTW_QSL_RCVD =\'Y\'';
+
+        $query = $this->db->query($sql);
 
         return $query->num_rows();
     }
