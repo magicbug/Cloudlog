@@ -153,7 +153,7 @@
 				<?php if($row->COL_COUNTRY != null) { ?>
 				<tr>
 					<td>Country:</td>
-					<td><?php echo $row->COL_COUNTRY; ?></td>
+					<td><?php echo ucwords(strtolower(($row->COL_COUNTRY))); ?></td>
 				</tr>
 				<?php } ?>
 
@@ -251,6 +251,22 @@
 				<br>
                     <p class="editButton"><a class="btn btn-success" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a></p>
 			<?php } ?>
+
+			<?php 
+
+				if($row->COL_SAT_NAME != null) {
+					$twitter_band_sat = $row->COL_SAT_NAME;
+					$hashtags = "#hamr #cloudlog #amsat";
+				} else {
+					$twitter_band_sat = $row->COL_BAND;
+					$hashtags = "#hamr #cloudlog";
+				}
+
+				$twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." (Gridsquare: ".$row->COL_GRIDSQUARE.") on ".$twitter_band_sat." ".$hashtags);
+			?>
+
+			<h4>Share QSO</h4>
+			<a class="btn btn-sm btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a>
 
 		</div>
 	</div>
