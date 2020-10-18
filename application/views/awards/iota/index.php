@@ -136,10 +136,9 @@
         foreach($bands as $band) {
             echo '<td>' . $band . '</td>';
         }
-        echo '</tr>';
+        echo '<td>Total</td></tr>';
 
-        echo '</tr>
-        </thead>
+        echo '</thead>
         <tbody>
 
         <tr><td>Total worked</td>';
