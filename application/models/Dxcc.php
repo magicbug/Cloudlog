@@ -480,6 +480,12 @@ class DXCC extends CI_Model {
 			$dxccSummary['confirmed'][$band] = $confirmed[0]->count;
 		}
 
+		$workedTotal = $this->getSummaryByBand('All', $station_id);
+		$confirmedTotal = $this->getSummaryByBandConfirmed('All', $station_id);
+
+		$dxccSummary['worked']['Total'] = $workedTotal[0]->count;
+		$dxccSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
+
 		return $dxccSummary;
 	}
 
@@ -489,12 +495,14 @@ class DXCC extends CI_Model {
 
 		$sql .= " where station_id = " . $station_id;
 
+
 		if ($band == 'SAT') {
 			$sql .= " and thcv.col_prop_mode ='" . $band . "'";
+		} else if ($band == 'All') {
+			$sql .= " and thcv.col_prop_mode !='SAT'";
 		} else {
 			$sql .= " and thcv.col_prop_mode !='SAT'";
 			$sql .= " and thcv.col_band ='" . $band . "'";
-
 		}
 		$query = $this->db->query($sql);
 
@@ -509,6 +517,8 @@ class DXCC extends CI_Model {
 
 		if ($band == 'SAT') {
 			$sql .= " and thcv.col_prop_mode ='" . $band . "'";
+		} else if ($band == 'All') {
+			$sql .= " and thcv.col_prop_mode !='SAT'";
 		} else {
 			$sql .= " and thcv.col_prop_mode !='SAT'";
 			$sql .= " and thcv.col_band ='" . $band . "'";

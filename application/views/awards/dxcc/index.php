@@ -145,9 +145,8 @@
         foreach($bands as $band) {
             echo '<td>' . $band . '</td>';
         }
-        echo '</tr>';
-
-        echo '</tr>
+        echo '<td>Total</td>
+        </tr>
         </thead>
         <tbody>
 
