@@ -148,6 +148,12 @@ class was extends CI_Model {
             $wasSummary['confirmed'][$band] = $confirmed[0]->count;
         }
 
+        $workedTotal = $this->getSummaryByBand('All', $station_id);
+        $confirmedTotal = $this->getSummaryByBandConfirmed('All', $station_id);
+
+        $wasSummary['worked']['Total'] = $workedTotal[0]->count;
+        $wasSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
+
         return $wasSummary;
     }
 
@@ -159,6 +165,8 @@ class was extends CI_Model {
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+        } else if ($band == 'All') {
+            $sql .= " and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
@@ -179,6 +187,8 @@ class was extends CI_Model {
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+        } else if ($band == 'All') {
+            $sql .= " and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
