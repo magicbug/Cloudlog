@@ -28,7 +28,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/quill/quill.snow.css" />
 	<?php } ?>
 
-	<?php if ($this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "accumulated") { ?>
+	<?php if ($this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "accumulated" || $this->uri->segment(1) == "timeplotter") { ?>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/loading.min.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/ldbtn.min.css" />
 	<?php } ?>
@@ -86,6 +86,8 @@
                     <a class="dropdown-item" href="<?php echo site_url('timeline');?>" title="Dxcctimeline">DXCC Timeline</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('accumulated');?>" title="Dxcctimeline">Accumulated statistics</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('timeplotter');?>" title="View time when worked">Timeplotter</a>
 				</div>
         	</li>
 
