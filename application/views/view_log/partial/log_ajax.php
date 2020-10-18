@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-sm table-striped table-hover">
+    <table class="table table-striped table-hover">
         <tr class="titles">
             <td>Date</td>
             <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
