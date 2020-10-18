@@ -224,7 +224,7 @@
 				<?php if($row->station_country) { ?>
 				<tr>
 					<td>Station Country:</td>
-					<td><?php echo $row->station_country; ?></td>
+					<td><?php echo ucwords(strtolower(($row->station_country))); ?></td>
 				</tr>
 				<?php } ?>
 
