@@ -42,6 +42,7 @@
             <?php } ?>
             <td>
                 <a id="edit_qso" href="javascript:displayQso(<?php echo $row->COL_PRIMARY_KEY; ?>)"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
+                , <a id="qrz" href="https://www.qrz.com/db/<?php echo($row->COL_CALL);?>" target=”_blank”>🌐</a>
             </td>
             <td><?php echo $row->COL_MODE; ?></td>
             <td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX) { ?><span class="badge badge-light"><?php echo $row->COL_STX;?></span><?php } ?><?php if ($row->COL_STX_STRING) { ?><span class="badge badge-light"><?php echo $row->COL_STX_STRING;?></span><?php } ?></td>
