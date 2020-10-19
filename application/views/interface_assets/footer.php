@@ -32,6 +32,8 @@
 <?php } ?>
 
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script>
 
 <?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
 
@@ -1466,8 +1468,18 @@ $(document).ready(function(){
         "scrollY":        "400px",
         "scrollCollapse": true,
         "paging":         false,
-        "scrollX": true
+        "scrollX": true,
+        dom: 'Bfrtip',
+        buttons: [
+            'csv'
+        ]
     });
+    // using this to change color of csv-button if dark mode is chosen
+    var background = $('body').css( "background-color");
+
+    if (background != ('rgb(255, 255, 255)')) {
+        $(".buttons-csv").css("color", "white");
+    }
 
         function displayDxccContacts(country, band) {
             var baseURL = "<?php echo base_url();?>";
