@@ -1474,6 +1474,18 @@ $(document).ready(function(){
             'csv'
         ]
     });
+
+    $('.tablesummary').DataTable({
+        info: false,
+        searching: false,
+        ordering: false,
+        "paging":         false,
+        dom: 'Bfrtip',
+        buttons: [
+            'csv'
+        ]
+    });
+
     // using this to change color of csv-button if dark mode is chosen
     var background = $('body').css( "background-color");
 
@@ -1519,8 +1531,19 @@ $(document).ready(function(){
         "scrollY":        "400px",
         "scrollCollapse": true,
         "paging":         false,
-        "scrollX": true
+        "scrollX": true,
+        dom: 'Bfrtip',
+        buttons: [
+            'csv'
+        ]
     });
+
+    // using this to change color of csv-button if dark mode is chosen
+    var background = $('body').css( "background-color");
+
+    if (background != ('rgb(255, 255, 255)')) {
+        $(".buttons-csv").css("color", "white");
+    }
 
             function displayVuccContacts(gridsquare, band) {
                 var baseURL= "<?php echo base_url();?>";
@@ -1591,8 +1614,30 @@ $(document).ready(function(){
             "scrollY":        "400px",
             "scrollCollapse": true,
             "paging":         false,
-            "scrollX": true
+            "scrollX": true,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv'
+            ]
         });
+
+        $('.tablesummary').DataTable({
+            info: false,
+            searching: false,
+            ordering: false,
+            "paging":         false,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv'
+            ]
+        });
+
+        // using this to change color of csv-button if dark mode is chosen
+        var background = $('body').css( "background-color");
+
+        if (background != ('rgb(255, 255, 255)')) {
+            $(".buttons-csv").css("color", "white");
+        }
 
         function displayIotaContacts(iota, band) {
             var baseURL= "<?php echo base_url();?>";
@@ -1632,8 +1677,30 @@ $(document).ready(function(){
             "scrollY":        "400px",
             "scrollCollapse": true,
             "paging":         false,
-            "scrollX": true
+            "scrollX": true,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv'
+            ]
         });
+
+        $('.tablesummary').DataTable({
+            info: false,
+            searching: false,
+            ordering: false,
+            "paging":         false,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv'
+            ]
+        });
+
+        // using this to change color of csv-button if dark mode is chosen
+        var background = $('body').css( "background-color");
+
+        if (background != ('rgb(255, 255, 255)')) {
+            $(".buttons-csv").css("color", "white");
+        }
 
             function displayCqContacts(cqzone, band) {
                 var baseURL= "<?php echo base_url();?>";
@@ -1672,8 +1739,30 @@ $(document).ready(function(){
             "scrollY":        "400px",
             "scrollCollapse": true,
             "paging":         false,
-            "scrollX": true
+            "scrollX": true,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv'
+            ]
         });
+
+        $('.tablesummary').DataTable({
+            info: false,
+            searching: false,
+            ordering: false,
+            "paging":         false,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv'
+            ]
+        });
+
+        // using this to change color of csv-button if dark mode is chosen
+        var background = $('body').css( "background-color");
+
+        if (background != ('rgb(255, 255, 255)')) {
+            $(".buttons-csv").css("color", "white");
+        }
 
         function displayWasContacts(was, band) {
             var baseURL= "<?php echo base_url();?>";
@@ -1800,8 +1889,19 @@ $(document).ready(function(){
                 "scrollY":        "500px",
                 "scrollCollapse": true,
                 "paging":         false,
-                "scrollX": true
+                "scrollX": true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'csv'
+                ]
             });
+
+            // using this to change color of csv-button if dark mode is chosen
+            var background = $('body').css( "background-color");
+
+            if (background != ('rgb(255, 255, 255)')) {
+                $(".buttons-csv").css("color", "white");
+            }
 
             function displayTimelineContacts(adif, band) {
                 var baseURL= "<?php echo base_url();?>";
@@ -2056,8 +2156,19 @@ $(document).ready(function(){
                         "scrollY":        "400px",
                         "scrollCollapse": true,
                         "paging":         false,
-                        "scrollX": true
+                        "scrollX": true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'csv'
+                        ]
                     });
+
+                    // using this to change color of csv-button if dark mode is chosen
+                    var background = $('body').css( "background-color");
+
+                    if (background != ('rgb(255, 255, 255)')) {
+                        $(".buttons-csv").css("color", "white");
+                    }
                 }
             });
         }

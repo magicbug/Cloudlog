@@ -93,7 +93,7 @@
 
         <h2>Summary</h2>
 
-        <table class="table table-sm table-bordered table-hover table-striped table-condensed text-center">
+        <table class="table tablesummary table-sm table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr><td></td>';
 

@@ -138,7 +138,7 @@
         echo '</table>
         <h2>Summary</h2>
 
-        <table class="table-sm table table-bordered table-hover table-striped table-condensed text-center">
+        <table class="table-sm tablesummary table table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr><td></td>';
 
