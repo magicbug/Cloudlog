@@ -10,7 +10,7 @@ class User extends CI_Controller {
 
 		$data['results'] = $this->user_model->users();
 
-		$data['page_title'] = "Users";
+		$data['page_title'] = "User Accounts";
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('user/main');

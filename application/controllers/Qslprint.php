@@ -16,7 +16,7 @@ class QSLPrint extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	
-		$data['page_title'] = "Export requested QSLs for printing";
+		$data['page_title'] = "Print Requested QSLs";
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('qslprint/index');

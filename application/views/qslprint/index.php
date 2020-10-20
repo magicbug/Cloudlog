@@ -13,7 +13,7 @@
 
 	<div class="card">
 	  <div class="card-header">
-	    Export Files
+	    Export Requested QSLs for Printing
 	  </div>
 	  <div class="card-body">
 	    <p class="card-text">Here you can export requested QSLs as CSV or ADIF files for printing and, optionally, mark them as sent via bureau.</p>
