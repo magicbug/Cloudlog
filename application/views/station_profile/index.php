@@ -8,13 +8,16 @@
 		</div>
 	<?php } ?>
 
+<h2><?php echo $page_title; ?></h2>
+
 <div class="card">
   <div class="card-header">
-    <?php echo $page_title; ?>
+    Station Profiles
   </div>
   <div class="card-body">
-    <p class="card-text">Station Profiles define locations of operating, useful for portable operating or using a friends QTH.</p>
-    <p class="card-text">Within Cloudlog these act in a similar way to logbooks, a Station Profile keeps a set of QSOs together.</p>
+    <p class="card-text">Station Profiles define operating locations, such as your QTH, a friend's QTH, or a portable station.</p>
+	<p class="card-text">Similar to logbooks, a Station Profile keeps a set of QSOs together.</p>
+	<p class="card-text">Only one logbook may be active at a time. In the table below this is shown with the "Active Logbook" badge.</p>
 
 		<?php if ($stations->num_rows() > 0) { ?>
 

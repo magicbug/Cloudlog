@@ -1,7 +1,8 @@
 <div class="container eqsl">
+<h2><?php echo $page_title; ?></h2>
 <div class="card">
   <div class="card-header">
-  	<h5 class="card-title"><?php echo $page_title; ?></h5>
+  	<div class="card-title">eQSL Import</div>
     <ul class="nav nav-tabs card-header-tabs">
       <li class="nav-item">
         <a class="nav-link active" href="<?php echo site_url('eqsl/import');?>">Download QSOs</a>

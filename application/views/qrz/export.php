@@ -1,19 +1,19 @@
 
 <div class="container adif">
 
-    <h1>QRZ Logbook</h1>
+    <h2><?php echo $page_title; ?></h2>
 
     <div class="card">
         <div class="card-header">
-            <h5 class="card-title">Upload Logbook</h5>
+            Upload Logbook
         </div>
 
         <div class="card-body">
 
-            <p>Here you can upload all QSOs to QRZ Logbook, which have not been previously uploaded. This might take a while, since only 1 QSO is uploaded at a time.</p>
+            <p>Here you can see and upload all QSOs which have not been previously uploaded to a QRZ logbook.</p>
+            <p>You need to set a QRZ Logbook API key in your station profile. Only station profiles with an API Key set are displayed.</p>
+            <p><span class="badge badge-warning">Warning</span>This might take a while as QSO uploads are processed sequentially.</p>
             
-            <p>You need to set a QRZ Logbook API Key in your station profile. Only a station profile with an API Key set, is diplayed in the table below.</p>
-
 <?php
             if ($station_profile->result()) {
             echo '
