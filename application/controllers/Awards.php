@@ -70,9 +70,7 @@ class Awards extends CI_Controller {
         // Render Page
         $data['page_title'] = "Log View - DOK";
         $data['filter'] = str_replace("&#40;and&#41;", ", ", $q);//implode(", ", array_keys($a));
-        //$this->load->view('interface_assets/header', $data);
-        $this->load->view('awards/dok/details_ajax', $data);
-        //$this->load->view('interface_assets/footer');
+        $this->load->view('awards/details', $data);
     }
 	
 	public function dxcc ()	{
@@ -147,7 +145,7 @@ class Awards extends CI_Controller {
         // Render Page
         $data['page_title'] = "Log View - DXCC";
         $data['filter'] = "country ".$country. " and ".$band;
-        $this->load->view('awards/dxcc/details_ajax', $data);
+        $this->load->view('awards/details', $data);
     }
 
     public function vucc()	{
@@ -187,7 +185,7 @@ class Awards extends CI_Controller {
         // Render Page
         $data['page_title'] = "Log View - VUCC";
         $data['filter'] = "vucc " . $gridsquare . " and band ".$band;
-        $this->load->view('awards/vucc/details_ajax', $data);
+        $this->load->view('awards/details', $data);
     }
 
 	/*
@@ -302,7 +300,7 @@ class Awards extends CI_Controller {
         // Render Page
         $data['page_title'] = "Log View - DXCC";
         $data['filter'] = "CQZone ".$cqzone. " and ".$band;;
-        $this->load->view('awards/cq/details_ajax', $data);
+        $this->load->view('awards/details', $data);
     }
 
     public function was() {
@@ -360,7 +358,7 @@ class Awards extends CI_Controller {
         // Render Page
         $data['page_title'] = "Log View - WAS";
         $data['filter'] = "state ".$state. " and ".$band;
-        $this->load->view('awards/was/details_ajax', $data);
+        $this->load->view('awards/details', $data);
     }
 
     public function iota ()	{
@@ -431,6 +429,6 @@ class Awards extends CI_Controller {
         // Render Page
         $data['page_title'] = "Log View - IOTA";
         $data['filter'] = "iota ".$iota. " and ".$band;
-        $this->load->view('awards/iota/details_ajax', $data);
+        $this->load->view('awards/details', $data);
     }
 }
