@@ -1,11 +1,11 @@
 
 <div class="container adif">
 
-	<h1>ADIF Functions</h1>
+	<h2><?php echo $page_title; ?></h2>
 
 	<div class="card">
 	  <div class="card-header">
-	    <h5 class="card-title"><?php echo $page_title; ?></h5>
+	    ADIF Import
 	  </div>
 
 	  <div class="card-body">
@@ -66,7 +66,7 @@
 
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title">ADIF Export</h5>
+    ADIF Export
   </div>
 
 	<div class="alert alert-warning" role="alert">

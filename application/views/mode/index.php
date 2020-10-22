@@ -8,9 +8,11 @@
 		</div>
 	<?php } ?>
 
+<h2><?php echo $page_title; ?></h2>
+
 <div class="card">
   <div class="card-header">
-    <?php echo $page_title; ?>
+    Modes
   </div>
   <div class="card-body">
     <p class="card-text">This is the place you can customize your modes-list by activating/deactivating modes to be shown in the select-list.</p>

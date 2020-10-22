@@ -7,13 +7,16 @@
 	</div>
 <?php } ?>
 
+<h2><?php echo $page_title; ?></h2>
+
 <div class="card">
   <div class="card-header">
-    <?php echo $page_title; ?>
+    User List
   </div>
   <div class="card-body">
-    <h5 class="card-title">Cloudlog Needs Users You make them here.</h5>
-    <p class="card-text"></p>
+    <p class="card-text">Cloudlog needs at least one user configured in order to operate.</p>
+    <p class="card-text">Users can be assigned roles which give them different permissions, such as adding QSOs to the logbook and accessing Cloudlog APIs.</p>
+    <p class="card-text">The currently logged in user is displayed at the upper-right of each page.</p>
     <div class="table-responsive">
 		<table class="table table-striped">
 		  <thead>

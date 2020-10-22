@@ -1,6 +1,7 @@
 <div class="container lotw">
 <br>
-	<a class="btn btn-outline-primary btn-sm float-right" href="<?php echo site_url('/lotw/import'); ?>" role="button"><i class="fas fa-cloud-download-alt"></i> LoTW Import</a><h1><?php echo $page_title; ?></h1>
+	<a class="btn btn-outline-primary btn-sm float-right" href="<?php echo site_url('/lotw/import'); ?>" role="button"><i class="fas fa-cloud-download-alt"></i> LoTW Import</a>
+	<h2><?php echo $page_title; ?></h2>
 
 	<div class="alert alert-danger" role="alert">
 	  <i class="fas fa-exclamation-triangle"></i> Please be aware that LoTW Sync is BETA, you might get errors, this isn't fully production ready.

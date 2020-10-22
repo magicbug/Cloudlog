@@ -50,7 +50,7 @@ class API extends CI_Controller {
 
 		$data['api_keys'] = $this->api_model->keys();
 
-		$data['page_title'] = "API Options";
+		$data['page_title'] = "API";
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('api/help');

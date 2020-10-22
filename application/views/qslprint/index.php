@@ -9,16 +9,16 @@
 			</div>
 		<?php } ?>
 
+	<h2><?php echo $page_title; ?></h2>
+
 	<div class="card">
 	  <div class="card-header">
-	    <?php echo $page_title; ?>
+	    Export Requested QSLs for Printing
 	  </div>
 	  <div class="card-body">
-	    <h5 class="card-title"></h5>
-	    <p class="card-text">
-	    	Here you can export requested QSLs as CSV-file or ADIF and mark them as sent via buro in a mass transaction if you like. Requested QSOs are QSOs marked as "Requested" or "Queued" in the QSL-sent-field. The considered QSOs for this functions would be those of the active station profile.
-	    </p>
-		
+	    <p class="card-text">Here you can export requested QSLs as CSV or ADIF files for printing and, optionally, mark them as sent via bureau.</p>
+	    <p class="card-text">Requested QSLs are any QSOs with a value of "Requested" or "Queued" in their "QSL Sent" field.</p>
+	    <p class="card-text">Only QSOs under the active station profile will be exported.</p>
 		    
     <a href="<?php echo site_url('qslprint/exportcsv'); ?>" title="Export CSV-file" target="_blank" class="btn btn-outline-secondary btn-sm">Export requested QSLs to CSV-file</a>
     

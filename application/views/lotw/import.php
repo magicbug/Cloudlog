@@ -1,6 +1,6 @@
 <div class="container lotw">
 
-	<h1>LOTW Import</h1>
+  <h2><?php echo $page_title; ?></h2>
   
 <div class="card">
 	<div class="card-header">Import Options</div>

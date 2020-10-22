@@ -9,7 +9,7 @@
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		
 		// load the view
-		$data['page_title'] = "Radio Status";
+		$data['page_title'] = "Radio Interface";
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('radio/index');

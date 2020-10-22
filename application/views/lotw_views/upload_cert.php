@@ -1,6 +1,6 @@
 <div class="container lotw">
 
-	<h1><?php echo $page_title; ?></h1>
+	<h2><?php echo $page_title; ?></h2>
 
 	<!-- Card Starts -->
 	<div class="card">

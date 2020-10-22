@@ -7,13 +7,16 @@
 </div>
 <?php } ?>
 
+<h2><?php echo $page_title; ?></h2>
+
 <div class="card">
   <div class="card-header">
-    <?php echo $page_title; ?>
+    API Keys
   </div>
   <div class="card-body">
-    <h5 class="card-title">API or Application Programming Interface lets third party systems access Cloudlog</h5>
-    <p class="card-text">You will need to generate API keys if you wish to use tools like CloudlogCAT.</p>
+	<p class="card-text">The Cloudlog API (Application Programming Interface) lets third party systems access Cloudlog in a controlled way. Access to the API is managed via API Keys.</p>
+	<p class="card-text">You will need to generate an API key for each tool you wish to use (e.g. CloudlogCAT). Generate a read-write key if the application needs to send data to Cloudlog. Generate a read-only key if the application only needs to obtain data from Cloudlog.</p>
+	<p class="card-text"><span class="badge badge-info">Info</span> It's good practice to delete a key if you are no longer using the associated application.</p>
 
 		<?php if ($api_keys->num_rows() > 0) { ?>
 
