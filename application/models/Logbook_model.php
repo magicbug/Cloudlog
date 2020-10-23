@@ -278,7 +278,7 @@ class Logbook_model extends CI_Model {
         return $this->db->get($this->config->item('table_name'));
     }
 
-    public function timeline_qso_details($adif, $band){
+    public function timeline_qso_details($querystring, $band, $mode, $type){
         $CI =& get_instance();
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
@@ -292,8 +292,18 @@ class Logbook_model extends CI_Model {
             }
         }
 
+        if ($mode != 'All') {
+            $this->db->where('col_mode', $mode);
+        }
+
         $this->db->where('station_id', $station_id);
-        $this->db->where('COL_DXCC', $adif);
+
+        switch($type) {
+            case 'dxcc': $this->db->where('COL_DXCC', $querystring); break;
+            case 'was':  $this->db->where('COL_STATE', $querystring); break;
+            case 'iota': $this->db->where('COL_IOTA', $querystring); break;
+            case 'waz':  $this->db->where('COL_CQZ', $querystring); break;
+        }
 
         return $this->db->get($this->config->item('table_name'));
     }

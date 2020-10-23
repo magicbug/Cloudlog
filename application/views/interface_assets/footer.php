@@ -1903,13 +1903,15 @@ $(document).ready(function(){
                 $(".buttons-csv").css("color", "white");
             }
 
-            function displayTimelineContacts(adif, band) {
+            function displayTimelineContacts(querystring, band, mode, type) {
                 var baseURL= "<?php echo base_url();?>";
                 $.ajax({
                     url: baseURL + 'index.php/timeline/details',
                     type: 'post',
-                    data: {'Adif': adif,
-                        'Band': band
+                    data: {'Querystring': querystring,
+                        'Band': band,
+                        'Mode': mode,
+                        'Type': type
                     },
                     success: function(html) {
                         BootstrapDialog.show({
