@@ -294,7 +294,7 @@ class VUCC extends CI_Model
             $result = $this->logbook_model->vucc_qso_details($grid, $band);
             $callsignlist = '';
             foreach($result->result() as $call) {
-                $callsignlist .= $call->COL_CALL . ' ';
+                $callsignlist .= $call->COL_CALL . '<br/>';
             }
             $vuccBand[$grid]['call'] = $callsignlist;
         }
