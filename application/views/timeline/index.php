@@ -22,7 +22,7 @@
             <div class="form-group row">
                 <label class="col-md-1 control-label" for="button1id"></label>
                 <div class="col-md-10">
-                    <button id="button1id" type="submit" name="button1id" class="btn btn-success btn-primary">Show</button>
+                    <button id="button1id" type="submit" name="button1id" class="btn btn-primary">Show</button>
                 </div>
             </div>
 

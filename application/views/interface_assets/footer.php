@@ -1428,7 +1428,7 @@ $(document).ready(function(){
                             message: html,
                             onshown: function(dialog) {
                                 var qsoid = $("#qsoid").text();
-                                $(".editButton").html('<a class="btn btn-success" id="edit_qso" href="javascript:qso_edit('+qsoid+')"><i class="fas fa-edit"></i> Edit QSO</a>');
+                                $(".editButton").html('<a class="btn btn-primary" id="edit_qso" href="javascript:qso_edit('+qsoid+')"><i class="fas fa-edit"></i> Edit QSO</a>');
                                 var lat = $("#lat").text();
                                 var long = $("#long").text();
                                 var callsign = $("#callsign").text();

@@ -557,7 +557,7 @@
                         <input type="hidden" name="id" value="<?php echo $qso->COL_PRIMARY_KEY; ?>" />
 
                         <div class="actions">
-                            <button id="show" type="button" name="download" class="btn btn-success btn-primary" onclick="qso_save();">Save changes</button>
+                            <button id="show" type="button" name="download" class="btn btn-primary" onclick="qso_save();">Save changes</button>
                             <a class="btn btn-danger float-right" href="javascript:qso_delete(<?php echo $qso->COL_PRIMARY_KEY; ?>, '<?php echo $qso->COL_CALL; ?>')"><i class="fas fa-trash-alt"></i> Delete QSO</a>
                         </div>
                     </div>

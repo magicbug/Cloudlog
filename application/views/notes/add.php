@@ -45,7 +45,7 @@
 		<textarea name="content" style="display:none" id="hiddenArea"></textarea>
 	</div>
 
-	<button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+	<button type="submit" value="Submit" class="btn btn-primary">Save</button>
 	</form>
   </div>
 </div>
