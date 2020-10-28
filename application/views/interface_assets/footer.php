@@ -2265,5 +2265,63 @@ $(document).ready(function(){
     </script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "qsl") { ?>
+    <script>
+        $('.qsltable').DataTable({
+            "pageLength": 25,
+            responsive: false,
+            ordering: false,
+            "scrollY":        "500px",
+            "scrollCollapse": true,
+            "paging":         false,
+            "scrollX": true
+        });
+
+        function viewQsl(picture, callsign) {
+            var baseURL= "<?php echo base_url();?>";
+            var $textAndPic = $('<div></div>');
+                $textAndPic.append('<img class="img-fluid" style="height:auto;width:auto;"src="'+baseURL+'/assets/qslcard/'+picture+'" />');
+
+            BootstrapDialog.show({
+                title: 'QSL Card for ' + callsign,
+                size: BootstrapDialog.SIZE_WIDE,
+                message: $textAndPic,
+                buttons: [{
+                    label: 'Close',
+                    action: function(dialogRef){
+                        dialogRef.close();
+                    }
+                }]
+            });
+        }
+
+    </script>
+<?php } ?>
+<script>
+function deleteQsl(id) {
+            BootstrapDialog.confirm({
+                title: 'DANGER',
+                message: 'Warning! Are you sure you want to delete this QSL card?'  ,
+                type: BootstrapDialog.TYPE_DANGER,
+                closable: true,
+                draggable: true,
+                btnOKClass: 'btn-danger',
+                callback: function(result) {
+                    if(result) {
+                        var baseURL= "<?php echo base_url();?>";
+                        $.ajax({
+                            url: baseURL + 'index.php/qsl/delete',
+                            type: 'post',
+                            data: {'id': id
+                            },
+                            success: function(data) {
+                                $("#" + id).parent("tr:first").remove(); // removes mode from table
+                            }
+                        });
+                    }
+                }
+            });
+        }
+</script>
   </body>
 </html>

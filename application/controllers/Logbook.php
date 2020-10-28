@@ -411,6 +411,9 @@ class Logbook extends CI_Controller {
             $data['measurement_base'] = $this->session->userdata('user_measurement_base');
         }
 
+        $this->load->model('Qsl_model');
+        $data['qslimages'] = $this->Qsl_model->getQslForQsoId($id);
+
 		$this->load->view('interface_assets/mini_header', $data);
 		$this->load->view('view_log/qso');
 		$this->load->view('interface_assets/footer');
