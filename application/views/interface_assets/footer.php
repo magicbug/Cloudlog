@@ -977,9 +977,9 @@ $(document).on('change', 'input', function(){
 
             if(data.updated_minutes_ago > minutes) {
               if($('.radio_timeout_error').length == 0) {
-                $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio Connection Error: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');  
+                $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');  
               } else {
-                $('.radio_timeout_error').text('Radio Connection Error: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');    
+                $('.radio_timeout_error').text('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');    
               }
             } else {
               $(".radio_timeout_error" ).remove();
@@ -2228,7 +2228,7 @@ $(document).ready(function(){
                 },
                 yAxis: {
                     title: {
-                        text: '# QSOes'
+                        text: '# QSOs'
                     }
                 },
                 rangeSelector: {
@@ -2239,7 +2239,7 @@ $(document).ready(function(){
                         if(this.point) {
                             return "Time: " + options.xAxis.categories[this.point.x] +
                                 "<br />Callsign(s) worked (max 5): " + myComments[this.point.x] +
-                                "<br />Number of qsos: <strong>" + series.data[this.point.x] + "</strong>";
+                                "<br />Number of QSOs: <strong>" + series.data[this.point.x] + "</strong>";
                         }
                     }
                 },
@@ -2254,7 +2254,7 @@ $(document).ready(function(){
             $.each(tmp.qsodata, function(){
                 myComments.push(this.calls);
                 options.xAxis.categories.push(this.time);
-                series.name = 'Number of qsos';
+                series.name = 'Number of QSOs';
                 series.data.push(this.count);
             });
 

@@ -27,16 +27,16 @@ class Qrz extends CI_Controller {
             foreach ($station_ids as $station_id) {
                 $qrz_api_key = $this->logbook_model->exists_qrz_api_key($station_id);
                 if($this->mass_upload_qsos($station_id, $qrz_api_key)) {
-                    echo "QSOs has been uploaded to QRZ.com.";
-                    log_message('info', 'QSOs has been uploaded to QRZ.com.');
+                    echo "QSOs have been uploaded to QRZ.com.";
+                    log_message('info', 'QSOs have been uploaded to QRZ.com.');
                 } else{
                     echo "No QSOs found for upload.";
                     log_message('info', 'No QSOs found for upload.');
                 }
             }
         } else {
-            echo "No station_id's with a QRZ API Key found";
-            log_message('error', "No station_id's with a QRZ API Key found");
+            echo "No station profiles with a QRZ API Key found.";
+            log_message('error', "No station profiles with a QRZ API Key found.");
         }
 
     }
@@ -139,7 +139,7 @@ class Qrz extends CI_Controller {
             echo json_encode($data);
         } else {
             $data['status'] = 'Error';
-            $data['info'] = 'Error, no QSOs to upload found';
+            $data['info'] = 'Error: No QSOs found to upload.';
             $data['errormessages'] = $result['errormessages'];
             echo json_encode($data);
         }

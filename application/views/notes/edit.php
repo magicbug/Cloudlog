@@ -32,7 +32,7 @@
 	</div>
 
 	<div class="form-group">
-	   <label for="catSelect">Pick Category</label>
+	   <label for="catSelect">Category</label>
 	   <select name="category" class="form-control" id="catSelect">
 	   	<option value="General" selected="selected">General</option>
 		<option value="Antennas">Antennas</option>

@@ -91,7 +91,7 @@ class Distances_model extends CI_Model
             }
             else {
                 header('Content-Type: application/json');
-                echo json_encode(array('Error' => 'No qsoes to plot found'));
+                echo json_encode(array('Error' => 'No QSOs found to plot.'));
             }
         }
     }

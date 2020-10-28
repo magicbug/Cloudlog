@@ -195,9 +195,9 @@
             </div>
 
             <div class="form-group">
-              <label for="transmit_power">Transmit Power (Watts)</label>
+              <label for="transmit_power">Transmit Power (W)</label>
               <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php echo $this->session->userdata('transmit_power'); ?>" />
-              <small id="powerHelp" class="form-text text-muted">Power is in watts only include numbers in the input.</small>
+              <small id="powerHelp" class="form-text text-muted">Give power value in Watts. Include only numbers in the input.</small>
             </div>
           </div>
 
@@ -324,12 +324,14 @@
 
             <div class="form-group">
               <label for="sota_ref">SOTA Reference</label>
-              <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" /> e.g: GM/NS-001
+              <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" />
+              <small id="sotaRefHelp" class="form-text text-muted">For example: GM/NS-001</small>
             </div>
 
             <div class="form-group">
               <label for="sota_ref">DOK</label>
-              <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" /> e.g: Q03
+              <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" />
+              <small id="dokHelp" class="form-text text-muted">For example: Q03</small>
             </div>
           </div>
           
@@ -355,7 +357,7 @@
           <!-- Notes Panel Contents -->
           <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
             <div class="alert alert-info" role="alert">
-              Internal usage only, not exported.
+              <span class="badge badge-info">Info</span> Note content is used within Cloudlog only and is not exported to other services.
             </div>
            <div class="form-group">
               <label for="notes">Notes</label>
