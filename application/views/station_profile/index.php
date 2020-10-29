@@ -59,7 +59,7 @@
 					<td><?php echo $row->station_gridsquare;?></td>
 					<td><?php echo $row->station_city;?></td>	
 					<td><?php echo $row->qso_total;?></td>
-					<td>
+					<td style="text-align: center">
 						<?php if($row->station_active != 1) { ?>			
 							<a href="<?php echo site_url('station/set_active/').$current_active."/".$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('Are you sure you want to make logbook <?php echo $row->station_profile_name; ?> the active logbook?');">Set Active</a>
 						<?php } else { ?>
@@ -71,7 +71,7 @@
 						<?php } ?>
 					</td>
 					<td>
-						<a href="<?php echo site_url('station/edit')."/".$row->station_id; ?>" class="btn btn-info btn-sm"><i class="fas fa-edit"></i> Edit</a>
+						<a href="<?php echo site_url('station/edit')."/".$row->station_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
 					</td>
                     <td>
                         <a href="<?php echo site_url('station/deletelog')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i> Empty Log</a></td>

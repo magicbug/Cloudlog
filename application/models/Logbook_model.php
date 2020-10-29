@@ -232,19 +232,10 @@ class Logbook_model extends CI_Model {
         $CI =& get_instance();
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
-        $sql = "select * from " . $this->config->item('table_name') . " where station_id =" . $station_id . " and col_gridsquare like '" . $gridsquare. "%'";
-
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
-            } else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
-            }
-        }
-
-        $sql .= " union ";
-        $sql .= "select * from " . $this->config->item('table_name') . " where station_id =" . $station_id . " and col_vucc_grids like '%" . $gridsquare. "%'";
+        $sql = "select * from " . $this->config->item('table_name') .
+                " where station_id =" . $station_id .
+                " and (col_gridsquare like '" . $gridsquare. "%'
+                    or col_vucc_grids like '%" . $gridsquare. "%')";
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -278,7 +269,7 @@ class Logbook_model extends CI_Model {
         return $this->db->get($this->config->item('table_name'));
     }
 
-    public function timeline_qso_details($adif, $band){
+    public function timeline_qso_details($querystring, $band, $mode, $type){
         $CI =& get_instance();
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
@@ -292,8 +283,18 @@ class Logbook_model extends CI_Model {
             }
         }
 
+        if ($mode != 'All') {
+            $this->db->where('col_mode', $mode);
+        }
+
         $this->db->where('station_id', $station_id);
-        $this->db->where('COL_DXCC', $adif);
+
+        switch($type) {
+            case 'dxcc': $this->db->where('COL_DXCC', $querystring); break;
+            case 'was':  $this->db->where('COL_STATE', $querystring); break;
+            case 'iota': $this->db->where('COL_IOTA', $querystring); break;
+            case 'waz':  $this->db->where('COL_CQZ', $querystring); break;
+        }
 
         return $this->db->get($this->config->item('table_name'));
     }
@@ -1474,7 +1475,7 @@ class Logbook_model extends CI_Model {
 
     // Show all QSOs we need to send to eQSL
     function eqsl_not_yet_sent() {
-      $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE');
+      $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE');
       $this->db->from('station_profile');
       $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id AND station_profile.eqslqthnickname != ""','left');
       $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'Y');

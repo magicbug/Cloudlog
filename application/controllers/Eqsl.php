@@ -400,7 +400,7 @@ class eqsl extends CI_Controller {
 				// adding prop mode if it isn't blank
 				if ($qsl['COL_PROP_MODE']){
                     $adif .= "%3C";
-                    $adif .= "PROP_MODE";
+                    $adif .= "PROP%5FMODE";
                     $adif .= "%3A";
                     $adif .= strlen($qsl['COL_PROP_MODE']);
                     $adif .= "%3E";
@@ -409,20 +409,20 @@ class eqsl extends CI_Controller {
 				}
 
 				// adding sat name if it isn't blank
-				if ($qsl['COL_SAT_NAME'] = ''){
+				if ($qsl['COL_SAT_NAME'] != ''){
                     $adif .= "%3C";
-                    $adif .= "SAT_NAME";
+                    $adif .= "SAT%5FNAME";
                     $adif .= "%3A";
                     $adif .= strlen($qsl['COL_SAT_NAME']);
                     $adif .= "%3E";
-                    $adif .= $qsl['COL_SAT_NAME'];
+                    $adif .= str_replace('-', '%2D', $qsl['COL_SAT_NAME']);
                     $adif .= "%20";
 				}
 
 				// adding sat mode if it isn't blank
-				if ($qsl['COL_SAT_MODE'] = ''){
+				if ($qsl['COL_SAT_MODE'] != ''){
                     $adif .= "%3C";
-                    $adif .= "SAT_MODE";
+                    $adif .= "SAT%5FMODE";
                     $adif .= "%3A";
                     $adif .= strlen($qsl['COL_SAT_MODE']);
                     $adif .= "%3E";
@@ -430,9 +430,9 @@ class eqsl extends CI_Controller {
                     $adif .= "%20";
 				}
 
-				if ($qsl['eqslqthnickname'] = ''){
+				if ($qsl['eqslqthnickname'] != ''){
                     $adif .= "%3C";
-                    $adif .= "APP_EQSL_QTH_NICKNAME";
+                    $adif .= "APP%5FEQSL%5FQTH%5FNICKNAME";
                     $adif .= "%3A";
                     $adif .= strlen($qsl['eqslqthnickname']);
                     $adif .= "%3E";
@@ -441,9 +441,9 @@ class eqsl extends CI_Controller {
 				}
 
 				// adding sat mode if it isn't blank
-				if ($qsl['station_gridsquare'] = ''){
+				if ($qsl['station_gridsquare'] != ''){
                     $adif .= "%3C";
-                    $adif .= "MY_GRIDSQUARE";
+                    $adif .= "MY%5FGRIDSQUARE";
                     $adif .= "%3A";
                     $adif .= strlen($qsl['station_gridsquare']);
                     $adif .= "%3E";

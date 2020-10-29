@@ -405,7 +405,7 @@
         </div>
         
         <button type="reset" class="btn btn-light" onclick="reset_fields()">Reset</button>
-        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save QSO</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save QSO</button>
       </div>
     </form>
     </div>

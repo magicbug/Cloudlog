@@ -10,7 +10,7 @@
             <select class="custom-select my-1 mr-sm-2"  id="distplot_bands">
                 <option value="sat">SAT</option>
             </select>
-            <button id="plot" type="button" name="plot" class="btn btn-success btn-primary" onclick="distPlot(this.form)">Plot</button>
+            <button id="plot" type="button" name="plot" class="btn btn-primary" onclick="distPlot(this.form)">Plot</button>
         </form>
     </div>
 

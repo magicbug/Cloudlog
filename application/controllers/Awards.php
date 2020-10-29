@@ -164,7 +164,9 @@ class Awards extends CI_Controller {
     public function vucc_band(){
         $this->load->model('vucc');
         $band = str_replace('"', "", $this->input->get("Band"));
-        $data['vucc_array'] = $this->vucc->vucc_details($band);
+        $type = str_replace('"', "", $this->input->get("Type"));
+        $data['vucc_array'] = $this->vucc->vucc_details($band, $type);
+        $data['type'] = $type;
 
         // Render Page
         $data['page_title'] = "VUCC - band";

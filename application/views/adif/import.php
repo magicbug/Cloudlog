@@ -115,11 +115,11 @@
               </div>
           </div>
 
-    <button type="submit" class="btn btn-outline-secondary btn-sm" value="Export">Export QSOs</button>
+    <button type="submit" class="btn btn-primary" value="Export">Export QSOs</button>
       </form>
 
     <br><br>
-      <h6>Logbook of The World</h6>
+      <h5>Logbook of The World</h5>
       <p>If no date are chosen, that means all QSOs will be marked!</p>
       <form class="form" action="<?php echo site_url('adif/mark_lotw'); ?>" method="post" enctype="multipart/form-data">
           <p class="card-text">From date:</p>
@@ -141,14 +141,14 @@
           </div>
       </div>
       <br>
-      <button type="submit" class="btn btn-outline-secondary btn-sm" value="Export">Mark QSOs as exported to LoTW</button>
+      <button type="submit" class="btn btn-primary" value="Export">Mark QSOs as exported to LoTW</button>
       </form>
       <br><br>
 
-    <h6>Export Satellite Only QSOs</h6>
-    <a href="<?php echo site_url('adif/exportsat'); ?>" title="Export All Satellite Contacts" target="_blank" class="btn btn-outline-secondary btn-sm">Export All Satellite QSOs</a>
-
-    <a href="<?php echo site_url('adif/exportsatlotw'); ?>" title="Export All Satellite QSOS Confirmed on LoTW" target="_blank" class="btn btn-outline-secondary btn-sm">Export All Satellite QSOs Confirmed on LoTW</a>
+    <h5>Export Satellite Only QSOs</h5>
+    <p><a href="<?php echo site_url('adif/exportsat'); ?>" title="Export All Satellite Contacts" target="_blank" class="btn btn-primary">Export All Satellite QSOs</a></p>
+    
+    <p><a href="<?php echo site_url('adif/exportsatlotw'); ?>" title="Export All Satellite QSOS Confirmed on LoTW" target="_blank" class="btn btn-primary">Export All Satellite QSOs Confirmed on LoTW</a></p>
   </div>
 </div>
 

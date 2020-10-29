@@ -1,7 +1,4 @@
 <div class="container">
-
-    <h2>Logbook</h2>
-
-    <h3>Filtering on <?php echo $filter ?></h3>
+    <h5>Filtering on <?php echo $filter ?></h5>
 
     <?php $this->load->view('view_log/partial/log_ajax') ?>

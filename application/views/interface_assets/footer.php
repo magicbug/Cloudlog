@@ -1428,7 +1428,7 @@ $(document).ready(function(){
                             message: html,
                             onshown: function(dialog) {
                                 var qsoid = $("#qsoid").text();
-                                $(".editButton").html('<a class="btn btn-success" id="edit_qso" href="javascript:qso_edit('+qsoid+')"><i class="fas fa-edit"></i> Edit QSO</a>');
+                                $(".editButton").html('<a class="btn btn-primary" id="edit_qso" href="javascript:qso_edit('+qsoid+')"><i class="fas fa-edit"></i> Edit QSO</a>');
                                 var lat = $("#lat").text();
                                 var long = $("#long").text();
                                 var callsign = $("#callsign").text();
@@ -1903,13 +1903,15 @@ $(document).ready(function(){
                 $(".buttons-csv").css("color", "white");
             }
 
-            function displayTimelineContacts(adif, band) {
+            function displayTimelineContacts(querystring, band, mode, type) {
                 var baseURL= "<?php echo base_url();?>";
                 $.ajax({
                     url: baseURL + 'index.php/timeline/details',
                     type: 'post',
-                    data: {'Adif': adif,
-                        'Band': band
+                    data: {'Querystring': querystring,
+                        'Band': band,
+                        'Mode': mode,
+                        'Type': type
                     },
                     success: function(html) {
                         BootstrapDialog.show({

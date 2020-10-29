@@ -9,21 +9,32 @@
         <thead>
         <tr>
             <td>#</td>
-            <td>Gridsquare</td>
-            <td>QSL</td>
-            <td>LoTW</td>
-        </tr>
+            <td>Gridsquare</td>';
+
+        if ($type != 'worked') {
+            echo '<td>QSL</td>
+                <td>LoTW</td>';
+        } else {
+            echo '<td>Call</td>';
+        }
+        echo '</tr>
         </thead>
         <tbody>';
-        foreach ($vucc_array as $vucc => $value) {      // Fills the table with the data
-            echo '<tr>
+    foreach ($vucc_array as $vucc => $value) {      // Fills the table with the data
+        echo '<tr>
             <td>'. $i++ .'</td>
-            <td><a href=\'javascript:displayVuccContacts("'. $vucc .'","'. $band . '")\'>'. $vucc .'</td>
-            <td>'. $value['qsl'] . '</td>
-            <td>'. $value['lotw'] .'</td>
-        </tr>';
+            <td><a href=\'javascript:displayVuccContacts("'. $vucc .'","'. $band . '")\'>'. $vucc .'</td>';
+
+            if ($type != 'worked') {
+                echo '<td>'. $value['qsl'] . '</td>
+                    <td>'. $value['lotw'] .'</td>';
+            } else {
+            echo '<td>'. $value['call'] .'</td>';
+            }
+
+        echo '</tr>';
         }
-        echo '</tfoot></table></div>';
+        echo '</tbody></table></div>';
 
     }
     else {

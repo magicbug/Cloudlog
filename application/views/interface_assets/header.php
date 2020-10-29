@@ -86,9 +86,9 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('dayswithqso');?>" title="Dayswithqso">Days with QSOs</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('timeline');?>" title="Dxcctimeline">DXCC Timeline</a>
+                    <a class="dropdown-item" href="<?php echo site_url('timeline');?>" title="Timeline">Timeline</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('accumulated');?>" title="Dxcctimeline">Accumulated statistics</a>
+                    <a class="dropdown-item" href="<?php echo site_url('accumulated');?>" title="Accumulated statistics">Accumulated statistics</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('timeplotter');?>" title="View time when worked">Timeplotter</a>
 				</div>
