@@ -14,7 +14,7 @@ class Timeline extends CI_Controller {
     public function index()
     {
         // Render Page
-        $data['page_title'] = "DXCC Timeline";
+        $data['page_title'] = "Timeline";
 
         $this->load->model('Timeline_model');
 
@@ -25,9 +25,28 @@ class Timeline extends CI_Controller {
             $band = 'All';
         }
 
-        $data['dxcc_timeline_array'] = $this->Timeline_model->get_dxcc_timeline($band);
+        if ($this->input->post('mode') != NULL) {   // Band is not set when page first loads.
+            $mode = $this->input->post('mode');
+        }
+        else {
+            $mode = 'All';
+        }
+
+        if ($this->input->post('awardradio') != NULL) {   // Band is not set when page first loads.
+            $award = $this->input->post('awardradio');
+        }
+        else {
+            $award = 'dxcc';
+        }
+
+        $this->load->model('modes');
+
+        $data['modes'] = $this->modes->active();
+
+        $data['timeline_array'] = $this->Timeline_model->get_timeline($band, $mode, $award);
         $data['worked_bands'] = $this->Timeline_model->get_worked_bands();
         $data['bandselect'] = $band;
+        $data['modeselect'] = $mode;
 
         $this->load->view('interface_assets/header', $data);
         $this->load->view('timeline/index');
@@ -37,14 +56,29 @@ class Timeline extends CI_Controller {
     public function details() {
         $this->load->model('logbook_model');
 
-        $adif = str_replace('"', "", $this->input->post("Adif"));
-        $country = $this->logbook_model->get_entity($adif);
-        $band = str_replace('"', "", $this->input->post("Band"));
-        $data['results'] = $this->logbook_model->timeline_qso_details($adif, $band);
+        $querystring = str_replace('"', "", $this->input->post("Querystring"));
 
-        // Render Page
-        $data['page_title'] = "Log View - DXCC";
-        $data['filter'] = "country ". $country['name'];
+        $band = str_replace('"', "", $this->input->post("Band"));
+        $mode = str_replace('"', "", $this->input->post("Mode"));
+        $type = str_replace('"', "", $this->input->post("Type"));
+        $data['results'] = $this->logbook_model->timeline_qso_details($querystring, $band, $mode, $type);
+
+
+        switch($type) {
+            case 'dxcc':    $country = $this->logbook_model->get_entity($querystring);
+                            $data['page_title'] = "Log View - DXCC";
+                            $data['filter'] = "country ". $country['name'];
+                            break;
+            case 'was' :    $data['page_title'] = "Log View - WAS";
+                            $data['filter'] = "state ". $querystring;
+                            break;
+            case 'iota':    $data['page_title'] = "Log View - IOTA";
+                            $data['filter'] = "iota ". $querystring;
+                            break;
+            case 'waz' :    $data['page_title'] = "Log View - WAZ";
+                            $data['filter'] = "CQ zone ". $querystring;
+                            break;
+        }
 
         if ($band != "All") {
             $data['filter'] .= " and " . $band;
