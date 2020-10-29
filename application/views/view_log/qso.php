@@ -320,8 +320,13 @@
                 <fieldset>
 
                     <div class="form-group">
-                        <label for="qslcardfront">Upload QSL card image</label>
+                        <label for="qslcardfront">Upload QSL Card front image</label>
                         <input class="form-control-file" type="file" id="qslcardfront" name="qslcardfront" accept="image/*" capture="environment">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="qslcardback">Upload QSL card back image</label>
+                        <input class="form-control-file" type="file" id="qslcardback" name="qslcardback" accept="image/*" capture="environment">
                     </div>
 
                     <input type="hidden" class="form-control" id="qsoinputid" name="qsoid" value="<?php echo $row->COL_PRIMARY_KEY; ?>">

@@ -59,7 +59,12 @@ class Qsl extends CI_Controller {
 
         if (isset($_FILES['qslcardfront']) && $_FILES['qslcardfront']['name'] != "" && $_FILES['qslcardfront']['error'] == 0)
         {
-            $result = $this->uploadQslCard($qsoid);
+            $result['front'] = $this->uploadQslCardFront($qsoid);
+        }
+
+        if (isset($_FILES['qslcardback']) && $_FILES['qslcardback']['name'] != "" && $_FILES['qslcardback']['error'] == 0)
+        {
+            $result['back'] = $this->uploadQslCardBack($qsoid);
         }
 
         // Set Page Title
@@ -71,7 +76,7 @@ class Qsl extends CI_Controller {
         $this->load->view('interface_assets/footer');
     }
 
-    function uploadQslCard($qsoid) {
+    function uploadQslCardFront($qsoid) {
         $config['upload_path']          = './assets/qslcard';
         $config['allowed_types']        = 'jpg|gif|png';
         $array = explode(".", $_FILES['qslcardfront']['name']);
@@ -81,6 +86,36 @@ class Qsl extends CI_Controller {
         $this->load->library('upload', $config);
 
         if ( ! $this->upload->do_upload('qslcardfront')) {
+            // Upload of QSL card Failed
+            $error = array('error' => $this->upload->display_errors());
+
+            return $error;
+        }
+        else {
+            // Load database queries
+            $this->load->model('Qsl_model');
+
+            //Upload of QSL card was successful
+            $data = $this->upload->data();
+
+            // Now we need to insert info into database about file
+            $filename = $data['file_name'];
+            $this->Qsl_model->saveQsl($qsoid, $filename);
+
+            return 'Success';
+        }
+    }
+
+    function uploadQslCardBack($qsoid) {
+        $config['upload_path']          = './assets/qslcard';
+        $config['allowed_types']        = 'jpg|gif|png';
+        $array = explode(".", $_FILES['qslcardback']['name']);
+        $ext = end($array);
+        $config['file_name'] = $qsoid . '_' . time() . '.' . $ext;
+
+        $this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload('qslcardback')) {
             // Upload of QSL card Failed
             $error = array('error' => $this->upload->display_errors());
 
