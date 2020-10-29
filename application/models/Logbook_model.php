@@ -232,19 +232,10 @@ class Logbook_model extends CI_Model {
         $CI =& get_instance();
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
-        $sql = "select * from " . $this->config->item('table_name') . " where station_id =" . $station_id . " and col_gridsquare like '" . $gridsquare. "%'";
-
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
-            } else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
-            }
-        }
-
-        $sql .= " union ";
-        $sql .= "select * from " . $this->config->item('table_name') . " where station_id =" . $station_id . " and col_vucc_grids like '%" . $gridsquare. "%'";
+        $sql = "select * from " . $this->config->item('table_name') .
+                " where station_id =" . $station_id .
+                " and (col_gridsquare like '" . $gridsquare. "%'
+                    or col_vucc_grids like '%" . $gridsquare. "%')";
 
         if ($band != 'All') {
             if ($band == 'SAT') {
