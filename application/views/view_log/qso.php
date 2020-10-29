@@ -10,12 +10,12 @@
 
             if (count($qslimages) > 0) {
                 echo '<li class="nav-item">
-                <a class="nav-link" id="map-tab" data-toggle="tab" href="#qslcard" role="tab" aria-controls="home" aria-selected="false">QSL card</a>
+                <a class="nav-link" id="map-tab" data-toggle="tab" href="#qslcard" role="tab" aria-controls="home" aria-selected="false">QSL Card</a>
                 </li>';
             }
 
             echo '<li class="nav-item">
-            <a class="nav-link" id="map-tab" data-toggle="tab" href="#qslupload" role="tab" aria-controls="home" aria-selected="false">QSL card management</a>
+            <a class="nav-link" id="map-tab" data-toggle="tab" href="#qslupload" role="tab" aria-controls="home" aria-selected="false">QSL Card Management</a>
             </li>';
 
 

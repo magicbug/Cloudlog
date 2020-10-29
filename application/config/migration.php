@@ -21,7 +21,8 @@ $config['migration_enabled'] = TRUE;
 | be upgraded / downgraded to.
 |
 */
-$config['migra
+$config['migration_version'] = 54;
+
 /*
 |--------------------------------------------------------------------------
 | Migrations Path
