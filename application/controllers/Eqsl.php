@@ -409,18 +409,18 @@ class eqsl extends CI_Controller {
 				}
 
 				// adding sat name if it isn't blank
-				if ($qsl['COL_SAT_NAME'] = ''){
+				if ($qsl['COL_SAT_NAME'] != ''){
                     $adif .= "%3C";
                     $adif .= "SAT%5FNAME";
                     $adif .= "%3A";
                     $adif .= strlen($qsl['COL_SAT_NAME']);
                     $adif .= "%3E";
-                    $adif .= $qsl['COL_SAT_NAME'];
+                    $adif .= str_replace('-', '%2D', $qsl['COL_SAT_NAME']);
                     $adif .= "%20";
 				}
 
 				// adding sat mode if it isn't blank
-				if ($qsl['COL_SAT_MODE'] = ''){
+				if ($qsl['COL_SAT_MODE'] != ''){
                     $adif .= "%3C";
                     $adif .= "SAT%5FMODE";
                     $adif .= "%3A";
@@ -430,7 +430,7 @@ class eqsl extends CI_Controller {
                     $adif .= "%20";
 				}
 
-				if ($qsl['eqslqthnickname'] = ''){
+				if ($qsl['eqslqthnickname'] != ''){
                     $adif .= "%3C";
                     $adif .= "APP%5FEQSL%5FQTH%5FNICKNAME";
                     $adif .= "%3A";
@@ -441,7 +441,7 @@ class eqsl extends CI_Controller {
 				}
 
 				// adding sat mode if it isn't blank
-				if ($qsl['station_gridsquare'] = ''){
+				if ($qsl['station_gridsquare'] != ''){
                     $adif .= "%3C";
                     $adif .= "MY%5FGRIDSQUARE";
                     $adif .= "%3A";
