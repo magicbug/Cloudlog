@@ -15,12 +15,9 @@
   </div>
   <div class="card-body">
     <p class="card-text">Some of the data stored in Cloudlog can be exported so that you can keep a backup copy elsewhere.</p>
-    <p class="card-text">It's recommended to create backups on a regular basis to protect your data.</p>
-    <p class="card-text">Choose an option from the list below:</p>
-	<ul>
-		<li><a href="<?php echo site_url('backup/adif'); ?>">Backup ADIF</a></li>
-		<li><a href="<?php echo site_url('backup/notes'); ?>">Backup Notes</a></li>
-	</ul>
+	<p class="card-text">It's recommended to create backups on a regular basis to protect your data.</p>
+	<p><a href="<?php echo site_url('backup/adif'); ?>" title="Export a backup copy of your ADIF data" class="btn btn-primary">Backup ADIF data</a></p>
+	<p><a href="<?php echo site_url('backup/notes'); ?>" title="Export a backup copy of your notes" class="btn btn-primary">Backup Notes</a></p>
   </div>
 </div>
 

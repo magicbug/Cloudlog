@@ -16,7 +16,6 @@
   </div>
   <div class="card-body">
     <p class="card-text">This is the place you can customize your modes-list by activating/deactivating modes to be shown in the select-list.</p>
-      <p><button onclick="createModeDialog();" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Mode</button></p>
     <div class="table-responsive">
 		<table style="width:100%" class="modetable table table-striped">
 			<thead>
@@ -37,15 +36,15 @@
 					<td><?php echo $row->submode;?></td>
 					<td><?php echo $row->qrgmode;?></td>
                     <td class='mode_<?php echo $row->id ?>'><?php if ($row->active == 1) { echo "active";} else { echo "not active";};?></td>
-                    <td>
+                    <td style="text-align: center">
                         <?php if ($row->active == 1) {
-                            echo "<button onclick='javascript:deactivateMode(". $row->id . ")' class='btn_" . $row->id . " btn btn-success btn-sm'><i class='fas fa-edit-alt'></i> Deactivate</button>";
+                            echo "<button onclick='javascript:deactivateMode(". $row->id . ")' class='btn_" . $row->id . " btn btn-secondary btn-sm'>Deactivate</button>";
                         } else {
-                            echo "<button onclick='javascript:activateMode(". $row->id . ")' class='btn_" . $row->id . " btn btn-success btn-sm'><i class='fas fa-edit-alt'></i> Activate</button>";
+                            echo "<button onclick='javascript:activateMode(". $row->id . ")' class='btn_" . $row->id . " btn btn-primary btn-sm'>Activate</button>";
                         };?>
                     </td>
 					<td>
-						<a href="<?php echo site_url('mode/edit')."/".$row->id; ?>" class="btn btn-info btn-sm"><i class="fas fa-edit-alt"></i> Edit</a>
+						<a href="<?php echo site_url('mode/edit')."/".$row->id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
 					</td>
 					<td>
 						<a href="javascript:deleteMode('<?php echo $row->id; ?>', '<?php echo $row->mode; ?>');" class="btn btn-danger btn-sm" ><i class="fas fa-trash-alt"></i> Delete</a>
@@ -55,11 +54,8 @@
 				<?php } ?>
 			</tbody>
 		<table>
-	</table>
-	
-
   </div>
+  <br/>
+  <p><button onclick="createModeDialog();" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Mode</button></p>
 </div>
-
-
 </div>

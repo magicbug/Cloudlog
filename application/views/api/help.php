@@ -32,7 +32,7 @@
 		  <tbody>
 			<?php foreach ($api_keys->result() as $row) { ?>
 				<tr>
-					<td><?php echo $row->key; ?></td>
+					<td><i class="fas fa-key"></i> <?php echo $row->key; ?></td>
 					<td><?php echo $row->description; ?></td>
 					<td>
 						<?php
@@ -67,8 +67,8 @@
 		<?php } ?>
 
 		<p>
-			<a href="<?php echo site_url('api/generate/rw'); ?>" class="btn btn-outline-primary btn-sm">Generate Key with Read & Write Access</a>
-			<a href="<?php echo site_url('api/generate/r'); ?>" class="btn btn-outline-primary btn-sm">Generate Key with Read Only Access</a>
+			<a href="<?php echo site_url('api/generate/rw'); ?>" class="btn btn-primary "><i class="fas fa-plus"></i> Create a read & write key</a>
+			<a href="<?php echo site_url('api/generate/r'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a read-only key</a>
 		</p>
 
   </div>

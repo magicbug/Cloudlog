@@ -262,7 +262,7 @@
 
 	<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 	<br>
-	<button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save Account Changes</button>
+	<button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Account Changes</button>
 	<br>
 	<br>
 </form>

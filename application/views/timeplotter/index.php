@@ -49,7 +49,7 @@
 
             <div class="form-group row">
                 <div class="col-md-3">
-                    <button id="button1id" type="button" name="button1id" class="btn btn-success btn-primary ld-ext-right" onclick="timeplot(this.form);">Show<div class="ld ld-ring ld-spin"></div></button>
+                    <button id="button1id" type="button" name="button1id" class="btn btn-primary ld-ext-right" onclick="timeplot(this.form);">Show<div class="ld ld-ring ld-spin"></div></button>
                 </div>
             </div>
 
