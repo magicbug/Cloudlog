@@ -47,7 +47,7 @@
 	</div>
 
 	<input type="hidden" name="id" value="<?php echo $id; ?>" />
-	<button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+	<button type="submit" value="Submit" class="btn btn-primary">Save</button>
 	</form>
   </div>
 

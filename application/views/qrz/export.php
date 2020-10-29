@@ -26,7 +26,7 @@
                     <td>Edited QSOs not uploaded</td>
                     <td>Total QSOs not uploaded</td>
                     <td>Total QSOs uploaded</td>
-                    <td></td>
+                    <td>Actions</td>
                 </thead>
                 <tbody>';
                 foreach ($station_profile->result() as $station) {      // Fills the table with the data
@@ -36,7 +36,7 @@
                     echo '<td id ="modcount'.$station->station_id.'">' . $station->modcount . '</td>';
                     echo '<td id ="notcount'.$station->station_id.'">' . $station->notcount . '</td>';
                     echo '<td id ="totcount'.$station->station_id.'">' . $station->totcount . '</td>';
-                    echo '<td><button id="qrzUpload" type="button" name="qrzUpload" class="btn btn-primary btn-sm ld-ext-right" onclick="ExportQrz('. $station->station_id .')">Export<div class="ld ld-ring ld-spin"></div></button></td>';
+                    echo '<td><button id="qrzUpload" type="button" name="qrzUpload" class="btn btn-primary btn-sm ld-ext-right" onclick="ExportQrz('. $station->station_id .')"><i class="fas fa-cloud-upload-alt"></i> Upload<div class="ld ld-ring ld-spin"></div></button></td>';
                     echo '</tr>';
                 }
                 echo '</tfoot></table></div>';

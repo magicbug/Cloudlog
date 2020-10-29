@@ -30,7 +30,7 @@
     	echo "<p>Clicking \"Upload QSOs\" will send QSO information to eQSL.cc.</p>";
 		echo form_open('eqsl/export');
 		echo "<input type=\"hidden\" name=\"eqslexport\" id=\"eqslexport\" value=\"export\" />";
-		echo "<input class=\"btn primary\" type=\"submit\" value=\"Upload QSOs\" /></form>";
+		echo "<input class=\"btn btn-primary\" type=\"submit\" value=\"Upload QSOs\" /></form>";
 	}
 	else
 	{
