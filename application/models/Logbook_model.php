@@ -487,6 +487,10 @@ class Logbook_model extends CI_Model {
           $adif .= '<SOTA_REF:' . strlen($data['COL_SOTA_REF']) . '>' . $data['COL_SOTA_REF'];
       }
 
+      if($data['COL_COMMENT']) {
+          $adif .= '<COMMENT:' . strlen($data['COL_COMMENT']) . '>' . $data['COL_COMMENT'];
+      }
+
       if($data['COL_SAT_NAME']) {
           if($data['COL_SAT_MODE'] != 0 || $data['COL_SAT_MODE'] !="") {
               $adif .= '<sat_mode:' . strlen($data['COL_SAT_MODE']) . '>' . $data['COL_SAT_MODE'];
