@@ -7,7 +7,7 @@ class Migration_add_qsl_images extends CI_Migration {
     public function up()
     {
         // create qsl images table
-        $this->db->query("CREATE TABLE `qsl_images` 
+        $this->db->query("CREATE TABLE IF NOT EXISTS `qsl_images` 
                     (`id` integer NOT NULL auto_increment, `qsoid` int, `filename` text, primary key (id)) 
                     ENGINE=myisam DEFAULT CHARSET=utf8;");
     }
