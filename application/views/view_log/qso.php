@@ -304,6 +304,7 @@
                 <tr>
                     <th style=\'text-align: center\'>QSL image file</th>
                     <th style=\'text-align: center\'></th>
+                    <th style=\'text-align: center\'></th>
                 </tr>
                 </thead><tbody>';
 
@@ -311,6 +312,7 @@
                 echo '<tr>';
                     echo '<td style=\'text-align: center\'>' . $qsl->filename . '</td>';
                     echo '<td id="'.$qsl->id.'" style=\'text-align: center\'><button onclick="deleteQsl('.$qsl->id.')" class="btn btn-sm btn-danger">Delete</button></td>';
+                    echo '<td style=\'text-align: center\'><button onclick="viewQsl(\''.$qsl->filename.'\')" class="btn btn-sm btn-success">View</button></td>';
                     echo '</tr>';
                 }
 
@@ -326,7 +328,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="qslcardback">Upload QSL card back image</label>
+                        <label for="qslcardback">Upload QSL Card back image</label>
                         <input class="form-control-file" type="file" id="qslcardback" name="qslcardback" accept="image/*" capture="environment">
                     </div>
 
