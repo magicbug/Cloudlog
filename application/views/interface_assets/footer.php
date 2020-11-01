@@ -1449,7 +1449,6 @@ $(document).ready(function(){
                                 L.marker([lat,long], {icon: redIcon}).addTo(mymap)
                                     .bindPopup(callsign);
 
-                                mymap.on('click', onMapClick);
                             },
                         });
 
@@ -2317,13 +2316,110 @@ function deleteQsl(id) {
                             data: {'id': id
                             },
                             success: function(data) {
-                                $("#" + id).parent("tr:first").remove(); // removes mode from table
+                                $("#" + id).parent("tr:first").remove(); // removes qsl from table
+
+                                // remove qsl from carousel
+                                $(".carousel-indicators li:last-child").remove();
+                                $(".carouselimageid_"+id).remove();
+                                $('#carouselExampleIndicators').find('.carousel-item').first().addClass('active');
+
+                                // remove table and hide tab if all qsls are deleted
+                                if ($('.qsltable tr').length == 1) {
+                                    $('.qsltable').remove();
+                                    $('.qslcardtab').attr('hidden','');
+                                }
                             }
                         });
                     }
                 }
             });
         }
+</script>
+
+<script>
+    function uploadQsl() {
+        var baseURL= "<?php echo base_url();?>";
+        var formdata = new FormData(document.getElementById("fileinfo"));
+
+        $.ajax({
+            url: baseURL + 'index.php/qsl/uploadqsl',
+            type: 'post',
+            data: formdata,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (data.status.front.status == 'Success') {
+                    if ($('.qsltable').length > 0) {
+                        $('.qsltable tr:last').after('<tr><td style="text-align: center">'+data.status.front.filename+'</td>' +
+                            '<td id="'+data.status.front.insertid+'"style="text-align: center"><button onclick="deleteQsl('+data.status.front.insertid+');" class="btn btn-sm btn-danger">Delete</button></td></tr>');
+                        var quantity = $(".carousel-indicators li").length;
+                        $(".carousel-indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
+                        $(".carousel-inner").append('<div class="carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="d-block w-100" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $("#qslcardfront").val(null);
+                    }
+                    else {
+                        $("#qslupload").prepend('<table style="width:100%" class="qsltable table table-sm table-bordered table-hover table-striped table-condensed">'+
+                            '<thead>'+
+                               '<tr>'+
+                            '<th style="text-align: center">QSL image file</th>'+
+                            '<th style="text-align: center"></th>'+
+                            '</tr>'+
+                            '</thead><tbody>'+
+                                '<tr><td style="text-align: center">'+data.status.front.filename+'</td>' +
+                            '<td id="'+data.status.front.insertid+'"style="text-align: center"><button onclick="deleteQsl('+data.status.front.insertid+');" class="btn btn-sm btn-danger">Delete</button></td>' +
+                            '</tr>'+
+                        '</tbody></table>');
+                        $('.qslcardtab').removeAttr('hidden');
+                        var quantity = $(".carousel-indicators li").length;
+                        $(".carousel-indicators").append('<li class="active" data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
+                        $(".carousel-inner").append('<div class="active carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="d-block w-100" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carouselExampleIndicators").carousel();
+                        $("#qslcardfront").val(null);
+                    }
+
+                } else {
+                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n' +
+                        data.status.front +
+                        '</div>');
+                }
+                if (data.status.back.status == 'Success') {
+                    var qsoid = $("#qsoid").text();
+                    if ($('.qsltable').length > 0) {
+                        $('.qsltable tr:last').after('<tr><td style="text-align: center">'+data.status.back.filename+'</td>' +
+                            '<td id="'+data.status.back.insertid+'"style="text-align: center"><button onclick="deleteQsl('+data.status.back.insertid+');" class="btn btn-sm btn-danger">Delete</button></td></tr>');
+                        var quantity = $(".carousel-indicators li").length;
+                        $(".carousel-indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
+                        $(".carousel-inner").append('<div class="carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="d-block w-100" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $("#qslcardback").val(null);
+                    }
+                    else {
+                        $("#qslupload").prepend('<table style="width:100%" class="qsltable table table-sm table-bordered table-hover table-striped table-condensed">'+
+                            '<thead>'+
+                            '<tr>'+
+                            '<th style="text-align: center">QSL image file</th>'+
+                            '<th style="text-align: center"></th>'+
+                            '</tr>'+
+                            '</thead><tbody>'+
+                            '<tr><td style="text-align: center">'+data.status.back.filename+'</td>' +
+                            '<td id="'+data.status.back.insertid+'"style="text-align: center"><button onclick="deleteQsl('+data.status.back.insertid+');" class="btn btn-sm btn-danger">Delete</button></td>' +
+                            '</tr>'+
+                            '</tbody></table>');
+                        $('.qslcardtab').removeAttr('hidden');
+                        var quantity = $(".carousel-indicators li").length;
+                        $(".carousel-indicators").append('<li class="active" data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
+                        $(".carousel-inner").append('<div class="active carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="d-block w-100" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carouselExampleIndicators").carousel();
+                        $("#qslcardback").val(null);
+                    }
+                } else {
+                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n' +
+                        data.status.back +
+                        '</div>');
+                }
+            }
+        });
+    }
 </script>
   </body>
 </html>

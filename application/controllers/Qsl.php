@@ -67,13 +67,8 @@ class Qsl extends CI_Controller {
             $result['back'] = $this->uploadQslCardBack($qsoid);
         }
 
-        // Set Page Title
-        $data['page_title'] = "QSL Upload";
-
-        // Load Views
-        $this->load->view('interface_assets/header', $data);
-        $this->load->view('qslcard/upload_done', $result);
-        $this->load->view('interface_assets/footer');
+        header("Content-type: application/json");
+        echo json_encode(['status' => $result]);
     }
 
     function uploadQslCardFront($qsoid) {
@@ -100,9 +95,12 @@ class Qsl extends CI_Controller {
 
             // Now we need to insert info into database about file
             $filename = $data['file_name'];
-            $this->Qsl_model->saveQsl($qsoid, $filename);
+            $insertid = $this->Qsl_model->saveQsl($qsoid, $filename);
 
-            return 'Success';
+            $result['status']  = 'Success';
+            $result['insertid'] = $insertid;
+            $result['filename'] = $filename;
+            return $result;
         }
     }
 
@@ -130,9 +128,12 @@ class Qsl extends CI_Controller {
 
             // Now we need to insert info into database about file
             $filename = $data['file_name'];
-            $this->Qsl_model->saveQsl($qsoid, $filename);
+            $insertid = $this->Qsl_model->saveQsl($qsoid, $filename);
 
-            return 'Success';
+            $result['status']  = 'Success';
+            $result['insertid'] = $insertid;
+            $result['filename'] = $filename;
+            return $result;
         }
     }
 

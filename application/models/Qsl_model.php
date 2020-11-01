@@ -38,6 +38,8 @@ class Qsl_model extends CI_Model {
         );
 
         $this->db->insert('qsl_images', $data);
+
+        return $this->db->insert_id();
     }
 
     function deleteQsl($id) {

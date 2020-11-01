@@ -8,18 +8,19 @@
         <?php
         if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) {
 
-            if (count($qslimages) > 0) {
-                echo '<li class="nav-item">
-                <a class="nav-link" id="map-tab" data-toggle="tab" href="#qslcard" role="tab" aria-controls="home" aria-selected="false">QSL Card</a>
-                </li>';
+            echo '<li ';
+            if (count($qslimages) == 0) {
+                echo 'hidden ';
             }
+                echo 'class="qslcardtab nav-item">
+                <a class="nav-link" id="qsltab" data-toggle="tab" href="#qslcard" role="tab" aria-controls="home" aria-selected="false">QSL Card</a>
+                </li>';
 
             echo '<li class="nav-item">
-            <a class="nav-link" id="map-tab" data-toggle="tab" href="#qslupload" role="tab" aria-controls="home" aria-selected="false">QSL Card Management</a>
+            <a class="nav-link" id="qslmanagementtab" data-toggle="tab" href="#qslupload" role="tab" aria-controls="home" aria-selected="false">QSL Card Management</a>
             </li>';
-
-
         }
+
         ?>
 
     </ul>
@@ -309,14 +310,14 @@
                 foreach ($qslimages as $qsl) {
                 echo '<tr>';
                     echo '<td style=\'text-align: center\'>' . $qsl->filename . '</td>';
-                    echo '<td id="'.$qsl->id.'" style=\'text-align: center\'><button onclick="deleteQsl(\''.$qsl->id.'\')" class="btn btn-sm btn-danger">Delete</button></td>';
+                    echo '<td id="'.$qsl->id.'" style=\'text-align: center\'><button onclick="deleteQsl('.$qsl->id.')" class="btn btn-sm btn-danger">Delete</button></td>';
                     echo '</tr>';
                 }
 
                 echo '</tbody></table>';
             }
             ?>
-            <form class="form" id="fileinfo" method="post" enctype="multipart/form-data" action="<?php echo site_url('qsl/uploadqsl');?>">
+            <form class="form" id="fileinfo" name="fileinfo" enctype="multipart/form-data">
                 <fieldset>
 
                     <div class="form-group">
@@ -331,7 +332,7 @@
 
                     <input type="hidden" class="form-control" id="qsoinputid" name="qsoid" value="<?php echo $row->COL_PRIMARY_KEY; ?>">
 
-                    <button  type="submit" id="button1id"  name="button1id" class="btn btn-primary">Upload QSL card image</button>
+                    <button type="button" onclick="uploadQsl();" id="button1id"  name="button1id" class="btn btn-primary">Upload QSL card image</button>
 
                 </fieldset>
             </form>
@@ -357,7 +358,7 @@
                     <?php
                     $i = 1;
                     foreach ($qslimages as $image) {
-                        echo '<div class="carousel-item';
+                        echo '<div class="carousel-item carouselimageid_' . $image->id;
                         if ($i == 1) {
                             echo ' active';
                         }
