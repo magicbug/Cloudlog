@@ -241,9 +241,14 @@ class Lotw extends CI_Controller {
 					// Build File to save
 					$adif_to_save = $this->load->view('lotw_views/adif_views/adif_export', $data, TRUE);
 
+					// create folder to store upload file
+					if (!file_exists('./uploads/lotw')) {
+					    mkdir('./uploads/lotw', 0775, true);
+					}
+
 					// Build Filename
 
-					$filename_for_saving = preg_replace('/[^a-z0-9]+/', '-', strtolower($data['lotw_cert_info']->callsign))."-".date("Y-m-d-H-i-s")."-cloudlog.tq8";
+					$filename_for_saving = './uploads/lotw/'.preg_replace('/[^a-z0-9]+/', '-', strtolower($data['lotw_cert_info']->callsign))."-".date("Y-m-d-H-i-s")."-cloudlog.tq8";
 
 					$gzdata = gzencode($adif_to_save, 9);
 					$fp = fopen($filename_for_saving, "w");
