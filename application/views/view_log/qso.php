@@ -317,6 +317,9 @@
                 echo '</tbody></table>';
             }
             ?>
+
+            <p><div class="alert alert-warning" role="alert"><span class="badge badge-warning">Warning</span> Maximum file upload size is <?php echo $max_upload; ?>B.</div></p>
+
             <form class="form" id="fileinfo" name="fileinfo" enctype="multipart/form-data">
                 <fieldset>
 

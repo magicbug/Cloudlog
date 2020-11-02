@@ -413,7 +413,7 @@ class Logbook extends CI_Controller {
 
         $this->load->model('Qsl_model');
         $data['qslimages'] = $this->Qsl_model->getQslForQsoId($id);
-
+		$data['max_upload'] = ini_get('upload_max_filesize');
 		$this->load->view('interface_assets/mini_header', $data);
 		$this->load->view('view_log/qso');
 		$this->load->view('interface_assets/footer');
