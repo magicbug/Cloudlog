@@ -196,7 +196,7 @@
 			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i> <?php echo $this->session->userdata('user_callsign'); ?></a>
 			
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<a class="dropdown-item" href="<?php echo site_url('user/edit')."/".$this->session->userdata('user_id'); ?>" title="Profile"><i class="far fa-user"></i> Profile</a>
+				<a class="dropdown-item" href="<?php echo site_url('user/edit')."/".$this->session->userdata('user_id'); ?>" title="Account"><i class="fas fa-user"></i> Account</a>
 				
 				<div class="dropdown-divider"></div>
 				
