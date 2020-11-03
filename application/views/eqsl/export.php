@@ -11,6 +11,9 @@
       <li class="nav-item">
         <a class="nav-link active" href="<?php echo site_url('eqsl/Export');?>">Upload QSOs</a>
       </li>
+	  <li class="nav-item">
+        <a class="nav-link" href="<?php echo site_url('eqsl/tools');?>">Tools</a>
+      </li>
     </ul>
   </div>
 

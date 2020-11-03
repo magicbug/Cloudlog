@@ -10,6 +10,10 @@
       <li class="nav-item">
         <a class="nav-link" href="<?php echo site_url('eqsl/Export');?>">Upload QSOs</a>
       </li>
+
+	  <li class="nav-item">
+        <a class="nav-link" href="<?php echo site_url('eqsl/tools');?>">Tools</a>
+      </li>
     </ul>
   </div>
   <div class="card-body">

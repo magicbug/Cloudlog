@@ -628,5 +628,34 @@ class eqsl extends CI_Controller {
 		}
 
 	}
+
+	public function tools() {
+
+		// Check logged in
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		$data['page_title'] = "eQSL Tools";
+
+		// Load frontend
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('eqsl/tools');
+		$this->load->view('interface_assets/footer');
+	}
+
+	public function mark_all_sent() {
+		
+		// Check logged in
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		
+		// mark all eqsls as sent
+		$this->load->model('eqslmethods_model');
+		$this->eqslmethods_model->mark_all_as_sent();
+
+		$this->session->set_flashdata('success', 'All eQSLs Marked as Uploaded');
+
+		redirect('eqsl/tools');
+	}
 	
 } // end class
