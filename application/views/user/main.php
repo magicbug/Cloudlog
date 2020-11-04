@@ -16,7 +16,7 @@
   <div class="card-body">
     <p class="card-text">Cloudlog needs at least one user configured in order to operate.</p>
     <p class="card-text">Users can be assigned roles which give them different permissions, such as adding QSOs to the logbook and accessing Cloudlog APIs.</p>
-    <p class="card-text">The currently logged in user is displayed at the upper-right of each page.</p>
+    <p class="card-text">The currently logged-in user is displayed at the upper-right of each page.</p>
     <div class="table-responsive">
 		<table class="table table-striped">
 		  <thead>

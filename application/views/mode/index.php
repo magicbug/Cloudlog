@@ -15,7 +15,12 @@
     Modes
   </div>
   <div class="card-body">
-    <p class="card-text">This is the place you can customize your modes-list by activating/deactivating modes to be shown in the select-list.</p>
+    <p class="card-text">
+		Using the modes list you can control which modes are shown when creating a new QSO.
+	</p>
+    <p class="card-text">
+		Active modes will be shown in the QSO "Mode" drop-down, while inactive modes will be hidden and cannot be selected.
+	</p>
     <div class="table-responsive">
 		<table style="width:100%" class="modetable table table-striped">
 			<thead>

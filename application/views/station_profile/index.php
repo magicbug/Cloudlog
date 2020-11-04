@@ -16,14 +16,14 @@
   </div>
   <div class="card-body">
     <p class="card-text">Station Profiles define operating locations, such as your QTH, a friend's QTH, or a portable station.</p>
-	<p class="card-text">Similar to logbooks, a Station Profile keeps a set of QSOs together.</p>
+	<p class="card-text">Similar to logbooks, a station profile keeps a set of QSOs together.</p>
 	<p class="card-text">Only one logbook may be active at a time. In the table below this is shown with the "Active Logbook" badge.</p>
 
 		<?php if ($stations->num_rows() > 0) { ?>
 
 		<?php if($current_active == 0) { ?>
 		<div class="alert alert-danger" role="alert">
-		  Attention you need to set an active station profile.
+		  Attention: You need to set an active station profile. Go to Admin->Station Profiles to select one.
 		</div>
 		<?php } ?>
 
@@ -31,7 +31,7 @@
 			<div class="alert alert-danger" role="alert">
 		  		<span class="badge badge-pill badge-warning">Warning</span> Due to recent changes within Cloudlog you need to reassign QSOs to your station profiles.
 
-		  		If you haven't any station profiles, create a profile then <a href="<?php echo site_url('station/assign_all/'); ?>" class="btn btn-danger" onclick="return confirm('Assign All QSOs to Default Station ID"><i class="fas fa-trash-alt"></i> Press this Button to assign all QSOs to the the #1 station ID</a>
+		  		Create a station profile, if you haven't already, then <a href="<?php echo site_url('station/assign_all/'); ?>" class="btn btn-danger" onclick="return confirm('Assign All QSOs to Default Station ID"><i class="fas fa-trash-alt"></i> press this button to assign all QSOs to the first Station Profile.</a>
 			</div>
 		<?php } ?>
 
@@ -43,7 +43,7 @@
 					<th scope="col">Country</th>
 					<th scope="col">Gridsquare</th>
 					<th scope="col">City</th>
-					<th scope="col">QSO Count</th>
+					<th scope="col">QSOs</th>
 					<th></th>
 					<th scope="col"></th>
 					<th scope="col"></th>

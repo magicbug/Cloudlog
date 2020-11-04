@@ -143,7 +143,7 @@ class Timeplotter_model extends CI_Model
         }
         else {
             header('Content-Type: application/json');
-            $data['error'] = 'No qsoes to plot found!';
+            $data['error'] = 'No QSOs found to plot!';
             echo json_encode($data);
         }
 

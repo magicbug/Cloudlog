@@ -24,7 +24,7 @@
 			<div class="form-check">
 			  <input class="form-check-input" type="radio" name="eqslimport" id="upload" value="upload" checked /> 
 			  <label class="form-check-label" for="exampleRadios1">
-			    Upload File
+			    Import from file...
 			  </label>
 			  <br><br>
 			  <p>Upload the Exported ADIF file from eQSL from the <a href="http://eqsl.cc/qslcard/DownloadInBox.cfm" target="_blank">Download Inbox</a> page, to mark QSOs as confirmed on eQSL.</p>
@@ -37,9 +37,9 @@
 			<div class="form-check">
 			  <input class="form-check-input" type="radio" name="eqslimport" id="fetch" value="fetch"  checked="checked"/>
 			  <label class="form-check-label" for="exampleRadios1">
-			    Pull eQSL data for me
+			    Import directly from eQSL
 			  </label>
-			  <p>Cloudlog will use the eQSL username and password stored in your user profile to download confirmations from eQSL for you. We will only download confirmations received since your last eQSL confirmed QSO.</p>
+			  <p>Cloudlog will use the eQSL credentials from your Cloudlog user profile to connect to eQSL and download confirmations. Only confirmations received since your last eQSL-confirmed QSO will be downloaded.</p>
 			</div>
 
 		<input class="btn btn-primary" type="submit" value="Import eQSL QSO Matches" />

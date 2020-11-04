@@ -4,7 +4,7 @@
 	<h2><?php echo $page_title; ?></h2>
 
 	<div class="alert alert-danger" role="alert">
-	  <i class="fas fa-exclamation-triangle"></i> Please be aware that LoTW Sync is BETA, you might get errors, this isn't fully production ready.
+	  <i class="fas fa-exclamation-triangle"></i> Please be aware that LoTW Sync is BETA. You might get errors as this isn't fully production ready.
 	</div>
 
 	<!-- Card Starts -->
@@ -102,7 +102,7 @@
 		</div>
 
 		<div class="card-body">
-			<p>You can run the LoTW upload script manually using <a href="<?php echo site_url('lotw/lotw_upload'); ?>"><?php echo site_url('lotw/lotw_upload'); ?></a>, this should be run as a cron task hourly or greater not in real time.</p>
+			<p>You can run the LoTW upload script manually from: <a href="<?php echo site_url('lotw/lotw_upload'); ?>"><?php echo site_url('lotw/lotw_upload'); ?></a>. This should be run as a cron task on a fixed interval (no more frequently than once an hour).</p>
 
 			<p>We are building the help file for this at <a href="https://github.com/magicbug/Cloudlog/wiki/LoTW-Import-&-Export-Documentation" target="_blank">https://github.com/magicbug/Cloudlog/wiki/LoTW-Import-&-Export-Documentation</a></p>
 		</div>

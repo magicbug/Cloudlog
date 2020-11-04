@@ -47,7 +47,7 @@
 						<label>Password</label>
 						<input class="form-control" type="password" name="user_password" />
 						<?php if(isset($password_error)) { echo "<div class=\"small error\">".$password_error."</div>"; } else { ?>
-						<div class="small">Leave blank to keep existing password</div></td>
+						<div class="small form-text text-muted">Leave blank to keep existing password</div></td>
 						<?php } ?>
 					</div>
 				</div>
@@ -199,7 +199,7 @@
 						<label>Logbook of The World (LoTW) Password</label>
 						<input class="form-control" type="password" name="user_lotw_password" />
 							<?php if(isset($lotwpassword_error)) { echo "<div class=\"small error\">".$lotwpassword_error."</div>"; } else { ?>
-							<div class="small">Leave blank to keep existing password</div></td>
+							<div class="small form-text text-muted">Leave blank to keep existing password</div></td>
 							<?php } ?>
 					</div>
 				</div>
@@ -223,7 +223,7 @@
 						<label>eQSL.cc Password</label>
 						<input class="form-control" type="password" name="user_eqsl_password" />
 							<?php if(isset($eqslpassword_error)) { echo "<div class=\"small error\">".$eqslpassword_error."</div>"; } else { ?>
-							<div class="small">Leave blank to keep existing password</div></td>
+							<div class="small form-text text-muted">Leave blank to keep existing password</div></td>
 							<?php } ?>
 					</div>				
 				</div>
@@ -233,17 +233,17 @@
 
 	<br>
 	<div class="row">
-	 	<!-- Logbook of the World -->
+	 	<!-- Club Log -->
 	    <div class="col-md">
 	    	<div class="card">
 				<div class="card-header">
-			   		Clublog
+			   		Club Log
 				</div>
 				<div class="card-body">
 					<div class="form-group">
 						<label>Club Log Email/Callsign</label>
 						<input class="form-control" type="text" name="user_clublog_name" value="<?php if(isset($user_clublog_name)) { echo $user_clublog_name; } ?>" />
-							<div class="small">This is the Email or Callsign you use to login to Club Log</div></td>
+							<div class="small form-text text-muted">The Email or Callsign you use to login to Club Log</div></td>
 							<?php if(isset($userclublogname_error)) { echo "<div class=\"small error\">".$userclublogname_error."</div>"; } ?>
 
 					</div>
@@ -252,7 +252,7 @@
 						<label>Club Log Password</label>
 						<input class="form-control" type="password" name="user_clublog_password" />
 							<?php if(isset($clublogpassword_error)) { echo "<div class=\"small error\">".$clublogpassword_error."</div>"; } else { ?>
-							<div class="small">Leave blank to keep existing password</div></td>
+							<div class="small form-text text-muted">Leave blank to keep existing password</div></td>
 							<?php } ?>
 					</div>
 				</div>

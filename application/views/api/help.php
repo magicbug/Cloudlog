@@ -14,7 +14,7 @@
     API Keys
   </div>
   <div class="card-body">
-	<p class="card-text">The Cloudlog API (Application Programming Interface) lets third party systems access Cloudlog in a controlled way. Access to the API is managed via API Keys.</p>
+	<p class="card-text">The Cloudlog API (Application Programming Interface) lets third party systems access Cloudlog in a controlled way. Access to the API is managed via API keys.</p>
 	<p class="card-text">You will need to generate an API key for each tool you wish to use (e.g. CloudlogCAT). Generate a read-write key if the application needs to send data to Cloudlog. Generate a read-only key if the application only needs to obtain data from Cloudlog.</p>
 	<p class="card-text"><span class="badge badge-info">Info</span> It's good practice to delete a key if you are no longer using the associated application.</p>
 

@@ -15,7 +15,8 @@
 			</div>
 	    <?php } ?>
 
-	    <p><span class="label important">Important</span> Log files must have the file type .adi</p>
+        <p><span class="badge badge-warning">Important</span> Log files must have the file type .adi</p>
+        <p><span class="badge badge-warning">Warning</span> Maximum file upload size is <?php echo $max_upload; ?>B.</p>
 
 		<form class="form" action="<?php echo site_url('adif/import'); ?>" method="post" enctype="multipart/form-data">
 		    <select name="station_profile" class="custom-select mb-2 mr-sm-2" style="width: 20%;">
@@ -40,8 +41,9 @@
                 <div class="col-md-10">
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="markLotw" value="1" id="markLotwImport">
-                        <label class="form-check-label" for="markLotwImport">Mark imported QSOs as uploaded to LoTW (use if ADIF does not contain this information)</label>
+                        <label class="form-check-label" for="markLotwImport">Mark imported QSOs as uploaded to LoTW</label>
                     </div>
+                    <div class="small form-text text-muted">Select if ADIF being imported does not contain this information.</div>
                 </div>
             </div>
 
@@ -49,16 +51,14 @@
                 <div class="col-md-10">
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="dxccAdif" value="1" id="dxccAdif">
-                        <label class="form-check-label" for="dxccAdif">Use DXCC set in ADIF (Cloudlog tries to determine DXCC if not checked)</label>
+                        <label class="form-check-label" for="dxccAdif">Use DXCC information from ADIF</label>
                     </div>
+                    <div class="small form-text text-muted">If not selected, Cloudlog will attempt to determine DXCC information automatically.</div>
                 </div>
             </div>
 
 		  <button type="submit" class="btn btn-primary mb-2" value="Upload">Upload</button>
 		</form>
-
-		<p><span class="badge badge-warning">Warning</span> Maximum file upload size is <?php echo $max_upload; ?>B.</p>
-
 	  </div>
 	</div>
 
@@ -70,7 +70,7 @@
   </div>
 
 	<div class="alert alert-warning" role="alert">
- 		Exporting QSOs from the Active Station Profile Name <span class="badge badge-danger"><?php echo $active_station_info->station_profile_name;?></span> with the station callsign <span class="badge badge-danger"><?php echo $active_station_info->station_callsign;?></span>
+ 		Exporting QSOs from the active station profile <span class="badge badge-danger"><?php echo $active_station_info->station_profile_name;?></span> with the station callsign <span class="badge badge-danger"><?php echo $active_station_info->station_callsign;?></span>
 	</div>
 
   <div class="card-body">
@@ -120,7 +120,7 @@
 
     <br><br>
       <h5>Logbook of The World</h5>
-      <p>If no date are chosen, that means all QSOs will be marked!</p>
+      <p><span class="badge badge-warning">Warning</span> If a date range is not selected then all QSOs will be marked!</p>
       <form class="form" action="<?php echo site_url('adif/mark_lotw'); ?>" method="post" enctype="multipart/form-data">
           <p class="card-text">From date:</p>
           <div class="row">
@@ -145,7 +145,7 @@
       </form>
       <br><br>
 
-    <h5>Export Satellite Only QSOs</h5>
+    <h5>Export Satellite-Only QSOs</h5>
     <p><a href="<?php echo site_url('adif/exportsat'); ?>" title="Export All Satellite Contacts" target="_blank" class="btn btn-primary">Export All Satellite QSOs</a></p>
     
     <p><a href="<?php echo site_url('adif/exportsatlotw'); ?>" title="Export All Satellite QSOS Confirmed on LoTW" target="_blank" class="btn btn-primary">Export All Satellite QSOs Confirmed on LoTW</a></p>
