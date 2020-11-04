@@ -319,17 +319,20 @@
                 echo '</tbody></table>';
             }
             ?>
+
+            <p><div class="alert alert-warning" role="alert"><span class="badge badge-warning">Warning</span> Maximum file upload size is <?php echo $max_upload; ?>B.</div></p>
+
             <form class="form" id="fileinfo" name="fileinfo" enctype="multipart/form-data">
                 <fieldset>
 
                     <div class="form-group">
                         <label for="qslcardfront">Upload QSL Card front image</label>
-                        <input class="form-control-file" type="file" id="qslcardfront" name="qslcardfront" accept="image/*" capture="environment">
+                        <input class="form-control-file" type="file" id="qslcardfront" name="qslcardfront" accept="image/*" >
                     </div>
 
                     <div class="form-group">
                         <label for="qslcardback">Upload QSL Card back image</label>
-                        <input class="form-control-file" type="file" id="qslcardback" name="qslcardback" accept="image/*" capture="environment">
+                        <input class="form-control-file" type="file" id="qslcardback" name="qslcardback" accept="image/*">
                     </div>
 
                     <input type="hidden" class="form-control" id="qsoinputid" name="qsoid" value="<?php echo $row->COL_PRIMARY_KEY; ?>">
