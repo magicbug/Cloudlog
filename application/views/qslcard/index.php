@@ -1,4 +1,7 @@
 <div class="container">
+
+    <br>
+
     <h2><?php echo $page_title; ?></h2>
 
     <div class="alert alert-info" role="alert">
