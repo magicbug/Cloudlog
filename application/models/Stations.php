@@ -176,6 +176,14 @@ class Stations extends CI_Model {
 			$this->db->where('COL_MY_SOTA_REF', $row->station_sota);
 		}
 
+		if($row->station_sig != "") {
+			$this->db->where('COL_MY_SIG', $row->station_sig);
+		}
+
+		if($row->station_sig_info != "") {
+			$this->db->where('COL_MY_SIG_INFO', $row->station_sig_info);
+		}
+
 		$this->db->where('COL_MY_COUNTRY', $row->station_country);
 
 		if( strpos($row->station_gridsquare, ',') !== false ) {
