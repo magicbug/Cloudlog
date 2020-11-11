@@ -545,7 +545,7 @@ class Logbook extends CI_Controller {
 					$this->load->library('qrz');
 
 					if(!$this->session->userdata('qrz_session_key')) {
-						$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'));
+						$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
 						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
 					}
 
