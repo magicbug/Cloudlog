@@ -1,6 +1,6 @@
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
@@ -20,8 +20,8 @@
 
 <?php if ($this->uri->segment(1) == "adif") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="<?php echo base_url() ;?>assets/js/sections/adif.js"></script>
 <?php } ?>
 
@@ -131,13 +131,14 @@ $(document).ready(function() {
 </script>
 
 <script>
+var $= jQuery.noConflict();
 $('[data-fancybox]').fancybox({
-  toolbar  : false,
-  smallBtn : true,
-  iframe : {
-    preload : false
-  }
-});
+    toolbar  : false,
+    smallBtn : true,
+    iframe : {
+        preload : false
+    }
+});    
 
 </script>
 
@@ -1193,7 +1194,7 @@ $(document).ready(function(){
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "dayswithqso") { ?>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="<?php echo base_url(); ?>assets/js/chart.js"></script>
     <script>
         var baseURL= "<?php echo base_url();?>";
         $.ajax({
@@ -1234,7 +1235,7 @@ $(document).ready(function(){
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "distances") { ?>
-    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/highstock.js"></script>
 <script>
 
   var bands_available = <?php echo $bands_available; ?>;
@@ -1349,8 +1350,8 @@ $(document).ready(function(){
 <?php } ?>
 
     <?php if ($this->uri->segment(2) == "import") { ?>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
         <script type="text/javascript">
             $(function () {
                 $('#datetimepicker1').datetimepicker({
@@ -2040,7 +2041,7 @@ $(document).ready(function(){
     <?php } ?>
 
 <?php if ($this->uri->segment(1) == "accumulated") { ?>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="<?php echo base_url(); ?>assets/js/chart.js"></script>
     <script>
         function accumulatePlot(form) {
             $(".ld-ext-right").addClass('running');
@@ -2177,7 +2178,7 @@ $(document).ready(function(){
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "timeplotter") { ?>
-    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/highstock.js"></script>
     <script>
 
         function timeplot(form) {
