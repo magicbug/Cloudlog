@@ -206,7 +206,7 @@
 
 		  <div class="form-group">
 		    <label for="stationSigInput">Signature</label>
-		    <input type="text" class="form-control" name="sota" id="stationSigInput" aria-describedby="stationSigInputHelp" value="<?php if(set_value('sig') != "") { echo set_value('sig'); } else { echo $my_station_profile->station_sig; } ?>">
+		    <input type="text" class="form-control" name="sig" id="stationSigInput" aria-describedby="stationSigInputHelp" value="<?php if(set_value('sig') != "") { echo set_value('sig'); } else { echo $my_station_profile->station_sig; } ?>">
 		    <small id="stationSigInputHelp" class="form-text text-muted">Station Signature (e.g. WWFF)..</small>
 		  </div>
 
