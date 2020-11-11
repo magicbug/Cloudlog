@@ -1793,11 +1793,16 @@ class Logbook_model extends CI_Model {
 
         // if we are doing lookups and grid square and name aren't set, do the lookup now
 
-        $callbook = $this->loadCallBook(strtoupper($record['call']));
-        if (isset($callbook)) {
-            $record['name']= $callbook['name'];
-            if (empty($record['gridsquare'])) {
-                $record['gridsquare'] = $callbook['gridsquare'];
+        if ((empty($record['name'])) || empty($record['gridsquare'])) {
+            $callbook = $this->loadCallBook(strtoupper($record['call']), $this->config->item('use_fullname'));
+            if (isset($callbook)) {
+                if (empty($record['name'])) {
+                    $record['name'] = $callbook['name'];
+                }
+
+                if (empty($record['gridsquare'])) {
+                    $record['gridsquare'] = $callbook['gridsquare'];
+                }
             }
         }
 
