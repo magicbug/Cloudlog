@@ -2168,7 +2168,7 @@ class Logbook_model extends CI_Model {
       }        
     }
 
-    public function loadCallBook($callsign)
+    public function loadCallBook($callsign, $personal=false)
     {
         $callbook = null;
         try {
@@ -2181,7 +2181,11 @@ class Logbook_model extends CI_Model {
                     $this->session->set_userdata('qrz_session_key', $qrz_session_key);
                 }
 
-                $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'));
+
+                $personal = "foo";
+                echo ("part 3: ". $personal. "<br/>");
+                $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'),  $this->config->item('qrz_password'), "foobar");
+                echo ("part 4: ". $personal. "<br/>");
             }
 
             if ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {

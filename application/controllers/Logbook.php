@@ -122,7 +122,7 @@ class Logbook extends CI_Controller {
             $measurement_base = $this->session->userdata('user_measurement_base');
         }
 
-		$return['callsign_name'] = $this->logbook_model->call_name($callsign);
+		$return['callsign_name'] =  $this->logbook_model->call_name($callsign);
 		$return['callsign_qra'] = $this->logbook_model->call_qra($callsign);
 		$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
 		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
@@ -138,7 +138,8 @@ class Logbook extends CI_Controller {
 		return;
 	}
 
-	$callbook = $this->logbook_model->loadCallBook($callsign);
+
+	$callbook = $this->logbook_model->loadCallBook($callsign, $this->config->item('personal'));
 
 
 	if (isset($callbook))
@@ -490,8 +491,8 @@ class Logbook extends CI_Controller {
 						$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
 						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
 					}
-
-					$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'));
+                    echo("Part 1: ". (int)$this->config->item('personal'));
+					$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('personal'));
 				}
 
 				// There's no hamli integration? Disabled for now.
@@ -544,11 +545,11 @@ class Logbook extends CI_Controller {
 					$this->load->library('qrz');
 
 					if(!$this->session->userdata('qrz_session_key')) {
-						$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+						$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'));
 						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
 					}
-
-					$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'));
+                    echo ("Part 2: ". $this->config->item('personal'). "<br/>");
+					$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('qrz_password'), $this->config->item('personal'));
 				} else {
 					// Lookup using hamli
 					$this->load->library('hamli');

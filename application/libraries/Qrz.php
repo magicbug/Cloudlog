@@ -54,8 +54,11 @@ class Qrz {
 	}
 
 
-	public function search($callsign, $key)
+	public function search($callsign, $key, $private="dog")
 	{
+	    echo("Callsign: ".$callsign."<br/>");
+        echo("key: ".$key."<br/>");
+	    echo("FOOOOOO: ". $private."<br/>");
         $data = null;
         try {
             // URL to the XML Source
@@ -75,7 +78,12 @@ class Qrz {
 
             // Return Required Fields
             $data['callsign'] = (string)$xml->Callsign->call;
-            $data['name'] = (string)$xml->Callsign->fname . ' ' . (string)$xml->Callsign->name;
+
+            if ($private === true) {
+                $data['name'] = (string)$xml->Callsign->fname . ' AAAA ' . (string)$xml->Callsign->name;
+            } else {
+                $data['name'] = (string)$xml->Callsign->fname;
+            }
             $data['gridsquare'] = (string)$xml->Callsign->grid;
             $data['city'] = (string)$xml->Callsign->addr2;
             $data['lat'] = (string)$xml->Callsign->lat;
