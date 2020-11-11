@@ -1,6 +1,6 @@
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/popper.min.js"</script>
+<script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
@@ -131,13 +131,14 @@ $(document).ready(function() {
 </script>
 
 <script>
+var $= jQuery.noConflict();
 $('[data-fancybox]').fancybox({
     toolbar  : false,
     smallBtn : true,
     iframe : {
         preload : false
     }
-});
+});    
 
 </script>
 
