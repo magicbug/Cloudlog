@@ -549,7 +549,7 @@ class Logbook extends CI_Controller {
 						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
 					}
 
-					$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('qrz_password'), $this->config->item('use_fullname'));
+					$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
 				} else {
 					// Lookup using hamli
 					$this->load->library('hamli');
