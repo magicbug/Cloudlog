@@ -40,10 +40,21 @@ $config['display_freq'] = false;
 |
 | 	'qrz_username'	QRZ.com user login
 |	'qrz_password'	QRZ.com user password
+|   'use_fullname'  Get full names from QRZ, may not be GDPR compliant
 */
 
 $config['qrz_username'] = "";
 $config['qrz_password'] = "";
+$config['use_fullname'] = false;
+
+
+/*
+|--------------------------------------------------------------------------
+| Are we running this on a personal server?  If we are, GDPR laws
+| prevent us from storing personal information.
+|
+*/
+$config['personal'] = false;
 
 /*
 |--------------------------------------------------------------------------
