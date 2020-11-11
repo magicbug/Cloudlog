@@ -141,12 +141,14 @@
                     </tr>
                     <?php } ?>
 
+                    <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 
-                    <?php if($row->COL_NAME != null) { ?>
+                        <?php if($row->COL_NAME != null) { ?>
                     <tr>
                         <td>Name:</td>
                         <td><?php echo $row->COL_NAME; ?></td>
                     </tr>
+                    <?php } ?>
                     <?php } ?>
 
                     <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>

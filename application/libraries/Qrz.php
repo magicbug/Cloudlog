@@ -73,7 +73,7 @@ class Qrz {
 	
 		// Return Required Fields
 		$data['callsign'] = (string) $xml->Callsign->call;
-		$data['name'] = (string) $xml->Callsign->fname;
+		$data['name'] = (string) $xml->Callsign->fname . ' '. (string) $xml->Callsign->name;
 		$data['gridsquare'] = (string) $xml->Callsign->grid;	
 		$data['city'] = (string) $xml->Callsign->addr2;
 		$data['lat'] = (string) $xml->Callsign->lat;
