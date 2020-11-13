@@ -2191,6 +2191,14 @@ class Logbook_model extends CI_Model {
 
 
                 $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
+
+                // if we got nothing, it's probably because our session key is invalid, try again
+                if (!isset($callbook['callsign']))
+                {
+                    $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+                    $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+                    $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
+                }
             }
 
             if ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
