@@ -77,9 +77,9 @@ class Qrz {
             $data['callsign'] = (string)$xml->Callsign->call;
 
             if ($use_fullname === true) {
-                $data['name'] = (string)$xml->Callsign->fname . ' ' . (string)$xml->Callsign->name;
+                $data['name'] = addslashes((string)$xml->Callsign->fname) . ' ' . addslashes((string)$xml->Callsign->name);
             } else {
-                $data['name'] = (string)$xml->Callsign->fname;
+                $data['name'] = addslashes((string)$xml->Callsign->fname);
             }
             $data['gridsquare'] = (string)$xml->Callsign->grid;
             $data['city'] = (string)$xml->Callsign->addr2;
