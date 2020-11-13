@@ -1538,7 +1538,9 @@ class Logbook_model extends CI_Model {
         if(isset($record['country'])) {
             $country = $record['country'];
         } else {
-            $country = ucwords(strtolower($dxcc[1]));
+            if (isset($dxcc[1])) {
+                $country = ucwords(strtolower($dxcc[1]));
+            }
         }
 
         // RST recevied
