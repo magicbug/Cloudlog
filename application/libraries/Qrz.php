@@ -81,6 +81,7 @@ class Qrz {
             } else {
                 $data['name'] = (string)$xml->Callsign->fname;
             }
+            $data['name'] = trim($data['name']);
             $data['gridsquare'] = (string)$xml->Callsign->grid;
             $data['city'] = (string)$xml->Callsign->addr2;
             $data['lat'] = (string)$xml->Callsign->lat;
