@@ -135,7 +135,7 @@ CREATE TABLE `TABLE_HRD_CONTACTS_V01` (
                                         `COL_COMMENT` longtext DEFAULT NULL,
                                         `COL_CONT` varchar(6) DEFAULT NULL,
                                         `COL_CONTACTED_OP` varchar(32) DEFAULT NULL,
-                                        `COL_CONTEST_ID` varchar(32) DEFAULT NULL,
+                                        `COL_CONTEST_ID` varchar(64) DEFAULT NULL,
                                         `COL_COUNTRY` varchar(64) DEFAULT NULL,
                                         `COL_CQZ` int(11) DEFAULT NULL,
                                         `COL_DISTANCE` double DEFAULT NULL,
