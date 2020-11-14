@@ -53,7 +53,8 @@
                         <input class="form-check-input" type="checkbox" name="dxccAdif" value="1" id="dxccAdif">
                         <label class="form-check-label" for="dxccAdif">Use DXCC information from ADIF</label>
                     </div>
-                    <div class="small form-text text-muted">If not selected, Cloudlog will attempt to determine DXCC information automatically.</div>
+                    <div class="small form-text text-muted">If not selected, Cloudlog will attempt to determine DXCC information automatically.<br/>
+                    If selected, we will import from ADIF, but determine if not included in entries.</div>
                 </div>
             </div>
 

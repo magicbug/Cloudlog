@@ -1525,7 +1525,7 @@ class Logbook_model extends CI_Model {
                   $entity = $this->get_entity($record['dxcc']);
                   $dxcc = array($record['dxcc'], $entity['name']);
               } else {
-                  $dxcc = NULL;
+                  $dxcc = $this->check_dxcc_table($record['call'], $time_off);
               }
           } else {
             $dxcc = $this->check_dxcc_table($record['call'], $time_off);
