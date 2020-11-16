@@ -2436,5 +2436,139 @@ function deleteQsl(id) {
         });
     }
 </script>
+<?php if ($this->uri->segment(1) == "contesting") { ?>
+    <script>
+
+        // We don't want spaces to be written in callsign
+        $(function() {
+            $('#callsign').on('keypress', function(e) {
+                if (e.which == 32){
+                    //console.log('Space Detected');
+                    return false;
+                }
+            });
+        });
+
+        // We don't want spaces to be written in exchange
+        $(function() {
+            $('#exch_recv').on('keypress', function(e) {
+                if (e.which == 32){
+                    //console.log('Space Detected');
+                    return false;
+                }
+            });
+        });
+
+        // Here we capture keystrokes fo execute functions
+        document.onkeyup = function(e) {
+        // ALT-W wipe
+        if (e.altKey && e.which == 87) {
+            reset_log_fields();
+        } else if ((e.keyCode == 10 || e.keyCode == 13) && (e.ctrlKey || e.metaKey)) {
+            logQso();
+        } else if (e.ctrlKey && e.altKey && e.which == 89) {
+            alert("Ctrl + Alt + Y shortcut combination was pressed");
+        } else if (e.ctrlKey && e.altKey && e.shiftKey && e.which == 85) {
+            alert("Ctrl + Alt + Shift + U shortcut combination was pressed");
+        // Space to jump to either callsign or sent exchange
+        } else if (e.which == 32) {
+            if ($(document.activeElement).attr("id") == "callsign") {
+                $("#exch_recv").focus();
+                return false;
+            } else if ($(document.activeElement).attr("id") == "exch_recv") {
+                $("#callsign").focus();
+                return false;
+            }
+        }
+
+    };
+
+
+    // On Key up check and suggest callsigns
+    $("#callsign").keyup(function() {
+        var call = $(this).val();
+    if (call.length >= 3) {
+      $.get('lookup/scp/' + call.toUpperCase(), function(result) {
+        $('.callsign-suggestions').text(result);
+        highlight(call.toUpperCase());
+      });
+    }
+       else if (call.length <= 2) {
+        $('.callsign-suggestions').text("");
+    }
+    });
+
+    function reset_log_fields() {
+        $('#name').val("");
+        $('.callsign-suggestions').text("");
+        $('#callsign').val("");
+        $('#comment').val("");
+        $('#exch_recv').val("");
+        $("#callsign").focus();
+    }
+
+    function logQso() {
+        if ($("#callsign").val().length > 0) {
+
+            $('.callsign-suggestions').text("");
+            $(".qsotable tbody").prepend('<tr>' +
+                '<td>'+$("#start_date").val()+ ' ' + $("#start_time").val() + '</td>' +
+                '<td>'+$("#callsign").val()+'</td>' +
+                '<td>'+$("#band").val()+'</td>' +
+                '<td>'+$("#mode").val()+'</td>' +
+                '<td>'+$("#rst_sent").val()+'</td>' +
+                '<td>'+$("#rst_recv").val()+'</td>' +
+                '<td>'+$("#exch_sent").val()+'</td>' +
+                '<td>'+$("#exch_recv").val()+'</td>' +
+                '</tr>');
+
+            $('#name').val("");
+
+            $('#callsign').val("");
+            $('#comment').val("");
+            $('#exch_recv').val("");
+            if ($('input[name=exchangeradio]:checked', '#qso_input').val() == "serial") {
+                $("#exch_sent").val(+$("#exch_sent").val() + 1);
+            }
+            $("#callsign").focus();
+
+            var baseURL= "<?php echo base_url();?>";
+            var formdata = new FormData(document.getElementById("qso_input"));
+            $.ajax({
+                url: baseURL + 'index.php/qso/saveqso',
+                type: 'post',
+                data: formdata,
+                processData: false,
+                contentType: false,
+                enctype: 'multipart/form-data',
+                success: function (html) {
+                    alert("logged");
+                }
+            });
+        }
+    }
+
+    RegExp.escape = function(text) {
+        return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    }
+
+    function highlight(term, base) {
+        if (!term) return;
+        base = base || document.body;
+        var re = new RegExp("(" + RegExp.escape(term) + ")", "gi");
+        var replacement = "<span class=\"text-primary\">" + term + "</span>";
+        $(".callsign-suggestions", base).contents().each( function(i, el) {
+            if (el.nodeType === 3) {
+                var data = el.data;
+                if (data = data.replace(re, replacement)) {
+                    var wrapper = $("<span>").html(data);
+                    $(el).before(wrapper.contents()).remove();
+                }
+            }
+        });
+    }
+
+    </script>
+<?php } ?>
   </body>
 </html>

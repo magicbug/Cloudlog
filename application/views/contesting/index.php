@@ -4,29 +4,38 @@
 
         <div class="col-sm-12 col-md-12">
             <div class="card">
+                <div class="card-header"><h5 class="card-title">Logging form</h5></div>
+                <div class="card-body">
+                    <form id="qso_input" name="qsos">
 
-                <form id="qso_input" name="qsos">
+                            <div class="form-group row">
 
-                                <!-- HTML for Date/Time -->
+                                    <label class="col-md-2 control-label" for="radio">Exchange type</label>
+                                    <div class="col-md-9">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="exchangeradio" id="serial" value="serial" checked>
+                                            <label class="form-check-label" for="serial">
+                                                Serial
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="exchangeradio" id="other" value="other">
+                                            <label class="form-check-label" for="other">
+                                                Other
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="form-row">
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-2">
                                         <label for="start_date">Date</label>
                                         <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_date'); } else { echo date('d-m-Y');}?>">
                                     </div>
 
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-md-1">
                                         <label for="start_time">Time</label>
                                         <input type="text" class="form-control form-control-sm input_time" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_time'); } else {echo date('H:i'); } ?>" size="7">
-                                    </div>
-
-                                </div>
-
-                                <div class="form-row">
-
-                                    <div class="form-group col-md-4">
-                                        <label for="callsign">Callsign</label>
-                                        <input type="text" class="form-control form-control-sm" id="callsign" name="callsign" required>
-                                        <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-light"></small>
                                     </div>
 
                                     <div class="form-group col-md-2">
@@ -81,82 +90,94 @@
                                         </select>
                                     </div>
 
-                                    <div class="form-group col-md-2">
+                                </div>
+
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-3">
+                                        <label for="callsign">Callsign</label>
+                                        <input type="text" class="form-control form-control-sm" id="callsign" name="callsign" required>
+                                        <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-light"></small>
+                                    </div>
+
+                                    <div class="form-group col-md-1">
                                         <label for="rst_sent">RST (S)</label>
                                         <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
                                     </div>
 
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-md-1">
+                                        <label for="exch_sent">Exch (S)</label>
+                                        <input type="text" class="form-control form-control-sm" name="exch_sent" id="exch_sent" value="">
+                                    </div>
+
+                                    <div class="form-group col-md-1">
                                         <label for="rst_recv">RST (R)</label>
                                         <input type="text" class="form-control form-control-sm" name="rst_recv" id="rst_recv" value="59">
                                     </div>
-                                </div>
 
-                                <!-- Signal Report Information -->
+                                    <div class="form-group col-md-1">
+                                        <label for="exch_recv">Exch (R)</label>
+                                        <input type="text" class="form-control form-control-sm" name="exch_recv" id="exch_recv" value="">
+                                    </div>
+
+                                </div>
                                 <div class="form-row">
-
-                                </div>
-                                    <div class="form-group row">
-                                        <label for="name" class="col-sm-3 col-form-label">Name</label>
-                                        <div class="col-sm-9">
+                                        <div class="form-group col-md-5">
+                                            <label for="name">Name</label>
                                             <input type="text" class="form-control form-control-sm" name="name" id="name" value="">
                                         </div>
-                                    </div>
 
-                                    <div class="form-group row">
-                                        <label for="comment" class="col-sm-3 col-form-label">Comment</label>
-                                        <div class="col-sm-9">
+                                        <div class="form-group col-md-5">
+                                            <label for="comment">Comment</label>
                                             <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
                                         </div>
-                                    </div>
-
-
-
+                                </div>
+                            <button type="reset" class="btn btn-sm btn-warning" onclick="reset_log_fields()">Reset</button>
+                            <button type="button" class="btn btn-sm btn-primary" onclick="logQso();"><i class="fas fa-save"></i> Log QSO</button>
                             </div>
 
-                        <div class="info">
-                            <input size="20" id="country" type="hidden" name="country" value="" />
                         </div>
-<br/>
-                        <button type="reset" class="btn btn-sm btn-light" onclick="reset_fields()">Reset</button>
-                        <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-save"></i> Log QSO</button>
-                    </div>
-                </form>
+
+                        </div>
+                    </form>
             </div>
 
-<br/>
+            <br/>
             <div class="card callsign-suggest">
-                <div class="card-header"><h4 class="card-title">Callsign Suggestions</h4></div>
+                <div class="card-header"><h5 class="card-title">Callsign Suggestions</h5></div>
 
                 <div class="card-body callsign-suggestions"></div>
             </div>
 
-            <div class="card previous-qsos">
-                <div class="card-header"><h4 class="card-title">Logbook (for this session)</h4></div>
-
-                <div id="partial_view"></div>
+            <div class="card log">
+                <div class="card-header"><h5 class="card-title">Logbook (for this logging session)</h5></div>
 
                 <div id="qso-last-table">
 
                     <div class="table-responsive">
-                        <table class="table table-sm">
+                        <table class="table-sm table qsotable table-bordered table-hover table-striped table-condensed text-center">
+                            <thead>
                             <tr class="log_title titles">
-                                <td>Date/Time</td>
-                                <td>Call</td>
-                                <td>Mode</td>
-                                <td>RST s</td>
-                                <td>RST r</td>
-                                <td>Exch S</td>
-                                <td>Exch R</td>
-                                <td>Band</td>
+                                <th>Date/Time</th>
+                                <th>Call</th>
+                                <th>Band</th>
+                                <th>Mode</th>
+                                <th>RST (S)</th>
+                                <th>RST (R)</th>
+                                <th>Exch S</th>
+                                <th>Exch R</th>
                             </tr>
+                            </thead>
+                            <tbody>
 
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
 </div>
 
