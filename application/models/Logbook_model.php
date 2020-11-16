@@ -122,6 +122,8 @@ class Logbook_model extends CI_Model {
             'COL_CQZ' => $cqz,
             'COL_STATE' => trim($this->input->post('usa_state')),
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
+            'COL_SIG' => trim($this->input->post('sig')),
+            'COL_SIG_INFO' => trim($this->input->post('sig_info')),
             'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
 	    'COL_NOTES' => $this->input->post('notes'),
     );
