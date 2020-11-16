@@ -87,7 +87,15 @@
                       }
                   ?>
                             </select>
-                    </div>
+					</div>
+					
+					<div class="form-group col-sm6">
+              		    <label for="transmit_power">Transmit Power (W)</label>
+              		    <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php echo $qso->COL_TX_PWR; ?>" />
+					    <small id="powerHelp" class="form-text text-muted">Give power value in Watts. Include only numbers in the input.</small>
+					</div>
+				</div>
+            </div>
 
                     <div class="form-group col-sm-6">
                         <label for="freq">Band</label>
