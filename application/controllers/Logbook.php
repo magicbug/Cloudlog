@@ -491,8 +491,14 @@ class Logbook extends CI_Controller {
 						$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
 						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
 					}
+                    $data= $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
 
-					$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+                    if (empty($data['callsign']))
+                    {
+                        $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+                        $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+                        $data = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+                    }
 				}
 
 				// There's no hamli integration? Disabled for now.
