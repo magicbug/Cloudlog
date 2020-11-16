@@ -192,6 +192,20 @@
                     </tr>
                     <?php } ?>
 
+                    <?php if($row->COL_SIG != null) { ?>
+                    <tr>
+                        <td>Sig:</td>
+                        <td><?php echo $row->COL_SIG; ?></td>
+                    </tr>
+                    <?php } ?>
+
+                    <?php if($row->COL_SIG_INFO != null) { ?>
+                    <tr>
+                        <td>Sig Info:</td>
+                        <td><?php echo $row->COL_SIG_INFO; ?></td>
+                    </tr>
+                    <?php } ?>
+
                     <?php if($row->COL_DARC_DOK != null) { ?>
                     <tr>
                         <td>DOK:</td>
