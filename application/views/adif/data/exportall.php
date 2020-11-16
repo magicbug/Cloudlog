@@ -14,4 +14,3 @@ $CI->load->library('adifhelper');
 foreach ($qsos->result() as $qso) {
     echo $CI->adifhelper->getAdifLine($qso);
 }
-

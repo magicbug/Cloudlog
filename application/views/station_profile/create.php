@@ -182,6 +182,18 @@
 		    <small id="stationSOTAInputHelp" class="form-text text-muted">Station SOTA reference.</small>
 		  </div>
 
+		  <div class="form-group">
+		    <label for="stationSigInput">Signature</label>
+		    <input type="text" class="form-control" name="sig" id="stationSigInput" aria-describedby="stationSigInputHelp">
+		    <small id="stationSigInputHelp" class="form-text text-muted">Station Signature (e.g. WWFF).</small>
+		  </div>
+
+		  <div class="form-group">
+		    <label for="stationSigInfoInput">Signature Info</label>
+		    <input type="text" class="form-control" name="sig_info" id="stationSigInfoInput" aria-describedby="stationSigInfoInputHelp">
+		    <small id="stationSigInfoInput" class="form-text text-muted">Station Signature Info (e.g. DLFF-0029).</small>
+		  </div>
+
             <div class="form-group">
                 <label for="eqslNickname">eQSL QTH Nickname</label>
                 <input type="text" class="form-control" name="eqslnickname" id="eqslNickname" aria-describedby="eqslhelp">
