@@ -101,9 +101,9 @@ class Dashboard extends CI_Controller {
 				}
 
 				if($row->COL_SAT_NAME != null) { 
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE."\",\"label\":\"".$row->COL_CALL."\"}";
 				} else {
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE."\",\"label\":\"".$row->COL_CALL."\"}";
 				}
 
 				$count++;
@@ -121,7 +121,7 @@ class Dashboard extends CI_Controller {
 					if($count != 1) {
 					echo ",";
 						}
-					echo "{\"lat\":\"".$dxcc->lat."\",\"lng\":\"".$dxcc->long."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$dxcc->lat."\",\"lng\":\"".$dxcc->long."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE."\",\"label\":\"".$row->COL_CALL."\"}";
 					$count++;
 				}
 			}
@@ -146,7 +146,7 @@ class Dashboard extends CI_Controller {
 			//print_r($row);
 			if($row->COL_GRIDSQUARE != null) {
 				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
-				echo "{\"point\":new GLatLng(".$stn_loc[0].",".$stn_loc[1]."), \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"},";
+				echo "{\"point\":new GLatLng(".$stn_loc[0].",".$stn_loc[1]."), \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE."\",\"label\":\"".$row->COL_CALL."\"},";
 			} else {
 				$query = $this->db->query('
 					SELECT *
@@ -157,7 +157,7 @@ class Dashboard extends CI_Controller {
 				');
 				
 				foreach ($query->result() as $dxcc) {
-					echo "{\"point\":new GLatLng(".$dxcc->lat.",".$dxcc->long."), \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"},";
+					echo "{\"point\":new GLatLng(".$dxcc->lat.",".$dxcc->long."), \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE."\",\"label\":\"".$row->COL_CALL."\"},";
 				}
 			}
 			
