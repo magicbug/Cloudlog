@@ -114,6 +114,10 @@ class AdifHelper {
 
         $line .= $this->getAdifFieldLine("MY_SIG_INFO", $qso->station_sig_info);
 
+        $line .= $this->getAdifFieldLine("SIG", $qso->COL_SIG);
+
+        $line .= $this->getAdifFieldLine("SIG_INFO", $qso->COL_SIG_INFO);
+
         $line .= "<eor>\r\n";
 
         return $line;
