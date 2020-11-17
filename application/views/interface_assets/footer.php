@@ -2439,6 +2439,29 @@ function deleteQsl(id) {
 <?php if ($this->uri->segment(1) == "contesting") { ?>
     <script>
 
+        // Callsign always has focus on load
+        $("#callsign").focus();
+
+        // Init serial sent as 1 when lading page
+        $("#exch_sent").val(1);
+
+        // realtime clock
+        $(function($) {
+            var options = {
+                utc: true,
+                format: '%H:%M:%S'
+            }
+            $('.input_time').jclock(options);
+        });
+
+        $(function($) {
+            var options = {
+                utc: true,
+                format: '%d-%m-%Y'
+            }
+            $('.input_date').jclock(options);
+        });
+
         // We don't want spaces to be written in callsign
         $(function() {
             $('#callsign').on('keypress', function(e) {
@@ -2466,10 +2489,8 @@ function deleteQsl(id) {
             reset_log_fields();
         } else if ((e.keyCode == 10 || e.keyCode == 13) && (e.ctrlKey || e.metaKey)) {
             logQso();
-        } else if (e.ctrlKey && e.altKey && e.which == 89) {
-            alert("Ctrl + Alt + Y shortcut combination was pressed");
-        } else if (e.ctrlKey && e.altKey && e.shiftKey && e.which == 85) {
-            alert("Ctrl + Alt + Shift + U shortcut combination was pressed");
+        } else if (e.which == 27) {
+            reset_log_fields();
         // Space to jump to either callsign or sent exchange
         } else if (e.which == 32) {
             if ($(document.activeElement).attr("id") == "callsign") {
@@ -2482,7 +2503,6 @@ function deleteQsl(id) {
         }
 
     };
-
 
     // On Key up check and suggest callsigns
     $("#callsign").keyup(function() {
@@ -2513,7 +2533,7 @@ function deleteQsl(id) {
             $('.callsign-suggestions').text("");
             $(".qsotable tbody").prepend('<tr>' +
                 '<td>'+$("#start_date").val()+ ' ' + $("#start_time").val() + '</td>' +
-                '<td>'+$("#callsign").val()+'</td>' +
+                '<td>'+$("#callsign").val().toUpperCase()+'</td>' +
                 '<td>'+$("#band").val()+'</td>' +
                 '<td>'+$("#mode").val()+'</td>' +
                 '<td>'+$("#rst_sent").val()+'</td>' +
@@ -2521,16 +2541,6 @@ function deleteQsl(id) {
                 '<td>'+$("#exch_sent").val()+'</td>' +
                 '<td>'+$("#exch_recv").val()+'</td>' +
                 '</tr>');
-
-            $('#name').val("");
-
-            $('#callsign').val("");
-            $('#comment').val("");
-            $('#exch_recv').val("");
-            if ($('input[name=exchangeradio]:checked', '#qso_input').val() == "serial") {
-                $("#exch_sent").val(+$("#exch_sent").val() + 1);
-            }
-            $("#callsign").focus();
 
             var baseURL= "<?php echo base_url();?>";
             var formdata = new FormData(document.getElementById("qso_input"));
@@ -2542,7 +2552,15 @@ function deleteQsl(id) {
                 contentType: false,
                 enctype: 'multipart/form-data',
                 success: function (html) {
-                    alert("logged");
+                    $('#name').val("");
+
+                    $('#callsign').val("");
+                    $('#comment').val("");
+                    $('#exch_recv').val("");
+                    if ($('input[name=exchangeradio]:checked', '#qso_input').val() == "serial") {
+                        $("#exch_sent").val(+$("#exch_sent").val() + 1);
+                    }
+                    $("#callsign").focus();
                 }
             });
         }

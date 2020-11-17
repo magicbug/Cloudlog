@@ -104,41 +104,7 @@ class QSO extends CI_Controller {
 	 */
 	public function saveqso() {
         $this->load->model('logbook_model');
-        // Add QSO
-        // $this->logbook_model->add();
-        //change to create_qso function as add and create_qso duplicate functionality
         $this->logbook_model->create_qso();
-
-        // Store Basic QSO Info for reuse
-        // Put data in an array first, then call set_userdata once.
-        // This solves the problem of CI dumping out the session
-        // cookie each time set_userdata is called.
-        // For more info, see http://bizhole.com/codeigniter-nginx-error-502-bad-gateway/
-        $qso_data = array(
-            'start_date' => $this->input->post('start_date'),
-            'start_time' => $this->input->post('start_time'),
-            'time_stamp' => time(),
-            'band' => $this->input->post('band'),
-            'freq' => $this->input->post('freq_display'),
-            'freq_rx' => $this->input->post('freq_display_rx'),
-            'mode' => $this->input->post('mode'),
-            'sat_name' => $this->input->post('sat_name'),
-            'sat_mode' => $this->input->post('sat_mode'),
-            'prop_mode' => $this->input->post('prop_mode'),
-            'radio' => $this->input->post('radio'),
-            'station_profile_id' => $this->input->post('station_profile'),
-            'transmit_power' => $this->input->post('transmit_power')
-        );
-
-        setcookie("radio", $qso_data['radio'], time()+3600*24*99);
-        setcookie("station_profile_id", $qso_data['station_profile_id'], time()+3600*24*99);
-
-        $this->session->set_userdata($qso_data);
-
-        // If SAT name is set make it session set to sat
-        if($this->input->post('sat_name')) {
-            $this->session->set_userdata('prop_mode', 'SAT');
-        }
     }
 	
 	function edit() {

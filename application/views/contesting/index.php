@@ -97,7 +97,6 @@
                                     <div class="form-group col-md-3">
                                         <label for="callsign">Callsign</label>
                                         <input type="text" class="form-control form-control-sm" id="callsign" name="callsign" required>
-                                        <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-light"></small>
                                     </div>
 
                                     <div class="form-group col-md-1">
@@ -152,9 +151,6 @@
             <div class="card log">
                 <div class="card-header"><h5 class="card-title">Logbook (for this logging session)</h5></div>
 
-                <div id="qso-last-table">
-
-                    <div class="table-responsive">
                         <table class="table-sm table qsotable table-bordered table-hover table-striped table-condensed text-center">
                             <thead>
                             <tr class="log_title titles">
@@ -172,8 +168,6 @@
 
                             </tbody>
                         </table>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
