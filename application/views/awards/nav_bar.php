@@ -30,4 +30,8 @@
   <li class="nav-item">
     <a class="nav-link" href="<?php echo site_url('awards/dok'); ?>">DOK</a>
   </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="<?php echo site_url('awards/sig'); ?>">Sig</a>
+  </li>
 </ul>
