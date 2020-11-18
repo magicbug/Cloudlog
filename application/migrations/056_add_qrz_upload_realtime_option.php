@@ -7,7 +7,7 @@ class Migration_add_qrz_upload_realtime_option extends CI_Migration {
     public function up()
     {
         $fields = array(
-            'qrzrealtime bool DEFAULT TRUE',
+            'qrzrealtime bool DEFAULT FALSE',
         );
 
         $this->dbforge->add_column('station_profile', $fields);
