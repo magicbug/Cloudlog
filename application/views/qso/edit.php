@@ -7,15 +7,14 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->session->userdata('user_stylesheet');?>">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery.fancybox.min.css" />
+   
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css">
 
-  <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
-
 	</head>
 
 	<body class="container-fluid qso-edit-box">
@@ -342,7 +341,17 @@
 	            <div class="form-group">
 	            	<label for="sota_ref">SOTA</label>
 	                <input type="text" class="form-control" id="sota_ref" name="sota_ref" value="<?php echo $qso->COL_SOTA_REF; ?>">
-	            </div>
+				</div>
+				
+				<div class="form-group">
+                    <label for="sig">Sig</label>
+                    <input type="text" class="form-control" id="sig" name="sig" value="<?php echo $qso->COL_SIG; ?>">
+                </div>
+
+                <div class="form-group">
+                    <label for="sig_info">Sig Info</label>
+                    <input type="text" class="form-control" id="sig_info" name="sig_info" value="<?php echo $qso->COL_SIG_INFO; ?>">
+				</div>
 
 	            <div class="form-group">
 	            	<label for="darc_dok">DOK</label>

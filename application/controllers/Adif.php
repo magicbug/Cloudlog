@@ -76,7 +76,6 @@ class adif extends CI_Controller {
 	}
 
 	public function export_custom() {
-
 		// Set memory limit to unlimited to allow heavy usage
 		ini_set('memory_limit', '-1');
 
@@ -87,11 +86,13 @@ class adif extends CI_Controller {
             $exportLotw = true;
         } else {
             $exportLotw = false;
-        }
-
+		}
+		
 		$data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'), $exportLotw);
 
+
 		$this->load->view('adif/data/exportall', $data);
+
 
 		if ($this->input->post('markLotw') == 1) {
             foreach ($data['qsos']->result() as $qso)
