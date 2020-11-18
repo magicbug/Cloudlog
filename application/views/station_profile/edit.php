@@ -231,8 +231,8 @@
                 <div class="form-group col-sm-6">
                     <label for="qrzrealtime">QRZ.com Logbook Realtime Upload</label>
                     <select class="custom-select" id="qrzrealtime" name="qrzrealtime">
-                        <option value="1" <?php if ($my_station_profile->qrzrealtime == 1) { echo " selected =\"selected\""; } ?>>True</option>
-                        <option value="0" <?php if ($my_station_profile->qrzrealtime == 0) { echo " selected =\"selected\""; } ?>>False</option>
+                        <option value="1" <?php if ($my_station_profile->qrzrealtime == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
+                        <option value="0" <?php if ($my_station_profile->qrzrealtime == 0) { echo " selected =\"selected\""; } ?>>No</option>
                     </select>
                 </div>
             </div>
