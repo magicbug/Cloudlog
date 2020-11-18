@@ -209,8 +209,8 @@
                 <div class="form-group col-sm-6">
                     <label for="qrzrealtime">QRZ.com Logbook Realtime Upload</label>
                     <select class="custom-select" id="qrzrealtime" name="qrzrealtime">
-                        <option value="1" selected>Yes</option>
-                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                        <option value="0" selected>No</option>
                     </select>
                 </div>
             </div>
