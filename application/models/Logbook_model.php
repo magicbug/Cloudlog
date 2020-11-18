@@ -563,7 +563,6 @@ class Logbook_model extends CI_Model {
 
   /* Edit QSO */
   function edit() {
-
     $entity = $this->get_entity($this->input->post('dxcc_id'));
     $country = $entity['name'];
 
@@ -2091,7 +2090,7 @@ class Logbook_model extends CI_Model {
     }
 
     public function get_entity($dxcc){
-      $sql = "select name, cqz, lat, `long` from dxcc_entities where adif = " . $dxcc;
+      $sql = "select name, cqz, lat, 'long' from dxcc_entities where adif = " . $dxcc;
       $query = $this->db->query($sql);
 
       if ($query->result() > 0){
