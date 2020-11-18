@@ -383,6 +383,16 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="sig">Sig</label>
+                                    <input type="text" class="form-control" id="sig" name="sig" value="<?php echo $qso->COL_SIG; ?>">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="sig_info">Sig Info</label>
+                                    <input type="text" class="form-control" id="sig_info" name="sig_info" value="<?php echo $qso->COL_SIG_INFO; ?>">
+                                </div>
+
+                                <div class="form-group">
                                     <label for="darc_dok">DOK</label>
                                     <input type="text" class="form-control" id="darc_dok" name="darc_dok" value="<?php echo $qso->COL_DARC_DOK; ?>">
                                 </div>

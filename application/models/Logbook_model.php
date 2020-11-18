@@ -122,6 +122,8 @@ class Logbook_model extends CI_Model {
             'COL_CQZ' => $cqz,
             'COL_STATE' => trim($this->input->post('usa_state')),
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
+            'COL_SIG' => trim($this->input->post('sig')),
+            'COL_SIG_INFO' => trim($this->input->post('sig_info')),
             'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
 	    'COL_NOTES' => $this->input->post('notes'),
     );
@@ -605,6 +607,8 @@ class Logbook_model extends CI_Model {
        'COL_LOTW_QSL_RCVD' => $this->input->post('lotw_recv'),
        'COL_IOTA' => $this->input->post('iota_ref'),
        'COL_SOTA_REF' => $this->input->post('sota_ref'),
+       'COL_SIG' => $this->input->post('sig'),
+       'COL_SIG_INFO' => $this->input->post('sig_info'),
        'COL_DARC_DOK' => $this->input->post('darc_dok'),
        'COL_QTH' => $this->input->post('qth'),
        'COL_PROP_MODE' => $this->input->post('prop_mode'),

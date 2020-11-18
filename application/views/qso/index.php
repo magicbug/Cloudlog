@@ -329,6 +329,18 @@
             </div>
 
             <div class="form-group">
+              <label for="sig">Sig</label>
+              <input class="form-control" id="sig" type="text" name="sig" value="" />
+              <small id="sigHelp" class="form-text text-muted">For example: WWFF or POTA</small>
+            </div>
+
+            <div class="form-group">
+              <label for="sig_info">Sig Info</label>
+              <input class="form-control" id="sig_info" type="text" name="sig_info" value="" />
+              <small id="sigInfoHelp" class="form-text text-muted">For example: DLFF-0029</small>
+            </div>
+
+            <div class="form-group">
               <label for="sota_ref">DOK</label>
               <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" />
               <small id="dokHelp" class="form-text text-muted">For example: Q03</small>
