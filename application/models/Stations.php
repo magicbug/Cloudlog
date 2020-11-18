@@ -53,6 +53,7 @@ class Stations extends CI_Model {
 			'state' =>  xss_clean($this->input->post('station_state', true)),
             'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
             'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
+            'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
 		);
 
 		// Insert Records
@@ -77,6 +78,7 @@ class Stations extends CI_Model {
 			'state' => xss_clean($this->input->post('station_state', true)),
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
             'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
+            'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
 		);
 
 		$this->db->where('station_id', xss_clean($this->input->post('station_id', true)));

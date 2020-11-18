@@ -336,15 +336,19 @@ class Logbook_model extends CI_Model {
       $data['COL_RX_PWR'] = str_replace("W", "", $data['COL_RX_PWR']);
     }
 
+    $result = $this->exists_qrz_api_key($data['station_id']);
+    
     // Push qso to qrz if apikey is set
-    if ($apikey = $this->exists_qrz_api_key($data['station_id'])) {
-        $adif = $this->create_adif_from_data($data);
-        $result = $this->push_qso_to_qrz($apikey, $adif);
-        IF ($result['status'] == 'OK') {
-            $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'Y';
-            $data['COL_QRZCOM_QSO_UPLOAD_DATE'] = date("Y-m-d H:i:s", strtotime("now"));
+      if ($result) {
+        if ($result->qrzrealtime == 1) {
+            $adif = $this->create_adif_from_data($data);
+            $result = $this->push_qso_to_qrz($result->qrzapikey, $adif);
+            IF ($result['status'] == 'OK') {
+                $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'Y';
+                $data['COL_QRZCOM_QSO_UPLOAD_DATE'] = date("Y-m-d H:i:s", strtotime("now"));
+            }
         }
-    }
+      }
 
       // Add QSO to database
       $this->db->insert($this->config->item('table_name'), $data);
@@ -354,7 +358,7 @@ class Logbook_model extends CI_Model {
    * Function checks if a QRZ API Key exists in the table with the given station id
   */
   function exists_qrz_api_key($station_id) {
-      $sql = 'select qrzapikey from station_profile
+      $sql = 'select qrzapikey, qrzrealtime from station_profile
             where station_id = ' . $station_id;
 
       $query = $this->db->query($sql);
@@ -362,7 +366,7 @@ class Logbook_model extends CI_Model {
       $result = $query->row();
 
       if ($result) {
-          return $result->qrzapikey;
+          return $result;
       }
       else {
           return false;
