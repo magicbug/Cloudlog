@@ -573,6 +573,12 @@ class Logbook_model extends CI_Model {
     } else {
         $submode = $this->input->post('mode');
     }
+
+    if($this->input->post('transmit_power')) {
+      $txpower = $this->input->post('transmit_power');
+    } else {
+      $txpower = null;
+    }
     $data = array(
        'COL_TIME_ON' => $this->input->post('time_on'),
        'COL_TIME_OFF' => $this->input->post('time_off'),
@@ -606,7 +612,7 @@ class Logbook_model extends CI_Model {
        'COL_LOTW_QSL_RCVD' => $this->input->post('lotw_recv'),
        'COL_IOTA' => $this->input->post('iota_ref'),
        'COL_SOTA_REF' => $this->input->post('sota_ref'),
-       'COL_TX_PWR' => $this->input->post('transmit_power'),
+       'COL_TX_PWR' => $txpower,
        'COL_SIG' => $this->input->post('sig'),
        'COL_SIG_INFO' => $this->input->post('sig_info'),
        'COL_DARC_DOK' => $this->input->post('darc_dok'),
