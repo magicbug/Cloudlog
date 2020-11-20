@@ -53,6 +53,9 @@ class Distances_model extends CI_Model
                 $unit = "nmi";
                 $dist = '11000';
                 break;
+            default:
+                $unit = "km";
+                $dist = '20000';
         }
 
         if (!$this->valid_locator($stationgrid)) {
@@ -179,6 +182,8 @@ class Distances_model extends CI_Model
                 return round(6371*$ca);
             case 'N':
                 return round(6371*$ca/1.852);
+            default:
+                return round(6371*$ca);
         }
     }
 }
