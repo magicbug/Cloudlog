@@ -9,7 +9,7 @@ class Distances_model extends CI_Model
         parent::__construct();
     }
 
-    function get_distances($postdata)
+    function get_distances($postdata, $measurement_base)
     {
         $CI =& get_instance();
         $CI->load->model('Stations');
@@ -29,16 +29,31 @@ class Distances_model extends CI_Model
         }
         $this->db->where('station_id', $station_id);
         $dataarrayata = $this->db->get($this->config->item('table_name'));
-        $this->plot($dataarrayata->result_array(), $gridsquare);
+        $this->plot($dataarrayata->result_array(), $gridsquare, $measurement_base);
     }
 
     // This functions takes query result from the database and extracts grids from the qso,
     // then calculates distance between homelocator and locator given in qso.
     // It builds an array, which has 50km intervals, then inputs each length into the correct spot
     // The function returns a json-encoded array.
-    function plot($qsoArray, $gridsquare) {
+    function plot($qsoArray, $gridsquare, $measurement_base) {
         $stationgrid = strtoupper($gridsquare[0]);              // We use only the first entered gridsquare from the active profile
         if (strlen($stationgrid) == 4) $stationgrid .= 'MM';    // adding center of grid if only 4 digits are specified
+
+        switch ($measurement_base) {
+            case 'M':
+                $unit = "mi";
+                $dist = '13000';
+                break;
+            case 'K':
+                $unit = "km";
+                $dist = '20000';
+                break;
+            case 'N':
+                $unit = "nmi";
+                $dist = '11000';
+                break;
+        }
 
         if (!$this->valid_locator($stationgrid)) {
             header('Content-Type: application/json');
@@ -47,8 +62,8 @@ class Distances_model extends CI_Model
         else {
             // Making the array we will use for plotting, we save occurrences of the length of each qso in the array
             $j = 0;
-            for ($i = 0; $j < 20000; $i++) {
-                $dataarray[$i]['dist'] =  $j . 'km - ' . ($j + 50) . 'km';
+            for ($i = 0; $j < $dist; $i++) {
+                $dataarray[$i]['dist'] =  $j . $unit . ' - ' . ($j + 50) . $unit;
                 $dataarray[$i]['count'] = 0;
                 $dataarray[$i]['calls'] = '';
                 $dataarray[$i]['callcount'] = 0;
@@ -65,7 +80,7 @@ class Distances_model extends CI_Model
     
             foreach ($qsoArray as $qso) {
                 $qrb['Qsoes']++;                                                        // Counts up number of qsoes
-                $bearingdistance = $this->bearing_dist($stationgrid, $qso['grid']);     // Calculates distance based on grids
+                $bearingdistance = $this->bearing_dist($stationgrid, $qso['grid'], $measurement_base);     // Calculates distance based on grids
                 $arrayplacement = $bearingdistance / 50;                                // Resolution is 50, calculates where to put result in array
                 if ($bearingdistance > $qrb['Distance']) {                              // Saves the longest QSO
                     $qrb['Distance'] = $bearingdistance;
@@ -87,6 +102,7 @@ class Distances_model extends CI_Model
                 $data['ok'] = 'OK';
                 $data['qrb'] = $qrb;
                 $data['qsodata'] = $dataarray;
+                $data['unit'] = $unit;
                 echo json_encode($data);
             }
             else {
@@ -137,7 +153,7 @@ class Distances_model extends CI_Model
         return (M_PI * $deg/180);
     }
 
-    function bearing_dist($loc1, $loc2) {
+    function bearing_dist($loc1, $loc2, $measurement_base) {
         $loc1 = strtoupper($loc1);
         $loc2 = strtoupper($loc2);
         
@@ -154,6 +170,15 @@ class Distances_model extends CI_Model
         $co = cos($l1[1] - $l2[1]) * cos($l1[0]) * cos($l2[0]) + sin($l1[0]) * sin($l2[0]);
         $ca = atan2(sqrt(1 - $co*$co), $co);
 
-        return round(6371*$ca);
+
+
+        switch ($measurement_base) {
+            case 'M':
+                return round(6371*$ca/1.609344);
+            case 'K':
+                return round(6371*$ca);
+            case 'N':
+                return round(6371*$ca/1.852);
+        }
     }
 }
