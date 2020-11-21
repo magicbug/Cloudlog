@@ -1292,7 +1292,7 @@ $(document).ready(function(){
                           xAxis: {
                               labels: {
                                   formatter: function() {
-                                      return this.value * '50' + ' km';
+                                      return this.value * '50' + ' ' + tmp.unit;
                                   }
                               }
                           }
@@ -1331,7 +1331,7 @@ $(document).ready(function(){
                   $('#information').html(tmp.qrb.Qsoes + " contacts were plotted.<br /> Your furthest contact was with " + tmp.qrb.Callsign
                       + " in gridsquare "+ tmp.qrb.Grid
                       +" the distance was "
-                      +tmp.qrb.Distance +"km.");
+                      +tmp.qrb.Distance + tmp.unit +".");
 
                   var chart = new Highcharts.Chart(options);
               }
