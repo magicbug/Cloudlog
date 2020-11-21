@@ -338,22 +338,25 @@ class Logbook_model extends CI_Model {
       $data['COL_RX_PWR'] = str_replace("W", "", $data['COL_RX_PWR']);
     }
 
-    $result = $this->exists_qrz_api_key($data['station_id']);
-    
-    // Push qso to qrz if apikey is set
-      if ($result) {
-        if ($result->qrzrealtime == 1) {
-            $adif = $this->create_adif_from_data($data);
-            $result = $this->push_qso_to_qrz($result->qrzapikey, $adif);
-            IF ($result['status'] == 'OK') {
-                $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'Y';
-                $data['COL_QRZCOM_QSO_UPLOAD_DATE'] = date("Y-m-d H:i:s", strtotime("now"));
-            }
-        }
-      }
+    // Add QSO to database
+    $this->db->insert($this->config->item('table_name'), $data);
 
-      // Add QSO to database
-      $this->db->insert($this->config->item('table_name'), $data);
+    $last_id = $this->db->insert_id();
+
+    $result = $this->exists_qrz_api_key($data['station_id']);
+
+    // Push qso to qrz if apikey is set, and realtime upload is enabled
+    if (isset($result->qrzapikey) && $result->qrzrealtime == 1) {
+      $CI =& get_instance();
+      $CI->load->library('AdifHelper');
+      $qso = $this->get_qso($last_id)->result();
+
+      $adif = $CI->adifhelper->getAdifLine($qso[0]);
+      $result = $this->push_qso_to_qrz($result->qrzapikey, $adif);
+      if ($result['status'] == 'OK') {
+        $this->mark_qrz_qsos_sent($last_id);
+      }
+    }
   }
 
   /*
@@ -433,133 +436,6 @@ class Logbook_model extends CI_Model {
 
         return true;
     }
-
-    /*
-     * Function is used to build an ADIF string from an array that contains the QSO data
-     */
-  function create_adif_from_data($data) {
-      $adif = '<call:' . strlen($data['COL_CALL']) . '>' . $data['COL_CALL'];
-      $adif .= '<band:' . strlen($data['COL_BAND']) . '>' . $data['COL_BAND'];
-      $adif .= '<mode:' . strlen($data['COL_MODE']) . '>' . $data['COL_MODE'];
-
-      if ($data['COL_SUBMODE']) {
-          $adif .= '<submode:' . strlen($data['COL_SUBMODE']) . '>' . $data['COL_SUBMODE'];
-      }
-
-      if($data['COL_FREQ'] != "0") {
-            $freq_in_mhz = $data['COL_FREQ'] / 1000000;
-            $adif .= '<freq:' . strlen($freq_in_mhz) . '>' . $freq_in_mhz;
-      }
-
-      $date_on = strtotime($data['COL_TIME_ON']);
-      $new_date = date('Ymd', $date_on);
-      $adif .= '<qso_date:' . strlen($new_date) . '>' . $new_date;
-      $time_on = strtotime($data['COL_TIME_ON']);
-      $new_on = date('His', $time_on);
-      $adif .= '<time_on:' . strlen($new_on) . '>' . $new_on;
-      $time_off = strtotime($data['COL_TIME_OFF']);
-      $new_off = date('His', $time_off);
-      $adif .= '<time_off:' . strlen($new_off) . '>' . $new_off;
-      $adif .= '<rst_rcvd:' . strlen($data['COL_RST_RCVD']) . '>' . $data['COL_RST_RCVD'];
-      $adif .= '<rst_sent:' . strlen($data['COL_RST_SENT']) . '>' . $data['COL_RST_SENT'];
-
-      if ($data['COL_QSL_RCVD']) {
-          $adif .= '<qsl_rcvd:' . strlen($data['COL_QSL_RCVD']) . '>' . $data['COL_QSL_RCVD'];
-      }
-
-      $adif .= '<qsl_sent:' . strlen($data['COL_QSL_SENT']) . '>' . $data['COL_QSL_SENT'];
-      $adif .= '<country:' . strlen($data['COL_COUNTRY']) . '>' . $data['COL_COUNTRY'];
-      $adif .= '<station_callsign:' . strlen($data['COL_STATION_CALLSIGN']) . '>' . $data['COL_STATION_CALLSIGN'];
-      $adif .= '<dxcc:' . strlen($data['COL_DXCC']) . '>' . $data['COL_DXCC'];
-      $adif .= '<cqz:' . strlen($data['COL_CQZ']) . '>' . $data['COL_CQZ'];
-      //$adif .= '<ituz:' . strlen($data['COL_ITUZ']) . '>' . $data['COL_ITUZ']; -- not yet implemented
-
-      if(isset($data['COL_LOTW_QSL_SENT'])) {
-         $adif .= '<lotw_qsl_sent:' . strlen($data['COL_LOTW_QSL_SENT']) . '>' . $data['COL_LOTW_QSL_SENT'];
-      }
-	  
-      if(isset($data['COL_LOTW_QSL_RCVD'])) {
-         $adif .= '<lotw_qsl_rcvd:' . strlen($data['COL_LOTW_QSL_RCVD']) . '>' . $data['COL_LOTW_QSL_RCVD'];
-      }
-
-      if($data['COL_IOTA']) {
-        $adif .= '<iota:' . strlen($data['COL_IOTA']) . '>' . $data['COL_IOTA'];
-      }
-
-      if($data['COL_GRIDSQUARE']) {
-          $adif .= '<gridsquare:' . strlen($data['COL_GRIDSQUARE']) . '>' . $data['COL_GRIDSQUARE'];
-      }
-
-      if($data['COL_SOTA_REF']) {
-          $adif .= '<SOTA_REF:' . strlen($data['COL_SOTA_REF']) . '>' . $data['COL_SOTA_REF'];
-      }
-
-      if($data['COL_COMMENT']) {
-          $adif .= '<COMMENT:' . strlen($data['COL_COMMENT']) . '>' . $data['COL_COMMENT'];
-      }
-
-      if($data['COL_SAT_NAME']) {
-          if($data['COL_SAT_MODE'] != 0 || $data['COL_SAT_MODE'] !="") {
-              $adif .= '<sat_mode:' . strlen($data['COL_SAT_MODE']) . '>' . $data['COL_SAT_MODE'];
-              $adif .= 'sat_name:' . strlen($data['COL_SAT_NAME']) . '>' . $data['COL_SAT_NAME'];
-          }
-      }
-
-      if($data['COL_STATE']) {
-          $adif .= '<state:' . strlen($data['COL_STATE']) . '>' . $data['COL_STATE'];
-      }
-
-      if($data['COL_PROP_MODE']) {
-          $adif .= '<prop_mode:' . strlen($data['COL_PROP_MODE']) . '>' . $data['COL_PROP_MODE'];
-      }
-
-      if($data['COL_NAME']) {
-          $adif .= '<name:' . strlen($data['COL_NAME']) . '>' . $data['COL_NAME'];
-      }
-
-      if($data['COL_OPERATOR']) {
-          $adif .= '<operator:' . strlen($data['COL_OPERATOR']) . '>' . $data['COL_OPERATOR'];
-      }
-
-      if($data['COL_MY_CITY']) {
-          $adif .= '<MY_CITY:' . strlen($data['COL_MY_CITY']) . '>' . $data['COL_MY_CITY'];
-      }
-
-      if($data['COL_MY_COUNTRY']) {
-          $adif .= '<MY_COUNTRY:' . strlen($data['COL_MY_COUNTRY']) . '>' . $data['COL_MY_COUNTRY'];
-      }
-
-      if($data['COL_MY_DXCC']) {
-          $adif .= '<MY_DXCC:' . strlen($data['COL_MY_DXCC']) . '>' . $data['COL_MY_DXCC'];
-      }
-
-      if($data['COL_MY_IOTA']) {
-          $adif .= '<MY_IOTA:' . strlen($data['COL_MY_IOTA']) . '>' . $data['COL_MY_IOTA'];
-      }
-
-      if($data['COL_MY_SOTA_REF']) {
-        $adif .= '<MY_SOTA_REF:' . strlen($data['COL_MY_SOTA_REF']) . '>' . $data['COL_MY_SOTA_REF'];
-      }
-
-      if($data['COL_MY_CQ_ZONE']) {
-        $adif .= '<MY_CQ_ZONE:' . strlen($data['COL_MY_CQ_ZONE']) . '>' . $data['COL_MY_CQ_ZONE'];
-      }
-
-      if($data['COL_MY_ITU_ZONE']) {
-        $adif .= '<MY_ITU_ZONE:' . strlen($data['COL_MY_ITU_ZONE']) . '>' . $data['COL_MY_ITU_ZONE'];
-      }
-
-      if($data['COL_MY_CNTY']) {
-        $adif .= '<MY_CNTY:' . strlen($data['COL_MY_CNTY']) . '>' . $data['COL_MY_CNTY'];
-      }
-
-      if(strpos($data['COL_MY_GRIDSQUARE'], ',') !== false ) {
-          $adif .= '<my_gridsquare:' . strlen($data['COL_MY_GRIDSQUARE']) . '>' . $data['COL_MY_GRIDSQUARE'];
-      }
-
-      $adif .= '<eor>';
-      return $adif;
-  }
 
   /* Edit QSO */
   function edit() {
@@ -887,16 +763,18 @@ class Logbook_model extends CI_Model {
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to qrz, or has been modified with an edit
      */
     function get_qrz_qsos($station_id){
-        $sql = 'select * from ' . $this->config->item('table_name') .
-            ' where station_id = ' . $station_id .
+        $sql = 'select * from ' . $this->config->item('table_name') . ' thcv ' .
+            ' join station_profile on thcv.station_id = station_profile.station_id' .
+            ' where thcv.station_id = ' . $station_id .
             ' and (COL_QRZCOM_QSO_UPLOAD_STATUS is NULL
             or COL_QRZCOM_QSO_UPLOAD_STATUS = ""
             or COL_QRZCOM_QSO_UPLOAD_STATUS = "M"
             or COL_QRZCOM_QSO_UPLOAD_STATUS = "N")';
 
         $query = $this->db->query($sql);
-        return $query->result_array();
+        return $query;
     }
+
     /*
      * Function returns all the station_id's with QRZ API Key's
      */
@@ -915,8 +793,6 @@ class Logbook_model extends CI_Model {
             return null;
         }
     }
-
-
 
   function get_last_qsos($num) {
 
