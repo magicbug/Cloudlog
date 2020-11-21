@@ -110,14 +110,30 @@ class adif extends CI_Controller {
 
         $data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'));
 
-        //$this->load->view('adif/import', $data);
-
         foreach ($data['qsos']->result() as $qso)
         {
             $this->adif_data->mark_lotw_sent($qso->COL_PRIMARY_KEY);
         }
 
         $this->load->view('adif/mark_lotw', $data);
+    }
+
+    public function mark_qrz() {
+        // Set memory limit to unlimited to allow heavy usage
+        ini_set('memory_limit', '-1');
+
+        $this->load->model('adif_data');
+
+        $data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'));
+
+        $this->load->model('logbook_model');
+
+        foreach ($data['qsos']->result() as $qso)
+        {
+            $this->logbook_model->mark_qrz_qsos_sent($qso->COL_PRIMARY_KEY);
+        }
+
+        $this->load->view('adif/mark_qrz', $data);
     }
 
 	public function export_lotw()
