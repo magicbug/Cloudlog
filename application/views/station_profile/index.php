@@ -35,6 +35,7 @@
 			</div>
 		<?php } ?>
 
+		<div class="table-responsive">
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -83,6 +84,7 @@
 				<?php } ?>
 			</tbody>
 		<table>
+		</div>
 		<?php } ?>
 
 
