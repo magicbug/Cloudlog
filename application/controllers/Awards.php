@@ -344,7 +344,7 @@ class Awards extends CI_Controller {
         $data['was_summary'] = $this->was->get_was_summary($bands);
 
         // Render Page
-        $data['page_title'] = "Awards - WAS (Worked all states)";
+        $data['page_title'] = "Awards - WAS (Worked All States)";
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/was/index');
         $this->load->view('interface_assets/footer');

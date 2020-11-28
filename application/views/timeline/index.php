@@ -50,19 +50,19 @@
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="awardradio" id="was" value="was" <?php if ($this->input->post('awardradio') == 'was') echo ' checked'?>>
                     <label class="form-check-label" for="was">
-                        Worked all states (WAS)
+                        Worked All States (WAS)
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="awardradio" id="iota" value="iota" <?php if ($this->input->post('awardradio') == 'iota') echo ' checked'?>>
                     <label class="form-check-label" for="iota">
-                        Islands on the air (IOTA)
+                        Islands On The Air (IOTA)
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="awardradio" id="waz" value="waz" <?php if ($this->input->post('awardradio') == 'waz') echo ' checked'?>>
                     <label class="form-check-label" for="waz">
-                        Worked all zones (WAZ)
+                        Worked All Zones (WAZ)
                     </label>
                 </div>
             </div>

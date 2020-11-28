@@ -49,7 +49,7 @@
         echo '<div id="streaks" class="table-responsive"><table class="qsotable table table-sm table-bordered table-hover table-striped table-condensed">';
 
             echo '<tr>';
-                echo '<th style=\'text-align: center\'>Streak (Continues days with QSOs)</th>';
+                echo '<th style=\'text-align: center\'>Streak (continuous days with QSOs)</th>';
                 echo '<th style=\'text-align: center\'>Begin date</th>';
                 echo '<th style=\'text-align: center\'>End date</th>';
                 echo '</tr>';
@@ -77,7 +77,7 @@
         echo '<div id="streaks" class="table-responsive"><table class="qsotable table table-sm table-bordered table-hover table-striped table-condensed">';
 
         echo '<tr>';
-        echo '<th style=\'text-align: center\'>Current Streak (Continues days with QSOs)</th>';
+        echo '<th style=\'text-align: center\'>Current streak (continuous days with QSOs)</th>';
         echo '<th style=\'text-align: center\'>Begin date</th>';
         echo '<th style=\'text-align: center\'>End date</th>';
         echo '</tr>';
@@ -94,12 +94,12 @@
     }
     elseif (is_array($almostcurrentstreak)) {
         ?>
-        <p>If you make a QSO today, you can continue to extend your streak, else your current streak will be broken!</p>
+        <p>If you make a QSO today, you can continue to extend your streak... or else your current streak will be broken!</p>
         <?php
         echo '<div id="streaks" class="table-responsive"><table class="qsotable table table-sm table-bordered table-hover table-striped table-condensed">';
 
         echo '<tr>';
-        echo '<th style=\'text-align: center\'>Current Streak (Continues days with QSOs)</th>';
+        echo '<th style=\'text-align: center\'>Current streak (continuous days with QSOs)</th>';
         echo '<th style=\'text-align: center\'>Begin date</th>';
         echo '<th style=\'text-align: center\'>End date</th>';
         echo '</tr>';

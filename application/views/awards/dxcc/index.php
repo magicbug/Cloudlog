@@ -10,7 +10,7 @@
                 <div class="col-md-10">
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="includedeleted" id="includedeleted" value="1" <?php if ($this->input->post('includedeleted') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
-                        <label class="form-check-label" for="includedeleted">Include Deleted</label>
+                        <label class="form-check-label" for="includedeleted">Include deleted</label>
                     </div>
                 </div>
             </div>
@@ -116,7 +116,7 @@
                     <thead>
                     <tr>
                         <td>#</td>
-                        <td>DXCCName</td>
+                        <td>DXCC Name</td>
                         <td>Prefix</td>';
         if ($this->input->post('includedeleted') || $this->input->method() !== 'post')
             echo '
