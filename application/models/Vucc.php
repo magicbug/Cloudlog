@@ -241,7 +241,7 @@ class VUCC extends CI_Model
             $vuccBand = $this->markConfirmedGrids($band, $workedGridArray);
         }
 
-        if (count($vuccBand) == 0) {
+        if (!isset($vuccBand)) {
             return 0;
         } else {
             ksort($vuccBand);
@@ -299,7 +299,11 @@ class VUCC extends CI_Model
             $vuccBand[$grid]['call'] = $callsignlist;
         }
 
-        return $vuccBand;
+        if (isset($vuccBand)) {
+            return $vuccBand;
+        } else {
+            return null;
+        }
     }
 
     function markConfirmedGrids($band, $workedGridArray) {
