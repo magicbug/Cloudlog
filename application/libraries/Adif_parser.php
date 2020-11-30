@@ -19,10 +19,11 @@ class ADIF_Parser
 {
 
 	var $data; //the adif data
+    var $datasplit; // one line is one QSO in the array
+    var $currentarray = 0; // current place in the array
 	var $i; //the iterator
-	var $current_line; //stores information about the current qso
 	var $headers = array();
-	
+
 	public function initialize() //this function locates the <EOH>
 	{
 
@@ -108,6 +109,8 @@ class ADIF_Parser
 			echo "Error: ADIF File Does Not Contain Any QSOs";
 			return 0;
 		};
+
+        $this->datasplit = preg_split("/<eor>/i", substr($this->data, $this->i));
 		return 1;
 	}
 	
@@ -176,23 +179,15 @@ class ADIF_Parser
 		};
 		return $return;
 	}
-	
-	
+
 	//finds the next record in the file
 	public function get_record()
 	{
-		if($this->i >= strlen($this->data))
+		if($this->currentarray >= count($this->datasplit))
 		{
 			return array(); //return nothing
 		};
-		$end = stripos($this->data, "<eor>", $this->i);
-		if($end == false) //is this the end?
-		{
-			return array(); //return nothing
-		};
-		$record = substr($this->data, $this->i, $end-$this->i);
-		$this->i = $end+5;
-		return $this->record_to_array($record); //process and return output
+		return $this->record_to_array($this->datasplit[$this->currentarray++]); //process and return output
  	}
 	
 	public function get_header($key)
@@ -204,6 +199,6 @@ class ADIF_Parser
 			return NULL;
 		}
 	}
-	
+
 }
 ?>
