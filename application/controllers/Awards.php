@@ -228,7 +228,24 @@ class Awards extends CI_Controller {
 		$this->load->view('awards/sota/index');
 		$this->load->view('interface_assets/footer');
 	}
+    
+    /*
+		Handles showing worked Sigs
+		Adif fields: my_sig
+	*/
+	public function sig() {
 	
+		// Grab all worked sig stations
+		$this->load->model('sig');
+		$data['sig_all'] = $this->sig->get_all();
+	
+		// Render page
+		$data['page_title'] = "Awards - SIG";
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('awards/sig/index');
+		$this->load->view('interface_assets/footer');
+	}
+
 	/*
 		Handles showing worked WACRAL members (wacral.org)
 		Comment field - WACRAL:#
