@@ -1875,7 +1875,7 @@ $(document).ready(function(){
                 success: function (dataofconfirm) {
                     $(".edit-dialog").modal('hide');
                     $(".qso-dialog").modal('hide');
-                    <?php if ($this->uri->segment(1) != "search" && $this->uri->segment(2) != "filter") { ?>location.reload();<?php } ?>
+                    <?php if ($this->uri->segment(1) != "search" && $this->uri->segment(2) != "filter" && $this->uri->segment(1) != "qso") { ?>location.reload();<?php } ?>
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr.responseText);
