@@ -54,42 +54,51 @@ class Qrz {
 	}
 
 
-	public function search($callsign, $key)
+	public function search($callsign, $key, $use_fullname)
 	{
+        $data = null;
+        try {
+            // URL to the XML Source
+            $xml_feed_url = 'http://xmldata.qrz.com/xml/current/?s=' . $key . ';callsign=' . $callsign . '';
 
-		// URL to the XML Source
-		$xml_feed_url = 'http://xmldata.qrz.com/xml/current/?s='.$key.';callsign='.$callsign.'';
-		
-		// CURL Functions
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $xml_feed_url);
-		curl_setopt($ch, CURLOPT_HEADER, false);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$xml = curl_exec($ch);
-		curl_close($ch);
-		
-		// Create XML object
-		$xml = simplexml_load_string($xml);
-	
-		// Return Required Fields
-		$data['callsign'] = (string) $xml->Callsign->call;
-		$data['name'] = (string) $xml->Callsign->fname;
-		$data['gridsquare'] = (string) $xml->Callsign->grid;	
-		$data['city'] = (string) $xml->Callsign->addr2;
-		$data['lat'] = (string) $xml->Callsign->lat;
-		$data['long'] = (string) $xml->Callsign->lon;
-		$data['iota'] = (string) $xml->Callsign->iota;
-		$data['qslmgr'] = (string) $xml->Callsign->qslmgr;
+            // CURL Functions
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $xml_feed_url);
+            curl_setopt($ch, CURLOPT_HEADER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $xml = curl_exec($ch);
+            curl_close($ch);
 
-		if($xml->Callsign->country == "United States") {
-			$data['state'] = (string) $xml->Callsign->state;
-			$data['us_county'] = (string) $xml->Callsign->county;
-		} else {
-			$data['state'] = null; 
-			$data['us_county'] = null; 
-		}
+            // Create XML object
+            $xml = simplexml_load_string($xml);
+            if (empty($xml)) return;
 
-		
-		return $data;
+            // Return Required Fields
+            $data['callsign'] = (string)$xml->Callsign->call;
+
+            if ($use_fullname === true) {
+                $data['name'] =  (string)$xml->Callsign->fname. ' ' . (string)$xml->Callsign->name;
+            } else {
+                $data['name'] = (string)$xml->Callsign->fname;
+            }
+            $data['name'] = trim($data['name']);
+            $data['gridsquare'] = (string)$xml->Callsign->grid;
+            $data['city'] = (string)$xml->Callsign->addr2;
+            $data['lat'] = (string)$xml->Callsign->lat;
+            $data['long'] = (string)$xml->Callsign->lon;
+            $data['iota'] = (string)$xml->Callsign->iota;
+            $data['qslmgr'] = (string)$xml->Callsign->qslmgr;
+
+            if ($xml->Callsign->country == "United States") {
+                $data['state'] = (string)$xml->Callsign->state;
+                $data['us_county'] = (string)$xml->Callsign->county;
+            } else {
+                $data['state'] = null;
+                $data['us_county'] = null;
+            }
+        } finally {
+
+            return $data;
+        }
 	}
 }
