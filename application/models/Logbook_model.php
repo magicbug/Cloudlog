@@ -1379,7 +1379,7 @@ class Logbook_model extends CI_Model {
       return $this->db->get();
     }
 
-    function import($record, $station_id = "0", $skipDuplicate, $markLotw, $dxccAdif) {
+    function import($record, $station_id = "0", $skipDuplicate, $markLotw, $dxccAdif, $markQrz) {
         $CI =& get_instance();
         $CI->load->library('frequency');
         $my_error = "";
@@ -1682,6 +1682,16 @@ class Logbook_model extends CI_Model {
             }
         }
 
+        // If user checked to mark QSOs as uploaded to QRZ Logbook, or else we try to find info in ADIF import.
+        if ($markQrz != null) {
+            $input_qrzcom_qso_upload_status = 'Y';
+            $input_qrzcom_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
+        }
+        else {
+            $input_qrzcom_qso_upload_date = (!empty($record['qrzcom_qso_upload_date'])) ? $record['qrzcom_qso_upload_date'] : null;
+            $input_qrzcom_qso_upload_status = (!empty($record['qrzcom_qso_upload_status'])) ? $record['qrzcom_qso_upload_status'] : '';
+        }
+
         if (!$skip)
         {
             // Create array with QSO Data use ?:
@@ -1791,8 +1801,8 @@ class Logbook_model extends CI_Model {
                 'COL_PRECEDENCE' => (!empty($record['precedence'])) ? $record['precedence'] : '',
                 'COL_PROP_MODE' => (!empty($record['prop_mode'])) ? $record['prop_mode'] : '',
                 'COL_PUBLIC_KEY' => (!empty($record['public_key'])) ? $record['public_key'] : '',
-                'COL_QRZCOM_QSO_UPLOAD_DATE' => (!empty($record['qrzcom_qso_upload_date'])) ? $record['qrzcom_qso_upload_date'] : null,
-                'COL_QRZCOM_QSO_UPLOAD_STATUS' => (!empty($record['qrzcom_qso_upload_status'])) ? $record['qrzcom_qso_upload_status'] : '',
+                'COL_QRZCOM_QSO_UPLOAD_DATE' => $input_qrzcom_qso_upload_date,
+                'COL_QRZCOM_QSO_UPLOAD_STATUS' => $input_qrzcom_qso_upload_status,
                 'COL_QSL_RCVD' => $input_qsl_rcvd,
                 'COL_QSL_RCVD_VIA' => $input_qsl_rcvd_via,
                 'COL_QSL_SENT' => $input_qsl_sent,
