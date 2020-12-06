@@ -114,6 +114,7 @@
                 <option value='default' selected="selected">Default</option>
                 <option value='blue'>Blue</option>
                 <option value='blue'>Dark</option>
+                <option value='cosmo'>Cosmo</option>
                 <option value='superhero'>Superhero (Dark)</option>
             </select>
         </div>
