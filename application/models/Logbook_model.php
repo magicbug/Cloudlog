@@ -810,10 +810,49 @@ class Logbook_model extends CI_Model {
     return $query;
   }
 
-    /* Get All QSOs with a Valid Grid */
-    function kml_get_all_qsos() {
+    /* Get all QSOs with a valid grid for use in the KML export */
+    function kml_get_all_qsos($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate) {
         $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_GRIDSQUARE');
         $this->db->where('COL_GRIDSQUARE != \'null\'');
+
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $this->db->where('COL_PROP_MODE = \'' . $band . '\'');
+            }
+            else {
+                $this->db->where('COL_PROP_MODE != \'SAT\'');
+                $this->db->where('COL_BAND = \'' . $band .'\'');
+            }
+        }
+
+        if ($mode != 'All') {
+            $this->db->where('COL_MODE = \'' . $mode . '\'');
+        }
+
+        if ($dxcc != 'All') {
+            $this->db->where('COL_DXCC = ' . $dxcc);
+        }
+
+        if ($cqz != 'All') {
+            $this->db->where('COL_CQZ = ' . $cqz);
+        }
+
+        if ($propagation != 'All') {
+            $this->db->where('COL_PROP_MODE = ' . $propagation);
+        }
+
+        // If date is set, we format the date and add it to the where-statement
+        if ($fromdate != "") {
+            $from = DateTime::createFromFormat('d/m/Y', $fromdate);
+            $from = $from->format('Y-m-d');
+            $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) >= '".$from."'");
+        }
+        if ($todate != "") {
+            $to = DateTime::createFromFormat('d/m/Y', $todate);
+            $to = $to->format('Y-m-d');
+            $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) <= '".$to."'");
+        }
+
         $query = $this->db->get($this->config->item('table_name'));
 
         return $query;
