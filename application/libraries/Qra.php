@@ -119,20 +119,24 @@ $var_dist = "";
 function qra2latlong($strQRA)
 
 {
-		$strQRA = strtoupper($strQRA);
-		if (strlen($strQRA) == 4)  $strQRA .= "MM";
-		if (!preg_match('/^[A-Z]{2}[0-9]{2}[A-Z]{2}$/',$strQRA)) return false;
-		list($a,$b,$c,$d,$e,$f) = str_split($strQRA,1);
-		$a = ord($a) - ord('A');
-		$b = ord($b) - ord('A');
-		$c = ord($c) - ord('0');
-		$d = ord($d) - ord('0');
-		$e = ord($e) - ord('A');
-		$f = ord($f) - ord('A');
-		$nLong = ($a*20) + ($c*2) + (($e+0.5)/12) - 180;
-		$nLat = ($b*10) + $d + (($f+0.5)/24) - 90;
-		$arLatLong = array($nLat,$nLong);
-		return($arLatLong);
+		if (strlen($strQRA) %2 == 0) {
+			$strQRA = strtoupper($strQRA);
+			if (strlen($strQRA) == 4)  $strQRA .= "MM";
+			if (!preg_match('/^[A-Z]{2}[0-9]{2}[A-Z]{2}$/',$strQRA)) return false;
+			list($a,$b,$c,$d,$e,$f) = str_split($strQRA,1);
+			$a = ord($a) - ord('A');
+			$b = ord($b) - ord('A');
+			$c = ord($c) - ord('0');
+			$d = ord($d) - ord('0');
+			$e = ord($e) - ord('A');
+			$f = ord($f) - ord('A');
+			$nLong = ($a*20) + ($c*2) + (($e+0.5)/12) - 180;
+			$nLat = ($b*10) + $d + (($f+0.5)/24) - 90;
+			$arLatLong = array($nLat,$nLong);
+			return($arLatLong);
+		} else {
+			return array(0, 0);
+		}
 
 }
 /* End of file Qra.php */
