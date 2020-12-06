@@ -94,6 +94,7 @@
                             <option value='default' <?php if($user_stylesheet == "default") { echo "selected=\"selected\""; } ?>>Default</option>
                             <option value='blue' <?php if($user_stylesheet == "blue") { echo "selected=\"selected\""; } ?>>Blue</option>
                             <option value='dark' <?php if($user_stylesheet == "dark") { echo "selected=\"selected\""; } ?>>Dark</option>
+                            <option value='superhero' <?php if($user_stylesheet == "superhero") { echo "selected=\"selected\""; } ?>>Superhero (Dark)</option>
                         </select>
                     </div>
                 </div>
