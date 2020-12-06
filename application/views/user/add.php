@@ -111,9 +111,9 @@
         <div class="form-group">
             <label for="user_stylesheet">Theme</label>
             <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
-                <option value='bootstrap.min.css' selected="selected">Standard theme</option>
-                <option value='bootstrap-dark.css'>Dark theme</option>
-                <option value='bootstrap-blue.css'>Blue theme</option>
+                <option value='default' selected="selected">Default</option>
+                <option value='blue'>Blue</option>
+                <option value='blue'>Dark</option>
             </select>
         </div>
 
