@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('Direkter Zugriff auf Skripe ist nicht erlaubt');
+defined('BASEPATH') OR exit('Direkter Zugriff auf Skripte ist nicht erlaubt');
 
 $lang['error_no_active_station_profile'] = 'Attention: you need to set an active station profile.';
 
