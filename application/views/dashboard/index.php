@@ -6,7 +6,7 @@
 			  <?php echo $this->lang->line('dashboard_you_have_had'); ?> <strong><?php echo $todays_qsos; ?></strong> <?php echo $this->lang->line('dashboard_qsos_today'); ?>
 		</div>
 	<?php } else { ?>
-		<div class="alert alert-danger" role="alert">
+		<div class="alert alert-warning" role="alert">
 			  <span class="badge badge-info"><?php echo $this->lang->line('general_word_important'); ?></span> <i class="fas fa-broadcast-tower"></i> <?php echo $this->lang->line('notice_turn_the_radio_on'); ?>
 		</div>
 	<?php } ?>
