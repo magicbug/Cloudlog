@@ -1,0 +1,75 @@
+thead > tr > td {
+	position: sticky;
+	top: 45px;
+	background-color: aliceblue;
+}
+
+.workedGrid {
+    border-color: green;
+}
+
+.newGrid {
+    border-color: red;
+    border-width: 2px;
+}
+
+.eqsl-green{
+    color: #00A000;
+    font-size: 1.1em;
+}
+.eqsl-red{
+    color: #F00;
+    font-size: 1.1em;
+}
+.qsl-green{
+    color: #00A000;
+    font-size: 1.1em;
+}
+.qsl-red{
+    color: #F00;
+    font-size: 1.1em;
+}
+.qsl-yellow{
+    color: #d39e00;
+    font-size: 1.1em;
+}
+.qsl-grey{
+    color: #dddddd;
+    font-size: 1.1em;
+}
+.lotw-green{
+    color: #00A000;
+    font-size: 1.1em;
+}
+.lotw-red{
+    color: #F00;
+    font-size: 1.1em;
+}
+
+.settings-nav {
+    margin-bottom: 15px;
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid #d1d5da;
+    border-radius: 3px;
+}
+
+.settings-nav .nav-link {
+    list-style: none;
+    background-color: #fff;
+    border: 1px solid #d1d5da;
+}
+
+.settings-nav .nav-link:hover {
+    background-color: #e1e4e8;
+
+}
+
+/* QSL Card Management CSS */
+
+.qso-map-new .card-header {
+background: #0F2027;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+color: #ffffff;
+}

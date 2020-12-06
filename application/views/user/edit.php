@@ -91,9 +91,9 @@
                         <label>Stylesheet</label>
 
                         <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
-                            <option value='bootstrap.min.css' <?php if($user_stylesheet == "bootstrap.min.css") { echo "selected=\"selected\""; } ?>>Standard theme</option>
-                            <option value='bootstrap-dark.css' <?php if($user_stylesheet == "bootstrap-dark.css") { echo "selected=\"selected\""; } ?>>Dark theme</option>
-                            <option value='bootstrap-blue.css' <?php if($user_stylesheet == "bootstrap-blue.css") { echo "selected=\"selected\""; } ?>>Blue theme</option>
+                            <option value='default' <?php if($user_stylesheet == "default") { echo "selected=\"selected\""; } ?>>Default</option>
+                            <option value='blue' <?php if($user_stylesheet == "blue") { echo "selected=\"selected\""; } ?>>Blue</option>
+                            <option value='dark' <?php if($user_stylesheet == "dark") { echo "selected=\"selected\""; } ?>>Dark</option>
                         </select>
                     </div>
                 </div>
