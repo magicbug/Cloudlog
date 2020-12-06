@@ -164,6 +164,10 @@
 					<div class="dropdown-divider"></div>
 					
 					<a class="dropdown-item" href="<?php echo site_url('update');?>" title="Update Country Files"><i class="fas fa-sync"></i> Update Country Files</a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item" href="<?php echo site_url('kml');?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> KML Export</a>
 				</div>
         	</li>
         <?php } ?>
