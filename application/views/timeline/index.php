@@ -19,7 +19,7 @@
                     <label class="col-md-1 control-label" for="mode">Mode</label>
                     <div class="col-md-3">
                         <select id="mode" name="mode" class="form-control custom-select">
-                            <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >All</option>
+                            <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >All</option>
                             <?php
                             foreach($modes->result() as $mode){
                                 if ($mode->submode == null) {
