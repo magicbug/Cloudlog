@@ -1,14 +1,20 @@
 <div class="container">
-<br>
 	<h3>
 	  Edit Account
 	  <small class="text-muted"><?php echo $user_name; ?></small>
 	</h3>
 
+	<?php if($this->session->flashdata('success')) { ?>
+		<!-- Display Success Message -->
+		<div class="alert alert-success">
+		  <?php echo $this->session->flashdata('success'); ?>
+		</div>
+	<?php } ?>
+
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
 		<div class="alert-message error">
-		  <p><?php echo $this->session->flashdata('message'); ?></p>
+		  <?php echo $this->session->flashdata('message'); ?>
 		</div>
 	<?php } ?>
 
@@ -22,8 +28,6 @@
 	<?php $this->load->helper('form'); ?>
 		
 	<form method="post" action="<?php echo site_url('user/edit')."/".$this->uri->segment(3); ?>" name="users" autocomplete="off">
-
-	<br>
 	<div class="row">
 	    <div class="col-md">
 	    	<div class="card">
