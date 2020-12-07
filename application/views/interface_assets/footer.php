@@ -1236,6 +1236,9 @@ $(document).ready(function(){
 
 <?php if ($this->uri->segment(1) == "distances") { ?>
     <script src="<?php echo base_url(); ?>assets/js/highstock.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/highstock/exporting.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/highstock/offline-exporting.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/highstock/export-data.js"></script>
 <script>
 
   var bands_available = <?php echo $bands_available; ?>;
@@ -2182,6 +2185,9 @@ $(document).ready(function(){
 
 <?php if ($this->uri->segment(1) == "timeplotter") { ?>
     <script src="<?php echo base_url(); ?>assets/js/highstock.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/highstock/exporting.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/highstock/offline-exporting.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/highstock/export-data.js"></script>
     <script>
 
         function timeplot(form) {

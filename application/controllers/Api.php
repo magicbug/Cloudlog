@@ -429,9 +429,9 @@ class API extends CI_Controller {
 				
 
 				if(isset($obj['station_profile_id'])) {
-					$this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL);
+					$this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL);
 				} else {
-					$this->logbook_model->import($record, 0, NULL, NULL, NULL);
+					$this->logbook_model->import($record, 0, NULL, NULL, NULL, NULL);
 				}
 
 			};
