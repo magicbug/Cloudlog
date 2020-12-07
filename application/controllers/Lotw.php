@@ -489,7 +489,7 @@ class Lotw extends CI_Controller {
                     $station_id = $this->logbook_model->find_correct_station_id($record['station_callsign'], $record['my_gridsquare']);
 
                     if ($station_id != NULL) {
-                        $result = $this->logbook_model->import($record, $station_id, NULL, NULL, NULL);  // Create the Entry
+                        $result = $this->logbook_model->import($record, $station_id, NULL, NULL, NULL, NULL);  // Create the Entry
                         if ($result == "") {
                             $lotw_status = 'QSO imported';
                         } else {
