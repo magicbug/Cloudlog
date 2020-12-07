@@ -90,6 +90,21 @@
                                         </select>
                                     </div>
 
+                                    <div class="form-group col-md-2">
+                                        <label for="frequency">Frequency</label>
+                                        <input type="text" class="form-control form-control-sm" id="frequency" name="freq_display" value="<?php echo $this->session->userdata('freq'); ?>" />
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        <label for="inputRadio">Radio</label>
+                                        <select class="form-control form-control-sm radios" id="radio" name="radio">
+                                            <option value="0" selected="selected">None</option>
+                                            <?php foreach ($radios->result() as $row) { ?>
+                                                <option value="<?php echo $row->id; ?>" <?php if($this->session->userdata('radio') == $row->id) { echo "selected=\"selected\""; } ?>><?php echo $row->radio; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+
                                 </div>
 
                                 <div class="form-row">
