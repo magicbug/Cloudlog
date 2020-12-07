@@ -1,14 +1,20 @@
 <div class="container">
-<br>
 	<h3>
 	  Edit Account
 	  <small class="text-muted"><?php echo $user_name; ?></small>
 	</h3>
 
+	<?php if($this->session->flashdata('success')) { ?>
+		<!-- Display Success Message -->
+		<div class="alert alert-success">
+		  <?php echo $this->session->flashdata('success'); ?>
+		</div>
+	<?php } ?>
+
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
 		<div class="alert-message error">
-		  <p><?php echo $this->session->flashdata('message'); ?></p>
+		  <?php echo $this->session->flashdata('message'); ?>
 		</div>
 	<?php } ?>
 
@@ -22,8 +28,6 @@
 	<?php $this->load->helper('form'); ?>
 		
 	<form method="post" action="<?php echo site_url('user/edit')."/".$this->uri->segment(3); ?>" name="users" autocomplete="off">
-
-	<br>
 	<div class="row">
 	    <div class="col-md">
 	    	<div class="card">
@@ -91,9 +95,12 @@
                         <label>Stylesheet</label>
 
                         <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
-                            <option value='bootstrap.min.css' <?php if($user_stylesheet == "bootstrap.min.css") { echo "selected=\"selected\""; } ?>>Standard theme</option>
-                            <option value='bootstrap-dark.css' <?php if($user_stylesheet == "bootstrap-dark.css") { echo "selected=\"selected\""; } ?>>Dark theme</option>
-                            <option value='bootstrap-blue.css' <?php if($user_stylesheet == "bootstrap-blue.css") { echo "selected=\"selected\""; } ?>>Blue theme</option>
+                            <option value='default' <?php if($user_stylesheet == "default") { echo "selected=\"selected\""; } ?>>Default</option>
+                            <option value='blue' <?php if($user_stylesheet == "blue") { echo "selected=\"selected\""; } ?>>Blue</option>
+                            <option value='cosmo' <?php if($user_stylesheet == "cosmo") { echo "selected=\"selected\""; } ?>>Cosmo</option>
+                            <option value='cyborg' <?php if($user_stylesheet == "cyborg") { echo "selected=\"selected\""; } ?>>Cyborg (Dark)</option>
+                            <option value='darkly' <?php if($user_stylesheet == "darkly") { echo "selected=\"selected\""; } ?>> Darkly (Dark)</option>
+                            <option value='superhero' <?php if($user_stylesheet == "superhero") { echo "selected=\"selected\""; } ?>>Superhero (Dark)</option>
                         </select>
                     </div>
                 </div>

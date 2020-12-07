@@ -1,3 +1,9 @@
+@media (min-width: 992px) {
+    .modal-lg, .modal-xl {
+        max-width: 900px;
+    }
+}
+
 .main-nav .container {
     margin-top: 0px !important;
 }
@@ -11,7 +17,6 @@
 thead > tr > td {
 	position: sticky;
 	top: 45px;
-	background-color: aliceblue;
 }
 
 .dashboard {
