@@ -24,10 +24,21 @@ class Stations extends CI_Model {
 	function profile($id) {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
+		$this->db->where('station_id', $clean_id);
+		return $this->db->get('station_profile');
+	}
+
+	function profile_clean($id) {
+		// Clean ID
+		$clean_id = $this->security->xss_clean($id);
 
 
 		$this->db->where('station_id', $clean_id);
-		return $this->db->get('station_profile');
+		$query = $this->db->get('station_profile');
+
+		$row = $query->row();
+
+		return $row;
 	}
 
 	/*
