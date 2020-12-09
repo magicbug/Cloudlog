@@ -20,7 +20,27 @@ class Logbook_model extends CI_Model {
 
     if($this->input->post('sat_name')) {
         $prop_mode = "SAT";
-    } 
+    }
+
+    // Contest exchange, need to separate between serial and other type of exchange
+    if($this->input->post('exchangeradio')) {
+        if($this->input->post('exchangeradio') == "serial") {
+            $srx = $this->input->post('exch_recv');
+            $stx = $this->input->post('exch_sent');
+            $srx_string = null;
+            $stx_string = null;
+        } else {
+            $srx = null;
+            $stx = null;
+            $srx_string = $this->input->post('exch_recv');
+            $stx_string = $this->input->post('exch_sent');
+        }
+    } else {
+        $srx_string = null;
+        $stx_string = null;
+        $srx = null;
+        $stx = null;
+    }
 
     if($this->session->userdata('user_locator')){
         $locator = $this->session->userdata('user_locator');
@@ -108,8 +128,10 @@ class Logbook_model extends CI_Model {
             'COL_AGE' => null,
             'COL_TEN_TEN' => null,
             'COL_TX_PWR' => $tx_power,
-            'COL_STX' => null,
-            'COL_SRX' => null,
+            'COL_STX' => $stx,
+            'COL_SRX' => $srx,
+            'COL_STX_STRING' => $stx_string,
+            'COL_SRX_STRING' => $srx_string,
             'COL_NR_BURSTS' => null,
             'COL_NR_PINGS' => null,
             'COL_MAX_BURSTS' => null,

@@ -984,6 +984,20 @@ $(document).on('change', 'input', function(){
       setRst($('.mode') .val());
     });
 
+
+
+  function convert_case(str) {
+    var lower = str.toLowerCase();
+    return lower.replace(/(^| )(\w)/g, function(x) {
+      return x.toUpperCase();
+    });
+  }
+
+  </script>
+
+<?php } ?>
+<?php if ( ($this->uri->segment(1) == "qso" && $_GET['manual'] == 0) || $this->uri->segment(1) == "contesting") { ?>
+    <script>
     function setRst(mode) {
         if(mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS'){
             $('#rst_sent').val('-5');
@@ -999,13 +1013,14 @@ $(document).on('change', 'input', function(){
             $('#rst_recv').val('59');
         }
     }
-
-
-  /* Javascript for controlling rig frequency. */
-<?php if ( $_GET['manual'] == 0 ) { ?>
+    </script>
+<?php } ?>
+<?php if ( ($this->uri->segment(1) == "qso" && $_GET['manual'] == 0) || $this->uri->segment(1) == "contesting") { ?>
+    <script>
+        // Javascript for controlling rig frequency.
   var updateFromCAT = function() {
     if($('select.radios option:selected').val() != '0') {
-      radioID = $('select.radios option:selected').val(); 
+      radioID = $('select.radios option:selected').val();
       $.getJSON( "radio/json/" + radioID, function( data ) {
           /* {
               "uplink_freq": "2400210000",
@@ -1028,24 +1043,24 @@ $(document).on('change', 'input', function(){
           if (data.mode == "LSB" || data.mode == "USB" || data.mode == "SSB") {
             $(".mode").val('SSB');
           } else {
-            $(".mode").val(data.mode);  
+            $(".mode").val(data.mode);
           }
 
           if (old_mode !== $(".mode").val()) {
             // Update RST on mode change via CAT
             setRst($(".mode").val());
           }
-          $("#sat_name").val(data.satname);  
-          $("#sat_mode").val(data.satmode);  
+          $("#sat_name").val(data.satname);
+          $("#sat_mode").val(data.satmode);
 
           // Display CAT Timeout warnng based on the figure given in the config file
             var minutes = Math.floor(<?php echo $this->config->item('cat_timeout_interval'); ?> / 60);
 
             if(data.updated_minutes_ago > minutes) {
               if($('.radio_timeout_error').length == 0) {
-                $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');  
+                $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
               } else {
-                $('.radio_timeout_error').text('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');    
+                $('.radio_timeout_error').text('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
               }
             } else {
               $(".radio_timeout_error" ).remove();
@@ -1064,10 +1079,10 @@ $(document).on('change', 'input', function(){
   // If radio isn't SatPC32 clear sat_name and sat_mode
   $( ".radios" ).change(function() {
       if ($(".radios option:selected").text() != "SatPC32") {
-        $("#sat_name").val("");  
-        $("#sat_mode").val("");  
-        $("#frequency").val("");  
-        $("#frequency_rx").val(""); 
+        $("#sat_name").val("");
+        $("#sat_mode").val("");
+        $("#frequency").val("");
+        $("#frequency_rx").val("");
         $("#selectPropagation").val($("#selectPropagation option:first").val());
       }
 
@@ -1076,16 +1091,6 @@ $(document).on('change', 'input', function(){
       }
 
   });
-
-<?php } ?>
-
-  function convert_case(str) {
-    var lower = str.toLowerCase();
-    return lower.replace(/(^| )(\w)/g, function(x) {
-      return x.toUpperCase();
-    });
-  }
-
   </script>
 
 <?php } ?>
@@ -2528,5 +2533,49 @@ function deleteQsl(id) {
         });
     }
 </script>
+<?php if ($this->uri->segment(1) == "contesting") { ?>
+    <script src="<?php echo base_url() ;?>assets/js/sections/contesting.js"></script>
+    <script>
+        function logQso() {
+            if ($("#callsign").val().length > 0) {
+
+                $('.callsign-suggestions').text("");
+                $(".qsotable tbody").prepend('<tr>' +
+                    '<td>'+$("#start_date").val()+ ' ' + $("#start_time").val() + '</td>' +
+                    '<td>'+$("#callsign").val().toUpperCase()+'</td>' +
+                    '<td>'+$("#band").val()+'</td>' +
+                    '<td>'+$("#mode").val()+'</td>' +
+                    '<td>'+$("#rst_sent").val()+'</td>' +
+                    '<td>'+$("#rst_recv").val()+'</td>' +
+                    '<td>'+$("#exch_sent").val()+'</td>' +
+                    '<td>'+$("#exch_recv").val()+'</td>' +
+                    '</tr>');
+
+                var baseURL= "<?php echo base_url();?>";
+                var formdata = new FormData(document.getElementById("qso_input"));
+                $.ajax({
+                    url: baseURL + 'index.php/qso/saveqso',
+                    type: 'post',
+                    data: formdata,
+                    processData: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    success: function (html) {
+                        $('#name').val("");
+
+                        $('#callsign').val("");
+                        $('#comment').val("");
+                        $('#exch_recv').val("");
+                        if ($('input[name=exchangeradio]:checked', '#qso_input').val() == "serial") {
+                            $("#exch_sent").val(+$("#exch_sent").val() + 1);
+                        }
+                        $("#callsign").focus();
+                    }
+                });
+            }
+        }
+    </script>
+
+<?php } ?>
   </body>
 </html>

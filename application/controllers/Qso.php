@@ -98,6 +98,14 @@ class QSO extends CI_Controller {
 			$this->load->view('interface_assets/footer');
 		}
 	}
+
+	/*
+	 * This is used for contest-logging and the ajax-call
+	 */
+	public function saveqso() {
+        $this->load->model('logbook_model');
+        $this->logbook_model->create_qso();
+    }
 	
 	function edit() {
 	
