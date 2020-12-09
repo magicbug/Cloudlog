@@ -9,19 +9,16 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 * Apache (Nginx should work)
 * PHP (Version 7 or higher) & MySQL (MySQL 5.7 or higher)
 
-## Versions
-
-* **Master** - Current working branch
+Notes
+* If you want to log microwave QSOs you will need to use a 64bit operating system.
 
 ## Setup
 
 Installation information can be found on the [wiki](https://github.com/magicbug/Cloudlog/wiki).
 
-Cloudlog now has a [Change Log](https://github.com/magicbug/Cloudlog/wiki/Change-Log) to go along with the commit history please consult this when updating.
-
 ## Support
 
-Cloudlog has two support systems for code issues use Github issues, however if you have general issues with setting up your server please use our general discussion forum [https://forum.cloudlog.co.uk](https://forum.cloudlog.co.uk).
+Cloudlog has two support systems for code issues use Github issues, however if you have general issues with setting up your server please use our general discussion forum [https://github.com/magicbug/Cloudlog/discussions](https://github.com/magicbug/Cloudlog/discussions).
 
 
 ## Want Cloudlog Hosting?
