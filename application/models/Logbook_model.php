@@ -1448,9 +1448,9 @@ class Logbook_model extends CI_Model {
       $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE');
       $this->db->from('station_profile');
       $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id AND station_profile.eqslqthnickname != ""','left');
+      $this->db->where($this->config->item('table_name').'.COL_CALL !=', '');
       $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'Y');
       $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'I');
-      $this->db->where($this->config->item('table_name').'.COL_CALL !=', '');
       $this->db->or_where(array($this->config->item('table_name').'.COL_EQSL_QSL_SENT' => NULL));
       return $this->db->get();
     }
