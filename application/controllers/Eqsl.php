@@ -294,7 +294,6 @@ class eqsl extends CI_Controller {
 						$table .= "<td>Call</td>";
 						$table .= "<td>Mode</td>";
 						$table .= "<td>Band</td>";
-						$table .= "<td>QSO ID</td>";
 						$table .= "<td>Result</td>";
 					$table .= "<tr>";
 			// Build out the ADIF info string according to specs http://eqsl.cc/qslcard/ADIFContentSpecs.cfm
