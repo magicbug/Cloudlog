@@ -461,7 +461,7 @@ class eqsl extends CI_Controller {
 				# Make sure we don't have any spaces
 				$adif = str_replace(" ", '%20', $adif);
 				
-				$status = "Unknown";
+				$status = "";
 				
 				// begin script
 				$ch = curl_init(); 
@@ -545,7 +545,6 @@ class eqsl extends CI_Controller {
 						$table .= "<td>".str_replace("0","&Oslash;",$qsl['COL_CALL'])."</td>";
 						$table .= "<td>".$qsl['COL_MODE']."</td>";
 						$table .= "<td>".$qsl['COL_BAND']."</td>";
-						$table .= "<td>".$qsl['COL_PRIMARY_KEY']."</td>";
 						$table .= "<td>".$status."</td>";
 				$table .= "<tr>";
 			}
@@ -562,7 +561,6 @@ class eqsl extends CI_Controller {
 			{
 				$table = "<table width=\"100%\">";
 					$table .= "<tr class=\"titles\">";
-						$table .= "<td>QSO ID</td>";
 						$table .= "<td>Date</td>";
 						$table .= "<td>Call</td>";
 						$table .= "<td>Mode</td>";
@@ -573,7 +571,6 @@ class eqsl extends CI_Controller {
 				foreach ($qslsnotsent->result_array() as $qsl)
 				{
 					$table .= "<tr>";
-						$table .= "<td>".$qsl['COL_PRIMARY_KEY']."</td>";
 						$table .= "<td>".$qsl['COL_TIME_ON']."</td>";
 						$table .= "<td><a class=\"qsobox\" href=\"".site_url('qso/edit')."/".$qsl['COL_PRIMARY_KEY']."\">".str_replace("0","&Oslash;",strtoupper($qsl['COL_CALL']))."</a></td>";
 						$table .= "<td>".$qsl['COL_MODE']."</td>";
