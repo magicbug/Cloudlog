@@ -562,7 +562,7 @@ class eqsl extends CI_Controller {
 			{
 				$table = "<table width=\"100%\">";
 					$table .= "<tr class=\"titles\">";
-						$table .= "<td>QSO ID</td>":
+						$table .= "<td>QSO ID</td>";
 						$table .= "<td>Date</td>";
 						$table .= "<td>Call</td>";
 						$table .= "<td>Mode</td>";
