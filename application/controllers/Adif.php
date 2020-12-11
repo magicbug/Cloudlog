@@ -221,7 +221,7 @@ class adif extends CI_Controller {
 
 
 				$custom_errors .= $this->logbook_model->import($record, $this->input->post('station_profile'),
-					$this->input->post('skipDuplicate'), $this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'));
+					$this->input->post('skipDuplicate'), $this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), true);
 
 			};
 
