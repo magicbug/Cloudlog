@@ -99,7 +99,6 @@ class ADIF_Parser
 				}
 			}
 
-            $this->datasplit = preg_split("/<eor>/i", substr($this->data, $this->i));
 			$this->i++;
 			
 		};
@@ -110,6 +109,8 @@ class ADIF_Parser
 			echo "Error: ADIF File Does Not Contain Any QSOs";
 			return 0;
 		};
+
+        $this->datasplit = preg_split("/<eor>/i", substr($this->data, $this->i));
 		return 1;
 	}
 	
