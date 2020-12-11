@@ -571,7 +571,7 @@ class eqsl extends CI_Controller {
 				{
 					$table .= "<tr>";
 						$table .= "<td>".$qsl['COL_TIME_ON']."</td>";
-						$table .= "<td><a class=\"qsobox\" href=\"".site_url('qso/edit')."/".$qsl['COL_PRIMARY_KEY']."\">".str_replace("0","&Oslash;",strtoupper($qsl['COL_CALL']))."</a></td>";
+						$table .= "<td><a href=\"javascript:displayQso(" . $qsl['COL_PRIMARY_KEY'] . ")\">" . str_replace("0","&Oslash;",strtoupper($qsl['COL_CALL'])) . "</a></td>";
 						$table .= "<td>".$qsl['COL_MODE']."</td>";
 						$table .= "<td>".$qsl['COL_BAND']."</td>";
 						$table .= "<td>".$qsl['eqslqthnickname']."</td>";
