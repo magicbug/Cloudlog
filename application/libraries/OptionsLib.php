@@ -12,6 +12,10 @@ class OptionsLib {
         // Make Codeigniter functions available to library
         $CI =& get_instance();
 
+	// Force Migration to run on every page load
+    	$CI->load->library('Migration');
+	$CI->migration->current();
+	    
         //Load the options model
         $CI->load->model('options_model');
 
