@@ -52,6 +52,37 @@ class OptionsLib {
         return $options_result;
     }
 
+    // Function to save new option to options table
+    function save($option_name, $option_value, $autoload) {
+        // Make Codeigniter functions available to library
+        $CI =& get_instance();
+
+        //Load the options model
+        $CI->load->model('options_model');
+        
+        // call library function to save update
+        $result = $CI->options_model->save($option_name, $option_value, $autoload);
+
+        // return True or False on whether its completed.
+        return $result;
+    }
+
+    // Function to update options within the options table
+    function update($option_name, $option_value) {
+        // Make Codeigniter functions available to library
+        $CI =& get_instance();
+
+        //Load the options model
+        $CI->load->model('options_model');
+        
+        // call library function to save update
+        $result = $CI->options_model->update($option_name, $option_value);
+
+        // return True or False on whether its completed.
+        return $result;
+    }
+
+
     // This returns the global theme or the theme stored in the logged in users session data.
     function get_theme() {
         // Make Codeigniter functions available to library

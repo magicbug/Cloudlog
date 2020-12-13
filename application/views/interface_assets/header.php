@@ -125,7 +125,11 @@
 					<a class="dropdown-item" href="<?php echo site_url('user');?>" title="Manage user accounts"><i class="fas fa-user"></i> User Accounts</a>
 					
 					<div class="dropdown-divider"></div>
-					
+
+					<a class="dropdown-item" href="<?php echo site_url('options');?>" title="Manage global options"><i class="fas fa-cog"></i> Global Options</a>
+
+					<div class="dropdown-divider"></div>
+
 					<a class="dropdown-item" href="<?php echo site_url('api/help');?>" title="Manage API keys"><i class="fas fa-key"></i> API</a>
 					
 					<div class="dropdown-divider"></div>					

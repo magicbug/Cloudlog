@@ -20,8 +20,50 @@ class Options extends CI_Controller {
 
         //echo $this->config->item('option_theme');
 
-        echo $this->optionslib->get_option('theme');
+		//echo $this->optionslib->get_option('theme');
+		
+		$data['page_title'] = "Cloudlog Options";
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('options/index');
+		$this->load->view('interface_assets/footer');
+	}
+	
+
+	function appearance() {
+		$data['page_title'] = "Cloudlog Options";
+		$data['sub_heading'] = "Appearance";
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('options/appearance');
+		$this->load->view('interface_assets/footer');
     }
 
+	function appearance_save() {
+		$data['page_title'] = "Cloudlog Options";
+		$data['sub_heading'] = "Appearance";
+		
+		$this->load->helper(array('form', 'url'));
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('theme', 'theme', 'required');
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('options/appearance');
+			$this->load->view('interface_assets/footer');
+		}
+		else
+		{
+			$theme_update_status = $this->optionslib->update('theme', $this->input->post('theme'));
+
+			if($theme_update_status == TRUE) {
+				$this->session->set_flashdata('success', 'Theme changed to '.$this->input->post('theme'));
+			}
+			redirect('/options/appearance');
+		}
+    }
 
 }
