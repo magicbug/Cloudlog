@@ -162,7 +162,7 @@
         <thead>
         <tr><td></td>';
 
-        foreach($bands as $band) {
+        foreach($worked_bands as $band) {
             echo '<td>' . $band . '</td>';
         }
         echo '<td>Total</td>
