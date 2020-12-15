@@ -1,10 +1,7 @@
 
 <div class="container">
-    <h1><?php echo $page_title; ?></h1>
+    <h2><?php echo $page_title; ?></h2>
 
-    <!-- Sub Nav for Awards -->
-
-    <?php $this->load->view("awards/nav_bar")?>
     <form class="form" action="<?php echo site_url('awards/iota'); ?>" method="post" enctype="multipart/form-data">
         <fieldset>
 
@@ -14,7 +11,7 @@
                 <div class="col-md-10">
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="includedeleted" id="includedeleted" value="1" <?php if ($this->input->post('includedeleted') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
-                        <label class="form-check-label" for="includedeleted">Include Deleted</label>
+                        <label class="form-check-label" for="includedeleted">Include deleted</label>
                     </div>
                 </div>
             </div>
@@ -91,8 +88,8 @@
             <div class="form-group row">
                 <label class="col-md-2 control-label" for="button1id"></label>
                 <div class="col-md-10">
-                    <button id="button2id" type="reset" name="button2id" class="btn btn-danger">Reset</button>
-                    <button id="button1id" type="submit" name="button1id" class="btn btn-success btn-primary">Show</button>
+                    <button id="button2id" type="reset" name="button2id" class="btn btn-warning">Reset</button>
+                    <button id="button1id" type="submit" name="button1id" class="btn btn-primary">Show</button>
                 </div>
             </div>
 
@@ -103,11 +100,11 @@
     if ($iota_array) {
         echo '
                 
-                <table class="table table-bordered table-hover table-striped table-condensed text-center">
+                <table style="width:100%;" class="table table-sm tableiota table-bordered table-hover table-striped table-condensed text-center">
                     <thead>
                     <tr>
                         <td>#</td>
-                        <td>Iota</td>
+                        <td>IOTA</td>
                         <td>Prefix</td>
                         <td>Name</td>';
         if ($this->input->post('includedeleted') || $this->input->method() !== 'post')
@@ -128,7 +125,37 @@
             }
             echo '</tr>';
         }
-        echo '</tfoot></table></div>';
+
+        echo '</table>
+        <h2>Summary</h2>
+
+        <table class="table-sm tablesummary table table-bordered table-hover table-striped table-condensed text-center">
+        <thead>
+        <tr><td></td>';
+
+        foreach($bands as $band) {
+            echo '<td>' . $band . '</td>';
+        }
+        echo '<td>Total</td></tr>';
+
+        echo '</thead>
+        <tbody>
+
+        <tr><td>Total worked</td>';
+
+        foreach ($iota_summary['worked'] as $dxcc) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $dxcc . '</td>';
+        }
+
+        echo '</tr><tr>
+        <td>Total confirmed</td>';
+        foreach ($iota_summary['confirmed'] as $dxcc) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $dxcc . '</td>';
+        }
+
+        echo '</tr>
+        </table>
+        </div>';
 
     }
     else {

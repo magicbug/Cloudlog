@@ -87,14 +87,14 @@ class was extends CI_Model {
             if ($postdata['worked'] != NULL) {
                 $wasBand = $this->getWasWorked($station_id, $band, $postdata);
                 foreach ($wasBand as $line) {
-                    $bandWas[$line->col_state][$band] = '<div class="alert-danger"><a href=\'was_details?State="' . str_replace("&", "%26", $line->col_state) . '"&Band="' . $band . '"\'>W</a></div>';
+                    $bandWas[$line->col_state][$band] = '<div class="alert-danger"><a href=\'javascript:displayWasContacts("' . $line->col_state . '","' . $band . '")\'>W</a></div>';
                     $states[$line->col_state]['count']++;
                 }
             }
             if ($postdata['confirmed'] != NULL) {
                 $wasBand = $this->getWasConfirmed($station_id, $band, $postdata);
                 foreach ($wasBand as $line) {
-                    $bandWas[$line->col_state][$band] = '<div class="alert-success"><a href=\'was_details?State="' . str_replace("&", "%26", $line->col_state) . '"&Band="' . $band . '"\'>C</a></div>';
+                    $bandWas[$line->col_state][$band] = '<div class="alert-success"><a href=\'javascript:displayWasContacts("' . $line->col_state . '","' . $band . '")\'>C</a></div>';
                     $states[$line->col_state]['count']++;
                 }
             }
@@ -148,6 +148,12 @@ class was extends CI_Model {
             $wasSummary['confirmed'][$band] = $confirmed[0]->count;
         }
 
+        $workedTotal = $this->getSummaryByBand('All', $station_id);
+        $confirmedTotal = $this->getSummaryByBandConfirmed('All', $station_id);
+
+        $wasSummary['worked']['Total'] = $workedTotal[0]->count;
+        $wasSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
+
         return $wasSummary;
     }
 
@@ -159,6 +165,8 @@ class was extends CI_Model {
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+        } else if ($band == 'All') {
+            $sql .= " and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
@@ -179,6 +187,8 @@ class was extends CI_Model {
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+        } else if ($band == 'All') {
+            $sql .= " and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";

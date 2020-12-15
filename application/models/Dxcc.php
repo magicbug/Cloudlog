@@ -168,7 +168,19 @@ class DXCC extends CI_Model {
 		$this->db->empty_table($table);
 	}
 
+	/*
+	 * Fethes a list of all dxcc's, both current and deleted
+	 */
 	function list() {
+		$this->db->order_by('name', 'ASC');
+		return $this->db->get('dxcc_entities');
+	}
+
+	/*
+	 * Fetches a list of all current dxcc's (non-deleted)
+	 */
+	function list_current() {
+		$this->db->where('end', null);
 		$this->db->order_by('name', 'ASC');
 		return $this->db->get('dxcc_entities');
 	}
@@ -191,7 +203,7 @@ class DXCC extends CI_Model {
 			if ($postdata['worked'] != NULL) {
 				$workedDXCC = $this->getDxccBandWorked($station_id, $band, $postdata);
 				foreach ($workedDXCC as $wdxcc) {
-					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="alert-danger"><a href=\'dxcc_details?Country="'.str_replace("&", "%26", $wdxcc->name).'"&Band="'. $band . '"\'>W</a></div>';;
+					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="alert-danger"><a href=\'javascript:displayDxccContacts("'.str_replace("&", "%26", $wdxcc->name).'","'. $band . '")\'>W</a></div>';
 				}
 			}
 
@@ -199,7 +211,7 @@ class DXCC extends CI_Model {
 			if ($postdata['confirmed'] != NULL) {
 				$confirmedDXCC = $this->getDxccBandConfirmed($station_id, $band, $postdata);
 				foreach ($confirmedDXCC as $cdxcc) {
-					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="alert-success"><a href=\'dxcc_details?Country="'.str_replace("&", "%26", $cdxcc->name).'"&Band="'. $band . '"\'>C</a></div>';;
+					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="alert-success"><a href=\'javascript:displayDxccContacts("'.str_replace("&", "%26", $cdxcc->name).'","'. $band . '")\'>C</a></div>';
 				}
 			}
 		}
@@ -480,6 +492,12 @@ class DXCC extends CI_Model {
 			$dxccSummary['confirmed'][$band] = $confirmed[0]->count;
 		}
 
+		$workedTotal = $this->getSummaryByBand('All', $station_id);
+		$confirmedTotal = $this->getSummaryByBandConfirmed('All', $station_id);
+
+		$dxccSummary['worked']['Total'] = $workedTotal[0]->count;
+		$dxccSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
+
 		return $dxccSummary;
 	}
 
@@ -489,12 +507,14 @@ class DXCC extends CI_Model {
 
 		$sql .= " where station_id = " . $station_id;
 
+
 		if ($band == 'SAT') {
 			$sql .= " and thcv.col_prop_mode ='" . $band . "'";
+		} else if ($band == 'All') {
+			$sql .= " and thcv.col_prop_mode !='SAT'";
 		} else {
 			$sql .= " and thcv.col_prop_mode !='SAT'";
 			$sql .= " and thcv.col_band ='" . $band . "'";
-
 		}
 		$query = $this->db->query($sql);
 
@@ -509,6 +529,8 @@ class DXCC extends CI_Model {
 
 		if ($band == 'SAT') {
 			$sql .= " and thcv.col_prop_mode ='" . $band . "'";
+		} else if ($band == 'All') {
+			$sql .= " and thcv.col_prop_mode !='SAT'";
 		} else {
 			$sql .= " and thcv.col_prop_mode !='SAT'";
 			$sql .= " and thcv.col_band ='" . $band . "'";

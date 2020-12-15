@@ -1,13 +1,18 @@
 <div class="container eqsl">
+<h2><?php echo $page_title; ?></h2>
 <div class="card">
   <div class="card-header">
-  	<h5 class="card-title"><?php echo $page_title; ?></h5>
+  	<div class="card-title">eQSL Import</div>
     <ul class="nav nav-tabs card-header-tabs">
       <li class="nav-item">
         <a class="nav-link active" href="<?php echo site_url('eqsl/import');?>">Download QSOs</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="<?php echo site_url('eqsl/Export');?>">Upload QSOs</a>
+      </li>
+
+	  <li class="nav-item">
+        <a class="nav-link" href="<?php echo site_url('eqsl/tools');?>">Tools</a>
       </li>
     </ul>
   </div>
@@ -19,7 +24,7 @@
 			<div class="form-check">
 			  <input class="form-check-input" type="radio" name="eqslimport" id="upload" value="upload" checked /> 
 			  <label class="form-check-label" for="exampleRadios1">
-			    Upload File
+			    Import from file...
 			  </label>
 			  <br><br>
 			  <p>Upload the Exported ADIF file from eQSL from the <a href="http://eqsl.cc/qslcard/DownloadInBox.cfm" target="_blank">Download Inbox</a> page, to mark QSOs as confirmed on eQSL.</p>
@@ -32,9 +37,9 @@
 			<div class="form-check">
 			  <input class="form-check-input" type="radio" name="eqslimport" id="fetch" value="fetch"  checked="checked"/>
 			  <label class="form-check-label" for="exampleRadios1">
-			    Pull eQSL data for me
+			    Import directly from eQSL
 			  </label>
-			  <p>Cloudlog will use the eQSL username and password stored in your user profile to download confirmations from eQSL for you. We will only download confirmations received since your last eQSL confirmed QSO.</p>
+			  <p>Cloudlog will use the eQSL credentials from your Cloudlog user profile to connect to eQSL and download confirmations. Only confirmations received since your last eQSL-confirmed QSO will be downloaded.</p>
 			</div>
 
 		<input class="btn btn-primary" type="submit" value="Import eQSL QSO Matches" />

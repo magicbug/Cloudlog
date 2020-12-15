@@ -195,9 +195,9 @@
             </div>
 
             <div class="form-group">
-              <label for="transmit_power">Transmit Power (Watts)</label>
+              <label for="transmit_power">Transmit Power (W)</label>
               <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php echo $this->session->userdata('transmit_power'); ?>" />
-              <small id="powerHelp" class="form-text text-muted">Power is in watts only include numbers in the input.</small>
+              <small id="powerHelp" class="form-text text-muted">Give power value in Watts. Include only numbers in the input.</small>
             </div>
           </div>
 
@@ -209,7 +209,7 @@
 
                       <?php
                       foreach($dxcc as $d){
-                          echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . $d->name . '</option>';
+                          echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name))) . '</option>';
                       }
                       ?>
 
@@ -324,12 +324,26 @@
 
             <div class="form-group">
               <label for="sota_ref">SOTA Reference</label>
-              <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" /> e.g: GM/NS-001
+              <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" />
+              <small id="sotaRefHelp" class="form-text text-muted">For example: GM/NS-001</small>
+            </div>
+
+            <div class="form-group">
+              <label for="sig">Sig</label>
+              <input class="form-control" id="sig" type="text" name="sig" value="" />
+              <small id="sigHelp" class="form-text text-muted">For example: WWFF or POTA</small>
+            </div>
+
+            <div class="form-group">
+              <label for="sig_info">Sig Info</label>
+              <input class="form-control" id="sig_info" type="text" name="sig_info" value="" />
+              <small id="sigInfoHelp" class="form-text text-muted">For example: DLFF-0029</small>
             </div>
 
             <div class="form-group">
               <label for="sota_ref">DOK</label>
-              <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" /> e.g: Q03
+              <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" />
+              <small id="dokHelp" class="form-text text-muted">For example: Q03</small>
             </div>
           </div>
           
@@ -355,7 +369,7 @@
           <!-- Notes Panel Contents -->
           <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
             <div class="alert alert-info" role="alert">
-              Internal usage only, not exported.
+              <span class="badge badge-info">Info</span> Note content is used within Cloudlog only and is not exported to other services.
             </div>
            <div class="form-group">
               <label for="notes">Notes</label>
@@ -405,7 +419,7 @@
         </div>
         
         <button type="reset" class="btn btn-light" onclick="reset_fields()">Reset</button>
-        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save QSO</button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save QSO</button>
       </div>
     </form>
     </div>
@@ -462,7 +476,9 @@
               foreach ($query->result() as $row) { ?>
                     <?php  echo '<tr class="tr'.($i & 1).'">'; ?>
                     <td><?php echo date($this->config->item('qso_date_format').' H:i',strtotime($row->COL_TIME_ON)); ?></td>
-                    <td><a class="qsobox" data-fancybox data-type="iframe" data-width="750" data-height="520" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a></td>
+                  <td>
+                      <a id="edit_qso" href="javascript:displayQso(<?php echo $row->COL_PRIMARY_KEY; ?>)"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
+                  </td>
                     <td><?php echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; ?></td>
                     <td><?php echo $row->COL_RST_SENT; ?></td>
                     <td><?php echo $row->COL_RST_RCVD; ?></td>

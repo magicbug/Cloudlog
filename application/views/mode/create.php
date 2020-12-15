@@ -9,14 +9,6 @@
 		</div>
 	<?php } ?>
 
-<div class="card">
-  <div class="card-header">
-    <?php echo $page_title; ?>
-  </div>
-  <div class="card-body">
-    <h5 class="card-title"></h5>
-    <p class="card-text"></p>
-
 		<?php if($this->session->flashdata('notice')) { ?>
 			<div id="message" >
 			<?php echo $this->session->flashdata('notice'); ?>
@@ -27,7 +19,7 @@
 
 		<?php echo validation_errors(); ?>
 
-		<form method="post" action="<?php echo site_url('mode/create'); ?>" name="create_profile">
+		<form method="post" name="create_profile">
 		<div class="form-group">
 		    <label for="modeInput">ADIF Mode</label>
 		    <input type="text" class="form-control" name="mode" id="modeInput" aria-describedby="modeInputHelp" required>
@@ -59,12 +51,7 @@
 		    <small id="activeInputHelp" class="form-text text-muted">Set to active if to be listed in Modes-list</small>
 		  </div>
 
-			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Create mode</button>
+			<button onclick="createMode(this.form);" class="btn btn-primary"><i class="fas fa-plus-square"></i> Create mode</button>
 
 		</form>
-  </div>
-</div>
-
-<br>
-
 </div>

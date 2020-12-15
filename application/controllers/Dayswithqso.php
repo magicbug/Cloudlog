@@ -18,6 +18,9 @@ class Dayswithqso extends CI_Controller {
         $data['page_title'] = "Number of days with QSOs each year";
 
         $data['result'] = $this->dayswithqso_model->getDaysWithQso();
+        $data['streaks'] = $this->dayswithqso_model->getLongestStreak();
+        $data['currentstreak'] = $this->dayswithqso_model->getCurrentStreak();
+        $data['almostcurrentstreak'] = $this->dayswithqso_model->getAlmostCurrentStreak();
 
         $this->load->view('interface_assets/header', $data);
         $this->load->view('dayswithqso/index');

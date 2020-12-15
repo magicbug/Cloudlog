@@ -1,12 +1,8 @@
 
 <div class="container">
-	<h1><?php echo $page_title; ?></h1>
+	<h2><?php echo $page_title; ?></h2>
 
-	<!-- Sub Nav for Awards -->
-	
-    <?php $this->load->view("awards/nav_bar")?>
-    
-	<table class="table table-striped table-hover">
+	<table class="table table-sm table-striped table-hover">
 	<thead>
         <tr>
         <td style="width:225px">DOKs (<?php echo count($doks)?>)</td>
@@ -26,7 +22,7 @@
 	                if ($count == 0){
 	      	             print("<td>&nbsp;</td>");
 	                }else{
-	                    printf("<td><a href='dok_details?Dok=\"%s\"&Band=\"%s\"'>%d</a></td>", str_replace("&", "%26", $dok), $band, $count);
+	                    printf("<td><a href='javascript:displayDokContacts(\"%s\",\"%s\")'>%d</a></td>", str_replace("&", "%26", $dok), $band, $count);
 	                }
 		} 
             }

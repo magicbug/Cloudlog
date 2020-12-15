@@ -6,12 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+    <?php if($this->optionslib->get_theme()) { ?>
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/bootstrap.min.css">
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css">
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/overrides.css">
+	<?php } ?>
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">
 
-	   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css">
+	   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery.fancybox.min.css" />
 
     <!-- Maps -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/leaflet/leaflet.css" />

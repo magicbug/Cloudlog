@@ -1,10 +1,7 @@
 
 <div class="container">
-    <h1><?php echo $page_title; ?></h1>
+    <h2><?php echo $page_title; ?></h2>
 
-    <!-- Sub Nav for Awards -->
-
-    <?php $this->load->view("awards/nav_bar")?>
     <form class="form" action="<?php echo site_url('awards/was'); ?>" method="post" enctype="multipart/form-data">
         <fieldset>
 
@@ -60,8 +57,8 @@
             <div class="form-group row">
                 <label class="col-md-2 control-label" for="button1id"></label>
                 <div class="col-md-10">
-                    <button id="button2id" type="reset" name="button2id" class="btn btn-danger">Reset</button>
-                    <button id="button1id" type="submit" name="button1id" class="btn btn-success btn-primary">Show</button>
+                    <button id="button2id" type="reset" name="button2id" class="btn btn-warning">Reset</button>
+                    <button id="button1id" type="submit" name="button1id" class="btn btn-primary">Show</button>
                 </div>
             </div>
 
@@ -71,7 +68,7 @@
     if ($was_array) {
         $i = 1;
     echo '
-    <table class="table table-bordered table-hover table-striped table-condensed text-center">
+    <table style="width:100%" class="table table-sm tablewas table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr>
             <td>#</td>
@@ -94,18 +91,16 @@
         }
         echo '</table>
 
-        <h1>Summary</h1>
+        <h2>Summary</h2>
 
-        <table class="table table-bordered table-hover table-striped table-condensed text-center">
+        <table class="table tablesummary table-sm table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr><td></td>';
 
         foreach($bands as $band) {
             echo '<td>' . $band . '</td>';
         }
-        echo '</tr>';
-
-        echo '</tr>
+        echo '<td>Total</td></tr>
         </thead>
         <tbody>
 

@@ -76,7 +76,6 @@ class adif extends CI_Controller {
 	}
 
 	public function export_custom() {
-
 		// Set memory limit to unlimited to allow heavy usage
 		ini_set('memory_limit', '-1');
 
@@ -87,11 +86,13 @@ class adif extends CI_Controller {
             $exportLotw = true;
         } else {
             $exportLotw = false;
-        }
-
+		}
+		
 		$data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'), $exportLotw);
 
+
 		$this->load->view('adif/data/exportall', $data);
+
 
 		if ($this->input->post('markLotw') == 1) {
             foreach ($data['qsos']->result() as $qso)
@@ -109,14 +110,30 @@ class adif extends CI_Controller {
 
         $data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'));
 
-        //$this->load->view('adif/import', $data);
-
         foreach ($data['qsos']->result() as $qso)
         {
             $this->adif_data->mark_lotw_sent($qso->COL_PRIMARY_KEY);
         }
 
         $this->load->view('adif/mark_lotw', $data);
+    }
+
+    public function mark_qrz() {
+        // Set memory limit to unlimited to allow heavy usage
+        ini_set('memory_limit', '-1');
+
+        $this->load->model('adif_data');
+
+        $data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'));
+
+        $this->load->model('logbook_model');
+
+        foreach ($data['qsos']->result() as $qso)
+        {
+            $this->logbook_model->mark_qrz_qsos_sent($qso->COL_PRIMARY_KEY);
+        }
+
+        $this->load->view('adif/mark_qrz', $data);
     }
 
 	public function export_lotw()
@@ -139,7 +156,7 @@ class adif extends CI_Controller {
 	public function index() {
 		$this->load->model('stations');
 
-		$data['page_title'] = "ADIF Import";
+		$data['page_title'] = "ADIF Import / Export";
 		$data['max_upload'] = ini_get('upload_max_filesize');
 
 		$data['station_profile'] = $this->stations->all();
@@ -204,7 +221,7 @@ class adif extends CI_Controller {
 
 
 				$custom_errors .= $this->logbook_model->import($record, $this->input->post('station_profile'),
-					$this->input->post('skipDuplicate'), $this->input->post('markLotw'), $this->input->post('dxccAdif'));
+					$this->input->post('skipDuplicate'), $this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'));
 
 			};
 

@@ -1,9 +1,11 @@
-.main-nav .container {
-    margin-top: 0px !important;
+@media (min-width: 992px) {
+    .modal-lg, .modal-xl {
+        max-width: 900px;
+    }
 }
 
-.container {
-	margin-top: 55px;
+.main-nav .container {
+    margin-top: 0px !important;
 }
 
 #nav-container {
@@ -15,7 +17,6 @@
 thead > tr > td {
 	position: sticky;
 	top: 45px;
-	background-color: aliceblue;
 }
 
 .dashboard {
@@ -207,4 +208,8 @@ background: #0F2027;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 color: #ffffff;
+}
+
+#myTab .nav-link {
+    padding: 8px !important;
 }

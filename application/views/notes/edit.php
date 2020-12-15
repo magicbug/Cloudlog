@@ -32,7 +32,7 @@
 	</div>
 
 	<div class="form-group">
-	   <label for="catSelect">Pick Category</label>
+	   <label for="catSelect">Category</label>
 	   <select name="category" class="form-control" id="catSelect">
 	   	<option value="General" selected="selected">General</option>
 		<option value="Antennas">Antennas</option>
@@ -47,7 +47,7 @@
 	</div>
 
 	<input type="hidden" name="id" value="<?php echo $id; ?>" />
-	<button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+	<button type="submit" value="Submit" class="btn btn-primary">Save</button>
 	</form>
   </div>
 

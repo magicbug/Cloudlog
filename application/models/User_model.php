@@ -41,6 +41,15 @@ class User_Model extends CI_Model {
 		return $r;
 	}
 
+	// FUNCTION: object get_all_lotw_users
+	// Returns all users with lotw details
+	function get_all_lotw_users() {
+		$this->db->where('user_lotw_name !=', null);
+		$this->db->where('user_lotw_name !=', "");
+		$r = $this->db->get($this->config->item('auth_table'));
+		return $r;
+	}
+
 	// FUNCTION: object get_by_email($email)
 	// Retrieve a user by email address
 	function get_by_email($email) {
@@ -87,7 +96,7 @@ class User_Model extends CI_Model {
 
 	// FUNCTION: bool add($username, $password, $email, $type)
 	// Add a user
-	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone) {
+	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone, $measurement, $user_date_format, $user_stylesheet) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -99,7 +108,10 @@ class User_Model extends CI_Model {
 				'user_lastname' => xss_clean($lastname),
 				'user_callsign' => xss_clean($callsign),
 				'user_locator' => xss_clean($locator),
-				'user_timezone' => xss_clean($timezone)
+				'user_timezone' => xss_clean($timezone),
+				'user_measurement_base' => xss_clean($measurement),
+				'user_date_format' => xss_clean($user_date_format),
+				'user_stylesheet' => xss_clean($user_stylesheet),
 			);
 
 			// Check the password is valid
@@ -138,6 +150,9 @@ class User_Model extends CI_Model {
 					'user_lotw_name' => xss_clean($fields['user_lotw_name']),
 					'user_eqsl_name' => xss_clean($fields['user_eqsl_name']),
 					'user_clublog_name' => xss_clean($fields['user_clublog_name']),
+					'user_measurement_base' => xss_clean($fields['user_measurement_base']),
+					'user_date_format' => xss_clean($fields['user_date_format']),
+					'user_stylesheet' => xss_clean($fields['user_stylesheet']),
 				);
 	
 				// Check to see if the user is allowed to change user levels
@@ -241,7 +256,10 @@ class User_Model extends CI_Model {
 			'user_eqsl_qth_nickname' => $u->row()->user_eqsl_qth_nickname,
 			'user_hash'		 => $this->_hash($u->row()->user_id."-".$u->row()->user_type),
 			'radio' => isset($_COOKIE["radio"])?$_COOKIE["radio"]:"",
-			'station_profile_id' => isset($_COOKIE["station_profile_id"])?$_COOKIE["station_profile_id"]:""
+			'station_profile_id' => isset($_COOKIE["station_profile_id"])?$_COOKIE["station_profile_id"]:"",
+			'user_measurement_base' => $u->row()->user_measurement_base,
+			'user_date_format' => $u->row()->user_date_format,
+			'user_stylesheet' => $u->row()->user_stylesheet,
 		);
 
 		$this->session->set_userdata($userdata);

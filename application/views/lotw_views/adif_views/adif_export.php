@@ -1,4 +1,5 @@
-<?php 
+<?php
+$CI =& get_instance(); 
 $clean_cert = trim($lotw_cert_info->cert);
 $cert1 = str_replace("-----BEGIN CERTIFICATE-----", "", $clean_cert);
 $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
@@ -26,6 +27,8 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 <?php if(isset($station_profile->station_iota)) { ?><IOTA:<?php echo strlen($station_profile->station_iota); ?>><?php echo $station_profile->station_iota; ?><?php } ?>
 
+<?php if($station_profile->state != "" && $station_profile->station_country == "CANADA") { ?><CA_PROVINCE:<?php echo strlen($station_profile->state); ?>><?php echo $station_profile->state; ?><?php } ?>
+
 <?php if($station_profile->state != "" && $station_profile->station_country == "UNITED STATES OF AMERICA") { ?><US_STATE:<?php echo strlen($station_profile->state); ?>><?php echo $station_profile->state; ?><?php } ?>
 
 <?php if($station_profile->station_cnty != ""  && $station_profile->station_country == "UNITED STATES OF AMERICA") { ?><US_COUNTY:<?php echo strlen($station_profile->station_cnty); ?>><?php echo $station_profile->station_cnty; ?><?php } ?>
@@ -47,7 +50,8 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 <?php if($qso->COL_PROP_MODE) { ?><PROP_MODE:<?php echo strlen($qso->COL_PROP_MODE); ?>><?php echo strtoupper($qso->COL_PROP_MODE); ?><?php } ?>
 
-<?php if($qso->COL_SAT_NAME) { ?><SAT_NAME:<?php echo strlen($qso->COL_SAT_NAME); ?>><?php echo strtoupper($qso->COL_SAT_NAME); ?><?php } ?>
+<?php if($qso->COL_SAT_NAME) { $satellite_name_check = $CI->lotw_satellite_map(strtoupper($qso->COL_SAT_NAME)); if($satellite_name_check != FALSE) { $satname = $satellite_name_check; } else { $satname = $qso->COL_SAT_NAME; } ?>
+<SAT_NAME:<?php echo strlen($satname); ?>><?php echo strtoupper($satname); ?><?php } ?>
 
 <?php if($qso->COL_BAND_RX) { ?><BAND_RX:<?php echo strlen($qso->COL_BAND_RX); ?>><?php echo strtoupper($qso->COL_BAND_RX); ?><?php } ?>
 
@@ -61,6 +65,11 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 
 $sign_string = "";
+
+// Adds CA Prov
+if($station_profile->state != "" && $station_profile->station_country == "CANADA") {
+	$sign_string .= strtoupper($station_profile->state);
+}
 
 // Add CQ Zone
 if($station_profile->station_cq) {
@@ -122,14 +131,14 @@ $sign_string .= $new_date;
 $sign_string .= $new_on."Z";
 
 if($qso->COL_SAT_NAME) {
-	$sign_string .= strtoupper($qso->COL_SAT_NAME);
+	$satellite_name_check = $CI->lotw_satellite_map(strtoupper($qso->COL_SAT_NAME)); if($satellite_name_check != FALSE) { $satname = $satellite_name_check; } else { $satname = $qso->COL_SAT_NAME; }
+
+	$sign_string .= strtoupper($satname);
 }
 
  ?>
 <?php 
-    $CI =& get_instance();
     $signed_item = $CI->signlog($lotw_cert_info->cert_key, $sign_string);
-
 ?>
 <SIGN_LOTW_V2.0:<?php echo strlen($signed_item)+1; ?>:6><?php echo $signed_item; ?>
 

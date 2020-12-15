@@ -11,7 +11,7 @@ class eqsl extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
-	
+
 	private function loadFromFile($filepath)
 	{
 		ini_set('memory_limit', '-1');
@@ -94,6 +94,14 @@ class eqsl extends CI_Controller {
 	}
 
 	public function import() {
+
+		// Check if eQSL Nicknames have been defined
+			$this->load->model('stations');
+			if($this->stations->are_eqsl_nicks_defined() == 0) {
+				show_error('eQSL Nicknames in Station Profiles arent defined');
+				exit;
+			}
+
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
 	
@@ -248,7 +256,14 @@ class eqsl extends CI_Controller {
 		}
 	} // end function
 	
-	public function export() {	
+	public function export() {
+		// Check if eQSL Nicknames have been defined
+			$this->load->model('stations');
+			if($this->stations->are_eqsl_nicks_defined() == 0) {
+				show_error('eQSL Nicknames in Station Profiles arent defined');
+				exit;
+			}
+
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
 		$this->load->model('logbook_model');
@@ -385,7 +400,7 @@ class eqsl extends CI_Controller {
 				// adding prop mode if it isn't blank
 				if ($qsl['COL_PROP_MODE']){
                     $adif .= "%3C";
-                    $adif .= "PROP_MODE";
+                    $adif .= "PROP%5FMODE";
                     $adif .= "%3A";
                     $adif .= strlen($qsl['COL_PROP_MODE']);
                     $adif .= "%3E";
@@ -394,20 +409,20 @@ class eqsl extends CI_Controller {
 				}
 
 				// adding sat name if it isn't blank
-				if ($qsl['COL_SAT_NAME'] = ''){
+				if ($qsl['COL_SAT_NAME'] != ''){
                     $adif .= "%3C";
-                    $adif .= "SAT_NAME";
+                    $adif .= "SAT%5FNAME";
                     $adif .= "%3A";
                     $adif .= strlen($qsl['COL_SAT_NAME']);
                     $adif .= "%3E";
-                    $adif .= $qsl['COL_SAT_NAME'];
+                    $adif .= str_replace('-', '%2D', $qsl['COL_SAT_NAME']);
                     $adif .= "%20";
 				}
 
 				// adding sat mode if it isn't blank
-				if ($qsl['COL_SAT_MODE'] = ''){
+				if ($qsl['COL_SAT_MODE'] != ''){
                     $adif .= "%3C";
-                    $adif .= "SAT_MODE";
+                    $adif .= "SAT%5FMODE";
                     $adif .= "%3A";
                     $adif .= strlen($qsl['COL_SAT_MODE']);
                     $adif .= "%3E";
@@ -415,9 +430,9 @@ class eqsl extends CI_Controller {
                     $adif .= "%20";
 				}
 
-				if ($qsl['eqslqthnickname'] = ''){
+				if ($qsl['eqslqthnickname'] != ''){
                     $adif .= "%3C";
-                    $adif .= "APP_EQSL_QTH_NICKNAME";
+                    $adif .= "APP%5FEQSL%5FQTH%5FNICKNAME";
                     $adif .= "%3A";
                     $adif .= strlen($qsl['eqslqthnickname']);
                     $adif .= "%3E";
@@ -426,9 +441,9 @@ class eqsl extends CI_Controller {
 				}
 
 				// adding sat mode if it isn't blank
-				if ($qsl['station_gridsquare'] = ''){
+				if ($qsl['station_gridsquare'] != ''){
                     $adif .= "%3C";
-                    $adif .= "MY_GRIDSQUARE";
+                    $adif .= "MY%5FGRIDSQUARE";
                     $adif .= "%3A";
                     $adif .= strlen($qsl['station_gridsquare']);
                     $adif .= "%3E";
@@ -445,7 +460,7 @@ class eqsl extends CI_Controller {
 				# Make sure we don't have any spaces
 				$adif = str_replace(" ", '%20', $adif);
 				
-				$status = "Unknown";
+				$status = "";
 				
 				// begin script
 				$ch = curl_init(); 
@@ -556,7 +571,7 @@ class eqsl extends CI_Controller {
 				{
 					$table .= "<tr>";
 						$table .= "<td>".$qsl['COL_TIME_ON']."</td>";
-						$table .= "<td><a class=\"qsobox\" href=\"".site_url('qso/edit')."/".$qsl['COL_PRIMARY_KEY']."\">".str_replace("0","&Oslash;",strtoupper($qsl['COL_CALL']))."</a></td>";
+						$table .= "<td><a href=\"javascript:displayQso(" . $qsl['COL_PRIMARY_KEY'] . ")\">" . str_replace("0","&Oslash;",strtoupper($qsl['COL_CALL'])) . "</a></td>";
 						$table .= "<td>".$qsl['COL_MODE']."</td>";
 						$table .= "<td>".$qsl['COL_BAND']."</td>";
 						$table .= "<td>".$qsl['eqslqthnickname']."</td>";
@@ -612,6 +627,35 @@ class eqsl extends CI_Controller {
 			readfile($image_url); 
 		}
 
+	}
+
+	public function tools() {
+
+		// Check logged in
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		$data['page_title'] = "eQSL Tools";
+
+		// Load frontend
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('eqsl/tools');
+		$this->load->view('interface_assets/footer');
+	}
+
+	public function mark_all_sent() {
+		
+		// Check logged in
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		
+		// mark all eqsls as sent
+		$this->load->model('eqslmethods_model');
+		$this->eqslmethods_model->mark_all_as_sent();
+
+		$this->session->set_flashdata('success', 'All eQSLs Marked as Uploaded');
+
+		redirect('eqsl/tools');
 	}
 	
 } // end class

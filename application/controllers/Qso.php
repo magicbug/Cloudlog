@@ -98,6 +98,14 @@ class QSO extends CI_Controller {
 			$this->load->view('interface_assets/footer');
 		}
 	}
+
+	/*
+	 * This is used for contest-logging and the ajax-call
+	 */
+	public function saveqso() {
+        $this->load->model('logbook_model');
+        $this->logbook_model->create_qso();
+    }
 	
 	function edit() {
 	
@@ -129,6 +137,39 @@ class QSO extends CI_Controller {
 			$this->load->view('qso/edit_done');
 		}
 	}
+
+    function edit_ajax() {
+
+        $this->load->model('logbook_model');
+        $this->load->model('user_model');
+        $this->load->model('modes');
+
+        $this->load->library('form_validation');
+
+        if(!$this->user_model->authorize(2)) {
+            $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard');
+        }
+
+        $id = str_replace('"', "", $this->input->post("id"));
+        $query = $this->logbook_model->qso_info($id);
+
+        $data['qso'] = $query->row();
+        $data['dxcc'] = $this->logbook_model->fetchDxcc();
+        $data['iota'] = $this->logbook_model->fetchIota();
+        $data['modes'] = $this->modes->all();
+
+        $this->load->view('qso/edit_ajax', $data);
+    }
+
+    function qso_save_ajax() {
+        $this->load->model('logbook_model');
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(2)) {
+            $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard');
+        }
+
+        $this->logbook_model->edit();
+    }
 	
 	function qsl_rcvd($id, $method) {
 		$this->load->model('logbook_model');
@@ -143,6 +184,27 @@ class QSO extends CI_Controller {
 
 			redirect('logbook');
 	}
+
+    function qsl_rcvd_ajax() {
+        $id = str_replace('"', "", $this->input->post("id"));
+        $method = str_replace('"', "", $this->input->post("method"));
+
+        $this->load->model('logbook_model');
+        $this->load->model('user_model');
+
+        header('Content-Type: application/json');
+
+        if(!$this->user_model->authorize(2)) {
+            echo json_encode(array('message' => 'Error'));
+
+        }
+        else {
+            // Update Logbook to Mark Paper Card Received
+            $this->logbook_model->paperqsl_update($id, $method);
+
+            echo json_encode(array('message' => 'OK'));
+        }
+    }
 	
 	/* Delete QSO */
 	function delete($id) {
@@ -161,6 +223,18 @@ class QSO extends CI_Controller {
 		    redirect($_SERVER['HTTP_REFERER']);
 		}
 	}
+
+    /* Delete QSO */
+    function delete_ajax() {
+        $id = str_replace('"', "", $this->input->post("id"));
+
+        $this->load->model('logbook_model');
+
+        $this->logbook_model->delete($id);
+        header('Content-Type: application/json');
+        echo json_encode(array('message' => 'OK'));
+        return;
+    }
 	
 	
 	function band_to_freq($band, $mode) {

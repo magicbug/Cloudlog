@@ -1,15 +1,16 @@
 <div class="container lotw">
 <br>
-	<a class="btn btn-success btn-sm float-right" href="<?php echo site_url('/lotw/import'); ?>" role="button"><i class="fas fa-cloud-upload-alt"></i> LoTW Import</a><h1><?php echo $page_title; ?></h1>
+	<a class="btn btn-outline-primary btn-sm float-right" href="<?php echo site_url('/lotw/import'); ?>" role="button"><i class="fas fa-cloud-download-alt"></i> LoTW Import</a>
+	<h2><?php echo $page_title; ?></h2>
 
 	<div class="alert alert-danger" role="alert">
-	  <i class="fas fa-exclamation-triangle"></i> Please be aware that LoTW Sync is BETA, you might get errors, this isn't fully production ready.
+	  <i class="fas fa-exclamation-triangle"></i> Please be aware that LoTW Sync is BETA. You might get errors as this isn't fully production ready.
 	</div>
 
 	<!-- Card Starts -->
 	<div class="card">
 		<div class="card-header">
-			<a class="btn btn-success btn-sm float-right" href="<?php echo site_url('/lotw/cert_upload'); ?>" role="button"><i class="fas fa-cloud-upload-alt"></i> Upload Certificate</a><i class="fab fa-expeditedssl"></i> Available Certificates
+			<a class="btn btn-outline-success btn-sm float-right" href="<?php echo site_url('/lotw/cert_upload'); ?>" role="button"><i class="fas fa-cloud-upload-alt"></i> Upload Certificate</a><i class="fab fa-expeditedssl"></i> Available Certificates
 		</div>
 
 		<div class="card-body">
@@ -73,7 +74,7 @@
 									<?php } ?>
 								</td>
 								<td>
-									<a class="btn btn-primary btn-sm" href="<?php echo site_url('lotw/delete_cert/'.$row->lotw_cert_id); ?>" role="button"><i class="far fa-trash-alt"></i> Delete</a>
+									<a class="btn btn-outline-danger btn-sm" href="<?php echo site_url('lotw/delete_cert/'.$row->lotw_cert_id); ?>" role="button"><i class="far fa-trash-alt"></i> Delete</a>
 								</td>
 							</tr>
 						<?php } ?>
@@ -101,7 +102,7 @@
 		</div>
 
 		<div class="card-body">
-			<p>You can run the LoTW upload script manually using <a href="<?php echo site_url('lotw/lotw_upload'); ?>"><?php echo site_url('lotw/lotw_upload'); ?></a>, this should be run as a cron task hourly or greater not in real time.</p>
+			<p>You can run the LoTW upload script manually from: <a href="<?php echo site_url('lotw/lotw_upload'); ?>"><?php echo site_url('lotw/lotw_upload'); ?></a>. This should be run as a cron task on a fixed interval (no more frequently than once an hour).</p>
 
 			<p>We are building the help file for this at <a href="https://github.com/magicbug/Cloudlog/wiki/LoTW-Import-&-Export-Documentation" target="_blank">https://github.com/magicbug/Cloudlog/wiki/LoTW-Import-&-Export-Documentation</a></p>
 		</div>

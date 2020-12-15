@@ -1,0 +1,4 @@
+User-Agent: *
+Disallow: /assets
+Disallow: /images
+Disallow: /index.php/logbook/qso_map

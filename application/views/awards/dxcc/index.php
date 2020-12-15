@@ -1,20 +1,16 @@
 
 <div class="container">
-    <h1><?php echo $page_title; ?></h1>
+    <h2><?php echo $page_title; ?></h2>
 
-    <!-- Sub Nav for Awards -->
-
-    <?php $this->load->view("awards/nav_bar")?>
     <form class="form" action="<?php echo site_url('awards/dxcc'); ?>" method="post" enctype="multipart/form-data">
         <fieldset>
 
-            <!-- Multiple Checkboxes (inline) -->
             <div class="form-group row">
                 <div class="col-md-2 control-label" for="checkboxes">Deleted DXCC</div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="includedeleted" id="includedeleted" value="1" <?php if ($this->input->post('includedeleted') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
-                        <label class="form-check-label" for="includedeleted">Include Deleted</label>
+                        <label class="form-check-label" for="includedeleted">Include deleted</label>
                     </div>
                 </div>
             </div>
@@ -105,8 +101,8 @@
             <div class="form-group row">
                 <label class="col-md-2 control-label" for="button1id"></label>
                 <div class="col-md-10">
-                    <button id="button2id" type="reset" name="button2id" class="btn btn-danger">Reset</button>
-                    <button id="button1id" type="submit" name="button1id" class="btn btn-success btn-primary">Show</button>
+                    <button id="button2id" type="reset" name="button2id" class="btn btn-warning">Reset</button>
+                    <button id="button1id" type="submit" name="button1id" class="btn btn-primary">Show</button>
                 </div>
             </div>
 
@@ -116,12 +112,11 @@
     $i = 1;
     if ($dxcc_array) {
         echo '
-                
-                <table class="table table-bordered table-hover table-striped table-condensed text-center">
+                <table style="width:100%" class="table-sm table tabledxcc table-bordered table-hover table-striped table-condensed text-center">
                     <thead>
                     <tr>
                         <td>#</td>
-                        <td>DXCCName</td>
+                        <td>DXCC Name</td>
                         <td>Prefix</td>';
         if ($this->input->post('includedeleted') || $this->input->method() !== 'post')
             echo '
@@ -141,18 +136,17 @@
             echo '</tr>';
         }
         echo '</table>
-        <h1>Summary</h1>
+        <h2>Summary</h2>
 
-        <table class="table table-bordered table-hover table-striped table-condensed text-center">
+        <table class="table-sm tablesummary table table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr><td></td>';
 
         foreach($bands as $band) {
             echo '<td>' . $band . '</td>';
         }
-        echo '</tr>';
-
-        echo '</tr>
+        echo '<td>Total</td>
+        </tr>
         </thead>
         <tbody>
 

@@ -1,12 +1,8 @@
 <div class="container">
 
-	<h1><?php echo $page_title; ?></h1>
+	<h2><?php echo $page_title; ?></h2>
 	
-	<!-- Sub Nav for Awards -->
-	
-    <?php $this->load->view("awards/nav_bar")?>
-	
-	<table class="table table-striped table-hover">
+	<table class="table table-sm table-striped table-hover">
 		
 	<tr>
 		<td>Reference</td>

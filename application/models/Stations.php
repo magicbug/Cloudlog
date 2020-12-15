@@ -24,20 +24,37 @@ class Stations extends CI_Model {
 	function profile($id) {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
-
-
 		$this->db->where('station_id', $clean_id);
 		return $this->db->get('station_profile');
 	}
 
+	function profile_clean($id) {
+		// Clean ID
+		$clean_id = $this->security->xss_clean($id);
 
+
+		$this->db->where('station_id', $clean_id);
+		$query = $this->db->get('station_profile');
+
+		$row = $query->row();
+
+		return $row;
+	}
+
+	/*
+	*	Function: add
+	*	Adds post material into the station profile table.
+	*/
 	function add() {
+		// Create data array with field values
 		$data = array(
 			'station_profile_name' => xss_clean($this->input->post('station_profile_name', true)),
 			'station_gridsquare' =>  xss_clean(strtoupper($this->input->post('gridsquare', true))),
 			'station_city' =>  xss_clean($this->input->post('city', true)),
 			'station_iota' =>  xss_clean(strtoupper($this->input->post('iota', true))),
 			'station_sota' =>  xss_clean(strtoupper($this->input->post('sota', true))),
+			'station_sig' =>  xss_clean(strtoupper($this->input->post('sig', true))),
+			'station_sig_info' =>  xss_clean(strtoupper($this->input->post('sig_info', true))),
 			'station_callsign' =>  xss_clean($this->input->post('station_callsign', true)),
 			'station_dxcc' =>  xss_clean($this->input->post('dxcc', true)),
 			'station_country' =>  xss_clean($this->input->post('station_country', true)),
@@ -47,8 +64,10 @@ class Stations extends CI_Model {
 			'state' =>  xss_clean($this->input->post('station_state', true)),
             'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
             'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
+            'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
 		);
 
+		// Insert Records
 		$this->db->insert('station_profile', $data); 
 	}
 
@@ -59,6 +78,8 @@ class Stations extends CI_Model {
 			'station_city' => xss_clean($this->input->post('city', true)),
 			'station_iota' => xss_clean($this->input->post('iota', true)),
 			'station_sota' => xss_clean($this->input->post('sota', true)),
+			'station_sig' => xss_clean($this->input->post('sig', true)),
+			'station_sig_info' => xss_clean($this->input->post('sig_info', true)),
 			'station_callsign' => xss_clean($this->input->post('station_callsign', true)),
 			'station_dxcc' => xss_clean($this->input->post('dxcc', true)),
 			'station_country' => xss_clean($this->input->post('station_country', true)),
@@ -68,6 +89,7 @@ class Stations extends CI_Model {
 			'state' => xss_clean($this->input->post('station_state', true)),
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
             'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
+            'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
 		);
 
 		$this->db->where('station_id', xss_clean($this->input->post('station_id', true)));
@@ -167,6 +189,14 @@ class Stations extends CI_Model {
 			$this->db->where('COL_MY_SOTA_REF', $row->station_sota);
 		}
 
+		if($row->station_sig != "") {
+			$this->db->where('COL_MY_SIG', $row->station_sig);
+		}
+
+		if($row->station_sig_info != "") {
+			$this->db->where('COL_MY_SIG_INFO', $row->station_sig_info);
+		}
+
 		$this->db->where('COL_MY_COUNTRY', $row->station_country);
 
 		if( strpos($row->station_gridsquare, ',') !== false ) {
@@ -216,6 +246,20 @@ class Stations extends CI_Model {
         $query = $this->db->query($sql);
 
         return $query;
+    }
+
+    /*
+	*	Function: are_eqsl_nicks_defined
+	*	Description: Returns number of station profiles with eqslnicknames
+    */
+    function are_eqsl_nicks_defined() {
+    	$this->db->select('eqslqthnickname');
+    	$this->db->where('eqslqthnickname IS NOT NULL');
+    	$this->db->where('eqslqthnickname !=', '');
+		$this->db->from('station_profile');
+		$query = $this->db->get();
+
+		return $query->num_rows();
     }
 
 }

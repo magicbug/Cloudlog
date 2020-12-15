@@ -8,19 +8,22 @@
 		</div>
 	<?php } ?>
 
+<h2><?php echo $page_title; ?></h2>
+
 <div class="card">
   <div class="card-header">
-    <?php echo $page_title; ?>
+    Station Profiles
   </div>
   <div class="card-body">
-    <p class="card-text">Station Profiles define locations of operating, useful for portable operating or using a friends QTH.</p>
-    <p class="card-text">Within Cloudlog these act in a similar way to logbooks, a Station Profile keeps a set of QSOs together.</p>
+    <p class="card-text">Station Profiles define operating locations, such as your QTH, a friend's QTH, or a portable station.</p>
+	<p class="card-text">Similar to logbooks, a station profile keeps a set of QSOs together.</p>
+	<p class="card-text">Only one logbook may be active at a time. In the table below this is shown with the "Active Logbook" badge.</p>
 
 		<?php if ($stations->num_rows() > 0) { ?>
 
 		<?php if($current_active == 0) { ?>
 		<div class="alert alert-danger" role="alert">
-		  Attention you need to set an active station profile.
+		  Attention: You need to set an active station profile. Go to Admin->Station Profiles to select one.
 		</div>
 		<?php } ?>
 
@@ -28,10 +31,11 @@
 			<div class="alert alert-danger" role="alert">
 		  		<span class="badge badge-pill badge-warning">Warning</span> Due to recent changes within Cloudlog you need to reassign QSOs to your station profiles.
 
-		  		If you haven't any station profiles, create a profile then <a href="<?php echo site_url('station/assign_all/'); ?>" class="btn btn-danger" onclick="return confirm('Assign All QSOs to Default Station ID"><i class="fas fa-trash-alt"></i> Press this Button to assign all QSOs to the the #1 station ID</a>
+		  		Create a station profile, if you haven't already, then <a href="<?php echo site_url('station/assign_all/'); ?>" class="btn btn-danger" onclick="return confirm('Assign All QSOs to Default Station ID"><i class="fas fa-trash-alt"></i> press this button to assign all QSOs to the first Station Profile.</a>
 			</div>
 		<?php } ?>
 
+		<div class="table-responsive">
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -40,7 +44,7 @@
 					<th scope="col">Country</th>
 					<th scope="col">Gridsquare</th>
 					<th scope="col">City</th>
-					<th scope="col">QSO Count</th>
+					<th scope="col">QSOs</th>
 					<th></th>
 					<th scope="col"></th>
 					<th scope="col"></th>
@@ -56,7 +60,7 @@
 					<td><?php echo $row->station_gridsquare;?></td>
 					<td><?php echo $row->station_city;?></td>	
 					<td><?php echo $row->qso_total;?></td>
-					<td>
+					<td style="text-align: center">
 						<?php if($row->station_active != 1) { ?>			
 							<a href="<?php echo site_url('station/set_active/').$current_active."/".$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('Are you sure you want to make logbook <?php echo $row->station_profile_name; ?> the active logbook?');">Set Active</a>
 						<?php } else { ?>
@@ -68,18 +72,19 @@
 						<?php } ?>
 					</td>
 					<td>
-						<a href="<?php echo site_url('station/edit')."/".$row->station_id; ?>" class="btn btn-info btn-sm"><i class="fas fa-edit-alt"></i> Edit</a>
+						<a href="<?php echo site_url('station/edit')."/".$row->station_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
 					</td>
                     <td>
-                        <a href="<?php echo site_url('station/deletelog')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i> Delete log</a></td>
+                        <a href="<?php echo site_url('station/deletelog')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i> Empty Log</a></td>
                     </td>
 					<td>
-						<a href="<?php echo site_url('station/delete')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete station profile <?php echo $row->station_profile_name; ?> this will delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i> Delete</a></td>
+						<a href="<?php echo site_url('station/delete')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete station profile <?php echo $row->station_profile_name; ?> this will delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i> Delete Profile</a></td>
 				</tr>
 
 				<?php } ?>
 			</tbody>
 		<table>
+		</div>
 		<?php } ?>
 
 

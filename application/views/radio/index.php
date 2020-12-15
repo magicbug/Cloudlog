@@ -9,23 +9,22 @@
 			</div>
 		<?php } ?>
 
+	<h2><?php echo $page_title; ?></h2>
+
 	<div class="card">
 	  <div class="card-header">
-	    <?php echo $page_title; ?>
+	    Active Radios
 	  </div>
 	  <div class="card-body">
-	    <h5 class="card-title"></h5>
-	    <p class="card-text">
-	    	These are active radios that are connected to Cloudlog via the API.
-	    </p>
-
+	    <p class="card-text">Below is a list of active radios that are connected to Cloudlog.</p>
+	    <p class="card-text">If you haven't connected any radios yet, see the API page to generate API keys.</p>
 	    <div class="table-responsive">
 		    <!-- Display Radio Statuses -->	  
 			<table class="table table-striped status"></table>
 		</div>
 
 		<p class="card-text">
-	    	<span class="badge badge-info">Info</span> You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Radio-Interface" target="_blank">radio functons</a> in the wiki.</a>
+	    	<span class="badge badge-info">Info</span> You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Radio-Interface" target="_blank">radio functions</a> in the wiki.</a>
 	    </p>
 
 	  </div>

@@ -50,7 +50,7 @@ class API extends CI_Controller {
 
 		$data['api_keys'] = $this->api_model->keys();
 
-		$data['page_title'] = "API Options";
+		$data['page_title'] = "API";
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('api/help');
@@ -388,7 +388,11 @@ class API extends CI_Controller {
 		return $arguments;
 	}
 
-
+	/*
+	*
+	*	Function: QSO
+	*	Task: allows passing of ADIF data to Cloudlog
+	*/
 	function qso() {
 		header('Content-type: application/json');
 
@@ -397,11 +401,13 @@ class API extends CI_Controller {
 		// Decode JSON and store
 		$obj = json_decode(file_get_contents("php://input"), true);
 
+
 		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
 		   http_response_code(401);
 		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
 		   die();
 		}
+
 
 		if($obj['type'] == "adif" && $obj['string'] != "") {
 			// Load the logbook model for adding QSO records
@@ -420,8 +426,13 @@ class API extends CI_Controller {
 				{
 					break;
 				};
+				
 
-				$this->logbook_model->import($record, 0, NULL, NULL, NULL);
+				if(isset($obj['station_profile_id'])) {
+					$this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL);
+				} else {
+					$this->logbook_model->import($record, 0, NULL, NULL, NULL, NULL);
+				}
 
 			};
 			http_response_code(201);
@@ -632,14 +643,7 @@ class API extends CI_Controller {
 		*	Check if callsign is active on LOTW
 		*
 		*/
-			$this->load->model('lotw_user');
-		 
-			$lotw_member = $this->lotw_user->check($lookup_callsign);
-			if($lotw_member == "not found") {
-				$return['lotw_member'] = false;
-			} else {
-				$return['lotw_member'] = true;
-			}
+
 
 		/*
 		*
