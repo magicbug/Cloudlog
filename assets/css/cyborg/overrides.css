@@ -1,3 +1,26 @@
 /*!
  * No overrides for the default theme as it aligns with general.css
 */
+
+.leaflet-tile {
+	filter: invert() hue-rotate(180deg) grayscale(0.8) !important;
+}
+
+path.grid-rectangle {
+	stroke: rgba(200, 200, 200, 0.5);
+}
+
+span.grid-text > font {
+	color: rgba(220, 220, 220, 0.7) !important; 
+	-webkit-text-stroke: 1px black !important;
+}
+
+path.grid-confirmed {
+	fill: rgba(144, 238, 144, 0.15) !important;
+	stroke: rgba(144, 238, 144, 0.15) !important;
+}
+
+path.grid-worked {
+	fill: rgba(220, 50, 50, 0.25) !important;
+	stroke: rgba(220, 50, 50, 0.25) !important;
+}
