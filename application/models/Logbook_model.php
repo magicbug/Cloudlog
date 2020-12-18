@@ -42,6 +42,12 @@ class Logbook_model extends CI_Model {
         $stx = null;
     }
 
+    if($this->input->post('contestname')) {
+        $contestid = $this->input->post('contestname');
+    } else {
+        $contestid = null;
+    }
+
     if($this->session->userdata('user_locator')){
         $locator = $this->session->userdata('user_locator');
     } else {
@@ -132,6 +138,7 @@ class Logbook_model extends CI_Model {
             'COL_SRX' => $srx,
             'COL_STX_STRING' => $stx_string,
             'COL_SRX_STRING' => $srx_string,
+            'COL_CONTEST_ID' => $contestid,
             'COL_NR_BURSTS' => null,
             'COL_NR_PINGS' => null,
             'COL_MAX_BURSTS' => null,
