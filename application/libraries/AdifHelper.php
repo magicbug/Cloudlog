@@ -46,6 +46,10 @@ class AdifHelper {
 
         $line .= $this->getAdifFieldLine("QSL_SENT", $qso->COL_QSL_SENT);
 
+        if ($qso->COL_QSL_VIA) {
+            $line .= $this->getAdifFieldLine("QSL_VIA", $qso->COL_QSL_VIA);
+        }
+
         $line .= $this->getAdifFieldLine("COUNTRY", $qso->COL_COUNTRY);
 
         if ($qso->COL_VUCC_GRIDS != "") {
