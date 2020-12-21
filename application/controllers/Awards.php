@@ -75,7 +75,10 @@ class Awards extends CI_Controller {
 	
 	public function dxcc ()	{
 		$this->load->model('dxcc');
+        $this->load->model('modes');
+
         $data['worked_bands'] = $this->dxcc->get_worked_bands(); // Used in the view for band select
+        $data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
@@ -106,6 +109,7 @@ class Awards extends CI_Controller {
             $postdata['Oceania'] = $this->input->post('Oceania');
             $postdata['Antarctica'] = $this->input->post('Antarctica');
             $postdata['band'] = $this->input->post('band');
+            $postdata['mode'] = $this->input->post('mode');
         }
         else { // Setting default values at first load of page
             $postdata['lotw'] = 1;
@@ -122,11 +126,12 @@ class Awards extends CI_Controller {
             $postdata['Oceania'] = 1;
             $postdata['Antarctica'] = 1;
             $postdata['band'] = 'All';
+            $postdata['mode'] = 'All';
         }
 
 		$dxcclist = $this->dxcc->fetchdxcc($postdata);
         $data['dxcc_array'] = $this->dxcc->get_dxcc_array($dxcclist, $bands, $postdata);
-        $data['dxcc_summary'] = $this->dxcc->get_dxcc_summary($bands);
+        $data['dxcc_summary'] = $this->dxcc->get_dxcc_summary($data['worked_bands']);
 
 		// Render Page
 		$data['page_title'] = "Awards - DXCC";
