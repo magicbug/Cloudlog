@@ -14,7 +14,7 @@ class Distances extends CI_Controller {
     public function index()
     {
         // Render Page
-        $data['page_title'] = "Distances worked";
+        $data['page_title'] = "Distances Worked";
 
         function js_str($s)
         {

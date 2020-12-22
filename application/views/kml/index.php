@@ -8,7 +8,7 @@
         </div>
 
         <div class="alert alert-warning" role="alert">
-            Only QSOs with a gridsquare defined, is exported!
+            Only QSOs with a gridsquare defined will be exported!
         </div>
 
         <div class="card-body">

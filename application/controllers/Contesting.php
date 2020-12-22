@@ -33,7 +33,7 @@ class Contesting extends CI_Controller {
         $this->form_validation->set_rules('start_time', 'Time', 'required');
         $this->form_validation->set_rules('callsign', 'Callsign', 'required');
 
-            $data['page_title'] = "Contest logging";
+            $data['page_title'] = "Contest Logging";
 
             $this->load->view('interface_assets/header', $data);
             $this->load->view('contesting/index');

@@ -90,7 +90,7 @@
                     </tr>
 
                     <tr>
-                        <td>RST Recv:</td>
+                        <td>RST Recv'd:</td>
                         <td><?php echo $row->COL_RST_RCVD; ?> <?php if ($row->COL_SRX) { ?>(<?php echo $row->COL_SRX;?>)<?php } ?> <?php if ($row->COL_SRX_STRING) { ?>(<?php echo $row->COL_SRX_STRING;?>)<?php } ?></td>
                     </tr>
 

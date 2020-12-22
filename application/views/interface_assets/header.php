@@ -67,7 +67,7 @@
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('qso?manual=1');?>" title="Log QSO made in the past">Post QSO</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="<?php echo site_url('contesting');?>" title="Log contest QSOs">Contest logging</a>
+                            <a class="dropdown-item" href="<?php echo site_url('contesting');?>" title="Log contest QSOs">Contest Logging</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="<?php echo site_url('qsl');?>" title="QSL"> View QSL</a>
 						</div>
@@ -83,13 +83,13 @@
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="<?php echo site_url('gridsquares');?>" title="Gridsquares">Gridsquares</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('distances');?>" title="Distances">Distances worked</a>
+                    <a class="dropdown-item" href="<?php echo site_url('distances');?>" title="Distances">Distances Worked</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('dayswithqso');?>" title="Dayswithqso">Days with QSOs</a>
+                    <a class="dropdown-item" href="<?php echo site_url('dayswithqso');?>" title="Days with QSOs">Days with QSOs</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('timeline');?>" title="Timeline">Timeline</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('accumulated');?>" title="Accumulated statistics">Accumulated statistics</a>
+                    <a class="dropdown-item" href="<?php echo site_url('accumulated');?>" title="Accumulated Statistics">Accumulated Statistics</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('timeplotter');?>" title="View time when worked">Timeplotter</a>
 					<div class="dropdown-divider"></div>

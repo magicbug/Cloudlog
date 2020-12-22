@@ -4,13 +4,13 @@
 
         <div class="col-sm-12 col-md-12">
             <div class="card">
-                <div class="card-header"><h5 class="card-title">Logging form</h5></div>
+                <div class="card-header"><h5 class="card-title">Logging Form</h5></div>
                 <div class="card-body">
                     <form id="qso_input" name="qsos">
 
                             <div class="form-group row">
 
-                                    <label class="col-auto control-label" for="radio">Exchange type</label>
+                                    <label class="col-auto control-label" for="radio">Exchange Type</label>
                                     <div class="col-auto">
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="exchangeradio" id="serial" value="serial" checked>
@@ -379,7 +379,7 @@
                                         </div>
                                 </div>
                             <button type="reset" class="btn btn-sm btn-warning" onclick="reset_log_fields()">Reset</button>
-                            <button type="button" class="btn btn-sm btn-primary" onclick="logQso();"><i class="fas fa-save"></i> Log QSO</button>
+                            <button type="button" class="btn btn-sm btn-primary" onclick="logQso();"><i class="fas fa-save"></i> Save QSO</button>
                             </div>
 
                         </div>
@@ -396,7 +396,7 @@
             </div>
 
             <div class="card log">
-                <div class="card-header"><h5 class="card-title">Logbook (for this logging session)</h5></div>
+                <div class="card-header"><h5 class="card-title">Contest Logbook (Only for this session)</h5></div>
 
                         <table class="table-sm table qsotable table-bordered table-hover table-striped table-condensed text-center">
                             <thead>
