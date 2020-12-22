@@ -5,6 +5,9 @@
         <li class="nav-item">
             <a class="nav-link active" id="table-tab" data-toggle="tab" href="#qsodetails" role="tab" aria-controls="table" aria-selected="true">QSO Details</a>
         </li>
+        <li class="nav-item">
+            <a id="station-tab" class="nav-link" data-toggle="tab" href="#stationdetails" role="tab" aria-controls="table" aria-selected="true">Station Details</a>
+        </li>
         <?php
         if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) {
 
@@ -243,10 +246,40 @@
                     <h3>LoTW:</h3>
                         <p>This QSO is confirmed on Lotw</p>
                     <?php } ?>
+            </div>
 
-                <h2 style="font-size: 22px;">Station Information</h2>
+                <div class="col">
 
-                <table width="100%">
+                    <div id="mapqso" style="width: 340px; height: 250px"></div>
+
+                    <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
+                        <br>
+                            <p class="editButton"><a class="btn btn-primary" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a></p>
+                    <?php } ?>
+
+                    <?php
+
+                        if($row->COL_SAT_NAME != null) {
+                            $twitter_band_sat = $row->COL_SAT_NAME;
+                            $hashtags = "#hamr #cloudlog #amsat";
+                        } else {
+                            $twitter_band_sat = $row->COL_BAND;
+                            $hashtags = "#hamr #cloudlog";
+                        }
+
+                        $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." (Gridsquare: ".$row->COL_GRIDSQUARE.") on ".$twitter_band_sat." using ".$row->COL_MODE." ".$hashtags);
+                    ?>
+
+                    <div class="text-right"><a class="btn btn-sm btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a></div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="stationdetails" role="tabpanel" aria-labelledby="table-tab">
+            <h3>Station Details</h3>
+
+            <table width="100%">
                     <tr>
                         <td>Station Callsign</td>
                         <td><?php echo $row->station_callsign; ?></td>
@@ -283,35 +316,7 @@
                         <td><?php echo $row->COL_TX_PWR; ?>w</td>
                     </tr>
                     <?php } ?>
-                </table>
-            </div>
-
-                <div class="col">
-
-                    <div id="mapqso" style="width: 340px; height: 250px"></div>
-
-                    <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
-                        <br>
-                            <p class="editButton"><a class="btn btn-primary" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> Edit QSO</a></p>
-                    <?php } ?>
-
-                    <?php
-
-                        if($row->COL_SAT_NAME != null) {
-                            $twitter_band_sat = $row->COL_SAT_NAME;
-                            $hashtags = "#hamr #cloudlog #amsat";
-                        } else {
-                            $twitter_band_sat = $row->COL_BAND;
-                            $hashtags = "#hamr #cloudlog";
-                        }
-
-                        $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." (Gridsquare: ".$row->COL_GRIDSQUARE.") on ".$twitter_band_sat." using ".$row->COL_MODE." ".$hashtags);
-                    ?>
-
-                    <div class="text-right"><a class="btn btn-sm btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a></div>
-
-                </div>
-            </div>
+            </table>
         </div>
 
         <?php
