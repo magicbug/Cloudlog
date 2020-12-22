@@ -178,6 +178,13 @@
                     </tr>
                     <?php } ?>
 
+                    <?php if($row->COL_CONTEST_ID != null) { ?>
+                    <tr>
+                        <td>Contest Name:</td>
+                        <td><?php echo $row->COL_CONTEST_ID; ?></td>
+                    </tr>
+                    <?php } ?>
+
                     <?php if($row->COL_IOTA != null) { ?>
                     <tr>
                         <td>IOTA Ref:</td>
