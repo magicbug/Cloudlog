@@ -12,8 +12,8 @@ class Options extends CI_Controller {
 		$this->load->helper(array('form', 'url'));
 
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-    }
+		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+	}
 	
 	
 	// Default /options view just gives some text to explain the options area
