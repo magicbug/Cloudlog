@@ -67,6 +67,7 @@ path.grid-worked {
 */
 
 .form-control,
+.form-control-sm,
 .form-control:focus,
 .form-control:disabled,
 .custom-select {

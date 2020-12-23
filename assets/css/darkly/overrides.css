@@ -68,9 +68,15 @@ path.grid-worked {
 */
 
 .form-control,
+.form-control-sm,
 .form-control:focus,
 .form-control:disabled,
 .custom-select {
 	background-color: rgba(20,20,20,.5);
 	color: #eee; 
+}
+
+select optgroup,
+select option {
+	background-color: #222;
 }
