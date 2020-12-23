@@ -2,6 +2,10 @@
  * No overrides for the default theme as it aligns with general.css
 */
 
+/*
+*	Dark Maps
+*/
+
 .leaflet-tile {
 	filter: invert() hue-rotate(180deg) grayscale(0.8) brightness(1.2) !important;
 }
@@ -23,4 +27,45 @@ path.grid-confirmed {
 path.grid-worked {
 	fill: rgba(220, 50, 50, 0.25) !important;
 	stroke: rgba(220, 50, 50, 0.25) !important;
+}
+
+#map, 
+#qsomap{
+	background-color: #222;
+}
+
+/* 
+*	Dark Navigation 
+*/
+
+/* Navigation background */
+.bg-light {
+    background-color: #303030!important;
+}
+
+/* Inactive Links */
+.navbar-light .navbar-nav .nav-link {
+    color: rgba(255,255,255,.6);
+}
+
+/* Active Links and Logo */
+.navbar-light .navbar-brand,
+.navbar-light .navbar-brand:focus,
+.navbar-light .navbar-brand:hover,
+.navbar-light .navbar-nav .active>.nav-link,
+.navbar-light .navbar-nav .nav-link:focus,
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #fff;
+}
+
+/* 
+*	Dark inputs 
+*/
+
+.form-control,
+.form-control:focus,
+.form-control:disabled,
+.custom-select {
+	background-color: rgba(20,20,20,.5);
+	color: #eee; 
 }
