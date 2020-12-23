@@ -66,6 +66,6 @@ path.grid-worked {
 .form-control:focus,
 .form-control:disabled,
 .custom-select {
-	background-color: rgba(20,20,20,.25);
+	background-color: rgba(20, 41, 62, 0.6);
 	color: #fff; 
 }
