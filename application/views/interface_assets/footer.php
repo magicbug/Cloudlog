@@ -548,6 +548,14 @@ $(document).on('change', 'input', function(){
 });
 });
 
+    //Spacebar moves to the name field when you're entering a callsign
+    //Similar to contesting ux, good for pileups.
+    $("#callsign").on("keypress", function(e) {
+        if (e.which == 32){
+            $("#name").focus();
+            return false; //Eliminate space char
+        }
+    });
 
     // On Key up check and suggest callsigns
     $("#callsign").keyup(function() {
