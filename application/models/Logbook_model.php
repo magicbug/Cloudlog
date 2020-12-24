@@ -1458,7 +1458,7 @@ class Logbook_model extends CI_Model {
      * $skipDuplicate - used in ADIF import to skip duplicate checking when importing QSOs
      * $markLoTW - used in ADIF import to mark QSOs as exported to LoTW when importing QSOs
      * $dxccAdif - used in ADIF import to determine if DXCC From ADIF is used, or if Cloudlog should try to guess
-     * $markLoTW - used in ADIF import to mark QSOs as exported to QRZ Logbook when importing QSOs
+     * $markQrz - used in ADIF import to mark QSOs as exported to QRZ Logbook when importing QSOs
      * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
      */
     function import($record, $station_id = "0", $skipDuplicate, $markLotw, $dxccAdif, $markQrz, $skipexport = false) {
