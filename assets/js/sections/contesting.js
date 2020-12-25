@@ -44,7 +44,11 @@ document.onkeyup = function(e) {
     // ALT-W wipe
     if (e.altKey && e.which == 87) {
         reset_log_fields();
+    // CTRL-Enter logs QSO
     } else if ((e.keyCode == 10 || e.keyCode == 13) && (e.ctrlKey || e.metaKey)) {
+        logQso();
+    // Enter in sent exchange logs QSO
+    }  else if((e.which == 13) && ($(document.activeElement).attr("id") == "exch_recv")) {
         logQso();
     } else if (e.which == 27) {
         reset_log_fields();
