@@ -113,7 +113,7 @@ class Lotw extends CI_Controller {
         	// Upload of P12 Failed
             $error = array('error' => $this->upload->display_errors());
 
-	        	// Set Page Title
+			// Set Page Title
 			$data['page_title'] = "Logbook of the World";
 
 			// Load Views
@@ -235,9 +235,6 @@ class Lotw extends CI_Controller {
 						array_push($qso_id_array, $temp_qso->COL_PRIMARY_KEY);
 					}
 
-					//$this->load->view('lotw_views/adif_views/adif_export', $data);
-
-
 					// Build File to save
 					$adif_to_save = $this->load->view('lotw_views/adif_views/adif_export', $data, TRUE);
 
@@ -247,7 +244,6 @@ class Lotw extends CI_Controller {
 					}
 
 					// Build Filename
-
 					$filename_for_saving = './uploads/lotw/'.preg_replace('/[^a-z0-9]+/', '-', strtolower($data['lotw_cert_info']->callsign))."-".date("Y-m-d-H-i-s")."-cloudlog.tq8";
 
 					$gzdata = gzencode($adif_to_save, 9);
