@@ -1353,7 +1353,7 @@ $(document).ready(function(){
                           renderTo: 'graphcontainer'
                       },
                       title: {
-                          text: 'Distance distribution'
+                          text: 'Distance Distribution'
                       },
                       xAxis: {
                           categories: [],
@@ -2305,7 +2305,7 @@ $(document).ready(function(){
                     renderTo: 'container'
                 },
                 title: {
-                    text: 'Time distribution'
+                    text: 'Time Distribution'
                 },
                 xAxis: {
                     categories: [],

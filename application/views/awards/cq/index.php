@@ -84,7 +84,7 @@
 
             <!-- Multiple Checkboxes (inline) -->
             <div class="form-group row">
-                <div class="col-md-2" for="checkboxes">Worked / confirmed</div>
+                <div class="col-md-2" for="checkboxes">Worked / Confirmed</div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="worked" id="worked" value="1" <?php if ($this->input->post('worked') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >

@@ -10,7 +10,7 @@
 		<td>Callsign</td>
 		<td>Band</td>
 		<td>RST Sent</td>
-		<td>RST Recvd</td>
+		<td>RST Received</td>
 	</tr>
 	
 	<?php

@@ -29,7 +29,7 @@ $lang['gen_hamradio_call'] = 'Call';
 $lang['gen_hamradio_callsign'] = 'Callsign';
 $lang['gen_hamradio_mode'] = 'Mode';
 $lang['gen_hamradio_rst_sent'] = 'Sent';
-$lang['gen_hamradio_rst_recv'] = 'Recv';
+$lang['gen_hamradio_rst_recv'] = 'Recv\'d';
 $lang['gen_hamradio_band'] = 'Band';
 
 // Dashboard Words

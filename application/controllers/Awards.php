@@ -174,7 +174,7 @@ class Awards extends CI_Controller {
         $data['type'] = $type;
 
         // Render Page
-        $data['page_title'] = "VUCC - band";
+        $data['page_title'] = "VUCC - " .$band . " Band";
         $data['filter'] = "band ".$band;
         $data['band'] = $band;
         $this->load->view('interface_assets/header', $data);
