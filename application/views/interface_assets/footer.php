@@ -398,6 +398,7 @@ $(document).on('change', 'input', function(){
                       $("#mode").val(val2[0].Uplink_Mode);  
                     }
                     $("#band").val(frequencyToBand(val2[0].Uplink_Freq));
+                    $("#band_rx").val(frequencyToBand(val2[0].Downlink_Freq));
                     $("#frequency").val(val2[0].Uplink_Freq);  
                     $("#frequency_rx").val(val2[0].Downlink_Freq); 
                     $("#selectPropagation").val('SAT');
@@ -1045,6 +1046,7 @@ $(document).on('change', 'input', function(){
           if (data.downlink_freq != "")
           {
             $('#frequency_rx').val(data.downlink_freq);
+            $("#band_rx").val(frequencyToBand(data.downlink_freq));
           }
 
           old_mode = $(".mode").val();
@@ -1091,6 +1093,7 @@ $(document).on('change', 'input', function(){
         $("#sat_mode").val("");
         $("#frequency").val("");
         $("#frequency_rx").val("");
+        $("#band_rx").val("");
         $("#selectPropagation").val($("#selectPropagation option:first").val());
       }
 

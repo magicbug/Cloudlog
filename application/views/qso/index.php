@@ -195,6 +195,45 @@
             </div>
 
             <div class="form-group">
+                  <label for="band">RX Band</label>
+
+                  <select id="band_rx" class="form-control" name="band_rx">
+                    <option value="" <?php if($this->session->userdata('band_rx') == "") { echo "selected=\"selected\""; } ?>></option>           
+                    
+                    <optgroup label="HF">
+                      <option value="160m" <?php if($this->session->userdata('band_rx') == "160m") { echo "selected=\"selected\""; } ?>>160m</option>
+                      <option value="80m" <?php if($this->session->userdata('band_rx') == "80m") { echo "selected=\"selected\""; } ?>>80m</option>
+                      <option value="60m" <?php if($this->session->userdata('band_rx') == "60m") { echo "selected=\"selected\""; } ?>>60m</option>
+                      <option value="40m" <?php if($this->session->userdata('band_rx') == "40m") { echo "selected=\"selected\""; } ?>>40m</option>
+                      <option value="30m" <?php if($this->session->userdata('band_rx') == "30m") { echo "selected=\"selected\""; } ?>>30m</option>
+                      <option value="20m" <?php if($this->session->userdata('band_rx') == "20m") { echo "selected=\"selected\""; } ?>>20m</option>
+                      <option value="17m" <?php if($this->session->userdata('band_rx') == "17m") { echo "selected=\"selected\""; } ?>>17m</option>
+                      <option value="15m" <?php if($this->session->userdata('band_rx') == "15m") { echo "selected=\"selected\""; } ?>>15m</option>
+                      <option value="12m" <?php if($this->session->userdata('band_rx') == "12m") { echo "selected=\"selected\""; } ?>>12m</option>
+                      <option value="10m" <?php if($this->session->userdata('band_rx') == "10m") { echo "selected=\"selected\""; } ?>>10m</option>
+                    </optgroup>
+
+                    <optgroup label="VHF">
+                      <option value="6m" <?php if($this->session->userdata('band_rx') == "6m") { echo "selected=\"selected\""; } ?>>6m</option>
+                      <option value="4m" <?php if($this->session->userdata('band_rx') == "4m") { echo "selected=\"selected\""; } ?>>4m</option>
+                      <option value="2m" <?php if($this->session->userdata('band_rx') == "2m") { echo "selected=\"selected\""; } ?>>2m</option>
+                    </optgroup>
+
+                    <optgroup label="UHF">
+                      <option value="70cm" <?php if($this->session->userdata('band_rx') == "70cm") { echo "selected=\"selected\""; } ?>>70cm</option>
+                      <option value="23cm" <?php if($this->session->userdata('band_rx') == "23cm") { echo "selected=\"selected\""; } ?>>23cm</option>
+                      <option value="13cm" <?php if($this->session->userdata('band_rx') == "13cm") { echo "selected=\"selected\""; } ?>>13cm</option>
+                      <option value="9cm" <?php if($this->session->userdata('band_rx') == "9cm") { echo "selected=\"selected\""; } ?>>9cm</option>
+                    </optgroup>
+
+                    <optgroup label="Microwave">
+                      <option value="6cm" <?php if($this->session->userdata('band_rx') == "6cm") { echo "selected=\"selected\""; } ?>>6cm</option>
+                      <option value="3cm" <?php if($this->session->userdata('band_rx') == "3cm") { echo "selected=\"selected\""; } ?>>3cm</option>
+                    </optgroup>
+                  </select>
+            </div>
+
+            <div class="form-group">
               <label for="transmit_power">Transmit Power (W)</label>
               <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php echo $this->session->userdata('transmit_power'); ?>" />
               <small id="powerHelp" class="form-text text-muted">Give power value in Watts. Include only numbers in the input.</small>
