@@ -211,7 +211,7 @@ class Logbook_model extends CI_Model {
         $data['COL_LOTW_QSL_RCVD'] = 'N';
     }
 
-    $this->add_qso($data);
+    $this->add_qso($data, $skipexport = false);
   }
 
   public function check_station($id){
@@ -357,7 +357,7 @@ class Logbook_model extends CI_Model {
 
   }
 
-  function add_qso($data) {
+  function add_qso($data, $skipexport = false) {
 
     if ($data['COL_DXCC'] == "Not Found"){
       $data['COL_DXCC'] = NULL;
@@ -374,8 +374,8 @@ class Logbook_model extends CI_Model {
 
     $result = $this->exists_qrz_api_key($data['station_id']);
 
-    // Push qso to qrz if apikey is set, and realtime upload is enabled
-    if (isset($result->qrzapikey) && $result->qrzrealtime == 1) {
+    // Push qso to qrz if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
+    if (isset($result->qrzapikey) && $result->qrzrealtime == 1 && !$skipexport) {
       $CI =& get_instance();
       $CI->load->library('AdifHelper');
       $qso = $this->get_qso($last_id)->result();
@@ -1462,7 +1462,14 @@ class Logbook_model extends CI_Model {
       return $this->db->get();
     }
 
-    function import($record, $station_id = "0", $skipDuplicate, $markLotw, $dxccAdif, $markQrz) {
+    /*
+     * $skipDuplicate - used in ADIF import to skip duplicate checking when importing QSOs
+     * $markLoTW - used in ADIF import to mark QSOs as exported to LoTW when importing QSOs
+     * $dxccAdif - used in ADIF import to determine if DXCC From ADIF is used, or if Cloudlog should try to guess
+     * $markQrz - used in ADIF import to mark QSOs as exported to QRZ Logbook when importing QSOs
+     * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
+     */
+    function import($record, $station_id = "0", $skipDuplicate, $markLotw, $dxccAdif, $markQrz, $skipexport = false) {
         $CI =& get_instance();
         $CI->load->library('frequency');
         $my_error = "";
@@ -1963,7 +1970,7 @@ class Logbook_model extends CI_Model {
             }
 
             // Save QSO
-            $this->add_qso($data);
+            $this->add_qso($data, $skipexport);
         } else {
           $my_error .= "Date/Time: ".$time_on." Callsign: ".$record['call']." Band: ".$band."  Duplicate<br>";
         }
