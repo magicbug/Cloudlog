@@ -117,6 +117,7 @@ class ADIF_Parser
 	public function feed($input_data) //allows the parser to be fed a string
 	{
 		$this->data = $input_data;
+        $this->datasplit = preg_split("/<eor>/i", substr($this->data, $this->i));
 	}
 	
 	public function load_from_file($fname) //allows the user to accept a filename as input
