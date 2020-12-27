@@ -4,6 +4,42 @@ $("#callsign").focus();
 // Init serial sent as 1 when loading page
 $("#exch_sent").val(1);
 
+$( document ).ready(function() {
+    restoreContestSession();
+});
+
+// We are restoring the settings in the contest logging form here
+function restoreContestSession() {
+    var contestname = localStorage.getItem("contestid");
+
+    if (contestname != null) {
+        $("#contestname").val(contestname);
+    }
+
+    var exchangetype = localStorage.getItem("exchangetype");
+
+    if (exchangetype == "other") {
+        $("[name=exchangeradio]").val(["other"]);
+    }
+
+    var exchangesent = localStorage.getItem("exchangesent");
+
+    if (exchangesent != null) {
+        $("#exch_sent").val(exchangesent);
+    }
+}
+
+// Storing the contestid in contest session
+$('#contestname').change(function() {
+    localStorage.setItem("contestid", $("#contestname").val());
+});
+
+// Storing the exchange type in contest session
+$('input[type=radio][name=exchangeradio]').change(function() {
+    localStorage.setItem("exchangetype", $('input[name=exchangeradio]:checked', '#qso_input').val());
+});
+
+
 // realtime clock
 $(function($) {
     var options = {

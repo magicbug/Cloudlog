@@ -2575,6 +2575,11 @@ function deleteQsl(id) {
                             $("#exch_sent").val(+$("#exch_sent").val() + 1);
                         }
                         $("#callsign").focus();
+
+                        // Store contest session
+                        localStorage.setItem("contestid", $("#contestname").val());
+                        localStorage.setItem("exchangetype", $('input[name=exchangeradio]:checked', '#qso_input').val());
+                        localStorage.setItem("exchangesent", $("#exch_sent").val());
                     }
                 });
             }
