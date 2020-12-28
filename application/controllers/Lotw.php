@@ -68,7 +68,11 @@ class Lotw extends CI_Controller {
 	*/
 	public function cert_upload() {
 		$this->load->model('user_model');
+		$this->load->model('dxcc');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		// Load DXCC Countrys List
+		$data['dxcc_list'] = $this->dxcc->list();
 
 		// Set Page Title
 		$data['page_title'] = "Logbook of the World";
@@ -91,6 +95,7 @@ class Lotw extends CI_Controller {
 	public function do_cert_upload()
     {
 		$this->load->model('user_model');
+		$this->load->model('dxcc');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		// Fire OpenSSL missing error if not found
@@ -131,13 +136,18 @@ class Lotw extends CI_Controller {
 
         	$info = $this->decrypt_key($data['upload_data']['full_path']);
 
-        	// Check to see if certificate is already in the system
-        	$new_certficiate = $this->LotwCert->find_cert($info['issued_callsign'], $this->session->userdata('user_id'));
-
         	// Check DXCC & Store Country Name
-        	$this->load->model('Logbook_model');
-        	$dxcc_check = $this->Logbook_model->check_dxcc_table($info['issued_callsign'], $info['validFrom']);
-        	$dxcc = $dxcc_check[1];
+			$this->load->model('Logbook_model');
+			
+			if($this->input->post('dxcc') != "") {
+				$dxcc = $this->input->post('dxcc');
+			} else{ 
+				$dxcc_check = $this->Logbook_model->check_dxcc_table($info['issued_callsign'], $info['validFrom']);
+				$dxcc = $dxcc_check[1];
+			}
+
+			// Check to see if certificate is already in the system
+			$new_certficiate = $this->LotwCert->find_cert($info['issued_callsign'], $dxcc, $this->session->userdata('user_id'));
 
         	if($new_certficiate == 0) {
         		// New Certificate Store in Database

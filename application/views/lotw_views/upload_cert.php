@@ -32,6 +32,19 @@
 				    <input type="file" name="userfile" class="form-control-file" id="exampleFormControlFile1">
 				 </div>
 
+			<div class="form-group">
+				<label for="stationDXCCInput">Certificate DXCC</label>
+					<?php if ($dxcc_list->num_rows() > 0) { ?>
+					<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
+					<option value=""></option>
+					<?php foreach ($dxcc_list->result() as $dxcc) { ?>
+					<option value="<?php echo $dxcc->name; ?>"><?php echo $dxcc->name; ?></option>
+					<?php } ?>
+					</select>
+					<?php } ?>
+				<small id="stationDXCCInputHelp" class="form-text text-muted">Certificate DXCC entity. For example: Scotland</small>
+			</div>
+
 				<button type="submit" value="upload" class="btn btn-primary">Upload File</button>
 
 			</form>
