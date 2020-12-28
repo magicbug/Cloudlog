@@ -67,6 +67,7 @@ class LotwCert extends CI_Model {
 
 		$this->db->where('user_id', $user_id);
 		$this->db->where('callsign', $callsign);
+		$this->db->where('cert_dxcc', $dxcc);
 		$this->db->update('lotw_certs', $data);
 	}
 
