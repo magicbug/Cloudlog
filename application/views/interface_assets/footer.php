@@ -2545,16 +2545,19 @@ function deleteQsl(id) {
             if ($("#callsign").val().length > 0) {
 
                 $('.callsign-suggestions').text("");
-                $(".qsotable tbody").prepend('<tr>' +
-                    '<td>'+$("#start_date").val()+ ' ' + $("#start_time").val() + '</td>' +
-                    '<td>'+$("#callsign").val().toUpperCase()+'</td>' +
-                    '<td>'+$("#band").val()+'</td>' +
-                    '<td>'+$("#mode").val()+'</td>' +
-                    '<td>'+$("#rst_sent").val()+'</td>' +
-                    '<td>'+$("#rst_recv").val()+'</td>' +
-                    '<td>'+$("#exch_sent").val()+'</td>' +
-                    '<td>'+$("#exch_recv").val()+'</td>' +
-                    '</tr>');
+
+                var table = $('.qsotable').DataTable();
+
+                var data = [[$("#start_date").val()+ ' ' + $("#start_time").val(),
+                    $("#callsign").val().toUpperCase(),
+                    $("#band").val(),
+                    $("#mode").val(),
+                    $("#rst_sent").val(),
+                    $("#rst_recv").val(),
+                    $("#exch_sent").val(),
+                    $("#exch_recv").val()]];
+
+                table.rows.add(data).draw();
 
                 var baseURL= "<?php echo base_url();?>";
                 var formdata = new FormData(document.getElementById("qso_input"));
@@ -2566,6 +2569,10 @@ function deleteQsl(id) {
                     contentType: false,
                     enctype: 'multipart/form-data',
                     success: function (html) {
+                        if (localStorage.getItem("qso") == null) {
+                            localStorage.setItem("qso", $("#start_date").val()+ ' ' + $("#start_time").val() + ',' + $("#callsign").val().toUpperCase() + ',' + $("#contestname").val());
+                        }
+
                         $('#name').val("");
 
                         $('#callsign').val("");
@@ -2580,6 +2587,83 @@ function deleteQsl(id) {
                         localStorage.setItem("contestid", $("#contestname").val());
                         localStorage.setItem("exchangetype", $('input[name=exchangeradio]:checked', '#qso_input').val());
                         localStorage.setItem("exchangesent", $("#exch_sent").val());
+                    }
+                });
+            }
+        }
+
+        // We are restoring the settings in the contest logging form here
+        function restoreContestSession() {
+            var contestname = localStorage.getItem("contestid");
+
+            if (contestname != null) {
+                $("#contestname").val(contestname);
+            }
+
+            var exchangetype = localStorage.getItem("exchangetype");
+
+            if (exchangetype == "other") {
+                $("[name=exchangeradio]").val(["other"]);
+            }
+
+            var exchangesent = localStorage.getItem("exchangesent");
+
+            if (exchangesent != null) {
+                $("#exch_sent").val(exchangesent);
+            }
+
+            if (localStorage.getItem("qso") != null) {
+                var baseURL= "<?php echo base_url();?>";
+                //alert(localStorage.getItem("qso"));
+                var qsodata = localStorage.getItem("qso");
+                $.ajax({
+                    url: baseURL + 'index.php/contesting/getSessionQsos',
+                    type: 'post',
+                    data: {'qso': qsodata,},
+                    success: function (html) {
+                        var mode = '';
+                        var sentexchange = '';
+                        var receivedexchange = '';
+                        $.each(html, function(){
+                            if (this.col_submode == null || this.col_submode == '') {
+                                mode = this.col_mode;
+                            } else {
+                                mode = this.col_submode;
+                            }
+
+                            if (this.col_srx == null || this.col_srx == '') {
+                                receivedexchange = this.col_srx_string;
+                            } else {
+                                receivedexchange = this.col_srx;
+                            }
+
+                            if (this.col_stx == null || this.col_stx == '') {
+                                sentexchange = this.col_stx_string;
+                            } else {
+                                sentexchange = this.col_stx;
+                            }
+
+                            $(".qsotable tbody").prepend('<tr>' +
+                                '<td>'+ this.col_time_on + '</td>' +
+                                '<td>'+ this.col_call + '</td>' +
+                                '<td>'+ this.col_band + '</td>' +
+                                '<td>'+ mode + '</td>' +
+                                '<td>'+ this.col_rst_sent + '</td>' +
+                                '<td>'+ this.col_rst_rcvd + '</td>' +
+                                '<td>'+ sentexchange + '</td>' +
+                                '<td>'+ receivedexchange + '</td>' +
+                                '</tr>');
+                        });
+
+                        $('.qsotable').DataTable({
+                            "pageLength": 25,
+                            responsive: false,
+                            "scrollY":        "400px",
+                            "scrollCollapse": true,
+                            "paging":         false,
+                            "scrollX": true,
+                            "order": [[ 0, "desc" ]]
+                        });
                     }
                 });
             }

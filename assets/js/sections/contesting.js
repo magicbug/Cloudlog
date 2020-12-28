@@ -8,25 +8,12 @@ $( document ).ready(function() {
     restoreContestSession();
 });
 
-// We are restoring the settings in the contest logging form here
-function restoreContestSession() {
-    var contestname = localStorage.getItem("contestid");
-
-    if (contestname != null) {
-        $("#contestname").val(contestname);
-    }
-
-    var exchangetype = localStorage.getItem("exchangetype");
-
-    if (exchangetype == "other") {
-        $("[name=exchangeradio]").val(["other"]);
-    }
-
-    var exchangesent = localStorage.getItem("exchangesent");
-
-    if (exchangesent != null) {
-        $("#exch_sent").val(exchangesent);
-    }
+// This erases the contest logging session which is stored in localStorage
+function reset_contest_session() {
+    localStorage.removeItem("contestid");
+    localStorage.removeItem("exchangetype");
+    localStorage.removeItem("exchangesent");
+    localStorage.removeItem("qso");
 }
 
 // Storing the contestid in contest session

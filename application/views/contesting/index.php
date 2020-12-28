@@ -378,7 +378,8 @@
                                             <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
                                         </div>
                                 </div>
-                            <button type="reset" class="btn btn-sm btn-warning" onclick="reset_log_fields()">Reset</button>
+                            <button type="reset" class="btn btn-sm btn-warning" onclick="reset_log_fields()">Reset Form</button>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="reset_contest_session()">Reset Contest Session</button>
                             <button type="button" class="btn btn-sm btn-primary" onclick="logQso();"><i class="fas fa-save"></i> Save QSO</button>
                             </div>
 
@@ -398,7 +399,7 @@
             <div class="card log">
                 <div class="card-header"><h5 class="card-title">Contest Logbook (Only for this session)</h5></div>
 
-                        <table class="table-sm table qsotable table-bordered table-hover table-striped table-condensed text-center">
+                        <table style="width:100%" class="table-sm table qsotable table-bordered table-hover table-striped table-condensed text-center">
                             <thead>
                             <tr class="log_title titles">
                                 <th>Date/Time</th>
