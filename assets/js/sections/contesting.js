@@ -11,6 +11,15 @@ $( document ).ready(function() {
 
 // This erases the contest logging session which is stored in localStorage
 function reset_contest_session() {
+    $('#name').val("");
+    $('.callsign-suggestions').text("");
+    $('#callsign').val("");
+    $('#comment').val("");
+    $('#exch_sent').val("1");
+    $('#exch_recv').val("");
+    $("#callsign").focus();
+    setRst($("#mode").val());
+
     localStorage.removeItem("contestid");
     localStorage.removeItem("exchangetype");
     localStorage.removeItem("exchangesent");
