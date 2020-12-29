@@ -20,6 +20,8 @@ function reset_contest_session() {
     $("#callsign").focus();
     setRst($("#mode").val());
 
+    $("#serial").prop("checked", true);
+
     localStorage.removeItem("contestid");
     localStorage.removeItem("exchangetype");
     localStorage.removeItem("exchangesent");
