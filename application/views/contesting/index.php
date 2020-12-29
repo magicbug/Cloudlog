@@ -379,7 +379,7 @@
                                             <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
                                         </div>
                                 </div>
-                            <button type="reset" class="btn btn-sm btn-light" onclick="reset_log_fields()"><i class="fas fa-sync-alt"></i> Reset QSO</button>
+                            <button type="button" class="btn btn-sm btn-light" onclick="reset_log_fields()"><i class="fas fa-sync-alt"></i> Reset QSO</button>
                             <button type="button" class="btn btn-sm btn-primary" onclick="logQso();"><i class="fas fa-save"></i> Save QSO</button>
                             </div>
 
