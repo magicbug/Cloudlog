@@ -19,8 +19,8 @@ function reset_contest_session() {
     $('#exch_recv').val("");
     $("#callsign").focus();
     setRst($("#mode").val());
-
     $("#serial").prop("checked", true);
+    $("#contestname").val("Other").change();
 
     localStorage.removeItem("contestid");
     localStorage.removeItem("exchangetype");
