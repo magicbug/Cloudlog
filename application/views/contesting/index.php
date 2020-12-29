@@ -1,4 +1,5 @@
 <div class="container qso_panel">
+    <button type="button" class="btn btn-sm btn-warning float-right" onclick="reset_contest_session()"><i class="fas fa-sync-alt"></i> Reset Contest Session</button>
     <h2><?php echo $page_title; ?></h2>
     <div class="row">
 
@@ -378,8 +379,7 @@
                                             <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
                                         </div>
                                 </div>
-                            <button type="reset" class="btn btn-sm btn-warning" onclick="reset_log_fields()">Reset Form</button>
-                        <button type="button" class="btn btn-sm btn-warning" onclick="reset_contest_session()">Reset Contest Session</button>
+                            <button type="reset" class="btn btn-sm btn-light" onclick="reset_log_fields()"><i class="fas fa-sync-alt"></i> Reset QSO</button>
                             <button type="button" class="btn btn-sm btn-primary" onclick="logQso();"><i class="fas fa-save"></i> Save QSO</button>
                             </div>
 
