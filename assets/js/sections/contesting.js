@@ -21,6 +21,7 @@ function reset_contest_session() {
     setRst($("#mode").val());
     $("#serial").prop("checked", true);
     $("#contestname").val("Other").change();
+    $(".contest_qso_table_contents").empty();
 
     localStorage.removeItem("contestid");
     localStorage.removeItem("exchangetype");

@@ -407,7 +407,7 @@
                         </tr>
                     </thead>
                     
-                    <tbody>
+                    <tbody class="contest_qso_table_contents">
                     </tbody>
                 </table>
             </div>
