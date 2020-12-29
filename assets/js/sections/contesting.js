@@ -6,6 +6,7 @@ $("#exch_sent").val(1);
 
 $( document ).ready(function() {
     restoreContestSession();
+    setRst($("#mode").val());
 });
 
 // This erases the contest logging session which is stored in localStorage
@@ -109,6 +110,7 @@ function reset_log_fields() {
     $('#comment').val("");
     $('#exch_recv').val("");
     $("#callsign").focus();
+    setRst($("#mode").val());
 }
 
 RegExp.escape = function(text) {
