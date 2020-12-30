@@ -6,27 +6,27 @@ $("#exch_sent").val(1);
 
 $( document ).ready(function() {
     restoreContestSession();
+    setRst($("#mode").val());
 });
 
-// We are restoring the settings in the contest logging form here
-function restoreContestSession() {
-    var contestname = localStorage.getItem("contestid");
+// This erases the contest logging session which is stored in localStorage
+function reset_contest_session() {
+    $('#name').val("");
+    $('.callsign-suggestions').text("");
+    $('#callsign').val("");
+    $('#comment').val("");
+    $('#exch_sent').val("1");
+    $('#exch_recv').val("");
+    $("#callsign").focus();
+    setRst($("#mode").val());
+    $("#serial").prop("checked", true);
+    $("#contestname").val("Other").change();
+    $(".contest_qso_table_contents").empty();
 
-    if (contestname != null) {
-        $("#contestname").val(contestname);
-    }
-
-    var exchangetype = localStorage.getItem("exchangetype");
-
-    if (exchangetype == "other") {
-        $("[name=exchangeradio]").val(["other"]);
-    }
-
-    var exchangesent = localStorage.getItem("exchangesent");
-
-    if (exchangesent != null) {
-        $("#exch_sent").val(exchangesent);
-    }
+    localStorage.removeItem("contestid");
+    localStorage.removeItem("exchangetype");
+    localStorage.removeItem("exchangesent");
+    localStorage.removeItem("qso");
 }
 
 // Storing the contestid in contest session
@@ -122,6 +122,7 @@ function reset_log_fields() {
     $('#comment').val("");
     $('#exch_recv').val("");
     $("#callsign").focus();
+    setRst($("#mode").val());
 }
 
 RegExp.escape = function(text) {

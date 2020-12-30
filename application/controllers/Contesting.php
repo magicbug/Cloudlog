@@ -51,4 +51,16 @@ class Contesting extends CI_Controller {
             }
 
     }
+
+    public function getSessionQsos() {
+        //load model
+        $this->load->model('Contesting_model');
+
+        $qso = $this->input->post('qso');
+
+        // get QSOs to fill the table
+        $data = $this->Contesting_model->getSessionQsos($qso);
+
+        return json_encode($data);
+    }
 }
