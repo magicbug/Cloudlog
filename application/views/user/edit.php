@@ -93,7 +93,6 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label>Stylesheet</label>
-
                         <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
                             <option value='default' <?php if($user_stylesheet == "default") { echo "selected=\"selected\""; } ?>>Default</option>
                             <option value='blue' <?php if($user_stylesheet == "blue") { echo "selected=\"selected\""; } ?>>Blue</option>
