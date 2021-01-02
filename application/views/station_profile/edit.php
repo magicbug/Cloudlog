@@ -132,9 +132,9 @@
 		  </div>
 
 		  <div class="form-group">
-		    <label for="stationCntyInput">Station Cnty</label>
+		    <label for="stationCntyInput">Station County</label>
 		    <input type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp" value="<?php if(set_value('station_cnty') != "") { echo set_value('station_cnty'); } else { echo $my_station_profile->station_cnty; } ?>">
-		    <small id="stationCntyInputHelp" class="form-text text-muted">Station County (Only used for USA/Alaska/Hawaii)/small>
+		    <small id="stationCntyInputHelp" class="form-text text-muted">Station County (Only used for USA/Alaska/Hawaii)</small>
 		  </div>
 
             <div class="form-row">
