@@ -10,27 +10,39 @@
       <div class="card-header"> 
         <ul style="font-size: 15px;" class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
           <li class="nav-item">
-           <a class="nav-link active" id="qsp-tab" data-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true">QSO</a>
+           <a class="nav-link active" id="qsp-tab" data-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true">
+             <?php echo lang('qso'); ?>
+            </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" id="station-tab" data-toggle="tab" href="#station" role="tab" aria-controls="station" aria-selected="false">Station</a>
+            <a class="nav-link" id="station-tab" data-toggle="tab" href="#station" role="tab" aria-controls="station" aria-selected="false">
+              <?php echo lang('station'); ?>
+            </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false">General</a>
+            <a class="nav-link" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false">
+              <?php echo lang('qso_general'); ?>
+            </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Sat</a>
+            <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">
+              <?php echo lang('qso_sat'); ?>
+            </a>
           </li>
           
           <li class="nav-item">
-            <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notes</a>
+            <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">
+              <?php echo lang('notes'); ?>
+            </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" id="qsl-tab" data-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false">QSL</a>
+            <a class="nav-link" id="qsl-tab" data-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false">
+              <?php echo lang('qso_qsl'); ?>
+            </a>
           </li>
         </ul>
       </div>
@@ -41,12 +53,12 @@
                       <!-- HTML for Date/Time -->
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="start_date">Date</label>
+                  <?php echo lang('general_word_date', 'start_date'); ?>
                   <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_date'); } else { echo date('d-m-Y');}?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label for="start_time">Time</label>
+                  <?php echo lang('general_word_time', 'start_time'); ?>
                   <input type="text" class="form-control form-control-sm input_time" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_time'); } else {echo date('H:i'); } ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
                 </div>
 
@@ -60,14 +72,14 @@
 
               <!-- Callsign Input -->
               <div class="form-group">
-                <label for="callsign">Callsign</label>
+                <?php echo lang('gen_hamradio_callsign', 'callsign'); ?>
                 <input type="text" class="form-control" id="callsign" name="callsign" required>
                 <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-light"></small>
               </div>
 
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="mode">Mode</label>
+                  <?php echo lang('gen_hamradio_mode', 'mode'); ?>
                   <select id="mode" class="form-control mode form-control-sm" name="mode">
                   <?php
                       foreach($modes->result() as $mode){
@@ -82,7 +94,7 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label for="band">Band</label>
+                  <?php echo lang('gen_hamradio_band', 'band'); ?>
 
                   <select id="band" class="form-control form-control-sm" name="band">
                     <optgroup label="HF">
@@ -122,32 +134,32 @@
               <!-- Signal Report Information -->
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="rst_sent">RST (S)</label>
+                  <?php echo lang('qso_rst_sent', 'rst_sent'); ?>
                   <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label for="rst_recv">RST (R)</label>
+                 <?php echo lang('qso_rst_recv', 'rst_recv'); ?>
                   <input type="text" class="form-control form-control-sm" name="rst_recv" id="rst_recv" value="59">
                 </div>
               </div>
 
               <div class="form-group row">
-                  <label for="name" class="col-sm-3 col-form-label">Name</label>
+                <?php echo lang('qso_name', 'name', array('class' =>'col-sm-3 col-form-label')); ?>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm" name="name" id="name" value="">
                 </div>
               </div>
 
               <div class="form-group row">
-                <label for="qth" class="col-sm-3 col-form-label">Location</label>
+                <?php echo lang('qso_qth', 'qth', array('class' =>'col-sm-3 col-form-label')); ?>
                 <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm" name="qth" id="qth" value="">
                 </div>
               </div>
 
               <div class="form-group row">
-                  <label for="locator" class="col-sm-3 col-form-label">Locator</label>
+                <?php echo lang('qso_locator', 'locator', array('class' =>'col-sm-3 col-form-label')); ?>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm" name="locator" id="locator" value="">
                     <small id="locator_info" class="form-text text-muted"></small>
@@ -155,7 +167,7 @@
               </div>
 
               <div class="form-group row">
-                  <label for="comment" class="col-sm-3 col-form-label">Comment</label>
+               <?php echo lang('qso_comment', 'comment', array('class' =>'col-sm-3 col-form-label')); ?>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
                 </div>
@@ -166,7 +178,7 @@
           <!-- Station Panel Data -->
           <div class="tab-pane fade" id="station" role="tabpanel" aria-labelledby="station-tab">
             <div class="form-group">
-              <label for="inputStationProfile">Station Profile</label>
+              <?php echo lang('station', 'inputStationProfile'); ?>
               <select id="stationProfile" class="custom-select" name="station_profile">
                 <?php foreach ($stations->result() as $stationrow) { ?>
                 <option value="<?php echo $stationrow->station_id; ?>" <?php if($active_station_profile == $stationrow->station_id) { echo "selected=\"selected\""; } ?>><?php echo $stationrow->station_profile_name; ?></option>
@@ -175,7 +187,7 @@
             </div>
 
             <div class="form-group">
-              <label for="inputRadio">Radio</label>
+              <?php echo lang('qso_inputRadio', 'inputRadio'); ?>
               <select class="custom-select radios" id="radio" name="radio">
                 <option value="0" selected="selected">None</option>
                 <?php foreach ($radios->result() as $row) { ?>
@@ -185,17 +197,17 @@
             </div>
 
             <div class="form-group">
-              <label for="frequency">Frequency</label>
+              <?php echo lang('qso_frequency', 'frequency'); ?>
               <input type="text" class="form-control" id="frequency" name="freq_display" value="<?php echo $this->session->userdata('freq'); ?>" />
             </div>
 
             <div class="form-group">
-              <label for="frequency_rx">Frequency (RX)</label>
+              <?php echo lang('qso_frequencyRx', 'frequency_rx'); ?>
               <input type="text" class="form-control" id="frequency_rx" name="freq_display_rx" value="<?php echo $this->session->userdata('freq_rx'); ?>" />
             </div>
 
             <div class="form-group">
-                  <label for="band">RX Band</label>
+                  <?php echo lang('qso_rxBand', 'band'); ?>
 
                   <select id="band_rx" class="form-control" name="band_rx">
                     <option value="" <?php if($this->session->userdata('band_rx') == "") { echo "selected=\"selected\""; } ?>></option>           
@@ -226,7 +238,7 @@
                       <option value="9cm" <?php if($this->session->userdata('band_rx') == "9cm") { echo "selected=\"selected\""; } ?>>9cm</option>
                     </optgroup>
 
-                    <optgroup label="Microwave">
+                    <optgroup label="<?php echo lang('qso_microwave');?>">
                       <option value="6cm" <?php if($this->session->userdata('band_rx') == "6cm") { echo "selected=\"selected\""; } ?>>6cm</option>
                       <option value="3cm" <?php if($this->session->userdata('band_rx') == "3cm") { echo "selected=\"selected\""; } ?>>3cm</option>
                     </optgroup>
@@ -234,16 +246,16 @@
             </div>
 
             <div class="form-group">
-              <label for="transmit_power">Transmit Power (W)</label>
+              <?php echo lang('qso_transmitPower', 'transmit_power'); ?>
               <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php echo $this->session->userdata('transmit_power'); ?>" />
-              <small id="powerHelp" class="form-text text-muted">Give power value in Watts. Include only numbers in the input.</small>
+              <small id="powerHelp" class="form-text text-muted"><?php echo lang('qso_powerHelp'); ?></small>
             </div>
           </div>
 
           <!-- General Items -->
           <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
               <div class="form-group">
-                  <label for="dxcc_id">DXCC</label>
+              <?php echo lang('qso_dxcc', 'dxcc_id'); ?>
                   <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
 
                       <?php
@@ -255,7 +267,7 @@
                   </select>
               </div>
               <div class="form-group">
-                  <label for="cqz">CQ Zone</label>
+                  <?php echo lang('qso_cqz', 'cqz'); ?>
                   <select class="custom-select" id="cqz" name="cqz" required>
                       <?php
                       for ($i = 1; $i<=40; $i++) {
@@ -266,26 +278,26 @@
               </div>
 
             <div class="form-group">
-              <label for="selectPropagation">Propagation Mode</label>
+              <label for="selectPropagation"><?php echo lang('qso_propagationMode'); ?></label>
               <select class="custom-select" id="selectPropagation" name="prop_mode">
                 <option value="" <?php if(!empty($this->session->userdata('prop_mode'))) { echo "selected=\"selected\""; } ?>></option>
-                <option value="AUR" <?php if($this->session->userdata('prop_mode') == "AUR") { echo "selected=\"selected\""; } ?>>Aurora</option>
-                <option value="AUE" <?php if($this->session->userdata('prop_mode') == "AUE") { echo "selected=\"selected\""; } ?>>Aurora-E</option>
-                <option value="BS" <?php if($this->session->userdata('prop_mode') == "BS") { echo "selected=\"selected\""; } ?>>Back scatter</option>
-                <option value="ECH" <?php if($this->session->userdata('prop_mode') == "ECH") { echo "selected=\"selected\""; } ?>>EchoLink</option>
-                <option value="EME" <?php if($this->session->userdata('prop_mode') == "EME") { echo "selected=\"selected\""; } ?>>Earth-Moon-Earth</option>
-                <option value="ES" <?php if($this->session->userdata('prop_mode') == "ES") { echo "selected=\"selected\""; } ?>>Sporadic E</option>
-                <option value="FAI" <?php if($this->session->userdata('prop_mode') == "FAI") { echo "selected=\"selected\""; } ?>>Field Aligned Irregularities</option>
-                <option value="F2" <?php if($this->session->userdata('prop_mode') == "F2") { echo "selected=\"selected\""; } ?>>F2 Reflection</option>
-                <option value="INTERNET" <?php if($this->session->userdata('prop_mode') == "INTERNET") { echo "selected=\"selected\""; } ?>>Internet-assisted</option>
-                <option value="ION" <?php if($this->session->userdata('prop_mode') == "ION") { echo "selected=\"selected\""; } ?>>Ionoscatter</option>
-                <option value="IRL" <?php if($this->session->userdata('prop_mode') == "IRL") { echo "selected=\"selected\""; } ?>>IRLP</option>
-                <option value="MS" <?php if($this->session->userdata('prop_mode') == "MS") { echo "selected=\"selected\""; } ?>>Meteor scatter</option>
-                <option value="RPT" <?php if($this->session->userdata('prop_mode') == "RPT") { echo "selected=\"selected\""; } ?>>Terrestrial or atmospheric repeater or transponder</option>
-                <option value="RS" <?php if($this->session->userdata('prop_mode') == "RS") { echo "selected=\"selected\""; } ?>>Rain scatter</option>
-                <option value="SAT" <?php if($this->session->userdata('prop_mode') == "SAT") { echo "selected=\"selected\""; } ?>>Satellite</option>
-                <option value="TEP" <?php if($this->session->userdata('prop_mode') == "TEP") { echo "selected=\"selected\""; } ?>>Trans-equatorial</option>
-                <option value="TR" <?php if($this->session->userdata('prop_mode') == "TR") { echo "selected=\"selected\""; } ?>>Tropospheric ducting</option>
+                <option value="AUR" <?php if($this->session->userdata('prop_mode') == "AUR") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_AUR'); ?></option>
+                <option value="AUE" <?php if($this->session->userdata('prop_mode') == "AUE") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_AUE'); ?></option>
+                <option value="BS" <?php if($this->session->userdata('prop_mode') == "BS") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_BS'); ?></option>
+                <option value="ECH" <?php if($this->session->userdata('prop_mode') == "ECH") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_ECH'); ?></option>
+                <option value="EME" <?php if($this->session->userdata('prop_mode') == "EME") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_EME'); ?></option>
+                <option value="ES" <?php if($this->session->userdata('prop_mode') == "ES") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_ES'); ?></option>
+                <option value="FAI" <?php if($this->session->userdata('prop_mode') == "FAI") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_FAI'); ?></option>
+                <option value="F2" <?php if($this->session->userdata('prop_mode') == "F2") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_F2'); ?></option>
+                <option value="INTERNET" <?php if($this->session->userdata('prop_mode') == "INTERNET") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_INTERNET'); ?></option>
+                <option value="ION" <?php if($this->session->userdata('prop_mode') == "ION") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_ION'); ?></option>
+                <option value="IRL" <?php if($this->session->userdata('prop_mode') == "IRL") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_IRL'); ?></option>
+                <option value="MS" <?php if($this->session->userdata('prop_mode') == "MS") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_MS'); ?></option>
+                <option value="RPT" <?php if($this->session->userdata('prop_mode') == "RPT") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_RPT'); ?></option>
+                <option value="RS" <?php if($this->session->userdata('prop_mode') == "RS") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_RS'); ?></option>
+                <option value="SAT" <?php if($this->session->userdata('prop_mode') == "SAT") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_SAT'); ?></option>
+                <option value="TEP" <?php if($this->session->userdata('prop_mode') == "TEP") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_TEP'); ?></option>
+                <option value="TR" <?php if($this->session->userdata('prop_mode') == "TR") { echo "selected=\"selected\""; } ?>><?php echo lang('qso_prop_TR'); ?></option>
               </select>
             </div>
 
@@ -348,7 +360,7 @@
             </div>
 
             <div class="form-group">
-              <label for="iota_ref">IOTA Reference</label>
+               <?php echo lang('qso_iota_ref', 'iota_ref'); ?>
                     <select class="custom-select" id="iota_ref" name="iota_ref">
                         <option value =""></option>
 
@@ -362,34 +374,34 @@
             </div>
 
             <div class="form-group">
-              <label for="sota_ref">SOTA Reference</label>
+              <?php echo lang('qso_sota_ref', 'sota_ref'); ?>
               <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" />
-              <small id="sotaRefHelp" class="form-text text-muted">For example: GM/NS-001</small>
+              <small id="sotaRefHelp" class="form-text text-muted"><?php echo lang('qso_sota_help'); ?></small>
             </div>
 
             <div class="form-group">
-              <label for="sig">Sig</label>
+              <?php echo lang('qso_sig', 'sig'); ?>
               <input class="form-control" id="sig" type="text" name="sig" value="" />
-              <small id="sigHelp" class="form-text text-muted">For example: WWFF or POTA</small>
+              <small id="sigHelp" class="form-text text-muted"><?php echo lang('qso_sig_help'); ?></small>
             </div>
 
             <div class="form-group">
-              <label for="sig_info">Sig Info</label>
+              <?php echo lang('qso_sig_info', 'sig_info'); ?>
               <input class="form-control" id="sig_info" type="text" name="sig_info" value="" />
-              <small id="sigInfoHelp" class="form-text text-muted">For example: DLFF-0029</small>
+              <small id="sigInfoHelp" class="form-text text-muted"><?php echo lang('qso_sig_help'); ?></small>
             </div>
 
             <div class="form-group">
-              <label for="sota_ref">DOK</label>
+              <?php echo lang('qso_darc_dok', 'darc_dok'); ?>
               <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" />
-              <small id="dokHelp" class="form-text text-muted">For example: Q03</small>
+              <small id="dokHelp" class="form-text text-muted"><?php echo lang('qso_dok_help'); ?></small>
             </div>
           </div>
           
           <!-- Satellite Panel -->
           <div class="tab-pane fade" id="satellite" role="tabpanel" aria-labelledby="satellite-tab">
             <div class="form-group">
-              <label for="inputSatName">Satellite Name</label>
+              <?php echo lang('qso_sat_name', 'inputSatName'); ?>
 
               <input list="satellite_names" id="sat_name" type="text" name="sat_name" class="form-control" value="<?php echo $this->session->userdata('sat_name'); ?>">
 
@@ -397,7 +409,7 @@
             </div>
 
             <div class="form-group">
-              <label for="inputSatMode">Satellite Mode</label>
+            <?php echo lang('qso_sat_mode', 'inputSatMode'); ?>
 
               <input list="satellite_modes" id="sat_mode" type="text" name="sat_mode" class="form-control" value="<?php echo $this->session->userdata('sat_mode'); ?>">
 
@@ -408,10 +420,10 @@
           <!-- Notes Panel Contents -->
           <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
             <div class="alert alert-info" role="alert">
-              <span class="badge badge-info">Info</span> Note content is used within Cloudlog only and is not exported to other services.
+              <span class="badge badge-info"><?php echo lang('general_info'); ?></span> <?php echo lang('notes_info_message'); ?>
             </div>
            <div class="form-group">
-              <label for="notes">Notes</label>
+           <?php echo lang('notes', 'notes'); ?>
               <textarea  type="text" class="form-control" id="notes" name="notes" rows="10"></textarea>
             </div>
           </div>
@@ -420,29 +432,29 @@
           <div class="tab-pane fade" id="qsl" role="tabpanel" aria-labelledby="qsl-tab">
             
             <div class="form-group row">
-              <label for="sent" class="col-sm-3 col-form-label">Sent</label>
+              <?php echo lang('general_word_sent', 'sent', array('class' =>'col-sm-3 col-form-label')); ?>
               <div class="col-sm-9">
                 <select class="custom-select" id="sent" name="qsl_sent">
-                  <option value="N" selected="selected">No</option>
-                  <option value="Y">Yes</option>
-                  <option value="R">Requested</option>
+                  <option value="N" selected="selected"><?php echo lang('general_no'); ?></option>
+                  <option value="Y"><?php echo lang('general_yes'); ?></option>
+                  <option value="R"><?php echo lang('general_word_requested'); ?></option>
                 </select>
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="sent-method" class="col-sm-3 col-form-label">Method</label>
+              <?php echo lang('qso_qsl_method', 'sent-method', array('class' =>'col-sm-3 col-form-label')); ?>
               <div class="col-sm-9">
                 <select class="custom-select" id="sent-method" name="qsl_sent_method">
-                 <option value="" selected="selected">Method</option>
-                 <option value="D">Direct</option>
-                 <option value="B">Bureau</option>
+                 <option value="" selected="selected"><?php echo lang('qso_qsl_method'); ?></option>
+                 <option value="D"><?php echo lang('qso_qsl_direct'); ?></option>
+                 <option value="B"><?php echo lang('qso_qsl_bureau'); ?></option>
                 </select>
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="qsl_via" class="col-sm-2 col-form-label">Via</label>
+              <?php echo lang('qso_qsl_via', 'qsl_via', array('class' =>'col-sm-2 col-form-label')); ?>
               <div class="col-sm-10">
                 <input type="text" id="qsl_via" class="form-control" name="qsl_via" value="" />
               </div>
@@ -457,8 +469,8 @@
           <input size="20" id="country" type="hidden" name="country" value="" />
         </div>
         
-        <button type="reset" class="btn btn-light" onclick="reset_fields()">Reset</button>
-        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save QSO</button>
+        <button type="reset" class="btn btn-light" onclick="reset_fields()"><?php echo lang('qso_reset_button'); ?></button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i><?php echo lang('qso_save_button'); ?></button>
       </div>
     </form>
     </div>
@@ -481,20 +493,20 @@
 
     <div class="card qso-map">
         <div class="card-header">
-          <h4 class="card-title">QSO Map</h4>
+          <h4 class="card-title"><?php echo lang('qso_map'); ?></h4>
         </div>
 
             <div id="qsomap" style="width: 100%; height: 200px;"></div>
     </div>
 
     <div class="card callsign-suggest">
-        <div class="card-header"><h4 class="card-title">Suggestions</h4></div>
+        <div class="card-header"><h4 class="card-title"><?php echo lang('qso_suggestions'); ?></h4></div>
 
         <div class="card-body callsign-suggestions"></div>
     </div>
 
     <div class="card previous-qsos">
-      <div class="card-header"><h4 class="card-title">Previous Contacts</h4></div>
+      <div class="card-header"><h4 class="card-title"><?php echo lang('qso_prev_contacts'); ?></h4></div>
 
         <div id="partial_view"></div>
 
@@ -503,12 +515,12 @@
           <div class="table-responsive">
             <table class="table">
               <tr class="log_title titles">
-                <td>Date/Time</td>
-                <td>Call</td>
-                <td>Mode</td>
-                <td>Sent</td>
-                <td>Recv'd</td>
-                <td>Band</td>
+                <td><?php echo lang('general_word_date'); ?></td>
+                <td><?php echo lang('gen_hamradio_call'); ?></td>
+                <td><?php echo lang('gen_hamradio_mode'); ?></td>
+                <td><?php echo lang('gen_hamradio_rst_sent'); ?></td>
+                <td><?php echo lang('gen_hamradio_rst_recv'); ?></td>
+                <td><?php echo lang('gen_hamradio_band'); ?></td>
               </tr>
 
               <?php $i = 0; 

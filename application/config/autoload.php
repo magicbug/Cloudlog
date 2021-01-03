@@ -109,6 +109,8 @@ $autoload['language'] = array(
     'number',
     'pagination',
     'upload',
+    'qso',
+    'station'
     );
 
 

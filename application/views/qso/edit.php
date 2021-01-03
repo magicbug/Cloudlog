@@ -52,23 +52,24 @@
 			<div class="tab-pane fade show active" id="nav-qso" role="tabpanel" aria-labelledby="nav-qso-tab">
                 <div class="form-row">
                     <div class="form-group col-sm-6">
-                      <label for="start_date">Start Date/Time</label>
+                      <?php echo lang('general_word_date', 'start_date'); ?>
                       <input type="text" class="form-control form-control-sm input_date" name="time_on" id="time_on" value="<?php echo $qso->COL_TIME_ON; ?>">
                     </div>
 
                     <div class="form-group col-sm-6">
-                      <label for="start_time">End Date/Time</label>
+                      <?php echo lang('general_word_time', 'start_time'); ?>
                       <input type="text" class="form-control form-control-sm input_time" name="time_off" id="time_off" value="<?php echo $qso->COL_TIME_OFF; ?>">
                     </div>
                 </div>
 
 	            <div class="form-group">
-	            	<label for="callsign">Callsign</label>
+                        <?php echo lang('gen_hamradio_callsign', 'callsign'); ?>
 	                <input type="text" class="form-control" id="callsign" name="callsign" value="<?php echo $qso->COL_CALL; ?>">
 	            </div>
 
 	            
 	            <div class="form-group">
+                        <?php echo lang('gen_hamradio_callsign', 'callsign'); ?>
 	            	<label for="freq">Frequency</label>
 	                <input type="text" class="form-control" id="freq" name="freq" value="<?php echo $qso->COL_FREQ; ?>">
 	            </div>

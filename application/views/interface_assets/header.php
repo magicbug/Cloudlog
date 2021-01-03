@@ -61,11 +61,17 @@
         <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
         	<!-- QSO Menu Dropdown -->
         	<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">QSO</a>
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <?php echo lang('qso'); ?>
+                                                </a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="<?php echo site_url('qso?manual=0');?>" title="Log Live QSOs">Live QSO</a>
+							<a class="dropdown-item" href="<?php echo site_url('qso?manual=0');?>" title="Log Live QSOs">
+                                                            <?php echo lang('qso_live'); ?>
+                                                        </a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('qso?manual=1');?>" title="Log QSO made in the past">Post QSO</a>
+							<a class="dropdown-item" href="<?php echo site_url('qso?manual=1');?>" title="Log QSO made in the past">
+                                                            <?php echo lang('qso_post'); ?>
+                                                        </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="<?php echo site_url('contesting');?>" title="Log contest QSOs">Contest Logging</a>
                             <div class="dropdown-divider"></div>
