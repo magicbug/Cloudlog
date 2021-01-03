@@ -110,6 +110,7 @@ $autoload['language'] = array(
     'pagination',
     'upload',
     'qso',
+    'notes',
     'station'
     );
 

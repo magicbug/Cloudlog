@@ -2,13 +2,13 @@
 
 	<div class="card">
 	  <div class="card-header">
-	  	<h2 class="card-title">Notes</h2>
+	        <h2 class="card-title"><?php echo lang('notes_heading'); ?></h2>
 	    <ul class="nav nav-tabs card-header-tabs">
 	      <li class="nav-item">
-	        <a class="nav-link active" href="<?php echo site_url('notes'); ?>">Notes</a>
+	        <a class="nav-link active" href="<?php echo site_url('notes'); ?>"><?php echo lang('notes'); ?></a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="<?php echo site_url('notes/add'); ?>">Create Note</a>
+	        <a class="nav-link" href="<?php echo site_url('notes/add'); ?>"><?php echo lang('notes_create'); ?></a>
 	      </li>
 	    </ul>
 	  </div>
@@ -19,7 +19,7 @@
 
 				if ($notes->num_rows() > 0)
 				{
-					echo "<h3>Your Notes</h3>";
+					echo "<h3>" . lang('notes_yours') ."</h3>";
 					echo "<ul class=\"list-group\">";
 					foreach ($notes->result() as $row)
 					{
@@ -29,9 +29,8 @@
 					}
 					echo "</ul>";
 				} else {
-					echo "<p>You don't currently have any notes, these are a fantastic way of storing data like ATU settings, beacons and general station notes and its better than paper as you can't lose them!</p>";
+					echo "<p>" . lang('notes_none_yet') . "</p>";
 				}
-
 			?>
 	  </div>
 	</div>
