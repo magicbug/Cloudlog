@@ -37,3 +37,8 @@ $lang['dashboard_you_have_had'] = '¡Has tenido';
 $lang['dashboard_qsos_today'] = 'QSOs hoy!';
 $lang['dashboard_qso_breakdown'] = 'Listado de QSOs';
 $lang['dashboard_countries_breakdown'] = 'Listado de países';
+
+//Other
+$lang['general_yes'] = 'Si';
+$lang['general_no'] = 'No';
+$lang['general_info'] = 'Info';
