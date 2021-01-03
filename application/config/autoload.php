@@ -96,7 +96,20 @@ $autoload['config'] = array('cloudlog', 'bands', 'lotw');
 |
 */
 
-$autoload['language'] = array('general_words');
+$autoload['language'] = array(
+    'general_words',
+    'calendar',
+    'date',
+    'db',
+    'email',
+    'form_validation',
+    'ftp',
+    'imglib',
+    'migration',
+    'number',
+    'pagination',
+    'upload',
+    );
 
 
 /*
