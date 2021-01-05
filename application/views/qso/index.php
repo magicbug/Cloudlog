@@ -10,27 +10,27 @@
       <div class="card-header"> 
         <ul style="font-size: 15px;" class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
           <li class="nav-item">
-           <a class="nav-link active" id="qsp-tab" data-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true">QSO</a>
+           <a class="nav-link active" id="qsp-tab" data-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true"><?php echo $this->lang->line('gen_hamradio_qso'); ?></a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" id="station-tab" data-toggle="tab" href="#station" role="tab" aria-controls="station" aria-selected="false">Station</a>
+            <a class="nav-link" id="station-tab" data-toggle="tab" href="#station" role="tab" aria-controls="station" aria-selected="false"><?php echo $this->lang->line('gen_hamradio_station'); ?></a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false">General</a>
+            <a class="nav-link" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false"><?php echo $this->lang->line('general_word_general'); ?></a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Sat</a>
+            <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false"><?php echo $this->lang->line('general_word_satellite_short'); ?></a>
           </li>
           
           <li class="nav-item">
-            <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false">Notes</a>
+            <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false"><?php echo $this->lang->line('general_word_notes'); ?></a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" id="qsl-tab" data-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false">QSL</a>
+            <a class="nav-link" id="qsl-tab" data-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false"><?php echo $this->lang->line('gen_hamradio_qsl'); ?></a>
           </li>
         </ul>
       </div>
@@ -41,12 +41,12 @@
                       <!-- HTML for Date/Time -->
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="start_date">Date</label>
+                  <label for="start_date"><?php echo $this->lang->line('general_word_date'); ?></label>
                   <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_date'); } else { echo date('d-m-Y');}?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label for="start_time">Time</label>
+                  <label for="start_time"><?php echo $this->lang->line('general_word_time'); ?></label>
                   <input type="text" class="form-control form-control-sm input_time" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_time'); } else {echo date('H:i'); } ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?>>
                 </div>
 
@@ -60,14 +60,14 @@
 
               <!-- Callsign Input -->
               <div class="form-group">
-                <label for="callsign">Callsign</label>
+                <label for="callsign"><?php echo $this->lang->line('gen_hamradio_callsign'); ?></label>
                 <input type="text" class="form-control" id="callsign" name="callsign" required>
                 <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-light"></small>
               </div>
 
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="mode">Mode</label>
+                  <label for="mode"><?php echo $this->lang->line('gen_hamradio_mode'); ?></label>
                   <select id="mode" class="form-control mode form-control-sm" name="mode">
                   <?php
                       foreach($modes->result() as $mode){
@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label for="band">Band</label>
+                  <label for="band"><?php echo $this->lang->line('gen_hamradio_band'); ?></label>
 
                   <select id="band" class="form-control form-control-sm" name="band">
                     <optgroup label="HF">
@@ -122,32 +122,32 @@
               <!-- Signal Report Information -->
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label for="rst_sent">RST (S)</label>
+                  <label for="rst_sent"><?php echo $this->lang->line('gen_hamradio_rsts'); ?></label>
                   <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label for="rst_recv">RST (R)</label>
+                  <label for="rst_recv"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></label>
                   <input type="text" class="form-control form-control-sm" name="rst_recv" id="rst_recv" value="59">
                 </div>
               </div>
 
               <div class="form-group row">
-                  <label for="name" class="col-sm-3 col-form-label">Name</label>
+                  <label for="name" class="col-sm-3 col-form-label"><?php echo $this->lang->line('general_word_name'); ?></label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm" name="name" id="name" value="">
                 </div>
               </div>
 
               <div class="form-group row">
-                <label for="qth" class="col-sm-3 col-form-label">Location</label>
+                <label for="qth" class="col-sm-3 col-form-label"><?php echo $this->lang->line('general_word_location'); ?></label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm" name="qth" id="qth" value="">
                 </div>
               </div>
 
               <div class="form-group row">
-                  <label for="locator" class="col-sm-3 col-form-label">Locator</label>
+                  <label for="locator" class="col-sm-3 col-form-label"><?php echo $this->lang->line('gen_hamradio_locator'); ?></label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm" name="locator" id="locator" value="">
                     <small id="locator_info" class="form-text text-muted"></small>
@@ -155,7 +155,7 @@
               </div>
 
               <div class="form-group row">
-                  <label for="comment" class="col-sm-3 col-form-label">Comment</label>
+                  <label for="comment" class="col-sm-3 col-form-label"><?php echo $this->lang->line('general_word_comment'); ?></label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
                 </div>
@@ -166,7 +166,7 @@
           <!-- Station Panel Data -->
           <div class="tab-pane fade" id="station" role="tabpanel" aria-labelledby="station-tab">
             <div class="form-group">
-              <label for="inputStationProfile">Station Profile</label>
+              <label for="inputStationProfile"><?php echo $this->lang->line('cloudlog_station_profile'); ?></label>
               <select id="stationProfile" class="custom-select" name="station_profile">
                 <?php foreach ($stations->result() as $stationrow) { ?>
                 <option value="<?php echo $stationrow->station_id; ?>" <?php if($active_station_profile == $stationrow->station_id) { echo "selected=\"selected\""; } ?>><?php echo $stationrow->station_profile_name; ?></option>
@@ -175,9 +175,9 @@
             </div>
 
             <div class="form-group">
-              <label for="inputRadio">Radio</label>
+              <label for="inputRadio"><?php echo $this->lang->line('gen_hamradio_radio'); ?></label>
               <select class="custom-select radios" id="radio" name="radio">
-                <option value="0" selected="selected">None</option>
+                <option value="0" selected="selected"><?php echo $this->lang->line('general_word_none'); ?></option>
                 <?php foreach ($radios->result() as $row) { ?>
                 <option value="<?php echo $row->id; ?>" <?php if($this->session->userdata('radio') == $row->id) { echo "selected=\"selected\""; } ?>><?php echo $row->radio; ?></option>
                 <?php } ?>
@@ -185,17 +185,17 @@
             </div>
 
             <div class="form-group">
-              <label for="frequency">Frequency</label>
+              <label for="frequency"><?php echo $this->lang->line('gen_hamradio_frequency'); ?></label>
               <input type="text" class="form-control" id="frequency" name="freq_display" value="<?php echo $this->session->userdata('freq'); ?>" />
             </div>
 
             <div class="form-group">
-              <label for="frequency_rx">Frequency (RX)</label>
+              <label for="frequency_rx"><?php echo $this->lang->line('gen_hamradio_frequency_rx'); ?></label>
               <input type="text" class="form-control" id="frequency_rx" name="freq_display_rx" value="<?php echo $this->session->userdata('freq_rx'); ?>" />
             </div>
 
             <div class="form-group">
-                  <label for="band">RX Band</label>
+                  <label for="band"><?php echo $this->lang->line('gen_hamradio_band_rx'); ?></label>
 
                   <select id="band_rx" class="form-control" name="band_rx">
                     <option value="" <?php if($this->session->userdata('band_rx') == "") { echo "selected=\"selected\""; } ?>></option>           
@@ -234,16 +234,16 @@
             </div>
 
             <div class="form-group">
-              <label for="transmit_power">Transmit Power (W)</label>
+              <label for="transmit_power"><?php echo $this->lang->line('gen_hamradio_transmit_power'); ?></label>
               <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php echo $this->session->userdata('transmit_power'); ?>" />
-              <small id="powerHelp" class="form-text text-muted">Give power value in Watts. Include only numbers in the input.</small>
+              <small id="powerHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_transmit_power_helptext'); ?></small>
             </div>
           </div>
 
           <!-- General Items -->
           <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
               <div class="form-group">
-                  <label for="dxcc_id">DXCC</label>
+                  <label for="dxcc_id"><?php echo $this->lang->line('gen_hamradio_dxcc'); ?></label>
                   <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
 
                       <?php
@@ -255,7 +255,7 @@
                   </select>
               </div>
               <div class="form-group">
-                  <label for="cqz">CQ Zone</label>
+                  <label for="cqz"><?php echo $this->lang->line('gen_hamradio_cq_zone'); ?></label>
                   <select class="custom-select" id="cqz" name="cqz" required>
                       <?php
                       for ($i = 1; $i<=40; $i++) {
@@ -266,7 +266,7 @@
               </div>
 
             <div class="form-group">
-              <label for="selectPropagation">Propagation Mode</label>
+              <label for="selectPropagation"><?php echo $this->lang->line('gen_hamradio_propagation_mode'); ?></label>
               <select class="custom-select" id="selectPropagation" name="prop_mode">
                 <option value="" <?php if(!empty($this->session->userdata('prop_mode'))) { echo "selected=\"selected\""; } ?>></option>
                 <option value="AUR" <?php if($this->session->userdata('prop_mode') == "AUR") { echo "selected=\"selected\""; } ?>>Aurora</option>
@@ -290,7 +290,7 @@
             </div>
 
             <div class="form-group">
-              <label for="usa_state">USA State</label>
+              <label for="usa_state"><?php echo $this->lang->line('gen_hamradio_usa_state'); ?></label>
               <select class="custom-select" id="input_usa_state" name="usa_state">
                 <option value=""></option>
                 <option value="AL">Alabama (AL)</option>
@@ -348,7 +348,7 @@
             </div>
 
             <div class="form-group">
-              <label for="iota_ref">IOTA Reference</label>
+              <label for="iota_ref"><?php echo $this->lang->line('gen_hamradio_iota_reference'); ?></label>
                     <select class="custom-select" id="iota_ref" name="iota_ref">
                         <option value =""></option>
 
@@ -362,34 +362,34 @@
             </div>
 
             <div class="form-group">
-              <label for="sota_ref">SOTA Reference</label>
+              <label for="sota_ref"><?php echo $this->lang->line('gen_hamradio_sota_reference'); ?></label>
               <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" />
-              <small id="sotaRefHelp" class="form-text text-muted">For example: GM/NS-001</small>
+              <small id="sotaRefHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_sota_ref_helptext'); ?></small>
             </div>
 
             <div class="form-group">
-              <label for="sig">Sig</label>
+              <label for="sig"><?php echo $this->lang->line('gen_hamradio_sig'); ?></label>
               <input class="form-control" id="sig" type="text" name="sig" value="" />
-              <small id="sigHelp" class="form-text text-muted">For example: WWFF or POTA</small>
+              <small id="sigHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_sig_helptext'); ?></small>
             </div>
 
             <div class="form-group">
-              <label for="sig_info">Sig Info</label>
+              <label for="sig_info"><?php echo $this->lang->line('gen_hamradio_sig_info'); ?></label>
               <input class="form-control" id="sig_info" type="text" name="sig_info" value="" />
-              <small id="sigInfoHelp" class="form-text text-muted">For example: DLFF-0029</small>
+              <small id="sigInfoHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_sig_info_helptext'); ?></small>
             </div>
 
             <div class="form-group">
-              <label for="sota_ref">DOK</label>
+              <label for="sota_ref"><?php echo $this->lang->line('gen_hamradio_dok'); ?></label>
               <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" />
-              <small id="dokHelp" class="form-text text-muted">For example: Q03</small>
+              <small id="dokHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_dok_helptext'); ?></small>
             </div>
           </div>
           
           <!-- Satellite Panel -->
           <div class="tab-pane fade" id="satellite" role="tabpanel" aria-labelledby="satellite-tab">
             <div class="form-group">
-              <label for="inputSatName">Satellite Name</label>
+              <label for="inputSatName"><?php echo $this->lang->line('gen_hamradio_satellite_name'); ?></label>
 
               <input list="satellite_names" id="sat_name" type="text" name="sat_name" class="form-control" value="<?php echo $this->session->userdata('sat_name'); ?>">
 
@@ -397,7 +397,7 @@
             </div>
 
             <div class="form-group">
-              <label for="inputSatMode">Satellite Mode</label>
+              <label for="inputSatMode"><?php echo $this->lang->line('gen_hamradio_satellite_mode'); ?></label>
 
               <input list="satellite_modes" id="sat_mode" type="text" name="sat_mode" class="form-control" value="<?php echo $this->session->userdata('sat_mode'); ?>">
 
@@ -408,10 +408,10 @@
           <!-- Notes Panel Contents -->
           <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
             <div class="alert alert-info" role="alert">
-              <span class="badge badge-info">Info</span> Note content is used within Cloudlog only and is not exported to other services.
+              <span class="badge badge-info"><?php echo $this->lang->line('general_word_info'); ?></span> <?php echo $this->lang->line('qso_notes_helptext'); ?>
             </div>
            <div class="form-group">
-              <label for="notes">Notes</label>
+              <label for="notes"><?php echo $this->lang->line('general_word_notes'); ?></label>
               <textarea  type="text" class="form-control" id="notes" name="notes" rows="10"></textarea>
             </div>
           </div>
@@ -420,29 +420,29 @@
           <div class="tab-pane fade" id="qsl" role="tabpanel" aria-labelledby="qsl-tab">
             
             <div class="form-group row">
-              <label for="sent" class="col-sm-3 col-form-label">Sent</label>
+              <label for="sent" class="col-sm-3 col-form-label"><?php echo $this->lang->line('general_word_sent'); ?></label>
               <div class="col-sm-9">
                 <select class="custom-select" id="sent" name="qsl_sent">
-                  <option value="N" selected="selected">No</option>
-                  <option value="Y">Yes</option>
-                  <option value="R">Requested</option>
+                  <option value="N" selected="selected"><?php echo $this->lang->line('general_word_no'); ?></option>
+                  <option value="Y"><?php echo $this->lang->line('general_word_yes'); ?></option>
+                  <option value="R"><?php echo $this->lang->line('general_word_requested'); ?></option>
                 </select>
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="sent-method" class="col-sm-3 col-form-label">Method</label>
+              <label for="sent-method" class="col-sm-3 col-form-label"><?php echo $this->lang->line('general_word_method'); ?></label>
               <div class="col-sm-9">
                 <select class="custom-select" id="sent-method" name="qsl_sent_method">
-                 <option value="" selected="selected">Method</option>
-                 <option value="D">Direct</option>
-                 <option value="B">Bureau</option>
+                 <option value="" selected="selected"><?php echo $this->lang->line('general_word_method'); ?></option>
+                 <option value="D"><?php echo $this->lang->line('general_word_qslcard_direct'); ?></option>
+                 <option value="B"><?php echo $this->lang->line('general_word_qslcard_bureau'); ?></option>
                 </select>
               </div>
             </div>
 
             <div class="form-group row">
-              <label for="qsl_via" class="col-sm-2 col-form-label">Via</label>
+              <label for="qsl_via" class="col-sm-2 col-form-label"><?php echo $this->lang->line('general_word_qslcard_via'); ?></label>
               <div class="col-sm-10">
                 <input type="text" id="qsl_via" class="form-control" name="qsl_via" value="" />
               </div>
@@ -457,8 +457,8 @@
           <input size="20" id="country" type="hidden" name="country" value="" />
         </div>
         
-        <button type="reset" class="btn btn-light" onclick="reset_fields()">Reset</button>
-        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save QSO</button>
+        <button type="reset" class="btn btn-light" onclick="reset_fields()"><?php echo $this->lang->line('qso_btn_reset_qso'); ?></button>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo $this->lang->line('qso_btn_save_qso'); ?></button>
       </div>
     </form>
     </div>
@@ -481,20 +481,20 @@
 
     <div class="card qso-map">
         <div class="card-header">
-          <h4 class="card-title">QSO Map</h4>
+          <h4 class="card-title"><?php echo $this->lang->line('qso_title_qso_map'); ?></h4>
         </div>
 
             <div id="qsomap" style="width: 100%; height: 200px;"></div>
     </div>
 
     <div class="card callsign-suggest">
-        <div class="card-header"><h4 class="card-title">Suggestions</h4></div>
+        <div class="card-header"><h4 class="card-title"><?php echo $this->lang->line('qso_title_suggestions'); ?></h4></div>
 
         <div class="card-body callsign-suggestions"></div>
     </div>
 
     <div class="card previous-qsos">
-      <div class="card-header"><h4 class="card-title">Previous Contacts</h4></div>
+      <div class="card-header"><h4 class="card-title"><?php echo $this->lang->line('qso_title_pervious_contacts'); ?></h4></div>
 
         <div id="partial_view"></div>
 
@@ -503,12 +503,12 @@
           <div class="table-responsive">
             <table class="table">
               <tr class="log_title titles">
-                <td>Date/Time</td>
-                <td>Call</td>
-                <td>Mode</td>
-                <td>Sent</td>
-                <td>Recv'd</td>
-                <td>Band</td>
+                <td><?php echo $this->lang->line('general_word_date'); ?>/<?php echo $this->lang->line('general_word_time'); ?></td>
+                <td><?php echo $this->lang->line('gen_hamradio_call'); ?></td>
+                <td><?php echo $this->lang->line('gen_hamradio_mode'); ?></td>
+                <td><?php echo $this->lang->line('gen_hamradio_rsts'); ?></td>
+                <td><?php echo $this->lang->line('gen_hamradio_rstr'); ?></td>
+                <td><?php echo $this->lang->line('gen_hamradio_band'); ?></td>
               </tr>
 
               <?php $i = 0; 
