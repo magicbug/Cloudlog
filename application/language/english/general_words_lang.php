@@ -20,6 +20,7 @@ $lang['general_word_satellite'] = 'Satellite';
 $lang['general_word_satellite_short'] = 'Sat';
 $lang['general_word_notes'] = 'Notes';
 $lang['general_word_comment'] = 'Comment';
+$lang['general_word_country'] = 'Country';
 
 $lang['general_word_total'] = 'Total';
 $lang['general_word_year'] = 'Year';
@@ -41,6 +42,11 @@ $lang['general_word_qslcard_direct'] = 'Direct';
 $lang['general_word_qslcard_bureau'] = 'Bureau';
 $lang['general_word_qslcard_via'] = 'Via';
 
+$lang['general_edit_qso'] = 'Edit QSO';
+$lang['general_mark_qsl_rx_bureau'] = 'Mark QSL Received (Bureau)';
+$lang['general_mark_qsl_rx_direct'] = 'Mark QSL Received (Direct)';
+
+$lang['general_delete_qso'] = 'Delete QSO';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Station Profile';
