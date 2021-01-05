@@ -9,6 +9,15 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Contesting extends CI_Controller {
 
+	function __construct()
+	{
+		parent::__construct();
+		$this->lang->load('contesting');
+		
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+	}
+
     public function index()
     {
 
@@ -17,7 +26,6 @@ class Contesting extends CI_Controller {
         $this->load->model('logbook_model');
         $this->load->model('user_model');
         $this->load->model('modes');
-        if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
         $data['active_station_profile'] = $this->stations->find_active();
         $data['notice'] = false;

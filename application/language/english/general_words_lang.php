@@ -10,6 +10,9 @@ $lang['general_word_important'] = 'Important';
 
 $lang['general_word_date'] = 'Date';
 $lang['general_word_time'] = 'Time';
+$lang['general_word_none'] = 'None';
+$lang['general_word_name'] = 'Name';
+$lang['general_word_comment'] = 'Comment';
 
 $lang['general_word_total'] = 'Total';
 $lang['general_word_year'] = 'Year';
@@ -24,6 +27,7 @@ $lang['general_word_received'] = 'Received';
 $lang['general_word_requested'] = 'Requested';
 $lang['general_word_qslcards'] = 'QSL Cards';
 
+
 // ham radio terms
 $lang['gen_hamradio_call'] = 'Call';
 $lang['gen_hamradio_callsign'] = 'Callsign';
@@ -31,6 +35,12 @@ $lang['gen_hamradio_mode'] = 'Mode';
 $lang['gen_hamradio_rst_sent'] = 'Sent';
 $lang['gen_hamradio_rst_recv'] = 'Recv\'d';
 $lang['gen_hamradio_band'] = 'Band';
+$lang['gen_hamradio_frequency'] = 'Frequency';
+$lang['gen_hamradio_radio'] = 'Radio';
+$lang['gen_hamradio_rsts'] = 'RST (S)';
+$lang['gen_hamradio_rstr'] = 'RST (R)';
+$lang['gen_hamradio_exchange_sent_short'] = 'Exch (S)';
+$lang['gen_hamradio_exchange_recv_short'] = 'Exch (R)';
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'You have had';
