@@ -77,6 +77,8 @@ $lang['gen_hamradio_propagation_mode'] = 'Propagation Mode';
 $lang['gen_hamradio_satellite_name'] = 'Satellite Name';
 $lang['gen_hamradio_satellite_mode'] = 'Satellite Mode';
 
+$lang['gen_hamradio_logbook'] = 'Logbook';
+
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_usa_state'] = 'USA State';
