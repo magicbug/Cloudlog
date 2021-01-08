@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('Directe toegang tot de scripts is niet toegestaan');
+defined('BASEPATH') OR exit('Directe toegang tot scripts is niet toegestaan');
 
 $lang['error_no_active_station_profile'] = 'Let op: Activeer een station profiel.';
 

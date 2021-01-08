@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('Directe toegang tot de scripts is niet toegestaan');
+defined('BASEPATH') OR exit('Directe toegang tot scripts is niet toegestaan');
 
 // Tiles
 $lang['qso_title_qso_map'] = 'QSO Kaart';
