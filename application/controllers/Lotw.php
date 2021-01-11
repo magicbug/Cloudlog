@@ -23,6 +23,9 @@ class Lotw extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
+	
+		// Load language files
+		$this->lang->load('lotw');
 	}
 
 	/*

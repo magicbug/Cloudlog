@@ -8,6 +8,7 @@ $lang['notice_turn_the_radio_on'] = 'You have made no QSOs today; time to turn o
 
 $lang['general_word_important'] = 'Important';
 $lang['general_word_info'] = 'Info';
+$lang['general_word_choose_file'] = 'Choose file';
 
 $lang['general_word_date'] = 'Date';
 $lang['general_word_time'] = 'Time';
@@ -94,3 +95,5 @@ $lang['dashboard_you_have_had'] = 'You have had';
 $lang['dashboard_qsos_today'] = 'QSOs Today!';
 $lang['dashboard_qso_breakdown'] = 'QSOs Breakdown';
 $lang['dashboard_countries_breakdown'] = 'Countries Breakdown';
+
+$lang['gen_from_date'] = 'From date';
