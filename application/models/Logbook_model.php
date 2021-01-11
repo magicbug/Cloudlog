@@ -1548,7 +1548,7 @@ class Logbook_model extends CI_Model {
         }
 
         if(isset($record['band_rx'])) {
-                $band_rx = $record['band_rx'];
+                $band_rx = strtolower($record['band_rx']);
         } else {
                 if (isset($record['freq_rx'])){
                   if($freq != "0") {
