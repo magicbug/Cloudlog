@@ -12,7 +12,7 @@ $lang['notes_create_note'] = 'Luo muistiinpano';
 
 $lang['notes_input_title'] = 'Otsikko';
 $lang['notes_input_category'] = 'Kategoria';
-$lang['notes_input_notes_content'] = 'Muistiinpanon sisältö:';
+$lang['notes_input_notes_content'] = 'Muistiinpanon tekstisisältö:';
 $lang['notes_input_btn_save_note'] = 'Tallenna muistiinpano';
 $lang['notes_input_btn_edit_note'] = 'Muokkaa muistiinpanoa';
 $lang['notes_input_btn_delete_note'] = 'Poista muistiinpano';
