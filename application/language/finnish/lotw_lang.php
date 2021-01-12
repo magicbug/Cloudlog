@@ -38,7 +38,7 @@ $lang['lotw_report_download_overview_helptext'] ='Cloudlog käyttää profiiliis
 $lang['lotw_btn_lotw_import'] = 'LoTW Tuonti';
 $lang['lotw_btn_upload_certificate'] = 'Lataa ja tuo kutsumerkin varmenne';
 $lang['lotw_btn_delete'] = 'Poista';
-$lang['lotw_btn_manual_sync'] = 'Manuaalinen synkronointi';
+$lang['lotw_btn_manual_sync'] = 'Synkronoi yhteydet manuaalisesti';
 $lang['lotw_btn_upload_file'] = 'Lataa tiedosto';
 $lang['lotw_btn_import_matches'] = 'Tuo LoTW:n osumat';
 
