@@ -8,6 +8,7 @@ $lang['notice_turn_the_radio_on'] = 'Ei kusoja tänään - siis radio päälle j
 
 $lang['general_word_important'] = 'Tärkeää';
 $lang['general_word_info'] = 'Info';
+$lang['general_word_choose_file'] = 'Valitse tiedosto';
 
 $lang['general_word_date'] = 'Päivä';
 $lang['general_word_time'] = 'Aika';
