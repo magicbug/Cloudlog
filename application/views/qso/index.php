@@ -166,7 +166,7 @@
           <!-- Station Panel Data -->
           <div class="tab-pane fade" id="station" role="tabpanel" aria-labelledby="station-tab">
             <div class="form-group">
-              <label for="inputStationProfile"><?php echo $this->lang->line('cloudlog_station_profile'); ?></label>
+              <label for="stationProfile"><?php echo $this->lang->line('cloudlog_station_profile'); ?></label>
               <select id="stationProfile" class="custom-select" name="station_profile">
                 <?php foreach ($stations->result() as $stationrow) { ?>
                 <option value="<?php echo $stationrow->station_id; ?>" <?php if($active_station_profile == $stationrow->station_id) { echo "selected=\"selected\""; } ?>><?php echo $stationrow->station_profile_name; ?></option>
@@ -175,7 +175,7 @@
             </div>
 
             <div class="form-group">
-              <label for="inputRadio"><?php echo $this->lang->line('gen_hamradio_radio'); ?></label>
+              <label for="radio"><?php echo $this->lang->line('gen_hamradio_radio'); ?></label>
               <select class="custom-select radios" id="radio" name="radio">
                 <option value="0" selected="selected"><?php echo $this->lang->line('general_word_none'); ?></option>
                 <?php foreach ($radios->result() as $row) { ?>
@@ -195,7 +195,7 @@
             </div>
 
             <div class="form-group">
-                  <label for="band"><?php echo $this->lang->line('gen_hamradio_band_rx'); ?></label>
+                  <label for="band_rx"><?php echo $this->lang->line('gen_hamradio_band_rx'); ?></label>
 
                   <select id="band_rx" class="form-control" name="band_rx">
                     <option value="" <?php if($this->session->userdata('band_rx') == "") { echo "selected=\"selected\""; } ?>></option>           
@@ -290,7 +290,7 @@
             </div>
 
             <div class="form-group">
-              <label for="usa_state"><?php echo $this->lang->line('gen_hamradio_usa_state'); ?></label>
+              <label for="input_usa_state"><?php echo $this->lang->line('gen_hamradio_usa_state'); ?></label>
               <select class="custom-select" id="input_usa_state" name="usa_state">
                 <option value=""></option>
                 <option value="AL">Alabama (AL)</option>
@@ -380,7 +380,7 @@
             </div>
 
             <div class="form-group">
-              <label for="sota_ref"><?php echo $this->lang->line('gen_hamradio_dok'); ?></label>
+              <label for="darc_dok"><?php echo $this->lang->line('gen_hamradio_dok'); ?></label>
               <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" />
               <small id="dokHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_dok_helptext'); ?></small>
             </div>
@@ -389,7 +389,7 @@
           <!-- Satellite Panel -->
           <div class="tab-pane fade" id="satellite" role="tabpanel" aria-labelledby="satellite-tab">
             <div class="form-group">
-              <label for="inputSatName"><?php echo $this->lang->line('gen_hamradio_satellite_name'); ?></label>
+              <label for="sat_name"><?php echo $this->lang->line('gen_hamradio_satellite_name'); ?></label>
 
               <input list="satellite_names" id="sat_name" type="text" name="sat_name" class="form-control" value="<?php echo $this->session->userdata('sat_name'); ?>">
 
@@ -397,7 +397,7 @@
             </div>
 
             <div class="form-group">
-              <label for="inputSatMode"><?php echo $this->lang->line('gen_hamradio_satellite_mode'); ?></label>
+              <label for="sat_mode"><?php echo $this->lang->line('gen_hamradio_satellite_mode'); ?></label>
 
               <input list="satellite_modes" id="sat_mode" type="text" name="sat_mode" class="form-control" value="<?php echo $this->session->userdata('sat_mode'); ?>">
 
