@@ -26,7 +26,7 @@
           </li>
           
           <li class="nav-item">
-            <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-selected="false"><?php echo $this->lang->line('general_word_notes'); ?></a>
+            <a class="nav-link" id="notes-tab" data-toggle="tab" href="#nav-notes" role="tab" aria-controls="notes" aria-selected="false"><?php echo $this->lang->line('general_word_notes'); ?></a>
           </li>
 
           <li class="nav-item">
@@ -406,7 +406,7 @@
           </div>
           
           <!-- Notes Panel Contents -->
-          <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+          <div class="tab-pane fade" id="nav-notes" role="tabpanel" aria-labelledby="notes-tab">
             <div class="alert alert-info" role="alert">
               <span class="badge badge-info"><?php echo $this->lang->line('general_word_info'); ?></span> <?php echo $this->lang->line('qso_notes_helptext'); ?>
             </div>
