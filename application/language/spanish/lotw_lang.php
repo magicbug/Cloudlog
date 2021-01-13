@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('Acceso directo a los scripts restringido');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['lotw_title'] = 'Logbook of the World';
 $lang['lotw_title_available_cert'] = 'Certificados disponibles';

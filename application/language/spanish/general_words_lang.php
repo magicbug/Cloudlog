@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('Acceso directo a los scripts restringido');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['error_no_active_station_profile'] = 'Attention: you need to set an active station profile.';
 
