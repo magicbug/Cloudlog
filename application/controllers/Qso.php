@@ -244,4 +244,36 @@ class QSO extends CI_Controller {
 		
 		echo $this->frequency->convent_band($band, $mode);
 	}
+
+	/*
+	 * Function is used for autocompletion of SOTA in the QSO entry form
+	 */
+	public function get_sota() {
+        $json = [];
+
+        if(!empty($this->input->get("query"))) {
+            $query = isset($_GET['query']) ? $_GET['query'] : FALSE;
+            $sota = strtoupper($query);
+
+            $file = 'assets/json/sota.txt';
+
+            if (is_readable($file)) {
+                $lines = file($file, FILE_IGNORE_NEW_LINES);
+                $input = preg_quote($sota, '~');
+                $reg = '~^'. $input .'(.*)$~';
+                $result = preg_grep($reg, $lines);
+                $json = [];
+                $i = 0;
+                foreach ($result as &$value) {
+                    // Limit to 100 as to not slowdown browser too much
+                    if (count($json) <= 100) {
+                        $json[] = ["name"=>$value];
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($json);
+    }
 }
