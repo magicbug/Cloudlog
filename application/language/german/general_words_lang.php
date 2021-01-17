@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('Direkter Zugriff auf Skripte ist nicht erlaubt');
 
-$lang['error_no_active_station_profile'] = 'Achtung: Du musst ein aktives Stationsprofil setzen.';
+$lang['error_no_active_station_profile'] = 'Achtung: Du musst ein aktives Stationsprofil auswählen.';
 
 $lang['notice_turn_the_radio_on'] = 'Du hast heute noch keine QSOs gemacht; Zeit, das Funkgerät einzuschalten!';
 
@@ -35,5 +35,5 @@ $lang['gen_hamradio_band'] = 'Band';
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Du hattest';
 $lang['dashboard_qsos_today'] = 'QSOs heute!';
-$lang['dashboard_qso_breakdown'] = 'QSOs Übersicht';
-$lang['dashboard_countries_breakdown'] = 'Länder Übersicht';
+$lang['dashboard_qso_breakdown'] = 'QSO-Übersicht';
+$lang['dashboard_countries_breakdown'] = 'Länderübersicht';
