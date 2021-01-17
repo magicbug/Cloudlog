@@ -191,6 +191,18 @@
          ]
       }
    },
+   "FOX-1E":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"145875000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"435775000"
+            }
+         ]
+      }
+   },
    "FS-3":{
       "Modes":{
          "V/U":[
