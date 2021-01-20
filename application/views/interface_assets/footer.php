@@ -351,6 +351,34 @@ $( document ).ready(function() {
         }
     });
 
+    $('#darc_dok').selectize({
+        maxItems: 1,
+        closeAfterSelect: true,
+        loadThrottle: 250,
+        valueField: 'name',
+        labelField: 'name',
+        searchField: 'name',
+        options: [],
+        create: false,
+        load: function(query, callback) {
+            if (!query) return callback();  // Only trigger if 3 or more characters are entered
+            $.ajax({
+                url: baseURL+'index.php/qso/get_dok',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    query: query,
+                },
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    callback(res);
+                }
+            });
+        }
+    });
+
   /*
     Populate the Satellite Names Field on the QSO Panel
   */
