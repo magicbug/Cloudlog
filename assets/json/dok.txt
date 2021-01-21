@@ -925,7 +925,7 @@ X04
 X05
 X06
 X07
-X08 bis 31.12.1992 Erfurt-Land
+X08
 X09
 X10
 X11
