@@ -34,6 +34,7 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/selectize.js"></script>
 
 <?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
 
@@ -318,9 +319,66 @@ $(document).on('keypress',function(e) {
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
-
 <script type="text/javascript">
 $( document ).ready(function() {
+    var baseURL= "<?php echo base_url();?>";
+
+    $('#sota_ref').selectize({
+        maxItems: 1,
+        closeAfterSelect: true,
+        loadThrottle: 250,
+        valueField: 'name',
+        labelField: 'name',
+        searchField: 'name',
+        options: [],
+        create: false,
+        load: function(query, callback) {
+            if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
+            $.ajax({
+                url: baseURL+'index.php/qso/get_sota',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    query: query,
+                },
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    callback(res);
+                }
+            });
+        }
+    });
+
+    $('#darc_dok').selectize({
+        maxItems: 1,
+        closeAfterSelect: true,
+        loadThrottle: 250,
+        valueField: 'name',
+        labelField: 'name',
+        searchField: 'name',
+        options: [],
+        create: false,
+        load: function(query, callback) {
+            if (!query) return callback();  // Only trigger if 3 or more characters are entered
+            $.ajax({
+                url: baseURL+'index.php/qso/get_dok',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    query: query,
+                },
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    callback(res);
+                }
+            });
+        }
+    });
+
   /*
     Populate the Satellite Names Field on the QSO Panel
   */
