@@ -52,12 +52,12 @@
 			<div class="tab-pane fade show active" id="nav-qso" role="tabpanel" aria-labelledby="nav-qso-tab">
                 <div class="form-row">
                     <div class="form-group col-sm-6">
-                      <label for="start_date">Start Date/Time</label>
+                      <label for="time_on">Start Date/Time</label>
                       <input type="text" class="form-control form-control-sm input_date" name="time_on" id="time_on" value="<?php echo $qso->COL_TIME_ON; ?>">
                     </div>
 
                     <div class="form-group col-sm-6">
-                      <label for="start_time">End Date/Time</label>
+                      <label for="time_off">End Date/Time</label>
                       <input type="text" class="form-control form-control-sm input_time" name="time_off" id="time_off" value="<?php echo $qso->COL_TIME_OFF; ?>">
                     </div>
                 </div>
@@ -80,7 +80,7 @@
 	            
                 <div class="form-row">
                     <div class="form-group col-sm-6">
-                        <label for="freq">Mode</label>
+                        <label for="mode">Mode</label>
                             <select id="mode" class="form-control mode form-control-sm" name="mode">
                   <?php
                       foreach($modes->result() as $mode){
@@ -104,7 +104,7 @@
             </div>
 
                     <div class="form-group col-sm-6">
-                        <label for="freq">Band</label>
+                        <label for="band">Band</label>
                         <select id="band" class="form-control form-control-sm" name="band">
                             <optgroup label="HF">
                                 <option value="160m" <?php if(strtolower($qso->COL_BAND == "160m")) { echo "selected=\"selected\""; } ?>>160m</option>
@@ -270,7 +270,7 @@
 
 
 				<div class="form-group">
-	            	<label for="usa_state">USA State</label>
+	            	<label for="input_usa_state">USA State</label>
                     <select class="custom-select" id="input_usa_state" name="usa_state">
                         <option value=""></option>
                         <option value="AL" <?php if($qso->COL_STATE == "AL") { echo "selected=\"selected\""; } ?>>Alabama (AL)</option>
@@ -390,9 +390,9 @@
 				<div class="tab-content" id="myTabContent">
 				  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 				            <div class="form-group row">
-				              <label for="sent" class="col-sm-3 col-form-label">Sent</label>
+				              <label for="qsl_sent" class="col-sm-3 col-form-label">Sent</label>
 				              <div class="col-sm-9">
-				                <select class="custom-select" name="qsl_sent">
+				                <select class="custom-select" id="qsl_sent" name="qsl_sent">
 				          <option value="N" <?php if($qso->COL_QSL_SENT == "N") { echo "selected=\"selected\""; } ?>>No</option>
 				          <option value="Y" <?php if($qso->COL_QSL_SENT == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 				          <option value="R" <?php if($qso->COL_QSL_SENT == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
@@ -403,9 +403,9 @@
 				            </div>
 
 				            <div class="form-group row">
-				              <label for="sent-method" class="col-sm-3 col-form-label">Sent Method</label>
+				              <label for="qsl_sent_method" class="col-sm-3 col-form-label">Sent Method</label>
 				              <div class="col-sm-9">
-				                <select class="custom-select" name="qsl_sent_method">
+				                <select class="custom-select" id="qsl_sent_method" name="qsl_sent_method">
 				          <option value="" <?php if($qso->COL_QSL_SENT_VIA == "") { echo "selected=\"selected\""; } ?>>Method</option>
 				          <option value="D" <?php if($qso->COL_QSL_SENT_VIA == "D") { echo "selected=\"selected\""; } ?>>Direct</option>
 				          <option value="B" <?php if($qso->COL_QSL_SENT_VIA == "B") { echo "selected=\"selected\""; } ?>>Bureau</option>
@@ -423,9 +423,9 @@
 				            </div>
 
 				            <div class="form-group row">
-				              <label for="sent-method" class="col-sm-3 col-form-label">Received</label>
+				              <label for="qsl_recv" class="col-sm-3 col-form-label">Received</label>
 				              <div class="col-sm-9">
-				                <select class="custom-select" name="qsl_recv">
+				                <select class="custom-select" id="qsl_recv" name="qsl_recv">
 				          <option value="N" <?php if($qso->COL_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
 				          <option value="Y" <?php if($qso->COL_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 				          <option value="R" <?php if($qso->COL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
@@ -436,9 +436,9 @@
 				            </div>
 
 				            <div class="form-group row">
-				              <label for="sent-method" class="col-sm-3 col-form-label">Received Method</label>
+				              <label for="qsl_recv_method" class="col-sm-3 col-form-label">Received Method</label>
 				              <div class="col-sm-9">
-				                <select class="custom-select" name="qsl_recv_method">
+				                <select class="custom-select" id="qsl_recv_method" name="qsl_recv_method">
 				          <option value="" <?php if($qso->COL_QSL_RCVD_VIA == "") { echo "selected=\"selected\""; } ?>>Method</option>
 				          <option value="D" <?php if($qso->COL_QSL_RCVD_VIA == "D") { echo "selected=\"selected\""; } ?>>Direct</option>
 				          <option value="B" <?php if($qso->COL_QSL_RCVD_VIA == "B") { echo "selected=\"selected\""; } ?>>Bureau</option>
@@ -451,9 +451,9 @@
 
 				  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 				            <div class="form-group row">
-				              <label for="sent" class="col-sm-3 col-form-label">Sent</label>
+				              <label for="eqsl_sent" class="col-sm-3 col-form-label">Sent</label>
 				              <div class="col-sm-9">
-				              <select class="custom-select" name="eqsl_sent">
+				              <select class="custom-select" id="eqsl_sent" name="eqsl_sent">
 				            <option value="N" <?php if($qso->COL_EQSL_QSL_SENT == "N") { echo "selected=\"selected\""; } ?>>No</option>
 				            <option value="Y" <?php if($qso->COL_EQSL_QSL_SENT == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 				            <option value="R" <?php if($qso->COL_EQSL_QSL_SENT == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
@@ -464,9 +464,9 @@
 				            </div>
 
 				            <div class="form-group row">
-				              <label for="sent" class="col-sm-3 col-form-label">Received</label>
+				              <label for="eqsl_recv" class="col-sm-3 col-form-label">Received</label>
 				              <div class="col-sm-9">
-				              <select class="custom-select" name="eqsl_recv">
+				              <select class="custom-select" id="eqsl_recv" name="eqsl_recv">
 				            <option value="N" <?php if($qso->COL_EQSL_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
 				            <option value="Y" <?php if($qso->COL_EQSL_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 				            <option value="R" <?php if($qso->COL_EQSL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
@@ -477,9 +477,9 @@
 				  </div>
 				  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 				            <div class="form-group row">
-				              <label for="sent" class="col-sm-3 col-form-label">Sent</label>
+				              <label for="lotw_sent" class="col-sm-3 col-form-label">Sent</label>
 				              <div class="col-sm-9">
-				              <select class="custom-select" name="lotw_sent">
+				              <select class="custom-select" id="lotw_sent" name="lotw_sent">
 				            <option value="N" <?php if($qso->COL_LOTW_QSL_SENT == "N") { echo "selected=\"selected\""; } ?>>No</option>
 				            <option value="Y" <?php if($qso->COL_LOTW_QSL_SENT == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 				            <option value="R" <?php if($qso->COL_LOTW_QSL_SENT == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
@@ -489,9 +489,9 @@
 				            </div>
 
 				            <div class="form-group row">
-				              <label for="sent" class="col-sm-3 col-form-label">Received</label>
+				              <label for="lotw_recv" class="col-sm-3 col-form-label">Received</label>
 				              <div class="col-sm-9">
-				              <select class="custom-select" name="lotw_recv">
+				              <select class="custom-select" id="lotw_recv" name="lotw_recv">
 				            <option value="N" <?php if($qso->COL_LOTW_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
 				            <option value="Y" <?php if($qso->COL_LOTW_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
 				            <option value="R" <?php if($qso->COL_LOTW_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
@@ -514,7 +514,7 @@
 		 ?>
 
 	            <div class="form-group">
-	              <label for="inputStationProfile">Change Station Profile</label>
+	              <label for="stationProfile">Change Station Profile</label>
 	              <select id="stationProfile" class="custom-select" name="station_profile">
 	                <?php foreach ($my_stations->result() as $stationrow) { ?>
 	                <option value="<?php echo $stationrow->station_id; ?>" <?php if($qso->station_id == $stationrow->station_id) { echo "selected=\"selected\""; } ?>><?php echo $stationrow->station_profile_name; ?></option>
