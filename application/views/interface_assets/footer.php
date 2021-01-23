@@ -1992,6 +1992,63 @@ $(document).ready(function(){
                         size: BootstrapDialog.SIZE_WIDE,
                         nl2br: false,
                         message: html,
+                        onshown: function(dialog) {
+                            $('#sota_ref').selectize({
+                                maxItems: 1,
+                                closeAfterSelect: true,
+                                loadThrottle: 250,
+                                valueField: 'name',
+                                labelField: 'name',
+                                searchField: 'name',
+                                options: [],
+                                create: false,
+                                load: function(query, callback) {
+                                    if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
+                                    $.ajax({
+                                        url: baseURL+'index.php/qso/get_sota',
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        data: {
+                                            query: query,
+                                        },
+                                        error: function() {
+                                            callback();
+                                        },
+                                        success: function(res) {
+                                            callback(res);
+                                        }
+                                    });
+                                }
+                            });
+
+                            $('#darc_dok').selectize({
+                                maxItems: 1,
+                                closeAfterSelect: true,
+                                loadThrottle: 250,
+                                valueField: 'name',
+                                labelField: 'name',
+                                searchField: 'name',
+                                options: [],
+                                create: false,
+                                load: function(query, callback) {
+                                    if (!query) return callback();  // Only trigger if 3 or more characters are entered
+                                    $.ajax({
+                                        url: baseURL+'index.php/qso/get_dok',
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        data: {
+                                            query: query,
+                                        },
+                                        error: function() {
+                                            callback();
+                                        },
+                                        success: function(res) {
+                                            callback(res);
+                                        }
+                                    });
+                                }
+                            });
+                        },
                     });
                 }
             });
