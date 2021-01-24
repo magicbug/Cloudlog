@@ -60,7 +60,8 @@
 		    <small id="stationCityInputHelp" class="form-text text-muted">Station city. For example: Inverness</small>
 		  </div>
 
-		  <div class="form-group">
+        <div class="form-row">
+            <div class="form-group col-sm-6">
 		    <label for="stateInput">Station State</label>
 		    <select class="form-control custom-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 		    	<option value=""></option>
@@ -131,11 +132,12 @@
 		    <small id="StateHelp" class="form-text text-muted">Station state. Applies to certain countries only. Leave blank if not applicable.</small>
 		  </div>
 
-		  <div style="display: none" class="form-group">
+		  <div class="form-group col-sm-6">
 		    <label for="stationCntyInput">Station County</label>
-		    <input type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp" value="<?php if(set_value('station_cnty') != "") { echo set_value('station_cnty'); } else { echo $my_station_profile->station_cnty; } ?>">
+		    <input disabled="disabled" type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp" value="<?php if(set_value('station_cnty') != "") { echo set_value('station_cnty'); } else { echo $my_station_profile->station_cnty; } ?>">
 		    <small id="stationCntyInputHelp" class="form-text text-muted">Station County (Only used for USA/Alaska/Hawaii)</small>
 		  </div>
+        </div>
 
             <div class="form-row">
                 <div class="form-group col-sm-6">
