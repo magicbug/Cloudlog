@@ -339,6 +339,18 @@
          ]
       }
    },
+   "UVSQ-SAT":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145905000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"437020000"
+            }
+         ]
+      }
+   },
    "XW-2A":{
       "Modes":{
          "U/V":[
