@@ -202,6 +202,10 @@
                 <small id="eqslhelp" class="form-text text-muted">eQSL QTH Nickname.</small>
             </div>
 
+			<div class="alert alert-warning" role="alert">
+					QRZ.com Logbook Requires Paid Subscription
+			</div>
+
             <div class="form-row">
                 <div class="form-group col-sm-6">
                     <label for="qrzApiKey">QRZ.com Logbook API Key</label>
