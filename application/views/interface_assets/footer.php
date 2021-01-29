@@ -795,7 +795,7 @@ $(document).on('change', 'input', function(){
 				
 				if($("#sat_name" ).val() != "") {
 					//logbook/jsonlookupgrid/io77/SAT/0/0
-					$.getJSON('logbook/jsonlookupcallsign/' + $("#callsign").val().toUpperCase() + '/SAT/0/0', function(result)
+					$.getJSON('logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/SAT/0/0', function(result)
 					{
 					  // Reset CSS values before updating
 					  $('#callsign').removeClass("workedGrid");
@@ -814,7 +814,7 @@ $(document).on('change', 'input', function(){
 					  }
 					})
 				  } else {
-					$.getJSON('logbook/jsonlookupcallsign/' + $("#callsign").val().toUpperCase() + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
+					$.getJSON('logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
 					{
 					  // Reset CSS values before updating
 					  $('#callsign').removeClass("workedGrid");

@@ -317,6 +317,9 @@ class Logbook extends CI_Controller {
 
 	function jsonlookupcallsign($callsign, $type, $band, $mode) {
 		
+		// Convert - in Callsign to / Used for URL processing
+		$callsign = str_replace("-","/",$callsign);
+
 		$return = [
 			"workedBefore" => false,
 		];
