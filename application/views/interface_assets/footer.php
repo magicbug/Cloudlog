@@ -31,7 +31,7 @@
     <script src="<?php echo base_url() ;?>assets/js/sections/notes.js"></script>
 <?php } ?>
 
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/selectize.js"></script>
@@ -781,8 +781,12 @@ $(document).on('change', 'input', function(){
               var json_mode = $("#mode").val();
             }
 
+            var find_callsign = $(this).val().toUpperCase();
 
-            $.getJSON('logbook/json/' + $(this).val().toUpperCase() + '/' + sat_type + '/' + json_band + '/' + json_mode, function(result)
+            find_callsign.replace(/\//g, "-");
+
+            // Replace / in a callsign with - to stop urls breaking
+            $.getJSON('logbook/json/' + find_callsign.replace(/\//g, "-") + '/' + sat_type + '/' + json_band + '/' + json_mode, function(result)
             {
               //$('#country').val(result); lotw_info
               if(result.dxcc.entity != undefined) {

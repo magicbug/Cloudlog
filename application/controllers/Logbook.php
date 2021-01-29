@@ -67,6 +67,9 @@ class Logbook extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
+		// Convert - in Callsign to / Used for URL processing
+		$callsign = str_replace("-","/",$callsign);
+
 		// Check if callsign is an LOTW User
 			$lotw_member = "";
 			$lotw_file_name = "./updates/lotw_users.csv";
