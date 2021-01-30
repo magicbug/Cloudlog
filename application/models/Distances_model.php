@@ -9,6 +9,69 @@ class Distances_model extends CI_Model
         parent::__construct();
     }
 
+    public $bandslots = array("160m"=>0,
+        "80m"=>0,
+        "60m"=>0,
+        "40m"=>0,
+        "30m"=>0,
+        "20m"=>0,
+        "17m"=>0,
+        "15m"=>0,
+        "12m"=>0,
+        "10m"=>0,
+        "6m" =>0,
+        "4m" =>0,
+        "2m" =>0,
+        "70cm"=>0,
+        "23cm"=>0,
+        "13cm"=>0,
+        "9cm"=>0,
+        "6cm"=>0,
+        "3cm"=>0,
+        "1.25cm"=>0);
+
+    function get_worked_sats() {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        // get all worked sats from database
+        $sql = "SELECT distinct col_sat_name FROM ".$this->config->item('table_name')." WHERE station_id = ".$station_id . " and coalesce(col_sat_name, '') <> ''";
+
+        $data = $this->db->query($sql);
+
+        $worked_sats = array();
+        foreach($data->result() as $row){
+            array_push($worked_sats, $row->col_sat_name);
+        }
+
+        return $worked_sats;
+    }
+
+    function get_worked_bands() {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        // get all worked slots from database
+        $sql = "SELECT distinct LOWER(COL_BAND) as COL_BAND FROM ".$this->config->item('table_name')." WHERE station_id = ".$station_id;
+
+        $data = $this->db->query($sql);
+        $worked_slots = array();
+        foreach($data->result() as $row){
+            array_push($worked_slots, $row->COL_BAND);
+        }
+
+        // bring worked-slots in order of defined $bandslots
+        $results = array();
+        foreach(array_keys($this->bandslots) as $slot) {
+            if(in_array($slot, $worked_slots)) {
+                array_push($results, $slot);
+            }
+        }
+        return $results;
+    }
+
     function get_distances($postdata, $measurement_base)
     {
         $CI =& get_instance();
@@ -23,6 +86,9 @@ class Distances_model extends CI_Model
 
         if ($postdata['band'] == 'sat') {
             $this->db->where('col_prop_mode', $postdata['band']);
+            if ($postdata['sat'] != 'All') {
+                $this->db->where('col_sat_name', $postdata['sat']);
+            }
         }
         else {
             $this->db->where('col_band', $postdata['band']);
