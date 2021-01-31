@@ -1379,19 +1379,12 @@ $(document).ready(function(){
     <script src="<?php echo base_url(); ?>assets/js/highstock/export-data.js"></script>
 <script>
 
-  var bands_available = <?php echo $bands_available; ?>;
-
-  $.each(bands_available, function(key, value) {
-     $('#distplot_bands')
-         .append($("<option></option>")
-                    .attr("value",value)
-                    .text(value));
-  });
-
-  var num = "<?php echo $this->uri->segment(3);?>";
-    $("#distplot_bands option").each(function(){
-        if($(this).val()==num){ // EDITED THIS LINE
-            $(this).attr("selected","selected");
+    $('#distplot_bands').change(function(){
+        var band = $("#distplot_bands option:selected").text();
+        if (band != "SAT") {
+            $("#distplot_sats").prop('disabled', true);
+        } else {
+            $("#distplot_sats").prop('disabled', false);
         }
     });
 
@@ -1401,7 +1394,8 @@ $(document).ready(function(){
       $.ajax({
           url: baseURL+'index.php/distances/get_distances',
           type: 'post',
-          data: {'band': form.distplot_bands.value},
+          data: {'band': form.distplot_bands.value,
+                'sat': form.distplot_sats.value},
           success: function(tmp) {
               if (tmp.ok == 'OK') {
                   if (!($('#information').length > 0))

@@ -16,18 +16,9 @@ class Distances extends CI_Controller {
         // Render Page
         $data['page_title'] = "Distances Worked";
 
-        function js_str($s)
-        {
-            return '"' . addcslashes($s, "\0..\37\"\\") . '"';
-        }
-
-        function js_array($array)
-        {
-            $temp = array_map('js_str', $array);
-            return '[' . implode(',', $temp) . ']';
-        }
-
-        $data['bands_available'] = js_array($this->config->item('bands_available'));
+        $this->load->model('Distances_model');
+        $data['bands_available'] = $this->Distances_model->get_worked_bands();
+        $data['sats_available'] = $this->Distances_model->get_worked_sats();
 
         $this->load->view('interface_assets/header', $data);
         $this->load->view('distances/index');
@@ -53,5 +44,4 @@ class Distances extends CI_Controller {
 
         return json_encode($data);
     }
-
 }
