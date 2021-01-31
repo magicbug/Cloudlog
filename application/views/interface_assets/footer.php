@@ -323,6 +323,49 @@ $(document).on('keypress',function(e) {
 $( document ).ready(function() {
     var baseURL= "<?php echo base_url();?>";
 
+    $('#input_usa_state').change(function(){
+        var state = $("#input_usa_state option:selected").text();
+        if (state != "") {
+            $("#stationCntyInput").prop('disabled', false);
+
+            $('#stationCntyInput').selectize({
+                maxItems: 1,
+                closeAfterSelect: true,
+                loadThrottle: 250,
+                valueField: 'name',
+                labelField: 'name',
+                searchField: 'name',
+                options: [],
+                create: false,
+                load: function(query, callback) {
+                    var state = $("#input_usa_state option:selected").text();
+
+                    if (!query || state == "") return callback();
+                    $.ajax({
+                        url: baseURL+'index.php/qso/get_county',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            query: query,
+                            state: state,
+                        },
+                        error: function() {
+                            callback();
+                        },
+                        success: function(res) {
+                            callback(res);
+                        }
+                    });
+                }
+            });
+
+        } else {
+            $("#stationCntyInput").prop('disabled', true);
+            $('#stationCntyInput')[0].selectize.destroy();
+            $("#stationCntyInput").val("");
+        }
+    });
+
     $('#sota_ref').selectize({
         maxItems: 1,
         closeAfterSelect: true,

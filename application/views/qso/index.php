@@ -347,6 +347,11 @@
               </select>
             </div>
 
+              <div class="form-group">
+                  <label for="stationCntyInput"><?php echo $this->lang->line('gen_hamradio_county_reference'); ?></label>
+                  <input disabled="disabled" class="form-control" id="stationCntyInput" type="text" name="county" value="" />
+              </div>
+
             <div class="form-group">
               <label for="iota_ref"><?php echo $this->lang->line('gen_hamradio_iota_reference'); ?></label>
                     <select class="custom-select" id="iota_ref" name="iota_ref">
