@@ -33,6 +33,11 @@ class Options extends CI_Controller {
 	
 	// function used to display the /appearance url
 	function appearance() {
+
+		// Get Language Options
+		$directory = 'application/language';
+		$data['language_options'] = array_diff(scandir($directory), array('..', '.'));
+
 		$data['page_title'] = "Cloudlog Options";
 		$data['sub_heading'] = "Appearance";
 
@@ -43,6 +48,11 @@ class Options extends CI_Controller {
 
 	// Handles saving the appreance options to the options system.
 	function appearance_save() {
+
+		// Get Language Options
+		$directory = 'application/language';
+		$data['language_options'] = array_diff(scandir($directory), array('..', '.'));
+
 		$data['page_title'] = "Cloudlog Options";
 		$data['sub_heading'] = "Appearance";
 
@@ -66,6 +76,14 @@ class Options extends CI_Controller {
 			// If theme update is complete set a flashsession with a success note
 			if($theme_update_status == TRUE) {
 				$this->session->set_flashdata('success', 'Theme changed to '.$this->input->post('theme'));
+			}
+
+			// Update Lang choice within the options system
+			$lang_update_status = $this->optionslib->update('language', $this->input->post('language'));
+
+			// If Lang update is complete set a flashsession with a success note
+			if($lang_update_status == TRUE) {
+				$this->session->set_flashdata('success', 'Language changed to '.ucfirst($this->input->post('language')));
 			}
 
 			// Redirect back to /appearance
