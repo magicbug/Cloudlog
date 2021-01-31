@@ -144,6 +144,12 @@
                     </tr>
                     <?php } ?>
 
+                    <?php if($row->COL_USACA_COUNTIES != null) { ?>
+                        <tr>
+                            <td>USA County:</td>
+                            <td><?php echo $row->COL_USACA_COUNTIES; ?></td>
+                        </tr>
+                    <?php } ?>
 
                     <?php if($row->COL_NAME != null) { ?>
                     <tr>

@@ -372,6 +372,11 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="stationCntyInput">USA County</label>
+                                    <input disabled="disabled" class="form-control" id="stationCntyInput" type="text" name="usa_county" value="<?php echo $qso->COL_USACA_COUNTIES; ?>" />
+                                </div>
+
+                                <div class="form-group">
                                     <label for="iota_ref">IOTA</label>
                                     <select class="custom-select" id="iota_ref" name="iota_ref">
                                         <option value =""></option>
