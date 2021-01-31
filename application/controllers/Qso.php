@@ -317,4 +317,39 @@ class QSO extends CI_Controller {
         header('Content-Type: application/json');
         echo json_encode($json);
     }
+
+    /*
+	 * Function is used for autocompletion of Counties in the station profile form
+	 */
+    public function get_county() {
+        $json = [];
+
+        if(!empty($this->input->get("query"))) {
+            //$query = isset($_GET['query']) ? $_GET['query'] : FALSE;
+            $county = $this->input->get("state");
+            $cleanedcounty = explode('(', $county);
+            $cleanedcounty = trim($cleanedcounty[0]);
+
+            $file = 'assets/json/US_counties.csv';
+
+            if (is_readable($file)) {
+                $lines = file($file, FILE_IGNORE_NEW_LINES);
+                $input = preg_quote($cleanedcounty, '~');
+                $reg = '~^'. $input .'(.*)$~';
+                $result = preg_grep($reg, $lines);
+                $json = [];
+                $i = 0;
+                foreach ($result as &$value) {
+                    $county = explode(',', $value);
+                    // Limit to 100 as to not slowdown browser too much
+                    if (count($json) <= 100) {
+                        $json[] = ["name"=>$county[1]];
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($json);
+    }
 }

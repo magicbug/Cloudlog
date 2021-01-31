@@ -83,6 +83,7 @@ $lang['gen_hamradio_logbook'] = 'Logbook';
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_usa_state'] = 'USA State';
+$lang['gen_hamradio_county_reference'] = 'USA County';
 $lang['gen_hamradio_iota_reference'] = 'IOTA Reference';
 $lang['gen_hamradio_sota_reference'] = 'SOTA Reference';
 $lang['gen_hamradio_dok'] = 'DOK';
