@@ -94,7 +94,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('timeplotter');?>" title="View time when worked">Timeplotter</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="<?php echo site_url('map');?>" title="Maps of QSOs">Maps</a>
+					<a class="dropdown-item" href="<?php echo site_url('map/custom');?>" title="Custom Maps of QSOs">Custom Maps</a>
 				</div>
         	</li>
 
