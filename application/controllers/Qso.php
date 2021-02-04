@@ -294,13 +294,13 @@ class QSO extends CI_Controller {
 
         if(!empty($this->input->get("query"))) {
             $query = isset($_GET['query']) ? $_GET['query'] : FALSE;
-            $sota = strtoupper($query);
+            $dok = strtoupper($query);
 
             $file = 'assets/json/dok.txt';
 
             if (is_readable($file)) {
                 $lines = file($file, FILE_IGNORE_NEW_LINES);
-                $input = preg_quote($sota, '~');
+                $input = preg_quote($dok, '~');
                 $reg = '~^'. $input .'(.*)$~';
                 $result = preg_grep($reg, $lines);
                 $json = [];

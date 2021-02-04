@@ -404,7 +404,7 @@ $( document ).ready(function() {
         options: [],
         create: false,
         load: function(query, callback) {
-            if (!query) return callback();  // Only trigger if 3 or more characters are entered
+            if (!query) return callback();  // Only trigger if at least 1 character is entered
             $.ajax({
                 url: baseURL+'index.php/qso/get_dok',
                 type: 'GET',
