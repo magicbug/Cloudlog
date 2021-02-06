@@ -438,4 +438,15 @@ class Awards extends CI_Controller {
         $data['filter'] = "iota ".$iota. " and ".$band;
         $this->load->view('awards/details', $data);
     }
+
+    public function counties()	{
+        $this->load->model('counties');
+        $data['counties_array'] = $this->counties->get_counties_array();
+
+        // Render Page
+        $data['page_title'] = "Awards - US Counties";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/counties/index');
+        $this->load->view('interface_assets/footer');
+    }
 }
