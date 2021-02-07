@@ -449,4 +449,32 @@ class Awards extends CI_Controller {
         $this->load->view('awards/counties/index');
         $this->load->view('interface_assets/footer');
     }
+
+    public function counties_details() {
+        $this->load->model('counties');
+        $state = str_replace('"', "", $this->input->get("State"));
+        $type = str_replace('"', "", $this->input->get("Type"));
+        $data['counties_array'] = $this->counties->counties_details($state, $type);
+        $data['type'] = $type;
+
+        // Render Page
+        $data['page_title'] = "US Counties";
+        $data['filter'] = $type . " counties in state ".$state;
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/counties/details');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function counties_details_ajax(){
+        $this->load->model('logbook_model');
+
+        $state = str_replace('"', "", $this->input->post("State"));
+        $county = str_replace('"', "", $this->input->post("County"));
+        $data['results'] = $this->logbook_model->county_qso_details($state, $county);
+
+        // Render Page
+        $data['page_title'] = "Log View - Counties";
+        $data['filter'] = "county " . $state;
+        $this->load->view('awards/details', $data);
+    }
 }

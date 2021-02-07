@@ -2931,7 +2931,7 @@ function deleteQsl(id) {
 
 <?php } ?>
 
-<?php if ($this->uri->segment(2) == "counties") { ?>
+<?php if ($this->uri->segment(2) == "counties" || $this->uri->segment(2) == "counties_details") { ?>
 <script>
     $('.countiestable').DataTable({
         "pageLength": 25,
@@ -2951,6 +2951,31 @@ function deleteQsl(id) {
 
     if (background != ('rgb(255, 255, 255)')) {
         $(".buttons-csv").css("color", "white");
+    }
+
+    function displayCountyContacts(state, county) {
+        var baseURL= "<?php echo base_url();?>";
+        $.ajax({
+            url: baseURL + 'index.php/awards/counties_details_ajax',
+            type: 'post',
+            data: {'State': state, 'County': county
+            },
+            success: function(html) {
+                BootstrapDialog.show({
+                    title: 'QSO Data',
+                    size: BootstrapDialog.SIZE_WIDE,
+                    cssClass: 'qso-counties-dialog',
+                    nl2br: false,
+                    message: html,
+                    buttons: [{
+                        label: 'Close',
+                        action: function (dialogItself) {
+                            dialogItself.close();
+                        }
+                    }]
+                });
+            }
+        });
     }
 </script>
 <?php } ?>

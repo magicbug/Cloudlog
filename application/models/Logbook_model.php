@@ -2257,6 +2257,20 @@ class Logbook_model extends CI_Model {
 
     return "Updated";
   }
+
+    function county_qso_details($state, $county) {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        $this->db->where('station_id', $station_id);
+        $this->db->where('COL_STATE', $state);
+        $this->db->where('COL_CNTY', $county);
+        $this->db->where('COL_PROP_MODE !=', 'SAT');
+
+        return $this->db->get($this->config->item('table_name'));
+    }
+
 }
 
 function validateADIFDate($date, $format = 'Ymd')
@@ -2264,4 +2278,8 @@ function validateADIFDate($date, $format = 'Ymd')
   $d = DateTime::createFromFormat($format, $date);
   return $d && $d->format($format) == $date;
 }
+
+
+
 ?>
+

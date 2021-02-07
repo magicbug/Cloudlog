@@ -13,19 +13,19 @@
         <?php
         $worked = 0;
         $confirmed = 0;
-        foreach($counties_array as $band => $counties) {
+        foreach($counties_array as $counties) {
             echo '<tr>';
             echo '<td>' . $counties['COL_STATE'] .'</td>';
-            echo '<td><a href=\'counties?Type="worked"\'>'. $counties['countycountworked'] .'</td>';
-            echo '<td><a href=\'counties?Type="confirmed"\'>'. $counties['countycountconfirmed'] .'</td>';
+            echo '<td><a href=\'counties_details?State="'.$counties['COL_STATE'].'"&Type="worked"\'>'. $counties['countycountworked'] .'</a></td>';
+            echo '<td><a href=\'counties_details?State="'.$counties['COL_STATE'].'"&Type="confirmed"\'>'. $counties['countycountconfirmed'] .'</a></td>';
             echo '</tr>';
             $worked += $counties['countycountworked'];
             $confirmed += $counties['countycountconfirmed'];
         }
         ?><tfoot><tr>
-        <td>Total</td>
-        <td><?php echo $worked ?></td>
-        <td><?php echo $confirmed ?></td>
+            <td>Total</td>
+            <td><a href=counties_details?State="All"&Type="worked"><?php echo $worked ?></a></td>
+            <td><a href=counties_details?State="All"&Type="confirmed"><?php echo $confirmed ?></a></td>
         </tr></tfoot>
         </tbody>
     </table>

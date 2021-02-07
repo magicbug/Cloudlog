@@ -3,8 +3,7 @@
 class Counties extends CI_Model
 {
 
-    function __construct()
-    {
+    function __construct() {
         // Call the Model constructor
         parent::__construct();
     }
@@ -36,8 +35,8 @@ class Counties extends CI_Model
                  left outer join (
                         select count(distinct COL_CNTY) countycountconfirmed, COL_STATE
                         from " . $this->config->item('table_name') .
-                        " where station_id =" . $station_id .
-                    " and COL_DXCC in ('291', '6', '110')
+            " where station_id =" . $station_id .
+            " and COL_DXCC in ('291', '6', '110')
                     and coalesce(COL_CNTY, '') <> ''
                     and COL_BAND != 'SAT'
                     and (col_qsl_rcvd='Y' or col_eqsl_qsl_rcvd='Y')
@@ -45,7 +44,7 @@ class Counties extends CI_Model
                     order by COL_STATE
                 ) x on thcv.COL_STATE = x.COL_STATE
                  where station_id =" . $station_id .
-                " and COL_DXCC in ('291', '6', '110')
+            " and COL_DXCC in ('291', '6', '110')
                 and coalesce(COL_CNTY, '') <> ''
                 and COL_BAND != 'SAT'
                 group by thcv.COL_STATE
@@ -60,4 +59,46 @@ class Counties extends CI_Model
         $CI->load->model('Stations');
         return $CI->Stations->find_active();
     }
+
+    /*
+    * Makes a list of all counties in given state
+    */
+    function counties_details($state, $type) {
+        if ($type == 'worked') {
+            $counties = $this->get_counties($state, 'none');
+        } else if ($type == 'confirmed') {
+            $counties = $this->get_counties($state, 'confirmed');
+        }
+        if (!isset($counties)) {
+            return 0;
+        } else {
+            ksort($counties);
+            return $counties;
+        }
+    }
+
+    function get_counties($state, $confirmationtype) {
+        $station_id = $this->get_station_id();
+
+        $sql = "select distinct COL_CNTY, COL_STATE
+                from " . $this->config->item('table_name') . " thcv
+                 where station_id =" . $station_id .
+                " and COL_DXCC in ('291', '6', '110')
+                and coalesce(COL_CNTY, '') <> ''
+                and COL_BAND != 'SAT'";
+
+        if ($state != 'All') {
+            $sql .= " and COL_STATE = '" . $state . "'";
+        }
+
+        if ($confirmationtype != 'none') {
+            $sql .= " and (col_qsl_rcvd='Y' or col_eqsl_qsl_rcvd='Y')";
+        }
+
+        $sql .= " order by thcv.COL_STATE";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
 }
