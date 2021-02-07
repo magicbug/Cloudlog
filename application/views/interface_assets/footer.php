@@ -361,7 +361,7 @@ $( document ).ready(function() {
 
         } else {
             $("#stationCntyInput").prop('disabled', true);
-            $('#stationCntyInput')[0].selectize.destroy();
+            //$('#stationCntyInput')[0].selectize.destroy();
             $("#stationCntyInput").val("");
         }
     });
@@ -2049,7 +2049,7 @@ $(document).ready(function(){
 
                                 } else {
                                     $("#stationCntyInput").prop('disabled', true);
-                                    $('#stationCntyInput')[0].selectize.destroy();
+                                    //$('#stationCntyInput')[0].selectize.destroy();
                                     $("#stationCntyInput").val("");
                                 }
                             });
@@ -2923,7 +2923,7 @@ function deleteQsl(id) {
 
         } else {
             $("#stationCntyInput").prop('disabled', true);
-            $('#stationCntyInput')[0].selectize.destroy();
+            //$('#stationCntyInput')[0].selectize.destroy();
             $("#stationCntyInput").val("");
         }
     });
