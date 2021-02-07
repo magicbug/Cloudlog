@@ -150,7 +150,7 @@ class Logbook_model extends CI_Model {
             'COL_DXCC' => $dxcc_id,
             'COL_CQZ' => $cqz,
             'COL_STATE' => trim($this->input->post('usa_state')),
-            'COL_USACA_COUNTIES' => trim($this->input->post('county')),
+            'COL_CNTY' => trim($this->input->post('usa_state')) . "," . trim($this->input->post('county')),
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
             'COL_SIG' => trim($this->input->post('sig')),
             'COL_SIG_INFO' => trim($this->input->post('sig_info')),
@@ -531,7 +531,7 @@ class Logbook_model extends CI_Model {
        'station_id' => $this->input->post('station_profile'),
        'COL_OPERATOR' => $this->input->post('operator_callsign'),
        'COL_STATE' =>$this->input->post('usa_state'),
-       'COL_USACA_COUNTIES' =>$this->input->post('usa_county'),
+       'COL_CNTY' =>$this->input->post('usa_state') .",".$this->input->post('usa_county'),
     );
 
     if ($this->exists_qrz_api_key($data['station_id'])) {
