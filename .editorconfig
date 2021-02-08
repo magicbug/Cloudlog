@@ -1,0 +1,22 @@
+# Automatic editor configuration for the Cloudlog coding style.
+# See https://editorconfig.org/#download to check for support in your editor of
+# choice.
+
+# This is the root configuration file (there are no others in subdirectories).
+root = true
+
+# These global rules affect all files under the repository root.
+[*]
+charset = utf-8
+end_of_line = lf
+
+# These rules affect the listed file types only. Global rules still apply and
+# are overridden if the same key is assigned a different value here.
+[*.{php,js,html,xml,css}]
+indent_style = tab
+indent_size = 4
+
+# These rules are specifically for code
+[*.{php,js}]
+insert_final_newline = true
+trim_trailing_whitespace = true
