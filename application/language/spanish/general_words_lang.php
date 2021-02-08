@@ -40,12 +40,12 @@ $lang['general_word_received'] = 'Recibido';
 $lang['general_word_requested'] = 'Solicitadas';
 $lang['general_word_qslcards'] = 'Tarjetas QSL';
 $lang['general_word_qslcard_direct'] = 'Directo';
-$lang['general_word_qslcard_bureau'] = 'Agencia';
+$lang['general_word_qslcard_bureau'] = 'Buró';
 $lang['general_word_qslcard_via'] = 'Vía';
 
 $lang['general_edit_qso'] = 'Editar QSO';
-$lang['general_mark_qsl_rx_bureau'] = 'Marcar QSL Recibida (Agencia)';
-$lang['general_mark_qsl_rx_direct'] = 'Mark QSL Recibida (Directa)';
+$lang['general_mark_qsl_rx_bureau'] = 'Marcar QSL Recibida (Buró)';
+$lang['general_mark_qsl_rx_direct'] = 'Marcar QSL Recibida (Directa)';
 
 $lang['general_delete_qso'] = 'Eliminar QSO';
 
@@ -56,7 +56,7 @@ $lang['cloudlog_station_profile'] = 'Perfil de estación';
 $lang['gen_hamradio_qso'] = 'QSO';
 $lang['gen_hamradio_station'] = 'Estación';
 
-$lang['gen_hamradio_call'] = 'Llamada';
+$lang['gen_hamradio_call'] = 'Indicativo';
 $lang['gen_hamradio_callsign'] = 'Indicativo';
 $lang['gen_hamradio_mode'] = 'Modo';
 $lang['gen_hamradio_rst_sent'] = 'Enviado';
