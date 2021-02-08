@@ -293,7 +293,7 @@ class Update extends CI_Controller {
      * Used for autoupdating the DOK file which is used in the QSO entry dialog for autocompletion.
      */
     public function update_dok() {
-        $contents = file_get_contents('https://www.df2et.de/cqrlog/dok.txt', true);
+        $contents = file_get_contents('https://www.df2et.de/cqrlog/dok_and_sdok.txt', true);
 
         if($contents === FALSE) {
             echo "Something went wrong with fetching the DOK file.";
@@ -307,7 +307,7 @@ class Update extends CI_Controller {
                 $nCount = count(file($file));
                 if ($nCount > 0)
                 {
-                    echo "DONE: " . number_format($nCount) . " DOK's saved";
+                    echo "DONE: " . number_format($nCount) . " DOKs and SDOKs saved";
                 } else {
                     echo"FAILED: Empty file";
                 }
