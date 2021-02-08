@@ -3,10 +3,10 @@
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="table-tab" data-toggle="tab" href="#qsodetails" role="tab" aria-controls="table" aria-selected="true">QSO Details</a>
+            <a class="nav-link active" id="table-tab" data-toggle="tab" href="#qsodetails" role="tab" aria-controls="table" aria-selected="true"><?php echo $this->lang->line('qso_details'); ?></a>
         </li>
         <li class="nav-item">
-            <a id="station-tab" class="nav-link" data-toggle="tab" href="#stationdetails" role="tab" aria-controls="table" aria-selected="true">Station Details</a>
+            <a id="station-tab" class="nav-link" data-toggle="tab" href="#stationdetails" role="tab" aria-controls="table" aria-selected="true"><?php echo $this->lang->line('cloudlog_station_profile'); ?></a>
         </li>
         <?php
         if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) {
@@ -16,11 +16,11 @@
                 echo 'hidden ';
             }
                 echo 'class="qslcardtab nav-item">
-                <a class="nav-link" id="qsltab" data-toggle="tab" href="#qslcard" role="tab" aria-controls="home" aria-selected="false">QSL Card</a>
+                <a class="nav-link" id="qsltab" data-toggle="tab" href="#qslcard" role="tab" aria-controls="home" aria-selected="false">'. $this->lang->line('general_words_qslcard') .'</a>
                 </li>';
 
             echo '<li class="nav-item">
-            <a class="nav-link" id="qslmanagementtab" data-toggle="tab" href="#qslupload" role="tab" aria-controls="home" aria-selected="false">QSL Card Management</a>
+            <a class="nav-link" id="qslmanagementtab" data-toggle="tab" href="#qslupload" role="tab" aria-controls="home" aria-selected="false">'. $this->lang->line('general_words_qslcard_management') .'</a>
             </li>';
         }
 
@@ -49,7 +49,7 @@
 
                         ?>
 
-                        <td>Date/Time:</td>
+                        <td><?php echo $this->lang->line('general_word_datetime'); ?></td>
                         <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
                         <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></td>
                         <?php } else { ?>
@@ -58,39 +58,39 @@
                     </tr>
 
                     <tr>
-                        <td>Callsign:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_callsign'); ?></td>
                         <td><b><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></b></td>
                     </tr>
 
                     <tr>
-                        <td>Band:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_band'); ?></td>
                         <td><?php echo $row->COL_BAND; ?></td>
                     </tr>
 
                     <?php if($this->config->item('display_freq') == true) { ?>
                     <tr>
-                        <td>Freq:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_frequency'); ?></td>
                         <td><?php echo frequency_display_string($row->COL_FREQ); ?></td>
                     </tr>
                     <?php if($row->COL_FREQ_RX != 0) { ?>
                     <tr>
-                        <td>Freq (RX):</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_frequency_rx'); ?></td>
                         <td><?php echo frequency_display_string($row->COL_FREQ_RX); ?></td>
                     </tr>
                     <?php }} ?>
 
                     <tr>
-                        <td>Mode:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_mode'); ?></td>
                         <td><?php echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; ?></td>
                     </tr>
 
                     <tr>
-                        <td>RST Sent:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_rsts'); ?></td>
                         <td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX) { ?>(<?php echo $row->COL_STX;?>)<?php } ?> <?php if ($row->COL_STX_STRING) { ?>(<?php echo $row->COL_STX_STRING;?>)<?php } ?></td>
                     </tr>
 
                     <tr>
-                        <td>RST Recv'd:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_rstr'); ?></td>
                         <td><?php echo $row->COL_RST_RCVD; ?> <?php if ($row->COL_SRX) { ?>(<?php echo $row->COL_SRX;?>)<?php } ?> <?php if ($row->COL_SRX_STRING) { ?>(<?php echo $row->COL_SRX_STRING;?>)<?php } ?></td>
                     </tr>
 
@@ -104,7 +104,7 @@
                     <?php if($row->COL_GRIDSQUARE != null) { ?>
                     <!-- Total Distance Between the Station Profile Gridsquare and Logged Square -->
                     <tr>
-                        <td>Total Distance</td>
+                        <td><?php echo $this->lang->line('general_total_distance'); //Total distance ?></td>
                         <td>
                             <?php
                                 // Load the QRA Library
@@ -153,7 +153,7 @@
 
                     <?php if($row->COL_NAME != null) { ?>
                     <tr>
-                        <td>Name:</td>
+                        <td><?php echo $this->lang->line('general_word_name'); ?></td>
                         <td><?php echo $row->COL_NAME; ?></td>
                     </tr>
                     <?php } ?>
@@ -161,7 +161,7 @@
                     <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
                     <?php if($row->COL_COMMENT != null) { ?>
                     <tr>
-                        <td>Comment:</td>
+                        <td><?php echo $this->lang->line('general_word_comment'); ?></td>
                         <td><?php echo $row->COL_COMMENT; ?></td>
                     </tr>
                     <?php } ?>
@@ -169,88 +169,88 @@
 
                     <?php if($row->COL_SAT_NAME != null) { ?>
                     <tr>
-                        <td>Sat Name:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_satellite_name'); ?></td>
                         <td><?php echo $row->COL_SAT_NAME; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_SAT_MODE != null) { ?>
                     <tr>
-                        <td>Sat Mode:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_satellite_mode'); ?></td>
                         <td><?php echo $row->COL_SAT_MODE; ?></td>
                     </tr>
                     <?php } ?>
                     <?php if($row->COL_COUNTRY != null) { ?>
                     <tr>
-                        <td>Country:</td>
+                        <td><?php echo $this->lang->line('geneneral_word_country'); ?></td>
                         <td><?php echo ucwords(strtolower(($row->COL_COUNTRY))); ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_CONTEST_ID != null) { ?>
                     <tr>
-                        <td>Contest Name:</td>
+                        <td><?php echo $this->lang->line('contesting_contest_name'); ?></td>
                         <td><?php echo $row->COL_CONTEST_ID; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_IOTA != null) { ?>
                     <tr>
-                        <td>IOTA Ref:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_iota_reference'); ?></td>
                         <td><?php echo $row->COL_IOTA; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_SOTA_REF != null) { ?>
                     <tr>
-                        <td>SOTA Ref:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_sota_reference'); ?></td>
                         <td><?php echo $row->COL_SOTA_REF; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_SIG != null) { ?>
                     <tr>
-                        <td>Sig:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_sig'); ?></td>
                         <td><?php echo $row->COL_SIG; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_SIG_INFO != null) { ?>
                     <tr>
-                        <td>Sig Info:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_sig_info'); ?></td>
                         <td><?php echo $row->COL_SIG_INFO; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_DARC_DOK != null) { ?>
                     <tr>
-                        <td>DOK:</td>
+                        <td><?php echo $this->lang->line('gen_hamradio_dok'); ?></td>
                         <td><a href="https://www.darc.de/<?php echo $row->COL_DARC_DOK; ?>" target="_new"><?php echo $row->COL_DARC_DOK; ?></a></td>
                     </tr>
                     <?php } ?>
 
                 </table>
                 <?php if($row->COL_QSL_SENT == "Y" || $row->COL_QSL_RCVD == "Y") { ?>
-                    <h3>QSL Info:</h3>
+                    <h3><?php echo $this->lang->line('qslcard_info'); ?></h3>
 
                     <?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "B") { ?>
-                    <p>QSL Card has been sent via the bureau</p>
+                    <p><?php echo $this->lang->line('qslcard_sent_bureau'); ?></p>
                     <?php } ?>
                     <?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "D") { ?>
-                    <p>QSL Card has been sent direct</p>
+                    <p><?php echo $this->lang->line('qslcard_sent_direct'); ?></p>
                     <?php } ?>
 
                     <?php if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_RCVD_VIA == "B") { ?>
-                    <p>QSL Card has been received via the bureau</p>
+                    <p><?php echo $this->lang->line('qslcard_recvd_bureau'); ?></p>
                     <?php } ?>
                     <?php if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_RCVD_VIA == "D") { ?>
-                    <p>QSL Card has been received direct</p>
+                    <p><?php echo $this->lang->line('qslcard_recvd_direct'); ?></p>
                     <?php } ?>
                 <?php } ?>
 
                     <?php if($row->COL_LOTW_QSL_RCVD == "Y") { ?>
-                    <h3>LoTW:</h3>
-                        <p>This QSO is confirmed on Lotw</p>
+                    <h3><?php echo $this->lang->line('lotw_short'); ?></h3>
+                        <p><?php echo $this->lang->line('lotw_confirmed'); ?></p>
                     <?php } ?>
             </div>
 
@@ -358,18 +358,18 @@
                 <fieldset>
 
                     <div class="form-group">
-                        <label for="qslcardfront">Upload QSL Card front image</label>
+                        <label for="qslcardfront"><?php echo $this->lang->line('qslcard_upload_front'); ?></label>
                         <input class="form-control-file" type="file" id="qslcardfront" name="qslcardfront" accept="image/*" >
                     </div>
 
                     <div class="form-group">
-                        <label for="qslcardback">Upload QSL Card back image</label>
+                        <label for="qslcardback"><?php echo $this->lang->line('qslcard_upload_back'); ?></label>
                         <input class="form-control-file" type="file" id="qslcardback" name="qslcardback" accept="image/*">
                     </div>
 
                     <input type="hidden" class="form-control" id="qsoinputid" name="qsoid" value="<?php echo $row->COL_PRIMARY_KEY; ?>">
 
-                    <button type="button" onclick="uploadQsl();" id="button1id"  name="button1id" class="btn btn-primary">Upload QSL card image</button>
+                    <button type="button" onclick="uploadQsl();" id="button1id"  name="button1id" class="btn btn-primary"><?php echo $this->lang->line('qslcard_upload_button'); ?></button>
 
                 </fieldset>
             </form>
