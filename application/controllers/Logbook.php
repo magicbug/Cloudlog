@@ -130,6 +130,7 @@ class Logbook extends CI_Controller {
 		$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
 		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
 		$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
+        $return['callsign_state'] = $this->logbook_model->call_state($callsign);
 		$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base);
 		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
 
