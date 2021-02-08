@@ -111,6 +111,8 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('awards/sota');?>">SOTA</a>
                     <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/counties');?>">US Counties</a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('awards/vucc');?>">VUCC</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('awards/wab');?>">WAB</a>
