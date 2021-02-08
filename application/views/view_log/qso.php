@@ -144,10 +144,10 @@
                     </tr>
                     <?php } ?>
 
-                    <?php if($row->COL_USACA_COUNTIES != null) { ?>
+                    <?php if($row->COL_CNTY != null) { ?>
                         <tr>
                             <td>USA County:</td>
-                            <td><?php echo $row->COL_USACA_COUNTIES; ?></td>
+                            <td><?php echo $row->COL_CNTY; ?></td>
                         </tr>
                     <?php } ?>
 
