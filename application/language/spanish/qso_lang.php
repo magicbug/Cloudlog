@@ -23,3 +23,7 @@ $lang['qso_notes_helptext'] = 'El contenido es usado solo dentro de Cloudlog y n
 
 $lang['qso_btn_reset_qso'] = 'Resetear';
 $lang['qso_btn_save_qso'] = 'Guardar QSO';
+
+// QSO Details
+
+$lang['qso_details'] = 'Detalles de QSO';
