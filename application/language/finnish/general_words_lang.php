@@ -20,7 +20,6 @@ $lang['general_word_general'] = 'Yleinen';
 $lang['general_word_satellite'] = 'Satelliitti';
 $lang['general_word_satellite_short'] = 'Sat';
 $lang['general_word_notes'] = 'Muistiinpanot';
-$lang['general_word_comment'] = 'Kommentti';
 $lang['general_word_country'] = 'Maa';
 
 $lang['general_word_total'] = 'Yhteensä';

@@ -19,7 +19,6 @@ $lang['general_word_general'] = 'Algemeen';
 $lang['general_word_satellite'] = 'Satelliet';
 $lang['general_word_satellite_short'] = 'Sat';
 $lang['general_word_notes'] = 'Aantekeningen';
-$lang['general_word_comment'] = 'Opmerking';
 $lang['general_word_country'] = 'Land';
 $lang['general_word_total'] = 'Totaal';
 $lang['general_word_year'] = 'Jaar';
