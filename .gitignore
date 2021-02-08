@@ -1,0 +1,17 @@
+/application/config/database.php
+/application/config/config.php
+/application/logs/*.php
+/uploads/*.adi
+/uploads/*.ADI
+/uploads/*.tq8
+/uploads/*.TQ8
+/install/*
+/updates/*.xml
+/updates/*.html
+/images/eqsl_card_images/*.jpg
+/updates/clublog_scp.txt
+/assets/qslcard/*
+.idea/*
+.DS_Store
+sync.sh
+*.p12
