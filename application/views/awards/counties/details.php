@@ -9,6 +9,7 @@
         <thead>
         <tr>
             <td>#</td>
+            <td>State</td>
             <td>County</td>
         </tr>
         </thead>
@@ -16,6 +17,7 @@
         foreach ($counties_array as $county) {
             echo '<tr>
             <td>'. $i++ .'</td>
+            <td>'. $county['COL_STATE'] .'</td>
             <td><a href=\'javascript:displayCountyContacts("'. $county['COL_STATE'] .'","'. $county['COL_CNTY'] .'")\'>'. $county['COL_CNTY'] .'</a></td>';
             echo '</tr>';
         }
