@@ -57,6 +57,15 @@
                             <small id="themeHelp" class="form-text text-muted">Global Theme Choice, this is used when users arent logged in.</small>
                         </div>
 
+                        <div class="form-group">
+                            <label for="globalSearch">Public Search Bar</label>
+                            <select class="custom-select" id="globalSearch" name="globalSearch" aria-describedby="globalSearchHelp" required>
+                                <option value='true' <?php if($this->optionslib->get_option('global_search') == "true") { echo "selected=\"selected\""; } ?>>Enabled</option>
+                                <option value='false' <?php if($this->optionslib->get_option('global_search') == "false") { echo "selected=\"selected\""; } ?>>Disabled</option>
+                            </select>
+                            <small id="globalSearchHelp" class="form-text text-muted">This allows non logged in users to access the search functions.</small>
+                        </div>
+
                         <!-- Save the Form -->
                         <input class="btn btn-primary" type="submit" value="Save" />
                     </form>
