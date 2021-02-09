@@ -13,7 +13,7 @@
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css">
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/default/overrides.css">
 	<?php } ?>
-    
+
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">
 
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery.fancybox.min.css" />
@@ -79,7 +79,7 @@
 
                                     <div class="form-group col-sm-6">
                                     <label for="freq">RX Frequency</label>
-                                    <input type="text" class="form-control" id="freq" name="freq_display_rx" value="<?php if($qso->COL_FREQ_RX != "0") { echo $qso->COL_FREQ_RX; } ?>">
+                                    <input type="text" class="form-control" id="freqrx" name="freq_display_rx" value="<?php if($qso->COL_FREQ_RX != "0") { echo $qso->COL_FREQ_RX; } ?>">
                                     </div>
                                 </div>
 
@@ -372,6 +372,11 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="stationCntyInput">USA County</label>
+                                    <input disabled="disabled" class="form-control" id="stationCntyInput" type="text" name="usa_county" value="<?php echo $qso->COL_CNTY; ?>" />
+                                </div>
+
+                                <div class="form-group">
                                     <label for="iota_ref">IOTA</label>
                                     <select class="custom-select" id="iota_ref" name="iota_ref">
                                         <option value =""></option>
@@ -579,8 +584,8 @@
                         <input type="hidden" name="id" value="<?php echo $qso->COL_PRIMARY_KEY; ?>" />
 
                         <div class="actions">
-                            <button id="show" type="button" name="download" class="btn btn-primary" onclick="qso_save();">Save changes</button>
-                            <a class="btn btn-danger float-right" href="javascript:qso_delete(<?php echo $qso->COL_PRIMARY_KEY; ?>, '<?php echo $qso->COL_CALL; ?>')"><i class="fas fa-trash-alt"></i> Delete QSO</a>
+                            <a class="btn btn-danger" href="javascript:qso_delete(<?php echo $qso->COL_PRIMARY_KEY; ?>, '<?php echo $qso->COL_CALL; ?>')"><i class="fas fa-trash-alt"></i> Delete QSO</a>
+                            <button id="show" type="button" name="download" class="btn btn-primary float-right" onclick="qso_save();"><i class="fas fa-save"></i> Save changes</button>
                         </div>
                     </div>
                 </div>

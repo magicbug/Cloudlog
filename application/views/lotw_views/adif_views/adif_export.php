@@ -93,7 +93,23 @@ if($station_profile->station_cnty != "" && $station_profile->station_country == 
 	$sign_string .= strtoupper($station_profile->station_cnty);
 }
 
+if($station_profile->station_cnty != "" && $station_profile->station_country == "ALASKA") {
+	$sign_string .= strtoupper($station_profile->station_cnty);
+}
+
+if($station_profile->station_cnty != "" && $station_profile->station_country == "HAWAII") {
+	$sign_string .= strtoupper($station_profile->station_cnty);
+}
+
 if($station_profile->state != "" && $station_profile->station_country == "UNITED STATES OF AMERICA") {
+	$sign_string .= strtoupper($station_profile->state);
+}
+
+if($station_profile->state != "" && $station_profile->station_country == "ALASKA") {
+	$sign_string .= strtoupper($station_profile->state);
+}
+
+if($station_profile->state != "" && $station_profile->station_country == "HAWAII") {
 	$sign_string .= strtoupper($station_profile->state);
 }
 

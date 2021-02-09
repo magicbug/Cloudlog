@@ -259,6 +259,10 @@ class DXCC extends CI_Model {
 			$sql .= " and col_band ='" . $band . "'";
 		}
 
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
+
 		$sql .= $this->addQslToQuery($postdata);
 
 		$sql .= " group by col_dxcc
@@ -288,6 +292,10 @@ class DXCC extends CI_Model {
 		else {
 			$sql .= " and col_prop_mode !='SAT'";
 			$sql .= " and col_band ='" . $band . "'";
+		}
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
 		}
 
 		$sql .= " group by col_dxcc
@@ -325,6 +333,10 @@ class DXCC extends CI_Model {
 				}
 			}
 
+			if ($postdata['mode'] != 'All') {
+				$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+			}
+
 			$sql .= ' group by col_dxcc) x on dxcc_entities.adif = x.col_dxcc';
 		}
 
@@ -360,6 +372,10 @@ class DXCC extends CI_Model {
 			}
 		}
 
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
+
 		$sql .= " and not exists (select 1 from ".$this->config->item('table_name')." where station_id = $station_id and col_dxcc = thcv.col_dxcc";
 
 		if ($postdata['band'] != 'All') {
@@ -370,6 +386,10 @@ class DXCC extends CI_Model {
 				$sql .= " and col_prop_mode !='SAT'";
 				$sql .= " and col_band ='" . $postdata['band'] . "'";
 			}
+		}
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
 		}
 
 		$sql .= $this->addQslToQuery($postdata);
@@ -407,6 +427,10 @@ class DXCC extends CI_Model {
 				$sql .= " and col_prop_mode !='SAT'";
 				$sql .= " and col_band ='" . $postdata['band'] . "'";
 			}
+		}
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
 		}
 
 		$sql .= $this->addQslToQuery($postdata);

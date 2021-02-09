@@ -99,7 +99,7 @@ class Kml extends CI_Controller {
 
 		if ( ! write_file('kml/qsos.kml', $output))
 		{
-		     echo 'Unable to write the file - Make sure the folder KML has write permissions.';
+		     echo 'Unable to write the file. Make sure the folder KML has write permissions.';
 		}
 		else
 		{

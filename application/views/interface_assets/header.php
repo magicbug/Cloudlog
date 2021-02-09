@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/bootstrap.min.css">
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css">
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/overrides.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/selectize.bootstrap4.css"/>
 	<?php } ?>
 
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">
@@ -67,7 +68,7 @@
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('qso?manual=1');?>" title="Log QSO made in the past">Post QSO</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="<?php echo site_url('contesting');?>" title="Log contest QSOs">Contest logging</a>
+                            <a class="dropdown-item" href="<?php echo site_url('contesting');?>" title="Log contest QSOs">Contest Logging</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="<?php echo site_url('qsl');?>" title="QSL"> View QSL</a>
 						</div>
@@ -83,38 +84,40 @@
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="<?php echo site_url('gridsquares');?>" title="Gridsquares">Gridsquares</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('distances');?>" title="Distances">Distances worked</a>
+                    <a class="dropdown-item" href="<?php echo site_url('distances');?>" title="Distances">Distances Worked</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('dayswithqso');?>" title="Dayswithqso">Days with QSOs</a>
+                    <a class="dropdown-item" href="<?php echo site_url('dayswithqso');?>" title="Days with QSOs">Days with QSOs</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('timeline');?>" title="Timeline">Timeline</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('accumulated');?>" title="Accumulated statistics">Accumulated statistics</a>
+                    <a class="dropdown-item" href="<?php echo site_url('accumulated');?>" title="Accumulated Statistics">Accumulated Statistics</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('timeplotter');?>" title="View time when worked">Timeplotter</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="<?php echo site_url('map');?>" title="Maps of QSOs">Maps</a>
+					<a class="dropdown-item" href="<?php echo site_url('map/custom');?>" title="Custom Maps of QSOs">Custom Maps</a>
 				</div>
         	</li>
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Awards</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        	        <a class="dropdown-item" href="<?php echo site_url('awards/dxcc');?>">DXCC</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('awards/vucc');?>">VUCC</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('awards/was');?>">WAS</a>
-                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('awards/cq');?>">CQ</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/dok');?>">DOK</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/dxcc');?>">DXCC</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('awards/iota');?>">IOTA</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('awards/wab');?>">WAB</a>
-                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('awards/sota');?>">SOTA</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('awards/dok');?>">DOK</a>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/counties');?>">US Counties</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/vucc');?>">VUCC</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/wab');?>">WAB</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/was');?>">WAS</a>
                 </div>
             </li>
         	

@@ -31,9 +31,10 @@
     <script src="<?php echo base_url() ;?>assets/js/sections/notes.js"></script>
 <?php } ?>
 
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/selectize.js"></script>
 
 <?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
 
@@ -318,9 +319,109 @@ $(document).on('keypress',function(e) {
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
-
 <script type="text/javascript">
 $( document ).ready(function() {
+    var baseURL= "<?php echo base_url();?>";
+
+    $('#input_usa_state').change(function(){
+        var state = $("#input_usa_state option:selected").text();
+        if (state != "") {
+            $("#stationCntyInput").prop('disabled', false);
+
+            $('#stationCntyInput').selectize({
+                maxItems: 1,
+                closeAfterSelect: true,
+                loadThrottle: 250,
+                valueField: 'name',
+                labelField: 'name',
+                searchField: 'name',
+                options: [],
+                create: false,
+                load: function(query, callback) {
+                    var state = $("#input_usa_state option:selected").text();
+
+                    if (!query || state == "") return callback();
+                    $.ajax({
+                        url: baseURL+'index.php/qso/get_county',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            query: query,
+                            state: state,
+                        },
+                        error: function() {
+                            callback();
+                        },
+                        success: function(res) {
+                            callback(res);
+                        }
+                    });
+                }
+            });
+
+        } else {
+            $("#stationCntyInput").prop('disabled', true);
+            //$('#stationCntyInput')[0].selectize.destroy();
+            $("#stationCntyInput").val("");
+        }
+    });
+
+    $('#sota_ref').selectize({
+        maxItems: 1,
+        closeAfterSelect: true,
+        loadThrottle: 250,
+        valueField: 'name',
+        labelField: 'name',
+        searchField: 'name',
+        options: [],
+        create: false,
+        load: function(query, callback) {
+            if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
+            $.ajax({
+                url: baseURL+'index.php/qso/get_sota',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    query: query,
+                },
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    callback(res);
+                }
+            });
+        }
+    });
+
+    $('#darc_dok').selectize({
+        maxItems: 1,
+        closeAfterSelect: true,
+        loadThrottle: 250,
+        valueField: 'name',
+        labelField: 'name',
+        searchField: 'name',
+        options: [],
+        create: false,
+        load: function(query, callback) {
+            if (!query) return callback();  // Only trigger if at least 1 character is entered
+            $.ajax({
+                url: baseURL+'index.php/qso/get_dok',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    query: query,
+                },
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    callback(res);
+                }
+            });
+        }
+    });
+
   /*
     Populate the Satellite Names Field on the QSO Panel
   */
@@ -398,6 +499,7 @@ $(document).on('change', 'input', function(){
                       $("#mode").val(val2[0].Uplink_Mode);  
                     }
                     $("#band").val(frequencyToBand(val2[0].Uplink_Freq));
+                    $("#band_rx").val(frequencyToBand(val2[0].Downlink_Freq));
                     $("#frequency").val(val2[0].Uplink_Freq);  
                     $("#frequency_rx").val(val2[0].Downlink_Freq); 
                     $("#selectPropagation").val('SAT');
@@ -417,11 +519,9 @@ $(document).on('change', 'input', function(){
   var markers = L.layerGroup();
   var mymap = L.map('qsomap').setView([51.505, -0.09], 13);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
     maxZoom: 18,
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-      '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-      'Created by Cloudlog',
+    attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
     id: 'mapbox.streets'
   }).addTo(mymap);
 
@@ -548,6 +648,14 @@ $(document).on('change', 'input', function(){
 });
 });
 
+    //Spacebar moves to the name field when you're entering a callsign
+    //Similar to contesting ux, good for pileups.
+    $("#callsign").on("keypress", function(e) {
+        if (e.which == 32){
+            $("#name").focus();
+            return false; //Eliminate space char
+        }
+    });
 
     // On Key up check and suggest callsigns
     $("#callsign").keyup(function() {
@@ -716,8 +824,12 @@ $(document).on('change', 'input', function(){
               var json_mode = $("#mode").val();
             }
 
+            var find_callsign = $(this).val().toUpperCase();
 
-            $.getJSON('logbook/json/' + $(this).val().toUpperCase() + '/' + sat_type + '/' + json_band + '/' + json_mode, function(result)
+            find_callsign.replace(/\//g, "-");
+
+            // Replace / in a callsign with - to stop urls breaking
+            $.getJSON('logbook/json/' + find_callsign.replace(/\//g, "-") + '/' + sat_type + '/' + json_band + '/' + json_mode, function(result)
             {
               //$('#country').val(result); lotw_info
               if(result.dxcc.entity != undefined) {
@@ -726,7 +838,7 @@ $(document).on('change', 'input', function(){
 				
 				if($("#sat_name" ).val() != "") {
 					//logbook/jsonlookupgrid/io77/SAT/0/0
-					$.getJSON('logbook/jsonlookupcallsign/' + $("#callsign").val().toUpperCase() + '/SAT/0/0', function(result)
+					$.getJSON('logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/SAT/0/0', function(result)
 					{
 					  // Reset CSS values before updating
 					  $('#callsign').removeClass("workedGrid");
@@ -745,7 +857,7 @@ $(document).on('change', 'input', function(){
 					  }
 					})
 				  } else {
-					$.getJSON('logbook/jsonlookupcallsign/' + $("#callsign").val().toUpperCase() + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
+					$.getJSON('logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
 					{
 					  // Reset CSS values before updating
 					  $('#callsign').removeClass("workedGrid");
@@ -1037,6 +1149,7 @@ $(document).on('change', 'input', function(){
           if (data.downlink_freq != "")
           {
             $('#frequency_rx').val(data.downlink_freq);
+            $("#band_rx").val(frequencyToBand(data.downlink_freq));
           }
 
           old_mode = $(".mode").val();
@@ -1083,6 +1196,7 @@ $(document).on('change', 'input', function(){
         $("#sat_mode").val("");
         $("#frequency").val("");
         $("#frequency_rx").val("");
+        $("#band_rx").val("");
         $("#selectPropagation").val($("#selectPropagation option:first").val());
       }
 
@@ -1100,10 +1214,9 @@ $(document).on('change', 'input', function(){
 
   var mymap = L.map('map').setView([lat,long], 5);
 
-  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+  L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
     maxZoom: 18,
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, ' +
-      'Generated by <a href="http://www.cloudlog.co.uk/">Cloudlog</a>',
+    attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
     id: 'mapbox.streets'
   }).addTo(mymap);
 
@@ -1151,11 +1264,9 @@ $(document).ready(function(){
 
 <script>
 
-  var layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  var layer = L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
     maxZoom: 18,
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-      '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-      'Created by Cloudlog',
+    attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
     id: 'mapbox.streets'
   });
 
@@ -1311,19 +1422,12 @@ $(document).ready(function(){
     <script src="<?php echo base_url(); ?>assets/js/highstock/export-data.js"></script>
 <script>
 
-  var bands_available = <?php echo $bands_available; ?>;
-
-  $.each(bands_available, function(key, value) {
-     $('#distplot_bands')
-         .append($("<option></option>")
-                    .attr("value",value)
-                    .text(value));
-  });
-
-  var num = "<?php echo $this->uri->segment(3);?>";
-    $("#distplot_bands option").each(function(){
-        if($(this).val()==num){ // EDITED THIS LINE
-            $(this).attr("selected","selected");
+    $('#distplot_bands').change(function(){
+        var band = $("#distplot_bands option:selected").text();
+        if (band != "SAT") {
+            $("#distplot_sats").prop('disabled', true);
+        } else {
+            $("#distplot_sats").prop('disabled', false);
         }
     });
 
@@ -1333,7 +1437,8 @@ $(document).ready(function(){
       $.ajax({
           url: baseURL+'index.php/distances/get_distances',
           type: 'post',
-          data: {'band': form.distplot_bands.value},
+          data: {'band': form.distplot_bands.value,
+                'sat': form.distplot_sats.value},
           success: function(tmp) {
               if (tmp.ok == 'OK') {
                   if (!($('#information').length > 0))
@@ -1345,7 +1450,7 @@ $(document).ready(function(){
                           renderTo: 'graphcontainer'
                       },
                       title: {
-                          text: 'Distance distribution'
+                          text: 'Distance Distribution'
                       },
                       xAxis: {
                           categories: [],
@@ -1508,10 +1613,9 @@ $(document).ready(function(){
                                 var callsign = $("#callsign").text();
                                 var mymap = L.map('mapqso').setView([lat,long], 5);
 
-                                L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                                L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
                                     maxZoom: 18,
-                                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, ' +
-                                        'Generated by <a href="http://www.cloudlog.co.uk/">Cloudlog</a>',
+                                    attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
                                     id: 'mapbox.streets'
                                 }).addTo(mymap);
 
@@ -1929,6 +2033,117 @@ $(document).ready(function(){
                         size: BootstrapDialog.SIZE_WIDE,
                         nl2br: false,
                         message: html,
+                        onshown: function(dialog) {
+                            var state = $("#input_usa_state option:selected").text();
+                            if (state != "") {
+                                $("#stationCntyInput").prop('disabled', false);
+                                selectize_usa_county();
+                            }
+
+                            $('#input_usa_state').change(function(){
+                                var state = $("#input_usa_state option:selected").text();
+                                if (state != "") {
+                                    $("#stationCntyInput").prop('disabled', false);
+
+                                    selectize_usa_county();
+
+                                } else {
+                                    $("#stationCntyInput").prop('disabled', true);
+                                    //$('#stationCntyInput')[0].selectize.destroy();
+                                    $("#stationCntyInput").val("");
+                                }
+                            });
+
+                            $('#sota_ref').selectize({
+                                maxItems: 1,
+                                closeAfterSelect: true,
+                                loadThrottle: 250,
+                                valueField: 'name',
+                                labelField: 'name',
+                                searchField: 'name',
+                                options: [],
+                                create: false,
+                                load: function(query, callback) {
+                                    if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
+                                    $.ajax({
+                                        url: baseURL+'index.php/qso/get_sota',
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        data: {
+                                            query: query,
+                                        },
+                                        error: function() {
+                                            callback();
+                                        },
+                                        success: function(res) {
+                                            callback(res);
+                                        }
+                                    });
+                                }
+                            });
+
+                            $('#darc_dok').selectize({
+                                maxItems: 1,
+                                closeAfterSelect: true,
+                                loadThrottle: 250,
+                                valueField: 'name',
+                                labelField: 'name',
+                                searchField: 'name',
+                                options: [],
+                                create: false,
+                                load: function(query, callback) {
+                                    if (!query) return callback();  // Only trigger if 3 or more characters are entered
+                                    $.ajax({
+                                        url: baseURL+'index.php/qso/get_dok',
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        data: {
+                                            query: query,
+                                        },
+                                        error: function() {
+                                            callback();
+                                        },
+                                        success: function(res) {
+                                            callback(res);
+                                        }
+                                    });
+                                }
+                            });
+                        },
+                    });
+                }
+            });
+        }
+
+        function selectize_usa_county() {
+            var baseURL= "<?php echo base_url();?>";
+            $('#stationCntyInput').selectize({
+                maxItems: 1,
+                closeAfterSelect: true,
+                loadThrottle: 250,
+                valueField: 'name',
+                labelField: 'name',
+                searchField: 'name',
+                options: [],
+                create: false,
+                load: function(query, callback) {
+                    var state = $("#input_usa_state option:selected").text();
+
+                    if (!query || state == "") return callback();
+                    $.ajax({
+                        url: baseURL+'index.php/qso/get_county',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            query: query,
+                            state: state,
+                        },
+                        error: function() {
+                            callback();
+                        },
+                        success: function(res) {
+                            callback(res);
+                        }
                     });
                 }
             });
@@ -2297,7 +2512,7 @@ $(document).ready(function(){
                     renderTo: 'container'
                 },
                 title: {
-                    text: 'Time distribution'
+                    text: 'Time Distribution'
                 },
                 xAxis: {
                     categories: [],
@@ -2540,16 +2755,19 @@ function deleteQsl(id) {
             if ($("#callsign").val().length > 0) {
 
                 $('.callsign-suggestions').text("");
-                $(".qsotable tbody").prepend('<tr>' +
-                    '<td>'+$("#start_date").val()+ ' ' + $("#start_time").val() + '</td>' +
-                    '<td>'+$("#callsign").val().toUpperCase()+'</td>' +
-                    '<td>'+$("#band").val()+'</td>' +
-                    '<td>'+$("#mode").val()+'</td>' +
-                    '<td>'+$("#rst_sent").val()+'</td>' +
-                    '<td>'+$("#rst_recv").val()+'</td>' +
-                    '<td>'+$("#exch_sent").val()+'</td>' +
-                    '<td>'+$("#exch_recv").val()+'</td>' +
-                    '</tr>');
+
+                var table = $('.qsotable').DataTable();
+
+                var data = [[$("#start_date").val()+ ' ' + $("#start_time").val(),
+                    $("#callsign").val().toUpperCase(),
+                    $("#band").val(),
+                    $("#mode").val(),
+                    $("#rst_sent").val(),
+                    $("#rst_recv").val(),
+                    $("#exch_sent").val(),
+                    $("#exch_recv").val()]];
+
+                table.rows.add(data).draw();
 
                 var baseURL= "<?php echo base_url();?>";
                 var formdata = new FormData(document.getElementById("qso_input"));
@@ -2561,6 +2779,10 @@ function deleteQsl(id) {
                     contentType: false,
                     enctype: 'multipart/form-data',
                     success: function (html) {
+                        if (localStorage.getItem("qso") == null) {
+                            localStorage.setItem("qso", $("#start_date").val()+ ' ' + $("#start_time").val() + ',' + $("#callsign").val().toUpperCase() + ',' + $("#contestname").val());
+                        }
+
                         $('#name').val("");
 
                         $('#callsign').val("");
@@ -2570,12 +2792,192 @@ function deleteQsl(id) {
                             $("#exch_sent").val(+$("#exch_sent").val() + 1);
                         }
                         $("#callsign").focus();
+
+                        // Store contest session
+                        localStorage.setItem("contestid", $("#contestname").val());
+                        localStorage.setItem("exchangetype", $('input[name=exchangeradio]:checked', '#qso_input').val());
+                        localStorage.setItem("exchangesent", $("#exch_sent").val());
+                    }
+                });
+            }
+        }
+
+        // We are restoring the settings in the contest logging form here
+        function restoreContestSession() {
+            var contestname = localStorage.getItem("contestid");
+
+            if (contestname != null) {
+                $("#contestname").val(contestname);
+            }
+
+            var exchangetype = localStorage.getItem("exchangetype");
+
+            if (exchangetype == "other") {
+                $("[name=exchangeradio]").val(["other"]);
+            }
+
+            var exchangesent = localStorage.getItem("exchangesent");
+
+            if (exchangesent != null) {
+                $("#exch_sent").val(exchangesent);
+            }
+
+            if (localStorage.getItem("qso") != null) {
+                var baseURL= "<?php echo base_url();?>";
+                //alert(localStorage.getItem("qso"));
+                var qsodata = localStorage.getItem("qso");
+                $.ajax({
+                    url: baseURL + 'index.php/contesting/getSessionQsos',
+                    type: 'post',
+                    data: {'qso': qsodata,},
+                    success: function (html) {
+                        var mode = '';
+                        var sentexchange = '';
+                        var receivedexchange = '';
+                        $.each(html, function(){
+                            if (this.col_submode == null || this.col_submode == '') {
+                                mode = this.col_mode;
+                            } else {
+                                mode = this.col_submode;
+                            }
+
+                            if (this.col_srx == null || this.col_srx == '') {
+                                receivedexchange = this.col_srx_string;
+                            } else {
+                                receivedexchange = this.col_srx;
+                            }
+
+                            if (this.col_stx == null || this.col_stx == '') {
+                                sentexchange = this.col_stx_string;
+                            } else {
+                                sentexchange = this.col_stx;
+                            }
+
+                            $(".qsotable tbody").prepend('<tr>' +
+                                '<td>'+ this.col_time_on + '</td>' +
+                                '<td>'+ this.col_call + '</td>' +
+                                '<td>'+ this.col_band + '</td>' +
+                                '<td>'+ mode + '</td>' +
+                                '<td>'+ this.col_rst_sent + '</td>' +
+                                '<td>'+ this.col_rst_rcvd + '</td>' +
+                                '<td>'+ sentexchange + '</td>' +
+                                '<td>'+ receivedexchange + '</td>' +
+                                '</tr>');
+                        });
+
+                        $('.qsotable').DataTable({
+                            "pageLength": 25,
+                            responsive: false,
+                            "scrollY":        "400px",
+                            "scrollCollapse": true,
+                            "paging":         false,
+                            "scrollX": true,
+                            "order": [[ 0, "desc" ]]
+                        });
                     }
                 });
             }
         }
     </script>
 
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "station") { ?>
+<script>
+    var baseURL= "<?php echo base_url();?>";
+    $('#StateHelp').change(function(){
+        var state = $("#StateHelp option:selected").text();
+        if (state != "") {
+            $("#stationCntyInput").prop('disabled', false);
+
+            $('#stationCntyInput').selectize({
+                maxItems: 1,
+                closeAfterSelect: true,
+                loadThrottle: 250,
+                valueField: 'name',
+                labelField: 'name',
+                searchField: 'name',
+                options: [],
+                create: false,
+                load: function(query, callback) {
+                    var state = $("#StateHelp option:selected").text();
+
+                    if (!query || state == "") return callback();
+                    $.ajax({
+                        url: baseURL+'index.php/station/get_county',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            query: query,
+                            state: state,
+                        },
+                        error: function() {
+                            callback();
+                        },
+                        success: function(res) {
+                            callback(res);
+                        }
+                    });
+                }
+            });
+
+        } else {
+            $("#stationCntyInput").prop('disabled', true);
+            //$('#stationCntyInput')[0].selectize.destroy();
+            $("#stationCntyInput").val("");
+        }
+    });
+</script>
+
+<?php } ?>
+
+<?php if ($this->uri->segment(2) == "counties" || $this->uri->segment(2) == "counties_details") { ?>
+<script>
+    $('.countiestable').DataTable({
+        "pageLength": 25,
+        responsive: false,
+        ordering: false,
+        "scrollY":        "390px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "scrollX": true,
+        dom: 'Bfrtip',
+        buttons: [
+            'csv'
+        ]
+    });
+    // using this to change color of csv-button if dark mode is chosen
+    var background = $('body').css( "background-color");
+
+    if (background != ('rgb(255, 255, 255)')) {
+        $(".buttons-csv").css("color", "white");
+    }
+
+    function displayCountyContacts(state, county) {
+        var baseURL= "<?php echo base_url();?>";
+        $.ajax({
+            url: baseURL + 'index.php/awards/counties_details_ajax',
+            type: 'post',
+            data: {'State': state, 'County': county
+            },
+            success: function(html) {
+                BootstrapDialog.show({
+                    title: 'QSO Data',
+                    size: BootstrapDialog.SIZE_WIDE,
+                    cssClass: 'qso-counties-dialog',
+                    nl2br: false,
+                    message: html,
+                    buttons: [{
+                        label: 'Close',
+                        action: function (dialogItself) {
+                            dialogItself.close();
+                        }
+                    }]
+                });
+            }
+        });
+    }
+</script>
 <?php } ?>
   </body>
 </html>

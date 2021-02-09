@@ -1,16 +1,16 @@
 <div class="table-responsive">
     <table class="table table-striped table-hover">
         <tr class="titles">
-            <td>Date</td>
+            <td><?php echo $this->lang->line('general_word_date'); ?></td>
             <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-                <td>Time</td>
+            <td><?php echo $this->lang->line('general_word_time'); ?></td>
             <?php } ?>
-            <td>Call</td>
-            <td>Mode</td>
-            <td>Sent</td>
-            <td>Recv</td>
-            <td>Band</td>
-            <td>Country</td>
+            <td><?php echo $this->lang->line('gen_hamradio_call'); ?></td>
+            <td><?php echo $this->lang->line('gen_hamradio_mode'); ?></td>
+            <td><?php echo $this->lang->line('general_word_sent'); ?></td>
+            <td><?php echo $this->lang->line('general_word_received'); ?></td>
+            <td><?php echo $this->lang->line('gen_hamradio_band'); ?></td>
+            <td><?php echo $this->lang->line('general_word_country'); ?></td>
             <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td>QSL</td>
                 <?php if($this->session->userdata('user_eqsl_name') != "") { ?>
@@ -19,7 +19,7 @@
                 <?php if($this->session->userdata('user_lotw_name') != "") { ?>
                     <td>LoTW</td>
                 <?php } ?>
-                <td>Station</td>
+                <td><?php echo $this->lang->line('gen_hamradio_station'); ?></td>
                 <td></td>
             <?php } ?>
         </tr>
@@ -129,18 +129,18 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" id="edit_qso" href="javascript:qso_edit(<?php echo $row->COL_PRIMARY_KEY; ?>)"><i class="fas fa-edit"></i> Edit QSO</a>
+                            <a class="dropdown-item" id="edit_qso" href="javascript:qso_edit(<?php echo $row->COL_PRIMARY_KEY; ?>)"><i class="fas fa-edit"></i> <?php echo $this->lang->line('general_edit_qso'); ?></a>
                             <div class="qsl_<?php echo $row->COL_PRIMARY_KEY; ?>">
                             <div class="dropdown-divider"></div>
 
                             <?php if($row->COL_QSL_RCVD !='Y') { ?>
-                                <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B')" ><i class="fas fa-envelope"></i> Mark QSL Received (Bureau)</a>
-                                <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> Mark QSL Received (Direct)</a>
+                                <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B')" ><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_mark_qsl_rx_bureau'); ?></a>
+                                <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_mark_qsl_rx_direct'); ?></a>
                             <?php } ?>
 
                             <div class="dropdown-divider"></div>
                             </div>
-                            <a class="dropdown-item" href="javascript:qso_delete(<?php echo $row->COL_PRIMARY_KEY; ?>, '<?php echo $row->COL_CALL; ?>')"><i class="fas fa-trash-alt"></i> Delete QSO</a>
+                            <a class="dropdown-item" href="javascript:qso_delete(<?php echo $row->COL_PRIMARY_KEY; ?>, '<?php echo $row->COL_CALL; ?>')"><i class="fas fa-trash-alt"></i> <?php echo $this->lang->line('general_delete_qso'); ?></a>
                         </div>
                     </div>
                 </td>

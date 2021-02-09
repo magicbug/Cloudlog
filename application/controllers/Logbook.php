@@ -67,6 +67,9 @@ class Logbook extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
+		// Convert - in Callsign to / Used for URL processing
+		$callsign = str_replace("-","/",$callsign);
+
 		// Check if callsign is an LOTW User
 			$lotw_member = "";
 			$lotw_file_name = "./updates/lotw_users.csv";
@@ -127,6 +130,7 @@ class Logbook extends CI_Controller {
 		$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
 		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
 		$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
+        $return['callsign_state'] = $this->logbook_model->call_state($callsign);
 		$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base);
 		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
 
@@ -314,6 +318,9 @@ class Logbook extends CI_Controller {
 
 	function jsonlookupcallsign($callsign, $type, $band, $mode) {
 		
+		// Convert - in Callsign to / Used for URL processing
+		$callsign = str_replace("-","/",$callsign);
+
 		$return = [
 			"workedBefore" => false,
 		];

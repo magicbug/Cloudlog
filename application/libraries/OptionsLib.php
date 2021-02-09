@@ -14,8 +14,8 @@ class OptionsLib {
 
 	// Force Migration to run on every page load
     	$CI->load->library('Migration');
-	$CI->migration->current();
-	    
+	    $CI->migration->current();
+
         //Load the options model
         $CI->load->model('options_model');
 
@@ -31,8 +31,12 @@ class OptionsLib {
                 * Add option to the config system dynamicly option_name is prefixed by option_
                 * you can then call $this->config->item('option_<option_name>') to get the item.
                 */
-
-                $CI->config->set_item('option_'.$item->option_name, $item->option_value);
+                if($item->option_name == "language") {
+                    // language is a global internal config item there for we dont want to prefix it as an option
+                    $CI->config->set_item($item->option_name, $item->option_value);
+                } else {
+                    $CI->config->set_item('option_'.$item->option_name, $item->option_value);
+                }
             }
         }
     }

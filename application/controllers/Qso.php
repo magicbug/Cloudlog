@@ -9,6 +9,15 @@ TODO
 
 class QSO extends CI_Controller {
 
+	function __construct()
+	{
+		parent::__construct();
+		$this->lang->load('qso');
+		
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+	}
+
 	public function index()
 	{
 	
@@ -62,6 +71,7 @@ class QSO extends CI_Controller {
                 'start_time' => $this->input->post('start_time'),
 				'time_stamp' => time(),
 				'band' => $this->input->post('band'),
+				'band_rx' => $this->input->post('band_rx'),
 				'freq' => $this->input->post('freq_display'),
 				'freq_rx' => $this->input->post('freq_display_rx'),
 				'mode' => $this->input->post('mode'),
@@ -243,4 +253,103 @@ class QSO extends CI_Controller {
 		
 		echo $this->frequency->convent_band($band, $mode);
 	}
+
+	/*
+	 * Function is used for autocompletion of SOTA in the QSO entry form
+	 */
+	public function get_sota() {
+        $json = [];
+
+        if(!empty($this->input->get("query"))) {
+            $query = isset($_GET['query']) ? $_GET['query'] : FALSE;
+            $sota = strtoupper($query);
+
+            $file = 'assets/json/sota.txt';
+
+            if (is_readable($file)) {
+                $lines = file($file, FILE_IGNORE_NEW_LINES);
+                $input = preg_quote($sota, '~');
+                $reg = '~^'. $input .'(.*)$~';
+                $result = preg_grep($reg, $lines);
+                $json = [];
+                $i = 0;
+                foreach ($result as &$value) {
+                    // Limit to 100 as to not slowdown browser too much
+                    if (count($json) <= 100) {
+                        $json[] = ["name"=>$value];
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($json);
+    }
+
+    /*
+	 * Function is used for autocompletion of DOK in the QSO entry form
+	 */
+    public function get_dok() {
+        $json = [];
+
+        if(!empty($this->input->get("query"))) {
+            $query = isset($_GET['query']) ? $_GET['query'] : FALSE;
+            $dok = strtoupper($query);
+
+            $file = 'assets/json/dok.txt';
+
+            if (is_readable($file)) {
+                $lines = file($file, FILE_IGNORE_NEW_LINES);
+                $input = preg_quote($dok, '~');
+                $reg = '~^'. $input .'(.*)$~';
+                $result = preg_grep($reg, $lines);
+                $json = [];
+                $i = 0;
+                foreach ($result as &$value) {
+                    // Limit to 100 as to not slowdown browser too much
+                    if (count($json) <= 100) {
+                        $json[] = ["name"=>$value];
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($json);
+    }
+
+    /*
+	 * Function is used for autocompletion of Counties in the station profile form
+	 */
+    public function get_county() {
+        $json = [];
+
+        if(!empty($this->input->get("query"))) {
+            //$query = isset($_GET['query']) ? $_GET['query'] : FALSE;
+            $county = $this->input->get("state");
+            $cleanedcounty = explode('(', $county);
+            $cleanedcounty = trim($cleanedcounty[0]);
+
+            $file = 'assets/json/US_counties.csv';
+
+            if (is_readable($file)) {
+                $lines = file($file, FILE_IGNORE_NEW_LINES);
+                $input = preg_quote($cleanedcounty, '~');
+                $reg = '~^'. $input .'(.*)$~';
+                $result = preg_grep($reg, $lines);
+                $json = [];
+                $i = 0;
+                foreach ($result as &$value) {
+                    $county = explode(',', $value);
+                    // Limit to 100 as to not slowdown browser too much
+                    if (count($json) <= 100) {
+                        $json[] = ["name"=>$county[1]];
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($json);
+    }
 }

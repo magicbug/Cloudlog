@@ -117,7 +117,7 @@ function write_dxcc_timeline($timeline_array, $custom_date_format, $bandselect, 
                         <td>Prefix</td>
                         <td>Country</td>
                         <td>Deleted</td>
-                        <td>End date</td>
+                        <td>End Date</td>
                         <td>Show QSOs</td>
                     </tr>
                 </thead>

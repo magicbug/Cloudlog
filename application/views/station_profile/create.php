@@ -59,7 +59,8 @@
 		    <small id="stationCityInputHelp" class="form-text text-muted">Station city. For example: Inverness</small>
 		  </div>
 
-		  <div class="form-group">
+        <div class="form-row">
+            <div class="form-group col-sm-6">
 		    <label for="stateInput">Station State</label>
 		    <select class="form-control custom-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 		    	<option value="" selected></option>
@@ -117,11 +118,12 @@
 		    <small id="StateHelp" class="form-text text-muted">Station state. Applies to certain countries only. Leave blank if not applicable.</small>
 		  </div>
 
-		  <div style="display: none" class="form-group">
-		    <label for="stationCntyInput">Station Cnty</label>
-		    <input type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp">
-		    <small id="stationCntyInputHelp" class="form-text text-muted">Station Cnty #get def from ADIF Spec#</small>
+		  <div class="form-group col-sm-6">
+		    <label for="stationCntyInput">Station County</label>
+		    <input disabled="disabled" type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp">
+		    <small id="stationCntyInputHelp" class="form-text text-muted">Station County (Only used for USA/Alaska/Hawaii)</small>
 		  </div>
+        </div>
 
             <div class="form-row">
                 <div class="form-group col-sm-6">
@@ -199,6 +201,10 @@
                 <input type="text" class="form-control" name="eqslnickname" id="eqslNickname" aria-describedby="eqslhelp">
                 <small id="eqslhelp" class="form-text text-muted">eQSL QTH Nickname.</small>
             </div>
+
+			<div class="alert alert-warning" role="alert">
+					QRZ.com Logbook Requires Paid Subscription
+			</div>
 
             <div class="form-row">
                 <div class="form-group col-sm-6">

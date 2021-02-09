@@ -60,7 +60,8 @@
 		    <small id="stationCityInputHelp" class="form-text text-muted">Station city. For example: Inverness</small>
 		  </div>
 
-		  <div class="form-group">
+        <div class="form-row">
+            <div class="form-group col-sm-6">
 		    <label for="stateInput">Station State</label>
 		    <select class="form-control custom-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 		    	<option value=""></option>
@@ -131,11 +132,12 @@
 		    <small id="StateHelp" class="form-text text-muted">Station state. Applies to certain countries only. Leave blank if not applicable.</small>
 		  </div>
 
-		  <div style="display: none" class="form-group">
-		    <label for="stationCntyInput">Station Cnty</label>
-		    <input type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp" value="<?php if(set_value('station_cnty') != "") { echo set_value('station_cnty'); } else { echo $my_station_profile->station_cnty; } ?>">
-		    <small id="stationCntyInputHelp" class="form-text text-muted">Station Cnty #get def from ADIF Spec#</small>
+		  <div class="form-group col-sm-6">
+		    <label for="stationCntyInput">Station County</label>
+		    <input disabled="disabled" type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp" value="<?php if(set_value('station_cnty') != "") { echo set_value('station_cnty'); } else { echo $my_station_profile->station_cnty; } ?>">
+		    <small id="stationCntyInputHelp" class="form-text text-muted">Station County (Only used for USA/Alaska/Hawaii)</small>
 		  </div>
+        </div>
 
             <div class="form-row">
                 <div class="form-group col-sm-6">
@@ -222,12 +224,19 @@
 		    <small id="eqslhelp" class="form-text text-muted">eQSL QTH Nickname.</small>
 		  </div>
 
+
+			<div class="alert alert-warning" role="alert">
+					QRZ.com Logbook Requires Paid Subscription
+			</div>
+
+
             <div class="form-row">
-            <div class="form-group col-sm-6">
-                <label for="qrzApiKey">QRZ.com Logbook API Key</label>
-                <input type="text" class="form-control" name="qrzapikey" id="qrzApiKey" aria-describedby="qrzApiKeyHelp" value="<?php if(set_value('qrzapikey') != "") { echo set_value('qrzapikey'); } else { echo $my_station_profile->qrzapikey; } ?>">
-                <small id="qrzApiKeyHelp" class="form-text text-muted">Find your API key on <a href="https://logbook.qrz.com/logbook" target="_blank">QRZ.com's settings page</a></small>
-            </div>
+				<div class="form-group col-sm-6">
+					<label for="qrzApiKey">QRZ.com Logbook API Key</label>
+					<input type="text" class="form-control" name="qrzapikey" id="qrzApiKey" aria-describedby="qrzApiKeyHelp" value="<?php if(set_value('qrzapikey') != "") { echo set_value('qrzapikey'); } else { echo $my_station_profile->qrzapikey; } ?>">
+					<small id="qrzApiKeyHelp" class="form-text text-muted">Find your API key on <a href="https://logbook.qrz.com/logbook" target="_blank">QRZ.com's settings page</a></small>
+				</div>
+
                 <div class="form-group col-sm-6">
                     <label for="qrzrealtime">QRZ.com Logbook Realtime Upload</label>
                     <select class="custom-select" id="qrzrealtime" name="qrzrealtime">

@@ -23,6 +23,9 @@ class Lotw extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
+	
+		// Load language files
+		$this->lang->load('lotw');
 	}
 
 	/*
@@ -68,7 +71,11 @@ class Lotw extends CI_Controller {
 	*/
 	public function cert_upload() {
 		$this->load->model('user_model');
+		$this->load->model('dxcc');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		// Load DXCC Countrys List
+		$data['dxcc_list'] = $this->dxcc->list();
 
 		// Set Page Title
 		$data['page_title'] = "Logbook of the World";
@@ -91,6 +98,7 @@ class Lotw extends CI_Controller {
 	public function do_cert_upload()
     {
 		$this->load->model('user_model');
+		$this->load->model('dxcc');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		// Fire OpenSSL missing error if not found
@@ -113,7 +121,7 @@ class Lotw extends CI_Controller {
         	// Upload of P12 Failed
             $error = array('error' => $this->upload->display_errors());
 
-	        	// Set Page Title
+			// Set Page Title
 			$data['page_title'] = "Logbook of the World";
 
 			// Load Views
@@ -131,13 +139,18 @@ class Lotw extends CI_Controller {
 
         	$info = $this->decrypt_key($data['upload_data']['full_path']);
 
-        	// Check to see if certificate is already in the system
-        	$new_certficiate = $this->LotwCert->find_cert($info['issued_callsign'], $this->session->userdata('user_id'));
-
         	// Check DXCC & Store Country Name
-        	$this->load->model('Logbook_model');
-        	$dxcc_check = $this->Logbook_model->check_dxcc_table($info['issued_callsign'], $info['validFrom']);
-        	$dxcc = $dxcc_check[1];
+			$this->load->model('Logbook_model');
+			
+			if($this->input->post('dxcc') != "") {
+				$dxcc = $this->input->post('dxcc');
+			} else{ 
+				$dxcc_check = $this->Logbook_model->check_dxcc_table($info['issued_callsign'], $info['validFrom']);
+				$dxcc = $dxcc_check[1];
+			}
+
+			// Check to see if certificate is already in the system
+			$new_certficiate = $this->LotwCert->find_cert($info['issued_callsign'], $dxcc, $this->session->userdata('user_id'));
 
         	if($new_certficiate == 0) {
         		// New Certificate Store in Database
@@ -209,7 +222,7 @@ class Lotw extends CI_Controller {
 					// Get Certificate Data
 					$this->load->model('LotwCert');
 					$data['station_profile'] = $station_profile;
-					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign);
+					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign, $station_profile->station_country);
 
 					// If Station Profile has no LOTW Cert continue on.
 					if(!isset($data['lotw_cert_info']->cert_dxcc)) {
@@ -235,9 +248,6 @@ class Lotw extends CI_Controller {
 						array_push($qso_id_array, $temp_qso->COL_PRIMARY_KEY);
 					}
 
-					//$this->load->view('lotw_views/adif_views/adif_export', $data);
-
-
 					// Build File to save
 					$adif_to_save = $this->load->view('lotw_views/adif_views/adif_export', $data, TRUE);
 
@@ -247,7 +257,6 @@ class Lotw extends CI_Controller {
 					}
 
 					// Build Filename
-
 					$filename_for_saving = './uploads/lotw/'.preg_replace('/[^a-z0-9]+/', '-', strtolower($data['lotw_cert_info']->callsign))."-".date("Y-m-d-H-i-s")."-cloudlog.tq8";
 
 					$gzdata = gzencode($adif_to_save, 9);
@@ -489,7 +498,7 @@ class Lotw extends CI_Controller {
                     $station_id = $this->logbook_model->find_correct_station_id($record['station_callsign'], $record['my_gridsquare']);
 
                     if ($station_id != NULL) {
-                        $result = $this->logbook_model->import($record, $station_id, NULL, NULL, NULL, NULL);  // Create the Entry
+                        $result = $this->logbook_model->import($record, $station_id, NULL, TRUE, NULL, NULL, true);  // Create the Entry
                         if ($result == "") {
                             $lotw_status = 'QSO imported';
                         } else {

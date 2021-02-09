@@ -4,6 +4,42 @@ $("#callsign").focus();
 // Init serial sent as 1 when loading page
 $("#exch_sent").val(1);
 
+$( document ).ready(function() {
+    restoreContestSession();
+    setRst($("#mode").val());
+});
+
+// This erases the contest logging session which is stored in localStorage
+function reset_contest_session() {
+    $('#name').val("");
+    $('.callsign-suggestions').text("");
+    $('#callsign').val("");
+    $('#comment').val("");
+    $('#exch_sent').val("1");
+    $('#exch_recv').val("");
+    $("#callsign").focus();
+    setRst($("#mode").val());
+    $("#serial").prop("checked", true);
+    $("#contestname").val("Other").change();
+    $(".contest_qso_table_contents").empty();
+
+    localStorage.removeItem("contestid");
+    localStorage.removeItem("exchangetype");
+    localStorage.removeItem("exchangesent");
+    localStorage.removeItem("qso");
+}
+
+// Storing the contestid in contest session
+$('#contestname').change(function() {
+    localStorage.setItem("contestid", $("#contestname").val());
+});
+
+// Storing the exchange type in contest session
+$('input[type=radio][name=exchangeradio]').change(function() {
+    localStorage.setItem("exchangetype", $('input[name=exchangeradio]:checked', '#qso_input').val());
+});
+
+
 // realtime clock
 $(function($) {
     var options = {
@@ -44,7 +80,11 @@ document.onkeyup = function(e) {
     // ALT-W wipe
     if (e.altKey && e.which == 87) {
         reset_log_fields();
+    // CTRL-Enter logs QSO
     } else if ((e.keyCode == 10 || e.keyCode == 13) && (e.ctrlKey || e.metaKey)) {
+        logQso();
+    // Enter in sent exchange logs QSO
+    }  else if((e.which == 13) && ($(document.activeElement).attr("id") == "exch_recv")) {
         logQso();
     } else if (e.which == 27) {
         reset_log_fields();
@@ -82,6 +122,7 @@ function reset_log_fields() {
     $('#comment').val("");
     $('#exch_recv').val("");
     $("#callsign").focus();
+    setRst($("#mode").val());
 }
 
 RegExp.escape = function(text) {
