@@ -183,7 +183,7 @@
         <?php } ?>
     </ul>
 
-     <?php if($this->config->item('public_search') == TRUE || $this->session->userdata('user_type') >= 2) { ?>
+     <?php if($this->optionslib->get_option('global_search') != "false" || $this->session->userdata('user_type') >= 2) { ?>
 		<form method="post" action="<?php echo site_url('search'); ?>" class="form-inline">
 		<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search">
 		
