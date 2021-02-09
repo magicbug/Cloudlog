@@ -33,7 +33,7 @@
                     <?php } ?>
 
                     <?php echo form_open('options/appearance_save'); ?>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="themeSelect">Language</label>
                             <select class="custom-select" id="langSelect" name="language" aria-describedby="langHelp" required>
                                 <?php foreach ($language_options as &$lang_opt) { ?>
@@ -41,7 +41,7 @@
                                 <?php } ?>
                             </select>
                             <small id="langHelp" class="form-text text-muted">Select the default language for Cloudlog.</small>
-                        </div>
+                        </div> -->
 
                         <!-- Form options for selecting global theme choice -->
                         <div class="form-group">
