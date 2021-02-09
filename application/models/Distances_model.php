@@ -36,7 +36,7 @@ class Distances_model extends CI_Model
         $station_id = $CI->Stations->find_active();
 
         // get all worked sats from database
-        $sql = "SELECT distinct col_sat_name FROM ".$this->config->item('table_name')." WHERE station_id = ".$station_id . " and coalesce(col_sat_name, '') <> ''";
+        $sql = "SELECT distinct col_sat_name FROM ".$this->config->item('table_name')." WHERE station_id = ".$station_id . " and coalesce(col_sat_name, '') <> '' ORDER BY col_sat_name";
 
         $data = $this->db->query($sql);
 
