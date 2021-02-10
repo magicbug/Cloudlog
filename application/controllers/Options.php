@@ -87,12 +87,12 @@ class Options extends CI_Controller {
 			}
 
 			// Update Lang choice within the options system
-			$lang_update_status = $this->optionslib->update('language', $this->input->post('language'));
+			// $lang_update_status = $this->optionslib->update('language', $this->input->post('language'));
 
 			// If Lang update is complete set a flashsession with a success note
-			if($lang_update_status == TRUE) {
-				$this->session->set_flashdata('success', 'Language changed to '.ucfirst($this->input->post('language')));
-			}
+			// if($lang_update_status == TRUE) {
+			// 	$this->session->set_flashdata('success', 'Language changed to '.ucfirst($this->input->post('language')));
+			// }
 
 			// Redirect back to /appearance
 			redirect('/options/appearance');
