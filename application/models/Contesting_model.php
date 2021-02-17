@@ -32,4 +32,91 @@ class Contesting_model extends CI_Model {
         header('Content-Type: application/json');
         echo json_encode($data->result());
     }
+
+    function getActivecontests() {
+
+		$sql = "SELECT name, adifname FROM contest WHERE active = 1 ORDER BY name ASC";
+
+		$data = $this->db->query($sql);
+
+		return($data->result_array());
+	}
+
+	function getAllContests() {
+
+		$sql = "SELECT id, name, adifname, active FROM contest ORDER BY name ASC";
+
+		$data = $this->db->query($sql);
+
+		return($data->result_array());
+	}
+
+	function delete($id) {
+		// Clean ID
+		$clean_id = $this->security->xss_clean($id);
+
+		// Delete Contest
+		$this->db->delete('contest', array('id' => $clean_id));
+	}
+
+	function activate($id) {
+		// Clean ID
+		$clean_id = $this->security->xss_clean($id);
+
+		$data = array(
+			'active' => '1',
+		);
+
+		$this->db->where('id', $clean_id);
+
+		$this->db->update('contest', $data);
+
+		return true;
+	}
+
+	function deactivate($id) {
+		// Clean ID
+		$clean_id = $this->security->xss_clean($id);
+
+		$data = array(
+			'active' => '0',
+		);
+
+		$this->db->where('id', $clean_id);
+
+		$this->db->update('contest', $data);
+
+		return true;
+	}
+
+	function add() {
+		$data = array(
+			'name' => xss_clean($this->input->post('name', true)),
+			'adifname' => xss_clean($this->input->post('adifname', true)),
+		);
+
+		$this->db->insert('contest', $data);
+	}
+
+	function contest($id) {
+		// Clean ID
+		$clean_id = $this->security->xss_clean($id);
+
+		$sql = "SELECT id, name, adifname, active FROM contest where id =" . $clean_id;
+
+		$data = $this->db->query($sql);
+
+		return ($data->row());
+	}
+
+	function edit($id) {
+		$data = array(
+			'name' => xss_clean($this->input->post('name', true)),
+			'adifname' => xss_clean($this->input->post('adifname', true)),
+			'active' =>  xss_clean($this->input->post('active', true)),
+		);
+
+		$this->db->where('id', $id);
+		$this->db->update('contest', $data);
+	}
 }
