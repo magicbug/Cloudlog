@@ -41,8 +41,7 @@
 					<?php } ?>
 					<th><?php echo $this->lang->line('gen_hamradio_call'); ?></th>
 					<th><?php echo $this->lang->line('gen_hamradio_mode'); ?></th>
-					<th class="d-none d-sm-table-cell"><?php echo $this->lang->line('gen_hamradio_rst_sent'); ?></th>
-					<th class="d-none d-sm-table-cell"><?php echo $this->lang->line('gen_hamradio_rst_recv'); ?></th>
+					<th><?php echo $this->lang->line('general_word_country'); ?></th>
 					<th><?php echo $this->lang->line('gen_hamradio_band'); ?></th>
 				</tr>
 			</thead>
