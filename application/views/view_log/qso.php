@@ -229,30 +229,37 @@
                     </tr>
                     <?php } ?>
 
-                </table>
+                </table><br/>
                 <?php if($row->COL_QSL_SENT == "Y" || $row->COL_QSL_RCVD == "Y") { ?>
-                    <h3>QSL Info:</h3>
+                    <h5>QSL Info:</h5>
 
                     <?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "B") { ?>
-                    <p>QSL Card has been sent via the bureau</p>
+                    <p>QSL card has been sent via the bureau.</p>
                     <?php } ?>
                     <?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "D") { ?>
-                    <p>QSL Card has been sent direct</p>
+                    <p>QSL card has been sent direct.</p>
                     <?php } ?>
 
                     <?php if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_RCVD_VIA == "B") { ?>
-                    <p>QSL Card has been received via the bureau</p>
+                    <p>QSL card has been received via the bureau.</p>
                     <?php } ?>
                     <?php if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_RCVD_VIA == "D") { ?>
-                    <p>QSL Card has been received direct</p>
+                    <p>QSL card has been received direct.</p>
                     <?php } ?>
                 <?php } ?>
 
                     <?php if($row->COL_LOTW_QSL_RCVD == "Y") { ?>
-                    <h3>LoTW:</h3>
-                        <p>This QSO is confirmed on Lotw</p>
+                    <h5>Logbook of The World:</h5>
+                        <p>This QSO was confirmed on <?php echo $row->COL_LOTW_QSLRDATE; ?>.</p>
+                    <?php } ?>
+                        
+
+                    <?php if($row->COL_EQSL_QSL_RCVD == "Y") { ?>
+                    <h5>eQSL:</h5>
+                        <p>This QSO was confirmed on <?php echo $row->COL_EQSL_QSLRDATE; ?>.</p>
                     <?php } ?>
             </div>
+
 
                 <div class="col">
 
