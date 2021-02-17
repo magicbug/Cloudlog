@@ -250,13 +250,13 @@
 
                     <?php if($row->COL_LOTW_QSL_RCVD == "Y") { ?>
                     <h5>Logbook of The World:</h5>
-                        <p>This QSO was confirmed on <?php echo $row->COL_LOTW_QSLRDATE; ?>.</p>
+                        <p>This QSO was confirmed on <?php $timestamp = strtotime($row->COL_LOTW_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
                         
 
                     <?php if($row->COL_EQSL_QSL_RCVD == "Y") { ?>
                     <h5>eQSL:</h5>
-                        <p>This QSO was confirmed on <?php echo $row->COL_EQSL_QSLRDATE; ?>.</p>
+                        <p>This QSO was confirmed on <?php $timestamp = strtotime($row->COL_EQSL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
             </div>
 
