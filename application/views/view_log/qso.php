@@ -290,15 +290,14 @@
         </div>
 
         <div class="tab-pane fade" id="stationdetails" role="tabpanel" aria-labelledby="table-tab">
-            <h3>Station Details</h3>
 
             <table width="100%">
                     <tr>
-                        <td>Station Callsign</td>
+                        <td>Station Callsign:</td>
                         <td><?php echo $row->station_callsign; ?></td>
                     </tr>
                     <tr>
-                        <td>Station Gridsquare</td>
+                        <td>Station Gridsquare:</td>
                         <td><?php echo $row->station_gridsquare; ?></td>
                     </tr>
 
@@ -318,14 +317,14 @@
 
                     <?php if($row->COL_OPERATOR) { ?>
                     <tr>
-                        <td>Station Operator</td>
+                        <td>Station Operator:</td>
                         <td><?php echo $row->COL_OPERATOR; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_TX_PWR) { ?>
                     <tr>
-                        <td>Station Transmit Power</td>
+                        <td>Station Transmit Power:</td>
                         <td><?php echo $row->COL_TX_PWR; ?>w</td>
                     </tr>
                     <?php } ?>
