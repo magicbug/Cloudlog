@@ -16,11 +16,11 @@
                 echo 'hidden ';
             }
                 echo 'class="qslcardtab nav-item">
-                <a class="nav-link" id="qsltab" data-toggle="tab" href="#qslcard" role="tab" aria-controls="home" aria-selected="false">'. $this->lang->line('general_words_qslcard') .'</a>
+                <a class="nav-link" id="qsltab" data-toggle="tab" href="#qslcard" role="tab" aria-controls="home" aria-selected="false">'. $this->lang->line('general_word_qslcard') .'</a>
                 </li>';
 
             echo '<li class="nav-item">
-            <a class="nav-link" id="qslmanagementtab" data-toggle="tab" href="#qslupload" role="tab" aria-controls="home" aria-selected="false">'. $this->lang->line('general_words_qslcard_management') .'</a>
+            <a class="nav-link" id="qslmanagementtab" data-toggle="tab" href="#qslupload" role="tab" aria-controls="home" aria-selected="false">'. $this->lang->line('general_word_qslcard_management') .'</a>
             </li>';
         }
 
