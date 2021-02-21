@@ -182,7 +182,7 @@
                     <?php } ?>
                     <?php if($row->COL_COUNTRY != null) { ?>
                     <tr>
-                        <td><?php echo $this->lang->line('geneneral_word_country'); ?></td>
+                        <td><?php echo $this->lang->line('general_word_country'); ?></td>
                         <td><?php echo ucwords(strtolower(($row->COL_COUNTRY))); ?></td>
                     </tr>
                     <?php } ?>
