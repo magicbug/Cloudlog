@@ -20,7 +20,7 @@ class User extends CI_Controller {
 	function add() {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-		
+
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('user_name', 'Username', 'required');
@@ -55,6 +55,7 @@ class User extends CI_Controller {
 				$data['user_timezone'] = $this->input->post('user_timezone');
                 $data['user_measurement_base'] = $this->input->post('user_measurement_base');
                 $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+				$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 				$this->load->view('user/add', $data);
 			} else {
 				$this->load->view('user/add', $data);
@@ -63,7 +64,7 @@ class User extends CI_Controller {
 		}
 		else
 		{
-			switch($this->user_model->add($this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'), $this->input->post('user_firstname'), $this->input->post('user_lastname'), $this->input->post('user_callsign'), $this->input->post('user_locator'), $this->input->post('user_timezone'), $this->input->post('user_measurement_base'), $this->input->post('user_date_format'), $this->input->post('user_stylesheet'))) {
+			switch($this->user_model->add($this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'), $this->input->post('user_firstname'), $this->input->post('user_lastname'), $this->input->post('user_callsign'), $this->input->post('user_locator'), $this->input->post('user_timezone'), $this->input->post('user_measurement_base'), $this->input->post('user_date_format'), $this->input->post('user_stylesheet'), $this->input->post('user_sota_lookup'))) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
 					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';
@@ -93,6 +94,7 @@ class User extends CI_Controller {
 			$data['user_locator'] = $this->input->post('user_locator');
             $data['user_measurement_base'] = $this->input->post('user_measurement_base');
             $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -102,7 +104,7 @@ class User extends CI_Controller {
 		$this->load->model('user_model');
 		if((!$this->user_model->authorize(99)) && ($this->session->userdata('user_id') != $this->uri->segment(3))) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$query = $this->user_model->get_by_id($this->uri->segment(3));
-		
+
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('user_name', 'Username', 'required|xss_clean');
@@ -206,7 +208,7 @@ class User extends CI_Controller {
 			} else {
 				$data['user_clublog_name'] = $q->user_clublog_name;
 			}
-			
+
 			if($this->input->post('user_clublog_password')) {
 				$data['user_clublog_password'] = $this->input->post('user_clublog_password', true);
 			} else {
@@ -218,13 +220,13 @@ class User extends CI_Controller {
 			} else {
 				$data['user_lotw_password'] = $q->user_lotw_password;
 			}
-			
+
 			if($this->input->post('user_eqsl_name')) {
 				$data['user_eqsl_name'] = $this->input->post('user_eqsl_name', true);
 			} else {
 				$data['user_eqsl_name'] = $q->user_eqsl_name;
 			}
-			
+
 			if($this->input->post('user_eqsl_password')) {
 				$data['user_eqsl_password'] = $this->input->post('user_eqsl_password', true);
 			} else {
@@ -248,7 +250,13 @@ class User extends CI_Controller {
             } else {
                 $data['user_stylesheet'] = $q->user_stylesheet;
             }
-			
+
+			if($this->input->post('user_sota_lookup')) {
+				$data['user_sota_lookup'] = $this->input->post('user_sota_lookup', true);
+			} else {
+				$data['user_sota_lookup'] = $q->user_sota_lookup;
+			}
+
 			$this->load->view('user/edit', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -290,6 +298,7 @@ class User extends CI_Controller {
 			$data['user_locator'] = $this->input->post('user_locator', true);
 			$data['user_timezone'] = $this->input->post('user_timezone', true);
             $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}
@@ -347,8 +356,8 @@ class User extends CI_Controller {
 	function login() {
 		// Check our version and run any migrations
 		$this->load->library('Migration');
-		$this->migration->current();	
-		
+		$this->migration->current();
+
 		$this->load->model('user_model');
 		$query = $this->user_model->get($this->input->post('user_name', true));
 
