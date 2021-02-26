@@ -281,8 +281,8 @@
 						<div class="form-group">
 							<label for="sotalookup">SOTA auto lookup gridsquare and name for summit.</label>
 							<select class="custom-select" id="sotalookup" name="user_sota_lookup">
-								<option value="1" <?php if ($user_sota_lookup == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
-								<option value="0" <?php if ($user_sota_lookup == 0) { echo " selected =\"selected\""; } ?>>No</option>
+								<option value="1" <?php if ($user_sota_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_yes'); ?></option>
+								<option value="0" <?php if ($user_sota_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_no'); ?></option>
 							</select>
 							<div class="small form-text text-muted">If this is set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
 						</div>
