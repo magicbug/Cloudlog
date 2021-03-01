@@ -14,12 +14,12 @@ $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Zeit';
 $lang['general_word_none'] = 'None';
 $lang['general_word_name'] = 'Name';
-$lang['general_word_location'] = 'Die Stelle';
-$lang['general_word_comment'] = 'Anmerkung';
+$lang['general_word_location'] = 'Stelle';
+$lang['general_word_comment'] = 'Kommentar';
 $lang['general_word_general'] = 'Allgemeines';
-$lang['general_word_satellite'] = 'Satelliit';
+$lang['general_word_satellite'] = 'Satellit';
 $lang['general_word_satellite_short'] = 'Sat';
-$lang['general_word_notes'] = 'Anmerkungen';
+$lang['general_word_notes'] = 'Notizen';
 $lang['general_word_country'] = 'Land';
 
 $lang['general_word_total'] = 'Gesamt';
@@ -36,17 +36,17 @@ $lang['general_word_method'] = 'Methode';
 
 $lang['general_word_sent'] = 'Gesendet';
 $lang['general_word_received'] = 'Erhalten';
-$lang['general_word_requested'] = 'Beantragt';
+$lang['general_word_requested'] = 'Angefordert';
 $lang['general_word_qslcards'] = 'QSL Karten';
-$lang['general_word_qslcard_direct'] = 'Direkte';
+$lang['general_word_qslcard_direct'] = 'Direkt';
 $lang['general_word_qslcard_bureau'] = 'Büro';
 $lang['general_word_qslcard_via'] = 'Via';
 
 $lang['general_edit_qso'] = 'QSO bearbeiten';
 $lang['general_mark_qsl_rx_bureau'] = 'Markiere QSL erhalten (Büro)';
-$lang['general_mark_qsl_rx_direct'] = 'Markiere QSL erhalten (Direkte)';
+$lang['general_mark_qsl_rx_direct'] = 'Markiere QSL erhalten (Direkt)';
 
-$lang['general_delete_qso'] = 'Löschen QSO';
+$lang['general_delete_qso'] = 'QSO Löschen';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Stationsprofil';
