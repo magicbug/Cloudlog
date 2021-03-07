@@ -28,21 +28,21 @@ $lang['general_word_month'] = 'Kuukausi';
 
 $lang['general_word_worked'] = 'Workittu';
 $lang['general_word_confirmed'] = 'Kuitattu';
-$lang['general_word_needed'] = 'Tarvitaan';
+$lang['general_word_needed'] = 'Tarvittu';
 
 $lang['general_word_no'] = 'Ei';
 $lang['general_word_yes'] = 'Kyllä';
 $lang['general_word_method'] = 'Method / tapa';
 
-$lang['general_word_sent'] = 'Lähetetty';
-$lang['general_word_received'] = 'Vastaanotettu';
-$lang['general_word_requested'] = 'Pyydetty';
-$lang['general_word_qslcards'] = 'QSL kortit';
+$lang['general_word_sent'] = 'Lähetetyt';
+$lang['general_word_received'] = 'Vastaanotetut';
+$lang['general_word_requested'] = 'Pyydetyt';
+$lang['general_word_qslcards'] = 'QSL-kortit';
 $lang['general_word_qslcard_direct'] = 'Direct';
 $lang['general_word_qslcard_bureau'] = 'Bureau';
 $lang['general_word_qslcard_via'] = 'Via';
 
-$lang['general_edit_qso'] = 'Muokkaa QSO';
+$lang['general_edit_qso'] = 'Muokkaa QSO:a';
 $lang['general_mark_qsl_rx_bureau'] = 'Merkitse QSL vastaanotetuksi (Bureau)';
 $lang['general_mark_qsl_rx_direct'] = 'Merkitse QSL vastaanotetuksi (Direct)';
 
@@ -57,9 +57,9 @@ $lang['gen_hamradio_station'] = 'Asema';
 
 $lang['gen_hamradio_call'] = 'Kutsu';
 $lang['gen_hamradio_callsign'] = 'Kutsumerkki';
-$lang['gen_hamradio_mode'] = 'Mode';
-$lang['gen_hamradio_rst_sent'] = 'Lähetetty';
-$lang['gen_hamradio_rst_recv'] = 'saatu';
+$lang['gen_hamradio_mode'] = 'Lähetelaji';
+$lang['gen_hamradio_rst_sent'] = 'Annettu raportti';
+$lang['gen_hamradio_rst_recv'] = 'Saatu raportti';
 $lang['gen_hamradio_band'] = 'Bandi';
 $lang['gen_hamradio_band_rx'] = 'Bandi (RX)';
 $lang['gen_hamradio_frequency'] = 'Taajuus';
@@ -74,14 +74,14 @@ $lang['gen_hamradio_locator'] = 'Lokaattori';
 $lang['gen_hamradio_transmit_power'] = 'Lähetysteho (W)';
 $lang['gen_hamradio_propagation_mode'] = 'Propagaatiomuoto';
 
-$lang['gen_hamradio_satellite_name'] = 'Satelliitin nimi';
+$lang['gen_hamradio_satellite_name'] = 'Satelliitti';
 $lang['gen_hamradio_satellite_mode'] = 'Satelliitin Mode';
 
 $lang['gen_hamradio_logbook'] = 'Lokikirja';
 
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
-$lang['gen_hamradio_usa_state'] = 'USA Osavaltio';
+$lang['gen_hamradio_usa_state'] = 'USA:n osavaltio';
 $lang['gen_hamradio_iota_reference'] = 'IOTA numero';
 $lang['gen_hamradio_sota_reference'] = 'SOTA numero';
 $lang['gen_hamradio_dok'] = 'DOK';
@@ -91,6 +91,6 @@ $lang['gen_hamradio_sig_info'] = 'Sig Info';
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Olet pitänyt';
-$lang['dashboard_qsos_today'] = 'kusoa tänään!';
-$lang['dashboard_qso_breakdown'] = 'QSO-erittely';
-$lang['dashboard_countries_breakdown'] = 'Maa-erittely';
+$lang['dashboard_qsos_today'] = 'yhteyttä tänään!';
+$lang['dashboard_qso_breakdown'] = 'Yhteystilasto';
+$lang['dashboard_countries_breakdown'] = 'Maatilasto';
