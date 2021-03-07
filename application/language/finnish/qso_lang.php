@@ -3,9 +3,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 // Tiles
-$lang['qso_title_qso_map'] = 'QSO-kartta';
-$lang['qso_title_suggestions'] = 'Ehdotukset';
-$lang['qso_title_pervious_contacts'] = 'Aikaisemmat yhteydet';
+$lang['qso_title_qso_map'] = 'Vasta-aseman sijainti kartalla';
+$lang['qso_title_suggestions'] = 'Kutsumerkkiehdotukset';
+$lang['qso_title_pervious_contacts'] = 'Edelliset yhteydet';
 
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Anna teholukema Watteina käyttäen vain numeroita.';
@@ -22,4 +22,4 @@ $lang['qso_notes_helptext'] = 'Muistion sisältö tallentuu vain Cloudlogiin, t�
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = 'Tyhjennä';
-$lang['qso_btn_save_qso'] = 'Tallenna QSO';
+$lang['qso_btn_save_qso'] = 'TALLENNA QSO';
