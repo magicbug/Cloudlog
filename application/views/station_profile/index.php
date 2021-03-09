@@ -19,6 +19,8 @@
 	<p class="card-text">Similar to logbooks, a station profile keeps a set of QSOs together.</p>
 	<p class="card-text">Only one logbook may be active at a time. In the table below this is shown with the "Active Logbook" badge.</p>
 
+	  <p><a href="<?php echo site_url('station/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Station Profile</a></p>
+	  
 		<?php if ($stations->num_rows() > 0) { ?>
 
 		<?php if($current_active == 0) { ?>
@@ -34,8 +36,7 @@
 		  		Create a station profile, if you haven't already, then <a href="<?php echo site_url('station/assign_all/'); ?>" class="btn btn-danger" onclick="return confirm('Assign All QSOs to Default Station ID"><i class="fas fa-trash-alt"></i> press this button to assign all QSOs to the first Station Profile.</a>
 			</div>
 		<?php } ?>
-
-		<p><a href="<?php echo site_url('station/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Station Profile</a></p>
+	  
 		<div class="table-responsive">
 		<table class="table table-striped">
 			<thead>
