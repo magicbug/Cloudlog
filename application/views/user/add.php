@@ -28,7 +28,7 @@
 		<div class="form-group">
 			<label>User Role</label>
 		    <select class="custom-select" name="user_type">
-			<?php			
+			<?php
 				$levels = $this->config->item('auth_level');
 				while (list($key, $val) = each($levels)) {
 			?>
@@ -66,7 +66,7 @@
 		    <input class="form-control" type="text" name="user_callsign" value="<?php if(isset($user_callsign)) { echo $user_callsign; } ?>" />
 			<?php if(isset($callsign_error)) { echo "<div class=\"small error\">".$callsign_error."</div>"; } ?>
 		</div>
-			
+
 		<div class="form-group">
 		    <label>Locator</label>
 		    <input class="form-control" type="text" name="user_locator" value="<?php if(isset($user_locator)) { echo $user_locator; } ?>" />
@@ -75,9 +75,9 @@
 
 		<div class="form-group">
 		    <label>Timezone</label>
-			<?php 
+			<?php
 				if(!isset($user_timezone)) { $user_timezone = 0; }
-				echo form_dropdown('user_timezone', $timezones, $user_timezone); 
+				echo form_dropdown('user_timezone', $timezones, $user_timezone);
 			?>
 		</div>
 
@@ -92,7 +92,7 @@
             	<option value="d.m.Y"><?php echo date('d.m.Y'); ?></option>
             	<option value="Y-m-d"><?php echo date('Y-m-d'); ?></option>
             </select>
-            
+
             <small id="SelectDateFormatHelp" class="form-text text-muted">Select how you would like dates shown when logged into your account.</small>
         </div>
 
@@ -119,6 +119,15 @@
                 <option value='superhero'>Superhero (Dark)</option>
             </select>
         </div>
+
+		<div class="form-group">
+			<label for="sotalookup">SOTA auto lookup gridsquare and name for summit.</label>
+			<select class="custom-select" id="sotalookup" name="user_sota_lookup">
+				<option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>
+				<option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
+			</select>
+			<div class="small form-text text-muted">If this is set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
+		</div>
 
 		<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 		<button type="submit" class="btn btn-primary">Create Account</button>

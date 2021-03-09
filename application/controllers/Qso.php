@@ -13,21 +13,21 @@ class QSO extends CI_Controller {
 	{
 		parent::__construct();
 		$this->lang->load('qso');
-		
+
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
 
 	public function index()
 	{
-	
+
 		$this->load->model('cat');
 		$this->load->model('stations');
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
 		$this->load->model('modes');
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-		
+
 		$data['active_station_profile'] = $this->stations->find_active();
 		$data['notice'] = false;
 		$data['stations'] = $this->stations->all();
@@ -36,7 +36,7 @@ class QSO extends CI_Controller {
 		$data['dxcc'] = $this->logbook_model->fetchDxcc();
 		$data['iota'] = $this->logbook_model->fetchIota();
 		$data['modes'] = $this->modes->active();
-		
+
 
 		$this->load->library('form_validation');
 
@@ -58,7 +58,7 @@ class QSO extends CI_Controller {
 			// $this->logbook_model->add();
 			//change to create_qso function as add and create_qso duplicate functionality
 			$this->logbook_model->create_qso();
-				
+
 			// Store Basic QSO Info for reuse
 			// Put data in an array first, then call set_userdata once.
 			// This solves the problem of CI dumping out the session
@@ -83,7 +83,7 @@ class QSO extends CI_Controller {
 				'transmit_power' => $this->input->post('transmit_power')
 			);
 			// ];
-			
+
 			setcookie("radio", $qso_data['radio'], time()+3600*24*99);
 			setcookie("station_profile_id", $qso_data['station_profile_id'], time()+3600*24*99);
 
@@ -93,13 +93,13 @@ class QSO extends CI_Controller {
 			if($this->input->post('sat_name')) {
         		$this->session->set_userdata('prop_mode', 'SAT');
     		}
-				
+
 			// Get last 5 qsos
 			$data['query'] = $this->logbook_model->last_custom('5');
-			 
+
 			// Set Any Notice Messages
 			$data['notice'] = "QSO Added";
-			
+
 			// Load view to create another contact
 			$data['page_title'] = "Add QSO";
 
@@ -116,15 +116,15 @@ class QSO extends CI_Controller {
         $this->load->model('logbook_model');
         $this->logbook_model->create_qso();
     }
-	
+
 	function edit() {
-	
+
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
 		$this->load->model('modes');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$query = $this->logbook_model->qso_info($this->uri->segment(3));
-		
+
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('time_on', 'Start Date', 'required');
@@ -135,7 +135,7 @@ class QSO extends CI_Controller {
         $data['dxcc'] = $this->logbook_model->fetchDxcc();
         $data['iota'] = $this->logbook_model->fetchIota();
 		$data['modes'] = $this->modes->all();
-		
+
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->load->view('qso/edit', $data);
@@ -180,7 +180,7 @@ class QSO extends CI_Controller {
 
         $this->logbook_model->edit();
     }
-	
+
 	function qsl_rcvd($id, $method) {
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
@@ -215,13 +215,13 @@ class QSO extends CI_Controller {
             echo json_encode(array('message' => 'OK'));
         }
     }
-	
+
 	/* Delete QSO */
 	function delete($id) {
 		$this->load->model('logbook_model');
-		
+
 		$this->logbook_model->delete($id);
-		
+
 		$this->session->set_flashdata('notice', 'QSO Deleted Successfully');
 		$data['message_title'] = "Deleted";
 		$data['message_contents'] = "QSO Deleted Successfully";
@@ -245,12 +245,12 @@ class QSO extends CI_Controller {
         echo json_encode(array('message' => 'OK'));
         return;
     }
-	
-	
+
+
 	function band_to_freq($band, $mode) {
-		
+
 		$this->load->library('frequency');
-		
+
 		echo $this->frequency->convent_band($band, $mode);
 	}
 
@@ -352,4 +352,29 @@ class QSO extends CI_Controller {
         header('Content-Type: application/json');
         echo json_encode($json);
     }
+
+    public function get_sota_info() {
+		$sota = xss_clean($this->input->post('sota'));
+		$url = 'https://api2.sota.org.uk/api/summits/' . $sota;
+
+		// Let's use cURL instead of file_get_contents
+		// begin script
+		$ch = curl_init();
+
+		// basic curl options for all requests
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+
+		// use the URL we built
+		curl_setopt($ch, CURLOPT_URL, $url);
+
+		$input = curl_exec($ch);
+		$chi = curl_getinfo($ch);
+
+		// Close cURL handle
+		curl_close($ch);
+
+		header('Content-Type: application/json');
+		echo $input;
+	}
 }
