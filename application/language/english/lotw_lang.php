@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+$lang['lotw_short'] = 'LoTW';
 $lang['lotw_title'] = 'Logbook of the World';
 $lang['lotw_title_available_cert'] = 'Available Certificates';
 $lang['lotw_title_information'] = 'Information';
@@ -47,3 +48,5 @@ $lang['lotw_p12_export_step_one'] = 'Open TQSL &amp; go to the Callsign Certific
 $lang['lotw_p12_export_step_two'] = 'Right click on desired Callsign';
 $lang['lotw_p12_export_step_three'] = 'Click "Save Callsign Certificate File" and do not add a password';
 $lang['lotw_p12_export_step_four'] = 'Upload File below.';
+
+$lang['lotw_confirmed'] = 'This QSO is confirmed on LoTW';
