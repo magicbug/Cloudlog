@@ -220,9 +220,7 @@
 
 				<a class="dropdown-item" target="_blank" href="https://github.com/magicbug/Cloudlog/wiki" title="Help"><i class="fas fa-question"></i> Help</a>
 
-				<div class="dropdown-divider"></div>
-
-				<a class="dropdown-item" target="_blank" href="https://forum.cloudlog.co.uk" title="Forum"><i class="fas fa-question"></i> Forum</a>
+				<a class="dropdown-item" target="_blank" href="https://github.com/magicbug/Cloudlog/discussions" title="Forum"><i class="fas fa-question"></i> Forum</a>
 
 				<div class="dropdown-divider"></div>
 
