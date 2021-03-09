@@ -67,14 +67,11 @@ class adif_data extends CI_Model {
 
         return $this->db->get();
     }
-    
-    function export_custom($from, $to, $exportLotw = false) {
-        $this->load->model('stations');
-        $active_station_id = $this->stations->find_active();
 
+    function export_custom($from, $to, $station_id, $exportLotw = false) {
         $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
         $this->db->from($this->config->item('table_name'));
-        $this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
+        $this->db->where($this->config->item('table_name').'.station_id', $station_id);
 
         // If date is set, we format the date and add it to the where-statement
         if ($from != 0) {
@@ -97,12 +94,12 @@ class adif_data extends CI_Model {
 
         return $this->db->get();
     }
-    
+
     function export_lotw() {
         $this->load->model('stations');
         $active_station_id = $this->stations->find_active();
 
-        
+
         $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
         $this->db->from($this->config->item('table_name'));
         $this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
@@ -114,15 +111,15 @@ class adif_data extends CI_Model {
 
         return $this->db->get();
     }
-    
+
     function mark_lotw_sent($id) {
        $data = array(
        		'COL_LOTW_QSL_SENT' => 'Y'
     	  );
-	
+
 		$this->db->set('COL_LOTW_QSLSDATE', 'now()', FALSE);
     	$this->db->where('COL_PRIMARY_KEY', $id);
-    	$this->db->update($this->config->item('table_name'), $data); 
+    	$this->db->update($this->config->item('table_name'), $data);
     }
 }
 
