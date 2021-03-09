@@ -35,6 +35,7 @@
 			</div>
 		<?php } ?>
 
+		<p><a href="<?php echo site_url('station/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Station Profile</a></p>
 		<div class="table-responsive">
 		<table class="table table-striped">
 			<thead>
@@ -87,9 +88,6 @@
 		<table>
 		</div>
 		<?php } ?>
-
-
-		<p><a href="<?php echo site_url('station/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Station Profile</a></p>
   </div>
 </div>
 
