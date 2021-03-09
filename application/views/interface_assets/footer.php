@@ -782,43 +782,7 @@ $(document).ready(function(){
 
 <?php if ($this->uri->segment(1) == "dayswithqso") { ?>
     <script src="<?php echo base_url(); ?>assets/js/chart.js"></script>
-    <script>
-        var baseURL= "<?php echo base_url();?>";
-        $.ajax({
-            url: baseURL+'index.php/dayswithqso/get_days',
-            success: function(data) {
-                var labels = [];
-                var dataDxcc = [];
-                $.each(data, function(){
-                    labels.push(this.Year);
-                    dataDxcc.push(this.Days);
-                });
-                var ctx = document.getElementById("myChartDiff").getContext('2d');
-                var myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Days with QSOs',
-                            data: dataDxcc,
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                beginAtZero:true
-                                }
-                            }]
-                        },
-                    }
-                });
-            }
-        });
-    </script>
+	<script src="<?php echo base_url(); ?>assets/js/sections/dayswithqso.js"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "distances") { ?>
@@ -826,111 +790,7 @@ $(document).ready(function(){
     <script src="<?php echo base_url(); ?>assets/js/highstock/exporting.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/highstock/offline-exporting.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/highstock/export-data.js"></script>
-<script>
-
-    $('#distplot_bands').change(function(){
-        var band = $("#distplot_bands option:selected").text();
-        if (band != "SAT") {
-            $("#distplot_sats").prop('disabled', true);
-        } else {
-            $("#distplot_sats").prop('disabled', false);
-        }
-    });
-
-  function distPlot(form) {
-      $(".alert").remove();
-      var baseURL= "<?php echo base_url();?>";
-      $.ajax({
-          url: baseURL+'index.php/distances/get_distances',
-          type: 'post',
-          data: {'band': form.distplot_bands.value,
-                'sat': form.distplot_sats.value},
-          success: function(tmp) {
-              if (tmp.ok == 'OK') {
-                  if (!($('#information').length > 0))
-                      $("#distances_div").append('<div id="information"></div><div id="graphcontainer" style="height: 600px; margin: 0 auto"></div>');
-                  var options = {
-                      chart: {
-                          type: 'column',
-                          zoomType: 'xy',
-                          renderTo: 'graphcontainer'
-                      },
-                      title: {
-                          text: 'Distance Distribution'
-                      },
-                      xAxis: {
-                          categories: [],
-                          crosshair: true,
-                          type: "category",
-                          min:0,
-                          max:100
-
-                      },
-                      yAxis: {
-                          title: {
-                              text: '# QSOs'
-                          }
-                      },
-                      navigator: {
-                          enabled: true,
-                          xAxis: {
-                              labels: {
-                                  formatter: function() {
-                                      return this.value * '50' + ' ' + tmp.unit;
-                                  }
-                              }
-                          }
-                      },
-                      rangeSelector: {
-                          selected: 1
-                      },
-                      tooltip: {
-                          formatter: function () {
-                              if(this.point) {
-                                  return "Distance: " + options.xAxis.categories[this.point.x] +
-                                      "<br />Callsign(s) worked (max 5 shown): " + myComments[this.point.x] +
-                                      "<br />Number of QSOs: <strong>" + series.data[this.point.x] + "</strong>";
-                              }
-                          }
-                      },
-                      series: []
-                  };
-                  var myComments=[];
-
-                  var series = {
-                      data: [],
-                      showInNavigator: true
-                  };
-
-                  $.each(tmp.qsodata, function(){
-                      myComments.push(this.calls);
-                      options.xAxis.categories.push(this.dist);
-                      series.name = 'Number of QSOs';
-                      series.data.push(this.count);
-
-                  });
-
-                  options.series.push(series);
-
-                  $('#information').html(tmp.qrb.Qsoes + " contacts were plotted.<br /> Your furthest contact was with " + tmp.qrb.Callsign
-                      + " in gridsquare "+ tmp.qrb.Grid
-                      +"; the distance was "
-                      +tmp.qrb.Distance + tmp.unit +".");
-
-                  var chart = new Highcharts.Chart(options);
-              }
-              else {
-                  if (($('#information').length > 0)) {
-                      $("#information").remove();
-                      $("#graphcontainer").remove();
-                  }
-                  $("#distances_div").append('<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + tmp.Error + '</div>');
-              }
-          }
-      });
-  }
-
-</script>
+	<script src="<?php echo base_url(); ?>assets/js/sections/distances.js"></script>
 <?php } ?>
 
     <?php if ($this->uri->segment(2) == "import") { ?>
@@ -946,100 +806,51 @@ $(document).ready(function(){
     <?php } ?>
 
     <?php if ($this->uri->segment(1) == "qrz") { ?>
-        <script>
-            function ExportQrz(station_id) {
-                if ($(".alert").length > 0) {
-                    $(".alert").remove();
-                }
-                if ($(".errormessages").length > 0) {
-                    $(".errormessages").remove();
-                }
-                $(".ld-ext-right").addClass('running');
-                $(".ld-ext-right").prop('disabled', true);
-                var baseURL= "<?php echo base_url();?>";
-                $.ajax({
-                    url: baseURL + 'index.php/qrz/upload_station',
-                    type: 'post',
-                    data: {'station_id': station_id},
-                    success: function (data) {
-                        $(".ld-ext-right").removeClass('running');
-                        $(".ld-ext-right").prop('disabled', false);
-                        if (data.status == 'OK') {
-                            $.each(data.info, function(index, value){
-                                $('#modcount'+value.station_id).html(value.modcount);
-                                $('#notcount'+value.station_id).html(value.notcount);
-                                $('#totcount'+value.station_id).html(value.totcount);
-                            });
-                            $(".card-body").append('<div class="alert alert-success" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + data.infomessage + '</div>');
-                        }
-                        else {
-                            $(".card-body").append('<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + data.info + '</div>');
-                        }
-
-                        if (data.errormessages.length > 0) {
-                            $(".card-body").append('' +
-                                '<div class="errormessages"><p>\n' +
-                                '                            <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">\n' +
-                                '                                Show error messages\n' +
-                                '                            </button>\n' +
-                                '                            </p>\n' +
-                                '                            <div class="collapse" id="collapseExample">\n' +
-                                '                                <div class="card card-body"><div class="errors"></div>\n' +
-                                '                            </div>\n' +
-                                '                            </div></div>');
-                            $.each(data.errormessages, function(index, value) {
-                                $(".errors").append('<li>' + value);
-                            });
-                        }
-                    }
-                });
-            }
-
-        </script>
+		<script src="<?php echo base_url(); ?>assets/js/sections/qrzlogbook.js"></script>
     <?php } ?>
 
-        <script>
-            function displayQso(id) {
-                var baseURL= "<?php echo base_url();?>";
-                $.ajax({
-                    url: baseURL + 'index.php/logbook/view/' + id,
-                    type: 'post',
-                    success: function(html) {
-                        BootstrapDialog.show({
-                            title: 'QSO Data',
-                            cssClass: 'qso-dialog',
-                            size: BootstrapDialog.SIZE_WIDE,
-                            nl2br: false,
-                            message: html,
-                            onshown: function(dialog) {
-                                var qsoid = $("#qsoid").text();
-                                $(".editButton").html('<a class="btn btn-primary" id="edit_qso" href="javascript:qso_edit('+qsoid+')"><i class="fas fa-edit"></i> Edit QSO</a>');
-                                var lat = $("#lat").text();
-                                var long = $("#long").text();
-                                var callsign = $("#callsign").text();
-                                var mymap = L.map('mapqso').setView([lat,long], 5);
+	<script>
+		function displayQso(id) {
+			var baseURL= "<?php echo base_url();?>";
+			$.ajax({
+				url: baseURL + 'index.php/logbook/view/' + id,
+				type: 'post',
+				success: function(html) {
+					BootstrapDialog.show({
+						title: 'QSO Data',
+						cssClass: 'qso-dialog',
+						size: BootstrapDialog.SIZE_WIDE,
+						nl2br: false,
+						message: html,
+						onshown: function(dialog) {
+							var qsoid = $("#qsoid").text();
+							$(".editButton").html('<a class="btn btn-primary" id="edit_qso" href="javascript:qso_edit('+qsoid+')"><i class="fas fa-edit"></i> Edit QSO</a>');
+							var lat = $("#lat").text();
+							var long = $("#long").text();
+							var callsign = $("#callsign").text();
+							var mymap = L.map('mapqso').setView([lat,long], 5);
 
-                                L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
-                                    maxZoom: 18,
-                                    attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
-                                    id: 'mapbox.streets'
-                                }).addTo(mymap);
+							L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
+								maxZoom: 18,
+								attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
+								id: 'mapbox.streets'
+							}).addTo(mymap);
 
-                                var redIcon = L.icon({
-                                    iconUrl: icon_dot_url,
-                                    iconSize:     [18, 18], // size of the icon
-                                });
+							var redIcon = L.icon({
+								iconUrl: icon_dot_url,
+								iconSize:     [18, 18], // size of the icon
+							});
 
-                                L.marker([lat,long], {icon: redIcon}).addTo(mymap)
-                                    .bindPopup(callsign);
+							L.marker([lat,long], {icon: redIcon}).addTo(mymap)
+								.bindPopup(callsign);
 
-                            },
-                        });
+						},
+					});
 
-                    }
-                });
-            }
-            </script>
+				}
+			});
+		}
+		</script>
 
 
 <?php if ($this->uri->segment(2) == "dxcc") { ?>
