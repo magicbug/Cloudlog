@@ -41,7 +41,7 @@ class Frequency {
 	'10m'=>array(
   		'SSB'=>"28300000",
   		'DATA'=>"28120000",
-  		'CW'=>"21050000"),
+  		'CW'=>"28050000"),
 	'6m'=>array(
   		'SSB'=>"50150000",
   		'DATA'=>"50230000",
@@ -86,7 +86,7 @@ class Frequency {
 		if($mode =='LSB' or $mode =='USB'){
 		  $mode= "SSB";
 		}
-		
+
 		// Use 'DATA' for any of the data modes
 		if($mode !='CW' and $mode !='SSB'){
 		  $mode= "DATA";
