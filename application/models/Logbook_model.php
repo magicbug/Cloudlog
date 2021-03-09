@@ -98,6 +98,13 @@ class Logbook_model extends CI_Model {
     } else {
         $submode = $this->input->post('mode');
     }
+
+    if($this->input->post('county') && $this->input->post('usa_state')) {
+      $clean_county_input = trim($this->input->post('usa_state')) . "," . trim($this->input->post('county'));
+    } else {
+      $clean_county_input = null;
+    }
+
     // Create array with QSO Data
     $data = array(
             'COL_TIME_ON' => $datetime,
@@ -150,12 +157,12 @@ class Logbook_model extends CI_Model {
             'COL_DXCC' => $dxcc_id,
             'COL_CQZ' => $cqz,
             'COL_STATE' => trim($this->input->post('usa_state')),
-            'COL_CNTY' => trim($this->input->post('usa_state')) . "," . trim($this->input->post('county')),
+            'COL_CNTY' => $clean_county_input,
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
             'COL_SIG' => trim($this->input->post('sig')),
             'COL_SIG_INFO' => trim($this->input->post('sig_info')),
             'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
-	    'COL_NOTES' => $this->input->post('notes'),
+	          'COL_NOTES' => $this->input->post('notes'),
     );
 
     $station_id = $this->input->post('station_profile');
