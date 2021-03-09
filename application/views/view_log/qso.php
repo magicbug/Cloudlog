@@ -144,7 +144,7 @@
                     </tr>
                     <?php } ?>
 
-                    <?php if($row->COL_CNTY != null) { ?>
+                    <?php if($row->COL_CNTY != null && $row->COL_CNTY != ",") { ?>
                         <tr>
                             <td>USA County:</td>
                             <td><?php echo $row->COL_CNTY; ?></td>
