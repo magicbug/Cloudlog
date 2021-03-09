@@ -12,6 +12,7 @@ $lang['general_word_choose_file'] = 'Elegir archivo';
 
 $lang['general_word_date'] = 'Fecha';
 $lang['general_word_time'] = 'Hora';
+$lang['general_word_datetime'] = 'Fecha/Hora';
 $lang['general_word_none'] = 'Ninguno';
 $lang['general_word_name'] = 'Nombre';
 $lang['general_word_location'] = 'Localización';
@@ -37,6 +38,8 @@ $lang['general_word_method'] = 'Método';
 $lang['general_word_sent'] = 'Enviado';
 $lang['general_word_received'] = 'Recibido';
 $lang['general_word_requested'] = 'Solicitadas';
+$lang['general_word_qslcard'] = 'Tarjeta QSL';
+$lang['general_word_qslcard_management'] = 'Gestión de QSL';
 $lang['general_word_qslcards'] = 'Tarjetas QSL';
 $lang['general_word_qslcard_direct'] = 'Directo';
 $lang['general_word_qslcard_bureau'] = 'Buró';
@@ -47,6 +50,8 @@ $lang['general_mark_qsl_rx_bureau'] = 'Marcar QSL Recibida (Buró)';
 $lang['general_mark_qsl_rx_direct'] = 'Marcar QSL Recibida (Directa)';
 
 $lang['general_delete_qso'] = 'Eliminar QSO';
+
+$lang['general_total_distance'] = 'Distancia total';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Perfil de estación';

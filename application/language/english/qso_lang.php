@@ -23,3 +23,8 @@ $lang['qso_notes_helptext'] = 'Note content is used within Cloudlog only and is 
 
 $lang['qso_btn_reset_qso'] = 'Reset';
 $lang['qso_btn_save_qso'] = 'Save QSO';
+$lang['qso_btn_edit_qso'] = 'Edit QSO';
+
+// QSO Details
+
+$lang['qso_details'] = 'QSO Details';
