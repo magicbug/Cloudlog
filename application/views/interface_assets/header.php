@@ -11,6 +11,7 @@
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css">
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/overrides.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/selectize.bootstrap4.css"/>
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/bootstrap-dialog.css"/>
 	<?php } ?>
 
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">
@@ -33,7 +34,6 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/ldbtn.min.css" />
 	<?php } ?>
 
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/bootstrapdialog/css/bootstrap-dialog.min.css" />
       <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/buttons.dataTables.min.css"/>
 
   <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datatables.min.css"/>
