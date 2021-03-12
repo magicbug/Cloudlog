@@ -137,15 +137,17 @@
 
 					<div class="dropdown-divider"></div>
 
+					<a class="dropdown-item" href="<?php echo site_url('contesting/add');?>" title="Manage Contest names"><i class="fas fa-broadcast-tower"></i> Contests</a>
+
+					<div class="dropdown-divider"></div>
+
 					<a class="dropdown-item" href="<?php echo site_url('backup');?>" title="Backup Cloudlog content"><i class="fas fa-save"></i> Backup</a>
 
 					<div class="dropdown-divider"></div>
 
 					<a class="dropdown-item" href="<?php echo site_url('update');?>" title="Update Country Files"><i class="fas fa-sync"></i> Update Country Files</a>
 
-					<div class="dropdown-divider"></div>
-
-					<a class="dropdown-item" href="<?php echo site_url('contesting/add');?>" title="Manage Contest names"><i class="fas fa-broadcast-tower"></i> Contests</a>
+					
 				</div>
         	</li>
         <?php } ?>
@@ -208,7 +210,7 @@
 
 				<a class="dropdown-item" target="_blank" href="https://github.com/magicbug/Cloudlog/wiki" title="Help"><i class="fas fa-question"></i> Help</a>
 
-				<a class="dropdown-item" target="_blank" href="https://github.com/magicbug/Cloudlog/discussions" title="Forum"><i class="fas fa-question"></i> Forum</a>
+				<a class="dropdown-item" target="_blank" href="https://github.com/magicbug/Cloudlog/discussions" title="Forum"><i class="far fa-comment-dots"></i> Forum</a>
 
 				<div class="dropdown-divider"></div>
 
