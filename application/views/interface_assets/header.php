@@ -133,39 +133,7 @@
 
 					<div class="dropdown-divider"></div>
 
-					<a class="dropdown-item" href="<?php echo site_url('api/help');?>" title="Manage API keys"><i class="fas fa-key"></i> API</a>
-
-					<div class="dropdown-divider"></div>
-
-					<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Manage station profiles"><i class="fas fa-home"></i> Station Profiles</a>
-
-					<div class="dropdown-divider"></div>
-
 					<a class="dropdown-item" href="<?php echo site_url('mode');?>" title="Manage QSO modes"><i class="fas fa-broadcast-tower"></i> Modes</a>
-
-					<div class="dropdown-divider"></div>
-
-					<a class="dropdown-item" href="<?php echo site_url('radio');?>" title="Interface with one or more radios"><i class="fas fa-broadcast-tower"></i> Radio Interface</a>
-
-					<div class="dropdown-divider"></div>
-
-					<a class="dropdown-item" href="<?php echo site_url('adif');?>" title="Amateur Data Interchange Format (ADIF) import / export"><i class="fas fa-sync"></i> ADIF Import / Export</a>
-
-					<div class="dropdown-divider"></div>
-
-					<a class="dropdown-item" href="<?php echo site_url('lotw');?>" title="Synchronise with Logbook of the World (LotW)"><i class="fas fa-sync"></i> Logbook of the World</a>
-
-					<div class="dropdown-divider"></div>
-
-					<a class="dropdown-item" href="<?php echo site_url('eqsl/import');?>" title="eQSL import / export"><i class="fas fa-sync"></i> eQSL Import / Export</a>
-
-					<div class="dropdown-divider"></div>
-
-                    <a class="dropdown-item" href="<?php echo site_url('qrz/export');?>" title="Upload to QRZ.com logbook"><i class="fas fa-sync"></i> QRZ Logbook</a>
-
-                    <div class="dropdown-divider"></div>
-
-					<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
 
 					<div class="dropdown-divider"></div>
 
@@ -174,10 +142,6 @@
 					<div class="dropdown-divider"></div>
 
 					<a class="dropdown-item" href="<?php echo site_url('update');?>" title="Update Country Files"><i class="fas fa-sync"></i> Update Country Files</a>
-
-                    <div class="dropdown-divider"></div>
-
-                    <a class="dropdown-item" href="<?php echo site_url('kml');?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> KML Export</a>
 
 					<div class="dropdown-divider"></div>
 
@@ -215,6 +179,30 @@
 
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				<a class="dropdown-item" href="<?php echo site_url('user/edit')."/".$this->session->userdata('user_id'); ?>" title="Account"><i class="fas fa-user"></i> Account</a>
+
+				<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Manage station locations"><i class="fas fa-home"></i> Station Locations</a>
+				
+				<div class="dropdown-divider"></div>
+
+				<a class="dropdown-item" href="<?php echo site_url('adif');?>" title="Amateur Data Interchange Format (ADIF) import / export"><i class="fas fa-sync"></i> ADIF Import / Export</a>
+
+				<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
+
+				<a class="dropdown-item" href="<?php echo site_url('kml');?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> KML Export</a>
+
+				<div class="dropdown-divider"></div>
+
+				<a class="dropdown-item" href="<?php echo site_url('lotw');?>" title="Synchronise with Logbook of the World (LotW)"><i class="fas fa-sync"></i> Logbook of the World</a>
+
+				<a class="dropdown-item" href="<?php echo site_url('eqsl/import');?>" title="eQSL import / export"><i class="fas fa-sync"></i> eQSL Import / Export</a>
+
+                <a class="dropdown-item" href="<?php echo site_url('qrz/export');?>" title="Upload to QRZ.com logbook"><i class="fas fa-sync"></i> QRZ Logbook</a>
+
+				<div class="dropdown-divider"></div>
+
+				<a class="dropdown-item" href="<?php echo site_url('api/help');?>" title="Manage API keys"><i class="fas fa-key"></i> API Keys</a>
+
+				<a class="dropdown-item" href="<?php echo site_url('radio');?>" title="Interface with one or more radios"><i class="fas fa-broadcast-tower"></i> Hardware Interfaces</a>
 
 				<div class="dropdown-divider"></div>
 
