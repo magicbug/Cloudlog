@@ -31,13 +31,13 @@ class Lookup extends CI_Controller {
 		$CI->load->model('Stations');
 		$station_id = $CI->Stations->find_active();
 
-		$type = $this->input->post('type');
-		$dxcc = $this->input->post('dxcc');
-		$was = $this->input->post('was');
-		$cqz = $this->input->post('cqz');
-		$sota = $this->input->post('sota');
-		$grid = $this->input->post('grid');
-		$iota = $this->input->post('iota');
+		$type = xss_clean($this->input->post('type'));
+		$dxcc = xss_clean($this->input->post('dxcc'));
+		$was = xss_clean($this->input->post('was'));
+		$cqz = xss_clean($this->input->post('cqz'));
+		$sota = xss_clean($this->input->post('sota'));
+		$grid = xss_clean($this->input->post('grid'));
+		$iota = xss_clean($this->input->post('iota'));
 
 		$this->load->model('lookup_model');
 
