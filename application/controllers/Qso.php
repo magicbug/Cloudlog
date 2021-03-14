@@ -54,11 +54,6 @@ class QSO extends CI_Controller {
 		}
 		else
 		{
-			// Add QSO
-			// $this->logbook_model->add();
-			//change to create_qso function as add and create_qso duplicate functionality
-			$this->logbook_model->create_qso();
-
 			// Store Basic QSO Info for reuse
 			// Put data in an array first, then call set_userdata once.
 			// This solves the problem of CI dumping out the session
@@ -93,6 +88,11 @@ class QSO extends CI_Controller {
 			if($this->input->post('sat_name')) {
         		$this->session->set_userdata('prop_mode', 'SAT');
     		}
+
+			// Add QSO
+			// $this->logbook_model->add();
+			//change to create_qso function as add and create_qso duplicate functionality
+			$this->logbook_model->create_qso();
 
 			// Get last 5 qsos
 			$data['query'] = $this->logbook_model->last_custom('5');
