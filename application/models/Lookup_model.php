@@ -40,6 +40,14 @@ class Lookup_model extends CI_Model{
 	 * Builds query depending on what we are searching for
 	 */
 	function getQueryData($station_id, $type, $dxcc, $was, $cqz, $sota, $grid, $iota, $confirmedtype) {
+		// If user inputs longer grid than 4 chars, we use only the first 4
+		if (strlen($grid) > 4) {
+			$fixedgrid = substr($grid, 0, 4);
+		}
+		else {
+			$fixedgrid = $grid;
+		}
+
 		$sql = "SELECT distinct col_band, lower(col_mode) as col_mode FROM " . $this->config->item('table_name') . " thcv";
 
 		$sql .= " where station_id = " . $station_id;
@@ -51,7 +59,7 @@ class Lookup_model extends CI_Model{
 		switch ($type) 	{
 			case 'dxcc': $sql .= " and col_dxcc = " . $dxcc; 																break;
 			case 'iota': $sql .= " and col_iota = '" . $iota . "'"; 														break;
-			case 'grid': $sql .= " and (col_gridsquare like '%" . $grid . "%' or col_vucc_grids like '%" . $grid . "%')" ; 	break;
+			case 'grid': $sql .= " and (col_gridsquare like '%" . $fixedgrid . "%' or col_vucc_grids like '%" . $fixedgrid . "%')" ; 	break;
 			case 'cqz':  $sql .= " and col_cqz = " . $cqz; 																	break;
 			case 'was':  $sql .= " and col_state = '" . $was . "' and COL_DXCC in ('291', '6', '110')";; 					break;
 			case 'sota': $sql .= " and col_sota_ref = '" . $sota . "'"; 													break;
@@ -73,7 +81,7 @@ class Lookup_model extends CI_Model{
 		switch ($type) 	{
 			case 'dxcc': $sql .= " and col_dxcc = " . $dxcc; 																break;
 			case 'iota': $sql .= " and col_iota = '" . $iota . "'"; 														break;
-			case 'grid': $sql .= " and (col_gridsquare like '%" . $grid . "%' or col_vucc_grids like '%" . $grid . "%')" ; 	break;
+			case 'grid': $sql .= " and (col_gridsquare like '%" . $fixedgrid . "%' or col_vucc_grids like '%" . $fixedgrid . "%')" ; 	break;
 			case 'cqz':  $sql .= " and col_cqz = " . $cqz; 																	break;
 			case 'was':  $sql .= " and col_state = '" . $was . "' and COL_DXCC in ('291', '6', '110')";; 					break;
 			case 'sota': $sql .= " and col_sota_ref = '" . $sota . "'"; 													break;
@@ -95,7 +103,7 @@ class Lookup_model extends CI_Model{
 		switch ($type) 	{
 			case 'dxcc': $sql .= " and col_dxcc = " . $dxcc; 																break;
 			case 'iota': $sql .= " and col_iota = '" . $iota . "'"; 														break;
-			case 'grid': $sql .= " and (col_gridsquare like '%" . $grid . "%' or col_vucc_grids like '%" . $grid . "%')" ; 	break;
+			case 'grid': $sql .= " and (col_gridsquare like '%" . $fixedgrid . "%' or col_vucc_grids like '%" . $fixedgrid . "%')" ; 	break;
 			case 'cqz':  $sql .= " and col_cqz = " . $cqz; 																	break;
 			case 'was':  $sql .= " and col_state = '" . $was . "' and COL_DXCC in ('291', '6', '110')";; 					break;
 			case 'sota': $sql .= " and col_sota_ref = '" . $sota . "'"; 													break;
@@ -117,7 +125,7 @@ class Lookup_model extends CI_Model{
 		switch ($type) 	{
 			case 'dxcc': $sql .= " and col_dxcc = " . $dxcc; 																break;
 			case 'iota': $sql .= " and col_iota = '" . $iota . "'"; 														break;
-			case 'grid': $sql .= " and (col_gridsquare like '%" . $grid . "%' or col_vucc_grids like '%" . $grid . "%')" ; 	break;
+			case 'grid': $sql .= " and (col_gridsquare like '%" . $fixedgrid . "%' or col_vucc_grids like '%" . $fixedgrid . "%')" ; 	break;
 			case 'cqz':  $sql .= " and col_cqz = " . $cqz; 																	break;
 			case 'was':  $sql .= " and col_state = '" . $was . "' and COL_DXCC in ('291', '6', '110')";; 					break;
 			case 'sota': $sql .= " and col_sota_ref= '" . $sota . "'"; 														break;
