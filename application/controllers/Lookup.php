@@ -16,14 +16,38 @@ class Lookup extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
-	
+
 	public function index()
 	{
+		$data['page_title'] = "Quick Lookup";
+		$this->load->model('logbook_model');
+		$data['dxcc'] = $this->logbook_model->fetchDxcc();
+		$data['iota'] = $this->logbook_model->fetchIota();
+		$this->load->view('lookup/index', $data);
+	}
 
+	public function search() {
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
+
+		$type = $this->input->post('type');
+		$dxcc = $this->input->post('dxcc');
+		$was = $this->input->post('was');
+		$cqz = $this->input->post('cqz');
+		$sota = $this->input->post('sota');
+		$grid = $this->input->post('grid');
+		$iota = $this->input->post('iota');
+
+		$this->load->model('lookup_model');
+
+		$data['bands'] = $this->lookup_model->get_Worked_Bands($station_id);
+		$data['result'] = $this->lookup_model->getSearchResult($station_id, $type, $dxcc, $was, $cqz, $sota, $grid, $iota, $data['bands']);
+		$this->load->view('lookup/result', $data);
 	}
 
 	public function scp($call) {
-		
+
 		if($call) {
 			$uppercase_callsign = strtoupper($call);
 		}
@@ -78,7 +102,7 @@ class Lookup extends CI_Controller {
 		{
 			echo " " . $strCall . " ";
 		}
-		
+
 	}
 
 }
