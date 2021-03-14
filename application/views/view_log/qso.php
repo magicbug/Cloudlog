@@ -250,7 +250,12 @@
 
                     <?php if($row->COL_LOTW_QSL_RCVD == "Y") { ?>
                     <h3><?php echo $this->lang->line('lotw_short'); ?></h3>
-                        <p><?php echo $this->lang->line('lotw_confirmed'); ?></p>
+                    <p><?php echo $this->lang->line('gen_this_qso_was_confirmed_on'); ?> <?php $timestamp = strtotime($row->COL_LOTW_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
+                    <?php } ?>
+
+                    <?php if($row->COL_EQSL_QSL_RCVD == "Y") { ?>
+                    <h3>eQSL</h3>
+                        <p><?php echo $this->lang->line('gen_this_qso_was_confirmed_on'); ?> <?php $timestamp = strtotime($row->COL_EQSL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
             </div>
 

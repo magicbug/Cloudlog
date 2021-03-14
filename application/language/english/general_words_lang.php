@@ -102,3 +102,5 @@ $lang['dashboard_qso_breakdown'] = 'QSOs Breakdown';
 $lang['dashboard_countries_breakdown'] = 'Countries Breakdown';
 
 $lang['gen_from_date'] = 'From date';
+
+$lang['gen_this_qso_was_confirmed_on'] = 'This QSO was confirmed on';
