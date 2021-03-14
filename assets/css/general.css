@@ -213,3 +213,11 @@ color: #ffffff;
 #myTab .nav-link {
     padding: 8px !important;
 }
+
+#map {
+    z-index: 1;
+}
+
+#qsomap {
+    z-index: 1;
+}
