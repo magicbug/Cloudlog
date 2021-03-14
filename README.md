@@ -7,7 +7,8 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 ## Requirements
 * Linux based Operating System
 * Apache (Nginx should work)
-* PHP (Version 7 or higher) & MySQL (MySQL 5.7 or higher)
+* PHP Version 7 (Currently not fully working on PHP 8)
+* MySQL (MySQL 5.7 or higher)
 
 Notes
 * If you want to log microwave QSOs you will need to use a 64bit operating system.
