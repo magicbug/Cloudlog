@@ -1,7 +1,7 @@
 <?php if ($query->num_rows() > 0) {  foreach ($query->result() as $row) { ?>
 <div class="container-fluid">
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <ul style="margin-bottom: 10px;" class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="table-tab" data-toggle="tab" href="#qsodetails" role="tab" aria-controls="table" aria-selected="true"><?php echo $this->lang->line('qso_details'); ?></a>
         </li>
@@ -256,7 +256,7 @@
 
                 <div class="col">
 
-                    <div id="mapqso" style="width: 340px; height: 250px"></div>
+                    <div id="mapqso" style="width: 100%; height: 250px"></div>
 
                     <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
                         <br>
@@ -297,14 +297,14 @@
 
                     <?php if($row->station_city) { ?>
                     <tr>
-                        <td>Station City:</td>
+                        <td>Station City</td>
                         <td><?php echo $row->station_city; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->station_country) { ?>
                     <tr>
-                        <td>Station Country:</td>
+                        <td>Station Country</td>
                         <td><?php echo ucwords(strtolower(($row->station_country))); ?></td>
                     </tr>
                     <?php } ?>
