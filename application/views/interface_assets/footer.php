@@ -1335,6 +1335,7 @@ $(document).ready(function(){
         function selectize_usa_county() {
             var baseURL= "<?php echo base_url();?>";
             $('#stationCntyInput').selectize({
+				delimiter: ';',
                 maxItems: 1,
                 closeAfterSelect: true,
                 loadThrottle: 250,
