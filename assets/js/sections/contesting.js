@@ -7,6 +7,14 @@ $("#exch_sent").val(1);
 $( document ).ready(function() {
     restoreContestSession();
     setRst($("#mode").val());
+
+    // Check to see what serial type is selected and set validation
+    if($('#serial').is(':checked')) { 
+        set_serial_number_input_validation();
+    }
+    if($('#other').is(':checked')) { 
+        set_other_input_validation();
+    }
 });
 
 // This erases the contest logging session which is stored in localStorage
@@ -170,3 +178,35 @@ $('#band').change(function() {
         $('#frequency_rx').val("");
     });
 });
+
+// Change Serial Validation when selected
+$('#serial').change(function() {
+    if($('#serial').is(':checked')) { 
+        set_serial_number_input_validation();
+    }
+});
+
+// Change other serial type when selected
+$('#other').change(function() {
+    if($('#other').is(':checked')) { 
+        set_other_input_validation();
+    }
+});
+
+/*
+    Function: set_serial_number_input_validation
+    Job: This sets the field input to number for validation
+*/
+function set_serial_number_input_validation() {
+    $('#exch_sent').attr('type', 'number');
+    $('#exch_recv').attr('type', 'number');
+}
+
+/*
+    Function: set_other_input_validation
+    Job: This sets the field input to text for validation
+*/
+function set_other_input_validation() {
+    $('#exch_sent').attr('type', 'text');
+    $('#exch_recv').attr('type', 'text');
+}
