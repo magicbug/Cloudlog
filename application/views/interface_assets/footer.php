@@ -176,13 +176,7 @@ function spawnLookupModal() {
 							$('#quicklookupcqz').hide();
 							$('#quicklookupwas').hide();
 							$('#quicklookuptext').hide();
-						} else if (type == "grid") {
-							$('#quicklookuptext').show();
-							$('#quicklookupiota').hide();
-							$('#quicklookupdxcc').hide();
-							$('#quicklookupcqz').hide();
-							$('#quicklookupwas').hide();
-						} else if (type == "sota") {
+						} else if (type == "grid" || type == "sota" || type == "wwff") {
 							$('#quicklookuptext').show();
 							$('#quicklookupiota').hide();
 							$('#quicklookupdxcc').hide();
@@ -229,6 +223,7 @@ function getLookupResult() {
 			cqz:  $('#quicklookupcqz').val(),
 			iota: $('#quicklookupiota').val(),
 			sota: $('#quicklookuptext').val(),
+			wwff: $('#quicklookuptext').val(),
 		},
 		success: function (html) {
 			$('#lookupresulttable').html(html);

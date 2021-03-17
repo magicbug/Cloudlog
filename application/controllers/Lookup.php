@@ -31,18 +31,22 @@ class Lookup extends CI_Controller {
 		$CI->load->model('Stations');
 		$station_id = $CI->Stations->find_active();
 
-		$type = xss_clean($this->input->post('type'));
-		$dxcc = xss_clean($this->input->post('dxcc'));
-		$was = xss_clean($this->input->post('was'));
-		$cqz = xss_clean($this->input->post('cqz'));
-		$sota = xss_clean($this->input->post('sota'));
-		$grid = xss_clean($this->input->post('grid'));
-		$iota = xss_clean($this->input->post('iota'));
-
 		$this->load->model('lookup_model');
 
 		$data['bands'] = $this->lookup_model->get_Worked_Bands($station_id);
-		$data['result'] = $this->lookup_model->getSearchResult($station_id, $type, $dxcc, $was, $cqz, $sota, $grid, $iota, $data['bands']);
+
+		$queryinfo['type'] = xss_clean($this->input->post('type'));
+		$queryinfo['dxcc'] = xss_clean($this->input->post('dxcc'));
+		$queryinfo['was'] = xss_clean($this->input->post('was'));
+		$queryinfo['sota'] = xss_clean($this->input->post('sota'));
+		$queryinfo['grid'] = xss_clean($this->input->post('grid'));
+		$queryinfo['iota'] = xss_clean($this->input->post('iota'));
+		$queryinfo['cqz'] = xss_clean($this->input->post('cqz'));
+		$queryinfo['wwff'] = xss_clean($this->input->post('wwff'));
+		$queryinfo['station_id'] = $station_id;
+		$queryinfo['bands'] = $data['bands'];
+
+		$data['result'] = $this->lookup_model->getSearchResult($queryinfo);
 		$this->load->view('lookup/result', $data);
 	}
 
