@@ -910,4 +910,20 @@ class Lotw extends CI_Controller {
 		return array_search(strtoupper($satname),$arr,true);
 	}
 
+	/*
+	|	Function: mode_map
+	|	Requires: mode as $mode
+	|
+	|	This converts ADIF modes to the mode that LoTW expects if its non standard
+	*/
+	function mode_map($mode) {
+		switch ($mode):
+			case "PKT":
+				return "PACKET"
+				break;
+			default:
+				return $mode
+		endswitch;
+	}
+
 } // end class
