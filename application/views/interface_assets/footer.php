@@ -141,6 +141,103 @@ $('[data-fancybox]').fancybox({
     }
 });
 
+// Here we capture ALT-L to invoice the Quick lookup
+document.onkeyup = function(e) {
+	// ALT-W wipe
+	if (e.altKey && e.which == 76) {
+		spawnLookupModal();
+	}
+};
+
+// This displays the dialog with the form and it's where the resulttable is displayed
+function spawnLookupModal() {
+	$.ajax({
+		url: base_url + 'index.php/lookup',
+		type: 'post',
+		success: function (html) {
+			BootstrapDialog.show({
+				title: 'Quick lookup',
+				size: BootstrapDialog.SIZE_WIDE,
+				cssClass: 'lookup-dialog',
+				nl2br: false,
+				message: html,
+				onshown: function(dialog) {
+					$('#quicklookuptype').change(function(){
+						var type = $('#quicklookuptype').val();
+						if (type == "dxcc") {
+							$('#quicklookupdxcc').show();
+							$('#quicklookupiota').hide();
+							$('#quicklookupcqz').hide();
+							$('#quicklookupwas').hide();
+							$('#quicklookuptext').hide();
+						} else if (type == "iota") {
+							$('#quicklookupiota').show();
+							$('#quicklookupdxcc').hide();
+							$('#quicklookupcqz').hide();
+							$('#quicklookupwas').hide();
+							$('#quicklookuptext').hide();
+						} else if (type == "grid") {
+							$('#quicklookuptext').show();
+							$('#quicklookupiota').hide();
+							$('#quicklookupdxcc').hide();
+							$('#quicklookupcqz').hide();
+							$('#quicklookupwas').hide();
+						} else if (type == "sota") {
+							$('#quicklookuptext').show();
+							$('#quicklookupiota').hide();
+							$('#quicklookupdxcc').hide();
+							$('#quicklookupcqz').hide();
+							$('#quicklookupwas').hide();
+						} else if (type == "cqz") {
+							$('#quicklookupcqz').show();
+							$('#quicklookupiota').hide();
+							$('#quicklookupdxcc').hide();
+							$('#quicklookupwas').hide();
+							$('#quicklookuptext').hide();
+						} else if (type == "was") {
+							$('#quicklookupwas').show();
+							$('#quicklookupcqz').hide();
+							$('#quicklookupiota').hide();
+							$('#quicklookupdxcc').hide();
+							$('#quicklookuptext').hide();
+						}
+					});
+				},
+				buttons: [{
+					label: 'Close',
+					action: function (dialogItself) {
+						dialogItself.close();
+					}
+				}]
+			});
+		}
+	});
+}
+
+// This function executes the call to the backend for fetching queryresult and displays the table in the dialog
+function getLookupResult() {
+	$(".ld-ext-right").addClass('running');
+	$(".ld-ext-right").prop('disabled', true);
+	$.ajax({
+		url: base_url + 'index.php/lookup/search',
+		type: 'post',
+		data: {
+			type: $('#quicklookuptype').val(),
+			dxcc: $('#quicklookupdxcc').val(),
+			was:  $('#quicklookupwas').val(),
+			grid: $('#quicklookuptext').val(),
+			cqz:  $('#quicklookupcqz').val(),
+			iota: $('#quicklookupiota').val(),
+			sota: $('#quicklookuptext').val(),
+		},
+		success: function (html) {
+			$('#lookupresulttable').html(html);
+			$(".ld-ext-right").removeClass('running');
+			$(".ld-ext-right").prop('disabled', false);
+		}
+	});
+}
+
 </script>
 
 <?php if ($this->uri->segment(1) == "map" && $this->uri->segment(2) == "custom") { ?>
