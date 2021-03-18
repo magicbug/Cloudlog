@@ -909,7 +909,7 @@ class Lotw extends CI_Controller {
 
 		return array_search(strtoupper($satname),$arr,true);
 	}
-
+	
 	/*
 	|	Function: mode_map
 	|	Requires: mode as $mode
