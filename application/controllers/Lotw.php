@@ -919,10 +919,10 @@ class Lotw extends CI_Controller {
 	function mode_map($mode) {
 		switch ($mode):
 			case "PKT":
-				return "PACKET"
+				return "PACKET";
 				break;
 			default:
-				return $mode
+				return $mode;
 		endswitch;
 	}
 
