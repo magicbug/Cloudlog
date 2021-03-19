@@ -42,7 +42,7 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 <BAND:<?php echo strlen($qso->COL_BAND); ?>><?php echo strtoupper($qso->COL_BAND); ?>
 
-<MODE:<?php echo strlen($CI->mode_map($qso->COL_MODE)); ?>><?php echo strtoupper($CI->mode_map(strtoupper($qso->COL_MODE))); ?>
+<MODE:<?php echo strlen($CI->mode_map($qso->COL_MODE, $qso->COL_SUBMODE)); ?>><?php echo strtoupper($CI->mode_map(strtoupper($qso->COL_MODE), strtoupper($qso->COL_SUBMODE))); ?>
 
 <?php if($qso->COL_FREQ != "" || $qso->COL_FREQ != "0") { ?><?php $freq_in_mhz = $qso->COL_FREQ / 1000000; ?><FREQ:<?php echo strlen($freq_in_mhz); ?>><?php echo $freq_in_mhz; ?><?php } ?>
 
@@ -134,7 +134,7 @@ if($qso->COL_FREQ_RX != "" || $qso->COL_FREQ_RX != "0") {
 }
 
 if($qso->COL_MODE) {
-	$sign_string .= strtoupper($CI->mode_map($qso->COL_MODE));
+	$sign_string .= strtoupper($CI->mode_map($qso->COL_MODE, $qso->COL_SUBMODE));
 }
 
 

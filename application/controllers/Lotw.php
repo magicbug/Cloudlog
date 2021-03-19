@@ -912,15 +912,23 @@ class Lotw extends CI_Controller {
 	
 	/*
 	|	Function: mode_map
-	|	Requires: mode as $mode
+	|	Requires: mode as $mode, submode as $submode
 	|
 	|	This converts ADIF modes to the mode that LoTW expects if its non standard
 	*/
-	function mode_map($mode) {
+	function mode_map($mode, $submode) {
 		switch ($mode):
 			case "PKT":
 				return "PACKET";
 				break;
+			case "MFSK":
+				if ($submode == "FT4") {
+					return "FT4";
+					break;
+				} else {
+					return "MFSK";
+					break;
+				}
 			default:
 				return $mode;
 		endswitch;
