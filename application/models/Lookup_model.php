@@ -7,28 +7,28 @@ class Lookup_model extends CI_Model{
 		parent::__construct();
 	}
 
-	function getSearchResult($station_id, $type, $dxcc, $was, $cqz, $sota, $grid, $iota, $bands){
-		$modes = $this->get_worked_modes($station_id);
+	function getSearchResult($queryinfo){
+		$modes = $this->get_worked_modes($queryinfo['station_id']);
 
-		return $this->getResultFromDatabase($station_id, $type, $dxcc, $was, $cqz, $sota, $grid, $iota, $modes, $bands);
+		return $this->getResultFromDatabase($queryinfo, $modes);
 	}
 
-	function getResultFromDatabase($station_id, $type, $dxcc, $was, $cqz, $sota, $grid, $iota, $modes, $bands) {
+	function getResultFromDatabase($queryinfo, $modes) {
 		// Creating an empty array with all the bands and modes from the database
 		foreach ($modes as $mode) {
-			foreach ($bands as $band) {
+			foreach ($queryinfo['bands'] as $band) {
 				$resultArray[$mode][$band] = '-';
 			}
 		}
 
 		// Populating array with worked band/mode combinations
-		$worked = $this->getQueryData($station_id, $type, $dxcc, $was, $cqz, $sota, $grid, $iota,'worked');
+		$worked = $this->getQueryData($queryinfo, 'worked');
 		foreach ($worked as $w) {
 			$resultArray[$w->col_mode][$w->col_band] = 'W';
 		}
 
 		// Populating array with confirmed band/mode combinations
-		$confirmed = $this->getQueryData($station_id, $type, $dxcc, $was, $cqz, $sota, $grid, $iota,'confirmed');
+		$confirmed = $this->getQueryData($queryinfo, 'confirmed');
 		foreach ($confirmed as $c) {
 			$resultArray[$c->col_mode][$c->col_band] = 'C';
 		}
@@ -39,102 +39,85 @@ class Lookup_model extends CI_Model{
 	/*
 	 * Builds query depending on what we are searching for
 	 */
-	function getQueryData($station_id, $type, $dxcc, $was, $cqz, $sota, $grid, $iota, $confirmedtype) {
+	function getQueryData($queryinfo, $confirmedtype) {
 		// If user inputs longer grid than 4 chars, we use only the first 4
-		if (strlen($grid) > 4) {
-			$fixedgrid = substr($grid, 0, 4);
+		if (strlen($queryinfo['grid']) > 4) {
+			$fixedgrid = substr($queryinfo['grid'], 0, 4);
 		}
 		else {
-			$fixedgrid = $grid;
+			$fixedgrid = $queryinfo['grid'];
 		}
 
+		$sqlquerytypestring = '';
+
+		switch ($queryinfo['type']) 	{
+			case 'dxcc': $sqlquerytypestring .= " and col_dxcc = " . $queryinfo['dxcc']; 																break;
+			case 'iota': $sqlquerytypestring .= " and col_iota = '" . $queryinfo['iota'] . "'"; 														break;
+			case 'grid': $sqlquerytypestring .= " and (col_gridsquare like '%" . $fixedgrid . "%' or col_vucc_grids like '%" . $fixedgrid . "%')" ; 	break;
+			case 'cqz':  $sqlquerytypestring .= " and col_cqz = " . $queryinfo['cqz']; 																break;
+			case 'was':  $sqlquerytypestring .= " and col_state = '" . $queryinfo['was'] . "' and COL_DXCC in ('291', '6', '110')";; 					break;
+			case 'sota': $sqlquerytypestring .= " and col_sota_ref = '" . $queryinfo['sota'] . "'"; 													break;
+			case 'wwff': $sqlquerytypestring .= " and col_sig = 'WWFF' and col_sig_info = '" . $queryinfo['wwff'] . "'"; 								break;
+			default: break;
+		}
+
+		$sqlqueryconfirmationstring = '';
+
+		if ($confirmedtype == 'confirmed') {
+			$sqlqueryconfirmationstring .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+		}
+
+		// Fetching info for all modes and bands except satellite
 		$sql = "SELECT distinct col_band, lower(col_mode) as col_mode FROM " . $this->config->item('table_name') . " thcv";
 
-		$sql .= " where station_id = " . $station_id;
+		$sql .= " where station_id = " . $queryinfo['station_id'];
 
 		$sql .= " and coalesce(col_submode, '') = ''";
 
 		$sql .= " and col_prop_mode != 'SAT'";
 
-		switch ($type) 	{
-			case 'dxcc': $sql .= " and col_dxcc = " . $dxcc; 																break;
-			case 'iota': $sql .= " and col_iota = '" . $iota . "'"; 														break;
-			case 'grid': $sql .= " and (col_gridsquare like '%" . $fixedgrid . "%' or col_vucc_grids like '%" . $fixedgrid . "%')" ; 	break;
-			case 'cqz':  $sql .= " and col_cqz = " . $cqz; 																	break;
-			case 'was':  $sql .= " and col_state = '" . $was . "' and COL_DXCC in ('291', '6', '110')";; 					break;
-			case 'sota': $sql .= " and col_sota_ref = '" . $sota . "'"; 													break;
-			default: break;
-		}
+		$sql .= $sqlquerytypestring;
 
-		if ($confirmedtype == 'confirmed') {
-			$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
-		}
+		$sql .= $sqlqueryconfirmationstring;
 
+		// Fetching info for all sub_modes and bands except satellite
 		$sql .= " union SELECT distinct col_band, lower(col_submode) as col_mode FROM " . $this->config->item('table_name') . " thcv";
 
-		$sql .= " where station_id = " . $station_id;
+		$sql .= " where station_id = " . $queryinfo['station_id'];
 
 		$sql .= " and coalesce(col_submode, '') <> ''";
 
 		$sql .= " and col_prop_mode != 'SAT'";
 
-		switch ($type) 	{
-			case 'dxcc': $sql .= " and col_dxcc = " . $dxcc; 																break;
-			case 'iota': $sql .= " and col_iota = '" . $iota . "'"; 														break;
-			case 'grid': $sql .= " and (col_gridsquare like '%" . $fixedgrid . "%' or col_vucc_grids like '%" . $fixedgrid . "%')" ; 	break;
-			case 'cqz':  $sql .= " and col_cqz = " . $cqz; 																	break;
-			case 'was':  $sql .= " and col_state = '" . $was . "' and COL_DXCC in ('291', '6', '110')";; 					break;
-			case 'sota': $sql .= " and col_sota_ref = '" . $sota . "'"; 													break;
-			default: break;
-		}
+		$sql .= $sqlquerytypestring;
 
-		if ($confirmedtype == 'confirmed') {
-			$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
-		}
+		$sql .= $sqlqueryconfirmationstring;
 
+		// Fetching info for all modes on satellite
 		$sql .= " union SELECT distinct 'SAT' col_band, lower(col_mode) as col_mode FROM " . $this->config->item('table_name') . " thcv";
 
-		$sql .= " where station_id = " . $station_id;
+		$sql .= " where station_id = " . $queryinfo['station_id'];
 
 		$sql .= " and coalesce(col_submode, '') = ''";
 
 		$sql .= " and col_prop_mode = 'SAT'";
 
-		switch ($type) 	{
-			case 'dxcc': $sql .= " and col_dxcc = " . $dxcc; 																break;
-			case 'iota': $sql .= " and col_iota = '" . $iota . "'"; 														break;
-			case 'grid': $sql .= " and (col_gridsquare like '%" . $fixedgrid . "%' or col_vucc_grids like '%" . $fixedgrid . "%')" ; 	break;
-			case 'cqz':  $sql .= " and col_cqz = " . $cqz; 																	break;
-			case 'was':  $sql .= " and col_state = '" . $was . "' and COL_DXCC in ('291', '6', '110')";; 					break;
-			case 'sota': $sql .= " and col_sota_ref = '" . $sota . "'"; 													break;
-			default: break;
-		}
+		$sql .= $sqlquerytypestring;
 
-		if ($confirmedtype == 'confirmed') {
-			$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
-		}
+		$sql .= $sqlqueryconfirmationstring;
 
+		// Fetching info for all sub_modes on satellite
 		$sql .= " union SELECT distinct 'SAT' col_band, lower(col_submode) as col_mode FROM " . $this->config->item('table_name') . " thcv";
 
-		$sql .= " where station_id = " . $station_id;
+		$sql .= " where station_id = " . $queryinfo['station_id'];
 
 		$sql .= " and coalesce(col_submode, '') <> ''";
 
 		$sql .= " and col_prop_mode = 'SAT'";
 
-		switch ($type) 	{
-			case 'dxcc': $sql .= " and col_dxcc = " . $dxcc; 																break;
-			case 'iota': $sql .= " and col_iota = '" . $iota . "'"; 														break;
-			case 'grid': $sql .= " and (col_gridsquare like '%" . $fixedgrid . "%' or col_vucc_grids like '%" . $fixedgrid . "%')" ; 	break;
-			case 'cqz':  $sql .= " and col_cqz = " . $cqz; 																	break;
-			case 'was':  $sql .= " and col_state = '" . $was . "' and COL_DXCC in ('291', '6', '110')";; 					break;
-			case 'sota': $sql .= " and col_sota_ref= '" . $sota . "'"; 														break;
-			default: break;
-		}
+		$sql .= $sqlquerytypestring;
 
-		if ($confirmedtype == 'confirmed') {
-			$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
-		}
+		$sql .= $sqlqueryconfirmationstring;
 
 		$query = $this->db->query($sql);
 

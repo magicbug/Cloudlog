@@ -6,6 +6,7 @@
 			<option value="iota">IOTA</option>
 			<option value="sota">SOTA</option>
 			<option value="was">US State</option>
+			<option value="wwff">WWFF</option>
 		</select>
 		<div>&nbsp;</div>
 		<input style="display:none" class="form-control input-group-sm" id="quicklookuptext" type="text" name="searchfield" placeholder="" aria-label="Search">
