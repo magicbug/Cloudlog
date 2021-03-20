@@ -525,6 +525,6 @@ class Awards extends CI_Controller {
 		$type = $this->uri->segment(3);
 		$data['qsos'] = $this->adif_data->sig_all($type);
 
-		$this->load->view('adif/data/exportsat', $data);
+		$this->load->view('adif/data/exportall', $data);
 	}
 }
