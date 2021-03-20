@@ -19,7 +19,9 @@
                 <?php if($this->session->userdata('user_lotw_name') != "") { ?>
                     <td>LoTW</td>
                 <?php } ?>
+            <?php } ?>
                 <td><?php echo $this->lang->line('gen_hamradio_station'); ?></td>
+            <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td></td>
             <?php } ?>
         </tr>
@@ -113,15 +115,16 @@
                         <?php } ?>
                     </td>
                 <?php } ?>
-
-                <?php if($this->config->item('callsign_tags') == true) { ?>
+            
+            <?php } ?>
+            
                     <?php if(isset($row->station_callsign)) { ?>
                         <td>
                             <span class="badge badge-light"><?php echo $row->station_callsign; ?></span>
                         </td>
                     <?php } ?>
-                <?php } ?>
-
+            
+            <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td>
                     <div class="dropdown">
                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -1,5 +1,4 @@
-
-	<div class="table-responsive">
+<div class="table-responsive">
 	<table class="table table-striped table-hover">
 		<tr class="titles">
 			<td>Date</td>

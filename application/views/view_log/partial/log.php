@@ -114,13 +114,11 @@
 			</td>
 			<?php } ?>
 
-			<?php if($this->config->item('callsign_tags') == true) { ?>
 				<?php if(isset($row->station_callsign)) { ?>
 				<td>
 					<span class="badge badge-light"><?php echo $row->station_callsign; ?></span>
 				</td>
 				<?php } ?>
-			<?php } ?>
 
 			<td>
 				<div class="dropdown">
