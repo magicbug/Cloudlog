@@ -115,8 +115,6 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('awards/vucc');?>">VUCC</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('awards/wab');?>">WAB</a>
-                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('awards/was');?>">WAS</a>
                 </div>
             </li>
