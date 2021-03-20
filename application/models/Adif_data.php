@@ -121,6 +121,22 @@ class adif_data extends CI_Model {
     	$this->db->where('COL_PRIMARY_KEY', $id);
     	$this->db->update($this->config->item('table_name'), $data);
     }
+
+	function sig_all($type) {
+		$this->load->model('stations');
+		$active_station_id = $this->stations->find_active();
+
+		$this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
+		$this->db->where($this->config->item('table_name').'.COL_SIG', $type);
+
+		$this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
+
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+
+		return $this->db->get();
+	}
 }
 
 ?>

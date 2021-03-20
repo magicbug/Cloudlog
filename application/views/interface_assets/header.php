@@ -106,7 +106,9 @@
                     <a class="dropdown-item" href="<?php echo site_url('awards/dxcc');?>">DXCC</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('awards/iota');?>">IOTA</a>
-                    <div class="dropdown-divider"></div>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="<?php echo site_url('awards/sig');?>">SIG</a>
+					<div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('awards/sota');?>">SOTA</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('awards/counties');?>">US Counties</a>
