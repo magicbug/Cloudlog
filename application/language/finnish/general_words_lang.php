@@ -12,9 +12,10 @@ $lang['general_word_choose_file'] = 'Valitse tiedosto';
 
 $lang['general_word_date'] = 'Päivä';
 $lang['general_word_time'] = 'Aika';
+$lang['general_word_datetime'] = 'Päivä/Aika';
 $lang['general_word_none'] = 'None';
 $lang['general_word_name'] = 'Nimi';
-$lang['general_word_location'] = 'Lokaatio';
+$lang['general_word_location'] = 'Sijainti';
 $lang['general_word_comment'] = 'Kommentti';
 $lang['general_word_general'] = 'Yleinen';
 $lang['general_word_satellite'] = 'Satelliitti';
@@ -37,6 +38,8 @@ $lang['general_word_method'] = 'Method / tapa';
 $lang['general_word_sent'] = 'Lähetetyt';
 $lang['general_word_received'] = 'Vastaanotetut';
 $lang['general_word_requested'] = 'Pyydetyt';
+$lang['general_word_qslcard'] = 'QSL kortti';
+$lang['general_word_qslcard_management'] = 'QSL manageri';
 $lang['general_word_qslcards'] = 'QSL-kortit';
 $lang['general_word_qslcard_direct'] = 'Direct';
 $lang['general_word_qslcard_bureau'] = 'Bureau';
@@ -47,6 +50,8 @@ $lang['general_mark_qsl_rx_bureau'] = 'Merkitse QSL vastaanotetuksi (Bureau)';
 $lang['general_mark_qsl_rx_direct'] = 'Merkitse QSL vastaanotetuksi (Direct)';
 
 $lang['general_delete_qso'] = 'Poista QSO';
+
+$lang['general_total_distance'] = 'Kokonaismatka';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Asemaprofiili';
@@ -82,8 +87,10 @@ $lang['gen_hamradio_logbook'] = 'Lokikirja';
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_usa_state'] = 'USA:n osavaltio';
-$lang['gen_hamradio_iota_reference'] = 'IOTA numero';
-$lang['gen_hamradio_sota_reference'] = 'SOTA numero';
+$lang['gen_hamradio_county_reference'] = 'USA lääni';
+$lang['gen_hamradio_iota_reference'] = 'IOTA ref.numero';
+$lang['gen_hamradio_sota_reference'] = 'SOTA ref.numero';
+$lang['gen_hamradio_wwff_reference'] = 'WWFF ref.nro';
 $lang['gen_hamradio_dok'] = 'DOK';
 
 $lang['gen_hamradio_sig'] = 'Sig';
@@ -94,3 +101,7 @@ $lang['dashboard_you_have_had'] = 'Olet pitänyt';
 $lang['dashboard_qsos_today'] = 'yhteyttä tänään!';
 $lang['dashboard_qso_breakdown'] = 'Yhteystilasto';
 $lang['dashboard_countries_breakdown'] = 'Maatilasto';
+
+$lang['gen_from_date'] = 'päivämäärästä';
+
+$lang['gen_this_qso_was_confirmed_on'] = 'Tämä QSO vahvistettiin';

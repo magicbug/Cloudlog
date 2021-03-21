@@ -23,3 +23,8 @@ $lang['qso_notes_helptext'] = 'Muistion sisältö tallentuu vain Cloudlogiin, t�
 
 $lang['qso_btn_reset_qso'] = 'Tyhjennä';
 $lang['qso_btn_save_qso'] = 'TALLENNA QSO';
+$lang['qso_btn_edit_qso'] = 'muokkaa QSO:a';
+
+// QSO Details
+
+$lang['qso_details'] = 'QSO:n tiedot';

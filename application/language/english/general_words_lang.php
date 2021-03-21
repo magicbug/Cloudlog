@@ -90,6 +90,7 @@ $lang['gen_hamradio_usa_state'] = 'USA State';
 $lang['gen_hamradio_county_reference'] = 'USA County';
 $lang['gen_hamradio_iota_reference'] = 'IOTA Reference';
 $lang['gen_hamradio_sota_reference'] = 'SOTA Reference';
+$lang['gen_hamradio_wwff_reference'] = 'WWFF Reference';
 $lang['gen_hamradio_dok'] = 'DOK';
 
 $lang['gen_hamradio_sig'] = 'Sig';

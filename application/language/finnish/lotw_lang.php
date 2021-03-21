@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+$lang['lotw_short'] = 'LoTW';
 $lang['lotw_title'] = 'Logbook of the World';
 $lang['lotw_title_available_cert'] = 'Kutsumerkin varmenteet';
 $lang['lotw_title_information'] = 'Info';
@@ -47,3 +48,5 @@ $lang['lotw_p12_export_step_one'] = 'Avaa TQSL &amp; ja siirry kutsumerkin varme
 $lang['lotw_p12_export_step_two'] = 'Klikkaa hiiren oikealla näppäimella haluamaasi kutsua';
 $lang['lotw_p12_export_step_three'] = 'Klikkaa "Tallenna kutsumerkin varmenne / "Save Callsign Certificate File" äläkä aseta salasanaa';
 $lang['lotw_p12_export_step_four'] = 'Lataa ja tuo äsken tallentamasi tiedosto tänne.';
+
+$lang['lotw_confirmed'] = 'Tämä QSO on kuitattu LoTW:ssa';
