@@ -3,8 +3,8 @@
 
     <?php if ($sig_all) { ?>
 
-    <table class="table table-sm table-striped table-hover">
-
+	<table style="width:100%" class="table-sm table tablesig table-bordered table-hover table-striped table-condensed text-center">
+			<thead>
         <tr>
             <td>Reference</td>
             <td>Date/Time</td>
@@ -13,6 +13,7 @@
             <td>RST Sent</td>
             <td>RST Received</td>
         </tr>
+		</thead>
         <?php foreach ($sig_all->result() as $row) { ?>
             <tr>
                 <td>

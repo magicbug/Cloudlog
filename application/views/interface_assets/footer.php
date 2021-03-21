@@ -1979,6 +1979,32 @@ function deleteQsl(id) {
 </script>
 <?php } ?>
 
+<?php if ($this->uri->segment(2) == "sig_details") { ?>
+	<script>
+		$('.tablesig').DataTable({
+			"pageLength": 25,
+			responsive: false,
+			ordering: false,
+			"scrollY":        "400px",
+			"scrollCollapse": true,
+			"paging":         false,
+			"scrollX": true,
+			dom: 'Bfrtip',
+			buttons: [
+				'csv'
+			]
+		});
+
+		// using this to change color of csv-button if dark mode is chosen
+		var background = $('body').css( "background-color");
+
+		if (background != ('rgb(255, 255, 255)')) {
+			$(".buttons-csv").css("color", "white");
+		}
+
+	</script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) == "add") { ?>
 	<script src="<?php echo base_url() ;?>assets/js/sections/contestingnames.js"></script>
 <?php } ?>
