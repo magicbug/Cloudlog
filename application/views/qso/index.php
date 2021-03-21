@@ -484,22 +484,19 @@
 </div>
 <?php } ?>
 
+    <!-- QSO Map -->
     <div class="card qso-map">
-        <div class="card-header">
-          <h4 class="card-title"><?php echo $this->lang->line('qso_title_qso_map'); ?></h4>
-        </div>
-
             <div id="qsomap" style="width: 100%; height: 200px;"></div>
     </div>
 
     <div class="card callsign-suggest">
-        <div class="card-header"><h4 class="card-title"><?php echo $this->lang->line('qso_title_suggestions'); ?></h4></div>
+        <div class="card-header"><h4 style="font-size: 16px; font-weight: bold;" class="card-title"><?php echo $this->lang->line('qso_title_suggestions'); ?></h4></div>
 
         <div class="card-body callsign-suggestions"></div>
     </div>
 
     <div class="card previous-qsos">
-      <div class="card-header"><h4 class="card-title"><?php echo $this->lang->line('qso_title_pervious_contacts'); ?></h4></div>
+      <div class="card-header"><h4 class="card-title" style="font-size: 16px; font-weight: bold;"><?php echo $this->lang->line('qso_title_pervious_contacts'); ?></h4></div>
 
         <div id="partial_view"></div>
 
