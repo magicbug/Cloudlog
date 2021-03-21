@@ -6,7 +6,7 @@ $lang['contesting_page_title'] = 'Kilpailuloki';
 $lang['contesting_button_reset_contest_session'] = 'Nollaa kilpailuloki';
 
 $lang['contesting_exchange_type'] = 'Annettava sanoma';
-$lang['contesting_exchange_type_serial'] = 'Sarjanumero (QSO:n numero)';
+$lang['contesting_exchange_type_serial'] = 'Sarjanumero';
 $lang['contesting_exchange_type_other'] = 'Muu';
 
 $lang['contesting_contest_name'] = 'Kilpailun nimi';
