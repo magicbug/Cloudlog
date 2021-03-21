@@ -292,6 +292,28 @@
 			</div>
 
 		</div>
+		<br>
+		<div class="row">
+			<!-- Club Log -->
+			<div class="col-md">
+				<div class="card">
+					<div class="card-header">
+						Main menu
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+							<label for="shownotes">Show notes in the main menu.</label>
+							<select class="custom-select" id="shownotes" name="user_show_notes">
+								<option value="1" <?php if ($user_show_notes == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_yes'); ?></option>
+								<option value="0" <?php if ($user_show_notes == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_no'); ?></option>
+							</select>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
 
 	<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 	<br>

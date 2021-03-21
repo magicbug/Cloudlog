@@ -96,7 +96,7 @@ class User_Model extends CI_Model {
 
 	// FUNCTION: bool add($username, $password, $email, $type)
 	// Add a user
-	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone, $measurement, $user_date_format, $user_stylesheet, $user_sota_lookup) {
+	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone, $measurement, $user_date_format, $user_stylesheet, $user_sota_lookup, $user_show_notes) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -113,6 +113,7 @@ class User_Model extends CI_Model {
 				'user_date_format' => xss_clean($user_date_format),
 				'user_stylesheet' => xss_clean($user_stylesheet),
 				'user_sota_lookup' => xss_clean($user_sota_lookup),
+				'user_show_notes' => xss_clean($user_show_notes),
 			);
 
 			// Check the password is valid
@@ -155,6 +156,7 @@ class User_Model extends CI_Model {
 					'user_date_format' => xss_clean($fields['user_date_format']),
 					'user_stylesheet' => xss_clean($fields['user_stylesheet']),
 					'user_sota_lookup' => xss_clean($fields['user_sota_lookup']),
+					'user_show_notes' => xss_clean($fields['user_show_notes']),
 				);
 
 				// Check to see if the user is allowed to change user levels
@@ -263,6 +265,7 @@ class User_Model extends CI_Model {
 			'user_date_format' => $u->row()->user_date_format,
 			'user_stylesheet' => $u->row()->user_stylesheet,
 			'user_sota_lookup' => $u->row()->user_sota_lookup,
+			'user_show_notes' => $u->row()->user_show_notes,
 		);
 
 		$this->session->set_userdata($userdata);
