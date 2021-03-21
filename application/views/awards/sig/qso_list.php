@@ -3,16 +3,18 @@
 
     <?php if ($sig_all) { ?>
 
-    <table class="table table-sm table-striped table-hover">
-
+	<table style="width:100%" class="table-sm table tablesig table-bordered table-hover table-striped table-condensed text-center">
+			<thead>
         <tr>
             <td>Reference</td>
             <td>Date/Time</td>
             <td>Callsign</td>
+			<td>Mode</td>
             <td>Band</td>
             <td>RST Sent</td>
             <td>RST Received</td>
         </tr>
+		</thead>
         <?php foreach ($sig_all->result() as $row) { ?>
             <tr>
                 <td>
@@ -20,6 +22,7 @@
                 </td>
                 <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('d/m/y', $timestamp); ?> - <?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
                 <td><?php echo $row->COL_CALL; ?></td>
+				<td><?php echo $row->COL_MODE; ?></td>
                 <td><?php echo $row->COL_BAND; ?></td>
                 <td><?php echo $row->COL_RST_SENT; ?></td>
                 <td><?php echo $row->COL_RST_RCVD; ?></td>
