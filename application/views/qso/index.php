@@ -498,11 +498,11 @@
     <div class="card previous-qsos">
       <div class="card-header"><h4 class="card-title" style="font-size: 16px; font-weight: bold;"><?php echo $this->lang->line('qso_title_pervious_contacts'); ?></h4></div>
 
-        <div id="partial_view"></div>
+        <div id="partial_view" style="font-size: 0.95rem;"></div>
 
         <div id="qso-last-table">
 
-          <div class="table-responsive">
+          <div class="table-responsive" style="font-size: 0.95rem;">
             <table class="table">
               <tr class="log_title titles">
                 <td><?php echo $this->lang->line('general_word_date'); ?>/<?php echo $this->lang->line('general_word_time'); ?></td>
