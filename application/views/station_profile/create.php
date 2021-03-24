@@ -221,7 +221,7 @@
                 </div>
             </div>
 
-			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Create Station Profile</button>
+			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Create Station Location</button>
 
 		</form>
   </div>

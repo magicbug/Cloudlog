@@ -246,7 +246,7 @@
                 </div>
             </div>
 
-			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Update Station Profile</button>
+			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Update Station Location</button>
 
 		</form>
   </div>
