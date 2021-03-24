@@ -32,7 +32,7 @@
         <div class="tab-pane active" id="qsodetails" role="tabpanel" aria-labelledby="home-tab">
 
         <div class="row">
-            <div class="col">
+            <div class="col-md">
 
                 <table width="100%">
                     <tr>
@@ -259,7 +259,7 @@
                     <?php } ?>
             </div>
 
-                <div class="col">
+                <div class="col-md">
 
                     <div id="mapqso" style="width: 100%; height: 250px"></div>
 
