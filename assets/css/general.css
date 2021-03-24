@@ -221,3 +221,7 @@ color: #ffffff;
 #qsomap {
     z-index: 1;
 }
+
+#create_station_profile .row {
+    margin-bottom: 10px;
+}
