@@ -213,16 +213,15 @@ class Awards extends CI_Controller {
 	}
 
 	public function cq(){
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
+
         $this->load->model('cq');
-        $zones = array();
-        foreach($this->cq->get_zones() as $row){
-            array_push($zones, intval($row->COL_CQZ));
-        }
-        $data['cqz'] = $zones;
 
-        $data['worked_bands'] = $this->cq->get_worked_bands();
+        $data['worked_bands'] = $this->cq->get_worked_bands($station_id);
 
-        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
+        if ($this->input->post('band') != NULL) {   			// Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
                 $bands = $data['worked_bands'];
             }
@@ -253,8 +252,8 @@ class Awards extends CI_Controller {
             $postdata['band'] = 'All';
         }
 
-        $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata);
-        $data['cq_summary'] = $this->cq->get_cq_summary($bands);
+        $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata, $station_id);
+        $data['cq_summary'] = $this->cq->get_cq_summary($data['worked_bands'], $station_id);
 
         // Render page
         $data['page_title'] = "Awards - CQ Magazine";

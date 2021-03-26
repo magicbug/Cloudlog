@@ -7,15 +7,11 @@ class CQ extends CI_Model{
         parent::__construct();
     }
 
-    function get_zones(){
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
-
+    function get_zones($station_id){
         $data = $this->db->query(
             "select COL_CQZ, count(COL_CQZ)
             from ".$this->config->item('table_name')."
-            where COL_CQZ is not null and station_id = ".$station_id." 
+            where COL_CQZ is not null and station_id = ".$station_id."
             group by COL_CQZ order by COL_CQZ"
         );
 
@@ -45,12 +41,8 @@ class CQ extends CI_Model{
         "SAT" => 0,
     );
 
-    function get_worked_bands()
+    function get_worked_bands($station_id)
     {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
-
         // get all worked slots from database
         $data = $this->db->query(
             "SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `" . $this->config->item('table_name') . "` WHERE station_id = " . $station_id . " AND COL_PROP_MODE != \"SAT\""
@@ -78,12 +70,8 @@ class CQ extends CI_Model{
         return $results;
     }
 
-    function get_cq_array($bands, $postdata) {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
-
-        $cqZ = array(); // Used for keeping track of which states that are not worked
+    function get_cq_array($bands, $postdata, $station_id) {
+        $cqZ = array(); // Used for keeping track of which zones that are not worked
 
         for ($i = 1; $i <= 40; $i++) {
             $cqZ[$i]['count'] = 0;                   // Inits each cq zone's count
@@ -93,26 +81,46 @@ class CQ extends CI_Model{
             for ($i = 1; $i <= 40; $i++) {
                 $bandCq[$i][$band] = '-';                  // Sets all to dash to indicate no result
             }
-
-            if ($postdata['worked'] != NULL) {
-                $cqBand = $this->getCQWorked($station_id, $band, $postdata);
-                foreach ($cqBand as $line) {
-                    $bandCq[$line->col_cqz][$band] = '<div class="alert-danger"><a href=\'javascript:displayCqContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '")\'>W</a></div>';
-                    $cqZ[$line->col_cqz]['count']++;
-                }
-            }
-            if ($postdata['confirmed'] != NULL) {
-                $cqBand = $this->getCQConfirmed($station_id, $band, $postdata);
-                foreach ($cqBand as $line) {
-                    $bandCq[$line->col_cqz][$band] = '<div class="alert-success"><a href=\'javascript:displayCqContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '")\'>C</a></div>';
-                    $cqZ[$line->col_cqz]['count']++;
-                }
-            }
         }
+
+		if ($postdata['worked'] != NULL) {
+			$cqBand = $this->getCQWorked2($station_id, $postdata);
+			foreach ($cqBand as $line) {
+				$bandCq[$line->col_cqz][$line->col_band] = '<div class="alert-danger"><a href=\'javascript:displayCqContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $line->col_band . '")\'>W</a></div>';
+				$cqZ[$line->col_cqz]['count']++;
+			}
+			if ($postdata['band'] == 'All') {
+				$sat = $postdata;
+				$sat['band'] = 'SAT';
+				$cqBand = $this->getCQWorked2($station_id, $sat);
+				foreach ($cqBand as $line) {
+					$bandCq[$line->col_cqz][$line->col_band] = '<div class="alert-danger"><a href=\'javascript:displayCqContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $line->col_band . '")\'>W</a></div>';
+					$cqZ[$line->col_cqz]['count']++;
+				}
+			}
+		}
+
+		if ($postdata['confirmed'] != NULL) {
+			$cqBand = $this->getCQConfirmed2($station_id, $postdata);
+			foreach ($cqBand as $line) {
+				$bandCq[$line->col_cqz][$line->col_band] = '<div class="alert-success"><a href=\'javascript:displayCqContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $line->col_band . '")\'>C</a></div>';
+				$cqZ[$line->col_cqz]['count']++;
+			}
+			if ($postdata['band'] == 'All') {
+				$sat = $postdata;
+				$sat['band'] = 'SAT';
+				$cqBand = $this->getCQConfirmed2($station_id, $sat);
+				foreach ($cqBand as $line) {
+					$bandCq[$line->col_cqz][$line->col_band] = '<div class="alert-success"><a href=\'javascript:displayCqContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $line->col_band . '")\'>C</a></div>';
+					$cqZ[$line->col_cqz]['count']++;
+				}
+			}
+
+		}
 
         // We want to remove the worked zones in the list, since we do not want to display them
         if ($postdata['worked'] == NULL) {
-            $cqBand = $this->getCQWorked($station_id, $postdata['band'], $postdata);
+            $cqBand = $this->getCQWorked2($station_id, $postdata);
             foreach ($cqBand as $line) {
                 unset($bandCq[$line->col_cqz]);
             }
@@ -120,7 +128,7 @@ class CQ extends CI_Model{
 
         // We want to remove the confirmed zones in the list, since we do not want to display them
         if ($postdata['confirmed'] == NULL) {
-            $cqBand = $this->getCQConfirmed($station_id, $postdata['band'], $postdata);
+            $cqBand = $this->getCQConfirmed2($station_id, $postdata);
             foreach ($cqBand as $line) {
                 unset($bandCq[$line->col_cqz]);
             }
@@ -141,47 +149,60 @@ class CQ extends CI_Model{
         }
     }
 
-    /*
-     * Function returns all worked, but not confirmed states
-     * $postdata contains data from the form, in this case Lotw or QSL are used
-     */
-    function getCQWorked($station_id, $band, $postdata) {
-        $sql = "SELECT distinct col_cqz FROM " . $this->config->item('table_name') . " thcv 
+	/*
+	 * Function returns all worked, but not confirmed states
+	 * $postdata contains data from the form, in this case Lotw or QSL are used
+	 */
+	function getCQWorked2($station_id, $postdata) {
+		$sql = "SELECT distinct col_cqz";
+		if ($postdata['band'] == 'SAT') {
+			$sql .= " , 'SAT' as col_band";
+		} else {
+			$sql .= " , col_band";
+		}
+
+		$sql .= " FROM " . $this->config->item('table_name') . " thcv
         where station_id = " . $station_id . " and col_cqz <> ''";
 
-        $sql .= $this->addBandToQuery($band);
+		$sql .= $this->addBandToQuery($postdata['band']);
 
-        $sql .= " and not exists (select 1 from " . $this->config->item('table_name') .
-            " where station_id = " . $station_id .
-            " and col_cqz = thcv.col_cqz and col_cqz <> '' ";
+		$sql .= " and not exists (select 1 from " . $this->config->item('table_name') .
+			" where station_id = " . $station_id .
+			" and col_cqz = thcv.col_cqz and col_cqz <> '' and col_band = thcv.col_band ";
 
-        $sql .= $this->addBandToQuery($band);
+		$sql .= $this->addBandToQuery($postdata['band']);
 
-        $sql .= $this->addQslToQuery($postdata);
+		$sql .= $this->addQslToQuery($postdata);
 
-        $sql .= ")";
+		$sql .= ")";
 
-        $query = $this->db->query($sql);
+		$query = $this->db->query($sql);
+		return $query->result();
+	}
 
-        return $query->result();
-    }
+	/*
+	* Function returns all confirmed states on given band and on LoTW or QSL
+	* $postdata contains data from the form, in this case Lotw or QSL are used
+	*/
+	function getCQConfirmed2($station_id, $postdata) {
+		$sql = "SELECT distinct col_cqz";
+		if ($postdata['band'] == 'SAT') {
+			$sql .= " , 'SAT' as col_band";
+		} else {
+			$sql .= " , col_band";
+		}
 
-    /*
-     * Function returns all confirmed states on given band and on LoTW or QSL
-     * $postdata contains data from the form, in this case Lotw or QSL are used
-     */
-    function getCQConfirmed($station_id, $band, $postdata) {
-        $sql = "SELECT distinct col_cqz FROM " . $this->config->item('table_name') . " thcv 
-            where station_id = " . $station_id . " and col_cqz <> ''";
+		$sql .= " FROM " . $this->config->item('table_name') . " thcv
+        where station_id = " . $station_id . " and col_cqz <> ''";
 
-        $sql .= $this->addBandToQuery($band);
+		$sql .= $this->addBandToQuery($postdata['band']);
 
-        $sql .= $this->addQslToQuery($postdata);
+		$sql .= $this->addQslToQuery($postdata);
 
-        $query = $this->db->query($sql);
+		$query = $this->db->query($sql);
 
-        return $query->result();
-    }
+		return $query->result();
+	}
 
     function addQslToQuery($postdata) {
         $sql = '';
@@ -200,35 +221,49 @@ class CQ extends CI_Model{
     }
 
     function addBandToQuery($band) {
-        $sql = '';
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
-            } else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
-            }
-        }
+		$sql = " and col_prop_mode !='SAT'";
+		$sql .= " and col_band ='" . $band . "'";
+
+		if ($band == 'SAT') {
+			return " and col_prop_mode ='" . $band . "'";
+		}
+
+		if ($band == 'All') {
+			return " and col_prop_mode !='SAT'";
+		}
+
         return $sql;
     }
 
     /*
     * Function gets worked and confirmed summary on each band on the active stationprofile
     */
-    function get_cq_summary($bands) {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
-
+    function get_cq_summary($bands, $station_id) {
         foreach ($bands as $band) {
-            $worked = $this->getSummaryByBand($band, $station_id);
-            $confirmed = $this->getSummaryByBandConfirmed($band, $station_id);
-            $cqSummary['worked'][$band] = $worked[0]->count;
-            $cqSummary['confirmed'][$band] = $confirmed[0]->count;
+            $cqSummary['worked'][$band] = 0;
+            $cqSummary['confirmed'][$band] = 0;
         }
 
-        $workedTotal = $this->getSummaryByBand('All', $station_id);
-        $confirmedTotal = $this->getSummaryByBandConfirmed('All', $station_id);
+		$worked = $this->getSummaryByBand('All', $station_id);
+
+		foreach ($worked as $w) {
+			$cqSummary['worked'][$w->col_band] = $w->count;
+		}
+
+		$confirmed = $this->getSummaryByBandConfirmed('All', $station_id);
+
+		foreach ($confirmed as $c) {
+			$cqSummary['confirmed'][$c->col_band] = $c->count;
+		}
+
+		$worked = $this->getSummaryByBand('SAT', $station_id);
+		$cqSummary['worked']['SAT'] = $worked[0]->count;
+
+		$confirmed = $this->getSummaryByBandConfirmed('SAT', $station_id);
+		$cqSummary['confirmed']['SAT'] = $confirmed[0]->count;
+
+        $workedTotal = $this->getSummaryByBand('Total', $station_id);
+        $confirmedTotal = $this->getSummaryByBandConfirmed('Total', $station_id);
 
         $cqSummary['worked']['Total'] = $workedTotal[0]->count;
         $cqSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
@@ -237,7 +272,11 @@ class CQ extends CI_Model{
     }
 
     function getSummaryByBand($band, $station_id) {
-        $sql = "SELECT count(distinct thcv.col_cqz) as count FROM " . $this->config->item('table_name') . " thcv";
+        $sql = "SELECT count(distinct thcv.col_cqz) as count";
+		if ($band != 'SAT' || $band != 'Total') {
+			$sql .= ", col_band";
+		}
+		$sql .= " FROM " . $this->config->item('table_name') . " thcv";
 
         $sql .= " where station_id = " . $station_id;
 
@@ -245,31 +284,35 @@ class CQ extends CI_Model{
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
         } else if ($band == 'All') {
             $sql .= " and thcv.col_prop_mode !='SAT'";
+			$sql .= " group by col_band";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
-            $sql .= " and thcv.col_band ='" . $band . "'";
-
         }
+
         $query = $this->db->query($sql);
 
         return $query->result();
     }
 
     function getSummaryByBandConfirmed($band, $station_id){
-        $sql = "SELECT count(distinct thcv.col_cqz) as count FROM " . $this->config->item('table_name') . " thcv";
+		$sql = "SELECT count(distinct thcv.col_cqz) as count";
+		if ($band != 'SAT' || $band != 'Total') {
+			$sql .= ", col_band";
+		}
+		$sql .= " FROM " . $this->config->item('table_name') . " thcv";
 
         $sql .= " where station_id = " . $station_id;
+
+		$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
         } else if ($band == 'All') {
             $sql .= " and thcv.col_prop_mode !='SAT'";
+			$sql .= " group by col_band";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
-            $sql .= " and thcv.col_band ='" . $band . "'";
         }
-
-        $sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
 
         $query = $this->db->query($sql);
 
