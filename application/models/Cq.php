@@ -84,43 +84,24 @@ class CQ extends CI_Model{
         }
 
 		if ($postdata['worked'] != NULL) {
-			$cqBand = $this->getCQWorked2($station_id, $postdata);
+			$cqBand = $this->getCQWorked($station_id, $postdata);
 			foreach ($cqBand as $line) {
 				$bandCq[$line->col_cqz][$line->col_band] = '<div class="alert-danger"><a href=\'javascript:displayCqContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $line->col_band . '")\'>W</a></div>';
 				$cqZ[$line->col_cqz]['count']++;
 			}
-			if ($postdata['band'] == 'All') {
-				$sat = $postdata;
-				$sat['band'] = 'SAT';
-				$cqBand = $this->getCQWorked2($station_id, $sat);
-				foreach ($cqBand as $line) {
-					$bandCq[$line->col_cqz][$line->col_band] = '<div class="alert-danger"><a href=\'javascript:displayCqContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $line->col_band . '")\'>W</a></div>';
-					$cqZ[$line->col_cqz]['count']++;
-				}
-			}
 		}
 
 		if ($postdata['confirmed'] != NULL) {
-			$cqBand = $this->getCQConfirmed2($station_id, $postdata);
+			$cqBand = $this->getCQConfirmed($station_id, $postdata);
 			foreach ($cqBand as $line) {
 				$bandCq[$line->col_cqz][$line->col_band] = '<div class="alert-success"><a href=\'javascript:displayCqContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $line->col_band . '")\'>C</a></div>';
 				$cqZ[$line->col_cqz]['count']++;
 			}
-			if ($postdata['band'] == 'All') {
-				$sat = $postdata;
-				$sat['band'] = 'SAT';
-				$cqBand = $this->getCQConfirmed2($station_id, $sat);
-				foreach ($cqBand as $line) {
-					$bandCq[$line->col_cqz][$line->col_band] = '<div class="alert-success"><a href=\'javascript:displayCqContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $line->col_band . '")\'>C</a></div>';
-					$cqZ[$line->col_cqz]['count']++;
-				}
-			}
-
 		}
 
         // We want to remove the worked zones in the list, since we do not want to display them
         if ($postdata['worked'] == NULL) {
-            $cqBand = $this->getCQWorked2($station_id, $postdata);
+            $cqBand = $this->getCQWorked($station_id, $postdata);
             foreach ($cqBand as $line) {
                 unset($bandCq[$line->col_cqz]);
             }
@@ -128,7 +109,7 @@ class CQ extends CI_Model{
 
         // We want to remove the confirmed zones in the list, since we do not want to display them
         if ($postdata['confirmed'] == NULL) {
-            $cqBand = $this->getCQConfirmed2($station_id, $postdata);
+            $cqBand = $this->getCQConfirmed($station_id, $postdata);
             foreach ($cqBand as $line) {
                 unset($bandCq[$line->col_cqz]);
             }
@@ -181,6 +162,45 @@ class CQ extends CI_Model{
 	}
 
 	/*
+ * Function returns all worked, but not confirmed states
+ * $postdata contains data from the form, in this case Lotw or QSL are used
+ */
+	function getCQWorked($station_id, $postdata) {
+		$sql = "SELECT distinct col_cqz, col_band FROM " . $this->config->item('table_name') .
+			" thcv where station_id = " . $station_id . " and col_cqz <> ''";
+
+		$sql .= $this->addBandToQuery($postdata['band']);
+
+		$sql .= " and not exists (select 1 from " . $this->config->item('table_name') .
+			" where station_id = " . $station_id .
+			" and col_cqz = thcv.col_cqz and col_cqz <> '' and col_band = thcv.col_band ";
+
+		$sql .= $this->addBandToQuery($postdata['band']);
+
+		$sql .= $this->addQslToQuery($postdata);
+
+		$sql .= ")";
+
+		$sql .= " union SELECT distinct col_cqz, 'SAT' as col_band FROM " . $this->config->item('table_name') .
+			" thcv where station_id = " . $station_id . " and col_cqz <> ''";
+
+		$sql .= $this->addBandToQuery('SAT');
+
+		$sql .= " and not exists (select 1 from " . $this->config->item('table_name') .
+			" where station_id = " . $station_id .
+			" and col_cqz = thcv.col_cqz and col_cqz <> '' ";
+
+		$sql .= $this->addBandToQuery('SAT');
+
+		$sql .= $this->addQslToQuery($postdata);
+
+		$sql .= ")";
+
+		$query = $this->db->query($sql);
+		return $query->result();
+	}
+
+	/*
 	* Function returns all confirmed states on given band and on LoTW or QSL
 	* $postdata contains data from the form, in this case Lotw or QSL are used
 	*/
@@ -196,6 +216,30 @@ class CQ extends CI_Model{
         where station_id = " . $station_id . " and col_cqz <> ''";
 
 		$sql .= $this->addBandToQuery($postdata['band']);
+
+		$sql .= $this->addQslToQuery($postdata);
+
+		$query = $this->db->query($sql);
+
+		return $query->result();
+	}
+
+	/*
+	* Function returns all confirmed states on given band and on LoTW or QSL
+	* $postdata contains data from the form, in this case Lotw or QSL are used
+	*/
+	function getCQConfirmed($station_id, $postdata) {
+		$sql = "SELECT distinct col_cqz, col_band FROM " . $this->config->item('table_name') . " thcv
+        where station_id = " . $station_id . " and col_cqz <> ''";
+
+		$sql .= $this->addBandToQuery($postdata['band']);
+
+		$sql .= $this->addQslToQuery($postdata);
+
+		$sql .= " union SELECT distinct col_cqz, 'SAT' as col_band FROM " . $this->config->item('table_name') . " thcv
+        where station_id = " . $station_id . " and col_cqz <> ''";
+
+		$sql .= $this->addBandToQuery('SAT');
 
 		$sql .= $this->addQslToQuery($postdata);
 
