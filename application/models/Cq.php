@@ -134,37 +134,6 @@ class CQ extends CI_Model{
 	 * Function returns all worked, but not confirmed states
 	 * $postdata contains data from the form, in this case Lotw or QSL are used
 	 */
-	function getCQWorked2($station_id, $postdata) {
-		$sql = "SELECT distinct col_cqz";
-		if ($postdata['band'] == 'SAT') {
-			$sql .= " , 'SAT' as col_band";
-		} else {
-			$sql .= " , col_band";
-		}
-
-		$sql .= " FROM " . $this->config->item('table_name') . " thcv
-        where station_id = " . $station_id . " and col_cqz <> ''";
-
-		$sql .= $this->addBandToQuery($postdata['band']);
-
-		$sql .= " and not exists (select 1 from " . $this->config->item('table_name') .
-			" where station_id = " . $station_id .
-			" and col_cqz = thcv.col_cqz and col_cqz <> '' and col_band = thcv.col_band ";
-
-		$sql .= $this->addBandToQuery($postdata['band']);
-
-		$sql .= $this->addQslToQuery($postdata);
-
-		$sql .= ")";
-
-		$query = $this->db->query($sql);
-		return $query->result();
-	}
-
-	/*
- * Function returns all worked, but not confirmed states
- * $postdata contains data from the form, in this case Lotw or QSL are used
- */
 	function getCQWorked($station_id, $postdata) {
 		$sql = "SELECT distinct col_cqz, col_band FROM " . $this->config->item('table_name') .
 			" thcv where station_id = " . $station_id . " and col_cqz <> ''";
@@ -197,30 +166,6 @@ class CQ extends CI_Model{
 		$sql .= ")";
 
 		$query = $this->db->query($sql);
-		return $query->result();
-	}
-
-	/*
-	* Function returns all confirmed states on given band and on LoTW or QSL
-	* $postdata contains data from the form, in this case Lotw or QSL are used
-	*/
-	function getCQConfirmed2($station_id, $postdata) {
-		$sql = "SELECT distinct col_cqz";
-		if ($postdata['band'] == 'SAT') {
-			$sql .= " , 'SAT' as col_band";
-		} else {
-			$sql .= " , col_band";
-		}
-
-		$sql .= " FROM " . $this->config->item('table_name') . " thcv
-        where station_id = " . $station_id . " and col_cqz <> ''";
-
-		$sql .= $this->addBandToQuery($postdata['band']);
-
-		$sql .= $this->addQslToQuery($postdata);
-
-		$query = $this->db->query($sql);
-
 		return $query->result();
 	}
 
@@ -265,9 +210,6 @@ class CQ extends CI_Model{
     }
 
     function addBandToQuery($band) {
-		$sql = " and col_prop_mode !='SAT'";
-		$sql .= " and col_band ='" . $band . "'";
-
 		if ($band == 'SAT') {
 			return " and col_prop_mode ='" . $band . "'";
 		}
@@ -276,7 +218,7 @@ class CQ extends CI_Model{
 			return " and col_prop_mode !='SAT'";
 		}
 
-        return $sql;
+        return " and col_prop_mode !='SAT' and col_band ='" . $band . "'";
     }
 
     /*
@@ -288,26 +230,20 @@ class CQ extends CI_Model{
             $cqSummary['confirmed'][$band] = 0;
         }
 
-		$worked = $this->getSummaryByBand('All', $station_id);
+		$worked = $this->getSummaryByBand($station_id);
 
 		foreach ($worked as $w) {
 			$cqSummary['worked'][$w->col_band] = $w->count;
 		}
 
-		$confirmed = $this->getSummaryByBandConfirmed('All', $station_id);
+		$confirmed = $this->getSummaryByBandConfirmed($station_id);
 
 		foreach ($confirmed as $c) {
 			$cqSummary['confirmed'][$c->col_band] = $c->count;
 		}
 
-		$worked = $this->getSummaryByBand('SAT', $station_id);
-		$cqSummary['worked']['SAT'] = $worked[0]->count;
-
-		$confirmed = $this->getSummaryByBandConfirmed('SAT', $station_id);
-		$cqSummary['confirmed']['SAT'] = $confirmed[0]->count;
-
-        $workedTotal = $this->getSummaryByBand('Total', $station_id);
-        $confirmedTotal = $this->getSummaryByBandConfirmed('Total', $station_id);
+        $workedTotal = $this->getSummaryTotal($station_id);
+        $confirmedTotal = $this->getSummaryTotalConfirmed($station_id);
 
         $cqSummary['worked']['Total'] = $workedTotal[0]->count;
         $cqSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
@@ -315,52 +251,59 @@ class CQ extends CI_Model{
         return $cqSummary;
     }
 
-    function getSummaryByBand($band, $station_id) {
-        $sql = "SELECT count(distinct thcv.col_cqz) as count";
-		if ($band != 'SAT' || $band != 'Total') {
-			$sql .= ", col_band";
-		}
-		$sql .= " FROM " . $this->config->item('table_name') . " thcv";
+    function getSummaryByBand($station_id) {
+        $sql = "SELECT count(distinct thcv.col_cqz) as count, col_band FROM " . $this->config->item('table_name') . " thcv" .
+				" where station_id = " . $station_id .
+				" and thcv.col_prop_mode !='SAT'" .
+				" group by col_band";
 
-        $sql .= " where station_id = " . $station_id;
-
-        if ($band == 'SAT') {
-            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
-        } else if ($band == 'All') {
-            $sql .= " and thcv.col_prop_mode !='SAT'";
-			$sql .= " group by col_band";
-        } else {
-            $sql .= " and thcv.col_prop_mode !='SAT'";
-        }
+		$sql .= " union SELECT count(distinct thcv.col_cqz) as count, 'SAT' as col_band FROM " . $this->config->item('table_name') . " thcv" .
+			" where station_id = " . $station_id .
+			" and thcv.col_prop_mode ='SAT'";
 
         $query = $this->db->query($sql);
 
         return $query->result();
     }
 
-    function getSummaryByBandConfirmed($band, $station_id){
-		$sql = "SELECT count(distinct thcv.col_cqz) as count";
-		if ($band != 'SAT' || $band != 'Total') {
-			$sql .= ", col_band";
-		}
-		$sql .= " FROM " . $this->config->item('table_name') . " thcv";
+	function getSummaryTotal($station_id) {
+		$sql = "SELECT count(distinct thcv.col_cqz) as count" .
+			" FROM " . $this->config->item('table_name') . " thcv" .
+			" where station_id = " . $station_id .
+			" and thcv.col_prop_mode !='SAT'";
 
-        $sql .= " where station_id = " . $station_id;
+		$query = $this->db->query($sql);
 
-		$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+		return $query->result();
+	}
 
-        if ($band == 'SAT') {
-            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
-        } else if ($band == 'All') {
-            $sql .= " and thcv.col_prop_mode !='SAT'";
-			$sql .= " group by col_band";
-        } else {
-            $sql .= " and thcv.col_prop_mode !='SAT'";
-        }
+    function getSummaryByBandConfirmed($station_id){
+		$sql = "SELECT count(distinct thcv.col_cqz) as count, col_band FROM " . $this->config->item('table_name') . " thcv" .
+			" where station_id = " . $station_id .
+			" and thcv.col_prop_mode !='SAT'" .
+			" and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')" .
+			" group by col_band";
+
+		$sql .= " union SELECT count(distinct thcv.col_cqz) as count, 'SAT' as col_band FROM " . $this->config->item('table_name') . " thcv" .
+			" where station_id = " . $station_id .
+			" and thcv.col_prop_mode ='SAT'" .
+			" and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
 
         $query = $this->db->query($sql);
 
         return $query->result();
     }
+
+	function getSummaryTotalConfirmed($station_id){
+		$sql = "SELECT count(distinct thcv.col_cqz) as count" .
+				" FROM " . $this->config->item('table_name') . " thcv" .
+				" where station_id = " . $station_id .
+				" and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')" .
+				" and thcv.col_prop_mode !='SAT'";
+
+		$query = $this->db->query($sql);
+
+		return $query->result();
+	}
 
 }
