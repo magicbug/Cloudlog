@@ -15,7 +15,7 @@ class CQ extends CI_Model{
         $data = $this->db->query(
             "select COL_CQZ, count(COL_CQZ)
             from ".$this->config->item('table_name')."
-            where COL_CQZ is not null and station_id = ".$station_id." 
+            where COL_CQZ is not null and station_id = ".$station_id."
             group by COL_CQZ order by COL_CQZ"
         );
 
@@ -45,12 +45,8 @@ class CQ extends CI_Model{
         "SAT" => 0,
     );
 
-    function get_worked_bands()
+    function get_worked_bands($station_id)
     {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
-
         // get all worked slots from database
         $data = $this->db->query(
             "SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `" . $this->config->item('table_name') . "` WHERE station_id = " . $station_id . " AND COL_PROP_MODE != \"SAT\""
@@ -78,11 +74,7 @@ class CQ extends CI_Model{
         return $results;
     }
 
-    function get_cq_array($bands, $postdata) {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
-
+    function get_cq_array($bands, $postdata, $station_id) {
         $cqZ = array(); // Used for keeping track of which states that are not worked
 
         for ($i = 1; $i <= 40; $i++) {
@@ -146,7 +138,7 @@ class CQ extends CI_Model{
      * $postdata contains data from the form, in this case Lotw or QSL are used
      */
     function getCQWorked($station_id, $band, $postdata) {
-        $sql = "SELECT distinct col_cqz FROM " . $this->config->item('table_name') . " thcv 
+        $sql = "SELECT distinct col_cqz FROM " . $this->config->item('table_name') . " thcv
         where station_id = " . $station_id . " and col_cqz <> ''";
 
         $sql .= $this->addBandToQuery($band);
@@ -171,7 +163,7 @@ class CQ extends CI_Model{
      * $postdata contains data from the form, in this case Lotw or QSL are used
      */
     function getCQConfirmed($station_id, $band, $postdata) {
-        $sql = "SELECT distinct col_cqz FROM " . $this->config->item('table_name') . " thcv 
+        $sql = "SELECT distinct col_cqz FROM " . $this->config->item('table_name') . " thcv
             where station_id = " . $station_id . " and col_cqz <> ''";
 
         $sql .= $this->addBandToQuery($band);
@@ -215,11 +207,7 @@ class CQ extends CI_Model{
     /*
     * Function gets worked and confirmed summary on each band on the active stationprofile
     */
-    function get_cq_summary($bands) {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
-
+    function get_cq_summary($bands, $station_id) {
         foreach ($bands as $band) {
             $worked = $this->getSummaryByBand($band, $station_id);
             $confirmed = $this->getSummaryByBandConfirmed($band, $station_id);
