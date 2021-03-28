@@ -380,20 +380,24 @@ class Logbook_model extends CI_Model {
 
     $last_id = $this->db->insert_id();
 
-    $result = $this->exists_qrz_api_key($data['station_id']);
+    // No point in fetching qrz api key and qrzrealtime setting if we're skipping the export
+	if (!$skipexport) {
 
-    // Push qso to qrz if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
-    if (isset($result->qrzapikey) && $result->qrzrealtime == 1 && !$skipexport) {
-      $CI =& get_instance();
-      $CI->load->library('AdifHelper');
-      $qso = $this->get_qso($last_id)->result();
+		$result = $this->exists_qrz_api_key($data['station_id']);
 
-      $adif = $CI->adifhelper->getAdifLine($qso[0]);
-      $result = $this->push_qso_to_qrz($result->qrzapikey, $adif);
-      if ($result['status'] == 'OK') {
-        $this->mark_qrz_qsos_sent($last_id);
-      }
-    }
+		// Push qso to qrz if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
+		if (isset($result->qrzapikey) && $result->qrzrealtime == 1) {
+			$CI =& get_instance();
+			$CI->load->library('AdifHelper');
+			$qso = $this->get_qso($last_id)->result();
+
+			$adif = $CI->adifhelper->getAdifLine($qso[0]);
+			$result = $this->push_qso_to_qrz($result->qrzapikey, $adif);
+			if ($result['status'] == 'OK') {
+				$this->mark_qrz_qsos_sent($last_id);
+			}
+		}
+	}
   }
 
   /*
