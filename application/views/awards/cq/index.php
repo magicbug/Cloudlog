@@ -134,8 +134,8 @@
             <div class="form-group row">
                 <label class="col-md-2 control-label" for="button1id"></label>
                 <div class="col-md-10">
-                    <button id="button2id" type="reset" name="button2id" class="btn btn-warning">Reset</button>
-                    <button id="button1id" type="submit" name="button1id" class="btn btn-primary">Show</button>
+                    <button id="button2id" type="reset" name="button2id" class="btn-sm btn-warning">Reset</button>
+                    <button id="button1id" type="submit" name="button1id" class="btn-sm btn-primary">Show</button>
                 </div>
             </div>
 
@@ -172,7 +172,7 @@
         <thead>
         <tr><td></td>';
 
-        foreach($bands as $band) {
+        foreach($worked_bands as $band) {
             echo '<td>' . $band . '</td>';
         }
         echo '<td>Total</td></tr>
