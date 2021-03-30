@@ -129,7 +129,7 @@ class AdifHelper {
 
     function getAdifFieldLine($adifcolumn, $dbvalue) {
         if ($dbvalue != "") {
-            return "<" . $adifcolumn . ":" . strlen($dbvalue) . ">" . $dbvalue;
+            return "<" . $adifcolumn . ":" . mb_strlen($dbvalue, "UTF-8") . ">" . $dbvalue;
         } else {
             return "";
         }

@@ -27,7 +27,7 @@ class ADIF_Parser
 	public function initialize() //this function locates the <EOH>
 	{
 
-        $pos = stripos(strtoupper($this->data), "<EOH>");;
+        $pos = mb_stripos(mb_strtoupper($this->data, "UTF-8"), "<EOH>", 0, "UTF-8");
 
 		if($pos == false) //did we find the end of headers?
 		{
@@ -46,11 +46,11 @@ class ADIF_Parser
 		while($this->i < $pos)
 		{
 			//skip comments
-			if($this->data[$this->i] == "#")
+			if(mb_substr($this->data, $this->i, 1, "UTF-8") == "#")
 			{
 				while($this->i < $pos)
 				{
-					if($this->data[$this->i] == "\n")
+					if(mb_substr($this->data, $this->i, 1, "UTF-8") == "\n")
 					{
 						break;
 					}
@@ -59,13 +59,13 @@ class ADIF_Parser
 				}
 			}else{
 				//find the beginning of a tag
-				if($this->data[$this->i] == "<")
+				if(mb_substr($this->data, $this->i, 1, "UTF-8") == "<")
 				{
 					$this->i++;
 					//record the key
-					while($this->data[$this->i] < $pos && $this->data[$this->i] != ':')
+					while($this->i < $pos && mb_substr($this->data, $this->i, 1, "UTF-8") != ':')
 					{
-						$tag = $tag.$this->data[$this->i];
+						$tag = $tag.mb_substr($this->data, $this->i, 1, "UTF-8");
 						$this->i++;
 					}
 					
@@ -73,9 +73,9 @@ class ADIF_Parser
 					
 					//find out how long the value is
 					
-					while($this->data[$this->i] < $pos && $this->data[$this->i] != '>')
+					while($this->i < $pos && mb_substr($this->data, $this->i, 1, "UTF-8") != '>')
 					{
-						$value_length = $value_length.$this->data[$this->i];
+						$value_length = $value_length.mb_substr($this->data, $this->i, 1, "UTF-8");
 						$this->i++;
 					}
 					
@@ -83,14 +83,14 @@ class ADIF_Parser
 					
 					$len = (int)$value_length;
 					//copy the value into the buffer
-					while($len > 0 && $this->i < $pos)
-					{
-						$value = $value.$this->data[$this->i];
-						$len--;
-						$this->i++;
-					};
 
-					$this->headers[strtolower(trim($tag))] = $value; //convert it to lowercase and trim it in case of \r
+					if ($this->i + $len > $pos) {
+						$len = $len - ($this->i + $len - $pos);
+					}
+					$value = mb_substr($this->data, $this->i, $len, "UTF-8");
+					$this->i = $this->i + $len;
+
+					$this->headers[mb_strtolower(trim($tag), "UTF-8")] = $value; //convert it to lowercase and trim it in case of \r
 					//clear all of our variables
 					$tag = "";
 					$value_length = "";
@@ -104,20 +104,20 @@ class ADIF_Parser
 		};
 		
 		$this->i = $pos+5; //iterate past the <eoh>
-		if($this->i >= strlen($this->data)) //is this the end of the file?
+		if($this->i >= mb_strlen($this->data, "UTF-8")) //is this the end of the file?
 		{
 			echo "Error: ADIF File Does Not Contain Any QSOs";
 			return 0;
 		};
 
-        $this->datasplit = preg_split("/<eor>/i", substr($this->data, $this->i));
+        $this->datasplit = preg_split("/<eor>/i", mb_substr($this->data, $this->i, NULL, "UTF-8"));
 		return 1;
 	}
 	
 	public function feed($input_data) //allows the parser to be fed a string
 	{
 		$this->data = $input_data;
-        $this->datasplit = preg_split("/<eor>/i", substr($this->data, $this->i));
+        $this->datasplit = preg_split("/<eor>/i", mb_substr($this->data, $this->i, NULL, "UTF-8"));
 	}
 	
 	public function load_from_file($fname) //allows the user to accept a filename as input
@@ -129,48 +129,46 @@ class ADIF_Parser
 	public function record_to_array($record)
 	{
 		$return = array();
-		for($a = 0; $a < strlen($record); $a++)
+		for($a = 0; $a < mb_strlen($record, "UTF-8"); $a++)
 		{
-			if($record[$a] == '<') //find the start of the tag
+			if(mb_substr($record, $a, 1, "UTF-8") == '<') //find the start of the tag
 			{
 				$tag_name = "";
 				$value = "";
 				$len_str = "";
 				$len = 0;
 				$a++; //go past the <
-				while($record[$a] != ':') //get the tag
+				while(mb_substr($record, $a, 1, "UTF-8") != ':') //get the tag
 				{
-					$tag_name = $tag_name.$record[$a]; //append this char to the tag name
+					$tag_name = $tag_name.mb_substr($record, $a, 1, "UTF-8"); //append this char to the tag name
 					$a++;
 				};
 				$a++; //iterate past the colon
-				while($record[$a] != '>' && $record[$a] != ':')
+				while(mb_substr($record, $a, 1, "UTF-8") != '>' && mb_substr($record, $a, 1, "UTF-8") != ':')
 				{
-					$len_str = $len_str.$record[$a];
+					$len_str = $len_str.mb_substr($record, $a, 1, "UTF-8");
 					$a++;
 				};
-				if($record[$a] == ':')
+				if(mb_substr($record, $a, 1, "UTF-8") == ':')
 				{
-					while($record[$a] != '>')
+					while(mb_substr($record, $a, 1, "UTF-8") != '>')
 					{
 						$a++;
 					};
 				};
 				$len = (int)$len_str;
-				while($len > 0)
-				{
-					$a++;
-					$value = $value.$record[$a];
-					$len--;
-				};
-				$return[strtolower($tag_name)] = $value;
+				$a++;
+
+				$value = mb_substr($record, $a, $len, "UTF-8");
+				$a = $a + $len - 1;
+				$return[mb_strtolower($tag_name, "UTF-8")] = $value;
 			};
 			//skip comments
-			if($record[$a] == "#")
+			if(mb_substr($record, $a, 1, "UTF-8") == "#")
 			{
-				while($a < strlen($record))
+				while($a < mb_strlen($record, "UTF-8"))
 				{
-					if($record[$a] == "\n")
+					if(mb_substr($record, $a, 1, "UTF-8") == "\n")
 					{
 						break;
 					}
@@ -189,7 +187,7 @@ class ADIF_Parser
             return array(); //return nothing
         } else {
             // Is this a valid QSO?
-            if (stristr($this->datasplit[$this->currentarray],"<CALL:")) {
+            if (mb_stristr($this->datasplit[$this->currentarray], "<CALL:", false, "UTF-8")) {
                 return $this->record_to_array($this->datasplit[$this->currentarray++]); //process and return output
             }
             else {
@@ -200,9 +198,9 @@ class ADIF_Parser
 	
 	public function get_header($key)
 	{
-		if(array_key_exists(strtolower($key), $this->headers))
+		if(array_key_exists(mb_strtolower($key, "UTF-8"), $this->headers))
 		{
-			return $this->headers[strtolower($key)];
+			return $this->headers[mb_strtolower($key, "UTF-8")];
 		}else{
 			return NULL;
 		}
