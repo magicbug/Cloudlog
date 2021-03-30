@@ -23,12 +23,14 @@ class Qra {
 	
 	// calculate  the bearing between two squares
 	function bearing($tx, $rx, $unit = 'M') {
-		$my = qra2latlong($tx);
-		$stn = qra2latlong($rx);
+		if(strlen($tx) <= 6 && strlen($rx) <= 6) {
+			$my = qra2latlong($tx);
+			$stn = qra2latlong($rx);
 
-		$bearing = bearing($my[0], $my[1], $stn[0], $stn[1], $unit);
-		
-		return $bearing;
+			$bearing = bearing($my[0], $my[1], $stn[0], $stn[1], $unit);
+			
+			return $bearing;
+		}
 	}
 
 	/*
