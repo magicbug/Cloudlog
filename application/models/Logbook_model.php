@@ -2170,7 +2170,70 @@ class Logbook_model extends CI_Model {
 
         print("$count updated\n");
     }
+	
+	public function check_missing_grid_id($all){
+        // get all records with no COL_GRIDSQUARE
+        $this->db->select("COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_TIME_OFF");
 
+        // check which to update - records with no Gridsquare or all records
+        $this->db->where("COL_GRIDSQUARE is NULL or COL_GRIDSQUARE = ''");
+
+        $r = $this->db->get($this->config->item('table_name'));
+
+        $count = 0;
+        $this->db->trans_start();
+        if ($r->num_rows() > 0){
+            foreach($r->result_array() as $row){
+		          $callsign = $row['COL_CALL'];
+              if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null)
+              {
+                  // Lookup using QRZ
+                  $this->load->library('qrz');
+
+                  if(!$this->session->userdata('qrz_session_key')) {
+                      $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+                      $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+                  }
+
+                  $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'));
+              }
+
+              if ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null)
+              {
+                  // Load the HamQTH library
+                  $this->load->library('hamqth');
+
+                  if(!$this->session->userdata('hamqth_session_key')) {
+                      $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+                      $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+                  }
+
+                  $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+
+                  // If HamQTH session has expired, start a new session and retry the search.
+                  if($callbook['error'] == "Session does not exist or expired") {
+                      $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+                      $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+                      $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+                  }
+              }
+              if (isset($callbook))
+              {
+                  $return['callsign_qra'] = $callbook['gridsquare'];
+              }
+              if ($return['callsign_qra'] != ''){
+                  $sql = sprintf("update %s set COL_GRIDSQUARE = '%s' where COL_PRIMARY_KEY=%d",
+                                  $this->config->item('table_name'), $return['callsign_qra'], $row['COL_PRIMARY_KEY']);
+                  $this->db->query($sql);
+                  printf("Updating %s to %s\n<br/>", $row['COL_PRIMARY_KEY'], $return['callsign_qra']);
+                  $count++;
+              }
+            }
+        }
+        $this->db->trans_complete();
+
+        print("$count updated\n");
+    }
 
     public function check_for_station_id() {
       $this->db->where('station_id =', 'NULL');
