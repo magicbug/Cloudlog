@@ -3,10 +3,6 @@
 	<a class="btn btn-outline-primary btn-sm float-right" href="<?php echo site_url('/lotw/import'); ?>" role="button"><i class="fas fa-cloud-download-alt"></i> <?php echo $this->lang->line('lotw_btn_lotw_import'); ?></a>
 	<h2><?php echo $this->lang->line('lotw_title'); ?></h2>
 
-	<div class="alert alert-danger" role="alert">
-	  <i class="fas fa-exclamation-triangle"></i> <?php echo $this->lang->line('lotw_beta_warning'); ?>
-	</div>
-
 	<!-- Card Starts -->
 	<div class="card">
 		<div class="card-header">
