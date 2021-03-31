@@ -2178,6 +2178,9 @@ class Logbook_model extends CI_Model {
         // check which to update - records with no Gridsquare or all records
         $this->db->where("COL_GRIDSQUARE is NULL or COL_GRIDSQUARE = ''");
 
+        $where = "(COL_GRIDSQUARE is NULL or COL_GRIDSQUARE = '') AND (COL_VUCC_GRIDS is NULL or COL_VUCC_GRIDS = '')";
+        $this->db->where($where);
+
         $r = $this->db->get($this->config->item('table_name'));
 
         $count = 0;
