@@ -224,6 +224,11 @@ class Update extends CI_Controller {
         $this->logbook_model->check_missing_dxcc_id($all);
 
 	}
+	
+	public function check_missing_grid($all = false){
+	    $this->load->model('logbook_model');
+        $this->logbook_model->check_missing_grid_id($all);
+	}
 
     public function update_clublog_scp() {
         $strFile = "./updates/clublog_scp.txt";
