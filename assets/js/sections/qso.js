@@ -291,8 +291,7 @@ $("#callsign").focusout(function() {
 		// Replace / in a callsign with - to stop urls breaking
 		$.getJSON('logbook/json/' + find_callsign.replace(/\//g, "-") + '/' + sat_type + '/' + json_band + '/' + json_mode, function(result)
 		{
-			console.log ("temp callsign" + temp_callsign);
-			console.log("entered callsign" + $('#callsign').val());
+			// Make sure the typed callsign and temp callsign match
 			if($('#callsign').val = temp_callsign){
 
 				if(result.dxcc.entity != undefined) {
