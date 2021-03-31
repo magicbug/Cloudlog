@@ -267,6 +267,10 @@ function reset_fields() {
 $("#callsign").focusout(function() {
 
 	if ($(this).val().length >= 3) {
+
+		// Temp store the callsign
+		var temp_callsign = $(this).val();
+
 		/* Find and populate DXCC */
 		$('.callsign-suggest').hide();
 
@@ -287,140 +291,143 @@ $("#callsign").focusout(function() {
 		// Replace / in a callsign with - to stop urls breaking
 		$.getJSON('logbook/json/' + find_callsign.replace(/\//g, "-") + '/' + sat_type + '/' + json_band + '/' + json_mode, function(result)
 		{
-			//$('#country').val(result); lotw_info
-			if(result.dxcc.entity != undefined) {
-				$('#country').val(convert_case(result.dxcc.entity));
-				$('#callsign_info').text(convert_case(result.dxcc.entity));
+			console.log ("temp callsign" + temp_callsign);
+			console.log("entered callsign" + $('#callsign').val());
+			if($('#callsign').val = temp_callsign){
 
-				if($("#sat_name" ).val() != "") {
-					//logbook/jsonlookupgrid/io77/SAT/0/0
-					$.getJSON('logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/SAT/0/0', function(result)
-					{
-						// Reset CSS values before updating
-						$('#callsign').removeClass("workedGrid");
-						$('#callsign').removeClass("newGrid");
-						$('#callsign').attr('title', '');
+				if(result.dxcc.entity != undefined) {
+					$('#country').val(convert_case(result.dxcc.entity));
+					$('#callsign_info').text(convert_case(result.dxcc.entity));
 
-						if (result.workedBefore)
+					if($("#sat_name" ).val() != "") {
+						//logbook/jsonlookupgrid/io77/SAT/0/0
+						$.getJSON('logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/SAT/0/0', function(result)
 						{
-							$('#callsign').addClass("workedGrid");
-							$('#callsign').attr('title', 'Callsign was already worked in the past on this band and mode!');
-						}
-						else
-						{
-							$('#callsign').addClass("newGrid");
-							$('#callsign').attr('title', 'New Callsign!');
-						}
-					})
-				} else {
-					$.getJSON('logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
-					{
-						// Reset CSS values before updating
-						$('#callsign').removeClass("workedGrid");
-						$('#callsign').removeClass("newGrid");
-						$('#callsign').attr('title', '');
+							// Reset CSS values before updating
+							$('#callsign').removeClass("workedGrid");
+							$('#callsign').removeClass("newGrid");
+							$('#callsign').attr('title', '');
 
-						if (result.workedBefore)
+							if (result.workedBefore)
+							{
+								$('#callsign').addClass("workedGrid");
+								$('#callsign').attr('title', 'Callsign was already worked in the past on this band and mode!');
+							}
+							else
+							{
+								$('#callsign').addClass("newGrid");
+								$('#callsign').attr('title', 'New Callsign!');
+							}
+						})
+					} else {
+						$.getJSON('logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
 						{
-							$('#callsign').addClass("workedGrid");
-							$('#callsign').attr('title', 'Callsign was already worked in the past on this band and mode!');
-						}
-						else
-						{
-							$('#callsign').addClass("newGrid");
-							$('#callsign').attr('title', 'New Callsign!');
-						}
-					})
+							// Reset CSS values before updating
+							$('#callsign').removeClass("workedGrid");
+							$('#callsign').removeClass("newGrid");
+							$('#callsign').attr('title', '');
+
+							if (result.workedBefore)
+							{
+								$('#callsign').addClass("workedGrid");
+								$('#callsign').attr('title', 'Callsign was already worked in the past on this band and mode!');
+							}
+							else
+							{
+								$('#callsign').addClass("newGrid");
+								$('#callsign').attr('title', 'New Callsign!');
+							}
+						})
+					}
+
+					changebadge(result.dxcc.entity);
 				}
 
-				changebadge(result.dxcc.entity);
-			}
+				if(result.lotw_member == "active") {
+					$('#lotw_info').text("LoTW");
+				}
 
-			if(result.lotw_member == "active") {
-				$('#lotw_info').text("LoTW");
-			}
+				$('#dxcc_id').val(result.dxcc.adif);
+				$('#cqz').val(result.dxcc.cqz);
+				$('#ituz').val(result.dxcc.ituz);
 
-			$('#dxcc_id').val(result.dxcc.adif);
-			$('#cqz').val(result.dxcc.cqz);
-			$('#ituz').val(result.dxcc.ituz);
+				var redIcon = L.icon({
+					iconUrl: icon_dot_url,
+					iconSize:     [18, 18], // size of the icon
+				});
 
+				// Set Map to Lat/Long
+				markers.clearLayers();
+				mymap.setZoom(8);
+				if (typeof result.latlng !== "undefined" && result.latlng !== false) {
+					var marker = L.marker([result.latlng[0], result.latlng[1]], {icon: redIcon});
+					mymap.panTo([result.latlng[0], result.latlng[1]]);
+				} else {
+					var marker = L.marker([result.dxcc.lat, result.dxcc.long], {icon: redIcon});
+					mymap.panTo([result.dxcc.lat, result.dxcc.long]);
+				}
 
-			var redIcon = L.icon({
-				iconUrl: icon_dot_url,
-				iconSize:     [18, 18], // size of the icon
-			});
-
-			// Set Map to Lat/Long
-			markers.clearLayers();
-			mymap.setZoom(8);
-			if (typeof result.latlng !== "undefined" && result.latlng !== false) {
-				var marker = L.marker([result.latlng[0], result.latlng[1]], {icon: redIcon});
-				mymap.panTo([result.latlng[0], result.latlng[1]]);
-			} else {
-				var marker = L.marker([result.dxcc.lat, result.dxcc.long], {icon: redIcon});
-				mymap.panTo([result.dxcc.lat, result.dxcc.long]);
-			}
-
-			markers.addLayer(marker).addTo(mymap);
+				markers.addLayer(marker).addTo(mymap);
 
 
-			/* Find Locator if the field is empty */
-			if($('#locator').val() == "") {
-				$('#locator').val(result.callsign_qra);
-				$('#locator_info').html(result.bearing);
+				/* Find Locator if the field is empty */
+				if($('#locator').val() == "") {
+					$('#locator').val(result.callsign_qra);
+					$('#locator_info').html(result.bearing);
 
-				if (result.callsign_qra != "")
-				{
-					if (result.workedBefore)
+					if (result.callsign_qra != "")
 					{
-						$('#locator').addClass("workedGrid");
-						$('#locator').attr('title', 'Grid was already worked in the past');
+						if (result.workedBefore)
+						{
+							$('#locator').addClass("workedGrid");
+							$('#locator').attr('title', 'Grid was already worked in the past');
+						}
+						else
+						{
+							$('#locator').addClass("newGrid");
+							$('#locator').attr('title', 'New grid!');
+						}
 					}
 					else
 					{
-						$('#locator').addClass("newGrid");
-						$('#locator').attr('title', 'New grid!');
+						$('#locator').removeClass("workedGrid");
+						$('#locator').removeClass("newGrid");
+						$('#locator').attr('title', '');
 					}
-				}
-				else
-				{
-					$('#locator').removeClass("workedGrid");
-					$('#locator').removeClass("newGrid");
-					$('#locator').attr('title', '');
+
 				}
 
-			}
+				/* Find Operators Name */
+				if($('#qsl_via').val() == "") {
+					$('#qsl_via').val(result.qsl_manager);
+				}
 
-			/* Find Operators Name */
-			if($('#qsl_via').val() == "") {
-				$('#qsl_via').val(result.qsl_manager);
-			}
+				/* Find Operators Name */
+				if($('#name').val() == "") {
+					$('#name').val(result.callsign_name);
+				}
 
-			/* Find Operators Name */
-			if($('#name').val() == "") {
-				$('#name').val(result.callsign_name);
-			}
+				if($('#qth').val() == "") {
+					$('#qth').val(result.callsign_qth);
+				}
 
-			if($('#qth').val() == "") {
-				$('#qth').val(result.callsign_qth);
-			}
-
-			/*
-			* Update state with returned value
-			*/
-			if($("#input_usa_state").val() == "") {
-				$("#input_usa_state").val(result.callsign_state).trigger('change');
-			}
+				/*
+				* Update state with returned value
+				*/
+				if($("#input_usa_state").val() == "") {
+					$("#input_usa_state").val(result.callsign_state).trigger('change');
+				}
 
 
-			if($('#iota_ref').val() == "") {
-				$('#iota_ref').val(result.callsign_iota);
+				if($('#iota_ref').val() == "") {
+					$('#iota_ref').val(result.callsign_iota);
+				}
+				// Hide the last QSO table
+				$('#qso-last-table').hide();
+				$('#partial_view').show();
+				/* display past QSOs */
+				$('#partial_view').html(result.partial);
 			}
-			// Hide the last QSO table
-			$('#qso-last-table').hide();
-			$('#partial_view').show();
-			/* display past QSOs */
-			$('#partial_view').html(result.partial);
 		});
 	} else {
 		/* Reset fields ... */
