@@ -225,3 +225,11 @@ color: #ffffff;
 #create_station_profile .row {
     margin-bottom: 10px;
 }
+
+/*
+*   Debug CSS
+*/
+
+    .debug_main .card {
+        margin-bottom: 10px;
+    }
