@@ -137,7 +137,7 @@ class DXCC extends CI_Model {
 	{
 		$exceptions = $this->db->query('
 				SELECT *
-				FROM `dxccexceptions`
+				FROM `dxcc_exceptions`
 				WHERE `prefix` = \''.$callsign.'\'
 				LIMIT 1
 			');
