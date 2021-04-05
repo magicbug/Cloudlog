@@ -146,10 +146,11 @@
 
 					<a class="dropdown-item" href="<?php echo site_url('update');?>" title="Update Country Files"><i class="fas fa-sync"></i> Update Country Files</a>
 
+					<?php if(ENVIRONMENT == "development") { ?>
 					<div class="dropdown-divider"></div>
 
 					<a class="dropdown-item" href="<?php echo site_url('debug');?>" title="Debug Information"><i class="fas fa-tools"></i> Debug Information</a>
-
+					<?php } ?>
 				</div>
         	</li>
         <?php } ?>
