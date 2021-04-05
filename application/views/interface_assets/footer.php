@@ -1854,16 +1854,17 @@ function deleteQsl(id) {
                                 '<td>'+ receivedexchange + '</td>' +
                                 '</tr>');
                         });
-
-                        $('.qsotable').DataTable({
-                            "pageLength": 25,
-                            responsive: false,
-                            "scrollY":        "400px",
-                            "scrollCollapse": true,
-                            "paging":         false,
-                            "scrollX": true,
-                            "order": [[ 0, "desc" ]]
-                        });
+                        if (!$.fn.DataTable.isDataTable('.qsotable')) {
+                            $('.qsotable').DataTable({
+                                "pageLength": 25,
+                                responsive: false,
+                                "scrollY":        "400px",
+                                "scrollCollapse": true,
+                                "paging":         false,
+                                "scrollX": true,
+                                "order": [[ 0, "desc" ]]
+                            });
+                        }
                     }
                 });
             }
