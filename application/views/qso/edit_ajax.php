@@ -344,7 +344,7 @@
                                         <option value="MS" <?php if($qso->COL_STATE == "MS") { echo "selected=\"selected\""; } ?>>Mississippi (MS)</option>
                                         <option value="MO" <?php if($qso->COL_STATE == "MO") { echo "selected=\"selected\""; } ?>>Missouri (MO)</option>
                                         <option value="MT" <?php if($qso->COL_STATE == "MT") { echo "selected=\"selected\""; } ?>>Montana (MT)</option>
-                                        <option value="NE" <?php if($qso->COL_STATE == "ME") { echo "selected=\"selected\""; } ?>>Nebraska (NE)</option>
+                                        <option value="NE" <?php if($qso->COL_STATE == "NE") { echo "selected=\"selected\""; } ?>>Nebraska (NE)</option>
                                         <option value="NV" <?php if($qso->COL_STATE == "NV") { echo "selected=\"selected\""; } ?>>Nevada (NV)</option>
                                         <option value="NH" <?php if($qso->COL_STATE == "NH") { echo "selected=\"selected\""; } ?>>New Hampshire (NH)</option>
                                         <option value="NJ" <?php if($qso->COL_STATE == "NJ") { echo "selected=\"selected\""; } ?>>New Jersey (NJ)</option>
