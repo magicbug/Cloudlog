@@ -18,7 +18,7 @@
     <!-- Maps -->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/leaflet/leaflet.css" />
 
-	<?php if (file_exists(APPPATH.'third_party/assets/css/custom.css')) { echo '<link rel="stylesheet" href="'.base_url().'third_party/assets/css/custom.css">'; } ?>
+	<?php if (file_exists(APPPATH.'../assets/css/custom.css')) { echo '<link rel="stylesheet" href="'.base_url().'assets/css/custom.css">'; } ?>
 
     <link rel="icon" href="<?php echo base_url(); ?>favicon.ico">
 
