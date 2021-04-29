@@ -64,6 +64,15 @@
 
         </fieldset>
     </form>
+
+
+    <?php if ($this->input->post('band') == "SAT") { ?>
+    
+    <a href="#" onclick="load_was_map();" class="btn btn-primary">Show WAS Map</a><br><br>
+    <br>
+    
+    
+    <?php } ?>
 <?php
     if ($was_array) {
         $i = 1;
