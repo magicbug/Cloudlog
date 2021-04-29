@@ -492,4 +492,30 @@ class Awards extends CI_Controller {
 
 		$this->load->view('adif/data/exportall', $data);
 	}
+
+    public function was_map() {
+
+        $this->load->model('was');
+        $data['worked_bands'] = $this->was->get_worked_bands();
+
+
+        $bands[] = 'SAT';
+
+
+        $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
+
+            $postdata['lotw'] = 1;
+            $postdata['qsl'] = 1;
+            $postdata['worked'] = 1;
+            $postdata['confirmed'] = 1;
+            $postdata['notworked'] = 1;
+            $postdata['band'] = 'SAT';
+
+
+        $data['was_array'] = $this->was->get_was_array($bands, $postdata);
+        $data['was_summary'] = $this->was->get_was_summary($bands);
+
+        $data['page_title'] = "";
+        $this->load->view('awards/was/map', $data);
+    }
 }
