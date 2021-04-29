@@ -22,13 +22,14 @@
 	<script>
 	$(document).ready(function() {
 	  $('#map').usmap({
+        showLabels: false,
         'stateStyles': {
 	      fill: '#4ECDC4', 
 	      "stroke-width": 1,
 	      'stroke' : '#036'
 	    },
 	    'stateHoverStyles': {
-	      fill: 'red'
+	      fill: 'blue'
 	    },
 	    'stateSpecificStyles': {
             <?php foreach ($was_array as $was => $value) { ?>
