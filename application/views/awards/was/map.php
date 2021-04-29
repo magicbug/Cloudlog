@@ -37,7 +37,7 @@
         foreach ($value  as $key) {
                 if($key != "") {
                     if (strpos($key, '>W<') !== false) {
-                        echo "{fill: '#e34949'},";
+                        echo "{fill: 'orange'},";
                         break;
                     }
                     if (strpos($key, '>C<') !== false) {
@@ -45,7 +45,7 @@
                         break;
                     }
                     if (strpos($key, '-') !== false) {
-                        echo "{fill: 'white'},";
+                        echo "{fill: '#e34949'},";
                         break;
                     }
                 }
@@ -78,5 +78,11 @@
 </head>
 <body>
   <div id="map" style="width: 930px; height: 630px;"></div>
+
+  <ul>
+    <li>Red - Not Worked</li>
+    <li>Orange - Worked but not confirmed</li>
+    <li>Green - Confirmed</li>
+  </ul>
 </body>
 </html>
