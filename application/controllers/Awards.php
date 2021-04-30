@@ -493,29 +493,33 @@ class Awards extends CI_Controller {
 		$this->load->view('adif/data/exportall', $data);
 	}
 
+    /*
+        function was_map
+
+        This displays the WAS map and requires the $band_type
+    */
     public function was_map($band_type) {
 
         $this->load->model('was');
         $data['worked_bands'] = $this->was->get_worked_bands();
 
-
         $bands[] = $band_type;
-
 
         $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
 
-            $postdata['lotw'] = 1;
-            $postdata['qsl'] = 1;
-            $postdata['worked'] = 1;
-            $postdata['confirmed'] = 1;
-            $postdata['notworked'] = 1;
-            $postdata['band'] = $band_type;
+        $postdata['lotw'] = 1;
+        $postdata['qsl'] = 1;
+        $postdata['worked'] = 1;
+        $postdata['confirmed'] = 1;
+        $postdata['notworked'] = 1;
+        $postdata['band'] = $band_type;
 
 
         $data['was_array'] = $this->was->get_was_array($bands, $postdata);
         $data['was_summary'] = $this->was->get_was_summary($bands);
 
         $data['page_title'] = "";
+        
         $this->load->view('awards/was/map', $data);
     }
 }
