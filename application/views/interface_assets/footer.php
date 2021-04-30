@@ -23,9 +23,9 @@
 
 function load_was_map() {
     BootstrapDialog.show({
-            title: 'Worked All States Map',
+            title: 'Worked All States Map (<?php echo $this->input->post('band'); ?>)',
             cssClass: 'was-map-dialog',
-            message: $('<div></div>').load(site_url + '/awards/was_map')
+            message: $('<div></div>').load(site_url + '/awards/was_map/<?php echo $this->input->post('band'); ?>')
     });
 }
 

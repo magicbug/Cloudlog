@@ -66,12 +66,8 @@
     </form>
 
 
-    <?php if ($this->input->post('band') == "SAT") { ?>
-    
-    <a href="#" onclick="load_was_map();" class="btn btn-primary">Show WAS Map</a><br><br>
-    <br>
-    
-    
+    <?php if ($this->input->post('band')) { ?>
+    <button type="button" onclick="load_was_map();" class="btn btn-info" style="margin-bottom: 15px;"><i class="fas fa-globe-americas"></i> Show WAS Map</button>
     <?php } ?>
 <?php
     if ($was_array) {
