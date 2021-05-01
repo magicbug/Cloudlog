@@ -60,7 +60,7 @@ class API extends CI_Controller {
 
 	function edit($key) {
 		$this->load->model('user_model');
-		
+
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		$this->load->model('api_model');
@@ -426,12 +426,12 @@ class API extends CI_Controller {
 				{
 					break;
 				};
-				
+
 
 				if(isset($obj['station_profile_id'])) {
-					$this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL, false);
+					$this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL, false, false);
 				} else {
-					$this->logbook_model->import($record, 0, NULL, NULL, NULL, NULL, false);
+					$this->logbook_model->import($record, 0, NULL, NULL, NULL, NULL, false, false);
 				}
 
 			};
