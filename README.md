@@ -45,4 +45,3 @@ Cloudlog is supported by Patreon and donations via PayPal, thanks to the followi
 Paul (M0TZO), Tim (G4VXE), Paul (N8HM), Michelle (W5NYV), Mitchell (AD0HJ), Dan (M0TCB), Martin (DK3ML), Juan Carlos (EA5WA), Iain (M0PCB), Charlie (GM1TGY), Ondrej (OK1CDJ), Trystan (G0KAY), Oliver (DL6KBG), Volkmar Schirmer, Jordan (M0PIR), Thomas Ziegler, Mathis (DB9MAT), Ken (VE3HLS), Tyler (WL7T), Jeremy Taylor, Ben Kuhn, Eric Thresher, Michael Cullen, Juuso (OH1JW), Anthony Castiglia, Fernando Ramirez-Ferrer, Robert Dixon, Mark Percival, Julia (KV1V), Timo Tomasini, Ant (NU1U), Christopher Williams, Danny Barnes, Vic.
 
 If you'd like to donate to Cloudlog to help allow @magicbug spend less time doing commercial work and more time coding Cloudlog then you can donate via [PayPal](https://paypal.me/PGoodhall), [Github Sponsor](https://github.com/sponsors/magicbug) or become a [Patreon](https://www.patreon.com/2m0sql) 
- 
