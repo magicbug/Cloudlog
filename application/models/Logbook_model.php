@@ -1502,7 +1502,7 @@ class Logbook_model extends CI_Model {
      * $markQrz - used in ADIF import to mark QSOs as exported to QRZ Logbook when importing QSOs
      * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
      */
-	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $skipexport = false) {
+	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $skipexport = false, $operatorName = false) {
         $CI =& get_instance();
         $CI->load->library('frequency');
         $my_error = "";
@@ -1805,6 +1805,12 @@ class Logbook_model extends CI_Model {
             }
         }
 
+        if ($operatorName != false) {
+			$operatorName = $this->session->userdata('user_callsign');
+		} else {
+			$operatorName = (!empty($record['operator'])) ? $record['operator'] : '';
+		}
+
         // If user checked to mark QSOs as uploaded to QRZ Logbook, or else we try to find info in ADIF import.
         if ($markQrz != null) {
             $input_qrzcom_qso_upload_status = 'Y';
@@ -1918,7 +1924,7 @@ class Logbook_model extends CI_Model {
                 'COL_NOTES_INTL' => (!empty($record['notes_intl'])) ? $record['notes_intl'] : '',
                 'COL_NR_BURSTS' => (!empty($record['nr_bursts'])) ? $record['nr_bursts'] : null,
                 'COL_NR_PINGS' => (!empty($record['nr_pings'])) ? $record['nr_pings'] : null,
-                'COL_OPERATOR' => (!empty($record['operator'])) ? $record['operator'] : '',
+                'COL_OPERATOR' => $operatorName,
                 'COL_OWNER_CALLSIGN' => (!empty($record['owner_callsign'])) ? $record['owner_callsign'] : '',
                 'COL_PFX' => (!empty($record['pfx'])) ? $record['pfx'] : '',
                 'COL_PRECEDENCE' => (!empty($record['precedence'])) ? $record['precedence'] : '',
@@ -2170,7 +2176,7 @@ class Logbook_model extends CI_Model {
 
         print("$count updated\n");
     }
-	
+
 	public function check_missing_grid_id($all){
         // get all records with no COL_GRIDSQUARE
         $this->db->select("COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_TIME_OFF");

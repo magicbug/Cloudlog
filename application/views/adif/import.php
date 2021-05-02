@@ -82,6 +82,15 @@
                         </div>
                     </div>
 
+					<div class="form-group row">
+						<div class="col-md-10">
+							<div class="form-check-inline">
+								<input class="form-check-input" type="checkbox" name="operatorName" value="1" id="operatorName">
+								<label class="form-check-label" for="operatorName">Always use login-callsign as operator-name on import</label>
+							</div>
+						</div>
+					</div>
+
                   <button type="submit" class="btn-sm btn-primary mb-2" value="Upload">Upload</button>
                 </form>
                 </div>
