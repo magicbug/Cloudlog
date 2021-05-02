@@ -240,6 +240,6 @@ color: #ffffff;
 
 @media (min-width: 576px) {
     .was-map-dialog .modal-dialog {
-        max-width: 70% !important;
+        max-width: 73% !important;
     }
   }
