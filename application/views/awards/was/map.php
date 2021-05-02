@@ -42,7 +42,7 @@
                         break;
                     }
                     if (strpos($key, '>C<') !== false) {
-                        echo "{fill: '#32a852'},";
+                        echo "{fill: '#DB4325'},";
                         break;
                     }
                     if (strpos($key, '-') !== false) {
