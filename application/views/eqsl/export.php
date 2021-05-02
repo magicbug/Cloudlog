@@ -48,11 +48,6 @@
 		}
 	}
 ?>
-
-	<?php if($eqsl_response) { ?>
-		<h3>eQSL Response:</h3>
-		<?php echo $eqsl_response; ?>
-	<?php } ?>
 </div>
 
 </div>

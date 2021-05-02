@@ -551,7 +551,7 @@ class eqsl extends CI_Controller {
 			
 			// Dump out a table with the results
 			$data['eqsl_results_table'] = $table;
-			$data['eqsl_response'] = $result;
+			log_message('debug', $result);
 		}
 		else
 		{
