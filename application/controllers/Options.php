@@ -99,4 +99,50 @@ class Options extends CI_Controller {
 		}
     }
 
+		// function used to display the /radio url
+		function radio() {
+	
+			$data['page_title'] = "Cloudlog Options";
+			$data['sub_heading'] = "Radio Settings";
+	
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('options/radios');
+			$this->load->view('interface_assets/footer');
+		}
+
+	// Handles saving the radio options to the options system.
+	function radio_save() {
+
+		// Get Language Options
+
+		$data['page_title'] = "Cloudlog Options";
+		$data['sub_heading'] = "Radio Settings";
+
+		$this->load->helper(array('form', 'url'));
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('radioTimeout', 'radioTimeout', 'required');
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('options/radios');
+			$this->load->view('interface_assets/footer');
+		}
+		else
+		{
+			// Update theme choice within the options system
+			$radioTimeout_update = $this->optionslib->update('cat_timeout_interval', $this->input->post('radioTimeout'));
+
+			// If theme update is complete set a flashsession with a success note
+			if($radioTimeout_update == TRUE) {
+				$this->session->set_flashdata('success', 'Radio Timeout Warning changed to '.$this->input->post('radioTimeout').' seconds');
+			}
+
+			// Redirect back to /appearance
+			redirect('/options/radio');
+		}
+    }
+
 }
