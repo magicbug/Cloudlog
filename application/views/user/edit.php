@@ -314,6 +314,76 @@
 			</div>
 
 		</div>
+		<br>
+		<div class="row">
+			<div class="col-md">
+				<div class="card">
+					<div class="card-header">
+						Logbook fields
+					</div>
+					<div class="card-body">
+						<div class="form-row">
+						<div class="form-group col-md-3">
+							<label for="column1">Choose column 1</label>
+							<select class="custom-select" id="column1" name="user_column1">
+								<option value="Band" <?php if ($user_column1 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+								<option value="Mode" <?php if ($user_column1 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+								<option value="RSTS" <?php if ($user_column1 == "RSTS") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rst_sent'); ?></option>
+								<option value="RSTR" <?php if ($user_column1 == "RSTR") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rst_recv'); ?></option>
+								<option value="Country" <?php if ($user_column1 == "Country") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_country'); ?></option>
+								<option value="IOTA" <?php if ($user_column1 == "IOTA") { echo " selected =\"selected\""; } ?>>IOTA</option>
+								<option value="State" <?php if ($user_column1 == "State") { echo " selected =\"selected\""; } ?>>State</option>
+								<option value="Grid" <?php if ($user_column1 == "Grid") { echo " selected =\"selected\""; } ?>>Gridsquare</option>
+							</select>
+						</div>
+
+							<div class="form-group col-md-3">
+							<label for="column2">Choose column 2</label>
+							<select class="custom-select" id="column2" name="user_column2">
+								<option value="Band" <?php if ($user_column2 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+								<option value="Mode" <?php if ($user_column2 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+								<option value="RSTS" <?php if ($user_column2 == "RSTS") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rst_sent'); ?></option>
+								<option value="RSTR" <?php if ($user_column2 == "RSTR") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rst_recv'); ?></option>
+								<option value="Country" <?php if ($user_column2 == "Country") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_country'); ?></option>
+								<option value="IOTA" <?php if ($user_column2 == "IOTA") { echo " selected =\"selected\""; } ?>>IOTA</option>
+								<option value="State" <?php if ($user_column2 == "State") { echo " selected =\"selected\""; } ?>>State</option>
+								<option value="Grid" <?php if ($user_column2 == "Grid") { echo " selected =\"selected\""; } ?>>Gridsquare</option>
+							</select>
+							</div>
+
+							<div class="form-group col-md-3">
+							<label for="column3">Choose column 3</label>
+							<select class="custom-select" id="column3" name="user_column3">
+								<option value="Band" <?php if ($user_column3 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+								<option value="Mode" <?php if ($user_column3 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+								<option value="RSTS" <?php if ($user_column3 == "RSTS") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rst_sent'); ?></option>
+								<option value="RSTR" <?php if ($user_column3 == "RSTR") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rst_recv'); ?></option>
+								<option value="Country" <?php if ($user_column3 == "Country") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_country'); ?></option>
+								<option value="IOTA" <?php if ($user_column3 == "IOTA") { echo " selected =\"selected\""; } ?>>IOTA</option>
+								<option value="State" <?php if ($user_column3 == "State") { echo " selected =\"selected\""; } ?>>State</option>
+								<option value="Grid" <?php if ($user_column3 == "Grid") { echo " selected =\"selected\""; } ?>>Gridsquare</option>
+							</select>
+							</div>
+
+							<div class="form-group col-md-3">
+							<label for="column4">Choose column 4</label>
+							<select class="custom-select" id="column4" name="user_column4">
+								<option value="Band" <?php if ($user_column4 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+								<option value="Mode" <?php if ($user_column4 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+								<option value="RSTS" <?php if ($user_column4 == "RSTS") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rst_sent'); ?></option>
+								<option value="RSTR" <?php if ($user_column4 == "RSTR") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rst_recv'); ?></option>
+								<option value="Country" <?php if ($user_column4 == "Country") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_country'); ?></option>
+								<option value="IOTA" <?php if ($user_column4 == "IOTA") { echo " selected =\"selected\""; } ?>>IOTA</option>
+								<option value="State" <?php if ($user_column4 == "State") { echo " selected =\"selected\""; } ?>>State</option>
+								<option value="Grid" <?php if ($user_column4 == "Grid") { echo " selected =\"selected\""; } ?>>Gridsquare</option>
+							</select>
+						</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
 
 	<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 	<br>
@@ -321,6 +391,4 @@
 	<br>
 	<br>
 </form>
-
 </div>
-
