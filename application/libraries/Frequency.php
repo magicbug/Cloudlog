@@ -154,5 +154,11 @@ class Frequency {
 		}
 		return $Band;
 	}
+
+	 // converts a frequency in Hz to MHz output
+	 function hz_to_mhz($frequency)
+	 {
+		 return number_format (($frequency / 1000 / 1000), 3) . " MHz";
+	 }
 }
 /* End of file Frequency.php */
