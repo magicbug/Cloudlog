@@ -238,8 +238,8 @@ color: #ffffff;
         width: 100%;
     }
 
-@media (min-width: 576px) {
-    .was-map-dialog .modal-dialog {
-        max-width: 73% !important;
+    @media (min-width: 576px) {
+        .was-map-dialog .modal-dialog {
+            max-width: 73% !important;
+        }
     }
-  }
