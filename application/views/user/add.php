@@ -136,6 +136,62 @@
 				<option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
 			</select>
 		</div>
+		<div class="form-row">
+			<div class="form-group col-md-3">
+			<label for="column1"><?php echo $this->lang->line('account_column1_text'); ?></label>
+			<select class="custom-select" id="column1" name="user_column1">
+				<option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+				<option value="Mode" selected ='selected'> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+				<option value="RSTS"><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
+				<option value="RSTR"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
+				<option value="Country"><?php echo $this->lang->line('general_word_country'); ?></option>
+				<option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?></option>
+				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
+				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+			</select>
+			</div>
+
+			<div class="form-group col-md-3">
+			<label for="column2"><?php echo $this->lang->line('account_column2_text'); ?></label>
+			<select class="custom-select" id="column2" name="user_column2">
+				<option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+				<option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+				<option value="RSTS" selected ='selected'><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
+				<option value="RSTR"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
+				<option value="Country"><?php echo $this->lang->line('general_word_country'); ?></option>
+				<option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?></option>
+				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
+				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+			</select>
+			</div>
+
+			<div class="form-group col-md-3">
+			<label for="column3"><?php echo $this->lang->line('account_column3_text'); ?></label>
+			<select class="custom-select" id="column3" name="user_column3">
+				<option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+				<option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+				<option value="RSTS"><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
+				<option value="RSTR" selected ='selected'><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
+				<option value="Country"><?php echo $this->lang->line('general_word_country'); ?></option>
+				<option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?></option>
+				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
+				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+			</select>
+			</div>
+
+			<div class="form-group col-md-3">
+			<label for="column4"><?php echo $this->lang->line('account_column4_text'); ?></label>
+			<select class="custom-select" id="column4" name="user_column4">
+				<option value="Band" selected ='selected'> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+				<option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+				<option value="RSTS"><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
+				<option value="RSTR"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
+				<option value="Country"><?php echo $this->lang->line('general_word_country'); ?></option>
+				<option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?></option>
+				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
+				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+			</select>
+		</div>
 
 		<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 		<button type="submit" class="btn btn-primary">Create Account</button>

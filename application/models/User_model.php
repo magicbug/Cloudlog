@@ -114,6 +114,10 @@ class User_Model extends CI_Model {
 				'user_stylesheet' => xss_clean($user_stylesheet),
 				'user_sota_lookup' => xss_clean($user_sota_lookup),
 				'user_show_notes' => xss_clean($user_show_notes),
+				'user_column1' => xss_clean($user_column1),
+				'user_column2' => xss_clean($user_column2),
+				'user_column3' => xss_clean($user_column3),
+				'user_column4' => xss_clean($user_column4),
 			);
 
 			// Check the password is valid
@@ -157,6 +161,10 @@ class User_Model extends CI_Model {
 					'user_stylesheet' => xss_clean($fields['user_stylesheet']),
 					'user_sota_lookup' => xss_clean($fields['user_sota_lookup']),
 					'user_show_notes' => xss_clean($fields['user_show_notes']),
+					'user_column1' => xss_clean($fields['user_column1']),
+					'user_column2' => xss_clean($fields['user_column2']),
+					'user_column3' => xss_clean($fields['user_column3']),
+					'user_column4' => xss_clean($fields['user_column4']),
 				);
 
 				// Check to see if the user is allowed to change user levels
@@ -266,6 +274,10 @@ class User_Model extends CI_Model {
 			'user_stylesheet' => $u->row()->user_stylesheet,
 			'user_sota_lookup' => $u->row()->user_sota_lookup,
 			'user_show_notes' => $u->row()->user_show_notes,
+			'user_column1' => $u->row()->user_column1,
+			'user_column2' => $u->row()->user_column2,
+			'user_column3' => $u->row()->user_column3,
+			'user_column4' => $u->row()->user_column4,
 		);
 
 		$this->session->set_userdata($userdata);
