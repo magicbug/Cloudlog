@@ -191,7 +191,7 @@
 							<?php if($row['radio'] == "SatPC32") { ?>
 								<?php echo $row['sat_name']; ?>
 							<?php } else { ?>
-								<?php echo frequency_display_string($row['frequency']); ?> (<?php echo $row['mode']; ?>)
+								<?php echo $this->frequency->hz_to_mhz($row['frequency']); ?> (<?php echo $row['mode']; ?>)
 							<?php } ?>
 						</td>
 					</tr>
@@ -200,14 +200,6 @@
 				</table>
 
 		<?php } ?>
-
-		<?php
-		// converts a frequency in Hz (e.g. 3650) to 3.650 MHz
-		function frequency_display_string($frequency)
-		{
-			return number_format (($frequency / 1000 / 1000), 3) . " MHz";
-		}
-		?>
 
     	<table class="table table-striped">
 			<tr class="titles">
