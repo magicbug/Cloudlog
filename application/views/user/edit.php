@@ -319,12 +319,12 @@
 			<div class="col-md">
 				<div class="card">
 					<div class="card-header">
-						Logbook fields
+						<?php echo $this->lang->line('account_logbook_fields'); ?>
 					</div>
 					<div class="card-body">
 						<div class="form-row">
 						<div class="form-group col-md-3">
-							<label for="column1">Choose column 1</label>
+							<label for="column1"><?php echo $this->lang->line('account_column1_text'); ?></label>
 							<select class="custom-select" id="column1" name="user_column1">
 								<option value="Band" <?php if ($user_column1 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
 								<option value="Mode" <?php if ($user_column1 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
@@ -338,7 +338,7 @@
 						</div>
 
 							<div class="form-group col-md-3">
-							<label for="column2">Choose column 2</label>
+							<label for="column2"><?php echo $this->lang->line('account_column2_text'); ?></label>
 							<select class="custom-select" id="column2" name="user_column2">
 								<option value="Band" <?php if ($user_column2 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
 								<option value="Mode" <?php if ($user_column2 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
@@ -352,7 +352,7 @@
 							</div>
 
 							<div class="form-group col-md-3">
-							<label for="column3">Choose column 3</label>
+							<label for="column3"><?php echo $this->lang->line('account_column3_text'); ?></label>
 							<select class="custom-select" id="column3" name="user_column3">
 								<option value="Band" <?php if ($user_column3 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
 								<option value="Mode" <?php if ($user_column3 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
@@ -366,7 +366,7 @@
 							</div>
 
 							<div class="form-group col-md-3">
-							<label for="column4">Choose column 4</label>
+							<label for="column4"><?php echo $this->lang->line('account_column4_text'); ?></label>
 							<select class="custom-select" id="column4" name="user_column4">
 								<option value="Band" <?php if ($user_column4 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
 								<option value="Mode" <?php if ($user_column4 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>

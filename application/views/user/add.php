@@ -138,7 +138,7 @@
 		</div>
 		<div class="form-row">
 			<div class="form-group col-md-3">
-			<label for="column1">Column 1.</label>
+			<label for="column1"><?php echo $this->lang->line('account_column1_text'); ?></label>
 			<select class="custom-select" id="column1" name="user_column1">
 				<option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
 				<option value="Mode" selected ='selected'> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
@@ -152,7 +152,7 @@
 			</div>
 
 			<div class="form-group col-md-3">
-			<label for="column2">Column 2.</label>
+			<label for="column2"><?php echo $this->lang->line('account_column2_text'); ?></label>
 			<select class="custom-select" id="column2" name="user_column2">
 				<option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
 				<option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
@@ -166,7 +166,7 @@
 			</div>
 
 			<div class="form-group col-md-3">
-			<label for="column3">Column 3.</label>
+			<label for="column3"><?php echo $this->lang->line('account_column3_text'); ?></label>
 			<select class="custom-select" id="column3" name="user_column3">
 				<option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
 				<option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
@@ -180,7 +180,7 @@
 			</div>
 
 			<div class="form-group col-md-3">
-			<label for="column4">Column 4.</label>
+			<label for="column4"><?php echo $this->lang->line('account_column4_text'); ?></label>
 			<select class="custom-select" id="column4" name="user_column4">
 				<option value="Band" selected ='selected'> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
 				<option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>

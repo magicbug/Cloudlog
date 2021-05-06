@@ -2,6 +2,15 @@
 
 class User extends CI_Controller {
 
+	function __construct()
+	{
+		parent::__construct();
+
+		// Load language files
+		$this->lang->load(array(
+			'account',
+		));
+	}
 
 	public function index()
 	{
