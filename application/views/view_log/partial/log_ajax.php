@@ -10,48 +10,48 @@
 			echo '<td>';
 				switch($this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-					case 'RSTS': echo $this->lang->line('gen_hamradio_rst_sent'); break;
-					case 'RSTR': echo $this->lang->line('gen_hamradio_rst_recv'); break;
+					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
+					case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
 					case 'Country': echo $this->lang->line('general_word_country'); break;
-					case 'IOTA': echo 'IOTA'; break;
-					case 'State': echo 'State'; break;
-					case 'Grid': echo 'Gridsquare'; break;
+					case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
+					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
+					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
 				}
 			echo '</td>';
 			echo '<td>';
 				switch($this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-					case 'RSTS': echo $this->lang->line('gen_hamradio_rst_sent'); break;
-					case 'RSTR': echo $this->lang->line('gen_hamradio_rst_recv'); break;
+					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
+					case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
 					case 'Country': echo $this->lang->line('general_word_country'); break;
-					case 'IOTA': echo 'IOTA'; break;
-					case 'State': echo 'State'; break;
-					case 'Grid': echo 'Gridsquare'; break;
+					case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
+					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
+					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
 				}
 			echo '</td>';
 			echo '<td>';
 				switch($this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-					case 'RSTS': echo $this->lang->line('gen_hamradio_rst_sent'); break;
-					case 'RSTR': echo $this->lang->line('gen_hamradio_rst_recv'); break;
+					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
+					case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
 					case 'Country': echo $this->lang->line('general_word_country'); break;
-					case 'IOTA': echo 'IOTA'; break;
-					case 'State': echo 'State'; break;
-					case 'Grid': echo 'Gridsquare'; break;
+					case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
+					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
+					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
 				}
 			echo '</td>';
 			echo '<td>';
 				switch($this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-					case 'RSTS': echo $this->lang->line('gen_hamradio_rst_sent'); break;
-					case 'RSTR': echo $this->lang->line('gen_hamradio_rst_recv'); break;
+					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
+					case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
 					case 'Country': echo $this->lang->line('general_word_country'); break;
-					case 'IOTA': echo 'IOTA'; break;
-					case 'State': echo 'State'; break;
-					case 'Grid': echo 'Gridsquare'; break;
+					case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
+					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
+					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
 				}
 			echo '</td>';

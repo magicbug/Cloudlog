@@ -92,6 +92,9 @@ $lang['gen_hamradio_iota_reference'] = 'IOTA Reference';
 $lang['gen_hamradio_sota_reference'] = 'SOTA Reference';
 $lang['gen_hamradio_wwff_reference'] = 'WWFF Reference';
 $lang['gen_hamradio_dok'] = 'DOK';
+$lang['gen_hamradio_state'] = 'State';
+$lang['gen_hamradio_iota'] = 'IOTA';
+$lang['gen_hamradio_gridsquare'] = 'Gridsquare';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
