@@ -70,12 +70,12 @@
                     <?php if($this->config->item('display_freq') == true) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_frequency'); ?></td>
-                        <td><?php echo frequency_display_string($row->COL_FREQ); ?></td>
+                        <td><?php echo $this->frequency->hz_to_mhz($row->COL_FREQ); ?></td>
                     </tr>
                     <?php if($row->COL_FREQ_RX != 0) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_frequency_rx'); ?></td>
-                        <td><?php echo frequency_display_string($row->COL_FREQ_RX); ?></td>
+                        <td><?php echo $this->frequency->hz_to_mhz($row->COL_FREQ_RX); ?></td>
                     </tr>
                     <?php }} ?>
 
@@ -456,10 +456,3 @@ var callsign = "<?php echo $row->COL_CALL; ?>";
     <div hidden id ='qsoid'><?php echo $row->COL_PRIMARY_KEY; ?></div>
 
 <?php } } ?>
-<?php 
-  // converts a frequency in Hz (e.g. 3650) to 3.650 MHz 
-  function frequency_display_string($frequency)
-  {
-    return number_format (($frequency / 1000 / 1000), 3) . " MHz";
-  }
-?>
