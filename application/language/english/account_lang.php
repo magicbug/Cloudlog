@@ -7,3 +7,4 @@ $lang['account_column1_text'] = 'Choose column 1';
 $lang['account_column2_text'] = 'Choose column 2';
 $lang['account_column3_text'] = 'Choose column 3';
 $lang['account_column4_text'] = 'Choose column 4';
+$lang['account_column5_text'] = 'Choose column 5 (only for logbook)';

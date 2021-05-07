@@ -191,6 +191,21 @@
 				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
 				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
 			</select>
+			</div>
+
+			<div class="form-group col-md-3">
+			<label for="column5"><?php echo $this->lang->line('account_column5_text'); ?></label>
+				<select class="custom-select" id="column5" name="user_column5">
+					<option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+					<option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+					<option value="RSTS"><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
+					<option value="RSTR"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
+					<option value="Country" selected ='selected'><?php echo $this->lang->line('general_word_country'); ?></option>
+					<option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?></option>
+					<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
+					<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+				</select>
+			</div>
 		</div>
 
 		<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />

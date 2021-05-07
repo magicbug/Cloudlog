@@ -55,9 +55,20 @@
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
 				}
 			echo '</td>';
-			?>
-            <td><?php echo $this->lang->line('general_word_country'); ?></td>
-            <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
+			echo '<td>';
+			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
+				case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
+				case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
+				case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
+				case 'Country': echo $this->lang->line('general_word_country'); break;
+				case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
+				case 'State': echo $this->lang->line('gen_hamradio_state'); break;
+				case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
+				case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+			}
+			echo '</td>';
+
+            	if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td>QSL</td>
                 <?php if($this->session->userdata('user_eqsl_name') != "") { ?>
                     <td>eQSL</td>
