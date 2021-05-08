@@ -149,10 +149,18 @@
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 			}
 			echo '</td>';
-			?>
-
-            <td><?php echo ucwords(strtolower(($row->COL_COUNTRY))); ?></td>
-            <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
+			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
+				case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; break;
+				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">' . $row->COL_STX . '</span>';}if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
+				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">' . $row->COL_SRX . '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
+				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
+				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
+				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
+				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
+				case 'State':   echo '<td>' . ($row->COL_STATE); break;
+			}
+			echo '</td>';
+				if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td class="qsl">
 				<span class="qsl-<?php
                 switch ($row->COL_QSL_SENT) {
