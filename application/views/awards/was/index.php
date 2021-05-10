@@ -59,11 +59,13 @@
                 <div class="col-md-10">
                     <button id="button2id" type="reset" name="button2id" class="btn btn-warning">Reset</button>
                     <button id="button1id" type="submit" name="button1id" class="btn btn-primary">Show</button>
+					<button type="button" onclick="load_was_map();" class="btn btn-info"><i class="fas fa-globe-americas"></i> Show WAS Map</button>
                 </div>
             </div>
 
         </fieldset>
     </form>
+
 <?php
     if ($was_array) {
         $i = 1;

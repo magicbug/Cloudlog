@@ -5,7 +5,7 @@ class Lotw extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Controller: Lotw
 	|--------------------------------------------------------------------------
-	| 
+	|
 	| This Controller handles all things LOTW, upload and download.
 	|
 	|
@@ -23,7 +23,7 @@ class Lotw extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
-	
+
 		// Load language files
 		$this->lang->load('lotw');
 	}
@@ -32,7 +32,7 @@ class Lotw extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Function: index
 	|--------------------------------------------------------------------------
-	| 
+	|
 	| Default function for the controller which loads when doing /lotw
 	| this shows all the uploaded lotw p12 certificates the user has uploaded
 	|
@@ -65,7 +65,7 @@ class Lotw extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Function: cert_upload
 	|--------------------------------------------------------------------------
-	| 
+	|
 	| Nothing fancy just shows the cert_upload form for uploading p12 files
 	|
 	*/
@@ -83,14 +83,14 @@ class Lotw extends CI_Controller {
 		// Load Views
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('lotw_views/upload_cert', array('error' => ' ' ));
-		$this->load->view('interface_assets/footer');		
+		$this->load->view('interface_assets/footer');
 	}
 
 	/*
 	|--------------------------------------------------------------------------
 	| Function: do_cert_upload
 	|--------------------------------------------------------------------------
-	| 
+	|
 	| do_cert_upload is called from cert_upload form submit and handles uploading
 	| and processing of p12 files and storing the data into mysql
 	|
@@ -127,7 +127,7 @@ class Lotw extends CI_Controller {
 			// Load Views
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('lotw_views/upload_cert', $error);
-			$this->load->view('interface_assets/footer');	
+			$this->load->view('interface_assets/footer');
         }
         else
         {
@@ -141,10 +141,10 @@ class Lotw extends CI_Controller {
 
         	// Check DXCC & Store Country Name
 			$this->load->model('Logbook_model');
-			
+
 			if($this->input->post('dxcc') != "") {
 				$dxcc = $this->input->post('dxcc');
-			} else{ 
+			} else{
 				$dxcc_check = $this->Logbook_model->check_dxcc_table($info['issued_callsign'], $info['validFrom']);
 				$dxcc = $dxcc_check[1];
 			}
@@ -193,7 +193,7 @@ class Lotw extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Function: lotw_upload
 	|--------------------------------------------------------------------------
-	| 
+	|
 	| This function Uploads to LOTW
 	|
 	*/
@@ -242,9 +242,9 @@ class Lotw extends CI_Controller {
 					if(empty($data['qsos']->result())){
 						echo $station_profile->station_callsign." (".$station_profile->station_profile_name.") No QSOs to Upload <br>";
 					    continue;
-					} 
+					}
 
-					foreach ($data['qsos']->result() as $temp_qso) { 
+					foreach ($data['qsos']->result() as $temp_qso) {
 						array_push($qso_id_array, $temp_qso->COL_PRIMARY_KEY);
 					}
 
@@ -266,25 +266,25 @@ class Lotw extends CI_Controller {
 
 					//The URL that accepts the file upload.
 					$url = 'https://lotw.arrl.org/lotw/upload';
-					 
+
 					//The name of the field for the uploaded file.
 					$uploadFieldName = 'upfile';
-					 
+
 					//The full path to the file that you want to upload
 					$filePath = realpath($filename_for_saving);
-					 
+
 					//Initiate cURL
 					$ch = curl_init();
-					 
+
 					//Set the URL
 					curl_setopt($ch, CURLOPT_URL, $url);
-					 
+
 					//Set the HTTP request to POST
 					curl_setopt($ch, CURLOPT_POST, true);
-					 
+
 					//Tell cURL to return the output as a string.
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-					 
+
 					//If the function curl_file_create exists
 					if(function_exists('curl_file_create')){
 					    //Use the recommended way, creating a CURLFile object.
@@ -298,23 +298,23 @@ class Lotw extends CI_Controller {
 					    //starting with an @
 					    curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
 					}
-					 
+
 					//Setup our POST fields
 					$postFields = array(
 					    $uploadFieldName => $filePath
 					);
-					 
+
 					curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
-					 
+
 					//Execute the request
 					$result = curl_exec($ch);
-					 
+
 					//If an error occured, throw an exception
 					//with the error message.
 					if(curl_errno($ch)){
 					    throw new Exception(curl_error($ch));
 					}
-					 
+
 					$pos = strpos($result, "<!-- .UPL.  accepted -->");
 
 					if ($pos === false) {
@@ -353,7 +353,7 @@ class Lotw extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Function: delete_cert
 	|--------------------------------------------------------------------------
-	| 
+	|
 	| Deletes LOTW certificate from the MySQL table
 	|
 	*/
@@ -375,7 +375,7 @@ class Lotw extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Function: decrypt_key
 	|--------------------------------------------------------------------------
-	| 
+	|
 	| Accepts p12 file and optional password and encrypts the file returning
 	| the required fields for LOTW and the PEM Key
 	|
@@ -429,12 +429,12 @@ class Lotw extends CI_Controller {
 
 		return $data;
 	}
-	
+
 	/*
 	|--------------------------------------------------------------------------
 	| Function: loadFromFile
 	|--------------------------------------------------------------------------
-	| 
+	|
 	|	$filepath is the ADIF file, $display_view is used to hide the output if its internal script
 	|
 	|	Internal function that takes the LoTW ADIF and imports into the log
@@ -498,7 +498,7 @@ class Lotw extends CI_Controller {
                     $station_id = $this->logbook_model->find_correct_station_id($record['station_callsign'], $record['my_gridsquare']);
 
                     if ($station_id != NULL) {
-                        $result = $this->logbook_model->import($record, $station_id, NULL, TRUE, NULL, NULL, true);  // Create the Entry
+                        $result = $this->logbook_model->import($record, $station_id, NULL, TRUE, NULL, NULL, true, false);  // Create the Entry
                         if ($result == "") {
                             $lotw_status = 'QSO imported';
                         } else {
@@ -557,8 +557,8 @@ class Lotw extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Function: lotw_download
 	|--------------------------------------------------------------------------
-	| 
-	|	Collects users with LoTW usernames and passwords and runs through them 
+	|
+	|	Collects users with LoTW usernames and passwords and runs through them
 	|	downloading matching QSOs.
 	|
 	*/
@@ -834,11 +834,11 @@ class Lotw extends CI_Controller {
 
 	/*
 		Load the ARRL LOTW User Activity CSV and saves into uploads/lotw_users.csv
-	*/ 
+	*/
 	public function load_users() {
 		$contents = file_get_contents('https://lotw.arrl.org/lotw-user-activity.csv', true);
 
-        if($contents === FALSE) { 
+        if($contents === FALSE) {
             echo "something went wrong";
         } else {
             $file = './updates/lotw_users.csv';
@@ -909,7 +909,7 @@ class Lotw extends CI_Controller {
 
 		return array_search(strtoupper($satname),$arr,true);
 	}
-	
+
 	/*
 	|	Function: mode_map
 	|	Requires: mode as $mode, submode as $submode

@@ -2,6 +2,15 @@
 
 class User extends CI_Controller {
 
+	function __construct()
+	{
+		parent::__construct();
+
+		// Load language files
+		$this->lang->load(array(
+			'account',
+		));
+	}
 
 	public function index()
 	{
@@ -57,6 +66,11 @@ class User extends CI_Controller {
                 $data['user_stylesheet'] = $this->input->post('user_stylesheet');
 				$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 				$data['user_show_notes'] = $this->input->post('user_show_notes');
+				$data['user_column1'] = $this->input->post('user_column1');
+				$data['user_column2'] = $this->input->post('user_column2');
+				$data['user_column3'] = $this->input->post('user_column3');
+				$data['user_column4'] = $this->input->post('user_column4');
+				$data['user_column5'] = $this->input->post('user_column5');
 				$this->load->view('user/add', $data);
 			} else {
 				$this->load->view('user/add', $data);
@@ -65,7 +79,25 @@ class User extends CI_Controller {
 		}
 		else
 		{
-			switch($this->user_model->add($this->input->post('user_name'), $this->input->post('user_password'), $this->input->post('user_email'), $this->input->post('user_type'), $this->input->post('user_firstname'), $this->input->post('user_lastname'), $this->input->post('user_callsign'), $this->input->post('user_locator'), $this->input->post('user_timezone'), $this->input->post('user_measurement_base'), $this->input->post('user_date_format'), $this->input->post('user_stylesheet'), $this->input->post('user_sota_lookup'), $this->input->post('user_show_notes'))) {
+			switch($this->user_model->add($this->input->post('user_name'),
+				$this->input->post('user_password'),
+				$this->input->post('user_email'),
+				$this->input->post('user_type'),
+				$this->input->post('user_firstname'),
+				$this->input->post('user_lastname'),
+				$this->input->post('user_callsign'),
+				$this->input->post('user_locator'),
+				$this->input->post('user_timezone'),
+				$this->input->post('user_measurement_base'),
+				$this->input->post('user_date_format'),
+				$this->input->post('user_stylesheet'),
+				$this->input->post('user_sota_lookup'),
+				$this->input->post('user_show_notes'),
+				$this->input->post('user_column1'),
+				$this->input->post('user_column2'),
+				$this->input->post('user_column3'),
+				$this->input->post('user_column4'),
+				$this->input->post('user_column5'))) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
 					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';
@@ -97,6 +129,11 @@ class User extends CI_Controller {
             $data['user_stylesheet'] = $this->input->post('user_stylesheet');
 			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 			$data['user_show_notes'] = $this->input->post('user_show_notes');
+			$data['user_column1'] = $this->input->post('user_column1');
+			$data['user_column2'] = $this->input->post('user_column2');
+			$data['user_column3'] = $this->input->post('user_column3');
+			$data['user_column4'] = $this->input->post('user_column4');
+			$data['user_column5'] = $this->input->post('user_column5');
 			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -265,6 +302,36 @@ class User extends CI_Controller {
 				$data['user_show_notes'] = $q->user_show_notes;
 			}
 
+			if($this->input->post('user_column1')) {
+				$data['user_column1'] = $this->input->post('user_column1', true);
+			} else {
+				$data['user_column1'] = $q->user_column1;
+			}
+
+			if($this->input->post('user_column2')) {
+				$data['user_column2'] = $this->input->post('user_column2', true);
+			} else {
+				$data['user_column2'] = $q->user_column2;
+			}
+
+			if($this->input->post('user_column3')) {
+				$data['user_column3'] = $this->input->post('user_column3', true);
+			} else {
+				$data['user_column3'] = $q->user_column3;
+			}
+
+			if($this->input->post('user_column4')) {
+				$data['user_column4'] = $this->input->post('user_column4', true);
+			} else {
+				$data['user_column4'] = $q->user_column4;
+			}
+
+			if($this->input->post('user_column5')) {
+				$data['user_column5'] = $this->input->post('user_column5', true);
+			} else {
+				$data['user_column5'] = $q->user_column5;
+			}
+
 			$this->load->view('user/edit', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -308,6 +375,12 @@ class User extends CI_Controller {
             $data['user_stylesheet'] = $this->input->post('user_stylesheet');
 			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 			$data['user_show_notes'] = $this->input->post('user_show_notes');
+			$data['user_column1'] = $this->input->post('user_column1');
+			$data['user_column2'] = $this->input->post('user_column2');
+			$data['user_column3'] = $this->input->post('user_column3');
+			$data['user_column4'] = $this->input->post('user_column4');
+			$data['user_column4'] = $this->input->post('user_column4');
+			$data['user_column5'] = $this->input->post('user_column5');
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}

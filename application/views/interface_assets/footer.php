@@ -18,6 +18,19 @@
   var icon_dot_url = "<?php echo base_url();?>assets/images/dot.png";
 </script>
 
+
+<script>
+
+function load_was_map() {
+    BootstrapDialog.show({
+            title: 'Worked All States Map ('+$('#band2').val()+')',
+            cssClass: 'was-map-dialog',
+            message: $('<div></div>').load(site_url + '/awards/was_map/' + $('#band2').val())
+    });
+}
+
+</script>
+
 <?php if ($this->uri->segment(1) == "adif") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>

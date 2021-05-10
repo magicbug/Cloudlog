@@ -346,12 +346,14 @@ class Logbook_model extends CI_Model {
         $this->db->where('station_id', $station_id);
         $this->db->where('COL_STATE', $state);
         $this->db->where_in('COL_DXCC', ['291', '6', '110']);
-        if($band != "SAT") {
-            $this->db->where('COL_PROP_MODE !=', 'SAT');
-            $this->db->where('COL_BAND', $band);
-        } else {
-            $this->db->where('COL_PROP_MODE', "SAT");
-        }
+        if($band != 'All') {
+			if($band != "SAT") {
+				$this->db->where('COL_PROP_MODE !=', 'SAT');
+				$this->db->where('COL_BAND', $band);
+			} else {
+				$this->db->where('COL_PROP_MODE', "SAT");
+			}
+		}
 
         return $this->db->get($this->config->item('table_name'));
     }
@@ -788,7 +790,7 @@ class Logbook_model extends CI_Model {
   }
 
   function get_qsos($num, $offset) {
-    $this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_NAME, '.$this->config->item('table_name').'.COL_COUNTRY, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
+    //$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_NAME, '.$this->config->item('table_name').'.COL_COUNTRY, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
     $this->db->from($this->config->item('table_name'));
 
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
@@ -863,7 +865,7 @@ class Logbook_model extends CI_Model {
     $CI->load->model('Stations');
     $station_id = $CI->Stations->find_active();
 
-    $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_STX_STRING, COL_SRX_STRING');
+    //$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_STX_STRING, COL_SRX_STRING, COL_IOTA, COL_STATE, COL_GRIDSQUARE');
     $this->db->where("station_id", $station_id);
     $this->db->order_by("COL_TIME_ON", "desc");
     $this->db->limit($num);
@@ -1502,7 +1504,7 @@ class Logbook_model extends CI_Model {
      * $markQrz - used in ADIF import to mark QSOs as exported to QRZ Logbook when importing QSOs
      * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
      */
-	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $skipexport = false) {
+	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $skipexport = false, $operatorName = false) {
         $CI =& get_instance();
         $CI->load->library('frequency');
         $my_error = "";
@@ -1805,6 +1807,12 @@ class Logbook_model extends CI_Model {
             }
         }
 
+        if ($operatorName != false) {
+			$operatorName = $this->session->userdata('user_callsign');
+		} else {
+			$operatorName = (!empty($record['operator'])) ? $record['operator'] : '';
+		}
+
         // If user checked to mark QSOs as uploaded to QRZ Logbook, or else we try to find info in ADIF import.
         if ($markQrz != null) {
             $input_qrzcom_qso_upload_status = 'Y';
@@ -1918,7 +1926,7 @@ class Logbook_model extends CI_Model {
                 'COL_NOTES_INTL' => (!empty($record['notes_intl'])) ? $record['notes_intl'] : '',
                 'COL_NR_BURSTS' => (!empty($record['nr_bursts'])) ? $record['nr_bursts'] : null,
                 'COL_NR_PINGS' => (!empty($record['nr_pings'])) ? $record['nr_pings'] : null,
-                'COL_OPERATOR' => (!empty($record['operator'])) ? $record['operator'] : '',
+                'COL_OPERATOR' => $operatorName,
                 'COL_OWNER_CALLSIGN' => (!empty($record['owner_callsign'])) ? $record['owner_callsign'] : '',
                 'COL_PFX' => (!empty($record['pfx'])) ? $record['pfx'] : '',
                 'COL_PRECEDENCE' => (!empty($record['precedence'])) ? $record['precedence'] : '',
@@ -2170,7 +2178,7 @@ class Logbook_model extends CI_Model {
 
         print("$count updated\n");
     }
-	
+
 	public function check_missing_grid_id($all){
         // get all records with no COL_GRIDSQUARE
         $this->db->select("COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_TIME_OFF");

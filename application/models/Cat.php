@@ -82,6 +82,13 @@
 			return $query;
 		}
 
+		function recent_status() {
+			$this->db->where("timestamp > date_sub(now(), interval 15 minute)", NULL, FALSE);
+
+			$query = $this->db->get('cat');
+			return $query;
+		}
+
 		/* Return list of radios */
 		function radios() {
 			$this->db->select('id, radio');
