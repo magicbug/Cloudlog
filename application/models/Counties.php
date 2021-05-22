@@ -47,7 +47,7 @@ class Counties extends CI_Model
             " and COL_DXCC in ('291', '6', '110')
                 and coalesce(COL_CNTY, '') <> ''
                 and COL_BAND != 'SAT'
-                group by thcv.COL_STATE
+                group by thcv.COL_STATE, countycountconfirmed
                 order by thcv.COL_STATE";
 
         $query = $this->db->query($sql);
