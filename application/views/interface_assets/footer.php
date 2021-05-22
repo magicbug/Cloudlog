@@ -2022,5 +2022,33 @@ function deleteQsl(id) {
 <?php if ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) == "add") { ?>
 	<script src="<?php echo base_url() ;?>assets/js/sections/contestingnames.js"></script>
 <?php } ?>
+
+<?php if ($this->uri->segment(1) == "qslprint") { ?>
+	<script>
+		function deleteFromQslQueue(id) {
+			$.ajax({
+				url: baseURL + 'index.php/qslprint/delete_from_qsl_queue',
+				type: 'post',
+				data: {'id': id
+				},
+				success: function(html) {
+					BootstrapDialog.show({
+						title: 'QSO Data',
+						size: BootstrapDialog.SIZE_WIDE,
+						cssClass: 'qso-counties-dialog',
+						nl2br: false,
+						message: html,
+						buttons: [{
+							label: 'Close',
+							action: function (dialogItself) {
+								dialogItself.close();
+							}
+						}]
+					});
+				}
+			});
+		}
+	</script>
+<?php } ?>
   </body>
 </html>

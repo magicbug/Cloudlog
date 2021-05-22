@@ -15,13 +15,15 @@
 	  <div class="card-header">
 	    Export Requested QSLs for Printing
 	  </div>
-	  <div class="card-body">
-		  <select name="station_profile" class="custom-select mb-2 mr-sm-2" style="width: 20%;">
-			  <option value="0">Select Station Profile</option>
-			  <?php foreach ($station_profile->result() as $station) { ?>
-				  <option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
-			  <?php } ?>
-		  </select>
+		<div class="card-body">
+			<form class="form" action="<?php echo site_url('adif/import'); ?>" method="post" enctype="multipart/form-data">
+				<select name="station_profile" class="custom-select mb-2 mr-sm-2" style="width: 20%;">
+					<option value="0">Select Station Profile</option>
+					<?php foreach ($station_profile->result() as $station) { ?>
+						<option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
+					<?php } ?>
+				</select>
+			</form>
 
 	    <p class="card-text">Here you can export requested QSLs as CSV or ADIF files for printing and, optionally, mark them as sent via bureau.</p>
 	    <p class="card-text">Requested QSLs are any QSOs with a value of "Requested" or "Queued" in their "QSL Sent" field.</p>

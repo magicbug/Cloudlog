@@ -37,6 +37,22 @@ class Qslprint_model extends CI_Model {
 
 		return $query;
 	}
+
+	function delete_from_qsl_queue($id) {
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
+
+		$data = array(
+			'COL_QSL_SENT' => "N",
+		);
+
+		$this->db->where("COL_PRIMARY_KEY", $id);
+		//$this->db->where("station_id", $station_id);
+		$this->db->update($this->config->item('table_name'), $data);
+
+		return true;
+	}
 }
 
 ?>

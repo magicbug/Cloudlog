@@ -114,6 +114,12 @@ class QSLPrint extends CI_Controller {
 
 			redirect('logbook');
 	}
+
+	public function delete_from_qsl_queue($id) {
+		$this->load->model('qslprint_model');
+
+		$this->qslprint_model->delete_from_qsl_queue($this->security->xss_clean($id));
+	}
 }
 
 /* End of file Qslprint.php */
