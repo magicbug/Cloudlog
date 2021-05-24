@@ -90,6 +90,9 @@ $lang['gen_hamradio_usa_state'] = 'Estado USA';
 $lang['gen_hamradio_iota_reference'] = 'Referencia IOTA';
 $lang['gen_hamradio_sota_reference'] = 'Referencia SOTA';
 $lang['gen_hamradio_dok'] = 'DOK';
+$lang['gen_hamradio_state'] = 'Estado';
+$lang['gen_hamradio_iota'] = 'IOTA';
+$lang['gen_hamradio_gridsquare'] = 'Gridsquare';
 
 $lang['gen_hamradio_sig'] = 'Señal';
 $lang['gen_hamradio_sig_info'] = 'Información de señal';
