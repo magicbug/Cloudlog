@@ -101,7 +101,7 @@
                     </tr>
                     <?php } ?>
 
-                    <?php if($row->COL_GRIDSQUARE != null) { ?>
+                    <?php if($row->COL_GRIDSQUARE != null && strlen($row->COL_GRIDSQUARE) >= 4) { ?>
                     <!-- Total Distance Between the Station Profile Gridsquare and Logged Square -->
                     <tr>
                         <td><?php echo $this->lang->line('general_total_distance'); //Total distance ?></td>
@@ -428,18 +428,23 @@
 </div>
 
 <?php
-	if($row->COL_GRIDSQUARE != null) {
-		$stn_loc = $this->qra->qra2latlong(trim($row->COL_GRIDSQUARE));			
-		$lat = $stn_loc[0];
-		$lng = $stn_loc[1];
+	if($row->COL_GRIDSQUARE != null && strlen($row->COL_GRIDSQUARE) >= 4) {
+		$stn_loc = $this->qra->qra2latlong(trim($row->COL_GRIDSQUARE));	
+        if($stn_loc[0] != 0) {
+		    $lat = $stn_loc[0];
+		    $lng = $stn_loc[1];
+        }
 	} else {
 
 		$CI =& get_instance();
 		$CI->load->model('Logbook_model');
 
 		$result = $CI->Logbook_model->dxcc_lookup($row->COL_CALL, $row->COL_TIME_ON);
+
+        if(isset($result)) {
 			$lat = $result['lat'];
 			$lng = $result['long'];
+        }
 	}
 ?>
 
