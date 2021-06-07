@@ -239,6 +239,18 @@
          ]
       }
    },
+   "JO-97":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435110000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145865000"
+            }
+         ]
+      }
+   },
    "Lilacsat-1":{
       "Modes":{
          "V/U":[
