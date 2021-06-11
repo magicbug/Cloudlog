@@ -1333,6 +1333,27 @@ $(document).ready(function(){
             });
         }
 
+        // Function: qsl_ignore
+        // Marks QSL card ignore against the QSO.
+        function qsl_ignore(id, method) {
+            var baseURL= "<?php echo base_url();?>";
+            $.ajax({
+                url: baseURL + 'index.php/qso/qsl_ignore_ajax',
+                type: 'post',
+                data: {'id': id,
+                    'method': method
+                },
+                success: function(data) {
+                    if (data.message == 'OK') {
+                        $("#qso_" + id).find("td:eq(8)").find("span:eq(0)").attr('class', 'qsl-red'); // Paints arrow green
+                    }
+                    else {
+                        $(".bootstrap-dialog-message").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You are not allowed to update QSL status!</div>');
+                    }
+                }
+            });
+        }
+
         function qso_delete(id, call) {
             BootstrapDialog.confirm({
                 title: 'DANGER',

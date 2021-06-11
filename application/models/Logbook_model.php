@@ -768,6 +768,19 @@ class Logbook_model extends CI_Model {
     $this->db->update($this->config->item('table_name'), $data);
   }
 
+
+  function paperqsl_ignore($qso_id, $method) {
+
+    $data = array(
+         'COL_QSLSDATE' => date('Y-m-d'),
+         'COL_QSL_SENT' => 'I'
+    );
+
+    $this->db->where('COL_PRIMARY_KEY', $qso_id);
+
+    $this->db->update($this->config->item('table_name'), $data);
+  }
+
   function get_qsos_for_printing() {
 	$CI =& get_instance();
     $CI->load->model('Stations');
