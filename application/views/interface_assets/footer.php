@@ -267,7 +267,7 @@ function getLookupResult() {
         var q_lng = -32.695312;
         <?php } ?>
 
-        var qso_loc = '<?php echo site_url('map/map_data_custom/');?><?php echo urlencode($date_from); ?>/<?php echo urlencode($date_to); ?>';
+        var qso_loc = '<?php echo site_url('map/map_data_custom/');?><?php echo rawurlencode($date_from); ?>/<?php echo rawurlencode($date_to); ?>';
         var q_zoom = 2;
 
       $(document).ready(function(){
