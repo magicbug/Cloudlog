@@ -34,7 +34,9 @@ path.grid-worked {
 	background-color: #000;
 }
 
-
+.leaflet-popup-content h3 {
+	color: #000;
+}
 /* 
 *	Dark Navigation 
 */
