@@ -146,8 +146,22 @@ class CI_Lang {
 					break;
 				}
 			}
+			// try to load in default language (english) //
+			if (($found !== TRUE)&&($idiom != 'english')) { 
+				$idiom = 'english';
+				foreach (get_instance()->load->get_package_paths(TRUE) as $package_path)
+				{
+						$package_path .= 'language/'.$idiom.'/'.$langfile;
+						if ($basepath !== $package_path && file_exists($package_path))
+						{
+								include($package_path);
+								$found = TRUE;
+								break;
+						}
+				}                        
+			}
 		}
-
+		
 		if ($found !== TRUE)
 		{
 			show_error('Unable to load the requested language file: language/'.$idiom.'/'.$langfile);
