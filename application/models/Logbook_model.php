@@ -1021,7 +1021,7 @@ class Logbook_model extends CI_Model {
     }
 
     /* Return QSOs over a period of days */
-    function map_week_qsos($start, $end) {
+    function map_week_qsos($start, $end, $band) {
         $CI =& get_instance();
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
@@ -1033,6 +1033,30 @@ class Logbook_model extends CI_Model {
 
         return $query;
     }
+
+    /* used to return custom qsos requires start, end date plus a band */
+    function map_custom_qsos($start, $end, $band) {
+      $CI =& get_instance();
+      $CI->load->model('Stations');
+      $station_id = $CI->Stations->find_active();
+
+      $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
+      $this->db->where("station_id", $station_id);
+      
+
+      if($band != "All" && $band != "SAT") {
+        $this->db->where("COL_BAND", $band);
+      }
+
+      if ($band == "SAT") {
+        $this->db->where("COL_PROP_MODE", "SAT");
+      }
+
+      $this->db->order_by("COL_TIME_ON", "ASC");
+      $query = $this->db->get($this->config->item('table_name'));
+
+      return $query;
+  }
 
     /* Returns QSOs for the date sent eg 2011-09-30 */
     function map_day($date) {
