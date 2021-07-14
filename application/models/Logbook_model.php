@@ -1021,7 +1021,7 @@ class Logbook_model extends CI_Model {
     }
 
     /* Return QSOs over a period of days */
-    function map_week_qsos($start, $end, $band) {
+    function map_week_qsos($start, $end) {
         $CI =& get_instance();
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
