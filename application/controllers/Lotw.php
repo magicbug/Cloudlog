@@ -905,6 +905,7 @@ class Lotw extends CI_Controller {
 			"TO-108"	=>	"CAS-6",
 			"TAURUS"	=>	"TAURUS-1",
 			"AISAT1"	=>	"AISAT-1",
+			'UVSQ'		=>	"UVSQ-SAT"
 		);
 
 		return array_search(strtoupper($satname),$arr,true);
