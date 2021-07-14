@@ -102,7 +102,7 @@ class Timeline_model extends CI_Model
             $sql .= " and col_mode ='" . $mode . "'";
         }
 
-        $sql .= " and col_iota <> '' group by col_iota
+        $sql .= " and col_iota <> '' group by col_iota, name, prefix
                 order by date desc";
 
         $query = $this->db->query($sql);
