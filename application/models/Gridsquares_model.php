@@ -31,7 +31,7 @@ class Gridsquares_model extends CI_Model {
         $CI =& get_instance();
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
-        
+
         return $this->db->query('SELECT COL_VUCC_GRIDS, COL_SAT_NAME FROM '.$this->config->item('table_name').' WHERE station_id = "'.$station_id.'" AND COL_VUCC_GRIDS != "" AND COL_SAT_NAME != "" AND (COL_LOTW_QSL_RCVD = "Y" OR COL_QSL_RCVD = "Y") AND (COL_LOTW_QSL_RCVD = "Y" OR COL_QSL_RCVD = "Y")');
     }
 
@@ -58,7 +58,7 @@ class Gridsquares_model extends CI_Model {
             .$station_id.'" AND COL_GRIDSQUARE != ""';
         if ($band != 'All') {
             $sql .= ' AND COL_BAND = "' . $band
-                .'" 
+                .'"
             AND COL_PROP_MODE != "SAT"
             AND COL_PROP_MODE != "INTERNET"
             AND COL_PROP_MODE != "ECH"
@@ -80,7 +80,7 @@ class Gridsquares_model extends CI_Model {
             .$station_id.'" AND COL_GRIDSQUARE != ""';
         if ($band != 'All') {
             $sql .= ' AND COL_BAND = "' . $band
-            .'" 
+            .'"
             AND COL_PROP_MODE != "SAT"
             AND COL_PROP_MODE != "INTERNET"
             AND COL_PROP_MODE != "ECH"
@@ -99,15 +99,14 @@ class Gridsquares_model extends CI_Model {
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        $sql = 'SELECT COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_GRIDSQUARE FROM '
+        $sql = 'SELECT COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_GRIDSQUARE, COL_VUCC_GRIDS FROM '
             .$this->config->item('table_name')
-            .' WHERE station_id = "'
-            .$station_id.'" AND COL_GRIDSQUARE LIKE "%'
-            .$gridsquare.'%"';
+            .' WHERE station_id = "' . $station_id . '" '
+			. ' AND (COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" or COL_VUCC_GRIDS LIKE "%'.$gridsquare.'%")';
 
         if ($band != 'All') {
             $sql .= ' AND COL_BAND = "' . $band
-                .'" 
+                .'"
             AND COL_PROP_MODE != "SAT"
             AND COL_PROP_MODE != "INTERNET"
             AND COL_PROP_MODE != "ECH"
@@ -126,7 +125,13 @@ class Gridsquares_model extends CI_Model {
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        $result = $this->db->query('SELECT COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_SAT_NAME, COL_GRIDSQUARE FROM '.$this->config->item('table_name').' WHERE station_id = "'.$station_id.'" AND COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" AND COL_PROP_MODE = "SAT"');
+        $sql = 'SELECT COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_SAT_NAME, COL_GRIDSQUARE, COL_VUCC_GRIDS FROM ' .
+				$this->config->item('table_name').
+				' WHERE station_id = "'.$station_id. '"' .
+				' AND (COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" or COL_VUCC_GRIDS LIKE "%'.$gridsquare.'%")'.
+				' AND COL_PROP_MODE = "SAT"';
+
+        $result = $this->db->query($sql);
 
         //print_r($result);
         return json_encode($result->result());
