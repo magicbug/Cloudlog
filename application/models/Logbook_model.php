@@ -1042,7 +1042,7 @@ class Logbook_model extends CI_Model {
 
       $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
       $this->db->where("station_id", $station_id);
-      
+
 
       if($band != "All" && $band != "SAT") {
         $this->db->where("COL_BAND", $band);
@@ -2086,9 +2086,8 @@ class Logbook_model extends CI_Model {
      * Check the dxxc_prefixes table and return (dxcc, country)
      */
     public function check_dxcc_table($call, $date){
-        $len = strlen($call);
 
-	$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
+		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
              ->where('call', $call)
              ->where('(start <= ', $date)
              ->or_where('start is null)', NULL, false)
@@ -2096,12 +2095,19 @@ class Logbook_model extends CI_Model {
              ->or_where('end is null)', NULL, false)
              ->get('dxcc_exceptions');
 
-        if ($dxcc_exceptions->num_rows() > 0){
-            $row = $dxcc_exceptions->row_array();
-            return array($row['adif'], $row['entity'], $row['cqz']);
-        }
-        // query the table, removing a character from the right until a match
-        for ($i = $len; $i > 0; $i--){
+		if ($dxcc_exceptions->num_rows() > 0){
+			$row = $dxcc_exceptions->row_array();
+			return array($row['adif'], $row['entity'], $row['cqz']);
+		}
+
+		if (preg_match('/(^KG4)[A-Z09]{3,}/', $call)) { 	// KG4/ and KG4 5 char calls are Guantanamo Bay. If 6 char, it is USA
+			$call = "K";
+		}
+
+		$len = strlen($call);
+
+		// query the table, removing a character from the right until a match
+		for ($i = $len; $i > 0; $i--){
             //printf("searching for %s\n", substr($call, 0, $i));
             $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`')
                                     ->where('call', substr($call, 0, $i))
@@ -2124,41 +2130,47 @@ class Logbook_model extends CI_Model {
     }
 
     public function dxcc_lookup($call, $date){
-        $len = strlen($call);
 
-	$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
-            ->where('call', $call)
-            ->where('(start <= CURDATE()')
-            ->or_where('start is null', NULL, false)
-            ->where('end >= CURDATE()')
-            ->or_where('end is null)', NULL, false)
-            ->get('dxcc_exceptions');
+		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
+				->where('call', $call)
+				->where('(start <= CURDATE()')
+				->or_where('start is null', NULL, false)
+				->where('end >= CURDATE()')
+				->or_where('end is null)', NULL, false)
+				->get('dxcc_exceptions');
 
 
-        if ($dxcc_exceptions->num_rows() > 0){
-            $row = $dxcc_exceptions->row_array();
-            return $row;
-        } else {
-          // query the table, removing a character from the right until a match
-          for ($i = $len; $i > 0; $i--){
-              //printf("searching for %s\n", substr($call, 0, $i));
-              $dxcc_result = $this->db->select('*')
-                                      ->where('call', substr($call, 0, $i))
-                                      ->where('(start <= ', $date)
-                                      ->or_where("start is null)", NULL, false)
-                                      ->where('(end >= ', $date)
-                                      ->or_where("end is null)", NULL, false)
-                                      ->get('dxcc_prefixes');
+			if ($dxcc_exceptions->num_rows() > 0){
+				$row = $dxcc_exceptions->row_array();
+				return $row;
+			} else {
 
-              //$dxcc_result = $this->db->query("select `call`, `entity`, `adif` from dxcc_prefixes where `call` = '".substr($call, 0, $i) ."'");
-              //print $this->db->last_query();
+				if (preg_match('/(^KG4)[A-Z09]{3,}/', $call)) { 	// KG4/ and KG4 5 char calls are Guantanamo Bay. If 6 char, it is USA
+					$call = "K";
+				}
 
-              if ($dxcc_result->num_rows() > 0){
-                  $row = $dxcc_result->row_array();
-                  return $row;
-              }
-          }
-        }
+				$len = strlen($call);
+
+				// query the table, removing a character from the right until a match
+				for ($i = $len; $i > 0; $i--){
+					//printf("searching for %s\n", substr($call, 0, $i));
+					$dxcc_result = $this->db->select('*')
+										  ->where('call', substr($call, 0, $i))
+										  ->where('(start <= ', $date)
+										  ->or_where("start is null)", NULL, false)
+										  ->where('(end >= ', $date)
+										  ->or_where("end is null)", NULL, false)
+										  ->get('dxcc_prefixes');
+
+					//$dxcc_result = $this->db->query("select `call`, `entity`, `adif` from dxcc_prefixes where `call` = '".substr($call, 0, $i) ."'");
+					//print $this->db->last_query();
+
+					if ($dxcc_result->num_rows() > 0){
+					  $row = $dxcc_result->row_array();
+					  return $row;
+					}
+				}
+			}
 
         return array("Not Found", "Not Found");
     }
