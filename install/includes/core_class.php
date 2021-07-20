@@ -9,7 +9,7 @@ class Core {
 		$counter = 0;
 
 		// Validate the hostname
-		if(isset($data['hostname']) AND !empty($data['hostname'])) {
+		if(isset($data['hostname']) AND !empty($data['hostname']) AND filter_var($data['hostname'], FILTER_SANITIZE_URL)) {
 			$counter++;
 		}
 		// Validate the username
@@ -25,8 +25,14 @@ class Core {
 			$counter++;
 		}
 
+		if(!preg_match("~0-9A-Za-z-/+~", $data['directory'])) {
+			// pass
+		} else {
+			return false;
+		}
+
 		// Check if all the required fields have been entered
-		if($counter == '3') {
+		if($counter == '4') {
 			return true;
 		}
 		else {
