@@ -2,7 +2,7 @@
 
 /*
 	Class: Options_model
-	This model handles all database interactions for the options table 
+	This model handles all database interactions for the options table
 	used for global settings within cloudlog.
 */
 
@@ -12,7 +12,7 @@ class Options_model extends CI_Model {
 	{
 		parent::__construct();
 	}
-    
+
     // Returns all options that are autoload yes
 	function get_autoloads() {
 		$this->db->where('autoload', "yes");
@@ -25,7 +25,11 @@ class Options_model extends CI_Model {
 		$query = $this->db->get('options');
 		$row = $query->row();
 
-		return $row->option_value;
+		if (isset($row->option_value)) {
+			return $row->option_value;
+		}
+
+		return null;
 	}
 
 	/*
@@ -50,7 +54,7 @@ class Options_model extends CI_Model {
 				'option_value' => $option_value,
 				'autoload' => $autoload,
 			);
-			
+
 			// Save to database
 			$this->db->insert('options', $data);
 
@@ -70,23 +74,23 @@ class Options_model extends CI_Model {
 		$this->db->where('option_name', $option_name);
 		$query = $this->db->get('options');
 
+		$data = array(
+			'option_name' => $option_name,
+			'option_value' => $option_value,
+		);
+
 		if($query->num_rows() > 0) {
 			// Update the Entry
-			$data = array(
-				'option_name' => $option_name,
-				'option_value' => $option_value,
-			);
-
 			$this->db->where('option_name', $option_name);
 			$this->db->update('options', $data);
 
 			return TRUE;
-		} else {			
+		} else {
 			// Save to database
 			$this->db->insert('options', $data);
 
 			return FALSE;
-		}	
+		}
 	}
 
 }
