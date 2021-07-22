@@ -28,8 +28,6 @@
 
 	    <p class="card-text">Here you can export requested QSLs as CSV or ADIF files for printing and, optionally, mark them as sent via bureau.</p>
 	    <p class="card-text">Requested QSLs are any QSOs with a value of "Requested" or "Queued" in their "QSL Sent" field.</p>
-	    <p class="card-text">Only QSOs under the active station profile will be exported.</p>
-
 
 		  <?php
 		  echo '<div class="resulttable">';
