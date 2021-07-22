@@ -1793,6 +1793,66 @@ function deleteQsl(id) {
         });
     }
 </script>
+<script>
+
+	function addQsosToQsl(filename) {
+		var title = 'Add additional QSOs to a QSL Card';
+
+		var baseURL= "<?php echo base_url();?>";
+		$.ajax({
+			url: baseURL + 'index.php/qsl/loadSearchForm',
+			type: 'post',
+			data: {'filename': filename},
+			success: function(html) {
+				BootstrapDialog.show({
+					title: title,
+					size: BootstrapDialog.SIZE_WIDE,
+					cssClass: 'qso-search_results',
+					nl2br: false,
+					message: html,
+					buttons: [{
+						label: 'Close',
+						action: function (dialogItself) {
+							dialogItself.close();
+						}
+					}]
+				});
+			}
+		});
+	}
+
+	function addQsoToQsl(qsoid, filename, id) {
+		var title = 'Add additional QSOs to a QSL Card';
+
+		var baseURL= "<?php echo base_url();?>";
+		$.ajax({
+			url: baseURL + 'index.php/qsl/addQsoToQsl',
+			type: 'post',
+			data: {'filename': filename, 'qsoid': qsoid},
+			success: function(html) {
+				if (html.status == 'Success') {
+					location.reload();
+				} else {
+					$(".alert").remove();
+					$('#searchresult').prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Something went wrong. Please try again!</div>');
+				}
+			}
+		});
+	}
+
+	function searchAdditionalQsos(filename) {
+		var baseURL= "<?php echo base_url();?>";
+		$.ajax({
+			url: baseURL + 'index.php/qsl/searchQsos',
+			type: 'post',
+			data: {'callsign': $('#callsign').val(), 'filename': filename},
+			success: function(html) {
+				$('#searchresult').empty();
+				$('#searchresult').append(html);
+			}
+		});
+	}
+</script>
 <?php if ($this->uri->segment(1) == "contesting") { ?>
     <script src="<?php echo base_url() ;?>assets/js/sections/contesting.js"></script>
     <script>
@@ -2013,8 +2073,7 @@ function deleteQsl(id) {
         $.ajax({
             url: baseURL + 'index.php/awards/counties_details_ajax',
             type: 'post',
-            data: {'State': state, 'County': county
-            },
+            data: {'State': state, 'County': county },
             success: function(html) {
                 BootstrapDialog.show({
                     title: 'QSO Data',

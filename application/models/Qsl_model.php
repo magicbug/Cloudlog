@@ -60,4 +60,31 @@ class Qsl_model extends CI_Model {
 
         return $this->db->get();
     }
+
+	function searchQsos($callsign) {
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
+
+		$this->db->select('*');
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where('station_id', $station_id);
+		$this->db->where('col_call', $callsign);
+
+		return $this->db->get();
+	}
+
+	function addQsotoQsl($qsoid, $filename) {
+		$clean_qsoid = $this->security->xss_clean($qsoid);
+		$clean_filename = $this->security->xss_clean($filename);
+
+		$data = array(
+			'qsoid' => $qsoid,
+			'filename' => $filename
+		);
+
+		$this->db->insert('qsl_images', $data);
+
+		return $this->db->insert_id();
+	}
 }
