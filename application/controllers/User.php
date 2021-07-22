@@ -70,6 +70,7 @@ class User extends CI_Controller {
 				$data['user_column2'] = $this->input->post('user_column2');
 				$data['user_column3'] = $this->input->post('user_column3');
 				$data['user_column4'] = $this->input->post('user_column4');
+				$data['user_column5'] = $this->input->post('user_column5');
 				$this->load->view('user/add', $data);
 			} else {
 				$this->load->view('user/add', $data);
@@ -95,7 +96,8 @@ class User extends CI_Controller {
 				$this->input->post('user_column1'),
 				$this->input->post('user_column2'),
 				$this->input->post('user_column3'),
-				$this->input->post('user_column4'))) {
+				$this->input->post('user_column4'),
+				$this->input->post('user_column5'))) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
 					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';
@@ -131,6 +133,7 @@ class User extends CI_Controller {
 			$data['user_column2'] = $this->input->post('user_column2');
 			$data['user_column3'] = $this->input->post('user_column3');
 			$data['user_column4'] = $this->input->post('user_column4');
+			$data['user_column5'] = $this->input->post('user_column5');
 			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -323,6 +326,12 @@ class User extends CI_Controller {
 				$data['user_column4'] = $q->user_column4;
 			}
 
+			if($this->input->post('user_column5')) {
+				$data['user_column5'] = $this->input->post('user_column5', true);
+			} else {
+				$data['user_column5'] = $q->user_column5;
+			}
+
 			$this->load->view('user/edit', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -370,6 +379,8 @@ class User extends CI_Controller {
 			$data['user_column2'] = $this->input->post('user_column2');
 			$data['user_column3'] = $this->input->post('user_column3');
 			$data['user_column4'] = $this->input->post('user_column4');
+			$data['user_column4'] = $this->input->post('user_column4');
+			$data['user_column5'] = $this->input->post('user_column5');
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}

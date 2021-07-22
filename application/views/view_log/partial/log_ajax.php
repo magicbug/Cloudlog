@@ -55,9 +55,20 @@
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
 				}
 			echo '</td>';
-			?>
-            <td><?php echo $this->lang->line('general_word_country'); ?></td>
-            <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
+			echo '<td>';
+			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
+				case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
+				case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
+				case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
+				case 'Country': echo $this->lang->line('general_word_country'); break;
+				case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
+				case 'State': echo $this->lang->line('gen_hamradio_state'); break;
+				case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
+				case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+			}
+			echo '</td>';
+
+            	if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td>QSL</td>
                 <?php if($this->session->userdata('user_eqsl_name') != "") { ?>
                     <td>eQSL</td>
@@ -99,7 +110,7 @@
 				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">' . $row->COL_SRX . '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
-				case 'Grid':    echo '<td>' . ($row->COL_GRIDSQUARE); break;
+				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 			}
@@ -110,7 +121,7 @@
 				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">' . $row->COL_SRX . '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
-				case 'Grid':    echo '<td>' . ($row->COL_GRIDSQUARE); break;
+				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 			}
@@ -122,7 +133,7 @@
 				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">' . $row->COL_SRX . '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
-				case 'Grid':    echo '<td>' . ($row->COL_GRIDSQUARE); break;
+				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 			}
@@ -133,15 +144,23 @@
 				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">' . $row->COL_SRX . '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
-				case 'Grid':    echo '<td>' . ($row->COL_GRIDSQUARE); break;
+				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 			}
 			echo '</td>';
-			?>
-
-            <td><?php echo ucwords(strtolower(($row->COL_COUNTRY))); ?></td>
-            <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
+			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
+				case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; break;
+				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">' . $row->COL_STX . '</span>';}if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
+				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">' . $row->COL_SRX . '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
+				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
+				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
+				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
+				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
+				case 'State':   echo '<td>' . ($row->COL_STATE); break;
+			}
+			echo '</td>';
+				if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td class="qsl">
 				<span class="qsl-<?php
                 switch ($row->COL_QSL_SENT) {
@@ -226,10 +245,17 @@
                             <?php if($row->COL_QSL_RCVD !='Y') { ?>
                                 <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B')" ><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_mark_qsl_rx_bureau'); ?></a>
                                 <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_mark_qsl_rx_direct'); ?></a>
+                                <a class="dropdown-item" href="javascript:qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> Mark QSL Card Requested</a>
                             <?php } ?>
 
+                            <a class="dropdown-item" href="javascript:qsl_ignore(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> Mark QSL Card Not Required</a>
+
                             <div class="dropdown-divider"></div>
-                            </div>
+
+                            <a class="dropdown-item" href="https://www.qrz.com/db/<?php echo $row->COL_CALL; ?>" target="_blank"><i class="fas fa-question"></i> Lookup on QRZ</a>
+
+                            <div class="dropdown-divider"></div>
+
                             <a class="dropdown-item" href="javascript:qso_delete(<?php echo $row->COL_PRIMARY_KEY; ?>, '<?php echo $row->COL_CALL; ?>')"><i class="fas fa-trash-alt"></i> <?php echo $this->lang->line('general_delete_qso'); ?></a>
                         </div>
                     </div>

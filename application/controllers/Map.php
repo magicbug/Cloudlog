@@ -34,6 +34,26 @@ class Map extends CI_Controller {
     function custom()
 	{
 
+		$this->load->model('dxcc');
+        $this->load->model('modes');
+
+        $data['worked_bands'] = $this->dxcc->get_worked_bands(); // Used in the view for band select
+        $data['modes'] = $this->modes->active(); // Used in the view for mode select
+
+        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
+            if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
+                $bands = $data['worked_bands'];
+            }
+            else {
+                $bands[] = $this->input->post('band');
+            }
+        }
+        else {
+            $bands = $data['worked_bands'];
+        }
+
+        $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
+
         // Calculate Lat/Lng from Locator to use on Maps
         if($this->session->userdata('user_locator')) {
             $this->load->library('qra');
@@ -58,18 +78,19 @@ class Map extends CI_Controller {
         if ($this->input->post('from')) {
             $from = $this->input->post('from');
             $from = DateTime::createFromFormat('m/d/Y g:i A', $from);
-            $from = $from->format('Y-m-d');
+            $from = $from->format('Y-m-d H:i');
+
             $footer_data['date_from'] = $from;
         } else {
-            $footer_data['date_from'] = date('Y-m-d');
+            $footer_data['date_from'] = date('Y-m-d H:i:00');
         }
         if ($this->input->post('to')) {
             $to = DateTime::createFromFormat('m/d/Y g:i A', $this->input->post('to'));
-            $to = $to->modify('+1 day')->format('Y-m-d');
+            $to = $to->modify('+1 day')->format('Y-m-d H:i:00');
             $footer_data['date_to'] = $to;
         } else {
             $temp_to = new DateTime('tomorrow');
-            $footer_data['date_to'] = $temp_to->format('Y-m-d');
+            $footer_data['date_to'] = $temp_to->format('Y-m-d H:i:00');
         }
 
 
@@ -82,11 +103,12 @@ class Map extends CI_Controller {
     function map_data_custom() {
         $start_date = $this->uri->segment(3);
         $end_date = $this->uri->segment(4);
+		$band = $this->uri->segment(5);
 		$this->load->model('logbook_model');
 		
 		$this->load->library('qra');
 
-		$qsos = $this->logbook_model->map_week_qsos($start_date, $end_date);
+		$qsos = $this->logbook_model->map_custom_qsos(rawurldecode($start_date), rawurldecode($end_date), $band);
 
 		echo "{\"markers\": [";
 		$count = 1;
