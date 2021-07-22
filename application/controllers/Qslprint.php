@@ -35,9 +35,15 @@ class QSLPrint extends CI_Controller {
 		// Set memory limit to unlimited to allow heavy usage
 		ini_set('memory_limit', '-1');
 
+		if ($this->uri->segment(3) == 'All') {
+			$station_id = NULL;
+		} else {
+			$station_id = $this->security->xss_clean($this->uri->segment(3));
+		}
+
 		$this->load->model('adif_data');
 
-		$data['qsos'] = $this->adif_data->export_printrequested();
+		$data['qsos'] = $this->adif_data->export_printrequested($station_id);
 
 		$this->load->view('adif/data/exportall', $data);
 	}
@@ -47,9 +53,15 @@ class QSLPrint extends CI_Controller {
 		// Set memory limit to unlimited to allow heavy usage
 		ini_set('memory_limit', '-1');
 
+		if ($this->uri->segment(3) == 'All') {
+			$station_id = NULL;
+		} else {
+			$station_id = $this->security->xss_clean($this->uri->segment(3));
+		}
+
 		$this->load->model('logbook_model');
 
-		$myData = $this->logbook_model->get_qsos_for_printing();
+		$myData = $this->logbook_model->get_qsos_for_printing($station_id);
 
 		// file name
 		$filename = 'qsl_export.csv';
@@ -102,23 +114,40 @@ class QSLPrint extends CI_Controller {
 	}
 
 	function qsl_printed() {
+
+		if ($this->uri->segment(3) == 'All') {
+			$station_id = NULL;
+		} else {
+			$station_id = $this->security->xss_clean($this->uri->segment(3));
+		}
+
 		$this->load->model('qslprint_model');
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 			// Update Logbook to Mark Paper Card Received
 
-			$this->qslprint_model->mark_qsos_printed();
+			$this->qslprint_model->mark_qsos_printed($station_id);
 
 			$this->session->set_flashdata('notice', 'QSOs are marked as sent via buro');
 
 			redirect('logbook');
 	}
 
-	public function delete_from_qsl_queue($id) {
+	public function delete_from_qsl_queue() {
+		$id = $this->input->post('id');
 		$this->load->model('qslprint_model');
 
 		$this->qslprint_model->delete_from_qsl_queue($this->security->xss_clean($id));
+	}
+
+	public function get_qsos_for_print_ajax() {
+		$station_id = $this->input->post('station_id');
+		$this->load->model('qslprint_model');
+
+		$data['qsos'] = $this->qslprint_model->get_qsos_for_print_ajax($this->security->xss_clean($station_id));
+		$data['station_id'] = $station_id;
+		$this->load->view('qslprint/qslprint', $data);
 	}
 }
 

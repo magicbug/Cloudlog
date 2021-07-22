@@ -19,11 +19,16 @@ class adif_data extends CI_Model {
         return $query;
     }
 
-    function export_printrequested() {
+    function export_printrequested($station_id = NULL) {
         $this->load->model('stations');
         $active_station_id = $this->stations->find_active();
 
-        $this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
+		if ($station_id == NULL) {
+			$this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
+		} else {
+			$this->db->where($this->config->item('table_name').'.station_id', $station_id);
+		}
+
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
         $this->db->where_in('COL_QSL_SENT', array('R', 'Q'));
         $this->db->order_by("COL_TIME_ON", "ASC");

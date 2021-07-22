@@ -2026,28 +2026,38 @@ function deleteQsl(id) {
 <?php if ($this->uri->segment(1) == "qslprint") { ?>
 	<script>
 		function deleteFromQslQueue(id) {
-			$.ajax({
-				url: baseURL + 'index.php/qslprint/delete_from_qsl_queue',
-				type: 'post',
-				data: {'id': id
-				},
-				success: function(html) {
-					BootstrapDialog.show({
-						title: 'QSO Data',
-						size: BootstrapDialog.SIZE_WIDE,
-						cssClass: 'qso-counties-dialog',
-						nl2br: false,
-						message: html,
-						buttons: [{
-							label: 'Close',
-							action: function (dialogItself) {
-								dialogItself.close();
-							}
-						}]
+			BootstrapDialog.confirm({
+				title: 'DANGER',
+				message: 'Warning! Are you sure you want to removes this QSL from the queue?',
+				type: BootstrapDialog.TYPE_DANGER,
+				closable: true,
+				draggable: true,
+				btnOKClass: 'btn-danger',
+				callback: function(result) {
+					$.ajax({
+						url: base_url + 'index.php/qslprint/delete_from_qsl_queue',
+						type: 'post',
+						data: {'id': id	},
+						success: function(html) {
+							location.reload();
+						}
 					});
 				}
 			});
 		}
+
+		$(".station_id").change(function(){
+			var station_id = $(".station_id").val();
+			$.ajax({
+				url: base_url + 'index.php/qslprint/get_qsos_for_print_ajax',
+				type: 'post',
+				data: {'station_id': station_id},
+				success: function(html) {
+					$('.resulttable').empty();
+					$('.resulttable').append(html);
+				}
+			});
+		});
 	</script>
 <?php } ?>
   </body>
