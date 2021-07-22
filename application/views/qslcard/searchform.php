@@ -1,4 +1,4 @@
-		<form method="post" action="" id="search_box" name="test">
+		<form method="post" onsubmit="return false;" action="" id="search_box" name="test">
 			<div class="form-group row col-sm-12">
 				<label for="callsign" class="col-sm-2 col-form-label">Callsign</label>
 				<div class="col-sm-8">
