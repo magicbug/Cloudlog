@@ -143,7 +143,32 @@ class Qsl extends CI_Controller {
         }
     }
 
+	function loadSearchForm() {
+    	$data['filename'] = $this->input->post('filename');
+		$this->load->view('qslcard/searchform', $data);
+	}
 
+	function searchQsos() {
+		$this->load->model('Qsl_model');
+		$callsign = $this->input->post('callsign');
+
+		$data['results'] = $this->Qsl_model->searchQsos($callsign);
+		$data['filename'] = $this->input->post('filename');
+		$this->load->view('qslcard/searchresult', $data);
+	}
+
+	function addQsoToQsl() {
+		$qsoid = $this->input->post('qsoid');
+		$filename = $this->input->post('filename');
+
+		$this->load->model('Qsl_model');
+		$insertid = $this->Qsl_model->addQsotoQsl($qsoid, $filename);
+		header("Content-type: application/json");
+		$result['status']  = 'Success';
+		$result['insertid'] = $insertid;
+		$result['filename'] = $filename;
+		echo json_encode($result);
+	}
 
 }
 
@@ -166,24 +191,24 @@ function folderSize($dir){
     return $count_size;
 }
 
-function sizeFormat($bytes){ 
+function sizeFormat($bytes){
     $kb = 1024;
     $mb = $kb * 1024;
     $gb = $mb * 1024;
     $tb = $gb * 1024;
-    
+
     if (($bytes >= 0) && ($bytes < $kb)) {
     return $bytes . ' B';
-    
+
     } elseif (($bytes >= $kb) && ($bytes < $mb)) {
     return ceil($bytes / $kb) . ' KB';
-    
+
     } elseif (($bytes >= $mb) && ($bytes < $gb)) {
     return ceil($bytes / $mb) . ' MB';
-    
+
     } elseif (($bytes >= $gb) && ($bytes < $tb)) {
     return ceil($bytes / $gb) . ' GB';
-    
+
     } elseif ($bytes >= $tb) {
     return ceil($bytes / $tb) . ' TB';
     } else {
