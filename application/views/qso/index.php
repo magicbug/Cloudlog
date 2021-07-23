@@ -1,13 +1,13 @@
 <div class="container qso_panel">
 
 <div class="row">
-  
+
   <div class="col-sm-5">
     <div class="card">
-        
+
     <form id="qso_input" method="post" action="<?php echo site_url('qso') . "?manual=" . $_GET['manual']; ?>" name="qsos">
 
-      <div class="card-header"> 
+      <div class="card-header">
         <ul style="font-size: 15px;" class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
           <li class="nav-item">
            <a class="nav-link active" id="qsp-tab" data-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true"><?php echo $this->lang->line('gen_hamradio_qso'); ?></a>
@@ -24,7 +24,7 @@
           <li class="nav-item">
             <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false"><?php echo $this->lang->line('general_word_satellite_short'); ?></a>
           </li>
-          
+
           <li class="nav-item">
             <a class="nav-link" id="notes-tab" data-toggle="tab" href="#nav-notes" role="tab" aria-controls="notes" aria-selected="false"><?php echo $this->lang->line('general_word_notes'); ?></a>
           </li>
@@ -75,7 +75,7 @@
                           printf("<option value=\"%s\" %s>%s</option>", $mode->mode, $this->session->userdata('mode')==$mode->mode?"selected=\"selected\"":"",$mode->mode);
                         } else {
                           printf("<option value=\"%s\" %s>&rArr; %s</option>", $mode->submode, $this->session->userdata('mode')==$mode->submode?"selected=\"selected\"":"",$mode->submode);
-                        } 
+                        }
                       }
                   ?>
                   </select>
@@ -198,8 +198,8 @@
                   <label for="band_rx"><?php echo $this->lang->line('gen_hamradio_band_rx'); ?></label>
 
                   <select id="band_rx" class="form-control" name="band_rx">
-                    <option value="" <?php if($this->session->userdata('band_rx') == "") { echo "selected=\"selected\""; } ?>></option>           
-                    
+                    <option value="" <?php if($this->session->userdata('band_rx') == "") { echo "selected=\"selected\""; } ?>></option>
+
                     <optgroup label="HF">
                       <option value="160m" <?php if($this->session->userdata('band_rx') == "160m") { echo "selected=\"selected\""; } ?>>160m</option>
                       <option value="80m" <?php if($this->session->userdata('band_rx') == "80m") { echo "selected=\"selected\""; } ?>>80m</option>
@@ -390,7 +390,7 @@
               <small id="dokHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_dok_helptext'); ?></small>
             </div>
           </div>
-          
+
           <!-- Satellite Panel -->
           <div class="tab-pane fade" id="satellite" role="tabpanel" aria-labelledby="satellite-tab">
             <div class="form-group">
@@ -409,7 +409,7 @@
               <datalist id="satellite_modes" class="satellite_modes_list"></datalist>
             </div>
           </div>
-          
+
           <!-- Notes Panel Contents -->
           <div class="tab-pane fade" id="nav-notes" role="tabpanel" aria-labelledby="notes-tab">
             <div class="alert alert-info" role="alert">
@@ -420,10 +420,10 @@
               <textarea  type="text" class="form-control" id="notes" name="notes" rows="10"></textarea>
             </div>
           </div>
-          
+
           <!-- QSL Tab -->
           <div class="tab-pane fade" id="qsl" role="tabpanel" aria-labelledby="qsl-tab">
-            
+
             <div class="form-group row">
               <label for="sent" class="col-sm-3 col-form-label"><?php echo $this->lang->line('general_word_sent'); ?></label>
               <div class="col-sm-9">
@@ -456,12 +456,12 @@
           </div>
         </div>
 
-        
+
 
         <div class="info">
           <input size="20" id="country" type="hidden" name="country" value="" />
         </div>
-        
+
         <button type="reset" class="btn btn-light" onclick="reset_fields()"><?php echo $this->lang->line('qso_btn_reset_qso'); ?></button>
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo $this->lang->line('qso_btn_save_qso'); ?></button>
       </div>
@@ -513,10 +513,26 @@
                 <td><?php echo $this->lang->line('gen_hamradio_band'); ?></td>
               </tr>
 
-              <?php $i = 0; 
-              foreach ($query->result() as $row) { ?>
-                    <?php  echo '<tr class="tr'.($i & 1).'">'; ?>
-                    <td><?php echo date($this->config->item('qso_date_format').' H:i',strtotime($row->COL_TIME_ON)); ?></td>
+              <?php
+
+			  // Get Date format
+			  if($this->session->userdata('user_date_format')) {
+				  // If Logged in and session exists
+				  $custom_date_format = $this->session->userdata('user_date_format');
+			  } else {
+				  // Get Default date format from /config/cloudlog.php
+				  $custom_date_format = $this->config->item('qso_date_format');
+			  }
+
+			  $i = 0;
+              foreach ($query->result() as $row) {
+              	echo '<tr class="tr'.($i & 1).'">';
+                    echo '<td>';
+						$timestamp = strtotime($row->COL_TIME_ON);
+						echo date($custom_date_format, $timestamp);
+						echo date(' H:i',strtotime($row->COL_TIME_ON));
+					?>
+				  </td>
                   <td>
                       <a id="edit_qso" href="javascript:displayQso(<?php echo $row->COL_PRIMARY_KEY; ?>)"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
                   </td>
@@ -534,7 +550,7 @@
           </div>
         </div>
       </div>
-    </div>    
+    </div>
   </div>
 
 </div>
