@@ -17,7 +17,7 @@
 	  </div>
 		<div class="card-body">
 			<form class="form" action="<?php echo site_url('adif/import'); ?>" method="post" enctype="multipart/form-data">
-				Station profile:
+				<?php echo $this->lang->line('cloudlog_station_profile'); ?>:
 				<select name="station_profile" class="station_id custom-select mb-3 mr-sm-3" style="width: 20%;">
 					<option value="All">All</option>
 					<?php foreach ($station_profile->result() as $station) { ?>
@@ -36,22 +36,31 @@
         <thead>
         <tr>
         <th style=\'text-align: center\'>'.$this->lang->line('gen_hamradio_callsign').'</th>
-        <th style=\'text-align: center\'>Date</th>
-        <th style=\'text-align: center\'>Time</th>
-        <th style=\'text-align: center\'>Mode</th>
-        <th style=\'text-align: center\'>Band</th>
-        <th style=\'text-align: center\'>Station</th>
+        <th style=\'text-align: center\'>' . $this->lang->line('general_word_date') . '</th>
+        <th style=\'text-align: center\'>'. $this->lang->line('general_word_time') .'</th>
+        <th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_mode') . '</th>
+        <th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_band') . '</th>
+        <th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_station') . '</th>
         <th style=\'text-align: center\'></th>
         </tr>
         </thead><tbody>';
 
+			  // Get Date format
+			  if($this->session->userdata('user_date_format')) {
+				  // If Logged in and session exists
+				  $custom_date_format = $this->session->userdata('user_date_format');
+			  } else {
+				  // Get Default date format from /config/cloudlog.php
+				  $custom_date_format = $this->config->item('qso_date_format');
+			  }
+
 			  foreach ($qsos->result() as $qsl) {
 				  echo '<tr>';
 				  echo '<td style=\'text-align: center\'>' . $qsl->COL_CALL . '</td>';
-				  echo '<td style=\'text-align: center\'>' . $qsl->COL_TIME_ON . '</td>';
-				  echo '<td style=\'text-align: center\'>' . $qsl->COL_TIME_ON . '</td>';
-				  echo '<td style=\'text-align: center\'>'; if($qsl->COL_SAT_NAME != null) { echo $qsl->COL_SAT_NAME; } else { echo strtolower($qsl->COL_BAND); }; echo '</td>';
+				  echo '<td style=\'text-align: center\'>'; $timestamp = strtotime($qsl->COL_TIME_ON); echo date($custom_date_format, $timestamp); echo '</td>';
+				  echo '<td style=\'text-align: center\'>'; $timestamp = strtotime($qsl->COL_TIME_ON); echo date('H:i', $timestamp); echo '</td>';
 				  echo '<td style=\'text-align: center\'>'; echo $qsl->COL_SUBMODE==null?$qsl->COL_MODE:$qsl->COL_SUBMODE; echo '</td>';
+				  echo '<td style=\'text-align: center\'>'; if($qsl->COL_SAT_NAME != null) { echo $qsl->COL_SAT_NAME; } else { echo strtolower($qsl->COL_BAND); }; echo '</td>';
 				  echo '<td style=\'text-align: center\'><span class="badge badge-light">' . $qsl->station_callsign . '</span></td>';
 				  echo '<td id="'.$qsl->COL_PRIMARY_KEY.'" style=\'text-align: center\'><button onclick="deleteFromQslQueue(\''.$qsl->COL_PRIMARY_KEY.'\')" class="btn btn-sm btn-danger">Delete from queue</button></td>';
 				  echo '</tr>';
