@@ -80,3 +80,7 @@ select optgroup,
 select option {
 	background-color: #222;
 }
+
+div.alert-success a, div.alert-danger a, div.alert-danger {
+	color: #ffffff;
+}

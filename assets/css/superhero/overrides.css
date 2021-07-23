@@ -74,3 +74,7 @@ path.grid-worked {
 	background-color: rgba(20, 41, 62, 0.6);
 	color: #fff; 
 }
+
+div.alert-danger {
+	color: #ffffff;
+}
