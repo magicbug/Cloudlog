@@ -471,10 +471,23 @@ class Logbook extends CI_Controller {
 					$html .= "<td>QSL</td>";
 					$html .= "<td></td>";
 				$html .= "</tr>";
+
+			// Get Date format
+			if($this->session->userdata('user_date_format')) {
+				// If Logged in and session exists
+				$custom_date_format = $this->session->userdata('user_date_format');
+			} else {
+				// Get Default date format from /config/cloudlog.php
+				$custom_date_format = $this->config->item('qso_date_format');
+			}
+
 			foreach ($query->result() as $row)
 			{
+
+				$timestamp = strtotime($row->COL_TIME_ON);
+
 				$html .= "<tr>";
-					$html .= "<td>".date($this->config->item('qso_date_format').' H:i',strtotime($row->COL_TIME_ON))."</td>";
+					$html .= "<td>".date($custom_date_format, $timestamp). date(' H:i',strtotime($row->COL_TIME_ON)) . "</td>";
 					$html .= "<td>".str_replace("0","&Oslash;",strtoupper($row->COL_CALL))."</td>";
 					$html .= "<td>".$row->COL_RST_SENT."</td>";
 					$html .= "<td>".$row->COL_RST_RCVD."</td>";
