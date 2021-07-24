@@ -232,40 +232,50 @@ class Logbook_model extends CI_Model {
         return($row);
     }
   }
+	/*
+	 * Used to fetch QSOs from the logbook in the awards
+	 */
+	public function qso_details($searchphrase, $band, $mode, $type){
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
 
-  public function dxcc_qso_details($country, $band){
-    $CI =& get_instance();
-    $CI->load->model('Stations');
-    $station_id = $CI->Stations->find_active();
+		switch ($type) {
+			case 'DXCC':
+				$this->db->where('COL_COUNTRY', $searchphrase);
+				break;
+			case 'IOTA':
+				$this->db->where('COL_IOTA', $searchphrase);
+				break;
+			case 'VUCC':
+				$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
+				break;
+			case 'CQZone':
+				$this->db->where('COL_CQZ', $searchphrase);
+				break;
+			case 'WAS':
+				$this->db->where('COL_STATE', $searchphrase);
+				$this->db->where_in('COL_DXCC', ['291', '6', '110']);
+				break;
+		}
 
-    $this->db->where('station_id', $station_id);
-    $this->db->where('COL_COUNTRY', $country);
-    if($band != "SAT") {
-      $this->db->where('COL_PROP_MODE !=', 'SAT');
-      $this->db->where('COL_BAND', $band);
-    } else {
-      $this->db->where('COL_PROP_MODE', "SAT");
-    }
+		$this->db->where('station_id', $station_id);
 
-    return $this->db->get($this->config->item('table_name'));
-  }
+		if ($band != 'All') {
+			if($band != "SAT") {
+				$this->db->where('COL_PROP_MODE !=', 'SAT');
+				$this->db->where('COL_BAND', $band);
+			} else {
+				$this->db->where('COL_PROP_MODE', "SAT");
+			}
+		}
 
-    public function iota_qso_details($iota, $band){
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		if ($mode != 'All') {
+			$this->db->where("(COL_MODE='" . $mode . "' OR COL_SUBMODE='" . $mode ."')");
+		}
 
-        $this->db->where('station_id', $station_id);
-        $this->db->where('COL_IOTA', $iota);
-        if($band != "SAT") {
-            $this->db->where('COL_PROP_MODE !=', 'SAT');
-            $this->db->where('COL_BAND', $band);
-        } else {
-            $this->db->where('COL_PROP_MODE', "SAT");
-        }
-
-        return $this->db->get($this->config->item('table_name'));
-    }
+		return $this->db->get($this->config->item('table_name'));
+	}
 
     public function vucc_qso_details($gridsquare, $band) {
         $CI =& get_instance();
@@ -286,26 +296,6 @@ class Logbook_model extends CI_Model {
         }
 
         return $this->db->query($sql);
-    }
-
-    public function cq_qso_details($cqzone, $band){
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
-
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $this->db->where('col_prop_mode', $band);
-            } else if ($band != '') {
-                $this->db->where('col_prop_mode !=', 'SAT');
-                $this->db->where('col_band', $band);
-            }
-        }
-
-        $this->db->where('station_id', $station_id);
-        $this->db->where('COL_CQZ', $cqzone);
-
-        return $this->db->get($this->config->item('table_name'));
     }
 
     public function timeline_qso_details($querystring, $band, $mode, $type){
@@ -334,26 +324,6 @@ class Logbook_model extends CI_Model {
             case 'iota': $this->db->where('COL_IOTA', $querystring); break;
             case 'waz':  $this->db->where('COL_CQZ', $querystring); break;
         }
-
-        return $this->db->get($this->config->item('table_name'));
-    }
-
-    public function was_qso_details($state, $band){
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
-
-        $this->db->where('station_id', $station_id);
-        $this->db->where('COL_STATE', $state);
-        $this->db->where_in('COL_DXCC', ['291', '6', '110']);
-        if($band != 'All') {
-			if($band != "SAT") {
-				$this->db->where('COL_PROP_MODE !=', 'SAT');
-				$this->db->where('COL_BAND', $band);
-			} else {
-				$this->db->where('COL_PROP_MODE', "SAT");
-			}
-		}
 
         return $this->db->get($this->config->item('table_name'));
     }
