@@ -33,6 +33,8 @@ class Core {
 				echo "Directory ".$data['directory']." cannot be found";
 				exit;
 			}
+		} else {
+			$counter++;
 		}
 
 		// Check if all the required fields have been entered
