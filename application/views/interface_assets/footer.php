@@ -991,33 +991,6 @@ $(document).ready(function(){
     if (background != ('rgb(255, 255, 255)')) {
         $(".buttons-csv").css("color", "white");
     }
-
-        function displayDxccContacts(country, band) {
-            var baseURL = "<?php echo base_url();?>";
-            $.ajax({
-                url: baseURL + 'index.php/awards/dxcc_details_ajax',
-                type: 'post',
-                data: {
-                    'Country': country,
-                    'Band': band
-                },
-                success: function (html) {
-                    BootstrapDialog.show({
-                        title: 'QSO Data',
-                        size: BootstrapDialog.SIZE_WIDE,
-                        cssClass: 'qso-dxcc-dialog',
-                        nl2br: false,
-                        message: html,
-                        buttons: [{
-                            label: 'Close',
-                            action: function (dialogItself) {
-                                dialogItself.close();
-                            }
-                        }]
-                    });
-                }
-            });
-        }
  </script>
     <?php } ?>
 
@@ -1043,32 +1016,6 @@ $(document).ready(function(){
     if (background != ('rgb(255, 255, 255)')) {
         $(".buttons-csv").css("color", "white");
     }
-
-            function displayVuccContacts(gridsquare, band) {
-                var baseURL= "<?php echo base_url();?>";
-                $.ajax({
-                    url: baseURL + 'index.php/awards/vucc_details_ajax',
-                    type: 'post',
-                    data: {'Gridsquare': gridsquare,
-                        'Band': band
-                    },
-                    success: function(html) {
-                        BootstrapDialog.show({
-                            title: 'QSO Data',
-                            size: BootstrapDialog.SIZE_WIDE,
-                            cssClass: 'qso-vucc-dialog',
-                            nl2br: false,
-                            message: html,
-                            buttons: [{
-                                label: 'Close',
-                                action: function (dialogItself) {
-                                    dialogItself.close();
-                                }
-                            }]
-                        });
-                    }
-                });
-            }
     </script>
 <?php } ?>
 
@@ -1137,32 +1084,6 @@ $(document).ready(function(){
         if (background != ('rgb(255, 255, 255)')) {
             $(".buttons-csv").css("color", "white");
         }
-
-        function displayIotaContacts(iota, band) {
-            var baseURL= "<?php echo base_url();?>";
-            $.ajax({
-                url: baseURL + 'index.php/awards/iota_details_ajax',
-                type: 'post',
-                data: {'Iota': iota,
-                    'Band': band
-                },
-                success: function(html) {
-                    BootstrapDialog.show({
-                        title: 'QSO Data',
-                        size: BootstrapDialog.SIZE_WIDE,
-                        cssClass: 'qso-iota-dialog',
-                        nl2br: false,
-                        message: html,
-                        buttons: [{
-                            label: 'Close',
-                            action: function (dialogItself) {
-                                dialogItself.close();
-                            }
-                        }]
-                    });
-                }
-            });
-        }
     </script>
 
 <?php } ?>
@@ -1200,32 +1121,6 @@ $(document).ready(function(){
         if (background != ('rgb(255, 255, 255)')) {
             $(".buttons-csv").css("color", "white");
         }
-
-            function displayCqContacts(cqzone, band) {
-                var baseURL= "<?php echo base_url();?>";
-                $.ajax({
-                    url: baseURL + 'index.php/awards/cq_details_ajax',
-                    type: 'post',
-                    data: {'CQZone': cqzone,
-                        'Band': band
-                    },
-                    success: function(html) {
-                        BootstrapDialog.show({
-                            title: 'QSO Data',
-                            size: BootstrapDialog.SIZE_WIDE,
-                            cssClass: 'qso-cq-dialog',
-                            nl2br: false,
-                            message: html,
-                            buttons: [{
-                                label: 'Close',
-                                action: function (dialogItself) {
-                                    dialogItself.close();
-                                }
-                            }]
-                        });
-                    }
-                });
-            }
     </script>
 <?php } ?>
 
@@ -1261,32 +1156,6 @@ $(document).ready(function(){
 
         if (background != ('rgb(255, 255, 255)')) {
             $(".buttons-csv").css("color", "white");
-        }
-
-        function displayWasContacts(was, band) {
-            var baseURL= "<?php echo base_url();?>";
-            $.ajax({
-                url: baseURL + 'index.php/awards/was_details_ajax',
-                type: 'post',
-                data: {'State': was,
-                    'Band': band
-                },
-                success: function(html) {
-                    BootstrapDialog.show({
-                        title: 'QSO Data',
-                        size: BootstrapDialog.SIZE_WIDE,
-                        cssClass: 'qso-was-dialog',
-                        nl2br: false,
-                        message: html,
-                        buttons: [{
-                            label: 'Close',
-                            action: function (dialogItself) {
-                            dialogItself.close();
-                            }
-                        }]
-                    });
-                }
-            });
         }
     </script>
 <?php } ?>
@@ -1701,6 +1570,38 @@ function deleteQsl(id) {
 </script>
 
 <script>
+  /*
+   * Used to fetch QSOs from the logbook in the awards
+   */
+    function displayContacts(searchphrase, band, mode, type) {
+        var baseURL = "<?php echo base_url();?>";
+        $.ajax({
+            url: baseURL + 'index.php/awards/qso_details_ajax',
+            type: 'post',
+            data: {
+                'Searchphrase': searchphrase,
+                'Band': band,
+                'Mode': mode,
+                'Type': type
+            },
+            success: function (html) {
+                BootstrapDialog.show({
+                    title: 'QSO Data',
+                    size: BootstrapDialog.SIZE_WIDE,
+                    cssClass: 'qso-dialog',
+                    nl2br: false,
+                    message: html,
+                    buttons: [{
+                        label: 'Close',
+                        action: function (dialogItself) {
+                            dialogItself.close();
+                        }
+                    }]
+                });
+            }
+        });
+    }
+
     function uploadQsl() {
         var baseURL= "<?php echo base_url();?>";
         var formdata = new FormData(document.getElementById("fileinfo"));

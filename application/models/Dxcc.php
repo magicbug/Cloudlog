@@ -60,7 +60,7 @@ class DXCC extends CI_Model {
 		foreach(array_keys($this->bandslots) as $slot) {
 			if(in_array($slot, $worked_slots)) {
 				array_push($results, $slot);
-			} 
+			}
 		}
 
 		return $results;
@@ -89,10 +89,10 @@ class DXCC extends CI_Model {
 
             // update stats
             if (!isset($results[$row->COL_COUNTRY]))
-                $results[$row->COL_COUNTRY] = []; 
+                $results[$row->COL_COUNTRY] = [];
 
             if (!isset($results[$row->COL_COUNTRY][$row->COL_BAND]))
-                $results[$row->COL_COUNTRY][$row->COL_BAND] = 0; 
+                $results[$row->COL_COUNTRY][$row->COL_BAND] = 0;
 
             $results[$row->COL_COUNTRY][$row->COL_BAND] += $row->cnt;
         }
@@ -115,10 +115,10 @@ class DXCC extends CI_Model {
 
             // update stats
             if (!isset($results[$row->COL_COUNTRY]))
-                $results[$row->COL_COUNTRY] = []; 
+                $results[$row->COL_COUNTRY] = [];
 
             if (!isset($results[$row->COL_COUNTRY][$row->COL_PROP_MODE]))
-                $results[$row->COL_COUNTRY][$row->COL_PROP_MODE] = 0; 
+                $results[$row->COL_COUNTRY][$row->COL_PROP_MODE] = 0;
 
             $results[$row->COL_COUNTRY][$row->COL_PROP_MODE] += $row->cnt;
         }
@@ -203,7 +203,8 @@ class DXCC extends CI_Model {
 			if ($postdata['worked'] != NULL) {
 				$workedDXCC = $this->getDxccBandWorked($station_id, $band, $postdata);
 				foreach ($workedDXCC as $wdxcc) {
-					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="alert-danger"><a href=\'javascript:displayDxccContacts("'.str_replace("&", "%26", $wdxcc->name).'","'. $band . '")\'>W</a></div>';
+					//function displayContacts(searchphrase, band, mode, type) {
+					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("'.str_replace("&", "%26", $wdxcc->name).'","'. $band . '","'. $postdata['mode'] . '","DXCC")\'>W</a></div>';
 				}
 			}
 
@@ -211,7 +212,7 @@ class DXCC extends CI_Model {
 			if ($postdata['confirmed'] != NULL) {
 				$confirmedDXCC = $this->getDxccBandConfirmed($station_id, $band, $postdata);
 				foreach ($confirmedDXCC as $cdxcc) {
-					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="alert-success"><a href=\'javascript:displayDxccContacts("'.str_replace("&", "%26", $cdxcc->name).'","'. $band . '")\'>C</a></div>';
+					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("'.str_replace("&", "%26", $cdxcc->name).'","'. $band . '","'. $postdata['mode'] . '","DXCC")\'>C</a></div>';
 				}
 			}
 		}
@@ -317,7 +318,7 @@ class DXCC extends CI_Model {
 		$CI->load->model('Stations');
 		$station_id = $CI->Stations->find_active();
 
-		$sql = "select adif, prefix, name, date(end) Enddate, date(start) Startdate 
+		$sql = "select adif, prefix, name, date(end) Enddate, date(start) Startdate
             from dxcc_entities";
 
 		if ($postdata['notworked'] == NULL) {
@@ -357,7 +358,7 @@ class DXCC extends CI_Model {
 	function getDxccWorked($station_id, $postdata) {
 		$sql = "SELECT adif as dxcc FROM dxcc_entities
         join (
-            select col_dxcc 
+            select col_dxcc
             from ".$this->config->item('table_name')." thcv
             where station_id = " . $station_id .
               " and col_dxcc > 0";
@@ -414,7 +415,7 @@ class DXCC extends CI_Model {
 	function getDxccConfirmed($station_id, $postdata) {
 		$sql = "SELECT adif as dxcc FROM dxcc_entities
             join (
-                select col_dxcc 
+                select col_dxcc
                 from ".$this->config->item('table_name')." thcv
                 where station_id = ". $station_id .
                     " and col_dxcc > 0";
@@ -499,7 +500,7 @@ class DXCC extends CI_Model {
 		}
 		return $sql;
 	}
-  
+
 	/*
      * Function gets worked and confirmed summary on each band on the active stationprofile
      */
@@ -566,7 +567,7 @@ class DXCC extends CI_Model {
 
 		return $query->result();
 	}
-  
+
   function lookup_country($country)
 	{
 		$query = $this->db->query('

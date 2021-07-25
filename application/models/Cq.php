@@ -89,14 +89,14 @@ class CQ extends CI_Model{
             if ($postdata['worked'] != NULL) {
                 $cqBand = $this->getCQWorked($station_id, $band, $postdata);
                 foreach ($cqBand as $line) {
-                    $bandCq[$line->col_cqz][$band] = '<div class="alert-danger"><a href=\'javascript:displayCqContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '")\'>W</a></div>';
+                    $bandCq[$line->col_cqz][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '","All","CQZone")\'>W</a></div>';
                     $cqZ[$line->col_cqz]['count']++;
                 }
             }
             if ($postdata['confirmed'] != NULL) {
                 $cqBand = $this->getCQConfirmed($station_id, $band, $postdata);
                 foreach ($cqBand as $line) {
-                    $bandCq[$line->col_cqz][$band] = '<div class="alert-success"><a href=\'javascript:displayCqContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '")\'>C</a></div>';
+                    $bandCq[$line->col_cqz][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '","All","CQZone")\'>C</a></div>';
                     $cqZ[$line->col_cqz]['count']++;
                 }
             }

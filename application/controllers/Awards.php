@@ -140,19 +140,6 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-    public function dxcc_details_ajax(){
-        $this->load->model('logbook_model');
-
-        $country = str_replace('"', "", $this->input->post("Country"));
-        $band = str_replace('"', "", $this->input->post("Band"));
-        $data['results'] = $this->logbook_model->dxcc_qso_details($country, $band);
-
-        // Render Page
-        $data['page_title'] = "Log View - DXCC";
-        $data['filter'] = "country ".$country. " and ".$band;
-        $this->load->view('awards/details', $data);
-    }
-
     public function vucc()	{
         $this->load->model('vucc');
         $data['worked_bands'] = $this->vucc->get_worked_bands();
@@ -194,6 +181,25 @@ class Awards extends CI_Controller {
         $data['filter'] = "vucc " . $gridsquare . " and band ".$band;
         $this->load->view('awards/details', $data);
     }
+
+	/*
+	 * Used to fetch QSOs from the logbook in the awards
+	 */
+	public function qso_details_ajax(){
+		$this->load->model('logbook_model');
+
+		$searchphrase = str_replace('"', "", $this->input->post("Searchphrase"));
+		$band = str_replace('"', "", $this->input->post("Band"));
+		$mode = str_replace('"', "", $this->input->post("Mode"));
+		$type = $this->input->post('Type');
+
+		$data['results'] = $this->logbook_model->qso_details($searchphrase, $band, $mode, $type);
+
+		// Render Page
+		$data['page_title'] = "Log View - " . $type;
+		$data['filter'] = $type . " " . $searchphrase . " and band ".$band . " and mode ".$mode;
+		$this->load->view('awards/details', $data);
+	}
 
 	/*
 		Handles showing worked SOTAs
@@ -262,19 +268,6 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-    public function cq_details_ajax(){
-        $this->load->model('logbook_model');
-
-        $cqzone = str_replace('"', "", $this->input->post("CQZone"));
-        $band = str_replace('"', "", $this->input->post("Band"));
-        $data['results'] = $this->logbook_model->cq_qso_details($cqzone, $band);
-
-        // Render Page
-        $data['page_title'] = "Log View - DXCC";
-        $data['filter'] = "CQZone ".$cqzone. " and ".$band;;
-        $this->load->view('awards/details', $data);
-    }
-
     public function was() {
         $this->load->model('was');
         $data['worked_bands'] = $this->was->get_worked_bands();
@@ -318,19 +311,6 @@ class Awards extends CI_Controller {
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/was/index');
         $this->load->view('interface_assets/footer');
-    }
-
-    public function was_details_ajax() {
-        $this->load->model('logbook_model');
-
-        $state = str_replace('"', "", $this->input->post("State"));
-        $band = str_replace('"', "", $this->input->post("Band"));
-        $data['results'] = $this->logbook_model->was_qso_details($state, $band);
-
-        // Render Page
-        $data['page_title'] = "Log View - WAS";
-        $data['filter'] = "state ".$state. " and ".$band;
-        $this->load->view('awards/details', $data);
     }
 
     public function iota ()	{
@@ -389,19 +369,6 @@ class Awards extends CI_Controller {
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/iota/index');
         $this->load->view('interface_assets/footer');
-    }
-
-    public function iota_details_ajax(){
-        $this->load->model('logbook_model');
-
-        $iota = str_replace('"', "", $this->input->post("Iota"));
-        $band = str_replace('"', "", $this->input->post("Band"));
-        $data['results'] = $this->logbook_model->iota_qso_details($iota, $band);
-
-        // Render Page
-        $data['page_title'] = "Log View - IOTA";
-        $data['filter'] = "iota ".$iota. " and ".$band;
-        $this->load->view('awards/details', $data);
     }
 
     public function counties()	{

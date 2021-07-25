@@ -81,7 +81,7 @@ class IOTA extends CI_Model {
             if ($postdata['worked'] != NULL) {
                 $workedIota = $this->getIotaBandWorked($station_id, $band, $postdata);
                 foreach ($workedIota as $wiota) {
-                    $iotaMatrix[$wiota->tag][$band] = '<div class="alert-danger"><a href=\'javascript:displayIotaContacts("'.$wiota->tag.'","'. $band . '")\'>W</a></div>';
+                    $iotaMatrix[$wiota->tag][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("'.$wiota->tag.'","'. $band . '","All","IOTA")\'>W</a></div>';
                 }
             }
 
@@ -89,7 +89,7 @@ class IOTA extends CI_Model {
             if ($postdata['confirmed'] != NULL) {
                 $confirmedIota = $this->getIotaBandConfirmed($station_id, $band, $postdata);
                 foreach ($confirmedIota as $ciota) {
-                    $iotaMatrix[$ciota->tag][$band] = '<div class="alert-success"><a href=\'javascript:displayIotaContacts("'.$ciota->tag.'","'. $band . '")\'>C</a></div>';
+                    $iotaMatrix[$ciota->tag][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("'.$ciota->tag.'","'. $band . '","All","IOTA")\'>C</a></div>';
                 }
             }
         }
@@ -123,7 +123,7 @@ class IOTA extends CI_Model {
     }
 
     function getIotaBandConfirmed($station_id, $band, $postdata) {
-        $sql = "SELECT distinct col_iota as tag FROM " . $this->config->item('table_name') . " thcv 
+        $sql = "SELECT distinct col_iota as tag FROM " . $this->config->item('table_name') . " thcv
             join iota on thcv.col_iota = iota.tag
             where station_id = " . $station_id .
             " and thcv.col_iota is not null
@@ -149,7 +149,7 @@ class IOTA extends CI_Model {
     }
 
     function getIotaBandWorked($station_id, $band, $postdata) {
-        $sql = 'SELECT distinct col_iota as tag FROM ' . $this->config->item('table_name'). ' thcv 
+        $sql = 'SELECT distinct col_iota as tag FROM ' . $this->config->item('table_name'). ' thcv
             join iota on thcv.col_iota = iota.tag
             where station_id = ' . $station_id .
             ' and thcv.col_iota is not null';
@@ -207,7 +207,7 @@ class IOTA extends CI_Model {
     }
 
     function getIotaWorked($station_id, $postdata) {
-        $sql = "SELECT distinct col_iota as tag FROM " . $this->config->item('table_name') . " thcv 
+        $sql = "SELECT distinct col_iota as tag FROM " . $this->config->item('table_name') . " thcv
             join iota on thcv.col_iota = iota.tag
             where station_id = " . $station_id .
             " and thcv.col_iota is not null
@@ -248,7 +248,7 @@ class IOTA extends CI_Model {
     }
 
     function getIotaConfirmed($station_id, $postdata) {
-        $sql = "SELECT distinct col_iota as tag FROM " . $this->config->item('table_name') . " thcv 
+        $sql = "SELECT distinct col_iota as tag FROM " . $this->config->item('table_name') . " thcv
             join iota on thcv.col_iota = iota.tag
             where station_id = " . $station_id .
             " and thcv.col_iota is not null
