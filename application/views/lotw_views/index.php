@@ -60,7 +60,7 @@
 									<?php if ($current_date <= $row->date_expires) { ?>
 										<span class="badge badge-success"><?php echo $this->lang->line('lotw_valid'); ?></span>
 									<?php } else { ?>
-										<span class="badge badge-dark"><?php echo $this->lang->line('lotw_expired'); ?></span>
+										<span class="badge badge-danger"><?php echo $this->lang->line('lotw_expired'); ?></span>
 									<?php } ?>
 
 									<?php if ($row->last_upload) { ?>
