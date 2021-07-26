@@ -115,11 +115,10 @@
                 </div>
             </div>
 
-            <!-- Select Basic -->
             <div class="form-group row">
                 <label class="col-md-2 control-label" for="band">Band</label>
                 <div class="col-md-2">
-                    <select id="band2" name="band" class="form-control">
+                    <select id="band2" name="band" class="form-control custom-select-sm">
                         <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >Every band</option>
                         <?php foreach($worked_bands as $band) {
                             echo '<option value="' . $band . '"';
@@ -130,7 +129,28 @@
                 </div>
             </div>
 
-            <!-- Button (Double) -->
+			<div class="form-group row">
+				<label class="col-md-2 control-label" for="mode">Mode</label>
+				<div class="col-md-2">
+					<select id="mode" name="mode" class="form-control custom-select-sm">
+						<option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'mode') echo ' selected'; ?>>All</option>
+						<?php
+						foreach($modes->result() as $mode){
+							if ($mode->submode == null) {
+								echo '<option value="' . $mode->mode . '"';
+								if ($this->input->post('mode') == $mode->mode) echo ' selected';
+								echo '>'. $mode->mode . '</option>'."\n";
+							} else {
+								echo '<option value="' . $mode->submode . '"';
+								if ($this->input->post('mode') == $mode->submode) echo ' selected';
+								echo '>' . $mode->submode . '</option>'."\n";
+							}
+						}
+						?>
+					</select>
+				</div>
+			</div>
+
             <div class="form-group row">
                 <label class="col-md-2 control-label" for="button1id"></label>
                 <div class="col-md-10">

@@ -89,14 +89,14 @@ class CQ extends CI_Model{
             if ($postdata['worked'] != NULL) {
                 $cqBand = $this->getCQWorked($station_id, $band, $postdata);
                 foreach ($cqBand as $line) {
-                    $bandCq[$line->col_cqz][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '","All","CQZone")\'>W</a></div>';
+                    $bandCq[$line->col_cqz][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '","'. $postdata['mode'] . '","CQZone")\'>W</a></div>';
                     $cqZ[$line->col_cqz]['count']++;
                 }
             }
             if ($postdata['confirmed'] != NULL) {
                 $cqBand = $this->getCQConfirmed($station_id, $band, $postdata);
                 foreach ($cqBand as $line) {
-                    $bandCq[$line->col_cqz][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '","All","CQZone")\'>C</a></div>';
+                    $bandCq[$line->col_cqz][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '","'. $postdata['mode'] . '","CQZone")\'>C</a></div>';
                     $cqZ[$line->col_cqz]['count']++;
                 }
             }
@@ -141,11 +141,19 @@ class CQ extends CI_Model{
         $sql = "SELECT distinct col_cqz FROM " . $this->config->item('table_name') . " thcv
         where station_id = " . $station_id . " and col_cqz <> ''";
 
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
+
         $sql .= $this->addBandToQuery($band);
 
         $sql .= " and not exists (select 1 from " . $this->config->item('table_name') .
             " where station_id = " . $station_id .
             " and col_cqz = thcv.col_cqz and col_cqz <> '' ";
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
 
         $sql .= $this->addBandToQuery($band);
 
@@ -165,6 +173,10 @@ class CQ extends CI_Model{
     function getCQConfirmed($station_id, $band, $postdata) {
         $sql = "SELECT distinct col_cqz FROM " . $this->config->item('table_name') . " thcv
             where station_id = " . $station_id . " and col_cqz <> ''";
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
 
         $sql .= $this->addBandToQuery($band);
 
