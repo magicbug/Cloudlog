@@ -319,6 +319,8 @@ class Awards extends CI_Controller {
 
     public function iota ()	{
         $this->load->model('iota');
+		$this->load->model('modes');
+
         $data['worked_bands'] = $this->iota->get_worked_bands(); // Used in the view for band select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
@@ -334,6 +336,7 @@ class Awards extends CI_Controller {
         }
 
         $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
+		$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if($this->input->method() === 'post') {
             $postdata['worked'] = $this->input->post('worked');
@@ -348,6 +351,7 @@ class Awards extends CI_Controller {
             $postdata['Oceania'] = $this->input->post('Oceania');
             $postdata['Antarctica'] = $this->input->post('Antarctica');
             $postdata['band'] = $this->input->post('band');
+			$postdata['mode'] = $this->input->post('mode');
         }
         else { // Setting default values at first load of page
             $postdata['worked'] = 1;
@@ -362,6 +366,7 @@ class Awards extends CI_Controller {
             $postdata['Oceania'] = 1;
             $postdata['Antarctica'] = 1;
             $postdata['band'] = 'All';
+			$postdata['mode'] = 'All';
         }
 
         $iotalist = $this->iota->fetchIota($postdata);

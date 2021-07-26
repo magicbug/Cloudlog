@@ -5,7 +5,6 @@
     <form class="form" action="<?php echo site_url('awards/iota'); ?>" method="post" enctype="multipart/form-data">
         <fieldset>
 
-            <!-- Multiple Checkboxes (inline) -->
             <div class="form-group row">
                 <div class="col-md-2 control-label" for="checkboxes">Deleted IOTA</div>
                 <div class="col-md-10">
@@ -16,7 +15,6 @@
                 </div>
             </div>
 
-            <!-- Multiple Checkboxes (inline) -->
             <div class="form-group row">
                 <div class="col-md-2" for="checkboxes">Worked / Confirmed</div>
                 <div class="col-md-10">
@@ -69,11 +67,10 @@
                 </div>
             </div>
 
-            <!-- Select Basic -->
             <div class="form-group row">
                 <label class="col-md-2 control-label" for="band">Band</label>
                 <div class="col-md-2">
-                    <select id="band2" name="band" class="form-control">
+                    <select id="band2" name="band" class="form-control custom-select-sm">
                         <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >Every band</option>
                         <?php foreach($worked_bands as $band) {
                             echo '<option value="' . $band . '"';
@@ -84,12 +81,33 @@
                 </div>
             </div>
 
-            <!-- Button (Double) -->
+			<div class="form-group row">
+				<label class="col-md-2 control-label" for="mode">Mode</label>
+				<div class="col-md-2">
+					<select id="mode" name="mode" class="form-control custom-select-sm">
+						<option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'mode') echo ' selected'; ?>>All</option>
+						<?php
+						foreach($modes->result() as $mode){
+							if ($mode->submode == null) {
+								echo '<option value="' . $mode->mode . '"';
+								if ($this->input->post('mode') == $mode->mode) echo ' selected';
+								echo '>'. $mode->mode . '</option>'."\n";
+							} else {
+								echo '<option value="' . $mode->submode . '"';
+								if ($this->input->post('mode') == $mode->submode) echo ' selected';
+								echo '>' . $mode->submode . '</option>'."\n";
+							}
+						}
+						?>
+					</select>
+				</div>
+			</div>
+
             <div class="form-group row">
                 <label class="col-md-2 control-label" for="button1id"></label>
                 <div class="col-md-10">
-                    <button id="button2id" type="reset" name="button2id" class="btn btn-warning">Reset</button>
-                    <button id="button1id" type="submit" name="button1id" class="btn btn-primary">Show</button>
+                    <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning">Reset</button>
+                    <button id="button1id" type="submit" name="button1id" class="btn btn-sm btn-primary">Show</button>
                 </div>
             </div>
 
@@ -99,7 +117,7 @@
     $i = 1;
     if ($iota_array) {
         echo '
-                
+
                 <table style="width:100%;" class="table table-sm tableiota table-bordered table-hover table-striped table-condensed text-center">
                     <thead>
                     <tr>
