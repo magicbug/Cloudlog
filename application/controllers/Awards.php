@@ -224,8 +224,10 @@ class Awards extends CI_Controller {
 		$station_id = $CI->Stations->find_active();
 
         $this->load->model('cq');
+		$this->load->model('modes');
 
         $data['worked_bands'] = $this->cq->get_worked_bands($station_id);
+		$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
@@ -248,6 +250,7 @@ class Awards extends CI_Controller {
             $postdata['confirmed'] = $this->input->post('confirmed');
             $postdata['notworked'] = $this->input->post('notworked');
             $postdata['band'] = $this->input->post('band');
+			$postdata['mode'] = $this->input->post('mode');
         }
         else { // Setting default values at first load of page
             $postdata['lotw'] = 1;
@@ -256,6 +259,7 @@ class Awards extends CI_Controller {
             $postdata['confirmed'] = 1;
             $postdata['notworked'] = 1;
             $postdata['band'] = 'All';
+			$postdata['mode'] = 'All';
         }
 
         $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata, $station_id);
