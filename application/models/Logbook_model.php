@@ -1401,28 +1401,45 @@ class Logbook_model extends CI_Model {
     }
   }
 
-  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state) {
+  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare) {
 
-    if($state != "") {
-      $data = array(
-           'COL_LOTW_QSLRDATE' => $qsl_date,
-           'COL_LOTW_QSL_RCVD' => $qsl_status,
-           'COL_LOTW_QSL_SENT' => 'Y',
-           'COL_STATE' => $state
-      );
-    } else {
-      $data = array(
-           'COL_LOTW_QSLRDATE' => $qsl_date,
-           'COL_LOTW_QSL_RCVD' => $qsl_status,
-           'COL_LOTW_QSL_SENT' => 'Y'
-      );
-    }
+	$data = array(
+      'COL_LOTW_QSLRDATE' => $qsl_date,
+      'COL_LOTW_QSL_RCVD' => $qsl_status,
+      'COL_LOTW_QSL_SENT' => 'Y'
+    );
+	if($state != "") {
+      $data['COL_STATE'] = $state;
+	}
 
     $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
     $this->db->where('COL_CALL', $callsign);
     $this->db->where('COL_BAND', $band);
 
     $this->db->update($this->config->item('table_name'), $data);
+	unset($data);
+
+	if($qsl_gridsquare != "") {
+      $data = array(
+        'COL_GRIDSQUARE' => $qsl_gridsquare
+      );
+      $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
+      $this->db->where('COL_CALL', $callsign);
+      $this->db->where('COL_BAND', $band);
+      if(strlen($qsl_gridsquare) > 4) {
+        $this->db->group_start();
+        $this->db->where('COL_GRIDSQUARE', "");
+        $this->db->or_where('COL_GRIDSQUARE', substr($qsl_gridsquare, 0, 4));
+        if(strlen($qsl_gridsquare) > 6) {
+          $this->db->or_where('COL_GRIDSQUARE', substr($qsl_gridsquare, 0, 6));
+        }
+        $this->db->group_end();
+      } else {
+        $this->db->where('COL_GRIDSQUARE', "");
+      }
+
+      $this->db->update($this->config->item('table_name'), $data);
+    }
 
     return "Updated";
   }
