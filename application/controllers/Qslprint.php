@@ -149,6 +149,22 @@ class QSLPrint extends CI_Controller {
 		$data['station_id'] = $station_id;
 		$this->load->view('qslprint/qslprint', $data);
 	}
+
+	public function open_qso_list() {
+		$callsign = $this->input->post('callsign');
+		$this->load->model('qslprint_model');
+
+		$data['qsos'] = $this->qslprint_model->open_qso_list($this->security->xss_clean($callsign));
+		$this->load->view('qslprint/qsolist', $data);
+	}
+
+	public function add_qso_to_print_queue() {
+		$id = $this->input->post('id');
+		$this->load->model('qslprint_model');
+
+		$this->qslprint_model->add_qso_to_print_queue($this->security->xss_clean($id));
+	}
+
 }
 
 /* End of file Qslprint.php */
