@@ -23,9 +23,9 @@
 
 function load_was_map() {
     BootstrapDialog.show({
-            title: 'Worked All States Map ('+$('#band2').val()+')',
+            title: 'Worked All States Map ('+$('#band2').val()+' '+$('#mode').val()+')',
             cssClass: 'was-map-dialog',
-            message: $('<div></div>').load(site_url + '/awards/was_map/' + $('#band2').val())
+            message: $('<div></div>').load(site_url + '/awards/was_map/' + $('#band2').val() + '/' + $('#mode').val())
     });
 }
 
