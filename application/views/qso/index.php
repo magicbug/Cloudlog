@@ -258,7 +258,7 @@
                   <label for="cqz"><?php echo $this->lang->line('gen_hamradio_cq_zone'); ?></label>
                   <select class="custom-select" id="cqz" name="cqz" required>
                       <?php
-                      for ($i = 1; $i<=40; $i++) {
+                      for ($i = 0; $i<=40; $i++) {
                           echo '<option value="'. $i . '">'. $i .'</option>';
                       }
                       ?>

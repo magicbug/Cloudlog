@@ -2092,7 +2092,14 @@ class Logbook_model extends CI_Model {
 
 		if (preg_match('/(^KG4)[A-Z09]{3,}/', $call)) { 	// KG4/ and KG4 5 char calls are Guantanamo Bay. If 6 char, it is USA
 			$call = "K";
-		}
+		} elseif (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
+			if ($matches[5][0] == '/MM') {
+				$row['adif'] = 0;
+				$row['entity'] = 'None';
+				$row['cqz'] = 0;
+				return array($row['adif'], $row['entity'], $row['cqz']);
+			}
+    	}
 
 		$len = strlen($call);
 
@@ -2137,7 +2144,16 @@ class Logbook_model extends CI_Model {
 
 				if (preg_match('/(^KG4)[A-Z09]{3,}/', $call)) { 	// KG4/ and KG4 5 char calls are Guantanamo Bay. If 6 char, it is USA
 					$call = "K";
-				}
+				} elseif (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
+					if ($matches[5][0] == '/MM') {
+						$row['adif'] = 0;
+						$row['entity'] = 'None';
+						$row['cqz'] = 0;
+						$row['long'] = '0';
+						$row['lat'] = '0';
+						return $row;
+					}
+    			}
 
 				$len = strlen($call);
 
