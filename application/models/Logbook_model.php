@@ -244,6 +244,9 @@ class Logbook_model extends CI_Model {
 			case 'DXCC':
 				$this->db->where('COL_COUNTRY', $searchphrase);
 				break;
+			case 'DXCC2':
+				$this->db->where('COL_DXCC', $searchphrase);
+				break;
 			case 'IOTA':
 				$this->db->where('COL_IOTA', $searchphrase);
 				break;
@@ -256,6 +259,13 @@ class Logbook_model extends CI_Model {
 			case 'WAS':
 				$this->db->where('COL_STATE', $searchphrase);
 				$this->db->where_in('COL_DXCC', ['291', '6', '110']);
+				break;
+			case 'SOTA':
+				$this->db->where('COL_SOTA_REF', $searchphrase);
+				break;
+			case 'WWFF':
+				$this->db->where('COL_SIG', 'WWFF');
+				$this->db->where('COL_SIG_INFO', $searchphrase);
 				break;
 		}
 

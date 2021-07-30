@@ -195,6 +195,14 @@ class Awards extends CI_Controller {
 
 		$data['results'] = $this->logbook_model->qso_details($searchphrase, $band, $mode, $type);
 
+		// This is done because we have two different ways to get dxcc info in Cloudlog. Once is using the name (in awards), and the other one is using the ADIF DXCC.
+		// We replace the values to make it look a bit nicer
+		if ($type == 'DXCC2') {
+			$type = 'DXCC';
+			$dxccname = $this->logbook_model->get_entity($searchphrase);
+			$searchphrase = $dxccname['name'];
+		}
+
 		// Render Page
 		$data['page_title'] = "Log View - " . $type;
 		$data['filter'] = $type . " " . $searchphrase . " and band ".$band . " and mode ".$mode;
