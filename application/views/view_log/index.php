@@ -1,6 +1,6 @@
 <div class="container logbook">
 
-	<h2>Logbook</h2>
+	<h2><?php echo $this->lang->line('gen_hamradio_logbook'); ?></h2>
 
 	<?php if($this->session->flashdata('notice')) { ?>
 	<div class="alert alert-info" role="alert">

@@ -28,7 +28,7 @@
 		<div class="form-group">
 			<label>User Role</label>
 		    <select class="custom-select" name="user_type">
-			<?php			
+			<?php
 				$levels = $this->config->item('auth_level');
 				while (list($key, $val) = each($levels)) {
 			?>
@@ -66,7 +66,7 @@
 		    <input class="form-control" type="text" name="user_callsign" value="<?php if(isset($user_callsign)) { echo $user_callsign; } ?>" />
 			<?php if(isset($callsign_error)) { echo "<div class=\"small error\">".$callsign_error."</div>"; } ?>
 		</div>
-			
+
 		<div class="form-group">
 		    <label>Locator</label>
 		    <input class="form-control" type="text" name="user_locator" value="<?php if(isset($user_locator)) { echo $user_locator; } ?>" />
@@ -75,9 +75,9 @@
 
 		<div class="form-group">
 		    <label>Timezone</label>
-			<?php 
+			<?php
 				if(!isset($user_timezone)) { $user_timezone = 0; }
-				echo form_dropdown('user_timezone', $timezones, $user_timezone); 
+				echo form_dropdown('user_timezone', $timezones, $user_timezone);
 			?>
 		</div>
 
@@ -92,7 +92,7 @@
             	<option value="d.m.Y"><?php echo date('d.m.Y'); ?></option>
             	<option value="Y-m-d"><?php echo date('Y-m-d'); ?></option>
             </select>
-            
+
             <small id="SelectDateFormatHelp" class="form-text text-muted">Select how you would like dates shown when logged into your account.</small>
         </div>
 
@@ -111,11 +111,102 @@
         <div class="form-group">
             <label for="user_stylesheet">Theme</label>
             <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
-                <option value='bootstrap.min.css' selected="selected">Standard theme</option>
-                <option value='bootstrap-dark.css'>Dark theme</option>
-                <option value='bootstrap-blue.css'>Blue theme</option>
+                <option value='default' selected="selected">Default</option>
+                <option value='blue'>Blue</option>
+                <option value='cosmo'>Cosmo</option>
+                <option value='cyborg'>Cyborg (Dark)</option>
+                <option value='darkly'>Darkly (Dark)</option>
+                <option value='superhero'>Superhero (Dark)</option>
             </select>
         </div>
+
+		<div class="form-group">
+			<label for="sotalookup">SOTA auto lookup gridsquare and name for summit.</label>
+			<select class="custom-select" id="sotalookup" name="user_sota_lookup">
+				<option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>
+				<option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
+			</select>
+			<div class="small form-text text-muted">If this is set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
+		</div>
+
+		<div class="form-group">
+			<label for="shownotes">Show notes in the main menu.</label>
+			<select class="custom-select" id="shownotes" name="user_show_notes">
+				<option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>
+				<option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
+			</select>
+		</div>
+		<div class="form-row">
+			<div class="form-group col-md-3">
+			<label for="column1"><?php echo $this->lang->line('account_column1_text'); ?></label>
+			<select class="custom-select" id="column1" name="user_column1">
+				<option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+				<option value="Mode" selected ='selected'> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+				<option value="RSTS"><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
+				<option value="RSTR"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
+				<option value="Country"><?php echo $this->lang->line('general_word_country'); ?></option>
+				<option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?></option>
+				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
+				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+			</select>
+			</div>
+
+			<div class="form-group col-md-3">
+			<label for="column2"><?php echo $this->lang->line('account_column2_text'); ?></label>
+			<select class="custom-select" id="column2" name="user_column2">
+				<option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+				<option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+				<option value="RSTS" selected ='selected'><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
+				<option value="RSTR"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
+				<option value="Country"><?php echo $this->lang->line('general_word_country'); ?></option>
+				<option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?></option>
+				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
+				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+			</select>
+			</div>
+
+			<div class="form-group col-md-3">
+			<label for="column3"><?php echo $this->lang->line('account_column3_text'); ?></label>
+			<select class="custom-select" id="column3" name="user_column3">
+				<option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+				<option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+				<option value="RSTS"><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
+				<option value="RSTR" selected ='selected'><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
+				<option value="Country"><?php echo $this->lang->line('general_word_country'); ?></option>
+				<option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?></option>
+				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
+				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+			</select>
+			</div>
+
+			<div class="form-group col-md-3">
+			<label for="column4"><?php echo $this->lang->line('account_column4_text'); ?></label>
+			<select class="custom-select" id="column4" name="user_column4">
+				<option value="Band" selected ='selected'> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+				<option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+				<option value="RSTS"><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
+				<option value="RSTR"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
+				<option value="Country"><?php echo $this->lang->line('general_word_country'); ?></option>
+				<option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?></option>
+				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
+				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+			</select>
+			</div>
+
+			<div class="form-group col-md-3">
+			<label for="column5"><?php echo $this->lang->line('account_column5_text'); ?></label>
+				<select class="custom-select" id="column5" name="user_column5">
+					<option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+					<option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
+					<option value="RSTS"><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
+					<option value="RSTR"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
+					<option value="Country" selected ='selected'><?php echo $this->lang->line('general_word_country'); ?></option>
+					<option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?></option>
+					<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
+					<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+				</select>
+			</div>
+		</div>
 
 		<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 		<button type="submit" class="btn btn-primary">Create Account</button>

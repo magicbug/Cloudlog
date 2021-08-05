@@ -6,7 +6,7 @@
 	<h3>Data Types</h3>
 	
 	<ul>
-		<li><a href="<?php echo site_url('kml'); ?>">All QSOs as a KML File</a></li>
+		<li><a href="<?php echo site_url('kml'); ?>">All QSOs as KML</a></li>
 		<li><a href="<?php echo site_url('adif/export'); ?>">ADIF Export</a></li>
 	</ul>
 </div>

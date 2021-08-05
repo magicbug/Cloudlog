@@ -44,6 +44,7 @@
 		    <label for="stationDXCCInput">Station DXCC</label>
 				<?php if ($dxcc_list->num_rows() > 0) { ?>
 				<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
+				<option value="0" selected>NONE</option>
 				<?php foreach ($dxcc_list->result() as $dxcc) { ?>
 				<option value="<?php echo $dxcc->adif; ?>"><?php echo $dxcc->name; ?></option>
 				<?php } ?>
@@ -59,7 +60,8 @@
 		    <small id="stationCityInputHelp" class="form-text text-muted">Station city. For example: Inverness</small>
 		  </div>
 
-		  <div class="form-group">
+        <div class="form-row">
+            <div class="form-group col-sm-6">
 		    <label for="stateInput">Station State</label>
 		    <select class="form-control custom-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 		    	<option value="" selected></option>
@@ -117,11 +119,12 @@
 		    <small id="StateHelp" class="form-text text-muted">Station state. Applies to certain countries only. Leave blank if not applicable.</small>
 		  </div>
 
-		  <div style="display: none" class="form-group">
-		    <label for="stationCntyInput">Station Cnty</label>
-		    <input type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp">
-		    <small id="stationCntyInputHelp" class="form-text text-muted">Station Cnty #get def from ADIF Spec#</small>
+		  <div class="form-group col-sm-6">
+		    <label for="stationCntyInput">Station County</label>
+		    <input disabled="disabled" type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp">
+		    <small id="stationCntyInputHelp" class="form-text text-muted">Station County (Only used for USA/Alaska/Hawaii)</small>
 		  </div>
+        </div>
 
             <div class="form-row">
                 <div class="form-group col-sm-6">
@@ -182,19 +185,44 @@
 		    <small id="stationSOTAInputHelp" class="form-text text-muted">Station SOTA reference.</small>
 		  </div>
 
+		  <div class="form-group">
+		    <label for="stationSigInput">Signature</label>
+		    <input type="text" class="form-control" name="sig" id="stationSigInput" aria-describedby="stationSigInputHelp">
+		    <small id="stationSigInputHelp" class="form-text text-muted">Station Signature (e.g. WWFF).</small>
+		  </div>
+
+		  <div class="form-group">
+		    <label for="stationSigInfoInput">Signature Info</label>
+		    <input type="text" class="form-control" name="sig_info" id="stationSigInfoInput" aria-describedby="stationSigInfoInputHelp">
+		    <small id="stationSigInfoInput" class="form-text text-muted">Station Signature Info (e.g. DLFF-0029).</small>
+		  </div>
+
             <div class="form-group">
                 <label for="eqslNickname">eQSL QTH Nickname</label>
                 <input type="text" class="form-control" name="eqslnickname" id="eqslNickname" aria-describedby="eqslhelp">
                 <small id="eqslhelp" class="form-text text-muted">eQSL QTH Nickname.</small>
             </div>
 
-            <div class="form-group">
-                <label for="qrzApiKey">QRZ.com Logbook API Key</label>
-                <input type="text" class="form-control" name="qrzapikey" id="qrzApiKey" aria-describedby="qrzApiKeyHelp">
-                <small id="qrzApiKeyHelp" class="form-text text-muted">Find your API key on <a href="https://logbook.qrz.com/logbook" target="_blank">QRZ.com's settings page</a></small>
+			<div class="alert alert-warning" role="alert">
+					QRZ.com Logbook Requires Paid Subscription
+			</div>
+
+            <div class="form-row">
+                <div class="form-group col-sm-6">
+                    <label for="qrzApiKey">QRZ.com Logbook API Key</label>
+                    <input type="text" class="form-control" name="qrzapikey" id="qrzApiKey" aria-describedby="qrzApiKeyHelp">
+                    <small id="qrzApiKeyHelp" class="form-text text-muted">Find your API key on <a href="https://logbook.qrz.com/logbook" target="_blank">QRZ.com's settings page</a></small>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="qrzrealtime">QRZ.com Logbook Realtime Upload</label>
+                    <select class="custom-select" id="qrzrealtime" name="qrzrealtime">
+                        <option value="1">Yes</option>
+                        <option value="0" selected>No</option>
+                    </select>
+                </div>
             </div>
 
-			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Create Station Profile</button>
+			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Create Station Location</button>
 
 		</form>
   </div>

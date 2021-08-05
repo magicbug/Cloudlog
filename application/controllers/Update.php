@@ -224,6 +224,11 @@ class Update extends CI_Controller {
         $this->logbook_model->check_missing_dxcc_id($all);
 
 	}
+	
+	public function check_missing_grid($all = false){
+	    $this->load->model('logbook_model');
+        $this->logbook_model->check_missing_grid_id($all);
+	}
 
     public function update_clublog_scp() {
         $strFile = "./updates/clublog_scp.txt";
@@ -287,6 +292,75 @@ class Update extends CI_Controller {
             }
         }
         fclose($f);
+    }
+
+    /*
+     * Used for autoupdating the DOK file which is used in the QSO entry dialog for autocompletion.
+     */
+    public function update_dok() {
+        $contents = file_get_contents('https://www.df2et.de/cqrlog/dok_and_sdok.txt', true);
+
+        if($contents === FALSE) {
+            echo "Something went wrong with fetching the DOK file.";
+        } else {
+            $file = './assets/json/dok.txt';
+
+            file_put_contents($file, $contents);     // Save our content to the file.
+
+            if (file_exists($file))
+            {
+                $nCount = count(file($file));
+                if ($nCount > 0)
+                {
+                    echo "DONE: " . number_format($nCount) . " DOKs and SDOKs saved";
+                } else {
+                    echo"FAILED: Empty file";
+                }
+            } else {
+                echo"FAILED: Could not create dok.txt file locally";
+            }
+        }
+    }
+
+    /*
+     * Used for autoupdating the SOTA file which is used in the QSO entry dialog for autocompletion.
+     */
+    public function update_sota() {
+        $csvfile = 'https://www.sotadata.org.uk/summitslist.csv';
+
+        $sotafile = './assets/json/sota.txt';
+
+        if($csvfile === FALSE) {
+            echo "Something went wrong with fetching the SOTA file";
+        } else {
+            $csvhandle = fopen($csvfile,"r");
+
+            $data = fgetcsv($csvhandle,1000,","); // Skip line we are not interested in
+            $data = fgetcsv($csvhandle,1000,","); // Skip line we are not interested in
+            $data = fgetcsv($csvhandle,1000,",");
+            $sotafilehandle = fopen($sotafile, 'w');
+
+            do {
+                if ($data[0]) {
+                    fwrite($sotafilehandle, $data[0].PHP_EOL);
+                }
+            } while ($data = fgetcsv($csvhandle,1000,","));
+
+            fclose($csvhandle);
+            fclose($sotafilehandle);
+            if (file_exists($sotafile))
+            {
+                $nCount = count(file($sotafile));
+                if ($nCount > 0)
+                {
+                    echo "DONE: " . number_format($nCount) . " SOTA's saved";
+                } else {
+                    echo"FAILED: Empty file";
+                }
+            } else {
+                echo"FAILED: Could not create sota.txt file locally";
+            }
+        }
     }
 
 

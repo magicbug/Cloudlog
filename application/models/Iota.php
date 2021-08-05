@@ -81,7 +81,7 @@ class IOTA extends CI_Model {
             if ($postdata['worked'] != NULL) {
                 $workedIota = $this->getIotaBandWorked($station_id, $band, $postdata);
                 foreach ($workedIota as $wiota) {
-                    $iotaMatrix[$wiota->tag][$band] = '<div class="alert-danger"><a href=\'javascript:displayIotaContacts("'.$wiota->tag.'","'. $band . '")\'>W</a></div>';
+                    $iotaMatrix[$wiota->tag][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("'.$wiota->tag.'","'. $band . '","'. $postdata['mode'] . '","IOTA")\'>W</a></div>';
                 }
             }
 
@@ -89,7 +89,7 @@ class IOTA extends CI_Model {
             if ($postdata['confirmed'] != NULL) {
                 $confirmedIota = $this->getIotaBandConfirmed($station_id, $band, $postdata);
                 foreach ($confirmedIota as $ciota) {
-                    $iotaMatrix[$ciota->tag][$band] = '<div class="alert-success"><a href=\'javascript:displayIotaContacts("'.$ciota->tag.'","'. $band . '")\'>C</a></div>';
+                    $iotaMatrix[$ciota->tag][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("'.$ciota->tag.'","'. $band . '","'. $postdata['mode'] . '","IOTA")\'>C</a></div>';
                 }
             }
         }
@@ -123,11 +123,15 @@ class IOTA extends CI_Model {
     }
 
     function getIotaBandConfirmed($station_id, $band, $postdata) {
-        $sql = "SELECT distinct col_iota as tag FROM " . $this->config->item('table_name') . " thcv 
+        $sql = "SELECT distinct col_iota as tag FROM " . $this->config->item('table_name') . " thcv
             join iota on thcv.col_iota = iota.tag
             where station_id = " . $station_id .
             " and thcv.col_iota is not null
-            and col_qsl_rcvd = 'Y'";
+            and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
 
         if ($band == 'SAT') {
             $sql .= " and col_prop_mode ='" . $band . "'";
@@ -149,10 +153,14 @@ class IOTA extends CI_Model {
     }
 
     function getIotaBandWorked($station_id, $band, $postdata) {
-        $sql = 'SELECT distinct col_iota as tag FROM ' . $this->config->item('table_name'). ' thcv 
+        $sql = 'SELECT distinct col_iota as tag FROM ' . $this->config->item('table_name'). ' thcv
             join iota on thcv.col_iota = iota.tag
             where station_id = ' . $station_id .
             ' and thcv.col_iota is not null';
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
 
         if ($band == 'SAT') {
             $sql .= " and col_prop_mode ='" . $band . "'";
@@ -188,6 +196,11 @@ class IOTA extends CI_Model {
 
         if ($postdata['notworked'] == NULL) {
             $sql .= " and exists (select 1 from " . $this->config->item('table_name') . " where station_id = ". $station_id . " and col_iota = iota.tag";
+
+			if ($postdata['mode'] != 'All') {
+				$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+			}
+
             if ($postdata['band'] != 'All') {
                 if ($postdata['band'] == 'SAT') {
                     $sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
@@ -207,12 +220,16 @@ class IOTA extends CI_Model {
     }
 
     function getIotaWorked($station_id, $postdata) {
-        $sql = "SELECT distinct col_iota as tag FROM " . $this->config->item('table_name') . " thcv 
+        $sql = "SELECT distinct col_iota as tag FROM " . $this->config->item('table_name') . " thcv
             join iota on thcv.col_iota = iota.tag
             where station_id = " . $station_id .
             " and thcv.col_iota is not null
             and not exists (select 1 from ". $this->config->item('table_name') . " where station_id = ". $station_id .
             " and col_iota = thcv.col_iota";
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
 
         if ($postdata['band'] != 'All') {
             if ($postdata['band'] == 'SAT') {
@@ -224,7 +241,7 @@ class IOTA extends CI_Model {
             }
         }
 
-        $sql .= " and col_qsl_rcvd = 'Y')";
+        $sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y'))";
 
         if ($postdata['band'] != 'All') {
             if ($postdata['band'] == 'SAT') {
@@ -240,6 +257,10 @@ class IOTA extends CI_Model {
             $sql .= " and coalesce(iota.status, '') <> 'D'";
         }
 
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
+
         $sql .= $this->addContinentsToQuery($postdata);
 
         $query = $this->db->query($sql);
@@ -248,11 +269,15 @@ class IOTA extends CI_Model {
     }
 
     function getIotaConfirmed($station_id, $postdata) {
-        $sql = "SELECT distinct col_iota as tag FROM " . $this->config->item('table_name') . " thcv 
+        $sql = "SELECT distinct col_iota as tag FROM " . $this->config->item('table_name') . " thcv
             join iota on thcv.col_iota = iota.tag
             where station_id = " . $station_id .
             " and thcv.col_iota is not null
-            and col_qsl_rcvd = 'Y'";
+            and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
 
         if ($postdata['includedeleted'] == NULL) {
             $sql .= " and coalesce(iota.status, '') <> 'D'";

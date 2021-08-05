@@ -56,7 +56,7 @@ L.Maidenhead = L.LayerGroup.extend({
 		for (var lon = left; lon < right; lon += (unit*2)) {
 			for (var lat = bottom; lat < top; lat += unit) {
 			var bounds = [[lat,lon],[lat+unit,lon+(unit*2)]];
-			this.addLayer(L.rectangle(bounds, {color: this.options.color, weight: 1, fill:false, interactive: false}));
+			this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle', color: this.options.color, weight: 1, fill:false, interactive: false}));
 			//var pont = map.latLngToLayerPoint([lat,lon]);
 			//console.log(pont.x);
 			this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c)));
@@ -66,10 +66,10 @@ L.Maidenhead = L.LayerGroup.extend({
 	},
     	
 	_getLabel: function(lon,lat) {
-	  var title_size = new Array(0 ,10,12,16,20,26,12,16,24,36,12  ,14  ,20  ,36  ,60  ,12   ,20   ,36   ,60   ,12      ,24       );
+	  var title_size = new Array(0 ,10,12,16,20,26,15,16,24,36,12  ,14  ,20  ,36  ,60  ,12   ,20   ,36   ,60   ,12      ,24       );
 	  var zoom = map.getZoom();
 	  var size = title_size[zoom]+'px';
-	  var title = '<span style="cursor: default;"><font style="color:'+this.options.color+'; font-size:'+size+'; font-weight: 900; ">' + this._getLocator(lon,lat) + '</font></span>';
+	  var title = '<span class="grid-text" style="cursor: default;"><font style="color:'+this.options.color+'; font-size:'+size+'; font-weight: 900; ">' + this._getLocator(lon,lat) + '</font></span>';
       var myIcon = L.divIcon({className: 'my-div-icon', html: title});
       var marker = L.marker([lat,lon], {icon: myIcon}, clickable=false);
       return marker;

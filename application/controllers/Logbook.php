@@ -3,6 +3,18 @@
 
 class Logbook extends CI_Controller {
 
+	function __construct()
+	{
+		parent::__construct();
+
+		// Load language files
+		$this->lang->load(array(
+			'qslcard',
+			'lotw',
+			'qso'
+		));
+	}
+
 	function index()
 	{
 				$this->load->model('user_model');
@@ -67,6 +79,9 @@ class Logbook extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
+		// Convert - in Callsign to / Used for URL processing
+		$callsign = str_replace("-","/",$callsign);
+
 		// Check if callsign is an LOTW User
 			$lotw_member = "";
 			$lotw_file_name = "./updates/lotw_users.csv";
@@ -127,6 +142,7 @@ class Logbook extends CI_Controller {
 		$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
 		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
 		$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
+        $return['callsign_state'] = $this->logbook_model->call_state($callsign);
 		$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base);
 		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
 
@@ -177,7 +193,7 @@ class Logbook extends CI_Controller {
 	function worked_grid_before($gridsquare, $type, $band, $mode)
 	{
 		if (strlen($gridsquare) < 4)
-			return false; 
+			return false;
 
 		$CI =& get_instance();
     	$CI->load->model('Stations');
@@ -185,14 +201,14 @@ class Logbook extends CI_Controller {
 
 
 		if($type == "SAT") {
-			$this->db->where('COL_PROP_MODE', 'SAT'); 
+			$this->db->where('COL_PROP_MODE', 'SAT');
 		} else {
-			$this->db->where('COL_MODE', $mode); 
-			$this->db->where('COL_BAND', $band); 
+			$this->db->where('COL_MODE', $mode);
+			$this->db->where('COL_BAND', $band);
 			$this->db->where('COL_PROP_MODE !=','SAT');
 
 		}
-    	$this->db->where('station_id', $station_id); 
+    	$this->db->where('station_id', $station_id);
 		$this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($gridsquare, 0, 4));
 		$this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "desc");
 		$this->db->limit(1);
@@ -211,7 +227,7 @@ class Logbook extends CI_Controller {
 	/*
 	*	Function: jsonlookupgrid
 	*
-	* 	Usage: Used to look up gridsquares when creating a QSO to check whether its needed or not 
+	* 	Usage: Used to look up gridsquares when creating a QSO to check whether its needed or not
 	*	the $type variable is only used for satellites, set this to SAT.
 	*
 	*/
@@ -225,16 +241,16 @@ class Logbook extends CI_Controller {
     	$station_id = $CI->Stations->find_active();
 
 		if($type == "SAT") {
-			$this->db->where('COL_PROP_MODE', 'SAT'); 
+			$this->db->where('COL_PROP_MODE', 'SAT');
 		} else {
-			$this->db->where('COL_MODE', $mode); 
-			$this->db->where('COL_BAND', $band); 
+			$this->db->where('COL_MODE', $mode);
+			$this->db->where('COL_BAND', $band);
 			$this->db->where('COL_PROP_MODE !=','SAT');
 
 		}
 
-    	$this->db->where('station_id', $station_id); 
-    	
+    	$this->db->where('station_id', $station_id);
+
 		$this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($gridsquare, 0, 4));
 		$query = $this->db->get($this->config->item('table_name'), 1, 0);
 		foreach ($query->result() as $workedBeforeRow)
@@ -249,7 +265,7 @@ class Logbook extends CI_Controller {
 	}
 
 	function jsonlookupdxcc($country, $type, $band, $mode) {
-		
+
 		$return = [
 			"workedBefore" => false,
 		];
@@ -259,17 +275,17 @@ class Logbook extends CI_Controller {
     	$station_id = $CI->Stations->find_active();
 
 		if($type == "SAT") {
-			$this->db->where('COL_PROP_MODE', 'SAT'); 
+			$this->db->where('COL_PROP_MODE', 'SAT');
 		} else {
-			$this->db->where('COL_MODE', $mode); 
-			$this->db->where('COL_BAND', $band); 
+			$this->db->where('COL_MODE', $mode);
+			$this->db->where('COL_BAND', $band);
 			$this->db->where('COL_PROP_MODE !=','SAT');
 
 		}
 
-    	$this->db->where('station_id', $station_id); 
-    	$this->db->where('COL_COUNTRY', urldecode($country)); 
- 
+    	$this->db->where('station_id', $station_id);
+    	$this->db->where('COL_COUNTRY', urldecode($country));
+
 		$query = $this->db->get($this->config->item('table_name'), 1, 0);
 		foreach ($query->result() as $workedBeforeRow)
 		{
@@ -283,7 +299,10 @@ class Logbook extends CI_Controller {
 	}
 
 	function jsonlookupcallsign($callsign, $type, $band, $mode) {
-		
+
+		// Convert - in Callsign to / Used for URL processing
+		$callsign = str_replace("-","/",$callsign);
+
 		$return = [
 			"workedBefore" => false,
 		];
@@ -293,17 +312,17 @@ class Logbook extends CI_Controller {
     	$station_id = $CI->Stations->find_active();
 
 		if($type == "SAT") {
-			$this->db->where('COL_PROP_MODE', 'SAT'); 
+			$this->db->where('COL_PROP_MODE', 'SAT');
 		} else {
-			$this->db->where('COL_MODE', $mode); 
-			$this->db->where('COL_BAND', $band); 
+			$this->db->where('COL_MODE', $mode);
+			$this->db->where('COL_BAND', $band);
 			$this->db->where('COL_PROP_MODE !=','SAT');
 
 		}
 
-    	$this->db->where('station_id', $station_id); 
-    	$this->db->where('COL_CALL', strtoupper($callsign)); 
- 
+    	$this->db->where('station_id', $station_id);
+    	$this->db->where('COL_CALL', strtoupper($callsign));
+
 		$query = $this->db->get($this->config->item('table_name'), 1, 0);
 		foreach ($query->result() as $workedBeforeRow)
 		{
@@ -364,7 +383,7 @@ class Logbook extends CI_Controller {
 		echo "]";
 		echo "}";
 	}
- 
+
 	function view($id) {
 		$this->load->model('user_model');
 				if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
@@ -388,11 +407,11 @@ class Logbook extends CI_Controller {
 		$this->load->view('view_log/qso');
 		$this->load->view('interface_assets/footer');
 	}
- 
+
 	function partial($id) {
 		$this->load->model('user_model');
 				if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
-				
+
 		$html = "";
 
 
@@ -422,10 +441,23 @@ class Logbook extends CI_Controller {
 					$html .= "<td>QSL</td>";
 					$html .= "<td></td>";
 				$html .= "</tr>";
+
+			// Get Date format
+			if($this->session->userdata('user_date_format')) {
+				// If Logged in and session exists
+				$custom_date_format = $this->session->userdata('user_date_format');
+			} else {
+				// Get Default date format from /config/cloudlog.php
+				$custom_date_format = $this->config->item('qso_date_format');
+			}
+
 			foreach ($query->result() as $row)
 			{
+
+				$timestamp = strtotime($row->COL_TIME_ON);
+
 				$html .= "<tr>";
-					$html .= "<td>".date($this->config->item('qso_date_format').' H:i',strtotime($row->COL_TIME_ON))."</td>";
+					$html .= "<td>".date($custom_date_format, $timestamp). date(' H:i',strtotime($row->COL_TIME_ON)) . "</td>";
 					$html .= "<td>".str_replace("0","&Oslash;",strtoupper($row->COL_CALL))."</td>";
 					$html .= "<td>".$row->COL_RST_SENT."</td>";
 					$html .= "<td>".$row->COL_RST_RCVD."</td>";
@@ -520,12 +552,12 @@ class Logbook extends CI_Controller {
 
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
-   		$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_NAME, '.$this->config->item('table_name').'.COL_COUNTRY, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
-    
+   		//$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_NAME, '.$this->config->item('table_name').'.COL_COUNTRY, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
+
     	$this->db->from($this->config->item('table_name'));
 
     	$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-    		
+
 		$this->db->like(''.$this->config->item('table_name').'.COL_CALL', $id);
 		$this->db->or_like(''.$this->config->item('table_name').'.COL_GRIDSQUARE', $id);
 		$this->db->or_like(''.$this->config->item('table_name').'.COL_VUCC_GRIDS', $id);

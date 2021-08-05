@@ -7,22 +7,22 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 ## Requirements
 * Linux based Operating System
 * Apache (Nginx should work)
-* PHP (Version 7 or higher) & MySQL (MySQL 5.7 or higher)
+* PHP Version 7 (Currently not fully working on PHP 8)
+* MySQL (MySQL 5.7 or higher)
 
-## Versions
-
-* **Master** - Current working branch
+Notes
+* If you want to log microwave QSOs you will need to use a 64bit operating system.
 
 ## Setup
 
 Installation information can be found on the [wiki](https://github.com/magicbug/Cloudlog/wiki).
 
-Cloudlog now has a [Change Log](https://github.com/magicbug/Cloudlog/wiki/Change-Log) to go along with the commit history please consult this when updating.
-
 ## Support
 
-Cloudlog has two support systems for code issues use Github issues, however if you have general issues with setting up your server please use our general discussion forum [https://forum.cloudlog.co.uk](https://forum.cloudlog.co.uk).
+Cloudlog has two support systems for code issues use Github issues, however if you have general issues with setting up your server please use our general discussion forum [https://github.com/magicbug/Cloudlog/discussions](https://github.com/magicbug/Cloudlog/discussions).
 
+## Security Vulnerabilities
+If you discover a security vulnerability within Cloudlog, please send an e-mail to Peter Goodhall, 2M0SQL via [peter@magicbug.co.uk](mailto:peter@magicbug.co.uk). All security vulnerabilities will be promptly addressed.
 
 ## Want Cloudlog Hosting?
 
@@ -44,6 +44,6 @@ Thanks to Andy (VE7CXZ), Gavin (M1BXF), Graham (W5ISP), Robert (M0VFC), Corby (K
 
 Cloudlog is supported by Patreon and donations via PayPal, thanks to the following people:
 
-Paul (M0TZO), Tim (G4VXE), Paul (N8HM), Michelle (W5NYV), Mitchell (AD0HJ), Dan (M0TCB), Martin (DK3ML), Juan Carlos (EA5WA), Iain (M0PCB), Charlie (GM1TGY), Ondrej (OK1CDJ).
+Paul (M0TZO), Tim (G4VXE), Paul (N8HM), Michelle (W5NYV), Mitchell (AD0HJ), Dan (M0TCB), Martin (DK3ML), Juan Carlos (EA5WA), Iain (M0PCB), Charlie (GM1TGY), Ondrej (OK1CDJ), Trystan (G0KAY), Oliver (DL6KBG), Volkmar Schirmer, Jordan (M0PIR), Thomas Ziegler, Mathis (DB9MAT), Ken (VE3HLS), Tyler (WL7T), Jeremy Taylor, Ben Kuhn, Eric Thresher, Michael Cullen, Juuso (OH1JW), Anthony Castiglia, Fernando Ramirez-Ferrer, Robert Dixon, Mark Percival, Julia (KV1V), Timo Tomasini, Ant (NU1U), Christopher Williams, Danny Barnes, Vic, Tom (M0LTE), smurphboy
 
-If you'd like to donate to Cloudlog to help allow @magicbug spend less time doing commercial work and more time coding Cloudlog then you can donate via [PayPal](https://paypal.me/PGoodhall) or become a [Patreon](https://www.patreon.com/2m0sql)
+If you'd like to donate to Cloudlog to help allow @magicbug spend less time doing commercial work and more time coding Cloudlog then you can donate via [PayPal](https://paypal.me/PGoodhall), [Github Sponsor](https://github.com/sponsors/magicbug) or become a [Patreon](https://www.patreon.com/2m0sql) 

@@ -9,16 +9,25 @@ TODO
 
 class QSO extends CI_Controller {
 
+	function __construct()
+	{
+		parent::__construct();
+		$this->lang->load('qso');
+
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+	}
+
 	public function index()
 	{
-	
+
 		$this->load->model('cat');
 		$this->load->model('stations');
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
 		$this->load->model('modes');
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-		
+
 		$data['active_station_profile'] = $this->stations->find_active();
 		$data['notice'] = false;
 		$data['stations'] = $this->stations->all();
@@ -27,7 +36,7 @@ class QSO extends CI_Controller {
 		$data['dxcc'] = $this->logbook_model->fetchDxcc();
 		$data['iota'] = $this->logbook_model->fetchIota();
 		$data['modes'] = $this->modes->active();
-		
+
 
 		$this->load->library('form_validation');
 
@@ -45,11 +54,6 @@ class QSO extends CI_Controller {
 		}
 		else
 		{
-			// Add QSO
-			// $this->logbook_model->add();
-			//change to create_qso function as add and create_qso duplicate functionality
-			$this->logbook_model->create_qso();
-				
 			// Store Basic QSO Info for reuse
 			// Put data in an array first, then call set_userdata once.
 			// This solves the problem of CI dumping out the session
@@ -62,6 +66,7 @@ class QSO extends CI_Controller {
                 'start_time' => $this->input->post('start_time'),
 				'time_stamp' => time(),
 				'band' => $this->input->post('band'),
+				'band_rx' => $this->input->post('band_rx'),
 				'freq' => $this->input->post('freq_display'),
 				'freq_rx' => $this->input->post('freq_display_rx'),
 				'mode' => $this->input->post('mode'),
@@ -73,7 +78,7 @@ class QSO extends CI_Controller {
 				'transmit_power' => $this->input->post('transmit_power')
 			);
 			// ];
-			
+
 			setcookie("radio", $qso_data['radio'], time()+3600*24*99);
 			setcookie("station_profile_id", $qso_data['station_profile_id'], time()+3600*24*99);
 
@@ -83,13 +88,18 @@ class QSO extends CI_Controller {
 			if($this->input->post('sat_name')) {
         		$this->session->set_userdata('prop_mode', 'SAT');
     		}
-				
+
+			// Add QSO
+			// $this->logbook_model->add();
+			//change to create_qso function as add and create_qso duplicate functionality
+			$this->logbook_model->create_qso();
+
 			// Get last 5 qsos
 			$data['query'] = $this->logbook_model->last_custom('5');
-			 
+
 			// Set Any Notice Messages
 			$data['notice'] = "QSO Added";
-			
+
 			// Load view to create another contact
 			$data['page_title'] = "Add QSO";
 
@@ -98,15 +108,23 @@ class QSO extends CI_Controller {
 			$this->load->view('interface_assets/footer');
 		}
 	}
-	
+
+	/*
+	 * This is used for contest-logging and the ajax-call
+	 */
+	public function saveqso() {
+        $this->load->model('logbook_model');
+        $this->logbook_model->create_qso();
+    }
+
 	function edit() {
-	
+
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
 		$this->load->model('modes');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$query = $this->logbook_model->qso_info($this->uri->segment(3));
-		
+
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('time_on', 'Start Date', 'required');
@@ -117,7 +135,7 @@ class QSO extends CI_Controller {
         $data['dxcc'] = $this->logbook_model->fetchDxcc();
         $data['iota'] = $this->logbook_model->fetchIota();
 		$data['modes'] = $this->modes->all();
-		
+
 		if ($this->form_validation->run() == FALSE)
 		{
 			$this->load->view('qso/edit', $data);
@@ -162,7 +180,7 @@ class QSO extends CI_Controller {
 
         $this->logbook_model->edit();
     }
-	
+
 	function qsl_rcvd($id, $method) {
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
@@ -197,13 +215,55 @@ class QSO extends CI_Controller {
             echo json_encode(array('message' => 'OK'));
         }
     }
-	
+
+    function qsl_requested_ajax() {
+        $id = str_replace('"', "", $this->input->post("id"));
+        $method = str_replace('"', "", $this->input->post("method"));
+
+        $this->load->model('logbook_model');
+        $this->load->model('user_model');
+
+        header('Content-Type: application/json');
+
+        if(!$this->user_model->authorize(2)) {
+            echo json_encode(array('message' => 'Error'));
+
+        }
+        else {
+            // Update Logbook to Mark Paper Card Received
+            $this->logbook_model->paperqsl_requested($id, $method);
+
+            echo json_encode(array('message' => 'OK'));
+        }
+    }
+
+	function qsl_ignore_ajax() {
+        $id = str_replace('"', "", $this->input->post("id"));
+        $method = str_replace('"', "", $this->input->post("method"));
+
+        $this->load->model('logbook_model');
+        $this->load->model('user_model');
+
+        header('Content-Type: application/json');
+
+        if(!$this->user_model->authorize(2)) {
+            echo json_encode(array('message' => 'Error'));
+
+        }
+        else {
+            // Update Logbook to Mark Paper Card Received
+            $this->logbook_model->paperqsl_ignore($id, $method);
+
+            echo json_encode(array('message' => 'OK'));
+        }
+    }
+
 	/* Delete QSO */
 	function delete($id) {
 		$this->load->model('logbook_model');
-		
+
 		$this->logbook_model->delete($id);
-		
+
 		$this->session->set_flashdata('notice', 'QSO Deleted Successfully');
 		$data['message_title'] = "Deleted";
 		$data['message_contents'] = "QSO Deleted Successfully";
@@ -227,12 +287,136 @@ class QSO extends CI_Controller {
         echo json_encode(array('message' => 'OK'));
         return;
     }
-	
-	
+
+
 	function band_to_freq($band, $mode) {
-		
+
 		$this->load->library('frequency');
-		
+
 		echo $this->frequency->convent_band($band, $mode);
+	}
+
+	/*
+	 * Function is used for autocompletion of SOTA in the QSO entry form
+	 */
+	public function get_sota() {
+        $json = [];
+
+        if(!empty($this->input->get("query"))) {
+            $query = isset($_GET['query']) ? $_GET['query'] : FALSE;
+            $sota = strtoupper($query);
+
+            $file = 'assets/json/sota.txt';
+
+            if (is_readable($file)) {
+                $lines = file($file, FILE_IGNORE_NEW_LINES);
+                $input = preg_quote($sota, '~');
+                $reg = '~^'. $input .'(.*)$~';
+                $result = preg_grep($reg, $lines);
+                $json = [];
+                $i = 0;
+                foreach ($result as &$value) {
+                    // Limit to 100 as to not slowdown browser too much
+                    if (count($json) <= 100) {
+                        $json[] = ["name"=>$value];
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($json);
+    }
+
+    /*
+	 * Function is used for autocompletion of DOK in the QSO entry form
+	 */
+    public function get_dok() {
+        $json = [];
+
+        if(!empty($this->input->get("query"))) {
+            $query = isset($_GET['query']) ? $_GET['query'] : FALSE;
+            $dok = strtoupper($query);
+
+            $file = 'assets/json/dok.txt';
+
+            if (is_readable($file)) {
+                $lines = file($file, FILE_IGNORE_NEW_LINES);
+                $input = preg_quote($dok, '~');
+                $reg = '~^'. $input .'(.*)$~';
+                $result = preg_grep($reg, $lines);
+                $json = [];
+                $i = 0;
+                foreach ($result as &$value) {
+                    // Limit to 100 as to not slowdown browser too much
+                    if (count($json) <= 100) {
+                        $json[] = ["name"=>$value];
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($json);
+    }
+
+    /*
+	 * Function is used for autocompletion of Counties in the station profile form
+	 */
+    public function get_county() {
+        $json = [];
+
+        if(!empty($this->input->get("query"))) {
+            //$query = isset($_GET['query']) ? $_GET['query'] : FALSE;
+            $county = $this->input->get("state");
+            $cleanedcounty = explode('(', $county);
+            $cleanedcounty = trim($cleanedcounty[0]);
+
+            $file = 'assets/json/US_counties.csv';
+
+            if (is_readable($file)) {
+                $lines = file($file, FILE_IGNORE_NEW_LINES);
+                $input = preg_quote($cleanedcounty, '~');
+                $reg = '~^'. $input .'(.*)$~';
+                $result = preg_grep($reg, $lines);
+                $json = [];
+                $i = 0;
+                foreach ($result as &$value) {
+                    $county = explode(',', $value);
+                    // Limit to 100 as to not slowdown browser too much
+                    if (count($json) <= 100) {
+                        $json[] = ["name"=>$county[1]];
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($json);
+    }
+
+    public function get_sota_info() {
+		$sota = xss_clean($this->input->post('sota'));
+		$url = 'https://api2.sota.org.uk/api/summits/' . $sota;
+
+		// Let's use cURL instead of file_get_contents
+		// begin script
+		$ch = curl_init();
+
+		// basic curl options for all requests
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+
+		// use the URL we built
+		curl_setopt($ch, CURLOPT_URL, $url);
+
+		$input = curl_exec($ch);
+		$chi = curl_getinfo($ch);
+
+		// Close cURL handle
+		curl_close($ch);
+
+		header('Content-Type: application/json');
+		echo $input;
 	}
 }

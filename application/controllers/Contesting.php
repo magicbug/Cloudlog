@@ -9,8 +9,153 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Contesting extends CI_Controller {
 
-	public function index()
+	function __construct()
+	{
+		parent::__construct();
+		$this->lang->load('contesting');
+
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+	}
+
+    public function index()
     {
-    	echo 'Functions to come';
+
+        $this->load->model('cat');
+        $this->load->model('stations');
+        $this->load->model('logbook_model');
+        $this->load->model('user_model');
+        $this->load->model('modes');
+		$this->load->model('contesting_model');
+
+        $data['active_station_profile'] = $this->stations->find_active();
+        $data['notice'] = false;
+        $data['stations'] = $this->stations->all();
+        $data['radios'] = $this->cat->radios();
+        $data['modes'] = $this->modes->active();
+		$data['contestnames'] = $this->contesting_model->getActivecontests();
+
+
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('start_date', 'Date', 'required');
+        $this->form_validation->set_rules('start_time', 'Time', 'required');
+        $this->form_validation->set_rules('callsign', 'Callsign', 'required');
+
+            $data['page_title'] = "Contest Logging";
+
+            $this->load->view('interface_assets/header', $data);
+            $this->load->view('contesting/index');
+            $this->load->view('interface_assets/footer');
+
+
+            //setcookie("radio", $qso_data['radio'], time()+3600*24*99);
+            //setcookie("station_profile_id", $qso_data['station_profile_id'], time()+3600*24*99);
+
+            //$this->session->set_userdata($qso_data);
+
+            // If SAT name is set make it session set to sat
+            if($this->input->post('sat_name')) {
+                $this->session->set_userdata('prop_mode', 'SAT');
+            }
+
+    }
+
+    public function getSessionQsos() {
+        //load model
+        $this->load->model('Contesting_model');
+
+        $qso = $this->input->post('qso');
+
+        // get QSOs to fill the table
+        $data = $this->Contesting_model->getSessionQsos($qso);
+
+        return json_encode($data);
+    }
+
+	public function create()
+	{
+		$this->load->model('Contesting_model');
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('name', 'Contest Name', 'required');
+		$this->form_validation->set_rules('adifname', 'Contest Adif Name', 'required');
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$data['page_title'] = "Create Mode";
+			$this->load->view('contesting/create', $data);
+		}
+		else
+		{
+			$this->Contesting_model->add();
+		}
+	}
+
+	public function add() {
+		$this->load->model('Contesting_model');
+
+		$data['contests'] = $this->Contesting_model->getAllContests();
+
+		// Render Page
+		$data['page_title'] = "Contests";
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('contesting/add');
+		$this->load->view('interface_assets/footer');
+	}
+
+	public function edit($id)
+	{
+		$this->load->library('form_validation');
+
+		$this->load->model('Contesting_model');
+
+		$item_id_clean = $this->security->xss_clean($id);
+
+		$data['contest'] = $this->Contesting_model->contest($item_id_clean);
+
+		$data['page_title'] = "Edit Contest";
+
+		$this->form_validation->set_rules('name', 'Contest Name', 'required');
+		$this->form_validation->set_rules('adifname', 'Adif Contest Name', 'required');
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('contesting/edit');
+			$this->load->view('interface_assets/footer');
+		}
+		else
+		{
+			$this->Contesting_model->edit($item_id_clean);
+
+			$data['notice'] = "Contest ".$this->security->xss_clean($this->input->post('name', true))." Updated";
+
+			redirect('contesting/add');
+		}
+	}
+
+	public function delete() {
+		$id = $this->input->post('id');
+		$this->load->model('Contesting_model');
+		$this->Contesting_model->delete($id);
+	}
+
+	public function activate() {
+		$id = $this->input->post('id');
+		$this->load->model('Contesting_model');
+		$this->Contesting_model->activate($id);
+		header('Content-Type: application/json');
+		echo json_encode(array('message' => 'OK'));
+		return;
+	}
+
+	public function deactivate() {
+		$id = $this->input->post('id');
+		$this->load->model('Contesting_model');
+		$this->Contesting_model->deactivate($id);
+		header('Content-Type: application/json');
+		echo json_encode(array('message' => 'OK'));
+		return;
 	}
 }

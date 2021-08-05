@@ -41,6 +41,7 @@
 						$data = array(
 						'frequency' => $result['frequency'],
 						'mode' => $result['mode'],
+						'timestamp' => $result['timestamp'],
 						);
 
 						$this->db->where('id', $radio_id);
@@ -65,7 +66,8 @@
 					$data = array(
 						'radio' => $result['radio'],
 						'frequency' => $result['frequency'],
-						'mode' => $result['mode']
+						'mode' => $result['mode'],
+						'timestamp' => $result['timestamp'],
 					);
 				}
 
@@ -79,6 +81,13 @@
 			//$this->db->where('radio', $result['radio']); 
 			$query = $this->db->get('cat');
 			
+			return $query;
+		}
+
+		function recent_status() {
+			$this->db->where("timestamp > date_sub(now(), interval 15 minute)", NULL, FALSE);
+
+			$query = $this->db->get('cat');
 			return $query;
 		}
 

@@ -5,7 +5,7 @@
  * This model implements user authentication and authorization
  *
  */
- 
+
 
 // Uses 'phpass' from http://www.openwall.com/phpass/ to implement password hashing
 // TODO migration away from this?
@@ -28,7 +28,7 @@ class User_Model extends CI_Model {
 		$this->db->where('user_name', $clean_username);
 		$r = $this->db->get($this->config->item('auth_table'));
 		return $r;
-	} 
+	}
 
 	// FUNCTION: object get_by_id($id)
 	// Retrieve a user by user ID
@@ -96,7 +96,9 @@ class User_Model extends CI_Model {
 
 	// FUNCTION: bool add($username, $password, $email, $type)
 	// Add a user
-	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone, $measurement, $user_date_format, $user_stylesheet) {
+	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone,
+				 $measurement, $user_date_format, $user_stylesheet, $user_sota_lookup, $user_show_notes,
+				 $user_column1, $user_column2, $user_column3, $user_column4, $user_column5) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -112,6 +114,13 @@ class User_Model extends CI_Model {
 				'user_measurement_base' => xss_clean($measurement),
 				'user_date_format' => xss_clean($user_date_format),
 				'user_stylesheet' => xss_clean($user_stylesheet),
+				'user_sota_lookup' => xss_clean($user_sota_lookup),
+				'user_show_notes' => xss_clean($user_show_notes),
+				'user_column1' => xss_clean($user_column1),
+				'user_column2' => xss_clean($user_column2),
+				'user_column3' => xss_clean($user_column3),
+				'user_column4' => xss_clean($user_column4),
+				'user_column5' => xss_clean($user_column5),
 			);
 
 			// Check the password is valid
@@ -153,13 +162,20 @@ class User_Model extends CI_Model {
 					'user_measurement_base' => xss_clean($fields['user_measurement_base']),
 					'user_date_format' => xss_clean($fields['user_date_format']),
 					'user_stylesheet' => xss_clean($fields['user_stylesheet']),
+					'user_sota_lookup' => xss_clean($fields['user_sota_lookup']),
+					'user_show_notes' => xss_clean($fields['user_show_notes']),
+					'user_column1' => xss_clean($fields['user_column1']),
+					'user_column2' => xss_clean($fields['user_column2']),
+					'user_column3' => xss_clean($fields['user_column3']),
+					'user_column4' => xss_clean($fields['user_column4']),
+					'user_column5' => xss_clean($fields['user_column5']),
 				);
-	
+
 				// Check to see if the user is allowed to change user levels
 				if($this->session->userdata('user_type') == 99) {
 					$data['user_type'] = $fields['user_type'];
 				}
-	
+
 				// Check to see if username is used already
 				if($this->exists($fields['user_name']) && $this->get($fields['user_name'])->row()->user_id != $fields['id']) {
 					return EUSERNAMEEXISTS;
@@ -168,7 +184,7 @@ class User_Model extends CI_Model {
 				if($this->exists_by_email($fields['user_email']) && $this->get_by_email($fields['user_email'])->row()->user_id != $fields['id']) {
 					return EEMAILEXISTS;
 				}
-	
+
 				// Hash password
 				if($fields['user_password'] != NULL)
 				{
@@ -187,12 +203,12 @@ class User_Model extends CI_Model {
 				{
 					$data['user_clublog_password'] = $fields['user_clublog_password'];
 				}
-				
+
 				if($fields['user_eqsl_password'] != NULL)
 				{
 					$data['user_eqsl_password'] = $fields['user_eqsl_password'];
 				}
-				
+
 				// Update the user
 				$this->db->where('user_id', $fields['id']);
 				$this->db->update($this->config->item('auth_table'), $data);
@@ -202,7 +218,7 @@ class User_Model extends CI_Model {
 			}
 		} else {
 			return EFORBIDDEN;
-		}	
+		}
 	}
 
 	// FUNCTION: bool delete()
@@ -234,15 +250,15 @@ class User_Model extends CI_Model {
 	// Nothing is returned - it can be assumed that if this is called, the user's
 	// login session *will* be cleared, no matter what state it is in
 	function clear_session() {
-	
+
 		$this->session->sess_destroy();
 	}
-		
+
 	// FUNCTION: void update_session()
 	// Updates a user's login session after they've logged in
 	// TODO: This should return bool TRUE/FALSE or 0/1
 	function update_session($id) {
-		
+
 		$u = $this->get_by_id($id);
 
 		$userdata = array(
@@ -260,6 +276,13 @@ class User_Model extends CI_Model {
 			'user_measurement_base' => $u->row()->user_measurement_base,
 			'user_date_format' => $u->row()->user_date_format,
 			'user_stylesheet' => $u->row()->user_stylesheet,
+			'user_sota_lookup' => isset($u->row()->user_sota_lookup) ? $u->row()->user_sota_lookup : 0,
+			'user_show_notes' => isset($u->row()->user_show_notes) ? $u->row()->user_show_notes : 1,
+			'user_column1' => isset($u->row()->user_column1) ? $u->row()->user_column1: 'Mode',
+			'user_column2' => isset($u->row()->user_column2) ? $u->row()->user_column2: 'RSTS',
+			'user_column3' => isset($u->row()->user_column3) ? $u->row()->user_column3: 'RSTR',
+			'user_column4' => isset($u->row()->user_column4) ? $u->row()->user_column4: 'Band',
+			'user_column5' => isset($u->row()->user_column5) ? $u->row()->user_column5: 'Country',
 		);
 
 		$this->session->set_userdata($userdata);
@@ -362,7 +385,7 @@ class User_Model extends CI_Model {
 	// Will return '0' in the event of problems with the
 	// hashing function
 	private function _hash($password) {
-        $hash = password_hash($password, PASSWORD_DEFAULT); 
+        $hash = password_hash($password, PASSWORD_DEFAULT);
 
 		if(strlen($hash) < 20) {
 			return EPASSWORDINVALID;
@@ -370,7 +393,7 @@ class User_Model extends CI_Model {
 			return $hash;
 		}
 	}
-		
+
 }
 
 ?>

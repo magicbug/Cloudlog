@@ -19,7 +19,7 @@
                     <label class="col-md-1 control-label" for="mode">Mode</label>
                     <div class="col-md-3">
                         <select id="mode" name="mode" class="form-control custom-select">
-                            <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >All</option>
+                            <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >All</option>
                             <?php
                             foreach($modes->result() as $mode){
                                 if ($mode->submode == null) {
@@ -50,19 +50,19 @@
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="awardradio" id="was" value="was" <?php if ($this->input->post('awardradio') == 'was') echo ' checked'?>>
                     <label class="form-check-label" for="was">
-                        Worked all states (WAS)
+                        Worked All States (WAS)
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="awardradio" id="iota" value="iota" <?php if ($this->input->post('awardradio') == 'iota') echo ' checked'?>>
                     <label class="form-check-label" for="iota">
-                        Islands on the air (IOTA)
+                        Islands On The Air (IOTA)
                     </label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="awardradio" id="waz" value="waz" <?php if ($this->input->post('awardradio') == 'waz') echo ' checked'?>>
                     <label class="form-check-label" for="waz">
-                        Worked all zones (WAZ)
+                        Worked All Zones (WAZ)
                     </label>
                 </div>
             </div>
@@ -117,7 +117,7 @@ function write_dxcc_timeline($timeline_array, $custom_date_format, $bandselect, 
                         <td>Prefix</td>
                         <td>Country</td>
                         <td>Deleted</td>
-                        <td>End date</td>
+                        <td>End Date</td>
                         <td>Show QSOs</td>
                     </tr>
                 </thead>

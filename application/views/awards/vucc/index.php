@@ -5,8 +5,8 @@
             <thead>
             <tr>
                 <td>Band</td>
-                <td>Grids worked</td>
-                <td>Grids confirmed</td>
+                <td>Grids Worked</td>
+                <td>Grids Confirmed</td>
             </tr>
             </thead>
             <tbody>

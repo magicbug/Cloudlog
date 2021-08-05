@@ -1,3 +1,9 @@
+@media (min-width: 992px) {
+    .modal-lg, .modal-xl {
+        max-width: 900px;
+    }
+}
+
 .main-nav .container {
     margin-top: 0px !important;
 }
@@ -11,7 +17,6 @@
 thead > tr > td {
 	position: sticky;
 	top: 45px;
-	background-color: aliceblue;
 }
 
 .dashboard {
@@ -208,3 +213,33 @@ color: #ffffff;
 #myTab .nav-link {
     padding: 8px !important;
 }
+
+#map {
+    z-index: 1;
+}
+
+#qsomap {
+    z-index: 1;
+}
+
+#create_station_profile .row {
+    margin-bottom: 10px;
+}
+
+/*
+*   Debug CSS
+*/
+
+    .debug_main .card {
+        margin-bottom: 10px;
+    }
+
+    .was-map-dialog .modal-dialog {
+        width: 100%;
+    }
+
+    @media (min-width: 576px) {
+        .was-map-dialog .modal-dialog {
+            max-width: 73% !important;
+        }
+    }

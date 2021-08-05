@@ -99,11 +99,11 @@ class Clublog extends CI_Controller {
 
 							// If Clublog Accepts mark the QSOs
 							if (preg_match('/\baccepted\b/', $response)) {
-								echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog";
+								echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog"."<br>";
 
 								$this->load->model('clublog_model');
 								$this->clublog_model->mark_qsos_sent($station_row->station_id);
-								echo "Clublog upload for ".$station_row->station_callsign;
+								echo "Clublog upload for ".$station_row->station_callsign."<br>";
 								log_message('info', 'Clublog upload for '.$station_row->station_callsign.' successfully sent.');
 							} else {
 								echo "Error ".$response;
@@ -116,7 +116,7 @@ class Clublog extends CI_Controller {
 						}
 
 					} else {
-						echo "Nothing awaiting upload to clublog for ".$station_row->station_callsign;
+						echo "Nothing awaiting upload to clublog for ".$station_row->station_callsign."<br>";
 						
 						log_message('info', 'Nothing awaiting upload to clublog for '.$station_row->station_callsign);
 					}

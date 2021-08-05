@@ -25,7 +25,8 @@ class Qrz extends CI_Controller {
 
         if ($station_ids) {
             foreach ($station_ids as $station_id) {
-                $qrz_api_key = $this->logbook_model->exists_qrz_api_key($station_id);
+                $result = $this->logbook_model->exists_qrz_api_key($station_id);
+                $qrz_api_key = $result->qrzapikey;
                 if($this->mass_upload_qsos($station_id, $qrz_api_key)) {
                     echo "QSOs have been uploaded to QRZ.com.";
                     log_message('info', 'QSOs have been uploaded to QRZ.com.');
@@ -58,23 +59,26 @@ class Qrz extends CI_Controller {
         $data['qsos'] = $this->logbook_model->get_qrz_qsos($station_id);
         $errormessages=array();
 
-        if ($data['qsos']) {
-            foreach ($data['qsos'] as $qso) {
-                $adif = $this->logbook_model->create_adif_from_data($qso);
+        $CI =& get_instance();
+        $CI->load->library('AdifHelper');
 
-                if ($qso['COL_QRZCOM_QSO_UPLOAD_STATUS'] == 'M') {
+        if ($data['qsos']) {
+            foreach ($data['qsos']->result() as $qso) {
+                $adif = $CI->adifhelper->getAdifLine($qso);
+
+                if ($qso->COL_QRZCOM_QSO_UPLOAD_STATUS == 'M') {
                     $result = $this->logbook_model->push_qso_to_qrz($qrz_api_key, $adif, true);
                 } else {
                     $result = $this->logbook_model->push_qso_to_qrz($qrz_api_key, $adif);
                 }
 
                 if ($result['status'] == 'OK') {
-                    $this->markqso($qso['COL_PRIMARY_KEY']);
+                    $this->markqso($qso->COL_PRIMARY_KEY);
                     $i++;
                 } else {
-                    log_message('error', 'QRZ upload failed for qso: Call: ' . $qso['COL_CALL'] . ' Band: ' . $qso['COL_BAND'] . ' Mode: ' . $qso['COL_MODE'] . ' Time: ' . $qso['COL_TIME_ON']);
+                    log_message('error', 'QRZ upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
                     log_message('error', 'QRZ upload failed with the following message: ' .$result['message']);
-                    $errormessages[] = $result['message'] . ' Call: ' . $qso['COL_CALL'] . ' Band: ' . $qso['COL_BAND'] . ' Mode: ' . $qso['COL_MODE'] . ' Time: ' . $qso['COL_TIME_ON'];
+                    $errormessages[] = $result['message'] . ' Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
                 }
             }
             $result['status'] = 'OK';
@@ -124,8 +128,8 @@ class Qrz extends CI_Controller {
         $postData = $this->input->post();
 
         $this->load->model('logbook_model');
-        $qrz_api_key = $this->logbook_model->exists_qrz_api_key($postData['station_id']);
-
+        $result = $this->logbook_model->exists_qrz_api_key($postData['station_id']);
+        $qrz_api_key = $result->qrzapikey;
         header('Content-type: application/json');
         $result = $this->mass_upload_qsos($postData['station_id'], $qrz_api_key);
         if ($result['status'] == 'OK') {

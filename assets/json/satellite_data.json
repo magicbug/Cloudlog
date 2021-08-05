@@ -143,7 +143,7 @@
          ]
       }
    },
-   "CAS-6":{
+   "TO-108":{
       "Modes":{
          "U/V":[
             {
@@ -191,6 +191,18 @@
          ]
       }
    },
+   "AO-109":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"145875000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"435775000"
+            }
+         ]
+      }
+   },
    "FS-3":{
       "Modes":{
          "V/U":[
@@ -223,6 +235,18 @@
                "Uplink_Freq":"145880000",
                "Downlink_Mode":"FM",
                "Downlink_Freq":"435880000"
+            }
+         ]
+      }
+   },
+   "JO-97":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"435110000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"145865000"
             }
          ]
       }
@@ -323,6 +347,18 @@
                "Uplink_Freq":"145850000",
                "Downlink_Mode":"FM",
                "Downlink_Freq":"436795000"
+            }
+         ]
+      }
+   },
+   "UVSQ-SAT":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145905000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"437020000"
             }
          ]
       }

@@ -10,7 +10,7 @@ class Qrz {
 	// Return session key
 	public function session($username, $password) {
 		// URL to the XML Source
-		$xml_feed_url = 'http://xmldata.qrz.com/xml/current/?username='.$username.';password='.$password.';agent=cloudlog';
+		$xml_feed_url = 'http://xmldata.qrz.com/xml/current/?username='.$username.';password='.urlencode($password).';agent=cloudlog';
 		
 		// CURL Functions
 		$ch = curl_init();
@@ -33,7 +33,7 @@ class Qrz {
 		$ci = & get_instance();
 		
 		// URL to the XML Source
-		$xml_feed_url = 'http://xmldata.qrz.com/xml/current/?username='.$username.';password='.$password.';agent=cloudlog';
+		$xml_feed_url = 'http://xmldata.qrz.com/xml/current/?username='.$username.';password='.urlencode($password).';agent=cloudlog';
 		
 		// CURL Functions
 		$ch = curl_init();

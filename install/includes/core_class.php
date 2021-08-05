@@ -25,8 +25,20 @@ class Core {
 			$counter++;
 		}
 
+		if($data['directory'] != "") {
+			if (file_exists("../".$data['directory'])) {
+				//pass folders real
+				$counter++;
+			} else {
+				echo "Directory ".$data['directory']." cannot be found";
+				exit;
+			}
+		} else {
+			$counter++;
+		}
+
 		// Check if all the required fields have been entered
-		if($counter == '3') {
+		if($counter == '4') {
 			return true;
 		}
 		else {

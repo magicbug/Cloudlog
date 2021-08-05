@@ -56,7 +56,7 @@
 					<td>Call</td>
 					<td>Mode</td>
 					<td>Sent</td>
-					<td>Recv</td>
+					<td>Recv'd</td>
 					<td>Band</td>
 					<td>Country</td>
 					<td></td>

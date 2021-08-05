@@ -8,7 +8,7 @@ class Search extends CI_Controller {
         parent::__construct();
 
         $this->load->helper(array('form', 'url'));
-        if($this->config->item('public_search') != TRUE) {
+        if($this->optionslib->get_option('global_search') != "true") {
             $this->load->model('user_model');
             if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
         }
