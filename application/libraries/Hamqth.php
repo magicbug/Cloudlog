@@ -10,7 +10,7 @@ class Hamqth {
 	// Return session key
 	public function session($username, $password) {
 		// URL to the XML Source
-		$xml_feed_url = 'https://www.hamqth.com/xml.php?u='.$username.'&p='.$password;
+		$xml_feed_url = 'https://www.hamqth.com/xml.php?u='.$username.'&p='.urlencode($password);
 
 		// CURL Functions
 		$ch = curl_init();
@@ -33,7 +33,7 @@ class Hamqth {
 		$ci = & get_instance();
 
 		// URL to the XML Source
-		$xml_feed_url = 'https://www.hamqth.com/xml.php?u='.$username.'&p='.$password;
+		$xml_feed_url = 'https://www.hamqth.com/xml.php?u='.$username.'&p='.urlencode($password);
 
 		// CURL Functions
 		$ch = curl_init();

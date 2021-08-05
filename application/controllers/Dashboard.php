@@ -44,6 +44,12 @@ class Dashboard extends CI_Controller {
 			$this->load->view('setup/check_list');
 			$this->load->view('interface_assets/footer');
 		} else {
+
+			// 
+			$this->load->model('cat');
+
+			$data['radio_status'] = $this->cat->recent_status();
+
 			// Store info
 			$data['todays_qsos'] = $this->logbook_model->todays_qsos();
 			$data['total_qsos'] = $this->logbook_model->total_qsos();

@@ -23,7 +23,7 @@
     foreach ($vucc_array as $vucc => $value) {      // Fills the table with the data
         echo '<tr>
             <td>'. $i++ .'</td>
-            <td><a href=\'javascript:displayVuccContacts("'. $vucc .'","'. $band . '")\'>'. $vucc .'</td>';
+			<td><a href=\'javascript:displayContacts("'. $vucc .'","'. $band . '","All","VUCC")\'>'. $vucc .'</td>';
 
             if ($type != 'worked') {
                 echo '<td>'. $value['qsl'] . '</td>

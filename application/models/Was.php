@@ -87,14 +87,14 @@ class was extends CI_Model {
             if ($postdata['worked'] != NULL) {
                 $wasBand = $this->getWasWorked($station_id, $band, $postdata);
                 foreach ($wasBand as $line) {
-                    $bandWas[$line->col_state][$band] = '<div class="alert-danger"><a href=\'javascript:displayWasContacts("' . $line->col_state . '","' . $band . '")\'>W</a></div>';
+                    $bandWas[$line->col_state][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("' . $line->col_state . '","' . $band . '","'. $postdata['mode'] . '","WAS")\'>W</a></div>';
                     $states[$line->col_state]['count']++;
                 }
             }
             if ($postdata['confirmed'] != NULL) {
                 $wasBand = $this->getWasConfirmed($station_id, $band, $postdata);
                 foreach ($wasBand as $line) {
-                    $bandWas[$line->col_state][$band] = '<div class="alert-success"><a href=\'javascript:displayWasContacts("' . $line->col_state . '","' . $band . '")\'>C</a></div>';
+                    $bandWas[$line->col_state][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("' . $line->col_state . '","' . $band . '","'. $postdata['mode'] . '","WAS")\'>C</a></div>';
                     $states[$line->col_state]['count']++;
                 }
             }
@@ -208,8 +208,12 @@ class was extends CI_Model {
      * $postdata contains data from the form, in this case Lotw or QSL are used
      */
     function getWasWorked($station_id, $band, $postdata) {
-        $sql = "SELECT distinct col_state FROM " . $this->config->item('table_name') . " thcv 
+        $sql = "SELECT distinct col_state FROM " . $this->config->item('table_name') . " thcv
         where station_id = " . $station_id;
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
 
         $sql .= $this->addStateToQuery();
 
@@ -218,6 +222,10 @@ class was extends CI_Model {
         $sql .= " and not exists (select 1 from ". $this->config->item('table_name') .
             " where station_id = ". $station_id .
             " and col_state = thcv.col_state";
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
 
         $sql .= $this->addBandToQuery($band);
 
@@ -237,8 +245,12 @@ class was extends CI_Model {
      * $postdata contains data from the form, in this case Lotw or QSL are used
      */
     function getWasConfirmed($station_id, $band, $postdata) {
-        $sql = "SELECT distinct col_state FROM " . $this->config->item('table_name') . " thcv 
+        $sql = "SELECT distinct col_state FROM " . $this->config->item('table_name') . " thcv
             where station_id = " . $station_id;
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
 
         $sql .= $this->addStateToQuery();
 

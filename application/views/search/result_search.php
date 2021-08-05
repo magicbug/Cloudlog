@@ -1,5 +1,4 @@
-
-	<div class="table-responsive">
+<div class="table-responsive">
 	<table class="table table-striped table-hover">
 		<tr class="titles">
 			<td>Date</td>
@@ -7,7 +6,7 @@
 			<td>Call</td>
 			<td>Mode</td>
 			<td>Sent</td>
-			<td>Recv</td>
+			<td>Recv'd</td>
 			<td>Band</td>
 			<td>Country</td>
 			<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>

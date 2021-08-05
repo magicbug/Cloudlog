@@ -1,0 +1,80 @@
+/*!
+ * No overrides for the default theme as it aligns with general.css
+*/
+
+/*
+*	 Maps
+*/
+
+.leaflet-tile {
+	filter: brightness(0.7) grayscale(0.6) !important;
+}
+path.grid-rectangle {
+	stroke: rgba(200, 200, 200, 0.5);
+}
+
+span.grid-text > font {
+	color: rgba(220, 220, 220, 0.85) !important;
+	-webkit-text-stroke: 1px black !important;
+}
+
+path.grid-confirmed {
+	fill: rgba(144, 238, 144, 0.3) !important;
+	stroke: rgba(144, 238, 144, 0.3) !important;
+}
+
+path.grid-worked {
+	fill: rgba(220, 50, 50, 0.4) !important;
+	stroke: rgba(220, 50, 50, 0.4) !important;
+}
+
+#map, 
+#qsomap{
+	background-color: #2E3E50;
+}
+
+/* 
+*	Dark Navigation 
+*/
+
+/* Navigation background */
+.bg-light {
+    background-color: #4e5d6c !important;
+}
+
+/* Inactive Links */
+.navbar-light .navbar-nav .nav-link {
+    color: rgba(255,255,255,.6);
+}
+
+/* Active Links and Logo */
+.navbar-light .navbar-brand,
+.navbar-light .navbar-brand:focus,
+.navbar-light .navbar-brand:hover,
+.navbar-light .navbar-nav .active>.nav-link,
+.navbar-light .navbar-nav .nav-link:focus,
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #fff;
+}
+
+/* Hamburger Menu */
+.navbar-light .navbar-toggler-icon {
+	background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.6%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
+}
+
+/* 
+*	Dark inputs 
+*/
+
+.form-control,
+.form-control-sm,
+.form-control:focus,
+.form-control:disabled,
+.custom-select {
+	background-color: rgba(20, 41, 62, 0.6);
+	color: #fff; 
+}
+
+div.alert-danger {
+	color: #ffffff;
+}

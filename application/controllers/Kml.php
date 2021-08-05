@@ -9,7 +9,28 @@
 
 class Kml extends CI_Controller {
 
-	public function index()
+    public function index()
+    {
+        $this->load->model('user_model');
+        $this->load->model('modes');
+        $this->load->model('dxcc');
+        $this->load->model('logbook_model');
+
+        if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+        $data['worked_bands'] = $this->dxcc->get_worked_bands(); // Used in the view for band select
+        $data['modes'] = $this->modes->active(); // Used in the view for mode select
+        $data['dxcc'] = $this->logbook_model->fetchDxcc(); // Used in the view for dxcc select
+
+        $data['page_title'] = "KML Export";
+
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('kml/index');
+        $this->load->view('interface_assets/footer');
+
+    }
+
+	public function export()
 	{
 		// Load Librarys
 		$this->load->library('qra');
@@ -18,12 +39,18 @@ class Kml extends CI_Controller {
 		// Load Database connections
 		$this->load->model('logbook_model');
 
-		// Get QSOs with Valid QRAs
-		$qsos = $this->logbook_model->kml_get_all_qsos();
+		// Parameters
+        $band = $this->input->post('band');
+        $mode = $this->input->post('mode');
+        $dxcc = $this->input->post('dxcc_id');
+        $cqz = $this->input->post('cqz');
+        $propagation = $this->input->post('prop_mode');
+        $fromdate = $this->input->post('fromdate');
+        $todate = $this->input->post('todate');
 
-		//header('Content-type: text/xml');
-		//header("Cache-Control: no-cache");
-		
+		// Get QSOs with Valid QRAs
+		$qsos = $this->logbook_model->kml_get_all_qsos($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate);
+
 		$output = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 		$output .= "<kml xmlns=\"http://www.opengis.net/kml/2.2\">";
 
@@ -32,7 +59,7 @@ class Kml extends CI_Controller {
 		foreach ($qsos->result() as $row)
 		{
 			$output .= "<Placemark>";
-			//print_r($row);
+
 			if($row->COL_GRIDSQUARE != null) {
 				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
 				
@@ -41,7 +68,7 @@ class Kml extends CI_Controller {
 			} else {
 				$query = $this->db->query('
 					SELECT *
-					FROM dxcc
+					FROM dxcc_entities
 					WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
 					ORDER BY LENGTH( prefix ) DESC
 					LIMIT 1 
@@ -55,7 +82,6 @@ class Kml extends CI_Controller {
 
 			$timestamp = strtotime($row->COL_TIME_ON); 
 
-
 			$output .= "<name>".$row->COL_CALL."</name>";
 			$output .= "<description><![CDATA[<p>Date/Time: ".date('Y-m-d H:i:s', ($timestamp))."<br/>Band: ".$row->COL_BAND."<br /></p>]]></description>";		
 			$output .= "<Point>";
@@ -64,13 +90,16 @@ class Kml extends CI_Controller {
 			$output .= "</Placemark>";
 		}
 
-
 		$output .= "</Document>";
 		$output .= "</kml>";
 
+        if (!file_exists('kml')) {
+            mkdir('kml', 0755, true);
+        }
+
 		if ( ! write_file('kml/qsos.kml', $output))
 		{
-		     echo 'Unable to write the file - Make the folder KML has write permissions.';
+		     echo 'Unable to write the file. Make sure the folder KML has write permissions.';
 		}
 		else
 		{

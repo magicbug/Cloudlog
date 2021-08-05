@@ -3,6 +3,13 @@
 
 $db_config_path = '../application/config/';
 
+$db_file_path = $db_config_path."database.php";
+
+if (file_exists($db_file_path)) {
+    echo "Cloudlog is already installed, please delete the /install folder.";
+	exit;
+}
+
 // Only load the classes in case the user submitted the form
 if($_POST) {
 

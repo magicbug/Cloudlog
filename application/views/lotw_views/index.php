@@ -1,16 +1,12 @@
 <div class="container lotw">
 <br>
-	<a class="btn btn-outline-primary btn-sm float-right" href="<?php echo site_url('/lotw/import'); ?>" role="button"><i class="fas fa-cloud-download-alt"></i> LoTW Import</a>
-	<h2><?php echo $page_title; ?></h2>
-
-	<div class="alert alert-danger" role="alert">
-	  <i class="fas fa-exclamation-triangle"></i> Please be aware that LoTW Sync is BETA. You might get errors as this isn't fully production ready.
-	</div>
+	<a class="btn btn-outline-primary btn-sm float-right" href="<?php echo site_url('/lotw/import'); ?>" role="button"><i class="fas fa-cloud-download-alt"></i> <?php echo $this->lang->line('lotw_btn_lotw_import'); ?></a>
+	<h2><?php echo $this->lang->line('lotw_title'); ?></h2>
 
 	<!-- Card Starts -->
 	<div class="card">
 		<div class="card-header">
-			<a class="btn btn-outline-success btn-sm float-right" href="<?php echo site_url('/lotw/cert_upload'); ?>" role="button"><i class="fas fa-cloud-upload-alt"></i> Upload Certificate</a><i class="fab fa-expeditedssl"></i> Available Certificates
+			<a class="btn btn-outline-success btn-sm float-right" href="<?php echo site_url('/lotw/cert_upload'); ?>" role="button"><i class="fas fa-cloud-upload-alt"></i> <?php echo $this->lang->line('lotw_btn_upload_certificate'); ?></a><i class="fab fa-expeditedssl"></i> <?php echo $this->lang->line('lotw_title_available_cert'); ?>
 		</div>
 
 		<div class="card-body">
@@ -32,12 +28,12 @@
 				<table class="table table-hover">
 					<thead class="thead-light">
 						<tr>
-				 			<th scope="col">Callsign</th>
-							<th scope="col">DXCC</th>
-				      		<th scope="col">Date Created</th>
-				    		<th scope="col">Date Expires</th>
-				    		<th scope="col">Status</th>
-				    		<th scope="col">Options</th>
+				 			<th scope="col"><?php echo $this->lang->line('gen_hamradio_callsign'); ?></th>
+							<th scope="col"><?php echo $this->lang->line('gen_hamradio_dxcc'); ?></th>
+				      		<th scope="col"><?php echo $this->lang->line('lotw_date_created'); ?></th>
+				    		<th scope="col"><?php echo $this->lang->line('lotw_date_expires'); ?></th>
+				    		<th scope="col"><?php echo $this->lang->line('lotw_status'); ?></th>
+				    		<th scope="col"><?php echo $this->lang->line('lotw_options'); ?></th>
 				    	</tr>
 					</thead>
 				 
@@ -62,19 +58,19 @@
 									<?php $current_date = date('Y-m-d H:i:s'); ?>
 
 									<?php if ($current_date <= $row->date_expires) { ?>
-										<span class="badge badge-success">Valid</span>
+										<span class="badge badge-success"><?php echo $this->lang->line('lotw_valid'); ?></span>
 									<?php } else { ?>
-										<span class="badge badge-dark">Expired</span>
+										<span class="badge badge-danger"><?php echo $this->lang->line('lotw_expired'); ?></span>
 									<?php } ?>
 
 									<?php if ($row->last_upload) { ?>
 										<span class="badge badge-success"><?php echo $row->last_upload; ?></span>
 									<?php } else { ?>
-										<span class="badge badge-warning">Not Synced</span>
+										<span class="badge badge-warning"><?php echo $this->lang->line('lotw_not_synced'); ?></span>
 									<?php } ?>
 								</td>
 								<td>
-									<a class="btn btn-outline-danger btn-sm" href="<?php echo site_url('lotw/delete_cert/'.$row->lotw_cert_id); ?>" role="button"><i class="far fa-trash-alt"></i> Delete</a>
+									<a class="btn btn-outline-danger btn-sm" href="<?php echo site_url('lotw/delete_cert/'.$row->lotw_cert_id); ?>" role="button"><i class="far fa-trash-alt"></i> <?php echo $this->lang->line('lotw_btn_delete'); ?></a>
 								</td>
 							</tr>
 						<?php } ?>
@@ -85,7 +81,7 @@
 
 			<?php } else { ?>
 			<div class="alert alert-info" role="alert">
-				You need to upload some LoTW p12 certificates to use this area.
+				<?php echo $this->lang->line('lotw_no_certs_uploaded'); ?>
 			</div>
 			<?php } ?>
 
@@ -98,13 +94,11 @@
 	<!-- Card Starts -->
 	<div class="card">
 		<div class="card-header">
-			Information
+			<?php echo $this->lang->line('lotw_title_information'); ?>
 		</div>
 
 		<div class="card-body">
-			<p>You can run the LoTW upload script manually from: <a href="<?php echo site_url('lotw/lotw_upload'); ?>"><?php echo site_url('lotw/lotw_upload'); ?></a>. This should be run as a cron task on a fixed interval (no more frequently than once an hour).</p>
-
-			<p>We are building the help file for this at <a href="https://github.com/magicbug/Cloudlog/wiki/LoTW-Import-&-Export-Documentation" target="_blank">https://github.com/magicbug/Cloudlog/wiki/LoTW-Import-&-Export-Documentation</a></p>
+			<p><a class="btn btn-outline-success" href="<?php echo site_url('lotw/lotw_upload'); ?>"><?php echo $this->lang->line('lotw_btn_manual_sync'); ?></a></p>
 		</div>
 	</div>
 

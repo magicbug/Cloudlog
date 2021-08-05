@@ -2,12 +2,12 @@
 
 /*
 	Handles Displaying of information for awards.
-	
-	These are taken from comments fields or ADIF fields 
+
+	These are taken from comments fields or ADIF fields
 */
 
 class Awards extends CI_Controller {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -24,7 +24,7 @@ class Awards extends CI_Controller {
 		$this->load->view('awards/index');
 		$this->load->view('interface_assets/footer');
 	}
-	
+
 	public function dok ()
 	{
 		//echo "Needs Developed";
@@ -39,7 +39,7 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 
 	}
-	
+
     public function dok_details_ajax(){
         $a = $this->input->post();
         $q = "";
@@ -72,10 +72,13 @@ class Awards extends CI_Controller {
         $data['filter'] = str_replace("&#40;and&#41;", ", ", $q);//implode(", ", array_keys($a));
         $this->load->view('awards/details', $data);
     }
-	
+
 	public function dxcc ()	{
 		$this->load->model('dxcc');
+        $this->load->model('modes');
+
         $data['worked_bands'] = $this->dxcc->get_worked_bands(); // Used in the view for band select
+        $data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
@@ -106,6 +109,7 @@ class Awards extends CI_Controller {
             $postdata['Oceania'] = $this->input->post('Oceania');
             $postdata['Antarctica'] = $this->input->post('Antarctica');
             $postdata['band'] = $this->input->post('band');
+            $postdata['mode'] = $this->input->post('mode');
         }
         else { // Setting default values at first load of page
             $postdata['lotw'] = 1;
@@ -122,11 +126,12 @@ class Awards extends CI_Controller {
             $postdata['Oceania'] = 1;
             $postdata['Antarctica'] = 1;
             $postdata['band'] = 'All';
+            $postdata['mode'] = 'All';
         }
 
 		$dxcclist = $this->dxcc->fetchdxcc($postdata);
         $data['dxcc_array'] = $this->dxcc->get_dxcc_array($dxcclist, $bands, $postdata);
-        $data['dxcc_summary'] = $this->dxcc->get_dxcc_summary($bands);
+        $data['dxcc_summary'] = $this->dxcc->get_dxcc_summary($data['worked_bands']);
 
 		// Render Page
 		$data['page_title'] = "Awards - DXCC";
@@ -134,19 +139,6 @@ class Awards extends CI_Controller {
 		$this->load->view('awards/dxcc/index');
 		$this->load->view('interface_assets/footer');
 	}
-
-    public function dxcc_details_ajax(){
-        $this->load->model('logbook_model');
-
-        $country = str_replace('"', "", $this->input->post("Country"));
-        $band = str_replace('"', "", $this->input->post("Band"));
-        $data['results'] = $this->logbook_model->dxcc_qso_details($country, $band);
-
-        // Render Page
-        $data['page_title'] = "Log View - DXCC";
-        $data['filter'] = "country ".$country. " and ".$band;
-        $this->load->view('awards/details', $data);
-    }
 
     public function vucc()	{
         $this->load->model('vucc');
@@ -169,7 +161,7 @@ class Awards extends CI_Controller {
         $data['type'] = $type;
 
         // Render Page
-        $data['page_title'] = "VUCC - band";
+        $data['page_title'] = "VUCC - " .$band . " Band";
         $data['filter'] = "band ".$band;
         $data['band'] = $band;
         $this->load->view('interface_assets/header', $data);
@@ -191,65 +183,59 @@ class Awards extends CI_Controller {
     }
 
 	/*
-		Handles Displaying of WAB Squares worked.
-		Comment field - WAB:#
-	*/
-	public function wab() {
-	
-		// Grab all worked WABs
-		$this->load->model('wab');
-		$data['wab_all'] = $this->wab->get_all();
-	
+	 * Used to fetch QSOs from the logbook in the awards
+	 */
+	public function qso_details_ajax(){
+		$this->load->model('logbook_model');
+
+		$searchphrase = str_replace('"', "", $this->input->post("Searchphrase"));
+		$band = str_replace('"', "", $this->input->post("Band"));
+		$mode = str_replace('"', "", $this->input->post("Mode"));
+		$type = $this->input->post('Type');
+
+		$data['results'] = $this->logbook_model->qso_details($searchphrase, $band, $mode, $type);
+
+		// This is done because we have two different ways to get dxcc info in Cloudlog. Once is using the name (in awards), and the other one is using the ADIF DXCC.
+		// We replace the values to make it look a bit nicer
+		if ($type == 'DXCC2') {
+			$type = 'DXCC';
+			$dxccname = $this->logbook_model->get_entity($searchphrase);
+			$searchphrase = $dxccname['name'];
+		}
+
 		// Render Page
-		$data['page_title'] = "Awards - WAB";
-		$this->load->view('interface_assets/header', $data);
-		$this->load->view('awards/wab/index');
-		$this->load->view('interface_assets/footer');
+		$data['page_title'] = "Log View - " . $type;
+		$data['filter'] = $type . " " . $searchphrase . " and band ".$band . " and mode ".$mode;
+		$this->load->view('awards/details', $data);
 	}
-	
+
 	/*
 		Handles showing worked SOTAs
 		Comment field - SOTA:#
 	*/
 	public function sota() {
-	
+
 		// Grab all worked sota stations
 		$this->load->model('sota');
 		$data['sota_all'] = $this->sota->get_all();
-	
+
 		// Render page
 		$data['page_title'] = "Awards - SOTA";
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/sota/index');
 		$this->load->view('interface_assets/footer');
 	}
-	
-	/*
-		Handles showing worked WACRAL members (wacral.org)
-		Comment field - WACRAL:#
-	*/
-	public function wacral() {
-	
-		// Grab all worked wacral members
-		$this->load->model('wacral');
-		$data['wacral_all'] = $this->wacral->get_all();
-	
-		// Render page
-		$data['page_title'] = "Awards - WACRAL Members";
-		$this->load->view('interface_assets/header', $data);
-		$this->load->view('awards/wacral/index');
-		$this->load->view('interface_assets/footer');
-	}
-	
-	public function cq(){
-        $this->load->model('cq');
-        $zones = array();
-        foreach($this->cq->get_zones() as $row){
-            array_push($zones, intval($row->COL_CQZ));
-        }
-        $data['cqz'] = $zones;
 
-        $data['worked_bands'] = $this->cq->get_worked_bands();
+	public function cq(){
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
+
+        $this->load->model('cq');
+		$this->load->model('modes');
+
+        $data['worked_bands'] = $this->cq->get_worked_bands($station_id);
+		$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
@@ -272,6 +258,7 @@ class Awards extends CI_Controller {
             $postdata['confirmed'] = $this->input->post('confirmed');
             $postdata['notworked'] = $this->input->post('notworked');
             $postdata['band'] = $this->input->post('band');
+			$postdata['mode'] = $this->input->post('mode');
         }
         else { // Setting default values at first load of page
             $postdata['lotw'] = 1;
@@ -280,10 +267,11 @@ class Awards extends CI_Controller {
             $postdata['confirmed'] = 1;
             $postdata['notworked'] = 1;
             $postdata['band'] = 'All';
+			$postdata['mode'] = 'All';
         }
 
-        $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata);
-        $data['cq_summary'] = $this->cq->get_cq_summary($bands);
+        $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata, $station_id);
+        $data['cq_summary'] = $this->cq->get_cq_summary($data['worked_bands'], $station_id);
 
         // Render page
         $data['page_title'] = "Awards - CQ Magazine";
@@ -292,22 +280,12 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-    public function cq_details_ajax(){
-        $this->load->model('logbook_model');
-
-        $cqzone = str_replace('"', "", $this->input->post("CQZone"));
-        $band = str_replace('"', "", $this->input->post("Band"));
-        $data['results'] = $this->logbook_model->cq_qso_details($cqzone, $band);
-
-        // Render Page
-        $data['page_title'] = "Log View - DXCC";
-        $data['filter'] = "CQZone ".$cqzone. " and ".$band;;
-        $this->load->view('awards/details', $data);
-    }
-
     public function was() {
         $this->load->model('was');
+		$this->load->model('modes');
+
         $data['worked_bands'] = $this->was->get_worked_bands();
+		$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
@@ -330,6 +308,7 @@ class Awards extends CI_Controller {
             $postdata['confirmed'] = $this->input->post('confirmed');
             $postdata['notworked'] = $this->input->post('notworked');
             $postdata['band'] = $this->input->post('band');
+			$postdata['mode'] = $this->input->post('mode');
         }
         else { // Setting default values at first load of page
             $postdata['lotw'] = 1;
@@ -338,33 +317,23 @@ class Awards extends CI_Controller {
             $postdata['confirmed'] = 1;
             $postdata['notworked'] = 1;
             $postdata['band'] = 'All';
+			$postdata['mode'] = 'All';
         }
 
         $data['was_array'] = $this->was->get_was_array($bands, $postdata);
-        $data['was_summary'] = $this->was->get_was_summary($bands);
+        $data['was_summary'] = $this->was->get_was_summary($data['worked_bands']);
 
         // Render Page
-        $data['page_title'] = "Awards - WAS (Worked all states)";
+        $data['page_title'] = "Awards - WAS (Worked All States)";
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/was/index');
         $this->load->view('interface_assets/footer');
     }
 
-    public function was_details_ajax() {
-        $this->load->model('logbook_model');
-
-        $state = str_replace('"', "", $this->input->post("State"));
-        $band = str_replace('"', "", $this->input->post("Band"));
-        $data['results'] = $this->logbook_model->was_qso_details($state, $band);
-
-        // Render Page
-        $data['page_title'] = "Log View - WAS";
-        $data['filter'] = "state ".$state. " and ".$band;
-        $this->load->view('awards/details', $data);
-    }
-
     public function iota ()	{
         $this->load->model('iota');
+		$this->load->model('modes');
+
         $data['worked_bands'] = $this->iota->get_worked_bands(); // Used in the view for band select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
@@ -380,6 +349,7 @@ class Awards extends CI_Controller {
         }
 
         $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
+		$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if($this->input->method() === 'post') {
             $postdata['worked'] = $this->input->post('worked');
@@ -394,6 +364,7 @@ class Awards extends CI_Controller {
             $postdata['Oceania'] = $this->input->post('Oceania');
             $postdata['Antarctica'] = $this->input->post('Antarctica');
             $postdata['band'] = $this->input->post('band');
+			$postdata['mode'] = $this->input->post('mode');
         }
         else { // Setting default values at first load of page
             $postdata['worked'] = 1;
@@ -408,6 +379,7 @@ class Awards extends CI_Controller {
             $postdata['Oceania'] = 1;
             $postdata['Antarctica'] = 1;
             $postdata['band'] = 'All';
+			$postdata['mode'] = 'All';
         }
 
         $iotalist = $this->iota->fetchIota($postdata);
@@ -421,16 +393,120 @@ class Awards extends CI_Controller {
         $this->load->view('interface_assets/footer');
     }
 
-    public function iota_details_ajax(){
-        $this->load->model('logbook_model');
-
-        $iota = str_replace('"', "", $this->input->post("Iota"));
-        $band = str_replace('"', "", $this->input->post("Band"));
-        $data['results'] = $this->logbook_model->iota_qso_details($iota, $band);
+    public function counties()	{
+        $this->load->model('counties');
+        $data['counties_array'] = $this->counties->get_counties_array();
 
         // Render Page
-        $data['page_title'] = "Log View - IOTA";
-        $data['filter'] = "iota ".$iota. " and ".$band;
+        $data['page_title'] = "Awards - US Counties";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/counties/index');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function counties_details() {
+        $this->load->model('counties');
+        $state = str_replace('"', "", $this->input->get("State"));
+        $type = str_replace('"', "", $this->input->get("Type"));
+        $data['counties_array'] = $this->counties->counties_details($state, $type);
+        $data['type'] = $type;
+
+        // Render Page
+        $data['page_title'] = "US Counties";
+        $data['filter'] = $type . " counties in state ".$state;
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/counties/details');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function counties_details_ajax(){
+        $this->load->model('logbook_model');
+
+        $state = str_replace('"', "", $this->input->post("State"));
+        $county = str_replace('"', "", $this->input->post("County"));
+        $data['results'] = $this->logbook_model->county_qso_details($state, $county);
+
+        // Render Page
+        $data['page_title'] = "Log View - Counties";
+        $data['filter'] = "county " . $state;
         $this->load->view('awards/details', $data);
+    }
+
+	/*
+		Handles showing worked Sigs
+		Adif fields: my_sig
+	*/
+	public function sig() {
+		// Grab all worked sig stations
+		$this->load->model('sig');
+
+		$data['sig_types'] = $this->sig->get_all_sig_types();
+
+		// Render page
+		$data['page_title'] = "Awards - SIG";
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('awards/sig/index');
+		$this->load->view('interface_assets/footer');
+	}
+
+	/*
+	Handles showing worked Sigs
+	*/
+	public function sig_details() {
+
+		// Grab all worked sig stations
+		$this->load->model('sig');
+		$type = str_replace('"', "", $this->input->get("type"));
+		$data['sig_all'] = $this->sig->get_all($type);
+		$data['type'] = $type;
+
+		// Render page
+		$data['page_title'] = "Awards - SIG - " . $type;
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('awards/sig/qso_list');
+		$this->load->view('interface_assets/footer');
+	}
+
+	/*
+	Handles exporting SIGS to ADIF
+	*/
+	public function sigexportadif() {
+		// Set memory limit to unlimited to allow heavy usage
+		ini_set('memory_limit', '-1');
+
+		$this->load->model('adif_data');
+		//$type = str_replace('"', "", $this->input->get("type"));
+		$type = $this->uri->segment(3);
+		$data['qsos'] = $this->adif_data->sig_all($type);
+
+		$this->load->view('adif/data/exportall', $data);
+	}
+
+    /*
+        function was_map
+
+        This displays the WAS map and requires the $band_type and $mode_type
+    */
+    public function was_map($band_type, $mode_type) {
+
+        $this->load->model('was');
+
+		$data['mode'] = $mode_type;
+
+        $bands[] = $band_type;
+
+        $postdata['lotw'] = 1;
+        $postdata['qsl'] = 1;
+        $postdata['worked'] = 1;
+        $postdata['confirmed'] = 1;
+        $postdata['notworked'] = 1;
+        $postdata['band'] = $band_type;
+		$postdata['mode'] = $mode_type;
+
+        $data['was_array'] = $this->was->get_was_array($bands, $postdata);
+
+        $data['page_title'] = "";
+
+        $this->load->view('awards/was/map', $data);
     }
 }

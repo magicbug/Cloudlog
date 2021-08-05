@@ -2,13 +2,13 @@
 
 	<div class="card">
 	  <div class="card-header">
-	  	<h2 class="card-title">Notes</h2>
+	  	<h2 class="card-title"><?php echo $this->lang->line('notes_menu_notes'); ?></h2>
 	    <ul class="nav nav-tabs card-header-tabs">
 	      <li class="nav-item">
-	        <a class="nav-link active" href="<?php echo site_url('notes'); ?>">Notes</a>
+	        <a class="nav-link active" href="<?php echo site_url('notes'); ?>"><?php echo $this->lang->line('notes_menu_notes'); ?></a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="<?php echo site_url('notes/add'); ?>">Create Note</a>
+	        <a class="nav-link" href="<?php echo site_url('notes/add'); ?>"><?php echo $this->lang->line('notes_create_note'); ?></a>
 	      </li>
 	    </ul>
 	  </div>
@@ -19,7 +19,7 @@
 
 				if ($notes->num_rows() > 0)
 				{
-					echo "<h3>Your Notes</h3>";
+					echo "<h3>".$this->lang->line('notes_your_notes')."</h3>";
 					echo "<ul class=\"list-group\">";
 					foreach ($notes->result() as $row)
 					{
@@ -29,7 +29,7 @@
 					}
 					echo "</ul>";
 				} else {
-					echo "<p>You don't currently have any notes, these are a fantastic way of storing data like ATU settings, beacons and general station notes and its better than paper as you can't lose them!</p>";
+					echo "<p>".$this->lang->line('notes_welcome')."</p>";
 				}
 
 			?>

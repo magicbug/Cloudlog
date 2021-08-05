@@ -14,7 +14,7 @@ class Accumulated extends CI_Controller {
     public function index()
     {
         // Render Page
-        $data['page_title'] = "Accumulated statistics";
+        $data['page_title'] = "Accumulated Statistics";
 
         $this->load->model('Accumulate_model');
 
