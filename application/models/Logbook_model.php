@@ -244,6 +244,9 @@ class Logbook_model extends CI_Model {
 			case 'DXCC':
 				$this->db->where('COL_COUNTRY', $searchphrase);
 				break;
+			case 'DXCC2':
+				$this->db->where('COL_DXCC', $searchphrase);
+				break;
 			case 'IOTA':
 				$this->db->where('COL_IOTA', $searchphrase);
 				break;
@@ -256,6 +259,13 @@ class Logbook_model extends CI_Model {
 			case 'WAS':
 				$this->db->where('COL_STATE', $searchphrase);
 				$this->db->where_in('COL_DXCC', ['291', '6', '110']);
+				break;
+			case 'SOTA':
+				$this->db->where('COL_SOTA_REF', $searchphrase);
+				break;
+			case 'WWFF':
+				$this->db->where('COL_SIG', 'WWFF');
+				$this->db->where('COL_SIG_INFO', $searchphrase);
 				break;
 		}
 
@@ -2099,7 +2109,14 @@ class Logbook_model extends CI_Model {
 
 		if (preg_match('/(^KG4)[A-Z09]{3,}/', $call)) { 	// KG4/ and KG4 5 char calls are Guantanamo Bay. If 6 char, it is USA
 			$call = "K";
-		}
+		} elseif (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
+			if ($matches[5][0] == '/MM') {
+				$row['adif'] = 0;
+				$row['entity'] = 'None';
+				$row['cqz'] = 0;
+				return array($row['adif'], $row['entity'], $row['cqz']);
+			}
+    	}
 
 		$len = strlen($call);
 
@@ -2144,7 +2161,16 @@ class Logbook_model extends CI_Model {
 
 				if (preg_match('/(^KG4)[A-Z09]{3,}/', $call)) { 	// KG4/ and KG4 5 char calls are Guantanamo Bay. If 6 char, it is USA
 					$call = "K";
-				}
+				} elseif (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
+					if ($matches[5][0] == '/MM') {
+						$row['adif'] = 0;
+						$row['entity'] = 'None';
+						$row['cqz'] = 0;
+						$row['long'] = '0';
+						$row['lat'] = '0';
+						return $row;
+					}
+    			}
 
 				$len = strlen($call);
 

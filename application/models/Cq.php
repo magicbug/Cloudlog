@@ -239,7 +239,7 @@ class CQ extends CI_Model{
     function getSummaryByBand($band, $station_id) {
         $sql = "SELECT count(distinct thcv.col_cqz) as count FROM " . $this->config->item('table_name') . " thcv";
 
-        $sql .= " where station_id = " . $station_id;
+        $sql .= " where station_id = " . $station_id . ' and col_cqz > 0';
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
@@ -258,7 +258,7 @@ class CQ extends CI_Model{
     function getSummaryByBandConfirmed($band, $station_id){
         $sql = "SELECT count(distinct thcv.col_cqz) as count FROM " . $this->config->item('table_name') . " thcv";
 
-        $sql .= " where station_id = " . $station_id;
+        $sql .= " where station_id = " . $station_id . ' and col_cqz > 0';
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";

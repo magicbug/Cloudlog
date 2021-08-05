@@ -63,6 +63,28 @@ class Qslprint_model extends CI_Model {
 
 		return true;
 	}
+
+	function add_qso_to_print_queue($id) {
+		$data = array(
+			'COL_QSL_SENT' => "R",
+		);
+
+		$this->db->where("COL_PRIMARY_KEY", $id);
+		$this->db->update($this->config->item('table_name'), $data);
+
+		return true;
+	}
+
+	function open_qso_list($callsign) {
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->where('COL_CALL like "%'.$callsign.'%"');
+		$this->db->where('coalesce(COL_QSL_SENT, "") not in ("R", "Q")');
+		$this->db->order_by("COL_TIME_ON", "ASC");
+		$query = $this->db->get($this->config->item('table_name'));
+
+		return $query;
+	}
+
 }
 
 ?>

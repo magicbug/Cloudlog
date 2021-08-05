@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Qra {
 
@@ -13,14 +13,14 @@ class Qra {
 	*	K = Kilometers
 	*	N = Nautical Miles
 	*/
-	
+
 	// Name: qra2latlong
 	// Task: convert qra to lat/long
 	function qra2latlong($strQRA)
 	{
 		return qra2latlong($strQRA);
 	}
-	
+
 	// calculate  the bearing between two squares
 	function bearing($tx, $rx, $unit = 'M') {
 		if(strlen($tx) <= 6 && strlen($rx) <= 6) {
@@ -28,7 +28,7 @@ class Qra {
 			$stn = qra2latlong($rx);
 
 			$bearing = bearing($my[0], $my[1], $stn[0], $stn[1], $unit);
-			
+
 			return $bearing;
 		}
 	}
@@ -46,7 +46,7 @@ class Qra {
 
 		// Feed in Lat Longs plus the unit type
 		$total_distance = distance($my[0], $my[1], $stn[0], $stn[1], $unit);
-		
+
 		// Return the distance
 		return $total_distance;
 	}
@@ -72,21 +72,10 @@ cos(deg2rad($theta));
 }
 
 function bearing($lat1, $lon1, $lat2, $lon2, $unit = 'M') {
-  if (round($lon1, 1) == round($lon2, 1)) {
-	if ($lat1 < $lat2) {
-	  $bearing = 0;
-	} else {
-	  $bearing = 180;
-	}
-  } else {
-	$dist = distance($lat1, $lon1, $lat2, $lon2, $unit);
-	$arad = acos((sin(deg2rad($lat2)) - sin(deg2rad($lat1)) * cos(deg2rad($dist / 60))) / (sin(deg2rad($dist
-/ 60)) * cos(deg2rad($lat1))));
-	$bearing = $arad * 180 / pi();
-	if (sin(deg2rad($lon2 - $lon1)) < 0) {
-	  $bearing = 360 - $bearing;
-	}
-  }
+  $dist = distance($lat1, $lon1, $lat2, $lon2, $unit);
+  $dist = round($dist, 0);
+
+  $bearing = get_bearing($lat1, $lon1, $lat2, $lon2);
 
   $dirs = array("N","E","S","W");
 
@@ -99,7 +88,7 @@ function bearing($lat1, $lon1, $lat2, $lon2, $unit = 'M') {
 	#if ($rounded % 2 == 1)
 	#  $dir = $dirs[round_to_int($rounded/4) % 4] . "-" . $dir;
   }
-$var_dist = "";
+  $var_dist = "";
   #return $dir;
   if (isset($dist)) {
 	$var_dist = $dist;
@@ -118,13 +107,17 @@ $var_dist = "";
   return round($bearing, 0)."&#186; ".$dir." ".$var_dist;
 }
 
+function get_bearing($lat1, $lon1, $lat2, $lon2) {
+	return (rad2deg(atan2(sin(deg2rad($lon2) - deg2rad($lon1)) * cos(deg2rad($lat2)), cos(deg2rad($lat1)) * sin(deg2rad($lat2)) - sin(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($lon2) - deg2rad($lon1)))) + 360) % 360;
+}
+
 function qra2latlong($strQRA)
 
 {
 		if (strlen($strQRA) %2 == 0) {
 			$strQRA = strtoupper($strQRA);
 			if (strlen($strQRA) == 4)  $strQRA .= "MM";
-			if (!preg_match('/^[A-Z]{2}[0-9]{2}[A-Z]{2}$/',$strQRA)) return false;
+			if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}$/',$strQRA)) return false;
 			list($a,$b,$c,$d,$e,$f) = str_split($strQRA,1);
 			$a = ord($a) - ord('A');
 			$b = ord($b) - ord('A');

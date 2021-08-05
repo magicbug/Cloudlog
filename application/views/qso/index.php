@@ -245,7 +245,7 @@
               <div class="form-group">
                   <label for="dxcc_id"><?php echo $this->lang->line('gen_hamradio_dxcc'); ?></label>
                   <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
-
+                      <option value="0">None</option>
                       <?php
                       foreach($dxcc as $d){
                           echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name))) . '</option>';
@@ -258,7 +258,7 @@
                   <label for="cqz"><?php echo $this->lang->line('gen_hamradio_cq_zone'); ?></label>
                   <select class="custom-select" id="cqz" name="cqz" required>
                       <?php
-                      for ($i = 1; $i<=40; $i++) {
+                      for ($i = 0; $i<=40; $i++) {
                           echo '<option value="'. $i . '">'. $i .'</option>';
                       }
                       ?>

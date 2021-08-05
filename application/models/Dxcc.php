@@ -322,7 +322,7 @@ class DXCC extends CI_Model {
             from dxcc_entities";
 
 		if ($postdata['notworked'] == NULL) {
-			$sql .= " join (select col_dxcc from ".$this->config->item('table_name')." where station_id = $station_id";
+			$sql .= " join (select col_dxcc from " . $this->config->item('table_name') . " where station_id = " . $station_id . " and col_dxcc > 0";
 
 			if ($postdata['band'] != 'All') {
 				if ($postdata['band'] == 'SAT') {
@@ -377,7 +377,7 @@ class DXCC extends CI_Model {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
 		}
 
-		$sql .= " and not exists (select 1 from ".$this->config->item('table_name')." where station_id = $station_id and col_dxcc = thcv.col_dxcc";
+		$sql .= " and not exists (select 1 from ".$this->config->item('table_name')." where station_id = $station_id and col_dxcc = thcv.col_dxcc and col_dxcc > 0";
 
 		if ($postdata['band'] != 'All') {
 			if ($postdata['band'] == 'SAT') {
@@ -530,7 +530,7 @@ class DXCC extends CI_Model {
 	{
 		$sql = "SELECT count(distinct thcv.col_dxcc) as count FROM " . $this->config->item('table_name') . " thcv";
 
-		$sql .= " where station_id = " . $station_id;
+		$sql .= " where station_id = " . $station_id . " and col_dxcc > 0";
 
 
 		if ($band == 'SAT') {
@@ -561,7 +561,7 @@ class DXCC extends CI_Model {
 			$sql .= " and thcv.col_band ='" . $band . "'";
 		}
 
-		$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+		$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y') and col_dxcc > 0";
 
 		$query = $this->db->query($sql);
 

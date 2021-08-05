@@ -21,6 +21,8 @@ Installation information can be found on the [wiki](https://github.com/magicbug/
 
 Cloudlog has two support systems for code issues use Github issues, however if you have general issues with setting up your server please use our general discussion forum [https://github.com/magicbug/Cloudlog/discussions](https://github.com/magicbug/Cloudlog/discussions).
 
+## Security Vulnerabilities
+If you discover a security vulnerability within Cloudlog, please send an e-mail to Peter Goodhall, 2M0SQL via [peter@magicbug.co.uk](mailto:peter@magicbug.co.uk). All security vulnerabilities will be promptly addressed.
 
 ## Want Cloudlog Hosting?
 

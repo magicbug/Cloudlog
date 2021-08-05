@@ -135,7 +135,7 @@
 
 
 	    'click' : function(event, data) {
-        	displayContacts(data.name,$('#band2').val(), 'All', 'WAS');
+        	displayContacts(data.name,$('#band2').val(), $('#mode').val(), 'WAS');
 	    }
 	  });
 

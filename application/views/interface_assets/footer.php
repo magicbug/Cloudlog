@@ -23,9 +23,9 @@
 
 function load_was_map() {
     BootstrapDialog.show({
-            title: 'Worked All States Map ('+$('#band2').val()+')',
+            title: 'Worked All States Map ('+$('#band2').val()+' '+$('#mode').val()+')',
             cssClass: 'was-map-dialog',
-            message: $('<div></div>').load(site_url + '/awards/was_map/' + $('#band2').val())
+            message: $('<div></div>').load(site_url + '/awards/was_map/' + $('#band2').val() + '/' + $('#mode').val())
     });
 }
 
@@ -2041,9 +2041,54 @@ function deleteQsl(id) {
 						type: 'post',
 						data: {'id': id	},
 						success: function(html) {
-							location.reload();
+							$("#qslprint_"+id).remove();
 						}
 					});
+				}
+			});
+		}
+
+		function openQsoList(callsign) {
+			$.ajax({
+				url: base_url + 'index.php/qslprint/open_qso_list',
+				type: 'post',
+				data: {'callsign': callsign},
+				success: function(html) {
+					BootstrapDialog.show({
+						title: 'QSO List',
+						size: BootstrapDialog.SIZE_WIDE,
+						cssClass: 'qso-dialog',
+						nl2br: false,
+						message: html,
+						buttons: [{
+							label: 'Close',
+							action: function (dialogItself) {
+								dialogItself.close();
+							}
+						}]
+					});
+				}
+			});
+		}
+
+		function addQsoToPrintQueue(id) {
+			$.ajax({
+				url: base_url + 'index.php/qslprint/add_qso_to_print_queue',
+				type: 'post',
+				data: {'id': id},
+				success: function(html) {
+					var line = '<tr id="qslprint_'+id+'">';
+					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(0)").text()+'</td>';
+					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(1)").text()+'</td>';
+					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(2)").text()+'</td>';
+					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(3)").text()+'</td>';
+					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(4)").text()+'</td>';
+					line += '<td style=\'text-align: center\'><span class="badge badge-light">'+$("#qsolist_"+id).find("td:eq(5)").text()+'</span></td>';
+					line += '<td style=\'text-align: center\'><button onclick="deleteFromQslQueue('+id+')" class="btn btn-sm btn-danger">Delete from queue</button></td></td>';
+					line += '<td style=\'text-align: center\'><button onclick="openQsoList(\''+$("#qsolist_"+id).find("td:eq(0)").text()+'\')" class="btn btn-sm btn-success">Open QSO list</button></td>';
+					line += '</tr>';
+					$('.table tr:last').after(line);
+					$("#qsolist_"+id).remove();''
 				}
 			});
 		}

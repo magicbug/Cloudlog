@@ -195,6 +195,14 @@ class Awards extends CI_Controller {
 
 		$data['results'] = $this->logbook_model->qso_details($searchphrase, $band, $mode, $type);
 
+		// This is done because we have two different ways to get dxcc info in Cloudlog. Once is using the name (in awards), and the other one is using the ADIF DXCC.
+		// We replace the values to make it look a bit nicer
+		if ($type == 'DXCC2') {
+			$type = 'DXCC';
+			$dxccname = $this->logbook_model->get_entity($searchphrase);
+			$searchphrase = $dxccname['name'];
+		}
+
 		// Render Page
 		$data['page_title'] = "Log View - " . $type;
 		$data['filter'] = $type . " " . $searchphrase . " and band ".$band . " and mode ".$mode;
@@ -274,7 +282,10 @@ class Awards extends CI_Controller {
 
     public function was() {
         $this->load->model('was');
+		$this->load->model('modes');
+
         $data['worked_bands'] = $this->was->get_worked_bands();
+		$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
@@ -297,6 +308,7 @@ class Awards extends CI_Controller {
             $postdata['confirmed'] = $this->input->post('confirmed');
             $postdata['notworked'] = $this->input->post('notworked');
             $postdata['band'] = $this->input->post('band');
+			$postdata['mode'] = $this->input->post('mode');
         }
         else { // Setting default values at first load of page
             $postdata['lotw'] = 1;
@@ -305,10 +317,11 @@ class Awards extends CI_Controller {
             $postdata['confirmed'] = 1;
             $postdata['notworked'] = 1;
             $postdata['band'] = 'All';
+			$postdata['mode'] = 'All';
         }
 
         $data['was_array'] = $this->was->get_was_array($bands, $postdata);
-        $data['was_summary'] = $this->was->get_was_summary($bands);
+        $data['was_summary'] = $this->was->get_was_summary($data['worked_bands']);
 
         // Render Page
         $data['page_title'] = "Awards - WAS (Worked All States)";
@@ -472,16 +485,15 @@ class Awards extends CI_Controller {
     /*
         function was_map
 
-        This displays the WAS map and requires the $band_type
+        This displays the WAS map and requires the $band_type and $mode_type
     */
-    public function was_map($band_type) {
+    public function was_map($band_type, $mode_type) {
 
         $this->load->model('was');
-        $data['worked_bands'] = $this->was->get_worked_bands();
+
+		$data['mode'] = $mode_type;
 
         $bands[] = $band_type;
-
-        $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
 
         $postdata['lotw'] = 1;
         $postdata['qsl'] = 1;
@@ -489,7 +501,7 @@ class Awards extends CI_Controller {
         $postdata['confirmed'] = 1;
         $postdata['notworked'] = 1;
         $postdata['band'] = $band_type;
-
+		$postdata['mode'] = $mode_type;
 
         $data['was_array'] = $this->was->get_was_array($bands, $postdata);
 
