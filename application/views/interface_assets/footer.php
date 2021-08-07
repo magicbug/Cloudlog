@@ -785,7 +785,7 @@ $(document).ready(function(){
   var map = L.map('map', {
     layers: [layer],
     center: [19, 0],
-    zoom: 3
+    zoom: 2
   });
 
   var grid_two = <?php echo $grid_2char; ?>;
@@ -809,7 +809,7 @@ $(document).ready(function(){
     console.log(loc_4char);
     console.log(map.getZoom());
 
-    if(map.getZoom() > 5) {
+    if(map.getZoom() > 2) {
       var search_type = "<?php echo $this->uri->segment(2); ?>";
       if(search_type == "satellites") {
         console.log("satellites search");
