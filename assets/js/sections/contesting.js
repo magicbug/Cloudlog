@@ -9,10 +9,10 @@ $( document ).ready(function() {
     setRst($("#mode").val());
 
     // Check to see what serial type is selected and set validation
-    if($('#serial').is(':checked')) { 
+    if($('#serial').is(':checked')) {
         set_serial_number_input_validation();
     }
-    if($('#other').is(':checked')) { 
+    if($('#other').is(':checked')) {
         set_other_input_validation();
     }
 });
@@ -181,16 +181,35 @@ $('#band').change(function() {
 
 // Change Serial Validation when selected
 $('#serial').change(function() {
-    if($('#serial').is(':checked')) { 
+    if($('#serial').is(':checked')) {
         set_serial_number_input_validation();
     }
 });
 
 // Change other serial type when selected
 $('#other').change(function() {
-    if($('#other').is(':checked')) { 
+    if($('#other').is(':checked')) {
         set_other_input_validation();
     }
+});
+
+$('#exchangetype').change(function(){
+	var exchangetype = $("#exchangetype option:selected").text();
+	if (exchangetype == 'None') {
+
+	}
+	if (exchangetype == 'Serial') {
+
+	}
+	if (exchangetype == 'Serialexchange') {
+
+	}
+	if (exchangetype == 'Serialgridsquare') {
+
+	}
+	if (exchangetype == 'Gridsquare') {
+
+	}
 });
 
 /*

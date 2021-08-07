@@ -8,19 +8,17 @@
                 <div class="card-body">
                     <form id="qso_input" name="qsos">
                         <div class="form-group row">
-                            <label class="col-auto control-label" for="radio"><?php echo $this->lang->line('contesting_exchange_type'); ?></label>
+							<label class="col-auto control-label" for="radio"><?php echo $this->lang->line('contesting_exchange_type'); ?></label>
 
-                            <div class="col-auto">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="exchangeradio" id="serial" value="serial" checked>
-                                    <label class="form-check-label" for="serial"><?php echo $this->lang->line('contesting_exchange_type_serial'); ?></label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="exchangeradio" id="other" value="other">
-                                    <label class="form-check-label" for="other"><?php echo $this->lang->line('contesting_exchange_type_other'); ?></label>
-                                </div>
-                            </div>
+							<div class="col-auto">
+								<select class="form-control-sm" id="exchangetype" name="exchangetype">
+									<option value='None'>None</option>
+									<option value='Serial'>Serial</option>
+									<option value='Serialexchange'>Serial + Exchange</option>
+									<option value='Serialgridsquare'>Serial + Gridsquare</option>
+									<option value='Gridsquare'>Gridsquare</option>
+								</select>
+							</div>
 
                             <label class="col-auto control-label" for="contestname"><?php echo $this->lang->line('contesting_contest_name'); ?></label>
 
@@ -121,10 +119,20 @@
                                 <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
                             </div>
 
+							<div class="form-group col-md-1">
+								<label for="exch_serial_r">Serial (R)</label>
+								<input type="text" class="form-control form-control-sm" name="exch_serial_r" id="exch_serial_r" value="">
+							</div>
+
                             <div class="form-group col-md-1">
                                 <label for="exch_sent"><?php echo $this->lang->line('gen_hamradio_exchange_sent_short'); ?></label>
                                 <input type="text" class="form-control form-control-sm" name="exch_sent" id="exch_sent" value="">
                             </div>
+
+							<div class="form-group col-md-1">
+								<label for="exch_gridsquare_r">Gridsquare (S)</label>
+								<input type="text" class="form-control form-control-sm" name="exch_gridsquare_r" id="exch_gridsquare_r" value="">
+							</div>
 
                             <div class="form-group col-md-1">
                                 <label for="rst_recv"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></label>
@@ -132,9 +140,19 @@
                             </div>
 
                             <div class="form-group col-md-1">
-                                <label for="exch_recv"><?php echo $this->lang->line('gen_hamradio_exchange_recv_short'); ?></label>
-                                <input type="text" class="form-control form-control-sm" name="exch_recv" id="exch_recv" value="">
+                                <label for="exch_serial_s">Serial (S)</label>
+                                <input type="text" class="form-control form-control-sm" name="exch_serial_s" id="exch_serial_s" value="">
                             </div>
+
+							<div class="form-group col-md-1">
+								<label for="exch_recv"><?php echo $this->lang->line('gen_hamradio_exchange_recv_short'); ?></label>
+								<input type="text" class="form-control form-control-sm" name="exch_recv" id="exch_recv" value="">
+							</div>
+
+							<div class="form-group col-md-1">
+								<label for="exch_gridsquare_s">Gridsquare (S)</label>
+								<input type="text" class="form-control form-control-sm" name="exch_gridsquare_s" id="exch_gridsquare_s" value="">
+							</div>
 
                         </div>
 
