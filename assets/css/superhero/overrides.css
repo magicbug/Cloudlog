@@ -7,20 +7,21 @@
 */
 
 .leaflet-tile {
-	filter: brightness(0.7) grayscale(0.6) !important;
+	filter: invert() hue-rotate(180deg) sepia(100%) hue-rotate(180deg) !important;
 }
+
 path.grid-rectangle {
 	stroke: rgba(200, 200, 200, 0.5);
 }
 
 span.grid-text > font {
-	color: rgba(220, 220, 220, 0.85) !important;
-	-webkit-text-stroke: 1px black !important;
+	color: rgba(220, 220, 220, 1) !important;
+	-webkit-text-stroke: 0.6px black !important;
 }
 
 path.grid-confirmed {
-	fill: rgba(144, 238, 144, 0.3) !important;
-	stroke: rgba(144, 238, 144, 0.3) !important;
+	fill: rgba(144, 238, 144, 0.4) !important;
+	stroke: rgba(144, 238, 144, 0.4) !important;
 }
 
 path.grid-worked {
@@ -28,7 +29,7 @@ path.grid-worked {
 	stroke: rgba(220, 50, 50, 0.4) !important;
 }
 
-#map, 
+#map,
 #qsomap{
 	background-color: #2E3E50;
 }
