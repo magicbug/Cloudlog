@@ -79,7 +79,7 @@ $( document ).ready(function() {
 		labelField: 'name',
 		searchField: 'name',
 		options: [],
-		create: false,
+		create: true,
 		load: function(query, callback) {
 			if (!query) return callback();  // Only trigger if at least 1 character is entered
 			$.ajax({
