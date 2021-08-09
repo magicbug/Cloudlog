@@ -140,6 +140,10 @@
 
 					<div class="dropdown-divider"></div>
 
+					<a class="dropdown-item" href="<?php echo site_url('themes');?>" title="Manage Themes"><i class="fas fa-cog"></i> Themes</a>
+
+					<div class="dropdown-divider"></div>
+
 					<a class="dropdown-item" href="<?php echo site_url('backup');?>" title="Backup Cloudlog content"><i class="fas fa-save"></i> Backup</a>
 
 					<div class="dropdown-divider"></div>
