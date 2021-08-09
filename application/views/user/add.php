@@ -111,12 +111,15 @@
         <div class="form-group">
             <label for="user_stylesheet">Theme</label>
             <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
-                <option value='default' selected="selected">Default</option>
-                <option value='blue'>Blue</option>
-                <option value='cosmo'>Cosmo</option>
-                <option value='cyborg'>Cyborg (Dark)</option>
-                <option value='darkly'>Darkly (Dark)</option>
-                <option value='superhero'>Superhero (Dark)</option>
+				<?php
+				foreach ($themes as $theme) {
+					echo '<option value="' . $theme->foldername . '"';
+					if( $theme->foldername == 'default') {
+						echo 'selected="selected"';
+					}
+					echo '>' . $theme->name . '</option>';
+				}
+				?>
             </select>
         </div>
 
