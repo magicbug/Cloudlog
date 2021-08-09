@@ -782,7 +782,7 @@ $(document).ready(function(){
   });
 
 
-  var map = L.map('map', {
+  var map = L.map('gridsquare_map', {
     layers: [layer],
     center: [19, 0],
     zoom: 2
