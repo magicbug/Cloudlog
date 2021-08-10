@@ -194,21 +194,46 @@ $('#other').change(function() {
 });
 
 $('#exchangetype').change(function(){
-	var exchangetype = $("#exchangetype option:selected").text();
+	var exchangetype = $("#exchangetype").val();
 	if (exchangetype == 'None') {
-
+		$(".exchanger").hide();
+		$(".exchanges").hide();
+		$(".serials").hide();
+		$(".serialr").hide();
+		$(".gridsquarer").hide();
+		$(".gridsquares").hide();
 	}
 	if (exchangetype == 'Serial') {
-
+		$(".exchanger").hide();
+		$(".exchanges").hide();
+		$(".serials").show();
+		$(".serialr").show();
+		$(".gridsquarer").hide();
+		$(".gridsquares").hide();
 	}
 	if (exchangetype == 'Serialexchange') {
-
+		$(".exchanger").show();
+		$(".exchanges").show();
+		$(".serials").show();
+		$(".serialr").show();
+		$(".gridsquarer").hide();
+		$(".gridsquares").hide();
 	}
 	if (exchangetype == 'Serialgridsquare') {
-
+		$(".exchanger").hide();
+		$(".exchanges").hide();
+		$(".serials").show();
+		$(".serialr").show();
+		$(".gridsquarer").show();
+		$(".gridsquares").show();
 	}
 	if (exchangetype == 'Gridsquare') {
-
+		$(".exchanger").hide();
+		$(".exchanges").hide();
+		$(".serials").hide();
+		$(".serialr").hide();
+		$(".gridsquarer").show();
+		$(".gridsquares").show();
 	}
 });
 

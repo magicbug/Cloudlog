@@ -119,17 +119,17 @@
                                 <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
                             </div>
 
-							<div class="form-group col-md-1">
+							<div style="display:none" class="form-group col-md-1 serialr">
 								<label for="exch_serial_r">Serial (R)</label>
 								<input type="text" class="form-control form-control-sm" name="exch_serial_r" id="exch_serial_r" value="">
 							</div>
 
-                            <div class="form-group col-md-1">
+                            <div style="display:none" class="form-group col-md-1 exchanges">
                                 <label for="exch_sent"><?php echo $this->lang->line('gen_hamradio_exchange_sent_short'); ?></label>
                                 <input type="text" class="form-control form-control-sm" name="exch_sent" id="exch_sent" value="">
                             </div>
 
-							<div class="form-group col-md-1">
+							<div style="display:none" class="form-group col-md-2 gridsquarer">
 								<label for="exch_gridsquare_r">Gridsquare (S)</label>
 								<input type="text" class="form-control form-control-sm" name="exch_gridsquare_r" id="exch_gridsquare_r" value="">
 							</div>
@@ -139,17 +139,17 @@
                                 <input type="text" class="form-control form-control-sm" name="rst_recv" id="rst_recv" value="59">
                             </div>
 
-                            <div class="form-group col-md-1">
+                            <div style="display:none" class="form-group col-md-1 serials">
                                 <label for="exch_serial_s">Serial (S)</label>
                                 <input type="text" class="form-control form-control-sm" name="exch_serial_s" id="exch_serial_s" value="">
                             </div>
 
-							<div class="form-group col-md-1">
+							<div style="display:none" class="form-group col-md-1 exchanger">
 								<label for="exch_recv"><?php echo $this->lang->line('gen_hamradio_exchange_recv_short'); ?></label>
 								<input type="text" class="form-control form-control-sm" name="exch_recv" id="exch_recv" value="">
 							</div>
 
-							<div class="form-group col-md-1">
+							<div style="display:none" class="form-group col-md-2 gridsquares">
 								<label for="exch_gridsquare_s">Gridsquare (S)</label>
 								<input type="text" class="form-control form-control-sm" name="exch_gridsquare_s" id="exch_gridsquare_s" value="">
 							</div>
