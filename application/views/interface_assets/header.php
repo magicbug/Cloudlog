@@ -185,6 +185,8 @@
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				<a class="dropdown-item" href="<?php echo site_url('user/edit')."/".$this->session->userdata('user_id'); ?>" title="Account"><i class="fas fa-user"></i> Account</a>
 
+				<a class="dropdown-item" href="<?php echo site_url('logbooks');?>" title="Manage station logbooks"><i class="fas fa-home"></i> Station Logbooks</a>
+				
 				<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Manage station locations"><i class="fas fa-home"></i> Station Locations</a>
 
 				<div class="dropdown-divider"></div>
