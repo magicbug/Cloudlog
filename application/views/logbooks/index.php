@@ -41,7 +41,7 @@
 					</td>
 
 					<td>
-					    <a href="<?php echo site_url('station/delete')."/".$row->logbook_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete station profile <?php echo $row->station_profile_name; ?> this will delete all QSOs within this station logbook?');"><i class="fas fa-trash-alt"></i> Delete Station Logbook</a>
+					    <a href="<?php echo site_url('Logbooks/delete')."/".$row->logbook_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete station profile <?php echo $row->logbook_name; ?> this will delete all QSOs within this station logbook?');"><i class="fas fa-trash-alt"></i> Delete Station Logbook</a>
                     </td>
 				</tr>
 
