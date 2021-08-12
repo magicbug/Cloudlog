@@ -49,6 +49,38 @@ class Logbooks extends CI_Controller {
 		}
 	}
 
+    public function edit($id)
+	{
+		$this->load->library('form_validation');
+
+        $this->load->model('logbooks_model');
+
+		$station_logbook_id = $this->security->xss_clean($id);
+
+		$station_logbook_details_query = $this->logbooks_model->logbook($station_logbook_id);
+
+		$data['station_logbook_details'] = $station_logbook_details_query->row();
+		
+		$data['page_title'] = "Edit Station Logbook";
+
+		$this->form_validation->set_rules('station_logbook_name', 'Station Logbook Name', 'required');
+
+        if ($this->form_validation->run() == FALSE)
+        {
+        	$this->load->view('interface_assets/header', $data);
+            $this->load->view('logbooks/edit');
+            $this->load->view('interface_assets/footer');
+        }
+        else
+        {
+            $this->logbooks_model->edit();
+
+            $data['notice'] = "Station Logbooks ".$this->security->xss_clean($this->input->post('station_logbook_name', true))." Updated";
+
+            redirect('logbooks');
+        }
+	}
+
     public function delete($id) {
 		$this->load->model('logbooks_model');
 		$this->logbooks_model->delete($id);
