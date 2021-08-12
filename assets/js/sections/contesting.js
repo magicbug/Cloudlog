@@ -207,7 +207,7 @@ function setExchangetype(exchangetype) {
 		$(".gridsquarer").hide();
 		$(".gridsquares").hide();
 	}
-	else if (exchange == 'Exchange') {
+	else if (exchangetype == 'Exchange') {
 		$(".exchanger").show();
 		$(".exchanges").show();
 		$(".serials").hide();
