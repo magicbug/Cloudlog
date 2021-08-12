@@ -13,10 +13,11 @@
 							<div class="col-auto">
 								<select class="form-control-sm" id="exchangetype" name="exchangetype">
 									<option value='None'>None</option>
+									<option value='Exchange'>Exchange</option>
+									<option value='Gridsquare'>Gridsquare</option>
 									<option value='Serial'>Serial</option>
 									<option value='Serialexchange'>Serial + Exchange</option>
 									<option value='Serialgridsquare'>Serial + Gridsquare</option>
-									<option value='Gridsquare'>Gridsquare</option>
 								</select>
 							</div>
 

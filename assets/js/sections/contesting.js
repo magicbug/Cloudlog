@@ -195,6 +195,10 @@ $('#other').change(function() {
 
 $('#exchangetype').change(function(){
 	var exchangetype = $("#exchangetype").val();
+	setExchangetype(exchangetype);
+});
+
+function setExchangetype(exchangetype) {
 	if (exchangetype == 'None') {
 		$(".exchanger").hide();
 		$(".exchanges").hide();
@@ -203,7 +207,15 @@ $('#exchangetype').change(function(){
 		$(".gridsquarer").hide();
 		$(".gridsquares").hide();
 	}
-	if (exchangetype == 'Serial') {
+	else if (exchange == 'Exchange') {
+		$(".exchanger").show();
+		$(".exchanges").show();
+		$(".serials").hide();
+		$(".serialr").hide();
+		$(".gridsquarer").hide();
+		$(".gridsquares").hide();
+	}
+	else if (exchangetype == 'Serial') {
 		$(".exchanger").hide();
 		$(".exchanges").hide();
 		$(".serials").show();
@@ -211,7 +223,7 @@ $('#exchangetype').change(function(){
 		$(".gridsquarer").hide();
 		$(".gridsquares").hide();
 	}
-	if (exchangetype == 'Serialexchange') {
+	else if (exchangetype == 'Serialexchange') {
 		$(".exchanger").show();
 		$(".exchanges").show();
 		$(".serials").show();
@@ -219,7 +231,7 @@ $('#exchangetype').change(function(){
 		$(".gridsquarer").hide();
 		$(".gridsquares").hide();
 	}
-	if (exchangetype == 'Serialgridsquare') {
+	else if (exchangetype == 'Serialgridsquare') {
 		$(".exchanger").hide();
 		$(".exchanges").hide();
 		$(".serials").show();
@@ -227,7 +239,7 @@ $('#exchangetype').change(function(){
 		$(".gridsquarer").show();
 		$(".gridsquares").show();
 	}
-	if (exchangetype == 'Gridsquare') {
+	else if (exchangetype == 'Gridsquare') {
 		$(".exchanger").hide();
 		$(".exchanges").hide();
 		$(".serials").hide();
@@ -235,7 +247,7 @@ $('#exchangetype').change(function(){
 		$(".gridsquarer").show();
 		$(".gridsquares").show();
 	}
-});
+}
 
 /*
     Function: set_serial_number_input_validation
@@ -295,15 +307,21 @@ function logQso() {
 				$('#callsign').val("");
 				$('#comment').val("");
 				$('#exch_recv').val("");
-				if ($('input[name=exchangeradio]:checked', '#qso_input').val() == "serial") {
-					$("#exch_sent").val(+$("#exch_sent").val() + 1);
+				var exchangetype = $("#exchangetype").val();
+				if (exchangetype == "Serial" || exchangetype == 'Serialexchange' || exchangetype == 'Serialgridsquare') {
+					$(".serials").val(+$(".serials").val() + 1);
 				}
 				$("#callsign").focus();
 
 				// Store contest session
 				localStorage.setItem("contestid", $("#contestname").val());
-				localStorage.setItem("exchangetype", $('input[name=exchangeradio]:checked', '#qso_input').val());
-				localStorage.setItem("exchangesent", $("#exch_sent").val());
+				localStorage.setItem("exchangetype", $("#exchangetype").val());
+				localStorage.setItem("exchangereceived", $(".exchanger").val());
+				localStorage.setItem("exchangesent", $(".exchanges").val());
+				localStorage.setItem("serialreceived", $(".serialr").val());
+				localStorage.setItem("serialsent", $(".serials").val());
+				localStorage.setItem("gridsquarereceived", $(".gridsquarer").val());
+				localStorage.setItem("gridsquaresent", $(".gridsquares").val());
 			}
 		});
 	}
@@ -318,20 +336,17 @@ function restoreContestSession() {
 	}
 
 	var exchangetype = localStorage.getItem("exchangetype");
+	$("#exchangetype").val(exchangetype);
+	setExchangetype(exchangetype);
 
-	if (exchangetype == "other") {
-		$("[name=exchangeradio]").val(["other"]);
-	}
-
-	var exchangesent = localStorage.getItem("exchangesent");
-
-	if (exchangesent != null) {
-		$("#exch_sent").val(exchangesent);
-	}
+	$(".exchanger").val(localStorage.getItem("exchangereceived"));
+	$(".exchanges").val(localStorage.getItem("exchangesent"));
+	$(".serialr").val(localStorage.getItem("serialreceived"));
+	$(".serials").val(localStorage.getItem("serialsent"));
+	$(".gridsquarer").val(localStorage.getItem("gridsquarereceived"));
+	$(".gridsquares").val(localStorage.getItem("gridsquaresent"));
 
 	if (localStorage.getItem("qso") != null) {
-		var baseURL= "<?php echo base_url();?>";
-		//alert(localStorage.getItem("qso"));
 		var qsodata = localStorage.getItem("qso");
 		$.ajax({
 			url: base_url + 'index.php/contesting/getSessionQsos',
