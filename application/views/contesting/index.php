@@ -122,7 +122,7 @@
 
 							<div style="display:none" class="form-group col-md-1 serialr">
 								<label for="exch_serial_r">Serial (R)</label>
-								<input type="text" class="form-control form-control-sm" name="exch_serial_r" id="exch_serial_r" value="">
+								<input type="number" class="form-control form-control-sm" name="exch_serial_r" id="exch_serial_r" value="">
 							</div>
 
                             <div style="display:none" class="form-group col-md-1 exchanges">
@@ -142,7 +142,7 @@
 
                             <div style="display:none" class="form-group col-md-1 serials">
                                 <label for="exch_serial_s">Serial (S)</label>
-                                <input type="text" class="form-control form-control-sm" name="exch_serial_s" id="exch_serial_s" value="">
+                                <input type="number" class="form-control form-control-sm" name="exch_serial_s" id="exch_serial_s" value="">
                             </div>
 
 							<div style="display:none" class="form-group col-md-1 exchanger">

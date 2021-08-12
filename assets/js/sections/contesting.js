@@ -2,19 +2,11 @@
 $("#callsign").focus();
 
 // Init serial sent as 1 when loading page
-$("#exch_sent").val(1);
+$("#exch_serial_s").val(1);
 
 $( document ).ready(function() {
     restoreContestSession();
     setRst($("#mode").val());
-
-    // Check to see what serial type is selected and set validation
-    if($('#serial').is(':checked')) {
-        set_serial_number_input_validation();
-    }
-    if($('#other').is(':checked')) {
-        set_other_input_validation();
-    }
 });
 
 // This erases the contest logging session which is stored in localStorage
@@ -23,18 +15,29 @@ function reset_contest_session() {
     $('.callsign-suggestions').text("");
     $('#callsign').val("");
     $('#comment').val("");
-    $('#exch_sent').val("1");
+
+	$("#exch_serial_s").val("1");
+	$("#exch_serial_r").val("");
+    $('#exch_sent').val("");
     $('#exch_recv').val("");
+	$("#exch_gridsquare_r").val("");
+	$("#exch_gridsquare_s").val("");
+
     $("#callsign").focus();
     setRst($("#mode").val());
-    $("#serial").prop("checked", true);
+	$("#exchangetype").val("None");
     $("#contestname").val("Other").change();
     $(".contest_qso_table_contents").empty();
 
     localStorage.removeItem("contestid");
     localStorage.removeItem("exchangetype");
-    localStorage.removeItem("exchangesent");
     localStorage.removeItem("qso");
+	localStorage.removeItem("exchangereceived");
+	localStorage.removeItem("exchangesent");
+	localStorage.removeItem("serialreceived");
+	localStorage.removeItem("serialsent");
+	localStorage.removeItem("gridsquarereceived");
+	localStorage.removeItem("gridsquaresent");
 }
 
 // Storing the contestid in contest session
@@ -43,10 +46,9 @@ $('#contestname').change(function() {
 });
 
 // Storing the exchange type in contest session
-$('input[type=radio][name=exchangeradio]').change(function() {
-    localStorage.setItem("exchangetype", $('input[name=exchangeradio]:checked', '#qso_input').val());
+$('#exchangetype').change(function() {
+    localStorage.setItem("exchangetype", $('#exchangetype').val());
 });
-
 
 // realtime clock
 $(function($) {
@@ -83,7 +85,7 @@ $(function() {
     });
 });
 
-// Here we capture keystrokes fo execute functions
+// Here we capture keystrokes to execute functions
 document.onkeyup = function(e) {
     // ALT-W wipe
     if (e.altKey && e.which == 87) {
@@ -129,6 +131,8 @@ function reset_log_fields() {
     $('#callsign').val("");
     $('#comment').val("");
     $('#exch_recv').val("");
+	$('#exch_serial_r').val("");
+	$('#exch_gridsquare_r').val("");
     $("#callsign").focus();
     setRst($("#mode").val());
 }
@@ -163,11 +167,12 @@ if ($('#frequency').val() == "")
 }
 
 /* on mode change */
-$('.mode').change(function() {
+$('#mode').change(function() {
     $.get('qso/band_to_freq/' + $('#band').val() + '/' + $('.mode').val(), function(result) {
         $('#frequency').val(result);
         $('#frequency_rx').val("");
     });
+	setRst($("#mode").val());
 });
 
 /* Calculate Frequency */
@@ -177,20 +182,6 @@ $('#band').change(function() {
         $('#frequency').val(result);
         $('#frequency_rx').val("");
     });
-});
-
-// Change Serial Validation when selected
-$('#serial').change(function() {
-    if($('#serial').is(':checked')) {
-        set_serial_number_input_validation();
-    }
-});
-
-// Change other serial type when selected
-$('#other').change(function() {
-    if($('#other').is(':checked')) {
-        set_other_input_validation();
-    }
 });
 
 $('#exchangetype').change(function(){
@@ -250,24 +241,6 @@ function setExchangetype(exchangetype) {
 }
 
 /*
-    Function: set_serial_number_input_validation
-    Job: This sets the field input to number for validation
-*/
-function set_serial_number_input_validation() {
-    $('#exch_sent').attr('type', 'number');
-    $('#exch_recv').attr('type', 'number');
-}
-
-/*
-    Function: set_other_input_validation
-    Job: This sets the field input to text for validation
-*/
-function set_other_input_validation() {
-    $('#exch_sent').attr('type', 'text');
-    $('#exch_recv').attr('type', 'text');
-}
-
-/*
 	Function: logQso
 	Job: this handles the logging done in the contesting module.
  */
@@ -309,19 +282,19 @@ function logQso() {
 				$('#exch_recv').val("");
 				var exchangetype = $("#exchangetype").val();
 				if (exchangetype == "Serial" || exchangetype == 'Serialexchange' || exchangetype == 'Serialgridsquare') {
-					$(".serials").val(+$(".serials").val() + 1);
+					$("#exch_serial_s").val(+$("#exch_serial_s").val() + 1);
 				}
 				$("#callsign").focus();
 
 				// Store contest session
 				localStorage.setItem("contestid", $("#contestname").val());
 				localStorage.setItem("exchangetype", $("#exchangetype").val());
-				localStorage.setItem("exchangereceived", $(".exchanger").val());
-				localStorage.setItem("exchangesent", $(".exchanges").val());
-				localStorage.setItem("serialreceived", $(".serialr").val());
-				localStorage.setItem("serialsent", $(".serials").val());
-				localStorage.setItem("gridsquarereceived", $(".gridsquarer").val());
-				localStorage.setItem("gridsquaresent", $(".gridsquares").val());
+				localStorage.setItem("exchangereceived", $("#exch_recv").val());
+				localStorage.setItem("exchangesent", $("#exch_sent").val());
+				localStorage.setItem("serialreceived", $("#exch_serial_r").val());
+				localStorage.setItem("serialsent", $("#exch_serial_s").val());
+				localStorage.setItem("gridsquarereceived", $("#exch_gridsquare_r").val());
+				localStorage.setItem("gridsquaresent", $("#exch_gridsquare_s").val());
 			}
 		});
 	}
@@ -336,15 +309,41 @@ function restoreContestSession() {
 	}
 
 	var exchangetype = localStorage.getItem("exchangetype");
-	$("#exchangetype").val(exchangetype);
-	setExchangetype(exchangetype);
 
-	$(".exchanger").val(localStorage.getItem("exchangereceived"));
-	$(".exchanges").val(localStorage.getItem("exchangesent"));
-	$(".serialr").val(localStorage.getItem("serialreceived"));
-	$(".serials").val(localStorage.getItem("serialsent"));
-	$(".gridsquarer").val(localStorage.getItem("gridsquarereceived"));
-	$(".gridsquares").val(localStorage.getItem("gridsquaresent"));
+	if (exchangetype != null) {
+		$("#exchangetype").val(exchangetype);
+		setExchangetype(exchangetype);
+	}
+
+	var exchangereceived = localStorage.getItem("exchangereceived");
+	if (exchangereceived != null) {
+		$("#exch_recv").val(exchangereceived);
+	}
+
+	var exchangesent = localStorage.getItem("exchangesent");
+	if (exchangesent != null) {
+		$("#exch_sent").val(exchangesent);
+	}
+
+	var serialreceived = localStorage.getItem("serialreceived");
+	if (serialreceived != null) {
+		$("#exch_serial_r").val(serialreceived);
+	}
+
+	var serialsent = localStorage.getItem("serialsent");
+	if (serialsent != null) {
+		$("#exch_serial_s").val(serialsent);
+	}
+
+	var gridsquarereceived = localStorage.getItem("gridsquarereceived");
+	if (gridsquarereceived != null) {
+		$("#exch_gridsquare_r").val(gridsquarereceived);
+	}
+
+	var gridsquaresent = localStorage.getItem("gridsquaresent");
+	if (gridsquaresent != null) {
+		$("#exch_gridsquare_s").val(gridsquaresent);
+	}
 
 	if (localStorage.getItem("qso") != null) {
 		var qsodata = localStorage.getItem("qso");
