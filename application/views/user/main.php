@@ -37,7 +37,14 @@
 					<td><a href="<?php echo site_url('user/edit')."/".$row->user_id; ?>"><?php echo $row->user_name; ?></a></td>
 					<td><?php echo $row->user_email; ?></td>
 					<td><?php $l = $this->config->item('auth_level'); echo $l[$row->user_type]; ?></td>
-					<td><a href="<?php echo site_url('user/edit')."/".$row->user_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-user-edit"></i> Edit</a> <a href="<?php echo site_url('user/delete')."/".$row->user_id; ?>" class="btn btn-danger btn-sm"><i class="fas fa-user-minus"></i> Delete</a></td>
+					<td>
+						<a href="<?php echo site_url('user/edit')."/".$row->user_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-user-edit"></i> Edit</a>
+						<?php
+						if ($_SESSION['user_id'] != $row->user_id) {
+							echo "<a href=" . site_url('user/delete'). "/" . $row->user_id . " class=\"btn btn-danger btn-sm\"><i class=\"fas fa-user-minus\"></i> Delete</a>";
+						}
+						?>
+					</td>
 				</tr>
 				<?php $i++; } ?>
 			</tbody>
