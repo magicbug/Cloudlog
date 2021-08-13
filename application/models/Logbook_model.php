@@ -23,18 +23,11 @@ class Logbook_model extends CI_Model {
     }
 
     // Contest exchange, need to separate between serial and other type of exchange
-    if($this->input->post('exchangeradio')) {
-        if($this->input->post('exchangeradio') == "serial") {
-            $srx = $this->input->post('exch_recv');
-            $stx = $this->input->post('exch_sent');
-            $srx_string = null;
-            $stx_string = null;
-        } else {
-            $srx = null;
-            $stx = null;
-            $srx_string = $this->input->post('exch_recv');
-            $stx_string = $this->input->post('exch_sent');
-        }
+    if($this->input->post('exchangetype')) {
+		$srx_string = $this->input->post('exch_recv');
+		$stx_string = $this->input->post('exch_sent');
+		$srx = $this->input->post('exch_serial_r');
+		$stx = $this->input->post('exch_serial_s');
     } else {
         $srx_string = null;
         $stx_string = null;
@@ -162,7 +155,7 @@ class Logbook_model extends CI_Model {
             'COL_SIG' => trim($this->input->post('sig')),
             'COL_SIG_INFO' => trim($this->input->post('sig_info')),
             'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
-	          'COL_NOTES' => $this->input->post('notes'),
+			'COL_NOTES' => $this->input->post('notes'),
     );
 
     $station_id = $this->input->post('station_profile');

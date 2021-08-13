@@ -120,9 +120,9 @@
                                 <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
                             </div>
 
-							<div style="display:none" class="form-group col-md-1 serialr">
-								<label for="exch_serial_r">Serial (R)</label>
-								<input type="number" class="form-control form-control-sm" name="exch_serial_r" id="exch_serial_r" value="">
+							<div style="display:none" class="form-group col-md-1 serials">
+								<label for="exch_serial_s">Serial (S)</label>
+								<input type="number" class="form-control form-control-sm" name="exch_serial_s" id="exch_serial_s" value="">
 							</div>
 
                             <div style="display:none" class="form-group col-md-1 exchanges">
@@ -130,9 +130,9 @@
                                 <input type="text" class="form-control form-control-sm" name="exch_sent" id="exch_sent" value="">
                             </div>
 
-							<div style="display:none" class="form-group col-md-2 gridsquarer">
-								<label for="exch_gridsquare_r">Gridsquare (S)</label>
-								<input type="text" class="form-control form-control-sm" name="exch_gridsquare_r" id="exch_gridsquare_r" value="">
+							<div style="display:none" class="form-group col-md-2 gridsquares">
+								<label for="exch_gridsquare_s">Gridsquare (S)</label>
+								<input disabled type="text" class="form-control form-control-sm" name="exch_gridsquare_s" id="exch_gridsquare_s" value="<?php echo strtoupper($_SESSION['user_locator']) ?>">
 							</div>
 
                             <div class="form-group col-md-1">
@@ -140,21 +140,20 @@
                                 <input type="text" class="form-control form-control-sm" name="rst_recv" id="rst_recv" value="59">
                             </div>
 
-                            <div style="display:none" class="form-group col-md-1 serials">
-                                <label for="exch_serial_s">Serial (S)</label>
-                                <input type="number" class="form-control form-control-sm" name="exch_serial_s" id="exch_serial_s" value="">
-                            </div>
+							<div style="display:none" class="form-group col-md-1 serialr">
+								<label for="exch_serial_r">Serial (R)</label>
+								<input type="number" class="form-control form-control-sm" name="exch_serial_r" id="exch_serial_r" value="">
+							</div>
 
 							<div style="display:none" class="form-group col-md-1 exchanger">
 								<label for="exch_recv"><?php echo $this->lang->line('gen_hamradio_exchange_recv_short'); ?></label>
 								<input type="text" class="form-control form-control-sm" name="exch_recv" id="exch_recv" value="">
 							</div>
 
-							<div style="display:none" class="form-group col-md-2 gridsquares">
-								<label for="exch_gridsquare_s">Gridsquare (S)</label>
-								<input type="text" class="form-control form-control-sm" name="exch_gridsquare_s" id="exch_gridsquare_s" value="">
+							<div style="display:none" class="form-group col-md-2 gridsquarer">
+								<label for="exch_gridsquare_r">Gridsquare (R)</label>
+								<input type="text" class="form-control form-control-sm" name="locator" id="exch_gridsquare_r" value="">
 							</div>
-
                         </div>
 
                         <div class="form-row">
@@ -199,6 +198,10 @@
                             <th><?php echo $this->lang->line('gen_hamradio_rstr'); ?></th>
                             <th><?php echo $this->lang->line('gen_hamradio_exchange_sent_short'); ?></th>
                             <th><?php echo $this->lang->line('gen_hamradio_exchange_recv_short'); ?></th>
+							<th>Serial (R)</th>
+							<th>Serial (S)</th>
+							<th>Gridsquare</th>
+							<th>Vucc Gridsquare</th>
                         </tr>
                     </thead>
 
@@ -209,3 +212,6 @@
         </div>
     </div>
 </div>
+<?php
+//var_dump($_SESSION);
+?>

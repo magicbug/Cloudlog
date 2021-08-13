@@ -21,7 +21,10 @@ class Contesting_model extends CI_Model {
         $date = DateTime::createFromFormat('d-m-Y H:i:s', $qsoarray[0]);
         $date = $date->format('Y-m-d H:i:s');
 
-        $sql = "SELECT date_format(col_time_on, '%d-%m-%Y %H:%i:%s') as col_time_on, col_call, col_band, col_mode, col_submode, col_rst_sent, col_rst_rcvd, col_srx, col_srx_string, col_stx, col_stx_string FROM " .
+        $sql = "SELECT date_format(col_time_on, '%d-%m-%Y %H:%i:%s') as col_time_on, col_call, col_band, col_mode,
+       		col_submode, col_rst_sent, col_rst_rcvd, coalesce(col_srx, '') col_srx, coalesce(col_srx_string, '') col_srx_string,
+       		coalesce(col_stx, '') col_stx, coalesce(col_stx_string, '') col_stx_string, coalesce(col_gridsquare, '') col_gridsquare,
+       		coalesce(col_vucc_grids, '') col_vucc_grids FROM " .
             $this->config->item('table_name') .
             " WHERE station_id = " . $station_id .
             " AND COL_TIME_ON >= '" . $date . "'" .
