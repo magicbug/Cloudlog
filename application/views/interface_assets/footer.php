@@ -810,6 +810,7 @@ $(document).ready(function(){
     console.log(map.getZoom());
 
     if(map.getZoom() > 2) {
+    	<?php if ($this->session->userdata('user_callsign')) { ?>
 	  var band = '';
       var search_type = "<?php echo $this->uri->segment(2); ?>";
       if(search_type == "satellites") {
@@ -846,6 +847,7 @@ $(document).ready(function(){
 				  }
 			  }
 		  });
+		  <?php } ?>
     }
   };
 
