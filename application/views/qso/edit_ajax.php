@@ -42,6 +42,7 @@
                                 <a class="nav-item nav-link" id="nav-qso-notes-tab" data-toggle="tab" href="#nav-qso-notes" role="tab" aria-controls="nav-qso-notes" aria-selected="false">Notes</a>
                                 <a class="nav-item nav-link" id="nav-qsl-tab" data-toggle="tab" href="#nav-qsl" role="tab" aria-controls="nav-qsl" aria-selected="false">QSL</a>
                                 <a class="nav-item nav-link" id="nav-station-tab" data-toggle="tab" href="#nav-station" role="tab" aria-controls="nav-station" aria-selected="false">Station</a>
+								<a class="nav-item nav-link" id="nav-contest-tab" data-toggle="tab" href="#nav-contest" role="tab" aria-controls="nav-contest" aria-selected="false">Contest</a>
                             </div>
                         </nav>
 
@@ -191,19 +192,8 @@
                                     </div>
                                 </div>
 
-                                <?php if ($qso->COL_STX_STRING) { ?>
-                                    <div class="form-group">
-                                        <label for="stx_string">TX Serial</label>
-                                        <input type="text" class="form-control" id="band" name="stx_string" value="<?php echo $qso->COL_STX_STRING; ?>">
-                                    </div>
-                                <?php } ?>
 
-                                <?php if ($qso->COL_SRX_STRING) { ?>
-                                    <div class="form-group">
-                                        <label for="srx_string">RX Serial</label>
-                                        <input type="text" class="form-control" id="srx_string" name="srx_string" value="<?php echo $qso->COL_SRX_STRING; ?>">
-                                    </div>
-                                <?php } ?>
+
                                 <div class="form-row">
                                     <div class="form-group col-sm-6">
                                         <label for="locator">Gridsquare</label>
@@ -578,8 +568,50 @@
 
 
                             </div>
+							<!-- Contest Panel Contents -->
+							<div class="tab-pane fade" id="nav-contest" role="tabpanel" aria-labelledby="nav-contest-tab">
+								<div class="form-group">
+									<label for="contest_name">Contest Name</label>
+									<select class="custom-select" id="contest_name" name="contest_name">
+										<option value =""></option>
 
-                        </div>
+										<?php
+										foreach($contest as $c) {
+											echo '<option value=' . $c['adifname'];
+											if ($qso->COL_CONTEST_ID == $c['adifname']) {
+												echo " selected=\"selected\"";
+											}
+											echo '>' . $c['name'] . '</option>';
+										}
+										?>
+
+									</select>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-sm-3">
+										<label for="srx">Serial (R)</label>
+										<input type="text" id="srx" class="form-control" name="srx" value="<?php echo $qso->COL_SRX; ?>" />
+									</div>
+
+									<div class="form-group col-sm-3">
+										<label for="stx">Serial (S)</label>
+										<input type="text" id="stx" class="form-control" name="stx" value="<?php echo $qso->COL_STX; ?>" />
+									</div>
+
+									<div class="form-group col-sm-3">
+										<label for="srx_string">Exchange (R)</label>
+										<input type="text" id="srx_string" class="form-control" name="srx_string" value="<?php echo $qso->COL_SRX_STRING; ?>" />
+									</div>
+
+									<div class="form-group col-sm-3">
+										<label for="stx_string">Exchange (S)</label>
+										<input type="text" id="stx_string" class="form-control" name="stx_string" value="<?php echo $qso->COL_STX_STRING; ?>" />
+									</div>
+								</div>
+
+
+
+                        	</div>
 
                         <input type="hidden" name="id" value="<?php echo $qso->COL_PRIMARY_KEY; ?>" />
 

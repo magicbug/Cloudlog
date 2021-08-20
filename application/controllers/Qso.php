@@ -153,6 +153,7 @@ class QSO extends CI_Controller {
         $this->load->model('logbook_model');
         $this->load->model('user_model');
         $this->load->model('modes');
+		$this->load->model('contesting_model');
 
         $this->load->library('form_validation');
 
@@ -167,6 +168,7 @@ class QSO extends CI_Controller {
         $data['dxcc'] = $this->logbook_model->fetchDxcc();
         $data['iota'] = $this->logbook_model->fetchIota();
         $data['modes'] = $this->modes->all();
+        $data['contest'] = $this->contesting_model->getActivecontests();
 
         $this->load->view('qso/edit_ajax', $data);
     }
