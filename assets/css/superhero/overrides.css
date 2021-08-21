@@ -105,3 +105,11 @@ div.alert-danger {
 	border-color: #f1b287;
 	box-shadow: 0 0 0 .2rem rgba(223, 105, 26, .25)
 }
+
+.selectize-input.dropdown-active {
+	border-radius: 0;
+}
+
+.selectize-dropdown, .selectize-dropdown.form-control {
+	border-radius: 0;
+}

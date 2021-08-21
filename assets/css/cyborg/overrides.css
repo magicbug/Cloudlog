@@ -79,6 +79,10 @@ path.grid-worked {
 	background-color: #131313;
 }
 
+.selectize-input {
+	border: 1px solid #333333;
+}
+
 .selectize-dropdown, .selectize-input, .selectize-input input {
 	color: #fff;
 }
@@ -108,4 +112,8 @@ path.grid-worked {
 	background-color: #fff;
 	border-color: #95cfeb;
 	box-shadow: 0 0 0 0.2rem rgba(42, 159, 214, 0.25);
+}
+
+.selectize-dropdown, .selectize-dropdown.form-control {
+	border-radius: 0;
 }
