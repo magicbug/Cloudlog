@@ -1,3 +1,7 @@
-thead > tr > td {
+thead>tr>td {
     background-color: aliceblue !important;
+}
+
+.selectize-input {
+    border: 1px solid #ced4da;
 }
