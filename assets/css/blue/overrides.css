@@ -105,6 +105,7 @@ div.alert-danger {
 
 .selectize-input.focus {
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, .15);
+    border-radius: 0;
 }
 
 .selectize-dropdown .optgroup-header {
@@ -116,4 +117,12 @@ div.alert-danger {
     background-color: #fff;
     border-color: #f1b287;
     box-shadow: 0 0 0 .2rem rgba(223, 105, 26, .25)
+}
+
+.selectize-input.dropdown-active {
+    border-radius: 0;
+}
+
+.selectize-dropdown, .selectize-dropdown.form-control {
+    border-radius: 0;
 }

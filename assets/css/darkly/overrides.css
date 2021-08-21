@@ -105,3 +105,7 @@ div.alert-success a, div.alert-danger a, div.alert-danger {
 	border-color: #739ac2;
 	box-shadow: 0 0 0 .2rem rgba(55, 90, 127, .25)
 }
+
+.selectize-dropdown, .selectize-dropdown.form-control {
+	border-radius: 0;
+}
