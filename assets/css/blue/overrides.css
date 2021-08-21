@@ -1,7 +1,7 @@
-thead > tr > td {
-	position: sticky;
-	top: 45px;
-	background-color: aliceblue;
+thead>tr>td {
+    position: sticky;
+    top: 45px;
+    background-color: aliceblue;
 }
 
 .workedGrid {
@@ -13,35 +13,42 @@ thead > tr > td {
     border-width: 2px;
 }
 
-.eqsl-green{
+.eqsl-green {
     color: #00A000;
     font-size: 1.1em;
 }
-.eqsl-red{
+
+.eqsl-red {
     color: #F00;
     font-size: 1.1em;
 }
-.qsl-green{
+
+.qsl-green {
     color: #00A000;
     font-size: 1.1em;
 }
-.qsl-red{
+
+.qsl-red {
     color: #F00;
     font-size: 1.1em;
 }
-.qsl-yellow{
+
+.qsl-yellow {
     color: #d39e00;
     font-size: 1.1em;
 }
-.qsl-grey{
+
+.qsl-grey {
     color: #dddddd;
     font-size: 1.1em;
 }
-.lotw-green{
+
+.lotw-green {
     color: #00A000;
     font-size: 1.1em;
 }
-.lotw-red{
+
+.lotw-red {
     color: #F00;
     font-size: 1.1em;
 }
@@ -62,18 +69,51 @@ thead > tr > td {
 
 .settings-nav .nav-link:hover {
     background-color: #e1e4e8;
-
 }
 
 /* QSL Card Management CSS */
 
 .qso-map-new .card-header {
-background: #0F2027;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-color: #ffffff;
+    background: #0F2027;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #2C5364, #203A43, #0F2027);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: #ffffff;
 }
 
 div.alert-danger {
-	color: #ffffff;
+    color: #ffffff;
+}
+
+.bootstrap-dialog.type-primary .modal-header {
+    background-color: #2B3E50;
+}
+
+.selectize-dropdown, .selectize-input, .selectize-input input {
+    color: #495057;
+}
+
+.selectize-input, .selectize-control.single .selectize-input.input-active {
+    color: #495057;
+}
+
+.selectize-input {
+    border-radius: 0;
+}
+
+.selectize-input.focus {
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .15);
+}
+
+.selectize-dropdown .optgroup-header {
+    color: #495057;
+}
+
+.selectize-input.focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #f1b287;
+    box-shadow: 0 0 0 .2rem rgba(223, 105, 26, .25)
 }

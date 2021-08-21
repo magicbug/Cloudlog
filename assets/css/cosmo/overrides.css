@@ -1,3 +1,11 @@
 /*!
  * No overrides for the default theme as it aligns with general.css
 */
+
+.selectize-input {
+    border-radius: 0
+}
+
+.selectize-input {
+    border: 1px solid #ced4da;
+}
