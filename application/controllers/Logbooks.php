@@ -79,7 +79,17 @@ class Logbooks extends CI_Controller {
 
             $data['notice'] = "Station Logbooks ".$this->security->xss_clean($this->input->post('station_logbook_name', true))." Updated";
 
-            redirect('logbooks');
+			foreach ($this->input->post('SelectedStationLocations') as $selectedOption){ 
+    			echo $selectedOption."\n";
+
+				// Check if theres already a link between logbook and location
+
+				// If no link exisits create
+
+				// Delete link if removed
+			}
+
+            //redirect('logbooks');
         }
 	}
 
