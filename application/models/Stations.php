@@ -14,6 +14,8 @@ class Stations extends CI_Model {
         $this->db->from('station_profile');
         $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id','left');
        	$this->db->group_by('station_profile.station_id');
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+		$this->db->or_where('station_profile.user_id =', NULL); 
         return $this->db->get();
 	}
 
@@ -113,6 +115,16 @@ class Stations extends CI_Model {
         $this->db->where('station_id', $id);
         $this->db->delete($this->config->item('table_name'));
     }
+
+	function claim_user($id) {
+		
+		$data = array(
+			'user_id' => $this->session->userdata('user_id')
+		);
+	
+		$this->db->where('station_id', xss_clean($id, true));
+		$this->db->update('station_profile', $data); 
+	}
 
 	function set_active($current, $new) {
 
