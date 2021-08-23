@@ -20,6 +20,7 @@ class Stations extends CI_Model {
 	}
 
 	function all() {
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		return $this->db->get('station_profile');
 	}
 
@@ -117,13 +118,12 @@ class Stations extends CI_Model {
     }
 
 	function claim_user($id) {
-		
 		$data = array(
-			'user_id' => $this->session->userdata('user_id')
+				'user_id' => $this->session->userdata('user_id'),
 		);
-	
-		$this->db->where('station_id', xss_clean($id, true));
-		$this->db->update('station_profile', $data); 
+			
+		$this->db->where('station_id', $id);
+		$this->db->update('station_profile', $data);
 	}
 
 	function set_active($current, $new) {

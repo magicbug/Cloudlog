@@ -102,8 +102,9 @@ class Station extends CI_Controller {
 		// $id is the profile id
 		$this->load->model('stations');
 		$this->stations->claim_user($id);
+
+		echo $this->session->userdata('user_id');
 		
-		//$this->stations->logbook_session_data();
 		redirect('station');
 	}
 

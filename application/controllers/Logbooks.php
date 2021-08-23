@@ -54,12 +54,14 @@ class Logbooks extends CI_Controller {
 		$this->load->library('form_validation');
 
         $this->load->model('logbooks_model');
+		$this->load->model('stations');
 
 		$station_logbook_id = $this->security->xss_clean($id);
 
 		$station_logbook_details_query = $this->logbooks_model->logbook($station_logbook_id);
 
 		$data['station_logbook_details'] = $station_logbook_details_query->row();
+		$data['station_locations_list'] = $this->stations->all();
 		
 		$data['page_title'] = "Edit Station Logbook";
 
