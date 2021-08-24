@@ -776,23 +776,21 @@ class Logbook_model extends CI_Model {
 				COL_SAT_MODE,
 				COL_QSL_RCVD,
 				COL_COMMENT,
-				(CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) AS COL_ROUTING,
-				ADIF,
-				ENTITY
-				FROM '.$this->config->item('table_name').', dxcc_prefixes, station_profile
-				WHERE
-				COL_QSL_SENT in (\'R\', \'Q\')
-				and (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) like CONCAT(dxcc_prefixes.call,\'%\')
-				and (end is null or end > now())
-				and ' . $this->config->item('table_name') . '.station_id = station_profile.station_id';
+				(select adif from dxcc_prefixes where  (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) like concat(dxcc_prefixes.`call`,\'%\') order by end limit 1) as ADIF,
+				(select entity from dxcc_prefixes where  (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) like concat(dxcc_prefixes.`call`,\'%\') order by end limit 1) as ENTITY,
+       			(CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) AS COL_ROUTING
+			FROM '.$this->config->item('table_name').' thcv
+				join station_profile on thcv.station_id = station_profile.station_id
+			WHERE
+				COL_QSL_SENT in (\'R\', \'Q\')';
 
     if ($station_id2 == NULL) {
-    	$sql .= ' and ' . $this->config->item('table_name') . '.station_id = ' . $station_id;
-	} else {
-		$sql .= ' and ' . $this->config->item('table_name') . '.station_id = ' . $station_id2;
+    	$sql .= ' and thcv.station_id = ' . $station_id;
+	} else if ($station_id2 != 'All') {
+		$sql .= ' and thcv.station_id = ' . $station_id2;
 	}
 
-	$sql .= ' ORDER BY adif, col_routing';
+	$sql .= ' ORDER BY ADIF, COL_ROUTING';
 
     $query = $this->db->query($sql);
     return $query;
