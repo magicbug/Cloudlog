@@ -14,8 +14,8 @@
 		<div class="card-body">
 
 			<form class="form" action="<?php echo site_url('dxatlas/export'); ?>" method="post" enctype="multipart/form-data">
-
-				<div class="form-group">
+				<div class="form-row">
+				<div class="form-group col-md-3">
 					<label for="band">Band</label>
 					<select id="band" name="band" class="custom-select">
 						<option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >Every band</option>
@@ -26,8 +26,23 @@
 						} ?>
 					</select>
 				</div>
+					<div class="form-group col-md-3">
+						<label for="mode">Mode</label>
+						<select id="mode" name="mode" class="form-control custom-select">
+							<option value="All">All</option>
+							<?php
+							foreach($modes->result() as $mode){
+								if ($mode->submode == null) {
+									echo '<option value="' . $mode->mode . '">'. $mode->mode . '</option>'."\n";
+								} else {
+									echo '<option value="' . $mode->submode . '">' . $mode->submode . '</option>'."\n";
+								}
+							}
+							?>
+						</select>
+					</div>
 
-				<div class="form-group">
+				<div class="form-group col-md-4">
 					<label for="dxcc_id">DXCC</label>
 					<select class="custom-select" id="dxcc_id" name="dxcc_id">
 						<option value="All">All</option>
@@ -40,23 +55,12 @@
 					</select>
 				</div>
 
-				<div class="form-group">
-					<label for="mode">Mode</label>
-					<select id="mode" name="mode" class="form-control custom-select">
-						<option value="All">All</option>
-						<?php
-						foreach($modes->result() as $mode){
-							if ($mode->submode == null) {
-								echo '<option value="' . $mode->mode . '">'. $mode->mode . '</option>'."\n";
-							} else {
-								echo '<option value="' . $mode->submode . '">' . $mode->submode . '</option>'."\n";
-							}
-						}
-						?>
-					</select>
 				</div>
 
-				<div class="form-group">
+
+
+				<div class="form-row">
+					<div class="form-group col-md-3">
 					<label for="cqz">CQ Zone</label>
 					<select class="custom-select" id="cqz" name="cqz">
 						<option value="All">All</option>
@@ -68,7 +72,7 @@
 					</select>
 				</div>
 
-				<div class="form-group">
+				<div class="form-group col-md-5">
 					<label for="selectPropagation">Propagation Mode</label>
 					<select class="custom-select" id="selectPropagation" name="prop_mode">
 						<option value="All">All</option>
@@ -91,23 +95,25 @@
 						<option value="TR">Tropospheric ducting</option>
 					</select>
 				</div>
-
-				<p class="card-text">From date:</p>
-				<div class="row">
-					<div class="input-group date col-md-3" id="datetimepicker1" data-target-input="nearest">
-						<input name="fromdate" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
-						<div class="input-group-append"  data-target="#datetimepicker1" data-toggle="datetimepicker">
-							<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-3">
+						<label for="datetimepicker1">From date:</label>
+						<div class="dxatlasdatepicker input-group date col-md-12" id="datetimepicker1" data-target-input="nearest">
+							<input name="fromdate" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+							<div class="input-group-append"  data-target="#datetimepicker1" data-toggle="datetimepicker">
+								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<p class="card-text">To date:</p>
-				<div class="row">
-					<div class="input-group date col-md-3" id="datetimepicker2" data-target-input="nearest">
-						<input name="todate" "totype="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
-						<div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-							<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+					<div class="form-group col-md-3">
+						<label for="datetimepicker2">To date:</label>
+						<div class="dxatlasdatepicker input-group date col-md-12" id="datetimepicker2" data-target-input="nearest">
+							<input name="todate" "totype="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+							<div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -243,3 +243,11 @@ color: #ffffff;
             max-width: 73% !important;
         }
     }
+
+/*
+ * Timepicker alignment
+ */
+.dxatlasdatepicker {
+	padding-right: 0;
+	padding-left: 0;
+}
