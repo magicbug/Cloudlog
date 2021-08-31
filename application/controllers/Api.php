@@ -476,6 +476,10 @@ class API extends CI_Controller {
 		   die();
 		}
 
+		if(!isset($obj['timestamp'])) {
+			$obj['timestamp'] = gmdate('Y/m/d H:i:s');
+		}
+
 		// Store Result to Database
 		$this->cat->update($obj);
 
