@@ -455,18 +455,14 @@ class API extends CI_Controller {
 	}
 
 
-	/*
-	* ENDPOINT for Rig Control
-	*
-	* Note: timestamp should always be in UTC
-	*/
+	/* ENDPOINT for Rig Control */
 
 	function radio() {
 		header('Content-type: application/json');
 
 		$this->load->model('api_model');
 
-		//$json = '{"radio":"FT-950","frequency":14075,"mode":"SSB","timestamp":"2012/04/07 16:47:31"}';
+		//$json = '{"radio":"FT-950","frequency":14075,"mode":"SSB","timestamp":"2012/04/07 16:47"}';
 
 		$this->load->model('cat');
 
@@ -478,10 +474,6 @@ class API extends CI_Controller {
 		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
 		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
 		   die();
-		}
-
-		if(!isset($obj['timestamp'])) {
-			$obj['timestamp'] = gmdate('Y/m/d H:i:s'); // in UTC
 		}
 
 		// Store Result to Database

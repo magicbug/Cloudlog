@@ -120,9 +120,8 @@
 				}
 
 				// Calculate how old the data is in minutes 
-				$timezone = new DateTimeZone("UTC");
-				$datetime1 = new DateTime("now", $timezone);
-				$datetime2 = new DateTime($row->timestamp, $timezone);
+				$datetime1 = new DateTime(); // Today's Date/Time
+				$datetime2 = new DateTime($row->newtime);
 				$interval = $datetime1->diff($datetime2);
 
 				$minutes = $interval->days * 24 * 60;
