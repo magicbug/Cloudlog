@@ -459,6 +459,27 @@ if ($('#frequency').val() == "")
 	});
 }
 
+/* time input shortcut */
+$('#start_time').change(function() {
+	var raw_time = $(this).val();
+	if(raw_time.match(/^\d\[0-6]d$/)) {
+		raw_time = "0"+raw_time;
+	}
+	if(raw_time.match(/^[012]\d[0-5]\d$/)) {
+		raw_time = raw_time.substring(0,2)+":"+raw_time.substring(2,4);
+		$('#start_time').val(raw_time);
+	}
+});
+
+/* date input shortcut */
+$('#start_date').change(function() {
+	 raw_date = $(this).val();
+	if(raw_date.match(/^[12]\d{3}[01]\d[0123]\d$/)) {
+		raw_date = raw_date.substring(0,4)+"-"+raw_date.substring(4,6)+"-"+raw_date.substring(6,8);
+		$('#start_date').val(raw_date);
+	}
+});
+
 /* on mode change */
 $('.mode').change(function() {
 	$.get('qso/band_to_freq/' + $('#band').val() + '/' + $('.mode').val(), function(result) {
