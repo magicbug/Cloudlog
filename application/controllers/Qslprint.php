@@ -115,8 +115,8 @@ class QSLPrint extends CI_Controller {
 
 	function qsl_printed() {
 
-		if ($this->uri->segment(3) == 'All') {
-			$station_id = NULL;
+		if ($this->uri->segment(3) == 'all') {
+			$station_id = 'All';
 		} else {
 			$station_id = $this->security->xss_clean($this->uri->segment(3));
 		}
