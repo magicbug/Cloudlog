@@ -22,7 +22,7 @@ class Qslprint_model extends CI_Model {
 
 		if ($station_id2 == NULL) {
 			$this->db->where("station_id", $station_id);
-		} else {
+		} else if ($station_id2 != 'All') {
 			$this->db->where("station_id", $station_id2);
 		}
 
