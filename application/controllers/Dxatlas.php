@@ -30,7 +30,7 @@ class Dxatlas extends CI_Controller {
 		$this->load->helper('file');
 
 		// Load Database connections
-		$this->load->model('logbook_model');
+		$this->load->model('dxatlas_model');
 
 		// Parameters
 		$band = $this->input->post('band');
@@ -42,7 +42,7 @@ class Dxatlas extends CI_Controller {
 		$todate = $this->input->post('todate');
 
 		// Get QSOs with Valid QRAs
-		$qsos = $this->logbook_model->kml_get_all_qsos($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate);
+		$qsos = $this->dxatlas_model->get_gridsquares($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate);
 
 		$output = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 		$output .= "<kml xmlns=\"http://www.opengis.net/kml/2.2\">";
