@@ -11,9 +11,9 @@ class Dxatlas extends CI_Controller {
 
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
-		$data['worked_bands'] = $this->dxcc->get_worked_bands(); // Used in the view for band select
-		$data['modes'] = $this->modes->active(); // Used in the view for mode select
-		$data['dxcc'] = $this->logbook_model->fetchDxcc(); // Used in the view for dxcc select
+		$data['worked_bands'] = $this->dxcc->get_worked_bands(); 	// Used in the view for band select
+		$data['modes'] = $this->modes->active(); 					// Used in the view for mode select
+		$data['dxcc'] = $this->logbook_model->fetchDxcc(); 			// Used in the view for dxcc select
 
 		$data['page_title'] = "DX Atlas Gridsquare Export";
 
@@ -25,11 +25,6 @@ class Dxatlas extends CI_Controller {
 
 	public function export()
 	{
-		// Load Librarys
-		$this->load->library('qra');
-		$this->load->helper('file');
-
-		// Load Database connections
 		$this->load->model('dxatlas_model');
 
 		// Parameters
@@ -42,63 +37,84 @@ class Dxatlas extends CI_Controller {
 		$todate = $this->input->post('todate');
 
 		// Get QSOs with Valid QRAs
-		$qsos = $this->dxatlas_model->get_gridsquares($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate);
+		$grids = $this->dxatlas_model->get_gridsquares($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate);
 
-		$output = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
-		$output .= "<kml xmlns=\"http://www.opengis.net/kml/2.2\">";
+		$this->generateFiles($grids['worked'], $grids['confirmed'], $band);
+	}
 
-		$output .= "<Document>";
+	function generateFiles($wkdArray, $cfmArray, $band) {
 
-		foreach ($qsos->result() as $row)
-		{
-			$output .= "<Placemark>";
+		$gridCfmArray = [];
+		$gridWkdArray = [];
+		$fieldCfmArray = [];
+		$fieldWkdArray = [];
 
-			if($row->COL_GRIDSQUARE != null) {
-				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
+		foreach ($cfmArray as $grid) {
+			$field = substr($grid, 0, 2);
+			if (!in_array($field, $fieldCfmArray)) {
+				$fieldCfmArray[] = $field;
+			}
+			$gridCfmArray[] = $grid;
+		}
 
-				$lat = $stn_loc[0];
-				$lng = $stn_loc[1];
-			} else {
-				$query = $this->db->query('
-					SELECT *
-					FROM dxcc_entities
-					WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
-					ORDER BY LENGTH( prefix ) DESC
-					LIMIT 1
-				');
 
-				foreach ($query->result() as $dxcc) {
-					$lat = $dxcc->lat;
-					$lng = $dxcc->long;
+		foreach ($wkdArray as $grid) {
+			$field = substr($grid, 0, 2);
+			if (!in_array($field, $fieldCfmArray)) {
+				if (!in_array($field, $fieldWkdArray)) {
+					$fieldWkdArray[] = $field;
 				}
 			}
-
-			$timestamp = strtotime($row->COL_TIME_ON);
-
-			$output .= "<name>".$row->COL_CALL."</name>";
-			$output .= "<description><![CDATA[<p>Date/Time: ".date('Y-m-d H:i:s', ($timestamp))."<br/>Band: ".$row->COL_BAND."<br /></p>]]></description>";
-			$output .= "<Point>";
-			$output .= "<coordinates>".$lng.",".$lat.",0</coordinates>";
-			$output .= "</Point>";
-			$output .= "</Placemark>";
+			if (!in_array($grid, $gridCfmArray)) {
+				$gridWkdArray[] = $grid;
+			}
 		}
 
-		$output .= "</Document>";
-		$output .= "</kml>";
+		$gridWkdString = '';
+		$gridCfmString = '';
 
-		if (!file_exists('kml')) {
-			mkdir('kml', 0755, true);
+		asort($gridWkdArray);
+		asort($gridCfmArray);
+		asort($fieldWkdArray);
+		asort($fieldCfmArray);
+
+		foreach ($fieldWkdArray as $fields) {
+			$gridWkdString .= $fields . "\r\n";
 		}
 
-		if ( ! write_file('kml/qsos.kml', $output))
-		{
-			echo 'Unable to write the file. Make sure the folder KML has write permissions.';
-		}
-		else
-		{
-			header("Content-Disposition: attachment; filename=\"qsos.kml\"");
-			echo $output;
+		foreach ($gridWkdArray as $grids) {
+			$gridWkdString .= $grids . "\r\n";
 		}
 
+		foreach ($fieldCfmArray as $fields) {
+			$gridCfmString .= $fields . "\r\n";
+		}
+
+		foreach ($gridCfmArray as $grids) {
+			$gridCfmString .= $grids . "\r\n";
+		}
+
+		$this->makeZip($gridWkdString, $gridCfmString, $band);
+	}
+
+	function makeZip($gridWkdString, $gridCfmString, $band) {
+		$zipFileName = $this->session->userdata('user_callsign') . '_'. $band . '.zip';
+		// Prepare File
+		$file = tempnam("tmp", "zip");
+		$zip = new ZipArchive();
+		$zip->open($file, ZipArchive::OVERWRITE);
+
+		// Stuff with content
+		$zip->addFromString($band . '_grids.wkd', $gridWkdString);
+		$zip->addFromString($band . '_grids.cfm', $gridCfmString);
+
+		// Close and send to users
+		$zip->close();
+		$length = filesize($file);
+		header('Content-Type: application/zip');
+		header('Content-Length: ' . $length);
+		header('Content-Disposition: attachment; filename="' . $zipFileName . '"');
+		readfile($file);
+		unlink($file);
 	}
 }
