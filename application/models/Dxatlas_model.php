@@ -3,29 +3,6 @@
 class Dxatlas_model extends CI_Model
 {
 
-	public $bandslots = array("160m" => 0,
-		"80m" => 0,
-		"60m" => 0,
-		"40m" => 0,
-		"30m" => 0,
-		"20m" => 0,
-		"17m" => 0,
-		"15m" => 0,
-		"12m" => 0,
-		"10m" => 0,
-		"6m" => 0,
-		"4m" => 0,
-		"2m" => 0,
-		"70cm" => 0,
-		"23cm" => 0,
-		"13cm" => 0,
-		"9cm" => 0,
-		"6cm" => 0,
-		"3cm" => 0,
-		"1.25cm" => 0,
-		"SAT" => 0,
-	);
-
 	function __construct()
 	{
 		// Call the Model constructor
@@ -33,7 +10,7 @@ class Dxatlas_model extends CI_Model
 	}
 
 	/*
-	 *  Fetches worked and confirmed gridsquare on each band and total
+	 *  Fetches worked and confirmed gridsquare from the logbook
 	 */
 	function get_gridsquares($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate) {
 		$gridArray = $this->fetchGrids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate);
@@ -46,18 +23,19 @@ class Dxatlas_model extends CI_Model
 	}
 
 	/*
-	 * Builds the array to display worked/confirmed vucc on awward page
+	 * Builds the array for worked and confirmed gridsquares
 	 */
 	function fetchGrids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate) {
+
 		// Getting all the worked grids
-		$col_gridsquare_worked = $this->get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'none');
+		$col_gridsquare_worked = $this->get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'none', 'single');
 
 		$workedGridArray = array();
 		foreach ($col_gridsquare_worked as $workedgrid) {
 			array_push($workedGridArray, $workedgrid['gridsquare']);
 		}
 
-		$col_vucc_grids_worked = $this->get_grids_col_vucc($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'none');
+		$col_vucc_grids_worked = $this->get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'none', 'multi');
 
 		foreach ($col_vucc_grids_worked as $gridSplit) {
 			$grids = explode(",", $gridSplit['col_vucc_grids']);
@@ -71,7 +49,7 @@ class Dxatlas_model extends CI_Model
 		}
 
 		// Getting all the confirmed grids
-		$col_gridsquare_confirmed = $this->get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'both');
+		$col_gridsquare_confirmed = $this->get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'both', 'single');
 
 		$confirmedGridArray = array();
 		foreach ($col_gridsquare_confirmed as $confirmedgrid) {
@@ -82,7 +60,7 @@ class Dxatlas_model extends CI_Model
 			}
 		}
 
-		$col_vucc_grids_confirmed = $this->get_grids_col_vucc($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'both');
+		$col_vucc_grids_confirmed = $this->get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'both', 'multi');
 
 		foreach ($col_vucc_grids_confirmed as $gridSplit) {
 			$grids = explode(",", $gridSplit['col_vucc_grids']);
@@ -106,17 +84,38 @@ class Dxatlas_model extends CI_Model
 	}
 
 	/*
-	 *  Gets the grid from col_vucc_grids
-	 * $band = the band chosen
+	 * Gets the grids from the datbase
+	 *
+	 * Filters:
+	 *
+	 * $band = filter on band
+	 * $mode = filter on mode
+	 * $dxcc = filter on dxx
+	 * $cqz = filter on cq zone
+	 * $propagation = Filter on propagation
+	 * $fromdate = Date range from
+	 * $todate = Date range to
+	 * $column = Chooses if we fetch from col_gridsquare (only single grids) or col_vucc_grids (multisquares)
 	 * $confirmationMethod - qsl, lotw or both, use anything else to skip confirmed
+	 *
 	 */
-	function get_grids_col_vucc($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, $confirmationMethod) {
+	function get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, $confirmationMethod, $column) {
 		$station_id = $this->get_station_id();
 
-		$sql = "select col_vucc_grids
-            from " . $this->config->item('table_name') .
-			" where station_id =" . $station_id .
-			" and col_vucc_grids <> '' ";
+		$sql = "";
+
+		if ($column == 'single') {
+			$sql .= "select distinct upper(substring(col_gridsquare, 1, 4)) gridsquare
+				  from " . $this->config->item('table_name') .
+				" where station_id =" . $station_id .
+				" and col_gridsquare <> ''";
+		}
+		else if ($column == 'multi') {
+			$sql .= "select col_vucc_grids
+            	 from " . $this->config->item('table_name') .
+				" where station_id =" . $station_id .
+				" and col_vucc_grids <> '' ";
+		}
 
 		if ($confirmationMethod == 'both') {
 			$sql .= " and (col_qsl_rcvd='Y' or col_lotw_qsl_rcvd='Y')";
@@ -137,39 +136,32 @@ class Dxatlas_model extends CI_Model
 			}
 		}
 
-		$query = $this->db->query($sql);
-		return $query->result_array();
-	}
-
-	/*
-	 * Gets the grid from col_gridsquare
-	 * $band = the band chosen
-	 * $confirmationMethod - qsl, lotw or both, use anything else to skip confirmed
-	 */
-	function get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, $confirmationMethod) {
-		$station_id = $this->get_station_id();
-		$sql = "select distinct upper(substring(col_gridsquare, 1, 4)) gridsquare
-            from " . $this->config->item('table_name') .
-			" where station_id =" . $station_id .
-			" and col_gridsquare <> ''";
-
-		if ($confirmationMethod == 'both') {
-			$sql .= " and (col_qsl_rcvd='Y' or col_lotw_qsl_rcvd='Y')";
-		}
-		else if ($confirmationMethod == 'qsl') {
-			$sql .= " and col_qsl_rcvd='Y'";
-		}
-		else if ($confirmationMethod == 'lotw') {
-			$sql .= " and col_lotw_qsl_rcvd='Y'";
+		if ($mode != 'All') {
+			$sql .= " and (COL_MODE = '" . $mode . "' or COL_SUBMODE = '" . $mode . "')";
 		}
 
-		if ($band != 'All') {
-			if ($band == 'SAT') {
-				$sql .= " and col_prop_mode ='" . $band . "'";
-			} else {
-				$sql .= " and col_prop_mode !='SAT'";
-				$sql .= " and col_band ='" . $band . "'";
-			}
+		if ($dxcc != 'All') {
+			$sql .= " and COL_DXCC ='" . $dxcc . "'";
+		}
+
+		if ($cqz != 'All') {
+			$sql .= " and COL_CQZ ='" . $cqz . "'";
+		}
+
+		if ($propagation != 'All') {
+			$sql .= " and COL_PROP_MODE ='" . $propagation . "'";
+		}
+
+		// If date is set, we format the date and add it to the where-statement
+		if ($fromdate != "") {
+			$from = DateTime::createFromFormat('d/m/Y', $fromdate);
+			$from = $from->format('Y-m-d');
+			$sql .= " and date(COL_TIME_ON) >='" . $from . "'";
+		}
+		if ($todate != "") {
+			$to = DateTime::createFromFormat('d/m/Y', $todate);
+			$to = $to->format('Y-m-d');
+			$sql .= " and date(COL_TIME_ON) <='" . $to . "'";
 		}
 
 		$query = $this->db->query($sql);
