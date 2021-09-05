@@ -108,11 +108,8 @@ class Qrz extends CI_Controller {
 
         $data['page_title'] = "QRZ Logbook";
 
+		$data['station_profiles'] = $this->stations->all();
         $data['station_profile'] = $this->stations->stations_with_qrz_api_key();
-        $active_station_id = $this->stations->find_active();
-        $station_profile = $this->stations->profile($active_station_id);
-
-        $data['active_station_info'] = $station_profile->row();
 
         $this->load->view('interface_assets/header', $data);
         $this->load->view('qrz/export');
@@ -125,6 +122,7 @@ class Qrz extends CI_Controller {
     public function upload_station() {
         $this->setOptions();
         $this->load->model('stations');
+
         $postData = $this->input->post();
 
         $this->load->model('logbook_model');
@@ -148,4 +146,26 @@ class Qrz extends CI_Controller {
             echo json_encode($data);
         }
     }
+
+	public function mark_qrz() {
+		// Set memory limit to unlimited to allow heavy usage
+		ini_set('memory_limit', '-1');
+
+		$station_id = $this->security->xss_clean($this->input->post('station_profile'));
+
+		$this->load->model('adif_data');
+
+		$data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'), $station_id);
+
+		$this->load->model('logbook_model');
+
+		foreach ($data['qsos']->result() as $qso)
+		{
+			$this->logbook_model->mark_qrz_qsos_sent($qso->COL_PRIMARY_KEY);
+		}
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('qrz/mark_qrz', $data);
+		$this->load->view('interface_assets/footer');
+	}
 }

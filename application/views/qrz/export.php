@@ -48,7 +48,7 @@
                     echo '<td><button id="qrzUpload" type="button" name="qrzUpload" class="btn btn-primary btn-sm ld-ext-right" onclick="ExportQrz('. $station->station_id .')"><i class="fas fa-cloud-upload-alt"></i> Upload<div class="ld ld-ring ld-spin"></div></button></td>';
                     echo '</tr>';
                 }
-                echo '</tfoot></table></div>';
+                echo '</tfoot></table>';
 
         }
         else {
@@ -60,9 +60,9 @@
 				<div class="tab-pane fade" id="mark" role="tabpanel" aria-labelledby="home-tab">
 
 				<form class="form" action="<?php echo site_url('qrz/mark_qrz'); ?>" method="post" enctype="multipart/form-data">
-					<select name="station_profile" class="custom-select mb-2 mr-sm-2" style="width: 20%;">
+					<select name="station_profile" class="custom-select mb-4 mr-sm-4" style="width: 30%;">
 						<option value="0">Select Station Profile</option>
-						<?php foreach ($station_profile->result() as $station) { ?>
+						<?php foreach ($station_profiles->result() as $station) { ?>
 							<option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
 						<?php } ?>
 					</select>
