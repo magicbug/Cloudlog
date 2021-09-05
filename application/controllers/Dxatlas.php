@@ -25,7 +25,7 @@ class Dxatlas extends CI_Controller {
 
 	}
 
-	public function export() {
+	public function export()  {
 		$this->load->model('dxatlas_model');
 
 		// Parameters
@@ -100,7 +100,7 @@ class Dxatlas extends CI_Controller {
 	}
 
 	function makeZip($gridWkdString, $gridCfmString, $band) {
-		$zipFileName = $this->session->userdata('user_callsign') . '_'. $band . '.zip';
+		$zipFileName = 'dxatlas_gridsquares_'. $band . '.zip';
 		// Prepare File
 		$file = tempnam("tmp", "zip");
 		$zip = new ZipArchive();
