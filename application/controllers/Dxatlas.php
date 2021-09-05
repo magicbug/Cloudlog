@@ -2,15 +2,17 @@
 
 class Dxatlas extends CI_Controller {
 
-	public function index()
-	{
+	public function index()	{
 		$this->load->model('user_model');
-		$this->load->model('modes');
-		$this->load->model('dxcc');
-		$this->load->model('logbook_model');
 
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
+		$this->load->model('modes');
+		$this->load->model('dxcc');
+		$this->load->model('logbook_model');
+		$this->load->model('stations');
+
+		$data['station_profile'] = $this->stations->all();			// Used in the view for station location select
 		$data['worked_bands'] = $this->dxcc->get_worked_bands(); 	// Used in the view for band select
 		$data['modes'] = $this->modes->active(); 					// Used in the view for mode select
 		$data['dxcc'] = $this->logbook_model->fetchDxcc(); 			// Used in the view for dxcc select
@@ -23,21 +25,21 @@ class Dxatlas extends CI_Controller {
 
 	}
 
-	public function export()
-	{
+	public function export() {
 		$this->load->model('dxatlas_model');
 
 		// Parameters
-		$band = $this->input->post('band');
-		$mode = $this->input->post('mode');
-		$dxcc = $this->input->post('dxcc_id');
-		$cqz = $this->input->post('cqz');
-		$propagation = $this->input->post('prop_mode');
-		$fromdate = $this->input->post('fromdate');
-		$todate = $this->input->post('todate');
+		$station_id = $this->security->xss_clean($this->input->post('station_profile'));
+		$band = $this->security->xss_clean($this->input->post('band'));
+		$mode = $this->security->xss_clean($this->input->post('mode'));
+		$dxcc = $this->security->xss_clean($this->input->post('dxcc_id'));
+		$cqz = $this->security->xss_clean($this->input->post('cqz'));
+		$propagation = $this->security->xss_clean($this->input->post('prop_mode'));
+		$fromdate = $this->security->xss_clean($this->input->post('fromdate'));
+		$todate = $this->security->xss_clean($this->input->post('todate'));
 
 		// Get QSOs with Valid QRAs
-		$grids = $this->dxatlas_model->get_gridsquares($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate);
+		$grids = $this->dxatlas_model->get_gridsquares($station_id, $band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate);
 
 		$this->generateFiles($grids['worked'], $grids['confirmed'], $band);
 	}

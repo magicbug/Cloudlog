@@ -12,8 +12,8 @@ class Dxatlas_model extends CI_Model
 	/*
 	 *  Fetches worked and confirmed gridsquare from the logbook
 	 */
-	function get_gridsquares($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate) {
-		$gridArray = $this->fetchGrids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate);
+	function get_gridsquares($station_id, $band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate) {
+		$gridArray = $this->fetchGrids($station_id, $band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate);
 
 		if (isset($gridArray)) {
 			return $gridArray;
@@ -25,17 +25,17 @@ class Dxatlas_model extends CI_Model
 	/*
 	 * Builds the array for worked and confirmed gridsquares
 	 */
-	function fetchGrids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate) {
+	function fetchGrids($station_id, $band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate) {
 
 		// Getting all the worked grids
-		$col_gridsquare_worked = $this->get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'none', 'single');
+		$col_gridsquare_worked = $this->get_grids($station_id, $band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'none', 'single');
 
 		$workedGridArray = array();
 		foreach ($col_gridsquare_worked as $workedgrid) {
 			array_push($workedGridArray, $workedgrid['gridsquare']);
 		}
 
-		$col_vucc_grids_worked = $this->get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'none', 'multi');
+		$col_vucc_grids_worked = $this->get_grids($station_id, $band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'none', 'multi');
 
 		foreach ($col_vucc_grids_worked as $gridSplit) {
 			$grids = explode(",", $gridSplit['col_vucc_grids']);
@@ -49,7 +49,7 @@ class Dxatlas_model extends CI_Model
 		}
 
 		// Getting all the confirmed grids
-		$col_gridsquare_confirmed = $this->get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'both', 'single');
+		$col_gridsquare_confirmed = $this->get_grids($station_id, $band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'both', 'single');
 
 		$confirmedGridArray = array();
 		foreach ($col_gridsquare_confirmed as $confirmedgrid) {
@@ -60,7 +60,7 @@ class Dxatlas_model extends CI_Model
 			}
 		}
 
-		$col_vucc_grids_confirmed = $this->get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'both', 'multi');
+		$col_vucc_grids_confirmed = $this->get_grids($station_id, $band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, 'both', 'multi');
 
 		foreach ($col_vucc_grids_confirmed as $gridSplit) {
 			$grids = explode(",", $gridSplit['col_vucc_grids']);
@@ -99,22 +99,22 @@ class Dxatlas_model extends CI_Model
 	 * $confirmationMethod - qsl, lotw or both, use anything else to skip confirmed
 	 *
 	 */
-	function get_grids($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, $confirmationMethod, $column) {
-		$station_id = $this->get_station_id();
-
+	function get_grids($station_id, $band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate, $confirmationMethod, $column) {
 		$sql = "";
 
 		if ($column == 'single') {
 			$sql .= "select distinct upper(substring(col_gridsquare, 1, 4)) gridsquare
 				  from " . $this->config->item('table_name') .
-				" where station_id =" . $station_id .
-				" and col_gridsquare <> ''";
+				" where col_gridsquare <> ''";
 		}
 		else if ($column == 'multi') {
 			$sql .= "select col_vucc_grids
             	 from " . $this->config->item('table_name') .
-				" where station_id =" . $station_id .
-				" and col_vucc_grids <> '' ";
+				" where col_vucc_grids <> '' ";
+		}
+
+		if ($station_id != "All") {
+			$sql .= ' and station_id = ' . $station_id;
 		}
 
 		if ($confirmationMethod == 'both') {
@@ -167,12 +167,6 @@ class Dxatlas_model extends CI_Model
 		$query = $this->db->query($sql);
 
 		return $query->result_array();
-	}
-
-	function get_station_id() {
-		$CI =& get_instance();
-		$CI->load->model('Stations');
-		return $CI->Stations->find_active();
 	}
 }
 ?>

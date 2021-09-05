@@ -15,6 +15,18 @@
 
 			<form class="form" action="<?php echo site_url('dxatlas/export'); ?>" method="post" enctype="multipart/form-data">
 				<div class="form-row">
+					<div class="form-group col-md-3">
+						<label for="station_profile"><?php echo $this->lang->line('cloudlog_station_profile'); ?></label>
+						<select name="station_profile" class="station_id custom-select">
+							<option value="All">All</option>
+							<?php foreach ($station_profile->result() as $station) { ?>
+								<option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
+							<?php } ?>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-row">
 				<div class="form-group col-md-3">
 					<label for="band">Band</label>
 					<select id="band" name="band" class="custom-select">
