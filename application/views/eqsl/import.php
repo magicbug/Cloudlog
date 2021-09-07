@@ -39,7 +39,7 @@
 			  <label class="form-check-label" for="exampleRadios1">
 			    Import directly from eQSL
 			  </label>
-			  <p>Cloudlog will use the eQSL credentials from your Cloudlog user profile to connect to eQSL and download confirmations. Only confirmations received since your last eQSL-confirmed QSO will be downloaded.</p>
+			  <p>Cloudlog will use the eQSL credentials from your Cloudlog user profile to connect to eQSL and download confirmations.</p>
 			</div>
 
 		<input class="btn btn-primary" type="submit" value="Import eQSL QSO Matches" />
