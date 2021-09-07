@@ -121,26 +121,6 @@ class adif extends CI_Controller {
         $this->load->view('adif/mark_lotw', $data);
     }
 
-    public function mark_qrz() {
-        // Set memory limit to unlimited to allow heavy usage
-        ini_set('memory_limit', '-1');
-
-		$station_id = $this->security->xss_clean($this->input->post('station_profile'));
-
-        $this->load->model('adif_data');
-
-        $data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'), $station_id);
-
-        $this->load->model('logbook_model');
-
-        foreach ($data['qsos']->result() as $qso)
-        {
-            $this->logbook_model->mark_qrz_qsos_sent($qso->COL_PRIMARY_KEY);
-        }
-
-        $this->load->view('adif/mark_qrz', $data);
-    }
-
 	public function export_lotw()
 	{
 		// Set memory limit to unlimited to allow heavy usage
