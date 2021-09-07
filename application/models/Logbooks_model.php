@@ -45,6 +45,15 @@ class Logbooks_model extends CI_Model {
 		$this->db->update('station_logbooks', $data); 
 	}
 
+	function set_logbook_active($id) {
+		$data = array(
+			'active_station_logbook' => xss_clean($id),
+		);
+
+        $this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->update('users', $data); 
+	}
+
     function logbook($id) {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);

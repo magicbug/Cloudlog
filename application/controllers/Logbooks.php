@@ -96,6 +96,14 @@ class Logbooks extends CI_Controller {
         }
 	}
 
+	public function set_active($id) {
+		$this->load->model('logbooks_model');
+		$this->logbooks_model->set_logbook_active($id);
+		$this->user_model->update_session($this->session->userdata('user_id'));
+
+		redirect('logbooks');
+	}
+
     public function delete($id) {
 		$this->load->model('logbooks_model');
 		$this->logbooks_model->delete($id);

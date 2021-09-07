@@ -283,6 +283,7 @@ class User_Model extends CI_Model {
 			'user_column3' => isset($u->row()->user_column3) ? $u->row()->user_column3: 'RSTR',
 			'user_column4' => isset($u->row()->user_column4) ? $u->row()->user_column4: 'Band',
 			'user_column5' => isset($u->row()->user_column5) ? $u->row()->user_column5: 'Country',
+			'active_station_logbook' => $u->row()->active_station_logbook,
 		);
 
 		$this->session->set_userdata($userdata);
