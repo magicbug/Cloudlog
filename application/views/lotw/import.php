@@ -41,7 +41,7 @@
           </div>
       </div>
       <br/>
-      <div class="form-group row">
+      <div class="form-group row" style="display: none">
           <div class="col-md-10">
               <div class="form-check-inline">
                   <input class="form-check-input" type="checkbox" name="importMissing" value="1" id="importMissing">
