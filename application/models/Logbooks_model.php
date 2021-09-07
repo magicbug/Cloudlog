@@ -53,5 +53,51 @@ class Logbooks_model extends CI_Model {
 		$this->db->where('logbook_id', $clean_id);
 		return $this->db->get('station_logbooks');
 	}
+
+
+	// Creates relationship between a logbook and a station location
+	function create_logbook_location_link($logbook_id, $location_id) {
+		// Create data array with field values
+		$data = array(
+			'station_logbook_id' => $logbook_id,
+			'station_location_id' =>  $location_id,
+		);
+
+		// Insert Record
+		$this->db->insert('station_logbooks_relationship', $data); 
+	}
+
+	function relationship_exists($logbook_id, $location_id) {
+		$this->db->where('station_logbook_id', $logbook_id);
+		$this->db->where('station_location_id', $location_id);
+		$query = $this->db->get('station_logbooks_relationship');
+		
+		if ($query->num_rows() > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	function list_logbook_relationships($logbook_id) {
+
+		$relationships_array = array();
+
+		$this->db->where('station_logbook_id', $logbook_id);
+		$query = $this->db->get('station_logbooks_relationship');
+		
+		if ($query->num_rows() > 0){
+			foreach ($query->result() as $row)
+			{
+				array_push($relationships_array, $row->station_location_id);
+			}
+
+			return $relationships_array;
+		}
+		else{
+			return false;
+		}
+	}
 }
 ?>

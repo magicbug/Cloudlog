@@ -59,6 +59,7 @@ class Logbooks extends CI_Controller {
 		$station_logbook_id = $this->security->xss_clean($id);
 
 		$station_logbook_details_query = $this->logbooks_model->logbook($station_logbook_id);
+		$data['station_locations_array'] = $this->logbooks_model->list_logbook_relationships($station_logbook_id);
 
 		$data['station_logbook_details'] = $station_logbook_details_query->row();
 		$data['station_locations_list'] = $this->stations->all();
@@ -80,16 +81,18 @@ class Logbooks extends CI_Controller {
             $data['notice'] = "Station Logbooks ".$this->security->xss_clean($this->input->post('station_logbook_name', true))." Updated";
 
 			foreach ($this->input->post('SelectedStationLocations') as $selectedOption){ 
-    			echo $selectedOption."\n";
-
 				// Check if theres already a link between logbook and location
-
-				// If no link exisits create
+				if($this->logbooks_model->relationship_exists($this->input->post('station_logbook_id'), $selectedOption) != TRUE) {
+					// If no link exisits create
+					$this->logbooks_model->create_logbook_location_link($this->input->post('station_logbook_id'), $selectedOption);
+				} else {
+					echo "Already Linked";
+				}
 
 				// Delete link if removed
 			}
 
-            //redirect('logbooks');
+            redirect('logbooks');
         }
 	}
 

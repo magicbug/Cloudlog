@@ -45,7 +45,7 @@
 						<label for="StationLocationsSelect">Select Available Station Locations</label>
 						<select name="SelectedStationLocations[]" class="form-control" id="StationLocationsSelect" multiple aria-describedby="StationLocationSelectHelp">
 							<?php foreach ($station_locations_list->result() as $row) { ?>	
-								<option value="	<?php echo $row->station_id;?>"><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country;?>)</option>
+								<option value="<?php echo $row->station_id;?>" <?php if (in_array($row->station_id, $station_locations_array)) { echo "selected"; } ?>><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country;?>)</option>
 							<?php } ?>
 						</select>
 						<small id="StationLocationSelectHelp" class="form-text text-muted">Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</small>
@@ -55,6 +55,7 @@
 		</div>
 	</div>
 
+	<input type="hidden" class="form-control" name="station_logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>" required>	
 
 	<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Update Station Logbook</button>
 
