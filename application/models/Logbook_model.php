@@ -960,54 +960,63 @@ class Logbook_model extends CI_Model {
   function totals_year() {
 
     $CI =& get_instance();
-    $CI->load->model('Stations');
-    $station_id = $CI->Stations->find_active();
+    $CI->load->model('logbooks_model');
+    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-    $query = $this->db->query('
-    SELECT DATE_FORMAT(COL_TIME_ON, \'%Y\') as \'year\',
-    COUNT(COL_PRIMARY_KEY) as \'total\'
-    FROM '.$this->config->item('table_name').'
-    WHERE station_id = '.$station_id.'
-    GROUP BY DATE_FORMAT(COL_TIME_ON, \'%Y\')
-    ');
+
+    $this->db->select('DATE_FORMAT(COL_TIME_ON, \'%Y\') as \'year\',COUNT(COL_PRIMARY_KEY) as \'total\'', FALSE);
+    $this->db->where_in('station_id', $logbooks_locations_array);
+    $this->db->group_by('DATE_FORMAT(COL_TIME_ON, \'%Y\')');
+    $this->db->order_by('year', 'ASC');
+
+    $query = $this->db->get($this->config->item('table_name'));
+
     return $query;
   }
 
     /* Return total number of qsos */
-     function total_qsos() {
+    function total_qsos() {
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.'');
 
-        if ($query->num_rows() > 0)
+      $this->db->select('COUNT( * ) as count', FALSE);
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $query = $this->db->get($this->config->item('table_name'));
+
+      if ($query->num_rows() > 0)
+      {
+        foreach ($query->result() as $row)
         {
-            foreach ($query->result() as $row)
-            {
-                 return $row->count;
-            }
+          return $row->count;
         }
+      }
     }
 
     /* Return number of QSOs had today */
     function todays_qsos() {
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 
-        $morning = date('Y-m-d 00:00:00');
-        $night = date('Y-m-d 23:59:59');
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_TIME_ON between \''.$morning.'\' AND \''.$night.'\'');
+      $morning = date('Y-m-d 00:00:00');
+      $night = date('Y-m-d 23:59:59');
 
-        if ($query->num_rows() > 0)
+      $this->db->select('COUNT( * ) as count', FALSE);
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_TIME_ON >=', $morning);
+      $this->db->where('COL_TIME_ON <=', $night);
+      $query = $this->db->get($this->config->item('table_name'));
+
+      if ($query->num_rows() > 0)
+      {
+        foreach ($query->result() as $row)
         {
-            foreach ($query->result() as $row)
-            {
-                 return $row->count;
-            }
+          return $row->count;
         }
+      }
     }
 
     /* Return QSOs over a period of days */
@@ -1069,8 +1078,8 @@ class Logbook_model extends CI_Model {
     function month_qsos() {
 
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
         $morning = date('Y-m-01 00:00:00');
 
@@ -1079,7 +1088,11 @@ class Logbook_model extends CI_Model {
 
         $night = $date->format('Y-m-d')." 23:59:59";
 
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_TIME_ON between \''.$morning.'\' AND \''.$night.'\'');
+        $this->db->select('COUNT( * ) as count', FALSE);
+        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->where('COL_TIME_ON >=', $morning);
+        $this->db->where('COL_TIME_ON <=', $night);
+        $query = $this->db->get($this->config->item('table_name'));
 
         if ($query->num_rows() > 0)
         {
@@ -1108,12 +1121,17 @@ class Logbook_model extends CI_Model {
     function year_qsos() {
 
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
         $morning = date('Y-01-01 00:00:00');
         $night = date('Y-12-31 23:59:59');
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_TIME_ON between \''.$morning.'\' AND \''.$night.'\'');
+
+        $this->db->select('COUNT( * ) as count', FALSE);
+        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->where('COL_TIME_ON >=', $morning);
+        $this->db->where('COL_TIME_ON <=', $night);
+        $query = $this->db->get($this->config->item('table_name'));
 
         if ($query->num_rows() > 0)
         {
@@ -1128,10 +1146,16 @@ class Logbook_model extends CI_Model {
     function total_ssb() {
 
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_MODE = \'SSB\' OR COL_MODE = \'LSB\' OR COL_MODE = \'USB\'');
+      $this->db->select('COUNT( * ) as count', FALSE);
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_MODE', 'SSB');
+      $this->db->or_where('COL_MODE', 'LSB');
+      $this->db->or_where('COL_MODE', 'USB');
+
+      $query = $this->db->get($this->config->item('table_name'));
 
         if ($query->num_rows() > 0)
         {
@@ -1145,11 +1169,15 @@ class Logbook_model extends CI_Model {
    /* Return total number of satellite QSOs */
    function total_sat() {
 
-    $CI =& get_instance();
-    $CI->load->model('Stations');
-    $station_id = $CI->Stations->find_active();
+      $CI =& get_instance();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $query = $this->db->query('SELECT COL_SAT_NAME, COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_SAT_NAME != \'null\' GROUP BY COL_SAT_NAME');
+      $this->db->select('COL_SAT_NAME, COUNT( * ) as count', FALSE);
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_SAT_NAME !=', 'null');
+      $this->db->group_by('COL_SAT_NAME');
+      $query = $this->db->get($this->config->item('table_name'));
 
         return $query;
     }
@@ -1158,10 +1186,13 @@ class Logbook_model extends CI_Model {
     function total_cw() {
 
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_MODE = \'CW\' ');
+      $this->db->select('COUNT( * ) as count', FALSE);
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_MODE', 'CW');
+      $query = $this->db->get($this->config->item('table_name'));
 
         if ($query->num_rows() > 0)
         {
@@ -1176,10 +1207,13 @@ class Logbook_model extends CI_Model {
     function total_fm() {
 
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_MODE = \'FM\'');
+      $this->db->select('COUNT( * ) as count', FALSE);
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_MODE', 'FM');
+      $query = $this->db->get($this->config->item('table_name'));
 
         if ($query->num_rows() > 0)
         {
@@ -1194,10 +1228,19 @@ class Logbook_model extends CI_Model {
     function total_digi() {
 
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $query = $this->db->query('SELECT COUNT( * ) as count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_MODE != \'SSB\' AND COL_MODE != \'LSB\' AND COL_MODE != \'USB\' AND COL_MODE != \'CW\' AND COL_MODE != \'FM\' AND COL_MODE != \'AM\'');
+      $this->db->select('COUNT( * ) as count', FALSE);
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_MODE !=', 'SSB');
+      $this->db->where('COL_MODE !=', 'LSB');
+      $this->db->where('COL_MODE !=', 'USB');
+      $this->db->where('COL_MODE !=', 'CW');
+      $this->db->where('COL_MODE !=', 'FM');
+      $this->db->where('COL_MODE !=', 'AM');
+
+      $query = $this->db->get($this->config->item('table_name'));
 
         if ($query->num_rows() > 0)
         {
@@ -1216,14 +1259,18 @@ class Logbook_model extends CI_Model {
 
     /* Return total number of QSOs per band */
    function total_bands() {
+      $CI =& get_instance();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-    $CI =& get_instance();
-    $CI->load->model('Stations');
-    $station_id = $CI->Stations->find_active();
+      $this->db->select('DISTINCT (COL_BAND) AS band, count( * ) AS count', FALSE);
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->group_by('band');
+      $this->db->order_by('count', 'DESC');
 
-        $query = $this->db->query('SELECT DISTINCT (COL_BAND) AS band, count( * ) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' GROUP BY band ORDER BY count DESC');
+      $query = $this->db->get($this->config->item('table_name'));
 
-        return $query;
+      return $query;
     }
 
     /* Return total number of QSL Cards sent */
