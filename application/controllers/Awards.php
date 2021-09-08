@@ -228,13 +228,15 @@ class Awards extends CI_Controller {
 
 	public function cq(){
 		$CI =& get_instance();
-		$CI->load->model('Stations');
-		$station_id = $CI->Stations->find_active();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         $this->load->model('cq');
 		$this->load->model('modes');
 
-        $data['worked_bands'] = $this->cq->get_worked_bands($station_id);
+        $data['worked_bands'] = $this->cq->get_worked_bands($location_list);
 		$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
@@ -270,8 +272,8 @@ class Awards extends CI_Controller {
 			$postdata['mode'] = 'All';
         }
 
-        $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata, $station_id);
-        $data['cq_summary'] = $this->cq->get_cq_summary($data['worked_bands'], $station_id);
+        $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata, $location_list);
+        $data['cq_summary'] = $this->cq->get_cq_summary($data['worked_bands'], $location_list);
 
         // Render page
         $data['page_title'] = "Awards - CQ Magazine";
