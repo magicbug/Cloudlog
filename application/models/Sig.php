@@ -6,27 +6,29 @@ class Sig extends CI_Model {
 	{
 		parent::__construct();
 	}
-	
+
 	function get_all($type) {
 		$CI =& get_instance();
-      	$CI->load->model('Stations');
-      	$station_id = $CI->Stations->find_active();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-		$this->db->where("station_id", $station_id);
+		$this->db->where_in("station_id", $logbooks_locations_array);
 		$this->db->order_by("COL_SIG_INFO", "ASC");
 		$this->db->where('COL_SIG =', $type);
-		
+
 		return $this->db->get($this->config->item('table_name'));
 	}
 
     function get_all_sig_types() {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         $sql = "select col_sig, count(*) qsos, count(distinct col_sig_info) refs from " . $this->config->item('table_name') .
                 " where col_sig <> ''" .
-                " and station_id = " . $station_id .
+                " and station_id in (" . $location_list . ")" .
                 " group by col_sig";
 
         $query = $this->db->query($sql);
