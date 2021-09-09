@@ -34,13 +34,15 @@ class VUCC extends CI_Model
 
     function get_worked_bands()
     {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         // get all worked slots from database
         $data = $this->db->query(
-            "SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `" . $this->config->item('table_name') . "` WHERE station_id = " . $station_id . " AND COL_PROP_MODE != \"SAT\""
+            "SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `" . $this->config->item('table_name') . "` WHERE station_id in (" . $location_list . ") AND COL_PROP_MODE != \"SAT\""
         );
         $worked_slots = array();
         foreach ($data->result() as $row) {
@@ -48,7 +50,7 @@ class VUCC extends CI_Model
         }
 
         $SAT_data = $this->db->query(
-            "SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `" . $this->config->item('table_name') . "` WHERE station_id = " . $station_id . " AND COL_PROP_MODE = \"SAT\""
+            "SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `" . $this->config->item('table_name') . "` WHERE station_id in (" . $location_list . ") AND COL_PROP_MODE = \"SAT\""
         );
 
         foreach ($SAT_data->result() as $row) {
@@ -159,11 +161,15 @@ class VUCC extends CI_Model
      * $confirmationMethod - qsl, lotw or both, use anything else to skip confirmed
      */
     function get_vucc_summary_col_vucc($band, $confirmationMethod) {
-        $station_id = $this->get_station_id();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         $sql = "select col_vucc_grids
             from " . $this->config->item('table_name') .
-            " where station_id =" . $station_id .
+            " where station_id in (" . $location_list . ")" .
             " and col_vucc_grids <> '' ";
 
         if ($confirmationMethod == 'both') {
@@ -195,10 +201,15 @@ class VUCC extends CI_Model
      * $confirmationMethod - qsl, lotw or both, use anything else to skip confirmed
      */
     function get_vucc_summary($band, $confirmationMethod) {
-        $station_id = $this->get_station_id();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+
         $sql = "select distinct upper(substring(col_gridsquare, 1, 4)) gridsquare
             from " . $this->config->item('table_name') .
-            " where station_id =" . $station_id .
+            " where station_id in (" . $location_list . ")" .
             " and col_gridsquare <> ''";
 
         if ($confirmationMethod == 'both') {
@@ -370,12 +381,6 @@ class VUCC extends CI_Model
         }
 
         return $workedGridArray;
-    }
-
-    function get_station_id() {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        return $CI->Stations->find_active();
     }
 }
 ?>
