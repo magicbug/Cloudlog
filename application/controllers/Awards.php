@@ -477,7 +477,7 @@ class Awards extends CI_Controller {
 		ini_set('memory_limit', '-1');
 
 		$this->load->model('adif_data');
-		//$type = str_replace('"', "", $this->input->get("type"));
+
 		$type = $this->uri->segment(3);
 		$data['qsos'] = $this->adif_data->sig_all($type);
 
