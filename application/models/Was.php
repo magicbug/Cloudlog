@@ -34,13 +34,15 @@ class was extends CI_Model {
     }
 
     function get_worked_bands() {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         // get all worked slots from database
         $data = $this->db->query(
-            "SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `".$this->config->item('table_name')."` WHERE station_id = ".$station_id." AND COL_PROP_MODE != \"SAT\""
+            "SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `".$this->config->item('table_name')."` WHERE station_id in (" . $location_list . ") AND COL_PROP_MODE != \"SAT\""
         );
         $worked_slots = array();
         foreach($data->result() as $row){
@@ -48,7 +50,7 @@ class was extends CI_Model {
         }
 
         $SAT_data = $this->db->query(
-            "SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `".$this->config->item('table_name')."` WHERE station_id = ".$station_id." AND COL_PROP_MODE = \"SAT\""
+            "SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `".$this->config->item('table_name')."` WHERE station_id in (" . $location_list . ") AND COL_PROP_MODE = \"SAT\""
         );
 
         foreach($SAT_data->result() as $row){
@@ -66,9 +68,11 @@ class was extends CI_Model {
     }
 
     function get_was_array($bands, $postdata) {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         $stateArray = explode(',', $this->stateString);
 
@@ -85,14 +89,14 @@ class was extends CI_Model {
             }
 
             if ($postdata['worked'] != NULL) {
-                $wasBand = $this->getWasWorked($station_id, $band, $postdata);
+                $wasBand = $this->getWasWorked($location_list, $band, $postdata);
                 foreach ($wasBand as $line) {
                     $bandWas[$line->col_state][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("' . $line->col_state . '","' . $band . '","'. $postdata['mode'] . '","WAS")\'>W</a></div>';
                     $states[$line->col_state]['count']++;
                 }
             }
             if ($postdata['confirmed'] != NULL) {
-                $wasBand = $this->getWasConfirmed($station_id, $band, $postdata);
+                $wasBand = $this->getWasConfirmed($location_list, $band, $postdata);
                 foreach ($wasBand as $line) {
                     $bandWas[$line->col_state][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("' . $line->col_state . '","' . $band . '","'. $postdata['mode'] . '","WAS")\'>C</a></div>';
                     $states[$line->col_state]['count']++;
@@ -102,7 +106,7 @@ class was extends CI_Model {
 
         // We want to remove the worked states in the list, since we do not want to display them
         if ($postdata['worked'] == NULL) {
-            $wasBand = $this->getWasWorked($station_id, $postdata['band'], $postdata);
+            $wasBand = $this->getWasWorked($location_list, $postdata['band'], $postdata);
             foreach ($wasBand as $line) {
                 unset($bandWas[$line->col_state]);
             }
@@ -110,7 +114,7 @@ class was extends CI_Model {
 
         // We want to remove the confirmed states in the list, since we do not want to display them
         if ($postdata['confirmed'] == NULL) {
-            $wasBand = $this->getWasConfirmed($station_id, $postdata['band'], $postdata);
+            $wasBand = $this->getWasConfirmed($location_list, $postdata['band'], $postdata);
             foreach ($wasBand as $line) {
                 unset($bandWas[$line->col_state]);
             }
@@ -137,19 +141,21 @@ class was extends CI_Model {
      */
     function get_was_summary($bands)
     {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         foreach ($bands as $band) {
-            $worked = $this->getSummaryByBand($band, $station_id);
-            $confirmed = $this->getSummaryByBandConfirmed($band, $station_id);
+            $worked = $this->getSummaryByBand($band, $location_list);
+            $confirmed = $this->getSummaryByBandConfirmed($band, $location_list);
             $wasSummary['worked'][$band] = $worked[0]->count;
             $wasSummary['confirmed'][$band] = $confirmed[0]->count;
         }
 
-        $workedTotal = $this->getSummaryByBand('All', $station_id);
-        $confirmedTotal = $this->getSummaryByBandConfirmed('All', $station_id);
+        $workedTotal = $this->getSummaryByBand('All', $location_list);
+        $confirmedTotal = $this->getSummaryByBandConfirmed('All', $location_list);
 
         $wasSummary['worked']['Total'] = $workedTotal[0]->count;
         $wasSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
@@ -157,11 +163,11 @@ class was extends CI_Model {
         return $wasSummary;
     }
 
-    function getSummaryByBand($band, $station_id)
+    function getSummaryByBand($band, $location_list)
     {
         $sql = "SELECT count(distinct thcv.col_state) as count FROM " . $this->config->item('table_name') . " thcv";
 
-        $sql .= " where station_id = " . $station_id;
+        $sql .= " where station_id in (" . $location_list . ")";
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
@@ -179,11 +185,11 @@ class was extends CI_Model {
         return $query->result();
     }
 
-    function getSummaryByBandConfirmed($band, $station_id)
+    function getSummaryByBandConfirmed($band, $location_list)
     {
         $sql = "SELECT count(distinct thcv.col_state) as count FROM " . $this->config->item('table_name') . " thcv";
 
-        $sql .= " where station_id = " . $station_id;
+        $sql .= " where station_id in (" . $location_list . ")";
 
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
@@ -207,9 +213,9 @@ class was extends CI_Model {
      * Function returns all worked, but not confirmed states
      * $postdata contains data from the form, in this case Lotw or QSL are used
      */
-    function getWasWorked($station_id, $band, $postdata) {
+    function getWasWorked($location_list, $band, $postdata) {
         $sql = "SELECT distinct col_state FROM " . $this->config->item('table_name') . " thcv
-        where station_id = " . $station_id;
+        where station_id in (" . $location_list . ")";
 
 		if ($postdata['mode'] != 'All') {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
@@ -220,7 +226,7 @@ class was extends CI_Model {
         $sql .= $this->addBandToQuery($band);
 
         $sql .= " and not exists (select 1 from ". $this->config->item('table_name') .
-            " where station_id = ". $station_id .
+            " where station_id in (". $location_list . ")" .
             " and col_state = thcv.col_state";
 
 		if ($postdata['mode'] != 'All') {
@@ -244,9 +250,9 @@ class was extends CI_Model {
      * Function returns all confirmed states on given band and on LoTW or QSL
      * $postdata contains data from the form, in this case Lotw or QSL are used
      */
-    function getWasConfirmed($station_id, $band, $postdata) {
+    function getWasConfirmed($location_list, $band, $postdata) {
         $sql = "SELECT distinct col_state FROM " . $this->config->item('table_name') . " thcv
-            where station_id = " . $station_id;
+            where station_id in (" . $location_list . ")";
 
 		if ($postdata['mode'] != 'All') {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
