@@ -48,6 +48,7 @@
 						case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
 						case 'Country': echo $this->lang->line('general_word_country'); break;
 						case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
+						case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
 						case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 						case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 						case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
@@ -60,6 +61,7 @@
 						case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
 						case 'Country': echo $this->lang->line('general_word_country'); break;
 						case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
+						case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
 						case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 						case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 						case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
@@ -72,6 +74,7 @@
 						case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
 						case 'Country': echo $this->lang->line('general_word_country'); break;
 						case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
+						case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
 						case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 						case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 						case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
@@ -84,6 +87,7 @@
 						case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
 						case 'Country': echo $this->lang->line('general_word_country'); break;
 						case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
+						case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
 						case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 						case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 						case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
@@ -126,6 +130,7 @@
 						case 'RSTR':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX_STRING) { echo '<span class="label">' . $row->COL_SRX_STRING . '</span>';}; break;
 						case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 						case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
+						case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
 						case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 						case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 						case 'State':   echo '<td>' . ($row->COL_STATE); break;
@@ -138,6 +143,7 @@
 						case 'RSTR':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX_STRING) { echo '<span class="label">' . $row->COL_SRX_STRING . '</span>';}; break;
 						case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 						case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
+						case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
 						case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 						case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 						case 'State':   echo '<td>' . ($row->COL_STATE); break;
@@ -150,6 +156,7 @@
 						case 'RSTR':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX_STRING) { echo '<span class="label">' . $row->COL_SRX_STRING . '</span>';}; break;
 						case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 						case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
+						case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
 						case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 						case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 						case 'State':   echo '<td>' . ($row->COL_STATE); break;
@@ -162,6 +169,7 @@
 						case 'RSTR':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX_STRING) { echo '<span class="label">' . $row->COL_SRX_STRING . '</span>';}; break;
 						case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 						case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
+						case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
 						case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 						case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 						case 'State':   echo '<td>' . ($row->COL_STATE); break;
