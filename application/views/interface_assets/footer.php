@@ -6,6 +6,7 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ;?>assets/js/darkmodehelpers.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
 <script type="text/javascript">
   /*
@@ -985,10 +986,8 @@ $(document).ready(function(){
         ]
     });
 
-    // using this to change color of csv-button if dark mode is chosen
-    var background = $('body').css( "background-color");
-
-    if (background != ('rgb(255, 255, 255)')) {
+    // change color of csv-button if dark mode is chosen
+    if (isDarkModeTheme()) {
         $(".buttons-csv").css("color", "white");
     }
  </script>
@@ -1010,10 +1009,8 @@ $(document).ready(function(){
         ]
     });
 
-    // using this to change color of csv-button if dark mode is chosen
-    var background = $('body').css( "background-color");
-
-    if (background != ('rgb(255, 255, 255)')) {
+    // change color of csv-button if dark mode is chosen
+    if (isDarkModeTheme()) {
         $(".buttons-csv").css("color", "white");
     }
     </script>
@@ -1078,10 +1075,8 @@ $(document).ready(function(){
             ]
         });
 
-        // using this to change color of csv-button if dark mode is chosen
-        var background = $('body').css( "background-color");
-
-        if (background != ('rgb(255, 255, 255)')) {
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
             $(".buttons-csv").css("color", "white");
         }
     </script>
@@ -1115,10 +1110,8 @@ $(document).ready(function(){
             ]
         });
 
-        // using this to change color of csv-button if dark mode is chosen
-        var background = $('body').css( "background-color");
-
-        if (background != ('rgb(255, 255, 255)')) {
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
             $(".buttons-csv").css("color", "white");
         }
     </script>
@@ -1151,10 +1144,8 @@ $(document).ready(function(){
             ]
         });
 
-        // using this to change color of csv-button if dark mode is chosen
-        var background = $('body').css( "background-color");
-
-        if (background != ('rgb(255, 255, 255)')) {
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
             $(".buttons-csv").css("color", "white");
         }
     </script>
@@ -1421,10 +1412,8 @@ $(document).ready(function(){
                 ]
             });
 
-            // using this to change color of csv-button if dark mode is chosen
-            var background = $('body').css( "background-color");
-
-            if (background != ('rgb(255, 255, 255)')) {
+            // change color of csv-button if dark mode is chosen
+            if (isDarkModeTheme()) {
                 $(".buttons-csv").css("color", "white");
             }
 
@@ -1831,10 +1820,9 @@ function deleteQsl(id) {
             'csv'
         ]
     });
-    // using this to change color of csv-button if dark mode is chosen
-    var background = $('body').css( "background-color");
 
-    if (background != ('rgb(255, 255, 255)')) {
+    // change color of csv-button if dark mode is chosen
+    if (isDarkModeTheme()) {
         $(".buttons-csv").css("color", "white");
     }
 
@@ -1880,13 +1868,10 @@ function deleteQsl(id) {
 			]
 		});
 
-		// using this to change color of csv-button if dark mode is chosen
-		var background = $('body').css( "background-color");
-
-		if (background != ('rgb(255, 255, 255)')) {
+		// change color of csv-button if dark mode is chosen
+		if (isDarkModeTheme()) {
 			$(".buttons-csv").css("color", "white");
 		}
-
 	</script>
 <?php } ?>
 

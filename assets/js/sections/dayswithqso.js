@@ -8,6 +8,7 @@ $.ajax({
 			dataDxcc.push(this.Days);
 		});
 		var ctx = document.getElementById("myChartDiff").getContext('2d');
+		var color = ifDarkModeThemeReturn('white', 'grey');
 		var myChart = new Chart(ctx, {
 			type: 'bar',
 			data: {
@@ -24,10 +25,21 @@ $.ajax({
 				scales: {
 					yAxes: [{
 						ticks: {
-							beginAtZero:true
+							beginAtZero:true,
+							fontColor: color
+						}
+					}],
+					xAxes: [{
+						ticks: {
+							fontColor: color
 						}
 					}]
 				},
+				legend: {
+					labels: {
+						fontColor: color
+					}
+				}
 			}
 		});
 	}
