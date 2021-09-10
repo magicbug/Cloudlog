@@ -154,9 +154,8 @@ $('[data-fancybox]').fancybox({
     }
 });
 
-// Here we capture ALT-L to invoice the Quick lookup
+// Here we capture ALT-L to invoke the Quick lookup
 document.onkeyup = function(e) {
-	// ALT-W wipe
 	if (e.altKey && e.which == 76) {
 		spawnLookupModal();
 	}
