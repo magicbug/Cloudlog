@@ -11,13 +11,15 @@ class Dayswithqso_model extends CI_Model
 
     function getDaysWithQso()
     {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         $sql = "select year(COL_TIME_ON) Year, COUNT(DISTINCT TO_DAYS(COL_TIME_ON)) as Days from "
             .$this->config->item('table_name'). " thcv
-            where station_id = " . $station_id . " and COL_TIME_ON is not null group by year";
+            where station_id in (" . $location_list . ") and COL_TIME_ON is not null group by year";
 
         $query = $this->db->query($sql);
 
@@ -150,13 +152,15 @@ class Dayswithqso_model extends CI_Model
      * Returns all distinct dates from db on active profile
      */
     function getDates() {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         $sql = "select distinct cast(col_time_on as date) as date from "
             .$this->config->item('table_name'). " thcv
-            where station_id = " . $station_id . " order by date asc";
+            where station_id in (" . $location_list . ") order by date asc";
 
         $query = $this->db->query($sql);
 
