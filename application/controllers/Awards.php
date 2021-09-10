@@ -27,7 +27,6 @@ class Awards extends CI_Controller {
 
 	public function dok ()
 	{
-		//echo "Needs Developed";
 		$this->load->model('dok');
 		$data['doks'] = $this->dok->show_stats();
 		$data['worked_bands'] = $this->dok->get_worked_bands();
@@ -226,7 +225,7 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-	public function cq(){
+	public function cq() {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
