@@ -10,12 +10,14 @@ class Timeplotter_model extends CI_Model
     }
 
     function get_worked_bands() {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         $data = $this->db->query(
-            "SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `" . $this->config->item('table_name') . "` WHERE station_id = " . $station_id . " AND COL_PROP_MODE != \"SAT\""
+            "SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `" . $this->config->item('table_name') . "` WHERE station_id in (" . $location_list . ") AND COL_PROP_MODE != \"SAT\""
         );
         $worked_slots = array();
         foreach ($data->result() as $row) {
@@ -23,7 +25,7 @@ class Timeplotter_model extends CI_Model
         }
 
         $SAT_data = $this->db->query(
-            "SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `" . $this->config->item('table_name') . "` WHERE station_id = " . $station_id . " AND COL_PROP_MODE = \"SAT\""
+            "SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `" . $this->config->item('table_name') . "` WHERE station_id in (" . $location_list . ") AND COL_PROP_MODE = \"SAT\""
         );
 
         foreach ($SAT_data->result() as $row) {
@@ -64,9 +66,9 @@ class Timeplotter_model extends CI_Model
     );
 
     function getTimes($postdata) {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
         $this->db->select('time(col_time_on) time, col_call as callsign');
 
@@ -87,7 +89,7 @@ class Timeplotter_model extends CI_Model
             $this->db->where('col_cqz', $postdata['cqzone']);
         }
 
-        $this->db->where('station_id', $station_id);
+        $this->db->where_in('station_id', $logbooks_locations_array);
         $datearray = $this->db->get($this->config->item('table_name'));
         $this->plot($datearray->result_array());
     }
