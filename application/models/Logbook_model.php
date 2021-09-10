@@ -288,11 +288,14 @@ class Logbook_model extends CI_Model {
 	}
 
     public function vucc_qso_details($gridsquare, $band) {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+
         $sql = "select * from " . $this->config->item('table_name') .
-                " where station_id =" . $station_id .
+                " where station_id in (" . $location_list . ")" .
                 " and (col_gridsquare like '" . $gridsquare. "%'
                     or col_vucc_grids like '%" . $gridsquare. "%')";
 
