@@ -309,9 +309,9 @@ class Logbook_model extends CI_Model {
     }
 
     public function timeline_qso_details($querystring, $band, $mode, $type){
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -326,7 +326,7 @@ class Logbook_model extends CI_Model {
             $this->db->where('col_mode', $mode);
         }
 
-        $this->db->where('station_id', $station_id);
+        $this->db->where_in('station_id', $logbooks_locations_array);
 
         switch($type) {
             case 'dxcc': $this->db->where('COL_DXCC', $querystring); break;
