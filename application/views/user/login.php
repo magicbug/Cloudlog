@@ -1,4 +1,4 @@
-<div id="container" class="container w-25 mx-auto pt-5">
+<div id="container" class="container mx-auto pt-5" style="max-width:400px">
 
 <h2>Log in</h2>
 <?php $this->load->view('layout/messages'); ?>
