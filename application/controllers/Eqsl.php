@@ -589,11 +589,24 @@ class eqsl extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-	function image($id, $callsign, $mode, $band, $hour, $minute, $day, $month, $year) {
+	function image($id) {
 		$this->load->library('electronicqsl');
 		$this->load->model('Eqsl_images');
 
 		if($this->Eqsl_images->get_image($id) == "No Image") {
+			$this->load->model('logbook_model');
+			$qso_query = $this->logbook_model->get_qso($id);
+			$qso = $qso_query->row();
+			$qso_timestamp = strtotime($qso->COL_TIME_ON);
+			$callsign = $qso->COL_CALL;
+			$band = $qso->COL_BAND;
+			$mode = $qso->COL_MODE;
+			$year = date('Y', $qso_timestamp);
+			$month = date('m', $qso_timestamp);
+			$day = date('d', $qso_timestamp);
+			$hour = date('H', $qso_timestamp);
+			$minute = date('i', $qso_timestamp);
+
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
 			$q = $query->row();
 			$username = $q->user_eqsl_name;
@@ -613,14 +626,14 @@ class eqsl extends CI_Controller {
 			}
 
 			foreach ($images as $image) 
-			{ 
-			 header('Content-Type: image/jpg');
-			 readfile ("https://www.eqsl.cc".$image->getAttribute('src')); 
-			 $content = file_get_contents("https://www.eqsl.cc".$image->getAttribute('src'));
-			 $filename = uniqid().'.jpg';
-			 file_put_contents('images/eqsl_card_images/' . '/'.$filename, $content);
+			{
+				header('Content-Type: image/jpg');
+				readfile ("https://www.eqsl.cc".$image->getAttribute('src')); 
+				$content = file_get_contents("https://www.eqsl.cc".$image->getAttribute('src'));
+				$filename = uniqid().'.jpg';
+				file_put_contents('images/eqsl_card_images/' . '/'.$filename, $content);
 
-			 $this->Eqsl_images->save_image($id, $filename);
+				$this->Eqsl_images->save_image($id, $filename);
 			}
 		} else {
 			header('Content-Type: image/jpg');
