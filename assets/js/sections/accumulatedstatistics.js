@@ -3,11 +3,7 @@ function accumulatePlot(form) {
 	$(".ld-ext-right").prop('disabled', true);
 
 	// using this to change color of legend and label according to background color
-	var background = $('body').css( "background-color");
-	var color = 'grey';
-	if (background != ('rgb(255, 255, 255)')) {
-		color = 'white';
-	}
+	var color = ifDarkModeThemeReturn('white', 'grey');
 
 	var award = form.awardradio.value;
 	var mode = form.mode.value;
@@ -99,9 +95,9 @@ function accumulatePlot(form) {
 					},
 					legend: {
 						labels: {
-							fontColor: color,
+							fontColor: color
 						}
-					},
+					}
 				}
 			});
 			$(".ld-ext-right").removeClass('running');
