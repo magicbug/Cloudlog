@@ -811,45 +811,44 @@ $(document).ready(function(){
     console.log(map.getZoom());
 
     if(map.getZoom() > 2) {
+    	<?php if ($this->session->userdata('user_callsign')) { ?>
+	  var band = '';
       var search_type = "<?php echo $this->uri->segment(2); ?>";
       if(search_type == "satellites") {
-        console.log("satellites search");
-        var search_tags = "search_sat/" + loc_4char;
+		band = 'SAT';
       } else {
-        var band = "<?php echo $this->uri->segment(3); ?>";
-        console.log(band);
-        var search_tags = "search_band/" + band + "/" + loc_4char;
+        band = "<?php echo $this->uri->segment(3); ?>";
       }
+		$(".modal-body").empty();
+		  $.ajax({
+			  url: base_url + 'index.php/awards/qso_details_ajax',
+			  type: 'post',
+			  data: {
+				  'Searchphrase': loc_4char,
+				  'Band': band,
+				  'Mode': 'All',
+				  'Type': 'VUCC'
+			  },
+			  success: function (html) {
+				$(".modal-body").html(html);
+				  $(".modal-body table").addClass('table-sm');
+				  $(".modal-body h5").empty();
+				  var count = $('.table tr').length;
+				  count = count - 1;
+				  $('#qso_count').text(count);
+				  if (count > 1) {
+					  $('#gt1_qso').text("s");
+				  } else {
+					  $('#gt1_qso').text("");
+				  }
 
-      $.getJSON( "<?php echo site_url('gridsquares/');?>" + search_tags, function( data ) {
-        var count = Object.keys(data).length;
-        console.log("Count: " + count);
-        var items = [];
-        $.each( data, function( i, item ) {
-          console.log(item.COL_CALL + item.COL_SAT_NAME);
-          if(item.COL_SAT_NAME != undefined) {
-            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_SAT_NAME + "</td><td>" + item.COL_GRIDSQUARE + item.COL_VUCC_GRIDS + "</td></tr>" );
-          } else {
-            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_BAND + "</td><td>" + item.COL_GRIDSQUARE + item.COL_VUCC_GRIDS + "</td></tr>" );
-          }
-        });
-
-        $('#qso_count').text(count);
-        if (count > 1) {
-           $('#gt1_qso').text("s");
-        } else {
-           $('#gt1_qso').text("");
-        }
-
-        $("#grid_results tbody").empty();
-        if (count > 0) {
-          $("#grid_results tbody").append(items.join( "" ));
-
-          $('#square_number').text(loc_4char);
-          $('#exampleModal').modal('show');
-        }
-
-      });
+				  if (count > 0) {
+					  $('#square_number').text(loc_4char);
+					  $('#exampleModal').modal('show');
+				  }
+			  }
+		  });
+		  <?php } ?>
     }
   };
 
