@@ -10,25 +10,27 @@ class Timeline_model extends CI_Model
     }
 
     function get_timeline($band, $mode, $award)  {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         switch ($award) {
-            case 'dxcc': $result = $this->get_timeline_dxcc($band, $mode, $station_id); break;
-            case 'was':  $result = $this->get_timeline_was($band, $mode, $station_id);  break;
-            case 'iota': $result = $this->get_timeline_iota($band, $mode, $station_id); break;
-            case 'waz':  $result = $this->get_timeline_waz($band, $mode, $station_id);  break;
+            case 'dxcc': $result = $this->get_timeline_dxcc($band, $mode, $location_list); break;
+            case 'was':  $result = $this->get_timeline_was($band, $mode, $location_list);  break;
+            case 'iota': $result = $this->get_timeline_iota($band, $mode, $location_list); break;
+            case 'waz':  $result = $this->get_timeline_waz($band, $mode, $location_list);  break;
         }
 
         return $result;
     }
 
-    public function get_timeline_dxcc($band, $mode, $station_id) {
+    public function get_timeline_dxcc($band, $mode, $location_list) {
         $sql = "select min(date(COL_TIME_ON)) date, prefix, col_country, end, adif from "
             .$this->config->item('table_name'). " thcv
             join dxcc_entities on thcv.col_dxcc = dxcc_entities.adif
-            where station_id = " . $station_id;
+            where station_id in (" . $location_list . ")";
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -52,10 +54,10 @@ class Timeline_model extends CI_Model
         return $query->result();
     }
 
-    public function get_timeline_was($band, $mode, $station_id) {
+    public function get_timeline_was($band, $mode, $location_list) {
         $sql = "select min(date(COL_TIME_ON)) date, col_state from "
             .$this->config->item('table_name'). " thcv
-            where station_id = " . $station_id;
+            where station_id in (" . $location_list . ")";
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -82,11 +84,11 @@ class Timeline_model extends CI_Model
         return $query->result();
     }
 
-    public function get_timeline_iota($band, $mode, $station_id) {
+    public function get_timeline_iota($band, $mode, $location_list) {
         $sql = "select min(date(COL_TIME_ON)) date,  col_iota, name, prefix from "
             .$this->config->item('table_name'). " thcv
             join iota on thcv.col_iota = iota.tag
-            where station_id = " . $station_id;
+            where station_id in (" . $location_list . ")";
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -110,10 +112,10 @@ class Timeline_model extends CI_Model
         return $query->result();
     }
 
-    public function get_timeline_waz($band, $mode, $station_id) {
+    public function get_timeline_waz($band, $mode, $location_list) {
         $sql = "select min(date(COL_TIME_ON)) date, col_cqz from "
             .$this->config->item('table_name'). " thcv
-            where station_id = " . $station_id;
+            where station_id in (" . $location_list . ")";
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -162,13 +164,15 @@ class Timeline_model extends CI_Model
 
     function get_worked_bands()
     {
-        $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         // get all worked slots from database
         $data = $this->db->query(
-            "SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `" . $this->config->item('table_name') . "` WHERE station_id = " . $station_id . " AND COL_PROP_MODE != \"SAT\""
+            "SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `" . $this->config->item('table_name') . "` WHERE station_id in (" . $location_list . ") AND COL_PROP_MODE != \"SAT\""
         );
         $worked_slots = array();
         foreach ($data->result() as $row) {
@@ -176,7 +180,7 @@ class Timeline_model extends CI_Model
         }
 
         $SAT_data = $this->db->query(
-            "SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `" . $this->config->item('table_name') . "` WHERE station_id = " . $station_id . " AND COL_PROP_MODE = \"SAT\""
+            "SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `" . $this->config->item('table_name') . "` WHERE station_id in (" . $location_list . ") AND COL_PROP_MODE = \"SAT\""
         );
 
         foreach ($SAT_data->result() as $row) {

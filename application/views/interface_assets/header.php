@@ -47,7 +47,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light main-nav">
 <div class="container">
-		<a class="navbar-brand" href="<?php echo site_url(); ?>">Cloudlog</a>
+		<a class="navbar-brand" href="<?php echo site_url(); ?>">Cloudlog</a> <?php if(ENVIRONMENT == "development") { ?><span class="badge badge-danger">Developer Mode</span><?php } ?>
 
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
@@ -189,6 +189,8 @@
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				<a class="dropdown-item" href="<?php echo site_url('user/edit')."/".$this->session->userdata('user_id'); ?>" title="Account"><i class="fas fa-user"></i> Account</a>
 
+				<a class="dropdown-item" href="<?php echo site_url('logbooks');?>" title="Manage station logbooks"><i class="fas fa-home"></i> Station Logbooks</a>
+				
 				<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Manage station locations"><i class="fas fa-home"></i> Station Locations</a>
 
 				<div class="dropdown-divider"></div>
@@ -198,6 +200,8 @@
 				<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('kml');?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> KML Export</a>
+
+				<a class="dropdown-item" href="<?php echo site_url('dxatlas');?>" title="DX Atlas Gridsquare Export"><i class="fas fa-sync"></i> DX Atlas Gridsquare Export</a>
 
 				<div class="dropdown-divider"></div>
 

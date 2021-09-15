@@ -728,5 +728,4 @@ class Logbook extends CI_Controller {
         return $this->db->get();
     }
 
-
 }
