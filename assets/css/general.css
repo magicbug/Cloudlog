@@ -244,6 +244,7 @@ color: #ffffff;
         }
     }
 
+
 /*
  * Timepicker alignment
  */
@@ -251,6 +252,7 @@ color: #ffffff;
 	padding-right: 0;
 	padding-left: 0;
 }
+
 .modal-body {
 	max-height: calc(100vh - 200px);
 	overflow-y: auto;
