@@ -13,12 +13,6 @@ path.grid-rectangle {
 	stroke: rgba(200, 200, 200, 0.5);
 }
 
-
-span.grid-text > font {
-	color: rgba(220, 220, 220, 0.85) !important;
-	-webkit-text-stroke: 1px black !important;
-}
-
 span.grid-text>font {
 	color: rgba(220, 220, 220, 1) !important;
 	-webkit-text-stroke: 0.6px black !important;
