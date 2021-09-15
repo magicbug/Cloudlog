@@ -108,7 +108,7 @@
 }
 
 .selectize-dropdown, .selectize-input, .selectize-input input {
-    color: #fff;
+    color: #343a40;
     font-family: inherit;
     font-size: inherit;
     line-height: 1.5;
@@ -116,8 +116,7 @@
 }
 
 .selectize-input, .selectize-control.single .selectize-input.input-active {
-    background: #222222;
-    color: #fff; 
+    background: #fff;
     cursor: text;
     display: inline-block
 }
@@ -131,7 +130,7 @@
     z-index: 1;
     box-sizing: border-box;
     box-shadow: none;
-    border-radius: 0.25rem;
+    border-radius: 0.25rem
 }
 
 .selectize-control.multi .selectize-input.has-items {
@@ -139,7 +138,7 @@
 }
 
 .selectize-input.full {
-    background-color: #222222;
+    background-color: #fff
 }
 
 .selectize-input.disabled, .selectize-input.disabled * {
@@ -147,7 +146,7 @@
 }
 
 .selectize-input.focus {
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .15);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .15)
 }
 
 .selectize-input.dropdown-active {
@@ -377,7 +376,7 @@
     padding: 0;
     margin: 2px 0 0 0;
     z-index: 1000;
-    background: #222222;
+    background: #fff;
     border: 1px solid rgba(0, 0, 0, .15);
     border-radius: .25rem;
     box-shadow: 0 6px 12px rgba(0, 0, 0, .175)
@@ -431,11 +430,9 @@
 }
 
 .selectize-input.focus {
-    color: #444;
-    background-color: #fff;
-    border-color: #739ac2;
+    border-color: #80bdff;
     outline: 0;
-    box-shadow: 0 0 0 .2rem rgba(55, 90, 127, .25)
+    box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25)
 }
 
 .is-invalid .selectize-input {

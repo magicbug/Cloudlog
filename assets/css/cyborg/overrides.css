@@ -14,8 +14,8 @@ path.grid-rectangle {
 	stroke: rgba(200, 200, 200, 0.5);
 }
 
-span.grid-text > font {
-	color: rgba(220, 220, 220, 0.7) !important; 
+span.grid-text>font {
+	color: rgba(220, 220, 220, 0.7) !important;
 	-webkit-text-stroke: 1px black !important;
 }
 
@@ -29,53 +29,91 @@ path.grid-worked {
 	stroke: rgba(220, 50, 50, 0.25) !important;
 }
 
-#map, 
-#qsomap{
+#map, #qsomap {
 	background-color: #000;
 }
 
 .leaflet-popup-content h3 {
 	color: #000;
 }
+
 /* 
 *	Dark Navigation 
 */
 
 /* Navigation background */
+
 .navbar.bg-light {
-    background-color: #000 !important;
+	background-color: #000 !important;
 }
 
 /* Inactive Links */
+
 .navbar-light .navbar-nav .nav-link {
-    color: rgba(255,255,255,.6);
+	color: rgba(255, 255, 255, .6);
 }
 
 /* Active Links and Logo */
-.navbar-light .navbar-brand,
-.navbar-light .navbar-brand:focus,
-.navbar-light .navbar-brand:hover,
-.navbar-light .navbar-nav .active>.nav-link,
-.navbar-light .navbar-nav .nav-link:focus,
-.navbar-light .navbar-nav .nav-link:hover {
-    color: #fff;
+
+.navbar-light .navbar-brand, .navbar-light .navbar-brand:focus, .navbar-light .navbar-brand:hover, .navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+	color: #fff;
 }
 
 /* Hamburger Menu */
+
 .navbar-light .navbar-toggler-icon {
-	background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.6%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.6%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
 }
 
 /* 
 *	Dark inputs 
 */
 
-.form-control, 
-.form-control-sm,
-.form-control:focus,
-.form-control:disabled,
-.custom-select {
+.form-control, .form-control-sm, .form-control:focus, .form-control:disabled, .custom-select {
 	background-color: #151515;
-	color: #eeeeee; 
+	color: #eeeeee;
 	border: 1px solid #333;
+}
+
+.bootstrap-dialog.type-primary .modal-header {
+	background-color: #131313;
+}
+
+.selectize-input {
+	border: 1px solid #333333;
+}
+
+.selectize-dropdown, .selectize-input, .selectize-input input {
+	color: #fff;
+}
+
+.selectize-input, .selectize-control.single .selectize-input.input-active {
+	background: #151515;
+}
+
+.selectize-input.full {
+	background-color: #151515;
+}
+
+.selectize-input.focus {
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, .15);
+}
+
+.selectize-dropdown .optgroup-header {
+	color: #151515;
+}
+
+.selectize-dropdown, .selectize-dropdown.form-control {
+	background: #151515;
+}
+
+.selectize-input.focus {
+	color: #282828;
+	background-color: #fff;
+	border-color: #95cfeb;
+	box-shadow: 0 0 0 0.2rem rgba(42, 159, 214, 0.25);
+}
+
+.selectize-dropdown, .selectize-dropdown.form-control {
+	border-radius: 0;
 }

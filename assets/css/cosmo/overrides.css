@@ -1,3 +1,19 @@
 /*!
  * No overrides for the default theme as it aligns with general.css
 */
+
+.selectize-input {
+    border-radius: 0
+}
+
+.selectize-input {
+    border: 1px solid #ced4da;
+}
+
+.selectize-input.dropdown-active {
+    border-radius: 0;
+}
+
+.selectize-dropdown, .selectize-dropdown.form-control {
+    border-radius: 0;
+}
