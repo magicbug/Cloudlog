@@ -94,12 +94,15 @@
                     <div class="form-group">
                         <label>Stylesheet</label>
                         <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
-                            <option value='default' <?php if($user_stylesheet == "default") { echo "selected=\"selected\""; } ?>>Default</option>
-                            <option value='blue' <?php if($user_stylesheet == "blue") { echo "selected=\"selected\""; } ?>>Blue</option>
-                            <option value='cosmo' <?php if($user_stylesheet == "cosmo") { echo "selected=\"selected\""; } ?>>Cosmo</option>
-                            <option value='cyborg' <?php if($user_stylesheet == "cyborg") { echo "selected=\"selected\""; } ?>>Cyborg (Dark)</option>
-                            <option value='darkly' <?php if($user_stylesheet == "darkly") { echo "selected=\"selected\""; } ?>> Darkly (Dark)</option>
-                            <option value='superhero' <?php if($user_stylesheet == "superhero") { echo "selected=\"selected\""; } ?>>Superhero (Dark)</option>
+							<?php
+							foreach ($themes as $theme) {
+								echo '<option value="' . $theme->foldername . '"';
+								if( $user_stylesheet == $theme->foldername) {
+									echo 'selected="selected"';
+								}
+								echo '>' . $theme->name . '</option>';
+							}
+							?>
                         </select>
                     </div>
                 </div>

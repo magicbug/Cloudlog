@@ -371,6 +371,14 @@ class User_Model extends CI_Model {
 		return $ts;
 	}
 
+	// FUNCTION: array getThemes()
+	// Returns a list of themes
+	function getThemes() {
+		$result = $this->db->query('SELECT * FROM themes order by name');
+
+		return $result->result();
+	}
+
 	// FUNCTION: bool _auth($password, $hash)
 	// Checks a password against the stored hash
 	private function _auth($password, $hash) {
