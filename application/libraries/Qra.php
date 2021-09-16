@@ -23,14 +23,18 @@ class Qra {
 
 	// calculate  the bearing between two squares
 	function bearing($tx, $rx, $unit = 'M') {
-		if(strlen($tx) <= 6 && strlen($rx) <= 6) {
-			$my = qra2latlong($tx);
-			$stn = qra2latlong($rx);
-
-			$bearing = bearing($my[0], $my[1], $stn[0], $stn[1], $unit);
-
-			return $bearing;
+		if(strlen($tx) > 6) {
+			$tx = substr($tx, 0, 6);
 		}
+		if(strlen($rx) > 6) {
+			$rx = substr($rx, 0, 6);
+		}
+		$my = qra2latlong($tx);
+		$stn = qra2latlong($rx);
+
+		$bearing = bearing($my[0], $my[1], $stn[0], $stn[1], $unit);
+
+		return $bearing;
 	}
 
 	/*
@@ -40,6 +44,12 @@ class Qra {
 	*
 	*/
 	function distance($tx, $rx, $unit = 'M') {
+		if(strlen($tx) > 6) {
+			$tx = substr($tx, 0, 6);
+		}
+		if(strlen($rx) > 6) {
+			$rx = substr($rx, 0, 6);
+		}
 		// Calc LatLongs
 		$my = qra2latlong($tx);
 		$stn = qra2latlong($rx);
@@ -52,12 +62,9 @@ class Qra {
 	}
 }
 
-
-
 function distance($lat1, $lon1, $lat2, $lon2, $unit = 'M') {
   $theta = $lon1 - $lon2;
-  $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-cos(deg2rad($theta));
+  $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
   $dist = acos($dist);
   $dist = rad2deg($dist);
   $dist = $dist * 60 * 1.1515;
@@ -111,27 +118,28 @@ function get_bearing($lat1, $lon1, $lat2, $lon2) {
 	return (rad2deg(atan2(sin(deg2rad($lon2) - deg2rad($lon1)) * cos(deg2rad($lat2)), cos(deg2rad($lat1)) * sin(deg2rad($lat2)) - sin(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($lon2) - deg2rad($lon1)))) + 360) % 360;
 }
 
-function qra2latlong($strQRA)
-
-{
-		if (strlen($strQRA) %2 == 0) {
-			$strQRA = strtoupper($strQRA);
-			if (strlen($strQRA) == 4)  $strQRA .= "MM";
-			if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}$/',$strQRA)) return false;
-			list($a,$b,$c,$d,$e,$f) = str_split($strQRA,1);
-			$a = ord($a) - ord('A');
-			$b = ord($b) - ord('A');
-			$c = ord($c) - ord('0');
-			$d = ord($d) - ord('0');
-			$e = ord($e) - ord('A');
-			$f = ord($f) - ord('A');
-			$nLong = ($a*20) + ($c*2) + (($e+0.5)/12) - 180;
-			$nLat = ($b*10) + $d + (($f+0.5)/24) - 90;
-			$arLatLong = array($nLat,$nLong);
-			return($arLatLong);
-		} else {
-			return array(0, 0);
+function qra2latlong($strQRA) {
+	if (strlen($strQRA) %2 == 0) {
+		$strQRA = strtoupper($strQRA);
+		if (strlen($strQRA) == 4)  $strQRA .= "MM";
+		if(strlen($strQRA) > 6) {
+			$strQRA = substr($strQRA, 0, 6);
 		}
 
+		if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}$/',$strQRA)) return false;
+		list($a,$b,$c,$d,$e,$f) = str_split($strQRA,1);
+		$a = ord($a) - ord('A');
+		$b = ord($b) - ord('A');
+		$c = ord($c) - ord('0');
+		$d = ord($d) - ord('0');
+		$e = ord($e) - ord('A');
+		$f = ord($f) - ord('A');
+		$nLong = ($a*20) + ($c*2) + (($e+0.5)/12) - 180;
+		$nLat = ($b*10) + $d + (($f+0.5)/24) - 90;
+		$arLatLong = array($nLat,$nLong);
+		return($arLatLong);
+	} else {
+		return array(0, 0);
+	}
 }
 /* End of file Qra.php */
