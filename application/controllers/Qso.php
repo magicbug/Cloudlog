@@ -386,7 +386,7 @@ class QSO extends CI_Controller {
                 foreach ($result as &$value) {
                     $county = explode(',', $value);
                     // Limit to 100 as to not slowdown browser too much
-                    if (count($json) <= 100) {
+                    if (count($json) <= 300) {
                         $json[] = ["name"=>$county[1]];
                     }
                 }
