@@ -484,6 +484,12 @@ class Logbook_model extends CI_Model {
       $srx_string = null;
     }
 
+	if (stristr($this->input->post('usa_county'), ',')) {
+		$uscounty = $this->input->post('usa_county');
+	} else {
+		$uscounty = $this->input->post('usa_state') .",".$this->input->post('usa_county');
+	}
+
     $data = array(
        'COL_TIME_ON' => $this->input->post('time_on'),
        'COL_TIME_OFF' => $this->input->post('time_off'),
@@ -526,14 +532,14 @@ class Logbook_model extends CI_Model {
        'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
        'COL_STX_STRING' => $this->input->post('stx_string'),
        'COL_SRX_STRING' => $this->input->post('srx_string'),
-		   'COL_STX' => $stx_string,
-		   'COL_SRX' => $srx_string,
-		   'COL_CONTEST_ID' => $this->input->post('contest_name'),
+	   'COL_STX' => $stx_string,
+	   'COL_SRX' => $srx_string,
+	   'COL_CONTEST_ID' => $this->input->post('contest_name'),
        'COL_QSL_VIA' => $this->input->post('qsl_via_callsign'),
        'station_id' => $this->input->post('station_profile'),
        'COL_OPERATOR' => $this->input->post('operator_callsign'),
        'COL_STATE' =>$this->input->post('usa_state'),
-       'COL_CNTY' =>$this->input->post('usa_state') .",".$this->input->post('usa_county'),
+       'COL_CNTY' => $uscounty
     );
 
     if ($this->exists_qrz_api_key($data['station_id'])) {
