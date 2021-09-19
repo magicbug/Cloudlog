@@ -305,7 +305,7 @@
 
                                 <div class="form-group">
                                     <label for="usa_state">USA State</label>
-                                    <select class="custom-select" id="input_usa_state" name="usa_state">
+                                    <select class="custom-select" id="input_usa_state_edit" name="usa_state">
                                         <option value=""></option>
                                         <option value="AL" <?php if($qso->COL_STATE == "AL") { echo "selected=\"selected\""; } ?>>Alabama (AL)</option>
                                         <option value="AK" <?php if($qso->COL_STATE == "AK") { echo "selected=\"selected\""; } ?>>Alaska (AK)</option>
@@ -363,7 +363,7 @@
 
                                 <div class="form-group">
                                     <label for="stationCntyInput">USA County</label>
-                                    <input disabled="disabled" class="form-control" id="stationCntyInput" type="text" name="usa_county" value="<?php echo $qso->COL_CNTY; ?>" />
+                                    <input disabled="disabled" class="form-control" id="stationCntyInputEdit" type="text" name="usa_county" value="<?php echo $qso->COL_CNTY; ?>" />
                                 </div>
 
                                 <div class="form-group">
@@ -386,7 +386,7 @@
 
                                 <div class="form-group">
                                     <label for="sota_ref">SOTA</label>
-                                    <input type="text" class="form-control" id="sota_ref" name="sota_ref" value="<?php echo $qso->COL_SOTA_REF; ?>">
+                                    <input type="text" class="form-control" id="sota_ref_edit" name="sota_ref" value="<?php echo $qso->COL_SOTA_REF; ?>">
                                 </div>
 
                                 <div class="form-group">
@@ -401,7 +401,7 @@
 
                                 <div class="form-group">
                                     <label for="darc_dok">DOK</label>
-                                    <input type="text" class="form-control" id="darc_dok" name="darc_dok" value="<?php echo $qso->COL_DARC_DOK; ?>">
+                                    <input type="text" class="form-control" id="darc_dok_edit" name="darc_dok" value="<?php echo $qso->COL_DARC_DOK; ?>">
                                 </div>
                             </div>
 

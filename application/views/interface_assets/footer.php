@@ -1257,27 +1257,27 @@ $(document).ready(function(){
                         nl2br: false,
                         message: html,
                         onshown: function(dialog) {
-                            var state = $("#input_usa_state option:selected").text();
+                            var state = $("#input_usa_state_edit option:selected").text();
                             if (state != "") {
-                                $("#stationCntyInput").prop('disabled', false);
+                                $("#stationCntyInputEdit").prop('disabled', false);
                                 selectize_usa_county();
                             }
 
-                            $('#input_usa_state').change(function(){
-                                var state = $("#input_usa_state option:selected").text();
+                            $('#input_usa_state_edit').change(function(){
+                                var state = $("#input_usa_state_edit option:selected").text();
                                 if (state != "") {
-                                    $("#stationCntyInput").prop('disabled', false);
+                                    $("#stationCntyInputEdit").prop('disabled', false);
 
                                     selectize_usa_county();
 
                                 } else {
-                                    $("#stationCntyInput").prop('disabled', true);
+                                    $("#stationCntyInputEdit").prop('disabled', true);
                                     //$('#stationCntyInput')[0].selectize.destroy();
-                                    $("#stationCntyInput").val("");
+                                    $("#stationCntyInputEdit").val("");
                                 }
                             });
 
-                            $('#sota_ref').selectize({
+                            $('#sota_ref_edit').selectize({
                                 maxItems: 1,
                                 closeAfterSelect: true,
                                 loadThrottle: 250,
@@ -1305,7 +1305,7 @@ $(document).ready(function(){
                                 }
                             });
 
-                            $('#darc_dok').selectize({
+                            $('#darc_dok_edit').selectize({
                                 maxItems: 1,
                                 closeAfterSelect: true,
                                 loadThrottle: 250,
@@ -1340,7 +1340,7 @@ $(document).ready(function(){
 
         function selectize_usa_county() {
             var baseURL= "<?php echo base_url();?>";
-            $('#stationCntyInput').selectize({
+            $('#stationCntyInputEdit').selectize({
 				delimiter: ';',
                 maxItems: 1,
                 closeAfterSelect: true,
@@ -1351,7 +1351,7 @@ $(document).ready(function(){
                 options: [],
                 create: false,
                 load: function(query, callback) {
-                    var state = $("#input_usa_state option:selected").text();
+                    var state = $("#input_usa_state_edit option:selected").text();
 
                     if (!query || state == "") return callback();
                     $.ajax({
