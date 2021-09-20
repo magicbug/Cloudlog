@@ -40,8 +40,8 @@ class Map extends CI_Controller {
         $data['worked_bands'] = $this->dxcc->get_worked_bands(); // Used in the view for band select
         //$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
-        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
-            if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
+        if ($this->input->post('band') != NULL) {   			// Band is not set when page first loads.
+            if ($this->input->post('band') == 'All') {          // Did the user specify a band? If not, use all bands
                 $bands = $data['worked_bands'];
             }
             else {
@@ -55,7 +55,7 @@ class Map extends CI_Controller {
         $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
 
         // Calculate Lat/Lng from Locator to use on Maps
-        /*if($this->session->userdata('user_locator')) {
+        if($this->session->userdata('user_locator')) {
             $this->load->library('qra');
 
             $qra_position = $this->qra->qra2latlong($this->session->userdata('user_locator'));
@@ -64,16 +64,16 @@ class Map extends CI_Controller {
             $data['qra_lng'] = $qra_position[1];
         } else {
             $data['qra'] = "none";
-        }*/
+        }
 
-        /*$this->load->model('Stations');
-        $station_id = $this->Stations->find_active();
-        $station_data = $this->Stations->profile_clean($station_id);
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$result = $CI->logbooks_model->logbook($this->session->userdata('active_station_logbook'))->result();
+		$logbook_name = $result[0]->logbook_name;
 
         // load the view
-        $data['station_profile'] = $station_data;*/
+        $data['logbook_name'] = $logbook_name;
 		$data['page_title'] = "Map QSOs";
-
 
         if ($this->input->post('from')) {
             $from = $this->input->post('from');
@@ -92,7 +92,6 @@ class Map extends CI_Controller {
             $temp_to = new DateTime('tomorrow');
             $footer_data['date_to'] = $temp_to->format('Y-m-d H:i:00');
         }
-
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('map/custom_date');

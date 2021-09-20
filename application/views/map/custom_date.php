@@ -1,6 +1,6 @@
 <div class="container custom-map-QSOs">
 
-	<h2>Station Profile QSOs (Custom Date)</h2>
+	<h2><?php echo $logbook_name ?> logbook QSOs (Custom Date)</h2>
 
 	<?php if($this->session->flashdata('notice')) { ?>
 	<div class="alert alert-info" role="alert">
@@ -55,4 +55,4 @@
 	<!-- Map -->
 	<div id="map" style="width: 100%; height: 700px;"></div>
 
-    <div class="alert alert-success" role="alert">Showing QSOs for Custom Date</div>
+    <div class="alert alert-success" role="alert">Showing QSOs for Custom Date for Active Logbook <?php echo $logbook_name ?></div>
