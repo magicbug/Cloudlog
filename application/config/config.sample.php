@@ -19,6 +19,8 @@ $config['directory'] = "logbook";
 
 $config['callbook'] = "hamqth"; // Options are hamqth or qrz
 
+$config['datadir'] = null; // default to install directory
+
 /*
 |--------------------------------------------------------------------------
 | Logbook Options

@@ -18,6 +18,8 @@ $config['app_version'] = "1.7";
 $config['directory'] = "%directory%";
 $config['callbook'] = "hamqth"; // Options are hamqth or qrz
 
+$config['datadir'] = null; // default to install directory
+
 /*
 |--------------------------------------------------------------------------
 | Logbook Options
