@@ -85,6 +85,41 @@ $(".search-results-box").hide();
     ]
   });
 
+
+$("#btn-export").on("click", function(){
+
+	var result = $('#builder').queryBuilder('getRules');
+	if (!$.isEmptyObject(result)) {
+		// Data to post
+		data = {
+			search: JSON.stringify(result, null, 2), temp: "testvar"
+		};
+
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			var a;
+			if (xhttp.readyState === 4 && xhttp.status === 200) {
+				// Trick for making downloadable link
+				a = document.createElement('a');
+				a.href = window.URL.createObjectURL(xhttp.response);
+				// Give filename you wish to download
+				a.download = "advanced_search_export.adi";
+				a.style.display = 'none';
+				document.body.appendChild(a);
+				a.click();
+			}
+		};
+		// Post data to URL which handles post request
+		xhttp.open("POST", "<?php echo site_url('search/export_to_adif');?>", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		// You should set responseType as blob for binary responses
+		xhttp.responseType = 'blob';
+		xhttp.send("search=" + JSON.stringify(result, null, 2));
+	}
+
+
+});
+
   $('#btn-get').on('click', function() {
     var result = $('#builder').queryBuilder('getRules');
     if (!$.isEmptyObject(result)) {

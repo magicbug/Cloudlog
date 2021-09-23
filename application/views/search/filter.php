@@ -27,11 +27,13 @@
 	  <div class="card-body">
 
 		<div class="card-text" id="builder"></div>
-		
+
 		<p class="card-text">
 		<button class="btn btn-primary" id="btn-get">Search</button>
 
 		<button class="btn btn-warning" id="btn-reset">Reset</button>
+
+		<button class="btn btn-primary" id="btn-export">Export to ADIF</button>
 		</p>
 
 	    	<span class="badge badge-info">Info</span> You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Search----Filter" target="_blank">search filter functions</a> in the wiki.</a>
