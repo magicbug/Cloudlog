@@ -35,6 +35,19 @@
         </ul>
       </div>
 
+      <?php
+
+      // Get Date format
+      if($this->session->userdata('user_date_format')) {
+          // If Logged in and session exists
+          $custom_date_format = $this->session->userdata('user_date_format');
+      } else {
+          // Get Default date format from /config/cloudlog.php
+          $custom_date_format = $this->config->item('qso_date_format');
+      }
+
+      ?>
+
       <div class="card-body">
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade show active" id="qso" role="tabpanel" aria-labelledby="qso-tab">
@@ -42,7 +55,7 @@
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="start_date"><?php echo $this->lang->line('general_word_date'); ?></label>
-                  <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_date'); } else { echo date('d-m-Y');}?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
+                  <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo date($custom_date_format, strtotime($this->session->userdata('start_date'))); } else { echo date($custom_date_format); }?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
                 </div>
 
                 <div class="form-group col-md-6">
@@ -51,7 +64,7 @@
                 </div>
 
                 <?php if ( $_GET['manual'] == 0 ) { ?>
-                  <input class="input_time" type="hidden" id="start_time"  name="start_time"value="<?php echo date('H:i'); ?>" />
+                  <input class="input_time" type="hidden" id="start_time" name="start_time" value="<?php echo date('H:i'); ?>" />
                   <input class="input_date" type="hidden" id="start_date" name="start_date" value="<?php echo date('d-m-Y'); ?>" />
                 <?php } ?>
               </div>
@@ -513,16 +526,7 @@
                 <td><?php echo $this->lang->line('gen_hamradio_band'); ?></td>
               </tr>
 
-              <?php
-
-			  // Get Date format
-			  if($this->session->userdata('user_date_format')) {
-				  // If Logged in and session exists
-				  $custom_date_format = $this->session->userdata('user_date_format');
-			  } else {
-				  // Get Default date format from /config/cloudlog.php
-				  $custom_date_format = $this->config->item('qso_date_format');
-			  }
+			  <?php
 
 			  $i = 0;
               foreach ($query->result() as $row) {
