@@ -88,10 +88,13 @@ class Search extends CI_Controller {
 	function run_query() {
 		$this->db->where('id', xss_clean($this->input->post('id')));
 		$sql = $this->db->get('queries')->result();
+		$sql = $sql[0]->query;
 
-		$data['results'] = $this->db->query($sql[0]->query);
+		if (stristr($sql, 'select', ) && !stristr($sql, 'delete') && !stristr($sql, 'update')) {
+			$data['results'] = $this->db->query($sql);
 
-		$this->load->view('search/search_result_ajax', $data);
+			$this->load->view('search/search_result_ajax', $data);
+		}
 	}
 
 	function save_query() {
