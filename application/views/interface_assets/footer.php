@@ -113,26 +113,26 @@ function export_search_result(){
 }
 
 function export_stored_query(id){
-		xhttp = new XMLHttpRequest();
-		xhttp.onreadystatechange = function() {
-			var a;
-			if (xhttp.readyState === 4 && xhttp.status === 200) {
-				// Trick for making downloadable link
-				a = document.createElement('a');
-				a.href = window.URL.createObjectURL(xhttp.response);
-				// Give filename you wish to download
-				a.download = "advanced_search_export.adi";
-				a.style.display = 'none';
-				document.body.appendChild(a);
-				a.click();
-			}
-		};
-		// Post data to URL which handles post request
-		xhttp.open("POST", "<?php echo site_url('search/export_stored_query_to_adif');?>", true);
-		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		// You should set responseType as blob for binary responses
-		xhttp.responseType = 'blob';
-		xhttp.send("id=" + id);
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		var a;
+		if (xhttp.readyState === 4 && xhttp.status === 200) {
+			// Trick for making downloadable link
+			a = document.createElement('a');
+			a.href = window.URL.createObjectURL(xhttp.response);
+			// Give filename you wish to download
+			a.download = "advanced_search_export.adi";
+			a.style.display = 'none';
+			document.body.appendChild(a);
+			a.click();
+		}
+	};
+	// Post data to URL which handles post request
+	xhttp.open("POST", "<?php echo site_url('search/export_stored_query_to_adif');?>", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	// You should set responseType as blob for binary responses
+	xhttp.responseType = 'blob';
+	xhttp.send("id=" + id);
 }
 
 $('#btn-save').on('click', function() {
@@ -153,7 +153,8 @@ $('#btn-save').on('click', function() {
 				if(result) {
 					$.post( "<?php echo site_url('search/save_query');?>", { search: JSON.stringify(resultquery, null, 2), description: $(".getqueryname").val() })
 						.done(function( data ) {
-							alert('Query saved!');
+							$(".alert").remove();
+							$(".card-body.main").append('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your query has been saved!</div>');
 							$('#querydropdown').append( new Option(data.description, data.id) ); // We add the saved query to the dropdown
 						});
 				}
@@ -162,11 +163,25 @@ $('#btn-save').on('click', function() {
 
 	}
 	else{
-		alert('Make a query first');
+		BootstrapDialog.show({
+			title: 'Stored Queries',
+			type: BootstrapDialog.TYPE_WARNING,
+			size: BootstrapDialog.SIZE_NORMAL,
+			cssClass: 'queries-dialog',
+			nl2br: false,
+			message: 'You need to make a query before you search!',
+			buttons: [{
+				label: 'Close',
+				action: function (dialogItself) {
+					dialogItself.close();
+				}
+			}]
+		});
 	}
 });
 
 function run_query() {
+	$(".alert").remove();
 	$(".runbutton").addClass('running');
 	$(".runbutton").prop('disabled', true);
 	let id = $('#querydropdown').val();
@@ -231,6 +246,7 @@ function edit_stored_query(id) {
 }
 
 $('#btn-edit').on('click', function() {
+	$(".alert").remove();
 	$.ajax({
 		url: base_url + 'index.php/search/get_stored_queries',
 		type: 'post',
@@ -253,6 +269,7 @@ $('#btn-edit').on('click', function() {
 });
 
 $('#btn-get').on('click', function() {
+	$(".alert").remove();
 	var result = $('#builder').queryBuilder('getRules');
 	if (!$.isEmptyObject(result)) {
 		$(".searchbutton").addClass('running');
@@ -289,7 +306,20 @@ $('#btn-get').on('click', function() {
 			});
 	}
 	else{
-		alert('Make a query first');
+		BootstrapDialog.show({
+			title: 'Stored Queries',
+			type: BootstrapDialog.TYPE_WARNING,
+			size: BootstrapDialog.SIZE_NORMAL,
+			cssClass: 'queries-dialog',
+			nl2br: false,
+			message: 'You need to make a query before you search!',
+			buttons: [{
+				label: 'Close',
+				action: function (dialogItself) {
+					dialogItself.close();
+				}
+			}]
+		});
 	}
 });
 

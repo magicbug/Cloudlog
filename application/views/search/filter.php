@@ -24,7 +24,7 @@
 	      </li>
 	    </ul>
 	  </div>
-	  <div class="card-body">
+	  <div class="card-body main">
 
 		<div class="card-text" id="builder"></div>
 
@@ -41,8 +41,8 @@
 
 
 		  <div class="form-group row">
-			  <label class="col-md-1 control-label" for="querydropdown">  Stored queries:</label>
-			  <div class="col-md-2">
+			  <label class="col-md-2 control-label" for="querydropdown">  Stored queries:</label>
+			  <div class="col-md-3">
 				  <select id="querydropdown" name="querydropdown" class="form-control custom-select-sm">
 					  <?php
 					  foreach($stored_queries as $q){
