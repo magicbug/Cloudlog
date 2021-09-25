@@ -86,15 +86,9 @@ $(".search-results-box").hide();
   });
 
 
-$("#btn-export").on("click", function(){
-
+function export_search_result(){
 	var result = $('#builder').queryBuilder('getRules');
 	if (!$.isEmptyObject(result)) {
-		// Data to post
-		data = {
-			search: JSON.stringify(result, null, 2), temp: "testvar"
-		};
-
 		xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			var a;
@@ -116,45 +110,186 @@ $("#btn-export").on("click", function(){
 		xhttp.responseType = 'blob';
 		xhttp.send("search=" + JSON.stringify(result, null, 2));
 	}
+}
 
+function export_stored_query(id){
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			var a;
+			if (xhttp.readyState === 4 && xhttp.status === 200) {
+				// Trick for making downloadable link
+				a = document.createElement('a');
+				a.href = window.URL.createObjectURL(xhttp.response);
+				// Give filename you wish to download
+				a.download = "advanced_search_export.adi";
+				a.style.display = 'none';
+				document.body.appendChild(a);
+				a.click();
+			}
+		};
+		// Post data to URL which handles post request
+		xhttp.open("POST", "<?php echo site_url('search/export_stored_query_to_adif');?>", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		// You should set responseType as blob for binary responses
+		xhttp.responseType = 'blob';
+		xhttp.send("id=" + id);
+}
 
+$('#btn-save').on('click', function() {
+	var resultquery = $('#builder').queryBuilder('getRules');
+	if (!$.isEmptyObject(resultquery)) {
+		let message = 'Description: <input class="form-control input-group-sm getqueryname">'
+
+		BootstrapDialog.confirm({
+			title: 'Query description',
+			size: BootstrapDialog.SIZE_NORMAL,
+			cssClass: 'description-dialog',
+			closable: true,
+			nl2br: false,
+			message: message,
+			btnCancelLabel: 'Cancel',
+			btnOKLabel: 'Save',
+			callback: function(result) {
+				if(result) {
+					$.post( "<?php echo site_url('search/save_query');?>", { search: JSON.stringify(resultquery, null, 2), description: $(".getqueryname").val() })
+						.done(function( data ) {
+							alert('Query saved!');
+						});
+				}
+			},
+		});
+
+	}
+	else{
+		alert('Make a query first');
+	}
 });
 
-  $('#btn-get').on('click', function() {
-    var result = $('#builder').queryBuilder('getRules');
-    if (!$.isEmptyObject(result)) {
-      //alert(JSON.stringify(result, null, 2));
+function run_query() {
+	$(".runbutton").addClass('running');
+	$(".runbutton").prop('disabled', true);
+	let id = $('#querydropdown').val();
+	$.post( "<?php echo site_url('search/run_query');?>", { id: id})
+		.done(function( data ) {
 
-      $.post( "<?php echo site_url('search/json_result');?>", { search: JSON.stringify(result, null, 2), temp: "testvar" })
-      .done(function( data ) {
-        //console.log(data)
-        //alert( "Data Loaded: " + data );
-        $('.qso').remove();
-        $(".search-results-box").show();
+			$('.exportbutton').html('<button class="btn btn-sm btn-primary" onclick="export_stored_query('+id+')">Export to ADIF</button>');
+			$('.card-body.result').empty();
+			$(".search-results-box").show();
 
-        $.each(JSON.parse(data), function(i, item) {
+			$('.card-body.result').append(data);
+			$('.table').DataTable({
+				"pageLength": 25,
+				responsive: false,
+				ordering: false,
+				"scrollY":        "400px",
+				"scrollCollapse": true,
+				"paging":         false,
+				"scrollX": true,
+				dom: 'Bfrtip',
+				buttons: [
+					'csv'
+				]
+			});
+			// change color of csv-button if dark mode is chosen
+			if (isDarkModeTheme()) {
+				$(".buttons-csv").css("color", "white");
+			}
+			$(".runbutton").removeClass('running');
+			$(".runbutton").prop('disabled', false);
+		});
+}
 
-          var band = "";
-          if(item.COL_SAT_NAME != "") {
-            band = item.COL_SAT_NAME;
-          } else {
-            band = item.COL_BAND;
-          }
-          var callsign = '<a href="javascript:displayQso(' + item.COL_PRIMARY_KEY + ');" >' + item.COL_CALL + '</a>';
-          if (item.COL_SUBMODE == '' || item.COL_SUBMODE == null) {
-            $('#results').append('<tr class="qso"><td>' + item.COL_TIME_ON + '</td><td>' + callsign + '</td><td>' + item.COL_MODE + '</td><td>' + item.COL_RST_SENT + '</td><td>' + item.COL_RST_RCVD + '</td><td>' + band + '</td><td>' + item.COL_COUNTRY + '</td><td></td></tr>');
-          }
-          else {
-            $('#results').append('<tr class="qso"><td>' + item.COL_TIME_ON + '</td><td>' + callsign + '</td><td>' + item.COL_SUBMODE + '</td><td>' + item.COL_RST_SENT + '</td><td>' + item.COL_RST_RCVD + '</td><td>' + band + '</td><td>' + item.COL_COUNTRY + '</td><td></td></tr>');
-          }
-        });
+function delete_stored_query(id) {
+	BootstrapDialog.confirm({
+		title: 'DANGER',
+		message: 'Warning! Are you sure you want delete this stored query?' ,
+		type: BootstrapDialog.TYPE_DANGER,
+		closable: true,
+		draggable: true,
+		btnOKClass: 'btn-danger',
+		callback: function(result) {
+			if(result) {
+				$.ajax({
+					url: base_url + 'index.php/search/delete_query',
+					type: 'post',
+					data: {'id': id
+					},
+					success: function(data) {
+						$(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
+						$("#query_" + id).remove(); // removes qso from table in dialog
+					}
+				});
+			}
+		}
+	});
+}
 
-      });
-    }
-    else{
-      //console.log("invalid object :");
-    }
-  });
+function edit_stored_query(id) {
+
+}
+
+$('#btn-edit').on('click', function() {
+	$.ajax({
+		url: base_url + 'index.php/search/get_stored_queries',
+		type: 'post',
+		success: function (html) {
+			BootstrapDialog.show({
+				title: 'Stored Queries',
+				size: BootstrapDialog.SIZE_WIDE,
+				cssClass: 'queries-dialog',
+				nl2br: false,
+				message: html,
+				buttons: [{
+					label: 'Close',
+					action: function (dialogItself) {
+						dialogItself.close();
+					}
+				}]
+			});
+		}
+	});
+});
+
+$('#btn-get').on('click', function() {
+	var result = $('#builder').queryBuilder('getRules');
+	if (!$.isEmptyObject(result)) {
+		$(".searchbutton").addClass('running');
+		$(".searchbutton").prop('disabled', true);
+
+		$.post( "<?php echo site_url('search/search_result');?>", { search: JSON.stringify(result, null, 2), temp: "testvar" })
+			.done(function( data ) {
+				$('.exportbutton').html('<button class="btn btn-sm btn-primary" onclick="export_search_result();">Export to ADIF</button>');
+
+				$('.card-body.result').empty();
+				$(".search-results-box").show();
+
+				$('.card-body.result').append(data);
+				$('.table').DataTable({
+					"pageLength": 25,
+					responsive: false,
+					ordering: false,
+					"scrollY":        "400px",
+					"scrollCollapse": true,
+					"paging":         false,
+					"scrollX": true,
+					dom: 'Bfrtip',
+					buttons: [
+						'csv'
+					]
+				});
+				// change color of csv-button if dark mode is chosen
+				if (isDarkModeTheme()) {
+					$(".buttons-csv").css("color", "white");
+				}
+				$(".searchbutton").removeClass('running');
+				$(".searchbutton").prop('disabled', false);
+				$("#btn-save").show();
+			});
+	}
+	else{
+		alert('Make a query first');
+	}
+});
 
   $('#btn-set').on('click', function() {
     //$('#builder').queryBuilder('setRules', rules_basic);

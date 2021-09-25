@@ -32,6 +32,7 @@ class Search extends CI_Controller {
         $this->load->model('Search_filter');
 
         $data['get_table_names'] = $this->Search_filter->get_table_columns();
+		$data['stored_queries'] = $this->Search_filter->get_stored_queries();
 
         //print_r($this->Search_filter->get_table_columns());
 
@@ -51,16 +52,31 @@ class Search extends CI_Controller {
 
     function json_result() {
           if(isset($_POST['search'])) {
-			  $result = $this->fetchQueryResult($_POST['search']);
+			  $result = $this->fetchQueryResult($_POST['search'], false);
 			  echo json_encode($result->result_array());
 		  } else {
 				echo "Noooooooob";
           }
     }
 
+	function get_stored_queries() {
+		$this->load->model('Search_filter');
+		$data['result'] = $this->Search_filter->get_stored_queries();
+		$this->load->view('search/stored_queries', $data);
+	}
+
+	function search_result() {
+		if(isset($_POST['search'])) {
+			$data['results'] = $this->fetchQueryResult($_POST['search'], false);
+			$this->load->view('search/search_result_ajax', $data);
+		} else {
+			echo "Noooooooob";
+		}
+	}
+
 	function export_to_adif() {
 		if(isset($_POST['search'])) {
-			$data['qsos'] = $this->fetchQueryResult($_POST['search']);
+			$data['qsos'] = $this->fetchQueryResult($_POST['search'], false);
 
 			$this->load->view('adif/data/exportall', $data);
 		} else {
@@ -68,7 +84,58 @@ class Search extends CI_Controller {
 		}
 	}
 
-	function fetchQueryResult($json) {
+	function export_stored_query_to_adif() {
+		$this->db->where('id', xss_clean($this->input->post('id')));
+		$sql = $this->db->get('queries')->result();
+
+		$data['qsos'] = $this->db->query($sql[0]->query);
+		$this->load->view('adif/data/exportall', $data);
+	}
+
+	function run_query() {
+		$this->db->where('id', xss_clean($this->input->post('id')));
+		$sql = $this->db->get('queries')->result();
+
+		$data['results'] = $this->db->query($sql[0]->query);
+
+		$this->load->view('search/search_result_ajax', $data);
+	}
+
+	function save_query() {
+		if(isset($_POST['search'])) {
+			$query = $this->fetchQueryResult($_POST['search'], true);
+
+			$data = array(
+				'userid' => xss_clean($this->session->userdata('user_id')),
+				'query' => $query,
+				'description' => xss_clean($_POST['description'])
+			);
+
+			$this->db->insert('queries', $data);
+
+		} else {
+			echo "Noooooooob";
+		}
+	}
+
+	function delete_query() {
+		$id = xss_clean($this->input->post('id'));
+		$this->load->model('search_filter');
+		$this->search_filter->delete_query($id);
+	}
+
+	function edit_query() {
+		$data = array(
+			'cat' => xss_clean($this->input->post('category')),
+			'title' => xss_clean($this->input->post('title')),
+			'note' => xss_clean($this->input->post('content'))
+		);
+
+		$this->db->where('id', xss_clean($this->input->post('id')));
+		$this->db->update('notes', $data);
+	}
+
+	function fetchQueryResult($json, $returnquery) {
 
 		$search_items = json_decode($json, true);
 
@@ -316,9 +383,15 @@ class Search extends CI_Controller {
 				}
 			}
 		}
+
 		$this->db->order_by('COL_TIME_ON', 'DESC');
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-		$query = $this->db->get($this->config->item('table_name'));
+
+		if ($returnquery) {
+			$query = $this->db->get_compiled_select($this->config->item('table_name'));
+		} else {
+			$query = $this->db->get($this->config->item('table_name'));
+		}
 		return $query;
 	}
 }
