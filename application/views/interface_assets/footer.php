@@ -154,6 +154,7 @@ $('#btn-save').on('click', function() {
 					$.post( "<?php echo site_url('search/save_query');?>", { search: JSON.stringify(resultquery, null, 2), description: $(".getqueryname").val() })
 						.done(function( data ) {
 							alert('Query saved!');
+							$('#querydropdown').append( new Option(data.description, data.id) ); // We add the saved query to the dropdown
 						});
 				}
 			},

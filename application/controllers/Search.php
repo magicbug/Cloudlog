@@ -54,9 +54,7 @@ class Search extends CI_Controller {
           if(isset($_POST['search'])) {
 			  $result = $this->fetchQueryResult($_POST['search'], false);
 			  echo json_encode($result->result_array());
-		  } else {
-				echo "Noooooooob";
-          }
+		  }
     }
 
 	function get_stored_queries() {
@@ -69,18 +67,13 @@ class Search extends CI_Controller {
 		if(isset($_POST['search'])) {
 			$data['results'] = $this->fetchQueryResult($_POST['search'], false);
 			$this->load->view('search/search_result_ajax', $data);
-		} else {
-			echo "Noooooooob";
 		}
 	}
 
 	function export_to_adif() {
 		if(isset($_POST['search'])) {
 			$data['qsos'] = $this->fetchQueryResult($_POST['search'], false);
-
 			$this->load->view('adif/data/exportall', $data);
-		} else {
-			echo "Noooooooob";
 		}
 	}
 
@@ -112,9 +105,9 @@ class Search extends CI_Controller {
 			);
 
 			$this->db->insert('queries', $data);
-
-		} else {
-			echo "Noooooooob";
+			$last_id = $this->db->insert_id();
+			header('Content-Type: application/json');
+			echo json_encode(array('id' => $last_id, 'description' => xss_clean($_POST['description'])));
 		}
 	}
 
