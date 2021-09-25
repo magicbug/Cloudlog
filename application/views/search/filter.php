@@ -41,9 +41,9 @@
 
 
 		  <div class="form-group row">
-			  <label class="col-md-1 control-label" for="mode">  Stored queries:</label>
+			  <label class="col-md-1 control-label" for="querydropdown">  Stored queries:</label>
 			  <div class="col-md-2">
-				  <select id="querydropdown" name="mode" class="form-control custom-select-sm">
+				  <select id="querydropdown" name="querydropdown" class="form-control custom-select-sm">
 					  <?php
 					  foreach($stored_queries as $q){
 						  echo '<option value="' . $q->id . '">'. $q->description . '</option>'."\n";

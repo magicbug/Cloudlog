@@ -216,7 +216,8 @@ function delete_stored_query(id) {
 					},
 					success: function(data) {
 						$(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
-						$("#query_" + id).remove(); // removes qso from table in dialog
+						$("#query_" + id).remove(); // removes query from table in dialog
+						$("#querydropdown option[value='"+id+"']").remove(); // removes query from dropdown
 					}
 				});
 			}
