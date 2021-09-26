@@ -78,7 +78,7 @@ class Qslprint_model extends CI_Model {
 	function open_qso_list($callsign) {
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->where('COL_CALL like "%'.$callsign.'%"');
-		$this->db->where('coalesce(COL_QSL_SENT, "") not in ("R", "Q")');
+		$this->db->where('coalesce(COL_QSL_SENT, "") not in ("R", "Q", "Y", "I")');
 		$this->db->order_by("COL_TIME_ON", "ASC");
 		$query = $this->db->get($this->config->item('table_name'));
 
