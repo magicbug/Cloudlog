@@ -10,7 +10,9 @@ class Migration_add_userid_to_station_profiles extends CI_Migration {
             'user_id BIGINT(20) DEFAULT NULL',
         );
 
-        $this->dbforge->add_column('station_profile', $fields);
+        if (!$this->db->field_exists('user_id', 'station_profile')) {
+            $this->dbforge->add_column('station_profile', $fields);
+        }
     }
 
     public function down()

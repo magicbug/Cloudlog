@@ -15,7 +15,9 @@ class Migration_add_active_station_logbook_to_user_table extends CI_Migration {
 			'active_station_logbook int(11)',
 		);
 
-		$this->dbforge->add_column('users', $fields);
+		if (!$this->db->field_exists('active_station_logbook', 'users')) {
+			$this->dbforge->add_column('users', $fields);
+		}
 	}
 
 	public function down()
