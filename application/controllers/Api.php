@@ -7,13 +7,6 @@ class API extends CI_Controller {
 	{
 	}
 
-
-	function test() {
-		$this->load->model('api_model');
-
-		echo $this->api_model->key_userid('cl61533ebc1fbfa');
-	}
-
 	/*
 		TODOs
 		- Search Callsign (Return Json)
