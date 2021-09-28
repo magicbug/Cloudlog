@@ -498,35 +498,10 @@ $(document).on('keypress',function(e) {
           $('.input_time').jclock(options);
         });
 
-        var fmt = "<?php
-		// Borrowed from ..\qso\index.php
-		// Get Date format
-        if($this->session->userdata('user_date_format')) {
-            // If Logged in and session exists
-            $custom_date_format = $this->session->userdata('user_date_format');
-        } else {
-            // Get Default date format from /config/cloudlog.php
-            $custom_date_format = $this->config->item('qso_date_format');
-        }
-		// php format string
-		$find = array('d',  // Day of month (2 digit)
-                      'm',  // Numeric month (2 digit)
-                      'M',  // Month abbreviation (3 char)
-                      'Y',  // Year (4 digit)
-                      'y'); // Year (2 digit)
-		// jclock format string
-		$replace = array('%d',  // Day of month (2 digit)
-                         '%m',  // Numeric month (2 digit)
-                         '%b',  // Month abbreviation (3 char)
-                         '%Y',  // Year (4 digit)
-                         '%y'); // Year (2 digit)
-		echo str_replace($find, $replace, $custom_date_format)
-		?>"
-
         $(function($) {
           var options = {
             utc: true,
-            format: fmt
+            format: '%d-%m-%Y'
           }
           $('.input_date').jclock(options);
         });
