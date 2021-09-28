@@ -897,11 +897,11 @@ class Logbook_model extends CI_Model {
   function get_last_qsos($num) {
 
     $CI =& get_instance();
-    $CI->load->model('Stations');
-    $station_id = $CI->Stations->find_active();
+    $CI->load->model('logbooks_model');
+    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
     //$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_STX_STRING, COL_SRX_STRING, COL_IOTA, COL_STATE, COL_GRIDSQUARE');
-    $this->db->where("station_id", $station_id);
+    $this->db->where_in('station_id', $logbooks_locations_array);
     $this->db->order_by("COL_TIME_ON", "desc");
     $this->db->limit($num);
     $query = $this->db->get($this->config->item('table_name'));
@@ -1041,11 +1041,11 @@ class Logbook_model extends CI_Model {
     /* Return QSOs over a period of days */
     function map_week_qsos($start, $end) {
         $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
         $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
-        $this->db->where("station_id", $station_id);
+        $this->db->where_in('station_id', $logbooks_locations_array);
         $this->db->order_by("COL_TIME_ON", "ASC");
         $query = $this->db->get($this->config->item('table_name'));
 
@@ -1078,14 +1078,14 @@ class Logbook_model extends CI_Model {
     /* Returns QSOs for the date sent eg 2011-09-30 */
     function map_day($date) {
         $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
         $start = $date." 00:00:00";
         $end = $date." 23:59:59";
 
         $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
-        $this->db->where("station_id", $station_id);
+        $this->db->where_in('station_id', $logbooks_locations_array);
         $this->db->order_by("COL_TIME_ON", "ASC");
         $query = $this->db->get($this->config->item('table_name'));
 
