@@ -226,9 +226,8 @@ class Logbook extends CI_Controller {
 			return false;
 
 		$CI =& get_instance();
-    	$CI->load->model('Stations');
-    	$station_id = $CI->Stations->find_active();
-
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 		if($type == "SAT") {
 			$this->db->where('COL_PROP_MODE', 'SAT');
@@ -238,7 +237,7 @@ class Logbook extends CI_Controller {
 			$this->db->where('COL_PROP_MODE !=','SAT');
 
 		}
-    	$this->db->where('station_id', $station_id);
+    	$this->db->where_in('station_id', $logbooks_locations_array);
 		$this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($gridsquare, 0, 4));
 		$this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "desc");
 		$this->db->limit(1);
