@@ -8,10 +8,10 @@
 			parent::__construct();
 		}
 
-		function update($result) {
+		function update($result, $user_id) {
 
 			$this->db->where('radio', $result['radio']);
-			$this->db->where('user_id', $this->session->userdata('user_id'));
+			$this->db->where('user_id', $user_id);
 			$query = $this->db->get('cat');
 
 			if ($query->num_rows() > 0)
@@ -31,7 +31,7 @@
 						);
 
 						$this->db->where('id', $radio_id);
-						$this->db->where('user_id', $this->session->userdata('user_id'));
+						$this->db->where('user_id', $user_id);
 						$this->db->update('cat', $data);
 					}
 				} else {
@@ -64,7 +64,7 @@
 						'uplink_freq' => $result['uplink_freq'],
 						'downlink_mode' => $result['downlink_mode'],
 						'uplink_mode' => $result['uplink_mode'],
-						'user_id' => $this->session->userdata('user_id'),
+						'user_id' => $user_id,
 					);
 				} else {
 					$data = array(
@@ -72,7 +72,7 @@
 						'frequency' => $result['frequency'],
 						'mode' => $result['mode'],
 						'timestamp' => $result['timestamp'],
-						'user_id' => $this->session->userdata('user_id'),
+						'user_id' => $user_id,
 					);
 				}
 

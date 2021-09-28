@@ -8,6 +8,12 @@ class API extends CI_Controller {
 	}
 
 
+	function test() {
+		$this->load->model('api_model');
+
+		echo $this->api_model->key_userid('cl61533ebc1fbfa');
+	}
+
 	/*
 		TODOs
 		- Search Callsign (Return Json)
@@ -476,8 +482,10 @@ class API extends CI_Controller {
 		   die();
 		}
 
+		$user_id = $this->api_model->key_userid($obj['key']);
+
 		// Store Result to Database
-		$this->cat->update($obj);
+		$this->cat->update($obj, $user_id);
 
 		// Return Message
 

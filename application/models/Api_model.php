@@ -28,6 +28,12 @@ class API_Model extends CI_Model {
     	return $query->result_array()[0];
     }
 
+	function key_userid($key) {
+    	$this->db->where('key', $key);
+    	$query = $this->db->get('api');
+
+    	return $query->result_array()[0]['user_id'];
+    }
 
     function update_key_description($key, $description) {
 
