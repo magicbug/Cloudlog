@@ -19,6 +19,8 @@ class Stations extends CI_Model {
         return $this->db->get();
 	}
 
+	// Returns ALL station profiles regardless of user logged in
+	// This is also used by LoTW sync so must not be changed.
 	function all() {
 		return $this->db->get('station_profile');
 	}
