@@ -20,7 +20,6 @@ class Stations extends CI_Model {
 	}
 
 	function all() {
-		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		return $this->db->get('station_profile');
 	}
 
