@@ -4,7 +4,7 @@ class Migration_add_queries_table extends CI_Migration
 {
 	public function up()
 	{
-		$this->db->query("create table queries (id integer not null auto_increment, query text, description text, userid integer not null, primary key (id)) ENGINE=myisam DEFAULT CHARSET=utf8;");
+		$this->db->query("create table if not exists queries (id integer not null auto_increment, query text, description text, userid integer not null, primary key (id)) ENGINE=myisam DEFAULT CHARSET=utf8;");
 	}
 
 	public function down()

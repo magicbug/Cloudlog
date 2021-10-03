@@ -120,15 +120,14 @@ class Search extends CI_Controller {
 		$this->search_filter->delete_query($id);
 	}
 
-	function edit_query() {
+	function save_edited_query() {
 		$data = array(
-			'cat' => xss_clean($this->input->post('category')),
-			'title' => xss_clean($this->input->post('title')),
-			'note' => xss_clean($this->input->post('content'))
+			'description' => xss_clean($this->input->post('description')),
 		);
 
 		$this->db->where('id', xss_clean($this->input->post('id')));
-		$this->db->update('notes', $data);
+		$this->db->where('userid', $this->session->userdata['user_id']);
+		$this->db->update('queries', $data);
 	}
 
 	function fetchQueryResult($json, $returnquery) {
