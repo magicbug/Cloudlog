@@ -1594,7 +1594,7 @@ class Logbook_model extends CI_Model {
                   $entity = $this->get_entity($record['dxcc']);
                   $dxcc = array($record['dxcc'], $entity['name']);
               } else {
-                  $dxcc = NULL;
+                  $dxcc = $this->check_dxcc_table($record['call'], $time_off);
               }
           } else {
             $dxcc = $this->check_dxcc_table($record['call'], $time_off);
@@ -1607,7 +1607,9 @@ class Logbook_model extends CI_Model {
         if(isset($record['country'])) {
             $country = $record['country'];
         } else {
-            $country = ucwords(strtolower($dxcc[1]));
+            if (isset($dxcc[1])) {
+                $country = ucwords(strtolower($dxcc[1]));
+            }
         }
 
         // RST recevied
@@ -2337,6 +2339,54 @@ class Logbook_model extends CI_Model {
       }
     }
 
+    public function loadCallBook($callsign, $use_fullname=false)
+    {
+        $callbook = null;
+        try {
+            if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
+                // Lookup using QRZ
+                $this->load->library('qrz');
+
+                if (!$this->session->userdata('qrz_session_key')) {
+                    $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+                    $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+                }
+
+
+
+                $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
+
+                // if we got nothing, it's probably because our session key is invalid, try again
+                if (!isset($callbook['callsign']))
+                {
+                    $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+                    $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+                    $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
+                }
+            }
+
+            if ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
+                // Load the HamQTH library
+                $this->load->library('hamqth');
+
+                if (!$this->session->userdata('hamqth_session_key')) {
+                    $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+                    $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+                }
+
+                $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+
+                // If HamQTH session has expired, start a new session and retry the search.
+                if ($callbook['error'] == "Session does not exist or expired") {
+                    $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+                    $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+                    $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+                }
+            }
+        } finally {
+            return $callbook;
+        }
+    }
 
     public function update_all_station_ids() {
 
@@ -2464,4 +2514,6 @@ function validateADIFDate($date, $format = 'Ymd')
   $d = DateTime::createFromFormat($format, $date);
   return $d && $d->format($format) == $date;
 }
+
+
 ?>
