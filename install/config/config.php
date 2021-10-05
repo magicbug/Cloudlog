@@ -47,15 +47,6 @@ $config['qrz_username'] = "";
 $config['qrz_password'] = "";
 $config['use_fullname'] = false;
 
-
-/*
-|--------------------------------------------------------------------------
-| Are we running this on a personal server?  If we are, GDPR laws
-| prevent us from storing personal information.
-|
-*/
-$config['personal'] = false;
-
 /*
 |--------------------------------------------------------------------------
 | HamQTH Login Options
