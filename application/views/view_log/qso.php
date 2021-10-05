@@ -144,23 +144,18 @@
                     </tr>
                     <?php } ?>
 
-<<<<<<< HEAD
-                    <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
-=======
                     <?php if($row->COL_CNTY != null && $row->COL_CNTY != ",") { ?>
                         <tr>
                             <td>USA County:</td>
                             <td><?php echo $row->COL_CNTY; ?></td>
                         </tr>
                     <?php } ?>
->>>>>>> 9e058dac9a7454cebd80396e5de94ae445eed096
 
-                        <?php if($row->COL_NAME != null) { ?>
+                    <?php if($row->COL_NAME != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('general_word_name'); ?></td>
                         <td><?php echo $row->COL_NAME; ?></td>
                     </tr>
-                    <?php } ?>
                     <?php } ?>
 
                     <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
