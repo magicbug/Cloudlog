@@ -90,7 +90,7 @@ class Search extends CI_Controller {
 		$sql = $this->db->get('queries')->result();
 		$sql = $sql[0]->query;
 
-		if (stristr($sql, 'select', ) && !stristr($sql, 'delete') && !stristr($sql, 'update')) {
+		if (stristr($sql, 'select') && !stristr($sql, 'delete') && !stristr($sql, 'update')) {
 			$data['results'] = $this->db->query($sql);
 
 			$this->load->view('search/search_result_ajax', $data);
