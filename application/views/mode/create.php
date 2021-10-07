@@ -19,7 +19,7 @@
 
 		<?php echo validation_errors(); ?>
 
-		<form method="post" name="create_profile">
+		<form>
 		<div class="form-group">
 		    <label for="modeInput">ADIF Mode</label>
 		    <input type="text" class="form-control" name="mode" id="modeInput" aria-describedby="modeInputHelp" required>
@@ -51,7 +51,7 @@
 		    <small id="activeInputHelp" class="form-text text-muted">Set to active if to be listed in Modes-list</small>
 		  </div>
 
-			<button onclick="createMode(this.form);" class="btn btn-primary"><i class="fas fa-plus-square"></i> Create mode</button>
+			<button type="button" onclick="createMode(this.form);" class="btn btn-primary"><i class="fas fa-plus-square"></i> Create mode</button>
 
 		</form>
 </div>
