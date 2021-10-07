@@ -132,7 +132,7 @@
 
 							<div style="display:none" class="form-group col-md-2 gridsquares">
 								<label for="exch_gridsquare_s">Gridsquare (S)</label>
-								<input disabled type="text" class="form-control form-control-sm" name="exch_gridsquare_s" id="exch_gridsquare_s" value="<?php echo strtoupper($_SESSION['user_locator']) ?>">
+								<input disabled type="text" class="form-control form-control-sm" name="exch_gridsquare_s" id="exch_gridsquare_s" value="<?php echo $my_gridsquare;?>">
 							</div>
 
                             <div class="form-group col-md-1">
