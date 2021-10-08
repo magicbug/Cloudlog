@@ -19,26 +19,43 @@ function distPlot(form) {
 			if (tmp.ok == 'OK') {
 				if (!($('#information').length > 0))
 					$("#distances_div").append('<div id="information"></div><div id="graphcontainer" style="height: 600px; margin: 0 auto"></div>');
+				var color = ifDarkModeThemeReturn('white', 'grey');
 				var options = {
 					chart: {
 						type: 'column',
 						zoomType: 'xy',
-						renderTo: 'graphcontainer'
+						renderTo: 'graphcontainer',
+						backgroundColor: getBodyBackground()
 					},
 					title: {
-						text: 'Distance Distribution'
+						text: 'Distance Distribution',
+						style: {
+							color: color
+						}
 					},
 					xAxis: {
 						categories: [],
 						crosshair: true,
 						type: "category",
 						min:0,
-						max:100
-
+						max:100,
+						labels: {
+							style: {
+								color: color
+							}
+						}
 					},
 					yAxis: {
 						title: {
-							text: '# QSOs'
+							text: '# QSOs',
+							style: {
+								color: color
+							}
+						},
+						labels: {
+							style: {
+								color: color
+							}
 						}
 					},
 					navigator: {
@@ -47,6 +64,9 @@ function distPlot(form) {
 							labels: {
 								formatter: function() {
 									return this.value * '50' + ' ' + tmp.unit;
+								},
+								style: {
+									color: color
 								}
 							}
 						}
@@ -63,6 +83,11 @@ function distPlot(form) {
 							}
 						}
 					},
+					legend: {
+						itemStyle: {
+							color: color
+						}
+					},
 					series: []
 				};
 				var myComments=[];
@@ -77,7 +102,6 @@ function distPlot(form) {
 					options.xAxis.categories.push(this.dist);
 					series.name = 'Number of QSOs';
 					series.data.push(this.count);
-
 				});
 
 				options.series.push(series);

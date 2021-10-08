@@ -1,5 +1,6 @@
 <div class="table-responsive">
-    <table class="table table-striped table-hover">
+	<table style="width:100%" class="table table-sm tablewas table-bordered table-hover table-striped table-condensed text-center">
+		<thead>
         <tr class="titles">
             <td><?php echo $this->lang->line('general_word_date'); ?></td>
             <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
@@ -87,8 +88,10 @@
                 <td></td>
             <?php } ?>
         </tr>
-
+		</thead>
+		<tbody>
         <?php  $i = 0;  foreach ($results->result() as $row) { ?>
+
             <?php
                 // Get Date format
                 if($this->session->userdata('user_date_format')) {
@@ -243,7 +246,7 @@
             <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td>
                     <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="btn btn-sm btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-cog"></i>
                         </a>
 
@@ -273,36 +276,7 @@
             <?php } ?>
             </tr>
             <?php $i++; } ?>
-
+			</tbody>
     </table>
 
-    <?php if (isset($this->pagination)){ ?>
-        <?php
-        $config['full_tag_open'] = '<ul class="pagination">';
-        $config['full_tag_close'] = '</ul>';
-        $config['attributes'] = ['class' => 'page-link'];
-        $config['first_link'] = false;
-        $config['last_link'] = false;
-        $config['first_tag_open'] = '<li class="page-item">';
-        $config['first_tag_close'] = '</li>';
-        $config['prev_link'] = '&laquo';
-        $config['prev_tag_open'] = '<li class="page-item">';
-        $config['prev_tag_close'] = '</li>';
-        $config['next_link'] = '&raquo';
-        $config['next_tag_open'] = '<li class="page-item">';
-        $config['next_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li class="page-item">';
-        $config['last_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
-        $config['cur_tag_close'] = '<span class="sr-only">(current)</span></a></li>';
-        $config['num_tag_open'] = '<li class="page-item">';
-        $config['num_tag_close'] = '</li>';
-        $this->pagination->initialize($config);
-        ?>
-
-        <?php echo $this->pagination->create_links(); ?>
-
-    <?php } ?>
-
-</div>
 </div>

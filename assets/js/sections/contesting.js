@@ -2,19 +2,11 @@
 $("#callsign").focus();
 
 // Init serial sent as 1 when loading page
-$("#exch_sent").val(1);
+$("#exch_serial_s").val(1);
 
 $( document ).ready(function() {
     restoreContestSession();
     setRst($("#mode").val());
-
-    // Check to see what serial type is selected and set validation
-    if($('#serial').is(':checked')) { 
-        set_serial_number_input_validation();
-    }
-    if($('#other').is(':checked')) { 
-        set_other_input_validation();
-    }
 });
 
 // This erases the contest logging session which is stored in localStorage
@@ -23,18 +15,29 @@ function reset_contest_session() {
     $('.callsign-suggestions').text("");
     $('#callsign').val("");
     $('#comment').val("");
-    $('#exch_sent').val("1");
+
+	$("#exch_serial_s").val("1");
+	$("#exch_serial_r").val("");
+    $('#exch_sent').val("");
     $('#exch_recv').val("");
+	$("#exch_gridsquare_r").val("");
+	$("#exch_gridsquare_s").val("");
+
     $("#callsign").focus();
     setRst($("#mode").val());
-    $("#serial").prop("checked", true);
+	$("#exchangetype").val("None");
     $("#contestname").val("Other").change();
     $(".contest_qso_table_contents").empty();
 
     localStorage.removeItem("contestid");
     localStorage.removeItem("exchangetype");
-    localStorage.removeItem("exchangesent");
     localStorage.removeItem("qso");
+	localStorage.removeItem("exchangereceived");
+	localStorage.removeItem("exchangesent");
+	localStorage.removeItem("serialreceived");
+	localStorage.removeItem("serialsent");
+	localStorage.removeItem("gridsquarereceived");
+	localStorage.removeItem("gridsquaresent");
 }
 
 // Storing the contestid in contest session
@@ -43,10 +46,9 @@ $('#contestname').change(function() {
 });
 
 // Storing the exchange type in contest session
-$('input[type=radio][name=exchangeradio]').change(function() {
-    localStorage.setItem("exchangetype", $('input[name=exchangeradio]:checked', '#qso_input').val());
+$('#exchangetype').change(function() {
+    localStorage.setItem("exchangetype", $('#exchangetype').val());
 });
-
 
 // realtime clock
 $(function($) {
@@ -83,7 +85,7 @@ $(function() {
     });
 });
 
-// Here we capture keystrokes fo execute functions
+// Here we capture keystrokes to execute functions
 document.onkeyup = function(e) {
     // ALT-W wipe
     if (e.altKey && e.which == 87) {
@@ -96,15 +98,61 @@ document.onkeyup = function(e) {
         logQso();
     } else if (e.which == 27) {
         reset_log_fields();
-        // Space to jump to either callsign or sent exchange
+        // Space to jump to either callsign or the various exchanges
     } else if (e.which == 32) {
-        if ($(document.activeElement).attr("id") == "callsign") {
-            $("#exch_recv").focus();
-            return false;
-        } else if ($(document.activeElement).attr("id") == "exch_recv") {
-            $("#callsign").focus();
-            return false;
-        }
+		var exchangetype = $("#exchangetype").val();
+	 	if (exchangetype == 'Exchange') {
+			if ($(document.activeElement).attr("id") == "callsign") {
+				$("#exch_recv").focus();
+				return false;
+			} else if ($(document.activeElement).attr("id") == "exch_recv") {
+				$("#callsign").focus();
+				return false;
+			}
+		}
+		else if (exchangetype == 'Serial') {
+			if ($(document.activeElement).attr("id") == "callsign") {
+				$("#exch_serial_r").focus();
+				return false;
+			} else if ($(document.activeElement).attr("id") == "exch_serial_r") {
+				$("#callsign").focus();
+				return false;
+			}
+		}
+		else if (exchangetype == 'Serialexchange') {
+			if ($(document.activeElement).attr("id") == "callsign") {
+				$("#exch_serial_r").focus();
+				return false;
+			} else if ($(document.activeElement).attr("id") == "exch_serial_r") {
+				$("#exch_recv").focus();
+				return false;
+			} else if ($(document.activeElement).attr("id") == "exch_recv") {
+				$("#callsign").focus();
+				return false;
+			}
+		}
+		else if (exchangetype == 'Serialgridsquare') {
+			if ($(document.activeElement).attr("id") == "callsign") {
+				$("#exch_serial_r").focus();
+				return false;
+			} else if ($(document.activeElement).attr("id") == "exch_serial_r") {
+				$("#exch_gridsquare_r").focus();
+				return false;
+			} else if ($(document.activeElement).attr("id") == "exch_gridsquare_r") {
+				$("#callsign").focus();
+				return false;
+			}
+		}
+		else if (exchangetype == 'Gridsquare') {
+			if ($(document.activeElement).attr("id") == "callsign") {
+				$("#exch_gridsquare_r").focus();
+				return false;
+			} else if ($(document.activeElement).attr("id") == "exch_gridsquare_r") {
+				$("#callsign").focus();
+				return false;
+			}
+		}
+
     }
 
 };
@@ -129,6 +177,8 @@ function reset_log_fields() {
     $('#callsign').val("");
     $('#comment').val("");
     $('#exch_recv').val("");
+	$('#exch_serial_r').val("");
+	$('#exch_gridsquare_r').val("");
     $("#callsign").focus();
     setRst($("#mode").val());
 }
@@ -163,11 +213,12 @@ if ($('#frequency').val() == "")
 }
 
 /* on mode change */
-$('.mode').change(function() {
+$('#mode').change(function() {
     $.get('qso/band_to_freq/' + $('#band').val() + '/' + $('.mode').val(), function(result) {
         $('#frequency').val(result);
         $('#frequency_rx').val("");
     });
+	setRst($("#mode").val());
 });
 
 /* Calculate Frequency */
@@ -179,34 +230,225 @@ $('#band').change(function() {
     });
 });
 
-// Change Serial Validation when selected
-$('#serial').change(function() {
-    if($('#serial').is(':checked')) { 
-        set_serial_number_input_validation();
-    }
+$('#exchangetype').change(function(){
+	var exchangetype = $("#exchangetype").val();
+	setExchangetype(exchangetype);
 });
 
-// Change other serial type when selected
-$('#other').change(function() {
-    if($('#other').is(':checked')) { 
-        set_other_input_validation();
-    }
-});
-
-/*
-    Function: set_serial_number_input_validation
-    Job: This sets the field input to number for validation
-*/
-function set_serial_number_input_validation() {
-    $('#exch_sent').attr('type', 'number');
-    $('#exch_recv').attr('type', 'number');
+function setExchangetype(exchangetype) {
+	if (exchangetype == 'None') {
+		$(".exchanger").hide();
+		$(".exchanges").hide();
+		$(".serials").hide();
+		$(".serialr").hide();
+		$(".gridsquarer").hide();
+		$(".gridsquares").hide();
+	}
+	else if (exchangetype == 'Exchange') {
+		$(".exchanger").show();
+		$(".exchanges").show();
+		$(".serials").hide();
+		$(".serialr").hide();
+		$(".gridsquarer").hide();
+		$(".gridsquares").hide();
+	}
+	else if (exchangetype == 'Serial') {
+		$(".exchanger").hide();
+		$(".exchanges").hide();
+		$(".serials").show();
+		$(".serialr").show();
+		$(".gridsquarer").hide();
+		$(".gridsquares").hide();
+	}
+	else if (exchangetype == 'Serialexchange') {
+		$(".exchanger").show();
+		$(".exchanges").show();
+		$(".serials").show();
+		$(".serialr").show();
+		$(".gridsquarer").hide();
+		$(".gridsquares").hide();
+	}
+	else if (exchangetype == 'Serialgridsquare') {
+		$(".exchanger").hide();
+		$(".exchanges").hide();
+		$(".serials").show();
+		$(".serialr").show();
+		$(".gridsquarer").show();
+		$(".gridsquares").show();
+	}
+	else if (exchangetype == 'Gridsquare') {
+		$(".exchanger").hide();
+		$(".exchanges").hide();
+		$(".serials").hide();
+		$(".serialr").hide();
+		$(".gridsquarer").show();
+		$(".gridsquares").show();
+	}
 }
 
 /*
-    Function: set_other_input_validation
-    Job: This sets the field input to text for validation
-*/
-function set_other_input_validation() {
-    $('#exch_sent').attr('type', 'text');
-    $('#exch_recv').attr('type', 'text');
+	Function: logQso
+	Job: this handles the logging done in the contesting module.
+ */
+function logQso() {
+	if ($("#callsign").val().length > 0) {
+
+		$('.callsign-suggestions').text("");
+
+		var table = $('.qsotable').DataTable();
+		var gridsquare = $("#exch_gridsquare_r").val();
+		var vucc = '';
+
+		if (gridsquare.indexOf(',') != -1) {
+			vucc = gridsquare;
+			gridsquare = '';
+		}
+
+		var data = [[
+			$("#start_date").val()+ ' ' + $("#start_time").val(),
+			$("#callsign").val().toUpperCase(),
+			$("#band").val(),
+			$("#mode").val(),
+			$("#rst_sent").val(),
+			$("#rst_recv").val(),
+			$("#exch_sent").val(),
+			$("#exch_recv").val(),
+			$("#exch_serial_s").val(),
+			$("#exch_serial_r").val(),
+			gridsquare,
+			vucc,
+		]];
+
+		table.rows.add(data).draw();
+
+		var formdata = new FormData(document.getElementById("qso_input"));
+		$.ajax({
+			url: base_url + 'index.php/qso/saveqso',
+			type: 'post',
+			data: formdata,
+			processData: false,
+			contentType: false,
+			enctype: 'multipart/form-data',
+			success: function (html) {
+				if (localStorage.getItem("qso") == null) {
+					localStorage.setItem("qso", $("#start_date").val()+ ' ' + $("#start_time").val() + ',' + $("#callsign").val().toUpperCase() + ',' + $("#contestname").val());
+				}
+
+				$('#name').val("");
+
+				$('#callsign').val("");
+				$('#comment').val("");
+				$('#exch_recv').val("");
+				$('#exch_gridsquare_r').val("");
+				$('#exch_serial_r').val("");
+				var exchangetype = $("#exchangetype").val();
+				if (exchangetype == "Serial" || exchangetype == 'Serialexchange' || exchangetype == 'Serialgridsquare') {
+					$("#exch_serial_s").val(+$("#exch_serial_s").val() + 1);
+				}
+				$("#callsign").focus();
+
+				// Store contest session
+				localStorage.setItem("contestid", $("#contestname").val());
+				localStorage.setItem("exchangetype", $("#exchangetype").val());
+				localStorage.setItem("exchangereceived", $("#exch_recv").val());
+				localStorage.setItem("exchangesent", $("#exch_sent").val());
+				localStorage.setItem("serialreceived", $("#exch_serial_r").val());
+				localStorage.setItem("serialsent", $("#exch_serial_s").val());
+				localStorage.setItem("gridsquarereceived", $("#exch_gridsquare_r").val());
+				localStorage.setItem("gridsquaresent", $("#exch_gridsquare_s").val());
+			}
+		});
+	}
+}
+
+// We are restoring the settings in the contest logging form here
+function restoreContestSession() {
+	var contestname = localStorage.getItem("contestid");
+
+	if (contestname != null) {
+		$("#contestname").val(contestname);
+	}
+
+	var exchangetype = localStorage.getItem("exchangetype");
+
+	if (exchangetype != null) {
+		$("#exchangetype").val(exchangetype);
+		setExchangetype(exchangetype);
+	}
+
+	var exchangereceived = localStorage.getItem("exchangereceived");
+	if (exchangereceived != null) {
+		$("#exch_recv").val(exchangereceived);
+	}
+
+	var exchangesent = localStorage.getItem("exchangesent");
+	if (exchangesent != null) {
+		$("#exch_sent").val(exchangesent);
+	}
+
+	var serialreceived = localStorage.getItem("serialreceived");
+	if (serialreceived != null) {
+		$("#exch_serial_r").val(serialreceived);
+	}
+
+	var serialsent = localStorage.getItem("serialsent");
+	if (serialsent != null) {
+		$("#exch_serial_s").val(serialsent);
+	}
+
+	var gridsquarereceived = localStorage.getItem("gridsquarereceived");
+	if (gridsquarereceived != null) {
+		$("#exch_gridsquare_r").val(gridsquarereceived);
+	}
+
+	var gridsquaresent = localStorage.getItem("gridsquaresent");
+	if (gridsquaresent != null) {
+		$("#exch_gridsquare_s").val(gridsquaresent);
+	}
+
+	if (localStorage.getItem("qso") != null) {
+		var qsodata = localStorage.getItem("qso");
+		$.ajax({
+			url: base_url + 'index.php/contesting/getSessionQsos',
+			type: 'post',
+			data: {'qso': qsodata,},
+			success: function (html) {
+				var mode = '';
+
+				$.each(html, function(){
+					if (this.col_submode == null || this.col_submode == '') {
+						mode = this.col_mode;
+					} else {
+						mode = this.col_submode;
+					}
+
+					$(".qsotable tbody").prepend('<tr>' +
+						'<td>'+ this.col_time_on + '</td>' +
+						'<td>'+ this.col_call + '</td>' +
+						'<td>'+ this.col_band + '</td>' +
+						'<td>'+ mode + '</td>' +
+						'<td>'+ this.col_rst_sent + '</td>' +
+						'<td>'+ this.col_rst_rcvd + '</td>' +
+						'<td>'+ this.col_stx_string + '</td>' +
+						'<td>'+ this.col_srx_string + '</td>' +
+						'<td>'+ this.col_stx + '</td>' +
+						'<td>'+ this.col_srx + '</td>' +
+						'<td>'+ this.col_gridsquare + '</td>' +
+						'<td>'+ this.col_vucc_grids + '</td>' +
+						'</tr>');
+				});
+				if (!$.fn.DataTable.isDataTable('.qsotable')) {
+					$('.qsotable').DataTable({
+						"pageLength": 25,
+						responsive: false,
+						"scrollY":        "400px",
+						"scrollCollapse": true,
+						"paging":         false,
+						"scrollX": true,
+						"order": [[ 0, "desc" ]]
+					});
+				}
+			}
+		});
+	}
 }

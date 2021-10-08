@@ -27,14 +27,19 @@ function plotTimeplotterChart(tmp) {
 	$("#container").remove();
 	$("#info").remove();
 	$("#timeplotter_div").append('<p id="info">' + tmp.qsocount + ' contacts were plotted.</p><div id="container" style="height: 600px;"></div>');
+	var color = ifDarkModeThemeReturn('white', 'grey');
 	var options = {
 		chart: {
 			type: 'column',
 			zoomType: 'xy',
-			renderTo: 'container'
+			renderTo: 'container',
+			backgroundColor: getBodyBackground()
 		},
 		title: {
-			text: 'Time Distribution'
+			text: 'Time Distribution',
+			style: {
+				color: color
+			}
 		},
 		xAxis: {
 			categories: [],
@@ -42,10 +47,23 @@ function plotTimeplotterChart(tmp) {
 			type: "category",
 			min:0,
 			max:47,
+			labels: {
+				style: {
+					color: color
+				}
+			}
 		},
 		yAxis: {
 			title: {
-				text: '# QSOs'
+				text: '# QSOs',
+				style: {
+					color: color
+				}
+			},
+			labels: {
+				style: {
+					color: color
+				}
 			}
 		},
 		rangeSelector: {
@@ -58,6 +76,11 @@ function plotTimeplotterChart(tmp) {
 						"<br />Callsign(s) worked (max 5): " + myComments[this.point.x] +
 						"<br />Number of QSOs: <strong>" + series.data[this.point.x] + "</strong>";
 				}
+			}
+		},
+		legend: {
+			itemStyle: {
+				color: color
 			}
 		},
 		series: []

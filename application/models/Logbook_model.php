@@ -23,18 +23,11 @@ class Logbook_model extends CI_Model {
     }
 
     // Contest exchange, need to separate between serial and other type of exchange
-    if($this->input->post('exchangeradio')) {
-        if($this->input->post('exchangeradio') == "serial") {
-            $srx = $this->input->post('exch_recv');
-            $stx = $this->input->post('exch_sent');
-            $srx_string = null;
-            $stx_string = null;
-        } else {
-            $srx = null;
-            $stx = null;
-            $srx_string = $this->input->post('exch_recv');
-            $stx_string = $this->input->post('exch_sent');
-        }
+    if($this->input->post('exchangetype')) {
+		$srx_string = $this->input->post('exch_recv');
+		$stx_string = $this->input->post('exch_sent');
+		$srx = $this->input->post('exch_serial_r');
+		$stx = $this->input->post('exch_serial_s');
     } else {
         $srx_string = null;
         $stx_string = null;
@@ -162,7 +155,7 @@ class Logbook_model extends CI_Model {
             'COL_SIG' => trim($this->input->post('sig')),
             'COL_SIG_INFO' => trim($this->input->post('sig_info')),
             'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
-	          'COL_NOTES' => $this->input->post('notes'),
+			'COL_NOTES' => $this->input->post('notes'),
     );
 
     $station_id = $this->input->post('station_profile');
@@ -494,6 +487,12 @@ class Logbook_model extends CI_Model {
       $srx_string = null;
     }
 
+	if (stristr($this->input->post('usa_county'), ',')) {
+		$uscounty = $this->input->post('usa_county');
+	} else {
+		$uscounty = $this->input->post('usa_state') .",".$this->input->post('usa_county');
+	}
+
     $data = array(
        'COL_TIME_ON' => $this->input->post('time_on'),
        'COL_TIME_OFF' => $this->input->post('time_off'),
@@ -543,7 +542,7 @@ class Logbook_model extends CI_Model {
        'station_id' => $this->input->post('station_profile'),
        'COL_OPERATOR' => $this->input->post('operator_callsign'),
        'COL_STATE' =>$this->input->post('usa_state'),
-       'COL_CNTY' =>$this->input->post('usa_state') .",".$this->input->post('usa_county'),
+       'COL_CNTY' => $uscounty
     );
 
     if ($this->exists_qrz_api_key($data['station_id'])) {
@@ -802,23 +801,21 @@ class Logbook_model extends CI_Model {
 				COL_SAT_MODE,
 				COL_QSL_RCVD,
 				COL_COMMENT,
-				(CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) AS COL_ROUTING,
-				ADIF,
-				ENTITY
-				FROM '.$this->config->item('table_name').', dxcc_prefixes, station_profile
-				WHERE
-				COL_QSL_SENT in (\'R\', \'Q\')
-				and (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) like CONCAT(dxcc_prefixes.call,\'%\')
-				and (end is null or end > now())
-				and ' . $this->config->item('table_name') . '.station_id = station_profile.station_id';
+				(select adif from dxcc_prefixes where  (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) like concat(dxcc_prefixes.`call`,\'%\') order by end limit 1) as ADIF,
+				(select entity from dxcc_prefixes where  (CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) like concat(dxcc_prefixes.`call`,\'%\') order by end limit 1) as ENTITY,
+       			(CASE WHEN COL_QSL_VIA != \'\' THEN COL_QSL_VIA ELSE COL_CALL END) AS COL_ROUTING
+			FROM '.$this->config->item('table_name').' thcv
+				join station_profile on thcv.station_id = station_profile.station_id
+			WHERE
+				COL_QSL_SENT in (\'R\', \'Q\')';
 
     if ($station_id2 == NULL) {
-    	$sql .= ' and ' . $this->config->item('table_name') . '.station_id = ' . $station_id;
-	} else {
-		$sql .= ' and ' . $this->config->item('table_name') . '.station_id = ' . $station_id2;
+    	$sql .= ' and thcv.station_id = ' . $station_id;
+	} else if ($station_id2 != 'All') {
+		$sql .= ' and thcv.station_id = ' . $station_id2;
 	}
 
-	$sql .= ' ORDER BY adif, col_routing';
+	$sql .= ' ORDER BY ADIF, COL_ROUTING';
 
     $query = $this->db->query($sql);
     return $query;
@@ -1667,7 +1664,7 @@ class Logbook_model extends CI_Model {
                   $entity = $this->get_entity($record['dxcc']);
                   $dxcc = array($record['dxcc'], $entity['name']);
               } else {
-                  $dxcc = NULL;
+                  $dxcc = $this->check_dxcc_table($record['call'], $time_off);
               }
           } else {
             $dxcc = $this->check_dxcc_table($record['call'], $time_off);
@@ -1680,7 +1677,9 @@ class Logbook_model extends CI_Model {
         if(isset($record['country'])) {
             $country = $record['country'];
         } else {
-            $country = ucwords(strtolower($dxcc[1]));
+            if (isset($dxcc[1])) {
+                $country = ucwords(strtolower($dxcc[1]));
+            }
         }
 
         // RST recevied
@@ -2410,6 +2409,54 @@ class Logbook_model extends CI_Model {
       }
     }
 
+    public function loadCallBook($callsign, $use_fullname=false)
+    {
+        $callbook = null;
+        try {
+            if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
+                // Lookup using QRZ
+                $this->load->library('qrz');
+
+                if (!$this->session->userdata('qrz_session_key')) {
+                    $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+                    $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+                }
+
+
+
+                $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
+
+                // if we got nothing, it's probably because our session key is invalid, try again
+                if (!isset($callbook['callsign']))
+                {
+                    $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+                    $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+                    $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
+                }
+            }
+
+            if ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
+                // Load the HamQTH library
+                $this->load->library('hamqth');
+
+                if (!$this->session->userdata('hamqth_session_key')) {
+                    $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+                    $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+                }
+
+                $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+
+                // If HamQTH session has expired, start a new session and retry the search.
+                if ($callbook['error'] == "Session does not exist or expired") {
+                    $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+                    $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+                    $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+                }
+            }
+        } finally {
+            return $callbook;
+        }
+    }
 
     public function update_all_station_ids() {
 
@@ -2537,4 +2584,6 @@ function validateADIFDate($date, $format = 'Ymd')
   $d = DateTime::createFromFormat($format, $date);
   return $d && $d->format($format) == $date;
 }
+
+
 ?>

@@ -7,8 +7,9 @@
 */
 
 .leaflet-tile {
-	filter: brightness(0.7) grayscale(0.6) !important;
+	filter: invert() hue-rotate(180deg) sepia(100%) hue-rotate(180deg) !important;
 }
+
 path.grid-rectangle {
 	stroke: rgba(200, 200, 200, 0.5);
 }
@@ -19,8 +20,8 @@ span.grid-text>font {
 }
 
 path.grid-confirmed {
-	fill: rgba(144, 238, 144, 0.3) !important;
-	stroke: rgba(144, 238, 144, 0.3) !important;
+	fill: rgba(144, 238, 144, 0.4) !important;
+	stroke: rgba(144, 238, 144, 0.4) !important;
 }
 
 path.grid-worked {

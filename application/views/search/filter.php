@@ -24,17 +24,41 @@
 	      </li>
 	    </ul>
 	  </div>
-	  <div class="card-body">
+	  <div class="card-body main">
 
 		<div class="card-text" id="builder"></div>
-		
+
 		<p class="card-text">
-		<button class="btn btn-primary" id="btn-get">Search</button>
+		<button class="btn btn-sm btn-primary ld-ext-right searchbutton" id="btn-get">Search<div class="ld ld-ring ld-spin"></div></button>
 
-		<button class="btn btn-warning" id="btn-reset">Reset</button>
+		<button class="btn btn-sm btn-warning" id="btn-reset">Reset</button>
 		</p>
+	  <p>
+		<button style="display:none;" class="btn btn-sm btn-primary" id="btn-save">Save query</button>
 
-	    	<span class="badge badge-info">Info</span> You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Search----Filter" target="_blank">search filter functions</a> in the wiki.</a>
+		  <?php if ($stored_queries) { ?>
+			<button class="btn btn-sm btn-primary" id="btn-edit">Edit queries</button></p>
+
+
+		  <div class="form-group row">
+			  <label class="col-md-2 control-label" for="querydropdown">  Stored queries:</label>
+			  <div class="col-md-3">
+				  <select id="querydropdown" name="querydropdown" class="form-control custom-select-sm">
+					  <?php
+					  foreach($stored_queries as $q){
+						  echo '<option value="' . $q->id . '">'. $q->description . '</option>'."\n";
+					  }
+					  ?>
+				  </select>
+			  </div>
+			  <button class="btn btn-sm btn-primary ld-ext-right runbutton" onclick="run_query()">Run Query<div class="ld ld-ring ld-spin"></div></button>
+		  </div>
+
+			<?php
+		  }
+		  ?>
+
+	    	<div style="display:none;"><span  class="badge badge-info">Info</span> You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Search----Filter" target="_blank">search filter functions</a> in the wiki.</a></div>
 	    </p>
 
 	  </div>
@@ -45,24 +69,9 @@
 	<!-- Search Results here -->
 	<div class="card search-results-box">
 	  <div class="card-header">
-	    Search Results
+	    Search Results:  <div class="exportbutton"><button class="btn btn-sm btn-primary" id="btn-export">Export to ADIF</button></div>
 	  </div>
-	  <div class="card-body">
-
-		<div class="table-responsive">
-			<table id="results" class="table table-striped table-hover">
-				<tr class="titles">
-					<td>Date/Time</td>
-					<td>Call</td>
-					<td>Mode</td>
-					<td>Sent</td>
-					<td>Recv'd</td>
-					<td>Band</td>
-					<td>Country</td>
-					<td></td>
-				</tr>
-	    	</table>
-	    </div>
+	  <div class="card-body result">
 
 	  </div>
 	</div>

@@ -25,7 +25,7 @@ class adif_data extends CI_Model {
 
 		if ($station_id == NULL) {
 			$this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
-		} else {
+		} else if ($station_id != 'All') {
 			$this->db->where($this->config->item('table_name').'.station_id', $station_id);
 		}
 

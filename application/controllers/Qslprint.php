@@ -35,8 +35,8 @@ class QSLPrint extends CI_Controller {
 		// Set memory limit to unlimited to allow heavy usage
 		ini_set('memory_limit', '-1');
 
-		if ($this->uri->segment(3) == 'All') {
-			$station_id = NULL;
+		if ($this->uri->segment(3) == 'all') {
+			$station_id = 'All';
 		} else {
 			$station_id = $this->security->xss_clean($this->uri->segment(3));
 		}
@@ -53,8 +53,8 @@ class QSLPrint extends CI_Controller {
 		// Set memory limit to unlimited to allow heavy usage
 		ini_set('memory_limit', '-1');
 
-		if ($this->uri->segment(3) == 'All') {
-			$station_id = NULL;
+		if ($this->uri->segment(3) == 'all') {
+			$station_id = 'All';
 		} else {
 			$station_id = $this->security->xss_clean($this->uri->segment(3));
 		}
@@ -115,8 +115,8 @@ class QSLPrint extends CI_Controller {
 
 	function qsl_printed() {
 
-		if ($this->uri->segment(3) == 'All') {
-			$station_id = NULL;
+		if ($this->uri->segment(3) == 'all') {
+			$station_id = 'All';
 		} else {
 			$station_id = $this->security->xss_clean($this->uri->segment(3));
 		}

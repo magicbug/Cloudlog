@@ -110,6 +110,8 @@ class AdifHelper {
 
         $line .= $this->getAdifFieldLine("SRX_STRING", $qso->COL_SRX_STRING);
 
+        $line .= $this->getAdifFieldLine("CONTEST_ID", $qso->COL_CONTEST_ID);
+
         $line .= $this->getAdifFieldLine("TX_PWR", $qso->COL_TX_PWR);
 
         $line .= $this->getAdifFieldLine("COMMENT", $qso->COL_COMMENT);

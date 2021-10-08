@@ -144,19 +144,17 @@ class eqsl extends CI_Controller {
 			$active_station_info = $station_profile->row();
 			// Query the logbook to determine when the last LoTW confirmation was
 			$eqsl_last_qsl_date = $this->logbook_model->eqsl_last_qsl_rcvd_date();
-			
-			// Build URL for eQSL inbox file
-			$eqsl_url .= "?";
-			$eqsl_url .= "UserName=" . $data['user_eqsl_name'];
-			$eqsl_url .= "&Password=" . urlencode($data['user_eqsl_password']);
-			
-			$eqsl_url .= "&RcvdSince=" . $eqsl_last_qsl_date;
-			$eqsl_url .= "&QTHNickname=" . urlencode($active_station_info->eqslqthnickname);
-			
-			// Pull back only confirmations
-			$eqsl_url .= "&ConfirmedOnly=1";
 
-			//echo "<br><br>".$eqsl_url."<br><br>";
+			// Build parameters for eQSL inbox file
+			$eqsl_params = http_build_query(array(
+				'UserName' => $data['user_eqsl_name'],
+				'Password' => $data['user_eqsl_password'],
+				'RcvdSince' => $eqsl_last_qsl_date,
+				'QTHNickname' => $active_station_info->eqslqthnickname,
+				'ConfirmedOnly' => 1
+			));
+
+			//echo "<br><br>".$eqsl_url."<br>".$eqsl_params."<br><br>";
 			
  			// At this point, what we get isn't the ADI file we need, but rather
 			// an HTML page, which contains a link to the generated ADI file that we want.
@@ -170,8 +168,10 @@ class eqsl extends CI_Controller {
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 			curl_setopt($ch, CURLOPT_HEADER, 1);
 			
-			// use the URL we built
+			// use the URL and params we built
 			curl_setopt($ch, CURLOPT_URL, $eqsl_url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $eqsl_params);
 			
 			$input = curl_exec($ch);  
 			$chi = curl_getinfo($ch);
@@ -589,11 +589,24 @@ class eqsl extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-	function image($id, $callsign, $mode, $band, $hour, $minute, $day, $month, $year) {
+	function image($id) {
 		$this->load->library('electronicqsl');
 		$this->load->model('Eqsl_images');
 
 		if($this->Eqsl_images->get_image($id) == "No Image") {
+			$this->load->model('logbook_model');
+			$qso_query = $this->logbook_model->get_qso($id);
+			$qso = $qso_query->row();
+			$qso_timestamp = strtotime($qso->COL_TIME_ON);
+			$callsign = $qso->COL_CALL;
+			$band = $qso->COL_BAND;
+			$mode = $qso->COL_MODE;
+			$year = date('Y', $qso_timestamp);
+			$month = date('m', $qso_timestamp);
+			$day = date('d', $qso_timestamp);
+			$hour = date('H', $qso_timestamp);
+			$minute = date('i', $qso_timestamp);
+
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
 			$q = $query->row();
 			$username = $q->user_eqsl_name;
@@ -613,14 +626,14 @@ class eqsl extends CI_Controller {
 			}
 
 			foreach ($images as $image) 
-			{ 
-			 header('Content-Type: image/jpg');
-			 readfile ("https://www.eqsl.cc".$image->getAttribute('src')); 
-			 $content = file_get_contents("https://www.eqsl.cc".$image->getAttribute('src'));
-			 $filename = uniqid().'.jpg';
-			 file_put_contents('images/eqsl_card_images/' . '/'.$filename, $content);
+			{
+				header('Content-Type: image/jpg');
+				readfile ("https://www.eqsl.cc".$image->getAttribute('src')); 
+				$content = file_get_contents("https://www.eqsl.cc".$image->getAttribute('src'));
+				$filename = uniqid().'.jpg';
+				file_put_contents('images/eqsl_card_images/' . '/'.$filename, $content);
 
-			 $this->Eqsl_images->save_image($id, $filename);
+				$this->Eqsl_images->save_image($id, $filename);
 			}
 		} else {
 			header('Content-Type: image/jpg');

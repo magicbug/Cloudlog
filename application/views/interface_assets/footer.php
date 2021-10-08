@@ -6,6 +6,7 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ;?>assets/js/darkmodehelpers.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
 <script type="text/javascript">
   /*
@@ -51,87 +52,320 @@ function load_was_map() {
 
 <?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
 
-<script type="text/javascript" src="<?php echo base_url() ;?>assets/js/query-builder.standalone.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/query-builder.standalone.min.js"></script>
 
 <script type="text/javascript">
-
-$(".search-results-box").hide();
+    $(".search-results-box").hide();
 
     $('#builder').queryBuilder({
-    filters: [
-      <?php foreach ($get_table_names->result() as $row) {
-        $value_name = str_replace("COL_", "", $row->Field);
-        if ($value_name != "PRIMARY_KEY" && strpos($value_name, 'MY_') === false && strpos($value_name, '_INTL') == false) { ?>
-        {
-          id: '<?php echo $row->Field; ?>',
-          label: '<?php echo $value_name; ?>',
-          <?php if (strpos($row->Type, 'int(') !== false) { ?>
-          type: 'integer',
-          operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal']
-          <?php } elseif(strpos($row->Type, 'double') !== false) { ?>
-          type: 'double',
-          operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal']
-          <?php } elseif(strpos($row->Type, 'datetime') !== false) { ?>
-          type: 'datetime',
-          operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal']
-          <?php } else { ?>
-          type: 'string',
-          operators: ['equal', 'not_equal', 'begins_with', 'contains', 'ends_with', 'is_empty', 'is_not_empty', 'is_null', 'is_not_null']
-          <?php } ?>
-        },
-        <?php } ?>
-      <?php } ?>
-    ]
-  });
+        filters: [
+            <?php foreach ($get_table_names->result() as $row) {
+                $value_name = str_replace("COL_", "", $row->Field);
+                if ($value_name != "PRIMARY_KEY" && strpos($value_name, 'MY_') === false && strpos($value_name, '_INTL') == false) { ?> {
+                        id: '<?php echo $row->Field; ?>',
+                        label: '<?php echo $value_name; ?>',
+                        <?php if (strpos($row->Type, 'int(') !== false) { ?>
+                            type: 'integer',
+                            operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal']
+                        <?php } elseif (strpos($row->Type, 'double') !== false) { ?>
+                            type: 'double',
+                            operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal']
+                        <?php } elseif (strpos($row->Type, 'datetime') !== false) { ?>
+                            type: 'datetime',
+                            operators: ['equal', 'not_equal', 'less', 'less_or_equal', 'greater', 'greater_or_equal']
+                        <?php } else { ?>
+                            type: 'string',
+                            operators: ['equal', 'not_equal', 'begins_with', 'contains', 'ends_with', 'is_empty', 'is_not_empty', 'is_null', 'is_not_null']
+                        <?php } ?>
+                    },
+                <?php } ?>
+            <?php } ?>
+        ]
+    });
 
-  $('#btn-get').on('click', function() {
-    var result = $('#builder').queryBuilder('getRules');
-    if (!$.isEmptyObject(result)) {
-      //alert(JSON.stringify(result, null, 2));
 
-      $.post( "<?php echo site_url('search/json_result');?>", { search: JSON.stringify(result, null, 2), temp: "testvar" })
-      .done(function( data ) {
-        //console.log(data)
-        //alert( "Data Loaded: " + data );
-        $('.qso').remove();
-        $(".search-results-box").show();
+    function export_search_result() {
+        var result = $('#builder').queryBuilder('getRules');
+        if (!$.isEmptyObject(result)) {
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                var a;
+                if (xhttp.readyState === 4 && xhttp.status === 200) {
+                    // Trick for making downloadable link
+                    a = document.createElement('a');
+                    a.href = window.URL.createObjectURL(xhttp.response);
+                    // Give filename you wish to download
+                    a.download = "advanced_search_export.adi";
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    a.click();
+                }
+            };
+            // Post data to URL which handles post request
+            xhttp.open("POST", "<?php echo site_url('search/export_to_adif'); ?>", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            // You should set responseType as blob for binary responses
+            xhttp.responseType = 'blob';
+            xhttp.send("search=" + JSON.stringify(result, null, 2));
+        }
+    }
 
-        $.each(JSON.parse(data), function(i, item) {
+    function export_stored_query(id) {
+        xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            var a;
+            if (xhttp.readyState === 4 && xhttp.status === 200) {
+                // Trick for making downloadable link
+                a = document.createElement('a');
+                a.href = window.URL.createObjectURL(xhttp.response);
+                // Give filename you wish to download
+                a.download = "advanced_search_export.adi";
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+            }
+        };
+        // Post data to URL which handles post request
+        xhttp.open("POST", "<?php echo site_url('search/export_stored_query_to_adif'); ?>", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        // You should set responseType as blob for binary responses
+        xhttp.responseType = 'blob';
+        xhttp.send("id=" + id);
+    }
 
-          var band = "";
-          if(item.COL_SAT_NAME != "") {
-            band = item.COL_SAT_NAME;
-          } else {
-            band = item.COL_BAND;
-          }
-          var callsign = '<a href="javascript:displayQso(' + item.COL_PRIMARY_KEY + ');" >' + item.COL_CALL + '</a>';
-          if (item.COL_SUBMODE == '' || item.COL_SUBMODE == null) {
-            $('#results').append('<tr class="qso"><td>' + item.COL_TIME_ON + '</td><td>' + callsign + '</td><td>' + item.COL_MODE + '</td><td>' + item.COL_RST_SENT + '</td><td>' + item.COL_RST_RCVD + '</td><td>' + band + '</td><td>' + item.COL_COUNTRY + '</td><td></td></tr>');
-          }
-          else {
-            $('#results').append('<tr class="qso"><td>' + item.COL_TIME_ON + '</td><td>' + callsign + '</td><td>' + item.COL_SUBMODE + '</td><td>' + item.COL_RST_SENT + '</td><td>' + item.COL_RST_RCVD + '</td><td>' + band + '</td><td>' + item.COL_COUNTRY + '</td><td></td></tr>');
-          }
+    $('#btn-save').on('click', function() {
+        var resultquery = $('#builder').queryBuilder('getRules');
+        if (!$.isEmptyObject(resultquery)) {
+            let message = 'Description: <input class="form-control input-group-sm getqueryname">'
+
+            BootstrapDialog.confirm({
+                title: 'Query description',
+                size: BootstrapDialog.SIZE_NORMAL,
+                cssClass: 'description-dialog',
+                closable: true,
+                nl2br: false,
+                message: message,
+                btnCancelLabel: 'Cancel',
+                btnOKLabel: 'Save',
+                callback: function(result) {
+                    if (result) {
+                        $.post("<?php echo site_url('search/save_query'); ?>", {
+                                search: JSON.stringify(resultquery, null, 2),
+                                description: $(".getqueryname").val()
+                            })
+                            .done(function(data) {
+                                $(".alert").remove();
+                                $(".card-body.main").append('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your query has been saved!</div>');
+                                $('#querydropdown').append(new Option(data.description, data.id)); // We add the saved query to the dropdown
+                            });
+                    }
+                },
+            });
+
+        } else {
+            BootstrapDialog.show({
+                title: 'Stored Queries',
+                type: BootstrapDialog.TYPE_WARNING,
+                size: BootstrapDialog.SIZE_NORMAL,
+                cssClass: 'queries-dialog',
+                nl2br: false,
+                message: 'You need to make a query before you search!',
+                buttons: [{
+                    label: 'Close',
+                    action: function(dialogItself) {
+                        dialogItself.close();
+                    }
+                }]
+            });
+        }
+    });
+
+    function run_query() {
+        $(".alert").remove();
+        $(".runbutton").addClass('running');
+        $(".runbutton").prop('disabled', true);
+        let id = $('#querydropdown').val();
+        $.post("<?php echo site_url('search/run_query'); ?>", {
+                id: id
+            })
+            .done(function(data) {
+
+                $('.exportbutton').html('<button class="btn btn-sm btn-primary" onclick="export_stored_query(' + id + ')">Export to ADIF</button>');
+                $('.card-body.result').empty();
+                $(".search-results-box").show();
+
+                $('.card-body.result').append(data);
+                $('.table').DataTable({
+                    "pageLength": 25,
+                    responsive: false,
+                    ordering: false,
+                    "scrollY": "400px",
+                    "scrollCollapse": true,
+                    "paging": false,
+                    "scrollX": true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'csv'
+                    ]
+                });
+                // change color of csv-button if dark mode is chosen
+                if (isDarkModeTheme()) {
+                    $(".buttons-csv").css("color", "white");
+                }
+                $(".runbutton").removeClass('running');
+                $(".runbutton").prop('disabled', false);
+            });
+    }
+
+    function delete_stored_query(id) {
+        BootstrapDialog.confirm({
+            title: 'DANGER',
+            message: 'Warning! Are you sure you want delete this stored query?',
+            type: BootstrapDialog.TYPE_DANGER,
+            closable: true,
+            draggable: true,
+            btnOKClass: 'btn-danger',
+            callback: function(result) {
+                if (result) {
+                    $.ajax({
+                        url: base_url + 'index.php/search/delete_query',
+                        type: 'post',
+                        data: {
+                            'id': id
+                        },
+                        success: function(data) {
+                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
+                            $("#query_" + id).remove(); // removes query from table in dialog
+                            $("#querydropdown option[value='" + id + "']").remove(); // removes query from dropdown
+                        },
+                        error: function() {
+                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query could not be deleted. Please try again!</div>');
+                        },
+                    });
+                }
+            }
         });
-
-      });
     }
-    else{
-      //console.log("invalid object :");
-    }
-  });
 
-  $('#btn-set').on('click', function() {
-    //$('#builder').queryBuilder('setRules', rules_basic);
-    var result = $('#builder').queryBuilder('getRules');
-    if (!$.isEmptyObject(result)) {
-      rules_basic = result;
+    function edit_stored_query(id) {
+        $('#description_' + id).attr('contenteditable', 'true');
+        $('#description_' + id).focus();
+        $('#edit_' + id).html('<a class="btn btn-primary btn-sm" href="javascript:save_edited_query(' + id + ');">Save</a>'); // Change to save button
     }
-  });
 
-  //When rules changed :
-  $('#builder').on('getRules.queryBuilder.filter', function(e) {
-    //$log.info(e.value);
-  });
+    function save_edited_query(id) {
+        $('#description_' + id).attr('contenteditable', 'false');
+        $('#edit_' + id).html('<a class="btn btn-outline-primary btn-sm" href="javascript:edit_stored_query(' + id + ');">Edit</a>');
+        $.ajax({
+            url: base_url + 'index.php/search/save_edited_query',
+            type: 'post',
+            data: {
+                id: id,
+                description: $('#description_' + id).html(),
+            },
+            success: function(html) {
+                $('#edit_' + id).html('<a class="btn btn-outline-primary btn-sm" href="javascript:edit_stored_query(' + id + ');">Edit</a>'); // Change to edit button
+                $(".bootstrap-dialog-message").prepend('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The query description has been updated!</div>');
+                $("#querydropdown option[value='" + id + "']").text($('#description_' + id).html()); // Change text in dropdown
+            },
+            error: function() {
+                $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Something went wrong with the save. Please try again!</div>');
+            },
+        });
+    }
+
+    $('#btn-edit').on('click', function() {
+        $(".alert").remove();
+        $.ajax({
+            url: base_url + 'index.php/search/get_stored_queries',
+            type: 'post',
+            success: function(html) {
+                BootstrapDialog.show({
+                    title: 'Stored Queries',
+                    size: BootstrapDialog.SIZE_WIDE,
+                    cssClass: 'queries-dialog',
+                    nl2br: false,
+                    message: html,
+                    buttons: [{
+                        label: 'Close',
+                        action: function(dialogItself) {
+                            dialogItself.close();
+                        }
+                    }]
+                });
+            }
+        });
+    });
+
+    $('#btn-get').on('click', function() {
+        $(".alert").remove();
+        var result = $('#builder').queryBuilder('getRules');
+        if (!$.isEmptyObject(result)) {
+            $(".searchbutton").addClass('running');
+            $(".searchbutton").prop('disabled', true);
+
+            $.post("<?php echo site_url('search/search_result'); ?>", {
+                    search: JSON.stringify(result, null, 2),
+                    temp: "testvar"
+                })
+                .done(function(data) {
+                    $('.exportbutton').html('<button class="btn btn-sm btn-primary" onclick="export_search_result();">Export to ADIF</button>');
+
+                    $('.card-body.result').empty();
+                    $(".search-results-box").show();
+
+                    $('.card-body.result').append(data);
+                    $('.table').DataTable({
+                        "pageLength": 25,
+                        responsive: false,
+                        ordering: false,
+                        "scrollY": "400px",
+                        "scrollCollapse": true,
+                        "paging": false,
+                        "scrollX": true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'csv'
+                        ]
+                    });
+                    // change color of csv-button if dark mode is chosen
+                    if (isDarkModeTheme()) {
+                        $(".buttons-csv").css("color", "white");
+                    }
+                    $(".searchbutton").removeClass('running');
+                    $(".searchbutton").prop('disabled', false);
+                    $("#btn-save").show();
+                });
+        } else {
+            BootstrapDialog.show({
+                title: 'Stored Queries',
+                type: BootstrapDialog.TYPE_WARNING,
+                size: BootstrapDialog.SIZE_NORMAL,
+                cssClass: 'queries-dialog',
+                nl2br: false,
+                message: 'You need to make a query before you search!',
+                buttons: [{
+                    label: 'Close',
+                    action: function(dialogItself) {
+                        dialogItself.close();
+                    }
+                }]
+            });
+        }
+    });
+
+    $('#btn-set').on('click', function() {
+        //$('#builder').queryBuilder('setRules', rules_basic);
+        var result = $('#builder').queryBuilder('getRules');
+        if (!$.isEmptyObject(result)) {
+            rules_basic = result;
+        }
+    });
+
+    //When rules changed :
+    $('#builder').on('getRules.queryBuilder.filter', function(e) {
+        //$log.info(e.value);
+    });
 </script>
 <?php } ?>
 
@@ -618,7 +852,7 @@ $(document).on('keypress',function(e) {
   </script>
 
 <?php } ?>
-<?php if ( ($this->uri->segment(1) == "qso" && $_GET['manual'] == 0) || $this->uri->segment(1) == "contesting") { ?>
+<?php if ( ($this->uri->segment(1) == "qso" && $_GET['manual'] == 0) || ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) != "add")) { ?>
     <script>
     function setRst(mode) {
         if(mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS'){
@@ -636,8 +870,7 @@ $(document).on('keypress',function(e) {
         }
     }
     </script>
-<?php } ?>
-<?php if ( ($this->uri->segment(1) == "qso" && $_GET['manual'] == 0) || $this->uri->segment(1) == "contesting") { ?>
+
     <script>
         // Javascript for controlling rig frequency.
   var updateFromCAT = function() {
@@ -781,10 +1014,10 @@ $(document).ready(function(){
   });
 
 
-  var map = L.map('map', {
+  var map = L.map('gridsquare_map', {
     layers: [layer],
     center: [19, 0],
-    zoom: 3
+    zoom: 2
   });
 
   var grid_two = <?php echo $grid_2char; ?>;
@@ -808,46 +1041,45 @@ $(document).ready(function(){
     console.log(loc_4char);
     console.log(map.getZoom());
 
-    if(map.getZoom() > 5) {
+    if(map.getZoom() > 2) {
+    	<?php if ($this->session->userdata('user_callsign')) { ?>
+	  var band = '';
       var search_type = "<?php echo $this->uri->segment(2); ?>";
       if(search_type == "satellites") {
-        console.log("satellites search");
-        var search_tags = "search_sat/" + loc_4char;
+		band = 'SAT';
       } else {
-        var band = "<?php echo $this->uri->segment(3); ?>";
-        console.log(band);
-        var search_tags = "search_band/" + band + "/" + loc_4char;
+        band = "<?php echo $this->uri->segment(3); ?>";
       }
+		$(".modal-body").empty();
+		  $.ajax({
+			  url: base_url + 'index.php/awards/qso_details_ajax',
+			  type: 'post',
+			  data: {
+				  'Searchphrase': loc_4char,
+				  'Band': band,
+				  'Mode': 'All',
+				  'Type': 'VUCC'
+			  },
+			  success: function (html) {
+				$(".modal-body").html(html);
+				  $(".modal-body table").addClass('table-sm');
+				  $(".modal-body h5").empty();
+				  var count = $('.table tr').length;
+				  count = count - 1;
+				  $('#qso_count').text(count);
+				  if (count > 1) {
+					  $('#gt1_qso').text("s");
+				  } else {
+					  $('#gt1_qso').text("");
+				  }
 
-      $.getJSON( "<?php echo site_url('gridsquares/');?>" + search_tags, function( data ) {
-        var count = Object.keys(data).length;
-        console.log("Count: " + count);
-        var items = [];
-        $.each( data, function( i, item ) {
-          console.log(item.COL_CALL + item.COL_SAT_NAME);
-          if(item.COL_SAT_NAME != undefined) {
-            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_SAT_NAME + "</td><td>" + item.COL_GRIDSQUARE + item.COL_VUCC_GRIDS + "</td></tr>" );
-          } else {
-            items.push( "<tr><td>" + item.COL_TIME_ON + "</td><td>" + item.COL_CALL + "</td><td>" + item.COL_MODE + "</td><td>" + item.COL_BAND + "</td><td>" + item.COL_GRIDSQUARE + item.COL_VUCC_GRIDS + "</td></tr>" );
-          }
-        });
-
-        $('#qso_count').text(count);
-        if (count > 1) {
-           $('#gt1_qso').text("s");
-        } else {
-           $('#gt1_qso').text("");
-        }
-
-        $("#grid_results tbody").empty();
-        if (count > 0) {
-          $("#grid_results tbody").append(items.join( "" ));
-
-          $('#square_number').text(loc_4char);
-          $('#exampleModal').modal('show');
-        }
-
-      });
+				  if (count > 0) {
+					  $('#square_number').text(loc_4char);
+					  $('#exampleModal').modal('show');
+				  }
+			  }
+		  });
+		  <?php } ?>
     }
   };
 
@@ -984,10 +1216,8 @@ $(document).ready(function(){
         ]
     });
 
-    // using this to change color of csv-button if dark mode is chosen
-    var background = $('body').css( "background-color");
-
-    if (background != ('rgb(255, 255, 255)')) {
+    // change color of csv-button if dark mode is chosen
+    if (isDarkModeTheme()) {
         $(".buttons-csv").css("color", "white");
     }
  </script>
@@ -1009,10 +1239,8 @@ $(document).ready(function(){
         ]
     });
 
-    // using this to change color of csv-button if dark mode is chosen
-    var background = $('body').css( "background-color");
-
-    if (background != ('rgb(255, 255, 255)')) {
+    // change color of csv-button if dark mode is chosen
+    if (isDarkModeTheme()) {
         $(".buttons-csv").css("color", "white");
     }
     </script>
@@ -1077,10 +1305,8 @@ $(document).ready(function(){
             ]
         });
 
-        // using this to change color of csv-button if dark mode is chosen
-        var background = $('body').css( "background-color");
-
-        if (background != ('rgb(255, 255, 255)')) {
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
             $(".buttons-csv").css("color", "white");
         }
     </script>
@@ -1114,10 +1340,8 @@ $(document).ready(function(){
             ]
         });
 
-        // using this to change color of csv-button if dark mode is chosen
-        var background = $('body').css( "background-color");
-
-        if (background != ('rgb(255, 255, 255)')) {
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
             $(".buttons-csv").css("color", "white");
         }
     </script>
@@ -1150,10 +1374,8 @@ $(document).ready(function(){
             ]
         });
 
-        // using this to change color of csv-button if dark mode is chosen
-        var background = $('body').css( "background-color");
-
-        if (background != ('rgb(255, 255, 255)')) {
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
             $(".buttons-csv").css("color", "white");
         }
     </script>
@@ -1213,7 +1435,7 @@ $(document).ready(function(){
                 },
                 success: function(data) {
                     if (data.message == 'OK') {
-                        $("#qso_" + id).find("td:eq(8)").find("span:eq(0)").attr('class', 'qsl-red'); // Paints arrow green
+                        $("#qso_" + id).find("td:eq(8)").find("span:eq(0)").attr('class', 'qsl-grey'); // Paints arrow grey
                     }
                     else {
                         $(".bootstrap-dialog-message").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You are not allowed to update QSL status!</div>');
@@ -1266,27 +1488,27 @@ $(document).ready(function(){
                         nl2br: false,
                         message: html,
                         onshown: function(dialog) {
-                            var state = $("#input_usa_state option:selected").text();
+                            var state = $("#input_usa_state_edit option:selected").text();
                             if (state != "") {
-                                $("#stationCntyInput").prop('disabled', false);
+                                $("#stationCntyInputEdit").prop('disabled', false);
                                 selectize_usa_county();
                             }
 
-                            $('#input_usa_state').change(function(){
-                                var state = $("#input_usa_state option:selected").text();
+                            $('#input_usa_state_edit').change(function(){
+                                var state = $("#input_usa_state_edit option:selected").text();
                                 if (state != "") {
-                                    $("#stationCntyInput").prop('disabled', false);
+                                    $("#stationCntyInputEdit").prop('disabled', false);
 
                                     selectize_usa_county();
 
                                 } else {
-                                    $("#stationCntyInput").prop('disabled', true);
+                                    $("#stationCntyInputEdit").prop('disabled', true);
                                     //$('#stationCntyInput')[0].selectize.destroy();
-                                    $("#stationCntyInput").val("");
+                                    $("#stationCntyInputEdit").val("");
                                 }
                             });
 
-                            $('#sota_ref').selectize({
+                            $('#sota_ref_edit').selectize({
                                 maxItems: 1,
                                 closeAfterSelect: true,
                                 loadThrottle: 250,
@@ -1314,7 +1536,7 @@ $(document).ready(function(){
                                 }
                             });
 
-                            $('#darc_dok').selectize({
+                            $('#darc_dok_edit').selectize({
                                 maxItems: 1,
                                 closeAfterSelect: true,
                                 loadThrottle: 250,
@@ -1322,7 +1544,7 @@ $(document).ready(function(){
                                 labelField: 'name',
                                 searchField: 'name',
                                 options: [],
-                                create: false,
+                                create: true,
                                 load: function(query, callback) {
                                     if (!query) return callback();  // Only trigger if 3 or more characters are entered
                                     $.ajax({
@@ -1349,7 +1571,7 @@ $(document).ready(function(){
 
         function selectize_usa_county() {
             var baseURL= "<?php echo base_url();?>";
-            $('#stationCntyInput').selectize({
+            $('#stationCntyInputEdit').selectize({
 				delimiter: ';',
                 maxItems: 1,
                 closeAfterSelect: true,
@@ -1360,7 +1582,7 @@ $(document).ready(function(){
                 options: [],
                 create: false,
                 load: function(query, callback) {
-                    var state = $("#input_usa_state option:selected").text();
+                    var state = $("#input_usa_state_edit option:selected").text();
 
                     if (!query || state == "") return callback();
                     $.ajax({
@@ -1420,10 +1642,8 @@ $(document).ready(function(){
                 ]
             });
 
-            // using this to change color of csv-button if dark mode is chosen
-            var background = $('body').css( "background-color");
-
-            if (background != ('rgb(255, 255, 255)')) {
+            // change color of csv-button if dark mode is chosen
+            if (isDarkModeTheme()) {
                 $(".buttons-csv").css("color", "white");
             }
 
@@ -1753,139 +1973,8 @@ function deleteQsl(id) {
 		});
 	}
 </script>
-<?php if ($this->uri->segment(1) == "contesting") { ?>
+<?php if ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) != "add" ) { ?>
     <script src="<?php echo base_url() ;?>assets/js/sections/contesting.js"></script>
-    <script>
-        function logQso() {
-            if ($("#callsign").val().length > 0) {
-
-                $('.callsign-suggestions').text("");
-
-                var table = $('.qsotable').DataTable();
-
-                var data = [[$("#start_date").val()+ ' ' + $("#start_time").val(),
-                    $("#callsign").val().toUpperCase(),
-                    $("#band").val(),
-                    $("#mode").val(),
-                    $("#rst_sent").val(),
-                    $("#rst_recv").val(),
-                    $("#exch_sent").val(),
-                    $("#exch_recv").val()]];
-
-                table.rows.add(data).draw();
-
-                var baseURL= "<?php echo base_url();?>";
-                var formdata = new FormData(document.getElementById("qso_input"));
-                $.ajax({
-                    url: baseURL + 'index.php/qso/saveqso',
-                    type: 'post',
-                    data: formdata,
-                    processData: false,
-                    contentType: false,
-                    enctype: 'multipart/form-data',
-                    success: function (html) {
-                        if (localStorage.getItem("qso") == null) {
-                            localStorage.setItem("qso", $("#start_date").val()+ ' ' + $("#start_time").val() + ',' + $("#callsign").val().toUpperCase() + ',' + $("#contestname").val());
-                        }
-
-                        $('#name').val("");
-
-                        $('#callsign').val("");
-                        $('#comment').val("");
-                        $('#exch_recv').val("");
-                        if ($('input[name=exchangeradio]:checked', '#qso_input').val() == "serial") {
-                            $("#exch_sent").val(+$("#exch_sent").val() + 1);
-                        }
-                        $("#callsign").focus();
-
-                        // Store contest session
-                        localStorage.setItem("contestid", $("#contestname").val());
-                        localStorage.setItem("exchangetype", $('input[name=exchangeradio]:checked', '#qso_input').val());
-                        localStorage.setItem("exchangesent", $("#exch_sent").val());
-                    }
-                });
-            }
-        }
-
-        // We are restoring the settings in the contest logging form here
-        function restoreContestSession() {
-            var contestname = localStorage.getItem("contestid");
-
-            if (contestname != null) {
-                $("#contestname").val(contestname);
-            }
-
-            var exchangetype = localStorage.getItem("exchangetype");
-
-            if (exchangetype == "other") {
-                $("[name=exchangeradio]").val(["other"]);
-            }
-
-            var exchangesent = localStorage.getItem("exchangesent");
-
-            if (exchangesent != null) {
-                $("#exch_sent").val(exchangesent);
-            }
-
-            if (localStorage.getItem("qso") != null) {
-                var baseURL= "<?php echo base_url();?>";
-                //alert(localStorage.getItem("qso"));
-                var qsodata = localStorage.getItem("qso");
-                $.ajax({
-                    url: baseURL + 'index.php/contesting/getSessionQsos',
-                    type: 'post',
-                    data: {'qso': qsodata,},
-                    success: function (html) {
-                        var mode = '';
-                        var sentexchange = '';
-                        var receivedexchange = '';
-                        $.each(html, function(){
-                            if (this.col_submode == null || this.col_submode == '') {
-                                mode = this.col_mode;
-                            } else {
-                                mode = this.col_submode;
-                            }
-
-                            if (this.col_srx == null || this.col_srx == '') {
-                                receivedexchange = this.col_srx_string;
-                            } else {
-                                receivedexchange = this.col_srx;
-                            }
-
-                            if (this.col_stx == null || this.col_stx == '') {
-                                sentexchange = this.col_stx_string;
-                            } else {
-                                sentexchange = this.col_stx;
-                            }
-
-                            $(".qsotable tbody").prepend('<tr>' +
-                                '<td>'+ this.col_time_on + '</td>' +
-                                '<td>'+ this.col_call + '</td>' +
-                                '<td>'+ this.col_band + '</td>' +
-                                '<td>'+ mode + '</td>' +
-                                '<td>'+ this.col_rst_sent + '</td>' +
-                                '<td>'+ this.col_rst_rcvd + '</td>' +
-                                '<td>'+ sentexchange + '</td>' +
-                                '<td>'+ receivedexchange + '</td>' +
-                                '</tr>');
-                        });
-                        if (!$.fn.DataTable.isDataTable('.qsotable')) {
-                            $('.qsotable').DataTable({
-                                "pageLength": 25,
-                                responsive: false,
-                                "scrollY":        "400px",
-                                "scrollCollapse": true,
-                                "paging":         false,
-                                "scrollX": true,
-                                "order": [[ 0, "desc" ]]
-                            });
-                        }
-                    }
-                });
-            }
-        }
-    </script>
-
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "station") { ?>
@@ -1961,10 +2050,9 @@ function deleteQsl(id) {
             'csv'
         ]
     });
-    // using this to change color of csv-button if dark mode is chosen
-    var background = $('body').css( "background-color");
 
-    if (background != ('rgb(255, 255, 255)')) {
+    // change color of csv-button if dark mode is chosen
+    if (isDarkModeTheme()) {
         $(".buttons-csv").css("color", "white");
     }
 
@@ -2010,13 +2098,10 @@ function deleteQsl(id) {
 			]
 		});
 
-		// using this to change color of csv-button if dark mode is chosen
-		var background = $('body').css( "background-color");
-
-		if (background != ('rgb(255, 255, 255)')) {
+		// change color of csv-button if dark mode is chosen
+		if (isDarkModeTheme()) {
 			$(".buttons-csv").css("color", "white");
 		}
-
 	</script>
 <?php } ?>
 

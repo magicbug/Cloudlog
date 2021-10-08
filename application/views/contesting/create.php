@@ -19,7 +19,7 @@
 
 		<?php echo validation_errors(); ?>
 
-		<form method="post" name="create_profile">
+		<form>
 		<div class="form-group">
 		    <label for="contestInput">Contest Name</label>
 		    <input type="text" class="form-control" name="contestname" id="contestInput" aria-describedby="contestInputHelp" required>
@@ -32,7 +32,7 @@
 		    <small id="adifcontestInputHelp" class="form-text text-muted">Name of Contest in ADIF-specification</small>
 		  </div>
 
-			<button onclick="createContest(this.form);" class="btn btn-primary btn-sm"><i class="fas fa-plus-square"></i> Create Contest</button>
+			<button type="button" onclick="createContest(this.form);" class="btn btn-primary btn-sm"><i class="fas fa-plus-square"></i> Create Contest</button>
 
 		</form>
 </div>
