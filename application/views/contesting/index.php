@@ -198,8 +198,8 @@
                             <th><?php echo $this->lang->line('gen_hamradio_rstr'); ?></th>
                             <th><?php echo $this->lang->line('gen_hamradio_exchange_sent_short'); ?></th>
                             <th><?php echo $this->lang->line('gen_hamradio_exchange_recv_short'); ?></th>
-							<th>Serial (R)</th>
 							<th>Serial (S)</th>
+							<th>Serial (R)</th>
 							<th>Gridsquare</th>
 							<th>Vucc Gridsquare</th>
                         </tr>
