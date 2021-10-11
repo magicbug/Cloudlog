@@ -156,6 +156,18 @@ function load_was_map() {
                             .done(function(data) {
                                 $(".alert").remove();
                                 $(".card-body.main").append('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your query has been saved!</div>');
+                                if ($("#querydropdown option").length == 0) {
+                                    var dropdowninfo = ' <button class="btn btn-sm btn-primary" onclick="edit_stored_query_dialog()" id="btn-edit">Edit queries</button></p>' +
+                                    '<div class="form-group row querydropdownform">' +
+                                        '<label class="col-md-2 control-label" for="querydropdown">  Stored queries:</label>' +
+                                        '<div class="col-md-3">' +
+                                            '<select id="querydropdown" name="querydropdown" class="form-control custom-select-sm">' +
+                                            '</select>' +
+                                        '</div>' +
+                                        '<button class="btn btn-sm btn-primary ld-ext-right runbutton" onclick="run_query()">Run Query<div class="ld ld-ring ld-spin"></div></button>' +
+                                    '</div>';
+                                    $("#btn-save").after(dropdowninfo);
+                                }
                                 $('#querydropdown').append(new Option(data.description, data.id)); // We add the saved query to the dropdown
                             });
                     }
@@ -237,6 +249,10 @@ function load_was_map() {
                             $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
                             $("#query_" + id).remove(); // removes query from table in dialog
                             $("#querydropdown option[value='" + id + "']").remove(); // removes query from dropdown
+                            if ($("#querydropdown option").length == 0) { 
+                                $("#btn-edit").remove();
+                                $('.querydropdownform').remove();
+                            };
                         },
                         error: function() {
                             $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query could not be deleted. Please try again!</div>');
@@ -274,7 +290,7 @@ function load_was_map() {
         });
     }
 
-    $('#btn-edit').on('click', function() {
+    function edit_stored_query_dialog() {
         $(".alert").remove();
         $.ajax({
             url: base_url + 'index.php/search/get_stored_queries',
@@ -295,7 +311,7 @@ function load_was_map() {
                 });
             }
         });
-    });
+    }
 
     $('#btn-get').on('click', function() {
         $(".alert").remove();
