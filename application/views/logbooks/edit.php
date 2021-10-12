@@ -75,17 +75,25 @@
 			<table class="table table-hover">
 				<thead class="thead-light">
 					<tr>
-				 		<th scope="col">Location Name</th>
+						<th scope="col">Location Name</th>
 						<th scope="col"></th>
-				    </tr>
+					</tr>
 				</thead>
-				 
-
 				<tbody>
-					<?php foreach ($station_locations_linked->result() as $row) { ?>
+					<?php
+						if ($station_locations_linked) {
+							foreach ($station_locations_linked->result() as $row) {
+					?>
 					<tr>
 						<td><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country;?>)</td>
 						<td><a href="<?php echo site_url('logbooks/delete_relationship/'); ?><?php echo $station_logbook_details->logbook_id; ?>/<?php echo $row->station_id;?>" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a></td>
+					</tr>
+					<?php
+							}
+						} else {
+					?>
+					<tr>
+						<td colspan="2">No linked locations</td>
 					</tr>
 					<?php } ?>
 				</tbody>
