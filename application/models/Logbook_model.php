@@ -2216,8 +2216,8 @@ class Logbook_model extends CI_Model {
 		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
 				->where('call', $call)
 				->where('(start <= CURDATE()')
-				->or_where('start is null', NULL, false)
-				->where('end >= CURDATE()')
+				->or_where('start is null)', NULL, false)
+				->where('(end >= CURDATE()')
 				->or_where('end is null)', NULL, false)
 				->get('dxcc_exceptions');
 
