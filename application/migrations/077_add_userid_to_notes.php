@@ -9,7 +9,9 @@ class Migration_add_userid_to_notes extends CI_Migration
 			'user_id BIGINT(20) DEFAULT NULL',
 		);
 
-		$this->dbforge->add_column('notes', $fields);
+		if (!$this->db->field_exists('user_id', 'notes')) {
+			$this->dbforge->add_column('notes', $fields);
+		}
 	}
 
 	public function down()

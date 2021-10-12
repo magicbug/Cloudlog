@@ -10,7 +10,9 @@ class Migration_add_userid_to_hardware extends CI_Migration {
 			'user_id BIGINT(20) DEFAULT NULL',
 		);
 
-		$this->dbforge->add_column('cat', $fields);
+		if (!$this->db->field_exists('user_id', 'cat')) {
+			$this->dbforge->add_column('cat', $fields);
+		}
 	}
 
 	public function down()
