@@ -85,9 +85,6 @@ class Logbooks extends CI_Controller {
 				if($this->logbooks_model->relationship_exists($this->input->post('station_logbook_id'), $this->input->post('SelectedStationLocation')) != TRUE) {
 					// If no link exisits create
 					$this->logbooks_model->create_logbook_location_link($this->input->post('station_logbook_id'), $this->input->post('SelectedStationLocation'));
-					echo "linked";
-				} else {
-					echo "Already Linked";
 				}
 			} else {
 				$this->logbooks_model->edit();
