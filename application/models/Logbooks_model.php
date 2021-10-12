@@ -108,5 +108,40 @@ class Logbooks_model extends CI_Model {
 			return false;
 		}
 	}
+
+	function list_logbooks_linked($logbook_id) {
+
+		$relationships_array = array();
+
+		$this->db->where('station_logbook_id', $logbook_id);
+		$query = $this->db->get('station_logbooks_relationship');
+		
+
+		if ($query->num_rows() > 0){
+			foreach ($query->result() as $row)
+			{
+				array_push($relationships_array, $row->station_location_id);
+			}
+
+			$this->db->where_in('station_id', $relationships_array);
+			$query = $this->db->get('station_profile');
+			
+			return $query;
+		}
+		else{
+			return false;
+		}
+	}
+
+	function delete_relationship($logbook_id, $station_id) {
+		// Clean ID
+		$clean_logbook_id = $this->security->xss_clean($logbook_id);
+		$clean_station_id = $this->security->xss_clean($station_id);
+
+		// Delete QSOs
+		$this->db->where('station_logbook_id', $clean_logbook_id);
+		$this->db->where('station_location_id', $clean_station_id);
+		$this->db->delete('station_logbooks_relationship'); 
+	}
 }
 ?>

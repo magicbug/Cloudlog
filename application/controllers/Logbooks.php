@@ -63,10 +63,12 @@ class Logbooks extends CI_Controller {
 
 		$data['station_logbook_details'] = $station_logbook_details_query->row();
 		$data['station_locations_list'] = $this->stations->all();
+
+		$data['station_locations_linked'] = $this->logbooks_model->list_logbooks_linked($station_logbook_id);
 		
 		$data['page_title'] = "Edit Station Logbook";
 
-		$this->form_validation->set_rules('station_logbook_name', 'Station Logbook Name', 'required');
+		$this->form_validation->set_rules('station_logbook_id', 'Station Logbook Name', 'required');
 
         if ($this->form_validation->run() == FALSE)
         {
@@ -76,23 +78,22 @@ class Logbooks extends CI_Controller {
         }
         else
         {
-            $this->logbooks_model->edit();
 
             $data['notice'] = "Station Logbooks ".$this->security->xss_clean($this->input->post('station_logbook_name', true))." Updated";
 
-			foreach ($this->input->post('SelectedStationLocations') as $selectedOption){ 
-				// Check if theres already a link between logbook and location
-				if($this->logbooks_model->relationship_exists($this->input->post('station_logbook_id'), $selectedOption) != TRUE) {
+			if($this->input->post('SelectedStationLocation') != "") {
+				if($this->logbooks_model->relationship_exists($this->input->post('station_logbook_id'), $this->input->post('SelectedStationLocation')) != TRUE) {
 					// If no link exisits create
-					$this->logbooks_model->create_logbook_location_link($this->input->post('station_logbook_id'), $selectedOption);
+					$this->logbooks_model->create_logbook_location_link($this->input->post('station_logbook_id'), $this->input->post('SelectedStationLocation'));
+					echo "linked";
 				} else {
 					echo "Already Linked";
 				}
-
-				// Delete link if removed
+			} else {
+				$this->logbooks_model->edit();
 			}
 
-            redirect('logbooks');
+            redirect('logbooks/edit/'.$this->input->post('station_logbook_id'));
         }
 	}
 
@@ -109,6 +110,13 @@ class Logbooks extends CI_Controller {
 		$this->logbooks_model->delete($id);
 		
 		redirect('logbooks');
+	}
+
+	public function delete_relationship($logbook_id, $station_id) {
+		$this->load->model('logbooks_model');
+		$this->logbooks_model->delete_relationship($logbook_id, $station_id);
+		
+		redirect('logbooks/edit/'.$logbook_id);
 	}
 
 }
