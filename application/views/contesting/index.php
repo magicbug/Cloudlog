@@ -13,6 +13,9 @@
 							<div class="col-auto">
 								<select class="form-control-sm" id="exchangetype" name="exchangetype">
 									<option value='None'>None</option>
+                                    <option value='Dok'>DOK</option>
+                                    <option value='Serialdok'>DOK + Serial</option>
+                                    <option value='Dokgridsquare'>DOK + Gridsquare</option>
 									<option value='Exchange'>Exchange</option>
 									<option value='Gridsquare'>Gridsquare</option>
 									<option value='Serial'>Serial</option>
@@ -120,10 +123,15 @@
                                 <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
                             </div>
 
-							<div style="display:none" class="form-group col-md-1 serials">
+                            <div style="display:none" class="form-group col-md-1 serials">
 								<label for="exch_serial_s">Serial (S)</label>
 								<input type="number" class="form-control form-control-sm" name="exch_serial_s" id="exch_serial_s" value="">
 							</div>
+                            
+                            <div style="display:none" class="form-group col-md-1 doks">
+                                <label for="exch_dok_s">DOK (S)</label>
+                                <input disabled type="text" class="form-control form-control-sm" name="exch_dok_s" id="exch_dok_s" value="<?php echo $my_dok;?>">
+                            </div>
 
                             <div style="display:none" class="form-group col-md-1 exchanges">
                                 <label for="exch_sent"><?php echo $this->lang->line('gen_hamradio_exchange_sent_short'); ?></label>
@@ -140,11 +148,16 @@
                                 <input type="text" class="form-control form-control-sm" name="rst_recv" id="rst_recv" value="59">
                             </div>
 
-							<div style="display:none" class="form-group col-md-1 serialr">
+                            <div style="display:none" class="form-group col-md-1 serialr">
 								<label for="exch_serial_r">Serial (R)</label>
 								<input type="number" class="form-control form-control-sm" name="exch_serial_r" id="exch_serial_r" value="">
 							</div>
-
+                            
+                            <div style="display:none" class="form-group col-md-1 dokr">
+								<label for="exch_dok_r">DOK (R)</label>
+								<input type="text" class="form-control form-control-sm" name="darc_dok" id="exch_dok_r" value="">
+							</div>
+							
 							<div style="display:none" class="form-group col-md-1 exchanger">
 								<label for="exch_recv"><?php echo $this->lang->line('gen_hamradio_exchange_recv_short'); ?></label>
 								<input type="text" class="form-control form-control-sm" name="exch_recv" id="exch_recv" value="">

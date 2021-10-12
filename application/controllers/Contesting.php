@@ -22,6 +22,7 @@ class Contesting extends CI_Controller {
 		$this->load->model('contesting_model');
 
 		$data['my_gridsquare'] = $this->stations->find_gridsquare();
+		$data['my_dok'] = ""; // For now, this is set to blank, but need function to get
         $data['radios'] = $this->cat->radios();
         $data['modes'] = $this->modes->active();
 		$data['contestnames'] = $this->contesting_model->getActivecontests();

@@ -233,72 +233,63 @@ $('#exchangetype').change(function () {
 });
 
 function setExchangetype(exchangetype) {
-	if (exchangetype == 'None') {
-		$("#exch_serial_s").val("");
-		$(".exchanger").hide();
-		$(".exchanges").hide();
-		$(".serials").hide();
-		$(".serialr").hide();
-		$(".gridsquarer").hide();
-		$(".gridsquares").hide();
+	// Perhaps a better approach is to hide everything, then just enable the things you need
+	$(".exchanger").hide();
+	$(".exchanges").hide();
+	$(".serials").hide();
+	$(".serialr").hide();
+	$(".gridsquarer").hide();
+	$(".gridsquares").hide();
+	$(".doks").hide();
+	$(".dokr").hide();
+	$("#exch_serial_s").val("");
+
+	var serialsent = localStorage.getItem("serialsent");
+	if (serialsent == null) {
+		serialsent = 1;
 	}
-	else if (exchangetype == 'Exchange') {
-		$("#exch_serial_s").val("");
+
+	if (exchangetype == 'Exchange') {
 		$(".exchanger").show();
 		$(".exchanges").show();
-		$(".serials").hide();
-		$(".serialr").hide();
-		$(".gridsquarer").hide();
-		$(".gridsquares").hide();
 	}
 	else if (exchangetype == 'Serial') {
-		var serialsent = localStorage.getItem("serialsent");
-		if (serialsent != null) {
-			$("#exch_serial_s").val(serialsent);
-		} else {
-			$("#exch_serial_s").val(1);
-		}
-		$(".exchanger").hide();
-		$(".exchanges").hide();
+		$("#exch_serial_s").val(serialsent);
 		$(".serials").show();
 		$(".serialr").show();
-		$(".gridsquarer").hide();
-		$(".gridsquares").hide();
+	}
+	else if (exchangetype == 'Dok') {
+		$(".doks").show();
+		$(".dokr").show();
+	}
+	else if (exchangetype == 'Serialdok') {
+		$("#exch_serial_s").val(serialsent);
+		$(".serials").show();
+		$(".serialr").show();
+		$(".doks").show();
+		$(".dokr").show();
+	}
+	else if (exchangetype == 'Dokgridsquare') {
+		$(".gridsquarer").show();
+		$(".gridsquares").show();
+		$(".doks").show();
+		$(".dokr").show();
 	}
 	else if (exchangetype == 'Serialexchange') {
-		var serialsent = localStorage.getItem("serialsent");
-		if (serialsent != null) {
-			$("#exch_serial_s").val(serialsent);
-		} else {
-			$("#exch_serial_s").val(1);
-		}
+		$("#exch_serial_s").val(serialsent);
 		$(".exchanger").show();
 		$(".exchanges").show();
 		$(".serials").show();
 		$(".serialr").show();
-		$(".gridsquarer").hide();
-		$(".gridsquares").hide();
 	}
 	else if (exchangetype == 'Serialgridsquare') {
-		var serialsent = localStorage.getItem("serialsent");
-		if (serialsent != null) {
-			$("#exch_serial_s").val(serialsent);
-		} else {
-			$("#exch_serial_s").val(1);
-		}
-		$(".exchanger").hide();
-		$(".exchanges").hide();
+		$("#exch_serial_s").val(serialsent);
 		$(".serials").show();
 		$(".serialr").show();
 		$(".gridsquarer").show();
 		$(".gridsquares").show();
 	}
 	else if (exchangetype == 'Gridsquare') {
-		$("#exch_serial_s").val("");
-		$(".exchanger").hide();
-		$(".exchanges").hide();
-		$(".serials").hide();
-		$(".serialr").hide();
 		$(".gridsquarer").show();
 		$(".gridsquares").show();
 	}
