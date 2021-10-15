@@ -17,6 +17,6 @@ class Migration_Theme_table extends CI_Migration {
 	}
 
 	public function down(){
-		$this->db->query("");
+		
 	}
 }
