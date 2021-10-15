@@ -30,10 +30,16 @@
 		    <select class="custom-select" name="user_type">
 			<?php
 				$levels = $this->config->item('auth_level');
-				while (list($key, $val) = each($levels)) {
-			?>
-					<option value="<?php echo $key; ?>" <?php if(isset($user_type)) { if($user_type == $key) { echo "selected=\"selected\""; } } ?>><?php echo $val; ?></option>
-				<?php } ?>
+				foreach ($levels as $key => $value) {
+					echo '<option value="'. $key . '"';
+					if(isset($user_type)) { 
+						if($user_type == $key) { 
+							echo "selected=\"selected\""; 
+						} 
+					} 
+					echo '>' . $value . '</option>';
+				} 
+				?>
 			</select>
 		  </div>
 
