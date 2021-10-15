@@ -1,3 +1,34 @@
+<?php
+function echo_table_header_col($ctx, $name) {
+	switch($name) {
+		case 'Mode': echo '<th>'.$ctx->lang->line('gen_hamradio_mode').'</th>'; break;
+		case 'RSTS': echo '<th class="d-none d-sm-table-cell">'.$ctx->lang->line('gen_hamradio_rsts').'</th>'; break;
+		case 'RSTR': echo '<th class="d-none d-sm-table-cell">'.$ctx->lang->line('gen_hamradio_rstr').'</th>'; break;
+		case 'Country': echo '<th>'.$ctx->lang->line('general_word_country').'</th>'; break;
+		case 'IOTA': echo '<th>'.$ctx->lang->line('gen_hamradio_iota').'</th>'; break;
+		case 'SOTA': echo '<th>'.$ctx->lang->line('gen_hamradio_sota').'</th>'; break;
+		case 'State': echo '<th>'.$ctx->lang->line('gen_hamradio_state').'</th>'; break;
+		case 'Grid': echo '<th>'.$ctx->lang->line('gen_hamradio_gridsquare').'</th>'; break;
+		case 'Band': echo '<th>'.$ctx->lang->line('gen_hamradio_band').'</th>'; break;
+	}
+}
+
+function echo_table_col($row, $name) {
+	switch($name) {
+		case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE . '</td>'; break;
+		case 'RSTS':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_SENT; if ($row->COL_STX_STRING) { echo '<span class="label">' . $row->COL_STX_STRING . '</span>';} echo '</td>'; break;
+		case 'RSTR':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX_STRING) { echo '<span class="label">' . $row->COL_SRX_STRING . '</span>';} echo '</td>'; break;
+		case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY))) . '</td>'; break;
+		case 'IOTA':    echo '<td>' . ($row->COL_IOTA) . '</td>'; break;
+		case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF) . '</td>'; break;
+		case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE . '</td>'; break;
+		case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); } echo '</td>'; break;
+		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
+	}
+}
+?>
+
+
 <div class="table-responsive">
     <table class="table table-striped table-hover">
         <tr class="titles">
@@ -7,71 +38,11 @@
             <?php } ?>
             <td><?php echo $this->lang->line('gen_hamradio_call'); ?></td>
 <?php
-			echo '<td>';
-				switch($this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1')) {
-					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
-					case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
-					case 'Country': echo $this->lang->line('general_word_country'); break;
-					case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
-					case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
-					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
-					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
-					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
-				}
-			echo '</td>';
-			echo '<td>';
-				switch($this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2')) {
-					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
-					case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
-					case 'Country': echo $this->lang->line('general_word_country'); break;
-					case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
-					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
-					case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
-					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
-					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
-				}
-			echo '</td>';
-			echo '<td>';
-				switch($this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3')) {
-					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
-					case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
-					case 'Country': echo $this->lang->line('general_word_country'); break;
-					case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
-					case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
-					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
-					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
-					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
-				}
-			echo '</td>';
-			echo '<td>';
-				switch($this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4')) {
-					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
-					case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
-					case 'Country': echo $this->lang->line('general_word_country'); break;
-					case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
-					case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
-					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
-					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
-					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
-				}
-			echo '</td>';
-			echo '<td>';
-			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
-				case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-				case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
-				case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
-				case 'Country': echo $this->lang->line('general_word_country'); break;
-				case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
-				case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
-				case 'State': echo $this->lang->line('gen_hamradio_state'); break;
-				case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
-				case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
-			}
-			echo '</td>';
+			echo_table_header_col($this, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
+            echo_table_header_col($this, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
+            echo_table_header_col($this, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
+            echo_table_header_col($this, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
+            echo_table_header_col($this, $this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5'));
 
             	if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td>QSL</td>
@@ -109,67 +80,12 @@
             </td>
 			<?php
 
-			switch($this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1')) {
-				case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; break;
-				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">' . $row->COL_STX . '</span>';}if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
-				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">' . $row->COL_SRX . '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
-				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
-				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
-				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
-				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
-				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
-				case 'State':   echo '<td>' . ($row->COL_STATE); break;
-			}
-			echo '</td>';
-			switch($this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2')) {
-				case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; break;
-				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">' . $row->COL_STX . '</span>';}if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
-				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">' . $row->COL_SRX . '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
-				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
-				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
-				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
-				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
-				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
-				case 'State':   echo '<td>' . ($row->COL_STATE); break;
-			}
-			echo '</td>';
-
-			switch($this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3')) {
-				case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; break;
-				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">' . $row->COL_STX . '</span>';}if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
-				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">' . $row->COL_SRX . '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
-				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
-				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
-				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
-				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
-				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
-				case 'State':   echo '<td>' . ($row->COL_STATE); break;
-			}
-			echo '</td>';
-			switch($this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4')) {
-				case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; break;
-				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">' . $row->COL_STX . '</span>';}if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
-				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">' . $row->COL_SRX . '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
-				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
-				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
-				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
-				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
-				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
-				case 'State':   echo '<td>' . ($row->COL_STATE); break;
-			}
-			echo '</td>';
-			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
-				case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; break;
-				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">' . $row->COL_STX . '</span>';}if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
-				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">' . $row->COL_SRX . '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
-				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
-				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
-				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
-				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
-				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
-				case 'State':   echo '<td>' . ($row->COL_STATE); break;
-			}
-			echo '</td>';
+                echo_table_col($row, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
+                echo_table_col($row, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
+                echo_table_col($row, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
+                echo_table_col($row, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
+                echo_table_col($row, $this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5'));
+			
 				if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td class="qsl">
 				<span class="qsl-<?php
