@@ -26,6 +26,7 @@ function reset_contest_session() {
 	setExchangetype("None");
 	$("#contestname").val("Other").change();
 	$(".contest_qso_table_contents").empty();
+	$('#copyexchangetodok').prop('checked', false);
 
 	localStorage.removeItem("contestid");
 	localStorage.removeItem("exchangetype");
@@ -36,6 +37,7 @@ function reset_contest_session() {
 	localStorage.removeItem("serialsent");
 	localStorage.removeItem("gridsquarereceived");
 	localStorage.removeItem("gridsquaresent");
+	localStorage.removeItem("copytodok");
 }
 
 // Storing the contestid in contest session
@@ -233,72 +235,44 @@ $('#exchangetype').change(function () {
 });
 
 function setExchangetype(exchangetype) {
-	if (exchangetype == 'None') {
-		$("#exch_serial_s").val("");
-		$(".exchanger").hide();
-		$(".exchanges").hide();
-		$(".serials").hide();
-		$(".serialr").hide();
-		$(".gridsquarer").hide();
-		$(".gridsquares").hide();
+	// Perhaps a better approach is to hide everything, then just enable the things you need
+	$(".exchanger").hide();
+	$(".exchanges").hide();
+	$(".serials").hide();
+	$(".serialr").hide();
+	$(".gridsquarer").hide();
+	$(".gridsquares").hide();
+	$("#exch_serial_s").val("");
+
+	var serialsent = localStorage.getItem("serialsent");
+	if (serialsent == null) {
+		serialsent = 1;
 	}
-	else if (exchangetype == 'Exchange') {
-		$("#exch_serial_s").val("");
+
+	if (exchangetype == 'Exchange') {
 		$(".exchanger").show();
 		$(".exchanges").show();
-		$(".serials").hide();
-		$(".serialr").hide();
-		$(".gridsquarer").hide();
-		$(".gridsquares").hide();
 	}
 	else if (exchangetype == 'Serial') {
-		var serialsent = localStorage.getItem("serialsent");
-		if (serialsent != null) {
-			$("#exch_serial_s").val(serialsent);
-		} else {
-			$("#exch_serial_s").val(1);
-		}
-		$(".exchanger").hide();
-		$(".exchanges").hide();
+		$("#exch_serial_s").val(serialsent);
 		$(".serials").show();
 		$(".serialr").show();
-		$(".gridsquarer").hide();
-		$(".gridsquares").hide();
 	}
 	else if (exchangetype == 'Serialexchange') {
-		var serialsent = localStorage.getItem("serialsent");
-		if (serialsent != null) {
-			$("#exch_serial_s").val(serialsent);
-		} else {
-			$("#exch_serial_s").val(1);
-		}
+		$("#exch_serial_s").val(serialsent);
 		$(".exchanger").show();
 		$(".exchanges").show();
 		$(".serials").show();
 		$(".serialr").show();
-		$(".gridsquarer").hide();
-		$(".gridsquares").hide();
 	}
 	else if (exchangetype == 'Serialgridsquare') {
-		var serialsent = localStorage.getItem("serialsent");
-		if (serialsent != null) {
-			$("#exch_serial_s").val(serialsent);
-		} else {
-			$("#exch_serial_s").val(1);
-		}
-		$(".exchanger").hide();
-		$(".exchanges").hide();
+		$("#exch_serial_s").val(serialsent);
 		$(".serials").show();
 		$(".serialr").show();
 		$(".gridsquarer").show();
 		$(".gridsquares").show();
 	}
 	else if (exchangetype == 'Gridsquare') {
-		$("#exch_serial_s").val("");
-		$(".exchanger").hide();
-		$(".exchanges").hide();
-		$(".serials").hide();
-		$(".serialr").hide();
 		$(".gridsquarer").show();
 		$(".gridsquares").show();
 	}
@@ -374,6 +348,7 @@ function logQso() {
 				localStorage.setItem("serialsent", $("#exch_serial_s").val());
 				localStorage.setItem("gridsquarereceived", $("#exch_gridsquare_r").val());
 				localStorage.setItem("gridsquaresent", $("#exch_gridsquare_s").val());
+				localStorage.setItem("copytodok", $('#copyexchangetodok').is(":checked"));
 			}
 		});
 	}
@@ -381,14 +356,17 @@ function logQso() {
 
 // We are restoring the settings in the contest logging form here
 function restoreContestSession() {
-	var contestname = localStorage.getItem("contestid");
+	var dokcopy = localStorage.getItem("copytodok");
+	if (dokcopy != null) {
+		$('#copyexchangetodok').prop('checked', true);
+	}
 
+	var contestname = localStorage.getItem("contestid");
 	if (contestname != null) {
 		$("#contestname").val(contestname);
 	}
 
 	var exchangetype = localStorage.getItem("exchangetype");
-
 	if (exchangetype != null) {
 		$("#exchangetype").val(exchangetype);
 		setExchangetype(exchangetype);
