@@ -19,7 +19,7 @@
 
 	<?php echo validation_errors(); ?>
 
-	<form method="post" name="create_profile">
+	<form>
 		<div class="form-group">
 			<label for="nameInput">Theme Name</label>
 			<input type="text" class="form-control" name="name" id="nameInput" aria-describedby="nameInputHelp" required>
@@ -32,7 +32,6 @@
 			<small id="foldernameInputHelp" class="form-text text-muted">This is the name of the folder where your CSS-files are placed under assets/css.</small>
 		</div>
 
-		<button onclick="addTheme(this.form);" class="btn btn-primary"><i class="fas fa-plus-square"></i> Add theme</button>
-
+		<button type="button" onclick="addTheme(this.form);" class="btn btn-primary"><i class="fas fa-plus-square"></i> Add theme</button>
 	</form>
 </div>
