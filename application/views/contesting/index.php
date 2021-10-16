@@ -13,9 +13,6 @@
 							<div class="col-auto">
 								<select class="form-control-sm" id="exchangetype" name="exchangetype">
 									<option value='None'>None</option>
-                                    <option value='Dok'>DOK</option>
-                                    <option value='Serialdok'>DOK + Serial</option>
-                                    <option value='Dokgridsquare'>DOK + Gridsquare</option>
 									<option value='Exchange'>Exchange</option>
 									<option value='Gridsquare'>Gridsquare</option>
 									<option value='Serial'>Serial</option>
@@ -128,11 +125,6 @@
 								<input type="number" class="form-control form-control-sm" name="exch_serial_s" id="exch_serial_s" value="">
 							</div>
                             
-                            <div style="display:none" class="form-group col-md-1 doks">
-                                <label for="exch_dok_s">DOK (S)</label>
-                                <input disabled type="text" class="form-control form-control-sm" name="exch_dok_s" id="exch_dok_s" value="<?php echo $my_dok;?>">
-                            </div>
-
                             <div style="display:none" class="form-group col-md-1 exchanges">
                                 <label for="exch_sent"><?php echo $this->lang->line('gen_hamradio_exchange_sent_short'); ?></label>
                                 <input type="text" class="form-control form-control-sm" name="exch_sent" id="exch_sent" value="">
@@ -151,11 +143,6 @@
                             <div style="display:none" class="form-group col-md-1 serialr">
 								<label for="exch_serial_r">Serial (R)</label>
 								<input type="number" class="form-control form-control-sm" name="exch_serial_r" id="exch_serial_r" value="">
-							</div>
-                            
-                            <div style="display:none" class="form-group col-md-1 dokr">
-								<label for="exch_dok_r">DOK (R)</label>
-								<input type="text" class="form-control form-control-sm" name="darc_dok" id="exch_dok_r" value="">
 							</div>
 							
 							<div style="display:none" class="form-group col-md-1 exchanger">
@@ -183,6 +170,14 @@
 
                         <button type="button" class="btn btn-sm btn-light" onclick="reset_log_fields()"><i class="fas fa-sync-alt"></i> <?php echo $this->lang->line('contesting_btn_reset_qso'); ?></button>
                         <button type="button" class="btn btn-sm btn-primary" onclick="logQso();"><i class="fas fa-save"></i> <?php echo $this->lang->line('contesting_btn_save_qso'); ?></button>
+                        <div class="form-group row">
+                          <div class="col-md-12">
+                              <div class="form-check-inline">
+                                  <input class="form-check-input" type="checkbox" name="copyexchangetodok" value="1" id="copyexchangetodok">
+                                  <label class="form-check-label" for="copyexchangetodok">Copy received exchange to DOK field in the database!</label>
+                              </div>
+                          </div>
+                      </div>
                     </form>
                 </div>
             </div>
@@ -226,5 +221,4 @@
     </div>
 </div>
 <?php
-//var_dump($_SESSION);
 ?>

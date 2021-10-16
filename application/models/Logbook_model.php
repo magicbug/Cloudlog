@@ -98,6 +98,12 @@ class Logbook_model extends CI_Model {
       $clean_county_input = null;
     }
 
+    if($this->input->post('copyexchangetodok')) {
+      $dark_dok = $this->input->post('exch_recv');
+    } else {
+      $dark_dok = $this->input->post('darc_dok');
+    }
+
     // Create array with QSO Data
     $data = array(
             'COL_TIME_ON' => $datetime,
@@ -154,7 +160,7 @@ class Logbook_model extends CI_Model {
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
             'COL_SIG' => trim($this->input->post('sig')),
             'COL_SIG_INFO' => trim($this->input->post('sig_info')),
-            'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
+            'COL_DARC_DOK' => trim($dark_dok),
 			'COL_NOTES' => $this->input->post('notes'),
     );
 
