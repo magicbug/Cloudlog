@@ -1512,7 +1512,7 @@ class Logbook_model extends CI_Model {
       $query = $this->db->get($this->config->item('table_name'));
       $row = $query->row();
 
-      if (isset($row->COL_EQSL_QSLDATE)){
+      if (isset($row->COL_EQSL_QSLRDATE)){
           return $row->COL_EQSL_QSLRDATE;
         }else{
             // No previous date (first time import has run?), so choose UNIX EPOCH!
