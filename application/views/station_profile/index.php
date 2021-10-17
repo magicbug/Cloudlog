@@ -17,7 +17,7 @@
   <div class="card-body">
     <p class="card-text">Station Locations define operating locations, such as your QTH, a friend's QTH, or a portable station.</p>
 	<p class="card-text">Similar to logbooks, a station profile keeps a set of QSOs together.</p>
-	<p class="card-text">Only one logbook may be active at a time. In the table below this is shown with the "Active Station" badge.</p>
+	<p class="card-text">Only one station may be active at a time. In the table below this is shown with the "Active Station" badge.</p>
 
 	  <p><a href="<?php echo site_url('station/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Station Location</a></p>
 	  
