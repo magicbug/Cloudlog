@@ -11,6 +11,7 @@ class Logbooks_model extends CI_Model {
 
     function show_all() {
         $this->db->where('user_id', $this->session->userdata('user_id'));
+        $this->db->order_by('logbook_name');
 		return $this->db->get('station_logbooks');
 	}
 
