@@ -27,9 +27,11 @@ class Logbook extends CI_Controller {
 						}
 				}
 
+		$this->load->model('logbook_model');
+
 		$this->load->library('pagination');
 		$config['base_url'] = base_url().'index.php/logbook/index/';
-		$config['total_rows'] = $this->db->count_all($this->config->item('table_name'));
+		$config['total_rows'] = $this->logbook_model->total_qsos();
 		$config['per_page'] = '25';
 		$config['num_links'] = 6;
 		$config['full_tag_open'] = '';
@@ -40,7 +42,6 @@ class Logbook extends CI_Controller {
 		$this->pagination->initialize($config);
 
 		//load the model and get results
-		$this->load->model('logbook_model');
 		$data['results'] = $this->logbook_model->get_qsos($config['per_page'],$this->uri->segment(3));
 
 		// Calculate Lat/Lng from Locator to use on Maps
