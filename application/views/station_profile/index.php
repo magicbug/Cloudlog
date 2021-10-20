@@ -17,7 +17,7 @@
   <div class="card-body">
     <p class="card-text">Station Locations define operating locations, such as your QTH, a friend's QTH, or a portable station.</p>
 	<p class="card-text">Similar to logbooks, a station profile keeps a set of QSOs together.</p>
-	<p class="card-text">Only one logbook may be active at a time. In the table below this is shown with the "Active Logbook" badge.</p>
+	<p class="card-text">Only one station may be active at a time. In the table below this is shown with the "Active Station" badge.</p>
 
 	  <p><a href="<?php echo site_url('station/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Station Location</a></p>
 	  
@@ -62,9 +62,9 @@
 					<td><?php echo $row->station_gridsquare;?></td>
 					<td style="text-align: center">
 						<?php if($row->station_active != 1) { ?>			
-							<a href="<?php echo site_url('station/set_active/').$current_active."/".$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('Are you sure you want to make logbook <?php echo $row->station_profile_name; ?> the active logbook?');">Set Active</a>
+							<a href="<?php echo site_url('station/set_active/').$current_active."/".$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('Are you sure you want to make station <?php echo $row->station_profile_name; ?> the active station?');">Set Active</a>
 						<?php } else { ?>
-							<span class="badge badge-success">Active Logbook</span>
+							<span class="badge badge-success">Active Station</span>
 						<?php } ?>
 
 						<?php if($is_there_qsos_with_no_station_id >= 1) { ?>
