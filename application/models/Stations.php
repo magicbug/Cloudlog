@@ -15,7 +15,8 @@ class Stations extends CI_Model {
         $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id','left');
        	$this->db->group_by('station_profile.station_id');
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
-		$this->db->or_where('station_profile.user_id =', NULL); 
+		$this->db->or_where('station_profile.user_id =', NULL);
+		$this->db->order_by('station_profile.station_profile_name');
         return $this->db->get();
 	}
 
