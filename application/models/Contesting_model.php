@@ -122,4 +122,24 @@ class Contesting_model extends CI_Model {
 		$this->db->where('id', $id);
 		$this->db->update('contest', $data);
 	}
+
+	function activateall() {
+		$data = array(
+			'active' => '1',
+		);
+
+		$this->db->update('contest', $data);
+
+		return true;
+	}
+
+	function deactivateall() {
+		$data = array(
+			'active' => '0',
+		);
+
+		$this->db->update('contest', $data);
+
+		return true;
+	}
 }
