@@ -102,6 +102,26 @@ class Modes extends CI_Model {
         return true;
     }
 
+	function activateall() {
+        $data = array(
+            'active' => '1',
+        );
+
+        $this->db->update('adif_modes', $data);
+
+        return true;
+    }
+
+    function deactivateall() {
+        $data = array(
+            'active' => '0',
+        );
+
+        $this->db->update('adif_modes', $data);
+
+        return true;
+    }
+
 }
 
 ?>
