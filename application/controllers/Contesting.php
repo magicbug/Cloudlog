@@ -134,4 +134,20 @@ class Contesting extends CI_Controller {
 		echo json_encode(array('message' => 'OK'));
 		return;
 	}
+
+	public function deactivateall() {
+		$this->load->model('Contesting_model');
+		$this->Contesting_model->deactivateall();
+		header('Content-Type: application/json');
+		echo json_encode(array('message' => 'OK'));
+		return;
+	}
+
+	public function activateall() {
+		$this->load->model('Contesting_model');
+		$this->Contesting_model->activateall();
+		header('Content-Type: application/json');
+		echo json_encode(array('message' => 'OK'));
+		return;
+	}
 }
