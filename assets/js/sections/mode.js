@@ -2,9 +2,9 @@ $('.modetable').DataTable({
 	"pageLength": 25,
 	responsive: false,
 	ordering: false,
-	"scrollY":        "500px",
+	"scrollY": "500px",
 	"scrollCollapse": true,
-	"paging":         false,
+	"paging": false,
 	"scrollX": true
 });
 
@@ -12,7 +12,7 @@ function createModeDialog() {
 	$.ajax({
 		url: base_url + 'index.php/mode/create',
 		type: 'post',
-		success: function(html) {
+		success: function (html) {
 			BootstrapDialog.show({
 				title: 'Create mode',
 				size: BootstrapDialog.SIZE_WIDE,
@@ -35,11 +35,13 @@ function createMode(form) {
 		$.ajax({
 			url: base_url + 'index.php/mode/create',
 			type: 'post',
-			data: {'mode': form.mode.value,
+			data: {
+				'mode': form.mode.value,
 				'submode': form.submode.value,
 				'qrgmode': form.qrgmode.value,
-				'active': form.active.value},
-			success: function(html) {
+				'active': form.active.value
+			},
+			success: function (html) {
 				location.reload();
 			}
 		});
@@ -50,11 +52,11 @@ function deactivateMode(modeid) {
 	$.ajax({
 		url: base_url + 'index.php/mode/deactivate',
 		type: 'post',
-		data: {'id': modeid },
-		success: function(html) {
+		data: { 'id': modeid },
+		success: function (html) {
 			$(".mode_" + modeid).text('not active');
-			$('.btn_'+modeid).html('Activate');
-			$('.btn_'+modeid).attr('onclick', 'activateMode('+modeid+')')
+			$('.btn_' + modeid).html('Activate');
+			$('.btn_' + modeid).attr('onclick', 'activateMode(' + modeid + ')')
 		}
 	});
 }
@@ -63,11 +65,11 @@ function activateMode(modeid) {
 	$.ajax({
 		url: base_url + 'index.php/mode/activate',
 		type: 'post',
-		data: {'id': modeid },
-		success: function(html) {
-			$('.mode_'+modeid).text('active');
-			$('.btn_'+modeid).html('Deactivate');
-			$('.btn_'+modeid).attr('onclick', 'deactivateMode('+modeid+')')
+		data: { 'id': modeid },
+		success: function (html) {
+			$('.mode_' + modeid).text('active');
+			$('.btn_' + modeid).html('Deactivate');
+			$('.btn_' + modeid).attr('onclick', 'deactivateMode(' + modeid + ')')
 		}
 	});
 }
@@ -75,20 +77,65 @@ function activateMode(modeid) {
 function deleteMode(id, mode) {
 	BootstrapDialog.confirm({
 		title: 'DANGER',
-		message: 'Warning! Are you sure you want to delete the following mode: ' + mode + '?'  ,
+		message: 'Warning! Are you sure you want to delete the following mode: ' + mode + '?',
 		type: BootstrapDialog.TYPE_DANGER,
 		closable: true,
 		draggable: true,
 		btnOKClass: 'btn-danger',
-		callback: function(result) {
-			if(result) {
+		callback: function (result) {
+			if (result) {
 				$.ajax({
 					url: base_url + 'index.php/mode/delete',
 					type: 'post',
-					data: {'id': id
+					data: {
+						'id': id
 					},
-					success: function(data) {
+					success: function (data) {
 						$(".mode_" + id).parent("tr:first").remove(); // removes mode from table
+					}
+				});
+			}
+		}
+	});
+}
+
+function activateAllModes() {
+	BootstrapDialog.confirm({
+		title: 'DANGER',
+		message: 'Warning! Are you sure you want to activate all modes?',
+		type: BootstrapDialog.TYPE_DANGER,
+		closable: true,
+		draggable: true,
+		btnOKClass: 'btn-danger',
+		callback: function (result) {
+			if (result) {
+				$.ajax({
+					url: base_url + 'index.php/mode/activateall',
+					type: 'post',
+					success: function (data) {
+						location.reload();
+					}
+				});
+			}
+		}
+	});
+}
+
+function deactivateAllModes() {
+	BootstrapDialog.confirm({
+		title: 'DANGER',
+		message: 'Warning! Are you sure you want to deactivate all modes?',
+		type: BootstrapDialog.TYPE_DANGER,
+		closable: true,
+		draggable: true,
+		btnOKClass: 'btn-danger',
+		callback: function (result) {
+			if (result) {
+				$.ajax({
+					url: base_url + 'index.php/mode/deactivateall',
+					type: 'post',
+					success: function (data) {
+						location.reload();
 					}
 				});
 			}

@@ -103,4 +103,20 @@ class Mode extends CI_Controller {
         echo json_encode(array('message' => 'OK'));
         return;
     }
+
+	public function activateall() {
+        $this->load->model('modes');
+        $this->modes->activateall();
+        header('Content-Type: application/json');
+        echo json_encode(array('message' => 'OK'));
+        return;
+    }
+
+    public function deactivateall() {
+        $this->load->model('modes');
+        $this->modes->deactivateall();
+        header('Content-Type: application/json');
+        echo json_encode(array('message' => 'OK'));
+        return;
+    }
 }
