@@ -113,6 +113,7 @@
                             <div class="form-group col-md-3">
                                 <label for="callsign"><?php echo $this->lang->line('gen_hamradio_callsign'); ?></label>
                                 <input type="text" class="form-control form-control-sm" id="callsign" name="callsign" required>
+                                <small id="callsign_info" class="badge badge-danger"></small>
                             </div>
 
                             <div class="form-group col-md-1">

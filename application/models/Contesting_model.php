@@ -142,4 +142,28 @@ class Contesting_model extends CI_Model {
 
 		return true;
 	}
+
+	function checkIfWorkedBefore($call, $band, $mode, $contest, $qso) {
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		$station_id = $CI->Stations->find_active();
+
+		$qsoarray = explode(',', $qso);
+
+        $date = DateTime::createFromFormat('d-m-Y H:i:s', $qsoarray[0]);
+        $date = $date->format('Y-m-d H:i:s');
+
+		$this->db->where('STATION_ID', $station_id);
+		$this->db->where('COL_CALL', xss_clean($call));
+	    $this->db->where("COL_BAND", xss_clean($band));
+		$this->db->where("COL_CONTEST_ID", xss_clean($contest));
+		$this->db->where("COL_TIME_ON >=", $date);
+	    $this->db->group_start();
+		$this->db->where("COL_MODE", xss_clean($mode));
+	    $this->db->or_where("COL_SUBMODE", xss_clean($mode));
+		$this->db->group_end();
+	    $query = $this->db->get($this->config->item('table_name'));
+
+	    return $query;
+	}
 }
