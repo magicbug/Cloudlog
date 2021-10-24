@@ -150,4 +150,24 @@ class Contesting extends CI_Controller {
 		echo json_encode(array('message' => 'OK'));
 		return;
 	}
+
+	/*
+	 *  Function is used for dupe-checking in contestinglogging
+	 */
+	public function checkIfWorkedBefore() {
+		$call = $this->input->post('call');
+		$band = $this->input->post('band');
+		$mode = $this->input->post('mode');
+		$contest = $this->input->post('contest');
+		$qso = $this->input->post('qso');
+
+		$this->load->model('Contesting_model');
+		$result = $this->Contesting_model->checkIfWorkedBefore($call, $band, $mode, $contest, $qso);
+		
+		header('Content-Type: application/json');
+		if ($result->num_rows()) {
+			echo json_encode(array('message' => 'Worked before'));
+		}
+		return;
+	}
 }

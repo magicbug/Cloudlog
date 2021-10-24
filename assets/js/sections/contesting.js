@@ -165,11 +165,32 @@ $("#callsign").keyup(function () {
 			$('.callsign-suggestions').text(result);
 			highlight(call.toUpperCase());
 		});
+		checkIfWorkedBefore();
 	}
 	else if (call.length <= 2) {
 		$('.callsign-suggestions').text("");
 	}
 });
+
+function checkIfWorkedBefore() {
+	$('#callsign_info').text("");
+	$.ajax({
+		url: base_url + 'index.php/contesting/checkIfWorkedBefore',
+		type: 'post',
+		data: {
+			'call': $("#callsign").val(),
+			'mode': $("#mode").val(),
+			'band': $("#band").val(),
+			'contest': $("#contestname").val(),
+			'qso': localStorage.getItem("qso")
+		},
+		success: function (result) {
+			if (result.message == 'Worked before') {
+				$('#callsign_info').text("Worked before!");
+			}
+		}
+	});
+}
 
 function reset_log_fields() {
 	$('#name').val("");
@@ -181,6 +202,7 @@ function reset_log_fields() {
 	$('#exch_gridsquare_r').val("");
 	$("#callsign").focus();
 	setRst($("#mode").val());
+	$('#callsign_info').text("");
 }
 
 RegExp.escape = function (text) {
@@ -218,6 +240,7 @@ $('#mode').change(function () {
 		$('#frequency_rx').val("");
 	});
 	setRst($("#mode").val());
+	checkIfWorkedBefore();
 });
 
 /* Calculate Frequency */
@@ -227,6 +250,7 @@ $('#band').change(function () {
 		$('#frequency').val(result);
 		$('#frequency_rx').val("");
 	});
+	checkIfWorkedBefore();
 });
 
 $('#exchangetype').change(function () {
