@@ -619,14 +619,15 @@ i=0;
 function searchButtonPress(){
     event.preventDefault()
     if ($('#callsign').val()) {
-      $('#partial_view').load("logbook/search_result/" + $('#callsign').val(), function() {});
+      let fixedcall = $('#callsign').val();
+      $('#partial_view').load("logbook/search_result/" + fixedcall.replace('Ø', '0'), function() {});
     }
 }
 
 $(document).ready(function(){
 
   <?php if($this->input->post('callsign') != "") { ?>
-    $('#partial_view').load("logbook/search_result/<?php echo $this->input->post('callsign'); ?>", function() {
+        $('#partial_view').load("logbook/search_result/<?php echo str_replace("Ø","0",$this->input->post('callsign')); ?>", function() {
     });
   <?php } ?>
 
@@ -634,9 +635,9 @@ $(document).on('keypress',function(e) {
   if(e.which == 13) {
 
     if ($('#callsign').val()) {
-      $('#partial_view').load("logbook/search_result/" + $('#callsign').val(), function() {});
+        let fixedcall = $('#callsign').val();
+      $('#partial_view').load("logbook/search_result/" + fixedcall.replace('Ø', '0'), function() {});
     }
-
 
      event.preventDefault();
         return false;
