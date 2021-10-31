@@ -51,10 +51,7 @@ class Logbooks_model extends CI_Model {
 		$cleanId = xss_clean($id);
 
 		// be sure that logbook belongs to user
-		$this->db->where('user_id', $this->session->userdata('user_id'));
-		$this->db->where('logbook_id', $cleanId);
-		$query = $this->db->get('station_logbooks');
-		if ($query->num_rows() != 1) {
+		if (!$this->check_logbook_is_accessible($cleanId)) {
 			return;
 		}
 
@@ -83,18 +80,14 @@ class Logbooks_model extends CI_Model {
 		$clean_location_id = $this->security->xss_clean($location_id);
 
 		// be sure that logbook belongs to user
-		$this->db->where('user_id', $this->session->userdata('user_id'));
-		$this->db->where('logbook_id', $clean_logbook_id);
-		$query = $this->db->get('station_logbooks');
-		if ($query->num_rows() != 1) {
+		if (!$this->check_logbook_is_accessible($clean_logbook_id)) {
 			return;
 		}
 
 		// be sure that station belongs to user
-		$this->db->where('user_id', $this->session->userdata('user_id'));
-		$this->db->where('station_id', $clean_location_id);
-		$query = $this->db->get('station_profile');
-		if ($query->num_rows() != 1) {
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		if (!$CI->Stations->check_station_is_accessible($clean_location_id)) {
 			return;
 		}
 
@@ -171,25 +164,32 @@ class Logbooks_model extends CI_Model {
 		$clean_station_id = $this->security->xss_clean($station_id);
 
 		// be sure that logbook belongs to user
-		$this->db->where('user_id', $this->session->userdata('user_id'));
-		$this->db->where('logbook_id', $clean_logbook_id);
-		$query = $this->db->get('station_logbooks');
-		if ($query->num_rows() != 1) {
+		if (!$this->check_logbook_is_accessible($clean_logbook_id)) {
 			return;
 		}
 
 		// be sure that station belongs to user
-		$this->db->where('user_id', $this->session->userdata('user_id'));
-		$this->db->where('station_id', $clean_station_id);
-		$query = $this->db->get('station_profile');
-		if ($query->num_rows() != 1) {
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		if (!$CI->Stations->check_station_is_accessible($clean_station_id)) {
 			return;
 		}
 
-		// Delete QSOs
+		// Delete relationship
 		$this->db->where('station_logbook_id', $clean_logbook_id);
 		$this->db->where('station_location_id', $clean_station_id);
 		$this->db->delete('station_logbooks_relationship'); 
+	}
+
+	public function check_logbook_is_accessible($id) {
+		// check if logbook belongs to user
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('logbook_id', $id);
+		$query = $this->db->get('station_logbooks');
+		if ($query->num_rows() == 1) {
+			return true;
+		}
+		return false;
 	}
 }
 ?>

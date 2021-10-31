@@ -459,6 +459,7 @@ class Logbook_model extends CI_Model {
   /* Edit QSO */
   function edit() {
     $entity = $this->get_entity($this->input->post('dxcc_id'));
+    $stationId = $this->input->post('station_profile');
     $country = $entity['name'];
 
     $mode = $this->get_main_mode_if_submode($this->input->post('mode'));
@@ -539,7 +540,7 @@ class Logbook_model extends CI_Model {
 		   'COL_SRX' => $srx_string,
 		   'COL_CONTEST_ID' => $this->input->post('contest_name'),
        'COL_QSL_VIA' => $this->input->post('qsl_via_callsign'),
-       'station_id' => $this->input->post('station_profile'),
+       'station_id' => $stationId,
        'COL_OPERATOR' => $this->input->post('operator_callsign'),
        'COL_STATE' =>$this->input->post('usa_state'),
        'COL_CNTY' => $uscounty

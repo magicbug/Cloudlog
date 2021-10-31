@@ -102,6 +102,7 @@ class Stations extends CI_Model {
             'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
 		);
 
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', xss_clean($this->input->post('station_id', true)));
 		$this->db->update('station_profile', $data); 
 	}
@@ -139,13 +140,12 @@ class Stations extends CI_Model {
 		$clean_new = $this->security->xss_clean($new);
 
 		// be sure that stations belong to user
-		$this->db->where('user_id', $this->session->userdata('user_id'));
-		$this->db->where_in('station_id', array($clean_current, $clean_new));
-		$query = $this->db->get('station_profile');
-		if ($clean_current == 0 && $query->num_rows() != 1) {
-			return;
+		if ($clean_current != 0) {
+			if (!$this->check_station_is_accessible($clean_current)) {
+				return;
+			}
 		}
-		if ($clean_current != 0 && $query->num_rows() != 2) {
+		if (!$this->check_station_is_accessible($clean_new)) {
 			return;
 		}
 
@@ -294,6 +294,16 @@ class Stations extends CI_Model {
 		return $query->num_rows();
     }
 
+	public function check_station_is_accessible($id) {
+		// check if station belongs to user
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('station_id', $id);
+		$query = $this->db->get('station_profile');
+		if ($query->num_rows() == 1) {
+			return true;
+		}
+		return false;
+	}
 }
 
 ?>
