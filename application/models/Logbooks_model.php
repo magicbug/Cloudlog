@@ -26,40 +26,51 @@ class Logbooks_model extends CI_Model {
 		$this->db->insert('station_logbooks', $data); 
 	}
 
-    function delete($id) {
+	function delete($id) {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
 
 		// Delete QSOs
-        $this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('logbook_id', $id);
 		$this->db->delete('station_logbooks'); 
 	}
 
-    function edit() {
+	function edit() {
 		$data = array(
 			'logbook_name' => xss_clean($this->input->post('station_logbook_name', true)),
 		);
 
-        $this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('logbook_id', xss_clean($this->input->post('logbook_id', true)));
 		$this->db->update('station_logbooks', $data); 
 	}
 
 	function set_logbook_active($id) {
+		// Clean input
+		$cleanId = xss_clean($id);
+
+		// be sure that logbook belongs to user
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('logbook_id', $cleanId);
+		$query = $this->db->get('station_logbooks');
+		if ($query->num_rows() != 1) {
+			return;
+		}
+
 		$data = array(
-			'active_station_logbook' => xss_clean($id),
+			'active_station_logbook' => $cleanId,
 		);
 
-        $this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->update('users', $data); 
 	}
 
-    function logbook($id) {
+	function logbook($id) {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
 
-        $this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('logbook_id', $clean_id);
 		return $this->db->get('station_logbooks');
 	}
@@ -67,10 +78,30 @@ class Logbooks_model extends CI_Model {
 
 	// Creates relationship between a logbook and a station location
 	function create_logbook_location_link($logbook_id, $location_id) {
+		// Clean ID
+		$clean_logbook_id = $this->security->xss_clean($logbook_id);
+		$clean_location_id = $this->security->xss_clean($location_id);
+
+		// be sure that logbook belongs to user
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('logbook_id', $clean_logbook_id);
+		$query = $this->db->get('station_logbooks');
+		if ($query->num_rows() != 1) {
+			return;
+		}
+
+		// be sure that station belongs to user
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('station_id', $clean_location_id);
+		$query = $this->db->get('station_profile');
+		if ($query->num_rows() != 1) {
+			return;
+		}
+
 		// Create data array with field values
 		$data = array(
-			'station_logbook_id' => $logbook_id,
-			'station_location_id' =>  $location_id,
+			'station_logbook_id' => $clean_logbook_id,
+			'station_location_id' =>  $clean_location_id,
 		);
 
 		// Insert Record
@@ -138,6 +169,22 @@ class Logbooks_model extends CI_Model {
 		// Clean ID
 		$clean_logbook_id = $this->security->xss_clean($logbook_id);
 		$clean_station_id = $this->security->xss_clean($station_id);
+
+		// be sure that logbook belongs to user
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('logbook_id', $clean_logbook_id);
+		$query = $this->db->get('station_logbooks');
+		if ($query->num_rows() != 1) {
+			return;
+		}
+
+		// be sure that station belongs to user
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('station_id', $clean_station_id);
+		$query = $this->db->get('station_profile');
+		if ($query->num_rows() != 1) {
+			return;
+		}
 
 		// Delete QSOs
 		$this->db->where('station_logbook_id', $clean_logbook_id);

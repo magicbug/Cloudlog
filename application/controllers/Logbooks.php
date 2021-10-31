@@ -53,7 +53,7 @@ class Logbooks extends CI_Controller {
 	{
 		$this->load->library('form_validation');
 
-        $this->load->model('logbooks_model');
+		$this->load->model('logbooks_model');
 		$this->load->model('stations');
 
 		$station_logbook_id = $this->security->xss_clean($id);
@@ -62,7 +62,7 @@ class Logbooks extends CI_Controller {
 		$data['station_locations_array'] = $this->logbooks_model->list_logbook_relationships($station_logbook_id);
 
 		$data['station_logbook_details'] = $station_logbook_details_query->row();
-		$data['station_locations_list'] = $this->stations->all();
+		$data['station_locations_list'] = $this->stations->all_of_user();
 
 		$data['station_locations_linked'] = $this->logbooks_model->list_logbooks_linked($station_logbook_id);
 		

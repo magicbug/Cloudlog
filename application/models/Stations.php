@@ -26,6 +26,11 @@ class Stations extends CI_Model {
 		return $this->db->get('station_profile');
 	}
 
+	function all_of_user() {
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		return $this->db->get('station_profile');
+	}
+
 	function profile($id) {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
@@ -129,54 +134,67 @@ class Stations extends CI_Model {
 	}
 
 	function set_active($current, $new) {
-
 		// Clean inputs
-
 		$clean_current = $this->security->xss_clean($current);
 		$clean_new = $this->security->xss_clean($new);
 
-        // Deselect current default
+		// be sure that stations belong to user
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where_in('station_id', array($clean_current, $clean_new));
+		$query = $this->db->get('station_profile');
+		if ($clean_current == 0 && $query->num_rows() != 1) {
+			return;
+		}
+		if ($clean_current != 0 && $query->num_rows() != 2) {
+			return;
+		}
+
+		// Deselect current default
 		$current_default = array(
-				'station_active' => null,
+			'station_active' => null,
 		);
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', $clean_current);
 		$this->db->update('station_profile', $current_default);
-		
+
 		// Deselect current default	
 		$newdefault = array(
 			'station_active' => 1,
 		);
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', $clean_new);
 		$this->db->update('station_profile', $newdefault);
-    }
+	}
 
-    public function find_active() {
-        $this->db->where('station_active', 1);
-       	$query = $this->db->get('station_profile');
-        
-        if($query->num_rows() >= 1) {
-        	foreach ($query->result() as $row)
+	public function find_active() {
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('station_active', 1);
+		$query = $this->db->get('station_profile');
+
+		if($query->num_rows() >= 1) {
+			foreach ($query->result() as $row)
 			{
 				return $row->station_id;
 			}
-       	} else {
+		} else {
 			return "0";
 		}
 	}
 	
 	public function find_gridsquare() {
-        $this->db->where('station_active', 1);
-       	$query = $this->db->get('station_profile');
-        
-        if($query->num_rows() >= 1) {
-        	foreach ($query->result() as $row)
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('station_active', 1);
+		$query = $this->db->get('station_profile');
+
+		if($query->num_rows() >= 1) {
+			foreach ($query->result() as $row)
 			{
 				return $row->station_gridsquare;
 			}
-       	} else {
+		} else {
 			return "0";
 		}
-    }
+	}
 
     public function reassign($id) {
 		// Clean ID
