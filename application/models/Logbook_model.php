@@ -24,15 +24,15 @@ class Logbook_model extends CI_Model {
 
     // Contest exchange, need to separate between serial and other type of exchange
     if($this->input->post('exchangetype')) {
-		$srx_string = $this->input->post('exch_recv');
-		$stx_string = $this->input->post('exch_sent');
-		$srx = $this->input->post('exch_serial_r');
-		$stx = $this->input->post('exch_serial_s');
+      $srx_string = $this->input->post('exch_recv') == '' ? null : $this->input->post('exch_recv');
+      $stx_string = $this->input->post('exch_sent') == '' ? null : $this->input->post('exch_sent');
+      $srx = $this->input->post('exch_serial_r') == '' ? null : $this->input->post('exch_serial_r');
+      $stx = $this->input->post('exch_serial_s') == '' ? null : $this->input->post('exch_serial_s');
     } else {
-        $srx_string = null;
-        $stx_string = null;
-        $srx = null;
-        $stx = null;
+      $srx_string = null;
+      $stx_string = null;
+      $srx = null;
+      $stx = null;
     }
 
     if($this->input->post('contestname')) {
