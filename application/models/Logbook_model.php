@@ -462,6 +462,13 @@ class Logbook_model extends CI_Model {
     $stationId = $this->input->post('station_profile');
     $country = $entity['name'];
 
+    // be sure that station belongs to user
+    $CI =& get_instance();
+    $CI->load->model('Stations');
+    if (!$CI->Stations->check_station_is_accessible($stationId)) {
+        return;
+    }
+
     $mode = $this->get_main_mode_if_submode($this->input->post('mode'));
     if ($mode == null) {
         $mode = $this->input->post('mode');
