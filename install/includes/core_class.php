@@ -26,7 +26,7 @@ class Core {
 		}
 
 		if($data['directory'] != "") {
-			if (file_exists("../".$data['directory'])) {
+			if (file_exists($_SERVER['DOCUMENT_ROOT'].$data['directory'])) {
 				//pass folders real
 				$counter++;
 			} else {
@@ -56,7 +56,7 @@ class Core {
 
 		// Config path
 		$template_path 	= 'config/database.php';
-		$output_path 	= '../application/config/database.php';
+		$output_path 	= $_SERVER['DOCUMENT_ROOT'].$data['directory'].'/application/config/database.php';
 
 		// Open the file
 		$database_file = file_get_contents($template_path);
@@ -92,7 +92,7 @@ class Core {
 
 		// Config path
 		$template_path 	= 'config/config.php';
-		$output_path 	= '../application/config/config.php';
+		$output_path 	= $_SERVER['DOCUMENT_ROOT'].$data['directory'].'/application/config/config.php';
 
 		// Open the file
 		$database_file = file_get_contents($template_path);
