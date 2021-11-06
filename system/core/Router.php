@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	Libraries
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/general/routing.html
+ * @link		https://codeigniter.com/userguide3/general/routing.html
  */
 class CI_Router {
 
@@ -439,19 +439,6 @@ class CI_Router {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Fetch the current class
-	 *
-	 * @deprecated	3.0.0	Read the 'class' property instead
-	 * @return	string
-	 */
-	public function fetch_class()
-	{
-		return $this->class;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Set method name
 	 *
 	 * @param	string	$method	Method name
@@ -460,19 +447,6 @@ class CI_Router {
 	public function set_method($method)
 	{
 		$this->method = $method;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Fetch the current method
-	 *
-	 * @deprecated	3.0.0	Read the 'method' property instead
-	 * @return	string
-	 */
-	public function fetch_method()
-	{
-		return $this->method;
 	}
 
 	// --------------------------------------------------------------------
@@ -495,21 +469,4 @@ class CI_Router {
 			$this->directory .= str_replace('.', '', trim($dir, '/')).'/';
 		}
 	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Fetch directory
-	 *
-	 * Feches the sub-directory (if any) that contains the requested
-	 * controller class.
-	 *
-	 * @deprecated	3.0.0	Read the 'directory' property instead
-	 * @return	string
-	 */
-	public function fetch_directory()
-	{
-		return $this->directory;
-	}
-
 }

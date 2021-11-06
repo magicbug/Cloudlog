@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	Security
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/libraries/security.html
+ * @link		https://codeigniter.com/userguide3/libraries/security.html
  */
 class CI_Security {
 
@@ -134,7 +134,9 @@ class CI_Security {
 	 */
 	protected $_never_allowed_str =	array(
 		'document.cookie' => '[removed]',
+		'(document).cookie' => '[removed]',
 		'document.write'  => '[removed]',
+		'(document).write'  => '[removed]',
 		'.parentNode'     => '[removed]',
 		'.innerHTML'      => '[removed]',
 		'-moz-binding'    => '[removed]',
@@ -152,7 +154,7 @@ class CI_Security {
 	 */
 	protected $_never_allowed_regex = array(
 		'javascript\s*:',
-		'(document|(document\.)?window)\.(location|on\w*)',
+		'(\(?document\)?|\(?window\)?(\.document)?)\.(location|on\w*)',
 		'expression\s*(\(|&\#40;)', // CSS and IE
 		'vbscript\s*:', // IE, surprise!
 		'wscript\s*:', // IE
@@ -167,10 +169,12 @@ class CI_Security {
 	 *
 	 * @return	void
 	 */
-	public function __construct()
+	public function __construct($charset)
 	{
+		$this->charset = $charset;
+
 		// Is CSRF protection enabled?
-		if (config_item('csrf_protection'))
+		if (config_item('csrf_protection') && ! is_cli())
 		{
 			// CSRF config
 			foreach (array('csrf_expire', 'csrf_token_name', 'csrf_cookie_name') as $key)
@@ -189,9 +193,8 @@ class CI_Security {
 
 			// Set the CSRF hash
 			$this->_csrf_set_hash();
+			$this->csrf_verify();
 		}
-
-		$this->charset = strtoupper(config_item('charset'));
 
 		log_message('info', 'Security Class Initialized');
 	}
@@ -226,6 +229,7 @@ class CI_Security {
 
 		// Check CSRF token validity, but don't error on mismatch just yet - we'll want to regenerate
 		$valid = isset($_POST[$this->_csrf_token_name], $_COOKIE[$this->_csrf_cookie_name])
+			&& is_string($_POST[$this->_csrf_token_name]) && is_string($_COOKIE[$this->_csrf_cookie_name])
 			&& hash_equals($_POST[$this->_csrf_token_name], $_COOKIE[$this->_csrf_cookie_name]);
 
 		// We kill this since we're done and we don't want to pollute the _POST array
@@ -542,6 +546,14 @@ class CI_Security {
 			$str
 		);
 
+		// Same thing, but for "tag functions" (e.g. eval`some code`)
+		// See https://github.com/bcit-ci/CodeIgniter/issues/5420
+		$str = preg_replace(
+			'#(alert|prompt|confirm|cmd|passthru|eval|exec|expression|system|fopen|fsockopen|file|file_get_contents|readfile|unlink)(\s*)`(.*?)`#si',
+			'\\1\\2&#96;\\3&#96;',
+			$str
+		);
+
 		// Final clean up
 		// This adds a bit of extra precaution in case
 		// something got through the above filters
@@ -628,7 +640,7 @@ class CI_Security {
 		if (is_readable('/dev/urandom') && ($fp = fopen('/dev/urandom', 'rb')) !== FALSE)
 		{
 			// Try not to waste entropy ...
-			is_php('5.4') && stream_set_chunk_size($fp, $length);
+			stream_set_chunk_size($fp, $length);
 			$output = fread($fp, $length);
 			fclose($fp);
 			if ($output !== FALSE)
@@ -658,7 +670,7 @@ class CI_Security {
 	 * correctly. html_entity_decode() does not convert entities without
 	 * semicolons, so we are left with our own little solution here. Bummer.
 	 *
-	 * @link	http://php.net/html-entity-decode
+	 * @link	https://secure.php.net/html-entity-decode
 	 *
 	 * @param	string	$str		Input
 	 * @param	string	$charset	Character set
@@ -673,26 +685,8 @@ class CI_Security {
 
 		static $_entities;
 
-		isset($charset) OR $charset = $this->charset;
-		$flag = is_php('5.4')
-			? ENT_COMPAT | ENT_HTML5
-			: ENT_COMPAT;
-
-		if ( ! isset($_entities))
-		{
-			$_entities = array_map('strtolower', get_html_translation_table(HTML_ENTITIES, $flag, $charset));
-
-			// If we're not on PHP 5.4+, add the possibly dangerous HTML 5
-			// entities to the array manually
-			if ($flag === ENT_COMPAT)
-			{
-				$_entities[':'] = '&colon;';
-				$_entities['('] = '&lpar;';
-				$_entities[')'] = '&rpar;';
-				$_entities["\n"] = '&NewLine;';
-				$_entities["\t"] = '&Tab;';
-			}
-		}
+		isset($charset)   OR $charset = $this->charset;
+		isset($_entities) OR $_entities = array_map('strtolower', get_html_translation_table(HTML_ENTITIES, ENT_COMPAT | ENT_HTML5, $charset));
 
 		do
 		{
@@ -717,14 +711,9 @@ class CI_Security {
 			// Decode numeric & UTF16 two byte entities
 			$str = html_entity_decode(
 				preg_replace('/(&#(?:x0*[0-9a-f]{2,5}(?![0-9a-f;])|(?:0*\d{2,4}(?![0-9;]))))/iS', '$1;', $str),
-				$flag,
+				ENT_COMPAT | ENT_HTML5,
 				$charset
 			);
-
-			if ($flag === ENT_COMPAT)
-			{
-				$str = str_replace(array_values($_entities), array_keys($_entities), $str);
-			}
 		}
 		while ($str_compare !== $str);
 		return $str;
@@ -853,7 +842,7 @@ class CI_Security {
 		// For other tags, see if their attributes are "evil" and strip those
 		elseif (isset($matches['attributes']))
 		{
-			// We'll store the already fitlered attributes here
+			// We'll store the already filtered attributes here
 			$attributes = array();
 
 			// Attribute-catching pattern
@@ -927,7 +916,7 @@ class CI_Security {
 		return str_replace(
 			$match[1],
 			preg_replace(
-				'#href=.*?(?:(?:alert|prompt|confirm)(?:\(|&\#40;)|javascript:|livescript:|mocha:|charset=|window\.|document\.|\.cookie|<script|<xss|d\s*a\s*t\s*a\s*:)#si',
+				'#href=.*?(?:(?:alert|prompt|confirm)(?:\(|&\#40;|`|&\#96;)|javascript:|livescript:|mocha:|charset=|window\.|\(?document\)?\.|\.cookie|<script|<xss|d\s*a\s*t\s*a\s*:)#si',
 				'',
 				$this->_filter_attributes($match[1])
 			),
@@ -955,7 +944,7 @@ class CI_Security {
 		return str_replace(
 			$match[1],
 			preg_replace(
-				'#src=.*?(?:(?:alert|prompt|confirm|eval)(?:\(|&\#40;)|javascript:|livescript:|mocha:|charset=|window\.|document\.|\.cookie|<script|<xss|base64\s*,)#si',
+				'#src=.*?(?:(?:alert|prompt|confirm|eval)(?:\(|&\#40;|`|&\#96;)|javascript:|livescript:|mocha:|charset=|window\.|\(?document\)?\.|\.cookie|<script|<xss|base64\s*,)#si',
 				'',
 				$this->_filter_attributes($match[1])
 			),
@@ -1076,5 +1065,4 @@ class CI_Security {
 
 		return $this->_csrf_hash;
 	}
-
 }
