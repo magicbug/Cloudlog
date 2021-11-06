@@ -19,6 +19,7 @@
 					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
 			echo '</td>';
 			echo '<td>';
@@ -32,6 +33,7 @@
 					case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
 					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
 			echo '</td>';
 			echo '<td>';
@@ -45,6 +47,7 @@
 					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
 			echo '</td>';
 			echo '<td>';
@@ -58,6 +61,7 @@
 					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
 			echo '</td>';
 			echo '<td>';
@@ -71,6 +75,7 @@
 				case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 				case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 				case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+				case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 			}
 			echo '</td>';
 
@@ -122,6 +127,7 @@
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
+				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
 			}
 			echo '</td>';
 			switch($this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2')) {
@@ -134,6 +140,7 @@
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
+				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
 			}
 			echo '</td>';
 
@@ -147,6 +154,7 @@
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
+				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
 			}
 			echo '</td>';
 			switch($this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4')) {
@@ -159,6 +167,7 @@
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
+				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
 			}
 			echo '</td>';
 			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
@@ -171,6 +180,7 @@
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
+				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
 			}
 			echo '</td>';
 				if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>

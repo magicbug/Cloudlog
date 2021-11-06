@@ -96,6 +96,7 @@ $lang['gen_hamradio_state'] = 'State';
 $lang['gen_hamradio_iota'] = 'IOTA';
 $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_gridsquare'] = 'Gridsquare';
+$lang['gen_hamradio_operator'] = 'Operator';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
