@@ -3,12 +3,6 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Distances_model extends CI_Model
 {
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
     public $bandslots = array("160m"=>0,
         "80m"=>0,
         "60m"=>0,

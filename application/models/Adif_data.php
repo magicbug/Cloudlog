@@ -2,12 +2,6 @@
 
 class adif_data extends CI_Model {
 
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
     function export_all() {
         $this->load->model('stations');
         $active_station_id = $this->stations->find_active();

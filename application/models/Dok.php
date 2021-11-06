@@ -23,12 +23,6 @@ class DOK extends CI_Model {
                            "3cm"=>0,
                            "1.25cm"=>0);
 
-	function __construct()
-	{
-		// Call the Model constructor
-		parent::__construct();
-	}
-
 	function get_worked_bands() {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');

@@ -27,12 +27,6 @@ class was extends CI_Model {
         "SAT"=>0,
     );
 
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
     function get_worked_bands() {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');

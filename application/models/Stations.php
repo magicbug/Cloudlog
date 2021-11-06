@@ -2,12 +2,6 @@
 
 class Stations extends CI_Model {
 
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
     function all_with_count() {
 
 		$this->db->select('station_profile.*, count('.$this->config->item('table_name').'.station_id) as qso_total');
