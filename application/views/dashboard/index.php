@@ -1,3 +1,34 @@
+<?php
+function echo_table_header_col($ctx, $name) {
+	switch($name) {
+		case 'Mode': echo '<th>'.$ctx->lang->line('gen_hamradio_mode').'</th>'; break;
+		case 'RSTS': echo '<th class="d-none d-sm-table-cell">'.$ctx->lang->line('gen_hamradio_rsts').'</th>'; break;
+		case 'RSTR': echo '<th class="d-none d-sm-table-cell">'.$ctx->lang->line('gen_hamradio_rstr').'</th>'; break;
+		case 'Country': echo '<th>'.$ctx->lang->line('general_word_country').'</th>'; break;
+		case 'IOTA': echo '<th>'.$ctx->lang->line('gen_hamradio_iota').'</th>'; break;
+		case 'SOTA': echo '<th>'.$ctx->lang->line('gen_hamradio_sota').'</th>'; break;
+		case 'State': echo '<th>'.$ctx->lang->line('gen_hamradio_state').'</th>'; break;
+		case 'Grid': echo '<th>'.$ctx->lang->line('gen_hamradio_gridsquare').'</th>'; break;
+		case 'Band': echo '<th>'.$ctx->lang->line('gen_hamradio_band').'</th>'; break;
+		case 'Operator': echo '<td>'.$ctx->lang->line('gen_hamradio_operator').'</td>'; break;
+	}
+}
+
+function echo_table_col($row, $name) {
+	switch($name) {
+		case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE . '</td>'; break;
+		case 'RSTS':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_SENT; if ($row->COL_STX_STRING) { echo '<span class="label">' . $row->COL_STX_STRING . '</span>';} echo '</td>'; break;
+		case 'RSTR':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX_STRING) { echo '<span class="label">' . $row->COL_SRX_STRING . '</span>';} echo '</td>'; break;
+		case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY))) . '</td>'; break;
+		case 'IOTA':    echo '<td>' . ($row->COL_IOTA) . '</td>'; break;
+		case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF) . '</td>'; break;
+		case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE . '</td>'; break;
+		case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); } echo '</td>'; break;
+		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
+		case 'Operator': echo '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
+	}
+}
+?>
 <div class="container dashboard">
 <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 
