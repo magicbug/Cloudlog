@@ -904,13 +904,18 @@ class Logbook_model extends CI_Model {
     $CI->load->model('logbooks_model');
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-    //$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_STX_STRING, COL_SRX_STRING, COL_IOTA, COL_STATE, COL_GRIDSQUARE');
-    $this->db->where_in('station_id', $logbooks_locations_array);
-    $this->db->order_by("COL_TIME_ON", "desc");
-    $this->db->limit($num);
-    $query = $this->db->get($this->config->item('table_name'));
+    if ($logbooks_locations_array) {
+      //$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_STX_STRING, COL_SRX_STRING, COL_IOTA, COL_STATE, COL_GRIDSQUARE');
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->order_by("COL_TIME_ON", "desc");
+      $this->db->limit($num);
+      $query = $this->db->get($this->config->item('table_name'));
+  
+      return $query;
+    } else {
+      return null;
+    }
 
-    return $query;
   }
 
     /* Get all QSOs with a valid grid for use in the KML export */
@@ -1003,17 +1008,20 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+      if ($logbooks_locations_array) {
+        $this->db->select('COUNT( * ) as count', FALSE);
+        $this->db->where_in('station_id', $logbooks_locations_array);
+        $query = $this->db->get($this->config->item('table_name'));
 
-      $this->db->select('COUNT( * ) as count', FALSE);
-      $this->db->where_in('station_id', $logbooks_locations_array);
-      $query = $this->db->get($this->config->item('table_name'));
-
-      if ($query->num_rows() > 0)
-      {
-        foreach ($query->result() as $row)
+        if ($query->num_rows() > 0)
         {
-          return $row->count;
+          foreach ($query->result() as $row)
+          {
+            return $row->count;
+          }
         }
+      } else {
+        return null;
       }
     }
 
@@ -1023,23 +1031,27 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+      if ($logbooks_locations_array) {
+        $morning = date('Y-m-d 00:00:00');
+        $night = date('Y-m-d 23:59:59');
 
-      $morning = date('Y-m-d 00:00:00');
-      $night = date('Y-m-d 23:59:59');
+        $this->db->select('COUNT( * ) as count', FALSE);
+        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->where('COL_TIME_ON >=', $morning);
+        $this->db->where('COL_TIME_ON <=', $night);
+        $query = $this->db->get($this->config->item('table_name'));
 
-      $this->db->select('COUNT( * ) as count', FALSE);
-      $this->db->where_in('station_id', $logbooks_locations_array);
-      $this->db->where('COL_TIME_ON >=', $morning);
-      $this->db->where('COL_TIME_ON <=', $night);
-      $query = $this->db->get($this->config->item('table_name'));
-
-      if ($query->num_rows() > 0)
-      {
-        foreach ($query->result() as $row)
+        if ($query->num_rows() > 0)
         {
-          return $row->count;
+          foreach ($query->result() as $row)
+          {
+            return $row->count;
+          }
         }
+      } else {
+        return null;
       }
+     
     }
 
     /* Return QSOs over a period of days */
@@ -1103,6 +1115,8 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+      if ($logbooks_locations_array) {
+
         $morning = date('Y-m-01 00:00:00');
 
         $date = new DateTime('now');
@@ -1123,6 +1137,9 @@ class Logbook_model extends CI_Model {
                  return $row->count;
             }
         }
+      } else {
+        return null;
+      }
     }
 
     /* Return QSOs for the year for the active profile */
@@ -1146,6 +1163,8 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+      if ($logbooks_locations_array) {
+
         $morning = date('Y-01-01 00:00:00');
         $night = date('Y-12-31 23:59:59');
 
@@ -1162,6 +1181,9 @@ class Logbook_model extends CI_Model {
                  return $row->count;
             }
         }
+      } else {
+        return null;
+      }
     }
 
     /* Return total amount of SSB QSOs logged */
