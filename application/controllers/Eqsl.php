@@ -620,7 +620,7 @@ class eqsl extends CI_Controller {
 			$dom->preserveWhiteSpace = false;
 			$images = $dom->getElementsByTagName('img');
 
-			if(!isset($images)) {
+			if(!isset($images) || count($images) == 0) {
 				echo "Rate Limited";
 				exit;
 			}
@@ -628,17 +628,21 @@ class eqsl extends CI_Controller {
 			foreach ($images as $image) 
 			{
 				header('Content-Type: image/jpg');
-				readfile ("https://www.eqsl.cc".$image->getAttribute('src')); 
 				$content = file_get_contents("https://www.eqsl.cc".$image->getAttribute('src'));
+				if ($content === false) {
+					echo "No response";
+					exit;
+				}
+				echo $content;
 				$filename = uniqid().'.jpg';
-				file_put_contents('images/eqsl_card_images/' . '/'.$filename, $content);
-
-				$this->Eqsl_images->save_image($id, $filename);
+				if (file_put_contents('images/eqsl_card_images/' . '/'.$filename, $content) !== false) {
+					$this->Eqsl_images->save_image($id, $filename);
+				}
 			}
 		} else {
 			header('Content-Type: image/jpg');
 			$image_url = base_url('images/eqsl_card_images/'.$this->Eqsl_images->get_image($id));
-			readfile($image_url); 
+			header('Location: ' . $image_url);
 		}
 
 	}
