@@ -123,6 +123,7 @@
                 </div>
             </li>
 
+			<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') == 99)) { ?>
         	<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
 
@@ -160,6 +161,7 @@
 					<?php } ?>
 				</div>
         	</li>
+			<?php } ?>
         <?php } ?>
     </ul>
 
