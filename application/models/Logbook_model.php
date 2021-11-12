@@ -912,7 +912,7 @@ class Logbook_model extends CI_Model {
     /* Get all QSOs with a valid grid for use in the KML export */
     function kml_get_all_qsos($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate) {
         $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_GRIDSQUARE');
-        $this->db->where('COL_GRIDSQUARE != \'null\'');
+        $this->db->where("coalesce(COL_GRIDSQUARE, '') <> ''");
 
         if ($band != 'All') {
             if ($band == 'SAT') {
