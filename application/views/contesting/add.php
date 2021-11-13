@@ -59,6 +59,10 @@
 					<table>
 			</div>
 			<br/>
-			<p><button onclick="createContestDialog();" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Add a Contest</button></p>
+			<p>
+				<button onclick="createContestDialog();" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Add a Contest</button>
+				<button onclick="activateAllContests();" class="btn btn-primary btn-sm">Activate All</button>
+				<button onclick="deactivateAllContests();" class="btn btn-primary btn-sm">Deactivate All </button>
+			</p>
 		</div>
 	</div>

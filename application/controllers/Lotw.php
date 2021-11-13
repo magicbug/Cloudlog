@@ -914,7 +914,8 @@ class Lotw extends CI_Controller {
 			"TO-108"	=>	"CAS-6",
 			"TAURUS"	=>	"TAURUS-1",
 			"AISAT1"	=>	"AISAT-1",
-			'UVSQ'		=>	"UVSQ-SAT"
+			'UVSQ'		=>	"UVSQ-SAT",
+			'CAS-3H'	=>	"LILACSAT-2",
 		);
 
 		return array_search(strtoupper($satname),$arr,true);
@@ -935,6 +936,15 @@ class Lotw extends CI_Controller {
 				if ($submode == "FT4") {
 					return "FT4";
 					break;
+				} elseif ($submode == "JS8") {
+						return "JS8";
+						break;
+				} elseif ($submode == "FST4") {
+						return "FST4";
+						break;
+				} elseif ($submode == "Q65") {
+						return "Q65";
+						break;
 				} else {
 					return "MFSK";
 					break;

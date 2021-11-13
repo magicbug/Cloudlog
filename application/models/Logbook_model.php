@@ -18,15 +18,15 @@ class Logbook_model extends CI_Model {
 
     // Contest exchange, need to separate between serial and other type of exchange
     if($this->input->post('exchangetype')) {
-		$srx_string = $this->input->post('exch_recv');
-		$stx_string = $this->input->post('exch_sent');
-		$srx = $this->input->post('exch_serial_r');
-		$stx = $this->input->post('exch_serial_s');
+      $srx_string = $this->input->post('exch_recv') == '' ? null : $this->input->post('exch_recv');
+      $stx_string = $this->input->post('exch_sent') == '' ? null : $this->input->post('exch_sent');
+      $srx = $this->input->post('exch_serial_r') == '' ? null : $this->input->post('exch_serial_r');
+      $stx = $this->input->post('exch_serial_s') == '' ? null : $this->input->post('exch_serial_s');
     } else {
-        $srx_string = null;
-        $stx_string = null;
-        $srx = null;
-        $stx = null;
+      $srx_string = null;
+      $stx_string = null;
+      $srx = null;
+      $stx = null;
     }
 
     if($this->input->post('contestname')) {
@@ -92,6 +92,12 @@ class Logbook_model extends CI_Model {
       $clean_county_input = null;
     }
 
+    if($this->input->post('copyexchangetodok')) {
+      $dark_dok = $this->input->post('exch_recv');
+    } else {
+      $dark_dok = $this->input->post('darc_dok');
+    }
+
     // Create array with QSO Data
     $data = array(
             'COL_TIME_ON' => $datetime,
@@ -148,7 +154,7 @@ class Logbook_model extends CI_Model {
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
             'COL_SIG' => trim($this->input->post('sig')),
             'COL_SIG_INFO' => trim($this->input->post('sig_info')),
-            'COL_DARC_DOK' => trim($this->input->post('darc_dok')),
+            'COL_DARC_DOK' => trim($dark_dok),
 			'COL_NOTES' => $this->input->post('notes'),
     );
 
@@ -921,7 +927,7 @@ class Logbook_model extends CI_Model {
     /* Get all QSOs with a valid grid for use in the KML export */
     function kml_get_all_qsos($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate) {
         $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_GRIDSQUARE');
-        $this->db->where('COL_GRIDSQUARE != \'null\'');
+        $this->db->where("coalesce(COL_GRIDSQUARE, '') <> ''");
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -1605,7 +1611,7 @@ class Logbook_model extends CI_Model {
       $query = $this->db->get($this->config->item('table_name'));
       $row = $query->row();
 
-      if (isset($row->COL_EQSL_QSLDATE)){
+      if (isset($row->COL_EQSL_QSLRDATE)){
           return $row->COL_EQSL_QSLRDATE;
         }else{
             // No previous date (first time import has run?), so choose UNIX EPOCH!

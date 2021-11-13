@@ -158,6 +158,7 @@
 				<option value="SOTA"><?php echo $this->lang->line('gen_hamradio_sota'); ?></option>
 				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
 				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+				<option value="Operator"><?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
 			</select>
 			</div>
 
@@ -173,6 +174,7 @@
 				<option value="SOTA"><?php echo $this->lang->line('gen_hamradio_sota'); ?></option>
 				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
 				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+				<option value="Operator"><?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
 			</select>
 			</div>
 
@@ -188,6 +190,7 @@
 				<option value="SOTA"><?php echo $this->lang->line('gen_hamradio_sota'); ?></option>
 				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
 				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+				<option value="Operator"><?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
 			</select>
 			</div>
 
@@ -203,6 +206,7 @@
 				<option value="SOTA"><?php echo $this->lang->line('gen_hamradio_sota'); ?></option>
 				<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
 				<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+				<option value="Operator"><?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
 			</select>
 			</div>
 
@@ -218,6 +222,7 @@
 					<option value="SOTA"><?php echo $this->lang->line('gen_hamradio_sota'); ?></option>
 					<option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
 					<option value="Grid"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+					<option value="Operator"><?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
 				</select>
 			</div>
 		</div>
