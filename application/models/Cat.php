@@ -2,12 +2,6 @@
 
 	class Cat extends CI_Model {
 
-		function __construct()
-		{
-			// Call the Model constructor
-			parent::__construct();
-		}
-
 		function update($result, $user_id) {
 
 			$this->db->where('radio', $result['radio']);

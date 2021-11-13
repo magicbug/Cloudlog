@@ -8,12 +8,6 @@
 
 class API_Model extends CI_Model {
 
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
     // GET API Keys
     function keys() {
 		$this->db->where('user_id', $this->session->userdata('user_id'));

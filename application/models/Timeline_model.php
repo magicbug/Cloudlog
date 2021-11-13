@@ -3,12 +3,6 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Timeline_model extends CI_Model
 {
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
     function get_timeline($band, $mode, $award)  {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');

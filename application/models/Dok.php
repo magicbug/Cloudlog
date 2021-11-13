@@ -2,12 +2,6 @@
 
 class DOK extends CI_Model {
 
-	function __construct()
-	{
-		// Call the Model constructor
-		parent::__construct();
-	}
-
 	function show_stats() {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');

@@ -1,12 +1,6 @@
 <?php
 
 class IOTA extends CI_Model {
-  
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
 
     function get_iota_array($iotaArray, $bands, $postdata) {
 		$CI =& get_instance();
