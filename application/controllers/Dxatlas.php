@@ -8,12 +8,12 @@ class Dxatlas extends CI_Controller {
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		$this->load->model('modes');
-		$this->load->model('dxcc');
 		$this->load->model('logbook_model');
 		$this->load->model('stations');
+		$this->load->model('bands');
 
 		$data['station_profile'] = $this->stations->all();			// Used in the view for station location select
-		$data['worked_bands'] = $this->dxcc->get_worked_bands(); 	// Used in the view for band select
+		$data['worked_bands'] = $this->bands->get_worked_bands(); 	// Used in the view for band select
 		$data['modes'] = $this->modes->active(); 					// Used in the view for mode select
 		$data['dxcc'] = $this->logbook_model->fetchDxcc(); 			// Used in the view for dxcc select
 
