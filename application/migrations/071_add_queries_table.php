@@ -9,6 +9,6 @@ class Migration_add_queries_table extends CI_Migration
 
 	public function down()
 	{
-		$this->db->query("");
+
 	}
 }

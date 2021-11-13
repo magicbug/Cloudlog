@@ -106,7 +106,7 @@ function distPlot(form) {
 
 				options.series.push(series);
 
-				$('#information').html(tmp.qrb.Qsoes + " contacts were plotted.<br /> Your furthest contact was with " + tmp.qrb.Callsign
+				$('#information').html(tmp.qrb.Qsos + " contacts were plotted.<br /> Your furthest contact was with " + tmp.qrb.Callsign
 					+ " in gridsquare "+ tmp.qrb.Grid
 					+"; the distance was "
 					+tmp.qrb.Distance + tmp.unit +".");

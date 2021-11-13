@@ -97,6 +97,17 @@ class Station extends CI_Controller {
         }
 	}
 
+	// This function allows a user to claim ownership of a station location
+	function claim_user($id) {
+		// $id is the profile id
+		$this->load->model('stations');
+		$this->stations->claim_user($id);
+
+		echo $this->session->userdata('user_id');
+		
+		redirect('station');
+	}
+
 	function reassign_profile($id) {
 		// $id is the profile that needs reassigned to QSOs
 		$this->load->model('stations');

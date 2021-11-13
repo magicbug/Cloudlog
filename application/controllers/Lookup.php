@@ -28,12 +28,15 @@ class Lookup extends CI_Controller {
 
 	public function search() {
 		$CI =& get_instance();
-		$CI->load->model('Stations');
-		$station_id = $CI->Stations->find_active();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
 		$this->load->model('lookup_model');
+		$this->load->model('bands');
 
-		$data['bands'] = $this->lookup_model->get_Worked_Bands($station_id);
+		$data['bands'] = $this->bands->get_worked_bands();
 
 		$data['type'] = xss_clean($this->input->post('type'));
 		$data['dxcc'] = xss_clean($this->input->post('dxcc'));
@@ -43,7 +46,7 @@ class Lookup extends CI_Controller {
 		$data['iota'] = xss_clean($this->input->post('iota'));
 		$data['cqz']  = xss_clean($this->input->post('cqz'));
 		$data['wwff'] = xss_clean($this->input->post('wwff'));
-		$data['station_id'] = $station_id;
+		$data['location_list'] = $location_list;
 
 		$data['result'] = $this->lookup_model->getSearchResult($data);
 

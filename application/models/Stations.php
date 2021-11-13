@@ -2,22 +2,26 @@
 
 class Stations extends CI_Model {
 
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
     function all_with_count() {
 
 		$this->db->select('station_profile.*, count('.$this->config->item('table_name').'.station_id) as qso_total');
         $this->db->from('station_profile');
         $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id','left');
        	$this->db->group_by('station_profile.station_id');
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+		$this->db->or_where('station_profile.user_id =', NULL);
+		$this->db->order_by('station_profile.station_profile_name');
         return $this->db->get();
 	}
 
+	// Returns ALL station profiles regardless of user logged in
+	// This is also used by LoTW sync so must not be changed.
 	function all() {
+		return $this->db->get('station_profile');
+	}
+
+	function all_of_user() {
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		return $this->db->get('station_profile');
 	}
 
@@ -92,6 +96,7 @@ class Stations extends CI_Model {
             'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
 		);
 
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', xss_clean($this->input->post('station_id', true)));
 		$this->db->update('station_profile', $data); 
 	}
@@ -114,55 +119,76 @@ class Stations extends CI_Model {
         $this->db->delete($this->config->item('table_name'));
     }
 
+	function claim_user($id) {
+		$data = array(
+				'user_id' => $this->session->userdata('user_id'),
+		);
+			
+		$this->db->where('station_id', $id);
+		$this->db->update('station_profile', $data);
+	}
+
 	function set_active($current, $new) {
-
 		// Clean inputs
-
 		$clean_current = $this->security->xss_clean($current);
 		$clean_new = $this->security->xss_clean($new);
 
-        // Deselect current default
+		// be sure that stations belong to user
+		if ($clean_current != 0) {
+			if (!$this->check_station_is_accessible($clean_current)) {
+				return;
+			}
+		}
+		if (!$this->check_station_is_accessible($clean_new)) {
+			return;
+		}
+
+		// Deselect current default
 		$current_default = array(
-				'station_active' => null,
+			'station_active' => null,
 		);
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', $clean_current);
 		$this->db->update('station_profile', $current_default);
-		
+
 		// Deselect current default	
 		$newdefault = array(
 			'station_active' => 1,
 		);
+		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', $clean_new);
 		$this->db->update('station_profile', $newdefault);
-    }
+	}
 
-    public function find_active() {
-        $this->db->where('station_active', 1);
-       	$query = $this->db->get('station_profile');
-        
-        if($query->num_rows() >= 1) {
-        	foreach ($query->result() as $row)
+	public function find_active() {
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('station_active', 1);
+		$query = $this->db->get('station_profile');
+
+		if($query->num_rows() >= 1) {
+			foreach ($query->result() as $row)
 			{
 				return $row->station_id;
 			}
-       	} else {
+		} else {
 			return "0";
 		}
 	}
 	
 	public function find_gridsquare() {
-        $this->db->where('station_active', 1);
-       	$query = $this->db->get('station_profile');
-        
-        if($query->num_rows() >= 1) {
-        	foreach ($query->result() as $row)
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('station_active', 1);
+		$query = $this->db->get('station_profile');
+
+		if($query->num_rows() >= 1) {
+			foreach ($query->result() as $row)
 			{
 				return $row->station_gridsquare;
 			}
-       	} else {
+		} else {
 			return "0";
 		}
-    }
+	}
 
     public function reassign($id) {
 		// Clean ID
@@ -262,6 +288,16 @@ class Stations extends CI_Model {
 		return $query->num_rows();
     }
 
+	public function check_station_is_accessible($id) {
+		// check if station belongs to user
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('station_id', $id);
+		$query = $this->db->get('station_profile');
+		if ($query->num_rows() == 1) {
+			return true;
+		}
+		return false;
+	}
 }
 
 ?>

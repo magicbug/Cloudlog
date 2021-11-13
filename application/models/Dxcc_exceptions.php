@@ -18,14 +18,7 @@ CREATE TABLE IF NOT EXISTS `dxcc_exceptions` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;   
 
 */
-    function __construct(){
-        parent::__construct();
-    }
-
-
     function empty_table($table){
         $this->db->empty_table($table);
     }
-
-
 }

@@ -42,6 +42,9 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_locator', 'Locator', 'required');
 		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
 
+		// Get themes list
+		$data['themes'] = $this->user_model->getThemes();
+
 		// Get timezones
 		$data['timezones'] = $this->user_model->timezones();
 
@@ -157,6 +160,9 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_callsign', 'Callsign', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('user_locator', 'Locator', 'required|xss_clean');
 		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
+
+		// Get themes list
+		$data['themes'] = $this->user_model->getThemes();
 
 		// Get timezones
 		$data['timezones'] = $this->user_model->timezones();
@@ -453,7 +459,7 @@ class User extends CI_Controller {
 		if ($this->form_validation->run() == FALSE)
 		{
 			$data['page_title'] = "Login";
-			$this->load->view('interface_assets/header', $data);
+			$this->load->view('interface_assets/mini_header', $data);
 			$this->load->view('user/login');
 			$this->load->view('interface_assets/footer');
 

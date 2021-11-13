@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Helpers
  * @category	Helpers
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/helpers/inflector_helper.html
+ * @link		https://codeigniter.com/userguide3/helpers/inflector_helper.html
  */
 
 // --------------------------------------------------------------------
@@ -63,7 +63,7 @@ if ( ! function_exists('singular'))
 	{
 		$result = strval($str);
 
-		if ( ! is_countable($result))
+		if ( ! word_is_countable($result))
 		{
 			return $result;
 		}
@@ -128,7 +128,7 @@ if ( ! function_exists('plural'))
 	{
 		$result = strval($str);
 
-		if ( ! is_countable($result))
+		if ( ! word_is_countable($result))
 		{
 			return $result;
 		}
@@ -226,7 +226,7 @@ if ( ! function_exists('humanize'))
 
 // --------------------------------------------------------------------
 
-if ( ! function_exists('is_countable'))
+if ( ! function_exists('word_is_countable'))
 {
 	/**
 	 * Checks if the given word has a plural version.
@@ -234,7 +234,7 @@ if ( ! function_exists('is_countable'))
 	 * @param	string	$word	Word to check
 	 * @return	bool
 	 */
-	function is_countable($word)
+	function word_is_countable($word)
 	{
 		return ! in_array(
 			strtolower($word),
@@ -272,5 +272,55 @@ if ( ! function_exists('is_countable'))
 				'wheat'
 			)
 		);
+	}
+}
+
+// --------------------------------------------------------------------
+
+if ( ! function_exists('is_countable'))
+{
+	function is_countable($word)
+	{
+		trigger_error('is_countable() is a native PHP function since version 7.3.0; use word_is_countable() instead', E_USER_WARNING);
+		return word_is_countable($word);
+	}
+}
+
+// ------------------------------------------------------------------------
+
+if ( ! function_exists('ordinal_format'))
+{
+	/**
+	 * Returns the English ordinal numeral for a given number
+	 *
+	 * @param  int    $number
+	 * @return string
+	 */
+	function ordinal_format($number)
+	{
+		if ( ! ctype_digit((string) $number) OR $number < 1)
+		{
+			return $number;
+		}
+
+		$last_digit = array(
+			0 => 'th',
+			1 => 'st',
+			2 => 'nd',
+			3 => 'rd',
+			4 => 'th',
+			5 => 'th',
+			6 => 'th',
+			7 => 'th',
+			8 => 'th',
+			9 => 'th'
+		);
+
+		if (($number % 100) >= 11 && ($number % 100) <= 13)
+		{
+			return $number.'th';
+		}
+
+		return $number.$last_digit[$number % 10];
 	}
 }
