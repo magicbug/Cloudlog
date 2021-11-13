@@ -34,10 +34,10 @@ class Map extends CI_Controller {
     function custom()
 	{
 
-		$this->load->model('dxcc');
+		$this->load->model('bands');
         //$this->load->model('modes');
 
-        $data['worked_bands'] = $this->dxcc->get_worked_bands(); // Used in the view for band select
+        $data['worked_bands'] = $this->bands->get_worked_bands(); // Used in the view for band select
         //$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   			// Band is not set when page first loads.

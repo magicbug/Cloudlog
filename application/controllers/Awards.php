@@ -28,8 +28,11 @@ class Awards extends CI_Controller {
 	public function dok ()
 	{
 		$this->load->model('dok');
+		$this->load->model('bands');
+
 		$data['doks'] = $this->dok->show_stats();
-		$data['worked_bands'] = $this->dok->get_worked_bands();
+
+        $data['worked_bands'] = $this->bands->get_worked_bands_dok(); // Used in the view for band select
 
 		// Render Page
 		$data['page_title'] = "Awards - DOK";
@@ -75,8 +78,9 @@ class Awards extends CI_Controller {
 	public function dxcc ()	{
 		$this->load->model('dxcc');
         $this->load->model('modes');
+        $this->load->model('bands');
 
-        $data['worked_bands'] = $this->dxcc->get_worked_bands(); // Used in the view for band select
+        $data['worked_bands'] = $this->bands->get_worked_bands(); // Used in the view for band select
         $data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
@@ -141,7 +145,8 @@ class Awards extends CI_Controller {
 
     public function vucc()	{
         $this->load->model('vucc');
-        $data['worked_bands'] = $this->vucc->get_worked_bands();
+        $this->load->model('bands');
+        $data['worked_bands'] = $this->bands->get_worked_bands();
 
         $data['vucc_array'] = $this->vucc->get_vucc_array($data);
 
@@ -234,8 +239,9 @@ class Awards extends CI_Controller {
 
         $this->load->model('cq');
 		$this->load->model('modes');
+        $this->load->model('bands');
 
-        $data['worked_bands'] = $this->cq->get_worked_bands($location_list);
+        $data['worked_bands'] = $this->bands->get_worked_bands($location_list);
 		$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
@@ -284,8 +290,9 @@ class Awards extends CI_Controller {
     public function was() {
         $this->load->model('was');
 		$this->load->model('modes');
+        $this->load->model('bands');
 
-        $data['worked_bands'] = $this->was->get_worked_bands();
+        $data['worked_bands'] = $this->bands->get_worked_bands();
 		$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
@@ -334,8 +341,9 @@ class Awards extends CI_Controller {
     public function iota ()	{
         $this->load->model('iota');
 		$this->load->model('modes');
+        $this->load->model('bands');
 
-        $data['worked_bands'] = $this->iota->get_worked_bands(); // Used in the view for band select
+        $data['worked_bands'] = $this->bands->get_worked_bands(); // Used in the view for band select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands

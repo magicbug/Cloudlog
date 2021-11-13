@@ -34,8 +34,9 @@ class Lookup extends CI_Controller {
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
 		$this->load->model('lookup_model');
+		$this->load->model('bands');
 
-		$data['bands'] = $this->lookup_model->get_Worked_Bands($location_list);
+		$data['bands'] = $this->bands->get_worked_bands();
 
 		$data['type'] = xss_clean($this->input->post('type'));
 		$data['dxcc'] = xss_clean($this->input->post('dxcc'));

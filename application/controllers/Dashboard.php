@@ -4,13 +4,24 @@ class Dashboard extends CI_Controller {
 
 	public function index()
 	{
+
+
 		// Check our version and run any migrations
 		$this->load->library('Migration');
 		$this->migration->current();	
-		
+
 		// Database connections
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
+
+		// Check if users logged in
+
+		if($this->user_model->validate_session() == 0) {
+			// user is not logged in
+			redirect('user/login');
+		}
+
+
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
 			if($this->user_model->validate_session()) {
 				$this->user_model->clear_session();

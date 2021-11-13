@@ -13,12 +13,12 @@ class Kml extends CI_Controller {
     {
         $this->load->model('user_model');
         $this->load->model('modes');
-        $this->load->model('dxcc');
         $this->load->model('logbook_model');
+		$this->load->model('bands');
 
         if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
-        $data['worked_bands'] = $this->dxcc->get_worked_bands(); // Used in the view for band select
+        $data['worked_bands'] = $this->bands->get_worked_bands(); // Used in the view for band select
         $data['modes'] = $this->modes->active(); // Used in the view for mode select
         $data['dxcc'] = $this->logbook_model->fetchDxcc(); // Used in the view for dxcc select
 
