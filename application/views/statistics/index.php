@@ -5,9 +5,18 @@
 	google.load('visualization', '1', {'packages':['corechart']});
 
 	// Set a callback to run when the Google Visualization API is loaded.
-	google.setOnLoadCallback(drawModeChart);
-	google.setOnLoadCallback(drawBandChart);
-	google.setOnLoadCallback(drawSatChart);
+	<?php if (($total_ssb != null) && ($total_cw != null) && ($total_fm != null) && ($total_digi != null)) { ?>
+		google.setOnLoadCallback(drawModeChart);
+	<?php } ?>
+
+	<?php if ($total_bands) { ?>
+		google.setOnLoadCallback(drawBandChart);
+	<?php } ?>
+
+	<?php if ($total_sat) { ?>
+		google.setOnLoadCallback(drawSatChart);
+	<?php } ?>
+
 
 	// Callback that creates and populates a data table, 
 	// instantiates the pie chart, passes in the data and
@@ -19,10 +28,10 @@
 		data.addColumn('string', 'Topping');
 		data.addColumn('number', 'Slices');
 		data.addRows([
-			['SSB', <?php echo $total_ssb; ?>],
-			['CW', <?php echo $total_cw; ?>],
-			['FM', <?php echo $total_fm; ?>], 
-			['Digi', <?php echo $total_digi; ?>],
+			['SSB', <?php echo $total_ssb==null?0:$total_ssb; ?>],
+			['CW', <?php echo $total_cw==null?0:$total_cw; ?>],
+			['FM', <?php echo $total_fm==null?0:$total_fm; ?>], 
+			['Digi', <?php echo $total_digi==null?0:$total_digi; ?>],
 		]);
 
 		var color = ifDarkModeThemeReturn('white');
@@ -58,9 +67,15 @@
 		data.addColumn('string', 'Topping');
 		data.addColumn('number', 'Slices');
 		data.addRows([
-			<?php foreach($total_bands->result() as $row) { ?>
-				['<?php echo $row->band; ?>', <?php echo $row->count; ?>],
-			<?php } ?>
+			<?php 
+				if ($total_bands) {
+				
+				foreach($total_bands->result() as $row) { ?>
+					['<?php echo $row->band; ?>', <?php echo $row->count; ?>],
+				<?php } 
+			}
+			
+			?>
 		]);
 
 		var color = ifDarkModeThemeReturn('white');
@@ -95,11 +110,14 @@
 		data.addColumn('string', 'Topping');
 		data.addColumn('number', 'Slices');
 		data.addRows([
-			<?php foreach($total_sat->result() as $row1) { ?>
-				<?php if($row1->COL_SAT_NAME != null) { ?>
-				['<?php echo $row1->COL_SAT_NAME; ?>', <?php echo $row1->count; ?>],
-				<?php } ?>
-			<?php } ?>
+			<?php 
+				if ($total_sat) {
+					foreach($total_sat->result() as $row1) { ?>
+						<?php if($row1->COL_SAT_NAME != null) { ?>
+							['<?php echo $row1->COL_SAT_NAME; ?>', <?php echo $row1->count; ?>],
+						<?php } ?>
+				<?php } 
+				}?>
 		]);
 
 		var color = ifDarkModeThemeReturn('white');
@@ -128,13 +146,19 @@
 	}
 </script>
 <script type="text/javascript">
+	<?php if ($totals_year) { ?>
 	google.setOnLoadCallback(barchart);
+	<?php } ?>
 	function barchart() {
 		var data = google.visualization.arrayToDataTable([
 			['Year', 'QSOs'],
-			<?php foreach($totals_year->result() as $qso_numbers) { ?>
-				['<?php echo $qso_numbers->year; ?>',  <?php echo $qso_numbers->total; ?>],
-			<?php } ?>
+			<?php 
+				if ($totals_year) {
+					foreach($totals_year->result() as $qso_numbers) { ?>
+						['<?php echo $qso_numbers->year; ?>',  <?php echo $qso_numbers->total; ?>],
+					<?php } 
+				}
+				?>
 		]);
 
 		var color = ifDarkModeThemeReturn('white');
