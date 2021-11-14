@@ -577,7 +577,12 @@ class Logbook_model extends CI_Model {
 
   /* Return last 10 QSOs */
   function last_ten() {
+    $CI =& get_instance();
+    $CI->load->model('logbooks_model');
+    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
+    $this->db->where_in('station_id', $logbooks_locations_array);
     $this->db->order_by("COL_TIME_ON", "desc");
     $this->db->limit(10);
 
@@ -586,7 +591,12 @@ class Logbook_model extends CI_Model {
 
   /* Show custom number of qsos */
   function last_custom($num) {
+    $CI =& get_instance();
+    $CI->load->model('logbooks_model');
+    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
+    $this->db->where_in('station_id', $logbooks_locations_array);
     $this->db->order_by("COL_TIME_ON", "desc");
     $this->db->limit($num);
 
@@ -848,10 +858,15 @@ class Logbook_model extends CI_Model {
   }
 
   function get_qso($id) {
+    $CI =& get_instance();
+    $CI->load->model('logbooks_model');
+    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
     $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
     $this->db->from($this->config->item('table_name'));
 
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+    $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
     $this->db->where('COL_PRIMARY_KEY', $id);
 
     return $this->db->get();
@@ -2648,6 +2663,19 @@ class Logbook_model extends CI_Model {
         $this->db->where('COL_PROP_MODE !=', 'SAT');
 
         return $this->db->get($this->config->item('table_name'));
+    }
+
+    public function check_qso_is_accessible($id) {
+        // check if qso belongs to user
+        $this->db->select($this->config->item('table_name').'.COL_PRIMARY_KEY');
+        $this->db->join('station_profile', $this->config->item('table_name').'.station_id = station_profile.station_id');
+        $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+        $this->db->where($this->config->item('table_name').'.COL_PRIMARY_KEY', $id);
+        $query = $this->db->get($this->config->item('table_name'));
+        if ($query->num_rows() == 1) {
+            return true;
+        }
+        return false;
     }
 
 }

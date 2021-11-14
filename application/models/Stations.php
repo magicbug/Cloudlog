@@ -290,6 +290,7 @@ class Stations extends CI_Model {
 
 	public function check_station_is_accessible($id) {
 		// check if station belongs to user
+		$this->db->select('station_id');
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', $id);
 		$query = $this->db->get('station_profile');
