@@ -43,8 +43,14 @@ class API extends CI_Controller {
 	function help()
 	{
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
+			if($this->user_model->validate_session()) {
+				$this->user_model->clear_session();
+				show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
+			} else {
+				redirect('user/login');
+			}
+		}
 
 		$this->load->model('api_model');
 
@@ -60,8 +66,14 @@ class API extends CI_Controller {
 
 	function edit($key) {
 		$this->load->model('user_model');
-
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
+			if($this->user_model->validate_session()) {
+				$this->user_model->clear_session();
+				show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
+			} else {
+				redirect('user/login');
+			}
+		}
 
 		$this->load->model('api_model');
 
@@ -96,9 +108,15 @@ class API extends CI_Controller {
 	}
 
 	function generate($rights) {
-		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-
+$this->load->model('user_model');
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
+			if($this->user_model->validate_session()) {
+				$this->user_model->clear_session();
+				show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
+			} else {
+				redirect('user/login');
+			}
+		}
 
 		$this->load->model('api_model');
 
@@ -109,8 +127,14 @@ class API extends CI_Controller {
 
 	function delete($key) {
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
+			if($this->user_model->validate_session()) {
+				$this->user_model->clear_session();
+				show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
+			} else {
+				redirect('user/login');
+			}
+		}
 
 		$this->load->model('api_model');
 
@@ -311,9 +335,17 @@ class API extends CI_Controller {
 		// Load the API and Logbook models
 		$this->load->model('api_model');
 		$this->load->model('logbook_model');
-		$this->load->model('user_model');
-		if(!$this->user_model->authorize(3)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
+			if($this->user_model->validate_session()) {
+				$this->user_model->clear_session();
+				show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
+			} else {
+				redirect('user/login');
+			}
+		}
+		
 		// Retrieve the arguments from the query string
 		$arguments = $this->_retrieve();
 
