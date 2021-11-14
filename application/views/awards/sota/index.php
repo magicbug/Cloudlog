@@ -1,6 +1,10 @@
 <div class="container">
 
 	<h2><?php echo $page_title; ?></h2>
+
+	<?php
+		if ($sota_all) {
+	?>
 	
 	<table class="table table-sm table-striped table-hover">
 		
@@ -34,4 +38,7 @@
 	?>
 	
 	</table>
+	<?php } else {
+        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+    }?>
 </div>

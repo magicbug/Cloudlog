@@ -9,6 +9,13 @@ class Timeplotter_model extends CI_Model
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+        if (!$logbooks_locations_array) {
+            header('Content-Type: application/json');
+            $data['error'] = 'No QSOs found to plot!';
+            echo json_encode($data);
+            return;
+        }
+
         $this->db->select('time(col_time_on) time, col_call as callsign');
 
         if ($postdata['band'] != 'All') {

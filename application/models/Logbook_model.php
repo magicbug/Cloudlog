@@ -1012,6 +1012,9 @@ class Logbook_model extends CI_Model {
     $CI->load->model('logbooks_model');
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+    if (!$logbooks_locations_array) {
+      return null;
+    }
 
     $this->db->select('DATE_FORMAT(COL_TIME_ON, \'%Y\') as \'year\',COUNT(COL_PRIMARY_KEY) as \'total\'', FALSE);
     $this->db->where_in('station_id', $logbooks_locations_array);
@@ -1094,6 +1097,10 @@ class Logbook_model extends CI_Model {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+    if (!$logbooks_locations_array) {
+      return null;
+    }
 
       $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
       $this->db->where_in("station_id", $logbooks_locations_array);
@@ -1214,6 +1221,10 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+      if (!$logbooks_locations_array) {
+        return null;
+      }
+
       $this->db->select('COUNT( * ) as count', FALSE);
       $this->db->where_in('station_id', $logbooks_locations_array);
       $this->db->where('COL_MODE', 'SSB');
@@ -1238,6 +1249,10 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+      if (!$logbooks_locations_array) {
+        return null;
+      }
+
       $this->db->select('COL_SAT_NAME, COUNT( * ) as count', FALSE);
       $this->db->where_in('station_id', $logbooks_locations_array);
       $this->db->where('COL_SAT_NAME !=', 'null');
@@ -1253,6 +1268,10 @@ class Logbook_model extends CI_Model {
       $CI =& get_instance();
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+      if (!$logbooks_locations_array) {
+        return null;
+      }
 
       $this->db->select('COUNT( * ) as count', FALSE);
       $this->db->where_in('station_id', $logbooks_locations_array);
@@ -1275,6 +1294,10 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+      if (!$logbooks_locations_array) {
+        return null;
+      }
+
       $this->db->select('COUNT( * ) as count', FALSE);
       $this->db->where_in('station_id', $logbooks_locations_array);
       $this->db->where('COL_MODE', 'FM');
@@ -1295,6 +1318,10 @@ class Logbook_model extends CI_Model {
       $CI =& get_instance();
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+      if (!$logbooks_locations_array) {
+        return null;
+      }
 
       $this->db->select('COUNT( * ) as count', FALSE);
       $this->db->where_in('station_id', $logbooks_locations_array);
@@ -1327,6 +1354,10 @@ class Logbook_model extends CI_Model {
       $CI =& get_instance();
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+      if (!$logbooks_locations_array) {
+        return null;
+      }
 
       $this->db->select('DISTINCT (COL_BAND) AS band, count( * ) AS count', FALSE);
       $this->db->where_in('station_id', $logbooks_locations_array);

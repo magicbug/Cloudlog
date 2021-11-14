@@ -87,6 +87,10 @@ class VUCC extends CI_Model
         $vuccArray['All']['worked'] = count($totalGridWorked);
         $vuccArray['All']['confirmed'] = count($totalGridConfirmed);
 
+        if ($vuccArray['All']['worked'] == 0) {
+            return null;
+        }
+
         return $vuccArray;
     }
 
@@ -99,6 +103,10 @@ class VUCC extends CI_Model
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
@@ -139,6 +147,10 @@ class VUCC extends CI_Model
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 

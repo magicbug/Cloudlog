@@ -3,6 +3,10 @@
 	<h2><?php echo $page_title; ?></h2>
 
 	<table class="table table-sm table-striped table-hover">
+        <?php
+        if ($worked_bands) {
+?>
+  
 	<thead>
         <tr>
         <td style="width:225px">DOKs (<?php echo count($doks)?>)</td>
@@ -33,5 +37,7 @@
     </tbody>
 
 	</table>
-
+<?php } else {
+        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+    } ?>
 </div>

@@ -27,6 +27,10 @@ class Counties extends CI_Model
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         $sql = "select count(distinct COL_CNTY) countycountworked, coalesce(x.countycountconfirmed, 0) countycountconfirmed, thcv.COL_STATE
@@ -74,6 +78,10 @@ class Counties extends CI_Model
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 

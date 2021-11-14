@@ -7,6 +7,10 @@ class IOTA extends CI_Model {
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         foreach ($bands as $band) {             	// Looping through bands and iota to generate the array needed for display
@@ -278,6 +282,10 @@ class IOTA extends CI_Model {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 

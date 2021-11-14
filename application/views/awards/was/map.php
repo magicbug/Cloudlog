@@ -32,7 +32,9 @@
 	      fill: 'blue'
 	    },
 	    'stateSpecificStyles': {
-            <?php foreach ($was_array as $was => $value) { ?>
+            <?php 
+				if ($was_array) {
+				foreach ($was_array as $was => $value) { ?>
     '<?php echo $was; ?>' :
     <?php
         foreach ($value  as $key) {
@@ -52,6 +54,7 @@
                 }
             }
         }
+	}
 ?>
 	    },
 		  // Show tooltip when hovering over state

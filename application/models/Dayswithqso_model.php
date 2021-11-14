@@ -9,6 +9,10 @@ class Dayswithqso_model extends CI_Model
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         $sql = "select year(COL_TIME_ON) Year, COUNT(DISTINCT TO_DAYS(COL_TIME_ON)) as Days from "
@@ -25,35 +29,38 @@ class Dayswithqso_model extends CI_Model
      */
     function getCurrentStreak() {
         $dates = $this->getDates();
-        $dates = array_reverse($dates);
-        $streak = 1;
-        $firstrun = true;
 
-        $dateprev = date_create(date('Y-m-d'));
-
-        foreach($dates as $date) {      // Loop through the result set
-            $datecurr = date_create($date->date);
-            $diff = $dateprev->diff($datecurr)->format("%a"); // Getting date difference between current date and previous date in array
-
-            if ($diff == 0) {
-                $streaks['highstreak'] = $streak;
-                $streaks['endstreak'] = $datecurr->format('Y-m-d');
-                $streaks['beginstreak'] = $datecurr->format('Y-m-d');
-                $firstrun = false;
+        if ($dates) {
+            $dates = array_reverse($dates);
+            $streak = 1;
+            $firstrun = true;
+    
+            $dateprev = date_create(date('Y-m-d'));
+    
+            foreach($dates as $date) {      // Loop through the result set
+                $datecurr = date_create($date->date);
+                $diff = $dateprev->diff($datecurr)->format("%a"); // Getting date difference between current date and previous date in array
+    
+                if ($diff == 0) {
+                    $streaks['highstreak'] = $streak;
+                    $streaks['endstreak'] = $datecurr->format('Y-m-d');
+                    $streaks['beginstreak'] = $datecurr->format('Y-m-d');
+                    $firstrun = false;
+                }
+                else if ($diff == 1 and !$firstrun) {   // If diff = 1, means that we are on a streak
+                    $streaks['highstreak'] = ++$streak;
+                    $streaks['beginstreak'] = date_create($streaks['endstreak'])->sub(new DateInterval('P'.($streak-1).'D'))->format('Y-m-d');
+                } else {
+                    break;
+                }
+                $dateprev = date_create($date->date);
             }
-            else if ($diff == 1 and !$firstrun) {   // If diff = 1, means that we are on a streak
-                $streaks['highstreak'] = ++$streak;
-                $streaks['beginstreak'] = date_create($streaks['endstreak'])->sub(new DateInterval('P'.($streak-1).'D'))->format('Y-m-d');
+    
+            if (isset($streaks) && is_array($streaks)) {
+                return $streaks;
             } else {
-                break;
+                return null;
             }
-            $dateprev = date_create($date->date);
-        }
-
-        if (isset($streaks) && is_array($streaks)) {
-            return $streaks;
-        } else {
-            return null;
         }
     }
 
@@ -62,36 +69,40 @@ class Dayswithqso_model extends CI_Model
      */
     function getAlmostCurrentStreak() {
         $dates = $this->getDates();
-        $dates = array_reverse($dates);
-        $streak = 1;
-        $firstrun = true;
 
-        $dateprev = date_create(date('Y-m-d'));
-
-        foreach($dates as $date) {      // Loop through the result set
-            $datecurr = date_create($date->date);
-            $diff = $dateprev->diff($datecurr)->format("%a"); // Getting date difference between current date and previous date in array
-
-            if ($diff == 1 && $firstrun == true) {
-                $streaks['highstreak'] = $streak++;
-                $streaks['endstreak'] = $datecurr->format('Y-m-d');
-                $streaks['beginstreak'] = $datecurr->format('Y-m-d');
-                $firstrun = false;
-            }
-            else if ($diff == 1 && $firstrun == false) {
+        if  ($dates) {
+            $dates = array_reverse($dates);
+            $streak = 1;
+            $firstrun = true;
+    
+            $dateprev = date_create(date('Y-m-d'));
+    
+            foreach($dates as $date) {      // Loop through the result set
+                $datecurr = date_create($date->date);
+                $diff = $dateprev->diff($datecurr)->format("%a"); // Getting date difference between current date and previous date in array
+    
+                if ($diff == 1 && $firstrun == true) {
                     $streaks['highstreak'] = $streak++;
-                    $streaks['beginstreak'] = date_create($streaks['endstreak'])->sub(new DateInterval('P'.($streak-2).'D'))->format('Y-m-d');
-            } else {
-                break;
+                    $streaks['endstreak'] = $datecurr->format('Y-m-d');
+                    $streaks['beginstreak'] = $datecurr->format('Y-m-d');
+                    $firstrun = false;
+                }
+                else if ($diff == 1 && $firstrun == false) {
+                        $streaks['highstreak'] = $streak++;
+                        $streaks['beginstreak'] = date_create($streaks['endstreak'])->sub(new DateInterval('P'.($streak-2).'D'))->format('Y-m-d');
+                } else {
+                    break;
+                }
+                $dateprev = date_create($date->date);
             }
-            $dateprev = date_create($date->date);
+    
+            if (isset($streaks) && is_array($streaks)) {
+                return $streaks;
+            } else {
+                return null;
+            }
         }
 
-        if (isset($streaks) && is_array($streaks)) {
-            return $streaks;
-        } else {
-            return null;
-        }
     }
 
     /*
@@ -103,35 +114,39 @@ class Dayswithqso_model extends CI_Model
         $dateprev = date_create('1900-01-01'); // init variable with an old date
         $i = 0;
 
-        foreach($dates as $date) {      // Loop through the result set
-            $datecurr = date_create($date->date);
-            if ($dateprev == date_create('1900-01-01')) { // If first run
-                $dateprev = $datecurr;
-            }
-            else {
-                $diff = $dateprev->diff($datecurr)->format("%a"); // Getting date difference between current date and previous date in array
-                if ($diff == 1) {   // If diff = 1, means that we are on a streak
-                    $streak++;
-                    $endstreak = $datecurr; // As long as the streak continues, we update the end date
-                } else {
-                    if ($streak > 1) {
-                        $streaks[$i]['highstreak'] = $streak;
-                        $streaks[$i]['endstreak'] = $endstreak->format('Y-m-d');
-                        $streaks[$i]['beginstreak'] = $endstreak->sub(new DateInterval('P'.($streak-1).'D'))->format('Y-m-d');
-                        $i++;
-                    }
-                    $streak = 1;
+        if ($dates) {
+            foreach($dates as $date) {      // Loop through the result set
+                $datecurr = date_create($date->date);
+                if ($dateprev == date_create('1900-01-01')) { // If first run
+                    $dateprev = $datecurr;
                 }
-                $dateprev = date_create($date->date);
+                else {
+                    $diff = $dateprev->diff($datecurr)->format("%a"); // Getting date difference between current date and previous date in array
+                    if ($diff == 1) {   // If diff = 1, means that we are on a streak
+                        $streak++;
+                        $endstreak = $datecurr; // As long as the streak continues, we update the end date
+                    } else {
+                        if ($streak > 1) {
+                            $streaks[$i]['highstreak'] = $streak;
+                            $streaks[$i]['endstreak'] = $endstreak->format('Y-m-d');
+                            $streaks[$i]['beginstreak'] = $endstreak->sub(new DateInterval('P'.($streak-1).'D'))->format('Y-m-d');
+                            $i++;
+                        }
+                        $streak = 1;
+                    }
+                    $dateprev = date_create($date->date);
+                }
             }
-        }
+        
 
-        if (isset($streaks) && is_array($streaks)) {
-            usort($streaks, array($this,'compareStreak'));      // Sort array, highest streak first
-            $streaks_trimmed = array_slice($streaks, 0,10);  // We only want top 10, so we trim the array
-            return $streaks_trimmed;
-        } else {
-            return null;
+
+            if (isset($streaks) && is_array($streaks)) {
+                usort($streaks, array($this,'compareStreak'));      // Sort array, highest streak first
+                $streaks_trimmed = array_slice($streaks, 0,10);  // We only want top 10, so we trim the array
+                return $streaks_trimmed;
+            } else {
+                return null;
+            }
         }
     }
 
@@ -149,6 +164,10 @@ class Dayswithqso_model extends CI_Model
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
