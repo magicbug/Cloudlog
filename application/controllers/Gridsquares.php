@@ -53,7 +53,7 @@ class Gridsquares extends CI_Controller {
 		$query = $this->gridsquares_model->get_confirmed_sat_squares();
 
 
-		if ($query->num_rows() > 0)
+		if ($query && $query->num_rows() > 0)
 		{
 			foreach ($query->result() as $row)
 			{
@@ -88,7 +88,7 @@ class Gridsquares extends CI_Controller {
 		// Get worked squares
 		$query = $this->gridsquares_model->get_worked_sat_squares();
 
-		if ($query->num_rows() > 0)
+		if ($query && $query->num_rows() > 0)
 		{
 			foreach ($query->result() as $row)
 			{
@@ -122,7 +122,7 @@ class Gridsquares extends CI_Controller {
 
 		$query_vucc = $this->gridsquares_model->get_worked_sat_vucc_squares();
 
-		if ($query_vucc->num_rows() > 0)
+		if ($query && $query_vucc->num_rows() > 0)
 		{
 			foreach ($query_vucc->result() as $row)
 			{
@@ -149,7 +149,7 @@ class Gridsquares extends CI_Controller {
 		// Confirmed Squares
 		$query_vucc = $this->gridsquares_model->get_confirmed_sat_vucc_squares();
 
-		if ($query_vucc->num_rows() > 0)
+		if ($query && $query_vucc->num_rows() > 0)
 		{
 			foreach ($query_vucc->result() as $row)
 			{
@@ -225,7 +225,7 @@ class Gridsquares extends CI_Controller {
 
 		$query = $this->gridsquares_model->get_band_confirmed($band);
 
-		if ($query->num_rows() > 0)
+		if ($query && $query->num_rows() > 0)
 		{
 			foreach ($query->result() as $row)
 			{
@@ -254,7 +254,7 @@ class Gridsquares extends CI_Controller {
 
 		$query = $this->gridsquares_model->get_band($band);
 
-		if ($query->num_rows() > 0)
+		if ($query && $query->num_rows() > 0)
 		{
 			foreach ($query->result() as $row)
 			{

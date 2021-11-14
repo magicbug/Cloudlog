@@ -7,6 +7,10 @@ class Gridsquares_model extends CI_Model {
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+
         $this->db->select('distinct substring(COL_GRIDSQUARE,1,6) as SAT_SQUARE, COL_SAT_NAME', FALSE);
         $this->db->where_in('station_id', $logbooks_locations_array);
         $this->db->where('COL_GRIDSQUARE !=', '');
@@ -19,6 +23,10 @@ class Gridsquares_model extends CI_Model {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
@@ -35,6 +43,10 @@ class Gridsquares_model extends CI_Model {
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
 		$sql = 'SELECT COL_VUCC_GRIDS, COL_SAT_NAME FROM '
@@ -49,6 +61,10 @@ class Gridsquares_model extends CI_Model {
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+
 	    $this->db->select('COL_PRIMARY_KEY, COL_VUCC_GRIDS, COL_SAT_NAME', FALSE);
         $this->db->where_in('station_id', $logbooks_locations_array);
     	$this->db->where('COL_VUCC_GRIDS !=', "");
@@ -61,6 +77,9 @@ class Gridsquares_model extends CI_Model {
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+        if (!$logbooks_locations_array) {
+            return null;
+        }
 
         $this->db->select('distinct substring(COL_GRIDSQUARE,1,6) as GRID_SQUARES, COL_BAND', FALSE);
         $this->db->where_in('station_id', $logbooks_locations_array);
@@ -82,6 +101,10 @@ class Gridsquares_model extends CI_Model {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
