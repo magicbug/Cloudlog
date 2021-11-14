@@ -27,10 +27,12 @@ class Awards extends CI_Controller {
 
 	public function dok ()
 	{
-		//echo "Needs Developed";
 		$this->load->model('dok');
+		$this->load->model('bands');
+
 		$data['doks'] = $this->dok->show_stats();
-		$data['worked_bands'] = $this->dok->get_worked_bands();
+
+        $data['worked_bands'] = $this->bands->get_worked_bands_dok(); // Used in the view for band select
 
 		// Render Page
 		$data['page_title'] = "Awards - DOK";
@@ -76,8 +78,9 @@ class Awards extends CI_Controller {
 	public function dxcc ()	{
 		$this->load->model('dxcc');
         $this->load->model('modes');
+        $this->load->model('bands');
 
-        $data['worked_bands'] = $this->dxcc->get_worked_bands(); // Used in the view for band select
+        $data['worked_bands'] = $this->bands->get_worked_bands(); // Used in the view for band select
         $data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
@@ -142,7 +145,8 @@ class Awards extends CI_Controller {
 
     public function vucc()	{
         $this->load->model('vucc');
-        $data['worked_bands'] = $this->vucc->get_worked_bands();
+        $this->load->model('bands');
+        $data['worked_bands'] = $this->bands->get_worked_bands();
 
         $data['vucc_array'] = $this->vucc->get_vucc_array($data);
 
@@ -226,15 +230,18 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-	public function cq(){
+	public function cq() {
 		$CI =& get_instance();
-		$CI->load->model('Stations');
-		$station_id = $CI->Stations->find_active();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         $this->load->model('cq');
 		$this->load->model('modes');
+        $this->load->model('bands');
 
-        $data['worked_bands'] = $this->cq->get_worked_bands($station_id);
+        $data['worked_bands'] = $this->bands->get_worked_bands($location_list);
 		$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
@@ -270,8 +277,8 @@ class Awards extends CI_Controller {
 			$postdata['mode'] = 'All';
         }
 
-        $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata, $station_id);
-        $data['cq_summary'] = $this->cq->get_cq_summary($data['worked_bands'], $station_id);
+        $data['cq_array'] = $this->cq->get_cq_array($bands, $postdata, $location_list);
+        $data['cq_summary'] = $this->cq->get_cq_summary($data['worked_bands'], $location_list);
 
         // Render page
         $data['page_title'] = "Awards - CQ Magazine";
@@ -283,8 +290,9 @@ class Awards extends CI_Controller {
     public function was() {
         $this->load->model('was');
 		$this->load->model('modes');
+        $this->load->model('bands');
 
-        $data['worked_bands'] = $this->was->get_worked_bands();
+        $data['worked_bands'] = $this->bands->get_worked_bands();
 		$data['modes'] = $this->modes->active(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
@@ -333,8 +341,9 @@ class Awards extends CI_Controller {
     public function iota ()	{
         $this->load->model('iota');
 		$this->load->model('modes');
+        $this->load->model('bands');
 
-        $data['worked_bands'] = $this->iota->get_worked_bands(); // Used in the view for band select
+        $data['worked_bands'] = $this->bands->get_worked_bands(); // Used in the view for band select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
@@ -475,7 +484,7 @@ class Awards extends CI_Controller {
 		ini_set('memory_limit', '-1');
 
 		$this->load->model('adif_data');
-		//$type = str_replace('"', "", $this->input->get("type"));
+
 		$type = $this->uri->segment(3);
 		$data['qsos'] = $this->adif_data->sig_all($type);
 

@@ -18,6 +18,8 @@ $config['app_version'] = "1.7";
 $config['directory'] = "%directory%";
 $config['callbook'] = "hamqth"; // Options are hamqth or qrz
 
+$config['datadir'] = null; // default to install directory
+
 /*
 |--------------------------------------------------------------------------
 | Logbook Options
@@ -72,12 +74,9 @@ $config['hamqth_password'] = "";
 
 $config['use_auth'] = true;
 $config['auth_table'] = "users";
-$config['auth_mode'] = "0";
+$config['auth_mode'] = "3";
 
-$config['auth_level'][0] = "Anonymous";
-$config['auth_level'][1] = "Viewer";
-$config['auth_level'][2] = "Editor";
-$config['auth_level'][3] = "API User";
+$config['auth_level'][3] = "Operator";
 $config['auth_level'][99] = "Administrator";
 
 /*

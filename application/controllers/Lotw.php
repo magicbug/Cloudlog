@@ -466,6 +466,7 @@ class Lotw extends CI_Controller {
 				$tableheaders .= "<td>LoTW QSL Received</td>";
 				$tableheaders .= "<td>Date LoTW Confirmed</td>";
 				$tableheaders .= "<td>State</td>";
+				$tableheaders .= "<td>Gridsquare</td>";
 				$tableheaders .= "<td>Log Status</td>";
 				$tableheaders .= "<td>LoTW Status</td>";
 			$tableheaders .= "</tr>";
@@ -512,8 +513,15 @@ class Lotw extends CI_Controller {
 					} else {
 						$state = "";
 					}
+					// Present only if the QSLing station specified a single valid grid square value in its station location uploaded to LoTW.
+					if (isset($record['gridsquare'])) {
+						$qsl_gridsquare = $record['gridsquare'];
+					} else {
+						$qsl_gridsquare = "";
+					}
 
-					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state);
+
+					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare);
 				}
 
 
@@ -525,6 +533,7 @@ class Lotw extends CI_Controller {
 					$table .= "<td>".$record['qsl_rcvd']."</td>";
 					$table .= "<td>".$qsl_date."</td>";
 					$table .= "<td>".$state."</td>";
+					$table .= "<td>".$qsl_gridsquare."</td>";
 					$table .= "<td>QSO Record: ".$status."</td>";
 					$table .= "<td>LoTW Record: ".$lotw_status."</td>";
 				$table .= "</tr>";

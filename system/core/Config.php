@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	Libraries
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/libraries/config.html
+ * @link		https://codeigniter.com/userguide3/libraries/config.html
  */
 class CI_Config {
 
@@ -169,7 +169,7 @@ class CI_Config {
 				$this->is_loaded[] = $file_path;
 				$config = NULL;
 				$loaded = TRUE;
-				log_message('debug', 'Config file loaded: '.$file_path);
+				log_message('info', 'Config file loaded: '.$file_path);
 			}
 		}
 
@@ -346,20 +346,6 @@ class CI_Config {
 		}
 
 		return $uri;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * System URL
-	 *
-	 * @deprecated	3.0.0	Encourages insecure practices
-	 * @return	string
-	 */
-	public function system_url()
-	{
-		$x = explode('/', preg_replace('|/*(.+?)/*$|', '\\1', BASEPATH));
-		return $this->slash_item('base_url').end($x).'/';
 	}
 
 	// --------------------------------------------------------------------

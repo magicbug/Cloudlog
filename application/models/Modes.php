@@ -2,12 +2,6 @@
 
 class Modes extends CI_Model {
 
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
 	function all() {
 		$this->db->order_by('mode', 'ASC');
 		$this->db->order_by('submode', 'ASC');

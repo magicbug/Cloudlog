@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	CodeIgniter
  * @category	Front-controller
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/
+ * @link		https://codeigniter.com/userguide3/
  */
 
 /**
@@ -55,7 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @var	string
  *
  */
-	const CI_VERSION = '3.1.6';
+	const CI_VERSION = '3.2.0-dev';
 
 /*
  * ------------------------------------------------------
@@ -78,57 +78,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * ------------------------------------------------------
  */
 	require_once(BASEPATH.'core/Common.php');
-
-
-/*
- * ------------------------------------------------------
- * Security procedures
- * ------------------------------------------------------
- */
-
-if ( ! is_php('5.4'))
-{
-	ini_set('magic_quotes_runtime', 0);
-
-	if ((bool) ini_get('register_globals'))
-	{
-		$_protected = array(
-			'_SERVER',
-			'_GET',
-			'_POST',
-			'_FILES',
-			'_REQUEST',
-			'_SESSION',
-			'_ENV',
-			'_COOKIE',
-			'GLOBALS',
-			'HTTP_RAW_POST_DATA',
-			'system_path',
-			'application_folder',
-			'view_folder',
-			'_protected',
-			'_registered'
-		);
-
-		$_registered = ini_get('variables_order');
-		foreach (array('E' => '_ENV', 'G' => '_GET', 'P' => '_POST', 'C' => '_COOKIE', 'S' => '_SERVER') as $key => $superglobal)
-		{
-			if (strpos($_registered, $key) === FALSE)
-			{
-				continue;
-			}
-
-			foreach (array_keys($$superglobal) as $var)
-			{
-				if (isset($GLOBALS[$var]) && ! in_array($var, $_protected, TRUE))
-				{
-					$GLOBALS[$var] = NULL;
-				}
-			}
-		}
-	}
-}
-
 
 /*
  * ------------------------------------------------------
@@ -194,20 +143,6 @@ if ( ! is_php('5.4'))
 
 /*
  * ------------------------------------------------------
- *  Instantiate the hooks class
- * ------------------------------------------------------
- */
-	$EXT =& load_class('Hooks', 'core');
-
-/*
- * ------------------------------------------------------
- *  Is there a "pre_system" hook?
- * ------------------------------------------------------
- */
-	$EXT->call_hook('pre_system');
-
-/*
- * ------------------------------------------------------
  *  Instantiate the config class
  * ------------------------------------------------------
  *
@@ -226,6 +161,20 @@ if ( ! is_php('5.4'))
 			$CFG->set_item($key, $value);
 		}
 	}
+
+/*
+ * ------------------------------------------------------
+ *  Instantiate the hooks class
+ * ------------------------------------------------------
+ */
+	$EXT =& load_class('Hooks', 'core', $CFG);
+
+/*
+ * ------------------------------------------------------
+ *  Is there a "pre_system" hook?
+ * ------------------------------------------------------
+ */
+	$EXT->call_hook('pre_system');
 
 /*
  * ------------------------------------------------------
@@ -294,14 +243,14 @@ if ( ! is_php('5.4'))
  *  Instantiate the UTF-8 class
  * ------------------------------------------------------
  */
-	$UNI =& load_class('Utf8', 'core');
+	$UNI =& load_class('Utf8', 'core', $charset);
 
 /*
  * ------------------------------------------------------
  *  Instantiate the URI class
  * ------------------------------------------------------
  */
-	$URI =& load_class('URI', 'core');
+	$URI =& load_class('URI', 'core', $CFG);
 
 /*
  * ------------------------------------------------------
@@ -332,14 +281,14 @@ if ( ! is_php('5.4'))
  * Load the security class for xss and csrf support
  * -----------------------------------------------------
  */
-	$SEC =& load_class('Security', 'core');
+	$SEC =& load_class('Security', 'core', $charset);
 
 /*
  * ------------------------------------------------------
  *  Load the Input class and sanitize globals
  * ------------------------------------------------------
  */
-	$IN	=& load_class('Input', 'core');
+	$IN =& load_class('Input', 'core', $SEC);
 
 /*
  * ------------------------------------------------------
@@ -402,13 +351,17 @@ if ( ! is_php('5.4'))
 	$class = ucfirst($RTR->class);
 	$method = $RTR->method;
 
-	if (empty($class) OR ! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))
+	if (empty($class) OR !(file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php') OR file_exists(APPPATH.'third_party/controllers/'.$RTR->directory.$class.'.php')))
 	{
 		$e404 = TRUE;
 	}
 	else
 	{
-		require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
+	    if (file_exists(APPPATH.'third_party/controllers/'.$RTR->directory.$class.'.php')) {
+            require_once(APPPATH.'third_party/controllers/'.$RTR->directory.$class.'.php');
+        } else {
+        	require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
+        }
 
 		if ( ! class_exists($class, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
 		{
@@ -434,7 +387,7 @@ if ( ! is_php('5.4'))
 		 * ReflectionMethod::isConstructor() is the ONLY reliable check,
 		 * knowing which method will be executed as a constructor.
 		 */
-		elseif ( ! is_callable(array($class, $method)))
+		else
 		{
 			$reflection = new ReflectionMethod($class, $method);
 			if ( ! $reflection->isPublic() OR $reflection->isConstructor())

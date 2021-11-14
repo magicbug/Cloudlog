@@ -40,11 +40,12 @@ class Timeline extends CI_Controller {
         }
 
         $this->load->model('modes');
+        $this->load->model('bands');
 
         $data['modes'] = $this->modes->active();
 
         $data['timeline_array'] = $this->Timeline_model->get_timeline($band, $mode, $award);
-        $data['worked_bands'] = $this->Timeline_model->get_worked_bands();
+        $data['worked_bands'] = $this->bands->get_worked_bands();
         $data['bandselect'] = $band;
         $data['modeselect'] = $mode;
 

@@ -13,12 +13,6 @@
 
 class User_Model extends CI_Model {
 
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
 	// FUNCTION: object get($username)
 	// Retrieve a user
 	function get($username) {
@@ -283,6 +277,7 @@ class User_Model extends CI_Model {
 			'user_column3' => isset($u->row()->user_column3) ? $u->row()->user_column3: 'RSTR',
 			'user_column4' => isset($u->row()->user_column4) ? $u->row()->user_column4: 'Band',
 			'user_column5' => isset($u->row()->user_column5) ? $u->row()->user_column5: 'Country',
+			'active_station_logbook' => $u->row()->active_station_logbook,
 		);
 
 		$this->session->set_userdata($userdata);
@@ -368,6 +363,14 @@ class User_Model extends CI_Model {
 			$ts[$t['id']] = $t['name'];
 		}
 		return $ts;
+	}
+
+	// FUNCTION: array getThemes()
+	// Returns a list of themes
+	function getThemes() {
+		$result = $this->db->query('SELECT * FROM themes order by name');
+
+		return $result->result();
 	}
 
 	// FUNCTION: bool _auth($password, $hash)

@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.3.0
  * @filesource
@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Drivers
  * @category	Database
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/database/
+ * @link		https://codeigniter.com/userguide3/database/
  */
 class CI_DB_postgre_driver extends CI_DB {
 
@@ -78,22 +78,12 @@ class CI_DB_postgre_driver extends CI_DB {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Class constructor
+	 * Build DSN
 	 *
-	 * Creates a DSN string to be used for db_connect() and db_pconnect()
-	 *
-	 * @param	array	$params
 	 * @return	void
 	 */
-	public function __construct($params)
+	protected function _build_dsn()
 	{
-		parent::__construct($params);
-
-		if ( ! empty($this->dsn))
-		{
-			return;
-		}
-
 		$this->dsn === '' OR $this->dsn = '';
 
 		if (strpos($this->hostname, '/') !== FALSE)
@@ -149,6 +139,7 @@ class CI_DB_postgre_driver extends CI_DB {
 	 */
 	public function db_connect($persistent = FALSE)
 	{
+		empty($this->dsn) && $this->_build_dsn();
 		$this->conn_id = ($persistent === TRUE)
 			? pg_pconnect($this->dsn)
 			: pg_connect($this->dsn);
@@ -161,6 +152,13 @@ class CI_DB_postgre_driver extends CI_DB {
 			)
 			{
 				return FALSE;
+			}
+
+			if (pg_set_client_encoding($this->conn_id, $this->char_set) !== 0)
+			{
+				log_message('error', "Database: Unable to set the configured connection charset ('{$this->char_set}').");
+				pg_close($this->conn_id);
+				return ($this->db->db_debug) ? $this->display_error('db_unable_to_set_charset', $this->char_set) : FALSE;
 			}
 
 			empty($this->schema) OR $this->simple_query('SET search_path TO '.$this->schema.',public');
@@ -190,19 +188,6 @@ class CI_DB_postgre_driver extends CI_DB {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Set client character set
-	 *
-	 * @param	string	$charset
-	 * @return	bool
-	 */
-	protected function _db_set_charset($charset)
-	{
-		return (pg_set_client_encoding($this->conn_id, $charset) === 0);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Database version number
 	 *
 	 * @return	string
@@ -224,8 +209,8 @@ class CI_DB_postgre_driver extends CI_DB {
 		 * and so we'll have to fall back to running a query in
 		 * order to get it.
 		 */
-		return isset($pg_version['server'])
-			? $this->data_cache['version'] = $pg_version['server']
+		return (isset($pg_version['server']) && preg_match('#^(\d+\.\d+)#', $pg_version['server'], $match))
+			? $this->data_cache['version'] = $match[1]
 			: parent::version();
 	}
 
@@ -321,7 +306,7 @@ class CI_DB_postgre_driver extends CI_DB {
 	 */
 	public function escape($str)
 	{
-		if (is_php('5.4.4') && (is_string($str) OR (is_object($str) && method_exists($str, '__toString'))))
+		if (is_string($str) OR (is_object($str) && method_exists($str, '__toString')))
 		{
 			return pg_escape_literal($this->conn_id, $str);
 		}
@@ -354,8 +339,7 @@ class CI_DB_postgre_driver extends CI_DB {
 	 */
 	public function insert_id()
 	{
-		$v = pg_version($this->conn_id);
-		$v = isset($v['server']) ? $v['server'] : 0; // 'server' key is only available since PosgreSQL 7.4
+		$v = $this->version();
 
 		$table	= (func_num_args() > 0) ? func_get_arg(0) : NULL;
 		$column	= (func_num_args() > 1) ? func_get_arg(1) : NULL;
@@ -429,7 +413,7 @@ class CI_DB_postgre_driver extends CI_DB {
 	{
 		return 'SELECT "column_name"
 			FROM "information_schema"."columns"
-			WHERE LOWER("table_name") = '.$this->escape(strtolower($table));
+			WHERE "table_schema" = \''.$this->schema.'\' AND LOWER("table_name") = '.$this->escape(strtolower($table));
 	}
 
 	// --------------------------------------------------------------------
@@ -444,7 +428,7 @@ class CI_DB_postgre_driver extends CI_DB {
 	{
 		$sql = 'SELECT "column_name", "data_type", "character_maximum_length", "numeric_precision", "column_default"
 			FROM "information_schema"."columns"
-			WHERE LOWER("table_name") = '.$this->escape(strtolower($table));
+			WHERE "table_schema" = \''.$this->schema.'\' AND LOWER("table_name") = '.$this->escape(strtolower($table));
 
 		if (($query = $this->query($sql)) === FALSE)
 		{
