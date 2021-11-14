@@ -384,7 +384,7 @@ class Logbook extends CI_Controller {
 
 	function view($id) {
 		$this->load->model('user_model');
-				if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
 		$this->load->library('qra');
 
@@ -408,15 +408,19 @@ class Logbook extends CI_Controller {
 
 	function partial($id) {
 		$this->load->model('user_model');
-				if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 		$html = "";
-
 
 	    $this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
 	    $this->db->from($this->config->item('table_name'));
 
 	    $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+	    $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
 	    $this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', "desc");
 
 		$this->db->like($this->config->item('table_name').'.COL_CALL', $id);

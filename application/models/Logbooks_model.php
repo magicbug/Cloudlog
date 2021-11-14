@@ -175,7 +175,8 @@ class Logbooks_model extends CI_Model {
 	}
 
 	public function check_logbook_is_accessible($id) {
-		// check if logbook belongs to user
+	    // check if logbook belongs to user
+	    $this->db->select('logbook_id');
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('logbook_id', $id);
 		$query = $this->db->get('station_logbooks');
