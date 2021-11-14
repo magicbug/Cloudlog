@@ -61,6 +61,10 @@
 		<table>
   </div>
   <br/>
-  <p><button onclick="createModeDialog();" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Mode</button></p>
+  <p>
+	  	<button onclick="createModeDialog();" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Create a Mode</button>
+  		<button onclick="activateAllModes();" class="btn btn-primary btn-sm">Activate All</button>
+		<button onclick="deactivateAllModes();" class="btn btn-primary btn-sm">Deactivate All </button>
+	</p>
 </div>
 </div>

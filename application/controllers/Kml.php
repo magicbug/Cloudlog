@@ -9,8 +9,7 @@
 
 class Kml extends CI_Controller {
 
-    public function index()
-    {
+    public function index() {
         $this->load->model('user_model');
         $this->load->model('modes');
         $this->load->model('logbook_model');
@@ -27,12 +26,10 @@ class Kml extends CI_Controller {
         $this->load->view('interface_assets/header', $data);
         $this->load->view('kml/index');
         $this->load->view('interface_assets/footer');
-
     }
 
-	public function export()
-	{
-		// Load Librarys
+	public function export() {
+		// Load Libraries
 		$this->load->library('qra');
 		$this->load->helper('file');
 
@@ -56,10 +53,7 @@ class Kml extends CI_Controller {
 
 		$output .= "<Document>";
 
-		foreach ($qsos->result() as $row)
-		{
-			$output .= "<Placemark>";
-
+		foreach ($qsos->result() as $row) {
 			if($row->COL_GRIDSQUARE != null) {
 				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
 				
@@ -73,21 +67,24 @@ class Kml extends CI_Controller {
 					ORDER BY LENGTH( prefix ) DESC
 					LIMIT 1 
 				');
-
-				foreach ($query->result() as $dxcc) {
-					$lat = $dxcc->lat;
-					$lng = $dxcc->long;
-				}
+					foreach ($query->result() as $dxcc) {
+						$lat = $dxcc->lat;
+						$lng = $dxcc->long;
+					}
 			}
 
-			$timestamp = strtotime($row->COL_TIME_ON); 
+			if (isset($lat) && isset($lng)) {
+				$output .= "<Placemark>";
 
-			$output .= "<name>".$row->COL_CALL."</name>";
-			$output .= "<description><![CDATA[<p>Date/Time: ".date('Y-m-d H:i:s', ($timestamp))."<br/>Band: ".$row->COL_BAND."<br /></p>]]></description>";		
-			$output .= "<Point>";
-	  		$output .= "<coordinates>".$lng.",".$lat.",0</coordinates>";
-			$output .= "</Point>";
-			$output .= "</Placemark>";
+				$timestamp = strtotime($row->COL_TIME_ON); 
+
+				$output .= "<name>".$row->COL_CALL."</name>";
+				$output .= "<description><![CDATA[<p>Date/Time: ".date('Y-m-d H:i:s', ($timestamp))."<br/>Band: ".$row->COL_BAND."<br /></p>]]></description>";		
+				$output .= "<Point>";
+				$output .= "<coordinates>".$lng.",".$lat.",0</coordinates>";
+				$output .= "</Point>";
+				$output .= "</Placemark>";
+			}
 		}
 
 		$output .= "</Document>";
@@ -97,12 +94,10 @@ class Kml extends CI_Controller {
             mkdir('kml', 0755, true);
         }
 
-		if ( ! write_file('kml/qsos.kml', $output))
-		{
+		if ( ! write_file('kml/qsos.kml', $output)) {
 		     echo 'Unable to write the file. Make sure the folder KML has write permissions.';
 		}
-		else
-		{
+		else {
 		    header("Content-Disposition: attachment; filename=\"qsos.kml\"");
 			echo $output;
 		}
