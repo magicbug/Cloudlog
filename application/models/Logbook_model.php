@@ -1323,18 +1323,22 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-      $this->db->select('count(COL_QSL_SENT) AS count');
-      $this->db->where_in('station_id', $logbooks_locations_array);
-      $this->db->where('COL_QSL_SENT =', 'Y');
+      if(!empty($logbooks_locations_array)) {
+        $this->db->select('count(COL_QSL_SENT) AS count');
+        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->where('COL_QSL_SENT =', 'Y');
 
-      $query = $this->db->get($this->config->item('table_name'));
+        $query = $this->db->get($this->config->item('table_name'));
 
-      $row = $query->row();
+        $row = $query->row();
 
-      if($row == null) {
-          return 0;
+        if($row == null) {
+            return 0;
+        } else {
+            return $row->count;
+        }
       } else {
-          return $row->count;
+        return 0;
       }
     }
 
@@ -1344,18 +1348,22 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-      $this->db->select('count(COL_QSL_SENT) AS count');
-      $this->db->where_in('station_id', $logbooks_locations_array);
-      $this->db->where_in('COL_QSL_SENT', array('Q', 'R'));
+      if(!empty($logbooks_locations_array)) {
+        $this->db->select('count(COL_QSL_SENT) AS count');
+        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->where_in('COL_QSL_SENT', array('Q', 'R'));
 
-      $query = $this->db->get($this->config->item('table_name'));
+        $query = $this->db->get($this->config->item('table_name'));
 
-      $row = $query->row();
+        $row = $query->row();
 
-      if($row == null) {
-          return 0;
+        if($row == null) {
+            return 0;
+        } else {
+            return $row->count;
+        }
       } else {
-          return $row->count;
+        return 0;
       }
     }
 
@@ -1365,18 +1373,22 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-      $this->db->select('count(COL_QSL_RCVD) AS count');
-      $this->db->where_in('station_id', $logbooks_locations_array);
-      $this->db->where('COL_QSL_RCVD =', 'Y');
+      if(!empty($logbooks_locations_array)) {
+        $this->db->select('count(COL_QSL_RCVD) AS count');
+        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->where('COL_QSL_RCVD =', 'Y');
 
-      $query = $this->db->get($this->config->item('table_name'));
+        $query = $this->db->get($this->config->item('table_name'));
 
-      $row = $query->row();
- 
-      if($row == null) {
-          return 0;
+        $row = $query->row();
+  
+        if($row == null) {
+            return 0;
+        } else {
+            return $row->count;
+        }
       } else {
-          return $row->count;
+        return 0;
       }
     }
 
@@ -1386,13 +1398,17 @@ class Logbook_model extends CI_Model {
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $this->db->select('DISTINCT (COL_COUNTRY)');
-        $this->db->where_in('station_id', $logbooks_locations_array);
-        $this->db->where('COL_COUNTRY !=', 'Invalid');
-        $this->db->where('COL_DXCC >', '0');
-        $query = $this->db->get($this->config->item('table_name'));
-
-        return $query->num_rows();
+        if(!empty($logbooks_locations_array)) {
+          $this->db->select('DISTINCT (COL_COUNTRY)');
+          $this->db->where_in('station_id', $logbooks_locations_array);
+          $this->db->where('COL_COUNTRY !=', 'Invalid');
+          $this->db->where('COL_DXCC >', '0');
+          $query = $this->db->get($this->config->item('table_name'));
+  
+          return $query->num_rows();
+        } else {
+          return 0;
+        }
     }
 
     /* Return total number of countries worked */
@@ -1401,14 +1417,18 @@ class Logbook_model extends CI_Model {
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $this->db->select('DISTINCT ('.$this->config->item('table_name').'.COL_COUNTRY)');
-        $this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.col_dxcc');
-        $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
-        $this->db->where($this->config->item('table_name').'.COL_COUNTRY !=', 'Invalid');
-        $this->db->where('dxcc_entities.end is null');
-        $query = $this->db->get($this->config->item('table_name'));
+        if(!empty($logbooks_locations_array)) {
+          $this->db->select('DISTINCT ('.$this->config->item('table_name').'.COL_COUNTRY)');
+          $this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.col_dxcc');
+          $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
+          $this->db->where($this->config->item('table_name').'.COL_COUNTRY !=', 'Invalid');
+          $this->db->where('dxcc_entities.end is null');
+          $query = $this->db->get($this->config->item('table_name'));
 
-        return $query->num_rows();
+          return $query->num_rows();
+        } else {
+          return 0;
+        }
     }
 
     /* Return total number of countries confirmed with paper QSL */
@@ -1417,14 +1437,18 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-      $this->db->select('DISTINCT (COL_COUNTRY)');
-      $this->db->where_in('station_id', $logbooks_locations_array);
-      $this->db->where('COL_COUNTRY !=', 'Invalid');
-      $this->db->where('COL_DXCC >', '0');
-      $this->db->where('COL_QSL_RCVD =', 'Y');
-      $query = $this->db->get($this->config->item('table_name'));
+      if(!empty($logbooks_locations_array)) {
+        $this->db->select('DISTINCT (COL_COUNTRY)');
+        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->where('COL_COUNTRY !=', 'Invalid');
+        $this->db->where('COL_DXCC >', '0');
+        $this->db->where('COL_QSL_RCVD =', 'Y');
+        $query = $this->db->get($this->config->item('table_name'));
 
-      return $query->num_rows();
+        return $query->num_rows();
+      } else {
+        return 0;
+      }
     }
 
     /* Return total number of countries confirmed with eQSL */
@@ -1433,14 +1457,18 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-      $this->db->select('DISTINCT (COL_COUNTRY)');
-      $this->db->where_in('station_id', $logbooks_locations_array);
-      $this->db->where('COL_COUNTRY !=', 'Invalid');
-      $this->db->where('COL_DXCC >', '0');
-      $this->db->where('COL_EQSL_QSL_RCVD =', 'Y');
-      $query = $this->db->get($this->config->item('table_name'));
+      if(!empty($logbooks_locations_array)) {
+        $this->db->select('DISTINCT (COL_COUNTRY)');
+        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->where('COL_COUNTRY !=', 'Invalid');
+        $this->db->where('COL_DXCC >', '0');
+        $this->db->where('COL_EQSL_QSL_RCVD =', 'Y');
+        $query = $this->db->get($this->config->item('table_name'));
 
-      return $query->num_rows();
+        return $query->num_rows();
+      } else {
+        return 0;
+      }
     }
 
     /* Return total number of countries confirmed with LoTW */
@@ -1449,14 +1477,18 @@ class Logbook_model extends CI_Model {
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-      $this->db->select('DISTINCT (COL_COUNTRY)');
-      $this->db->where_in('station_id', $logbooks_locations_array);
-      $this->db->where('COL_COUNTRY !=', 'Invalid');
-      $this->db->where('COL_DXCC >', '0');
-      $this->db->where('COL_LOTW_QSL_RCVD =', 'Y');
-      $query = $this->db->get($this->config->item('table_name'));
+      if(!empty($logbooks_locations_array)) {
+        $this->db->select('DISTINCT (COL_COUNTRY)');
+        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->where('COL_COUNTRY !=', 'Invalid');
+        $this->db->where('COL_DXCC >', '0');
+        $this->db->where('COL_LOTW_QSL_RCVD =', 'Y');
+        $query = $this->db->get($this->config->item('table_name'));
 
-      return $query->num_rows();
+        return $query->num_rows();
+      } else {
+        return 0;
+      }
     }
 
   function api_search_query($query) {
