@@ -6,8 +6,13 @@
 	{
 		// Check Auth
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
+		// Check if users logged in
+
+		if($this->user_model->validate_session() == 0) {
+			// user is not logged in
+			redirect('user/login');
+		}
 		// load the view
 		$data['page_title'] = "Hardware Interfaces";
 
@@ -20,8 +25,14 @@
 
 		// Check Auth
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
+		// Check if users logged in
+
+		if($this->user_model->validate_session() == 0) {
+			// user is not logged in
+			redirect('user/login');
+		}
+		
 		$this->load->model('cat');
 		$query = $this->cat->status();
 		if ($query->num_rows() > 0)
