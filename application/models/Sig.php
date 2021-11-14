@@ -7,6 +7,10 @@ class Sig extends CI_Model {
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+		if (!$logbooks_locations_array) {
+            return null;
+        }
+
 		$this->db->where_in("station_id", $logbooks_locations_array);
 		$this->db->order_by("COL_SIG_INFO", "ASC");
 		$this->db->where('COL_SIG =', $type);
@@ -18,6 +22,10 @@ class Sig extends CI_Model {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		if (!$logbooks_locations_array) {
+            return null;
+        }
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 

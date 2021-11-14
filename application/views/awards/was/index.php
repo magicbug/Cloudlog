@@ -78,7 +78,9 @@
                 <div class="col-md-10">
                     <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning">Reset</button>
                     <button id="button1id" type="submit" name="button1id" class="btn btn-sm btn-primary">Show</button>
-					<button type="button" onclick="load_was_map();" class="btn btn-info btn-sm"><i class="fas fa-globe-americas"></i> Show WAS Map</button>
+					<?php if ($was_array) {
+                        ?><button type="button" onclick="load_was_map();" class="btn btn-info btn-sm"><i class="fas fa-globe-americas"></i> Show WAS Map</button>
+                    <?php }?>
                 </div>
             </div>
 
