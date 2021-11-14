@@ -39,10 +39,7 @@
  	<?php if ($this->uri->segment(1) == "adif") { ?>
   	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
   	<?php } ?>
-	 
-	<?php if (file_exists(APPPATH.'../assets/css/custom.css')) { echo '<link rel="stylesheet" href="'.base_url().'assets/css/custom.css">'; } ?>
-
-    <link rel="icon" href="<?php echo base_url(); ?>favicon.ico">
+    <link rel="icon" href="<?php echo base_url(); ?>/favicon.ico">
 
     <title><?php if(isset($page_title)) { echo $page_title; } ?> - Cloudlog</title>
   </head>
@@ -50,7 +47,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light main-nav">
 <div class="container">
-		<a class="navbar-brand" href="<?php echo site_url(); ?>">Cloudlog</a> <?php if(ENVIRONMENT == "development") { ?><span class="badge badge-danger">Developer Mode</span><?php } ?>
+		<a class="navbar-brand" href="<?php echo site_url(); ?>">Cloudlog</a>
 
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
@@ -123,7 +120,6 @@
                 </div>
             </li>
 
-			<?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') == 99)) { ?>
         	<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
 
@@ -144,10 +140,6 @@
 
 					<div class="dropdown-divider"></div>
 
-					<a class="dropdown-item" href="<?php echo site_url('themes');?>" title="Manage Themes"><i class="fas fa-cog"></i> Themes</a>
-
-					<div class="dropdown-divider"></div>
-
 					<a class="dropdown-item" href="<?php echo site_url('backup');?>" title="Backup Cloudlog content"><i class="fas fa-save"></i> Backup</a>
 
 					<div class="dropdown-divider"></div>
@@ -161,7 +153,6 @@
 					<?php } ?>
 				</div>
         	</li>
-			<?php } ?>
         <?php } ?>
     </ul>
 
@@ -194,8 +185,6 @@
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				<a class="dropdown-item" href="<?php echo site_url('user/edit')."/".$this->session->userdata('user_id'); ?>" title="Account"><i class="fas fa-user"></i> Account</a>
 
-				<a class="dropdown-item" href="<?php echo site_url('logbooks');?>" title="Manage station logbooks"><i class="fas fa-home"></i> Station Logbooks</a>
-				
 				<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Manage station locations"><i class="fas fa-home"></i> Station Locations</a>
 
 				<div class="dropdown-divider"></div>
@@ -205,8 +194,6 @@
 				<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('kml');?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> KML Export</a>
-
-				<a class="dropdown-item" href="<?php echo site_url('dxatlas');?>" title="DX Atlas Gridsquare Export"><i class="fas fa-sync"></i> DX Atlas Gridsquare Export</a>
 
 				<div class="dropdown-divider"></div>
 

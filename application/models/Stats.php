@@ -2,6 +2,11 @@
 
 	class Stats extends CI_Model {
 
+	function __construct()
+	{
+		parent::__construct();
+	}
+	
 	function result() {
 		$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
 	

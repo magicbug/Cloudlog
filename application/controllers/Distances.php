@@ -16,9 +16,9 @@ class Distances extends CI_Controller {
         // Render Page
         $data['page_title'] = "Distances Worked";
 
-        $this->load->model('bands');
-        $data['bands_available'] = $this->bands->get_worked_bands_distances();
-        $data['sats_available'] = $this->bands->get_worked_sats();
+        $this->load->model('Distances_model');
+        $data['bands_available'] = $this->Distances_model->get_worked_bands();
+        $data['sats_available'] = $this->Distances_model->get_worked_sats();
 
         $this->load->view('interface_assets/header', $data);
         $this->load->view('distances/index');

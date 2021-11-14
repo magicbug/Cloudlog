@@ -8,6 +8,11 @@
 
 class Options_model extends CI_Model {
 
+	function __construct()
+	{
+		parent::__construct();
+	}
+
     // Returns all options that are autoload yes
 	function get_autoloads() {
 		$this->db->where('autoload', "yes");

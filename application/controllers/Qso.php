@@ -30,7 +30,7 @@ class QSO extends CI_Controller {
 
 		$data['active_station_profile'] = $this->stations->find_active();
 		$data['notice'] = false;
-		$data['stations'] = $this->stations->all_of_user();
+		$data['stations'] = $this->stations->all();
 		$data['radios'] = $this->cat->radios();
 		$data['query'] = $this->logbook_model->last_custom('5');
 		$data['dxcc'] = $this->logbook_model->fetchDxcc();

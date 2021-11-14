@@ -2,6 +2,11 @@
 
 class Qslprint_model extends CI_Model {
 
+	function __construct()
+	{
+		parent::__construct();
+	}
+
 	function mark_qsos_printed($station_id2 = NULL) {
 		$CI =& get_instance();
 		$CI->load->model('Stations');

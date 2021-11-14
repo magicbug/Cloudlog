@@ -8,38 +8,36 @@
 
 class API_Model extends CI_Model {
 
+    function __construct()
+    {
+        // Call the Model constructor
+        parent::__construct();
+    }
+
     // GET API Keys
     function keys() {
-		$this->db->where('user_id', $this->session->userdata('user_id'));
     	return $this->db->get('api');
     }
 
     function key_description($key) {
-		$this->db->where('user_id', $this->session->userdata('user_id'));
-    	$this->db->where('key', $key);
+    	$this->db->where('key', $key); 
     	$query = $this->db->get('api');
 
     	return $query->result_array()[0];
     }
 
-	function key_userid($key) {
-    	$this->db->where('key', $key);
-    	$query = $this->db->get('api');
-
-    	return $query->result_array()[0]['user_id'];
-    }
 
     function update_key_description($key, $description) {
-
+    	
     	$data = array(
         'description' => xss_clean($description),
 		);
 
 		$this->db->where('key', xss_clean($key));
-		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->update('api', xss_clean($data));
 
     }
+
 
     function country_worked($dxcc_num, $band, $mode){
 
@@ -95,38 +93,35 @@ class API_Model extends CI_Model {
 
 
     function delete_key($key) {
-		$this->db->where('user_id', $this->session->userdata('user_id'));
     	$this->db->where('key', xss_clean($key));
 		$this->db->delete('api');
     }
     // Generate API Key
     function generate_key($rights) {
-
+    	
     	// Expects either rw (Read, Write) or r (read only)
 
     	// Generate Unique Key
     	$data['key'] = uniqid("cl");
 
     	$data['rights'] = $rights;
-
+    	
     	// Set API key to active
     	$data['status'] = "active";
 
-		$data['user_id'] = $this->session->userdata('user_id');
-
-    	$this->db->insert('api', $data);
+    	$this->db->insert('api', $data); 
 
     }
 
     function access($key) {
-
+    	
       // No key = no access, mate
       if(!$key) {
         return $status = "No Key Found";
       }
 
     	// Check that the key is valid
-    	$this->db->where('key', $key);
+    	$this->db->where('key', $key); 
      	$query = $this->db->get('api');
 
 		  if ($query->num_rows() > 0)
@@ -339,7 +334,7 @@ class API_Model extends CI_Model {
 			$s[12]  = '/~([a-zA-Z0-9\-\_\*\(\)\=\~]+)/';
 			// *, which becomes '%'
 			$s[13]  = '/\*/';
-
+	
 			$r[0]   = ' AND ';
 			$r[1]   = ' OR ';
 			$r[2]   = ' < ';

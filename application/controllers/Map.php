@@ -13,7 +13,7 @@ class Map extends CI_Controller {
             $qra_position = $this->qra->qra2latlong($this->session->userdata('user_locator'));
             $data['qra'] = "set";
             $data['qra_lat'] = $qra_position[0];
-            $data['qra_lng'] = $qra_position[1];
+            $data['qra_lng'] = $qra_position[1];   
         } else {
             $data['qra'] = "none";
         }
@@ -34,14 +34,14 @@ class Map extends CI_Controller {
     function custom()
 	{
 
-		$this->load->model('bands');
-        //$this->load->model('modes');
+		$this->load->model('dxcc');
+        $this->load->model('modes');
 
-        $data['worked_bands'] = $this->bands->get_worked_bands(); // Used in the view for band select
-        //$data['modes'] = $this->modes->active(); // Used in the view for mode select
+        $data['worked_bands'] = $this->dxcc->get_worked_bands(); // Used in the view for band select
+        $data['modes'] = $this->modes->active(); // Used in the view for mode select
 
-        if ($this->input->post('band') != NULL) {   			// Band is not set when page first loads.
-            if ($this->input->post('band') == 'All') {          // Did the user specify a band? If not, use all bands
+        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
+            if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
                 $bands = $data['worked_bands'];
             }
             else {
@@ -61,19 +61,19 @@ class Map extends CI_Controller {
             $qra_position = $this->qra->qra2latlong($this->session->userdata('user_locator'));
             $data['qra'] = "set";
             $data['qra_lat'] = $qra_position[0];
-            $data['qra_lng'] = $qra_position[1];
+            $data['qra_lng'] = $qra_position[1];   
         } else {
             $data['qra'] = "none";
         }
 
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$result = $CI->logbooks_model->logbook($this->session->userdata('active_station_logbook'))->result();
-		$logbook_name = $result[0]->logbook_name;
+        $this->load->model('Stations');
+        $station_id = $this->Stations->find_active();
+        $station_data = $this->Stations->profile_clean($station_id);
 
         // load the view
-        $data['logbook_name'] = $logbook_name;
+        $data['station_profile'] = $station_data;
 		$data['page_title'] = "Map QSOs";
+
 
         if ($this->input->post('from')) {
             $from = $this->input->post('from');
@@ -93,6 +93,7 @@ class Map extends CI_Controller {
             $footer_data['date_to'] = $temp_to->format('Y-m-d H:i:00');
         }
 
+
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('map/custom_date');
 		$this->load->view('interface_assets/footer',$footer_data);
@@ -104,7 +105,7 @@ class Map extends CI_Controller {
         $end_date = $this->uri->segment(4);
 		$band = $this->uri->segment(5);
 		$this->load->model('logbook_model');
-
+		
 		$this->load->library('qra');
 
 		$qsos = $this->logbook_model->map_custom_qsos(rawurldecode($start_date), rawurldecode($end_date), $band);
@@ -119,7 +120,7 @@ class Map extends CI_Controller {
 					echo ",";
 				}
 
-				if($row->COL_SAT_NAME != null) {
+				if($row->COL_SAT_NAME != null) { 
 						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
 				} else {
 						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
@@ -133,7 +134,7 @@ class Map extends CI_Controller {
 					FROM dxcc_entities
 					WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
 					ORDER BY LENGTH( prefix ) DESC
-					LIMIT 1
+					LIMIT 1 
 				');
 
 				foreach ($query->result() as $dxcc) {
@@ -153,12 +154,12 @@ class Map extends CI_Controller {
 
     function map_data() {
 		$this->load->model('logbook_model');
-
+		
 		$this->load->library('qra');
 
 		//echo date('Y-m-d')
 		$raw = strtotime('Monday last week');
-
+		
 		$mon = date('Y-m-d', $raw);
 		$sun = date('Y-m-d', strtotime('Monday next week'));
 
@@ -174,7 +175,7 @@ class Map extends CI_Controller {
 					echo ",";
 				}
 
-				if($row->COL_SAT_NAME != null) {
+				if($row->COL_SAT_NAME != null) { 
 						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
 				} else {
 						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
@@ -188,7 +189,7 @@ class Map extends CI_Controller {
 					FROM dxcc_entities
 					WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
 					ORDER BY LENGTH( prefix ) DESC
-					LIMIT 1
+					LIMIT 1 
 				');
 
 				foreach ($query->result() as $dxcc) {

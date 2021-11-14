@@ -1,11 +1,4 @@
 $( document ).ready(function() {
-	$("#sat_name").change(function(){
-		var sat = $("#sat_name").val();
-		if (sat == "") {
-			$("#sat_mode").val("");
-			$("#selectPropagation").val("");
-		}
-	});
 
 	$('#input_usa_state').change(function(){
 		var state = $("#input_usa_state option:selected").text();

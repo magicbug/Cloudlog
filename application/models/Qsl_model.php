@@ -1,5 +1,12 @@
 <?php
 class Qsl_model extends CI_Model {
+    function __construct()
+    {
+        // Call the Model constructor
+        parent::__construct();
+
+    }
+
     function getQsoWithQslList() {
         $CI =& get_instance();
         $CI->load->model('Stations');

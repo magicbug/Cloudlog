@@ -16,9 +16,9 @@ class Timeplotter extends CI_Controller {
         // Render Page
         $data['page_title'] = "Timeplotter";
 
-        $this->load->model('bands');
+        $this->load->model('Timeplotter_model');
 
-        $data['worked_bands'] = $this->bands->get_worked_bands();
+        $data['worked_bands'] = $this->Timeplotter_model->get_worked_bands();
 
         $this->load->model('dxcc');
         $data['dxcc_list'] = $this->dxcc->list();

@@ -47,15 +47,12 @@
                         <div class="form-group">
                             <label for="themeSelect">Theme</label>
                             <select class="custom-select" id="themeSelect" name="theme" aria-describedby="themeHelp" required>
-								<?php
-								foreach ($themes as $theme) {
-									echo '<option value="' . $theme->foldername . '"';
-									if ($this->optionslib->get_option('theme') == $theme->foldername) {
-										echo 'selected="selected"';
-									}
-									echo '>' . $theme->name . '</option>';
-								}
-								?>
+                                <option value='default' <?php if($this->optionslib->get_option('theme') == "default") { echo "selected=\"selected\""; } ?>>Default</option>
+                                <option value='blue' <?php if($this->optionslib->get_option('theme')== "blue") { echo "selected=\"selected\""; } ?>>Blue</option>
+                                <option value='cosmo' <?php if($this->optionslib->get_option('theme') == "cosmo") { echo "selected=\"selected\""; } ?>>Cosmo</option>
+                                <option value='cyborg' <?php if($this->optionslib->get_option('theme') == "cyborg") { echo "selected=\"selected\""; } ?>>Cyborg (Dark)</option>
+                                <option value='darkly' <?php if($this->optionslib->get_option('theme') == "darkly") { echo "selected=\"selected\""; } ?>> Darkly (Dark)</option>
+                                <option value='superhero' <?php if($this->optionslib->get_option('theme') == "superhero") { echo "selected=\"selected\""; } ?>>Superhero (Dark)</option>
                                 </select>
                             <small id="themeHelp" class="form-text text-muted">Global Theme Choice, this is used when users arent logged in.</small>
                         </div>

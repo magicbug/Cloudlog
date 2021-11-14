@@ -14,8 +14,8 @@ class Options extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
-
-
+	
+	
 	// Default /options view just gives some text to explain the options area
     function index() {
 
@@ -23,14 +23,14 @@ class Options extends CI_Controller {
         //echo $this->config->item('option_theme');
 
 		//echo $this->optionslib->get_option('theme');
-
+		
 		$data['page_title'] = "Cloudlog Options";
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('options/index');
 		$this->load->view('interface_assets/footer');
 	}
-
+	
 	// function used to display the /appearance url
 	function appearance() {
 
@@ -40,10 +40,6 @@ class Options extends CI_Controller {
 
 		$data['page_title'] = "Cloudlog Options";
 		$data['sub_heading'] = "Appearance";
-
-		$this->load->model('Themes_model');
-
-		$data['themes'] = $this->Themes_model->getThemes();
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('options/appearance');
@@ -105,10 +101,10 @@ class Options extends CI_Controller {
 
 		// function used to display the /radio url
 		function radio() {
-
+	
 			$data['page_title'] = "Cloudlog Options";
 			$data['sub_heading'] = "Radio Settings";
-
+	
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('options/radios');
 			$this->load->view('interface_assets/footer');

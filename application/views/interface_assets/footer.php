@@ -404,8 +404,9 @@ $('[data-fancybox]').fancybox({
     }
 });
 
-// Here we capture ALT-L to invoke the Quick lookup
+// Here we capture ALT-L to invoice the Quick lookup
 document.onkeyup = function(e) {
+	// ALT-W wipe
 	if (e.altKey && e.which == 76) {
 		spawnLookupModal();
 	}
@@ -2124,90 +2125,6 @@ function deleteQsl(id) {
 
 <?php if ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) == "add") { ?>
 	<script src="<?php echo base_url() ;?>assets/js/sections/contestingnames.js"></script>
-<?php } ?>
-
-<?php if ($this->uri->segment(1) == "themes") { ?>
-    <script>
-    function deleteTheme(id, name) {
-        BootstrapDialog.confirm({
-            title: 'DANGER',
-            message: 'Warning! Are you sure you want to delete the following theme: ' + name + '?'  ,
-            type: BootstrapDialog.TYPE_DANGER,
-            closable: true,
-            draggable: true,
-            btnOKClass: 'btn-danger',
-            callback: function(result) {
-                if(result) {
-                    $.ajax({
-                        url: base_url + 'index.php/themes/delete',
-                        type: 'post',
-                        data: {'id': id
-                        },
-                        success: function(data) {
-                            $(".theme_" + id).parent("tr:first").remove(); // removes mode from table
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-	function addThemeDialog() {
-		$.ajax({
-			url: base_url + 'index.php/themes/add',
-			type: 'post',
-			success: function(html) {
-				BootstrapDialog.show({
-					title: 'Create Theme',
-					size: BootstrapDialog.SIZE_WIDE,
-					cssClass: 'create-theme-dialog',
-					nl2br: false,
-					message: html,
-					buttons: [{
-						label: 'Close',
-						action: function (dialogItself) {
-							dialogItself.close();
-						}
-					}]
-				});
-			}
-		});
-	}
-
-	function addTheme(form) {
-		if (form.name.value != '') {
-			$.ajax({
-				url: base_url + 'index.php/themes/add',
-				type: 'post',
-				data: {
-					'name': form.name.value,
-					'foldername': form.foldername.value,
-				},
-				success: function(html) {
-					location.reload();
-				}
-			});
-		}
-	}
-    </script>
-<?php } ?>
-
-<?php if ($this->uri->segment(1) == "dxatlas") { ?>
-	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
-	<script>
-		$(function () {
-			$('#datetimepicker1').datetimepicker({
-				format: 'DD/MM/YYYY',
-			});
-		});
-
-		$(function () {
-			$('#datetimepicker2').datetimepicker({
-				format: 'DD/MM/YYYY',
-			});
-		});
-	</script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "qslprint") { ?>

@@ -2,6 +2,11 @@
 
 class Eqslmethods_model extends CI_Model {
 
+	function __construct()
+	{
+		parent::__construct();
+	}
+	
 	function mark_all_as_sent() {
 		$data = array(
             'COL_EQSL_QSL_SENT' => 'Y',

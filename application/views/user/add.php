@@ -30,16 +30,10 @@
 		    <select class="custom-select" name="user_type">
 			<?php
 				$levels = $this->config->item('auth_level');
-				foreach ($levels as $key => $value) {
-					echo '<option value="'. $key . '"';
-					if(isset($user_type)) { 
-						if($user_type == $key) { 
-							echo "selected=\"selected\""; 
-						} 
-					} 
-					echo '>' . $value . '</option>';
-				} 
-				?>
+				while (list($key, $val) = each($levels)) {
+			?>
+					<option value="<?php echo $key; ?>" <?php if(isset($user_type)) { if($user_type == $key) { echo "selected=\"selected\""; } } ?>><?php echo $val; ?></option>
+				<?php } ?>
 			</select>
 		  </div>
 
@@ -117,15 +111,12 @@
         <div class="form-group">
             <label for="user_stylesheet">Theme</label>
             <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
-				<?php
-				foreach ($themes as $theme) {
-					echo '<option value="' . $theme->foldername . '"';
-					if( $theme->foldername == 'default') {
-						echo 'selected="selected"';
-					}
-					echo '>' . $theme->name . '</option>';
-				}
-				?>
+                <option value='default' selected="selected">Default</option>
+                <option value='blue'>Blue</option>
+                <option value='cosmo'>Cosmo</option>
+                <option value='cyborg'>Cyborg (Dark)</option>
+                <option value='darkly'>Darkly (Dark)</option>
+                <option value='superhero'>Superhero (Dark)</option>
             </select>
         </div>
 

@@ -26,13 +26,15 @@
 	<?php if ($this->uri->segment(2) == "satellites") { ?>
 		<div class="alert alert-success" role="alert">
 			Confirmed is Green | Worked but not confirmed is Red
+			[This grid square map is publically viewable for sharing]
 		</div>
 	<?php } ?>
 
 	<?php if ($this->uri->segment(2) == "band") { ?>
 		<div class="alert alert-success" role="alert">
 			Confirmed is Green | Worked but not confirmed is Red <br>
-			[This map does not include satellite, internet or repeater QSOs]
+			[This map does not include satellite, internet or repeater QSOs] <br>
+			[This grid square map is publically viewable for sharing]
 		</div>
 	<?php } ?>
 </div>

@@ -16,9 +16,9 @@ class Accumulated extends CI_Controller {
         // Render Page
         $data['page_title'] = "Accumulated Statistics";
 
-        $this->load->model('bands');
+        $this->load->model('Accumulate_model');
 
-        $data['worked_bands'] = $this->bands->get_worked_bands(); // Used in the view for band select
+        $data['worked_bands'] = $this->Accumulate_model->get_worked_bands();
 
         $this->load->model('modes');
 

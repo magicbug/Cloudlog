@@ -7,21 +7,21 @@
 		// Check Auth
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-
+		
 		// load the view
-		$data['page_title'] = "Hardware Interfaces";
+		$data['page_title'] = "Radio Interface";
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('radio/index');
 		$this->load->view('interface_assets/footer');
 	}
-
+	
 	function status() {
-
+	
 		// Check Auth
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-
+	
 		$this->load->model('cat');
 		$query = $this->cat->status();
 		if ($query->num_rows() > 0)
@@ -58,14 +58,14 @@
 				echo "<td colspan=\"4\">No CAT Interfaced radios found.</td>";
 			echo "</tr>";
 		}
-
+			
 	}
 
 	function json($id)
 	{
 
 		header('Content-Type: application/json');
-
+		
 		$this->load->model('cat');
 
 		$query = $this->cat->radio_status($id);
@@ -97,8 +97,8 @@
 					}
 
 					// Get Satellite Mode
-					$uplink_mode = $this->get_mode_designator($row->uplink_freq);
-					$downlink_mode = $this->get_mode_designator($row->downlink_freq);
+					$uplink_mode = $this->get_mode_designator($row->uplink_freq); 
+					$downlink_mode = $this->get_mode_designator($row->downlink_freq); 
 
 					if ($uplink_mode != "" && $downlink_mode != "") {
 						$sat_mode = $uplink_mode."/".$downlink_mode;
@@ -119,7 +119,7 @@
 					$sat_mode = "";
 				}
 
-				// Calculate how old the data is in minutes
+				// Calculate how old the data is in minutes 
 				$datetime1 = new DateTime(); // Today's Date/Time
 				$datetime2 = new DateTime($row->newtime);
 				$interval = $datetime1->diff($datetime2);
@@ -127,7 +127,7 @@
 				$minutes = $interval->days * 24 * 60;
 				$minutes += $interval->h * 60;
 				$minutes += $interval->i;
-
+				
 				$updated_at = $minutes;
 
 				// Return Json data
@@ -143,7 +143,7 @@
 		}
 
 	}
-
+	
 	function get_mode_designator($frequency)
 	{
 		if ($frequency > 21000000 && $frequency < 22000000)
@@ -176,13 +176,13 @@
 		// Check Auth
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-
+		
 		$this->load->model('cat');
-
+		
 		$this->cat->delete($id);
-
+		
 		$this->session->set_flashdata('message', 'Radio Profile Deleted');
-
+		
 		redirect('radio');
 
 	}

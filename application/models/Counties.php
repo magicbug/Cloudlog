@@ -3,6 +3,11 @@
 class Counties extends CI_Model
 {
 
+    function __construct() {
+        // Call the Model constructor
+        parent::__construct();
+    }
+
     /*
      *  Fetches worked and confirmed counties
      */
@@ -23,18 +28,14 @@ class Counties extends CI_Model
      * No band split, as it only count the number of counties in the award.
      */
     function get_counties_summary() {
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $station_id = $this->get_station_id();
 
         $sql = "select count(distinct COL_CNTY) countycountworked, coalesce(x.countycountconfirmed, 0) countycountconfirmed, thcv.COL_STATE
                 from " . $this->config->item('table_name') . " thcv
                  left outer join (
                         select count(distinct COL_CNTY) countycountconfirmed, COL_STATE
                         from " . $this->config->item('table_name') .
-            " where station_id in (" . $location_list . ")" .
+            " where station_id =" . $station_id .
             " and COL_DXCC in ('291', '6', '110')
                     and coalesce(COL_CNTY, '') <> ''
                     and COL_BAND != 'SAT'
@@ -42,7 +43,7 @@ class Counties extends CI_Model
                     group by COL_STATE
                     order by COL_STATE
                 ) x on thcv.COL_STATE = x.COL_STATE
-                 where station_id in (" . $location_list . ")" .
+                 where station_id =" . $station_id .
             " and COL_DXCC in ('291', '6', '110')
                 and coalesce(COL_CNTY, '') <> ''
                 and COL_BAND != 'SAT'
@@ -51,6 +52,12 @@ class Counties extends CI_Model
 
         $query = $this->db->query($sql);
         return $query->result_array();
+    }
+
+    function get_station_id() {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        return $CI->Stations->find_active();
     }
 
     /*
@@ -71,15 +78,11 @@ class Counties extends CI_Model
     }
 
     function get_counties($state, $confirmationtype) {
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $station_id = $this->get_station_id();
 
         $sql = "select distinct COL_CNTY, COL_STATE
                 from " . $this->config->item('table_name') . " thcv
-                 where station_id in (" . $location_list . ")" .
+                 where station_id =" . $station_id .
                 " and COL_DXCC in ('291', '6', '110')
                 and coalesce(COL_CNTY, '') <> ''
                 and COL_BAND != 'SAT'";
