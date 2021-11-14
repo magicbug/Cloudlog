@@ -1303,70 +1303,78 @@ class Logbook_model extends CI_Model {
 
     /* Return total number of QSL Cards sent */
     function total_qsl_sent() {
-
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $query = $this->db->query('SELECT count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_SENT = "Y"');
+      $this->db->select('count(COL_QSL_SENT) AS count');
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_QSL_SENT =', 'Y');
 
-        $row = $query->row();
+      $query = $this->db->get($this->config->item('table_name'));
 
-        if($row == null) {
-            return 0;
-        } else {
-            return $row->count;
-        }
+      $row = $query->row();
+
+      if($row == null) {
+          return 0;
+      } else {
+          return $row->count;
+      }
     }
 
     /* Return total number of QSL Cards requested for printing - that means "requested" or "queued" */
     function total_qsl_requested() {
-
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $query = $this->db->query('SELECT count(COL_QSL_SENT) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_SENT in ("Q", "R")');
+      $this->db->select('count(COL_QSL_SENT) AS count');
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where_in('COL_QSL_SENT', array('Q', 'R'));
 
-        $row = $query->row();
+      $query = $this->db->get($this->config->item('table_name'));
 
-        if($row == null) {
-            return 0;
-        } else {
-            return $row->count;
-        }
+      $row = $query->row();
+
+      if($row == null) {
+          return 0;
+      } else {
+          return $row->count;
+      }
     }
 
     /* Return total number of QSL Cards received */
     function total_qsl_recv() {
-
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $query = $this->db->query('SELECT count(COL_QSL_RCVD) AS count FROM '.$this->config->item('table_name').' WHERE station_id = '.$station_id.' AND COL_QSL_RCVD = "Y"');
+      $this->db->select('count(COL_QSL_RCVD) AS count');
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_QSL_RCVD =', 'Y');
 
-        $row = $query->row();
+      $query = $this->db->get($this->config->item('table_name'));
 
-        if($row == null) {
-            return 0;
-        } else {
-            return $row->count;
-        }
+      $row = $query->row();
+ 
+      if($row == null) {
+          return 0;
+      } else {
+          return $row->count;
+      }
     }
 
     /* Return total number of countries worked */
     function total_countries() {
-      $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-      $sql = 'SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').'
-                WHERE COL_COUNTRY != "Invalid"
-                AND col_dxcc > 0
-                AND station_id = '.$station_id ;
-
-      $query = $this->db->query($sql);
+        $this->db->select('DISTINCT (COL_COUNTRY)');
+        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->where('COL_COUNTRY !=', 'Invalid');
+        $this->db->where('COL_DXCC >', '0');
+        $query = $this->db->get($this->config->item('table_name'));
 
         return $query->num_rows();
     }
@@ -1374,16 +1382,15 @@ class Logbook_model extends CI_Model {
     /* Return total number of countries worked */
     function total_countries_current() {
         $CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $sql = 'SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').' thcv
-        join dxcc_entities on thcv.col_dxcc = dxcc_entities.adif
-        WHERE COL_COUNTRY != "Invalid"
-        AND dxcc_entities.end is null
-        AND station_id = '.$station_id;
-
-        $query = $this->db->query($sql);
+        $this->db->select('DISTINCT ('.$this->config->item('table_name').'.COL_COUNTRY)');
+        $this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.col_dxcc');
+        $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
+        $this->db->where($this->config->item('table_name').'.COL_COUNTRY !=', 'Invalid');
+        $this->db->where('dxcc_entities.end is null');
+        $query = $this->db->get($this->config->item('table_name'));
 
         return $query->num_rows();
     }
@@ -1391,50 +1398,49 @@ class Logbook_model extends CI_Model {
     /* Return total number of countries confirmed with paper QSL */
     function total_countries_confirmed_paper() {
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-      $sql = 'SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').'
-                WHERE COL_COUNTRY != "Invalid"
-                AND COL_DXCC > 0
-                AND station_id = '.$station_id.' AND COL_QSL_RCVD =\'Y\'';
+      $this->db->select('DISTINCT (COL_COUNTRY)');
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_COUNTRY !=', 'Invalid');
+      $this->db->where('COL_DXCC >', '0');
+      $this->db->where('COL_QSL_RCVD =', 'Y');
+      $query = $this->db->get($this->config->item('table_name'));
 
-        $query = $this->db->query($sql);
-
-        return $query->num_rows();
+      return $query->num_rows();
     }
 
     /* Return total number of countries confirmed with eQSL */
     function total_countries_confirmed_eqsl() {
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-      $sql = 'SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').'
-                WHERE COL_COUNTRY != "Invalid"
-                AND COL_DXCC > 0
-                AND station_id = '.$station_id.' AND COL_EQSL_QSL_RCVD =\'Y\'';
+      $this->db->select('DISTINCT (COL_COUNTRY)');
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_COUNTRY !=', 'Invalid');
+      $this->db->where('COL_DXCC >', '0');
+      $this->db->where('COL_EQSL_QSL_RCVD =', 'Y');
+      $query = $this->db->get($this->config->item('table_name'));
 
-        $query = $this->db->query($sql);
-
-        return $query->num_rows();
+      return $query->num_rows();
     }
 
     /* Return total number of countries confirmed with LoTW */
     function total_countries_confirmed_lotw() {
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-      $sql = 'SELECT DISTINCT (COL_COUNTRY) FROM '.$this->config->item('table_name').'
-                  WHERE COL_COUNTRY != "Invalid"
-                  AND COL_DXCC > 0
-                  AND station_id = '.$station_id.'
-                  AND COL_LOTW_QSL_RCVD =\'Y\'';
+      $this->db->select('DISTINCT (COL_COUNTRY)');
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_COUNTRY !=', 'Invalid');
+      $this->db->where('COL_DXCC >', '0');
+      $this->db->where('COL_LOTW_QSL_RCVD =', 'Y');
+      $query = $this->db->get($this->config->item('table_name'));
 
-        $query = $this->db->query($sql);
-
-        return $query->num_rows();
+      return $query->num_rows();
     }
 
   function api_search_query($query) {
