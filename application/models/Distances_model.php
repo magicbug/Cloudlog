@@ -10,6 +10,12 @@ class Distances_model extends CI_Model
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+        if (!$logbooks_locations_array) {
+            header('Content-Type: application/json');
+            echo json_encode(array('Error' => 'No QSOs found to plot.'));
+            return;
+        }
+
 		$result = array();
 
 		foreach ($logbooks_locations_array as $station_id) {
