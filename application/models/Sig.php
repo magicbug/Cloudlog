@@ -2,11 +2,6 @@
 
 class Sig extends CI_Model {
 
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 	function get_all($type) {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');

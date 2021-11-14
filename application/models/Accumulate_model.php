@@ -3,12 +3,6 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Accumulate_model extends CI_Model
 {
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
     function get_accumulated_data($band, $award, $mode, $period) {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');

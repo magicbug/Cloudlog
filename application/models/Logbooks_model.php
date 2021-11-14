@@ -2,13 +2,6 @@
 
 class Logbooks_model extends CI_Model {
 
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
-
     function show_all() {
         $this->db->where('user_id', $this->session->userdata('user_id'));
         $this->db->order_by('logbook_name');

@@ -2,11 +2,6 @@
 
 class Clublog_model extends CI_Model {
 
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 	function get_clublog_auth_info($username) {
 		$this->db->select('user_name, user_clublog_name, user_clublog_password');
 		$this->db->where('user_name', $username);

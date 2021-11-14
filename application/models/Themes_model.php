@@ -1,11 +1,5 @@
 <?php
 class Themes_model extends CI_Model {
-	function __construct()
-	{
-		// Call the Model constructor
-		parent::__construct();
-
-	}
 
 	// FUNCTION: array getThemes()
 	// Returns a list of themes

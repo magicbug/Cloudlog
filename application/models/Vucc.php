@@ -2,12 +2,6 @@
 
 class VUCC extends CI_Model
 {
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
     /*
      *  Fetches worked and confirmed gridsquare on each band and total
      */

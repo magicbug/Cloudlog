@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Helpers
  * @category	Helpers
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/helpers/form_helper.html
+ * @link		https://codeigniter.com/userguide3/helpers/form_helper.html
  */
 
 // ------------------------------------------------------------------------
@@ -273,11 +273,10 @@ if ( ! function_exists('form_upload'))
 	 * Identical to the input function but adds the "file" type
 	 *
 	 * @param	mixed
-	 * @param	string
 	 * @param	mixed
 	 * @return	string
 	 */
-	function form_upload($data = '', $value = '', $extra = '')
+	function form_upload($data = '', $extra = '')
 	{
 		$defaults = array('type' => 'file', 'name' => '');
 		is_array($data) OR $data = array('name' => $data);
@@ -671,25 +670,6 @@ if ( ! function_exists('form_close'))
 	function form_close($extra = '')
 	{
 		return '</form>'.$extra;
-	}
-}
-
-// ------------------------------------------------------------------------
-
-if ( ! function_exists('form_prep'))
-{
-	/**
-	 * Form Prep
-	 *
-	 * Formats text so that it can be safely placed in a form field in the event it has HTML tags.
-	 *
-	 * @deprecated	3.0.0	An alias for html_escape()
-	 * @param	string|string[]	$str		Value to escape
-	 * @return	string|string[]	Escaped values
-	 */
-	function form_prep($str)
-	{
-		return html_escape($str, TRUE);
 	}
 }
 
