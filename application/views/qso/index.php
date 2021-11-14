@@ -525,7 +525,8 @@
 			  }
 
 			  $i = 0;
-              foreach ($query->result() as $row) {
+            if($query != false) {  
+            foreach ($query->result() as $row) {
               	echo '<tr class="tr'.($i & 1).'">';
                     echo '<td>';
 						$timestamp = strtotime($row->COL_TIME_ON);
@@ -545,7 +546,7 @@
                     <td><?php echo $row->COL_BAND; ?></td>
                     <?php } ?>
                   </tr>
-              <?php $i++; } ?>
+              <?php $i++; } } ?>
             </table>
           </div>
         </div>

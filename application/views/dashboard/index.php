@@ -82,6 +82,7 @@ function echo_table_col($row, $name) {
 
 			<?php
 			$i = 0;
+			if(!empty($last_five_qsos) > 0) {
 			foreach ($last_five_qsos->result() as $row) { ?>
 				<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
 
@@ -113,7 +114,7 @@ function echo_table_col($row, $name) {
 						echo_table_col($row, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
 					?>
 				</tr>
-			<?php $i++; } ?>
+			<?php $i++; } } ?>
 		</table>
 	</div>
   </div>

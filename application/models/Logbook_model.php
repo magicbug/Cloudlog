@@ -595,12 +595,16 @@ class Logbook_model extends CI_Model {
     $CI->load->model('logbooks_model');
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-    $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
-    $this->db->where_in('station_id', $logbooks_locations_array);
-    $this->db->order_by("COL_TIME_ON", "desc");
-    $this->db->limit($num);
+    if(!empty($logbooks_locations_array)) {
+      $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->order_by("COL_TIME_ON", "desc");
+      $this->db->limit($num);
 
-    return $this->db->get($this->config->item('table_name'));
+      return $this->db->get($this->config->item('table_name'));
+    } else {
+      return false;
+    }
   }
 
   /*
