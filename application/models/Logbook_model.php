@@ -1074,6 +1074,10 @@ class Logbook_model extends CI_Model {
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+    if (!$logbooks_locations_array) {
+      return null;
+    }
+
       $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
       $this->db->where_in("station_id", $logbooks_locations_array);
 
