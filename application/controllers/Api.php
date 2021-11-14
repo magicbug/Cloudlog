@@ -42,8 +42,13 @@ class API extends CI_Controller {
 	function help()
 	{
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
+		// Check if users logged in
+
+		if($this->user_model->validate_session() == 0) {
+			// user is not logged in
+			redirect('user/login');
+		}
 
 		$this->load->model('api_model');
 
@@ -60,7 +65,12 @@ class API extends CI_Controller {
 	function edit($key) {
 		$this->load->model('user_model');
 
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		// Check if users logged in
+
+		if($this->user_model->validate_session() == 0) {
+			// user is not logged in
+			redirect('user/login');
+		}
 
 		$this->load->model('api_model');
 
@@ -96,7 +106,13 @@ class API extends CI_Controller {
 
 	function generate($rights) {
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		// Check if users logged in
+
+		if($this->user_model->validate_session() == 0) {
+			// user is not logged in
+			redirect('user/login');
+		}
 
 
 		$this->load->model('api_model');
@@ -108,7 +124,13 @@ class API extends CI_Controller {
 
 	function delete($key) {
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		// Check if users logged in
+
+		if($this->user_model->validate_session() == 0) {
+			// user is not logged in
+			redirect('user/login');
+		}
 
 
 		$this->load->model('api_model');
