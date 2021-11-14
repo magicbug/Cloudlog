@@ -9,7 +9,7 @@
                 <div class="col-md-2 control-label" for="checkboxes">Deleted IOTA</div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="includedeleted" id="includedeleted" value="1" <?php if ($this->input->post('includedeleted') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
+                        <input class="form-check-input" type="checkbox" name="includedeleted" id="includedeleted" value="1" <?php if ($this->input->post('includedeleted')) echo ' checked="checked"'; ?> >
                         <label class="form-check-label" for="includedeleted">Include deleted</label>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                         <td>IOTA</td>
                         <td>Prefix</td>
                         <td>Name</td>';
-        if ($this->input->post('includedeleted') || $this->input->method() !== 'post')
+        if ($this->input->post('includedeleted'))
             echo '      <td>Deleted</td>';
 
         foreach($bands as $band) {

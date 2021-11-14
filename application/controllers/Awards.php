@@ -120,7 +120,7 @@ class Awards extends CI_Controller {
             $postdata['worked'] = 1;
             $postdata['confirmed'] = 1;
             $postdata['notworked'] = 1;
-            $postdata['includedeleted'] = 1;
+            $postdata['includedeleted'] = 0;
             $postdata['Africa'] = 1;
             $postdata['Asia'] = 1;
             $postdata['Europe'] = 1;
@@ -379,7 +379,7 @@ class Awards extends CI_Controller {
             $postdata['worked'] = 1;
             $postdata['confirmed'] = 1;
             $postdata['notworked'] = 1;
-            $postdata['includedeleted'] = 1;
+            $postdata['includedeleted'] = 0;
             $postdata['Africa'] = 1;
             $postdata['Asia'] = 1;
             $postdata['Europe'] = 1;
