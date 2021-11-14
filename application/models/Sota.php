@@ -2,11 +2,6 @@
 
 class Sota extends CI_Model {
 
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 	function get_all() {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');

@@ -13,12 +13,6 @@
 
 class User_Model extends CI_Model {
 
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
 	// FUNCTION: object get($username)
 	// Retrieve a user
 	function get($username) {

@@ -2,11 +2,6 @@
 
 class Lookup_model extends CI_Model{
 
-	function __construct(){
-		// Call the Model constructor
-		parent::__construct();
-	}
-
 	function getSearchResult($queryinfo){
 		$modes = $this->get_worked_modes($queryinfo['location_list']);
 

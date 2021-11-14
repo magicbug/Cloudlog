@@ -2,12 +2,6 @@
 
 class LotwCert extends CI_Model {
 
-	function __construct()
-	{
-		// Call the Model constructor
-		parent::__construct();
-	}
-
 	/*
 	|--------------------------------------------------------------------------
 	| Function: lotw_certs

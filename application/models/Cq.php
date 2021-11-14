@@ -2,11 +2,6 @@
 
 class CQ extends CI_Model{
 
-    function __construct(){
-        // Call the Model constructor
-        parent::__construct();
-    }
-
     function get_zones(){
         $CI =& get_instance();
         $CI->load->model('Stations');

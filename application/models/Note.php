@@ -2,12 +2,6 @@
 
 class Note extends CI_Model {
 
-    function __construct()
-    {
-        // Call the Model constructor
-        parent::__construct();
-    }
-
 	function list_all() {
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		return $this->db->get('notes');
