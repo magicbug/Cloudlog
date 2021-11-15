@@ -759,20 +759,35 @@ class Logbook_model extends CI_Model {
 
     return $this->db->get($this->config->item('table_name'));
   }
-
-
+  
+  
   // Set Paper to recived
   function paperqsl_update($qso_id, $method) {
+      
+      $data = array(
+          'COL_QSLRDATE' => date('Y-m-d'),
+          'COL_QSL_RCVD' => 'Y',
+          'COL_QSL_RCVD_VIA' => $method
+      );
+      
+      $this->db->where('COL_PRIMARY_KEY', $qso_id);
+      
+      $this->db->update($this->config->item('table_name'), $data);
+  }
 
-    $data = array(
-         'COL_QSLRDATE' => date('Y-m-d'),
-         'COL_QSL_RCVD' => 'Y',
-         'COL_QSL_RCVD_VIA' => $method
-    );
 
-    $this->db->where('COL_PRIMARY_KEY', $qso_id);
-
-    $this->db->update($this->config->item('table_name'), $data);
+  // Set Paper to sent
+  function paperqsl_update_sent($qso_id, $method) {
+      
+      $data = array(
+          'COL_QSLSDATE' => date('Y-m-d'),
+          'COL_QSL_SENT' => 'Y',
+          'COL_QSL_SENT_VIA' => $method
+      );
+      
+      $this->db->where('COL_PRIMARY_KEY', $qso_id);
+      
+      $this->db->update($this->config->item('table_name'), $data);
   }
 
 

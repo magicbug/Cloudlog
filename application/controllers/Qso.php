@@ -218,6 +218,27 @@ class QSO extends CI_Controller {
         }
     }
 
+    function qsl_sent_ajax() {
+        $id = str_replace('"', "", $this->input->post("id"));
+        $method = str_replace('"', "", $this->input->post("method"));
+        
+        $this->load->model('logbook_model');
+        $this->load->model('user_model');
+        
+        header('Content-Type: application/json');
+        
+        if(!$this->user_model->authorize(2)) {
+            echo json_encode(array('message' => 'Error'));
+            
+        }
+        else {
+            // Update Logbook to Mark Paper Card Sent
+            $this->logbook_model->paperqsl_update_sent($id, $method);
+            
+            echo json_encode(array('message' => 'OK'));
+        }
+    }
+
     function qsl_requested_ajax() {
         $id = str_replace('"', "", $this->input->post("id"));
         $method = str_replace('"', "", $this->input->post("method"));
