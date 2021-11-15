@@ -61,7 +61,7 @@
 
 				<form class="form" action="<?php echo site_url('qrz/mark_qrz'); ?>" method="post" enctype="multipart/form-data">
 					<select name="station_profile" class="custom-select mb-4 mr-sm-4" style="width: 30%;">
-						<option value="0">Select Station Profile</option>
+						<option value="0">Select Station Location</option>
 						<?php foreach ($station_profiles->result() as $station) { ?>
 							<option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
 						<?php } ?>

@@ -144,7 +144,7 @@ class adif extends CI_Controller {
 		$data['page_title'] = "ADIF Import / Export";
 		$data['max_upload'] = ini_get('upload_max_filesize');
 
-		$data['station_profile'] = $this->stations->all();
+		$data['station_profile'] = $this->stations->all_of_user();
         $active_station_id = $this->stations->find_active();
         $station_profile = $this->stations->profile($active_station_id);
 
@@ -157,7 +157,7 @@ class adif extends CI_Controller {
 
 	public function import() {
 		$this->load->model('stations');
-		$data['station_profile'] = $this->stations->all();
+		$data['station_profile'] = $this->stations->all_of_user();
 
         $active_station_id = $this->stations->find_active();
         $station_profile = $this->stations->profile($active_station_id);
