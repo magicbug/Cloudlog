@@ -52,6 +52,7 @@ class Stations extends CI_Model {
 	function add() {
 		// Create data array with field values
 		$data = array(
+			'user_id' => $this->session->userdata('user_id'),
 			'station_profile_name' => xss_clean($this->input->post('station_profile_name', true)),
 			'station_gridsquare' =>  xss_clean(strtoupper($this->input->post('gridsquare', true))),
 			'station_city' =>  xss_clean($this->input->post('city', true)),
