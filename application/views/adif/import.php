@@ -32,7 +32,7 @@
 
                 <form class="form" action="<?php echo site_url('adif/import'); ?>" method="post" enctype="multipart/form-data">
                     <select name="station_profile" class="custom-select mb-2 mr-sm-2" style="width: 20%;">
-                    <option value="0">Select Station Profile</option>
+                    <option value="0">Select Station Location</option>
                     <?php foreach ($station_profile->result() as $station) { ?>
                     <option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
                     <?php } ?>
@@ -98,7 +98,7 @@
                 <h5 class="card-title">Take your logbook file anywhere!</h5>
                 <p class="card-text">Exporting ADIFs allows you to import contacts into third party applications like LoTW, Awards or just for keeping a backup.</p>
 					  <select name="station_profile" class="custom-select mb-2 mr-sm-2" style="width: 20%;">
-						  <option value="0">Select Station Profile</option>
+						  <option value="0">Select Station Location</option>
 						  <?php foreach ($station_profile->result() as $station) { ?>
 							  <option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
 						  <?php } ?>
@@ -155,7 +155,7 @@
         <div class="tab-pane fade" id="lotw" role="tabpanel" aria-labelledby="home-tab">
             <form class="form" action="<?php echo site_url('adif/mark_lotw'); ?>" method="post" enctype="multipart/form-data">
 				<select name="station_profile" class="custom-select mb-2 mr-sm-2" style="width: 20%;">
-					<option value="0">Select Station Profile</option>
+					<option value="0">Select Station Location</option>
 					<?php foreach ($station_profile->result() as $station) { ?>
 						<option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
 					<?php } ?>

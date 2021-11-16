@@ -68,6 +68,13 @@ class adif_data extends CI_Model {
     }
 
     function export_custom($from, $to, $station_id, $exportLotw = false) {
+        // be sure that station belongs to user
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        if (!$CI->Stations->check_station_is_accessible($station_id)) {
+            return;
+        }
+
         $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
         $this->db->from($this->config->item('table_name'));
         $this->db->where($this->config->item('table_name').'.station_id', $station_id);
