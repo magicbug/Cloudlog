@@ -67,7 +67,7 @@ if ($qsos->result() != NULL) {
 		if ($this->session->userdata('user_eqsl_name') != ""){
 			echo '<td style=\'text-align: center\' class="eqsl">
 				<span class="eqsl-' . ($qsl->COL_EQSL_QSL_SENT=='Y'?'green':'red') . '">&#9650;</span>
-				<span class="eqsl-' . ($qsl->COL_EQSL_QSL_RCVD=='Y'?'green':'red') . '">&#9650;</span>
+				<span class="eqsl-' . ($qsl->COL_EQSL_QSL_RCVD=='Y'?'green':'red') . '">&#9660;</span>
 				</td>';
 		}
 		echo '<td id="'.$qsl->COL_PRIMARY_KEY.'" style=\'text-align: center\'><button onclick="addQsoToPrintQueue(\''.$qsl->COL_PRIMARY_KEY.'\')" class="btn btn-sm btn-success">Add to print queue</button></td>';
