@@ -17,7 +17,7 @@ class Gridsquares extends CI_Controller {
 
 
 	public function index() {
-		// if there are no satelite QSOs redirect to band selection directly
+		// if there are no satellite QSOs redirect to band selection directly
 		$this->load->model('logbook_model');
 		$total_sat = $this->logbook_model->total_sat();
 		if ($total_sat->num_rows() == 0) {
