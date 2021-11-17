@@ -17,7 +17,15 @@ class Gridsquares extends CI_Controller {
 
 
 	public function index() {
-		$data['page_title'] = "Satellite Gridsquare Map";
+		// if there are no satelite QSOs redirect to band selection directly
+		$this->load->model('logbook_model');
+		$total_sat = $this->logbook_model->total_sat();
+		if ($total_sat->num_rows() == 0) {
+			redirect('gridsquares/band/2m');
+			return;
+		}
+
+		$data['page_title'] = "Gridsquare Map";
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('gridsquares/main.php');

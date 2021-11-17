@@ -13,7 +13,7 @@
 		google.setOnLoadCallback(drawBandChart);
 	<?php } ?>
 
-	<?php if ($total_sat) { ?>
+	<?php if ($total_sat && $total_sat->num_rows() != 0) { ?>
 		google.setOnLoadCallback(drawSatChart);
 	<?php } ?>
 
@@ -208,14 +208,16 @@
 
 	<br>
 
-	<ul class="nav nav-tabs" id="myTab" role="tablist">
-		<li class="nav-item">
-			<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">General</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Satellites</a>
-		</li>
-	</ul>
+	<?php if ($total_sat && $total_sat->num_rows() != 0) { ?>
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">General</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Satellites</a>
+			</li>
+		</ul>
+	<?php } ?>
 
 	<div class="tab-content" id="myTabContent">
 		<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
