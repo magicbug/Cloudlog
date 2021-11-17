@@ -149,7 +149,6 @@ class Search extends CI_Controller {
 			if(is_array($value)) {
 				foreach($value as $values)
 				{
-
 					if(isset($values['rules'])) {
 						if($values['condition'] == "AND") {
 							$this->db->group_start();
@@ -158,6 +157,8 @@ class Search extends CI_Controller {
 						}
 						foreach($values['rules'] as $group_value)
 						{
+							$group_value['field'] = $this->config->item('table_name') . '.' . $group_value['field'];
+
 							if($group_value['operator'] == "equal") {
 								if($values['condition'] == "AND") {
 									$this->db->where($group_value['field'], $group_value['value']);
@@ -267,6 +268,8 @@ class Search extends CI_Controller {
 						$this->db->group_end();
 					} else {
 						//print_r($values['field']);
+						$values['field'] = $this->config->item('table_name') . '.' . $values['field'];
+
 						if(isset($values['operator'])) {
 
 						}
