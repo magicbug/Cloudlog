@@ -99,13 +99,7 @@ class Dashboard extends CI_Controller {
 		
 		$this->load->library('qra');
 
-		//echo date('Y-m-d')
-		$raw = strtotime('Monday last week');
-		
-		$mon = date('Y-m-d', $raw);
-		$sun = date('Y-m-d', strtotime('Monday next week'));
-
-		$qsos = $this->logbook_model->map_week_qsos($mon, $sun);
+		$qsos = $this->logbook_model->get_last_qsos('11');
 
 		echo "{\"markers\": [";
 		$count = 1;
