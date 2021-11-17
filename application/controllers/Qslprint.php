@@ -28,7 +28,7 @@ class QSLPrint extends CI_Controller {
 			redirect('user/login');
 		}
 		$this->load->model('stations');
-		$data['station_profile'] = $this->stations->all();
+		$data['station_profile'] = $this->stations->all_of_user();
 
 		$this->load->model('qslprint_model');
 		$data['qsos'] = $this->qslprint_model->get_qsos_for_print();
