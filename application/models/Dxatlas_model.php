@@ -98,17 +98,19 @@ class Dxatlas_model extends CI_Model
 
 		if ($column == 'single') {
 			$sql .= "select distinct upper(substring(col_gridsquare, 1, 4)) gridsquare
-				  from " . $this->config->item('table_name') .
+					from " . $this->config->item('table_name') .
+					' join station_profile on station_profile.station_id = ' . $this->config->item('table_name').'.station_id' .
 				" where col_gridsquare <> ''";
 		}
 		else if ($column == 'multi') {
 			$sql .= "select col_vucc_grids
             	 from " . $this->config->item('table_name') .
+				 ' join station_profile on station_profile.station_id = ' . $this->config->item('table_name').'.station_id' .
 				" where col_vucc_grids <> '' ";
 		}
 
 		if ($station_id != "All") {
-			$sql .= ' and station_id = ' . $station_id;
+			$sql .= ' and ' . $this->config->item('table_name'). '.station_id = ' . $station_id;
 		}
 
 		if ($confirmationMethod == 'both') {
@@ -157,6 +159,8 @@ class Dxatlas_model extends CI_Model
 			$to = $to->format('Y-m-d');
 			$sql .= " and date(COL_TIME_ON) <='" . $to . "'";
 		}
+
+		$sql .= ' and station_profile.user_id = ' . $this->session->userdata('user_id');
 
 		$query = $this->db->query($sql);
 
