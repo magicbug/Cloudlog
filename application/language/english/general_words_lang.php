@@ -44,6 +44,8 @@ $lang['general_word_qslcards'] = 'QSL Cards';
 $lang['general_word_qslcard_direct'] = 'Direct';
 $lang['general_word_qslcard_bureau'] = 'Bureau';
 $lang['general_word_qslcard_via'] = 'Via';
+$lang['general_word_eqslcards'] = 'eQSL Cards';
+$lang['general_word_lotw'] = 'Logbook of the World';
 
 $lang['general_edit_qso'] = 'Edit QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Mark QSL Received (Bureau)';

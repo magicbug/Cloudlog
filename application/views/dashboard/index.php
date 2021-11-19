@@ -193,7 +193,7 @@ function echo_table_col($row, $name) {
 			</tr>
 		</table>
 
-		<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
+		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_qsl_sent != 0 || $total_qsl_recv != 0 || $total_qsl_requested != 0)) { ?>
 		<table class="table table-striped">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_word_qslcards'); ?></td>
@@ -212,6 +212,42 @@ function echo_table_col($row, $name) {
 			<tr>
 				<td><?php echo $this->lang->line('general_word_requested'); ?></td>
 				<td><?php echo $total_qsl_requested; ?></td>
+			</tr>
+		</table>
+		<?php } ?>
+
+		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_eqsl_sent != 0 || $total_eqsl_recv != 0)) { ?>
+		<table class="table table-striped">
+			<tr class="titles">
+				<td colspan="2"><i class="fas fa-address-card"></i> <?php echo $this->lang->line('general_word_eqslcards'); ?></td>
+			</tr>
+
+			<tr>
+				<td><?php echo $this->lang->line('general_word_sent'); ?></td>
+				<td><?php echo $total_eqsl_sent; ?></td>
+			</tr>
+
+			<tr>
+				<td><?php echo $this->lang->line('general_word_received'); ?></td>
+				<td><?php echo $total_eqsl_recv; ?></td>
+			</tr>
+		</table>
+		<?php } ?>
+
+		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_lotw_sent != 0 || $total_lotw_recv != 0)) { ?>
+		<table class="table table-striped">
+			<tr class="titles">
+				<td colspan="2"><i class="fas fa-list"></i> <?php echo $this->lang->line('general_word_lotw'); ?></td>
+			</tr>
+
+			<tr>
+				<td><?php echo $this->lang->line('general_word_sent'); ?></td>
+				<td><?php echo $total_lotw_sent; ?></td>
+			</tr>
+
+			<tr>
+				<td><?php echo $this->lang->line('general_word_received'); ?></td>
+				<td><?php echo $total_lotw_recv; ?></td>
 			</tr>
 		</table>
 		<?php } ?>
