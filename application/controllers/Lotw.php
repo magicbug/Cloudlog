@@ -927,17 +927,20 @@ class Lotw extends CI_Controller {
 				if ($submode == "FT4") {
 					return "FT4";
 					break;
-				} elseif ($submode == "JS8") {
-						return "JS8";
-						break;
 				} elseif ($submode == "FST4") {
-						return "FST4";
-						break;
+					return "FST4";
+					break;
+				} elseif ($submode == "MFSK16") {
+					return "MFSK16";
+					break;
+				} elseif ($submode == "MFSK8") {
+					return "MFSK8";
+					break;
 				} elseif ($submode == "Q65") {
-						return "Q65";
-						break;
+					return "Q65";
+					break;
 				} else {
-					return "MFSK";
+					return "DATA";
 					break;
 				}
 			default:
