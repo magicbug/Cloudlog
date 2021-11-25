@@ -269,7 +269,8 @@ class Stations extends CI_Model {
                     " where COL_QRZCOM_QSO_UPLOAD_STATUS = 'Y'
                     group by station_id
                 ) as totc on station_profile.station_id = totc.station_id
-                where coalesce(station_profile.qrzapikey, '') <> ''";
+                where coalesce(station_profile.qrzapikey, '') <> ''
+				 and station_profile.user_id = " . $this->session->userdata('user_id');
         $query = $this->db->query($sql);
 
         return $query;

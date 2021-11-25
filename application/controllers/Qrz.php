@@ -108,7 +108,7 @@ class Qrz extends CI_Controller {
 
         $data['page_title'] = "QRZ Logbook";
 
-		$data['station_profiles'] = $this->stations->all();
+		$data['station_profiles'] = $this->stations->all_of_user();
         $data['station_profile'] = $this->stations->stations_with_qrz_api_key();
 
         $this->load->view('interface_assets/header', $data);
