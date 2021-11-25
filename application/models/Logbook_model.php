@@ -444,10 +444,6 @@ class Logbook_model extends CI_Model {
    * $primarykey is the unique id for that QSO in the logbook
    */
     function mark_qrz_qsos_sent($primarykey) {
-      if (!$this->check_qso_is_accessible($primarykey)) {
-        return;
-      }
-
         $data = array(
          'COL_QRZCOM_QSO_UPLOAD_DATE' => date("Y-m-d H:i:s", strtotime("now")),
          'COL_QRZCOM_QSO_UPLOAD_STATUS' => 'Y',
@@ -917,8 +913,7 @@ class Logbook_model extends CI_Model {
             ' and (COL_QRZCOM_QSO_UPLOAD_STATUS is NULL
             or COL_QRZCOM_QSO_UPLOAD_STATUS = ""
             or COL_QRZCOM_QSO_UPLOAD_STATUS = "M"
-            or COL_QRZCOM_QSO_UPLOAD_STATUS = "N")
-            and station_profile.user_id = ' . $this->session->userdata('user_id');
+            or COL_QRZCOM_QSO_UPLOAD_STATUS = "N")';
 
         $query = $this->db->query($sql);
         return $query;
@@ -928,12 +923,12 @@ class Logbook_model extends CI_Model {
      * Function returns all the station_id's with QRZ API Key's
      */
     function get_station_id_with_qrz_api() {
-        $sql = 'select station_id from station_profile
+        $sql = 'select station_id, qrzapikey from station_profile
             where coalesce(qrzapikey, "") <> ""';
 
         $query = $this->db->query($sql);
 
-        $result = $query->row();
+        $result = $query->result();
 
         if ($result) {
             return $result;
