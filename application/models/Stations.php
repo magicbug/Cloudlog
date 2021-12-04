@@ -50,9 +50,16 @@ class Stations extends CI_Model {
 	*	Adds post material into the station profile table.
 	*/
 	function add() {
+		// check if user has no active station profile yet
+		$station_active = null;
+		if ($this->find_active() === '0') {
+			$station_active = 1;
+		}
+
 		// Create data array with field values
 		$data = array(
 			'user_id' => $this->session->userdata('user_id'),
+			'station_active' => $station_active,
 			'station_profile_name' => xss_clean($this->input->post('station_profile_name', true)),
 			'station_gridsquare' =>  xss_clean(strtoupper($this->input->post('gridsquare', true))),
 			'station_city' =>  xss_clean($this->input->post('city', true)),
@@ -105,6 +112,11 @@ class Stations extends CI_Model {
 	function delete($id) {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
+
+		// do not delete active station
+		if ($clean_id === $this->find_active()) {
+			return;
+		}
 
 		// Delete QSOs
 		$this->db->where('station_id', $id);

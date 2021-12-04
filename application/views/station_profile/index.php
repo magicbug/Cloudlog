@@ -61,7 +61,7 @@
 					<td><?php echo $row->station_country;?></td>
 					<td><?php echo $row->station_gridsquare;?></td>
 					<td style="text-align: center">
-						<?php if($row->station_active != 1) { ?>			
+						<?php if($row->station_active != 1) { ?>
 							<a href="<?php echo site_url('station/set_active/').$current_active."/".$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('Are you sure you want to make station <?php echo $row->station_profile_name; ?> the active station?');">Set Active</a>
 						<?php } else { ?>
 							<span class="badge badge-success">Active Station</span>
@@ -84,7 +84,10 @@
                         <a href="<?php echo site_url('station/deletelog')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i> Empty Log</a></td>
                     </td>
 					<td>
-						<a href="<?php echo site_url('station/delete')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete station profile <?php echo $row->station_profile_name; ?> this will delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i> Delete Profile</a></td>
+						<?php if($row->station_active != 1) { ?>
+							<a href="<?php echo site_url('station/delete')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete station profile <?php echo $row->station_profile_name; ?> this will delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i> Delete Profile</a>
+						<?php } ?>
+					</td>
 				</tr>
 
 				<?php } ?>
