@@ -41,7 +41,7 @@
 						);
 
 						$this->db->where('id', $radio_id);
-						$this->db->where('user_id', $this->session->userdata('user_id'));
+						$this->db->where('user_id', $user_id);
 						$this->db->update('cat', $data);
 					}
 				}
