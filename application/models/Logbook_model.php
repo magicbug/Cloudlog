@@ -1672,7 +1672,11 @@ class Logbook_model extends CI_Model {
       $query = $this->db->get($this->config->item('table_name'));
       $row = $query->row();
 
-      return $row->COL_LOTW_QSLRDATE;
+      if (isset($row)) {
+        return $row->COL_LOTW_QSLRDATE;
+      }
+
+      return '1900-01-01 00:00:00.000';
     }
 
 //////////////////////////////
