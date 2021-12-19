@@ -247,6 +247,7 @@ function reset_fields() {
 	$('#locator_info').text("");
 	$('#country').val("");
 	$('#lotw_info').text("");
+	$('#qrz_info').text("");
 	$('#dxcc_id').val("");
 	$('#cqz').val("");
 	$('#name').val("");
@@ -352,6 +353,7 @@ $("#callsign").focusout(function() {
 				if(result.lotw_member == "active") {
 					$('#lotw_info').text("LoTW");
 				}
+				$('#qrz_info').html('<a target="_blank" href="https://www.qrz.com/db/'+find_callsign+'"><img width="32" height="32" src="/images/icons/qrz.com.png"></a>'); 
 
 				$('#dxcc_id').val(result.dxcc.adif);
 				$('#cqz').val(result.dxcc.cqz);
