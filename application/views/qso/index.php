@@ -65,6 +65,10 @@
                 <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-light"></small>
               </div>
 
+              <div class="form-group">
+                <small id="qrz_info" class="badge badge-secondary"></small>
+              </div>
+
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="mode"><?php echo $this->lang->line('gen_hamradio_mode'); ?></label>
