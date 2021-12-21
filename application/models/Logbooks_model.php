@@ -8,7 +8,7 @@ class Logbooks_model extends CI_Model {
 		return $this->db->get('station_logbooks');
 	}
 
-    function add() {
+	function add() {
 		// Create data array with field values
 		$data = array(
 			'user_id' => $this->session->userdata('user_id'),
@@ -16,14 +16,31 @@ class Logbooks_model extends CI_Model {
 		);
 
 		// Insert Records
-		$this->db->insert('station_logbooks', $data); 
+		$this->db->insert('station_logbooks', $data);
+		$logbook_id = $this->db->insert_id();
+
+		// check if user has no active logbook yet
+		if ($this->session->userdata('active_station_logbook') === null) {
+			// set logbook active
+			$this->set_logbook_active($logbook_id);
+
+			// update user session data
+			$CI =& get_instance();
+			$CI->load->model('user_model');
+			$CI->user_model->update_session($this->session->userdata('user_id'));
+		}
 	}
 
 	function delete($id) {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
 
-		// Delete QSOs
+		// do not delete active logbook
+		if ($this->session->userdata('active_station_logbook') === $clean_id) {
+			return;
+		}
+
+		// Delete logbook
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('logbook_id', $id);
 		$this->db->delete('station_logbooks'); 
