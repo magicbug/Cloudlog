@@ -24,6 +24,8 @@ class adif_data extends CI_Model {
 		}
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        // always filter user. this ensures that even if the station_id is from another user no inaccesible QSOs will be returned
+        $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
         $this->db->where_in('COL_QSL_SENT', array('R', 'Q'));
         $this->db->order_by("COL_TIME_ON", "ASC");
         $query = $this->db->get($this->config->item('table_name'));

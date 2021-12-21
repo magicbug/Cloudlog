@@ -852,6 +852,9 @@ class Logbook_model extends CI_Model {
 		$sql .= ' and thcv.station_id = ' . $station_id2;
 	}
 
+	// always filter user. this ensures that even if the station_id is from another user no inaccesible QSOs will be returned
+	$sql .= ' and station_profile.user_id = ' . $this->session->userdata('user_id');
+
 	$sql .= ' ORDER BY ADIF, COL_ROUTING';
 
     $query = $this->db->query($sql);
