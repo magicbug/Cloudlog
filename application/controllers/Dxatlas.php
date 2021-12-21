@@ -12,7 +12,7 @@ class Dxatlas extends CI_Controller {
 		$this->load->model('stations');
 		$this->load->model('bands');
 
-		$data['station_profile'] = $this->stations->all();			// Used in the view for station location select
+		$data['station_profile'] = $this->stations->all_of_user();			// Used in the view for station location select
 		$data['worked_bands'] = $this->bands->get_worked_bands(); 	// Used in the view for band select
 		$data['modes'] = $this->modes->active(); 					// Used in the view for mode select
 		$data['dxcc'] = $this->logbook_model->fetchDxcc(); 			// Used in the view for dxcc select
