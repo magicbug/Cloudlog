@@ -383,7 +383,7 @@ class Logbook_model extends CI_Model {
   */
   function exists_qrz_api_key($station_id) {
       $sql = 'select qrzapikey, qrzrealtime from station_profile
-            where station_id = ' . $station_id;
+            where station_id = ' . $station_id . ' and station_profile.user_id = ' . $this->session->userdata('user_id');
 
       $query = $this->db->query($sql);
 
@@ -926,12 +926,12 @@ class Logbook_model extends CI_Model {
      * Function returns all the station_id's with QRZ API Key's
      */
     function get_station_id_with_qrz_api() {
-        $sql = 'select station_id from station_profile
+        $sql = 'select station_id, qrzapikey from station_profile
             where coalesce(qrzapikey, "") <> ""';
 
         $query = $this->db->query($sql);
 
-        $result = $query->row();
+        $result = $query->result();
 
         if ($result) {
             return $result;

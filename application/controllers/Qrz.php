@@ -24,10 +24,9 @@ class Qrz extends CI_Controller {
         $station_ids = $this->logbook_model->get_station_id_with_qrz_api();
 
         if ($station_ids) {
-            foreach ($station_ids as $station_id) {
-                $result = $this->logbook_model->exists_qrz_api_key($station_id);
-                $qrz_api_key = $result->qrzapikey;
-                if($this->mass_upload_qsos($station_id, $qrz_api_key)) {
+            foreach ($station_ids as $station) {
+                $qrz_api_key = $station->qrzapikey;
+                if($this->mass_upload_qsos($station->station_id, $qrz_api_key)) {
                     echo "QSOs have been uploaded to QRZ.com.";
                     log_message('info', 'QSOs have been uploaded to QRZ.com.');
                 } else{
@@ -108,7 +107,7 @@ class Qrz extends CI_Controller {
 
         $data['page_title'] = "QRZ Logbook";
 
-		$data['station_profiles'] = $this->stations->all();
+		$data['station_profiles'] = $this->stations->all_of_user();
         $data['station_profile'] = $this->stations->stations_with_qrz_api_key();
 
         $this->load->view('interface_assets/header', $data);
