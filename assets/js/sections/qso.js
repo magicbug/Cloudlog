@@ -576,7 +576,7 @@ $("#locator").keyup(function(){
 				markers.addLayer(marker).addTo(mymap);
 			})
 
-			$('#locator_info').load("logbook/searchbearing/" + $(this).val()).fadeIn("slow");
+			$('#locator_info').load("logbook/searchbearing/" + $(this).val() + "/" + $('#stationProfile').val()).fadeIn("slow");
 		}
 	}
 });

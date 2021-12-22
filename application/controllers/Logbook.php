@@ -654,22 +654,34 @@ class Logbook extends CI_Controller {
 
 
 	/* return station bearing */
-	function searchbearing($locator) {
+	function searchbearing($locator, $station_id = null) {
 			$this->load->library('Qra');
 
 			if($locator != null) {
-				if($this->session->userdata('user_locator') != null){
+				if (isset($station_id)) {
+					// be sure that station belongs to user
+					$this->load->model('Stations');
+					if (!$this->Stations->check_station_is_accessible($station_id)) {
+						return "";
+					}
+
+					// get station profile
+					$station_profile = $this->Stations->profile_clean($station_id);
+
+					// get locator
+					$mylocator = $station_profile->station_gridsquare;
+				} else if($this->session->userdata('user_locator') != null){
 					$mylocator = $this->session->userdata('user_locator');
 				} else {
 					$mylocator = $this->config->item('locator');
 				}
 
-                if ($this->session->userdata('user_measurement_base') == NULL) {
-                    $measurement_base = $this->config->item('measurement_base');
-                }
-                else {
-                    $measurement_base = $this->session->userdata('user_measurement_base');
-                }
+				if ($this->session->userdata('user_measurement_base') == NULL) {
+					$measurement_base = $this->config->item('measurement_base');
+				}
+				else {
+					$measurement_base = $this->session->userdata('user_measurement_base');
+				}
 
 				$bearing = $this->qra->bearing($mylocator, $locator, $measurement_base);
 
