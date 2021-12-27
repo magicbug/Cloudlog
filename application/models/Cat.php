@@ -85,7 +85,7 @@
 
 		function recent_status() {
 			$this->db->where('user_id', $this->session->userdata('user_id'));
-			$this->db->where("timestamp > date_sub(now(), interval 15 minute)", NULL, FALSE);
+			$this->db->where("timestamp > date_sub(UTC_TIMESTAMP(), interval 15 minute)", NULL, FALSE);
 
 			$query = $this->db->get('cat');
 			return $query;
