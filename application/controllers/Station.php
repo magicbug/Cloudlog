@@ -167,8 +167,8 @@ class Station extends CI_Controller {
                 $i = 0;
                 foreach ($result as &$value) {
                     $county = explode(',', $value);
-                    // Limit to 100 as to not slowdown browser too much
-                    if (count($json) <= 100) {
+                    // Limit to 300 as to not slowdown browser too much
+                    if (count($json) <= 300) {
                         $json[] = ["name"=>$county[1]];
                     }
                 }
