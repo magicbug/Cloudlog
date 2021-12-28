@@ -478,7 +478,7 @@ class Logbook extends CI_Controller {
 
 				$html .= "<tr>";
 					$html .= "<td>".date($custom_date_format, $timestamp). date(' H:i',strtotime($row->COL_TIME_ON)) . "</td>";
-					$html .= "<td>".str_replace("0","&Oslash;",strtoupper($row->COL_CALL))."</td>";
+					$html .= "<td><a id='edit_qso' href='javascript:displayQso(" . $row->COL_PRIMARY_KEY . ");'>" . str_replace('0','&Oslash;',strtoupper($row->COL_CALL)) . "</a></td>";
 					$html .= "<td>".$row->COL_RST_SENT."</td>";
 					$html .= "<td>".$row->COL_RST_RCVD."</td>";
 					if($row->COL_SAT_NAME != null) {
