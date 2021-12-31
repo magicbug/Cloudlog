@@ -1472,6 +1472,106 @@ class Logbook_model extends CI_Model {
       }
     }
 
+    /* Return total number of eQSL Cards sent */
+    function total_eqsl_sent() {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if(!empty($logbooks_locations_array)) {
+            $this->db->select('count(COL_EQSL_QSL_SENT) AS count');
+            $this->db->where_in('station_id', $logbooks_locations_array);
+            $this->db->where('COL_EQSL_QSL_SENT =', 'Y');
+
+            $query = $this->db->get($this->config->item('table_name'));
+
+            $row = $query->row();
+
+            if($row == null) {
+                return 0;
+            } else {
+                return $row->count;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    /* Return total number of eQSL Cards received */
+    function total_eqsl_recv() {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if(!empty($logbooks_locations_array)) {
+            $this->db->select('count(COL_EQSL_QSL_RCVD) AS count');
+            $this->db->where_in('station_id', $logbooks_locations_array);
+            $this->db->where('COL_EQSL_QSL_RCVD =', 'Y');
+
+            $query = $this->db->get($this->config->item('table_name'));
+
+            $row = $query->row();
+
+            if($row == null) {
+                return 0;
+            } else {
+                return $row->count;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    /* Return total number of LotW sent */
+    function total_lotw_sent() {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if(!empty($logbooks_locations_array)) {
+            $this->db->select('count(COL_LOTW_QSL_SENT) AS count');
+            $this->db->where_in('station_id', $logbooks_locations_array);
+            $this->db->where('COL_LOTW_QSL_SENT =', 'Y');
+
+            $query = $this->db->get($this->config->item('table_name'));
+
+            $row = $query->row();
+
+            if($row == null) {
+                return 0;
+            } else {
+                return $row->count;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    /* Return total number of LotW received */
+    function total_lotw_recv() {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if(!empty($logbooks_locations_array)) {
+            $this->db->select('count(COL_LOTW_QSL_RCVD) AS count');
+            $this->db->where_in('station_id', $logbooks_locations_array);
+            $this->db->where('COL_LOTW_QSL_RCVD =', 'Y');
+
+            $query = $this->db->get($this->config->item('table_name'));
+
+            $row = $query->row();
+
+            if($row == null) {
+                return 0;
+            } else {
+                return $row->count;
+            }
+        } else {
+            return 0;
+        }
+    }
+
     /* Return total number of countries worked */
     function total_countries() {
         $CI =& get_instance();

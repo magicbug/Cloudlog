@@ -66,17 +66,23 @@ class Dashboard extends CI_Controller {
 			$data['total_qsos'] = $this->logbook_model->total_qsos();
 			$data['month_qsos'] = $this->logbook_model->month_qsos();
 			$data['year_qsos'] = $this->logbook_model->year_qsos();
-			
+
 			$data['total_countries'] = $this->logbook_model->total_countries();
 			$data['total_countries_confirmed_paper'] = $this->logbook_model->total_countries_confirmed_paper();
 			$data['total_countries_confirmed_eqsl'] = $this->logbook_model->total_countries_confirmed_eqsl();
 			$data['total_countries_confirmed_lotw'] = $this->logbook_model->total_countries_confirmed_lotw();
-			
+
 			$data['total_qsl_sent'] = $this->logbook_model->total_qsl_sent();
 			$data['total_qsl_recv'] = $this->logbook_model->total_qsl_recv();
 			$data['total_qsl_requested'] = $this->logbook_model->total_qsl_requested();
-					
-			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('11');
+
+			$data['total_eqsl_sent'] = $this->logbook_model->total_eqsl_sent();
+			$data['total_eqsl_recv'] = $this->logbook_model->total_eqsl_recv();
+
+			$data['total_lotw_sent'] = $this->logbook_model->total_lotw_sent();
+			$data['total_lotw_recv'] = $this->logbook_model->total_lotw_recv();
+
+			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18');
 
 			$data['page_title'] = "Dashboard";
 
@@ -99,7 +105,7 @@ class Dashboard extends CI_Controller {
 		
 		$this->load->library('qra');
 
-		$qsos = $this->logbook_model->get_last_qsos('11');
+		$qsos = $this->logbook_model->get_last_qsos('18');
 
 		echo "{\"markers\": [";
 		$count = 1;
