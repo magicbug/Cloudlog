@@ -1282,7 +1282,8 @@ class Logbook_model extends CI_Model {
 
       $this->db->select('COL_SAT_NAME, COUNT( * ) as count', FALSE);
       $this->db->where_in('station_id', $logbooks_locations_array);
-      $this->db->where('COL_SAT_NAME !=', 'null');
+      $this->db->where('COL_SAT_NAME is not null');
+      $this->db->where('COL_SAT_NAME !=', '');
       $this->db->group_by('COL_SAT_NAME');
       $query = $this->db->get($this->config->item('table_name'));
 
