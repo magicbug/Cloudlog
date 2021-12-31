@@ -152,18 +152,18 @@ function echo_table_col($row, $name) {
 			</tr>
 
 			<tr>
-				<td><?php echo $this->lang->line('general_word_total'); ?></td>
-				<td><?php echo $total_qsos; ?></td>
+				<td width="50%"><?php echo $this->lang->line('general_word_total'); ?></td>
+				<td width="50%"><?php echo $total_qsos; ?></td>
 			</tr>
 
 			<tr>
-				<td><?php echo $this->lang->line('general_word_year'); ?></td>
-				<td><?php echo $year_qsos; ?></td>
+				<td width="50%"><?php echo $this->lang->line('general_word_year'); ?></td>
+				<td width="50%"><?php echo $year_qsos; ?></td>
 			</tr>
 
 			<tr>
-				<td><?php echo $this->lang->line('general_word_month'); ?></td>
-				<td><?php echo $month_qsos; ?></td>
+				<td width="50%"><?php echo $this->lang->line('general_word_month'); ?></td>
+				<td width="50%"><?php echo $month_qsos; ?></td>
 			</tr>
 		</table>
 
@@ -175,12 +175,12 @@ function echo_table_col($row, $name) {
 			</tr>
 
 			<tr>
-				<td><?php echo $this->lang->line('general_word_worked'); ?></td>
-				<td><?php echo $total_countries; ?></td>
+				<td width="50%"><?php echo $this->lang->line('general_word_worked'); ?></td>
+				<td width="50%"><?php echo $total_countries; ?></td>
 			</tr>
 			<tr>
-				<td><a href="#" onclick="return false" data-original-title="QSL Cards / eQSL / LoTW" data-toggle="tooltip"><?php echo $this->lang->line('general_word_confirmed'); ?></a></td>
-				<td>
+				<td width="50%"><a href="#" onclick="return false" data-original-title="QSL Cards / eQSL / LoTW" data-toggle="tooltip"><?php echo $this->lang->line('general_word_confirmed'); ?></a></td>
+				<td width="50%">
 					<?php echo $total_countries_confirmed_paper; ?> /
 					<?php echo $total_countries_confirmed_eqsl; ?> /
 					<?php echo $total_countries_confirmed_lotw; ?>
@@ -188,8 +188,8 @@ function echo_table_col($row, $name) {
 			</tr>
 
 			<tr>
-				<td><?php echo $this->lang->line('general_word_needed'); ?></td>
-				<td><?php echo $total_countries_needed; ?></td>
+				<td width="50%"><?php echo $this->lang->line('general_word_needed'); ?></td>
+				<td width="50%"><?php echo $total_countries_needed; ?></td>
 			</tr>
 		</table>
 
@@ -200,18 +200,18 @@ function echo_table_col($row, $name) {
 			</tr>
 
 			<tr>
-				<td><?php echo $this->lang->line('general_word_sent'); ?></td>
-				<td><?php echo $total_qsl_sent; ?></td>
+				<td width="50%"><?php echo $this->lang->line('general_word_sent'); ?></td>
+				<td width="50%"><?php echo $total_qsl_sent; ?></td>
 			</tr>
 
 			<tr>
-				<td><?php echo $this->lang->line('general_word_received'); ?></td>
-				<td><?php echo $total_qsl_recv; ?></td>
+				<td width="50%"><?php echo $this->lang->line('general_word_received'); ?></td>
+				<td width="50%"><?php echo $total_qsl_recv; ?></td>
 			</tr>
 
 			<tr>
-				<td><?php echo $this->lang->line('general_word_requested'); ?></td>
-				<td><?php echo $total_qsl_requested; ?></td>
+				<td width="50%"><?php echo $this->lang->line('general_word_requested'); ?></td>
+				<td width="50%"><?php echo $total_qsl_requested; ?></td>
 			</tr>
 		</table>
 		<?php } ?>
@@ -223,13 +223,13 @@ function echo_table_col($row, $name) {
 			</tr>
 
 			<tr>
-				<td><?php echo $this->lang->line('general_word_sent'); ?></td>
-				<td><?php echo $total_eqsl_sent; ?></td>
+				<td width="50%"><?php echo $this->lang->line('general_word_sent'); ?></td>
+				<td width="50%"><?php echo $total_eqsl_sent; ?></td>
 			</tr>
 
 			<tr>
-				<td><?php echo $this->lang->line('general_word_received'); ?></td>
-				<td><?php echo $total_eqsl_recv; ?></td>
+				<td width="50%"><?php echo $this->lang->line('general_word_received'); ?></td>
+				<td width="50%"><?php echo $total_eqsl_recv; ?></td>
 			</tr>
 		</table>
 		<?php } ?>
@@ -241,13 +241,13 @@ function echo_table_col($row, $name) {
 			</tr>
 
 			<tr>
-				<td><?php echo $this->lang->line('general_word_sent'); ?></td>
-				<td><?php echo $total_lotw_sent; ?></td>
+				<td width="50%"><?php echo $this->lang->line('general_word_sent'); ?></td>
+				<td width="50%"><?php echo $total_lotw_sent; ?></td>
 			</tr>
 
 			<tr>
-				<td><?php echo $this->lang->line('general_word_received'); ?></td>
-				<td><?php echo $total_lotw_recv; ?></td>
+				<td width="50%"><?php echo $this->lang->line('general_word_received'); ?></td>
+				<td width="50%"><?php echo $total_lotw_recv; ?></td>
 			</tr>
 		</table>
 		<?php } ?>
