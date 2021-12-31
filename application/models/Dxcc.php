@@ -286,7 +286,7 @@ class DXCC extends CI_Model {
             ) ll on dxcc_entities.adif = ll.col_dxcc
             where 1=1";
 
-		if ($postdata['includedeleted'] == 'false') {
+		if ($postdata['includedeleted'] == NULL) {
 			$sql .= " and dxcc_entities.end is null";
 		}
 
@@ -325,7 +325,7 @@ class DXCC extends CI_Model {
             ) ll on dxcc_entities.adif = ll.col_dxcc
             where 1=1";
 
-		if ($postdata['includedeleted'] == 'false') {
+		if ($postdata['includedeleted'] == NULL) {
 			$sql .= " and dxcc_entities.end is null";
 		}
 
@@ -389,7 +389,7 @@ class DXCC extends CI_Model {
 	/*
      * Function gets worked and confirmed summary on each band on the active stationprofile
      */
-	function get_dxcc_summary($bands)
+	function get_dxcc_summary($bands, $postdata)
 	{
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
@@ -402,14 +402,14 @@ class DXCC extends CI_Model {
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
 		foreach ($bands as $band) {
-			$worked = $this->getSummaryByBand($band, $location_list);
-			$confirmed = $this->getSummaryByBandConfirmed($band, $location_list);
+			$worked = $this->getSummaryByBand($band, $postdata, $location_list);
+			$confirmed = $this->getSummaryByBandConfirmed($band, $postdata, $location_list);
 			$dxccSummary['worked'][$band] = $worked[0]->count;
 			$dxccSummary['confirmed'][$band] = $confirmed[0]->count;
 		}
 
-		$workedTotal = $this->getSummaryByBand('All', $location_list);
-		$confirmedTotal = $this->getSummaryByBandConfirmed('All', $location_list);
+		$workedTotal = $this->getSummaryByBand($postdata['band'], $postdata, $location_list);
+		$confirmedTotal = $this->getSummaryByBandConfirmed($postdata['band'], $postdata, $location_list);
 
 		$dxccSummary['worked']['Total'] = $workedTotal[0]->count;
 		$dxccSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
@@ -417,12 +417,12 @@ class DXCC extends CI_Model {
 		return $dxccSummary;
 	}
 
-	function getSummaryByBand($band, $location_list)
+	function getSummaryByBand($band, $postdata, $location_list)
 	{
 		$sql = "SELECT count(distinct thcv.col_dxcc) as count FROM " . $this->config->item('table_name') . " thcv";
+		$sql .= " join dxcc_entities d on thcv.col_dxcc = d.adif";
 
 		$sql .= " where station_id in (" . $location_list . ") and col_dxcc > 0";
-
 
 		if ($band == 'SAT') {
 			$sql .= " and thcv.col_prop_mode ='" . $band . "'";
@@ -432,14 +432,26 @@ class DXCC extends CI_Model {
 			$sql .= " and thcv.col_prop_mode !='SAT'";
 			$sql .= " and thcv.col_band ='" . $band . "'";
 		}
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
+
+		if ($postdata['includedeleted'] == NULL) {
+			$sql .= " and d.end is null";
+		}
+
+		$sql .= $this->addContinentsToQuery($postdata);
+
 		$query = $this->db->query($sql);
 
 		return $query->result();
 	}
 
-	function getSummaryByBandConfirmed($band, $location_list)
+	function getSummaryByBandConfirmed($band, $postdata, $location_list)
 	{
 		$sql = "SELECT count(distinct thcv.col_dxcc) as count FROM " . $this->config->item('table_name') . " thcv";
+		$sql .= " join dxcc_entities d on thcv.col_dxcc = d.adif";
 
 		$sql .= " where station_id in (" . $location_list . ")";
 
@@ -452,7 +464,18 @@ class DXCC extends CI_Model {
 			$sql .= " and thcv.col_band ='" . $band . "'";
 		}
 
-		$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y') and col_dxcc > 0";
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
+
+		$sql .= $this->addQslToQuery($postdata);
+
+		
+		if ($postdata['includedeleted'] == NULL) {
+			$sql .= " and d.end is null";
+		}
+
+		$sql .= $this->addContinentsToQuery($postdata);
 
 		$query = $this->db->query($sql);
 
