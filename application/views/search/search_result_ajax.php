@@ -119,8 +119,8 @@
 
 			switch($this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1')) {
 				case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; break;
-				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';}if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
-				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_SRX); echo '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
+				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';} if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
+				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_SRX); echo '</span>';} if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
 				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
@@ -132,8 +132,8 @@
 			echo '</td>';
 			switch($this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2')) {
 				case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; break;
-				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';}if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
-				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_SRX); echo '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
+				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';} if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
+				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_SRX); echo '</span>';} if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
 				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
@@ -146,8 +146,8 @@
 
 			switch($this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3')) {
 				case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; break;
-				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';}if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
-				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_SRX); echo '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
+				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';} if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
+				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_SRX); echo '</span>';} if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
 				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
@@ -159,8 +159,8 @@
 			echo '</td>';
 			switch($this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4')) {
 				case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; break;
-				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';}if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
-				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_SRX); echo '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
+				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';} if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
+				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_SRX); echo '</span>';} if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
 				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
@@ -172,8 +172,8 @@
 			echo '</td>';
 			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
 				case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; break;
-				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';}if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
-				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_SRX); echo '</span>';}if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
+				case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';} if ($row->COL_STX_STRING) { echo '<span class="badge badge-light">' . $row->COL_STX_STRING . '</span>';}; break;
+				case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span class="badge badge-light">'; printf("%03d", $row->COL_SRX); echo '</span>';} if ($row->COL_SRX_STRING) { echo '<span class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';}; break;
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
 				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
