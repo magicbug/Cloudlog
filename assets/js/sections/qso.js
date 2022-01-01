@@ -354,9 +354,9 @@ $("#callsign").focusout(function() {
 				if(result.lotw_member == "active") {
 					$('#lotw_info').text("LoTW");
 				}
-				$('#qrz_info').html('<a target="_blank" href="https://www.qrz.com/db/'+find_callsign+'"><img width="32" height="32" src="/images/icons/qrz.com.png"></a>'); 
+				$('#qrz_info').html('<a target="_blank" href="https://www.qrz.com/db/'+find_callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/qrz.com.png"></a>'); 
 				$('#qrz_info').attr('title', 'Lookup '+find_callsign+' info on qrz.com');
-				$('#hamqth_info').html('<a target="_blank" href="https://www.hamqth.com/'+find_callsign+'"><img width="32" height="32" src="/images/icons/hamqth.com.png"></a>'); 
+				$('#hamqth_info').html('<a target="_blank" href="https://www.hamqth.com/'+find_callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/hamqth.com.png"></a>'); 
 				$('#hamqth_info').attr('title', 'Lookup '+find_callsign+' info on hamqth.com');
 
 				$('#dxcc_id').val(result.dxcc.adif);
