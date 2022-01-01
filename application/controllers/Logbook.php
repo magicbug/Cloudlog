@@ -73,7 +73,7 @@ class Logbook extends CI_Controller {
         echo json_encode($return, JSON_PRETTY_PRINT);
     }
 
-	function json($callsign, $type, $band, $mode)
+	function json($callsign, $type, $band, $mode, $station_id = null)
 	{
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
@@ -82,29 +82,27 @@ class Logbook extends CI_Controller {
 		$callsign = str_replace("-","/",$callsign);
 
 		// Check if callsign is an LOTW User
-			$lotw_member = "";
-			$lotw_file_name = "./updates/lotw_users.csv";
+		$lotw_member = "";
+		$lotw_file_name = "./updates/lotw_users.csv";
 
-			if (file_exists($lotw_file_name)) {
-				$f = fopen($lotw_file_name, "r");
-		        $result = false;
-		        while ($row = fgetcsv($f)) {
-		            if ($row[0] == strtoupper($callsign)) {
-		                $result = $row[0];
-		                $lotw_member = "active";
-		                break;
-		            }
-		        }
-
-		        if($lotw_member != "active") {
-		        	$lotw_member = "not found";
-		        }
-		        fclose($f);
-			} else {
-			    $lotw_member = "not found";
+		if (file_exists($lotw_file_name)) {
+			$f = fopen($lotw_file_name, "r");
+			$result = false;
+			while ($row = fgetcsv($f)) {
+				if ($row[0] == strtoupper($callsign)) {
+					$result = $row[0];
+					$lotw_member = "active";
+					break;
+				}
 			}
 
-
+			if($lotw_member != "active") {
+				$lotw_member = "not found";
+			}
+			fclose($f);
+		} else {
+			$lotw_member = "not found";
+		}
 
 		// Check Database for all other data
 		$this->load->model('logbook_model');
@@ -126,67 +124,63 @@ class Logbook extends CI_Controller {
 		$return['dxcc'] = $this->dxcheck($callsign);
 		$return['partial'] = $this->partial($callsign);
 
-	// Do we have local data for the Callsign?
-	if($this->logbook_model->call_name($callsign) != null)
-	{
-        if ($this->session->userdata('user_measurement_base') == NULL) {
-             $measurement_base = $this->config->item('measurement_base');
-        }
-        else {
-            $measurement_base = $this->session->userdata('user_measurement_base');
-        }
+		// Do we have local data for the Callsign?
+		if($this->logbook_model->call_name($callsign) != null)
+		{
+			if ($this->session->userdata('user_measurement_base') == NULL) {
+				$measurement_base = $this->config->item('measurement_base');
+			} else {
+				$measurement_base = $this->session->userdata('user_measurement_base');
+			}
 
-		$return['callsign_name'] =  $this->logbook_model->call_name($callsign);
-		$return['callsign_qra'] = $this->logbook_model->call_qra($callsign);
-		$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
-		$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
-		$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
-        $return['callsign_state'] = $this->logbook_model->call_state($callsign);
-		$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base);
-		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
+			$return['callsign_name'] =  $this->logbook_model->call_name($callsign);
+			$return['callsign_qra'] = $this->logbook_model->call_qra($callsign);
+			$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
+			$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
+			$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
+			$return['callsign_state'] = $this->logbook_model->call_state($callsign);
+			$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base, $station_id);
+			$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
 
-		if ($return['callsign_qra'] != "") {
-			$return['latlng'] = $this->qralatlng($return['callsign_qra']);
+			if ($return['callsign_qra'] != "") {
+				$return['latlng'] = $this->qralatlng($return['callsign_qra']);
+			}
+
+			echo json_encode($return, JSON_PRETTY_PRINT);
+			return;
 		}
+
+		$callbook = $this->logbook_model->loadCallBook($callsign, $this->config->item('use_fullname'));
+
+		if (isset($callbook))
+		{
+			$return['callsign_name'] = $callbook['name'];
+			$return['callsign_qra'] = $callbook['gridsquare'];
+			$return['callsign_qth'] = $callbook['city'];
+			$return['callsign_iota'] = $callbook['iota'];
+			$return['callsign_state'] = $callbook['state'];
+			$return['callsign_us_county'] = $callbook['us_county'];
+
+			if(isset($callbook['qslmgr'])) {
+				$return['qsl_manager'] = $callbook['qslmgr'];
+			}
+			if ($return['callsign_qra'] != "") {
+				$return['latlng'] = $this->qralatlng($return['callsign_qra']);
+			}
+			$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
+		}
+
+		if ($this->session->userdata('user_measurement_base') == NULL) {
+			$measurement_base = $this->config->item('measurement_base');
+		} else {
+			$measurement_base = $this->session->userdata('user_measurement_base');
+		}
+
+		$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base, $station_id);
 
 		echo json_encode($return, JSON_PRETTY_PRINT);
+
 		return;
-	}
-
-
-	$callbook = $this->logbook_model->loadCallBook($callsign, $this->config->item('use_fullname'));
-
-
-	if (isset($callbook))
-	{
-		$return['callsign_name'] = $callbook['name'];
-		$return['callsign_qra'] = $callbook['gridsquare'];
-		$return['callsign_qth'] = $callbook['city'];
-		$return['callsign_iota'] = $callbook['iota'];
-		$return['callsign_state'] = $callbook['state'];
-		$return['callsign_us_county'] = $callbook['us_county'];
-
-		if(isset($callbook['qslmgr'])) {
-			$return['qsl_manager'] = $callbook['qslmgr'];
-		}
-		if ($return['callsign_qra'] != "") {
-			$return['latlng'] = $this->qralatlng($return['callsign_qra']);
-		}
-		$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
-	}
-
-    if ($this->session->userdata('user_measurement_base') == NULL) {
-        $measurement_base = $this->config->item('measurement_base');
-    }
-    else {
-        $measurement_base = $this->session->userdata('user_measurement_base');
-    }
-
-	$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base);
-
-	echo json_encode($return, JSON_PRETTY_PRINT);
-
-	return;
 	}
 
 	function worked_grid_before($gridsquare, $type, $band, $mode)
@@ -654,22 +648,34 @@ class Logbook extends CI_Controller {
 
 
 	/* return station bearing */
-	function searchbearing($locator) {
+	function searchbearing($locator, $station_id = null) {
 			$this->load->library('Qra');
 
 			if($locator != null) {
-				if($this->session->userdata('user_locator') != null){
+				if (isset($station_id)) {
+					// be sure that station belongs to user
+					$this->load->model('Stations');
+					if (!$this->Stations->check_station_is_accessible($station_id)) {
+						return "";
+					}
+
+					// get station profile
+					$station_profile = $this->Stations->profile_clean($station_id);
+
+					// get locator
+					$mylocator = $station_profile->station_gridsquare;
+				} else if($this->session->userdata('user_locator') != null){
 					$mylocator = $this->session->userdata('user_locator');
 				} else {
 					$mylocator = $this->config->item('locator');
 				}
 
-                if ($this->session->userdata('user_measurement_base') == NULL) {
-                    $measurement_base = $this->config->item('measurement_base');
-                }
-                else {
-                    $measurement_base = $this->session->userdata('user_measurement_base');
-                }
+				if ($this->session->userdata('user_measurement_base') == NULL) {
+					$measurement_base = $this->config->item('measurement_base');
+				}
+				else {
+					$measurement_base = $this->session->userdata('user_measurement_base');
+				}
 
 				$bearing = $this->qra->bearing($mylocator, $locator, $measurement_base);
 
@@ -679,18 +685,27 @@ class Logbook extends CI_Controller {
 	}
 
 	/* return station bearing */
-	function bearing($locator, $unit = 'M') {
+	function bearing($locator, $unit = 'M', $station_id = null) {
 			$this->load->library('Qra');
 
-
 			if($locator != null) {
-				if($this->session->userdata('user_locator') != null){
+				if (isset($station_id)) {
+					// be sure that station belongs to user
+					$this->load->model('Stations');
+					if (!$this->Stations->check_station_is_accessible($station_id)) {
+						return "";
+					}
+
+					// get station profile
+					$station_profile = $this->Stations->profile_clean($station_id);
+
+					// get locator
+					$mylocator = $station_profile->station_gridsquare;
+				} else if($this->session->userdata('user_locator') != null){
 					$mylocator = $this->session->userdata('user_locator');
 				} else {
 					$mylocator = $this->config->item('locator');
 				}
-
-
 
 				$bearing = $this->qra->bearing($mylocator, $locator, $unit);
 

@@ -296,7 +296,7 @@ $("#callsign").focusout(function() {
 		find_callsign.replace(/\//g, "-");
 
 		// Replace / in a callsign with - to stop urls breaking
-		$.getJSON('logbook/json/' + find_callsign.replace(/\//g, "-") + '/' + sat_type + '/' + json_band + '/' + json_mode, function(result)
+		$.getJSON('logbook/json/' + find_callsign.replace(/\//g, "-") + '/' + sat_type + '/' + json_band + '/' + json_mode + '/' + $('#stationProfile').val(), function(result)
 		{
 			// Make sure the typed callsign and temp callsign match
 			if($('#callsign').val = temp_callsign){
@@ -576,7 +576,7 @@ $("#locator").keyup(function(){
 				markers.addLayer(marker).addTo(mymap);
 			})
 
-			$('#locator_info').load("logbook/searchbearing/" + $(this).val()).fadeIn("slow");
+			$('#locator_info').load("logbook/searchbearing/" + $(this).val() + "/" + $('#stationProfile').val()).fadeIn("slow");
 		}
 	}
 });
