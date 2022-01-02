@@ -204,7 +204,7 @@
                     <?php if($row->COL_SOTA_REF != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_sota_reference'); ?></td>
-                        <td><?php echo $row->COL_SOTA_REF; ?></td>
+                        <td><a href="https://summits.sota.org.uk/summit/<?php echo $row->COL_SOTA_REF; ?>" target="_new"><?php echo $row->COL_SOTA_REF; ?></a></td>
                     </tr>
                     <?php } ?>
 
