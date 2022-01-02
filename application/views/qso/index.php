@@ -60,7 +60,7 @@
 
               <!-- Callsign Input -->
               <div class="form-row">
-                <div class="form-group col-md-7">
+                <div class="form-group col-md-9">
                   <label for="callsign"><?php echo $this->lang->line('gen_hamradio_callsign'); ?></label>
                   <input type="text" class="form-control" id="callsign" name="callsign" required>
                   <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-light"></small>
