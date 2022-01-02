@@ -372,10 +372,15 @@
                     </select>
             </div>
 
-            <div class="form-group">
-              <label for="sota_ref"><?php echo $this->lang->line('gen_hamradio_sota_reference'); ?></label>
-              <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" />
-              <small id="sotaRefHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_sota_ref_helptext'); ?></small>
+            <div class="form-row">
+              <div class="form-group col-md-9">
+                <label for="sota_ref"><?php echo $this->lang->line('gen_hamradio_sota_reference'); ?></label>
+                <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" />
+                <small id="sotaRefHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_sota_ref_helptext'); ?></small>
+              </div>
+              <div class="form-group col-md-3 align-self-center">
+                <small id="sota_info" class="badge badge-secondary"></small>
+              </div>
             </div>
 
             <div class="form-group">

@@ -78,6 +78,11 @@ $( document ).ready(function() {
 		}
 	});
 
+	$('#sota_ref').change(function(){
+		$('#sota_info').html('<a target="_blank" href="https://summits.sota.org.uk/summit/'+$('#sota_ref').val()+'"><img width="32" height="32" src="'+base_url+'images/icons/sota.org.uk.png"></a>'); 
+		$('#sota_info').attr('title', 'Lookup '+$('#sota_ref').val()+' summit info on sota.org.uk');
+	});
+
 	$('#darc_dok').selectize({
 		maxItems: 1,
 		closeAfterSelect: true,
@@ -249,12 +254,14 @@ function reset_fields() {
 	$('#lotw_info').text("");
 	$('#qrz_info').text("");
 	$('#hamqth_info').text("");
+	$('#sota_info').text("");
 	$('#dxcc_id').val("");
 	$('#cqz').val("");
 	$('#name').val("");
 	$('#qth').val("");
 	$('#locator').val("");
 	$('#iota_ref').val("");
+	$('#sota_ref').val("");
 	$("#locator").removeClass("workedGrid");
 	$("#locator").removeClass("newGrid");
 	$("#callsign").removeClass("workedGrid");
@@ -452,6 +459,7 @@ $("#callsign").focusout(function() {
 		$('#qth').val("");
 		$('#locator').val("");
 		$('#iota_ref').val("");
+		$('#sota_ref').val("");
 		$("#locator").removeClass("workedGrid");
 		$("#locator").removeClass("newGrid");
 		$("#callsign").removeClass("workedGrid");
