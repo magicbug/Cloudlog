@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('Direkter Zugriff auf Skripte ist nicht erlaubt');
 
+$lang['lotw_short'] = 'LoTW';
 $lang['lotw_title'] = 'Logbook of the World';
 $lang['lotw_title_available_cert'] = 'Verfügbare Zertifikate';
 $lang['lotw_title_information'] = 'Information';
@@ -47,3 +48,5 @@ $lang['lotw_p12_export_step_one'] = 'Öffne TQSL &amp; und gehe zum Rufzeichen Z
 $lang['lotw_p12_export_step_two'] = 'Klicke rechts auf das gewünschte Rufzeichen';
 $lang['lotw_p12_export_step_three'] = 'Klick "Save Callsign Certificate File" und füge kein Passwort hinzu';
 $lang['lotw_p12_export_step_four'] = 'Lade untenstehende Datei hoch.';
+
+$lang['lotw_confirmed'] = 'Dieses QSO wurde via LotW bestätigt am';
