@@ -12,6 +12,7 @@ $lang['general_word_choose_file'] = 'Datei wählen';
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Zeit';
+$lang['general_word_datetime'] = 'Datum/Uhrzeit';
 $lang['general_word_none'] = 'None';
 $lang['general_word_name'] = 'Name';
 $lang['general_word_location'] = 'Standort';
@@ -37,16 +38,24 @@ $lang['general_word_method'] = 'Methode';
 $lang['general_word_sent'] = 'Gesendet';
 $lang['general_word_received'] = 'Erhalten';
 $lang['general_word_requested'] = 'Angefordert';
+$lang['general_word_qslcard'] = 'QSL Karte';
+$lang['general_word_qslcard_management'] = 'QSL Verwaltung';
 $lang['general_word_qslcards'] = 'QSL Karten';
 $lang['general_word_qslcard_direct'] = 'Direkt';
 $lang['general_word_qslcard_bureau'] = 'Büro';
 $lang['general_word_qslcard_via'] = 'Via';
+$lang['general_word_eqslcards'] = 'eQSL Karten';
+$lang['general_word_lotw'] = 'Logbook of the World';
 
 $lang['general_edit_qso'] = 'QSO bearbeiten';
 $lang['general_mark_qsl_rx_bureau'] = 'Markiere QSL erhalten (Büro)';
 $lang['general_mark_qsl_rx_direct'] = 'Markiere QSL erhalten (Direkt)';
+$lang['general_mark_qsl_tx_bureau'] = 'Markiere QSL gesendet (Büro)';
+$lang['general_mark_qsl_tx_direct'] = 'Markiere QSL gesendet (Direkt)';
 
 $lang['general_delete_qso'] = 'QSO Löschen';
+
+$lang['general_total_distance'] = 'Entfernung';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Stationsprofil';
@@ -83,9 +92,16 @@ $lang['gen_hamradio_logbook'] = 'Logbuch';
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_usa_state'] = 'USA-Staat';
+$lang['gen_hamradio_county_reference'] = 'USA County';
 $lang['gen_hamradio_iota_reference'] = 'IOTA Referenznummer';
 $lang['gen_hamradio_sota_reference'] = 'SOTA Referenznummer';
+$lang['gen_hamradio_wwff_reference'] = 'WWFF Referenznummer';
 $lang['gen_hamradio_dok'] = 'DOK';
+$lang['gen_hamradio_state'] = 'Staat';
+$lang['gen_hamradio_iota'] = 'IOTA';
+$lang['gen_hamradio_sota'] = 'SOTA';
+$lang['gen_hamradio_gridsquare'] = 'Planquadrat';
+$lang['gen_hamradio_operator'] = 'Operator';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
@@ -96,3 +112,7 @@ $lang['dashboard_you_have_had'] = 'Du hattest';
 $lang['dashboard_qsos_today'] = 'QSOs heute!';
 $lang['dashboard_qso_breakdown'] = 'QSO-Übersicht';
 $lang['dashboard_countries_breakdown'] = 'Länderübersicht';
+
+$lang['gen_from_date'] = 'Ab Datum';
+
+$lang['gen_this_qso_was_confirmed_on'] = 'Dieses QSO wurde bestätigt am';

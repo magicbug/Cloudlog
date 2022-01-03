@@ -23,3 +23,8 @@ $lang['qso_notes_helptext'] = 'Notizeninhalt wird nur innerhalb von Cloudlog gen
 
 $lang['qso_btn_reset_qso'] = 'Zurücksetzen';
 $lang['qso_btn_save_qso'] = 'Speichere QSO';
+$lang['qso_btn_edit_qso'] = 'Editiere QSO';
+
+// QSO Details
+
+$lang['qso_details'] = 'QSO Details';
