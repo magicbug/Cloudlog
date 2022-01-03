@@ -9,6 +9,7 @@ class Logbook extends CI_Controller {
 
 		// Load language files
 		$this->lang->load(array(
+			'contesting',
 			'qslcard',
 			'lotw',
 			'qso'
