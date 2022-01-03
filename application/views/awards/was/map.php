@@ -143,7 +143,7 @@
 	</script>
 </head>
 <body>
-  <div id="map" style="width: 930px; height: 630px;"></div>
+  <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12" id="map" style="width: 930px; height: 630px;"></div>
   <div id="tooltip2"></div>
 
   <ul>
