@@ -80,7 +80,7 @@ class was extends CI_Model {
     /*
      * Function gets worked and confirmed summary on each band on the active stationprofile
      */
-    function get_was_summary($bands)
+    function get_was_summary($bands, $postdata)
     {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
@@ -93,14 +93,14 @@ class was extends CI_Model {
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         foreach ($bands as $band) {
-            $worked = $this->getSummaryByBand($band, $location_list);
-            $confirmed = $this->getSummaryByBandConfirmed($band, $location_list);
+            $worked = $this->getSummaryByBand($band, $postdata, $location_list);
+            $confirmed = $this->getSummaryByBandConfirmed($band, $postdata, $location_list);
             $wasSummary['worked'][$band] = $worked[0]->count;
             $wasSummary['confirmed'][$band] = $confirmed[0]->count;
         }
 
-        $workedTotal = $this->getSummaryByBand('All', $location_list);
-        $confirmedTotal = $this->getSummaryByBandConfirmed('All', $location_list);
+        $workedTotal = $this->getSummaryByBand($postdata['band'], $postdata, $location_list);
+        $confirmedTotal = $this->getSummaryByBandConfirmed($postdata['band'], $postdata, $location_list);
 
         $wasSummary['worked']['Total'] = $workedTotal[0]->count;
         $wasSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
@@ -108,7 +108,7 @@ class was extends CI_Model {
         return $wasSummary;
     }
 
-    function getSummaryByBand($band, $location_list)
+    function getSummaryByBand($band, $postdata, $location_list)
     {
         $sql = "SELECT count(distinct thcv.col_state) as count FROM " . $this->config->item('table_name') . " thcv";
 
@@ -122,6 +122,10 @@ class was extends CI_Model {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
         }
+
+        if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
 
         $sql .= $this->addStateToQuery();
 
@@ -130,7 +134,7 @@ class was extends CI_Model {
         return $query->result();
     }
 
-    function getSummaryByBandConfirmed($band, $location_list)
+    function getSummaryByBandConfirmed($band, $postdata, $location_list)
     {
         $sql = "SELECT count(distinct thcv.col_state) as count FROM " . $this->config->item('table_name') . " thcv";
 
@@ -145,9 +149,13 @@ class was extends CI_Model {
             $sql .= " and thcv.col_band ='" . $band . "'";
         }
 
-        $sql .= $this->addStateToQuery();
+        if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
 
-        $sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+        $sql .= $this->addQslToQuery($postdata);
+
+        $sql .= $this->addStateToQuery();
 
         $query = $this->db->query($sql);
 

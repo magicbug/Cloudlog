@@ -334,7 +334,7 @@ class Awards extends CI_Controller {
         }
 
         $data['was_array'] = $this->was->get_was_array($bands, $postdata);
-        $data['was_summary'] = $this->was->get_was_summary($data['worked_bands']);
+        $data['was_summary'] = $this->was->get_was_summary($bands, $postdata);
 
         // Render Page
         $data['page_title'] = "Awards - WAS (Worked All States)";
