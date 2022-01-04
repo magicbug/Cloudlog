@@ -952,6 +952,17 @@ class Lotw extends CI_Controller {
 					return "DATA";
 					break;
 				}
+			case "PSK":
+				if ($submode == "PSK31") {
+					return "PSK31";
+					break;
+				} elseif ($submode == "PSK63") {
+						return "PSK63";
+						break;
+				} else {
+					return "DATA";
+					break;
+				}
 			default:
 				return $mode;
 		endswitch;
