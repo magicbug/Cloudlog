@@ -678,7 +678,24 @@ $(document).on('keypress',function(e) {
 
 <script>
   var markers = L.layerGroup();
-  var mymap = L.map('qsomap').setView([51.505, -0.09], 13);
+  var pos = [51.505, -0.09];
+  var mymap = L.map('qsomap').setView(pos, 12);
+  <?php
+  $this->load->model('stations');
+  $active_station_id = $this->stations->find_active();
+  $station_profile = $this->stations->profile($active_station_id);
+  $active_station_info = $station_profile->row();
+  if ($active_station_info->station_gridsquare != "") { ?>
+  $.getJSON('logbook/qralatlngjson/<?php echo $active_station_info->station_gridsquare; ?>', function(result) {
+     mymap.panTo([result[0], result[1]]);
+     pos = result;
+  })
+  <?php } else if (null !== $this->config->item('locator')) { ?>
+  $.getJSON('logbook/qralatlngjson/<?php echo $this->config->item('locator'); ?>', function(result) {
+     mymap.panTo([result[0], result[1]]);
+     pos = result;
+  })
+  <?php } ?>
 
   L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
     maxZoom: 18,
