@@ -275,7 +275,7 @@ function reset_fields() {
 	$('#qso-last-table').show();
 	$('#partial_view').hide();
 
-	mymap.setView([51.505, -0.09], 13);
+	mymap.setView(pos, 12);
 	mymap.removeLayer(markers);
 	$('.callsign-suggest').hide();
 }
