@@ -12,13 +12,19 @@
 
 <div class="card">
   <div class="card-header">
-    Station Locations
+    What are Station Locations
   </div>
   <div class="card-body">
-    <p class="card-text">Intro to Station Logbooks.</p>
+    <p class="card-text">Station Logbooks allow you to group Station Locations, doing this allows you to see all the grouped locations across one session from the logbook areas to the analyics.</p>
+	<p class="card-text">Great for when your operating in multiple locations but they are part of the same DXCC or VUCC Circle.</p>
+  </div>
+</div>
 
-	  <p><a href="<?php echo site_url('logbooks/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Station Logbook</a></p>
-	  
+<div class="card" style="margin-top: 20px;">
+  <div class="card-header">
+    Station Locations <a class="btn btn-primary float-right" href="<?php echo site_url('logbooks/create'); ?>"><i class="fas fa-plus"></i> Create a Station Logbook</a>
+  </div>
+  <div class="">
 		<?php if ($my_logbooks->num_rows() > 0) { ?>
 
 		<div class="table-responsive">
