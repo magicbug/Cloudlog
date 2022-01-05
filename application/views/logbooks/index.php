@@ -12,7 +12,7 @@
 
 <div class="card">
   <div class="card-header">
-    What are Station Locations
+    What are Station Logbooks
   </div>
   <div class="card-body">
     <p class="card-text">Station Logbooks allow you to group Station Locations, doing this allows you to see all the grouped locations across one session from the logbook areas to the analyics.</p>
