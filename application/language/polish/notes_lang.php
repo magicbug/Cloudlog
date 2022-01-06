@@ -6,7 +6,7 @@ $lang['notes_menu_notes'] = 'Notatki';
 $lang['notes_edit_note'] = 'Edytuj notatkę';
 $lang['notes_your_notes'] = 'Twoje notatki';
 
-$lang['notes_welcome'] = "You don't currently have any notes, these are a fantastic way of storing data like ATU settings, beacons and general station notes and its better than paper as you can't lose them!";
+$lang['notes_welcome'] = "Nie masz jeszcze żadnej notatki, są one fantastyczną drogą do przechowywana pomocnych danych takich jak np. ustawienia skrzynki antenowej, bikony, i ogólne notatki. Są lepsze niż papierowe, bo nigdy nie giną. !";
 
 $lang['notes_create_note'] = 'Utwórz notatkę';
 
