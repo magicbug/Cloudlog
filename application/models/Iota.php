@@ -127,6 +127,16 @@ class IOTA extends CI_Model {
     }
 
     function fetchIota($postdata) {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+
         $sql = "select tag, name, prefix, dxccid, status from iota where 1=1";
 
         if ($postdata['includedeleted'] == NULL) {
@@ -277,7 +287,7 @@ class IOTA extends CI_Model {
     /*
      * Function gets worked and confirmed summary on each band on the active stationprofile
      */
-    function get_iota_summary($bands)
+    function get_iota_summary($bands, $postdata)
     {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
@@ -290,14 +300,14 @@ class IOTA extends CI_Model {
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         foreach ($bands as $band) {
-            $worked = $this->getSummaryByBand($band, $location_list);
-            $confirmed = $this->getSummaryByBandConfirmed($band, $location_list);
+            $worked = $this->getSummaryByBand($band, $postdata, $location_list);
+            $confirmed = $this->getSummaryByBandConfirmed($band, $postdata, $location_list);
             $iotaSummary['worked'][$band] = $worked[0]->count;
             $iotaSummary['confirmed'][$band] = $confirmed[0]->count;
         }
 
-        $workedTotal = $this->getSummaryByBand('All', $location_list);
-        $confirmedTotal = $this->getSummaryByBandConfirmed('All', $location_list);
+        $workedTotal = $this->getSummaryByBand($postdata['band'], $postdata, $location_list);
+        $confirmedTotal = $this->getSummaryByBandConfirmed($postdata['band'], $postdata, $location_list);
 
         $iotaSummary['worked']['Total'] = $workedTotal[0]->count;
         $iotaSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
@@ -305,9 +315,10 @@ class IOTA extends CI_Model {
         return $iotaSummary;
     }
 
-    function getSummaryByBand($band, $location_list)
+    function getSummaryByBand($band, $postdata, $location_list)
     {
         $sql = "SELECT count(distinct thcv.col_iota) as count FROM " . $this->config->item('table_name') . " thcv";
+        $sql .= ' join iota on thcv.col_iota = iota.tag';
 
         $sql .= " where station_id in (" . $location_list . ")";
 
@@ -318,16 +329,27 @@ class IOTA extends CI_Model {
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
-
         }
+
+        if ($postdata['includedeleted'] == NULL) {
+            $sql .= " and coalesce(iota.status, '') <> 'D'";
+        }
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
+
+        $sql .= $this->addContinentsToQuery($postdata);
+
         $query = $this->db->query($sql);
 
         return $query->result();
     }
 
-    function getSummaryByBandConfirmed($band, $location_list)
+    function getSummaryByBandConfirmed($band, $postdata, $location_list)
     {
         $sql = "SELECT count(distinct thcv.col_iota) as count FROM " . $this->config->item('table_name') . " thcv";
+        $sql .= ' join iota on thcv.col_iota = iota.tag';
 
         $sql .= " where station_id in (" . $location_list . ")";
 
@@ -339,6 +361,16 @@ class IOTA extends CI_Model {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
         }
+
+        if ($postdata['includedeleted'] == NULL) {
+            $sql .= " and coalesce(iota.status, '') <> 'D'";
+        }
+
+		if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
+
+        $sql .= $this->addContinentsToQuery($postdata);
 
         $sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
 
