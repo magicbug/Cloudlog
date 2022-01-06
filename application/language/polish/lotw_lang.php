@@ -12,7 +12,7 @@ $lang['lotw_title_adif_import'] = 'Wyślij plik w formacie ADIF';
 $lang['lotw_title_adif_import_options'] = 'Opcje wysyłania';
 
 $lang['lotw_beta_warning'] = 'Miej na uwadze, że wynchroinizacja z LoTW nie jest stabilna. Więcej na WIKI.';
-$lang['lotw_no_certs_uploaded'] = 'Musisz wysłać certyfikat .p12 aby używać tych pół';
+$lang['lotw_no_certs_uploaded'] = 'Musisz wysłać certyfikat .p12 aby używać tych pól';
 
 $lang['lotw_date_created'] = 'Data utworzenia';
 $lang['lotw_date_expires'] = 'Data wygaśnięcia';
@@ -27,13 +27,13 @@ $lang['lotw_certificate_dxcc_help_text'] = 'Podmiot DXCC dla którego wydany zos
 
 $lang['lotw_input_a_file'] = 'Prześlij plik';
 
-$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Upload the Exported ADIF file from LoTW from the <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a> Area, to mark QSOs as confirmed on LOTW.';
-$lang['lotw_upload_type_must_be_adi'] = 'Log files must have the file type .adi';
+$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Wyślij pobrany plik ADIF z LoTW z <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Linku</a>, aby oznaczyć łączności jako potwierdzone przez LOTW.';
+$lang['lotw_upload_type_must_be_adi'] = 'Pliki logu muszą mieć rozszerzenie .adi';
 
-$lang['lotw_pull_lotw_data_for_me'] = 'Pull LoTW data for me';
-$lang['lotw_import_missing_qsos_text'] = 'Import missing QSOs into the log. Call and gridsquare will be checked to try to find the correct profile to import the QSO into. If not found, the QSO will be skipped.';
+$lang['lotw_pull_lotw_data_for_me'] = 'Pobierz dane z LOTW za mnie';
+$lang['lotw_import_missing_qsos_text'] = 'Wyślij brakujące łączności do logu. Znak i lokator będą sprawdzone, aby dopasować odpowiedni profil do wgrania łączności. jeśli nie zostaną znalezione, łączność będzie pominięta.';
 
-$lang['lotw_report_download_overview_helptext'] ='Cloudlog will use the LoTW username and password stored in your user profile to download a report from LoTW for you. The report Cloudlog downloads will have all confirmations since chosen date, or since your last LoTW confirmation (fetched from your log), up until now.';
+$lang['lotw_report_download_overview_helptext'] ='Cloudlog będzie używał loginu i hasła podanego w profilu, aby pobierać raporty z LOTW.Raport będzie zawierał wszystkie potwierdzenia od wybranej daty, lub ostatniej potwierdzonej łączności z LOTW (wybranej z logiu), do teraz.';
 
 // Buttons
 $lang['lotw_btn_lotw_import'] = 'LoTW Import';
@@ -44,9 +44,9 @@ $lang['lotw_btn_upload_file'] = 'Wyślij plik';
 $lang['lotw_btn_import_matches'] = 'Import LoTW Matches';
 
 // P12 Export Text
-$lang['lotw_p12_export_step_one'] = 'Open TQSL &amp; go to the Callsign Certificates Tab';
+$lang['lotw_p12_export_step_one'] = 'Otwórz aplikacje TQSL &amp; przejdź dp zakładki Callsign Certificates';
 $lang['lotw_p12_export_step_two'] = 'Naciśnij prawym klawiszem myszny na żądany znak';
-$lang['lotw_p12_export_step_three'] = 'Click "Save Callsign Certificate File" and do not add a password';
+$lang['lotw_p12_export_step_three'] = 'wybierz "Save Callsign Certificate File"i nie podawaj hasła';
 $lang['lotw_p12_export_step_four'] = 'Wyślij plik poniżej.';
 
 $lang['lotw_confirmed'] = 'Ta łączność jest potwierdzona przez LoTW';
