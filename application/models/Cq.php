@@ -162,16 +162,16 @@ class CQ extends CI_Model{
     /*
     * Function gets worked and confirmed summary on each band on the active stationprofile
     */
-    function get_cq_summary($bands, $location_list) {
+    function get_cq_summary($bands, $postdata, $location_list) {
         foreach ($bands as $band) {
-            $worked = $this->getSummaryByBand($band, $location_list);
-            $confirmed = $this->getSummaryByBandConfirmed($band, $location_list);
+            $worked = $this->getSummaryByBand($band, $postdata, $location_list);
+            $confirmed = $this->getSummaryByBandConfirmed($band, $postdata, $location_list);
             $cqSummary['worked'][$band] = $worked[0]->count;
             $cqSummary['confirmed'][$band] = $confirmed[0]->count;
         }
 
-        $workedTotal = $this->getSummaryByBand('All', $location_list);
-        $confirmedTotal = $this->getSummaryByBandConfirmed('All', $location_list);
+        $workedTotal = $this->getSummaryByBand($postdata['band'], $postdata, $location_list);
+        $confirmedTotal = $this->getSummaryByBandConfirmed($postdata['band'], $postdata, $location_list);
 
         $cqSummary['worked']['Total'] = $workedTotal[0]->count;
         $cqSummary['confirmed']['Total'] = $confirmedTotal[0]->count;
@@ -179,7 +179,7 @@ class CQ extends CI_Model{
         return $cqSummary;
     }
 
-    function getSummaryByBand($band, $location_list) {
+    function getSummaryByBand($band, $postdata, $location_list) {
         $sql = "SELECT count(distinct thcv.col_cqz) as count FROM " . $this->config->item('table_name') . " thcv";
 
         $sql .= " where station_id in (" . $location_list . ') and col_cqz > 0';
@@ -191,14 +191,18 @@ class CQ extends CI_Model{
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
-
         }
+
+        if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
+
         $query = $this->db->query($sql);
 
         return $query->result();
     }
 
-    function getSummaryByBandConfirmed($band, $location_list){
+    function getSummaryByBandConfirmed($band, $postdata, $location_list){
         $sql = "SELECT count(distinct thcv.col_cqz) as count FROM " . $this->config->item('table_name') . " thcv";
 
         $sql .= " where station_id in (" . $location_list . ') and col_cqz > 0';
@@ -212,7 +216,11 @@ class CQ extends CI_Model{
             $sql .= " and thcv.col_band ='" . $band . "'";
         }
 
-        $sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+        if ($postdata['mode'] != 'All') {
+			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+		}
+
+        $sql .= $this->addQslToQuery($postdata);
 
         $query = $this->db->query($sql);
 
