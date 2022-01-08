@@ -281,7 +281,6 @@ function reset_fields() {
 }
 
 $("#callsign").focusout(function() {
-
 	if ($(this).val().length >= 3) {
 
 		// Temp store the callsign
@@ -381,9 +380,11 @@ $("#callsign").focusout(function() {
 				if (typeof result.latlng !== "undefined" && result.latlng !== false) {
 					var marker = L.marker([result.latlng[0], result.latlng[1]], {icon: redIcon});
 					mymap.panTo([result.latlng[0], result.latlng[1]]);
+					mymap.setView([result.latlng[0], result.latlng[1]], 8);
 				} else {
 					var marker = L.marker([result.dxcc.lat, result.dxcc.long], {icon: redIcon});
 					mymap.panTo([result.dxcc.lat, result.dxcc.long]);
+					mymap.setView([result.dxcc.lat, result.dxcc.long], 8);
 				}
 
 				markers.addLayer(marker).addTo(mymap);
@@ -586,6 +587,7 @@ $("#locator").keyup(function(){
 					var marker = L.marker([result[0], result[1]], {icon: redIcon});
 					mymap.setZoom(8);
 					mymap.panTo([result[0], result[1]]);
+					mymap.setView([result[0], result[1]], 8);
 				}
 				markers.addLayer(marker).addTo(mymap);
 			})
