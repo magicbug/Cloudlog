@@ -262,10 +262,16 @@ class Search extends CI_Controller {
 	}
 
 	function fetchQueryResult($json, $returnquery) {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 		$search_items = json_decode($json, true);
 
+		$this->db->group_start();
 		$this->buildWhere($search_items);
+		$this->db->group_end();
+		$this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
 
 		$this->db->order_by('COL_TIME_ON', 'DESC');
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
