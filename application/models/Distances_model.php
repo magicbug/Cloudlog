@@ -22,7 +22,7 @@ class Distances_model extends CI_Model
 
 			$station_gridsquare = $this->find_gridsquare($station_id);
 
-			if ($station_gridsquare != "") {
+			if ($station_gridsquare != null) {
 				$gridsquare = explode(',', $station_gridsquare); // We need to convert to an array, since a user can enter several gridsquares
 
 				$this->db->select('col_call callsign, col_gridsquare grid');
@@ -96,7 +96,14 @@ class Distances_model extends CI_Model
 	 */
 	function find_gridsquare($station_id) {
 		$this->db->where('station_id', $station_id);
-		return $this->db->get('station_profile')->row()->station_gridsquare;
+
+        $result = $this->db->get('station_profile')->row_array();
+
+        if ($result) {
+            return $result['station_gridsquare'];
+        }
+
+		return null;
 	}
 
     // This functions takes query result from the database and extracts grids from the qso,
