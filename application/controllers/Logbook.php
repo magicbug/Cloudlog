@@ -12,6 +12,7 @@ class Logbook extends CI_Controller {
 			'contesting',
 			'qslcard',
 			'lotw',
+			'eqsl',
 			'qso'
 		));
 	}
