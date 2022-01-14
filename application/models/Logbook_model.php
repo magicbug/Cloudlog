@@ -276,6 +276,7 @@ class Logbook_model extends CI_Model {
 		if ($mode != 'All') {
 			$this->db->where("(COL_MODE='" . $mode . "' OR COL_SUBMODE='" . $mode ."')");
 		}
+		$this->db->order_by("COL_TIME_ON", "desc");
 
 		return $this->db->get($this->config->item('table_name'));
 	}
