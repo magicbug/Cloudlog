@@ -37,12 +37,16 @@ class Distances_model extends CI_Model
 				else {
 					$this->db->where('col_band', $postdata['band']);
 				}
+
 				$this->db->where('station_id', $station_id);
-				$dataarrayata = $this->db->get($this->config->item('table_name'));
+				$queryresult = $this->db->get($this->config->item('table_name'));
 
-				$temp = $this->plot($dataarrayata->result_array(), $gridsquare, $measurement_base);
+                if ($queryresult->result_array()) {
+                    $temp = $this->plot($queryresult->result_array(), $gridsquare, $measurement_base);
+    
+                    $result = $this->mergeresult($result, $temp);
+                }
 
-				$result = $this->mergeresult($result, $temp);
 			}
 		}
 
