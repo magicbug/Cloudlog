@@ -15,7 +15,7 @@ class Migration_add_reset_pass_to_users extends CI_Migration {
         {
                 $fields = array(
                         'reset_password_code varchar(50) DEFAULT NULL',
-                        'reset_password_date varchar(50) DEFAULT NULL',
+                        'reset_password_date TIMESTAMP NULL DEFAULT NULL',
                 );
 
                 $this->dbforge->add_column('users', $fields);
