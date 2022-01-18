@@ -487,4 +487,76 @@ class User extends CI_Controller {
 		$this->session->set_flashdata('notice', 'User '.$user_name.' logged out.');
 		redirect('dashboard');
 	}
+
+	/**
+	 * Function: forgot_password
+	 * 
+	 * Allows users to input an email address and a password will be sent to that address.
+	 * 
+	 */
+	function forgot_password() {
+
+		$this->load->helper(array('form', 'url'));
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('email', 'Email', 'required');
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$data['page_title'] = "Forgot Password";
+			$this->load->view('interface_assets/mini_header', $data);
+			$this->load->view('user/forgot_password');
+			$this->load->view('interface_assets/footer');
+		}
+		else
+		{
+			// Check email address exists
+			$this->load->model('user_model');
+			
+			$check_email = $this->user_model->check_email_address($this->input->post('email', true));
+
+			print_r($check_email);
+
+			if($check_email == TRUE) {
+				// Generate password reset code 50 characters long
+				$this->load->helper('string');
+				$reset_code = random_string('alnum', 50);
+
+				$this->user_model->set_password_reset_code($this->input->post('email', true), $reset_code);
+				
+				// Send email with reset code
+
+				$config = Array(
+					'protocol' => 'smtp',
+					'smtp_host' => 'smtp.mailtrap.io',
+					'smtp_port' => 2525,
+					'smtp_user' => '2a4ee81ff3810f',
+					'smtp_pass' => 'bd4ec48aa67b14',
+					'crlf' => "\r\n",
+					'newline' => "\r\n"
+				  );
+
+				$this->data['reset_code'] = $reset_code;
+				$this->load->library('email');
+				$this->email->initialize($config);
+				$message = $this->load->view('email/forgot_password', $this->data,  TRUE);
+
+				$this->email->from('noreply@cloudlog.co.uk', 'Cloudlog');
+				$this->email->to($this->input->post('email', true));
+
+				$this->email->subject('Cloudlog Account Password Reset');
+				$this->email->message($message);
+
+				$this->email->send();
+				// Redirect to login page with message
+				$this->session->set_flashdata('notice', 'Password Reset Processed.');
+				redirect('user/login');
+			} else {
+				// No account found just return to login page
+				$this->session->set_flashdata('notice', 'Password Reset Processed.');
+				redirect('user/login');
+			}
+		}
+	}
 }
