@@ -413,6 +413,25 @@ class User_Model extends CI_Model {
 		$this->db->update('users', $data);
 	}
 
+	/*
+	 * FUNCTION: reset_password
+	 *
+	 * Sets new password for users account where the reset code matches then clears the password reset code and password reset date.
+	 * 
+	 * @param string $password
+	 * @return string $reset_code
+	 */
+	function reset_password($password, $reset_code) {
+		$data = array(
+			'user_password' => $this->_hash($password),
+			'reset_password_code' => NULL,
+			'reset_password_date' => NULL
+		);
+				
+		$this->db->where('reset_password_code', $reset_code);
+		$this->db->update('users', $data);
+	}
+
 	// FUNCTION: bool _auth($password, $hash)
 	// Checks a password against the stored hash
 	private function _auth($password, $hash) {

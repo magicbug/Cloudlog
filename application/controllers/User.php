@@ -527,19 +527,9 @@ class User extends CI_Controller {
 				
 				// Send email with reset code
 
-				$config = Array(
-					'protocol' => 'smtp',
-					'smtp_host' => 'smtp.mailtrap.io',
-					'smtp_port' => 2525,
-					'smtp_user' => '2a4ee81ff3810f',
-					'smtp_pass' => 'bd4ec48aa67b14',
-					'crlf' => "\r\n",
-					'newline' => "\r\n"
-				  );
-
 				$this->data['reset_code'] = $reset_code;
 				$this->load->library('email');
-				$this->email->initialize($config);
+
 				$message = $this->load->view('email/forgot_password', $this->data,  TRUE);
 
 				$this->email->from('noreply@cloudlog.co.uk', 'Cloudlog');
@@ -557,6 +547,38 @@ class User extends CI_Controller {
 				$this->session->set_flashdata('notice', 'Password Reset Processed.');
 				redirect('user/login');
 			}
+		}
+	}
+
+	function reset_password($reset_code = NULL)
+	{
+		$data['reset_code'] = $reset_code;
+		if($reset_code != NULL) {
+			$this->load->helper(array('form', 'url'));
+
+			$this->load->library('form_validation');
+	
+			$this->form_validation->set_rules('password', 'Password', 'required');
+			$this->form_validation->set_rules('password_confirm', 'Password Confirmation', 'required|matches[password]');
+	
+			if ($this->form_validation->run() == FALSE)
+			{
+				$data['page_title'] = "Reset Password";
+				$this->load->view('interface_assets/mini_header', $data);
+				$this->load->view('user/reset_password');
+				$this->load->view('interface_assets/footer');
+			}
+			else
+			{
+				// Lets reset the password!
+				$this->load->model('user_model');
+			
+				$this->user_model->reset_password($this->input->post('password', true), $reset_code);
+				$this->session->set_flashdata('notice', 'Password Reset.');
+				redirect('user/login');
+			}
+		} else {
+			redirect('user/login');
 		}
 	}
 }
