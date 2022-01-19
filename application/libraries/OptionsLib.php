@@ -72,7 +72,7 @@ class OptionsLib {
     }
 
     // Function to update options within the options table
-    function update($option_name, $option_value) {
+    function update($option_name, $option_value, $auto_load = NULL) {
         // Make Codeigniter functions available to library
         $CI =& get_instance();
 
@@ -80,7 +80,7 @@ class OptionsLib {
         $CI->load->model('options_model');
         
         // call library function to save update
-        $result = $CI->options_model->update($option_name, $option_value);
+        $result = $CI->options_model->update($option_name, $option_value, $auto_load);
 
         // return True or False on whether its completed.
         return $result;

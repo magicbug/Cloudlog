@@ -516,8 +516,6 @@ class User extends CI_Controller {
 			
 			$check_email = $this->user_model->check_email_address($this->input->post('email', true));
 
-			print_r($check_email);
-
 			if($check_email == TRUE) {
 				// Generate password reset code 50 characters long
 				$this->load->helper('string');
@@ -530,6 +528,20 @@ class User extends CI_Controller {
 				$this->data['reset_code'] = $reset_code;
 				$this->load->library('email');
 
+				if($this->optionslib->get_option('emailProtocol') == "smtp") {
+					$config = Array(
+						'protocol' => $this->optionslib->get_option('emailProtocol'),
+						'smtp_host' => $this->optionslib->get_option('smtpHost'),
+						'smtp_port' => $this->optionslib->get_option('smtpPort'),
+						'smtp_user' => $this->optionslib->get_option('smtpUsername'),
+						'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
+						'crlf' => "\r\n",
+						'newline' => "\r\n"
+					  );
+
+					  $this->email->initialize($config);
+				}
+
 				$message = $this->load->view('email/forgot_password', $this->data,  TRUE);
 
 				$this->email->from('noreply@cloudlog.co.uk', 'Cloudlog');
@@ -538,10 +550,16 @@ class User extends CI_Controller {
 				$this->email->subject('Cloudlog Account Password Reset');
 				$this->email->message($message);
 
-				$this->email->send();
-				// Redirect to login page with message
-				$this->session->set_flashdata('notice', 'Password Reset Processed.');
-				redirect('user/login');
+				if (! $this->email->send())
+				{
+					// Redirect to login page with message
+					$this->session->set_flashdata('warning', 'Email settings are incorrect.');
+					redirect('user/login');
+				} else {
+					// Redirect to login page with message
+					$this->session->set_flashdata('notice', 'Password Reset Processed.');
+					redirect('user/login');
+				}
 			} else {
 				// No account found just return to login page
 				$this->session->set_flashdata('notice', 'Password Reset Processed.');

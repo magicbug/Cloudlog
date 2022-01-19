@@ -65,13 +65,14 @@ class Options_model extends CI_Model {
 	* - option_name: name of the option with no spaces
 	* - option_value: the value of the option name
 	*/
-	function update($option_name, $option_value) {
+	function update($option_name, $option_value, $auto_load = NULL) {
 		$this->db->where('option_name', $option_name);
 		$query = $this->db->get('options');
 
 		$data = array(
 			'option_name' => $option_name,
 			'option_value' => $option_value,
+			'autoload' => $auto_load,
 		);
 
 		if($query->num_rows() > 0) {
