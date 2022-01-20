@@ -51,9 +51,13 @@ function load_was_map() {
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/selectize.js"></script>
 
 <?php if ($this->uri->segment(1) == "station") { ?>
-    <!-- Javascript used for Notes Area -->
-    <script src="<?php echo base_url() ;?>assets/js/sections//station_locations.js"></script>
+    <script src="<?php echo base_url() ;?>assets/js/sections/station_locations.js"></script>
 <?php } ?>
+
+<?php if ($this->uri->segment(1) == "logbooks") { ?>
+    <script src="<?php echo base_url() ;?>assets/js/sections/station_logbooks.js"></script>
+<?php } ?>
+
 
 <?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
 

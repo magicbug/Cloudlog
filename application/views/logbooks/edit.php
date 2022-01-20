@@ -72,7 +72,7 @@
 		</div>
 
 	    <div class="table-responsive">
-			<table class="table table-hover">
+			<table id="station_logbooks_linked_table" class="table table-hover">
 				<thead class="thead-light">
 					<tr>
 						<th scope="col">Location Name</th>

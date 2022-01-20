@@ -28,7 +28,7 @@
 		<?php if ($my_logbooks->num_rows() > 0) { ?>
 
 		<div class="table-responsive">
-		<table class="table table-striped">
+		<table id="station_logbooks_table" class="table table-striped">
 			<thead>
 				<tr>
 					<th scope="col">Name</th>
