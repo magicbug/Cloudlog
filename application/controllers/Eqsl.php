@@ -451,6 +451,15 @@ class eqsl extends CI_Controller {
                     $adif .= "%20";
 				}
 
+                 if ($qsl['COL_COMMENT'] != ''){
+                    $adif .= "%3C";
+                    $adif .= "QSLMSG";
+                    $adif .= "%3A";
+                    $adif .= strlen($qsl['COL_COMMENT']);
+                    $adif .= "%3E";
+                    $adif .= $qsl['COL_COMMENT'];
+                    $adif .= "%20";
+                                }
 
 				# Tie a bow on it!
 				$adif .= "%3C";
