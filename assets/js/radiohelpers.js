@@ -37,8 +37,14 @@ function frequencyToBand(frequency) {
 	else if(result >= 144000000 && result <= 148000000) {
 		return '2m';
 	}
+	else if(result >= 219000000 && result <= 225000000) {
+		return '1.25m';
+	}
 	else if(result >= 430000000 && result <= 440000000) {
 		return '70cm';
+	}
+	else if(result >= 902000000 && result <= 928000000) {
+		return '33cm';
 	}
 	else if(result >= 1200000000 && result <= 1600000000) {
 		return '23cm';
