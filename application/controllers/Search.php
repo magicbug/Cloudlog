@@ -196,33 +196,33 @@ class Search extends CI_Controller {
 
 			if ($object['operator'] == "is_empty") {
 				if ($condition == "AND") {
-					$this->db->where($object['field'], "''");
+					$this->db->where($object['field'], '');
 				} else {
-					$this->db->or_where($object['field'], "''");
+					$this->db->or_where($object['field'], '');
 				}
 			}
 
 			if ($object['operator'] == "is_not_empty") {
 				if ($condition == "AND") {
-					$this->db->where($object['field'] . ' !=', "''");
+					$this->db->where($object['field'] . ' !=', '');
 				} else {
-					$this->db->or_where($object['field'] . ' !=', "''");
+					$this->db->or_where($object['field'] . ' !=', '');
 				}
 			}
 
 			if ($object['operator'] == "is_null") {
 				if ($condition == "AND") {
-					$this->db->where($object['field'] . ' is ', NULL);
+					$this->db->where($object['field'] . ' IS NULL');
 				} else {
-					$this->db->or_where($object['field'] . ' is ', NULL);
+					$this->db->or_where($object['field'] . ' IS NULL');
 				}
 			}
 
 			if ($object['operator'] == "is_not_null") {
 				if ($condition == "AND") {
-					$this->db->where($object['field'] . ' is not ', NULL);
+					$this->db->where($object['field'] . ' IS NOT NULL');
 				} else {
-					$this->db->or_where($object['field'] . ' is not ', NULL);
+					$this->db->or_where($object['field'] . ' IS NOT NULL');
 				}
 			}
 
