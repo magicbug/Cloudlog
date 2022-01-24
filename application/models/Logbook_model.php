@@ -1879,11 +1879,11 @@ class Logbook_model extends CI_Model {
      * $markQrz - used in ADIF import to mark QSOs as exported to QRZ Logbook when importing QSOs
      * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
      */
-	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $skipexport = false, $operatorName = false) {
+	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $skipexport = false, $operatorName = false, $apicall = false) {
         // be sure that station belongs to user
         $CI =& get_instance();
         $CI->load->model('Stations');
-        if (!$CI->Stations->check_station_is_accessible($station_id)) {
+        if (!$CI->Stations->check_station_is_accessible($station_id) && $apicall == false ) {
             return 'Station not accessible<br>';
         }
 
