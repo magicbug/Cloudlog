@@ -31,7 +31,7 @@
 	</tr>
 	
 	<tr>
-		<td>Locator</td>
+		<td>Gridsquare</td>
 		<td><?php if(isset($user_locator)) { echo $user_locator; } ?></td>
 	</tr>
 	
