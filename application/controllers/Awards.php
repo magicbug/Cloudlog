@@ -30,7 +30,12 @@ class Awards extends CI_Controller {
 		$this->load->model('dok');
 		$this->load->model('bands');
 
-		$data['doks'] = $this->dok->show_stats();
+		if($this->input->method() === 'post') {
+			$postdata['doks'] = $this->input->post('doks');
+		} else {
+			$postdata['doks'] = 'both';
+		}
+		$data['doks'] = $this->dok->show_stats($postdata);
 
         $data['worked_bands'] = $this->bands->get_worked_bands_dok(); // Used in the view for band select
 

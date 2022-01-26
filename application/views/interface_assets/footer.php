@@ -1313,7 +1313,7 @@ $(document).ready(function(){
             $.ajax({
                 url: baseURL + 'index.php/awards/dok_details_ajax',
                 type: 'post',
-                data: {'Dok': dok,
+                data: {'DOK': dok,
                     'Band': band
                 },
                 success: function(html) {
