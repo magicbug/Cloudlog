@@ -20,6 +20,7 @@ class Migration_fix_collate extends CI_Migration
 			'lotw_certs',
 			'migrations',
 			'notes',
+			'queries',
 			'options',
 			'qsl_images',
 			'station_logbooks',
