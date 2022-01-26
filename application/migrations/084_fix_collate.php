@@ -22,7 +22,6 @@ class Migration_fix_collate extends CI_Migration
 			'notes',
 			'options',
 			'qsl_images',
-			'queries',
 			'station_logbooks',
 			'station_logbooks_relationship',
 			'station_profile',
