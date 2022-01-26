@@ -415,7 +415,7 @@ class API_Model extends CI_Model {
 		'COL_CONTEST_ID'				=> array('Name' => 'ContestID', 'Description' => '', 'Type' => ''),
 		'COL_COUNTRY'					=> array('Name' => 'Country', 'Description' => '', 'Type' => ''),
 		'COL_CQZ'						=> array('Name' => 'CQZone', 'Description' => '', 'Type' => ''),
-		'COL_DARC_DOK'					=> array('Name' => 'Dok', 'Description' => '', 'Type' => ''),
+		'COL_DARC_DOK'					=> array('Name' => 'DOK', 'Description' => '', 'Type' => ''),
 		'COL_DISTANCE'					=> array('Name' => 'Distance', 'Description' => '', 'Type' => ''),
 		'COL_DXCC'						=> array('Name' => 'DXCC', 'Description' => '', 'Type' => ''),
 		'COL_EMAIL'						=> array('Name' => 'EMail', 'Description' => '', 'Type' => ''),
