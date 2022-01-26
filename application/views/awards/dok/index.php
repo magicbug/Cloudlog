@@ -39,7 +39,7 @@
         <td style="width:225px">DOKs (<?php echo count($doks)?>)</td>
     <?php
 	foreach ($worked_bands as $slot) {
-		echo "          <td>$slot</td>\n";
+		echo "          <td style=\"text-align: center;\">$slot</td>\n";
 	}
     ?>
         </tr>
@@ -51,9 +51,9 @@
             foreach($val as $band=>$count){
 		if (in_array($band, $worked_bands)) {
 	                if ($count == 0){
-	      	             print("<td>&nbsp;</td>");
+	                     print("<td style=\"text-align: right; padding-right: 2em\">&nbsp;</td>");
 	                }else{
-	                    printf("<td><a href='javascript:displayDokContacts(\"%s\",\"%s\")'>%d</a></td>", str_replace("&", "%26", $dok), $band, $count);
+	                    printf("<td style=\"text-align: right; padding-right: 2em\"><a href='javascript:displayDokContacts(\"%s\",\"%s\")'>%d</a></td>", str_replace("&", "%26", $dok), $band, $count);
 	                }
 		} 
             }
