@@ -77,7 +77,7 @@
                                         <option value="6m" <?php if($this->session->userdata('band') == "6m") { echo "selected=\"selected\""; } ?>>6m</option>
                                         <option value="4m" <?php if($this->session->userdata('band') == "4m") { echo "selected=\"selected\""; } ?>>4m</option>
                                         <option value="2m" <?php if($this->session->userdata('band') == "2m") { echo "selected=\"selected\""; } ?>>2m</option>
-                                        <option value="1.25m"> <?php if($this->session->userdata('band') == "1.25m") echo "selected=\"selected\""; } ?>>1.25m</option>
+                                        <option value="1.25m" <?php if($this->session->userdata('band') == "1.25m") { echo "selected=\"selected\""; } ?>>1.25m</option>
                                     </optgroup>
 
                                     <optgroup label="UHF">
