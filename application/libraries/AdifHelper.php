@@ -46,6 +46,10 @@ class AdifHelper {
 
         $line .= $this->getAdifFieldLine("QSL_SENT", $qso->COL_QSL_SENT);
 
+	$line .= $this->getAdifFieldLine("LOTW_QSL_RCVD", $qso->COL_LOTW_QSL_RCVD);
+
+	$line .= $this->getAdifFieldLine("LOTW_QSL_SENT", $qso->COL_LOTW_QSL_SENT);
+
         if ($qso->COL_QSL_VIA) {
             $line .= $this->getAdifFieldLine("QSL_VIA", $qso->COL_QSL_VIA);
         }
