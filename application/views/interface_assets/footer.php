@@ -249,7 +249,7 @@ function load_was_map() {
                             $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
                             $("#query_" + id).remove(); // removes query from table in dialog
                             $("#querydropdown option[value='" + id + "']").remove(); // removes query from dropdown
-                            if ($("#querydropdown option").length == 0) { 
+                            if ($("#querydropdown option").length == 0) {
                                 $("#btn-edit").remove();
                                 $('.querydropdownform').remove();
                             };
@@ -1767,7 +1767,7 @@ $(document).ready(function(){
 function viewQsl(picture, callsign) {
             var baseURL= "<?php echo base_url();?>";
             var $textAndPic = $('<div></div>');
-                $textAndPic.append('<img class="img-fluid" style="height:auto;width:auto;"src="'+baseURL+'/assets/qslcard/'+picture+'" />');
+                $textAndPic.append('<img class="img-fluid" style="height:auto;width:auto;"src="'+picture+'" />');
             var title = '';
             if (callsign == null) {
                 title = 'QSL Card';
@@ -1875,11 +1875,11 @@ function deleteQsl(id) {
                     if ($('.qsltable').length > 0) {
                         $('.qsltable tr:last').after('<tr><td style="text-align: center">'+data.status.front.filename+'</td>' +
                             '<td id="'+data.status.front.insertid+'"style="text-align: center"><button onclick="deleteQsl('+data.status.front.insertid+');" class="btn btn-sm btn-danger">Delete</button></td>' +
-                            '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.front.filename + '\')" class="btn btn-sm btn-success">View</button></td>'+
+                            '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.front.url + '\')" class="btn btn-sm btn-success">View</button></td>'+
                             '</tr>');
                         var quantity = $(".carousel-indicators li").length;
                         $(".carousel-indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
-                        $(".carousel-inner").append('<div class="carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="d-block w-100" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carousel-inner").append('<div class="carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="d-block w-100" src="'+data.status.front.url+'" alt="QSL picture #'+(quantity+1)+'"></div>');
                         $("#qslcardfront").val(null);
                     }
                     else {
@@ -1893,13 +1893,13 @@ function deleteQsl(id) {
                             '</thead><tbody>'+
                                 '<tr><td style="text-align: center">'+data.status.front.filename+'</td>' +
                             '<td id="'+data.status.front.insertid+'"style="text-align: center"><button onclick="deleteQsl('+data.status.front.insertid+');" class="btn btn-sm btn-danger">Delete</button></td>' +
-                            '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.front.filename + '\')" class="btn btn-sm btn-success">View</button></td>'+
+                            '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.front.url + '\')" class="btn btn-sm btn-success">View</button></td>'+
                             '</tr>'+
                         '</tbody></table>');
                         $('.qslcardtab').removeAttr('hidden');
                         var quantity = $(".carousel-indicators li").length;
                         $(".carousel-indicators").append('<li class="active" data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
-                        $(".carousel-inner").append('<div class="active carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="d-block w-100" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carousel-inner").append('<div class="active carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="d-block w-100" src="'+data.status.front.url+'" alt="QSL picture #'+(quantity+1)+'"></div>');
                         $(".carouselExampleIndicators").carousel();
                         $("#qslcardfront").val(null);
                     }
@@ -1914,11 +1914,11 @@ function deleteQsl(id) {
                     if ($('.qsltable').length > 0) {
                         $('.qsltable tr:last').after('<tr><td style="text-align: center">'+data.status.back.filename+'</td>' +
                             '<td id="'+data.status.back.insertid+'"style="text-align: center"><button onclick="deleteQsl('+data.status.back.insertid+');" class="btn btn-sm btn-danger">Delete</button></td>' +
-                            '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.back.filename + '\')" class="btn btn-sm btn-success">View</button></td>'+
+                            '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.back.url + '\')" class="btn btn-sm btn-success">View</button></td>'+
                             '</tr>');
                         var quantity = $(".carousel-indicators li").length;
                         $(".carousel-indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
-                        $(".carousel-inner").append('<div class="carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="d-block w-100" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carousel-inner").append('<div class="carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="d-block w-100" src="'+data.status.back.url+'" alt="QSL picture #'+(quantity+1)+'"></div>');
                         $("#qslcardback").val(null);
                     }
                     else {
@@ -1938,7 +1938,7 @@ function deleteQsl(id) {
                         $('.qslcardtab').removeAttr('hidden');
                         var quantity = $(".carousel-indicators li").length;
                         $(".carousel-indicators").append('<li class="active" data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
-                        $(".carousel-inner").append('<div class="active carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="d-block w-100" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carousel-inner").append('<div class="active carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="d-block w-100" src="'+data.status.back.url+'" alt="QSL picture #'+(quantity+1)+'"></div>');
                         $(".carouselExampleIndicators").carousel();
                         $("#qslcardback").val(null);
                     }
@@ -1953,14 +1953,14 @@ function deleteQsl(id) {
 </script>
 <script>
 
-	function addQsosToQsl(filename) {
+	function addQsosToQsl(file_id) {
 		var title = 'Add additional QSOs to a QSL Card';
 
 		var baseURL= "<?php echo base_url();?>";
 		$.ajax({
 			url: baseURL + 'index.php/qsl/loadSearchForm',
 			type: 'post',
-			data: {'filename': filename},
+			data: {'file_id': file_id},
 			success: function(html) {
 				BootstrapDialog.show({
 					title: title,
@@ -1979,14 +1979,14 @@ function deleteQsl(id) {
 		});
 	}
 
-	function addQsoToQsl(qsoid, filename, id) {
+	function addQsoToQsl(qsoid, file_id, id) {
 		var title = 'Add additional QSOs to a QSL Card';
 
 		var baseURL= "<?php echo base_url();?>";
 		$.ajax({
 			url: baseURL + 'index.php/qsl/addQsoToQsl',
 			type: 'post',
-			data: {'filename': filename, 'qsoid': qsoid},
+			data: {'file_id': file_id, 'qsoid': qsoid},
 			success: function(html) {
 				if (html.status == 'Success') {
 					location.reload();
@@ -1998,12 +1998,12 @@ function deleteQsl(id) {
 		});
 	}
 
-	function searchAdditionalQsos(filename) {
+	function searchAdditionalQsos(file_id) {
 		var baseURL= "<?php echo base_url();?>";
 		$.ajax({
 			url: baseURL + 'index.php/qsl/searchQsos',
 			type: 'post',
-			data: {'callsign': $('#callsign').val(), 'filename': filename},
+			data: {'callsign': $('#callsign').val(), 'file_id': file_id},
 			success: function(html) {
 				$('#searchresult').empty();
 				$('#searchresult').append(html);

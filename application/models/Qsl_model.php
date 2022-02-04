@@ -12,9 +12,10 @@ class Qsl_model extends CI_Model {
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        $this->db->select('*');
+        $this->db->select('*, qsl_images.id as qsl_id');
         $this->db->from($this->config->item('table_name'));
         $this->db->join('qsl_images', 'qsl_images.qsoid = ' . $this->config->item('table_name') . '.col_primary_key');
+		$this->db->join('files', 'files.id = qsl_images.file_id', 'left');
         $this->db->where('station_id', $station_id);
 
         return $this->db->get();
@@ -24,17 +25,18 @@ class Qsl_model extends CI_Model {
         // Clean ID
         $clean_id = $this->security->xss_clean($id);
 
-        $this->db->select('*');
+        $this->db->select('*, qsl_images.id as qsl_id');
         $this->db->from('qsl_images');
+		$this->db->join('files', 'files.id = qsl_images.file_id', 'left');
         $this->db->where('qsoid', $clean_id);
 
         return $this->db->get()->result();
     }
 
-    function saveQsl($qsoid, $filename) {
+    function saveQsl($qsoid, $file_id) {
         $data = array(
             'qsoid' => $qsoid,
-            'filename' => $filename
+            'file_id' => $file_id
         );
 
         $this->db->insert('qsl_images', $data);
@@ -50,11 +52,11 @@ class Qsl_model extends CI_Model {
         $this->db->delete('qsl_images', array('id' => $clean_id));
     }
 
-    function getFilename($id) {
+    function getFileId($id) {
         // Clean ID
         $clean_id = $this->security->xss_clean($id);
 
-        $this->db->select('filename');
+        $this->db->select('file_id');
         $this->db->from('qsl_images');
         $this->db->where('id', $clean_id);
 
@@ -74,17 +76,26 @@ class Qsl_model extends CI_Model {
 		return $this->db->get();
 	}
 
-	function addQsotoQsl($qsoid, $filename) {
+	function addQsotoQsl($qsoid, $file_id) {
 		$clean_qsoid = $this->security->xss_clean($qsoid);
-		$clean_filename = $this->security->xss_clean($filename);
+		$clean_file_id = $this->security->xss_clean($file_id);
 
 		$data = array(
-			'qsoid' => $qsoid,
-			'filename' => $filename
+			'qsoid' => $clean_qsoid,
+			'file_id' => $clean_file_id
 		);
 
 		$this->db->insert('qsl_images', $data);
 
 		return $this->db->insert_id();
+	}
+
+	function getQslFileReference($file_id)
+	{
+		$this->db->select('count(*) as num');
+		$this->db->from('qsl_images');
+		$this->db->where('file_id', $file_id);
+
+		return $this->db->get()->result()[0]->num;
 	}
 }
