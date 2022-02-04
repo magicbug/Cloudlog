@@ -1,5 +1,7 @@
 # Cloudlog
 
+> Important: Currently only accepting PRs on the "station_logbooks" branch this will then become version 2.0 release.
+
 Cloudlog is a self-hosted PHP application that allows you to log your amateur radio contacts anywhere. All you need is a web browser and active internet connection.
 
 Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
@@ -29,6 +31,8 @@ If you discover a security vulnerability within Cloudlog, please send an e-mail 
 If you would prefer not to setup Cloudlog yourself [magicbug](https://magicbug.co.uk) offer hosted solutions, this is priced at £4 a month at the moment and they take care of keeping it updated.
 
 ## Contributing
+
+> Important: Currently only accepting PRs on the "station_logbooks" branch this will then become version 2.0 release.
 
 If you would like to contribute in any way to Cloudlog, it is most appreciated. This has been developed in free time, help coding new features or writing documentation is always useful.
 
