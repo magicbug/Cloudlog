@@ -165,7 +165,7 @@
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
 			}
 			echo '</td>
-				<td><button onclick="addQsoToQsl(' . $row->COL_PRIMARY_KEY . ', \'' . $filename . '\')" class="btn-sm btn-success" type="button"> Add to QSL</button></td>';
+				<td><button onclick="addQsoToQsl(' . $row->COL_PRIMARY_KEY . ', \'' . $file_id . '\')" class="btn-sm btn-success" type="button"> Add to QSL</button></td>';
 			echo '</tr>';
 			$i++; } ?>
 

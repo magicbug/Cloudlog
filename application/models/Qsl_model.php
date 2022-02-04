@@ -5,33 +5,16 @@ class Qsl_model extends CI_Model {
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $this->db->select('*');
+        $this->db->select('*, qsl_images.id as qsl_id');
         $this->db->from($this->config->item('table_name'));
         $this->db->join('qsl_images', 'qsl_images.qsoid = ' . $this->config->item('table_name') . '.col_primary_key');
+		$this->db->join('files', 'files.id = qsl_images.file_id', 'left');
         $this->db->where_in('station_id', $logbooks_locations_array);
 
         return $this->db->get();
     }
 
-    function getQslForQsoId($id) {
-        // Clean ID
-        $clean_id = $this->security->xss_clean($id);
-
-        // be sure that QSO belongs to user
-        $CI =& get_instance();
-        $CI->load->model('logbook_model');
-        if (!$CI->logbook_model->check_qso_is_accessible($clean_id)) {
-            return;
-        }
-
-        $this->db->select('*');
-        $this->db->from('qsl_images');
-        $this->db->where('qsoid', $clean_id);
-
-        return $this->db->get()->result();
-    }
-
-    function saveQsl($qsoid, $filename) {
+    function getQslForQsoId($qsoid) {
         // Clean ID
         $clean_id = $this->security->xss_clean($qsoid);
 
@@ -42,9 +25,28 @@ class Qsl_model extends CI_Model {
             return;
         }
 
+        $this->db->select('*, qsl_images.id as qsl_id');
+        $this->db->from('qsl_images');
+		$this->db->join('files', 'files.id = qsl_images.file_id', 'left');
+        $this->db->where('qsoid', $clean_id);
+
+        return $this->db->get()->result();
+    }
+
+    function saveQsl($qsoid, $file_id) {
+        $clean_id = $this->security->xss_clean($qsoid);
+        $clean_file_id = $this->security->xss_clean($file_id);
+
+        // be sure that QSO belongs to user
+        $CI =& get_instance();
+        $CI->load->model('logbook_model');
+        if (!$CI->logbook_model->check_qso_is_accessible($clean_id)) {
+            return;
+        }
+
         $data = array(
             'qsoid' => $clean_id,
-            'filename' => $filename
+            'file_id' => $clean_file_id
         );
 
         $this->db->insert('qsl_images', $data);
@@ -52,33 +54,33 @@ class Qsl_model extends CI_Model {
         return $this->db->insert_id();
     }
 
-    function deleteQsl($id) {
+    function deleteQsl($qsl_id) {
         // Clean ID
-        $clean_id = $this->security->xss_clean($id);
+        $clean_id = $this->security->xss_clean($qsl_id);
 
         // be sure that QSO belongs to user
         $CI =& get_instance();
         $CI->load->model('logbook_model');
         if (!$CI->logbook_model->check_qso_is_accessible($clean_id)) {
-            return;
+            //return;
         }
 
         // Delete Mode
         $this->db->delete('qsl_images', array('id' => $clean_id));
     }
 
-    function getFilename($id) {
+    function getFileId($qsl_id) {
         // Clean ID
-        $clean_id = $this->security->xss_clean($id);
+        $clean_id = $this->security->xss_clean($qsl_id);
 
         // be sure that QSO belongs to user
         $CI =& get_instance();
         $CI->load->model('logbook_model');
         if (!$CI->logbook_model->check_qso_is_accessible($clean_id)) {
-            return;
+            //return;
         }
 
-        $this->db->select('filename');
+        $this->db->select('file_id');
         $this->db->from('qsl_images');
         $this->db->where('id', $clean_id);
 
@@ -98,9 +100,9 @@ class Qsl_model extends CI_Model {
 		return $this->db->get();
 	}
 
-	function addQsotoQsl($qsoid, $filename) {
+	function addQsotoQsl($qsoid, $file_id) {
 		$clean_qsoid = $this->security->xss_clean($qsoid);
-		$clean_filename = $this->security->xss_clean($filename);
+		$clean_file_id = $this->security->xss_clean($file_id);
 
 		// be sure that QSO belongs to user
 		$CI =& get_instance();
@@ -111,11 +113,20 @@ class Qsl_model extends CI_Model {
 
 		$data = array(
 			'qsoid' => $clean_qsoid,
-			'filename' => $filename
+			'file_id' => $clean_file_id
 		);
 
 		$this->db->insert('qsl_images', $data);
 
 		return $this->db->insert_id();
+	}
+
+	function getQslFileReference($file_id)
+	{
+		$this->db->select('count(*) as num');
+		$this->db->from('qsl_images');
+		$this->db->where('file_id', $file_id);
+
+		return $this->db->get()->result()[0]->num;
 	}
 }

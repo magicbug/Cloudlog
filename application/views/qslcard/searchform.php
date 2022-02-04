@@ -5,7 +5,7 @@
 					<input type="text" class="form-control" id="callsign" value="">
 				</div>
 				<div class="col-sm-2">
-					<button onclick="searchAdditionalQsos('<?php echo $filename; ?>')" class="btn-sm btn-success" type="button"><i class="fas fa-search"></i> Search</button>
+					<button onclick="searchAdditionalQsos('<?php echo $file_id; ?>')" class="btn-sm btn-success" type="button"><i class="fas fa-search"></i> Search</button>
 				</div>
 			</div>
 		</form>

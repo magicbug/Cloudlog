@@ -355,7 +355,7 @@
                 echo '<tr>';
                     echo '<td style=\'text-align: center\'>' . $qsl->filename . '</td>';
                     echo '<td id="'.$qsl->id.'" style=\'text-align: center\'><button onclick="deleteQsl('.$qsl->id.')" class="btn btn-sm btn-danger">Delete</button></td>';
-                    echo '<td style=\'text-align: center\'><button onclick="viewQsl(\''.$qsl->filename.'\')" class="btn btn-sm btn-success">View</button></td>';
+                    echo '<td style=\'text-align: center\'><button onclick="viewQsl(\''.$qsl->url.'\')" class="btn btn-sm btn-success">View</button></td>';
                     echo '</tr>';
                 }
 
@@ -411,7 +411,7 @@
                             echo ' active';
                         }
                         echo '">';
-                        echo '<img class="d-block w-100" src="' . base_url() . '/assets/qslcard/' . $image->filename .'" alt="QSL picture #'. $i++.'">';
+                        echo '<img class="d-block w-100" src="' . $image->url .'" alt="QSL picture #'. $i++.'">';
                         echo '</div>';
                     }
                     ?>
@@ -435,7 +435,7 @@
 
 <?php
 	if($row->COL_GRIDSQUARE != null && strlen($row->COL_GRIDSQUARE) >= 4) {
-		$stn_loc = $this->qra->qra2latlong(trim($row->COL_GRIDSQUARE));	
+		$stn_loc = $this->qra->qra2latlong(trim($row->COL_GRIDSQUARE));
         if($stn_loc[0] != 0) {
 		    $lat = $stn_loc[0];
 		    $lng = $stn_loc[1];
