@@ -12,7 +12,7 @@ class Activated_grids_model extends CI_Model {
         }
 
         $this->db->select('distinct substring(COL_MY_GRIDSQUARE,1,6) as SAT_SQUARE, COL_SAT_NAME', FALSE);
-//        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->where_in('station_id', $logbooks_locations_array);
         $this->db->where('COL_MY_GRIDSQUARE !=', '');
         $this->db->where('COL_SAT_NAME !=', '');
 
@@ -32,8 +32,7 @@ class Activated_grids_model extends CI_Model {
 
 		$sql = 'SELECT distinct substring(COL_MY_GRIDSQUARE,1,6) as SAT_SQUARE, COL_SAT_NAME FROM '
 			. $this->config->item('table_name')
-			. ' WHERE COL_MY_GRIDSQUARE != "" AND COL_SAT_NAME != "" AND (COL_LOTW_QSL_SENT = "Y" OR COL_QSL_SENT = "Y")';
-			// . ' WHERE station_id in (' . $location_list . ') AND COL_MY_GRIDSQUARE != "" AND COL_SAT_NAME != "" AND (COL_LOTW_QSL_SENT = "Y" OR COL_QSL_SENT = "Y")';
+			. ' WHERE station_id in (' . $location_list . ') AND COL_MY_GRIDSQUARE != "" AND COL_SAT_NAME != "" AND (COL_LOTW_QSL_SENT = "Y" OR COL_QSL_SENT = "Y")';
 
 		return $this->db->query($sql);
 	}
@@ -82,9 +81,9 @@ class Activated_grids_model extends CI_Model {
             return null;
         }
 
-        $this->db->select('distinct substring(COL_GRIDSQUARE,1,6) as GRID_SQUARES, COL_BAND', FALSE);
+        $this->db->select('distinct substring(COL_MY_GRIDSQUARE,1,6) as GRID_SQUARES, COL_BAND', FALSE);
         $this->db->where_in('station_id', $logbooks_locations_array);
-        $this->db->where('COL_GRIDSQUARE !=', '');
+        $this->db->where('COL_MY_GRIDSQUARE !=', '');
 
         if ($band != 'All') {
             $this->db->where('COL_BAND', $band);
@@ -109,10 +108,10 @@ class Activated_grids_model extends CI_Model {
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
-		$sql = 'SELECT distinct substring(COL_GRIDSQUARE,1,6) as GRID_SQUARES, COL_BAND FROM '
+		$sql = 'SELECT distinct substring(COL_MY_GRIDSQUARE,1,6) as GRID_SQUARES, COL_BAND FROM '
 			.$this->config->item('table_name')
 			.' WHERE station_id in ('
-			.$location_list.') AND COL_GRIDSQUARE != ""';
+			.$location_list.') AND COL_MY_GRIDSQUARE != ""';
 		if ($band != 'All') {
 			$sql .= ' AND COL_BAND = "' . $band
 				.'"
@@ -123,7 +122,7 @@ class Activated_grids_model extends CI_Model {
             AND COL_SAT_NAME = ""';
 		}
 
-		$sql .= ' AND (COL_LOTW_QSL_RCVD = "Y" OR COL_QSL_RCVD = "Y")';
+		$sql .= ' AND (COL_LOTW_QSL_SENT = "Y" OR COL_QSL_SENT = "Y")';
 
 		return $this->db->query($sql);
 	}
@@ -138,7 +137,7 @@ class Activated_grids_model extends CI_Model {
         $sql = 'SELECT COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_GRIDSQUARE, COL_VUCC_GRIDS FROM '
             .$this->config->item('table_name')
             .' WHERE station_id IN (' . $location_list . ') '
-			. ' AND (COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" or COL_VUCC_GRIDS LIKE "%'.$gridsquare.'%")';
+			. ' AND (COL_MY_GRIDSQUARE LIKE "%'.$gridsquare.'%")';
 
         if ($band != 'All') {
             $sql .= ' AND COL_BAND = "' . $band
@@ -166,7 +165,7 @@ class Activated_grids_model extends CI_Model {
         $sql = 'SELECT COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_SAT_NAME, COL_GRIDSQUARE, COL_VUCC_GRIDS FROM ' .
 				$this->config->item('table_name').
 				' WHERE station_id IN ('.$location_list. ')' .
-				' AND (COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" or COL_VUCC_GRIDS LIKE "%'.$gridsquare.'%")'.
+				' AND (COL_MY_GRIDSQUARE LIKE "%'.$gridsquare.'%")'.
 				' AND COL_PROP_MODE = "SAT"';
 
         $result = $this->db->query($sql);

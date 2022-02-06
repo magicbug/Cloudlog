@@ -1232,7 +1232,7 @@ $(document).ready(function(){
 				  'Searchphrase': loc_4char,
 				  'Band': band,
 				  'Mode': 'All',
-				  'Type': 'VUCC'
+				  'Type': 'GridActivator'
 			  },
 			  success: function (html) {
 				$(".modal-body").html(html);

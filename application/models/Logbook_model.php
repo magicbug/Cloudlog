@@ -270,6 +270,9 @@ class Logbook_model extends CI_Model {
 			case 'VUCC':
 				$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
 				break;
+			case 'GridActivator':
+				$this->db->where("(COL_MY_GRIDSQUARE like '%" . $searchphrase . "%')");
+				break;
 			case 'CQZone':
 				$this->db->where('COL_CQZ', $searchphrase);
 				break;
