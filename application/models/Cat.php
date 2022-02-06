@@ -4,6 +4,12 @@
 
 		function update($result, $user_id) {
 
+			if ($result['timestamp'] != "") {
+				$timestamp = $result['timestamp'];
+			} else {
+				$timestamp = date("Y-m-d H:i:s");
+			}
+
 			$this->db->where('radio', $result['radio']);
 			$this->db->where('user_id', $user_id);
 			$query = $this->db->get('cat');
@@ -37,7 +43,7 @@
 						$data = array(
 						'frequency' => $result['frequency'],
 						'mode' => $result['mode'],
-						'timestamp' => $result['timestamp'],
+						'timestamp' => $timestamp,
 						);
 
 						$this->db->where('id', $radio_id);
@@ -65,7 +71,7 @@
 						'radio' => $result['radio'],
 						'frequency' => $result['frequency'],
 						'mode' => $result['mode'],
-						'timestamp' => $result['timestamp'],
+						'timestamp' => $timestamp,
 						'user_id' => $user_id,
 					);
 				}

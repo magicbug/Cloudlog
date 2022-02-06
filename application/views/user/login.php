@@ -15,7 +15,9 @@
 	</div>
 	<div class="form-group">
 		<input class="btn-info p-2 col" type="submit" value="Log in" />
-	</div
+	</div>
 </form>
+
+<p><a href="<?php echo site_url('user/forgot_password'); ?>">Forgot your password?</a></p>
 
 </div>

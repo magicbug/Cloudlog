@@ -105,17 +105,20 @@
                                                 <option value="6m" <?php if(strtolower($qso->COL_BAND == "6m")) { echo "selected=\"selected\""; } ?>>6m</option>
                                                 <option value="4m" <?php if(strtolower($qso->COL_BAND == "4m")) { echo "selected=\"selected\""; } ?>>4m</option>
                                                 <option value="2m" <?php if(strtolower($qso->COL_BAND == "2m")) { echo "selected=\"selected\""; } ?>>2m</option>
+                                                <option value="1.25m" <?php if(strtolower($qso->COL_BAND == "1.25m")) { echo "selected=\"selected\""; } ?>>1.25m</option>
                                             </optgroup>
 
                                             <optgroup label="UHF">
                                                 <option value="70cm" <?php if(strtolower($qso->COL_BAND == "70cm")) { echo "selected=\"selected\""; } ?>>70cm</option>
-                                                <option value="23cm" <?php if(strtolower($qso->COL_BAND == "23cm")) { echo "selected=\"selected\""; } ?>>23cm</option>
-                                                <option value="13cm" <?php if(strtolower($qso->COL_BAND == "13cm")) { echo "selected=\"selected\""; } ?>>13cm</option>
-                                                <option value="9cm" <?php if(strtolower($qso->COL_BAND == "9cm")) { echo "selected=\"selected\""; } ?>>9cm</option>
+                                                <option value="33cm" <?php if(strtolower($qso->COL_BAND == "33cm")) { echo "selected=\"selected\""; } ?>>33cm</option>
                                             </optgroup>
 
                                             <optgroup label="Microwave">
-                                                <option value="3cm" <?php if($qso->COL_BAND == "3cm") { echo "selected=\"selected\""; } ?>>3cm</option>
+                                                <option value="23cm" <?php if(strtolower($qso->COL_BAND == "23cm")) { echo "selected=\"selected\""; } ?>>23cm</option>
+                                                <option value="13cm" <?php if(strtolower($qso->COL_BAND == "13cm")) { echo "selected=\"selected\""; } ?>>13cm</option>
+                                                <option value="9cm" <?php if(strtolower($qso->COL_BAND == "9cm")) { echo "selected=\"selected\""; } ?>>9cm</option>
+                                                <option value="6cm" <?php if(strtolower($qso->COL_BAND == "6cm")) { echo "selected=\"selected\""; } ?>>6cm</option>
+                                                <option value="3cm" <?php if(strtolower($qso->COL_BAND == "3cm")) { echo "selected=\"selected\""; } ?>>3cm</option>
                                             </optgroup>
                                         </select>
                                     </div>
@@ -141,17 +144,19 @@
                                                 <option value="6m" <?php if(strtolower($qso->COL_BAND_RX == "6m")) { echo "selected=\"selected\""; } ?>>6m</option>
                                                 <option value="4m" <?php if(strtolower($qso->COL_BAND_RX == "4m")) { echo "selected=\"selected\""; } ?>>4m</option>
                                                 <option value="2m" <?php if(strtolower($qso->COL_BAND_RX == "2m")) { echo "selected=\"selected\""; } ?>>2m</option>
+                                                <option value="1.25m" <?php if(strtolower($qso->COL_BAND_RX == "1.25m")) { echo "selected=\"selected\""; } ?>>1.25m</option>
                                             </optgroup>
 
                                             <optgroup label="UHF">
                                                 <option value="70cm" <?php if(strtolower($qso->COL_BAND_RX == "70cm")) { echo "selected=\"selected\""; } ?>>70cm</option>
                                                 <option value="23cm" <?php if(strtolower($qso->COL_BAND_RX == "23cm")) { echo "selected=\"selected\""; } ?>>23cm</option>
-                                                <option value="13cm" <?php if(strtolower($qso->COL_BAND_RX == "13cm")) { echo "selected=\"selected\""; } ?>>13cm</option>
-                                                <option value="9cm" <?php if(strtolower($qso->COL_BAND_RX == "9cm")) { echo "selected=\"selected\""; } ?>>9cm</option>
                                             </optgroup>
 
                                             <optgroup label="Microwave">
-                                                <option value="3cm" <?php if($qso->COL_BAND_RX == "3cm") { echo "selected=\"selected\""; } ?>>3cm</option>
+                                                <option value="13cm" <?php if(strtolower($qso->COL_BAND_RX == "13cm")) { echo "selected=\"selected\""; } ?>>13cm</option>
+                                                <option value="9cm" <?php if(strtolower($qso->COL_BAND_RX == "9cm")) { echo "selected=\"selected\""; } ?>>9cm</option>
+                                                <option value="6cm" <?php if(strtolower($qso->COL_BAND_RX == "6cm")) { echo "selected=\"selected\""; } ?>>6cm</option>
+                                                <option value="3cm" <?php if(strtolower($qso->COL_BAND_RX == "3cm")) { echo "selected=\"selected\""; } ?>>3cm</option>
                                             </optgroup>
                                         </select>
                                     </div>
@@ -468,8 +473,8 @@
                                                     <option value="N" <?php if($qso->COL_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
                                                     <option value="Y" <?php if($qso->COL_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
                                                     <option value="R" <?php if($qso->COL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
-                                                    <option value="Q" <?php if($qso->COL_QSL_RCVD == "I") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
-                                                    <option value="I" <?php if($qso->COL_QSL_RCVD == "V") { echo "selected=\"selected\""; } ?>>Verified (Match)</option>
+                                                    <option value="I" <?php if($qso->COL_QSL_RCVD == "I") { echo "selected=\"selected\""; } ?>>Invalid (Ignore)</option>
+                                                    <option value="V" <?php if($qso->COL_QSL_RCVD == "V") { echo "selected=\"selected\""; } ?>>Verified (Match)</option>
                                                 </select>
                                             </div>
                                         </div>

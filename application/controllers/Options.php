@@ -149,4 +149,107 @@ class Options extends CI_Controller {
 		}
     }
 
+	// function used to display the /appearance url
+	function email() {
+
+		$data['page_title'] = "Cloudlog Options";
+		$data['sub_heading'] = "Email";
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('options/email');
+		$this->load->view('interface_assets/footer');
+    }
+
+	// Handles saving the radio options to the options system.
+	function email_save() {
+
+			// Get Language Options
+	
+			$data['page_title'] = "Cloudlog Options";
+			$data['sub_heading'] = "Email";
+	
+			$this->load->helper(array('form', 'url'));
+	
+			$this->load->library('form_validation');
+	
+			$this->form_validation->set_rules('emailProtocol', 'Email Protocol', 'required');
+	
+			if ($this->form_validation->run() == FALSE)
+			{
+				$this->load->view('interface_assets/header', $data);
+				$this->load->view('options/email');
+				$this->load->view('interface_assets/footer');
+			}
+			else
+			{
+
+				// Update emailProtocol choice within the options system
+				$emailProtocolupdate = $this->optionslib->update('emailProtocol', $this->input->post('emailProtocol'), 'yes');
+	
+				// If emailProtocolupdate update is complete set a flashsession with a success note
+				if($emailProtocolupdate == TRUE) {
+					$this->session->set_flashdata('success', 'Outgoing Email Protocol changed to '.$this->input->post('emailProtocol'));
+				}
+
+				// Update smtpEncryption choice within the options system
+				$smtpEncryptionupdate = $this->optionslib->update('smtpEncryption', $this->input->post('smtpEncryption'), 'yes');
+	
+				// If smtpEncryption update is complete set a flashsession with a success note
+				if($smtpEncryptionupdate == TRUE) {
+					$this->session->set_flashdata('success', 'SMTP Encryption changed to '.$this->input->post('smtpEncryption'));
+				}
+
+				// Update smtpHost choice within the options system
+				$smtpHostupdate = $this->optionslib->update('smtpHost', $this->input->post('smtpHost'), 'yes');
+	
+				// If smtpHost update is complete set a flashsession with a success note
+				if($smtpHostupdate == TRUE) {
+					$this->session->set_flashdata('success', 'SMTP Host changed to '.$this->input->post('smtpHost'));
+				}
+
+				// Update smtpPort choice within the options system
+				$smtpPortupdate = $this->optionslib->update('smtpPort', $this->input->post('smtpPort'), 'yes');
+	
+				// If smtpPort update is complete set a flashsession with a success note
+				if($smtpPortupdate == TRUE) {
+					$this->session->set_flashdata('success', 'SMTP Port changed to '.$this->input->post('smtpPort'));
+				}
+	
+				// Update smtpUsername choice within the options system
+				$smtpUsernameupdate = $this->optionslib->update('smtpUsername', $this->input->post('smtpUsername'), 'yes');
+	
+				// If smtpUsername update is complete set a flashsession with a success note
+				if($smtpUsernameupdate == TRUE) {
+					$this->session->set_flashdata('success', 'SMTP Username changed to '.$this->input->post('smtpUsername'));
+				}
+
+				// Update smtpPassword choice within the options system
+				$smtpPasswordupdate = $this->optionslib->update('smtpPassword', $this->input->post('smtpPassword'), 'yes');
+	
+				// If smtpPassword update is complete set a flashsession with a success note
+				if($smtpPasswordupdate == TRUE) {
+					$this->session->set_flashdata('success', 'SMTP Password changed to '.$this->input->post('smtpPassword'));
+				}
+
+				// Update emailcrlf choice within the options system
+				$emailcrlfupdate = $this->optionslib->update('emailcrlf', $this->input->post('emailcrlf'), 'yes');
+	
+				// If emailcrlf update is complete set a flashsession with a success note
+				if($emailcrlfupdate == TRUE) {
+					$this->session->set_flashdata('success', 'Email CRLF changed to '.$this->input->post('emailcrlf'));
+				}
+
+				// Update emailnewline choice within the options system
+				$emailnewlineupdate = $this->optionslib->update('emailnewline', $this->input->post('emailnewline'), 'yes');
+	
+				// If emailnewline update is complete set a flashsession with a success note
+				if($emailnewlineupdate == TRUE) {
+					$this->session->set_flashdata('success', 'Email Newline changed to '.$this->input->post('emailnewline'));
+				}
+	
+				// Redirect back to /appearance
+				redirect('/options/email');
+			}
+		}
+
 }

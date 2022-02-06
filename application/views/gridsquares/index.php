@@ -54,7 +54,7 @@
 		      <th scope="col">Callsign</th>
 		      <th scope="col">Mode</th>
 		      <th scope="col">Band</th>
-		      <th scope="col">Locator</th>
+		      <th scope="col">Gridsquare</th>
 		    </tr>
 		  </thead>
 		  <tbody>

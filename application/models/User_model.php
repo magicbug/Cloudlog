@@ -55,6 +55,27 @@ class User_Model extends CI_Model {
 		return $r;
 	}
 
+	/*
+	 * Function: check_email_address
+	 * 
+	 * Checks if an email address is already in use
+	 * 
+	 * @param string $email
+	 */
+	function check_email_address($email) {
+
+		$clean_email = $this->security->xss_clean($email);
+
+		$this->db->where('user_email', $clean_email);
+		$query = $this->db->get($this->config->item('auth_table'));
+		
+		if ($query->num_rows() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	// FUNCTION: bool exists($username)
 	// Check if a user exists (by username)
 	function exists($username) {
@@ -371,6 +392,44 @@ class User_Model extends CI_Model {
 		$result = $this->db->query('SELECT * FROM themes order by name');
 
 		return $result->result();
+	}
+
+	/*
+	 * FUNCTION: set_password_reset_code
+	 *
+	 * Stores generated password reset code in the database and sets the date to exactly
+	 * when the sql query runs.
+	 * 
+	 * @param string $user_email
+	 * @return string $reset_code
+	 */
+	function set_password_reset_code($user_email, $reset_code) {
+		$data = array(
+			'reset_password_code' => $reset_code,
+			'reset_password_date' => date('Y-m-d H:i:s')
+		);
+				
+		$this->db->where('user_email', $user_email);
+		$this->db->update('users', $data);
+	}
+
+	/*
+	 * FUNCTION: reset_password
+	 *
+	 * Sets new password for users account where the reset code matches then clears the password reset code and password reset date.
+	 * 
+	 * @param string $password
+	 * @return string $reset_code
+	 */
+	function reset_password($password, $reset_code) {
+		$data = array(
+			'user_password' => $this->_hash($password),
+			'reset_password_code' => NULL,
+			'reset_password_date' => NULL
+		);
+				
+		$this->db->where('reset_password_code', $reset_code);
+		$this->db->update('users', $data);
 	}
 
 	// FUNCTION: bool _auth($password, $hash)

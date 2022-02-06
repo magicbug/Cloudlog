@@ -2,7 +2,7 @@
 
 class DOK extends CI_Model {
 
-	function show_stats() {
+	function show_stats($postdata) {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -14,12 +14,16 @@ class DOK extends CI_Model {
 		$this->load->model('bands');
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$sql = "select upper(COL_DARC_DOK) as COL_DARC_DOK, COL_MODE, lcase(COL_BAND) as COL_BAND, count(COL_DARC_DOK) as cnt from ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ") AND COL_DARC_DOK IS NOT NULL AND COL_DARC_DOK != '' AND COL_DXCC = 230";
+		if ($postdata['doks'] == 'dok') {
+			$sql .= " AND REGEXP_LIKE (COL_DARC_DOK, '^[A-Z][0-9]{2}$')";
+		} else if ($postdata['doks'] == 'sdok') {
+			$sql .= " AND NOT REGEXP_LIKE (COL_DARC_DOK, '^[A-Z][0-9]{2}$')";
+		}
+		$sql .= " group by COL_DARC_DOK, COL_MODE, COL_BAND";
+		$sql .= " order by COL_DARC_DOK asc";
 
-        $data = $this->db->query(
-            "select upper(COL_DARC_DOK) as COL_DARC_DOK, COL_MODE, lcase(COL_BAND) as COL_BAND, count(COL_DARC_DOK) as cnt
-            from ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ") AND COL_DARC_DOK IS NOT NULL AND COL_DARC_DOK != '' AND COL_DXCC = 230
-            group by COL_DARC_DOK, COL_MODE, COL_BAND"
-            );
+        $data = $this->db->query($sql);
 
         $results = array();
         $last_dok = "";

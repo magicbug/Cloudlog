@@ -50,6 +50,15 @@ function load_was_map() {
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/selectize.js"></script>
 
+<?php if ($this->uri->segment(1) == "station") { ?>
+    <script src="<?php echo base_url() ;?>assets/js/sections/station_locations.js"></script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "logbooks") { ?>
+    <script src="<?php echo base_url() ;?>assets/js/sections/station_logbooks.js"></script>
+<?php } ?>
+
+
 <?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
 
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/query-builder.standalone.min.js"></script>
@@ -613,13 +622,20 @@ function getLookupResult() {
 
 <?php if ($this->uri->segment(1) == "search") { ?>
 <script type="text/javascript">
+  $(function () {
+     $('[data-toggle="tooltip"]').tooltip()
+  });
+</script>
+<script type="text/javascript">
 i=0;
 
 function searchButtonPress(){
     event.preventDefault()
     if ($('#callsign').val()) {
       let fixedcall = $('#callsign').val();
-      $('#partial_view').load("logbook/search_result/" + fixedcall.replace('Ø', '0'), function() {});
+      $('#partial_view').load("logbook/search_result/" + fixedcall.replace('Ø', '0'), function() {
+         $('[data-toggle="tooltip"]').tooltip()
+      });
     }
 }
 
@@ -627,6 +643,7 @@ $(document).ready(function(){
 
   <?php if($this->input->post('callsign') != "") { ?>
         $('#partial_view').load("logbook/search_result/<?php echo str_replace("Ø","0",$this->input->post('callsign')); ?>", function() {
+           $('[data-toggle="tooltip"]').tooltip()
     });
   <?php } ?>
 
@@ -635,7 +652,9 @@ $(document).on('keypress',function(e) {
 
     if ($('#callsign').val()) {
         let fixedcall = $('#callsign').val();
-      $('#partial_view').load("logbook/search_result/" + fixedcall.replace('Ø', '0'), function() {});
+        $('#partial_view').load("logbook/search_result/" + fixedcall.replace('Ø', '0'), function() {
+           $('[data-toggle="tooltip"]').tooltip()
+        });
     }
 
      event.preventDefault();
@@ -651,6 +670,11 @@ $(document).on('keypress',function(e) {
 <?php if ($this->uri->segment(1) == "logbook" && $this->uri->segment(2) != "view") { ?>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js"></script>
+    <script type="text/javascript">
+      $(function () {
+         $('[data-toggle="tooltip"]').tooltip()
+      });
+    </script>
     <script type="text/javascript">
         <?php if($qra == "set") { ?>
         var q_lat = <?php echo $qra_lat; ?>;
@@ -1110,6 +1134,7 @@ $(document).ready(function(){
 				  if (count > 0) {
 					  $('#square_number').text(loc_4char);
 					  $('#exampleModal').modal('show');
+					  $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
 				  }
 			  }
 		  });
@@ -1288,7 +1313,7 @@ $(document).ready(function(){
             $.ajax({
                 url: baseURL + 'index.php/awards/dok_details_ajax',
                 type: 'post',
-                data: {'Dok': dok,
+                data: {'DOK': dok,
                     'Band': band
                 },
                 success: function(html) {
@@ -1298,6 +1323,9 @@ $(document).ready(function(){
                         cssClass: 'qso-dok-dialog',
                         nl2br: false,
                         message: html,
+                        onshown: function(dialog) {
+                           $('[data-toggle="tooltip"]').tooltip();
+                        },
                         buttons: [{
                             label: 'Close',
                             action: function (dialogItself) {
@@ -1718,6 +1746,9 @@ $(document).ready(function(){
                             cssClass: 'qso-was-dialog',
                             nl2br: false,
                             message: html,
+                            onshown: function(dialog) {
+                               $('[data-toggle="tooltip"]').tooltip();
+                            },
                             buttons: [{
                                 label: 'Close',
                                 action: function (dialogItself) {
@@ -1864,6 +1895,9 @@ function deleteQsl(id) {
                     cssClass: 'qso-dialog',
                     nl2br: false,
                     message: html,
+                    onshown: function(dialog) {
+                       $('[data-toggle="tooltip"]').tooltip();
+                    },
                     buttons: [{
                         label: 'Close',
                         action: function (dialogItself) {
@@ -2123,6 +2157,9 @@ function deleteQsl(id) {
                     cssClass: 'qso-counties-dialog',
                     nl2br: false,
                     message: html,
+                    onshown: function(dialog) {
+                       $('[data-toggle="tooltip"]').tooltip();
+                    },
                     buttons: [{
                         label: 'Close',
                         action: function (dialogItself) {
@@ -2282,6 +2319,9 @@ function deleteQsl(id) {
 						cssClass: 'qso-dialog',
 						nl2br: false,
 						message: html,
+						onshown: function(dialog) {
+							$('[data-toggle="tooltip"]').tooltip();
+						},
 						buttons: [{
 							label: 'Close',
 							action: function (dialogItself) {

@@ -38,7 +38,7 @@
 		<?php } ?>
 	  
 		<div class="table-responsive">
-		<table class="table table-striped">
+		<table id="station_locations_table" class="table table-striped">
 			<thead>
 				<tr>
 					<th scope="col">Profile Name</th>

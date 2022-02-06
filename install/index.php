@@ -5,8 +5,20 @@ $db_config_path = '../application/config/';
 
 $db_file_path = $db_config_path."database.php";
 
+function delDir($dir) {
+	$files = glob( $dir . '*', GLOB_MARK );
+    foreach( $files as $file ){
+        if( substr( $file, -1 ) == '/' )
+            delDir( $file );
+        else
+            unlink( $file );
+    }
+    rmdir( $dir );
+}
+
 if (file_exists($db_file_path)) {
-    echo "Cloudlog is already installed, please delete the /install folder.";
+	delDir(getcwd());
+	header("../");
 	exit;
 }
 
@@ -40,11 +52,23 @@ if($_POST) {
 
 		// If no errors, redirect to registration page
 		if(!isset($message)) {
+			sleep(1);
+			$ch = curl_init();
+			$protocol=((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https" : "http";
+			list($realHost,)=explode(':',$_SERVER['HTTP_HOST']);
+			$cloudlog_url=$protocol."://".$realHost.":".$_SERVER['SERVER_PORT'];
+			curl_setopt($ch, CURLOPT_URL,$cloudlog_url);
+			curl_setopt($ch, CURLOPT_VERBOSE, 0);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$result = curl_exec($ch);
+			curl_setopt($ch, CURLOPT_URL,$cloudlog_url."/index.php/update/dxcc");
+			$result = curl_exec($ch);
+			delDir(getcwd());
+			header('Location: '.$protocol."://".$_SERVER['HTTP_HOST'].$_POST['directory']);
 			echo "<h1>Install successful</h1>";
 			echo "<p>Please delete the install folder";
 			exit;
 		}
-
 	}
 	else {
 		$message = $core->show_message('error','Not all fields have been filled in correctly. The host, username, password, and database name are required.');
@@ -139,4 +163,3 @@ if($_POST) {
 
 	</body>
 </html>
-

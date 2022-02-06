@@ -487,4 +487,116 @@ class User extends CI_Controller {
 		$this->session->set_flashdata('notice', 'User '.$user_name.' logged out.');
 		redirect('dashboard');
 	}
+
+	/**
+	 * Function: forgot_password
+	 * 
+	 * Allows users to input an email address and a password will be sent to that address.
+	 * 
+	 */
+	function forgot_password() {
+
+		$this->load->helper(array('form', 'url'));
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('email', 'Email', 'required');
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$data['page_title'] = "Forgot Password";
+			$this->load->view('interface_assets/mini_header', $data);
+			$this->load->view('user/forgot_password');
+			$this->load->view('interface_assets/footer');
+		}
+		else
+		{
+			// Check email address exists
+			$this->load->model('user_model');
+			
+			$check_email = $this->user_model->check_email_address($this->input->post('email', true));
+
+			if($check_email == TRUE) {
+				// Generate password reset code 50 characters long
+				$this->load->helper('string');
+				$reset_code = random_string('alnum', 50);
+
+				$this->user_model->set_password_reset_code($this->input->post('email', true), $reset_code);
+				
+				// Send email with reset code
+
+				$this->data['reset_code'] = $reset_code;
+				$this->load->library('email');
+
+				if($this->optionslib->get_option('emailProtocol') == "smtp") {
+					$config = Array(
+						'protocol' => $this->optionslib->get_option('emailProtocol'),
+						'smtp_host' => $this->optionslib->get_option('smtpHost'),
+						'smtp_port' => $this->optionslib->get_option('smtpPort'),
+						'smtp_user' => $this->optionslib->get_option('smtpUsername'),
+						'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
+						'crlf' => "\r\n",
+						'newline' => "\r\n"
+					  );
+
+					  $this->email->initialize($config);
+				}
+
+				$message = $this->load->view('email/forgot_password', $this->data,  TRUE);
+
+				$this->email->from('noreply@cloudlog.co.uk', 'Cloudlog');
+				$this->email->to($this->input->post('email', true));
+
+				$this->email->subject('Cloudlog Account Password Reset');
+				$this->email->message($message);
+
+				if (! $this->email->send())
+				{
+					// Redirect to login page with message
+					$this->session->set_flashdata('warning', 'Email settings are incorrect.');
+					redirect('user/login');
+				} else {
+					// Redirect to login page with message
+					$this->session->set_flashdata('notice', 'Password Reset Processed.');
+					redirect('user/login');
+				}
+			} else {
+				// No account found just return to login page
+				$this->session->set_flashdata('notice', 'Password Reset Processed.');
+				redirect('user/login');
+			}
+		}
+	}
+
+	function reset_password($reset_code = NULL)
+	{
+		$data['reset_code'] = $reset_code;
+		if($reset_code != NULL) {
+			$this->load->helper(array('form', 'url'));
+
+			$this->load->library('form_validation');
+	
+			$this->form_validation->set_rules('password', 'Password', 'required');
+			$this->form_validation->set_rules('password_confirm', 'Password Confirmation', 'required|matches[password]');
+	
+			if ($this->form_validation->run() == FALSE)
+			{
+				$data['page_title'] = "Reset Password";
+				$this->load->view('interface_assets/mini_header', $data);
+				$this->load->view('user/reset_password');
+				$this->load->view('interface_assets/footer');
+			}
+			else
+			{
+				// Lets reset the password!
+				$this->load->model('user_model');
+			
+				$this->user_model->reset_password($this->input->post('password', true), $reset_code);
+				$this->session->set_flashdata('notice', 'Password Reset.');
+				redirect('user/login');
+			}
+		} else {
+			redirect('user/login');
+		}
+	}
 }
