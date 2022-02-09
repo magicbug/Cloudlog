@@ -129,10 +129,20 @@ class Logbooks extends CI_Controller {
 		$this->load->view('logbooks/components/publicSlugInputValidation', $data);
 	}
 
-	public function test_this() {
+	public function save_publicslug() {
 		$this->load->model('logbooks_model');
-		print_r($this->logbooks_model->is_public_slug_available('2m0sql'));
 
+		$this->load->model('logbooks_model');
+		$result = $this->logbooks_model->is_public_slug_available($this->input->post('public_slug'));
+		
+		if($result == true) {
+			$returndata = $this->logbooks_model->save_public_slug($this->input->post('public_slug'), $this->input->post('logbook_id'));
+			echo "<div class=\"alert alert-success\" role=\"alert\">Public Slug Saved</div>";
+		} else {
+			echo "<div class=\"alert alert-danger\" role=\"alert\">Oops! This Public Slug is unavailable</div>";
+		}
+		
 	}
+
 
 }

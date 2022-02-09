@@ -71,15 +71,16 @@
 			<div class="card">
 				<div class="card-header">Public Slug</div>
 				<div class="card-body">
-					<p>Setting a public slug allows you to share your logbook with anyone via a custom website address, this slug can contain no letters or special characters just letters and numbers.</p>
+					<p>Setting a public slug allows you to share your logbook with anyone via a custom website address, this slug can contain letters & numbers only.</p>
 					
-					<form hx-post="<?php echo site_url('logbooks/save_publicslug/'); ?>">
-			
+					<form hx-post="<?php echo site_url('logbooks/save_publicslug/'); ?>" hx-target="#publicSlugForm">
+					<div id="publicSlugForm">
+					</div>
 					<div class="form-group">
 						<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
-						<label for="publicSlugInput">Public Slug</label>
+						<label for="publicSlugInput">Type in Public Slug choice</label>
 						<div hx-target="this" hx-swap="outerHTML">
-							<input class="form-control" name="public_slug" id="publicSlugInput" hx-post="<?php echo site_url('logbooks/publicslug_validate/'); ?>"  hx-trigger="keyup changed delay:500ms">
+							<input class="form-control" name="public_slug" id="publicSlugInput" value="<?php echo $station_logbook_details->public_slug; ?>" hx-post="<?php echo site_url('logbooks/publicslug_validate/'); ?>"  hx-trigger="keyup changed delay:500ms">
 						</div>
 					</div>
 					<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Save</button>
