@@ -15,15 +15,18 @@ class Migration_add_public_slug_to_stationlogbooks extends CI_Migration {
             $fields = array(
                 'public_slug' => array(
                     'type' => 'VARCHAR',
-                    'constraint' => '200',
+                    'constraint' => '191',
                     'null' => TRUE,
                     'unique' => TRUE
                 )
-        );
+            );
 
-            $this->dbforge->add_column('station_logbooks', $fields);
+            if (!$this->db->field_exists('public_slug', 'station_logbooks')) {
+                $this->dbforge->add_column('station_logbooks', $fields);
 
-            $this->dbforge->add_key('public_slug');
+                $this->dbforge->add_key('public_slug');
+            }
+            
         }
     }
 
