@@ -116,4 +116,23 @@ class Logbooks extends CI_Controller {
 		redirect('logbooks/edit/'.$logbook_id);
 	}
 
+	public function publicslug_validate() {
+		$this->load->model('logbooks_model');
+		$result = $this->logbooks_model->is_public_slug_available($this->input->post('public_slug'));
+		
+		if($result == true) {
+			$data['slugAvailable'] = true;
+		} else {
+			$data['slugAvailable'] = false;
+		}
+
+		$this->load->view('logbooks/components/publicSlugInputValidation', $data);
+	}
+
+	public function test_this() {
+		$this->load->model('logbooks_model');
+		print_r($this->logbooks_model->is_public_slug_available('2m0sql'));
+
+	}
+
 }
