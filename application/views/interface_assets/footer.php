@@ -9,6 +9,8 @@
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/darkmodehelpers.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/easyprint.js"></script>
+<script src="https://unpkg.com/htmx.org@1.6.1"></script>
+
 <script type="text/javascript">
   /*
   *
