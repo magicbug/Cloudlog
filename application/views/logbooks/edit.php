@@ -80,7 +80,7 @@
 						<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
 						<label for="publicSlugInput">Type in Public Slug choice</label>
 						<div hx-target="this" hx-swap="outerHTML">
-							<input class="form-control" name="public_slug" id="publicSlugInput" value="<?php echo $station_logbook_details->public_slug; ?>" hx-post="<?php echo site_url('logbooks/publicslug_validate/'); ?>"  hx-trigger="keyup changed delay:500ms">
+							<input class="form-control" name="public_slug" id="publicSlugInput" pattern="[a-zA-Z0-9-]+" value="<?php echo $station_logbook_details->public_slug; ?>" hx-post="<?php echo site_url('logbooks/publicslug_validate/'); ?>"  hx-trigger="keyup changed delay:500ms" required>
 						</div>
 					</div>
 					<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Save</button>
