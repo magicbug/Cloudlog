@@ -421,7 +421,35 @@ document.onkeyup = function(e) {
 	if (e.altKey && e.which == 76) {
 		spawnLookupModal();
 	}
+    if (e.altKey && e.which == 81) {
+		spawnQrbCalculator();
+	}
 };
+
+function spawnQrbCalculator() {
+	$.ajax({
+		url: base_url + 'index.php/qrbcalc',
+		type: 'post',
+		success: function (html) {
+			BootstrapDialog.show({
+				title: 'Compute QRB and QTF',
+				size: BootstrapDialog.SIZE_WIDE,
+				cssClass: 'lookup-dialog',
+				nl2br: false,
+				message: html,
+				onshown: function(dialog) {
+
+				},
+				buttons: [{
+					label: 'Close',
+					action: function (dialogItself) {
+						dialogItself.close();
+					}
+				}]
+			});
+		}
+	});
+}
 
 // This displays the dialog with the form and it's where the resulttable is displayed
 function spawnLookupModal() {
