@@ -360,6 +360,7 @@ function load_was_map() {
                     if (isDarkModeTheme()) {
                         $(".buttons-csv").css("color", "white");
                     }
+                    $('[data-toggle="tooltip"]').tooltip();
                     $(".searchbutton").removeClass('running');
                     $(".searchbutton").prop('disabled', false);
                     $("#btn-save").show();
@@ -395,6 +396,7 @@ function load_was_map() {
         //$log.info(e.value);
     });
 </script>
+
 <?php } ?>
 
 <script>
