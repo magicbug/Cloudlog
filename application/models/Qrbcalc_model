@@ -1,7 +1,0 @@
-<?php
-
-class Qrbcalc_model extends CI_Model {
-
-}
-
-?>

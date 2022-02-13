@@ -5,6 +5,8 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.qrb.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.geodesic@2.5.5-0/dist/leaflet.geodesic.umd.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/darkmodehelpers.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
@@ -449,6 +451,54 @@ function spawnQrbCalculator() {
 			});
 		}
 	});
+}
+
+function calculateQrb(form) {
+    $.ajax({
+		url: base_url+'index.php/qrbcalc/calculate',
+		type: 'post',
+		data: {'locator1': form.locator1.value,
+			    'locator2': form.locator2.value},
+		success: function (html) {
+			$(".qrbResult").append(html['result']);
+            newpath(html['latlng1'], html['latlng2']);
+		}
+	});
+}
+
+function newpath(locator1, locator2) {
+    // If map is already initialized
+    var container = L.DomUtil.get('mapqrb');
+
+    if(container != null){
+        container._leaflet_id = null;
+    }
+
+    const map = L.map('mapqrb').setView([30, 0], 1.5);
+
+    var maidenhead = L.maidenheadqrb().addTo(map);
+
+    L.tileLayer('https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        maxZoom: 10,
+        noWrap: false,
+    }).addTo(map);
+
+    const multiplelines = [];
+    //$.each(locs, function(){
+		multiplelines.push(
+            new L.LatLng(locator1[0], locator1[1]),
+            new L.LatLng(locator2[0], locator2[1])
+        )
+        
+	//});
+
+    const geodesic = L.geodesic(multiplelines, {
+        weight: 1,
+        opacity: 1,
+        color: 'red',
+        wrap: false,
+        steps: 100
+    }).addTo(map);
 }
 
 // This displays the dialog with the form and it's where the resulttable is displayed
