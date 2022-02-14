@@ -11,12 +11,11 @@ class Activated_grids_model extends CI_Model {
             return null;
         }
 
-        $this->db->select('distinct substring(COL_MY_GRIDSQUARE,1,6) as SAT_SQUARE, COL_SAT_NAME', FALSE);
-        $this->db->where_in('station_id', $logbooks_locations_array);
-        $this->db->where('COL_MY_GRIDSQUARE !=', '');
-        $this->db->where('COL_SAT_NAME !=', '');
+        $sql = 'SELECT DISTINCT station_gridsquare AS SAT_SQUARE, COL_SAT_NAME FROM '
+           . 'station_profile JOIN TABLE_HRD_CONTACTS_V01 on TABLE_HRD_CONTACTS_V01.station_id = station_profile.station_id '
+           . 'WHERE station_profile.station_gridsquare != "" AND TABLE_HRD_CONTACTS_V01.COL_SAT_NAME != ""';
 
-        return $this->db->get($this->config->item('table_name'));
+        return $this->db->query($sql);
 	}
 
 	function get_activated_confirmed_sat_squares() {
@@ -30,46 +29,12 @@ class Activated_grids_model extends CI_Model {
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
-		$sql = 'SELECT distinct substring(COL_MY_GRIDSQUARE,1,6) as SAT_SQUARE, COL_SAT_NAME FROM '
-			. $this->config->item('table_name')
-			. ' WHERE station_id in (' . $location_list . ') AND COL_MY_GRIDSQUARE != "" AND COL_SAT_NAME != "" AND (COL_LOTW_QSL_SENT = "Y" OR COL_QSL_SENT = "Y")';
+      $sql = 'SELECT DISTINCT station_gridsquare AS SAT_SQUARE, COL_SAT_NAME FROM '
+         . 'station_profile JOIN TABLE_HRD_CONTACTS_V01 on TABLE_HRD_CONTACTS_V01.station_id = station_profile.station_id '
+         . 'WHERE station_profile.station_gridsquare != "" AND TABLE_HRD_CONTACTS_V01.COL_SAT_NAME != "" '
+         . 'AND (COL_LOTW_QSL_SENT = "Y" OR COL_QSL_SENT = "Y");';
 
 		return $this->db->query($sql);
-	}
-
-
-	function get_confirmed_sat_vucc_squares() {
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-
-        if (!$logbooks_locations_array) {
-            return null;
-        }
-
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
-
-		$sql = 'SELECT COL_VUCC_GRIDS, COL_SAT_NAME FROM '
-			. $this->config->item('table_name')
-			. ' WHERE station_id in (' . $location_list . ') AND COL_VUCC_GRIDS != "" AND COL_SAT_NAME != "" AND (COL_LOTW_QSL_RCVD = "Y" OR COL_QSL_RCVD = "Y") AND (COL_LOTW_QSL_RCVD = "Y" OR COL_QSL_RCVD = "Y")';
-
-		return $this->db->query($sql);
-	}
-
-    function get_worked_sat_vucc_squares() {
-        $CI =& get_instance();
-        $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-
-        if (!$logbooks_locations_array) {
-            return null;
-        }
-
-	    $this->db->select('COL_PRIMARY_KEY, COL_VUCC_GRIDS, COL_SAT_NAME', FALSE);
-        $this->db->where_in('station_id', $logbooks_locations_array);
-    	$this->db->where('COL_VUCC_GRIDS !=', "");
-    	$this->db->where('COL_SAT_NAME !=', "");
-		return $this->db->get($this->config->item('table_name'));
 	}
 
     function get_band($band) {
@@ -81,20 +46,22 @@ class Activated_grids_model extends CI_Model {
             return null;
         }
 
-        $this->db->select('distinct substring(COL_MY_GRIDSQUARE,1,6) as GRID_SQUARES, COL_BAND', FALSE);
-        $this->db->where_in('station_id', $logbooks_locations_array);
-        $this->db->where('COL_MY_GRIDSQUARE !=', '');
+        $location_list = "'".implode("','",$logbooks_locations_array)."'";
+
+        $sql = 'SELECT DISTINCT station_gridsquare AS GRID_SQUARES, COL_BAND FROM '
+           . 'station_profile JOIN TABLE_HRD_CONTACTS_V01 on TABLE_HRD_CONTACTS_V01.station_id = station_profile.station_id '
+           . 'WHERE station_profile.station_gridsquare != "" ';
 
         if ($band != 'All') {
-            $this->db->where('COL_BAND', $band);
-            $this->db->where('COL_PROP_MODE !=', "SAT");
-            $this->db->where('COL_PROP_MODE !=', "INTERNET");
-            $this->db->where('COL_PROP_MODE !=', "ECH");
-            $this->db->where('COL_PROP_MODE !=', "RPT");
-            $this->db->where('COL_SAT_NAME =', "");
+            $sql .= 'AND COL_BAND = "'.$band.'" '
+               . 'AND COL_PROP_MODE != "SAT" '
+               . 'AND COL_PROP_MODE != "INTERNET" '
+               . 'AND COL_PROP_MODE != "ECH" '
+               . 'AND COL_PROP_MODE != "RPT" '
+               . 'AND COL_SAT_NAME = "" ';
         }
 
-        return $this->db->get($this->config->item('table_name'));
+        return $this->db->query($sql);
     }
 
 	function get_band_confirmed($band) {
@@ -108,21 +75,20 @@ class Activated_grids_model extends CI_Model {
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
-		$sql = 'SELECT distinct substring(COL_MY_GRIDSQUARE,1,6) as GRID_SQUARES, COL_BAND FROM '
-			.$this->config->item('table_name')
-			.' WHERE station_id in ('
-			.$location_list.') AND COL_MY_GRIDSQUARE != ""';
-		if ($band != 'All') {
-			$sql .= ' AND COL_BAND = "' . $band
-				.'"
-            AND COL_PROP_MODE != "SAT"
-            AND COL_PROP_MODE != "INTERNET"
-            AND COL_PROP_MODE != "ECH"
-            AND COL_PROP_MODE != "RPT"
-            AND COL_SAT_NAME = ""';
-		}
+        $sql = 'SELECT DISTINCT station_gridsquare AS GRID_SQUARES, COL_BAND FROM '
+           . 'station_profile JOIN TABLE_HRD_CONTACTS_V01 on TABLE_HRD_CONTACTS_V01.station_id = station_profile.station_id '
+           . 'WHERE station_profile.station_gridsquare != "" ';
 
-		$sql .= ' AND (COL_LOTW_QSL_SENT = "Y" OR COL_QSL_SENT = "Y")';
+        if ($band != 'All') {
+            $sql .= 'AND COL_BAND = "'.$band.'" '
+               . 'AND COL_PROP_MODE != "SAT" '
+               . 'AND COL_PROP_MODE != "INTERNET" '
+               . 'AND COL_PROP_MODE != "ECH" '
+               . 'AND COL_PROP_MODE != "RPT" '
+               . 'AND COL_SAT_NAME = "" ';
+        }
+
+        $sql .= ' AND (COL_LOTW_QSL_SENT = "Y" OR COL_QSL_SENT = "Y")';
 
 		return $this->db->query($sql);
 	}
