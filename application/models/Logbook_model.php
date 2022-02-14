@@ -1952,9 +1952,19 @@ class Logbook_model extends CI_Model {
         $time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i:s', strtotime($record['time_on']));
 
         if (isset($record['time_off'])) {
-            $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i:s', strtotime($record['time_off']));
+            if (isset($record['date_off'])) {
+                // date_off and time_off set
+                $time_off = date('Y-m-d', strtotime($record['date_off'])) . ' ' . date('H:i:s', strtotime($record['time_off']));
+            } elseif (strtotime($record['time_off']) < strtotime($record['time_on'])) {
+                // date_off is not set, QSO ends next day
+                $time_off = date('Y-m-d', strtotime($record['qso_date'] . ' + 1 day')) . ' ' . date('H:i:s', strtotime($record['time_off']));
+            } else {
+                // date_off is not set, QSO ends same day
+                $time_off = date('Y-m-d', strtotime($record['qso_date'])) . ' ' . date('H:i:s', strtotime($record['time_off']));
+            }
         } else {
-          $time_off = $time_on;
+            // date_off and time_off not set, QSO end == QSO start
+            $time_off = $time_on;
         }
 
         // Store Freq

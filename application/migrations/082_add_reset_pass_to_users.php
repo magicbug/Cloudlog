@@ -13,12 +13,19 @@ class Migration_add_reset_pass_to_users extends CI_Migration {
 
         public function up()
         {
-                $fields = array(
-                        'reset_password_code varchar(50) DEFAULT NULL',
-                        'reset_password_date TIMESTAMP NULL DEFAULT NULL',
-                );
+                if (!$this->db->field_exists('reset_password_code', 'users')) {
+                        $fields = array(
+                                'reset_password_code varchar(50) DEFAULT NULL',
+                        );
+                        $this->dbforge->add_column('users', $fields);
+                }
 
-                $this->dbforge->add_column('users', $fields);
+                if (!$this->db->field_exists('reset_password_date', 'users')) {
+                        $fields = array(
+                                'reset_password_date TIMESTAMP NULL DEFAULT NULL',
+                        );
+                        $this->dbforge->add_column('users', $fields);
+                }
         }
 
         public function down()

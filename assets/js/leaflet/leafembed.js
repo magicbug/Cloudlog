@@ -26,6 +26,14 @@ function initmap(ShowGrid = 'No') {
     var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
     var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});        
 
+	var printer = L.easyPrint({
+		tileLayer: osm,
+		sizeModes: ['Current'],
+		filename: 'myMap',
+		exportOnly: true,
+		hideControlContainer: true
+	}).addTo(map);
+
     // start the map in South-East England
     map.setView(new L.LatLng(q_lat, q_lng), q_zoom);
 	

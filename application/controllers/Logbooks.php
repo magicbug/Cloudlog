@@ -116,4 +116,46 @@ class Logbooks extends CI_Controller {
 		redirect('logbooks/edit/'.$logbook_id);
 	}
 
+	public function publicslug_validate() {
+		$this->load->model('logbooks_model');
+		$result = $this->logbooks_model->is_public_slug_available($this->input->post('public_slug'));
+		
+		if($result == true) {
+			$data['slugAvailable'] = true;
+		} else {
+			$data['slugAvailable'] = false;
+		}
+
+		$this->load->view('logbooks/components/publicSlugInputValidation', $data);
+	}
+
+	public function save_publicslug() {
+		$this->load->model('logbooks_model');
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('public_slug', 'Public Slug', 'required|alpha_numeric');
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			echo "<div class=\"alert alert-danger\" role=\"alert\">Oops! This Public Slug is unavailable</div>";
+			echo validation_errors();
+		}
+		else
+		{
+			$this->load->model('logbooks_model');
+			$result = $this->logbooks_model->is_public_slug_available($this->input->post('public_slug'));
+			
+	
+			if($result == true) {
+				$returndata = $this->logbooks_model->save_public_slug($this->input->post('public_slug'), $this->input->post('logbook_id'));
+				echo "<div class=\"alert alert-success\" role=\"alert\">Public Slug Saved</div>";
+			} else {
+				echo "<div class=\"alert alert-danger\" role=\"alert\">Oops! This Public Slug is unavailable</div>";
+			}
+		}
+		
+	}
+
+
 }

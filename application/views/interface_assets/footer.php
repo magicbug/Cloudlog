@@ -8,6 +8,9 @@
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/darkmodehelpers.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ;?>assets/js/easyprint.js"></script>
+<script src="https://unpkg.com/htmx.org@1.6.1"></script>
+
 <script type="text/javascript">
   /*
   *
@@ -1022,6 +1025,15 @@ $(document).on('keypress',function(e) {
   }).addTo(mymap);
 
 
+
+  var printer = L.easyPrint({
+      		tileLayer: tiles,
+      		sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
+      		filename: 'myMap',
+      		exportOnly: true,
+      		hideControlContainer: true
+		}).addTo(mymap);
+
   var redIcon = L.icon({
       iconUrl: icon_dot_url,
       iconSize:     [18, 18], // size of the icon
@@ -1071,12 +1083,19 @@ $(document).ready(function(){
     id: 'mapbox.streets'
   });
 
-
   var map = L.map('gridsquare_map', {
     layers: [layer],
     center: [19, 0],
     zoom: 2
   });
+
+  var printer = L.easyPrint({
+        tileLayer: layer,
+        sizeModes: ['Current'],
+        filename: 'myMap',
+        exportOnly: true,
+        hideControlContainer: true
+    }).addTo(map);
 
   var grid_two = <?php echo $grid_2char; ?>;
   var grid_four = <?php echo $grid_4char; ?>;
@@ -1341,11 +1360,19 @@ $(document).ready(function(){
 							var callsign = $("#callsign").text();
 							var mymap = L.map('mapqso').setView([lat,long], 5);
 
-							L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
+							var tiles = L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
 								maxZoom: 18,
 								attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
-								id: 'mapbox.streets'
 							}).addTo(mymap);
+
+                            
+                            var printer = L.easyPrint({
+                                tileLayer: tiles,
+                                sizeModes: ['Current'],
+                                filename: 'myMap',
+                                exportOnly: true,
+                                hideControlContainer: true
+                            }).addTo(mymap);
 
 							var redIcon = L.icon({
 								iconUrl: icon_dot_url,
