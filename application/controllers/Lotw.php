@@ -420,12 +420,12 @@ class Lotw extends CI_Controller {
 
 		// Read Cert Data
 		$certdata= openssl_x509_parse($results['cert'],0);
-
+		
 		// Store Variables
 		$data['issued_callsign'] = $certdata['subject']['undefined'];
 		$data['issued_name'] = $certdata['subject']['commonName'];
-		$data['validFrom'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.2'];
-		$data['validTo_Date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.3'];
+		$data['validFrom'] = date('Y-m-d H:i:s', $certdata['validFrom_time_t']);;
+		$data['validTo_Date'] = date('Y-m-d H:i:s', $certdata['validTo_time_t']);;
 
 		return $data;
 	}
