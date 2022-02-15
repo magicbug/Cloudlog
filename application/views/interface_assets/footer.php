@@ -457,23 +457,37 @@ function calculateQrb(form) {
     let locator1 = form.locator1.value;
     let locator2 = form.locator2.value;
 
-    $.ajax({
-		url: base_url+'index.php/qrbcalc/calculate',
-		type: 'post',
-		data: {'locator1': locator1,
-			    'locator2': locator2},
-		success: function (html) {
-            
-            var result = "<h5>Negative latitudes are south of the equator, negative longitudes are west of Greenwich. <br/>";
-            result += ' ' + locator1.toUpperCase() + ' Latitude = ' + html['latlng1'][0] + ' Longitude = ' + html['latlng1'][1] + '<br/>';
-            result += ' ' + locator2.toUpperCase() + ' Latitude = ' + html['latlng2'][0] + ' Longitude = ' + html['latlng2'][1] + '<br/>';
-            result += 'Distance between ' + locator1.toUpperCase() + ' and ' + locator2.toUpperCase() + ' is ' + html['distance'] + '. and ';
-            result += 'the bearing is ' + html['bearing'] + '.</h5>';
-            
-            $(".qrbResult").html(result);
-            newpath(html['latlng1'], html['latlng2']);
-		}
-	});
+    $(".qrbalert").remove();
+
+    if (validateLocator(locator1) && validateLocator(locator2)) {
+        $.ajax({
+            url: base_url+'index.php/qrbcalc/calculate',
+            type: 'post',
+            data: {'locator1': locator1,
+                    'locator2': locator2},
+            success: function (html) {
+                
+                var result = "<h5>Negative latitudes are south of the equator, negative longitudes are west of Greenwich. <br/>";
+                result += ' ' + locator1.toUpperCase() + ' Latitude = ' + html['latlng1'][0] + ' Longitude = ' + html['latlng1'][1] + '<br/>';
+                result += ' ' + locator2.toUpperCase() + ' Latitude = ' + html['latlng2'][0] + ' Longitude = ' + html['latlng2'][1] + '<br/>';
+                result += 'Distance between ' + locator1.toUpperCase() + ' and ' + locator2.toUpperCase() + ' is ' + html['distance'] + '. and ';
+                result += 'the bearing is ' + html['bearing'] + '.</h5>';
+                
+                $(".qrbResult").html(result);
+                newpath(html['latlng1'], html['latlng2']);
+            }
+        });
+    } else {
+        $('.qrbResult').html('<div class="qrbalert alert alert-danger" role="alert">Error in locators. Please check.</div>');
+    }
+}
+
+function validateLocator(locator) {
+    if(locator.length < 4 && !(/^[a-rA-R]{2}[0-9]{2}[a-xA-X]{0,2}[0-9]{0,2}[a-xA-X]{0,2}$/.test(locator))) {
+        return false;
+    }
+    
+    return true;
 }
 
 function newpath(locator1, locator2) {
