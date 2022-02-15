@@ -66,27 +66,59 @@ class Activated_grids extends CI_Controller {
 			foreach ($query->result() as $row)
 			{
 
-				$grid_2char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,2));
-				$grid_4char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,4));
-				if ($this->config->item('map_6digit_grids')) {
-					$grid_6char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,6));
-				}
-
-				// Check if 2 Char is in array
-				if(!in_array($grid_2char_confirmed, $array_confirmed_grid_2char)){
-					array_push($array_confirmed_grid_2char, $grid_2char_confirmed);	
-				}
-
-
-				if(!in_array($grid_4char_confirmed, $array_confirmed_grid_4char)){
-					array_push($array_confirmed_grid_4char, $grid_4char_confirmed);	
-				}
-
-
-				if ($this->config->item('map_6digit_grids')) {
-					if(!in_array($grid_6char_confirmed, $array_confirmed_grid_6char)){
-						array_push($array_confirmed_grid_6char, $grid_6char_confirmed);	
+				/* Handle VUCC squares */
+				if (strpos($row->SAT_SQUARE, ",") > 0) {
+					$subsquares = explode(",", $row->SAT_SQUARE);
+					foreach ($subsquares as &$subsquare) {
+						$grid_two = strtoupper(substr($subsquare,0,2));
+						$grid_four = strtoupper(substr($subsquare,0,4));
+						if ($this->config->item('map_6digit_grids')) {
+							$grid_six = strtoupper(substr($subsquare,0,6));
+						}
+		
+						// Check if 2 Char is in array
+						if(!in_array($grid_two, $array_grid_2char)){
+							array_push($array_grid_2char, $grid_two);	
+						}
+		
+		
+						if(!in_array($grid_four, $array_grid_4char)){
+							array_push($array_grid_4char, $grid_four);	
+						}
+		
+		
+						if ($this->config->item('map_6digit_grids')) {
+							if(!in_array($grid_six, $array_grid_6char)){
+								array_push($array_grid_6char, $grid_six);	
+							}
+						}
 					}
+
+				} else {
+
+					$grid_2char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,2));
+					$grid_4char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,4));
+					if ($this->config->item('map_6digit_grids')) {
+						$grid_6char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,6));
+					}
+	
+					// Check if 2 Char is in array
+					if(!in_array($grid_2char_confirmed, $array_confirmed_grid_2char)){
+						array_push($array_confirmed_grid_2char, $grid_2char_confirmed);	
+					}
+	
+	
+					if(!in_array($grid_4char_confirmed, $array_confirmed_grid_4char)){
+						array_push($array_confirmed_grid_4char, $grid_4char_confirmed);	
+					}
+	
+	
+					if ($this->config->item('map_6digit_grids')) {
+						if(!in_array($grid_6char_confirmed, $array_confirmed_grid_6char)){
+							array_push($array_confirmed_grid_6char, $grid_6char_confirmed);	
+						}
+					}
+
 				}
 
 
@@ -101,27 +133,59 @@ class Activated_grids extends CI_Controller {
 			foreach ($query->result() as $row)
 			{
 
-				$grid_two = strtoupper(substr($row->SAT_SQUARE,0,2));
-				$grid_four = strtoupper(substr($row->SAT_SQUARE,0,4));
-				if ($this->config->item('map_6digit_grids')) {
-					$grid_six = strtoupper(substr($row->SAT_SQUARE,0,6));
-				}
-
-				// Check if 2 Char is in array
-				if(!in_array($grid_two, $array_grid_2char)){
-					array_push($array_grid_2char, $grid_two);	
-				}
-
-
-				if(!in_array($grid_four, $array_grid_4char)){
-					array_push($array_grid_4char, $grid_four);	
-				}
-
-
-				if ($this->config->item('map_6digit_grids')) {
-					if(!in_array($grid_six, $array_grid_6char)){
-						array_push($array_grid_6char, $grid_six);	
+				/* Handle VUCC squares */
+				if (strpos($row->SAT_SQUARE, ",") > 0) {
+					$subsquares = explode(",", $row->SAT_SQUARE);
+					foreach ($subsquares as &$subsquare) {
+						$grid_two = strtoupper(substr($subsquare,0,2));
+						$grid_four = strtoupper(substr($subsquare,0,4));
+						if ($this->config->item('map_6digit_grids')) {
+							$grid_six = strtoupper(substr($subsquare,0,6));
+						}
+		
+						// Check if 2 Char is in array
+						if(!in_array($grid_two, $array_grid_2char)){
+							array_push($array_grid_2char, $grid_two);	
+						}
+		
+		
+						if(!in_array($grid_four, $array_grid_4char)){
+							array_push($array_grid_4char, $grid_four);	
+						}
+		
+		
+						if ($this->config->item('map_6digit_grids')) {
+							if(!in_array($grid_six, $array_grid_6char)){
+								array_push($array_grid_6char, $grid_six);	
+							}
+						}
 					}
+
+				} else {
+
+					$grid_two = strtoupper(substr($row->SAT_SQUARE,0,2));
+					$grid_four = strtoupper(substr($row->SAT_SQUARE,0,4));
+					if ($this->config->item('map_6digit_grids')) {
+						$grid_six = strtoupper(substr($row->SAT_SQUARE,0,6));
+					}
+	
+					// Check if 2 Char is in array
+					if(!in_array($grid_two, $array_grid_2char)){
+						array_push($array_grid_2char, $grid_two);	
+					}
+	
+	
+					if(!in_array($grid_four, $array_grid_4char)){
+						array_push($array_grid_4char, $grid_four);	
+					}
+	
+	
+					if ($this->config->item('map_6digit_grids')) {
+						if(!in_array($grid_six, $array_grid_6char)){
+							array_push($array_grid_6char, $grid_six);	
+						}
+					}
+
 				}
 
 
