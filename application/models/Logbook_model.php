@@ -271,7 +271,7 @@ class Logbook_model extends CI_Model {
 				$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
 				break;
 			case 'GridActivator':
-				$this->db->where("(COL_MY_GRIDSQUARE like '%" . $searchphrase . "%')");
+				$this->db->where("(COL_MY_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_MY_VUCC_GRIDS like'%" . $searchphrase ."%')");
 				break;
 			case 'CQZone':
 				$this->db->where('COL_CQZ', $searchphrase);
@@ -289,7 +289,9 @@ class Logbook_model extends CI_Model {
 				break;
 		}
 
-		$this->db->where_in('station_id', $logbooks_locations_array);
+		if ($type != 'GridActivator') {
+			$this->db->where_in('station_id', $logbooks_locations_array);
+		}
 
 		if ($band != 'All') {
 			if($band != "SAT") {
