@@ -21,9 +21,9 @@ L.MaidenheadQrb = L.LayerGroup.extend({
 
 	onAdd: function (map) {
 		this._map = map;
-		var grid = this.redraw();
+		var grid = this.redraw(map);
 		this._map.on('viewreset '+ this.options.redraw, function () {
-			grid.redraw();
+			grid.redraw(map);
 		});
 
 		this.eachLayer(map.addLayer, map);
@@ -35,7 +35,7 @@ L.MaidenheadQrb = L.LayerGroup.extend({
 		this.eachLayer(this.removeLayer, this);
 	},
 
-	redraw: function () {
+	redraw: function (map) {
 		var d3 = new Array(20, 10, 10, 1, 1, 1, 1, 1, 1, 1, 1 / 24, 1 / 24, 1 / 24, 1 / 24, 1 / 24, 1 / 240, 1 / 240, 1 / 240, 1 / 240, 1 / 240 / 24, 1 / 240 / 24);
 		var lat_cor = new Array(0, 8, 8, 8, 8, 1.7, 6, 8, 8, 8, 1.4, 2.5, 3, 3.5, 4, 4, 3.5, 3.5, 3, 1.8, 1.6);
 		var bounds = map.getBounds();
@@ -57,21 +57,21 @@ L.MaidenheadQrb = L.LayerGroup.extend({
 
 		for (var lon = left; lon < right; lon += (unit*2)) {
 			for (var lat = bottom; lat < top; lat += unit) {
-			var bounds = [[lat,lon],[lat+unit,lon+(unit*2)]];
+				var bounds = [[lat,lon],[lat+unit,lon+(unit*2)]];
 
-			if (zoom < 2 || zoom > 4) {
-				this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c)));
-			}
-			if (zoom < 3 ) {
-				this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle', color: this.options.color, weight: 1, fill:false, interactive: false}));
-			}
-			if (zoom < 3 || zoom > 5) {
-				this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle', color: this.options.color, weight: 1, fill:false, interactive: false}));
-			}
+				if (zoom < 2 || zoom > 4) {
+					this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c), map));
+				}
+				if (zoom < 3 ) {
+					this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle', color: this.options.color, weight: 1, fill:false, interactive: false}));
+				}
+				if (zoom < 3 || zoom > 5) {
+					this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle', color: this.options.color, weight: 1, fill:false, interactive: false}));
+				}
 
-			if (zoom < 3 || zoom > 5) {
-				this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c)));
-			}
+				if (zoom < 3 || zoom > 5) {
+					this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c), map));
+				}
 
 			}
 		}
@@ -93,24 +93,24 @@ L.MaidenheadQrb = L.LayerGroup.extend({
 						fill: false,
 						interactive: false
 					}));
-					this.addLayer(this._getLabel2(lon + unit - (unit / lcor), lat + (unit / 2) + (unit / lcor * c)));
+					this.addLayer(this._getLabel2(lon + unit - (unit / lcor), lat + (unit / 2) + (unit / lcor * c), map));
 				}
 			}
 		}
 		return this;
 	},
 
-	_getLabel: function(lon,lat) {
+	_getLabel: function(lon,lat, map) {
 	  var title_size = new Array(0, 10, 14, 16, 6, 13, 14, 16, 24, 36, 12, 14, 20, 36, 60, 12, 20, 36, 60, 12, 24);
 	  var zoom = map.getZoom();
 	  var size = title_size[zoom]+'px';
-	  var title = '<span class="grid-text" style="cursor: default;"><font style="color:'+this.options.color+'; font-size:'+size+'; font-weight: 900; ">' + this._getLocator(lon,lat) + '</font></span>';
+	  var title = '<span class="grid-text" style="cursor: default;"><font style="color:'+this.options.color+'; font-size:'+size+'; font-weight: 900; ">' + this._getLocator(lon,lat, map) + '</font></span>';
       var myIcon = L.divIcon({className: 'my-div-icon', html: title});
       var marker = L.marker([lat,lon], {icon: myIcon}, clickable=false);
       return marker;
 	},
 
-	_getLocator: function(lon,lat) {
+	_getLocator: function(lon,lat, map) {
 	  var ydiv_arr=new Array(10, 1, 1/24, 1/240, 1/240/24);
 	  var d1 = "ABCDEFGHIJKLMNOPQR".split("");
 	  var d2 = "ABCDEFGHIJKLMNOPQRSTUVWX".split("");
@@ -141,11 +141,11 @@ L.MaidenheadQrb = L.LayerGroup.extend({
 	/*
 	Need this for the field printing, while showing worked/confirmed grids
 	 */
-	_getLabel2: function(lon,lat) {
+	_getLabel2: function(lon,lat, map) {
 		var title_size = new Array(0, 10, 12, 16, 20, 26, 26, 16, 24, 36, 12, 14, 20, 36, 60, 12, 20, 36, 60, 12, 24);
 		var zoom = map.getZoom();
 		var size = title_size[zoom]+'px';
-		var title = '<span class="grid-text" style="cursor: default;"><font style="color:'+this.options.color+'; font-size:'+size+'; font-weight: 900; ">' + this._getLocator2(lon,lat) + '</font></span>';
+		var title = '<span class="grid-text" style="cursor: default;"><font style="color:'+this.options.color+'; font-size:'+size+'; font-weight: 900; ">' + this._getLocator2(lon,lat, map) + '</font></span>';
 		var myIcon = L.divIcon({className: 'my-div-icon', html: title});
 		var marker = L.marker([lat,lon], {icon: myIcon}, clickable=false);
 		return marker;
@@ -154,7 +154,7 @@ L.MaidenheadQrb = L.LayerGroup.extend({
 	/*
 	Need this for the field printing, while showing worked/confirmed grids
  	*/
-	_getLocator2: function(lon,lat) {
+	_getLocator2: function(lon,lat, map) {
 		var ydiv_arr=new Array(10, 1, 1/24, 1/240, 1/240/24);
 		var d1 = "ABCDEFGHIJKLMNOPQR".split("");
 		var d2 = "ABCDEFGHIJKLMNOPQRSTUVWX".split("");
