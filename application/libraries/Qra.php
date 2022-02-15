@@ -60,6 +60,16 @@ class Qra {
 		// Return the distance
 		return $total_distance;
 	}
+
+	/*
+	* Function returns just the bearing
+	*  Input locator1 and locator2
+	*/
+	function get_bearing($tx, $rx) {
+		$my = qra2latlong($tx);
+		$stn = qra2latlong($rx);
+		return get_bearing($my[0], $my[1], $stn[0], $stn[1]);
+	}
 }
 
 function distance($lat1, $lon1, $lat2, $lon2, $unit = 'M') {

@@ -3,7 +3,7 @@
             <div class="form-group row">
                 <div class="col-md-2 control-label" for="input">Locator 1</div>
                 <div class="col-md-4">
-                    <input class="form-control input-group-sm" id="locator1" type="text" name="locator1" placeholder="" aria-label="locator1">  
+                    <input class="form-control input-group-sm" id="locator1" type="text" name="locator1" placeholder="" value="<?php if ($station_locator != "0") echo $station_locator; ?>" aria-label="locator1">  
                 </div>
             </div>
 

@@ -454,13 +454,23 @@ function spawnQrbCalculator() {
 }
 
 function calculateQrb(form) {
+    let locator1 = form.locator1.value;
+    let locator2 = form.locator2.value;
+
     $.ajax({
 		url: base_url+'index.php/qrbcalc/calculate',
 		type: 'post',
-		data: {'locator1': form.locator1.value,
-			    'locator2': form.locator2.value},
+		data: {'locator1': locator1,
+			    'locator2': locator2},
 		success: function (html) {
-			$(".qrbResult").append(html['result']);
+            
+            var result = "<h5>Negative latitudes are south of the equator, negative longitudes are west of Greenwich. <br/>";
+            result += ' ' + locator1.toUpperCase() + ' Latitude = ' + html['latlng1'][0] + ' Longitude = ' + html['latlng1'][1] + '<br/>';
+            result += ' ' + locator2.toUpperCase() + ' Latitude = ' + html['latlng2'][0] + ' Longitude = ' + html['latlng2'][1] + '<br/>';
+            result += 'Distance between ' + locator1.toUpperCase() + ' and ' + locator2.toUpperCase() + ' is ' + html['distance'] + '. and ';
+            result += 'the bearing is ' + html['bearing'] + '.</h5>';
+            
+            $(".qrbResult").html(result);
             newpath(html['latlng1'], html['latlng2']);
 		}
 	});
@@ -474,23 +484,31 @@ function newpath(locator1, locator2) {
         container._leaflet_id = null;
     }
 
-    const map = L.map('mapqrb').setView([30, 0], 1.5);
+    const map = new L.map('mapqrb').setView([30, 0], 1.5);
 
     var maidenhead = L.maidenheadqrb().addTo(map);
 
-    L.tileLayer('https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-        maxZoom: 10,
-        noWrap: false,
-    }).addTo(map);
+    var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib}); 
+
+    var redIcon = L.icon({
+					iconUrl: icon_dot_url,
+					iconSize:     [10, 10], // size of the icon
+				});
+
+    map.addLayer(osm);
+    var marker = L.marker([locator1[0], locator1[1]], {icon: redIcon});
+    map.addLayer(marker);
+
+    var marker2 = L.marker([locator2[0], locator2[1]], {icon: redIcon});
+    map.addLayer(marker2);
 
     const multiplelines = [];
-    //$.each(locs, function(){
 		multiplelines.push(
             new L.LatLng(locator1[0], locator1[1]),
             new L.LatLng(locator2[0], locator2[1])
         )
-        
-	//});
 
     const geodesic = L.geodesic(multiplelines, {
         weight: 1,

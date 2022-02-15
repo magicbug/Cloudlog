@@ -15,6 +15,10 @@ class Qrbcalc extends CI_Controller {
 
 	public function index() {
 		$data['page_title'] = "QRB Calculator";
+
+		$this->load->model('stations');
+        $data['station_locator'] = $this->stations->find_gridsquare();
+		
 		$this->load->view('qrbcalc/index', $data);
 	}
 
@@ -29,9 +33,23 @@ class Qrbcalc extends CI_Controller {
 			$measurement_base = $this->session->userdata('user_measurement_base');
 		}
 
+		switch ($measurement_base) {
+			case 'M':
+				$var_dist = " miles";
+				break;
+			case 'N':
+				$var_dist = " nautic miles";
+				break;
+			case 'K':
+				$var_dist = " kilometers";
+				break;
+		}
+
 		$this->load->library('Qra');
 
 		$data['result'] = $this->qra->bearing($locator1, $locator2, $measurement_base);
+		$data['distance'] = $this->qra->distance($locator1, $locator2, $measurement_base) . $var_dist;
+		$data['bearing'] = $this->qra->get_bearing($locator1, $locator2) . "&#186; ";
 		$data['latlng1'] = $this->qra->qra2latlong($locator1);
 		$data['latlng2'] = $this->qra->qra2latlong($locator2);
 		header('Content-Type: application/json');
