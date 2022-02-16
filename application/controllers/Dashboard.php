@@ -8,11 +8,7 @@ class Dashboard extends CI_Controller {
 		if(ENVIRONMENT == 'development') {
             $this->output->enable_profiler(TRUE);
         }
-
-		// Check our version and run any migrations
-		$this->load->library('Migration');
-		$this->migration->current();	
-
+		
 		// Database connections
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
@@ -22,16 +18,6 @@ class Dashboard extends CI_Controller {
 		if($this->user_model->validate_session() == 0) {
 			// user is not logged in
 			redirect('user/login');
-		}
-
-
-		if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
-			if($this->user_model->validate_session()) {
-				$this->user_model->clear_session();
-				show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
-			} else {
-				redirect('user/login');
-			}
 		}
 		
 		// Calculate Lat/Lng from Locator to use on Maps
