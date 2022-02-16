@@ -268,13 +268,15 @@ class Search extends CI_Controller {
 	}
 
 	function fetchQueryResult($json, $returnquery) {
-
 		$search_items = json_decode($json, true);
 
+		$this->db->group_start();
 		$this->buildWhere($search_items);
+		$this->db->group_end();
 
 		$this->db->order_by('COL_TIME_ON', 'DESC');
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 
 		if ($returnquery) {
 			$query = $this->db->get_compiled_select($this->config->item('table_name'));

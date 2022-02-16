@@ -935,15 +935,11 @@ class Logbook_model extends CI_Model {
   }
 
   function get_qso($id) {
-    $CI =& get_instance();
-    $CI->load->model('logbooks_model');
-    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-
     $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
     $this->db->from($this->config->item('table_name'));
 
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-    $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
+    $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
     $this->db->where('COL_PRIMARY_KEY', $id);
 
     return $this->db->get();
