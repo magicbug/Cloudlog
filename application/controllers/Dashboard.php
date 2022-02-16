@@ -4,7 +4,10 @@ class Dashboard extends CI_Controller {
 
 	public function index()
 	{
-
+		// If environment is set to development then show the debug toolbar
+		if(ENVIRONMENT == 'development') {
+            $this->output->enable_profiler(TRUE);
+        }
 
 		// Check our version and run any migrations
 		$this->load->library('Migration');
