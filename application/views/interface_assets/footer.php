@@ -6,7 +6,7 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.qrb.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/leaflet.geodesic@2.5.5-0/dist/leaflet.geodesic.umd.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.geodesic.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/darkmodehelpers.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
@@ -474,7 +474,7 @@ function calculateQrb(form) {
                 result += 'the bearing is ' + html['bearing'] + '.</h5>';
                 
                 $(".qrbResult").html(result);
-                newpath(html['latlng1'], html['latlng2']);
+                newpath(html['latlng1'], html['latlng2'], locator1, locator2);
             }
         });
     } else {
@@ -490,7 +490,7 @@ function validateLocator(locator) {
     return true;
 }
 
-function newpath(locator1, locator2) {
+function newpath(latlng1, latlng2, locator1, locator2) {
     // If map is already initialized
     var container = L.DomUtil.get('mapqrb');
 
@@ -512,20 +512,18 @@ function newpath(locator1, locator2) {
 				});
 
     map.addLayer(osm);
-    var marker = L.marker([locator1[0], locator1[1]], {icon: redIcon});
-    map.addLayer(marker);
 
-    var marker2 = L.marker([locator2[0], locator2[1]], {icon: redIcon});
-    map.addLayer(marker2);
+    var marker = L.marker([latlng1[0], latlng1[1]], {closeOnClick: false, autoClose: false}).addTo(map).bindPopup(locator1);
+    var marker2 = L.marker([latlng2[0], latlng2[1]], {closeOnClick: false, autoClose: false}).addTo(map).bindPopup(locator2);
 
     const multiplelines = [];
 		multiplelines.push(
-            new L.LatLng(locator1[0], locator1[1]),
-            new L.LatLng(locator2[0], locator2[1])
+            new L.LatLng(latlng1[0], latlng1[1]),
+            new L.LatLng(latlng2[0], latlng2[1])
         )
 
     const geodesic = L.geodesic(multiplelines, {
-        weight: 1,
+        weight: 3,
         opacity: 1,
         color: 'red',
         wrap: false,
