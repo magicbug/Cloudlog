@@ -306,6 +306,7 @@ class Logbook_model extends CI_Model {
 			$this->db->where("(COL_MODE='" . $mode . "' OR COL_SUBMODE='" . $mode ."')");
 		}
 		$this->db->order_by("COL_TIME_ON", "desc");
+		$this->db->limit(500);
 
 		return $this->db->get($this->config->item('table_name'));
 	}
