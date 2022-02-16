@@ -5,6 +5,8 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.qrb.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.geodesic.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/darkmodehelpers.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
@@ -421,7 +423,113 @@ document.onkeyup = function(e) {
 	if (e.altKey && e.which == 76) {
 		spawnLookupModal();
 	}
+    if (e.altKey && e.which == 81) {
+		spawnQrbCalculator();
+	}
 };
+
+function spawnQrbCalculator() {
+	$.ajax({
+		url: base_url + 'index.php/qrbcalc',
+		type: 'post',
+		success: function (html) {
+			BootstrapDialog.show({
+				title: 'Compute QRB and QTF',
+				size: BootstrapDialog.SIZE_WIDE,
+				cssClass: 'lookup-dialog',
+				nl2br: false,
+				message: html,
+				onshown: function(dialog) {
+
+				},
+				buttons: [{
+					label: 'Close',
+					action: function (dialogItself) {
+						dialogItself.close();
+					}
+				}]
+			});
+		}
+	});
+}
+
+function calculateQrb(form) {
+    let locator1 = form.locator1.value;
+    let locator2 = form.locator2.value;
+
+    $(".qrbalert").remove();
+
+    if (validateLocator(locator1) && validateLocator(locator2)) {
+        $.ajax({
+            url: base_url+'index.php/qrbcalc/calculate',
+            type: 'post',
+            data: {'locator1': locator1,
+                    'locator2': locator2},
+            success: function (html) {
+                
+                var result = "<h5>Negative latitudes are south of the equator, negative longitudes are west of Greenwich. <br/>";
+                result += ' ' + locator1.toUpperCase() + ' Latitude = ' + html['latlng1'][0] + ' Longitude = ' + html['latlng1'][1] + '<br/>';
+                result += ' ' + locator2.toUpperCase() + ' Latitude = ' + html['latlng2'][0] + ' Longitude = ' + html['latlng2'][1] + '<br/>';
+                result += 'Distance between ' + locator1.toUpperCase() + ' and ' + locator2.toUpperCase() + ' is ' + html['distance'] + '.<br />';
+                result += 'The bearing is ' + html['bearing'] + '.</h5>';
+                
+                $(".qrbResult").html(result);
+                newpath(html['latlng1'], html['latlng2'], locator1, locator2);
+            }
+        });
+    } else {
+        $('.qrbResult').html('<div class="qrbalert alert alert-danger" role="alert">Error in locators. Please check.</div>');
+    }
+}
+
+function validateLocator(locator) {
+    if(locator.length < 4 && !(/^[a-rA-R]{2}[0-9]{2}[a-xA-X]{0,2}[0-9]{0,2}[a-xA-X]{0,2}$/.test(locator))) {
+        return false;
+    }
+    
+    return true;
+}
+
+function newpath(latlng1, latlng2, locator1, locator2) {
+    // If map is already initialized
+    var container = L.DomUtil.get('mapqrb');
+
+    if(container != null){
+        container._leaflet_id = null;
+    }
+
+    const map = new L.map('mapqrb').setView([30, 0], 1.5);
+
+    var maidenhead = L.maidenheadqrb().addTo(map);
+
+    var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib}); 
+
+    var redIcon = L.icon({
+					iconUrl: icon_dot_url,
+					iconSize:     [10, 10], // size of the icon
+				});
+
+    map.addLayer(osm);
+
+    var marker = L.marker([latlng1[0], latlng1[1]], {closeOnClick: false, autoClose: false}).addTo(map).bindPopup(locator1);
+    var marker2 = L.marker([latlng2[0], latlng2[1]], {closeOnClick: false, autoClose: false}).addTo(map).bindPopup(locator2);
+
+    const multiplelines = [];
+		multiplelines.push(
+            new L.LatLng(latlng1[0], latlng1[1]),
+            new L.LatLng(latlng2[0], latlng2[1])
+        )
+
+    const geodesic = L.geodesic(multiplelines, {
+        weight: 3,
+        opacity: 1,
+        color: 'red',
+        wrap: false,
+        steps: 100
+    }).addTo(map);
+}
 
 // This displays the dialog with the form and it's where the resulttable is displayed
 function spawnLookupModal() {
