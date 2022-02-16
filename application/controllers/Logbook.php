@@ -605,12 +605,12 @@ class Logbook extends CI_Controller {
 					}
 
 					$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
-				} else {
+				} /*else {
 					// Lookup using hamli
 					$this->load->library('hamli');
 
 					$data['callsign'] = $this->hamli->callsign($id);
-				}
+				}*/
 
 				$data['id'] = strtoupper($id);
 
