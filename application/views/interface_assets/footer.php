@@ -834,9 +834,9 @@ $(document).on('keypress',function(e) {
   })
   <?php } ?>
 
-  L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
+  L.tileLayer('<?php echo $this->optionslib->get_option('option_map_tile_server');?>', {
     maxZoom: 18,
-    attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
+    attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright');?>',
     id: 'mapbox.streets'
   }).addTo(mymap);
 
@@ -1128,9 +1128,9 @@ $(document).on('keypress',function(e) {
 
   var mymap = L.map('map').setView([lat,long], 5);
 
-  L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
+  L.tileLayer('<?php echo $this->optionslib->get_option('option_map_tile_server');?>', {
     maxZoom: 18,
-    attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
+    attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright');?>',
     id: 'mapbox.streets'
   }).addTo(mymap);
 
@@ -1187,9 +1187,9 @@ $(document).ready(function(){
 
 <script>
 
-  var layer = L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
+  var layer = L.tileLayer('<?php echo $this->optionslib->get_option('option_map_tile_server');?>', {
     maxZoom: 18,
-    attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
+    attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright');?>',
     id: 'mapbox.streets'
   });
 
@@ -1354,9 +1354,9 @@ $(document).ready(function(){
 							var callsign = $("#callsign").text();
 							var mymap = L.map('mapqso').setView([lat,long], 5);
 
-							var tiles = L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
+							var tiles = L.tileLayer('<?php echo $this->optionslib->get_option('option_map_tile_server');?>', {
 								maxZoom: 18,
-								attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
+								attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright');?>',
 							}).addTo(mymap);
 
                             

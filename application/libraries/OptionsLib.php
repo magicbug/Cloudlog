@@ -46,14 +46,37 @@ class OptionsLib {
         // Make Codeigniter functions available to library
         $CI =& get_instance();
 
-        //Load the options model
-        $CI->load->model('options_model');
-        
-        // call library function to get options value
-        $options_result = $CI->options_model->item($option_name);
+        if (strpos($option_name, 'option_')) { 
+            if(!$CI->config->item('option_'.$option_name)) {
+                //Load the options model
+                $CI->load->model('options_model');
+                
+                // call library function to get options value
+                $options_result = $CI->options_model->item($option_name);
+    
+                // return option_value as a string
+                return $options_result;
+            } else {
+                return $CI->config->item($option_name);
+            }
+        } else {
 
-        // return option_value as a string
-        return $options_result;
+                return $CI->config->item($option_name);
+        }
+
+        if(!$CI->config->item('option_'.$option_name)) {
+            //Load the options model
+            $CI->load->model('options_model');
+            
+            // call library function to get options value
+            $options_result = $CI->options_model->item($option_name);
+
+            // return option_value as a string
+            return $options_result;
+        } else {
+            return $CI->config->item($option_name);
+        }
+
     }
 
     // Function to save new option to options table
