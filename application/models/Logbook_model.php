@@ -257,6 +257,36 @@ class Logbook_model extends CI_Model {
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+		$this->db->select('COL_CALL');
+		$this->db->distinct();
+		$this->db->select('ANY_VALUE(`COL_TIME_ON`) AS `COL_TIME_ON`');
+		$this->db->select('ANY_VALUE(`COL_PRIMARY_KEY`) AS `COL_PRIMARY_KEY`');
+		$this->db->select('ANY_VALUE(`COL_BAND`) AS `COL_BAND`');
+		$this->db->select('ANY_VALUE(`COL_SAT_NAME`) AS `COL_SAT_NAME`');
+		$this->db->select('ANY_VALUE(`COL_MODE`) AS `COL_MODE`');
+		$this->db->select('ANY_VALUE(`COL_SUBMODE`) AS `COL_SUBMODE`');
+		$this->db->select('ANY_VALUE(`COL_RST_SENT`) AS `COL_RST_SENT`');
+		$this->db->select('ANY_VALUE(`COL_RST_RCVD`) AS `COL_RST_RCVD`');
+		$this->db->select('ANY_VALUE(`COL_STX`) AS `COL_STX`');
+		$this->db->select('ANY_VALUE(`COL_SRX`) AS `COL_SRX`');
+		$this->db->select('ANY_VALUE(`COL_STX_STRING`) AS `COL_STX_STRING`');
+		$this->db->select('ANY_VALUE(`COL_SRX_STRING`) AS `COL_SRX_STRING`');
+		$this->db->select('ANY_VALUE(`COL_COUNTRY`) AS `COL_COUNTRY`');
+		$this->db->select('ANY_VALUE(`COL_QSL_SENT`) AS `COL_QSL_SENT`');
+		$this->db->select('ANY_VALUE(`COL_QSL_SENT_VIA`) AS `COL_QSL_SENT_VIA`');
+		$this->db->select('ANY_VALUE(`COL_QSLSDATE`) AS `COL_QSLSDATE`');
+		$this->db->select('ANY_VALUE(`COL_QSL_RCVD`) AS `COL_QSL_RCVD`');
+		$this->db->select('ANY_VALUE(`COL_QSL_RCVD_VIA`) AS `COL_QSL_RCVD_VIA`');
+		$this->db->select('ANY_VALUE(`COL_QSLRDATE`) AS `COL_QSLRDATE`');
+		$this->db->select('ANY_VALUE(`COL_EQSL_QSL_SENT`) AS `COL_EQSL_QSL_SENT`');
+		$this->db->select('ANY_VALUE(`COL_EQSL_QSLSDATE`) AS `COL_EQSL_QSLSDATE`');
+		$this->db->select('ANY_VALUE(`COL_EQSL_QSL_RCVD`) AS `COL_EQSL_QSL_RCVD`');
+		$this->db->select('ANY_VALUE(`COL_EQSL_QSLRDATE`) AS `COL_EQSL_QSLRDATE`');
+		$this->db->select('ANY_VALUE(`COL_LOTW_QSL_SENT`) AS `COL_LOTW_QSL_SENT`');
+		$this->db->select('ANY_VALUE(`COL_LOTW_QSLSDATE`) AS `COL_LOTW_QSLSDATE`');
+		$this->db->select('ANY_VALUE(`COL_LOTW_QSL_RCVD`) AS `COL_LOTW_QSL_RCVD`');
+		$this->db->select('ANY_VALUE(`COL_LOTW_QSLRDATE`) AS `COL_LOTW_QSLRDATE`');
+		$this->db->select('ANY_VALUE(`COL_CONTEST_ID`) AS `COL_CONTEST_ID`');
 		switch ($type) {
 			case 'DXCC':
 				$this->db->where('COL_COUNTRY', $searchphrase);
@@ -305,6 +335,7 @@ class Logbook_model extends CI_Model {
 		if ($mode != 'All') {
 			$this->db->where("(COL_MODE='" . $mode . "' OR COL_SUBMODE='" . $mode ."')");
 		}
+		$this->db->group_by("COL_CALL, COL_TIME_ON");
 		$this->db->order_by("COL_TIME_ON", "desc");
 		$this->db->limit(500);
 
