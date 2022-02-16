@@ -470,8 +470,8 @@ function calculateQrb(form) {
                 var result = "<h5>Negative latitudes are south of the equator, negative longitudes are west of Greenwich. <br/>";
                 result += ' ' + locator1.toUpperCase() + ' Latitude = ' + html['latlng1'][0] + ' Longitude = ' + html['latlng1'][1] + '<br/>';
                 result += ' ' + locator2.toUpperCase() + ' Latitude = ' + html['latlng2'][0] + ' Longitude = ' + html['latlng2'][1] + '<br/>';
-                result += 'Distance between ' + locator1.toUpperCase() + ' and ' + locator2.toUpperCase() + ' is ' + html['distance'] + '. and ';
-                result += 'the bearing is ' + html['bearing'] + '.</h5>';
+                result += 'Distance between ' + locator1.toUpperCase() + ' and ' + locator2.toUpperCase() + ' is ' + html['distance'] + '.<br />';
+                result += 'The bearing is ' + html['bearing'] + '.</h5>';
                 
                 $(".qrbResult").html(result);
                 newpath(html['latlng1'], html['latlng2'], locator1, locator2);

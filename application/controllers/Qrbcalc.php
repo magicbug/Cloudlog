@@ -49,7 +49,7 @@ class Qrbcalc extends CI_Controller {
 
 		$data['result'] = $this->qra->bearing($locator1, $locator2, $measurement_base);
 		$data['distance'] = $this->qra->distance($locator1, $locator2, $measurement_base) . $var_dist;
-		$data['bearing'] = $this->qra->get_bearing($locator1, $locator2) . "&#186; ";
+		$data['bearing'] = $this->qra->get_bearing($locator1, $locator2) . "&#186;";
 		$latlng1 = $this->qra->qra2latlong($locator1);
 		$latlng2 = $this->qra->qra2latlong($locator2);
 		$latlng1[0] = number_format((float)$latlng1[0], 3, '.', '');;
