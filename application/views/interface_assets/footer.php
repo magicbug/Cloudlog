@@ -1245,13 +1245,12 @@ $(document).ready(function(){
       }
 		$(".modal-body").empty();
 		  $.ajax({
-			  url: base_url + 'index.php/awards/qso_details_ajax',
+			  url: base_url + 'index.php/activated_grids/qso_details_ajax',
 			  type: 'post',
 			  data: {
 				  'Searchphrase': loc_4char,
 				  'Band': band,
 				  'Mode': 'All',
-				  'Type': 'GridActivator'
 			  },
 			  success: function (html) {
 				$(".modal-body").html(html);

@@ -345,5 +345,20 @@ class Activated_grids extends CI_Controller {
 
 		echo $result;
 	}
-	
+
+	public function qso_details_ajax(){
+		$this->load->model('logbook_model');
+
+		$searchphrase = str_replace('"', "", $this->input->post("Searchphrase"));
+		$band = str_replace('"', "", $this->input->post("Band"));
+		$mode = str_replace('"', "", $this->input->post("Mode"));
+
+		$data['results'] = $this->logbook_model->activated_grids_qso_details($searchphrase, $band, $mode);
+
+		// Render Page
+		$data['page_title'] = "Log View";
+		$data['filter'] = $searchphrase . " and band ".$band . " and mode ".$mode;
+		$this->load->view('awards/details', $data);
+	}
+
 }
