@@ -1662,6 +1662,47 @@ class Logbook_model extends CI_Model {
         }
     }
 
+        /* Return total number of countries confirmed with along with qsl types confirmed */
+        function total_countries_confirmed($StationLocationsArray = null) {
+          
+          if($StationLocationsArray == null) {
+            $CI =& get_instance();
+            $CI->load->model('logbooks_model');
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+          } else {
+            $logbooks_locations_array = StationLocationsArray;
+          }
+
+          if(!empty($logbooks_locations_array)) {
+            $this->db->select('COUNT(DISTINCT COL_COUNTRY) as Countries_Worked,
+            COUNT(DISTINCT IF(COL_QSL_RCVD = "Y", COL_COUNTRY, NULL)) as Countries_Worked_QSL,
+            COUNT(DISTINCT IF(COL_EQSL_QSL_RCVD = "Y", COL_COUNTRY, NULL)) as Countries_Worked_EQSL,  
+            COUNT(DISTINCT IF(COL_LOTW_QSL_RCVD = "Y", COL_COUNTRY, NULL)) as Countries_Worked_LOTW');
+            $this->db->where_in('station_id', $logbooks_locations_array);
+            $this->db->where('COL_COUNTRY !=', 'Invalid');
+            $this->db->where('COL_DXCC >', '0');
+
+            if ($query = $this->db->get($this->config->item('table_name')))
+            {
+                foreach ($query->result() as $row)
+                {
+                        $CountriesBreakdown['Countries_Worked'] = $row->Countries_Worked;
+                        $CountriesBreakdown['Countries_Worked_QSL'] =  $row->Countries_Worked_QSL;
+                        $CountriesBreakdown['Countries_Worked_EQSL'] =  $row->Countries_Worked_EQSL;
+                        $CountriesBreakdown['Countries_Worked_LOTW'] =  $row->Countries_Worked_LOTW;
+                }
+
+                return $CountriesBreakdown;
+            }
+            else
+            {
+                return false;
+            }
+          } else {
+            return false;
+          }
+        }
+
     /* Return total number of countries confirmed with paper QSL */
     function total_countries_confirmed_paper() {
       $CI =& get_instance();

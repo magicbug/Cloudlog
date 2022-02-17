@@ -56,10 +56,13 @@ class Dashboard extends CI_Controller {
 			$data['month_qsos'] = $this->logbook_model->month_qsos();
 			$data['year_qsos'] = $this->logbook_model->year_qsos();
 
-			$data['total_countries'] = $this->logbook_model->total_countries();
-			$data['total_countries_confirmed_paper'] = $this->logbook_model->total_countries_confirmed_paper();
-			$data['total_countries_confirmed_eqsl'] = $this->logbook_model->total_countries_confirmed_eqsl();
-			$data['total_countries_confirmed_lotw'] = $this->logbook_model->total_countries_confirmed_lotw();
+			// Load  Countries Breakdown data into array
+			$CountriesBreakdown = $this->logbook_model->total_countries_confirmed();
+
+			$data['total_countries'] = $CountriesBreakdown['Countries_Worked'];
+			$data['total_countries_confirmed_paper'] = $CountriesBreakdown['Countries_Worked_QSL'];
+			$data['total_countries_confirmed_eqsl'] = $CountriesBreakdown['Countries_Worked_EQSL'];
+			$data['total_countries_confirmed_lotw'] = $CountriesBreakdown['Countries_Worked_LOTW'];
 
 			$data['total_qsl_sent'] = $this->logbook_model->total_qsl_sent();
 			$data['total_qsl_recv'] = $this->logbook_model->total_qsl_recv();
