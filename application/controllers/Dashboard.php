@@ -20,6 +20,9 @@ class Dashboard extends CI_Controller {
 			redirect('user/login');
 		}
 		
+		$this->load->model('logbooks_model');
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
 		// Calculate Lat/Lng from Locator to use on Maps
 		if($this->session->userdata('user_locator')) {
 				$this->load->library('qra');
@@ -51,37 +54,39 @@ class Dashboard extends CI_Controller {
 			$data['radio_status'] = $this->cat->recent_status();
 
 			// Store info
-			$data['todays_qsos'] = $this->logbook_model->todays_qsos();
-			$data['total_qsos'] = $this->logbook_model->total_qsos();
-			$data['month_qsos'] = $this->logbook_model->month_qsos();
-			$data['year_qsos'] = $this->logbook_model->year_qsos();
+			$data['todays_qsos'] = $this->logbook_model->todays_qsos($logbooks_locations_array);
+			$data['total_qsos'] = $this->logbook_model->total_qsos($logbooks_locations_array);
+			$data['month_qsos'] = $this->logbook_model->month_qsos($logbooks_locations_array);
+			$data['year_qsos'] = $this->logbook_model->year_qsos($logbooks_locations_array);
 
 			// Load  Countries Breakdown data into array
-			$CountriesBreakdown = $this->logbook_model->total_countries_confirmed();
+			$CountriesBreakdown = $this->logbook_model->total_countries_confirmed($logbooks_locations_array);
 
 			$data['total_countries'] = $CountriesBreakdown['Countries_Worked'];
 			$data['total_countries_confirmed_paper'] = $CountriesBreakdown['Countries_Worked_QSL'];
 			$data['total_countries_confirmed_eqsl'] = $CountriesBreakdown['Countries_Worked_EQSL'];
 			$data['total_countries_confirmed_lotw'] = $CountriesBreakdown['Countries_Worked_LOTW'];
 
-			$data['total_qsl_sent'] = $this->logbook_model->total_qsl_sent();
-			$data['total_qsl_recv'] = $this->logbook_model->total_qsl_recv();
-			$data['total_qsl_requested'] = $this->logbook_model->total_qsl_requested();
+			$QSLStatsBreakdownArray =$this->logbook_model->get_QSLStats($logbooks_locations_array);
 
-			$data['total_eqsl_sent'] = $this->logbook_model->total_eqsl_sent();
-			$data['total_eqsl_recv'] = $this->logbook_model->total_eqsl_recv();
+			$data['total_qsl_sent'] = $QSLStatsBreakdownArray['QSL_Sent'];
+			$data['total_qsl_recv'] = $QSLStatsBreakdownArray['QSL_Received'];
+			$data['total_qsl_requested'] = $QSLStatsBreakdownArray['QSL_Requested'];
 
-			$data['total_lotw_sent'] = $this->logbook_model->total_lotw_sent();
-			$data['total_lotw_recv'] = $this->logbook_model->total_lotw_recv();
+			$data['total_eqsl_sent'] = $QSLStatsBreakdownArray['eQSL_Sent'];
+			$data['total_eqsl_recv'] = $QSLStatsBreakdownArray['eQSL_Received'];
 
-			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18');
+			$data['total_lotw_sent'] = $QSLStatsBreakdownArray['LoTW_Sent'];
+			$data['total_lotw_recv'] = $QSLStatsBreakdownArray['LoTW_Received'];
+
+			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18', $logbooks_locations_array);
 
 			$data['page_title'] = "Dashboard";
 
 			$this->load->model('dxcc');
 			$dxcc = $this->dxcc->list_current();
 
-			$current = $this->logbook_model->total_countries_current();
+			$current = $this->logbook_model->total_countries_current($logbooks_locations_array);
 
 			$data['total_countries_needed'] = count($dxcc->result()) - $current;
 

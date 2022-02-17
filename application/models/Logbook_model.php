@@ -992,11 +992,15 @@ class Logbook_model extends CI_Model {
         }
     }
 
-  function get_last_qsos($num) {
+  function get_last_qsos($num, $StationLocationsArray = null) {
 
-    $CI =& get_instance();
-    $CI->load->model('logbooks_model');
-    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    if($StationLocationsArray == null) {
+      $CI =& get_instance();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    } else {
+      $logbooks_locations_array = $StationLocationsArray;
+    }
 
     if ($logbooks_locations_array) {
       //$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_STX_STRING, COL_SRX_STRING, COL_IOTA, COL_STATE, COL_GRIDSQUARE');
@@ -1105,10 +1109,14 @@ class Logbook_model extends CI_Model {
   }
 
     /* Return total number of qsos */
-    function total_qsos() {
-      $CI =& get_instance();
-      $CI->load->model('logbooks_model');
-      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    function total_qsos($StationLocationsArray = null) {
+      if($StationLocationsArray == null) {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+      } else {
+        $logbooks_locations_array = $StationLocationsArray;
+      }
 
       if ($logbooks_locations_array) {
         $this->db->select('COUNT( * ) as count', FALSE);
@@ -1128,10 +1136,14 @@ class Logbook_model extends CI_Model {
     }
 
     /* Return number of QSOs had today */
-    function todays_qsos() {
-      $CI =& get_instance();
-      $CI->load->model('logbooks_model');
-      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    function todays_qsos($StationLocationsArray = null) {
+      if($StationLocationsArray == null) {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+      } else {
+        $logbooks_locations_array = $StationLocationsArray;
+      }
 
       if ($logbooks_locations_array) {
         $morning = date('Y-m-d 00:00:00');
@@ -1215,11 +1227,14 @@ class Logbook_model extends CI_Model {
     }
 
     // Return QSOs made during the current month
-    function month_qsos() {
-
-      $CI =& get_instance();
-      $CI->load->model('logbooks_model');
-      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    function month_qsos($StationLocationsArray = null) {
+      if($StationLocationsArray == null) { 
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+      } else {
+        $logbooks_locations_array = $StationLocationsArray;
+      }
 
       if ($logbooks_locations_array) {
 
@@ -1263,11 +1278,15 @@ class Logbook_model extends CI_Model {
 
 
     /* Return QSOs made during the current Year */
-    function year_qsos() {
+    function year_qsos($StationLocationsArray = null) {
 
-      $CI =& get_instance();
-      $CI->load->model('logbooks_model');
-      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+      if($StationLocationsArray == null) {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+      } else {
+        $logbooks_locations_array = $StationLocationsArray;
+      }
 
       if ($logbooks_locations_array) {
 
@@ -1446,6 +1465,53 @@ class Logbook_model extends CI_Model {
       $query = $this->db->get($this->config->item('table_name'));
 
       return $query;
+    }
+
+    function get_QSLStats($StationLocationsArray = null) {
+          
+      if($StationLocationsArray == null) {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+      } else {
+        $logbooks_locations_array = $StationLocationsArray;
+      }
+
+      if(!empty($logbooks_locations_array)) {
+        $this->db->select('
+          COUNT(IF(COL_QSL_SENT="Y",COL_QSL_SENT,null)) as QSL_Sent,
+          COUNT(IF(COL_QSL_RCVD="Y",COL_QSL_RCVD,null)) as QSL_Received,
+          COUNT(IF(COL_QSL_SENT IN("Q", "R") ,COL_QSL_SENT,null)) as QSL_Requested,
+          COUNT(IF(COL_EQSL_QSL_SENT="Y",COL_EQSL_QSL_SENT,null)) as eQSL_Sent,
+          COUNT(IF(COL_EQSL_QSL_RCVD="Y",COL_EQSL_QSL_RCVD,null)) as eQSL_Received,
+          COUNT(IF(COL_LOTW_QSL_SENT="Y",COL_LOTW_QSL_SENT,null)) as LoTW_Sent,
+          COUNT(IF(COL_LOTW_QSL_RCVD="Y",COL_LOTW_QSL_RCVD,null)) as LoTW_Received
+        ');
+        $this->db->where_in('station_id', $logbooks_locations_array);
+
+        if ($query = $this->db->get($this->config->item('table_name')))
+        {
+          $this->db->last_query();
+            foreach ($query->result() as $row)
+            {
+                    $QSLBreakdown['QSL_Sent'] = $row->QSL_Sent;
+                    $QSLBreakdown['QSL_Received'] =  $row->QSL_Received;
+                    $QSLBreakdown['QSL_Requested'] =  $row->QSL_Requested;
+                    $QSLBreakdown['eQSL_Sent'] =  $row->eQSL_Sent;
+                    $QSLBreakdown['eQSL_Received'] =  $row->eQSL_Received;
+                    $QSLBreakdown['LoTW_Sent'] =  $row->LoTW_Sent;
+                    $QSLBreakdown['LoTW_Received'] =  $row->LoTW_Received;
+            }
+
+            return $QSLBreakdown;
+        }
+        else
+        {
+            return false;
+        }
+      } else {
+        return false;
+      }
     }
 
     /* Return total number of QSL Cards sent */
@@ -1643,10 +1709,14 @@ class Logbook_model extends CI_Model {
     }
 
     /* Return total number of countries worked */
-    function total_countries_current() {
+    function total_countries_current($StationLocationsArray = null) {
+      if($StationLocationsArray == null) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+      } else {
+        $logbooks_locations_array = $StationLocationsArray;
+      }
 
         if(!empty($logbooks_locations_array)) {
           $this->db->select('DISTINCT ('.$this->config->item('table_name').'.COL_COUNTRY)');
@@ -1670,7 +1740,7 @@ class Logbook_model extends CI_Model {
             $CI->load->model('logbooks_model');
             $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
           } else {
-            $logbooks_locations_array = StationLocationsArray;
+            $logbooks_locations_array = $StationLocationsArray;
           }
 
           if(!empty($logbooks_locations_array)) {
