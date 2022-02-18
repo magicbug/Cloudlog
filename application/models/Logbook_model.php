@@ -916,7 +916,7 @@ class Logbook_model extends CI_Model {
     return $query;
   }
 
-  function get_qsos($num, $offset, $StationLocationsArray) {
+  function get_qsos($num, $offset, $StationLocationsArray = null) {
     if($StationLocationsArray == null) {
       $CI =& get_instance();
       $CI->load->model('logbooks_model');
