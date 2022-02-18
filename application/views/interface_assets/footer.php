@@ -813,17 +813,28 @@ $(document).on('keypress',function(e) {
 <?php if ($this->uri->segment(1) == "qso") { ?>
 <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
 
+<?php 
+
+    $this->load->model('stations');
+    $active_station_id = $this->stations->find_active();
+    $station_profile = $this->stations->profile($active_station_id);
+    $active_station_info = $station_profile->row();
+
+    if (strpos($active_station_info->station_gridsquare, ',') !== false) {
+        $gridsquareArray = explode(',', $active_station_info->station_gridsquare);
+        $user_gridsquare = $gridsquareArray[0];
+    } else {
+        $user_gridsquare = $active_station_info->station_gridsquare;
+    }
+?>
+
 <script>
   var markers = L.layerGroup();
   var pos = [51.505, -0.09];
   var mymap = L.map('qsomap').setView(pos, 12);
   <?php
-  $this->load->model('stations');
-  $active_station_id = $this->stations->find_active();
-  $station_profile = $this->stations->profile($active_station_id);
-  $active_station_info = $station_profile->row();
   if ($active_station_info->station_gridsquare != "") { ?>
-  $.getJSON('logbook/qralatlngjson/<?php echo $active_station_info->station_gridsquare; ?>', function(result) {
+  $.getJSON('logbook/qralatlngjson/<?php echo $user_gridsquare; ?>', function(result) {
      mymap.panTo([result[0], result[1]]);
      pos = result;
   })

@@ -129,6 +129,12 @@ function get_bearing($lat1, $lon1, $lat2, $lon2) {
 }
 
 function qra2latlong($strQRA) {
+
+	if (strpos($strQRA, ',') !== false) {
+        $gridsquareArray = explode(',', $strQRA);
+        $strQRA = $gridsquareArray[0];
+    }
+
 	if (strlen($strQRA) %2 == 0) {
 		$strQRA = strtoupper($strQRA);
 		if (strlen($strQRA) == 4)  $strQRA .= "MM";
