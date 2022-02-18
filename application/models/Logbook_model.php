@@ -916,10 +916,14 @@ class Logbook_model extends CI_Model {
     return $query;
   }
 
-  function get_qsos($num, $offset) {
-    $CI =& get_instance();
-    $CI->load->model('logbooks_model');
-    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+  function get_qsos($num, $offset, $StationLocationsArray) {
+    if($StationLocationsArray == null) {
+      $CI =& get_instance();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    } else {
+      $logbooks_locations_array = $StationLocationsArray;
+    }
 
     //$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_NAME, '.$this->config->item('table_name').'.COL_COUNTRY, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
     $this->db->from($this->config->item('table_name'));
@@ -1507,10 +1511,26 @@ class Logbook_model extends CI_Model {
         }
         else
         {
-            return false;
+            $QSLBreakdown['QSL_Sent'] = 0;
+            $QSLBreakdown['QSL_Received'] =  0;
+            $QSLBreakdown['QSL_Requested'] =  0;
+            $QSLBreakdown['eQSL_Sent'] =  0;
+            $QSLBreakdown['eQSL_Received'] =  0;
+            $QSLBreakdown['LoTW_Sent'] =  0;
+            $QSLBreakdown['LoTW_Received'] = 0;
+
+            return $QSLBreakdown;
         }
       } else {
-        return false;
+            $QSLBreakdown['QSL_Sent'] = 0;
+            $QSLBreakdown['QSL_Received'] =  0;
+            $QSLBreakdown['QSL_Requested'] =  0;
+            $QSLBreakdown['eQSL_Sent'] =  0;
+            $QSLBreakdown['eQSL_Received'] =  0;
+            $QSLBreakdown['LoTW_Sent'] =  0;
+            $QSLBreakdown['LoTW_Received'] = 0;
+
+            return $QSLBreakdown;
       }
     }
 
@@ -1766,10 +1786,18 @@ class Logbook_model extends CI_Model {
             }
             else
             {
-                return false;
+              $CountriesBreakdown['Countries_Worked'] = 0;
+              $CountriesBreakdown['Countries_Worked_QSL'] = 0;
+              $CountriesBreakdown['Countries_Worked_EQSL'] = 0;
+              $CountriesBreakdown['Countries_Worked_LOTW'] = 0;
+              return $CountriesBreakdown;
             }
           } else {
-            return false;
+              $CountriesBreakdown['Countries_Worked'] = 0;
+              $CountriesBreakdown['Countries_Worked_QSL'] = 0;
+              $CountriesBreakdown['Countries_Worked_EQSL'] = 0;
+              $CountriesBreakdown['Countries_Worked_LOTW'] = 0;
+              return $CountriesBreakdown;
           }
         }
 
