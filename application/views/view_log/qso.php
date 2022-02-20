@@ -97,7 +97,7 @@
                     <?php if($row->COL_GRIDSQUARE != null) { ?>
                     <tr>
                         <td>Gridsquare:</td>
-                        <td><?php echo $row->COL_GRIDSQUARE; ?></td>
+                        <td><?php echo $row->COL_GRIDSQUARE; ?> <a href="javascript:spawnQrbCalculator('<?php echo $row->COL_GRIDSQUARE; ?>')"><i class="fas fa-globe"></i></a></td>
                     </tr>
                     <?php } ?>
 
@@ -133,7 +133,7 @@
                     <?php if($row->COL_VUCC_GRIDS != null) { ?>
                     <tr>
                         <td>Gridsquare (Multi):</td>
-                        <td><?php echo $row->COL_VUCC_GRIDS; ?></td>
+                        <td><?php echo $row->COL_VUCC_GRIDS; ?> <a href="javascript:spawnQrbCalculator('<?php echo $row->COL_VUCC_GRIDS; ?>')"><i class="fas fa-globe"></i></a></td>
                     </tr>
                     <?php } ?>
 

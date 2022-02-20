@@ -430,7 +430,7 @@ document.onkeyup = function(e) {
 	}
 };
 
-function spawnQrbCalculator() {
+function spawnQrbCalculator(locator2) {
 	$.ajax({
 		url: base_url + 'index.php/qrbcalc',
 		type: 'post',
@@ -442,7 +442,10 @@ function spawnQrbCalculator() {
 				nl2br: false,
 				message: html,
 				onshown: function(dialog) {
-
+                    if (locator2 !== undefined) {
+                        $("#qrbcalc_locator2").val(locator2);
+                        calculateQrb();
+                    }
 				},
 				buttons: [{
 					label: 'Close',
@@ -455,9 +458,9 @@ function spawnQrbCalculator() {
 	});
 }
 
-function calculateQrb(form) {
-    let locator1 = form.locator1.value;
-    let locator2 = form.locator2.value;
+function calculateQrb() {
+    let locator1 = $("#qrbcalc_locator1").val();
+    let locator2 = $("#qrbcalc_locator2").val();
 
     $(".qrbalert").remove();
 

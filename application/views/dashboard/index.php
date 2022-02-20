@@ -22,10 +22,18 @@ function echo_table_col($row, $name) {
 		case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY))) . '</td>'; break;
 		case 'IOTA':    echo '<td>' . ($row->COL_IOTA) . '</td>'; break;
 		case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF) . '</td>'; break;
-		case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE . '</td>'; break;
+		case 'Grid':    echo '<td>'; echoQrbCalcLink($row->COL_VUCC_GRIDS, $row->COL_GRIDSQUARE); echo '</td>'; break;
 		case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); } echo '</td>'; break;
 		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
 		case 'Operator': echo '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
+	}
+}
+
+function echoQrbCalcLink($grid, $vucc) {
+	if (strlen($grid) != 0) {
+		echo $grid . ' <a href="javascript:spawnQrbCalculator(\'' . $grid . '\')"><i class="fas fa-globe"></i></a>';
+	} else if (strlen($vucc) != 0) {
+		echo $vucc .' <a href="javascript:spawnQrbCalculator(\'' . $vucc . '\')"><i class="fas fa-globe"></i></a>';
 	}
 }
 ?>
