@@ -266,11 +266,7 @@
                                                 if ($qso->COL_DXCC == $d->adif) {
                                                     echo " selected=\"selected\"";
                                                 }
-                                                echo '>' . $d->prefix . ' - ' . ucwords(strtolower($d->name));
-                                                if ($d->Enddate != null) {
-                                                    echo ' (deleted dxcc)';
-                                                }
-                                                echo '</option>';
+                                                echo '>' . $d->prefix . ' - ' . $d->name . '</option>';
                                             }
                                             ?>
 
