@@ -32,9 +32,9 @@ function echo_table_col($row, $name) {
 
 function echoQrbCalcLink($grid, $vucc) {
 	if (strlen($grid) != 0) {
-		echo $grid . ' <a id="edit_qso" href="javascript:spawnQrbCalculator(\'' . $grid . '\')"><i class="fas fa-globe"></i></a>';
+		echo $grid . ' <a href="javascript:spawnQrbCalculator(\'' . $grid . '\')"><i class="fas fa-globe"></i></a>';
 	} else if (strlen($vucc) != 0) {
-		echo $vucc .' <a id="edit_qso" href="javascript:spawnQrbCalculator(\'' . $vucc . '\')"><i class="fas fa-globe"></i></a>';
+		echo $vucc .' <a href="javascript:spawnQrbCalculator(\'' . $vucc . '\')"><i class="fas fa-globe"></i></a>';
 	}
 }
 ?>
