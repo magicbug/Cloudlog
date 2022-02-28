@@ -430,7 +430,7 @@ document.onkeyup = function(e) {
 	}
 };
 
-function spawnQrbCalculator(locator2) {
+function spawnQrbCalculator(locator1, locator2) {
 	$.ajax({
 		url: base_url + 'index.php/qrbcalc',
 		type: 'post',
@@ -442,6 +442,9 @@ function spawnQrbCalculator(locator2) {
 				nl2br: false,
 				message: html,
 				onshown: function(dialog) {
+                    if (locator1 !== undefined) {
+                        $("#qrbcalc_locator1").val(locator1);
+                    }
                     if (locator2 !== undefined) {
                         $("#qrbcalc_locator2").val(locator2);
                         calculateQrb();
