@@ -286,6 +286,8 @@ class Logbook_model extends CI_Model {
 				break;
 		}
 
+    $this->db->where_in('station_id', $logbooks_locations_array);
+
 		if ($band != 'All') {
 			if($band != "SAT") {
 				$this->db->where('COL_PROP_MODE !=', 'SAT');
