@@ -312,7 +312,7 @@ class Logbook_model extends CI_Model {
 		$sql .= 'COL_RST_RCVD, COL_STX, COL_SRX, COL_STX_STRING, COL_SRX_STRING, COL_COUNTRY, COL_QSL_SENT, COL_QSL_SENT_VIA, ';
 		$sql .= 'COL_QSLSDATE, COL_QSL_RCVD, COL_QSL_RCVD_VIA, COL_QSLRDATE, COL_EQSL_QSL_SENT, COL_EQSL_QSLSDATE, COL_EQSL_QSLRDATE, ';
 		$sql .= 'COL_EQSL_QSL_RCVD, COL_LOTW_QSL_SENT, COL_LOTW_QSLSDATE, COL_LOTW_QSL_RCVD, COL_LOTW_QSLRDATE, COL_CONTEST_ID ';
-		$sql .= 'FROM TABLE_HRD_CONTACTS_V01 WHERE station_id IN (SELECT station_id from station_profile ';
+		$sql .= 'FROM '.$this->config->item('table_name').' WHERE station_id IN (SELECT station_id from station_profile ';
 		$sql .= 'WHERE station_gridsquare LIKE "%'.$searchphrase.'%") ';
 
 		if ($band != 'All') {
