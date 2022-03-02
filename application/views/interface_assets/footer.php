@@ -1326,10 +1326,9 @@ $(document).ready(function(){
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.MaidenheadColoured.js"></script>
 
 <script>
-
-  var layer = L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
+  var layer = L.tileLayer('<?php echo $this->optionslib->get_option('option_map_tile_server');?>', {
     maxZoom: 18,
-    attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
+    attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright');?>',
     id: 'mapbox.streets'
   });
 
