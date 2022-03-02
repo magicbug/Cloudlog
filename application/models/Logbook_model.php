@@ -257,6 +257,7 @@ class Logbook_model extends CI_Model {
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		switch ($type) {
 			case 'DXCC':
 				$this->db->where('COL_COUNTRY', $searchphrase);
@@ -286,7 +287,7 @@ class Logbook_model extends CI_Model {
 				break;
 		}
 
-    $this->db->where_in('station_id', $logbooks_locations_array);
+    $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
 
 		if ($band != 'All') {
 			if($band != "SAT") {
