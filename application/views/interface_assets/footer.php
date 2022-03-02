@@ -1321,6 +1321,121 @@ $(document).ready(function(){
 </script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "activated_grids") { ?>
+
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.MaidenheadColoured.js"></script>
+
+<script>
+
+  var layer = L.tileLayer('<?php echo $this->optionslib->get_option('map_tile_server');?>', {
+    maxZoom: 18,
+    attribution: '<?php echo $this->optionslib->get_option('map_tile_server_copyright');?>',
+    id: 'mapbox.streets'
+  });
+
+
+  var map = L.map('gridsquare_map', {
+    layers: [layer],
+    center: [19, 0],
+    zoom: 2
+  });
+
+  var grid_two = <?php echo $grid_2char; ?>;
+  var grid_four = <?php echo $grid_4char; ?>;
+  var grid_six = <?php echo $grid_6char; ?>;
+
+  var grid_two_confirmed = <?php echo $grid_2char_confirmed; ?>;
+  var grid_four_confirmed = <?php echo $grid_4char_confirmed; ?>;
+  var grid_six_confirmed = <?php echo $grid_6char_confirmed; ?>;
+
+  var maidenhead = L.maidenhead().addTo(map);
+
+  map.on('click', onMapClick);
+
+  function onMapClick(event) {
+    var LatLng = event.latlng;
+    var lat = LatLng.lat;
+    var lng = LatLng.lng;
+    var locator = LatLng2Loc(lat,lng, 10);
+    var loc_4char = locator.substring(0, 4);
+    console.log(loc_4char);
+    console.log(map.getZoom());
+
+    if(map.getZoom() > 2) {
+    	<?php if ($this->session->userdata('user_callsign')) { ?>
+	  var band = '';
+      var search_type = "<?php echo $this->uri->segment(2); ?>";
+      if(search_type == "satellites") {
+		band = 'SAT';
+      } else {
+        band = "<?php echo $this->uri->segment(3); ?>";
+      }
+		$(".modal-body").empty();
+		  $.ajax({
+			  url: base_url + 'index.php/activated_grids/qso_details_ajax',
+			  type: 'post',
+			  data: {
+				  'Searchphrase': loc_4char,
+				  'Band': band,
+				  'Mode': 'All',
+			  },
+			  success: function (html) {
+				$(".modal-body").html(html);
+				  $(".modal-body table").addClass('table-sm');
+				  $(".modal-body h5").empty();
+				  var count = $('.table tr').length;
+				  count = count - 1;
+				  $('#qso_count').text(count);
+				  if (count > 1) {
+					  $('#gt1_qso').text("s");
+				  } else {
+					  $('#gt1_qso').text("");
+				  }
+
+				  if (count > 0) {
+					  $('#square_number').text(loc_4char);
+					  $('#exampleModal').modal('show');
+					  $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
+				  }
+			  }
+		  });
+		  <?php } ?>
+    }
+  };
+
+<?php if ($this->uri->segment(1) == "activated_grids" && $this->uri->segment(2) == "band") { ?>
+
+  var bands_available = <?php echo $bands_available; ?>;
+  $('#gridsquare_bands').append('<option value="All">All</option>')
+  $.each(bands_available, function(key, value) {
+     $('#gridsquare_bands')
+         .append($("<option></option>")
+                    .attr("value",value)
+                    .text(value));
+  });
+
+  var num = "<?php echo $this->uri->segment(3);?>";
+    $("#gridsquare_bands option").each(function(){
+        if($(this).val()==num){ // EDITED THIS LINE
+            $(this).attr("selected","selected");
+        }
+    });
+
+  $(function(){
+      // bind change event to select
+      $('#gridsquare_bands').on('change', function () {
+          var url = $(this).val(); // get selected value
+          if (url) { // require a URL
+              window.location = "<?php echo site_url('activated_grids/band/');?>" + url
+          }
+          return false;
+      });
+    });
+<?php } ?>
+
+</script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "dayswithqso") { ?>
     <script src="<?php echo base_url(); ?>assets/js/chart.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/sections/dayswithqso.js"></script>

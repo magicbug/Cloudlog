@@ -86,6 +86,8 @@
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="<?php echo site_url('gridsquares');?>" title="Gridsquares">Gridsquares</a>
                     <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('activated_grids');?>" title="Activated Gridsquares">Activated Gridsquares</a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('distances');?>" title="Distances">Distances Worked</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('dayswithqso');?>" title="Days with QSOs">Days with QSOs</a>
