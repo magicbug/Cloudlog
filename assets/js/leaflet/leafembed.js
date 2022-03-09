@@ -10,7 +10,7 @@ var greenIcon = L.icon({
     iconSize:     [10, 10], // size of the icon
 });
 
-function initmap(ShowGrid = 'No') {
+function initmap(ShowGrid = 'No', MapTag = 'map') {
     // set up AJAX request
     ajaxRequest=getXmlHttpObject();
     if (ajaxRequest==null) {
@@ -19,7 +19,7 @@ function initmap(ShowGrid = 'No') {
     }
     
     // set up the map
-    map = new L.Map('map');
+    map = new L.Map(MapTag);
 
     // create the tile layer with correct attribution
     var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
