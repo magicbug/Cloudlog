@@ -1518,7 +1518,7 @@ $(document).ready(function(){
 								attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright');?>',
 							}).addTo(mymap);
 
-                            
+
                             var printer = L.easyPrint({
                                 tileLayer: tiles,
                                 sizeModes: ['Current'],
@@ -2750,6 +2750,40 @@ function deleteQsl(id) {
 				}
 			});
 		});
+	</script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "options" && $this->uri->segment(2) == "filemgr") { ?>
+	<script lang="javascript">
+		function switch_to_file_manager_add()
+		{
+			window.location.href = base_url + 'index.php/options/filemgr_add'
+		}
+	</script>
+<?php } ?>
+<?php if ($this->uri->segment(1) == "options" && ($this->uri->segment(2) == "filemgr_edit" || $this->uri->segment(2) == "filemgr_add")) { ?>
+	<script lang="javascript">
+		function update_form_group_hide_or_show() {
+			let driver = $("#driver").val();
+			if (driver == "local")
+			{
+				$("#form-group-dir").show();
+				$("#form-group-akid").hide();
+				$("#form-group-aksec").hide();
+				$("#form-group-region").hide();
+				$("#form-group-bucket").hide();
+				$("#form-group-hostname").hide();
+			} else if (driver == "aws_s3") {
+				$("#form-group-dir").hide();
+				$("#form-group-akid").show();
+				$("#form-group-aksec").show();
+				$("#form-group-region").show();
+				$("#form-group-bucket").show();
+				$("#form-group-hostname").show();
+			}
+		}
+		$("#driver").on("change", update_form_group_hide_or_show);
+		$(update_form_group_hide_or_show);
 	</script>
 <?php } ?>
   </body>

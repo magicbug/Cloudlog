@@ -42,7 +42,7 @@ class Logbooks_model extends CI_Model {
 		// Delete logbook
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('logbook_id', $id);
-		$this->db->delete('station_logbooks'); 
+		$this->db->delete('station_logbooks');
 	}
 
 	function edit() {
@@ -52,7 +52,7 @@ class Logbooks_model extends CI_Model {
 
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('logbook_id', xss_clean($this->input->post('logbook_id', true)));
-		$this->db->update('station_logbooks', $data); 
+		$this->db->update('station_logbooks', $data);
 	}
 
 	function set_logbook_active($id) {
@@ -69,7 +69,7 @@ class Logbooks_model extends CI_Model {
 		);
 
 		$this->db->where('user_id', $this->session->userdata('user_id'));
-		$this->db->update('users', $data); 
+		$this->db->update('users', $data);
 	}
 
 	function logbook($id) {
@@ -107,14 +107,14 @@ class Logbooks_model extends CI_Model {
 		);
 
 		// Insert Record
-		$this->db->insert('station_logbooks_relationship', $data); 
+		$this->db->insert('station_logbooks_relationship', $data);
 	}
 
 	function relationship_exists($logbook_id, $location_id) {
 		$this->db->where('station_logbook_id', $logbook_id);
 		$this->db->where('station_location_id', $location_id);
 		$query = $this->db->get('station_logbooks_relationship');
-		
+
 		if ($query->num_rows() > 0){
 			return true;
 		}
@@ -180,7 +180,7 @@ class Logbooks_model extends CI_Model {
 
 		$this->db->where('station_logbook_id', $logbook_id);
 		$query = $this->db->get('station_logbooks_relationship');
-		
+
 		if ($query->num_rows() > 0){
 			foreach ($query->result() as $row)
 			{
@@ -200,7 +200,7 @@ class Logbooks_model extends CI_Model {
 
 		$this->db->where('station_logbook_id', $logbook_id);
 		$query = $this->db->get('station_logbooks_relationship');
-		
+
 
 		if ($query->num_rows() > 0){
 			foreach ($query->result() as $row)
@@ -210,7 +210,7 @@ class Logbooks_model extends CI_Model {
 
 			$this->db->where_in('station_id', $relationships_array);
 			$query = $this->db->get('station_profile');
-			
+
 			return $query;
 		}
 		else{
@@ -238,7 +238,7 @@ class Logbooks_model extends CI_Model {
 		// Delete relationship
 		$this->db->where('station_logbook_id', $clean_logbook_id);
 		$this->db->where('station_location_id', $clean_station_id);
-		$this->db->delete('station_logbooks_relationship'); 
+		$this->db->delete('station_logbooks_relationship');
 	}
 
 	public function check_logbook_is_accessible($id) {

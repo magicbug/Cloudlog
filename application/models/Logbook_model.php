@@ -886,34 +886,34 @@ class Logbook_model extends CI_Model {
 
     return $this->db->get($this->config->item('table_name'));
   }
-  
-  
+
+
   // Set Paper to received
   function paperqsl_update($qso_id, $method) {
-      
+
       $data = array(
           'COL_QSLRDATE' => date('Y-m-d H:i:s'),
           'COL_QSL_RCVD' => 'Y',
           'COL_QSL_RCVD_VIA' => $method
       );
-      
+
       $this->db->where('COL_PRIMARY_KEY', $qso_id);
-      
+
       $this->db->update($this->config->item('table_name'), $data);
   }
 
 
   // Set Paper to sent
   function paperqsl_update_sent($qso_id, $method) {
-      
+
       $data = array(
           'COL_QSLSDATE' => date('Y-m-d H:i:s'),
           'COL_QSL_SENT' => 'Y',
           'COL_QSL_SENT_VIA' => $method
       );
-      
+
       $this->db->where('COL_PRIMARY_KEY', $qso_id);
-      
+
       $this->db->update($this->config->item('table_name'), $data);
   }
 
@@ -1084,7 +1084,7 @@ class Logbook_model extends CI_Model {
       $this->db->order_by("COL_TIME_ON", "desc");
       $this->db->limit($num);
       $query = $this->db->get($this->config->item('table_name'));
-  
+
       return $query;
     } else {
       return null;
@@ -1241,7 +1241,7 @@ class Logbook_model extends CI_Model {
       } else {
         return null;
       }
-     
+
     }
 
     /* Return QSOs over a period of days */
@@ -1670,7 +1670,7 @@ class Logbook_model extends CI_Model {
         $query = $this->db->get($this->config->item('table_name'));
 
         $row = $query->row();
-  
+
         if($row == null) {
             return 0;
         } else {
@@ -1793,7 +1793,7 @@ class Logbook_model extends CI_Model {
           $this->db->where('COL_COUNTRY !=', 'Invalid');
           $this->db->where('COL_DXCC >', '0');
           $query = $this->db->get($this->config->item('table_name'));
-  
+
           return $query->num_rows();
         } else {
           return 0;

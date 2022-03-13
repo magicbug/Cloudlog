@@ -74,6 +74,12 @@ class File_manager extends CI_Driver_Library
 		$this->_default = driver_cfg_mapper($default_row);
 	}
 
+	public function get_manager($id)
+	{
+		$cfg = driver_cfg_mapper($this->CI->Filemanager_model->get($id));
+		return $cfg;
+	}
+
 	public function upload_file_from_field($file_field, $filename, $manager=null): array
 	{
 		if ($manager == null)

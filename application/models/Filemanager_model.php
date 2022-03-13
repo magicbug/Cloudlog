@@ -17,6 +17,14 @@ class Filemanager_model extends CI_Model
 		$CI->Options_model->update("default_file_manager_id", $id);
 	}
 
+	public function get_all()
+	{
+		$this->db->select("*");
+		$this->db->from("file_manager");
+
+		return $this->db->get()->result_array();
+	}
+
 	public function get($id)
 	{
 		$this->db->select("*");

@@ -11,7 +11,7 @@ function echo_table_header_col($ctx, $name) {
 		case 'Grid': echo '<td>'.$ctx->lang->line('gen_hamradio_gridsquare').'</td>'; break;
 		case 'Band': echo '<td>'.$ctx->lang->line('gen_hamradio_band').'</td>'; break;
 		case 'Operator': echo '<td>'.$ctx->lang->line('gen_hamradio_operator').'</td>'; break;
-		
+
 	}
 }
 
@@ -96,7 +96,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                 echo_table_col($row, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
                 echo_table_col($row, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
                 echo_table_col($row, $this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5'));
-			
+
 				if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td class="qsl">
                 <span <?php if ($row->COL_QSL_SENT != "N") {
