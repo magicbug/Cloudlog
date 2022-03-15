@@ -27,7 +27,7 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 <?php if(isset($station_profile->station_iota)) { ?><IOTA:<?php echo strlen($station_profile->station_iota); ?>><?php echo $station_profile->station_iota; ?><?php } ?>
 
-<?php if($station_profile->state != "" && $station_profile->station_country == "CANADA") { ?><CA_PROVINCE:<?php echo strlen($station_profile->state); ?>><?php echo $station_profile->state; ?><?php } ?>
+<?php if($station_profile->state != "" && $station_profile->station_country == "CANADA") { ?><CA_PROVINCE:<?php echo strlen($CI->lotw_ca_province_map($station_profile->state)); ?>><?php echo $CI->lotw_ca_province_map($station_profile->state); ?><?php } ?>
 
 <?php if($station_profile->state != "" && $station_profile->station_country == "UNITED STATES OF AMERICA") { ?><US_STATE:<?php echo strlen($station_profile->state); ?>><?php echo $station_profile->state; ?><?php } ?>
 
