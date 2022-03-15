@@ -921,12 +921,9 @@ class Lotw extends CI_Controller {
 		return array_search(strtoupper($satname),$arr,true);
 	}
 
-		/*
-	|	Function: lotw_satellite_map
-	|	Requires: OSCAR Satellite name $satname
-	|
-	|	Outputs if LOTW uses a different satellite name
-	|
+	/*
+	|	Function: lotw_ca_province_map
+	|	Requires: candian province map $ca_province
 	*/
 	function lotw_ca_province_map($ca_prov) {
 		switch ($ca_prov):
