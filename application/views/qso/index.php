@@ -472,6 +472,13 @@
               </div>
             </div>
 
+            <div class="alert alert-info" role="alert">
+              <span class="badge badge-info"><?php echo $this->lang->line('general_word_info'); ?></span> <?php echo $this->lang->line('qsl_notes_helptext'); ?>
+            </div>
+           <div class="form-group">
+              <label for="qslnotes"><?php echo $this->lang->line('general_word_notes'); ?></label>
+              <textarea  type="text" class="form-control" id="qslnotes" name="qslnotes" rows="10"></textarea>
+            </div>
           </div>
         </div>
 
