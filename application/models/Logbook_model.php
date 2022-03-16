@@ -93,9 +93,9 @@ class Logbook_model extends CI_Model {
     }
 
     if($this->input->post('copyexchangetodok')) {
-      $dark_dok = $this->input->post('exch_recv');
+      $darc_dok = $this->input->post('exch_recv');
     } else {
-      $dark_dok = $this->input->post('darc_dok');
+      $darc_dok = $this->input->post('darc_dok');
     }
 
     if ($this->input->post('qsl_sent')) {
@@ -178,7 +178,7 @@ class Logbook_model extends CI_Model {
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
             'COL_SIG' => trim($this->input->post('sig')),
             'COL_SIG_INFO' => trim($this->input->post('sig_info')),
-            'COL_DARC_DOK' => trim($dark_dok),
+            'COL_DARC_DOK' => trim($darc_dok),
 			'COL_NOTES' => $this->input->post('notes'),
     );
 
