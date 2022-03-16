@@ -2552,6 +2552,24 @@ function deleteQsl(id) {
 	</script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "csv") { ?>
+	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
+	<script>
+		$(function () {
+			$('#datetimepicker1').datetimepicker({
+				format: 'DD/MM/YYYY',
+			});
+		});
+
+		$(function () {
+			$('#datetimepicker2').datetimepicker({
+				format: 'DD/MM/YYYY',
+			});
+		});
+	</script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "qslprint") { ?>
 	<script>
 		function deleteFromQslQueue(id) {
