@@ -1781,6 +1781,19 @@ class Logbook_model extends CI_Model {
             $tx_pwr = NULL;
         }
 
+        // Sanitise RX Power
+        if (isset($record['rx_pwr'])){
+          // Check if RX_PWR is "K" which N1MM+ uses to indicate 1000W
+          if($record['rx_pwr'] == "K") {
+            $rx_pwr = 1000;
+          } else {
+            $rx_pwr = filter_var($record['rx_pwr'],FILTER_VALIDATE_FLOAT);
+          }
+        }else{
+          $rx_pwr = NULL;
+         }
+
+
         if (isset($record['a_index'])){
             $input_a_index = filter_var($record['a_index'],FILTER_SANITIZE_NUMBER_INT);
         } else {
@@ -2096,7 +2109,7 @@ class Logbook_model extends CI_Model {
                 'COL_RIG_INTL' => (!empty($record['rig_intl'])) ? $record['rig_intl'] : '',
                 'COL_RST_RCVD' => $rst_rx,
                 'COL_RST_SENT' => $rst_tx,
-                'COL_RX_PWR' => (!empty($record['rx_pwr'])) ? $record['rx_pwr'] : null,
+                'COL_RX_PWR' => $rx_pwr,
                 'COL_SAT_MODE' => (!empty($record['sat_mode'])) ? $record['sat_mode'] : '',
                 'COL_SAT_NAME' => (!empty($record['sat_name'])) ? $record['sat_name'] : '',
                 'COL_SFI' => (!empty($record['sfi'])) ? $record['sfi'] : null,
