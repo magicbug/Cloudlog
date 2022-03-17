@@ -518,6 +518,18 @@
                                                     <option value="V" <?php if($qso->COL_EQSL_QSL_RCVD == "V") { echo "selected=\"selected\""; } ?>>Verified (Match)</option>
                                                 </select></div>
                                         </div>
+                                        <div class="form-group row">
+                                             <div class="col-sm-9">
+                                                 <label for="qslmsg"><?php echo $this->lang->line('general_word_notes'); ?></label>
+                                                 <div class="alert alert-info" role="alert">
+                                                     <span class="badge badge-info"><?php echo $this->lang->line('general_word_info'); ?></span> <?php echo $this->lang->line('qsl_notes_helptext'); ?>
+                                                 </div>
+                                             </div>
+                                             <div class="col-sm-9">
+                                                 <textarea  type="text" class="form-control" id="qslmsg" name="qslmsg" rows="5"><?php echo $qso->COL_QSLMSG; ?></textarea>
+                                             </div>
+                                        </div>
+
                                     </div>
                                     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                                         <div class="form-group row">

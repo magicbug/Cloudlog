@@ -477,7 +477,7 @@
             </div>
            <div class="form-group">
               <label for="qslmsg"><?php echo $this->lang->line('general_word_notes'); ?></label>
-              <textarea  type="text" class="form-control" id="qslmsg" name="qslmsg" rows="10"></textarea>
+              <textarea  type="text" class="form-control" id="qslmsg" name="qslmsg" rows="5"></textarea>
             </div>
           </div>
         </div>
