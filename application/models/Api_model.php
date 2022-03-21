@@ -250,6 +250,9 @@ class API_Model extends CI_Model {
 
 		// Append the table we're pulling data from
 		$q .= "FROM ".$this->config->item('table_name');
+		if (isset($arguments["join_station_profile"]) && $arguments["join_station_profile"]) {
+			$q .= " INNER JOIN station_profile ON ".$this->config->item('table_name').".station_id = station_profile.station_id";
+		}
 
 		// Parse the 'query' string, which is converted into a standard MySQL 'WHERE'
 		// clause.

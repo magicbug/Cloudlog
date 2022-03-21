@@ -64,6 +64,7 @@ class Awards extends CI_Controller {
         $arguments["format"] = "json";
         $arguments["limit"] = '';
         $arguments["order"] = '';
+        $arguments["join_station_profile"] = true;
 
         // print_r($arguments);
         // return;
