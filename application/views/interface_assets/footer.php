@@ -405,7 +405,8 @@ function load_was_map() {
 $(document).ready(function() {
 	$('#create_station_profile #country').val($("#dxcc_select option:selected").text());
 	$("#create_station_profile #dxcc_select" ).change(function() {
-	  $('#country').val($("#dxcc_select option:selected").text());
+	$('#country').val($("#dxcc_select option:selected").text());
+
 	});
 });
 </script>
@@ -2006,6 +2007,72 @@ $(document).ready(function(){
                         'Band': band,
                         'Mode': mode,
                         'Type': type
+                    },
+                    success: function(html) {
+                        BootstrapDialog.show({
+                            title: 'QSO Data',
+                            size: BootstrapDialog.SIZE_WIDE,
+                            cssClass: 'qso-was-dialog',
+                            nl2br: false,
+                            message: html,
+                            onshown: function(dialog) {
+                               $('[data-toggle="tooltip"]').tooltip();
+                            },
+                            buttons: [{
+                                label: 'Close',
+                                action: function (dialogItself) {
+                                    dialogItself.close();
+                                }
+                            }]
+                        });
+                    }
+                });
+            }
+        </script>
+        <?php } ?>
+    <?php if ($this->uri->segment(1) == "activators") { ?>
+        <script>
+            $('.activatorstable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: false,
+                "scrollY":        "500px",
+                "scrollCollapse": true,
+                "paging":         false,
+                "scrollX": true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'csv'
+                ]
+            });
+
+            // change color of csv-button if dark mode is chosen
+            if (isDarkModeTheme()) {
+                $(".buttons-csv").css("color", "white");
+            }
+
+      $(document).ready(function(){
+         $('#band').change(function()
+         {
+            if($(this).val() == "SAT")
+            {
+               $('#leogeo').show();
+            } else {
+               $('#leogeo').hide();
+            }
+         });
+         <?php if ($this->input->post('band') != "SAT") { ?>
+         $('#leogeo').hide();
+         <?php } ?>
+      });
+            function displayActivatorsContacts(call, band, leogeo) {
+                var baseURL= "<?php echo base_url();?>";
+                $.ajax({
+                    url: baseURL + 'index.php/activators/details',
+                    type: 'post',
+                    data: {'Callsign': call,
+                        'Band': band,
+                        'LeoGeo': leogeo
                     },
                     success: function(html) {
                         BootstrapDialog.show({
