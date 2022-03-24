@@ -14,6 +14,9 @@ class Visitor extends CI_Controller {
         elseif($method == "map") {
             $this->map($method);
         }
+        elseif($method == "satellites") {
+            $this->satellites($method);
+        }
         else {
             $this->index($method);
         }
@@ -177,4 +180,197 @@ class Visitor extends CI_Controller {
 		echo "}";
 
 	}
+
+    public function satellites()
+	{
+
+        $slug = $this->security->xss_clean($this->uri->segment(3));
+
+        $this->load->model('logbooks_model');
+        if($this->logbooks_model->public_slug_exists($slug)) {
+            // Load the public view
+            if($logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($slug) != false)
+            {
+                // Get associated station locations for mysql queries
+                $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+            } else {
+                log_message('error', $slug.' has no associated station locations');
+                show_404('Unknown Public Page.');
+            }
+        }
+
+		$this->load->model('gridsquares_model');
+
+		$data['page_title'] = "Satellite Gridsquare Map";
+
+
+		$array_grid_2char = array();
+		$array_grid_4char = array();
+		$array_grid_6char = array();
+
+
+		$array_confirmed_grid_2char = array();
+		$array_confirmed_grid_4char = array();
+		$array_confirmed_grid_6char = array();
+
+		$grid_2char = "";
+		$grid_4char = "";
+		$grid_6char = "";
+
+		$grid_2char_confirmed = "";
+		$grid_4char_confirmed = "";
+		$grid_6char_confirmed = "";
+
+
+		// Get Confirmed LOTW & Paper Squares (non VUCC)
+		$query = $this->gridsquares_model->get_confirmed_sat_squares($logbooks_locations_array);
+
+
+		if ($query && $query->num_rows() > 0)
+		{
+			foreach ($query->result() as $row)
+			{
+
+				$grid_2char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,2));
+				$grid_4char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,4));
+				if ($this->config->item('map_6digit_grids')) {
+					$grid_6char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,6));
+				}
+
+				// Check if 2 Char is in array
+				if(!in_array($grid_2char_confirmed, $array_confirmed_grid_2char)){
+					array_push($array_confirmed_grid_2char, $grid_2char_confirmed);	
+				}
+
+
+				if(!in_array($grid_4char_confirmed, $array_confirmed_grid_4char)){
+					array_push($array_confirmed_grid_4char, $grid_4char_confirmed);	
+				}
+
+
+				if ($this->config->item('map_6digit_grids')) {
+					if(!in_array($grid_6char_confirmed, $array_confirmed_grid_6char)){
+						array_push($array_confirmed_grid_6char, $grid_6char_confirmed);	
+					}
+				}
+
+
+			}
+		}
+
+		// Get worked squares
+		$query = $this->gridsquares_model->get_worked_sat_squares($logbooks_locations_array);
+
+		if ($query && $query->num_rows() > 0)
+		{
+			foreach ($query->result() as $row)
+			{
+
+				$grid_two = strtoupper(substr($row->SAT_SQUARE,0,2));
+				$grid_four = strtoupper(substr($row->SAT_SQUARE,0,4));
+				if ($this->config->item('map_6digit_grids')) {
+					$grid_six = strtoupper(substr($row->SAT_SQUARE,0,6));
+				}
+
+				// Check if 2 Char is in array
+				if(!in_array($grid_two, $array_grid_2char)){
+					array_push($array_grid_2char, $grid_two);	
+				}
+
+
+				if(!in_array($grid_four, $array_grid_4char)){
+					array_push($array_grid_4char, $grid_four);	
+				}
+
+
+				if ($this->config->item('map_6digit_grids')) {
+					if(!in_array($grid_six, $array_grid_6char)){
+						array_push($array_grid_6char, $grid_six);	
+					}
+				}
+
+
+			}
+		}
+
+		$query_vucc = $this->gridsquares_model->get_worked_sat_vucc_squares($logbooks_locations_array);
+
+		if ($query && $query_vucc->num_rows() > 0)
+		{
+			foreach ($query_vucc->result() as $row)
+			{
+
+				$grids = explode(",", $row->COL_VUCC_GRIDS);
+
+				foreach($grids as $key) {    
+					$grid_two = strtoupper(substr($key,0,2));
+					$grid_four = strtoupper(substr($key,0,4));
+
+					// Check if 2 Char is in array
+					if(!in_array($grid_two, $array_grid_2char)){
+						array_push($array_grid_2char, $grid_two);	
+					}
+
+
+					if(!in_array($grid_four, $array_grid_4char)){
+						array_push($array_grid_4char, $grid_four);	
+					}
+				}
+			}
+		}
+
+		// Confirmed Squares
+		$query_vucc = $this->gridsquares_model->get_confirmed_sat_vucc_squares($logbooks_locations_array);
+
+		if ($query && $query_vucc->num_rows() > 0)
+		{
+			foreach ($query_vucc->result() as $row)
+			{
+
+				$grids = explode(",", $row->COL_VUCC_GRIDS);
+
+				foreach($grids as $key) {    
+					$grid_2char_confirmed = strtoupper(substr($key,0,2));
+					$grid_4char_confirmed = strtoupper(substr($key,0,4));
+
+					// Check if 2 Char is in array
+					if(!in_array($grid_2char_confirmed, $array_confirmed_grid_2char)){
+						array_push($array_confirmed_grid_2char, $grid_2char_confirmed);	
+					}
+
+
+					if(!in_array($grid_4char_confirmed, $array_confirmed_grid_4char)){
+						array_push($array_confirmed_grid_4char, $grid_4char_confirmed);	
+					}
+				}
+			}
+		}
+
+
+		function js_str($s)
+		{
+		    return '"' . addcslashes($s, "\0..\37\"\\") . '"';
+		}
+
+		function js_array($array)
+		{
+		    $temp = array_map('js_str', $array);
+		    return '[' . implode(',', $temp) . ']';
+		}
+
+
+		$data['grid_2char_confirmed'] = js_array($array_confirmed_grid_2char);
+		$data['grid_4char_confirmed'] = js_array($array_confirmed_grid_4char);
+		$data['grid_6char_confirmed'] = js_array($array_confirmed_grid_6char);
+
+		$data['grid_2char'] = js_array($array_grid_2char);
+		$data['grid_4char'] = js_array($array_grid_4char);
+		$data['grid_6char'] = js_array($array_grid_6char);
+
+
+		$this->load->view('visitor/layout/header', $data);
+		$this->load->view('gridsquares/index');
+		$this->load->view('visitor/layout/footer');
+	}
+	
 }

@@ -2,13 +2,13 @@
 
 class Gridsquares_model extends CI_Model {
 
-    function get_worked_sat_squares() {
-        $CI =& get_instance();
-        $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-
-        if (!$logbooks_locations_array) {
-            return null;
+    function get_worked_sat_squares($StationLocationsArray = null) {
+        if($StationLocationsArray == null) {
+            $CI =& get_instance();
+            $CI->load->model('logbooks_model');
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        } else {
+            $logbooks_locations_array = $StationLocationsArray;
         }
 
         $this->db->select('distinct substring(COL_GRIDSQUARE,1,6) as SAT_SQUARE, COL_SAT_NAME', FALSE);
@@ -19,10 +19,14 @@ class Gridsquares_model extends CI_Model {
         return $this->db->get($this->config->item('table_name'));
 	}
 
-	function get_confirmed_sat_squares() {
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	function get_confirmed_sat_squares($StationLocationsArray = null) {
+		if($StationLocationsArray == null) {
+            $CI =& get_instance();
+            $CI->load->model('logbooks_model');
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        } else {
+            $logbooks_locations_array = $StationLocationsArray;
+        }
 
         if (!$logbooks_locations_array) {
             return null;
@@ -38,10 +42,14 @@ class Gridsquares_model extends CI_Model {
 	}
 
 
-	function get_confirmed_sat_vucc_squares() {
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	function get_confirmed_sat_vucc_squares($StationLocationsArray = null) {
+		if($StationLocationsArray == null) {
+            $CI =& get_instance();
+            $CI->load->model('logbooks_model');
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        } else {
+            $logbooks_locations_array = $StationLocationsArray;
+        }
 
         if (!$logbooks_locations_array) {
             return null;
@@ -56,10 +64,14 @@ class Gridsquares_model extends CI_Model {
 		return $this->db->query($sql);
 	}
 
-    function get_worked_sat_vucc_squares() {
-        $CI =& get_instance();
-        $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    function get_worked_sat_vucc_squares($StationLocationsArray = null) {
+        if($StationLocationsArray == null) {
+            $CI =& get_instance();
+            $CI->load->model('logbooks_model');
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        } else {
+            $logbooks_locations_array = $StationLocationsArray;
+        }
 
         if (!$logbooks_locations_array) {
             return null;
@@ -72,10 +84,14 @@ class Gridsquares_model extends CI_Model {
 		return $this->db->get($this->config->item('table_name'));
 	}
 
-    function get_band($band) {
-        $CI =& get_instance();
-        $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    function get_band($band, $StationLocationsArray = null) {
+        if($StationLocationsArray == null) {
+            $CI =& get_instance();
+            $CI->load->model('logbooks_model');
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        } else {
+            $logbooks_locations_array = $StationLocationsArray;
+        }
 
         if (!$logbooks_locations_array) {
             return null;
@@ -97,11 +113,15 @@ class Gridsquares_model extends CI_Model {
         return $this->db->get($this->config->item('table_name'));
     }
 
-	function get_band_confirmed($band) {
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-
+	function get_band_confirmed($band, $StationLocationsArray = null) {
+		if($StationLocationsArray == null) {
+            $CI =& get_instance();
+            $CI->load->model('logbooks_model');
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        } else {
+            $logbooks_locations_array = $StationLocationsArray;
+        }
+        
         if (!$logbooks_locations_array) {
             return null;
         }
@@ -127,11 +147,14 @@ class Gridsquares_model extends CI_Model {
 		return $this->db->query($sql);
 	}
 
-    function search_band($band, $gridsquare) {
-        $CI =& get_instance();
-        $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-
+    function search_band($band, $gridsquare, $StationLocationsArray = null) {
+        if($StationLocationsArray == null) {
+            $CI =& get_instance();
+            $CI->load->model('logbooks_model');
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        } else {
+            $logbooks_locations_array = $StationLocationsArray;
+        }
         $location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         $sql = 'SELECT COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_GRIDSQUARE, COL_VUCC_GRIDS FROM '
@@ -155,11 +178,14 @@ class Gridsquares_model extends CI_Model {
         return json_encode($result->result());
     }
 
-    function search_sat($gridsquare) {
-        $CI =& get_instance();
-        $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-
+    function search_sat($gridsquare, $StationLocationsArray = null) {
+        if($StationLocationsArray == null) {
+            $CI =& get_instance();
+            $CI->load->model('logbooks_model');
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        } else {
+            $logbooks_locations_array = $StationLocationsArray;
+        }
         $location_list = "'".implode("','",$logbooks_locations_array)."'";
 
         $sql = 'SELECT COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_SAT_NAME, COL_GRIDSQUARE, COL_VUCC_GRIDS FROM ' .
