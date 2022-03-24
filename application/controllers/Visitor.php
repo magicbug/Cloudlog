@@ -185,7 +185,7 @@ class Visitor extends CI_Controller {
 	{
 
         $slug = $this->security->xss_clean($this->uri->segment(3));
-
+        $data['slug'] = $slug;
         $this->load->model('logbooks_model');
         if($this->logbooks_model->public_slug_exists($slug)) {
             // Load the public view

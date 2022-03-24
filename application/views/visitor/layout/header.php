@@ -47,6 +47,9 @@
 
 		<ul class="navbar-nav">
 		<li class="nav-item">
+			<a class="nav-link" href="<?php echo site_url('visitor/satellites/'.$slug);?>">Gridsquares</a>
+		</li>
+		<li class="nav-item">
 			 <a class="btn btn-outline-primary" href="<?php echo site_url('user/login');?>">Login</a>
 		</li>
 		</ul>
