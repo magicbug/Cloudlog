@@ -38,25 +38,6 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 }
 ?>
 <div class="container dashboard">
-<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
-
-	<?php if($todays_qsos >= 1) { ?>
-		<div class="alert alert-success" role="alert">
-			  <?php echo $this->lang->line('dashboard_you_have_had'); ?> <strong><?php echo $todays_qsos; ?></strong> <?php echo $this->lang->line('dashboard_qsos_today'); ?>
-		</div>
-	<?php } else { ?>
-		<div class="alert alert-warning" role="alert">
-			  <span class="badge badge-info"><?php echo $this->lang->line('general_word_important'); ?></span> <i class="fas fa-broadcast-tower"></i> <?php echo $this->lang->line('notice_turn_the_radio_on'); ?>
-		</div>
-	<?php } ?>
-
-	<?php if($current_active == 0) { ?>
-		<div class="alert alert-danger" role="alert">
-		  <?php echo $this->lang->line('error_no_active_station_profile'); ?>
-		</div>
-	<?php } ?>
-
-<?php } ?>
 </div>
 
 <!-- Map -->
