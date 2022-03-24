@@ -124,12 +124,36 @@ class Logbooks_model extends CI_Model {
 		}
 	}
 
+	function public_slug_exists($slug) {
+		$this->db->where('public_slug', $this->security->xss_clean($slug));
+		$query = $this->db->get('station_logbooks');
+
+		if ($query->num_rows() > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	function public_slug_exists_logbook_id($slug) {
+		$this->db->where('public_slug', $this->security->xss_clean($slug));
+		$query = $this->db->get('station_logbooks');
+
+		if ($query->num_rows() > 0){
+			foreach ($query->result() as $row)
+			{
+				return $row->logbook_id;
+			}
+		}
+		else{
+			return false;
+		}
+	}
 
 	function is_public_slug_available($slug) {
 		// Clean public_slug
 		$clean_slug = $this->security->xss_clean($slug);
-
-
 		$this->db->where('public_slug', $clean_slug);
 		$query = $this->db->get('station_logbooks');
 
