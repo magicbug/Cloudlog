@@ -47,7 +47,7 @@
 
 		<ul class="navbar-nav">
 		<li class="nav-item">
-			 <a class="btn btn-outline-primary" href="<?php echo site_url('login');?>">Login</a>
+			 <a class="btn btn-outline-primary" href="<?php echo site_url('user/login');?>">Login</a>
 		</li>
 		</ul>
 	</div>
