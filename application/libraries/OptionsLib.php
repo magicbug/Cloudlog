@@ -113,7 +113,12 @@ class OptionsLib {
         // If session data for stylesheet is set return choice
         if($CI->session->userdata('user_stylesheet')) {
             return $CI->session->userdata('user_stylesheet');
-        } else {
+        }
+        else if ($CI->options_model->item('theme')) {
+            // Return the globally stored theme from database.
+            return $CI->options_model->item('theme');
+        }
+        else {
             // Return the global choice.
             return $CI->config->item('option_theme');
         }
