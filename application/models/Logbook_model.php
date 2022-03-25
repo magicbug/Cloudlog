@@ -146,6 +146,7 @@ class Logbook_model extends CI_Model {
             'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
             'COL_QSL_RCVD_VIA' => $this->input->post('qsl_recv_method'),
             'COL_QSL_VIA' => $this->input->post('qsl_via'),
+            'COL_QSLMSG' => $this->input->post('qslmsg'),
             'COL_OPERATOR' => $this->session->userdata('user_callsign'),
             'COL_QTH' => $this->input->post('qth'),
             'COL_PROP_MODE' => $prop_mode,
@@ -618,6 +619,7 @@ class Logbook_model extends CI_Model {
        'COL_QSL_RCVD_VIA' => $this->input->post('qsl_recv_method'),
        'COL_EQSL_QSL_SENT' => $this->input->post('eqsl_sent'),
        'COL_EQSL_QSL_RCVD' => $this->input->post('eqsl_recv'),
+       'COL_QSLMSG' => $this->input->post('qslmsg'),
        'COL_LOTW_QSL_SENT' => $this->input->post('lotw_sent'),
        'COL_LOTW_QSL_RCVD' => $this->input->post('lotw_recv'),
        'COL_IOTA' => $this->input->post('iota_ref'),
@@ -631,9 +633,9 @@ class Logbook_model extends CI_Model {
        'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
        'COL_STX_STRING' => $this->input->post('stx_string'),
        'COL_SRX_STRING' => $this->input->post('srx_string'),
-		   'COL_STX' => $stx_string,
-		   'COL_SRX' => $srx_string,
-		   'COL_CONTEST_ID' => $this->input->post('contest_name'),
+       'COL_STX' => $stx_string,
+       'COL_SRX' => $srx_string,
+       'COL_CONTEST_ID' => $this->input->post('contest_name'),
        'COL_QSL_VIA' => $this->input->post('qsl_via_callsign'),
        'station_id' => $stationId,
        'COL_OPERATOR' => $this->input->post('operator_callsign'),
@@ -2085,7 +2087,7 @@ class Logbook_model extends CI_Model {
 
     // Show all QSOs we need to send to eQSL
     function eqsl_not_yet_sent() {
-      $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE');
+      $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE, '.$this->config->item('table_name').'.COL_QSLMSG');
       $this->db->from('station_profile');
       $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id AND station_profile.eqslqthnickname != ""','left');
       $this->db->where($this->config->item('table_name').'.COL_CALL !=', '');

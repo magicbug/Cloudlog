@@ -430,6 +430,17 @@ class eqsl extends CI_Controller {
                     $adif .= "%20";
 				}
 
+				// adding qslmsg if it isn't blank
+				if ($qsl['COL_QSLMSG'] != ''){
+                    $adif .= "%3C";
+                    $adif .= "QSLMSG";
+                    $adif .= "%3A";
+                    $adif .= strlen($qsl['COL_QSLMSG']);
+                    $adif .= "%3E";
+                    $adif .= $qsl['COL_QSLMSG'];
+                    $adif .= "%20";
+				}
+
 				if ($qsl['eqslqthnickname'] != ''){
                     $adif .= "%3C";
                     $adif .= "APP%5FEQSL%5FQTH%5FNICKNAME";

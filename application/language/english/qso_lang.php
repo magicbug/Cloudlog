@@ -18,6 +18,7 @@ $lang['qso_sig_info_helptext'] = 'For example: DLFF-0029';
 $lang['qso_dok_helptext'] = 'For example: Q03';
 
 $lang['qso_notes_helptext'] = 'Note content is used within Cloudlog only and is not exported to other services.';
+$lang['qsl_notes_helptext'] = 'This note content is exported to QSL services like eqsl.cc.';
 
 // Button Text on /qso Display
 
