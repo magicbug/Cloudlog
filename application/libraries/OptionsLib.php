@@ -56,15 +56,10 @@ class OptionsLib {
     
                 // return option_value as a string
                 return $options_result;
-            } else {
-                return $CI->config->item($option_name);
             }
-        } else {
-
-                return $CI->config->item($option_name);
         }
 
-        if(!$CI->config->item('option_'.$option_name)) {
+        else if(!$CI->config->item('option_'.$option_name)) {
             //Load the options model
             $CI->load->model('options_model');
             
