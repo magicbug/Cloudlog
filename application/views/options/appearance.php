@@ -50,7 +50,7 @@
 								<?php
 								foreach ($themes as $theme) {
 									echo '<option value="' . $theme->foldername . '"';
-									if ($this->optionslib->get_option('theme') == $theme->foldername) {
+									if ($this->optionslib->get_option('option_theme') == $theme->foldername) {
 										echo 'selected="selected"';
 									}
 									echo '>' . $theme->name . '</option>';

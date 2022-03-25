@@ -45,38 +45,32 @@ class OptionsLib {
     function get_option($option_name) {
         // Make Codeigniter functions available to library
         $CI =& get_instance();
-
-        if (strpos($option_name, 'option_')) { 
-            if(!$CI->config->item('option_'.$option_name)) {
-                //Load the options model
+        if (strpos($option_name, 'option_') !== false) { 
+            if(!$CI->config->item($option_name)) {
+                 //Load the options model
                 $CI->load->model('options_model');
-                
+                $removed_options_tag = trim($option_name, 'option_');
                 // call library function to get options value
-                $options_result = $CI->options_model->item($option_name);
-    
+                $options_result = $CI->options_model->item($removed_options_tag);
+                    
                 // return option_value as a string
                 return $options_result;
             } else {
                 return $CI->config->item($option_name);
             }
         } else {
-
+            if(!$CI->config->item($option_name)) {
+                //Load the options model
+               $CI->load->model('options_model');
+               // call library function to get options value
+               $options_result = $CI->options_model->item($option_name);
+                   
+               // return option_value as a string
+               return $options_result;
+           } else {
                 return $CI->config->item($option_name);
+           }
         }
-
-        if(!$CI->config->item('option_'.$option_name)) {
-            //Load the options model
-            $CI->load->model('options_model');
-            
-            // call library function to get options value
-            $options_result = $CI->options_model->item($option_name);
-
-            // return option_value as a string
-            return $options_result;
-        } else {
-            return $CI->config->item($option_name);
-        }
-
     }
 
     // Function to save new option to options table

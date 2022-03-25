@@ -75,7 +75,7 @@ class Options extends CI_Controller {
 		else
 		{
 			// Update theme choice within the options system
-			$theme_update_status = $this->optionslib->update('theme', $this->input->post('theme'));
+			$theme_update_status = $this->optionslib->update('theme', $this->input->post('theme'), 'yes');
 
 			// If theme update is complete set a flashsession with a success note
 			if($theme_update_status == TRUE) {
