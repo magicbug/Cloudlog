@@ -393,6 +393,32 @@ class Logbook_model extends CI_Model {
         return $this->db->get($this->config->item('table_name'));
     }
 
+    public function activator_details($call, $band, $leogeo){
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        $this->db->where('COL_CALL', $call);
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $this->db->where('col_prop_mode', $band);
+                switch ($leogeo) {
+                case 'leo' :  $this->db->where('COL_SAT_NAME !=', 'QO-100');
+                              break;
+                case 'geo':   $this->db->where('COL_SAT_NAME', 'QO-100');
+                              break;
+                }
+            } else {
+                $this->db->where('COL_PROP_MODE !=', 'SAT');
+                $this->db->where('col_band', $band);
+            }
+        }
+
+        $this->db->where_in('station_id', $logbooks_locations_array);
+
+        return $this->db->get($this->config->item('table_name'));
+    }
+
   public function get_callsigns($callsign){
     $this->db->select('COL_CALL');
     $this->db->distinct();
