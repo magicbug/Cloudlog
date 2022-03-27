@@ -1,4 +1,4 @@
-<div id="container" class="container mx-auto pt-5">
+<div id="container" class="container mx-auto pt-5" style="max-width:400px">
 	<div class="row">
 		<div class="col-12">
             <div class="panel panel-default">
