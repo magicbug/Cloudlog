@@ -53,6 +53,6 @@
 </div>
 
 	<!-- Map -->
-	<div id="map" style="width: 100%; height: 700px;"></div>
+	<div id="custommap" style="width: 100%; height: calc(100vh - 380px); max-height: 900px;"></div>
 
     <div class="alert alert-success" role="alert">Showing QSOs for Custom Date for Active Logbook <?php echo $logbook_name ?></div>

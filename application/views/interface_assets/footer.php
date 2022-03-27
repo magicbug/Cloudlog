@@ -646,7 +646,7 @@ function getLookupResult() {
         <?php } ?>
 
         var qso_loc = '<?php echo site_url('map/map_data_custom/');?><?php echo rawurlencode($date_from); ?>/<?php echo rawurlencode($date_to); ?>/<?php echo rawurlencode($this->input->post('band')); ?>';
-        var q_zoom = 2;
+        var q_zoom = 3;
 
       $(document).ready(function(){
             <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
@@ -654,7 +654,7 @@ function getLookupResult() {
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
-            initmap(grid);
+            initmap(grid, 'custommap');
 
       });
     </script>
