@@ -68,10 +68,12 @@
 							<a class="dropdown-item" href="<?php echo site_url('qso?manual=0');?>" title="Log Live QSOs">Live QSO</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('qso?manual=1');?>" title="Log QSO made in the past">Post QSO</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="<?php echo site_url('contesting');?>" title="Log contest QSOs">Contest Logging</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="<?php echo site_url('qsl');?>" title="QSL"> View QSL</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="<?php echo site_url('contesting?manual=0');?>" title="Live contest QSOs">Live Contest Logging</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="<?php echo site_url('contesting?manual=1');?>" title="Post contest QSOs">Post Contest Logging</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="<?php echo site_url('qsl');?>" title="QSL"> View QSL</a>
 						</div>
         	</li>
 
