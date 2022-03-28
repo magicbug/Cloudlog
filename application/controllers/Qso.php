@@ -44,6 +44,7 @@ class QSO extends CI_Controller {
 		$this->form_validation->set_rules('start_date', 'Date', 'required');
 		$this->form_validation->set_rules('start_time', 'Time', 'required');
 		$this->form_validation->set_rules('callsign', 'Callsign', 'required');
+		$this->form_validation->set_rules('locator', 'Locator', 'callback_check_locator');
 
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -443,4 +444,26 @@ class QSO extends CI_Controller {
 		header('Content-Type: application/json');
 		echo $input;
 	}
+
+   function check_locator($grid) {
+      $grid = $this->input->post('locator');
+      // Allow empty locator
+      if (preg_match('/^$/', $grid)) return true;
+      // Allow 6-digit locator
+      if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Ra-r]{2}$/', $grid)) return true;
+      // Allow 4-digit locator
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}$/', $grid)) return true;
+      // Allow 4-digit grid line
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2},[A-Ra-r]{2}[0-9]{2}$/', $grid)) return true;
+      // Allow 4-digit grid corner
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2},[A-Ra-r]{2}[0-9]{2},[A-Ra-r]{2}[0-9]{2},[A-Ra-r]{2}[0-9]{2}$/', $grid)) return true;
+      // Allow 2-digit locator
+      else if (preg_match('/^[A-Ra-r]{2}$/', $grid)) return true;
+      // Allow 8-digit locator
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Ra-r]{2}[0-9]{2}$/', $grid)) return true;
+      else {
+         $this->form_validation->set_message('check_locator', 'Please check value for grid locator ('.strtoupper($grid).').');
+         return false;
+      }
+   }
 }
