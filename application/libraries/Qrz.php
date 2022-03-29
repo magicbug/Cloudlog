@@ -54,7 +54,7 @@ class Qrz {
 	}
 
 
-	public function search($callsign, $key, $use_fullname)
+	public function search($callsign, $key, $use_fullname=true)
 	{
         $data = null;
         try {
