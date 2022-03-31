@@ -1,7 +1,7 @@
 $( document ).ready(function() {
 
 	$("#locator")
-		.popover({ title: 'Gridsquare Formatting', content: "Enter multiple (4-digit) grids separated with commas. For example: IO77,IO78" })
+		.popover({ placement: 'top', title: 'Gridsquare Formatting', content: "Enter multiple (4-digit) grids separated with commas. For example: IO77,IO78" })
 		.blur(function () {
 		$(this).popover('hide');
 	});
