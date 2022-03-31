@@ -61,7 +61,7 @@ class Activators_model extends CI_Model
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
-      $sql = "SELECT DISTINCT COL_CALL AS `call`, GROUP_CONCAT(REGEXP_REPLACE(COL_VUCC_GRIDS, '([A-Z]{2}[0-9]{2})[A-Z]{2}', '$1')) AS `vucc_grids` FROM ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ")";
+      $sql = "SELECT DISTINCT COL_CALL AS `call`, GROUP_CONCAT(COL_VUCC_GRIDS) AS `vucc_grids` FROM ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ")";
         if ($band != 'All') {
             if ($band == 'SAT') {
                switch ($leogeo) {

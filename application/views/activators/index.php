@@ -70,16 +70,19 @@
           $vucc_grids[$line->call] = $line->vucc_grids;
        }
     }
-    if ($activators_array) {
+    if( $this->input->post('band') != NULL) {
+        if ($activators_array) {
 
-        $result = write_activators($activators_array, $vucc_grids, $custom_date_format, $this->input->post('band'), $this->input->post('leogeo'));
-    }
-    else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+            $result = write_activators($activators_array, $vucc_grids, $custom_date_format, $this->input->post('band'), $this->input->post('leogeo'));
+        }
+        else {
+            echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+        }
     }
     ?>
 
 </div>
+
 
 <?php
 
