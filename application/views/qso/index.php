@@ -159,7 +159,6 @@
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm" name="locator" id="locator" value="">
                     <small id="locator_info" class="form-text text-muted"></small>
-                    <small id="locator_format" class="form-text text-muted">Enter multiple (4-digit) grids separated with commas. For example: IO77,IO78</small>
                 </div>
               </div>
 
