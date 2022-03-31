@@ -155,7 +155,7 @@
               </div>
 
               <div class="form-group row">
-                  <label for="locator" class="col-sm-3 col-form-label"><?php echo $this->lang->line('gen_hamradio_locator'); ?></label>
+                  <label for="locator" class="col-sm-3 col-form-label"><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control form-control-sm" name="locator" id="locator" value="">
                     <small id="locator_info" class="form-text text-muted"></small>
