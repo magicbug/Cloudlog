@@ -79,7 +79,7 @@ class Qsl extends CI_Controller {
 
     function uploadQslCardFront($qsoid) {
         $config['upload_path']          = './assets/qslcard';
-        $config['allowed_types']        = 'jpg|gif|png';
+        $config['allowed_types']        = 'jpg|gif|png|jpeg|JPG|PNG';
         $array = explode(".", $_FILES['qslcardfront']['name']);
         $ext = end($array);
         $config['file_name'] = $qsoid . '_' . time() . '.' . $ext;
@@ -112,7 +112,7 @@ class Qsl extends CI_Controller {
 
     function uploadQslCardBack($qsoid) {
         $config['upload_path']          = './assets/qslcard';
-        $config['allowed_types']        = 'jpg|gif|png';
+        $config['allowed_types']        = 'jpg|gif|png|jpeg|JPG|PNG';
         $array = explode(".", $_FILES['qslcardback']['name']);
         $ext = end($array);
         $config['file_name'] = $qsoid . '_' . time() . '.' . $ext;

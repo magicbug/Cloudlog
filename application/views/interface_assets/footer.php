@@ -2290,8 +2290,8 @@ function deleteQsl(id) {
                     }
 
                 } else {
-                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n' +
-                        data.status.front +
+                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Front QSL Card:' +
+                    data.status.front.error +
                         '</div>');
                 }
                 if (data.status.back.status == 'Success') {
@@ -2328,8 +2328,8 @@ function deleteQsl(id) {
                         $("#qslcardback").val(null);
                     }
                 } else {
-                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n' +
-                        data.status.back +
+                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\nBack QSL Card: ' +
+                    data.status.back.error +
                         '</div>');
                 }
             }
