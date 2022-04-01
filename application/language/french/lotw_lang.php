@@ -47,3 +47,4 @@ $lang['lotw_p12_export_step_one'] = 'Ouvrir  TQSL et aller à l\'onglet  Certifi
 $lang['lotw_p12_export_step_two'] = 'Click droit sur l\indicatif désiré';
 $lang['lotw_p12_export_step_three'] = 'Cliquer "Enregistrer le fichier des certificats d\'indicatif sans ajouter de mot de passe';
 $lang['lotw_p12_export_step_four'] = 'Envoyer le fichier ci-dessous.';
+$lang['lotw_confirmed'] = 'Ce QSO est confirmé sur LoTW';

@@ -39,6 +39,8 @@ $lang['general_word_requested'] = 'Demandées';
 $lang['general_word_qslcards'] = 'Cartes QSL';
 $lang['general_word_qslcard_direct'] = 'Direct';
 $lang['general_word_qslcard_bureau'] = 'Bureau';
+$lang['general_word_qslcard_electronic'] = 'Electronic';
+$lang['general_word_qslcard_manager'] = 'Manager';
 $lang['general_word_qslcard_via'] = 'Via';
 
 $lang['general_edit_qso'] = 'Editer QSO';
@@ -70,7 +72,7 @@ $lang['gen_hamradio_exchange_sent_short'] = 'Exch (S)';
 $lang['gen_hamradio_exchange_recv_short'] = 'Exch (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';
 $lang['gen_hamradio_locator'] = 'Locator';
-$lang['gen_hamradio_transmit_power'] = 'Power Emission (W)';
+$lang['gen_hamradio_transmit_power'] = 'Puissance Emission (W)';
 $lang['gen_hamradio_propagation_mode'] = 'Mode Propagation';
 
 $lang['gen_hamradio_satellite_name'] = 'Nom du Satellite';
@@ -84,12 +86,21 @@ $lang['gen_hamradio_usa_state'] = 'Etat USA';
 $lang['gen_hamradio_iota_reference'] = 'Référence IOTA';
 $lang['gen_hamradio_sota_reference'] = 'Référence SOTA';
 $lang['gen_hamradio_dok'] = 'DOK';
+$lang['gen_hamradio_state'] = 'State';
+$lang['gen_hamradio_iota'] = 'IOTA';
+$lang['gen_hamradio_sota'] = 'SOTA';
+$lang['gen_hamradio_gridsquare'] = 'Gridsquare';
+$lang['gen_hamradio_operator'] = 'Operateur';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
 
 // Dashboard Words
-$lang['dashboard_you_have_had'] = 'Vous avez effectué';
+$lang['dashboard_you_have_had'] = 'Vous avez eu';
 $lang['dashboard_qsos_today'] = 'QSOs aujourd\'hui!';
-$lang['dashboard_qso_breakdown'] = 'Ventilation par QSO';
-$lang['dashboard_countries_breakdown'] = 'Ventilation par Pays';
+$lang['dashboard_qso_breakdown'] = 'QSOs Breakdown';
+$lang['dashboard_countries_breakdown'] = 'Pays Breakdown';
+
+$lang['gen_from_date'] = 'depuis la date';
+
+$lang['gen_this_qso_was_confirmed_on'] = 'Ce QSO est confirmé depuis le';
