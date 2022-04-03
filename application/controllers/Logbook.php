@@ -151,14 +151,16 @@ class Logbook extends CI_Controller {
 			$return['callsign_state'] = $this->logbook_model->call_state($callsign);
 			$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base, $station_id);
 			$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
-			if (isset($callbook)) {
-				if ($callbook['image'] == "") {
-					$return['image'] = "n/a";
+			if ($this->config->item('show_qrz_image')) {
+				if (isset($callbook)) {
+					if ($callbook['image'] == "") {
+						$return['image'] = "n/a";
+					} else {
+						$return['image'] = $callbook['image'];
+					}
 				} else {
-					$return['image'] = $callbook['image'];
+					$return['image'] = "n/a";
 				}
-			} else {
-				$return['image'] = "n/a";
 			}
 
 			if ($return['callsign_qra'] != "") {
@@ -169,8 +171,6 @@ class Logbook extends CI_Controller {
 			return;
 		}
 
-		//$callbook = $this->logbook_model->loadCallBook($callsign, $this->config->item('use_fullname'));
-
 		if (isset($callbook))
 		{
 			$return['callsign_name'] = $callbook['name'];
@@ -179,10 +179,12 @@ class Logbook extends CI_Controller {
 			$return['callsign_iota'] = $callbook['iota'];
 			$return['callsign_state'] = $callbook['state'];
 			$return['callsign_us_county'] = $callbook['us_county'];
-			if ($callbook['image'] == "") {
-				$return['image'] = "n/a";
-			} else {
-				$return['image'] = $callbook['image'];
+			if ($this->config->item('show_qrz_image')) {
+				if ($callbook['image'] == "") {
+					$return['image'] = "n/a";
+				} else {
+					$return['image'] = $callbook['image'];
+				}
 			}
 
 			if(isset($callbook['qslmgr'])) {

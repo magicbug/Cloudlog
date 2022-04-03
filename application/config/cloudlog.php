@@ -139,3 +139,18 @@ $config['map_6digit_grids'] = FALSE;
 */
 
 $config['qso_auto_qth'] = FALSE;
+
+/*
+|--------------------------------------------------------------------------
+| Pull qrz.com image on logging
+|--------------------------------------------------------------------------
+|
+| Setting this to TRUE allows Cloudlog to pull and show
+| the profile picture of the qrz.com profile of your QSO
+| partner upon QSO logging.
+|
+| Default is: FALSE
+|
+*/
+
+$config['show_qrz_image'] = FALSE;

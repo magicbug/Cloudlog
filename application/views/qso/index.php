@@ -521,6 +521,7 @@
         <div class="card-body callsign-suggestions"></div>
     </div>
 
+    <?php if ($this->config->item('show_qrz_image')) { ?>
     <div class="card callsign-image" id="callsign-image" style="display: none;">
         <div class="card-header"><h4 style="font-size: 16px; font-weight: bold;" class="card-title"><?php echo $this->lang->line('qso_title_image'); ?></h4></div>
 
@@ -529,6 +530,7 @@
             </div>
         </div>
     </div>
+    <?php } ?>
 
     <div class="card previous-qsos">
       <div class="card-header"><h4 class="card-title" style="font-size: 16px; font-weight: bold;"><?php echo $this->lang->line('qso_title_pervious_contacts'); ?></h4></div>
