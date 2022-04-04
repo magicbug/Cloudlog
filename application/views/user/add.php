@@ -233,7 +233,7 @@
 				<option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>
 				<option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
 			</select>
-			<div class="small form-text text-muted">Please set your qrz.com API key in the station locations configuration (XML subscription required).</div></td>
+			<div class="small form-text text-muted">Please set your qrz.com credentials in the general config file.</div></td>
 		</div>
 
 		<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />

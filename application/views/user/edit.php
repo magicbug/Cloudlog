@@ -429,7 +429,7 @@
 								<option value="1" <?php if ($user_show_qrz_image == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_yes'); ?></option>
 								<option value="0" <?php if ($user_show_qrz_image == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_no'); ?></option>
 							</select>
-							<div class="small form-text text-muted">Please set your qrz.com API key in the station locations configuration (XML subscription required).</div></td>
+							<div class="small form-text text-muted">Please set your qrz.com credentials in the general config file.</div></td>
 						</div>
 
 					</div>
