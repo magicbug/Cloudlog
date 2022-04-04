@@ -70,6 +70,46 @@ class Qra {
 		$stn = qra2latlong($rx);
 		return get_bearing($my[0], $my[1], $stn[0], $stn[1]);
 	}
+
+	/*
+	Find the Midpoint between two gridsquares using lat / long
+
+	Needs following passed
+
+	$coords[]=array('lat' => '53.344104','lng'=>'-6.2674937');
+	$coords[]=array('lat' => '51.5081289','lng'=>'-0.128005');    
+
+*/
+
+function get_midpoint($coords)
+{
+    $count_coords = count($coords);
+    $xcos=0.0;
+    $ycos=0.0;
+    $zsin=0.0;
+    
+        foreach ($coords as $lnglat)
+        {
+            $lat = $lnglat['lat'] * pi() / 180;
+            $lon = $lnglat['lng'] * pi() / 180;
+            
+            $acos = cos($lat) * cos($lon);
+            $bcos = cos($lat) * sin($lon);
+            $csin = sin($lat);
+            $xcos += $acos;
+            $ycos += $bcos;
+            $zsin += $csin;
+        }
+    
+    $xcos /= $count_coords;
+    $ycos /= $count_coords;
+    $zsin /= $count_coords;
+    $lon = atan2($ycos, $xcos);
+    $sqrt = sqrt($xcos * $xcos + $ycos * $ycos);
+    $lat = atan2($zsin, $sqrt);
+    
+    return array($lat * 180 / pi(), $lon * 180 / pi());
+}
 }
 
 function distance($lat1, $lon1, $lat2, $lon2, $unit = 'M') {
@@ -158,4 +198,6 @@ function qra2latlong($strQRA) {
 		return array(0, 0);
 	}
 }
+
+
 /* End of file Qra.php */

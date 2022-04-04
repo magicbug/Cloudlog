@@ -121,7 +121,43 @@ class Dashboard extends CI_Controller {
 				}
 
 				$count++;
+			}elseif($row->COL_VUCC_GRIDS != null) {
 
+				$grids = explode(",", $row->COL_VUCC_GRIDS);
+				if (count($grids) == 2) {
+					$grid1 = $this->qra->qra2latlong(trim($grids[0]));
+					$grid2 = $this->qra->qra2latlong(trim($grids[1]));
+		
+					$coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
+					$coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);    
+		
+					$stn_loc = $this->qra->get_midpoint($coords);
+				}
+				if (count($grids) == 4) {
+					$grid1 = $this->qra->qra2latlong(trim($grids[0]));
+					$grid2 = $this->qra->qra2latlong(trim($grids[1]));
+					$grid3 = $this->qra->qra2latlong(trim($grids[2]));
+					$grid4 = $this->qra->qra2latlong(trim($grids[3]));
+		
+					$coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
+					$coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);    
+					$coords[]=array('lat' => $grid3[0],'lng'=> $grid3[1]);    
+					$coords[]=array('lat' => $grid4[0],'lng'=> $grid4[1]);    
+		
+					$stn_loc = $this->qra->get_midpoint($coords);
+				}
+
+				if($count != 1) {
+					echo ",";
+				}
+	
+				if($row->COL_SAT_NAME != null) { 
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+				} else {
+				echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+				}
+	
+				$count++;
 			} else {
 				$query = $this->db->query('
 					SELECT *
