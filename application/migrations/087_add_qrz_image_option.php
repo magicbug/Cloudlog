@@ -14,16 +14,16 @@ class Migration_add_qrz_image_option extends CI_Migration {
 
         public function up()
         {
-                if (!$this->db->field_exists('show_qrz_image', 'users')) {
+                if (!$this->db->field_exists('user_show_qrz_image', 'users')) {
                         $fields = array(
-                                'show_qrz_image BOOLEAN DEFAULT FALSE',
+                                'user_show_qrz_image BOOLEAN DEFAULT FALSE',
                         );
-                        $this->dbforge->add_column('users', $fields);
+                        $this->dbforge->add_column('users', $fields, 'user_column5');
                 }
         }
 
         public function down()
         {
-                $this->dbforge->drop_column('users', 'show_qrz_image');
+                $this->dbforge->drop_column('users', 'user_show_qrz_image');
         }
 }

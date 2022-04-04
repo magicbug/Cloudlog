@@ -414,6 +414,29 @@
 				</div>
 			</div>
 		</div>
+		<br>
+		<div class="row">
+			<!-- Club Log -->
+			<div class="col-md">
+				<div class="card">
+					<div class="card-header">
+						qrz.com Images
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+							<label for="showqrzimages">Show profile picture of qrz.com in the log QSO section.</label>
+							<select class="custom-select" id="showqrzimages" name="user_show_qrz_image">
+								<option value="1" <?php if ($user_show_qrz_image == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_yes'); ?></option>
+								<option value="0" <?php if ($user_show_qrz_image == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_no'); ?></option>
+							</select>
+							<div class="small form-text text-muted">Please set your qrz.com credentials in the station locations configuration (XML subscription required).</div></td>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
 
 	<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 	<br>
