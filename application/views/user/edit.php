@@ -416,7 +416,7 @@
 		</div>
 		<br>
 		<div class="row">
-			<!-- Club Log -->
+			<!-- qrz.com Images -->
 			<div class="col-md">
 				<div class="card">
 					<div class="card-header">
