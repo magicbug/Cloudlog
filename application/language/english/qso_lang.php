@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $lang['qso_title_qso_map'] = 'QSO Map';
 $lang['qso_title_suggestions'] = 'Suggestions';
 $lang['qso_title_pervious_contacts'] = 'Previous Contacts';
-$lang['qso_title_image'] = 'Image';
+$lang['qso_title_image'] = 'Profile Picture from qrz.com';
 
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Give power value in Watts. Include only numbers in the input.';
