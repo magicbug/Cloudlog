@@ -145,25 +145,6 @@ TD.lotw{
     margin-bottom: 0px;
 }
 
-.callsign-image .card-title {
-    margin-bottom: 0px;
-}
-
-.callsign-image {
-    margin-bottom: 10px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.callsign-image-content {
-    display: block;
-    max-height: 300px;
-}
-
-.callsign-image-pic {
-    max-height: 250px;
-}
-
 .qso-map .card-title {
     margin-bottom: 0px;
 }
@@ -274,4 +255,69 @@ color: #ffffff;
 .modal-body {
 	max-height: calc(100vh - 200px);
 	overflow-y: auto;
+}
+
+/* Station Logbooks Styles */
+
+div#station_logbooks_table_length {
+    padding-top: 12px;
+    padding-left: 12px;
+    padding-bottom: 0px;
+}
+
+div#station_logbooks_table_filter {
+    padding-top: 12px;
+    padding-right: 12px;
+    padding-bottom: 0px;
+}
+
+div#station_logbooks_table_info {
+    padding-left: 12px;
+}
+
+div#station_logbooks_table_paginate {
+    padding-right: 12px;
+    padding-bottom: 12px;
+}
+
+div#station_logbooks_linked_table_length  {
+    padding-top: 12px;
+    padding-left: 12px;
+    padding-bottom: 0px;
+}
+
+div#station_logbooks_linked_table_filter {
+    padding-top: 12px;
+    padding-left: 12px;
+    padding-bottom: 0px;
+}
+
+div#station_logbooks_linked_table_info {
+    padding-left: 12px;
+}
+
+div#station_logbooks_linked_table_paginate {
+    padding-right: 12px;
+    padding-bottom: 12px;
+}
+
+/* qrz.com profile picture Styles */
+
+.callsign-image .card-title {
+    margin-bottom: 0px;
+}
+
+.callsign-image {
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.callsign-image-content {
+    display: block;
+    max-height: 300px;
+}
+
+.callsign-image-pic {
+    max-height: 250px;
 }

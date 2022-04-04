@@ -24,7 +24,7 @@
   <div class="card-header">
     Station Locations <a class="btn btn-primary float-right" href="<?php echo site_url('logbooks/create'); ?>"><i class="fas fa-plus"></i> Create a Station Logbook</a>
   </div>
-  <div class="">
+  <div id="station_logbooks">
 		<?php if ($my_logbooks->num_rows() > 0) { ?>
 
 		<div class="table-responsive">
