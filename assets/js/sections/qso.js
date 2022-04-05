@@ -279,6 +279,8 @@ function reset_fields() {
 	$('#callsign_info').removeClass("badge-secondary");
 	$('#callsign_info').removeClass("badge-success");
 	$('#callsign_info').removeClass("badge-danger");
+	$('#callsign-image').attr('style', 'display: none;');
+	$('#callsign-image-content').text("");
 	$('#qsl_via').val("");
 	$('#callsign_info').text("");
 	$('#input_usa_state').val("");
@@ -439,6 +441,12 @@ $("#callsign").focusout(function() {
 
 				if($('#qth').val() == "") {
 					$('#qth').val(result.callsign_qth);
+				}
+
+				/* Find link to qrz.com picture */
+				if (result.image != "n/a") {
+					$('#callsign-image-content').html('<img class="callsign-image-pic" src="'+result.image+'">');
+					$('#callsign-image').attr('style', 'display: true;');
 				}
 
 				/*

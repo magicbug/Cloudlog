@@ -6,6 +6,7 @@ defined('BASEPATH') OR exit('Direkter Zugriff auf Skripte ist nicht erlaubt');
 $lang['qso_title_qso_map'] = 'QSO-Karte';
 $lang['qso_title_suggestions'] = 'Vorschläge';
 $lang['qso_title_pervious_contacts'] = 'Vorherige Kontakte';
+$lang['qso_title_image'] = 'Profilbild von qrz.com';
 
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Gib die Ausgangsleistung in Watt an. Erfasse nur Zahlen bei der Eingabe.';

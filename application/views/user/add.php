@@ -227,6 +227,15 @@
 			</div>
 		</div>
 
+		<div class="form-group">
+			<label for="showqrzimages">Show profile picture of QSO partner from qrz.com profile in the log QSO section.</label>
+			<select class="custom-select" id="showqrzimages" name="user_show_qrz_image">
+				<option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>
+				<option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
+			</select>
+			<div class="small form-text text-muted">Please set your qrz.com credentials in the general config file.</div></td>
+		</div>
+
 		<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 		<button type="submit" class="btn btn-primary">Create Account</button>
     </form>

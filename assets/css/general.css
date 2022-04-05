@@ -300,3 +300,24 @@ div#station_logbooks_linked_table_paginate {
     padding-right: 12px;
     padding-bottom: 12px;
 }
+
+/* qrz.com profile picture Styles */
+
+.card-title {
+    margin-bottom: 0px;
+ }
+
+.callsign-image {
+    margin-bottom: 10px;
+}
+
+.callsign-image-content {
+    display: block;
+    max-height: 300px;
+    text-align: center;
+}
+
+.callsign-image-pic {
+    max-height: 250px;
+    max-width: 100%;
+}

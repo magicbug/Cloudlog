@@ -88,6 +88,7 @@ class Qrz {
             $data['long'] = (string)$xml->Callsign->lon;
             $data['iota'] = (string)$xml->Callsign->iota;
             $data['qslmgr'] = (string)$xml->Callsign->qslmgr;
+            $data['image'] = (string)$xml->Callsign->image;
 
             if ($xml->Callsign->country == "United States") {
                 $data['state'] = (string)$xml->Callsign->state;
