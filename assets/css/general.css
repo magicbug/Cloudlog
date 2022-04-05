@@ -309,15 +309,15 @@ div#station_logbooks_linked_table_paginate {
 
 .callsign-image {
     margin-bottom: 10px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .callsign-image-content {
     display: block;
     max-height: 300px;
+    text-align: center;
 }
 
 .callsign-image-pic {
     max-height: 250px;
+    max-width: 100%;
 }
