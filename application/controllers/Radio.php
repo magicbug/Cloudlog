@@ -91,6 +91,8 @@
 					$uplink_freq = $row->uplink_freq;
 					$downlink_freq = $row->downlink_freq;
 
+					$power = $row->power;
+
 					// Check Mode
 					if(strtoupper($row->uplink_mode) == "FMN"){
 						$mode = "FM";
@@ -118,6 +120,8 @@
 				} else {
 					$uplink_freq = $row->frequency;
 					$downlink_freq = "";
+
+					$power = $row->power;
 
 					// Check Mode
 					if(strtoupper($row->mode) == "FMN"){
@@ -148,6 +152,7 @@
 					"mode" => $mode,
 					"satmode" => $sat_mode,
 					"satname" => $sat_name,
+					"power" => $power,
 					"updated_minutes_ago" => $updated_at,
 				), JSON_PRETTY_PRINT);
 			}

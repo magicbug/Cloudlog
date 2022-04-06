@@ -1072,6 +1072,7 @@ $(document).on('keypress',function(e) {
               "mode": "SSB",
               "satmode": "",
               "satname": "ES'HAIL-2"
+              "power": "20"
           }  */
           if (data.uplink_freq != "")
           {
@@ -1097,6 +1098,7 @@ $(document).on('keypress',function(e) {
           }
           $("#sat_name").val(data.satname);
           $("#sat_mode").val(data.satmode);
+          $("#transmit_power").val(data.power);
 
           // Display CAT Timeout warnng based on the figure given in the config file
             var minutes = Math.floor(<?php echo $this->config->item('cat_timeout_interval'); ?> / 60);
@@ -1121,9 +1123,9 @@ $(document).on('keypress',function(e) {
   // If a radios selected from drop down select radio update.
   $('.radios').change(updateFromCAT);
 
-  // If radio isn't SatPC32 clear sat_name and sat_mode
+  // If radio isn't SatPC32 or CloudLogCATQt clear sat_name and sat_mode
   $( ".radios" ).change(function() {
-      if ($(".radios option:selected").text() != "SatPC32") {
+      if ($(".radios option:selected").text() != "SatPC32" && $(".radios option:selected").text() != "CloudLogCATQt") {
         $("#sat_name").val("");
         $("#sat_mode").val("");
         $("#frequency").val("");
