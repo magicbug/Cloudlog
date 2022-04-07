@@ -13,7 +13,7 @@ class Migration_add_power_to_cat extends CI_Migration {
 
         public function up()
         {
-                if (!$this->db->field_exists('powre', 'cat')) {
+                if (!$this->db->field_exists('power', 'cat')) {
                         $fields = array(
                                 'power INT NULL DEFAULT 0',
                         );
