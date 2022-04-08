@@ -1098,7 +1098,9 @@ $(document).on('keypress',function(e) {
           }
           $("#sat_name").val(data.satname);
           $("#sat_mode").val(data.satmode);
-          $("#transmit_power").val(data.power);
+          if(data.power != 0) {
+            $("#power").val(data.power);
+          }
 
           // Display CAT Timeout warnng based on the figure given in the config file
             var minutes = Math.floor(<?php echo $this->config->item('cat_timeout_interval'); ?> / 60);
