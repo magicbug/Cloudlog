@@ -5,7 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class Migration_make_mode_frequency_null
  *
- * Creates a varchar column in CAT table that holds value of propagation mode
+ * Modify frequency and mode column so that NULL is allowed
+ * Basically for propmode != SAT
  * 
  */
 
