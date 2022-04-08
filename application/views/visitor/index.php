@@ -122,7 +122,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 					<tr>
 						<td><?php echo $row['radio']; ?></td>
 						<td>
-							<?php if($row['radio'] == "SatPC32") { ?>
+							<?php if($row['radio'] == "SatPC32" || $row['radio'] == "CloudLogCATQt") { ?>
 								<?php echo $row['sat_name']; ?>
 							<?php } else { ?>
 								<?php echo $this->frequency->hz_to_mhz($row['frequency']); ?> (<?php echo $row['mode']; ?>)
