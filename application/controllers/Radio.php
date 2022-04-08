@@ -87,11 +87,13 @@
 			{
 
 
-				if($row->sat_name != "") {
+				if($row->prop_mode == "SAT") {
 					$uplink_freq = $row->uplink_freq;
 					$downlink_freq = $row->downlink_freq;
 
 					$power = $row->power;
+
+					$prop_mode = $row->prop_mode;
 
 					// Check Mode
 					if(strtoupper($row->uplink_mode) == "FMN"){
@@ -118,10 +120,11 @@
 					}
 
 				} else {
-					$uplink_freq = $row->frequency;
-					$downlink_freq = "";
+					$frequency = $row->frequency;
 
 					$power = $row->power;
+
+					$prop_mode = $row->prop_mode;
 
 					// Check Mode
 					if(strtoupper($row->mode) == "FMN"){
@@ -146,15 +149,26 @@
 				$updated_at = $minutes;
 
 				// Return Json data
-				echo json_encode(array(
-					"uplink_freq" => $uplink_freq,
-					"downlink_freq" => $downlink_freq,
-					"mode" => $mode,
-					"satmode" => $sat_mode,
-					"satname" => $sat_name,
-					"power" => $power,
-					"updated_minutes_ago" => $updated_at,
-				), JSON_PRETTY_PRINT);
+				if ($prop_mode == "SAT") {
+					echo json_encode(array(
+						"uplink_freq" => $uplink_freq,
+						"downlink_freq" => $downlink_freq,
+						"mode" => $mode,
+						"satmode" => $sat_mode,
+						"satname" => $sat_name,
+						"power" => $power,
+						"prop_mode" => $prop_mode,
+						"updated_minutes_ago" => $updated_at,
+					), JSON_PRETTY_PRINT);
+				} else {
+					echo json_encode(array(
+						"frequency" => $frequency,
+						"mode" => $mode,
+						"power" => $power,
+						"prop_mode" => $prop_mode,
+						"updated_minutes_ago" => $updated_at,
+					), JSON_PRETTY_PRINT);
+				}
 			}
 		}
 

@@ -1073,11 +1073,16 @@ $(document).on('keypress',function(e) {
               "satmode": "",
               "satname": "ES'HAIL-2"
               "power": "20"
+              "prop_mode": "SAT"
           }  */
-          if (data.uplink_freq != "")
+          if (data.prop_mode == "SAT")
+          //if (data.uplink_freq != "")
           {
             $('#frequency').val(data.uplink_freq);
             $("#band").val(frequencyToBand(data.uplink_freq));
+          } else {
+            $('#frequency').val(data.frequency);
+            $("#band").val(frequencyToBand(data.frequency));
           }
           if (data.downlink_freq != "")
           {
@@ -1101,6 +1106,7 @@ $(document).on('keypress',function(e) {
           if(data.power != 0) {
             $("#power").val(data.power);
           }
+          $("#selectPropagation").val(data.prop_mode);
 
           // Display CAT Timeout warnng based on the figure given in the config file
             var minutes = Math.floor(<?php echo $this->config->item('cat_timeout_interval'); ?> / 60);
