@@ -126,6 +126,53 @@
                 </table>
             </div>
         </div>
+        <?php if (file_exists('.git')) { ?>
+        <div class="card">
+        <?php
+            $commitHash = trim(exec('git log --pretty="%H" -n1 HEAD'));
+            $commitDate = trim(exec('git log --pretty="%ci" -n1 HEAD'));
+            $branch = trim(exec('git branch --show-current'));
+            $tag = trim(exec('git describe --tags '.$commitHash));
+        ?>
+            <div class="card-header">Git Information</div>
+            <div class="card-body">
+                <table width="100%">
+                    <tr>
+                        <td>Branch</td>
+                        <td>
+                            <?php if($branch != "") { ?>
+                                <span class="badge badge-success"><?php echo $branch; ?></span>
+                            <?php } else { ?> 
+                                <span class="badge badge-danger">n/a</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td>Commit</td>
+                        <td>
+                            <?php if($commitHash != "") { ?>
+                                <span class="badge badge-success"><?php echo substr($commitHash,0,8); ?></span>
+                            <?php } else { ?> 
+                                <span class="badge badge-danger">n/a</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Tag</td>
+                        <td>
+                            <?php if($commitHash != "") { ?>
+                                <span class="badge badge-success"><?php echo $tag; ?></span>
+                            <?php } else { ?> 
+                                <span class="badge badge-danger">n/a</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+                </table>
+                </table>
+            </div>
+        </div>
+        <?php } ?>
     </div>
 </div>
 
