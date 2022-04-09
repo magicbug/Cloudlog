@@ -86,6 +86,10 @@
 						'timestamp' => $timestamp,
 						);
 
+						if (isset($result['power'])) {
+							$data['power'] = $result['power'];
+						}
+
 						$this->db->where('id', $radio_id);
 						$this->db->where('user_id', $user_id);
 						$this->db->update('cat', $data);
@@ -148,6 +152,10 @@
 						'timestamp' => $timestamp,
 						'user_id' => $user_id,
 					);
+
+					if (isset($result['power'])) {
+						$data['power'] = $result['power'];
+					}
 				}
 
 				$this->db->insert('cat', $data);
