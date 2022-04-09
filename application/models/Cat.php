@@ -28,6 +28,7 @@
 							'uplink_freq' => $result['uplink_freq'],
 							'downlink_mode' => $result['downlink_mode'],
 							'uplink_mode' => $result['uplink_mode'],
+							'prop_mode' => 'SAT',
 						);
 
 						$this->db->where('id', $radio_id);
