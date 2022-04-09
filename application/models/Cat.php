@@ -103,6 +103,7 @@
 						'uplink_freq' => $result['uplink_freq'],
 						'downlink_mode' => $result['downlink_mode'],
 						'uplink_mode' => $result['uplink_mode'],
+						'prop_mode' => 'SAT',
 						'user_id' => $user_id,
 					);
 				} else if($result['radio'] == "CloudLogCATQt") {
