@@ -126,6 +126,53 @@
                 </table>
             </div>
         </div>
+        <?php if (file_exists('.git')) { ?>
+        <div class="card">
+        <?php
+            $commitHash = trim(exec('git log --pretty="%H" -n1 HEAD'));
+            $commitDate = trim(exec('git log --pretty="%ci" -n1 HEAD'));
+            $branch = trim(exec('git branch --show-current'));
+            $tag = trim(exec('git describe --tags '.$commitHash));
+        ?>
+            <div class="card-header">Git Information</div>
+            <div class="card-body">
+                <table width="100%">
+                    <tr>
+                        <td>Branch</td>
+                        <td>
+                            <?php if($branch != "") { ?>
+                                <a target="_blank" href="https://github.com/magicbug/Cloudlog/tree/<?php echo $branch?>"><span class="badge badge-success"><?php echo $branch; ?></span></a>
+                            <?php } else { ?> 
+                                <span class="badge badge-danger">n/a</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td>Commit</td>
+                        <td>
+                            <?php if($commitHash != "") { ?>
+                                <a target="_blank" href="https://github.com/magicbug/Cloudlog/commit/<?php echo $commitHash?>"><span class="badge badge-success"><?php echo substr($commitHash,0,8); ?></span></a>
+                            <?php } else { ?> 
+                                <span class="badge badge-danger">n/a</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Tag</td>
+                        <td>
+                            <?php if($commitHash != "") { ?>
+                                <a target="_blank" href="https://github.com/magicbug/Cloudlog/releases/tag/<?php echo substr($tag,0,strpos($tag, '-')); ?>"><span class="badge badge-success"><?php echo $tag; ?></span></a>
+                            <?php } else { ?> 
+                                <span class="badge badge-danger">n/a</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+                </table>
+                </table>
+            </div>
+        </div>
+        <?php } ?>
     </div>
 </div>
 
