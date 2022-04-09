@@ -141,7 +141,7 @@
                         <td>Branch</td>
                         <td>
                             <?php if($branch != "") { ?>
-                                <span class="badge badge-success"><?php echo $branch; ?></span>
+                                <a target="_blank" href="https://github.com/magicbug/Cloudlog/tree/<?php echo $branch?>"><span class="badge badge-success"><?php echo $branch; ?></span></a>
                             <?php } else { ?> 
                                 <span class="badge badge-danger">n/a</span>
                             <?php } ?>
@@ -152,7 +152,7 @@
                         <td>Commit</td>
                         <td>
                             <?php if($commitHash != "") { ?>
-                                <span class="badge badge-success"><?php echo substr($commitHash,0,8); ?></span>
+                                <a target="_blank" href="https://github.com/magicbug/Cloudlog/commit/<?php echo $commitHash?>"><span class="badge badge-success"><?php echo substr($commitHash,0,8); ?></span></a>
                             <?php } else { ?> 
                                 <span class="badge badge-danger">n/a</span>
                             <?php } ?>
@@ -162,7 +162,7 @@
                         <td>Tag</td>
                         <td>
                             <?php if($commitHash != "") { ?>
-                                <span class="badge badge-success"><?php echo $tag; ?></span>
+                                <a target="_blank" href="https://github.com/magicbug/Cloudlog/releases/tag/<?php echo substr($tag,0,strpos($tag, '-')); ?>"><span class="badge badge-success"><?php echo $tag; ?></span></a>
                             <?php } else { ?> 
                                 <span class="badge badge-danger">n/a</span>
                             <?php } ?>
