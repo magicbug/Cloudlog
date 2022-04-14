@@ -64,16 +64,13 @@ function load_was_map() {
             console.log("'clicked");
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
-                console.log("'got position");
             } else { 
                 console.log('Geolocation is not supported by this browser.');
             }
         }
 
         function showPosition(position) {
-            console.log(position);
             gridsquare = latLonToGridSquare(position.coords.latitude,position.coords.longitude);
-            console.log(gridsquare);
             document.getElementById("stationGridsquareInput").value = gridsquare;
   }
     </script>
