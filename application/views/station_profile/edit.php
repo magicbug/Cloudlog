@@ -212,10 +212,10 @@
 						<div class="input-group mb-3">
 						<input type="text" class="form-control" name="gridsquare" id="stationGridsquareInput" aria-describedby="stationGridInputHelp" value="<?php if(set_value('gridsquare') != "") { echo set_value('gridsquare'); } else { echo $my_station_profile->station_gridsquare; } ?>" required>
 							<div class="input-group-append">
-								<button class="btn btn-outline-secondary" onclick="getLocation()"><i class="fas fa-compass"></i> Get Gridsquare</button>
+								<button type="button" class="btn btn-outline-secondary" onclick="getLocation()"><i class="fas fa-compass"></i> Get Gridsquare</button>
 							</div>
 						</div>
-						
+
 		    			<small id="stationGridInputHelp" class="form-text text-muted">Station grid square. For example: IO87IP</small>
 		    			<small id="stationGridInputHelp" class="form-text text-muted">If you are located on a grid line, enter multiple grid squares separated with commas. For example: IO77,IO78,IO87,IO88.</small>
 		  			</div>
