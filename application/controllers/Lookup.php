@@ -112,4 +112,20 @@ class Lookup extends CI_Controller {
 
 	}
 
+	public function dok($call) {
+
+		if($call) {
+			$uppercase_callsign = strtoupper($call);
+		}
+
+		// DOK results from logbook
+		$this->load->model('logbook_model');
+
+		$query = $this->logbook_model->get_dok($uppercase_callsign);
+
+		if ($query->row()) {
+			echo $query->row()->COL_DARC_DOK;
+		}
+	}
+
 }

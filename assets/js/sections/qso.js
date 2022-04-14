@@ -383,8 +383,12 @@ $("#callsign").focusout(function() {
 				var $select = $('#darc_dok').selectize();
 				var selectize = $select[0].selectize;
 				if (result.dxcc.adif == '230') {
-					selectize.addOption({name:'N18'});
-					selectize.setValue('N18', false);
+					$.get('lookup/dok/' + $('#callsign').val().toUpperCase(), function(result) {
+						if (result) {
+							selectize.addOption({name: result});
+							selectize.setValue(result, false);
+						}
+					});
 				} else {
 					selectize.clear();
 				}
