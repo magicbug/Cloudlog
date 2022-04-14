@@ -56,7 +56,29 @@ function load_was_map() {
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/selectize.js"></script>
 
 <?php if ($this->uri->segment(1) == "station") { ?>
+    <script language="javascript" src="<?php echo base_url() ;?>assets/js/HamGridSquare.js"></script>
     <script src="<?php echo base_url() ;?>assets/js/sections/station_locations.js"></script>
+    <script>
+        var x = document.getElementById("demo");
+        var position;
+        function getLocation() {
+            console.log("'clicked");
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+                console.log("'got position");
+            } else { 
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            console.log("'got position");
+  x.innerHTML = "Latitude: " + position.coords.latitude + 
+  "<br>Longitude: " + position.coords.longitude;
+  console.log(position);
+  console.log(latLonToGridSquare(position.coords.latitude,position.coords.longitude));
+  }
+    </script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "logbooks") { ?>

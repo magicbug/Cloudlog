@@ -161,6 +161,8 @@
 		    <input type="text" class="form-control" name="gridsquare" id="stationGridsquareInput" aria-describedby="stationGridInputHelp" required>
 		    <small id="stationGridInputHelp" class="form-text text-muted">Station grid square. For example: IO87IP</small>
 		    <small id="stationGridInputHelp" class="form-text text-muted">If you are located on a grid line, enter multiple grid squares separated with commas. For example: IO77,IO78,IO87,IO88.</small>
+
+			<button onclick="getLocation()">Find Gridsquare</button>
 		  </div>
 
             <div class="form-group">
