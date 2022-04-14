@@ -74,7 +74,7 @@ function load_was_map() {
             console.log(position);
             gridsquare = latLonToGridSquare(position.coords.latitude,position.coords.longitude);
             console.log(gridsquare);
-            document.getElementById("stationGridsquareInput").gridsquare;
+            document.getElementById("stationGridsquareInput").value = gridsquare;
   }
     </script>
 <?php } ?>
