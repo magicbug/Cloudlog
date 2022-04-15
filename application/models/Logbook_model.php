@@ -429,6 +429,16 @@ class Logbook_model extends CI_Model {
 
   }
 
+  public function get_dok($callsign){
+    $this->db->select('COL_DARC_DOK');
+    $this->db->where('COL_CALL', $callsign);
+    $this->db->order_by("COL_TIME_ON", "desc");
+    $this->db->limit(1);
+
+    return $this->db->get($this->config->item('table_name'));
+
+  }
+
   function add_qso($data, $skipexport = false) {
 
     if ($data['COL_DXCC'] == "Not Found"){

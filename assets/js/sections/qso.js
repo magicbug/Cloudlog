@@ -286,6 +286,9 @@ function reset_fields() {
 	$('#input_usa_state').val("");
 	$('#qso-last-table').show();
 	$('#partial_view').hide();
+	var $select = $('#darc_dok').selectize();
+	var selectize = $select[0].selectize;
+	selectize.clear();
 
 	mymap.setView(pos, 12);
 	mymap.removeLayer(markers);
@@ -376,6 +379,19 @@ $("#callsign").focusout(function() {
 				$('#qrz_info').attr('title', 'Lookup '+find_callsign+' info on qrz.com');
 				$('#hamqth_info').html('<a target="_blank" href="https://www.hamqth.com/'+find_callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/hamqth.com.png"></a>'); 
 				$('#hamqth_info').attr('title', 'Lookup '+find_callsign+' info on hamqth.com');
+
+				var $select = $('#darc_dok').selectize();
+				var selectize = $select[0].selectize;
+				if (result.dxcc.adif == '230') {
+					$.get('lookup/dok/' + $('#callsign').val().toUpperCase(), function(result) {
+						if (result) {
+							selectize.addOption({name: result});
+							selectize.setValue(result, false);
+						}
+					});
+				} else {
+					selectize.clear();
+				}
 
 				$('#dxcc_id').val(result.dxcc.adif);
 				$('#cqz').val(result.dxcc.cqz);
