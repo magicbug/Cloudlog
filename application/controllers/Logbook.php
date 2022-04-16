@@ -149,6 +149,7 @@ class Logbook extends CI_Controller {
 			$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
 			$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
 			$return['callsign_state'] = $this->logbook_model->call_state($callsign);
+			$return['callsign_us_county'] = $this->logbook_model->call_us_county($callsign);
 			$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base, $station_id);
 			$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
 			if ($this->session->userdata('user_show_qrz_image')) {

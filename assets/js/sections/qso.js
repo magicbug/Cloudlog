@@ -289,6 +289,9 @@ function reset_fields() {
 	var $select = $('#darc_dok').selectize();
 	var selectize = $select[0].selectize;
 	selectize.clear();
+	$select = $('#stationCntyInput').selectize();
+	selectize = $select[0].selectize;
+	selectize.clear();
 
 	mymap.setView(pos, 12);
 	mymap.removeLayer(markers);
@@ -472,6 +475,15 @@ $("#callsign").focusout(function() {
 					$("#input_usa_state").val(result.callsign_state).trigger('change');
 				}
 
+				/*
+				* Update county with returned value
+				*/
+				if( $('#stationCntyInput').has('option').length == 0 && result.callsign_us_county != "") {
+					var $select = $('#stationCntyInput').selectize();
+					var selectize = $select[0].selectize;
+					selectize.addOption({name: result.callsign_us_county});
+					selectize.setValue(result.callsign_us_county, false);
+				}
 
 				if($('#iota_ref').val() == "") {
 					$('#iota_ref').val(result.callsign_iota);
