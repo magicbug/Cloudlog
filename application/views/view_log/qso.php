@@ -225,7 +225,13 @@
                     <?php if($row->COL_DARC_DOK != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_dok'); ?></td>
+                        <?php if (preg_match('/^[A-Y]\d{2}$/', $row->COL_DARC_DOK)) { ?>
                         <td><a href="https://www.darc.de/<?php echo $row->COL_DARC_DOK; ?>" target="_blank"><?php echo $row->COL_DARC_DOK; ?></a></td>
+                        <?php } else if (preg_match('/^Z\d{2}$/', $row->COL_DARC_DOK)) { ?>
+                        <td><a href="https://<?php echo $row->COL_DARC_DOK; ?>.vfdb.org" target="_blank"><?php echo $row->COL_DARC_DOK; ?></a></td>
+                        <?php } else { ?>
+                        <td><?php echo $row->COL_DARC_DOK; ?></td>
+                        <?php } ?>
                     </tr>
                     <?php } ?>
 
