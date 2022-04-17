@@ -22,10 +22,13 @@ class Qsl extends CI_Controller {
 		$this->load->model('qsl_model');
 		$data['qslarray'] = $this->qsl_model->getQsoWithQslList();
 
+		$this->load->model('Filemanager_model');
+		$fmanager = $this->Filemanager_model->get_qsl_default_id();
+
 		$this->load->library("file_manager");
-		$data['show_get_size'] = $this->file_manager->is_support_get_size();
+		$data['show_get_size'] = $this->file_manager->is_support_get_size($fmanager);
 		if ($data['show_get_size']) {
-			$data['storage_used'] = sizeFormat($this->file_manager->get_size());
+			$data['storage_used'] = sizeFormat($this->file_manager->get_size($fmanager));
 		}
 
         // Render Page
@@ -112,9 +115,11 @@ class Qsl extends CI_Controller {
 			return array('error' => 'file format not allowed');
 		}
 
+		$this->load->model('Filemanager_model');
+		$fmanager = $this->Filemanager_model->get_qsl_default_id();
 		$this->load->library('File_manager');
 		try {
-			$upload_result = $this->file_manager->upload_file_from_field($field, $filename);
+			$upload_result = $this->file_manager->upload_file_from_field($field, $filename, $fmanager);
 		} catch (Exception $e) {
 			return array('error' => $e->getMessage());
 		}

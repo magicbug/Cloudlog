@@ -4,6 +4,102 @@
 	Handles Displaying of information for station tools.
 */
 
+function check_access_key($param): bool
+{
+	$param_keys = array_keys($param);
+	if (!in_array("access_key_id", $param_keys) || !in_array("access_key_secret", $param_keys))
+	{
+		return false;
+	}
+	if (!is_string($param["access_key_id"]) || !is_string($param["access_key_secret"]))
+	{
+		return false;
+	}
+	if ($param["access_key_id"] == "" || $param["access_key_secret"] == "")
+	{
+		return false;
+	}
+	return true;
+}
+
+function check_driver($driver_name): bool
+{
+	if (!is_string($driver_name))
+	{
+		return false;
+	}
+	if ($driver_name != "aws_s3" && $driver_name != "local")
+	{
+		return false;
+	}
+	return true;
+}
+
+function check_driver_inner($param, $allowed_params, $required_params)
+{
+	foreach($param as $key => $value)
+	{
+		if (!in_array($key, $allowed_params))
+		{
+			return array(
+				"valid" => false,
+				"message" => "Parameter not allowed for the driver."
+			);
+		}
+	}
+	foreach($required_params as $rpara)
+	{
+		if (!in_array($rpara, array_keys($param)) || $param[$rpara] == "" || !is_string($param[$rpara]))
+		{
+			return array(
+				"valid" => false,
+				"message" => "Missing required param ".$rpara."."
+			);
+		}
+	}
+	return array(
+		"valid" => true,
+		"message" => ""
+	);
+}
+
+function check_local_param($param)
+{
+	$allowed_params = ["name", "url_prefix", "dir_path"];
+	$required_params = ["name", "url_prefix", "dir_path"];
+	return check_driver_inner($param, $allowed_params, $required_params);
+}
+
+function check_aws_s3_param($param)
+{
+	$allowed_params = ["name", "url_prefix", "access_key_id", "access_key_secret", "region", "bucket_name", "hostname"];
+	$required_params = ["name", "url_prefix", "region", "hostname"];
+	return check_driver_inner($param, $allowed_params, $required_params);
+}
+
+function check_param_generic($driver, $param)
+{
+	foreach($param as $value)
+	{
+		if (!is_string($value))
+		{
+			return array(
+				"valid" => false,
+				"message" => "Parameter type invalid."
+			);
+		}
+		if (mb_strlen($value) >= 255)
+		{
+			return array(
+				"valid" => false,
+				"message" => "Parameter too long."
+			);
+		}
+	}
+	$checker = "check_".$driver."_param";
+	return $checker($param);
+}
+
 class Options extends CI_Controller {
 
 	function __construct()
@@ -260,11 +356,26 @@ class Options extends CI_Controller {
 		$this->load->model('Filemanager_model');
 
 		$data["file_managers"] = $this->Filemanager_model->get_all();
-		$data["qsl_default_filemgr"] = $this->Filemanager_model->get_default()["id"];
+		$data["qsl_default_filemgr"] = $this->Filemanager_model->get_qsl_default_id();
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('options/file_manager');
 		$this->load->view('interface_assets/footer');
+	}
+
+	function filemgr_default_set() {
+		$qsl_default_filemgr = xss_clean($this->input->post('qsl_default_filemgr'));
+		$this->load->model('Filemanager_model');
+		$this->output->set_content_type("application/json");
+		try {
+			$fm = $this->Filemanager_model->get($qsl_default_filemgr);
+		} catch (Exception $e) {
+			$this->output->set_output(json_encode(array('error' => 'File manager not found.')));
+			$this->output->set_status_header(404);
+			return;
+		}
+		$this->Filemanager_model->set_qsl_default_id($qsl_default_filemgr);
+		$this->output->set_output(json_encode(array()));
 	}
 
 	function filemgr_add() {
@@ -274,13 +385,48 @@ class Options extends CI_Controller {
 
 		$data["file_manager"] = array(
 			"name" => "",
-			"url_prefix" => base_url(),
+			"url_prefix" => "",
 			"driver" => "local"
 		);
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('options/file_manager_edit');
 		$this->load->view('interface_assets/footer');
+	}
+
+	function filemgr_add_submit() {
+		$driver = $this->input->post('driver');
+		$param_json = $this->input->post('param');
+		$param = json_decode($param_json, true);
+
+		$this->output->set_content_type("application/json");
+		$this->load->library("file_manager");
+		if (!check_driver($driver))
+		{
+			$this->output->set_output(json_encode(array('error' => 'Driver unsupported')));
+			$this->output->set_status_header(400);
+			return;
+		}
+		if ($driver == "aws_s3")
+		{
+			if (!check_access_key($param))
+			{
+				$this->output->set_output(json_encode(array('error' => 'Missing access key information')));
+				$this->output->set_status_header(400);
+				return;
+			}
+		}
+		$param_chk_result = check_param_generic($driver, $param);
+		if (!$param_chk_result["valid"])
+		{
+			$this->output->set_output(json_encode(array('error' => $param_chk_result["message"])));
+			$this->output->set_status_header(400);
+			return;
+		}
+		$cfg = $param;
+		$cfg["driver"] = $driver;
+		$this->file_manager->create_manager($cfg);
+		$this->output->set_output(json_encode(array()));
 	}
 
 	function filemgr_edit() {
@@ -295,6 +441,66 @@ class Options extends CI_Controller {
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('options/file_manager_edit');
 		$this->load->view('interface_assets/footer');
+	}
+
+	function filemgr_save() {
+		$id = $this->input->post('id');
+		$driver = $this->input->post('driver');
+		$param_json = $this->input->post('param');
+		$param = json_decode($param_json, true);
+
+		$this->output->set_content_type("application/json");
+		$this->load->library("file_manager");
+		try {
+			$origin_cfg = $this->file_manager->get_manager($id);
+		} catch (Exception $e) {
+			$this->output->set_output(json_encode(array('error' => 'File manager not found.')));
+			$this->output->set_status_header(404);
+			return;
+		}
+		if (!check_driver($driver))
+		{
+			$this->output->set_output(json_encode(array('error' => 'Driver unsupported.')));
+			$this->output->set_status_header(400);
+			return;
+		}
+		$param_chk_result = check_param_generic($driver, $param);
+		if (!$param_chk_result["valid"])
+		{
+			$this->output->set_output(json_encode(array('error' => $param_chk_result["message"])));
+			$this->output->set_status_header(400);
+			return;
+		}
+		if ($origin_cfg["driver"] == "local" && $driver == "aws_s3")
+		{
+			if (!check_access_key($param))
+			{
+				$this->output->set_output(json_encode(array('error' => 'Missing access key information.')));
+				$this->output->set_status_header(400);
+				return;
+			}
+		}
+		$cfg = $param;
+		$cfg["driver"] = $driver;
+		$cfg["id"] = $id;
+		$this->file_manager->update_manager($cfg);
+
+		$this->output->set_output(json_encode(array()));
+	}
+
+	function filemgr_del() {
+		$id = $this->input->post('id');
+
+		$this->load->model('Filemanager_model');
+		$this->output->set_content_type("application/json");
+		try {
+			$this->Filemanager_model->delete($id);
+		} catch (Exception $e) {
+			$this->output->set_output(json_encode(array('error' => $e->getMessage())));
+			$this->output->set_status_header(404);
+			return;
+		}
+		$this->output->set_output(json_encode(array()));
 	}
 
 }

@@ -2,19 +2,19 @@
 
 class Filemanager_model extends CI_Model
 {
-	public function get_default()
+	public function get_qsl_default_id()
 	{
 		$CI =& get_instance();
 		$CI->load->library('OptionsLib');
-		$default_id = $CI->optionslib->get_option("default_file_manager_id");
-		return $this->get($default_id);
+		$default_id = $CI->optionslib->get_option("default_file_manager_id_for_qsl");
+		return $default_id;
 	}
 
-	public function set_default($id)
+	public function set_qsl_default_id($id)
 	{
 		$CI =& get_instance();
 		$CI->load->model('Options_model');
-		$CI->Options_model->update("default_file_manager_id", $id);
+		$CI->Options_model->update("default_file_manager_id_for_qsl", $id);
 	}
 
 	public function get_all()
@@ -40,9 +40,19 @@ class Filemanager_model extends CI_Model
 		return $this->db->insert_id();
 	}
 
-	public function update($id, $raw)
+	public function update($raw)
 	{
-		$this->db->where("id", $id);
+		$this->db->where("id", $raw["id"]);
 		$this->db->update("file_manager", $raw);
+	}
+
+	public function delete($id)
+	{
+		$clean_id = $this->security->xss_clean($id);
+		if ($this->get_qsl_default_id() == $clean_id)
+		{
+			throw new Exception("File manager in use as default qsl file manager");
+		}
+		$this->db->delete('file_manager', array('id' => $clean_id));
 	}
 }

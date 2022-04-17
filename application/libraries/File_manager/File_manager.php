@@ -44,7 +44,11 @@ function raw_data_mapper($cfg): array
 				$ret["cfg_2"] = $cfg["access_key_secret"];
 			}
 			$ret["cfg_3"] = $cfg["region"];
-			$ret["cfg_4"] = $cfg["bucket_name"];
+			if (array_key_exists("bucket_name", $cfg)) {
+				$ret["cfg_4"] = $cfg["bucket_name"];
+			} else {
+				$ret["cfg_4"] = "";
+			}
 			$ret["cfg_5"] = $cfg["hostname"];
 			break;
 		case "local":
@@ -63,31 +67,24 @@ class File_manager extends CI_Driver_Library
 		'local'
 	);
 
-	protected $_default = array();
 	protected $CI = null;
 
 	public function __construct()
 	{
 		$this->CI =& get_instance();
 		$this->CI->load->model('Filemanager_model');
-		$default_row = $this->CI->Filemanager_model->get_default();
-		$this->_default = driver_cfg_mapper($default_row);
 	}
 
+	// TODO: add default file manager engine to avoid duplicate sql queries in several situation
 	public function get_manager($id)
 	{
 		$cfg = driver_cfg_mapper($this->CI->Filemanager_model->get($id));
 		return $cfg;
 	}
 
-	public function upload_file_from_field($file_field, $filename, $manager=null): array
+	public function upload_file_from_field($file_field, $filename, $manager): array
 	{
-		if ($manager == null)
-		{
-			$cfg = $this->_default;
-		} else {
-			$cfg = driver_cfg_mapper($this->CI->Filemanager_model->get($manager));
-		}
+		$cfg = $this->get_manager($manager);
 
 		$ret = $this->{$cfg["driver"]}->upload_file_from_field($file_field, $filename, $cfg);
 		$this->CI->load->model("File_model");
@@ -104,25 +101,15 @@ class File_manager extends CI_Driver_Library
 		$this->CI->File_model->delete($file_id);
 	}
 
-	public function is_support_get_size($manager=null): bool
+	public function is_support_get_size($manager): bool
 	{
-		if ($manager == null)
-		{
-			$cfg = $this->_default;
-		} else {
-			$cfg = driver_cfg_mapper($this->CI->Filemanager_model->get($manager));
-		}
+		$cfg = $this->get_manager($manager);
 		return $this->{$cfg["driver"]}->is_support_get_size($cfg);
 	}
 
-	public function get_size($manager=null): int
+	public function get_size($manager): int
 	{
-		if ($manager == null)
-		{
-			$cfg = $this->_default;
-		} else {
-			$cfg = driver_cfg_mapper($this->CI->Filemanager_model->get($manager));
-		}
+		$cfg = $this->get_manager($manager);
 		return $this->{$cfg["driver"]}->get_size($cfg);
 	}
 

@@ -492,13 +492,13 @@ function calculateQrb() {
             data: {'locator1': locator1,
                     'locator2': locator2},
             success: function (html) {
-                
+
                 var result = "<h5>Negative latitudes are south of the equator, negative longitudes are west of Greenwich. <br/>";
                 result += ' ' + locator1.toUpperCase() + ' Latitude = ' + html['latlng1'][0] + ' Longitude = ' + html['latlng1'][1] + '<br/>';
                 result += ' ' + locator2.toUpperCase() + ' Latitude = ' + html['latlng2'][0] + ' Longitude = ' + html['latlng2'][1] + '<br/>';
                 result += 'Distance between ' + locator1.toUpperCase() + ' and ' + locator2.toUpperCase() + ' is ' + html['distance'] + '.<br />';
                 result += 'The bearing is ' + html['bearing'] + '.</h5>';
-                
+
                 $(".qrbResult").html(result);
                 newpath(html['latlng1'], html['latlng2'], locator1, locator2);
             }
@@ -512,7 +512,7 @@ function validateLocator(locator) {
     if(locator.length < 4 && !(/^[a-rA-R]{2}[0-9]{2}[a-xA-X]{0,2}[0-9]{0,2}[a-xA-X]{0,2}$/.test(locator))) {
         return false;
     }
-    
+
     return true;
 }
 
@@ -530,7 +530,7 @@ function newpath(latlng1, latlng2, locator1, locator2) {
 
     var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib}); 
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});
 
     var redIcon = L.icon({
 					iconUrl: icon_dot_url,
@@ -837,7 +837,7 @@ $(document).on('keypress',function(e) {
 <?php if ($this->uri->segment(1) == "qso") { ?>
 <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
 
-<?php 
+<?php
 
     $this->load->model('stations');
     $active_station_id = $this->stations->find_active();
@@ -2759,12 +2759,78 @@ function deleteQsl(id) {
 		{
 			window.location.href = base_url + 'index.php/options/filemgr_add'
 		}
+
+		function switch_to_file_manager_edit(id)
+		{
+			window.location.href = base_url + 'index.php/options/filemgr_edit/' + id;
+		}
+
+		function trigger_fm_delete(id)
+		{
+			BootstrapDialog.confirm({
+				title: 'DANGER',
+				message: 'Warning! Are you sure you want delete this file manager? All file of this file manager will be unmanageable.',
+				type: BootstrapDialog.TYPE_DANGER,
+				closable: true,
+				draggable: true,
+				btnOKClass: 'btn-danger',
+				callback: function(result) {
+					if (result) {
+						$.ajax({
+							url: base_url + 'index.php/options/filemgr_del',
+							type: 'post',
+							data: {
+								'id': id
+							},
+							success: function(data) {
+								$(".bootstrap-dialog-message").prepend('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The file manager has been deleted!</div>');
+								$("#fm_" + id).remove();
+								$("#fm_select_" + id).remove();
+							},
+							error: function(data) {
+								if (data.responseJSON && data.responseJSON.error)
+									$(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+data.responseJSON.error+'</div>');
+								else
+									$(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The deletion of the file manager failed. Please try again later.</div>');
+							},
+						});
+					}
+				}
+			});
+		}
+
+		function save_fm_default()
+		{
+			$.ajax({
+				url: base_url + 'index.php/options/filemgr_default_set',
+				type: 'post',
+				data: {
+					'qsl_default_filemgr': $("#qslSelect").val()
+				},
+				success: function(data) {
+					$(".bootstrap-dialog-message").prepend('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Default file manager has been saved!</div>');
+				},
+				error: function(data) {
+					if (data.responseJSON && data.responseJSON.error)
+						$(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+data.responseJSON.error+'</div>');
+					else
+						$(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Saving default file manager failed. Please try again later.</div>');
+				},
+			});
+		}
 	</script>
 <?php } ?>
 <?php if ($this->uri->segment(1) == "options" && ($this->uri->segment(2) == "filemgr_edit" || $this->uri->segment(2) == "filemgr_add")) { ?>
 	<script lang="javascript">
+		function gen_default_prefix(name) {
+			if (name == "") return "";
+			return base_url + 'assets/' + name + '/';
+		}
+		var name_old = "";
 		function update_form_group_hide_or_show() {
-			let driver = $("#driver").val();
+			let driver = $("#fm_driver").val();
+			let url_prefix_input = $("#fm_url_prefix")
+			let name = $("#fm_name").val();
 			if (driver == "local")
 			{
 				$("#form-group-dir").show();
@@ -2773,6 +2839,10 @@ function deleteQsl(id) {
 				$("#form-group-region").hide();
 				$("#form-group-bucket").hide();
 				$("#form-group-hostname").hide();
+				if (url_prefix_input.val() == "")
+				{
+					url_prefix_input.val(gen_default_prefix(name));
+				}
 			} else if (driver == "aws_s3") {
 				$("#form-group-dir").hide();
 				$("#form-group-akid").show();
@@ -2780,10 +2850,119 @@ function deleteQsl(id) {
 				$("#form-group-region").show();
 				$("#form-group-bucket").show();
 				$("#form-group-hostname").show();
+				if (url_prefix_input.val() == gen_default_prefix(name))
+				{
+					url_prefix_input.val("");
+				}
 			}
 		}
-		$("#driver").on("change", update_form_group_hide_or_show);
-		$(update_form_group_hide_or_show);
+		$(document).ready(function (){
+			name_old = $("#fm_name").val();
+			$(update_form_group_hide_or_show);
+		})
+		$("#fm_driver").on("change", update_form_group_hide_or_show);
+
+		$("#fm_name").on("change", function (){
+			let url_prefix_input = $("#fm_url_prefix")
+			let name_new = $("#fm_name").val();
+			let driver = $("#fm_driver").val();
+			if ((driver != "local"))
+			{
+				return;
+			}
+			if (url_prefix_input.val() == gen_default_prefix(name_old))
+			{
+				url_prefix_input.val(gen_default_prefix(name_new));
+			}
+			name_old = name_new;
+		})
+
+		function get_param()
+		{
+			let driver = $("#fm_driver").val();
+			switch(driver)
+			{
+				case "local":
+					return {
+						"name": $("#fm_name").val(),
+						"url_prefix": $("#fm_url_prefix").val(),
+						"dir_path": $("#fm_dir_path").val()
+					};
+					break;
+				case "aws_s3":
+					return {
+						"name": $("#fm_name").val(),
+						"url_prefix": $("#fm_url_prefix").val(),
+						"access_key_id": $("#fm_access_key_id").val(),
+						"access_key_secret": $("#fm_access_key_secret").val(),
+						"region": $("#fm_region").val(),
+						"bucket_name": $("#fm_bucket_name").val(),
+						"hostname": $("#fm_hostname").val()
+					};
+					break;
+			}
+		}
+	</script>
+<?php } ?>
+<?php if ($this->uri->segment(1) == "options" && $this->uri->segment(2) == "filemgr_edit") { ?>
+	<script lang="javascript">
+		function fm_do_save()
+		{
+			BootstrapDialog.confirm({
+				title: 'DANGER',
+				message: 'Warning! Are you sure to edit this file manager? </br>Existing files will not be moved automatically. Mismatched file manager information will make all file of this file manager unmanageable. </br>You may keep the configuration consist manually.',
+				type: BootstrapDialog.TYPE_WARNING,
+				closable: true,
+				draggable: true,
+				btnOKClass: 'btn-danger',
+				callback: function(result) {
+					if (result) {
+						$.ajax({
+							url: base_url + 'index.php/options/filemgr_save',
+							type: 'post',
+							data: {
+								'id': <?php echo $this->uri->segment(3); ?>,
+								'driver': $("#fm_driver").val(),
+								'param': JSON.stringify(get_param())
+							},
+							success: function(data) {
+								window.location.href = base_url + 'index.php/options/filemgr';
+							},
+							error: function(data) {
+								if (data.responseJSON && data.responseJSON.error)
+									$(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+data.responseJSON.error+'</div>');
+								else
+									$(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Saving file manager failed. Please try again later.</div>');
+							},
+						});
+					}
+				}
+			});
+		}
+	</script>
+<?php } ?>
+<?php if ($this->uri->segment(1) == "options" && $this->uri->segment(2) == "filemgr_add") { ?>
+	<script lang="javascript">
+		function fm_do_save()
+		{
+			$.ajax({
+				url: base_url + 'index.php/options/filemgr_add_submit',
+				type: 'post',
+				data: {
+					'driver': $("#fm_driver").val(),
+					'param': JSON.stringify(get_param())
+				},
+				success: function(data) {
+					window.location.href = base_url + 'index.php/options/filemgr';
+				},
+				error: function(data) {
+					if (data.responseJSON && data.responseJSON.error)
+						$(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+data.responseJSON.error+'</div>');
+					else
+						$(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Adding file manager failed. Please try again later.</div>');
+				},
+			});
+		}
 	</script>
 <?php } ?>
   </body>
