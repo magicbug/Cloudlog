@@ -263,6 +263,18 @@
          ]
       }
    },
+   "MO-113":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"PKT",
+               "Uplink_Freq":"145987500",
+               "Downlink_Mode":"PKT",
+               "Downlink_Freq":"436925000"
+            }
+         ]
+      }
+   },
    "NO-84":{
       "Modes":{
          "A/U":[
