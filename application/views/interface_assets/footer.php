@@ -2424,7 +2424,10 @@ function deleteQsl(id) {
 	}
 </script>
 <?php if ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) != "add" ) { ?>
-    <script src="<?php echo base_url() ;?>assets/js/sections/contesting.js"></script>
+    <script>
+        var manual = <?php echo $_GET['manual']; ?>;
+    </script>
+    <script src="<?php echo base_url() ;?>assets/js/sections/contesting.js?v2"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "station") { ?>

@@ -51,21 +51,23 @@ $('#exchangetype').change(function () {
 });
 
 // realtime clock
-$(function ($) {
-	var options = {
-		utc: true,
-		format: '%H:%M:%S'
-	}
-	$('.input_time').jclock(options);
-});
+if ( ! manual ) {
+	$(function ($) {
+		var options = {
+			utc: true,
+			format: '%H:%M:%S'
+		}
+		$('.input_time').jclock(options);
+	});
 
-$(function ($) {
-	var options = {
-		utc: true,
-		format: '%d-%m-%Y'
-	}
-	$('.input_date').jclock(options);
-});
+	$(function ($) {
+		var options = {
+			utc: true,
+			format: '%d-%m-%Y'
+		}
+		$('.input_date').jclock(options);
+	});
+}
 
 // We don't want spaces to be written in callsign
 $(function () {
