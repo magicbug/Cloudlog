@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 *   removing the need for lots of configuration files.
 */
 
-class Migration_create_station_logbook_relationship_table2 extends CI_Migration {
+class Migration_create_station_logbook_relationship_table extends CI_Migration {
 
     public function up()
     {
