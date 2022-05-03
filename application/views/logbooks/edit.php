@@ -58,6 +58,12 @@
 					</div>
 					<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Save</button>
 					</form>
+
+					<?php if($station_logbook_details->public_slug != "") { ?>
+					<div class="alert alert-info" role="alert" style="margin-top: 20px;">
+						Visit Public Page <a href="<?php echo site_url(); ?>/<?php echo $station_logbook_details->public_slug; ?>" target="_blank"><?php echo site_url(); ?>/<?php echo $station_logbook_details->public_slug; ?></a>
+					</div>
+					<?php } ?>
 				</div>
 			</div>
 		</div>
