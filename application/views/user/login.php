@@ -1,6 +1,6 @@
 <div id="container" class="container mx-auto pt-5" style="max-width:400px">
 
-<h2>Log in</h2>
+<h1>Login</h1>
 <?php $this->load->view('layout/messages'); ?>
 
 <form method="post" action="<?php echo site_url('user/login'); ?>" name="users">
