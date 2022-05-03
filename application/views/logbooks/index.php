@@ -15,8 +15,7 @@
     What are Station Logbooks
   </div>
   <div class="card-body">
-    <p class="card-text">Station Logbooks allow you to group Station Locations, doing this allows you to see all the grouped locations across one session from the logbook areas to the analyics.</p>
-	<p class="card-text">Great for when your operating in multiple locations but they are part of the same DXCC or VUCC Circle.</p>
+    <p class="card-text">Station Logbooks allow you to group Station Locations, this allows you to see all the locations across one session from the logbook areas to the analytics. Great for when your operating in multiple locations but they are part of the same DXCC or VUCC Circle.</p>
   </div>
 </div>
 
@@ -47,7 +46,11 @@
 						<a href="<?php echo site_url('logbooks/set_active')."/".$row->logbook_id; ?>" class="btn btn-outline-primary btn-sm">Set as Active Logbook</a>
 						<?php } ?>
 
-						<a href="<?php echo site_url('logbooks/edit')."/".$row->logbook_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> </a>
+						<a href="<?php echo site_url('logbooks/edit')."/".$row->logbook_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit" title="Edit <?php echo $row->logbook_name;?>"></i> </a>
+
+						<?php if($row->public_slug != '') { ?>
+						<a target="_blank" href="<?php echo site_url('visitor')."/".$row->public_slug; ?>" class="btn btn-outline-primary btn-sm" ><i class="fas fa-globe" title="View Public Page for <?php echo $row->logbook_name;?> Logbook"></i> </a>
+						<?php } ?>
 
 						<?php if($this->session->userdata('active_station_logbook') != $row->logbook_id) { ?>
 						<a href="<?php echo site_url('Logbooks/delete')."/".$row->logbook_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete station profile <?php echo $row->logbook_name; ?> this will delete all QSOs within this station logbook?');"><i class="fas fa-trash-alt"></i></a>
