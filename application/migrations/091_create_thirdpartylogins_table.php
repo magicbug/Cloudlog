@@ -3,8 +3,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
-*   This migration creates a table called options which will hold global options needed within cloudlog
-*   removing the need for lots of configuration files.
+*   This migration creates a table called thirdparty_logins
+*   This table is used to store third party login details
 */
 
 class Migration_create_thirdpartylogins_table extends CI_Migration {
