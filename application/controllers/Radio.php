@@ -48,16 +48,16 @@
 			{
 				echo "<tr>";
 				echo "<td>".$row->radio."</td>";
-				if($row->frequency != "0") {
-					echo "<td>".$row->frequency."</td>";
+				if($row->frequency != "0" && $row->frequency != NULL) {
+					echo "<td>".$this->frequency->hz_to_mhz($row->frequency)."</td>";
 				} else {
-					echo "<td>".$row->downlink_freq." / ".$row->uplink_freq."</td>";
+					echo "<td>".$this->frequency->hz_to_mhz($row->downlink_freq)." / ".$this->frequency->hz_to_mhz($row->uplink_freq)."</td>";
 				}
 
-				if($row->mode != "non") {
+				if($row->mode != "non" && $row->mode != NULL) {
 					echo "<td>".$row->mode."</td>";
 				} else {
-					echo "<td>".$row->uplink_mode."</td>";
+					echo "<td>".$row->downlink_mode." / ".$row->uplink_mode."</td>";
 				}
 				$phpdate = strtotime($row->timestamp);
 				echo "<td>".date('H:i:s d-m-y', $phpdate)."</td>" ;
