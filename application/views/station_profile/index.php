@@ -60,7 +60,7 @@
 					<td><?php echo $row->station_callsign;?></td>
 					<td><?php echo $row->station_country;?></td>
 					<td><?php echo $row->station_gridsquare;?></td>
-					<td style="text-align: center">
+					<td style="text-align: center" data-order="<?php echo $row->station_id;?>">
 						<?php if($row->station_active != 1) { ?>
 							<a href="<?php echo site_url('station/set_active/').$current_active."/".$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('Are you sure you want to make station <?php echo $row->station_profile_name; ?> the active station?');">Set Active</a>
 						<?php } else { ?>
