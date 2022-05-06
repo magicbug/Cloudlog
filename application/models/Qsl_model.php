@@ -9,6 +9,7 @@ class Qsl_model extends CI_Model {
         $this->db->from($this->config->item('table_name'));
         $this->db->join('qsl_images', 'qsl_images.qsoid = ' . $this->config->item('table_name') . '.col_primary_key');
         $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->order_by("id", "desc");
 
         return $this->db->get();
     }
