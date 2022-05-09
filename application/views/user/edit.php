@@ -218,6 +218,15 @@
 							<div class="small form-text text-muted">Leave blank to keep existing password</div></td>
 							<?php } ?>
 					</div>
+
+					<div class="form-group">
+						<label>Download detailed QSO Data</label>
+						<select class="custom-select" id="user_lotw_qso_details" name="user_lotw_qso_details">
+							<option value="1" <?php if ($user_lotw_qso_details == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_yes'); ?></option>
+							<option value="0" <?php if ($user_lotw_qso_details == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_no'); ?></option>
+						</select>
+						<div class="small form-text text-muted">Download QSO details on LotW synchronization (e.g. IOTA information)</div></td>
+					</div>
 				</div>
 			</div>
 	    </div>
