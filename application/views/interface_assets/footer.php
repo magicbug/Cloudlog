@@ -2146,7 +2146,7 @@ $(document).ready(function(){
         $('.qsltable').DataTable({
             "pageLength": 25,
             responsive: false,
-            ordering: false,
+            ordering: true,
             "scrollY":        "500px",
             "scrollCollapse": true,
             "paging":         false,
