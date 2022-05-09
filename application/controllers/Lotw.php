@@ -595,6 +595,7 @@ class Lotw extends CI_Controller {
 				// Get credentials for LoTW
 		    	$data['user_lotw_name'] = urlencode($user->user_lotw_name);
 				$data['user_lotw_password'] = urlencode($user->user_lotw_password);
+				$data['user_lotw_qso_details'] = $user->user_lotw_qso_details;
 
 				// Get URL for downloading LoTW
 				$query = $query = $this->db->query('SELECT lotw_download_url FROM config');
@@ -614,13 +615,16 @@ class Lotw extends CI_Controller {
 				$lotw_url .= "?";
 				$lotw_url .= "login=" . $data['user_lotw_name'];
 				$lotw_url .= "&password=" . $data['user_lotw_password'];
-				$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
+				$lotw_url .= "&qso_query=1&qso_qsl='yes'";
 
-				//TODO: Option to specifiy whether we download location data from LoTW or not
-				$lotw_url .= "&qso_qsldetail=\"yes\"";
+				// Only download detailed QSO info if enabled in user's profile
+				if ($data['user_lotw_qso_details'] == 1) {
+					$lotw_url .= "&qso_qsldetail='yes'";
+				}
 
-		        $lotw_url .= "&qso_qslsince=";
-		        $lotw_url .= "$lotw_last_qsl_date";
+				$lotw_url .= "&qso_mydetail='yes'";
+				$lotw_url .= "&qso_qslsince=";
+				$lotw_url .= "$lotw_last_qsl_date";
 
 				file_put_contents($file, file_get_contents($lotw_url));
 
@@ -656,6 +660,7 @@ class Lotw extends CI_Controller {
     	    $q = $query->row();
     	    $data['user_lotw_name'] = urlencode($q->user_lotw_name);
 			$data['user_lotw_password'] = urlencode($q->user_lotw_password);
+			$data['user_lotw_qso_details'] = $q->user_lotw_qso_details;
 
 			// Get URL for downloading LoTW
 			$query = $query = $this->db->query('SELECT lotw_download_url FROM config');
@@ -685,13 +690,16 @@ class Lotw extends CI_Controller {
 			$lotw_url .= "?";
 			$lotw_url .= "login=" . $data['user_lotw_name'];
 			$lotw_url .= "&password=" . $data['user_lotw_password'];
-			$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
+			$lotw_url .= "&qso_query=1&qso_qsl='yes'";
 
-			//TODO: Option to specifiy whether we download location data from LoTW or not
-			//$lotw_url .= "&qso_qsldetail=\"yes\";
+			// Only download detailed QSO info if enabled in user's profile
+			if ($data['user_lotw_qso_details'] == 1) {
+				$lotw_url .= "&qso_qsldetail='yes'";
+			}
 
-            $lotw_url .= "&qso_qslsince=";
-            $lotw_url .= "$lotw_last_qsl_date";
+			$lotw_url .= "&qso_mydetail='yes'";
+			$lotw_url .= "&qso_qslsince=";
+			$lotw_url .= "$lotw_last_qsl_date";
 
 			// Only pull back entries that belong to this callsign
 			$lotw_call = $this->session->userdata('user_callsign');
