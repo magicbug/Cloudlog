@@ -467,6 +467,7 @@ class Lotw extends CI_Controller {
 				$tableheaders .= "<td>Date LoTW Confirmed</td>";
 				$tableheaders .= "<td>State</td>";
 				$tableheaders .= "<td>Gridsquare</td>";
+				$tableheaders .= "<td>IOTA</td>";
 				$tableheaders .= "<td>Log Status</td>";
 				$tableheaders .= "<td>LoTW Status</td>";
 			$tableheaders .= "</tr>";
@@ -520,8 +521,13 @@ class Lotw extends CI_Controller {
 						$qsl_gridsquare = "";
 					}
 
+					if (isset($record['iota'])) {
+						$iota = $record['iota'];
+					} else {
+						$iota = "";
+					}
 
-					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare);
+					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare, $iota);
 				}
 
 
@@ -534,6 +540,7 @@ class Lotw extends CI_Controller {
 					$table .= "<td>".$qsl_date."</td>";
 					$table .= "<td>".$state."</td>";
 					$table .= "<td>".$qsl_gridsquare."</td>";
+					$table .= "<td>".$iota."</td>";
 					$table .= "<td>QSO Record: ".$status."</td>";
 					$table .= "<td>LoTW Record: ".$lotw_status."</td>";
 				$table .= "</tr>";
@@ -609,11 +616,8 @@ class Lotw extends CI_Controller {
 				$lotw_url .= "&password=" . $data['user_lotw_password'];
 				$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
 
-				//TODO: Option to specifiy whether we download location data from LoTW or not
-				//$lotw_url .= "&qso_qsldetail=\"yes\";
-
-		        $lotw_url .= "&qso_qslsince=";
-		        $lotw_url .= "$lotw_last_qsl_date";
+				$lotw_url .= "&qso_qslsince=";
+				$lotw_url .= "$lotw_last_qsl_date";
 
 				file_put_contents($file, file_get_contents($lotw_url));
 
@@ -680,11 +684,8 @@ class Lotw extends CI_Controller {
 			$lotw_url .= "&password=" . $data['user_lotw_password'];
 			$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
 
-			//TODO: Option to specifiy whether we download location data from LoTW or not
-			//$lotw_url .= "&qso_qsldetail=\"yes\";
-
-            $lotw_url .= "&qso_qslsince=";
-            $lotw_url .= "$lotw_last_qsl_date";
+			$lotw_url .= "&qso_qslsince=";
+			$lotw_url .= "$lotw_last_qsl_date";
 
 			// Only pull back entries that belong to this callsign
 			$lotw_call = $this->session->userdata('user_callsign');
