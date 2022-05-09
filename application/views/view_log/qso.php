@@ -197,7 +197,7 @@
                     <?php if($row->COL_IOTA != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_iota_reference'); ?></td>
-                        <td><?php echo $row->COL_IOTA; ?></td>
+                        <td><a href="https://www.iota-world.org/iotamaps/?grpref=<?php echo $row->COL_IOTA; ?>" target="_blank"><?php echo $row->COL_IOTA; ?></a></td>
                     </tr>
                     <?php } ?>
 
