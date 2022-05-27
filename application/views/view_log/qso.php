@@ -302,6 +302,10 @@
                         <td><?php echo $row->station_callsign; ?></td>
                     </tr>
                     <tr>
+                        <td>Station Name</td>
+                        <td><?php echo $row->station_profile_name; ?></td>
+                    </tr>
+                    <tr>
                         <td>Station Gridsquare</td>
                         <td><?php echo $row->station_gridsquare; ?></td>
                     </tr>
