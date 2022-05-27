@@ -79,7 +79,31 @@ thead > tr > td {
     text-transform: uppercase;
 }
 
-.qso_panel .sota_ref {
+.qso_panel #sota_ref-selectized {
+    text-transform: uppercase;
+}
+
+.qso_panel #darc_dok-selectized {
+    text-transform: uppercase;
+}
+
+.card-body #callsign {
+    text-transform: uppercase;
+}
+
+.card-body #locator {
+    text-transform: uppercase;
+}
+
+.card-body #vucc_grids {
+    text-transform: uppercase;
+}
+
+.card-body #sota_ref_edit-selectized {
+    text-transform: uppercase;
+}
+
+.card-body #darc_dok_edit-selectized {
     text-transform: uppercase;
 }
 
