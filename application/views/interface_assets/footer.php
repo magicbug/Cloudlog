@@ -2167,7 +2167,7 @@ $(document).ready(function(){
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
-        $.fn.dataTable.moment('<? echo $usethisformat ?>');
+        $.fn.dataTable.moment('<?php echo $usethisformat ?>');
         $('.qsltable').DataTable({
             "pageLength": 25,
             responsive: false,
