@@ -844,14 +844,13 @@ class Logbook_model extends CI_Model {
     function call_us_county($callsign) {
         $this->db->select('COL_CALL, COL_CNTY');
         $this->db->where('COL_CALL', $callsign);
-        $where = "COL_NAME != \"\"";
+        $where = "COL_CNTY != \"\"";
 
         $this->db->where($where);
 
         $this->db->order_by("COL_TIME_ON", "desc");
         $this->db->limit(1);
         $query = $this->db->get($this->config->item('table_name'));
-        $name = "";
         if ($query->num_rows() > 0)
         {
             $data = $query->row();
