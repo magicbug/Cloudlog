@@ -64,7 +64,7 @@ function load_was_map() {
             console.log("'clicked");
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
-            } else { 
+            } else {
                 console.log('Geolocation is not supported by this browser.');
             }
         }
@@ -280,7 +280,7 @@ function load_was_map() {
                             $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
                             $("#query_" + id).remove(); // removes query from table in dialog
                             $("#querydropdown option[value='" + id + "']").remove(); // removes query from dropdown
-                            if ($("#querydropdown option").length == 0) { 
+                            if ($("#querydropdown option").length == 0) {
                                 $("#btn-edit").remove();
                                 $('.querydropdownform').remove();
                             };
@@ -492,13 +492,13 @@ function calculateQrb() {
             data: {'locator1': locator1,
                     'locator2': locator2},
             success: function (html) {
-                
+
                 var result = "<h5>Negative latitudes are south of the equator, negative longitudes are west of Greenwich. <br/>";
                 result += ' ' + locator1.toUpperCase() + ' Latitude = ' + html['latlng1'][0] + ' Longitude = ' + html['latlng1'][1] + '<br/>';
                 result += ' ' + locator2.toUpperCase() + ' Latitude = ' + html['latlng2'][0] + ' Longitude = ' + html['latlng2'][1] + '<br/>';
                 result += 'Distance between ' + locator1.toUpperCase() + ' and ' + locator2.toUpperCase() + ' is ' + html['distance'] + '.<br />';
                 result += 'The bearing is ' + html['bearing'] + '.</h5>';
-                
+
                 $(".qrbResult").html(result);
                 newpath(html['latlng1'], html['latlng2'], locator1, locator2);
             }
@@ -512,7 +512,7 @@ function validateLocator(locator) {
     if(locator.length < 4 && !(/^[a-rA-R]{2}[0-9]{2}[a-xA-X]{0,2}[0-9]{0,2}[a-xA-X]{0,2}$/.test(locator))) {
         return false;
     }
-    
+
     return true;
 }
 
@@ -530,7 +530,7 @@ function newpath(latlng1, latlng2, locator1, locator2) {
 
     var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib}); 
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});
 
     var redIcon = L.icon({
 					iconUrl: icon_dot_url,
@@ -837,7 +837,7 @@ $(document).on('keypress',function(e) {
 <?php if ($this->uri->segment(1) == "qso") { ?>
 <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
 
-<?php 
+<?php
 
     $this->load->model('stations');
     $active_station_id = $this->stations->find_active();
@@ -879,7 +879,7 @@ $(document).on('keypress',function(e) {
 
   <script type="text/javascript">
 
-    var manual = <?php echo $_GET['manual']; ?>;
+    var manual = <?php echo $_GET['manual'] ?? 0; ?>;
 
     $(document).ready(function() {
 
@@ -1058,7 +1058,7 @@ $(document).on('keypress',function(e) {
   </script>
 
 <?php } ?>
-<?php if ( ($this->uri->segment(1) == "qso" && $_GET['manual'] == 0) || ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) != "add")) { ?>
+<?php if ( ($this->uri->segment(1) == "qso" && $_GET['manual'] ?? 0 == 0) || ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) != "add")) { ?>
     <script>
     function setRst(mode) {
         if(mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS'){
@@ -1518,7 +1518,7 @@ $(document).ready(function(){
 								attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright');?>',
 							}).addTo(mymap);
 
-                            
+
                             var printer = L.easyPrint({
                                 tileLayer: tiles,
                                 sizeModes: ['Current'],
@@ -2453,7 +2453,7 @@ function deleteQsl(id) {
 </script>
 <?php if ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) != "add" ) { ?>
     <script>
-        var manual = <?php echo $_GET['manual']; ?>;
+        var manual = <?php echo $_GET['manual'] ?? 0; ?>;
     </script>
     <script src="<?php echo base_url() ;?>assets/js/sections/contesting.js?v2"></script>
 <?php } ?>
