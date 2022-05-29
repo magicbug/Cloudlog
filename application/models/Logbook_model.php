@@ -841,6 +841,27 @@ class Logbook_model extends CI_Model {
         return $qsl_state;
     }
 
+    function call_us_county($callsign) {
+        $this->db->select('COL_CALL, COL_CNTY');
+        $this->db->where('COL_CALL', $callsign);
+        $where = "COL_CNTY != \"\"";
+
+        $this->db->where($where);
+
+        $this->db->order_by("COL_TIME_ON", "desc");
+        $this->db->limit(1);
+        $query = $this->db->get($this->config->item('table_name'));
+        if ($query->num_rows() > 0)
+        {
+            $data = $query->row();
+            $qsl_county = $data->COL_CNTY;
+        }
+
+        // Strip state identifier
+        $qsl_county = substr($qsl_county, (strpos($qsl_county, ',')+1));
+        return $qsl_county;
+    }
+
 	function call_qth($callsign) {
 		$this->db->select('COL_CALL, COL_QTH, COL_TIME_ON');
 		$this->db->where('COL_CALL', $callsign);
