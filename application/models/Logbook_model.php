@@ -179,7 +179,7 @@ class Logbook_model extends CI_Model {
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
             'COL_SIG' => trim($this->input->post('sig')),
             'COL_SIG_INFO' => trim($this->input->post('sig_info')),
-            'COL_DARC_DOK' => trim($darc_dok),
+            'COL_DARC_DOK' => strtoupper(trim($darc_dok)),
 			'COL_NOTES' => $this->input->post('notes'),
     );
 
@@ -664,7 +664,7 @@ class Logbook_model extends CI_Model {
        'COL_TX_PWR' => $txpower,
        'COL_SIG' => $this->input->post('sig'),
        'COL_SIG_INFO' => $this->input->post('sig_info'),
-       'COL_DARC_DOK' => $this->input->post('darc_dok'),
+       'COL_DARC_DOK' => strtoupper($this->input->post('darc_dok')),
        'COL_QTH' => $this->input->post('qth'),
        'COL_PROP_MODE' => $this->input->post('prop_mode'),
        'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
@@ -2547,7 +2547,7 @@ class Logbook_model extends CI_Model {
                 'COL_CQZ' => $cq_zone,
                 'COL_CREDIT_GRANTED' => (!empty($record['credit_granted'])) ? $record['credit_granted'] : '',
                 'COL_CREDIT_SUBMITTED' => (!empty($record['credit_submitted'])) ? $record['credit_submitted'] : '',
-                'COL_DARC_DOK' => (!empty($record['darc_dok'])) ? $record['darc_dok'] : '',
+                'COL_DARC_DOK' => (!empty($record['darc_dok'])) ? strtoupper($record['darc_dok']) : '',
                 'COL_DISTANCE' => (!empty($record['distance'])) ? $record['distance'] : null,
                 'COL_DXCC' => $dxcc[0],
                 'COL_EMAIL' => (!empty($record['email'])) ? $record['email'] : '',
