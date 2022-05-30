@@ -107,6 +107,10 @@ thead > tr > td {
     text-transform: uppercase;
 }
 
+.card-body #exch_gridsquare_r {
+    text-transform: uppercase;
+}
+
 .workedGrid {
     border-color: green;
 }
