@@ -855,11 +855,11 @@ class Logbook_model extends CI_Model {
         {
             $data = $query->row();
             $qsl_county = $data->COL_CNTY;
+            $qsl_county = substr($qsl_county, (strpos($qsl_county, ',')+1));
+            return $qsl_county;
+        } else {
+          return NULL;
         }
-
-        // Strip state identifier
-        $qsl_county = substr($qsl_county, (strpos($qsl_county, ',')+1));
-        return $qsl_county;
     }
 
 	function call_qth($callsign) {
