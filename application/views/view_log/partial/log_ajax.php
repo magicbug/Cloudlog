@@ -188,10 +188,8 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
                 <?php if($this->session->userdata('user_lotw_name') != "") { ?>
                     <td class="lotw">
-                        <?php if ($row->COL_LOTW_QSL_SENT != ''){ ?>
-                            <span <?php if ($row->COL_LOTW_QSL_SENT == "Y") { $timestamp = strtotime($row->COL_LOTW_QSLSDATE); echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_sent')." ".($timestamp!=''?date($custom_date_format, $timestamp):'')."\" data-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
-                            <span <?php if ($row->COL_LOTW_QSL_RCVD == "Y") { $timestamp = strtotime($row->COL_LOTW_QSLRDATE); echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_received')." ".($timestamp!=''?date($custom_date_format, $timestamp):'')."\" data-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
-                        <?php } ?>
+                        <span <?php if ($row->COL_LOTW_QSL_SENT == "Y") { $timestamp = strtotime($row->COL_LOTW_QSLSDATE); echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_sent')." ".($timestamp!=''?date($custom_date_format, $timestamp):'')."\" data-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
+                        <span <?php if ($row->COL_LOTW_QSL_RCVD == "Y") { $timestamp = strtotime($row->COL_LOTW_QSLRDATE); echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_received')." ".($timestamp!=''?date($custom_date_format, $timestamp):'')."\" data-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
                     </td>
                 <?php } ?>
 
