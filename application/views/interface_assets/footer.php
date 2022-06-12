@@ -589,39 +589,31 @@ function showActivatorsMap(call, count, grids) {
 
     let re = /,/g;
     grids = grids.replace(re, ', ');
-    $.ajax({
-        url: base_url+'index.php/qrbcalc/calculate',
-        type: 'post',
-        data: {'grids': "test"},
-        success: function (html) {
 
-            var result = "Callsign: "+call+"<br />";
-            result +=    "Count: "+count+"<br/>";
-            result +=    "Grids: "+grids+"<br/><br />";
+    var result = "Callsign: "+call+"<br />";
+    result +=    "Count: "+count+"<br/>";
+    result +=    "Grids: "+grids+"<br/><br />";
 
-            $(".activatorsmapResult").html(result);
+    $(".activatorsmapResult").html(result);
 
-            // If map is already initialized
-            var container = L.DomUtil.get('mapactivators');
+    // If map is already initialized
+    var container = L.DomUtil.get('mapactivators');
 
-            if(container != null){
-                container._leaflet_id = null;
-            }
+    if(container != null){
+        container._leaflet_id = null;
+    }
 
-            const map = new L.map('mapactivators').setView([30, 0], 1.5);
+    const map = new L.map('mapactivators').setView([30, 0], 1.5);
 
-            var grid_four = grids.split(', ');
+    var grid_four = grids.split(', ');
 
-            var maidenhead = new L.maidenheadactivators(grid_four).addTo(map);
+    var maidenhead = new L.maidenheadactivators(grid_four).addTo(map);
 
-            var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-            var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-            var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib}); 
+    var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib}); 
 
-            map.addLayer(osm);
-
-        }
-    });
+    map.addLayer(osm);
 }
 
 // This displays the dialog with the form and it's where the resulttable is displayed

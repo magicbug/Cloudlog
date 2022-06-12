@@ -65,7 +65,6 @@ L.MaidenheadActivators = L.LayerGroup.extend({
 				if(grid_four.includes(this._getLocator(lon,lat,map))) {
 					this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle grid-confirmed', color: 'rgba(144,238,144, 0.6)', weight: 1, fillOpacity: 1, fill:true, interactive: false}));
 				}
-				console.log('Zoom: '+zoom);
 
 				if (zoom < 2 || zoom > 4) {
 					this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c), map));
