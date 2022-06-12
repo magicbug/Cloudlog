@@ -590,7 +590,7 @@ function showActivatorsMap(call, count, grids) {
     let re = /,/g;
     grids = grids.replace(re, ', ');
 
-    var result = "Callsign: "+call+"<br />";
+    var result = "Callsign: "+call.replace('0', '&Oslash;')+"<br />";
     result +=    "Count: "+count+"<br/>";
     result +=    "Grids: "+grids+"<br/><br />";
 
