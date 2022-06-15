@@ -26,6 +26,7 @@ class Logbook extends CI_Controller {
 			// user is not logged in
 			redirect('user/login');
 		}
+		$this->load->model('stations');
 
 		// If environment is set to development then show the debug toolbar
 		if(ENVIRONMENT == 'development') {

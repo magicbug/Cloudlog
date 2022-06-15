@@ -1,6 +1,7 @@
 <div class="container logbook">
 
 	<h2><?php echo $this->lang->line('gen_hamradio_logbook'); ?></h2>
+	<h6><?php echo $this->lang->line('gen_hamradio_logbook').": ".$this->logbooks_model->find_name($this->session->userdata('active_station_logbook')); ?> <?php echo $this->lang->line('general_word_location').": ".$this->stations->find_name(); ?></h6>
 
 	<?php if($this->session->flashdata('notice')) { ?>
 	<div class="alert alert-info" role="alert">

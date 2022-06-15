@@ -202,6 +202,21 @@ class Stations extends CI_Model {
 		}
 	}
 
+	public function find_name() {
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('station_active', 1);
+		$query = $this->db->get('station_profile');
+
+		if($query->num_rows() >= 1) {
+			foreach ($query->result() as $row)
+			{
+				return $row->station_profile_name;
+			}
+		} else {
+			return "0";
+		}
+	}
+
     public function reassign($id) {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
