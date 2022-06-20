@@ -87,9 +87,29 @@
   var grid_four = <?php echo $grid_4char; ?>;
   var grid_six = <?php echo $grid_6char; ?>;
 
+  var grid_two_count = grid_two.length;
+  var grid_four_count = grid_four.length;
+  var grid_six_count = grid_six.length;
+
+
   var grid_two_confirmed = <?php echo $grid_2char_confirmed; ?>;
   var grid_four_confirmed = <?php echo $grid_4char_confirmed; ?>;
   var grid_six_confirmed = <?php echo $grid_6char_confirmed; ?>;
+
+  var grid_two_confirmed_count = grid_two_confirmed.length;
+  var grid_four_confirmed_count = grid_four_confirmed.length;
+  var grid_six_confirmed_count = grid_six_confirmed.length;
+
+  if (grid_four_confirmed_count > 0) {
+     var span = document.getElementById('confirmed_grids');
+     span.innerText = span.textContent = '('+grid_four_confirmed_count+' grid squares)';
+  }
+  if ((grid_four_count-grid_four_confirmed_count) > 0) {
+     var span = document.getElementById('worked_grids');
+     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' grid squares)';
+  }
+  var span = document.getElementById('sum_grids');
+  span.innerText = span.textContent = '| Total Count: '+grid_four_count+' grid squares';
 
   var maidenhead = L.maidenhead().addTo(map);
 
