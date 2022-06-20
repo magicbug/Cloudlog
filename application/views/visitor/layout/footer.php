@@ -100,14 +100,14 @@
 
   if (grid_four_confirmed_count > 0) {
      var span = document.getElementById('confirmed_grids');
-     span.innerText = span.textContent = '('+grid_four_confirmed_count+' grid squares)';
+     span.innerText = span.textContent = '('+grid_four_confirmed_count+' grid squares) ';
   }
   if ((grid_four_count-grid_four_confirmed_count) > 0) {
      var span = document.getElementById('worked_grids');
-     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' grid squares)';
+     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' grid squares) ';
   }
   var span = document.getElementById('sum_grids');
-  span.innerText = span.textContent = '| Total Count: '+grid_four_count+' grid squares';
+  span.innerText = span.textContent = ' Total Count: '+grid_four_count+' grid squares';
 
   var maidenhead = L.maidenhead().addTo(map);
 
