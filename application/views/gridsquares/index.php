@@ -25,13 +25,13 @@
 <div class="container">
 	<?php if ($this->uri->segment(2) == "satellites") { ?>
 		<div class="alert alert-success" role="alert">
-			Confirmed is Green | Worked but not confirmed is Red
+			Confirmed is Green <span id="confirmed_grids"></span> | Worked but not confirmed is Red <span id="worked_grids"></span> <span id="sum_grids"></span><br>
 		</div>
 	<?php } ?>
 
 	<?php if ($this->uri->segment(2) == "band") { ?>
 		<div class="alert alert-success" role="alert">
-			Confirmed is Green | Worked but not confirmed is Red <br>
+			Confirmed is Green <span id="confirmed_grids"></span> | Worked but not confirmed is Red <span id="worked_grids"></span> <span id="sum_grids"></span><br>
 			[This map does not include satellite, internet or repeater QSOs]
 		</div>
 	<?php } ?>
