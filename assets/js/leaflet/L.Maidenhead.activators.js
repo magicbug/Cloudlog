@@ -57,10 +57,23 @@ L.MaidenheadActivators = L.LayerGroup.extend({
 		this.eachLayer(this.removeLayer, this);
 
 		var grid_four = this.grids;
+		var grid_two = [];
+
+		function addGridTwo(element, index, array) {
+			if (!grid_two.includes(element.substr(0,2))) {
+				grid_two.push(element.substr(0,2));
+			}
+		}
+
+		grid_four.forEach(addGridTwo);
 
 		for (var lon = left; lon < right; lon += (unit*2)) {
 			for (var lat = bottom; lat < top; lat += unit) {
 				var bounds = [[lat,lon],[lat+unit,lon+(unit*2)]];
+
+				if(grid_two.includes(this._getLocator(lon,lat,map))) {
+					this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle grid-confirmed', color: 'rgba(144,238,144, 0.6)', weight: 1, fillOpacity: 1, fill:true, interactive: false}));
+				}
 
 				if(grid_four.includes(this._getLocator(lon,lat,map))) {
 					this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle grid-confirmed', color: 'rgba(144,238,144, 0.6)', weight: 1, fillOpacity: 1, fill:true, interactive: false}));
