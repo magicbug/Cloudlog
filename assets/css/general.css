@@ -349,3 +349,8 @@ div#station_logbooks_linked_table_paginate {
     max-height: 250px;
     max-width: 100%;
 }
+
+#mapactivators {
+    height: calc(100vh - 380px) !important;
+    max-height: 900px !important;
+}
