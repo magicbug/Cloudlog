@@ -207,7 +207,7 @@ class Logbooks_model extends CI_Model {
 			return $relationships_array;
 		}
 		else{
-			return false;
+			return array();
 		}
 	}
 
