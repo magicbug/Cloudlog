@@ -6,6 +6,9 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.qrb.js"></script>
+<?php if ($this->uri->segment(1) == "activators") { ?>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.activators.js"></script>
+<?php } ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.geodesic.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/darkmodehelpers.js"></script>
@@ -479,6 +482,31 @@ function spawnQrbCalculator(locator1, locator2) {
 	});
 }
 
+function spawnActivatorsMap(call, count, grids) {
+	$.ajax({
+		url: base_url + 'index.php/activatorsmap',
+		type: 'post',
+		success: function (html) {
+			BootstrapDialog.show({
+				title: 'Activators Map',
+				size: BootstrapDialog.SIZE_WIDE,
+				cssClass: 'lookup-dialog',
+				nl2br: false,
+				message: html,
+				onshown: function(dialog) {
+					showActivatorsMap(call, count, grids);
+				},
+				buttons: [{
+					label: 'Close',
+					action: function (dialogItself) {
+						dialogItself.close();
+					}
+				}]
+			});
+		}
+	});
+}
+
 function calculateQrb() {
     let locator1 = $("#qrbcalc_locator1").val();
     let locator2 = $("#qrbcalc_locator2").val();
@@ -555,6 +583,37 @@ function newpath(latlng1, latlng2, locator1, locator2) {
         wrap: false,
         steps: 100
     }).addTo(map);
+}
+
+function showActivatorsMap(call, count, grids) {
+
+    let re = /,/g;
+    grids = grids.replace(re, ', ');
+
+    var result = "Callsign: "+call.replace('0', '&Oslash;')+"<br />";
+    result +=    "Count: "+count+"<br/>";
+    result +=    "Grids: "+grids+"<br/><br />";
+
+    $(".activatorsmapResult").html(result);
+
+    // If map is already initialized
+    var container = L.DomUtil.get('mapactivators');
+
+    if(container != null){
+        container._leaflet_id = null;
+    }
+
+    const map = new L.map('mapactivators').setView([30, 0], 1.5);
+
+    var grid_four = grids.split(', ');
+
+    var maidenhead = new L.maidenheadactivators(grid_four).addTo(map);
+
+    var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib}); 
+
+    map.addLayer(osm);
 }
 
 // This displays the dialog with the form and it's where the resulttable is displayed
