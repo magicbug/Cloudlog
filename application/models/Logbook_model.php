@@ -2245,7 +2245,7 @@ class Logbook_model extends CI_Model {
 
     public function dxcc_lookup($call, $date){
 
-		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
+		$dxcc_exceptions = $this->db->select('*')
 				->where('call', $call)
 				->where('(start <= CURDATE()')
 				->or_where('start is null', NULL, false)
