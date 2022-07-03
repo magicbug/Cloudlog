@@ -57,10 +57,8 @@
 
 			<?php if($this->session->userdata('user_lotw_name') != "") { ?>
 			<td class="lotw">
-				<?php if ($row->COL_LOTW_QSL_SENT != ''){ ?>
 			    <span class="lotw-<?php echo ($row->COL_LOTW_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
 			    <span class="lotw-<?php echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
-			    <?php } ?>
 			</td>
 			<?php } ?>
 

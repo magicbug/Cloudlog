@@ -2415,16 +2415,16 @@ class Logbook_model extends CI_Model {
         if (isset($record['lotw_qsl_rcvd'])){
             $input_lotw_qsl_rcvd = mb_strimwidth($record['lotw_qsl_rcvd'], 0, 1);
         } else {
-            $input_lotw_qsl_rcvd = "";
+            $input_lotw_qsl_rcvd = NULL;
         }
 
         if (isset($record['lotw_qsl_sent'])){
-          $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
-      } else if ($markLotw != NULL) {
-          $input_lotw_qsl_sent = "Y";
-      } else {
-          $input_lotw_qsl_sent = "";
-      }
+            $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
+        } else if ($markLotw != NULL) {
+            $input_lotw_qsl_sent = "Y";
+        } else {
+            $input_lotw_qsl_sent = NULL;
+        }
 
         if (isset($record['lotw_qslrdate'])){
             if(validateADIFDate($record['lotw_qslrdate']) == true){
