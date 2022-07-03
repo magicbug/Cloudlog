@@ -75,7 +75,12 @@ class eqsl extends CI_Controller {
 				$table .= "<td>".$time_on."</td>";
 				$table .= "<td>".str_replace("0","&Oslash;",$record['call'])."</td>";
 				$table .= "<td>".$record['mode']."</td>";
-				$table .= "<td>".$record['submode']."</td>";
+				if (isset($record['submode'])
+				{
+					$table .= "<td>".$record['submode']."</td>";
+				} else {
+					$table .= "<td></td>";
+				}
 				$table .= "<td>QSO Record: ".$status."</td>";
 				$table .= "<td>eQSL Record: ".$eqsl_status."</td>";
 			$table .= "<tr>";
