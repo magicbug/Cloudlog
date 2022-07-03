@@ -119,4 +119,4 @@ $lang['gen_from_date'] = 'From date';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'This QSO was confirmed on';
 
-$lang['error_no_logbook_found'] = 'No logbook\'s were found. You need to define a logbook under Station Logbooks!';
+$lang['error_no_logbook_found'] = 'No logbooks were found. You need to define a logbook under Station Logbooks! Do it here:';
