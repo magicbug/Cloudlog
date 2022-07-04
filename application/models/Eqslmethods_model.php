@@ -13,7 +13,7 @@ class Eqslmethods_model extends CI_Model {
             'COL_EQSL_QSLSDATE'  => date('Y-m-d')." 00:00:00",
         );
         
-        $this->db->replace($this->config->item('table_name'), $data);
+        $this->db->update($this->config->item('table_name'), $data);
 	}
 
 }
