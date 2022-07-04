@@ -473,20 +473,19 @@
 		    $lng = $midpoint[1];
         }
 	} else {
+        if(isset($row->lat)) {
+			$lat = $row->lat;
+        } else {
+            $lat = 0;
+        }
 
-		$CI =& get_instance();
-		$CI->load->model('Logbook_model');
-
-		$result = $CI->Logbook_model->dxcc_lookup($row->COL_CALL, $row->COL_TIME_ON);
-
-        if(isset($result)) {
-			$lat = $result['lat'];
-			$lng = $result['long'];
+        if(isset($row->long)) {
+			$lng = $row->long;
+        } else {
+            $lng = 0;
         }
 	}
 ?>
-
-
 
 <script>
 var lat = <?php echo $lat; ?>;

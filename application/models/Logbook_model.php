@@ -1035,9 +1035,8 @@ class Logbook_model extends CI_Model {
   }
 
   function get_qso($id) {
-    $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
     $this->db->from($this->config->item('table_name'));
-
+    $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
     $this->db->where('COL_PRIMARY_KEY', $id);
 
