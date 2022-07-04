@@ -1018,7 +1018,10 @@ class Logbook_model extends CI_Model {
       $logbooks_locations_array = $StationLocationsArray;
     }
 
-    //$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_NAME, '.$this->config->item('table_name').'.COL_COUNTRY, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
+    if (empty($logbooks_locations_array)) {
+      return array();
+    }
+
     $this->db->from($this->config->item('table_name'));
 
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
@@ -2415,16 +2418,16 @@ class Logbook_model extends CI_Model {
         if (isset($record['lotw_qsl_rcvd'])){
             $input_lotw_qsl_rcvd = mb_strimwidth($record['lotw_qsl_rcvd'], 0, 1);
         } else {
-            $input_lotw_qsl_rcvd = "";
+            $input_lotw_qsl_rcvd = NULL;
         }
 
         if (isset($record['lotw_qsl_sent'])){
-          $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
-      } else if ($markLotw != NULL) {
-          $input_lotw_qsl_sent = "Y";
-      } else {
-          $input_lotw_qsl_sent = "";
-      }
+            $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
+        } else if ($markLotw != NULL) {
+            $input_lotw_qsl_sent = "Y";
+        } else {
+            $input_lotw_qsl_sent = NULL;
+        }
 
         if (isset($record['lotw_qslrdate'])){
             if(validateADIFDate($record['lotw_qslrdate']) == true){
@@ -3104,7 +3107,10 @@ class Logbook_model extends CI_Model {
     $this->db->select('COL_PRIMARY_KEY,COL_CALL, COL_BAND, COL_BAND_RX, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_FREQ, COL_FREQ_RX, COL_GRIDSQUARE, COL_SAT_NAME, COL_PROP_MODE, COL_LOTW_QSL_SENT, station_id');
 
     $this->db->where("station_id", $station_id);
-    $this->db->where('COL_LOTW_QSL_SENT !=', "Y");
+    $this->db->group_start();
+    $this->db->where('COL_LOTW_QSL_SENT', NULL);
+    $this->db->or_where('COL_LOTW_QSL_SENT !=', "Y");
+    $this->db->group_end();
     $this->db->where('COL_PROP_MODE !=', "INTERNET");
     $this->db->where('COL_TIME_ON >=', $start_date);
     $this->db->where('COL_TIME_ON <=', $end_date);
