@@ -163,11 +163,9 @@ class Dashboard extends CI_Controller {
 					echo ",";
 				}
 
-				$result = $this->logbook_model->dxcc_lookup($row->COL_CALL, $row->COL_TIME_ON);
-		
-				if(isset($result)) {
-					$lat = $result['lat'];
-					$lng = $result['long'];
+				if(isset($row->lat) && isset($row->long)) {
+					$lat = $row->lat;
+					$lng = $row->long;
 				}
 				echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
 				$count++;
