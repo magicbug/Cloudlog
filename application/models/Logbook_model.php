@@ -1291,6 +1291,7 @@ class Logbook_model extends CI_Model {
       return null;
     }
 
+      $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
       $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
       $this->db->where_in("station_id", $logbooks_locations_array);
 
