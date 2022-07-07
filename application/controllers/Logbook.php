@@ -157,7 +157,7 @@ class Logbook extends CI_Controller {
 			$return['callsign_us_county'] = $this->logbook_model->call_us_county($callsign);
 			$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base, $station_id);
 			$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
-			if ($this->session->userdata('user_show_qrz_image')) {
+			if ($this->session->userdata('user_show_profile_image')) {
 				if (isset($callbook)) {
 					if ($callbook['image'] == "") {
 						$return['image'] = "n/a";
@@ -185,7 +185,7 @@ class Logbook extends CI_Controller {
 			$return['callsign_iota'] = $callbook['iota'];
 			$return['callsign_state'] = $callbook['state'];
 			$return['callsign_us_county'] = $callbook['us_county'];
-			if ($this->session->userdata('user_show_qrz_image')) {
+			if ($this->session->userdata('user_show_profile_image')) {
 				if ($callbook['image'] == "") {
 					$return['image'] = "n/a";
 				} else {
