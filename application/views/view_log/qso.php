@@ -218,7 +218,19 @@
                     <?php if($row->COL_SIG_INFO != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_sig_info'); ?></td>
-                        <td><?php echo $row->COL_SIG_INFO; ?></td>
+                        <?php
+                        switch ($row->COL_SIG) {
+                        case "GMA":
+                           echo "<td><a href=\"https://www.cqgma.org/zinfo.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
+                           break;
+                        case "WWFF":
+                           echo "<td><a href=\"https://wwff.co/directory/?showRef=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
+                           break;
+                        default:
+                           echo "<td>".$row->COL_SIG_INFO."</td>";
+                           break;
+                        }
+                        ?>
                     </tr>
                     <?php } ?>
 
