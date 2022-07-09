@@ -1035,9 +1035,8 @@ class Logbook_model extends CI_Model {
   }
 
   function get_qso($id) {
-    $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
     $this->db->from($this->config->item('table_name'));
-
+    $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
     $this->db->where('COL_PRIMARY_KEY', $id);
 
@@ -1102,9 +1101,9 @@ class Logbook_model extends CI_Model {
     }
 
     if ($logbooks_locations_array) {
-      //$this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_STX_STRING, COL_SRX_STRING, COL_IOTA, COL_STATE, COL_GRIDSQUARE');
       $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
       $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+      $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
       $this->db->order_by("COL_TIME_ON", "desc");
       $this->db->limit($num);
       $query = $this->db->get($this->config->item('table_name'));
@@ -1292,6 +1291,7 @@ class Logbook_model extends CI_Model {
       return null;
     }
 
+      $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
       $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
       $this->db->where_in("station_id", $logbooks_locations_array);
 
