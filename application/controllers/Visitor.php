@@ -56,12 +56,8 @@ class Visitor extends CI_Controller {
 				$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($public_slug);
                 if($logbook_id != false)
                 {
-
-					print_r($logbook_id);
                     // Get associated station locations for mysql queries
                     $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
-
-					print_r($logbooks_locations_array);
 
 					if (!$logbooks_locations_array) {
 						show_404('Empty Logbook');
@@ -138,10 +134,15 @@ class Visitor extends CI_Controller {
         $slug = $this->security->xss_clean($this->uri->segment(3));
 
         $this->load->model('logbooks_model');
-        if($logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($slug) != false)
+        $logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($slug);
+        if($logbook_id != false)
         {
             // Get associated station locations for mysql queries
             $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+
+			if (!$logbooks_locations_array) {
+				show_404('Empty Logbook');
+			}
         } else {
             log_message('error', $slug.' has no associated station locations');
             show_404('Unknown Public Page.');
@@ -236,14 +237,19 @@ class Visitor extends CI_Controller {
         $this->load->model('logbooks_model');
         if($this->logbooks_model->public_slug_exists($slug)) {
             // Load the public view
-            if($logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($slug) != false)
-            {
-                // Get associated station locations for mysql queries
-                $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
-            } else {
-                log_message('error', $slug.' has no associated station locations');
-                show_404('Unknown Public Page.');
-            }
+			$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($slug);
+			if($logbook_id != false)
+			{
+				// Get associated station locations for mysql queries
+				$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+	
+				if (!$logbooks_locations_array) {
+					show_404('Empty Logbook');
+				}
+			} else {
+				log_message('error', $slug.' has no associated station locations');
+				show_404('Unknown Public Page.');
+			}
         }
 
 		$this->load->model('gridsquares_model');
