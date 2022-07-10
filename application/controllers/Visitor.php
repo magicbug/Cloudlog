@@ -52,10 +52,20 @@ class Visitor extends CI_Controller {
             $this->load->model('logbooks_model');
             if($this->logbooks_model->public_slug_exists($public_slug)) {
                 // Load the public view
-                if($logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($public_slug) != false)
+
+				$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($public_slug);
+                if($logbook_id != false)
                 {
+
+					print_r($logbook_id);
                     // Get associated station locations for mysql queries
                     $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+
+					print_r($logbooks_locations_array);
+
+					if (!$logbooks_locations_array) {
+						show_404('Empty Logbook');
+					}
                 } else {
                     log_message('error', $public_slug.' has no associated station locations');
                     show_404('Unknown Public Page.');
