@@ -14,7 +14,7 @@ class Migration_rename_profile_images extends CI_Migration {
 
         public function up()
         {
-                if ($this->db->field_exists('user_show_qrz_image', 'users')) {
+                if ($this->db->field_exists('user_show_qrz_image', 'users') && !$this->db->field_exists('user_show_profile_image', 'users')) {
                         $fields = array(
                                 'user_show_qrz_image' => [ 'name' => 'user_show_profile_image', 'type' => ' BOOLEAN DEFAULT FALSE', ]
                         );
