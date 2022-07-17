@@ -161,13 +161,13 @@ class Visitor extends CI_Controller {
 				}
 
 				if($row->COL_SAT_NAME != null) { 
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
-						echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-						echo "\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				} else {
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
-						echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-						echo "\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				}
 
 				$count++;
