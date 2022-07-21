@@ -19,50 +19,50 @@ class Migration_update_modes_adif313 extends CI_Migration
 		$data = array(
 			array('mode' => "DIGITALVOICE", 'submode' => "C4FM", 'qrgmode' => "DATA", 'active' => 1),
 		);
-		$this->db->insert_batch('options', $data);
+		$this->db->insert_batch('adif_modes', $data);
 		
 		// insert new DMR
 		$data = array(
 			array('mode' => "DIGITALVOICE", 'submode' => "DMR", 'qrgmode' => "DATA", 'active' => 1),
 		);
-		$this->db->insert_batch('options', $data);
+		$this->db->insert_batch('adif_modes', $data);
 		
 		// insert new DSTAR
 		$data = array(
 			array('mode' => "DIGITALVOICE", 'submode' => "DSTAR", 'qrgmode' => "DATA", 'active' => 1),
 		);
 		
-		$this->db->insert_batch('options', $data);
+		$this->db->insert_batch('adif_modes', $data);
 		
 		// insert new DYNAMIC
 		$data = array(
 			array('mode' => "DYNAMIC", 'qrgmode' => "DATA", 'active' => 1),
 		);
-		$this->db->insert_batch('options', $data);
+		$this->db->insert_batch('adif_modes', $data);
 		
 		// insert new VARA HF
 		$data = array(
 			array('mode' => "DYNAMIC", 'submode' => "VARA HF", 'qrgmode' => "DATA", 'active' => 1),
 		);
-		$this->db->insert_batch('options', $data);
+		$this->db->insert_batch('adif_modes', $data);
 		
 		// insert new VARA SATELLITE
 		$data = array(
 			array('mode' => "DYNAMIC", 'submode' => "VARA SATELLITE", 'qrgmode' => "DATA", 'active' => 1),
 		);
-		$this->db->insert_batch('options', $data);
+		$this->db->insert_batch('adif_modes', $data);
 		
 		// insert new VARA FM 1200
 		$data = array(
 			array('mode' => "DYNAMIC", 'submode' => "VARA FM 1200", 'qrgmode' => "DATA", 'active' => 1),
 		);
-		$this->db->insert_batch('options', $data);
+		$this->db->insert_batch('adif_modes', $data);
 		
 		// insert new VARA FM 9600
 		$data = array(
 			array('mode' => "DYNAMIC", 'submode' => "VARA FM 9600", 'qrgmode' => "DATA", 'active' => 1),
 		);
-		$this->db->insert_batch('options', $data);
+		$this->db->insert_batch('adif_modes', $data);
 	}
 
 	public function down()
