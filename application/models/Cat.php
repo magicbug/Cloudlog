@@ -189,7 +189,7 @@
 		}
 
 		function radio_status($id) {
-			$sql = 'SELECT *, CONVERT_TZ(`timestamp`, @@session.time_zone, \'+00:00\' ) as newtime FROM `cat` WHERE id = ' . $id . ' and user_id =' . $this->session->userdata('user_id');
+			$sql = 'SELECT * FROM `cat` WHERE id = ' . $id . ' and user_id =' . $this->session->userdata('user_id');
 			return $this->db->query($sql);
 		}
 
