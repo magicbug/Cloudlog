@@ -226,7 +226,7 @@ class Visitor extends CI_Controller {
 					if($count != 1) {
 					echo ",";
 						}
-					echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
 					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 					$count++;
