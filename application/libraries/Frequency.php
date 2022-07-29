@@ -89,7 +89,7 @@ class Frequency {
   );
 
 	/* Class to convert band and mode into a frequency in a format based on the specifications of the database table */
-	public function convent_band($band, $mode='SSB') {
+	public function convert_band($band, $mode='SSB') {
 		// Converting LSB and USB to SSB
 		if($mode =='LSB' or $mode =='USB'){
 		  $mode= "SSB";

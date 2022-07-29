@@ -1167,11 +1167,7 @@ $(document).on('keypress',function(e) {
           }
 
           old_mode = $(".mode").val();
-          if (data.mode == "LSB" || data.mode == "USB" || data.mode == "SSB") {
-            $(".mode").val('SSB');
-          } else {
-            $(".mode").val(data.mode);
-          }
+          $(".mode").val(data.mode);
 
           if (old_mode !== $(".mode").val()) {
             // Update RST on mode change via CAT
