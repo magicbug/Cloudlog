@@ -29,6 +29,7 @@
 							'downlink_mode' => $result['downlink_mode'],
 							'uplink_mode' => $result['uplink_mode'],
 							'prop_mode' => 'SAT',
+							'timestamp' => $timestamp,
 						);
 
 						$this->db->where('id', $radio_id);
@@ -51,6 +52,7 @@
 								'uplink_freq' => $result['uplink_freq'],
 								'downlink_mode' => $result['downlink_mode'],
 								'uplink_mode' => $result['uplink_mode'],
+								'timestamp' => $timestamp,
 							);
 							if (isset($result['power'])) {
 								$data['power'] = $result['power'];
@@ -64,6 +66,7 @@
 								'downlink_mode' => NULL,
 								'uplink_freq' => NULL,
 								'uplink_mode' => NULL,
+								'timestamp' => $timestamp,
 							);
 							if (isset($result['power'])) {
 								$data['power'] = $result['power'];
@@ -110,6 +113,7 @@
 						'uplink_mode' => $result['uplink_mode'],
 						'prop_mode' => 'SAT',
 						'user_id' => $user_id,
+						'timestamp' => $timestamp,
 					);
 				} else if($result['radio'] == "CloudLogCATQt") {
 					if ($result['prop_mode'] == "SAT") {
@@ -124,6 +128,7 @@
 							'downlink_mode' => $result['downlink_mode'],
 							'uplink_mode' => $result['uplink_mode'],
 							'user_id' => $user_id,
+							'timestamp' => $timestamp,
 						);
 						if (isset($result['power'])) {
 							$data['power'] = $result['power'];
@@ -139,6 +144,7 @@
 							'uplink_freq' => NULL,
 							'uplink_mode' => NULL,
 							'user_id' => $user_id,
+							'timestamp' => $timestamp,
 						);
 						if (isset($result['power'])) {
 							$data['power'] = $result['power'];
