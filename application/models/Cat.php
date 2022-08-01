@@ -7,7 +7,7 @@
 			if ($result['timestamp'] != "") {
 				$timestamp = $result['timestamp'];
 			} else {
-				$timestamp = gmdate("Y-m-d H:i:s");
+				$timestamp = date("Y-m-d H:i:s", time() - date("Z"))				;
 			}
 
 			$this->db->where('radio', $result['radio']);
