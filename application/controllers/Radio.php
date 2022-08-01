@@ -2,10 +2,6 @@
 
 	class Radio extends CI_Controller {
 
-
-	public function test() {
-		echo gmdate("Y-m-d H:i:s");
-	}
 	public function index()
 	{
 		// Check Auth
