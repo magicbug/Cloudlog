@@ -2,6 +2,10 @@
 
 	class Radio extends CI_Controller {
 
+
+	public function test() {
+		echo gmdate("Y-m-d H:i:s");
+	}
 	public function index()
 	{
 		// Check Auth
@@ -139,6 +143,7 @@
 
 				// Calculate how old the data is in minutes
 				$datetime1 = new DateTime("now", new DateTimeZone('UTC')); // Today's Date/Time
+				echo datetime1;
 				$datetime2 = new DateTime($row->timestamp, new DateTimeZone('UTC'));
 				$interval = $datetime1->diff($datetime2);
 
