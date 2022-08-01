@@ -5,9 +5,9 @@
 		function update($result, $user_id) {
 
 			if ($result['timestamp'] != "") {
-				$timestamp = $result['timestamp'];
+				$timestamp = gmdate("Y-m-d H:i:s");
 			} else {
-				$timestamp = date("Y-m-d H:i:s", time() - date("Z"))				;
+				$timestamp = gmdate("Y-m-d H:i:s");
 			}
 
 			$this->db->where('radio', $result['radio']);
