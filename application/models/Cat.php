@@ -7,8 +7,7 @@
 			if ($result['timestamp'] != "") {
 				$timestamp = $result['timestamp'];
 			} else {
-				$given->setTimezone(new DateTimeZone("UTC"));
-				$timestamp = $given->format("Y-m-d H:i:s");
+				$timestamp = gmdate("Y-m-d H:i:s");
 			}
 
 			$this->db->where('radio', $result['radio']);
