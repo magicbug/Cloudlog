@@ -170,7 +170,7 @@
                     <?php if($row->COL_SAT_NAME != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_satellite_name'); ?></td>
-                        <td><?php echo $row->COL_SAT_NAME; ?></td>
+                        <td><?php echo $row->COL_SAT_NAME; ?> <a href="https://db.satnogs.org/search/?q=<?php echo $row->COL_SAT_NAME; ?>" target="_blank"><i class="fas fa-satellite"></a></td>
                     </tr>
                     <?php } ?>
 
