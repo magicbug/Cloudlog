@@ -68,6 +68,24 @@ class Bands extends CI_Model {
 		return $results;
 	}
 
+	function get_worked_bands_for_user($userId) {
+
+		// get all worked slots from database
+		$sql = "
+				SELECT distinct LOWER(`COL_BAND`) as `COL_BAND`
+				FROM `" . $this->config->item('table_name') . "` qsos
+				INNER JOIN station_profile ON qsos.station_id=station_profile.station_id
+				WHERE station_profile.user_id =  ?
+			";
+
+		$data = $this->db->query($sql, $userId);
+		$results = [];
+		foreach ($data->result('array') as $row) {
+			$results[]=$row['COL_BAND'];
+		}
+		return $results;
+	}
+
 	function get_worked_bands_distances() {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');

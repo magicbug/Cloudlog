@@ -36,10 +36,10 @@
 
   	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datatables.min.css"/>
 
- 	<?php if ($this->uri->segment(1) == "adif") { ?>
+ 	<?php if ($this->uri->segment(1) == "adif" || (isset($hasDatePicker) && $hasDatePicker)) { ?>
   	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
   	<?php } ?>
-	 
+
 	<?php if (file_exists(APPPATH.'../assets/css/custom.css')) { echo '<link rel="stylesheet" href="'.base_url().'assets/css/custom.css">'; } ?>
 
     <link rel="icon" href="<?php echo base_url(); ?>favicon.ico">
@@ -74,6 +74,8 @@
 							<a class="dropdown-item" href="<?php echo site_url('contesting?manual=1');?>" title="Post contest QSOs">Post Contest Logging</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('qsl');?>" title="QSL"> View QSL</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="<?php echo site_url('qslmanager');?>" title="QSL Manager"> QSL Manager</a>
 						</div>
         	</li>
 
@@ -201,7 +203,7 @@
 				<a class="dropdown-item" href="<?php echo site_url('user/edit')."/".$this->session->userdata('user_id'); ?>" title="Account"><i class="fas fa-user"></i> Account</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('logbooks');?>" title="Manage station logbooks"><i class="fas fa-home"></i> Station Logbooks</a>
-				
+
 				<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Manage station locations"><i class="fas fa-home"></i> Station Locations</a>
 
 				<div class="dropdown-divider"></div>

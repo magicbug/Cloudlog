@@ -15,7 +15,6 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/easyprint.js"></script>
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
-
 <script type="text/javascript">
   /*
   *
@@ -67,7 +66,7 @@ function load_was_map() {
             console.log("'clicked");
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
-            } else { 
+            } else {
                 console.log('Geolocation is not supported by this browser.');
             }
         }
@@ -283,7 +282,7 @@ function load_was_map() {
                             $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
                             $("#query_" + id).remove(); // removes query from table in dialog
                             $("#querydropdown option[value='" + id + "']").remove(); // removes query from dropdown
-                            if ($("#querydropdown option").length == 0) { 
+                            if ($("#querydropdown option").length == 0) {
                                 $("#btn-edit").remove();
                                 $('.querydropdownform').remove();
                             };
@@ -520,13 +519,13 @@ function calculateQrb() {
             data: {'locator1': locator1,
                     'locator2': locator2},
             success: function (html) {
-                
+
                 var result = "<h5>Negative latitudes are south of the equator, negative longitudes are west of Greenwich. <br/>";
                 result += ' ' + locator1.toUpperCase() + ' Latitude = ' + html['latlng1'][0] + ' Longitude = ' + html['latlng1'][1] + '<br/>';
                 result += ' ' + locator2.toUpperCase() + ' Latitude = ' + html['latlng2'][0] + ' Longitude = ' + html['latlng2'][1] + '<br/>';
                 result += 'Distance between ' + locator1.toUpperCase() + ' and ' + locator2.toUpperCase() + ' is ' + html['distance'] + '.<br />';
                 result += 'The bearing is ' + html['bearing'] + '.</h5>';
-                
+
                 $(".qrbResult").html(result);
                 newpath(html['latlng1'], html['latlng2'], locator1, locator2);
             }
@@ -540,7 +539,7 @@ function validateLocator(locator) {
     if(locator.length < 4 && !(/^[a-rA-R]{2}[0-9]{2}[a-xA-X]{0,2}[0-9]{0,2}[a-xA-X]{0,2}$/.test(locator))) {
         return false;
     }
-    
+
     return true;
 }
 
@@ -558,7 +557,7 @@ function newpath(latlng1, latlng2, locator1, locator2) {
 
     var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib}); 
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});
 
     var redIcon = L.icon({
 					iconUrl: icon_dot_url,
@@ -611,7 +610,7 @@ function showActivatorsMap(call, count, grids) {
 
     var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib}); 
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});
 
     map.addLayer(osm);
 }
@@ -896,7 +895,7 @@ $(document).on('keypress',function(e) {
 <?php if ($this->uri->segment(1) == "qso") { ?>
 <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
 
-<?php 
+<?php
 
     $this->load->model('stations');
     $active_station_id = $this->stations->find_active();
@@ -1611,7 +1610,7 @@ $(document).ready(function(){
 								attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright');?>',
 							}).addTo(mymap);
 
-                            
+
                             var printer = L.easyPrint({
                                 tileLayer: tiles,
                                 sizeModes: ['Current'],
@@ -2234,7 +2233,7 @@ $(document).ready(function(){
 	<script src="<?php echo base_url(); ?>assets/js/sections/timeplot.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "qsl") { 
+<?php if ($this->uri->segment(1) == "qsl") {
     	// Get Date format
 	if($this->session->userdata('user_date_format')) {
 		// If Logged in and session exists
@@ -2255,7 +2254,7 @@ $(document).ready(function(){
         case 'M d, Y': $usethisformat = 'MMM D, YYYY';break;
         case 'M d, y': $usethisformat = 'MMM D, YY';break;
     }
-    
+
     ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
@@ -2271,8 +2270,8 @@ $(document).ready(function(){
             "scrollX": true,
             "order": [ 2, 'desc' ],
         });
-        
-        
+
+
     </script>
 <?php } ?>
 
@@ -2873,5 +2872,13 @@ function deleteQsl(id) {
 		});
 	</script>
 <?php } ?>
+<?php
+if (isset($scripts) && is_array($scripts)){
+	foreach($scripts as $script){
+		?><script type="text/javascript" src="<?php echo base_url() . $script ;?>"></script>
+		<?php
+	}
+}
+?>
   </body>
 </html>

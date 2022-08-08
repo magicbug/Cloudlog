@@ -7,7 +7,7 @@ class Modes extends CI_Model {
 		$this->db->order_by('submode', 'ASC');
 		return $this->db->get('adif_modes');
 	}
-	
+
 	function active() {
 		$this->db->where('active', 1);
 		$this->db->order_by('mode', 'ASC');
@@ -30,7 +30,7 @@ class Modes extends CI_Model {
 			$submode = null;
 		else
 			$submode = xss_clean($this->input->post('submode', true));
-		
+
 		$data = array(
 			'mode' => xss_clean($this->input->post('mode', true)),
 			'submode' => $submode,
@@ -38,7 +38,7 @@ class Modes extends CI_Model {
 			'active' =>  xss_clean($this->input->post('active', true)),
 		);
 
-		$this->db->insert('adif_modes', $data); 
+		$this->db->insert('adif_modes', $data);
 	}
 
 	function edit() {
@@ -46,7 +46,7 @@ class Modes extends CI_Model {
 			$submode = null;
 		else
 			$submode = xss_clean($this->input->post('submode', true));
-		
+
 		$data = array(
 			'mode' => xss_clean($this->input->post('mode', true)),
 			'submode' => $submode,
@@ -55,7 +55,7 @@ class Modes extends CI_Model {
 		);
 
 		$this->db->where('id', xss_clean($this->input->post('id', true)));
-		$this->db->update('adif_modes', $data); 
+		$this->db->update('adif_modes', $data);
 	}
 
 	function delete($id) {
@@ -63,7 +63,7 @@ class Modes extends CI_Model {
 		$clean_id = $this->security->xss_clean($id);
 
 		// Delete Mode
-		$this->db->delete('adif_modes', array('id' => $clean_id)); 
+		$this->db->delete('adif_modes', array('id' => $clean_id));
 	}
 
     function activate($id) {

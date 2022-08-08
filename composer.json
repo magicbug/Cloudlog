@@ -1,0 +1,12 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Cloudlog\\": "src/",
+            "Tests\\Cloudlog\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.4",
+        "phpunit/phpunit": "^9.5"
+    }
+}
