@@ -112,19 +112,20 @@
                                 $CI->load->library('qra');
 
                                 // Cacluate Distance
-                                echo $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
+                                $distance = $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
 
                                 switch ($measurement_base) {
                                     case 'M':
-                                        echo "mi";
+                                        $distance .= "mi";
                                         break;
                                     case 'K':
-                                        echo "km";
+                                        $distance .= "km";
                                         break;
                                     case 'N':
-                                        echo "nmi";
+                                        $distance .= "nmi";
                                         break;
                                 }
+                                echo $distance;
                             ?>
                         </td>
                     </tr>
@@ -295,8 +296,9 @@
                             $twitter_band_sat = $row->COL_BAND;
                             $hashtags = "#hamr #cloudlog";
                         }
-
-                        $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." (Gridsquare: ".$row->COL_GRIDSQUARE.") on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
+                        if (!isset($distance))
+                            $distance = "";
+                        $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." (Gridsquare: ".$row->COL_GRIDSQUARE." / distance: ".$distance.") on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
                     ?>
 
                     <div class="text-right"><a class="btn btn-sm btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a></div>
