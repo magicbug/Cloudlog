@@ -574,7 +574,7 @@ class Logbook extends CI_Controller {
 							$html .= "yellow";
 							break;
 						case "I":
-							echo "grey";
+							$html .= "grey";
 							break;
 						default:
 						   $html .= "red";
@@ -592,7 +592,7 @@ class Logbook extends CI_Controller {
 							$html .= "yellow";
 							break;
 						case "I":
-							echo "grey";
+							$html .= "grey";
 							break;
 						default:
 						   $html .= "red";
