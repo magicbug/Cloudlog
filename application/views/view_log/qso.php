@@ -226,6 +226,9 @@
                         case "WWFF":
                            echo "<td><a href=\"https://wwff.co/directory/?showRef=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
                            break;
+                        case "POTA":
+                           echo "<td><a href=\"https://pota.app/#/park/".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
+                           break;
                         default:
                            echo "<td>".$row->COL_SIG_INFO."</td>";
                            break;
