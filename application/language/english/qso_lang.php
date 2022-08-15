@@ -12,9 +12,10 @@ $lang['qso_title_image'] = 'Profile Picture';
 $lang['qso_transmit_power_helptext'] = 'Give power value in Watts. Include only numbers in the input.';
 
 $lang['qso_sota_ref_helptext'] = 'For example: GM/NS-001.';
+$lang['qso_wwff_ref_helptext'] = 'For example: DLFF-0069.';
 
-$lang['qso_sig_helptext'] = 'For example: WWFF or POTA';
-$lang['qso_sig_info_helptext'] = 'For example: DLFF-0029';
+$lang['qso_sig_helptext'] = 'For example: POTA';
+$lang['qso_sig_info_helptext'] = 'For example: PA-0150';
 
 $lang['qso_dok_helptext'] = 'For example: Q03';
 
