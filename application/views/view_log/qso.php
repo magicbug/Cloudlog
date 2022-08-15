@@ -208,6 +208,13 @@
                     </tr>
                     <?php } ?>
 
+                    <?php if($row->COL_WWFF_REF != null) { ?>
+                    <tr>
+                        <td><?php echo $this->lang->line('gen_hamradio_wwff_reference'); ?></td>
+                        <td><a href="https://wwff.co/directory/?showRef=<?php echo $row->COL_WWFF_REF; ?>" target="_blank"><?php echo $row->COL_WWFF_REF; ?></a></td>
+                    </tr>
+                    <?php } ?>
+
                     <?php if($row->COL_SIG != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_sig'); ?></td>

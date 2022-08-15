@@ -396,7 +396,7 @@
 
                                 <div class="form-group">
                                     <label for="wwff_ref">WWFF</label>
-                                    <input type="text" class="form-control" id="wwff_ref_edit" name="wwff_ref" value="<?php echo $qso->COL_SOTA_REF; ?>">
+                                    <input type="text" class="form-control" id="wwff_ref_edit" name="wwff_ref" value="<?php echo $qso->COL_WWFF_REF; ?>">
                                 </div>
 
                                 <div class="form-group">
