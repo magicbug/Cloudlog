@@ -223,6 +223,9 @@
                         case "GMA":
                            echo "<td><a href=\"https://www.cqgma.org/zinfo.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
                            break;
+                        case "MQC":
+                           echo "<td><a href=\"https://www.mountainqrp.it/awards/referenza.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
+                           break;
                         case "WWFF":
                            echo "<td><a href=\"https://wwff.co/directory/?showRef=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
                            break;
