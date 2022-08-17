@@ -87,6 +87,7 @@ class AdifHelper {
             'SILENT_KEY',
             'SKCC',
             'SOTA_REF',
+            'WWFF_REF',
             'SRX',
             'SRX_STRING',
             'STATE',
