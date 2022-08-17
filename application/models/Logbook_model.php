@@ -284,8 +284,7 @@ class Logbook_model extends CI_Model {
 				$this->db->where('COL_SOTA_REF', $searchphrase);
 				break;
 			case 'WWFF':
-				$this->db->where('COL_SIG', 'WWFF');
-				$this->db->where('COL_SIG_INFO', $searchphrase);
+				$this->db->where('COL_WWFF_REF', $searchphrase);
 				break;
 		}
 
