@@ -56,7 +56,7 @@
 
 		  <div class="form-group">
 		    <label for="stationCityInput">Station City</label>
-		    <input type="text" class="form-control" name="city" id="stationCityInput" aria-describedby="stationCityInputHelp" required>
+		    <input type="text" class="form-control" name="city" id="stationCityInput" aria-describedby="stationCityInputHelp">
 		    <small id="stationCityInputHelp" class="form-text text-muted">Station city. For example: Inverness</small>
 		  </div>
 
