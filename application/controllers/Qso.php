@@ -318,7 +318,7 @@ class QSO extends CI_Controller {
 
 		$this->load->library('frequency');
 
-		echo $this->frequency->convent_band($band, $mode);
+		echo $this->frequency->convert_band($band, $mode);
 	}
 
 	/*

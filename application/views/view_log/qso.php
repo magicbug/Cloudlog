@@ -170,7 +170,7 @@
                     <?php if($row->COL_SAT_NAME != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_satellite_name'); ?></td>
-                        <td><?php echo $row->COL_SAT_NAME; ?></td>
+                        <td><a href="https://db.satnogs.org/search/?q=<?php echo $row->COL_SAT_NAME; ?>" target="_blank"><?php echo $row->COL_SAT_NAME; ?></a></td>
                     </tr>
                     <?php } ?>
 
@@ -223,8 +223,14 @@
                         case "GMA":
                            echo "<td><a href=\"https://www.cqgma.org/zinfo.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
                            break;
+                        case "MQC":
+                           echo "<td><a href=\"https://www.mountainqrp.it/awards/referenza.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
+                           break;
                         case "WWFF":
                            echo "<td><a href=\"https://wwff.co/directory/?showRef=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
+                           break;
+                        case "POTA":
+                           echo "<td><a href=\"https://pota.app/#/park/".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
                            break;
                         default:
                            echo "<td>".$row->COL_SIG_INFO."</td>";
@@ -296,7 +302,7 @@
                             $hashtags = "#hamr #cloudlog";
                         }
 
-                        $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." (Gridsquare: ".$row->COL_GRIDSQUARE.") on ".$twitter_band_sat." using ".$row->COL_MODE." ".$hashtags);
+                        $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." (Gridsquare: ".$row->COL_GRIDSQUARE.") on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
                     ?>
 
                     <div class="text-right"><a class="btn btn-sm btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a></div>

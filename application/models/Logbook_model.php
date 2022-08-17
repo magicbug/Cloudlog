@@ -558,7 +558,7 @@ class Logbook_model extends CI_Model {
 
     $entity = $this->get_entity($this->input->post('dxcc_id'));
     $stationId = $this->input->post('station_profile');
-    $country = $entity['name'];
+    $country = ucwords(strtolower($entity['name']));
 
     // be sure that station belongs to user
     $CI =& get_instance();
@@ -2231,12 +2231,11 @@ class Logbook_model extends CI_Model {
       }
 
         // Store or find country name
-        if(isset($record['country'])) {
+        // dxcc has higher priority to be consistent with qso create and edit
+        if (isset($dxcc[1])) {
+            $country = ucwords(strtolower($dxcc[1]));
+        } else if (isset($record['country'])) {
             $country = $record['country'];
-        } else {
-            if (isset($dxcc[1])) {
-                $country = ucwords(strtolower($dxcc[1]));
-            }
         }
 
         // RST recevied
