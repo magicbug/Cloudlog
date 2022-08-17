@@ -210,6 +210,7 @@ class Logbook_model extends CI_Model {
       $data['COL_MY_CITY'] = strtoupper(trim($station['station_city']));
       $data['COL_MY_IOTA'] = strtoupper(trim($station['station_iota']));
       $data['COL_MY_SOTA_REF'] = strtoupper(trim($station['station_sota']));
+      $data['COL_MY_WWFF_REF'] = strtoupper(trim($station['station_wwff']));
 
       $data['COL_STATION_CALLSIGN'] = strtoupper(trim($station['station_callsign']));
       $data['COL_MY_DXCC'] = strtoupper(trim($station['station_dxcc']));
@@ -2609,6 +2610,7 @@ class Logbook_model extends CI_Model {
                 'COL_MY_SIG_INFO_INTL' => (!empty($record['my_sig_info_intl'])) ? $record['my_sig_info_intl'] : '',
                 'COL_MY_SIG_INTL' => (!empty($record['my_sig_intl'])) ? $record['my_sig_intl'] : '',
                 'COL_MY_SOTA_REF' => (!empty($record['my_sota_ref'])) ? $record['my_sota_ref'] : '',
+                'COL_MY_WWFF_REF' => (!empty($record['my_wwff_ref'])) ? $record['my_wwff_ref'] : '',
                 'COL_MY_STATE' => (!empty($record['my_state'])) ? $record['my_state'] : '',
                 'COL_MY_STREET' =>  (!empty($record['my_street'])) ? $record['my_street'] : '',
                 'COL_MY_STREET_INTL' => (!empty($record['my_street_intl'])) ? $record['my_street_intl'] : '',
@@ -2695,6 +2697,7 @@ class Logbook_model extends CI_Model {
                     $data['COL_MY_CITY'] = trim($row['station_city']);
                     $data['COL_MY_IOTA'] = strtoupper(trim($row['station_iota']));
                     $data['COL_MY_SOTA_REF'] = strtoupper(trim($row['station_sota']));
+                    $data['COL_MY_WWFF_REF'] = strtoupper(trim($row['station_wwff']));
 
                     $data['COL_STATION_CALLSIGN'] = strtoupper(trim($row['station_callsign']));
                     $data['COL_MY_DXCC'] = strtoupper(trim($row['station_dxcc']));

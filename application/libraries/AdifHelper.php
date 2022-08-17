@@ -189,6 +189,8 @@ class AdifHelper {
 
         $line .= $this->getAdifFieldLine("MY_SOTA_REF", $qso->station_sota);
 
+        $line .= $this->getAdifFieldLine("MY_WWFF_REF", $qso->station_wwff);
+
         $line .= $this->getAdifFieldLine("MY_CQ_ZONE", $qso->station_cq);
 
         $line .= $this->getAdifFieldLine("MY_ITU_ZONE", $qso->station_itu);

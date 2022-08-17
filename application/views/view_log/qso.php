@@ -359,6 +359,13 @@
                         <td><?php echo $row->COL_TX_PWR; ?>w</td>
                     </tr>
                     <?php } ?>
+
+                    <?php if($row->COL_MY_WWFF_REF) { ?>
+                    <tr>
+                        <td>Station WWFF Reference</td>
+                        <td><?php echo $row->COL_MY_WWFF_REF; ?></td>
+                    </tr>
+                    <?php } ?>
             </table>
         </div>
 

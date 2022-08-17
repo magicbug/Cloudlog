@@ -266,6 +266,21 @@
 
 		<div class="col-md">
 			<div class="card">
+				<h5 class="card-header">WWFF</h5>
+				<div class="card-body">
+					<div class="form-group">
+						<label for="stationWWFFInput">WWFF Reference</label>
+						<input type="text" class="form-control" name="wwff" id="stationWWFFInput" aria-describedby="stationWWFFInputHelp" value="<?php if(set_value('wwff') != "") { echo set_value('wwff'); } else { echo $my_station_profile->station_wwff; } ?>">
+						<small id="stationWWFFInputHelp" class="form-text text-muted">Station WWFF reference.</small>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md">
+			<div class="card">
 				<h5 class="card-header">Signature</h5>
 				<div class="card-body">
 					<div class="form-group">
