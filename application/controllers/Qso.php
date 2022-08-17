@@ -325,33 +325,17 @@ class QSO extends CI_Controller {
 	 * Function is used for autocompletion of SOTA in the QSO entry form
 	 */
 	public function get_sota() {
-        $json = [];
+		$this->load->library('sota');
+		$json = [];
 
-        if(!empty($this->input->get("query"))) {
-            $query = isset($_GET['query']) ? $_GET['query'] : FALSE;
-            $sota = strtoupper($query);
+		if (!empty($this->input->get("query"))) {
+			$query = $_GET['query'] ?? FALSE;
+			$json = $this->sota->get($query);
+		}
 
-            $file = 'assets/json/sota.txt';
-
-            if (is_readable($file)) {
-                $lines = file($file, FILE_IGNORE_NEW_LINES);
-                $input = preg_quote($sota, '~');
-                $reg = '~^'. $input .'(.*)$~';
-                $result = preg_grep($reg, $lines);
-                $json = [];
-                $i = 0;
-                foreach ($result as &$value) {
-                    // Limit to 100 as to not slowdown browser too much
-                    if (count($json) <= 100) {
-                        $json[] = ["name"=>$value];
-                    }
-                }
-            }
-        }
-
-        header('Content-Type: application/json');
-        echo json_encode($json);
-    }
+		header('Content-Type: application/json');
+		echo json_encode($json);
+	}
 
     /*
 	 * Function is used for autocompletion of DOK in the QSO entry form
@@ -421,28 +405,12 @@ class QSO extends CI_Controller {
     }
 
     public function get_sota_info() {
+		$this->load->library('sota');
+
 		$sota = xss_clean($this->input->post('sota'));
-		$url = 'https://api2.sota.org.uk/api/summits/' . $sota;
-
-		// Let's use cURL instead of file_get_contents
-		// begin script
-		$ch = curl_init();
-
-		// basic curl options for all requests
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-
-		// use the URL we built
-		curl_setopt($ch, CURLOPT_URL, $url);
-
-		$input = curl_exec($ch);
-		$chi = curl_getinfo($ch);
-
-		// Close cURL handle
-		curl_close($ch);
 
 		header('Content-Type: application/json');
-		echo $input;
+		echo $this->sota->info($sota);
 	}
 
    function check_locator($grid) {
