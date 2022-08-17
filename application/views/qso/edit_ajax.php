@@ -234,6 +234,7 @@
                                         <label for="prop_mode">Propagation Mode</label>
                                         <select class="custom-select" id="prop_mode" name="prop_mode">
                                             <option value="" <?php if($qso->COL_PROP_MODE == "") { echo "selected=\"selected\""; } ?>></option>
+                                            <option value="AS" <?php if($qso->COL_PROP_MODE == "AS") { echo "selected=\"selected\""; } ?>>Aircraft Scatter</option>
                                             <option value="AUR" <?php if($qso->COL_PROP_MODE == "AUR") { echo "selected=\"selected\""; } ?>>Aurora</option>
                                             <option value="AUE" <?php if($qso->COL_PROP_MODE == "AUE") { echo "selected=\"selected\""; } ?>>Aurora-E</option>
                                             <option value="BS" <?php if($qso->COL_PROP_MODE == "BS") { echo "selected=\"selected\""; } ?>>Back scatter</option>
