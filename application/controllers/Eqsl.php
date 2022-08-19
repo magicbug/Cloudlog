@@ -149,7 +149,7 @@ class eqsl extends CI_Controller {
 			$active_station_id = $this->stations->find_active();
         	$station_profile = $this->stations->profile($active_station_id);
 			$active_station_info = $station_profile->row();
-			// Query the logbook to determine when the last LoTW confirmation was
+			// Query the logbook to determine when the last eQSL confirmation was
 			$eqsl_last_qsl_date = $this->logbook_model->eqsl_last_qsl_rcvd_date();
 
 			// Build parameters for eQSL inbox file
@@ -307,6 +307,11 @@ class eqsl extends CI_Controller {
 			// Build out the ADIF info string according to specs http://eqsl.cc/qslcard/ADIFContentSpecs.cfm
 			foreach ($qslsnotsent->result_array() as $qsl)
 			{
+				// eQSL username changes for linked account.
+				// i.e. when operating /P it must be callsign/p
+				// the password, however, is always the same as the main account
+				$data['user_eqsl_name'] = $qsl['station_callsign'];
+
 				$COL_QSO_DATE = date('Ymd',strtotime($qsl['COL_TIME_ON']));
 				$COL_TIME_ON = date('Hi',strtotime($qsl['COL_TIME_ON']));
 				
