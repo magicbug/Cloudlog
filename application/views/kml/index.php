@@ -72,6 +72,7 @@
                     <label for="selectPropagation">Propagation Mode</label>
                     <select class="custom-select" id="selectPropagation" name="prop_mode">
                         <option value="All">All</option>
+                        <option value="AS">Aircraft Scatter</option>
                         <option value="AUR">Aurora</option>
                         <option value="AUE">Aurora-E</option>
                         <option value="BS">Back scatter</option>
