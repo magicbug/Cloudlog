@@ -229,6 +229,18 @@ class Lotw extends CI_Controller {
 						continue;
 					}
 
+					// Check if LotW certificate itself is valid
+					// Validty of QSO dates will be checked later
+					$current_date = date('Y-m-d H:i:s');
+					if ($current_date <= $data['lotw_cert_info']->date_created) {
+						echo $data['lotw_cert_info']->callsign.": LotW certificate not valid yet!";
+						continue;
+					}
+					if ($current_date >= $data['lotw_cert_info']->date_expires) {
+						echo $data['lotw_cert_info']->callsign.": LotW certificate expired!";
+						continue;
+					}
+
 					$this->load->model('Dxcc');
 					$data['station_profile_dxcc'] = $this->Dxcc->lookup_country($data['lotw_cert_info']->cert_dxcc);
 
