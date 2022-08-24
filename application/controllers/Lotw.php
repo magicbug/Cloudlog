@@ -236,7 +236,7 @@ class Lotw extends CI_Controller {
 
 					$this->load->model('Logbook_model');
 
-					$data['qsos'] = $this->Logbook_model->get_lotw_qsos_to_upload($data['station_profile']->station_id, $data['lotw_cert_info']->date_created, $data['lotw_cert_info']->date_expires);
+					$data['qsos'] = $this->Logbook_model->get_lotw_qsos_to_upload($data['station_profile']->station_id, $data['lotw_cert_info']->qso_start_date, $data['lotw_cert_info']->qso_end_date);
 
 					// Nothing to upload
 					if(empty($data['qsos']->result())){
@@ -426,6 +426,7 @@ class Lotw extends CI_Controller {
 		$data['issued_name'] = $certdata['subject']['commonName'];
 		$data['validFrom'] = date('Y-m-d H:i:s', $certdata['validFrom_time_t']);
 		$data['validTo_Date'] = date('Y-m-d H:i:s', $certdata['validTo_time_t']);
+		// https://oidref.com/1.3.6.1.4.1.12348.1
 		$data['qso-first-date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.2'];
 		$data['qso-end-date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.3'];
 
