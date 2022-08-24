@@ -36,13 +36,15 @@ class LotwCert extends CI_Model {
 		return $query->num_rows();
 	}
 
-	function store_certficiate($user_id, $callsign, $dxcc, $date_created, $date_expires, $cert_key, $general_cert) {
+	function store_certifciate($user_id, $callsign, $dxcc, $date_created, $date_expires, $qso_start_date, $qso_end_date, $cert_key, $general_cert) {
 		$data = array(
 		    'user_id' => $user_id,
 		    'callsign' => $callsign,
 		    'cert_dxcc' => $dxcc,
 		    'date_created' => $date_created,
 		    'date_expires' => $date_expires,
+		    'qso_start_date' => $qso_start_date,
+		    'qso_end_date' => $qso_end_date,
 		    'cert_key' => $cert_key,
 		    'cert' => $general_cert,
 		);

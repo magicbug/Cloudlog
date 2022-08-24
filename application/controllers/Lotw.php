@@ -156,7 +156,7 @@ class Lotw extends CI_Controller {
         		// New Certificate Store in Database
 
         		// Store Certificate Data into MySQL
-        		$this->LotwCert->store_certficiate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
+        		$this->LotwCert->store_certifciate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['qso-first-date'], $info['qso-end-date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
         		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certficiate Imported.');
@@ -424,8 +424,10 @@ class Lotw extends CI_Controller {
 		// Store Variables
 		$data['issued_callsign'] = $certdata['subject']['undefined'];
 		$data['issued_name'] = $certdata['subject']['commonName'];
-		$data['validFrom'] = date('Y-m-d H:i:s', $certdata['validFrom_time_t']);;
-		$data['validTo_Date'] = date('Y-m-d H:i:s', $certdata['validTo_time_t']);;
+		$data['validFrom'] = date('Y-m-d H:i:s', $certdata['validFrom_time_t']);
+		$data['validTo_Date'] = date('Y-m-d H:i:s', $certdata['validTo_time_t']);
+		$data['qso-first-date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.2'];
+		$data['qso-end-date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.3'];
 
 		return $data;
 	}

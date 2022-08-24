@@ -16,6 +16,8 @@ $lang['lotw_no_certs_uploaded'] = 'You need to upload some LoTW p12 certificates
 
 $lang['lotw_date_created'] = 'Date Created';
 $lang['lotw_date_expires'] = 'Date Expires';
+$lang['lotw_qso_start_date'] = 'QSO Start Date';
+$lang['lotw_qso_end_date'] = 'QSO End Date';
 $lang['lotw_status'] = 'Status';
 $lang['lotw_options'] = 'Options';
 $lang['lotw_valid'] = 'Valid';

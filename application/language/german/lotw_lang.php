@@ -16,6 +16,8 @@ $lang['lotw_no_certs_uploaded'] = 'Du musst mindestens ein LoTW-p12-Zertifikat h
 
 $lang['lotw_date_created'] = 'Ausstellungsdatum';
 $lang['lotw_date_expires'] = 'Ablaufdatum';
+$lang['lotw_qso_start_date'] = 'QSO Startdatum';
+$lang['lotw_qso_end_date'] = 'QSO Enddatum';
 $lang['lotw_status'] = 'Status';
 $lang['lotw_options'] = 'Optionen';
 $lang['lotw_valid'] = 'Gültig';
