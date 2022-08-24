@@ -77,11 +77,22 @@
 					<form method="post" action="<?php echo site_url('logbooks/edit/'); ?><?php echo $station_logbook_details->logbook_id; ?>" name="create_profile">
 					<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
 
+					<?php
+						$linked_stations = array();
+						if ($station_locations_linked) {
+							foreach ($station_locations_linked->result() as $row) {
+								$linked_stations[] = $row->station_id;
+							}
+						}
+					?>
+
 					<div class="form-group">
 						<label for="StationLocationsSelect">Select Available Station Locations</label>
 						<select name="SelectedStationLocation" class="form-control" id="StationLocationSelect" aria-describedby="StationLocationSelectHelp">
-							<?php foreach ($station_locations_list->result() as $row) { ?>	
+							<?php foreach ($station_locations_list->result() as $row) {
+								if (!in_array($row->station_id, $linked_stations)) { ?>
 								<option value="<?php echo $row->station_id;?>"><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country;?>)</option>
+								<?php } ?>
 							<?php } ?>
 						</select>
 					</div>

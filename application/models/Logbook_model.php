@@ -177,6 +177,7 @@ class Logbook_model extends CI_Model {
             'COL_STATE' => trim($this->input->post('usa_state')),
             'COL_CNTY' => $clean_county_input,
             'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
+            'COL_WWFF_REF' => trim($this->input->post('wwff_ref')),
             'COL_SIG' => trim($this->input->post('sig')),
             'COL_SIG_INFO' => trim($this->input->post('sig_info')),
             'COL_DARC_DOK' => strtoupper(trim($darc_dok)),
@@ -209,6 +210,7 @@ class Logbook_model extends CI_Model {
       $data['COL_MY_CITY'] = strtoupper(trim($station['station_city']));
       $data['COL_MY_IOTA'] = strtoupper(trim($station['station_iota']));
       $data['COL_MY_SOTA_REF'] = strtoupper(trim($station['station_sota']));
+      $data['COL_MY_WWFF_REF'] = strtoupper(trim($station['station_wwff']));
 
       $data['COL_STATION_CALLSIGN'] = strtoupper(trim($station['station_callsign']));
       $data['COL_MY_DXCC'] = strtoupper(trim($station['station_dxcc']));
@@ -283,8 +285,7 @@ class Logbook_model extends CI_Model {
 				$this->db->where('COL_SOTA_REF', $searchphrase);
 				break;
 			case 'WWFF':
-				$this->db->where('COL_SIG', 'WWFF');
-				$this->db->where('COL_SIG_INFO', $searchphrase);
+				$this->db->where('COL_WWFF_REF', $searchphrase);
 				break;
 		}
 
@@ -661,6 +662,7 @@ class Logbook_model extends CI_Model {
        'COL_LOTW_QSL_RCVD' => $this->input->post('lotw_recv'),
        'COL_IOTA' => $this->input->post('iota_ref'),
        'COL_SOTA_REF' => $this->input->post('sota_ref'),
+       'COL_WWFF_REF' => $this->input->post('wwff_ref'),
        'COL_TX_PWR' => $txpower,
        'COL_SIG' => $this->input->post('sig'),
        'COL_SIG_INFO' => $this->input->post('sig_info'),
@@ -2608,6 +2610,7 @@ class Logbook_model extends CI_Model {
                 'COL_MY_SIG_INFO_INTL' => (!empty($record['my_sig_info_intl'])) ? $record['my_sig_info_intl'] : '',
                 'COL_MY_SIG_INTL' => (!empty($record['my_sig_intl'])) ? $record['my_sig_intl'] : '',
                 'COL_MY_SOTA_REF' => (!empty($record['my_sota_ref'])) ? $record['my_sota_ref'] : '',
+                'COL_MY_WWFF_REF' => (!empty($record['my_wwff_ref'])) ? $record['my_wwff_ref'] : '',
                 'COL_MY_STATE' => (!empty($record['my_state'])) ? $record['my_state'] : '',
                 'COL_MY_STREET' =>  (!empty($record['my_street'])) ? $record['my_street'] : '',
                 'COL_MY_STREET_INTL' => (!empty($record['my_street_intl'])) ? $record['my_street_intl'] : '',
@@ -2656,6 +2659,7 @@ class Logbook_model extends CI_Model {
                 'COL_SILENT_KEY' => (!empty($record['silent_key'])) ? $record['silent_key'] : '',
                 'COL_SKCC' => (!empty($record['skcc'])) ? $record['skcc'] : '',
                 'COL_SOTA_REF' => (!empty($record['sota_ref'])) ? $record['sota_ref'] : '',
+                'COL_WWFF_REF' => (!empty($record['wwff_ref'])) ? $record['wwff_ref'] : '',
                 'COL_SRX' => (!empty($record['srx'])) ? $record['srx'] : null,
                 'COL_SRX_STRING' => (!empty($record['srx_string'])) ? $record['srx_string'] : '',
                 'COL_STATE' => (!empty($record['state'])) ? strtoupper($record['state']) : '',
@@ -2693,6 +2697,7 @@ class Logbook_model extends CI_Model {
                     $data['COL_MY_CITY'] = trim($row['station_city']);
                     $data['COL_MY_IOTA'] = strtoupper(trim($row['station_iota']));
                     $data['COL_MY_SOTA_REF'] = strtoupper(trim($row['station_sota']));
+                    $data['COL_MY_WWFF_REF'] = strtoupper(trim($row['station_wwff']));
 
                     $data['COL_STATION_CALLSIGN'] = strtoupper(trim($row['station_callsign']));
                     $data['COL_MY_DXCC'] = strtoupper(trim($row['station_dxcc']));

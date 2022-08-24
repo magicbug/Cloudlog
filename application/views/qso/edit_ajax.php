@@ -396,6 +396,11 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="wwff_ref">WWFF</label>
+                                    <input type="text" class="form-control" id="wwff_ref_edit" name="wwff_ref" value="<?php echo $qso->COL_WWFF_REF; ?>">
+                                </div>
+
+                                <div class="form-group">
                                     <label for="sig">Sig</label>
                                     <input type="text" class="form-control" id="sig" name="sig" value="<?php echo $qso->COL_SIG; ?>">
                                 </div>

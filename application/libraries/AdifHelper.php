@@ -87,6 +87,7 @@ class AdifHelper {
             'SILENT_KEY',
             'SKCC',
             'SOTA_REF',
+            'WWFF_REF',
             'SRX',
             'SRX_STRING',
             'STATE',
@@ -187,6 +188,8 @@ class AdifHelper {
         $line .= $this->getAdifFieldLine("MY_IOTA", $qso->station_iota);
 
         $line .= $this->getAdifFieldLine("MY_SOTA_REF", $qso->station_sota);
+
+        $line .= $this->getAdifFieldLine("MY_WWFF_REF", $qso->station_wwff);
 
         $line .= $this->getAdifFieldLine("MY_CQ_ZONE", $qso->station_cq);
 
