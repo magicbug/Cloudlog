@@ -106,6 +106,7 @@
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
 				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
+				case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF); break;
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
@@ -119,6 +120,7 @@
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
 				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
+				case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF); break;
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
@@ -133,6 +135,7 @@
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
 				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
+				case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF); break;
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
@@ -146,6 +149,7 @@
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
 				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
+				case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF); break;
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
@@ -159,6 +163,7 @@
 				case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY)));; break;
 				case 'IOTA':    echo '<td>' . ($row->COL_IOTA); break;
 				case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF); break;
+				case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF); break;
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;

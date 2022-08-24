@@ -93,6 +93,39 @@ $( document ).ready(function() {
 		$('#sota_info').attr('title', 'Lookup '+$('#sota_ref').val()+' summit info on sota.org.uk');
 	});
 
+	$('#wwff_ref').selectize({
+		maxItems: 1,
+		closeAfterSelect: true,
+		loadThrottle: 250,
+		valueField: 'name',
+		labelField: 'name',
+		searchField: 'name',
+		options: [],
+		create: false,
+		load: function(query, callback) {
+			if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
+			$.ajax({
+				url: base_url+'index.php/qso/get_wwff',
+				type: 'GET',
+				dataType: 'json',
+				data: {
+					query: query,
+				},
+				error: function() {
+					callback();
+				},
+				success: function(res) {
+					callback(res);
+				}
+			});
+		}
+	});
+
+	$('#wwff_ref').change(function(){
+		$('#wwff_info').html('<a target="_blank" href="https://wwff.co/directory/?showRef='+$('#wwff_ref').val()+'"><img width="32" height="32" src="'+base_url+'images/icons/wwff.co.png"></a>'); 
+		$('#wwff_info').attr('title', 'Lookup '+$('#wwff_ref').val()+' reference info on wwff.co');
+	});
+
 	$('#darc_dok').selectize({
 		maxItems: 1,
 		closeAfterSelect: true,
@@ -286,6 +319,9 @@ function reset_fields() {
 	$('#input_usa_state').val("");
 	$('#qso-last-table').show();
 	$('#partial_view').hide();
+	var $select = $('#wwff_ref').selectize();
+	var selectize = $select[0].selectize;
+	selectize.clear();
 	var $select = $('#darc_dok').selectize();
 	var selectize = $select[0].selectize;
 	selectize.clear();
