@@ -12,257 +12,84 @@ class eqsl extends CI_Controller {
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
 
-	private function loadFromFile($filepath)
-	{
-		ini_set('memory_limit', '-1');
-		set_time_limit(0);
-		
-		// Figure out how we should be marking QSLs confirmed via eQSL
-		$query = $query = $this->db->query('SELECT eqsl_rcvd_mark FROM config');
-		$q = $query->row();
-		$config['eqsl_rcvd_mark'] = $q->eqsl_rcvd_mark;
-	
-		ini_set('memory_limit', '-1');
-		set_time_limit(0);
-
-		$this->load->library('adif_parser');
-
-		$this->adif_parser->load_from_file($filepath);
-
-		$this->adif_parser->initialize();
-		
-		$tableheaders = "<table>";
-			$tableheaders .= "<tr class=\"titles\">";
-				$tableheaders .= "<td>Date</td>";
-				$tableheaders .= "<td>Call</td>";
-				$tableheaders .= "<td>Mode</td>";
-				$tableheaders .= "<td>Submode</td>";
-				$tableheaders .= "<td>Log Status</td>";
-				$tableheaders .= "<td>eQSL Status</td>";
-			$tableheaders .= "<tr>";
-		$table = "";		
-		while ($record = $this->adif_parser->get_record())
-		{
-			$time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
-	
-			// The report from eQSL should only contain entries that have been confirmed via eQSL
-			// If there's a match for the QSO from the report in our log, it's confirmed via eQSL.
-	
-			// If we have a positive match from LoTW, record it in the DB according to the user's preferences
-			if ($record['qsl_sent'] == "Y")
-			{
-				$record['qsl_sent'] = $config['eqsl_rcvd_mark'];
-			}
-	
-			$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
-			if ($status == "Found")
-			{
-				$dupe = $this->logbook_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
-				if ($dupe == false)
-				{
-					$eqsl_status = $this->logbook_model->eqsl_update($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
-				}
-				else
-				{
-					$eqsl_status = "Already received an eQSL for this QSO.";
-				}
-			}
-			else
-			{
-				$eqsl_status = "QSO not found";
-			}
-			$table .= "<tr>";
-				$table .= "<td>".$time_on."</td>";
-				$table .= "<td>".str_replace("0","&Oslash;",$record['call'])."</td>";
-				$table .= "<td>".$record['mode']."</td>";
-				if (isset($record['submode']))
-				{
-					$table .= "<td>".$record['submode']."</td>";
-				} else {
-					$table .= "<td></td>";
-				}
-				$table .= "<td>QSO Record: ".$status."</td>";
-				$table .= "<td>eQSL Record: ".$eqsl_status."</td>";
-			$table .= "<tr>";
-		}
-		if ($table != "")
-		{	
-			$table .= "</table>";
-			$data['eqsl_results_table_headers'] = $tableheaders;
-			$data['eqsl_results_table'] = $table;
-		}
-
-		unlink($filepath);
-
-		$data['page_title'] = "eQSL Import Information";
-		$this->load->view('interface_assets/header', $data);
-		$this->load->view('eqsl/analysis');
-		$this->load->view('interface_assets/footer');
-	}
-
 	public function import() {
-
 		// Check if eQSL Nicknames have been defined
-			$this->load->model('stations');
-			if($this->stations->are_eqsl_nicks_defined() == 0) {
-				show_error('eQSL Nicknames in Station Profiles arent defined');
-				exit;
-			}
+		$this->load->model('stations');
+		$eqsl_locations = $this->stations->all_of_user_with_eqsl_nick_defined();
+		if($eqsl_locations->num_rows() == 0) {
+			show_error("eQSL Nicknames in Station Profiles aren't defined");
+			exit;
+		}
 
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
-	
-		$data['page_title'] = "eQSL Import";
 
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'adi|ADI';
-		
+
 		$this->load->library('upload', $config);
-		
+
 		$this->load->model('logbook_model');
-		
+
+		$eqsl_results = array();
 		if ($this->input->post('eqslimport') == 'fetch')
-		{			
-			//echo "import from clublog ADIF<br>";
-			$file = $config['upload_path'] . 'eqslreport_download.adi';
-			//echo "<br>Download File: ".$file."<br>";
+		{
+			$this->load->library('EqslImporter');
+
 			// Get credentials for eQSL
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
 			$q = $query->row();
-			$data['user_eqsl_name'] = $q->user_eqsl_name;
-			$data['user_eqsl_password'] = $q->user_eqsl_password;
+			$eqsl_password = $q->user_eqsl_password;
 
-			//echo "<br>Username".$data['user_eqsl_name']."<br>";
-			
-			// Get URL for downloading the eqsl.cc inbox
-			$query = $query = $this->db->query('SELECT eqsl_download_url FROM config');
-			$q = $query->row();
-			$eqsl_url = $q->eqsl_download_url;
-			
-			// Validate that LoTW credentials are not empty
-			if ($data['user_eqsl_name'] == '' || $data['user_eqsl_password'] == '')
+			// Validate that eQSL credentials are not empty
+			if ($eqsl_password == '')
 			{
-				$this->session->set_flashdata('warning', 'You have not defined your eQSL.cc credentials!'); redirect('eqsl/import');
+				$this->session->set_flashdata('warning', 'You have not defined your eQSL.cc credentials!');
+				redirect('eqsl/import');
 			}
 
-			$this->load->model('stations');
-			$active_station_id = $this->stations->find_active();
-        	$station_profile = $this->stations->profile($active_station_id);
-			$active_station_info = $station_profile->row();
-			// Query the logbook to determine when the last eQSL confirmation was
-			$eqsl_last_qsl_date = $this->logbook_model->eqsl_last_qsl_rcvd_date();
+			foreach ($eqsl_locations->result_array() as $eqsl_location) {
+				$this->eqslimporter->from_callsign_and_QTH(
+					$eqsl_location['station_callsign'],
+					$eqsl_location['eqslqthnickname'],
+					$config['upload_path']
+				);
 
-			// Build parameters for eQSL inbox file
-			$eqsl_params = http_build_query(array(
-				'UserName' => $data['user_eqsl_name'],
-				'Password' => $data['user_eqsl_password'],
-				'RcvdSince' => $eqsl_last_qsl_date,
-				'QTHNickname' => $active_station_info->eqslqthnickname,
-				'ConfirmedOnly' => 1
-			));
-
-			//echo "<br><br>".$eqsl_url."<br>".$eqsl_params."<br><br>";
-			
- 			// At this point, what we get isn't the ADI file we need, but rather
-			// an HTML page, which contains a link to the generated ADI file that we want.
-			// Adapted from Original PHP code by Chirp Internet: www.chirp.com.au (regex)
-			
-			// Let's use cURL instead of file_get_contents
-			// begin script
-			$ch = curl_init(); 
-
-			// basic curl options for all requests
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-			curl_setopt($ch, CURLOPT_HEADER, 1);
-			
-			// use the URL and params we built
-			curl_setopt($ch, CURLOPT_URL, $eqsl_url);
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $eqsl_params);
-			
-			$input = curl_exec($ch);  
-			$chi = curl_getinfo($ch);
-
- 			// "You have no log entries" -> Nothing else to do here
- 			// "Your ADIF log file has been built" -> We've got an ADIF file we need to grab.
- 			
- 			if ($chi['http_code'] == "200")
-			 {
-				if (stristr($input, "You have no log entries"))
-				{
-					$this->session->set_flashdata('success', 'There are no QSLs waiting for download at eQSL.cc.'); redirect('eqsl/import');
-				}
-				else if (stristr($input, "Error: No such Username/Password found")) 
-				{
-					$this->session->set_flashdata('warning', 'No such Username/Password found This could mean the wrong callsign or the wrong password, or the user does not exist.'); 
-					redirect('eqsl/import');
-				}
-				else
-				{
-					if (stristr($input, "Your ADIF log file has been built"))
-					{
-						// Get all the links on the page and grab the URL for the ADI file.
-						$regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
-						if(preg_match_all("/$regexp/siU", $input, $matches)) {
-							foreach( $matches[2] as $match )
-							{
-								// Look for the link that has the .adi file, and download it to $file
-								if (substr($match, -4, 4) == ".adi")
-								{
-									
-									file_put_contents($file, file_get_contents("http://eqsl.cc/qslcard/" . $match));
-									ini_set('memory_limit', '-1');
-									$this->loadFromFile($file);
-									break;
-								}
-							}
-						}
-					}
-				}
+				$eqsl_results[] = $this->eqslimporter->fetch($eqsl_password);
 			}
-			else
-			{
-				if ($chi['http_code'] == "500")
-				{
-					$this->session->set_flashdata('warning', 'eQSL.cc is experiencing issues. Please try importing QSOs later.'); redirect('eqsl/import');
-				}
-				else
-				{
-					if ($chi['http_code'] == "404")
-					{
-						$this->session->set_flashdata('warning', 'It seems that the eQSL site has changed. Please open up an issue on GitHub.'); redirect('eqsl/import');
-					}
-				}
-			}
- 			
-			
-			// Close cURL handle
-			curl_close($ch);
-			
-			
-			
-			
 		}
 		else
 		{
 			if ( ! $this->upload->do_upload())
 			{
-			
+				$data['page_title'] = "eQSL Import";
 				$data['error'] = $this->upload->display_errors();
 
 				$this->load->view('interface_assets/header', $data);
 				$this->load->view('eqsl/import');
 				$this->load->view('interface_assets/footer');
+
+				return;
 			}
 			else
 			{
 				$data = array('upload_data' => $this->upload->data());
-				
-				$this->loadFromFile('./uploads/'.$data['upload_data']['file_name']);
+
+				$this->load->library('EqslImporter');
+				$this->eqslimporter->from_file('./uploads/'.$data['upload_data']['file_name']);
+
+				$eqsl_results[] = $this->eqslimporter->import();
 			}
 		}
+
+		$data['eqsl_results'] = $eqsl_results;
+		$data['page_title'] = "eQSL Import Information";
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('eqsl/analysis');
+		$this->load->view('interface_assets/footer');
 	} // end function
-	
+
 	public function export() {
 		// Check if eQSL Nicknames have been defined
 			$this->load->model('stations');

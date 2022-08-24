@@ -16,22 +16,40 @@
     </ul>
   </div>
 
-  <div class="card-body">
-    <?php $this->load->view('layout/messages'); ?>
+	<div class="card-body">
+		<?php $this->load->view('layout/messages'); ?>
 
-<?php
-    if (isset($eqsl_results_table_headers))
-    {
-        echo "<p>The following QSLs have been received from eQSL.cc</p>";
-        echo $eqsl_results_table_headers;
-        echo $eqsl_results_table;
-    }
-    else
-    {
-        echo "<p>There are no QSO confirmations waiting for you at eQSL.cc</p>";
-    }
-?>
-</div>
+		<?php foreach ($eqsl_results as $import) { ?>
+			<h3><?php echo $import['name']; ?></h3>
+			<div class="alert alert-info" role="alert">
+				<?php echo $import['status']; ?>
+			</div>
+			<?php if (count($import['qsos']) > 0) { ?>
+				<table>
+					<tr class="titles">
+						<td>Date</td>
+						<td>Call</td>
+						<td>Mode</td>
+						<td>Submode</td>
+						<td>Log Status</td>
+						<td>eQSL Status</td>
+					</tr>
+					<?php foreach ($import['qsos'] as $qso) { ?>
+						<tr>
+							<td><?php echo $qso['date']; ?></td>
+							<td><?php echo $qso['call']; ?></td>
+							<td><?php echo $qso['mode']; ?></td>
+							<td><?php echo $qso['submode']; ?></td>
+							<td><?php echo $qso['status']; ?></td>
+							<td><?php echo $qso['eqsl_status']; ?></td>
+						</tr>
+					<?php } ?>
+				</table>
+			<?php } else { ?>
+				<p>There are no QSO confirmations waiting for you at eQSL.cc</p>
+			<?php } ?>
+		<?php } ?>
+	</div>
 </div>
 
 </div>
