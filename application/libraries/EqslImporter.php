@@ -53,9 +53,7 @@ class EqslImporter
 	// Download confirmed QSO from eQSL inbox and import them
 	public function fetch($password) {
 		if (empty($password) || empty($this->callsign)) {
-			$this->status = "Missing username and/or password";
-
-			return;
+			return $this->result('Missing username and/or password');
 		}
 
 		// Get URL for downloading the eqsl.cc inbox
@@ -82,54 +80,53 @@ class EqslImporter
 		// Let's use cURL instead of file_get_contents
 		// begin script
 		$ch = curl_init();
+		try {
+			// basic curl options for all requests
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_HEADER, 1);
 
-		// basic curl options for all requests
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 1);
+			// use the URL and params we built
+			curl_setopt($ch, CURLOPT_URL, $eqsl_url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $eqsl_params);
 
-		// use the URL and params we built
-		curl_setopt($ch, CURLOPT_URL, $eqsl_url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $eqsl_params);
+			$input = curl_exec($ch);
+			$chi = curl_getinfo($ch);
 
-		$input = curl_exec($ch);
-		$chi = curl_getinfo($ch);
+			// "You have no log entries" -> Nothing else to do here
+			// "Your ADIF log file has been built" -> We've got an ADIF file we need to grab.
 
-		// "You have no log entries" -> Nothing else to do here
-		// "Your ADIF log file has been built" -> We've got an ADIF file we need to grab.
-
-		if ($chi['http_code'] == "200") {
-			if (stristr($input, "You have no log entries")) {
-				return $this->result('There are no QSLs waiting for download at eQSL.cc.'); // success
-			} else if (stristr($input, "Error: No such Username/Password found")) {
-				return $this->result('No such Username/Password found This could mean the wrong callsign or the wrong password, or the user does not exist.'); // warning
-			} else {
-				if (stristr($input, "Your ADIF log file has been built")) {
-					// Get all the links on the page and grab the URL for the ADI file.
-					$regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
-					if (preg_match_all("/$regexp/siU", $input, $matches)) {
-						foreach ($matches[2] as $match) {
-							// Look for the link that has the .adi file, and download it to $file
-							if (substr($match, -4, 4) == ".adi") {
-								file_put_contents($this->adif_file, file_get_contents("http://eqsl.cc/qslcard/" . $match));
-								return $this->import();
+			if ($chi['http_code'] == "200") {
+				if (stristr($input, "You have no log entries")) {
+					return $this->result('There are no QSLs waiting for download at eQSL.cc.'); // success
+				} else if (stristr($input, "Error: No such Username/Password found")) {
+					return $this->result('No such Username/Password found This could mean the wrong callsign or the wrong password, or the user does not exist.'); // warning
+				} else {
+					if (stristr($input, "Your ADIF log file has been built")) {
+						// Get all the links on the page and grab the URL for the ADI file.
+						$regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
+						if (preg_match_all("/$regexp/siU", $input, $matches)) {
+							foreach ($matches[2] as $match) {
+								// Look for the link that has the .adi file, and download it to $file
+								if (substr($match, -4, 4) == ".adi") {
+									file_put_contents($this->adif_file, file_get_contents("http://eqsl.cc/qslcard/" . $match));
+									return $this->import();
+								}
 							}
 						}
 					}
 				}
-			}
-		} else {
-			if ($chi['http_code'] == "500") {
-				return $this->result('eQSL.cc is experiencing issues. Please try importing QSOs later.'); // warning
 			} else {
-				if ($chi['http_code'] == "404") {
-					return $this->result('It seems that the eQSL site has changed. Please open up an issue on GitHub.');
+				if ($chi['http_code'] == "500") {
+					return $this->result('eQSL.cc is experiencing issues. Please try importing QSOs later.'); // warning
 				}
 			}
-		}
 
-		// Close cURL handle
-		curl_close($ch);
+			return $this->result('It seems that the eQSL site has changed. Please open up an issue on GitHub.');
+		} finally {
+			// Close cURL handle
+			curl_close($ch);
+		}
 	}
 
 	// Read the ADIF file and set QSO confirmation status according to the settings
