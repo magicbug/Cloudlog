@@ -156,7 +156,7 @@ class Lotw extends CI_Controller {
         		// New Certificate Store in Database
 
         		// Store Certificate Data into MySQL
-        		$this->LotwCert->store_certifciate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['qso-first-date'], $info['qso-end-date'], $info['pem_key'], $info['general_cert']);
+        		$this->LotwCert->store_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['qso-first-date'], $info['qso-end-date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
         		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certficiate Imported.');
