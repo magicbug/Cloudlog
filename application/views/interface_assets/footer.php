@@ -1209,21 +1209,17 @@ $(document).on('keypress',function(e) {
   // If a radios selected from drop down select radio update.
   $('.radios').change(updateFromCAT);
 
-  // If radio isn't SatPC32 or CloudLogCATQt clear sat_name and sat_mode
+  // If no radio is selected clear data
   $( ".radios" ).change(function() {
-      if ($(".radios option:selected").text() != "SatPC32" && $(".radios option:selected").text() != "CloudLogCATQt") {
+      if ($(".radios option:selected").val() == 0) {
         $("#sat_name").val("");
         $("#sat_mode").val("");
         $("#frequency").val("");
         $("#frequency_rx").val("");
         $("#band_rx").val("");
         $("#selectPropagation").val($("#selectPropagation option:first").val());
-      }
-
-      if ($(".radios option:selected").text() == "None") {
         $(".radio_timeout_error" ).remove();
       }
-
   });
   </script>
 
