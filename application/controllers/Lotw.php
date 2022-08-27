@@ -156,7 +156,7 @@ class Lotw extends CI_Controller {
         		// New Certificate Store in Database
 
         		// Store Certificate Data into MySQL
-        		$this->LotwCert->store_certficiate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
+        		$this->LotwCert->store_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['qso-first-date'], $info['qso-end-date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
         		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certficiate Imported.');
@@ -229,6 +229,18 @@ class Lotw extends CI_Controller {
 						continue;
 					}
 
+					// Check if LotW certificate itself is valid
+					// Validty of QSO dates will be checked later
+					$current_date = date('Y-m-d H:i:s');
+					if ($current_date <= $data['lotw_cert_info']->date_created) {
+						echo $data['lotw_cert_info']->callsign.": LotW certificate not valid yet!";
+						continue;
+					}
+					if ($current_date >= $data['lotw_cert_info']->date_expires) {
+						echo $data['lotw_cert_info']->callsign.": LotW certificate expired!";
+						continue;
+					}
+
 					$this->load->model('Dxcc');
 					$data['station_profile_dxcc'] = $this->Dxcc->lookup_country($data['lotw_cert_info']->cert_dxcc);
 
@@ -236,7 +248,7 @@ class Lotw extends CI_Controller {
 
 					$this->load->model('Logbook_model');
 
-					$data['qsos'] = $this->Logbook_model->get_lotw_qsos_to_upload($data['station_profile']->station_id, $data['lotw_cert_info']->date_created, $data['lotw_cert_info']->date_expires);
+					$data['qsos'] = $this->Logbook_model->get_lotw_qsos_to_upload($data['station_profile']->station_id, $data['lotw_cert_info']->qso_start_date, $data['lotw_cert_info']->qso_end_date);
 
 					// Nothing to upload
 					if(empty($data['qsos']->result())){
@@ -424,8 +436,11 @@ class Lotw extends CI_Controller {
 		// Store Variables
 		$data['issued_callsign'] = $certdata['subject']['undefined'];
 		$data['issued_name'] = $certdata['subject']['commonName'];
-		$data['validFrom'] = date('Y-m-d H:i:s', $certdata['validFrom_time_t']);;
-		$data['validTo_Date'] = date('Y-m-d H:i:s', $certdata['validTo_time_t']);;
+		$data['validFrom'] = date('Y-m-d H:i:s', $certdata['validFrom_time_t']);
+		$data['validTo_Date'] = date('Y-m-d H:i:s', $certdata['validTo_time_t']);
+		// https://oidref.com/1.3.6.1.4.1.12348.1
+		$data['qso-first-date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.2'];
+		$data['qso-end-date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.3'];
 
 		return $data;
 	}
