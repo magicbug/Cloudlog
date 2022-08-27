@@ -12,7 +12,7 @@
     <div class="row">
         <label class="col-md-2 control-label" for="from">Start Date/Time</label>
         <div class="input-group date col-md-3" id="datetimepicker1" data-target-input="nearest">
-            <input name="from" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+            <input name="from" type="text" placeholder="DD/MM/YYYY" class="form-control form-control-sm datetimepicker-input" data-target="#datetimepicker1"/>
                 <div class="input-group-append"  data-target="#datetimepicker1" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
@@ -24,7 +24,7 @@
         <label class="col-md-2 control-label" for="to">End Date/Time</label>
 
         <div class="input-group date col-md-3" id="datetimepicker2" data-target-input="nearest">
-                <input name="to" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+                <input name="to" type="text" placeholder="DD/MM/YYYY" class="form-control form-control-sm datetimepicker-input" data-target="#datetimepicker2"/>
                 <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
