@@ -27,8 +27,8 @@
 				<tr>
 					<th scope="col">Mode</th>
 					<th scope="col">Sub-Mode</th>
-					<th scope="col">SSB/DATA/CW</th>
-					<th scope="col">Active</th>
+					<th scope="col">SSB / DATA / CW</th>
+					<th scope="col">Status</th>
                     <th scope="col"></th>
 					<th scope="col"></th>
 					<th scope="col"></th>
@@ -58,6 +58,17 @@
 
 				<?php } ?>
 			</tbody>
+			<tfoot>
+				<tr>
+					<th scope="col"></th>
+					<th scope="col"></th>
+					<th scope="col"></th>
+					<th scope="col"></th>
+                    <th scope="col"></th>
+					<th scope="col"></th>
+					<th scope="col"></th>
+				</tr>
+			</tfoot>
 		<table>
   </div>
   <br/>
