@@ -25,10 +25,10 @@
 		<table style="width:100%" class="modetable table table-striped">
 			<thead>
 				<tr>
-					<th scope="col">Mode</th>
-					<th scope="col">Sub-Mode</th>
-					<th scope="col">SSB / DATA / CW</th>
-					<th scope="col">Status</th>
+					<th class="select-filter" scope="col">Mode</th>
+					<th class="select-filter" scope="col">Sub-Mode</th>
+					<th class="select-filter" scope="col">SSB / DATA / CW</th>
+					<th class="select-filter" scope="col">Status</th>
                     <th scope="col"></th>
 					<th scope="col"></th>
 					<th scope="col"></th>
@@ -60,17 +60,17 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<th scope="col"></th>
-					<th scope="col"></th>
-					<th scope="col"></th>
-					<th scope="col"></th>
-                    <th scope="col"></th>
-					<th scope="col"></th>
-					<th scope="col"></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
+					<th></th>
 				</tr>
 			</tfoot>
 		<table>
-  </div>
+	</div>
   <br/>
   <p>
 	  	<button onclick="createModeDialog();" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Create a Mode</button>

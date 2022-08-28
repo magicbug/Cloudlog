@@ -5,10 +5,10 @@ $('.modetable').DataTable({
 	"scrollY": "500px",
 	"scrollCollapse": true,
 	"paging": false,
-	"scrollX": true,
+	"scrollX": true,	
 	initComplete: function () {
 		this.api()
-			.columns()
+			.columns('.select-filter')
 			.every(function () {
 				var column = this;
 				var select = $('<select><option value=""></option></select>')
@@ -29,6 +29,7 @@ $('.modetable').DataTable({
 			});
 	},
 });
+$($.fn.dataTable.tables(true)).DataTable().columns.adjust();
 
 function createModeDialog() {
 	$.ajax({
