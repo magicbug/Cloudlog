@@ -1306,8 +1306,10 @@ class Logbook_model extends CI_Model {
       }
 
       if ($mode != 'All') {
+        $this->db->group_start();
         $this->db->where("COL_MODE", $mode);
         $this->db->or_where("COL_SUBMODE", $mode);
+				$this->db->group_end();
       }
 
       if ($propagation != 'All') {
