@@ -25,34 +25,17 @@
 			$this->db->where('user_id', $user_id);
 			$query = $this->db->get('cat');
 
-			if ($prop_mode == "SAT") {
-				$data = array(
-					'prop_mode' => $prop_mode,
-					'sat_name' => $result['sat_name'],
-					'downlink_freq' => $result['downlink_freq'],
-					'uplink_freq' => $result['uplink_freq'],
-					'downlink_mode' => $result['downlink_mode'],
-					'uplink_mode' => $result['uplink_mode'],
-					'timestamp' => $timestamp,
-					'mode' => NULL,
-					'frequency' => NULL,
-				);
-			} else {
-				$data = array(
-					'prop_mode' => $result['prop_mode'],
-					'mode' => $result['mode'],
-					'frequency' => $result['frequency'],
-					'downlink_freq' => NULL,
-					'downlink_mode' => NULL,
-					'uplink_freq' => NULL,
-					'uplink_mode' => NULL,
-					'timestamp' => $timestamp,
-				);
-			}
-
-			if (isset($result['power'])) {
-				$data['power'] = $result['power'];
-			}
+			// Let's keep uplink_freq, downlink_freq, uplink_mode and downlink_mode for backward compatibility
+			$data = array(
+				'prop_mode' => $prop_mode,
+				'frequency' => $result['frequency'] ?? $result['uplink_freq'],
+				'downlink_freq' => $result['frequency_rx'] ?? $result['downlink_freq'],
+				'mode' => $result['mode'] ?? $result['uplink_mode'],
+				'downlink_mode' => $result['mode_rx'] ?? $result['downlink_mode'],
+				'power' => $result['power'],
+				'sat_name' => $result['sat_name'],
+				'timestamp' => $timestamp,
+			);
 
 			if ($query->num_rows() > 0)
 			{

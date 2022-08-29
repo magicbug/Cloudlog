@@ -48,17 +48,23 @@
 			{
 				echo "<tr>";
 				echo "<td>".$row->radio."</td>";
-				if($row->frequency != "0" && $row->frequency != NULL) {
+
+				if (empty($row->frequency) || $row->frequency == "0") {
+					echo "<td>- / -</td>";
+				} elseif (empty($row->downlink_freq) || $row->downlink_freq == "0") {
 					echo "<td>".$this->frequency->hz_to_mhz($row->frequency)."</td>";
 				} else {
-					echo "<td>".$this->frequency->hz_to_mhz($row->downlink_freq)." / ".$this->frequency->hz_to_mhz($row->uplink_freq)."</td>";
+					echo "<td>".$this->frequency->hz_to_mhz($row->downlink_freq)." / ".$this->frequency->hz_to_mhz($row->frequency)."</td>";
 				}
 
-				if($row->mode != "non" && $row->mode != NULL) {
+				if (empty($row->mode) || $row->mode == "non") {
+					echo "<td>N/A</td>";
+				} elseif (empty($row->downlink_mode) || $row->downlink_mode == "non") {
 					echo "<td>".$row->mode."</td>";
 				} else {
-					echo "<td>".$row->downlink_mode." / ".$row->uplink_mode."</td>";
+					echo "<td>".$row->downlink_mode." / ".$row->mode."</td>";
 				}
+
 				$phpdate = strtotime($row->timestamp);
 				echo "<td>".date('H:i:s d-m-y', $phpdate)."</td>" ;
 				echo "<td><a href=\"".site_url('radio/delete')."/".$row->id."\" class=\"btn btn-danger\"> <i class=\"fas fa-trash-alt\"></i> Delete</a></td>" ;
@@ -86,22 +92,22 @@
 			foreach ($query->result() as $row)
 			{
 
+				$frequency = $row->frequency;
 
-				if($row->prop_mode == "SAT") {
-					$uplink_freq = $row->uplink_freq;
-					$downlink_freq = $row->downlink_freq;
+				$frequency_rx = $row->downlink_freq;
 
-					$power = $row->power;
+				$power = $row->power;
 
-					$prop_mode = $row->prop_mode;
+				$prop_mode = $row->prop_mode;
 
-					// Check Mode
-					if(strtoupper($row->uplink_mode) == "FMN"){
-						$mode = "FM";
-					} else {
-						$mode = strtoupper($row->uplink_mode);
-					}
+				// Check Mode
+				if(strtoupper($row->mode) == "FMN"){
+					$mode = "FM";
+				} else {
+					$mode = strtoupper($row->mode);
+				}
 
+				if ($row->prop_mode == "SAT") {
 					// Get Satellite Name
 					if($row->sat_name == "AO-07") {
 						$sat_name = "AO-7";
@@ -118,21 +124,7 @@
 					if ($uplink_mode != "" && $downlink_mode != "") {
 						$sat_mode = $uplink_mode."/".$downlink_mode;
 					}
-
 				} else {
-					$frequency = $row->frequency;
-
-					$power = $row->power;
-
-					$prop_mode = $row->prop_mode;
-
-					// Check Mode
-					if(strtoupper($row->mode) == "FMN"){
-						$mode = "FM";
-					} else {
-						$mode = strtoupper($row->mode);
-					}
-
 					$sat_name = "";
 					$sat_mode = "";
 				}
@@ -149,29 +141,18 @@
 				$updated_at = $minutes;
 
 				// Return Json data
-				if ($prop_mode == "SAT") {
-					echo json_encode(array(
-						"uplink_freq" => $uplink_freq,
-						"downlink_freq" => $downlink_freq,
-						"mode" => $mode,
-						"satmode" => $sat_mode,
-						"satname" => $sat_name,
-						"power" => $power,
-						"prop_mode" => $prop_mode,
-						"updated_minutes_ago" => $updated_at,
-					), JSON_PRETTY_PRINT);
-				} else {
-					echo json_encode(array(
-						"frequency" => $frequency,
-						"mode" => $mode,
-						"power" => $power,
-						"prop_mode" => $prop_mode,
-						"updated_minutes_ago" => $updated_at,
-					), JSON_PRETTY_PRINT);
-				}
+				echo json_encode(array(
+					"frequency" => $frequency,
+					"frequency_rx" => $frequency_rx,
+					"mode" => $mode,
+					"satmode" => $sat_mode,
+					"satname" => $sat_name,
+					"power" => $power,
+					"prop_mode" => $prop_mode,
+					"updated_minutes_ago" => $updated_at,
+				), JSON_PRETTY_PRINT);
 			}
 		}
-
 	}
 
 	function get_mode_designator($frequency)

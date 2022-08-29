@@ -1143,33 +1143,25 @@ $(document).on('keypress',function(e) {
     </script>
 
     <script>
-        // Javascript for controlling rig frequency.
-  var updateFromCAT = function() {
+    // Javascript for controlling rig frequency.
+    var updateFromCAT = function() {
     if($('select.radios option:selected').val() != '0') {
       radioID = $('select.radios option:selected').val();
       $.getJSON( "radio/json/" + radioID, function( data ) {
           /* {
-              "uplink_freq": "2400210000",
-              "downlink_freq": "10489710000",
+              "frequency": "2400210000",
+              "frequency_rx": "10489710000",
               "mode": "SSB",
-              "satmode": "",
-              "satname": "ES'HAIL-2"
+              "satmode": "S/X",
+              "satname": "QO-100"
               "power": "20"
               "prop_mode": "SAT"
           }  */
-          if (data.prop_mode == "SAT")
-          //if (data.uplink_freq != "")
-          {
-            $('#frequency').val(data.uplink_freq);
-            $("#band").val(frequencyToBand(data.uplink_freq));
-          } else {
-            $('#frequency').val(data.frequency);
-            $("#band").val(frequencyToBand(data.frequency));
-          }
-          if (data.downlink_freq != "")
-          {
-            $('#frequency_rx').val(data.downlink_freq);
-            $("#band_rx").val(frequencyToBand(data.downlink_freq));
+          $('#frequency').val(data.frequency);
+          $("#band").val(frequencyToBand(data.frequency));
+          if (data.frequency_rx != "") {
+            $('#frequency_rx').val(data.frequency_rx);
+            $("#band_rx").val(frequencyToBand(data.frequency_rx));
           }
 
           old_mode = $(".mode").val();
