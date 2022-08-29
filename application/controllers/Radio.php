@@ -121,8 +121,12 @@
 					$uplink_mode = $this->get_mode_designator($row->uplink_freq);
 					$downlink_mode = $this->get_mode_designator($row->downlink_freq);
 
-					if ($uplink_mode != "" && $downlink_mode != "") {
+					if (empty($uplink_mode)) {
+						$sat_mode = "";
+					} elseif ($uplink_mode !== $downlink_mode) {
 						$sat_mode = $uplink_mode."/".$downlink_mode;
+					} else {
+						$sat_mode = $uplink_mode;
 					}
 				} else {
 					$sat_name = "";
