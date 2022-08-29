@@ -1178,18 +1178,18 @@ $(document).on('keypress',function(e) {
           }
           $("#selectPropagation").val(data.prop_mode);
 
-          // Display CAT Timeout warnng based on the figure given in the config file
-            var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
+          // Display CAT Timeout warning based on the figure given in the config file
+          var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
 
-            if(data.updated_minutes_ago > minutes) {
-              if($('.radio_timeout_error').length == 0) {
-                $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
-              } else {
-                $('.radio_timeout_error').text('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
-              }
+          if(data.updated_minutes_ago > minutes) {
+            if($('.radio_timeout_error').length == 0) {
+              $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
             } else {
-              $(".radio_timeout_error" ).remove();
+              $('.radio_timeout_error').text('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
             }
+          } else {
+            $(".radio_timeout_error" ).remove();
+          }
 
       });
     }
