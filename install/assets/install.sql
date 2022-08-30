@@ -32,6 +32,7 @@ CREATE TABLE `cat` (
                      `uplink_mode` varchar(255) DEFAULT NULL,
                      `sat_name` varchar(255) DEFAULT NULL,
                      `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+                     `user_id` bigint(20) DEFAULT NULL,
                      PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
