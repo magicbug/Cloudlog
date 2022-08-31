@@ -5,8 +5,31 @@ $('.modetable').DataTable({
 	"scrollY": "500px",
 	"scrollCollapse": true,
 	"paging": false,
-	"scrollX": true
+	"scrollX": true,	
+	initComplete: function () {
+		this.api()
+			.columns('.select-filter')
+			.every(function () {
+				var column = this;
+				var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+						column.search(val ? '^' + val + '$' : '', true, false).draw();
+					});
+
+				column
+					.data()
+					.unique()
+					.sort()
+					.each(function (d, j) {
+						select.append('<option value="' + d + '">' + d + '</option>');
+					});
+			});
+	},
 });
+$($.fn.dataTable.tables(true)).DataTable().columns.adjust();
 
 function createModeDialog() {
 	$.ajax({

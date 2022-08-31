@@ -103,6 +103,7 @@ $lang['gen_hamradio_dok'] = 'DOK';
 $lang['gen_hamradio_state'] = 'State';
 $lang['gen_hamradio_iota'] = 'IOTA';
 $lang['gen_hamradio_sota'] = 'SOTA';
+$lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_gridsquare'] = 'Gridsquare';
 $lang['gen_hamradio_operator'] = 'Operator';
 

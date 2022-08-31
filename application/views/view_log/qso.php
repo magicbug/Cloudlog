@@ -112,19 +112,20 @@
                                 $CI->load->library('qra');
 
                                 // Cacluate Distance
-                                echo $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
+                                $distance = $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
 
                                 switch ($measurement_base) {
                                     case 'M':
-                                        echo "mi";
+                                        $distance .= "mi";
                                         break;
                                     case 'K':
-                                        echo "km";
+                                        $distance .= "km";
                                         break;
                                     case 'N':
-                                        echo "nmi";
+                                        $distance .= "nmi";
                                         break;
                                 }
+                                echo $distance;
                             ?>
                         </td>
                     </tr>
@@ -205,6 +206,13 @@
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_sota_reference'); ?></td>
                         <td><a href="https://summits.sota.org.uk/summit/<?php echo $row->COL_SOTA_REF; ?>" target="_blank"><?php echo $row->COL_SOTA_REF; ?></a></td>
+                    </tr>
+                    <?php } ?>
+
+                    <?php if($row->COL_WWFF_REF != null) { ?>
+                    <tr>
+                        <td><?php echo $this->lang->line('gen_hamradio_wwff_reference'); ?></td>
+                        <td><a href="https://wwff.co/directory/?showRef=<?php echo $row->COL_WWFF_REF; ?>" target="_blank"><?php echo $row->COL_WWFF_REF; ?></a></td>
                     </tr>
                     <?php } ?>
 
@@ -301,8 +309,11 @@
                             $twitter_band_sat = $row->COL_BAND;
                             $hashtags = "#hamr #cloudlog";
                         }
-
-                        $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." (Gridsquare: ".$row->COL_GRIDSQUARE.") on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
+                        if (!isset($distance)) {
+                            $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
+                        } else {
+                            $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." (Gridsquare: ".$row->COL_GRIDSQUARE." / distance: ".$distance.") on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
+                        }
                     ?>
 
                     <div class="text-right"><a class="btn btn-sm btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a></div>
@@ -353,6 +364,13 @@
                     <tr>
                         <td>Station Transmit Power</td>
                         <td><?php echo $row->COL_TX_PWR; ?>w</td>
+                    </tr>
+                    <?php } ?>
+
+                    <?php if($row->COL_MY_WWFF_REF) { ?>
+                    <tr>
+                        <td>Station WWFF Reference</td>
+                        <td><?php echo $row->COL_MY_WWFF_REF; ?></td>
                     </tr>
                     <?php } ?>
             </table>

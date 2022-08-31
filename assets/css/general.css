@@ -83,6 +83,10 @@ thead > tr > td {
     text-transform: uppercase;
 }
 
+.qso_panel #wwff_ref-selectized {
+    text-transform: uppercase;
+}
+
 .qso_panel #darc_dok-selectized {
     text-transform: uppercase;
 }
@@ -100,6 +104,10 @@ thead > tr > td {
 }
 
 .card-body #sota_ref_edit-selectized {
+    text-transform: uppercase;
+}
+
+.card-body #wwff_ref_edit-selectized {
     text-transform: uppercase;
 }
 

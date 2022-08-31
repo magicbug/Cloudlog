@@ -388,6 +388,17 @@
               </div>
             </div>
 
+            <div class="form-row">
+              <div class="form-group col-md-9">
+                <label for="wwff_ref"><?php echo $this->lang->line('gen_hamradio_wwff_reference'); ?></label>
+                <input class="form-control" id="wwff_ref" type="text" name="wwff_ref" value="" />
+                <small id="wwffRefHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_wwff_ref_helptext'); ?></small>
+              </div>
+              <div class="form-group col-md-3 align-self-center">
+                <small id="wwff_info" class="badge badge-secondary"></small>
+              </div>
+            </div>
+
             <div class="form-group">
               <label for="sig"><?php echo $this->lang->line('gen_hamradio_sig'); ?></label>
               <input class="form-control" id="sig" type="text" name="sig" value="" />

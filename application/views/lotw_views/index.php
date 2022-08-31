@@ -30,11 +30,13 @@
 						<tr>
 				 			<th scope="col"><?php echo $this->lang->line('gen_hamradio_callsign'); ?></th>
 							<th scope="col"><?php echo $this->lang->line('gen_hamradio_dxcc'); ?></th>
-				      		<th scope="col"><?php echo $this->lang->line('lotw_date_created'); ?></th>
-				    		<th scope="col"><?php echo $this->lang->line('lotw_date_expires'); ?></th>
-				    		<th scope="col"><?php echo $this->lang->line('lotw_status'); ?></th>
-				    		<th scope="col"><?php echo $this->lang->line('lotw_options'); ?></th>
-				    	</tr>
+							<th scope="col"><?php echo $this->lang->line('lotw_qso_start_date'); ?></th>
+							<th scope="col"><?php echo $this->lang->line('lotw_qso_end_date'); ?></th>
+							<th scope="col"><?php echo $this->lang->line('lotw_date_created'); ?></th>
+							<th scope="col"><?php echo $this->lang->line('lotw_date_expires'); ?></th>
+							<th scope="col"><?php echo $this->lang->line('lotw_status'); ?></th>
+							<th scope="col"><?php echo $this->lang->line('lotw_options'); ?></th>
+						</tr>
 					</thead>
 				 
 					<tbody>
@@ -43,9 +45,27 @@
 							<tr>
 					      		<td><?php echo $row->callsign; ?></td>
 					      		<td><?php echo ucfirst($row->cert_dxcc); ?></td>
-								<td><?php 
-									$valid_form = strtotime( $row->date_created );
-									$new_valid_from = date($this->config->item('qso_date_format'), $valid_form );
+								<td><?php
+									if (isset($row->qso_start_date)) {
+										$valid_qso_start = strtotime( $row->qso_start_date );
+										$new_valid_qso_start = date($this->config->item('qso_date_format'), $valid_qso_start );
+										echo $new_valid_qso_start;
+									} else {
+										echo "n/a";
+									} ?>
+								</td>
+								<td><?php
+									if (isset($row->qso_end_date)) {
+										$valid_qso_end = strtotime( $row->qso_end_date );
+										$new_valid_qso_end = date($this->config->item('qso_date_format'), $valid_qso_end );
+										echo $new_valid_qso_end;
+									} else {
+										echo "n/a";
+									} ?>
+								</td>
+								<td><?php
+									$valid_from = strtotime( $row->date_created );
+									$new_valid_from = date($this->config->item('qso_date_format'), $valid_from );
 									echo $new_valid_from; ?>
 								</td>
 								<td>
