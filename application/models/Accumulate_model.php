@@ -25,18 +25,30 @@ class Accumulate_model extends CI_Model
     }
 
     function get_accumulated_dxcc($band, $mode, $period, $location_list) {
+
         if ($period == "year") {
-            $sql = "SELECT year(col_time_on) as year,
-                (select count(distinct b.col_dxcc) from " .
-                $this->config->item('table_name') .
-                " as b where year(col_time_on) <= year and b.station_id in (". $location_list . ")";
+            $sql = "select year(thcv.col_time_on) year";
         }
         else if ($period == "month") {
-            $sql = "SELECT date_format(col_time_on, '%Y%m') as year,
-                (select count(distinct b.col_dxcc) from " .
-                $this->config->item('table_name') .
-                " as b where date_format(col_time_on, '%Y%m') <= year and b.station_id in (". $location_list . ")";
+            $sql = "select date_format(col_time_on, '%Y%m') year";
         }
+
+        $sql .= ", coalesce(y.tot, 0) tot 
+            from " . $this->config->item('table_name') . " thcv
+            left outer join (
+                select count(col_dxcc) as tot, year
+            from (select distinct ";
+
+        if ($period == "year") {
+            $sql .= "year(col_time_on)";
+        }
+        else if ($period == "month") {
+            $sql .= "date_format(col_time_on, '%Y%m')";
+        }
+
+        $sql .= " year, col_dxcc
+        from " . $this->config->item('table_name') . 
+        " where col_dxcc > 0 and station_id in (". $location_list . ")";
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -51,9 +63,19 @@ class Accumulate_model extends CI_Model
 			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
         }
 
-        $sql .=" and b.col_dxcc > 0) total  from " . $this->config->item('table_name') . " as a
-                      where a.station_id in (". $location_list . ")";
-
+        $sql .= " order by year
+        ) x 
+        where not exists (select 1 from " . $this->config->item('table_name') . " where";
+        
+        if ($period == "year") {
+            $sql .= " year(col_time_on) < year";;
+        }
+        else if ($period == "month") {
+            $sql .= " date_format(col_time_on, '%Y%m') < year";;
+        }
+        
+        $sql .= " and col_dxcc = x.col_dxcc";
+        
         if ($band != 'All') {
             if ($band == 'SAT') {
                 $sql .= " and col_prop_mode ='" . $band . "'";
@@ -67,20 +89,56 @@ class Accumulate_model extends CI_Model
             $sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
         }
 
-        $sql .= " and col_dxcc > 0";
+        $sql .= " and station_id in (". $location_list . "))
+        group by year
+        order by year";
 
         if ($period == "year") {
-            $sql .= " group by year(a.col_time_on)
-                    order by year(a.col_time_on)";
+            $sql .= " ) y on year(thcv.col_time_on) = y.year";
         }
         else if ($period == "month") {
-            $sql .= " group by date_format(a.col_time_on, '%Y%m')
-                    order by date_format(a.col_time_on, '%Y%m')";
+            $sql .= " ) y on date_format(col_time_on, '%Y%m') = y.year";
+        }
+        
+        $sql .= " where thcv.col_dxcc > 0";
+
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+
+        if ($mode != 'All') {
+			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
+        }
+        
+        $sql .= " and station_id in (". $location_list . ")";
+
+        if ($period == "year") {
+            $sql .= " group by year(thcv.col_time_on), y.tot
+            order by year(thcv.col_time_on)";
+        }
+
+        else if ($period == "month") {
+            $sql .= " group by date_format(col_time_on, '%Y%m'), y.tot
+            order by date_format(col_time_on, '%Y%m')";
         }
 
         $query = $this->db->query($sql);
 
-        return $query->result();
+        return $this->count_and_add_accumulated_total($query->result());
+    }
+
+    function count_and_add_accumulated_total($array) {
+        $counter = 0;
+        for ($i = 0; $i < count($array); $i++) {
+            $array[$i]->total = $array[$i]->tot + $counter;
+            $counter = $array[$i]->total;
+        }
+        return $array;
     }
 
     function get_accumulated_was($band, $mode, $period, $location_list) {
