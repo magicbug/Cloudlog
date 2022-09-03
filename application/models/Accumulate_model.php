@@ -25,7 +25,6 @@ class Accumulate_model extends CI_Model
     }
 
     function get_accumulated_dxcc($band, $mode, $period, $location_list) {
-
         if ($period == "year") {
             $sql = "select year(thcv.col_time_on) year";
         }
@@ -143,178 +142,322 @@ class Accumulate_model extends CI_Model
 
     function get_accumulated_was($band, $mode, $period, $location_list) {
         if ($period == "year") {
-            $sql = "SELECT year(col_time_on) as year,
-                (select count(distinct b.col_state) from " .
-                $this->config->item('table_name') .
-                " as b where year(col_time_on) <= year and b.station_id in (". $location_list . ")";
+            $sql = "select year(thcv.col_time_on) year";
         }
         else if ($period == "month") {
-            $sql = "SELECT date_format(col_time_on, '%Y%m') as year,
-                (select count(distinct b.col_state) from " .
-                $this->config->item('table_name') .
-                " as b where date_format(col_time_on, '%Y%m') <= year and b.station_id in (". $location_list . ")";
+            $sql = "select date_format(col_time_on, '%Y%m') year";
         }
 
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
-            } else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
-            }
-        }
-
-        if ($mode != 'All') {
-			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
-        }
-
-        $sql .= " and COL_DXCC in ('291', '6', '110')";
-        $sql .= " and COL_STATE in ('AK','AL','AR','AZ','CA','CO','CT','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY')";
-
-        $sql .=") total  from " . $this->config->item('table_name') . " as a
-                      where a.station_id in (". $location_list . ")";
-
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
-            } else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
-            }
-        }
-
-        if ($mode != 'All') {
-			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
-        }
-
-        $sql .= " and COL_DXCC in ('291', '6', '110')";
-        $sql .= " and COL_STATE in ('AK','AL','AR','AZ','CA','CO','CT','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY')";
+        $sql .= ", coalesce(y.tot, 0) tot 
+            from " . $this->config->item('table_name') . " thcv
+            left outer join (
+                select count(col_state) as tot, year
+            from (select distinct ";
 
         if ($period == "year") {
-            $sql .= " group by year(a.col_time_on)
-                    order by year(a.col_time_on)";
+            $sql .= "year(col_time_on)";
         }
         else if ($period == "month") {
-            $sql .= " group by date_format(a.col_time_on, '%Y%m')
-                    order by date_format(a.col_time_on, '%Y%m')";
+            $sql .= "date_format(col_time_on, '%Y%m')";
+        }
+
+        $sql .= " year, col_state
+        from " . $this->config->item('table_name') . 
+        " where station_id in (". $location_list . ")";
+
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+
+        if ($mode != 'All') {
+			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
+        }
+
+        $sql .= " and COL_DXCC in ('291', '6', '110')";
+        $sql .= " and COL_STATE in ('AK','AL','AR','AZ','CA','CO','CT','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY')";
+
+        $sql .= " order by year
+        ) x 
+        where not exists (select 1 from " . $this->config->item('table_name') . " where";
+        
+        if ($period == "year") {
+            $sql .= " year(col_time_on) < year";;
+        }
+        else if ($period == "month") {
+            $sql .= " date_format(col_time_on, '%Y%m') < year";;
+        }
+        
+        $sql .= " and col_state = x.col_state";
+        
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+
+        if ($mode != 'All') {
+            $sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
+        }
+
+        $sql .= " and COL_DXCC in ('291', '6', '110')";
+        $sql .= " and COL_STATE in ('AK','AL','AR','AZ','CA','CO','CT','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY')";
+
+        $sql .= " and station_id in (". $location_list . "))
+        group by year
+        order by year";
+
+        if ($period == "year") {
+            $sql .= " ) y on year(thcv.col_time_on) = y.year";
+        }
+        else if ($period == "month") {
+            $sql .= " ) y on date_format(col_time_on, '%Y%m') = y.year";
+        }
+        
+        $sql .= " where station_id in (". $location_list . ")";
+
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+
+        if ($mode != 'All') {
+			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
+        }
+        
+        if ($period == "year") {
+            $sql .= " group by year(thcv.col_time_on), y.tot
+            order by year(thcv.col_time_on)";
+        }
+
+        else if ($period == "month") {
+            $sql .= " group by date_format(col_time_on, '%Y%m'), y.tot
+            order by date_format(col_time_on, '%Y%m')";
         }
 
         $query = $this->db->query($sql);
 
-        return $query->result();
+        return $this->count_and_add_accumulated_total($query->result());
     }
 
     function get_accumulated_iota($band, $mode, $period, $location_list) {
         if ($period == "year") {
-            $sql = "SELECT year(col_time_on) as year,
-                (select count(distinct b.col_iota) from " .
-                $this->config->item('table_name') .
-                " as b where year(col_time_on) <= year and b.station_id in (". $location_list . ")";
+            $sql = "select year(thcv.col_time_on) year";
         }
         else if ($period == "month") {
-            $sql = "SELECT date_format(col_time_on, '%Y%m') as year,
-                (select count(distinct b.col_iota) from " .
-                $this->config->item('table_name') .
-                " as b where date_format(col_time_on, '%Y%m') <= year and b.station_id in (". $location_list . ")";
+            $sql = "select date_format(col_time_on, '%Y%m') year";
         }
 
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
-            } else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
-            }
-        }
-
-        if ($mode != 'All') {
-			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
-        }
-
-        $sql .=") total  from " . $this->config->item('table_name') . " as a
-                      where a.station_id in (". $location_list . ")";
-
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
-            } else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
-            }
-        }
-
-        if ($mode != 'All') {
-			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
-        }
+        $sql .= ", coalesce(y.tot, 0) tot 
+            from " . $this->config->item('table_name') . " thcv
+            left outer join (
+                select count(col_iota) as tot, year
+            from (select distinct ";
 
         if ($period == "year") {
-            $sql .= " group by year(a.col_time_on)
-                    order by year(a.col_time_on)";
+            $sql .= "year(col_time_on)";
         }
         else if ($period == "month") {
-            $sql .= " group by date_format(a.col_time_on, '%Y%m')
-                    order by date_format(a.col_time_on, '%Y%m')";
+            $sql .= "date_format(col_time_on, '%Y%m')";
+        }
+
+        $sql .= " year, col_iota
+        from " . $this->config->item('table_name') . 
+        " where station_id in (". $location_list . ")";
+
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+
+        if ($mode != 'All') {
+			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
+        }
+
+        $sql .= " order by year
+        ) x 
+        where not exists (select 1 from " . $this->config->item('table_name') . " where";
+        
+        if ($period == "year") {
+            $sql .= " year(col_time_on) < year";;
+        }
+        else if ($period == "month") {
+            $sql .= " date_format(col_time_on, '%Y%m') < year";;
+        }
+        
+        $sql .= " and col_iota = x.col_iota";
+        
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+
+        if ($mode != 'All') {
+            $sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
+        }
+
+        $sql .= " and station_id in (". $location_list . "))
+        group by year
+        order by year";
+
+        if ($period == "year") {
+            $sql .= " ) y on year(thcv.col_time_on) = y.year";
+        }
+        else if ($period == "month") {
+            $sql .= " ) y on date_format(col_time_on, '%Y%m') = y.year";
+        }
+        
+        $sql .= " where station_id in (". $location_list . ")";
+
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+
+        if ($mode != 'All') {
+			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
+        }
+        
+        if ($period == "year") {
+            $sql .= " group by year(thcv.col_time_on), y.tot
+            order by year(thcv.col_time_on)";
+        }
+
+        else if ($period == "month") {
+            $sql .= " group by date_format(col_time_on, '%Y%m'), y.tot
+            order by date_format(col_time_on, '%Y%m')";
         }
 
         $query = $this->db->query($sql);
 
-        return $query->result();
+        return $this->count_and_add_accumulated_total($query->result());
     }
 
     function get_accumulated_waz($band, $mode, $period, $location_list) {
         if ($period == "year") {
-            $sql = "SELECT year(col_time_on) as year,
-                (select count(distinct b.col_cqz) from " .
-                $this->config->item('table_name') .
-                " as b where year(col_time_on) <= year and b.station_id in (". $location_list . ")";
+            $sql = "select year(thcv.col_time_on) year";
         }
         else if ($period == "month") {
-            $sql = "SELECT date_format(col_time_on, '%Y%m') as year,
-                (select count(distinct b.col_cqz) from " .
-                $this->config->item('table_name') .
-                " as b where date_format(col_time_on, '%Y%m') <= year and b.station_id in (". $location_list . ")";
+            $sql = "select date_format(col_time_on, '%Y%m') year";
         }
 
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
-            } else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
-            }
-        }
-
-        if ($mode != 'All') {
-			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
-        }
-
-        $sql .=") total  from " . $this->config->item('table_name') . " as a
-                      where a.station_id in (". $location_list . ")";
-
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
-            } else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
-            }
-        }
-
-        if ($mode != 'All') {
-			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
-        }
+        $sql .= ", coalesce(y.tot, 0) tot 
+            from " . $this->config->item('table_name') . " thcv
+            left outer join (
+                select count(col_cqz) as tot, year
+            from (select distinct ";
 
         if ($period == "year") {
-            $sql .= " group by year(a.col_time_on)
-                    order by year(a.col_time_on)";
+            $sql .= "year(col_time_on)";
         }
         else if ($period == "month") {
-            $sql .= " group by date_format(a.col_time_on, '%Y%m')
-                    order by date_format(a.col_time_on, '%Y%m')";
+            $sql .= "date_format(col_time_on, '%Y%m')";
+        }
+
+        $sql .= " year, col_cqz
+        from " . $this->config->item('table_name') . 
+        " where station_id in (". $location_list . ")";
+
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+
+        if ($mode != 'All') {
+			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
+        }
+
+        $sql .= " order by year
+        ) x 
+        where not exists (select 1 from " . $this->config->item('table_name') . " where";
+        
+        if ($period == "year") {
+            $sql .= " year(col_time_on) < year";;
+        }
+        else if ($period == "month") {
+            $sql .= " date_format(col_time_on, '%Y%m') < year";;
+        }
+        
+        $sql .= " and col_cqz = x.col_cqz";
+        
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+
+        if ($mode != 'All') {
+            $sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
+        }
+
+        $sql .= " and station_id in (". $location_list . "))
+        group by year
+        order by year";
+
+        if ($period == "year") {
+            $sql .= " ) y on year(thcv.col_time_on) = y.year";
+        }
+        else if ($period == "month") {
+            $sql .= " ) y on date_format(col_time_on, '%Y%m') = y.year";
+        }
+        
+        $sql .= " where station_id in (". $location_list . ")";
+
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+
+        if ($mode != 'All') {
+			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
+        }
+        
+        if ($period == "year") {
+            $sql .= " group by year(thcv.col_time_on), y.tot
+            order by year(thcv.col_time_on)";
+        }
+
+        else if ($period == "month") {
+            $sql .= " group by date_format(col_time_on, '%Y%m'), y.tot
+            order by date_format(col_time_on, '%Y%m')";
         }
 
         $query = $this->db->query($sql);
 
-        return $query->result();
+        return $this->count_and_add_accumulated_total($query->result());
     }
 }
