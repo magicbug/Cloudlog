@@ -150,6 +150,10 @@
 
 					<div class="dropdown-divider"></div>
 
+					<a class="dropdown-item" href="<?php echo site_url('band');?>" title="Manage Bands"><i class="fas fa-cog"></i> Bands</a>
+
+					<div class="dropdown-divider"></div>
+
 					<a class="dropdown-item" href="<?php echo site_url('themes');?>" title="Manage Themes"><i class="fas fa-cog"></i> Themes</a>
 
 					<div class="dropdown-divider"></div>
