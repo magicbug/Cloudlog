@@ -31,9 +31,9 @@ class Migration_add_band_bandxuser extends CI_Migration {
             $this->db->query("INSERT INTO bands (band) values ('80m');");
             $this->db->query("INSERT INTO bands (band) values ('60m');");
             $this->db->query("INSERT INTO bands (band) values ('40m');");
-            $this->db->query("INSERT INTO bands (band) values ('300m');");
+            $this->db->query("INSERT INTO bands (band) values ('30m');");
             $this->db->query("INSERT INTO bands (band) values ('20m');");
-            $this->db->query("INSERT INTO bands (band) values ('170m');");
+            $this->db->query("INSERT INTO bands (band) values ('17m');");
             $this->db->query("INSERT INTO bands (band) values ('15m');");
             $this->db->query("INSERT INTO bands (band) values ('12m');");
             $this->db->query("INSERT INTO bands (band) values ('10m');");
