@@ -44,19 +44,19 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($bands as $key => $band) { ?>
+				<?php foreach ($bands as $band) { ?>
 				<tr>
-					<td><?php echo $key?></td>
-                    <td>Active</td>
-					<td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" checked><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" checked><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" checked><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" checked><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" checked><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" checked><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" checked><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" checked><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" checked><label class="custom-control-label" for="customCheck1"></label></div></td>
+					<td><?php echo $band->band?></td>
+                    <td><?php if ($band->active == 1) {echo 'Active';} else {echo 'Not Active';}; ?></td>
+					<td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->cq == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
+                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->dok == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
+                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->dxcc == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
+                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->iota == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
+                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->sig == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
+                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->sota == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
+                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->uscounties == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
+                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->was == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
+                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->vucc == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
                     <td style="text-align: center">
                         <button onclick='javascript:deactivateMode()' class=' btn btn-secondary btn-sm'>Deactivate</button>
                     </td>

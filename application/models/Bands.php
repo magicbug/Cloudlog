@@ -28,16 +28,41 @@ class Bands extends CI_Model {
 		"SAT"=>0,
 	);
 
-	function all2() {
-		$this->db->order_by('band', 'ASC');
-		return $this->db->get('bands');
+	function get_user_bands($award = 'None') {
+		$this->db->from('bands');
+		$this->db->join('bandxuser', 'bandxuser.bandid = bands.id');
+		$this->db->where('bandxuser.userid', $this->session->userdata('user_id'));
+		$this->db->where('bandxuser.active', 1);
+
+		if ($award != 'None') {
+			$this->db->where('bandxuser.".$award', 1);
+		}
+		
+		$result = $this->db->get()->result();
+
+		$results = array();
+
+		foreach($result as $band) {
+			array_push($results, $band->band);
+		}
+
+		return $results;
+	}
+
+	function get_all_bands_for_user() {
+		$this->db->from('bands');
+		$this->db->join('bandxuser', 'bandxuser.bandid = bands.id');
+		$this->db->where('bandxuser.userid', $this->session->userdata('user_id'));
+
+		return $this->db->get()->result();
 	}
 
 	function all() {
 		return $this->bandslots;
 	}
 
-	function get_worked_bands() {
+	function get_worked_bands($award = 'None') {
+		
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -65,10 +90,10 @@ class Bands extends CI_Model {
 			array_push($worked_slots, strtoupper($row->COL_PROP_MODE));
 		}
 
+		$bandslots = $this->get_user_bands($award);
 
-		// bring worked-slots in order of defined $bandslots
 		$results = array();
-		foreach(array_keys($this->bandslots) as $slot) {
+		foreach($bandslots as $slot) {
 			if(in_array($slot, $worked_slots)) {
 				array_push($results, $slot);
 			}

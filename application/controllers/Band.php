@@ -19,7 +19,7 @@ class Band extends CI_Controller {
 	{
 		$this->load->model('bands');
 
-		$data['bands'] = $this->bands->all();
+		$data['bands'] = $this->bands->get_all_bands_for_user();
 		
 		// Render Page
 		$data['page_title'] = "Bands";
