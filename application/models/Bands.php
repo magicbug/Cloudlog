@@ -28,6 +28,15 @@ class Bands extends CI_Model {
 		"SAT"=>0,
 	);
 
+	function all2() {
+		$this->db->order_by('band', 'ASC');
+		return $this->db->get('bands');
+	}
+
+	function all() {
+		return $this->bandslots;
+	}
+
 	function get_worked_bands() {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
