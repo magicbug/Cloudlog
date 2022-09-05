@@ -23,64 +23,53 @@
 	</p>
     <div class="table-responsive">
 		
-    <table style="width:100%" class="modetable table table-striped">
+    <table style="width:100%" class="bandtable table table-striped">
 			<thead>
 				<tr>
-					<th class="select-filter" scope="col">Band</th>
-					<th class="select-filter" scope="col">Status</th>
-					<th scope="col">CQ</th>
-                    <th scope="col">DOK</th>
-                    <th scope="col">DXCC</th>
-                    <th scope="col">IOTA</th>
-					<th scope="col">SIG</th>
-                    <th scope="col">SOTA</th>
-                    <th scope="col">US Counties</th>
-                    <th scope="col">WAS</th>
-                    <th scope="col">VUCC</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+					<th>Band</th>
+					<th>Active</th>
+					<th>CQ</th>
+                    <th>DOK</th>
+                    <th>DXCC</th>
+                    <th>IOTA</th>
+					<th>SIG</th>
+                    <th>SOTA</th>
+                    <th>US Counties</th>
+                    <th>WAS</th>
+                    <th>VUCC</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
 
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach ($bands as $band) { ?>
 				<tr>
-					<td><?php echo $band->band?></td>
-                    <td><?php if ($band->active == 1) {echo 'Active';} else {echo 'Not Active';}; ?></td>
-					<td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->cq == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->dok == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->dxcc == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->iota == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->sig == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->sota == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->uscounties == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->was == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td><div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" id="customCheck1" <?php if ($band->vucc == 1) {echo 'checked';}?>><label class="custom-control-label" for="customCheck1"></label></div></td>
-                    <td style="text-align: center">
-                        <button onclick='javascript:deactivateMode()' class=' btn btn-secondary btn-sm'>Deactivate</button>
-                    </td>
+					<td><?php echo $band->band;?></td>
+                    <td class='band_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->active == 1) {echo 'checked';}?>></td>
+					<td class='cq_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->cq == 1) {echo 'checked';}?>></td>
+                    <td class='dok_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dok == 1) {echo 'checked';}?>></td>
+                    <td class='dxcc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dxcc == 1) {echo 'checked';}?>></td>
+                    <td class='iota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->iota == 1) {echo 'checked';}?>></td>
+                    <td class='sig_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sig == 1) {echo 'checked';}?>></td>
+                    <td class='sota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sota == 1) {echo 'checked';}?>></td>
+                    <td class='uscounties_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->uscounties == 1) {echo 'checked';}?>></td>
+                    <td class='was_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->was == 1) {echo 'checked';}?>></td>
+                    <td class='vucc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->vucc == 1) {echo 'checked';}?>></td>
 					<td>
-						<a href="<?php echo site_url('mode/edit')?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+						<a href="javascript:editBand('<?php echo $band->id ?>');" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
 					</td>
 					<td>
-						<a href="javascript:deleteMode('');" class="btn btn-danger btn-sm" ><i class="fas fa-trash-alt"></i> Delete</a>
+						<a href="javascript:deleteBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-danger btn-sm" ><i class="fas fa-trash-alt"></i> Delete</a>
+                    </td>
+                    <td>
+						<a href="javascript:saveBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-primary btn-sm" ><i class="fas fa-save"></i></i> Save</a>
                     </td>
 				</tr>
 
 				<?php } ?>
 			</tbody>
-			<tfoot>
-				<tr>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-				</tr>
-			</tfoot>
 		<table>
 	</div>
   <br/>

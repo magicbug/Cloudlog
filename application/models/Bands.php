@@ -35,7 +35,7 @@ class Bands extends CI_Model {
 		$this->db->where('bandxuser.active', 1);
 
 		if ($award != 'None') {
-			$this->db->where('bandxuser.".$award', 1);
+			$this->db->where('bandxuser.'.$award, 1);
 		}
 		
 		$result = $this->db->get()->result();
@@ -90,6 +90,7 @@ class Bands extends CI_Model {
 			array_push($worked_slots, strtoupper($row->COL_PROP_MODE));
 		}
 
+		// bring worked-slots in order of defined $bandslots
 		$bandslots = $this->get_user_bands($award);
 
 		$results = array();
@@ -122,12 +123,14 @@ class Bands extends CI_Model {
         }
 
         // bring worked-slots in order of defined $bandslots
-        $results = array();
-        foreach(array_keys($this->bandslots) as $slot) {
-            if(in_array($slot, $worked_slots)) {
-                array_push($results, $slot);
-            }
-        }
+		$bandslots = $this->get_user_bands();
+
+		$results = array();
+		foreach($bandslots as $slot) {
+			if(in_array($slot, $worked_slots)) {
+				array_push($results, $slot);
+			}
+		}
         return $results;
     }
 
@@ -175,16 +178,69 @@ class Bands extends CI_Model {
 			array_push($worked_slots, $row->COL_BAND);
 		}
 
-
 		// bring worked-slots in order of defined $bandslots
+		$bandslots = $this->get_user_bands();
+
 		$results = array();
-		foreach(array_keys($this->bandslots) as $slot) {
+		foreach($bandslots as $slot) {
 			if(in_array($slot, $worked_slots)) {
 				array_push($results, $slot);
 			}
 		}
 		return $results;
 	}
+
+	function activateall() {
+        $data = array(
+            'active' => '1',
+        );
+		$this->db->where('bandxuser.userid', $this->session->userdata('user_id'));
+
+        $this->db->update('bandxuser', $data);
+
+        return true;
+    }
+
+    function deactivateall() {
+        $data = array(
+            'active' => '0',
+        );
+		$this->db->where('bandxuser.userid', $this->session->userdata('user_id'));
+
+        $this->db->update('bandxuser', $data);
+
+        return true;
+    }
+
+	function delete($id) {
+		// Clean ID
+		$clean_id = $this->security->xss_clean($id);
+
+		// Delete Mode
+		$this->db->delete('bandxuser', array('id' => $clean_id)); 
+	}
+
+	function saveBand($id, $band) {
+        $data = array(
+			'active' 	 => $band['status']		== "true" ? '1' : '0',
+			'cq' 		 => $band['cq'] 		== "true" ? '1' : '0',
+			'dok' 		 => $band['dok'] 		== "true" ? '1' : '0',
+			'dxcc' 		 => $band['dxcc'] 		== "true" ? '1' : '0',
+			'iota' 		 => $band['iota'] 		== "true" ? '1' : '0',
+			'sig' 		 => $band['sig'] 		== "true" ? '1' : '0',
+			'sota'		 => $band['sota'] 		== "true" ? '1' : '0',
+			'uscounties' => $band['uscounties'] == "true" ? '1' : '0',
+			'was' 		 => $band['was'] 		== "true" ? '1' : '0',
+			'vucc'		 => $band['vucc'] 		== "true" ? '1' : '0'
+        );
+
+		$this->db->where('bandxuser.userid', $this->session->userdata('user_id'));
+        $this->db->where('bandxuser.id', $id);
+
+        $this->db->update('bandxuser', $data);
+
+        return true;
+    }
 
 }
 
