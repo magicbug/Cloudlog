@@ -31,7 +31,7 @@ function createBandDialog() {
 }
 
 function createBand(form) {
-	if (form.mode.value != '') {
+	if (form.band.value != '') {
 		$.ajax({
 			url: base_url + 'index.php/band/create',
 			type: 'post',
@@ -43,32 +43,6 @@ function createBand(form) {
 			}
 		});
 	}
-}
-
-function deactivateBand(bandid) {
-	$.ajax({
-		url: base_url + 'index.php/band/deactivate',
-		type: 'post',
-		data: { 'id': bandid },
-		success: function (html) {
-			$(".mode_" + modeid).text('not active');
-			$('.btn_' + modeid).html('Activate');
-			$('.btn_' + modeid).attr('onclick', 'activateMode(' + modeid + ')')
-		}
-	});
-}
-
-function activateBand(bandid) {
-	$.ajax({
-		url: base_url + 'index.php/band/activate',
-		type: 'post',
-		data: { 'id': bandid },
-		success: function (html) {
-			$('.mode_' + modeid).text('active');
-			$('.btn_' + modeid).html('Deactivate');
-			$('.btn_' + modeid).attr('onclick', 'deactivateMode(' + modeid + ')')
-		}
-	});
 }
 
 function deleteBand(id, band) {

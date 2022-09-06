@@ -33,13 +33,12 @@ class Band extends CI_Controller {
 		$this->load->model('bands');
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('mode', 'Mode', 'required');
-		$this->form_validation->set_rules('qrgmode', 'QRG-Mode', 'required');
+		$this->form_validation->set_rules('band', 'Band', 'required');
 
 		if ($this->form_validation->run() == FALSE)
 		{
 			$data['page_title'] = "Create Mode";
-			$this->load->view('mode/create', $data);
+			$this->load->view('bands/create', $data);
 		}
 		else
 		{	
