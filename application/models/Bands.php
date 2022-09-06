@@ -179,7 +179,7 @@ class Bands extends CI_Model {
 		}
 
 		// bring worked-slots in order of defined $bandslots
-		$bandslots = $this->get_user_bands();
+		$bandslots = $this->get_user_bands('dok');
 
 		$results = array();
 		foreach($bandslots as $slot) {
