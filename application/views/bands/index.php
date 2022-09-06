@@ -64,7 +64,7 @@
 						<a href="javascript:deleteBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-danger btn-sm" ><i class="fas fa-trash-alt"></i> Delete</a>
                     </td>
                     <td>
-						<a href="javascript:saveBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-primary btn-sm" ><i class="fas fa-save"></i></i> Save</a>
+						<a href="javascript:saveBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-primary btn-sm ld-ext-right btnband_<?php echo $band->id ?>" ><i class="fas fa-save"></i></i> Save<div class="ld ld-ring ld-spin"></div></a>
                     </td>
 				</tr>
 

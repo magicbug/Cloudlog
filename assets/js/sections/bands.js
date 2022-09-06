@@ -141,6 +141,8 @@ function deactivateAllBands() {
 }
 
 function saveBand(id) {
+	$(".btnband_"+id).addClass('running');
+	$(".btnband_"+id).prop('disabled', true);
 	$.ajax({
 		url: base_url + 'index.php/band/saveBand',
 		type: 'post',
@@ -157,7 +159,10 @@ function saveBand(id) {
 			'vucc': $(".vucc_"+id+" input[type='checkbox']").is(":checked")
 		},
 		success: function (html) {
-			// Add an alert to say that it is saved. Vanish after 5 seconds.
+			$(".alert").remove();
+			$('.card-body').prepend('<div class="alert alert-success" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+$(".band_"+id).parent("tr:first").find("td:first").text()+' band has been saved!</div>');
+			$(".btnband_"+id).removeClass('running');
+			$(".btnband_"+id).prop('disabled', false);
 		}
 	});
 }
