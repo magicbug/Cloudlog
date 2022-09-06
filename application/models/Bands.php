@@ -257,6 +257,23 @@ class Bands extends CI_Model {
 		$this->db->query("insert into bandxuser (bandid, userid, active, cq, dok, dxcc, iota, sig, sota, uscounties, was, vucc) 
 		select bands.id, " . $this->session->userdata('user_id') . ", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 from bands where band ='".$data['band']."' and not exists (select 1 from bandxuser where userid = " . $this->session->userdata('user_id') . " and bandid = bands.id);");
 	}
+
+	function getband($id) {
+		$this->db->where('id', $id);
+		return $this->db->get('bands');
+	}
+
+	function saveupdatedband($id, $band) {
+		$data = array(
+			'band' => $band,
+        );
+
+        $this->db->where('bands.id', $id);
+
+        $this->db->update('bands', $data);
+
+        return true;
+	}
 }
 
 ?>

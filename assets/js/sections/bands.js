@@ -15,7 +15,7 @@ function createBandDialog() {
 		success: function (html) {
 			BootstrapDialog.show({
 				title: 'Create band',
-				size: BootstrapDialog.SIZE_WIDE,
+				size: BootstrapDialog.SIZE_NORMAL,
 				cssClass: 'create-band-dialog',
 				nl2br: false,
 				message: html,
@@ -31,11 +31,59 @@ function createBandDialog() {
 }
 
 function createBand(form) {
-	if (form.band.value != '') {
+	$(".alert").remove();
+	if (form.band.value == "") {
+		$('#create_mode').prepend('<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Please enter a band!</div>');
+	}
+	else {
 		$.ajax({
 			url: base_url + 'index.php/band/create',
 			type: 'post',
 			data: {
+				'band': form.band.value
+			},
+			success: function (html) {
+				location.reload();
+			}
+		});
+	}
+}
+
+function editBandDialog(id) {
+	$.ajax({
+		url: base_url + 'index.php/band/edit',
+		type: 'post',
+		data: {
+			'id': id
+		},
+		success: function (html) {
+			BootstrapDialog.show({
+				title: 'Edit band',
+				size: BootstrapDialog.SIZE_NORMAL,
+				cssClass: 'edit-band-dialog',
+				nl2br: false,
+				message: html,
+				buttons: [{
+					label: 'Close',
+					action: function (dialogItself) {
+						dialogItself.close();
+					}
+				}]
+			});
+		}
+	});
+}
+
+function saveUpdatedBand(form) {
+	$(".alert").remove();
+	if (form.band.value == "") {
+		$('#edit_band_dialog').prepend('<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Please enter a band!</div>');
+	}
+	else {
+		$.ajax({
+			url: base_url + 'index.php/band/saveupdatedband',
+			type: 'post',
+			data: {'id': form.id.value,  
 				'band': form.band.value
 			},
 			success: function (html) {
@@ -62,7 +110,7 @@ function deleteBand(id, band) {
 						'id': id
 					},
 					success: function (data) {
-						$(".band_" + id).parent("tr:first").remove(); // removes mode from table
+						$(".band_" + id).parent("tr:first").remove(); // removes band from table
 					}
 				});
 			}

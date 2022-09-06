@@ -46,37 +46,30 @@ class Band extends CI_Controller {
 		}
 	}
 
-	public function edit($id)
+	public function edit()
 	{
-		$this->load->library('form_validation');
-
 		$this->load->model('bands');
 
-		$item_id_clean = $this->security->xss_clean($id);
+		$item_id_clean = $this->security->xss_clean($this->input->post('id'));
 
-		$mode_query = $this->bands->mode($item_id_clean);
+		$band_query = $this->bands->getband($item_id_clean);
 
-		$data['my_mode'] = $mode_query->row();
+		$data['my_band'] = $band_query->row();
 		
-		$data['page_title'] = "Edit Mode";
+		$data['page_title'] = "Edit Band";
 
-		$this->form_validation->set_rules('mode', 'Mode', 'required');
-		$this->form_validation->set_rules('qrgmode', 'QRG-Mode', 'required');
-		
-        if ($this->form_validation->run() == FALSE)
-        {
-        	$this->load->view('interface_assets/header', $data);
-            $this->load->view('mode/edit');
-            $this->load->view('interface_assets/footer');
-        }
-        else
-        {
-            $this->bands->edit();
+        $this->load->view('bands/edit', $data);
+	}
 
-            $data['notice'] = "Mode ".$this->security->xss_clean($this->input->post('mode', true))." Updated";
+	public function saveupdatedband() {
+		$this->load->model('bands');
 
-            redirect('mode');
-        }
+		$id = $this->security->xss_clean($this->input->post('id', true));
+		$band = $this->security->xss_clean($this->input->post('band', true));
+
+        $this->bands->saveupdatedband($id, $band);
+		echo json_encode(array('message' => 'OK'));
+        return;
 	}
 
 	public function delete() {
