@@ -33,12 +33,11 @@ class Map extends CI_Controller {
 
     function custom()
 	{
-
 		$this->load->model('bands');
-        //$this->load->model('modes');
+        $this->load->model('modes');
 
         $data['worked_bands'] = $this->bands->get_worked_bands(); // Used in the view for band select
-        //$data['modes'] = $this->modes->active(); // Used in the view for mode select
+		$data['modes'] = $this->modes->active(); 					// Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   			// Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {          // Did the user specify a band? If not, use all bands
@@ -108,11 +107,13 @@ class Map extends CI_Controller {
         $start_date = $this->uri->segment(3);
         $end_date = $this->uri->segment(4);
 		$band = $this->uri->segment(5);
+		$mode = $this->uri->segment(6);
+		$propagation = $this->uri->segment(7);
 		$this->load->model('logbook_model');
 
 		$this->load->library('qra');
 
-		$qsos = $this->logbook_model->map_custom_qsos(rawurldecode($start_date), rawurldecode($end_date), $band);
+		$qsos = $this->logbook_model->map_custom_qsos(rawurldecode($start_date), rawurldecode($end_date), $band, rawurldecode($mode), rawurldecode($propagation));
 		header('Content-Type: application/json; charset=utf-8');
 		echo "{\"markers\": [";
 		$count = 1;
