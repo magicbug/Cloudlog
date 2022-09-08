@@ -20,6 +20,12 @@ class Migration_add_band_bandxuser extends CI_Migration {
                     'constraint' => 20,
                     'unsigned' => TRUE,
                     'auto_increment' => FALSE
+                ),
+                'bandgroup' => array(
+                    'type' => 'VARCHAR',
+                    'constraint' => 20,
+                    'unsigned' => TRUE,
+                    'auto_increment' => FALSE
                 )
             ));
 
@@ -27,29 +33,29 @@ class Migration_add_band_bandxuser extends CI_Migration {
 
             $this->dbforge->create_table('bands');
 
-            $this->db->query("INSERT INTO bands (band) values ('160m');");
-            $this->db->query("INSERT INTO bands (band) values ('80m');");
-            $this->db->query("INSERT INTO bands (band) values ('60m');");
-            $this->db->query("INSERT INTO bands (band) values ('40m');");
-            $this->db->query("INSERT INTO bands (band) values ('30m');");
-            $this->db->query("INSERT INTO bands (band) values ('20m');");
-            $this->db->query("INSERT INTO bands (band) values ('17m');");
-            $this->db->query("INSERT INTO bands (band) values ('15m');");
-            $this->db->query("INSERT INTO bands (band) values ('12m');");
-            $this->db->query("INSERT INTO bands (band) values ('10m');");
-            $this->db->query("INSERT INTO bands (band) values ('6m');");
-            $this->db->query("INSERT INTO bands (band) values ('4m');");
-            $this->db->query("INSERT INTO bands (band) values ('2m');");
-            $this->db->query("INSERT INTO bands (band) values ('1.25m');");
-            $this->db->query("INSERT INTO bands (band) values ('70cm');");
-            $this->db->query("INSERT INTO bands (band) values ('33cm');");
-            $this->db->query("INSERT INTO bands (band) values ('23cm');");
-            $this->db->query("INSERT INTO bands (band) values ('13cm');");
-            $this->db->query("INSERT INTO bands (band) values ('9cm');");
-            $this->db->query("INSERT INTO bands (band) values ('6cm');");
-            $this->db->query("INSERT INTO bands (band) values ('3cm');");
-            $this->db->query("INSERT INTO bands (band) values ('1.25cm');");
-            $this->db->query("INSERT INTO bands (band) values ('SAT');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('160m', 'hf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('80m', 'hf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('60m', 'hf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('40m', 'hf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('30m', 'hf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('20m', 'hf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('17m', 'hf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('15m', 'hf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('12m', 'hf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('10m', 'hf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('6m', 'vhf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('4m', 'vhf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('2m', 'vhf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('1.25m', 'vhf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('70cm', 'uhf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('33cm', 'uhf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('23cm', 'shf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('13cm', 'shf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('9cm', 'shf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('6cm', 'shf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('3cm', 'shf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('1.25cm', 'shf');");
+            $this->db->query("INSERT INTO bands (band, bandgroup) values ('SAT', 'sat');");
         }
 
         if (!$this->db->table_exists('bandxuser')) {
