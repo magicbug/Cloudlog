@@ -23,11 +23,11 @@
 	</p>
     <div class="table-responsive">
 		
-    <table style="width:100%" class="bandtable table table-striped">
+    <table style="width:100%" class="bandtable table table-sm table-striped">
 			<thead>
 				<tr>
+					<th></th>
 					<th>Band</th>
-					<th>Active</th>
 					<th>CQ</th>
                     <th>DOK</th>
                     <th>DXCC</th>
@@ -37,6 +37,10 @@
                     <th>US Counties</th>
                     <th>WAS</th>
                     <th>VUCC</th>
+					<th>Bandgroup</th>
+					<th>SSB QRG</th>
+					<th>DATA QRG</th>
+					<th>CW QRG</th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -46,8 +50,8 @@
 			<tbody>
 				<?php foreach ($bands as $band) { ?>
 				<tr>
-					<td><?php echo $band->band;?></td>
                     <td class='band_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->active == 1) {echo 'checked';}?>></td>
+					<td><?php echo $band->band;?></td>
 					<td class='cq_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->cq == 1) {echo 'checked';}?>></td>
                     <td class='dok_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dok == 1) {echo 'checked';}?>></td>
                     <td class='dxcc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dxcc == 1) {echo 'checked';}?>></td>
@@ -57,14 +61,18 @@
                     <td class='uscounties_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->uscounties == 1) {echo 'checked';}?>></td>
                     <td class='was_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->was == 1) {echo 'checked';}?>></td>
                     <td class='vucc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->vucc == 1) {echo 'checked';}?>></td>
+					<td><?php echo $band->bandgroup;?></td>
+					<td><?php echo $band->ssb;?></td>
+					<td><?php echo $band->data;?></td>
+					<td><?php echo $band->cw;?></td>
 					<td>
-						<a href="javascript:editBandDialog('<?php echo $band->bandid ?>');" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+						<a href="javascript:editBandDialog('<?php echo $band->bandid ?>');" class="btn btn-outline-primary btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
 					</td>
 					<td>
-						<a href="javascript:deleteBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-danger btn-sm" ><i class="fas fa-trash-alt"></i> Delete</a>
+						<a href="javascript:deleteBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash-alt"></i></a>
                     </td>
                     <td>
-						<a href="javascript:saveBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-primary btn-sm ld-ext-right btnband_<?php echo $band->id ?>" ><i class="fas fa-save"></i></i> Save<div class="ld ld-ring ld-spin"></div></a>
+						<a href="javascript:saveBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-primary btn-sm ld-ext-right btnband_<?php echo $band->id ?>" title="Save band"><i class="fas fa-save"></i></i><div class="ld ld-ring ld-spin"></div></a>
                     </td>
 				</tr>
 

@@ -65,7 +65,11 @@ class Band extends CI_Controller {
 		$this->load->model('bands');
 
 		$id = $this->security->xss_clean($this->input->post('id', true));
-		$band = $this->security->xss_clean($this->input->post('band', true));
+		$band['band'] 		= $this->security->xss_clean($this->input->post('band', true));
+		$band['bandgroup'] 	= $this->security->xss_clean($this->input->post('bandgroup', true));
+		$band['ssbqrg'] 	= $this->security->xss_clean($this->input->post('ssbqrg', true));
+		$band['dataqrg'] 	= $this->security->xss_clean($this->input->post('dataqrg', true));
+		$band['cwqrg'] 		= $this->security->xss_clean($this->input->post('cwqrg', true));
 
         $this->bands->saveupdatedband($id, $band);
 		echo json_encode(array('message' => 'OK'));

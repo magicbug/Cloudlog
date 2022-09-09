@@ -262,7 +262,11 @@ class Bands extends CI_Model {
 
 	function add() {
 		$data = array(
-			'band' => xss_clean($this->input->post('band', true)),
+			'band' 		=> xss_clean($this->input->post('band', true)),
+			'bandgroup' => xss_clean($this->input->post('bandgroup', true)),
+			'ssb'	 	=> xss_clean($this->input->post('ssbqrg', true)),
+			'data' 		=> xss_clean($this->input->post('dataqrg', true)),
+			'cw' 		=> xss_clean($this->input->post('cwqrg', true)),
 		);
 
 		$this->db->where('band', xss_clean($this->input->post('band', true)));
@@ -283,7 +287,11 @@ class Bands extends CI_Model {
 
 	function saveupdatedband($id, $band) {
 		$data = array(
-			'band' => $band,
+			'band' 		=> $band['band'],
+			'bandgroup' => $band['bandgroup'],
+			'ssb'	 	=> $band['ssbqrg'],
+			'data' 		=> $band['dataqrg'],
+			'cw' 		=> $band['cwqrg'],
         );
 
         $this->db->where('bands.id', $id);
