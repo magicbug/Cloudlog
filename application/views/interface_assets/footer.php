@@ -721,7 +721,7 @@ function getLookupResult() {
         var q_lng = -32.695312;
         <?php } ?>
 
-        var qso_loc = '<?php echo site_url('map/map_data_custom/');?><?php echo rawurlencode($date_from); ?>/<?php echo rawurlencode($date_to); ?>/<?php echo rawurlencode($this->input->post('band')); ?>';
+        var qso_loc = '<?php echo site_url('map/map_data_custom/');?><?php echo rawurlencode($date_from); ?>/<?php echo rawurlencode($date_to); ?>/<?php echo rawurlencode($this->input->post('band')); ?>/<?php echo rawurlencode($this->input->post('mode')); ?>/<?php echo rawurlencode($this->input->post('prop_mode')); ?>';
         var q_zoom = 3;
 
       $(document).ready(function(){
