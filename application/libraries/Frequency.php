@@ -100,7 +100,21 @@ class Frequency {
 		  $mode= "DATA";
 		}
 
-		return $this->defaultFrequencies[$band][$mode];
+		return $this->getDefaultFrequency($band, $mode);
+	}
+
+	function getDefaultFrequency($band, $mode) {
+		$CI =& get_instance();
+		$db =& $CI->db;
+
+		$db->from('bands');
+		$db->where('bands.band', $band);
+
+		$result = $db->get()->row();
+
+		$mode = strtolower($mode);
+
+		return $result->$mode;
 	}
 
 	public function GetBand($Frequency) {
