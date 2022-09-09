@@ -40,7 +40,11 @@ function createBand(form) {
 			url: base_url + 'index.php/band/create',
 			type: 'post',
 			data: {
-				'band': form.band.value
+				'band': form.band.value,
+				'bandgroup': form.bandgroup.value,
+				'ssbqrg': form.ssbqrg.value,
+				'dataqrg': form.dataqrg.value,
+				'cwqrg': form.cwqrg.value
 			},
 			success: function (html) {
 				location.reload();
@@ -84,7 +88,11 @@ function saveUpdatedBand(form) {
 			url: base_url + 'index.php/band/saveupdatedband',
 			type: 'post',
 			data: {'id': form.id.value,  
-				'band': form.band.value
+				'band': form.band.value,
+				'bandgroup': form.bandgroup.value,
+				'ssbqrg': form.ssbqrg.value,
+				'dataqrg': form.dataqrg.value,
+				'cwqrg': form.cwqrg.value
 			},
 			success: function (html) {
 				location.reload();

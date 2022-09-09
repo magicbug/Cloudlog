@@ -49,11 +49,13 @@ class Bands extends CI_Model {
 		return $results;
 	}
 
-	function get_user_bands_for_qso_entry() {
+	function get_user_bands_for_qso_entry($includeall = false) {
 		$this->db->from('bands');
 		$this->db->join('bandxuser', 'bandxuser.bandid = bands.id');
 		$this->db->where('bandxuser.userid', $this->session->userdata('user_id'));
-		$this->db->where('bandxuser.active', 1);
+		if (!$includeall) {
+			$this->db->where('bandxuser.active', 1);
+		}
 		$this->db->where('bands.bandgroup != "sat"');
 
 		$result = $this->db->get()->result();

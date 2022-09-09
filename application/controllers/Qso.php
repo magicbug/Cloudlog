@@ -20,7 +20,6 @@ class QSO extends CI_Controller {
 
 	public function index()
 	{
-
 		$this->load->model('cat');
 		$this->load->model('stations');
 		$this->load->model('logbook_model');
@@ -39,7 +38,6 @@ class QSO extends CI_Controller {
 		$data['iota'] = $this->logbook_model->fetchIota();
 		$data['modes'] = $this->modes->active();
         $data['bands'] = $this->bands->get_user_bands_for_qso_entry();
-
 
 		$this->load->library('form_validation');
 
@@ -157,6 +155,7 @@ class QSO extends CI_Controller {
         $this->load->model('logbook_model');
         $this->load->model('user_model');
         $this->load->model('modes');
+        $this->load->model('bands');
 		$this->load->model('contesting_model');
 
         $this->load->library('form_validation');
@@ -172,6 +171,7 @@ class QSO extends CI_Controller {
         $data['dxcc'] = $this->logbook_model->fetchDxcc();
         $data['iota'] = $this->logbook_model->fetchIota();
         $data['modes'] = $this->modes->all();
+        $data['bands'] = $this->bands->get_user_bands_for_qso_entry(true);
         $data['contest'] = $this->contesting_model->getActivecontests();
 
         $this->load->view('qso/edit_ajax', $data);
