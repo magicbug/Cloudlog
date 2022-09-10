@@ -50,6 +50,7 @@ class Dashboard extends CI_Controller {
 
 			// 
 			$this->load->model('cat');
+			$this->load->model('vucc');
 
 			$data['radio_status'] = $this->cat->recent_status();
 
@@ -80,6 +81,8 @@ class Dashboard extends CI_Controller {
 			$data['total_lotw_recv'] = $QSLStatsBreakdownArray['LoTW_Received'];
 
 			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18', $logbooks_locations_array);
+
+			$data['vucc'] = $this->vucc->fetchVuccSummary();
 
 			$data['page_title'] = "Dashboard";
 

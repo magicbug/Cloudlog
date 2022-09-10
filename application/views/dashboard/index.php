@@ -261,6 +261,25 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			</tr>
 		</table>
 		<?php } ?>
+
+		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE)) { ?>
+    	 <table class="table table-striped">
+        <tr class="titles">
+            <td colspan="2"><i class="fas fa-globe-europe"></i> VHF/UHF Century Club (VUCC)</td>
+        </tr>
+
+        <tr>
+            <td width="50%">Worked</td>
+            <td width="50%"><?php echo $vucc['All']['worked']; ?></td>
+        </tr>
+
+        <tr>
+            <td width="50%">Confirmed</td>
+            <td width="50%"><?php echo $vucc['All']['confirmed']; ?></td>
+        </tr>
+
+    </table>
+    <?php } ?>
 	</div>
   </div>
 </div>
