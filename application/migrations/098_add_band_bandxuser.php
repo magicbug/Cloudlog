@@ -70,7 +70,7 @@ class Migration_add_band_bandxuser extends CI_Migration {
             $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('6cm', 'shf', '5670000000', '5670000000', '5670000000');");
             $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('3cm', 'shf', '10225000000', '10225000000', '10225000000');");
             $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('1.25cm', 'shf', '24000000000', '24000000000', '240000000000');");
-            $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('SAT', 'sat', '', '', '');");
+            $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('SAT', 'sat', 0, 0, 0);");
         }
 
         if (!$this->db->table_exists('bandxuser')) {
