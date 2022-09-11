@@ -79,6 +79,7 @@
 							<a href="<?php echo site_url('station/claim_user')."/".$row->station_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-user-plus"></i> Claim Ownership</a>
 						<?php } ?>
 						<a href="<?php echo site_url('station/edit')."/".$row->station_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+						<a href="<?php echo site_url('station/copy')."/".$row->station_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-copy"></i> Copy</a>
 					</td>
                     <td>
                         <a href="<?php echo site_url('station/deletelog')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i> Empty Log</a></td>
