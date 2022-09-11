@@ -12,9 +12,20 @@ class Clublog extends CI_Controller {
 	}
 
 	// Upload ADIF to Clublog
-	public function upload($username) {
+	public function upload() {
+		$this->load->model('clublog_model');
 
+		$users = $this->clublog_model->get_clublog_users();
+
+		foreach ($users as $user) {
+			$this->uploadUser($user->user_id, $user->user_clublog_name, $user->user_clublog_password);
+		}
+	}
+
+	function uploadUser($userid, $username, $password) {
 		$clean_username = $this->security->xss_clean($username);
+		$clean_passord = $this->security->xss_clean($password);
+		$clean_userid = $this->security->xss_clean($userid);
 
 		$this->config->load('config');
 		ini_set('memory_limit', '-1');
@@ -24,27 +35,15 @@ class Clublog extends CI_Controller {
 
 		$this->load->helper('file');
 
-		$this->load->model('logbook_model');
-
-		$this->load->model('stations');
-
 		$this->load->model('clublog_model');
 
-		$clublog_info = $this->clublog_model->get_clublog_auth_info($clean_username);
-
-		if(!isset($clublog_info['user_name'])) {
-			echo "Username unknown";
-			exit;
-		}
-
-
-		$station_profiles = $this->stations->all_with_count();
+		$station_profiles = $this->clublog_model->all_with_count($clean_userid);
 
 		if($station_profiles->num_rows()){
 			foreach ($station_profiles->result() as $station_row)
 			{
 				if($station_row->qso_total > 0) {
-					$data['qsos'] = $this->logbook_model->get_clublog_qsos($station_row->station_id);
+					$data['qsos'] = $this->clublog_model->get_clublog_qsos($station_row->station_id);
 
 					if($data['qsos']->num_rows()){
 						$string = $this->load->view('adif/data/clublog', $data, TRUE);
@@ -79,8 +78,8 @@ class Clublog extends CI_Controller {
 							    $request,
 							    CURLOPT_POSTFIELDS,
 							    array(
-							      'email' => $clublog_info['user_clublog_name'],
-							      'password' => $clublog_info['user_clublog_password'],
+							      'email' => $clean_username,
+							      'password' => $clean_passord,
 							      'callsign' => $station_row->station_callsign,
 							      'api' => "a11c3235cd74b88212ce726857056939d52372bd",
 							      'file' => $cFile
