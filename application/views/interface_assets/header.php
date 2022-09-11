@@ -65,15 +65,15 @@
         	<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">QSO</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="<?php echo site_url('qso?manual=0');?>" title="Log Live QSOs">Live QSO</a>
+							<a class="dropdown-item" href="<?php echo site_url('qso?manual=0');?>" title="Log Live QSOs"><i class="fas fa-list"></i> Live QSO</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('qso?manual=1');?>" title="Log QSO made in the past">Post QSO</a>
+							<a class="dropdown-item" href="<?php echo site_url('qso?manual=1');?>" title="Log QSO made in the past"><i class="fas fa-list"></i> Post QSO</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('contesting?manual=0');?>" title="Live contest QSOs">Live Contest Logging</a>
+							<a class="dropdown-item" href="<?php echo site_url('contesting?manual=0');?>" title="Live contest QSOs"><i class="fas fa-list"></i> Live Contest Logging</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('contesting?manual=1');?>" title="Post contest QSOs">Post Contest Logging</a>
+							<a class="dropdown-item" href="<?php echo site_url('contesting?manual=1');?>" title="Post contest QSOs"><i class="fas fa-list"></i> Post Contest Logging</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('qsl');?>" title="QSL"> View QSL</a>
+							<a class="dropdown-item" href="<?php echo site_url('qsl');?>" title="QSL"><i class="fa fa-id-card"></i> View QSL</a>
 						</div>
         	</li>
 
@@ -86,11 +86,11 @@
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="<?php echo site_url('statistics');?>" title="Statistics"><i class="fas fa-chart-area"></i> Statistics</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="<?php echo site_url('gridsquares');?>" title="Gridsquares"><i class="fas fa-chart-area"></i> Gridsquares</a>
+					<a class="dropdown-item" href="<?php echo site_url('gridsquares');?>" title="Gridsquares"><i class="fas fa-globe-europe"></i> Gridsquares</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('activated_grids');?>" title="Activated Gridsquares"><i class="fas fa-chart-area"></i> Activated Gridsquares</a>
+                    <a class="dropdown-item" href="<?php echo site_url('activated_grids');?>" title="Activated Gridsquares"><i class="fas fa-globe-europe"></i> Activated Gridsquares</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('activators');?>" title="Gridsquare Activators"><i class="fas fa-chart-area"></i> Gridsquare Activators</a>
+                    <a class="dropdown-item" href="<?php echo site_url('activators');?>" title="Gridsquare Activators"><i class="fas fa-globe-europe"></i> Gridsquare Activators</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('distances');?>" title="Distances"><i class="fas fa-chart-area"></i> Distances Worked</a>
                     <div class="dropdown-divider"></div>
@@ -102,7 +102,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('timeplotter');?>" title="View time when worked"><i class="fas fa-chart-area"></i> Timeplotter</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="<?php echo site_url('map/custom');?>" title="Custom Maps of QSOs"><i class="fas fa-chart-area"></i> Custom Maps</a>
+					<a class="dropdown-item" href="<?php echo site_url('map/custom');?>" title="Custom Maps of QSOs"><i class="fas fa-globe-europe"></i> Custom Maps</a>
 				</div>
         	</li>
 
