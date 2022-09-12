@@ -1045,18 +1045,6 @@ class Logbook_model extends CI_Model {
     return $this->db->get();
   }
 
-  function get_clublog_qsos($station_id){
-    $this->db->where($this->config->item('table_name').'.station_id', $station_id);
-    $this->db->where("COL_CLUBLOG_QSO_UPLOAD_STATUS", null);
-    $this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "");
-    $this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "N");
-    $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-
-    $query = $this->db->get($this->config->item('table_name'));
-
-    return $query;
-  }
-
     /*
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to qrz, or has been modified with an edit
      */

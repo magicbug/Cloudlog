@@ -240,6 +240,23 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
+	/*
+		Handles showing worked WWFFs
+		Comment field - WWFF:#
+	*/
+	public function wwff() {
+
+		// Grab all worked wwff stations
+		$this->load->model('wwff');
+		$data['wwff_all'] = $this->wwff->get_all();
+
+		// Render page
+		$data['page_title'] = "Awards - WWFF";
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('awards/wwff/index');
+		$this->load->view('interface_assets/footer');
+	}
+
 	public function cq() {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
