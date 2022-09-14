@@ -10,7 +10,7 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 <CERT_UID:1>1
 <CERTIFICATE:<?php echo strlen(trim($cert2)) + 1; ?>><?php echo trim($cert2); ?>
 
-<eor>
+<EOR
 
 <Rec_Type:8>tSTATION
 <STATION_UID:1>1
@@ -33,7 +33,7 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 <?php if($station_profile->station_cnty != ""  && $station_profile->station_country == "UNITED STATES OF AMERICA") { ?><US_COUNTY:<?php echo strlen($station_profile->station_cnty); ?>><?php echo $station_profile->station_cnty; ?><?php } ?>
 
-<eor>
+<EOR>
 
 <?php foreach ($qsos->result() as $qso) { ?>
 <Rec_Type:8>tCONTACT
@@ -160,7 +160,7 @@ if($qso->COL_SAT_NAME) {
 
 <SIGNDATA:<?php echo strlen($sign_string); ?>><?php echo $sign_string; ?>
 
-<eor>
+<EOR>
 
 <?php } ?>
 

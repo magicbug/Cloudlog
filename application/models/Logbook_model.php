@@ -496,7 +496,7 @@ class Logbook_model extends CI_Model {
 
   /*
    * Function uploads a QSO to QRZ with the API given.
-   * $adif contains a line with the QSO in the ADIF format. QSO ends with an <eor>
+   * $adif contains a line with the QSO in the ADIF format. QSO ends with an <EOR>
    */
   function push_qso_to_qrz($apikey, $adif, $replaceoption = false) {
       $url = 'http://logbook.qrz.com/api'; // TODO: Move this to database
