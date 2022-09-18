@@ -1422,12 +1422,13 @@ class Logbook_model extends CI_Model {
       if (!$logbooks_locations_array) {
         return null;
       }
+      $mode[] = 'SSB';
+      $mode[] = 'LSB';
+      $mode[] = 'USB';
 
       $this->db->select('COUNT( * ) as count', FALSE);
       $this->db->where_in('station_id', $logbooks_locations_array);
-      $this->db->where('COL_MODE', 'SSB');
-      $this->db->or_where('COL_MODE', 'LSB');
-      $this->db->or_where('COL_MODE', 'USB');
+      $this->db->where_in('COL_MODE', $mode);
 
       $query = $this->db->get($this->config->item('table_name'));
 
@@ -1558,7 +1559,7 @@ class Logbook_model extends CI_Model {
         return null;
       }
 
-      $this->db->select('DISTINCT (COL_BAND) AS band, count( * ) AS count', FALSE);
+      $this->db->select('COL_BAND AS band, count( * ) AS count', FALSE);
       $this->db->where_in('station_id', $logbooks_locations_array);
       $this->db->group_by('band');
       $this->db->order_by('count', 'DESC');

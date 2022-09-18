@@ -2,7 +2,6 @@
 
 class Statistics extends CI_Controller {
 
-
 	public function index()
 	{
         $this->load->model('user_model');
@@ -13,30 +12,7 @@ class Statistics extends CI_Controller {
             } else {
                 redirect('user/login');
             }
-        }
-			
-		// Database connections
-		$this->load->model('logbook_model');
-
-		// Store info
-		$data['todays_qsos'] = $this->logbook_model->todays_qsos();
-		$data['total_qsos'] = $this->logbook_model->total_qsos();
-		$data['month_qsos'] = $this->logbook_model->month_qsos();
-		$data['year_qsos'] = $this->logbook_model->year_qsos();
-
-		$data['total_ssb'] = $this->logbook_model->total_ssb();
-		$data['total_cw'] = $this->logbook_model->total_cw();
-		$data['total_fm'] = $this->logbook_model->total_fm();
-		$data['total_digi'] = $this->logbook_model->total_digi();
-		
-		$data['total_bands'] = $this->logbook_model->total_bands();
-		
-		$data['total_sat'] = $this->logbook_model->total_sat();
-		
-		$data['page_title'] = "Statistics"; 
-				
-		$data['totals_year'] = $this->logbook_model->totals_year();
-	
+        }	
 		// Render User Interface
 
 		// Set Page Title
@@ -90,5 +66,84 @@ class Statistics extends CI_Controller {
 			$this->load->view('interface_assets/footer');
 		}
 	
+	}
+
+	public function get_year() {
+		$this->load->model('logbook_model');
+
+		// get data
+		$totals_year = $this->logbook_model->totals_year();
+
+		$yearstats = array();
+		
+		$i = 0;
+		if ($totals_year) {
+			foreach($totals_year->result() as $qso_numbers) {
+				$yearstats[$i]['year'] = $qso_numbers->year;
+				$yearstats[$i++]['total'] = $qso_numbers->total;
+			}
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode($yearstats);
+	}
+
+	public function get_mode() {
+		$this->load->model('logbook_model');
+
+		$modestats = array();
+		
+		$i = 0;
+		$modestats[$i]['mode'] = 'ssb';
+		$modestats[$i++]['total'] = $this->logbook_model->total_ssb();
+		$modestats[$i]['mode'] = 'cw';
+		$modestats[$i++]['total'] = $this->logbook_model->total_cw();
+		$modestats[$i]['mode'] = 'fm';
+		$modestats[$i++]['total'] = $this->logbook_model->total_fm();
+		$modestats[$i]['mode'] = 'digi';
+		$modestats[$i]['total'] = $this->logbook_model->total_digi();
+		
+		header('Content-Type: application/json');
+
+		echo json_encode($modestats);
+	}
+
+	public function get_band() {
+		$this->load->model('logbook_model');
+
+		$bandstats = array();
+
+		$total_bands = $this->logbook_model->total_bands();
+		
+		$i = 0;
+		
+		if ($total_bands) {
+			foreach($total_bands->result() as $qso_numbers) {
+				$bandstats[$i]['band'] = $qso_numbers->band;
+				$bandstats[$i++]['count'] = $qso_numbers->count;
+			}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode($bandstats);
+	}
+
+	public function get_sat() {
+		$this->load->model('logbook_model');
+
+		$satstats = array();
+
+		$total_sat = $this->logbook_model->total_sat();
+		$i = 0;
+		
+		if ($total_sat) {
+			foreach($total_sat->result() as $qso_numbers) {
+				$satstats[$i]['sat'] = $qso_numbers->COL_SAT_NAME;
+				$satstats[$i++]['count'] = $qso_numbers->count;
+			}
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode($satstats);
 	}
 }
