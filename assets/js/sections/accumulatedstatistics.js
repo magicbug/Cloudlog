@@ -84,25 +84,28 @@ function accumulatePlot(form) {
 							backgroundColor: 'rgba(54, 162, 235, 0.2)',
 							borderColor: 'rgba(54, 162, 235, 1)',
 							borderWidth: 2,
+							color: color
 						}]
 					},
 					options: {
 						scales: {
-							yAxes: [{
+							y: {
 								ticks: {
 									beginAtZero: true,
-									fontColor: color
+									color: color
 								}
-							}],
-							xAxes: [{
+							},
+							x: {
 								ticks: {
-									fontColor: color
+									color: color
 								}
-							}]
+							}
 						},
-						legend: {
-							labels: {
-								fontColor: color
+						plugins: {
+							legend: {
+								labels: {
+									color: color
+								}
 							}
 						}
 					}
