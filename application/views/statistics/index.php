@@ -38,7 +38,7 @@
 
 		<div class="tab-pane fade" id="satellite" role="tabpanel" aria-labelledby="satellite-tab">
 		<br/>	
-		<div style="display: flex;" id="satContainer"><div style="flex: 1;"><canvas id="satChart" width="600" height="600"></canvas></div><div style="flex: 1;" id="satTable">
+		<div style="display: flex;" id="satContainer"><div style="flex: 1;"><canvas id="satChart" width="500" height="500"></canvas></div><div style="flex: 1;" id="satTable">
 			
 			<table style="width:100%" class="sattable table table-sm table-bordered table-hover table-striped table-condensed text-center"><thead>
                 <tr>

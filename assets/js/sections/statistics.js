@@ -258,7 +258,7 @@ function totalBandQsos() {
         success: function (data) {
             if (data.length > 0) {
                
-                $(".band").append('<br /><div style="display: flex;" id="bandContainer"><h2>Bands</h2><div style="flex: 1;"><canvas id="bandChart" width="600" height="600"></canvas></div><div style="flex: 1;" id="bandTable"></div></div><br />');
+                $(".band").append('<br /><div style="display: flex;" id="bandContainer"><h2>Bands</h2><div style="flex: 1;"><canvas id="bandChart" width="500" height="500"></canvas></div><div style="flex: 1;" id="bandTable"></div></div><br />');
 
                 // appending table to hold the data
                 $("#bandTable").append('<table style="width:100%" class="bandtable table table-sm table-bordered table-hover table-striped table-condensed text-center"><thead>' +
@@ -316,7 +316,7 @@ function totalBandQsos() {
                     },
                     options: {
                         layout: {
-                            padding: 150
+                            padding: 100
                         },
                         title: {
                             fontColor: color,
@@ -447,7 +447,7 @@ function totalSatQsos() {
 
                     options: {
                         layout: {
-                            padding: 150
+                            padding: 100
                         },
                         title: {
                             fontColor: color,
