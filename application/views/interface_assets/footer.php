@@ -2255,6 +2255,10 @@ $(document).ready(function(){
 		<script src="<?php echo base_url(); ?>assets/js/sections/mode.js"></script>
     <?php } ?>
 
+    <?php if ($this->uri->segment(1) == "band") { ?>
+		<script src="<?php echo base_url(); ?>assets/js/sections/bands.js"></script>
+    <?php } ?>
+
 <?php if ($this->uri->segment(1) == "accumulated") { ?>
     <script src="<?php echo base_url(); ?>assets/js/chart.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/sections/accumulatedstatistics.js"></script>

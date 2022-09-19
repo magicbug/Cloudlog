@@ -313,7 +313,8 @@ class Gridsquares extends CI_Controller {
 		$data['grid_4char'] = js_array($array_grid_4char);
 		$data['grid_6char'] = js_array($array_grid_6char);
 
-		$data['bands_available'] = js_array($this->config->item('bands_available'));
+		$this->load->model('bands');
+        $data['bands_available'] = js_array($this->bands->get_worked_bands());
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('gridsquares/index.php');

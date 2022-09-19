@@ -11,7 +11,12 @@ class Sota extends CI_Model {
             return null;
         }
 
+		$this->load->model('bands');
+
+		$bandslots = $this->bands->get_worked_bands('sota');
+
 		$this->db->where_in("station_id", $logbooks_locations_array);
+		$this->db->where_in("col_band", $bandslots);
 		$this->db->order_by("COL_SOTA_REF", "ASC");
 		$this->db->where('COL_SOTA_REF !=', '');
 
