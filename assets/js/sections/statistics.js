@@ -271,6 +271,7 @@ function totalBandQsos() {
                     '<tbody></tbody></table>');
                 var labels = [];
                 var dataQso = [];
+                var totalQso = Number(0);
 
                 var $myTable = $('.bandtable');
                 var i = 1;
@@ -295,6 +296,7 @@ function totalBandQsos() {
                 $.each(data, function () {
                     labels.push(this.band);
                     dataQso.push(this.count);
+                    totalQso = Number(totalQso) + Number(this.count);
                 });
 
                 const COLORS = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499"]
@@ -336,6 +338,9 @@ function totalBandQsos() {
                                 align: "middle"
                             },
                             outlabels: {
+                                display: function(context) { // Hide labels with low percentage
+                                    return ((context.dataset.data[context.dataIndex] / totalQso * 100) > 1)
+                                },
                                 backgroundColor: COLORS,
                                 borderColor: COLORS,
                                 borderRadius: 2, // Border radius of Label
@@ -395,6 +400,7 @@ function totalSatQsos() {
 
                 var labels = [];
                 var dataQso = [];
+                var totalQso = Number(0);
 
                 var $myTable = $('.sattable');
                 var i = 1;
@@ -419,6 +425,7 @@ function totalSatQsos() {
                 $.each(data, function () {
                     labels.push(this.sat);
                     dataQso.push(this.count);
+                    totalQso = Number(totalQso) + Number(this.count);
                 });
 
                 const COLORS = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499"]
@@ -462,6 +469,9 @@ function totalSatQsos() {
                                 align: "middle"
                             },
                             outlabels: {
+                                display: function(context) { // Hide labels with low percentage
+                                    return ((context.dataset.data[context.dataIndex] / totalQso * 100) > 1)
+                                },
                                 backgroundColor: COLORS,
                                 borderColor: COLORS,
                                 borderRadius: 2, // Border radius of Label
