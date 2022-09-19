@@ -49,7 +49,7 @@ class Logbook_model extends CI_Model {
 
     if($this->input->post('country') == "") {
       $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
-      $country = ucwords(strtolower($dxcc[1]));
+      $country = ucwords(strtolower($dxcc[1]), "- (/");
     } else {
       $country = $this->input->post('country');
     }
@@ -559,7 +559,7 @@ class Logbook_model extends CI_Model {
 
     $entity = $this->get_entity($this->input->post('dxcc_id'));
     $stationId = $this->input->post('station_profile');
-    $country = ucwords(strtolower($entity['name']));
+    $country = ucwords(strtolower($entity['name']), "- (/");
 
     // be sure that station belongs to user
     $CI =& get_instance();
@@ -2234,7 +2234,7 @@ class Logbook_model extends CI_Model {
         // Store or find country name
         // dxcc has higher priority to be consistent with qso create and edit
         if (isset($dxcc[1])) {
-            $country = ucwords(strtolower($dxcc[1]));
+            $country = ucwords(strtolower($dxcc[1]), "- (/");
         } else if (isset($record['country'])) {
             $country = $record['country'];
         }
@@ -2891,10 +2891,10 @@ class Logbook_model extends CI_Model {
 
                 if ($d[0] != 'Not Found'){
                     $sql = sprintf("update %s set COL_COUNTRY = '%s', COL_DXCC='%s' where COL_PRIMARY_KEY=%d",
-                                    $this->config->item('table_name'), addslashes(ucwords(strtolower($d[1]))), $d[0], $row['COL_PRIMARY_KEY']);
+                                    $this->config->item('table_name'), addslashes(ucwords(strtolower($d[1]), "- (/")), $d[0], $row['COL_PRIMARY_KEY']);
                     $this->db->query($sql);
                     //print($sql."\n");
-                    printf("Updating %s to %s and %s\n<br/>", $row['COL_PRIMARY_KEY'], ucwords(strtolower($d[1])), $d[0]);
+                    printf("Updating %s to %s and %s\n<br/>", $row['COL_PRIMARY_KEY'], ucwords(strtolower($d[1]), "- (/"), $d[0]);
                     $count++;
                 }
             }
