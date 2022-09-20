@@ -216,7 +216,7 @@ class AdifHelper {
             MY_USACA_COUNTIES
         */
 
-        $line .= "<eor>\r\n\r\n";
+        $line .= "<EOR>\r\n\r\n";
 
         return $line;
     }
