@@ -35,8 +35,9 @@
 					<th>SIG</th>
                     <th>SOTA</th>
                     <th>US Counties</th>
-                    <th>WAS</th>
                     <th>VUCC</th>
+                    <th>WAS</th>
+					<th>WWFF</th>
 					<th>Bandgroup</th>
 					<th>SSB QRG</th>
 					<th>DATA QRG</th>
@@ -57,8 +58,9 @@
                     <td class='sig_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sig == 1) {echo 'checked';}?>></td>
                     <td class='sota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sota == 1) {echo 'checked';}?>></td>
                     <td class='uscounties_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->uscounties == 1) {echo 'checked';}?>></td>
-                    <td class='was_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->was == 1) {echo 'checked';}?>></td>
                     <td class='vucc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->vucc == 1) {echo 'checked';}?>></td>
+                    <td class='was_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->was == 1) {echo 'checked';}?>></td>
+					<td class='wwff_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->wwff == 1) {echo 'checked';}?>></td>
 					<td><?php echo $band->bandgroup;?></td>
 					<td><?php echo $band->ssb;?></td>
 					<td><?php echo $band->data;?></td>
