@@ -1,3 +1,9 @@
+$('.bandtable').on('click', 'input[type="checkbox"]', function() {
+	var clickedbandid = $(this).closest('td').attr("class");
+	clickedbandid = clickedbandid.match(/\d+/)[0];
+	saveBand(clickedbandid);
+});
+
 $('.bandtable').DataTable({
 	"pageLength": 25,
 	responsive: false,
@@ -171,8 +177,6 @@ function deactivateAllBands() {
 }
 
 function saveBand(id) {
-	$(".btnband_"+id).addClass('running');
-	$(".btnband_"+id).prop('disabled', true);
 	$.ajax({
 		url: base_url + 'index.php/band/saveBand',
 		type: 'post',
@@ -189,10 +193,6 @@ function saveBand(id) {
 			'vucc': $(".vucc_"+id+" input[type='checkbox']").is(":checked")
 		},
 		success: function (html) {
-			$(".alert").remove();
-			$('.card-body').prepend('<div class="alert alert-success" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'+$(".band_"+id).parent("tr:first").find("td:first").text()+' band has been saved!</div>');
-			$(".btnband_"+id).removeClass('running');
-			$(".btnband_"+id).prop('disabled', false);
 		}
 	});
 }
