@@ -28,9 +28,13 @@ class Dashboard extends CI_Controller {
 				$this->load->library('qra');
 
 				$qra_position = $this->qra->qra2latlong($this->session->userdata('user_locator'));
-				$data['qra'] = "set";
-				$data['qra_lat'] = $qra_position[0];
-				$data['qra_lng'] = $qra_position[1];   
+				if ($qra_position) {
+					$data['qra'] = "set";
+					$data['qra_lat'] = $qra_position[0];
+					$data['qra_lng'] = $qra_position[1];   
+				} else {
+					$data['qra'] = "none";
+				}
 		} else {
 				$data['qra'] = "none";
 		}
