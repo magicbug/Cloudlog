@@ -11,6 +11,7 @@
 			}
 
 			$this->db->where('radio', $result['radio']);
+			$this->db->where('identifier', $result['identifier']);
 			$this->db->where('user_id', $user_id);
 			$query = $this->db->get('cat');
 
@@ -57,6 +58,9 @@
 							if (isset($result['power'])) {
 								$data['power'] = $result['power'];
 							}
+							if (isset($result['identifier'])) {
+								$data['identifier'] = $result['identifier'];
+							}
 						} else {
 							$data = array(
 								'prop_mode' => $result['prop_mode'],
@@ -70,6 +74,9 @@
 							);
 							if (isset($result['power'])) {
 								$data['power'] = $result['power'];
+							}
+							if (isset($result['identifier'])) {
+								$data['identifier'] = $result['identifier'];
 							}
 						}
 
@@ -92,8 +99,12 @@
 						if (isset($result['power'])) {
 							$data['power'] = $result['power'];
 						}
+						if (isset($result['identifier'])) {
+							$data['identifier'] = $result['identifier'];
+						}
 
 						$this->db->where('id', $radio_id);
+						$this->db->where('identifier', $data['identifier']);
 						$this->db->where('user_id', $user_id);
 						$this->db->update('cat', $data);
 					}
@@ -133,6 +144,9 @@
 						if (isset($result['power'])) {
 							$data['power'] = $result['power'];
 						}
+						if (isset($result['identifier'])) {
+							$data['identifier'] = $result['identifier'];
+						}
 					} else {
 						$data = array(
 							'radio' => $result['radio'],
@@ -149,6 +163,9 @@
 						if (isset($result['power'])) {
 							$data['power'] = $result['power'];
 						}
+						if (isset($result['identifier'])) {
+							$data['identifier'] = $result['identifier'];
+						}
 					}
 				} else {
 					$data = array(
@@ -161,6 +178,9 @@
 
 					if (isset($result['power'])) {
 						$data['power'] = $result['power'];
+					}
+					if (isset($result['identifier'])) {
+						$data['identifier'] = $result['identifier'];
 					}
 				}
 
@@ -187,7 +207,7 @@
 
 		/* Return list of radios */
 		function radios() {
-			$this->db->select('id, radio');
+			$this->db->select('id, radio, identifier');
 			$this->db->where('user_id', $this->session->userdata('user_id'));
 			$query = $this->db->get('cat');
 

@@ -88,7 +88,7 @@
                                 <select class="form-control form-control-sm radios" id="radio" name="radio">
                                     <option value="0" selected="selected"><?php echo $this->lang->line('general_word_none'); ?></option>
                                         <?php foreach ($radios->result() as $row) { ?>
-                                        <option value="<?php echo $row->id; ?>" <?php if($this->session->userdata('radio') == $row->id) { echo "selected=\"selected\""; } ?>><?php echo $row->radio; ?></option>
+                                        <option value="<?php echo $row->id; ?>" <?php if($this->session->userdata('radio') == $row->id) { echo "selected=\"selected\""; } ?>><?php echo $row->radio." (".$row->identifier.")"; ?></option>
                                         <?php } ?>
                                 </select>
                             </div>

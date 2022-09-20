@@ -39,6 +39,7 @@
 		{
 			echo "<tr class=\"titles\">";
 				echo "<td>Radio</td>";
+				echo "<td>Identifier</td>";
 				echo "<td>Frequency</td>";
 				echo "<td>Mode</td>";
 				echo "<td>Timestamp</td>" ;
@@ -48,6 +49,7 @@
 			{
 				echo "<tr>";
 				echo "<td>".$row->radio."</td>";
+				echo "<td>".$row->identifier."</td>";
 				if($row->frequency != "0" && $row->frequency != NULL) {
 					echo "<td>".$this->frequency->hz_to_mhz($row->frequency)."</td>";
 				} else {
