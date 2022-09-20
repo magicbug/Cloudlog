@@ -49,7 +49,7 @@ class Logbook_model extends CI_Model {
 
     if($this->input->post('country') == "") {
       $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
-      $country = ucwords(strtolower($dxcc[1]));
+      $country = ucwords(strtolower($dxcc[1]), "- (/");
     } else {
       $country = $this->input->post('country');
     }
@@ -496,7 +496,7 @@ class Logbook_model extends CI_Model {
 
   /*
    * Function uploads a QSO to QRZ with the API given.
-   * $adif contains a line with the QSO in the ADIF format. QSO ends with an <EOR>
+   * $adif contains a line with the QSO in the ADIF format. QSO ends with an <eor>
    */
   function push_qso_to_qrz($apikey, $adif, $replaceoption = false) {
       $url = 'http://logbook.qrz.com/api'; // TODO: Move this to database
@@ -559,7 +559,7 @@ class Logbook_model extends CI_Model {
 
     $entity = $this->get_entity($this->input->post('dxcc_id'));
     $stationId = $this->input->post('station_profile');
-    $country = ucwords(strtolower($entity['name']));
+    $country = ucwords(strtolower($entity['name']), "- (/");
 
     // be sure that station belongs to user
     $CI =& get_instance();
@@ -1422,12 +1422,13 @@ class Logbook_model extends CI_Model {
       if (!$logbooks_locations_array) {
         return null;
       }
+      $mode[] = 'SSB';
+      $mode[] = 'LSB';
+      $mode[] = 'USB';
 
       $this->db->select('COUNT( * ) as count', FALSE);
       $this->db->where_in('station_id', $logbooks_locations_array);
-      $this->db->where('COL_MODE', 'SSB');
-      $this->db->or_where('COL_MODE', 'LSB');
-      $this->db->or_where('COL_MODE', 'USB');
+      $this->db->where_in('COL_MODE', $mode);
 
       $query = $this->db->get($this->config->item('table_name'));
 
@@ -1558,7 +1559,7 @@ class Logbook_model extends CI_Model {
         return null;
       }
 
-      $this->db->select('DISTINCT (COL_BAND) AS band, count( * ) AS count', FALSE);
+      $this->db->select('COL_BAND AS band, count( * ) AS count', FALSE);
       $this->db->where_in('station_id', $logbooks_locations_array);
       $this->db->group_by('band');
       $this->db->order_by('count', 'DESC');
@@ -2234,7 +2235,7 @@ class Logbook_model extends CI_Model {
         // Store or find country name
         // dxcc has higher priority to be consistent with qso create and edit
         if (isset($dxcc[1])) {
-            $country = ucwords(strtolower($dxcc[1]));
+            $country = ucwords(strtolower($dxcc[1]), "- (/");
         } else if (isset($record['country'])) {
             $country = $record['country'];
         }
@@ -2891,10 +2892,10 @@ class Logbook_model extends CI_Model {
 
                 if ($d[0] != 'Not Found'){
                     $sql = sprintf("update %s set COL_COUNTRY = '%s', COL_DXCC='%s' where COL_PRIMARY_KEY=%d",
-                                    $this->config->item('table_name'), addslashes(ucwords(strtolower($d[1]))), $d[0], $row['COL_PRIMARY_KEY']);
+                                    $this->config->item('table_name'), addslashes(ucwords(strtolower($d[1]), "- (/")), $d[0], $row['COL_PRIMARY_KEY']);
                     $this->db->query($sql);
                     //print($sql."\n");
-                    printf("Updating %s to %s and %s\n<br/>", $row['COL_PRIMARY_KEY'], ucwords(strtolower($d[1])), $d[0]);
+                    printf("Updating %s to %s and %s\n<br/>", $row['COL_PRIMARY_KEY'], ucwords(strtolower($d[1]), "- (/"), $d[0]);
                     $count++;
                 }
             }

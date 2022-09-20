@@ -149,8 +149,10 @@ class User_Model extends CI_Model {
 				return EEMAILEXISTS;
 			}
 
-			// Add user
+			// Add user and insert bandsettings for user
 			$this->db->insert($this->config->item('auth_table'), $data);
+			$insert_id = $this->db->insert_id();
+			$this->db->query("insert into bandxuser (bandid, userid, active, cq, dok, dxcc, iota, sig, sota, uscounties, was, vucc) select bands.id, " . $insert_id . ", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 from bands;");
 			return OK;
 		} else {
 			return EUSERNAMEEXISTS;

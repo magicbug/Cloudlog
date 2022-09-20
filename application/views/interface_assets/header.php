@@ -206,6 +206,8 @@
 				
 				<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Manage station locations"><i class="fas fa-home"></i> Station Locations</a>
 
+				<a class="dropdown-item" href="<?php echo site_url('band');?>" title="Manage Bands"><i class="fas fa-cog"></i> Bands</a>
+
 				<div class="dropdown-divider"></div>
 
 				<a class="dropdown-item" href="<?php echo site_url('adif');?>" title="Amateur Data Interchange Format (ADIF) import / export"><i class="fas fa-sync"></i> ADIF Import / Export</a>

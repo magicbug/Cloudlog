@@ -40,6 +40,12 @@ function load_was_map() {
 
 </script>
 
+<?php if ($this->uri->segment(1) == "statistics") { ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/chart.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/chartjs-plugin-piechart-outlabels.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/statistics.js"></script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "adif") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
@@ -2247,6 +2253,10 @@ $(document).ready(function(){
 
     <?php if ($this->uri->segment(1) == "mode") { ?>
 		<script src="<?php echo base_url(); ?>assets/js/sections/mode.js"></script>
+    <?php } ?>
+
+    <?php if ($this->uri->segment(1) == "band") { ?>
+		<script src="<?php echo base_url(); ?>assets/js/sections/bands.js"></script>
     <?php } ?>
 
 <?php if ($this->uri->segment(1) == "accumulated") { ?>

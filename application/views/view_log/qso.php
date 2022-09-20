@@ -184,7 +184,7 @@
                     <?php if($row->COL_COUNTRY != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('general_word_country'); ?></td>
-                        <td><?php echo ucwords(strtolower(($row->COL_COUNTRY))); ?></td>
+                        <td><?php echo ucwords(strtolower(($row->COL_COUNTRY)), "- (/"); ?></td>
                     </tr>
                     <?php } ?>
 
@@ -349,7 +349,7 @@
                     <?php if($row->station_country) { ?>
                     <tr>
                         <td>Station Country</td>
-                        <td><?php echo ucwords(strtolower(($row->station_country))); ?></td>
+                        <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); ?></td>
                     </tr>
                     <?php } ?>
 
