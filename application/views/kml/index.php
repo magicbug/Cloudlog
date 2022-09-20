@@ -32,9 +32,13 @@
                     <select class="custom-select" id="dxcc_id" name="dxcc_id">
                         <option value="All">All</option>
                         <?php
-                        foreach($dxcc as $d){
-                            echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name))) . '</option>';
-                        }
+                            foreach($dxcc as $d){
+                                echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower($d->name), "- (/");
+                                if ($d->Enddate != null) {
+                                    echo ' (deleted dxcc)';
+                                }
+                                echo '</option>';
+                            }
                         ?>
 
                     </select>
