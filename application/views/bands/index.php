@@ -43,8 +43,6 @@
 					<th>CW QRG</th>
                     <th></th>
                     <th></th>
-                    <th></th>
-
 				</tr>
 			</thead>
 			<tbody>
@@ -70,9 +68,6 @@
 					</td>
 					<td>
 						<a href="javascript:deleteBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash-alt"></i></a>
-                    </td>
-                    <td>
-						<a href="javascript:saveBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-primary btn-sm ld-ext-right btnband_<?php echo $band->id ?>" title="Save band"><i class="fas fa-save"></i></i><div class="ld ld-ring ld-spin"></div></a>
                     </td>
 				</tr>
 
