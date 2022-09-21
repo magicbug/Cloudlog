@@ -71,7 +71,7 @@ class DXCC extends CI_Model {
 
 		foreach ($bands as $band) {             	// Looping through bands and entities to generate the array needed for display
 			foreach ($dxccArray as $dxcc) {
-				$dxccMatrix[$dxcc->adif]['name'] = $dxcc->name;
+				$dxccMatrix[$dxcc->adif]['name'] = ucwords(strtolower($dxcc->name), "- (/");
 				$dxccMatrix[$dxcc->adif]['Dxccprefix'] = $dxcc->prefix;
 				if ($postdata['includedeleted'])
 					$dxccMatrix[$dxcc->adif]['Deleted'] = isset($dxcc->Enddate) ? "<div class='alert-danger'>Y</div>" : '';
