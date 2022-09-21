@@ -165,7 +165,7 @@
               <select class="custom-select radios" id="radio" name="radio">
                 <option value="0" selected="selected"><?php echo $this->lang->line('general_word_none'); ?></option>
                 <?php foreach ($radios->result() as $row) { ?>
-                <option value="<?php echo $row->id; ?>" <?php if($this->session->userdata('radio') == $row->id) { echo "selected=\"selected\""; } ?>><?php echo $row->radio." (".$row->identifier.")"; ?></option>
+                <option value="<?php echo $row->id; ?>" <?php if($this->session->userdata('radio') == $row->id) { echo "selected=\"selected\""; } ?>><?php echo $row->radio; if ($row->identifier != "") echo " (".$row->identifier.")"; ?></option>
                 <?php } ?>
                 </select>
             </div>

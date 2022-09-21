@@ -11,7 +11,9 @@
 			}
 
 			$this->db->where('radio', $result['radio']);
-			$this->db->where('identifier', $result['identifier']);
+			if (isset($result['identifier'])) {
+				$this->db->where('identifier', $result['identifier']);
+			}
 			$this->db->where('user_id', $user_id);
 			$query = $this->db->get('cat');
 
@@ -104,7 +106,9 @@
 						}
 
 						$this->db->where('id', $radio_id);
-						$this->db->where('identifier', $data['identifier']);
+						if (isset($result['identifier'])) {
+							$this->db->where('identifier', $data['identifier']);
+						}
 						$this->db->where('user_id', $user_id);
 						$this->db->update('cat', $data);
 					}

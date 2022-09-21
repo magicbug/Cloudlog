@@ -49,7 +49,7 @@
 			{
 				echo "<tr>";
 				echo "<td>".$row->radio."</td>";
-				echo "<td>".$row->identifier."</td>";
+				echo $row->identifier != "" ? "<td>".$row->identifier."</td>" : "<td>n/a</td>";
 				if($row->frequency != "0" && $row->frequency != NULL) {
 					echo "<td>".$this->frequency->hz_to_mhz($row->frequency)."</td>";
 				} else {
