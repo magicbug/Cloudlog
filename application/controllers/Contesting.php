@@ -20,11 +20,13 @@ class Contesting extends CI_Controller {
         $this->load->model('stations');
         $this->load->model('modes');
 		$this->load->model('contesting_model');
+		$this->load->model('bands');
 
 		$data['my_gridsquare'] = $this->stations->find_gridsquare();
         $data['radios'] = $this->cat->radios();
         $data['modes'] = $this->modes->active();
 		$data['contestnames'] = $this->contesting_model->getActivecontests();
+		$data['bands'] = $this->bands->get_user_bands_for_qso_entry();
 
 		$this->load->library('form_validation');
 

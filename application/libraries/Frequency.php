@@ -89,7 +89,7 @@ class Frequency {
   );
 
 	/* Class to convert band and mode into a frequency in a format based on the specifications of the database table */
-	public function convent_band($band, $mode='SSB') {
+	public function convert_band($band, $mode='SSB') {
 		// Converting LSB and USB to SSB
 		if($mode =='LSB' or $mode =='USB'){
 		  $mode= "SSB";
@@ -100,7 +100,21 @@ class Frequency {
 		  $mode= "DATA";
 		}
 
-		return $this->defaultFrequencies[$band][$mode];
+		return $this->getDefaultFrequency($band, $mode);
+	}
+
+	function getDefaultFrequency($band, $mode) {
+		$CI =& get_instance();
+		$db =& $CI->db;
+
+		$db->from('bands');
+		$db->where('bands.band', $band);
+
+		$result = $db->get()->row();
+
+		$mode = strtolower($mode);
+
+		return $result->$mode;
 	}
 
 	public function GetBand($Frequency) {

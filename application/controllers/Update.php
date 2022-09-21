@@ -376,6 +376,47 @@ class Update extends CI_Controller {
         }
     }
 
+    /*
+     * Pulls the WWFF directory for autocompletion in QSO dialogs
+     */
+    public function update_wwff() {
+        $csvfile = 'https://wwff.co/wwff-data/wwff_directory.csv';
+
+        $wwfffile = './assets/json/wwff.txt';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $csvfile);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog Updater');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $csv = curl_exec($ch);
+        curl_close($ch);
+
+        $wwfffilehandle = fopen($wwfffile, 'w');
+        $data = str_getcsv($csv,"\n");
+        foreach ($data as $idx => $row) {
+           if ($idx == 0) continue; // Skip line we are not interested in
+           $row = str_getcsv($row, ',');
+           if ($row[0]) {
+              fwrite($wwfffilehandle, $row[0].PHP_EOL);
+           }
+        }
+
+        fclose($wwfffilehandle);
+        if (file_exists($wwfffile))
+        {
+            $nCount = count(file($wwfffile));
+            if ($nCount > 0)
+            {
+                echo "DONE: " . number_format($nCount) . " WWFF's saved";
+            } else {
+                echo"FAILED: Empty file";
+            }
+        } else {
+            echo"FAILED: Could not create wwff.txt file locally";
+        }
+    }
+
 
 }
 ?>

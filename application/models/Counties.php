@@ -33,12 +33,19 @@ class Counties extends CI_Model
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
+        $this->load->model('bands');
+
+		$bandslots = $this->bands->get_worked_bands('uscounties');
+
+		$bandslots_list = "'".implode("','",$bandslots)."'";
+
         $sql = "select count(distinct COL_CNTY) countycountworked, coalesce(x.countycountconfirmed, 0) countycountconfirmed, thcv.COL_STATE
                 from " . $this->config->item('table_name') . " thcv
                  left outer join (
                         select count(distinct COL_CNTY) countycountconfirmed, COL_STATE
                         from " . $this->config->item('table_name') .
             " where station_id in (" . $location_list . ")" .
+            " and col_band in (" . $bandslots_list . ")" .
             " and COL_DXCC in ('291', '6', '110')
                     and coalesce(COL_CNTY, '') <> ''
                     and COL_BAND != 'SAT'
@@ -47,6 +54,7 @@ class Counties extends CI_Model
                     order by COL_STATE
                 ) x on thcv.COL_STATE = x.COL_STATE
                  where station_id in (" . $location_list . ")" .
+                 " and col_band in (" . $bandslots_list . ")" .
             " and COL_DXCC in ('291', '6', '110')
                 and coalesce(COL_CNTY, '') <> ''
                 and COL_BAND != 'SAT'
@@ -85,9 +93,16 @@ class Counties extends CI_Model
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
+        $this->load->model('bands');
+
+		$bandslots = $this->bands->get_worked_bands('uscounties');
+
+		$bandslots_list = "'".implode("','",$bandslots)."'";
+
         $sql = "select distinct COL_CNTY, COL_STATE
                 from " . $this->config->item('table_name') . " thcv
                  where station_id in (" . $location_list . ")" .
+                 " and col_band in (" . $bandslots_list . ")" .
                 " and COL_DXCC in ('291', '6', '110')
                 and coalesce(COL_CNTY, '') <> ''
                 and COL_BAND != 'SAT'";

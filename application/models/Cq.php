@@ -187,7 +187,14 @@ class CQ extends CI_Model{
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
         } else if ($band == 'All') {
-            $sql .= " and thcv.col_prop_mode !='SAT'";
+            $this->load->model('bands');
+
+			$bandslots = $this->bands->get_worked_bands('cq');
+	
+			$bandslots_list = "'".implode("','",$bandslots)."'";
+			
+			$sql .= " and thcv.col_band in (" . $bandslots_list . ")" .
+					" and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
@@ -210,7 +217,14 @@ class CQ extends CI_Model{
         if ($band == 'SAT') {
             $sql .= " and thcv.col_prop_mode ='" . $band . "'";
         } else if ($band == 'All') {
-            $sql .= " and thcv.col_prop_mode !='SAT'";
+            $this->load->model('bands');
+
+			$bandslots = $this->bands->get_worked_bands('cq');
+	
+			$bandslots_list = "'".implode("','",$bandslots)."'";
+			
+			$sql .= " and thcv.col_band in (" . $bandslots_list . ")" .
+					" and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";

@@ -233,7 +233,7 @@ class Options extends CI_Controller {
 		else
 		{
 			// Update theme choice within the options system
-			$radioTimeout_update = $this->optionslib->update('cat_timeout_interval', $this->input->post('radioTimeout'));
+			$radioTimeout_update = $this->optionslib->update('cat_timeout_interval', $this->input->post('radioTimeout'), 'yes');
 
 			// If theme update is complete set a flashsession with a success note
 			if($radioTimeout_update == TRUE) {

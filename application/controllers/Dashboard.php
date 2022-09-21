@@ -28,9 +28,13 @@ class Dashboard extends CI_Controller {
 				$this->load->library('qra');
 
 				$qra_position = $this->qra->qra2latlong($this->session->userdata('user_locator'));
-				$data['qra'] = "set";
-				$data['qra_lat'] = $qra_position[0];
-				$data['qra_lng'] = $qra_position[1];   
+				if ($qra_position) {
+					$data['qra'] = "set";
+					$data['qra_lat'] = $qra_position[0];
+					$data['qra_lng'] = $qra_position[1];   
+				} else {
+					$data['qra'] = "none";
+				}
 		} else {
 				$data['qra'] = "none";
 		}
@@ -50,6 +54,7 @@ class Dashboard extends CI_Controller {
 
 			// 
 			$this->load->model('cat');
+			$this->load->model('vucc');
 
 			$data['radio_status'] = $this->cat->recent_status();
 
@@ -80,6 +85,8 @@ class Dashboard extends CI_Controller {
 			$data['total_lotw_recv'] = $QSLStatsBreakdownArray['LoTW_Received'];
 
 			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18', $logbooks_locations_array);
+
+			$data['vucc'] = $this->vucc->fetchVuccSummary();
 
 			$data['page_title'] = "Dashboard";
 
@@ -115,9 +122,13 @@ class Dashboard extends CI_Controller {
 				}
 
 				if($row->COL_SAT_NAME != null) { 
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				} else {
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				}
 
 				$count++;
@@ -152,9 +163,13 @@ class Dashboard extends CI_Controller {
 				}
 	
 				if($row->COL_SAT_NAME != null) { 
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				} else {
-				echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				}
 	
 				$count++;
@@ -163,13 +178,13 @@ class Dashboard extends CI_Controller {
 					echo ",";
 				}
 
-				$result = $this->logbook_model->dxcc_lookup($row->COL_CALL, $row->COL_TIME_ON);
-		
-				if(isset($result)) {
-					$lat = $result['lat'];
-					$lng = $result['long'];
+				if(isset($row->lat) && isset($row->long)) {
+					$lat = $row->lat;
+					$lng = $row->long;
 				}
-				echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+				echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+				echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+				echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				$count++;
 			}
 
@@ -193,7 +208,9 @@ class Dashboard extends CI_Controller {
 			//print_r($row);
 			if($row->COL_GRIDSQUARE != null) {
 				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
-				echo "{\"point\":new GLatLng(".$stn_loc[0].",".$stn_loc[1]."), \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"},";
+				echo "{\"point\":new GLatLng(".$stn_loc[0].",".$stn_loc[1]."), \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+				echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+				echo "\",\"label\":\"".$row->COL_CALL."\"},";
 			} else {
 				$query = $this->db->query('
 					SELECT *
@@ -204,7 +221,9 @@ class Dashboard extends CI_Controller {
 				');
 				
 				foreach ($query->result() as $dxcc) {
-					echo "{\"point\":new GLatLng(".$dxcc->lat.",".$dxcc->long."), \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"},";
+					echo "{\"point\":new GLatLng(".$dxcc->lat.",".$dxcc->long."), \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"},";
 				}
 			}
 			

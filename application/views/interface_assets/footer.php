@@ -6,6 +6,9 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.qrb.js"></script>
+<?php if ($this->uri->segment(1) == "activators") { ?>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.activators.js"></script>
+<?php } ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.geodesic.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/radiohelpers.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/darkmodehelpers.js"></script>
@@ -36,6 +39,12 @@ function load_was_map() {
 }
 
 </script>
+
+<?php if ($this->uri->segment(1) == "statistics") { ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/chart.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/chartjs-plugin-piechart-outlabels.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/statistics.js"></script>
+<?php } ?>
 
 <?php if ($this->uri->segment(1) == "adif") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
@@ -479,6 +488,31 @@ function spawnQrbCalculator(locator1, locator2) {
 	});
 }
 
+function spawnActivatorsMap(call, count, grids) {
+	$.ajax({
+		url: base_url + 'index.php/activatorsmap',
+		type: 'post',
+		success: function (html) {
+			BootstrapDialog.show({
+				title: 'Activators Map',
+				size: BootstrapDialog.SIZE_WIDE,
+				cssClass: 'lookup-dialog',
+				nl2br: false,
+				message: html,
+				onshown: function(dialog) {
+					showActivatorsMap(call, count, grids);
+				},
+				buttons: [{
+					label: 'Close',
+					action: function (dialogItself) {
+						dialogItself.close();
+					}
+				}]
+			});
+		}
+	});
+}
+
 function calculateQrb() {
     let locator1 = $("#qrbcalc_locator1").val();
     let locator2 = $("#qrbcalc_locator2").val();
@@ -555,6 +589,37 @@ function newpath(latlng1, latlng2, locator1, locator2) {
         wrap: false,
         steps: 100
     }).addTo(map);
+}
+
+function showActivatorsMap(call, count, grids) {
+
+    let re = /,/g;
+    grids = grids.replace(re, ', ');
+
+    var result = "Callsign: "+call.replace('0', '&Oslash;')+"<br />";
+    result +=    "Count: "+count+"<br/>";
+    result +=    "Grids: "+grids+"<br/><br />";
+
+    $(".activatorsmapResult").html(result);
+
+    // If map is already initialized
+    var container = L.DomUtil.get('mapactivators');
+
+    if(container != null){
+        container._leaflet_id = null;
+    }
+
+    const map = new L.map('mapactivators').setView([30, 0], 1.5);
+
+    var grid_four = grids.split(', ');
+
+    var maidenhead = new L.maidenheadactivators(grid_four).addTo(map);
+
+    var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib}); 
+
+    map.addLayer(osm);
 }
 
 // This displays the dialog with the form and it's where the resulttable is displayed
@@ -662,7 +727,7 @@ function getLookupResult() {
         var q_lng = -32.695312;
         <?php } ?>
 
-        var qso_loc = '<?php echo site_url('map/map_data_custom/');?><?php echo rawurlencode($date_from); ?>/<?php echo rawurlencode($date_to); ?>/<?php echo rawurlencode($this->input->post('band')); ?>';
+        var qso_loc = '<?php echo site_url('map/map_data_custom/');?><?php echo rawurlencode($date_from); ?>/<?php echo rawurlencode($date_to); ?>/<?php echo rawurlencode($this->input->post('band')); ?>/<?php echo rawurlencode($this->input->post('mode')); ?>/<?php echo rawurlencode($this->input->post('prop_mode')); ?>';
         var q_zoom = 3;
 
       $(document).ready(function(){
@@ -1058,7 +1123,7 @@ $(document).on('keypress',function(e) {
   </script>
 
 <?php } ?>
-<?php if ( ($this->uri->segment(1) == "qso" && $_GET['manual'] == 0) || ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) != "add")) { ?>
+<?php if ( $this->uri->segment(1) == "qso" || ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) != "add")) { ?>
     <script>
     function setRst(mode) {
         if(mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS'){
@@ -1108,11 +1173,7 @@ $(document).on('keypress',function(e) {
           }
 
           old_mode = $(".mode").val();
-          if (data.mode == "LSB" || data.mode == "USB" || data.mode == "SSB") {
-            $(".mode").val('SSB');
-          } else {
-            $(".mode").val(data.mode);
-          }
+          $(".mode").val(data.mode);
 
           if (old_mode !== $(".mode").val()) {
             // Update RST on mode change via CAT
@@ -1126,7 +1187,7 @@ $(document).on('keypress',function(e) {
           $("#selectPropagation").val(data.prop_mode);
 
           // Display CAT Timeout warnng based on the figure given in the config file
-            var minutes = Math.floor(<?php echo $this->config->item('cat_timeout_interval'); ?> / 60);
+            var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
 
             if(data.updated_minutes_ago > minutes) {
               if($('.radio_timeout_error').length == 0) {
@@ -1256,9 +1317,28 @@ $(document).ready(function(){
   var grid_four = <?php echo $grid_4char; ?>;
   var grid_six = <?php echo $grid_6char; ?>;
 
+  var grid_two_count = grid_two.length;
+  var grid_four_count = grid_four.length;
+  var grid_six_count = grid_six.length;
+
   var grid_two_confirmed = <?php echo $grid_2char_confirmed; ?>;
   var grid_four_confirmed = <?php echo $grid_4char_confirmed; ?>;
   var grid_six_confirmed = <?php echo $grid_6char_confirmed; ?>;
+
+  var grid_two_confirmed_count = grid_two_confirmed.length;
+  var grid_four_confirmed_count = grid_four_confirmed.length;
+  var grid_six_confirmed_count = grid_six_confirmed.length;
+
+  if (grid_four_confirmed_count > 0) {
+     var span = document.getElementById('confirmed_grids');
+     span.innerText = span.textContent = '('+grid_four_confirmed_count+' grid square'+(grid_four_confirmed_count != 1 ? 's' : '')+') ';
+  }
+  if ((grid_four_count-grid_four_confirmed_count) > 0) {
+     var span = document.getElementById('worked_grids');
+     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' grid square'+(grid_four_count-grid_four_confirmed_count != 1 ? 's' : '')+') ';
+  }
+  var span = document.getElementById('sum_grids');
+  span.innerText = span.textContent = ' Total Count: '+grid_four_count+' grid square'+(grid_four_count != 1 ? 's' : '');
 
   var maidenhead = L.maidenhead().addTo(map);
 
@@ -1371,9 +1451,28 @@ $(document).ready(function(){
   var grid_four = <?php echo $grid_4char; ?>;
   var grid_six = <?php echo $grid_6char; ?>;
 
+  var grid_two_count = grid_two.length;
+  var grid_four_count = grid_four.length;
+  var grid_six_count = grid_six.length;
+
   var grid_two_confirmed = <?php echo $grid_2char_confirmed; ?>;
   var grid_four_confirmed = <?php echo $grid_4char_confirmed; ?>;
   var grid_six_confirmed = <?php echo $grid_6char_confirmed; ?>;
+
+  var grid_two_confirmed_count = grid_two_confirmed.length;
+  var grid_four_confirmed_count = grid_four_confirmed.length;
+  var grid_six_confirmed_count = grid_six_confirmed.length;
+
+  if (grid_four_confirmed_count > 0) {
+     var span = document.getElementById('confirmed_grids');
+     span.innerText = span.textContent = '('+grid_four_confirmed_count+' grid square'+(grid_four_confirmed_count != 1 ? 's' : '')+') ';
+  }
+  if ((grid_four_count-grid_four_confirmed_count) > 0) {
+     var span = document.getElementById('activated_grids');
+     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' grid square'+(grid_four_count-grid_four_confirmed_count != 1 ? 's' : '')+') ';
+  }
+  var span = document.getElementById('sum_grids');
+  span.innerText = span.textContent = ' Total Count: '+grid_four_count+' grid square'+(grid_four_count != 1 ? 's' : '');
 
   var maidenhead = L.maidenhead().addTo(map);
 
@@ -1914,6 +2013,34 @@ $(document).ready(function(){
                                 }
                             });
 
+                            $('#wwff_ref_edit').selectize({
+                                maxItems: 1,
+                                closeAfterSelect: true,
+                                loadThrottle: 250,
+                                valueField: 'name',
+                                labelField: 'name',
+                                searchField: 'name',
+                                options: [],
+                                create: false,
+                                load: function(query, callback) {
+                                    if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
+                                    $.ajax({
+                                        url: baseURL+'index.php/qso/get_wwff',
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        data: {
+                                            query: query,
+                                        },
+                                        error: function() {
+                                            callback();
+                                        },
+                                        success: function(res) {
+                                            callback(res);
+                                        }
+                                    });
+                                }
+                            });
+
                             $('#darc_dok_edit').selectize({
                                 maxItems: 1,
                                 closeAfterSelect: true,
@@ -2128,6 +2255,10 @@ $(document).ready(function(){
 		<script src="<?php echo base_url(); ?>assets/js/sections/mode.js"></script>
     <?php } ?>
 
+    <?php if ($this->uri->segment(1) == "band") { ?>
+		<script src="<?php echo base_url(); ?>assets/js/sections/bands.js"></script>
+    <?php } ?>
+
 <?php if ($this->uri->segment(1) == "accumulated") { ?>
     <script src="<?php echo base_url(); ?>assets/js/chart.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/sections/accumulatedstatistics.js"></script>
@@ -2141,17 +2272,45 @@ $(document).ready(function(){
 	<script src="<?php echo base_url(); ?>assets/js/sections/timeplot.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "qsl") { ?>
+<?php if ($this->uri->segment(1) == "qsl") { 
+    	// Get Date format
+	if($this->session->userdata('user_date_format')) {
+		// If Logged in and session exists
+		$custom_date_format = $this->session->userdata('user_date_format');
+	} else {
+		// Get Default date format from /config/cloudlog.php
+		$custom_date_format = $this->config->item('qso_date_format');
+	}
+
+    switch ($custom_date_format) {
+        case 'd/m/y': $usethisformat = 'D/MM/YY';break;
+        case 'd/m/Y': $usethisformat = 'D/MM/YYYY';break;
+        case 'm/d/y': $usethisformat = 'MM/D/YY';break;
+        case 'm/d/Y': $usethisformat = 'MM/D/YYYY';break;
+        case 'd.m.Y': $usethisformat = 'D.MM.YYYY';break;
+        case 'y/m/d': $usethisformat = 'YY/MM/D';break;
+        case 'Y-m-d': $usethisformat = 'YYYY-MM-D';break;
+        case 'M d, Y': $usethisformat = 'MMM D, YYYY';break;
+        case 'M d, y': $usethisformat = 'MMM D, YY';break;
+    }
+    
+    ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
+        $.fn.dataTable.moment('<?php echo $usethisformat ?>');
         $('.qsltable').DataTable({
             "pageLength": 25,
             responsive: false,
-            ordering: false,
+            ordering: true,
             "scrollY":        "500px",
             "scrollCollapse": true,
             "paging":         false,
-            "scrollX": true
+            "scrollX": true,
+            "order": [ 2, 'desc' ],
         });
+        
+        
     </script>
 <?php } ?>
 

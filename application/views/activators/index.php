@@ -102,6 +102,7 @@ function write_activators($activators_array, $vucc_grids, $custom_date_format, $
                         <td>Count</td>
                         <td>Gridsquares</td>
                         <td>Show QSOs</td>
+                        <td>Show Map</td>
                     </tr>
                 </thead>
                 <tbody>';
@@ -112,10 +113,16 @@ function write_activators($activators_array, $vucc_grids, $custom_date_format, $
         $grids = $line->grids;
         $count = $line->count;
         if (array_key_exists($line->call, $vucc_grids)) {
-           $grids .= ','.$vucc_grids[$line->call];
+           foreach(explode(',', $vucc_grids[$line->call]) as $vgrid) {
+              if(!strpos($grids, $vgrid)) {
+                 $grids .= ','.$vgrid;
+              }
+           }
+           $grids = str_replace(' ', '', $grids);
            $grid_array = explode(',', $grids);
-           array_unique($grid_array, SORT_STRING);
+           sort($grid_array);
            $count = count($grid_array);
+           $grids = implode(', ', $grid_array);
         }
         array_push($activators, array($count, $call, $grids));
     }
@@ -126,7 +133,8 @@ function write_activators($activators_array, $vucc_grids, $custom_date_format, $
                 <td>'.$line[1].'</td>
                 <td>'.$line[0].'</td>
                 <td style="text-align: left; font-family: monospace;">'.$line[2].'</td>
-                <td><a href=javascript:displayActivatorsContacts("'.$line[1].'","'.$band.'","'.$leogeo.'")>Show</a></td>
+                <td><a href=javascript:displayActivatorsContacts("'.$line[1].'","'.$band.'","'.$leogeo.'")><i class="fas fa-list"></i></a></td>
+                <td><a href=javascript:spawnActivatorsMap("'.$line[1].'","'.$line[0].'","'.str_replace(' ', '', $line[2]).'")><i class="fas fa-globe"></i></a></td>
                </tr>';
     }
     echo '</tfoot></table></div>';

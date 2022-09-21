@@ -331,7 +331,7 @@
       "Modes":{
          "S/X":[
             {
-               "Uplink_Mode":"LSB",
+               "Uplink_Mode":"USB",
                "Uplink_Freq":"2400175000",
                "Downlink_Mode":"USB",
                "Downlink_Freq":"10489675000"

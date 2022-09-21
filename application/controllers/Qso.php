@@ -20,12 +20,12 @@ class QSO extends CI_Controller {
 
 	public function index()
 	{
-
 		$this->load->model('cat');
 		$this->load->model('stations');
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
 		$this->load->model('modes');
+        $this->load->model('bands');
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		$data['active_station_profile'] = $this->stations->find_active();
@@ -37,7 +37,7 @@ class QSO extends CI_Controller {
 		$data['dxcc'] = $this->logbook_model->fetchDxcc();
 		$data['iota'] = $this->logbook_model->fetchIota();
 		$data['modes'] = $this->modes->active();
-
+        $data['bands'] = $this->bands->get_user_bands_for_qso_entry();
 
 		$this->load->library('form_validation');
 
@@ -155,6 +155,7 @@ class QSO extends CI_Controller {
         $this->load->model('logbook_model');
         $this->load->model('user_model');
         $this->load->model('modes');
+        $this->load->model('bands');
 		$this->load->model('contesting_model');
 
         $this->load->library('form_validation');
@@ -170,6 +171,7 @@ class QSO extends CI_Controller {
         $data['dxcc'] = $this->logbook_model->fetchDxcc();
         $data['iota'] = $this->logbook_model->fetchIota();
         $data['modes'] = $this->modes->all();
+        $data['bands'] = $this->bands->get_user_bands_for_qso_entry(true);
         $data['contest'] = $this->contesting_model->getActivecontests();
 
         $this->load->view('qso/edit_ajax', $data);
@@ -318,24 +320,37 @@ class QSO extends CI_Controller {
 
 		$this->load->library('frequency');
 
-		echo $this->frequency->convent_band($band, $mode);
+		echo $this->frequency->convert_band($band, $mode);
 	}
 
 	/*
 	 * Function is used for autocompletion of SOTA in the QSO entry form
 	 */
 	public function get_sota() {
+		$this->load->library('sota');
+		$json = [];
+
+		if (!empty($this->input->get("query"))) {
+			$query = $_GET['query'] ?? FALSE;
+			$json = $this->sota->get($query);
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode($json);
+	}
+
+	public function get_wwff() {
         $json = [];
 
         if(!empty($this->input->get("query"))) {
             $query = isset($_GET['query']) ? $_GET['query'] : FALSE;
-            $sota = strtoupper($query);
+            $wwff = strtoupper($query);
 
-            $file = 'assets/json/sota.txt';
+            $file = 'assets/json/wwff.txt';
 
             if (is_readable($file)) {
                 $lines = file($file, FILE_IGNORE_NEW_LINES);
-                $input = preg_quote($sota, '~');
+                $input = preg_quote($wwff, '~');
                 $reg = '~^'. $input .'(.*)$~';
                 $result = preg_grep($reg, $lines);
                 $json = [];
@@ -421,28 +436,12 @@ class QSO extends CI_Controller {
     }
 
     public function get_sota_info() {
+		$this->load->library('sota');
+
 		$sota = xss_clean($this->input->post('sota'));
-		$url = 'https://api2.sota.org.uk/api/summits/' . $sota;
-
-		// Let's use cURL instead of file_get_contents
-		// begin script
-		$ch = curl_init();
-
-		// basic curl options for all requests
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-
-		// use the URL we built
-		curl_setopt($ch, CURLOPT_URL, $url);
-
-		$input = curl_exec($ch);
-		$chi = curl_getinfo($ch);
-
-		// Close cURL handle
-		curl_close($ch);
 
 		header('Content-Type: application/json');
-		echo $input;
+		echo $this->sota->info($sota);
 	}
 
    function check_locator($grid) {

@@ -16,7 +16,7 @@ class VUCC extends CI_Model
     }
 
     /*
-     * Builds the array to display worked/confirmed vucc on awward page
+     * Builds the array to display worked/confirmed vucc on award page
      */
     function fetchVucc($data) {
         $totalGridConfirmed = array();
@@ -328,6 +328,83 @@ class VUCC extends CI_Model
         }
 
         return $workedGridArray;
+    }
+
+    /*
+    * Builds the array to display worked/confirmed vucc on dashboard page
+    */
+    function fetchVuccSummary() {
+        $totalGridConfirmed = array();
+        $totalGridWorked = array();
+    
+            // Getting all the worked grids
+            $col_gridsquare_worked = $this->get_vucc_summary('All', 'none');
+    
+            $workedGridArray = array();
+            if ($col_gridsquare_worked != null) {
+                foreach ($col_gridsquare_worked as $workedgrid) {
+                    array_push($workedGridArray, $workedgrid['gridsquare']);
+                    if(!in_array($workedgrid['gridsquare'], $totalGridWorked)){
+                        array_push($totalGridWorked, $workedgrid['gridsquare']);
+                    }
+                }
+            }
+    
+            $col_vucc_grids_worked = $this->get_vucc_summary_col_vucc('All', 'none');
+    
+            if ($col_vucc_grids_worked != null) {
+                foreach ($col_vucc_grids_worked as $gridSplit) {
+                    $grids = explode(",", $gridSplit['col_vucc_grids']);
+                    foreach($grids as $key) {
+                        $grid_four = strtoupper(substr(trim($key),0,4));
+        
+                        if(!in_array($grid_four, $workedGridArray)){
+                            array_push($workedGridArray, $grid_four);
+                        }
+        
+                        if(!in_array($grid_four, $totalGridWorked)){
+                            array_push($totalGridWorked, $grid_four);
+                        }
+                    }
+                }
+            }
+    
+            // Getting all the confirmed grids
+            $col_gridsquare_confirmed = $this->get_vucc_summary('All', 'both');
+    
+            if ($col_gridsquare_confirmed != null) {
+                $confirmedGridArray = array();
+                foreach ($col_gridsquare_confirmed as $confirmedgrid) {
+                    array_push($confirmedGridArray, $confirmedgrid['gridsquare']);
+                    if(!in_array($confirmedgrid['gridsquare'], $totalGridConfirmed)){
+                        array_push($totalGridConfirmed, $confirmedgrid['gridsquare']);
+                    }
+                }
+            }
+    
+            $col_vucc_grids_confirmed = $this->get_vucc_summary_col_vucc('All', 'both');
+    
+            if ($col_vucc_grids_confirmed != null) {
+                foreach ($col_vucc_grids_confirmed as $gridSplit) {
+                    $grids = explode(",", $gridSplit['col_vucc_grids']);
+                    foreach($grids as $key) {
+                        $grid_four = strtoupper(substr(trim($key),0,4));
+        
+                        if(!in_array($grid_four, $confirmedGridArray)){
+                            array_push($confirmedGridArray, $grid_four);
+                        }
+        
+                        if(!in_array($grid_four, $totalGridConfirmed)){
+                            array_push($totalGridConfirmed, $grid_four);
+                        }
+                    }
+                }
+            }
+    
+        $vuccArray['All']['worked'] = count($totalGridWorked);
+        $vuccArray['All']['confirmed'] = count($totalGridConfirmed);
+    
+        return $vuccArray;
     }
 }
 ?>

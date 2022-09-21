@@ -52,10 +52,16 @@ class Visitor extends CI_Controller {
             $this->load->model('logbooks_model');
             if($this->logbooks_model->public_slug_exists($public_slug)) {
                 // Load the public view
-                if($logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($public_slug) != false)
+
+				$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($public_slug);
+                if($logbook_id != false)
                 {
                     // Get associated station locations for mysql queries
                     $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+
+					if (!$logbooks_locations_array) {
+						show_404('Empty Logbook');
+					}
                 } else {
                     log_message('error', $public_slug.' has no associated station locations');
                     show_404('Unknown Public Page.');
@@ -128,10 +134,15 @@ class Visitor extends CI_Controller {
         $slug = $this->security->xss_clean($this->uri->segment(3));
 
         $this->load->model('logbooks_model');
-        if($logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($slug) != false)
+        $logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($slug);
+        if($logbook_id != false)
         {
             // Get associated station locations for mysql queries
             $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+
+			if (!$logbooks_locations_array) {
+				show_404('Empty Logbook');
+			}
         } else {
             log_message('error', $slug.' has no associated station locations');
             show_404('Unknown Public Page.');
@@ -150,9 +161,13 @@ class Visitor extends CI_Controller {
 				}
 
 				if($row->COL_SAT_NAME != null) { 
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				} else {
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				}
 
 				$count++;
@@ -187,29 +202,31 @@ class Visitor extends CI_Controller {
 				}
 	
 				if($row->COL_SAT_NAME != null) { 
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				} else {
-				echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				}
 	
 				$count++;
 		
 			} else {
-				$query = $this->db->query('
-					SELECT *
-					FROM dxcc_entities
-					WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
-					ORDER BY LENGTH( prefix ) DESC
-					LIMIT 1 
-				');
-
-				foreach ($query->result() as $dxcc) {
-					if($count != 1) {
+				if($count != 1) {
 					echo ",";
-						}
-					echo "{\"lat\":\"".$dxcc->lat."\",\"lng\":\"".$dxcc->long."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
-					$count++;
 				}
+
+				if(isset($row->lat) && isset($row->long)) {
+					$lat = $row->lat;
+					$lng = $row->long;
+				}
+
+				echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+				echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+				echo "\",\"label\":\"".$row->COL_CALL."\"}";
+				$count++;
 			}
 
 		}
@@ -226,14 +243,19 @@ class Visitor extends CI_Controller {
         $this->load->model('logbooks_model');
         if($this->logbooks_model->public_slug_exists($slug)) {
             // Load the public view
-            if($logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($slug) != false)
-            {
-                // Get associated station locations for mysql queries
-                $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
-            } else {
-                log_message('error', $slug.' has no associated station locations');
-                show_404('Unknown Public Page.');
-            }
+			$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($slug);
+			if($logbook_id != false)
+			{
+				// Get associated station locations for mysql queries
+				$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+	
+				if (!$logbooks_locations_array) {
+					show_404('Empty Logbook');
+				}
+			} else {
+				log_message('error', $slug.' has no associated station locations');
+				show_404('Unknown Public Page.');
+			}
         }
 
 		$this->load->model('gridsquares_model');

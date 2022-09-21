@@ -26,6 +26,7 @@ class Logbook extends CI_Controller {
 			// user is not logged in
 			redirect('user/login');
 		}
+		$this->load->model('stations');
 
 		// If environment is set to development then show the debug toolbar
 		if(ENVIRONMENT == 'development') {
@@ -48,6 +49,10 @@ class Logbook extends CI_Controller {
  
 		//load the model and get results
 		$data['results'] = $this->logbook_model->get_qsos($config['per_page'],$this->uri->segment(3));
+
+		if(!$data['results']) { 
+			$this->session->set_flashdata('notice', $this->lang->line('error_no_logbook_found') . ' <a href="' . site_url('logbooks') . '" title="Station Logbooks">Station Logbooks</a>');
+		}
 
 		// Calculate Lat/Lng from Locator to use on Maps
 		if($this->session->userdata('user_locator')) {
@@ -149,9 +154,10 @@ class Logbook extends CI_Controller {
 			$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
 			$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
 			$return['callsign_state'] = $this->logbook_model->call_state($callsign);
+			$return['callsign_us_county'] = $this->logbook_model->call_us_county($callsign);
 			$return['bearing'] = $this->bearing($return['callsign_qra'], $measurement_base, $station_id);
 			$return['workedBefore'] = $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
-			if ($this->session->userdata('user_show_qrz_image')) {
+			if ($this->session->userdata('user_show_profile_image')) {
 				if (isset($callbook)) {
 					if ($callbook['image'] == "") {
 						$return['image'] = "n/a";
@@ -179,7 +185,7 @@ class Logbook extends CI_Controller {
 			$return['callsign_iota'] = $callbook['iota'];
 			$return['callsign_state'] = $callbook['state'];
 			$return['callsign_us_county'] = $callbook['us_county'];
-			if ($this->session->userdata('user_show_qrz_image')) {
+			if ($this->session->userdata('user_show_profile_image')) {
 				if ($callbook['image'] == "") {
 					$return['image'] = "n/a";
 				} else {
@@ -389,9 +395,13 @@ class Logbook extends CI_Controller {
 				}
 
 				if($row->COL_SAT_NAME != null) {
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
+						echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+						echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				} else {
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+						echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+						echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				}
 
 				$count++;
@@ -426,9 +436,13 @@ class Logbook extends CI_Controller {
 				}
 	
 				if($row->COL_SAT_NAME != null) { 
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				} else {
-				echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				}
 	
 				$count++;
@@ -444,7 +458,9 @@ class Logbook extends CI_Controller {
 					$lat = $result['lat'];
 					$lng = $result['long'];
 				}
-				echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+				echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+				echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
+				echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				$count++;
 			}
 
@@ -558,7 +574,7 @@ class Logbook extends CI_Controller {
 							$html .= "yellow";
 							break;
 						case "I":
-							echo "grey";
+							$html .= "grey";
 							break;
 						default:
 						   $html .= "red";
@@ -576,7 +592,7 @@ class Logbook extends CI_Controller {
 							$html .= "yellow";
 							break;
 						case "I":
-							echo "grey";
+							$html .= "grey";
 							break;
 						default:
 						   $html .= "red";

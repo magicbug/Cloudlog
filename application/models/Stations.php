@@ -64,6 +64,7 @@ class Stations extends CI_Model {
 			'station_city' =>  xss_clean($this->input->post('city', true)),
 			'station_iota' =>  xss_clean(strtoupper($this->input->post('iota', true))),
 			'station_sota' =>  xss_clean(strtoupper($this->input->post('sota', true))),
+			'station_wwff' =>  xss_clean(strtoupper($this->input->post('wwff', true))),
 			'station_sig' =>  xss_clean(strtoupper($this->input->post('sig', true))),
 			'station_sig_info' =>  xss_clean(strtoupper($this->input->post('sig_info', true))),
 			'station_callsign' =>  xss_clean($this->input->post('station_callsign', true)),
@@ -89,6 +90,7 @@ class Stations extends CI_Model {
 			'station_city' => xss_clean($this->input->post('city', true)),
 			'station_iota' => xss_clean($this->input->post('iota', true)),
 			'station_sota' => xss_clean($this->input->post('sota', true)),
+			'station_wwff' => xss_clean($this->input->post('wwff', true)),
 			'station_sig' => xss_clean($this->input->post('sig', true)),
 			'station_sig_info' => xss_clean($this->input->post('sig_info', true)),
 			'station_callsign' => xss_clean($this->input->post('station_callsign', true)),
@@ -202,6 +204,21 @@ class Stations extends CI_Model {
 		}
 	}
 
+	public function find_name() {
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('station_active', 1);
+		$query = $this->db->get('station_profile');
+
+		if($query->num_rows() >= 1) {
+			foreach ($query->result() as $row)
+			{
+				return $row->station_profile_name;
+			}
+		} else {
+			return "0";
+		}
+	}
+
     public function reassign($id) {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
@@ -225,6 +242,10 @@ class Stations extends CI_Model {
 
 		if($row->station_sota != "") {
 			$this->db->where('COL_MY_SOTA_REF', $row->station_sota);
+		}
+
+		if($row->station_wwff != "") {
+			$this->db->where('COL_MY_WWFF_REF', $row->station_wwff);
 		}
 
 		if($row->station_sig != "") {

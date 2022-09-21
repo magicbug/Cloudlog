@@ -79,7 +79,43 @@ thead > tr > td {
     text-transform: uppercase;
 }
 
-.qso_panel .sota_ref {
+.qso_panel #sota_ref-selectized {
+    text-transform: uppercase;
+}
+
+.qso_panel #wwff_ref-selectized {
+    text-transform: uppercase;
+}
+
+.qso_panel #darc_dok-selectized {
+    text-transform: uppercase;
+}
+
+.card-body #callsign {
+    text-transform: uppercase;
+}
+
+.card-body #locator {
+    text-transform: uppercase;
+}
+
+.card-body #vucc_grids {
+    text-transform: uppercase;
+}
+
+.card-body #sota_ref_edit-selectized {
+    text-transform: uppercase;
+}
+
+.card-body #wwff_ref_edit-selectized {
+    text-transform: uppercase;
+}
+
+.card-body #darc_dok_edit-selectized {
+    text-transform: uppercase;
+}
+
+.card-body #exch_gridsquare_r {
     text-transform: uppercase;
 }
 
@@ -322,7 +358,6 @@ div#station_logbooks_linked_table_paginate {
     max-width: 100%;
 }
 
-
 .option-nav {
 	margin-bottom: 10px;
 }
@@ -334,3 +369,9 @@ div#station_logbooks_linked_table_paginate {
 .file-manager-add-new :hover {
 	background-color: #ffe4b5;
 }
+
+#mapactivators {
+    height: calc(100vh - 380px) !important;
+    max-height: 900px !important;
+}
+

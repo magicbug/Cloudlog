@@ -20,7 +20,7 @@ class Migration_add_service_username extends CI_Migration {
                 )
             );
 
-            if (!$this->db->field_exists('public_slug', 'thirdparty_logins')) {
+            if (!$this->db->field_exists('service_username', 'thirdparty_logins')) {
                 $this->dbforge->add_column('thirdparty_logins', $fields);
             }
             

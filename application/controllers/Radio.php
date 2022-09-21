@@ -32,7 +32,7 @@
 			// user is not logged in
 			redirect('user/login');
 		}
-		
+
 		$this->load->model('cat');
 		$query = $this->cat->status();
 		if ($query->num_rows() > 0)
@@ -138,8 +138,8 @@
 				}
 
 				// Calculate how old the data is in minutes
-				$datetime1 = new DateTime(); // Today's Date/Time
-				$datetime2 = new DateTime($row->newtime);
+				$datetime1 = new DateTime("now", new DateTimeZone('UTC')); // Today's Date/Time
+				$datetime2 = new DateTime($row->timestamp, new DateTimeZone('UTC'));
 				$interval = $datetime1->diff($datetime2);
 
 				$minutes = $interval->days * 24 * 60;

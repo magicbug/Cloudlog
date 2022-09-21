@@ -59,7 +59,7 @@
 
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_callsign'); ?></td>
-                        <td><b><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></b></td>
+                        <td><b><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></b> <a target="_blank" href="https://www.qrz.com/db/<?php echo strtoupper($row->COL_CALL); ?>"><img width="16" height="16" src="<?php echo base_url(); ?>images/icons/qrz.png" alt="Lookup <?php echo strtoupper($row->COL_CALL); ?> on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/<?php echo strtoupper($row->COL_CALL); ?>"><img width="16" height="16" src="<?php echo base_url(); ?>images/icons/hamqth.png" alt="Lookup <?php echo strtoupper($row->COL_CALL); ?> on HamQTH"></a></td>
                     </tr>
 
                     <tr>
@@ -112,19 +112,20 @@
                                 $CI->load->library('qra');
 
                                 // Cacluate Distance
-                                echo $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
+                                $distance = $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
 
                                 switch ($measurement_base) {
                                     case 'M':
-                                        echo "mi";
+                                        $distance .= "mi";
                                         break;
                                     case 'K':
-                                        echo "km";
+                                        $distance .= "km";
                                         break;
                                     case 'N':
-                                        echo "nmi";
+                                        $distance .= "nmi";
                                         break;
                                 }
+                                echo $distance;
                             ?>
                         </td>
                     </tr>
@@ -170,7 +171,7 @@
                     <?php if($row->COL_SAT_NAME != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_satellite_name'); ?></td>
-                        <td><?php echo $row->COL_SAT_NAME; ?></td>
+                        <td><a href="https://db.satnogs.org/search/?q=<?php echo $row->COL_SAT_NAME; ?>" target="_blank"><?php echo $row->COL_SAT_NAME; ?></a></td>
                     </tr>
                     <?php } ?>
 
@@ -183,7 +184,7 @@
                     <?php if($row->COL_COUNTRY != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('general_word_country'); ?></td>
-                        <td><?php echo ucwords(strtolower(($row->COL_COUNTRY))); ?></td>
+                        <td><?php echo ucwords(strtolower(($row->COL_COUNTRY)), "- (/"); ?></td>
                     </tr>
                     <?php } ?>
 
@@ -208,6 +209,13 @@
                     </tr>
                     <?php } ?>
 
+                    <?php if($row->COL_WWFF_REF != null) { ?>
+                    <tr>
+                        <td><?php echo $this->lang->line('gen_hamradio_wwff_reference'); ?></td>
+                        <td><a href="https://wwff.co/directory/?showRef=<?php echo $row->COL_WWFF_REF; ?>" target="_blank"><?php echo $row->COL_WWFF_REF; ?></a></td>
+                    </tr>
+                    <?php } ?>
+
                     <?php if($row->COL_SIG != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_sig'); ?></td>
@@ -218,7 +226,25 @@
                     <?php if($row->COL_SIG_INFO != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_sig_info'); ?></td>
-                        <td><?php echo $row->COL_SIG_INFO; ?></td>
+                        <?php
+                        switch ($row->COL_SIG) {
+                        case "GMA":
+                           echo "<td><a href=\"https://www.cqgma.org/zinfo.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
+                           break;
+                        case "MQC":
+                           echo "<td><a href=\"https://www.mountainqrp.it/awards/referenza.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
+                           break;
+                        case "WWFF":
+                           echo "<td><a href=\"https://wwff.co/directory/?showRef=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
+                           break;
+                        case "POTA":
+                           echo "<td><a href=\"https://pota.app/#/park/".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
+                           break;
+                        default:
+                           echo "<td>".$row->COL_SIG_INFO."</td>";
+                           break;
+                        }
+                        ?>
                     </tr>
                     <?php } ?>
 
@@ -283,8 +309,11 @@
                             $twitter_band_sat = $row->COL_BAND;
                             $hashtags = "#hamr #cloudlog";
                         }
-
-                        $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." (Gridsquare: ".$row->COL_GRIDSQUARE.") on ".$twitter_band_sat." using ".$row->COL_MODE." ".$hashtags);
+                        if (!isset($distance)) {
+                            $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
+                        } else {
+                            $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." (Gridsquare: ".$row->COL_GRIDSQUARE." / distance: ".$distance.") on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
+                        }
                     ?>
 
                     <div class="text-right"><a class="btn btn-sm btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a></div>
@@ -302,6 +331,10 @@
                         <td><?php echo $row->station_callsign; ?></td>
                     </tr>
                     <tr>
+                        <td>Station Name</td>
+                        <td><?php echo $row->station_profile_name; ?></td>
+                    </tr>
+                    <tr>
                         <td>Station Gridsquare</td>
                         <td><?php echo $row->station_gridsquare; ?></td>
                     </tr>
@@ -316,7 +349,7 @@
                     <?php if($row->station_country) { ?>
                     <tr>
                         <td>Station Country</td>
-                        <td><?php echo ucwords(strtolower(($row->station_country))); ?></td>
+                        <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); ?></td>
                     </tr>
                     <?php } ?>
 
@@ -331,6 +364,13 @@
                     <tr>
                         <td>Station Transmit Power</td>
                         <td><?php echo $row->COL_TX_PWR; ?>w</td>
+                    </tr>
+                    <?php } ?>
+
+                    <?php if($row->COL_MY_WWFF_REF) { ?>
+                    <tr>
+                        <td>Station WWFF Reference</td>
+                        <td><?php echo $row->COL_MY_WWFF_REF; ?></td>
                     </tr>
                     <?php } ?>
             </table>
@@ -469,20 +509,19 @@
 		    $lng = $midpoint[1];
         }
 	} else {
+        if(isset($row->lat)) {
+			$lat = $row->lat;
+        } else {
+            $lat = 0;
+        }
 
-		$CI =& get_instance();
-		$CI->load->model('Logbook_model');
-
-		$result = $CI->Logbook_model->dxcc_lookup($row->COL_CALL, $row->COL_TIME_ON);
-
-        if(isset($result)) {
-			$lat = $result['lat'];
-			$lng = $result['long'];
+        if(isset($row->long)) {
+			$lng = $row->long;
+        } else {
+            $lng = 0;
         }
 	}
 ?>
-
-
 
 <script>
 var lat = <?php echo $lat; ?>;

@@ -91,38 +91,16 @@
                   <label for="band"><?php echo $this->lang->line('gen_hamradio_band'); ?></label>
 
                   <select id="band" class="form-control form-control-sm" name="band">
-                    <optgroup label="HF">
-                      <option value="160m" <?php if($this->session->userdata('band') == "160m") { echo "selected=\"selected\""; } ?>>160m</option>
-                      <option value="80m" <?php if($this->session->userdata('band') == "80m") { echo "selected=\"selected\""; } ?>>80m</option>
-                      <option value="60m" <?php if($this->session->userdata('band') == "60m") { echo "selected=\"selected\""; } ?>>60m</option>
-                      <option value="40m" <?php if($this->session->userdata('band') == "40m") { echo "selected=\"selected\""; } ?>>40m</option>
-                      <option value="30m" <?php if($this->session->userdata('band') == "30m") { echo "selected=\"selected\""; } ?>>30m</option>
-                      <option value="20m" <?php if($this->session->userdata('band') == "20m") { echo "selected=\"selected\""; } ?>>20m</option>
-                      <option value="17m" <?php if($this->session->userdata('band') == "17m") { echo "selected=\"selected\""; } ?>>17m</option>
-                      <option value="15m" <?php if($this->session->userdata('band') == "15m") { echo "selected=\"selected\""; } ?>>15m</option>
-                      <option value="12m" <?php if($this->session->userdata('band') == "12m") { echo "selected=\"selected\""; } ?>>12m</option>
-                      <option value="10m" <?php if($this->session->userdata('band') == "10m") { echo "selected=\"selected\""; } ?>>10m</option>
-                    </optgroup>
-
-                    <optgroup label="VHF">
-                      <option value="6m" <?php if($this->session->userdata('band') == "6m") { echo "selected=\"selected\""; } ?>>6m</option>
-                      <option value="4m" <?php if($this->session->userdata('band') == "4m") { echo "selected=\"selected\""; } ?>>4m</option>
-                      <option value="2m" <?php if($this->session->userdata('band') == "2m") { echo "selected=\"selected\""; } ?>>2m</option>
-                      <option value="1.25m" <?php if($this->session->userdata('band') == "1.25m") { echo "selected=\"selected\""; } ?>>1.25m</option>
-                    </optgroup>
-
-                    <optgroup label="UHF">
-                      <option value="70cm" <?php if($this->session->userdata('band') == "70cm") { echo "selected=\"selected\""; } ?>>70cm</option>
-                      <option value="33cm" <?php if($this->session->userdata('band') == "33cm") { echo "selected=\"selected\""; } ?>>33cm</option>
-                    </optgroup>
-
-                    <optgroup label="Microwave">
-                      <option value="23cm" <?php if($this->session->userdata('band') == "23cm") { echo "selected=\"selected\""; } ?>>23cm</option>
-                      <option value="13cm" <?php if($this->session->userdata('band') == "13cm") { echo "selected=\"selected\""; } ?>>13cm</option>
-                      <option value="9cm" <?php if($this->session->userdata('band') == "9cm") { echo "selected=\"selected\""; } ?>>9cm</option>
-                      <option value="6cm" <?php if($this->session->userdata('band') == "6cm") { echo "selected=\"selected\""; } ?>>6cm</option>
-                      <option value="3cm" <?php if($this->session->userdata('band') == "3cm") { echo "selected=\"selected\""; } ?>>3cm</option>
-                    </optgroup>
+                  <?php foreach($bands as $key=>$bandgroup) {
+                          echo '<optgroup label="' . strtoupper($key) . '">';
+                          foreach($bandgroup as $band) {
+                            echo '<option value="' . $band . '"';
+                              if ($this->session->userdata('band') == $band) echo ' selected';
+                              echo '>' . $band . '</option>'."\n";
+                          }
+                          echo '</optgroup>';
+                        }
+                  ?>
                   </select>
                 </div>
               </div>
@@ -208,38 +186,16 @@
                   <select id="band_rx" class="form-control" name="band_rx">
                     <option value="" <?php if($this->session->userdata('band_rx') == "") { echo "selected=\"selected\""; } ?>></option>
 
-                    <optgroup label="HF">
-                      <option value="160m" <?php if($this->session->userdata('band_rx') == "160m") { echo "selected=\"selected\""; } ?>>160m</option>
-                      <option value="80m" <?php if($this->session->userdata('band_rx') == "80m") { echo "selected=\"selected\""; } ?>>80m</option>
-                      <option value="60m" <?php if($this->session->userdata('band_rx') == "60m") { echo "selected=\"selected\""; } ?>>60m</option>
-                      <option value="40m" <?php if($this->session->userdata('band_rx') == "40m") { echo "selected=\"selected\""; } ?>>40m</option>
-                      <option value="30m" <?php if($this->session->userdata('band_rx') == "30m") { echo "selected=\"selected\""; } ?>>30m</option>
-                      <option value="20m" <?php if($this->session->userdata('band_rx') == "20m") { echo "selected=\"selected\""; } ?>>20m</option>
-                      <option value="17m" <?php if($this->session->userdata('band_rx') == "17m") { echo "selected=\"selected\""; } ?>>17m</option>
-                      <option value="15m" <?php if($this->session->userdata('band_rx') == "15m") { echo "selected=\"selected\""; } ?>>15m</option>
-                      <option value="12m" <?php if($this->session->userdata('band_rx') == "12m") { echo "selected=\"selected\""; } ?>>12m</option>
-                      <option value="10m" <?php if($this->session->userdata('band_rx') == "10m") { echo "selected=\"selected\""; } ?>>10m</option>
-                    </optgroup>
-
-                    <optgroup label="VHF">
-                      <option value="6m" <?php if($this->session->userdata('band_rx') == "6m") { echo "selected=\"selected\""; } ?>>6m</option>
-                      <option value="4m" <?php if($this->session->userdata('band_rx') == "4m") { echo "selected=\"selected\""; } ?>>4m</option>
-                      <option value="2m" <?php if($this->session->userdata('band_rx') == "2m") { echo "selected=\"selected\""; } ?>>2m</option>
-                      <option value="1.25m" <?php if($this->session->userdata('band_rx') == "1.25m") { echo "selected=\"selected\""; } ?>>1.25m</option>
-                    </optgroup>
-
-                    <optgroup label="UHF">
-                      <option value="70cm" <?php if($this->session->userdata('band_rx') == "70cm") { echo "selected=\"selected\""; } ?>>70cm</option>
-                      <option value="33cm" <?php if($this->session->userdata('band_rx') == "33cm") { echo "selected=\"selected\""; } ?>>33cm</option>
-                    </optgroup>
-
-                    <optgroup label="Microwave">
-                      <option value="23cm" <?php if($this->session->userdata('band_rx') == "23cm") { echo "selected=\"selected\""; } ?>>23cm</option>
-                      <option value="13cm" <?php if($this->session->userdata('band_rx') == "13cm") { echo "selected=\"selected\""; } ?>>13cm</option>
-                      <option value="9cm" <?php if($this->session->userdata('band_rx') == "9cm") { echo "selected=\"selected\""; } ?>>9cm</option>
-                      <option value="6cm" <?php if($this->session->userdata('band_rx') == "6cm") { echo "selected=\"selected\""; } ?>>6cm</option>
-                      <option value="3cm" <?php if($this->session->userdata('band_rx') == "3cm") { echo "selected=\"selected\""; } ?>>3cm</option>
-                    </optgroup>
+                  <?php foreach($bands as $key=>$bandgroup) {
+                          echo '<optgroup label="' . strtoupper($key) . '">';
+                          foreach($bandgroup as $band) {
+                            echo '<option value="' . $band . '"';
+                              if ($this->session->userdata('band_rx') == $band) echo ' selected';
+                              echo '>' . $band . '</option>'."\n";
+                          }
+                          echo '</optgroup>';
+                        }
+                  ?>
                   </select>
             </div>
 
@@ -279,6 +235,7 @@
               <label for="selectPropagation"><?php echo $this->lang->line('gen_hamradio_propagation_mode'); ?></label>
               <select class="custom-select" id="selectPropagation" name="prop_mode">
                 <option value="" <?php if(!empty($this->session->userdata('prop_mode'))) { echo "selected=\"selected\""; } ?>></option>
+                <option value="AS" <?php if($this->session->userdata('prop_mode') == "AS") { echo "selected=\"selected\""; } ?>>Aircraft Scatter</option>
                 <option value="AUR" <?php if($this->session->userdata('prop_mode') == "AUR") { echo "selected=\"selected\""; } ?>>Aurora</option>
                 <option value="AUE" <?php if($this->session->userdata('prop_mode') == "AUE") { echo "selected=\"selected\""; } ?>>Aurora-E</option>
                 <option value="BS" <?php if($this->session->userdata('prop_mode') == "BS") { echo "selected=\"selected\""; } ?>>Back scatter</option>
@@ -384,6 +341,17 @@
               </div>
               <div class="form-group col-md-3 align-self-center">
                 <small id="sota_info" class="badge badge-secondary"></small>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-9">
+                <label for="wwff_ref"><?php echo $this->lang->line('gen_hamradio_wwff_reference'); ?></label>
+                <input class="form-control" id="wwff_ref" type="text" name="wwff_ref" value="" />
+                <small id="wwffRefHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_wwff_ref_helptext'); ?></small>
+              </div>
+              <div class="form-group col-md-3 align-self-center">
+                <small id="wwff_info" class="badge badge-secondary"></small>
               </div>
             </div>
 
@@ -521,7 +489,7 @@
         <div class="card-body callsign-suggestions"></div>
     </div>
 
-    <?php if ($this->session->userdata('user_show_qrz_image')) { ?>
+    <?php if ($this->session->userdata('user_show_profile_image')) { ?>
     <div class="card callsign-image" id="callsign-image" style="display: none;">
         <div class="card-header"><h4 style="font-size: 16px; font-weight: bold;" class="card-title"><?php echo $this->lang->line('qso_title_image'); ?></h4></div>
 

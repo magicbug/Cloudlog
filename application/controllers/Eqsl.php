@@ -36,6 +36,7 @@ class eqsl extends CI_Controller {
 				$tableheaders .= "<td>Date</td>";
 				$tableheaders .= "<td>Call</td>";
 				$tableheaders .= "<td>Mode</td>";
+				$tableheaders .= "<td>Submode</td>";
 				$tableheaders .= "<td>Log Status</td>";
 				$tableheaders .= "<td>eQSL Status</td>";
 			$tableheaders .= "<tr>";
@@ -74,6 +75,12 @@ class eqsl extends CI_Controller {
 				$table .= "<td>".$time_on."</td>";
 				$table .= "<td>".str_replace("0","&Oslash;",$record['call'])."</td>";
 				$table .= "<td>".$record['mode']."</td>";
+				if (isset($record['submode']))
+				{
+					$table .= "<td>".$record['submode']."</td>";
+				} else {
+					$table .= "<td></td>";
+				}
 				$table .= "<td>QSO Record: ".$status."</td>";
 				$table .= "<td>eQSL Record: ".$eqsl_status."</td>";
 			$table .= "<tr>";
@@ -142,7 +149,7 @@ class eqsl extends CI_Controller {
 			$active_station_id = $this->stations->find_active();
         	$station_profile = $this->stations->profile($active_station_id);
 			$active_station_info = $station_profile->row();
-			// Query the logbook to determine when the last LoTW confirmation was
+			// Query the logbook to determine when the last eQSL confirmation was
 			$eqsl_last_qsl_date = $this->logbook_model->eqsl_last_qsl_rcvd_date();
 
 			// Build parameters for eQSL inbox file
@@ -293,12 +300,18 @@ class eqsl extends CI_Controller {
 						$table .= "<td>Date</td>";
 						$table .= "<td>Call</td>";
 						$table .= "<td>Mode</td>";
+						$table .= "<td>Submode</td>";
 						$table .= "<td>Band</td>";
 						$table .= "<td>Result</td>";
 					$table .= "<tr>";
 			// Build out the ADIF info string according to specs http://eqsl.cc/qslcard/ADIFContentSpecs.cfm
 			foreach ($qslsnotsent->result_array() as $qsl)
 			{
+				// eQSL username changes for linked account.
+				// i.e. when operating /P it must be callsign/p
+				// the password, however, is always the same as the main account
+				$data['user_eqsl_name'] = $qsl['station_callsign'];
+
 				$COL_QSO_DATE = date('Ymd',strtotime($qsl['COL_TIME_ON']));
 				$COL_TIME_ON = date('Hi',strtotime($qsl['COL_TIME_ON']));
 				
@@ -377,6 +390,16 @@ class eqsl extends CI_Controller {
 				$adif .= $qsl['COL_MODE'];
 				$adif .= "%20";
 				
+				if(isset($qsl['COL_SUBMODE'])) {
+				$adif .= "%3C";
+				$adif .= "SUBMODE";
+				$adif .= "%3A";
+				$adif .= strlen($qsl['COL_SUBMODE']);
+				$adif .= "%3E";
+				$adif .= $qsl['COL_SUBMODE'];
+				$adif .= "%20";
+				}
+
 				$adif .= "%3C";
 				$adif .= "BAND";
 				$adif .= "%3A";
@@ -554,6 +577,11 @@ class eqsl extends CI_Controller {
 						$table .= "<td>".$qsl['COL_TIME_ON']."</td>";
 						$table .= "<td>".str_replace("0","&Oslash;",$qsl['COL_CALL'])."</td>";
 						$table .= "<td>".$qsl['COL_MODE']."</td>";
+						if(isset($qsl['COL_SUBMODE'])) {
+							$table .= "<td>".$qsl['COL_SUBMODE']."</td>";
+						} else {
+							$table .= "<td></td>";
+						}
 						$table .= "<td>".$qsl['COL_BAND']."</td>";
 						$table .= "<td>".$status."</td>";
 				$table .= "<tr>";
@@ -575,6 +603,7 @@ class eqsl extends CI_Controller {
 						$table .= "<td>Date</td>";
 						$table .= "<td>Call</td>";
 						$table .= "<td>Mode</td>";
+						$table .= "<td>Submode</td>";
 						$table .= "<td>Band</td>";
 						$table .= "<td>eQSL QTH Nickname</td>";
 					$table .= "<tr>";
@@ -585,6 +614,12 @@ class eqsl extends CI_Controller {
 						$table .= "<td>".$qsl['COL_TIME_ON']."</td>";
 						$table .= "<td><a href=\"javascript:displayQso(" . $qsl['COL_PRIMARY_KEY'] . ")\">" . str_replace("0","&Oslash;",strtoupper($qsl['COL_CALL'])) . "</a></td>";
 						$table .= "<td>".$qsl['COL_MODE']."</td>";
+						
+						if(isset($qsl['COL_SUBMODE'])) {
+							$table .= "<td>".$qsl['COL_SUBMODE']."</td>";
+						} else {
+							$table .= "<td></td>";
+						}
 						$table .= "<td>".$qsl['COL_BAND']."</td>";
 						$table .= "<td>".$qsl['eqslqthnickname']."</td>";
 					$table .= "<tr>";

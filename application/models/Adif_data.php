@@ -93,7 +93,10 @@ class adif_data extends CI_Model {
             $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) <= '".$to."'");
         }
         if ($exportLotw) {
+            $this->db->group_start();
             $this->db->where($this->config->item('table_name').".COL_LOTW_QSL_SENT != 'Y'");
+            $this->db->or_where($this->config->item('table_name').".COL_LOTW_QSL_SENT", NULL);
+            $this->db->group_end();
         }
 
         $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
@@ -111,7 +114,10 @@ class adif_data extends CI_Model {
         $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
         $this->db->from($this->config->item('table_name'));
         $this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
+        $this->db->group_start();
         $this->db->where($this->config->item('table_name').".COL_LOTW_QSL_SENT != 'Y'");
+        $this->db->or_where($this->config->item('table_name').".COL_LOTW_QSL_SENT", NULL);
+        $this->db->group_end();
 
         $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
 

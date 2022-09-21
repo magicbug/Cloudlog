@@ -60,7 +60,11 @@
 						<option value="All">All</option>
 						<?php
 						foreach($dxcc as $d){
-							echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name))) . '</option>';
+							echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower($d->name), "- (/");
+							if ($d->Enddate != null) {
+								echo ' (deleted dxcc)';
+							}
+							echo '</option>';
 						}
 						?>
 
@@ -88,6 +92,7 @@
 					<label for="selectPropagation">Propagation Mode</label>
 					<select class="custom-select" id="selectPropagation" name="prop_mode">
 						<option value="All">All</option>
+						<option value="AS">Aircraft Scatter</option>
 						<option value="AUR">Aurora</option>
 						<option value="AUE">Aurora-E</option>
 						<option value="BS">Back scatter</option>
