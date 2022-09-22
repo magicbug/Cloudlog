@@ -2109,13 +2109,21 @@ class Logbook_model extends CI_Model {
   }
 
   // Get the last date we received an eQSL
-  function eqsl_last_qsl_rcvd_date() {
+  function eqsl_last_qsl_rcvd_date($callsign, $nickname) {
+	  $qso_table_name = $this->config->item('table_name');
+	  $this->db->from($qso_table_name);
+
+	  $this->db->join('station_profile',
+		  'station_profile.station_id = '.$qso_table_name.'.station_id AND station_profile.eqslqthnickname != ""');
+	  $this->db->where('station_profile.station_callsign', $callsign);
+	  $this->db->where('station_profile.eqslqthnickname', $nickname);
+
       $this->db->select("DATE_FORMAT(COL_EQSL_QSLRDATE,'%Y%m%d') AS COL_EQSL_QSLRDATE", FALSE);
       $this->db->where('COL_EQSL_QSLRDATE IS NOT NULL');
       $this->db->order_by("COL_EQSL_QSLRDATE", "desc");
       $this->db->limit(1);
 
-      $query = $this->db->get($this->config->item('table_name'));
+      $query = $this->db->get();
       $row = $query->row();
 
       if (isset($row->COL_EQSL_QSLRDATE)){

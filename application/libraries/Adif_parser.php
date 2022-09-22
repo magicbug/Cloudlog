@@ -111,6 +111,7 @@ class ADIF_Parser
 		};
 
         $this->datasplit = preg_split("/<eor>/i", mb_substr($this->data, $this->i, NULL, "UTF-8"));
+		$this->currentarray = 0;
 		return 1;
 	}
 	
