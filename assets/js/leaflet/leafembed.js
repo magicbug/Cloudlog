@@ -10,6 +10,8 @@ var greenIcon = L.icon({
     iconSize:     [10, 10], // size of the icon
 });
 
+var osmUrl = $('#leafembed').attr("tileUrl");
+
 function initmap(ShowGrid = 'No', MapTag = 'map') {
     // set up AJAX request
     ajaxRequest=getXmlHttpObject();
@@ -22,7 +24,6 @@ function initmap(ShowGrid = 'No', MapTag = 'map') {
     map = new L.Map(MapTag);
 
     // create the tile layer with correct attribution
-    var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
     var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});        
 
