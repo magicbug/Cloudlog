@@ -419,17 +419,17 @@ $("#callsign").focusout(function() {
 				$('#hamqth_info').html('<a target="_blank" href="https://www.hamqth.com/'+find_callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/hamqth.com.png"></a>'); 
 				$('#hamqth_info').attr('title', 'Lookup '+find_callsign+' info on hamqth.com');
 
-				var $select = $('#darc_dok').selectize();
-				var selectize = $select[0].selectize;
+				var $dok_select = $('#darc_dok').selectize();
+				var dok_selectize = $dok_select[0].selectize;
 				if (result.dxcc.adif == '230') {
 					$.get('lookup/dok/' + $('#callsign').val().toUpperCase(), function(result) {
 						if (result) {
-							selectize.addOption({name: result});
-							selectize.setValue(result, false);
+							dok_selectize.addOption({name: result});
+							dok_selectize.setValue(result, false);
 						}
 					});
 				} else {
-					selectize.clear();
+					dok_selectize.clear();
 				}
 
 				$('#dxcc_id').val(result.dxcc.adif);
@@ -515,10 +515,10 @@ $("#callsign").focusout(function() {
 				* Update county with returned value
 				*/
 				if( $('#stationCntyInput').has('option').length == 0 && result.callsign_us_county != "") {
-					var $select = $('#stationCntyInput').selectize();
-					var selectize = $select[0].selectize;
-					selectize.addOption({name: result.callsign_us_county});
-					selectize.setValue(result.callsign_us_county, false);
+					var $county_select = $('#stationCntyInput').selectize();
+					var county_selectize = $county_select[0].selectize;
+					county_selectize.addOption({name: result.callsign_us_county});
+					county_selectize.setValue(result.callsign_us_county, false);
 				}
 
 				if($('#iota_ref').val() == "") {
