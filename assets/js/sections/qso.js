@@ -322,12 +322,14 @@ function reset_fields() {
 	var $select = $('#wwff_ref').selectize();
 	var selectize = $select[0].selectize;
 	selectize.clear();
-	var $select = $('#darc_dok').selectize();
-	var selectize = $select[0].selectize;
-	selectize.clear();
-	$select = $('#stationCntyInput').selectize();
-	selectize = $select[0].selectize;
-	selectize.clear();
+	var $dok_select = $('#darc_dok').selectize();
+	var dok_selectize = $dok_select[0].selectize;
+	dok_selectize.clear();
+	var $county_select = $('#stationCntyInput').selectize();
+	var county_selectize = $county_select[0].selectize;
+	county_selectize.enable();
+	county_selectize.destroy();
+	county_selectize.clear();
 
 	mymap.setView(pos, 12);
 	mymap.removeLayer(markers);
