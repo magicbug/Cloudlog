@@ -70,6 +70,242 @@
 		
 		return $this->db->get($this->config->item('table_name'));
 	}
+
+	function unique_callsigns() {
+		$qsoView = array();
+
+		$bands = $this->get_bands();
+		$modes = $this->get_modes();
+
+		$bandunique = $this->getUniqueCallsignsBands();
+		$modeunique = $this->getUniqueCallsignsModes();
+		
+		// Generating the band/mode table
+		foreach ($bands as $band) {
+			$bandtotal[$band] = 0;
+			foreach ($modes as $mode) {
+				$qsoView [$mode][$band] = '-';
+			}
+		}
+
+		foreach ($bandunique as $band) {
+			$bandcalls[$band->band] = $band->calls;
+		}
+
+		foreach ($modeunique as $mode) {
+			if ($mode->col_submode == null) {
+				$modecalls[$mode->col_mode] = $mode->calls;
+			} else {
+				$modecalls[$mode->col_submode] = $mode->calls;
+			}
+		}
+
+		// Populating array with worked
+		$workedQso = $this->getUniqueCallsigns();
+
+		foreach ($workedQso as $line) {
+			if ($line->col_submode == null) {
+				$qsoView [$line->col_mode]  [$line->band] = $line->calls;
+			} else {
+				$qsoView [$line->col_submode]  [$line->band] = $line->calls;
+			}
+		}
+
+		$result['qsoView'] = $qsoView;
+		$result['bandunique'] = $bandcalls;
+		$result['modeunique'] = $modecalls;
+		$result['total'] = $this->getUniqueCallsignsTotal();
+
+		return $result;
+	}
+
+	function getUniqueCallsigns() {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	
+		if (!$logbooks_locations_array) {
+		  return null;
+		}
+
+		$bands = array();
+	
+		$this->db->select('count(distinct col_call) as calls, col_band as band, col_mode, col_submode', FALSE);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->group_by('col_band, col_mode, col_submode');
+	
+		$query = $this->db->get($this->config->item('table_name'));
+
+		return $query->result();
+	}
+
+	function getUniqueCallsignsModes() {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	
+		if (!$logbooks_locations_array) {
+		  return null;
+		}
+
+		$bands = array();
+	
+		$this->db->select('count(distinct col_call) as calls, col_mode, col_submode', FALSE);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->group_by('col_mode, col_submode');
+	
+		$query = $this->db->get($this->config->item('table_name'));
+
+		return $query->result();
+	}
+
+	function getUniqueCallsignsBands() {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	
+		if (!$logbooks_locations_array) {
+		  return null;
+		}
+
+		$bands = array();
+	
+		$this->db->select('count(distinct col_call) as calls, col_band as band', FALSE);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->group_by('col_band');
+	
+		$query = $this->db->get($this->config->item('table_name'));
+
+		return $query->result();
+	}
+
+	function getUniqueCallsignsTotal() {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	
+		if (!$logbooks_locations_array) {
+		  return null;
+		}
+
+		$bands = array();
+	
+		$this->db->select('count(distinct col_call) as calls', FALSE);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+	
+		$query = $this->db->get($this->config->item('table_name'));
+
+		return $query->row();
+	}
+
+	function total_qsos() {
+		$qsoView = array();
+
+		$bands = $this->get_bands();
+		$modes = $this->get_modes();
+
+		$bandtotal = array();
+		$modetotal = array();
+		// Generating the band/mode table
+		foreach ($bands as $band) {
+			$bandtotal[$band] = 0;
+			foreach ($modes as $mode) {
+				$qsoView [$mode][$band] = '-';
+				$modetotal[$mode] = 0;
+			}
+		}
+
+		// Populating array with worked
+		$workedQso = $this->modeBandQso();
+		foreach ($workedQso as $line) {
+			if ($line->col_submode == null) {
+				$qsoView [$line->col_mode]  [$line->band] = $line->count;
+				$modetotal[$line->col_mode] += $line->count;
+			} else {
+				$qsoView [$line->col_submode]  [$line->band] = $line->count;
+				$modetotal[$line->col_submode] += $line->count;
+			}
+			$bandtotal[$line->band] += $line->count;
+		}
+
+		$result['qsoView'] = $qsoView;
+		$result['bandtotal'] = $bandtotal;
+		$result['modetotal'] = $modetotal;
+
+		return $result;
+	}
+
+	function modeBandQso() {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	
+		if (!$logbooks_locations_array) {
+		  return null;
+		}
+
+		$bands = array();
+	
+		$this->db->select('count(*) as count, col_band as band, col_mode, col_submode', FALSE);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->group_by('col_band, col_mode, col_submode');
+	
+		$query = $this->db->get($this->config->item('table_name'));
+
+		return $query->result();
+	}
+
+	function get_bands() {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	
+		if (!$logbooks_locations_array) {
+		  return null;
+		}
+
+		$bands = array();
+	
+		$this->db->select('distinct col_band+0 as bandsort, col_band as band', FALSE);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->order_by('bandsort', 'desc');
+	
+		$query = $this->db->get($this->config->item('table_name'));
+
+		foreach($query->result() as $band){
+			array_push($bands, $band->band);
+		}
+	
+		return $bands;
+	}
+
+	function get_modes() {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	
+		if (!$logbooks_locations_array) {
+		  return null;
+		}
+
+		$modes = array();
+	
+		$this->db->select('distinct col_mode, col_submode', FALSE);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->order_by('col_mode, col_submode', 'ASC');
+
+		$query = $this->db->get($this->config->item('table_name'));
+	
+		foreach($query->result() as $mode){
+			if ($mode->col_submode == null) {
+				array_push($modes, $mode->col_mode);
+			} else {
+				array_push($modes, $mode->col_submode);
+			}
+		}
+
+		return $modes;
+	}
 }
 
 ?>

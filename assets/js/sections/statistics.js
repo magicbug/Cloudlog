@@ -1,12 +1,58 @@
 totalSatQsos();
 totalQsosPerYear();
-totalModeQsos();
-totalBandQsos();
 
 // Needed for sattable header fix, will be squished without
 $("a[href='#satellite']").on('shown.bs.tab', function(e) {
     $(".sattable").DataTable().columns.adjust();
 });
+
+$("a[href='#bandtab']").on('shown.bs.tab', function(e) {
+    if (!($('.bandtable').length > 0)) {
+        totalBandQsos();
+    }
+});
+
+$("a[href='#modetab']").on('shown.bs.tab', function(e) {
+    if (!($('.modetable').length > 0)) {
+        totalModeQsos();
+    }
+});
+
+$("a[href='#qsotab']").on('shown.bs.tab', function(e) {
+    if (!($('.qsotable').length > 0)) {
+        totalQsos();
+    }
+});
+
+$("a[href='#uniquetab']").on('shown.bs.tab', function(e) {
+    if (!($('.uniquetable').length > 0)) {
+        uniqueCallsigns();
+    }
+});
+
+function uniqueCallsigns() {
+    $.ajax({
+        url: base_url+'index.php/statistics/get_unique_callsigns',
+        type: 'post',
+        success: function (data) {
+            if (data.length > 0) {
+                $(".unique").html(data);
+            }
+        }
+    });
+}
+
+function totalQsos() {
+    $.ajax({
+        url: base_url+'index.php/statistics/get_total_qsos',
+        type: 'post',
+        success: function (data) {
+            if (data.length > 0) {
+                $(".qsos").html(data);
+            }
+        }
+    });
+}
 
 function totalQsosPerYear() {
         // using this to change color of legend and label according to background color
@@ -100,7 +146,7 @@ function totalQsosPerYear() {
                     $('.yeartable').DataTable({
                         responsive: false,
                         ordering: false,
-                        "scrollY": "170px",
+                        "scrollY": "320px",
                         "scrollCollapse": true,
                         "paging": false,
                         "scrollX": true,

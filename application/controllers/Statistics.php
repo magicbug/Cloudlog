@@ -146,4 +146,31 @@ class Statistics extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($satstats);
 	}
+
+	public function get_unique_callsigns() {
+		$this->load->model('stats');
+
+		$result = $this->stats->unique_callsigns();
+		$total_qsos['qsoarray'] = $result['qsoView'];
+		$total_qsos['bandunique'] = $result['bandunique'];
+		$total_qsos['modeunique'] = $result['modeunique'];
+		$total_qsos['total'] = $result['total'];
+		$total_qsos['bands'] = $this->stats->get_bands();
+
+		$this->load->view('statistics/uniquetable', $total_qsos);
+	}
+
+	public function get_total_qsos() {
+		$this->load->model('stats');
+
+		$totalqsos = array();
+
+		$result = $this->stats->total_qsos();
+		$total_qsos['qsoarray'] = $result['qsoView'];
+		$total_qsos['bandtotal'] = $result['bandtotal'];
+		$total_qsos['modetotal'] = $result['modetotal'];
+		$total_qsos['bands'] = $this->stats->get_bands();
+
+		$this->load->view('statistics/qsotable', $total_qsos);
+	}
 }
