@@ -23,7 +23,19 @@
         </div>
 
         <div class="card">
-            <div class="card-header">Folder Perimissions</div>
+            <div class="card-header">Codeigniter</div>
+            <div class="card-body">
+                <table width="100%">
+                    <tr>
+                        <td>Version</td>
+                        <td><?php echo CI_VERSION; ?></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Folder Permissions</div>
             <div class="card-body">
                 <p>This checks the folders Cloudlog uses are read and writeable by PHP.</p>
                 <table width="100%">
