@@ -32,7 +32,7 @@
 		  <tbody>
 			<?php foreach ($api_keys->result() as $row) { ?>
 				<tr>
-					<td><i class="fas fa-key"></i> <span class="api-key" id="<?php echo $row->key; ?>"><?php echo $row->key; ?></span> <span data-toggle="tooltip" data-original-title="Copy to Clipboard" onclick='copyApiKey("<?php echo $row->key; ?>")'><i class="copy-icon fas fa-copy"></span></td>
+					<td><i class="fas fa-key"></i> <span class="api-key" id="<?php echo $row->key; ?>"><?php echo $row->key; ?></span> <span data-toggle="tooltip" data-original-title="<?php echo $this->lang->line('copy_to_clipboard'); ?>" onclick='copyApiKey("<?php echo $row->key; ?>")'><i class="copy-icon fas fa-copy"></span></td>
 					<td><?php echo $row->description; ?></td>
 					<td>
 						<?php
