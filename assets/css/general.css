@@ -362,3 +362,28 @@ div#station_logbooks_linked_table_paginate {
     height: calc(100vh - 380px) !important;
     max-height: 900px !important;
 }
+
+.copy-icon {
+   display: block;
+   cursor: pointer;
+   padding-left: 0.5em;
+}
+
+.flash-copy {
+   animation-name: flash;
+   animation-timing-function: ease-out;
+   animation-duration: 1s;
+}
+
+@keyframes flash {
+   0% {
+      background: #28a745;
+   }
+   100% {
+      background: transparent;
+   }
+}
+
+.api-key {
+   font-family: Monospace;
+}
