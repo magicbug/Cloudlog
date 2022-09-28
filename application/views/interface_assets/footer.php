@@ -89,6 +89,23 @@ function load_was_map() {
     <script src="<?php echo base_url() ;?>assets/js/sections/station_logbooks.js"></script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "api"  && $this->uri->segment(2) == "help") { ?>
+<script type="text/javascript">
+function copyApiKey(apiKey) {
+   var apiKeyField = $('#'+apiKey);
+   navigator.clipboard.writeText(apiKey).then(function() {
+   });
+   apiKeyField.addClass('flash-copy')
+      .delay('1000').queue(function() {
+         apiKeyField.removeClass('flash-copy').dequeue();
+      });
+}
+
+$(function () {
+   $('[data-toggle="tooltip"]').tooltip({'delay': { show: 500, hide: 0 }, 'placement': 'right'});
+});
+</script>
+<?php } ?>
 
 <?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
 
