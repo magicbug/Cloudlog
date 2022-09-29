@@ -8,13 +8,11 @@
 
 			if (isset($result['prop_mode'])) {
 				$prop_mode = $result['prop_mode'];
+			// For backward compatibility, SatPC32 does not set propergation mode
+			} else if (isset($result['sat_name'])) {
+				$prop_mode = "SAT";
 			} else {
-				// For backward compatibility, SatPC32 does not set propergation mode
-				if (isset($result['sat_name'])) {
-					$prop_mode = "SAT";
-				} else {
-					$prop_mode = NULL;
-				}
+				$prop_mode = NULL;
 			}
 
 			$this->db->where('radio', $result['radio']);
@@ -24,7 +22,7 @@
 			// Let's keep uplink_freq, downlink_freq, uplink_mode and downlink_mode for backward compatibility
 			$data = array(
 				'prop_mode' => $prop_mode,
-				'power' => $result['power'] ?? 0,
+				'power' => $result['power'] ?? NULL,
 				'sat_name' => $result['sat_name'] ?? NULL,
 				'timestamp' => $timestamp,
 			);
