@@ -4,11 +4,7 @@
 
 		function update($result, $user_id) {
 
-			if ($result['timestamp'] != "") {
-				$timestamp = gmdate("Y-m-d H:i:s");
-			} else {
-				$timestamp = gmdate("Y-m-d H:i:s");
-			}
+			$timestamp = gmdate("Y-m-d H:i:s");
 
 			if (isset($result['prop_mode'])) {
 				$prop_mode = $result['prop_mode'];
@@ -28,14 +24,34 @@
 			// Let's keep uplink_freq, downlink_freq, uplink_mode and downlink_mode for backward compatibility
 			$data = array(
 				'prop_mode' => $prop_mode,
-				'frequency' => $result['frequency'] ?? $result['uplink_freq'],
-				'downlink_freq' => $result['frequency_rx'] ?? $result['downlink_freq'],
-				'mode' => $result['mode'] ?? $result['uplink_mode'],
-				'downlink_mode' => $result['mode_rx'] ?? $result['downlink_mode'],
-				'power' => $result['power'],
-				'sat_name' => $result['sat_name'],
+				'power' => $result['power'] ?? 0,
+				'sat_name' => $result['sat_name'] ?? NULL,
 				'timestamp' => $timestamp,
 			);
+			if (isset($result['frequency']) && $result['frequency'] != "NULL") {
+				$data['frequency'] = $result['frequency'];
+			} else {
+				$data['frequency'] = $result['uplink_freq'];
+			}
+			if (isset($result['mode']) && $result['mode'] != "NULL") {
+				$data['mode'] = $result['mode'];
+			} else {
+				$data['mode'] = $result['uplink_mode'];
+			}
+			if (isset($result['frequency_rx'])) {
+				$data['downlink_freq'] = $result['frequency_rx'];
+			} else if (isset($result['downlink_freq'])) {
+				$data['downlink_freq'] = $result['downlink_freq'];
+			} else {
+				$data['downlink_freq'] = NULL;
+			}
+			if (isset($result['mode_rx'])) {
+				$data['downlink_mode'] = $result['mode_rx'];
+			} else if (isset($result['downlink_freq'])) {
+				$data['downlink_mode'] = $result['downlink_mode'];
+			} else {
+				$data['downlink_mode'] = NULL;
+			}
 
 			if ($query->num_rows() > 0)
 			{

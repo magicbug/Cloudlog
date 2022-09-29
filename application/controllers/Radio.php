@@ -118,7 +118,7 @@
 					}
 
 					// Get Satellite Mode
-					$uplink_mode = $this->get_mode_designator($row->uplink_freq);
+					$uplink_mode = $this->get_mode_designator($row->frequency);
 					$downlink_mode = $this->get_mode_designator($row->downlink_freq);
 
 					if (empty($uplink_mode)) {
