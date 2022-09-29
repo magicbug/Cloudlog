@@ -117,15 +117,15 @@
 					}
 
 					// Get Satellite Mode
-					$uplink_mode = $this->get_mode_designator($row->frequency);
-					$downlink_mode = $this->get_mode_designator($row->frequency_rx);
+					$sat_mode_uplink = $this->get_mode_designator($row->frequency);
+					$sat_mode_downlink = $this->get_mode_designator($row->frequency_rx);
 
-					if (empty($uplink_mode)) {
+					if (empty($sat_mode_uplink)) {
 						$sat_mode = "";
-					} elseif ($uplink_mode !== $downlink_mode) {
-						$sat_mode = $uplink_mode."/".$downlink_mode;
+					} elseif ($sat_mode_uplink !== $sat_mode_downlink) {
+						$sat_mode = $sat_mode_uplink."/".$sat_mode_downlink;
 					} else {
-						$sat_mode = $uplink_mode;
+						$sat_mode = $sat_mode_uplink;
 					}
 				} else {
 					$sat_name = "";
