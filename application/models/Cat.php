@@ -37,18 +37,18 @@
 				$data['mode'] = $result['uplink_mode'];
 			}
 			if (isset($result['frequency_rx'])) {
-				$data['downlink_freq'] = $result['frequency_rx'];
+				$data['frequency_rx'] = $result['frequency_rx'];
 			} else if (isset($result['downlink_freq'])) {
-				$data['downlink_freq'] = $result['downlink_freq'];
+				$data['frequency_rx'] = $result['downlink_freq'];
 			} else {
-				$data['downlink_freq'] = NULL;
+				$data['frequency_rx'] = NULL;
 			}
 			if (isset($result['mode_rx'])) {
-				$data['downlink_mode'] = $result['mode_rx'];
+				$data['mode_rx'] = $result['mode_rx'];
 			} else if (isset($result['downlink_freq'])) {
-				$data['downlink_mode'] = $result['downlink_mode'];
+				$data['mode_rx'] = $result['downlink_mode'];
 			} else {
-				$data['downlink_mode'] = NULL;
+				$data['mode_rx'] = NULL;
 			}
 
 			if ($query->num_rows() > 0)

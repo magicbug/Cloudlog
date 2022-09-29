@@ -51,18 +51,18 @@
 
 				if (empty($row->frequency) || $row->frequency == "0") {
 					echo "<td>- / -</td>";
-				} elseif (empty($row->downlink_freq) || $row->downlink_freq == "0") {
+				} elseif (empty($row->frequency_rx) || $row->frequency_rx == "0") {
 					echo "<td>".$this->frequency->hz_to_mhz($row->frequency)."</td>";
 				} else {
-					echo "<td>".$this->frequency->hz_to_mhz($row->downlink_freq)." / ".$this->frequency->hz_to_mhz($row->frequency)."</td>";
+					echo "<td>".$this->frequency->hz_to_mhz($row->frequency_rx)." / ".$this->frequency->hz_to_mhz($row->frequency)."</td>";
 				}
 
 				if (empty($row->mode) || $row->mode == "non") {
 					echo "<td>N/A</td>";
-				} elseif (empty($row->downlink_mode) || $row->downlink_mode == "non") {
+				} elseif (empty($row->mode_rx) || $row->mode_rx == "non") {
 					echo "<td>".$row->mode."</td>";
 				} else {
-					echo "<td>".$row->downlink_mode." / ".$row->mode."</td>";
+					echo "<td>".$row->mode_rx." / ".$row->mode."</td>";
 				}
 
 				$phpdate = strtotime($row->timestamp);
@@ -94,22 +94,21 @@
 
 				$frequency = $row->frequency;
 
-				$frequency_rx = $row->downlink_freq;
+				$frequency_rx = $row->frequency_rx;
 
 				$power = $row->power;
 
 				$prop_mode = $row->prop_mode;
 
 				// Check Mode
-				if(strtoupper($row->mode) == "FMN"){
+				$mode = strtoupper($row->mode);
+				if ($mode == "FMN") {
 					$mode = "FM";
-				} else {
-					$mode = strtoupper($row->mode);
 				}
 
 				if ($row->prop_mode == "SAT") {
 					// Get Satellite Name
-					if($row->sat_name == "AO-07") {
+					if ($row->sat_name == "AO-07") {
 						$sat_name = "AO-7";
 					} elseif ($row->sat_name == "LILACSAT") {
 						$sat_name = "CAS-3H";
@@ -119,7 +118,7 @@
 
 					// Get Satellite Mode
 					$uplink_mode = $this->get_mode_designator($row->frequency);
-					$downlink_mode = $this->get_mode_designator($row->downlink_freq);
+					$downlink_mode = $this->get_mode_designator($row->frequency_rx);
 
 					if (empty($uplink_mode)) {
 						$sat_mode = "";
