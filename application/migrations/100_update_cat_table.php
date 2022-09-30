@@ -19,9 +19,20 @@ class Migration_update_cat_table extends CI_Migration {
             }
             if ($this->db->field_exists('downlink_freq', 'cat')) {
                 $this->db->query("ALTER TABLE cat CHANGE COLUMN downlink_freq TO frequency_rx");
+                $fields = array(
+                    'downlink_freq' => array(
+                            'name' => 'frequency_rx',
+                    ),
+                );
+                $this->dbforge->modify_column('table_name', $fields);
             }
             if ($this->db->field_exists('downlink_mode', 'cat')) {
-                $this->db->query("ALTER TABLE cat CHANGE COLUMN downlink_mode TO mode_rx");
+                $fields = array(
+                    'downlink_mode' => array(
+                            'name' => 'frequency_rx',
+                    ),
+                );
+                $this->dbforge->modify_column('table_name', $fields);
             }
         }
     }
