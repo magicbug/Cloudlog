@@ -18,17 +18,25 @@ class Migration_update_cat_table extends CI_Migration {
                 $this->dbforge->drop_column('cat', 'uplink_mode');
             }
             if ($this->db->field_exists('downlink_freq', 'cat')) {
+
                 $fields = array(
+
                     'downlink_freq' => array(
                             'name' => 'frequency_rx',
+                            'type' => 'BIGINT',
+                            'constraint' => '13',
                     ),
                 );
                 $this->dbforge->modify_column('cat', $fields);
+
             }
             if ($this->db->field_exists('downlink_mode', 'cat')) {
                 $fields = array(
+
                     'downlink_mode' => array(
-                            'name' => 'frequency_rx',
+                            'name' => 'mode_rx',
+                            'type' => 'VARCHAR',
+                            'constraint' => '10',
                     ),
                 );
                 $this->dbforge->modify_column('cat', $fields);
@@ -40,10 +48,26 @@ class Migration_update_cat_table extends CI_Migration {
     {
         if ($this->db->table_exists('cat')) {
             if ($this->db->field_exists('frequency_rx', 'cat')) {
-                $this->db->query("ALTER TABLE cat CHANGE COLUMN frequency_rx TO downlink_freq");
+                $fields = array(
+                    'frequency_rx' => array(
+                        'name'    => 'downlink_freq',
+                        'type'    => 'BIGINT',
+                        'null'    => TRUE,
+                        'default' => NULL,
+                    ),
+                );
+                $this->dbforge->modify_column('cat', $fields);
             }
             if ($this->db->field_exists('mode_rx', 'cat')) {
-                $this->db->query("ALTER TABLE cat CHANGE COLUMN mode_rx TO downlink_mode");
+                $fields = array(
+                    'mode_rx' => array(
+                        'name'    => 'downlink_mode',
+                        'type'    => 'VARCHAR(255)',
+                        'null'    => TRUE,
+                        'default' => NULL,
+                    ),
+                );
+                $this->dbforge->modify_column('cat', $fields);
             }
             if (!$this->db->field_exists('uplink_freq', 'cat')) {
                 $fields = array(
