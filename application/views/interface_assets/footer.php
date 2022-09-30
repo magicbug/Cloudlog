@@ -1160,33 +1160,25 @@ $(document).on('keypress',function(e) {
     </script>
 
     <script>
-        // Javascript for controlling rig frequency.
-  var updateFromCAT = function() {
+    // Javascript for controlling rig frequency.
+    var updateFromCAT = function() {
     if($('select.radios option:selected').val() != '0') {
       radioID = $('select.radios option:selected').val();
       $.getJSON( "radio/json/" + radioID, function( data ) {
           /* {
-              "uplink_freq": "2400210000",
-              "downlink_freq": "10489710000",
+              "frequency": "2400210000",
+              "frequency_rx": "10489710000",
               "mode": "SSB",
-              "satmode": "",
-              "satname": "ES'HAIL-2"
+              "satmode": "S/X",
+              "satname": "QO-100"
               "power": "20"
               "prop_mode": "SAT"
           }  */
-          if (data.prop_mode == "SAT")
-          //if (data.uplink_freq != "")
-          {
-            $('#frequency').val(data.uplink_freq);
-            $("#band").val(frequencyToBand(data.uplink_freq));
-          } else {
-            $('#frequency').val(data.frequency);
-            $("#band").val(frequencyToBand(data.frequency));
-          }
-          if (data.downlink_freq != "")
-          {
-            $('#frequency_rx').val(data.downlink_freq);
-            $("#band_rx").val(frequencyToBand(data.downlink_freq));
+          $('#frequency').val(data.frequency);
+          $("#band").val(frequencyToBand(data.frequency));
+          if (data.frequency_rx != "") {
+            $('#frequency_rx').val(data.frequency_rx);
+            $("#band_rx").val(frequencyToBand(data.frequency_rx));
           }
 
           old_mode = $(".mode").val();
@@ -1203,18 +1195,18 @@ $(document).on('keypress',function(e) {
           }
           $("#selectPropagation").val(data.prop_mode);
 
-          // Display CAT Timeout warnng based on the figure given in the config file
-            var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
+          // Display CAT Timeout warning based on the figure given in the config file
+          var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
 
-            if(data.updated_minutes_ago > minutes) {
-              if($('.radio_timeout_error').length == 0) {
-                $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
-              } else {
-                $('.radio_timeout_error').text('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
-              }
+          if(data.updated_minutes_ago > minutes) {
+            if($('.radio_timeout_error').length == 0) {
+              $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
             } else {
-              $(".radio_timeout_error" ).remove();
+              $('.radio_timeout_error').text('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
             }
+          } else {
+            $(".radio_timeout_error" ).remove();
+          }
 
       });
     }
@@ -1226,21 +1218,17 @@ $(document).on('keypress',function(e) {
   // If a radios selected from drop down select radio update.
   $('.radios').change(updateFromCAT);
 
-  // If radio isn't SatPC32 or CloudLogCATQt clear sat_name and sat_mode
+  // If no radio is selected clear data
   $( ".radios" ).change(function() {
-      if ($(".radios option:selected").text() != "SatPC32" && $(".radios option:selected").text() != "CloudLogCATQt") {
+      if ($(".radios option:selected").val() == 0) {
         $("#sat_name").val("");
         $("#sat_mode").val("");
         $("#frequency").val("");
         $("#frequency_rx").val("");
         $("#band_rx").val("");
         $("#selectPropagation").val($("#selectPropagation option:first").val());
-      }
-
-      if ($(".radios option:selected").text() == "None") {
         $(".radio_timeout_error" ).remove();
       }
-
   });
   </script>
 
