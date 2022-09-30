@@ -23,7 +23,7 @@ class Migration_update_cat_table extends CI_Migration {
                             'name' => 'frequency_rx',
                     ),
                 );
-                $this->dbforge->modify_column('table_name', $fields);
+                $this->dbforge->modify_column('cat', $fields);
             }
             if ($this->db->field_exists('downlink_mode', 'cat')) {
                 $fields = array(
@@ -31,7 +31,7 @@ class Migration_update_cat_table extends CI_Migration {
                             'name' => 'frequency_rx',
                     ),
                 );
-                $this->dbforge->modify_column('table_name', $fields);
+                $this->dbforge->modify_column('cat', $fields);
             }
         }
     }
