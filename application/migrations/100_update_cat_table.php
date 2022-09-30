@@ -18,7 +18,6 @@ class Migration_update_cat_table extends CI_Migration {
                 $this->dbforge->drop_column('cat', 'uplink_mode');
             }
             if ($this->db->field_exists('downlink_freq', 'cat')) {
-                $this->db->query("ALTER TABLE cat CHANGE COLUMN downlink_freq TO frequency_rx");
                 $fields = array(
                     'downlink_freq' => array(
                             'name' => 'frequency_rx',
