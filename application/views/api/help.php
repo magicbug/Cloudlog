@@ -32,7 +32,7 @@
 		  <tbody>
 			<?php foreach ($api_keys->result() as $row) { ?>
 				<tr>
-					<td><i class="fas fa-key"></i> <?php echo $row->key; ?></td>
+					<td><i class="fas fa-key"></i> <span class="api-key" id="<?php echo $row->key; ?>"><?php echo $row->key; ?></span> <span data-toggle="tooltip" data-original-title="<?php echo $this->lang->line('copy_to_clipboard'); ?>" onclick='copyApiKey("<?php echo $row->key; ?>")'><i class="copy-icon fas fa-copy"></span></td>
 					<td><?php echo $row->description; ?></td>
 					<td>
 						<?php
@@ -56,6 +56,7 @@
 
 						<a href="<?php echo site_url('api/delete/'.$row->key); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete API Key <?php echo $row->key; ?>?');">Delete</a>
 					</td>
+
 				</tr>
 
 			<?php } ?>

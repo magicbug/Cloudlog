@@ -119,3 +119,5 @@ $lang['dashboard_countries_breakdown'] = 'Länderübersicht';
 $lang['gen_from_date'] = 'Ab Datum';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'Dieses QSO wurde bestätigt am';
+
+$lang['copy_to_clipboard'] = 'In die Zwischenablage kopieren';
