@@ -1308,7 +1308,7 @@ $(document).ready(function(){
     layers: [layer],
     center: [19, 0],
     zoom: 2,
-    minZoom:1
+    minZoom: 1
   });
 
   var printer = L.easyPrint({
