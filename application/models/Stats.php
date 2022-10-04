@@ -93,7 +93,8 @@
 		}
 
 		foreach ($modeunique as $mode) {
-			if ($mode->col_submode == null) {
+			//if ($mode->col_submode == null) {
+			if ($mode->col_submode == null || $mode->col_submode == "") {
 				$modecalls[$mode->col_mode] = $mode->calls;
 			} else {
 				$modecalls[$mode->col_submode] = $mode->calls;
@@ -104,7 +105,8 @@
 		$workedQso = $this->getUniqueCallsigns();
 
 		foreach ($workedQso as $line) {
-			if ($line->col_submode == null) {
+			//if ($line->col_submode == null) {
+			if ($line->col_submode == null || $line->col_submode == "") {
 				$qsoView [$line->col_mode]  [$line->band] = $line->calls;
 			} else {
 				$qsoView [$line->col_submode]  [$line->band] = $line->calls;
@@ -130,9 +132,9 @@
 
 		$bands = array();
 	
-		$this->db->select('count(distinct col_call) as calls, col_band as band, col_mode, col_submode', FALSE);
+		$this->db->select('count(distinct col_call) as calls, lower(col_band) as band, col_mode, coalesce(col_submode, "") col_submode', FALSE);
 		$this->db->where_in('station_id', $logbooks_locations_array);
-		$this->db->group_by('col_band, col_mode, col_submode');
+		$this->db->group_by('lower(col_band), col_mode, coalesce(col_submode, "")');
 	
 		$query = $this->db->get($this->config->item('table_name'));
 
@@ -150,9 +152,9 @@
 
 		$bands = array();
 	
-		$this->db->select('count(distinct col_call) as calls, col_mode, col_submode', FALSE);
+		$this->db->select('count(distinct col_call) as calls, col_mode, coalesce(col_submode, "") col_submode', FALSE);
 		$this->db->where_in('station_id', $logbooks_locations_array);
-		$this->db->group_by('col_mode, col_submode');
+		$this->db->group_by('col_mode, coalesce(col_submode, "")');
 	
 		$query = $this->db->get($this->config->item('table_name'));
 
@@ -218,7 +220,7 @@
 		// Populating array with worked
 		$workedQso = $this->modeBandQso();
 		foreach ($workedQso as $line) {
-			if ($line->col_submode == null) {
+			if ($line->col_submode == null || $line->col_submode == "") {
 				$qsoView [$line->col_mode]  [$line->band] = $line->count;
 				$modetotal[$line->col_mode] += $line->count;
 			} else {
@@ -246,9 +248,9 @@
 
 		$bands = array();
 	
-		$this->db->select('count(*) as count, col_band as band, col_mode, col_submode', FALSE);
+		$this->db->select('count(*) as count, lower(col_band) as band, col_mode, coalesce(col_submode, "") col_submode', FALSE);
 		$this->db->where_in('station_id', $logbooks_locations_array);
-		$this->db->group_by('col_band, col_mode, col_submode');
+		$this->db->group_by('lower(col_band), col_mode, coalesce(col_submode, "")');
 	
 		$query = $this->db->get($this->config->item('table_name'));
 
@@ -266,7 +268,7 @@
 
 		$bands = array();
 	
-		$this->db->select('distinct col_band+0 as bandsort, col_band as band', FALSE);
+		$this->db->select('distinct col_band+0 as bandsort, lower(col_band) as band', FALSE);
 		$this->db->where_in('station_id', $logbooks_locations_array);
 		$this->db->order_by('bandsort', 'desc');
 	
@@ -290,14 +292,14 @@
 
 		$modes = array();
 	
-		$this->db->select('distinct col_mode, col_submode', FALSE);
+		$this->db->select('distinct col_mode, coalesce(col_submode, "") col_submode', FALSE);
 		$this->db->where_in('station_id', $logbooks_locations_array);
 		$this->db->order_by('col_mode, col_submode', 'ASC');
 
 		$query = $this->db->get($this->config->item('table_name'));
 	
 		foreach($query->result() as $mode){
-			if ($mode->col_submode == null) {
+			if ($mode->col_submode == null || $mode->col_submode == "") {
 				array_push($modes, $mode->col_mode);
 			} else {
 				array_push($modes, $mode->col_submode);
