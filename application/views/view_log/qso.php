@@ -219,7 +219,7 @@
                     <?php if($row->COL_POTA_REF != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_pota_reference'); ?></td>
-                        <td><a href="https://pota.app/#/park/<?php echo $row->COL_POTA_REF; ?>" target="_blank"><? php echo $row->COL_SIG_INFO; ?></a></td>
+                        <td><a href="https://pota.app/#/park/<?php echo $row->COL_POTA_REF; ?>" target="_blank"><?php echo $row->COL_POTA_REF; ?></a></td>
                     </tr>
                     <?php } ?>
 
