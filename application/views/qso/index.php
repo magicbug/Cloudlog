@@ -355,6 +355,17 @@
               </div>
             </div>
 
+            <div class="form-row">
+              <div class="form-group col-md-9">
+                <label for="pota_ref"><?php echo $this->lang->line('gen_hamradio_pota_reference'); ?></label>
+                <input class="form-control" id="pota_ref" type="text" name="pota_ref" value="" />
+                <small id="potaRefHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_pota_ref_helptext'); ?></small>
+              </div>
+              <div class="form-group col-md-3 align-self-center">
+                <small id="pota_info" class="badge badge-secondary"></small>
+              </div>
+            </div>
+
             <div class="form-group">
               <label for="sig"><?php echo $this->lang->line('gen_hamradio_sig'); ?></label>
               <input class="form-control" id="sig" type="text" name="sig" value="" />

@@ -126,6 +126,39 @@ $( document ).ready(function() {
 		$('#wwff_info').attr('title', 'Lookup '+$('#wwff_ref').val()+' reference info on wwff.co');
 	});
 
+	$('#pota_ref').selectize({
+		maxItems: 1,
+		closeAfterSelect: true,
+		loadThrottle: 250,
+		valueField: 'name',
+		labelField: 'name',
+		searchField: 'name',
+		options: [],
+		create: false,
+		load: function(query, callback) {
+			if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
+			$.ajax({
+				url: base_url+'index.php/qso/get_pota',
+				type: 'GET',
+				dataType: 'json',
+				data: {
+					query: query,
+				},
+				error: function() {
+					callback();
+				},
+				success: function(res) {
+					callback(res);
+				}
+			});
+		}
+	});
+
+	$('#pota_ref').change(function(){
+		$('#pota_info').html('<a target="_blank" href="https://pota.app/#/park/'+$('#pota_ref').val()+'"><img width="32" height="32" src="'+base_url+'images/icons/pota.app.png"></a>'); 
+		$('#pota_info').attr('title', 'Lookup '+$('#pota_ref').val()+' reference info on pota.co');
+	});
+
 	$('#darc_dok').selectize({
 		maxItems: 1,
 		closeAfterSelect: true,
@@ -320,6 +353,9 @@ function reset_fields() {
 	$('#qso-last-table').show();
 	$('#partial_view').hide();
 	var $select = $('#wwff_ref').selectize();
+	var selectize = $select[0].selectize;
+	selectize.clear();
+	var $select = $('#pota_ref').selectize();
 	var selectize = $select[0].selectize;
 	selectize.clear();
 	var $select = $('#darc_dok').selectize();

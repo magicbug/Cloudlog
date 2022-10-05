@@ -368,6 +368,35 @@ class QSO extends CI_Controller {
         echo json_encode($json);
     }
 
+	public function get_pota() {
+        $json = [];
+
+        if(!empty($this->input->get("query"))) {
+            $query = isset($_GET['query']) ? $_GET['query'] : FALSE;
+            $pota = strtoupper($query);
+
+            $file = 'assets/json/pota.txt';
+
+            if (is_readable($file)) {
+                $lines = file($file, FILE_IGNORE_NEW_LINES);
+                $input = preg_quote($pota, '~');
+                $reg = '~^'. $input .'(.*)$~';
+                $result = preg_grep($reg, $lines);
+                $json = [];
+                $i = 0;
+                foreach ($result as &$value) {
+                    // Limit to 100 as to not slowdown browser too much
+                    if (count($json) <= 100) {
+                        $json[] = ["name"=>$value];
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($json);
+    }
+
     /*
 	 * Function is used for autocompletion of DOK in the QSO entry form
 	 */
