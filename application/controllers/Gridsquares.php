@@ -19,6 +19,7 @@ class Gridsquares extends CI_Controller {
 	public function index() {
 		// if there are no satellite QSOs redirect to band selection directly
 		$this->load->model('logbook_model');
+		$this->load->model('bands');
 		$total_sat = $this->logbook_model->total_sat();
 		if ($total_sat->num_rows() == 0) {
 			redirect('gridsquares/band/2m');
@@ -26,6 +27,7 @@ class Gridsquares extends CI_Controller {
 		}
 
 		$data['page_title'] = "Gridsquare Map";
+		$data['sat_active'] = array_search("SAT", $this->bands->get_user_bands(), true);
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('gridsquares/main.php');

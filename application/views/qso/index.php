@@ -21,9 +21,11 @@
             <a class="nav-link" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false"><?php echo $this->lang->line('general_word_general'); ?></a>
           </li>
 
+<?php if ($sat_active) { ?>
           <li class="nav-item">
             <a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false"><?php echo $this->lang->line('general_word_satellite_short'); ?></a>
           </li>
+<?php } ?>
 
           <li class="nav-item">
             <a class="nav-link" id="notes-tab" data-toggle="tab" href="#nav-notes" role="tab" aria-controls="notes" aria-selected="false"><?php echo $this->lang->line('general_word_notes'); ?></a>

@@ -12,7 +12,9 @@
 	<h2><?php echo $page_title; ?></h2>
 
 	<nav class="nav">
+	  <?php if ($sat_active) { ?>
 	  <a class="nav-link" href="<?php echo site_url('activated_grids/satellites'); ?>">Satellites</a>
+	  <?php } ?>
 	  <a class="nav-link" href="<?php echo site_url('activated_grids/band/2m'); ?>">Band</a>
 	</nav>
 </div>
