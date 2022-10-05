@@ -257,6 +257,23 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
+	/*
+		Handles showing worked POTAs
+		Comment field - POTA:#
+	*/
+	public function pota() {
+
+		// Grab all worked pota stations
+		$this->load->model('pota');
+		$data['pota_all'] = $this->pota->get_all();
+
+		// Render page
+		$data['page_title'] = "Awards - POTA";
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('awards/pota/index');
+		$this->load->view('interface_assets/footer');
+	}
+
 	public function cq() {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');

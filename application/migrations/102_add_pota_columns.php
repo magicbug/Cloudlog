@@ -37,6 +37,17 @@ class Migration_add_pota_columns extends CI_Migration {
                         );
                         $this->dbforge->add_column('station_profile', $fields);
                 }
+                if (!$this->db->field_exists('pota', 'bandxuser')) {
+                        $fields = array(
+                                'pota' => array(
+                                        'type' => 'INT',
+                                        'constraint' => 20,
+                                        'unsigned' => TRUE,
+                                ),
+                        );
+                        $this->dbforge->add_column('bandxuser', $fields);
+                        $this->db->query("update bandxuser set pota = 1");
+                }
         }
 
         public function down()
@@ -49,6 +60,9 @@ class Migration_add_pota_columns extends CI_Migration {
                 }
                 if ($this->db->field_exists('station_pota', 'station_profile')) {
                         $this->dbforge->drop_column('station_profile', 'station_pota');
+                }
+                if ($this->db->field_exists('pota', 'bandxuser')) {
+                        $this->dbforge->drop_column('bandxuser', 'pota');
                 }
         }
 }
