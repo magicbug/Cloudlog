@@ -359,7 +359,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="pota_ref">WWFF</label>
+                                    <label for="pota_ref">POTA</label>
                                     <input type="text" class="form-control" id="pota_ref_edit" name="pota_ref" value="<?php echo $qso->COL_POTA_REF; ?>">
                                 </div>
 
