@@ -15,6 +15,7 @@
     <p class="lead">I'd like to thank Andreas (LA8AJA) and Flo (DF2ET) for helping getting this over the finish line.</p>
     <p class="lead">This guide is to help you get your installation configured to work with all the new features please follow it!</p>
 
+    <?php if(ENVIRONMENT != "production") { ?>
     <div class="card">
 	  <div class="card-header">
       <span class="badge badge-danger">File Change</span> /index.php - Turn off debugging messages
@@ -31,6 +32,7 @@
     </div>
 
     <br>
+    <?php } ?>
 
 	<div class="card">
 	  <div class="card-header">
