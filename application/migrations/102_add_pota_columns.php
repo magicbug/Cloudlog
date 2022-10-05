@@ -29,6 +29,8 @@ class Migration_add_pota_columns extends CI_Migration {
                         $this->db->where('COL_SIG', 'POTA');
                         $this->db->update('TABLE_HRD_CONTACTS_V01');
 
+                }
+                if (!$this->db->field_exists('station_pota', 'station_profile')) {
                         // Add MY_POTA_REF to station profile
                         $fields = array(
                                 'station_pota varchar(50) DEFAULT NULL',
@@ -39,8 +41,14 @@ class Migration_add_pota_columns extends CI_Migration {
 
         public function down()
         {
-                $this->dbforge->drop_column('TABLE_HRD_CONTACTS_V01', 'COL_POTA_REF');
-                $this->dbforge->drop_column('TABLE_HRD_CONTACTS_V01', 'COL_MY_POTA_REF');
-                $this->dbforge->drop_column('station_profile', 'station_potpota');
+                if ($this->db->field_exists('COL_POTA_REF', 'TABLE_HRD_CONTACTS_V01')) {
+                        $this->dbforge->drop_column('TABLE_HRD_CONTACTS_V01', 'COL_POTA_REF');
+                }
+                if ($this->db->field_exists('COL_MY_POTA_REF', 'TABLE_HRD_CONTACTS_V01')) {
+                        $this->dbforge->drop_column('TABLE_HRD_CONTACTS_V01', 'COL_MY_POTA_REF');
+                }
+                if ($this->db->field_exists('station_pota', 'station_profile')) {
+                        $this->dbforge->drop_column('station_profile', 'station_pota');
+                }
         }
 }
