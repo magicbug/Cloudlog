@@ -4,6 +4,28 @@ $('.bandtable').on('click', 'input[type="checkbox"]', function() {
 	saveBand(clickedbandid);
 });
 
+$('.bandtable tfoot').on('click', 'input[type="checkbox"]', function() {
+	var clickedaward = $(this).closest('th').attr("class");
+	var status = $(this).is(":checked");
+	clickedaward = clickedaward.replace('master_', '');
+	$('[class^='+clickedaward+'_] input[type="checkbox').each(function() {
+		$(this).prop( "checked", status );
+	});
+	saveBandAward(clickedaward, status);
+});
+
+function saveBandAward(award, status) {
+	$.ajax({
+		url: base_url + 'index.php/band/saveBandAward',
+		type: 'post',
+		data: {'award': award,  
+			'status': status,  
+		},
+		success: function (html) {
+		}
+	});
+}
+
 $('.bandtable').DataTable({
 	"pageLength": 25,
 	responsive: false,

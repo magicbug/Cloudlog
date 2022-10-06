@@ -137,4 +137,16 @@ class Band extends CI_Controller {
         echo json_encode(array('message' => 'OK'));
 		return;
     }
+
+	public function saveBandAward() {
+		$award  = $this->security->xss_clean($this->input->post('award'));
+		$status	= $this->security->xss_clean($this->input->post('status'));
+        
+		$this->load->model('bands');
+        $this->bands->saveBandAward($award, $status);
+        
+		header('Content-Type: application/json');
+        echo json_encode(array('message' => 'OK'));
+		return;
+    }
 }

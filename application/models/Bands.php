@@ -263,6 +263,18 @@ class Bands extends CI_Model {
         return true;
     }
 
+	function saveBandAward($award, $status) {
+		$data = array(
+			$award 	 => $status == "true" ? '1' : '0',
+        );
+
+		$this->db->where('bandxuser.userid', $this->session->userdata('user_id'));
+
+        $this->db->update('bandxuser', $data);
+
+        return true;
+    }
+
 	function add() {
 		$data = array(
 			'band' 		=> xss_clean($this->input->post('band', true)),
