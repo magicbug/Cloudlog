@@ -1292,7 +1292,7 @@ $(document).ready(function(){
 
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "gridsquares") { ?>
+<?php if ($this->uri->segment(1) == "gridsquares" && !empty($this->uri->segment(2))) { ?>
 
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.MaidenheadColoured.js"></script>
 
@@ -1435,7 +1435,7 @@ $(document).ready(function(){
 </script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "activated_grids") { ?>
+<?php if ($this->uri->segment(1) == "activated_grids" && !empty($this->uri->segment(2))) { ?>
 
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.MaidenheadColoured.js"></script>
 
