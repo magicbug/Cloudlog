@@ -43,11 +43,13 @@ class Distances_model extends CI_Model
 
                 if ($queryresult->result_array()) {
                     $temp = $this->plot($queryresult->result_array(), $gridsquare, $measurement_base);
-    
+ 
                     $result = $this->mergeresult($result, $temp);
+
                 }
 
 			}
+
 		}
 
 		if ($result) {
@@ -74,20 +76,25 @@ class Distances_model extends CI_Model
 			$result['qrb']['Qsos'] += $add['qrb']['Qsos'];
 
 			for ($i = 0; $i <= 399; $i++) {
-				$result['qsodata'][$i]['count'] += $add['qsodata'][$i]['count'];
+                
+                if(isset($result['qsodata'][$i]['count'])) {
+				    $result['qsodata'][$i]['count'] += $add['qsodata'][$i]['count'];
+                }
 
-				if ($result['qsodata'][$i]['callcount'] < 5 && $add['qsodata'][$i]['callcount'] > 0) {
-					$calls = explode(',', $add['qsodata'][$i]['calls']);
-					foreach ($calls as $c) {
-						if ($result['qsodata'][$i]['callcount'] < 5) {
-							if ($result['qsodata'][$i]['callcount'] > 0) {
-								$result['qsodata'][$i]['calls'] .= ', ';
-							}
-							$result['qsodata'][$i]['calls'] .= $c;
-							$result['qsodata'][$i]['callcount']++;
-						}
-					}
-				}
+                if(isset($result['qsodata'][$i]['callcount'])) {
+                    if ($result['qsodata'][$i]['callcount'] < 5 && $add['qsodata'][$i]['callcount'] > 0) {
+                        $calls = explode(',', $add['qsodata'][$i]['calls']);
+                        foreach ($calls as $c) {
+                            if ($result['qsodata'][$i]['callcount'] < 5) {
+                                if ($result['qsodata'][$i]['callcount'] > 0) {
+                                    $result['qsodata'][$i]['calls'] .= ', ';
+                                }
+                                $result['qsodata'][$i]['calls'] .= $c;
+                                $result['qsodata'][$i]['callcount']++;
+                            }
+                        }
+                    }
+                }
 			}
 			return $result;
 		}
@@ -115,6 +122,7 @@ class Distances_model extends CI_Model
     // It builds an array, which has 50km intervals, then inputs each length into the correct spot
     // The function returns a json-encoded array.
     function plot($qsoArray, $gridsquare, $measurement_base) {
+
         $stationgrid = strtoupper($gridsquare[0]);              // We use only the first entered gridsquare from the active profile
         if (strlen($stationgrid) == 4) $stationgrid .= 'MM';    // adding center of grid if only 4 digits are specified
 
@@ -139,6 +147,7 @@ class Distances_model extends CI_Model
         if (!$this->valid_locator($stationgrid)) {
             header('Content-Type: application/json');
             echo json_encode(array('Error' => 'Error. There is a problem with the gridsquare set in your profile!'));
+            exit;
         }
         else {
             // Making the array we will use for plotting, we save occurrences of the length of each qso in the array

@@ -44,4 +44,25 @@ class Distances extends CI_Controller {
 
         return json_encode($data);
     }
+
+    public function test_distance(){
+        // POST data
+        $postdata['band'] = "sat";
+        $postdata['sat'] = "All";
+
+        //load model
+        $this->load->model('Distances_model');
+
+        if ($this->session->userdata('user_measurement_base') == NULL) {
+            $measurement_base = $this->config->item('measurement_base');
+        }
+        else {
+            $measurement_base = $this->session->userdata('user_measurement_base');
+        }
+
+        // get data
+        $data = $this->Distances_model->get_distances($postdata, $measurement_base);
+
+        return json_encode($data);
+    }
 }
