@@ -16,10 +16,12 @@ class Welcome extends CI_Controller {
         // load stations model 
         $this->load->model('stations');
         $data['CountAllStationLocations'] = $this->stations->CountAllStationLocations();
-        echo $data['CountAllStationLocations'];
+
+        // load logbooks model
         $this->load->model('logbooks_model');
         $data['NumberOfStationLogbooks'] = $this->logbooks_model->CountAllStationLogbooks();
 
+        // load views
         $this->load->view('interface_assets/header', $data);
         $this->load->view('welcome/index');
         $this->load->view('interface_assets/footer');
