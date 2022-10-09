@@ -142,6 +142,20 @@ class Stations extends CI_Model {
 		$this->db->update('station_profile', $data);
 	}
 
+	function ClaimAllStationLocations($id = NULL) {
+		// if $id is empty then use session user_id
+		if (empty($id)) {
+			// Get the first USER ID from user table in the database
+			$id = $this->db->get("users")->row()->user_id;
+		}
+		
+		$data = array(
+				'user_id' => $id,
+		);
+			
+		$this->db->update('station_profile', $data);
+	}
+
 	function set_active($current, $new) {
 		// Clean inputs
 		$clean_current = $this->security->xss_clean($current);

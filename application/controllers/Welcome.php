@@ -17,4 +17,17 @@ class Welcome extends CI_Controller {
         $this->load->view('welcome/index');
         $this->load->view('interface_assets/footer');
     }
+
+    public function locationsclaim() {
+        try {
+            // load model Stations and call function ClaimAllStationLocations
+            $this->load->model('stations');
+            $this->stations->ClaimAllStationLocations();
+
+            echo "All Station Locations Claimed";
+        } catch (Exception $e) {
+            log_message('error', 'Error Claiming Station Locations during Migration. '.$e->getMessage());
+            echo "Error Claiming Station Locations during Migration. See Logs for further information";
+        }
+    }
 }
