@@ -142,6 +142,27 @@ class Stations extends CI_Model {
 		$this->db->update('station_profile', $data);
 	}
 
+	function ClaimAllStationLocations($id = NULL) {
+		// if $id is empty then use session user_id
+		if (empty($id)) {
+			// Get the first USER ID from user table in the database
+			$id = $this->db->get("users")->row()->user_id;
+		}
+
+		$data = array(
+				'user_id' => $id,
+		);
+			
+		$this->db->update('station_profile', $data);
+	}
+
+	function CountAllStationLocations() {
+		// count all logbooks
+		// where user_id is not NULL
+		$this->db->where('user_id !=', NULL);
+		return $this->db->count_all('station_logbooks');
+	}
+
 	function set_active($current, $new) {
 		// Clean inputs
 		$clean_current = $this->security->xss_clean($current);

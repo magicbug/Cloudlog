@@ -9,10 +9,10 @@
         </div>
     <?php } ?>
 
-    <h2><?php echo $page_title; ?></h2>
+    <h1 class="display-3"><?php echo $page_title; ?></h1>
 
     <p class="lead">After many years and hard work Cloudlog version 2.0 has finally arrived, this brings multi-user support, logbooks to group station locations, improved code with lots of speed increases sprinkled around.</p>
-    <p class="lead">I'd like to thank Andreas (LA8AJA) and Flo (DF2ET) for helping getting this over the finish line.</p>
+
     <p class="lead">This guide is to help you get your installation configured to work with all the new features please follow it!</p>
 
     <?php if(ENVIRONMENT != "production") { ?>
@@ -48,5 +48,79 @@
             $config['auth_level'][99] = "Administrator";
         </code>
 	  </div>
+    </div>
 
+    <br>
+
+    <div class="card">
+        <div class="card-header">Cronjob Refresher</div>
+        <div class="card-body">
+            <p class="card-text">Theres some new cronjobs to add with version 2.0.</p>
+
+            <code>
+            # Update the Cloudlog installation every day at midnight <br>
+            0 0 * * * /bin/bash -c "<Full-Path-To-Bash-Script>/cloudlog.sh" <br>
+            <br>
+            # Upload QSOs to Club Log (ignore cron job if this integration is not required) <br>
+            0 */6 * * * curl --silent <?php echo site_url();?>/clublog/upload/<username-with-clublog-login> &>/dev/null <br>
+            <br>
+            # Upload QSOs to LoTW if certs have been provided every hour. <br>
+            0 */1 * * * curl --silent <?php echo site_url();?>/lotw/lotw_upload &>/dev/null <br>
+            <br>
+            # Upload QSOs to QRZ Logbook (ignore cron job if this integration is not required) <br>
+            0 */6 * * * curl --silent <?php echo site_url();?>/qrz/upload &>/dev/null <br>
+            <br>
+            # Update LOTW Users Database <br>
+            @weekly curl --silent<?php echo site_url();?>/lotw/load_users &>/dev/null <br>
+            <br>
+            # Update Clublog SCP Database File <br>
+            @weekly curl --silent <?php echo site_url();?>/update/update_clublog_scp &>/dev/null <br>
+            <br>
+            # Update DOK File for autocomplete <br>
+            @monthly curl --silent <?php echo site_url();?>/update/update_dok &>/dev/null <br>
+            <br>
+            # Update SOTA File for autocomplete <br>
+            @monthly curl --silent <?php echo site_url();?>/update/update_sota &>/dev/null <br>
+            <br>
+            # Update WWFF File for autocomplete <br>
+            @monthly curl --silent <?php echo site_url();?>/update/update_wwff &>/dev/null <br>
+            </code>
+        </div>
+    </div>
+
+    <br>
+
+    <?php if($CountAllStationLocations == 0) { ?>
+    <div class="card">
+        <div class="card-header">Assign ALL Station Locations to this username</div>
+        <div class="card-body">
+            <p class="card-text">With Cloudlog Version 2.0, Station Locations must be associated with a user pressing the button below will assign all Station Locations to the first user in the database</p>
+            <button type="button" class="btn btn-primary" hx-post="<?php echo site_url('welcome/locationsclaim'); ?>">Associate Station Locations with the Administrator account.</button>
+        </div>
+    </div>
+
+    <br>
+    <?php } ?>
+
+    <?php if($NumberOfStationLogbooks == 0) { ?>
+        <div class="card">
+            <div class="card-header">Create Station Logbooks</div>
+            <div class="card-body">
+                <p class="card-text">All the views now in Cloudlog are based around Station Logbooks, you can create as many as you want and group Station Locations it makes tracking awards a lot easier.</p>
+                <p class="card-text">You don't have one at the moment and it can cause issues so press the button below and create a default logbook, you can change this later!</p>
+                <button type="button" class="btn btn-primary" hx-post="<?php echo site_url('welcome/defaultlogbook'); ?>">Create a default logbook.</button>
+            </div>
+        </div>
+
+        <br>
+    <?php } ?>
+
+    <div class="card">
+        <div class="card-header">Update Country Files</div>
+        <div class="card-body">
+            <p class="card-text">Needs Text</p>
+        </div>
+    </div>
+
+    <br>
 </div>
