@@ -7,6 +7,11 @@ class Logbooks_model extends CI_Model {
 		return $this->db->get('station_logbooks');
 	}
 
+	function CountAllStationLogbooks() {
+		// count all logbooks
+		return $this->db->count_all('station_logbooks');
+	}
+
 	function add() {
 		// Create data array with field values
 		$data = array(
@@ -28,6 +33,21 @@ class Logbooks_model extends CI_Model {
 			$CI->load->model('user_model');
 			$CI->user_model->update_session($this->session->userdata('user_id'));
 		}
+	}
+
+	function CreateDefaultLogbook() {
+		// Get the first USER ID from user table in the database
+		$id = $this->db->get("users")->row()->user_id;
+			
+		$data = array(
+			'user_id' => $id,
+			'logbook_name' => "Default Logbook",
+		);
+				
+		$this->db->insert('station_logbooks', $data);
+		$logbook_id = $this->db->insert_id();
+
+		$this->set_logbook_active($logbook_id, $id);
 	}
 
 	function delete($id) {
@@ -55,9 +75,16 @@ class Logbooks_model extends CI_Model {
 		$this->db->update('station_logbooks', $data); 
 	}
 
-	function set_logbook_active($id) {
+	function set_logbook_active($id, $user_id = null) {
 		// Clean input
 		$cleanId = xss_clean($id);
+
+		// check if user_id is set
+		if ($user_id === null) {
+			$user_id = $this->session->userdata('user_id');
+		} else {
+			$user_id = xss_clean($user_id);
+		}
 
 		// be sure that logbook belongs to user
 		if (!$this->check_logbook_is_accessible($cleanId)) {
@@ -68,7 +95,7 @@ class Logbooks_model extends CI_Model {
 			'active_station_logbook' => $cleanId,
 		);
 
-		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('user_id', $user_id);
 		$this->db->update('users', $data); 
 	}
 

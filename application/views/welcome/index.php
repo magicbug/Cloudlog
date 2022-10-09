@@ -90,6 +90,7 @@
 
     <br>
 
+    <?php if($CountAllStationLocations == 0) { ?>
     <div class="card">
         <div class="card-header">Assign ALL Station Locations to this username</div>
         <div class="card-body">
@@ -99,15 +100,20 @@
     </div>
 
     <br>
-    
-    <div class="card">
-        <div class="card-header">Create Station Logbooks</div>
-        <div class="card-body">
-            <p class="card-text">Needs Text</p>
-        </div>
-    </div>
+    <?php } ?>
 
-    <br>
+    <?php if($NumberOfStationLogbooks == 0) { ?>
+        <div class="card">
+            <div class="card-header">Create Station Logbooks</div>
+            <div class="card-body">
+                <p class="card-text">All the views now in Cloudlog are based around Station Logbooks, you can create as many as you want and group Station Locations it makes tracking awards a lot easier.</p>
+                <p class="card-text">You don't have one at the moment and it can cause issues so press the button below and create a default logbook, you can change this later!</p>
+                <button type="button" class="btn btn-primary" hx-post="<?php echo site_url('welcome/defaultlogbook'); ?>">Create a default logbook.</button>
+            </div>
+        </div>
+
+        <br>
+    <?php } ?>
 
     <div class="card">
         <div class="card-header">Update Country Files</div>

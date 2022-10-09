@@ -13,6 +13,13 @@ class Welcome extends CI_Controller {
 	{
         $data['page_title'] = "Welcome to Cloudlog Version 2.0";
 
+        // load stations model 
+        $this->load->model('stations');
+        $data['CountAllStationLocations'] = $this->stations->CountAllStationLocations();
+        echo $data['CountAllStationLocations'];
+        $this->load->model('logbooks_model');
+        $data['NumberOfStationLogbooks'] = $this->logbooks_model->CountAllStationLogbooks();
+
         $this->load->view('interface_assets/header', $data);
         $this->load->view('welcome/index');
         $this->load->view('interface_assets/footer');
@@ -28,6 +35,19 @@ class Welcome extends CI_Controller {
         } catch (Exception $e) {
             log_message('error', 'Error Claiming Station Locations during Migration. '.$e->getMessage());
             echo "Error Claiming Station Locations during Migration. See Logs for further information";
+        }
+    }
+
+    public function defaultlogbook() {
+        try {
+            // load model Stations and call function ClaimAllStationLocations
+            $this->load->model('logbooks_model');
+            $this->logbooks_model->CreateDefaultLogbook();
+
+            echo "Default Logbook Created";
+        } catch (Exception $e) {
+            log_message('error', 'Error Creating Default Logbook during Migration. '.$e->getMessage());
+            echo "Error Creating Default Logbook during Migration. See Logs for further information";
         }
     }
 }
