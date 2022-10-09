@@ -20,9 +20,11 @@
 			<li class="nav-item">
 				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">General</a>
 			</li>
+			<?php if ($sat_active) { ?>
 			<li class="nav-item">
 				<a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Satellites</a>
 			</li>
+			<?php } ?>
 		</ul>
 	</div>
 

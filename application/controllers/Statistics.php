@@ -5,6 +5,7 @@ class Statistics extends CI_Controller {
 	public function index()
 	{
         $this->load->model('user_model');
+        $this->load->model('bands');
         if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
             if($this->user_model->validate_session()) {
                 $this->user_model->clear_session();
@@ -17,6 +18,7 @@ class Statistics extends CI_Controller {
 
 		// Set Page Title
 		$data['page_title'] = "Statistics";
+		$data['sat_active'] = array_search("SAT", $this->bands->get_user_bands(), true);
 		
 		// Load Views
 		$this->load->view('interface_assets/header', $data);
