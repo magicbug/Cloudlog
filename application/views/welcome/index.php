@@ -9,7 +9,7 @@
         </div>
     <?php } ?>
 
-    <h2><?php echo $page_title; ?></h2>
+    <h1 class="display-3"><?php echo $page_title; ?></h1>
 
     <p class="lead">After many years and hard work Cloudlog version 2.0 has finally arrived, this brings multi-user support, logbooks to group station locations, improved code with lots of speed increases sprinkled around.</p>
 
@@ -55,7 +55,7 @@
     <div class="card">
         <div class="card-header">Cronjob Refresher</div>
         <div class="card-body">
-            <p class="card-text">Needs Text</p>
+            <p class="card-text">Theres some new cronjobs to add with version 2.0.</p>
 
             <code>
             # Update the Cloudlog installation every day at midnight <br>

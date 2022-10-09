@@ -22,7 +22,7 @@ class Welcome extends CI_Controller {
         $data['NumberOfStationLogbooks'] = $this->logbooks_model->CountAllStationLogbooks();
 
         // load views
-        $this->load->view('interface_assets/header', $data);
+        $this->load->view('interface_assets/mini_header', $data);
         $this->load->view('welcome/index');
         $this->load->view('interface_assets/footer');
     }
