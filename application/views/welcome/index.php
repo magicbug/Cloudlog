@@ -1,3 +1,6 @@
+<?php
+echo $this->config->item('option_version2_trigger');
+?>
 <div class="container">
 
     <br>
@@ -149,4 +152,9 @@
     </div>
 
     <br>
+
+    <button  class="btn btn-primary" onClick="window.location.reload();">Check if Migration Complete</button>
+
+    <br><br>
+
 </div>

@@ -11,28 +11,33 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-        $data['page_title'] = "Welcome to Cloudlog Version 2.0";
 
-        // load stations model 
-        $this->load->model('stations');
-        $data['CountAllStationLocations'] = $this->stations->CountAllStationLocations();
+        if($this->config->item('option_version2_trigger') == "false") {
+            $data['page_title'] = "Welcome to Cloudlog Version 2.0";
 
-        // load logbooks model
-        $this->load->model('logbooks_model');
-        $data['NumberOfStationLogbooks'] = $this->logbooks_model->CountAllStationLogbooks();
-
-        // load api model
-        $this->load->model('api_model');
-        $data['NumberOfAPIKeys'] = $this->api_model->CountKeysWithNoUserID();
-
-        // load note model
-        $this->load->model('note');
-        $data['NumberOfNotes'] = $this->note->CountAllNotes();
-
-        // load views
-        $this->load->view('interface_assets/mini_header', $data);
-        $this->load->view('welcome/index');
-        $this->load->view('interface_assets/footer');
+            // load stations model 
+            $this->load->model('stations');
+            $data['CountAllStationLocations'] = $this->stations->CountAllStationLocations();
+    
+            // load logbooks model
+            $this->load->model('logbooks_model');
+            $data['NumberOfStationLogbooks'] = $this->logbooks_model->CountAllStationLogbooks();
+    
+            // load api model
+            $this->load->model('api_model');
+            $data['NumberOfAPIKeys'] = $this->api_model->CountKeysWithNoUserID();
+    
+            // load note model
+            $this->load->model('note');
+            $data['NumberOfNotes'] = $this->note->CountAllNotes();
+    
+            // load views
+            $this->load->view('interface_assets/mini_header', $data);
+            $this->load->view('welcome/index');
+            $this->load->view('interface_assets/footer');
+        } else {
+            redirect('login');
+        }
     }
 
     public function locationsclaim() {
