@@ -34,6 +34,7 @@
     <br>
     <?php } ?>
 
+    <?php if($this->config->item('auth_level')[3] != "Operator") { ?>
 	<div class="card">
 	  <div class="card-header">
       <span class="badge badge-danger">File Change</span> /application/config/config.php - Changes
@@ -51,6 +52,7 @@
     </div>
 
     <br>
+    <?php } ?>
 
     <div class="card">
         <div class="card-header">Cronjob Refresher</div>
@@ -142,7 +144,7 @@
     <div class="card">
         <div class="card-header">Update Country Files</div>
         <div class="card-body">
-            <p class="card-text">Needs Text</p>
+            <p class="card-text">Just a friendly reminder to update country files within Cloudlog so they are nice and up to date :)</p>
         </div>
     </div>
 
