@@ -21,6 +21,14 @@ class Welcome extends CI_Controller {
         $this->load->model('logbooks_model');
         $data['NumberOfStationLogbooks'] = $this->logbooks_model->CountAllStationLogbooks();
 
+        // load api model
+        $this->load->model('api_model');
+        $data['NumberOfAPIKeys'] = $this->api_model->CountKeysWithNoUserID();
+
+        // load note model
+        $this->load->model('note');
+        $data['NumberOfNotes'] = $this->note->CountAllNotes();
+
         // load views
         $this->load->view('interface_assets/mini_header', $data);
         $this->load->view('welcome/index');
@@ -50,6 +58,32 @@ class Welcome extends CI_Controller {
         } catch (Exception $e) {
             log_message('error', 'Error Creating Default Logbook during Migration. '.$e->getMessage());
             echo "Error Creating Default Logbook during Migration. See Logs for further information";
+        }
+    }
+
+    public function claimnotes() {
+        try {
+            // load model Stations and call function ClaimAllStationLocations
+            $this->load->model('note');
+            $this->note->ClaimAllNotes();
+
+            echo "Notes all claimed";
+        } catch (Exception $e) {
+            log_message('error', 'Error claiming notes during Migration. '.$e->getMessage());
+            echo "Error claiming notes during Migration. See Logs for further information";
+        }
+    }
+
+    public function claimapikeys() {
+        try {
+            // load model Stations and call function ClaimAllStationLocations
+            $this->load->model('api_model');
+            $this->api_model->ClaimAllAPIKeys();
+
+            echo "All API Keys claimed";
+        } catch (Exception $e) {
+            log_message('error', 'Error claiming API Keys during Migration. '.$e->getMessage());
+            echo "Error claiming API Keys during Migration. See Logs for further information";
         }
     }
 }

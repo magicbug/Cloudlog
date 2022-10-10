@@ -14,6 +14,25 @@ class API_Model extends CI_Model {
     	return $this->db->get('api');
     }
 
+	function CountKeysWithNoUserID() {
+		$this->db->where('user_id !=', NULL);
+		return $this->db->count_all('api');
+    }
+
+	function ClaimAllAPIKeys($id = NULL) {
+		// if $id is empty then use session user_id
+		if (empty($id)) {
+			// Get the first USER ID from user table in the database
+			$id = $this->db->get("users")->row()->user_id;
+		}
+
+		$data = array(
+				'user_id' => $id,
+		);
+			
+		$this->db->update('api', $data);
+	}
+
     function key_description($key) {
 		$this->db->where('user_id', $this->session->userdata('user_id'));
     	$this->db->where('key', $key);

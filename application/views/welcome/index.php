@@ -59,10 +59,10 @@
 
             <code>
             # Update the Cloudlog installation every day at midnight <br>
-            0 0 * * * /bin/bash -c "<Full-Path-To-Bash-Script>/cloudlog.sh" <br>
+            0 0 * * * /bin/bash -c "Full-Path-To-Bash-Script/cloudlog.sh" <br>
             <br>
             # Upload QSOs to Club Log (ignore cron job if this integration is not required) <br>
-            0 */6 * * * curl --silent <?php echo site_url();?>/clublog/upload/<username-with-clublog-login> &>/dev/null <br>
+            0 */6 * * * curl --silent <?php echo site_url();?>/clublog/upload/username-with-clublog-login &>/dev/null <br>
             <br>
             # Upload QSOs to LoTW if certs have been provided every hour. <br>
             0 */1 * * * curl --silent <?php echo site_url();?>/lotw/lotw_upload &>/dev/null <br>
@@ -90,7 +90,7 @@
 
     <br>
 
-    <?php if($CountAllStationLocations == 0) { ?>
+    <?php if(!$CountAllStationLocations) { ?>
     <div class="card">
         <div class="card-header">Assign ALL Station Locations to this username</div>
         <div class="card-body">
@@ -102,13 +102,37 @@
     <br>
     <?php } ?>
 
-    <?php if($NumberOfStationLogbooks == 0) { ?>
+    <?php if(!$NumberOfStationLogbooks) { ?>
         <div class="card">
             <div class="card-header">Create Station Logbooks</div>
             <div class="card-body">
                 <p class="card-text">All the views now in Cloudlog are based around Station Logbooks, you can create as many as you want and group Station Locations it makes tracking awards a lot easier.</p>
                 <p class="card-text">You don't have one at the moment and it can cause issues so press the button below and create a default logbook, you can change this later!</p>
                 <button type="button" class="btn btn-primary" hx-post="<?php echo site_url('welcome/defaultlogbook'); ?>">Create a default logbook.</button>
+            </div>
+        </div>
+
+        <br>
+    <?php } ?>
+
+    <?php if(!$NumberOfNotes) { ?>
+        <div class="card">
+            <div class="card-header">Claim Notes <?php echo $NumberOfNotes; ?></div>
+            <div class="card-body">
+                <p class="card-text">Looks like you have some notes saved, we need to assign them to your username.</p>
+                <button type="button" class="btn btn-primary" hx-post="<?php echo site_url('welcome/claimnotes'); ?>">Claim Notes</button>
+            </div>
+        </div>
+
+        <br>
+    <?php } ?>
+
+    <?php if(!$NumberOfAPIKeys) { ?>
+        <div class="card">
+            <div class="card-header">Claim API Keys</div>
+            <div class="card-body">
+                <p class="card-text">Looks like you have some API Keys, we need to assign them to your username else they will stop working.</p>
+                <button type="button" class="btn btn-primary" hx-post="<?php echo site_url('welcome/claimapikeys'); ?>">Claim API Keys</button>
             </div>
         </div>
 
