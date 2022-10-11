@@ -39,7 +39,7 @@ class Welcome extends CI_Controller {
                 $this->load->view('interface_assets/footer');
             } else {
                 $data['NoMigrationRequired'] = false;
-                $this->optionslib->update('version2_trigger', "true");
+                $this->optionslib->update('version2_trigger', "true", "yes");
                 redirect('dashboard');
             }
         } else {

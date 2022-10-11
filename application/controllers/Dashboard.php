@@ -13,6 +13,10 @@ class Dashboard extends CI_Controller {
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
 
+		if($this->optionslib->get_option('version2_trigger') == "false") {
+			redirect('welcome');
+		}
+
 		// Check if users logged in
 
 		if($this->user_model->validate_session() == 0) {

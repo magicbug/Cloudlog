@@ -37,7 +37,6 @@ class OptionsLib {
                 } else {
                     $CI->config->set_item('option_'.$item->option_name, $item->option_value);
                 }
-
             }
         }
     }
