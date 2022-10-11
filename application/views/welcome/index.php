@@ -116,10 +116,9 @@
 
         <br>
     <?php } ?>
-
-    <?php if(!$NumberOfNotes) { ?>
+    <?php if($NumberOfNotes > 0) { ?>
         <div class="card">
-            <div class="card-header">Claim Notes <?php echo $NumberOfNotes; ?></div>
+            <div class="card-header">Claim Notes</div>
             <div class="card-body">
                 <p class="card-text">Looks like you have some notes saved, we need to assign them to your username.</p>
                 <button type="button" class="btn btn-primary" hx-post="<?php echo site_url('welcome/claimnotes'); ?>">Claim Notes</button>

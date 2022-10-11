@@ -12,7 +12,7 @@ class Welcome extends CI_Controller {
 	public function index()
 	{
 
-        if($this->config->item('option_version2_trigger') == "false") {
+        if($this->optionslib->get_option('version2_trigger') == "false") {
             $data['page_title'] = "Welcome to Cloudlog Version 2.0";
 
             // load stations model 
@@ -31,7 +31,8 @@ class Welcome extends CI_Controller {
             $this->load->model('note');
             $data['NumberOfNotes'] = $this->note->CountAllNotes();
     
-            if(!$data['CountAllStationLocations'] && !$data['NumberOfStationLogbooks'] && !$data['NumberOfAPIKeys'] && !$data['NumberOfNotes']) {
+
+            if($data['CountAllStationLocations'] == 0 || $data['NumberOfStationLogbooks'] == 0 || $data['NumberOfAPIKeys'] == 0  || $data['NumberOfNotes'] > 0) {
                 // load views
                 $this->load->view('interface_assets/mini_header', $data);
                 $this->load->view('welcome/index');
