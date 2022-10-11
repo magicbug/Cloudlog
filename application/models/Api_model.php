@@ -16,7 +16,8 @@ class API_Model extends CI_Model {
 
 	function CountKeysWithNoUserID() {
 		$this->db->where('user_id !=', NULL);
-		return $this->db->count_all('api');
+		$query = $this->db->get('CountKeysWithNoUserID');
+		return $query->num_rows();
     }
 
 	function ClaimAllAPIKeys($id = NULL) {
