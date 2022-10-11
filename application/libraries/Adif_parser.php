@@ -32,7 +32,7 @@ class ADIF_Parser
 		if($pos == false) //did we find the end of headers?
 		{
 			// Just skip if we did not find (optional) headers
-		$pos = 0;
+			$pos = 0;
 			goto noheaders;
 		};
 			
