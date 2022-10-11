@@ -92,7 +92,7 @@
 
     <br>
 
-    <?php if(!$CountAllStationLocations) { ?>
+    <?php if($CountAllStationLocations > 0) { ?>
     <div class="card">
         <div class="card-header">Assign ALL Station Locations to this username</div>
         <div class="card-body">
@@ -104,7 +104,7 @@
     <br>
     <?php } ?>
 
-    <?php if(!$NumberOfStationLogbooks) { ?>
+    <?php if($NumberOfStationLogbooks > 0) { ?>
         <div class="card">
             <div class="card-header">Create Station Logbooks</div>
             <div class="card-body">

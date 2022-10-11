@@ -57,7 +57,7 @@ class Note extends CI_Model {
 
 	function CountAllNotes() {
 		// count all notes
-		$this->db->where('user_id', NULL);
+		$this->db->where('user_id =', NULL);
 		$query = $this->db->get('notes');
 		return $query->num_rows();
 	}
