@@ -27,12 +27,13 @@ class ADIF_Parser
 	public function initialize() //this function locates the <EOH>
 	{
 
-        $pos = mb_stripos(mb_strtoupper($this->data, "UTF-8"), "<EOH>", 0, "UTF-8");
+		$pos = mb_stripos(mb_strtoupper($this->data, "UTF-8"), "<EOH>", 0, "UTF-8");
 
 		if($pos == false) //did we find the end of headers?
 		{
-			echo "Error: Adif_Parser Already Initialized or No <EOH> in ADIF File";
-			return 0;
+			// Just skip if we did not find (optional) headers
+		$pos = 0;
+			goto noheaders;
 		};
 			
 		//get headers
@@ -102,8 +103,12 @@ class ADIF_Parser
 			$this->i++;
 			
 		};
+
 		
 		$this->i = $pos+5; //iterate past the <eoh>
+
+		// Skip to here in case we did not find headers
+		noheaders:
 		if($this->i >= mb_strlen($this->data, "UTF-8")) //is this the end of the file?
 		{
 			echo "Error: ADIF File Does Not Contain Any QSOs";
