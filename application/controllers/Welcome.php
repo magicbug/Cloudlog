@@ -18,7 +18,7 @@ class Welcome extends CI_Controller {
             // load stations model 
             $this->load->model('stations');
             $data['CountAllStationLocations'] = $this->stations->CountAllStationLocations();
-    
+
             // load logbooks model
             $this->load->model('logbooks_model');
             $data['NumberOfStationLogbooks'] = $this->logbooks_model->CountAllStationLogbooks();
@@ -26,11 +26,10 @@ class Welcome extends CI_Controller {
             // load api model
             $this->load->model('api_model');
             $data['NumberOfAPIKeys'] = $this->api_model->CountKeysWithNoUserID();
-    
+
             // load note model
             $this->load->model('note');
             $data['NumberOfNotes'] = $this->note->CountAllNotes();
-    
 
             if($data['CountAllStationLocations'] == 0 || $data['NumberOfStationLogbooks'] == 0 || $data['NumberOfAPIKeys'] > 0  || $data['NumberOfNotes'] > 0) {
                 // load views

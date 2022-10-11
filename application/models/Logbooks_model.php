@@ -9,7 +9,9 @@ class Logbooks_model extends CI_Model {
 
 	function CountAllStationLogbooks() {
 		// count all logbooks
-		return $this->db->count_all('station_logbooks');
+		$this->db->where('user_id !=', NULL);
+		$query = $this->db->get('station_logbooks');
+		return $query->num_rows();
 	}
 
 	function add() {

@@ -157,10 +157,9 @@ class Stations extends CI_Model {
 	}
 
 	function CountAllStationLocations() {
-		// count all logbooks
-		// where user_id is not NULL
 		$this->db->where('user_id !=', NULL);
-		return $this->db->count_all('station_logbooks');
+		$query = $this->db->get('station_profile');
+		return $query->num_rows();
 	}
 
 	function set_active($current, $new) {
