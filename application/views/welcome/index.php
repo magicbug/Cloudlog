@@ -128,7 +128,7 @@
         <br>
     <?php } ?>
 
-    <?php if(!$NumberOfAPIKeys) { ?>
+    <?php if($NumberOfNotes > 0) { ?>
         <div class="card">
             <div class="card-header">Claim API Keys</div>
             <div class="card-body">
