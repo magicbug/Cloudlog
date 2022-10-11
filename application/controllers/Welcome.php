@@ -31,12 +31,18 @@ class Welcome extends CI_Controller {
             $this->load->model('note');
             $data['NumberOfNotes'] = $this->note->CountAllNotes();
     
-            // load views
-            $this->load->view('interface_assets/mini_header', $data);
-            $this->load->view('welcome/index');
-            $this->load->view('interface_assets/footer');
+            if(!$data['CountAllStationLocations'] && !$data['NumberOfStationLogbooks'] && !$data['NumberOfAPIKeys'] && !$data['NumberOfNotes']) {
+                // load views
+                $this->load->view('interface_assets/mini_header', $data);
+                $this->load->view('welcome/index');
+                $this->load->view('interface_assets/footer');
+            } else {
+                $data['NoMigrationRequired'] = false;
+                $this->optionslib->update('version2_trigger', "true");
+                redirect('dashboard');
+            }
         } else {
-            redirect('login');
+            redirect('dashboard');
         }
     }
 

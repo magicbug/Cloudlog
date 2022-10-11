@@ -1,6 +1,3 @@
-<?php
-echo $this->config->item('option_version2_trigger');
-?>
 <div class="container">
 
     <br>

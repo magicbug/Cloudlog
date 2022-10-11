@@ -37,6 +37,13 @@ class OptionsLib {
                 } else {
                     $CI->config->set_item('option_'.$item->option_name, $item->option_value);
                 }
+
+                // if version 2 mirgation has not been run then run it
+                if($item->option_name == "version2_trigger") {
+                    if($item->option_value == "false") {
+                        redirect('welcome');
+                    }
+                }
             }
         }
     }
