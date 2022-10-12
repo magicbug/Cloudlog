@@ -34,7 +34,6 @@
 <div class="container">
 
   <h2><?php echo $page_title?></h2>
-<br />
             <form class="form" action="<?php echo site_url('awards/cq'); ?>" method="post" enctype="multipart/form-data">
             <fieldset>
 
