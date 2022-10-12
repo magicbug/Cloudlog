@@ -124,15 +124,23 @@ function load_cq_map2(data) {
         }
     ).addTo(map);
 
+    var notworked = 40;
+    var confirmed = 0;
+    var workednotconfirmed = 0;
+
   for (var i = 0; i < cqzones.length; i++) {
         L.Polyline.fromEncoded(cqzones[i]).addTo(map);
         var mapColor = 'red';
 
         if (data[i] == 'C') {
             mapColor = 'green';
+            confirmed++;
+            notworked--;
         }
         if (data[i] == 'W') {
           mapColor = 'orange';
+          workednotconfirmed++;
+          notworked--;
         }
 
         L.Polygon.fromEncoded(cqzones[i], {
@@ -160,9 +168,9 @@ function load_cq_map2(data) {
     legend.onAdd = function(map) {
         var div = L.DomUtil.create("div", "legend");
         div.innerHTML += "<h4>Colors</h4>";
-        div.innerHTML += '<i style="background: green"></i><span>Confirmed</span><br>';
-        div.innerHTML += '<i style="background: orange"></i><span>Worked not confirmed</span><br>';
-        div.innerHTML += '<i style="background: red"></i><span>Not worked</span><br>';
+        div.innerHTML += '<i style="background: green"></i><span>Confirmed ('+confirmed+')</span><br>';
+        div.innerHTML += '<i style="background: orange"></i><span>Worked not confirmed ('+workednotconfirmed+')</span><br>';
+        div.innerHTML += '<i style="background: red"></i><span>Not worked ('+notworked+')</span><br>';
         return div;
     };
 
