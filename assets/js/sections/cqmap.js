@@ -131,7 +131,6 @@ function load_cq_map2(data) {
     var workednotconfirmed = 0;
 
   for (var i = 0; i < cqzones.length; i++) {
-        L.Polyline.fromEncoded(cqzones[i]).addTo(map);
         var mapColor = 'red';
 
         if (data[i] == 'C') {
@@ -146,7 +145,7 @@ function load_cq_map2(data) {
         }
 
         L.Polygon.fromEncoded(cqzones[i], {
-                weight: 3,
+                weight: 2,
                 color: mapColor,
                 strokeOpacity: 0.3,
                 strokeWeight: 2,
