@@ -73,7 +73,7 @@
             0 */6 * * * curl --silent <?php echo site_url();?>/qrz/upload &>/dev/null <br>
             <br>
             # Update LOTW Users Database <br>
-            @weekly curl --silent<?php echo site_url();?>/lotw/load_users &>/dev/null <br>
+            @weekly curl --silent <?php echo site_url();?>/lotw/load_users &>/dev/null <br>
             <br>
             # Update Clublog SCP Database File <br>
             @weekly curl --silent <?php echo site_url();?>/update/update_clublog_scp &>/dev/null <br>
