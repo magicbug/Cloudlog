@@ -27,9 +27,8 @@
   var icon_dot_url = "<?php echo base_url();?>assets/images/dot.png";
 </script>
 
-
+<?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "was") ) { ?>
 <script>
-
 function load_was_map() {
     BootstrapDialog.show({
             title: 'Worked All States Map ('+$('#band2').val()+' '+$('#mode').val()+')',
@@ -37,8 +36,13 @@ function load_was_map() {
             message: $('<div></div>').load(site_url + '/awards/was_map/' + $('#band2').val() + '/' + $('#mode').val())
     });
 }
-
 </script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "cq") ) { ?>
+    <script src="<?php echo base_url(); ?>assets/js/Polyline.encoded.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/cqmap.js"></script>
+<?php } ?>
 
 <?php if ($this->uri->segment(1) == "statistics") { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/chart.js"></script>
@@ -2918,5 +2922,6 @@ function deleteQsl(id) {
 		});
 	</script>
 <?php } ?>
+
   </body>
 </html>

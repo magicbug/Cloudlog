@@ -550,4 +550,56 @@ class Awards extends CI_Controller {
 
         $this->load->view('awards/was/map', $data);
     }
+
+    /*
+        function cq_map
+        This displays the CQ Zone map and requires the $band_type and $mode_type
+    */
+    public function cq_map() {
+        $CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        $this->load->model('cq');
+
+        $bands[] = $this->input->post('band');
+
+        $postdata['lotw'] = $this->input->post('lotw') == 0 ? NULL: 1;
+        $postdata['qsl'] = $this->input->post('qsl') == 0 ? NULL: 1;
+        $postdata['worked'] = $this->input->post('worked') == 0 ? NULL: 1;
+        $postdata['confirmed'] = $this->input->post('confirmed')  == 0 ? NULL: 1;
+        $postdata['notworked'] = $this->input->post('notworked')  == 0 ? NULL: 1;
+        $postdata['band'] = $this->input->post('band');
+		$postdata['mode'] = $this->input->post('mode');
+
+        if ($logbooks_locations_array) {
+			$location_list = "'".implode("','",$logbooks_locations_array)."'";
+            $cq_array = $this->cq->get_cq_array($bands, $postdata, $location_list);
+		} else {
+            $location_list = null;
+            $cq_array = null;
+        }
+
+        foreach ($cq_array as $cq => $value) {
+            foreach ($value  as $key) {
+                if($key != "") {
+                    if (strpos($key, '>W<') !== false) {
+                        $zones[] = 'W';
+                        break;
+                    }
+                    if (strpos($key, '>C<') !== false) {
+                        $zones[] = 'C';
+                        break;
+                    }
+                    if (strpos($key, '-') !== false) {
+                        $zones[] = '-';
+                        break;
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($zones);
+    }
 }
