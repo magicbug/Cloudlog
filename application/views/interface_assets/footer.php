@@ -41,7 +41,7 @@ function load_was_map() {
 
 <?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "cq") ) { ?>
     <script src="<?php echo base_url(); ?>assets/js/Polyline.encoded.js"></script>
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/cqmap.js"></script>
+    <script id="cqmapjs" type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/cqmap.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "statistics") { ?>

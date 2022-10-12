@@ -1,3 +1,5 @@
+var osmUrl = $('#cqmapjs').attr("tileUrl");
+
 function load_cq_map() {
     $('.nav-tabs a[href="#cqmap"]').tab('show');
     $.ajax({
@@ -117,7 +119,7 @@ function load_cq_map2(data) {
 
     var map = L.map('cqmap');
     L.tileLayer(
-        'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        osmUrl,
         {
             attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
             maxZoom: 18
