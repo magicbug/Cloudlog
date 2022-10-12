@@ -153,6 +153,21 @@ function load_cq_map2(data) {
             }
           ).addTo(map).on('click', onClick);
     }
+
+    /*Legend specific*/
+    var legend = L.control({ position: "topright" });
+
+    legend.onAdd = function(map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += "<h4>Colors</h4>";
+        div.innerHTML += '<i style="background: green"></i><span>Confirmed</span><br>';
+        div.innerHTML += '<i style="background: orange"></i><span>Worked not confirmed</span><br>';
+        div.innerHTML += '<i style="background: red"></i><span>Not worked</span><br>';
+        return div;
+    };
+
+    legend.addTo(map);
+
     map.setView([20, 0], 2);
 }
 
