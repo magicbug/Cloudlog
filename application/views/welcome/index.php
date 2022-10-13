@@ -34,6 +34,7 @@
     <br>
     <?php } ?>
 
+    <?php if($this->config->item('auth_level')[3] != "Operator") { ?>
 	<div class="card">
 	  <div class="card-header">
       <span class="badge badge-danger">File Change</span> /application/config/config.php - Changes
@@ -51,6 +52,7 @@
     </div>
 
     <br>
+    <?php } ?>
 
     <div class="card">
         <div class="card-header">Cronjob Refresher</div>
@@ -59,10 +61,10 @@
 
             <code>
             # Update the Cloudlog installation every day at midnight <br>
-            0 0 * * * /bin/bash -c "<Full-Path-To-Bash-Script>/cloudlog.sh" <br>
+            0 0 * * * /bin/bash -c "Full-Path-To-Bash-Script/cloudlog.sh" <br>
             <br>
             # Upload QSOs to Club Log (ignore cron job if this integration is not required) <br>
-            0 */6 * * * curl --silent <?php echo site_url();?>/clublog/upload/<username-with-clublog-login> &>/dev/null <br>
+            0 */6 * * * curl --silent <?php echo site_url();?>/clublog/upload/username-with-clublog-login &>/dev/null <br>
             <br>
             # Upload QSOs to LoTW if certs have been provided every hour. <br>
             0 */1 * * * curl --silent <?php echo site_url();?>/lotw/lotw_upload &>/dev/null <br>
@@ -71,7 +73,7 @@
             0 */6 * * * curl --silent <?php echo site_url();?>/qrz/upload &>/dev/null <br>
             <br>
             # Update LOTW Users Database <br>
-            @weekly curl --silent<?php echo site_url();?>/lotw/load_users &>/dev/null <br>
+            @weekly curl --silent <?php echo site_url();?>/lotw/load_users &>/dev/null <br>
             <br>
             # Update Clublog SCP Database File <br>
             @weekly curl --silent <?php echo site_url();?>/update/update_clublog_scp &>/dev/null <br>
@@ -90,7 +92,7 @@
 
     <br>
 
-    <?php if($CountAllStationLocations == 0) { ?>
+    <?php if($CountAllStationLocations > 0) { ?>
     <div class="card">
         <div class="card-header">Assign ALL Station Locations to this username</div>
         <div class="card-body">
@@ -102,7 +104,7 @@
     <br>
     <?php } ?>
 
-    <?php if($NumberOfStationLogbooks == 0) { ?>
+    <?php if($NumberOfStationLogbooks > 0) { ?>
         <div class="card">
             <div class="card-header">Create Station Logbooks</div>
             <div class="card-body">
@@ -114,13 +116,41 @@
 
         <br>
     <?php } ?>
+    <?php if($NumberOfNotes > 0) { ?>
+        <div class="card">
+            <div class="card-header">Claim Notes</div>
+            <div class="card-body">
+                <p class="card-text">Looks like you have some notes saved, we need to assign them to your username.</p>
+                <button type="button" class="btn btn-primary" hx-post="<?php echo site_url('welcome/claimnotes'); ?>">Claim Notes</button>
+            </div>
+        </div>
+
+        <br>
+    <?php } ?>
+
+    <?php if($NumberOfAPIKeys > 0) { ?>
+        <div class="card">
+            <div class="card-header">Claim API Keys</div>
+            <div class="card-body">
+                <p class="card-text">Looks like you have some API Keys, we need to assign them to your username else they will stop working.</p>
+                <button type="button" class="btn btn-primary" hx-post="<?php echo site_url('welcome/claimapikeys'); ?>">Claim API Keys</button>
+            </div>
+        </div>
+
+        <br>
+    <?php } ?>
 
     <div class="card">
         <div class="card-header">Update Country Files</div>
         <div class="card-body">
-            <p class="card-text">Needs Text</p>
+            <p class="card-text">Just a friendly reminder to update country files within Cloudlog so they are nice and up to date :)</p>
         </div>
     </div>
 
     <br>
+
+    <button  class="btn btn-primary" onClick="window.location.reload();">Check if Migration Complete</button>
+
+    <br><br>
+
 </div>

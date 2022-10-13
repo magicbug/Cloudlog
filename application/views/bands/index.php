@@ -54,8 +54,10 @@ $wwff = 0;
 					<th>SSB QRG</th>
 					<th>DATA QRG</th>
 					<th>CW QRG</th>
+					<?php if($this->session->userdata('user_type') == '99') { ?>
                     <th></th>
                     <th></th>
+					<?php } ?>
 				</tr>
 			</thead>
 			<tbody>
@@ -77,12 +79,14 @@ $wwff = 0;
 					<td><?php echo $band->ssb;?></td>
 					<td><?php echo $band->data;?></td>
 					<td><?php echo $band->cw;?></td>
+					<?php if($this->session->userdata('user_type') == '99') { ?>
 					<td>
 						<a href="javascript:editBandDialog('<?php echo $band->bandid ?>');" class="btn btn-outline-primary btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
 					</td>
 					<td>
 						<a href="javascript:deleteBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash-alt"></i></a>
                     </td>
+					<?php } ?>
 				</tr>
 
 				<?php } ?>
@@ -111,9 +115,11 @@ $wwff = 0;
 	</div>
   <br/>
   <p>
+		<?php if($this->session->userdata('user_type') == '99') { ?>
 	  	<button onclick="createBandDialog();" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Create a Band</button>
   		<button onclick="activateAllBands();" class="btn btn-primary btn-sm">Activate All</button>
 		<button onclick="deactivateAllBands();" class="btn btn-primary btn-sm">Deactivate All </button>
+		<?php } ?>
 	</p>
 </div>
 </div>
