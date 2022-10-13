@@ -2669,11 +2669,13 @@ class Logbook_model extends CI_Model {
                 'COL_SKCC' => (!empty($record['skcc'])) ? $record['skcc'] : '',
                 'COL_SOTA_REF' => (!empty($record['sota_ref'])) ? $record['sota_ref'] : '',
                 'COL_WWFF_REF' => (!empty($record['wwff_ref'])) ? $record['wwff_ref'] : '',
-                'COL_SRX' => (!empty($record['srx'])) ? $record['srx'] : null,
-                'COL_SRX_STRING' => (!empty($record['srx_string'])) ? $record['srx_string'] : '',
+                'COL_SRX' => (!empty($record['srx'])) ? (int)$record['srx'] : null,
+                			//convert to integer to make sure no invalid entries are imported 
+				'COL_SRX_STRING' => (!empty($record['srx_string'])) ? $record['srx_string'] : '',
                 'COL_STATE' => (!empty($record['state'])) ? strtoupper($record['state']) : '',
                 'COL_STATION_CALLSIGN' => (!empty($record['station_callsign'])) ? $record['station_callsign'] : '',
-                'COL_STX' => (!empty($record['stx'])) ? $record['stx'] : null,
+						 //convert to integer to make sure no invalid entries are imported 
+                'COL_STX' => (!empty($record['stx'])) ? (int)$record['stx'] : null,
                 'COL_STX_STRING' => (!empty($record['stx_string'])) ? $record['stx_string'] : '',
                 'COL_SUBMODE' => $input_submode,
                 'COL_SWL' => (!empty($record['swl'])) ? $record['swl'] : null,
