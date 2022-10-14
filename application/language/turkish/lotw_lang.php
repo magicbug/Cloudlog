@@ -15,7 +15,9 @@ $lang['lotw_beta_warning'] = 'Lütfen LoTW Sync\'in BETA olduğunu unutmayın, y
 $lang['lotw_no_certs_uploaded'] = 'Bu alanı kullanmak için bazı LoTW p12 sertifikaları yüklemeniz gerekiyor.';
 
 $lang['lotw_date_created'] = 'Oluşturma Tarihi';
-$lang['lotw_date_expires'] = 'Tarih Sona Eriyor';
+$lang['lotw_date_expires'] = 'Geçeriliğini Yitirme Tarihi';
+$lang['lotw_qso_start_date'] = 'QSO Başlama Tarihi';
+$lang['lotw_qso_end_date'] = 'QSO Sonu Tarihi';
 $lang['lotw_status'] = 'Durum';
 $lang['lotw_options'] = 'Seçenekler';
 $lang['lotw_valid'] = 'Geçerli';
@@ -46,7 +48,7 @@ $lang['lotw_btn_import_matches'] = 'LoTW Eşleşmelerini İçe Aktar';
 // P12 Metni Dışa Aktar
 $lang['lotw_p12_export_step_one'] = 'TQSL &amp; Çağrı İmzası Sertifikaları Sekmesine gidin';
 $lang['lotw_p12_export_step_two'] = 'İstenen Çağrı İşaretine sağ tıklayın';
-$lang['lotw_p12_export_step_3,000'] = '"Çağrı İmzası Sertifika Dosyasını Kaydet"e tıklayın ve şifre eklemeyin';
+$lang['lotw_p12_export_step_three'] = '"Çağrı İmzası Sertifika Dosyasını Kaydet"e tıklayın ve şifre eklemeyin';
 $lang['lotw_p12_export_step_four'] = 'Aşağıdaki Dosyayı Yükleyin.';
 
 $lang['lotw_confirmed'] = 'Bu QSO LoTW\'de onaylandı';
