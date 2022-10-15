@@ -530,7 +530,7 @@
                                 <?php
                                 $CI =& get_instance();
                                 $CI->load->model('stations');
-                                $my_stations = $CI->stations->all();
+                                $my_stations = $CI->stations->all_of_user();
                                 ?>
 
                                 <div class="form-group">
