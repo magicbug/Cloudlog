@@ -154,8 +154,17 @@ class Logbooks extends CI_Controller {
 				echo "<div class=\"alert alert-danger\" role=\"alert\">Oops! This Public Slug is unavailable</div>";
 			}
 		}
-		
 	}
 
+	public function remove_publicslug() {
+		$this->load->model('logbooks_model');
+
+		$this->logbooks_model->remove_public_slug($this->input->post('logbook_id'));
+		if ($this->db->affected_rows() > 0) {
+			echo "<div class=\"alert alert-success\" role=\"alert\">Public Slug Removed</div>";
+		} else {
+			echo "<div class=\"alert alert-danger\" role=\"alert\">Oops! This Public Slug could not be removed</div>";
+		}
+	}
 
 }
