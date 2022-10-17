@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('Non è permesso l"'"accesso diretto allo script');
+defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 
 $lang['account_logbook_fields'] = 'Campi Logbook';
 $lang['account_column1_text'] = 'Scegli colonna 1';

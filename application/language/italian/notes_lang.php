@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 
 $lang['notes_menu_notes'] = 'Note';
 $lang['notes_edit_note'] = 'Modifica Nota';

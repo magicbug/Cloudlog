@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,30 +29,30 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 
-$lang['ut_test_name'] = 'Test Name';
+$lang['ut_test_name'] = 'Nome Test';
 $lang['ut_test_datatype'] = 'Test Datatype';
 $lang['ut_res_datatype'] = 'Expected Datatype';
-$lang['ut_result'] = 'Result';
+$lang['ut_result'] = 'Risultato';
 $lang['ut_undefined'] = 'Undefined Test Name';
-$lang['ut_file'] = 'File Name';
-$lang['ut_line'] = 'Line Number';
-$lang['ut_passed'] = 'Passed';
-$lang['ut_failed'] = 'Failed';
-$lang['ut_boolean'] = 'Boolean';
-$lang['ut_integer'] = 'Integer';
+$lang['ut_file'] = 'Nome File';
+$lang['ut_line'] = 'Numero Linea';
+$lang['ut_passed'] = 'Passeto';
+$lang['ut_failed'] = 'Fallito';
+$lang['ut_boolean'] = 'Booleano';
+$lang['ut_integer'] = 'Intero';
 $lang['ut_float'] = 'Float';
 $lang['ut_double'] = 'Float'; // can be the same as float
-$lang['ut_string'] = 'String';
+$lang['ut_string'] = 'Stringa';
 $lang['ut_array'] = 'Array';
-$lang['ut_object'] = 'Object';
-$lang['ut_resource'] = 'Resource';
-$lang['ut_null'] = 'Null';
-$lang['ut_notes'] = 'Notes';
+$lang['ut_object'] = 'Oggetto';
+$lang['ut_resource'] = 'Risorsa';
+$lang['ut_null'] = 'Nullo';
+$lang['ut_notes'] = 'Note';

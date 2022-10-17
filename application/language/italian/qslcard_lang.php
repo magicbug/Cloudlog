@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('Non è permesso l"'"accesso diretto allo script');
+defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 
 // Tiles
 $lang['qslcard_string_your_are_using'] = 'Stai usando';

@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,13 +29,13 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 
 $lang['cal_su'] = 'Do';
 $lang['cal_mo'] = 'Lu';
@@ -71,7 +71,7 @@ $lang['cal_oct'] = 'Ott';
 $lang['cal_nov'] = 'Nov';
 $lang['cal_dec'] = 'Dic';
 $lang['cal_january'] = 'Gennaio';
-$lang['cal_february'] = 'Febbbraio';
+$lang['cal_february'] = 'Febbraio';
 $lang['cal_march'] = 'Marzo';
 $lang['cal_april'] = 'Aprile';
 $lang['cal_mayl'] = 'Maggio';
