@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('Non è permesso l"'"accesso diretto allo script');
+defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 
 $lang['contesting_page_title'] = 'Log per Contest';
 $lang['contesting_button_reset_contest_session'] = 'Azzera Sessione Contest';

@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('Non è permesso l"'"accesso diretto allo script');
+defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 
 $lang['lotw_short'] = 'LoTW';
 $lang['lotw_title'] = 'Logbook of the World';

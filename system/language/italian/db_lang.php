@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,35 +29,35 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 
-$lang['db_invalid_connection_str'] = 'Unable to determine the database settings based on the connection string you submitted.';
-$lang['db_unable_to_connect'] = 'Unable to connect to your database server using the provided settings.';
-$lang['db_unable_to_select'] = 'Unable to select the specified database: %s';
-$lang['db_unable_to_create'] = 'Unable to create the specified database: %s';
-$lang['db_invalid_query'] = 'The query you submitted is not valid.';
-$lang['db_must_set_table'] = 'You must set the database table to be used with your query.';
-$lang['db_must_use_set'] = 'You must use the "set" method to update an entry.';
-$lang['db_must_use_index'] = 'You must specify an index to match on for batch updates.';
-$lang['db_batch_missing_index'] = 'One or more rows submitted for batch updating is missing the specified index.';
-$lang['db_must_use_where'] = 'Updates are not allowed unless they contain a "where" clause.';
-$lang['db_del_must_use_where'] = 'Deletes are not allowed unless they contain a "where" or "like" clause.';
-$lang['db_field_param_missing'] = 'To fetch fields requires the name of the table as a parameter.';
-$lang['db_unsupported_function'] = 'This feature is not available for the database you are using.';
-$lang['db_transaction_failure'] = 'Transaction failure: Rollback performed.';
-$lang['db_unable_to_drop'] = 'Unable to drop the specified database.';
-$lang['db_unsupported_feature'] = 'Unsupported feature of the database platform you are using.';
-$lang['db_unsupported_compression'] = 'The file compression format you chose is not supported by your server.';
-$lang['db_filepath_error'] = 'Unable to write data to the file path you have submitted.';
-$lang['db_invalid_cache_path'] = 'The cache path you submitted is not valid or writable.';
-$lang['db_table_name_required'] = 'A table name is required for that operation.';
-$lang['db_column_name_required'] = 'A column name is required for that operation.';
-$lang['db_column_definition_required'] = 'A column definition is required for that operation.';
-$lang['db_unable_to_set_charset'] = 'Unable to set client connection character set: %s';
-$lang['db_error_heading'] = 'A Database Error Occurred';
+$lang['db_invalid_connection_str'] = 'Impossibile determinare le impostazioni del database in base alla stringa di connessione inviata.';
+$lang['db_unable_to_connect'] = 'Impossibile connettersi al server del database utilizzando le impostazioni fornite.';
+$lang['db_unable_to_select'] = 'Impossibile selezionare il database specificato: %s';
+$lang['db_unable_to_create'] = 'Impossibile creare il database specificato: %s';
+$lang['db_invalid_query'] = 'La query che hai inviato non è valida.';
+$lang['db_must_set_table'] = 'È necessario impostare la tabella del database da utilizzare con la query.';
+$lang['db_must_use_set'] = 'È necessario utilizzare il metodo "set" per aggiornare una voce.';
+$lang['db_must_use_index'] = 'È necessario specificare un indice su cui eseguire la corrispondenza per gli aggiornamenti batch.';
+$lang['db_batch_missing_index'] = 'In una o più righe inviate per l\'aggiornamento batch manca l\'indice specificato.';
+$lang['db_must_use_where'] = 'Gli aggiornamenti non sono consentiti a meno che non contengano una clausola "where".';
+$lang['db_del_must_use_where'] = 'Le eliminazioni non sono consentite a meno che non contengano una clausola "where" o "like"';
+$lang['db_field_param_missing'] = 'Per recuperare i campi è necessario il nome della tabella come parametro.';
+$lang['db_unsupported_function'] = 'Questa funzione non è disponibile per il database in uso.';
+$lang['db_transaction_failure'] = 'Transazione non riuscita: eseguito Rollback.';
+$lang['db_unable_to_drop'] = 'Impossibile eliminare il database specificato.';
+$lang['db_unsupported_feature'] = 'Funzionalità non supportata della piattaforma di database in uso.';
+$lang['db_unsupported_compression'] = 'Il formato di compressione file che hai scelto non è supportato dal tuo server.';
+$lang['db_filepath_error'] = 'Impossibile scrivere i dati nel percorso del file che hai inviato.';
+$lang['db_invalid_cache_path'] = 'Il percorso della cache che hai inviato non è valido o scrivibile.';
+$lang['db_table_name_required'] = 'Per tale operazione è richiesto un nome di tabella.';
+$lang['db_column_name_required'] = 'Per tale operazione è richiesto un nome di colonna.';
+$lang['db_column_definition_required'] = 'Per tale operazione è necessaria una definizione di colonna.';
+$lang['db_unable_to_set_charset'] = 'Impossibile impostare il set di caratteri di connessione client: %s';
+$lang['db_error_heading'] = 'Si è verificato un errore nel database';

@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,13 +29,13 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
+ * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 
 $lang['profiler_database'] = 'DATABASE';
 $lang['profiler_controller_info'] = 'CLASS/METHOD';
@@ -48,13 +48,13 @@ $lang['profiler_memory_usage'] = 'MEMORY USAGE';
 $lang['profiler_config'] = 'CONFIG VARIABLES';
 $lang['profiler_session_data'] = 'SESSION DATA';
 $lang['profiler_headers'] = 'HTTP HEADERS';
-$lang['profiler_no_db'] = 'Database driver is not currently loaded';
-$lang['profiler_no_queries'] = 'No queries were run';
-$lang['profiler_no_post'] = 'No POST data exists';
-$lang['profiler_no_get'] = 'No GET data exists';
-$lang['profiler_no_uri'] = 'No URI data exists';
-$lang['profiler_no_memory'] = 'Memory Usage Unavailable';
-$lang['profiler_no_profiles'] = 'No Profile data - all Profiler sections have been disabled.';
+$lang['profiler_no_db'] = 'Il driver del database non è attualmente caricato';
+$lang['profiler_no_queries'] = 'Non sono state eseguite query';
+$lang['profiler_no_post'] = 'Non esistono dati POST';
+$lang['profiler_no_get'] = 'Non esistono dati GET';
+$lang['profiler_no_uri'] = 'Non esistono dati URI';
+$lang['profiler_no_memory'] = 'Utilizzo memoria non disponibile';
+$lang['profiler_no_profiles'] = 'Nessun dato del profilo - tutte le sezioni del Profiler sono state disabilitate.';
 $lang['profiler_section_hide'] = 'Nascondi';
 $lang['profiler_section_show'] = 'Mostra';
 $lang['profiler_seconds'] = 'secondi';
