@@ -52,6 +52,7 @@ class User extends CI_Controller {
 		{
 			$data['page_title'] = "Add User";
             $data['measurement_base'] = $this->config->item('measurement_base');
+            $data['qso_auto_qth'] = $this->config->item('qso_auto_qth');
 
 			$this->load->view('interface_assets/header', $data);
 			if($this->input->post('user_name'))
@@ -75,6 +76,7 @@ class User extends CI_Controller {
 				$data['user_column4'] = $this->input->post('user_column4');
 				$data['user_column5'] = $this->input->post('user_column5');
 				$data['user_show_profile_image'] = $this->input->post('user_show_profile_image');
+                $data['user_auto_qth'] = $this->input->post('user_auto_qth');
 				$this->load->view('user/add', $data);
 			} else {
 				$this->load->view('user/add', $data);
@@ -102,6 +104,7 @@ class User extends CI_Controller {
 				$this->input->post('user_column3'),
 				$this->input->post('user_column4'),
 				$this->input->post('user_column5'),
+                $this->input->post('user_auto_qth'),
 				$this->input->post('user_show_profile_image'))) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
@@ -140,6 +143,7 @@ class User extends CI_Controller {
 			$data['user_column4'] = $this->input->post('user_column4');
 			$data['user_column5'] = $this->input->post('user_column5');
 			$data['user_show_profile_image'] = $this->input->post('user_show_profile_image');
+            $data['user_auto_qth'] = $this->input->post('user_auto_qth');
 			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -347,6 +351,12 @@ class User extends CI_Controller {
 				$data['user_column5'] = $q->user_column5;
 			}
 
+            if($this->input->post('user_auto_qth')) {
+                $data['user_auto_qth'] = $this->input->post('user_auto_qth', true);
+            } else {
+                $data['user_auto_qth'] = $q->user_auto_qth;
+            }
+
 			$this->load->view('user/edit', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -397,6 +407,7 @@ class User extends CI_Controller {
 			$data['user_column4'] = $this->input->post('user_column4');
 			$data['user_column5'] = $this->input->post('user_column5');
 			$data['user_show_profile_image'] = $this->input->post('user_show_profile_image');
+            $data['user_auto_qth'] = $this->input->post('user_auto_qth');
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}

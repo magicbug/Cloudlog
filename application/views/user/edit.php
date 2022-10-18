@@ -191,7 +191,17 @@
 		                </select>
 		                <small id="user_measurement_base_Help" class="form-text text-muted">Choose which unit distances will be shown in.</small>
 		            </div>
-				</div>
+
+                    <div class="form-group">
+		                <label for="user_auto_qth">Populate Gridsquare based on location</label>
+		                <select class="custom-select" id="user_auto_qth" name="user_auto_qth" aria-describedby="user_auto_qth_Help" required>
+                            <option value="1" <?php if ($user_auto_qth == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_yes'); ?></option>
+	    					<option value="0" <?php if ($user_auto_qth == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_no'); ?></option>
+		                </select>
+		                <small id="user_auto_qth_Help" class="form-text text-muted">If this is set, gridsquare is calculated based on the location.</small>
+		            </div>
+
+                </div>
 			</div>
 	    </div>
 	</div>
