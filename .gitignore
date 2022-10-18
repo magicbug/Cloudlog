@@ -8,9 +8,12 @@
 /install/*
 /updates/*.xml
 /updates/*.html
+/updates/clublog_scp.txt
 /images/eqsl_card_images/*.jpg
 /updates/clublog_scp.txt
 /assets/qslcard/*
+/assets/json/dok.txt
+/assets/json/sota.txt
 .idea/*
 .DS_Store
 sync.sh
