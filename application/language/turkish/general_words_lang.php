@@ -38,17 +38,24 @@ $lang['general_word_method'] = 'Metod';
 $lang['general_word_sent'] = 'Gönderilen';
 $lang['general_word_received'] = 'Gelen';
 $lang['general_word_requested'] = 'İstenen';
+$lang['general_word_queued'] = 'Sıralanan';
+$lang['general_word_invalid_ignore'] = 'Geçersiz (Yok say)';
 $lang['general_word_qslcard'] = 'QSL Kartı';
 $lang['general_word_qslcard_management'] = 'QSL Yönetimi';
 $lang['general_word_qslcards'] = 'QSL Kartları';
 $lang['general_word_qslcard_direct'] = 'Direk';
 $lang['general_word_qslcard_bureau'] = 'Büro';
+$lang['general_word_qslcard_electronic'] = 'Elektronik';
+$lang['general_word_qslcard_manager'] = 'Yönetici';
+$lang['general_word_eqslcards'] = 'eQSL Kartları';
+$lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_qslcard_via'] = 'üzerinden';
 
 $lang['general_edit_qso'] = 'QSO değiştirme';
 $lang['general_mark_qsl_rx_bureau'] = 'QSL\'i alındı Olarak İşaretle (Büro)';
 $lang['general_mark_qsl_rx_direct'] = 'QSL\'i alındı Olarak İşaretle (Direkt)';
-
+$lang['general_mark_qsl_tx_bureau'] = 'QSL\'i Gönderildi Olarak İşaretle (Bureau)';
+$lang['general_mark_qsl_tx_direct'] = 'QSL\'i Gönderildi Olarak İşaretle (Direkt)';
 $lang['general_delete_qso'] = 'QSO\'yu sil';
 
 $lang['general_total_distance'] = 'Topam mesafe';
@@ -95,6 +102,7 @@ $lang['gen_hamradio_dok'] = 'DOK';
 $lang['gen_hamradio_state'] = 'Eyalet';
 $lang['gen_hamradio_iota'] = 'IOTA';
 $lang['gen_hamradio_gridsquare'] = 'Pafta';
+$lang['gen_hamradio_operator'] = 'Operatör';
 
 $lang['gen_hamradio_sig'] = 'İmza';
 $lang['gen_hamradio_sig_info'] = 'İmza bilgisi';
@@ -108,3 +116,7 @@ $lang['dashboard_countries_breakdown'] = 'Ülke Analizi';
 $lang['gen_from_date'] = 'Tarihten itibaren';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'Bu QSO\'nun onaylandığı tarih';
+
+$lang['error_no_logbook_found'] = 'Kayıt defteri bulunamadı. İstasyon Kayıt Defterleri altında bir kayıt defteri tanızlamanız lazım! Buradan yapın:';
+
+$lang['copy_to_clipboard'] = 'Panoya kopyala';
