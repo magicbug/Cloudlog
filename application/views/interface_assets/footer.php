@@ -1109,7 +1109,7 @@ $(document).on('keypress',function(e) {
 	});
 <?php } ?>
 
-<?php if ($this->config->item('qso_auto_qth')) { ?>
+<?php if ($this->session->userdata('user_qth_lookup') == 1) { ?>
     $('#qth').focusout(function() {
     	if ($('#locator').val() === '') {
 			var lat = 0;

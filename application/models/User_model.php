@@ -112,8 +112,9 @@ class User_Model extends CI_Model {
 	// FUNCTION: bool add($username, $password, $email, $type)
 	// Add a user
 	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone,
-				 $measurement, $user_date_format, $user_stylesheet, $user_sota_lookup, $user_wwff_lookup, $user_show_notes,
-				 $user_column1, $user_column2, $user_column3, $user_column4, $user_column5, $user_show_profile_image) {
+		$measurement, $user_date_format, $user_stylesheet, $user_qth_lookup, $user_sota_lookup, $user_wwff_lookup,
+		$user_show_notes, $user_column1, $user_column2, $user_column3, $user_column4, $user_column5,
+	  	$user_show_profile_image) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -129,6 +130,7 @@ class User_Model extends CI_Model {
 				'user_measurement_base' => xss_clean($measurement),
 				'user_date_format' => xss_clean($user_date_format),
 				'user_stylesheet' => xss_clean($user_stylesheet),
+				'user_qth_lookup' => xss_clean($user_qth_lookup),
 				'user_sota_lookup' => xss_clean($user_sota_lookup),
 				'user_wwff_lookup' => xss_clean($user_wwff_lookup),
 				'user_show_notes' => xss_clean($user_show_notes),
@@ -181,6 +183,7 @@ class User_Model extends CI_Model {
 					'user_measurement_base' => xss_clean($fields['user_measurement_base']),
 					'user_date_format' => xss_clean($fields['user_date_format']),
 					'user_stylesheet' => xss_clean($fields['user_stylesheet']),
+					'user_qth_lookup' => xss_clean($fields['user_qth_lookup']),
 					'user_sota_lookup' => xss_clean($fields['user_sota_lookup']),
 					'user_wwff_lookup' => xss_clean($fields['user_wwff_lookup']),
 					'user_show_notes' => xss_clean($fields['user_show_notes']),
@@ -297,6 +300,7 @@ class User_Model extends CI_Model {
 			'user_measurement_base' => $u->row()->user_measurement_base,
 			'user_date_format' => $u->row()->user_date_format,
 			'user_stylesheet' => $u->row()->user_stylesheet,
+			'user_qth_lookup' => isset($u->row()->user_qth_lookup) ? $u->row()->user_qth_lookup : 0,
 			'user_sota_lookup' => isset($u->row()->user_sota_lookup) ? $u->row()->user_sota_lookup : 0,
 			'user_wwff_lookup' => isset($u->row()->user_wwff_lookup) ? $u->row()->user_wwff_lookup : 0,
 			'user_show_notes' => isset($u->row()->user_show_notes) ? $u->row()->user_show_notes : 1,
