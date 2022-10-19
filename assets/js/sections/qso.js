@@ -122,8 +122,8 @@ $( document ).ready(function() {
 	});
 
 	$('#wwff_ref').change(function(){
-		$('#wwff_info').html('<a target="_blank" href="https://wwff.co/directory/?showRef='+$('#wwff_ref').val()+'"><img width="32" height="32" src="'+base_url+'images/icons/wwff.co.png"></a>'); 
-		$('#wwff_info').attr('title', 'Lookup '+$('#wwff_ref').val()+' reference info on wwff.co');
+		$('#wwff_info').html('<a target="_blank" href="https://www.cqgma.org/zinfo.php?ref='+$('#wwff_ref').val()+'"><img width="32" height="32" src="'+base_url+'images/icons/wwff.co.png"></a>'); 
+		$('#wwff_info').attr('title', 'Lookup '+$('#wwff_ref').val()+' reference info on cqgma.org');
 	});
 
 	$('#darc_dok').selectize({
