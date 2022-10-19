@@ -115,6 +115,14 @@ thead > tr > td {
     text-transform: uppercase;
 }
 
+.card-body #exch_recv {
+    text-transform: uppercase;
+}
+
+.card-body #exch_sent {
+    text-transform: uppercase;
+}
+
 .card-body #exch_gridsquare_r {
     text-transform: uppercase;
 }

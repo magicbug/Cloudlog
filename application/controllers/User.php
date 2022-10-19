@@ -67,7 +67,9 @@ class User extends CI_Controller {
 				$data['user_timezone'] = $this->input->post('user_timezone');
                 $data['user_measurement_base'] = $this->input->post('user_measurement_base');
                 $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+				$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 				$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
+				$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
 				$data['user_show_notes'] = $this->input->post('user_show_notes');
 				$data['user_column1'] = $this->input->post('user_column1');
 				$data['user_column2'] = $this->input->post('user_column2');
@@ -95,7 +97,9 @@ class User extends CI_Controller {
 				$this->input->post('user_measurement_base'),
 				$this->input->post('user_date_format'),
 				$this->input->post('user_stylesheet'),
+				$this->input->post('user_qth_lookup'),
 				$this->input->post('user_sota_lookup'),
+				$this->input->post('user_wwff_lookup'),
 				$this->input->post('user_show_notes'),
 				$this->input->post('user_column1'),
 				$this->input->post('user_column2'),
@@ -132,7 +136,9 @@ class User extends CI_Controller {
 			$data['user_locator'] = $this->input->post('user_locator');
             $data['user_measurement_base'] = $this->input->post('user_measurement_base');
             $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+			$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
+			$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
 			$data['user_show_notes'] = $this->input->post('user_show_notes');
 			$data['user_column1'] = $this->input->post('user_column1');
 			$data['user_column2'] = $this->input->post('user_column2');
@@ -299,10 +305,22 @@ class User extends CI_Controller {
                 $data['user_stylesheet'] = $q->user_stylesheet;
             }
 
+			if($this->input->post('user_qth_lookup')) {
+				$data['user_qth_lookup'] = $this->input->post('user_qth_lookup', true);
+			} else {
+				$data['user_qth_lookup'] = $q->user_qth_lookup;
+			}
+
 			if($this->input->post('user_sota_lookup')) {
 				$data['user_sota_lookup'] = $this->input->post('user_sota_lookup', true);
 			} else {
 				$data['user_sota_lookup'] = $q->user_sota_lookup;
+			}
+
+			if($this->input->post('user_wwff_lookup')) {
+				$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup', true);
+			} else {
+				$data['user_wwff_lookup'] = $q->user_wwff_lookup;
 			}
 
 			if($this->input->post('user_show_notes')) {
@@ -388,7 +406,9 @@ class User extends CI_Controller {
 			$data['user_locator'] = $this->input->post('user_locator', true);
 			$data['user_timezone'] = $this->input->post('user_timezone', true);
             $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+			$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
+			$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
 			$data['user_show_notes'] = $this->input->post('user_show_notes');
 			$data['user_column1'] = $this->input->post('user_column1');
 			$data['user_column2'] = $this->input->post('user_column2');
