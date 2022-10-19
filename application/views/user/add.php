@@ -129,13 +129,24 @@
             </select>
         </div>
 
-		<div class="form-group">
-			<label for="sotalookup">SOTA auto lookup gridsquare and name for summit.</label>
-			<select class="custom-select" id="sotalookup" name="user_sota_lookup">
-				<option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>
-				<option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
-			</select>
-			<div class="small form-text text-muted">If this is set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="sotalookup">SOTA auto lookup gridsquare and name for summit.</label>
+				<select class="custom-select" id="sotalookup" name="user_sota_lookup">
+					<option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>
+					<option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
+				</select>
+				<div class="small form-text text-muted">If this is set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
+			</div>
+
+			<div class="form-group col-md-6">
+				<label for="wwfflookup">WWFF auto lookup gridsquare and name for reference.</label>
+				<select class="custom-select" id="wwfflookup" name="user_wwff_lookup">
+					<option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>
+					<option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
+				</select>
+				<div class="small form-text text-muted">If this is set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
+			</div>
 		</div>
 
 		<div class="form-group">
