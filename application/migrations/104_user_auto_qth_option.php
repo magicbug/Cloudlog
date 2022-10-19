@@ -11,7 +11,7 @@ class Migration_user_auto_qth_option extends CI_Migration {
 
 	public function up()
 	{
-		if (!$this->db->field_exists('user_qthlookup', 'users')) {
+		if (!$this->db->field_exists('user_qth_lookup', 'users')) {
 			$fields = array(
 				'user_qth_lookup integer DEFAULT 0 AFTER user_wwff_lookup',
 			);
