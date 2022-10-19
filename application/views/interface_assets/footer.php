@@ -1088,7 +1088,7 @@ $(document).on('keypress',function(e) {
 	});
 <?php } ?>
 
-<?php if ($this->session->userdata('user_auto_qth') == 1) { ?>    
+<?php if ($this->config->item('qso_auto_qth')) { ?>
     $('#qth').focusout(function() {
     	if ($('#locator').val() === '') {
 			var lat = 0;

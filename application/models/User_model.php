@@ -113,7 +113,7 @@ class User_Model extends CI_Model {
 	// Add a user
 	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone,
 				 $measurement, $user_date_format, $user_stylesheet, $user_sota_lookup, $user_show_notes,
-				 $user_column1, $user_column2, $user_column3, $user_column4, $user_column5, $user_show_profile_image, $qso_auto_qth) {
+				 $user_column1, $user_column2, $user_column3, $user_column4, $user_column5, $user_show_profile_image) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -137,7 +137,6 @@ class User_Model extends CI_Model {
 				'user_column4' => xss_clean($user_column4),
 				'user_column5' => xss_clean($user_column5),
 				'user_show_profile_image' => xss_clean($user_show_profile_image),
-                'user_auto_qth' => xss_clean($qso_auto_qth),
 			);
 
 			// Check the password is valid
@@ -189,7 +188,6 @@ class User_Model extends CI_Model {
 					'user_column4' => xss_clean($fields['user_column4']),
 					'user_column5' => xss_clean($fields['user_column5']),
 					'user_show_profile_image' => xss_clean($fields['user_show_profile_image']),
-                    'user_auto_qth' => xss_clean($fields['user_auto_qth']),
 				);
 
 				// Check to see if the user is allowed to change user levels
@@ -306,7 +304,6 @@ class User_Model extends CI_Model {
 			'user_column4' => isset($u->row()->user_column4) ? $u->row()->user_column4: 'Band',
 			'user_column5' => isset($u->row()->user_column5) ? $u->row()->user_column5: 'Country',
 			'active_station_logbook' => $u->row()->active_station_logbook,
-            'user_auto_qth' => isset($u->row()->user_auto_qth) ? $u->row()->user_auto_qth : 0,
 		);
 
 		$this->session->set_userdata($userdata);
