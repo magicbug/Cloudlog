@@ -57,11 +57,10 @@ class Qrz {
 	public function search($callsign, $key, $use_fullname = false)
 	{
         $data = null;
-
         try {
             // URL to the XML Source
             $xml_feed_url = 'http://xmldata.qrz.com/xml/current/?s=' . $key . ';callsign=' . $callsign . '';
-			
+
             // CURL Functions
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $xml_feed_url);
@@ -72,6 +71,8 @@ class Qrz {
 
             // Create XML object
             $xml = simplexml_load_string($xml);
+            if (empty($xml)) return;
+
 			$data['callsign'] = (string)$xml->Callsign->call;
 
             if ($data['callsign'] == "" and (substr($callsign, -2) == "/P" or substr($callsign, -2) == "/M" or substr($callsign, -3) == "/MM"))  {
@@ -94,18 +95,17 @@ class Qrz {
                 // Create XML object
                 $xml = simplexml_load_string($xml);
 
-                if (empty($xml)) {
-				    return;
-                }
+                if (empty($xml)) return;
+
             }
 
             // Return Required Fields
             $data['callsign'] = (string)$xml->Callsign->call;
 
             if ($use_fullname === true) {
-                 $data['name'] =  (string)$xml->Callsign->fname. ' ' . (string)$xml->Callsign->name;
+                $data['name'] =  (string)$xml->Callsign->fname. ' ' . (string)$xml->Callsign->name;
             } else {
-                 $data['name'] = (string)$xml->Callsign->fname;
+                $data['name'] = (string)$xml->Callsign->fname;
             }
             $data['name'] = trim($data['name']);
             $data['gridsquare'] = (string)$xml->Callsign->grid;
