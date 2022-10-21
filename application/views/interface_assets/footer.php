@@ -1227,7 +1227,7 @@ $(document).on('keypress',function(e) {
           }
           $("#sat_name").val(data.satname);
           $("#sat_mode").val(data.satmode);
-          if(data.power != 0) {
+          if(data.power == null or data.power != 0) {
             $("#transmit_power").val(data.power);
           }
           $("#selectPropagation").val(data.prop_mode);
