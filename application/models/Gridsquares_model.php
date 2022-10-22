@@ -147,6 +147,69 @@ class Gridsquares_model extends CI_Model {
 		return $this->db->query($sql);
 	}
 
+    function get_band_worked_vucc_squares($band, $StationLocationsArray = null) {
+        if($StationLocationsArray == null) {
+            $CI =& get_instance();
+            $CI->load->model('logbooks_model');
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        } else {
+            $logbooks_locations_array = $StationLocationsArray;
+        }
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+
+        $this->db->select('distinct COL_VUCC_GRIDS, COL_BAND', FALSE);
+        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->where('COL_VUCC_GRIDS !=', '');
+
+        if ($band != 'All') {
+            $this->db->where('COL_BAND', $band);
+            $this->db->where('COL_PROP_MODE !=', "SAT");
+            $this->db->where('COL_PROP_MODE !=', "INTERNET");
+            $this->db->where('COL_PROP_MODE !=', "ECH");
+            $this->db->where('COL_PROP_MODE !=', "RPT");
+            $this->db->where('COL_SAT_NAME =', "");
+        }
+
+        return $this->db->get($this->config->item('table_name'));
+    }
+
+	function get_band_confirmed_vucc_squares($band, $StationLocationsArray = null) {
+		if($StationLocationsArray == null) {
+            $CI =& get_instance();
+            $CI->load->model('logbooks_model');
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        } else {
+            $logbooks_locations_array = $StationLocationsArray;
+        }
+        
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+
+		$sql = 'SELECT distinct COL_VUCC_GRIDS, COL_BAND FROM '
+			.$this->config->item('table_name')
+			.' WHERE station_id in ('
+			.$location_list.') AND COL_VUCC_GRIDS != ""';
+		if ($band != 'All') {
+			$sql .= ' AND COL_BAND = "' . $band
+				.'"
+            AND COL_PROP_MODE != "SAT"
+            AND COL_PROP_MODE != "INTERNET"
+            AND COL_PROP_MODE != "ECH"
+            AND COL_PROP_MODE != "RPT"
+            AND COL_SAT_NAME = ""';
+		}
+
+		$sql .= ' AND (COL_LOTW_QSL_RCVD = "Y" OR COL_QSL_RCVD = "Y")';
+
+		return $this->db->query($sql);
+	}
+
     function search_band($band, $gridsquare, $StationLocationsArray = null) {
         if($StationLocationsArray == null) {
             $CI =& get_instance();
