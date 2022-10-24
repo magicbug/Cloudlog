@@ -1088,6 +1088,27 @@ $(document).on('keypress',function(e) {
 	});
 <?php } ?>
 
+<?php if ($this->session->userdata('user_wwff_lookup') == 1) { ?>
+	$('#wwff_ref').change(function() {
+		var wwff = $('#wwff_ref').val();
+		if (wwff.length > 0) {
+			$.ajax({
+				url: base_url+'index.php/qso/get_wwff_info',
+				type: 'post',
+				data: {'wwff': wwff},
+				success: function(res) {
+					$('#qth').val(res.name);
+					$('#locator').val(res.locator);
+				},
+				error: function() {
+					$('#qth').val('');
+					$('#locator').val('');
+				},
+			});
+		}
+	});
+<?php } ?>
+
 <?php if ($this->config->item('qso_auto_qth')) { ?>
     $('#qth').focusout(function() {
     	if ($('#locator').val() === '') {

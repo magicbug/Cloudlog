@@ -436,14 +436,23 @@ class QSO extends CI_Controller {
         echo json_encode($json);
     }
 
-    public function get_sota_info() {
-		$this->load->library('sota');
+   public function get_sota_info() {
+      $this->load->library('sota');
 
-		$sota = xss_clean($this->input->post('sota'));
+      $sota = xss_clean($this->input->post('sota'));
 
-		header('Content-Type: application/json');
-		echo $this->sota->info($sota);
-	}
+      header('Content-Type: application/json');
+      echo $this->sota->info($sota);
+   }
+
+   public function get_wwff_info() {
+      $this->load->library('wwff');
+
+      $wwff = xss_clean($this->input->post('wwff'));
+
+      header('Content-Type: application/json');
+      echo $this->wwff->info($wwff);
+   }
 
    function check_locator($grid) {
       $grid = $this->input->post('locator');
