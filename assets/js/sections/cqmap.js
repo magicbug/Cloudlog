@@ -1,7 +1,7 @@
 var osmUrl = $('#cqmapjs').attr("tileUrl");
 
 function load_cq_map() {
-    $('.nav-tabs a[href="#cqmap"]').tab('show');
+    $('.nav-tabs a[href="#cqmaptab"]').tab('show');
     $.ajax({
         url: base_url + 'index.php/awards/cq_map',
         type: 'post',
@@ -110,11 +110,13 @@ function load_cq_map2(data) {
       [ "78", "-10"],
     ];
 
-      // If map is already initialized
+    // If map is already initialized
     var container = L.DomUtil.get('cqmap');
 
     if(container != null){
         container._leaflet_id = null;
+        container.remove();
+        $("#cqmaptab").append('<div id="cqmap"></div>');
     }
 
     var map = L.map('cqmap');
