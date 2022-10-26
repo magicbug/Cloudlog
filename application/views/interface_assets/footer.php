@@ -860,6 +860,37 @@ function getLookupResult() {
   $(function () {
      $('[data-toggle="tooltip"]').tooltip()
   });
+
+  $(function () {
+    // hold onto the drop down menu                                             
+    var dropdownMenu;
+
+    // and when you show it, move it to the body                                     
+    $(window).on('show.bs.dropdown', function (e) {
+
+    // grab the menu        
+    dropdownMenu = $(e.target).find('.dropdown-menu');
+
+    // detach it and append it to the body
+    $('body').append(dropdownMenu.detach());
+
+    // grab the new offset position
+    var eOffset = $(e.target).offset();
+
+    // make sure to place it where it would normally go (this could be improved)
+    dropdownMenu.css({
+        'display': 'block',
+            'top': eOffset.top + $(e.target).outerHeight(),
+            'left': eOffset.left
+       });
+    });
+
+    // and when you hide it, reattach the drop down, and hide it normally                                                   
+    $(window).on('hide.bs.dropdown', function (e) {
+        $(e.target).append(dropdownMenu.detach());
+        dropdownMenu.hide();
+    });
+  })();
 </script>
 <script type="text/javascript">
 i=0;
@@ -2954,6 +2985,66 @@ function deleteQsl(id) {
 			});
 		});
 	</script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "wwff") ) {
+	// Get Date format
+	if($this->session->userdata('user_date_format')) {
+		// If Logged in and session exists
+		$custom_date_format = $this->session->userdata('user_date_format');
+	} else {
+		// Get Default date format from /config/cloudlog.php
+		$custom_date_format = $this->config->item('qso_date_format');
+	}
+
+    switch ($custom_date_format) {
+        case 'd/m/y': $usethisformat = 'D/MM/YY';break;
+        case 'd/m/Y': $usethisformat = 'D/MM/YYYY';break;
+        case 'm/d/y': $usethisformat = 'MM/D/YY';break;
+        case 'm/d/Y': $usethisformat = 'MM/D/YYYY';break;
+        case 'd.m.Y': $usethisformat = 'D.MM.YYYY';break;
+        case 'y/m/d': $usethisformat = 'YY/MM/D';break;
+        case 'Y-m-d': $usethisformat = 'YYYY-MM-D';break;
+        case 'M d, Y': $usethisformat = 'MMM D, YYYY';break;
+        case 'M d, y': $usethisformat = 'MMM D, YY';break;
+    }
+
+    ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
+    <script>
+        $.fn.dataTable.moment('<?php echo $usethisformat ?>');
+        $.fn.dataTable.ext.buttons.clear = {
+            className: 'buttons-clear',
+            action: function ( e, dt, node, config ) {
+               dt.search('').draw();
+            }
+        };
+        $('#wwfftable').DataTable({
+            "pageLength": 25,
+            responsive: false,
+            ordering: true,
+            "scrollY":        "500px",
+            "scrollCollapse": true,
+            "paging":         false,
+            "scrollX": true,
+            "order": [ 0, 'asc' ],
+            dom: 'Bfrtip',
+            buttons: [
+               {
+                  extend: 'csv'
+               },
+               {
+                  extend: 'clear',
+                  text: 'Clear'
+               }
+            ]
+        });
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
+           $('[class*="buttons"]').css("color", "white");
+        }
+    </script>
 <?php } ?>
 
   </body>
