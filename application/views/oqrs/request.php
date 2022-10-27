@@ -1,4 +1,6 @@
 <br />
+The following QSO(s) were found. Please fill out the date and time and submit your request.
+<br /><br />
 <table style="width:100%"
     class="notinlog-table table-sm table table-bordered table-hover table-striped table-condensed text-center">
     <thead>

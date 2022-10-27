@@ -23,10 +23,6 @@ class Oqrs_model extends CI_Model {
     function get_qsos($station_id, $callsign, $bands){
 		$modes = $this->get_worked_modes($station_id);
 
-		return $this->getResultFromDatabase($station_id, $callsign, $modes, $bands);
-	}
-
-	function getResultFromDatabase($station_id, $callsign, $modes, $bands) {
 		// Creating an empty array with all the bands and modes from the database
 		foreach ($modes as $mode) {
 			foreach ($bands as $band) {
@@ -40,7 +36,10 @@ class Oqrs_model extends CI_Model {
 			$resultArray[$w->col_mode][$w->col_band] = '<i class="fa fa-check" aria-hidden="true"></i>';
 		}
 
-		return $resultArray;
+		$result['qsocount'] = count($worked);
+		$result['qsoarray'] = $resultArray;
+
+		return $result;
 	}
 
 	/*

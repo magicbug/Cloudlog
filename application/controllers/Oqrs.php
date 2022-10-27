@@ -9,8 +9,9 @@ class Oqrs extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
-		$this->load->model('user_model');
-		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		// Commented out to get public access
+		// $this->load->model('user_model');
+		// if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
 
     public function index() {
@@ -37,8 +38,10 @@ class Oqrs extends CI_Controller {
 		$data['bands'] = $this->bands->get_worked_bands_oqrs($this->security->xss_clean($this->input->post('station_id')));
 		
 		$this->load->model('oqrs_model');
-		$data['result'] = $this->oqrs_model->get_qsos($this->input->post('station_id'), $this->input->post('callsign'), $data['bands']);
+		$result = $this->oqrs_model->get_qsos($this->input->post('station_id'), $this->input->post('callsign'), $data['bands']);
 		$data['callsign'] = $this->security->xss_clean($this->input->post('callsign'));
+		$data['result'] = $result['qsoarray'];
+		$data['qsocount'] = $result['qsocount'];
 
 		$this->load->view('oqrs/result', $data);
 	}

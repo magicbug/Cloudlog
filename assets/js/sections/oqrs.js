@@ -23,7 +23,6 @@ function searchOqrs() {
         type: 'post',
         data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val()},
         success: function (data) {
-            $(".searchinfo").append('<br />Log search result for ' + $("#oqrssearch").val() + ':<br />');
             $(".searchinfo").append(data);
         }
     });
