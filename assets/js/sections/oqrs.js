@@ -98,6 +98,15 @@ function requestOqrs() {
         data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val()},
         success: function(html) {
             $(".searchinfo").html(html);
+            $('.result-table').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: false,
+                "scrollY": "410px",
+                "scrollCollapse": true,
+                "paging": false,
+                "scrollX": true,
+            });
         }
     }); 
 }

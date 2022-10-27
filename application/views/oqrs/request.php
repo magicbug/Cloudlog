@@ -2,7 +2,7 @@
 The following QSO(s) were found. Please fill out the date and time and submit your request.
 <br /><br />
 <table style="width:100%"
-    class="notinlog-table table-sm table table-bordered table-hover table-striped table-condensed text-center">
+    class="result-table table-sm table table-bordered table-hover table-striped table-condensed text-center">
     <thead>
         <tr>
             <th>#</th>
@@ -13,13 +13,18 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td><input class="form-control" type="date" name="date1" value="" id="date_1" placeholder="YYYY-MM-DD"></td>
-            <td><input class="form-control" type="text" name="time1" value="" id="time_1" maxlength="5" placeholder="HH:MM"></td>
-			<td><input class="form-control" type="text" name="band1" value="" id="band_1"></td>
-            <td><input class="form-control" type="text" name="mode1" value="" id="mode_1"></td>
-        </tr>
+        <?php
+        $i = 1;
+            foreach ($result as $qso) {
+                echo '<tr>';
+                    echo '<td>'. $i++ .'</td>';
+                    echo '<td><input class="form-control" type="date" name="date1" value="" id="date_1" placeholder="YYYY-MM-DD"></td>';
+                    echo '<td><input class="form-control" type="text" name="time1" value="" id="time_1" maxlength="5" placeholder="HH:MM"></td>';
+                    echo '<td>'. $qso->col_band .'</td>';
+                    echo '<td>'; echo $qso->col_submode == null ? strtoupper($qso->col_mode) : strtoupper($qso->col_submode);  echo '</td>';      
+                echo '</tr>';
+            }
+        ?>
     </tbody>
 </table>
 <br />
