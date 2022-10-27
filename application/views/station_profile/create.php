@@ -235,6 +235,19 @@
                 </div>
             </div>
 
+			<div class="form-group">
+				<label for="oqrs">OQRS Enabled</label>
+				<select class="custom-select" id="oqrs" name="oqrs">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="oqrstext">OQRS Text</label>
+				<input type="text" class="form-control" name="oqrstext" id="oqrstext" aria-describedby="oqrstextHelp">
+				<small id="oqrstextHelp" class="form-text text-muted">Some info you want to add regarding QSL'ing.</small>
+			</div>
+
 			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Create Station Location</button>
 
 		</form>
