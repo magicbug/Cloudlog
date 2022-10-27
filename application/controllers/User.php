@@ -40,6 +40,7 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_lastname', 'Last name', 'required');
 		$this->form_validation->set_rules('user_callsign', 'Callsign', 'required');
 		$this->form_validation->set_rules('user_locator', 'Locator', 'required');
+		$this->form_validation->set_rules('user_locator', 'Locator', 'callback_check_locator');
 		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
 
 		// Get themes list
@@ -167,7 +168,7 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_firstname', 'First name', 'required|xss_clean');
 		$this->form_validation->set_rules('user_lastname', 'Last name', 'required|xss_clean');
 		$this->form_validation->set_rules('user_callsign', 'Callsign', 'trim|required|xss_clean');
-		$this->form_validation->set_rules('user_locator', 'Locator', 'required|xss_clean');
+		$this->form_validation->set_rules('user_locator', 'Locator', 'callback_check_locator');
 		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
 
 		// Get themes list
@@ -629,4 +630,26 @@ class User extends CI_Controller {
 			redirect('user/login');
 		}
 	}
+
+   function check_locator($grid) {
+      $grid = $this->input->post('user_locator');
+      // Allow empty locator
+      if (preg_match('/^$/', $grid)) return true;
+      // Allow 6-digit locator
+      if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Za-z]{2}$/', $grid)) return true;
+      // Allow 4-digit locator
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}$/', $grid)) return true;
+      // Allow 4-digit grid line
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2},[A-Ra-r]{2}[0-9]{2}$/', $grid)) return true;
+      // Allow 4-digit grid corner
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2},[A-Ra-r]{2}[0-9]{2},[A-Ra-r]{2}[0-9]{2},[A-Ra-r]{2}[0-9]{2}$/', $grid)) return true;
+      // Allow 2-digit locator
+      else if (preg_match('/^[A-Ra-r]{2}$/', $grid)) return true;
+      // Allow 8-digit locator
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Za-z]{2}[0-9]{2}$/', $grid)) return true;
+      else {
+         $this->form_validation->set_message('check_locator', 'Please check value for grid locator ('.strtoupper($grid).').');
+         return false;
+      }
+   }
 }
