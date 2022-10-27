@@ -34,19 +34,7 @@ function notInLog() {
         type: 'post',
         data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val()},
         success: function(html) {
-            BootstrapDialog.show({
-                title: 'Not in log',
-                size: BootstrapDialog.SIZE_WIDE,
-                cssClass: 'notinlog-dialog',
-                nl2br: false,
-                message: html,
-                buttons: [{
-                    label: 'Close',
-                    action: function(dialogItself) {
-                        dialogItself.close();
-                    }
-                }]
-            });
+            $(".searchinfo").html(html);
         }
     }); 
 }
@@ -58,8 +46,8 @@ function saveNotInLogRequest() {
         type: 'post',
         success: function(html) {
             BootstrapDialog.show({
-                title: 'Stored Queries',
-                size: BootstrapDialog.SIZE_WIDE,
+                title: 'Not in log query sent',
+                size: BootstrapDialog.SIZE_NORMAL,
                 cssClass: 'queries-dialog',
                 nl2br: false,
                 message: html,

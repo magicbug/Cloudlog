@@ -1,3 +1,4 @@
+<br />
 If you can't find your QSO in the log, please fill out the form below. You will be contacted after the log has been
 checked.<br />
 <table style="width:100%"
