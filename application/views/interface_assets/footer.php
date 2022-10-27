@@ -890,7 +890,7 @@ function getLookupResult() {
         $(e.target).append(dropdownMenu.detach());
         dropdownMenu.hide();
     });
-  })();
+  });
 </script>
 <script type="text/javascript">
 i=0;
