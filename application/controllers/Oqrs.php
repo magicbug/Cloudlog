@@ -69,4 +69,37 @@ class Oqrs extends CI_Controller {
 
 		$this->load->view('oqrs/request', $data);
 	}
+
+	public function requests() {
+		$data['page_title'] = "OQRS Requests";
+
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if ($logbooks_locations_array) {
+			$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		} else {
+            $location_list = null;
+        }
+
+		$this->load->model('oqrs_model');
+		$data['result'] = $this->oqrs_model->getOqrsRequests($location_list);
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('oqrs/showrequests');
+		$this->load->view('interface_assets/footer');
+	}
+
+	public function save_oqrs_request() {
+		$postdata = $this->input->post();
+		$this->load->model('oqrs_model');
+		$this->oqrs_model->save_oqrs_request($postdata);
+	}
+
+	public function delete_oqrs_line() {
+		$id = $this->input->post('id');
+		$this->load->model('oqrs_model');
+		$this->oqrs_model->delete_oqrs_line($id);
+	}
 }

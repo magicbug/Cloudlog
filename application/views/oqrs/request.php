@@ -18,8 +18,8 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
             foreach ($result as $qso) {
                 echo '<tr>';
                     echo '<td>'. $i++ .'</td>';
-                    echo '<td><input class="form-control" type="date" name="date1" value="" id="date_1" placeholder="YYYY-MM-DD"></td>';
-                    echo '<td><input class="form-control" type="text" name="time1" value="" id="time_1" maxlength="5" placeholder="HH:MM"></td>';
+                    echo '<td><input class="form-control" type="date" name="date" value="" id="date" placeholder="YYYY-MM-DD"></td>';
+                    echo '<td><input class="form-control" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM"></td>';
                     echo '<td>'. $qso->col_band .'</td>';
                     echo '<td>'; echo $qso->col_submode == null ? strtoupper($qso->col_mode) : strtoupper($qso->col_submode);  echo '</td>';      
                 echo '</tr>';
@@ -31,7 +31,7 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
 <form>
     <div class="form-group">
         <label for="message">Message</label>
-        <textarea name="message" class="form-control" id="exampleFormControlTextarea1" rows="3" aria-describedby="messageHelp"></textarea>
+        <textarea name="message" class="form-control" id="messageInput" rows="3" aria-describedby="messageHelp"></textarea>
         <small id="messageHelp" class="form-text text-muted">Any extra information we need to know about?</small>
     </div>
 

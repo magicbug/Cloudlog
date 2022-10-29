@@ -69,10 +69,10 @@ function oqrsAddLine() {
     var $row = $('<tr></tr>');
 
     var $iterator = $('<td></td>').html(rowCount);
-    var $date = $('<td></td>').html('<input class="form-control" type="date" name="date1" value="" id="date_1" placeholder="YYYY-MM-DD">');
-    var $time = $('<td></td>').html('<input class="form-control" type="text" name="time1" value="" id="time_1" maxlength="5" placeholder="HH:MM">');
-    var $band = $('<td></td>').html('<input class="form-control" type="text" name="band1" value="" id="band_1">');
-    var $mode = $('<td></td>').html('<input class="form-control" type="text" name="mode1" value="" id="mode_1">');
+    var $date = $('<td></td>').html('<input class="form-control" type="date" name="date" value="" id="date" placeholder="YYYY-MM-DD">');
+    var $time = $('<td></td>').html('<input class="form-control" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM">');
+    var $band = $('<td></td>').html('<input class="form-control" type="text" name="band" value="" id="band">');
+    var $mode = $('<td></td>').html('<input class="form-control" type="text" name="mode" value="" id="mode">');
 
     $row.append($iterator, $date, $time, $band, $mode);
 
@@ -100,5 +100,54 @@ function requestOqrs() {
 }
 
 function submitOqrsRequest() {
-    alert("Yay, lot's of qsls coming your way :)");
+   var $qsos = [];
+   $(".result-table tbody tr").each(function(i) {
+        var $data = [];
+        var x = $(this);
+        var cells = x.find('td');
+        $(cells).each(function(i) {
+            $j = 0;
+            var $d = $("#date", this).val() || $("#time", this).val()||$(this).text();
+            $data.push($d);
+        });
+        $qsos.push($data);
+    });
+
+    $.ajax({
+        url: base_url+'index.php/oqrs/save_oqrs_request',
+        type: 'post',
+        data: { 'station_id': $("#station").val(), 
+                'callsign': $("#oqrssearch").val(),
+                'email': $("#emailInput").val(),
+                'message': $("#messageInput").val(),
+                'qsos': $qsos
+        },
+        success: function (data) {
+            $(".stationinfo").empty();
+            $(".searchinfo").empty();
+            $(".stationinfo").append('<br /><div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your QSL request has been saved!</div>');
+        }
+    });
+}
+
+function deleteOqrsLine(id) {
+    BootstrapDialog.confirm({
+		title: 'DANGER',
+		message: 'Warning! Are you sure you want to delete this OQRS request?',
+		type: BootstrapDialog.TYPE_DANGER,
+		closable: true,
+		draggable: true,
+		btnOKClass: 'btn-danger',
+		callback: function (result) {
+			$.ajax({
+                url: base_url+'index.php/oqrs/delete_oqrs_line',
+                type: 'post',
+                data: { 'id': id,
+                },
+                success: function (data) {
+                    $(".oqrsid_"+id).remove();
+                }
+            });
+		}
+	});
 }

@@ -80,4 +80,43 @@ class Oqrs_model extends CI_Model {
 
 		return $results;
 	}
+
+	function getOqrsRequests($location_list) {
+        $sql = 'select * from oqrs join station_profile on oqrs.station_id = station_profile.station_id where oqrs.station_id in (' . $location_list . ') and oqrs.status = 0';
+
+        $query = $this->db->query($sql);
+
+        return $query->result();
+	}
+
+	function save_oqrs_request($postdata) {
+		$qsos = $postdata['qsos'];
+		foreach($qsos as $qso) {
+			$data = array(
+				'date' 				=> xss_clean($qso[1]),
+				'time'	 			=> xss_clean($qso[2]),
+				'band' 				=> xss_clean($qso[3]),
+				'mode' 				=> xss_clean($qso[4]),
+				'requestcallsign' 	=> xss_clean($postdata['callsign']),
+				'station_id' 		=> xss_clean($postdata['station_id']),
+				'matchtime' 		=> '',
+				'matchdate' 		=> '',
+				'note' 				=> xss_clean($postdata['message']),
+				'email' 			=> xss_clean($postdata['email']),
+				'type' 				=> '1',
+				'qslroute' 			=> '',
+				'status' 			=> '',
+			);
+	
+			$this->db->insert('oqrs', $data);
+		}
+	}
+
+	function delete_oqrs_line($id) {
+        $sql = 'delete from oqrs where id =' . xss_clean($id);
+
+        $query = $this->db->query($sql);
+
+        return true;
+	}
 }
