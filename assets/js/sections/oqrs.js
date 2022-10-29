@@ -159,3 +159,30 @@ function deleteOqrsLine(id) {
 		}
 	});
 }
+
+function searchLog(callsign) {
+    $.ajax({
+        url: base_url + 'index.php/oqrs/search_log',
+        type: 'post',
+        data: {'callsign': callsign,
+        },
+        success: function(html) {
+            BootstrapDialog.show({
+                title: 'QSO List',
+                size: BootstrapDialog.SIZE_WIDE,
+                cssClass: 'qso-dialog',
+                nl2br: false,
+                message: html,
+                onshown: function(dialog) {
+                    $('[data-toggle="tooltip"]').tooltip();
+                },
+                buttons: [{
+                    label: 'Close',
+                    action: function (dialogItself) {
+                        dialogItself.close();
+                    }
+                }]
+            });
+        }
+    });
+}

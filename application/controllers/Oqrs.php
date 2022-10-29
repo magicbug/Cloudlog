@@ -104,4 +104,13 @@ class Oqrs extends CI_Controller {
 		$this->load->model('oqrs_model');
 		$this->oqrs_model->delete_oqrs_line($id);
 	}
+
+	public function search_log() {
+		$this->load->model('oqrs_model');
+		$callsign = $this->input->post('callsign');
+
+        $data['qsos'] = $this->oqrs_model->search_log($this->security->xss_clean($callsign));
+
+		$this->load->view('qslprint/qsolist', $data);
+	}
 }

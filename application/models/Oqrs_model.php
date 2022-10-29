@@ -142,4 +142,15 @@ class Oqrs_model extends CI_Model {
 			$this->db->insert('oqrs', $data);
 		}
 	}
+
+	function search_log($callsign) {
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		// always filter user. this ensures that no inaccesible QSOs will be returned
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+		$this->db->where('COL_CALL like "%'.$callsign.'%"');
+		$this->db->order_by("COL_TIME_ON", "ASC");
+		$query = $this->db->get($this->config->item('table_name'));
+
+		return $query;
+	}
 }
