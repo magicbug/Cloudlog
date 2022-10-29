@@ -119,4 +119,27 @@ class Oqrs_model extends CI_Model {
 
         return true;
 	}
+
+	function save_not_in_log($postdata) {
+		$qsos = $postdata['qsos'];
+		foreach($qsos as $qso) {
+			$data = array(
+				'date' 				=> xss_clean($qso[1]),
+				'time'	 			=> xss_clean($qso[2]),
+				'band' 				=> xss_clean($qso[3]),
+				'mode' 				=> xss_clean($qso[4]),
+				'requestcallsign' 	=> xss_clean($postdata['callsign']),
+				'station_id' 		=> xss_clean($postdata['station_id']),
+				'matchtime' 		=> '',
+				'matchdate' 		=> '',
+				'note' 				=> xss_clean($postdata['message']),
+				'email' 			=> xss_clean($postdata['email']),
+				'type' 				=> '2',
+				'qslroute' 			=> '',
+				'status' 			=> '',
+			);
+	
+			$this->db->insert('oqrs', $data);
+		}
+	}
 }

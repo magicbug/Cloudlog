@@ -15,10 +15,10 @@ checked.<br />
     <tbody>
         <tr>
             <td>1</td>
-            <td><input class="form-control" type="date" name="date1" value="" id="date_1" placeholder="YYYY-MM-DD"></td>
-            <td><input class="form-control" type="text" name="time1" value="" id="time_1" maxlength="5" placeholder="HH:MM"></td>
-			<td><input class="form-control" type="text" name="band1" value="" id="band_1"></td>
-            <td><input class="form-control" type="text" name="mode1" value="" id="mode_1"></td>
+            <td><input class="form-control" type="date" name="date" value="" id="date" placeholder="YYYY-MM-DD"></td>
+            <td><input class="form-control" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM"></td>
+			<td><input class="form-control" type="text" name="band" value="" id="band"></td>
+            <td><input class="form-control" type="text" name="mode" value="" id="mode"></td>
         </tr>
     </tbody>
 </table>

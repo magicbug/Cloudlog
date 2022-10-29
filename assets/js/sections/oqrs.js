@@ -40,26 +40,34 @@ function notInLog() {
 }
 
 function saveNotInLogRequest() {
-    $(".alert").remove();
-    $.ajax({
-        url: base_url + 'index.php/oqrs/save_not_in_log',
-        type: 'post',
-        success: function(html) {
-            BootstrapDialog.show({
-                title: 'Not in log query sent',
-                size: BootstrapDialog.SIZE_NORMAL,
-                cssClass: 'queries-dialog',
-                nl2br: false,
-                message: html,
-                buttons: [{
-                    label: 'Close',
-                    action: function(dialogItself) {
-                        dialogItself.close();
-                    }
-                }]
-            });
-        }
-    });
+    var $qsos = [];
+    $(".notinlog-table tbody tr").each(function(i) {
+         var $data = [];
+         var x = $(this);
+         var cells = x.find('td');
+         $(cells).each(function(i) {
+             $j = 0;
+             var $d = $("#date", this).val() || $("#time", this).val()||$("#band", this).val()||$("#mode", this).val();
+             $data.push($d);
+         });
+         $qsos.push($data);
+     });
+ 
+     $.ajax({
+         url: base_url+'index.php/oqrs/save_not_in_log',
+         type: 'post',
+         data: { 'station_id': $("#station").val(), 
+                 'callsign': $("#oqrssearch").val(),
+                 'email': $("#emailInput").val(),
+                 'message': $("#messageInput").val(),
+                 'qsos': $qsos
+         },
+         success: function (data) {
+            $(".stationinfo").empty();
+            $(".searchinfo").empty();
+            $(".stationinfo").append('<br /><div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your not in log query has been saved!</div>');
+         }
+     });
 }
 
 function oqrsAddLine() {
