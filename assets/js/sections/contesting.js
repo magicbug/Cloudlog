@@ -189,6 +189,8 @@ $("#callsign").keyup(function () {
 			highlight(call.toUpperCase());
 		});
 		checkIfWorkedBefore();
+		var qTable = $('.qsotable').DataTable();
+		qTable.search(call).draw();
 	}
 	else if (call.length <= 2) {
 		$('.callsign-suggestions').text("");
@@ -226,6 +228,9 @@ function reset_log_fields() {
 	$("#callsign").focus();
 	setRst($("#mode").val());
 	$('#callsign_info').text("");
+
+	var qTable = $('.qsotable').DataTable();
+	qTable.search('').draw();
 }
 
 RegExp.escape = function (text) {
@@ -396,6 +401,9 @@ function logQso() {
 				localStorage.setItem("gridsquarereceived", $("#exch_gridsquare_r").val());
 				localStorage.setItem("gridsquaresent", $("#exch_gridsquare_s").val());
 				localStorage.setItem("copytodok", $('#copyexchangetodok').is(":checked"));
+
+				var qTable = $('.qsotable').DataTable();
+				qTable.search('').draw();
 			}
 		});
 	}
