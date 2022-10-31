@@ -855,7 +855,7 @@ function getLookupResult() {
 <?php } ?>
 
 
-<?php if ($this->uri->segment(1) == "search") { ?>
+
 <script type="text/javascript">
   $(function () {
      $('[data-toggle="tooltip"]').tooltip()
@@ -892,6 +892,8 @@ function getLookupResult() {
     });
   });
 </script>
+
+<?php if ($this->uri->segment(1) == "search") { ?>
 <script type="text/javascript">
 i=0;
 
