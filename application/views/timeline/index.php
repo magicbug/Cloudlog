@@ -68,6 +68,24 @@
             </div>
         </div>
 
+        <div class="form-group row">
+                <div class="col-md-1 control-label">Confirmation</div>
+                <div class="col-md-10">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="qsl" value="1" id="qsl" <?php if ($this->input->post('qsl'))  echo ' checked="checked"'; ?> >
+                        <label class="form-check-label" for="qsl">QSL</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="lotw" value="1" id="lotw" <?php if ($this->input->post('lotw')) echo ' checked="checked"'; ?> >
+                        <label class="form-check-label" for="lotw">LoTW</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="eqsl" value="1" id="eqsl" <?php if ($this->input->post('eqsl')) echo ' checked="checked"'; ?> >
+                        <label class="form-check-label" for="eqsl">eQSL</label>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group row">
                 <label class="col-md-1 control-label" for="button1id"></label>
                 <div class="col-md-10">
