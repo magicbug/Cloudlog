@@ -15,11 +15,11 @@
 	        <a class="nav-link" href="<?php echo site_url('search/filter'); ?>">Advanced Search</a>
 	      </li>
 		  <li class="nav-item">
-	        <a class="nav-link active" href="<?php echo site_url('search/duplicates'); ?>">Duplicate QSOs</a>
+	        <a class="nav-link" href="<?php echo site_url('search/duplicates'); ?>">Duplicate QSOs</a>
 	      </li>
 		  </li>
 		  <li class="nav-item">
-	        <a class="nav-link" href="<?php echo site_url('search/incorrect_cq_zones'); ?>">Incorrect CQ Zones</a>
+	        <a class="nav-link active" href="<?php echo site_url('search/incorrect_cq_zones'); ?>">Incorrect CQ Zones</a>
 	      </li>
 	    </ul>
 	  </div>
@@ -34,7 +34,7 @@
                     <?php } ?>
                     </select>
 		    <div class="col-sm-2">
-		    	<button onclick="findduplicates();" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Search</button>
+		    	<button onclick="findincorrectcqzones();" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Search</button>
 		    </div>
 		  </div>
 		</form>

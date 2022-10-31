@@ -17,6 +17,9 @@
 		  <li class="nav-item">
 	        <a class="nav-link" href="<?php echo site_url('search/duplicates'); ?>">Duplicate QSOs</a>
 	      </li>
+		  <li class="nav-item">
+	        <a class="nav-link" href="<?php echo site_url('search/incorrect_cq_zones'); ?>">Incorrect CQ Zones</a>
+	      </li>
 	    </ul>
 	  </div>
 	  <div class="card-body">

@@ -731,6 +731,39 @@ class Logbook extends CI_Controller {
 		$this->load->view('search/duplicates_result.php', $data);
 	}
 
+	function search_incorrect_cq_zones($station_id) {
+		$station_id = $this->security->xss_clean($station_id);
+
+		$this->load->model('user_model');
+
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+		
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		
+		if (!$logbooks_locations_array) {
+			return null;
+		}
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+
+		$sql = 'select * from ' . $this->config->item('table_name') . 
+		' thcv join station_profile on thcv.station_id = station_profile.station_id where thcv.station_id in ('. $location_list . ')
+		and not exists (select 1 from dxcc_master where countrycode = thcv.col_dxcc and cqzone = col_cqz)
+		'; 
+		
+		if ($station_id != 'All') {
+			$sql .= ' and station_profile.station_id = ' . $station_id;
+		}
+		
+		$query = $this->db->query($sql);
+
+		$data['qsos'] = $query;
+
+		$this->load->view('search/cqzones_result.php', $data);
+	}
+
 	/*
 	 * Provide a dxcc search, returning results json encoded
 	 */
