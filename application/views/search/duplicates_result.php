@@ -25,10 +25,11 @@ if ($qsos->result() != NULL) {
 		$custom_date_format = $this->config->item('qso_date_format');
 	}
 
+	$i = 0;
 	foreach ($qsos->result() as $qso) {
 		echo '<tr>';
 		echo '<td style=\'text-align: center\'>' . $qso->occurence . '</td>';
-		echo '<td style=\'text-align: center\'><form id="searchcall" method="POST" action="'.site_url('search'). '"><input type="hidden" value="'. strtoupper($qso->COL_CALL) .'" name="callsign"><a href="javascript:$(\'#searchcall\').submit()">' . $qso->COL_CALL . '</a></form></td>';
+		echo '<td style=\'text-align: center\'><form id="searchcall_'.$i.'" method="POST" action="'.site_url('search'). '"><input type="hidden" value="'. strtoupper($qso->COL_CALL) .'" name="callsign"><a href="javascript:$(\'#searchcall_'.$i++.'\').submit()">' . $qso->COL_CALL . '</a></form></td>';
 		echo '<td style=\'text-align: center\'>'; $timestamp = strtotime($qso->Mintime); echo date($custom_date_format, $timestamp); echo '</td>';
 		echo '<td style=\'text-align: center\'>'; $timestamp = strtotime($qso->Mintime); echo date('H:i', $timestamp); echo '</td>';
 		echo '<td style=\'text-align: center\'>'; $timestamp = strtotime($qso->Maxtime); echo date($custom_date_format, $timestamp); echo '</td>';
