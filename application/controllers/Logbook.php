@@ -748,9 +748,9 @@ class Logbook extends CI_Controller {
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
-		$sql = 'select * from ' . $this->config->item('table_name') . 
+		$sql = 'select *, (select group_concat(distinct cqzone order by cqzone) from dxcc_master where countrycode = thcv.col_dxcc and cqzone <> \'\' order by cqzone asc) as correctcqzone from ' . $this->config->item('table_name') . 
 		' thcv join station_profile on thcv.station_id = station_profile.station_id where thcv.station_id in ('. $location_list . ')
-		and not exists (select 1 from dxcc_master where countrycode = thcv.col_dxcc and cqzone = col_cqz)
+		and not exists (select 1 from dxcc_master where countrycode = thcv.col_dxcc and cqzone = col_cqz) and col_dxcc > 0
 		'; 
 		
 		if ($station_id != 'All') {
