@@ -29,6 +29,20 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
 </table>
 <br />
 <form>
+    <div class="form-check form-check-inline">
+        <label class="form-check-label">QSL Route</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="qslroute" id="bureau" value="Bureau" checked/>
+        <label class="form-check-label" for="bureau">Bureau</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="qslroute" id="direct" value="Direct" />
+        <label class="form-check-label" for="direct">Direct (write address in message below)</label>
+    </div>
+    <br /><br />
     <div class="form-group">
         <label for="message">Message</label>
         <textarea name="message" class="form-control" id="messageInput" rows="3" aria-describedby="messageHelp"></textarea>

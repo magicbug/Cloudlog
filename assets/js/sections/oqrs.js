@@ -128,7 +128,8 @@ function submitOqrsRequest() {
                 'callsign': $("#oqrssearch").val(),
                 'email': $("#emailInput").val(),
                 'message': $("#messageInput").val(),
-                'qsos': $qsos
+                'qsos': $qsos,
+                'qslroute': $('input[name="qslroute"]:checked').val()
         },
         success: function (data) {
             $(".stationinfo").empty();

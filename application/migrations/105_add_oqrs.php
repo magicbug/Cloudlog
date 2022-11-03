@@ -60,20 +60,11 @@ class Migration_add_oqrs extends CI_Migration {
 				'station_id' => array(
                     'type' => 'int',
                 ),
-				'matchtime' => array(
-                    'type' => 'int',
-                ),
-				'matchdate' => array(
-                    'type' => 'int',
-                ),
 				'note' => array(
                     'type' => 'TEXT',
                 ),
 				'email' => array(
                     'type' => 'TEXT',
-                ),
-				'type' => array(
-                    'type' => 'int',
                 ),
 				'qslroute' => array(
                     'type' => 'VARCHAR',

@@ -82,7 +82,7 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function getOqrsRequests($location_list) {
-        $sql = 'select * from oqrs join station_profile on oqrs.station_id = station_profile.station_id where oqrs.station_id in (' . $location_list . ') and oqrs.status = 0';
+        $sql = 'select * from oqrs join station_profile on oqrs.station_id = station_profile.station_id where oqrs.station_id in (' . $location_list . ') and oqrs.status < 2';
 
         $query = $this->db->query($sql);
 
@@ -99,14 +99,15 @@ class Oqrs_model extends CI_Model {
 				'mode' 				=> xss_clean($qso[4]),
 				'requestcallsign' 	=> xss_clean($postdata['callsign']),
 				'station_id' 		=> xss_clean($postdata['station_id']),
-				'matchtime' 		=> '',
-				'matchdate' 		=> '',
 				'note' 				=> xss_clean($postdata['message']),
 				'email' 			=> xss_clean($postdata['email']),
-				'type' 				=> '1',
-				'qslroute' 			=> '',
-				'status' 			=> '',
+				'qslroute' 			=> xss_clean($postdata['qslroute']),
+				'status' 			=> '0',
 			);
+
+			if ($this->check_oqrs($data)) {
+				$data['status'] = '2';
+			}
 	
 			$this->db->insert('oqrs', $data);
 		}
@@ -120,6 +121,11 @@ class Oqrs_model extends CI_Model {
         return true;
 	}
 
+
+	// Status:
+	// 0 = open request
+	// 1 = not in log request
+	// 2 = request done, means we found a match in the log
 	function save_not_in_log($postdata) {
 		$qsos = $postdata['qsos'];
 		foreach($qsos as $qso) {
@@ -130,17 +136,46 @@ class Oqrs_model extends CI_Model {
 				'mode' 				=> xss_clean($qso[4]),
 				'requestcallsign' 	=> xss_clean($postdata['callsign']),
 				'station_id' 		=> xss_clean($postdata['station_id']),
-				'matchtime' 		=> '',
-				'matchdate' 		=> '',
 				'note' 				=> xss_clean($postdata['message']),
 				'email' 			=> xss_clean($postdata['email']),
-				'type' 				=> '2',
 				'qslroute' 			=> '',
-				'status' 			=> '',
+				'status' 			=> '1',
 			);
-	
+
 			$this->db->insert('oqrs', $data);
 		}
+	}
+
+	// Need to check if this is enabled, and settings are set, then send
+	function send_email_alert() {
+
+	}
+
+	function check_oqrs($qsodata) {
+		$sql = 'select * from ' . $this->config->item('table_name') . 
+		' where col_band = \'' . $qsodata['band'] . '\'
+		 and col_call = \'' . $qsodata['requestcallsign'] . '\'
+		 and date(col_time_on) = \'' . $qsodata['date'] . '\'
+		 and (col_mode = \'' . $qsodata['mode'] . '\'
+		 or col_submode = \'' . $qsodata['mode'] . '\')
+		 and timediff(time(col_time_on), \'' . $qsodata['time'] . '\') <= 3000
+		 and station_id = ' . $qsodata['station_id'];
+		
+		$query = $this->db->query($sql);
+
+		if ($query->result()) {
+			//update log to set qsl as requested
+			$sql = 'update ' . $this->config->item('table_name');
+			if ($qsodata['qslroute'] == 'Bureau') {
+				$sql .= '';
+			}
+			if ($qsodata['qslroute'] == 'Direct') {
+				$sql .= '';
+			}
+			return true;
+		}
+
+		return false;
 	}
 
 	function search_log($callsign) {

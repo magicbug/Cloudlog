@@ -91,8 +91,6 @@ function insert_qso_data($qso) {
 			<td>' . $qso->time . '</td>
 			<td>' . $qso->band . '</td>
 			<td>' . $qso->mode . '</td>
-			<td></td>
-			<td></td>
 			<td><button class="btn btn-primary btn-sm" type="button" onclick="searchLog(\''. $qso->requestcallsign .'\');"><i class="fas fa-search"></i></button></td>
 			<td><a href="" class="btn btn-danger btn-sm" onclick=""><i class="fas fa-plus-square"></i></a></td>
 			<td><a href="javascript:deleteOqrsLine('. $qso->id .');" class="btn btn-danger btn-sm" onclick=""><i class="fas fa-trash-alt"></i></a></td>
@@ -109,8 +107,6 @@ function write_table_header() {
 		<th>Time (UTC)</th>
 		<th>Band</th>
 		<th>Mode</th>
-		<th>Date ok?</th>
-		<th>Time ok?</th>
 		<th>Check log</th>
 		<th>Add QSL</th>
 		<th>Delete</th>
