@@ -113,4 +113,16 @@ class Oqrs extends CI_Controller {
 
 		$this->load->view('qslprint/qsolist', $data);
 	}
+
+	public function search_log_time_date() {
+		$this->load->model('oqrs_model');
+		$time = $this->security->xss_clean($this->input->post('time'));
+		$date = $this->security->xss_clean($this->input->post('date'));
+		$mode = $this->security->xss_clean($this->input->post('mode'));
+		$band = $this->security->xss_clean($this->input->post('band'));
+
+        $data['qsos'] = $this->oqrs_model->search_log_time_date($time, $date, $band, $mode);
+
+		$this->load->view('qslprint/qsolist', $data);
+	}
 }

@@ -187,3 +187,33 @@ function searchLog(callsign) {
         }
     });
 }
+
+function searchLogTimeDate(id) {
+    $.ajax({
+        url: base_url + 'index.php/oqrs/search_log_time_date',
+        type: 'post',
+        data: {'time': $('.oqrsid_'+id+ ' td:nth-child(2)').text(),
+            'date': $('.oqrsid_'+id+ ' td:nth-child(1)').text(),
+            'band': $('.oqrsid_'+id+ ' td:nth-child(3)').text(),
+            'mode': $('.oqrsid_'+id+ ' td:nth-child(4)').text()
+        },
+        success: function(html) {
+            BootstrapDialog.show({
+                title: 'QSO List',
+                size: BootstrapDialog.SIZE_WIDE,
+                cssClass: 'qso-dialog',
+                nl2br: false,
+                message: html,
+                onshown: function(dialog) {
+                    $('[data-toggle="tooltip"]').tooltip();
+                },
+                buttons: [{
+                    label: 'Close',
+                    action: function (dialogItself) {
+                        dialogItself.close();
+                    }
+                }]
+            });
+        }
+    });
+}

@@ -188,4 +188,16 @@ class Oqrs_model extends CI_Model {
 
 		return $query;
 	}
+
+	function search_log_time_date($time, $date, $band, $mode) {
+		$sql = 'select * from ' . $this->config->item('table_name') . ' thcv
+		 join station_profile on thcv.station_id = station_profile.station_id where col_band = \'' . $band . '\'
+		 and date(col_time_on) = \'' . $date . '\'
+		 and (col_mode = \'' . $mode . '\'
+		 or col_submode = \'' . $mode . '\')
+		 and timediff(time(col_time_on), \'' . $time . '\') <= 3000
+		 and station_profile.user_id = '. $this->session->userdata('user_id');
+
+		return $this->db->query($sql);;
+	}
 }
