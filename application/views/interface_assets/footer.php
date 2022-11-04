@@ -855,7 +855,7 @@ function getLookupResult() {
 <?php } ?>
 
 
-<?php if ($this->uri->segment(1) == "search") { ?>
+
 <script type="text/javascript">
   $(function () {
      $('[data-toggle="tooltip"]').tooltip()
@@ -892,8 +892,33 @@ function getLookupResult() {
     });
   });
 </script>
+
+<?php if ($this->uri->segment(1) == "search") { ?>
 <script type="text/javascript">
 i=0;
+
+function findduplicates(){
+    event.preventDefault();
+    $('#partial_view').load(base_url+"index.php/logbook/search_duplicates/"+$("#station_id").val(), function() {
+        $('.qsolist').DataTable({
+            "pageLength": 25,
+            responsive: false,
+            ordering: false,
+            "scrollY":        "500px",
+            "scrollCollapse": true,
+            "paging":         false,
+            "scrollX": true,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv'
+            ]
+        });
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
+            $(".buttons-csv").css("color", "white");
+        }
+    });
+}
 
 function searchButtonPress(){
     event.preventDefault()

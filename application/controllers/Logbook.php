@@ -711,6 +711,40 @@ class Logbook extends CI_Controller {
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', 'desc');
 		return $this->db->get();
+  }
+
+	function search_duplicates($station_id) {
+		$station_id = $this->security->xss_clean($station_id);
+
+		$this->load->model('user_model');
+
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+		
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		
+		if (!$logbooks_locations_array) {
+			return null;
+		}
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		
+		$sql = 'select count(*) as occurence, COL_CALL, COL_MODE, COL_SUBMODE, station_callsign, COL_SAT_NAME, COL_BAND,  min(col_time_on) Mintime, max(col_time_on) Maxtime from ' . $this->config->item('table_name') . 
+		' join station_profile on ' . $this->config->item('table_name') . '.station_id = station_profile.station_id where ' . $this->config->item('table_name') .'.station_id in ('. $location_list . ')'; 
+		
+		if ($station_id != 'All') {
+			$sql .= ' and station_profile.station_id = ' . $station_id;
+		}
+		
+		$sql .= ' group by col_call, col_mode, COL_SUBMODE, STATION_CALLSIGN, col_band, COL_SAT_NAME having count(*) > 1 and timediff(maxtime, mintime) < 3000';
+
+		$query = $this->db->query($sql);
+
+		$data['qsos'] = $query;
+
+		$this->load->view('search/duplicates_result.php', $data);
+
 	}
 
 	/*
