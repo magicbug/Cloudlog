@@ -642,13 +642,65 @@ class Logbook extends CI_Controller {
 		}
 	}
 
-	function search_result($id="") {
+	function search_result($id="", $id2="") {
 		$this->load->model('user_model');
-
+		
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+		
+		$fixedid = $id;
 
-		//$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_NAME, '.$this->config->item('table_name').'.COL_COUNTRY, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
+		if ($id2 != "") {
+			$fixedid = $id . '/' . $id2;
+		}
 
+		$query = $this->querydb($fixedid);
+
+		if ($query->num_rows() == 0) {
+			$query = $this->querydb($id);
+			
+			if ($query->num_rows() > 0) {
+				$data['results'] = $query;
+				$this->load->view('view_log/partial/log_ajax.php', $data);
+			}
+			else {
+				$this->load->model('search');
+
+				$iota_search = $this->search->callsign_iota($id);
+
+				if ($iota_search->num_rows() > 0)
+				{
+					$data['results'] = $iota_search;
+					$this->load->view('view_log/partial/log_ajax.php', $data);
+				} else {
+					if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
+						// Lookup using QRZ
+						$this->load->library('qrz');
+
+						if(!$this->session->userdata('qrz_session_key')) {
+							$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+							$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+						}
+
+						$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+					} /*else {
+						// Lookup using hamli
+						$this->load->library('hamli');
+
+						$data['callsign'] = $this->hamli->callsign($id);
+					}*/
+
+					$data['id'] = strtoupper($id);
+
+					$this->load->view('search/result', $data);
+				}
+			}
+		} else {
+			$data['results'] = $query;
+			$this->load->view('view_log/partial/log_ajax.php', $data);
+		}
+	}
+
+	function querydb($id) {
 		$this->db->from($this->config->item('table_name'));
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->group_start();
@@ -658,45 +710,8 @@ class Logbook extends CI_Controller {
 		$this->db->group_end();
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', 'desc');
-		$query = $this->db->get();
-
-		if ($query->num_rows() > 0)
-		{
-			$data['results'] = $query;
-			$this->load->view('view_log/partial/log_ajax.php', $data);
-		} else {
-			$this->load->model('search');
-
-			$iota_search = $this->search->callsign_iota($id);
-
-			if ($iota_search->num_rows() > 0)
-			{
-				$data['results'] = $iota_search;
-				$this->load->view('view_log/partial/log_ajax.php', $data);
-			} else {
-				if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
-					// Lookup using QRZ
-					$this->load->library('qrz');
-
-					if(!$this->session->userdata('qrz_session_key')) {
-						$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
-						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
-					}
-
-					$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
-				} /*else {
-					// Lookup using hamli
-					$this->load->library('hamli');
-
-					$data['callsign'] = $this->hamli->callsign($id);
-				}*/
-
-				$data['id'] = strtoupper($id);
-
-				$this->load->view('search/result', $data);
-			}
-		}
-	}
+		return $this->db->get();
+  }
 
 	function search_duplicates($station_id) {
 		$station_id = $this->security->xss_clean($station_id);
@@ -729,6 +744,7 @@ class Logbook extends CI_Controller {
 		$data['qsos'] = $query;
 
 		$this->load->view('search/duplicates_result.php', $data);
+
 	}
 
 	/*
