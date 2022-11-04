@@ -59,6 +59,7 @@ class Oqrs extends CI_Controller {
 		$postdata = $this->input->post();
 		$this->load->model('oqrs_model');
 		$this->oqrs_model->save_not_in_log($postdata);
+		$this->alert_oqrs_request();
 	}
 
 	/*
@@ -97,6 +98,7 @@ class Oqrs extends CI_Controller {
 		$postdata = $this->input->post();
 		$this->load->model('oqrs_model');
 		$this->oqrs_model->save_oqrs_request($postdata);
+		$this->alert_oqrs_request();
 	}
 
 	public function delete_oqrs_line() {
@@ -124,5 +126,47 @@ class Oqrs extends CI_Controller {
         $data['qsos'] = $this->oqrs_model->search_log_time_date($time, $date, $band, $mode);
 
 		$this->load->view('qslprint/qsolist', $data);
+	}
+
+	public function alert_oqrs_request() {
+		$this->load->model('user_model');
+					
+		$email = $this->user_model->get_email_address($this->session->userdata('user_id'));
+
+		if($email != "") {
+						
+			$this->load->library('email');
+
+			if($this->optionslib->get_option('emailProtocol') == "smtp") {
+				$config = Array(
+					'protocol' => $this->optionslib->get_option('emailProtocol'),
+					'smtp_host' => $this->optionslib->get_option('smtpHost'),
+					'smtp_port' => $this->optionslib->get_option('smtpPort'),
+					'smtp_user' => $this->optionslib->get_option('smtpUsername'),
+					'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
+					'crlf' => "\r\n",
+					'newline' => "\r\n"
+				);
+
+				$this->email->initialize($config);
+			}
+
+			$data = array();
+
+			$message = $this->load->view('email/oqrs_request', $data,  TRUE);
+
+			$this->email->from('noreply@cloudlog.co.uk', 'Cloudlog');
+			$this->email->to($email);
+
+			$this->email->subject('Cloudlog OQRS');
+			$this->email->message($message);
+
+			if (! $this->email->send())
+			{
+				$this->session->set_flashdata('warning', 'Email settings are incorrect.');
+			} else {
+				$this->session->set_flashdata('notice', 'Password Reset Processed.');
+			}
+		}
 	}
 }

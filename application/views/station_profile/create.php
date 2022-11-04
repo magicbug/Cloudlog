@@ -243,6 +243,14 @@
 				</select>
 			</div>
 			<div class="form-group">
+						<label for="oqrs">OQRS Email alert</label>
+						<select class="custom-select" id="oqrsemail" name="oqrsemail">
+						<option value="0">No</option>
+						<option value="1">Yes</option>
+						</select>
+						<small id="oqrsemailHelp" class="form-text text-muted">Make sure email is set up under admin and global options.</small>
+					</div>
+			<div class="form-group">
 				<label for="oqrstext">OQRS Text</label>
 				<input type="text" class="form-control" name="oqrstext" id="oqrstext" aria-describedby="oqrstextHelp">
 				<small id="oqrstextHelp" class="form-text text-muted">Some info you want to add regarding QSL'ing.</small>

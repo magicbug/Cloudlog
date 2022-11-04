@@ -78,6 +78,7 @@ class Stations extends CI_Model {
             'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
             'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
 			'oqrs' => xss_clean($this->input->post('oqrs', true)),
+			'oqrs_email' => xss_clean($this->input->post('oqrsemail', true)),
 			'oqrs_text' => xss_clean($this->input->post('oqrstext', true)),
 		);
 
@@ -106,6 +107,7 @@ class Stations extends CI_Model {
             'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
             'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
 			'oqrs' => xss_clean($this->input->post('oqrs', true)),
+			'oqrs_email' => xss_clean($this->input->post('oqrsemail', true)),
 			'oqrs_text' => xss_clean($this->input->post('oqrstext', true)),
 		);
 

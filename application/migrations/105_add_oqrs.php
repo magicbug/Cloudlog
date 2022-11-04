@@ -27,6 +27,14 @@ class Migration_add_oqrs extends CI_Migration {
 			$this->dbforge->add_column('station_profile', $fields);
 		}
 
+        if (!$this->db->field_exists('oqrs_email', 'station_profile')) {
+			$fields = array(
+				'oqrs_email int DEFAULT 0',
+			);
+
+			$this->dbforge->add_column('station_profile', $fields);
+		}
+
 		if (!$this->db->table_exists('oqrs')) {
             $this->dbforge->add_field(array(
                 'id' => array(
@@ -88,6 +96,10 @@ class Migration_add_oqrs extends CI_Migration {
 		}
 		if ($this->db->field_exists('oqrs_text', 'station_profile')) {
 			$this->dbforge->drop_column('station_profile', 'oqrs_text');
+		}
+
+        if ($this->db->field_exists('oqrs_email', 'station_profile')) {
+			$this->dbforge->drop_column('station_profile', 'oqrs_email');
 		}
 
 		$this->dbforge->drop_table('oqrs');
