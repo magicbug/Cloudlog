@@ -40,34 +40,45 @@ function notInLog() {
 }
 
 function saveNotInLogRequest() {
-    var $qsos = [];
-    $(".notinlog-table tbody tr").each(function(i) {
-         var $data = [];
-         var x = $(this);
-         var cells = x.find('td');
-         $(cells).each(function(i) {
-             $j = 0;
-             var $d = $("#date", this).val() || $("#time", this).val()||$("#band", this).val()||$("#mode", this).val();
-             $data.push($d);
-         });
-         $qsos.push($data);
-     });
- 
-     $.ajax({
-         url: base_url+'index.php/oqrs/save_not_in_log',
-         type: 'post',
-         data: { 'station_id': $("#station").val(), 
-                 'callsign': $("#oqrssearch").val(),
-                 'email': $("#emailInput").val(),
-                 'message': $("#messageInput").val(),
-                 'qsos': $qsos
-         },
-         success: function (data) {
-            $(".stationinfo").empty();
-            $(".searchinfo").empty();
-            $(".stationinfo").append('<br /><div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your not in log query has been saved!</div>');
-         }
-     });
+    $(".alertinfo").remove();
+    if ($("#emailInput").val() == '') {
+        $(".searchinfo").prepend('<div class="alertinfo"><br /><div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You need to fill out an email address!</div></div>');
+    } else {
+        const qsos = [];
+        $(".notinlog-table tbody tr").each(function(i) {
+            var data = [];
+            var datecell = $("#date", this).val();
+            var timecell = $("#time", this).val();
+            var bandcell = $("#band", this).val();
+            var modecell = $("#mode", this).val();
+            if (datecell != "" && timecell != "" && bandcell != "" && modecell != "") {
+                data.push(datecell);
+                data.push(timecell);
+                data.push(bandcell);
+                data.push(modecell);
+                qsos.push(data);
+            }
+        });
+        if (qsos.length === 0) {
+            $(".searchinfo").prepend('<div class="alertinfo"><br /><div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You need to fill the QSO information before submitting a request!</div></div>');
+        } else {
+            $.ajax({
+                url: base_url+'index.php/oqrs/save_not_in_log',
+                type: 'post',
+                data: { 'station_id': $("#station").val(), 
+                        'callsign': $("#oqrssearch").val(),
+                        'email': $("#emailInput").val(),
+                        'message': $("#messageInput").val(),
+                        'qsos': qsos
+                },
+                success: function (data) {
+                    $(".stationinfo").empty();
+                    $(".searchinfo").empty();
+                    $(".stationinfo").append('<br /><div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your not in log query has been saved!</div>');
+                }
+            });
+        }
+    }
 }
 
 function oqrsAddLine() {
@@ -108,35 +119,47 @@ function requestOqrs() {
 }
 
 function submitOqrsRequest() {
-   var $qsos = [];
-   $(".result-table tbody tr").each(function(i) {
-        var $data = [];
-        var x = $(this);
-        var cells = x.find('td');
-        $(cells).each(function(i) {
-            $j = 0;
-            var $d = $("#date", this).val() || $("#time", this).val()||$(this).text();
-            $data.push($d);
+    $(".alertinfo").remove();
+    if ($("#emailInput").val() == '') {
+        $(".searchinfo").prepend('<div class="alertinfo"><br /><div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You need to fill out an email address!</div></div>');
+    } else {
+        const qsos = [];
+        $(".result-table tbody tr").each(function(i) {
+            var data = [];
+            var datecell = $("#date", this).val();
+            var timecell = $("#time", this).val();
+            var bandcell = $("#band", this).text();
+            var modecell = $("#mode", this).text();
+            if (datecell != "" && timecell != "") {
+                data.push(datecell);
+                data.push(timecell);
+                data.push(bandcell);
+                data.push(modecell);
+                qsos.push(data);
+            }
         });
-        $qsos.push($data);
-    });
 
-    $.ajax({
-        url: base_url+'index.php/oqrs/save_oqrs_request',
-        type: 'post',
-        data: { 'station_id': $("#station").val(), 
-                'callsign': $("#oqrssearch").val(),
-                'email': $("#emailInput").val(),
-                'message': $("#messageInput").val(),
-                'qsos': $qsos,
-                'qslroute': $('input[name="qslroute"]:checked').val()
-        },
-        success: function (data) {
-            $(".stationinfo").empty();
-            $(".searchinfo").empty();
-            $(".stationinfo").append('<br /><div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your QSL request has been saved!</div>');
+        if (qsos.length === 0) {
+            $(".searchinfo").prepend('<div class="alertinfo"><br /><div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You need to fill the QSO information before submitting a request!</div></div>');
+        } else {
+            $.ajax({
+                url: base_url+'index.php/oqrs/save_oqrs_request',
+                type: 'post',
+                data: { 'station_id': $("#station").val(), 
+                        'callsign': $("#oqrssearch").val(),
+                        'email': $("#emailInput").val(),
+                        'message': $("#messageInput").val(),
+                        'qsos': qsos,
+                        'qslroute': $('input[name="qslroute"]:checked').val()
+                },
+                success: function (data) {
+                    $(".stationinfo").empty();
+                    $(".searchinfo").empty();
+                    $(".stationinfo").append('<br /><div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your QSL request has been saved!</div>');
+                }
+            });
         }
-    });
+    }
 }
 
 function deleteOqrsLine(id) {

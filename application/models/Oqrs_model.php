@@ -93,10 +93,10 @@ class Oqrs_model extends CI_Model {
 		$qsos = $postdata['qsos'];
 		foreach($qsos as $qso) {
 			$data = array(
-				'date' 				=> xss_clean($qso[1]),
-				'time'	 			=> xss_clean($qso[2]),
-				'band' 				=> xss_clean($qso[3]),
-				'mode' 				=> xss_clean($qso[4]),
+				'date' 				=> xss_clean($qso[0]),
+				'time'	 			=> xss_clean($qso[1]),
+				'band' 				=> xss_clean($qso[2]),
+				'mode' 				=> xss_clean($qso[3]),
 				'requestcallsign' 	=> xss_clean($postdata['callsign']),
 				'station_id' 		=> xss_clean($postdata['station_id']),
 				'note' 				=> xss_clean($postdata['message']),
@@ -130,10 +130,10 @@ class Oqrs_model extends CI_Model {
 		$qsos = $postdata['qsos'];
 		foreach($qsos as $qso) {
 			$data = array(
-				'date' 				=> xss_clean($qso[1]),
-				'time'	 			=> xss_clean($qso[2]),
-				'band' 				=> xss_clean($qso[3]),
-				'mode' 				=> xss_clean($qso[4]),
+				'date' 				=> xss_clean($qso[0]),
+				'time'	 			=> xss_clean($qso[1]),
+				'band' 				=> xss_clean($qso[2]),
+				'mode' 				=> xss_clean($qso[3]),
 				'requestcallsign' 	=> xss_clean($postdata['callsign']),
 				'station_id' 		=> xss_clean($postdata['station_id']),
 				'note' 				=> xss_clean($postdata['message']),

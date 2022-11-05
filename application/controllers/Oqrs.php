@@ -59,7 +59,7 @@ class Oqrs extends CI_Controller {
 		$postdata = $this->input->post();
 		$this->load->model('oqrs_model');
 		$this->oqrs_model->save_not_in_log($postdata);
-		$this->alert_oqrs_request();
+		$this->alert_oqrs_request($postdata);
 	}
 
 	/*
