@@ -99,7 +99,7 @@ class Oqrs extends CI_Controller {
 		$postdata = $this->input->post();
 		$this->load->model('oqrs_model');
 		$this->oqrs_model->save_oqrs_request($postdata);
-		$this->alert_oqrs_request();
+		$this->alert_oqrs_request($postdata);
 	}
 
 	public function delete_oqrs_line() {
@@ -129,12 +129,16 @@ class Oqrs extends CI_Controller {
 		$this->load->view('qslprint/qsolist', $data);
 	}
 
-	public function alert_oqrs_request() {
+	public function alert_oqrs_request($postdata) {
 		$this->load->model('user_model');
 					
 		$email = $this->user_model->get_email_address($this->session->userdata('user_id'));
 
-		if($email != "") {
+		$this->load->model('oqrs_model');
+					
+		$sendEmail = $this->oqrs_model->getOqrsEmailSetting($this->security->xss_clean($this->input->post('station_id')));
+
+		if($email != "" && $sendEmail == "1") {
 						
 			$this->load->library('email');
 
@@ -152,18 +156,17 @@ class Oqrs extends CI_Controller {
 				$this->email->initialize($config);
 			}
 
-			$data = array();
+			$data['callsign'] = $this->security->xss_clean($postdata['callsign']);
 
 			$message = $this->load->view('email/oqrs_request', $data,  TRUE);
 
 			$this->email->from('noreply@cloudlog.co.uk', 'Cloudlog');
 			$this->email->to($email);
 
-			$this->email->subject('Cloudlog OQRS');
+			$this->email->subject('Cloudlog OQRS from ' . strtoupper($data['callsign']));
 			$this->email->message($message);
 
-			if (! $this->email->send())
-			{
+			if (! $this->email->send()) {
 				$this->session->set_flashdata('warning', 'Email settings are incorrect.');
 			} else {
 				$this->session->set_flashdata('notice', 'Password Reset Processed.');

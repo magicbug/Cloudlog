@@ -228,4 +228,18 @@ class Oqrs_model extends CI_Model {
 
 		return '';
 	}
+
+	function getOqrsEmailSetting($station_id) {
+		$sql = 'select oqrs_email from station_profile where station_id = ' . $station_id;
+
+		$query = $this->db->query($sql);
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row(); 
+			return $row->oqrs_email;
+		}
+
+		return '';
+	}
 }
