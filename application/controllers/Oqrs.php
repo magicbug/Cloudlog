@@ -69,6 +69,7 @@ class Oqrs extends CI_Controller {
 		$this->load->model('oqrs_model');
 		$data['result'] = $this->oqrs_model->getQueryData($this->input->post('station_id'), $this->input->post('callsign'));
 		$data['callsign'] = $this->security->xss_clean($this->input->post('callsign'));
+		$data['qslinfo'] =  $this->oqrs_model->getQslInfo($this->input->post('station_id'));
 
 		$this->load->view('oqrs/request', $data);
 	}

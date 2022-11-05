@@ -146,11 +146,6 @@ class Oqrs_model extends CI_Model {
 		}
 	}
 
-	// Need to check if this is enabled, and settings are set, then send
-	function send_email_alert() {
-
-	}
-
 	function check_oqrs($qsodata) {
 		$sql = 'select * from ' . $this->config->item('table_name') . 
 		' where col_band = \'' . $qsodata['band'] . '\'
@@ -173,19 +168,19 @@ class Oqrs_model extends CI_Model {
 		return false;
 	}
 
-	  // Set Paper to requested
-	  function paperqsl_requested($qso_id, $method) {
+	// Set Paper to requested
+	function paperqsl_requested($qso_id, $method) {
 
-		$data = array(
-			 'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-			 'COL_QSL_SENT' => 'R',
-			 'COL_QSL_SENT_VIA ' => $method
-		);
-	
-		$this->db->where('COL_PRIMARY_KEY', $qso_id);
-	
-		$this->db->update($this->config->item('table_name'), $data);
-	  }
+	$data = array(
+			'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+			'COL_QSL_SENT' => 'R',
+			'COL_QSL_SENT_VIA ' => $method
+	);
+
+	$this->db->where('COL_PRIMARY_KEY', $qso_id);
+
+	$this->db->update($this->config->item('table_name'), $data);
+	}
 
 	function search_log($callsign) {
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
@@ -218,5 +213,19 @@ class Oqrs_model extends CI_Model {
 	   $this->db->where('id', $id);
    
 	   $this->db->update('oqrs', $data);
+	}
+
+	function getQslInfo($station_id) {
+		$sql = 'select oqrs_text from station_profile where station_id = ' . $station_id;
+
+		$query = $this->db->query($sql);
+
+		if ($query->num_rows() > 0)
+		{
+			$row = $query->row(); 
+			return $row->oqrs_text;
+		}
+
+		return '';
 	}
 }

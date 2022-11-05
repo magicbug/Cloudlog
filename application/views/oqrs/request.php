@@ -1,6 +1,12 @@
+
+<?php if ($qslinfo != '') {
+    echo '<br />QSL information <br /><br />';
+    echo $qslinfo;
+    echo '<br />';
+}
+?>
 <br />
 The following QSO(s) were found. Please fill out the date and time and submit your request.
-<br /><br />
 <table style="width:100%"
     class="result-table table-sm table table-bordered table-hover table-striped table-condensed text-center">
     <thead>
@@ -28,6 +34,7 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
     </tbody>
 </table>
 <br />
+
 <form>
     <div class="form-check form-check-inline">
         <label class="form-check-label">QSL Route</label>
