@@ -217,3 +217,15 @@ function searchLogTimeDate(id) {
         }
     });
 }
+
+function markOqrsLineAsDone(id) {
+    $.ajax({
+        url: base_url+'index.php/oqrs/mark_oqrs_line_as_done',
+        type: 'post',
+        data: { 'id': id,
+        },
+        success: function (data) {
+            $(".oqrsid_"+id).remove();
+        }
+    });
+}

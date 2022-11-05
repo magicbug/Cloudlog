@@ -169,4 +169,11 @@ class Oqrs extends CI_Controller {
 			}
 		}
 	}
+
+	public function mark_oqrs_line_as_done() {
+		$this->load->model('oqrs_model');
+		$id = $this->security->xss_clean($this->input->post('id'));
+
+        $this->oqrs_model->mark_oqrs_line_as_done($id);
+	}
 }

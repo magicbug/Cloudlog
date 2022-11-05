@@ -163,20 +163,29 @@ class Oqrs_model extends CI_Model {
 		
 		$query = $this->db->query($sql);
 
-		if ($query->result()) {
-			//update log to set qsl as requested
-			$sql = 'update ' . $this->config->item('table_name');
-			if ($qsodata['qslroute'] == 'Bureau') {
-				$sql .= '';
-			}
-			if ($qsodata['qslroute'] == 'Direct') {
-				$sql .= '';
+		if ($result = $query->result()) {
+			foreach ($result as $qso) {
+				$this->paperqsl_requested($qso->COL_PRIMARY_KEY, $qsodata['qslroute']);
 			}
 			return true;
 		}
 
 		return false;
 	}
+
+	  // Set Paper to requested
+	  function paperqsl_requested($qso_id, $method) {
+
+		$data = array(
+			 'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+			 'COL_QSL_SENT' => 'R',
+			 'COL_QSL_SENT_VIA ' => $method
+		);
+	
+		$this->db->where('COL_PRIMARY_KEY', $qso_id);
+	
+		$this->db->update($this->config->item('table_name'), $data);
+	  }
 
 	function search_log($callsign) {
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
@@ -199,5 +208,15 @@ class Oqrs_model extends CI_Model {
 		 and station_profile.user_id = '. $this->session->userdata('user_id');
 
 		return $this->db->query($sql);;
+	}
+
+	function mark_oqrs_line_as_done($id) {
+		$data = array(
+			'status' => '2',
+	   );
+   
+	   $this->db->where('id', $id);
+   
+	   $this->db->update('oqrs', $data);
 	}
 }
