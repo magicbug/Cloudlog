@@ -2988,6 +2988,32 @@ function deleteQsl(id) {
 				}
 			});
 		});
+
+        function showOqrs(id) {
+			$.ajax({
+				url: base_url + 'index.php/qslprint/show_oqrs',
+				type: 'post',
+				data: {'id': id},
+				success: function(html) {
+					BootstrapDialog.show({
+						title: 'OQRS',
+						size: BootstrapDialog.SIZE_WIDE,
+						cssClass: 'qso-dialog',
+						nl2br: false,
+						message: html,
+						onshown: function(dialog) {
+							$('[data-toggle="tooltip"]').tooltip();
+						},
+						buttons: [{
+							label: 'Close',
+							action: function (dialogItself) {
+								dialogItself.close();
+							}
+						}]
+					});
+				}
+			});
+		}
 	</script>
 <?php } ?>
 

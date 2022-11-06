@@ -2,11 +2,6 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-/*
- *   This adds an option to enable grid lookup
- *   by location entered
-*/
-
 class Migration_add_oqrs extends CI_Migration {
 
 	public function up()
@@ -79,6 +74,9 @@ class Migration_add_oqrs extends CI_Migration {
 					'constraint' => 50,
                 ),
 				'status' => array(
+                    'type' => 'int',
+                ),
+				'qsoid' => array(
                     'type' => 'int',
                 )
             ));

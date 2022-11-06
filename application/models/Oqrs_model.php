@@ -105,8 +105,11 @@ class Oqrs_model extends CI_Model {
 				'status' 			=> '0',
 			);
 
-			if ($this->check_oqrs($data)) {
+			$qsoid = $this->check_oqrs($data);
+
+			if ($qsoid > 0) {
 				$data['status'] = '2';
+				$data['qsoid'] = $qsoid;
 			}
 	
 			$this->db->insert('oqrs', $data);
@@ -159,13 +162,15 @@ class Oqrs_model extends CI_Model {
 		$query = $this->db->query($sql);
 
 		if ($result = $query->result()) {
+			$id = 0;
 			foreach ($result as $qso) {
 				$this->paperqsl_requested($qso->COL_PRIMARY_KEY, $qsodata['qslroute']);
+				$id = $qso->COL_PRIMARY_KEY;
 			}
-			return true;
+			return $id;
 		}
 
-		return false;
+		return 0;
 	}
 
 	// Set Paper to requested
