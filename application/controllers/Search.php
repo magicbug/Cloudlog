@@ -68,6 +68,18 @@ class Search extends CI_Controller {
 		$this->load->view('interface_assets/footer');
     }
 
+	// Searches for incorrect CQ Zones
+	public function incorrect_cq_zones() {
+		$this->load->model('stations');
+
+		$data['station_profile'] = $this->stations->all_of_user();
+		$data['page_title'] = "Incorrectly logged CQ zones";
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('search/cqzones');
+		$this->load->view('interface_assets/footer');
+	}
+
     function json_result() {
           if(isset($_POST['search'])) {
 			  $result = $this->fetchQueryResult($_POST['search'], false);
