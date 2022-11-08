@@ -20,6 +20,7 @@ $lang['qso_sig_info_helptext'] = 'Zum Beispiel: PA-0150';
 $lang['qso_dok_helptext'] = 'Zum Beispiel: Q03';
 
 $lang['qso_notes_helptext'] = 'Notizeninhalt wird nur innerhalb von Cloudlog genutzt und nicht an andere Dienste weitergegeben.';
+$lang['qsl_notes_helptext'] = 'Dieser Notizeninhalt wird an QSL Services wie eqsl.cc exportiert.';
 
 // Button Text on /qso Display
 
