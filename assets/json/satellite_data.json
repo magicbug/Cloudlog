@@ -569,7 +569,7 @@
    },
    "GREENCUBE":{
       "Modes":{
-         "V":[
+         "U":[
             {
                "Uplink_Mode":"PKT",
                "Uplink_Freq":"435310000",
