@@ -150,8 +150,8 @@
                                     </div>
 
                                     <div class="form-group col-sm-6">
-                                        <label for="rst_recv">RST (R)</label>
-                                        <input type="text" class="form-control form-control-sm" name="rst_recv" id="rst_recv" value="<?php echo $qso->COL_RST_RCVD; ?>">
+                                        <label for="rst_rcvd">RST (R)</label>
+                                        <input type="text" class="form-control form-control-sm" name="rst_rcvd" id="rst_rcvd" value="<?php echo $qso->COL_RST_RCVD; ?>">
                                     </div>
                                 </div>
 
@@ -433,7 +433,7 @@
                                         <div class="form-group row">
                                             <label for="sent-method" class="col-sm-3 col-form-label">Received</label>
                                             <div class="col-sm-9">
-                                                <select class="custom-select" name="qsl_recv">
+                                                <select class="custom-select" name="qsl_rcvd">
                                                     <option value="N" <?php if($qso->COL_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
                                                     <option value="Y" <?php if($qso->COL_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
                                                     <option value="R" <?php if($qso->COL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
@@ -446,7 +446,7 @@
                                         <div class="form-group row">
                                             <label for="sent-method" class="col-sm-3 col-form-label">Received Method</label>
                                             <div class="col-sm-9">
-                                                <select class="custom-select" name="qsl_recv_method">
+                                                <select class="custom-select" name="qsl_rcvd_method">
                                                     <option value="" <?php if($qso->COL_QSL_RCVD_VIA == "") { echo "selected=\"selected\""; } ?>>Method</option>
                                                     <option value="D" <?php if($qso->COL_QSL_RCVD_VIA == "D") { echo "selected=\"selected\""; } ?>>Direct</option>
                                                     <option value="B" <?php if($qso->COL_QSL_RCVD_VIA == "B") { echo "selected=\"selected\""; } ?>>Bureau</option>
@@ -474,7 +474,7 @@
                                         <div class="form-group row">
                                             <label for="sent" class="col-sm-3 col-form-label">Received</label>
                                             <div class="col-sm-9">
-                                                <select class="custom-select" name="eqsl_recv">
+                                                <select class="custom-select" name="eqsl_rcvd">
                                                     <option value="N" <?php if($qso->COL_EQSL_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
                                                     <option value="Y" <?php if($qso->COL_EQSL_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
                                                     <option value="R" <?php if($qso->COL_EQSL_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
@@ -511,7 +511,7 @@
                                         <div class="form-group row">
                                             <label for="sent" class="col-sm-3 col-form-label">Received</label>
                                             <div class="col-sm-9">
-                                                <select class="custom-select" name="lotw_recv">
+                                                <select class="custom-select" name="lotw_rcvd">
                                                     <option value="N" <?php if($qso->COL_LOTW_QSL_RCVD == "N") { echo "selected=\"selected\""; } ?>>No</option>
                                                     <option value="Y" <?php if($qso->COL_LOTW_QSL_RCVD == "Y") { echo "selected=\"selected\""; } ?>>Yes</option>
                                                     <option value="R" <?php if($qso->COL_LOTW_QSL_RCVD == "R") { echo "selected=\"selected\""; } ?>>Requested</option>
