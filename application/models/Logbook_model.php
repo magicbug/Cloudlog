@@ -622,7 +622,7 @@ class Logbook_model extends CI_Model {
 
     if ($qsl_recv == 'N') {
         $qslrdate = null;
-    } elseif (!$qso->COL_QSLRDATE || $qso->COL_QSL_RECV != $qsl_recv) {
+    } elseif (!$qso->COL_QSLRDATE || $qso->COL_QSL_RCVD != $qsl_recv) {
         $qslrdate = date('Y-m-d H:i:s');
     } else {
         $qslrdate = $qso->COL_QSLRDATE;
