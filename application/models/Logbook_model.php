@@ -612,6 +612,30 @@ class Logbook_model extends CI_Model {
         $qsl_recv = 'N';
     }
 
+    if ($this->input->post('eqsl_sent')) {
+        $eqsl_sent = $this->input->post('eqsl_sent');
+    } else {
+        $eqsl_sent = 'N';
+    }
+
+    if ($this->input->post('eqsl_recv')) {
+        $eqsl_recv = $this->input->post('eqsl_recv');
+    } else {
+        $eqsl_recv = 'N';
+    }
+
+    if ($this->input->post('lotw_sent')) {
+        $lotw_sent = $this->input->post('lotw_sent');
+    } else {
+        $lotw_sent = 'N';
+    }
+
+    if ($this->input->post('lotw_recv')) {
+        $lotw_recv = $this->input->post('lotw_recv');
+    } else {
+        $lotw_recv = 'N';
+    }
+
     if ($qsl_sent == 'N') {
         $qslsdate = null;
     } elseif (!$qso->COL_QSLSDATE || $qso->COL_QSL_SENT != $qsl_sent) {
@@ -626,6 +650,38 @@ class Logbook_model extends CI_Model {
         $qslrdate = date('Y-m-d H:i:s');
     } else {
         $qslrdate = $qso->COL_QSLRDATE;
+    }
+
+    if ($eqsl_sent == 'N') {
+        $eqslsdate = null;
+    } elseif (!$qso->COL_EQSL_QSLSDATE || $qso->COL_EQSL_QSL_SENT != $eqsl_sent) {
+        $eqslsdate = date('Y-m-d H:i:s');
+    } else {
+        $eqslsdate = $qso->COL_EQSL_QSLSDATE;
+    }
+
+    if ($eqsl_recv == 'N') {
+        $eqslrdate = null;
+    } elseif (!$qso->COL_EQSL_QSLRDATE || $qso->COL_EQSL_QSL_RCVD != $eqsl_recv) {
+        $eqslrdate = date('Y-m-d H:i:s');
+    } else {
+        $eqslrdate = $qso->COL_EQSL_QSLRDATE;
+    }
+
+    if ($lotw_sent == 'N') {
+        $lotwsdate = null;
+    } elseif (!$qso->COL_LOTW_QSLSDATE || $qso->COL_LOTW_QSL_SENT != $lotw_sent) {
+        $lotwsdate = date('Y-m-d H:i:s');
+    } else {
+        $lotwsdate = $qso->COL_LOTW_QSLSDATE;
+    }
+
+    if ($lotw_recv == 'N') {
+        $lotwrdate = null;
+    } elseif (!$qso->COL_LOTW_QSLRDATE || $qso->COL_LOTW_QSL_RCVD != $lotw_recv) {
+        $lotwrdate = date('Y-m-d H:i:s');
+    } else {
+        $lotwrdate = $qso->COL_LOTW_QSLRDATE;
     }
 
     $data = array(
@@ -655,9 +711,13 @@ class Logbook_model extends CI_Model {
        'COL_QSL_RCVD' => $qsl_recv,
        'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
        'COL_QSL_RCVD_VIA' => $this->input->post('qsl_recv_method'),
+       'COL_EQSL_QSLSDATE' => $eqslsdate,
+       'COL_EQSL_QSLRDATE' => $eqslrdate,
        'COL_EQSL_QSL_SENT' => $this->input->post('eqsl_sent'),
        'COL_EQSL_QSL_RCVD' => $this->input->post('eqsl_recv'),
        'COL_QSLMSG' => $this->input->post('qslmsg'),
+       'COL_LOTW_QSLSDATE' => $lotwsdate,
+       'COL_LOTW_QSLRDATE' => $lotwrdate,
        'COL_LOTW_QSL_SENT' => $this->input->post('lotw_sent'),
        'COL_LOTW_QSL_RCVD' => $this->input->post('lotw_recv'),
        'COL_IOTA' => $this->input->post('iota_ref'),
