@@ -266,17 +266,17 @@
                     <h3><?php echo $this->lang->line('qslcard_info'); ?></h3>
 
                     <?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "B") { ?>
-                    <p><?php echo $this->lang->line('qslcard_sent_bureau'); ?></p>
+                    <p><?php echo $this->lang->line('qslcard_sent_bureau'); ?> <?php $timestamp = strtotime($row->COL_QSLSDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
                     <?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "D") { ?>
-                    <p><?php echo $this->lang->line('qslcard_sent_direct'); ?></p>
+                    <p><?php echo $this->lang->line('qslcard_sent_direct'); ?> <?php $timestamp = strtotime($row->COL_QSLSDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
 
                     <?php if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_RCVD_VIA == "B") { ?>
-                    <p><?php echo $this->lang->line('qslcard_recvd_bureau'); ?></p>
+                    <p><?php echo $this->lang->line('qslcard_rcvd_bureau'); ?> <?php $timestamp = strtotime($row->COL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
                     <?php if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_RCVD_VIA == "D") { ?>
-                    <p><?php echo $this->lang->line('qslcard_recvd_direct'); ?></p>
+                    <p><?php echo $this->lang->line('qslcard_rcvd_direct'); ?> <?php $timestamp = strtotime($row->COL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
                 <?php } ?>
 
@@ -317,7 +317,7 @@
                         }
                     ?>
 
-                    <div class="text-right"><a class="btn btn-sm btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a></div>
+                    <div style="display: inline-block;"><a class="btn btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a></div>
 
                 </div>
             </div>

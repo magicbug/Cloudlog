@@ -566,5 +566,17 @@
             }
          ]
       }
+   },
+   "GREENCUBE":{
+      "Modes":{
+         "U":[
+            {
+               "Uplink_Mode":"PKT",
+               "Uplink_Freq":"435310000",
+               "Downlink_Mode":"PKT",
+               "Downlink_Freq":"435310000"
+            }
+         ]
+      }
    }
 }

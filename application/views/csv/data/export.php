@@ -27,14 +27,14 @@ $bands = array(
    "6cm"    => "5.6GHz",
    "3cm"    => "10GHz",
    "1.25cm" => "24GHz",
-   "6mm"    => "MIcROWAVE",
-   "4mm"    => "MIcROWAVE",
-   "2.5mm"  => "MIcROWAVE",
-   "2mm"    => "MIcROWAVE",
-   "1mm"    => "MIcROWAVE"
+   "6mm"    => "MICROWAVE",
+   "4mm"    => "MICROWAVE",
+   "2.5mm"  => "MICROWAVE",
+   "2mm"    => "MICROWAVE",
+   "1mm"    => "MICROWAVE"
 );
 foreach ($qsos as $qso) {
    $timestamp = strtotime($qso['COL_TIME_ON']);
-   print "V2;".$qso['station_callsign'].";".$qso['COL_MY_SOTA_REF'].";".date('d/m/y', $timestamp).";".date('Hi', $timestamp).";".$bands[$qso['COL_BAND']].";".$qso['COL_MODE'].";".$qso['COL_CALL'].";".$qso['COL_SOTA_REF'].";".$qso['COL_COMMENT']."\n";
+   print "V2,".$qso['station_callsign'].",".$qso['COL_MY_SOTA_REF'].",".date('d/m/y', $timestamp).",".date('Hi', $timestamp).",".$bands[$qso['COL_BAND']].",".$qso['COL_MODE'].",".$qso['COL_CALL'].",".$qso['COL_SOTA_REF'].",".$qso['COL_COMMENT']."\n";
 }
 ?>
