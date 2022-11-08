@@ -27,11 +27,11 @@ $bands = array(
    "6cm"    => "5.6GHz",
    "3cm"    => "10GHz",
    "1.25cm" => "24GHz",
-   "6mm"    => "MIcROWAVE",
-   "4mm"    => "MIcROWAVE",
-   "2.5mm"  => "MIcROWAVE",
-   "2mm"    => "MIcROWAVE",
-   "1mm"    => "MIcROWAVE"
+   "6mm"    => "MICROWAVE",
+   "4mm"    => "MICROWAVE",
+   "2.5mm"  => "MICROWAVE",
+   "2mm"    => "MICROWAVE",
+   "1mm"    => "MICROWAVE"
 );
 foreach ($qsos as $qso) {
    $timestamp = strtotime($qso['COL_TIME_ON']);
