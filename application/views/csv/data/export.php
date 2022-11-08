@@ -35,6 +35,6 @@ $bands = array(
 );
 foreach ($qsos as $qso) {
    $timestamp = strtotime($qso['COL_TIME_ON']);
-   print "V2;".$qso['station_callsign'].";".$qso['COL_MY_SOTA_REF'].";".date('d/m/y', $timestamp).";".date('Hi', $timestamp).";".$bands[$qso['COL_BAND']].";".$qso['COL_MODE'].";".$qso['COL_CALL'].";".$qso['COL_SOTA_REF'].";".$qso['COL_COMMENT']."\n";
+   print "V2,".$qso['station_callsign'].",".$qso['COL_MY_SOTA_REF'].",".date('d/m/y', $timestamp).",".date('Hi', $timestamp).",".$bands[$qso['COL_BAND']].",".$qso['COL_MODE'].",".$qso['COL_CALL'].",".$qso['COL_SOTA_REF'].",".$qso['COL_COMMENT']."\n";
 }
 ?>
