@@ -18,7 +18,7 @@ class Logbook_model extends CI_Model {
 
     // Contest exchange, need to separate between serial and other type of exchange
     if($this->input->post('exchangetype')) {
-      $srx_string = $this->input->post('exch_recv') == '' ? null : $this->input->post('exch_recv');
+      $srx_string = $this->input->post('exch_rcvd') == '' ? null : $this->input->post('exch_rcvd');
       $stx_string = $this->input->post('exch_sent') == '' ? null : $this->input->post('exch_sent');
       $srx = $this->input->post('exch_serial_r') == '' ? null : $this->input->post('exch_serial_r');
       $stx = $this->input->post('exch_serial_s') == '' ? null : $this->input->post('exch_serial_s');
@@ -93,7 +93,7 @@ class Logbook_model extends CI_Model {
     }
 
     if($this->input->post('copyexchangetodok')) {
-      $darc_dok = $this->input->post('exch_recv');
+      $darc_dok = $this->input->post('exch_rcvd');
     } else {
       $darc_dok = $this->input->post('darc_dok');
     }
@@ -104,10 +104,10 @@ class Logbook_model extends CI_Model {
         $qsl_sent = 'N';
     }
 
-    if ($this->input->post('qsl_recv')) {
-        $qsl_recv = $this->input->post('qsl_recv');
+    if ($this->input->post('qsl_rcvd')) {
+        $qsl_rcvd = $this->input->post('qsl_rcvd');
     } else {
-        $qsl_recv = 'N';
+        $qsl_rcvd = 'N';
     }
 
     if ($qsl_sent == 'N') {
@@ -116,7 +116,7 @@ class Logbook_model extends CI_Model {
         $qslsdate = date('Y-m-d H:i:s');
     }
 
-    if ($qsl_recv == 'N') {
+    if ($qsl_rcvd == 'N') {
         $qslrdate = null;
     } else {
         $qslrdate = date('Y-m-d H:i:s');
@@ -132,7 +132,7 @@ class Logbook_model extends CI_Model {
             'COL_FREQ' => $this->parse_frequency($this->input->post('freq_display')),
             'COL_MODE' => $mode,
             'COL_SUBMODE' => $submode,
-            'COL_RST_RCVD' => $this->input->post('rst_recv'),
+            'COL_RST_RCVD' => $this->input->post('rst_rcvd'),
             'COL_RST_SENT' => $this->input->post('rst_sent'),
             'COL_NAME' => $this->input->post('name'),
             'COL_COMMENT' => $this->input->post('comment'),
@@ -142,9 +142,9 @@ class Logbook_model extends CI_Model {
             'COL_QSLSDATE' => $qslsdate,
             'COL_QSLRDATE' => $qslrdate,
             'COL_QSL_SENT' => $qsl_sent,
-            'COL_QSL_RCVD' => $qsl_recv,
+            'COL_QSL_RCVD' => $qsl_rcvd,
             'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
-            'COL_QSL_RCVD_VIA' => $this->input->post('qsl_recv_method'),
+            'COL_QSL_RCVD_VIA' => $this->input->post('qsl_rcvd_method'),
             'COL_QSL_VIA' => $this->input->post('qsl_via'),
             'COL_QSLMSG' => $this->input->post('qslmsg'),
             'COL_OPERATOR' => $this->session->userdata('user_callsign'),
@@ -606,10 +606,34 @@ class Logbook_model extends CI_Model {
         $qsl_sent = 'N';
     }
 
-    if ($this->input->post('qsl_recv')) {
-        $qsl_recv = $this->input->post('qsl_recv');
+    if ($this->input->post('qsl_rcvd')) {
+        $qsl_rcvd = $this->input->post('qsl_rcvd');
     } else {
-        $qsl_recv = 'N';
+        $qsl_rcvd = 'N';
+    }
+
+    if ($this->input->post('eqsl_sent')) {
+        $eqsl_sent = $this->input->post('eqsl_sent');
+    } else {
+        $eqsl_sent = 'N';
+    }
+
+    if ($this->input->post('eqsl_rcvd')) {
+        $eqsl_rcvd = $this->input->post('eqsl_rcvd');
+    } else {
+        $eqsl_rcvd = 'N';
+    }
+
+    if ($this->input->post('lotw_sent')) {
+        $lotw_sent = $this->input->post('lotw_sent');
+    } else {
+        $lotw_sent = 'N';
+    }
+
+    if ($this->input->post('lotw_rcvd')) {
+        $lotw_rcvd = $this->input->post('lotw_rcvd');
+    } else {
+        $lotw_rcvd = 'N';
     }
 
     if ($qsl_sent == 'N') {
@@ -620,12 +644,44 @@ class Logbook_model extends CI_Model {
         $qslsdate = $qso->COL_QSLSDATE;
     }
 
-    if ($qsl_recv == 'N') {
+    if ($qsl_rcvd == 'N') {
         $qslrdate = null;
-    } elseif (!$qso->COL_QSLRDATE || $qso->COL_QSL_RECV != $qsl_recv) {
+    } elseif (!$qso->COL_QSLRDATE || $qso->COL_QSL_RCVD != $qsl_rcvd) {
         $qslrdate = date('Y-m-d H:i:s');
     } else {
         $qslrdate = $qso->COL_QSLRDATE;
+    }
+
+    if ($eqsl_sent == 'N') {
+        $eqslsdate = null;
+    } elseif (!$qso->COL_EQSL_QSLSDATE || $qso->COL_EQSL_QSL_SENT != $eqsl_sent) {
+        $eqslsdate = date('Y-m-d H:i:s');
+    } else {
+        $eqslsdate = $qso->COL_EQSL_QSLSDATE;
+    }
+
+    if ($eqsl_rcvd == 'N') {
+        $eqslrdate = null;
+    } elseif (!$qso->COL_EQSL_QSLRDATE || $qso->COL_EQSL_QSL_RCVD != $eqsl_rcvd) {
+        $eqslrdate = date('Y-m-d H:i:s');
+    } else {
+        $eqslrdate = $qso->COL_EQSL_QSLRDATE;
+    }
+
+    if ($lotw_sent == 'N') {
+        $lotwsdate = null;
+    } elseif (!$qso->COL_LOTW_QSLSDATE || $qso->COL_LOTW_QSL_SENT != $lotw_sent) {
+        $lotwsdate = date('Y-m-d H:i:s');
+    } else {
+        $lotwsdate = $qso->COL_LOTW_QSLSDATE;
+    }
+
+    if ($lotw_rcvd == 'N') {
+        $lotwrdate = null;
+    } elseif (!$qso->COL_LOTW_QSLRDATE || $qso->COL_LOTW_QSL_RCVD != $lotw_rcvd) {
+        $lotwrdate = date('Y-m-d H:i:s');
+    } else {
+        $lotwrdate = $qso->COL_LOTW_QSLRDATE;
     }
 
     $data = array(
@@ -637,7 +693,7 @@ class Logbook_model extends CI_Model {
        'COL_FREQ' => $this->parse_frequency($this->input->post('freq')),
        'COL_MODE' => $mode,
        'COL_SUBMODE' => $submode,
-       'COL_RST_RCVD' => $this->input->post('rst_recv'),
+       'COL_RST_RCVD' => $this->input->post('rst_rcvd'),
        'COL_RST_SENT' => $this->input->post('rst_sent'),
        'COL_GRIDSQUARE' => strtoupper(trim($this->input->post('locator'))),
        'COL_VUCC_GRIDS' => strtoupper(trim($this->input->post('vucc_grids'))),
@@ -652,14 +708,18 @@ class Logbook_model extends CI_Model {
        'COL_QSLSDATE' => $qslsdate,
        'COL_QSLRDATE' => $qslrdate,
        'COL_QSL_SENT' => $qsl_sent,
-       'COL_QSL_RCVD' => $qsl_recv,
+       'COL_QSL_RCVD' => $qsl_rcvd,
        'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
-       'COL_QSL_RCVD_VIA' => $this->input->post('qsl_recv_method'),
+       'COL_QSL_RCVD_VIA' => $this->input->post('qsl_rcvd_method'),
+       'COL_EQSL_QSLSDATE' => $eqslsdate,
+       'COL_EQSL_QSLRDATE' => $eqslrdate,
        'COL_EQSL_QSL_SENT' => $this->input->post('eqsl_sent'),
-       'COL_EQSL_QSL_RCVD' => $this->input->post('eqsl_recv'),
+       'COL_EQSL_QSL_RCVD' => $this->input->post('eqsl_rcvd'),
        'COL_QSLMSG' => $this->input->post('qslmsg'),
+       'COL_LOTW_QSLSDATE' => $lotwsdate,
+       'COL_LOTW_QSLRDATE' => $lotwrdate,
        'COL_LOTW_QSL_SENT' => $this->input->post('lotw_sent'),
-       'COL_LOTW_QSL_RCVD' => $this->input->post('lotw_recv'),
+       'COL_LOTW_QSL_RCVD' => $this->input->post('lotw_rcvd'),
        'COL_IOTA' => $this->input->post('iota_ref'),
        'COL_SOTA_REF' => $this->input->post('sota_ref'),
        'COL_WWFF_REF' => $this->input->post('wwff_ref'),
@@ -1683,7 +1743,7 @@ class Logbook_model extends CI_Model {
     }
 
     /* Return total number of QSL Cards received */
-    function total_qsl_recv() {
+    function total_qsl_rcvd() {
       $CI =& get_instance();
       $CI->load->model('logbooks_model');
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -1733,7 +1793,7 @@ class Logbook_model extends CI_Model {
     }
 
     /* Return total number of eQSL Cards received */
-    function total_eqsl_recv() {
+    function total_eqsl_rcvd() {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -1783,7 +1843,7 @@ class Logbook_model extends CI_Model {
     }
 
     /* Return total number of LotW received */
-    function total_lotw_recv() {
+    function total_lotw_rcvd() {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
