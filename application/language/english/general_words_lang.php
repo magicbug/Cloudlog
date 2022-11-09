@@ -56,8 +56,6 @@ $lang['general_mark_qsl_rx_bureau'] = 'Mark QSL Received (Bureau)';
 $lang['general_mark_qsl_rx_direct'] = 'Mark QSL Received (Direct)';
 $lang['general_mark_qsl_tx_bureau'] = 'Mark QSL Sent (Bureau)';
 $lang['general_mark_qsl_tx_direct'] = 'Mark QSL Sent (Direct)';
-$lang['general_mark_qsl_will_tx_bureau'] = 'Mark QSL to be sent via Bureau';
-$lang['general_mark_qsl_will_tx_direct'] = 'Mark QSL to be sent Direct';
 
 $lang['general_delete_qso'] = 'Delete QSO';
 
