@@ -295,6 +295,58 @@ class Gridsquares extends CI_Controller {
 
 			}
 		}
+		$query_vucc = $this->gridsquares_model->get_band_worked_vucc_squares($band);
+
+		if ($query && $query_vucc->num_rows() > 0)
+		{
+			foreach ($query_vucc->result() as $row)
+			{
+
+				$grids = explode(",", $row->COL_VUCC_GRIDS);
+
+				foreach($grids as $key) {    
+					$grid_two = strtoupper(substr($key,0,2));
+					$grid_four = strtoupper(substr($key,0,4));
+
+					// Check if 2 Char is in array
+					if(!in_array($grid_two, $array_grid_2char)){
+						array_push($array_grid_2char, $grid_two);	
+					}
+
+
+					if(!in_array($grid_four, $array_grid_4char)){
+						array_push($array_grid_4char, $grid_four);	
+					}
+				}
+			}
+		}
+
+		// Confirmed Squares
+		$query_vucc = $this->gridsquares_model->get_band_confirmed_vucc_squares($band);
+
+		if ($query && $query_vucc->num_rows() > 0)
+		{
+			foreach ($query_vucc->result() as $row)
+			{
+
+				$grids = explode(",", $row->COL_VUCC_GRIDS);
+
+				foreach($grids as $key) {    
+					$grid_2char_confirmed = strtoupper(substr($key,0,2));
+					$grid_4char_confirmed = strtoupper(substr($key,0,4));
+
+					// Check if 2 Char is in array
+					if(!in_array($grid_2char_confirmed, $array_grid_2char_confirmed)){
+						array_push($array_grid_2char_confirmed, $grid_2char_confirmed);	
+					}
+
+
+					if(!in_array($grid_4char_confirmed, $array_grid_4char_confirmed)){
+						array_push($array_grid_4char_confirmed, $grid_4char_confirmed);	
+					}
+				}
+			}
+		}
 
 		function js_str($s)
 		{

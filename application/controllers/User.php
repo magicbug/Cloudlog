@@ -40,6 +40,7 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_lastname', 'Last name', 'required');
 		$this->form_validation->set_rules('user_callsign', 'Callsign', 'required');
 		$this->form_validation->set_rules('user_locator', 'Locator', 'required');
+		$this->form_validation->set_rules('user_locator', 'Locator', 'callback_check_locator');
 		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
 
 		// Get themes list
@@ -67,7 +68,9 @@ class User extends CI_Controller {
 				$data['user_timezone'] = $this->input->post('user_timezone');
                 $data['user_measurement_base'] = $this->input->post('user_measurement_base');
                 $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+				$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 				$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
+				$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
 				$data['user_show_notes'] = $this->input->post('user_show_notes');
 				$data['user_column1'] = $this->input->post('user_column1');
 				$data['user_column2'] = $this->input->post('user_column2');
@@ -95,7 +98,9 @@ class User extends CI_Controller {
 				$this->input->post('user_measurement_base'),
 				$this->input->post('user_date_format'),
 				$this->input->post('user_stylesheet'),
+				$this->input->post('user_qth_lookup'),
 				$this->input->post('user_sota_lookup'),
+				$this->input->post('user_wwff_lookup'),
 				$this->input->post('user_show_notes'),
 				$this->input->post('user_column1'),
 				$this->input->post('user_column2'),
@@ -132,7 +137,9 @@ class User extends CI_Controller {
 			$data['user_locator'] = $this->input->post('user_locator');
             $data['user_measurement_base'] = $this->input->post('user_measurement_base');
             $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+			$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
+			$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
 			$data['user_show_notes'] = $this->input->post('user_show_notes');
 			$data['user_column1'] = $this->input->post('user_column1');
 			$data['user_column2'] = $this->input->post('user_column2');
@@ -161,7 +168,7 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_firstname', 'First name', 'required|xss_clean');
 		$this->form_validation->set_rules('user_lastname', 'Last name', 'required|xss_clean');
 		$this->form_validation->set_rules('user_callsign', 'Callsign', 'trim|required|xss_clean');
-		$this->form_validation->set_rules('user_locator', 'Locator', 'required|xss_clean');
+		$this->form_validation->set_rules('user_locator', 'Locator', 'callback_check_locator');
 		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
 
 		// Get themes list
@@ -299,10 +306,22 @@ class User extends CI_Controller {
                 $data['user_stylesheet'] = $q->user_stylesheet;
             }
 
+			if($this->input->post('user_qth_lookup')) {
+				$data['user_qth_lookup'] = $this->input->post('user_qth_lookup', true);
+			} else {
+				$data['user_qth_lookup'] = $q->user_qth_lookup;
+			}
+
 			if($this->input->post('user_sota_lookup')) {
 				$data['user_sota_lookup'] = $this->input->post('user_sota_lookup', true);
 			} else {
 				$data['user_sota_lookup'] = $q->user_sota_lookup;
+			}
+
+			if($this->input->post('user_wwff_lookup')) {
+				$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup', true);
+			} else {
+				$data['user_wwff_lookup'] = $q->user_wwff_lookup;
 			}
 
 			if($this->input->post('user_show_notes')) {
@@ -388,7 +407,9 @@ class User extends CI_Controller {
 			$data['user_locator'] = $this->input->post('user_locator', true);
 			$data['user_timezone'] = $this->input->post('user_timezone', true);
             $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+			$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
+			$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
 			$data['user_show_notes'] = $this->input->post('user_show_notes');
 			$data['user_column1'] = $this->input->post('user_column1');
 			$data['user_column2'] = $this->input->post('user_column2');
@@ -609,4 +630,26 @@ class User extends CI_Controller {
 			redirect('user/login');
 		}
 	}
+
+   function check_locator($grid) {
+      $grid = $this->input->post('user_locator');
+      // Allow empty locator
+      if (preg_match('/^$/', $grid)) return true;
+      // Allow 6-digit locator
+      if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Za-z]{2}$/', $grid)) return true;
+      // Allow 4-digit locator
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}$/', $grid)) return true;
+      // Allow 4-digit grid line
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2},[A-Ra-r]{2}[0-9]{2}$/', $grid)) return true;
+      // Allow 4-digit grid corner
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2},[A-Ra-r]{2}[0-9]{2},[A-Ra-r]{2}[0-9]{2},[A-Ra-r]{2}[0-9]{2}$/', $grid)) return true;
+      // Allow 2-digit locator
+      else if (preg_match('/^[A-Ra-r]{2}$/', $grid)) return true;
+      // Allow 8-digit locator
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Za-z]{2}[0-9]{2}$/', $grid)) return true;
+      else {
+         $this->form_validation->set_message('check_locator', 'Please check value for grid locator ('.strtoupper($grid).').');
+         return false;
+      }
+   }
 }

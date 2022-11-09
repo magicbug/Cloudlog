@@ -855,14 +855,93 @@ function getLookupResult() {
 <?php } ?>
 
 
-<?php if ($this->uri->segment(1) == "search") { ?>
+
 <script type="text/javascript">
   $(function () {
      $('[data-toggle="tooltip"]').tooltip()
   });
+
+  $(function () {
+    // hold onto the drop down menu                                             
+    var dropdownMenu;
+
+    // and when you show it, move it to the body                                     
+    $(window).on('show.bs.dropdown', function (e) {
+
+    // grab the menu        
+    dropdownMenu = $(e.target).find('.dropdown-menu');
+
+    // detach it and append it to the body
+    $('body').append(dropdownMenu.detach());
+
+    // grab the new offset position
+    var eOffset = $(e.target).offset();
+
+    // make sure to place it where it would normally go (this could be improved)
+    dropdownMenu.css({
+        'display': 'block',
+            'top': eOffset.top + $(e.target).outerHeight(),
+            'left': eOffset.left
+       });
+    });
+
+    // and when you hide it, reattach the drop down, and hide it normally                                                   
+    $(window).on('hide.bs.dropdown', function (e) {
+        $(e.target).append(dropdownMenu.detach());
+        dropdownMenu.hide();
+    });
+  });
 </script>
+
+<?php if ($this->uri->segment(1) == "search") { ?>
 <script type="text/javascript">
 i=0;
+
+function findduplicates(){
+    event.preventDefault();
+    $('#partial_view').load(base_url+"index.php/logbook/search_duplicates/"+$("#station_id").val(), function() {
+        $('.qsolist').DataTable({
+            "pageLength": 25,
+            responsive: false,
+            ordering: false,
+            "scrollY":        "500px",
+            "scrollCollapse": true,
+            "paging":         false,
+            "scrollX": true,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv'
+            ]
+        });
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
+            $(".buttons-csv").css("color", "white");
+        }
+    });
+}
+
+function findincorrectcqzones() {
+    event.preventDefault();
+    $('#partial_view').load(base_url+"index.php/logbook/search_incorrect_cq_zones/"+$("#station_id").val(), function() {
+        $('.qsolist').DataTable({
+            "pageLength": 25,
+            responsive: false,
+            ordering: false,
+            "scrollY":        "500px",
+            "scrollCollapse": true,
+            "paging":         false,
+            "scrollX": true,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv'
+            ]
+        });
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
+            $(".buttons-csv").css("color", "white");
+        }
+    });
+}
 
 function searchButtonPress(){
     event.preventDefault()
@@ -1088,7 +1167,28 @@ $(document).on('keypress',function(e) {
 	});
 <?php } ?>
 
-<?php if ($this->config->item('qso_auto_qth')) { ?>
+<?php if ($this->session->userdata('user_wwff_lookup') == 1) { ?>
+	$('#wwff_ref').change(function() {
+		var wwff = $('#wwff_ref').val();
+		if (wwff.length > 0) {
+			$.ajax({
+				url: base_url+'index.php/qso/get_wwff_info',
+				type: 'post',
+				data: {'wwff': wwff},
+				success: function(res) {
+					$('#qth').val(res.name);
+					$('#locator').val(res.locator);
+				},
+				error: function() {
+					$('#qth').val('');
+					$('#locator').val('');
+				},
+			});
+		}
+	});
+<?php } ?>
+
+<?php if ($this->session->userdata('user_qth_lookup') == 1) { ?>
     $('#qth').focusout(function() {
     	if ($('#locator').val() === '') {
 			var lat = 0;
@@ -1161,16 +1261,16 @@ $(document).on('keypress',function(e) {
     function setRst(mode) {
         if(mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS'){
             $('#rst_sent').val('-5');
-            $('#rst_recv').val('-5');
+            $('#rst_rcvd').val('-5');
         } else if (mode == 'FSK441' || mode == 'JT6M') {
             $('#rst_sent').val('26');
-            $('#rst_recv').val('26');
+            $('#rst_rcvd').val('26');
         } else if (mode == 'CW' || mode == 'RTTY' || mode == 'PSK31' || mode == 'PSK63') {
             $('#rst_sent').val('599');
-            $('#rst_recv').val('599');
+            $('#rst_rcvd').val('599');
         } else {
             $('#rst_sent').val('59');
-            $('#rst_recv').val('59');
+            $('#rst_rcvd').val('59');
         }
     }
     </script>
@@ -1206,7 +1306,7 @@ $(document).on('keypress',function(e) {
           }
           $("#sat_name").val(data.satname);
           $("#sat_mode").val(data.satmode);
-          if(data.power != 0) {
+          if(data.power != null && data.power != 0) {
             $("#transmit_power").val(data.power);
           }
           $("#selectPropagation").val(data.prop_mode);
@@ -2933,6 +3033,66 @@ function deleteQsl(id) {
 			});
 		});
 	</script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "wwff") ) {
+	// Get Date format
+	if($this->session->userdata('user_date_format')) {
+		// If Logged in and session exists
+		$custom_date_format = $this->session->userdata('user_date_format');
+	} else {
+		// Get Default date format from /config/cloudlog.php
+		$custom_date_format = $this->config->item('qso_date_format');
+	}
+
+    switch ($custom_date_format) {
+        case 'd/m/y': $usethisformat = 'D/MM/YY';break;
+        case 'd/m/Y': $usethisformat = 'D/MM/YYYY';break;
+        case 'm/d/y': $usethisformat = 'MM/D/YY';break;
+        case 'm/d/Y': $usethisformat = 'MM/D/YYYY';break;
+        case 'd.m.Y': $usethisformat = 'D.MM.YYYY';break;
+        case 'y/m/d': $usethisformat = 'YY/MM/D';break;
+        case 'Y-m-d': $usethisformat = 'YYYY-MM-D';break;
+        case 'M d, Y': $usethisformat = 'MMM D, YYYY';break;
+        case 'M d, y': $usethisformat = 'MMM D, YY';break;
+    }
+
+    ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
+    <script>
+        $.fn.dataTable.moment('<?php echo $usethisformat ?>');
+        $.fn.dataTable.ext.buttons.clear = {
+            className: 'buttons-clear',
+            action: function ( e, dt, node, config ) {
+               dt.search('').draw();
+            }
+        };
+        $('#wwfftable').DataTable({
+            "pageLength": 25,
+            responsive: false,
+            ordering: true,
+            "scrollY":        "500px",
+            "scrollCollapse": true,
+            "paging":         false,
+            "scrollX": true,
+            "order": [ 0, 'asc' ],
+            dom: 'Bfrtip',
+            buttons: [
+               {
+                  extend: 'csv'
+               },
+               {
+                  extend: 'clear',
+                  text: 'Clear'
+               }
+            ]
+        });
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
+           $('[class*="buttons"]').css("color", "white");
+        }
+    </script>
 <?php } ?>
 
   </body>

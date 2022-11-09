@@ -124,13 +124,13 @@
             <a class="nav-link active" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="true">Table</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="map-tab" data-toggle="tab" href="#cqmap" role="tab" aria-controls="home" aria-selected="false">Map</a>
+            <a class="nav-link" id="map-tab" data-toggle="tab" href="#cqmaptab" role="tab" aria-controls="home" aria-selected="false">Map</a>
         </li>
     </ul>
     <br />
 
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade" id="cqmap" role="tabpanel" aria-labelledby="home-tab">
+        <div class="tab-pane fade" id="cqmaptab" role="tabpanel" aria-labelledby="home-tab">
     <br />
 
     <div id="cqmap"></div>

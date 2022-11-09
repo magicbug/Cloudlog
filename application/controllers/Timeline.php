@@ -25,18 +25,39 @@ class Timeline extends CI_Controller {
             $band = 'All';
         }
 
-        if ($this->input->post('mode') != NULL) {   // Band is not set when page first loads.
+        if ($this->input->post('mode') != NULL) {
             $mode = $this->input->post('mode');
         }
         else {
             $mode = 'All';
         }
 
-        if ($this->input->post('awardradio') != NULL) {   // Band is not set when page first loads.
+        if ($this->input->post('awardradio') != NULL) {
             $award = $this->input->post('awardradio');
         }
         else {
             $award = 'dxcc';
+        }
+
+        if ($this->input->post('qsl') != NULL) {
+            $qsl = $this->input->post('qsl');
+        }
+        else {
+            $qsl = '0';
+        }
+
+        if ($this->input->post('lotw') != NULL) {
+            $lotw = $this->input->post('lotw');
+        }
+        else {
+            $lotw = '0';
+        }
+
+        if ($this->input->post('eqsl') != NULL) {
+            $eqsl = $this->input->post('eqsl');
+        }
+        else {
+            $eqsl = '0';
         }
 
         $this->load->model('modes');
@@ -44,7 +65,7 @@ class Timeline extends CI_Controller {
 
         $data['modes'] = $this->modes->active();
 
-        $data['timeline_array'] = $this->Timeline_model->get_timeline($band, $mode, $award);
+        $data['timeline_array'] = $this->Timeline_model->get_timeline($band, $mode, $award, $qsl, $lotw, $eqsl);
         $data['worked_bands'] = $this->bands->get_worked_bands();
         $data['bandselect'] = $band;
         $data['modeselect'] = $mode;

@@ -122,8 +122,8 @@
 							</div>
 
                             <div class="form-group col-md-1">
-                                <label for="rst_recv"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></label>
-                                <input type="text" class="form-control form-control-sm" name="rst_recv" id="rst_recv" value="59">
+                                <label for="rst_rcvd"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></label>
+                                <input type="text" class="form-control form-control-sm" name="rst_rcvd" id="rst_rcvd" value="59">
                             </div>
 
                             <div style="display:none" class="form-group col-md-1 serialr">
@@ -132,8 +132,8 @@
 							</div>
 							
 							<div style="display:none" class="form-group col-md-1 exchanger">
-								<label for="exch_recv"><?php echo $this->lang->line('gen_hamradio_exchange_recv_short'); ?></label>
-								<input type="text" class="form-control form-control-sm" name="exch_recv" id="exch_recv" value="">
+								<label for="exch_rcvd"><?php echo $this->lang->line('gen_hamradio_exchange_rcvd_short'); ?></label>
+								<input type="text" class="form-control form-control-sm" name="exch_rcvd" id="exch_rcvd" value="">
 							</div>
 
 							<div style="display:none" class="form-group col-md-2 gridsquarer">
@@ -191,7 +191,7 @@
                             <th><?php echo $this->lang->line('gen_hamradio_rsts'); ?></th>
                             <th><?php echo $this->lang->line('gen_hamradio_rstr'); ?></th>
                             <th><?php echo $this->lang->line('gen_hamradio_exchange_sent_short'); ?></th>
-                            <th><?php echo $this->lang->line('gen_hamradio_exchange_recv_short'); ?></th>
+                            <th><?php echo $this->lang->line('gen_hamradio_exchange_rcvd_short'); ?></th>
 							<th>Serial (S)</th>
 							<th>Serial (R)</th>
 							<th>Gridsquare</th>

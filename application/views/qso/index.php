@@ -115,8 +115,8 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label for="rst_recv"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></label>
-                  <input type="text" class="form-control form-control-sm" name="rst_recv" id="rst_recv" value="59">
+                  <label for="rst_rcvd"><?php echo $this->lang->line('gen_hamradio_rstr'); ?></label>
+                  <input type="text" class="form-control form-control-sm" name="rst_rcvd" id="rst_rcvd" value="59">
                 </div>
               </div>
 

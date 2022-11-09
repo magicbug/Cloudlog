@@ -16,7 +16,7 @@ function reset_contest_session() {
 	$("#exch_serial_s").val("1");
 	$("#exch_serial_r").val("");
 	$('#exch_sent').val("");
-	$('#exch_recv').val("");
+	$('#exch_rcvd').val("");
 	$("#exch_gridsquare_r").val("");
 	$("#exch_gridsquare_s").val("");
 
@@ -80,7 +80,7 @@ $(function () {
 
 // We don't want spaces to be written in exchange
 $(function () {
-	$('#exch_recv').on('keypress', function (e) {
+	$('#exch_rcvd').on('keypress', function (e) {
 		if (e.which == 32) {
 			return false;
 		}
@@ -96,7 +96,7 @@ document.onkeyup = function (e) {
 	} else if ((e.keyCode == 10 || e.keyCode == 13) && (e.ctrlKey || e.metaKey)) {
 		logQso();
 		// Enter in sent exchange logs QSO
-	} else if ((e.which == 13) && ($(document.activeElement).attr("id") == "exch_recv")) {
+	} else if ((e.which == 13) && ($(document.activeElement).attr("id") == "exch_rcvd")) {
 		logQso();
 	} else if (e.which == 27) {
 		reset_log_fields();
@@ -105,9 +105,9 @@ document.onkeyup = function (e) {
 		var exchangetype = $("#exchangetype").val();
 		if (exchangetype == 'Exchange') {
 			if ($(document.activeElement).attr("id") == "callsign") {
-				$("#exch_recv").focus();
+				$("#exch_rcvd").focus();
 				return false;
-			} else if ($(document.activeElement).attr("id") == "exch_recv") {
+			} else if ($(document.activeElement).attr("id") == "exch_rcvd") {
 				$("#callsign").focus();
 				return false;
 			}
@@ -126,9 +126,9 @@ document.onkeyup = function (e) {
 				$("#exch_serial_r").focus();
 				return false;
 			} else if ($(document.activeElement).attr("id") == "exch_serial_r") {
-				$("#exch_recv").focus();
+				$("#exch_rcvd").focus();
 				return false;
-			} else if ($(document.activeElement).attr("id") == "exch_recv") {
+			} else if ($(document.activeElement).attr("id") == "exch_rcvd") {
 				$("#callsign").focus();
 				return false;
 			}
@@ -189,6 +189,8 @@ $("#callsign").keyup(function () {
 			highlight(call.toUpperCase());
 		});
 		checkIfWorkedBefore();
+		var qTable = $('.qsotable').DataTable();
+		qTable.search(call).draw();
 	}
 	else if (call.length <= 2) {
 		$('.callsign-suggestions').text("");
@@ -220,12 +222,15 @@ function reset_log_fields() {
 	$('.callsign-suggestions').text("");
 	$('#callsign').val("");
 	$('#comment').val("");
-	$('#exch_recv').val("");
+	$('#exch_rcvd').val("");
 	$('#exch_serial_r').val("");
 	$('#exch_gridsquare_r').val("");
 	$("#callsign").focus();
 	setRst($("#mode").val());
 	$('#callsign_info').text("");
+
+	var qTable = $('.qsotable').DataTable();
+	qTable.search('').draw();
 }
 
 RegExp.escape = function (text) {
@@ -349,9 +354,9 @@ function logQso() {
 			$("#band").val(),
 			$("#mode").val(),
 			$("#rst_sent").val(),
-			$("#rst_recv").val(),
+			$("#rst_rcvd").val(),
 			$("#exch_sent").val(),
-			$("#exch_recv").val(),
+			$("#exch_rcvd").val(),
 			$("#exch_serial_s").val(),
 			$("#exch_serial_r").val(),
 			gridsquare,
@@ -377,7 +382,7 @@ function logQso() {
 
 				$('#callsign').val("");
 				$('#comment').val("");
-				$('#exch_recv').val("");
+				$('#exch_rcvd').val("");
 				$('#exch_gridsquare_r').val("");
 				$('#exch_serial_r').val("");
 				var exchangetype = $("#exchangetype").val();
@@ -389,13 +394,16 @@ function logQso() {
 				// Store contest session
 				localStorage.setItem("contestid", $("#contestname").val());
 				localStorage.setItem("exchangetype", $("#exchangetype").val());
-				localStorage.setItem("exchangereceived", $("#exch_recv").val());
+				localStorage.setItem("exchangereceived", $("#exch_rcvd").val());
 				localStorage.setItem("exchangesent", $("#exch_sent").val());
 				localStorage.setItem("serialreceived", $("#exch_serial_r").val());
 				localStorage.setItem("serialsent", $("#exch_serial_s").val());
 				localStorage.setItem("gridsquarereceived", $("#exch_gridsquare_r").val());
 				localStorage.setItem("gridsquaresent", $("#exch_gridsquare_s").val());
 				localStorage.setItem("copytodok", $('#copyexchangetodok').is(":checked"));
+
+				var qTable = $('.qsotable').DataTable();
+				qTable.search('').draw();
 			}
 		});
 	}
@@ -421,7 +429,7 @@ function restoreContestSession() {
 
 	var exchangereceived = localStorage.getItem("exchangereceived");
 	if (exchangereceived != null) {
-		$("#exch_recv").val(exchangereceived);
+		$("#exch_rcvd").val(exchangereceived);
 	}
 
 	var exchangesent = localStorage.getItem("exchangesent");

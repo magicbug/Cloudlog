@@ -79,14 +79,14 @@ class Dashboard extends CI_Controller {
 			$QSLStatsBreakdownArray =$this->logbook_model->get_QSLStats($logbooks_locations_array);
 
 			$data['total_qsl_sent'] = $QSLStatsBreakdownArray['QSL_Sent'];
-			$data['total_qsl_recv'] = $QSLStatsBreakdownArray['QSL_Received'];
+			$data['total_qsl_rcvd'] = $QSLStatsBreakdownArray['QSL_Received'];
 			$data['total_qsl_requested'] = $QSLStatsBreakdownArray['QSL_Requested'];
 
 			$data['total_eqsl_sent'] = $QSLStatsBreakdownArray['eQSL_Sent'];
-			$data['total_eqsl_recv'] = $QSLStatsBreakdownArray['eQSL_Received'];
+			$data['total_eqsl_rcvd'] = $QSLStatsBreakdownArray['eQSL_Received'];
 
 			$data['total_lotw_sent'] = $QSLStatsBreakdownArray['LoTW_Sent'];
-			$data['total_lotw_recv'] = $QSLStatsBreakdownArray['LoTW_Received'];
+			$data['total_lotw_rcvd'] = $QSLStatsBreakdownArray['LoTW_Received'];
 
 			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18', $logbooks_locations_array);
 

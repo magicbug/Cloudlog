@@ -212,7 +212,7 @@
                     <?php if($row->COL_WWFF_REF != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_wwff_reference'); ?></td>
-                        <td><a href="https://wwff.co/directory/?showRef=<?php echo $row->COL_WWFF_REF; ?>" target="_blank"><?php echo $row->COL_WWFF_REF; ?></a></td>
+                        <td><a href="https://www.cqgma.org/zinfo.php?ref=<?php echo $row->COL_WWFF_REF; ?>" target="_blank"><?php echo $row->COL_WWFF_REF; ?></a></td>
                     </tr>
                     <?php } ?>
 
@@ -235,7 +235,7 @@
                            echo "<td><a href=\"https://www.mountainqrp.it/awards/referenza.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
                            break;
                         case "WWFF":
-                           echo "<td><a href=\"https://wwff.co/directory/?showRef=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
+                           echo "<td><a href=\"https://www.cqgma.org/zinfo.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
                            break;
                         case "POTA":
                            echo "<td><a href=\"https://pota.app/#/park/".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
@@ -266,17 +266,17 @@
                     <h3><?php echo $this->lang->line('qslcard_info'); ?></h3>
 
                     <?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "B") { ?>
-                    <p><?php echo $this->lang->line('qslcard_sent_bureau'); ?></p>
+                    <p><?php echo $this->lang->line('qslcard_sent_bureau'); ?> <?php $timestamp = strtotime($row->COL_QSLSDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
                     <?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "D") { ?>
-                    <p><?php echo $this->lang->line('qslcard_sent_direct'); ?></p>
+                    <p><?php echo $this->lang->line('qslcard_sent_direct'); ?> <?php $timestamp = strtotime($row->COL_QSLSDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
 
                     <?php if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_RCVD_VIA == "B") { ?>
-                    <p><?php echo $this->lang->line('qslcard_recvd_bureau'); ?></p>
+                    <p><?php echo $this->lang->line('qslcard_rcvd_bureau'); ?> <?php $timestamp = strtotime($row->COL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
                     <?php if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_RCVD_VIA == "D") { ?>
-                    <p><?php echo $this->lang->line('qslcard_recvd_direct'); ?></p>
+                    <p><?php echo $this->lang->line('qslcard_rcvd_direct'); ?> <?php $timestamp = strtotime($row->COL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
                 <?php } ?>
 
@@ -297,7 +297,8 @@
 
                     <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
                         <br>
-                            <p class="editButton"><a class="btn btn-primary" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i><?php echo $this->lang->line('qso_btn_edit_qso'); ?></a></p>
+                            <div style="display: inline-block;"><p class="editButton"><a class="btn btn-primary" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i><?php echo $this->lang->line('qso_btn_edit_qso'); ?></a></p></div>
+                            <div style="display: inline-block;"><form method="POST" action="<?php echo site_url('search'); ?>"><input type="hidden" value="<?php echo strtoupper($row->COL_CALL); ?>" name="callsign"><button class="btn btn-primary" type="submit"><i class="fas fa-eye"></i> More QSOs</button></form></div>
                     <?php } ?>
 
                     <?php
@@ -316,7 +317,7 @@
                         }
                     ?>
 
-                    <div class="text-right"><a class="btn btn-sm btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a></div>
+                    <div style="display: inline-block;"><a class="btn btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a></div>
 
                 </div>
             </div>
