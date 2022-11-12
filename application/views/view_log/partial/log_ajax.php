@@ -44,7 +44,8 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 <?php if ($results) { ?>
 
 <div class="table-responsive">
-    <table class="table table-striped table-hover">
+    <table style="width:100%" class="table contacttable table-striped table-hover">
+        <thead>
         <tr class="titles">
             <td><?php echo $this->lang->line('general_word_date'); ?></td>
             <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
@@ -72,6 +73,8 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                 <td></td>
             <?php } ?>
         </tr>
+        <thead>
+            <tbody>
 
         <?php  $i = 0;  
             foreach ($results->result() as $row) {
@@ -246,7 +249,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
             <?php } ?>
             </tr>
             <?php $i++; } ?>
-
+                            </tbody>
     </table></div>
     <?php } ?>
 

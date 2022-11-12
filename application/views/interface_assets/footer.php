@@ -2545,6 +2545,19 @@ function deleteQsl(id) {
                     message: html,
                     onshown: function(dialog) {
                        $('[data-toggle="tooltip"]').tooltip();
+                       $('.contacttable').DataTable({
+                            "pageLength": 25,
+                            responsive: false,
+                            ordering: false,
+                            "scrollY":        "550px",
+                            "scrollCollapse": true,
+                            "paging":         false,
+                            "scrollX": true,
+                            dom: 'Bfrtip',
+                            buttons: [
+                                'csv'
+                            ]
+                        });
                     },
                     buttons: [{
                         label: 'Close',

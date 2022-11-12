@@ -91,7 +91,8 @@ function load_dxcc_map2(data) {
         L.marker(
             [D['lat'], D['long']], {
                 icon: icon,
-                title: D['adif']
+                adif: D['adif'],
+                title: D['prefix'] + ' - ' + D['name'],
             }
           ).addTo(map).on('click', onClick);
     }
@@ -115,5 +116,5 @@ function load_dxcc_map2(data) {
 
 function onClick(e) {
     var marker = e.target;
-    displayContacts(marker.options.title, $('#band2').val(), $('#mode').val(), 'DXCC2');
+    displayContacts(marker.options.adif, $('#band2').val(), $('#mode').val(), 'DXCC2');
 }

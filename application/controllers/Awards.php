@@ -638,7 +638,10 @@ class Awards extends CI_Controller {
         foreach ($dxcclist as $dxcc) {
             $newdxcc[$i]['adif'] = $dxcc->adif;
             $newdxcc[$i]['prefix'] = $dxcc->prefix;
-            $newdxcc[$i]['name'] = $dxcc->name;
+            $newdxcc[$i]['name'] = ucwords(strtolower($dxcc->name), "- (/");
+            if ($dxcc->Enddate!=null) {
+                $newdxcc[$i]['name'] .= ' (deleted)';
+            }
             $newdxcc[$i]['lat'] = $dxcc->lat;
             $newdxcc[$i]['long'] = $dxcc->long;
             $newdxcc[$i++]['status'] = $this->returnStatus($dxcc_array[$dxcc->adif]);
