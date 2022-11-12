@@ -121,6 +121,9 @@ class Lotw extends CI_Controller {
         	// Upload of P12 Failed
             $error = array('error' => $this->upload->display_errors());
 
+			// Load DXCC Countrys List
+			$data['dxcc_list'] = $this->dxcc->list();
+
 			// Set Page Title
 			$data['page_title'] = "Logbook of the World";
 

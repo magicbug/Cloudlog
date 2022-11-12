@@ -117,7 +117,7 @@ return array(
 	'json'  =>	array('application/json', 'text/json'),
 	'pem'   =>	array('application/x-x509-user-cert', 'application/x-pem-file', 'application/octet-stream'),
 	'p10'   =>	array('application/x-pkcs10', 'application/pkcs10'),
-	'p12'   =>	'application/octet-stream',
+	'p12'   =>	array('application/octet-stream', 'application/x-pkcs12'),
 	'p7a'   =>	'application/x-pkcs7-signature',
 	'p7c'   =>	array('application/pkcs7-mime', 'application/x-pkcs7-mime'),
 	'p7m'   =>	array('application/pkcs7-mime', 'application/x-pkcs7-mime'),
