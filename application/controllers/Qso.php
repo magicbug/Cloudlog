@@ -42,7 +42,7 @@ class QSO extends CI_Controller {
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_rules('start_date', 'Date', 'required');
+		$this->form_validation->set_rules('start_date', 'Date', 'callback_check_qso_date');
 		$this->form_validation->set_rules('start_time', 'Time', 'required');
 		$this->form_validation->set_rules('callsign', 'Callsign', 'required');
 		$this->form_validation->set_rules('locator', 'Locator', 'callback_check_locator');
@@ -475,4 +475,18 @@ class QSO extends CI_Controller {
          return false;
       }
    }
+
+   function check_qso_date($date) {
+      $timestamp = gmdate("d-m-Y ");
+      $date = $this->input->post('start_date');
+      if ($date > $timestamp) {
+         $this->form_validation->set_message('check_qso_date', 'QSO date in the future ('.$date.').');
+         return false;
+      }
+      if (empty($date)) {
+         $this->form_validation->set_message('check_qso_date', 'Please check QSO date (empty).');
+         return false;
+      }
+   }
+
 }
