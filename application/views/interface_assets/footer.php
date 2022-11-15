@@ -859,7 +859,7 @@ function getLookupResult() {
 <?php } ?>
 
 
-<?php if ($this->uri->segment(1) == "search") { ?>
+
 <script type="text/javascript">
   $(function () {
      $('[data-toggle="tooltip"]').tooltip()
@@ -894,10 +894,58 @@ function getLookupResult() {
         $(e.target).append(dropdownMenu.detach());
         dropdownMenu.hide();
     });
-  })();
+  });
 </script>
+
+<?php if ($this->uri->segment(1) == "search") { ?>
 <script type="text/javascript">
 i=0;
+
+function findduplicates(){
+    event.preventDefault();
+    $('#partial_view').load(base_url+"index.php/logbook/search_duplicates/"+$("#station_id").val(), function() {
+        $('.qsolist').DataTable({
+            "pageLength": 25,
+            responsive: false,
+            ordering: false,
+            "scrollY":        "500px",
+            "scrollCollapse": true,
+            "paging":         false,
+            "scrollX": true,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv'
+            ]
+        });
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
+            $(".buttons-csv").css("color", "white");
+        }
+    });
+}
+
+function findincorrectcqzones() {
+    event.preventDefault();
+    $('#partial_view').load(base_url+"index.php/logbook/search_incorrect_cq_zones/"+$("#station_id").val(), function() {
+        $('.qsolist').DataTable({
+            "pageLength": 25,
+            responsive: false,
+            ordering: false,
+            "scrollY":        "500px",
+            "scrollCollapse": true,
+            "paging":         false,
+            "scrollX": true,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv'
+            ]
+        });
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
+            $(".buttons-csv").css("color", "white");
+        }
+    });
+}
 
 function searchButtonPress(){
     event.preventDefault()
@@ -1217,16 +1265,16 @@ $(document).on('keypress',function(e) {
     function setRst(mode) {
         if(mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS'){
             $('#rst_sent').val('-5');
-            $('#rst_recv').val('-5');
+            $('#rst_rcvd').val('-5');
         } else if (mode == 'FSK441' || mode == 'JT6M') {
             $('#rst_sent').val('26');
-            $('#rst_recv').val('26');
+            $('#rst_rcvd').val('26');
         } else if (mode == 'CW' || mode == 'RTTY' || mode == 'PSK31' || mode == 'PSK63') {
             $('#rst_sent').val('599');
-            $('#rst_recv').val('599');
+            $('#rst_rcvd').val('599');
         } else {
             $('#rst_sent').val('59');
-            $('#rst_recv').val('59');
+            $('#rst_rcvd').val('59');
         }
     }
     </script>

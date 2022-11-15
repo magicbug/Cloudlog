@@ -58,9 +58,13 @@ class Logbook extends CI_Controller {
 		if($this->session->userdata('user_locator')) {
 				$this->load->library('qra');
 				$qra_position = $this->qra->qra2latlong($this->session->userdata('user_locator'));
-				$data['qra'] = "set";
-				$data['qra_lat'] = $qra_position[0];
-				$data['qra_lng'] = $qra_position[1];
+				if (isset($qra_position[0]) and isset($qra_position[1])) {
+					$data['qra'] = "set";
+					$data['qra_lat'] = $qra_position[0];
+					$data['qra_lng'] = $qra_position[1];
+				} else {
+					$data['qra'] = "none";
+				}
 		} else {
 				$data['qra'] = "none";
 		}
@@ -638,13 +642,65 @@ class Logbook extends CI_Controller {
 		}
 	}
 
-	function search_result($id="") {
+	function search_result($id="", $id2="") {
 		$this->load->model('user_model');
-
+		
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+		
+		$fixedid = $id;
 
-		//$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_NAME, '.$this->config->item('table_name').'.COL_COUNTRY, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
+		if ($id2 != "") {
+			$fixedid = $id . '/' . $id2;
+		}
 
+		$query = $this->querydb($fixedid);
+
+		if ($query->num_rows() == 0) {
+			$query = $this->querydb($id);
+			
+			if ($query->num_rows() > 0) {
+				$data['results'] = $query;
+				$this->load->view('view_log/partial/log_ajax.php', $data);
+			}
+			else {
+				$this->load->model('search');
+
+				$iota_search = $this->search->callsign_iota($id);
+
+				if ($iota_search->num_rows() > 0)
+				{
+					$data['results'] = $iota_search;
+					$this->load->view('view_log/partial/log_ajax.php', $data);
+				} else {
+					if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
+						// Lookup using QRZ
+						$this->load->library('qrz');
+
+						if(!$this->session->userdata('qrz_session_key')) {
+							$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+							$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+						}
+
+						$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+					} /*else {
+						// Lookup using hamli
+						$this->load->library('hamli');
+
+						$data['callsign'] = $this->hamli->callsign($id);
+					}*/
+
+					$data['id'] = strtoupper($id);
+
+					$this->load->view('search/result', $data);
+				}
+			}
+		} else {
+			$data['results'] = $query;
+			$this->load->view('view_log/partial/log_ajax.php', $data);
+		}
+	}
+
+	function querydb($id) {
 		$this->db->from($this->config->item('table_name'));
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->group_start();
@@ -654,47 +710,75 @@ class Logbook extends CI_Controller {
 		$this->db->group_end();
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', 'desc');
-		$query = $this->db->get();
+		return $this->db->get();
+  }
 
-		if ($query->num_rows() > 0)
-		{
-			$data['results'] = $query;
-			$this->load->view('view_log/partial/log_ajax.php', $data);
-		} else {
-			$this->load->model('search');
+	function search_duplicates($station_id) {
+		$station_id = $this->security->xss_clean($station_id);
 
-			$iota_search = $this->search->callsign_iota($id);
+		$this->load->model('user_model');
 
-			if ($iota_search->num_rows() > 0)
-			{
-				$data['results'] = $iota_search;
-				$this->load->view('view_log/partial/log_ajax.php', $data);
-			} else {
-				if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
-					// Lookup using QRZ
-					$this->load->library('qrz');
-
-					if(!$this->session->userdata('qrz_session_key')) {
-						$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
-						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
-					}
-
-					$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
-				} /*else {
-					// Lookup using hamli
-					$this->load->library('hamli');
-
-					$data['callsign'] = $this->hamli->callsign($id);
-				}*/
-
-				$data['id'] = strtoupper($id);
-
-				$this->load->view('search/result', $data);
-			}
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+		
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		
+		if (!$logbooks_locations_array) {
+			return null;
 		}
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		
+		$sql = 'select count(*) as occurence, COL_CALL, COL_MODE, COL_SUBMODE, station_callsign, COL_SAT_NAME, COL_BAND,  min(col_time_on) Mintime, max(col_time_on) Maxtime from ' . $this->config->item('table_name') . 
+		' join station_profile on ' . $this->config->item('table_name') . '.station_id = station_profile.station_id where ' . $this->config->item('table_name') .'.station_id in ('. $location_list . ')'; 
+		
+		if ($station_id != 'All') {
+			$sql .= ' and station_profile.station_id = ' . $station_id;
+		}
+		
+		$sql .= ' group by col_call, col_mode, COL_SUBMODE, STATION_CALLSIGN, col_band, COL_SAT_NAME having count(*) > 1 and timediff(maxtime, mintime) < 3000';
+
+		$query = $this->db->query($sql);
+
+		$data['qsos'] = $query;
+
+		$this->load->view('search/duplicates_result.php', $data);
+
 	}
 
+	function search_incorrect_cq_zones($station_id) {
+		$station_id = $this->security->xss_clean($station_id);
 
+		$this->load->model('user_model');
+
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+		
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		
+		if (!$logbooks_locations_array) {
+			return null;
+		}
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+
+		$sql = 'select *, (select group_concat(distinct cqzone order by cqzone) from dxcc_master where countrycode = thcv.col_dxcc and cqzone <> \'\' order by cqzone asc) as correctcqzone from ' . $this->config->item('table_name') . 
+		' thcv join station_profile on thcv.station_id = station_profile.station_id where thcv.station_id in ('. $location_list . ')
+		and not exists (select 1 from dxcc_master where countrycode = thcv.col_dxcc and cqzone = col_cqz) and col_dxcc > 0
+		'; 
+		
+		if ($station_id != 'All') {
+			$sql .= ' and station_profile.station_id = ' . $station_id;
+		}
+		
+		$query = $this->db->query($sql);
+
+		$data['qsos'] = $query;
+
+		$this->load->view('search/cqzones_result.php', $data);
+	}
 
 	/*
 	 * Provide a dxcc search, returning results json encoded

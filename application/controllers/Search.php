@@ -56,6 +56,30 @@ class Search extends CI_Controller {
         }
     }
 
+	// Searches for duplicate QSOs within 30m of time difference
+    public function duplicates() {
+		$this->load->model('stations');
+
+		$data['station_profile'] = $this->stations->all_of_user();
+        $data['page_title'] = "Duplicate QSOs within 30m time difference";
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('search/duplicates');
+		$this->load->view('interface_assets/footer');
+    }
+
+	// Searches for incorrect CQ Zones
+	public function incorrect_cq_zones() {
+		$this->load->model('stations');
+
+		$data['station_profile'] = $this->stations->all_of_user();
+		$data['page_title'] = "Incorrectly logged CQ zones";
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('search/cqzones');
+		$this->load->view('interface_assets/footer');
+	}
+
     function json_result() {
           if(isset($_POST['search'])) {
 			  $result = $this->fetchQueryResult($_POST['search'], false);
