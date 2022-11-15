@@ -182,7 +182,6 @@ class Stations extends CI_Model {
 			'station_active' => null,
 		);
 		$this->db->where('user_id', $this->session->userdata('user_id'));
-		$this->db->where('station_id', $clean_current);
 		$this->db->update('station_profile', $current_default);
 
 		// Deselect current default	
