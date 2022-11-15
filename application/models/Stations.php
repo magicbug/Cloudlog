@@ -77,6 +77,9 @@ class Stations extends CI_Model {
             'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
             'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
             'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
+			'oqrs' => xss_clean($this->input->post('oqrs', true)),
+			'oqrs_email' => xss_clean($this->input->post('oqrsemail', true)),
+			'oqrs_text' => xss_clean($this->input->post('oqrstext', true)),
 		);
 
 		// Insert Records
@@ -103,6 +106,9 @@ class Stations extends CI_Model {
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
             'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
             'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
+			'oqrs' => xss_clean($this->input->post('oqrs', true)),
+			'oqrs_email' => xss_clean($this->input->post('oqrsemail', true)),
+			'oqrs_text' => xss_clean($this->input->post('oqrstext', true)),
 		);
 
 		$this->db->where('user_id', $this->session->userdata('user_id'));

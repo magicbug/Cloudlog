@@ -341,6 +341,37 @@
 				</div>
 			</div>
 		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-md">
+			<div class="card">
+				<h5 class="card-header">OQRS</h5>
+				<div class="card-body">
+					<div class="form-group">
+						<label for="oqrs">OQRS Enabled</label>
+						<select class="custom-select" id="oqrs" name="oqrs">
+							<option value="1" <?php if ($my_station_profile->oqrs == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
+							<option value="0" <?php if ($my_station_profile->oqrs == 0) { echo " selected =\"selected\""; } ?>>No</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="oqrs">OQRS Email alert</label>
+						<select class="custom-select" id="oqrsemail" name="oqrsemail">
+							<option value="1" <?php if ($my_station_profile->oqrs_email == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
+							<option value="0" <?php if ($my_station_profile->oqrs_email == 0) { echo " selected =\"selected\""; } ?>>No</option>
+						</select>
+						<small id="oqrsemailHelp" class="form-text text-muted">Make sure email is set up under admin and global options.</small>
+					</div>
+					<div class="form-group">
+						<label for="oqrstext">OQRS Text</label>
+						<input type="text" class="form-control" name="oqrstext" id="oqrstext" aria-describedby="oqrstextHelp" value="<?php if(set_value('oqrs_text') != "") { echo set_value('oqrs_text'); } else { echo $my_station_profile->oqrs_text; } ?>">
+						<small id="oqrstextHelp" class="form-text text-muted">Some info you want to add regarding QSL'ing.</small>
+					</div>
+
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> <?php echo $form_action; ?> Station Location</button>
