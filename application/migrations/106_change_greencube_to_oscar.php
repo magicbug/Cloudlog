@@ -3,8 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
- *   This adds an option to enable grid lookup
- *   by location entered
+ *   Change Greencube to Oscar number
 */
 
 class Migration_change_greencube_to_oscar extends CI_Migration {
