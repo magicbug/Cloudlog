@@ -490,6 +490,7 @@ function restoreContestSession() {
 				});
 				if (!$.fn.DataTable.isDataTable('.qsotable')) {
 					$('.qsotable').DataTable({
+						"stateSave": true,
 						"pageLength": 25,
 						responsive: false,
 						"scrollY": "400px",
