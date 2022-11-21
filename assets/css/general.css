@@ -146,38 +146,38 @@ TD.eqsl{
 }
 
 .eqsl-green{
-    color: #00A000;
+    color: #00A000 !important;
     font-size: 1.1em;
 }
 .eqsl-red{
-    color: #F00;
+    color: #F00 !important;
     font-size: 1.1em;
 }
 .qsl-green{
-    color: #00A000;
+    color: #00A000 !important;
     font-size: 1.1em;
 }
 .qsl-red{
-    color: #F00;
+    color: #F00 !important;
     font-size: 1.1em;
 }
 .qsl-yellow{
-    color: #d39e00;
+    color: #d39e00 !important;
     font-size: 1.1em;
 }
 .qsl-grey{
-    color: #dddddd;
+    color: #dddddd !important;
     font-size: 1.1em;
 }
 TD.lotw{
     width: 33px;
 }
 .lotw-green{
-    color: #00A000;
+    color: #00A000 !important;
     font-size: 1.1em;
 }
 .lotw-red{
-    color: #F00;
+    color: #F00 !important;
     font-size: 1.1em;
 }
 
