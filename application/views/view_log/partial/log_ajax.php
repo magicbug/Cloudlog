@@ -1,17 +1,17 @@
 <?php
 function echo_table_header_col($ctx, $name) {
 	switch($name) {
-		case 'Mode': echo '<td>'.$ctx->lang->line('gen_hamradio_mode').'</td>'; break;
-		case 'RSTS': echo '<td>'.$ctx->lang->line('gen_hamradio_rsts').'</td>'; break;
-		case 'RSTR': echo '<td>'.$ctx->lang->line('gen_hamradio_rstr').'</td>'; break;
-		case 'Country': echo '<td>'.$ctx->lang->line('general_word_country').'</td>'; break;
-		case 'IOTA': echo '<td>'.$ctx->lang->line('gen_hamradio_iota').'</td>'; break;
-		case 'SOTA': echo '<td>'.$ctx->lang->line('gen_hamradio_sota').'</td>'; break;
-		case 'WWFF': echo '<td>'.$ctx->lang->line('gen_hamradio_wwff').'</td>'; break;
-		case 'State': echo '<td>'.$ctx->lang->line('gen_hamradio_state').'</td>'; break;
-		case 'Grid': echo '<td>'.$ctx->lang->line('gen_hamradio_gridsquare').'</td>'; break;
-		case 'Band': echo '<td>'.$ctx->lang->line('gen_hamradio_band').'</td>'; break;
-		case 'Operator': echo '<td>'.$ctx->lang->line('gen_hamradio_operator').'</td>'; break;
+		case 'Mode': echo '<th>'.$ctx->lang->line('gen_hamradio_mode').'</th>'; break;
+		case 'RSTS': echo '<th>'.$ctx->lang->line('gen_hamradio_rsts').'</th>'; break;
+		case 'RSTR': echo '<th>'.$ctx->lang->line('gen_hamradio_rstr').'</th>'; break;
+		case 'Country': echo '<th>'.$ctx->lang->line('general_word_country').'</th>'; break;
+		case 'IOTA': echo '<th>'.$ctx->lang->line('gen_hamradio_iota').'</th>'; break;
+		case 'SOTA': echo '<th>'.$ctx->lang->line('gen_hamradio_sota').'</th>'; break;
+		case 'WWFF': echo '<th>'.$ctx->lang->line('gen_hamradio_wwff').'</th>'; break;
+		case 'State': echo '<th>'.$ctx->lang->line('gen_hamradio_state').'</th>'; break;
+		case 'Grid': echo '<th>'.$ctx->lang->line('gen_hamradio_gridsquare').'</th>'; break;
+		case 'Band': echo '<th>'.$ctx->lang->line('gen_hamradio_band').'</td>'; break;
+		case 'Operator': echo '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
 		
 	}
 }
@@ -46,35 +46,35 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 <div class="table-responsive">
     <table style="width:100%" class="table contacttable table-striped table-hover">
         <thead>
-        <tr class="titles">
-            <td><?php echo $this->lang->line('general_word_date'); ?></td>
-            <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-            <td><?php echo $this->lang->line('general_word_time'); ?></td>
-            <?php } ?>
-            <td><?php echo $this->lang->line('gen_hamradio_call'); ?></td>
-            <?php
-			echo_table_header_col($this, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
-            echo_table_header_col($this, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
-            echo_table_header_col($this, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
-            echo_table_header_col($this, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
-            echo_table_header_col($this, $this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5'));
+            <tr class="titles">
+                <th><?php echo $this->lang->line('general_word_date'); ?></th>
+                <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
+                <th><?php echo $this->lang->line('general_word_time'); ?></th>
+                <?php } ?>
+                <th><?php echo $this->lang->line('gen_hamradio_call'); ?></th>
+                <?php
+                echo_table_header_col($this, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
+                echo_table_header_col($this, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
+                echo_table_header_col($this, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
+                echo_table_header_col($this, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
+                echo_table_header_col($this, $this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5'));
 
-            	if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-                <td>QSL</td>
-                <?php if($this->session->userdata('user_eqsl_name') != "") { ?>
-                    <td>eQSL</td>
+                    if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
+                    <th>QSL</th>
+                    <?php if($this->session->userdata('user_eqsl_name') != "") { ?>
+                        <th>eQSL</th>
+                    <?php } ?>
+                    <?php if($this->session->userdata('user_lotw_name') != "") { ?>
+                        <th>LoTW</th>
+                    <?php } ?>
                 <?php } ?>
-                <?php if($this->session->userdata('user_lotw_name') != "") { ?>
-                    <td>LoTW</td>
+                    <th><?php echo $this->lang->line('gen_hamradio_station'); ?></th>
+                <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
+                    <th></th>
                 <?php } ?>
-            <?php } ?>
-                <td><?php echo $this->lang->line('gen_hamradio_station'); ?></td>
-            <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-                <td></td>
-            <?php } ?>
-        </tr>
-        <thead>
-            <tbody>
+            </tr>
+        </thead>
+        <tbody>
 
         <?php  $i = 0;  
             foreach ($results->result() as $row) {
