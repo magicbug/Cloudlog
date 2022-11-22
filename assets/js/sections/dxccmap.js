@@ -23,7 +23,7 @@ function load_dxcc_map() {
             Antarctica: +$('#Antarctica').prop('checked'),
         },
         success: function(data) {
-            load_dxcc_map2(data);
+            load_dxcc_map2(data, worked, confirmed, notworked);
         },
         error: function() {
             
@@ -31,7 +31,7 @@ function load_dxcc_map() {
     });
 }
 
-function load_dxcc_map2(data) {
+function load_dxcc_map2(data, worked, confirmed, notworked) {
 
     // If map is already initialized
     var container = L.DomUtil.get('dxccmap');
@@ -51,67 +51,89 @@ function load_dxcc_map2(data) {
         }
     ).addTo(map);
 
-    var notworked = data.length;
-    var confirmed = 0;
-    var workednotconfirmed = 0;
+    var notworkedcount = data.length;
+    var confirmedcount = 0;
+    var workednotconfirmedcount = 0;
 
     for (var i = 0; i < data.length; i++) {
-    var D = data[i];
-        var mapColor = 'red';
-
-        if (D['status'] == 'C') {
-            mapColor = 'green';
-            confirmed++;
-            notworked--;
-        }
-        if (D['status'] == 'W') {
-          mapColor = 'orange';
-          workednotconfirmed++;
-          notworked--;
-        }
-
-        const markerHtmlStyles = `
-          background-color: ${mapColor};
-          width: 1rem;
-          height: 1rem;
-          display: block;
-          position: relative;
-          border-radius: 3rem 3rem 0;
-          transform: rotate(45deg);
-          border: 1px solid #FFFFFF`
-        
-        const icon = L.divIcon({
-          className: "my-custom-pin",
-          iconAnchor: [0, 24],
-          labelAnchor: [-6, 0],
-          popupAnchor: [0, -36],
-          html: `<span style="${markerHtmlStyles}" />`
-        })
-
-        L.marker(
-            [D['lat'], D['long']], {
-                icon: icon,
-                adif: D['adif'],
-                title: D['prefix'] + ' - ' + D['name'],
+        var D = data[i];
+        if (D['status'] != 'x') {
+            var mapColor = 'red';
+    
+            if (D['status'] == 'C') {
+                mapColor = 'green';
+                if (confirmed != '0') {
+                    addMarker(L, D, mapColor, map);
+                    confirmedcount++;
+                    notworkedcount--;
+                }
             }
-          ).addTo(map).on('click', onClick);
+            if (D['status'] == 'W') {
+                mapColor = 'orange';
+                if (worked != '0') {
+                    addMarker(L, D, mapColor, map);
+                    workednotconfirmedcount++;
+                    notworkedcount--;
+                }
+            }
+    
+            
+        // Make a check here and hide what I don't want to show
+            if (notworked != '0') {
+                if (mapColor == 'red') {
+                    addMarker(L, D, mapColor, map);
+                }
+            }
+        }
     }
 
     /*Legend specific*/
     var legend = L.control({ position: "topright" });
 
+    if (notworked.checked == false) {
+        notworkedcount = 0;
+    }
+
     legend.onAdd = function(map) {
         var div = L.DomUtil.create("div", "legend");
         div.innerHTML += "<h4>Colors</h4>";
-        div.innerHTML += '<i style="background: green"></i><span>Confirmed ('+confirmed+')</span><br>';
-        div.innerHTML += '<i style="background: orange"></i><span>Worked not confirmed ('+workednotconfirmed+')</span><br>';
-        div.innerHTML += '<i style="background: red"></i><span>Not worked ('+notworked+')</span><br>';
+        div.innerHTML += '<i style="background: green"></i><span>Confirmed ('+confirmedcount+')</span><br>';
+        div.innerHTML += '<i style="background: orange"></i><span>Worked not confirmed ('+workednotconfirmedcount+')</span><br>';
+        div.innerHTML += '<i style="background: red"></i><span>Not worked ('+notworkedcount+')</span><br>';
         return div;
     };
 
     legend.addTo(map);
 
     map.setView([20, 0], 2);
+}
+
+function addMarker(L, D, mapColor, map) {
+    const markerHtmlStyles = `
+    background-color: ${mapColor};
+    width: 1rem;
+    height: 1rem;
+    display: block;
+    position: relative;
+    border-radius: 3rem 3rem 0;
+    transform: rotate(45deg);
+    border: 1px solid #FFFFFF`
+  
+    const icon = L.divIcon({
+        className: "my-custom-pin",
+        iconAnchor: [0, 24],
+        labelAnchor: [-6, 0],
+        popupAnchor: [0, -36],
+        html: `<span style="${markerHtmlStyles}" />`
+    })
+
+    L.marker(
+    [D['lat'], D['long']], {
+        icon: icon,
+        adif: D['adif'],
+        title: D['prefix'] + ' - ' + D['name'],
+    }
+    ).addTo(map).on('click', onClick);
 }
 
 function onClick(e) {

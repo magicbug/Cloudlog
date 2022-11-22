@@ -644,7 +644,7 @@ class Awards extends CI_Controller {
             }
             $newdxcc[$i]['lat'] = $dxcc->lat;
             $newdxcc[$i]['long'] = $dxcc->long;
-            $newdxcc[$i++]['status'] = $this->returnStatus($dxcc_array[$dxcc->adif]);
+            $newdxcc[$i++]['status'] = isset($dxcc_array[$dxcc->adif]) ? $this->returnStatus($dxcc_array[$dxcc->adif]) : 'x';
         }
 
         header('Content-Type: application/json');
