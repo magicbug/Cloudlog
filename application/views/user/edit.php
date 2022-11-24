@@ -441,6 +441,29 @@
 			<div class="col-md">
 				<div class="card">
 					<div class="card-header">
+						Previous QSL Type
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+							<label for="profileimages">Select the type of QSL to show in the previous QSOs section.</label>
+							<select class="custom-select" id="previousqsltype" name="user_previous_qsl_type">
+								<option value="0" <?php if ($user_previous_qsl_type == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_qsl'); ?></option>
+								<option value="1" <?php if ($user_previous_qsl_type == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('lotw_short'); ?></option>
+								<option value="2" <?php if ($user_previous_qsl_type == 2) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('eqsl_short'); ?></option>
+							</select>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<br>
+		<div class="row">
+			<!-- qrz.com Images -->
+			<div class="col-md">
+				<div class="card">
+					<div class="card-header">
 						qrz.com/hamqth.com Images
 					</div>
 					<div class="card-body">
