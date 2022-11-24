@@ -437,7 +437,6 @@
 		</div>
 		<br>
 		<div class="row">
-			<!-- qrz.com Images -->
 			<div class="col-md">
 				<div class="card">
 					<div class="card-header">
