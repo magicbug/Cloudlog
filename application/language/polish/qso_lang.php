@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // Tiles
 $lang['qso_title_qso_map'] = 'Mapa łączności';
 $lang['qso_title_suggestions'] = 'Sugestie';
-$lang['qso_title_pervious_contacts'] = 'Poprzednie łączności';
+$lang['qso_title_previous_contacts'] = 'Poprzednie łączności';
 
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Wpisz wartość mocy w watach. W polu podaj same cyfry.';
