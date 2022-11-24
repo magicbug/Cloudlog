@@ -109,6 +109,9 @@ function load_dxcc_map2(data, worked, confirmed, notworked) {
 }
 
 function addMarker(L, D, mapColor, map) {
+    var title = '<span><font style="color: ' +mapColor+ '; text-shadow: 1px 0 #fff, -1px 0 #fff, 0 1px #fff, 0 -1px #fff, 1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;font-size: 14px; font-weight: 900;">' + D['prefix'] + '</font></span>';
+    var myIcon = L.divIcon({className: 'my-div-icon', html: title});
+
     const markerHtmlStyles = `
     background-color: ${mapColor};
     width: 1rem;
@@ -129,11 +132,19 @@ function addMarker(L, D, mapColor, map) {
 
     L.marker(
     [D['lat'], D['long']], {
-        icon: icon,
+        icon: myIcon,
         adif: D['adif'],
         title: D['prefix'] + ' - ' + D['name'],
     }
     ).addTo(map).on('click', onClick);
+
+    L.marker(
+        [D['lat'], D['long']], {
+            icon: icon,
+            adif: D['adif'],
+            title: D['prefix'] + ' - ' + D['name'],
+        }
+        ).addTo(map).on('click', onClick);
 }
 
 function onClick(e) {
