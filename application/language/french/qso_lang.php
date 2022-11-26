@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // Tiles
 $lang['qso_title_qso_map'] = 'Carte QSO';
 $lang['qso_title_suggestions'] = 'Suggestions';
-$lang['qso_title_pervious_contacts'] = 'Contacts précédents';
+$lang['qso_title_previous_contacts'] = 'Contacts précédents';
 
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Saisissez la ouissance en Watts en utilisant uniquement des chiffres.';
