@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 // Tiles
 $lang['qso_title_qso_map'] = 'Mappa QSO';
 $lang['qso_title_suggestions'] = 'Suggerimenti';
-$lang['qso_title_pervious_contacts'] = 'Contatti Precedenti';
+$lang['qso_title_previous_contacts'] = 'Contatti Precedenti';
 $lang['qso_title_image'] = 'Immagine Profilo';
 
 // Input Help Text on the /QSO Display

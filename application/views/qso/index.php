@@ -503,7 +503,7 @@
     <?php } ?>
 
     <div class="card previous-qsos">
-      <div class="card-header"><h4 class="card-title" style="font-size: 16px; font-weight: bold;"><?php echo $this->lang->line('qso_title_pervious_contacts'); ?></h4></div>
+      <div class="card-header"><h4 class="card-title" style="font-size: 16px; font-weight: bold;"><?php echo $this->lang->line('qso_title_previous_contacts'); ?></h4></div>
 
         <div id="partial_view" style="font-size: 0.95rem;"></div>
 

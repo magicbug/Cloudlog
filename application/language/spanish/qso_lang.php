@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // Tiles
 $lang['qso_title_qso_map'] = 'Mapa de QSO';
 $lang['qso_title_suggestions'] = 'Sugerencias';
-$lang['qso_title_pervious_contacts'] = 'Contactos previos';
+$lang['qso_title_previous_contacts'] = 'Contactos previos';
 
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Especifique el valor de potencia en Watios (W). Incluya solo números.';
