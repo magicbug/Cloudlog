@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('Doğrudan komut dosyası erişimine izin verilmez')
 // Tiles
 $lang['qso_title_qso_map'] = 'QSO Haritası';
 $lang['qso_title_suggestions'] = 'Öneriler';
-$lang['qso_title_pervious_contacts'] = 'Önceki Görüşmeler';
+$lang['qso_title_previous_contacts'] = 'Önceki Görüşmeler';
 $lang['qso_title_image'] = 'Profil Resmi';
 
 // Input Help Text on the /QSO Display

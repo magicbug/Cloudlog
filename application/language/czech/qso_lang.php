@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // Tiles
 $lang['qso_title_qso_map'] = 'Mapa spojení';
 $lang['qso_title_suggestions'] = 'Návrhy';
-$lang['qso_title_pervious_contacts'] = 'Předchozí spojení';
+$lang['qso_title_previous_contacts'] = 'Předchozí spojení';
 
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Zadej výkon ve Wattech. Jsou povolen pouz čísla';

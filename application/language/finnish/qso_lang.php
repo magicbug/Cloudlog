@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // Tiles
 $lang['qso_title_qso_map'] = 'Vasta-aseman sijainti kartalla';
 $lang['qso_title_suggestions'] = 'Kutsumerkkiehdotukset';
-$lang['qso_title_pervious_contacts'] = 'Edelliset yhteydet';
+$lang['qso_title_previous_contacts'] = 'Edelliset yhteydet';
 
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Anna teholukema Watteina käyttäen vain numeroita.';

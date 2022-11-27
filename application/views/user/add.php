@@ -248,6 +248,15 @@
 		</div>
 
 		<div class="form-group">
+			<label for="previousqsltype">Select the type of QSL to show in the previous QSOs section.</label>
+			<select class="custom-select" id="previousqsltype" name="user_previous_qsl_type">
+				<option value="0"><?php echo $this->lang->line('gen_hamradio_qsl'); ?></option>
+				<option value="1"><?php echo $this->lang->line('lotw_short'); ?></option>
+				<option value="2"><?php echo $this->lang->line('eqsl_short'); ?></option>
+			</select>
+		</div>
+
+		<div class="form-group">
 			<label for="profileimages">Show profile picture of QSO partner from qrz.com/hamqth.com profile in the log QSO section.</label>
 			<select class="custom-select" id="profileimages" name="user_show_profile_image">
 				<option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>

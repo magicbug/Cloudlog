@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('Не е разрешен директен дост�
 // Tiles
 $lang['qso_title_qso_map'] = 'Карта на QSO';
 $lang['qso_title_suggestions'] = 'Предложения';
-$lang['qso_title_pervious_contacts'] = 'Предишни контакти';
+$lang['qso_title_previous_contacts'] = 'Предишни контакти';
 
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Посочете стойността на мощността във ватове. Въведете само цифри.';

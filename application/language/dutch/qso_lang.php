@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('Directe toegang tot scripts is niet toegestaan');
 // Tiles
 $lang['qso_title_qso_map'] = 'QSO Kaart';
 $lang['qso_title_suggestions'] = 'Suggesties';
-$lang['qso_title_pervious_contacts'] = 'Eerdere verbindingen';
+$lang['qso_title_previous_contacts'] = 'Eerdere verbindingen';
 
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Geef vermogen in Watt. Vermeld alleen cijfers.';
