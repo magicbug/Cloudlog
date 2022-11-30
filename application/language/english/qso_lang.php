@@ -13,6 +13,7 @@ $lang['qso_transmit_power_helptext'] = 'Give power value in Watts. Include only 
 
 $lang['qso_sota_ref_helptext'] = 'For example: GM/NS-001.';
 $lang['qso_wwff_ref_helptext'] = 'For example: DLFF-0069.';
+$lang['qso_pota_ref_helptext'] = 'For example: PA-0150.';
 
 $lang['qso_sig_helptext'] = 'For example: GMA';
 $lang['qso_sig_info_helptext'] = 'For example: DA/NW-357';

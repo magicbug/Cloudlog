@@ -12,8 +12,8 @@ $lang['qso_transmit_power_helptext'] = 'Посочете стойността н
 
 $lang['qso_sota_ref_helptext'] = 'Например: GM/NS-001.';
 
-$lang['qso_sig_helptext'] = 'Например: WWFF или POTA';
-$lang['qso_sig_info_helptext'] = 'Например: DLFF-0029';
+$lang['qso_sig_helptext'] = 'Например: GMA';
+$lang['qso_sig_info_helptext'] = 'Например: DA/NW-357';
 
 $lang['qso_dok_helptext'] = 'Например: Q03';
 
