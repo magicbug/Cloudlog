@@ -3063,7 +3063,7 @@ function deleteQsl(id) {
 	</script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "wwff") ) {
+<?php if ($this->uri->segment(1) == "awards") {
 	// Get Date format
 	if($this->session->userdata('user_date_format')) {
 		// If Logged in and session exists
@@ -3088,39 +3088,75 @@ function deleteQsl(id) {
     ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
-    <script>
-        $.fn.dataTable.moment('<?php echo $usethisformat ?>');
-        $.fn.dataTable.ext.buttons.clear = {
-            className: 'buttons-clear',
-            action: function ( e, dt, node, config ) {
-               dt.search('').draw();
+    <?php if ($this->uri->segment(2) == "wwff") { ?>
+        <script>
+            $.fn.dataTable.moment('<?php echo $usethisformat ?>');
+            $.fn.dataTable.ext.buttons.clear = {
+                className: 'buttons-clear',
+                action: function ( e, dt, node, config ) {
+                   dt.search('').draw();
+                }
+            };
+            $('#wwfftable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: true,
+                "scrollY":        "500px",
+                "scrollCollapse": true,
+                "paging":         false,
+                "scrollX": true,
+                "order": [ 0, 'asc' ],
+                dom: 'Bfrtip',
+                buttons: [
+                   {
+                      extend: 'csv'
+                   },
+                   {
+                      extend: 'clear',
+                      text: 'Clear'
+                   }
+                ]
+            });
+            // change color of csv-button if dark mode is chosen
+            if (isDarkModeTheme()) {
+               $('[class*="buttons"]').css("color", "white");
             }
-        };
-        $('#wwfftable').DataTable({
-            "pageLength": 25,
-            responsive: false,
-            ordering: true,
-            "scrollY":        "500px",
-            "scrollCollapse": true,
-            "paging":         false,
-            "scrollX": true,
-            "order": [ 0, 'asc' ],
-            dom: 'Bfrtip',
-            buttons: [
-               {
-                  extend: 'csv'
-               },
-               {
-                  extend: 'clear',
-                  text: 'Clear'
-               }
-            ]
-        });
-        // change color of csv-button if dark mode is chosen
-        if (isDarkModeTheme()) {
-           $('[class*="buttons"]').css("color", "white");
-        }
-    </script>
+        </script>
+    <?php } else if ($this->uri->segment(2) == "pota") { ?>
+        <script>
+            $.fn.dataTable.moment('<?php echo $usethisformat ?>');
+            $.fn.dataTable.ext.buttons.clear = {
+                className: 'buttons-clear',
+                action: function ( e, dt, node, config ) {
+                   dt.search('').draw();
+                }
+            };
+            $('#potatable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: true,
+                "scrollY":        "500px",
+                "scrollCollapse": true,
+                "paging":         false,
+                "scrollX": true,
+                "order": [ 0, 'asc' ],
+                dom: 'Bfrtip',
+                buttons: [
+                   {
+                      extend: 'csv'
+                   },
+                   {
+                      extend: 'clear',
+                      text: 'Clear'
+                   }
+                ]
+            });
+            // change color of csv-button if dark mode is chosen
+            if (isDarkModeTheme()) {
+               $('[class*="buttons"]').css("color", "white");
+            }
+        </script>
+    <?php } ?>
 <?php } ?>
 
   </body>
