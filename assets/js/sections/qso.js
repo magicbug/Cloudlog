@@ -749,4 +749,6 @@ function resetDefaultQSOFields() {
 	$('#callsign_info').removeClass("badge-success");
 	$('#callsign_info').removeClass("badge-danger");
 	$('#input_usa_state').val("");
+	$('#callsign-image').attr('style', 'display: none;');
+	$('#callsign-image-content').text("");
 }
