@@ -364,6 +364,9 @@ $("#callsign").focusout(function() {
 			// Make sure the typed callsign and json result match
 			if($('#callsign').val = result.callsign) {
 
+				// Reset QSO fields
+				resetDefaultQSOFields();
+
 				if(result.dxcc.entity != undefined) {
 					$('#country').val(convert_case(result.dxcc.entity));
 					$('#callsign_info').text(convert_case(result.dxcc.entity));
@@ -533,25 +536,8 @@ $("#callsign").focusout(function() {
 			}
 		});
 	} else {
-		/* Reset fields ... */
-		$('#callsign_info').text("");
-		$('#locator_info').text("");
-		$('#country').val("");
-		$('#dxcc_id').val("");
-		$('#cqz').val("");
-		$('#name').val("");
-		$('#qth').val("");
-		$('#locator').val("");
-		$('#iota_ref').val("");
-		$('#sota_ref').val("");
-		$("#locator").removeClass("workedGrid");
-		$("#locator").removeClass("newGrid");
-		$("#callsign").removeClass("workedGrid");
-		$("#callsign").removeClass("newGrid");
-		$('#callsign_info').removeClass("badge-secondary");
-		$('#callsign_info').removeClass("badge-success");
-		$('#callsign_info').removeClass("badge-danger");
-		$('#input_usa_state').val("");
+		// Reset QSO fields
+		resetDefaultQSOFields();
 	}
 })
 
@@ -742,3 +728,25 @@ $("#callsign").keyup(function() {
 		});
 	}
 });
+
+//Reset QSO form Fields function
+function resetDefaultQSOFields() {
+	$('#callsign_info').text("");
+	$('#locator_info').text("");
+	$('#country').val("");
+	$('#dxcc_id').val("");
+	$('#cqz').val("");
+	$('#name').val("");
+	$('#qth').val("");
+	$('#locator').val("");
+	$('#iota_ref').val("");
+	$('#sota_ref').val("");
+	$("#locator").removeClass("workedGrid");
+	$("#locator").removeClass("newGrid");
+	$("#callsign").removeClass("workedGrid");
+	$("#callsign").removeClass("newGrid");
+	$('#callsign_info').removeClass("badge-secondary");
+	$('#callsign_info').removeClass("badge-success");
+	$('#callsign_info').removeClass("badge-danger");
+	$('#input_usa_state').val("");
+}
