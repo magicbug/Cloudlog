@@ -124,6 +124,7 @@ class Logbook extends CI_Controller {
 		$this->load->model('logbook_model');
 
 		$return = [
+			"callsign" => strtoupper($callsign),
 			"dxcc" => false,
 			"callsign_name" => "",
 			"callsign_qra"  => "",

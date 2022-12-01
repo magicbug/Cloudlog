@@ -360,8 +360,9 @@ $("#callsign").focusout(function() {
 		// Replace / in a callsign with - to stop urls breaking
 		$.getJSON('logbook/json/' + find_callsign.replace(/\//g, "-") + '/' + sat_type + '/' + json_band + '/' + json_mode + '/' + $('#stationProfile').val(), function(result)
 		{
-			// Make sure the typed callsign and temp callsign match
-			if($('#callsign').val = temp_callsign){
+
+			// Make sure the typed callsign and json result match
+			if($('#callsign').val = result.callsign) {
 
 				if(result.dxcc.entity != undefined) {
 					$('#country').val(convert_case(result.dxcc.entity));
