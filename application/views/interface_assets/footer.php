@@ -595,6 +595,10 @@ function newpath(latlng1, latlng2, locator1, locator2) {
     }
 
     const map = new L.map('mapqrb').setView([30, 0], 1.5);
+    map.fitBounds([
+        [latlng1[0], latlng1[1]],
+        [latlng2[0], latlng2[1]]
+    ]);
 
     var maidenhead = L.maidenheadqrb().addTo(map);
 
