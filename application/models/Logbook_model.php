@@ -2818,9 +2818,12 @@ class Logbook_model extends CI_Model {
 			$row = $dxcc_exceptions->row_array();
 			return array($row['adif'], $row['entity'], $row['cqz']);
 		}
-
-		if (preg_match('/(^KG4)[A-Z09]{3,}/', $call)) { 	// KG4/ and KG4 5 char calls are Guantanamo Bay. If 6 char, it is USA
-			$call = "K";
+    if (preg_match('/(^KG4)[A-Z09]{3}/', $call)) {      // KG4/ and KG4 5 char calls are Guantanamo Bay. If 4 or 6 char, it is USA
+      $call = "K";
+    } elseif (preg_match('/(^KG4)[A-Z09]{2}/', $call)) {
+      $call = "KG4";
+    } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
+      $call = "K";
 		} elseif (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
 			if ($matches[5][0] == '/MM') {
 				$row['adif'] = 0;
@@ -2871,8 +2874,12 @@ class Logbook_model extends CI_Model {
 				return $row;
 			} else {
 
-				if (preg_match('/(^KG4)[A-Z09]{3,}/', $call)) { 	// KG4/ and KG4 5 char calls are Guantanamo Bay. If 6 char, it is USA
-					$call = "K";
+        if (preg_match('/(^KG4)[A-Z09]{3}/', $call)) {       // KG4/ and KG4 5 char calls are Guantanamo Bay. If 4 or 6 char, it is USA
+          $call = "K";
+        } elseif (preg_match('/(^KG4)[A-Z09]{2}/', $call)) { 
+          $call = "KG4";
+        } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
+          $call = "K";
 				} elseif (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
 					if ($matches[5][0] == '/MM') {
 						$row['adif'] = 0;
