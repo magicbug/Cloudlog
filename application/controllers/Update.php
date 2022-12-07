@@ -417,6 +417,43 @@ class Update extends CI_Controller {
         }
     }
 
+    public function update_pota() {
+        $csvfile = 'https://pota.app/all_parks.csv';
+
+        $potafile = './assets/json/pota.txt';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $csvfile);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog Updater');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $csv = curl_exec($ch);
+        curl_close($ch);
+
+        $potafilehandle = fopen($potafile, 'w');
+        $data = str_getcsv($csv,"\n");
+        foreach ($data as $idx => $row) {
+           if ($idx == 0) continue; // Skip line we are not interested in
+           $row = str_getcsv($row, ',');
+           if ($row[0]) {
+              fwrite($potafilehandle, $row[0].PHP_EOL);
+           }
+        }
+
+        fclose($potafilehandle);
+        if (file_exists($potafile))
+        {
+            $nCount = count(file($potafile));
+            if ($nCount > 0)
+            {
+                echo "DONE: " . number_format($nCount) . " POTA's saved";
+            } else {
+                echo"FAILED: Empty file";
+            }
+        } else {
+            echo"FAILED: Could not create pota.txt file locally";
+        }
+    }
 
 }
 ?>

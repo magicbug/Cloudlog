@@ -1,4 +1,7 @@
 
+<?php
+$custom_date_format = $this->session->userdata('user_date_format');
+?>
 <div class="container eqsl">
 <div class="card">
   <div class="card-header">
@@ -25,9 +28,10 @@
 				<?php echo $import['status']; ?>
 			</div>
 			<?php if (count($import['qsos']) > 0) { ?>
-				<table>
+				<table width="100%">
 					<tr class="titles">
 						<td>Date</td>
+						<td>Time</td>
 						<td>Call</td>
 						<td>Mode</td>
 						<td>Submode</td>
@@ -36,7 +40,9 @@
 					</tr>
 					<?php foreach ($import['qsos'] as $qso) { ?>
 						<tr>
-							<td><?php echo $qso['date']; ?></td>
+							<?php $timestamp = strtotime($qso['date']); ?>
+							<td><?php echo date($custom_date_format, $timestamp) ?></td>
+							<td><?php echo date('H:i', $timestamp); ?></td>
 							<td><?php echo $qso['call']; ?></td>
 							<td><?php echo $qso['mode']; ?></td>
 							<td><?php echo $qso['submode']; ?></td>

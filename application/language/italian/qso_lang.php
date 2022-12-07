@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 // Tiles
 $lang['qso_title_qso_map'] = 'Mappa QSO';
 $lang['qso_title_suggestions'] = 'Suggerimenti';
-$lang['qso_title_pervious_contacts'] = 'Contatti Precedenti';
+$lang['qso_title_previous_contacts'] = 'Contatti Precedenti';
 $lang['qso_title_image'] = 'Immagine Profilo';
 
 // Input Help Text on the /QSO Display
@@ -13,9 +13,10 @@ $lang['qso_transmit_power_helptext'] = 'Dare valore di potenza in Watt. Includer
 
 $lang['qso_sota_ref_helptext'] = 'Per esempio: GM/NS-001.';
 $lang['qso_wwff_ref_helptext'] = 'Per esempio: DLFF-0069.';
+$lang['qso_pota_ref_helptext'] = 'Per esempio: PA-0150.';
 
-$lang['qso_sig_helptext'] = 'Per esempio: POTA';
-$lang['qso_sig_info_helptext'] = 'Per esempio: PA-0150';
+$lang['qso_sig_helptext'] = 'Per esempio: GMA';
+$lang['qso_sig_info_helptext'] = 'Per esempio: DA/NW-357';
 
 $lang['qso_dok_helptext'] = 'Per esempio: Q03';
 

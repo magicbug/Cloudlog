@@ -21,13 +21,3 @@ $(function () {
         format: 'DD/MM/YYYY',
     });
 });
-$(function () {
-    $('#datetimepicker5').datetimepicker({
-        format: 'DD/MM/YYYY',
-    });
-});
-$(function () {
-    $('#datetimepicker6').datetimepicker({
-        format: 'DD/MM/YYYY',
-    });
-});

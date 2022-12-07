@@ -87,6 +87,10 @@ thead > tr > td {
     text-transform: uppercase;
 }
 
+.qso_panel #pota_ref-selectized {
+    text-transform: uppercase;
+}
+
 .qso_panel #darc_dok-selectized {
     text-transform: uppercase;
 }
@@ -108,6 +112,10 @@ thead > tr > td {
 }
 
 .card-body #wwff_ref_edit-selectized {
+    text-transform: uppercase;
+}
+
+.card-body #pota_ref_edit-selectized {
     text-transform: uppercase;
 }
 
@@ -146,38 +154,39 @@ TD.eqsl{
 }
 
 .eqsl-green{
-    color: #00A000;
+    color: #00A000 !important;
     font-size: 1.1em;
+    text-decoration: none !important;
 }
 .eqsl-red{
-    color: #F00;
+    color: #F00 !important;
     font-size: 1.1em;
 }
 .qsl-green{
-    color: #00A000;
+    color: #00A000 !important;
     font-size: 1.1em;
 }
 .qsl-red{
-    color: #F00;
+    color: #F00 !important;
     font-size: 1.1em;
 }
 .qsl-yellow{
-    color: #d39e00;
+    color: #d39e00 !important;
     font-size: 1.1em;
 }
 .qsl-grey{
-    color: #dddddd;
+    color: #dddddd !important;
     font-size: 1.1em;
 }
 TD.lotw{
     width: 33px;
 }
 .lotw-green{
-    color: #00A000;
+    color: #00A000 !important;
     font-size: 1.1em;
 }
 .lotw-red{
-    color: #F00;
+    color: #F00 !important;
     font-size: 1.1em;
 }
 
@@ -394,4 +403,8 @@ div#station_logbooks_linked_table_paginate {
 
 .api-key {
    font-family: Monospace;
+}
+
+.dropdown-menu {
+    z-index: 2000;
 }

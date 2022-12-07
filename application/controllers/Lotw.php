@@ -121,6 +121,9 @@ class Lotw extends CI_Controller {
         	// Upload of P12 Failed
             $error = array('error' => $this->upload->display_errors());
 
+			// Load DXCC Countrys List
+			$data['dxcc_list'] = $this->dxcc->list();
+
 			// Set Page Title
 			$data['page_title'] = "Logbook of the World";
 
@@ -932,6 +935,7 @@ class Lotw extends CI_Controller {
 			"AISAT1"	=>	"AISAT-1",
 			'UVSQ'		=>	"UVSQ-SAT",
 			'CAS-3H'	=>	"LILACSAT-2",
+			'IO-117'	=>	"GREENCUBE",
 		);
 
 		return array_search(strtoupper($satname),$arr,true);

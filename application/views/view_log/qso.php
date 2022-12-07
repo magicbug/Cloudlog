@@ -216,6 +216,13 @@
                     </tr>
                     <?php } ?>
 
+                    <?php if($row->COL_POTA_REF != null) { ?>
+                    <tr>
+                        <td><?php echo $this->lang->line('gen_hamradio_pota_reference'); ?></td>
+                        <td><a href="https://pota.app/#/park/<?php echo $row->COL_POTA_REF; ?>" target="_blank"><?php echo $row->COL_POTA_REF; ?></a></td>
+                    </tr>
+                    <?php } ?>
+
                     <?php if($row->COL_SIG != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_sig'); ?></td>
@@ -233,12 +240,6 @@
                            break;
                         case "MQC":
                            echo "<td><a href=\"https://www.mountainqrp.it/awards/referenza.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
-                           break;
-                        case "WWFF":
-                           echo "<td><a href=\"https://www.cqgma.org/zinfo.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
-                           break;
-                        case "POTA":
-                           echo "<td><a href=\"https://pota.app/#/park/".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
                            break;
                         default:
                            echo "<td>".$row->COL_SIG_INFO."</td>";
@@ -265,19 +266,36 @@
                 <?php if($row->COL_QSL_SENT == "Y" || $row->COL_QSL_RCVD == "Y") { ?>
                     <h3><?php echo $this->lang->line('qslcard_info'); ?></h3>
 
-                    <?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "B") { ?>
-                    <p><?php echo $this->lang->line('qslcard_sent_bureau'); ?> <?php $timestamp = strtotime($row->COL_QSLSDATE); echo date($custom_date_format, $timestamp); ?>.</p>
-                    <?php } ?>
-                    <?php if($row->COL_QSL_SENT == "Y" && $row->COL_QSL_SENT_VIA == "D") { ?>
-                    <p><?php echo $this->lang->line('qslcard_sent_direct'); ?> <?php $timestamp = strtotime($row->COL_QSLSDATE); echo date($custom_date_format, $timestamp); ?>.</p>
+                    <?php if($row->COL_QSL_SENT == "Y") {?>
+                        <?php if ($row->COL_QSL_SENT_VIA == "B") { ?>
+                            <p><?php echo $this->lang->line('qslcard_sent_bureau'); ?>
+                        <?php } else if($row->COL_QSL_SENT_VIA == "D") { ?>
+                            <p><?php echo $this->lang->line('qslcard_sent_direct'); ?>
+                        <?php } else if($row->COL_QSL_SENT_VIA == "E") { ?>
+                            <p><?php echo $this->lang->line('qslcard_sent_electronic'); ?>
+                        <?php } else if($row->COL_QSL_SENT_VIA == "M") { ?>
+                            <p><?php echo $this->lang->line('qslcard_sent_manager'); ?>
+                        <?php } else { ?>
+                            <p><?php echo $this->lang->line('qslcard_sent'); ?>
+                        <?php } ?>
+                        <?php $timestamp = strtotime($row->COL_QSLSDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
 
-                    <?php if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_RCVD_VIA == "B") { ?>
-                    <p><?php echo $this->lang->line('qslcard_rcvd_bureau'); ?> <?php $timestamp = strtotime($row->COL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
+                    <?php if($row->COL_QSL_RCVD == "Y") { ?>
+                        <?php if ($row->COL_QSL_RCVD_VIA == "B") { ?>
+                            <p><?php echo $this->lang->line('qslcard_rcvd_bureau'); ?>
+                        <?php } else if($row->COL_QSL_RCVD_VIA == "D") { ?>
+                            <p><?php echo $this->lang->line('qslcard_rcvd_direct'); ?>
+                        <?php } else if($row->COL_QSL_RCVD_VIA == "E") { ?>
+                            <p><?php echo $this->lang->line('qslcard_rcvd_electronic'); ?>
+                        <?php } else if($row->COL_QSL_RCVD_VIA == "M") { ?>
+                            <p><?php echo $this->lang->line('qslcard_rcvd_manager'); ?>
+                        <?php } else { ?>
+                            <p><?php echo $this->lang->line('qslcard_rcvd'); ?>
+                        <?php } ?>
+                        <?php $timestamp = strtotime($row->COL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
-                    <?php if($row->COL_QSL_RCVD == "Y" && $row->COL_QSL_RCVD_VIA == "D") { ?>
-                    <p><?php echo $this->lang->line('qslcard_rcvd_direct'); ?> <?php $timestamp = strtotime($row->COL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
-                    <?php } ?>
+
                 <?php } ?>
 
                     <?php if($row->COL_LOTW_QSL_RCVD == "Y") { ?>
@@ -372,6 +390,13 @@
                     <tr>
                         <td>Station WWFF Reference</td>
                         <td><?php echo $row->COL_MY_WWFF_REF; ?></td>
+                    </tr>
+                    <?php } ?>
+
+                    <?php if($row->COL_MY_POTA_REF) { ?>
+                    <tr>
+                        <td>Station POTA Reference</td>
+                        <td><?php echo $row->COL_MY_POTA_REF; ?></td>
                     </tr>
                     <?php } ?>
             </table>
