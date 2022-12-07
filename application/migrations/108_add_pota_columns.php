@@ -5,8 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class Migration_add_pota_columns
  *
- * Add POTA columnds to database to reflect latest ADIF v3.1.x spec changes
- * See http://www.adif.org.uk/313/ADIF_313_annotated.htm
+ * Add POTA columnds to database to reflect latest ADIF v3.1.4 spec changes
+ * See http://adif.org.uk/314/ADIF_314_annotated.htm
  * 
  */
 
