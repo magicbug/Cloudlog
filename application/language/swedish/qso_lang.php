@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // Tiles
 $lang['qso_title_qso_map'] = 'QSO-karta';
 $lang['qso_title_suggestions'] = 'Förslag';
-$lang['qso_title_pervious_contacts'] = 'Föregående QSOn';
+$lang['qso_title_previous_contacts'] = 'Föregående QSOn';
 $lang['qso_title_image'] = 'Profilbild';
 
 // Input Help Text on the /QSO Display
@@ -13,9 +13,10 @@ $lang['qso_transmit_power_helptext'] = 'Ange effekt i watt, enbart med siffror.'
 
 $lang['qso_sota_ref_helptext'] = 'Exempel: GM/NS-001.';
 $lang['qso_wwff_ref_helptext'] = 'Exempel: DLFF-0069.';
+$lang['qso_pota_ref_helptext'] = 'Exempel: PA-0150.';
 
-$lang['qso_sig_helptext'] = 'Exempel: POTA';
-$lang['qso_sig_info_helptext'] = 'Exempel: PA-0150';
+$lang['qso_sig_helptext'] = 'Exempel: GMA';
+$lang['qso_sig_info_helptext'] = 'Exempel: DA/NW-357';
 
 $lang['qso_dok_helptext'] = 'Exempel: Q03';
 

@@ -126,6 +126,39 @@ $( document ).ready(function() {
 		$('#wwff_info').attr('title', 'Lookup '+$('#wwff_ref').val()+' reference info on cqgma.org');
 	});
 
+	$('#pota_ref').selectize({
+		maxItems: 1,
+		closeAfterSelect: true,
+		loadThrottle: 250,
+		valueField: 'name',
+		labelField: 'name',
+		searchField: 'name',
+		options: [],
+		create: false,
+		load: function(query, callback) {
+			if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
+			$.ajax({
+				url: base_url+'index.php/qso/get_pota',
+				type: 'GET',
+				dataType: 'json',
+				data: {
+					query: query,
+				},
+				error: function() {
+					callback();
+				},
+				success: function(res) {
+					callback(res);
+				}
+			});
+		}
+	});
+
+	$('#pota_ref').change(function(){
+		$('#pota_info').html('<a target="_blank" href="https://pota.app/#/park/'+$('#pota_ref').val()+'"><img width="32" height="32" src="'+base_url+'images/icons/pota.app.png"></a>'); 
+		$('#pota_info').attr('title', 'Lookup '+$('#pota_ref').val()+' reference info on pota.co');
+	});
+
 	$('#darc_dok').selectize({
 		maxItems: 1,
 		closeAfterSelect: true,
@@ -322,6 +355,9 @@ function reset_fields() {
 	var $select = $('#wwff_ref').selectize();
 	var selectize = $select[0].selectize;
 	selectize.clear();
+	var $select = $('#pota_ref').selectize();
+	var selectize = $select[0].selectize;
+	selectize.clear();
 	var $select = $('#darc_dok').selectize();
 	var selectize = $select[0].selectize;
 	selectize.clear();
@@ -360,8 +396,12 @@ $("#callsign").focusout(function() {
 		// Replace / in a callsign with - to stop urls breaking
 		$.getJSON('logbook/json/' + find_callsign.replace(/\//g, "-") + '/' + sat_type + '/' + json_band + '/' + json_mode + '/' + $('#stationProfile').val(), function(result)
 		{
-			// Make sure the typed callsign and temp callsign match
-			if($('#callsign').val = temp_callsign){
+
+			// Make sure the typed callsign and json result match
+			if($('#callsign').val = result.callsign) {
+
+				// Reset QSO fields
+				resetDefaultQSOFields();
 
 				if(result.dxcc.entity != undefined) {
 					$('#country').val(convert_case(result.dxcc.entity));
@@ -532,25 +572,8 @@ $("#callsign").focusout(function() {
 			}
 		});
 	} else {
-		/* Reset fields ... */
-		$('#callsign_info').text("");
-		$('#locator_info').text("");
-		$('#country').val("");
-		$('#dxcc_id').val("");
-		$('#cqz').val("");
-		$('#name').val("");
-		$('#qth').val("");
-		$('#locator').val("");
-		$('#iota_ref').val("");
-		$('#sota_ref').val("");
-		$("#locator").removeClass("workedGrid");
-		$("#locator").removeClass("newGrid");
-		$("#callsign").removeClass("workedGrid");
-		$("#callsign").removeClass("newGrid");
-		$('#callsign_info').removeClass("badge-secondary");
-		$('#callsign_info').removeClass("badge-success");
-		$('#callsign_info').removeClass("badge-danger");
-		$('#input_usa_state').val("");
+		// Reset QSO fields
+		resetDefaultQSOFields();
 	}
 })
 
@@ -741,3 +764,27 @@ $("#callsign").keyup(function() {
 		});
 	}
 });
+
+//Reset QSO form Fields function
+function resetDefaultQSOFields() {
+	$('#callsign_info').text("");
+	$('#locator_info').text("");
+	$('#country').val("");
+	$('#dxcc_id').val("");
+	$('#cqz').val("");
+	$('#name').val("");
+	$('#qth').val("");
+	$('#locator').val("");
+	$('#iota_ref').val("");
+	$('#sota_ref').val("");
+	$("#locator").removeClass("workedGrid");
+	$("#locator").removeClass("newGrid");
+	$("#callsign").removeClass("workedGrid");
+	$("#callsign").removeClass("newGrid");
+	$('#callsign_info').removeClass("badge-secondary");
+	$('#callsign_info').removeClass("badge-success");
+	$('#callsign_info').removeClass("badge-danger");
+	$('#input_usa_state').val("");
+	$('#callsign-image').attr('style', 'display: none;');
+	$('#callsign-image-content').text("");
+}

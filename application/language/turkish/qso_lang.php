@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('Doğrudan komut dosyası erişimine izin verilmez')
 // Tiles
 $lang['qso_title_qso_map'] = 'QSO Haritası';
 $lang['qso_title_suggestions'] = 'Öneriler';
-$lang['qso_title_pervious_contacts'] = 'Önceki Görüşmeler';
+$lang['qso_title_previous_contacts'] = 'Önceki Görüşmeler';
 $lang['qso_title_image'] = 'Profil Resmi';
 
 // Input Help Text on the /QSO Display
@@ -14,9 +14,10 @@ $lang['qso_transmit_power_helptext'] = 'Gücü Watt olarak veriniz. Sadece rakam
 $lang['qso_sota_ref_helptext'] = 'Örnek: GM/NS-001.';
 
 $lang['qso_wwff_ref_helptext'] = 'Örnek: DLFF-0069.';
+$lang['qso_pota_ref_helptext'] = 'Örnek: PA-0150.';
 
-$lang['qso_sig_helptext'] = 'Örnek: WWFF or POTA';
-$lang['qso_sig_info_helptext'] = 'Örnek: DLFF-0029';
+$lang['qso_sig_helptext'] = 'Örnek: GMA';
+$lang['qso_sig_info_helptext'] = 'Örnek: DA/NW-357';
 
 $lang['qso_dok_helptext'] = 'Örnek: Q03';
 

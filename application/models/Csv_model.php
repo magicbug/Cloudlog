@@ -23,7 +23,7 @@ class Csv_model extends CI_Model
 		$sql .= "SELECT station_callsign, COL_MY_SOTA_REF, COL_QSO_DATE, COL_TIME_ON, COL_BAND, COL_MODE, COL_CALL, COL_SOTA_REF, COL_COMMENT
 			FROM ".$this->config->item('table_name').
 			" JOIN station_profile on station_profile.station_id = ".$this->config->item('table_name').".station_id".
-			" WHERE COL_SOTA_REF <> '' OR COL_MY_SOTA_REF <> ''";
+			" WHERE (COL_SOTA_REF <> '' OR COL_MY_SOTA_REF <> '')";
 
 		if ($station_id != "All") {
 			$sql .= ' and ' . $this->config->item('table_name'). '.station_id = ' . $station_id;

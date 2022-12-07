@@ -239,6 +239,18 @@
          ]
       }
    },
+   "IO-117":{
+      "Modes":{
+         "U":[
+            {
+               "Uplink_Mode":"PKT",
+               "Uplink_Freq":"435310000",
+               "Downlink_Mode":"PKT",
+               "Downlink_Freq":"435310000"
+            }
+         ]
+      }
+   },
    "JO-97":{
       "Modes":{
          "U/V":[
@@ -563,18 +575,6 @@
                "Uplink_Freq":"435340000",
                "Downlink_Mode":"USB",
                "Downlink_Freq":"145990000"
-            }
-         ]
-      }
-   },
-   "GREENCUBE":{
-      "Modes":{
-         "U":[
-            {
-               "Uplink_Mode":"PKT",
-               "Uplink_Freq":"435310000",
-               "Downlink_Mode":"PKT",
-               "Downlink_Freq":"435310000"
             }
          ]
       }

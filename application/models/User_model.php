@@ -114,7 +114,7 @@ class User_Model extends CI_Model {
 	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone,
 		$measurement, $user_date_format, $user_stylesheet, $user_qth_lookup, $user_sota_lookup, $user_wwff_lookup,
 		$user_show_notes, $user_column1, $user_column2, $user_column3, $user_column4, $user_column5,
-	  	$user_show_profile_image) {
+		$user_show_profile_image, $user_previous_qsl_type) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -140,6 +140,7 @@ class User_Model extends CI_Model {
 				'user_column4' => xss_clean($user_column4),
 				'user_column5' => xss_clean($user_column5),
 				'user_show_profile_image' => xss_clean($user_show_profile_image),
+				'user_previous_qsl_type' => xss_clean($user_previous_qsl_type),
 			);
 
 			// Check the password is valid
@@ -155,7 +156,7 @@ class User_Model extends CI_Model {
 			// Add user and insert bandsettings for user
 			$this->db->insert($this->config->item('auth_table'), $data);
 			$insert_id = $this->db->insert_id();
-			$this->db->query("insert into bandxuser (bandid, userid, active, cq, dok, dxcc, iota, sig, sota, uscounties, was, wwff, vucc) select bands.id, " . $insert_id . ", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 from bands;");
+			$this->db->query("insert into bandxuser (bandid, userid, active, cq, dok, dxcc, iota, pota, sig, sota, uscounties, was, wwff, vucc) select bands.id, " . $insert_id . ", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 from bands;");
 			return OK;
 		} else {
 			return EUSERNAMEEXISTS;
@@ -193,6 +194,7 @@ class User_Model extends CI_Model {
 					'user_column4' => xss_clean($fields['user_column4']),
 					'user_column5' => xss_clean($fields['user_column5']),
 					'user_show_profile_image' => xss_clean($fields['user_show_profile_image']),
+					'user_previous_qsl_type' => xss_clean($fields['user_previous_qsl_type']),
 				);
 
 				// Check to see if the user is allowed to change user levels
@@ -310,6 +312,7 @@ class User_Model extends CI_Model {
 			'user_column3' => isset($u->row()->user_column3) ? $u->row()->user_column3: 'RSTR',
 			'user_column4' => isset($u->row()->user_column4) ? $u->row()->user_column4: 'Band',
 			'user_column5' => isset($u->row()->user_column5) ? $u->row()->user_column5: 'Country',
+			'user_previous_qsl_type' => isset($u->row()->user_previous_qsl_type) ? $u->row()->user_previous_qsl_type: 0,
 			'active_station_logbook' => $u->row()->active_station_logbook,
 		);
 

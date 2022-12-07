@@ -13,46 +13,6 @@ thead>tr>td {
     border-width: 2px;
 }
 
-.eqsl-green {
-    color: #00A000;
-    font-size: 1.1em;
-}
-
-.eqsl-red {
-    color: #F00;
-    font-size: 1.1em;
-}
-
-.qsl-green {
-    color: #00A000;
-    font-size: 1.1em;
-}
-
-.qsl-red {
-    color: #F00;
-    font-size: 1.1em;
-}
-
-.qsl-yellow {
-    color: #d39e00;
-    font-size: 1.1em;
-}
-
-.qsl-grey {
-    color: #dddddd;
-    font-size: 1.1em;
-}
-
-.lotw-green {
-    color: #00A000;
-    font-size: 1.1em;
-}
-
-.lotw-red {
-    color: #F00;
-    font-size: 1.1em;
-}
-
 .settings-nav {
     margin-bottom: 15px;
     list-style: none;
