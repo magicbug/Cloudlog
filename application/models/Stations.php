@@ -65,6 +65,7 @@ class Stations extends CI_Model {
 			'station_iota' =>  xss_clean(strtoupper($this->input->post('iota', true))),
 			'station_sota' =>  xss_clean(strtoupper($this->input->post('sota', true))),
 			'station_wwff' =>  xss_clean(strtoupper($this->input->post('wwff', true))),
+			'station_pota' =>  xss_clean(strtoupper($this->input->post('pota', true))),
 			'station_sig' =>  xss_clean(strtoupper($this->input->post('sig', true))),
 			'station_sig_info' =>  xss_clean(strtoupper($this->input->post('sig_info', true))),
 			'station_callsign' =>  xss_clean($this->input->post('station_callsign', true)),
@@ -91,6 +92,7 @@ class Stations extends CI_Model {
 			'station_iota' => xss_clean($this->input->post('iota', true)),
 			'station_sota' => xss_clean($this->input->post('sota', true)),
 			'station_wwff' => xss_clean($this->input->post('wwff', true)),
+			'station_pota' => xss_clean($this->input->post('pota', true)),
 			'station_sig' => xss_clean($this->input->post('sig', true)),
 			'station_sig_info' => xss_clean($this->input->post('sig_info', true)),
 			'station_callsign' => xss_clean($this->input->post('station_callsign', true)),
@@ -265,6 +267,10 @@ class Stations extends CI_Model {
 
 		if($row->station_wwff != "") {
 			$this->db->where('COL_MY_WWFF_REF', $row->station_wwff);
+		}
+
+		if($row->station_pota != "") {
+			$this->db->where('COL_MY_POTA_REF', $row->station_pota);
 		}
 
 		if($row->station_sig != "") {

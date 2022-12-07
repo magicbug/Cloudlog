@@ -12,8 +12,8 @@ $lang['qso_transmit_power_helptext'] = 'Especifique el valor de potencia en Wati
 
 $lang['qso_sota_ref_helptext'] = 'Por ejemplo: GM/NS-001.';
 
-$lang['qso_sig_helptext'] = 'Por ejemplo: WWFF or POTA';
-$lang['qso_sig_info_helptext'] = 'Por ejemplo: DLFF-0029';
+$lang['qso_sig_helptext'] = 'Por ejemplo: GMA';
+$lang['qso_sig_info_helptext'] = 'Por ejemplo: DA/NW-357';
 
 $lang['qso_dok_helptext'] = 'Por ejemplo: Q03';
 
