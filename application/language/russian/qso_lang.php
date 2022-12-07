@@ -13,9 +13,10 @@ $lang['qso_transmit_power_helptext'] = 'Укажите мощность в Ва�
 
 $lang['qso_sota_ref_helptext'] = 'Например: GM/NS-001.';
 $lang['qso_wwff_ref_helptext'] = 'Например: DLFF-0069.';
+$lang['qso_pota_ref_helptext'] = 'Например: PA-0150.';
 
-$lang['qso_sig_helptext'] = 'Например: WWFF or POTA';
-$lang['qso_sig_info_helptext'] = 'Например: DLFF-0029';
+$lang['qso_sig_helptext'] = 'Например: GMA';
+$lang['qso_sig_info_helptext'] = 'Например: DA/NW-357';
 
 $lang['qso_dok_helptext'] = 'Например: Q03';
 

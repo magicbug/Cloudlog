@@ -99,10 +99,13 @@ $lang['gen_hamradio_county_reference'] = 'USA County';
 $lang['gen_hamradio_iota_reference'] = 'IOTA Referenznummer';
 $lang['gen_hamradio_sota_reference'] = 'SOTA Referenznummer';
 $lang['gen_hamradio_wwff_reference'] = 'WWFF Referenznummer';
+$lang['gen_hamradio_pota_reference'] = 'POTA Referenznummer';
 $lang['gen_hamradio_dok'] = 'DOK';
 $lang['gen_hamradio_state'] = 'Staat';
 $lang['gen_hamradio_iota'] = 'IOTA';
 $lang['gen_hamradio_sota'] = 'SOTA';
+$lang['gen_hamradio_wwff'] = 'WWFF';
+$lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Planquadrat';
 $lang['gen_hamradio_operator'] = 'Operator';
 

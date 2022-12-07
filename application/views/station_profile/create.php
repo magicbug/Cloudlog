@@ -199,15 +199,21 @@
 		  </div>
 
 		  <div class="form-group">
+		    <label for="stationPOTAInput">POTA Reference</label>
+		    <input type="text" class="form-control" name="pota" id="stationPOTAInput" aria-describedby="stationPOTAInputHelp">
+		    <small id="stationPOTAInputHelp" class="form-text text-muted">Station POTA reference (e.g. PA-0150).</small>
+		  </div>
+
+		  <div class="form-group">
 		    <label for="stationSigInput">Signature</label>
 		    <input type="text" class="form-control" name="sig" id="stationSigInput" aria-describedby="stationSigInputHelp">
-		    <small id="stationSigInputHelp" class="form-text text-muted">Station Signature (e.g. POTA).</small>
+		    <small id="stationSigInputHelp" class="form-text text-muted">Station Signature (e.g. GMA).</small>
 		  </div>
 
 		  <div class="form-group">
 		    <label for="stationSigInfoInput">Signature Info</label>
 		    <input type="text" class="form-control" name="sig_info" id="stationSigInfoInput" aria-describedby="stationSigInfoInputHelp">
-		    <small id="stationSigInfoInput" class="form-text text-muted">Station Signature Info (e.g. PA-0150).</small>
+		    <small id="stationSigInfoInput" class="form-text text-muted">Station Signature Info (e.g. DA/NW-357).</small>
 		  </div>
 
             <div class="form-group">

@@ -359,6 +359,11 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="pota_ref">POTA</label>
+                                    <input type="text" class="form-control" id="pota_ref_edit" name="pota_ref" value="<?php echo $qso->COL_POTA_REF; ?>">
+                                </div>
+
+                                <div class="form-group">
                                     <label for="sig">Sig</label>
                                     <input type="text" class="form-control" id="sig" name="sig" value="<?php echo $qso->COL_SIG; ?>">
                                 </div>

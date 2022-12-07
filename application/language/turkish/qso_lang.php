@@ -14,9 +14,10 @@ $lang['qso_transmit_power_helptext'] = 'Gücü Watt olarak veriniz. Sadece rakam
 $lang['qso_sota_ref_helptext'] = 'Örnek: GM/NS-001.';
 
 $lang['qso_wwff_ref_helptext'] = 'Örnek: DLFF-0069.';
+$lang['qso_pota_ref_helptext'] = 'Örnek: PA-0150.';
 
-$lang['qso_sig_helptext'] = 'Örnek: WWFF or POTA';
-$lang['qso_sig_info_helptext'] = 'Örnek: DLFF-0029';
+$lang['qso_sig_helptext'] = 'Örnek: GMA';
+$lang['qso_sig_info_helptext'] = 'Örnek: DA/NW-357';
 
 $lang['qso_dok_helptext'] = 'Örnek: Q03';
 
