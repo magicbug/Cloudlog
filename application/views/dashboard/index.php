@@ -25,7 +25,7 @@ function echo_table_col($row, $name) {
 		case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF) . '</td>'; break;
 		case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF) . '</td>'; break;
 		case 'Grid':    echo '<td>'; echoQrbCalcLink($row->station_gridsquare, $row->COL_VUCC_GRIDS, $row->COL_GRIDSQUARE); echo '</td>'; break;
-		case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'.$row->COL_SAT_NAME.'</a></td>'; } else { echo strtolower($row->COL_BAND); } echo '</td>'; break;
+		case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'.$row->COL_SAT_NAME.'</a></td>'; } else { echo strtolower($row->COL_BAND).'/'.round($row->COL_FREQ/1000,0); } echo '</td>'; break;
 		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
 		case 'Operator': echo '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
 	}

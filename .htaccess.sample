@@ -1,8 +1,0 @@
-# If you want to hide 'index.php' from the URL, rename this file to '.htaccess' on your server
-# Then change the following variable in /application/config/config.php
-#   $config['index_page'] = '';
-
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /index.php?/$1 [L]
