@@ -44,6 +44,7 @@ $wwff = 0;
                     <th>DOK</th>
                     <th>DXCC</th>
                     <th>IOTA</th>
+					<th>POTA</th>
 					<th>SIG</th>
                     <th>SOTA</th>
                     <th>US Counties</th>
@@ -69,6 +70,7 @@ $wwff = 0;
                     <td class='dok_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dok == 1) {echo 'checked'; $dok++;}?>></td>
                     <td class='dxcc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dxcc == 1) {echo 'checked'; $dxcc++;}?>></td>
                     <td class='iota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->iota == 1) {echo 'checked'; $iota++;}?>></td>
+                    <td class='pota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->pota == 1) {echo 'checked';}?>></td>
                     <td class='sig_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sig == 1) {echo 'checked'; $sig++;}?>></td>
                     <td class='sota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sota == 1) {echo 'checked'; $sota++;}?>></td>
                     <td class='uscounties_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->uscounties == 1) {echo 'checked'; $uscounties++;}?>></td>

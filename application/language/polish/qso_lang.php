@@ -12,8 +12,8 @@ $lang['qso_transmit_power_helptext'] = 'Wpisz wartość mocy w watach. W polu po
 
 $lang['qso_sota_ref_helptext'] = 'Na przykład: GM/NS-001.';
 
-$lang['qso_sig_helptext'] = 'Na przykład: WWFF lub POTA';
-$lang['qso_sig_info_helptext'] = 'Na przykład: SPFF-0029';
+$lang['qso_sig_helptext'] = 'Na przykład: GMA';
+$lang['qso_sig_info_helptext'] = 'Na przykład: DA/NW-357';
 
 $lang['qso_dok_helptext'] = 'Na przykład: Q03';
 
