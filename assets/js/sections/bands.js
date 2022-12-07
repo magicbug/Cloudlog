@@ -208,6 +208,7 @@ function saveBand(id) {
 			'dok': $(".dok_"+id+" input[type='checkbox']").is(":checked"),
 			'dxcc': $(".dxcc_"+id+" input[type='checkbox']").is(":checked"),
 			'iota': $(".iota_"+id+" input[type='checkbox']").is(":checked"),
+			'pota': $(".pota_"+id+" input[type='checkbox']").is(":checked"),
 			'sig': $(".sig_"+id+" input[type='checkbox']").is(":checked"),
 			'sota': $(".sota_"+id+" input[type='checkbox']").is(":checked"),
 			'uscounties': $(".uscounties_"+id+" input[type='checkbox']").is(":checked"),

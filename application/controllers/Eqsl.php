@@ -103,6 +103,7 @@ class eqsl extends CI_Controller {
 		$this->load->model('logbook_model');
 		
 		$data['page_title'] = "eQSL QSO Upload";
+		$custom_date_format = $this->session->userdata('user_date_format');
 		
 		if ($this->input->post('eqslexport') == "export")
 		{
@@ -122,9 +123,10 @@ class eqsl extends CI_Controller {
 			// perform an HTTP get on each one, and grab the status back
 			$qslsnotsent = $this->logbook_model->eqsl_not_yet_sent();
 			 
-			$table = "<table>";
+			$table = "<table width=\"100%\">";
 					$table .= "<tr class=\"titles\">";
 						$table .= "<td>Date</td>";
+						$table .= "<td>Time</td>";
 						$table .= "<td>Call</td>";
 						$table .= "<td>Mode</td>";
 						$table .= "<td>Submode</td>";
@@ -336,6 +338,7 @@ class eqsl extends CI_Controller {
 				$result = curl_exec($ch);  
 				$chi = curl_getinfo($ch);
 				curl_close($ch);
+
 				
 				/* Time for some error handling
 				   Things we might get back
@@ -401,7 +404,9 @@ class eqsl extends CI_Controller {
 					}
 				}
 				$table .= "<tr>";
-						$table .= "<td>".$qsl['COL_TIME_ON']."</td>";
+						$timestamp = strtotime($qsl['COL_TIME_ON']);
+						$table .= "<td>".date($custom_date_format, $timestamp)."</td>";
+						$table .= "<td>".date('H:i', $timestamp)."</td>";
 						$table .= "<td>".str_replace("0","&Oslash;",$qsl['COL_CALL'])."</td>";
 						$table .= "<td>".$qsl['COL_MODE']."</td>";
 						if(isset($qsl['COL_SUBMODE'])) {
@@ -428,6 +433,7 @@ class eqsl extends CI_Controller {
 				$table = "<table width=\"100%\">";
 					$table .= "<tr class=\"titles\">";
 						$table .= "<td>Date</td>";
+						$table .= "<td>Time</td>";
 						$table .= "<td>Call</td>";
 						$table .= "<td>Mode</td>";
 						$table .= "<td>Submode</td>";
@@ -438,7 +444,9 @@ class eqsl extends CI_Controller {
 				foreach ($qslsnotsent->result_array() as $qsl)
 				{
 					$table .= "<tr>";
-						$table .= "<td>".$qsl['COL_TIME_ON']."</td>";
+						$timestamp = strtotime($qsl['COL_TIME_ON']);
+						$table .= "<td>".date($custom_date_format, $timestamp)."</td>";
+						$table .= "<td>".date('H:i', $timestamp)."</td>";
 						$table .= "<td><a href=\"javascript:displayQso(" . $qsl['COL_PRIMARY_KEY'] . ")\">" . str_replace("0","&Oslash;",strtoupper($qsl['COL_CALL'])) . "</a></td>";
 						$table .= "<td>".$qsl['COL_MODE']."</td>";
 						

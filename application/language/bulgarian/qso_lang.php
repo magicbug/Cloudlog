@@ -5,15 +5,15 @@ defined('BASEPATH') OR exit('Не е разрешен директен дост�
 // Tiles
 $lang['qso_title_qso_map'] = 'Карта на QSO';
 $lang['qso_title_suggestions'] = 'Предложения';
-$lang['qso_title_pervious_contacts'] = 'Предишни контакти';
+$lang['qso_title_previous_contacts'] = 'Предишни контакти';
 
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Посочете стойността на мощността във ватове. Въведете само цифри.';
 
 $lang['qso_sota_ref_helptext'] = 'Например: GM/NS-001.';
 
-$lang['qso_sig_helptext'] = 'Например: WWFF или POTA';
-$lang['qso_sig_info_helptext'] = 'Например: DLFF-0029';
+$lang['qso_sig_helptext'] = 'Например: GMA';
+$lang['qso_sig_info_helptext'] = 'Например: DA/NW-357';
 
 $lang['qso_dok_helptext'] = 'Например: Q03';
 
