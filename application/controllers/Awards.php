@@ -619,4 +619,70 @@ class Awards extends CI_Controller {
         header('Content-Type: application/json');
         echo json_encode($zones);
     }
+
+    /*
+        function iota
+        This displays the IOTA map
+    */
+    public function iota_map() {
+        $this->load->model('iota');
+        $this->load->model('bands');
+
+        $bands[] = $this->input->post('band');
+
+        $postdata['lotw'] = $this->input->post('lotw') == 0 ? NULL: 1;
+        $postdata['qsl'] = $this->input->post('qsl') == 0 ? NULL: 1;
+        $postdata['worked'] = $this->input->post('worked') == 0 ? NULL: 1;
+        $postdata['confirmed'] = $this->input->post('confirmed')  == 0 ? NULL: 1;
+        $postdata['notworked'] = $this->input->post('notworked')  == 0 ? NULL: 1;
+        $postdata['band'] = $this->input->post('band');
+		$postdata['mode'] = $this->input->post('mode');
+        $postdata['includedeleted'] = $this->input->post('includedeleted') == 0 ? NULL: 1;
+        $postdata['Africa'] = $this->input->post('Africa') == 0 ? NULL: 1;
+        $postdata['Asia'] = $this->input->post('Asia') == 0 ? NULL: 1;
+        $postdata['Europe'] = $this->input->post('Europe') == 0 ? NULL: 1;
+        $postdata['NorthAmerica'] = $this->input->post('NorthAmerica') == 0 ? NULL: 1;
+        $postdata['SouthAmerica'] = $this->input->post('SouthAmerica') == 0 ? NULL: 1;
+        $postdata['Oceania'] = $this->input->post('Oceania') == 0 ? NULL: 1;
+        $postdata['Antarctica'] = $this->input->post('Antarctica') == 0 ? NULL: 1;
+
+        $iotalist = $this->iota->fetchIota($postdata);
+
+        $iota_array = $this->iota->get_iota_array($iotalist, $bands, $postdata);
+
+        $i = 0;
+
+        foreach ($iotalist as $iota) {
+            $newiota[$i]['tag'] = $iota->tag;
+            $newiota[$i]['prefix'] = $iota->prefix;
+            $newiota[$i]['name'] = ucwords(strtolower($iota->name), "- (/");
+            if ($iota->status == 'D') {
+                $newiota[$i]['name'] .= ' (deleted)';
+            }
+            $newiota[$i]['lat1'] = $iota->lat1;
+            $newiota[$i]['lon1'] = $iota->lon1;
+            $newiota[$i]['lat2'] = $iota->lat2;
+            $newiota[$i]['lon2'] = $iota->lon2;
+            $newiota[$i++]['status'] = isset($iota_array[$iota->tag]) ? $this->returnStatus($iota_array[$iota->tag]) : 'x';
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($newiota);
+    }
+
+    function returnStatus($string) {
+        foreach ($string  as $key) {
+            if($key != "") {
+                if (strpos($key, '>W<') !== false) {
+                    return 'W';
+                }
+                if (strpos($key, '>C<') !== false) {
+                    return 'C';
+                }
+                if ($key == '-') {
+                    return '-';
+                }
+            }
+        }
+    }
 }
