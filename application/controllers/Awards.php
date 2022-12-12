@@ -619,6 +619,54 @@ class Awards extends CI_Controller {
         header('Content-Type: application/json');
         echo json_encode($zones);
     }
+    
+    /*
+        function dxcc_map
+        This displays the DXCC map
+    */
+    public function dxcc_map() {
+        $this->load->model('dxcc');
+        $this->load->model('bands');
+
+        $bands[] = $this->input->post('band');
+
+        $postdata['lotw'] = $this->input->post('lotw') == 0 ? NULL: 1;
+        $postdata['qsl'] = $this->input->post('qsl') == 0 ? NULL: 1;
+        $postdata['worked'] = $this->input->post('worked') == 0 ? NULL: 1;
+        $postdata['confirmed'] = $this->input->post('confirmed')  == 0 ? NULL: 1;
+        $postdata['notworked'] = $this->input->post('notworked')  == 0 ? NULL: 1;
+        $postdata['band'] = $this->input->post('band');
+		    $postdata['mode'] = $this->input->post('mode');
+        $postdata['includedeleted'] = $this->input->post('includedeleted') == 0 ? NULL: 1;
+        $postdata['Africa'] = $this->input->post('Africa') == 0 ? NULL: 1;
+        $postdata['Asia'] = $this->input->post('Asia') == 0 ? NULL: 1;
+        $postdata['Europe'] = $this->input->post('Europe') == 0 ? NULL: 1;
+        $postdata['NorthAmerica'] = $this->input->post('NorthAmerica') == 0 ? NULL: 1;
+        $postdata['SouthAmerica'] = $this->input->post('SouthAmerica') == 0 ? NULL: 1;
+        $postdata['Oceania'] = $this->input->post('Oceania') == 0 ? NULL: 1;
+        $postdata['Antarctica'] = $this->input->post('Antarctica') == 0 ? NULL: 1;
+
+        $dxcclist = $this->dxcc->fetchdxcc($postdata);
+
+        $dxcc_array = $this->dxcc->get_dxcc_array($dxcclist, $bands, $postdata);
+
+        $i = 0;
+
+        foreach ($dxcclist as $dxcc) {
+            $newdxcc[$i]['adif'] = $dxcc->adif;
+            $newdxcc[$i]['prefix'] = $dxcc->prefix;
+            $newdxcc[$i]['name'] = ucwords(strtolower($dxcc->name), "- (/");
+            if ($dxcc->Enddate!=null) {
+                $newdxcc[$i]['name'] .= ' (deleted)';
+            }
+            $newdxcc[$i]['lat'] = $dxcc->lat;
+            $newdxcc[$i]['long'] = $dxcc->long;
+            $newdxcc[$i++]['status'] = isset($dxcc_array[$dxcc->adif]) ? $this->returnStatus($dxcc_array[$dxcc->adif]) : 'x';
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($newdxcc);
+    }
 
     /*
         function iota
@@ -636,7 +684,7 @@ class Awards extends CI_Controller {
         $postdata['confirmed'] = $this->input->post('confirmed')  == 0 ? NULL: 1;
         $postdata['notworked'] = $this->input->post('notworked')  == 0 ? NULL: 1;
         $postdata['band'] = $this->input->post('band');
-		$postdata['mode'] = $this->input->post('mode');
+		    $postdata['mode'] = $this->input->post('mode');
         $postdata['includedeleted'] = $this->input->post('includedeleted') == 0 ? NULL: 1;
         $postdata['Africa'] = $this->input->post('Africa') == 0 ? NULL: 1;
         $postdata['Asia'] = $this->input->post('Asia') == 0 ? NULL: 1;
