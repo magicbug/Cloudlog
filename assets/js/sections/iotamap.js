@@ -149,12 +149,14 @@ function addMarker(L, D, mapColor, map) {
         iconSize: [60, 10]
     });
 
+    var markerTitle = D['tag'] + ' - ' + D['prefix'] + ' - ' + D['name'];
+
     // It seems to me that latitudes have the wrong sign to be drawn correctly in leaflet. That's why they are mulitipled with -1 to be drawn in the correct hemisphere.
     L.marker(
     [D['lat1']*-1, D['lon1']], {
         icon: myIcon,
         iota: D['tag'],
-        title: D['tag'],
+        title: markerTitle,
     }
     ).addTo(map).on('click', onClick);
 }
