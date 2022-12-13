@@ -1,7 +1,7 @@
 Cloudlog ADIF export
-<ADIF_VER:5>3.1.2
+<ADIF_VER:5>3.1.4
 <PROGRAMID:<?php echo strlen($this->config->item('app_name')); ?>><?php echo $this->config->item('app_name')."\n"; ?>
-<PROGRAMVERSION:<?php echo strlen('Version' . ' ' .$this->config->item('app_version')); ?>>Version <?php echo $this->config->item('app_version')."\n"; ?>
+<PROGRAMVERSION:<?php echo strlen($this->config->item('app_version')); ?>><?php echo $this->config->item('app_version')."\n"; ?>
 <EOH>
 
 <?php
