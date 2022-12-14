@@ -490,10 +490,10 @@ class CI_Profiler {
 			if (is_array($val) OR is_object($val))
 			{
 				$val = print_r($val, TRUE);
-
 				$pre       = '<pre>' ;
 				$pre_close = '</pre>';
 			}
+			$val = $val == null ? "" : $val;
 
 			$output .= '<tr><td style="padding:5px;vertical-align:top;color:#900;background-color:#ddd;">'
 				.$config.'&nbsp;&nbsp;</td><td style="padding:5px;color:#000;background-color:#ddd;">'.$pre.htmlspecialchars($val, ENT_QUOTES, config_item('charset')).$pre_close."</td></tr>\n";
@@ -522,6 +522,7 @@ class CI_Profiler {
 
 		foreach ($this->CI->session->userdata() as $key => $val)
 		{
+			$val = $val == null ? "" : $val;
 			$pre       = '';
 			$pre_close = '';
 
