@@ -34,9 +34,9 @@ function echo_table_col($row, $name) {
 }
 
 function echoQrbCalcLink($mygrid, $grid, $vucc) {
-	if (strlen($grid) != 0) {
+	if (!empty($grid)) {
 		echo $grid . ' <a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $grid . '\')"><i class="fas fa-globe"></i></a>';
-	} else if (strlen($vucc) != 0) {
+	} else if (!empty($vucc)) {
 		echo $vucc .' <a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $vucc . '\')"><i class="fas fa-globe"></i></a>';
 	}
 }
