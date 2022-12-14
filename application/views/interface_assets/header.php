@@ -116,6 +116,8 @@
                     <a class="dropdown-item" href="<?php echo site_url('awards/dxcc');?>"><i class="fas fa-trophy"></i> DXCC</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('awards/iota');?>"><i class="fas fa-trophy"></i> IOTA</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<?php echo site_url('awards/pota');?>"><i class="fas fa-trophy"></i> POTA</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="<?php echo site_url('awards/sig');?>"><i class="fas fa-trophy"></i> SIG</a>
 					<div class="dropdown-divider"></div>

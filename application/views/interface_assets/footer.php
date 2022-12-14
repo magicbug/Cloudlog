@@ -48,16 +48,27 @@ function load_was_map() {
     <script id="cqmapjs" type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/cqmap.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "iota") ) { ?>
+    <script id="iotamapjs" type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/iotamap.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "dxcc") ) { ?>
+    <script id="dxccmapjs" type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/dxccmap.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "statistics") { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/chart.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/chartjs-plugin-piechart-outlabels.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/statistics.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "adif") { ?>
+<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "adif" ) { ?>
     <script src="<?php echo base_url() ;?>assets/js/sections/adif.js"></script>
 <?php } ?>
 
@@ -596,6 +607,10 @@ function newpath(latlng1, latlng2, locator1, locator2) {
     }
 
     const map = new L.map('mapqrb').setView([30, 0], 1.5);
+    map.fitBounds([
+        [latlng1[0], latlng1[1]],
+        [latlng2[0], latlng2[1]]
+    ]);
 
     var maidenhead = L.maidenheadqrb().addTo(map);
 
@@ -2168,6 +2183,34 @@ $(document).ready(function(){
                                 }
                             });
 
+                            $('#pota_ref_edit').selectize({
+                                maxItems: 1,
+                                closeAfterSelect: true,
+                                loadThrottle: 250,
+                                valueField: 'name',
+                                labelField: 'name',
+                                searchField: 'name',
+                                options: [],
+                                create: false,
+                                load: function(query, callback) {
+                                    if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
+                                    $.ajax({
+                                        url: baseURL+'index.php/qso/get_pota',
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        data: {
+                                            query: query,
+                                        },
+                                        error: function() {
+                                            callback();
+                                        },
+                                        success: function(res) {
+                                            callback(res);
+                                        }
+                                    });
+                                }
+                            });
+
                             $('#darc_dok_edit').selectize({
                                 maxItems: 1,
                                 closeAfterSelect: true,
@@ -2545,6 +2588,19 @@ function deleteQsl(id) {
                     message: html,
                     onshown: function(dialog) {
                        $('[data-toggle="tooltip"]').tooltip();
+                       $('.contacttable').DataTable({
+                            "pageLength": 25,
+                            responsive: false,
+                            ordering: false,
+                            "scrollY":        "550px",
+                            "scrollCollapse": true,
+                            "paging":         false,
+                            "scrollX": true,
+                            dom: 'Bfrtip',
+                            buttons: [
+                                'csv'
+                            ]
+                        });
                     },
                     buttons: [{
                         label: 'Close',
@@ -3065,7 +3121,7 @@ function deleteQsl(id) {
 	</script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "wwff") ) {
+<?php if ($this->uri->segment(1) == "awards") {
 	// Get Date format
 	if($this->session->userdata('user_date_format')) {
 		// If Logged in and session exists
@@ -3090,39 +3146,75 @@ function deleteQsl(id) {
     ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
-    <script>
-        $.fn.dataTable.moment('<?php echo $usethisformat ?>');
-        $.fn.dataTable.ext.buttons.clear = {
-            className: 'buttons-clear',
-            action: function ( e, dt, node, config ) {
-               dt.search('').draw();
+    <?php if ($this->uri->segment(2) == "wwff") { ?>
+        <script>
+            $.fn.dataTable.moment('<?php echo $usethisformat ?>');
+            $.fn.dataTable.ext.buttons.clear = {
+                className: 'buttons-clear',
+                action: function ( e, dt, node, config ) {
+                   dt.search('').draw();
+                }
+            };
+            $('#wwfftable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: true,
+                "scrollY":        "500px",
+                "scrollCollapse": true,
+                "paging":         false,
+                "scrollX": true,
+                "order": [ 0, 'asc' ],
+                dom: 'Bfrtip',
+                buttons: [
+                   {
+                      extend: 'csv'
+                   },
+                   {
+                      extend: 'clear',
+                      text: 'Clear'
+                   }
+                ]
+            });
+            // change color of csv-button if dark mode is chosen
+            if (isDarkModeTheme()) {
+               $('[class*="buttons"]').css("color", "white");
             }
-        };
-        $('#wwfftable').DataTable({
-            "pageLength": 25,
-            responsive: false,
-            ordering: true,
-            "scrollY":        "500px",
-            "scrollCollapse": true,
-            "paging":         false,
-            "scrollX": true,
-            "order": [ 0, 'asc' ],
-            dom: 'Bfrtip',
-            buttons: [
-               {
-                  extend: 'csv'
-               },
-               {
-                  extend: 'clear',
-                  text: 'Clear'
-               }
-            ]
-        });
-        // change color of csv-button if dark mode is chosen
-        if (isDarkModeTheme()) {
-           $('[class*="buttons"]').css("color", "white");
-        }
-    </script>
+        </script>
+    <?php } else if ($this->uri->segment(2) == "pota") { ?>
+        <script>
+            $.fn.dataTable.moment('<?php echo $usethisformat ?>');
+            $.fn.dataTable.ext.buttons.clear = {
+                className: 'buttons-clear',
+                action: function ( e, dt, node, config ) {
+                   dt.search('').draw();
+                }
+            };
+            $('#potatable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: true,
+                "scrollY":        "500px",
+                "scrollCollapse": true,
+                "paging":         false,
+                "scrollX": true,
+                "order": [ 0, 'asc' ],
+                dom: 'Bfrtip',
+                buttons: [
+                   {
+                      extend: 'csv'
+                   },
+                   {
+                      extend: 'clear',
+                      text: 'Clear'
+                   }
+                ]
+            });
+            // change color of csv-button if dark mode is chosen
+            if (isDarkModeTheme()) {
+               $('[class*="buttons"]').css("color", "white");
+            }
+        </script>
+    <?php } ?>
 <?php } ?>
 
   </body>

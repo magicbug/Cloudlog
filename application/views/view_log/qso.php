@@ -216,6 +216,13 @@
                     </tr>
                     <?php } ?>
 
+                    <?php if($row->COL_POTA_REF != null) { ?>
+                    <tr>
+                        <td><?php echo $this->lang->line('gen_hamradio_pota_reference'); ?></td>
+                        <td><a href="https://pota.app/#/park/<?php echo $row->COL_POTA_REF; ?>" target="_blank"><?php echo $row->COL_POTA_REF; ?></a></td>
+                    </tr>
+                    <?php } ?>
+
                     <?php if($row->COL_SIG != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('gen_hamradio_sig'); ?></td>
@@ -233,12 +240,6 @@
                            break;
                         case "MQC":
                            echo "<td><a href=\"https://www.mountainqrp.it/awards/referenza.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
-                           break;
-                        case "WWFF":
-                           echo "<td><a href=\"https://www.cqgma.org/zinfo.php?ref=".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
-                           break;
-                        case "POTA":
-                           echo "<td><a href=\"https://pota.app/#/park/".$row->COL_SIG_INFO."\" target=\"_blank\">".$row->COL_SIG_INFO."</a></td>";
                            break;
                         default:
                            echo "<td>".$row->COL_SIG_INFO."</td>";
@@ -277,8 +278,8 @@
                         <?php } else { ?>
                             <p><?php echo $this->lang->line('qslcard_sent'); ?>
                         <?php } ?>
+                        <?php $timestamp = strtotime($row->COL_QSLSDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
-                    <?php $timestamp = strtotime($row->COL_QSLSDATE); echo date($custom_date_format, $timestamp); ?>.</p>
 
                     <?php if($row->COL_QSL_RCVD == "Y") { ?>
                         <?php if ($row->COL_QSL_RCVD_VIA == "B") { ?>
@@ -292,8 +293,8 @@
                         <?php } else { ?>
                             <p><?php echo $this->lang->line('qslcard_rcvd'); ?>
                         <?php } ?>
+                        <?php $timestamp = strtotime($row->COL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
-                    <?php $timestamp = strtotime($row->COL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
 
                 <?php } ?>
 
@@ -389,6 +390,13 @@
                     <tr>
                         <td>Station WWFF Reference</td>
                         <td><?php echo $row->COL_MY_WWFF_REF; ?></td>
+                    </tr>
+                    <?php } ?>
+
+                    <?php if($row->COL_MY_POTA_REF) { ?>
+                    <tr>
+                        <td>Station POTA Reference</td>
+                        <td><?php echo $row->COL_MY_POTA_REF; ?></td>
                     </tr>
                     <?php } ?>
             </table>

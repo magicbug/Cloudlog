@@ -124,6 +124,7 @@ class Logbook extends CI_Controller {
 		$this->load->model('logbook_model');
 
 		$return = [
+			"callsign" => strtoupper($callsign),
 			"dxcc" => false,
 			"callsign_name" => "",
 			"callsign_qra"  => "",
@@ -533,7 +534,20 @@ class Logbook extends CI_Controller {
 					$html .= "<td>RST (R)</td>";
 					$html .= "<td>Band</td>";
 					$html .= "<td>Mode</td>";
-					$html .= "<td>QSL</td>";
+					switch($this->session->userdata('user_previous_qsl_type')) {
+						case 0:
+							$html .= "<td>".$this->lang->line('gen_hamradio_qsl')."</td>";
+							break;
+						case 1:
+							$html .= "<td>".$this->lang->line('lotw_short')."</td>";
+							break;
+						case 2:
+							$html .= "<td>".$this->lang->line('eqsl_short')."</td>";
+							break;
+						default:
+							$html .= "<td>".$this->lang->line('gen_hamradio_qsl')."</td>";
+							break;
+					}
 					$html .= "<td></td>";
 				$html .= "</tr>";
 
@@ -565,44 +579,88 @@ class Logbook extends CI_Controller {
 						$html .= "<td>".$row->COL_MODE."</td>";
 					else
 						$html .= "<td>".$row->COL_SUBMODE."</td>";
-					$html .= "<td class=\"qsl\">";
-					$html .= "<span class=\"qsl-";
-					switch ($row->COL_QSL_SENT) {
-						case "Y":
-							$html .= "green";
-							break;
-						case "Q":
-							$html .= "yellow";
-							break;
-						case "R":
-							$html .= "yellow";
-							break;
-						case "I":
-							$html .= "grey";
-							break;
-						default:
-						   $html .= "red";
+					if ($this->session->userdata('user_previous_qsl_type') == 1) {
+						$html .= "<td class=\"lotw\">";
+						$html .= "<span class=\"qsl-";
+						switch ($row->COL_LOTW_QSL_SENT) {
+							case "Y":
+								$html .= "green";
+								break;
+							default:
+								$html .= "red";
+						}
+						$html .= "\">&#9650;</span>";
+						$html .= "<span class=\"qsl-";
+						switch ($row->COL_LOTW_QSL_RCVD) {
+							case "Y":
+								$html .= "green";
+								break;
+							default:
+								$html .= "red";
+						}
+						$html .= "\">&#9660;</span>";
+						$html .= "</td>";
+					} else if ($this->session->userdata('user_previous_qsl_type') == 2) {
+						$html .= "<td class=\"eqsl\">";
+						$html .= "<span class=\"qsl-";
+						switch ($row->COL_EQSL_QSL_SENT) {
+							case "Y":
+								$html .= "green";
+								break;
+							default:
+								$html .= "red";
+						}
+						$html .= "\">&#9650;</span>";
+						$html .= "<span class=\"qsl-";
+						switch ($row->COL_EQSL_QSL_RCVD) {
+							case "Y":
+								$html .= "green";
+								break;
+							default:
+								$html .= "red";
+						}
+						$html .= "\">&#9660;</span>";
+						$html .= "</td>";
+					} else {
+						$html .= "<td class=\"qsl\">";
+						$html .= "<span class=\"qsl-";
+						switch ($row->COL_QSL_SENT) {
+							case "Y":
+								$html .= "green";
+								break;
+							case "Q":
+								$html .= "yellow";
+								break;
+							case "R":
+								$html .= "yellow";
+								break;
+							case "I":
+								$html .= "grey";
+								break;
+							default:
+								$html .= "red";
+						}
+						$html .= "\">&#9650;</span>";
+						$html .= "<span class=\"qsl-";
+						switch ($row->COL_QSL_RCVD) {
+							case "Y":
+								$html .= "green";
+								break;
+							case "Q":
+								$html .= "yellow";
+								break;
+							case "R":
+								$html .= "yellow";
+								break;
+							case "I":
+								$html .= "grey";
+								break;
+							default:
+								$html .= "red";
+						}
+						$html .= "\">&#9660;</span>";
+						$html .= "</td>";
 					}
-					$html .= "\">&#9650;</span>";
-					$html .= "<span class=\"qsl-";
-					switch ($row->COL_QSL_RCVD) {
-						case "Y":
-							$html .= "green";
-							break;
-						case "Q":
-							$html .= "yellow";
-							break;
-						case "R":
-							$html .= "yellow";
-							break;
-						case "I":
-							$html .= "grey";
-							break;
-						default:
-						   $html .= "red";
-					}
-					$html .= "\">&#9660;</span>";
-					$html .= "</td>";
 					$html .= "<td><span class=\"badge badge-info\">".$row->station_callsign."</span></td>";
 				$html .= "</tr>";
 			}

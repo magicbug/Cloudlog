@@ -284,6 +284,19 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="col-md">
+			<div class="card">
+				<h5 class="card-header">POTA</h5>
+				<div class="card-body">
+					<div class="form-group">
+						<label for="stationPOTAInput">POTA Reference</label>
+						<input type="text" class="form-control" name="pota" id="stationPOTAInput" aria-describedby="stationPOTAInputHelp" value="<?php if(set_value('pota') != "") { echo set_value('pota'); } else { echo $my_station_profile->station_pota; } ?>">
+						<small id="stationPOTAInputHelp" class="form-text text-muted">Station POTA reference.</small>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div class="row">
@@ -294,13 +307,13 @@
 					<div class="form-group">
 		    			<label for="stationSigInput">Signature</label>
 		    			<input type="text" class="form-control" name="sig" id="stationSigInput" aria-describedby="stationSigInputHelp" value="<?php if(set_value('sig') != "") { echo set_value('sig'); } else { echo $my_station_profile->station_sig; } ?>">
-		    			<small id="stationSigInputHelp" class="form-text text-muted">Station Signature (e.g. WWFF)..</small>
+		    			<small id="stationSigInputHelp" class="form-text text-muted">Station Signature (e.g. GMA)..</small>
 					</div>
 
 					<div class="form-group">
 		    			<label for="stationSigInfoInput">Signature Information</label>
 		    			<input type="text" class="form-control" name="sig_info" id="stationSigInfoInput" aria-describedby="stationSigInfoInputHelp" value="<?php if(set_value('sig_info') != "") { echo set_value('sig_info'); } else { echo $my_station_profile->station_sig_info; } ?>">
-		    			<small id="stationSigInfoInputHelp" class="form-text text-muted">Station Signature Info (e.g. DLFF-0029).</small>
+		    			<small id="stationSigInfoInputHelp" class="form-text text-muted">Station Signature Info (e.g. DA/NW-357).</small>
 					</div>
 				</div>
 			</div>
