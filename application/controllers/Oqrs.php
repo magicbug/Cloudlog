@@ -126,7 +126,7 @@ class Oqrs extends CI_Controller {
 
         $data['qsos'] = $this->oqrs_model->search_log_time_date($time, $date, $band, $mode);
 
-		$this->load->view('qslprint/qsolist', $data);
+		$this->load->view('oqrs/qsolist', $data);
 	}
 
 	public function alert_oqrs_request($postdata) {
