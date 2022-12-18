@@ -183,6 +183,10 @@
 				<th>QSL Sent</th>
 				<th>QSL Received</th>
 				<th>QSL Msg</th>
+				<th>DXCC</th>
+				<th>State</th>
+				<th>CQ Zone</th>
+				<th>IOTA</th>
 			</tr>
 		</thead>
 		<tbody>

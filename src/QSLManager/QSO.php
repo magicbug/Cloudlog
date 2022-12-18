@@ -31,6 +31,11 @@ class QSO
 	private string $deSigInfo;
 	private string $deIOTAIslandID;
 	private string $deSOTAReference;
+	/** Awards */
+	private string $cqzone;
+	private string $state;
+	private string $dxcc;
+	private string $iota;
 	/** @var string[] */
 	private array $deVUCCGridsquares;
 	private string $dxGridsquare;
@@ -93,7 +98,11 @@ class QSO
 			'COL_MY_VUCC_GRIDS',
 			'COL_SOTA_REF',
 			'COL_SUBMODE',
-			'COL_VUCC_GRIDS'
+			'COL_VUCC_GRIDS',
+			'COL_CQZ',
+			'COL_STATE',
+			'COL_COUNTRY',
+			'COL_IOTA',
 		];
 
 
@@ -152,6 +161,11 @@ class QSO
 		$this->QSLSent = ($data['COL_QSL_SENT'] === null) ? '' : $data['COL_QSL_SENT'];
 		$this->QSLSentVia = ($data['COL_QSL_SENT_VIA'] === null) ? '' : $data['COL_QSL_SENT_VIA'];
 		$this->QSLVia = ($data['COL_QSL_VIA'] === null) ? '' : $data['COL_QSL_VIA'];
+
+		$this->cqzone = $data['COL_CQZ'];
+		$this->state = $data['COL_STATE'];
+		$this->dxcc = $data['COL_COUNTRY'];
+		$this->iota = $data['COL_IOTA'];
 	}
 
 	/**
@@ -458,6 +472,26 @@ class QSO
 		return $this->QSLVia;
 	}
 
+	public function getDXCC(): string
+	{
+		return $this->dxcc;
+	}
+
+	public function getCqzone(): string
+	{
+		return $this->cqzone;
+	}
+
+	public function getState(): string
+	{
+		return $this->state;
+	}
+
+	public function getIOTA(): string
+	{
+		return $this->iota;
+	}
+
 	public function toArray(): array
 	{
 		return [
@@ -476,6 +510,10 @@ class QSO
 			'qslReceived' => $this->getFormattedQSLReceived(),
 			'qslMessage' => $this->getQSLMsg(),
 			'name' => $this->getName(),
+			'dxcc' => $this->getDXCC(),
+			'state' => $this->getState(),
+			'cqzone' => $this->getCqzone(),
+			'iota' => $this->getIOTA(),
 		];
 	}
 
@@ -540,9 +578,6 @@ class QSO
 			$refs[] = implode(",", $this->dxVUCCGridsquares);
 		} else if ($this->dxGridsquare !== '') {
 			$refs[] = $this->dxGridsquare;
-		}
-		if ($this->dxIOTA !== '') {
-			$refs[] = "IOTA:" . $this->dxIOTA;
 		}
 		if ($this->dxSOTAReference !== '') {
 			$refs[] = "SOTA:" . $this->dxSOTAReference;
