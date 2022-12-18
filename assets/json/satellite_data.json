@@ -143,6 +143,18 @@
          ]
       }
    },
+   "CAS-10":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"145870000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"435180000"
+            }
+         ]
+      }
+   },
    "FO-118":{
       "Modes":{
          "H/U":[
