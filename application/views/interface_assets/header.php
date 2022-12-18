@@ -36,7 +36,7 @@
 
   	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datatables.min.css"/>
 
- 	<?php if ($this->uri->segment(1) == "adif") { ?>
+	  <?php if ($this->uri->segment(1) == "adif" || (isset($hasDatePicker) && $hasDatePicker)) { ?>
   	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
   	<?php } ?>
 	 
@@ -58,7 +58,7 @@
 
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="<?php echo site_url('logbook');?>">Logbook</a>
+        <a class="nav-link" href="<?php echo site_url('logbookadvanced');?>">Logbook</a>
 
         <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
         	<!-- QSO Menu Dropdown -->
