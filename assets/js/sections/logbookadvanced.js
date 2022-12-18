@@ -306,6 +306,12 @@ $(document).ready(function () {
 		handleQsl('N','', 'dontSend');
 	});
 
+	$('#searchForm').on('reset', function(e) {
+		setTimeout(function() {
+			$('#searchForm').submit();
+		});
+	});
+
 	function handleQsl(sent, method, tag) {
 		var elements = $('#qsoList tbody input:checked');
 		var nElements = elements.length;
