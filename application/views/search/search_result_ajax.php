@@ -2,13 +2,13 @@
 	<table style="width:100%" class="table table-sm tablewas table-bordered table-hover table-striped table-condensed text-center">
 		<thead>
         <tr class="titles">
-            <td><?php echo $this->lang->line('general_word_date'); ?></td>
+            <th><?php echo $this->lang->line('general_word_date'); ?></th>
             <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-            <td><?php echo $this->lang->line('general_word_time'); ?></td>
+            <th><?php echo $this->lang->line('general_word_time'); ?></th>
             <?php } ?>
-            <td><?php echo $this->lang->line('gen_hamradio_call'); ?></td>
+            <th><?php echo $this->lang->line('gen_hamradio_call'); ?></th>
 <?php
-			echo '<td>';
+			echo '<th>';
 				switch($this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
 					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
@@ -22,8 +22,8 @@
 					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
-			echo '</td>';
-			echo '<td>';
+			echo '</th>';
+			echo '<th>';
 				switch($this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
 					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
@@ -37,8 +37,8 @@
 					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
-			echo '</td>';
-			echo '<td>';
+			echo '</th>';
+			echo '<th>';
 				switch($this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
 					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
@@ -52,8 +52,8 @@
 					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
-			echo '</td>';
-			echo '<td>';
+			echo '</th>';
+			echo '<th>';
 				switch($this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
 					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
@@ -67,8 +67,8 @@
 					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
-			echo '</td>';
-			echo '<td>';
+			echo '</th>';
+			echo '<th>';
 			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
 				case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
 				case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
@@ -82,20 +82,20 @@
 				case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 				case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 			}
-			echo '</td>';
+			echo '</th>';
 
             	if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-                <td>QSL</td>
+                <th>QSL</th>
                 <?php if($this->session->userdata('user_eqsl_name') != "") { ?>
-                    <td>eQSL</td>
+                    <th>eQSL</th>
                 <?php } ?>
                 <?php if($this->session->userdata('user_lotw_name') != "") { ?>
-                    <td>LoTW</td>
+                    <th>LoTW</th>
                 <?php } ?>
             <?php } ?>
-                <td><?php echo $this->lang->line('gen_hamradio_station'); ?></td>
+                <th><?php echo $this->lang->line('gen_hamradio_station'); ?></td>
             <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-                <td></td>
+                <th></th>
             <?php } ?>
         </tr>
 		</thead>
