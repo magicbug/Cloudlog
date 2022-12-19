@@ -5,10 +5,10 @@
 			<p><?php echo $this->session->flashdata('message'); ?></p>
 		</div>
 	<?php } ?>
-
+<div class="row">
 	<form id="searchForm" name="searchForm" action="<?php echo base_url()."index.php/logbookadvanced/search";?>" method="post">
 		<div class="form-row">
-			<div class="form-group col-1">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="dateFrom">From</label>
 				<div class="input-group input-group-sm date" id="dateFrom" data-target-input="nearest">
 					<input name="dateFrom" type="text" placeholder="<?php echo $datePlaceholder;?>" class="form-control" data-target="#dateFrom"/>
@@ -17,7 +17,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="form-group col-1">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label for="dateTo">To</label>
 				<div class="input-group input-group-sm date" id="dateTo" data-target-input="nearest">
 					<input name="dateTo" type="text" placeholder="<?php echo $datePlaceholder;?>" class="form-control" data-target="#dateTo"/>
@@ -26,7 +26,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="de">De</label>
 				<select id="de" name="de" class="form-control form-control-sm">
 					<option value="">All</option>
@@ -37,11 +37,11 @@
 					?>
 				</select>
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="dx">Dx</label>
 				<input type="text" name="dx" id="dx" class="form-control form-control-sm" value="">
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="dxcc">DXCC</label>
 				<select class="form-control form-control-sm" id="dxcc" name="dxcc">
 				<option value="">-</option>	
@@ -58,7 +58,7 @@
 					?>
 				</select>
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="iota">IOTA</label>
 				<select class="form-control form-control-sm" id="iota" name="iota">
 					<option value ="">-</option>
@@ -70,15 +70,15 @@
 					?>
 				</select>
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="state">State</label>
 				<input type="text" name="state" id="state" class="form-control form-control-sm" value="">
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="gridsquare">Gridsquare</label>
 				<input type="text" name="gridsquare" id="gridsquare" class="form-control form-control-sm" value="">
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="mode">Mode</label>
 				<select id="mode" name="mode" class="form-control form-control-sm">
 					<option value="">All</option>
@@ -89,7 +89,7 @@
 					?>
 				</select>
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="band">Band</label>
 				<select id="band" name="band" class="form-control form-control-sm">
 					<option value="">All</option>
@@ -100,7 +100,7 @@
 					?>
 				</select>
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="selectPropagation">Propagation</label>
 				<select id="selectPropagation" name="selectPropagation" class="form-control form-control-sm">
 				<option value="">All</option>
@@ -124,7 +124,7 @@
 						<option value="TR">Tropospheric ducting</option>
 				</select>
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label for="qslSent">QSL Sent</label>
 				<select id="qslSent" name="qslSent" class="form-control form-control-sm">
 					<option value="">All</option>
@@ -135,7 +135,7 @@
 					<option value="I">Ignore/Invalid</option>
 				</select>
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label for="qslReceived">QSL Received</label>
 				<select id="qslReceived" name="qslReceived" class="form-control form-control-sm">
 					<option value="">All</option>
@@ -146,7 +146,7 @@
 					<option value="V">Verified</option>
 				</select>
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label for="qsoResults"># Results</label>
 				<select id="qsoResults" name="qsoResults" class="form-control form-control-sm">
 					<option value="250">250</option>
@@ -155,7 +155,7 @@
 					<option value="5000">5000</option>
 				</select>
 			</div>
-			<div class="form-group col">
+			<div class="form-group col-lg col-md-3 col-sm-3 col-xl-1">
 				<label>&nbsp;</label><br>
 				<button type="submit" class="btn btn-sm btn-primary" id="searchButton">Search</button>
 				<button type="reset" class="btn btn-sm btn-danger" id="resetButton">Reset</button>
@@ -173,6 +173,7 @@
 		<button type="button" class="btn btn-sm btn-info" id="exportAdif">Create ADIF</button>
         <button type="button" class="btn btn-sm btn-danger" id="deleteQsos">Delete</button>
 		<span id="infoBox"></span>
+	</div>
 	</div>
 	<table style="width:100%" class="table-sm table table-bordered table-hover table-condensed text-center" id="qsoList">
 		<thead>
