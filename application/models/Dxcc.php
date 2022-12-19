@@ -82,7 +82,6 @@ class DXCC extends CI_Model {
 			if ($postdata['worked'] != NULL) {
 				$workedDXCC = $this->getDxccBandWorked($location_list, $band, $postdata);
 				foreach ($workedDXCC as $wdxcc) {
-					//function displayContacts(searchphrase, band, mode, type) {
 					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("'.str_replace("&", "%26", $wdxcc->name).'","'. $band . '","'. $postdata['mode'] . '","DXCC")\'>W</a></div>';
 				}
 			}
@@ -131,13 +130,7 @@ class DXCC extends CI_Model {
 					where station_id in (" . $location_list .
 				  ") and col_dxcc > 0";
 
-		if ($band == 'SAT') {
-			$sql .= " and col_prop_mode ='" . $band . "'";
-		}
-		else {
-			$sql .= " and col_prop_mode !='SAT'";
-			$sql .= " and col_band ='" . $band . "'";
-		}
+		$sql .= $this->addBandToQuery($band);
 
 		if ($postdata['mode'] != 'All') {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
@@ -166,13 +159,7 @@ class DXCC extends CI_Model {
 					where station_id in (" . $location_list .
 					") and col_dxcc > 0";
 
-		if ($band == 'SAT') {
-			$sql .= " and col_prop_mode ='" . $band . "'";
-		}
-		else {
-			$sql .= " and col_prop_mode !='SAT'";
-			$sql .= " and col_band ='" . $band . "'";
-		}
+		$sql .= $this->addBandToQuery($band);
 
 		if ($postdata['mode'] != 'All') {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
@@ -192,6 +179,19 @@ class DXCC extends CI_Model {
 		return $query->result();
 	}
 
+	function addBandToQuery($band) {
+        $sql = '';
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+        return $sql;
+    }
+
 	function fetchDxcc($postdata) {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
@@ -203,7 +203,7 @@ class DXCC extends CI_Model {
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
-		$sql = "select adif, prefix, name, date(end) Enddate, date(start) Startdate
+		$sql = "select adif, prefix, name, date(end) Enddate, date(start) Startdate, lat, `long`
             from dxcc_entities";
 
 		if ($postdata['notworked'] == NULL) {
@@ -248,15 +248,7 @@ class DXCC extends CI_Model {
             where station_id in (" . $location_list .
               ") and col_dxcc > 0";
 
-		if ($postdata['band'] != 'All') {
-			if ($postdata['band'] == 'SAT') {
-				$sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
-			}
-			else {
-				$sql .= " and col_prop_mode !='SAT'";
-				$sql .= " and col_band ='" . $postdata['band'] . "'";
-			}
-		}
+		$sql .= $this->addBandToQuery($postdata['band']);
 
 		if ($postdata['mode'] != 'All') {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
@@ -264,15 +256,7 @@ class DXCC extends CI_Model {
 
 		$sql .= " and not exists (select 1 from ".$this->config->item('table_name')." where station_id in (". $location_list .") and col_dxcc = thcv.col_dxcc and col_dxcc > 0";
 
-		if ($postdata['band'] != 'All') {
-			if ($postdata['band'] == 'SAT') {
-				$sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
-			}
-			else {
-				$sql .= " and col_prop_mode !='SAT'";
-				$sql .= " and col_band ='" . $postdata['band'] . "'";
-			}
-		}
+		$sql .= $this->addBandToQuery($postdata['band']);
 
 		if ($postdata['mode'] != 'All') {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
@@ -305,15 +289,7 @@ class DXCC extends CI_Model {
                 where station_id in (". $location_list .
                     ") and col_dxcc > 0";
 
-		if ($postdata['band'] != 'All') {
-			if ($postdata['band'] == 'SAT') {
-				$sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
-			}
-			else {
-				$sql .= " and col_prop_mode !='SAT'";
-				$sql .= " and col_band ='" . $postdata['band'] . "'";
-			}
-		}
+		$sql .= $this->addBandToQuery($postdata['band']);
 
 		if ($postdata['mode'] != 'All') {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";

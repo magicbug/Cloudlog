@@ -19,6 +19,7 @@
 					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
 			echo '</td>';
@@ -33,6 +34,7 @@
 					case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
 					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
 			echo '</td>';
@@ -47,6 +49,7 @@
 					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
 			echo '</td>';
@@ -61,6 +64,7 @@
 					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
 			echo '</td>';
@@ -75,6 +79,7 @@
 				case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 				case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 				case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+				case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 				case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 			}
 			echo '</td>';
