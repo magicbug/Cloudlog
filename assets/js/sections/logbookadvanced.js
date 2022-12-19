@@ -156,6 +156,7 @@ $(document).ready(function () {
 				propmode: this.selectPropagation.value,
 				gridsquare: this.gridsquare.value,
 				state: this.state.value,
+				qsoresults: this.qsoResults.value
 			},
 			dataType: 'json',
 			success: function (data) {

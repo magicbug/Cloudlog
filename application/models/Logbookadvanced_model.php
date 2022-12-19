@@ -114,11 +114,7 @@ class Logbookadvanced_model extends CI_Model {
 			$where = "AND $where";
 		}
 
-		if ($where === '') {
-			$limit = 250;
-		} else {
-			$limit = 1000;
-		}
+		$limit = $searchCriteria['qsoresults'];
 
 		$sql = "
 			SELECT *

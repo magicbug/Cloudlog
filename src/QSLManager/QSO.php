@@ -162,10 +162,10 @@ class QSO
 		$this->QSLSentVia = ($data['COL_QSL_SENT_VIA'] === null) ? '' : $data['COL_QSL_SENT_VIA'];
 		$this->QSLVia = ($data['COL_QSL_VIA'] === null) ? '' : $data['COL_QSL_VIA'];
 
-		$this->cqzone = $data['COL_CQZ'];
-		$this->state = $data['COL_STATE'];
-		$this->dxcc = $data['COL_COUNTRY'];
-		$this->iota = $data['COL_IOTA'];
+		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : $data['COL_CQZ'];
+		$this->state = ($data['COL_STATE'] === null) ? '' :$data['COL_STATE'];
+		$this->dxcc = ($data['COL_COUNTRY'] === null) ? '' :$data['COL_COUNTRY'];
+		$this->iota = ($data['COL_IOTA'] === null) ? '' :$data['COL_IOTA'];
 	}
 
 	/**

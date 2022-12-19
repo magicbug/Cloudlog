@@ -101,7 +101,7 @@
 				</select>
 			</div>
 			<div class="form-group col">
-				<label class="form-label" for="selectPropagation">Propagation Mode</label>
+				<label class="form-label" for="selectPropagation">Propagation</label>
 				<select id="selectPropagation" name="selectPropagation" class="form-control form-control-sm">
 				<option value="">All</option>
 						<option value="AS">Aircraft Scatter</option>
@@ -144,6 +144,15 @@
 					<option value="R">Requested</option>
 					<option value="I">Ignore/Invalid</option>
 					<option value="V">Verified</option>
+				</select>
+			</div>
+			<div class="form-group col">
+				<label for="qsoResults"># Results</label>
+				<select id="qsoResults" name="qsoResults" class="form-control form-control-sm">
+					<option value="250">250</option>
+					<option value="1000">1000</option>
+					<option value="2500">2500</option>
+					<option value="5000">5000</option>
 				</select>
 			</div>
 			<div class="form-group col">

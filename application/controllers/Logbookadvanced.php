@@ -94,6 +94,7 @@ class Logbookadvanced extends CI_Controller {
 			'propmode' => xss_clean($this->input->post('propmode')),
 			'gridsquare' => xss_clean($this->input->post('gridsquare')),
 			'state' => xss_clean($this->input->post('state')),
+			'qsoresults' => xss_clean($this->input->post('qsoresults')),
 		);
 
 		$qsos = [];
