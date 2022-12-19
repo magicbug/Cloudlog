@@ -8,6 +8,7 @@
             <?php } ?>
             <th><?php echo $this->lang->line('gen_hamradio_call'); ?></th>
 <?php
+$ci =& get_instance();
 			echo '<th>';
 				switch($this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
@@ -93,7 +94,7 @@
                     <th>LoTW</th>
                 <?php } ?>
             <?php } ?>
-                <th><?php echo $this->lang->line('gen_hamradio_station'); ?></td>
+                <th><?php echo $this->lang->line('gen_hamradio_station'); ?></th>
             <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <th></th>
             <?php } ?>
@@ -135,6 +136,7 @@
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
+            case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 			}
 			echo '</td>';
 			switch($this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2')) {
@@ -150,6 +152,7 @@
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
+            case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 			}
 			echo '</td>';
 
@@ -166,6 +169,7 @@
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
+            case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 			}
 			echo '</td>';
 			switch($this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4')) {
@@ -181,6 +185,7 @@
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
+            case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 			}
 			echo '</td>';
 			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
@@ -196,6 +201,7 @@
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
+            case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 			}
 			echo '</td>';
 				if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
