@@ -2,13 +2,14 @@
 	<table style="width:100%" class="table table-sm tablewas table-bordered table-hover table-striped table-condensed text-center">
 		<thead>
         <tr class="titles">
-            <td><?php echo $this->lang->line('general_word_date'); ?></td>
+            <th><?php echo $this->lang->line('general_word_date'); ?></th>
             <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-            <td><?php echo $this->lang->line('general_word_time'); ?></td>
+            <th><?php echo $this->lang->line('general_word_time'); ?></th>
             <?php } ?>
-            <td><?php echo $this->lang->line('gen_hamradio_call'); ?></td>
+            <th><?php echo $this->lang->line('gen_hamradio_call'); ?></th>
 <?php
-			echo '<td>';
+$ci =& get_instance();
+			echo '<th>';
 				switch($this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
 					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
@@ -19,10 +20,11 @@
 					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
-			echo '</td>';
-			echo '<td>';
+			echo '</th>';
+			echo '<th>';
 				switch($this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
 					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
@@ -33,10 +35,11 @@
 					case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
 					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
-			echo '</td>';
-			echo '<td>';
+			echo '</th>';
+			echo '<th>';
 				switch($this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
 					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
@@ -47,10 +50,11 @@
 					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
-			echo '</td>';
-			echo '<td>';
+			echo '</th>';
+			echo '<th>';
 				switch($this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4')) {
 					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
 					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
@@ -61,10 +65,11 @@
 					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 				}
-			echo '</td>';
-			echo '<td>';
+			echo '</th>';
+			echo '<th>';
 			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
 				case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
 				case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
@@ -75,22 +80,23 @@
 				case 'State': echo $this->lang->line('gen_hamradio_state'); break;
 				case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
 				case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
+				case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
 				case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
 			}
-			echo '</td>';
+			echo '</th>';
 
             	if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-                <td>QSL</td>
+                <th>QSL</th>
                 <?php if($this->session->userdata('user_eqsl_name') != "") { ?>
-                    <td>eQSL</td>
+                    <th>eQSL</th>
                 <?php } ?>
                 <?php if($this->session->userdata('user_lotw_name') != "") { ?>
-                    <td>LoTW</td>
+                    <th>LoTW</th>
                 <?php } ?>
             <?php } ?>
-                <td><?php echo $this->lang->line('gen_hamradio_station'); ?></td>
+                <th><?php echo $this->lang->line('gen_hamradio_station'); ?></th>
             <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-                <td></td>
+                <th></th>
             <?php } ?>
         </tr>
 		</thead>
@@ -130,6 +136,7 @@
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
+            case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 			}
 			echo '</td>';
 			switch($this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2')) {
@@ -145,6 +152,7 @@
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
+            case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 			}
 			echo '</td>';
 
@@ -161,6 +169,7 @@
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
+            case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 			}
 			echo '</td>';
 			switch($this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4')) {
@@ -176,6 +185,7 @@
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
+            case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 			}
 			echo '</td>';
 			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
@@ -191,6 +201,7 @@
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
+            case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 			}
 			echo '</td>';
 				if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>

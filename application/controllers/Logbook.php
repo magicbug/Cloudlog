@@ -509,7 +509,7 @@ class Logbook extends CI_Controller {
 		$html = "";
 
 		if(!empty($logbooks_locations_array)) { 
-	    $this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
+	    $this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_FREQ, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
 	    $this->db->from($this->config->item('table_name'));
 
 	    $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
@@ -530,10 +530,14 @@ class Logbook extends CI_Controller {
 				$html .= "<tr>";
 					$html .= "<td>Date</td>";
 					$html .= "<td>Callsign</td>";
+					$html .= "<td>Mode</td>";
 					$html .= "<td>RST (S)</td>";
 					$html .= "<td>RST (R)</td>";
-					$html .= "<td>Band</td>";
-					$html .= "<td>Mode</td>";
+					if ($this->session->userdata('user_column1')=='Frequency' || $this->session->userdata('user_column2')=='Frequency' || $this->session->userdata('user_column3')=='Frequency' || $this->session->userdata('user_column4')=='Frequency' || $this->session->userdata('user_column5')=='Frequency') {
+						$html .= "<td>Frequency</td>";
+					} else {
+						$html .= "<td>Band</td>";
+					}
 					switch($this->session->userdata('user_previous_qsl_type')) {
 						case 0:
 							$html .= "<td>".$this->lang->line('gen_hamradio_qsl')."</td>";
@@ -568,17 +572,21 @@ class Logbook extends CI_Controller {
 				$html .= "<tr>";
 					$html .= "<td>".date($custom_date_format, $timestamp). date(' H:i',strtotime($row->COL_TIME_ON)) . "</td>";
 					$html .= "<td><a id='edit_qso' href='javascript:displayQso(" . $row->COL_PRIMARY_KEY . ");'>" . str_replace('0','&Oslash;',strtoupper($row->COL_CALL)) . "</a></td>";
-					$html .= "<td>".$row->COL_RST_SENT."</td>";
-					$html .= "<td>".$row->COL_RST_RCVD."</td>";
-					if($row->COL_SAT_NAME != null) {
-									$html .= "<td>".$row->COL_SAT_NAME."</td>";
-					} else {
-								$html .= "<td>".$row->COL_BAND."</td>";
-					}
 					if ($row->COL_SUBMODE==null)
 						$html .= "<td>".$row->COL_MODE."</td>";
 					else
 						$html .= "<td>".$row->COL_SUBMODE."</td>";
+					$html .= "<td>".$row->COL_RST_SENT."</td>";
+					$html .= "<td>".$row->COL_RST_RCVD."</td>";
+					if($row->COL_SAT_NAME != null) {
+						$html .= "<td>".$row->COL_SAT_NAME."</td>";
+					} else {
+						if ($this->session->userdata('user_column1')=='Frequency' || $this->session->userdata('user_column2')=='Frequency' || $this->session->userdata('user_column3')=='Frequency' || $this->session->userdata('user_column4')=='Frequency' || $this->session->userdata('user_column5')=='Frequency') {
+							$html .= "<td>".$this->frequency->hz_to_mhz($row->COL_FREQ)."</td>";
+						} else {
+							$html .= "<td>".$row->COL_BAND."</td>";
+						}
+					}
 					if ($this->session->userdata('user_previous_qsl_type') == 1) {
 						$html .= "<td class=\"lotw\">";
 						$html .= "<span class=\"qsl-";
