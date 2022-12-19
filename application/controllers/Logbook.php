@@ -38,7 +38,7 @@ class Logbook extends CI_Controller {
 		$this->load->library('pagination');
 		$config['base_url'] = base_url().'index.php/logbook/index/';
 		$config['total_rows'] = $this->logbook_model->total_qsos();
-		$config['per_page'] = '50';
+		$config['per_page'] = '25';
 		$config['num_links'] = 6;
 		$config['full_tag_open'] = '';
 		$config['full_tag_close'] = '';

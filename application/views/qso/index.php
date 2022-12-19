@@ -561,7 +561,7 @@
                     <?php if($row->COL_SAT_NAME != null) { ?>
                     <td><?php echo $row->COL_SAT_NAME; ?></td>
                     <?php } else { ?>
-		    <td title="<?php echo strval($row->COL_FREQ); ?>"><?php echo $row->COL_BAND.'/'.round($row->COL_FREQ/1000,0); ?></td>
+                    <td><?php echo $row->COL_BAND; ?></td>
                     <?php } ?>
                   </tr>
               <?php $i++; } } ?>
