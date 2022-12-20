@@ -118,14 +118,14 @@ function processNextCallbookItem() {
 function selectQsoID(qsoID) {
 	var element = $("#qsoID-" + qsoID);
 	element.find("input[type=checkbox]").prop("checked", true);
-	element.addClass('alert-success')
+	element.addClass('alert-success');
 }
-
 
 function unselectQsoID(qsoID) {
 	var element = $("#qsoID-" + qsoID);
 	element.find("input[type=checkbox]").prop("checked", false);
-	element.removeClass('alert-success')
+	element.removeClass('alert-success');
+	$('#checkBoxAll').prop("checked", false);
 }
 
 $(document).ready(function () {
@@ -349,7 +349,7 @@ $(document).ready(function () {
 			$('#qsoList tbody tr').each(function (i) {
 				selectQsoID($(this).data('qsoID'))
 			});
-		}else{
+		} else {
 			$('#qsoList tbody tr').each(function (i) {
 				unselectQsoID($(this).data('qsoID'))
 			});
