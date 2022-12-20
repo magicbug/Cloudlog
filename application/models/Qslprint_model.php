@@ -49,7 +49,6 @@ class Qslprint_model extends CI_Model {
 		}
 
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-		$this->db->join('oqrs', 'oqrs.qsoid = '.$this->config->item('table_name').'.COL_PRIMARY_KEY', 'left outer');
 		// always filter user. this ensures that even if the station_id is from another user no inaccesible QSOs will be returned
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$this->db->where_in('COL_QSL_SENT', array('R', 'Q'));
@@ -111,17 +110,6 @@ class Qslprint_model extends CI_Model {
 		$query = $this->db->get($this->config->item('table_name'));
 
 		return $query;
-	}
-
-	function show_oqrs($id) {
-		$this->db->select('requesttime as "Request time", requestcallsign as "Requester", email as "Email", note as "Note"');
-		$this->db->join('station_profile', 'station_profile.station_id = oqrs.station_id');
-		// always filter user. this ensures that no inaccesible QSOs will be returned
-		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
-		$this->db->where('oqrs.id = ' .$id);
-		$query = $this->db->get('oqrs');
-
-		return $query->result();
 	}
 
 }

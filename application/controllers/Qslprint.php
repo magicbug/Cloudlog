@@ -176,15 +176,6 @@ class QSLPrint extends CI_Controller {
 		$this->qslprint_model->add_qso_to_print_queue($this->security->xss_clean($id));
 	}
 
-	public function show_oqrs() {
-		$id = $this->security->xss_clean($this->input->post('id'));
-
-		$this->load->model('qslprint_model');
-
-		$data['result'] = $this->qslprint_model->show_oqrs($id);
-		$this->load->view('oqrs/showoqrs', $data);
-	}
-
 }
 
 /* End of file Qslprint.php */
