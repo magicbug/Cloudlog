@@ -108,6 +108,7 @@ class Logbookadvanced extends CI_Controller {
 
 	public function updateFromCallbook() {
 		$this->load->model('logbook_model');
+		$this->load->model('logbookadvanced_model');
 
 		$qsoID = xss_clean($this->input->post('qsoID'));
 		$qso = $this->logbook_model->qso_info($qsoID)->row_array();
@@ -120,8 +121,11 @@ class Logbookadvanced extends CI_Controller {
 		$callbook = $this->logbook_model->loadCallBook($qso['COL_CALL'], $this->config->item('use_fullname'));
 
 		if ($callbook['callsign'] !== "") {
+			$this->logbookadvanced_model->updateQsoWithCallbookInfo($qsoID, $qso, $callbook);
 			$qso['COL_NAME'] = trim($callbook['name']);
-			$qso['COL_QSL_VIA'] = trim($callbook['qslmgr']);
+			if (isset($callbook['qslmgr'])) {
+				$qso['COL_QSL_VIA'] = trim($callbook['qslmgr']);
+			}
 		}
 
 		$qsoObj = new QSO($qso);

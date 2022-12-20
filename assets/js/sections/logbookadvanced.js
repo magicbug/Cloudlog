@@ -56,7 +56,7 @@ function loadQSOTable(rows) {
 			'<div class="form-check"><input class="form-check-input" type="checkbox" /></div>',
 			qso.qsoDateTime,
 			qso.de,
-			qso.dx,
+			'<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>',
 			qso.mode,
 			qso.rstS,
 			qso.rstR,

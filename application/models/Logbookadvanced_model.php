@@ -177,4 +177,47 @@ class Logbookadvanced_model extends CI_Model {
             return array('message' => 'OK');
         }
     }
+
+	public function updateQsoWithCallbookInfo($qsoID, $qso, $callbook) {
+		$updatedData = array();
+		if (!empty($callbook['name']) && empty($qso['COL_NAME'])) {
+			$updatedData['COL_NAME'] = $callbook['name'];
+		}
+		if (!empty($callbook['gridsquare']) && empty($qso['COL_GRIDSQUARE']) && empty($qso['COL_VUCC_GRIDS'] )) {
+			if (strpos(trim($callbook['gridsquare']), ',') === false) {
+				$updatedData['COL_GRIDSQUARE'] = strtoupper(trim($callbook['gridsquare']));
+			} else {
+				$updatedData['COL_VUCC_GRIDS'] = strtoupper(trim($callbook['gridsquare']));
+			}
+		}
+		if (!empty($callbook['city']) && empty($qso['COL_QTH'])) {
+			$updatedData['COL_QTH'] = $callbook['city'];
+		}
+		if (!empty($callbook['lat']) && empty($qso['COL_LAT'])) {
+			$updatedData['COL_LAT'] = $callbook['lat'];
+		}
+		if (!empty($callbook['long']) && empty($qso['COL_LON'])) {
+			$updatedData['COL_LON'] = $callbook['long'];
+		}
+		if (!empty($callbook['iota']) && empty($qso['COL_IOTA'])) {
+			$updatedData['COL_IOTA'] = $callbook['iota'];
+		}
+		if (!empty($callbook['state']) && empty($qso['COL_STATE'])) {
+			$updatedData['COL_STATE'] = $callbook['state'];
+		}
+		if (!empty($callbook['us_county']) && empty($qso['COL_USACA_COUNTIES'])) {
+			$updatedData['COL_USACA_COUNTIES'] = $callbook['us_county'];
+		}
+		if (!empty($callbook['qslmgr']) && empty($qso['COL_QSL_VIA'])) {
+			$updatedData['COL_QSL_VIA'] = $callbook['qslmgr'];
+		}
+
+		if (count($updatedData) > 0) {
+			$this->db->where('COL_PRIMARY_KEY', $qsoID);
+			$this->db->update($this->config->item('table_name'), $updatedData);
+			return true;
+		}
+
+		return false;
+    }
 }
