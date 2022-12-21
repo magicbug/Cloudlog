@@ -71,8 +71,12 @@ class Logbookadvanced_model extends CI_Model {
 			}
 		}
 		if ($searchCriteria['band'] !== '') {
-			$conditions[] = "COL_BAND = ?";
-			$binding[] = trim($searchCriteria['band']);
+			if($searchCriteria['band'] != "SAT") {
+				$conditions[] = "COL_BAND = ? and COL_PROP_MODE != 'SAT'";
+				$binding[] = trim($searchCriteria['band']);
+			} else {
+				$conditions[] = "COL_PROP_MODE = 'SAT'";
+			}
 		}
 		if ($searchCriteria['qslSent'] !== '') {
 			$conditions[] = "COL_QSL_SENT = ?";
