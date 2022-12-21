@@ -16,7 +16,7 @@ class Migration_add_oqrs extends CI_Migration {
 
 		if (!$this->db->field_exists('oqrs_text', 'station_profile')) {
 			$fields = array(
-				'oqrs_text text DEFAULT ""',
+				'oqrs_text text',
 			);
 
 			$this->dbforge->add_column('station_profile', $fields);
