@@ -8,15 +8,17 @@ function echo_table_header_col($ctx, $name) {
 		case 'IOTA': echo '<th>'.$ctx->lang->line('gen_hamradio_iota').'</th>'; break;
 		case 'SOTA': echo '<th>'.$ctx->lang->line('gen_hamradio_sota').'</th>'; break;
 		case 'WWFF': echo '<th>'.$ctx->lang->line('gen_hamradio_wwff').'</th>'; break;
-    case 'POTA': echo '<th>'.$ctx->lang->line('gen_hamradio_pota').'</th>'; break;
+		case 'POTA': echo '<th>'.$ctx->lang->line('gen_hamradio_pota').'</th>'; break;
 		case 'State': echo '<th>'.$ctx->lang->line('gen_hamradio_state').'</th>'; break;
 		case 'Grid': echo '<th>'.$ctx->lang->line('gen_hamradio_gridsquare').'</th>'; break;
 		case 'Band': echo '<th>'.$ctx->lang->line('gen_hamradio_band').'</td>'; break;
-		case 'Operator': echo '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;		
+		case 'Frequency': echo '<th>'.$ctx->lang->line('gen_hamradio_frequency').'</th>'; break;
+		case 'Operator': echo '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
 	}
 }
 
 function echo_table_col($row, $name) {
+	$ci =& get_instance();
 	switch($name) {
 		case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE . '</td>'; break;
         case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';} if ($row->COL_STX_STRING) { echo '<span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">' . $row->COL_STX_STRING . '</span>';} echo '</td>'; break;
@@ -27,16 +29,17 @@ function echo_table_col($row, $name) {
 		case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF) . '</td>'; break;
 		case 'POTA':    echo '<td>' . ($row->COL_POTA_REF) . '</td>'; break;
 		case 'Grid':    echo '<td>'; echoQrbCalcLink($row->station_gridsquare, $row->COL_VUCC_GRIDS, $row->COL_GRIDSQUARE); echo '</td>'; break;
-		case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'.$row->COL_SAT_NAME.'</a></td>'; } else { echo strtolower($row->COL_BAND); } echo '</td>'; break;
+		case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank"><span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$row->COL_SAT_NAME.'</span></a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'. strtolower($row->COL_BAND).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
+		case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
 		case 'Operator':echo '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
 	}
 }
 
 function echoQrbCalcLink($mygrid, $grid, $vucc) {
-	if (strlen($grid) != 0) {
+	if (!empty($grid)) {
 		echo $grid . ' <a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $grid . '\')"><i class="fas fa-globe"></i></a>';
-	} else if (strlen($vucc) != 0) {
+	} else if (!empty($vucc)) {
 		echo $vucc .' <a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $vucc . '\')"><i class="fas fa-globe"></i></a>';
 	}
 }
@@ -181,8 +184,8 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
                 <?php if ($this->session->userdata('user_eqsl_name') != ""){ ?>
                     <td class="eqsl">
-                        <span <?php if ($row->COL_EQSL_QSL_SENT == "Y") { $timestamp = strtotime($row->COL_EQSL_QSLSDATE); echo "data-original-title=\"".$this->lang->line('eqsl_short')." ".$this->lang->line('general_word_sent')." ".($timestamp!=''?date($custom_date_format, $timestamp):'')."\" data-toggle=\"tooltip\""; } ?> class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
-                        <span <?php if ($row->COL_EQSL_QSL_RCVD == "Y") { $timestamp = strtotime($row->COL_EQSL_QSLRDATE); echo "data-original-title=\"".$this->lang->line('eqsl_short')." ".$this->lang->line('general_word_received')." ".($timestamp!=''?date($custom_date_format, $timestamp):'')."\" data-toggle=\"tooltip\""; } ?> class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">
+                        <span <?php if ($row->COL_EQSL_QSL_SENT == "Y") { echo "data-original-title=\"".$this->lang->line('eqsl_short')." ".$this->lang->line('general_word_sent'); if ($row->COL_EQSL_QSLSDATE != null) { $timestamp = strtotime($row->COL_EQSL_QSLSDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-toggle=\"tooltip\""; } ?> class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
+                        <span <?php if ($row->COL_EQSL_QSL_RCVD == "Y") { echo "data-original-title=\"".$this->lang->line('eqsl_short')." ".$this->lang->line('general_word_received'); if ($row->COL_EQSL_QSLRDATE != null) { $timestamp = strtotime($row->COL_EQSL_QSLRDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-toggle=\"tooltip\""; } ?> class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">
 			    	<?php if($row->COL_EQSL_QSL_RCVD =='Y') { ?>
                         <a class="eqsl-green" href="<?php echo site_url("eqsl/image/".$row->COL_PRIMARY_KEY); ?>" data-fancybox="images" data-width="528" data-height="336">&#9660;</a>
                     <?php } else { ?>
@@ -194,8 +197,8 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
                 <?php if($this->session->userdata('user_lotw_name') != "") { ?>
                     <td class="lotw">
-                        <span <?php if ($row->COL_LOTW_QSL_SENT == "Y") { $timestamp = strtotime($row->COL_LOTW_QSLSDATE); echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_sent')." ".($timestamp!=''?date($custom_date_format, $timestamp):'')."\" data-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
-                        <span <?php if ($row->COL_LOTW_QSL_RCVD == "Y") { $timestamp = strtotime($row->COL_LOTW_QSLRDATE); echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_received')." ".($timestamp!=''?date($custom_date_format, $timestamp):'')."\" data-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
+                        <span <?php if ($row->COL_LOTW_QSL_SENT == "Y") { echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_sent'); if ($row->COL_LOTW_QSLSDATE != null) { $timestamp = strtotime($row->COL_LOTW_QSLSDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
+                        <span <?php if ($row->COL_LOTW_QSL_RCVD == "Y") { echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_received'); if ($row->COL_LOTW_QSLRDATE != null) { $timestamp = strtotime($row->COL_LOTW_QSLRDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
                     </td>
                 <?php } ?>
 
