@@ -8,7 +8,7 @@ function updateRow(qso) {
 	let c = 1;
 	cells.eq(c++).text(qso.qsoDateTime);
 	cells.eq(c++).text(qso.de);
-	cells.eq(c++).text(qso.dx);
+	cells.eq(c++).html('<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>');
 	cells.eq(c++).text(qso.mode);
 	cells.eq(c++).text(qso.rstS);
 	cells.eq(c++).text(qso.rstR);
