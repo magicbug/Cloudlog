@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Migration_reupload_io117_and_fo118.php extends CI_Migration
+class Migration_reupload_io117_and_fo118 extends CI_Migration
 {
 	public function up()
 	{
