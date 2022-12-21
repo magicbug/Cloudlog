@@ -58,7 +58,14 @@
 
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="<?php echo site_url('logbookadvanced');?>">Logbook</a>
+        <li class="nav-item dropdown">
+           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Logbook</a>
+           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="<?php echo site_url('logbook');?>"><i class="fas fa-book"></i> Overview</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="<?php echo site_url('logbookadvanced');?>"><i class="fas fa-book-open"></i> Advanced</a>
+           </div>
+        </li>
 
         <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
         	<!-- QSO Menu Dropdown -->
