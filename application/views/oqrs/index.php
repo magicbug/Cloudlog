@@ -19,7 +19,7 @@
 			<label class="my-1 mr-2" for="station">Select station: </label>
                         <select id="station" class="custom-select my-1 mr-sm-2" name="station">
 							<?php foreach($stations->result() as $station) {
-									echo '<option value="' . $station->station_id . '">' . $station->station_callsign . '</option>'."\n";
+									echo '<option value="' . $station->station_id . '">' . $station->station_profile_name . ' - ' . $station->station_callsign . '</option>'."\n";
 								} ?>
 						</select>
 					<button id="button1id" type="button" onclick="loadStationInfo();" name="button1id" class="btn btn-sm btn-primary"> Proceed</button>
