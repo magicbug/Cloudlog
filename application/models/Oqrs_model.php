@@ -153,7 +153,7 @@ class Oqrs_model extends CI_Model {
 
 	function check_oqrs($qsodata) {
 		$sql = 'select * from ' . $this->config->item('table_name') . 
-		' where col_band = \'' . $qsodata['band'] . '\'
+		' where (col_band = \'' . $qsodata['band'] . '\' or col_prop_mode = \'' . $qsodata['band'] . '\')
 		 and col_call = \'' . $qsodata['requestcallsign'] . '\'
 		 and date(col_time_on) = \'' . $qsodata['date'] . '\'
 		 and (col_mode = \'' . $qsodata['mode'] . '\'
