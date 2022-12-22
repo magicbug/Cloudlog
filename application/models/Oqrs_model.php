@@ -48,7 +48,9 @@ class Oqrs_model extends CI_Model {
 	function getQueryData($station_id, $callsign) {
         $station_id = $this->security->xss_clean($station_id);
         $callsign = $this->security->xss_clean($callsign);
-        $sql = 'select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, col_band from ' . $this->config->item('table_name') . ' where station_id = ' . $station_id . ' and col_call ="' . $callsign . '"';
+        $sql = 'select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, col_band from ' . $this->config->item('table_name') . ' where station_id = ' . $station_id . ' and col_call ="' . $callsign . '" and col_prop_mode != "SAT"';
+
+		$sql .= ' union select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, "SAT" col_band from ' . $this->config->item('table_name') . ' where station_id = ' . $station_id . ' and col_call ="' . $callsign . '" and col_prop_mode = "SAT"';
 
         $query = $this->db->query($sql);
 
