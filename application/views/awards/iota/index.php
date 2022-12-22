@@ -1,4 +1,38 @@
 
+<style>
+    #iotamap {
+	height: calc(100vh - 500px) !important;
+	max-height: 900px !important;
+}
+/*Legend specific*/
+.legend {
+  padding: 6px 8px;
+  font: 14px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  line-height: 24px;
+  color: #555;
+}
+.legend h4 {
+  text-align: center;
+  font-size: 16px;
+  margin: 2px 12px 8px;
+  color: #777;
+}
+.legend span {
+  position: relative;
+  bottom: 3px;
+}
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin: 0 8px 0 0;
+  opacity: 0.7;
+}
+</style>
+
+
 <div class="container">
     <h2><?php echo $page_title; ?></h2>
 
@@ -108,11 +142,35 @@
                 <div class="col-md-10">
                     <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning">Reset</button>
                     <button id="button1id" type="submit" name="button1id" class="btn btn-sm btn-primary">Show</button>
+                    <?php if ($iota_array) {
+                        ?><button type="button" onclick="load_iota_map();" class="btn btn-info btn-sm"><i class="fas fa-globe-americas"></i> Show IOTA Map</button>
+                    <?php }?>
                 </div>
             </div>
 
         </fieldset>
     </form>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="true">Table</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="map-tab" data-toggle="tab" href="#iotamaptab" role="tab" aria-controls="home" aria-selected="false">Map</a>
+        </li>
+    </ul>
+    <br />
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade" id="iotamaptab" role="tabpanel" aria-labelledby="home-tab">
+    <br />
+
+    <div id="iotamap"></div>
+
+    </div>
+
+        <div class="tab-pane fade show active" id="table" role="tabpanel" aria-labelledby="table-tab">
+
     <?php
     $i = 1;
     if ($iota_array) {
@@ -180,4 +238,6 @@
         echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
     }
     ?>
+                    </div>
+        </div>
 </div>

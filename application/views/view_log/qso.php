@@ -278,7 +278,9 @@
                         <?php } else { ?>
                             <p><?php echo $this->lang->line('qslcard_sent'); ?>
                         <?php } ?>
-                        <?php $timestamp = strtotime($row->COL_QSLSDATE); echo date($custom_date_format, $timestamp); ?>.</p>
+                        <?php if ($row->COL_QSLSDATE != null) { ?>
+                            <?php $timestamp = strtotime($row->COL_QSLSDATE); echo " (".date($custom_date_format, $timestamp).")"; ?></p>
+                        <?php } ?>
                     <?php } ?>
 
                     <?php if($row->COL_QSL_RCVD == "Y") { ?>
@@ -293,7 +295,9 @@
                         <?php } else { ?>
                             <p><?php echo $this->lang->line('qslcard_rcvd'); ?>
                         <?php } ?>
-                        <?php $timestamp = strtotime($row->COL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
+                        <?php if ($row->COL_QSLRDATE != null) { ?>
+                            <?php $timestamp = strtotime($row->COL_QSLRDATE); echo " (".date($custom_date_format, $timestamp).")"; ?></p>
+                        <?php } ?>
                     <?php } ?>
 
                 <?php } ?>

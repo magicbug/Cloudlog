@@ -350,6 +350,7 @@
 							<label for="column1"><?php echo $this->lang->line('account_column1_text'); ?></label>
 							<select class="custom-select" id="column1" name="user_column1">
 								<option value="Band" <?php if ($user_column1 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+								<option value="Frequency" <?php if ($user_column1 == "Frequency") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_frequency'); ?></option>
 								<option value="Mode" <?php if ($user_column1 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
 								<option value="RSTS" <?php if ($user_column1 == "RSTS") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
 								<option value="RSTR" <?php if ($user_column1 == "RSTR") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
@@ -368,6 +369,7 @@
 							<label for="column2"><?php echo $this->lang->line('account_column2_text'); ?></label>
 							<select class="custom-select" id="column2" name="user_column2">
 								<option value="Band" <?php if ($user_column2 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+								<option value="Frequency" <?php if ($user_column2 == "Frequency") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_frequency'); ?></option>
 								<option value="Mode" <?php if ($user_column2 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
 								<option value="RSTS" <?php if ($user_column2 == "RSTS") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
 								<option value="RSTR" <?php if ($user_column2 == "RSTR") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
@@ -386,6 +388,7 @@
 							<label for="column3"><?php echo $this->lang->line('account_column3_text'); ?></label>
 							<select class="custom-select" id="column3" name="user_column3">
 								<option value="Band" <?php if ($user_column3 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+								<option value="Frequency" <?php if ($user_column3 == "Frequency") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_frequency'); ?></option>
 								<option value="Mode" <?php if ($user_column3 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
 								<option value="RSTS" <?php if ($user_column3 == "RSTS") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
 								<option value="RSTR" <?php if ($user_column3 == "RSTR") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
@@ -404,6 +407,7 @@
 							<label for="column4"><?php echo $this->lang->line('account_column4_text'); ?></label>
 							<select class="custom-select" id="column4" name="user_column4">
 								<option value="Band" <?php if ($user_column4 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+								<option value="Frequency" <?php if ($user_column4 == "Frequency") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_frequency'); ?></option>
 								<option value="Mode" <?php if ($user_column4 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
 								<option value="RSTS" <?php if ($user_column4 == "RSTS") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
 								<option value="RSTR" <?php if ($user_column4 == "RSTR") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
@@ -421,6 +425,7 @@
 								<label for="column5"><?php echo $this->lang->line('account_column5_text'); ?></label>
 								<select class="custom-select" id="column5" name="user_column5">
 									<option value="Band" <?php if ($user_column5 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+									<option value="Frequency" <?php if ($user_column5 == "Frequency") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_frequency'); ?></option>
 									<option value="Mode" <?php if ($user_column5 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
 									<option value="RSTS" <?php if ($user_column5 == "RSTS") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
 									<option value="RSTR" <?php if ($user_column5 == "RSTR") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>

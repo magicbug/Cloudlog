@@ -39,9 +39,21 @@ function load_was_map() {
 </script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "oqrs") { ?>
+    <script src="<?php echo base_url() ;?>assets/js/sections/oqrs.js"></script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "cq") ) { ?>
     <script src="<?php echo base_url(); ?>assets/js/Polyline.encoded.js"></script>
     <script id="cqmapjs" type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/cqmap.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "iota") ) { ?>
+    <script id="iotamapjs" type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/iotamap.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "dxcc") ) { ?>
+    <script id="dxccmapjs" type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/dxccmap.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "statistics") { ?>
@@ -2576,6 +2588,19 @@ function deleteQsl(id) {
                     message: html,
                     onshown: function(dialog) {
                        $('[data-toggle="tooltip"]').tooltip();
+                       $('.contacttable').DataTable({
+                            "pageLength": 25,
+                            responsive: false,
+                            ordering: false,
+                            "scrollY":        "550px",
+                            "scrollCollapse": true,
+                            "paging":         false,
+                            "scrollX": true,
+                            dom: 'Bfrtip',
+                            buttons: [
+                                'csv'
+                            ]
+                        });
                     },
                     buttons: [{
                         label: 'Close',
@@ -3067,6 +3092,32 @@ function deleteQsl(id) {
 				}
 			});
 		});
+
+        function showOqrs(id) {
+			$.ajax({
+				url: base_url + 'index.php/qslprint/show_oqrs',
+				type: 'post',
+				data: {'id': id},
+				success: function(html) {
+					BootstrapDialog.show({
+						title: 'OQRS',
+						size: BootstrapDialog.SIZE_WIDE,
+						cssClass: 'qso-dialog',
+						nl2br: false,
+						message: html,
+						onshown: function(dialog) {
+							$('[data-toggle="tooltip"]').tooltip();
+						},
+						buttons: [{
+							label: 'Close',
+							action: function (dialogItself) {
+								dialogItself.close();
+							}
+						}]
+					});
+				}
+			});
+		}
 	</script>
 <?php } ?>
 
@@ -3165,6 +3216,15 @@ function deleteQsl(id) {
         </script>
     <?php } ?>
 <?php } ?>
+
+<?php
+if (isset($scripts) && is_array($scripts)){
+	foreach($scripts as $script){
+		?><script type="text/javascript" src="<?php echo base_url() . $script ;?>"></script>
+		<?php
+	}
+}
+?>
 
   </body>
 </html>

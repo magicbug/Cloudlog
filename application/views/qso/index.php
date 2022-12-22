@@ -528,7 +528,12 @@
                 <td><?php echo $this->lang->line('gen_hamradio_mode'); ?></td>
                 <td><?php echo $this->lang->line('gen_hamradio_rsts'); ?></td>
                 <td><?php echo $this->lang->line('gen_hamradio_rstr'); ?></td>
-                <td><?php echo $this->lang->line('gen_hamradio_band'); ?></td>
+                <?php if ($this->session->userdata('user_column1')=='Frequency' || $this->session->userdata('user_column2')=='Frequency' || $this->session->userdata('user_column3')=='Frequency' || $this->session->userdata('user_column4')=='Frequency' || $this->session->userdata('user_column5')=='Frequency') {
+                         echo '<td>'.$this->lang->line('gen_hamradio_frequency').'</td>';
+                      } else {
+                         echo '<td>'.$this->lang->line('gen_hamradio_band').'</td>';
+                      }
+                ?>
               </tr>
 
               <?php
@@ -560,9 +565,19 @@
                     <td><?php echo $row->COL_RST_RCVD; ?></td>
                     <?php if($row->COL_SAT_NAME != null) { ?>
                     <td><?php echo $row->COL_SAT_NAME; ?></td>
-                    <?php } else { ?>
-                    <td><?php echo $row->COL_BAND; ?></td>
-                    <?php } ?>
+                    <?php } else {
+                              if ($this->session->userdata('user_column1')=='Frequency' || $this->session->userdata('user_column2')=='Frequency' || $this->session->userdata('user_column3')=='Frequency' || $this->session->userdata('user_column4')=='Frequency' || $this->session->userdata('user_column5')=='Frequency') {
+                                 echo '<td>';
+                                 if ($row->COL_FREQ != null) {
+                                    echo $this->frequency->hz_to_mhz($row->COL_FREQ);
+                                 } else {
+                                    echo $row->COL_BAND;
+                                 }
+                                 echo '</td>';
+                              } else {
+                                 echo '<td>'.$row->COL_BAND.'</td>';
+                              }
+                          } ?>
                   </tr>
               <?php $i++; } } ?>
             </table>

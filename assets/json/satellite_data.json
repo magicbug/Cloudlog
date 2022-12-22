@@ -136,9 +136,49 @@
          "U/V":[
             {
                "Uplink_Mode":"LSB",
-               "Uplink_Freq":"435280000",
+               "Uplink_Freq":"4352800000",
                "Downlink_Mode":"USB",
                "Downlink_Freq":"145925000"
+            }
+         ]
+      }
+   },
+   "CAS-10":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"145870000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"435180000"
+            }
+         ]
+      }
+   },
+   "FO-118":{
+      "Modes":{
+         "H/U":[
+            {
+               "Uplink_Mode":"USB",
+               "Uplink_Freq":"21435000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"435505000"
+            }
+         ],
+         "V/U":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"145820000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"435540000"
+            }
+         ],
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145925000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"435600000"
             }
          ]
       }

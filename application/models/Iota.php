@@ -78,13 +78,7 @@ class IOTA extends CI_Model {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
 		}
 
-        if ($band == 'SAT') {
-            $sql .= " and col_prop_mode ='" . $band . "'";
-        }
-        else {
-            $sql .= " and col_prop_mode !='SAT'";
-            $sql .= " and col_band ='" . $band . "'";
-        }
+        $sql .= $this->addBandToQuery($band);
 
         if ($postdata['includedeleted'] == NULL) {
             $sql .= " and coalesce(iota.status, '') <> 'D'";
@@ -107,13 +101,7 @@ class IOTA extends CI_Model {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
 		}
 
-        if ($band == 'SAT') {
-            $sql .= " and col_prop_mode ='" . $band . "'";
-        }
-        else {
-            $sql .= " and col_prop_mode !='SAT'";
-            $sql .= " and col_band ='" . $band . "'";
-        }
+        $sql .= $this->addBandToQuery($band);
 
         if ($postdata['includedeleted'] == NULL) {
             $sql .= " and coalesce(iota.status, '') <> 'D'";
@@ -137,7 +125,7 @@ class IOTA extends CI_Model {
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
-        $sql = "select tag, name, prefix, dxccid, status from iota where 1=1";
+        $sql = "select tag, name, prefix, dxccid, status, lat1, lat2, lon1, lon2 from iota where 1=1";
 
         if ($postdata['includedeleted'] == NULL) {
             $sql .= " and coalesce(iota.status, '') <> 'D'";
@@ -182,27 +170,11 @@ class IOTA extends CI_Model {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
 		}
 
-        if ($postdata['band'] != 'All') {
-            if ($postdata['band'] == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
-            }
-            else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $postdata['band'] . "'";
-            }
-        }
+        $sql .= $this->addBandToQuery($postdata['band']);
 
         $sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y'))";
 
-        if ($postdata['band'] != 'All') {
-            if ($postdata['band'] == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
-            }
-            else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $postdata['band'] . "'";
-            }
-        }
+        $sql .= $this->addBandToQuery($postdata['band']);
 
         if ($postdata['includedeleted'] == NULL) {
             $sql .= " and coalesce(iota.status, '') <> 'D'";
@@ -236,15 +208,7 @@ class IOTA extends CI_Model {
 
         $sql .= $this->addContinentsToQuery($postdata);
 
-        if ($postdata['band'] != 'All') {
-            if ($postdata['band'] == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
-            }
-            else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $postdata['band'] . "'";
-            }
-        }
+        $sql .= $this->addBandToQuery($postdata['band']);
 
         $query = $this->db->query($sql);
 
@@ -391,6 +355,19 @@ class IOTA extends CI_Model {
         $query = $this->db->query($sql);
 
         return $query->result();
+    }
+
+    function addBandToQuery($band) {
+        $sql = '';
+        if ($band != 'All') {
+            if ($band == 'SAT') {
+                $sql .= " and col_prop_mode ='" . $band . "'";
+            } else {
+                $sql .= " and col_prop_mode !='SAT'";
+                $sql .= " and col_band ='" . $band . "'";
+            }
+        }
+        return $sql;
     }
 }
 ?>
