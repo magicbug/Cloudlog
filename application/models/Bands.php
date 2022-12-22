@@ -316,6 +316,51 @@ class Bands extends CI_Model {
 
         return true;
 	}
+
+	function get_worked_bands_oqrs($station_id) {
+
+		// get all worked slots from database
+		$data = $this->db->query(
+			"SELECT distinct LOWER(`COL_BAND`) as `COL_BAND` FROM `".$this->config->item('table_name')."` WHERE station_id in (" . $station_id . ") AND COL_PROP_MODE != \"SAT\""
+		);
+		$worked_slots = array();
+		foreach($data->result() as $row){
+			array_push($worked_slots, $row->COL_BAND);
+		}
+
+		$SAT_data = $this->db->query(
+			"SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `".$this->config->item('table_name')."` WHERE station_id in (" . $station_id . ") AND COL_PROP_MODE = \"SAT\""
+		);
+
+		foreach($SAT_data->result() as $row){
+			array_push($worked_slots, strtoupper($row->COL_PROP_MODE));
+		}
+
+		// php5
+		usort(
+			$worked_slots,
+			function($b, $a) {
+				sscanf($a, '%f%s', $ac, $ar);
+				sscanf($b, '%f%s', $bc, $br);
+				if ($ar == $br) {
+					return ($ac < $bc) ? -1 : 1;
+				}
+				return ($ar < $br) ? -1 : 1;
+			}
+		);
+
+		// Only for php7+
+		// usort(
+		// 	$worked_slots,
+		// 	function($b, $a) {
+		// 		sscanf($a, '%f%s', $ac, $ar);
+		// 		sscanf($b, '%f%s', $bc, $br);
+		// 		return ($ar == $br) ? $ac <=> $bc : $ar <=> $br;
+		// 	}
+		// );
+
+		return $worked_slots;
+	}
 }
 
 ?>
