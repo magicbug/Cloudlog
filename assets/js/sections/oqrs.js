@@ -8,7 +8,20 @@ function loadStationInfo() {
         success: function (data) {
             if (data.count > 0) {
                 $(".stationinfo").append('<br />' + data.count + ' Qsos logged between ' + data.mindate + ' and ' + data.maxdate + '.<br /><br />');
-                $(".stationinfo").append('<form class="form-inline" onsubmit="return false;"><label class="my-1 mr-2" for="oqrssearch">Enter your callsign: </label><input class="form-control mr-sm-2" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search"><button onclick="searchOqrs();" class="btn btn-sm btn-primary" type="button"><i class="fas fa-search"></i> Search</button></form>');
+                $(".stationinfo").append('<form class="form-inline" onsubmit="return false;"><label class="my-1 mr-2" for="oqrssearch">Enter your callsign: </label><input class="form-control mr-sm-2" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search"><button onclick="searchOqrs();" class="btn btn-sm btn-primary" id="stationbuttonsubmit" type="button"><i class="fas fa-search"></i> Search</button></form>');
+                // Get the input field
+                var input = document.getElementById("oqrssearch");
+
+                // Execute a function when the user presses a key on the keyboard
+                input.addEventListener("keypress", function(event) {
+                // If the user presses the "Enter" key on the keyboard
+                if (event.key === "Enter") {
+                    // Cancel the default action, if needed
+                    event.preventDefault();
+                    // Trigger the button element with a click
+                    document.getElementById("stationbuttonsubmit").click();
+                }
+                });
             } else {
                 $(".stationinfo").append("No QSOs for this callsign was found!");
             }
