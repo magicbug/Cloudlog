@@ -36,7 +36,7 @@
 
   	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datatables.min.css"/>
 
- 	<?php if ($this->uri->segment(1) == "adif") { ?>
+	  <?php if ($this->uri->segment(1) == "adif" || (isset($hasDatePicker) && $hasDatePicker)) { ?>
   	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
   	<?php } ?>
 	 
@@ -58,7 +58,14 @@
 
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="<?php echo site_url('logbook');?>">Logbook</a>
+        <li class="nav-item dropdown">
+           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Logbook</a>
+           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="<?php echo site_url('logbook');?>"><i class="fas fa-book"></i> Overview</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="<?php echo site_url('logbookadvanced');?>"><i class="fas fa-book-open"></i> Advanced</a>
+           </div>
+        </li>
 
         <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
         	<!-- QSO Menu Dropdown -->
@@ -215,6 +222,10 @@
 				<a class="dropdown-item" href="<?php echo site_url('adif');?>" title="Amateur Data Interchange Format (ADIF) import / export"><i class="fas fa-sync"></i> ADIF Import / Export</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
+
+				<a class="dropdown-item" href="<?php echo site_url('oqrs');?>" title="OQRS"><i class="fa fa-id-card"></i> OQRS</a>
+
+				<a class="dropdown-item" href="<?php echo site_url('oqrs/requests');?>" title="OQRS Requests"><i class="fa fa-id-card"></i> OQRS Requests</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('kml');?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> KML Export</a>
 

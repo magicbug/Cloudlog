@@ -76,6 +76,14 @@ class User_Model extends CI_Model {
 		}
 	}
 
+	function get_email_address($userid) {
+		$this->db->where('user_id', $userid);
+		$query = $this->db->get($this->config->item('auth_table'));
+		
+		$ret = $query->row();
+		return $ret->user_email;
+	}
+
 	// FUNCTION: bool exists($username)
 	// Check if a user exists (by username)
 	function exists($username) {
