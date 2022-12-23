@@ -53,3 +53,7 @@ $lang['lotw_p12_export_step_three'] = 'Click "Save Callsign Certificate File" an
 $lang['lotw_p12_export_step_four'] = 'Upload File below.';
 
 $lang['lotw_confirmed'] = 'This QSO is confirmed on LoTW';
+
+// LotW Expiry
+$lang['lotw_cert_expiring'] = 'At least one of your LotW certificates is about to expire!';
+$lang['lotw_cert_expired'] = 'At least one of your LotW certificates is expired!';

@@ -63,6 +63,21 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		</div>
 	<?php } ?>
 
+	<?php
+		$current_date = date('Y-m-d H:i:s');
+	?>
+	<?php if($this->LotwCert->lotw_cert_expired($this->session->userdata('user_id'), $current_date) == true) { ?>
+		<div class="alert alert-danger" role="alert">
+			<span class="badge badge-info"><?php echo $this->lang->line('general_word_important'); ?></span> <i class="fas fa-hourglass-end"></i> <?php echo $this->lang->line('lotw_cert_expired'); ?>
+		</div>
+	<?php } ?>
+
+	<?php if($this->LotwCert->lotw_cert_expiring($this->session->userdata('user_id'), $current_date) == true) { ?>
+		<div class="alert alert-warning" role="alert">
+			<span class="badge badge-info"><?php echo $this->lang->line('general_word_important'); ?></span> <i class="fas fa-hourglass-half"></i> <?php echo $this->lang->line('lotw_cert_expiring'); ?>
+		</div>
+	<?php } ?>
+
 <?php } ?>
 </div>
 

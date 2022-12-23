@@ -53,3 +53,7 @@ $lang['lotw_p12_export_step_three'] = 'Klick "Save Callsign Certificate File" un
 $lang['lotw_p12_export_step_four'] = 'Lade untenstehende Datei hoch.';
 
 $lang['lotw_confirmed'] = 'Dieses QSO wurde via LotW bestätigt am';
+
+// LotW Expiry
+$lang['lotw_cert_expiring'] = 'Mindestens eines deiner LotW Zertifikate läuft bald ab!';
+$lang['lotw_cert_expired'] = 'Mindestens eines deiner LotW Zertifikate ist abgelaufen!';

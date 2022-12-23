@@ -76,7 +76,7 @@
 								</td>
 								<td>
 									<?php $current_date = date('Y-m-d H:i:s'); ?>
-									<?php $warning_date = date('Y-m-d H:i:s', strtotime($row->date_expires.'-10 days')); ?>
+									<?php $warning_date = date('Y-m-d H:i:s', strtotime($row->date_expires.'-30 days')); ?>
 
 									<?php if ($current_date > $row->date_expires) { ?>
 										<span class="badge badge-danger"><?php echo $this->lang->line('lotw_expired'); ?></span>
