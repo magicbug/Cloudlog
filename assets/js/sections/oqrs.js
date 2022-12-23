@@ -8,7 +8,7 @@ function loadStationInfo() {
         success: function (data) {
             if (data.count > 0) {
                 $(".stationinfo").append('<br />' + data.count + ' Qsos logged between ' + data.mindate + ' and ' + data.maxdate + '.<br /><br />');
-                $(".stationinfo").append('<form class="form-inline"><label class="my-1 mr-2" for="oqrssearch">Enter your callsign: </label><input class="form-control mr-sm-2" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search"><button onclick="searchOqrs();" class="btn btn-sm btn-primary" type="button"><i class="fas fa-search"></i> Search</button></form>');
+                $(".stationinfo").append('<form class="form-inline" onsubmit="return false;"><label class="my-1 mr-2" for="oqrssearch">Enter your callsign: </label><input class="form-control mr-sm-2" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search"><button onclick="searchOqrs();" class="btn btn-sm btn-primary" type="button"><i class="fas fa-search"></i> Search</button></form>');
             } else {
                 $(".stationinfo").append("No QSOs for this callsign was found!");
             }
