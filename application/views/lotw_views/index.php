@@ -76,11 +76,14 @@
 								</td>
 								<td>
 									<?php $current_date = date('Y-m-d H:i:s'); ?>
+									<?php $warning_date = date('Y-m-d H:i:s', strtotime($row->date_expires.'-10 days')); ?>
 
-									<?php if ($current_date <= $row->date_expires) { ?>
-										<span class="badge badge-success"><?php echo $this->lang->line('lotw_valid'); ?></span>
-									<?php } else { ?>
+									<?php if ($current_date > $row->date_expires) { ?>
 										<span class="badge badge-danger"><?php echo $this->lang->line('lotw_expired'); ?></span>
+									<?php } else if ($current_date <= $row->date_expires && $current_date > $warning_date) { ?>
+										<span class="badge badge-warning"><?php echo $this->lang->line('lotw_expiring'); ?></span>
+									<?php } else { ?>
+										<span class="badge badge-success"><?php echo $this->lang->line('lotw_valid'); ?></span>
 									<?php } ?>
 
 									<?php if ($row->last_upload) { ?>

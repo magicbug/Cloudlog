@@ -22,6 +22,7 @@ $lang['lotw_status'] = 'Status';
 $lang['lotw_options'] = 'Options';
 $lang['lotw_valid'] = 'Valid';
 $lang['lotw_expired'] = 'Expired';
+$lang['lotw_expiring'] = 'Expiring';
 $lang['lotw_not_synced'] = 'Not Synced';
 
 $lang['lotw_certificate_dxcc'] = 'Certificate DXCC';
