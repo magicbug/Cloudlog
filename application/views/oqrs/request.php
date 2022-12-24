@@ -41,12 +41,12 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
     </div>
 
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="qslroute" id="bureau" value="b" checked/>
+        <input class="form-check-input" type="radio" name="qslroute" id="bureau" value="B" checked/>
         <label class="form-check-label" for="bureau">Bureau</label>
     </div>
 
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="qslroute" id="direct" value="d" />
+        <input class="form-check-input" type="radio" name="qslroute" id="direct" value="D" />
         <label class="form-check-label" for="direct">Direct (write address in message below)</label>
     </div>
     <br /><br />
