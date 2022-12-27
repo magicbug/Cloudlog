@@ -35,18 +35,18 @@ class Logbookadvanced extends CI_Controller {
 		}
 		ksort($deOptions);
 		$deOptions = array_keys($deOptions);
-
 		$modes = [];
 		if ($stationIds !== []) {
 			foreach ($this->logbookadvanced_model->get_worked_modes($stationIds) as $mode) {
 				$key = $mode['mode'];
-				if ($mode['submode'] !== null) {
+				if ($mode['submode'] != null) {
 					$key .= "|" . $mode['submode'];
 				}
+
 				if ($mode['submode'] == null) {
 					$modes[$key] = $mode['mode'];
 				} else {
-					$modes[$key] = $mode['submode'];
+					$modes[$key] = $mode['mode'] . " | ".$mode['submode'];
 				}
 			}
 		}

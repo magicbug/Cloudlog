@@ -14,7 +14,7 @@ class Logbookadvanced_model extends CI_Model {
 		$ids =  "'".implode("','",$stationIds)."'";
 
 		$sql = "
-		SELECT distinct `COL_MODE`, `COL_SUBMODE`
+		SELECT distinct COL_MODE, COL_SUBMODE
 		FROM `" . $this->config->item('table_name') . "` qsos
 		WHERE qsos.station_id IN (".$ids.")
 		ORDER BY COL_MODE, COL_SUBMODE";
@@ -23,11 +23,24 @@ class Logbookadvanced_model extends CI_Model {
 			
 		$results = [];
 		foreach ($data->result() as $row) {
-			$results[] = [
-				'mode' => $row->COL_MODE,
-				'submode' => $row->COL_SUBMODE
-			];
+			if(!empty($row->COL_SUBMODE)) {
+				$results[] = [
+					'mode' => $row->COL_MODE,
+					'submode' => $row->COL_SUBMODE
+				];
+			} else {
+				// if mode is not already in the results array
+				if (!in_array($row->COL_MODE, array_column($results, 'mode'))) {
+					$results[] = [
+						'mode' => $row->COL_MODE,
+						'submode' => null
+					];
+				}
+			}
 		}
+
+
+
 		return $results;
 	}
 
