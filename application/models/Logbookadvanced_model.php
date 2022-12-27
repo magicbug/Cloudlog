@@ -2,48 +2,6 @@
 use Cloudlog\QSLManager\QSO;
 
 class Logbookadvanced_model extends CI_Model {
-    /**
-	 * Returns worked modes in the supplied stations as a simple array
-	 * @param array $stationIds
-	 * @return array
-	 */
-	function get_worked_modes(array $stationIds): array	{
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-
-		$ids =  "'".implode("','",$stationIds)."'";
-
-		$sql = "
-		SELECT distinct COL_MODE, COL_SUBMODE
-		FROM `" . $this->config->item('table_name') . "` qsos
-		WHERE qsos.station_id IN (".$ids.")
-		ORDER BY COL_MODE, COL_SUBMODE";
-
-		$data = $this->db->query($sql);
-			
-		$results = [];
-		foreach ($data->result() as $row) {
-			if(!empty($row->COL_SUBMODE)) {
-				$results[] = [
-					'mode' => $row->COL_MODE,
-					'submode' => $row->COL_SUBMODE
-				];
-			} else {
-				// if mode is not already in the results array
-				if (!in_array($row->COL_MODE, array_column($results, 'mode'))) {
-					$results[] = [
-						'mode' => $row->COL_MODE,
-						'submode' => null
-					];
-				}
-			}
-		}
-
-
-
-		return $results;
-	}
-
   /*
    * @param array $searchCriteria
    * @return array
@@ -73,15 +31,9 @@ class Logbookadvanced_model extends CI_Model {
 			$binding[] = '%' . trim($searchCriteria['dx']) . '%';
 		}
 		if ($searchCriteria['mode'] !== '') {
-			list ($mode, $subMode) = explode("|", trim($searchCriteria['mode']));
-			$mode = trim($mode);
-			$subMode = trim($subMode);
-			$conditions[] = "COL_MODE = ?";
-			$binding[] = $mode;
-			if ($subMode !== '') {
-				$conditions[] = "COL_SUBMODE = ?";
-				$binding[] = $subMode;
-			}
+			$conditions[] = "(COL_MODE = ? or COL_SUBMODE = ?)";
+			$binding[] = $searchCriteria['mode'];
+			$binding[] = $searchCriteria['mode'];
 		}
 		if ($searchCriteria['band'] !== '') {
 			if($searchCriteria['band'] != "SAT") {
@@ -237,4 +189,32 @@ class Logbookadvanced_model extends CI_Model {
 
 		return false;
     }
+
+	function get_modes() {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	
+		if (!$logbooks_locations_array) {
+			return null;
+		}
+
+		$modes = array();
+	
+		$this->db->select('distinct col_mode, coalesce(col_submode, "") col_submode', FALSE);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->order_by('col_mode, col_submode', 'ASC');
+
+		$query = $this->db->get($this->config->item('table_name'));
+	
+		foreach($query->result() as $mode){
+			if ($mode->col_submode == null || $mode->col_submode == "") {
+				array_push($modes, $mode->col_mode);
+			} else {
+				array_push($modes, $mode->col_submode);
+			}
+		}
+
+		return $modes;
+	}
 }

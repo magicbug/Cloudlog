@@ -35,21 +35,6 @@ class Logbookadvanced extends CI_Controller {
 		}
 		ksort($deOptions);
 		$deOptions = array_keys($deOptions);
-		$modes = [];
-		if ($stationIds !== []) {
-			foreach ($this->logbookadvanced_model->get_worked_modes($stationIds) as $mode) {
-				$key = $mode['mode'];
-				if ($mode['submode'] != null) {
-					$key .= "|" . $mode['submode'];
-				}
-
-				if ($mode['submode'] == null) {
-					$modes[$key] = $mode['mode'];
-				} else {
-					$modes[$key] = $mode['mode'] . " | ".$mode['submode'];
-				}
-			}
-		}
 
 		$data = [];
 		$data['page_title'] = "Advanced logbook";
@@ -58,7 +43,7 @@ class Logbookadvanced extends CI_Controller {
 		$pageData = [];
 		$pageData['datePlaceholder'] = 'DD/MM/YYYY';
 		$pageData['deOptions'] = $deOptions;
-		$pageData['modes'] = $modes;
+		$pageData['modes'] = $this->logbookadvanced_model->get_modes();
 		$pageData['dxccarray'] = $this->logbook_model->fetchDxcc();
 		$pageData['iotaarray'] = $this->logbook_model->fetchIota();
 		
