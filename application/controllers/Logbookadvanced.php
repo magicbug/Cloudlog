@@ -39,9 +39,9 @@ class Logbookadvanced extends CI_Controller {
 		$modes = [];
 		if ($stationIds !== []) {
 			foreach ($this->logbookadvanced_model->get_worked_modes($stationIds) as $mode) {
-				$key = $mode['mode'];
+				$key = $mode['mode'] . "|";
 				if ($mode['submode'] !== null) {
-					$key .= "|" . $mode['submode'];
+					$key .= $mode['submode'];
 				}
 				if ($mode['submode'] == null) {
 					$modes[$key] = $mode['mode'];
