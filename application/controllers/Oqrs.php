@@ -160,6 +160,7 @@ class Oqrs extends CI_Controller {
 			}
 
 			$data['callsign'] = $this->security->xss_clean($postdata['callsign']);
+			$data['usermessage'] = $this->security->xss_clean($postdata['message']);
 
 			$message = $this->load->view('email/oqrs_request', $data,  TRUE);
 
