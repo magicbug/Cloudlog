@@ -34,7 +34,7 @@ function searchOqrs() {
     $.ajax({
         url: base_url+'index.php/oqrs/get_qsos',
         type: 'post',
-        data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val()},
+        data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val().toUpperCase()},
         success: function (data) {
             $(".searchinfo").append(data);
         }
@@ -45,7 +45,7 @@ function notInLog() {
     $.ajax({
         url: base_url + 'index.php/oqrs/not_in_log',
         type: 'post',
-        data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val()},
+        data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val().toUpperCase()},
         success: function(html) {
             $(".searchinfo").html(html);
         }
@@ -79,7 +79,7 @@ function saveNotInLogRequest() {
                 url: base_url+'index.php/oqrs/save_not_in_log',
                 type: 'post',
                 data: { 'station_id': $("#station").val(), 
-                        'callsign': $("#oqrssearch").val(),
+                        'callsign': $("#oqrssearch").val().toUpperCase(),
                         'email': $("#emailInput").val(),
                         'message': $("#messageInput").val(),
                         'qsos': qsos
@@ -115,7 +115,7 @@ function requestOqrs() {
     $.ajax({
         url: base_url + 'index.php/oqrs/request_form',
         type: 'post',
-        data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val()},
+        data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val().toUpperCase()},
         success: function(html) {
             $(".searchinfo").html(html);
             $('.result-table').DataTable({
@@ -158,8 +158,8 @@ function submitOqrsRequest() {
             $.ajax({
                 url: base_url+'index.php/oqrs/save_oqrs_request',
                 type: 'post',
-                data: { 'station_id': $("#station").val(), 
-                        'callsign': $("#oqrssearch").val(),
+                data: { 'station_id': $("#station").val(),
+                        'callsign': $("#oqrssearch").val().toUpperCase(),
                         'email': $("#emailInput").val(),
                         'message': $("#messageInput").val(),
                         'qsos': qsos,
