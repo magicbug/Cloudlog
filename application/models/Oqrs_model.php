@@ -296,7 +296,7 @@ class Oqrs_model extends CI_Model {
 
 	public function oqrs_requests($location_list) {
 		if ($location_list != "") {
-			$sql = 'SELECT COUNT(*) AS number FROM oqrs JOIN station_profile ON oqrs.station_id = station_profile.station_id WHERE oqrs.station_id IN ('.$location_list.')';
+			$sql = 'SELECT COUNT(*) AS number FROM oqrs JOIN station_profile ON oqrs.station_id = station_profile.station_id WHERE oqrs.station_id IN ('.$location_list.') AND status < 2';
 			$query = $this->db->query($sql);
 			$row = $query->row();
 			return $row->number;
