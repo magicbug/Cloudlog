@@ -175,28 +175,6 @@ function submitOqrsRequest() {
     }
 }
 
-function deleteOqrsLine(id) {
-    BootstrapDialog.confirm({
-		title: 'DANGER',
-		message: 'Warning! Are you sure you want to delete this OQRS request?',
-		type: BootstrapDialog.TYPE_DANGER,
-		closable: true,
-		draggable: true,
-		btnOKClass: 'btn-danger',
-		callback: function (result) {
-			$.ajax({
-                url: base_url+'index.php/oqrs/delete_oqrs_line',
-                type: 'post',
-                data: { 'id': id,
-                },
-                success: function (data) {
-                    $(".oqrsid_"+id).remove();
-                }
-            });
-		}
-	});
-}
-
 function searchLog(callsign) {
     $.ajax({
         url: base_url + 'index.php/oqrs/search_log',
@@ -254,17 +232,6 @@ function searchLogTimeDate(id) {
     });
 }
 
-function markOqrsLineAsDone(id) {
-    $.ajax({
-        url: base_url+'index.php/oqrs/mark_oqrs_line_as_done',
-        type: 'post',
-        data: { 'id': id,
-        },
-        success: function (data) {
-            $(".oqrsid_"+id).remove();
-        }
-    });
-}
 function loadOqrsTable(rows) {
 	var uninitialized = $('.oqrstable').filter(function() {
 		return !$.fn.DataTable.fnIsDataTable(this);
@@ -400,14 +367,14 @@ $(document).ready(function () {
 			callback: function(result) {
 				if(result) {
 					elements.each(function() {
-						let id = $(this).first().closest('tr').data('qsoID')
+						let id = $(this).first().closest('tr').data('oqrsID')
 						$.ajax({
-							url: base_url + 'index.php/oqrs/delete_ajax',
+							url: base_url + 'index.php/oqrs/delete_oqrs_line',
 							type: 'post',
 							data: {'id': id
 							},
 							success: function(data) {
-								var row = $("#qsoID_" + id);
+								var row = $("#oqrsID_" + id);
 								table.row(row).remove().draw(false);
 							}
 						});
@@ -431,7 +398,7 @@ $(document).ready(function () {
 
 		BootstrapDialog.confirm({
 			title: 'DANGER',
-			message: 'Warning! Are you sure you want to delete the marked OQRS request(s)?' ,
+			message: 'Warning! Are you sure you want to mark OQRS request(s) as done?' ,
 			type: BootstrapDialog.TYPE_DANGER,
 			closable: true,
 			draggable: true,
@@ -439,15 +406,14 @@ $(document).ready(function () {
 			callback: function(result) {
 				if(result) {
 					elements.each(function() {
-						let id = $(this).first().closest('tr').data('qsoID')
+						let id = $(this).first().closest('tr').data('oqrsID')
 						$.ajax({
-							url: base_url + 'index.php/oqrs/mark_ajax',
+							url: base_url + 'index.php/oqrs/mark_oqrs_line_as_done',
 							type: 'post',
 							data: {'id': id
 							},
 							success: function(data) {
-								var row = $("#qsoID_" + id);
-								table.row(row).remove().draw(false);
+								$('#searchForm').submit();
 							}
 						});
 						$('#markOqrs').prop("disabled", false);
