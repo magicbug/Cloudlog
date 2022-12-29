@@ -431,5 +431,15 @@ class Visitor extends CI_Controller {
 		$this->load->view('gridsquares/index');
 		$this->load->view('visitor/layout/footer');
 	}
-	
+
+	public function oqrs_enabled($slug) {
+		$this->load->model('oqrs_model');
+		$this->load->model('Logbooks_model');
+		$logbook_id = $this->Logbooks_model->public_slug_exists_logbook_id($slug);
+		if (!empty($this->oqrs_model->getOqrsStationsFromSlug($logbook_id))) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
