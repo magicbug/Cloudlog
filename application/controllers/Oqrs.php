@@ -166,6 +166,7 @@ class Oqrs extends CI_Controller {
 
 			$this->email->from('noreply@cloudlog.co.uk', 'Cloudlog');
 			$this->email->to($email);
+			$this->email->reply_to($this->security->xss_clean($postdata['email']), strtoupper($data['callsign']));
 
 			$this->email->subject('Cloudlog OQRS from ' . strtoupper($data['callsign']));
 			$this->email->message($message);
