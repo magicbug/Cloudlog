@@ -223,8 +223,6 @@
 
 				<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
 
-				<a class="dropdown-item" href="<?php echo site_url('oqrs');?>" title="OQRS"><i class="fa fa-id-card"></i> OQRS</a>
-
 				<a class="dropdown-item" href="<?php echo site_url('oqrs/requests');?>" title="OQRS Requests"><i class="fa fa-id-card"></i> OQRS Requests</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('kml');?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> KML Export</a>
