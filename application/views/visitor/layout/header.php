@@ -49,6 +49,14 @@
 		<li class="nav-item">
 			<a class="nav-link" href="<?php echo site_url('visitor/satellites/'.$slug);?>">Gridsquares</a>
 		</li>
+		<?php
+		$this->CI =& get_instance();
+		if ($this->CI->oqrs_enabled($slug)) {
+		?>
+		<li class="nav-item">
+			<a class="nav-link" href="<?php echo site_url('oqrs');?>">OQRS</a>
+		</li>
+		<?php } ?>
 		<li class="nav-item">
 			 <a class="btn btn-outline-primary" href="<?php echo site_url('user/login');?>">Login</a>
 		</li>
