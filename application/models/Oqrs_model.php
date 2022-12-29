@@ -84,7 +84,7 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function getOqrsRequests($location_list) {
-        $sql = 'select * from oqrs join station_profile on oqrs.station_id = station_profile.station_id where oqrs.station_id in (' . $location_list . ') and oqrs.status < 2';
+        $sql = 'select * from oqrs join station_profile on oqrs.station_id = station_profile.station_id where oqrs.station_id in (' . $location_list . ')';
 
         $query = $this->db->query($sql);
 
@@ -251,15 +251,46 @@ class Oqrs_model extends CI_Model {
 		return '';
 	}
 
-	function getOqrsStationsFromSlug($logbook_id) {
-		$sql = 'SELECT station_callsign FROM `station_logbooks_relationship` JOIN `station_profile` ON station_logbooks_relationship.station_location_id = station_profile.station_id WHERE station_profile.oqrs = 1 AND station_logbook_id = '.$logbook_id.';';
+	/*
+   * @param array $searchCriteria
+   * @return array
+   */
+  public function searchOqrs($searchCriteria) : array {
+		$conditions = [];
+		$binding = [$searchCriteria['user_id']];
 
-		$query = $this->db->query($sql);
-
-		if ($query->num_rows() > 0) {
-			return true;
-		} else {
-			return false;
+		if ($searchCriteria['de'] !== '') {
+			$conditions[] = "station_profile.STATION_CALLSIGN = ?";
+			$binding[] = trim($searchCriteria['de']);
 		}
+		if ($searchCriteria['dx'] !== '') {
+			$conditions[] = "oqrs.requestcallsign LIKE ?";
+			$binding[] = '%' . trim($searchCriteria['dx']) . '%';
+		}
+		if ($searchCriteria['status'] !== '') {
+			$conditions[] = "oqrs.status = ?";
+			$binding[] = $searchCriteria['status'];
+		}
+
+		$where = trim(implode(" AND ", $conditions));
+		if ($where != "") {
+			$where = "AND $where";
+		}
+
+		$limit = $searchCriteria['oqrsResults'];
+
+		$sql = "
+			SELECT *
+			FROM oqrs
+			INNER JOIN station_profile ON oqrs.station_id=station_profile.station_id
+			WHERE station_profile.user_id =  ?
+			$where
+			ORDER BY oqrs.id
+			LIMIT $limit
+		";
+
+		$data = $this->db->query($sql, $binding);
+
+		return $data->result('array');
 	}
 }

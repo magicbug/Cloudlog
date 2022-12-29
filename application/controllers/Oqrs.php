@@ -91,6 +91,7 @@ class Oqrs extends CI_Controller {
 
 		$this->load->model('oqrs_model');
 		$data['result'] = $this->oqrs_model->getOqrsRequests($location_list);
+		$data['stations'] = $this->oqrs_model->get_oqrs_stations();
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('oqrs/showrequests');
@@ -181,5 +182,22 @@ class Oqrs extends CI_Controller {
 		$id = $this->security->xss_clean($this->input->post('id'));
 
         $this->oqrs_model->mark_oqrs_line_as_done($id);
+	}
+
+	public function search() {
+		$this->load->model('oqrs_model');
+
+		$searchCriteria = array(
+			'user_id' => (int)$this->session->userdata('user_id'),
+			'de' => xss_clean($this->input->post('de')),
+			'dx' => xss_clean($this->input->post('dx')),
+			'status' => xss_clean($this->input->post('status')),
+			'oqrsResults' => xss_clean($this->input->post('oqrsResults')),
+		);
+
+		$qsos = $this->oqrs_model->searchOqrs($searchCriteria);
+
+		header("Content-Type: application/json");
+		print json_encode($qsos);
 	}
 }
