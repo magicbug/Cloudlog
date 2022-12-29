@@ -221,15 +221,17 @@
 
 				<a class="dropdown-item" href="<?php echo site_url('adif');?>" title="Amateur Data Interchange Format (ADIF) import / export"><i class="fas fa-sync"></i> ADIF Import / Export</a>
 
-				<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
-
-				<a class="dropdown-item" href="<?php echo site_url('oqrs/requests');?>" title="OQRS Requests"><i class="fa fa-id-card"></i> OQRS Requests</a>
-
 				<a class="dropdown-item" href="<?php echo site_url('kml');?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> KML Export</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('dxatlas');?>" title="DX Atlas Gridsquare Export"><i class="fas fa-sync"></i> DX Atlas Gridsquare Export</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('csv');?>" title="SOTA CSV Export"><i class="fas fa-sync"></i> SOTA CSV Export</a>
+
+				<div class="dropdown-divider"></div>
+
+				<a class="dropdown-item" href="<?php echo site_url('oqrs/requests');?>" title="OQRS Requests"><i class="fa fa-id-card"></i> OQRS Requests</a>
+
+				<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
 
 				<div class="dropdown-divider"></div>
 
