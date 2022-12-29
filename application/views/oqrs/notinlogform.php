@@ -27,7 +27,7 @@ checked.<br />
 <form>
     <div class="form-group">
         <label for="message">Message</label>
-        <textarea name="message" class="form-control" id="exampleFormControlTextarea1" rows="3" aria-describedby="messageHelp"></textarea>
+        <textarea name="message" class="form-control" id="messageInput" rows="3" aria-describedby="messageHelp"></textarea>
         <small id="messageHelp" class="form-text text-muted">Any extra information we need to know about?</small>
     </div>
 

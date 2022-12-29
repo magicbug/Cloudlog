@@ -145,6 +145,7 @@ class Oqrs_model extends CI_Model {
 				'email' 			=> xss_clean($postdata['email']),
 				'qslroute' 			=> '',
 				'status' 			=> '1',
+				'qsoid' 			=> '0',
 			);
 
 			$this->db->insert('oqrs', $data);
