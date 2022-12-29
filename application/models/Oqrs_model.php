@@ -145,6 +145,7 @@ class Oqrs_model extends CI_Model {
 				'email' 			=> xss_clean($postdata['email']),
 				'qslroute' 			=> '',
 				'status' 			=> '1',
+				'qsoid' 			=> '0',
 			);
 
 			$this->db->insert('oqrs', $data);
@@ -248,5 +249,17 @@ class Oqrs_model extends CI_Model {
 		}
 
 		return '';
+	}
+
+	function getOqrsStationsFromSlug($logbook_id) {
+		$sql = 'SELECT station_callsign FROM `station_logbooks_relationship` JOIN `station_profile` ON station_logbooks_relationship.station_location_id = station_profile.station_id WHERE station_profile.oqrs = 1 AND station_logbook_id = '.$logbook_id.';';
+
+		$query = $this->db->query($sql);
+
+		if ($query->num_rows() > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
