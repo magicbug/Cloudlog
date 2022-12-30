@@ -91,6 +91,7 @@ class Oqrs extends CI_Controller {
 
 		$this->load->model('oqrs_model');
 		$data['result'] = $this->oqrs_model->getOqrsRequests($location_list);
+		$data['stations'] = $this->oqrs_model->get_oqrs_stations();
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('oqrs/showrequests');
@@ -159,11 +160,13 @@ class Oqrs extends CI_Controller {
 			}
 
 			$data['callsign'] = $this->security->xss_clean($postdata['callsign']);
+			$data['usermessage'] = $this->security->xss_clean($postdata['message']);
 
 			$message = $this->load->view('email/oqrs_request', $data,  TRUE);
 
 			$this->email->from('noreply@cloudlog.co.uk', 'Cloudlog');
 			$this->email->to($email);
+			$this->email->reply_to($this->security->xss_clean($postdata['email']), strtoupper($data['callsign']));
 
 			$this->email->subject('Cloudlog OQRS from ' . strtoupper($data['callsign']));
 			$this->email->message($message);
@@ -181,5 +184,22 @@ class Oqrs extends CI_Controller {
 		$id = $this->security->xss_clean($this->input->post('id'));
 
         $this->oqrs_model->mark_oqrs_line_as_done($id);
+	}
+
+	public function search() {
+		$this->load->model('oqrs_model');
+
+		$searchCriteria = array(
+			'user_id' => (int)$this->session->userdata('user_id'),
+			'de' => xss_clean($this->input->post('de')),
+			'dx' => xss_clean($this->input->post('dx')),
+			'status' => xss_clean($this->input->post('status')),
+			'oqrsResults' => xss_clean($this->input->post('oqrsResults')),
+		);
+
+		$qsos = $this->oqrs_model->searchOqrs($searchCriteria);
+
+		header("Content-Type: application/json");
+		print json_encode($qsos);
 	}
 }
