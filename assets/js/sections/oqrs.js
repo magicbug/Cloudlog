@@ -48,6 +48,16 @@ function notInLog() {
         data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val().toUpperCase()},
         success: function(html) {
             $(".searchinfo").html(html);
+            $('.qsotime').change(function() {
+                var raw_time = $(this).val();
+                if(raw_time.match(/^\d\[0-6]d$/)) {
+                    raw_time = "0"+raw_time;
+                }
+                if(raw_time.match(/^[012]\d[0-5]\d$/)) {
+                    raw_time = raw_time.substring(0,2)+":"+raw_time.substring(2,4);
+                    $(this).val(raw_time);
+                }
+            });
         }
     }); 
 }
@@ -102,13 +112,23 @@ function oqrsAddLine() {
 
     var $iterator = $('<td></td>').html(rowCount);
     var $date = $('<td></td>').html('<input class="form-control" type="date" name="date" value="" id="date" placeholder="YYYY-MM-DD">');
-    var $time = $('<td></td>').html('<input class="form-control" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM">');
+    var $time = $('<td></td>').html('<input class="form-control qsotime" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM">');
     var $band = $('<td></td>').html('<input class="form-control" type="text" name="band" value="" id="band">');
     var $mode = $('<td></td>').html('<input class="form-control" type="text" name="mode" value="" id="mode">');
 
     $row.append($iterator, $date, $time, $band, $mode);
 
     $myTable.append($row);
+    $('.qsotime').change(function() {
+        var raw_time = $(this).val();
+        if(raw_time.match(/^\d\[0-6]d$/)) {
+            raw_time = "0"+raw_time;
+        }
+        if(raw_time.match(/^[012]\d[0-5]\d$/)) {
+            raw_time = raw_time.substring(0,2)+":"+raw_time.substring(2,4);
+            $(this).val(raw_time);
+        }
+    });
 }
 
 function requestOqrs() {
@@ -118,6 +138,17 @@ function requestOqrs() {
         data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val().toUpperCase()},
         success: function(html) {
             $(".searchinfo").html(html);
+            /* time input shortcut */
+            $('.qsotime').change(function() {
+                var raw_time = $(this).val();
+                if(raw_time.match(/^\d\[0-6]d$/)) {
+                    raw_time = "0"+raw_time;
+                }
+                if(raw_time.match(/^[012]\d[0-5]\d$/)) {
+                    raw_time = raw_time.substring(0,2)+":"+raw_time.substring(2,4);
+                    $(this).val(raw_time);
+                }
+            });
             $('.result-table').DataTable({
                 "pageLength": 25,
                 responsive: false,
@@ -443,6 +474,7 @@ $(document).ready(function () {
             $('#searchForm').submit();
         });
     });
+
 });
 
 function selectQsoID(qsoID) {

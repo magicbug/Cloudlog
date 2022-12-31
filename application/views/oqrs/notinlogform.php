@@ -16,7 +16,7 @@ checked.<br />
         <tr>
             <td>1</td>
             <td><input class="form-control" type="date" name="date" value="" id="date" placeholder="YYYY-MM-DD"></td>
-            <td><input class="form-control" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM"></td>
+            <td><input class="form-control qsotime" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM"></td>
 			<td><input class="form-control" type="text" name="band" value="" id="band"></td>
             <td><input class="form-control" type="text" name="mode" value="" id="mode"></td>
         </tr>
