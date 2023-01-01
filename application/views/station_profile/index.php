@@ -48,7 +48,7 @@
 					<th></th>
 					<th scope="col">Edit</th>
 					<th scope="col">Copy</th>
-					<th scope="col">Empty</th>
+					<th scope="col">Empty Log</th>
                     <th scope="col">Delete</th>
 				</tr>
 			</thead>
@@ -79,17 +79,17 @@
 						<?php if($row->user_id == "") { ?>
 							<a href="<?php echo site_url('station/claim_user')."/".$row->station_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-user-plus"></i> Claim Ownership</a>
 						<?php } ?>
-						<a href="<?php echo site_url('station/edit')."/".$row->station_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
+						<a href="<?php echo site_url('station/edit')."/".$row->station_id; ?>" title="Edit" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
 						</td>
 						<td>
-						<a href="<?php echo site_url('station/copy')."/".$row->station_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-copy"></i></a>
+						<a href="<?php echo site_url('station/copy')."/".$row->station_id; ?>" title="Copy" class="btn btn-outline-primary btn-sm"><i class="fas fa-copy"></i></a>
 					</td>
                     <td>
-                        <a href="<?php echo site_url('station/deletelog')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i></a></td>
+                        <a href="<?php echo site_url('station/deletelog')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" title="Empty Log" onclick="return confirm('Are you sure you want to delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i></a></td>
                     </td>
 					<td>
 						<?php if($row->station_active != 1) { ?>
-							<a href="<?php echo site_url('station/delete')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete station profile <?php echo $row->station_profile_name; ?> this will delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i></a>
+							<a href="<?php echo site_url('station/delete')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" title="Delete" onclick="return confirm('Are you sure you want delete station profile <?php echo $row->station_profile_name; ?> this will delete all QSOs within this station profile?');"><i class="fas fa-trash-alt"></i></a>
 						<?php } ?>
 					</td>
 				</tr>
