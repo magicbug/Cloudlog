@@ -22,7 +22,7 @@ class Oqrs extends CI_Controller {
 		$data['stations'] = $this->oqrs_model->get_oqrs_stations();
 		$data['page_title'] = "Log Search & OQRS";
 
-		$this->load->view('interface_assets/header', $data);
+		$this->load->view('visitor/layout/header', $data);
 		$this->load->view('oqrs/index');
 		$this->load->view('interface_assets/footer');
     }
