@@ -28,11 +28,14 @@
 		<?php if ($my_logbooks->num_rows() > 0) { ?>
 
 		<div class="table-responsive">
-		<table id="station_logbooks_table" class="table table-striped">
+		<table id="station_logbooks_table" class="table table-sm table-striped">
 			<thead>
 				<tr>
 					<th scope="col">Name</th>
-					<th scope="col"></th>
+					<th scope="col">Status</th>
+					<th scope="col">Edit</th>
+					<th scope="col">Delete</th>
+					<th scope="col">Link</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -45,20 +48,24 @@
 					<td>
 						<?php if($this->session->userdata('active_station_logbook') != $row->logbook_id) { ?>
 						<a href="<?php echo site_url('logbooks/set_active')."/".$row->logbook_id; ?>" class="btn btn-outline-primary btn-sm">Set as Active Logbook</a>
-						<?php } ?>
-
+						<?php } else {
+							echo '<span class="badge badge-success">Active Logbook</span>';
+							}?>
+					</td>
+					<td>
 						<a href="<?php echo site_url('logbooks/edit')."/".$row->logbook_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit" title="Edit <?php echo $row->logbook_name;?>"></i> </a>
-
-						<?php if($row->public_slug != '') { ?>
-						<a target="_blank" href="<?php echo site_url('visitor')."/".$row->public_slug; ?>" class="btn btn-outline-primary btn-sm" ><i class="fas fa-globe" title="View Public Page for <?php echo $row->logbook_name;?> Logbook"></i> </a>
-						<?php } ?>
-
+					</td>
+					<td>
 						<?php if($this->session->userdata('active_station_logbook') != $row->logbook_id) { ?>
-						<a href="<?php echo site_url('Logbooks/delete')."/".$row->logbook_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete station profile <?php echo $row->logbook_name; ?> this will delete all QSOs within this station logbook?');"><i class="fas fa-trash-alt"></i></a>
+						<a href="<?php echo site_url('Logbooks/delete')."/".$row->logbook_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want delete station logbook <?php echo $row->logbook_name; ?>? You must re-link any locations linked here to another logbook.');"><i class="fas fa-trash-alt"></i></a>
 						<?php } ?>
 					</td>
+					<td>
+						<?php if($row->public_slug != '') { ?>
+							<a target="_blank" href="<?php echo site_url('visitor')."/".$row->public_slug; ?>" class="btn btn-outline-primary btn-sm" ><i class="fas fa-globe" title="View Public Page for <?php echo $row->logbook_name;?> Logbook"></i> </a>
+							<?php } ?>
+					</td>
 				</tr>
-
 				<?php } ?>
 			</tbody>
 		<table>
