@@ -910,7 +910,9 @@ class Lotw extends CI_Controller {
 
 
 		if(openssl_sign($qso_string, $signature, $pkeyid, OPENSSL_ALGO_SHA1)) {
-		  openssl_free_key($pkeyid);
+		  if (defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION < 8) {
+		    openssl_free_key($pkeyid);
+		  }
 		  $signature_b64 = base64_encode($signature);
 		  return $signature_b64;
 		}

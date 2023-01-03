@@ -7,7 +7,7 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 ## Requirements
 * Linux based Operating System
 * Apache (Nginx should work)
-* PHP Version 7.4 (PHP 8.0 is working, 8.1 might have some undetected issues)
+* PHP Version 7.4 (PHP 8.0 is working, 8.1 might have some undetected issues, please report so we can fix)
 * MySQL (MySQL 5.7 or higher)
 
 Notes
