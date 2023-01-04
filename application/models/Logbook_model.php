@@ -1256,7 +1256,7 @@ class Logbook_model extends CI_Model {
     $this->db->select('DATE_FORMAT(COL_TIME_ON, \'%Y\') as \'year\',COUNT(COL_PRIMARY_KEY) as \'total\'', FALSE);
     $this->db->where_in('station_id', $logbooks_locations_array);
     $this->db->group_by('DATE_FORMAT(COL_TIME_ON, \'%Y\')');
-    $this->db->order_by('year', 'ASC');
+    $this->db->order_by('year', 'DESC');
 
     $query = $this->db->get($this->config->item('table_name'));
 
