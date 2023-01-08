@@ -18,10 +18,11 @@ $lang['lotw_date_created'] = 'Ausstellungsdatum';
 $lang['lotw_date_expires'] = 'Ablaufdatum';
 $lang['lotw_qso_start_date'] = 'QSO Startdatum';
 $lang['lotw_qso_end_date'] = 'QSO Enddatum';
-$lang['lotw_status'] = 'Status';
+$lang['lotw_status'] = 'Status / Letzter Upload';
 $lang['lotw_options'] = 'Optionen';
 $lang['lotw_valid'] = 'Gültig';
 $lang['lotw_expired'] = 'Abgelaufen';
+$lang['lotw_expiring'] = 'Läuft ab';
 $lang['lotw_not_synced'] = 'Nicht synchronisiert';
 
 $lang['lotw_certificate_dxcc'] = 'Zertifikats-DXCC';
@@ -52,3 +53,7 @@ $lang['lotw_p12_export_step_three'] = 'Klick "Save Callsign Certificate File" un
 $lang['lotw_p12_export_step_four'] = 'Lade untenstehende Datei hoch.';
 
 $lang['lotw_confirmed'] = 'Dieses QSO wurde via LotW bestätigt am';
+
+// LotW Expiry
+$lang['lotw_cert_expiring'] = 'Mindestens eines deiner LotW Zertifikate läuft bald ab!';
+$lang['lotw_cert_expired'] = 'Mindestens eines deiner LotW Zertifikate ist abgelaufen!';

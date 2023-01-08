@@ -8,10 +8,16 @@ class Dashboard extends CI_Controller {
 		if(ENVIRONMENT == 'development') {
             $this->output->enable_profiler(TRUE);
         }
-		
+
+		// Load language files
+		$this->lang->load('lotw');
+
 		// Database connections
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
+
+		// LotW infos
+		$this->load->model('LotwCert');
 
 		if($this->optionslib->get_option('version2_trigger') == "false") {
 			redirect('welcome');
