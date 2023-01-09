@@ -65,6 +65,9 @@
 			</li>
 			<?php } 
 		}?>
+		<li class="nav-item">
+			 <a class="btn btn-outline-primary" href="<?php echo site_url('user/login');?>">Login</a>
+		</li>
 		</ul>
 	</div>
 </div>
