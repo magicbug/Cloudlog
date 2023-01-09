@@ -513,7 +513,7 @@ class Lotw extends CI_Controller {
 				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
 				$skipNewQso = $this->input->post('importMissing'); // If import missing was checked
 
-				if($status == "No Match" && $skipNewQso != NULL) {
+				if($status[0] == "No Match" && $skipNewQso != NULL) {
 
                     $station_id = $this->logbook_model->find_correct_station_id($record['station_callsign'], $record['my_gridsquare']);
 
@@ -559,7 +559,7 @@ class Lotw extends CI_Controller {
 					$table .= "<td>".$state."</td>";
 					$table .= "<td>".$qsl_gridsquare."</td>";
 					$table .= "<td>".$iota."</td>";
-					$table .= "<td>QSO Record: ".$status."</td>";
+					$table .= "<td>QSO Record: ".$status[0]."</td>";
 					$table .= "<td>LoTW Record: ".$lotw_status."</td>";
 				$table .= "</tr>";
 			}
