@@ -2058,7 +2058,7 @@ class Logbook_model extends CI_Model {
   /* Used to check if the qso is already in the database */
   function import_check($datetime, $callsign, $band) {
 
-    $this->db->select('COL_TIME_ON, COL_CALL, COL_BAND');
+    $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_BAND');
     $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
     $this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
     $this->db->where('COL_CALL', $callsign);
@@ -2068,9 +2068,10 @@ class Logbook_model extends CI_Model {
 
     if ($query->num_rows() > 0)
     {
-      return "Found";
+      $ret = $query->row();
+      return ["Found", $ret->COL_PRIMARY_KEY];
     } else {
-      return "No Match";
+      return ["No Match", 0];
     }
   }
 
