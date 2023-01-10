@@ -15,7 +15,11 @@ class Widgets extends CI_Controller {
 	
 	
 	// Can be used to embed last 11 QSOs in a iframe or javascript include.
-	public function qsos($logbook_slug) {
+	public function qsos($logbook_slug = null) {
+
+		if($logbook_slug == null) {
+			show_error('Unknown Public Page, please make sure the public slug is correct.');
+		}
 		$this->load->model('logbook_model');
 
 		$this->load->model('logbooks_model');

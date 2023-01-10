@@ -221,17 +221,28 @@
 
 				<a class="dropdown-item" href="<?php echo site_url('adif');?>" title="Amateur Data Interchange Format (ADIF) import / export"><i class="fas fa-sync"></i> ADIF Import / Export</a>
 
-				<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
-
-				<a class="dropdown-item" href="<?php echo site_url('oqrs');?>" title="OQRS"><i class="fa fa-id-card"></i> OQRS</a>
-
-				<a class="dropdown-item" href="<?php echo site_url('oqrs/requests');?>" title="OQRS Requests"><i class="fa fa-id-card"></i> OQRS Requests</a>
-
 				<a class="dropdown-item" href="<?php echo site_url('kml');?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> KML Export</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('dxatlas');?>" title="DX Atlas Gridsquare Export"><i class="fas fa-sync"></i> DX Atlas Gridsquare Export</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('csv');?>" title="SOTA CSV Export"><i class="fas fa-sync"></i> SOTA CSV Export</a>
+
+				<div class="dropdown-divider"></div>
+
+<?php
+$CI =& get_instance();
+$CI->load->model('oqrs_model');
+$CI->load->model('logbooks_model');
+$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+if ($logbooks_locations_array) {
+	$location_list = "'".implode("','",$logbooks_locations_array)."'";
+} else {
+	$location_list = null;
+}
+?>
+				<a class="dropdown-item" href="<?php echo site_url('oqrs/requests');?>" title="OQRS Requests"><i class="fa fa-id-card"></i> OQRS Requests <?php if ($CI->oqrs_model->oqrs_requests($location_list) > 0) { echo "<span class=\"badge badge-light\">".$CI->oqrs_model->oqrs_requests($location_list)."</span>"; } ?></a>
+
+				<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
 
 				<div class="dropdown-divider"></div>
 

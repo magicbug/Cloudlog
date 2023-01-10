@@ -274,50 +274,6 @@
 				</div>
 			</div>
 	    </div>
-
-	</div>
-		<br>
-		<div class="row">
-			<div class="col-md">
-				<div class="card">
-					<div class="card-header">
-						Gridsquare and Location Autocomplete
-					</div>
-					<div class="card-body">
-						<div class="form-row">
-							<div class="form-group col-md-4">
-								<label for="qthlookup"> Location auto lookup.</label>
-								<select class="custom-select" id="qthlookup" name="user_qth_lookup">
-									<option value="1" <?php if ($user_qth_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_yes'); ?></option>
-									<option value="0" <?php if ($user_qth_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_no'); ?></option>
-								</select>
-								<div class="small form-text text-muted">If set, gridsquare is fetched based on location name.</div></td>
-							</div>
-							<div class="form-group col-md-4">
-								<label for="sotalookup">SOTA auto lookup gridsquare and name for summit.</label>
-								<select class="custom-select" id="sotalookup" name="user_sota_lookup">
-									<option value="1" <?php if ($user_sota_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_yes'); ?></option>
-									<option value="0" <?php if ($user_sota_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_no'); ?></option>
-								</select>
-								<div class="small form-text text-muted">If set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
-							</div>
-							<div class="form-group col-md-4">
-								<label for="wwfflookup">WWFF auto lookup gridsquare and name for summit.</label>
-								<select class="custom-select" id="wwfflookup" name="user_wwff_lookup">
-									<option value="1" <?php if ($user_wwff_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_yes'); ?></option>
-									<option value="0" <?php if ($user_wwff_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_no'); ?></option>
-								</select>
-								<div class="small form-text text-muted">If set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<br>
-		<div class="row">
-			<!-- Club Log -->
 			<div class="col-md">
 				<div class="card">
 					<div class="card-header">
@@ -335,10 +291,45 @@
 					</div>
 				</div>
 			</div>
-
-		</div>
+	</div>
 		<br>
 		<div class="row">
+			<div class="col-md">
+				<div class="card">
+					<div class="card-header">
+						Gridsquare and Location Autocomplete
+					</div>
+					<div class="card-body">
+						<div class="form-row">
+							<div class="form-group col-md-12">
+								<label for="qthlookup">Location auto lookup.</label>
+								<select class="custom-select" id="qthlookup" name="user_qth_lookup">
+									<option value="1" <?php if ($user_qth_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_yes'); ?></option>
+									<option value="0" <?php if ($user_qth_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_no'); ?></option>
+								</select>
+								<div class="small form-text text-muted">If set, gridsquare is fetched based on location name.</div></td>
+							</div>
+							<div class="form-group col-md-12">
+								<label for="sotalookup">SOTA auto lookup gridsquare and name for summit.</label>
+								<select class="custom-select" id="sotalookup" name="user_sota_lookup">
+									<option value="1" <?php if ($user_sota_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_yes'); ?></option>
+									<option value="0" <?php if ($user_sota_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_no'); ?></option>
+								</select>
+								<div class="small form-text text-muted">If set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
+							</div>
+							<div class="form-group col-md-12">
+								<label for="wwfflookup">WWFF auto lookup gridsquare and name for summit.</label>
+								<select class="custom-select" id="wwfflookup" name="user_wwff_lookup">
+									<option value="1" <?php if ($user_wwff_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_yes'); ?></option>
+									<option value="0" <?php if ($user_wwff_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('general_word_no'); ?></option>
+								</select>
+								<div class="small form-text text-muted">If set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="col-md">
 				<div class="card">
 					<div class="card-header">
@@ -346,7 +337,7 @@
 					</div>
 					<div class="card-body">
 						<div class="form-row">
-						<div class="form-group col-md-3">
+						<div class="form-group col-md-12">
 							<label for="column1"><?php echo $this->lang->line('account_column1_text'); ?></label>
 							<select class="custom-select" id="column1" name="user_column1">
 								<option value="Band" <?php if ($user_column1 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
@@ -365,7 +356,7 @@
 							</select>
 						</div>
 
-							<div class="form-group col-md-3">
+							<div class="form-group col-md-12">
 							<label for="column2"><?php echo $this->lang->line('account_column2_text'); ?></label>
 							<select class="custom-select" id="column2" name="user_column2">
 								<option value="Band" <?php if ($user_column2 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
@@ -384,7 +375,7 @@
 							</select>
 							</div>
 
-							<div class="form-group col-md-3">
+							<div class="form-group col-md-12">
 							<label for="column3"><?php echo $this->lang->line('account_column3_text'); ?></label>
 							<select class="custom-select" id="column3" name="user_column3">
 								<option value="Band" <?php if ($user_column3 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
@@ -403,7 +394,7 @@
 							</select>
 							</div>
 
-							<div class="form-group col-md-3">
+							<div class="form-group col-md-12">
 							<label for="column4"><?php echo $this->lang->line('account_column4_text'); ?></label>
 							<select class="custom-select" id="column4" name="user_column4">
 								<option value="Band" <?php if ($user_column4 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
@@ -421,7 +412,7 @@
 								<option value="Operator" <?php if ($user_column4 == "Operator") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
 							</select>
 						</div>
-							<div class="form-group col-md-3">
+							<div class="form-group col-md-12">
 								<label for="column5"><?php echo $this->lang->line('account_column5_text'); ?></label>
 								<select class="custom-select" id="column5" name="user_column5">
 									<option value="Band" <?php if ($user_column5 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
@@ -447,7 +438,7 @@
 		</div>
 		<br>
 		<div class="row">
-			<div class="col-md">
+			<div class="col-md-6">
 				<div class="card">
 					<div class="card-header">
 						Previous QSL Type
@@ -466,11 +457,8 @@
 				</div>
 			</div>
 
-		</div>
-		<br>
-		<div class="row">
 			<!-- qrz.com Images -->
-			<div class="col-md">
+			<div class="col-md-6">
 				<div class="card">
 					<div class="card-header">
 						qrz.com/hamqth.com Images

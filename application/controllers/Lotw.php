@@ -513,7 +513,7 @@ class Lotw extends CI_Controller {
 				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
 				$skipNewQso = $this->input->post('importMissing'); // If import missing was checked
 
-				if($status == "No Match" && $skipNewQso != NULL) {
+				if($status[0] == "No Match" && $skipNewQso != NULL) {
 
                     $station_id = $this->logbook_model->find_correct_station_id($record['station_callsign'], $record['my_gridsquare']);
 
@@ -545,7 +545,13 @@ class Lotw extends CI_Controller {
 						$iota = "";
 					}
 
-					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare, $iota);
+					if (isset($record['cnty'])) {
+						$cnty = $record['cnty'];
+					} else {
+						$cnty = "";
+					}
+
+					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare, $iota, $cnty);
 				}
 
 
@@ -559,7 +565,7 @@ class Lotw extends CI_Controller {
 					$table .= "<td>".$state."</td>";
 					$table .= "<td>".$qsl_gridsquare."</td>";
 					$table .= "<td>".$iota."</td>";
-					$table .= "<td>QSO Record: ".$status."</td>";
+					$table .= "<td>QSO Record: ".$status[0]."</td>";
 					$table .= "<td>LoTW Record: ".$lotw_status."</td>";
 				$table .= "</tr>";
 			}
@@ -910,7 +916,9 @@ class Lotw extends CI_Controller {
 
 
 		if(openssl_sign($qso_string, $signature, $pkeyid, OPENSSL_ALGO_SHA1)) {
-		  openssl_free_key($pkeyid);
+		  if (defined('PHP_MAJOR_VERSION') && PHP_MAJOR_VERSION < 8) {
+		    openssl_free_key($pkeyid);
+		  }
 		  $signature_b64 = base64_encode($signature);
 		  return $signature_b64;
 		}

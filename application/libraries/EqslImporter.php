@@ -154,7 +154,9 @@ class EqslImporter
 			}
 
 			$status = $this->CI->logbook_model->import_check($time_on, $record['call'], $record['band']);
-			if ($status == "Found") {
+			$qsoid = 0;
+			if ($status[0] == "Found") {
+				$qsoid = $status[1];
 				$dupe = $this->CI->logbook_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
 				if ($dupe == false) {
 					$updated += 1;
@@ -173,8 +175,9 @@ class EqslImporter
 				'call' => str_replace("0", "&Oslash;", $record['call']),
 				'mode' => $record['mode'],
 				'submode' => $record['submode'] ?? null,
-				'status' => $status,
+				'status' => $status[0],
 				'eqsl_status' => $eqsl_status,
+				'qsoid' => $qsoid,
 			);
 		}
 
