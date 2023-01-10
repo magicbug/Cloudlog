@@ -545,7 +545,13 @@ class Lotw extends CI_Controller {
 						$iota = "";
 					}
 
-					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare, $iota);
+					if (isset($record['cnty'])) {
+						$cnty = $record['cnty'];
+					} else {
+						$cnty = "";
+					}
+
+					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare, $iota, $cnty);
 				}
 
 
