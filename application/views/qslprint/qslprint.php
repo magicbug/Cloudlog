@@ -1,19 +1,33 @@
 <?php
+
+function echo_qsl_sent_via($method) {
+	switch($method) {
+		case 'B': echo 'Bureau'; break;
+		case 'D': echo 'Direct'; break;
+		case 'E': echo 'Electronic'; break;
+	}
+}
+
+if (empty($station_id)) {
+	$station_id = 'all';
+}
+
 if ($qsos->result() != NULL) {
 	echo '<table style="width:100%" class="table table-sm table-bordered table-hover table-striped table-condensed">
-	<thead>
-	<tr>
-	<th style=\'text-align: center\'>'.$this->lang->line('gen_hamradio_callsign').'</th>
-	<th style=\'text-align: center\'>' . $this->lang->line('general_word_date') . '</th>
-	<th style=\'text-align: center\'>'. $this->lang->line('general_word_time') .'</th>
-	<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_mode') . '</th>
-	<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_band') . '</th>
-	<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_qsl') . ' ' . $this->lang->line('general_word_qslcard_via') . '</th>
-	<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_station') . '</th>
-	<th style=\'text-align: center\'></th>
-	<th style=\'text-align: center\'></th>
-	</tr>
-	</thead><tbody>';
+<thead>
+<tr>
+<th style=\'text-align: center\'>'.$this->lang->line('gen_hamradio_callsign').'</th>
+<th style=\'text-align: center\'>' . $this->lang->line('general_word_date') . '</th>
+<th style=\'text-align: center\'>'. $this->lang->line('general_word_time') .'</th>
+<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_mode') . '</th>
+<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_band') . '</th>
+<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_qsl') . ' ' . $this->lang->line('general_word_qslcard_via') . '</th>
+<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_station') . '</th>
+<th style=\'text-align: center\'>Sent method</th>
+<th style=\'text-align: center\'>Delete</th>
+<th style=\'text-align: center\'>QSO List</th>
+</tr>
+</thead><tbody>';
 
 	// Get Date format
 	if($this->session->userdata('user_date_format')) {
@@ -33,8 +47,9 @@ if ($qsos->result() != NULL) {
 		echo '<td style=\'text-align: center\'>'; if($qsl->COL_SAT_NAME != null) { echo $qsl->COL_SAT_NAME; } else { echo strtolower($qsl->COL_BAND); }; echo '</td>';
 		echo '<td style=\'text-align: center\'>' . $qsl->COL_QSL_VIA . '</td>';
 		echo '<td style=\'text-align: center\'><span class="badge badge-light">' . $qsl->station_callsign . '</span></td>';
-		echo '<td style=\'text-align: center\'><button onclick="deleteFromQslQueue(\''.$qsl->COL_PRIMARY_KEY.'\')" class="btn btn-sm btn-danger">Delete from queue</button></td>';
-		echo '<td style=\'text-align: center\'><button onclick="openQsoList(\''.$qsl->COL_CALL.'\')" class="btn btn-sm btn-success">Open QSO list</button></td>';
+		echo '<td style=\'text-align: center\'>'; echo_qsl_sent_via($qsl->COL_QSL_SENT_VIA); echo '</td>';
+		echo '<td style=\'text-align: center\'><button onclick="deleteFromQslQueue(\''.$qsl->COL_PRIMARY_KEY.'\')" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button></td>';
+		echo '<td style=\'text-align: center\'><button onclick="openQsoList(\''.$qsl->COL_CALL.'\')" class="btn btn-sm btn-success"><i class="fas fa-search"></i></button></td>';
 		echo '</tr>';
 	}
 

@@ -210,19 +210,23 @@ $ci =& get_instance();
                   echo '<td style=\'text-align: center\' class="qsl">';
                   echo '<span ';
                   if ($row->COL_QSL_SENT != "N") {
-                     $timestamp = strtotime($row->COL_QSLSDATE);
+                     if ($row->COL_QSLSDATE != null) {
+                        $timestamp = ' '.date($custom_date_format, strtotime($row->COL_QSLSDATE));
+                     } else {
+                        $timestamp = '';
+                     }
                      switch ($row->COL_QSL_SENT) {
                      case "Y":
-                        echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_sent')." ".date($custom_date_format,$timestamp);
+                        echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_sent').$timestamp;
                         break;
                      case "Q":
-                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_queued')." ".date($custom_date_format,$timestamp);
+                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_queued').$timestamp;
                         break;
                      case "R":
-                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_requested')." ".date($custom_date_format,$timestamp);
+                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_requested').$timestamp;
                         break;
                      case "I":
-                        echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_invalid_ignore')." ".date($custom_date_format,$timestamp);
+                        echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_invalid_ignore').$timestamp;
                         break;
                      default:
                         echo "class=\"qsl-red";
@@ -248,19 +252,23 @@ $ci =& get_instance();
                   echo '">&#9650;</span>';
                   echo '<span ';
                   if ($row->COL_QSL_RCVD != "N") {
-                     $timestamp = strtotime($row->COL_QSLRDATE);
+                     if ($row->COL_QSLRDATE != null) {
+                        $timestamp = ' '.date($custom_date_format, strtotime($row->COL_QSLRDATE));
+                     } else {
+                        $timestamp = '';
+                     }
                      switch ($row->COL_QSL_RCVD) {
                      case "Y":
-                        echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_received')." ".date($custom_date_format,$timestamp);
+                        echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_received').$timestamp;
                         break;
                      case "Q":
-                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_queued')." ".date($custom_date_format,$timestamp);
+                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_queued').$timestamp;
                         break;
                      case "R":
-                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_requested')." ".date($custom_date_format,$timestamp);
+                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_requested').$timestamp;
                         break;
                      case "I":
-                        echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_invalid_ignore')." ".date($custom_date_format,$timestamp);
+                        echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_invalid_ignore').$timestamp;
                         break;
                      default:
                         echo "class=\"qsl-red";
@@ -289,8 +297,12 @@ $ci =& get_instance();
                   echo '<td style=\'text-align: center\' class="eqsl">';
                   echo '<span ';
                   if ($row->COL_EQSL_QSL_SENT == "Y") {
-                     $timestamp = strtotime($row->COL_EQSL_QSLSDATE);
-                     echo "data-original-title=\"".$this->lang->line('eqsl_short')." ".$this->lang->line('general_word_sent')." ".($timestamp!=''?date($custom_date_format, $timestamp):'')."\" data-toggle=\"tooltip\"";
+                     echo "data-original-title=\"".$this->lang->line('eqsl_short')." ".$this->lang->line('general_word_sent');
+                     if ($row->COL_EQSL_QSLSDATE != null) {
+                        $timestamp = strtotime($row->COL_EQSL_QSLSDATE);
+                        echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
+                     }
+                     echo "\" data-toggle=\"tooltip\"";
                   }
                   echo ' class="eqsl-';
                   echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red';
@@ -298,8 +310,12 @@ $ci =& get_instance();
 
                   echo '<span ';
                   if ($row->COL_EQSL_QSL_RCVD == "Y") {
-                     $timestamp = strtotime($row->COL_EQSL_QSLRDATE);
-                     echo "data-original-title=\"".$this->lang->line('eqsl_short')." ".$this->lang->line('general_word_received')." ".($timestamp!=''?date($custom_date_format, $timestamp):'')."\" data-toggle=\"tooltip\"";
+                     echo "data-original-title=\"".$this->lang->line('eqsl_short')." ".$this->lang->line('general_word_received');
+                     if ($row->COL_EQSL_QSLRDATE != null) {
+                        $timestamp = strtotime($row->COL_EQSL_QSLRDATE);
+                        echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
+                     }
+                     echo "\" data-toggle=\"tooltip\"";
                   }
                   echo ' class="eqsl-';
                   echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red';
@@ -319,8 +335,12 @@ $ci =& get_instance();
                 echo '<td style=\'text-align: center\' class="lotw">';
                 echo '<span ';
                 if ($row->COL_LOTW_QSL_SENT == "Y") {
-                   $timestamp = strtotime($row->COL_LOTW_QSLSDATE);
-                   echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_sent')." ".($timestamp!=''?date($custom_date_format, $timestamp):'')."\" data-toggle=\"tooltip\"";
+                   echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_sent');
+                   if ($row->COL_LOTW_QSLSDATE != null) {
+                     $timestamp = strtotime($row->COL_LOTW_QSLSDATE);
+                     echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
+                   }
+                   echo "\" data-toggle=\"tooltip\"";
                 }
                 echo ' class="lotw-';
                 echo ($row->COL_LOTW_QSL_SENT=='Y')?'green':'red';
@@ -328,8 +348,12 @@ $ci =& get_instance();
 
                 echo '<span ';
                 if ($row->COL_LOTW_QSL_RCVD == "Y") {
-                   $timestamp = strtotime($row->COL_LOTW_QSLRDATE);
-                   echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_received')." ".($timestamp!=''?date($custom_date_format, $timestamp):'')."\" data-toggle=\"tooltip\"";
+                   echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_received');
+                   if ($row->COL_LOTW_QSLRDATE != null) {
+                      $timestamp = strtotime($row->COL_LOTW_QSLRDATE);
+                      echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
+                   }
+                   echo "\" data-toggle=\"tooltip\"";
                 }
                 echo ' class="lotw-';
                 echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red';

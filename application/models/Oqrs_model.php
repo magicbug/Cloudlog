@@ -48,7 +48,9 @@ class Oqrs_model extends CI_Model {
 	function getQueryData($station_id, $callsign) {
         $station_id = $this->security->xss_clean($station_id);
         $callsign = $this->security->xss_clean($callsign);
-        $sql = 'select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, col_band from ' . $this->config->item('table_name') . ' where station_id = ' . $station_id . ' and col_call ="' . $callsign . '"';
+        $sql = 'select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, col_band from ' . $this->config->item('table_name') . ' where station_id = ' . $station_id . ' and col_call ="' . $callsign . '" and col_prop_mode != "SAT"';
+
+		$sql .= ' union all select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, "SAT" col_band from ' . $this->config->item('table_name') . ' where station_id = ' . $station_id . ' and col_call ="' . $callsign . '" and col_prop_mode = "SAT"';
 
         $query = $this->db->query($sql);
 
@@ -82,7 +84,7 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function getOqrsRequests($location_list) {
-        $sql = 'select * from oqrs join station_profile on oqrs.station_id = station_profile.station_id where oqrs.station_id in (' . $location_list . ') and oqrs.status < 2';
+        $sql = 'select * from oqrs join station_profile on oqrs.station_id = station_profile.station_id where oqrs.station_id in (' . $location_list . ')';
 
         $query = $this->db->query($sql);
 
@@ -143,6 +145,7 @@ class Oqrs_model extends CI_Model {
 				'email' 			=> xss_clean($postdata['email']),
 				'qslroute' 			=> '',
 				'status' 			=> '1',
+				'qsoid' 			=> '0',
 			);
 
 			$this->db->insert('oqrs', $data);
@@ -151,7 +154,7 @@ class Oqrs_model extends CI_Model {
 
 	function check_oqrs($qsodata) {
 		$sql = 'select * from ' . $this->config->item('table_name') . 
-		' where col_band = \'' . $qsodata['band'] . '\'
+		' where (col_band = \'' . $qsodata['band'] . '\' or col_prop_mode = \'' . $qsodata['band'] . '\')
 		 and col_call = \'' . $qsodata['requestcallsign'] . '\'
 		 and date(col_time_on) = \'' . $qsodata['date'] . '\'
 		 and (col_mode = \'' . $qsodata['mode'] . '\'
@@ -200,7 +203,7 @@ class Oqrs_model extends CI_Model {
 
 	function search_log_time_date($time, $date, $band, $mode) {
 		$sql = 'select * from ' . $this->config->item('table_name') . ' thcv
-		 join station_profile on thcv.station_id = station_profile.station_id where col_band = \'' . $band . '\'
+		 join station_profile on thcv.station_id = station_profile.station_id where (col_band = \'' . $band . '\' or col_prop_mode = \'' . $band . '\')
 		 and date(col_time_on) = \'' . $date . '\'
 		 and (col_mode = \'' . $mode . '\'
 		 or col_submode = \'' . $mode . '\')
@@ -246,5 +249,71 @@ class Oqrs_model extends CI_Model {
 		}
 
 		return '';
+	}
+
+	/*
+   * @param array $searchCriteria
+   * @return array
+   */
+  public function searchOqrs($searchCriteria) : array {
+		$conditions = [];
+		$binding = [$searchCriteria['user_id']];
+
+		if ($searchCriteria['de'] !== '') {
+			$conditions[] = "station_profile.STATION_CALLSIGN = ?";
+			$binding[] = trim($searchCriteria['de']);
+		}
+		if ($searchCriteria['dx'] !== '') {
+			$conditions[] = "oqrs.requestcallsign LIKE ?";
+			$binding[] = '%' . trim($searchCriteria['dx']) . '%';
+		}
+		if ($searchCriteria['status'] !== '') {
+			$conditions[] = "oqrs.status = ?";
+			$binding[] = $searchCriteria['status'];
+		}
+
+		$where = trim(implode(" AND ", $conditions));
+		if ($where != "") {
+			$where = "AND $where";
+		}
+
+		$limit = $searchCriteria['oqrsResults'];
+
+		$sql = "
+			SELECT *
+			FROM oqrs
+			INNER JOIN station_profile ON oqrs.station_id=station_profile.station_id
+			WHERE station_profile.user_id =  ?
+			$where
+			ORDER BY oqrs.id
+			LIMIT $limit
+		";
+
+		$data = $this->db->query($sql, $binding);
+
+		return $data->result('array');
+	}
+
+	public function oqrs_requests($location_list) {
+		if ($location_list != "") {
+			$sql = 'SELECT COUNT(*) AS number FROM oqrs JOIN station_profile ON oqrs.station_id = station_profile.station_id WHERE oqrs.station_id IN ('.$location_list.') AND status < 2';
+			$query = $this->db->query($sql);
+			$row = $query->row();
+			return $row->number;
+		} else {
+			return 0;
+		}
+	}
+
+	function getOqrsStationsFromSlug($logbook_id) {
+		$sql = 'SELECT station_callsign FROM `station_logbooks_relationship` JOIN `station_profile` ON station_logbooks_relationship.station_location_id = station_profile.station_id WHERE station_profile.oqrs = 1 AND station_logbook_id = '.$logbook_id.';';
+
+		$query = $this->db->query($sql);
+
+		if ($query->num_rows() > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

@@ -16,7 +16,7 @@ checked.<br />
         <tr>
             <td>1</td>
             <td><input class="form-control" type="date" name="date" value="" id="date" placeholder="YYYY-MM-DD"></td>
-            <td><input class="form-control" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM"></td>
+            <td><input class="form-control qsotime" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM"></td>
 			<td><input class="form-control" type="text" name="band" value="" id="band"></td>
             <td><input class="form-control" type="text" name="mode" value="" id="mode"></td>
         </tr>
@@ -27,7 +27,7 @@ checked.<br />
 <form>
     <div class="form-group">
         <label for="message">Message</label>
-        <textarea name="message" class="form-control" id="exampleFormControlTextarea1" rows="3" aria-describedby="messageHelp"></textarea>
+        <textarea name="message" class="form-control" id="messageInput" rows="3" aria-describedby="messageHelp"></textarea>
         <small id="messageHelp" class="form-text text-muted">Any extra information we need to know about?</small>
     </div>
 

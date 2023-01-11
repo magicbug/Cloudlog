@@ -43,7 +43,11 @@ $custom_date_format = $this->session->userdata('user_date_format');
 							<?php $timestamp = strtotime($qso['date']); ?>
 							<td><?php echo date($custom_date_format, $timestamp) ?></td>
 							<td><?php echo date('H:i', $timestamp); ?></td>
+							<?php if ($qso['status'] == "Found") { ?>
+							<td><a href="<?php echo site_url("eqsl/image/".$qso['qsoid']); ?>" data-fancybox="images" data-width="528" data-height="336"><?php echo $qso['call']; ?></a></td>
+							<?php } else { ?>
 							<td><?php echo $qso['call']; ?></td>
+							<?php } ?>
 							<td><?php echo $qso['mode']; ?></td>
 							<td><?php echo $qso['submode']; ?></td>
 							<td><?php echo $qso['status']; ?></td>

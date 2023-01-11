@@ -25,7 +25,7 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
                 echo '<tr>';
                     echo '<td>'. $i++ .'</td>';
                     echo '<td><input class="form-control" type="date" name="date" value="" id="date" placeholder="YYYY-MM-DD"></td>';
-                    echo '<td><input class="form-control" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM"></td>';
+                    echo '<td><input class="form-control qsotime" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM"></td>';
                     echo '<td id="band">'. $qso->col_band .'</td>';
                     echo '<td id="mode">'; echo $qso->col_submode == null ? strtoupper($qso->col_mode) : strtoupper($qso->col_submode);  echo '</td>';      
                 echo '</tr>';
@@ -41,12 +41,12 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
     </div>
 
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="qslroute" id="bureau" value="b" checked/>
+        <input class="form-check-input" type="radio" name="qslroute" id="bureau" value="B" checked/>
         <label class="form-check-label" for="bureau">Bureau</label>
     </div>
 
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="qslroute" id="direct" value="d" />
+        <input class="form-check-input" type="radio" name="qslroute" id="direct" value="D" />
         <label class="form-check-label" for="direct">Direct (write address in message below)</label>
     </div>
     <br /><br />

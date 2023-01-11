@@ -39,19 +39,37 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light main-nav">
 <div class="container">
 
-	<a class="navbar-brand" href="<?php echo site_url('visitor/'.$slug);?>">Cloudlog</a> <?php if(ENVIRONMENT == "development") { ?><span class="badge badge-danger">Developer Mode</span><?php } ?>
-
+		<?php
+		if (!empty($slug)) {
+			echo '<a class="navbar-brand" href="' . site_url('visitor/'.$slug) .'">Cloudlog</a>';
+		} else {
+			echo '<a class="navbar-brand" href="' . site_url() .'">Cloudlog</a>';
+		}
+		?>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
 	<div class="collapse navbar-collapse" id="navbarNav">
 
 		<ul class="navbar-nav">
+		<?php
+		if (!empty($slug)) { ?>
 		<li class="nav-item">
 			<a class="nav-link" href="<?php echo site_url('visitor/satellites/'.$slug);?>">Gridsquares</a>
 		</li>
+		<?php
+			$this->CI =& get_instance();
+			if ($this->CI->oqrs_enabled($slug)) {
+			?>
+			<li class="nav-item">
+				<a class="nav-link" href="<?php echo site_url('oqrs');?>">OQRS</a>
+			</li>
+			<?php } 
+		}
+		if ($this->uri->segment(1) != "oqrs") { ?>
 		<li class="nav-item">
 			 <a class="btn btn-outline-primary" href="<?php echo site_url('user/login');?>">Login</a>
 		</li>
+		<?php } ?>
 		</ul>
 	</div>
 </div>

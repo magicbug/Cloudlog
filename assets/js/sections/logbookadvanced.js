@@ -295,12 +295,20 @@ $(document).ready(function () {
 		handleQsl('Q','D', 'queueDirect');
 	});
 
+    $('#queueElectronic').click(function (event) {
+		handleQsl('Q','E', 'queueElectronic');
+	});
+
 	$('#sentBureau').click(function (event) {
 		handleQsl('Y','B', 'sentBureau');
 	});
 
 	$('#sentDirect').click(function (event) {
 		handleQsl('Y','D', 'sentDirect');
+	});
+
+    $('#sentElectronic').click(function (event) {
+		handleQsl('Y','E', 'sentElectronic');
 	});
 
 	$('#dontSend').click(function (event) {

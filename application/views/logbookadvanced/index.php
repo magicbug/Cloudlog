@@ -84,7 +84,7 @@
 					<option value="">All</option>
 					<?php
 					foreach($modes as $modeId => $mode){
-						?><option value="<?php echo htmlentities($modeId);?>"><?php echo htmlspecialchars($mode);?></option><?php
+						?><option value="<?php echo htmlspecialchars($mode);?>"><?php echo htmlspecialchars($mode);?></option><?php
 					}
 					?>
 				</select>
@@ -167,8 +167,10 @@
 		<button type="button" class="btn btn-sm btn-primary" id="btnUpdateFromCallbook">Update from Callbook</button>
 		<button type="button" class="btn btn-sm btn-primary" id="queueBureau">Queue Bureau</button>
 		<button type="button" class="btn btn-sm btn-primary" id="queueDirect">Queue Direct</button>
+        <button type="button" class="btn btn-sm btn-primary" id="queueElectronic">Queue Electronic</button>
 		<button type="button" class="btn btn-sm btn-success" id="sentBureau">Sent Bureau</button>
 		<button type="button" class="btn btn-sm btn-success" id="sentDirect">Sent Direct</button>
+        <button type="button" class="btn btn-sm btn-success" id="sentElectronic">Sent Electronic</button>
 		<button type="button" class="btn btn-sm btn-warning" id="dontSend">Don't Send</button>
 		<button type="button" class="btn btn-sm btn-info" id="exportAdif">Create ADIF</button>
         <button type="button" class="btn btn-sm btn-danger" id="deleteQsos">Delete</button>

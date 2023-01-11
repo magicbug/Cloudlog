@@ -171,7 +171,7 @@ class Distances_model extends CI_Model
             foreach ($qsoArray as $qso) {
                 $qrb['Qsos']++;                                                        // Counts up number of qsos
                 $bearingdistance = $this->bearing_dist($stationgrid, $qso['grid'], $measurement_base);     // Calculates distance based on grids
-                $arrayplacement = $bearingdistance / 50;                                // Resolution is 50, calculates where to put result in array
+                $arrayplacement = (int)($bearingdistance / 50);                                // Resolution is 50, calculates where to put result in array
                 if ($bearingdistance > $qrb['Distance']) {                              // Saves the longest QSO
                     $qrb['Distance'] = $bearingdistance;
                     $qrb['Callsign'] = $qso['callsign'];
