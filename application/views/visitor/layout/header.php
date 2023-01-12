@@ -64,10 +64,12 @@
 				<a class="nav-link" href="<?php echo site_url('oqrs');?>">OQRS</a>
 			</li>
 			<?php } 
-		}?>
+		}
+		if ($this->uri->segment(1) != "oqrs") { ?>
 		<li class="nav-item">
 			 <a class="btn btn-outline-primary" href="<?php echo site_url('user/login');?>">Login</a>
 		</li>
+		<?php } ?>
 		</ul>
 	</div>
 </div>

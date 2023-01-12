@@ -212,7 +212,7 @@ class Logbook_model extends CI_Model {
       $data['COL_MY_IOTA'] = strtoupper(trim($station['station_iota']));
       $data['COL_MY_SOTA_REF'] = strtoupper(trim($station['station_sota']));
       $data['COL_MY_WWFF_REF'] = strtoupper(trim($station['station_wwff']));
-      $data['COL_MY_POTA_REF'] = strtoupper(trim($station['station_pota']));
+      $data['COL_MY_POTA_REF'] = $station['station_pota'] == null ? '' : strtoupper(trim($station['station_pota']));
 
       $data['COL_STATION_CALLSIGN'] = strtoupper(trim($station['station_callsign']));
       $data['COL_MY_DXCC'] = strtoupper(trim($station['station_dxcc']));
@@ -2058,7 +2058,7 @@ class Logbook_model extends CI_Model {
   /* Used to check if the qso is already in the database */
   function import_check($datetime, $callsign, $band) {
 
-    $this->db->select('COL_TIME_ON, COL_CALL, COL_BAND');
+    $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_BAND');
     $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
     $this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
     $this->db->where('COL_CALL', $callsign);
@@ -2068,13 +2068,14 @@ class Logbook_model extends CI_Model {
 
     if ($query->num_rows() > 0)
     {
-      return "Found";
+      $ret = $query->row();
+      return ["Found", $ret->COL_PRIMARY_KEY];
     } else {
-      return "No Match";
+      return ["No Match", 0];
     }
   }
 
-  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $iota) {
+  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $iota, $cnty) {
 
 	$data = array(
       'COL_LOTW_QSLRDATE' => $qsl_date,
@@ -2086,6 +2087,10 @@ class Logbook_model extends CI_Model {
 	}
 	if($iota != "") {
       $data['COL_IOTA'] = $iota;
+	}
+
+	if($cnty != "") {
+      $data['COL_CNTY'] = $cnty;
 	}
 
     $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
