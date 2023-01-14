@@ -104,6 +104,9 @@ function totalQsosPerYear() {
                         labels.push(this.year);
                         dataQso.push(this.total);
                     });
+
+                    labels.reverse();
+                    dataQso.reverse();
     
                     var ctx = document.getElementById("yearChart").getContext('2d');
                     var myChart = new Chart(ctx, {

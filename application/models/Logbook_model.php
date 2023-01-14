@@ -212,7 +212,7 @@ class Logbook_model extends CI_Model {
       $data['COL_MY_IOTA'] = strtoupper(trim($station['station_iota']));
       $data['COL_MY_SOTA_REF'] = strtoupper(trim($station['station_sota']));
       $data['COL_MY_WWFF_REF'] = strtoupper(trim($station['station_wwff']));
-      $data['COL_MY_POTA_REF'] = strtoupper(trim($station['station_pota']));
+      $data['COL_MY_POTA_REF'] = $station['station_pota'] == null ? '' : strtoupper(trim($station['station_pota']));
 
       $data['COL_STATION_CALLSIGN'] = strtoupper(trim($station['station_callsign']));
       $data['COL_MY_DXCC'] = strtoupper(trim($station['station_dxcc']));
@@ -318,7 +318,7 @@ class Logbook_model extends CI_Model {
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-		$sql =  'SELECT COL_SOTA_REF, COL_OPERATOR, COL_IOTA, COL_VUCC_GRIDS, COL_STATE, COL_GRIDSQUARE, COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_BAND, COL_SAT_NAME, COL_MODE, COL_SUBMODE, COL_RST_SENT, ';
+		$sql =  'SELECT COL_FREQ, COL_SOTA_REF, COL_OPERATOR, COL_IOTA, COL_VUCC_GRIDS, COL_STATE, COL_GRIDSQUARE, COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_BAND, COL_SAT_NAME, COL_MODE, COL_SUBMODE, COL_RST_SENT, ';
 		$sql .= 'COL_RST_RCVD, COL_STX, COL_SRX, COL_STX_STRING, COL_SRX_STRING, COL_COUNTRY, COL_QSL_SENT, COL_QSL_SENT_VIA, ';
 		$sql .= 'COL_QSLSDATE, COL_QSL_RCVD, COL_QSL_RCVD_VIA, COL_QSLRDATE, COL_EQSL_QSL_SENT, COL_EQSL_QSLSDATE, COL_EQSL_QSLRDATE, ';
 		$sql .= 'COL_EQSL_QSL_RCVD, COL_LOTW_QSL_SENT, COL_LOTW_QSLSDATE, COL_LOTW_QSL_RCVD, COL_LOTW_QSLRDATE, COL_CONTEST_ID, station_gridsquare ';
@@ -1256,7 +1256,7 @@ class Logbook_model extends CI_Model {
     $this->db->select('DATE_FORMAT(COL_TIME_ON, \'%Y\') as \'year\',COUNT(COL_PRIMARY_KEY) as \'total\'', FALSE);
     $this->db->where_in('station_id', $logbooks_locations_array);
     $this->db->group_by('DATE_FORMAT(COL_TIME_ON, \'%Y\')');
-    $this->db->order_by('year', 'ASC');
+    $this->db->order_by('year', 'DESC');
 
     $query = $this->db->get($this->config->item('table_name'));
 
@@ -2058,7 +2058,7 @@ class Logbook_model extends CI_Model {
   /* Used to check if the qso is already in the database */
   function import_check($datetime, $callsign, $band) {
 
-    $this->db->select('COL_TIME_ON, COL_CALL, COL_BAND');
+    $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_BAND');
     $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
     $this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
     $this->db->where('COL_CALL', $callsign);
@@ -2068,13 +2068,14 @@ class Logbook_model extends CI_Model {
 
     if ($query->num_rows() > 0)
     {
-      return "Found";
+      $ret = $query->row();
+      return ["Found", $ret->COL_PRIMARY_KEY];
     } else {
-      return "No Match";
+      return ["No Match", 0];
     }
   }
 
-  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $iota) {
+  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $iota, $cnty) {
 
 	$data = array(
       'COL_LOTW_QSLRDATE' => $qsl_date,
@@ -2086,6 +2087,10 @@ class Logbook_model extends CI_Model {
 	}
 	if($iota != "") {
       $data['COL_IOTA'] = $iota;
+	}
+
+	if($cnty != "") {
+      $data['COL_CNTY'] = $cnty;
 	}
 
     $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');

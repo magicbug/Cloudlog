@@ -109,24 +109,26 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 				if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td class="qsl">
                 <span <?php if ($row->COL_QSL_SENT != "N") {
-                       $timestamp = strtotime($row->COL_QSLSDATE);
                        switch ($row->COL_QSL_SENT) {
                        case "Y":
-                          echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_sent')." ".date($custom_date_format,$timestamp);
+                          echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_sent');
                           break;
                        case "Q":
-                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_queued')." ".date($custom_date_format,$timestamp);
+                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_queued');
                           break;
                        case "R":
-                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_requested')." ".date($custom_date_format,$timestamp);
+                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_requested');
                           break;
                        case "I":
-                          echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_invalid_ignore')." ".date($custom_date_format,$timestamp);
+                          echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_invalid_ignore');
                           break;
                        default:
                           echo "class=\"qsl-red";
                           break;
                        }
+                        if ($row->COL_QSLSDATE != null) {
+                            $timestamp = strtotime($row->COL_QSLSDATE); echo " "  .($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
+                        }
                      } else { echo "class=\"qsl-red"; }
                        if ($row->COL_QSL_SENT_VIA != "") {
                           switch ($row->COL_QSL_SENT_VIA) {
@@ -145,23 +147,25 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                          }
                        } ?>">&#9650;</span>
                 <span <?php if ($row->COL_QSL_RCVD != "N") {
-                       $timestamp = strtotime($row->COL_QSLRDATE);
                        switch ($row->COL_QSL_RCVD) {
                        case "Y":
-                          echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_received')." ".date($custom_date_format,$timestamp);
+                          echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_received');
                           break;
                        case "Q":
-                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_queued')." ".date($custom_date_format,$timestamp);
+                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_queued');
                           break;
                        case "R":
-                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_requested')." ".date($custom_date_format,$timestamp);
+                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_requested');
                           break;
                        case "I":
-                          echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_invalid_ignore')." ".date($custom_date_format,$timestamp);
+                          echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_invalid_ignore');
                           break;
                        default:
                           echo "class=\"qsl-red";
                           break;
+                       }
+                       if ($row->COL_QSLRDATE != null) {
+                            $timestamp = strtotime($row->COL_QSLRDATE); echo " "  .($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
                        }
                      } else { echo "class=\"qsl-red"; }
                        if ($row->COL_QSL_RCVD_VIA != "") {
