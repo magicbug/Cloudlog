@@ -2960,7 +2960,7 @@ class Logbook_model extends CI_Model {
       $c = '';
   
       $lidadditions = '/^QRP|^LGT/';
-      $csadditions = '/^P$|^M{1,2}$|^AM$|^A$/';
+      $csadditions = '/^P$|^R$|^M{1,2}$|^AM$|^A$/';
   
       # First check if the call is in the proper format, A/B/C where A and C
       # are optional (prefix of guest country and P, MM, AM etc) and B is the
