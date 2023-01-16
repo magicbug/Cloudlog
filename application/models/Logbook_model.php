@@ -257,7 +257,7 @@ class Logbook_model extends CI_Model {
 	/*
 	 * Used to fetch QSOs from the logbook in the awards
 	 */
-	public function qso_details($searchphrase, $band, $mode, $type){
+	public function qso_details($searchphrase, $band, $mode, $type, $qsl){
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -292,6 +292,9 @@ class Logbook_model extends CI_Model {
 			case 'POTA':
 				$this->db->where('COL_POTA_REF', $searchphrase);
 				break;
+			case 'DOK':
+				$this->db->where('COL_DARC_DOK', $searchphrase);
+				break;
 		}
 
     $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
@@ -303,6 +306,21 @@ class Logbook_model extends CI_Model {
 			} else {
 				$this->db->where('COL_PROP_MODE', "SAT");
 			}
+		}
+
+		if (!empty($qsl)) {
+			$qslfilter = array();
+			if (strpos($qsl, "Q") !== false) {
+				$qslfilter[] = 'COL_QSL_RCVD = "Y"';
+			}
+			if (strpos($qsl, "L") !== false) {
+				$qslfilter[] = 'COL_LOTW_QSL_RCVD = "Y"';
+			}
+			if (strpos($qsl, "E") !== false) {
+				$qslfilter[] = 'COL_EQSL_QSL_RCVD = "Y"';
+			}
+			$sql = "(".implode(' OR ', $qslfilter).")";
+			$this->db->where($sql);
 		}
 
 		if ($mode != 'All') {

@@ -1,11 +1,40 @@
+<style>
+/*Legend specific*/
+.legend {
+  padding: 6px 8px;
+  font: 14px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  line-height: 24px;
+  color: #555;
+}
+.legend h4 {
+  text-align: center;
+  font-size: 16px;
+  margin: 2px 12px 8px;
+  color: #777;
+}
+.legend span {
+  position: relative;
+  bottom: 3px;
+}
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin: 0 8px 0 0;
+  opacity: 0.7;
+}
+</style>
 
 <div class="container">
-	<h2><?php echo $page_title; ?></h2>
 
-    <form class="form" action="<?php echo site_url('awards/dok'); ?>" method="post" enctype="multipart/form-data">
-        <fieldset>
+  <h2><?php echo $page_title?></h2>
+            <form class="form" action="<?php echo site_url('awards/dok'); ?>" method="post" enctype="multipart/form-data">
+            <fieldset>
+
             <div class="form-group row">
-                <label class="col-md-2 control-label" for="dok">Type</label>
+                <label class="col-md-2 control-label" for="band">DOK / SDOK</label>
                 <div class="col-md-2">
                     <select id="doks" name="doks" class="form-control custom-select-sm">
                         <option value="both" <?php if ($this->input->post('doks') == "both" || $this->input->method() !== 'post') echo ' selected'; ?> >DOK + SDOK</option>
@@ -20,51 +49,161 @@
                     </select>
                 </div>
             </div>
+
+            <div class="form-group row">
+                <div class="col-md-2" for="checkboxes">Worked / Confirmed</div>
+                <div class="col-md-10">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="worked" id="worked" value="1" <?php if ($this->input->post('worked') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
+                        <label class="form-check-label" for="worked">Show worked</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="confirmed" id="confirmed" value="1" <?php if ($this->input->post('confirmed') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
+                        <label class="form-check-label" for="confirmed">Show confirmed</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-2">QSL / LoTW</div>
+                <div class="col-md-10">
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="qsl" value="1" id="qsl" <?php if ($this->input->post('qsl') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
+                        <label class="form-check-label" for="qsl">QSL</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="lotw" value="1" id="lotw" <?php if ($this->input->post('lotw') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
+                        <label class="form-check-label" for="lotw">LoTW</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="eqsl" value="1" id="eqsl" <?php if ($this->input->post('eqsl')) echo ' checked="checked"'; ?> >
+                        <label class="form-check-label" for="eqsl">eQSL</label>
+                    </div>
+                </div>
+            </div>
+
+           <div class="form-group row">
+               <label class="col-md-2 control-label" for="band">Band</label>
+               <div class="col-md-2">
+                   <select id="band2" name="band" class="form-control custom-select-sm">
+                       <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >Every band</option>
+                       <?php foreach($worked_bands as $band) {
+                           echo '<option value="' . $band . '"';
+                           if ($this->input->post('band') == $band) echo ' selected';
+                           echo '>' . $band . '</option>'."\n";
+                       } ?>
+                   </select>
+               </div>
+           </div>
+
+           <div class="form-group row">
+               <label class="col-md-2 control-label" for="mode">Mode</label>
+               <div class="col-md-2">
+                  <select id="mode" name="mode" class="form-control custom-select-sm">
+                     <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'mode') echo ' selected'; ?>>All</option>
+                     <?php
+                        foreach($modes->result() as $mode){
+                        if ($mode->submode == null) {
+                           echo '<option value="' . $mode->mode . '"';
+                           if ($this->input->post('mode') == $mode->mode) echo ' selected';
+                           echo '>'. $mode->mode . '</option>'."\n";
+                        } else {
+                           echo '<option value="' . $mode->submode . '"';
+                           if ($this->input->post('mode') == $mode->submode) echo ' selected';
+                           echo '>' . $mode->submode . '</option>'."\n";
+                        }
+                     }
+                     ?>
+                  </select>
+               </div>
+            </div>
+
+<?php
+   $doks = array();
+   foreach ($dok_array as $dok => $value) {
+      if (preg_match('/^[A-Z][0-9]{2}$/', $dok)) {
+         $doks[] = $dok;
+      }
+   }
+?>
+
             <div class="form-group row">
                 <label class="col-md-2 control-label" for="button1id"></label>
                 <div class="col-md-10">
-                    <button id="button2id" type="reset" name="button2id" class="btn-sm btn-warning">Reset</button>
-                    <button id="button1id" type="submit" name="button1id" class="btn-sm btn-primary">Show</button>
+                    <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning">Reset</button>
+                    <button id="button1id" type="submit" name="button1id" class="btn btn-sm btn-primary">Show</button>
+                    <button id="button3id" type="button" name="button3id" class="btn btn-sm btn-info" onclick=" window.open('https://dd3ah.de/dokmap/dokonly.html?zoom=9&dokonly=<?php print implode(',', $doks); ?>','_blank')"><i class="fas fa-globe-americas"></i> Map</button>
                 </div>
             </div>
         </fieldset>
     </form>
-	<table class="table table-sm table-striped table-hover">
-        <?php
-        if ($worked_bands) {
-?>
-  
-	<thead>
+    <br />
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade" id="dokmaptab" role="tabpanel" aria-labelledby="home-tab">
+    <br />
+
+    </div>
+
+        <div class="tab-pane fade show active" id="table" role="tabpanel" aria-labelledby="table-tab">
+
+<?php
+    if ($dok_array) {
+    echo '
+    <table style="width:100%" id="doktable" class="table table-sm table-bordered table-hover table-striped table-condensed text-center">
+        <thead>
         <tr>
-        <td style="width:225px">DOKs (<?php echo count($doks)?>)</td>
-    <?php
-	foreach ($worked_bands as $slot) {
-		echo "          <td style=\"text-align: center;\">$slot</td>\n";
-	}
-    ?>
-        </tr>
-    </thead>
-    <tbody>
-    <?php
-        foreach($doks as $dok=>$val){
-            print("<tr><td>$dok</td>");
-            foreach($val as $band=>$count){
-		if (in_array($band, $worked_bands)) {
-	                if ($count == 0){
-	                     print("<td style=\"text-align: right; padding-right: 2em\">&nbsp;</td>");
-	                }else{
-	                    printf("<td style=\"text-align: right; padding-right: 2em\"><a href='javascript:displayDokContacts(\"%s\",\"%s\")'>%d</a></td>", str_replace("&", "%26", $dok), $band, $count);
-	                }
-		} 
+            <th>DOK</th>';
+        foreach($bands as $band) {
+            echo '<th>' . $band . '</th>';
             }
-            print("</tr>");
+            echo '</tr>
+        </thead>
+        <tbody>';
+        foreach ($dok_array as $dok => $value) {      // Fills the table with the data
+        echo '<tr>
+            <td>'. $dok .'</td>';
+            foreach ($value  as $key) {
+            echo '<td style="text-align: center">' . $key . '</td>';
+            }
+            echo '</tr>';
+        }
+        echo '</table>
+        <h2>Summary</h2>
+
+        <table class="table-sm tablesummary table table-bordered table-hover table-striped table-condensed text-center">
+        <thead>
+        <tr><td></td>';
+
+        foreach($bands as $band) {
+            echo '<td>' . $band . '</td>';
+        }
+        echo '<td>Total</td></tr>
+        </thead>
+        <tbody>
+
+        <tr><td>Total worked</td>';
+
+        foreach ($dok_summary['worked'] as $dxcc) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $dxcc . '</td>';
         }
 
-    ?>
-    </tbody>
+        echo '</tr><tr>
+        <td>Total confirmed</td>';
+        foreach ($dok_summary['confirmed'] as $dxcc) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $dxcc . '</td>';
+        }
 
-	</table>
-<?php } else {
+        echo '</tr>
+        </table>
+        </div>';
+
+    }
+    else {
         echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
-    } ?>
+    }
+    ?>
+
+            </div>
+        </div>
 </div>
