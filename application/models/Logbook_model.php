@@ -2944,8 +2944,8 @@ class Logbook_model extends CI_Model {
       $c = '';
   
       $lidadditions = '/^QRP|^LGT/';
-      $csadditions = '/^P$|^R$|^A$/';
-      $noneadditions = '/^M{1,2}$|^AM$/';
+      $csadditions = '/^P$|^R$|^A$|^M$/';
+      $noneadditions = '/^MM$|^AM$/';
   
       # First check if the call is in the proper format, A/B/C where A and C
       # are optional (prefix of guest country and P, MM, AM etc) and B is the
@@ -3048,6 +3048,8 @@ class Logbook_model extends CI_Model {
                       $prefix = $c . "0";
                   }
               }
+          } elseif (($a) && (preg_match($noneadditions, $c))) {                # Case 2.1, X/CALL/X ie TF/DL2NWK/MM - DXCC none
+            return '';
           } elseif ($a) {
               # $a contains the prefix we want
               if (preg_match('/\d$/', $a)) {                      # ends in number -> good prefix
