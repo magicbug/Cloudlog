@@ -2782,7 +2782,7 @@ class Logbook_model extends CI_Model {
                     $data['COL_MY_IOTA'] = strtoupper(trim($row['station_iota']));
                     $data['COL_MY_SOTA_REF'] = strtoupper(trim($row['station_sota']));
                     $data['COL_MY_WWFF_REF'] = strtoupper(trim($row['station_wwff']));
-                    $data['COL_MY_POTA_REF'] = strtoupper(trim($row['station_pota']));
+                    $data['COL_MY_POTA_REF'] = $row['station_pota'] == null ? '' : strtoupper(trim($row['station_pota']));
 
                     $data['COL_STATION_CALLSIGN'] = strtoupper(trim($row['station_callsign']));
                     $data['COL_MY_DXCC'] = strtoupper(trim($row['station_dxcc']));
