@@ -75,7 +75,9 @@ function get_dok_array($bands, $postdata, $location_list) {
 		}
 
 		// We want to hide NM as marking not having a DOK at all
-		unset($bandDok['NM']);
+		if (isset($bandDok['NM'])) {
+			unset($bandDok['NM']);
+		}
 
 		if (isset($bandDok)) {
 			return $bandDok;

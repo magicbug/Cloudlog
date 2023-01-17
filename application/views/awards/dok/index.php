@@ -120,9 +120,11 @@
 
 <?php
    $doks = array();
-   foreach ($dok_array as $dok => $value) {
-      if (preg_match('/^[A-Z][0-9]{2}$/', $dok)) {
-         $doks[] = $dok;
+   if ($dok_array) {
+      foreach ($dok_array as $dok => $value) {
+         if (preg_match('/^[A-Z][0-9]{2}$/', $dok)) {
+            $doks[] = $dok;
+         }
       }
    }
 ?>
