@@ -239,8 +239,10 @@ if ($logbooks_locations_array) {
 } else {
 	$location_list = null;
 }
+
+$oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 ?>
-				<a class="dropdown-item" href="<?php echo site_url('oqrs/requests');?>" title="OQRS Requests"><i class="fa fa-id-card"></i> OQRS Requests <?php if ($CI->oqrs_model->oqrs_requests($location_list) > 0) { echo "<span class=\"badge badge-light\">".$CI->oqrs_model->oqrs_requests($location_list)."</span>"; } ?></a>
+				<a class="dropdown-item" href="<?php echo site_url('oqrs/requests');?>" title="OQRS Requests"><i class="fa fa-id-card"></i> OQRS Requests <?php if ($oqrs_requests > 0) { echo "<span class=\"badge badge-light\">".$oqrs_requests."</span>"; } ?></a>
 
 				<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> Print Requested QSLs</a>
 

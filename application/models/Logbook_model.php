@@ -1155,7 +1155,7 @@ class Logbook_model extends CI_Model {
     } else {
       $logbooks_locations_array = $StationLocationsArray;
     }
-
+  
     if ($logbooks_locations_array) {
       $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
       $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
@@ -1163,12 +1163,12 @@ class Logbook_model extends CI_Model {
       $this->db->order_by("COL_TIME_ON", "desc");
       $this->db->limit($num);
       $query = $this->db->get($this->config->item('table_name'));
-  
+    
       return $query;
     } else {
       return null;
     }
-
+  
   }
 
     /* Get all QSOs with a valid grid for use in the KML export */
@@ -2782,7 +2782,7 @@ class Logbook_model extends CI_Model {
                     $data['COL_MY_IOTA'] = strtoupper(trim($row['station_iota']));
                     $data['COL_MY_SOTA_REF'] = strtoupper(trim($row['station_sota']));
                     $data['COL_MY_WWFF_REF'] = strtoupper(trim($row['station_wwff']));
-                    $data['COL_MY_POTA_REF'] = strtoupper(trim($row['station_pota']));
+                    $data['COL_MY_POTA_REF'] = $row['station_pota'] == null ? '' : strtoupper(trim($row['station_pota']));
 
                     $data['COL_STATION_CALLSIGN'] = strtoupper(trim($row['station_callsign']));
                     $data['COL_MY_DXCC'] = strtoupper(trim($row['station_dxcc']));
@@ -2838,13 +2838,7 @@ class Logbook_model extends CI_Model {
       $call = "KG4";
     } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
       $call = "K";
-		} elseif (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
-			if ($matches[5][0] == '/MM' || $matches[5][0] == '/AM') {
-				$row['adif'] = 0;
-				$row['entity'] = 'None';
-				$row['cqz'] = 0;
-				return array($row['adif'], $row['entity'], $row['cqz']);
-			} else {
+		} elseif (preg_match('/\w\/\w/', $call)) {
         $result = $this->wpx($call, 1);                       # use the wpx prefix instead
         if ($result == '') {
           $row['adif'] = 0;
@@ -2854,7 +2848,6 @@ class Logbook_model extends CI_Model {
         } else {
           $call = $result . "AA";
         }
-      }
     }
 
 		$len = strlen($call);
@@ -2904,15 +2897,7 @@ class Logbook_model extends CI_Model {
           $call = "KG4";
         } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
           $call = "K";
-				} elseif (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
-					if ($matches[5][0] == '/MM' || $matches[5][0] == '/AM') {
-						$row['adif'] = 0;
-						$row['entity'] = 'None';
-						$row['cqz'] = 0;
-						$row['long'] = '0';
-						$row['lat'] = '0';
-						return $row;
-					} else {
+        } elseif (preg_match('/\w\/\w/', $call)) {
             $result = $this->wpx($call, 1);                       # use the wpx prefix instead
             if ($result == '') {
               $row['adif'] = 0;
@@ -2924,7 +2909,6 @@ class Logbook_model extends CI_Model {
             } else {
               $call = $result . "AA";
             }
-          }
     		}
 
 				$len = strlen($call);
@@ -2960,7 +2944,8 @@ class Logbook_model extends CI_Model {
       $c = '';
   
       $lidadditions = '/^QRP|^LGT/';
-      $csadditions = '/^P$|^M{1,2}$|^AM$|^A$/';
+      $csadditions = '/^P$|^R$|^A$|^M$/';
+      $noneadditions = '/^MM$|^AM$/';
   
       # First check if the call is in the proper format, A/B/C where A and C
       # are optional (prefix of guest country and P, MM, AM etc) and B is the
@@ -3051,6 +3036,8 @@ class Logbook_model extends CI_Model {
               } elseif (preg_match($csadditions, $c)) {
                   preg_match('/(.+\d)[A-Z]*/', $b, $matches);     # Known attachment -> like Case 1.1
                   $prefix = $matches[1];
+              } elseif (preg_match($noneadditions, $c)) {
+                 return '';
               } elseif (preg_match('/^\d\d+$/', $c)) {            # more than 2 numbers -> ignore
                   preg_match('/(.+\d)[A-Z]* /', $b, $matches);    # see above
                   $prefix = $matches[1][0];
@@ -3061,6 +3048,8 @@ class Logbook_model extends CI_Model {
                       $prefix = $c . "0";
                   }
               }
+          } elseif (($a) && (preg_match($noneadditions, $c))) {                # Case 2.1, X/CALL/X ie TF/DL2NWK/MM - DXCC none
+            return '';
           } elseif ($a) {
               # $a contains the prefix we want
               if (preg_match('/\d$/', $a)) {                      # ends in number -> good prefix
