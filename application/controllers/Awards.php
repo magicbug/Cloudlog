@@ -421,8 +421,9 @@ class Awards extends CI_Controller {
         $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
 
         if($this->input->method() === 'post') {
-            $postdata['lotw'] = $this->input->post('lotw');
             $postdata['qsl'] = $this->input->post('qsl');
+            $postdata['lotw'] = $this->input->post('lotw');
+            $postdata['eqsl'] = $this->input->post('eqsl');
             $postdata['worked'] = $this->input->post('worked');
             $postdata['confirmed'] = $this->input->post('confirmed');
             $postdata['notworked'] = $this->input->post('notworked');
@@ -430,8 +431,9 @@ class Awards extends CI_Controller {
 			$postdata['mode'] = $this->input->post('mode');
         }
         else { // Setting default values at first load of page
-            $postdata['lotw'] = 1;
             $postdata['qsl'] = 1;
+            $postdata['lotw'] = 1;
+            $postdata['eqsl'] = 0;
             $postdata['worked'] = 1;
             $postdata['confirmed'] = 1;
             $postdata['notworked'] = 1;
@@ -615,8 +617,9 @@ class Awards extends CI_Controller {
 
         $bands[] = $band_type;
 
-        $postdata['lotw'] = 1;
         $postdata['qsl'] = 1;
+        $postdata['lotw'] = 1;
+        $postdata['eqsl'] = 0;
         $postdata['worked'] = 1;
         $postdata['confirmed'] = 1;
         $postdata['notworked'] = 1;
