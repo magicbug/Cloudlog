@@ -245,12 +245,11 @@ class Awards extends CI_Controller {
 	public function qso_details_ajax(){
 		$this->load->model('logbook_model');
 
-		$qsl = '';
 		$searchphrase = str_replace('"', "", $this->input->post("Searchphrase"));
 		$band = str_replace('"', "", $this->input->post("Band"));
 		$mode = str_replace('"', "", $this->input->post("Mode"));
 		$type = $this->input->post('Type');
-		$qsl = $this->input->post('QSL');
+		$this->input->post('QSL') == null ? '' : $this->input->post('QSL');
 
 		$data['results'] = $this->logbook_model->qso_details($searchphrase, $band, $mode, $type, $qsl);
 
