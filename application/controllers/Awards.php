@@ -359,8 +359,9 @@ class Awards extends CI_Controller {
         $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
 
         if($this->input->method() === 'post') {
-            $postdata['lotw'] = $this->input->post('lotw');
             $postdata['qsl'] = $this->input->post('qsl');
+            $postdata['lotw'] = $this->input->post('lotw');
+            $postdata['eqsl'] = $this->input->post('eqsl');
             $postdata['worked'] = $this->input->post('worked');
             $postdata['confirmed'] = $this->input->post('confirmed');
             $postdata['notworked'] = $this->input->post('notworked');
@@ -368,8 +369,9 @@ class Awards extends CI_Controller {
 			$postdata['mode'] = $this->input->post('mode');
         }
         else { // Setting default values at first load of page
-            $postdata['lotw'] = 1;
             $postdata['qsl'] = 1;
+            $postdata['lotw'] = 1;
+            $postdata['eqsl'] = 0;
             $postdata['worked'] = 1;
             $postdata['confirmed'] = 1;
             $postdata['notworked'] = 1;
@@ -639,8 +641,9 @@ class Awards extends CI_Controller {
 
         $bands[] = $this->input->post('band');
 
-        $postdata['lotw'] = $this->input->post('lotw') == 0 ? NULL: 1;
         $postdata['qsl'] = $this->input->post('qsl') == 0 ? NULL: 1;
+        $postdata['lotw'] = $this->input->post('lotw') == 0 ? NULL: 1;
+        $postdata['eqsl'] = $this->input->post('eqsl') == 0 ? NULL: 1;
         $postdata['worked'] = $this->input->post('worked') == 0 ? NULL: 1;
         $postdata['confirmed'] = $this->input->post('confirmed')  == 0 ? NULL: 1;
         $postdata['notworked'] = $this->input->post('notworked')  == 0 ? NULL: 1;
