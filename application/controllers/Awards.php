@@ -249,7 +249,7 @@ class Awards extends CI_Controller {
 		$band = str_replace('"', "", $this->input->post("Band"));
 		$mode = str_replace('"', "", $this->input->post("Mode"));
 		$type = $this->input->post('Type');
-		$this->input->post('QSL') == null ? '' : $this->input->post('QSL');
+		$qsl = $this->input->post('QSL') == null ? '' : $this->input->post('QSL');
 
 		$data['results'] = $this->logbook_model->qso_details($searchphrase, $band, $mode, $type, $qsl);
 
