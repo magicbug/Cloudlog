@@ -1175,12 +1175,17 @@ class Logbook_model extends CI_Model {
     }
   
     if ($logbooks_locations_array) {
-      $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
-      $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-      $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
-      $this->db->order_by("COL_TIME_ON", "desc");
-      $this->db->limit($num);
-      $query = $this->db->get($this->config->item('table_name'));
+      $location_list = "'".implode("','",$logbooks_locations_array)."'";
+      
+      $sql = "SELECT * FROM ( select * from " . $this->config->item('table_name'). "
+        WHERE station_id IN(". $location_list .")
+        order by col_time_on desc
+        limit " . $num .
+        ") hrd
+        JOIN station_profile ON station_profile.station_id = hrd.station_id
+        LEFT JOIN dxcc_entities ON hrd.col_dxcc = dxcc_entities.adif";
+
+      $query = $this->db->query($sql);
     
       return $query;
     } else {
