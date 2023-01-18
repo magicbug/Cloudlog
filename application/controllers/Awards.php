@@ -31,17 +31,63 @@ class Awards extends CI_Controller {
 
 	public function dok ()
 	{
+
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
 		$this->load->model('dok');
 		$this->load->model('bands');
+		$this->load->model('modes');
 
 		if($this->input->method() === 'post') {
 			$postdata['doks'] = $this->input->post('doks');
 		} else {
 			$postdata['doks'] = 'both';
 		}
-		$data['doks'] = $this->dok->show_stats($postdata);
 
-        $data['worked_bands'] = $this->bands->get_worked_bands_dok(); // Used in the view for band select
+		$data['worked_bands'] = $this->bands->get_worked_bands('dok');
+		$data['modes'] = $this->modes->active();
+
+		if ($this->input->post('band') != NULL) {
+			if ($this->input->post('band') == 'All') {
+				$bands = $data['worked_bands'];
+			} else {
+				$bands[] = $this->input->post('band');
+			}
+		} else {
+			$bands = $data['worked_bands'];
+		}
+
+		$data['bands'] = $bands;
+
+		if($this->input->method() === 'post') {
+			$postdata['qsl'] = $this->input->post('qsl');
+			$postdata['lotw'] = $this->input->post('lotw');
+			$postdata['eqsl'] = $this->input->post('eqsl');
+			$postdata['worked'] = $this->input->post('worked');
+			$postdata['confirmed'] = $this->input->post('confirmed');
+			$postdata['band'] = $this->input->post('band');
+			$postdata['mode'] = $this->input->post('mode');
+		} else {
+			$postdata['qsl'] = 1;
+			$postdata['lotw'] = 1;
+			$postdata['eqsl'] = 0;
+			$postdata['worked'] = 1;
+			$postdata['confirmed'] = 1;
+			$postdata['band'] = 'All';
+			$postdata['mode'] = 'All';
+		}
+
+		if ($logbooks_locations_array) {
+			$location_list = "'".implode("','",$logbooks_locations_array)."'";
+			$data['dok_array'] = $this->dok->get_dok_array($bands, $postdata, $location_list);
+			$data['dok_summary'] = $this->dok->get_dok_summary($bands, $postdata, $location_list);
+		} else {
+			$location_list = null;
+			$data['dok_array'] = null;
+			$data['dok_summary'] = null;
+		}
 
 		// Render Page
 		$data['page_title'] = "Awards - DOK";
@@ -66,9 +112,6 @@ class Awards extends CI_Controller {
         $arguments["order"] = '';
         $arguments["join_station_profile"] = true;
 
-        // print_r($arguments);
-        // return;
-
         // Load the API and Logbook models
         $this->load->model('api_model');
         $this->load->model('logbook_model');
@@ -81,7 +124,7 @@ class Awards extends CI_Controller {
 
         // Render Page
         $data['page_title'] = "Log View - DOK";
-        $data['filter'] = str_replace("&#40;and&#41;", ", ", $q);//implode(", ", array_keys($a));
+        $data['filter'] = str_replace("&#40;and&#41;", ", ", $q);
         $this->load->view('awards/details', $data);
     }
 
@@ -206,8 +249,9 @@ class Awards extends CI_Controller {
 		$band = str_replace('"', "", $this->input->post("Band"));
 		$mode = str_replace('"', "", $this->input->post("Mode"));
 		$type = $this->input->post('Type');
+		$qsl = $this->input->post('QSL') == null ? '' : $this->input->post('QSL');
 
-		$data['results'] = $this->logbook_model->qso_details($searchphrase, $band, $mode, $type);
+		$data['results'] = $this->logbook_model->qso_details($searchphrase, $band, $mode, $type, $qsl);
 
 		// This is done because we have two different ways to get dxcc info in Cloudlog. Once is using the name (in awards), and the other one is using the ADIF DXCC.
 		// We replace the values to make it look a bit nicer
@@ -217,9 +261,23 @@ class Awards extends CI_Controller {
 			$searchphrase = $dxccname['name'];
 		}
 
+		$qsltype = [];
+		if (strpos($qsl, "Q") !== false) {
+			$qsltype[] = "QSL";
+		}
+		if (strpos($qsl, "L") !== false) {
+			$qsltype[] = "LotW";
+		}
+		if (strpos($qsl, "E") !== false) {
+			$qsltype[] = "eQSL";
+		}
+
 		// Render Page
 		$data['page_title'] = "Log View - " . $type;
 		$data['filter'] = $type . " " . $searchphrase . " and band ".$band . " and mode ".$mode;
+		if (!empty($qsltype)) {
+			$data['filter'] .= " and ".implode('/', $qsltype);
+		}
 		$this->load->view('awards/details', $data);
 	}
 

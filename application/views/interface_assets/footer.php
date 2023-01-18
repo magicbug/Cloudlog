@@ -2568,7 +2568,7 @@ function deleteQsl(id) {
   /*
    * Used to fetch QSOs from the logbook in the awards
    */
-    function displayContacts(searchphrase, band, mode, type) {
+    function displayContacts(searchphrase, band, mode, type, qsl) {
         var baseURL = "<?php echo base_url();?>";
         $.ajax({
             url: baseURL + 'index.php/awards/qso_details_ajax',
@@ -2577,7 +2577,8 @@ function deleteQsl(id) {
                 'Searchphrase': searchphrase,
                 'Band': band,
                 'Mode': mode,
-                'Type': type
+                'Type': type,
+                'QSL' : qsl
             },
             success: function (html) {
                 BootstrapDialog.show({
@@ -3198,6 +3199,38 @@ function deleteQsl(id) {
                 "paging":         false,
                 "scrollX": true,
                 "order": [ 0, 'asc' ],
+                dom: 'Bfrtip',
+                buttons: [
+                   {
+                      extend: 'csv'
+                   },
+                   {
+                      extend: 'clear',
+                      text: 'Clear'
+                   }
+                ]
+            });
+            // change color of csv-button if dark mode is chosen
+            if (isDarkModeTheme()) {
+               $('[class*="buttons"]').css("color", "white");
+            }
+        </script>
+    <?php } else if ($this->uri->segment(2) == "dok") { ?>
+        <script>
+            $.fn.dataTable.ext.buttons.clear = {
+                className: 'buttons-clear',
+                action: function ( e, dt, node, config ) {
+                   dt.search('').draw();
+                }
+            };
+            $('#doktable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: false,
+                "scrollY":        "500px",
+                "scrollCollapse": true,
+                "paging":         false,
+                "scrollX": true,
                 dom: 'Bfrtip',
                 buttons: [
                    {
