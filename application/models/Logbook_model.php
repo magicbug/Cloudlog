@@ -2990,7 +2990,7 @@ class Logbook_model extends CI_Model {
               $a = substr($a, 0, -1); # Remove the / at the end 
           }
           if ($c) {
-              $c = substr($c, 1,); # Remove the / at the beginning
+              $c = substr($c, 1); # Remove the / at the beginning
           };
   
           # In some cases when there is no part A but B and C, and C is longer than 2
