@@ -2857,6 +2857,14 @@ class Logbook_model extends CI_Model {
 		}
     if (preg_match('/(^KG4)[A-Z09]{3}/', $call)) {      // KG4/ and KG4 5 char calls are Guantanamo Bay. If 4 or 6 char, it is USA
       $call = "K";
+    } elseif (preg_match('/(^OH\/)|(\/OH[1-9]?$)/', $call)) {   # non-Aland prefix!
+      $call = "OH";                                             # make callsign OH = finland
+    } elseif (preg_match('/(^3D2R)|(^3D2.+\/R)/', $call)) {     # seems to be from Rotuma
+      $call = "3D2/R";                                          # will match with Rotuma
+    } elseif (preg_match('/^3D2C/', $call)) {                   # seems to be from Conway Reef
+      $call = "3D2/C";                                          # will match with Conway
+    } elseif (preg_match('/(^LZ\/)|(\/LZ[1-9]?$)/', $call)) {   # LZ/ is LZ0 by DXCC but this is VP8h
+      $call = "LZ";
     } elseif (preg_match('/(^KG4)[A-Z09]{2}/', $call)) {
       $call = "KG4";
     } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
@@ -2916,6 +2924,14 @@ class Logbook_model extends CI_Model {
 
         if (preg_match('/(^KG4)[A-Z09]{3}/', $call)) {       // KG4/ and KG4 5 char calls are Guantanamo Bay. If 4 or 6 char, it is USA
           $call = "K";
+        } elseif (preg_match('/(^OH\/)|(\/OH[1-9]?$)/', $call)) {   # non-Aland prefix!
+          $call = "OH";                                             # make callsign OH = finland
+        } elseif (preg_match('/(^3D2R)|(^3D2.+\/R)/', $call)) {     # seems to be from Rotuma
+          $call = "3D2/R";                                          # will match with Rotuma
+        } elseif (preg_match('/^3D2C/', $call)) {                   # seems to be from Conway Reef
+          $call = "3D2/C";                                          # will match with Conway
+        } elseif (preg_match('/(^LZ\/)|(\/LZ[1-9]?$)/', $call)) {   # LZ/ is LZ0 by DXCC but this is VP8h
+          $call = "LZ";
         } elseif (preg_match('/(^KG4)[A-Z09]{2}/', $call)) { 
           $call = "KG4";
         } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
@@ -3041,7 +3057,7 @@ class Logbook_model extends CI_Model {
                   $prefix = substr($b, 0, 2) . "0";               # first two + 0
               }
           } elseif (($a == null) && (isset($c))) {                # Case 2, CALL/X
-              if (preg_match('/^(\d)$/', $c)) {                   # Case 2.1, number
+              if (preg_match('/^(\d)/', $c)) {                    # Case 2.1, number
                   preg_match('/(.+\d)[A-Z]*/', $b, $matches);     # regular Prefix in $1
                   # Here we need to find out how many digits there are in the
                   # prefix, because for example A45XR/0 is A40. If there are 2
