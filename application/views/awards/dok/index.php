@@ -36,7 +36,7 @@
             </div>
 
             <div class="form-group row">
-                <div class="col-md-2">QSL / LoTW</div>
+                <div class="col-md-2">QSL Type</div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="qsl" value="1" id="qsl" <?php if ($this->input->post('qsl') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >

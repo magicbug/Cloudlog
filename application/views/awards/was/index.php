@@ -24,7 +24,7 @@
             </div>
 
             <div class="form-group row">
-                <div class="col-md-2">QSL / LoTW</div>
+                <div class="col-md-2">QSL Type</div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="qsl" value="1" id="qsl" <?php if ($this->input->post('qsl') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
@@ -33,6 +33,10 @@
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="lotw" value="1" id="lotw" <?php if ($this->input->post('lotw') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
                         <label class="form-check-label" for="lotw">LoTW</label>
+                    </div>
+<div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="eqsl" value="1" id="eqsl" <?php if ($this->input->post('eqsl')) echo ' checked="checked"'; ?> >
+                        <label class="form-check-label" for="eqsl">eQSL</label>
                     </div>
                 </div>
             </div>
