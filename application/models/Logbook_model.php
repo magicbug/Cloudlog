@@ -3143,7 +3143,7 @@ class Logbook_model extends CI_Model {
         $this->db->select("COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_TIME_OFF");
 
         // check which to update - records with no dxcc or all records
-        if (! isset($all)){
+        if (!$all){
             $this->db->where("COL_DXCC is NULL");
         }
 
