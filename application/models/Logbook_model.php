@@ -3155,7 +3155,7 @@ class Logbook_model extends CI_Model {
         if ($r->num_rows() > 0){
             foreach($r->result_array() as $row){
                 $qso_date = $row['COL_TIME_OFF']=='' ? $row['COL_TIME_ON'] : $row['COL_TIME_ON'];
-                $qso_date = strftime("%Y-%m-%d", strtotime($qso_date));
+                $qso_date = date("Y-m-d", strtotime($qso_date));
 
                 // Manual call
                 $d = $this->check_dxcc_table($row['COL_CALL'], $qso_date);
