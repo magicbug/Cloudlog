@@ -3154,7 +3154,7 @@ class Logbook_model extends CI_Model {
         //query dxcc_prefixes
         if ($r->num_rows() > 0){
             foreach($r->result_array() as $row){
-                $qso_date = $row['COL_TIME_OFF']=='' ? $row['COL_TIME_ON'] : $row['COL_TIME_ON'];
+                $qso_date = $row['COL_TIME_OFF']=='' ? $row['COL_TIME_ON'] : $row['COL_TIME_OFF'];
                 $qso_date = date("Y-m-d", strtotime($qso_date));
 
                 // Manual call
