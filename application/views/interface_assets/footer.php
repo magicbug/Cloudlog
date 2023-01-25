@@ -1,3 +1,14 @@
+<script type="text/javascript">
+  /*
+  *
+  * Define global javascript variables
+  *
+  */
+  var base_url = "<?php echo base_url(); ?>"; // Base URL
+  var site_url = "<?php echo site_url(); ?>"; // Site URL
+  var icon_dot_url = "<?php echo base_url();?>assets/images/dot.png";
+</script>
+
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
@@ -17,17 +28,6 @@
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/common.js"></script>
 
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
-
-<script type="text/javascript">
-  /*
-  *
-  * Define global javascript variables
-  *
-  */
-  var base_url = "<?php echo base_url(); ?>"; // Base URL
-  var site_url = "<?php echo site_url(); ?>"; // Site URL
-  var icon_dot_url = "<?php echo base_url();?>assets/images/dot.png";
-</script>
 
 <?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "was") ) { ?>
 <script>

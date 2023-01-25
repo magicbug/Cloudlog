@@ -88,7 +88,6 @@ function qso_delete(id, call) {
             if(result) {
                 $(".edit-dialog").modal('hide');
                 $(".qso-dialog").modal('hide');
-                var base_url= "<?php echo base_url();?>";
                 $.ajax({
                     url: base_url + 'index.php/qso/delete_ajax',
                     type: 'post',
