@@ -9,7 +9,7 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['migration_none_found'] = '不需迁移。  ';
+$lang['migration_none_found'] = '不需迁移。';
 $lang['migration_not_found'] = '无法根据版本号找到迁移方法： %s。';
 $lang['migration_sequence_gap'] = '版本迁移存在鸿沟：%s。';
 $lang['migration_multiple_version'] = '多个迁移对应同一版本号：%s。';

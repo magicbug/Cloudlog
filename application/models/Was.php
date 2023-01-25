@@ -19,6 +19,19 @@ class was extends CI_Model {
 
         $states = array(); // Used for keeping track of which states that are not worked
 
+        $qsl = "";
+        if ($postdata['confirmed'] != NULL) {
+            if ($postdata['qsl'] != NULL ) {
+                $qsl .= "Q";
+            }
+            if ($postdata['lotw'] != NULL ) {
+                $qsl .= "L";
+            }
+            if ($postdata['eqsl'] != NULL ) {
+                $qsl .= "E";
+            }
+        }
+
         foreach ($stateArray as $state) {                   // Generating array for use in the table
             $states[$state]['count'] = 0;                   // Inits each state's count
         }
@@ -32,14 +45,14 @@ class was extends CI_Model {
             if ($postdata['worked'] != NULL) {
                 $wasBand = $this->getWasWorked($location_list, $band, $postdata);
                 foreach ($wasBand as $line) {
-                    $bandWas[$line->col_state][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("' . $line->col_state . '","' . $band . '","'. $postdata['mode'] . '","WAS")\'>W</a></div>';
+                    $bandWas[$line->col_state][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("' . $line->col_state . '","' . $band . '","'. $postdata['mode'] . '","WAS", "")\'>W</a></div>';
                     $states[$line->col_state]['count']++;
                 }
             }
             if ($postdata['confirmed'] != NULL) {
                 $wasBand = $this->getWasConfirmed($location_list, $band, $postdata);
                 foreach ($wasBand as $line) {
-                    $bandWas[$line->col_state][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("' . $line->col_state . '","' . $band . '","'. $postdata['mode'] . '","WAS")\'>C</a></div>';
+                    $bandWas[$line->col_state][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("' . $line->col_state . '","' . $band . '","'. $postdata['mode'] . '","WAS", "'.$qsl.'")\'>C</a></div>';
                     $states[$line->col_state]['count']++;
                 }
             }
@@ -238,16 +251,20 @@ class was extends CI_Model {
 
     function addQslToQuery($postdata) {
         $sql = '';
-        if ($postdata['lotw'] != NULL and $postdata['qsl'] == NULL) {
-            $sql .= " and col_lotw_qsl_rcvd = 'Y'";
-        }
-
-        if ($postdata['qsl'] != NULL and $postdata['lotw'] == NULL) {
-            $sql .= " and col_qsl_rcvd = 'Y'";
-        }
-
-        if ($postdata['qsl'] != NULL && $postdata['lotw'] != NULL) {
-            $sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+        $qsl = array();
+        if ($postdata['lotw'] != NULL || $postdata['qsl'] != NULL || $postdata['eqsl'] != NULL) {
+            $sql .= ' and (';
+            if ($postdata['qsl'] != NULL) {
+                array_push($qsl, "col_qsl_rcvd = 'Y'");
+            }
+            if ($postdata['lotw'] != NULL) {
+                array_push($qsl, "col_lotw_qsl_rcvd = 'Y'");
+            }
+            if ($postdata['eqsl'] != NULL) {
+                array_push($qsl, "col_eqsl_qsl_rcvd = 'Y'");
+            }
+            $sql .= implode(' or ', $qsl);
+            $sql .= ')';
         }
         return $sql;
     }

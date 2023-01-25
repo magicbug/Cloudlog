@@ -1,5 +1,7 @@
 # Cloudlog
 
+> Important: Only accepting PRs on the "dev" branch.
+
 Cloudlog is a self-hosted PHP application that allows you to log your amateur radio contacts anywhere. All you need is a web browser and active internet connection.
 
 Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
