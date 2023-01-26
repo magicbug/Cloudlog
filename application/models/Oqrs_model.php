@@ -260,7 +260,7 @@ class Oqrs_model extends CI_Model {
 		$binding = [$searchCriteria['user_id']];
 
 		if ($searchCriteria['de'] !== '') {
-			$conditions[] = "station_profile.STATION_CALLSIGN = ?";
+			$conditions[] = "station_profile.station_id = ?";
 			$binding[] = trim($searchCriteria['de']);
 		}
 		if ($searchCriteria['dx'] !== '') {

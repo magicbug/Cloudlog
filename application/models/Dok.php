@@ -126,7 +126,7 @@ function get_dok_array($bands, $postdata, $location_list) {
 		$sql = '';
 		$qsl = array();
 		if ($postdata['lotw'] != NULL || $postdata['qsl'] != NULL || $postdata['eqsl'] != NULL) {
-			$sql .= 'and (';
+			$sql .= ' and (';
 			if ($postdata['qsl'] != NULL) {
 				array_push($qsl, "col_qsl_rcvd = 'Y'");
 			}
