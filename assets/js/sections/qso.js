@@ -368,6 +368,7 @@ function reset_fields() {
 	mymap.setView(pos, 12);
 	mymap.removeLayer(markers);
 	$('.callsign-suggest').hide();
+	$('.dxccsummary').remove();
 }
 
 $("#callsign").focusout(function() {
@@ -788,4 +789,5 @@ function resetDefaultQSOFields() {
 	$('#input_usa_state').val("");
 	$('#callsign-image').attr('style', 'display: none;');
 	$('#callsign-image-content').text("");
+	$('.dxccsummary').remove();
 }
