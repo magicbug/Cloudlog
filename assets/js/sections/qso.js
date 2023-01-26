@@ -406,7 +406,7 @@ $("#callsign").focusout(function() {
 				if(result.dxcc.entity != undefined) {
 					$('#country').val(convert_case(result.dxcc.entity));
 					$('#callsign_info').text(convert_case(result.dxcc.entity));
-					getDxccResult(convert_case(result.dxcc.adif));
+					getDxccResult(result.dxcc.adif);
 
 					if($("#sat_name" ).val() != "") {
 						//logbook/jsonlookupgrid/io77/SAT/0/0
