@@ -1184,7 +1184,8 @@ class Logbook_model extends CI_Model {
         limit " . $num .
         ") hrd
         JOIN station_profile ON station_profile.station_id = hrd.station_id
-        LEFT JOIN dxcc_entities ON hrd.col_dxcc = dxcc_entities.adif";
+        LEFT JOIN dxcc_entities ON hrd.col_dxcc = dxcc_entities.adif
+        order by col_time_on desc, col_primary_key desc";
 
       $query = $this->db->query($sql);
     
