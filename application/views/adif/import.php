@@ -34,7 +34,7 @@
                     <select name="station_profile" class="custom-select mb-2 mr-sm-2" style="width: 20%;">
                     <option value="0">Select Station Location</option>
                     <?php foreach ($station_profile->result() as $station) { ?>
-                    <option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
+                    <option value="<?php echo $station->station_id; ?>" <?php if ($station->station_id == $this->stations->find_active()) { echo " selected =\"selected\""; } ?>>Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
                     <?php } ?>
                     </select>
                   <label class="sr-only" for="inlineFormInputName2">ADIF file</label>
@@ -100,7 +100,7 @@
 					  <select name="station_profile" class="custom-select mb-2 mr-sm-2" style="width: 20%;">
 						  <option value="0">Select Station Location</option>
 						  <?php foreach ($station_profile->result() as $station) { ?>
-							  <option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
+                       <option value="<?php echo $station->station_id; ?>" <?php if ($station->station_id == $this->stations->find_active()) { echo " selected =\"selected\""; } ?>>Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
 						  <?php } ?>
 					  </select>
                       <p class="card-text">From date:</p>
