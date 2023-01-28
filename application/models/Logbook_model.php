@@ -606,10 +606,26 @@ class Logbook_model extends CI_Model {
             $sat_name = 'AO-95_L/v';
          }
       } else if ($data['COL_SAT_NAME'] == 'PO-101') {
-         if ($data['COL_MODE'] == 'PACKET') {
+         if ($data['COL_MODE'] == 'PKT') {
             $sat_name = 'PO-101[APRS]';
          } else {
             $sat_name = 'PO-101[FM]';
+         }
+      } else if ($data['COL_SAT_NAME'] == 'FO-118') {
+         if ($data['COL_BAND'] == '2m') {
+            if ($data['COL_MODE'] == 'FM') {
+               $sat_name = 'FO-118[V/u FM]';
+            } else if ($data['COL_MODE'] == 'SSB') {
+               $sat_name = 'FO-118[V/u]';
+            }
+         } else if ($data['COL_BAND'] == '15m') {
+            $sat_name = 'FO-118[H/u]';
+         }
+      } else if ($data['COL_SAT_NAME'] == 'ARISS') {
+         if ($data['COL_MODE'] == 'FM') {
+            $sat_name = 'ISS-FM';
+         else if ($data['COL_MODE'] == 'PKT') {
+            $sat_name = 'ISS-DATA';
          }
       }
       if ($sat_name != '') {
