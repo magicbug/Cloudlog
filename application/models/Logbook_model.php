@@ -624,7 +624,7 @@ class Logbook_model extends CI_Model {
       } else if ($data['COL_SAT_NAME'] == 'ARISS') {
          if ($data['COL_MODE'] == 'FM') {
             $sat_name = 'ISS-FM';
-         else if ($data['COL_MODE'] == 'PKT') {
+         } else if ($data['COL_MODE'] == 'PKT') {
             $sat_name = 'ISS-DATA';
          }
       }
