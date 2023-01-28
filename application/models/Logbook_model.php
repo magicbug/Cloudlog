@@ -478,6 +478,10 @@ class Logbook_model extends CI_Model {
 
     $last_id = $this->db->insert_id();
 
+    if ($this->session->userdata('user_amsat_status_upload') && $data['COL_PROP_MODE'] == "SAT") {
+       $this->upload_amsat_status($data);
+    }
+
     // No point in fetching qrz api key and qrzrealtime setting if we're skipping the export
 	if (!$skipexport) {
 
@@ -575,6 +579,64 @@ class Logbook_model extends CI_Model {
 
         return true;
     }
+
+   function upload_amsat_status($data) {
+      $sat_name = '';
+      if ($data['COL_SAT_NAME'] == 'AO-7') {
+         if ($data['COL_BAND'] == '2m' && $data['COL_BAND_RX'] == '10m') {
+            $sat_name = '[A]_AO-7';
+         }
+         if ($data['COL_BAND'] == '70cm' && $data['COL_BAND_RX'] == '2m') {
+            $sat_name = '[B]_AO-7';
+         }
+      } else if ($data['COL_SAT_NAME'] == 'QO-100') {
+         $sat_name = 'QO-100_NB';
+      } else if ($data['COL_SAT_NAME'] == 'AO-92') {
+         if ($data['COL_BAND'] == '70cm' && $data['COL_BAND_RX'] == '2m') {
+            $sat_name = 'AO-92_U/v';
+         }
+         if ($data['COL_BAND'] == '23cm' && $data['COL_BAND_RX'] == '2m') {
+            $sat_name = 'AO-92_L/v';
+         }
+      } else if ($data['COL_SAT_NAME'] == 'AO-95') {
+         if ($data['COL_BAND'] == '70cm' && $data['COL_BAND_RX'] == '2m') {
+            $sat_name = 'AO-95_U/v';
+         }
+         if ($data['COL_BAND'] == '23cm' && $data['COL_BAND_RX'] == '2m') {
+            $sat_name = 'AO-95_L/v';
+         }
+      } else if ($data['COL_SAT_NAME'] == 'PO-101') {
+         if ($data['COL_MODE'] == 'PKT') {
+            $sat_name = 'PO-101[APRS]';
+         } else {
+            $sat_name = 'PO-101[FM]';
+         }
+      } else if ($data['COL_SAT_NAME'] == 'FO-118') {
+         if ($data['COL_BAND'] == '2m') {
+            if ($data['COL_MODE'] == 'FM') {
+               $sat_name = 'FO-118[V/u FM]';
+            } else if ($data['COL_MODE'] == 'SSB') {
+               $sat_name = 'FO-118[V/u]';
+            }
+         } else if ($data['COL_BAND'] == '15m') {
+            $sat_name = 'FO-118[H/u]';
+         }
+      } else if ($data['COL_SAT_NAME'] == 'ARISS') {
+         if ($data['COL_MODE'] == 'FM') {
+            $sat_name = 'ISS-FM';
+         } else if ($data['COL_MODE'] == 'PKT') {
+            $sat_name = 'ISS-DATA';
+         }
+      }
+      if ($sat_name != '') {
+         $datearray = date_parse_from_format("Y-m-d H:i:s", $data['COL_TIME_ON']);
+         $url='https://amsat.org/status/submit.php?SatSubmit=yes&Confirm=yes&SatName='.$sat_name.'&SatYear='.$datearray['year'].'&SatMonth='.str_pad($datearray['month'], 2, '0', STR_PAD_LEFT).'&SatDay='.str_pad($datearray['day'], 2, '0', STR_PAD_LEFT).'&SatHour='.str_pad($datearray['hour'], 2, '0', STR_PAD_LEFT).'&SatPeriod='.(intdiv(($datearray['minute']-1), 15)).'&SatCall='.$data['COL_STATION_CALLSIGN'].'&SatReport=Heard&SatGridSquare='.$data['COL_MY_GRIDSQUARE'];
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+         curl_exec($ch);
+      }
+  }
 
   /* Edit QSO */
   function edit() {
