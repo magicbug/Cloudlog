@@ -78,6 +78,19 @@ class Logbook_model extends CI_Model {
         $dxcc_id = $this->input->post('dxcc_id');
     }
 
+    if($this->input->post('continent') == "") {
+
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      if (empty($dxcc[3])) {
+        $continent = null;
+      } else {
+       $continent = $dxcc[3];
+      }
+
+    } else {
+        $continent = $this->input->post('continent');
+    }
+
     $mode = $this->get_main_mode_if_submode($this->input->post('mode'));
     if ($mode == null) {
         $mode = $this->input->post('mode');
@@ -139,6 +152,7 @@ class Logbook_model extends CI_Model {
             'COL_SAT_NAME' => strtoupper($this->input->post('sat_name')),
             'COL_SAT_MODE' => strtoupper($this->input->post('sat_mode')),
             'COL_COUNTRY' => $country,
+            'COL_CONT' => $continent,
             'COL_QSLSDATE' => $qslsdate,
             'COL_QSLRDATE' => $qslrdate,
             'COL_QSL_SENT' => $qsl_sent,
@@ -785,6 +799,7 @@ class Logbook_model extends CI_Model {
        'COL_COMMENT' => $this->input->post('comment'),
        'COL_NAME' => $this->input->post('name'),
        'COL_COUNTRY' => $country,
+       'COL_CONT' => $this->input->post('continent'),
        'COL_DXCC'=> $this->input->post('dxcc_id'),
        'COL_CQZ' => $this->input->post('cqz'),
        'COL_SAT_NAME' => $this->input->post('sat_name'),
@@ -2939,7 +2954,7 @@ class Logbook_model extends CI_Model {
           $row['adif'] = 0;
           $row['entity'] = 'None';
           $row['cqz'] = 0;
-          return array($row['adif'], $row['entity'], $row['cqz']);
+          return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
         } else {
           $call = $result . "AA";
         }
@@ -2950,7 +2965,7 @@ class Logbook_model extends CI_Model {
 		// query the table, removing a character from the right until a match
 		for ($i = $len; $i > 0; $i--){
             //printf("searching for %s\n", substr($call, 0, $i));
-            $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`')
+            $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`, `cont`')
                                     ->where('call', substr($call, 0, $i))
                                     ->where('(start <= ', $date)
                                     ->or_where("start is null)", NULL, false)
@@ -2963,7 +2978,7 @@ class Logbook_model extends CI_Model {
 
             if ($dxcc_result->num_rows() > 0){
                 $row = $dxcc_result->row_array();
-                return array($row['adif'], $row['entity'], $row['cqz']);
+                return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
             }
         }
 

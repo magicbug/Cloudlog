@@ -215,6 +215,8 @@
 
                                     <input type="hidden" class="form-control" id="country" name="country" value="<?php echo $qso->COL_COUNTRY; ?>">
 
+                                </div>
+                                <div class="form-row">
                                     <div class="form-group col-sm-6">
                                         <label for="dxcc_id">DXCC</label>
                                         <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
@@ -229,6 +231,19 @@
                                             }
                                             ?>
 
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label for="continent"><?php echo $this->lang->line('gen_hamradio_continent'); ?></label>
+                                        <select class="custom-select" id="continent" name="continent">
+                                            <option value=""></option>
+                                            <option value="AF" <?php if($qso->COL_CONT == "AF") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('africa'); ?></option>
+                                            <option value="AN" <?php if($qso->COL_CONT == "AN") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('antarctica'); ?></option>
+                                            <option value="AS" <?php if($qso->COL_CONT == "AS") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('asia'); ?></option>
+                                            <option value="EU" <?php if($qso->COL_CONT == "EU") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('europe'); ?></option>
+                                            <option value="NA" <?php if($qso->COL_CONT == "NA") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('northamerica'); ?></option>
+                                            <option value="OC" <?php if($qso->COL_CONT == "OC") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('oceania'); ?></option>
+                                            <option value="SA" <?php if($qso->COL_CONT == "SA") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('southamerica'); ?></option>
                                         </select>
                                     </div>
                                 </div>
