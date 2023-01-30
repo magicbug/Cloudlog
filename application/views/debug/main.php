@@ -6,6 +6,26 @@
     <div class="col">
 
         <div class="card">
+            <div class="card-header">Cloudlog Information</div>
+            <div class="card-body">
+                <table width="100%">
+                    <tr>
+                        <td>Version</td>
+                        <td><?php echo $this->config->item('app_version')."\n"; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Language</td>
+                        <td><?php echo $this->config->item('language')."\n"; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Base URL</td>
+                        <td><?php echo $this->config->item('base_url')."\n"; ?></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
             <div class="card-header">Server Information</div>
             <div class="card-body">
                 <table width="100%">
