@@ -69,6 +69,19 @@ class DXCC extends CI_Model {
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
+		$qsl = "";
+		if ($postdata['confirmed'] != NULL) {
+			if ($postdata['qsl'] != NULL ) {
+				$qsl .= "Q";
+			}
+			if ($postdata['lotw'] != NULL ) {
+				$qsl .= "L";
+			}
+			if ($postdata['eqsl'] != NULL ) {
+				$qsl .= "E";
+			}
+		}
+
 		foreach ($bands as $band) {             	// Looping through bands and entities to generate the array needed for display
 			foreach ($dxccArray as $dxcc) {
 				$dxccMatrix[$dxcc->adif]['name'] = ucwords(strtolower($dxcc->name), "- (/");
@@ -82,7 +95,7 @@ class DXCC extends CI_Model {
 			if ($postdata['worked'] != NULL) {
 				$workedDXCC = $this->getDxccBandWorked($location_list, $band, $postdata);
 				foreach ($workedDXCC as $wdxcc) {
-					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("'.str_replace("&", "%26", $wdxcc->name).'","'. $band . '","'. $postdata['mode'] . '","DXCC")\'>W</a></div>';
+					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("'.str_replace("&", "%26", $wdxcc->name).'","'. $band . '","'. $postdata['mode'] . '","DXCC", "")\'>W</a></div>';
 				}
 			}
 
@@ -90,7 +103,7 @@ class DXCC extends CI_Model {
 			if ($postdata['confirmed'] != NULL) {
 				$confirmedDXCC = $this->getDxccBandConfirmed($location_list, $band, $postdata);
 				foreach ($confirmedDXCC as $cdxcc) {
-					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("'.str_replace("&", "%26", $cdxcc->name).'","'. $band . '","'. $postdata['mode'] . '","DXCC")\'>C</a></div>';
+					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("'.str_replace("&", "%26", $cdxcc->name).'","'. $band . '","'. $postdata['mode'] . '","DXCC","'.$qsl.'")\'>C</a></div>';
 				}
 			}
 		}
@@ -315,16 +328,20 @@ class DXCC extends CI_Model {
 	// Made function instead of repeating this several times
 	function addQslToQuery($postdata) {
 		$sql = '';
-		if ($postdata['lotw'] != NULL and $postdata['qsl'] == NULL) {
-			$sql .= " and col_lotw_qsl_rcvd = 'Y'";
-		}
-
-		if ($postdata['qsl'] != NULL and $postdata['lotw'] == NULL) {
-			$sql .= " and col_qsl_rcvd = 'Y'";
-		}
-
-		if ($postdata['qsl'] != NULL && $postdata['lotw'] != NULL) {
-			$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+		$qsl = array();
+		if ($postdata['lotw'] != NULL || $postdata['qsl'] != NULL || $postdata['eqsl'] != NULL) {
+			$sql .= ' and (';
+			if ($postdata['qsl'] != NULL) {
+				array_push($qsl, "col_qsl_rcvd = 'Y'");
+			}
+			if ($postdata['lotw'] != NULL) {
+				array_push($qsl, "col_lotw_qsl_rcvd = 'Y'");
+			}
+			if ($postdata['eqsl'] != NULL) {
+				array_push($qsl, "col_eqsl_qsl_rcvd = 'Y'");
+			}
+			$sql .= implode(' or ', $qsl);
+			$sql .= ')';
 		}
 		return $sql;
 	}

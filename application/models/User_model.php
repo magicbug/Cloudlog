@@ -122,7 +122,7 @@ class User_Model extends CI_Model {
 	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone,
 		$measurement, $user_date_format, $user_stylesheet, $user_qth_lookup, $user_sota_lookup, $user_wwff_lookup,
 		$user_show_notes, $user_column1, $user_column2, $user_column3, $user_column4, $user_column5,
-		$user_show_profile_image, $user_previous_qsl_type) {
+		$user_show_profile_image, $user_previous_qsl_type, $user_amsat_status_upload) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -149,6 +149,7 @@ class User_Model extends CI_Model {
 				'user_column5' => xss_clean($user_column5),
 				'user_show_profile_image' => xss_clean($user_show_profile_image),
 				'user_previous_qsl_type' => xss_clean($user_previous_qsl_type),
+				'user_amsat_status_upload' => xss_clean($user_amsat_status_upload),
 			);
 
 			// Check the password is valid
@@ -203,6 +204,7 @@ class User_Model extends CI_Model {
 					'user_column5' => xss_clean($fields['user_column5']),
 					'user_show_profile_image' => xss_clean($fields['user_show_profile_image']),
 					'user_previous_qsl_type' => xss_clean($fields['user_previous_qsl_type']),
+					'user_amsat_status_upload' => xss_clean($fields['user_amsat_status_upload']),
 				);
 
 				// Check to see if the user is allowed to change user levels
@@ -321,6 +323,7 @@ class User_Model extends CI_Model {
 			'user_column4' => isset($u->row()->user_column4) ? $u->row()->user_column4: 'Band',
 			'user_column5' => isset($u->row()->user_column5) ? $u->row()->user_column5: 'Country',
 			'user_previous_qsl_type' => isset($u->row()->user_previous_qsl_type) ? $u->row()->user_previous_qsl_type: 0,
+			'user_amsat_status_upload' => isset($u->row()->user_amsat_status_upload) ? $u->row()->user_amsat_status_upload: 0,
 			'active_station_logbook' => $u->row()->active_station_logbook,
 		);
 

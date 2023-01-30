@@ -24,6 +24,19 @@ class CQ extends CI_Model{
             $cqZ[$i]['count'] = 0;                   // Inits each cq zone's count
         }
 
+        $qsl = "";
+        if ($postdata['confirmed'] != NULL) {
+            if ($postdata['qsl'] != NULL ) {
+                $qsl .= "Q";
+            }
+            if ($postdata['lotw'] != NULL ) {
+                $qsl .= "L";
+            }
+            if ($postdata['eqsl'] != NULL ) {
+                $qsl .= "E";
+            }
+        }
+
         foreach ($bands as $band) {
             for ($i = 1; $i <= 40; $i++) {
                 $bandCq[$i][$band] = '-';                  // Sets all to dash to indicate no result
@@ -32,14 +45,14 @@ class CQ extends CI_Model{
             if ($postdata['worked'] != NULL) {
                 $cqBand = $this->getCQWorked($location_list, $band, $postdata);
                 foreach ($cqBand as $line) {
-                    $bandCq[$line->col_cqz][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '","'. $postdata['mode'] . '","CQZone")\'>W</a></div>';
+                    $bandCq[$line->col_cqz][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '","'. $postdata['mode'] . '","CQZone","")\'>W</a></div>';
                     $cqZ[$line->col_cqz]['count']++;
                 }
             }
             if ($postdata['confirmed'] != NULL) {
                 $cqBand = $this->getCQConfirmed($location_list, $band, $postdata);
                 foreach ($cqBand as $line) {
-                    $bandCq[$line->col_cqz][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '","'. $postdata['mode'] . '","CQZone")\'>C</a></div>';
+                    $bandCq[$line->col_cqz][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("' . str_replace("&", "%26", $line->col_cqz) . '","' . $band . '","'. $postdata['mode'] . '","CQZone","'.$qsl.'")\'>C</a></div>';
                     $cqZ[$line->col_cqz]['count']++;
                 }
             }
@@ -132,16 +145,20 @@ class CQ extends CI_Model{
 
     function addQslToQuery($postdata) {
         $sql = '';
-        if ($postdata['lotw'] != NULL and $postdata['qsl'] == NULL) {
-            $sql .= " and col_lotw_qsl_rcvd = 'Y'";
-        }
-
-        if ($postdata['qsl'] != NULL and $postdata['lotw'] == NULL) {
-            $sql .= " and col_qsl_rcvd = 'Y'";
-        }
-
-        if ($postdata['qsl'] != NULL && $postdata['lotw'] != NULL) {
-            $sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+        $qsl = array();
+        if ($postdata['lotw'] != NULL || $postdata['qsl'] != NULL || $postdata['eqsl'] != NULL) {
+            $sql .= ' and (';
+            if ($postdata['qsl'] != NULL) {
+                array_push($qsl, "col_qsl_rcvd = 'Y'");
+            }
+            if ($postdata['lotw'] != NULL) {
+                array_push($qsl, "col_lotw_qsl_rcvd = 'Y'");
+            }
+            if ($postdata['eqsl'] != NULL) {
+                array_push($qsl, "col_eqsl_qsl_rcvd = 'Y'");
+            }
+            $sql .= implode(' or ', $qsl);
+            $sql .= ')';
         }
         return $sql;
     }

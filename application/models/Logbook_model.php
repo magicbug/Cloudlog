@@ -257,7 +257,7 @@ class Logbook_model extends CI_Model {
 	/*
 	 * Used to fetch QSOs from the logbook in the awards
 	 */
-	public function qso_details($searchphrase, $band, $mode, $type){
+	public function qso_details($searchphrase, $band, $mode, $type, $qsl){
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -292,6 +292,9 @@ class Logbook_model extends CI_Model {
 			case 'POTA':
 				$this->db->where('COL_POTA_REF', $searchphrase);
 				break;
+			case 'DOK':
+				$this->db->where('COL_DARC_DOK', $searchphrase);
+				break;
 		}
 
     $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
@@ -303,6 +306,21 @@ class Logbook_model extends CI_Model {
 			} else {
 				$this->db->where('COL_PROP_MODE', "SAT");
 			}
+		}
+
+		if (!empty($qsl)) {
+			$qslfilter = array();
+			if (strpos($qsl, "Q") !== false) {
+				$qslfilter[] = 'COL_QSL_RCVD = "Y"';
+			}
+			if (strpos($qsl, "L") !== false) {
+				$qslfilter[] = 'COL_LOTW_QSL_RCVD = "Y"';
+			}
+			if (strpos($qsl, "E") !== false) {
+				$qslfilter[] = 'COL_EQSL_QSL_RCVD = "Y"';
+			}
+			$sql = "(".implode(' OR ', $qslfilter).")";
+			$this->db->where($sql);
 		}
 
 		if ($mode != 'All') {
@@ -318,7 +336,7 @@ class Logbook_model extends CI_Model {
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-		$sql =  'SELECT COL_SOTA_REF, COL_OPERATOR, COL_IOTA, COL_VUCC_GRIDS, COL_STATE, COL_GRIDSQUARE, COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_BAND, COL_SAT_NAME, COL_MODE, COL_SUBMODE, COL_RST_SENT, ';
+		$sql =  'SELECT COL_FREQ, COL_SOTA_REF, COL_OPERATOR, COL_IOTA, COL_VUCC_GRIDS, COL_STATE, COL_GRIDSQUARE, COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_BAND, COL_SAT_NAME, COL_MODE, COL_SUBMODE, COL_RST_SENT, ';
 		$sql .= 'COL_RST_RCVD, COL_STX, COL_SRX, COL_STX_STRING, COL_SRX_STRING, COL_COUNTRY, COL_QSL_SENT, COL_QSL_SENT_VIA, ';
 		$sql .= 'COL_QSLSDATE, COL_QSL_RCVD, COL_QSL_RCVD_VIA, COL_QSLRDATE, COL_EQSL_QSL_SENT, COL_EQSL_QSLSDATE, COL_EQSL_QSLRDATE, ';
 		$sql .= 'COL_EQSL_QSL_RCVD, COL_LOTW_QSL_SENT, COL_LOTW_QSLSDATE, COL_LOTW_QSL_RCVD, COL_LOTW_QSLRDATE, COL_CONTEST_ID, station_gridsquare ';
@@ -460,6 +478,10 @@ class Logbook_model extends CI_Model {
 
     $last_id = $this->db->insert_id();
 
+    if ($this->session->userdata('user_amsat_status_upload') && $data['COL_PROP_MODE'] == "SAT") {
+       $this->upload_amsat_status($data);
+    }
+
     // No point in fetching qrz api key and qrzrealtime setting if we're skipping the export
 	if (!$skipexport) {
 
@@ -557,6 +579,64 @@ class Logbook_model extends CI_Model {
 
         return true;
     }
+
+   function upload_amsat_status($data) {
+      $sat_name = '';
+      if ($data['COL_SAT_NAME'] == 'AO-7') {
+         if ($data['COL_BAND'] == '2m' && $data['COL_BAND_RX'] == '10m') {
+            $sat_name = '[A]_AO-7';
+         }
+         if ($data['COL_BAND'] == '70cm' && $data['COL_BAND_RX'] == '2m') {
+            $sat_name = '[B]_AO-7';
+         }
+      } else if ($data['COL_SAT_NAME'] == 'QO-100') {
+         $sat_name = 'QO-100_NB';
+      } else if ($data['COL_SAT_NAME'] == 'AO-92') {
+         if ($data['COL_BAND'] == '70cm' && $data['COL_BAND_RX'] == '2m') {
+            $sat_name = 'AO-92_U/v';
+         }
+         if ($data['COL_BAND'] == '23cm' && $data['COL_BAND_RX'] == '2m') {
+            $sat_name = 'AO-92_L/v';
+         }
+      } else if ($data['COL_SAT_NAME'] == 'AO-95') {
+         if ($data['COL_BAND'] == '70cm' && $data['COL_BAND_RX'] == '2m') {
+            $sat_name = 'AO-95_U/v';
+         }
+         if ($data['COL_BAND'] == '23cm' && $data['COL_BAND_RX'] == '2m') {
+            $sat_name = 'AO-95_L/v';
+         }
+      } else if ($data['COL_SAT_NAME'] == 'PO-101') {
+         if ($data['COL_MODE'] == 'PKT') {
+            $sat_name = 'PO-101[APRS]';
+         } else {
+            $sat_name = 'PO-101[FM]';
+         }
+      } else if ($data['COL_SAT_NAME'] == 'FO-118') {
+         if ($data['COL_BAND'] == '2m') {
+            if ($data['COL_MODE'] == 'FM') {
+               $sat_name = 'FO-118[V/u FM]';
+            } else if ($data['COL_MODE'] == 'SSB') {
+               $sat_name = 'FO-118[V/u]';
+            }
+         } else if ($data['COL_BAND'] == '15m') {
+            $sat_name = 'FO-118[H/u]';
+         }
+      } else if ($data['COL_SAT_NAME'] == 'ARISS') {
+         if ($data['COL_MODE'] == 'FM') {
+            $sat_name = 'ISS-FM';
+         } else if ($data['COL_MODE'] == 'PKT') {
+            $sat_name = 'ISS-DATA';
+         }
+      } else {
+         $sat_name = $data['COL_SAT_NAME'];
+      }
+      $datearray = date_parse_from_format("Y-m-d H:i:s", $data['COL_TIME_ON']);
+      $url='https://amsat.org/status/submit.php?SatSubmit=yes&Confirm=yes&SatName='.$sat_name.'&SatYear='.$datearray['year'].'&SatMonth='.str_pad($datearray['month'], 2, '0', STR_PAD_LEFT).'&SatDay='.str_pad($datearray['day'], 2, '0', STR_PAD_LEFT).'&SatHour='.str_pad($datearray['hour'], 2, '0', STR_PAD_LEFT).'&SatPeriod='.(intdiv(($datearray['minute']-1), 15)).'&SatCall='.$data['COL_STATION_CALLSIGN'].'&SatReport=Heard&SatGridSquare='.$data['COL_MY_GRIDSQUARE'];
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, $url);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_exec($ch);
+  }
 
   /* Edit QSO */
   function edit() {
@@ -1095,6 +1175,7 @@ class Logbook_model extends CI_Model {
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
     $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
     $this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', "desc");
+    $this->db->order_by(''.$this->config->item('table_name').'.COL_PRIMARY_KEY', "desc");
 
     $this->db->limit($num);
     $this->db->offset($offset);
@@ -1155,20 +1236,26 @@ class Logbook_model extends CI_Model {
     } else {
       $logbooks_locations_array = $StationLocationsArray;
     }
-
-    if ($logbooks_locations_array) {
-      $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
-      $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-      $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
-      $this->db->order_by("COL_TIME_ON", "desc");
-      $this->db->limit($num);
-      $query = $this->db->get($this->config->item('table_name'));
   
+    if ($logbooks_locations_array) {
+      $location_list = "'".implode("','",$logbooks_locations_array)."'";
+      
+      $sql = "SELECT * FROM ( select * from " . $this->config->item('table_name'). "
+        WHERE station_id IN(". $location_list .")
+        order by col_time_on desc, col_primary_key desc
+        limit " . $num .
+        ") hrd
+        JOIN station_profile ON station_profile.station_id = hrd.station_id
+        LEFT JOIN dxcc_entities ON hrd.col_dxcc = dxcc_entities.adif
+        order by col_time_on desc, col_primary_key desc";
+
+      $query = $this->db->query($sql);
+    
       return $query;
     } else {
       return null;
     }
-
+  
   }
 
     /* Get all QSOs with a valid grid for use in the KML export */
@@ -2782,7 +2869,7 @@ class Logbook_model extends CI_Model {
                     $data['COL_MY_IOTA'] = strtoupper(trim($row['station_iota']));
                     $data['COL_MY_SOTA_REF'] = strtoupper(trim($row['station_sota']));
                     $data['COL_MY_WWFF_REF'] = strtoupper(trim($row['station_wwff']));
-                    $data['COL_MY_POTA_REF'] = strtoupper(trim($row['station_pota']));
+                    $data['COL_MY_POTA_REF'] = $row['station_pota'] == null ? '' : strtoupper(trim($row['station_pota']));
 
                     $data['COL_STATION_CALLSIGN'] = strtoupper(trim($row['station_callsign']));
                     $data['COL_MY_DXCC'] = strtoupper(trim($row['station_dxcc']));
@@ -2834,17 +2921,19 @@ class Logbook_model extends CI_Model {
 		}
     if (preg_match('/(^KG4)[A-Z09]{3}/', $call)) {      // KG4/ and KG4 5 char calls are Guantanamo Bay. If 4 or 6 char, it is USA
       $call = "K";
+    } elseif (preg_match('/(^OH\/)|(\/OH[1-9]?$)/', $call)) {   # non-Aland prefix!
+      $call = "OH";                                             # make callsign OH = finland
+    } elseif (preg_match('/(^3D2R)|(^3D2.+\/R)/', $call)) {     # seems to be from Rotuma
+      $call = "3D2/R";                                          # will match with Rotuma
+    } elseif (preg_match('/^3D2C/', $call)) {                   # seems to be from Conway Reef
+      $call = "3D2/C";                                          # will match with Conway
+    } elseif (preg_match('/(^LZ\/)|(\/LZ[1-9]?$)/', $call)) {   # LZ/ is LZ0 by DXCC but this is VP8h
+      $call = "LZ";
     } elseif (preg_match('/(^KG4)[A-Z09]{2}/', $call)) {
       $call = "KG4";
     } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
       $call = "K";
-		} elseif (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
-			if ($matches[5][0] == '/MM' || $matches[5][0] == '/AM') {
-				$row['adif'] = 0;
-				$row['entity'] = 'None';
-				$row['cqz'] = 0;
-				return array($row['adif'], $row['entity'], $row['cqz']);
-			} else {
+		} elseif (preg_match('/\w\/\w/', $call)) {
         $result = $this->wpx($call, 1);                       # use the wpx prefix instead
         if ($result == '') {
           $row['adif'] = 0;
@@ -2854,7 +2943,6 @@ class Logbook_model extends CI_Model {
         } else {
           $call = $result . "AA";
         }
-      }
     }
 
 		$len = strlen($call);
@@ -2900,19 +2988,19 @@ class Logbook_model extends CI_Model {
 
         if (preg_match('/(^KG4)[A-Z09]{3}/', $call)) {       // KG4/ and KG4 5 char calls are Guantanamo Bay. If 4 or 6 char, it is USA
           $call = "K";
+        } elseif (preg_match('/(^OH\/)|(\/OH[1-9]?$)/', $call)) {   # non-Aland prefix!
+          $call = "OH";                                             # make callsign OH = finland
+        } elseif (preg_match('/(^3D2R)|(^3D2.+\/R)/', $call)) {     # seems to be from Rotuma
+          $call = "3D2/R";                                          # will match with Rotuma
+        } elseif (preg_match('/^3D2C/', $call)) {                   # seems to be from Conway Reef
+          $call = "3D2/C";                                          # will match with Conway
+        } elseif (preg_match('/(^LZ\/)|(\/LZ[1-9]?$)/', $call)) {   # LZ/ is LZ0 by DXCC but this is VP8h
+          $call = "LZ";
         } elseif (preg_match('/(^KG4)[A-Z09]{2}/', $call)) { 
           $call = "KG4";
         } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
           $call = "K";
-				} elseif (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
-					if ($matches[5][0] == '/MM' || $matches[5][0] == '/AM') {
-						$row['adif'] = 0;
-						$row['entity'] = 'None';
-						$row['cqz'] = 0;
-						$row['long'] = '0';
-						$row['lat'] = '0';
-						return $row;
-					} else {
+        } elseif (preg_match('/\w\/\w/', $call)) {
             $result = $this->wpx($call, 1);                       # use the wpx prefix instead
             if ($result == '') {
               $row['adif'] = 0;
@@ -2924,7 +3012,6 @@ class Logbook_model extends CI_Model {
             } else {
               $call = $result . "AA";
             }
-          }
     		}
 
 				$len = strlen($call);
@@ -2960,7 +3047,8 @@ class Logbook_model extends CI_Model {
       $c = '';
   
       $lidadditions = '/^QRP|^LGT/';
-      $csadditions = '/^P$|^M{1,2}$|^AM$|^A$/';
+      $csadditions = '/^P$|^R$|^A$|^M$/';
+      $noneadditions = '/^MM$|^AM$/';
   
       # First check if the call is in the proper format, A/B/C where A and C
       # are optional (prefix of guest country and P, MM, AM etc) and B is the
@@ -2982,7 +3070,7 @@ class Logbook_model extends CI_Model {
               $a = substr($a, 0, -1); # Remove the / at the end 
           }
           if ($c) {
-              $c = substr($c, 1,); # Remove the / at the beginning
+              $c = substr($c, 1); # Remove the / at the beginning
           };
   
           # In some cases when there is no part A but B and C, and C is longer than 2
@@ -3033,7 +3121,7 @@ class Logbook_model extends CI_Model {
                   $prefix = substr($b, 0, 2) . "0";               # first two + 0
               }
           } elseif (($a == null) && (isset($c))) {                # Case 2, CALL/X
-              if (preg_match('/^(\d)$/', $c)) {                   # Case 2.1, number
+              if (preg_match('/^(\d)/', $c)) {                    # Case 2.1, number
                   preg_match('/(.+\d)[A-Z]*/', $b, $matches);     # regular Prefix in $1
                   # Here we need to find out how many digits there are in the
                   # prefix, because for example A45XR/0 is A40. If there are 2
@@ -3051,6 +3139,8 @@ class Logbook_model extends CI_Model {
               } elseif (preg_match($csadditions, $c)) {
                   preg_match('/(.+\d)[A-Z]*/', $b, $matches);     # Known attachment -> like Case 1.1
                   $prefix = $matches[1];
+              } elseif (preg_match($noneadditions, $c)) {
+                 return '';
               } elseif (preg_match('/^\d\d+$/', $c)) {            # more than 2 numbers -> ignore
                   preg_match('/(.+\d)[A-Z]* /', $b, $matches);    # see above
                   $prefix = $matches[1][0];
@@ -3061,6 +3151,8 @@ class Logbook_model extends CI_Model {
                       $prefix = $c . "0";
                   }
               }
+          } elseif (($a) && (preg_match($noneadditions, $c))) {                # Case 2.1, X/CALL/X ie TF/DL2NWK/MM - DXCC none
+            return '';
           } elseif ($a) {
               # $a contains the prefix we want
               if (preg_match('/\d$/', $a)) {                      # ends in number -> good prefix
@@ -3115,7 +3207,7 @@ class Logbook_model extends CI_Model {
         $this->db->select("COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_TIME_OFF");
 
         // check which to update - records with no dxcc or all records
-        if (! isset($all)){
+        if (!$all){
             $this->db->where("COL_DXCC is NULL");
         }
 
@@ -3126,8 +3218,8 @@ class Logbook_model extends CI_Model {
         //query dxcc_prefixes
         if ($r->num_rows() > 0){
             foreach($r->result_array() as $row){
-                $qso_date = $row['COL_TIME_OFF']=='' ? $row['COL_TIME_ON'] : $row['COL_TIME_ON'];
-                $qso_date = strftime("%Y-%m-%d", strtotime($qso_date));
+                $qso_date = $row['COL_TIME_OFF']=='' ? $row['COL_TIME_ON'] : $row['COL_TIME_OFF'];
+                $qso_date = date("Y-m-d", strtotime($qso_date));
 
                 // Manual call
                 $d = $this->check_dxcc_table($row['COL_CALL'], $qso_date);

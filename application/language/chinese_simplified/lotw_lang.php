@@ -16,6 +16,8 @@ $lang['lotw_no_certs_uploaded'] = '你需要上传 LoTW p12 证书以使用该�
 
 $lang['lotw_date_created'] = '创建日期';
 $lang['lotw_date_expires'] = '过期日期';
+$lang['lotw_qso_start_date'] = 'QSO 起始日期';
+$lang['lotw_qso_end_date'] = 'QSO 结束日期';
 $lang['lotw_status'] = '状态';
 $lang['lotw_options'] = '选项';
 $lang['lotw_valid'] = '有效';
