@@ -65,12 +65,16 @@
                         Worked All Zones (WAZ)
                     </label>
                 </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="awardradio" id="vucc" value="vucc" <?php if ($this->input->post('awardradio') == 'vucc') echo ' checked'?>>
+                    <label class="form-check-label" for="vucc">
+                        VHF / UHF Century Club (VUCC)
+                    </label>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group row">
                 <div class="col-md-1 control-label">Confirmation</div>
-                <div class="col-md-10">
+                <div class="col-md-3">
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="qsl" value="1" id="qsl" <?php if ($this->input->post('qsl'))  echo ' checked="checked"'; ?> >
                         <label class="form-check-label" for="qsl">QSL</label>
@@ -114,6 +118,7 @@
             case 'was':  $result = write_was_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
             case 'iota': $result = write_iota_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
             case 'waz':  $result = write_waz_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
+            case 'vucc':  $result = write_vucc_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
         }
     }
     else {
@@ -232,6 +237,31 @@ function write_waz_timeline($timeline_array, $custom_date_format, $bandselect, $
                 <td>' . date($custom_date_format, $date_as_timestamp) . '</td>
                 <td>' . $line->col_cqz . '</td>
                 <td><a href=javascript:displayTimelineContacts("' . $line->col_cqz . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>Show</a></td>
+               </tr>';
+    }
+    echo '</tfoot></table></div>';
+}
+
+function write_vucc_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $award) {
+    $i = count($timeline_array);
+    echo '<table style="width:100%" class="table table-sm timelinetable table-bordered table-hover table-striped table-condensed text-center">
+              <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Date</td>
+                        <td>Gridsquare</td>
+                        <td>Show QSOs</td>
+                    </tr>
+                </thead>
+                <tbody>';
+
+    foreach ($timeline_array as $line) {
+        $date_as_timestamp = strtotime($line['date']);
+        echo '<tr>
+                <td>' . $i-- . '</td>
+                <td>' . date($custom_date_format, $date_as_timestamp) . '</td>
+                <td>' . $line['gridsquare'] . '</td>
+                <td><a href=javascript:displayTimelineContacts("' . $line['gridsquare'] . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>Show</a></td>
                </tr>';
     }
     echo '</tfoot></table></div>';

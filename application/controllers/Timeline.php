@@ -76,14 +76,14 @@ class Timeline extends CI_Controller {
     }
 
     public function details() {
-        $this->load->model('logbook_model');
+        $this->load->model('timeline_model');
 
         $querystring = str_replace('"', "", $this->input->post("Querystring"));
 
         $band = str_replace('"', "", $this->input->post("Band"));
         $mode = str_replace('"', "", $this->input->post("Mode"));
         $type = str_replace('"', "", $this->input->post("Type"));
-        $data['results'] = $this->logbook_model->timeline_qso_details($querystring, $band, $mode, $type);
+        $data['results'] = $this->timeline_model->timeline_qso_details($querystring, $band, $mode, $type);
 
 
         switch($type) {
@@ -99,6 +99,9 @@ class Timeline extends CI_Controller {
                             break;
             case 'waz' :    $data['page_title'] = "Log View - WAZ";
                             $data['filter'] = "CQ zone ". $querystring;
+                            break;
+            case 'vucc' :   $data['page_title'] = "Log View - VUCC";
+                            $data['filter'] = "Gridsquare ". $querystring;
                             break;
         }
 
