@@ -3251,6 +3251,8 @@ class Logbook_model extends CI_Model {
                     //print($sql."\n");
                     printf("Updating %s to %s (%s) and %s\n<br/>", $row['COL_PRIMARY_KEY'], ucwords(strtolower($d[1]), "- (/"), $d[3], $d[0]);
                     $count++;
+                } else {
+                   printf("%s not updated. DXCC: %s\n<br />", $row['COL_CALL'], $d[0]);
                 }
             }
         }
