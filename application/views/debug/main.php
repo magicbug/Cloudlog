@@ -178,6 +178,8 @@
                $tag = trim(exec('git describe --tags '.$commitHash));
             }
         ?>
+
+        <?php if($commitHash != "") { ?>
         <div class="card">
             <div class="card-header">Git Information</div>
             <div class="card-body">
@@ -223,6 +225,7 @@
                 </table>
             </div>
         </div>
+        <?php } ?>
         <?php } ?>
     </div>
 </div>
