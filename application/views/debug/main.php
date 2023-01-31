@@ -15,11 +15,11 @@
                     </tr>
                     <tr>
                         <td>Language</td>
-                        <td><?php echo $this->config->item('language')."\n"; ?></td>
+                        <td><?php echo ucfirst($this->config->item('language'))."\n"; ?></td>
                     </tr>
                     <tr>
                         <td>Base URL</td>
-                        <td><?php echo $this->config->item('base_url')."\n"; ?></td>
+                        <td><span id="baseUrl"><a href="<?php echo $this->config->item('base_url')?>" target="_blank"><?php echo $this->config->item('base_url'); ?></a></span> <span data-toggle="tooltip" data-original-title="<?php echo $this->lang->line('copy_to_clipboard'); ?>" onclick='copyURL("<?php echo $this->config->item('base_url'); ?>")'><i class="copy-icon fas fa-copy"></span></td>
                     </tr>
                 </table>
             </div>
