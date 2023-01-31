@@ -163,7 +163,17 @@
         <?php
             $commitHash = trim(exec('git log --pretty="%H" -n1 HEAD'));
             $commitDate = trim(exec('git log --pretty="%ci" -n1 HEAD'));
-            $branch = trim(exec('git branch --show-current'));
+            $line = trim(exec('git log -n 1 --pretty=%D HEAD'));
+            $pieces = explode(', ', $line);
+            $remote = substr($pieces[1], 0, strpos($pieces[1], '/'));
+            $branch = substr($pieces[1], strpos($pieces[1], '/')+1);
+            $url = trim(exec('git remote get-url '.$remote));
+            $owner = '';
+            if (strpos($url, 'https://github.com') !== false) {
+               $owner = preg_replace('/https:\/\/github\.com\/(\w+)\/Cloudlog\.git/', '$1', $url);
+            } else if (strpos($url, 'git@github.com') !== false) {
+               $owner = preg_replace('/git@github\.com:(\w+)\/Cloudlog\.git/', '$1', $url);
+            }
             $tag = trim(exec('git describe --tags '.$commitHash));
         ?>
             <div class="card-header">Git Information</div>
@@ -173,7 +183,13 @@
                         <td>Branch</td>
                         <td>
                             <?php if($branch != "") { ?>
-                                <a target="_blank" href="https://github.com/magicbug/Cloudlog/tree/<?php echo $branch?>"><span class="badge badge-success"><?php echo $branch; ?></span></a>
+                                <?php if($owner != "") { ?>
+                                    <a target="_blank" href="https://github.com/<?php echo $owner; ?>/Cloudlog/tree/<?php echo $branch?>">
+                                <?php } ?>
+                                    <span class="badge badge-success"><?php echo $branch; ?></span>
+                                <?php if($owner != "") { ?>
+                                    </a>
+                                <?php } ?>
                             <?php } else { ?> 
                                 <span class="badge badge-danger">n/a</span>
                             <?php } ?>
