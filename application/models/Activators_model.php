@@ -105,7 +105,7 @@ class Activators_model extends CI_Model
 
 		// Get max no of activated grids of single operator
 		$data = $this->db->query(
-			"select COUNT(DISTINCT(SUBSTR(COL_GRIDSQUARE,1,4))) AS `count` from TABLE_HRD_CONTACTS_V01 WHERE station_id in (" . $location_list . ") AND `COL_GRIDSQUARE` != '' GROUP BY `COL_CALL` ORDER BY `count` DESC LIMIT 1"
+			"select COUNT(DISTINCT(SUBSTR(COL_GRIDSQUARE,1,4))) AS `count` from " . $this->config->item('table_name') . " WHERE station_id in (" . $location_list . ") AND `COL_GRIDSQUARE` != '' GROUP BY `COL_CALL` ORDER BY `count` DESC LIMIT 1"
 		);
 		foreach($data->result() as $row){
 			$max =  $row->count;

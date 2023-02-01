@@ -431,3 +431,20 @@ function getLookupResult() {
 		}
 	});
 }
+
+// This function executes the call to the backend for fetching dxcc summary and inserted table below qso entry
+function getDxccResult(dxcc, name) {
+	$.ajax({
+		url: base_url + 'index.php/lookup/search',
+		type: 'post',
+		data: {
+			type: 'dxcc',
+			dxcc: dxcc,
+		},
+		success: function (html) {
+            $('.dxccsummary').remove();
+            $('.qsopane').append('<div class="dxccsummary col-sm-12"><br><div class="card"><div class="card-header" data-toggle="collapse" data-target=".dxccsummarybody">DXCC Summary for '+name+'</div><div class="card-body collapse dxccsummarybody"></div></div></div>');
+            $('.dxccsummarybody').append(html);
+		}
+	});
+}

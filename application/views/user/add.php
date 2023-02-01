@@ -479,6 +479,26 @@
                 </div>
             </div>
         </div>
+        <br />
+        <div class="row">
+            <div class="col-md">
+                <div class="card">
+                    <div class="card-header">
+                         AMSAT Status Upload
+                    </div>
+                    <div class="card-body">
+
+                        <div class="form-group">
+                            <label for="amsatstatusupload">Upload status of SAT QSOs to <a href="https://www.amsat.org/status/" target="_blank">https://www.amsat.org/status/</a>.</label>
+                            <select class="custom-select" id="amsatstatusupload" name="user_amsat_status_upload">
+                                <option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>
+                                <option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
         <br />
