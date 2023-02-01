@@ -369,6 +369,7 @@ function reset_fields() {
 	mymap.setView(pos, 12);
 	mymap.removeLayer(markers);
 	$('.callsign-suggest').hide();
+	$('.dxccsummary').remove();
 }
 
 $("#callsign").focusout(function() {
@@ -407,6 +408,7 @@ $("#callsign").focusout(function() {
 				if(result.dxcc.entity != undefined) {
 					$('#country').val(convert_case(result.dxcc.entity));
 					$('#callsign_info').text(convert_case(result.dxcc.entity));
+					getDxccResult(result.dxcc.adif, convert_case(result.dxcc.entity));
 
 					if($("#sat_name" ).val() != "") {
 						//logbook/jsonlookupgrid/io77/SAT/0/0
@@ -793,4 +795,5 @@ function resetDefaultQSOFields() {
 	$('#input_usa_state').val("");
 	$('#callsign-image').attr('style', 'display: none;');
 	$('#callsign-image-content').text("");
+	$('.dxccsummary').remove();
 }

@@ -1,6 +1,6 @@
 <div class="container qso_panel">
 
-<div class="row">
+<div class="row qsopane">
 
   <div class="col-sm-5">
     <div class="card">
