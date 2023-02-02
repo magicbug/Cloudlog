@@ -2907,6 +2907,8 @@ class Logbook_model extends CI_Model {
      */
     public function check_dxcc_table($call, $date){
 
+    $csadditions = '/^P$|^R$|^A$|^M$/';
+
 		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
              ->where('call', $call)
              ->where('(start <= ', $date)
@@ -2923,6 +2925,8 @@ class Logbook_model extends CI_Model {
       $call = "K";
     } elseif (preg_match('/(^OH\/)|(\/OH[1-9]?$)/', $call)) {   # non-Aland prefix!
       $call = "OH";                                             # make callsign OH = finland
+    } elseif (preg_match('/(^CX\/)|(\/CX[1-9]?$)/', $call)) {   # non-Antarctica prefix!
+      $call = "CX";                                             # make callsign CX = Uruguay
     } elseif (preg_match('/(^3D2R)|(^3D2.+\/R)/', $call)) {     # seems to be from Rotuma
       $call = "3D2/R";                                          # will match with Rotuma
     } elseif (preg_match('/^3D2C/', $call)) {                   # seems to be from Conway Reef
@@ -2934,6 +2938,23 @@ class Logbook_model extends CI_Model {
     } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
       $call = "K";
 		} elseif (preg_match('/\w\/\w/', $call)) {
+      if (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
+        $prefix = $matches[1][0];
+        $callsign = $matches[3][0];
+        $suffix = $matches[5][0];
+      if ($prefix) {
+          $prefix = substr($prefix, 0, -1); # Remove the / at the end 
+      }
+      if ($suffix) {
+          $suffix = substr($suffix, 1); # Remove the / at the beginning
+      };
+      if (preg_match($csadditions, $suffix)) {
+        if ($prefix) {
+          $call = $prefix;  
+        } else {
+          $call = $callsign;
+        }
+      } else {
         $result = $this->wpx($call, 1);                       # use the wpx prefix instead
         if ($result == '') {
           $row['adif'] = 0;
@@ -2943,7 +2964,9 @@ class Logbook_model extends CI_Model {
         } else {
           $call = $result . "AA";
         }
+      }
     }
+  }
 
 		$len = strlen($call);
 
@@ -2968,18 +2991,20 @@ class Logbook_model extends CI_Model {
         }
 
         return array("Not Found", "Not Found");
-    }
+
+  }
 
     public function dxcc_lookup($call, $date){
 
+    $csadditions = '/^P$|^R$|^A$|^M$/';
+
 		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
 				->where('call', $call)
-				->where('(start <= CURDATE()')
+				->where('(start <= ', $date)
 				->or_where('start is null)', NULL, false)
-				->where('(end >= CURDATE()')
+				->where('(end >= ', $date)
 				->or_where('end is null)', NULL, false)
 				->get('dxcc_exceptions');
-
 
 			if ($dxcc_exceptions->num_rows() > 0){
 				$row = $dxcc_exceptions->row_array();
@@ -2990,6 +3015,8 @@ class Logbook_model extends CI_Model {
           $call = "K";
         } elseif (preg_match('/(^OH\/)|(\/OH[1-9]?$)/', $call)) {   # non-Aland prefix!
           $call = "OH";                                             # make callsign OH = finland
+        } elseif (preg_match('/(^CX\/)|(\/CX[1-9]?$)/', $call)) {   # non-Antarctica prefix!
+          $call = "CX";                                             # make callsign CX = Uruguay
         } elseif (preg_match('/(^3D2R)|(^3D2.+\/R)/', $call)) {     # seems to be from Rotuma
           $call = "3D2/R";                                          # will match with Rotuma
         } elseif (preg_match('/^3D2C/', $call)) {                   # seems to be from Conway Reef
@@ -3001,18 +3028,37 @@ class Logbook_model extends CI_Model {
         } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
           $call = "K";
         } elseif (preg_match('/\w\/\w/', $call)) {
-            $result = $this->wpx($call, 1);                       # use the wpx prefix instead
-            if ($result == '') {
-              $row['adif'] = 0;
-              $row['entity'] = 'None';
-              $row['cqz'] = 0;
-              $row['long'] = '0';
-              $row['lat'] = '0';
-              return $row;
-            } else {
-              $call = $result . "AA";
+          if (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
+              $prefix = $matches[1][0];
+              $callsign = $matches[3][0];
+              $suffix = $matches[5][0];
+            if ($prefix) {
+                $prefix = substr($prefix, 0, -1); # Remove the / at the end 
             }
+            if ($suffix) {
+                $suffix = substr($suffix, 1); # Remove the / at the beginning
+            };
+            if (preg_match($csadditions, $suffix)) {
+              if ($prefix) {
+                $call = $prefix;  
+              } else {
+                $call = $callsign;
+              }
+            } else {
+              $result = $this->wpx($call, 1);                       # use the wpx prefix instead
+              if ($result == '') {
+                $row['adif'] = 0;
+                $row['entity'] = 'None';
+                $row['cqz'] = 0;
+                $row['long'] = '0';
+                $row['lat'] = '0';
+                return $row;
+              } else {
+                $call = $result . "AA";
+              }
+          }
     		}
+      }
 
 				$len = strlen($call);
 
@@ -3046,8 +3092,8 @@ class Logbook_model extends CI_Model {
       $b = '';
       $c = '';
   
-      $lidadditions = '/^QRP|^LGT/';
-      $csadditions = '/^P$|^R$|^A$|^M$/';
+      $lidadditions = '/^QRP$|^LGT$/';
+      $csadditions = '/^P$|^R$|^A$|^M$|^LH$/';
       $noneadditions = '/^MM$|^AM$/';
   
       # First check if the call is in the proper format, A/B/C where A and C
