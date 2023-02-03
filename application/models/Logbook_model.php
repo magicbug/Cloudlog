@@ -621,7 +621,7 @@ class Logbook_model extends CI_Model {
          } else if ($data['COL_BAND'] == '15m') {
             $sat_name = 'FO-118[H/u]';
          }
-      } else if ($data['COL_SAT_NAME'] == 'ARISS') {
+      } else if ($data['COL_SAT_NAME'] == 'ARISS' || $data['COL_SAT_NAME'] == 'ISS') {
          if ($data['COL_MODE'] == 'FM') {
             $sat_name = 'ISS-FM';
          } else if ($data['COL_MODE'] == 'PKT') {
