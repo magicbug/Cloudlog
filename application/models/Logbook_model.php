@@ -2924,7 +2924,7 @@ class Logbook_model extends CI_Model {
 
     $csadditions = '/^P$|^R$|^A$|^M$/';
 
-		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`, `cont`')
+		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
              ->where('call', $call)
              ->where('(start <= ', $date)
              ->or_where('start is null)', NULL, false)
@@ -2934,7 +2934,7 @@ class Logbook_model extends CI_Model {
 
 		if ($dxcc_exceptions->num_rows() > 0){
 			$row = $dxcc_exceptions->row_array();
-			return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
+			return array($row['adif'], $row['entity'], $row['cqz']);
 		}
     if (preg_match('/(^KG4)[A-Z09]{3}/', $call)) {      // KG4/ and KG4 5 char calls are Guantanamo Bay. If 4 or 6 char, it is USA
       $call = "K";
@@ -2976,7 +2976,7 @@ class Logbook_model extends CI_Model {
           $row['entity'] = 'None';
           $row['cqz'] = 0;
           $row['cont'] = '';
-          return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
+          return array($row['adif'], $row['entity'], $row['cqz']);
         } else {
           $call = $result . "AA";
         }
@@ -2989,7 +2989,7 @@ class Logbook_model extends CI_Model {
 		// query the table, removing a character from the right until a match
 		for ($i = $len; $i > 0; $i--){
             //printf("searching for %s\n", substr($call, 0, $i));
-            $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`, `cont`')
+            $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`')
                                     ->where('call', substr($call, 0, $i))
                                     ->where('(start <= ', $date)
                                     ->or_where("start is null)", NULL, false)
@@ -3002,7 +3002,7 @@ class Logbook_model extends CI_Model {
 
             if ($dxcc_result->num_rows() > 0){
                 $row = $dxcc_result->row_array();
-                return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
+                return array($row['adif'], $row['entity'], $row['cqz']);
             }
         }
 
@@ -3271,7 +3271,6 @@ class Logbook_model extends CI_Model {
         // check which to update - records with no dxcc or all records
         if (!$all){
             $this->db->where("COL_DXCC is NULL");
-            $this->db->or_where("COL_CONT is NULL");
         }
 
         $r = $this->db->get($this->config->item('table_name'));
@@ -3291,14 +3290,12 @@ class Logbook_model extends CI_Model {
                 //$d = $this->check_dxcc_stored_proc($row["COL_CALL"], $qso_date);
 
                 if ($d[0] != 'Not Found'){
-                    $sql = sprintf("update %s set COL_COUNTRY = '%s', COL_DXCC='%s', COL_CONT = '%s' where COL_PRIMARY_KEY=%d",
-                                    $this->config->item('table_name'), addslashes(ucwords(strtolower($d[1]), "- (/")), $d[0], $d[3], $row['COL_PRIMARY_KEY']);
+                    $sql = sprintf("update %s set COL_COUNTRY = '%s', COL_DXCC='%s' where COL_PRIMARY_KEY=%d",
+                                    $this->config->item('table_name'), addslashes(ucwords(strtolower($d[1]), "- (/")), $d[0], $row['COL_PRIMARY_KEY']);
                     $this->db->query($sql);
                     //print($sql."\n");
-                    printf("Updating %s to %s (%s) and %s\n<br/>", $row['COL_PRIMARY_KEY'], ucwords(strtolower($d[1]), "- (/"), $d[3], $d[0]);
+                    printf("Updating %s to %s and %s\n<br/>", $row['COL_PRIMARY_KEY'], ucwords(strtolower($d[1]), "- (/"), $d[0]);
                     $count++;
-                } else {
-                   printf("%s not updated. DXCC: %s\n<br />", $row['COL_CALL'], $d[0]);
                 }
             }
         }
