@@ -2924,7 +2924,7 @@ class Logbook_model extends CI_Model {
 
     $csadditions = '/^P$|^R$|^A$|^M$/';
 
-		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
+		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`, `cont`')
              ->where('call', $call)
              ->where('(start <= ', $date)
              ->or_where('start is null)', NULL, false)
@@ -2934,7 +2934,7 @@ class Logbook_model extends CI_Model {
 
 		if ($dxcc_exceptions->num_rows() > 0){
 			$row = $dxcc_exceptions->row_array();
-			return array($row['adif'], $row['entity'], $row['cqz']);
+			return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
 		}
     if (preg_match('/(^KG4)[A-Z09]{3}/', $call)) {      // KG4/ and KG4 5 char calls are Guantanamo Bay. If 4 or 6 char, it is USA
       $call = "K";
@@ -2976,7 +2976,7 @@ class Logbook_model extends CI_Model {
           $row['entity'] = 'None';
           $row['cqz'] = 0;
           $row['cont'] = '';
-          return array($row['adif'], $row['entity'], $row['cqz']);
+          return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
         } else {
           $call = $result . "AA";
         }
@@ -2989,7 +2989,7 @@ class Logbook_model extends CI_Model {
 		// query the table, removing a character from the right until a match
 		for ($i = $len; $i > 0; $i--){
             //printf("searching for %s\n", substr($call, 0, $i));
-            $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`')
+            $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`, `cont`')
                                     ->where('call', substr($call, 0, $i))
                                     ->where('(start <= ', $date)
                                     ->or_where("start is null)", NULL, false)
@@ -3002,7 +3002,7 @@ class Logbook_model extends CI_Model {
 
             if ($dxcc_result->num_rows() > 0){
                 $row = $dxcc_result->row_array();
-                return array($row['adif'], $row['entity'], $row['cqz']);
+                return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
             }
         }
 
