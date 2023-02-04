@@ -3304,6 +3304,16 @@ class Logbook_model extends CI_Model {
         print("$count updated\n");
     }
 
+    public function check_missing_continent(){
+       // get all records with no COL_CONT
+       $this->db->trans_start();
+       $sql = "UPDATE ".$this->config->item('table_name')." JOIN dxcc_entities ON ".$this->config->item('table_name').".col_dxcc = dxcc_entities.adif SET col_cont = dxcc_entities.cont WHERE COALESCE(".$this->config->item('table_name').".col_cont, '') = ''";
+
+        $query = $this->db->query($sql);
+        print($this->db->affected_rows()." updated\n");
+        $this->db->trans_complete();
+    }
+
 	public function check_missing_grid_id($all){
         // get all records with no COL_GRIDSQUARE
         $this->db->select("COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_TIME_OFF");

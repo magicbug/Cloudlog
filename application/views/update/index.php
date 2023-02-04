@@ -30,6 +30,11 @@
 				<p><a class="btn btn-primary" href="<?php echo site_url('update/check_missing_dxcc');?>">Check QSOs missing DXCC data</a></p>
 				<p><a class="btn btn-primary" href="<?php echo site_url('update/check_missing_dxcc/all');?>">Re-check all QSOs in logbook</a></p>
 
+				<h5>Apply Continent Data to Logbook</h5>
+				<p class="card-text">
+					This function can be used to update QSO continent information for all QSOs in Cloudlog missing that information.
+				</p>
+				<p><a class="btn btn-primary" href="<?php echo site_url('update/check_missing_continent');?>">Check QSOs missing continent data</a></p>
 				<style>
 					#dxcc_update_status{
 					display: None;
