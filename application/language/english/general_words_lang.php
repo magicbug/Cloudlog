@@ -94,6 +94,7 @@ $lang['gen_hamradio_logbook'] = 'Logbook';
 
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
+$lang['gen_hamradio_continent'] = 'Continent';
 $lang['gen_hamradio_usa_state'] = 'USA State';
 $lang['gen_hamradio_county_reference'] = 'USA County';
 $lang['gen_hamradio_iota_reference'] = 'IOTA Reference';
@@ -125,3 +126,11 @@ $lang['gen_this_qso_was_confirmed_on'] = 'This QSO was confirmed on';
 $lang['error_no_logbook_found'] = 'No logbooks were found. You need to define a logbook under Station Logbooks! Do it here:';
 
 $lang['copy_to_clipboard'] = 'Copy to clipboard';
+
+$lang['africa'] = 'Africa';
+$lang['antarctica'] = 'Antarctica';
+$lang['asia'] = 'Asia';
+$lang['europe'] = 'Europe';
+$lang['northamerica'] = 'North America';
+$lang['oceania'] = 'Oceania';
+$lang['southamerica'] = 'South America';

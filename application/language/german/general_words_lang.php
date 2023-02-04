@@ -94,6 +94,7 @@ $lang['gen_hamradio_logbook'] = 'Logbuch';
 
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
+$lang['gen_hamradio_continent'] = 'Kontinent';
 $lang['gen_hamradio_usa_state'] = 'USA-Staat';
 $lang['gen_hamradio_county_reference'] = 'USA County';
 $lang['gen_hamradio_iota_reference'] = 'IOTA Referenznummer';
@@ -124,3 +125,11 @@ $lang['gen_from_date'] = 'Ab Datum';
 $lang['gen_this_qso_was_confirmed_on'] = 'Dieses QSO wurde bestätigt am';
 
 $lang['copy_to_clipboard'] = 'In die Zwischenablage kopieren';
+
+$lang['africa'] = 'Afrika';
+$lang['antarctica'] = 'Antarktis';
+$lang['asia'] = 'Asien';
+$lang['europe'] = 'Europa';
+$lang['northamerica'] = 'Nord-Amerika';
+$lang['oceania'] = 'Ozeanien';
+$lang['southamerica'] = 'Süd-Amerika';
