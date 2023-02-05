@@ -161,19 +161,23 @@
         <?php if (file_exists('.git')) { ?>
         <?php
             $commitHash = trim(exec('git log --pretty="%H" -n1 HEAD'));
+            $branch = '';
+            $remote = '';
+            $owner = '';
             // only proceed here if git can actually be executed
             if ($commitHash != "") {
                $commitDate = trim(exec('git log --pretty="%ci" -n1 HEAD'));
                $line = trim(exec('git log -n 1 --pretty=%D HEAD'));
                $pieces = explode(', ', $line);
-               $remote = substr($pieces[1], 0, strpos($pieces[1], '/'));
-               $branch = substr($pieces[1], strpos($pieces[1], '/')+1);
-               $url = trim(exec('git remote get-url '.$remote));
-               $owner = '';
-               if (strpos($url, 'https://github.com') !== false) {
-                  $owner = preg_replace('/https:\/\/github\.com\/(\w+)\/Cloudlog\.git/', '$1', $url);
-               } else if (strpos($url, 'git@github.com') !== false) {
-                  $owner = preg_replace('/git@github\.com:(\w+)\/Cloudlog\.git/', '$1', $url);
+               if (isset($pieces[1])) {
+                  $remote = substr($pieces[1], 0, strpos($pieces[1], '/'));
+                  $branch = substr($pieces[1], strpos($pieces[1], '/')+1);
+                  $url = trim(exec('git remote get-url '.$remote));
+                  if (strpos($url, 'https://github.com') !== false) {
+                     $owner = preg_replace('/https:\/\/github\.com\/(\w+)\/Cloudlog\.git/', '$1', $url);
+                  } else if (strpos($url, 'git@github.com') !== false) {
+                     $owner = preg_replace('/git@github\.com:(\w+)\/Cloudlog\.git/', '$1', $url);
+                  }
                }
                $tag = trim(exec('git describe --tags '.$commitHash));
             }
