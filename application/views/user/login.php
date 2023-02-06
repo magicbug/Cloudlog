@@ -1,23 +1,60 @@
-<div id="container" class="container mx-auto pt-5" style="max-width:400px">
+<style>
+html,
+body {
+    height: 100%;
+}
 
-<h1>Login</h1>
-<?php $this->load->view('layout/messages'); ?>
+body {
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
 
-<form method="post" action="<?php echo site_url('user/login'); ?>" name="users">
-	<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
-	<div class="form-group">
-		<label for="user_name">Username</label>
-		<input id="user_name" type="text" name="user_name" class="form-control" value="<?php echo $this->input->post('user_name'); ?>">
-	</div>
-	<div class="form-group">
-		<label for="password">Password</label>
-		<input id="password" type="password" name="user_password" class="form-control">
-	</div>
-	<div class="form-group">
-		<input class="btn-info p-2 col" type="submit" value="Log in" />
-	</div>
-</form>
+.form-signin {
+    width: 100%;
+    max-width: 430px;
+    padding: 15px;
+    margin: auto;
+}
 
-<p><a href="<?php echo site_url('user/forgot_password'); ?>">Forgot your password?</a></p>
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
 
-</div>
+.form-signin input[type="password"] {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+</style>
+<main class="form-signin">
+    <img src="<?php echo site_url()?>/CloudLog_logo.png" class="mx-auto d-block" alt="" style="width:100px;height:100px;">
+    <div class="my-2 bg-body rounded-0 shadow-sm card mb-2 shadow-sm">
+        <div class="rounded-0 card-header py-2">Cloudlog Login</div>
+        <div class="card-body">
+
+            <form method="post" action="<?php echo site_url('user/login'); ?>" name="users">
+			<?php $this->form_validation->set_error_delimiters('', ''); ?>
+                <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
+                <div>
+                    <label for="floatingInput">Username</label>
+                    <input type="text" name="user_name" class="form-control" id="floatingInput" placeholder="Username"
+                        value="<?php echo $this->input->post('user_name'); ?>">
+                </div>
+                <div>
+                    <label for="floatingPassword">Password</label>
+                    <input type="password" name="user_password" class="form-control" id="floatingPassword"
+                        placeholder="Password">
+                </div>
+
+                <div>
+                    <p><a href="<?php echo site_url('user/forgot_password'); ?>">Forgot your password?</a></p>
+                </div>
+					<?php $this->load->view('layout/messages'); ?>
+                <button class="w-100 btn btn-info" type="submit">Log in</button>
+            </form>
+        </div>
+    </div>
+</main>
