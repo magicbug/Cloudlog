@@ -39,21 +39,21 @@ body {
 			<?php $this->form_validation->set_error_delimiters('', ''); ?>
                 <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
                 <div>
-                    <label for="floatingInput">Username</label>
+                    <label for="floatingInput"><strong>Username<strong></label>
                     <input type="text" name="user_name" class="form-control" id="floatingInput" placeholder="Username"
                         value="<?php echo $this->input->post('user_name'); ?>">
                 </div>
                 <div>
-                    <label for="floatingPassword">Password</label>
+                    <label for="floatingPassword"><strong>Password</strong></label>
                     <input type="password" name="user_password" class="form-control" id="floatingPassword"
                         placeholder="Password">
                 </div>
 
                 <div>
-                    <p><a href="<?php echo site_url('user/forgot_password'); ?>">Forgot your password?</a></p>
+                    <p><small><a class="" href="<?php echo site_url('user/forgot_password'); ?>">Forgot your password?</a></small></p>
                 </div>
 					<?php $this->load->view('layout/messages'); ?>
-                <button class="w-100 btn btn-info" type="submit">Log in</button>
+                <button class="w-100 btn btn-info" type="submit">Login →</button>
             </form>
         </div>
     </div>
