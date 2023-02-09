@@ -1631,7 +1631,7 @@ class Logbook_model extends CI_Model {
     }
 
    /* Return total number of QSOs per continent */
-   function total_continents() {
+   function total_continents($searchCriteria) {
 
       $CI =& get_instance();
       $CI->load->model('logbooks_model');
@@ -1645,6 +1645,23 @@ class Logbook_model extends CI_Model {
       $this->db->where_in('station_id', $logbooks_locations_array);
       $this->db->where('COL_CONT is not null');
       $this->db->where('COL_CONT !=', '');
+
+      if ($searchCriteria['mode'] !== '') {
+        $this->db->group_start();
+        $this->db->where('COL_MODE', $searchCriteria['mode']); 
+        $this->db->or_where('COL_SUBMODE', $searchCriteria['mode']);
+        $this->db->group_end();
+      }
+
+      if ($searchCriteria['band'] !== '') {
+        if($searchCriteria['band'] != "SAT") {
+          $this->db->where('COL_BAND', $searchCriteria['band']); 
+          $this->db->where('COL_PROP_MODE != "SAT"'); 
+        } else {
+          $this->db->where('COL_PROP_MODE', 'SAT'); 
+        }
+      }
+
       $this->db->order_by('count DESC');
       $this->db->group_by('COL_CONT');
       $query = $this->db->get($this->config->item('table_name'));

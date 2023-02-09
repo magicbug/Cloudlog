@@ -1,19 +1,49 @@
-totalContinentQsos();
+$(document).ready(function () {
+    // Needed for continentstable header fix, will be squished without
+    $("a[href='#continents']").on('shown.bs.tab', function(e) {
+        $(".continentstable").DataTable().columns.adjust();
+    });
 
-// Needed for continentstable header fix, will be squished without
-$("a[href='#continents']").on('shown.bs.tab', function(e) {
-    $(".continentstable").DataTable().columns.adjust();
+    $('#searchForm').submit(function (e) {
+        $('#searchButton').prop("disabled", true);
+
+        $.ajax({
+            url: this.action,
+            type: 'post',
+            data: {
+                mode: this.mode.value,
+                band: this.band.value,
+            },
+            dataType: 'json',
+            success: function (data) {
+                $('#searchButton').prop("disabled", false);
+                totalContinentQsos(data);
+            },
+            error: function (data) {
+                $('#searchButton').prop("disabled", false);
+                BootstrapDialog.alert({
+                    title: 'ERROR',
+                    message: 'An error ocurred while making the request',
+                    type: BootstrapDialog.TYPE_DANGER,
+                    closable: false,
+                    draggable: false,
+                    callback: function (result) {
+                    }
+                });
+            },
+        });
+        return false;
+    });
+
+    $('#searchForm').submit();
 });
 
-function totalContinentQsos() {
+function totalContinentQsos(data) {
     // using this to change color of legend and label according to background color
     var color = ifDarkModeThemeReturn('white', 'grey');
 
-    $.ajax({
-        url: base_url+'index.php/continents/get_continents',
-        type: 'post',
-        success: function (data) {
             if (data.length > 0) {
+                $('.continentstable > tbody').empty();
                 $('.tabs').removeAttr('hidden');
 
                 var labels = [];
@@ -47,6 +77,12 @@ function totalContinentQsos() {
                 });
 
                 const COLORS = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499"]
+                
+                let chartStatus = Chart.getChart("continentChart"); // <canvas> id
+                if (chartStatus != undefined) {
+                    chartStatus.destroy();
+                }
+                
                 var ctx = document.getElementById("continentChart").getContext('2d');
                 var myChart = new Chart(ctx, {
                     plugins: [ChartPieChartOutlabels],
@@ -120,18 +156,5 @@ function totalContinentQsos() {
                 if (background != ('rgb(255, 255, 255)')) {
                     $(".buttons-csv").css("color", "white");
                 }
-
-                $('.continentstable').DataTable({
-                    responsive: false,
-                    ordering: false,
-                    "scrollY": "330px",
-                    "scrollX": true,
-                    "ScrollCollapse": true,
-                    "paging": false,
-                    bFilter: false,
-                    bInfo: false,
-                });
             }
-        }
-    });
 }

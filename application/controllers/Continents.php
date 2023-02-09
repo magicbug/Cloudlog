@@ -6,6 +6,11 @@ class Continents extends CI_Controller {
 	{
         $this->load->model('user_model');
         $this->load->model('bands');
+        $this->load->model('logbookadvanced_model');
+
+        $data['bands'] = $this->bands->get_worked_bands();
+		$data['modes'] = $this->logbookadvanced_model->get_modes();
+
         if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
             if($this->user_model->validate_session()) {
                 $this->user_model->clear_session();
@@ -27,11 +32,17 @@ class Continents extends CI_Controller {
 	
 
 	public function get_continents() {
+
+		$searchCriteria = array(
+			'mode' => xss_clean($this->input->post('mode')),
+			'band' => xss_clean($this->input->post('band')),
+		);
+
 		$this->load->model('logbook_model');
 
 		$continentsstats = array();
 
-		$total_continents = $this->logbook_model->total_continents();
+		$total_continents = $this->logbook_model->total_continents($searchCriteria);
 		$i = 0;
 
 		if ($total_continents) {
