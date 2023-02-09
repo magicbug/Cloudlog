@@ -146,7 +146,7 @@ function qso_edit(id) {
                         labelField: 'name',
                         searchField: 'name',
                         options: [],
-                        create: false,
+                        create: true,
                         load: function(query, callback) {
                             if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
                             $.ajax({
@@ -174,7 +174,7 @@ function qso_edit(id) {
                         labelField: 'name',
                         searchField: 'name',
                         options: [],
-                        create: false,
+                        create: true,
                         load: function(query, callback) {
                             if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
                             $.ajax({
@@ -202,7 +202,7 @@ function qso_edit(id) {
                         labelField: 'name',
                         searchField: 'name',
                         options: [],
-                        create: false,
+                        create: true,
                         load: function(query, callback) {
                             if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
                             $.ajax({

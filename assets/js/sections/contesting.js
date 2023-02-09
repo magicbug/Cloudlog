@@ -394,8 +394,8 @@ function logQso() {
 				// Store contest session
 				localStorage.setItem("contestid", $("#contestname").val());
 				localStorage.setItem("exchangetype", $("#exchangetype").val());
-				localStorage.setItem("exchangereceived", $("#exch_rcvd").val());
-				localStorage.setItem("exchangesent", $("#exch_sent").val());
+				localStorage.setItem("exchangereceived", $("#exch_rcvd").val().toUpperCase());
+				localStorage.setItem("exchangesent", $("#exch_sent").val().toUpperCase());
 				localStorage.setItem("serialreceived", $("#exch_serial_r").val());
 				localStorage.setItem("serialsent", $("#exch_serial_s").val());
 				localStorage.setItem("gridsquarereceived", $("#exch_gridsquare_r").val());

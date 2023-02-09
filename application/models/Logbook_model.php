@@ -78,6 +78,19 @@ class Logbook_model extends CI_Model {
         $dxcc_id = $this->input->post('dxcc_id');
     }
 
+    if($this->input->post('continent') == "") {
+
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      if (empty($dxcc[3])) {
+        $continent = null;
+      } else {
+       $continent = $dxcc[3];
+      }
+
+    } else {
+        $continent = $this->input->post('continent');
+    }
+
     $mode = $this->get_main_mode_if_submode($this->input->post('mode'));
     if ($mode == null) {
         $mode = $this->input->post('mode');
@@ -139,6 +152,7 @@ class Logbook_model extends CI_Model {
             'COL_SAT_NAME' => strtoupper($this->input->post('sat_name')),
             'COL_SAT_MODE' => strtoupper($this->input->post('sat_mode')),
             'COL_COUNTRY' => $country,
+            'COL_CONT' => $continent,
             'COL_QSLSDATE' => $qslsdate,
             'COL_QSLRDATE' => $qslrdate,
             'COL_QSL_SENT' => $qsl_sent,
@@ -161,8 +175,8 @@ class Logbook_model extends CI_Model {
             'COL_TX_PWR' => $tx_power,
             'COL_STX' => $stx,
             'COL_SRX' => $srx,
-            'COL_STX_STRING' => $stx_string,
-            'COL_SRX_STRING' => $srx_string,
+            'COL_STX_STRING' => strtoupper(trim($stx_string)),
+            'COL_SRX_STRING' => strtoupper(trim($srx_string)),
             'COL_CONTEST_ID' => $contestid,
             'COL_NR_BURSTS' => null,
             'COL_NR_PINGS' => null,
@@ -621,7 +635,7 @@ class Logbook_model extends CI_Model {
          } else if ($data['COL_BAND'] == '15m') {
             $sat_name = 'FO-118[H/u]';
          }
-      } else if ($data['COL_SAT_NAME'] == 'ARISS') {
+      } else if ($data['COL_SAT_NAME'] == 'ARISS' || $data['COL_SAT_NAME'] == 'ISS') {
          if ($data['COL_MODE'] == 'FM') {
             $sat_name = 'ISS-FM';
          } else if ($data['COL_MODE'] == 'PKT') {
@@ -785,6 +799,7 @@ class Logbook_model extends CI_Model {
        'COL_COMMENT' => $this->input->post('comment'),
        'COL_NAME' => $this->input->post('name'),
        'COL_COUNTRY' => $country,
+       'COL_CONT' => $this->input->post('continent'),
        'COL_DXCC'=> $this->input->post('dxcc_id'),
        'COL_CQZ' => $this->input->post('cqz'),
        'COL_SAT_NAME' => $this->input->post('sat_name'),
@@ -816,8 +831,8 @@ class Logbook_model extends CI_Model {
        'COL_QTH' => $this->input->post('qth'),
        'COL_PROP_MODE' => $this->input->post('prop_mode'),
        'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
-       'COL_STX_STRING' => $this->input->post('stx_string'),
-       'COL_SRX_STRING' => $this->input->post('srx_string'),
+       'COL_STX_STRING' => strtoupper(trim($this->input->post('stx_string'))),
+       'COL_SRX_STRING' => strtoupper(trim($this->input->post('srx_string'))),
        'COL_STX' => $stx_string,
        'COL_SRX' => $srx_string,
        'COL_CONTEST_ID' => $this->input->post('contest_name'),
@@ -2907,7 +2922,9 @@ class Logbook_model extends CI_Model {
      */
     public function check_dxcc_table($call, $date){
 
-		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
+    $csadditions = '/^P$|^R$|^A$|^M$/';
+
+		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`, `cont`')
              ->where('call', $call)
              ->where('(start <= ', $date)
              ->or_where('start is null)', NULL, false)
@@ -2917,12 +2934,14 @@ class Logbook_model extends CI_Model {
 
 		if ($dxcc_exceptions->num_rows() > 0){
 			$row = $dxcc_exceptions->row_array();
-			return array($row['adif'], $row['entity'], $row['cqz']);
+			return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
 		}
     if (preg_match('/(^KG4)[A-Z09]{3}/', $call)) {      // KG4/ and KG4 5 char calls are Guantanamo Bay. If 4 or 6 char, it is USA
       $call = "K";
     } elseif (preg_match('/(^OH\/)|(\/OH[1-9]?$)/', $call)) {   # non-Aland prefix!
       $call = "OH";                                             # make callsign OH = finland
+    } elseif (preg_match('/(^CX\/)|(\/CX[1-9]?$)/', $call)) {   # non-Antarctica prefix!
+      $call = "CX";                                             # make callsign CX = Uruguay
     } elseif (preg_match('/(^3D2R)|(^3D2.+\/R)/', $call)) {     # seems to be from Rotuma
       $call = "3D2/R";                                          # will match with Rotuma
     } elseif (preg_match('/^3D2C/', $call)) {                   # seems to be from Conway Reef
@@ -2934,23 +2953,43 @@ class Logbook_model extends CI_Model {
     } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
       $call = "K";
 		} elseif (preg_match('/\w\/\w/', $call)) {
+      if (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
+        $prefix = $matches[1][0];
+        $callsign = $matches[3][0];
+        $suffix = $matches[5][0];
+      if ($prefix) {
+          $prefix = substr($prefix, 0, -1); # Remove the / at the end 
+      }
+      if ($suffix) {
+          $suffix = substr($suffix, 1); # Remove the / at the beginning
+      };
+      if (preg_match($csadditions, $suffix)) {
+        if ($prefix) {
+          $call = $prefix;  
+        } else {
+          $call = $callsign;
+        }
+      } else {
         $result = $this->wpx($call, 1);                       # use the wpx prefix instead
         if ($result == '') {
           $row['adif'] = 0;
           $row['entity'] = 'None';
           $row['cqz'] = 0;
-          return array($row['adif'], $row['entity'], $row['cqz']);
+          $row['cont'] = '';
+          return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
         } else {
           $call = $result . "AA";
         }
+      }
     }
+  }
 
 		$len = strlen($call);
 
 		// query the table, removing a character from the right until a match
 		for ($i = $len; $i > 0; $i--){
             //printf("searching for %s\n", substr($call, 0, $i));
-            $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`')
+            $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`, `cont`')
                                     ->where('call', substr($call, 0, $i))
                                     ->where('(start <= ', $date)
                                     ->or_where("start is null)", NULL, false)
@@ -2963,23 +3002,25 @@ class Logbook_model extends CI_Model {
 
             if ($dxcc_result->num_rows() > 0){
                 $row = $dxcc_result->row_array();
-                return array($row['adif'], $row['entity'], $row['cqz']);
+                return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
             }
         }
 
         return array("Not Found", "Not Found");
-    }
+
+  }
 
     public function dxcc_lookup($call, $date){
 
+    $csadditions = '/^P$|^R$|^A$|^M$/';
+
 		$dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`')
 				->where('call', $call)
-				->where('(start <= CURDATE()')
+				->where('(start <= ', $date)
 				->or_where('start is null)', NULL, false)
-				->where('(end >= CURDATE()')
+				->where('(end >= ', $date)
 				->or_where('end is null)', NULL, false)
 				->get('dxcc_exceptions');
-
 
 			if ($dxcc_exceptions->num_rows() > 0){
 				$row = $dxcc_exceptions->row_array();
@@ -2990,6 +3031,8 @@ class Logbook_model extends CI_Model {
           $call = "K";
         } elseif (preg_match('/(^OH\/)|(\/OH[1-9]?$)/', $call)) {   # non-Aland prefix!
           $call = "OH";                                             # make callsign OH = finland
+        } elseif (preg_match('/(^CX\/)|(\/CX[1-9]?$)/', $call)) {   # non-Antarctica prefix!
+          $call = "CX";                                             # make callsign CX = Uruguay
         } elseif (preg_match('/(^3D2R)|(^3D2.+\/R)/', $call)) {     # seems to be from Rotuma
           $call = "3D2/R";                                          # will match with Rotuma
         } elseif (preg_match('/^3D2C/', $call)) {                   # seems to be from Conway Reef
@@ -3001,18 +3044,37 @@ class Logbook_model extends CI_Model {
         } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
           $call = "K";
         } elseif (preg_match('/\w\/\w/', $call)) {
-            $result = $this->wpx($call, 1);                       # use the wpx prefix instead
-            if ($result == '') {
-              $row['adif'] = 0;
-              $row['entity'] = 'None';
-              $row['cqz'] = 0;
-              $row['long'] = '0';
-              $row['lat'] = '0';
-              return $row;
-            } else {
-              $call = $result . "AA";
+          if (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $call, $matches)) {
+              $prefix = $matches[1][0];
+              $callsign = $matches[3][0];
+              $suffix = $matches[5][0];
+            if ($prefix) {
+                $prefix = substr($prefix, 0, -1); # Remove the / at the end 
             }
+            if ($suffix) {
+                $suffix = substr($suffix, 1); # Remove the / at the beginning
+            };
+            if (preg_match($csadditions, $suffix)) {
+              if ($prefix) {
+                $call = $prefix;  
+              } else {
+                $call = $callsign;
+              }
+            } else {
+              $result = $this->wpx($call, 1);                       # use the wpx prefix instead
+              if ($result == '') {
+                $row['adif'] = 0;
+                $row['entity'] = 'None';
+                $row['cqz'] = 0;
+                $row['long'] = '0';
+                $row['lat'] = '0';
+                return $row;
+              } else {
+                $call = $result . "AA";
+              }
+          }
     		}
+      }
 
 				$len = strlen($call);
 
@@ -3046,8 +3108,8 @@ class Logbook_model extends CI_Model {
       $b = '';
       $c = '';
   
-      $lidadditions = '/^QRP|^LGT/';
-      $csadditions = '/^P$|^R$|^A$|^M$/';
+      $lidadditions = '/^QRP$|^LGT$/';
+      $csadditions = '/^P$|^R$|^A$|^M$|^LH$/';
       $noneadditions = '/^MM$|^AM$/';
   
       # First check if the call is in the proper format, A/B/C where A and C
@@ -3240,6 +3302,16 @@ class Logbook_model extends CI_Model {
         $this->db->trans_complete();
 
         print("$count updated\n");
+    }
+
+    public function check_missing_continent(){
+       // get all records with no COL_CONT
+       $this->db->trans_start();
+       $sql = "UPDATE ".$this->config->item('table_name')." JOIN dxcc_entities ON ".$this->config->item('table_name').".col_dxcc = dxcc_entities.adif SET col_cont = dxcc_entities.cont WHERE COALESCE(".$this->config->item('table_name').".col_cont, '') = ''";
+
+        $query = $this->db->query($sql);
+        print($this->db->affected_rows()." updated\n");
+        $this->db->trans_complete();
     }
 
 	public function check_missing_grid_id($all){
