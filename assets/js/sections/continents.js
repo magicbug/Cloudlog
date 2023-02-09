@@ -123,9 +123,6 @@ function totalContinentQsos(data) {
                                 align: "middle"
                             },
                             outlabels: {
-                                display: function(context) { // Hide labels with low percentage
-                                    return ((context.dataset.data[context.dataIndex] / totalQso * 100) > 1)
-                                },
                                 backgroundColor: COLORS,
                                 borderColor: COLORS,
                                 borderRadius: 2, // Border radius of Label
