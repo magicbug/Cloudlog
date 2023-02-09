@@ -104,6 +104,7 @@ class Statistics extends CI_Controller {
 		$modestats[$i++]['total'] = $this->logbook_model->total_fm();
 		$modestats[$i]['mode'] = 'digi';
 		$modestats[$i]['total'] = $this->logbook_model->total_digi();
+		usort($modestats, fn($a, $b) => $b['total'] <=> $a['total']);
 		
 		header('Content-Type: application/json');
 
