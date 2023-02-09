@@ -16,7 +16,7 @@ $lang['general_word_datetime'] = 'Дата/Время';
 $lang['general_word_none'] = '-';
 $lang['general_word_name'] = 'Имя';
 $lang['general_word_location'] = 'QTH';
-$lang['general_word_comment'] = 'Коммент.';
+$lang['general_word_comment'] = 'Комментарий';
 $lang['general_word_general'] = 'Общее';
 $lang['general_word_satellite'] = 'Спутник';
 $lang['general_word_satellite_short'] = 'Спутн.';
@@ -97,15 +97,18 @@ $lang['gen_hamradio_logbook'] = 'Журнал';
 
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
+$lang['gen_hamradio_continent'] = 'Континент';
 $lang['gen_hamradio_usa_state'] = 'Штат США';
 $lang['gen_hamradio_county_reference'] = 'Графство США';
 $lang['gen_hamradio_iota_reference'] = 'IOTA справочник';
 $lang['gen_hamradio_sota_reference'] = 'SOTA Справочник';
 $lang['gen_hamradio_wwff_reference'] = 'WWFF справочник';
+$lang['gen_hamradio_pota_reference'] = 'POTA справочник';
 $lang['gen_hamradio_dok'] = 'DOK';
 $lang['gen_hamradio_state'] = 'Штат';
 $lang['gen_hamradio_iota'] = 'IOTA';
 $lang['gen_hamradio_sota'] = 'SOTA';
+$lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Квадрат';
 $lang['gen_hamradio_operator'] = 'Оператор';
 
@@ -125,3 +128,11 @@ $lang['gen_this_qso_was_confirmed_on'] = 'Это QSO было подтвержд
 $lang['error_no_logbook_found'] = 'Журнал не найден. Вам необходимо опрелелить журнал в разделе Журналы станций! Тут:';
 
 $lang['copy_to_clipboard'] = 'Скопировать в буфер обмена';
+
+$lang['africa'] = 'Африка';
+$lang['antarctica'] = 'Антарктика';
+$lang['asia'] = 'Азия';
+$lang['europe'] = 'Европа';
+$lang['northamerica'] = 'Северная Америка';
+$lang['oceania'] = 'Океания';
+$lang['southamerica'] = 'Южная Америка';
