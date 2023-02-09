@@ -110,6 +110,8 @@
                     <a class="dropdown-item" href="<?php echo site_url('timeplotter');?>" title="View time when worked"><i class="fas fa-chart-area"></i> Timeplotter</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="<?php echo site_url('map/custom');?>" title="Custom Maps of QSOs"><i class="fas fa-globe-europe"></i> Custom Maps</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="<?php echo site_url('continents');?>" title="Continents"><i class="fas fa-globe-europe"></i> Continents</a>
 				</div>
         	</li>
 

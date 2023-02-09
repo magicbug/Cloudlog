@@ -1630,6 +1630,28 @@ class Logbook_model extends CI_Model {
         return $query;
     }
 
+   /* Return total number of QSOs per continent */
+   function total_continents() {
+
+      $CI =& get_instance();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+      if (!$logbooks_locations_array) {
+        return null;
+      }
+
+      $this->db->select('COL_CONT, COUNT( * ) as count', FALSE);
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_CONT is not null');
+      $this->db->where('COL_CONT !=', '');
+      $this->db->order_by('count DESC');
+      $this->db->group_by('COL_CONT');
+      $query = $this->db->get($this->config->item('table_name'));
+
+        return $query;
+    }
+
     /* Return total number of CW QSOs */
     function total_cw() {
 
