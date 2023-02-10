@@ -26,14 +26,12 @@ input[type="email"] {
 </style>
 
 <main class="form-forgot">
-    <img src="<?php echo base_url()?>/CloudLog_logo.png" class="mx-auto d-block" alt=""
-        style="width:100px;height:100px;">
+    <img src="<?php echo base_url()?>/CloudLog_logo.png" class="mx-auto d-block" alt="" style="width:100px;height:100px;">
     <div class="my-2 bg-body rounded-0 shadow-sm card mb-2 shadow-sm">
         <div class="card-body">
             <div class="text-center">
-                <h3><i class="fa fa-lock fa-4x"></i></h3>
-                <h2 class="text-center">Forgot Password?</h2>
-                <p>You can reset your password here.</p>
+                        <h3 class="text-center">Forgot Password? <i class="fa fa-lock"></i></h3>
+                        <p>You can reset your password here.</p>
                 <div class="panel-body">
 
                     <?php if(validation_errors() != ''): ?>
