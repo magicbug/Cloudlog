@@ -36,7 +36,7 @@ class Lookup extends CI_Controller {
 		$this->load->model('lookup_model');
 		$this->load->model('bands');
 
-		$data['bands'] = $this->bands->get_worked_bands();
+		$data['bands'] = $this->bands->get_worked_bands('dxcc');
 
 		$data['type'] = xss_clean($this->input->post('type'));
 		$data['dxcc'] = xss_clean($this->input->post('dxcc'));

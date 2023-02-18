@@ -19,13 +19,17 @@ class Lookup_model extends CI_Model{
 		// Populating array with worked band/mode combinations
 		$worked = $this->getQueryData($queryinfo, 'worked');
 		foreach ($worked as $w) {
-			$resultArray[$w->col_mode][$w->col_band] = 'W';
+			if(in_array($w->col_band, $queryinfo['bands'])) {
+				$resultArray[$w->col_mode][$w->col_band] = 'W';
+			}
 		}
 
 		// Populating array with confirmed band/mode combinations
 		$confirmed = $this->getQueryData($queryinfo, 'confirmed');
 		foreach ($confirmed as $c) {
-			$resultArray[$c->col_mode][$c->col_band] = 'C';
+			if(in_array($c->col_band, $queryinfo['bands'])) {
+				$resultArray[$c->col_mode][$c->col_band] = 'C';
+			}
 		}
 
 		return $resultArray;
