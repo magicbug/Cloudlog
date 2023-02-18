@@ -52,8 +52,8 @@ class Lookup_model extends CI_Model{
 		switch ($queryinfo['type']) 	{
 			case 'dxcc': $sqlquerytypestring .= " and col_dxcc = " . $queryinfo['dxcc']; 																break;
 			case 'iota': $sqlquerytypestring .= " and col_iota = '" . $queryinfo['iota'] . "'"; 														break;
-			case 'grid': $sqlquerytypestring .= " and (col_gridsquare like '%" . $fixedgrid . "%' or col_vucc_grids like '%" . $fixedgrid . "%')" ; 	break;
-			case 'cqz':  $sqlquerytypestring .= " and col_cqz = " . $queryinfo['cqz']; 																	break;
+			case 'vucc': $sqlquerytypestring .= " and (col_gridsquare like '%" . $fixedgrid . "%' or col_vucc_grids like '%" . $fixedgrid . "%')" ; 	break;
+			case 'cq':   $sqlquerytypestring .= " and col_cqz = " . $queryinfo['cqz']; 																	break;
 			case 'was':  $sqlquerytypestring .= " and col_state = '" . $queryinfo['was'] . "' and COL_DXCC in ('291', '6', '110')";; 					break;
 			case 'sota': $sqlquerytypestring .= " and col_sota_ref = '" . $queryinfo['sota'] . "'"; 													break;
 			case 'wwff': $sqlquerytypestring .= " and col_sig = 'WWFF' and col_sig_info = '" . $queryinfo['wwff'] . "'"; 								break;

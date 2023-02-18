@@ -1,8 +1,8 @@
 	<form method="post" class="form-inline">
 		<select id="quicklookuptype" name="type" class="form-control custom-select">
-			<option value="cqz">CQ Zone</option>
+			<option value="cq">CQ Zone</option>
 			<option value="dxcc">DXCC</option>
-			<option value="grid">Gridsquare</option>
+			<option value="vucc">Gridsquare</option>
 			<option value="iota">IOTA</option>
 			<option value="sota">SOTA</option>
 			<option value="was">US State</option>
