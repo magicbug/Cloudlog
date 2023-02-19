@@ -38,41 +38,16 @@
                 </div>
 
         <div class="form-group row">
-
-            <label class="col-md-1 control-label" for="radio">Award</label>
-            <div class="col-md-3">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="awardradio" id="dxcc" value="dxcc" <?php if ($this->input->post('awardradio') == 'dxcc' || $this->input->method() !== 'post') echo ' checked'?>>
-                    <label class="form-check-label" for="dxcc">
-                        DX Century Club (DXCC)
-                    </label>
+            <label class="col-md-1 control-label" for="award">Award</label>
+                <div class="col-md-3">
+                    <select id="award" name="award" class="form-control custom-select">
+                        <option value="dxcc" <?php if ($this->input->post('award') == "dxcc" || $this->input->method() !== 'post') echo ' selected'; ?> >DX Century Club (DXCC)</option>
+                        <option value="was" <?php if ($this->input->post('award') == "was" || $this->input->method() !== 'post') echo ' selected'; ?> >Worked All States (WAS)</option>
+                        <option value="iota" <?php if ($this->input->post('award') == "iota" || $this->input->method() !== 'post') echo ' selected'; ?> >Islands On The Air (IOTA)</option>
+                        <option value="waz" <?php if ($this->input->post('award') == "waz" || $this->input->method() !== 'post') echo ' selected'; ?> >Worked All Zones (WAZ)</option>
+                        <option value="vucc" <?php if ($this->input->post('award') == "vucc" || $this->input->method() !== 'post') echo ' selected'; ?> >VHF / UHF Century Club (VUCC)</option>
+                    </select>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="awardradio" id="was" value="was" <?php if ($this->input->post('awardradio') == 'was') echo ' checked'?>>
-                    <label class="form-check-label" for="was">
-                        Worked All States (WAS)
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="awardradio" id="iota" value="iota" <?php if ($this->input->post('awardradio') == 'iota') echo ' checked'?>>
-                    <label class="form-check-label" for="iota">
-                        Islands On The Air (IOTA)
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="awardradio" id="waz" value="waz" <?php if ($this->input->post('awardradio') == 'waz') echo ' checked'?>>
-                    <label class="form-check-label" for="waz">
-                        Worked All Zones (WAZ)
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="awardradio" id="vucc" value="vucc" <?php if ($this->input->post('awardradio') == 'vucc') echo ' checked'?>>
-                    <label class="form-check-label" for="vucc">
-                        VHF / UHF Century Club (VUCC)
-                    </label>
-                </div>
-            </div>
-
                 <div class="col-md-1 control-label">Confirmation</div>
                 <div class="col-md-3">
                     <div class="form-check-inline">
@@ -113,12 +88,12 @@
     <?php
 
     if ($timeline_array) {
-        switch ($this->input->post('awardradio')) {
-            case 'dxcc': $result = write_dxcc_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
-            case 'was':  $result = write_was_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
-            case 'iota': $result = write_iota_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
-            case 'waz':  $result = write_waz_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
-            case 'vucc':  $result = write_vucc_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
+        switch ($this->input->post('award')) {
+            case 'dxcc': $result = write_dxcc_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('award')); break;
+            case 'was':  $result = write_was_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('award')); break;
+            case 'iota': $result = write_iota_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('award')); break;
+            case 'waz':  $result = write_waz_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('award')); break;
+            case 'vucc':  $result = write_vucc_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('award')); break;
         }
     }
     else {

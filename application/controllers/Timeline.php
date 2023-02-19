@@ -32,8 +32,8 @@ class Timeline extends CI_Controller {
             $mode = 'All';
         }
 
-        if ($this->input->post('awardradio') != NULL) {
-            $award = $this->input->post('awardradio');
+        if ($this->input->post('award') != NULL) {
+            $award = $this->input->post('award');
         }
         else {
             $award = 'dxcc';
