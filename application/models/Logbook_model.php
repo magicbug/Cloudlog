@@ -399,38 +399,6 @@ class Logbook_model extends CI_Model {
         return $this->db->query($sql);
     }
 
-    public function timeline_qso_details($querystring, $band, $mode, $type){
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-
-		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $this->db->where('col_prop_mode', $band);
-            } else {
-                $this->db->where('COL_PROP_MODE !=', 'SAT');
-                $this->db->where('col_band', $band);
-            }
-        }
-
-        if ($mode != 'All') {
-            $this->db->where('col_mode', $mode);
-        }
-
-        $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
-
-        switch($type) {
-            case 'dxcc': $this->db->where('COL_DXCC', $querystring); break;
-            case 'was':  $this->db->where('COL_STATE', $querystring); break;
-            case 'iota': $this->db->where('COL_IOTA', $querystring); break;
-            case 'waz':  $this->db->where('COL_CQZ', $querystring); break;
-        }
-
-        return $this->db->get($this->config->item('table_name'));
-    }
-
     public function activator_details($call, $band, $leogeo){
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
