@@ -41,11 +41,11 @@
             <label class="col-md-1 control-label" for="award">Award</label>
                 <div class="col-md-3">
                     <select id="award" name="award" class="form-control custom-select">
-                        <option value="dxcc" <?php if ($this->input->post('award') == "dxcc" || $this->input->method() !== 'post') echo ' selected'; ?> >DX Century Club (DXCC)</option>
-                        <option value="was" <?php if ($this->input->post('award') == "was" || $this->input->method() !== 'post') echo ' selected'; ?> >Worked All States (WAS)</option>
-                        <option value="iota" <?php if ($this->input->post('award') == "iota" || $this->input->method() !== 'post') echo ' selected'; ?> >Islands On The Air (IOTA)</option>
-                        <option value="waz" <?php if ($this->input->post('award') == "waz" || $this->input->method() !== 'post') echo ' selected'; ?> >Worked All Zones (WAZ)</option>
-                        <option value="vucc" <?php if ($this->input->post('award') == "vucc" || $this->input->method() !== 'post') echo ' selected'; ?> >VHF / UHF Century Club (VUCC)</option>
+                        <option value="dxcc" <?php if ($this->input->post('award') == "dxcc") echo ' selected'; ?> >DX Century Club (DXCC)</option>
+                        <option value="was" <?php if ($this->input->post('award') == "was") echo ' selected'; ?> >Worked All States (WAS)</option>
+                        <option value="iota" <?php if ($this->input->post('award') == "iota") echo ' selected'; ?> >Islands On The Air (IOTA)</option>
+                        <option value="waz" <?php if ($this->input->post('award') == "waz") echo ' selected'; ?> >Worked All Zones (WAZ)</option>
+                        <option value="vucc" <?php if ($this->input->post('award') == "vucc") echo ' selected'; ?> >VHF / UHF Century Club (VUCC)</option>
                     </select>
                 </div>
                 <div class="col-md-1 control-label">Confirmation</div>
