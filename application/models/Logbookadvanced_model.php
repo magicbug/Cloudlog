@@ -211,7 +211,10 @@ class Logbookadvanced_model extends CI_Model {
 			if ($mode->col_submode == null || $mode->col_submode == "") {
 				array_push($modes, $mode->col_mode);
 			} else {
-				array_push($modes, $mode->col_submode);
+				// Make sure we don't add LSB or USB as submodes in the array list
+				if ($mode->col_mode != "SSB") {
+					array_push($modes, $mode->col_submode);
+				}
 			}
 		}
 

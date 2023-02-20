@@ -375,13 +375,13 @@ function spawnLookupModal() {
 							$('#quicklookupcqz').hide();
 							$('#quicklookupwas').hide();
 							$('#quicklookuptext').hide();
-						} else if (type == "grid" || type == "sota" || type == "wwff") {
+						} else if (type == "vucc" || type == "sota" || type == "wwff") {
 							$('#quicklookuptext').show();
 							$('#quicklookupiota').hide();
 							$('#quicklookupdxcc').hide();
 							$('#quicklookupcqz').hide();
 							$('#quicklookupwas').hide();
-						} else if (type == "cqz") {
+						} else if (type == "cq") {
 							$('#quicklookupcqz').show();
 							$('#quicklookupiota').hide();
 							$('#quicklookupdxcc').hide();
