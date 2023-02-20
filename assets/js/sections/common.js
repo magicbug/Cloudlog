@@ -146,7 +146,7 @@ function qso_edit(id) {
                         labelField: 'name',
                         searchField: 'name',
                         options: [],
-                        create: false,
+                        create: true,
                         load: function(query, callback) {
                             if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
                             $.ajax({
@@ -174,7 +174,7 @@ function qso_edit(id) {
                         labelField: 'name',
                         searchField: 'name',
                         options: [],
-                        create: false,
+                        create: true,
                         load: function(query, callback) {
                             if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
                             $.ajax({
@@ -202,7 +202,7 @@ function qso_edit(id) {
                         labelField: 'name',
                         searchField: 'name',
                         options: [],
-                        create: false,
+                        create: true,
                         load: function(query, callback) {
                             if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
                             $.ajax({
@@ -375,13 +375,13 @@ function spawnLookupModal() {
 							$('#quicklookupcqz').hide();
 							$('#quicklookupwas').hide();
 							$('#quicklookuptext').hide();
-						} else if (type == "grid" || type == "sota" || type == "wwff") {
+						} else if (type == "vucc" || type == "sota" || type == "wwff") {
 							$('#quicklookuptext').show();
 							$('#quicklookupiota').hide();
 							$('#quicklookupdxcc').hide();
 							$('#quicklookupcqz').hide();
 							$('#quicklookupwas').hide();
-						} else if (type == "cqz") {
+						} else if (type == "cq") {
 							$('#quicklookupcqz').show();
 							$('#quicklookupiota').hide();
 							$('#quicklookupdxcc').hide();
@@ -428,6 +428,23 @@ function getLookupResult() {
 			$('#lookupresulttable').html(html);
 			$(".ld-ext-right").removeClass('running');
 			$(".ld-ext-right").prop('disabled', false);
+		}
+	});
+}
+
+// This function executes the call to the backend for fetching dxcc summary and inserted table below qso entry
+function getDxccResult(dxcc, name) {
+	$.ajax({
+		url: base_url + 'index.php/lookup/search',
+		type: 'post',
+		data: {
+			type: 'dxcc',
+			dxcc: dxcc,
+		},
+		success: function (html) {
+            $('.dxccsummary').remove();
+            $('.qsopane').append('<div class="dxccsummary col-sm-12"><br><div class="card"><div class="card-header" data-toggle="collapse" data-target=".dxccsummarybody">DXCC Summary for '+name+'</div><div class="card-body collapse dxccsummarybody"></div></div></div>');
+            $('.dxccsummarybody').append(html);
 		}
 	});
 }

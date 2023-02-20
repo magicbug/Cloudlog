@@ -873,15 +873,15 @@ class Lotw extends CI_Controller {
 		$contents = file_get_contents('https://lotw.arrl.org/lotw-user-activity.csv', true);
 
         if($contents === FALSE) {
-            echo "something went wrong";
+            echo "Something went wrong with fetching the LoTW users file.";
         } else {
             $file = './updates/lotw_users.csv';
 
-            if(!is_file($file)){        // Some simple example content.
-                file_put_contents($file, $contents);     // Save our content to the file.
+            if (file_put_contents($file, $contents) !== FALSE) {     // Save our content to the file.
+                echo "LoTW User Data Saved.";
+            } else {
+                echo "FAILED: Could not write to LoTW users file";
             }
-
-            echo "LoTW User Data Saved.";
         }
 	}
 

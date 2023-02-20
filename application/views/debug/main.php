@@ -6,6 +6,26 @@
     <div class="col">
 
         <div class="card">
+            <div class="card-header">Cloudlog Information</div>
+            <div class="card-body">
+                <table width="100%">
+                    <tr>
+                        <td>Version</td>
+                        <td><?php echo $this->config->item('app_version')."\n"; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Language</td>
+                        <td><?php echo ucfirst($this->config->item('language'))."\n"; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Base URL</td>
+                        <td><span id="baseUrl"><a href="<?php echo $this->config->item('base_url')?>" target="_blank"><?php echo $this->config->item('base_url'); ?></a></span> <span data-toggle="tooltip" data-original-title="<?php echo $this->lang->line('copy_to_clipboard'); ?>" onclick='copyURL("<?php echo $this->config->item('base_url'); ?>")'><i class="copy-icon fas fa-copy"></span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
             <div class="card-header">Server Information</div>
             <div class="card-body">
                 <table width="100%">
@@ -139,13 +159,32 @@
             </div>
         </div>
         <?php if (file_exists('.git')) { ?>
-        <div class="card">
         <?php
             $commitHash = trim(exec('git log --pretty="%H" -n1 HEAD'));
-            $commitDate = trim(exec('git log --pretty="%ci" -n1 HEAD'));
-            $branch = trim(exec('git branch --show-current'));
-            $tag = trim(exec('git describe --tags '.$commitHash));
+            $branch = '';
+            $remote = '';
+            $owner = '';
+            // only proceed here if git can actually be executed
+            if ($commitHash != "") {
+               $commitDate = trim(exec('git log --pretty="%ci" -n1 HEAD'));
+               $line = trim(exec('git log -n 1 --pretty=%D HEAD'));
+               $pieces = explode(', ', $line);
+               if (isset($pieces[1])) {
+                  $remote = substr($pieces[1], 0, strpos($pieces[1], '/'));
+                  $branch = substr($pieces[1], strpos($pieces[1], '/')+1);
+                  $url = trim(exec('git remote get-url '.$remote));
+                  if (strpos($url, 'https://github.com') !== false) {
+                     $owner = preg_replace('/https:\/\/github\.com\/(\w+)\/Cloudlog\.git/', '$1', $url);
+                  } else if (strpos($url, 'git@github.com') !== false) {
+                     $owner = preg_replace('/git@github\.com:(\w+)\/Cloudlog\.git/', '$1', $url);
+                  }
+               }
+               $tag = trim(exec('git describe --tags '.$commitHash));
+            }
         ?>
+
+        <?php if($commitHash != "") { ?>
+        <div class="card">
             <div class="card-header">Git Information</div>
             <div class="card-body">
                 <table width="100%">
@@ -153,7 +192,13 @@
                         <td>Branch</td>
                         <td>
                             <?php if($branch != "") { ?>
-                                <a target="_blank" href="https://github.com/magicbug/Cloudlog/tree/<?php echo $branch?>"><span class="badge badge-success"><?php echo $branch; ?></span></a>
+                                <?php if($owner != "") { ?>
+                                    <a target="_blank" href="https://github.com/<?php echo $owner; ?>/Cloudlog/tree/<?php echo $branch?>">
+                                <?php } ?>
+                                    <span class="badge badge-success"><?php echo $branch; ?></span>
+                                <?php if($owner != "") { ?>
+                                    </a>
+                                <?php } ?>
                             <?php } else { ?> 
                                 <span class="badge badge-danger">n/a</span>
                             <?php } ?>
@@ -184,6 +229,7 @@
                 </table>
             </div>
         </div>
+        <?php } ?>
         <?php } ?>
     </div>
 </div>

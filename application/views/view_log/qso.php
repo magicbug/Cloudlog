@@ -188,6 +188,39 @@
                     </tr>
                     <?php } ?>
 
+                    <?php if($row->COL_CONT != null) { ?>
+                    <tr>
+                        <td><?php echo $this->lang->line('gen_hamradio_continent'); ?></td>
+                        <td>
+                        <?php
+                           switch($row->COL_CONT) {
+                             case "AF":
+                               echo $this->lang->line('africa');
+                               break;
+                             case "AN":
+                               echo $this->lang->line('antarctica');
+                               break;
+                             case "AS":
+                               echo $this->lang->line('asia');
+                               break;
+                             case "EU":
+                               echo $this->lang->line('europe');
+                               break;
+                             case "NA":
+                               echo $this->lang->line('northamerica');
+                               break;
+                             case "OC":
+                               echo $this->lang->line('oceania');
+                               break;
+                             case "SA":
+                               echo $this->lang->line('southamerica');
+                               break;
+                           }
+                        ?>
+                        </td>
+                    </tr>
+                    <?php } ?>
+
                     <?php if($row->COL_CONTEST_ID != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('contesting_contest_name'); ?></td>

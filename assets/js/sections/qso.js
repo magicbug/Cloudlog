@@ -68,7 +68,7 @@ $( document ).ready(function() {
 		labelField: 'name',
 		searchField: 'name',
 		options: [],
-		create: false,
+		create: true,
 		load: function(query, callback) {
 			if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
 			$.ajax({
@@ -101,7 +101,7 @@ $( document ).ready(function() {
 		labelField: 'name',
 		searchField: 'name',
 		options: [],
-		create: false,
+		create: true,
 		load: function(query, callback) {
 			if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
 			$.ajax({
@@ -134,7 +134,7 @@ $( document ).ready(function() {
 		labelField: 'name',
 		searchField: 'name',
 		options: [],
-		create: false,
+		create: true,
 		load: function(query, callback) {
 			if (!query || query.length < 3) return callback();  // Only trigger if 3 or more characters are entered
 			$.ajax({
@@ -327,6 +327,7 @@ function reset_fields() {
 
 	$('#locator_info').text("");
 	$('#country').val("");
+	$('#continent').val("");
 	$('#lotw_info').text("");
 	$('#qrz_info').text("");
 	$('#hamqth_info').text("");
@@ -368,6 +369,7 @@ function reset_fields() {
 	mymap.setView(pos, 12);
 	mymap.removeLayer(markers);
 	$('.callsign-suggest').hide();
+	$('.dxccsummary').remove();
 }
 
 $("#callsign").focusout(function() {
@@ -449,6 +451,8 @@ $("#callsign").focusout(function() {
 					}
 
 					changebadge(result.dxcc.entity);
+					
+					getDxccResult(result.dxcc.adif, convert_case(result.dxcc.entity));
 				}
 
 				if(result.lotw_member == "active") {
@@ -532,6 +536,10 @@ $("#callsign").focusout(function() {
 				/* Find Operators Name */
 				if($('#name').val() == "") {
 					$('#name').val(result.callsign_name);
+				}
+
+				if($('#continent').val() == "") {
+					$('#continent').val(result.dxcc.cont);
 				}
 
 				if($('#qth').val() == "") {
@@ -770,6 +778,7 @@ function resetDefaultQSOFields() {
 	$('#callsign_info').text("");
 	$('#locator_info').text("");
 	$('#country').val("");
+	$('#continent').val("");
 	$('#dxcc_id').val("");
 	$('#cqz').val("");
 	$('#name').val("");
@@ -787,4 +796,5 @@ function resetDefaultQSOFields() {
 	$('#input_usa_state').val("");
 	$('#callsign-image').attr('style', 'display: none;');
 	$('#callsign-image-content').text("");
+	$('.dxccsummary').remove();
 }

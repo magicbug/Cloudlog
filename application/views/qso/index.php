@@ -1,6 +1,6 @@
 <div class="container qso_panel">
 
-<div class="row">
+<div class="row qsopane">
 
   <div class="col-sm-5">
     <div class="card">
@@ -220,6 +220,19 @@
                       }
                       ?>
 
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label for="continent"><?php echo $this->lang->line('gen_hamradio_continent'); ?></label>
+                  <select class="custom-select" id="continent" name="continent">
+                      <option value=""></option>
+                      <option value="AF"><?php echo $this->lang->line('africa'); ?></option>
+                      <option value="AN"><?php echo $this->lang->line('antarctica'); ?></option>
+                      <option value="AS"><?php echo $this->lang->line('asia'); ?></option>
+                      <option value="EU"><?php echo $this->lang->line('europe'); ?></option>
+                      <option value="NA"><?php echo $this->lang->line('northamerica'); ?></option>
+                      <option value="OC"><?php echo $this->lang->line('oceania'); ?></option>
+                      <option value="SA"><?php echo $this->lang->line('southamerica'); ?></option>
                   </select>
               </div>
               <div class="form-group">

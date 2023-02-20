@@ -81,6 +81,7 @@ class User extends CI_Controller {
 				$data['user_column5'] = $this->input->post('user_column5');
 				$data['user_show_profile_image'] = $this->input->post('user_show_profile_image');
 				$data['user_previous_qsl_type'] = $this->input->post('user_previous_qsl_type');
+				$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload');
 				$this->load->view('user/add', $data);
 			} else {
 				$this->load->view('user/add', $data);
@@ -111,7 +112,8 @@ class User extends CI_Controller {
 				$this->input->post('user_column4'),
 				$this->input->post('user_column5'),
 				$this->input->post('user_show_profile_image'),
-				$this->input->post('user_previous_qsl_type'))) {
+				$this->input->post('user_previous_qsl_type'),
+				$this->input->post('user_amsat_status_upload'))) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
 					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';
@@ -152,6 +154,7 @@ class User extends CI_Controller {
 			$data['user_column5'] = $this->input->post('user_column5');
 			$data['user_show_profile_image'] = $this->input->post('user_show_profile_image');
 			$data['user_previous_qsl_type'] = $this->input->post('user_previous_qsl_type');
+			$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload');
 			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -347,6 +350,12 @@ class User extends CI_Controller {
 				$data['user_previous_qsl_type'] = $q->user_previous_qsl_type;
 			}
 
+			if($this->input->post('user_amsat_status_upload')) {
+				$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload', false);
+			} else {
+				$data['user_amsat_status_upload'] = $q->user_amsat_status_upload;
+			}
+
 			if($this->input->post('user_column1')) {
 				$data['user_column1'] = $this->input->post('user_column1', true);
 			} else {
@@ -430,6 +439,7 @@ class User extends CI_Controller {
 			$data['user_column5'] = $this->input->post('user_column5');
 			$data['user_show_profile_image'] = $this->input->post('user_show_profile_image');
 			$data['user_previous_qsl_type'] = $this->input->post('user_previous_qsl_type');
+			$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload');
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}
