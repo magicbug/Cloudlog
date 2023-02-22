@@ -76,6 +76,7 @@ class Timeline extends CI_Controller {
     }
 
     public function details() {
+        $this->load->model('logbook_model');
         $this->load->model('timeline_model');
 
         $querystring = str_replace('"', "", $this->input->post("Querystring"));
