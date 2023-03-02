@@ -64,6 +64,12 @@ function load_was_map() {
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/statistics.js"></script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "continents") { ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/chart.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/chartjs-plugin-piechart-outlabels.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/continents.js"></script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>

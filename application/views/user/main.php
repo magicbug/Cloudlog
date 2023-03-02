@@ -1,13 +1,16 @@
 <div class="container">
 
 <br>
-<?php if($this->session->flashdata('notice')) { ?>
-	<div id="message" >
-    	<?php echo $this->session->flashdata('notice'); ?>
-	</div>
-<?php } ?>
 
 <h2><?php echo $page_title; ?></h2>
+
+<?php if($this->session->flashdata('notice')) { ?>
+		<!-- Display Message -->
+		<div class="alert alert-info" role="alert">
+			<?php echo $this->session->flashdata('notice'); ?>
+		</div>
+
+<?php } ?>
 
 <div class="card">
   <div class="card-header">

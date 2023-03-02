@@ -38,39 +38,18 @@
                 </div>
 
         <div class="form-group row">
-
-            <label class="col-md-1 control-label" for="radio">Award</label>
-            <div class="col-md-3">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="awardradio" id="dxcc" value="dxcc" <?php if ($this->input->post('awardradio') == 'dxcc' || $this->input->method() !== 'post') echo ' checked'?>>
-                    <label class="form-check-label" for="dxcc">
-                        DX Century Club (DXCC)
-                    </label>
+            <label class="col-md-1 control-label" for="award">Award</label>
+                <div class="col-md-3">
+                    <select id="award" name="award" class="form-control custom-select">
+                        <option value="dxcc" <?php if ($this->input->post('award') == "dxcc") echo ' selected'; ?> >DX Century Club (DXCC)</option>
+                        <option value="was" <?php if ($this->input->post('award') == "was") echo ' selected'; ?> >Worked All States (WAS)</option>
+                        <option value="iota" <?php if ($this->input->post('award') == "iota") echo ' selected'; ?> >Islands On The Air (IOTA)</option>
+                        <option value="waz" <?php if ($this->input->post('award') == "waz") echo ' selected'; ?> >Worked All Zones (WAZ)</option>
+                        <option value="vucc" <?php if ($this->input->post('award') == "vucc") echo ' selected'; ?> >VHF / UHF Century Club (VUCC)</option>
+                    </select>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="awardradio" id="was" value="was" <?php if ($this->input->post('awardradio') == 'was') echo ' checked'?>>
-                    <label class="form-check-label" for="was">
-                        Worked All States (WAS)
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="awardradio" id="iota" value="iota" <?php if ($this->input->post('awardradio') == 'iota') echo ' checked'?>>
-                    <label class="form-check-label" for="iota">
-                        Islands On The Air (IOTA)
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="awardradio" id="waz" value="waz" <?php if ($this->input->post('awardradio') == 'waz') echo ' checked'?>>
-                    <label class="form-check-label" for="waz">
-                        Worked All Zones (WAZ)
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group row">
                 <div class="col-md-1 control-label">Confirmation</div>
-                <div class="col-md-10">
+                <div class="col-md-3">
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="qsl" value="1" id="qsl" <?php if ($this->input->post('qsl'))  echo ' checked="checked"'; ?> >
                         <label class="form-check-label" for="qsl">QSL</label>
@@ -109,11 +88,12 @@
     <?php
 
     if ($timeline_array) {
-        switch ($this->input->post('awardradio')) {
-            case 'dxcc': $result = write_dxcc_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
-            case 'was':  $result = write_was_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
-            case 'iota': $result = write_iota_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
-            case 'waz':  $result = write_waz_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('awardradio')); break;
+        switch ($this->input->post('award')) {
+            case 'dxcc': $result = write_dxcc_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('award')); break;
+            case 'was':  $result = write_was_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('award')); break;
+            case 'iota': $result = write_iota_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('award')); break;
+            case 'waz':  $result = write_waz_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('award')); break;
+            case 'vucc':  $result = write_vucc_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $this->input->post('award')); break;
         }
     }
     else {
@@ -232,6 +212,31 @@ function write_waz_timeline($timeline_array, $custom_date_format, $bandselect, $
                 <td>' . date($custom_date_format, $date_as_timestamp) . '</td>
                 <td>' . $line->col_cqz . '</td>
                 <td><a href=javascript:displayTimelineContacts("' . $line->col_cqz . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>Show</a></td>
+               </tr>';
+    }
+    echo '</tfoot></table></div>';
+}
+
+function write_vucc_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $award) {
+    $i = count($timeline_array);
+    echo '<table style="width:100%" class="table table-sm timelinetable table-bordered table-hover table-striped table-condensed text-center">
+              <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Date</td>
+                        <td>Gridsquare</td>
+                        <td>Show QSOs</td>
+                    </tr>
+                </thead>
+                <tbody>';
+
+    foreach ($timeline_array as $line) {
+        $date_as_timestamp = strtotime($line['date']);
+        echo '<tr>
+                <td>' . $i-- . '</td>
+                <td>' . date($custom_date_format, $date_as_timestamp) . '</td>
+                <td>' . $line['gridsquare'] . '</td>
+                <td><a href=javascript:displayTimelineContacts("' . $line['gridsquare'] . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>Show</a></td>
                </tr>';
     }
     echo '</tfoot></table></div>';

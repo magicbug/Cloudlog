@@ -175,8 +175,8 @@ class Logbook_model extends CI_Model {
             'COL_TX_PWR' => $tx_power,
             'COL_STX' => $stx,
             'COL_SRX' => $srx,
-            'COL_STX_STRING' => strtoupper(trim($stx_string)),
-            'COL_SRX_STRING' => strtoupper(trim($srx_string)),
+            'COL_STX_STRING' => $stx_string == null ? '' : strtoupper(trim($stx_string)),
+            'COL_SRX_STRING' => $srx_string == null ? '' : strtoupper(trim($srx_string)),
             'COL_CONTEST_ID' => $contestid,
             'COL_NR_BURSTS' => null,
             'COL_NR_PINGS' => null,
@@ -397,38 +397,6 @@ class Logbook_model extends CI_Model {
         }
 
         return $this->db->query($sql);
-    }
-
-    public function timeline_qso_details($querystring, $band, $mode, $type){
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-
-		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $this->db->where('col_prop_mode', $band);
-            } else {
-                $this->db->where('COL_PROP_MODE !=', 'SAT');
-                $this->db->where('col_band', $band);
-            }
-        }
-
-        if ($mode != 'All') {
-            $this->db->where('col_mode', $mode);
-        }
-
-        $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
-
-        switch($type) {
-            case 'dxcc': $this->db->where('COL_DXCC', $querystring); break;
-            case 'was':  $this->db->where('COL_STATE', $querystring); break;
-            case 'iota': $this->db->where('COL_IOTA', $querystring); break;
-            case 'waz':  $this->db->where('COL_CQZ', $querystring); break;
-        }
-
-        return $this->db->get($this->config->item('table_name'));
     }
 
     public function activator_details($call, $band, $leogeo){
@@ -1624,7 +1592,47 @@ class Logbook_model extends CI_Model {
       $this->db->where_in('station_id', $logbooks_locations_array);
       $this->db->where('COL_SAT_NAME is not null');
       $this->db->where('COL_SAT_NAME !=', '');
+      $this->db->order_by('count DESC');
       $this->db->group_by('COL_SAT_NAME');
+      $query = $this->db->get($this->config->item('table_name'));
+
+        return $query;
+    }
+
+   /* Return total number of QSOs per continent */
+   function total_continents($searchCriteria) {
+
+      $CI =& get_instance();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+      if (!$logbooks_locations_array) {
+        return null;
+      }
+
+      $this->db->select('COL_CONT, COUNT( * ) as count', FALSE);
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_CONT is not null');
+      $this->db->where('COL_CONT !=', '');
+
+      if ($searchCriteria['mode'] !== '') {
+        $this->db->group_start();
+        $this->db->where('COL_MODE', $searchCriteria['mode']); 
+        $this->db->or_where('COL_SUBMODE', $searchCriteria['mode']);
+        $this->db->group_end();
+      }
+
+      if ($searchCriteria['band'] !== '') {
+        if($searchCriteria['band'] != "SAT") {
+          $this->db->where('COL_BAND', $searchCriteria['band']); 
+          $this->db->where('COL_PROP_MODE != "SAT"'); 
+        } else {
+          $this->db->where('COL_PROP_MODE', 'SAT'); 
+        }
+      }
+
+      $this->db->order_by('count DESC');
+      $this->db->group_by('COL_CONT');
       $query = $this->db->get($this->config->item('table_name'));
 
         return $query;

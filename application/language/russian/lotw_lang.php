@@ -4,15 +4,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['lotw_short'] = 'LoTW';
 $lang['lotw_title'] = 'Logbook of the World';
-$lang['lotw_title_available_cert'] = 'Available Certificates';
-$lang['lotw_title_information'] = 'Information';
-$lang['lotw_title_upload_p12_cert'] = 'Upload Logbook of the World .p12 Certificate';
-$lang['lotw_title_export_p12_file_instruction'] = 'Export .p12 File Instructions';
-$lang['lotw_title_adif_import'] = 'ADIF Import';
-$lang['lotw_title_adif_import_options'] = 'Import Options';
+$lang['lotw_title_available_cert'] = 'Имеющиеся сертификаты';
+$lang['lotw_title_information'] = 'Информация';
+$lang['lotw_title_upload_p12_cert'] = 'Загрузка Logbook of the World .p12 сертификата';
+$lang['lotw_title_export_p12_file_instruction'] = 'Инструкции по экспорту .p12 файла';
+$lang['lotw_title_adif_import'] = 'Импорт ADIF';
+$lang['lotw_title_adif_import_options'] = 'Опции импорта';
 
-$lang['lotw_beta_warning'] = 'Please be aware that LoTW Sync is BETA, see wiki for help.';
-$lang['lotw_no_certs_uploaded'] = 'Вам необходимо загрузить сертификат  LoTW в формате  p12 для использования этих функций.';
+$lang['lotw_beta_warning'] = 'Обратите внимание, что синхронизация с LoTW пока в статусе бета, подробнее в wiki.';
+$lang['lotw_no_certs_uploaded'] = 'Вам необходимо загрузить сертификат LoTW в формате  p12 для использования этих функций.';
 
 $lang['lotw_date_created'] = 'Дата создания';
 $lang['lotw_date_expires'] = 'Дата окончания срока действия';
@@ -22,6 +22,7 @@ $lang['lotw_status'] = 'Статус';
 $lang['lotw_options'] = 'Опции';
 $lang['lotw_valid'] = 'Действует';
 $lang['lotw_expired'] = 'Истёк';
+$lang['lotw_expiring'] = 'Истекает';
 $lang['lotw_not_synced'] = 'Не синхронизирован';
 
 $lang['lotw_certificate_dxcc'] = 'Сертификат DXCC';
@@ -51,3 +52,7 @@ $lang['lotw_p12_export_step_three'] = 'Кликните "Сохранить Се
 $lang['lotw_p12_export_step_four'] = 'Загрузите полученный файл ниже.';
 
 $lang['lotw_confirmed'] = 'Это QSO подтверждено на LoTW';
+
+// LotW Expiry
+$lang['lotw_cert_expiring'] = 'Как минимум, один из ваших сертификатов LoTW скоро истечёт!';
+$lang['lotw_cert_expired'] = 'Один из ваших сертификатов LoTW истёк!';
