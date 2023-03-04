@@ -416,3 +416,7 @@ div#station_logbooks_linked_table_paginate {
 .qso_panel .dxccsummary {
     margin-bottom: 10px;
 }
+
+.qso_panel .dxccsummaryheader {
+    cursor: pointer;
+}
