@@ -122,7 +122,7 @@ $config['map_6digit_grids'] = FALSE;
 |
 */
 
-$config['map_at_right'] = TRUE;
+$config['map_at_right'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------

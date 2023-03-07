@@ -87,7 +87,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
 <?php if((!$this->config->item('map_at_right')) && (!$this->config->item('hide_map'))) { ?>
 <!-- Map -->
-<div id="map" style="width: 100%; height: 350px"></div>
+<div id="map" style="width: 100%; height: 350px;  margin-bottom: 15px;"></div>
 <?php } ?>
 
 <!-- Log Data -->
@@ -156,7 +156,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
   <div class="col-sm-4">
 	<?php if(($this->config->item('map_at_right')) && (!$this->config->item('hide_map'))) { ?>
 	<!-- Map -->
-	<div id="map" style="width: 100%; height: 350px"></div>
+	<div id="map" style="width: 100%; height: 350px;  margin-bottom: 15px;"></div>
 	<?php } ?>
 
   	<div class="table-responsive">
