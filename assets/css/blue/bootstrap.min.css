@@ -8645,6 +8645,10 @@ button.bg-dark:focus {
   height: auto !important;
 }
 
+.w-qsl {
+  width:55%!important
+}
+
 .mw-100 {
   max-width: 100% !important;
 }

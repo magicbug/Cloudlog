@@ -8646,6 +8646,10 @@
    width: auto !important;
  }
  
+.w-qsl {
+  width:55%!important
+}
+
  .h-25 {
    height: 25% !important;
  }

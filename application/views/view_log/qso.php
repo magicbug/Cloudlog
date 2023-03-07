@@ -514,7 +514,7 @@
                             echo ' active';
                         }
                         echo '">';
-                        echo '<img class="d-block w-auto" src="' . base_url() . '/assets/qslcard/' . $image->filename .'" alt="QSL picture #'. $i++.'">';
+                        echo '<img class="d-block w-qsl" src="' . base_url() . '/assets/qslcard/' . $image->filename .'" alt="QSL picture #'. $i++.'">';
                         echo '</div>';
                     }
                     ?>
