@@ -15,7 +15,9 @@
 	   <table width="100%" class="zebra-striped">
 			<tr class="titles">
 				<td>Date</td>
+				<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
 				<td>Time</td>
+				<?php } ?>
 				<td>Call</td>
 				<td>Mode</td>
 				<td>Sent</td>
@@ -38,7 +40,9 @@
 			foreach ($last_five_qsos->result() as $row) { ?>
 				<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
 					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); ?></td>
+					<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
 					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
+					<?php } ?>
 					<td><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></td>
 					<td><?php echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; ?></td>
 					<td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX_STRING) { ?>(<?php echo $row->COL_STX_STRING;?>)<?php } ?></td>
