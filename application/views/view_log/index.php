@@ -13,8 +13,15 @@
 	<?php } ?>
 </div>
 	
-	<!-- Map -->
-	<div id="map" style="width: 100%; height: 350px"></div> 
 
 <div style="padding-top: 10px; margin-top: 0px;" class="container logbook">
+    
+	<?php if(!($this->config->item('hide_map') || $this->config->item('hide_map_at_overview')))  { ?>
+	<!-- Map -->
+	<div id="map" style="width: 100%; height: 350px"></div>
+	<?php } ?>
+
+
 	<?php $this->load->view('view_log/partial/log_ajax') ?>
+</div>
+

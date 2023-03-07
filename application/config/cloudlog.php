@@ -32,7 +32,7 @@ $config['show_time'] = FALSE;
 | Default is: M
 |
 */
-$config['measurement_base'] = 'M';
+$config['measurement_base'] = 'K';
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +59,7 @@ $config['map_gridsquares'] = FALSE;
 |
 */
 
-$config['public_search'] = FALSE;
+$config['public_search'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,3 +110,42 @@ $config['qso_date_format'] = "d/m/y";
 */
 
 $config['map_6digit_grids'] = FALSE;
+
+/*
+|--------------------------------------------------------------------------
+| Show map in right column
+|--------------------------------------------------------------------------
+|
+| Set this to TRUE to show the map in the right column at the Dashboard and Visitor views.
+|
+| Default is: FALSE
+|
+*/
+
+$config['map_at_right'] = TRUE;
+
+/*
+|--------------------------------------------------------------------------
+| Hide map at the logbook overview
+|--------------------------------------------------------------------------
+|
+| Setting this to TRUE to hide the map from the logbook overview.
+|
+| Default is: FALSE
+|
+*/
+
+$config['hide_map_at_overview'] = FALSE;
+
+/*
+|--------------------------------------------------------------------------
+| Hide map from all tables
+|--------------------------------------------------------------------------
+|
+| Setting this to TRUE to hide the map from all logbook table views (visitor, dashboard, logbook overview).
+|
+| Default is: FALSE
+|
+*/
+
+$config['hide_map'] = FALSE;

@@ -45,10 +45,13 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 <div class="container dashboard">
 </div>
 
-<!-- Map -->
-<div id="map" style="width: 100%; height: 350px"></div>
 
 <div style="padding-top: 0px; margin-top: 5px;" class="container dashboard">
+
+<?php if((!$this->config->item('map_at_right')) && (!$this->config->item('hide_map'))) { ?>
+<!-- Map -->
+<div id="map" style="width: 100%; height: 350px"></div>
+<?php } ?>
 
 <!-- Log Data -->
 <div class="row logdata">
@@ -114,6 +117,11 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
   </div>
 
   <div class="col-sm-4">
+	<?php if(($this->config->item('map_at_right')) && (!$this->config->item('hide_map'))) { ?>
+	<!-- Map -->
+	<div id="map" style="width: 100%; height: 350px"></div>
+	<?php } ?>
+
   	<div class="table-responsive">
 
 		<?php if($radio_status->num_rows()) { ?>
