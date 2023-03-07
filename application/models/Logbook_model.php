@@ -2343,12 +2343,18 @@ class Logbook_model extends CI_Model {
     function eqsl_not_yet_sent() {
       $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE, '.$this->config->item('table_name').'.COL_QSLMSG');
       $this->db->from('station_profile');
-      $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id AND station_profile.eqslqthnickname != ""','right');
+      $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+      $this->db->group_start();
       $this->db->where('station_profile.eqslqthnickname !=', '');
+      $this->db->or_where('station_profile.eqslqthnickname is not null');
+      $this->db->group_end();
       $this->db->where($this->config->item('table_name').'.COL_CALL !=', '');
       $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'Y');
+      $this->db->group_start();
       $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'I');
       $this->db->or_where(array($this->config->item('table_name').'.COL_EQSL_QSL_SENT' => NULL));
+      $this->db->group_end();
+
       return $this->db->get();
     }
 
