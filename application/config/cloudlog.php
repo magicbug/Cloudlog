@@ -32,7 +32,7 @@ $config['show_time'] = FALSE;
 | Default is: M
 |
 */
-$config['measurement_base'] = 'K';
+$config['measurement_base'] = 'M';
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +59,7 @@ $config['map_gridsquares'] = FALSE;
 |
 */
 
-$config['public_search'] = TRUE;
+$config['public_search'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
