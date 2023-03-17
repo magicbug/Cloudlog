@@ -637,13 +637,11 @@ class Logbook_model extends CI_Model {
 	function mark_webadif_qsos_sent($primarykey)
 	{
 		$data = array(
-			'webadif_upload_date' => date("Y-m-d H:i:s", strtotime("now")),
-			'webadif_upload_status' => 'Y',
+			'upload_date' => date("Y-m-d H:i:s", strtotime("now")),
+			'qso_id' => $primarykey,
 		);
 
-		$this->db->where('COL_PRIMARY_KEY', $primarykey);
-
-		$this->db->update($this->config->item('table_name'), $data);
+		$this->db->insert('webadif', $data);
 
 		return true;
 	}

@@ -25,18 +25,25 @@ class Migration_add_webadif_api_export extends CI_Migration {
 			$this->dbforge->add_column('station_profile', $fields);
 		}
 
-		if (!$this->db->field_exists('webadif_upload_date', $this->config->item('table_name'))) {
-			$fields = array(
-				"webadif_upload_date datetime DEFAULT NULL"
-			);
-			$this->dbforge->add_column($this->config->item('table_name'), $fields);
-		}
 
-		if (!$this->db->field_exists('webadif_upload_status', $this->config->item('table_name'))) {
-			$fields = array(
-				"webadif_upload_status varchar(1) DEFAULT 'N'"
-			);
-			$this->dbforge->add_column($this->config->item('table_name'), $fields);
+		if (!$this->db->table_exists('webadif')) {
+			$this->dbforge->add_field(array(
+				'id' => array(
+					'type' => 'INT',
+					'auto_increment' => TRUE
+				),
+				'qso_id' => array(
+					'type' => 'int',
+				),
+				'upload_date' => array(
+					'type' => 'datetime',
+				),
+			));
+
+			$this->dbforge->add_key('id', TRUE);
+			$this->dbforge->add_key(array('qso_id','upload_date'), FALSE);
+
+			$this->dbforge->create_table('webadif');
 		}
 
 	}
@@ -46,7 +53,6 @@ class Migration_add_webadif_api_export extends CI_Migration {
         $this->dbforge->drop_column('station_profile', 'webadifapikey');
 		$this->dbforge->drop_column('station_profile', 'webadifapiurl');
 		$this->dbforge->drop_column('station_profile', 'webadifrealtime');
-		$this->dbforge->drop_column($this->config->item('table_name'), 'webadif_upload_date');
-		$this->dbforge->drop_column($this->config->item('table_name'), 'webadif_upload_status');
+		$this->dbforge->drop_table('webadif');
     }
 }
