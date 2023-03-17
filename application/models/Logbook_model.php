@@ -1275,6 +1275,25 @@ class Logbook_model extends CI_Model {
         return $query;
     }
 
+	/*
+     * Function returns the QSOs from the logbook, which have not been either marked as uploaded to webADIF
+     */
+	function get_webadif_qsos($station_id){
+		$sql = "
+			SELECT qsos.*, station_profile.* FROM %s qsos
+			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
+			LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
+			WHERE qsos.station_id = %d
+			  AND webadif.upload_date IS NULL
+		";
+		$sql = sprintf(
+			$sql,
+			$this->config->item('table_name'),
+			$station_id
+		);
+		return $this->db->query($sql);
+	}
+
     /*
      * Function returns all the station_id's with QRZ API Key's
      */
@@ -1293,6 +1312,26 @@ class Logbook_model extends CI_Model {
             return null;
         }
     }
+
+	/*
+     * Function returns all the station_id's with QRZ API Key's
+     */
+	function get_station_id_with_webadif_api() {
+		$sql = "
+			SELECT station_id, webadifapikey, webadifapiurl
+			FROM station_profile
+            WHERE COALESCE(webadifapikey, '') <> ''
+              AND COALESCE(webadifapiurl, '') <> ''
+		";
+
+		$query = $this->db->query($sql);
+		$result = $query->result();
+		if ($result) {
+			return $result;
+		} else {
+			return null;
+		}
+	}
 
   function get_last_qsos($num, $StationLocationsArray = null) {
 

@@ -345,6 +345,35 @@ class Stations extends CI_Model {
         return $query;
     }
 
+	function stations_with_webadif_api_key() {
+		$sql="
+			SELECT station_profile.station_id, station_profile.station_profile_name, station_profile.station_callsign, notc.c notcount, totc.c totcount
+			FROM station_profile
+			INNER JOIN (
+				SELECT qsos.station_id, COUNT(qsos.COL_PRIMARY_KEY) c
+				FROM %s qsos
+				LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
+				WHERE webadif.qso_id IS NULL
+				GROUP BY qsos.station_id
+			) notc
+			INNER JOIN (
+				SELECT qsos.station_id, COUNT(qsos.COL_PRIMARY_KEY) c
+				FROM %s qsos
+				GROUP BY qsos.station_id
+			) totc
+			WHERE COALESCE(station_profile.webadifapikey, '') <> ''
+			AND COALESCE(station_profile.webadifapiurl, '') <> ''
+			AND station_profile.user_id = %d
+		";
+		$sql=sprintf(
+			$sql,
+			$this->config->item('table_name'),
+			$this->config->item('table_name'),
+			$this->session->userdata('user_id')
+		);
+		return $this->db->query($sql);
+	}
+
     /*
 	*	Function: are_eqsl_nicks_defined
 	*	Description: Returns number of station profiles with eqslnicknames

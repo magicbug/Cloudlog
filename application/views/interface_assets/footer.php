@@ -70,7 +70,7 @@ function load_was_map() {
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/continents.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz") { ?>
+<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "webadif") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
@@ -112,7 +112,7 @@ function load_was_map() {
             console.log("'clicked");
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
-            } else { 
+            } else {
                 console.log('Geolocation is not supported by this browser.');
             }
         }
@@ -363,7 +363,7 @@ $(function () {
                             $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
                             $("#query_" + id).remove(); // removes query from table in dialog
                             $("#querydropdown option[value='" + id + "']").remove(); // removes query from dropdown
-                            if ($("#querydropdown option").length == 0) { 
+                            if ($("#querydropdown option").length == 0) {
                                 $("#btn-edit").remove();
                                 $('.querydropdownform').remove();
                             };
@@ -549,7 +549,7 @@ function newpath(latlng1, latlng2, locator1, locator2) {
 
     var osmUrl='<?php echo $this->optionslib->get_option('option_map_tile_server');?>';
     var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib}); 
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});
 
     var redIcon = L.icon({
 					iconUrl: icon_dot_url,
@@ -602,7 +602,7 @@ function showActivatorsMap(call, count, grids) {
 
     var osmUrl='<?php echo $this->optionslib->get_option('option_map_tile_server');?>';
     var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib}); 
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});
 
     map.addLayer(osm);
 }
@@ -730,13 +730,13 @@ function showActivatorsMap(call, count, grids) {
   });
 
   $(function () {
-    // hold onto the drop down menu                                             
+    // hold onto the drop down menu
     var dropdownMenu;
 
-    // and when you show it, move it to the body                                     
+    // and when you show it, move it to the body
     $(window).on('show.bs.dropdown', function (e) {
 
-    // grab the menu        
+    // grab the menu
     dropdownMenu = $(e.target).find('.dropdown-menu');
 
     // detach it and append it to the body
@@ -753,7 +753,7 @@ function showActivatorsMap(call, count, grids) {
        });
     });
 
-    // and when you hide it, reattach the drop down, and hide it normally                                                   
+    // and when you hide it, reattach the drop down, and hide it normally
     $(window).on('hide.bs.dropdown', function (e) {
         $(e.target).append(dropdownMenu.detach());
         dropdownMenu.hide();
@@ -882,7 +882,7 @@ $(document).on('keypress',function(e) {
 <?php if ($this->uri->segment(1) == "qso") { ?>
 <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
 
-<?php 
+<?php
 
     $this->load->model('stations');
     $active_station_id = $this->stations->find_active();
@@ -1581,6 +1581,9 @@ $(document).ready(function(){
     <?php if ($this->uri->segment(1) == "qrz") { ?>
 		<script src="<?php echo base_url(); ?>assets/js/sections/qrzlogbook.js"></script>
     <?php } ?>
+	<?php if ($this->uri->segment(1) == "webadif") { ?>
+		<script src="<?php echo base_url(); ?>assets/js/sections/webadif.js"></script>
+	<?php } ?>
 
 	<script>
 		function displayQso(id) {
@@ -1608,7 +1611,7 @@ $(document).ready(function(){
 								attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright');?>',
 							}).addTo(mymap);
 
-                            
+
                             var printer = L.easyPrint({
                                 tileLayer: tiles,
                                 sizeModes: ['Current'],
@@ -1830,7 +1833,7 @@ $(document).ready(function(){
 <?php } ?>
 
 <script>
-        
+
         function selectize_usa_county() {
             var baseURL= "<?php echo base_url();?>";
             $('#stationCntyInputEdit').selectize({
@@ -2029,7 +2032,7 @@ $(document).ready(function(){
 	<script src="<?php echo base_url(); ?>assets/js/sections/timeplot.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "qsl") { 
+<?php if ($this->uri->segment(1) == "qsl") {
     	// Get Date format
 	if($this->session->userdata('user_date_format')) {
 		// If Logged in and session exists
@@ -2050,7 +2053,7 @@ $(document).ready(function(){
         case 'M d, Y': $usethisformat = 'MMM D, YYYY';break;
         case 'M d, y': $usethisformat = 'MMM D, YY';break;
     }
-    
+
     ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
@@ -2066,8 +2069,8 @@ $(document).ready(function(){
             "scrollX": true,
             "order": [ 2, 'desc' ],
         });
-        
-        
+
+
     </script>
 <?php } ?>
 
