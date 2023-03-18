@@ -16,6 +16,7 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/Control.FullScreen.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.qrb.js"></script>
 <?php if ($this->uri->segment(1) == "activators") { ?>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.activators.js"></script>

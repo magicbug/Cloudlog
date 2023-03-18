@@ -119,7 +119,13 @@ function load_cq_map2(data) {
         $("#cqmaptab").append('<div id="cqmap"></div>');
     }
 
-    var map = L.map('cqmap');
+    var map = new L.Map('cqmap', {
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+          position: 'topleft'
+        },
+      });
+
     L.tileLayer(
         osmUrl,
         {
