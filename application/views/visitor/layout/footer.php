@@ -69,7 +69,11 @@
   var map = L.map('gridsquare_map', {
     layers: [layer],
     center: [19, 0],
-    zoom: 2
+    zoom: 2,
+    fullscreenControl: true,
+        fullscreenControlOptions: {
+          position: 'topleft'
+        },
   });
 
   var printer = L.easyPrint({

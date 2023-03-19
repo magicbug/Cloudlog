@@ -1303,7 +1303,11 @@ $(document).ready(function(){
     layers: [layer],
     center: [19, 0],
     zoom: 2,
-    minZoom: 1
+    minZoom: 1,
+    fullscreenControl: true,
+        fullscreenControlOptions: {
+          position: 'topleft'
+        },
   });
 
   var printer = L.easyPrint({
@@ -1446,7 +1450,11 @@ $(document).ready(function(){
     layers: [layer],
     center: [19, 0],
     zoom: 2,
-    minZoom: 1
+    minZoom: 1,
+    fullscreenControl: true,
+        fullscreenControlOptions: {
+          position: 'topleft'
+        },
   });
 
   var grid_two = <?php echo $grid_2char; ?>;
