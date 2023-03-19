@@ -355,12 +355,12 @@ class Stations extends CI_Model {
 				LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
 				WHERE webadif.qso_id IS NULL
 				GROUP BY qsos.station_id
-			) notc
+			) notc ON station_profile.station_id = notc.station_id
 			INNER JOIN (
 				SELECT qsos.station_id, COUNT(qsos.COL_PRIMARY_KEY) c
 				FROM %s qsos
 				GROUP BY qsos.station_id
-			) totc
+			) totc ON station_profile.station_id = totc.station_id
 			WHERE COALESCE(station_profile.webadifapikey, '') <> ''
 			AND COALESCE(station_profile.webadifapiurl, '') <> ''
 			AND station_profile.user_id = %d
