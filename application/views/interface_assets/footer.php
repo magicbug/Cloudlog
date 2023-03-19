@@ -158,6 +158,16 @@ function copyApiKey(apiKey) {
       });
 }
 
+function copyApiUrl() {
+   var apiUrlField = $('#apiUrl');
+   navigator.clipboard.writeText("<?php echo base_url(); ?>").then(function() {
+   });
+   apiUrlField.addClass('flash-copy')
+      .delay('1000').queue(function() {
+         apiUrlField.removeClass('flash-copy').dequeue();
+      });
+}
+
 $(function () {
    $('[data-toggle="tooltip"]').tooltip({'delay': { show: 500, hide: 0 }, 'placement': 'right'});
 });
