@@ -19,12 +19,15 @@
         <div class="card-body">
 			<div class="tab-content">
 				<div class="tab-pane active" id="export" role="tabpanel" aria-labelledby="export-tab">
-            <p>Here you can see and upload all QSOs which have not been previously uploaded to QO-100 Dx Club.</p>
-            <p>You need to set a QO-100 Dx Club API key in your station profile. Only station profiles with an API Key are displayed.</p>
-            <p><span class="badge badge-warning">Warning</span>This might take a while as QSO uploads are processed sequentially.</p>
+            	<p>Here you can see and upload all QSOs which have not been previously uploaded to QO-100 Dx Club.</p>
+
 
 <?php
             if ($station_profile->result()) {
+				?>
+				<p>You need to set a QO-100 Dx Club API key in your station profile. Only station profiles with an API Key are displayed.</p>
+				<p><span class="badge badge-warning">Warning</span>This might take a while as QSO uploads are processed sequentially.</p>
+				<?php
             echo '
 
             <table class="table table-bordered table-hover table-striped table-condensed text-center">
@@ -50,13 +53,22 @@
 
         }
         else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+			?>
+			<div class="alert alert-danger">
+				None of your Logbooks are configured to export data to the QO-100 Dx Club's API.<br />
+				To configure this feature, go to your profile page at the <a href="https://qo100dx.club" target="_blank">QO-100 Dx Club</a> and <strong>Create</strong> an API key.
+				Then, navigate to your <a href="<?php echo site_url('stations');?>">Station Locations</a> and configure you station with the key you have created at the club.
+			</div>
+			<?php
         }
         ?>
 
         </div>
 				<div class="tab-pane fade" id="mark" role="tabpanel" aria-labelledby="home-tab">
-
+					<p>Here you can mark as uploaded your QSOs which have not been previously uploaded to QO-100 Dx Club.</p>
+				<?php
+				if ($station_profiles->result()!==[]){
+				?>
 				<form class="form" action="<?php echo site_url('webadif/mark_webadif'); ?>" method="post" enctype="multipart/form-data">
 					<select name="station_profile" class="custom-select mb-4 mr-sm-4" style="width: 30%;">
 						<option value="0">Select Station Location</option>
@@ -86,6 +98,17 @@
 					<br>
 					<button type="button" id="markWebAdifAsExported" class="btn-sm btn-primary" value="Export">Mark QSOs as exported to QO-100 Dx Club</button>
 				</form>
+				<?php
+				}else{
+				?>
+					<div class="alert alert-danger">
+						None of your Logbooks are configured to export data to the QO-100 Dx Club's API.<br />
+						To configure this feature, go to your profile page at the <a href="https://qo100dx.club" target="_blank">QO-100 Dx Club</a> and <strong>Create</strong> an API key.
+						Then, navigate to your <a href="<?php echo site_url('stations');?>">Station Locations</a> and configure you station with the key you have created at the club.
+					</div>
+				<?php
+				}
+				?>
 	</div>
 			</div>
 		</div>
