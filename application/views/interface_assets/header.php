@@ -40,7 +40,7 @@
 	  <?php if ($this->uri->segment(1) == "adif" || (isset($hasDatePicker) && $hasDatePicker)) { ?>
   	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
   	<?php } ?>
-	 
+
 	<?php if (file_exists(APPPATH.'../assets/css/custom.css')) { echo '<link rel="stylesheet" href="'.base_url().'assets/css/custom.css">'; } ?>
 
     <link rel="icon" href="<?php echo base_url(); ?>favicon.ico">
@@ -215,7 +215,7 @@
 				<a class="dropdown-item" href="<?php echo site_url('user/edit')."/".$this->session->userdata('user_id'); ?>" title="Account"><i class="fas fa-user"></i> Account</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('logbooks');?>" title="Manage station logbooks"><i class="fas fa-home"></i> Station Logbooks</a>
-				
+
 				<a class="dropdown-item" href="<?php echo site_url('station');?>" title="Manage station locations"><i class="fas fa-home"></i> Station Locations</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('band');?>" title="Manage Bands"><i class="fas fa-cog"></i> Bands</a>
@@ -256,6 +256,8 @@ $oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 				<a class="dropdown-item" href="<?php echo site_url('eqsl/import');?>" title="eQSL import / export"><i class="fas fa-sync"></i> eQSL Import / Export</a>
 
                 <a class="dropdown-item" href="<?php echo site_url('qrz/export');?>" title="Upload to QRZ.com logbook"><i class="fas fa-sync"></i> QRZ Logbook</a>
+
+				<a class="dropdown-item" href="<?php echo site_url('webadif/export');?>" title="Upload to webADIF"><i class="fas fa-sync"></i> QO-100 Dx Club Upload</a>
 
 				<div class="dropdown-divider"></div>
 
