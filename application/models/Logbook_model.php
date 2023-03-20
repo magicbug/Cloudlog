@@ -1278,7 +1278,7 @@ class Logbook_model extends CI_Model {
 	/*
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to webADIF
      */
-	function get_webadif_qsos($station_id,$from, $to){
+	function get_webadif_qsos($station_id,$from = null, $to = null){
 		$sql = "
 			SELECT qsos.*, station_profile.*
 			FROM %s qsos
