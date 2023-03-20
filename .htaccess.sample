@@ -4,7 +4,7 @@
 
 RewriteEngine On
 
-RewriteCond %{REQUEST_URI} ^/backup/$
+RewriteCond %{REQUEST_URI} ^/(backup|kml)/$
 RewriteRule ^(.*)$ /index.php?/$1 [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
