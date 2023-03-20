@@ -136,7 +136,7 @@
          "U/V":[
             {
                "Uplink_Mode":"LSB",
-               "Uplink_Freq":"4352800000",
+               "Uplink_Freq":"435280000",
                "Downlink_Mode":"USB",
                "Downlink_Freq":"145925000"
             }

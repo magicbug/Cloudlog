@@ -42,7 +42,13 @@ function load_iota_map2(data, worked, confirmed, notworked) {
         $("#iotamaptab").append('<div id="iotamap"></div>');
     }
 
-    var map = L.map('iotamap');
+    var map = new L.Map('iotamap', {
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+          position: 'topleft'
+        },
+      });
+
     L.tileLayer(
         osmUrl,
         {
