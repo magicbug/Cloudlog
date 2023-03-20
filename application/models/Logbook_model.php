@@ -1278,9 +1278,10 @@ class Logbook_model extends CI_Model {
 	/*
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to webADIF
      */
-	function get_webadif_qsos($station_id){
+	function get_webadif_qsos($station_id,$from, $to){
 		$sql = "
-			SELECT qsos.*, station_profile.* FROM %s qsos
+			SELECT qsos.*, station_profile.*
+			FROM %s qsos
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
 			LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
 			WHERE qsos.station_id = %d
@@ -1291,6 +1292,27 @@ class Logbook_model extends CI_Model {
 			$this->config->item('table_name'),
 			$station_id
 		);
+		if ($from) {
+			$from = DateTime::createFromFormat('d/m/Y', $from);
+			$from = $from->format('Y-m-d');
+
+			$sql.="  AND qsos.COL_TIME_ON >= %s";
+			$sql=sprintf(
+				$sql,
+				$this->db->escape($from)
+			);
+		}
+		if ($to) {
+			$to = DateTime::createFromFormat('d/m/Y', $to);
+			$to = $to->format('Y-m-d');
+
+			$sql.="  AND qsos.COL_TIME_ON <= %s";
+			$sql=sprintf(
+				$sql,
+				$this->db->escape($to)
+			);
+		}
+
 		return $this->db->query($sql);
 	}
 

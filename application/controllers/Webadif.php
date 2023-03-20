@@ -91,7 +91,7 @@ class Webadif extends CI_Controller {
 
         $data['page_title'] = "QO-100 Dx Club Upload";
 
-		$data['station_profiles'] = $this->stations->all_of_user();
+		$data['station_profiles'] = $this->stations->stations_with_webadif_api_key();
         $data['station_profile'] = $this->stations->stations_with_webadif_api_key();
 
         $this->load->view('interface_assets/header', $data);
@@ -137,12 +137,17 @@ class Webadif extends CI_Controller {
 		$data['page_title'] = "QO-100 Dx Club Upload";
 
 		$station_id = $this->security->xss_clean($this->input->post('station_profile'));
-
-		$this->load->model('adif_data');
-
-		$data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'), $station_id);
+		$from = $this->security->xss_clean($this->input->post('from'));
+		$to = $this->security->xss_clean($this->input->post('to'));
 
 		$this->load->model('logbook_model');
+
+		$data['qsos'] = $this->logbook_model->get_webadif_qsos(
+			$station_id,
+			$from,
+			$to
+		);
+
 		if ($data['qsos']!==null) {
 			foreach ($data['qsos']->result() as $qso) {
 				$this->logbook_model->mark_webadif_qsos_sent($qso->COL_PRIMARY_KEY);
