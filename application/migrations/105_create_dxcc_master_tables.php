@@ -4,6 +4,7 @@ class Migration_create_dxcc_master_tables extends CI_Migration {
 
 	public function up()
 	{
+	  if (!$this->db->table_exists('dxcc_master')) {
 		$this->db->query("CREATE TABLE `dxcc_master` (
 			`DXCCPrefix` varchar(6) DEFAULT NULL,
 			`DXCCSearch` varchar(6) DEFAULT NULL,
@@ -1041,6 +1042,7 @@ class Migration_create_dxcc_master_tables extends CI_Migration {
 		$this->db->query("INSERT INTO `dxcc_master` (DXCCPrefix,DXCCSearch,DXCCMap,DXCCSort,CountryCode,PrefixList,DXCCName,Location,Continent,CQZone,ITUZone,IOTA,TimeZone,Latitude,Longitude,StartDate,EndDate) VALUES ('YB','YB','YB',17,327,'YB9[L-P],YB9Z[L-P],YC9[L-P],YC9Z[L-P],YD9[L-P],YD9Z[L-P],YE9[L-P],YE9Z[L-P],YF9[L-P],YF9Z[L-P],YG9[L-P],YG9Z[L-P],YH9[L-P],YH9Z[L-P]','Indonesia','East Nusatenggara','OC','28','54',NULL,-8.0,-8.67,121.5,NULL,NULL);");
 		$this->db->query("INSERT INTO `dxcc_master` (DXCCPrefix,DXCCSearch,DXCCMap,DXCCSort,CountryCode,PrefixList,DXCCName,Location,Continent,CQZone,ITUZone,IOTA,TimeZone,Latitude,Longitude,StartDate,EndDate) VALUES ('CE9','CE9','CE9',29,13,'RI1ANZ','Antarctica','Progress Station (Russia)','AN','39','69','AN-016',-6.0,-69.397,76.373,NULL,NULL);");
 		$this->db->query("INSERT INTO `dxcc_master` (DXCCPrefix,DXCCSearch,DXCCMap,DXCCSort,CountryCode,PrefixList,DXCCName,Location,Continent,CQZone,ITUZone,IOTA,TimeZone,Latitude,Longitude,StartDate,EndDate) VALUES ('UA0','UA0','UA',1,15,'UA0','Asiatic Russia','Asiatic Russia','AS',NULL,NULL,NULL,NULL,64.0,130.0,NULL,NULL);");
+	  }
 	}
 
 	public function down(){

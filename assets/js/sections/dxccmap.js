@@ -42,7 +42,13 @@ function load_dxcc_map2(data, worked, confirmed, notworked) {
         $("#dxccmaptab").append('<div id="dxccmap"></div>');
     }
 
-    var map = L.map('dxccmap');
+    var map = new L.Map('dxccmap', {
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+          position: 'topleft'
+        },
+      });
+
     L.tileLayer(
         osmUrl,
         {

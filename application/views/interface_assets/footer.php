@@ -16,6 +16,7 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/Control.FullScreen.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.qrb.js"></script>
 <?php if ($this->uri->segment(1) == "activators") { ?>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.activators.js"></script>
@@ -155,6 +156,16 @@ function copyApiKey(apiKey) {
    apiKeyField.addClass('flash-copy')
       .delay('1000').queue(function() {
          apiKeyField.removeClass('flash-copy').dequeue();
+      });
+}
+
+function copyApiUrl() {
+   var apiUrlField = $('#apiUrl');
+   navigator.clipboard.writeText("<?php echo base_url(); ?>").then(function() {
+   });
+   apiUrlField.addClass('flash-copy')
+      .delay('1000').queue(function() {
+         apiUrlField.removeClass('flash-copy').dequeue();
       });
 }
 
@@ -1292,7 +1303,11 @@ $(document).ready(function(){
     layers: [layer],
     center: [19, 0],
     zoom: 2,
-    minZoom: 1
+    minZoom: 1,
+    fullscreenControl: true,
+        fullscreenControlOptions: {
+          position: 'topleft'
+        },
   });
 
   var printer = L.easyPrint({
@@ -1435,7 +1450,11 @@ $(document).ready(function(){
     layers: [layer],
     center: [19, 0],
     zoom: 2,
-    minZoom: 1
+    minZoom: 1,
+    fullscreenControl: true,
+        fullscreenControlOptions: {
+          position: 'topleft'
+        },
   });
 
   var grid_two = <?php echo $grid_2char; ?>;
