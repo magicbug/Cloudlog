@@ -497,7 +497,7 @@ class Logbook_model extends CI_Model {
 			);
 
 			if ($result) {
-				$this->mark_webadif_qsos_sent($last_id);
+				$this->mark_webadif_qsos_sent([$last_id]);
 			}
 		}
 	}
@@ -632,17 +632,19 @@ class Logbook_model extends CI_Model {
 
 	/*
 	* Function marks QSOs as uploaded to WebADIF.
-	* $primarykey is the unique id for that QSO in the logbook
+	* $qsoIDs is an arroy of unique id for the QSOs in the logbook
 	*/
-	function mark_webadif_qsos_sent($primarykey)
+	function mark_webadif_qsos_sent(array $qsoIDs)
 	{
-		$data = array(
-			'upload_date' => date("Y-m-d H:i:s", strtotime("now")),
-			'qso_id' => $primarykey,
-		);
-
-		$this->db->insert('webadif', $data);
-
+		$data = [];
+		$now = date("Y-m-d H:i:s", strtotime("now"));
+		foreach ($qsoIDs as $qsoID) {
+			$data[] = [
+				'upload_date' => $now,
+				'qso_id' => $qsoID,
+			];
+		}
+		$this->db->insert_batch('webadif', $data);
 		return true;
 	}
 
