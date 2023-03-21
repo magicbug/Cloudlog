@@ -175,6 +175,12 @@ class API_Model extends CI_Model {
     }
   }
 
+  function update_last_used($key) {
+    $this->db->set('last_used', 'NOW()', FALSE);
+    $this->db->where('key', xss_clean($key));
+    $this->db->update('api');
+  }
+
 	// FUNCTION: string name(string $column)
 	// Converts a MySQL column name to a more friendly name
 	function name($col)

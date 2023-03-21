@@ -61,7 +61,7 @@ class Webadif extends CI_Controller {
 				$result = $this->logbook_model->push_qso_to_webadif($webadif_api_url, $webadif_api_key, $adif);
 
 				if ($result) {
-					$this->logbook_model->mark_webadif_qsos_sent($qso->COL_PRIMARY_KEY);
+					$this->logbook_model->mark_webadif_qsos_sent([$qso->COL_PRIMARY_KEY]);
 					$i++;
 				} else {
 					$errorMessage = 'QO-100 Dx Club upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
@@ -149,8 +149,15 @@ class Webadif extends CI_Controller {
 		);
 
 		if ($data['qsos']!==null) {
+			$qsoIDs=[];
 			foreach ($data['qsos']->result() as $qso) {
-				$this->logbook_model->mark_webadif_qsos_sent($qso->COL_PRIMARY_KEY);
+				$qsoIDs[]=$qso->COL_PRIMARY_KEY;
+			}
+			$batchSize = 500;
+			while ($qsoIDs !== []) {
+				$slice = array_slice($qsoIDs, 0, $batchSize);
+				$qsoIDs = array_slice($qsoIDs, $batchSize);
+				$this->logbook_model->mark_webadif_qsos_sent($slice);
 			}
 		}
 

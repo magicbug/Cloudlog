@@ -26,6 +26,7 @@
 		    <tr>
 		      <th scope="col">API Key</th>
 		      <th scope="col">Description</th>
+		      <th scope="col">Last Used</th>
 		      <th scope="col">Rights</th>
 		      <th scope="col">Status</th>
 		    </tr>
@@ -35,6 +36,7 @@
 				<tr>
 					<td><i class="fas fa-key"></i> <span class="api-key" id="<?php echo $row->key; ?>"><?php echo $row->key; ?></span> <span data-toggle="tooltip" data-original-title="<?php echo $this->lang->line('copy_to_clipboard'); ?>" onclick='copyApiKey("<?php echo $row->key; ?>")'><i class="copy-icon fas fa-copy"></span></td>
 					<td><?php echo $row->description; ?></td>
+					<td><?php echo $row->last_used; ?></td>
 					<td>
 						<?php
 							
