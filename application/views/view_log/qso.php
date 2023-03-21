@@ -9,6 +9,12 @@
             <a id="station-tab" class="nav-link" data-toggle="tab" href="#stationdetails" role="tab" aria-controls="table" aria-selected="true"><?php echo $this->lang->line('cloudlog_station_profile'); ?></a>
         </li>
         <?php
+        if ($row->COL_NOTES != null) {?>
+        <li class="nav-item">
+            <a id="notes-tab" class="nav-link" data-toggle="tab" href="#notesdetails" role="tab" aria-controls="table" aria-selected="true"><?php echo "Notes"; ?></a>
+        </li>
+        <?php }?>
+        <?php
         if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) {
 
             echo '<li ';
@@ -437,6 +443,11 @@
                     </tr>
                     <?php } ?>
             </table>
+        </div>
+
+        <div class="tab-pane fade" id="notesdetails" role="tabpanel" aria-labelledby="table-tab">
+            <h3>Notes</h3>
+            <?php echo nl2br($row->COL_NOTES); ?>
         </div>
 
         <?php
