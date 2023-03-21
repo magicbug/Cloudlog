@@ -179,7 +179,6 @@ class API_Model extends CI_Model {
     $this->db->set('last_used', 'NOW()', FALSE);
     $this->db->where('key', xss_clean($key));
     $this->db->update('api');
-    //$query = $this->db->query('UPDATE `api` SET `last_used` = NOW() WHERE `key` = "'.xss_clean($key).'";');
   }
 
 	// FUNCTION: string name(string $column)
