@@ -26,7 +26,7 @@
             if ($station_profile->result()) {
 				?>
 				<p>You need to set a QO-100 Dx Club API key in your station profile. Only station profiles with an API Key are displayed.</p>
-				<p><span class="badge badge-warning">Warning</span>This might take a while as QSO uploads are processed sequentially.</p>
+				<p><span class="badge badge-warning">Warning</span> This might take a while as QSO uploads are processed sequentially.</p>
 				<?php
             echo '
 
