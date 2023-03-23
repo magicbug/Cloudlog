@@ -443,7 +443,7 @@ function getDxccResult(dxcc, name) {
 		},
 		success: function (html) {
             $('.dxccsummary').remove();
-            $('.qsopane').append('<div class="dxccsummary col-sm-12"><br><div class="card"><div class="card-header" data-toggle="collapse" data-target=".dxccsummarybody">DXCC Summary for '+name+'</div><div class="card-body collapse dxccsummarybody"></div></div></div>');
+            $('.qsopane').append('<div class="dxccsummary col-sm-12"><br><div class="card"><div class="card-header dxccsummaryheader" data-toggle="collapse" data-target=".dxccsummarybody">DXCC Summary for '+name+'</div><div class="card-body collapse dxccsummarybody"></div></div></div>');
             $('.dxccsummarybody').append(html);
 		}
 	});
