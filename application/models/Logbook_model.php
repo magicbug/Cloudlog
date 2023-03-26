@@ -481,6 +481,25 @@ class Logbook_model extends CI_Model {
 				$this->mark_qrz_qsos_sent($last_id);
 			}
 		}
+
+		$result = $this->exists_webadif_api_key($data['station_id']);
+		// Push qso to webadif if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
+		if (isset($result->webadifapikey) && $result->webadifrealtime == 1) {
+			$CI =& get_instance();
+			$CI->load->library('AdifHelper');
+			$qso = $this->get_qso($last_id)->result();
+
+			$adif = $CI->adifhelper->getAdifLine($qso[0]);
+			$result = $this->push_qso_to_webadif(
+				$result->webadifapiurl,
+				$result->webadifapikey,
+				$adif
+			);
+
+			if ($result) {
+				$this->mark_webadif_qsos_sent([$last_id]);
+			}
+		}
 	}
   }
 
@@ -502,6 +521,25 @@ class Logbook_model extends CI_Model {
           return false;
       }
   }
+
+	/*
+	 * Function checks if a WebADIF API Key exists in the table with the given station id
+	*/
+	function exists_webadif_api_key($station_id) {
+		$sql = 'select webadifapikey, webadifapiurl, webadifrealtime from station_profile
+            where station_id = ' . $station_id;
+
+		$query = $this->db->query($sql);
+
+		$result = $query->row();
+
+		if ($result) {
+			return $result;
+		}
+		else {
+			return false;
+		}
+	}
 
   /*
    * Function uploads a QSO to QRZ with the API given.
@@ -545,6 +583,36 @@ class Logbook_model extends CI_Model {
       curl_close($ch);
   }
 
+	/*
+	 * Function uploads a QSO to WebADIF consumer with the API given.
+	 * $adif contains a line with the QSO in the ADIF format.
+	 */
+	function push_qso_to_webadif($url, $apikey, $adif) : bool{
+
+		$headers = array(
+			'Content-Type: text/plain',
+			'X-API-Key: ' . $apikey
+		);
+
+		if (substr($url, -1) !== "/") {
+			$url .= "/";
+		}
+
+		$ch = curl_init( $url . "qso");
+		curl_setopt( $ch, CURLOPT_POST, true);
+		curl_setopt( $ch, CURLOPT_POSTFIELDS, (string)$adif);
+		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt( $ch, CURLOPT_HEADER, 0);
+		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
+
+		$content = curl_exec($ch); // TODO: better error handling
+		$errors = curl_error($ch);
+		$response = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		curl_close($ch);
+		return $response === 200;
+	}
+
   /*
    * Function marks QSOs as uploaded to QRZ.
    * $primarykey is the unique id for that QSO in the logbook
@@ -561,6 +629,24 @@ class Logbook_model extends CI_Model {
 
         return true;
     }
+
+	/*
+	* Function marks QSOs as uploaded to WebADIF.
+	* $qsoIDs is an arroy of unique id for the QSOs in the logbook
+	*/
+	function mark_webadif_qsos_sent(array $qsoIDs)
+	{
+		$data = [];
+		$now = date("Y-m-d H:i:s", strtotime("now"));
+		foreach ($qsoIDs as $qsoID) {
+			$data[] = [
+				'upload_date' => $now,
+				'qso_id' => $qsoID,
+			];
+		}
+		$this->db->insert_batch('webadif', $data);
+		return true;
+	}
 
    function upload_amsat_status($data) {
       $sat_name = '';
@@ -1038,34 +1124,34 @@ class Logbook_model extends CI_Model {
 
     return $this->db->get($this->config->item('table_name'));
   }
-  
-  
+
+
   // Set Paper to received
   function paperqsl_update($qso_id, $method) {
-      
+
       $data = array(
           'COL_QSLRDATE' => date('Y-m-d H:i:s'),
           'COL_QSL_RCVD' => 'Y',
           'COL_QSL_RCVD_VIA' => $method
       );
-      
+
       $this->db->where('COL_PRIMARY_KEY', $qso_id);
-      
+
       $this->db->update($this->config->item('table_name'), $data);
   }
 
 
   // Set Paper to sent
   function paperqsl_update_sent($qso_id, $method) {
-      
+
       $data = array(
           'COL_QSLSDATE' => date('Y-m-d H:i:s'),
           'COL_QSL_SENT' => 'Y',
           'COL_QSL_SENT_VIA' => $method
       );
-      
+
       $this->db->where('COL_PRIMARY_KEY', $qso_id);
-      
+
       $this->db->update($this->config->item('table_name'), $data);
   }
 
@@ -1191,6 +1277,47 @@ class Logbook_model extends CI_Model {
         return $query;
     }
 
+	/*
+     * Function returns the QSOs from the logbook, which have not been either marked as uploaded to webADIF
+     */
+	function get_webadif_qsos($station_id,$from = null, $to = null){
+		$sql = "
+			SELECT qsos.*, station_profile.*
+			FROM %s qsos
+			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
+			LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
+			WHERE qsos.station_id = %d
+			  AND webadif.upload_date IS NULL
+		";
+		$sql = sprintf(
+			$sql,
+			$this->config->item('table_name'),
+			$station_id
+		);
+		if ($from) {
+			$from = DateTime::createFromFormat('d/m/Y', $from);
+			$from = $from->format('Y-m-d');
+
+			$sql.="  AND qsos.COL_TIME_ON >= %s";
+			$sql=sprintf(
+				$sql,
+				$this->db->escape($from)
+			);
+		}
+		if ($to) {
+			$to = DateTime::createFromFormat('d/m/Y', $to);
+			$to = $to->format('Y-m-d');
+
+			$sql.="  AND qsos.COL_TIME_ON <= %s";
+			$sql=sprintf(
+				$sql,
+				$this->db->escape($to)
+			);
+		}
+
+		return $this->db->query($sql);
+	}
+
     /*
      * Function returns all the station_id's with QRZ API Key's
      */
@@ -1210,6 +1337,26 @@ class Logbook_model extends CI_Model {
         }
     }
 
+	/*
+     * Function returns all the station_id's with QRZ API Key's
+     */
+	function get_station_id_with_webadif_api() {
+		$sql = "
+			SELECT station_id, webadifapikey, webadifapiurl
+			FROM station_profile
+            WHERE COALESCE(webadifapikey, '') <> ''
+              AND COALESCE(webadifapiurl, '') <> ''
+		";
+
+		$query = $this->db->query($sql);
+		$result = $query->result();
+		if ($result) {
+			return $result;
+		} else {
+			return null;
+		}
+	}
+
   function get_last_qsos($num, $StationLocationsArray = null) {
 
     if($StationLocationsArray == null) {
@@ -1219,10 +1366,10 @@ class Logbook_model extends CI_Model {
     } else {
       $logbooks_locations_array = $StationLocationsArray;
     }
-  
+
     if ($logbooks_locations_array) {
       $location_list = "'".implode("','",$logbooks_locations_array)."'";
-      
+
       $sql = "SELECT * FROM ( select * from " . $this->config->item('table_name'). "
         WHERE station_id IN(". $location_list .")
         order by col_time_on desc, col_primary_key desc
@@ -1233,12 +1380,12 @@ class Logbook_model extends CI_Model {
         order by col_time_on desc, col_primary_key desc";
 
       $query = $this->db->query($sql);
-    
+
       return $query;
     } else {
       return null;
     }
-  
+
   }
 
     /* Get all QSOs with a valid grid for use in the KML export */
@@ -1390,7 +1537,7 @@ class Logbook_model extends CI_Model {
       } else {
         return null;
       }
-     
+
     }
 
     /* Return QSOs over a period of days */
@@ -1465,7 +1612,7 @@ class Logbook_model extends CI_Model {
 
     // Return QSOs made during the current month
     function month_qsos($StationLocationsArray = null) {
-      if($StationLocationsArray == null) { 
+      if($StationLocationsArray == null) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -1617,17 +1764,17 @@ class Logbook_model extends CI_Model {
 
       if ($searchCriteria['mode'] !== '') {
         $this->db->group_start();
-        $this->db->where('COL_MODE', $searchCriteria['mode']); 
+        $this->db->where('COL_MODE', $searchCriteria['mode']);
         $this->db->or_where('COL_SUBMODE', $searchCriteria['mode']);
         $this->db->group_end();
       }
 
       if ($searchCriteria['band'] !== '') {
         if($searchCriteria['band'] != "SAT") {
-          $this->db->where('COL_BAND', $searchCriteria['band']); 
-          $this->db->where('COL_PROP_MODE != "SAT"'); 
+          $this->db->where('COL_BAND', $searchCriteria['band']);
+          $this->db->where('COL_PROP_MODE != "SAT"');
         } else {
-          $this->db->where('COL_PROP_MODE', 'SAT'); 
+          $this->db->where('COL_PROP_MODE', 'SAT');
         }
       }
 
@@ -1746,7 +1893,7 @@ class Logbook_model extends CI_Model {
     }
 
     function get_QSLStats($StationLocationsArray = null) {
-          
+
       if($StationLocationsArray == null) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
@@ -1872,7 +2019,7 @@ class Logbook_model extends CI_Model {
         $query = $this->db->get($this->config->item('table_name'));
 
         $row = $query->row();
-  
+
         if($row == null) {
             return 0;
         } else {
@@ -1995,7 +2142,7 @@ class Logbook_model extends CI_Model {
           $this->db->where('COL_COUNTRY !=', 'Invalid');
           $this->db->where('COL_DXCC >', '0');
           $query = $this->db->get($this->config->item('table_name'));
-  
+
           return $query->num_rows();
         } else {
           return 0;
@@ -2028,7 +2175,7 @@ class Logbook_model extends CI_Model {
 
         /* Return total number of countries confirmed with along with qsl types confirmed */
         function total_countries_confirmed($StationLocationsArray = null) {
-          
+
           if($StationLocationsArray == null) {
             $CI =& get_instance();
             $CI->load->model('logbooks_model');
@@ -2040,7 +2187,7 @@ class Logbook_model extends CI_Model {
           if(!empty($logbooks_locations_array)) {
             $this->db->select('COUNT(DISTINCT COL_COUNTRY) as Countries_Worked,
             COUNT(DISTINCT IF(COL_QSL_RCVD = "Y", COL_COUNTRY, NULL)) as Countries_Worked_QSL,
-            COUNT(DISTINCT IF(COL_EQSL_QSL_RCVD = "Y", COL_COUNTRY, NULL)) as Countries_Worked_EQSL,  
+            COUNT(DISTINCT IF(COL_EQSL_QSL_RCVD = "Y", COL_COUNTRY, NULL)) as Countries_Worked_EQSL,
             COUNT(DISTINCT IF(COL_LOTW_QSL_RCVD = "Y", COL_COUNTRY, NULL)) as Countries_Worked_LOTW');
             $this->db->where_in('station_id', $logbooks_locations_array);
             $this->db->where('COL_COUNTRY !=', 'Invalid');
@@ -2343,12 +2490,17 @@ class Logbook_model extends CI_Model {
     function eqsl_not_yet_sent() {
       $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE, '.$this->config->item('table_name').'.COL_QSLMSG');
       $this->db->from('station_profile');
-      $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id AND station_profile.eqslqthnickname != ""','right');
-      $this->db->where('station_profile.eqslqthnickname !=', '');
+      $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+      $this->db->where("coalesce(station_profile.eqslqthnickname, '') <> ''");
       $this->db->where($this->config->item('table_name').'.COL_CALL !=', '');
-      $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'Y');
-      $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT !=', 'I');
-      $this->db->or_where(array($this->config->item('table_name').'.COL_EQSL_QSL_SENT' => NULL));
+      $this->db->group_start();
+      $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT is null');
+      $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', '');
+      $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'R');
+      $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'Q');
+      $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'N');
+      $this->db->group_end();
+
       return $this->db->get();
     }
 
@@ -2853,11 +3005,11 @@ class Logbook_model extends CI_Model {
                 'COL_WWFF_REF' => (!empty($record['wwff_ref'])) ? $record['wwff_ref'] : '',
                 'COL_POTA_REF' => (!empty($record['pota_ref'])) ? $record['pota_ref'] : '',
                 'COL_SRX' => (!empty($record['srx'])) ? (int)$record['srx'] : null,
-                //convert to integer to make sure no invalid entries are imported 
+                //convert to integer to make sure no invalid entries are imported
                 'COL_SRX_STRING' => (!empty($record['srx_string'])) ? $record['srx_string'] : '',
                 'COL_STATE' => (!empty($record['state'])) ? strtoupper($record['state']) : '',
                 'COL_STATION_CALLSIGN' => (!empty($record['station_callsign'])) ? $record['station_callsign'] : '',
-                //convert to integer to make sure no invalid entries are imported 
+                //convert to integer to make sure no invalid entries are imported
                 'COL_STX' => (!empty($record['stx'])) ? (int)$record['stx'] : null,
                 'COL_STX_STRING' => (!empty($record['stx_string'])) ? $record['stx_string'] : '',
                 'COL_SUBMODE' => $input_submode,
@@ -2966,14 +3118,14 @@ class Logbook_model extends CI_Model {
         $callsign = $matches[3][0];
         $suffix = $matches[5][0];
       if ($prefix) {
-          $prefix = substr($prefix, 0, -1); # Remove the / at the end 
+          $prefix = substr($prefix, 0, -1); # Remove the / at the end
       }
       if ($suffix) {
           $suffix = substr($suffix, 1); # Remove the / at the beginning
       };
       if (preg_match($csadditions, $suffix)) {
         if ($prefix) {
-          $call = $prefix;  
+          $call = $prefix;
         } else {
           $call = $callsign;
         }
@@ -3047,7 +3199,7 @@ class Logbook_model extends CI_Model {
           $call = "3D2/C";                                          # will match with Conway
         } elseif (preg_match('/(^LZ\/)|(\/LZ[1-9]?$)/', $call)) {   # LZ/ is LZ0 by DXCC but this is VP8h
           $call = "LZ";
-        } elseif (preg_match('/(^KG4)[A-Z09]{2}/', $call)) { 
+        } elseif (preg_match('/(^KG4)[A-Z09]{2}/', $call)) {
           $call = "KG4";
         } elseif (preg_match('/(^KG4)[A-Z09]{1}/', $call)) {
           $call = "K";
@@ -3057,14 +3209,14 @@ class Logbook_model extends CI_Model {
               $callsign = $matches[3][0];
               $suffix = $matches[5][0];
             if ($prefix) {
-                $prefix = substr($prefix, 0, -1); # Remove the / at the end 
+                $prefix = substr($prefix, 0, -1); # Remove the / at the end
             }
             if ($suffix) {
                 $suffix = substr($suffix, 1); # Remove the / at the beginning
             };
             if (preg_match($csadditions, $suffix)) {
               if ($prefix) {
-                $call = $prefix;  
+                $call = $prefix;
               } else {
                 $call = $callsign;
               }
@@ -3115,38 +3267,38 @@ class Logbook_model extends CI_Model {
       $a = '';
       $b = '';
       $c = '';
-  
+
       $lidadditions = '/^QRP$|^LGT$/';
       $csadditions = '/^P$|^R$|^A$|^M$|^LH$/';
       $noneadditions = '/^MM$|^AM$/';
-  
+
       # First check if the call is in the proper format, A/B/C where A and C
       # are optional (prefix of guest country and P, MM, AM etc) and B is the
       # callsign. Only letters, figures and "/" is accepted, no further check if the
       # callsign "makes sense".
       # 23.Apr.06: Added another "/X" to the regex, for calls like RV0AL/0/P
       # as used by RDA-DXpeditions....
-  
+
       if (preg_match_all('/^((\d|[A-Z])+\/)?((\d|[A-Z]){3,})(\/(\d|[A-Z])+)?(\/(\d|[A-Z])+)?$/', $testcall, $matches)) {
-  
+
           # Now $1 holds A (incl /), $3 holds the callsign B and $5 has C
-          # We save them to $a, $b and $c respectively to ensure they won't get 
+          # We save them to $a, $b and $c respectively to ensure they won't get
           # lost in further Regex evaluations.
           $a = $matches[1][0];
           $b = $matches[3][0];
           $c = $matches[5][0];
-  
+
           if ($a) {
-              $a = substr($a, 0, -1); # Remove the / at the end 
+              $a = substr($a, 0, -1); # Remove the / at the end
           }
           if ($c) {
               $c = substr($c, 1); # Remove the / at the beginning
           };
-  
+
           # In some cases when there is no part A but B and C, and C is longer than 2
           # letters, it happens that $a and $b get the values that $b and $c should
           # have. This often happens with liddish callsign-additions like /QRP and
-          # /LGT, but also with calls like DJ1YFK/KP5. ~/.yfklog has a line called    
+          # /LGT, but also with calls like DJ1YFK/KP5. ~/.yfklog has a line called
           # "lidadditions", which has QRP and LGT as defaults. This sorts out half of
           # the problem, but not calls like DJ1YFK/KH5. This is tested in a second
           # try: $a looks like a call (.\d[A-Z]) and $b doesn't (.\d), they are
@@ -3162,32 +3314,32 @@ class Logbook_model extends CI_Model {
                   $a = $temp;
               }
           }
-  
+
           # *** Added later ***  The check didn't make sure that the callsign
           # contains a letter. there are letter-only callsigns like RAEM, but not
-          # figure-only calls. 
-  
+          # figure-only calls.
+
           if (preg_match('/^[0-9]+$/', $b)) {            # Callsign only consists of numbers. Bad!
               return null;            # exit, undef
           }
-  
+
           # Depending on these values we have to determine the prefix.
           # Following cases are possible:
           #
           # 1.    $a and $c undef --> only callsign, subcases
           # 1.1   $b contains a number -> everything from start to number
-          # 1.2   $b contains no number -> first two letters plus 0 
+          # 1.2   $b contains no number -> first two letters plus 0
           # 2.    $a undef, subcases:
           # 2.1   $c is only a number -> $a with changed number
-          # 2.2   $c is /P,/M,/MM,/AM -> 1. 
+          # 2.2   $c is /P,/M,/MM,/AM -> 1.
           # 2.3   $c is something else and will be interpreted as a Prefix
-          # 3.    $a is defined, will be taken as PFX, regardless of $c 
-  
+          # 3.    $a is defined, will be taken as PFX, regardless of $c
+
           if (($a == null) && ($c == null)) {                     # Case 1
               if (preg_match('/\d/', $b)) {                       # Case 1.1, contains number
                   preg_match('/(.+\d)[A-Z]*/', $b, $matches);     # Prefix is all but the last
                   $prefix = $matches[1];                          # Letters
-              } else {                                            # Case 1.2, no number 
+              } else {                                            # Case 1.2, no number
                   $prefix = substr($b, 0, 2) . "0";               # first two + 0
               }
           } elseif (($a == null) && (isset($c))) {                # Case 2, CALL/X
@@ -3199,12 +3351,12 @@ class Logbook_model extends CI_Model {
                   # like N66A/7 -> N7 this brings the wrong result of N67, but I
                   # think that's rather irrelevant cos such calls rarely appear
                   # and if they do, it's very unlikely for them to have a number
-                  # attached.   You can still edit it by hand anyway..  
+                  # attached.   You can still edit it by hand anyway..
                   if (preg_match('/^([A-Z]\d)\d$/', $matches[1])) {        # e.g. A45   $c = 0
                       $prefix = $matches[1] . $c;  # ->   A40
                   } else {                         # Otherwise cut all numbers
                       preg_match('/(.*[A-Z])\d+/', $matches[1], $match); # Prefix w/o number in $1
-                      $prefix = $match[1] . $c; # Add attached number   
+                      $prefix = $match[1] . $c; # Add attached number
                   }
               } elseif (preg_match($csadditions, $c)) {
                   preg_match('/(.+\d)[A-Z]*/', $b, $matches);     # Known attachment -> like Case 1.1
@@ -3236,7 +3388,7 @@ class Logbook_model extends CI_Model {
           # case, the superfluous part will be cropped. Since this, however, changes the
           # DXCC of the prefix, this will NOT happen when invoked from with an
           # extra parameter $_[1]; this will happen when invoking it from &dxcc.
-  
+
           if (preg_match('/(\w+\d)[A-Z]+\d/', $prefix, $matches) && $i == null) {
               $prefix = $matches[1][0];
           }

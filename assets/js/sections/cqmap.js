@@ -119,7 +119,13 @@ function load_cq_map2(data) {
         $("#cqmaptab").append('<div id="cqmap"></div>');
     }
 
-    var map = L.map('cqmap');
+    var map = new L.Map('cqmap', {
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+          position: 'topleft'
+        },
+      });
+
     L.tileLayer(
         osmUrl,
         {
@@ -151,9 +157,9 @@ function load_cq_map2(data) {
                 color: mapColor,
                 strokeOpacity: 0.3,
                 strokeWeight: 2,
-          }).addTo(map);
+        }).addTo(map);
 
-        var title = '<span class="grid-text" style="cursor: default"><font style="color: \'white\'; font-size: 24px; font-weight: 900;">' + (Number(i)+Number(1)) + '</font></span>';
+        var title = '<span class="grid-text" style="cursor: default"><font style="color: \'white\'; font-size: 1.5em; font-weight: 900;">' + (Number(i)+Number(1)) + '</font></span>';
         var myIcon = L.divIcon({className: 'my-div-icon', html: title});
 
         L.marker(
@@ -162,7 +168,7 @@ function load_cq_map2(data) {
                 title: (Number(i)+Number(1)),
                 zIndex: 1000,
             }
-          ).addTo(map).on('click', onClick);
+        ).addTo(map).on('click', onClick);
     }
 
     /*Legend specific*/

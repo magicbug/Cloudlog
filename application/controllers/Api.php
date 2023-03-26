@@ -221,6 +221,8 @@ class API extends CI_Controller {
             $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard');
         }
 
+		$this->api_model->update_last_used($obj['key']);
+
 		// Retrieve the arguments from the query string
         $data['data']['format'] = $arguments['format'];
 
@@ -294,6 +296,8 @@ class API extends CI_Controller {
 		if((!$this->user_model->authorize(3)) && ($this->api_model->authorize($arguments['key']) == 0)) {
             $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard');
         }
+
+		$this->api_model->update_last_used($obj['key']);
 
 		// Retrieve the arguments from the query string
         $data['data']['format'] = $arguments['format'];
@@ -432,6 +436,7 @@ class API extends CI_Controller {
 		   die();
 		}
 
+		$this->api_model->update_last_used($obj['key']);
 
 		if($obj['type'] == "adif" && $obj['string'] != "") {
 			// Load the logbook model for adding QSO records
@@ -499,6 +504,8 @@ class API extends CI_Controller {
 		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
 		   die();
 		}
+
+		$this->api_model->update_last_used($obj['key']);
 
 		$user_id = $this->api_model->key_userid($obj['key']);
 

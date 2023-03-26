@@ -359,6 +359,27 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
+				<h5 class="card-header">QO-100 Dx Club</h5>
+				<div class="card-body">
+					<div class="form-group">
+						<label for="webadifApiKey">QO-100 Dx Club API Key</label>
+						<input type="text" class="form-control" name="webadifapikey" id="webadifApiKey" aria-describedby="webadifApiKeyHelp" value="<?php if(set_value('webadifapikey') != "") { echo set_value('webadifapikey'); } else { echo $my_station_profile->webadifapikey; } ?>">
+						<small id="webadifApiKeyHelp" class="form-text text-muted">Create your API key on <a href="https://qo100dx.club" target="_blank">your QO-100 Dx Club's profile page</a></small>
+					</div>
+					<div class="form-group">
+						<label for="webadifrealtime">QO-100 Dx Club Realtime Upload</label>
+						<select class="custom-select" id="webadifrealtime" name="webadifrealtime">
+							<option value="1" <?php if ($my_station_profile->webadifrealtime == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
+							<option value="0" <?php if ($my_station_profile->webadifrealtime == 0) { echo " selected =\"selected\""; } ?>>No</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md">
+			<div class="card">
 				<h5 class="card-header">OQRS</h5>
 				<div class="card-body">
 					<div class="form-group">
