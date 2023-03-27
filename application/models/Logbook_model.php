@@ -1287,6 +1287,7 @@ class Logbook_model extends CI_Model {
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
 			LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
 			WHERE qsos.station_id = %d
+        AND qsos.COL_SAT_NAME = 'QO-100'
 			  AND webadif.upload_date IS NULL
 		";
 		$sql = sprintf(
