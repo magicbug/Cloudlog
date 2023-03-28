@@ -1389,6 +1389,33 @@ class Logbook_model extends CI_Model {
 
   }
 
+  function check_if_callsign_worked_in_logbook($StationLocationsArray = null, $callsign, $band = null) {
+
+    if($StationLocationsArray == null) {
+      $CI =& get_instance();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    } else {
+      $logbooks_locations_array = $StationLocationsArray;
+    }
+
+    $this->db->select('COL_CALL');
+    $this->db->where_in('station_id', $logbooks_locations_array);
+    $this->db->where('COL_CALL', $callsign);
+
+    if($band != null && $band != 'SAT') {
+      $this->db->where('COL_BAND', $band);
+    } else if($band == 'SAT') {
+      // Where col_sat_name is not empty
+      $this->db->where('COL_SAT_NAME !=', '');
+    }
+
+    $query = $this->db->get($this->config->item('table_name'));
+
+    return $query->num_rows();
+
+  }
+
     /* Get all QSOs with a valid grid for use in the KML export */
     function kml_get_all_qsos($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate) {
         $CI =& get_instance();
