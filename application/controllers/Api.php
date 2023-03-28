@@ -544,6 +544,79 @@ class API extends CI_Controller {
 
 	}
 
+	// API function to check if a grid is in the logbook already
+	function logbook_check_grid() {
+		header('Content-type: application/json');
+
+		$this->load->model('api_model');
+
+		// Decode JSON and store
+		$obj = json_decode(file_get_contents("php://input"), true);
+		if ($obj === NULL) {
+		    echo json_encode(['status' => 'failed', 'reason' => "wrong JSON"]);
+		}
+
+		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
+		   http_response_code(401);
+		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
+		}
+
+		if($obj['logbook_public_slug'] != "" && $obj['grid'] != "") {
+
+			$logbook_slug = $obj['logbook_public_slug'];
+			$grid = $obj['grid'];
+
+			// If $obj['band'] exists
+			if(isset($obj['band'])) {
+				$band = $obj['band'];
+			} else {
+				$band = null;
+			}
+
+			$this->load->model('logbooks_model');
+
+			if($this->logbooks_model->public_slug_exists($logbook_slug)) {
+				$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($logbook_slug);
+				if($logbook_id != false)
+				{
+					// Get associated station locations for mysql queries
+					$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+	
+					if (!$logbooks_locations_array) {
+						// Logbook not found
+						http_response_code(404);
+						echo json_encode(['status' => 'failed', 'reason' => "Empty Logbook"]);
+						die();
+					}
+				} else {
+					// Logbook not found
+					http_response_code(404);
+					echo json_encode(['status' => 'failed', 'reason' => $logbook_slug." has no associated station locations"]);
+					die();
+				}
+				// Search Logbook for callsign
+				$this->load->model('logbook_model');
+
+				$result = $this->logbook_model->check_if_grid_worked_in_logbook($logbooks_locations_array, $grid, $band);
+
+				http_response_code(201);
+				if($result > 0)
+				{
+					echo json_encode(['gridsquare' => strtoupper($grid), 'result' => 'Found']);
+				} else {
+					echo json_encode(['gridsquare' => strtoupper($grid), 'result' => 'Not Found']);
+				}
+			} else {
+				// Logbook not found
+				http_response_code(404);
+				echo json_encode(['status' => 'failed', 'reason' => "logbook not found"]);
+				die();
+			}
+
+		}
+
+	}
+
 	function country_worked($dxcc_num, $band, $mode = NULL) {
 		$this->load->model('api_model');
 
