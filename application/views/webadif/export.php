@@ -57,7 +57,7 @@
 			<div class="alert alert-danger">
 				None of your Logbooks are configured to export data to the QO-100 Dx Club's API.<br />
 				To configure this feature, go to your profile page at the <a href="https://qo100dx.club" target="_blank">QO-100 Dx Club</a> and <strong>Create</strong> an API key.
-				Then, navigate to your <a href="<?php echo site_url('stations');?>">Station Locations</a> and configure you station with the key you have created at the club.
+				Then, navigate to your <a href="<?php echo site_url('station');?>">Station Locations</a> and configure you station with the key you have created at the club.
 			</div>
 			<?php
         }

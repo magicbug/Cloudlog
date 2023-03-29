@@ -1287,6 +1287,7 @@ class Logbook_model extends CI_Model {
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
 			LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
 			WHERE qsos.station_id = %d
+        AND qsos.COL_SAT_NAME = 'QO-100'
 			  AND webadif.upload_date IS NULL
 		";
 		$sql = sprintf(
@@ -1385,6 +1386,61 @@ class Logbook_model extends CI_Model {
     } else {
       return null;
     }
+
+  }
+
+  function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray = null, $band = null) {
+
+    if($StationLocationsArray == null) {
+      $CI =& get_instance();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    } else {
+      $logbooks_locations_array = $StationLocationsArray;
+    }
+
+    $this->db->select('COL_CALL');
+    $this->db->where_in('station_id', $logbooks_locations_array);
+    $this->db->where('COL_CALL', $callsign);
+
+    if($band != null && $band != 'SAT') {
+      $this->db->where('COL_BAND', $band);
+    } else if($band == 'SAT') {
+      // Where col_sat_name is not empty
+      $this->db->where('COL_SAT_NAME !=', '');
+    }
+    $this->db->limit('2');
+    $query = $this->db->get($this->config->item('table_name'));
+
+    return $query->num_rows();
+
+  }
+
+  function check_if_grid_worked_in_logbook($grid, $StationLocationsArray = null, $band = null) {
+
+    if($StationLocationsArray == null) {
+      $CI =& get_instance();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    } else {
+      $logbooks_locations_array = $StationLocationsArray;
+    }
+
+    $this->db->select('COL_GRIDSQUARE');
+    $this->db->where_in('station_id', $logbooks_locations_array);
+    $this->db->like('COL_GRIDSQUARE', $grid);
+
+    if($band != null && $band != 'SAT') {
+      $this->db->where('COL_BAND', $band);
+    } else if($band == 'SAT') {
+      // Where col_sat_name is not empty
+      $this->db->where('COL_SAT_NAME !=', '');
+    }
+    $this->db->limit('2');
+
+    $query = $this->db->get($this->config->item('table_name'));
+
+    return $query->num_rows();
 
   }
 
@@ -2488,6 +2544,10 @@ class Logbook_model extends CI_Model {
 
     // Show all QSOs we need to send to eQSL
     function eqsl_not_yet_sent() {
+      $CI =& get_instance();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
       $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE, '.$this->config->item('table_name').'.COL_QSLMSG');
       $this->db->from('station_profile');
       $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
@@ -2500,6 +2560,7 @@ class Logbook_model extends CI_Model {
       $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'Q');
       $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'N');
       $this->db->group_end();
+      $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
 
       return $this->db->get();
     }
