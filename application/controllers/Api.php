@@ -524,7 +524,7 @@ class API extends CI_Controller {
 				// Search Logbook for callsign
 				$this->load->model('logbook_model');
 
-				$result = $this->logbook_model->check_if_callsign_worked_in_logbook($logbooks_locations_array, $callsign, $band);
+				$result = $this->logbook_model->check_if_callsign_worked_in_logbook($callsign, $logbooks_locations_array, $band);
 
 				http_response_code(201);
 				if($result > 0)
@@ -597,7 +597,7 @@ class API extends CI_Controller {
 				// Search Logbook for callsign
 				$this->load->model('logbook_model');
 
-				$result = $this->logbook_model->check_if_grid_worked_in_logbook($logbooks_locations_array, $grid, $band);
+				$result = $this->logbook_model->check_if_grid_worked_in_logbook($grid, $logbooks_locations_array, $band);
 
 				http_response_code(201);
 				if($result > 0)

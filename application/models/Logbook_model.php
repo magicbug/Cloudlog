@@ -1389,7 +1389,7 @@ class Logbook_model extends CI_Model {
 
   }
 
-  function check_if_callsign_worked_in_logbook($StationLocationsArray = null, $callsign, $band = null) {
+  function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray = null, $band = null) {
 
     if($StationLocationsArray == null) {
       $CI =& get_instance();
@@ -1409,14 +1409,14 @@ class Logbook_model extends CI_Model {
       // Where col_sat_name is not empty
       $this->db->where('COL_SAT_NAME !=', '');
     }
-
+    $this->db->limit('2');
     $query = $this->db->get($this->config->item('table_name'));
 
     return $query->num_rows();
 
   }
 
-  function check_if_grid_worked_in_logbook($StationLocationsArray = null, $grid, $band = null) {
+  function check_if_grid_worked_in_logbook($grid, $StationLocationsArray = null, $band = null) {
 
     if($StationLocationsArray == null) {
       $CI =& get_instance();
@@ -1436,6 +1436,7 @@ class Logbook_model extends CI_Model {
       // Where col_sat_name is not empty
       $this->db->where('COL_SAT_NAME !=', '');
     }
+    $this->db->limit('2');
 
     $query = $this->db->get($this->config->item('table_name'));
 
