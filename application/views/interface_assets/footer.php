@@ -544,13 +544,29 @@ document.onkeyup = function(e) {
 
 function newpath(latlng1, latlng2, locator1, locator2) {
     // If map is already initialized
-    var container = L.DomUtil.get('mapqrb');
+    var container = L.DomUtil.get('mapqrbcontainer');
 
     if(container != null){
         container._leaflet_id = null;
+        container.remove();
+        $("#mapqrb").append('<div id="mapqrbcontainer" style="Height: 500px"></div>');
     }
 
-    const map = new L.map('mapqrb').setView([30, 0], 1.5);
+    var map = new L.Map('mapqrbcontainer', {
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+          position: 'topleft'
+        },
+      }).setView([30, 0], 1.5);
+
+    // Need to fix so that marker is placed at same place as end of line, but this only needs to be done when longitude is < -170
+    if (latlng2[1] < -170) {
+        latlng2[1] =  parseFloat(latlng2[1])+360;
+    }
+    if (latlng1[1] < -170) {
+        latlng1[1] =  parseFloat(latlng1[1])+360;
+    }
+
     map.fitBounds([
         [latlng1[0], latlng1[1]],
         [latlng2[0], latlng2[1]]
@@ -570,6 +586,7 @@ function newpath(latlng1, latlng2, locator1, locator2) {
     map.addLayer(osm);
 
     var marker = L.marker([latlng1[0], latlng1[1]], {closeOnClick: false, autoClose: false}).addTo(map).bindPopup(locator1);
+
     var marker2 = L.marker([latlng2[0], latlng2[1]], {closeOnClick: false, autoClose: false}).addTo(map).bindPopup(locator2);
 
     const multiplelines = [];
