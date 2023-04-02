@@ -353,12 +353,13 @@ class Stations extends CI_Model {
 				SELECT qsos.station_id, COUNT(qsos.COL_PRIMARY_KEY) c
 				FROM %s qsos
 				LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
-				WHERE webadif.qso_id IS NULL
+				WHERE webadif.qso_id IS NULL AND qsos.COL_SAT_NAME = 'QO-100'
 				GROUP BY qsos.station_id
 			) notc ON station_profile.station_id = notc.station_id
 			INNER JOIN (
 				SELECT qsos.station_id, COUNT(qsos.COL_PRIMARY_KEY) c
 				FROM %s qsos
+				WHERE qsos.COL_SAT_NAME = 'QO-100'
 				GROUP BY qsos.station_id
 			) totc ON station_profile.station_id = totc.station_id
 			WHERE COALESCE(station_profile.webadifapikey, '') <> ''
