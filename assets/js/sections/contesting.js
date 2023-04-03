@@ -95,8 +95,13 @@ document.onkeyup = function (e) {
 		// CTRL-Enter logs QSO
 	} else if ((e.keyCode == 10 || e.keyCode == 13) && (e.ctrlKey || e.metaKey)) {
 		logQso();
-		// Enter in sent exchange logs QSO
-	} else if ((e.which == 13) && ($(document.activeElement).attr("id") == "exch_rcvd")) {
+		// Enter in received exchange logs QSO
+	} else if ((e.which == 13) && (
+			($(document.activeElement).attr("id") == "exch_rcvd")
+			|| ($(document.activeElement).attr("id") == "exch_gridsquare_r")
+			|| ($(document.activeElement).attr("id") == "exch_serial_r")
+		)
+	) {
 		logQso();
 	} else if (e.which == 27) {
 		reset_log_fields();
