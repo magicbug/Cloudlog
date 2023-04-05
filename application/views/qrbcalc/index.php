@@ -22,4 +22,4 @@
     </div>
 </form>
 <div class="qrbResult"></div>
-<div id="mapqrb" style="Height: 500px"></div>
+<div id="mapqrb"><div id="mapqrbcontainer" style="Height: 500px"></div></div>

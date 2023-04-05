@@ -87,6 +87,15 @@ $(function () {
 	});
 });
 
+// We don't want spaces to be written in serial
+$(function () {
+	$('#exch_serial_r').on('keypress', function (e) {
+		if (e.which == 32) {
+			return false;
+		}
+	});
+});
+
 // Here we capture keystrokes to execute functions
 document.onkeyup = function (e) {
 	// ALT-W wipe
@@ -95,8 +104,13 @@ document.onkeyup = function (e) {
 		// CTRL-Enter logs QSO
 	} else if ((e.keyCode == 10 || e.keyCode == 13) && (e.ctrlKey || e.metaKey)) {
 		logQso();
-		// Enter in sent exchange logs QSO
-	} else if ((e.which == 13) && ($(document.activeElement).attr("id") == "exch_rcvd")) {
+		// Enter in received exchange logs QSO
+	} else if ((e.which == 13) && (
+			($(document.activeElement).attr("id") == "exch_rcvd")
+			|| ($(document.activeElement).attr("id") == "exch_gridsquare_r")
+			|| ($(document.activeElement).attr("id") == "exch_serial_r")
+		)
+	) {
 		logQso();
 	} else if (e.which == 27) {
 		reset_log_fields();

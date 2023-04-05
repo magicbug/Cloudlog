@@ -52,7 +52,7 @@ class LotwCert extends CI_Model {
 		$this->db->insert('lotw_certs', $data);
 	}
 
-	function update_certficiate($user_id, $callsign, $dxcc, $date_created, $date_expires, $cert_key, $general_cert) {
+	function update_certificate($user_id, $callsign, $dxcc, $date_created, $date_expires, $cert_key, $general_cert) {
 		$data = array(
 		    'cert_dxcc' => $dxcc,
 		    'date_created' => $date_created,
@@ -67,7 +67,7 @@ class LotwCert extends CI_Model {
 		$this->db->update('lotw_certs', $data);
 	}
 
-	function delete_certficiate($user_id, $lotw_cert_id) {
+	function delete_certificate($user_id, $lotw_cert_id) {
 		$this->db->where('lotw_cert_id', $lotw_cert_id);
 		$this->db->where('user_id', $user_id);
 		$this->db->delete('lotw_certs');
