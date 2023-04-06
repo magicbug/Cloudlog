@@ -87,6 +87,15 @@ $(function () {
 	});
 });
 
+// We don't want spaces to be written in serial
+$(function () {
+	$('#exch_serial_r').on('keypress', function (e) {
+		if (e.which == 32) {
+			return false;
+		}
+	});
+});
+
 // Here we capture keystrokes to execute functions
 document.onkeyup = function (e) {
 	// ALT-W wipe
