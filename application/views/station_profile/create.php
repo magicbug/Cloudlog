@@ -241,6 +241,21 @@
                 </div>
             </div>
 
+			<div class="form-row">
+				<div class="form-group col-sm-6">
+					<label for="webadifApiKey"> QO-100 Dx Club API Key </label>
+					<input type="text" class="form-control" name="webadifapikey" id="webadifApiKey" aria-describedby="webadifApiKeyHelp">
+					<small id="webadifApiKeyHelp" class="form-text text-muted">Create your API key on <a href="https://qo100dx.club" target="_blank">your QO-100 Dx Club's profile page</a></small>
+				</div>
+				<div class="form-group col-sm-6">
+					<label for="webadifrealtime">QO-100 Dx Club Realtime Upload</label>
+					<select class="custom-select" id="webadifrealtime" name="webadifrealtime">
+						<option value="1">Yes</option>
+						<option value="0" selected>No</option>
+					</select>
+				</div>
+			</div>
+
 			<div class="form-group">
 				<label for="oqrs">OQRS Enabled</label>
 				<select class="custom-select" id="oqrs" name="oqrs">

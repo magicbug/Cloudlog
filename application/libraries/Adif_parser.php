@@ -119,7 +119,15 @@ class ADIF_Parser
 	
 	public function feed($input_data) //allows the parser to be fed a string
 	{
-		$this->data = $input_data;
+		
+		if (strpos($input_data, "<EOH>") !== false) {
+			$arr=explode("<EOH>",$input_data);
+			$newstring = $arr[1];
+			$this->data = $newstring;
+		} else {
+			$this->data = $input_data;
+		}
+
         $this->datasplit = preg_split("/<eor>/i", mb_substr($this->data, $this->i, NULL, "UTF-8"));
 	}
 	

@@ -81,10 +81,13 @@ class Stations extends CI_Model {
 			'oqrs' => xss_clean($this->input->post('oqrs', true)),
 			'oqrs_email' => xss_clean($this->input->post('oqrsemail', true)),
 			'oqrs_text' => xss_clean($this->input->post('oqrstext', true)),
+			'webadifapikey' => xss_clean($this->input->post('webadifapikey', true)),
+			'webadifapiurl' => 'https://qo100dx.club/api',
+			'webadifrealtime' => xss_clean($this->input->post('webadifrealtime', true)),
 		);
 
 		// Insert Records
-		$this->db->insert('station_profile', $data); 
+		$this->db->insert('station_profile', $data);
 	}
 
 	function edit() {
@@ -111,11 +114,14 @@ class Stations extends CI_Model {
 			'oqrs' => xss_clean($this->input->post('oqrs', true)),
 			'oqrs_email' => xss_clean($this->input->post('oqrsemail', true)),
 			'oqrs_text' => xss_clean($this->input->post('oqrstext', true)),
+			'webadifapikey' => xss_clean($this->input->post('webadifapikey', true)),
+			'webadifapiurl' => 'https://qo100dx.club/api',
+			'webadifrealtime' => xss_clean($this->input->post('webadifrealtime', true)),
 		);
 
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', xss_clean($this->input->post('station_id', true)));
-		$this->db->update('station_profile', $data); 
+		$this->db->update('station_profile', $data);
 	}
 
 	function delete($id) {
@@ -132,7 +138,7 @@ class Stations extends CI_Model {
 		$this->db->delete($this->config->item('table_name'));
 
 		// Delete Station Profile
-		$this->db->delete('station_profile', array('station_id' => $clean_id)); 
+		$this->db->delete('station_profile', array('station_id' => $clean_id));
 	}
 
 	function deletelog($id) {
@@ -145,7 +151,7 @@ class Stations extends CI_Model {
 		$data = array(
 				'user_id' => $this->session->userdata('user_id'),
 		);
-			
+
 		$this->db->where('station_id', $id);
 		$this->db->update('station_profile', $data);
 	}
@@ -160,7 +166,7 @@ class Stations extends CI_Model {
 		$data = array(
 				'user_id' => $id,
 		);
-			
+
 		$this->db->update('station_profile', $data);
 	}
 
@@ -192,7 +198,7 @@ class Stations extends CI_Model {
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->update('station_profile', $current_default);
 
-		// Deselect current default	
+		// Deselect current default
 		$newdefault = array(
 			'station_active' => 1,
 		);
@@ -215,7 +221,7 @@ class Stations extends CI_Model {
 			return "0";
 		}
 	}
-	
+
 	public function find_gridsquare() {
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_active', 1);
@@ -262,7 +268,7 @@ class Stations extends CI_Model {
 		);
 
 		$this->db->where('COL_STATION_CALLSIGN', $row->station_callsign);
-		
+
 		if($row->station_iota != "") {
 			$this->db->where('COL_MY_IOTA', $row->station_iota);
 		}
@@ -307,7 +313,7 @@ class Stations extends CI_Model {
 	    	return 1;
 	    } else {
 	    	return 0;
-	    }        	
+	    }
     }
 
     function stations_with_qrz_api_key() {
@@ -338,6 +344,36 @@ class Stations extends CI_Model {
 
         return $query;
     }
+
+	function stations_with_webadif_api_key() {
+		$sql="
+			SELECT station_profile.station_id, station_profile.station_profile_name, station_profile.station_callsign, notc.c notcount, totc.c totcount
+			FROM station_profile
+			INNER JOIN (
+				SELECT qsos.station_id, COUNT(qsos.COL_PRIMARY_KEY) c
+				FROM %s qsos
+				LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
+				WHERE webadif.qso_id IS NULL AND qsos.COL_SAT_NAME = 'QO-100'
+				GROUP BY qsos.station_id
+			) notc ON station_profile.station_id = notc.station_id
+			INNER JOIN (
+				SELECT qsos.station_id, COUNT(qsos.COL_PRIMARY_KEY) c
+				FROM %s qsos
+				WHERE qsos.COL_SAT_NAME = 'QO-100'
+				GROUP BY qsos.station_id
+			) totc ON station_profile.station_id = totc.station_id
+			WHERE COALESCE(station_profile.webadifapikey, '') <> ''
+			AND COALESCE(station_profile.webadifapiurl, '') <> ''
+			AND station_profile.user_id = %d
+		";
+		$sql=sprintf(
+			$sql,
+			$this->config->item('table_name'),
+			$this->config->item('table_name'),
+			$this->session->userdata('user_id')
+		);
+		return $this->db->query($sql);
+	}
 
     /*
 	*	Function: are_eqsl_nicks_defined

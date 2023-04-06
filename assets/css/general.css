@@ -405,6 +405,10 @@ div#station_logbooks_linked_table_paginate {
    }
 }
 
+.api-url {
+   font-family: Monospace;
+}
+
 .api-key {
    font-family: Monospace;
 }
@@ -415,4 +419,8 @@ div#station_logbooks_linked_table_paginate {
 
 .qso_panel .dxccsummary {
     margin-bottom: 10px;
+}
+
+.qso_panel .dxccsummaryheader {
+    cursor: pointer;
 }

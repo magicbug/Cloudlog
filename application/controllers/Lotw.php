@@ -153,23 +153,23 @@ class Lotw extends CI_Controller {
 			}
 
 			// Check to see if certificate is already in the system
-			$new_certficiate = $this->LotwCert->find_cert($info['issued_callsign'], $dxcc, $this->session->userdata('user_id'));
+			$new_certificate = $this->LotwCert->find_cert($info['issued_callsign'], $dxcc, $this->session->userdata('user_id'));
 
-        	if($new_certficiate == 0) {
+        	if($new_certificate == 0) {
         		// New Certificate Store in Database
 
         		// Store Certificate Data into MySQL
         		$this->LotwCert->store_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['qso-first-date'], $info['qso-end-date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
-        		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certficiate Imported.');
+        		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certificate Imported.');
         	} else {
-        		// Certficiate is in the system time to update
+        		// Certificate is in the system time to update
 
-				$this->LotwCert->update_certficiate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
+				$this->LotwCert->update_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
-        		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certficiate Updated.');
+        		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certificate Updated.');
 
         	}
 
@@ -378,9 +378,9 @@ class Lotw extends CI_Controller {
 
     	$this->load->model('LotwCert');
 
-    	$this->LotwCert->delete_certficiate($this->session->userdata('user_id'), $cert_id);
+    	$this->LotwCert->delete_certificate($this->session->userdata('user_id'), $cert_id);
 
-    	$this->session->set_flashdata('Success', 'Certficiate Deleted.');
+    	$this->session->set_flashdata('Success', 'Certificate Deleted.');
 
     	redirect('/lotw/');
     }
