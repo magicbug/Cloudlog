@@ -18,10 +18,38 @@ class Logbook_model extends CI_Model {
 
     // Contest exchange, need to separate between serial and other type of exchange
     if($this->input->post('exchangetype')) {
-      $srx_string = $this->input->post('exch_rcvd') == '' ? null : $this->input->post('exch_rcvd');
-      $stx_string = $this->input->post('exch_sent') == '' ? null : $this->input->post('exch_sent');
-      $srx = $this->input->post('exch_serial_r') == '' ? null : $this->input->post('exch_serial_r');
-      $stx = $this->input->post('exch_serial_s') == '' ? null : $this->input->post('exch_serial_s');
+      switch ($this->input->post('exchangetype')) {
+        case 'Exchange':
+          $srx_string = $this->input->post('exch_rcvd') == '' ? null : $this->input->post('exch_rcvd');
+          $stx_string = $this->input->post('exch_sent') == '' ? null : $this->input->post('exch_sent');
+          $srx = null;
+          $stx = null;
+          break;
+        case 'Gridsquare':
+          $srx_string = null;
+          $stx_string = null;
+          $srx = null;
+          $stx = null;
+          break;
+        case 'Serial':
+          $srx = $this->input->post('exch_serial_r') == '' ? null : $this->input->post('exch_serial_r');
+          $stx = $this->input->post('exch_serial_s') == '' ? null : $this->input->post('exch_serial_s');
+          $srx_string = null;
+          $stx_string = null;
+          break;
+        case 'Serialexchange':
+          $srx_string = $this->input->post('exch_rcvd') == '' ? null : $this->input->post('exch_rcvd');
+          $stx_string = $this->input->post('exch_sent') == '' ? null : $this->input->post('exch_sent');
+          $srx = $this->input->post('exch_serial_r') == '' ? null : $this->input->post('exch_serial_r');
+          $stx = $this->input->post('exch_serial_s') == '' ? null : $this->input->post('exch_serial_s');
+          break;
+        case 'Serialgridsquare':
+          $srx = $this->input->post('exch_serial_r') == '' ? null : $this->input->post('exch_serial_r');
+          $stx = $this->input->post('exch_serial_s') == '' ? null : $this->input->post('exch_serial_s');
+          $srx_string = null;
+          $stx_string = null;
+          break;
+      }
     } else {
       $srx_string = null;
       $stx_string = null;

@@ -354,12 +354,52 @@ function logQso() {
 		$('.callsign-suggestions').text("");
 
 		var table = $('.qsotable').DataTable();
+		var exchangetype = $("#exchangetype").val();
+
 		var gridsquare = $("#exch_gridsquare_r").val();
 		var vucc = '';
 
 		if (gridsquare.indexOf(',') != -1) {
 			vucc = gridsquare;
 			gridsquare = '';
+		}
+
+		var gridr = '';
+		var vuccr = '';
+		var exchsent = '';
+		var exchrcvd = '';
+		var serials = '';
+		var serialr = '';
+
+		switch (exchangetype) {
+			case 'Exchange':
+				exchsent = $("#exch_sent").val();
+				exchrcvd = $("#exch_rcvd").val();
+			break;
+
+			case 'Gridsquare':
+				gridr = gridsquare;
+				vuccr = vucc;
+			break;
+
+			case 'Serial':
+				serials = $("#exch_serial_s").val();
+				serialr = $("#exch_serial_r").val();
+			break;
+			
+			case 'Serialexchange':
+				exchsent = $("#exch_sent").val();
+				exchrcvd = $("#exch_rcvd").val();
+				serials = $("#exch_serial_s").val();
+				serialr = $("#exch_serial_r").val();
+			break;
+			
+			case 'Serialgridsquare':
+				gridr = gridsquare;
+				vuccr = vucc;
+				serials = $("#exch_serial_s").val();
+				serialr = $("#exch_serial_r").val();
+			break;
 		}
 
 		var data = [[
@@ -369,12 +409,12 @@ function logQso() {
 			$("#mode").val(),
 			$("#rst_sent").val(),
 			$("#rst_rcvd").val(),
-			$("#exch_sent").val(),
-			$("#exch_rcvd").val(),
-			$("#exch_serial_s").val(),
-			$("#exch_serial_r").val(),
-			gridsquare,
-			vucc,
+			exchsent,
+			exchrcvd,
+			serials,
+			serialr,
+			gridr,
+			vuccr,
 		]];
 
 		table.rows.add(data).draw();
