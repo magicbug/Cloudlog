@@ -417,6 +417,7 @@
                                     <label
                                         for="column5"><?php echo $this->lang->line('account_column5_text'); ?></label>
                                     <select class="custom-select" id="column5" name="user_column5">
+                                        <option value=""></option>
                                         <option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?>
                                         </option>
                                         <option value="Frequency">
@@ -439,6 +440,8 @@
                                             <?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
                                         <option value="Operator">
                                             <?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
+                                        <option value="Location">
+                                            <?php echo $this->lang->line('cloudlog_station_profile'); ?></option>
                                     </select>
                                 </div>
                             </div>
