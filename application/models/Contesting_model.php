@@ -26,8 +26,78 @@ class Contesting_model extends CI_Model {
             " ORDER BY COL_PRIMARY_KEY ASC";
 
         $data = $this->db->query($sql);
-        header('Content-Type: application/json');
-        echo json_encode($data->result());
+        return $data->result();
+    }
+
+	function getSession() {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        $sql = "SELECT * from contest_session where station_id = " . $station_id;
+
+        $data = $this->db->query($sql);
+        return $data->row();
+    }
+
+
+
+	function deleteSession() {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        $sql = "delete from contest_session where station_id = " . $station_id;
+
+        $this->db->query($sql);
+		return;
+    }
+
+	function setSession() {
+        $CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+		$qso = "";
+
+		if ($this->input->post('callsign')) {
+			$qso = xss_clean($this->input->post('start_date', true)) . ' ' . xss_clean($this->input->post('start_time', true)) . ',' . xss_clean($this->input->post('callsign', true)) . ',' . xss_clean($this->input->post('contestname', true));
+		}
+
+		$data = array(
+			'contestid' 			=> xss_clean($this->input->post('contestname', true)),
+			'exchangetype' 			=> xss_clean($this->input->post('exchangetype', true)),
+			'exchangesent' 			=> xss_clean($this->input->post('exch_sent', true)),
+			'serialsent' 			=> xss_clean($this->input->post('exch_serial_s', true)),
+			'copytodok' 			=> xss_clean($this->input->post('copyexchangetodok', true)),
+			'qso' 					=> $qso,
+			'station_id' 			=> $station_id,
+		);
+
+        $sql = "SELECT * from contest_session where station_id = " . $station_id;
+
+        $querydata = $this->db->query($sql);
+
+		if ($querydata->num_rows() == 0) {
+			$this->db->insert('contest_session', $data);
+			return;
+		}
+
+		$result = $querydata->row();
+
+		if ($result->qso != "") {
+			$data['qso'] = $result->qso;
+		}
+
+		$this->updateSession($data, $station_id);
+		
+		return;
+    }
+
+	function updateSession($data, $station_id) {
+		$this->db->where('station_id', $station_id);
+
+		$this->db->update('contest_session', $data);
     }
 
     function getActivecontests() {
@@ -137,27 +207,32 @@ class Contesting_model extends CI_Model {
 		return true;
 	}
 
-	function checkIfWorkedBefore($call, $band, $mode, $contest, $qso) {
+	function checkIfWorkedBefore($call, $band, $mode, $contest) {
 		$CI =& get_instance();
 		$CI->load->model('Stations');
 		$station_id = $CI->Stations->find_active();
 
-		$qsoarray = explode(',', $qso);
-
-        $date = DateTime::createFromFormat('d-m-Y H:i:s', $qsoarray[0]);
-        $date = $date->format('Y-m-d H:i:s');
-
-		$this->db->where('STATION_ID', $station_id);
-		$this->db->where('COL_CALL', xss_clean($call));
-	    $this->db->where("COL_BAND", xss_clean($band));
-		$this->db->where("COL_CONTEST_ID", xss_clean($contest));
-		$this->db->where("COL_TIME_ON >=", $date);
-	    $this->db->group_start();
-		$this->db->where("COL_MODE", xss_clean($mode));
-	    $this->db->or_where("COL_SUBMODE", xss_clean($mode));
-		$this->db->group_end();
-	    $query = $this->db->get($this->config->item('table_name'));
-
-	    return $query;
+		$contest_session = $this->getSession();
+		
+		if ($contest_session) {
+			$qsoarray = explode(',', $contest_session->qso);
+	
+			$date = DateTime::createFromFormat('d-m-Y H:i:s', $qsoarray[0]);
+			$date = $date->format('Y-m-d H:i:s');
+	
+			$this->db->where('STATION_ID', $station_id);
+			$this->db->where('COL_CALL', xss_clean($call));
+			$this->db->where("COL_BAND", xss_clean($band));
+			$this->db->where("COL_CONTEST_ID", xss_clean($contest));
+			$this->db->where("COL_TIME_ON >=", $date);
+			$this->db->group_start();
+			$this->db->where("COL_MODE", xss_clean($mode));
+			$this->db->or_where("COL_SUBMODE", xss_clean($mode));
+			$this->db->group_end();
+			$query = $this->db->get($this->config->item('table_name'));
+	
+			return $query;
+		}
+		return;
 	}
 }
