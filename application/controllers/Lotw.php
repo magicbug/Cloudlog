@@ -359,7 +359,6 @@ class Lotw extends CI_Controller {
 			|	Download QSO Matches from LoTW
 			*/
 			echo "<br><br>";
-			echo "LoTW Matches<br>";
 			echo $this->lotw_download();
 
 	}
@@ -580,6 +579,7 @@ class Lotw extends CI_Controller {
 		unlink($filepath);
 
 		if(isset($data['lotw_table_headers'])) {
+			echo "LoTW Matches<br>";
 			if($display_view == TRUE) {
 				$data['page_title'] = "LoTW ADIF Information";
 				$this->load->view('interface_assets/header', $data);
@@ -589,7 +589,7 @@ class Lotw extends CI_Controller {
 				return $tableheaders.$table;
 			}
 		} else {
-			echo "LoTW Downloading failed either due to it being down or incorrect logins.";
+			echo "Downloaded LotW report contains no matches.";
 		}
 	}
 
