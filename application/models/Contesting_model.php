@@ -69,7 +69,7 @@ class Contesting_model extends CI_Model {
 			'exchangetype' 			=> xss_clean($this->input->post('exchangetype', true)),
 			'exchangesent' 			=> xss_clean($this->input->post('exch_sent', true)),
 			'serialsent' 			=> xss_clean($this->input->post('exch_serial_s', true)),
-			'copytodok' 			=> xss_clean($this->input->post('copyexchangetodok', true)),
+			'copytodok'             => $this->input->post('copyexchangetodok', true) == "" ? 0 : xss_clean($this->input->post('copyexchangetodok', true)),
 			'qso' 					=> $qso,
 			'station_id' 			=> $station_id,
 		);
