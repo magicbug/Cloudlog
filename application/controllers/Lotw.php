@@ -615,6 +615,9 @@ class Lotw extends CI_Controller {
 
 				$config['upload_path'] = './uploads/';
 				$file = $config['upload_path'] . 'lotwreport_download.adi';
+				if (file_exists($file) && ! is_writable($file)) {
+					return "Temporary download file ".$file." is not writable. Aborting!";
+				}
 
 				// Get credentials for LoTW
 		    	$data['user_lotw_name'] = urlencode($user->user_lotw_name);
@@ -643,6 +646,9 @@ class Lotw extends CI_Controller {
 				$lotw_url .= "&qso_qslsince=";
 				$lotw_url .= "$lotw_last_qsl_date";
 
+				if (! is_writable(dirname($file))) {
+					return "Temporary download directory ".dirname($file)." is not writable. Aborting!";
+				}
 				file_put_contents($file, file_get_contents($lotw_url));
 
 				ini_set('memory_limit', '-1');
