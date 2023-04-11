@@ -313,7 +313,7 @@ $('#band').change(function () {
 function setSerial(data) {
 	var serialsent = 1;
 	if (data.serialsent != "") {
-		serialsent = data.serialsent;
+		serialsent = parseInt(data.serialsent) + 1;
 	}
 	$("#exch_serial_s").val(serialsent);
 }
