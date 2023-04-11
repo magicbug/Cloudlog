@@ -18,10 +18,44 @@ class Logbook_model extends CI_Model {
 
     // Contest exchange, need to separate between serial and other type of exchange
     if($this->input->post('exchangetype')) {
-      $srx_string = $this->input->post('exch_rcvd') == '' ? null : $this->input->post('exch_rcvd');
-      $stx_string = $this->input->post('exch_sent') == '' ? null : $this->input->post('exch_sent');
-      $srx = $this->input->post('exch_serial_r') == '' ? null : $this->input->post('exch_serial_r');
-      $stx = $this->input->post('exch_serial_s') == '' ? null : $this->input->post('exch_serial_s');
+      switch ($this->input->post('exchangetype')) {
+        case 'Exchange':
+          $srx_string = $this->input->post('exch_rcvd') == '' ? null : $this->input->post('exch_rcvd');
+          $stx_string = $this->input->post('exch_sent') == '' ? null : $this->input->post('exch_sent');
+          $srx = null;
+          $stx = null;
+          break;
+        case 'Gridsquare':
+          $srx_string = null;
+          $stx_string = null;
+          $srx = null;
+          $stx = null;
+          break;
+        case 'Serial':
+          $srx = $this->input->post('exch_serial_r') == '' ? null : $this->input->post('exch_serial_r');
+          $stx = $this->input->post('exch_serial_s') == '' ? null : $this->input->post('exch_serial_s');
+          $srx_string = null;
+          $stx_string = null;
+          break;
+        case 'Serialexchange':
+          $srx_string = $this->input->post('exch_rcvd') == '' ? null : $this->input->post('exch_rcvd');
+          $stx_string = $this->input->post('exch_sent') == '' ? null : $this->input->post('exch_sent');
+          $srx = $this->input->post('exch_serial_r') == '' ? null : $this->input->post('exch_serial_r');
+          $stx = $this->input->post('exch_serial_s') == '' ? null : $this->input->post('exch_serial_s');
+          break;
+        case 'Serialgridsquare':
+          $srx = $this->input->post('exch_serial_r') == '' ? null : $this->input->post('exch_serial_r');
+          $stx = $this->input->post('exch_serial_s') == '' ? null : $this->input->post('exch_serial_s');
+          $srx_string = null;
+          $stx_string = null;
+          break;
+          case 'None':
+            $srx_string = null;
+            $stx_string = null;
+            $srx = null;
+            $stx = null;
+            break;
+      }
     } else {
       $srx_string = null;
       $stx_string = null;
@@ -149,8 +183,8 @@ class Logbook_model extends CI_Model {
             'COL_RST_SENT' => $this->input->post('rst_sent'),
             'COL_NAME' => $this->input->post('name'),
             'COL_COMMENT' => $this->input->post('comment'),
-            'COL_SAT_NAME' => strtoupper($this->input->post('sat_name')),
-            'COL_SAT_MODE' => strtoupper($this->input->post('sat_mode')),
+            'COL_SAT_NAME' => $this->input->post('sat_name') == null ? '' : strtoupper($this->input->post('sat_name')),
+            'COL_SAT_MODE' => $this->input->post('sat_mode') == null ? '' : strtoupper($this->input->post('sat_mode')),
             'COL_COUNTRY' => $country,
             'COL_CONT' => $continent,
             'COL_QSLSDATE' => $qslsdate,
@@ -164,7 +198,7 @@ class Logbook_model extends CI_Model {
             'COL_OPERATOR' => $this->session->userdata('user_callsign'),
             'COL_QTH' => $this->input->post('qth'),
             'COL_PROP_MODE' => $prop_mode,
-            'COL_IOTA' => trim($this->input->post('iota_ref')),
+            'COL_IOTA' => $this->input->post('iota_ref')  == null ? '' : trim($this->input->post('iota_ref')),
             'COL_DISTANCE' => "0",
             'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
             'COL_ANT_AZ' => null,
@@ -188,15 +222,15 @@ class Logbook_model extends CI_Model {
             'COL_LON' => null,
             'COL_DXCC' => $dxcc_id,
             'COL_CQZ' => $cqz,
-            'COL_STATE' => trim($this->input->post('usa_state')),
+            'COL_STATE' => $this->input->post('usa_state') == null ? '' : trim($this->input->post('usa_state')),
             'COL_CNTY' => $clean_county_input,
-            'COL_SOTA_REF' => trim($this->input->post('sota_ref')),
-            'COL_WWFF_REF' => trim($this->input->post('wwff_ref')),
-            'COL_POTA_REF' => trim($this->input->post('pota_ref')),
-            'COL_SIG' => trim($this->input->post('sig')),
-            'COL_SIG_INFO' => trim($this->input->post('sig_info')),
-            'COL_DARC_DOK' => strtoupper(trim($darc_dok)),
-			'COL_NOTES' => $this->input->post('notes'),
+            'COL_SOTA_REF' => $this->input->post('sota_ref') == null ? '' : trim($this->input->post('sota_ref')),
+            'COL_WWFF_REF' => $this->input->post('wwff_ref') == null ? '' : trim($this->input->post('wwff_ref')),
+            'COL_POTA_REF' => $this->input->post('pota_ref') == null ? '' : trim($this->input->post('pota_ref')),
+            'COL_SIG' => $this->input->post('sig') == null ? '' : trim($this->input->post('sig')),
+            'COL_SIG_INFO' => $this->input->post('sig_info') == null ? '' : trim($this->input->post('sig_info')),
+            'COL_DARC_DOK' => $darc_dok  == null ? '' : strtoupper(trim($darc_dok)),
+			      'COL_NOTES' => $this->input->post('notes'),
     );
 
     $station_id = $this->input->post('station_profile');
