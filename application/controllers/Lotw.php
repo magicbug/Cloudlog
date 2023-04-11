@@ -650,6 +650,9 @@ class Lotw extends CI_Controller {
 					return "Temporary download directory ".dirname($file)." is not writable. Aborting!";
 				}
 				file_put_contents($file, file_get_contents($lotw_url));
+				if (file_get_contents($file, false, null, 0, 39) != "ARRL Logbook of the World Status Report") {
+					return "LotW downloading failed either due to it being down or incorrect logins.";
+				}
 
 				ini_set('memory_limit', '-1');
 				$results = $this->loadFromFile($file, false);
