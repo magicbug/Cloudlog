@@ -160,4 +160,107 @@ class Contesting_model extends CI_Model {
 
 	    return $query;
 	}
+
+	function export_custom($from, $to, $contest_id) {
+		$CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+        $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
+        $this->db->from($this->config->item('table_name'));
+        $this->db->where($this->config->item('table_name').'.station_id', $station_id);
+
+        // If date is set, we format the date and add it to the where-statement
+        if ($from != 0) {
+            $from = DateTime::createFromFormat('Y-m-d', $from);
+            $from = $from->format('Y-m-d');
+            $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) >= '".$from."'");
+        }
+        if ($to != 0) {
+            $to = DateTime::createFromFormat('Y-m-d', $to);
+            $to = $to->format('Y-m-d');
+            $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) <= '".$to."'");
+        }
+
+		$this->db->where($this->config->item('table_name').'.COL_CONTEST_ID', $contest_id);
+
+        $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
+
+        $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+
+        return $this->db->get();
+    }
+
+	function get_logged_contests2() {
+		$CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+		$sql = "select col_contest_id, min(date(col_time_on)) mindate, max(date(col_time_on)) maxdate, year(col_time_on) year, month(col_time_on) month
+		from logbook l 
+		where coalesce(COL_CONTEST_ID, '') <> '' 
+		and station_id =" . $station_id;
+
+		$sql .= " group by COL_CONTEST_ID , year(col_time_on), month(col_time_on) order by year(col_time_on) desc";
+
+		$data = $this->db->query($sql);
+
+		return ($data->result());
+	}
+
+	function get_logged_years() {
+		$CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+		$sql = "select distinct year(col_time_on) year
+		from logbook l 
+		where coalesce(COL_CONTEST_ID, '') <> '' 
+		and station_id =" . $station_id;
+
+		$sql .= " order by year(col_time_on) desc";
+
+		$data = $this->db->query($sql);
+
+		return ($data->result());
+	}
+
+	function get_logged_contests($year) {
+        $year = $this->security->xss_clean($year);
+
+		$CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+		$sql = "select distinct col_contest_id
+		from logbook l 
+		where coalesce(COL_CONTEST_ID, '') <> '' 
+		and station_id =" . $station_id .
+		" and year(col_time_on) ='" . $year . "'";
+
+		$sql .= " order by COL_CONTEST_ID asc";
+
+		$data = $this->db->query($sql);
+
+        return $data->result();
+    }
+
+	function get_contest_dates($year, $contestid) {
+		$year = $this->security->xss_clean($year);
+		$contestid = $this->security->xss_clean($contestid);
+
+		$CI =& get_instance();
+        $CI->load->model('Stations');
+        $station_id = $CI->Stations->find_active();
+
+		$sql = "select min(date(col_time_on)) mindate, max(date(col_time_on)) maxdate
+		from logbook l 
+		where coalesce(COL_CONTEST_ID, '') <> '' 
+		and station_id =" . $station_id .
+		" and year(col_time_on) ='" . $year . "' and col_contest_id ='" . $contestid . "'";
+
+		$data = $this->db->query($sql);
+
+        return $data->result();
+	}
 }

@@ -230,6 +230,8 @@
 
 				<a class="dropdown-item" href="<?php echo site_url('csv');?>" title="SOTA CSV Export"><i class="fas fa-sync"></i> SOTA CSV Export</a>
 
+				<a class="dropdown-item" href="<?php echo site_url('cabrillo');?>" title="Cabrillo Export"><i class="fas fa-sync"></i> Cabrillo Export</a>
+
 				<div class="dropdown-divider"></div>
 
 <?php
