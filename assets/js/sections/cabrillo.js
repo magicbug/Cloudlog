@@ -7,6 +7,7 @@ function loadYears() {
         type: 'post',
         data: {'station_id': $("#station_id").val()},
         success: function (data) {
+            if (data.length > 0) {
                 $(".contestyear").append('<div class="col-md-2 control-label" for="year">Select year: </div>' +
                 '<select id="year" class="custom-select my-1 mr-sm-2 col-md-2" name="year">' +
                 '</select>' +
@@ -18,6 +19,9 @@ function loadYears() {
                         .attr("value",value.year)
                         .text(value.year));
                 });
+            } else {
+                $(".contestyear").append("No contests were found for this station location!");
+            }
         }
     });
 }
@@ -56,16 +60,26 @@ function loadContestDates() {
                 'contestid': $("#contestid").val(),
                 'station_id': $("#station_id").val()},
         success: function (data) {
-                $(".contestdates").append('<div class="col-md-2 control-label" for="contestdates">Select daterange: </div>' +
-                '<select class="custom-select my-1 mr-sm-2 col-md-3" id="contestdates" name="contestdates">' +
+                $(".contestdates").append('<div class="col-md-2 control-label" for="contestdates">Select date range: </div>' +
+                '<select class="custom-select my-1 mr-sm-2 col-md-1" id="contestdatesfrom" name="contestdatesfrom">' +
+                '</select>' +
+                '<select class="custom-select my-1 mr-sm-2 col-md-1" id="contestdatesto" name="contestdatesto">' +
                 '</select>' +
                 '  <button class="btn btn-sm btn-primary" type="submit">Export</button>'); 
 
                 $.each(data, function(key, value) {
-                    $('#contestdates')
+                    $('#contestdatesfrom')
                         .append($("<option></option>")
-                        .attr("value", value.mindate + ',' + value.maxdate)
-                        .text(value.mindate + ' - ' + value.maxdate));
+                        .attr("value", value.date)
+                        .text(value.date));
+                });
+
+                
+                $.each(data, function(key, value) {
+                    $('#contestdatesto')
+                        .append($("<option></option>")
+                        .attr("value", value.date)
+                        .text(value.date));
                 });
         }
     });

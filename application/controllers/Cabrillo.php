@@ -78,16 +78,11 @@ class Cabrillo extends CI_Controller {
 
         $this->load->model('stations');
 
-        
-
         $station_id = $this->security->xss_clean($this->input->post('station_id'));
         $contest_id = $this->security->xss_clean($this->input->post('contestid'));
-        $fromto = $this->security->xss_clean($this->input->post('contestdates'));
 
-        $fromto = explode(',', $fromto);
-
-        $from = $fromto[0];
-        $to = $fromto[1];
+        $from = $this->security->xss_clean($this->input->post('contestdatesfrom'));
+        $to = $this->security->xss_clean($this->input->post('contestdatesto'));
 
         $station = $this->stations->profile($station_id);
 

@@ -233,7 +233,7 @@ class Contesting_model extends CI_Model {
     }
 
 	function get_contest_dates($station_id, $year, $contestid) {
-		$sql = "select min(date(col_time_on)) mindate, max(date(col_time_on)) maxdate
+		$sql = "select distinct (date(col_time_on)) date
 		from " . $this->config->item('table_name') . " 
 		where coalesce(COL_CONTEST_ID, '') <> '' 
 		and station_id =" . $station_id .
