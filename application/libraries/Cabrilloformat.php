@@ -38,6 +38,62 @@ class Cabrilloformat {
 
     public function qso($qso) {
         $freq =  substr($qso->COL_FREQ, 0, -3);
+        if ($freq > 30000) {
+           if ($freq > 250000000) {
+              $freq = "LIGHT";
+           }
+           if ($freq >= 241000000 && $freq <= 250000000 ) {
+              $freq = "241G";
+           }
+           if ($freq >= 134000000 && $freq <= 141000000 ) {
+              $freq = "134G";
+           }
+           if ($freq >= 122250000 && $freq <= 123000000 ) {
+              $freq = "122G";
+           }
+           if ($freq >= 75500000 && $freq <= 81500000 ) {
+              $freq = "75G";
+           }
+           if ($freq >= 47000000 && $freq <= 47200000 ) {
+              $freq = "47G";
+           }
+           if ($freq >= 24000000 && $freq <= 24250000 ) {
+              $freq = "24G";
+           }
+           if ($freq >= 10000000 && $freq <= 10500000 ) {
+              $freq = "10G";
+           }
+           if ($freq >= 5650000 && $freq <= 5850000 ) {
+              $freq = "5.7G";
+           }
+           if ($freq >= 3400000 && $freq <= 3475000 ) {
+              $freq = "3.4G";
+           }
+           if ($freq >= 2320000 && $freq <= 2450000 ) {
+              $freq = "2.4G";
+           }
+           if ($freq >= 1240000 && $freq <= 1300000 ) {
+              $freq = "1.2G";
+           }
+           if ($freq >= 902000 && $freq <= 928000 ) {
+              $freq = "902";
+           }
+           if ($freq >= 430000 && $freq <= 440000 ) {
+              $freq = "432";
+           }
+           if ($freq >= 222000 && $freq <= 225000 ) {
+              $freq = "222";
+           }
+           if ($freq >= 144000 && $freq <= 146000 ) {
+              $freq = "144";
+           }
+           if ($freq >= 70150 && $freq <= 70210 ) {
+              $freq = "70";
+           }
+           if ($freq >= 50000 && $freq <= 52000 ) {
+              $freq = "50";
+           }
+        }
 
         if($qso->COL_MODE == "SSB") {
             $mode = "PH";
@@ -51,17 +107,7 @@ class Cabrilloformat {
 
         $time = str_replace(":","",$time);
 
-        if ($qso->COL_STX_STRING != "") {
-
-            if($qso->COL_SRX_STRING != "") {
-                $rx_string = $qso->COL_SRX_STRING;
-            } else {
-                $rx_string = "--";
-            }
-
-            return "QSO:  ".$freq." ".$mode." ".$time." ".$qso->station_callsign."\t".$qso->COL_RST_SENT." ".$qso->COL_STX." ".$qso->COL_STX_STRING."\t".$qso->COL_CALL."\t".$qso->COL_RST_RCVD." ".$qso->COL_STX." ".$rx_string."\n";
-        } else {
-            return "QSO:  ".$freq." ".$mode." ".$time." ".$qso->station_callsign."\t".$qso->COL_RST_SENT." ".$qso->COL_STX."\t".$qso->COL_CALL."\t".$qso->COL_RST_RCVD." ".$qso->COL_STX."\n";   
-        }
+        // Format according to https://wwrof.org/cabrillo/cabrillo-qso-data/
+        return "QSO: ".sprintf("%6s", $freq)." ".$mode." ".$time." ".sprintf("%-13s", $qso->station_callsign)." ".sprintf("%3s", $qso->COL_RST_SENT)." ".sprintf("%-6s", sprintf("%03d", $qso->COL_STX))." ".sprintf("%-13s", $qso->COL_CALL)." ".sprintf("%3s", $qso->COL_RST_RCVD)." ".sprintf("%-6s", sprintf("%03d", $qso->COL_SRX))." 0\n";
     }
 }
