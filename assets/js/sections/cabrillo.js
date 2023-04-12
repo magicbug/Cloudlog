@@ -8,7 +8,7 @@ function loadYears() {
         data: {'station_id': $("#station_id").val()},
         success: function (data) {
             if (data.length > 0) {
-                $(".contestyear").append('<div class="col-md-2 control-label" for="year">Select year: </div>' +
+                $(".contestyear").append('<div class="col-md-3 control-label" for="year">Select year: </div>' +
                 '<select id="year" class="custom-select my-1 mr-sm-2 col-md-2" name="year">' +
                 '</select>' +
                 '  <button onclick="loadContests();" class="btn btn-sm btn-primary" type="button">Proceed</button>'); 
@@ -36,8 +36,8 @@ function loadContests() {
                 'station_id': $("#station_id").val()
         },
         success: function (data) {
-                $(".contestname").append('<div class="col-md-2 control-label" for="contestid">Select contest: </div>' +
-                '<select class="custom-select my-1 mr-sm-2 col-md-3" id="contestid" name="contestid">' +
+                $(".contestname").append('<div class="col-md-3 control-label" for="contestid">Select contest: </div>' +
+                '<select class="custom-select my-1 mr-sm-2 col-md-4" id="contestid" name="contestid">' +
                 '</select>' +
                 '  <button onclick="loadContestDates();" class="btn btn-sm btn-primary" type="button">Proceed</button>'); 
 
@@ -60,10 +60,10 @@ function loadContestDates() {
                 'contestid': $("#contestid").val(),
                 'station_id': $("#station_id").val()},
         success: function (data) {
-                $(".contestdates").append('<div class="col-md-2 control-label" for="contestdates">Select date range: </div>' +
-                '<select class="custom-select my-1 mr-sm-2 col-md-1" id="contestdatesfrom" name="contestdatesfrom">' +
+                $(".contestdates").append('<div class="col-md-3 control-label" for="contestdates">Select date range: </div>' +
+                '<select class="custom-select my-1 mr-sm-2 col-md-2" id="contestdatesfrom" name="contestdatesfrom">' +
                 '</select>' +
-                '<select class="custom-select my-1 mr-sm-2 col-md-1" id="contestdatesto" name="contestdatesto">' +
+                '<select class="custom-select my-1 mr-sm-2 col-md-2" id="contestdatesto" name="contestdatesto">' +
                 '</select>' +
                 '  <button class="btn btn-sm btn-primary" type="submit">Export</button>'); 
 
