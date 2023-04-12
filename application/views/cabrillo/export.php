@@ -5,7 +5,7 @@ header('Content-Disposition: attachment; filename="'.$callsign.'-'.$contest_id.'
 $CI =& get_instance();
 $CI->load->library('Cabrilloformat');
 
-echo $CI->cabrilloformat->header($contest_id, $callsign, $claimed_score, $operators, $club, $name, $address1, $address2, $address3, $soapbox);
+echo $CI->cabrilloformat->header($contest_id, $callsign, $claimed_score, $operators, $club, $name, $address1, $address2, $address3, $soapbox, $gridlocator);
 foreach ($qsos->result() as $row) {
 	echo $CI->cabrilloformat->qso($row);
 }

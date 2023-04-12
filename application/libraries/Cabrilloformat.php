@@ -2,7 +2,7 @@
 
 class Cabrilloformat {
 
-    public function header($contest_id, $callsign, $claimed_score, $operators, $club, $name, $address1, $address2, $address3, $soapbox) {
+    public function header($contest_id, $callsign, $claimed_score, $operators, $club, $name, $address1, $address2, $address3, $soapbox, $gridlocator) {
         $cab_header = "";
         $cab_header .= "START-OF-LOG: 3.0"."\r\n";
         $cab_header .= "CONTEST: ".$contest_id."\r\n";
@@ -23,6 +23,10 @@ class Cabrilloformat {
         $cab_header .= "ADDRESS: ".$address2."\r\n";
         $cab_header .= "ADDRESS: ".$address3."\r\n";
         $cab_header .= "SOAPBOX: ".$soapbox."\r\n";
+
+        if($gridlocator != null) {
+            $cab_header .= "GRID-LOCATOR: ".$gridlocator."\r\n";
+        }
 
         return $cab_header;
 

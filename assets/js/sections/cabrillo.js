@@ -1,10 +1,36 @@
+function loadYears() {
+    $(".contestyear").empty();
+    $(".contestname").empty();
+    $(".contestdates").empty();
+    $.ajax({
+        url: base_url+'index.php/cabrillo/getYears',
+        type: 'post',
+        data: {'station_id': $("#station_id").val()},
+        success: function (data) {
+                $(".contestyear").append('<div class="col-md-2 control-label" for="year">Select year: </div>' +
+                '<select id="year" class="custom-select my-1 mr-sm-2 col-md-2" name="year">' +
+                '</select>' +
+                '  <button onclick="loadContests();" class="btn btn-sm btn-primary" type="button">Proceed</button>'); 
+
+                $.each(data, function(key, value) {
+                    $('#year')
+                        .append($("<option></option>")
+                        .attr("value",value.year)
+                        .text(value.year));
+                });
+        }
+    });
+}
+
 function loadContests() {
     $(".contestname").empty();
     $(".contestdates").empty();
     $.ajax({
         url: base_url+'index.php/cabrillo/getContests',
         type: 'post',
-        data: {'year': $("#year").val()},
+        data: {'year': $("#year").val(),
+                'station_id': $("#station_id").val()
+        },
         success: function (data) {
                 $(".contestname").append('<div class="col-md-2 control-label" for="contestid">Select contest: </div>' +
                 '<select class="custom-select my-1 mr-sm-2 col-md-3" id="contestid" name="contestid">' +
@@ -27,7 +53,8 @@ function loadContestDates() {
         url: base_url+'index.php/cabrillo/getContestDates',
         type: 'post',
         data: {'year': $("#year").val(),
-                'contestid': $("#contestid").val()},
+                'contestid': $("#contestid").val(),
+                'station_id': $("#station_id").val()},
         success: function (data) {
                 $(".contestdates").append('<div class="col-md-2 control-label" for="contestdates">Select daterange: </div>' +
                 '<select class="custom-select my-1 mr-sm-2 col-md-3" id="contestdates" name="contestdates">' +

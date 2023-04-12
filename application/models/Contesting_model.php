@@ -161,11 +161,7 @@ class Contesting_model extends CI_Model {
 	    return $query;
 	}
 
-	function export_custom($from, $to, $contest_id) {
-		$CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
-
+	function export_custom($from, $to, $contest_id, $station_id) {
         $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
         $this->db->from($this->config->item('table_name'));
         $this->db->where($this->config->item('table_name').'.station_id', $station_id);
@@ -208,10 +204,7 @@ class Contesting_model extends CI_Model {
 		return ($data->result());
 	}
 
-	function get_logged_years() {
-		$CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
+	function get_logged_years($station_id) {
 
 		$sql = "select distinct year(col_time_on) year
 		from " . $this->config->item('table_name') . " 
@@ -222,16 +215,10 @@ class Contesting_model extends CI_Model {
 
 		$data = $this->db->query($sql);
 
-		return ($data->result());
+		return $data->result();
 	}
 
-	function get_logged_contests($year) {
-        $year = $this->security->xss_clean($year);
-
-		$CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
-
+	function get_logged_contests($station_id, $year) {
 		$sql = "select distinct col_contest_id
 		from " . $this->config->item('table_name') . " 
 		where coalesce(COL_CONTEST_ID, '') <> '' 
@@ -245,14 +232,7 @@ class Contesting_model extends CI_Model {
         return $data->result();
     }
 
-	function get_contest_dates($year, $contestid) {
-		$year = $this->security->xss_clean($year);
-		$contestid = $this->security->xss_clean($contestid);
-
-		$CI =& get_instance();
-        $CI->load->model('Stations');
-        $station_id = $CI->Stations->find_active();
-
+	function get_contest_dates($station_id, $year, $contestid) {
 		$sql = "select min(date(col_time_on)) mindate, max(date(col_time_on)) maxdate
 		from " . $this->config->item('table_name') . " 
 		where coalesce(COL_CONTEST_ID, '') <> '' 
