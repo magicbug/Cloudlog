@@ -1,6 +1,6 @@
 function loadContests() {
-    $(".stationinfo").empty();
-    $(".searchinfo").empty();
+    $(".contestname").empty();
+    $(".contestdates").empty();
     $.ajax({
         url: base_url+'index.php/cabrillo/getContests',
         type: 'post',
@@ -22,6 +22,7 @@ function loadContests() {
 }
 
 function loadContestDates() {
+    $(".contestdates").empty();
     $.ajax({
         url: base_url+'index.php/cabrillo/getContestDates',
         type: 'post',
