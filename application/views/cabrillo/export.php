@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: text/plain; charset=utf-8');
-header('Content-Disposition: attachment; filename="'.$this->session->userdata('user_callsign').'-'.date('dmY-Hi').'.log"');
+header('Content-Disposition: attachment; filename="'.$callsign.'-'.$contest_id.'-'.date('dmY-Hi').'.cbr"');
 
 $CI =& get_instance();
 $CI->load->library('Cabrilloformat');
