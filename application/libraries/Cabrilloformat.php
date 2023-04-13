@@ -2,7 +2,9 @@
 
 class Cabrilloformat {
 
-    public function header($contest_id, $callsign, $claimed_score, $operators, $club, $name, $address1, $address2, $address3, $soapbox, $gridlocator) {
+    public function header($contest_id, $callsign, $claimed_score, 
+    $operators, $club, $name, $address, $addresscity, $addressstateprovince, $addresspostalcode, $addresscountry, $soapbox, $gridlocator, 
+    $categoryoverlay, $categorytransmitter, $categorystation, $categorypower, $categorymode, $categoryband, $categoryassisted, $categoryoperator, $email) {
         $cab_header = "";
         $cab_header .= "START-OF-LOG: 3.0"."\r\n";
         $cab_header .= "CONTEST: ".$contest_id."\r\n";
@@ -18,15 +20,29 @@ class Cabrilloformat {
             $cab_header .= "CLUB: ".$club."\r\n";
         }
 
+        $cab_header .= "CATEGORY-OPERATOR: ".$categoryoperator."\r\n";
+        $cab_header .= "CATEGORY-BAND: ".$categoryassisted."\r\n";
+        $cab_header .= "CATEGORY-ASSISTED: ".$categoryband."\r\n";
+        $cab_header .= "CATEGORY-MODE: ".$categorymode."\r\n";
+        $cab_header .= "CATEGORY-POWER: ".$categorypower."\r\n";
+        $cab_header .= "CATEGORY-STATION: ".$categorystation."\r\n";
+        $cab_header .= "CATEGORY-TRANSMITTER: ".$categorytransmitter."\r\n";
+        $cab_header .= "CATEGORY-OVERLAY: ".$categoryoverlay."\r\n";
+
         $cab_header .= "NAME: ".$name."\r\n";
-        $cab_header .= "ADDRESS: ".$address1."\r\n";
-        $cab_header .= "ADDRESS: ".$address2."\r\n";
-        $cab_header .= "ADDRESS: ".$address3."\r\n";
+        $cab_header .= "ADDRESS: ".$address."\r\n";
+        $cab_header .= "ADDRESS-CITY: ".$addresscity."\r\n";
+        $cab_header .= "ADDRESS-STATE-PROVINCE: ".$addressstateprovince."\r\n";
+        $cab_header .= "ADDRESS-POSTALCODE: ".$addresspostalcode."\r\n";
+        $cab_header .= "ADDRESS-COUNTRY: ".$addresscountry."\r\n";
+        $cab_header .= "EMAIL: ".$email."\r\n";
         $cab_header .= "SOAPBOX: ".$soapbox."\r\n";
 
         if($gridlocator != null) {
             $cab_header .= "GRID-LOCATOR: ".$gridlocator."\r\n";
         }
+
+        $cab_header .= "CREATED-BY: Cloudlog"."\r\n";
 
         return $cab_header;
 

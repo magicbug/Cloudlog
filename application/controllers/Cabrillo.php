@@ -78,6 +78,8 @@ class Cabrillo extends CI_Controller {
 
         $this->load->model('stations');
 
+        $this->load->model('user_model');
+
         $station_id = $this->security->xss_clean($this->input->post('station_id'));
         $contest_id = $this->security->xss_clean($this->input->post('contestid'));
 
@@ -88,18 +90,33 @@ class Cabrillo extends CI_Controller {
 
         $station = $station->row();
 
+        $userinfo = $this->user_model->get_by_id($this->session->userdata('user_id'));
+
+        $userinfo = $userinfo->row();
+
 		$data['qsos'] = $this->Contesting_model->export_custom($from, $to, $contest_id, $station_id);
 
         $data['contest_id'] = $contest_id;
         $data['callsign'] = $station->station_callsign;
         $data['claimed_score'] = '';
-        $data['operators'] = '';
-        $data['club'] = '';
-        $data['name'] = '';
-        $data['address1'] = '';
-        $data['address2'] = '';
-        $data['address3'] = '';
-        $data['soapbox'] = '';
+        $data['categoryoperator'] = $this->security->xss_clean($this->input->post('categoryoperator'));
+        $data['categoryassisted'] = $this->security->xss_clean($this->input->post('categoryassisted'));
+        $data['categoryband'] = $this->security->xss_clean($this->input->post('categoryband'));
+        $data['categorymode'] = $this->security->xss_clean($this->input->post('categorymode'));
+        $data['categorypower'] = $this->security->xss_clean($this->input->post('categorypower'));
+        $data['categorystation'] = $this->security->xss_clean($this->input->post('categorystation'));
+        $data['categorytransmitter'] = $this->security->xss_clean($this->input->post('categorytransmitter'));
+        $data['categoryoverlay'] = $this->security->xss_clean($this->input->post('categoryoverlay'));
+        $data['operators'] = $this->security->xss_clean($this->input->post('operators'));
+        $data['club'] = $this->security->xss_clean($this->input->post('club'));
+        $data['name'] = $userinfo->user_firstname . ' ' . $userinfo->user_lastname;
+        $data['email'] = $userinfo->user_email;
+        $data['address'] = $this->security->xss_clean($this->input->post('address'));
+        $data['addresscity'] = $this->security->xss_clean($this->input->post('addresscity'));
+        $data['addressstateprovince'] = $this->security->xss_clean($this->input->post('addressstateprovince'));
+        $data['addresspostalcode'] = $this->security->xss_clean($this->input->post('addresspostalcode'));
+        $data['addresscountry'] = $this->security->xss_clean($this->input->post('addresscountry'));
+        $data['soapbox'] = $this->security->xss_clean($this->input->post('soapbox'));
         $data['gridlocator'] = $station->station_gridsquare;
 
 		$this->load->view('cabrillo/export', $data);

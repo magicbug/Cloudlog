@@ -2,6 +2,7 @@ function loadYears() {
     $(".contestyear").empty();
     $(".contestname").empty();
     $(".contestdates").empty();
+    $(".additionalinfo").attr("hidden", true);
     $.ajax({
         url: base_url+'index.php/cabrillo/getYears',
         type: 'post',
@@ -65,7 +66,7 @@ function loadContestDates() {
                 '</select>' +
                 '<select class="custom-select my-1 mr-sm-2 col-md-2" id="contestdatesto" name="contestdatesto">' +
                 '</select>' +
-                '  <button class="btn btn-sm btn-primary" type="submit">Export</button>'); 
+                '  <button class="btn btn-sm btn-primary" onclick="addAdditionalInfo();" type="button">Proceed</button>'); 
 
                 $.each(data, function(key, value) {
                     $('#contestdatesfrom')
@@ -83,4 +84,8 @@ function loadContestDates() {
                 });
         }
     });
+}
+
+function addAdditionalInfo() {
+    $(".additionalinfo").removeAttr("hidden");
 }
