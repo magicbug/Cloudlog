@@ -22,8 +22,8 @@ class Cabrilloformat {
       }
 
       $cab_header .= "CATEGORY-OPERATOR: ".$categoryoperator."\r\n";
-      $cab_header .= "CATEGORY-BAND: ".$categoryassisted."\r\n";
-      $cab_header .= "CATEGORY-ASSISTED: ".$categoryband."\r\n";
+      $cab_header .= "CATEGORY-BAND: ".$categoryband."\r\n";
+      $cab_header .= "CATEGORY-ASSISTED: ".$categoryassisted."\r\n";
       $cab_header .= "CATEGORY-MODE: ".$categorymode."\r\n";
       $cab_header .= "CATEGORY-POWER: ".$categorypower."\r\n";
       $cab_header .= "CATEGORY-STATION: ".$categorystation."\r\n";
