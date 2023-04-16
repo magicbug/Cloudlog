@@ -42,15 +42,37 @@ class Contesting extends CI_Controller {
     }
 
     public function getSessionQsos() {
-        //load model
         $this->load->model('Contesting_model');
 
         $qso = $this->input->post('qso');
 
-        // get QSOs to fill the table
-        $data = $this->Contesting_model->getSessionQsos($qso);
+		header('Content-Type: application/json');
+		echo json_encode($this->Contesting_model->getSessionQsos($qso));
+    }
+
+	public function getSession() {
+        $this->load->model('Contesting_model');
+
+        header('Content-Type: application/json');
+		echo json_encode($this->Contesting_model->getSession());
+    }
+
+	public function deleteSession() {
+        $this->load->model('Contesting_model');
+
+        $qso = $this->input->post('qso');
+
+        $data = $this->Contesting_model->deleteSession($qso);
 
         return json_encode($data);
+    }
+
+	public function setSession() {
+        $this->load->model('Contesting_model');
+
+        $this->Contesting_model->setSession();
+
+        return json_encode("ok");
     }
 
 	public function create() {
@@ -161,10 +183,10 @@ class Contesting extends CI_Controller {
 		$band = $this->input->post('band');
 		$mode = $this->input->post('mode');
 		$contest = $this->input->post('contest');
-		$qso = $this->input->post('qso');
 
 		$this->load->model('Contesting_model');
-		$result = $this->Contesting_model->checkIfWorkedBefore($call, $band, $mode, $contest, $qso);
+
+		$result = $this->Contesting_model->checkIfWorkedBefore($call, $band, $mode, $contest);
 		
 		header('Content-Type: application/json');
 		if ($result->num_rows()) {

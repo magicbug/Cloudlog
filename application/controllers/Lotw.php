@@ -359,7 +359,6 @@ class Lotw extends CI_Controller {
 			|	Download QSO Matches from LoTW
 			*/
 			echo "<br><br>";
-			echo "LoTW Matches<br>";
 			echo $this->lotw_download();
 
 	}
@@ -580,6 +579,7 @@ class Lotw extends CI_Controller {
 		unlink($filepath);
 
 		if(isset($data['lotw_table_headers'])) {
+			echo "LoTW Matches<br>";
 			if($display_view == TRUE) {
 				$data['page_title'] = "LoTW ADIF Information";
 				$this->load->view('interface_assets/header', $data);
@@ -589,7 +589,7 @@ class Lotw extends CI_Controller {
 				return $tableheaders.$table;
 			}
 		} else {
-			echo "LoTW Downloading failed either due to it being down or incorrect logins.";
+			echo "Downloaded LotW report contains no matches.";
 		}
 	}
 
@@ -615,6 +615,9 @@ class Lotw extends CI_Controller {
 
 				$config['upload_path'] = './uploads/';
 				$file = $config['upload_path'] . 'lotwreport_download.adi';
+				if (file_exists($file) && ! is_writable($file)) {
+					return "Temporary download file ".$file." is not writable. Aborting!";
+				}
 
 				// Get credentials for LoTW
 		    	$data['user_lotw_name'] = urlencode($user->user_lotw_name);
@@ -643,7 +646,13 @@ class Lotw extends CI_Controller {
 				$lotw_url .= "&qso_qslsince=";
 				$lotw_url .= "$lotw_last_qsl_date";
 
+				if (! is_writable(dirname($file))) {
+					return "Temporary download directory ".dirname($file)." is not writable. Aborting!";
+				}
 				file_put_contents($file, file_get_contents($lotw_url));
+				if (file_get_contents($file, false, null, 0, 39) != "ARRL Logbook of the World Status Report") {
+					return "LotW downloading failed either due to it being down or incorrect logins.";
+				}
 
 				ini_set('memory_limit', '-1');
 				$results = $this->loadFromFile($file, false);

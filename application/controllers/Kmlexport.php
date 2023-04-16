@@ -7,7 +7,7 @@
 
 */
 
-class Kml extends CI_Controller {
+class Kmlexport extends CI_Controller {
 
     public function index() {
         $this->load->model('user_model');

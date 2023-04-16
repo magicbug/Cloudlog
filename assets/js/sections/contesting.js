@@ -2,11 +2,11 @@
 $("#callsign").focus();
 
 $(document).ready(function () {
-	restoreContestSession();
+	getSession().done(restoreContestSession);
 	setRst($("#mode").val());
 });
 
-// This erases the contest logging session which is stored in localStorage
+// Resets the logging form and deletes session from database
 function reset_contest_session() {
 	$('#name').val("");
 	$('.callsign-suggestions').text("");
@@ -18,7 +18,6 @@ function reset_contest_session() {
 	$('#exch_sent').val("");
 	$('#exch_rcvd').val("");
 	$("#exch_gridsquare_r").val("");
-	$("#exch_gridsquare_s").val("");
 
 	$("#callsign").focus();
 	setRst($("#mode").val());
@@ -28,27 +27,41 @@ function reset_contest_session() {
 	$(".contest_qso_table_contents").empty();
 	$('#copyexchangetodok').prop('checked', false);
 
-	localStorage.removeItem("contestid");
-	localStorage.removeItem("exchangetype");
-	localStorage.removeItem("qso");
-	localStorage.removeItem("exchangereceived");
-	localStorage.removeItem("exchangesent");
-	localStorage.removeItem("serialreceived");
-	localStorage.removeItem("serialsent");
-	localStorage.removeItem("gridsquarereceived");
-	localStorage.removeItem("gridsquaresent");
-	localStorage.removeItem("copytodok");
+	$.ajax({
+		url: base_url + 'index.php/contesting/deleteSession',
+		type: 'post',
+		success: function (data) {
+
+		}
+	});
 }
 
 // Storing the contestid in contest session
 $('#contestname').change(function () {
-	localStorage.setItem("contestid", $("#contestname").val());
+	var formdata = new FormData(document.getElementById("qso_input"));
+	setSession(formdata);
 });
 
 // Storing the exchange type in contest session
 $('#exchangetype').change(function () {
-	localStorage.setItem("exchangetype", $('#exchangetype').val());
+	var exchangetype = $("#exchangetype").val();
+	var formdata = new FormData(document.getElementById("qso_input"));
+	setSession(formdata);
+	setExchangetype(exchangetype);
 });
+
+function setSession(formdata) {
+	$.ajax({
+		url: base_url + 'index.php/contesting/setSession',
+		type: 'post',
+		data: formdata,
+		processData: false,
+		contentType: false,
+		success: function (data) {
+
+		}
+	});
+}
 
 // realtime clock
 if ( ! manual ) {
@@ -212,23 +225,25 @@ $("#callsign").keyup(function () {
 });
 
 function checkIfWorkedBefore() {
-	$('#callsign_info').text("");
-	$.ajax({
-		url: base_url + 'index.php/contesting/checkIfWorkedBefore',
-		type: 'post',
-		data: {
-			'call': $("#callsign").val(),
-			'mode': $("#mode").val(),
-			'band': $("#band").val(),
-			'contest': $("#contestname").val(),
-			'qso': localStorage.getItem("qso")
-		},
-		success: function (result) {
-			if (result.message == 'Worked before') {
-				$('#callsign_info').text("Worked before!");
+	var call = $("#callsign").val();
+	if (call.length >= 3) {
+		$('#callsign_info').text("");
+		$.ajax({
+			url: base_url + 'index.php/contesting/checkIfWorkedBefore',
+			type: 'post',
+			data: {
+				'call': call,
+				'mode': $("#mode").val(),
+				'band': $("#band").val(),
+				'contest': $("#contestname").val()
+			},
+			success: function (result) {
+				if (result.message == 'Worked before') {
+					$('#callsign_info').text("Worked before!");
+				}
 			}
-		}
-	});
+		});
+	}
 }
 
 function reset_log_fields() {
@@ -295,12 +310,16 @@ $('#band').change(function () {
 	checkIfWorkedBefore();
 });
 
-$('#exchangetype').change(function () {
-	var exchangetype = $("#exchangetype").val();
-	setExchangetype(exchangetype);
-});
+function setSerial(data) {
+	var serialsent = 1;
+	if (data.serialsent != "") {
+		serialsent = parseInt(data.serialsent) + 1;
+	}
+	$("#exch_serial_s").val(serialsent);
+}
 
 function setExchangetype(exchangetype) {
+	getSession().done(setSerial);
 	// Perhaps a better approach is to hide everything, then just enable the things you need
 	$(".exchanger").hide();
 	$(".exchanges").hide();
@@ -310,29 +329,21 @@ function setExchangetype(exchangetype) {
 	$(".gridsquares").hide();
 	$("#exch_serial_s").val("");
 
-	var serialsent = localStorage.getItem("serialsent");
-	if (serialsent == null) {
-		serialsent = 1;
-	}
-
 	if (exchangetype == 'Exchange') {
 		$(".exchanger").show();
 		$(".exchanges").show();
 	}
 	else if (exchangetype == 'Serial') {
-		$("#exch_serial_s").val(serialsent);
 		$(".serials").show();
 		$(".serialr").show();
 	}
 	else if (exchangetype == 'Serialexchange') {
-		$("#exch_serial_s").val(serialsent);
 		$(".exchanger").show();
 		$(".exchanges").show();
 		$(".serials").show();
 		$(".serialr").show();
 	}
 	else if (exchangetype == 'Serialgridsquare') {
-		$("#exch_serial_s").val(serialsent);
 		$(".serials").show();
 		$(".serialr").show();
 		$(".gridsquarer").show();
@@ -428,10 +439,7 @@ function logQso() {
 			contentType: false,
 			enctype: 'multipart/form-data',
 			success: function (html) {
-				if (localStorage.getItem("qso") == null) {
-					localStorage.setItem("qso", $("#start_date").val() + ' ' + $("#start_time").val() + ',' + $("#callsign").val().toUpperCase() + ',' + $("#contestname").val());
-				}
-
+				setSession(formdata);
 				$('#name').val("");
 
 				$('#callsign').val("");
@@ -445,17 +453,6 @@ function logQso() {
 				}
 				$("#callsign").focus();
 
-				// Store contest session
-				localStorage.setItem("contestid", $("#contestname").val());
-				localStorage.setItem("exchangetype", $("#exchangetype").val());
-				localStorage.setItem("exchangereceived", $("#exch_rcvd").val().toUpperCase());
-				localStorage.setItem("exchangesent", $("#exch_sent").val().toUpperCase());
-				localStorage.setItem("serialreceived", $("#exch_serial_r").val());
-				localStorage.setItem("serialsent", $("#exch_serial_s").val());
-				localStorage.setItem("gridsquarereceived", $("#exch_gridsquare_r").val());
-				localStorage.setItem("gridsquaresent", $("#exch_gridsquare_s").val());
-				localStorage.setItem("copytodok", $('#copyexchangetodok').is(":checked"));
-
 				var qTable = $('.qsotable').DataTable();
 				qTable.search('').draw();
 			}
@@ -463,98 +460,80 @@ function logQso() {
 	}
 }
 
-// We are restoring the settings in the contest logging form here
-function restoreContestSession() {
-	var dokcopy = localStorage.getItem("copytodok");
-	if (dokcopy != null) {
-		$('#copyexchangetodok').prop('checked', true);
-	}
-
-	var contestname = localStorage.getItem("contestid");
-	if (contestname != null) {
-		$("#contestname").val(contestname);
-	}
-
-	var exchangetype = localStorage.getItem("exchangetype");
-	if (exchangetype != null) {
-		$("#exchangetype").val(exchangetype);
-		setExchangetype(exchangetype);
-	}
-
-	var exchangereceived = localStorage.getItem("exchangereceived");
-	if (exchangereceived != null) {
-		$("#exch_rcvd").val(exchangereceived);
-	}
-
-	var exchangesent = localStorage.getItem("exchangesent");
-	if (exchangesent != null) {
-		$("#exch_sent").val(exchangesent);
-	}
-
-	var serialreceived = localStorage.getItem("serialreceived");
-	if (serialreceived != null) {
-		$("#exch_serial_r").val(serialreceived);
-	}
-
-	var serialsent = localStorage.getItem("serialsent");
-	if (serialsent != null) {
-		$("#exch_serial_s").val(serialsent);
-	}
-
-	var gridsquarereceived = localStorage.getItem("gridsquarereceived");
-	if (gridsquarereceived != null) {
-		$("#exch_gridsquare_r").val(gridsquarereceived);
-	}
-
-	var gridsquaresent = localStorage.getItem("gridsquaresent");
-	if (gridsquaresent != null) {
-		$("#exch_gridsquare_s").val(gridsquaresent);
-	}
-
-	if (localStorage.getItem("qso") != null) {
-		var qsodata = localStorage.getItem("qso");
-		$.ajax({
-			url: base_url + 'index.php/contesting/getSessionQsos',
-			type: 'post',
-			data: { 'qso': qsodata, },
-			success: function (html) {
-				var mode = '';
-
-				$.each(html, function () {
-					if (this.col_submode == null || this.col_submode == '') {
-						mode = this.col_mode;
-					} else {
-						mode = this.col_submode;
-					}
-
-					$(".qsotable tbody").prepend('<tr>' +
-						'<td>' + this.col_time_on + '</td>' +
-						'<td>' + this.col_call + '</td>' +
-						'<td>' + this.col_band + '</td>' +
-						'<td>' + mode + '</td>' +
-						'<td>' + this.col_rst_sent + '</td>' +
-						'<td>' + this.col_rst_rcvd + '</td>' +
-						'<td>' + this.col_stx_string + '</td>' +
-						'<td>' + this.col_srx_string + '</td>' +
-						'<td>' + this.col_stx + '</td>' +
-						'<td>' + this.col_srx + '</td>' +
-						'<td>' + this.col_gridsquare + '</td>' +
-						'<td>' + this.col_vucc_grids + '</td>' +
-						'</tr>');
-				});
-				if (!$.fn.DataTable.isDataTable('.qsotable')) {
-					$('.qsotable').DataTable({
-						"stateSave": true,
-						"pageLength": 25,
-						responsive: false,
-						"scrollY": "400px",
-						"scrollCollapse": true,
-						"paging": false,
-						"scrollX": true,
-						"order": [[0, "desc"]]
+function getSession() {
+	return $.ajax({
+		url: base_url + 'index.php/contesting/getSession',
+		type: 'post',
+	});
+}
+	
+function restoreContestSession(data) {
+	if (data) {
+		if (data.copytodok == "1") {
+			$('#copyexchangetodok').prop('checked', true);
+		}
+	
+		if (data.contestid != "") {
+			$("#contestname").val(data.contestid);
+		}
+	
+		if (data.exchangetype != "") {
+			$("#exchangetype").val(data.exchangetype);
+			setExchangetype(data.exchangetype);
+		}
+	
+		if (data.exchangesent != "") {
+			$("#exch_sent").val(data.exchangesent);
+		}
+	
+		if (data.serialsent != "") {
+			$("#exch_serial_s").val(data.serialsent);
+		}
+	
+		if (data.qso != "") {
+			$.ajax({
+				url: base_url + 'index.php/contesting/getSessionQsos',
+				type: 'post',
+				data: { 'qso': data.qso, },
+				success: function (html) {
+					var mode = '';
+	
+					$.each(html, function () {
+						if (this.col_submode == null || this.col_submode == '') {
+							mode = this.col_mode;
+						} else {
+							mode = this.col_submode;
+						}
+	
+						$(".qsotable tbody").prepend('<tr>' +
+							'<td>' + this.col_time_on + '</td>' +
+							'<td>' + this.col_call + '</td>' +
+							'<td>' + this.col_band + '</td>' +
+							'<td>' + mode + '</td>' +
+							'<td>' + this.col_rst_sent + '</td>' +
+							'<td>' + this.col_rst_rcvd + '</td>' +
+							'<td>' + this.col_stx_string + '</td>' +
+							'<td>' + this.col_srx_string + '</td>' +
+							'<td>' + this.col_stx + '</td>' +
+							'<td>' + this.col_srx + '</td>' +
+							'<td>' + this.col_gridsquare + '</td>' +
+							'<td>' + this.col_vucc_grids + '</td>' +
+							'</tr>');
 					});
+					if (!$.fn.DataTable.isDataTable('.qsotable')) {
+						$('.qsotable').DataTable({
+							"stateSave": true,
+							"pageLength": 25,
+							responsive: false,
+							"scrollY": "400px",
+							"scrollCollapse": true,
+							"paging": false,
+							"scrollX": true,
+							"order": [[0, "desc"]]
+						});
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 }
