@@ -21,6 +21,8 @@ class Oqrs extends CI_Controller {
 
 		$data['stations'] = $this->oqrs_model->get_oqrs_stations();
 		$data['page_title'] = "Log Search & OQRS";
+		$data['global_oqrs_text'] = $this->optionslib->get_option('global_oqrs_text');
+
 
 		$this->load->view('visitor/layout/header', $data);
 		$this->load->view('oqrs/index');
