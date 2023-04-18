@@ -14,6 +14,7 @@
 		<?php
 		if ($global_oqrs_text) {
 			echo $global_oqrs_text;
+			echo '<br />'
 		}
 		  echo '<div class="resulttable">';
 		  if ($stations->result() != NULL) { ?>
