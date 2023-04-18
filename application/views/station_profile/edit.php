@@ -183,7 +183,7 @@
 							}
 							?>
 						</select>
-						<small id="stationCQInputHelp" class="form-text text-muted">If you don't know your CQ Zone then <a href="http://www4.plala.or.jp/nomrax/CQ/" target="_blank">click here to find it!</a></small>
+						<small id="stationCQInputHelp" class="form-text text-muted">If you don't know your CQ Zone then <a href="https://zone-check.eu/" target="_blank">click here to find it!</a></small>
 					</div>
 
 					<!-- ITU Zone -->
@@ -200,7 +200,7 @@
 							}
 							?>
                     	</select>
-                    	<small id="stationITUInputHelp" class="form-text text-muted">If you don't know your ITU Zone then <a href="http://www4.plala.or.jp/nomrax/ITU/" target="_blank">click here to find it!</a></small>
+                    	<small id="stationITUInputHelp" class="form-text text-muted">If you don't know your ITU Zone then <a href="https://zone-check.eu/" target="_blank">click here to find it!</a></small>
                 	</div>
 
 				</div>
