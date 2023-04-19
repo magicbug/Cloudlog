@@ -13,7 +13,7 @@
 
         <div class="card-body">
 
-            <form class="form" action="<?php echo site_url('kml/export'); ?>" method="post" enctype="multipart/form-data">
+            <form class="form" action="<?php echo site_url('kmlexport/export'); ?>" method="post" enctype="multipart/form-data">
 
                 <div class="form-group">
                     <label for="band">Band</label>

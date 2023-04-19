@@ -224,11 +224,13 @@
 
 				<a class="dropdown-item" href="<?php echo site_url('adif');?>" title="Amateur Data Interchange Format (ADIF) import / export"><i class="fas fa-sync"></i> ADIF Import / Export</a>
 
-				<a class="dropdown-item" href="<?php echo site_url('kml');?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> KML Export</a>
+				<a class="dropdown-item" href="<?php echo site_url('kmlexport');?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> KML Export</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('dxatlas');?>" title="DX Atlas Gridsquare Export"><i class="fas fa-sync"></i> DX Atlas Gridsquare Export</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('csv');?>" title="SOTA CSV Export"><i class="fas fa-sync"></i> SOTA CSV Export</a>
+
+				<a class="dropdown-item" href="<?php echo site_url('cabrillo');?>" title="Cabrillo Export"><i class="fas fa-sync"></i> Cabrillo Export</a>
 
 				<div class="dropdown-divider"></div>
 

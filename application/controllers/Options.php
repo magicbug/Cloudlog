@@ -252,4 +252,32 @@ class Options extends CI_Controller {
 			}
 		}
 
+		function oqrs() {
+
+			$data['page_title'] = "Cloudlog Options";
+			$data['sub_heading'] = "OQRS Global text";
+
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('options/oqrs');
+			$this->load->view('interface_assets/footer');
+		}
+
+		function oqrs_save() {
+
+		$data['page_title'] = "Cloudlog Options";
+		$data['sub_heading'] = "OQRS Global text";
+
+		$this->load->helper(array('form', 'url'));
+
+		$this->load->library('form_validation');
+
+		$global_oqrs_text = $this->optionslib->update('global_oqrs_text', $this->input->post('global_oqrs_text'), null);
+
+		if($global_oqrs_text == TRUE) {
+			$this->session->set_flashdata('success', 'OQRS Global text has been saved.');
+		}
+
+		redirect('/options/oqrs');
+    }
+
 }
