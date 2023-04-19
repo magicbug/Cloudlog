@@ -44,7 +44,7 @@
 						<?php foreach ($lotw_cert_results->result() as $row) { ?>
 							<tr>
 					      		<td><?php echo $row->callsign; ?></td>
-					      		<td><?php echo ucfirst($row->cert_dxcc); ?></td>
+					      		<td><?php echo $row->cert_dxcc == '' ? '- NONE -' : ucfirst($row->cert_dxcc); ?></td>
 								<td><?php
 									if (isset($row->qso_start_date)) {
 										$valid_qso_start = strtotime( $row->qso_start_date );

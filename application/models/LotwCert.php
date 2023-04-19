@@ -12,7 +12,9 @@ class LotwCert extends CI_Model {
 	*/
 	function lotw_certs($user_id) {
 
+		$this->db->select('lotw_certs.lotw_cert_id as lotw_cert_id, lotw_certs.callsign as callsign, dxcc_entities.name as cert_dxcc, lotw_certs.qso_start_date as qso_start_date, lotw_certs.qso_end_date as qso_end_date, lotw_certs.date_created as date_created, lotw_certs.date_expires as date_expires, lotw_certs.last_upload as last_upload');
 		$this->db->where('user_id', $user_id);
+		$this->db->join('dxcc_entities','lotw_certs.cert_dxcc_id = dxcc_entities.adif','left');
 		$this->db->order_by('cert_dxcc', 'ASC');
 		$query = $this->db->get('lotw_certs');
 			
@@ -29,7 +31,7 @@ class LotwCert extends CI_Model {
 
 	function find_cert($callsign, $dxcc, $user_id) {
 		$this->db->where('user_id', $user_id);
-		$this->db->where('cert_dxcc', $dxcc);
+		$this->db->where('cert_dxcc_id', $dxcc);
 		$this->db->where('callsign', $callsign);
 		$query = $this->db->get('lotw_certs');
 
@@ -40,7 +42,7 @@ class LotwCert extends CI_Model {
 		$data = array(
 		    'user_id' => $user_id,
 		    'callsign' => $callsign,
-		    'cert_dxcc' => $dxcc,
+		    'cert_dxcc_id' => $dxcc,
 		    'date_created' => $date_created,
 		    'date_expires' => $date_expires,
 		    'qso_start_date' => $qso_start_date,
@@ -54,7 +56,7 @@ class LotwCert extends CI_Model {
 
 	function update_certificate($user_id, $callsign, $dxcc, $date_created, $date_expires, $cert_key, $general_cert) {
 		$data = array(
-		    'cert_dxcc' => $dxcc,
+		    'cert_dxcc_id' => $dxcc,
 		    'date_created' => $date_created,
 		    'date_expires' => $date_expires,
 		    'cert_key' => $cert_key,
@@ -63,7 +65,7 @@ class LotwCert extends CI_Model {
 
 		$this->db->where('user_id', $user_id);
 		$this->db->where('callsign', $callsign);
-		$this->db->where('cert_dxcc', $dxcc);
+		$this->db->where('cert_dxcc_id', $dxcc);
 		$this->db->update('lotw_certs', $data);
 	}
 

@@ -153,20 +153,20 @@ class Lotw extends CI_Controller {
 			}
 
 			// Check to see if certificate is already in the system
-			$new_certificate = $this->LotwCert->find_cert($info['issued_callsign'], $dxcc, $this->session->userdata('user_id'));
+			$new_certificate = $this->LotwCert->find_cert($info['issued_callsign'], $info['dxcc-id'], $this->session->userdata('user_id'));
 
         	if($new_certificate == 0) {
         		// New Certificate Store in Database
 
         		// Store Certificate Data into MySQL
-        		$this->LotwCert->store_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['qso-first-date'], $info['qso-end-date'], $info['pem_key'], $info['general_cert']);
+        		$this->LotwCert->store_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $info['dxcc-id'], $info['validFrom'], $info['validTo_Date'], $info['qso-first-date'], $info['qso-end-date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
         		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certificate Imported.');
         	} else {
         		// Certificate is in the system time to update
 
-				$this->LotwCert->update_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
+				$this->LotwCert->update_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $info['dxcc-id'], $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
         		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certificate Updated.');
@@ -443,6 +443,7 @@ class Lotw extends CI_Controller {
 		// https://oidref.com/1.3.6.1.4.1.12348.1
 		$data['qso-first-date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.2'];
 		$data['qso-end-date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.3'];
+		$data['dxcc-id'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.4'];
 
 		return $data;
 	}
