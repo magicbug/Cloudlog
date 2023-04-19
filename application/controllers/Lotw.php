@@ -142,16 +142,6 @@ class Lotw extends CI_Controller {
 
         	$info = $this->decrypt_key($data['upload_data']['full_path']);
 
-        	// Check DXCC & Store Country Name
-			$this->load->model('Logbook_model');
-
-			if($this->input->post('dxcc') != "") {
-				$dxcc = $this->input->post('dxcc');
-			} else{
-				$dxcc_check = $this->Logbook_model->check_dxcc_table($info['issued_callsign'], $info['validFrom']);
-				$dxcc = $dxcc_check[1];
-			}
-
 			// Check to see if certificate is already in the system
 			$new_certificate = $this->LotwCert->find_cert($info['issued_callsign'], $info['dxcc-id'], $this->session->userdata('user_id'));
 
