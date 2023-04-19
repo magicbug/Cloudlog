@@ -6,7 +6,7 @@ class Migration_make_lotw_use_dxcc_id extends CI_Migration
 	public function up()
 	{
 		$fields = array(
-			'cert_dxcc_id SMALLINT(6) NOT NULL AFTER `cert_dxcc`',
+			'cert_dxcc_id SMALLINT(6) DEFAULT 0 NOT NULL AFTER `cert_dxcc`',
 		);
 
 		if (!$this->db->field_exists('cert_dxcc_id', 'lotw_certs')) {
