@@ -17,7 +17,7 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 <CERT_UID:1>1
 <CALL:<?php echo strlen($lotw_cert_info->callsign); ?>><?php echo $lotw_cert_info->callsign; ?>
 
-<DXCC:<?php echo strlen($lotw_cert_info->cert_dxcc_id); ?>><?php echo $lotw_cert_info->cert_dxcc_d; ?>
+<DXCC:<?php echo strlen($lotw_cert_info->cert_dxcc_id); ?>><?php echo $lotw_cert_info->cert_dxcc_id; ?>
 
 <?php if(isset($station_profile->station_gridsquare)) { ?><GRIDSQUARE:<?php echo strlen($station_profile->station_gridsquare); ?>><?php echo $station_profile->station_gridsquare; ?><?php } ?>
 
