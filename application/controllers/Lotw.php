@@ -225,10 +225,10 @@ class Lotw extends CI_Controller {
 					// Get Certificate Data
 					$this->load->model('LotwCert');
 					$data['station_profile'] = $station_profile;
-					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign, $station_profile->station_country);
+					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign, $station_profile->station_dxcc);
 
 					// If Station Profile has no LOTW Cert continue on.
-					if(!isset($data['lotw_cert_info']->cert_dxcc)) {
+					if(!isset($data['lotw_cert_info']->cert_dxcc_id)) {
 						continue;
 					}
 
@@ -243,9 +243,6 @@ class Lotw extends CI_Controller {
 						echo $data['lotw_cert_info']->callsign.": LotW certificate expired!";
 						continue;
 					}
-
-					$this->load->model('Dxcc');
-					$data['station_profile_dxcc'] = $this->Dxcc->lookup_country($data['lotw_cert_info']->cert_dxcc);
 
 					// Get QSOs
 
