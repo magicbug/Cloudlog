@@ -86,8 +86,9 @@
 										<span class="badge badge-success"><?php echo $this->lang->line('lotw_valid'); ?></span>
 									<?php } ?>
 
-									<?php if ($row->last_upload) { ?>
-										<span class="badge badge-success"><?php echo $row->last_upload; ?></span>
+									<?php if ($row->last_upload) {
+										$last_upload = date($this->config->item('qso_date_format').' H:i:s', strtotime( $row->last_upload )); ?>
+										<span class="badge badge-success"><?php echo $last_upload; ?></span>
 									<?php } else { ?>
 										<span class="badge badge-warning"><?php echo $this->lang->line('lotw_not_synced'); ?></span>
 									<?php } ?>
