@@ -58,7 +58,7 @@ class adif_data extends CI_Model {
         $this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
         $this->db->where($this->config->item('table_name').'.COL_PROP_MODE', 'SAT');
 
-        $where = $this->config->item('table_name').".COL_LOTW_QSLRDATE != ''";
+        $where = $this->config->item('table_name').".COL_LOTW_QSLRDATE IS NOT NULL";
         $this->db->where($where);
 
         $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
