@@ -44,7 +44,7 @@
 						<?php foreach ($lotw_cert_results->result() as $row) { ?>
 							<tr>
 					      		<td><?php echo $row->callsign; ?></td>
-					      		<td><?php echo ucfirst($row->cert_dxcc); ?></td>
+					      		<td><?php echo $row->cert_dxcc == '' ? '- NONE -' : ucfirst($row->cert_dxcc); ?></td>
 								<td><?php
 									if (isset($row->qso_start_date)) {
 										$valid_qso_start = strtotime( $row->qso_start_date );
@@ -86,8 +86,9 @@
 										<span class="badge badge-success"><?php echo $this->lang->line('lotw_valid'); ?></span>
 									<?php } ?>
 
-									<?php if ($row->last_upload) { ?>
-										<span class="badge badge-success"><?php echo $row->last_upload; ?></span>
+									<?php if ($row->last_upload) {
+										$last_upload = date($this->config->item('qso_date_format').' H:i:s', strtotime( $row->last_upload )); ?>
+										<span class="badge badge-success"><?php echo $last_upload; ?></span>
 									<?php } else { ?>
 										<span class="badge badge-warning"><?php echo $this->lang->line('lotw_not_synced'); ?></span>
 									<?php } ?>
