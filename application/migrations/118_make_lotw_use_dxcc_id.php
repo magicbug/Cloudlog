@@ -13,10 +13,11 @@ class Migration_make_lotw_use_dxcc_id extends CI_Migration
 			$this->dbforge->add_column('lotw_certs', $fields);
 		}
 
-		$sql = 'UPDATE `lotw_certs` JOIN `dxcc_entities` ON `lotw_certs`.`cert_dxcc` = `dxcc_entities`.`name` SET `lotw_certs`.`cert_dxcc_id` = `dxcc_entities`.`adif`;';
-		$this->db->query($sql);
-
-		$this->dbforge->drop_column('lotw_certs', 'cert_dxcc');
+		if ($this->db->field_exists('cert_dxcc', 'lotw_certs')) {
+			$sql = 'UPDATE `lotw_certs` JOIN `dxcc_entities` ON `lotw_certs`.`cert_dxcc` = `dxcc_entities`.`name` SET `lotw_certs`.`cert_dxcc_id` = `dxcc_entities`.`adif`;';
+			$this->db->query($sql);
+			$this->dbforge->drop_column('lotw_certs', 'cert_dxcc');
+		}	
 	}
 
 	public function down()
