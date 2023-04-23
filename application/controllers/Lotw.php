@@ -142,31 +142,21 @@ class Lotw extends CI_Controller {
 
         	$info = $this->decrypt_key($data['upload_data']['full_path']);
 
-        	// Check DXCC & Store Country Name
-			$this->load->model('Logbook_model');
-
-			if($this->input->post('dxcc') != "") {
-				$dxcc = $this->input->post('dxcc');
-			} else{
-				$dxcc_check = $this->Logbook_model->check_dxcc_table($info['issued_callsign'], $info['validFrom']);
-				$dxcc = $dxcc_check[1];
-			}
-
 			// Check to see if certificate is already in the system
-			$new_certificate = $this->LotwCert->find_cert($info['issued_callsign'], $dxcc, $this->session->userdata('user_id'));
+			$new_certificate = $this->LotwCert->find_cert($info['issued_callsign'], $info['dxcc-id'], $this->session->userdata('user_id'));
 
         	if($new_certificate == 0) {
         		// New Certificate Store in Database
 
         		// Store Certificate Data into MySQL
-        		$this->LotwCert->store_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['qso-first-date'], $info['qso-end-date'], $info['pem_key'], $info['general_cert']);
+        		$this->LotwCert->store_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $info['dxcc-id'], $info['validFrom'], $info['validTo_Date'], $info['qso-first-date'], $info['qso-end-date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
         		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certificate Imported.');
         	} else {
         		// Certificate is in the system time to update
 
-				$this->LotwCert->update_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
+				$this->LotwCert->update_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $info['dxcc-id'], $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
         		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certificate Updated.');
@@ -225,10 +215,10 @@ class Lotw extends CI_Controller {
 					// Get Certificate Data
 					$this->load->model('LotwCert');
 					$data['station_profile'] = $station_profile;
-					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign, $station_profile->station_country);
+					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign, $station_profile->station_dxcc);
 
 					// If Station Profile has no LOTW Cert continue on.
-					if(!isset($data['lotw_cert_info']->cert_dxcc)) {
+					if(!isset($data['lotw_cert_info']->cert_dxcc_id)) {
 						continue;
 					}
 
@@ -243,9 +233,6 @@ class Lotw extends CI_Controller {
 						echo $data['lotw_cert_info']->callsign.": LotW certificate expired!";
 						continue;
 					}
-
-					$this->load->model('Dxcc');
-					$data['station_profile_dxcc'] = $this->Dxcc->lookup_country($data['lotw_cert_info']->cert_dxcc);
 
 					// Get QSOs
 
@@ -443,6 +430,7 @@ class Lotw extends CI_Controller {
 		// https://oidref.com/1.3.6.1.4.1.12348.1
 		$data['qso-first-date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.2'];
 		$data['qso-end-date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.3'];
+		$data['dxcc-id'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.4'];
 
 		return $data;
 	}
