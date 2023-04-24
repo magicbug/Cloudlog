@@ -3637,7 +3637,7 @@ class Logbook_model extends CI_Model {
     }
 
     public function check_for_station_id() {
-      $this->db->where('station_id =', 'NULL');
+      $this->db->where('station_id =', NULL);
       $query = $this->db->get($this->config->item('table_name'));
       if($query->num_rows() >= 1) {
         return 1;
