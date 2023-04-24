@@ -2392,7 +2392,7 @@ function deleteQsl(id) {
 		});
 	}
 </script>
-<?php if ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) != "add" ) { ?>
+<?php if ($this->uri->segment(1) == "contesting" && ($this->uri->segment(2) != "add" && $this->uri->segment(2) != "edit")) { ?>
     <script>
         var manual = <?php echo $_GET['manual']; ?>;
     </script>
