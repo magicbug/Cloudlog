@@ -69,7 +69,6 @@
 							<?php } ?>
 							</select>
 							<?php } ?>
-						<input type="hidden" id="country" name="station_country" value="<?php if(set_value('station_country') != "") { echo set_value('station_country'); } else { echo $my_station_profile->station_country; } ?>" required />
 						<small id="stationDXCCInputHelp" class="form-text text-muted">Station DXCC entity. For example: Scotland</small>
 					</div>
 

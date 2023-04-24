@@ -50,7 +50,6 @@
 				<?php } ?>
 				</select>
 				<?php } ?>
-				<input type="hidden" id="country" name="station_country" value="" required />
 		    <small id="stationDXCCInputHelp" class="form-text text-muted">Station DXCC entity. For example: Scotland</small>
 		  </div>
 

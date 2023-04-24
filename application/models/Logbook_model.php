@@ -294,6 +294,8 @@ class Logbook_model extends CI_Model {
 
   public function check_station($id){
 
+    $this->db->select('station_profile.*, dxcc_entities.name as station_country');
+    $this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left');
     $this->db->where('station_id', $id);
     $query = $this->db->get('station_profile');
 
@@ -1287,9 +1289,11 @@ class Logbook_model extends CI_Model {
   }
 
   function get_qso($id) {
+    $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, dxcc_entities_2.name as station_country');
     $this->db->from($this->config->item('table_name'));
     $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
-    $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+    $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id', 'left');
+    $this->db->join('dxcc_entities as dxcc_entities_2', 'station_profile.station_dxcc = dxcc_entities_2.adif');
     $this->db->where('COL_PRIMARY_KEY', $id);
 
     return $this->db->get();
@@ -3121,8 +3125,10 @@ class Logbook_model extends CI_Model {
 
             // Collect field information from the station profile table thats required for the QSO.
             if($station_id != "0") {
-              $station_result = $this->db->where('station_id', $station_id)
-                                ->get('station_profile');
+              $this->db->select('station_profile.*, dxcc_entities.name as station_country');
+              $this->db->where('station_id', $station_id);
+              $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
+              $station_result = $this->db->get('station_profile');
 
                 if ($station_result->num_rows() > 0){
                     $data['station_id'] = $station_id;
