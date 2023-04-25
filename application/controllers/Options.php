@@ -255,7 +255,7 @@ class Options extends CI_Controller {
 		function oqrs() {
 
 			$data['page_title'] = "Cloudlog Options";
-			$data['sub_heading'] = "OQRS Global text";
+			$data['sub_heading'] = "OQRS Options";
 
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('options/oqrs');
@@ -265,7 +265,7 @@ class Options extends CI_Controller {
 		function oqrs_save() {
 
 		$data['page_title'] = "Cloudlog Options";
-		$data['sub_heading'] = "OQRS Global text";
+		$data['sub_heading'] = "OQRS Options";
 
 		$this->load->helper(array('form', 'url'));
 
@@ -273,8 +273,10 @@ class Options extends CI_Controller {
 
 		$global_oqrs_text = $this->optionslib->update('global_oqrs_text', $this->input->post('global_oqrs_text'), null);
 
+		$global_oqrs_text = $this->optionslib->update('groupedSearch', $this->input->post('groupedSearch'), null);
+
 		if($global_oqrs_text == TRUE) {
-			$this->session->set_flashdata('success', 'OQRS Global text has been saved.');
+			$this->session->set_flashdata('success', 'OQRS options have been saved.');
 		}
 
 		redirect('/options/oqrs');

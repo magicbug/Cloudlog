@@ -42,6 +42,18 @@ class Oqrs_model extends CI_Model {
 		return $result;
 	}
 
+	
+    function get_qsos_grouped($callsign){
+
+		// Populating array with worked band/mode combinations
+		$worked = $this->getQueryData($station_id, $callsign);
+
+		$result['qsocount'] = count($worked);
+		$result['qsoarray'] = $resultArray;
+
+		return $result;
+	}
+
 	/*
 	 * Builds query depending on what we are searching for
 	 */
@@ -55,6 +67,26 @@ class Oqrs_model extends CI_Model {
         $query = $this->db->query($sql);
 
         return $query->result();
+	}
+
+	/*
+	 * Builds query depending on what we are searching for
+	 */
+	function getQueryDataGrouped($callsign) {
+        $callsign = $this->security->xss_clean($callsign);
+        $sql = 'select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, col_band, station_callsign, station_profile_name, l.station_id from ' . $this->config->item('table_name') . ' as l join station_profile on l.station_id = station_profile.station_id where station_profile.oqrs = "1" and l.col_call ="' . $callsign . '" and l.col_prop_mode != "SAT"';
+
+		$sql .= ' union all select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, "SAT" col_band, station_callsign, station_profile_name, l.station_id from ' . 
+			$this->config->item('table_name') . ' l' . 
+			' join station_profile on l.station_id = station_profile.station_id where station_profile.oqrs = "1" and col_call ="' . $callsign . '" and col_prop_mode = "SAT"';
+
+        $query = $this->db->query($sql);
+
+		if ($query) {
+			return $query->result();
+		}
+
+		return;
 	}
 
 	/*
@@ -92,6 +124,7 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function save_oqrs_request($postdata) {
+		$station_ids = array();
 		$qsos = $postdata['qsos'];
 		foreach($qsos as $qso) {
 			$data = array(
@@ -115,7 +148,45 @@ class Oqrs_model extends CI_Model {
 			}
 	
 			$this->db->insert('oqrs', $data);
+			if(!in_array(xss_clean($postdata['station_id']), $station_ids)){
+				array_push($station_ids, xss_clean($postdata['station_id']));
+			}
 		}
+
+		return $station_ids;
+	}
+
+	function save_oqrs_request_grouped($postdata) {
+		$station_ids = array();
+		$qsos = $postdata['qsos'];
+		foreach($qsos as $qso) {
+			$data = array(
+				'date' 				=> xss_clean($qso[0]),
+				'time'	 			=> xss_clean($qso[1]),
+				'band' 				=> xss_clean($qso[2]),
+				'mode' 				=> xss_clean($qso[3]),
+				'requestcallsign' 	=> xss_clean($postdata['callsign']),
+				'station_id' 		=> xss_clean($qso[4]),
+				'note' 				=> xss_clean($postdata['message']),
+				'email' 			=> xss_clean($postdata['email']),
+				'qslroute' 			=> xss_clean($postdata['qslroute']),
+				'status' 			=> '0',
+			);
+
+			$qsoid = $this->check_oqrs($data);
+
+			if ($qsoid > 0) {
+				$data['status'] = '2';
+				$data['qsoid'] = $qsoid;
+			}
+	
+			$this->db->insert('oqrs', $data);
+			
+			if(!in_array(xss_clean($qso[4]), $station_ids)){
+				array_push($station_ids, xss_clean($qso[4]));
+			}
+		}
+		return $station_ids;
 	}
 
 	function delete_oqrs_line($id) {
@@ -178,16 +249,15 @@ class Oqrs_model extends CI_Model {
 
 	// Set Paper to requested
 	function paperqsl_requested($qso_id, $method) {
+		$data = array(
+				'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+				'COL_QSL_SENT' => 'R',
+				'COL_QSL_SENT_VIA ' => $method
+		);
 
-	$data = array(
-			'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-			'COL_QSL_SENT' => 'R',
-			'COL_QSL_SENT_VIA ' => $method
-	);
+		$this->db->where('COL_PRIMARY_KEY', $qso_id);
 
-	$this->db->where('COL_PRIMARY_KEY', $qso_id);
-
-	$this->db->update($this->config->item('table_name'), $data);
+		$this->db->update($this->config->item('table_name'), $data);
 	}
 
 	function search_log($callsign) {

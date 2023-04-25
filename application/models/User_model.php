@@ -76,8 +76,9 @@ class User_Model extends CI_Model {
 		}
 	}
 
-	function get_email_address($userid) {
-		$this->db->where('user_id', $userid);
+	function get_email_address($station_id) {
+		$this->db->where('station_id', $station_id);
+		$this->db->join('station_profile', 'station_profile.user_id = '.$this->config->item('auth_table').'.user_id');
 		$query = $this->db->get($this->config->item('auth_table'));
 		
 		$ret = $query->row();

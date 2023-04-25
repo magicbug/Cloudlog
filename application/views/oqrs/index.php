@@ -14,8 +14,15 @@
 		<?php
 		if ($global_oqrs_text) {
 			echo $global_oqrs_text;
-			echo '<br />';
+			echo '<br /><br />';
 		}
+		if ($groupedSearch == 'on') {
+			echo 'This search will search in all station locations where OQRS is active.<br /><br /><form class="form-inline" onsubmit="return false;"><label class="my-1 mr-2" for="oqrssearch">Enter your callsign: </label>
+			<input class="form-control mr-sm-2" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search" required="required">
+			<button onclick="searchOqrsGrouped();" class="btn btn-sm btn-primary" id="stationbuttonsubmit" type="button"><i class="fas fa-search"></i> Search</button>
+			</form>';
+			echo '<div class="searchinfo"></div>';
+			} else {
 		  echo '<div class="resulttable">';
 		  if ($stations->result() != NULL) { ?>
 
@@ -31,12 +38,14 @@
 
 			<div class="stationinfo"></div>
 			<div class="searchinfo"></div>
+			<?php 
+		}
 
-			<?php }
-			else {
-				echo 'No stations found that are using Cloudlog OQRS.';
-			}
-			?>
+		else {
+			echo 'No stations found that are using Cloudlog OQRS.';
+		}
+	}
+		?>
 
         </div>
     </div>
