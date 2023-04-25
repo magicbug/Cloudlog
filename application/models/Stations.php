@@ -17,7 +17,10 @@ class Stations extends CI_Model {
 	// Returns ALL station profiles regardless of user logged in
 	// This is also used by LoTW sync so must not be changed.
 	function all() {
-		return $this->db->get('station_profile');
+		$this->db->select('station_profile.*, dxcc_entities.name as station_country');
+		$this->db->from('station_profile');
+		$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left');
+		return $this->db->get();
 	}
 
 	function all_of_user() {
