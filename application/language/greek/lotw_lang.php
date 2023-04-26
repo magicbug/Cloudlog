@@ -54,6 +54,6 @@ $lang['lotw_p12_export_step_four'] = 'Ανεβάστε το αρχείο παρ�
 
 $lang['lotw_confirmed'] = 'Αυτό το QSO επιβεβαιώνεται στο LoTW';
 
-// LotW Expiry
-$lang['lotw_cert_expiring'] = 'Τουλάχιστον ένα από τα πιστοποιητικά LotW πρόκειται να λήξει!';
-$lang['lotw_cert_expired'] = 'Τουλάχιστον ένα από τα πιστοποιητικά LotW σας έχει λήξει!';
+// LoTW Expiry
+$lang['lotw_cert_expiring'] = 'Τουλάχιστον ένα από τα πιστοποιητικά LoTW πρόκειται να λήξει!';
+$lang['lotw_cert_expired'] = 'Τουλάχιστον ένα από τα πιστοποιητικά LoTW σας έχει λήξει!';

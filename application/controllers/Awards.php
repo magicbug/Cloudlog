@@ -268,7 +268,7 @@ class Awards extends CI_Controller {
 			$qsltype[] = "QSL";
 		}
 		if (strpos($qsl, "L") !== false) {
-			$qsltype[] = "LotW";
+			$qsltype[] = "LoTW";
 		}
 		if (strpos($qsl, "E") !== false) {
 			$qsltype[] = "eQSL";

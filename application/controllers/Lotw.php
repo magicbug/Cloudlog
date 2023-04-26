@@ -222,15 +222,15 @@ class Lotw extends CI_Controller {
 						continue;
 					}
 
-					// Check if LotW certificate itself is valid
+					// Check if LoTW certificate itself is valid
 					// Validty of QSO dates will be checked later
 					$current_date = date('Y-m-d H:i:s');
 					if ($current_date <= $data['lotw_cert_info']->date_created) {
-						echo $data['lotw_cert_info']->callsign.": LotW certificate not valid yet!";
+						echo $data['lotw_cert_info']->callsign.": LoTW certificate not valid yet!";
 						continue;
 					}
 					if ($current_date >= $data['lotw_cert_info']->date_expires) {
-						echo $data['lotw_cert_info']->callsign.": LotW certificate expired!";
+						echo $data['lotw_cert_info']->callsign.": LoTW certificate expired!";
 						continue;
 					}
 
@@ -577,7 +577,7 @@ class Lotw extends CI_Controller {
 				return $tableheaders.$table;
 			}
 		} else {
-			echo "Downloaded LotW report contains no matches.";
+			echo "Downloaded LoTW report contains no matches.";
 		}
 	}
 
@@ -639,7 +639,7 @@ class Lotw extends CI_Controller {
 				}
 				file_put_contents($file, file_get_contents($lotw_url));
 				if (file_get_contents($file, false, null, 0, 39) != "ARRL Logbook of the World Status Report") {
-					return "LotW downloading failed either due to it being down or incorrect logins.";
+					return "LoTW downloading failed either due to it being down or incorrect logins.";
 				}
 
 				ini_set('memory_limit', '-1');
