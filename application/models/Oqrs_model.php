@@ -280,7 +280,7 @@ class Oqrs_model extends CI_Model {
 		$limit = $searchCriteria['oqrsResults'];
 
 		$sql = "
-			SELECT *
+			SELECT *, DATE_FORMAT(requesttime, \"%Y-%m-%d %H:%i\") as requesttime, DATE_FORMAT(time, \"%H:%i\") as time
 			FROM oqrs
 			INNER JOIN station_profile ON oqrs.station_id=station_profile.station_id
 			WHERE station_profile.user_id =  ?
