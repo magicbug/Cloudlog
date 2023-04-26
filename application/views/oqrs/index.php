@@ -10,6 +10,7 @@
         </div>
         <div class="card-body">
 
+        <div class="stationinfo">
 
 		<?php
 		if ($global_oqrs_text) {
@@ -50,8 +51,8 @@
 						</select>
 					<button id="button1id" type="button" onclick="loadStationInfo();" name="button1id" class="btn btn-sm btn-primary"> Proceed</button>
             </form>
+        </div>
 
-			<div class="stationinfo"></div>
 			<div class="searchinfo"></div>
 			<?php 
 		}
