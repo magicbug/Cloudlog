@@ -262,7 +262,9 @@ class Logbooks_model extends CI_Model {
 				array_push($relationships_array, $row->station_location_id);
 			}
 
+			$this->db->select('station_profile.*, dxcc_entities.name as station_country');
 			$this->db->where_in('station_id', $relationships_array);
+			$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left');
 			$query = $this->db->get('station_profile');
 			
 			return $query;
