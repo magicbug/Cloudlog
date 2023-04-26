@@ -49,6 +49,25 @@ function searchOqrsGrouped() {
         data: {'callsign': $("#oqrssearch").val().toUpperCase()},
         success: function (data) {
             $(".searchinfo").append(data);
+            $('.qsotime').change(function() {
+                var raw_time = $(this).val();
+                if(raw_time.match(/^\d\[0-6]d$/)) {
+                    raw_time = "0"+raw_time;
+                }
+                if(raw_time.match(/^[012]\d[0-5]\d$/)) {
+                    raw_time = raw_time.substring(0,2)+":"+raw_time.substring(2,4);
+                    $(this).val(raw_time);
+                }
+            });
+            $('.result-table').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: false,
+                "scrollY": "410px",
+                "scrollCollapse": true,
+                "paging": false,
+                "scrollX": true,
+            });
         }
     });
 }

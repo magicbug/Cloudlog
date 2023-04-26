@@ -22,6 +22,21 @@
 			<button onclick="searchOqrsGrouped();" class="btn btn-sm btn-primary" id="stationbuttonsubmit" type="button"><i class="fas fa-search"></i> Search</button>
 			</form>';
 			echo '<div class="searchinfo"></div>';
+			?>
+			<script>// Get the input field
+			var input = document.getElementById("oqrssearch");
+
+			// Execute a function when the user presses a key on the keyboard
+			input.addEventListener("keypress", function(event) {
+			// If the user presses the "Enter" key on the keyboard
+			if (event.key === "Enter") {
+				// Cancel the default action, if needed
+				event.preventDefault();
+				// Trigger the button element with a click
+				document.getElementById("stationbuttonsubmit").click();
+			}
+			});</script>
+			<?php
 			} else {
 		  echo '<div class="resulttable">';
 		  if ($stations->result() != NULL) { ?>
