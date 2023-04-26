@@ -53,6 +53,6 @@ $lang['lotw_p12_export_step_four'] = 'Загрузите полученный ф
 
 $lang['lotw_confirmed'] = 'Это QSO подтверждено на LoTW';
 
-// LotW Expiry
+// LoTW Expiry
 $lang['lotw_cert_expiring'] = 'Как минимум, один из ваших сертификатов LoTW скоро истечёт!';
 $lang['lotw_cert_expired'] = 'Один из ваших сертификатов LoTW истёк!';

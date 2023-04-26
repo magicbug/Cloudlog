@@ -2170,7 +2170,7 @@ class Logbook_model extends CI_Model {
         }
     }
 
-    /* Return total number of LotW sent */
+    /* Return total number of LoTW sent */
     function total_lotw_sent() {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
@@ -2195,7 +2195,7 @@ class Logbook_model extends CI_Model {
         }
     }
 
-    /* Return total number of LotW received */
+    /* Return total number of LoTW received */
     function total_lotw_rcvd() {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
