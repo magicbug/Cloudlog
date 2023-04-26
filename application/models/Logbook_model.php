@@ -1303,8 +1303,9 @@ class Logbook_model extends CI_Model {
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to qrz, or has been modified with an edit
      */
     function get_qrz_qsos($station_id){
-        $sql = 'select * from ' . $this->config->item('table_name') . ' thcv ' .
-            ' join station_profile on thcv.station_id = station_profile.station_id' .
+        $sql = 'select *, dxcc_entities.name as station_country from ' . $this->config->item('table_name') . ' thcv ' .
+            ' left join station_profile on thcv.station_id = station_profile.station_id' .
+            ' left join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif' .
             ' where thcv.station_id = ' . $station_id .
             ' and (COL_QRZCOM_QSO_UPLOAD_STATUS is NULL
             or COL_QRZCOM_QSO_UPLOAD_STATUS = ""
@@ -1320,9 +1321,10 @@ class Logbook_model extends CI_Model {
      */
 	function get_webadif_qsos($station_id,$from = null, $to = null){
 		$sql = "
-			SELECT qsos.*, station_profile.*
+			SELECT qsos.*, station_profile.*, dxcc_entities.name as station_country
 			FROM %s qsos
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
+			LEFT JOIN dxcc_entities on qsos.col_my_dxcc = dxcc_entities.adif
 			LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
 			WHERE qsos.station_id = %d
         AND qsos.COL_SAT_NAME = 'QO-100'
