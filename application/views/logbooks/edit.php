@@ -95,7 +95,7 @@
 						<select name="SelectedStationLocation" class="form-control" id="StationLocationSelect" aria-describedby="StationLocationSelectHelp">
 							<?php foreach ($station_locations_list->result() as $row) {
 								if (!in_array($row->station_id, $linked_stations)) { ?>
-								<option value="<?php echo $row->station_id;?>"><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country;?>)</option>
+								<option value="<?php echo $row->station_id;?>"><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country; if ($row->dxcc_end != NULL) { echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')'; } ?>)</option>
 								<?php } ?>
 							<?php } ?>
 						</select>

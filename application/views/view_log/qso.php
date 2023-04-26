@@ -187,10 +187,10 @@
                         <td><?php echo $row->COL_SAT_MODE; ?></td>
                     </tr>
                     <?php } ?>
-                    <?php if($row->COL_COUNTRY != null) { ?>
+                    <?php if($row->name != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('general_word_country'); ?></td>
-                        <td><?php echo ucwords(strtolower(($row->COL_COUNTRY)), "- (/"); ?></td>
+                        <td><?php echo ucwords(strtolower(($row->name)), "- (/"); if ($row->end != null) { echo ' <span class="badge badge-danger">'.$this->lang->line('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
                     </tr>
                     <?php } ?>
 
@@ -411,7 +411,7 @@
                     <?php if($row->station_country) { ?>
                     <tr>
                         <td>Station Country</td>
-                        <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); ?></td>
+                        <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); if ($row->end != null) echo ' <span class="badge badge-danger">'.$this->lang->line('gen_hamradio_deleted_dxcc').'</span>'; ?></td>
                     </tr>
                     <?php } ?>
 
