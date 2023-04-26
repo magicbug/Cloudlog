@@ -41,6 +41,37 @@ function searchOqrs() {
     });
 }
 
+function searchOqrsGrouped() {
+    $(".searchinfo").empty();
+    $.ajax({
+        url: base_url+'index.php/oqrs/get_qsos_grouped',
+        type: 'post',
+        data: {'callsign': $("#oqrssearch").val().toUpperCase()},
+        success: function (data) {
+            $(".searchinfo").append(data);
+            $('.qsotime').change(function() {
+                var raw_time = $(this).val();
+                if(raw_time.match(/^\d\[0-6]d$/)) {
+                    raw_time = "0"+raw_time;
+                }
+                if(raw_time.match(/^[012]\d[0-5]\d$/)) {
+                    raw_time = raw_time.substring(0,2)+":"+raw_time.substring(2,4);
+                    $(this).val(raw_time);
+                }
+            });
+            $('.result-table').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: false,
+                "scrollY": "410px",
+                "scrollCollapse": true,
+                "paging": false,
+                "scrollX": true,
+            });
+        }
+    });
+}
+
 function notInLog() {
     $.ajax({
         url: base_url + 'index.php/oqrs/not_in_log',
@@ -200,6 +231,52 @@ function submitOqrsRequest() {
                     $(".stationinfo").empty();
                     $(".searchinfo").empty();
                     $(".stationinfo").append('<br /><div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your QSL request has been saved!</div>');
+                }
+            });
+        }
+    }
+}
+
+function submitOqrsRequestGrouped() {
+    $(".alertinfo").remove();
+    if ($("#emailInput").val() == '') {
+        $(".searchinfo").prepend('<div class="alertinfo"><br /><div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You need to fill out an email address!</div></div>');
+    } else {
+        const qsos = [];
+        $(".result-table tbody tr").each(function(i) {
+            var data = [];
+            var stationid = this.getAttribute('stationid');;
+            var datecell = $("#date", this).val();
+            var timecell = $("#time", this).val();
+            var bandcell = $("#band", this).text();
+            var modecell = $("#mode", this).text();
+            if (datecell != "" && timecell != "") {
+                data.push(datecell);
+                data.push(timecell);
+                data.push(bandcell);
+                data.push(modecell);
+                data.push(stationid);
+                qsos.push(data);
+            }
+        });
+
+        if (qsos.length === 0) {
+            $(".searchinfo").prepend('<div class="alertinfo"><br /><div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You need to fill the QSO information before submitting a request!</div></div>');
+        } else {
+            $.ajax({
+                url: base_url+'index.php/oqrs/save_oqrs_request_grouped',
+                type: 'post',
+                data: {
+                        'callsign': $("#oqrssearch").val().toUpperCase(),
+                        'email': $("#emailInput").val(),
+                        'message': $("#messageInput").val(),
+                        'qsos': qsos,
+                        'qslroute': $('input[name="qslroute"]:checked').val()
+                },
+                success: function (data) {
+                    $(".stationinfo").empty();
+                    $(".searchinfo").empty();
+                    $(".searchinfo").append('<br /><div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your QSL request has been saved!</div>');
                 }
             });
         }
