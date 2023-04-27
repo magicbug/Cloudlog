@@ -27,8 +27,9 @@
 		      <th scope="col">API Key</th>
 		      <th scope="col">Description</th>
 		      <th scope="col">Last Used</th>
-		      <th scope="col">Rights</th>
+		      <th scope="col">Permissions</th>
 		      <th scope="col">Status</th>
+		      <th scope="col">Actions</th>
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -41,18 +42,18 @@
 						<?php
 							
 							if($row->rights == "rw") {
-								echo "Read & Write";
+								echo "<span class=\"badge badge-warning\">Read & Write</span>";
 							} elseif($row->rights == "r") {
-								echo "Read Only";
+								echo "<span class=\"badge badge-success\">Read-Only</span>";
 							} else {
-								echo "Unknown";
+								echo "<span class=\"badge badge-dark\">Unknown</span>";
 							}
 			
 						?>
 
 					</td>
-					<td><span class="badge badge-pill badge-light"><?php echo ucfirst($row->status); ?></span>
-
+					<td><span class="badge badge-pill badge-success"><?php echo ucfirst($row->status); ?></span></td>
+					<td>
 						<a href="<?php echo site_url('api/edit'); ?>/<?php echo $row->key; ?>" class="btn btn-outline-primary btn-sm">Edit</a>
 
 						<a href="<?php echo site_url('api/auth/'.$row->key); ?>" target="_blank" class="btn btn-primary btn-sm">Test</a>
