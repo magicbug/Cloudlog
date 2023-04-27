@@ -129,7 +129,7 @@
 							foreach ($station_locations_linked->result() as $row) {
 					?>
 					<tr>
-						<td><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country;?>)</td>
+						<td><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country; if ($row->end != NULL) { echo ' <span class="badge badge-danger">'.$this->lang->line('gen_hamradio_deleted_dxcc').'</span>'; } ?>)</td>
 						<td><a href="<?php echo site_url('logbooks/delete_relationship/'); ?><?php echo $station_logbook_details->logbook_id; ?>/<?php echo $row->station_id;?>" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a></td>
 					</tr>
 					<?php
