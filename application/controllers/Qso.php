@@ -483,6 +483,15 @@ class QSO extends CI_Controller {
       echo $this->wwff->info($wwff);
    }
 
+   public function get_station_power() {
+      $this->load->model('stations');
+      $stationProfile = xss_clean($this->input->post('stationProfile'));
+      $data = array('station_power' => $this->stations->get_station_power($stationProfile));
+
+      header('Content-Type: application/json');
+      echo json_encode($data);
+   }
+
    function check_locator($grid) {
       $grid = $this->input->post('locator');
       // Allow empty locator

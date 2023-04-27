@@ -40,6 +40,12 @@
 		    <small id="stationCallsignInputHelp" class="form-text text-muted">Station callsign. For example: 2M0SQL/P</small>
 		  </div>
 
+			<div class="form-group">
+		    <label for="stationPowerInput">Station Power</label>
+		    <input type="number" class="form-control" name="station_power" id="stationPowerInput" step="1" aria-describedby="stationPowerInputHelp" placeholder="10" required>
+		    <small id="stationPowerInputHelp" class="form-text text-muted">Default station power. Overwritten by CAT.</small>
+		  </div>
+
 		  <div class="form-group">
 		    <label for="stationDXCCInput">Station DXCC</label>
 				<?php if ($dxcc_list->num_rows() > 0) { ?>
