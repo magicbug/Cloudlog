@@ -95,7 +95,7 @@
 						<select name="SelectedStationLocation" class="form-control" id="StationLocationSelect" aria-describedby="StationLocationSelectHelp">
 							<?php foreach ($station_locations_list->result() as $row) {
 								if (!in_array($row->station_id, $linked_stations)) { ?>
-								<option value="<?php echo $row->station_id;?>"><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country;?>)</option>
+								<option value="<?php echo $row->station_id;?>"><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country; if ($row->dxcc_end != NULL) { echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')'; } ?>)</option>
 								<?php } ?>
 							<?php } ?>
 						</select>
@@ -129,7 +129,7 @@
 							foreach ($station_locations_linked->result() as $row) {
 					?>
 					<tr>
-						<td><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country;?>)</td>
+						<td><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country; if ($row->end != NULL) { echo ' <span class="badge badge-danger">'.$this->lang->line('gen_hamradio_deleted_dxcc').'</span>'; } ?>)</td>
 						<td><a href="<?php echo site_url('logbooks/delete_relationship/'); ?><?php echo $station_logbook_details->logbook_id; ?>/<?php echo $row->station_id;?>" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a></td>
 					</tr>
 					<?php

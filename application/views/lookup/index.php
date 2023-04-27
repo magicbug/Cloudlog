@@ -16,7 +16,7 @@
 			foreach($dxcc as $d){
 				echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower($d->name), "- (/");
 				if ($d->Enddate != null) {
-					echo ' (deleted dxcc)';
+					echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';
 				}
 				echo '</option>';
 			}

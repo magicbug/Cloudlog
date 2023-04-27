@@ -4,7 +4,7 @@ class Stations extends CI_Model {
 
     function all_with_count() {
 
-		$this->db->select('station_profile.*, dxcc_entities.name as station_country, count('.$this->config->item('table_name').'.station_id) as qso_total');
+		$this->db->select('station_profile.*, dxcc_entities.name as station_country, dxcc_entities.end as dxcc_end, count('.$this->config->item('table_name').'.station_id) as qso_total');
         $this->db->from('station_profile');
         $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id','left');
         $this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left');
@@ -24,7 +24,7 @@ class Stations extends CI_Model {
 	}
 
 	function all_of_user() {
-		$this->db->select('station_profile.*, dxcc_entities.name as station_country');
+		$this->db->select('station_profile.*, dxcc_entities.name as station_country, dxcc_entities.end as dxcc_end');
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left');
 		return $this->db->get('station_profile');

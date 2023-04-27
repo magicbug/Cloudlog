@@ -313,6 +313,7 @@ class Logbook_model extends CI_Model {
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC', 'left outer');
 		switch ($type) {
 			case 'DXCC':
 				$this->db->where('COL_COUNTRY', $searchphrase);
@@ -389,8 +390,9 @@ class Logbook_model extends CI_Model {
 		$sql =  'SELECT COL_FREQ, COL_SOTA_REF, COL_OPERATOR, COL_IOTA, COL_VUCC_GRIDS, COL_STATE, COL_GRIDSQUARE, COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_BAND, COL_SAT_NAME, COL_MODE, COL_SUBMODE, COL_RST_SENT, ';
 		$sql .= 'COL_RST_RCVD, COL_STX, COL_SRX, COL_STX_STRING, COL_SRX_STRING, COL_COUNTRY, COL_QSL_SENT, COL_QSL_SENT_VIA, ';
 		$sql .= 'COL_QSLSDATE, COL_QSL_RCVD, COL_QSL_RCVD_VIA, COL_QSLRDATE, COL_EQSL_QSL_SENT, COL_EQSL_QSLSDATE, COL_EQSL_QSLRDATE, ';
-		$sql .= 'COL_EQSL_QSL_RCVD, COL_LOTW_QSL_SENT, COL_LOTW_QSLSDATE, COL_LOTW_QSL_RCVD, COL_LOTW_QSLRDATE, COL_CONTEST_ID, station_gridsquare ';
+		$sql .= 'COL_EQSL_QSL_RCVD, COL_LOTW_QSL_SENT, COL_LOTW_QSLSDATE, COL_LOTW_QSL_RCVD, COL_LOTW_QSLRDATE, COL_CONTEST_ID, station_gridsquare, dxcc_entities.name as name, dxcc_entities.end as end ';
 		$sql .= 'FROM '.$this->config->item('table_name').' JOIN `station_profile` ON station_profile.station_id = '.$this->config->item('table_name').'.station_id ';
+      $sql .= 'LEFT OUTER JOIN `dxcc_entities` ON dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC ';
 		$sql .= 'WHERE '.$this->config->item('table_name').'.station_id IN (SELECT station_id from station_profile ';
 		$sql .= 'WHERE station_gridsquare LIKE "%'.$searchphrase.'%") ';
 
@@ -441,6 +443,7 @@ class Logbook_model extends CI_Model {
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
       $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+      $this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC', 'left outer');
         $this->db->where('COL_CALL', $call);
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -458,6 +461,7 @@ class Logbook_model extends CI_Model {
         }
 
         $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
+        $this->db->order_by('COL_TIME_ON', 'DESC');
 
         return $this->db->get($this->config->item('table_name'));
     }
@@ -1275,9 +1279,11 @@ class Logbook_model extends CI_Model {
       return array();
     }
 
+    $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*');
     $this->db->from($this->config->item('table_name'));
 
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+    $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
     $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
     $this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', "desc");
     $this->db->order_by(''.$this->config->item('table_name').'.COL_PRIMARY_KEY', "desc");
@@ -1289,7 +1295,7 @@ class Logbook_model extends CI_Model {
   }
 
   function get_qso($id) {
-    $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, dxcc_entities_2.name as station_country');
+    $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, dxcc_entities_2.name as station_country, dxcc_entities_2.end as station_end');
     $this->db->from($this->config->item('table_name'));
     $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id', 'left');

@@ -106,15 +106,16 @@
 <?php
 
 function write_dxcc_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $award) {
+    $ci =& get_instance();
     $i = count($timeline_array);
     echo '<table style="width:100%" class="table table-sm timelinetable table-bordered table-hover table-striped table-condensed text-center">
               <thead>
                     <tr>
                         <td>#</td>
-                        <td>Date</td>
+                        <td>'.$ci->lang->line('general_word_date').'</td>
                         <td>Prefix</td>
-                        <td>Country</td>
-                        <td>Deleted</td>
+                        <td>'.$ci->lang->line('general_word_country').'</td>
+                        <td>Status</td>
                         <td>End Date</td>
                         <td>Show QSOs</td>
                     </tr>
@@ -129,7 +130,7 @@ function write_dxcc_timeline($timeline_array, $custom_date_format, $bandselect, 
                 <td>' . $line->prefix . '</td>
                 <td>' . $line->col_country . '</td>
                 <td>';
-        if (!empty($line->end)) echo 'Yes';
+        if (!empty($line->end)) echo '<span class="badge badge-danger">'.$ci->lang->line('gen_hamradio_deleted_dxcc').'</span>';
         echo '</td>
                 <td>' . $line->end . '</td>
                 <td><a href=javascript:displayTimelineContacts("' . $line->adif . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>Show</a></td>
@@ -139,13 +140,14 @@ function write_dxcc_timeline($timeline_array, $custom_date_format, $bandselect, 
 }
 
 function write_was_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $award) {
+    $ci =& get_instance();
     $i = count($timeline_array);
     echo '<table style="width:100%" class="table table-sm timelinetable table-bordered table-hover table-striped table-condensed text-center">
               <thead>
                     <tr>
                         <td>#</td>
-                        <td>Date</td>
-                        <td>State</td>
+                        <td>'.$ci->lang->line('general_word_date').'</td>
+                        <td>'.$ci->lang->line('gen_hamradio_state').'</td>
                         <td>Show QSOs</td>
                     </tr>
                 </thead>
@@ -164,13 +166,14 @@ function write_was_timeline($timeline_array, $custom_date_format, $bandselect, $
 }
 
 function write_iota_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $award) {
+    $ci =& get_instance();
     $i = count($timeline_array);
     echo '<table style="width:100%" class="table table-sm timelinetable table-bordered table-hover table-striped table-condensed text-center">
               <thead>
                     <tr>
                         <td>#</td>
-                        <td>Date</td>
-                        <td>Iota</td>
+                        <td>'.$ci->lang->line('general_word_date').'</td>
+                        <td>IOTA</td>
                         <td>Name</td>
                         <td>Prefix</td>
                         <td>Show QSOs</td>
@@ -193,12 +196,13 @@ function write_iota_timeline($timeline_array, $custom_date_format, $bandselect, 
 }
 
 function write_waz_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $award) {
+    $ci =& get_instance();
     $i = count($timeline_array);
     echo '<table style="width:100%" class="table table-sm timelinetable table-bordered table-hover table-striped table-condensed text-center">
               <thead>
                     <tr>
                         <td>#</td>
-                        <td>Date</td>
+                        <td>'.$ci->lang->line('general_word_date').'</td>
                         <td>CQ Zone</td>
                         <td>Show QSOs</td>
                     </tr>
@@ -218,13 +222,14 @@ function write_waz_timeline($timeline_array, $custom_date_format, $bandselect, $
 }
 
 function write_vucc_timeline($timeline_array, $custom_date_format, $bandselect, $modeselect, $award) {
+    $ci =& get_instance();
     $i = count($timeline_array);
     echo '<table style="width:100%" class="table table-sm timelinetable table-bordered table-hover table-striped table-condensed text-center">
               <thead>
                     <tr>
                         <td>#</td>
-                        <td>Date</td>
-                        <td>Gridsquare</td>
+                        <td>'.$ci->lang->line('general_word_date').'</td>
+                        <td>'.$ci->lang->line('gen_hamradio_gridsquare').'</td>
                         <td>Show QSOs</td>
                     </tr>
                 </thead>

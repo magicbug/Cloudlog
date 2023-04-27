@@ -227,7 +227,11 @@
                                                 if ($qso->COL_DXCC == $d->adif) {
                                                     echo " selected=\"selected\"";
                                                 }
-                                                echo '>' . $d->prefix . ' - ' . $d->name . '</option>';
+                                                echo '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name)));
+                                                if ($d->Enddate != null) {
+                                                    echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';
+                                                }
+                                                echo '</option>';
                                             }
                                             ?>
 
