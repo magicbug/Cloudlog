@@ -59,7 +59,7 @@
 						<?php echo $row->station_profile_name;?><br>
 					</td>
 					<td><?php echo $row->station_callsign;?></td>
-					<td><?php echo $row->station_country;?></td>
+					<td><?php echo $row->station_country == '' ? '- NONE -' : $row->station_country; if ($row->dxcc_end != NULL) { echo ' <span class="badge badge-danger">'.$this->lang->line('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
 					<td><?php echo $row->station_gridsquare;?></td>
 					<td style="text-align: center" data-order="<?php echo $row->station_id;?>">
 						<?php if($row->station_active != 1) { ?>

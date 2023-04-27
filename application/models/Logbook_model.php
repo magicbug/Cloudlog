@@ -294,6 +294,8 @@ class Logbook_model extends CI_Model {
 
   public function check_station($id){
 
+    $this->db->select('station_profile.*, dxcc_entities.name as station_country');
+    $this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left');
     $this->db->where('station_id', $id);
     $query = $this->db->get('station_profile');
 
@@ -311,6 +313,7 @@ class Logbook_model extends CI_Model {
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC', 'left outer');
 		switch ($type) {
 			case 'DXCC':
 				$this->db->where('COL_COUNTRY', $searchphrase);
@@ -387,8 +390,9 @@ class Logbook_model extends CI_Model {
 		$sql =  'SELECT COL_FREQ, COL_SOTA_REF, COL_OPERATOR, COL_IOTA, COL_VUCC_GRIDS, COL_STATE, COL_GRIDSQUARE, COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_BAND, COL_SAT_NAME, COL_MODE, COL_SUBMODE, COL_RST_SENT, ';
 		$sql .= 'COL_RST_RCVD, COL_STX, COL_SRX, COL_STX_STRING, COL_SRX_STRING, COL_COUNTRY, COL_QSL_SENT, COL_QSL_SENT_VIA, ';
 		$sql .= 'COL_QSLSDATE, COL_QSL_RCVD, COL_QSL_RCVD_VIA, COL_QSLRDATE, COL_EQSL_QSL_SENT, COL_EQSL_QSLSDATE, COL_EQSL_QSLRDATE, ';
-		$sql .= 'COL_EQSL_QSL_RCVD, COL_LOTW_QSL_SENT, COL_LOTW_QSLSDATE, COL_LOTW_QSL_RCVD, COL_LOTW_QSLRDATE, COL_CONTEST_ID, station_gridsquare ';
+		$sql .= 'COL_EQSL_QSL_RCVD, COL_LOTW_QSL_SENT, COL_LOTW_QSLSDATE, COL_LOTW_QSL_RCVD, COL_LOTW_QSLRDATE, COL_CONTEST_ID, station_gridsquare, dxcc_entities.name as name, dxcc_entities.end as end ';
 		$sql .= 'FROM '.$this->config->item('table_name').' JOIN `station_profile` ON station_profile.station_id = '.$this->config->item('table_name').'.station_id ';
+      $sql .= 'LEFT OUTER JOIN `dxcc_entities` ON dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC ';
 		$sql .= 'WHERE '.$this->config->item('table_name').'.station_id IN (SELECT station_id from station_profile ';
 		$sql .= 'WHERE station_gridsquare LIKE "%'.$searchphrase.'%") ';
 
@@ -439,6 +443,7 @@ class Logbook_model extends CI_Model {
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
       $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+      $this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC', 'left outer');
         $this->db->where('COL_CALL', $call);
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -456,6 +461,7 @@ class Logbook_model extends CI_Model {
         }
 
         $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
+        $this->db->order_by('COL_TIME_ON', 'DESC');
 
         return $this->db->get($this->config->item('table_name'));
     }
@@ -1273,9 +1279,11 @@ class Logbook_model extends CI_Model {
       return array();
     }
 
+    $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*');
     $this->db->from($this->config->item('table_name'));
 
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+    $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
     $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
     $this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', "desc");
     $this->db->order_by(''.$this->config->item('table_name').'.COL_PRIMARY_KEY', "desc");
@@ -1287,9 +1295,11 @@ class Logbook_model extends CI_Model {
   }
 
   function get_qso($id) {
+    $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, dxcc_entities_2.name as station_country, dxcc_entities_2.end as station_end');
     $this->db->from($this->config->item('table_name'));
     $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
-    $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+    $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id', 'left');
+    $this->db->join('dxcc_entities as dxcc_entities_2', 'station_profile.station_dxcc = dxcc_entities_2.adif');
     $this->db->where('COL_PRIMARY_KEY', $id);
 
     return $this->db->get();
@@ -1299,8 +1309,9 @@ class Logbook_model extends CI_Model {
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to qrz, or has been modified with an edit
      */
     function get_qrz_qsos($station_id){
-        $sql = 'select * from ' . $this->config->item('table_name') . ' thcv ' .
-            ' join station_profile on thcv.station_id = station_profile.station_id' .
+        $sql = 'select *, dxcc_entities.name as station_country from ' . $this->config->item('table_name') . ' thcv ' .
+            ' left join station_profile on thcv.station_id = station_profile.station_id' .
+            ' left join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif' .
             ' where thcv.station_id = ' . $station_id .
             ' and (COL_QRZCOM_QSO_UPLOAD_STATUS is NULL
             or COL_QRZCOM_QSO_UPLOAD_STATUS = ""
@@ -1316,9 +1327,10 @@ class Logbook_model extends CI_Model {
      */
 	function get_webadif_qsos($station_id,$from = null, $to = null){
 		$sql = "
-			SELECT qsos.*, station_profile.*
+			SELECT qsos.*, station_profile.*, dxcc_entities.name as station_country
 			FROM %s qsos
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
+			LEFT JOIN dxcc_entities on qsos.col_my_dxcc = dxcc_entities.adif
 			LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
 			WHERE qsos.station_id = %d
         AND qsos.COL_SAT_NAME = 'QO-100'
@@ -3121,8 +3133,10 @@ class Logbook_model extends CI_Model {
 
             // Collect field information from the station profile table thats required for the QSO.
             if($station_id != "0") {
-              $station_result = $this->db->where('station_id', $station_id)
-                                ->get('station_profile');
+              $this->db->select('station_profile.*, dxcc_entities.name as station_country');
+              $this->db->where('station_id', $station_id);
+              $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
+              $station_result = $this->db->get('station_profile');
 
                 if ($station_result->num_rows() > 0){
                     $data['station_id'] = $station_id;

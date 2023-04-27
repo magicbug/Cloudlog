@@ -124,19 +124,29 @@ class Cabrilloformat {
 
       $time = str_replace(":","",$time);
 
-      if ($qso->COL_STX_STRING != "") {
+      $returnstring = "QSO: ".sprintf("%6s", $freq)." ".$mode." ".$time." ".sprintf("%-13s", $qso->station_callsign)." ".sprintf("%3s", $qso->COL_RST_SENT)." ";
 
-         if($qso->COL_SRX_STRING != "") {
-            $rx_string = $qso->COL_SRX_STRING;
-         } else {
-            $rx_string = "--";
-         }
-
-         return "QSO: ".sprintf("%6s", $freq)." ".$mode." ".$time." ".sprintf("%-13s", $qso->station_callsign)." ".sprintf("%3s", $qso->COL_RST_SENT)." ".sprintf("%-6s", sprintf("%03d", $qso->COL_STX))." ".$qso->COL_STX_STRING . " " .sprintf("%-13s", $qso->COL_CALL)." ".sprintf("%3s", $qso->COL_RST_RCVD)." ".sprintf("%-6s", sprintf("%03d", $qso->COL_SRX))." " . $rx_string . " 0\n";
-      } else {
-         
-         return "QSO: ".sprintf("%6s", $freq)." ".$mode." ".$time." ".sprintf("%-13s", $qso->station_callsign)." ".sprintf("%3s", $qso->COL_RST_SENT)." ".sprintf("%-6s", sprintf("%03d", $qso->COL_STX))." ".sprintf("%-13s", $qso->COL_CALL)." ".sprintf("%3s", $qso->COL_RST_RCVD)." ".sprintf("%-6s", sprintf("%03d", $qso->COL_SRX))." 0\n";
+      if ($qso->COL_STX != NULL) {
+         $returnstring .= sprintf("%-6s", sprintf("%03d", $qso->COL_STX)) ." ";
       }
+
+      if ($qso->COL_STX_STRING != "") {
+         $returnstring .= $qso->COL_STX_STRING ." ";
+      }
+
+      $returnstring .= sprintf("%-13s", $qso->COL_CALL)." ".sprintf("%3s", $qso->COL_RST_RCVD)." ";
+
+      if ($qso->COL_SRX != NULL) {
+         $returnstring .= sprintf("%-6s", sprintf("%03d", $qso->COL_SRX)) ." ";
+      }  
+      
+      if ($qso->COL_SRX_STRING != "") {
+         $returnstring .= $qso->COL_SRX_STRING ." ";
+      }
+
+      $returnstring .= " 0\n";
+
+      return $returnstring;
 
    }
 }

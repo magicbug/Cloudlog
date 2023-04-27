@@ -63,7 +63,9 @@ class Clublog_model extends CI_Model {
 	}
 
 	function get_clublog_qsos($station_id){
+		$this->db->select('*, dxcc_entities.name as station_country');
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left');
 		$this->db->where($this->config->item('table_name').'.station_id', $station_id);
 		$this->db->group_start();
 		$this->db->where("COL_CLUBLOG_QSO_UPLOAD_STATUS", null);

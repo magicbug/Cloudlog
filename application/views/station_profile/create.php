@@ -46,11 +46,11 @@
 				<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
 				<option value="0" selected>NONE</option>
 				<?php foreach ($dxcc_list->result() as $dxcc) { ?>
-				<option value="<?php echo $dxcc->adif; ?>"><?php echo $dxcc->name; ?></option>
+				<option value="<?php echo $dxcc->adif; ?>"><?php echo ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix; if ($dxcc->end != NULL) echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';?>
+				</option>
 				<?php } ?>
 				</select>
 				<?php } ?>
-				<input type="hidden" id="country" name="station_country" value="" required />
 		    <small id="stationDXCCInputHelp" class="form-text text-muted">Station DXCC entity. For example: Scotland</small>
 		  </div>
 
