@@ -769,6 +769,7 @@ class Logbook extends CI_Controller {
 	function querydb($id) {
 		$this->db->from($this->config->item('table_name'));
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC');
 		$this->db->group_start();
 		$this->db->like(''.$this->config->item('table_name').'.COL_CALL', $id);
 		$this->db->or_like(''.$this->config->item('table_name').'.COL_GRIDSQUARE', $id);
