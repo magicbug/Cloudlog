@@ -411,7 +411,7 @@
                     <?php if($row->station_country) { ?>
                     <tr>
                         <td>Station Country</td>
-                        <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); if ($row->end != null) echo ' <span class="badge badge-danger">'.$this->lang->line('gen_hamradio_deleted_dxcc').'</span>'; ?></td>
+                        <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); if ($row->station_end != null) echo ' <span class="badge badge-danger">'.$this->lang->line('gen_hamradio_deleted_dxcc').'</span>'; ?></td>
                     </tr>
                     <?php } ?>
 
