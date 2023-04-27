@@ -94,7 +94,7 @@ $lang['gen_hamradio_logbook'] = 'Logbuch';
 
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
-$lang['gen_hamradio_deleted_dxcc'] = 'gelöschtes DXCC';
+$lang['gen_hamradio_deleted_dxcc'] = 'Gelöschtes DXCC';
 $lang['gen_hamradio_continent'] = 'Kontinent';
 $lang['gen_hamradio_usa_state'] = 'USA-Staat';
 $lang['gen_hamradio_county_reference'] = 'USA County';
