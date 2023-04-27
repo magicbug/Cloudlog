@@ -90,6 +90,14 @@ class Options extends CI_Controller {
 				$this->session->set_flashdata('success', 'Global Search changed to '.$this->input->post('globalSearch'));
 			}
 
+			// Update dashboard banner within the options system
+			$dasboard_banner_update_status = $this->optionslib->update('dashboard_banner', $this->input->post('dashboardBanner'), 'yes');
+
+			// If dashboard banner update is complete set a flashsession with a success note
+			if($dasboard_banner_update_status == TRUE) {
+				$this->session->set_flashdata('success', 'Dashboard banner changed to '.$this->input->post('dashboardBanner'));
+			}
+
 			// Update Lang choice within the options system
 			// $lang_update_status = $this->optionslib->update('language', $this->input->post('language'));
 
