@@ -295,7 +295,7 @@ class Logbook_model extends CI_Model {
   public function check_station($id){
 
     $this->db->select('station_profile.*, dxcc_entities.name as station_country');
-    $this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left');
+    $this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
     $this->db->where('station_id', $id);
     $query = $this->db->get('station_profile');
 
@@ -1296,10 +1296,11 @@ class Logbook_model extends CI_Model {
 
   function get_qso($id) {
     $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, dxcc_entities_2.name as station_country, dxcc_entities_2.end as station_end');
+    $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, coalesce(dxcc_entities_2.name, "None") as station_country, dxcc_entities_2.end as station_end');
     $this->db->from($this->config->item('table_name'));
     $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id', 'left');
-    $this->db->join('dxcc_entities as dxcc_entities_2', 'station_profile.station_dxcc = dxcc_entities_2.adif');
+    $this->db->join('dxcc_entities as dxcc_entities_2', 'station_profile.station_dxcc = dxcc_entities_2.adif', 'left outer');
     $this->db->where('COL_PRIMARY_KEY', $id);
 
     return $this->db->get();
@@ -1311,7 +1312,7 @@ class Logbook_model extends CI_Model {
     function get_qrz_qsos($station_id){
         $sql = 'select *, dxcc_entities.name as station_country from ' . $this->config->item('table_name') . ' thcv ' .
             ' left join station_profile on thcv.station_id = station_profile.station_id' .
-            ' left join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif' .
+            ' left outer join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif' .
             ' where thcv.station_id = ' . $station_id .
             ' and (COL_QRZCOM_QSO_UPLOAD_STATUS is NULL
             or COL_QRZCOM_QSO_UPLOAD_STATUS = ""
@@ -1331,7 +1332,7 @@ class Logbook_model extends CI_Model {
 			FROM %s qsos
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
 			LEFT JOIN dxcc_entities on qsos.col_my_dxcc = dxcc_entities.adif
-			LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
+			LEFT OUTER JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
 			WHERE qsos.station_id = %d
         AND qsos.COL_SAT_NAME = 'QO-100'
 			  AND webadif.upload_date IS NULL
@@ -3183,7 +3184,7 @@ class Logbook_model extends CI_Model {
             if($station_id != "0") {
               $this->db->select('station_profile.*, dxcc_entities.name as station_country');
               $this->db->where('station_id', $station_id);
-              $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
+              $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
               $station_result = $this->db->get('station_profile');
 
                 if ($station_result->num_rows() > 0){
