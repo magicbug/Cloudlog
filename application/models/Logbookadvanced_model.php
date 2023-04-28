@@ -122,7 +122,7 @@ class Logbookadvanced_model extends CI_Model {
             SELECT *, dxcc_entities.name AS station_country
 			FROM " . $this->config->item('table_name') . " qsos
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
-			INNER JOIN dxcc_entities ON qsos.COL_MY_DXCC = dxcc_entities.adif
+			LEFT OUTER JOIN dxcc_entities ON qsos.COL_MY_DXCC = dxcc_entities.adif
 			WHERE station_profile.user_id =  ?
 			$where
 			ORDER BY qsos.COL_TIME_ON desc
