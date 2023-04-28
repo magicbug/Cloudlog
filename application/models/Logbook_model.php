@@ -1583,11 +1583,23 @@ class Logbook_model extends CI_Model {
   }
 
     /* Return total number of qsos */
-    function total_qsos($StationLocationsArray = null) {
+    function total_qsos($StationLocationsArray = null, $api_key = null) {
       if($StationLocationsArray == null) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        if ($api_key != null) {
+          $CI->load->model('api_model');
+          if (strpos($this->api_model->access($api_key), 'r') !== false) {
+            $this->api_model->update_last_used($api_key);
+            $user_id = $this->api_model->key_userid($api_key);
+            $active_station_logbook = $CI->logbooks_model->find_active_station_logbook_from_userid($user_id);
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($active_station_logbook);
+          } else {
+            $logbooks_locations_array = [];
+          }
+        } else {
+          $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        }
       } else {
         $logbooks_locations_array = $StationLocationsArray;
       }
@@ -1610,11 +1622,23 @@ class Logbook_model extends CI_Model {
     }
 
     /* Return number of QSOs had today */
-    function todays_qsos($StationLocationsArray = null) {
+    function todays_qsos($StationLocationsArray = null, $api_key = null) {
       if($StationLocationsArray == null) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        if ($api_key != null) {
+          $CI->load->model('api_model');
+          if (strpos($this->api_model->access($api_key), 'r') !== false) {
+            $this->api_model->update_last_used($api_key);
+            $user_id = $this->api_model->key_userid($api_key);
+            $active_station_logbook = $CI->logbooks_model->find_active_station_logbook_from_userid($user_id);
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($active_station_logbook);
+          } else {
+            $logbooks_locations_array = [];
+          }
+        } else {
+          $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        }
       } else {
         $logbooks_locations_array = $StationLocationsArray;
       }
@@ -1713,11 +1737,23 @@ class Logbook_model extends CI_Model {
     }
 
     // Return QSOs made during the current month
-    function month_qsos($StationLocationsArray = null) {
+    function month_qsos($StationLocationsArray = null, $api_key = null) {
       if($StationLocationsArray == null) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        if ($api_key != null) {
+          $CI->load->model('api_model');
+          if (strpos($this->api_model->access($api_key), 'r') !== false) {
+            $this->api_model->update_last_used($api_key);
+            $user_id = $this->api_model->key_userid($api_key);
+            $active_station_logbook = $CI->logbooks_model->find_active_station_logbook_from_userid($user_id);
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($active_station_logbook);
+          } else {
+            $logbooks_locations_array = [];
+          }
+        } else {
+          $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        }
       } else {
         $logbooks_locations_array = $StationLocationsArray;
       }
@@ -1764,12 +1800,24 @@ class Logbook_model extends CI_Model {
 
 
     /* Return QSOs made during the current Year */
-    function year_qsos($StationLocationsArray = null) {
+    function year_qsos($StationLocationsArray = null, $api_key = null) {
 
       if($StationLocationsArray == null) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        if ($api_key != null) {
+          $CI->load->model('api_model');
+          if (strpos($this->api_model->access($api_key), 'r') !== false) {
+            $this->api_model->update_last_used($api_key);
+            $user_id = $this->api_model->key_userid($api_key);
+            $active_station_logbook = $CI->logbooks_model->find_active_station_logbook_from_userid($user_id);
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($active_station_logbook);
+          } else {
+             $logbooks_locations_array = [];
+          }
+        } else {
+          $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        }
       } else {
         $logbooks_locations_array = $StationLocationsArray;
       }
