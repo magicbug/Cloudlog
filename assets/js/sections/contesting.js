@@ -485,10 +485,6 @@ function restoreContestSession(data) {
 			$("#exch_sent").val(data.exchangesent);
 		}
 	
-		if (data.serialsent != "") {
-			$("#exch_serial_s").val(data.serialsent);
-		}
-	
 		if (data.qso != "") {
 			$.ajax({
 				url: base_url + 'index.php/contesting/getSessionQsos',
