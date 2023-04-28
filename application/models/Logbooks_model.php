@@ -308,5 +308,19 @@ class Logbooks_model extends CI_Model {
 		}
 		return false;
 	}
+
+	public function find_active_station_logbook_from_userid($userid) {
+		$this->db->select('active_station_logbook');
+		$this->db->where('user_id', $userid);
+		$query = $this->db->get('users');
+		if ($query->num_rows() > 0){
+			foreach ($query->result() as $row)
+			{
+				return $row->active_station_logbook;
+			}
+		} else {
+			return 0;
+		}
+	}
 }
 ?>

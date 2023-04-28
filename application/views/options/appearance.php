@@ -69,6 +69,15 @@
                             <small id="globalSearchHelp" class="form-text text-muted">This allows non logged in users to access the search functions.</small>
                         </div>
 
+                        <div class="form-group">
+                            <label for="dashboardBanner">Dashboard Notification Banner</label>
+                            <select class="custom-select" id="dashboardBanner" name="dashboardBanner" aria-describedby="dashboardBannerHelp" required>
+                                <option value='true' <?php if($this->optionslib->get_option('dashboard_banner') == "true") { echo "selected=\"selected\""; } ?>>Enabled</option>
+                                <option value='false' <?php if($this->optionslib->get_option('dashboard_banner') == "false") { echo "selected=\"selected\""; } ?>>Disabled</option>
+                            </select>
+                            <small id="dashboardBannerHelp" class="form-text text-muted">This allows to disable the global notification banner on the dashboard.</small>
+                        </div>
+
                         <!-- Save the Form -->
                         <input class="btn btn-primary" type="submit" value="Save" />
                     </form>

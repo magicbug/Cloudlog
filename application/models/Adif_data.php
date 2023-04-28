@@ -50,7 +50,7 @@ class adif_data extends CI_Model {
         $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
 
         return $this->db->get();
     }
@@ -71,7 +71,7 @@ class adif_data extends CI_Model {
 
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
 
         return $this->db->get();
     }
@@ -109,7 +109,7 @@ class adif_data extends CI_Model {
         $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
 
         return $this->db->get();
     }
@@ -130,7 +130,7 @@ class adif_data extends CI_Model {
         $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
 
         return $this->db->get();
     }
@@ -158,7 +158,7 @@ class adif_data extends CI_Model {
 		$this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
 
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-		$this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
+		$this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
 
 		return $this->db->get();
 	}

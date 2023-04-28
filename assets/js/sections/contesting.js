@@ -319,7 +319,6 @@ function setSerial(data) {
 }
 
 function setExchangetype(exchangetype) {
-	getSession().done(setSerial);
 	// Perhaps a better approach is to hide everything, then just enable the things you need
 	$(".exchanger").hide();
 	$(".exchanges").hide();
@@ -327,7 +326,6 @@ function setExchangetype(exchangetype) {
 	$(".serialr").hide();
 	$(".gridsquarer").hide();
 	$(".gridsquares").hide();
-	$("#exch_serial_s").val("");
 
 	if (exchangetype == 'Exchange') {
 		$(".exchanger").show();
@@ -480,6 +478,7 @@ function restoreContestSession(data) {
 		if (data.exchangetype != "") {
 			$("#exchangetype").val(data.exchangetype);
 			setExchangetype(data.exchangetype);
+			setSerial(data);
 		}
 	
 		if (data.exchangesent != "") {

@@ -7,7 +7,7 @@ class Stations extends CI_Model {
 		$this->db->select('station_profile.*, dxcc_entities.name as station_country, dxcc_entities.end as dxcc_end, count('.$this->config->item('table_name').'.station_id) as qso_total');
         $this->db->from('station_profile');
         $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id','left');
-        $this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left');
+        $this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
        	$this->db->group_by('station_profile.station_id');
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$this->db->or_where('station_profile.user_id =', NULL);
@@ -19,14 +19,14 @@ class Stations extends CI_Model {
 	function all() {
 		$this->db->select('station_profile.*, dxcc_entities.name as station_country');
 		$this->db->from('station_profile');
-		$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left');
+		$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
 		return $this->db->get();
 	}
 
 	function all_of_user() {
 		$this->db->select('station_profile.*, dxcc_entities.name as station_country, dxcc_entities.end as dxcc_end');
 		$this->db->where('user_id', $this->session->userdata('user_id'));
-		$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left');
+		$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
 		return $this->db->get('station_profile');
 	}
 
@@ -75,7 +75,7 @@ class Stations extends CI_Model {
 			'station_sig' =>  xss_clean(strtoupper($this->input->post('sig', true))),
 			'station_sig_info' =>  xss_clean(strtoupper($this->input->post('sig_info', true))),
 			'station_callsign' =>  xss_clean($this->input->post('station_callsign', true)),
-			'station_power' =>  xss_clean($this->input->post('station_power', true)),
+			'station_power' => is_numeric(xss_clean($this->input->post('station_power', true))) ? xss_clean($this->input->post('station_power', true)) : NULL,
 			'station_dxcc' =>  xss_clean($this->input->post('dxcc', true)),
 			'station_cnty' =>  xss_clean($this->input->post('station_cnty', true)),
 			'station_cq' =>  xss_clean($this->input->post('station_cq', true)),
@@ -108,7 +108,7 @@ class Stations extends CI_Model {
 			'station_sig' => xss_clean($this->input->post('sig', true)),
 			'station_sig_info' => xss_clean($this->input->post('sig_info', true)),
 			'station_callsign' => xss_clean($this->input->post('station_callsign', true)),
-			'station_power' => xss_clean($this->input->post('station_power', true)),
+			'station_power' => is_numeric(xss_clean($this->input->post('station_power', true))) ? xss_clean($this->input->post('station_power', true)) : NULL,
 			'station_dxcc' => xss_clean($this->input->post('dxcc', true)),
 			'station_cnty' => xss_clean($this->input->post('station_cnty', true)),
 			'station_cq' => xss_clean($this->input->post('station_cq', true)),
@@ -264,7 +264,7 @@ class Stations extends CI_Model {
 
 		$this->db->select('station_profile.*, dxcc_entities.name as station_country');
 		$this->db->where('station_id', $clean_id);
-		$this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
+		$this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
 		$query = $this->db->get('station_profile');
 
 		$row = $query->row();

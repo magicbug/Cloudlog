@@ -272,7 +272,7 @@
 					<div class="form-group">
 		    			<label for="stationSOTAInput">SOTA Reference</label>
 		    			<input type="text" class="form-control" name="sota" id="stationSOTAInput" aria-describedby="stationSOTAInputHelp" value="<?php if(set_value('sota') != "") { echo set_value('sota'); } else { echo $my_station_profile->station_sota; } ?>">
-		    			<small id="stationSOTAInputHelp" class="form-text text-muted">Station SOTA reference.</small>
+		    			<small id="stationSOTAInputHelp" class="form-text text-muted">Station SOTA reference. You can look up SOTA references at the <a target="_blank" href="https://www.sotamaps.org/">SOTA Maps</a> website.</small>
 		  			</div>
 				</div>
 			</div>
@@ -285,7 +285,7 @@
 					<div class="form-group">
 						<label for="stationWWFFInput">WWFF Reference</label>
 						<input type="text" class="form-control" name="wwff" id="stationWWFFInput" aria-describedby="stationWWFFInputHelp" value="<?php if(set_value('wwff') != "") { echo set_value('wwff'); } else { echo $my_station_profile->station_wwff; } ?>">
-						<small id="stationWWFFInputHelp" class="form-text text-muted">Station WWFF reference.</small>
+						<small id="stationWWFFInputHelp" class="form-text text-muted">Station WWFF reference. You can look up WWFF references at the <a target="_blank" href="https://www.cqgma.org/mvs/">GMA Map</a> website.</small>
 					</div>
 				</div>
 			</div>
@@ -298,7 +298,7 @@
 					<div class="form-group">
 						<label for="stationPOTAInput">POTA Reference</label>
 						<input type="text" class="form-control" name="pota" id="stationPOTAInput" aria-describedby="stationPOTAInputHelp" value="<?php if(set_value('pota') != "") { echo set_value('pota'); } else { echo $my_station_profile->station_pota; } ?>">
-						<small id="stationPOTAInputHelp" class="form-text text-muted">Station POTA reference.</small>
+						<small id="stationPOTAInputHelp" class="form-text text-muted">Station POTA reference. You can look up POTA references at the <a target="_blank" href="https://pota.app/#/map/">POTA Map</a> website.</small>
 					</div>
 				</div>
 			</div>
