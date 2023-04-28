@@ -68,7 +68,7 @@ function loadQSOTable(rows) {
 			qso.qslSent,
 			qso.qslReceived,
 			qso.qslMessage,
-			qso.dxcc,
+			qso.dxcc+(qso.end == null ? '' : ' <span class="badge badge-danger">Deleted DXCC</span>'),
 			qso.state,
 			qso.cqzone,
 			qso.iota,

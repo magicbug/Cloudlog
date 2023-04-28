@@ -371,6 +371,18 @@
                             $twitter_band_sat = $row->COL_BAND;
                             $hashtags = "#hamr #cloudlog";
                         }
+                        if($row->COL_IOTA != null) {
+                            $hashtags .= " #iota";
+                        }
+                        if($row->COL_SOTA_REF != null) {
+                            $hashtags .= " #sota";
+                        }
+                        if($row->COL_POTA_REF != null) {
+                            $hashtags .= " #pota";
+                        }
+                        if($row->COL_WWFF_REF != null) {
+                            $hashtags .= " #wwff";
+                        }
                         if (!isset($distance)) {
                             $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
                         } else {
