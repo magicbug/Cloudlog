@@ -47,6 +47,12 @@
 						<input type="text" class="form-control" name="station_callsign" id="stationCallsignInput" aria-describedby="stationCallsignInputHelp" value="<?php if(set_value('station_callsign') != "") { echo set_value('station_callsign'); } else { echo $my_station_profile->station_callsign; } ?>" required>
 						<small id="stationCallsignInputHelp" class="form-text text-muted">Station callsign. For example: 2M0SQL/P</small>
 					</div>
+
+					<div class="form-group">
+						<label for="stationPowerInput">Station Power</label>
+						<input type="number" class="form-control" name="station_power" step="1" id="stationPowerInput" aria-describedby="stationPowerInputHelp" value="<?php if(set_value('station_power') != "") { echo set_value('station_power'); } else { echo $my_station_profile->station_power; } ?>">
+						<small id="stationPowerInputHelp" class="form-text text-muted">Default station power. Overwritten by CAT.</small>
+					</div>
 				</div>
 			</div>
 		</div>

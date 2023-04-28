@@ -1084,6 +1084,21 @@ $(document).on('keypress',function(e) {
 	});
 <?php } ?>
 
+	$('#stationProfile').change(function() {
+		var stationProfile = $('#stationProfile').val();
+		$.ajax({
+			url: base_url+'index.php/qso/get_station_power',
+			type: 'post',
+			data: {'stationProfile': stationProfile},
+			success: function(res) {
+				$('#transmit_power').val(res.station_power);
+			},
+			error: function() {
+				$('#transmit_power').val('');
+			},
+		});
+	});
+
 <?php if ($this->session->userdata('user_qth_lookup') == 1) { ?>
     $('#qth').focusout(function() {
     	if ($('#locator').val() === '') {

@@ -75,6 +75,7 @@ class Stations extends CI_Model {
 			'station_sig' =>  xss_clean(strtoupper($this->input->post('sig', true))),
 			'station_sig_info' =>  xss_clean(strtoupper($this->input->post('sig_info', true))),
 			'station_callsign' =>  xss_clean($this->input->post('station_callsign', true)),
+			'station_power' =>  xss_clean($this->input->post('station_power', true)),
 			'station_dxcc' =>  xss_clean($this->input->post('dxcc', true)),
 			'station_cnty' =>  xss_clean($this->input->post('station_cnty', true)),
 			'station_cq' =>  xss_clean($this->input->post('station_cq', true)),
@@ -107,6 +108,7 @@ class Stations extends CI_Model {
 			'station_sig' => xss_clean($this->input->post('sig', true)),
 			'station_sig_info' => xss_clean($this->input->post('sig_info', true)),
 			'station_callsign' => xss_clean($this->input->post('station_callsign', true)),
+			'station_power' => xss_clean($this->input->post('station_power', true)),
 			'station_dxcc' => xss_clean($this->input->post('dxcc', true)),
 			'station_cnty' => xss_clean($this->input->post('station_cnty', true)),
 			'station_cq' => xss_clean($this->input->post('station_cq', true)),
@@ -417,6 +419,21 @@ class Stations extends CI_Model {
 			return true;
 		}
 		return false;
+	}
+
+	public function get_station_power($id) {
+		$this->db->select('station_power');
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('station_id', $id);
+		$query = $this->db->get('station_profile');
+		if($query->num_rows() >= 1) {
+			foreach ($query->result() as $row)
+			{
+				return $row->station_power;
+			}
+		} else {
+			return null;
+		}
 	}
 }
 
