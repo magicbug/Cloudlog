@@ -42,7 +42,7 @@
 
 			<div class="form-group">
 		    <label for="stationPowerInput">Station Power</label>
-		    <input type="number" class="form-control" name="station_power" id="stationPowerInput" step="1" aria-describedby="stationPowerInputHelp" placeholder="10" required>
+		    <input type="number" class="form-control" name="station_power" id="stationPowerInput" step="1" aria-describedby="stationPowerInputHelp" placeholder="10">
 		    <small id="stationPowerInputHelp" class="form-text text-muted">Default station power. Overwritten by CAT.</small>
 		  </div>
 
