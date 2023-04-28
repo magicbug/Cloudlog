@@ -1086,7 +1086,6 @@ $(document).on('keypress',function(e) {
 
 	$('#stationProfile').change(function() {
 		var stationProfile = $('#stationProfile').val();
-      console.log("TEST "+stationProfile);
 		$.ajax({
 			url: base_url+'index.php/qso/get_station_power',
 			type: 'post',
