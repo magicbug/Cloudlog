@@ -195,19 +195,19 @@
 		  <div class="form-group">
 		    <label for="stationSOTAInput">SOTA Reference</label>
 		    <input type="text" class="form-control" name="sota" id="stationSOTAInput" aria-describedby="stationSOTAInputHelp">
-		    <small id="stationSOTAInputHelp" class="form-text text-muted">Station SOTA reference.</small>
+		    <small id="stationSOTAInputHelp" class="form-text text-muted">Station SOTA reference. You can look up SOTA references at the <a target="_blank" href="https://www.sotamaps.org/">SOTA Maps</a> website.</small>
 		  </div>
 
 		  <div class="form-group">
 		    <label for="stationWWFFInput">WWFF Reference</label>
 		    <input type="text" class="form-control" name="wwff" id="stationWWFFInput" aria-describedby="stationWWFFInputHelp">
-		    <small id="stationWWFFInputHelp" class="form-text text-muted">Station WWFF reference (e.g. DLFF-0069).</small>
+		    <small id="stationWWFFInputHelp" class="form-text text-muted">Station WWFF reference (e.g. DLFF-0069). You can look up WWFF references at the <a target="_blank" href="https://www.cqgma.org/mvs/">GMA Map</a> website.</small>
 		  </div>
 
 		  <div class="form-group">
 		    <label for="stationPOTAInput">POTA Reference</label>
 		    <input type="text" class="form-control" name="pota" id="stationPOTAInput" aria-describedby="stationPOTAInputHelp">
-		    <small id="stationPOTAInputHelp" class="form-text text-muted">Station POTA reference (e.g. PA-0150).</small>
+		    <small id="stationPOTAInputHelp" class="form-text text-muted">Station POTA reference (e.g. PA-0150). You can look up POTA references at the <a target="_blank" href="https://pota.app/#/map/">POTA Map</a> website.</small>
 		  </div>
 
 		  <div class="form-group">
