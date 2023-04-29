@@ -84,9 +84,10 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 <?php } ?>
 </div>
 
+<?php if($this->optionslib->get_option('dashboard_map') != "false" && $this->optionslib->get_option('dashboard_map') != "map_at_right") { ?>
 <!-- Map -->
 <div id="map" style="width: 100%; height: 350px"></div>
-
+<?php } ?>
 <div style="padding-top: 0px; margin-top: 5px;" class="container dashboard">
 
 <!-- Log Data -->
@@ -153,6 +154,10 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
   </div>
 
   <div class="col-sm-4">
+  	<?php if($this->optionslib->get_option('dashboard_map') == "map_at_right") { ?>
+	<!-- Map -->
+	<div id="map" style="width: 100%; height: 350px;  margin-bottom: 15px;"></div>
+	<?php } ?>
   	<div class="table-responsive">
 
 		<?php if($radio_status->num_rows()) { ?>

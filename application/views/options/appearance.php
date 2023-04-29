@@ -78,6 +78,25 @@
                             <small id="dashboardBannerHelp" class="form-text text-muted">This allows to disable the global notification banner on the dashboard.</small>
                         </div>
 
+                        <div class="form-group">
+                            <label for="dashboardMap">Dashboard Map</label>
+                            <select class="custom-select" id="dashboardMap" name="dashboardMap" aria-describedby="dashboardMapHelp" required>
+                                <option value='true' <?php if($this->optionslib->get_option('dashboard_map') == "true") { echo "selected=\"selected\""; } ?>>Enabled</option>
+                                <option value='false' <?php if($this->optionslib->get_option('dashboard_map') == "false") { echo "selected=\"selected\""; } ?>>Disabled</option>
+                                <option value='map_at_right' <?php if($this->optionslib->get_option('dashboard_map') == "map_at_right") { echo "selected=\"selected\""; } ?>>Map at right</option>
+                            </select>
+                            <small id="dashboardMapHelp" class="form-text text-muted">This allows the map on the dashboard to be disabled or placed on the right.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="logbookMap">Logbook Map</label>
+                            <select class="custom-select" id="logbookMap" name="logbookMap" aria-describedby="logbookMapHelp" required>
+                                <option value='true' <?php if($this->optionslib->get_option('logbook_map') == "true") { echo "selected=\"selected\""; } ?>>Enabled</option>
+                                <option value='false' <?php if($this->optionslib->get_option('logbook_map') == "false") { echo "selected=\"selected\""; } ?>>Disabled</option>
+                            </select>
+                            <small id="logbookMapHelp" class="form-text text-muted">This allows to disable the map in the logbook.</small>
+                        </div>
+
                         <!-- Save the Form -->
                         <input class="btn btn-primary" type="submit" value="Save" />
                     </form>
