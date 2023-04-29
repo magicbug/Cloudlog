@@ -216,7 +216,7 @@
               <div class="form-group">
                   <label for="dxcc_id"><?php echo $this->lang->line('gen_hamradio_dxcc'); ?></label>
                   <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
-                      <option value="0">None</option>
+                      <option value="0">- NONE -</option>
                       <?php
                       foreach($dxcc as $d){
                           echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name)));
