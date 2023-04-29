@@ -45,7 +45,7 @@
 				<label class="form-label" for="dxcc">DXCC</label>
 				<select class="form-control form-control-sm" id="dxcc" name="dxcc">
 				<option value="">-</option>	
-				<option value="0">None (/MM, /AM)</option>
+				<option value="0">- NONE - (e.g. /MM, /AM)</option>
 					<?php
 					foreach($dxccarray as $dxcc){
 						echo '<option value=' . $dxcc->adif;

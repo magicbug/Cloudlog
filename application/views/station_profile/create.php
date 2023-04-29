@@ -50,7 +50,7 @@
 		    <label for="stationDXCCInput">Station DXCC</label>
 				<?php if ($dxcc_list->num_rows() > 0) { ?>
 				<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
-				<option value="0" selected>NONE</option>
+				<option value="0" selected>- NONE -</option>
 				<?php foreach ($dxcc_list->result() as $dxcc) { ?>
 				<option value="<?php echo $dxcc->adif; ?>"><?php echo ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix; if ($dxcc->end != NULL) echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';?>
 				</option>
