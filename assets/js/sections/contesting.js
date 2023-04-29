@@ -313,7 +313,7 @@ $('#band').change(function () {
 function setSerial(data) {
 	var serialsent = 1;
 	if (data.serialsent != "") {
-		serialsent = parseInt(data.serialsent) + 1;
+		serialsent = parseInt(data.serialsent);
 	}
 	$("#exch_serial_s").val(serialsent);
 }
@@ -437,20 +437,22 @@ function logQso() {
 			contentType: false,
 			enctype: 'multipart/form-data',
 			success: function (html) {
-				setSession(formdata);
-				$('#name').val("");
+				var exchangetype = $("#exchangetype").val();
+				if (exchangetype == "Serial" || exchangetype == 'Serialexchange' || exchangetype == 'Serialgridsquare') {
+					$("#exch_serial_s").val(+$("#exch_serial_s").val() + 1);
+					formdata.set('exch_serial_s', $("#exch_serial_s").val());
+				}
 
+				$('#name').val("");
+				
 				$('#callsign').val("");
 				$('#comment').val("");
 				$('#exch_rcvd').val("");
 				$('#exch_gridsquare_r').val("");
 				$('#exch_serial_r').val("");
-				var exchangetype = $("#exchangetype").val();
-				if (exchangetype == "Serial" || exchangetype == 'Serialexchange' || exchangetype == 'Serialgridsquare') {
-					$("#exch_serial_s").val(+$("#exch_serial_s").val() + 1);
-				}
 				$("#callsign").focus();
-
+				setSession(formdata);
+				
 				var qTable = $('.qsotable').DataTable();
 				qTable.search('').draw();
 			}
@@ -484,7 +486,7 @@ function restoreContestSession(data) {
 		if (data.exchangesent != "") {
 			$("#exch_sent").val(data.exchangesent);
 		}
-	
+
 		if (data.qso != "") {
 			$.ajax({
 				url: base_url + 'index.php/contesting/getSessionQsos',
@@ -530,5 +532,7 @@ function restoreContestSession(data) {
 				}
 			});
 		}
+	} else {
+		$("#exch_serial_s").val("1");
 	}
 }
