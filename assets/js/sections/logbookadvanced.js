@@ -118,13 +118,13 @@ function processNextCallbookItem() {
 function selectQsoID(qsoID) {
 	var element = $("#qsoID-" + qsoID);
 	element.find("input[type=checkbox]").prop("checked", true);
-	element.addClass('alert-success');
+	element.addClass('activeRow');
 }
 
 function unselectQsoID(qsoID) {
 	var element = $("#qsoID-" + qsoID);
 	element.find("input[type=checkbox]").prop("checked", false);
-	element.removeClass('alert-success');
+	element.removeClass('activeRow');
 	$('#checkBoxAll').prop("checked", false);
 }
 
@@ -181,9 +181,9 @@ $(document).ready(function () {
 
 	$('#qsoList').on('click', 'input[type="checkbox"]', function() {
 		if ($(this).is(":checked")) {
-			$(this).closest('tr').addClass('alert-success');
+			$(this).closest('tr').addClass('activeRow');
 		} else {
-			$(this).closest('tr').removeClass('alert-success');
+			$(this).closest('tr').removeClass('activeRow');
 		}
 	});
 

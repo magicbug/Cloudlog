@@ -98,6 +98,22 @@ class Options extends CI_Controller {
 				$this->session->set_flashdata('success', 'Dashboard banner changed to '.$this->input->post('dashboardBanner'));
 			}
 
+			// Update dashboard map within the options system
+			$dashboard_map_update_status = $this->optionslib->update('dashboard_map', $this->input->post('dashboardMap'), 'yes');
+
+			// If dashboard map update is complete set a flashsession with a success note
+			if($ldashboard_map_update_status == TRUE) {
+				$this->session->set_flashdata('success', 'Dashboard map changed to '.$this->input->post('dashboardMap'));
+			}
+
+			// Update logbook map within the options system
+			$logbook_map_update_status = $this->optionslib->update('logbook_map', $this->input->post('logbookMap'), 'yes');
+
+			// If logbook map update is complete set a flashsession with a success note
+			if($logbook_map_update_status == TRUE) {
+				$this->session->set_flashdata('success', 'Logbook map changed to '.$this->input->post('logbookMap'));
+			}
+
 			// Update Lang choice within the options system
 			// $lang_update_status = $this->optionslib->update('language', $this->input->post('language'));
 

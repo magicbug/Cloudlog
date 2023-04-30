@@ -13,8 +13,10 @@
 	<?php } ?>
 </div>
 	
+<?php if($this->optionslib->get_option('logbook_map') != "false") { ?>
 	<!-- Map -->
-	<div id="map" style="width: 100%; height: 350px"></div> 
+	<div id="map" style="width: 100%; height: 350px"></div>
+<?php } ?>
 
 <div style="padding-top: 10px; margin-top: 0px;" class="container logbook">
 	<?php $this->load->view('view_log/partial/log_ajax') ?>

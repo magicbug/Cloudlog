@@ -1296,7 +1296,7 @@ class Logbook_model extends CI_Model {
 
   function get_qso($id) {
     $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, dxcc_entities_2.name as station_country, dxcc_entities_2.end as station_end');
-    $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, coalesce(dxcc_entities_2.name, "None") as station_country, dxcc_entities_2.end as station_end');
+    $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, coalesce(dxcc_entities_2.name, "- NONE -") as station_country, dxcc_entities_2.end as station_end');
     $this->db->from($this->config->item('table_name'));
     $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id', 'left');
@@ -3291,7 +3291,7 @@ class Logbook_model extends CI_Model {
         $result = $this->wpx($call, 1);                       # use the wpx prefix instead
         if ($result == '') {
           $row['adif'] = 0;
-          $row['entity'] = 'None';
+          $row['entity'] = '- NONE -';
           $row['cqz'] = 0;
           $row['cont'] = '';
           return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
@@ -3382,7 +3382,7 @@ class Logbook_model extends CI_Model {
               $result = $this->wpx($call, 1);                       # use the wpx prefix instead
               if ($result == '') {
                 $row['adif'] = 0;
-                $row['entity'] = 'None';
+                $row['entity'] = '- NONE -';
                 $row['cqz'] = 0;
                 $row['long'] = '0';
                 $row['lat'] = '0';

@@ -104,6 +104,7 @@ class QSO
 			'COL_STATE',
 			'COL_COUNTRY',
 			'COL_IOTA',
+			'name'
 		];
 
 
@@ -165,7 +166,7 @@ class QSO
 
 		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : $data['COL_CQZ'];
 		$this->state = ($data['COL_STATE'] === null) ? '' :$data['COL_STATE'];
-		$this->dxcc = ($data['COL_COUNTRY'] === null) ? '' :$data['COL_COUNTRY'];
+		$this->dxcc = ($data['name'] === null) ? '- NONE -' :$data['name'];
 		$this->iota = ($data['COL_IOTA'] === null) ? '' :$data['COL_IOTA'];
 		if (array_key_exists('end', $data)) {
 			$this->end = ($data['end'] === null) ? null : DateTime::createFromFormat("Y-m-d", $data['end'], new DateTimeZone('UTC'));
