@@ -448,9 +448,9 @@ $(document).ready(function () {
 
 	$('.oqrstable').on('click', 'input[type="checkbox"]', function() {
 		if ($(this).is(":checked")) {
-			$(this).closest('tr').addClass('alert-success');
+			$(this).closest('tr').addClass('activeRow');
 		} else {
-			$(this).closest('tr').removeClass('alert-success');
+			$(this).closest('tr').removeClass('activeRow');
 		}
 	});
 
@@ -557,13 +557,13 @@ $(document).ready(function () {
 function selectQsoID(qsoID) {
 	var element = $("#oqrsID_" + qsoID);
 	element.find("input[type=checkbox]").prop("checked", true);
-	element.addClass('alert-success');
+	element.addClass('activeRow');
 }
 
 function unselectQsoID(qsoID) {
 	var element = $("#oqrsID_" + qsoID);
 	element.find("input[type=checkbox]").prop("checked", false);
-	element.removeClass('alert-success');
+	element.removeClass('activeRow');
 	$('#checkBoxAll').prop("checked", false);
 }
 
