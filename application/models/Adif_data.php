@@ -3,11 +3,11 @@
 class adif_data extends CI_Model {
 
     function export_all($api_key = null) {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
         if ($api_key != null) {
-            $CI =& get_instance();
             $CI->load->model('api_model');
             if (strpos($this->api_model->access($api_key), 'r') !== false) {
-                $CI->load->model('logbooks_model');
                 $this->api_model->update_last_used($api_key);
                 $user_id = $this->api_model->key_userid($api_key);
                 $active_station_logbook = $CI->logbooks_model->find_active_station_logbook_from_userid($user_id);

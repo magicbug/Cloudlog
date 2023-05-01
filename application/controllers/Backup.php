@@ -20,7 +20,7 @@ class Backup extends CI_Controller {
 	}
 
 	/* Gets all QSOs and Dumps them to logbook.adi */
-	public function adif($key){ 
+	public function adif($key = null){ 
 		$this->load->helper('file');
 		// Set memory limit to unlimited to allow heavy usage
 		ini_set('memory_limit', '-1');
