@@ -46,6 +46,7 @@ class Logbookadvanced extends CI_Controller {
 		$pageData['modes'] = $this->logbookadvanced_model->get_modes();
 		$pageData['dxccarray'] = $this->logbook_model->fetchDxcc();
 		$pageData['iotaarray'] = $this->logbook_model->fetchIota();
+		$pageData['sats'] = $this->bands->get_worked_sats();
 		
 		$pageData['bands'] = $this->bands->get_worked_bands();
 		
@@ -80,6 +81,7 @@ class Logbookadvanced extends CI_Controller {
 			'gridsquare' => xss_clean($this->input->post('gridsquare')),
 			'state' => xss_clean($this->input->post('state')),
 			'qsoresults' => xss_clean($this->input->post('qsoresults')),
+			'sats' => xss_clean($this->input->post('sats')),
 		);
 
 		$qsos = [];
