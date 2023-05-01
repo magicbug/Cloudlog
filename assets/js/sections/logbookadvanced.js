@@ -50,7 +50,7 @@ function loadQSOTable(rows) {
 			"scrollCollapse": true,
 			"paging":         false,
 			"scrollX": true,
-			"order": [ 0, 'asc' ],
+			"order": [ 1, 'desc' ],
 		});
 	});
 
@@ -293,7 +293,7 @@ $(document).ready(function () {
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		// You should set responseType as blob for binary responses
 		xhttp.responseType = 'blob';
-		xhttp.send("id=" + JSON.stringify(id_list, null, 2));
+		xhttp.send("id=" + JSON.stringify(id_list, null, 2)+"&sortorder=" +$('.table').DataTable().order());
 		$('#exportAdif').prop("disabled", false);
 	});
 
