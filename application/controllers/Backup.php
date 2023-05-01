@@ -29,7 +29,9 @@ class Backup extends CI_Controller {
 
 		$data['qsos'] = $this->adif_data->export_all($key);
 
-		if ( ! write_file('backup/logbook.adi', $this->load->view('backup/exportall', $data, true)))
+		$data['filename'] = 'backup/logbook'. date('_Y_m_d_H_i_s') .'.adi';
+		
+		if ( ! write_file($data['filename'], $this->load->view('backup/exportall', $data, true)))
 		{
 		     $data['status'] = false;
 		}
@@ -39,6 +41,7 @@ class Backup extends CI_Controller {
 		}
 
 		$data['page_title'] = "ADIF - Backup";
+		
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('backup/adif_view');
