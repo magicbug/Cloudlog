@@ -41,6 +41,10 @@ class Logbookadvanced_model extends CI_Model {
 				$binding[] = trim($searchCriteria['band']);
 			} else {
 				$conditions[] = "COL_PROP_MODE = 'SAT'";
+				if ($searchCriteria['sats'] !== 'All') {
+					$conditions[] = "COL_SAT_NAME = ?";
+					$binding[] = trim($searchCriteria['sats']);
+				}
 			}
 		}
 		if ($searchCriteria['qslSent'] !== '') {
@@ -77,7 +81,7 @@ class Logbookadvanced_model extends CI_Model {
                 $conditions[] = "COL_PROP_MODE = ?";
                 $binding[] = $searchCriteria['propmode'];
         }
-    
+
 		$where = trim(implode(" AND ", $conditions));
 		if ($where != "") {
 			$where = "AND $where";

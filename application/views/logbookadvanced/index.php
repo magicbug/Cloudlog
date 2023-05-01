@@ -100,6 +100,15 @@
 					?>
 				</select>
 			</div>
+			<div hidden class="sats_dropdown form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+			<label class="form-label" for="sats">Satellite</label>
+			<select class="form-control form-control-sm"  id="sats">
+				<option value="All">All</option>
+				<?php foreach($sats as $sat) {
+					echo '<option value="' . htmlentities($sat) . '"' . '>' . htmlentities($sat) . '</option>'."\n";
+				} ?>
+			</select>
+			</div>
 			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="selectPropagation">Propagation</label>
 				<select id="selectPropagation" name="selectPropagation" class="form-control form-control-sm">

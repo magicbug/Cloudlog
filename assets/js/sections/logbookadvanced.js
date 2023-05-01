@@ -2,6 +2,15 @@ var callBookProcessingDialog = null;
 var inCallbookProcessing = false;
 var inCallbookItemProcessing = false;
 
+$('#band').change(function () {
+	var band = $("#band option:selected").text();
+	if (band != "SAT") {
+		$(".sats_dropdown").attr("hidden", true);
+	} else {
+		$(".sats_dropdown").removeAttr("hidden");
+	}
+});
+
 function updateRow(qso) {
 	let row = $('#qsoID-' + qso.qsoID);
 	let cells = row.find('td');
@@ -156,7 +165,8 @@ $(document).ready(function () {
 				propmode: this.selectPropagation.value,
 				gridsquare: this.gridsquare.value,
 				state: this.state.value,
-				qsoresults: this.qsoResults.value
+				qsoresults: this.qsoResults.value,
+				sats: this.sats.value
 			},
 			dataType: 'json',
 			success: function (data) {
