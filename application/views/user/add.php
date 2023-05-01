@@ -267,6 +267,20 @@
                                     from the API and filled in location and locator.</div>
                                 </td>
                             </div>
+
+                            <div class="form-group col-md-12">
+                                <label for="potalookup">POTA auto lookup gridsquare and name for
+                                    park.</label>
+                                <select class="custom-select" id="potalookup" name="user_pota_lookup">
+                                    <option value="0"><?php echo $this->lang->line('general_word_no'); ?>
+                                    </option>
+                                    <option value="1"><?php echo $this->lang->line('general_word_yes'); ?>
+                                    </option>
+                                </select>
+                                <div class="small form-text text-muted">If set, name and gridsquare is fetched
+                                    from the API and filled in location and locator.</div>
+                                </td>
+                            </div>
                         </div>
 
                     </div>
