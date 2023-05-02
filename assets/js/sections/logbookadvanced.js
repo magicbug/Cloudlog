@@ -2,6 +2,15 @@ var callBookProcessingDialog = null;
 var inCallbookProcessing = false;
 var inCallbookItemProcessing = false;
 
+$('#band').change(function () {
+	var band = $("#band option:selected").text();
+	if (band != "SAT") {
+		$(".sats_dropdown").attr("hidden", true);
+	} else {
+		$(".sats_dropdown").removeAttr("hidden");
+	}
+});
+
 function updateRow(qso) {
 	let row = $('#qsoID-' + qso.qsoID);
 	let cells = row.find('td');
@@ -41,7 +50,7 @@ function loadQSOTable(rows) {
 			"scrollCollapse": true,
 			"paging":         false,
 			"scrollX": true,
-			"order": [ 0, 'asc' ],
+			"order": [ 1, 'desc' ],
 		});
 	});
 
@@ -68,7 +77,7 @@ function loadQSOTable(rows) {
 			qso.qslSent,
 			qso.qslReceived,
 			qso.qslMessage,
-			qso.dxcc,
+			qso.dxcc+(qso.end == null ? '' : ' <span class="badge badge-danger">Deleted DXCC</span>'),
 			qso.state,
 			qso.cqzone,
 			qso.iota,
@@ -118,13 +127,13 @@ function processNextCallbookItem() {
 function selectQsoID(qsoID) {
 	var element = $("#qsoID-" + qsoID);
 	element.find("input[type=checkbox]").prop("checked", true);
-	element.addClass('alert-success');
+	element.addClass('activeRow');
 }
 
 function unselectQsoID(qsoID) {
 	var element = $("#qsoID-" + qsoID);
 	element.find("input[type=checkbox]").prop("checked", false);
-	element.removeClass('alert-success');
+	element.removeClass('activeRow');
 	$('#checkBoxAll').prop("checked", false);
 }
 
@@ -156,7 +165,8 @@ $(document).ready(function () {
 				propmode: this.selectPropagation.value,
 				gridsquare: this.gridsquare.value,
 				state: this.state.value,
-				qsoresults: this.qsoResults.value
+				qsoresults: this.qsoResults.value,
+				sats: this.sats.value
 			},
 			dataType: 'json',
 			success: function (data) {
@@ -181,9 +191,9 @@ $(document).ready(function () {
 
 	$('#qsoList').on('click', 'input[type="checkbox"]', function() {
 		if ($(this).is(":checked")) {
-			$(this).closest('tr').addClass('alert-success');
+			$(this).closest('tr').addClass('activeRow');
 		} else {
-			$(this).closest('tr').removeClass('alert-success');
+			$(this).closest('tr').removeClass('activeRow');
 		}
 	});
 
@@ -283,7 +293,7 @@ $(document).ready(function () {
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		// You should set responseType as blob for binary responses
 		xhttp.responseType = 'blob';
-		xhttp.send("id=" + JSON.stringify(id_list, null, 2));
+		xhttp.send("id=" + JSON.stringify(id_list, null, 2)+"&sortorder=" +$('.table').DataTable().order());
 		$('#exportAdif').prop("disabled", false);
 	});
 

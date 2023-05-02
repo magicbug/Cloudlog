@@ -5,9 +5,11 @@ class adif_data extends CI_Model {
     function export_all() {
         $this->load->model('stations');
         $active_station_id = $this->stations->find_active();
+        $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.name as station_country');
         $this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
         $this->db->order_by("COL_TIME_ON", "ASC");
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
         $query = $this->db->get($this->config->item('table_name'));
 
         return $query;
@@ -17,6 +19,8 @@ class adif_data extends CI_Model {
         $this->load->model('stations');
         $active_station_id = $this->stations->find_active();
 
+        $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.name as station_country');
+
 		if ($station_id == NULL) {
 			$this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
 		} else if ($station_id != 'All') {
@@ -24,6 +28,7 @@ class adif_data extends CI_Model {
 		}
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
         // always filter user. this ensures that even if the station_id is from another user no inaccesible QSOs will be returned
         $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
         $this->db->where_in('COL_QSL_SENT', array('R', 'Q'));
@@ -37,7 +42,7 @@ class adif_data extends CI_Model {
         $this->load->model('stations');
         $active_station_id = $this->stations->find_active();
 
-        $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
+        $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*, dxcc_entities.name as station_country');
         $this->db->from($this->config->item('table_name'));
         $this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
         $this->db->where($this->config->item('table_name').'.COL_PROP_MODE', 'SAT');
@@ -45,6 +50,7 @@ class adif_data extends CI_Model {
         $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
 
         return $this->db->get();
     }
@@ -53,18 +59,19 @@ class adif_data extends CI_Model {
         $this->load->model('stations');
         $active_station_id = $this->stations->find_active();
 
-        $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
+        $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*, dxcc_entities.name as station_country');
         $this->db->from($this->config->item('table_name'));
         $this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
         $this->db->where($this->config->item('table_name').'.COL_PROP_MODE', 'SAT');
 
-        $where = $this->config->item('table_name').".COL_LOTW_QSLRDATE != ''";
+        $where = $this->config->item('table_name').".COL_LOTW_QSLRDATE IS NOT NULL";
         $this->db->where($where);
 
         $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
 
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
 
         return $this->db->get();
     }
@@ -77,7 +84,7 @@ class adif_data extends CI_Model {
             return;
         }
 
-        $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
+        $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*, dxcc_entities.name as station_country');
         $this->db->from($this->config->item('table_name'));
         $this->db->where($this->config->item('table_name').'.station_id', $station_id);
 
@@ -102,6 +109,7 @@ class adif_data extends CI_Model {
         $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
 
         return $this->db->get();
     }
@@ -111,7 +119,7 @@ class adif_data extends CI_Model {
         $active_station_id = $this->stations->find_active();
 
 
-        $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
+        $this->db->select(''.$this->config->item('table_name').'.*, station_profile.*, dxcc_entities.name as station_country');
         $this->db->from($this->config->item('table_name'));
         $this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
         $this->db->group_start();
@@ -122,6 +130,7 @@ class adif_data extends CI_Model {
         $this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
 
         return $this->db->get();
     }
@@ -141,7 +150,7 @@ class adif_data extends CI_Model {
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-		$this->db->select(''.$this->config->item('table_name').'.*, station_profile.*');
+		$this->db->select(''.$this->config->item('table_name').'.*, station_profile.*, dxcc_entities.name as station_country');
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
 		$this->db->where($this->config->item('table_name').'.COL_SIG', $type);
@@ -149,6 +158,7 @@ class adif_data extends CI_Model {
 		$this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "ASC");
 
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
 
 		return $this->db->get();
 	}

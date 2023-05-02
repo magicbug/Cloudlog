@@ -262,7 +262,9 @@ class Logbooks_model extends CI_Model {
 				array_push($relationships_array, $row->station_location_id);
 			}
 
+			$this->db->select('station_profile.*, dxcc_entities.name as station_country, dxcc_entities.end as end');
 			$this->db->where_in('station_id', $relationships_array);
+			$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
 			$query = $this->db->get('station_profile');
 			
 			return $query;
@@ -305,6 +307,20 @@ class Logbooks_model extends CI_Model {
 			return true;
 		}
 		return false;
+	}
+
+	public function find_active_station_logbook_from_userid($userid) {
+		$this->db->select('active_station_logbook');
+		$this->db->where('user_id', $userid);
+		$query = $this->db->get('users');
+		if ($query->num_rows() > 0){
+			foreach ($query->result() as $row)
+			{
+				return $row->active_station_logbook;
+			}
+		} else {
+			return 0;
+		}
 	}
 }
 ?>

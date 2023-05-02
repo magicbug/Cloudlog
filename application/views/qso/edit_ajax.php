@@ -220,14 +220,18 @@
                                     <div class="form-group col-sm-6">
                                         <label for="dxcc_id">DXCC</label>
                                         <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
-                                            <option value="0">None</option>
+                                            <option value="0">- NONE -</option>
                                             <?php
                                             foreach($dxcc as $d){
                                                 echo '<option value=' . $d->adif;
                                                 if ($qso->COL_DXCC == $d->adif) {
                                                     echo " selected=\"selected\"";
                                                 }
-                                                echo '>' . $d->prefix . ' - ' . $d->name . '</option>';
+                                                echo '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name)));
+                                                if ($d->Enddate != null) {
+                                                    echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';
+                                                }
+                                                echo '</option>';
                                             }
                                             ?>
 

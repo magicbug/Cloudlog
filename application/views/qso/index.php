@@ -156,8 +156,11 @@
             <div class="form-group">
               <label for="stationProfile"><?php echo $this->lang->line('cloudlog_station_profile'); ?></label>
               <select id="stationProfile" class="custom-select" name="station_profile">
-                <?php foreach ($stations->result() as $stationrow) { ?>
-                <option value="<?php echo $stationrow->station_id; ?>" <?php if($active_station_profile == $stationrow->station_id) { echo "selected=\"selected\""; } ?>><?php echo $stationrow->station_profile_name; ?></option>
+                <?php
+                   $power = '';
+                      foreach ($stations->result() as $stationrow) {
+                ?>
+                <option value="<?php echo $stationrow->station_id; ?>" <?php if($active_station_profile == $stationrow->station_id) { echo "selected=\"selected\""; $power = $stationrow->station_power; } ?>><?php echo $stationrow->station_profile_name; ?></option>
                 <?php } ?>
               </select>
             </div>
@@ -203,7 +206,7 @@
 
             <div class="form-group">
               <label for="transmit_power"><?php echo $this->lang->line('gen_hamradio_transmit_power'); ?></label>
-              <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php echo $this->session->userdata('transmit_power'); ?>" />
+              <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php if ($this->session->userdata('transmit_power')) { echo $this->session->userdata('transmit_power'); } else { echo $power; } ?>" />
               <small id="powerHelp" class="form-text text-muted"><?php echo $this->lang->line('qso_transmit_power_helptext'); ?></small>
             </div>
           </div>
@@ -213,10 +216,14 @@
               <div class="form-group">
                   <label for="dxcc_id"><?php echo $this->lang->line('gen_hamradio_dxcc'); ?></label>
                   <select class="custom-select" id="dxcc_id" name="dxcc_id" required>
-                      <option value="0">None</option>
+                      <option value="0">- NONE -</option>
                       <?php
                       foreach($dxcc as $d){
-                          echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name))) . '</option>';
+                          echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name)));
+                          if ($d->Enddate != null) {
+                              echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';
+                          }
+                          echo '</option>';
                       }
                       ?>
 

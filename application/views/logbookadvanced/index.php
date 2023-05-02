@@ -45,7 +45,7 @@
 				<label class="form-label" for="dxcc">DXCC</label>
 				<select class="form-control form-control-sm" id="dxcc" name="dxcc">
 				<option value="">-</option>	
-				<option value="0">None (/MM, /AM)</option>
+				<option value="0">- NONE - (e.g. /MM, /AM)</option>
 					<?php
 					foreach($dxccarray as $dxcc){
 						echo '<option value=' . $dxcc->adif;
@@ -99,6 +99,15 @@
 					}
 					?>
 				</select>
+			</div>
+			<div hidden class="sats_dropdown form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+			<label class="form-label" for="sats">Satellite</label>
+			<select class="form-control form-control-sm"  id="sats">
+				<option value="All">All</option>
+				<?php foreach($sats as $sat) {
+					echo '<option value="' . htmlentities($sat) . '"' . '>' . htmlentities($sat) . '</option>'."\n";
+				} ?>
+			</select>
 			</div>
 			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="selectPropagation">Propagation</label>
@@ -167,17 +176,17 @@
 		<button type="button" class="btn btn-sm btn-primary" id="btnUpdateFromCallbook">Update from Callbook</button>
 		<button type="button" class="btn btn-sm btn-primary" id="queueBureau">Queue Bureau</button>
 		<button type="button" class="btn btn-sm btn-primary" id="queueDirect">Queue Direct</button>
-        <button type="button" class="btn btn-sm btn-primary" id="queueElectronic">Queue Electronic</button>
+		<button type="button" class="btn btn-sm btn-primary" id="queueElectronic">Queue Electronic</button>
 		<button type="button" class="btn btn-sm btn-success" id="sentBureau">Sent Bureau</button>
 		<button type="button" class="btn btn-sm btn-success" id="sentDirect">Sent Direct</button>
-        <button type="button" class="btn btn-sm btn-success" id="sentElectronic">Sent Electronic</button>
+		<button type="button" class="btn btn-sm btn-success" id="sentElectronic">Sent Electronic</button>
 		<button type="button" class="btn btn-sm btn-warning" id="dontSend">Don't Send</button>
 		<button type="button" class="btn btn-sm btn-info" id="exportAdif">Create ADIF</button>
-        <button type="button" class="btn btn-sm btn-danger" id="deleteQsos">Delete</button>
+		<button type="button" class="btn btn-sm btn-danger" id="deleteQsos">Delete</button>
 		<span id="infoBox"></span>
 	</div>
 	</div>
-	<table style="width:100%" class="table-sm table table-bordered table-hover table-condensed text-center" id="qsoList">
+	<table style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center" id="qsoList">
 		<thead>
 			<tr>
 				<th><div class="form-check" style="margin-top: -1.5em"><input class="form-check-input" type="checkbox" id="checkBoxAll" /></div></th>

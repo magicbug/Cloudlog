@@ -672,14 +672,14 @@ class API extends CI_Controller {
 	*
 	*/
 
-	function statistics() {
+	function statistics($key = null) {
 		header('Content-type: application/json');
 		$this->load->model('logbook_model');
 
-		$data['todays_qsos'] = $this->logbook_model->todays_qsos();
-		$data['total_qsos'] = $this->logbook_model->total_qsos();
-		$data['month_qsos'] = $this->logbook_model->month_qsos();
-		$data['year_qsos'] = $this->logbook_model->year_qsos();
+		$data['todays_qsos'] = $this->logbook_model->todays_qsos(null, $key);
+		$data['total_qsos'] = $this->logbook_model->total_qsos(null, $key);
+		$data['month_qsos'] = $this->logbook_model->month_qsos(null, $key);
+		$data['year_qsos'] = $this->logbook_model->year_qsos(null, $key);
 
 		http_response_code(201);
 		echo json_encode(['Today' => $data['todays_qsos'], 'total_qsos' => $data['total_qsos'], 'month_qsos' => $data['month_qsos'], 'year_qsos' => $data['year_qsos']]);

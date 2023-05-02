@@ -54,6 +54,7 @@ class QSO
 	private string $QSLSent;
 	private string $QSLSentVia;
 	private string $QSLVia;
+	private ?DateTime $end;
 
 	/**
 	 * @param array $data Does no validation, it's assumed to be a row from the database in array format
@@ -103,6 +104,7 @@ class QSO
 			'COL_STATE',
 			'COL_COUNTRY',
 			'COL_IOTA',
+			'name'
 		];
 
 
@@ -164,8 +166,13 @@ class QSO
 
 		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : $data['COL_CQZ'];
 		$this->state = ($data['COL_STATE'] === null) ? '' :$data['COL_STATE'];
-		$this->dxcc = ($data['COL_COUNTRY'] === null) ? '' :$data['COL_COUNTRY'];
+		$this->dxcc = ($data['name'] === null) ? '- NONE -' :$data['name'];
 		$this->iota = ($data['COL_IOTA'] === null) ? '' :$data['COL_IOTA'];
+		if (array_key_exists('end', $data)) {
+			$this->end = ($data['end'] === null) ? null : DateTime::createFromFormat("Y-m-d", $data['end'], new DateTimeZone('UTC'));
+		} else {
+			$this->end = null;
+		}
 	}
 
 	/**
@@ -514,6 +521,7 @@ class QSO
 			'state' => $this->getState(),
 			'cqzone' => $this->getCqzone(),
 			'iota' => $this->getIOTA(),
+			'end' => $this->end === null ? null : $this->end->format("Y-m-d"),
 		];
 	}
 

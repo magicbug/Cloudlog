@@ -22,7 +22,7 @@ class Oqrs extends CI_Controller {
 		$data['stations'] = $this->oqrs_model->get_oqrs_stations();
 		$data['page_title'] = "Log Search & OQRS";
 		$data['global_oqrs_text'] = $this->optionslib->get_option('global_oqrs_text');
-
+		$data['groupedSearch'] = $this->optionslib->get_option('groupedSearch');
 
 		$this->load->view('visitor/layout/header', $data);
 		$this->load->view('oqrs/index');
@@ -50,11 +50,19 @@ class Oqrs extends CI_Controller {
 		$this->load->view('oqrs/result', $data);
 	}
 
+	public function get_qsos_grouped() {
+		$this->load->model('oqrs_model');
+		$data['result'] = $this->oqrs_model->getQueryDataGrouped($this->input->post('callsign'));
+		$data['callsign'] = $this->security->xss_clean($this->input->post('callsign'));
+
+		$this->load->view('oqrs/request_grouped', $data);
+	}
+
 	public function not_in_log() {
 		$data['page_title'] = "Log Search & OQRS";
 		
 		$this->load->model('bands');
-		$data['bands'] = $this->bands->get_worked_bands_oqrs($this->security->xss_clean($this->input->post('station_id')));
+		// $data['bands'] = $this->bands->get_worked_bands_oqrs($this->security->xss_clean($this->input->post('station_id')));
 
 		$this->load->view('oqrs/notinlogform', $data);
 	}
@@ -103,8 +111,15 @@ class Oqrs extends CI_Controller {
 	public function save_oqrs_request() {
 		$postdata = $this->input->post();
 		$this->load->model('oqrs_model');
-		$this->oqrs_model->save_oqrs_request($postdata);
-		$this->alert_oqrs_request($postdata);
+		$station_ids = $this->oqrs_model->save_oqrs_request($postdata);
+		$this->alert_oqrs_request($postdata, $station_ids);
+	}
+
+	public function save_oqrs_request_grouped() {
+		$postdata = $this->input->post();
+		$this->load->model('oqrs_model');
+		$station_ids = $this->oqrs_model->save_oqrs_request_grouped($postdata);
+		$this->alert_oqrs_request($postdata, $station_ids);
 	}
 
 	public function delete_oqrs_line() {
@@ -134,49 +149,51 @@ class Oqrs extends CI_Controller {
 		$this->load->view('oqrs/qsolist', $data);
 	}
 
-	public function alert_oqrs_request($postdata) {
-		$this->load->model('user_model');
-					
-		$email = $this->user_model->get_email_address($this->session->userdata('user_id'));
-
-		$this->load->model('oqrs_model');
-					
-		$sendEmail = $this->oqrs_model->getOqrsEmailSetting($this->security->xss_clean($this->input->post('station_id')));
-
-		if($email != "" && $sendEmail == "1") {
+	public function alert_oqrs_request($postdata, $station_ids) {
+		foreach ($station_ids as $id) {
+			$this->load->model('user_model');
+			
+			$email = $this->user_model->get_email_address($id);
+	
+			$this->load->model('oqrs_model');
 						
-			$this->load->library('email');
-
-			if($this->optionslib->get_option('emailProtocol') == "smtp") {
-				$config = Array(
-					'protocol' => $this->optionslib->get_option('emailProtocol'),
-					'smtp_host' => $this->optionslib->get_option('smtpHost'),
-					'smtp_port' => $this->optionslib->get_option('smtpPort'),
-					'smtp_user' => $this->optionslib->get_option('smtpUsername'),
-					'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
-					'crlf' => "\r\n",
-					'newline' => "\r\n"
-				);
-
-				$this->email->initialize($config);
-			}
-
-			$data['callsign'] = $this->security->xss_clean($postdata['callsign']);
-			$data['usermessage'] = $this->security->xss_clean($postdata['message']);
-
-			$message = $this->load->view('email/oqrs_request', $data,  TRUE);
-
-			$this->email->from('noreply@cloudlog.co.uk', 'Cloudlog');
-			$this->email->to($email);
-			$this->email->reply_to($this->security->xss_clean($postdata['email']), strtoupper($data['callsign']));
-
-			$this->email->subject('Cloudlog OQRS from ' . strtoupper($data['callsign']));
-			$this->email->message($message);
-
-			if (! $this->email->send()) {
-				$this->session->set_flashdata('warning', 'Email settings are incorrect.');
-			} else {
-				$this->session->set_flashdata('notice', 'Password Reset Processed.');
+			$sendEmail = $this->oqrs_model->getOqrsEmailSetting($id);
+	
+			if($email != "" && $sendEmail == "1") {
+							
+				$this->load->library('email');
+	
+				if($this->optionslib->get_option('emailProtocol') == "smtp") {
+					$config = Array(
+						'protocol' => $this->optionslib->get_option('emailProtocol'),
+						'smtp_host' => $this->optionslib->get_option('smtpHost'),
+						'smtp_port' => $this->optionslib->get_option('smtpPort'),
+						'smtp_user' => $this->optionslib->get_option('smtpUsername'),
+						'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
+						'crlf' => "\r\n",
+						'newline' => "\r\n"
+					);
+	
+					$this->email->initialize($config);
+				}
+	
+				$data['callsign'] = $this->security->xss_clean($postdata['callsign']);
+				$data['usermessage'] = $this->security->xss_clean($postdata['message']);
+	
+				$message = $this->load->view('email/oqrs_request', $data,  TRUE);
+	
+				$this->email->from('noreply@cloudlog.co.uk', 'Cloudlog');
+				$this->email->to($email);
+				$this->email->reply_to($this->security->xss_clean($postdata['email']), strtoupper($data['callsign']));
+	
+				$this->email->subject('Cloudlog OQRS from ' . strtoupper($data['callsign']));
+				$this->email->message($message);
+	
+				if (! $this->email->send()) {
+					$this->session->set_flashdata('warning', 'Email settings are incorrect.');
+				} else {
+					$this->session->set_flashdata('notice', 'Password Reset Processed.');
+				}
 			}
 		}
 	}

@@ -21,9 +21,9 @@
                         <?php
                         if ($dxcc_list->num_rows() > 0) {
                                 foreach ($dxcc_list->result() as $dxcc) {
-                                    echo '<option value=' . $dxcc->adif . '> ' . $dxcc->name . ' - ' . $dxcc->prefix;
+                                    echo '<option value=' . $dxcc->adif . '> ' . ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix;
                                     if ($dxcc->end != null) {
-                                        echo ' (deleted)';
+                                        echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';
                                     }
                                     echo '</option>';
                                 }

@@ -16,7 +16,7 @@ class Dashboard extends CI_Controller {
 		$this->load->model('logbook_model');
 		$this->load->model('user_model');
 
-		// LotW infos
+		// LoTW infos
 		$this->load->model('LotwCert');
 
 		if($this->optionslib->get_option('version2_trigger') == "false") {

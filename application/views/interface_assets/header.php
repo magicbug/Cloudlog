@@ -253,7 +253,7 @@ $oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 
 				<div class="dropdown-divider"></div>
 
-				<a class="dropdown-item" href="<?php echo site_url('lotw');?>" title="Synchronise with Logbook of the World (LotW)"><i class="fas fa-sync"></i> Logbook of the World</a>
+				<a class="dropdown-item" href="<?php echo site_url('lotw');?>" title="Synchronise with Logbook of the World (LoTW)"><i class="fas fa-sync"></i> Logbook of the World</a>
 
 				<a class="dropdown-item" href="<?php echo site_url('eqsl/import');?>" title="eQSL import / export"><i class="fas fa-sync"></i> eQSL Import / Export</a>
 
