@@ -122,7 +122,7 @@ class User_Model extends CI_Model {
 	// Add a user
 	function add($username, $password, $email, $type, $firstname, $lastname, $callsign, $locator, $timezone,
 		$measurement, $user_date_format, $user_stylesheet, $user_qth_lookup, $user_sota_lookup, $user_wwff_lookup,
-		$user_show_notes, $user_column1, $user_column2, $user_column3, $user_column4, $user_column5,
+		$user_pota_lookup, $user_show_notes, $user_column1, $user_column2, $user_column3, $user_column4, $user_column5,
 		$user_show_profile_image, $user_previous_qsl_type, $user_amsat_status_upload) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
@@ -142,6 +142,7 @@ class User_Model extends CI_Model {
 				'user_qth_lookup' => xss_clean($user_qth_lookup),
 				'user_sota_lookup' => xss_clean($user_sota_lookup),
 				'user_wwff_lookup' => xss_clean($user_wwff_lookup),
+				'user_pota_lookup' => xss_clean($user_pota_lookup),
 				'user_show_notes' => xss_clean($user_show_notes),
 				'user_column1' => xss_clean($user_column1),
 				'user_column2' => xss_clean($user_column2),
@@ -197,6 +198,7 @@ class User_Model extends CI_Model {
 					'user_qth_lookup' => xss_clean($fields['user_qth_lookup']),
 					'user_sota_lookup' => xss_clean($fields['user_sota_lookup']),
 					'user_wwff_lookup' => xss_clean($fields['user_wwff_lookup']),
+					'user_pota_lookup' => xss_clean($fields['user_pota_lookup']),
 					'user_show_notes' => xss_clean($fields['user_show_notes']),
 					'user_column1' => xss_clean($fields['user_column1']),
 					'user_column2' => xss_clean($fields['user_column2']),
@@ -316,6 +318,7 @@ class User_Model extends CI_Model {
 			'user_qth_lookup' => isset($u->row()->user_qth_lookup) ? $u->row()->user_qth_lookup : 0,
 			'user_sota_lookup' => isset($u->row()->user_sota_lookup) ? $u->row()->user_sota_lookup : 0,
 			'user_wwff_lookup' => isset($u->row()->user_wwff_lookup) ? $u->row()->user_wwff_lookup : 0,
+			'user_pota_lookup' => isset($u->row()->user_pota_lookup) ? $u->row()->user_pota_lookup : 0,
 			'user_show_notes' => isset($u->row()->user_show_notes) ? $u->row()->user_show_notes : 1,
 			'user_show_profile_image' => isset($u->row()->user_show_profile_image) ? $u->row()->user_show_profile_image : 0,
 			'user_column1' => isset($u->row()->user_column1) ? $u->row()->user_column1: 'Mode',
