@@ -112,7 +112,7 @@ class Logbookadvanced_model extends CI_Model {
 	    return $qsos;
 	}
 
-    public function getQsosForAdif($ids, $user_id, $sortorder) : object {
+    public function getQsosForAdif($ids, $user_id, $sortorder = null) : object {
 		$binding = [$user_id];
         $conditions[] = "COL_PRIMARY_KEY in ?";
         $binding[] = json_decode($ids, true);
@@ -122,20 +122,25 @@ class Logbookadvanced_model extends CI_Model {
 			$where = "AND $where";
 		}
 
-		$sortorder = explode(',', $sortorder);
-
-		switch($sortorder[0]) {
-			case 1: $order = 'ORDER BY qsos.COL_TIME_ON ' . $sortorder[1]; break;
-			case 2: $order = 'ORDER BY station_profile.station_callsign ' . $sortorder[1]; break;
-			case 3: $order = 'ORDER BY qsos.COL_CALL ' . $sortorder[1]; break;
-			case 4: $order = 'ORDER BY qsos.COL_MODE' .  $sortorder[1] . ', qsos.COL_SUBMODE ' . $sortorder[1]; break;
-			case 7: $order = 'ORDER BY qsos.COL_BAND ' . $sortorder[1] . ', qsos.COL_SAT_NAME ' . $sortorder[1]; break;
-			case 15: $order = 'ORDER BY qsos.COL_COUNTRY ' . $sortorder[1]; break;
-			case 16: $order = 'ORDER BY qso.COL_STATE ' . $sortorder[1]; break;
-			case 17: $order = 'ORDER BY qsos.COL_CQZ ' . $sortorder[1]; break;
-			case 18: $order = 'ORDER BY qsos.COL_IOTA ' . $sortorder[1]; break;
-			default: $order = 'ORDER BY qsos.COL_TIME_ON desc'; break;
+		if ($sortorder != null) {
+			$sortorder = explode(',', $sortorder);
+	
+			switch($sortorder[0]) {
+				case 1: $order = 'ORDER BY qsos.COL_TIME_ON ' . $sortorder[1]; break;
+				case 2: $order = 'ORDER BY station_profile.station_callsign ' . $sortorder[1]; break;
+				case 3: $order = 'ORDER BY qsos.COL_CALL ' . $sortorder[1]; break;
+				case 4: $order = 'ORDER BY qsos.COL_MODE' .  $sortorder[1] . ', qsos.COL_SUBMODE ' . $sortorder[1]; break;
+				case 7: $order = 'ORDER BY qsos.COL_BAND ' . $sortorder[1] . ', qsos.COL_SAT_NAME ' . $sortorder[1]; break;
+				case 15: $order = 'ORDER BY qsos.COL_COUNTRY ' . $sortorder[1]; break;
+				case 16: $order = 'ORDER BY qso.COL_STATE ' . $sortorder[1]; break;
+				case 17: $order = 'ORDER BY qsos.COL_CQZ ' . $sortorder[1]; break;
+				case 18: $order = 'ORDER BY qsos.COL_IOTA ' . $sortorder[1]; break;
+				default: $order = 'ORDER BY qsos.COL_TIME_ON desc'; break;
+			}
+		} else {
+			$order = 'ORDER BY qsos.COL_TIME_ON desc';
 		}
+
 
         $sql = "
             SELECT *, dxcc_entities.name AS station_country
