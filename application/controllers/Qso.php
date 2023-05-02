@@ -483,6 +483,15 @@ class QSO extends CI_Controller {
       echo $this->wwff->info($wwff);
    }
 
+   public function get_pota_info() {
+      $this->load->library('pota');
+
+      $pota = xss_clean($this->input->post('pota'));
+
+      header('Content-Type: application/json');
+      echo $this->pota->info($pota);
+   }
+
    public function get_station_power() {
       $this->load->model('stations');
       $stationProfile = xss_clean($this->input->post('stationProfile'));
