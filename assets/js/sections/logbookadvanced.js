@@ -26,13 +26,20 @@ function updateRow(qso) {
 	cells.eq(c++).text(qso.dxRefs);
 	cells.eq(c++).text(qso.name);
 	cells.eq(c++).text(qso.qslVia);
-	cells.eq(c++).text(qso.qslSent);
-	cells.eq(c++).text(qso.qslReceived);
+	cells.eq(c++).html(qso.qsl);
+	if ($(".lotwconfirmation")[0]){
+		cells.eq(c++).html(qso.lotw);
+	}
+	if ($(".eqslconfirmation")[0]){
+		cells.eq(c++).html(qso.eqsl);
+	}
 	cells.eq(c++).text(qso.qslMessage);
 	cells.eq(c++).text(qso.dxcc);
 	cells.eq(c++).text(qso.state);
 	cells.eq(c++).text(qso.cqzone);
 	cells.eq(c++).text(qso.iota);
+
+	$('[data-toggle="tooltip"]').tooltip();
 	return row;
 }
 
@@ -60,34 +67,39 @@ function loadQSOTable(rows) {
 	
 	for (i = 0; i < rows.length; i++) {
 		let qso = rows[i];
-		
-		var data = [
-			'<div class="form-check"><input class="form-check-input" type="checkbox" /></div>',
-			qso.qsoDateTime,
-			qso.de,
-			'<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>',
-			qso.mode,
-			qso.rstS,
-			qso.rstR,
-			qso.band,
-			qso.deRefs,
-			qso.dxRefs,
-			qso.name,
-			qso.qslVia,
-			qso.qslSent,
-			qso.qslReceived,
-			qso.qslMessage,
-			qso.dxcc+(qso.end == null ? '' : ' <span class="badge badge-danger">Deleted DXCC</span>'),
-			qso.state,
-			qso.cqzone,
-			qso.iota,
-		];
+
+		var data = [];
+		data.push('<div class="form-check"><input class="form-check-input" type="checkbox" /></div>');
+		data.push(qso.qsoDateTime);
+		data.push(qso.de);
+		data.push('<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>');
+		data.push(qso.mode);
+		data.push(qso.rstS);
+		data.push(qso.rstR);
+		data.push(qso.band);
+		data.push(qso.deRefs);
+		data.push(qso.dxRefs);
+		data.push(qso.name);
+		data.push(qso.qslVia);
+		data.push(qso.qsl);
+		if ($(".lotwconfirmation")[0]){
+			data.push(qso.lotw);
+		}
+		if ($(".eqslconfirmation")[0]){
+			data.push(qso.eqsl);
+		}
+		data.push(qso.qslMessage);
+		data.push(qso.dxcc+(qso.end == null ? '' : ' <span class="badge badge-danger">Deleted DXCC</span>'));
+		data.push(qso.state);
+		data.push(qso.cqzone);
+		data.push(qso.iota);
 		
 		let createdRow = table.row.add(data).index();
 		table.rows(createdRow).nodes().to$().data('qsoID', qso.qsoID);
 		table.row(createdRow).node().id = 'qsoID-' + qso.qsoID;
 	}
 	table.draw();
+	$('[data-toggle="tooltip"]').tooltip();
 }
 
 function processNextCallbookItem() {
