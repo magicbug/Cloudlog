@@ -20,16 +20,23 @@ class Backup extends CI_Controller {
 	}
 
 	/* Gets all QSOs and Dumps them to logbook.adi */
-	public function adif(){ 
+	public function adif($key = null){ 
+		if ($key == null) {
+			$this->load->model('user_model');
+			if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		}
+
 		$this->load->helper('file');
 		// Set memory limit to unlimited to allow heavy usage
 		ini_set('memory_limit', '-1');
 		
 		$this->load->model('adif_data');
 
-		$data['qsos'] = $this->adif_data->export_all();
+		$data['qsos'] = $this->adif_data->export_all($key);
 
-		if ( ! write_file('backup/logbook.adi', $this->load->view('backup/exportall', $data, true)))
+		$data['filename'] = 'backup/logbook'. date('_Y_m_d_H_i_s') .'.adi';
+		
+		if ( ! write_file($data['filename'], $this->load->view('backup/exportall', $data, true)))
 		{
 		     $data['status'] = false;
 		}
@@ -39,6 +46,7 @@ class Backup extends CI_Controller {
 		}
 
 		$data['page_title'] = "ADIF - Backup";
+		
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('backup/adif_view');
