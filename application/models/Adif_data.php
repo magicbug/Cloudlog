@@ -2,13 +2,25 @@
 
 class adif_data extends CI_Model {
 
-    function export_all() {
-        $this->load->model('stations');
-        $active_station_id = $this->stations->find_active();
+    function export_all($api_key = null) {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        if ($api_key != null) {
+            $CI->load->model('api_model');
+            if (strpos($this->api_model->access($api_key), 'r') !== false) {
+                $this->api_model->update_last_used($api_key);
+                $user_id = $this->api_model->key_userid($api_key);
+                $active_station_logbook = $CI->logbooks_model->find_active_station_logbook_from_userid($user_id);
+                $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($active_station_logbook);
+            }
+        } else {
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        }
+
         $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.name as station_country');
-        $this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
         $this->db->order_by("COL_TIME_ON", "ASC");
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
         $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
         $query = $this->db->get($this->config->item('table_name'));
 
