@@ -26,8 +26,9 @@ function updateRow(qso) {
 	cells.eq(c++).text(qso.dxRefs);
 	cells.eq(c++).text(qso.name);
 	cells.eq(c++).text(qso.qslVia);
-	cells.eq(c++).text(qso.qslSent);
-	cells.eq(c++).text(qso.qslReceived);
+	cells.eq(c++).text(qso.qsl);
+	cells.eq(c++).text(qso.lotw);
+	cells.eq(c++).text(qso.eqsl);
 	cells.eq(c++).text(qso.qslMessage);
 	cells.eq(c++).text(qso.dxcc);
 	cells.eq(c++).text(qso.state);
@@ -74,8 +75,9 @@ function loadQSOTable(rows) {
 			qso.dxRefs,
 			qso.name,
 			qso.qslVia,
-			qso.qslSent,
-			qso.qslReceived,
+			qso.qsl,
+			qso.lotw,
+			qso.eqsl,
 			qso.qslMessage,
 			qso.dxcc+(qso.end == null ? '' : ' <span class="badge badge-danger">Deleted DXCC</span>'),
 			qso.state,
@@ -88,6 +90,7 @@ function loadQSOTable(rows) {
 		table.row(createdRow).node().id = 'qsoID-' + qso.qsoID;
 	}
 	table.draw();
+	$('[data-toggle="tooltip"]').tooltip();
 }
 
 function processNextCallbookItem() {

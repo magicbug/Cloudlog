@@ -201,8 +201,9 @@
 				<th>Refs</th>
 				<th>Name</th>
 				<th>QSL Via</th>
-				<th>QSL Sent</th>
-				<th>QSL Received</th>
+				<th>QSL</th>
+				<th>LoTW</th>
+				<th>eQSL</th>
 				<th>QSL Msg</th>
 				<th>DXCC</th>
 				<th>State</th>
