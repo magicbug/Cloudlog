@@ -21,6 +21,11 @@ class Backup extends CI_Controller {
 
 	/* Gets all QSOs and Dumps them to logbook.adi */
 	public function adif($key = null){ 
+		if ($key == null) {
+			$this->load->model('user_model');
+			if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		}
+
 		$this->load->helper('file');
 		// Set memory limit to unlimited to allow heavy usage
 		ini_set('memory_limit', '-1');
