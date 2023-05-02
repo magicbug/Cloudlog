@@ -26,9 +26,9 @@ function updateRow(qso) {
 	cells.eq(c++).text(qso.dxRefs);
 	cells.eq(c++).text(qso.name);
 	cells.eq(c++).text(qso.qslVia);
-	cells.eq(c++).text(qso.qsl);
-	cells.eq(c++).text(qso.lotw);
-	cells.eq(c++).text(qso.eqsl);
+	cells.eq(c++).html(qso.qsl);
+	cells.eq(c++).html(qso.lotw);
+	cells.eq(c++).html(qso.eqsl);
 	cells.eq(c++).text(qso.qslMessage);
 	cells.eq(c++).text(qso.dxcc);
 	cells.eq(c++).text(qso.state);
