@@ -136,11 +136,11 @@ class QSLPrint extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
-			// Update Logbook to Mark Paper Card Received
+			// Update Logbook to Mark Paper Card Sent
 
 			$this->qslprint_model->mark_qsos_printed($station_id);
 
-			$this->session->set_flashdata('notice', 'QSOs are marked as sent via buro');
+			$this->session->set_flashdata('notice', 'QSOs are marked as sent');
 
 			redirect('logbook');
 	}

@@ -7,14 +7,10 @@ class Qslprint_model extends CI_Model {
 		$CI->load->model('Stations');
 		$station_id = $CI->Stations->find_active();
 
-		$data = array(
-			'COL_QSLSDATE' => date('Y-m-d'),
-			'COL_QSL_SENT' => "Y",
-			'COL_QSL_SENT_VIA' => "B",
-		);
+		$station_ids = array();
 
 		if ($station_id2 == NULL) {
-			$this->db->where("station_id", $station_id);
+			array_push($station_ids, $station_id);
 		} else if ($station_id2 == 'All') {
 			// get all stations of user
 			$stations = $CI->Stations->all_of_user();
@@ -22,18 +18,48 @@ class Qslprint_model extends CI_Model {
 			foreach ($stations->result() as $row) {
 				array_push($station_ids, $row->station_id);
 			}
-
-			// filter by all stations
-			$this->db->where_in("station_id", $station_ids);
-		} else if ($station_id2 != 'All') {
+		} else {
 			// be sure that station belongs to user
 			if (!$CI->Stations->check_station_is_accessible($station_id2)) {
 				return;
 			}
-			$this->db->where("station_id", $station_id2);
+			array_push($station_ids, $station_id2);
 		}
 
+		$this->update_qsos_bureau($station_ids);
+
+		$this->update_qsos($station_ids);
+	}
+
+	/*
+	 * Updates the QSOs that do not have any COL_QSL_SENT_VIA set
+	 */
+	 function update_qsos_bureau($station_ids) {
+		$data = array(
+			'COL_QSLSDATE' => date('Y-m-d'),
+			'COL_QSL_SENT' => "Y",
+			'COL_QSL_SENT_VIA' => "B",
+		);
+
+		$this->db->where_in("station_id", $station_ids);
 		$this->db->where_in("COL_QSL_SENT", array("R","Q"));
+		$this->db->where("coalesce(COL_QSL_SENT_VIA, '') = ''");
+
+		$this->db->update($this->config->item('table_name'), $data);
+	}
+
+	/*
+	 * Updates the QSOs that do have COL_QSL_SENT_VIA set
+	 */
+	function update_qsos($station_ids) {
+		$data = array(
+			'COL_QSLSDATE' => date('Y-m-d'),
+			'COL_QSL_SENT' => "Y",
+		);
+		
+		$this->db->where_in("station_id", $station_ids);
+		$this->db->where_in("COL_QSL_SENT", array("R","Q"));
+		$this->db->where("coalesce(COL_QSL_SENT_VIA, '') != ''");
 
 		$this->db->update($this->config->item('table_name'), $data);
 	}
