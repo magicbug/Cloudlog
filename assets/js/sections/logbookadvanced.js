@@ -274,12 +274,12 @@ $(document).ready(function () {
 	});
 
 	$('#exportAdif').click(function (event) {
-		$('#exportAdif').prop("disabled", true);
 		var elements = $('#qsoList tbody input:checked');
 		var nElements = elements.length;
 		if (nElements == 0) {
 			return;
 		}
+		$('#exportAdif').prop("disabled", true);
 		var id_list=[];
 		elements.each(function() {
 			let id = $(this).first().closest('tr').data('qsoID')
