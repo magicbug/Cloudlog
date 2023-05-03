@@ -2,8 +2,19 @@
 
 class Note extends CI_Model {
 
-	function list_all() {
-		$this->db->where('user_id', $this->session->userdata('user_id'));
+	function list_all($api_key = null) {
+        if ($api_key == null) {
+			$user_id = $this->session->userdata('user_id');
+		} else {
+			$CI =& get_instance();
+			$CI->load->model('api_model');
+			if (strpos($this->api_model->access($api_key), 'r') !== false) {
+				$this->api_model->update_last_used($api_key);
+				$user_id = $this->api_model->key_userid($api_key);
+			}
+		}
+		
+		$this->db->where('user_id', $user_id);
 		return $this->db->get('notes');
 	}
 
