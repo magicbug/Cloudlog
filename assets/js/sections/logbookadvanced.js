@@ -336,6 +336,9 @@ $(document).ready(function () {
 	$('#dontSend').click(function (event) {
 		handleQsl('N','', 'dontSend');
 	});
+	$('#notRequired').click(function (event) {
+		handleQsl('I','', 'notRequired');
+	});
 
 	$('#searchForm').on('reset', function(e) {
 		setTimeout(function() {
