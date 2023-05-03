@@ -55,6 +55,10 @@ class QSO
 	private string $QSLSentVia;
 	private string $QSLVia;
 	private ?DateTime $end;
+	/** QSL **/
+	private string $qsl;
+	private string $lotw;
+	private string $eqsl;
 
 	/**
 	 * @param array $data Does no validation, it's assumed to be a row from the database in array format
@@ -164,6 +168,20 @@ class QSO
 		$this->QSLSentVia = ($data['COL_QSL_SENT_VIA'] === null) ? '' : $data['COL_QSL_SENT_VIA'];
 		$this->QSLVia = ($data['COL_QSL_VIA'] === null) ? '' : $data['COL_QSL_VIA'];
 
+		$CI =& get_instance(); 
+		// Get Date format
+		if($CI->session->userdata('user_date_format')) {
+			// If Logged in and session exists
+			$custom_date_format = $CI->session->userdata('user_date_format');
+		} else {
+			// Get Default date format from /config/cloudlog.php
+			$custom_date_format = $CI->config->item('qso_date_format');
+		}
+		
+		$this->qsl = $this->getQslString($data, $custom_date_format);
+		$this->lotw = $this->getLotwString($data, $custom_date_format);
+		$this->eqsl = $this->getEqslString($data, $custom_date_format);
+		
 		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : $data['COL_CQZ'];
 		$this->state = ($data['COL_STATE'] === null) ? '' :$data['COL_STATE'];
 		$this->dxcc = ($data['name'] === null) ? '- NONE -' :$data['name'];
@@ -173,6 +191,210 @@ class QSO
 		} else {
 			$this->end = null;
 		}
+	}
+	
+	/**
+	 * @return string
+	 */
+	function getQSLString($data, $custom_date_format): string
+	{
+		$CI =& get_instance(); 
+		// Load language files
+		$CI->lang->load(array(
+			'contesting',
+			'qslcard',
+			'lotw',
+			'eqsl',
+			'qso'
+		));
+
+		$qslstring = '<span ';
+
+		if ($data['COL_QSL_SENT'] != "N") {
+			switch ($data['COL_QSL_SENT']) {
+			case "Y":
+				$qslstring .= "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_sent');
+				break;
+			case "Q":
+				$qslstring .= "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_queued');
+				break;
+			case "R":
+				$qslstring .= "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_requested');
+				break;
+			case "I":
+				$qslstring .= "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_invalid_ignore');
+				break;
+			default:
+			$qslstring .= "class=\"qsl-red";
+				break;
+			}
+			if ($data['COL_QSLSDATE'] != null) {
+				$timestamp = strtotime($data['COL_QSLSDATE']); 
+				$qslstring .= " "  .($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
+			}
+		} else { 
+			$qslstring .= "class=\"qsl-red"; 
+		}
+
+		if ($data['COL_QSL_SENT_VIA'] != "") {
+			switch ($data['COL_QSL_SENT_VIA']) {
+				case "B":
+					$qslstring .= " (" . $CI->lang->line('general_word_qslcard_bureau') . ")";
+					break;
+				case "D":
+				$qslstring .= " (".$CI->lang->line('general_word_qslcard_direct').")";
+					break;
+				case "M":
+				$qslstring .= " (".$CI->lang->line('general_word_qslcard_via').": ".($data['COL_QSL_VIA'] !="" ? $data['COL_QSL_VIA']:"n/a").")";
+					break;
+				case "E":
+				$qslstring .= " (".$CI->lang->line('general_word_qslcard_electronic').")";
+					break;
+			}
+		} 
+
+			$qslstring .= '">&#9650;</span><span ';
+
+			if ($data['COL_QSL_RCVD'] != "N") {
+				switch ($data['COL_QSL_RCVD']) {
+					case "Y":
+						$qslstring .= "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_received');
+					break;
+					case "Q":
+						$qslstring .= "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_queued');
+					break;
+					case "R":
+						$qslstring .= "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_requested');
+					break;
+					case "I":
+						$qslstring .= "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_invalid_ignore');
+					break;
+					default:
+					$qslstring .= "class=\"qsl-red";
+					break;
+				}
+				if ($data['COL_QSLRDATE'] != null) {
+					$timestamp = strtotime($data['COL_QSLRDATE']); 
+					$qslstring .= " "  .($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
+				}
+			} else { 
+			$qslstring .= "class=\"qsl-red"; }
+			if ($data['COL_QSL_RCVD_VIA'] != "") {
+				switch ($data['COL_QSL_RCVD_VIA']) {
+					case "B":
+					$qslstring .= " (".$CI->lang->line('general_word_qslcard_bureau').")";
+						break;
+					case "D":
+					$qslstring .= " (".$CI->lang->line('general_word_qslcard_direct').")";
+						break;
+					case "M":
+					$qslstring .= " (Manager)";
+						break;
+					case "E":
+					$qslstring .= " (".$CI->lang->line('general_word_qslcard_electronic').")";
+						break;
+				}
+			} 
+			$qslstring .= '">&#9660;</span>';
+		return $qslstring;
+	}
+	
+	/**
+	 * @return string
+	 */
+	function getLotwString($data, $custom_date_format): string
+	{
+		$CI =& get_instance(); 
+		// Load language files
+		$CI->lang->load(array(
+			'contesting',
+			'qslcard',
+			'lotw',
+			'eqsl',
+			'qso'
+		));
+
+		$lotwstring = '<span ';
+
+		if ($data['COL_LOTW_QSL_SENT'] == "Y") { 
+			$lotwstring .= "data-original-title=\"" . $CI->lang->line('lotw_short')." ".$CI->lang->line('general_word_sent'); 
+			if ($data['COL_LOTW_QSLSDATE'] != null) { 
+				$timestamp = strtotime($data['COL_LOTW_QSLSDATE']); 
+				$lotwstring .= " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
+			} 
+			$lotwstring .= "\" data-toggle=\"tooltip\""; 
+		} 
+
+		$lotwstring .= ' class="lotw-' . (($data['COL_LOTW_QSL_SENT']=='Y') ? 'green' : 'red') . '">&#9650;</span>';
+		$lotwstring .= '<span ';
+
+		if ($data['COL_LOTW_QSL_RCVD'] == "Y") { 
+			$lotwstring .= "data-original-title=\"". $CI->lang->line('lotw_short') ." ". $CI->lang->line('general_word_received'); 
+		
+			if ($data['COL_LOTW_QSLRDATE'] != null) { 
+				$timestamp = strtotime($data['COL_LOTW_QSLRDATE']); 
+				$lotwstring .=  " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
+			} 
+			
+			$lotwstring .= "\" data-toggle=\"tooltip\""; 
+		} 
+
+		$lotwstring .= ' class="lotw-' . (($data['COL_LOTW_QSL_RCVD']=='Y') ? 'green':'red') . '">&#9660;</span>';
+
+		return $lotwstring;
+	}
+
+	/**
+	 * @return string
+	 */
+	function getEqslString($data, $custom_date_format): string
+	{
+		$CI =& get_instance(); 
+		// Load language files
+		$CI->lang->load(array(
+			'contesting',
+			'qslcard',
+			'lotw',
+			'eqsl',
+			'qso'
+		));
+
+		$eqslstring = '<span ';
+
+		if ($data['COL_EQSL_QSL_SENT'] == "Y") { 
+			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_sent'); 
+			
+			if ($data['COL_EQSL_QSLSDATE'] != null) { 
+				$timestamp = strtotime($data['COL_EQSL_QSLSDATE']); 
+				$eqslstring .=  " ".($timestamp!=''?date($custom_date_format, $timestamp):''); 
+			} 
+			
+			$eqslstring .= "\" data-toggle=\"tooltip\""; 
+		} 
+		
+		$eqslstring .= ' class="eqsl-' . (($data['COL_EQSL_QSL_SENT'] =='Y') ? 'green':'red') . '">&#9650;</span><span';
+
+		if ($data['COL_EQSL_QSL_RCVD'] == "Y") { 
+			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_received'); 
+			
+			if ($data['COL_EQSL_QSLRDATE'] != null) { 
+				$timestamp = strtotime($data['COL_EQSL_QSLRDATE']); 
+				$eqslstring .= " ".($timestamp!=''?date($custom_date_format, $timestamp):''); 
+			} 
+			$eqslstring .= "\" data-toggle=\"tooltip\""; 
+		} 
+
+		$eqslstring .= ' class="eqsl-' . (($data['COL_EQSL_QSL_RCVD'] =='Y')?'green':'red') . '">';
+
+		if($data['COL_EQSL_QSL_RCVD'] =='Y') {
+			$eqslstring .= '<a class="eqsl-green" href="' . site_url("eqsl/image/".$data['COL_PRIMARY_KEY']) . '" data-fancybox="images" data-width="528" data-height="336">&#9660;</a>';
+		} else {
+			$eqslstring .= '&#9660;';
+		}
+
+		$eqslstring .= '</span>';
+
+		return $eqslstring;
 	}
 
 	/**
@@ -474,6 +696,30 @@ class QSO
 	/**
 	 * @return string
 	 */
+	public function getqsl(): string
+	{
+		return $this->qsl;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getlotw(): string
+	{
+		return $this->lotw;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function geteqsl(): string
+	{
+		return $this->eqsl;
+	}
+
+	/**
+	 * @return string
+	 */
 	public function getQSLVia(): string
 	{
 		return $this->QSLVia;
@@ -513,8 +759,9 @@ class QSO
 			'deRefs' => $this->getFormattedDeRefs(),
 			'dxRefs' => $this->getFormattedDxRefs(),
 			'qslVia' => $this->QSLVia,
-			'qslSent' => $this->getFormattedQSLSent(),
-			'qslReceived' => $this->getFormattedQSLReceived(),
+			'qsl' => $this->getqsl(),
+			'lotw' => $this->getlotw(),
+			'eqsl' => $this->geteqsl(),
 			'qslMessage' => $this->getQSLMsg(),
 			'name' => $this->getName(),
 			'dxcc' => $this->getDXCC(),
