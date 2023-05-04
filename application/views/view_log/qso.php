@@ -372,16 +372,16 @@
                             $hashtags = "#hamr #cloudlog";
                         }
                         if($row->COL_IOTA != null) {
-                            $hashtags .= " #iota";
+                            $hashtags .= " #IOTA ".$row->COL_IOTA;
                         }
                         if($row->COL_SOTA_REF != null) {
-                            $hashtags .= " #sota";
+                            $hashtags .= " #SOTA ".$row->COL_SOTA_EF;
                         }
                         if($row->COL_POTA_REF != null) {
-                            $hashtags .= " #pota";
+                            $hashtags .= " #POTA ".$row->COL_POTA_REF;
                         }
                         if($row->COL_WWFF_REF != null) {
-                            $hashtags .= " #wwff";
+                            $hashtags .= " #WWFF ".$row->COL_WWFF_REF;
                         }
                         if (!isset($distance)) {
                             $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
