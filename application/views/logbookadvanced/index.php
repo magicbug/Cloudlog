@@ -180,7 +180,7 @@
 		<button type="button" class="btn btn-sm btn-success" id="sentBureau">Sent Bureau</button>
 		<button type="button" class="btn btn-sm btn-success" id="sentDirect">Sent Direct</button>
 		<button type="button" class="btn btn-sm btn-success" id="sentElectronic">Sent Electronic</button>
-		<button type="button" class="btn btn-sm btn-warning" id="dontSend">Don't Send</button>
+		<button type="button" class="btn btn-sm btn-warning" id="dontSend">Not Sent</button>
 		<button type="button" class="btn btn-sm btn-warning" id="notRequired">QSL Not Required</button>
 		<button type="button" class="btn btn-sm btn-info" id="exportAdif">Create ADIF</button>
 		<button type="button" class="btn btn-sm btn-danger" id="deleteQsos">Delete</button>
