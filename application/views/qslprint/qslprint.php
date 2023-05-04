@@ -56,11 +56,11 @@ if ($qsos->result() != NULL) {
 	echo '</tbody></table>';
 	?>
 
-	<p><a href="<?php echo site_url('qslprint/exportcsv/' . $station_id); ?>" title="Export CSV-file" target="_blank" class="btn btn-primary">Export requested QSLs to CSV-file</a></p>
+	<p><a href="<?php echo site_url('qslprint/exportcsv/' . $station_id); ?>" title="Export CSV-file" class="btn btn-primary">Export requested QSLs to CSV-file</a></p>
 
-	<p><a href="<?php echo site_url('qslprint/exportadif/' . $station_id); ?>" title="Export ADIF" target="_blank" class="btn btn-primary">Export requested QSLs to ADIF-file</a></p>
+	<p><a href="<?php echo site_url('qslprint/exportadif/' . $station_id); ?>" title="Export ADIF" class="btn btn-primary">Export requested QSLs to ADIF-file</a></p>
 
-	<p><a href="<?php echo site_url('qslprint/qsl_printed/' . $station_id); ?>" title="Mark QSLs as printed" target="_blank" class="btn btn-primary">Mark requested QSLs as sent</a></p>
+	<p><a href="<?php echo site_url('qslprint/qsl_printed/' . $station_id); ?>" title="Mark QSLs as printed" class="btn btn-primary">Mark requested QSLs as sent</a></p>
 
 <?php
 } else {

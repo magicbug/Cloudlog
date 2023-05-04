@@ -73,6 +73,7 @@ class User extends CI_Controller {
 				$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 				$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 				$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
+				$data['user_pota_lookup'] = $this->input->post('user_pota_lookup');
 				$data['user_show_notes'] = $this->input->post('user_show_notes');
 				$data['user_column1'] = $this->input->post('user_column1');
 				$data['user_column2'] = $this->input->post('user_column2');
@@ -105,6 +106,7 @@ class User extends CI_Controller {
 				$this->input->post('user_qth_lookup'),
 				$this->input->post('user_sota_lookup'),
 				$this->input->post('user_wwff_lookup'),
+				$this->input->post('user_pota_lookup'),
 				$this->input->post('user_show_notes'),
 				$this->input->post('user_column1'),
 				$this->input->post('user_column2'),
@@ -146,6 +148,7 @@ class User extends CI_Controller {
 			$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 			$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
+			$data['user_pota_lookup'] = $this->input->post('user_pota_lookup');
 			$data['user_show_notes'] = $this->input->post('user_show_notes');
 			$data['user_column1'] = $this->input->post('user_column1');
 			$data['user_column2'] = $this->input->post('user_column2');
@@ -332,6 +335,12 @@ class User extends CI_Controller {
 				$data['user_wwff_lookup'] = $q->user_wwff_lookup;
 			}
 
+			if($this->input->post('user_pota_lookup')) {
+				$data['user_pota_lookup'] = $this->input->post('user_pota_lookup', true);
+			} else {
+				$data['user_pota_lookup'] = $q->user_pota_lookup;
+			}
+
 			if($this->input->post('user_show_notes')) {
 				$data['user_show_notes'] = $this->input->post('user_show_notes', true);
 			} else {
@@ -430,6 +439,7 @@ class User extends CI_Controller {
 			$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 			$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
+			$data['user_pota_lookup'] = $this->input->post('user_pota_lookup');
 			$data['user_show_notes'] = $this->input->post('user_show_notes');
 			$data['user_column1'] = $this->input->post('user_column1');
 			$data['user_column2'] = $this->input->post('user_column2');

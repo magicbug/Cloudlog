@@ -426,7 +426,8 @@ function logQso() {
 			vuccr,
 		]];
 
-		table.rows.add(data).draw();
+		table.rows.add(data);
+		table.draw();
 
 		var formdata = new FormData(document.getElementById("qso_input"));
 		$.ajax({
@@ -454,7 +455,8 @@ function logQso() {
 				setSession(formdata);
 				
 				var qTable = $('.qsotable').DataTable();
-				qTable.search('').draw();
+				qTable.search('').order([0, 'desc']).draw();
+
 			}
 		});
 	}
@@ -526,7 +528,8 @@ function restoreContestSession(data) {
 							"scrollCollapse": true,
 							"paging": false,
 							"scrollX": true,
-							"order": [[0, "desc"]]
+							columnDefs: [ { type: 'date', 'targets': [0] } ],
+							order: [0, 'desc']
 						});
 					}
 				}

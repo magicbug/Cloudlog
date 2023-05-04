@@ -1084,6 +1084,27 @@ $(document).on('keypress',function(e) {
 	});
 <?php } ?>
 
+<?php if ($this->session->userdata('user_pota_lookup') == 1) { ?>
+	$('#pota_ref').change(function() {
+		var pota = $('#pota_ref').val();
+		if (pota.length > 0) {
+			$.ajax({
+				url: base_url+'index.php/qso/get_pota_info',
+				type: 'post',
+				data: {'pota': pota},
+				success: function(res) {
+					$('#qth').val(res.name);
+					$('#locator').val(res.grid6);
+				},
+				error: function() {
+					$('#qth').val('');
+					$('#locator').val('');
+				},
+			});
+		}
+	});
+<?php } ?>
+
 	$('#stationProfile').change(function() {
 		var stationProfile = $('#stationProfile').val();
 		$.ajax({

@@ -4,7 +4,7 @@
 
 <?php if($status == true) { ?>
 
-<p>The backup of your log completed successfully. The output can be found at: <a href="<?php echo base_url(); ?>backup/logbook.adi"><?php echo base_url(); ?>backup/logbook.adi</a></a></p>
+<p>The backup of your log completed successfully. The output can be found at: <a href="<?php echo base_url().$filename; ?>"><?php echo base_url() . $filename; ?></a></p>
 
 <p>You could automate this process by making it a cronjob.</p>
 

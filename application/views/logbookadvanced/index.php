@@ -181,6 +181,7 @@
 		<button type="button" class="btn btn-sm btn-success" id="sentDirect">Sent Direct</button>
 		<button type="button" class="btn btn-sm btn-success" id="sentElectronic">Sent Electronic</button>
 		<button type="button" class="btn btn-sm btn-warning" id="dontSend">Don't Send</button>
+		<button type="button" class="btn btn-sm btn-warning" id="notRequired">QSL Not Required</button>
 		<button type="button" class="btn btn-sm btn-info" id="exportAdif">Create ADIF</button>
 		<button type="button" class="btn btn-sm btn-danger" id="deleteQsos">Delete</button>
 		<span id="infoBox"></span>
@@ -201,8 +202,13 @@
 				<th>Refs</th>
 				<th>Name</th>
 				<th>QSL Via</th>
-				<th>QSL Sent</th>
-				<th>QSL Received</th>
+				<th>QSL</th>
+				<?php if ($this->session->userdata('user_lotw_name') != ""){
+					echo '<th class="lotwconfirmation">LoTW</th>';
+				} ?>
+				<?php if ($this->session->userdata('user_eqsl_name') != ""){
+					echo '<th class="eqslconfirmation">eQSL</th>';
+				} ?>
 				<th>QSL Msg</th>
 				<th>DXCC</th>
 				<th>State</th>
