@@ -121,8 +121,7 @@ class eqsl extends CI_Controller {
 			// perform an HTTP get on each one, and grab the status back
 			$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent();
 			
-			$data['eqsl_table'] = $this->writeEqslNotSent($qslsnotsent->result_array(), $custom_date_format);
-
+			$rows = "<tr>";
 			foreach ($qslsnotsent->result_array() as $qsl) {
 				
 				// eQSL username changes for linked account.
@@ -132,7 +131,23 @@ class eqsl extends CI_Controller {
 				$adif = $this->generateAdif($qsl, $data);
 				
 				$status = $this->uploadQso($adif);
+
+				
+				$timestamp = strtotime($qsl['COL_TIME_ON']);
+				$rows .= "<td>".date($custom_date_format, $timestamp)."</td>";
+				$rows .= "<td>".date('H:i', $timestamp)."</td>";
+				$rows .= "<td>".str_replace("0","&Oslash;",$qsl['COL_CALL'])."</td>";
+				$rows .= "<td>".$qsl['COL_MODE']."</td>";
+				if(isset($qsl['COL_SUBMODE'])) {
+					$rows .= "<td>".$qsl['COL_SUBMODE']."</td>";
+				} else {
+					$rows .= "<td></td>";
+				}
+				$rows .= "<td>".$qsl['COL_BAND']."</td>";
+				$rows .= "<td>".$status."</td>";
 			}
+			$rows .= "</tr>";
+			$data['eqsl_table'] = $this->generateResultTable($custom_date_format, $rows);
 		} else {
 			$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent();
 			if ($qslsnotsent->num_rows() > 0) {
@@ -207,6 +222,24 @@ class eqsl extends CI_Controller {
 		}
 		log_message('debug', $result);
 		return $status;
+	}
+
+	function generateResultTable($custom_date_format, $rows) {
+		$table = '<table = style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center">';
+			$table .= "<thead><tr class=\"titles\">";
+				$table .= "<th>Date</th>";
+				$table .= "<th>Time</th>";
+				$table .= "<th>Call</th>";
+				$table .= "<th>Mode</th>";
+				$table .= "<th>Submode</th>";
+				$table .= "<th>Band</th>";
+				$table .= "<th>Status</th>";
+			$table .= "</tr></thead><tbody>";
+		
+		$table .= $rows;
+		$table .= "</tbody></table>";
+
+		return $table;
 	}
 
 	// Build out the ADIF info string according to specs http://eqsl.cc/qslcard/ADIFContentSpecs.cfm
