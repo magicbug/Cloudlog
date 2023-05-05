@@ -26,6 +26,15 @@ class Eqslmethods_model extends CI_Model {
         return $query->result();
     }
 
+    /*
+     * Gets all station location for user, for use in cron where we don't have any login
+     */
+    function get_all_user_locations($userid) {
+		$this->db->select('station_profile.*, dxcc_entities.name as station_country, dxcc_entities.end as dxcc_end');
+		$this->db->where('user_id', $userid);
+		$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
+		return $this->db->get('station_profile');
+	}
 
     // Show all QSOs we need to send to eQSL
     function eqsl_not_yet_sent($userid = null) {
@@ -34,8 +43,7 @@ class Eqslmethods_model extends CI_Model {
             $CI->load->model('logbooks_model');
             $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
         } else {
-            $CI->load->model('Stations');
-            $stations = $CI->Stations->all_of_user();
+            $stations = $this->get_all_user_locations($userid);
             $logbooks_locations_array = array();
             foreach ($stations->result() as $row) {
                 array_push($logbooks_locations_array, $row->station_id);
