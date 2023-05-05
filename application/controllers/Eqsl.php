@@ -423,16 +423,16 @@ class eqsl extends CI_Controller {
 	}
 
 	function writeEqslNotSent($qslsnotsent, $custom_date_format) {
-		$table = "<table width=\"100%\">";
-			$table .= "<tr class=\"titles\">";
-				$table .= "<td>Date</td>";
-				$table .= "<td>Time</td>";
-				$table .= "<td>Call</td>";
-				$table .= "<td>Mode</td>";
-				$table .= "<td>Submode</td>";
-				$table .= "<td>Band</td>";
-				$table .= "<td>eQSL QTH Nickname</td>";
-			$table .= "<tr>";
+		$table = '<table = style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center">';
+			$table .= "<thead><tr class=\"titles\">";
+				$table .= "<th>Date</th>";
+				$table .= "<th>Time</th>";
+				$table .= "<th>Call</th>";
+				$table .= "<th>Mode</th>";
+				$table .= "<th>Submode</th>";
+				$table .= "<th>Band</th>";
+				$table .= "<th>eQSL QTH Nickname</th>";
+			$table .= "</tr></thead><tbody>";
 		
 		foreach ($qslsnotsent as $qsl)
 		{
@@ -450,9 +450,9 @@ class eqsl extends CI_Controller {
 				}
 				$table .= "<td>".$qsl['COL_BAND']."</td>";
 				$table .= "<td>".$qsl['eqslqthnickname']."</td>";
-			$table .= "<tr>";
+			$table .= "</tr>";
 		}
-		$table .= "</table>";
+		$table .= "</tbody></table>";
 
 		return $table;
 	}
