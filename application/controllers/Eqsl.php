@@ -121,17 +121,8 @@ class eqsl extends CI_Controller {
 			// perform an HTTP get on each one, and grab the status back
 			$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent();
 			
-			$table = "<table width=\"100%\">";
-					$table .= "<tr class=\"titles\">";
-						$table .= "<td>Date</td>";
-						$table .= "<td>Time</td>";
-						$table .= "<td>Call</td>";
-						$table .= "<td>Mode</td>";
-						$table .= "<td>Submode</td>";
-						$table .= "<td>Band</td>";
-						$table .= "<td>Result</td>";
-					$table .= "<tr>";
-			
+			$data['eqsl_table'] = $this->writeEqslNotSent($qslsnotsent->result_array(), $custom_date_format);
+
 			foreach ($qslsnotsent->result_array() as $qsl) {
 				
 				// eQSL username changes for linked account.
@@ -141,26 +132,7 @@ class eqsl extends CI_Controller {
 				$adif = $this->generateAdif($qsl, $data);
 				
 				$status = $this->uploadQso($adif);
-
-				$table .= "<tr>";
-					$timestamp = strtotime($qsl['COL_TIME_ON']);
-					$table .= "<td>".date($custom_date_format, $timestamp)."</td>";
-					$table .= "<td>".date('H:i', $timestamp)."</td>";
-					$table .= "<td>".str_replace("0","&Oslash;",$qsl['COL_CALL'])."</td>";
-					$table .= "<td>".$qsl['COL_MODE']."</td>";
-					if(isset($qsl['COL_SUBMODE'])) {
-						$table .= "<td>".$qsl['COL_SUBMODE']."</td>";
-					} else {
-						$table .= "<td></td>";
-					}
-					$table .= "<td>".$qsl['COL_BAND']."</td>";
-					$table .= "<td>".$status."</td>";
-				$table .= "<tr>";
 			}
-			$table .= "</table>";
-			
-			// Dump out a table with the results
-			$data['eqsl_results_table'] = $table;
 		} else {
 			$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent();
 			if ($qslsnotsent->num_rows() > 0) {
