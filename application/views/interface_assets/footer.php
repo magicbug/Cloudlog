@@ -2672,6 +2672,21 @@ function deleteQsl(id) {
 	</script>
 <?php } ?>
 
+
+<?php if ($this->uri->segment(1) == "eqsl") { ?>
+	<script>
+	$('.table').DataTable({
+		"stateSave": true,
+		"pageLength": 25,
+		responsive: false,
+		"scrollY": "400px",
+		"scrollCollapse": true,
+		"paging": false,
+		"scrollX": true,
+	});
+	</script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "qslprint") { ?>
 	<script>
 		function deleteFromQslQueue(id) {
