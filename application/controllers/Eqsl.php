@@ -161,6 +161,7 @@ class eqsl extends CI_Controller {
 	}
 
 	function uploadQso($adif) {
+		$this->load->model('eqslmethods_model');
 		$status = "";
 		
 		// begin script
@@ -189,7 +190,7 @@ class eqsl extends CI_Controller {
 		if ($chi['http_code'] == "200") {
 			if (stristr($result, "Result: 1 out of 1 records added")) {
 				$status = "Sent";
-				$this->eqsl_mark_sent->eqsl_mark_sent($qsl['COL_PRIMARY_KEY']);
+				$this->eqslmethods_model->eqsl_mark_sent($qsl['COL_PRIMARY_KEY']);
 			} else {
 				if (stristr($result, "Error: No match on eQSL_User/eQSL_Pswd")) {
 					$this->session->set_flashdata('warning', 'Your eQSL username and/or password is incorrect.'); redirect('eqsl/export');
@@ -201,7 +202,7 @@ class eqsl extends CI_Controller {
 							$status = "Duplicate";
 							
 							# Mark the QSL as sent if this is a dupe.
-							$this->eqsl_mark_sent->eqsl_mark_sent($qsl['COL_PRIMARY_KEY']);
+							$this->eqslmethods_model->eqsl_mark_sent($qsl['COL_PRIMARY_KEY']);
 						}
 					}
 				}
