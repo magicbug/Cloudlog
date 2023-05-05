@@ -528,6 +528,8 @@ class eqsl extends CI_Controller {
 	}
 
 	function uploadUser($userid, $username, $password) {
+		ini_set('memory_limit', '-1');
+		set_time_limit(0);
 		$data['user_eqsl_name'] = $this->security->xss_clean($username);
 		$data['user_eqsl_password'] = $this->security->xss_clean($password);
 		$clean_userid = $this->security->xss_clean($userid);
