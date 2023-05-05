@@ -2573,20 +2573,6 @@ class Logbook_model extends CI_Model {
     return "Updated";
   }
 
-  // Mark the QSO as sent to eQSL
-  function eqsl_mark_sent($primarykey) {
-    $data = array(
-         'COL_EQSL_QSLSDATE' => date('Y-m-d H:i:s'), // eQSL doesn't give us a date, so let's use current
-         'COL_EQSL_QSL_SENT' => 'Y',
-    );
-
-    $this->db->where('COL_PRIMARY_KEY', $primarykey);
-
-    $this->db->update($this->config->item('table_name'), $data);
-
-    return "eQSL Sent";
-  }
-
   // Get the last date we received an eQSL
   function eqsl_last_qsl_rcvd_date($callsign, $nickname) {
 	  $qso_table_name = $this->config->item('table_name');
@@ -2635,29 +2621,6 @@ class Logbook_model extends CI_Model {
       {
         return false;
       }
-    }
-
-    // Show all QSOs we need to send to eQSL
-    function eqsl_not_yet_sent() {
-      $CI =& get_instance();
-      $CI->load->model('logbooks_model');
-      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-
-      $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE, '.$this->config->item('table_name').'.COL_QSLMSG');
-      $this->db->from('station_profile');
-      $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-      $this->db->where("coalesce(station_profile.eqslqthnickname, '') <> ''");
-      $this->db->where($this->config->item('table_name').'.COL_CALL !=', '');
-      $this->db->group_start();
-      $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT is null');
-      $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', '');
-      $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'R');
-      $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'Q');
-      $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'N');
-      $this->db->group_end();
-      $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
-
-      return $this->db->get();
     }
 
     /*
@@ -3901,6 +3864,4 @@ function validateADIFDate($date, $format = 'Ymd')
   $d = DateTime::createFromFormat($format, $date);
   return $d && $d->format($format) == $date;
 }
-
-
 ?>
