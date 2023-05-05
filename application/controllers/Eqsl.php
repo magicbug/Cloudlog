@@ -130,7 +130,7 @@ class eqsl extends CI_Controller {
 				$data['user_eqsl_name'] = $qsl['station_callsign'];
 				$adif = $this->generateAdif($qsl, $data);
 				
-				$status = $this->uploadQso($adif);
+				$status = $this->uploadQso($adif, $qsl);
 
 				
 				$timestamp = strtotime($qsl['COL_TIME_ON']);
@@ -160,7 +160,7 @@ class eqsl extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-	function uploadQso($adif) {
+	function uploadQso($adif, $qsl) {
 		$this->load->model('eqslmethods_model');
 		$status = "";
 		
@@ -574,7 +574,7 @@ class eqsl extends CI_Controller {
 			$data['user_eqsl_name'] = $qsl['station_callsign'];
 			$adif = $this->generateAdif($qsl, $data);
 			
-			$status = $this->uploadQso($adif);
+			$status = $this->uploadQso($adif, $qsl);
 		}
 	}
 	
