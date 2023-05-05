@@ -6,12 +6,12 @@ class eqsl extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
-		
-		$this->load->model('user_model');
-		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
 
 	public function import() {
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
 		// Check if eQSL Nicknames have been defined
 		$this->load->model('stations');
 		$eqsl_locations = $this->stations->all_of_user_with_eqsl_nick_defined();
@@ -90,6 +90,9 @@ class eqsl extends CI_Controller {
 	} // end function
 
 	public function export() {
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
 		// Check if eQSL Nicknames have been defined
 			$this->load->model('stations');
 			if($this->stations->are_eqsl_nicks_defined() == 0) {
