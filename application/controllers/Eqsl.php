@@ -570,7 +570,7 @@ class eqsl extends CI_Controller {
 		
 		$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent($clean_userid);
 
-		foreach ($qslsnotsent as $qsl) {
+		foreach ($qslsnotsent->result_array() as $qsl) {
 			$data['user_eqsl_name'] = $qsl['station_callsign'];
 			$adif = $this->generateAdif($qsl, $data);
 			
