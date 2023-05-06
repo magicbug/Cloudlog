@@ -594,6 +594,16 @@ class eqsl extends CI_Controller {
 
 			$eqsl_results[] = $this->eqslimporter->fetch($eqsl_password);
 		}
+
+		echo 'Result from eQSL download:<br /><br />';
+		foreach ($eqsl_results as $result) {
+			foreach ($result as $r) {
+			echo $r->name . '<br />';
+			echo $r->adif_file . '<br />';
+			echo $r->qsos . '<br />';
+			echo $r->status . '<br /><br />';
+		}
+
 	}
 
 	function uploadUser($userid, $username, $password) {
