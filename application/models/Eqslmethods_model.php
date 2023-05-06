@@ -81,6 +81,23 @@ class Eqslmethods_model extends CI_Model {
         return "eQSL Sent";
     }
 
+    // Returns all the distinct callsign, eqsl nick pair for the current user/supplied user
+	function all_of_user_with_eqsl_nick_defined($userid = null) {
+        if ($userid == null) {
+            $this->db->where('user_id', $this->session->userdata('user_id'));
+        } else {
+            $this->db->where('user_id', $userid);
+        }
+
+		$this->db->where('eqslqthnickname IS NOT NULL');
+		$this->db->where('eqslqthnickname !=', '');
+		$this->db->from('station_profile');
+		$this->db->select('station_callsign, eqslqthnickname');
+		$this->db->distinct(TRUE);
+
+		return $this->db->get();
+	}
+
 }
 
 ?>
