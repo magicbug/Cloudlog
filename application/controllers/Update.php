@@ -368,7 +368,7 @@ class Update extends CI_Controller {
             return;
         }
 
-        $$nCount = 0;
+        $nCount = 0;
         do {
             if ($data[0]) {
                 fwrite($sotafilehandle, $data[0].PHP_EOL);
