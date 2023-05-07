@@ -13,8 +13,8 @@ class eqsl extends CI_Controller {
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		// Check if eQSL Nicknames have been defined
-		$this->load->model('stations');
-		$eqsl_locations = $this->stations->all_of_user_with_eqsl_nick_defined();
+		$this->load->model('eqslmethods_model');
+		$eqsl_locations = $this->eqslmethods_model->all_of_user_with_eqsl_nick_defined();
 		if($eqsl_locations->num_rows() == 0) {
 			show_error("eQSL Nicknames in Station Profiles aren't defined");
 			exit;
@@ -27,8 +27,6 @@ class eqsl extends CI_Controller {
 		$config['allowed_types'] = 'adi|ADI';
 
 		$this->load->library('upload', $config);
-
-		$this->load->model('eqslmethods_model');
 
 		$eqsl_results = array();
 		if ($this->input->post('eqslimport') == 'fetch')
@@ -564,9 +562,46 @@ class eqsl extends CI_Controller {
 		}
 	}
 
-	function uploadUser($userid, $username, $password) {
+	/*
+	 * Used for CRON job
+	 */
+	public function sync() {
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
+		$this->load->model('eqslmethods_model');
+
+		$users = $this->eqslmethods_model->get_eqsl_users();
+
+		foreach ($users as $user) {
+			$this->uploadUser($user->user_id, $user->user_eqsl_name, $user->user_eqsl_password);
+			$this->downloadUser($user->user_id, $user->user_eqsl_name, $user->user_eqsl_password);
+		}
+	}
+
+	public function downloadUser($userid, $username, $password) {
+		$this->load->library('EqslImporter');
+		$this->load->model('eqslmethods_model');
+
+		$config['upload_path'] = './uploads/';
+		$eqsl_locations = $this->eqslmethods_model->all_of_user_with_eqsl_nick_defined($userid);
+
+		$eqsl_results = array();
+
+		foreach ($eqsl_locations->result_array() as $eqsl_location) {
+			$this->eqslimporter->from_callsign_and_QTH(
+				$eqsl_location['station_callsign'],
+				$eqsl_location['eqslqthnickname'],
+				$config['upload_path']
+			);
+
+			$eqsl_results[] = $this->eqslimporter->fetch($password);
+		}
+
+		echo 'Result from eQSL download:<br /><br />';
+		var_dump($eqsl_results);
+	}
+
+	function uploadUser($userid, $username, $password) {
 		$data['user_eqsl_name'] = $this->security->xss_clean($username);
 		$data['user_eqsl_password'] = $this->security->xss_clean($password);
 		$clean_userid = $this->security->xss_clean($userid);
