@@ -473,6 +473,7 @@ class eqsl extends CI_Controller {
 
         if($this->Eqsl_images->get_image($id) == "No Image") {
 			$this->load->model('logbook_model');
+			$this->load->model('user_model');
 			$qso_query = $this->logbook_model->get_qso($id);
 			$qso = $qso_query->row();
 			$qso_timestamp = strtotime($qso->COL_TIME_ON);
