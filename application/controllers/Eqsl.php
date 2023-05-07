@@ -583,7 +583,9 @@ class eqsl extends CI_Controller {
 		$this->load->model('eqslmethods_model');
 
 		$config['upload_path'] = './uploads/';
-		$eqsl_locations = $this->eqslmethods_model->all_of_user_with_eqsl_nick_defined();
+		$eqsl_locations = $this->eqslmethods_model->all_of_user_with_eqsl_nick_defined($userid);
+
+		$eqsl_results = array();
 
 		foreach ($eqsl_locations->result_array() as $eqsl_location) {
 			$this->eqslimporter->from_callsign_and_QTH(
@@ -592,18 +594,11 @@ class eqsl extends CI_Controller {
 				$config['upload_path']
 			);
 
-			$eqsl_results[] = $this->eqslimporter->fetch($eqsl_password);
+			$eqsl_results[] = $this->eqslimporter->fetch($password);
 		}
 
 		echo 'Result from eQSL download:<br /><br />';
-		foreach ($eqsl_results as $result) {
-			foreach ($result as $r) {
-				echo $r->name . '<br />';
-				echo $r->adif_file . '<br />';
-				echo $r->qsos . '<br />';
-				echo $r->status . '<br /><br />';
-			}
-		}
+		var_dump($eqsl_results);
 	}
 
 	function uploadUser($userid, $username, $password) {
