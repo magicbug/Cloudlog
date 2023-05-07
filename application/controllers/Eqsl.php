@@ -468,10 +468,7 @@ class eqsl extends CI_Controller {
 		$this->load->library('electronicqsl');
 		$this->load->model('Eqsl_images');
 
-        // Check logged in
-		$this->load->model('user_model');
-
-        if($this->Eqsl_images->get_image($id) == "No Image") {
+		if($this->Eqsl_images->get_image($id) == "No Image") {
 			$this->load->model('logbook_model');
 			$this->load->model('user_model');
 			$qso_query = $this->logbook_model->get_qso($id);
