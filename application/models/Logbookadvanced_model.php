@@ -80,6 +80,12 @@ class Logbookadvanced_model extends CI_Model {
         if ($searchCriteria['propmode'] !== '') {
                 $conditions[] = "COL_PROP_MODE = ?";
                 $binding[] = $searchCriteria['propmode'];
+                if($searchCriteria['propmode'] == "SAT") {
+                        if ($searchCriteria['sats'] !== 'All') {
+                                $conditions[] = "COL_SAT_NAME = ?";
+                                $binding[] = trim($searchCriteria['sats']);
+                        }
+                }
         }
 
 		$where = trim(implode(" AND ", $conditions));
