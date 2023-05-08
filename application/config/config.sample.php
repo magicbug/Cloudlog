@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 $config['app_name'] = "Cloudlog";
-$config['app_version'] = "2.4.1";
+$config['app_version'] = "2.4.2";
 $config['directory'] = "logbook";
 
 $config['callbook'] = "hamqth"; // Options are hamqth or qrz
