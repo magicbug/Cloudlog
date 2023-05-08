@@ -203,11 +203,11 @@
 				<th>Name</th>
 				<th>QSL Via</th>
 				<th>QSL</th>
-				<?php if ($this->session->userdata('user_lotw_name') != ""){
-					echo '<th class="lotwconfirmation">LoTW</th>';
-				} ?>
 				<?php if ($this->session->userdata('user_eqsl_name') != ""){
 					echo '<th class="eqslconfirmation">eQSL</th>';
+				} ?>
+				<?php if ($this->session->userdata('user_lotw_name') != ""){
+					echo '<th class="lotwconfirmation">LoTW</th>';
 				} ?>
 				<th>QSL Msg</th>
 				<th>DXCC</th>

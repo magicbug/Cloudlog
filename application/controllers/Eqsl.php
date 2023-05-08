@@ -117,14 +117,14 @@ class eqsl extends CI_Controller {
 			{
 				$this->session->set_flashdata('warning', 'You have not defined your eQSL.cc credentials!'); redirect('eqsl/import');
 			}
-			
+
+			$rows = '';
 			// Grab the list of QSOs to send information about
 			// perform an HTTP get on each one, and grab the status back
 			$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent();
 			
-			$rows = "<tr>";
 			foreach ($qslsnotsent->result_array() as $qsl) {
-				
+				$rows .= "<tr>";
 				// eQSL username changes for linked account.
 				// i.e. when operating /P it must be callsign/p
 				// the password, however, is always the same as the main account
@@ -132,7 +132,6 @@ class eqsl extends CI_Controller {
 				$adif = $this->generateAdif($qsl, $data);
 				
 				$status = $this->uploadQso($adif, $qsl);
-
 				
 				$timestamp = strtotime($qsl['COL_TIME_ON']);
 				$rows .= "<td>".date($custom_date_format, $timestamp)."</td>";
@@ -553,19 +552,6 @@ class eqsl extends CI_Controller {
 	/*
 	 * Used for CRON job
 	 */
-	public function upload() {
-		$this->load->model('eqslmethods_model');
-
-		$users = $this->eqslmethods_model->get_eqsl_users();
-
-		foreach ($users as $user) {
-			$this->uploadUser($user->user_id, $user->user_eqsl_name, $user->user_eqsl_password);
-		}
-	}
-
-	/*
-	 * Used for CRON job
-	 */
 	public function sync() {
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
@@ -597,9 +583,6 @@ class eqsl extends CI_Controller {
 
 			$eqsl_results[] = $this->eqslimporter->fetch($password);
 		}
-
-		echo 'Result from eQSL download:<br /><br />';
-		var_dump($eqsl_results);
 	}
 
 	function uploadUser($userid, $username, $password) {
