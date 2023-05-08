@@ -117,14 +117,14 @@ class eqsl extends CI_Controller {
 			{
 				$this->session->set_flashdata('warning', 'You have not defined your eQSL.cc credentials!'); redirect('eqsl/import');
 			}
-			
+
+			$rows = '';
 			// Grab the list of QSOs to send information about
 			// perform an HTTP get on each one, and grab the status back
 			$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent();
 			
-			$rows = "<tr>";
 			foreach ($qslsnotsent->result_array() as $qsl) {
-				
+				$rows .= "<tr>";
 				// eQSL username changes for linked account.
 				// i.e. when operating /P it must be callsign/p
 				// the password, however, is always the same as the main account
@@ -132,7 +132,6 @@ class eqsl extends CI_Controller {
 				$adif = $this->generateAdif($qsl, $data);
 				
 				$status = $this->uploadQso($adif, $qsl);
-
 				
 				$timestamp = strtotime($qsl['COL_TIME_ON']);
 				$rows .= "<td>".date($custom_date_format, $timestamp)."</td>";
