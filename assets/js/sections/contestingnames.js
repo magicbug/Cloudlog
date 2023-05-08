@@ -8,7 +8,12 @@ $('.contesttable').DataTable({
 	"scrollX": true,
 	dom: 'Bfrtip',
 	buttons: [
-		'csv'
+		{
+			extend: 'csv',
+			exportOptions: {
+				columns: [ 0, 1, 2 ]
+			}
+		}
 	]
 });
 

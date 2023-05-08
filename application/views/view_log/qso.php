@@ -187,10 +187,10 @@
                         <td><?php echo $row->COL_SAT_MODE; ?></td>
                     </tr>
                     <?php } ?>
-                    <?php if($row->COL_COUNTRY != null) { ?>
+                    <?php if($row->name != null) { ?>
                     <tr>
                         <td><?php echo $this->lang->line('general_word_country'); ?></td>
-                        <td><?php echo ucwords(strtolower(($row->COL_COUNTRY)), "- (/"); ?></td>
+                        <td><?php echo ucwords(strtolower(($row->name)), "- (/"); if ($row->end != null) { echo ' <span class="badge badge-danger">'.$this->lang->line('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
                     </tr>
                     <?php } ?>
 
@@ -371,6 +371,18 @@
                             $twitter_band_sat = $row->COL_BAND;
                             $hashtags = "#hamr #cloudlog";
                         }
+                        if($row->COL_IOTA != null) {
+                            $hashtags .= " #IOTA ".$row->COL_IOTA;
+                        }
+                        if($row->COL_SOTA_REF != null) {
+                            $hashtags .= " #SOTA ".$row->COL_SOTA_EF;
+                        }
+                        if($row->COL_POTA_REF != null) {
+                            $hashtags .= " #POTA ".$row->COL_POTA_REF;
+                        }
+                        if($row->COL_WWFF_REF != null) {
+                            $hashtags .= " #WWFF ".$row->COL_WWFF_REF;
+                        }
                         if (!isset($distance)) {
                             $twitter_string = urlencode("Just worked ".$row->COL_CALL." in ".ucwords(strtolower(($row->COL_COUNTRY)))." on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
                         } else {
@@ -411,7 +423,7 @@
                     <?php if($row->station_country) { ?>
                     <tr>
                         <td>Station Country</td>
-                        <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); ?></td>
+                        <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); if ($row->station_end != null) echo ' <span class="badge badge-danger">'.$this->lang->line('gen_hamradio_deleted_dxcc').'</span>'; ?></td>
                     </tr>
                     <?php } ?>
 

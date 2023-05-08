@@ -142,31 +142,21 @@ class Lotw extends CI_Controller {
 
         	$info = $this->decrypt_key($data['upload_data']['full_path']);
 
-        	// Check DXCC & Store Country Name
-			$this->load->model('Logbook_model');
-
-			if($this->input->post('dxcc') != "") {
-				$dxcc = $this->input->post('dxcc');
-			} else{
-				$dxcc_check = $this->Logbook_model->check_dxcc_table($info['issued_callsign'], $info['validFrom']);
-				$dxcc = $dxcc_check[1];
-			}
-
 			// Check to see if certificate is already in the system
-			$new_certificate = $this->LotwCert->find_cert($info['issued_callsign'], $dxcc, $this->session->userdata('user_id'));
+			$new_certificate = $this->LotwCert->find_cert($info['issued_callsign'], $info['dxcc-id'], $this->session->userdata('user_id'));
 
         	if($new_certificate == 0) {
         		// New Certificate Store in Database
 
         		// Store Certificate Data into MySQL
-        		$this->LotwCert->store_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['qso-first-date'], $info['qso-end-date'], $info['pem_key'], $info['general_cert']);
+        		$this->LotwCert->store_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $info['dxcc-id'], $info['validFrom'], $info['validTo_Date'], $info['qso-first-date'], $info['qso-end-date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
         		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certificate Imported.');
         	} else {
         		// Certificate is in the system time to update
 
-				$this->LotwCert->update_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $dxcc, $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
+				$this->LotwCert->update_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $info['dxcc-id'], $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
         		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certificate Updated.');
@@ -225,27 +215,24 @@ class Lotw extends CI_Controller {
 					// Get Certificate Data
 					$this->load->model('LotwCert');
 					$data['station_profile'] = $station_profile;
-					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign, $station_profile->station_country);
+					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign, $station_profile->station_dxcc);
 
 					// If Station Profile has no LOTW Cert continue on.
-					if(!isset($data['lotw_cert_info']->cert_dxcc)) {
+					if(!isset($data['lotw_cert_info']->cert_dxcc_id)) {
 						continue;
 					}
 
-					// Check if LotW certificate itself is valid
+					// Check if LoTW certificate itself is valid
 					// Validty of QSO dates will be checked later
 					$current_date = date('Y-m-d H:i:s');
 					if ($current_date <= $data['lotw_cert_info']->date_created) {
-						echo $data['lotw_cert_info']->callsign.": LotW certificate not valid yet!";
+						echo $data['lotw_cert_info']->callsign.": LoTW certificate not valid yet!";
 						continue;
 					}
 					if ($current_date >= $data['lotw_cert_info']->date_expires) {
-						echo $data['lotw_cert_info']->callsign.": LotW certificate expired!";
+						echo $data['lotw_cert_info']->callsign.": LoTW certificate expired!";
 						continue;
 					}
-
-					$this->load->model('Dxcc');
-					$data['station_profile_dxcc'] = $this->Dxcc->lookup_country($data['lotw_cert_info']->cert_dxcc);
 
 					// Get QSOs
 
@@ -359,7 +346,6 @@ class Lotw extends CI_Controller {
 			|	Download QSO Matches from LoTW
 			*/
 			echo "<br><br>";
-			echo "LoTW Matches<br>";
 			echo $this->lotw_download();
 
 	}
@@ -444,6 +430,7 @@ class Lotw extends CI_Controller {
 		// https://oidref.com/1.3.6.1.4.1.12348.1
 		$data['qso-first-date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.2'];
 		$data['qso-end-date'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.3'];
+		$data['dxcc-id'] = $certdata['extensions']['1.3.6.1.4.1.12348.1.4'];
 
 		return $data;
 	}
@@ -580,6 +567,7 @@ class Lotw extends CI_Controller {
 		unlink($filepath);
 
 		if(isset($data['lotw_table_headers'])) {
+			echo "LoTW Matches<br>";
 			if($display_view == TRUE) {
 				$data['page_title'] = "LoTW ADIF Information";
 				$this->load->view('interface_assets/header', $data);
@@ -589,7 +577,7 @@ class Lotw extends CI_Controller {
 				return $tableheaders.$table;
 			}
 		} else {
-			echo "LoTW Downloading failed either due to it being down or incorrect logins.";
+			echo "Downloaded LoTW report contains no matches.";
 		}
 	}
 
@@ -615,6 +603,9 @@ class Lotw extends CI_Controller {
 
 				$config['upload_path'] = './uploads/';
 				$file = $config['upload_path'] . 'lotwreport_download.adi';
+				if (file_exists($file) && ! is_writable($file)) {
+					return "Temporary download file ".$file." is not writable. Aborting!";
+				}
 
 				// Get credentials for LoTW
 		    	$data['user_lotw_name'] = urlencode($user->user_lotw_name);
@@ -643,7 +634,13 @@ class Lotw extends CI_Controller {
 				$lotw_url .= "&qso_qslsince=";
 				$lotw_url .= "$lotw_last_qsl_date";
 
+				if (! is_writable(dirname($file))) {
+					return "Temporary download directory ".dirname($file)." is not writable. Aborting!";
+				}
 				file_put_contents($file, file_get_contents($lotw_url));
+				if (file_get_contents($file, false, null, 0, 39) != "ARRL Logbook of the World Status Report") {
+					return "LoTW downloading failed either due to it being down or incorrect logins.";
+				}
 
 				ini_set('memory_limit', '-1');
 				$results = $this->loadFromFile($file, false);

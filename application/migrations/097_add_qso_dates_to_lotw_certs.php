@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class Migration_add_qso_dates_to_lotw_certs
  *
- * For validity checks of LotW we need to check qso dates from 
+ * For validity checks of LoTW we need to check qso dates from 
  * cvertificates rather than the cert issue date itself
  * 
  */

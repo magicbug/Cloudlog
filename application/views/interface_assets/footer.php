@@ -1084,6 +1084,42 @@ $(document).on('keypress',function(e) {
 	});
 <?php } ?>
 
+<?php if ($this->session->userdata('user_pota_lookup') == 1) { ?>
+	$('#pota_ref').change(function() {
+		var pota = $('#pota_ref').val();
+		if (pota.length > 0) {
+			$.ajax({
+				url: base_url+'index.php/qso/get_pota_info',
+				type: 'post',
+				data: {'pota': pota},
+				success: function(res) {
+					$('#qth').val(res.name);
+					$('#locator').val(res.grid6);
+				},
+				error: function() {
+					$('#qth').val('');
+					$('#locator').val('');
+				},
+			});
+		}
+	});
+<?php } ?>
+
+	$('#stationProfile').change(function() {
+		var stationProfile = $('#stationProfile').val();
+		$.ajax({
+			url: base_url+'index.php/qso/get_station_power',
+			type: 'post',
+			data: {'stationProfile': stationProfile},
+			success: function(res) {
+				$('#transmit_power').val(res.station_power);
+			},
+			error: function() {
+				$('#transmit_power').val('');
+			},
+		});
+	});
+
 <?php if ($this->session->userdata('user_qth_lookup') == 1) { ?>
     $('#qth').focusout(function() {
     	if ($('#locator').val() === '') {
@@ -1211,13 +1247,32 @@ $(document).on('keypress',function(e) {
           var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
 
           if(data.updated_minutes_ago > minutes) {
+            $(".radio_cat_state" ).remove();
             if($('.radio_timeout_error').length == 0) {
-              $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert">Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
+              $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert"><i class="fas fa-broadcast-tower"></i> Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
             } else {
-              $('.radio_timeout_error').text('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
+              $('.radio_timeout_error').html('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
             }
           } else {
             $(".radio_timeout_error" ).remove();
+            text = '<i class="fas fa-broadcast-tower"></i><span style="margin-left:10px;"></span><b>TX:</b> '+(Math.round(parseInt(data.frequency)/1000)/1000).toFixed(3)+' MHz';
+            if(data.power != null && data.power != 0) {
+               text = text+'<span style="margin-left:10px"></span>'+data.power+'W';
+            }
+            if(data.prop_mode != null && data.prop_mode != '') {
+               text = text+'<span style="margin-left:10px"></span>('+data.prop_mode;
+               if (data.prop_mode == 'SAT') {
+                  text = text+' '+data.satname;
+               }
+            }
+            if(data.frequency_rx != null && data.frequency_rx != 0) {
+               text = text+'<span style="margin-left:10px"></span><b>RX:</b> '+(Math.round(parseInt(data.frequency_rx)/1000)/1000).toFixed(3)+' MHz)';
+            }
+            if (! $('#radio_cat_state').length) {
+               $('.qso_panel').prepend('<div aria-hidden="true"><div id="radio_cat_state" class="alert alert-success radio_cat_state" role="alert">'+text+'</div></div>');
+            } else {
+               $('#radio_cat_state').html(text);
+            }
           }
 
       });
@@ -2392,7 +2447,7 @@ function deleteQsl(id) {
 		});
 	}
 </script>
-<?php if ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) != "add" ) { ?>
+<?php if ($this->uri->segment(1) == "contesting" && ($this->uri->segment(2) != "add" && $this->uri->segment(2) != "edit")) { ?>
     <script>
         var manual = <?php echo $_GET['manual']; ?>;
     </script>
@@ -2633,6 +2688,21 @@ function deleteQsl(id) {
 				format: 'DD/MM/YYYY',
 			});
 		});
+	</script>
+<?php } ?>
+
+
+<?php if ($this->uri->segment(1) == "eqsl") { ?>
+	<script>
+	$('.table').DataTable({
+		"stateSave": true,
+		"pageLength": 25,
+		responsive: false,
+		"scrollY": "400px",
+		"scrollCollapse": true,
+		"paging": false,
+		"scrollX": true,
+	});
 	</script>
 <?php } ?>
 

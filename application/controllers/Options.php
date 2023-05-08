@@ -90,6 +90,30 @@ class Options extends CI_Controller {
 				$this->session->set_flashdata('success', 'Global Search changed to '.$this->input->post('globalSearch'));
 			}
 
+			// Update dashboard banner within the options system
+			$dasboard_banner_update_status = $this->optionslib->update('dashboard_banner', $this->input->post('dashboardBanner'), 'yes');
+
+			// If dashboard banner update is complete set a flashsession with a success note
+			if($dasboard_banner_update_status == TRUE) {
+				$this->session->set_flashdata('success', 'Dashboard banner changed to '.$this->input->post('dashboardBanner'));
+			}
+
+			// Update dashboard map within the options system
+			$dashboard_map_update_status = $this->optionslib->update('dashboard_map', $this->input->post('dashboardMap'), 'yes');
+
+			// If dashboard map update is complete set a flashsession with a success note
+			if($ldashboard_map_update_status == TRUE) {
+				$this->session->set_flashdata('success', 'Dashboard map changed to '.$this->input->post('dashboardMap'));
+			}
+
+			// Update logbook map within the options system
+			$logbook_map_update_status = $this->optionslib->update('logbook_map', $this->input->post('logbookMap'), 'yes');
+
+			// If logbook map update is complete set a flashsession with a success note
+			if($logbook_map_update_status == TRUE) {
+				$this->session->set_flashdata('success', 'Logbook map changed to '.$this->input->post('logbookMap'));
+			}
+
 			// Update Lang choice within the options system
 			// $lang_update_status = $this->optionslib->update('language', $this->input->post('language'));
 
@@ -251,5 +275,35 @@ class Options extends CI_Controller {
 				redirect('/options/email');
 			}
 		}
+
+		function oqrs() {
+
+			$data['page_title'] = "Cloudlog Options";
+			$data['sub_heading'] = "OQRS Options";
+
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('options/oqrs');
+			$this->load->view('interface_assets/footer');
+		}
+
+		function oqrs_save() {
+
+		$data['page_title'] = "Cloudlog Options";
+		$data['sub_heading'] = "OQRS Options";
+
+		$this->load->helper(array('form', 'url'));
+
+		$this->load->library('form_validation');
+
+		$global_oqrs_text = $this->optionslib->update('global_oqrs_text', $this->input->post('global_oqrs_text'), null);
+
+		$global_oqrs_text = $this->optionslib->update('groupedSearch', $this->input->post('groupedSearch'), null);
+
+		if($global_oqrs_text == TRUE) {
+			$this->session->set_flashdata('success', 'OQRS options have been saved.');
+		}
+
+		redirect('/options/oqrs');
+    }
 
 }

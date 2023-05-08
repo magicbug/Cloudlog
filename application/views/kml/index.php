@@ -13,7 +13,7 @@
 
         <div class="card-body">
 
-            <form class="form" action="<?php echo site_url('kml/export'); ?>" method="post" enctype="multipart/form-data">
+            <form class="form" action="<?php echo site_url('kmlexport/export'); ?>" method="post" enctype="multipart/form-data">
 
                 <div class="form-group">
                     <label for="band">Band</label>
@@ -35,7 +35,7 @@
                             foreach($dxcc as $d){
                                 echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower($d->name), "- (/");
                                 if ($d->Enddate != null) {
-                                    echo ' (deleted dxcc)';
+                                    echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';
                                 }
                                 echo '</option>';
                             }

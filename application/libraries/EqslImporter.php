@@ -18,6 +18,7 @@ class EqslImporter
 
 		$this->CI->load->model('logbook_model');
 		$this->CI->load->library('adif_parser');
+		$this->CI->load->model('eqslmethods_model');
 	}
 
 	private function init($name, $adif_file) {
@@ -62,7 +63,7 @@ class EqslImporter
 		$eqsl_url = $q->eqsl_download_url;
 
 		// Query the logbook to determine when the last eQSL confirmation was
-		$eqsl_last_qsl_date = $this->CI->logbook_model->eqsl_last_qsl_rcvd_date($this->callsign, $this->qth_nickname);
+		$eqsl_last_qsl_date = $this->CI->eqslmethods_model->eqsl_last_qsl_rcvd_date($this->callsign, $this->qth_nickname);
 
 		// Build parameters for eQSL inbox file
 		$eqsl_params = http_build_query(array(
@@ -157,10 +158,10 @@ class EqslImporter
 			$qsoid = 0;
 			if ($status[0] == "Found") {
 				$qsoid = $status[1];
-				$dupe = $this->CI->logbook_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
+				$dupe = $this->CI->eqslmethods_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
 				if ($dupe == false) {
 					$updated += 1;
-					$eqsl_status = $this->CI->logbook_model->eqsl_update($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
+					$eqsl_status = $this->CI->eqslmethods_model->eqsl_update($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
 				} else {
 					$dupes += 1;
 					$eqsl_status = "Already received an eQSL for this QSO.";

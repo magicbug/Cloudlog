@@ -47,6 +47,12 @@
 						<input type="text" class="form-control" name="station_callsign" id="stationCallsignInput" aria-describedby="stationCallsignInputHelp" value="<?php if(set_value('station_callsign') != "") { echo set_value('station_callsign'); } else { echo $my_station_profile->station_callsign; } ?>" required>
 						<small id="stationCallsignInputHelp" class="form-text text-muted">Station callsign. For example: 2M0SQL/P</small>
 					</div>
+
+					<div class="form-group">
+						<label for="stationPowerInput">Station Power</label>
+						<input type="number" class="form-control" name="station_power" step="1" id="stationPowerInput" aria-describedby="stationPowerInputHelp" value="<?php if(set_value('station_power') != "") { echo set_value('station_power'); } else { echo $my_station_profile->station_power; } ?>">
+						<small id="stationPowerInputHelp" class="form-text text-muted">Default station power. Overwritten by CAT.</small>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -63,13 +69,13 @@
 						<label for="stationDXCCInput">Station DXCC</label>
 							<?php if ($dxcc_list->num_rows() > 0) { ?>
 							<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
-							<option value="0" <?php if($my_station_profile->station_dxcc == "0") { ?>selected<?php } ?>>NONE</option>
+							<option value="0" <?php if($my_station_profile->station_dxcc == "0") { ?>selected<?php } ?>>- NONE -</option>
 							<?php foreach ($dxcc_list->result() as $dxcc) { ?>
-							<option value="<?php echo $dxcc->adif; ?>" <?php if($my_station_profile->station_dxcc == $dxcc->adif) { ?>selected<?php } ?>><?php echo $dxcc->name; ?></option>
+							<option value="<?php echo $dxcc->adif; ?>" <?php if($my_station_profile->station_dxcc == $dxcc->adif) { ?>selected<?php } ?>><?php echo ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix; if ($dxcc->end != NULL) echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';?>
+							</option>
 							<?php } ?>
 							</select>
 							<?php } ?>
-						<input type="hidden" id="country" name="station_country" value="<?php if(set_value('station_country') != "") { echo set_value('station_country'); } else { echo $my_station_profile->station_country; } ?>" required />
 						<small id="stationDXCCInputHelp" class="form-text text-muted">Station DXCC entity. For example: Scotland</small>
 					</div>
 
@@ -183,7 +189,7 @@
 							}
 							?>
 						</select>
-						<small id="stationCQInputHelp" class="form-text text-muted">If you don't know your CQ Zone then <a href="http://www4.plala.or.jp/nomrax/CQ/" target="_blank">click here to find it!</a></small>
+						<small id="stationCQInputHelp" class="form-text text-muted">If you don't know your CQ Zone then <a href="https://zone-check.eu/?m=cq" target="_blank">click here</a> to find it!</small>
 					</div>
 
 					<!-- ITU Zone -->
@@ -200,7 +206,7 @@
 							}
 							?>
                     	</select>
-                    	<small id="stationITUInputHelp" class="form-text text-muted">If you don't know your ITU Zone then <a href="http://www4.plala.or.jp/nomrax/ITU/" target="_blank">click here to find it!</a></small>
+                    	<small id="stationITUInputHelp" class="form-text text-muted">If you don't know your ITU Zone then <a href="https://zone-check.eu/?m=itu" target="_blank">click here</a> to find it!</small>
                 	</div>
 
 				</div>
@@ -224,7 +230,7 @@
 							</div>
 						</div>
 
-		    			<small id="stationGridInputHelp" class="form-text text-muted">Station grid square. For example: IO87IP</small>
+		    			<small id="stationGridInputHelp" class="form-text text-muted">Station grid square. For example: IO87IP. If you don't know your grid square then <a href="https://zone-check.eu/?m=loc" target="_blank">click here</a>!</small>
 		    			<small id="stationGridInputHelp" class="form-text text-muted">If you are located on a grid line, enter multiple grid squares separated with commas. For example: IO77,IO78,IO87,IO88.</small>
 		  			</div>
 				</div>
@@ -266,7 +272,7 @@
 					<div class="form-group">
 		    			<label for="stationSOTAInput">SOTA Reference</label>
 		    			<input type="text" class="form-control" name="sota" id="stationSOTAInput" aria-describedby="stationSOTAInputHelp" value="<?php if(set_value('sota') != "") { echo set_value('sota'); } else { echo $my_station_profile->station_sota; } ?>">
-		    			<small id="stationSOTAInputHelp" class="form-text text-muted">Station SOTA reference.</small>
+		    			<small id="stationSOTAInputHelp" class="form-text text-muted">Station SOTA reference. You can look up SOTA references at the <a target="_blank" href="https://www.sotamaps.org/">SOTA Maps</a> website.</small>
 		  			</div>
 				</div>
 			</div>
@@ -279,7 +285,7 @@
 					<div class="form-group">
 						<label for="stationWWFFInput">WWFF Reference</label>
 						<input type="text" class="form-control" name="wwff" id="stationWWFFInput" aria-describedby="stationWWFFInputHelp" value="<?php if(set_value('wwff') != "") { echo set_value('wwff'); } else { echo $my_station_profile->station_wwff; } ?>">
-						<small id="stationWWFFInputHelp" class="form-text text-muted">Station WWFF reference.</small>
+						<small id="stationWWFFInputHelp" class="form-text text-muted">Station WWFF reference. You can look up WWFF references at the <a target="_blank" href="https://www.cqgma.org/mvs/">GMA Map</a> website.</small>
 					</div>
 				</div>
 			</div>
@@ -292,7 +298,7 @@
 					<div class="form-group">
 						<label for="stationPOTAInput">POTA Reference</label>
 						<input type="text" class="form-control" name="pota" id="stationPOTAInput" aria-describedby="stationPOTAInputHelp" value="<?php if(set_value('pota') != "") { echo set_value('pota'); } else { echo $my_station_profile->station_pota; } ?>">
-						<small id="stationPOTAInputHelp" class="form-text text-muted">Station POTA reference.</small>
+						<small id="stationPOTAInputHelp" class="form-text text-muted">Station POTA reference. You can look up POTA references at the <a target="_blank" href="https://pota.app/#/map/">POTA Map</a> website.</small>
 					</div>
 				</div>
 			</div>

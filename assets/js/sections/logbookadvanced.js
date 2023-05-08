@@ -2,6 +2,15 @@ var callBookProcessingDialog = null;
 var inCallbookProcessing = false;
 var inCallbookItemProcessing = false;
 
+$('#band').change(function () {
+	var band = $("#band option:selected").text();
+	if (band != "SAT") {
+		$(".sats_dropdown").attr("hidden", true);
+	} else {
+		$(".sats_dropdown").removeAttr("hidden");
+	}
+});
+
 function updateRow(qso) {
 	let row = $('#qsoID-' + qso.qsoID);
 	let cells = row.find('td');
@@ -17,13 +26,20 @@ function updateRow(qso) {
 	cells.eq(c++).text(qso.dxRefs);
 	cells.eq(c++).text(qso.name);
 	cells.eq(c++).text(qso.qslVia);
-	cells.eq(c++).text(qso.qslSent);
-	cells.eq(c++).text(qso.qslReceived);
+	cells.eq(c++).html(qso.qsl);
+	if ($(".eqslconfirmation")[0]){
+		cells.eq(c++).html(qso.eqsl);
+	}
+	if ($(".lotwconfirmation")[0]){
+		cells.eq(c++).html(qso.lotw);
+	}
 	cells.eq(c++).text(qso.qslMessage);
 	cells.eq(c++).text(qso.dxcc);
 	cells.eq(c++).text(qso.state);
 	cells.eq(c++).text(qso.cqzone);
 	cells.eq(c++).text(qso.iota);
+
+	$('[data-toggle="tooltip"]').tooltip();
 	return row;
 }
 
@@ -41,7 +57,7 @@ function loadQSOTable(rows) {
 			"scrollCollapse": true,
 			"paging":         false,
 			"scrollX": true,
-			"order": [ 0, 'asc' ],
+			"order": [ 1, 'desc' ],
 		});
 	});
 
@@ -51,34 +67,39 @@ function loadQSOTable(rows) {
 	
 	for (i = 0; i < rows.length; i++) {
 		let qso = rows[i];
-		
-		var data = [
-			'<div class="form-check"><input class="form-check-input" type="checkbox" /></div>',
-			qso.qsoDateTime,
-			qso.de,
-			'<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>',
-			qso.mode,
-			qso.rstS,
-			qso.rstR,
-			qso.band,
-			qso.deRefs,
-			qso.dxRefs,
-			qso.name,
-			qso.qslVia,
-			qso.qslSent,
-			qso.qslReceived,
-			qso.qslMessage,
-			qso.dxcc,
-			qso.state,
-			qso.cqzone,
-			qso.iota,
-		];
+
+		var data = [];
+		data.push('<div class="form-check"><input class="form-check-input" type="checkbox" /></div>');
+		data.push(qso.qsoDateTime);
+		data.push(qso.de);
+		data.push('<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>');
+		data.push(qso.mode);
+		data.push(qso.rstS);
+		data.push(qso.rstR);
+		data.push(qso.band);
+		data.push(qso.deRefs);
+		data.push(qso.dxRefs);
+		data.push(qso.name);
+		data.push(qso.qslVia);
+		data.push(qso.qsl);
+		if ($(".eqslconfirmation")[0]){
+			data.push(qso.eqsl);
+		}
+		if ($(".lotwconfirmation")[0]){
+			data.push(qso.lotw);
+		}
+		data.push(qso.qslMessage);
+		data.push(qso.dxcc+(qso.end == null ? '' : ' <span class="badge badge-danger">Deleted DXCC</span>'));
+		data.push(qso.state);
+		data.push(qso.cqzone);
+		data.push(qso.iota);
 		
 		let createdRow = table.row.add(data).index();
 		table.rows(createdRow).nodes().to$().data('qsoID', qso.qsoID);
 		table.row(createdRow).node().id = 'qsoID-' + qso.qsoID;
 	}
 	table.draw();
+	$('[data-toggle="tooltip"]').tooltip();
 }
 
 function processNextCallbookItem() {
@@ -118,13 +139,13 @@ function processNextCallbookItem() {
 function selectQsoID(qsoID) {
 	var element = $("#qsoID-" + qsoID);
 	element.find("input[type=checkbox]").prop("checked", true);
-	element.addClass('alert-success');
+	element.addClass('activeRow');
 }
 
 function unselectQsoID(qsoID) {
 	var element = $("#qsoID-" + qsoID);
 	element.find("input[type=checkbox]").prop("checked", false);
-	element.removeClass('alert-success');
+	element.removeClass('activeRow');
 	$('#checkBoxAll').prop("checked", false);
 }
 
@@ -156,7 +177,8 @@ $(document).ready(function () {
 				propmode: this.selectPropagation.value,
 				gridsquare: this.gridsquare.value,
 				state: this.state.value,
-				qsoresults: this.qsoResults.value
+				qsoresults: this.qsoResults.value,
+				sats: this.sats.value
 			},
 			dataType: 'json',
 			success: function (data) {
@@ -181,9 +203,9 @@ $(document).ready(function () {
 
 	$('#qsoList').on('click', 'input[type="checkbox"]', function() {
 		if ($(this).is(":checked")) {
-			$(this).closest('tr').addClass('alert-success');
+			$(this).closest('tr').addClass('activeRow');
 		} else {
-			$(this).closest('tr').removeClass('alert-success');
+			$(this).closest('tr').removeClass('activeRow');
 		}
 	});
 
@@ -252,12 +274,12 @@ $(document).ready(function () {
 	});
 
 	$('#exportAdif').click(function (event) {
-		$('#exportAdif').prop("disabled", true);
 		var elements = $('#qsoList tbody input:checked');
 		var nElements = elements.length;
 		if (nElements == 0) {
 			return;
 		}
+		$('#exportAdif').prop("disabled", true);
 		var id_list=[];
 		elements.each(function() {
 			let id = $(this).first().closest('tr').data('qsoID')
@@ -283,7 +305,7 @@ $(document).ready(function () {
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		// You should set responseType as blob for binary responses
 		xhttp.responseType = 'blob';
-		xhttp.send("id=" + JSON.stringify(id_list, null, 2));
+		xhttp.send("id=" + JSON.stringify(id_list, null, 2)+"&sortorder=" +$('.table').DataTable().order());
 		$('#exportAdif').prop("disabled", false);
 	});
 
@@ -313,6 +335,9 @@ $(document).ready(function () {
 
 	$('#dontSend').click(function (event) {
 		handleQsl('N','', 'dontSend');
+	});
+	$('#notRequired').click(function (event) {
+		handleQsl('I','', 'notRequired');
 	});
 
 	$('#searchForm').on('reset', function(e) {

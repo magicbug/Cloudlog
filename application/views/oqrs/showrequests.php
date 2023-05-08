@@ -78,7 +78,7 @@ function echo_qsl_method($method) {
 		<span id="infoBox"></span>
 	</div>
 </div>
-<table style="width:100%" class="table-sm oqrstable table table-bordered table-hover table-condensed text-center" id="qsoList">
+<table style="width:100%" class="table-sm oqrstable table table-striped table-bordered table-hover table-condensed text-center" id="qsoList">
 	<thead>
 		<tr>
 			<th><div class="form-check" style="margin-top: -1.5em"><input class="form-check-input" type="checkbox" id="checkBoxAll" /></div></th>

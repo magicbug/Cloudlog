@@ -23,7 +23,7 @@ function echo_table_col($row, $name) {
 		case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE . '</td>'; break;
       case 'RSTS':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_SENT; if ($row->COL_STX) { echo '<span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';} if ($row->COL_STX_STRING) { echo '<span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">' . $row->COL_STX_STRING . '</span>';} echo '</td>'; break;
       case 'RSTR':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo '<span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">'; printf("%03d", $row->COL_SRX); echo '</span>';} if ($row->COL_SRX_STRING) { echo '<span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';} echo '</td>'; break;
-		case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY))) . '</td>'; break;
+		case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY))); if ($row->end != NULL) echo ' <span class="badge badge-danger">'.$ci->lang->line('gen_hamradio_deleted_dxcc').'</span>'  . '</td>'; break;
 		case 'IOTA':    echo '<td>' . ($row->COL_IOTA) . '</td>'; break;
 		case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF) . '</td>'; break;
 		case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF) . '</td>'; break;
@@ -47,6 +47,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 <div class="container dashboard">
 <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 
+	<?php if($this->optionslib->get_option('dashboard_banner') != "false") { ?>
 	<?php if($todays_qsos >= 1) { ?>
 		<div class="alert alert-success" role="alert">
 			  <?php echo $this->lang->line('dashboard_you_have_had'); ?> <strong><?php echo $todays_qsos; ?></strong> <?php echo $this->lang->line('dashboard_qsos_today'); ?>
@@ -55,6 +56,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<div class="alert alert-warning" role="alert">
 			  <span class="badge badge-info"><?php echo $this->lang->line('general_word_important'); ?></span> <i class="fas fa-broadcast-tower"></i> <?php echo $this->lang->line('notice_turn_the_radio_on'); ?>
 		</div>
+	<?php } ?>
 	<?php } ?>
 
 	<?php if($current_active == 0) { ?>
@@ -82,9 +84,10 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 <?php } ?>
 </div>
 
+<?php if($this->optionslib->get_option('dashboard_map') != "false" && $this->optionslib->get_option('dashboard_map') != "map_at_right") { ?>
 <!-- Map -->
 <div id="map" style="width: 100%; height: 350px"></div>
-
+<?php } ?>
 <div style="padding-top: 0px; margin-top: 5px;" class="container dashboard">
 
 <!-- Log Data -->
@@ -151,6 +154,10 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
   </div>
 
   <div class="col-sm-4">
+  	<?php if($this->optionslib->get_option('dashboard_map') == "map_at_right") { ?>
+	<!-- Map -->
+	<div id="map" style="width: 100%; height: 350px;  margin-bottom: 15px;"></div>
+	<?php } ?>
   	<div class="table-responsive">
 
 		<?php if($radio_status->num_rows()) { ?>

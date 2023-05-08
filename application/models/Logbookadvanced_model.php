@@ -41,6 +41,10 @@ class Logbookadvanced_model extends CI_Model {
 				$binding[] = trim($searchCriteria['band']);
 			} else {
 				$conditions[] = "COL_PROP_MODE = 'SAT'";
+				if ($searchCriteria['sats'] !== 'All') {
+					$conditions[] = "COL_SAT_NAME = ?";
+					$binding[] = trim($searchCriteria['sats']);
+				}
 			}
 		}
 		if ($searchCriteria['qslSent'] !== '') {
@@ -77,7 +81,7 @@ class Logbookadvanced_model extends CI_Model {
                 $conditions[] = "COL_PROP_MODE = ?";
                 $binding[] = $searchCriteria['propmode'];
         }
-    
+
 		$where = trim(implode(" AND ", $conditions));
 		if ($where != "") {
 			$where = "AND $where";
@@ -89,6 +93,7 @@ class Logbookadvanced_model extends CI_Model {
 			SELECT *
 			FROM " . $this->config->item('table_name') . " qsos
 			INNER JOIN station_profile ON qsos.station_id=station_profile.station_id
+			LEFT OUTER JOIN dxcc_entities ON qsos.col_dxcc=dxcc_entities.adif
 			WHERE station_profile.user_id =  ?
 			$where
 			ORDER BY qsos.COL_TIME_ON desc, qsos.COL_PRIMARY_KEY desc
@@ -107,7 +112,7 @@ class Logbookadvanced_model extends CI_Model {
 	    return $qsos;
 	}
 
-    public function getQsosForAdif($ids, $user_id) : object {
+    public function getQsosForAdif($ids, $user_id, $sortorder = null) : object {
 		$binding = [$user_id];
         $conditions[] = "COL_PRIMARY_KEY in ?";
         $binding[] = json_decode($ids, true);
@@ -117,17 +122,73 @@ class Logbookadvanced_model extends CI_Model {
 			$where = "AND $where";
 		}
 
+		$order = $this->getSortorder($sortorder);
+
         $sql = "
-            SELECT *
+            SELECT *, dxcc_entities.name AS station_country
 			FROM " . $this->config->item('table_name') . " qsos
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
+			LEFT OUTER JOIN dxcc_entities ON qsos.COL_MY_DXCC = dxcc_entities.adif
 			WHERE station_profile.user_id =  ?
 			$where
-			ORDER BY qsos.COL_TIME_ON desc
+			$order
 		";
 
 		return $this->db->query($sql, $binding);
     }
+
+	public function getSortOrder($sortorder) {
+		if ($sortorder == null) {
+			return 'ORDER BY qsos.COL_TIME_ON desc';
+		} else {
+			$sortorder = explode(',', $sortorder);
+
+			if ($this->session->userdata('user_lotw_name') != "" && $this->session->userdata('user_eqsl_name') != ""){
+				switch($sortorder[0]) {
+					case 1: return 'ORDER BY qsos.COL_TIME_ON ' . $sortorder[1];
+					case 2: return 'ORDER BY station_profile.station_callsign ' . $sortorder[1];
+					case 3: return 'ORDER BY qsos.COL_CALL ' . $sortorder[1];
+					case 4: return 'ORDER BY qsos.COL_MODE' .  $sortorder[1] . ', qsos.COL_SUBMODE ' . $sortorder[1];
+					case 7: return 'ORDER BY qsos.COL_BAND ' . $sortorder[1] . ', qsos.COL_SAT_NAME ' . $sortorder[1];
+					case 16: return 'ORDER BY qsos.COL_COUNTRY ' . $sortorder[1];
+					case 17: return 'ORDER BY qso.COL_STATE ' . $sortorder[1];
+					case 18: return 'ORDER BY qsos.COL_CQZ ' . $sortorder[1];
+					case 19: return 'ORDER BY qsos.COL_IOTA ' . $sortorder[1];
+					default: return 'ORDER BY qsos.COL_TIME_ON desc';
+				}
+			}
+
+			else if (($this->session->userdata('user_eqsl_name') != "" && $this->session->userdata('user_lotw_name') == "") || ($this->session->userdata('user_eqsl_name') == "" && $this->session->userdata('user_lotw_name') != "")) {
+				switch($sortorder[0]) {
+					case 1: return 'ORDER BY qsos.COL_TIME_ON ' . $sortorder[1];
+					case 2: return 'ORDER BY station_profile.station_callsign ' . $sortorder[1];
+					case 3: return 'ORDER BY qsos.COL_CALL ' . $sortorder[1];
+					case 4: return 'ORDER BY qsos.COL_MODE' .  $sortorder[1] . ', qsos.COL_SUBMODE ' . $sortorder[1];
+					case 7: return 'ORDER BY qsos.COL_BAND ' . $sortorder[1] . ', qsos.COL_SAT_NAME ' . $sortorder[1];
+					case 15: return 'ORDER BY qsos.COL_COUNTRY ' . $sortorder[1];
+					case 16: return 'ORDER BY qso.COL_STATE ' . $sortorder[1];
+					case 17: return 'ORDER BY qsos.COL_CQZ ' . $sortorder[1];
+					case 18: return 'ORDER BY qsos.COL_IOTA ' . $sortorder[1];
+					default: return 'ORDER BY qsos.COL_TIME_ON desc';
+				}
+			}
+
+			else if ($this->session->userdata('user_eqsl_name') == "" && $this->session->userdata('user_lotw_name') == ""){
+				switch($sortorder[0]) {
+					case 1: return 'ORDER BY qsos.COL_TIME_ON ' . $sortorder[1];
+					case 2: return 'ORDER BY station_profile.station_callsign ' . $sortorder[1];
+					case 3: return 'ORDER BY qsos.COL_CALL ' . $sortorder[1];
+					case 4: return 'ORDER BY qsos.COL_MODE' .  $sortorder[1] . ', qsos.COL_SUBMODE ' . $sortorder[1];
+					case 7: return 'ORDER BY qsos.COL_BAND ' . $sortorder[1] . ', qsos.COL_SAT_NAME ' . $sortorder[1];
+					case 14: return 'ORDER BY qsos.COL_COUNTRY ' . $sortorder[1];
+					case 15: return 'ORDER BY qso.COL_STATE ' . $sortorder[1];
+					case 16: return 'ORDER BY qsos.COL_CQZ ' . $sortorder[1];
+					case 17: return 'ORDER BY qsos.COL_IOTA ' . $sortorder[1];
+					default: return 'ORDER BY qsos.COL_TIME_ON desc';
+				}
+			}
+		}
+	}
 
     public function updateQsl($ids, $user_id, $method, $sent) {
         $this->load->model('user_model');
