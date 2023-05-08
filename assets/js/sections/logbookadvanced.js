@@ -11,6 +11,15 @@ $('#band').change(function () {
 	}
 });
 
+$('#selectPropagation').change(function () {
+	var prop_mode = $("#selectPropagation option:selected").text();
+	if (prop_mode != "Satellite") {
+		$(".sats_dropdown").attr("hidden", true);
+	} else {
+		$(".sats_dropdown").removeAttr("hidden");
+	}
+});
+
 function updateRow(qso) {
 	let row = $('#qsoID-' + qso.qsoID);
 	let cells = row.find('td');
