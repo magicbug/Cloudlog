@@ -553,19 +553,6 @@ class eqsl extends CI_Controller {
 	/*
 	 * Used for CRON job
 	 */
-	public function upload() {
-		$this->load->model('eqslmethods_model');
-
-		$users = $this->eqslmethods_model->get_eqsl_users();
-
-		foreach ($users as $user) {
-			$this->uploadUser($user->user_id, $user->user_eqsl_name, $user->user_eqsl_password);
-		}
-	}
-
-	/*
-	 * Used for CRON job
-	 */
 	public function sync() {
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
@@ -597,9 +584,6 @@ class eqsl extends CI_Controller {
 
 			$eqsl_results[] = $this->eqslimporter->fetch($password);
 		}
-
-		echo 'Result from eQSL download:<br /><br />';
-		var_dump($eqsl_results);
 	}
 
 	function uploadUser($userid, $username, $password) {
