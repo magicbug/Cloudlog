@@ -14,6 +14,7 @@ function echo_table_header_col($ctx, $name) {
 		case 'Band': echo '<th>'.$ctx->lang->line('gen_hamradio_band').'</td>'; break;
 		case 'Frequency': echo '<th>'.$ctx->lang->line('gen_hamradio_frequency').'</th>'; break;
 		case 'Operator': echo '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
+		case 'Location': echo '<th>'.$ctx->lang->line('cloudlog_station_profile').'</th>'; break;
 	}
 }
 
@@ -33,6 +34,7 @@ function echo_table_col($row, $name) {
 		case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
 		case 'Operator':echo '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
+		case 'Location':echo '<td>' . ($row->station_profile_name) . '</td>'; break;
 	}
 }
 
@@ -61,7 +63,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                 echo_table_header_col($this, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
                 echo_table_header_col($this, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
                 echo_table_header_col($this, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
-                echo_table_header_col($this, $this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5'));
+                echo_table_header_col($this, $this->session->userdata('user_column5'));
 
                     if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                     <th>QSL</th>
@@ -104,7 +106,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                 echo_table_col($row, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
                 echo_table_col($row, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
                 echo_table_col($row, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
-                echo_table_col($row, $this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5'));
+                echo_table_col($row, $this->session->userdata('user_column5'));
 			
 				if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td class="qsl">

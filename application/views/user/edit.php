@@ -423,6 +423,7 @@
 							<div class="form-group col-md-12">
 								<label for="column5"><?php echo $this->lang->line('account_column5_text'); ?></label>
 								<select class="custom-select" id="column5" name="user_column5">
+									<option value="" <?php if ($user_column5 == "") { echo " selected =\"selected\""; } ?>></option>
 									<option value="Band" <?php if ($user_column5 == "Band") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_band'); ?></option>
 									<option value="Frequency" <?php if ($user_column5 == "Frequency") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_frequency'); ?></option>
 									<option value="Mode" <?php if ($user_column5 == "Mode") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
@@ -436,6 +437,7 @@
 									<option value="State" <?php if ($user_column5 == "State") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_state'); ?></option>
 									<option value="Grid" <?php if ($user_column5 == "Grid") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
 									<option value="Operator" <?php if ($user_column5 == "Operator") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
+									<option value="Location" <?php if ($user_column5 == "Location") { echo " selected =\"selected\""; } ?>><?php echo $this->lang->line('cloudlog_station_profile'); ?></option>
 								</select>
 							</div>
 						</div>
