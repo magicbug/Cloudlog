@@ -81,6 +81,88 @@ class Eqslmethods_model extends CI_Model {
         return "eQSL Sent";
     }
 
+    // Returns all the distinct callsign, eqsl nick pair for the current user/supplied user
+	function all_of_user_with_eqsl_nick_defined($userid = null) {
+        if ($userid == null) {
+            $this->db->where('user_id', $this->session->userdata('user_id'));
+        } else {
+            $this->db->where('user_id', $userid);
+        }
+
+		$this->db->where('eqslqthnickname IS NOT NULL');
+		$this->db->where('eqslqthnickname !=', '');
+		$this->db->from('station_profile');
+		$this->db->select('station_callsign, eqslqthnickname');
+		$this->db->distinct(TRUE);
+
+		return $this->db->get();
+	}
+
+    // Get the last date we received an eQSL
+    function eqsl_last_qsl_rcvd_date($callsign, $nickname) {
+        $qso_table_name = $this->config->item('table_name');
+        $this->db->from($qso_table_name);
+
+        $this->db->join('station_profile',
+            'station_profile.station_id = '.$qso_table_name.'.station_id AND station_profile.eqslqthnickname != ""');
+        $this->db->where('station_profile.station_callsign', $callsign);
+        $this->db->where('station_profile.eqslqthnickname', $nickname);
+
+        $this->db->select("DATE_FORMAT(COL_EQSL_QSLRDATE,'%Y%m%d') AS COL_EQSL_QSLRDATE", FALSE);
+        $this->db->where('COL_EQSL_QSLRDATE IS NOT NULL');
+        $this->db->order_by("COL_EQSL_QSLRDATE", "desc");
+        $this->db->limit(1);
+
+        $query = $this->db->get();
+        $row = $query->row();
+
+        if (isset($row->COL_EQSL_QSLRDATE)){
+            return $row->COL_EQSL_QSLRDATE;
+        } else {
+            // No previous date (first time import has run?), so choose UNIX EPOCH!
+            // Note: date is yyyy/mm/dd format
+            return '1970/01/01';
+        }
+    }
+
+    // Update a QSO with eQSL QSL info
+    // We could also probably use this use this: http://eqsl.cc/qslcard/VerifyQSO.txt
+    // http://www.eqsl.cc/qslcard/ImportADIF.txt
+    function eqsl_update($datetime, $callsign, $band, $qsl_status) {
+        $data = array(
+            'COL_EQSL_QSLRDATE' => date('Y-m-d H:i:s'), // eQSL doesn't give us a date, so let's use current
+            'COL_EQSL_QSL_RCVD' => $qsl_status
+        );
+
+        $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
+        $this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
+        $this->db->where('COL_CALL', $callsign);
+        $this->db->where('COL_BAND', $band);
+
+        $this->db->update($this->config->item('table_name'), $data);
+
+        return "Updated";
+    }
+
+    // Determine if we've already received an eQSL for this QSO
+    function eqsl_dupe_check($datetime, $callsign, $band, $qsl_status) {
+        $this->db->select('COL_EQSL_QSLRDATE');
+        $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
+        $this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
+        $this->db->where('COL_CALL', $callsign);
+        $this->db->where('COL_BAND', $band);
+        $this->db->where('COL_EQSL_QSL_RCVD', $qsl_status);
+        $this->db->limit(1);
+    
+        $query = $this->db->get($this->config->item('table_name'));
+        $row = $query->row();
+    
+        if ($row != null) {
+            return true;
+        } 
+        return false;
+    }
+
 }
 
 ?>

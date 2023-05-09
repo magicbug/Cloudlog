@@ -11,6 +11,15 @@ $('#band').change(function () {
 	}
 });
 
+$('#selectPropagation').change(function () {
+	var prop_mode = $("#selectPropagation option:selected").text();
+	if (prop_mode != "Satellite") {
+		$(".sats_dropdown").attr("hidden", true);
+	} else {
+		$(".sats_dropdown").removeAttr("hidden");
+	}
+});
+
 function updateRow(qso) {
 	let row = $('#qsoID-' + qso.qsoID);
 	let cells = row.find('td');
@@ -27,11 +36,11 @@ function updateRow(qso) {
 	cells.eq(c++).text(qso.name);
 	cells.eq(c++).text(qso.qslVia);
 	cells.eq(c++).html(qso.qsl);
-	if ($(".lotwconfirmation")[0]){
-		cells.eq(c++).html(qso.lotw);
-	}
 	if ($(".eqslconfirmation")[0]){
 		cells.eq(c++).html(qso.eqsl);
+	}
+	if ($(".lotwconfirmation")[0]){
+		cells.eq(c++).html(qso.lotw);
 	}
 	cells.eq(c++).text(qso.qslMessage);
 	cells.eq(c++).text(qso.dxcc);
@@ -82,11 +91,11 @@ function loadQSOTable(rows) {
 		data.push(qso.name);
 		data.push(qso.qslVia);
 		data.push(qso.qsl);
-		if ($(".lotwconfirmation")[0]){
-			data.push(qso.lotw);
-		}
 		if ($(".eqslconfirmation")[0]){
 			data.push(qso.eqsl);
+		}
+		if ($(".lotwconfirmation")[0]){
+			data.push(qso.lotw);
 		}
 		data.push(qso.qslMessage);
 		data.push(qso.dxcc+(qso.end == null ? '' : ' <span class="badge badge-danger">Deleted DXCC</span>'));

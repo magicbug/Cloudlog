@@ -372,7 +372,7 @@ class QSO
 			$eqslstring .= "\" data-toggle=\"tooltip\""; 
 		} 
 		
-		$eqslstring .= ' class="eqsl-' . (($data['COL_EQSL_QSL_SENT'] =='Y') ? 'green':'red') . '">&#9650;</span><span';
+		$eqslstring .= ' class="eqsl-' . (($data['COL_EQSL_QSL_SENT'] =='Y') ? 'green':'red') . '">&#9650;</span><span ';
 
 		if ($data['COL_EQSL_QSL_RCVD'] == "Y") { 
 			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_received'); 

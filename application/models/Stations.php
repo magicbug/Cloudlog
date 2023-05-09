@@ -397,18 +397,6 @@ class Stations extends CI_Model {
 		return $query->num_rows();
     }
 
-	// Returns all the distinct callsing, eqsl nick pair for the current user
-	function all_of_user_with_eqsl_nick_defined() {
-		$this->db->where('user_id', $this->session->userdata('user_id'));
-		$this->db->where('eqslqthnickname IS NOT NULL');
-		$this->db->where('eqslqthnickname !=', '');
-		$this->db->from('station_profile');
-		$this->db->select('station_callsign, eqslqthnickname');
-		$this->db->distinct(TRUE);
-
-		return $this->db->get();
-	}
-
 	public function check_station_is_accessible($id) {
 		// check if station belongs to user
 		$this->db->select('station_id');
