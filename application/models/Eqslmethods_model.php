@@ -81,21 +81,20 @@ class Eqslmethods_model extends CI_Model {
             }
         }
 
-        $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE, '.$this->config->item('table_name').'.COL_QSLMSG');
+        $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE, '.$this->config->item('table_name').'.COL_QSLMSG, eQSL_images.*');
         $this->db->from('station_profile');
         $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-        $this->db->where("coalesce(station_profile.eqslqthnickname, '') <> ''");
+        $this->db->join('eQSL_images','eQSL_images.qso_id = '.$this->config->item('table_name').'.COL_PRIMARY_KEY','left outer');
+        //$this->db->where("coalesce(station_profile.eqslqthnickname, '') <> ''");
         $this->db->where($this->config->item('table_name').'.COL_CALL !=', '');
-        $this->db->group_start();
-        $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT is null');
-        $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', '');
-        $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'R');
-        $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'Q');
-        $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'N');
-        $this->db->group_end();
+        $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_RCVD', 'Y');
+        $this->db->where('qso_id', NULL);
         $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
 
-        return $this->db->get();
+        $result = $this->db->get();
+        log_message('info','SQL: '.$this->db->last_query());
+        return $result;
+        //return $this->db->get();
     }
 
     // Mark the QSO as sent to eQSL

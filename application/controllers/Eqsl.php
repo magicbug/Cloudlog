@@ -558,6 +558,7 @@ class eqsl extends CI_Controller {
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		$data['page_title'] = "eQSL Card Image Download";
+		$custom_date_format = $this->session->userdata('user_date_format');
 		$this->load->model('eqslmethods_model');
 
 		$rows = '';
@@ -569,9 +570,10 @@ class eqsl extends CI_Controller {
 			// i.e. when operating /P it must be callsign/p
 			// the password, however, is always the same as the main account
 			$data['user_eqsl_name'] = $qsl['station_callsign'];
-			$adif = $this->generateAdif($qsl, $data);
+			//$adif = $this->generateAdif($qsl, $data);
 			
-			$status = $this->uploadQso($adif, $qsl);
+			//$status = $this->uploadQso($adif, $qsl);
+			$status = "none";
 			
 			$timestamp = strtotime($qsl['COL_TIME_ON']);
 			$rows .= "<td>".date($custom_date_format, $timestamp)."</td>";
