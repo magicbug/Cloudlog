@@ -97,6 +97,7 @@ $lang['gen_hamradio_logbook'] = 'Журнал';
 
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
+$lang['gen_hamradio_deleted_dxcc'] = 'Удалённые DXCC';
 $lang['gen_hamradio_continent'] = 'Континент';
 $lang['gen_hamradio_usa_state'] = 'Штат США';
 $lang['gen_hamradio_county_reference'] = 'Графство США';
