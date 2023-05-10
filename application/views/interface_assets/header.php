@@ -82,6 +82,8 @@
 							<a class="dropdown-item" href="<?php echo site_url('contesting?manual=1');?>" title="Post contest QSOs"><i class="fas fa-list"></i> Post Contest Logging</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('qsl');?>" title="QSL"><i class="fa fa-id-card"></i> View QSL</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="<?php echo site_url('eqsl');?>" title="eQSL"><i class="fa fa-id-card"></i> View eQSL</a>
 						</div>
         	</li>
 

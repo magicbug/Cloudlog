@@ -2123,7 +2123,7 @@ $(document).ready(function(){
 	<script src="<?php echo base_url(); ?>assets/js/sections/timeplot.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "qsl") {
+<?php if ($this->uri->segment(1) == "qsl" || $this->uri->segment(1) == "eqsl") {
     	// Get Date format
 	if($this->session->userdata('user_date_format')) {
 		// If Logged in and session exists
@@ -2241,6 +2241,31 @@ function deleteQsl(id) {
                         });
                     }
                 }
+            });
+        }
+</script>
+<script>
+function viewEqsl(picture, callsign) {
+            var baseURL= "<?php echo base_url();?>";
+            var $textAndPic = $('<div></div>');
+                $textAndPic.append('<img class="img-fluid" style="height:auto;width:auto;"src="'+baseURL+'images/eqsl_card_images/'+picture+'" />');
+            var title = '';
+            if (callsign == null) {
+                title = 'eQSL Card';
+            } else {
+                title = 'eQSL Card for ' + callsign;
+            }
+
+            BootstrapDialog.show({
+                title: title,
+                size: BootstrapDialog.SIZE_WIDE,
+                message: $textAndPic,
+                buttons: [{
+                    label: 'Close',
+                    action: function(dialogRef){
+                        dialogRef.close();
+                    }
+                }]
             });
         }
 </script>

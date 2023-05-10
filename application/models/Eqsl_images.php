@@ -24,6 +24,13 @@ class Eqsl_images extends CI_Model {
 		$this->db->insert('eQSL_images', $data);
 	}
 
+	function eqsl_qso_list() {
+		$this->db->select('qso_id, COL_CALL, COL_MODE, , COL_SUBMODE, COL_TIME_ON, COL_BAND, COL_SAT_NAME, image_file');
+		$this->db->join($this->config->item('table_name'), 'qso_id = COL_PRIMARY_KEY', 'left outer');
+		$this->db->order_by('COL_TIME_ON', 'DESC');
+		return $this->db->get('eQSL_images');
+	}
+
 }
 
 ?>
