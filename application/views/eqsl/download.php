@@ -24,31 +24,44 @@
   <?php $this->load->view('layout/messages'); ?>
 
 <?php
-	if (isset($eqsl_table))
-	{
+   if (! empty($qslsnotdownloaded->result())) {
 ?>
     	<p>Below is a table of QSOs that have been confirmed on eQSL but QSL images have not been downloaded yet.</p>
 
-    	<!--<p><span class="badge badge-info">Info</span> Please make sure the "eQSL QTH Nickname" field is set in your station profile and that the value matches the QTH Nickname you set within eQSL.</p>-->
- <?php
 
-    	echo $eqsl_table;
-    	echo "<p>Clicking \"Upload QSOs\" will send QSO information to eQSL.cc.</p>";
-		echo form_open('eqsl/export');
-		echo "<input type=\"hidden\" name=\"eqslexport\" id=\"eqslexport\" value=\"export\" />";
-		echo "<input class=\"btn btn-primary\" type=\"submit\" value=\"Upload QSOs\" /></form>";
+		<table = style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center">
+			<thead><tr class="titles">
+				<th>Date</th>
+				<th>Time</th>
+				<th>Call</th>
+				<th>Mode</th>
+				<th>Submode</th>
+				<th>Band</th>
+				<th>Action</th>
+			</tr></thead><tbody>
+<?php
+foreach ($qslsnotdownloaded->result_array() as $qsl) {
+	echo "<tr>";
+	$timestamp = strtotime($qsl['COL_TIME_ON']);
+	echo "<td>".date($custom_date_format, $timestamp)."</td>";
+	echo "<td>".date('H:i', $timestamp)."</td>";
+	echo "<td>".str_replace("0","&Oslash;",$qsl['COL_CALL'])."</td>";
+	echo "<td>".$qsl['COL_MODE']."</td>";
+	if(isset($qsl['COL_SUBMODE'])) {
+		echo "<td>".$qsl['COL_SUBMODE']."</td>";
+	} else {
+		echo "<td></td>";
 	}
-	else
-	{
-		if (isset($eqsl_results_table))
-		{
-			echo "<p>The following QSOs were sent to eQSL.</p>";
-			echo $eqsl_results_table;
-		}
-		else
-		{
-			echo "<p>There are no QSOs whose eQSL card images have not yet been downloaded. Go log some more QSOs!</p>";
-		}
+	echo "<td>".$qsl['COL_BAND']."</td>";
+	echo "<td><a href=\"".site_url()."/eqsl/image/".$qsl['COL_PRIMARY_KEY']."\" data-fancybox=\"images\" data-width=\"528\" data-height=\"336\" class=\"btn btn-primary btn-sm\">View/Download</a></td>";
+}
+	echo "</tr>";
+?>
+		</tbody></table>
+
+<?php
+	} else {
+		echo "<p>There are no QSOs whose eQSL card images have not yet been downloaded. Go log some more QSOs!</p>";
 	}
 ?>
 </div>

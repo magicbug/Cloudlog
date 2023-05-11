@@ -558,39 +558,11 @@ class eqsl extends CI_Controller {
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		$data['page_title'] = "eQSL Card Image Download";
-		$custom_date_format = $this->session->userdata('user_date_format');
 		$this->load->model('eqslmethods_model');
 
-		$rows = '';
-		$qslsnotdownloaded = $this->eqslmethods_model->eqsl_not_yet_downloaded();
+		$data['custom_date_format'] = $this->session->userdata('user_date_format');
+		$data['qslsnotdownloaded'] = $this->eqslmethods_model->eqsl_not_yet_downloaded();
 
-		foreach ($qslsnotdownloaded->result_array() as $qsl) {
-			$rows .= "<tr>";
-			// eQSL username changes for linked account.
-			// i.e. when operating /P it must be callsign/p
-			// the password, however, is always the same as the main account
-			$data['user_eqsl_name'] = $qsl['station_callsign'];
-			//$adif = $this->generateAdif($qsl, $data);
-			
-			//$status = $this->uploadQso($adif, $qsl);
-			$status = "none";
-			
-			$timestamp = strtotime($qsl['COL_TIME_ON']);
-			$rows .= "<td>".date($custom_date_format, $timestamp)."</td>";
-			$rows .= "<td>".date('H:i', $timestamp)."</td>";
-			$rows .= "<td>".str_replace("0","&Oslash;",$qsl['COL_CALL'])."</td>";
-			$rows .= "<td>".$qsl['COL_MODE']."</td>";
-			if(isset($qsl['COL_SUBMODE'])) {
-				$rows .= "<td>".$qsl['COL_SUBMODE']."</td>";
-			} else {
-				$rows .= "<td></td>";
-			}
-			$rows .= "<td>".$qsl['COL_BAND']."</td>";
-			$rows .= "<td>".$status."</td>";
-		}
-		$rows .= "</tr>";
-		$data['eqsl_table'] = $this->generateResultTable($custom_date_format, $rows);
-		// Load frontend
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('eqsl/download');
 		$this->load->view('interface_assets/footer');
