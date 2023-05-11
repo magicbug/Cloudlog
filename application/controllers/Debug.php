@@ -7,9 +7,6 @@ class Debug extends CI_Controller {
 
         $this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-        if(ENVIRONMENT != "development") {
-            show_error("You must have global enviroment set to development", '403', $heading = 'An Error Was Encountered');
-        }
 	}
 	
 	/* User Facing Links to Backup URLs */
