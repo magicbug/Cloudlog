@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $lang['menu_badge_developer_mode'] = 'Entwickler-Modus';
 
 $lang['menu_logbook'] = 'Logbuch';
-$lang['menu_overview'] = 'Überblick';
+$lang['menu_overview'] = 'Übersicht';
 $lang['menu_advanced'] = 'Erweitert';
 
 $lang['menu_qso'] = 'QSO';
@@ -72,7 +72,7 @@ $lang['menu_eqsl_import_export'] = 'eQSL Import / Export';
 $lang['menu_qrz_logbook'] = 'QRZ Logbuch';
 $lang['menu_qo_100_dx_club_upload'] = 'QO-100 Dx Club Upload';
 $lang['menu_api_keys'] = 'API Schlüssel';
-$lang['menu_hardware_interfaces'] = 'Hardware Schnittstellen';
+$lang['menu_hardware_interfaces'] = 'Hardware-Schnittstellen';
 $lang['menu_help'] = 'Hilfe';
 $lang['menu_forum'] = 'Forum';
 $lang['menu_logout'] = 'Logout';
