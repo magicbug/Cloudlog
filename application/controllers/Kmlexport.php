@@ -90,17 +90,8 @@ class Kmlexport extends CI_Controller {
 		$output .= "</Document>";
 		$output .= "</kml>";
 
-        if (!file_exists('kml')) {
-            mkdir('kml', 0755, true);
-        }
-
-		if ( ! write_file('kml/qsos.kml', $output)) {
-		     echo 'Unable to write the file. Make sure the folder KML has write permissions.';
-		}
-		else {
-		    header("Content-Disposition: attachment; filename=\"qsos.kml\"");
-			echo $output;
-		}
+		header("Content-Disposition: attachment; filename=\"qsos.kml\"");
+		echo $output;
 
 	}
 }
