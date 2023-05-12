@@ -48,6 +48,7 @@ $lang['general_word_qslcard_bureau'] = 'Bureau';
 $lang['general_word_qslcard_electronic'] = 'Electronic';
 $lang['general_word_qslcard_manager'] = 'Manager';
 $lang['general_word_qslcard_via'] = 'Via';
+$lang['general_word_eqslcard'] = 'eQSL Card';
 $lang['general_word_eqslcards'] = 'eQSL Cards';
 $lang['general_word_lotw'] = 'Logbook of the World';
 

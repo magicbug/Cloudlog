@@ -31,6 +31,19 @@
         }
 
         ?>
+        <?php
+        if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) {
+
+            echo '<li ';
+            if ($row->eqsl_image_file == null) {
+                echo 'hidden ';
+            }
+                echo 'class="eqslcardtab nav-item">
+                <a class="nav-link" id="eqsltab" data-toggle="tab" href="#eqslcard" role="tab" aria-controls="home" aria-selected="false">'. $this->lang->line('general_word_eqslcard') .'</a>
+                </li>';
+        }
+
+        ?>
 
     </ul>
 
@@ -553,6 +566,11 @@
             </div>
         </div>
 
+        <div class="tab-pane fade" id="eqslcard" role="tabpanel" aria-labelledby="table-tab">
+        <?php
+           echo '<img class="d-block" src="' . base_url() . '/images/eqsl_card_images/' . $row->eqsl_image_file .'" alt="QSL picture #'. $i++.'">';
+        ?>
+        </div>
         <?php
         }
         ?>
