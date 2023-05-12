@@ -432,3 +432,7 @@ div#station_logbooks_linked_table_paginate {
 .activeRow a {
     color: #fff !important;
 }
+
+.w-qsl {
+    width: 55% !important;
+}
