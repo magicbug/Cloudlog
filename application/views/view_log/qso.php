@@ -550,7 +550,7 @@
                             echo ' active';
                         }
                         echo '">';
-                        echo '<img class="d-block w-100" src="' . base_url() . '/assets/qslcard/' . $image->filename .'" alt="QSL picture #'. $i++.'">';
+                        echo '<img class="img-fluid w-qsl" src="' . base_url() . '/assets/qslcard/' . $image->filename .'" alt="QSL picture #'. $i++.'">';
                         echo '</div>';
                     }
                     ?>
