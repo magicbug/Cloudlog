@@ -17,13 +17,13 @@
 	<thead>
 		
 	<tr>
-		<th style="text-align: center"><?php echo $this->lang->line('gen_hamradio_wwff_reference') ?></th>
-		<th style="text-align: center"><?php echo $this->lang->line('general_word_date') ?></th>
-		<th style="text-align: center"><?php echo $this->lang->line('general_word_time') ?></th>
-		<th style="text-align: center"><?php echo $this->lang->line('gen_hamradio_callsign') ?></th>
-		<th style="text-align: center"><?php echo $this->lang->line('gen_hamradio_band') ?></th>
-		<th style="text-align: center"><?php echo $this->lang->line('gen_hamradio_rsts') ?></th>
-		<th style="text-align: center"><?php echo $this->lang->line('gen_hamradio_rstr') ?></th>
+		<th style="text-align: center"><?php echo lang('gen_hamradio_wwff_reference') ?></th>
+		<th style="text-align: center"><?php echo lang('general_word_date') ?></th>
+		<th style="text-align: center"><?php echo lang('general_word_time') ?></th>
+		<th style="text-align: center"><?php echo lang('gen_hamradio_callsign') ?></th>
+		<th style="text-align: center"><?php echo lang('gen_hamradio_band') ?></th>
+		<th style="text-align: center"><?php echo lang('gen_hamradio_rsts') ?></th>
+		<th style="text-align: center"><?php echo lang('gen_hamradio_rstr') ?></th>
 	</tr>
 	</thead>
 	

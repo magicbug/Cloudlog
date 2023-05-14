@@ -2,13 +2,13 @@
 
 	<div class="card">
 	  <div class="card-header">
-	  	<h2 class="card-title"><?php echo $this->lang->line('notes_menu_notes'); ?></h2>
+	  	<h2 class="card-title"><?php echo lang('notes_menu_notes'); ?></h2>
 	    <ul class="nav nav-tabs card-header-tabs">
 	      <li class="nav-item">
-	        <a class="nav-link active" href="<?php echo site_url('notes'); ?>"><?php echo $this->lang->line('notes_menu_notes'); ?></a>
+	        <a class="nav-link active" href="<?php echo site_url('notes'); ?>"><?php echo lang('notes_menu_notes'); ?></a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="<?php echo site_url('notes/add'); ?>"><?php echo $this->lang->line('notes_create_note'); ?></a>
+	        <a class="nav-link" href="<?php echo site_url('notes/add'); ?>"><?php echo lang('notes_create_note'); ?></a>
 	      </li>
 	    </ul>
 	  </div>

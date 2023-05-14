@@ -2,10 +2,10 @@
 
     <br>
 
-    <h2><?php echo $this->lang->line('general_word_qslcards'); ?></h2>
+    <h2><?php echo lang('general_word_qslcards'); ?></h2>
 
     <div class="alert alert-info" role="alert">
-    <?php echo $this->lang->line('qslcard_string_your_are_using'); ?> <?php echo $storage_used; ?> <?php echo $this->lang->line('qslcard_string_disk_space'); ?>
+    <?php echo lang('qslcard_string_your_are_using'); ?> <?php echo $storage_used; ?> <?php echo lang('qslcard_string_disk_space'); ?>
     </div>
 
     <?php

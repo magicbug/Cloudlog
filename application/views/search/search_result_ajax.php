@@ -2,86 +2,86 @@
 	<table style="width:100%" class="table table-sm tablewas table-bordered table-hover table-striped table-condensed text-center">
 		<thead>
         <tr class="titles">
-            <th><?php echo $this->lang->line('general_word_date'); ?></th>
+            <th><?php echo lang('general_word_date'); ?></th>
             <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-            <th><?php echo $this->lang->line('general_word_time'); ?></th>
+            <th><?php echo lang('general_word_time'); ?></th>
             <?php } ?>
-            <th><?php echo $this->lang->line('gen_hamradio_call'); ?></th>
+            <th><?php echo lang('gen_hamradio_call'); ?></th>
 <?php
 $ci =& get_instance();
 			echo '<th>';
 				switch($this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1')) {
-					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
-					case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
-					case 'Country': echo $this->lang->line('general_word_country'); break;
-					case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
-					case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
-					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
-					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
-					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
-					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
-					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
+					case 'Mode': echo lang('gen_hamradio_mode'); break;
+					case 'RSTS': echo lang('gen_hamradio_rsts'); break;
+					case 'RSTR': echo lang('gen_hamradio_rstr'); break;
+					case 'Country': echo lang('general_word_country'); break;
+					case 'IOTA': echo lang('gen_hamradio_iota'); break;
+					case 'SOTA': echo lang('gen_hamradio_sota'); break;
+					case 'State': echo lang('gen_hamradio_state'); break;
+					case 'Grid': echo lang('gen_hamradio_gridsquare'); break;
+					case 'Band': echo lang('gen_hamradio_band'); break;
+					case 'Frequency': echo lang('gen_hamradio_frequency'); break;
+					case 'Operator': echo lang('gen_hamradio_operator'); break;
 				}
 			echo '</th>';
 			echo '<th>';
 				switch($this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2')) {
-					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
-					case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
-					case 'Country': echo $this->lang->line('general_word_country'); break;
-					case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
-					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
-					case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
-					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
-					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
-					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
-					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
+					case 'Mode': echo lang('gen_hamradio_mode'); break;
+					case 'RSTS': echo lang('gen_hamradio_rsts'); break;
+					case 'RSTR': echo lang('gen_hamradio_rstr'); break;
+					case 'Country': echo lang('general_word_country'); break;
+					case 'IOTA': echo lang('gen_hamradio_iota'); break;
+					case 'State': echo lang('gen_hamradio_state'); break;
+					case 'SOTA': echo lang('gen_hamradio_sota'); break;
+					case 'Grid': echo lang('gen_hamradio_gridsquare'); break;
+					case 'Band': echo lang('gen_hamradio_band'); break;
+					case 'Frequency': echo lang('gen_hamradio_frequency'); break;
+					case 'Operator': echo lang('gen_hamradio_operator'); break;
 				}
 			echo '</th>';
 			echo '<th>';
 				switch($this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3')) {
-					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
-					case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
-					case 'Country': echo $this->lang->line('general_word_country'); break;
-					case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
-					case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
-					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
-					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
-					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
-					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
-					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
+					case 'Mode': echo lang('gen_hamradio_mode'); break;
+					case 'RSTS': echo lang('gen_hamradio_rsts'); break;
+					case 'RSTR': echo lang('gen_hamradio_rstr'); break;
+					case 'Country': echo lang('general_word_country'); break;
+					case 'IOTA': echo lang('gen_hamradio_iota'); break;
+					case 'SOTA': echo lang('gen_hamradio_sota'); break;
+					case 'State': echo lang('gen_hamradio_state'); break;
+					case 'Grid': echo lang('gen_hamradio_gridsquare'); break;
+					case 'Band': echo lang('gen_hamradio_band'); break;
+					case 'Frequency': echo lang('gen_hamradio_frequency'); break;
+					case 'Operator': echo lang('gen_hamradio_operator'); break;
 				}
 			echo '</th>';
 			echo '<th>';
 				switch($this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4')) {
-					case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-					case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
-					case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
-					case 'Country': echo $this->lang->line('general_word_country'); break;
-					case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
-					case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
-					case 'State': echo $this->lang->line('gen_hamradio_state'); break;
-					case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
-					case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
-					case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
-					case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
+					case 'Mode': echo lang('gen_hamradio_mode'); break;
+					case 'RSTS': echo lang('gen_hamradio_rsts'); break;
+					case 'RSTR': echo lang('gen_hamradio_rstr'); break;
+					case 'Country': echo lang('general_word_country'); break;
+					case 'IOTA': echo lang('gen_hamradio_iota'); break;
+					case 'SOTA': echo lang('gen_hamradio_sota'); break;
+					case 'State': echo lang('gen_hamradio_state'); break;
+					case 'Grid': echo lang('gen_hamradio_gridsquare'); break;
+					case 'Band': echo lang('gen_hamradio_band'); break;
+					case 'Frequency': echo lang('gen_hamradio_frequency'); break;
+					case 'Operator': echo lang('gen_hamradio_operator'); break;
 				}
 			echo '</th>';
 			echo '<th>';
 			switch($this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5')) {
-				case 'Mode': echo $this->lang->line('gen_hamradio_mode'); break;
-				case 'RSTS': echo $this->lang->line('gen_hamradio_rsts'); break;
-				case 'RSTR': echo $this->lang->line('gen_hamradio_rstr'); break;
-				case 'Country': echo $this->lang->line('general_word_country'); break;
-				case 'IOTA': echo $this->lang->line('gen_hamradio_iota'); break;
-				case 'SOTA': echo $this->lang->line('gen_hamradio_sota'); break;
-				case 'State': echo $this->lang->line('gen_hamradio_state'); break;
-				case 'Grid': echo $this->lang->line('gen_hamradio_gridsquare'); break;
-				case 'Band': echo $this->lang->line('gen_hamradio_band'); break;
-				case 'Frequency': echo $this->lang->line('gen_hamradio_frequency'); break;
-				case 'Operator': echo $this->lang->line('gen_hamradio_operator'); break;
+				case 'Mode': echo lang('gen_hamradio_mode'); break;
+				case 'RSTS': echo lang('gen_hamradio_rsts'); break;
+				case 'RSTR': echo lang('gen_hamradio_rstr'); break;
+				case 'Country': echo lang('general_word_country'); break;
+				case 'IOTA': echo lang('gen_hamradio_iota'); break;
+				case 'SOTA': echo lang('gen_hamradio_sota'); break;
+				case 'State': echo lang('gen_hamradio_state'); break;
+				case 'Grid': echo lang('gen_hamradio_gridsquare'); break;
+				case 'Band': echo lang('gen_hamradio_band'); break;
+				case 'Frequency': echo lang('gen_hamradio_frequency'); break;
+				case 'Operator': echo lang('gen_hamradio_operator'); break;
 			}
 			echo '</th>';
 
@@ -94,7 +94,7 @@ $ci =& get_instance();
                     <th>LoTW</th>
                 <?php } ?>
             <?php } ?>
-                <th><?php echo $this->lang->line('gen_hamradio_station'); ?></th>
+                <th><?php echo lang('gen_hamradio_station'); ?></th>
             <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <th></th>
             <?php } ?>
@@ -377,21 +377,21 @@ $ci =& get_instance();
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" id="edit_qso" href="javascript:qso_edit(<?php echo $row->COL_PRIMARY_KEY; ?>)"><i class="fas fa-edit"></i> <?php echo $this->lang->line('general_edit_qso'); ?></a>
+                            <a class="dropdown-item" id="edit_qso" href="javascript:qso_edit(<?php echo $row->COL_PRIMARY_KEY; ?>)"><i class="fas fa-edit"></i> <?php echo lang('general_edit_qso'); ?></a>
 
                             <?php if($row->COL_QSL_SENT !='Y') { ?>
                                 <div class="qsl_sent_<?php echo $row->COL_PRIMARY_KEY; ?>">
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="javascript:qsl_sent(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B')" ><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_mark_qsl_tx_bureau'); ?></a>
-                                    <a class="dropdown-item" href="javascript:qsl_sent(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_mark_qsl_tx_direct'); ?></a>
+                                    <a class="dropdown-item" href="javascript:qsl_sent(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B')" ><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_tx_bureau'); ?></a>
+                                    <a class="dropdown-item" href="javascript:qsl_sent(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_tx_direct'); ?></a>
                                 </div>
                             <?php } ?>
 
                             <?php if($row->COL_QSL_RCVD !='Y') { ?>
                                 <div class="qsl_rcvd_<?php echo $row->COL_PRIMARY_KEY; ?>">
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B')" ><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_mark_qsl_rx_bureau'); ?></a>
-                                    <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_mark_qsl_rx_direct'); ?></a>
+                                    <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B')" ><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_bureau'); ?></a>
+                                    <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_direct'); ?></a>
                                     <a class="dropdown-item" href="javascript:qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> Mark QSL Card Requested</a>
                                     <a class="dropdown-item" href="javascript:qsl_ignore(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> Mark QSL Card Not Required</a>
                                 </div>
@@ -405,7 +405,7 @@ $ci =& get_instance();
 
                             <div class="dropdown-divider"></div>
 
-                            <a class="dropdown-item" href="javascript:qso_delete(<?php echo $row->COL_PRIMARY_KEY; ?>, '<?php echo $row->COL_CALL; ?>')"><i class="fas fa-trash-alt"></i> <?php echo $this->lang->line('general_delete_qso'); ?></a>
+                            <a class="dropdown-item" href="javascript:qso_delete(<?php echo $row->COL_PRIMARY_KEY; ?>, '<?php echo $row->COL_CALL; ?>')"><i class="fas fa-trash-alt"></i> <?php echo lang('general_delete_qso'); ?></a>
                         </div>
                     </div>
                 </td>

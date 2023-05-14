@@ -238,16 +238,16 @@
                                         </select>
                                     </div>
                                     <div class="form-group col-sm-6">
-                                        <label for="continent"><?php echo $this->lang->line('gen_hamradio_continent'); ?></label>
+                                        <label for="continent"><?php echo lang('gen_hamradio_continent'); ?></label>
                                         <select class="custom-select" id="continent" name="continent">
                                             <option value=""></option>
-                                            <option value="AF" <?php if($qso->COL_CONT == "AF") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('africa'); ?></option>
-                                            <option value="AN" <?php if($qso->COL_CONT == "AN") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('antarctica'); ?></option>
-                                            <option value="AS" <?php if($qso->COL_CONT == "AS") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('asia'); ?></option>
-                                            <option value="EU" <?php if($qso->COL_CONT == "EU") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('europe'); ?></option>
-                                            <option value="NA" <?php if($qso->COL_CONT == "NA") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('northamerica'); ?></option>
-                                            <option value="OC" <?php if($qso->COL_CONT == "OC") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('oceania'); ?></option>
-                                            <option value="SA" <?php if($qso->COL_CONT == "SA") { echo "selected=\"selected\""; } ?>><?php echo $this->lang->line('southamerica'); ?></option>
+                                            <option value="AF" <?php if($qso->COL_CONT == "AF") { echo "selected=\"selected\""; } ?>><?php echo lang('africa'); ?></option>
+                                            <option value="AN" <?php if($qso->COL_CONT == "AN") { echo "selected=\"selected\""; } ?>><?php echo lang('antarctica'); ?></option>
+                                            <option value="AS" <?php if($qso->COL_CONT == "AS") { echo "selected=\"selected\""; } ?>><?php echo lang('asia'); ?></option>
+                                            <option value="EU" <?php if($qso->COL_CONT == "EU") { echo "selected=\"selected\""; } ?>><?php echo lang('europe'); ?></option>
+                                            <option value="NA" <?php if($qso->COL_CONT == "NA") { echo "selected=\"selected\""; } ?>><?php echo lang('northamerica'); ?></option>
+                                            <option value="OC" <?php if($qso->COL_CONT == "OC") { echo "selected=\"selected\""; } ?>><?php echo lang('oceania'); ?></option>
+                                            <option value="SA" <?php if($qso->COL_CONT == "SA") { echo "selected=\"selected\""; } ?>><?php echo lang('southamerica'); ?></option>
                                         </select>
                                     </div>
                                 </div>
@@ -508,9 +508,9 @@
                                         </div>
                                         <div class="form-group row">
                                              <div class="col-sm-9">
-                                                 <label for="qslmsg"><?php echo $this->lang->line('general_word_notes'); ?></label>
+                                                 <label for="qslmsg"><?php echo lang('general_word_notes'); ?></label>
                                                  <div class="alert alert-info" role="alert">
-                                                     <span class="badge badge-info"><?php echo $this->lang->line('general_word_info'); ?></span> <?php echo $this->lang->line('qsl_notes_helptext'); ?>
+                                                     <span class="badge badge-info"><?php echo lang('general_word_info'); ?></span> <?php echo lang('qsl_notes_helptext'); ?>
                                                  </div>
                                              </div>
                                              <div class="col-sm-9">

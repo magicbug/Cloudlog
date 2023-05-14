@@ -1,8 +1,8 @@
 <div class="container logbook">
 
-	<h2><?php echo $this->lang->line('gen_hamradio_logbook'); ?></h2>
+	<h2><?php echo lang('gen_hamradio_logbook'); ?></h2>
 	<?php if ($results) { ?>
-		<h6><?php echo $this->lang->line('gen_hamradio_logbook').": ".$this->logbooks_model->find_name($this->session->userdata('active_station_logbook')); ?> <?php echo $this->lang->line('general_word_location').": ".$this->stations->find_name(); ?></h6>
+		<h6><?php echo lang('gen_hamradio_logbook').": ".$this->logbooks_model->find_name($this->session->userdata('active_station_logbook')); ?> <?php echo lang('general_word_location').": ".$this->stations->find_name(); ?></h6>
 	<?php } ?>
 
 
