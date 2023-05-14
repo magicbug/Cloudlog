@@ -217,16 +217,16 @@ $ci =& get_instance();
                      }
                      switch ($row->COL_QSL_SENT) {
                      case "Y":
-                        echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_sent').$timestamp;
+                        echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_sent').$timestamp;
                         break;
                      case "Q":
-                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_queued').$timestamp;
+                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_queued').$timestamp;
                         break;
                      case "R":
-                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_requested').$timestamp;
+                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_requested').$timestamp;
                         break;
                      case "I":
-                        echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_invalid_ignore').$timestamp;
+                        echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_invalid_ignore').$timestamp;
                         break;
                      default:
                         echo "class=\"qsl-red";
@@ -236,16 +236,16 @@ $ci =& get_instance();
                   if ($row->COL_QSL_SENT_VIA != "") {
                      switch ($row->COL_QSL_SENT_VIA) {
                      case "B":
-                        echo " (".$this->lang->line('general_word_qslcard_bureau').")";
+                        echo " (".lang('general_word_qslcard_bureau').")";
                         break;
                      case "D":
-                        echo " (".$this->lang->line('general_word_qslcard_direct').")";
+                        echo " (".lang('general_word_qslcard_direct').")";
                         break;
                      case "M":
-                        echo " (".$this->lang->line('general_word_qslcard_via').": ".($row->COL_QSL_VIA!="" ? $row->COL_QSL_VIA:"n/a").")";
+                        echo " (".lang('general_word_qslcard_via').": ".($row->COL_QSL_VIA!="" ? $row->COL_QSL_VIA:"n/a").")";
                         break;
                      case "E":
-                        echo " (".$this->lang->line('general_word_qslcard_electronic').")";
+                        echo " (".lang('general_word_qslcard_electronic').")";
                         break;
                      }
                   }
@@ -259,16 +259,16 @@ $ci =& get_instance();
                      }
                      switch ($row->COL_QSL_RCVD) {
                      case "Y":
-                        echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_received').$timestamp;
+                        echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_received').$timestamp;
                         break;
                      case "Q":
-                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_queued').$timestamp;
+                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_queued').$timestamp;
                         break;
                      case "R":
-                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_requested').$timestamp;
+                        echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_requested').$timestamp;
                         break;
                      case "I":
-                        echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_invalid_ignore').$timestamp;
+                        echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_invalid_ignore').$timestamp;
                         break;
                      default:
                         echo "class=\"qsl-red";
@@ -278,16 +278,16 @@ $ci =& get_instance();
                   if ($row->COL_QSL_RCVD_VIA != "") {
                      switch ($row->COL_QSL_RCVD_VIA) {
                      case "B":
-                        echo " (".$this->lang->line('general_word_qslcard_bureau').")";
+                        echo " (".lang('general_word_qslcard_bureau').")";
                         break;
                      case "D":
-                        echo " (".$this->lang->line('general_word_qslcard_direct').")";
+                        echo " (".lang('general_word_qslcard_direct').")";
                         break;
                      case "M":
                         echo " (Manager)";
                         break;
                      case "E":
-                        echo " (".$this->lang->line('general_word_qslcard_electronic').")";
+                        echo " (".lang('general_word_qslcard_electronic').")";
                         break;
                      }
                   }
@@ -297,7 +297,7 @@ $ci =& get_instance();
                   echo '<td style=\'text-align: center\' class="eqsl">';
                   echo '<span ';
                   if ($row->COL_EQSL_QSL_SENT == "Y") {
-                     echo "data-original-title=\"".$this->lang->line('eqsl_short')." ".$this->lang->line('general_word_sent');
+                     echo "data-original-title=\"".lang('eqsl_short')." ".lang('general_word_sent');
                      if ($row->COL_EQSL_QSLSDATE != null) {
                         $timestamp = strtotime($row->COL_EQSL_QSLSDATE);
                         echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
@@ -310,7 +310,7 @@ $ci =& get_instance();
 
                   echo '<span ';
                   if ($row->COL_EQSL_QSL_RCVD == "Y") {
-                     echo "data-original-title=\"".$this->lang->line('eqsl_short')." ".$this->lang->line('general_word_received');
+                     echo "data-original-title=\"".lang('eqsl_short')." ".lang('general_word_received');
                      if ($row->COL_EQSL_QSLRDATE != null) {
                         $timestamp = strtotime($row->COL_EQSL_QSLRDATE);
                         echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
@@ -335,7 +335,7 @@ $ci =& get_instance();
                 echo '<td style=\'text-align: center\' class="lotw">';
                 echo '<span ';
                 if ($row->COL_LOTW_QSL_SENT == "Y") {
-                   echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_sent');
+                   echo "data-original-title=\"".lang('lotw_short')." ".lang('general_word_sent');
                    if ($row->COL_LOTW_QSLSDATE != null) {
                      $timestamp = strtotime($row->COL_LOTW_QSLSDATE);
                      echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
@@ -348,7 +348,7 @@ $ci =& get_instance();
 
                 echo '<span ';
                 if ($row->COL_LOTW_QSL_RCVD == "Y") {
-                   echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_received');
+                   echo "data-original-title=\"".lang('lotw_short')." ".lang('general_word_received');
                    if ($row->COL_LOTW_QSLRDATE != null) {
                       $timestamp = strtotime($row->COL_LOTW_QSLRDATE);
                       echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');

@@ -221,7 +221,7 @@
                       foreach($dxcc as $d){
                           echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name)));
                           if ($d->Enddate != null) {
-                              echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';
+                              echo ' ('.lang('gen_hamradio_deleted_dxcc').')';
                           }
                           echo '</option>';
                       }
@@ -549,9 +549,9 @@
                 <td><?php echo lang('gen_hamradio_rsts'); ?></td>
                 <td><?php echo lang('gen_hamradio_rstr'); ?></td>
                 <?php if ($this->session->userdata('user_column1')=='Frequency' || $this->session->userdata('user_column2')=='Frequency' || $this->session->userdata('user_column3')=='Frequency' || $this->session->userdata('user_column4')=='Frequency' || $this->session->userdata('user_column5')=='Frequency') {
-                         echo '<td>'.$this->lang->line('gen_hamradio_frequency').'</td>';
+                         echo '<td>'.lang('gen_hamradio_frequency').'</td>';
                       } else {
-                         echo '<td>'.$this->lang->line('gen_hamradio_band').'</td>';
+                         echo '<td>'.lang('gen_hamradio_band').'</td>';
                       }
                 ?>
               </tr>

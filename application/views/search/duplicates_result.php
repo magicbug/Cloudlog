@@ -5,14 +5,14 @@ if ($qsos->result() != NULL) {
 	<thead>
 	<tr>
 	<th style=\'text-align: center\'>Occurrence</th>
-	<th style=\'text-align: center\'>'.$this->lang->line('gen_hamradio_callsign').'</th>
+	<th style=\'text-align: center\'>'.lang('gen_hamradio_callsign').'</th>
 	<th style=\'text-align: center\'>Min date</th>
 	<th style=\'text-align: center\'>Min time</th>
 	<th style=\'text-align: center\'>Max date</th>
 	<th style=\'text-align: center\'>Max time</th>
-	<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_mode') . '</th>
-	<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_band') . '</th>
-	<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_station') . '</th>
+	<th style=\'text-align: center\'>' . lang('gen_hamradio_mode') . '</th>
+	<th style=\'text-align: center\'>' . lang('gen_hamradio_band') . '</th>
+	<th style=\'text-align: center\'>' . lang('gen_hamradio_station') . '</th>
 	</tr>
 	</thead><tbody>';
 

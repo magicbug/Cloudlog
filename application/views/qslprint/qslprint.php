@@ -16,13 +16,13 @@ if ($qsos->result() != NULL) {
 	echo '<table style="width:100%" class="table table-sm table-bordered table-hover table-striped table-condensed">
 <thead>
 <tr>
-<th style=\'text-align: center\'>'.$this->lang->line('gen_hamradio_callsign').'</th>
-<th style=\'text-align: center\'>' . $this->lang->line('general_word_date') . '</th>
-<th style=\'text-align: center\'>'. $this->lang->line('general_word_time') .'</th>
-<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_mode') . '</th>
-<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_band') . '</th>
-<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_qsl') . ' ' . $this->lang->line('general_word_qslcard_via') . '</th>
-<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_station') . '</th>
+<th style=\'text-align: center\'>'.lang('gen_hamradio_callsign').'</th>
+<th style=\'text-align: center\'>' . lang('general_word_date') . '</th>
+<th style=\'text-align: center\'>'. lang('general_word_time') .'</th>
+<th style=\'text-align: center\'>' . lang('gen_hamradio_mode') . '</th>
+<th style=\'text-align: center\'>' . lang('gen_hamradio_band') . '</th>
+<th style=\'text-align: center\'>' . lang('gen_hamradio_qsl') . ' ' . lang('general_word_qslcard_via') . '</th>
+<th style=\'text-align: center\'>' . lang('gen_hamradio_station') . '</th>
 <th style=\'text-align: center\'>Sent method</th>
 <th style=\'text-align: center\'>Delete</th>
 <th style=\'text-align: center\'>QSO List</th>

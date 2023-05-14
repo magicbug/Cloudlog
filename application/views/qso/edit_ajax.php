@@ -229,7 +229,7 @@
                                                 }
                                                 echo '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name)));
                                                 if ($d->Enddate != null) {
-                                                    echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';
+                                                    echo ' ('.lang('gen_hamradio_deleted_dxcc').')';
                                                 }
                                                 echo '</option>';
                                             }

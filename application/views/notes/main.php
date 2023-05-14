@@ -19,7 +19,7 @@
 
 				if ($notes->num_rows() > 0)
 				{
-					echo "<h3>".$this->lang->line('notes_your_notes')."</h3>";
+					echo "<h3>".lang('notes_your_notes')."</h3>";
 					echo "<ul class=\"list-group\">";
 					foreach ($notes->result() as $row)
 					{
@@ -29,7 +29,7 @@
 					}
 					echo "</ul>";
 				} else {
-					echo "<p>".$this->lang->line('notes_welcome')."</p>";
+					echo "<p>".lang('notes_welcome')."</p>";
 				}
 
 			?>
