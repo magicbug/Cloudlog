@@ -65,6 +65,20 @@ foreach ($qslsnotdownloaded->result_array() as $qsl) {
 	}
 ?>
 </div>
+  <div class="card-body">
+		<?php $this->load->view('layout/messages'); ?>
+
+		<?php echo form_open_multipart('eqsl/download');?>
+
+			<div class="form-check">
+			  <input class="form-check-input" type="hidden" name="eqsldownload" id="download" value="download" checked />
+			  <p>Cloudlog will use the eQSL credentials from your Cloudlog user profile to connect to eQSL and download confirmations.</p>
+			</div>
+
+		<input class="btn btn-primary" type="submit" value="Download un-synced eQSL cards" />
+
+		</form>
+  </div>
 
 </div>
 </div>
