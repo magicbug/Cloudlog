@@ -540,6 +540,7 @@ class eqsl extends CI_Controller {
 	}
 
 	function bulk_download_image($id) {
+		$this->load->library('electronicqsl');
 		$this->load->model('Eqsl_images');
 
 		$this->load->model('logbook_model');

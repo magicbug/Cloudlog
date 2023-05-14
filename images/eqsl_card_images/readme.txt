@@ -1,1 +1,0 @@
-This folders used to store downloaded eqsl card images.
