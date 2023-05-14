@@ -87,7 +87,7 @@ class DXCC extends CI_Model {
 				$dxccMatrix[$dxcc->adif]['name'] = ucwords(strtolower($dxcc->name), "- (/");
 				$dxccMatrix[$dxcc->adif]['Dxccprefix'] = $dxcc->prefix;
 				if ($postdata['includedeleted'])
-					$dxccMatrix[$dxcc->adif]['Deleted'] = isset($dxcc->Enddate) ? "<div class='alert-danger'>Y</div>" : '';
+					$dxccMatrix[$dxcc->adif]['Deleted'] = isset($dxcc->Enddate) ? 1 : 0;
 				$dxccMatrix[$dxcc->adif][$band] = '-';
 			}
 

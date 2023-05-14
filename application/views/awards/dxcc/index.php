@@ -198,9 +198,6 @@
                         <td>#</td>
                         <td>DXCC Name</td>
                         <td>Prefix</td>';
-        if ($this->input->post('includedeleted'))
-            echo '
-                        <td>Deleted</td>';
         foreach($bands as $band) {
             echo '<td>' . $band . '</td>';
         }
@@ -210,8 +207,14 @@
         foreach ($dxcc_array as $dxcc => $value) {      // Fills the table with the data
             echo '<tr>
                         <td>'. $i++ .'</td>';
-            foreach ($value  as $key) {
-                echo '<td style="text-align: center">' . $key . '</td>';
+            foreach ($value as $name => $key) {
+                if (isset($value['Deleted']) && $value['Deleted'] == 1 && $name == "name") {
+                   echo '<td style="text-align: center">' . $key . ' <span class="badge badge-danger">'.$this->lang->line('gen_hamradio_deleted_dxcc').'</span></td>';
+                } else if ($name == "Deleted") {
+                   continue;
+                } else {
+                   echo '<td style="text-align: center">' . $key . '</td>';
+                }
             }
             echo '</tr>';
         }
