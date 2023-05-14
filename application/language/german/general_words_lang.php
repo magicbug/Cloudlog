@@ -47,6 +47,7 @@ $lang['general_word_qslcard_direct'] = 'Direkt';
 $lang['general_word_qslcard_bureau'] = 'Büro';
 $lang['general_word_qslcard_electronic'] = 'Elektronisch';
 $lang['general_word_qslcard_via'] = 'Via';
+$lang['general_word_eqslcard'] = 'eQSL Karte';
 $lang['general_word_eqslcards'] = 'eQSL Karten';
 $lang['general_word_lotw'] = 'Logbook of the World';
 
