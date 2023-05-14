@@ -16,7 +16,7 @@
 			<form class="form" action="<?php echo site_url('csv/export'); ?>" method="post" enctype="multipart/form-data">
 				<div class="form-row">
 					<div class="form-group col-md-3">
-						<label for="station_profile"><?php echo $this->lang->line('cloudlog_station_profile'); ?></label>
+						<label for="station_profile"><?php echo lang('cloudlog_station_profile'); ?></label>
 						<select name="station_profile" class="station_id custom-select">
 							<option value="All">All</option>
 							<?php foreach ($station_profile->result() as $station) { ?>

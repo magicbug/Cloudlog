@@ -71,7 +71,7 @@
 							<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
 							<option value="0" <?php if($my_station_profile->station_dxcc == "0") { ?>selected<?php } ?>>- NONE -</option>
 							<?php foreach ($dxcc_list->result() as $dxcc) { ?>
-							<option value="<?php echo $dxcc->adif; ?>" <?php if($my_station_profile->station_dxcc == $dxcc->adif) { ?>selected<?php } ?>><?php echo ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix; if ($dxcc->end != NULL) echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';?>
+							<option value="<?php echo $dxcc->adif; ?>" <?php if($my_station_profile->station_dxcc == $dxcc->adif) { ?>selected<?php } ?>><?php echo ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix; if ($dxcc->end != NULL) echo ' ('.lang('gen_hamradio_deleted_dxcc').')';?>
 							</option>
 							<?php } ?>
 							</select>

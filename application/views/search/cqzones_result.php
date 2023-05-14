@@ -6,14 +6,14 @@ if ($qsos->result() != NULL) {
 	<tr>
 	<th style=\'text-align: center\'>Date</th>
 	<th style=\'text-align: center\'>Time</th>
-	<th style=\'text-align: center\'>'.$this->lang->line('gen_hamradio_callsign').'</th>
-	<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_mode') . '</th>
-	<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_band') . '</th>
-	<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_gridsquare') . '</th>
+	<th style=\'text-align: center\'>'.lang('gen_hamradio_callsign').'</th>
+	<th style=\'text-align: center\'>' . lang('gen_hamradio_mode') . '</th>
+	<th style=\'text-align: center\'>' . lang('gen_hamradio_band') . '</th>
+	<th style=\'text-align: center\'>' . lang('gen_hamradio_gridsquare') . '</th>
 	<th style=\'text-align: center\'>CQ Zone</th>
 	<th style=\'text-align: center\'>DXCC CQ Zone</th>
 	<th style=\'text-align: center\'>DXCC</th>
-	<th style=\'text-align: center\'>' . $this->lang->line('gen_hamradio_station') . '</th>
+	<th style=\'text-align: center\'>' . lang('gen_hamradio_station') . '</th>
 	</tr>
 	</thead><tbody>';
 
