@@ -209,7 +209,7 @@
                         <td>'. $i++ .'</td>';
             foreach ($value as $name => $key) {
                 if (isset($value['Deleted']) && $value['Deleted'] == 1 && $name == "name") {
-                   echo '<td style="text-align: center">' . $key . ' <span class="badge badge-danger">'.$this->lang->line('gen_hamradio_deleted_dxcc').'</span></td>';
+                   echo '<td style="text-align: center">' . $key . ' <span class="badge badge-danger">'.lang('gen_hamradio_deleted_dxcc').'</span></td>';
                 } else if ($name == "Deleted") {
                    continue;
                 } else {
