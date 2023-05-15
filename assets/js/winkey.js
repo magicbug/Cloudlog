@@ -9,7 +9,6 @@ connectButton.addEventListener("click", clickConnect)
 sendButton.addEventListener("click", clickSend)
 helpButton.addEventListener("click", clickHelp)
 statusButton.addEventListener("click", clickStatus)
-cwfunc1Button.addEventListener("click", morsekey_func1)
 
 //When the connectButton is pressed
 async function clickConnect() {
