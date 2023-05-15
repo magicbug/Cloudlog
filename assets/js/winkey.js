@@ -78,7 +78,7 @@ async function writeToStream(line) {
     var enc = new TextEncoder(); // always utf-8
     
     const writer = outputStream.getWriter();
-    writer.write(enc);
+    writer.write(line);
     writer.releaseLock();
 }
 
