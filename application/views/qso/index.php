@@ -517,13 +517,33 @@
     </div>
 
     <div class="card winkey-settings">
-        <div class="card-header"><h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey</h4></div>
+        <div class="card-header">
+          <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey 
+
+          <button id="connectButton" class="btn btn-primary">Connect</button>
+
+          <button type="button" class="btn btn-light"
+          hx-get="/index.php/qso/winkeysettings" 
+          hx-target="#modals-here" 
+          hx-trigger="click"
+          class="btn btn-primary"
+          _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-cog"></i> Settings</button>
+          </h4>
+        </div>
 
         <div class="card-body">
-        <button id="connectButton" class="btn btn-warning">Connect</button> <span id="statusBar"></span><br>
-      <input id="sendText" type="text"><input id="sendButton" type="button" value="Send" class="btn btn-success">
-      <button onclick="morsekey_func1()" class="btn btn-warning">CQ</button>
-      <br>
+        <div id="modals-here"></div>
+          <button onclick="morsekey_func1()" class="btn btn-warning">F1</button>
+          <button onclick="morsekey_func2()" class="btn btn-warning">F2</button>
+          <button onclick="morsekey_func3()" class="btn btn-warning">F3</button>
+          <button onclick="morsekey_func4()" class="btn btn-warning">F4</button>
+          <button onclick="morsekey_func5()" class="btn btn-warning">F5</button>
+          <button onclick="morsekey_func6()" class="btn btn-warning">F5</button>
+          <br><br>
+          <input id="sendText" type="text"><input id="sendButton" type="button" value="Send" class="btn btn-success">
+
+          <span id="statusBar"></span><br>
+
         </div>
     </div>
 

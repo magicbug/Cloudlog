@@ -151,6 +151,10 @@ class QSO extends CI_Controller {
 		}
 	}
 
+    function winkeysettings() {
+        $this->load->view('qso/components/winkeysettings');
+    }
+
     function edit_ajax() {
 
         $this->load->model('logbook_model');
