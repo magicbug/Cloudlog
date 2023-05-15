@@ -564,6 +564,7 @@ class eqsl extends CI_Controller {
 
 		$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
 		$file = file_get_contents($image_url, true);
+		$error = '';
 
 		$dom = new domDocument;
 		$dom->loadHTML($file);
@@ -571,23 +572,24 @@ class eqsl extends CI_Controller {
 		$images = $dom->getElementsByTagName('img');
 
 		if(!isset($images) || count($images) == 0) {
-			echo "Rate Limited";
-			exit;
+			$error = "Rate Limited";
+			return $error;
 		}
 
 		foreach ($images as $image)
 		{
 			$content = file_get_contents("https://www.eqsl.cc".$image->getAttribute('src'));
 			if ($content === false) {
-				echo "No response";
-				exit;
+				$error = "No response";
+				return $error;
 			}
 			$filename = uniqid().'.jpg';
 			if (file_put_contents('images/eqsl_card_images/' . '/'.$filename, $content) !== false) {
 				$this->Eqsl_images->save_image($id, $filename);
+				print "Image saved (QSO ID: ".$id.").<br />";
 			}
 		}
-		print "Image saved (QSO ID: ".$id.").<br />";
+		return $error;
 
 	}
 
@@ -613,9 +615,12 @@ class eqsl extends CI_Controller {
 			$this->load->model('eqslmethods_model');
 			$qslsnotdownloaded = $this->eqslmethods_model->eqsl_not_yet_downloaded();
 			foreach ($qslsnotdownloaded->result_array() as $qsl) {
-				//var_dump($qsl);
-				$this->bulk_download_image($qsl['COL_PRIMARY_KEY']);
-				//print "---------------------------------<br /><br />";
+				$error = $this->bulk_download_image($qsl['COL_PRIMARY_KEY']);
+				if ($error != '') {
+					print "Error: ".$error;
+					break;
+				}
+				sleep(15);
 			}
 		} else {
 
