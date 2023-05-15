@@ -532,13 +532,13 @@
                     <?php
                     $i = 1;
                     foreach ($qslimages as $image) {
-                        echo '<div class="carousel-item carouselimageid_' . $image->id;
+                        echo '<center><div class="carousel-item carouselimageid_' . $image->id;
                         if ($i == 1) {
                             echo ' active';
                         }
                         echo '">';
                         echo '<img class="img-fluid w-qsl" src="' . base_url() . '/assets/qslcard/' . $image->filename .'" alt="QSL picture #'. $i++.'">';
-                        echo '</div>';
+                        echo '</div></center>';
                     }
                     ?>
                 </div>
