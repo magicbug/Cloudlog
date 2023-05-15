@@ -908,7 +908,7 @@ $(document).on('keypress',function(e) {
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
-<script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
+    <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
 
 <?php
 
