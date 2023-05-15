@@ -42,8 +42,8 @@
          //Connect to the serial
          async function connect() {
          
-             //Optional filter to only see relevant boards
-
+             //Optional filter to only see relevant board
+ 
          
              //Try to connect to the Serial port
              try {
