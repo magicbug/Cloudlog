@@ -59,12 +59,12 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
     		<thead>
 				<tr class="titles">
-					<th><?php echo $this->lang->line('general_word_date'); ?></th>
+					<th><?php echo lang('general_word_date'); ?></th>
 
 					<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-					<th><?php echo $this->lang->line('general_word_time'); ?></th>
+					<th><?php echo lang('general_word_time'); ?></th>
 					<?php } ?>
-					<th><?php echo $this->lang->line('gen_hamradio_call'); ?></th>
+					<th><?php echo lang('gen_hamradio_call'); ?></th>
 					<?php
 					echo_table_header_col($this, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
 					echo_table_header_col($this, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
@@ -142,21 +142,21 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
     	<table class="table table-striped">
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-chart-bar"></i> <?php echo $this->lang->line('dashboard_qso_breakdown'); ?></td>
+				<td colspan="2"><i class="fas fa-chart-bar"></i> <?php echo lang('dashboard_qso_breakdown'); ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_total'); ?></td>
+				<td width="50%"><?php echo lang('general_word_total'); ?></td>
 				<td width="50%"><?php echo $total_qsos; ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_year'); ?></td>
+				<td width="50%"><?php echo lang('general_word_year'); ?></td>
 				<td width="50%"><?php echo $year_qsos; ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_month'); ?></td>
+				<td width="50%"><?php echo lang('general_word_month'); ?></td>
 				<td width="50%"><?php echo $month_qsos; ?></td>
 			</tr>
 		</table>
@@ -165,15 +165,15 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
 		<table class="table table-striped">
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-globe-europe"></i> <?php echo $this->lang->line('dashboard_countries_breakdown'); ?></td>
+				<td colspan="2"><i class="fas fa-globe-europe"></i> <?php echo lang('dashboard_countries_breakdown'); ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_worked'); ?></td>
+				<td width="50%"><?php echo lang('general_word_worked'); ?></td>
 				<td width="50%"><?php echo $total_countries; ?></td>
 			</tr>
 			<tr>
-				<td width="50%"><a href="#" onclick="return false" data-original-title="QSL Cards / eQSL / LoTW" data-toggle="tooltip"><?php echo $this->lang->line('general_word_confirmed'); ?></a></td>
+				<td width="50%"><a href="#" onclick="return false" data-original-title="QSL Cards / eQSL / LoTW" data-toggle="tooltip"><?php echo lang('general_word_confirmed'); ?></a></td>
 				<td width="50%">
 					<?php echo $total_countries_confirmed_paper; ?> /
 					<?php echo $total_countries_confirmed_eqsl; ?> /
@@ -182,7 +182,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_needed'); ?></td>
+				<td width="50%"><?php echo lang('general_word_needed'); ?></td>
 				<td width="50%"><?php echo $total_countries_needed; ?></td>
 			</tr>
 		</table>
@@ -190,21 +190,21 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_qsl_sent != 0 || $total_qsl_rcvd != 0 || $total_qsl_requested != 0)) { ?>
 		<table class="table table-striped">
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_word_qslcards'); ?></td>
+				<td colspan="2"><i class="fas fa-envelope"></i> <?php echo lang('general_word_qslcards'); ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_sent'); ?></td>
+				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
 				<td width="50%"><?php echo $total_qsl_sent; ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_received'); ?></td>
+				<td width="50%"><?php echo lang('general_word_received'); ?></td>
 				<td width="50%"><?php echo $total_qsl_rcvd; ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_requested'); ?></td>
+				<td width="50%"><?php echo lang('general_word_requested'); ?></td>
 				<td width="50%"><?php echo $total_qsl_requested; ?></td>
 			</tr>
 		</table>
@@ -213,16 +213,16 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_eqsl_sent != 0 || $total_eqsl_rcvd != 0)) { ?>
 		<table class="table table-striped">
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-address-card"></i> <?php echo $this->lang->line('general_word_eqslcards'); ?></td>
+				<td colspan="2"><i class="fas fa-address-card"></i> <?php echo lang('general_word_eqslcards'); ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_sent'); ?></td>
+				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
 				<td width="50%"><?php echo $total_eqsl_sent; ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_received'); ?></td>
+				<td width="50%"><?php echo lang('general_word_received'); ?></td>
 				<td width="50%"><?php echo $total_eqsl_rcvd; ?></td>
 			</tr>
 		</table>
@@ -231,16 +231,16 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_lotw_sent != 0 || $total_lotw_rcvd != 0)) { ?>
 		<table class="table table-striped">
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-list"></i> <?php echo $this->lang->line('general_word_lotw'); ?></td>
+				<td colspan="2"><i class="fas fa-list"></i> <?php echo lang('general_word_lotw'); ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_sent'); ?></td>
+				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
 				<td width="50%"><?php echo $total_lotw_sent; ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_received'); ?></td>
+				<td width="50%"><?php echo lang('general_word_received'); ?></td>
 				<td width="50%"><?php echo $total_lotw_rcvd; ?></td>
 			</tr>
 		</table>

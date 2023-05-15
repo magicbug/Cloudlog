@@ -21,7 +21,7 @@
 
 	  <p><a href="<?php echo site_url('station/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> Create a Station Location</a></p>
 	  
-		<?php if ($stations->num_rows() > 0) { ?>
+		<?php if ($stations) { ?>
 
 		<?php if($current_active == 0) { ?>
 		<div class="alert alert-danger" role="alert">

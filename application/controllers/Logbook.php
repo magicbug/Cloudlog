@@ -51,7 +51,7 @@ class Logbook extends CI_Controller {
 		$data['results'] = $this->logbook_model->get_qsos($config['per_page'],$this->uri->segment(3));
 
 		if(!$data['results']) { 
-			$this->session->set_flashdata('notice', $this->lang->line('error_no_logbook_found') . ' <a href="' . site_url('logbooks') . '" title="Station Logbooks">Station Logbooks</a>');
+			$this->session->set_flashdata('notice', lang('error_no_logbook_found') . ' <a href="' . site_url('logbooks') . '" title="Station Logbooks">Station Logbooks</a>');
 		}
 
 		// Calculate Lat/Lng from Locator to use on Maps
@@ -540,16 +540,16 @@ class Logbook extends CI_Controller {
 					}
 					switch($this->session->userdata('user_previous_qsl_type')) {
 						case 0:
-							$html .= "<td>".$this->lang->line('gen_hamradio_qsl')."</td>";
+							$html .= "<td>".lang('gen_hamradio_qsl')."</td>";
 							break;
 						case 1:
-							$html .= "<td>".$this->lang->line('lotw_short')."</td>";
+							$html .= "<td>".lang('lotw_short')."</td>";
 							break;
 						case 2:
-							$html .= "<td>".$this->lang->line('eqsl_short')."</td>";
+							$html .= "<td>".lang('eqsl_short')."</td>";
 							break;
 						default:
-							$html .= "<td>".$this->lang->line('gen_hamradio_qsl')."</td>";
+							$html .= "<td>".lang('gen_hamradio_qsl')."</td>";
 							break;
 					}
 					$html .= "<td></td>";

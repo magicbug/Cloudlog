@@ -23,7 +23,7 @@
                                 foreach ($dxcc_list->result() as $dxcc) {
                                     echo '<option value=' . $dxcc->adif . '> ' . ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix;
                                     if ($dxcc->end != null) {
-                                        echo ' ('.$this->lang->line('gen_hamradio_deleted_dxcc').')';
+                                        echo ' ('.lang('gen_hamradio_deleted_dxcc').')';
                                     }
                                     echo '</option>';
                                 }
