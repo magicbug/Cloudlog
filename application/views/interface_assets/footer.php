@@ -2123,7 +2123,7 @@ $(document).ready(function(){
 	<script src="<?php echo base_url(); ?>assets/js/sections/timeplot.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "qsl") {
+<?php if ($this->uri->segment(1) == "qsl" || $this->uri->segment(1) == "eqsl") {
     	// Get Date format
 	if($this->session->userdata('user_date_format')) {
 		// If Logged in and session exists
@@ -2186,7 +2186,7 @@ $(document).ready(function(){
 function viewQsl(picture, callsign) {
             var baseURL= "<?php echo base_url();?>";
             var $textAndPic = $('<div></div>');
-                $textAndPic.append('<img class="img-fluid" style="height:auto;width:auto;"src="'+baseURL+'/assets/qslcard/'+picture+'" />');
+                $textAndPic.append('<img class="img-fluid w-qsl" style="height:auto;width:auto;"src="'+baseURL+'/assets/qslcard/'+picture+'" />');
             var title = '';
             if (callsign == null) {
                 title = 'QSL Card';
@@ -2241,6 +2241,31 @@ function deleteQsl(id) {
                         });
                     }
                 }
+            });
+        }
+</script>
+<script>
+function viewEqsl(picture, callsign) {
+            var baseURL= "<?php echo base_url();?>";
+            var $textAndPic = $('<div></div>');
+                $textAndPic.append('<img class="img-fluid" style="height:auto;width:auto;"src="'+baseURL+'images/eqsl_card_images/'+picture+'" />');
+            var title = '';
+            if (callsign == null) {
+                title = 'eQSL Card';
+            } else {
+                title = 'eQSL Card for ' + callsign;
+            }
+
+            BootstrapDialog.show({
+                title: title,
+                size: BootstrapDialog.SIZE_WIDE,
+                message: $textAndPic,
+                buttons: [{
+                    label: 'Close',
+                    action: function(dialogRef){
+                        dialogRef.close();
+                    }
+                }]
             });
         }
 </script>
@@ -2315,7 +2340,7 @@ function deleteQsl(id) {
                             '</tr>');
                         var quantity = $(".carousel-indicators li").length;
                         $(".carousel-indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
-                        $(".carousel-inner").append('<div class="carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="d-block w-100" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carousel-inner").append('<div class="carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
                         $("#qslcardfront").val(null);
                     }
                     else {
@@ -2335,7 +2360,7 @@ function deleteQsl(id) {
                         $('.qslcardtab').removeAttr('hidden');
                         var quantity = $(".carousel-indicators li").length;
                         $(".carousel-indicators").append('<li class="active" data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
-                        $(".carousel-inner").append('<div class="active carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="d-block w-100" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carousel-inner").append('<div class="active carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
                         $(".carouselExampleIndicators").carousel();
                         $("#qslcardfront").val(null);
                     }
@@ -2354,7 +2379,7 @@ function deleteQsl(id) {
                             '</tr>');
                         var quantity = $(".carousel-indicators li").length;
                         $(".carousel-indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
-                        $(".carousel-inner").append('<div class="carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="d-block w-100" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carousel-inner").append('<div class="carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
                         $("#qslcardback").val(null);
                     }
                     else {
@@ -2374,7 +2399,7 @@ function deleteQsl(id) {
                         $('.qslcardtab').removeAttr('hidden');
                         var quantity = $(".carousel-indicators li").length;
                         $(".carousel-indicators").append('<li class="active" data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
-                        $(".carousel-inner").append('<div class="active carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="d-block w-100" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carousel-inner").append('<div class="active carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
                         $(".carouselExampleIndicators").carousel();
                         $("#qslcardback").val(null);
                     }

@@ -14,6 +14,7 @@ function echo_table_header_col($ctx, $name) {
 		case 'Band': echo '<th>'.$ctx->lang->line('gen_hamradio_band').'</td>'; break;
 		case 'Frequency': echo '<th>'.$ctx->lang->line('gen_hamradio_frequency').'</th>'; break;
 		case 'Operator': echo '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
+		case 'Location': echo '<th>'.$ctx->lang->line('cloudlog_station_profile').'</th>'; break;
 	}
 }
 
@@ -33,6 +34,7 @@ function echo_table_col($row, $name) {
 		case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
 		case 'Operator':echo '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
+		case 'Location':echo '<td>' . ($row->station_profile_name) . '</td>'; break;
 	}
 }
 
@@ -51,17 +53,17 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
     <table style="width:100%" class="table contacttable table-striped table-hover">
         <thead>
             <tr class="titles">
-                <th><?php echo $this->lang->line('general_word_date'); ?></th>
+                <th><?php echo lang('general_word_date'); ?></th>
                 <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-                <th><?php echo $this->lang->line('general_word_time'); ?></th>
+                <th><?php echo lang('general_word_time'); ?></th>
                 <?php } ?>
-                <th><?php echo $this->lang->line('gen_hamradio_call'); ?></th>
+                <th><?php echo lang('gen_hamradio_call'); ?></th>
                 <?php
                 echo_table_header_col($this, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
                 echo_table_header_col($this, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
                 echo_table_header_col($this, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
                 echo_table_header_col($this, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
-                echo_table_header_col($this, $this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5'));
+                echo_table_header_col($this, $this->session->userdata('user_column5'));
 
                     if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                     <th>QSL</th>
@@ -72,7 +74,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                         <th>LoTW</th>
                     <?php } ?>
                 <?php } ?>
-                    <th><?php echo $this->lang->line('gen_hamradio_station'); ?></th>
+                    <th><?php echo lang('gen_hamradio_station'); ?></th>
                 <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                     <th></th>
                 <?php } ?>
@@ -104,23 +106,23 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                 echo_table_col($row, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
                 echo_table_col($row, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
                 echo_table_col($row, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
-                echo_table_col($row, $this->session->userdata('user_column5')==""?'Country':$this->session->userdata('user_column5'));
+                echo_table_col($row, $this->session->userdata('user_column5'));
 			
 				if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
                 <td class="qsl">
                 <span <?php if ($row->COL_QSL_SENT != "N") {
                        switch ($row->COL_QSL_SENT) {
                        case "Y":
-                          echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_sent');
+                          echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_sent');
                           break;
                        case "Q":
-                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_queued');
+                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_queued');
                           break;
                        case "R":
-                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_requested');
+                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_requested');
                           break;
                        case "I":
-                          echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_invalid_ignore');
+                          echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_invalid_ignore');
                           break;
                        default:
                           echo "class=\"qsl-red";
@@ -133,32 +135,32 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                        if ($row->COL_QSL_SENT_VIA != "") {
                           switch ($row->COL_QSL_SENT_VIA) {
                              case "B":
-                                echo " (".$this->lang->line('general_word_qslcard_bureau').")";
+                                echo " (".lang('general_word_qslcard_bureau').")";
                                 break;
                              case "D":
-                                echo " (".$this->lang->line('general_word_qslcard_direct').")";
+                                echo " (".lang('general_word_qslcard_direct').")";
                                 break;
                              case "M":
-                                echo " (".$this->lang->line('general_word_qslcard_via').": ".($row->COL_QSL_VIA!="" ? $row->COL_QSL_VIA:"n/a").")";
+                                echo " (".lang('general_word_qslcard_via').": ".($row->COL_QSL_VIA!="" ? $row->COL_QSL_VIA:"n/a").")";
                                 break;
                              case "E":
-                                echo " (".$this->lang->line('general_word_qslcard_electronic').")";
+                                echo " (".lang('general_word_qslcard_electronic').")";
                                 break;
                          }
                        } ?>">&#9650;</span>
                 <span <?php if ($row->COL_QSL_RCVD != "N") {
                        switch ($row->COL_QSL_RCVD) {
                        case "Y":
-                          echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_received');
+                          echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_received');
                           break;
                        case "Q":
-                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_queued');
+                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_queued');
                           break;
                        case "R":
-                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_requested');
+                          echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_requested');
                           break;
                        case "I":
-                          echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$this->lang->line('general_word_invalid_ignore');
+                          echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_invalid_ignore');
                           break;
                        default:
                           echo "class=\"qsl-red";
@@ -171,16 +173,16 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                        if ($row->COL_QSL_RCVD_VIA != "") {
                           switch ($row->COL_QSL_RCVD_VIA) {
                              case "B":
-                                echo " (".$this->lang->line('general_word_qslcard_bureau').")";
+                                echo " (".lang('general_word_qslcard_bureau').")";
                                 break;
                              case "D":
-                                echo " (".$this->lang->line('general_word_qslcard_direct').")";
+                                echo " (".lang('general_word_qslcard_direct').")";
                                 break;
                              case "M":
                                 echo " (Manager)";
                                 break;
                              case "E":
-                                echo " (".$this->lang->line('general_word_qslcard_electronic').")";
+                                echo " (".lang('general_word_qslcard_electronic').")";
                                 break;
                          }
                        } ?>">&#9660;</span>
@@ -188,8 +190,8 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
                 <?php if ($this->session->userdata('user_eqsl_name') != ""){ ?>
                     <td class="eqsl">
-                        <span <?php if ($row->COL_EQSL_QSL_SENT == "Y") { echo "data-original-title=\"".$this->lang->line('eqsl_short')." ".$this->lang->line('general_word_sent'); if ($row->COL_EQSL_QSLSDATE != null) { $timestamp = strtotime($row->COL_EQSL_QSLSDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-toggle=\"tooltip\""; } ?> class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
-                        <span <?php if ($row->COL_EQSL_QSL_RCVD == "Y") { echo "data-original-title=\"".$this->lang->line('eqsl_short')." ".$this->lang->line('general_word_received'); if ($row->COL_EQSL_QSLRDATE != null) { $timestamp = strtotime($row->COL_EQSL_QSLRDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-toggle=\"tooltip\""; } ?> class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">
+                        <span <?php if ($row->COL_EQSL_QSL_SENT == "Y") { echo "data-original-title=\"".lang('eqsl_short')." ".lang('general_word_sent'); if ($row->COL_EQSL_QSLSDATE != null) { $timestamp = strtotime($row->COL_EQSL_QSLSDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-toggle=\"tooltip\""; } ?> class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
+                        <span <?php if ($row->COL_EQSL_QSL_RCVD == "Y") { echo "data-original-title=\"".lang('eqsl_short')." ".lang('general_word_received'); if ($row->COL_EQSL_QSLRDATE != null) { $timestamp = strtotime($row->COL_EQSL_QSLRDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-toggle=\"tooltip\""; } ?> class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">
 			    	<?php if($row->COL_EQSL_QSL_RCVD =='Y') { ?>
                         <a class="eqsl-green" href="<?php echo site_url("eqsl/image/".$row->COL_PRIMARY_KEY); ?>" data-fancybox="images" data-width="528" data-height="336">&#9660;</a>
                     <?php } else { ?>
@@ -201,8 +203,8 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
                 <?php if($this->session->userdata('user_lotw_name') != "") { ?>
                     <td class="lotw">
-                        <span <?php if ($row->COL_LOTW_QSL_SENT == "Y") { echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_sent'); if ($row->COL_LOTW_QSLSDATE != null) { $timestamp = strtotime($row->COL_LOTW_QSLSDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
-                        <span <?php if ($row->COL_LOTW_QSL_RCVD == "Y") { echo "data-original-title=\"".$this->lang->line('lotw_short')." ".$this->lang->line('general_word_received'); if ($row->COL_LOTW_QSLRDATE != null) { $timestamp = strtotime($row->COL_LOTW_QSLRDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
+                        <span <?php if ($row->COL_LOTW_QSL_SENT == "Y") { echo "data-original-title=\"".lang('lotw_short')." ".lang('general_word_sent'); if ($row->COL_LOTW_QSLSDATE != null) { $timestamp = strtotime($row->COL_LOTW_QSLSDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
+                        <span <?php if ($row->COL_LOTW_QSL_RCVD == "Y") { echo "data-original-title=\"".lang('lotw_short')." ".lang('general_word_received'); if ($row->COL_LOTW_QSLRDATE != null) { $timestamp = strtotime($row->COL_LOTW_QSLRDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
                     </td>
                 <?php } ?>
 
@@ -222,13 +224,13 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" id="edit_qso" href="javascript:qso_edit(<?php echo $row->COL_PRIMARY_KEY; ?>)"><i class="fas fa-edit"></i> <?php echo $this->lang->line('general_edit_qso'); ?></a>
+                            <a class="dropdown-item" id="edit_qso" href="javascript:qso_edit(<?php echo $row->COL_PRIMARY_KEY; ?>)"><i class="fas fa-edit"></i> <?php echo lang('general_edit_qso'); ?></a>
 
                             <?php if($row->COL_QSL_SENT !='Y') { ?>
                                 <div class="qsl_sent_<?php echo $row->COL_PRIMARY_KEY; ?>">
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="javascript:qsl_sent(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B')" ><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_mark_qsl_tx_bureau'); ?></a>
-                                    <a class="dropdown-item" href="javascript:qsl_sent(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_mark_qsl_tx_direct'); ?></a>
+                                    <a class="dropdown-item" href="javascript:qsl_sent(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B')" ><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_tx_bureau'); ?></a>
+                                    <a class="dropdown-item" href="javascript:qsl_sent(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_tx_direct'); ?></a>
                                     <a class="dropdown-item" href="javascript:qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> Mark QSL Card Requested</a>
                                     <a class="dropdown-item" href="javascript:qsl_ignore(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> Mark QSL Card Not Required</a>
                                 </div>
@@ -237,8 +239,8 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                             <?php if($row->COL_QSL_RCVD !='Y') { ?>
                                 <div class="qsl_rcvd_<?php echo $row->COL_PRIMARY_KEY; ?>">
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B')" ><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_mark_qsl_rx_bureau'); ?></a>
-                                    <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_mark_qsl_rx_direct'); ?></a>
+                                    <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B')" ><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_bureau'); ?></a>
+                                    <a class="dropdown-item" href="javascript:qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D')" ><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_direct'); ?></a>
                                 </div>
                             <?php } ?>
 
@@ -250,7 +252,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
                             <div class="dropdown-divider"></div>
 
-                            <a class="dropdown-item" href="javascript:qso_delete(<?php echo $row->COL_PRIMARY_KEY; ?>, '<?php echo $row->COL_CALL; ?>')"><i class="fas fa-trash-alt"></i> <?php echo $this->lang->line('general_delete_qso'); ?></a>
+                            <a class="dropdown-item" href="javascript:qso_delete(<?php echo $row->COL_PRIMARY_KEY; ?>, '<?php echo $row->COL_CALL; ?>')"><i class="fas fa-trash-alt"></i> <?php echo lang('general_delete_qso'); ?></a>
                         </div>
                     </div>
                 </td>
