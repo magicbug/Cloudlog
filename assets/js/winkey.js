@@ -9,6 +9,7 @@ connectButton.addEventListener("click", clickConnect)
 sendButton.addEventListener("click", clickSend)
 helpButton.addEventListener("click", clickHelp)
 statusButton.addEventListener("click", clickStatus)
+cwfunc1Button.addEventListener("click", morsekey_func1)
 
 //When the connectButton is pressed
 async function clickConnect() {
@@ -113,6 +114,15 @@ function clickSend() {
     sendText.value = "";
 
 }
+
+function morsekey_func1() {
+    writeToStream("CQ CQ 2M0SQL");
+    
+    //and clear the input field, so it's clear it has been sent
+    sendText.value = "";
+
+}
+
 
 //Read the incoming data
 async function readLoop() {

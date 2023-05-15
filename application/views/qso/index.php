@@ -522,6 +522,7 @@
         <div class="card-body">
         <button id="connectButton" class="btn btn-warning">Connect</button> <span id="statusBar"></span><br>
       <input id="sendText" type="text"><input id="sendButton" type="button" value="Send" class="btn btn-success">
+      <button id="cwfunc1Button" class="btn btn-warning">CQ</button>
       <br>
         </div>
     </div>
