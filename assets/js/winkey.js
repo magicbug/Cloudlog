@@ -116,6 +116,7 @@ function clickSend() {
 }
 
 function morsekey_func1() {
+    console.log("send CQ");
     writeToStream("CQ CQ 2M0SQL");
     
     //and clear the input field, so it's clear it has been sent
