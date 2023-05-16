@@ -5,8 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $lang['menu_badge_developer_mode'] = 'Режим разработчика';
 
 $lang['menu_logbook'] = 'Журнал';
-$lang['menu_overview'] = 'Обзор';
-$lang['menu_advanced'] = 'Расширенный';
+$lang['menu_overview'] = 'Обычный вид';
+$lang['menu_advanced'] = 'Расширенный вид';
 
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = 'добавить QSO';
@@ -15,6 +15,8 @@ $lang['menu_live_contest_logging'] = 'Журнал соревнований';
 $lang['menu_post_contest_logging'] = 'Журнал прошедших соревнований';
 $lang['menu_view_qsl'] = 'Просмотр QSL';
 $lang['menu_view_eqsl'] = 'Просмотр eQSL';
+
+$lang['menu_notes'] = 'Заметки';
 
 $lang['menu_analytics'] = 'Аналитика';
 $lang['menu_statistics'] = 'Статистика';
