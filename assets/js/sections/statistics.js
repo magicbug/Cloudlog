@@ -64,14 +64,14 @@ function totalQsosPerYear() {
             success: function (data) {
                 if (data.length > 0) {
                    
-                    $(".years").append('<h2>Year</h2><div id="yearContainer"></div><div id="yearTable"></div>');
+                    $(".years").append('<h2>Years</h2><div id="yearContainer"></div><div id="yearTable"></div>');
                     $("#yearContainer").append("<canvas id=\"yearChart\" width=\"400\" height=\"100\"></canvas>");
     
                     // appending table to hold the data
                     $("#yearTable").append('<table style="width:100%" class="yeartable table table-sm table-bordered table-hover table-striped table-condensed text-center"><thead>' +
                         '<tr>' +
                         '<td>#</td>' +
-                        '<td>'+'Year'+'</td>' +
+                        '<td>Year</td>' +
                         '<td># of QSO\'s worked </td>' +
                         '</tr>' +
                         '</thead>' +
