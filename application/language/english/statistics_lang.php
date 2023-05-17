@@ -11,3 +11,5 @@ $lang['statistics_qsos'] = 'QSOs';
 $lang['statistics_unique_callsigns'] = 'Unique callsigns';
 
 $lang['statistics_total'] = 'Total';
+
+$lang['statistics_year'] = 'Year';
