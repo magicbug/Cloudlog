@@ -538,7 +538,6 @@
           <button onclick="morsekey_func3()" class="btn btn-warning">F3</button>
           <button onclick="morsekey_func4()" class="btn btn-warning">F4</button>
           <button onclick="morsekey_func5()" class="btn btn-warning">F5</button>
-          <button onclick="morsekey_func6()" class="btn btn-warning">F5</button>
           <br><br>
           <input id="sendText" type="text"><input id="sendButton" type="button" value="Send" class="btn btn-success">
 
