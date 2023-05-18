@@ -561,10 +561,14 @@ class eqsl extends CI_Controller {
 		$q = $query->row();
 		$username = $q->user_eqsl_name;
 		$password = $q->user_eqsl_password;
+		$error = '';
 
 		$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
 		$file = file_get_contents($image_url, true);
-		$error = '';
+		if (str_contains($file, 'Error')) {
+			$error = preg_replace('/^\s*Error: /', '', $file);
+			return $error.' (QSO ID: '.$id.')';
+		}
 
 		$dom = new domDocument;
 		$dom->loadHTML($file);
@@ -617,8 +621,12 @@ class eqsl extends CI_Controller {
 			foreach ($qslsnotdownloaded->result_array() as $qsl) {
 				$error = $this->bulk_download_image($qsl['COL_PRIMARY_KEY']);
 				if ($error != '') {
-					print "Error: ".$error;
-					break;
+					if ($error == 'Rate Limited') {
+						break;
+					} else {
+						print "Error: ".$error."<br />";
+						continue;
+					}
 				}
 				sleep(15);
 			}
