@@ -2,7 +2,7 @@
 
 	<h2><?php echo lang('gen_hamradio_logbook'); ?></h2>
 	<?php if ($results) { ?>
-		<h6><?php echo lang('gen_hamradio_logbook').": <b>".$this->logbooks_model->find_name($this->session->userdata('active_station_logbook')); ?></b> <?php echo lang('general_word_location').": <b>".$this->stations->find_name(); ?></b></h6>
+		<h6><?php echo lang('gen_hamradio_logbook').": <span class='value_decorated'>".$this->logbooks_model->find_name($this->session->userdata('active_station_logbook')); ?></span> <?php echo lang('general_word_location').": <span class='value_decorated'>".$this->stations->find_name(); ?></span></h6>
 	<?php } ?>
 
 
