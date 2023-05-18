@@ -13,7 +13,16 @@ class Options extends CI_Controller {
 
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		// Load language files
+		$this->lang->load(array(
+			'options',
+		));
+
+
 	}
+
+
 
 
 	// Default /options view just gives some text to explain the options area
@@ -24,7 +33,7 @@ class Options extends CI_Controller {
 
 		//echo $this->optionslib->get_option('theme');
 
-		$data['page_title'] = "Cloudlog Options";
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('options/index');
@@ -38,8 +47,8 @@ class Options extends CI_Controller {
 		$directory = 'application/language';
 		$data['language_options'] = array_diff(scandir($directory), array('..', '.'));
 
-		$data['page_title'] = "Cloudlog Options";
-		$data['sub_heading'] = "Appearance";
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_appearance');
 
 		$this->load->model('Themes_model');
 
@@ -57,8 +66,8 @@ class Options extends CI_Controller {
 		$directory = 'application/language';
 		$data['language_options'] = array_diff(scandir($directory), array('..', '.'));
 
-		$data['page_title'] = "Cloudlog Options";
-		$data['sub_heading'] = "Appearance";
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_appearance');
 
 		$this->load->helper(array('form', 'url'));
 
@@ -79,7 +88,7 @@ class Options extends CI_Controller {
 
 			// If theme update is complete set a flashsession with a success note
 			if($theme_update_status == TRUE) {
-				$this->session->set_flashdata('success', 'Theme changed to '.$this->input->post('theme'));
+				$this->session->set_flashdata('success', $this->lang->line('options_theme_changed_to').$this->input->post('theme'));
 			}
 
 			// Update theme choice within the options system
@@ -130,7 +139,7 @@ class Options extends CI_Controller {
 		// function used to display the /radio url
 		function radio() {
 
-			$data['page_title'] = "Cloudlog Options";
+			$data['page_title'] = $this->lang->line('options_cloudlog_options');
 			$data['sub_heading'] = "Radio Settings";
 
 			$this->load->view('interface_assets/header', $data);
@@ -143,7 +152,7 @@ class Options extends CI_Controller {
 
 		// Get Language Options
 
-		$data['page_title'] = "Cloudlog Options";
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
 		$data['sub_heading'] = "Radio Settings";
 
 		$this->load->helper(array('form', 'url'));
@@ -176,7 +185,7 @@ class Options extends CI_Controller {
 	// function used to display the /appearance url
 	function email() {
 
-		$data['page_title'] = "Cloudlog Options";
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
 		$data['sub_heading'] = "Email";
 
 		$this->load->view('interface_assets/header', $data);
@@ -189,7 +198,7 @@ class Options extends CI_Controller {
 
 			// Get Language Options
 	
-			$data['page_title'] = "Cloudlog Options";
+			$data['page_title'] = $this->lang->line('options_cloudlog_options');
 			$data['sub_heading'] = "Email";
 	
 			$this->load->helper(array('form', 'url'));
@@ -278,7 +287,7 @@ class Options extends CI_Controller {
 
 		function oqrs() {
 
-			$data['page_title'] = "Cloudlog Options";
+			$data['page_title'] = $this->lang->line('options_cloudlog_options');
 			$data['sub_heading'] = "OQRS Options";
 
 			$this->load->view('interface_assets/header', $data);
@@ -288,7 +297,7 @@ class Options extends CI_Controller {
 
 		function oqrs_save() {
 
-		$data['page_title'] = "Cloudlog Options";
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
 		$data['sub_heading'] = "OQRS Options";
 
 		$this->load->helper(array('form', 'url'));

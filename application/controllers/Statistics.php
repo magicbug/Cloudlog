@@ -29,7 +29,7 @@ class Statistics extends CI_Controller {
 		// Render User Interface
 
 		// Set Page Title
-		$data['page_title'] = "Statistics";
+		$data['page_title'] = $this->lang->line('statistics_statistics');
 		$data['sat_active'] = array_search("SAT", $this->bands->get_user_bands(), true);
 		
 		// Load Views

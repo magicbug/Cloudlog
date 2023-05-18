@@ -2,6 +2,8 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+$lang['statistics_statistics'] = 'Статистика';
+
 $lang['statistics_explore_the_logbook'] = 'Исследуем журнал.';
 
 $lang['statistics_years'] = 'по годам';
