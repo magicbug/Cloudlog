@@ -14,6 +14,15 @@ class Gridsquares extends CI_Controller {
     *   - Band page provide a band dropdown list
     *   - Find somewhere in the main menu to add a button to it
     */
+	function __construct()
+	{
+		parent::__construct();
+
+		// Load language files
+		$this->lang->load(array(
+			'gridsquares',
+		));
+	}
 
 
 	public function index() {
