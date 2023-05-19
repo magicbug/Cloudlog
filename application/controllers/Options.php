@@ -96,7 +96,7 @@ class Options extends CI_Controller {
 
 			// If theme update is complete set a flashsession with a success note
 			if($search_update_status == TRUE) {
-				$this->session->set_flashdata('success', 'Global Search changed to '.$this->input->post('globalSearch'));
+				$this->session->set_flashdata('success', $this->lang->line('options_global_search_changed_to').$this->input->post('globalSearch'));
 			}
 
 			// Update dashboard banner within the options system
@@ -104,7 +104,7 @@ class Options extends CI_Controller {
 
 			// If dashboard banner update is complete set a flashsession with a success note
 			if($dasboard_banner_update_status == TRUE) {
-				$this->session->set_flashdata('success', 'Dashboard banner changed to '.$this->input->post('dashboardBanner'));
+				$this->session->set_flashdata('success', $this->lang->line('options_dashboard_banner_changed_to').$this->input->post('dashboardBanner'));
 			}
 
 			// Update dashboard map within the options system
@@ -112,7 +112,7 @@ class Options extends CI_Controller {
 
 			// If dashboard map update is complete set a flashsession with a success note
 			if($ldashboard_map_update_status == TRUE) {
-				$this->session->set_flashdata('success', 'Dashboard map changed to '.$this->input->post('dashboardMap'));
+				$this->session->set_flashdata('success', $this->lang->line('options_dashboard_map_changed_to').$this->input->post('dashboardMap'));
 			}
 
 			// Update logbook map within the options system
@@ -120,7 +120,7 @@ class Options extends CI_Controller {
 
 			// If logbook map update is complete set a flashsession with a success note
 			if($logbook_map_update_status == TRUE) {
-				$this->session->set_flashdata('success', 'Logbook map changed to '.$this->input->post('logbookMap'));
+				$this->session->set_flashdata('success', $this->lang->line('options_logbook_map_changed_to').$this->input->post('logbookMap'));
 			}
 
 			// Update Lang choice within the options system
@@ -140,7 +140,7 @@ class Options extends CI_Controller {
 		function radio() {
 
 			$data['page_title'] = $this->lang->line('options_cloudlog_options');
-			$data['sub_heading'] = "Radio Settings";
+			$data['sub_heading'] = $this->lang->line('options_radio_settings');
 
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('options/radios');
@@ -153,7 +153,7 @@ class Options extends CI_Controller {
 		// Get Language Options
 
 		$data['page_title'] = $this->lang->line('options_cloudlog_options');
-		$data['sub_heading'] = "Radio Settings";
+		$data['sub_heading'] = $this->lang->line('options_radio_settings');
 
 		$this->load->helper(array('form', 'url'));
 
@@ -174,7 +174,7 @@ class Options extends CI_Controller {
 
 			// If theme update is complete set a flashsession with a success note
 			if($radioTimeout_update == TRUE) {
-				$this->session->set_flashdata('success', 'Radio Timeout Warning changed to '.$this->input->post('radioTimeout').' seconds');
+				$this->session->set_flashdata('success', $this->lang->line('options_radio_timeout_warning_changed_to').$this->input->post('radioTimeout').' seconds');
 			}
 
 			// Redirect back to /appearance
@@ -186,7 +186,7 @@ class Options extends CI_Controller {
 	function email() {
 
 		$data['page_title'] = $this->lang->line('options_cloudlog_options');
-		$data['sub_heading'] = "Email";
+		$data['sub_heading'] = $this->lang->line('options_email');
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('options/email');
@@ -199,7 +199,7 @@ class Options extends CI_Controller {
 			// Get Language Options
 	
 			$data['page_title'] = $this->lang->line('options_cloudlog_options');
-			$data['sub_heading'] = "Email";
+			$data['sub_heading'] = $this->lang->line('options_email');
 	
 			$this->load->helper(array('form', 'url'));
 	
@@ -221,7 +221,7 @@ class Options extends CI_Controller {
 	
 				// If emailProtocolupdate update is complete set a flashsession with a success note
 				if($emailProtocolupdate == TRUE) {
-					$this->session->set_flashdata('success', 'Outgoing Email Protocol changed to '.$this->input->post('emailProtocol'));
+					$this->session->set_flashdata('success', $this->lang->line('options_outgoing_email_protocol_changed_to').$this->input->post('emailProtocol'));
 				}
 
 				// Update smtpEncryption choice within the options system
@@ -229,7 +229,7 @@ class Options extends CI_Controller {
 	
 				// If smtpEncryption update is complete set a flashsession with a success note
 				if($smtpEncryptionupdate == TRUE) {
-					$this->session->set_flashdata('success', 'SMTP Encryption changed to '.$this->input->post('smtpEncryption'));
+					$this->session->set_flashdata('success', $this->lang->line('options_smtp_encryption_changed_to').$this->input->post('smtpEncryption'));
 				}
 
 				// Update smtpHost choice within the options system
@@ -237,7 +237,7 @@ class Options extends CI_Controller {
 	
 				// If smtpHost update is complete set a flashsession with a success note
 				if($smtpHostupdate == TRUE) {
-					$this->session->set_flashdata('success', 'SMTP Host changed to '.$this->input->post('smtpHost'));
+					$this->session->set_flashdata('success', $this->lang->line('options_smtp_host_changed_to').$this->input->post('smtpHost'));
 				}
 
 				// Update smtpPort choice within the options system
@@ -245,7 +245,7 @@ class Options extends CI_Controller {
 	
 				// If smtpPort update is complete set a flashsession with a success note
 				if($smtpPortupdate == TRUE) {
-					$this->session->set_flashdata('success', 'SMTP Port changed to '.$this->input->post('smtpPort'));
+					$this->session->set_flashdata('success', $this->lang->line('options_smtp_port_changed_to').$this->input->post('smtpPort'));
 				}
 	
 				// Update smtpUsername choice within the options system
@@ -253,7 +253,7 @@ class Options extends CI_Controller {
 	
 				// If smtpUsername update is complete set a flashsession with a success note
 				if($smtpUsernameupdate == TRUE) {
-					$this->session->set_flashdata('success', 'SMTP Username changed to '.$this->input->post('smtpUsername'));
+					$this->session->set_flashdata('success', $this->lang->line('options_smtp_username_changed_to').$this->input->post('smtpUsername'));
 				}
 
 				// Update smtpPassword choice within the options system
@@ -261,7 +261,7 @@ class Options extends CI_Controller {
 	
 				// If smtpPassword update is complete set a flashsession with a success note
 				if($smtpPasswordupdate == TRUE) {
-					$this->session->set_flashdata('success', 'SMTP Password changed to '.$this->input->post('smtpPassword'));
+					$this->session->set_flashdata('success', $this->lang->line('options_smtp_password_changed_to').$this->input->post('smtpPassword'));
 				}
 
 				// Update emailcrlf choice within the options system
@@ -269,7 +269,7 @@ class Options extends CI_Controller {
 	
 				// If emailcrlf update is complete set a flashsession with a success note
 				if($emailcrlfupdate == TRUE) {
-					$this->session->set_flashdata('success', 'Email CRLF changed to '.$this->input->post('emailcrlf'));
+					$this->session->set_flashdata('success', $this->lang->line('options_email_crlf_changed_to').$this->input->post('emailcrlf'));
 				}
 
 				// Update emailnewline choice within the options system
@@ -277,7 +277,7 @@ class Options extends CI_Controller {
 	
 				// If emailnewline update is complete set a flashsession with a success note
 				if($emailnewlineupdate == TRUE) {
-					$this->session->set_flashdata('success', 'Email Newline changed to '.$this->input->post('emailnewline'));
+					$this->session->set_flashdata('success', $this->lang->line('options_email_newline_changed_to').$this->input->post('emailnewline'));
 				}
 	
 				// Redirect back to /appearance
@@ -288,7 +288,7 @@ class Options extends CI_Controller {
 		function oqrs() {
 
 			$data['page_title'] = $this->lang->line('options_cloudlog_options');
-			$data['sub_heading'] = "OQRS Options";
+			$data['sub_heading'] = $this->lang->line('options_oqrs');
 
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('options/oqrs');
@@ -298,7 +298,7 @@ class Options extends CI_Controller {
 		function oqrs_save() {
 
 		$data['page_title'] = $this->lang->line('options_cloudlog_options');
-		$data['sub_heading'] = "OQRS Options";
+		$data['sub_heading'] = $this->lang->line('options_oqrs');
 
 		$this->load->helper(array('form', 'url'));
 
@@ -309,7 +309,7 @@ class Options extends CI_Controller {
 		$global_oqrs_text = $this->optionslib->update('groupedSearch', $this->input->post('groupedSearch'), null);
 
 		if($global_oqrs_text == TRUE) {
-			$this->session->set_flashdata('success', 'OQRS options have been saved.');
+			$this->session->set_flashdata('success', $this->lang->line('options_oqrs_options_have_been_saved'));
 		}
 
 		redirect('/options/oqrs');
