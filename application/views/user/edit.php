@@ -1,6 +1,6 @@
 <div class="container">
 	<h3>
-	  Edit Account
+	  <?php echo lang('account_edit_account'); ?>
 	  <small class="text-muted"><?php echo $user_name; ?></small>
 	</h3>
 
@@ -32,23 +32,23 @@
 	    <div class="col-md">
 	    	<div class="card">
 		    	<div class="card-header">
-				   	 Account Information
+				   	 <?php echo lang('account_account_information'); ?>
 					</div>
 				<div class="card-body">
 					<div class="form-group">
-						<label>Username</label>
+						<label><?php echo lang('account_username'); ?></label>
 						<input class="form-control" type="text" name="user_name" value="<?php if(isset($user_name)) { echo $user_name; } ?>" />
 						<?php if(isset($username_error)) { echo "<div class=\"small error\">".$username_error."</div>"; } ?>
 					</div>
 
 					<div class="form-group">
-						<label>Email</label>
+						<label><?php echo lang('account_email_address'); ?></label>
 						<input class="form-control" type="text" name="user_email" value="<?php if(isset($user_email)) { echo $user_email; } ?>" />
 						<?php if(isset($email_error)) { echo "<div class=\"small error\">".$email_error."</div>"; } ?>
 					</div>
 
 					<div class="form-group">
-						<label>Password</label>
+						<label><?php echo lang('account_password'); ?></label>
 						<input class="form-control" type="password" name="user_password" />
 						<?php if(isset($password_error)) { echo "<div class=\"small error\">".$password_error."</div>"; } else { ?>
 						<div class="small form-text text-muted">Leave blank to keep existing password</div></td>
@@ -61,11 +61,11 @@
 	    <div class="col-md">
 	    	<div class="card">
 		    	<div class="card-header">
-				   	 Roles
+				   	 <?php echo lang('account_roles'); ?>
 					</div>
 				<div class="card-body">
 					<div class="form-group">
-						<label>Level</label>
+						<label><?php echo lang('account_user_role'); ?></label>
 
 						<?php if($this->session->userdata('user_type') == 99) { ?>
 						<select class="custom-select" name="user_type">
@@ -92,11 +92,11 @@
         <div class="col-md">
             <div class="card">
                 <div class="card-header">
-                    Theme
+                    <?php echo lang('account_theme'); ?>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <label>Stylesheet</label>
+                        <label><?php echo lang('account_stylesheet'); ?></label>
                         <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
 							<?php
 							foreach ($themes as $theme) {
@@ -120,32 +120,32 @@
 	    <div class="col-md">
 	    	<div class="card">
 				<div class="card-header">
-			   	 Personal Information
+			   	 <?php echo lang('account_personal_information'); ?>
 				</div>
 				<div class="card-body">
 					<div class="form-group">
-							<label>First name</label>
+							<label><?php echo lang('account_first_name'); ?></label>
 							<input class="form-control" type="text" name="user_firstname" value="<?php if(isset($user_firstname)) { echo $user_firstname; } ?>" />
 								<?php if(isset($firstname_error)) { echo "<div class=\"small error\">".$firstname_error."</div>"; } else { ?>
 								<?php } ?>
 						</div>
 
 						<div class="form-group">
-							<label>Last name</label>
+							<label><?php echo lang('account_last_name'); ?></label>
 							<input class="form-control" type="text" name="user_lastname" value="<?php if(isset($user_lastname)) { echo $user_lastname; } ?>" />
 								<?php if(isset($lastname_error)) { echo "<div class=\"small error\">".$lastname_error."</div>"; } else { ?>
 								<?php } ?>
 						</div>
 
 						<div class="form-group">
-							<label>Callsign</label>
+							<label><?php echo lang('account_callsign'); ?></label>
 							<input class="form-control" type="text" name="user_callsign" value="<?php if(isset($user_callsign)) { echo $user_callsign; } ?>" />
 								<?php if(isset($callsign_error)) { echo "<div class=\"small error\">".$callsign_error."</div>"; } else { ?>
 								<?php } ?>
 						</div>
 
 						<div class="form-group">
-							<label>Gridsquare</label>
+							<label><?php echo lang('account_gridsquare'); ?></label>
 							<input class="form-control" type="text" name="user_locator" value="<?php if(isset($user_locator)) { echo $user_locator; } ?>" />
 								<?php if(isset($locator_error)) { echo "<div class=\"small error\">".$locator_error."</div>"; } else { ?>
 								<?php } ?>
@@ -157,16 +157,16 @@
 	    <div class="col-md">
 	    	<div class="card">
 				<div class="card-header">
-			   	 Cloudlog Preferences
+			   	 <?php echo lang('account_cloudlog_preferences'); ?>
 				</div>
 				<div class="card-body">
 					<div class="form-group">
-						<label>Timezone</label>
+						<label><?php echo lang('account_timezone'); ?></label>
 						<?php echo form_dropdown('user_timezone', $timezones, $user_timezone); ?>
 					</div>
 
 					<div class="form-group">
-					<label for="SelectDateFormat">Date Format</label>
+					<label for="SelectDateFormat"><?php echo lang('account_date_format'); ?></label>
 						<select name="user_date_format" class="custom-select" id="SelectDateFormat" aria-describedby="SelectDateFormatHelp">
 							<option value="d/m/y" <?php if($user_date_format == "d/m/y") { echo "selected=\"selected\""; } ?>><?php echo date('d/m/y'); ?></option>
 							<option value="d/m/Y" <?php if($user_date_format == "d/m/Y") { echo "selected=\"selected\""; } ?>><?php echo date('d/m/Y'); ?></option>
@@ -178,18 +178,18 @@
 							<option value="M d, Y" <?php if($user_date_format == "M d, Y") { echo "selected=\"selected\""; } ?>><?php echo date('M d, Y'); ?></option>
 							<option value="M d, y" <?php if($user_date_format == "M d, y") { echo "selected=\"selected\""; } ?>><?php echo date('M d, y'); ?></option>
 						</select>
-						<small id="SelectDateFormatHelp" class="form-text text-muted">Select how you would like dates shown when logged into your account.</small>
+						<small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_select_how_you_would_like_dates_shown_when_logged_into_your_account'); ?></small>
 					</div>
 
 					<div class="form-group">
-		                <label for="user_measurement_base">Measurement preference</label>
+		                <label for="user_measurement_base"><?php echo lang('account_measurement_preferences'); ?></label>
 		                <select class="custom-select" id="user_measurement_base" name="user_measurement_base" aria-describedby="user_measurement_base_Help" required>
 		                    <option value ''></option>
                             <option value='K' <?php if($user_measurement_base == "K") { echo "selected=\"selected\""; } ?>>Kilometers</option>
 		                    <option value='M' <?php if($user_measurement_base == "M") { echo "selected=\"selected\""; } ?>>Miles</option>
 		                    <option value='N' <?php if($user_measurement_base == "N") { echo "selected=\"selected\""; } ?>>Nautical miles</option>
 		                </select>
-		                <small id="user_measurement_base_Help" class="form-text text-muted">Choose which unit distances will be shown in.</small>
+		                <small id="user_measurement_base_Help" class="form-text text-muted"><?php echo lang('account_choose_which_unit_distances_will_be_shown_in'); ?></small>
 		            </div>
 				</div>
 			</div>
@@ -202,20 +202,20 @@
 	    <div class="col-md">
 			<div class="card">
 				<div class="card-header">
-			   	 Logbook of the World
+			   	 <?php echo lang('account_logbook_of_the_world'); ?>
 				</div>
 				<div class="card-body">
 					<div class="form-group">
-						<label>Logbook of The World (LoTW) Username</label>
+						<label><?php echo lang('account_logbook_of_the_world_lotw_username'); ?></label>
 						<input class="form-control" type="text" name="user_lotw_name" value="<?php if(isset($user_lotw_name)) { echo $user_lotw_name; } ?>" />
 						<?php if(isset($userlotwname_error)) { echo "<div class=\"small error\">".$userlotwname_error."</div>"; } ?>
 					</div>
 
 					<div class="form-group">
-						<label>Logbook of The World (LoTW) Password</label>
+						<label><?php echo lang('account_logbook_of_the_world_lotw_password'); ?></label>
 						<input class="form-control" type="password" name="user_lotw_password" />
 							<?php if(isset($lotwpassword_error)) { echo "<div class=\"small error\">".$lotwpassword_error."</div>"; } else { ?>
-							<div class="small form-text text-muted">Leave blank to keep existing password</div></td>
+							<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div></td>
 							<?php } ?>
 					</div>
 				</div>
@@ -226,20 +226,20 @@
 	    <div class="col-md">
 			<div class="card">
 				<div class="card-header">
-			   	 eQSL
+			   	 <?php echo lang('account_eqsl'); ?>
 				</div>
 				<div class="card-body">
 					<div class="form-group">
-						<label>eQSL.cc Username</label>
+						<label><?php echo lang('account_eqslcc_username'); ?></label>
 						<input class="form-control" type="text" name="user_eqsl_name" value="<?php if(isset($user_eqsl_name)) { echo $user_eqsl_name; } ?>" />
 							<?php if(isset($eqslusername_error)) { echo "<div class=\"small error\">".$eqslusername_error."</div>"; } ?>
 					</div>
 
 					<div class="form-group">
-						<label>eQSL.cc Password</label>
+						<label><?php echo lang('account_eqslcc_password'); ?></label>
 						<input class="form-control" type="password" name="user_eqsl_password" />
 							<?php if(isset($eqslpassword_error)) { echo "<div class=\"small error\">".$eqslpassword_error."</div>"; } else { ?>
-							<div class="small form-text text-muted">Leave blank to keep existing password</div></td>
+							<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div></td>
 							<?php } ?>
 					</div>
 				</div>
@@ -253,22 +253,22 @@
 	    <div class="col-md">
 	    	<div class="card">
 				<div class="card-header">
-			   		Club Log
+			   		<?php echo lang('account_clublog'); ?>
 				</div>
 				<div class="card-body">
 					<div class="form-group">
-						<label>Club Log Email/Callsign</label>
+						<label><?php echo lang('account_clublog_email_callsign'); ?></label>
 						<input class="form-control" type="text" name="user_clublog_name" value="<?php if(isset($user_clublog_name)) { echo $user_clublog_name; } ?>" />
-							<div class="small form-text text-muted">The Email or Callsign you use to login to Club Log</div></td>
+							<div class="small form-text text-muted"><?php echo lang('account_the_email_or_callsign_you_use_to_login_to_club_log'); ?></div></td>
 							<?php if(isset($userclublogname_error)) { echo "<div class=\"small error\">".$userclublogname_error."</div>"; } ?>
 
 					</div>
 
 					<div class="form-group">
-						<label>Club Log Password</label>
+						<label><?php echo lang('account_clublog_password'); ?></label>
 						<input class="form-control" type="password" name="user_clublog_password" />
 							<?php if(isset($clublogpassword_error)) { echo "<div class=\"small error\">".$clublogpassword_error."</div>"; } else { ?>
-							<div class="small form-text text-muted">Leave blank to keep existing password</div></td>
+							<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div></td>
 							<?php } ?>
 					</div>
 				</div>
@@ -277,11 +277,11 @@
 			<div class="col-md">
 				<div class="card">
 					<div class="card-header">
-						Main menu
+						<?php echo lang('account_main_menu'); ?>
 					</div>
 					<div class="card-body">
 						<div class="form-group">
-							<label for="shownotes">Show notes in the main menu.</label>
+							<label for="shownotes"><?php echo lang('account_show_notes_in_the_main_menu'); ?></label>
 							<select class="custom-select" id="shownotes" name="user_show_notes">
 								<option value="1" <?php if ($user_show_notes == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 								<option value="0" <?php if ($user_show_notes == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -297,41 +297,41 @@
 			<div class="col-md">
 				<div class="card">
 					<div class="card-header">
-						Gridsquare and Location Autocomplete
+						<?php echo lang('account_gridsquare_and_location_autocomplete'); ?>
 					</div>
 					<div class="card-body">
 						<div class="form-row">
 							<div class="form-group col-md-12">
-								<label for="qthlookup">Location auto lookup.</label>
+								<label for="qthlookup"><?php echo lang('account_location_auto_lookup'); ?></label>
 								<select class="custom-select" id="qthlookup" name="user_qth_lookup">
 									<option value="1" <?php if ($user_qth_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 									<option value="0" <?php if ($user_qth_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 								</select>
-								<div class="small form-text text-muted">If set, gridsquare is fetched based on location name.</div></td>
+								<div class="small form-text text-muted"><?php echo lang('account_if_set_gridsquare_is_fetched_based_on_location_name'); ?></div></td>
 							</div>
 							<div class="form-group col-md-12">
-								<label for="sotalookup">SOTA auto lookup gridsquare and name for summit.</label>
+								<label for="sotalookup"><?php echo lang('account_sota_auto_lookup_gridsquare_and_name_for_summit'); ?></label>
 								<select class="custom-select" id="sotalookup" name="user_sota_lookup">
 									<option value="1" <?php if ($user_sota_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 									<option value="0" <?php if ($user_sota_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 								</select>
-								<div class="small form-text text-muted">If set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
+								<div class="small form-text text-muted"><?php echo lang('account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'); ?></div></td>
 							</div>
 							<div class="form-group col-md-12">
-								<label for="wwfflookup">WWFF auto lookup gridsquare and name for reference.</label>
+								<label for="wwfflookup"><?php echo lang('account_wwff_auto_lookup_gridsquare_and_name_for_reference'); ?></label>
 								<select class="custom-select" id="wwfflookup" name="user_wwff_lookup">
 									<option value="1" <?php if ($user_wwff_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 									<option value="0" <?php if ($user_wwff_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 								</select>
-								<div class="small form-text text-muted">If set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
+								<div class="small form-text text-muted"><?php echo lang('account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'); ?></div></td>
 							</div>
 							<div class="form-group col-md-12">
-								<label for="potalookup">POTA auto lookup gridsquare and name for park.</label>
+								<label for="potalookup"><?php echo lang('account_pota_auto_lookup_gridsquare_and_name_for_park'); ?></label>
 								<select class="custom-select" id="potalookup" name="user_pota_lookup">
 									<option value="1" <?php if ($user_pota_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 									<option value="0" <?php if ($user_pota_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 								</select>
-								<div class="small form-text text-muted">If set, name and gridsquare is fetched from the API and filled in location and locator.</div></td>
+								<div class="small form-text text-muted"><?php echo lang('account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'); ?></div></td>
 							</div>
 						</div>
 					</div>
@@ -451,7 +451,7 @@
 			<div class="col-md-6">
 				<div class="card">
 					<div class="card-header">
-						Previous QSL Type
+						<?php echo lang('account_previous_qsl_type'); ?>
 					</div>
 					<div class="card-body">
 						<div class="form-group">
@@ -471,16 +471,16 @@
 			<div class="col-md-6">
 				<div class="card">
 					<div class="card-header">
-						qrz.com/hamqth.com Images
+						<?php echo lang('account_previous_qsl_type'); ?>
 					</div>
 					<div class="card-body">
 						<div class="form-group">
-							<label for="profileimages">Show profile picture of QSO partner from qrz.com/hamqth.com profile in the log QSO section.</label>
+							<label for="profileimages"><?php echo lang('account_show_profile_picture_of_qso_partner_from_qrzcom_hamqthcom_profile_in_the_log_qso_section'); ?></label>
 							<select class="custom-select" id="profileimages" name="user_show_profile_image">
 								<option value="1" <?php if ($user_show_profile_image == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 								<option value="0" <?php if ($user_show_profile_image == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 							</select>
-							<div class="small form-text text-muted">Please set your qrz.com/hamqth.com credentials in the general config file.</div></td>
+							<div class="small form-text text-muted"><?php echo lang('account_please_set_your_qrzcom_hamqthcom_credentials_in_the_general_config_file'); ?></div></td>
 						</div>
 
 					</div>
@@ -493,11 +493,11 @@
 			<div class="col-md">
 				<div class="card">
 					<div class="card-header">
-						AMSAT Status Upload
+						<?php echo lang('account_amsat_status_upload'); ?>
 					</div>
 					<div class="card-body">
 						<div class="form-group">
-							<label for="amsatsatatusupload">Upload status of SAT QSOs to <a href="https://www.amsat.org/status/" target="_blank">https://www.amsat.org/status/</a>.</label>
+							<label for="amsatsatatusupload"><?php echo lang('account_upload_status_of_sat_qsos_to'); ?> <a href="https://www.amsat.org/status/" target="_blank">https://www.amsat.org/status/</a>.</label>
 							<select class="custom-select" id="amsatstatusupload" name="user_amsat_status_upload">
 								<option value="1" <?php if ($user_amsat_status_upload == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 								<option value="0" <?php if ($user_amsat_status_upload == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -512,7 +512,7 @@
 
 	<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 	<br>
-	<button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Account Changes</button>
+	<button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo lang('account_save_account_changes'); ?></button>
 	<br>
 	<br>
 </form>

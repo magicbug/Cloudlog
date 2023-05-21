@@ -54,11 +54,13 @@ class LotwCert extends CI_Model {
 		$this->db->insert('lotw_certs', $data);
 	}
 
-	function update_certificate($user_id, $callsign, $dxcc, $date_created, $date_expires, $cert_key, $general_cert) {
+	function update_certificate($user_id, $callsign, $dxcc, $date_created, $date_expires, $qso_start_date, $qso_end_date, $cert_key, $general_cert) {
 		$data = array(
 		    'cert_dxcc_id' => $dxcc,
 		    'date_created' => $date_created,
 		    'date_expires' => $date_expires,
+		    'qso_start_date' => $qso_start_date,
+		    'qso_end_date' => $qso_end_date,
 		    'cert_key' => $cert_key,
 		    'cert' => $general_cert
 		);

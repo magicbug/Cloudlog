@@ -6,7 +6,7 @@
 
     <div id="distances_div">
         <form class="form-inline">
-            <label class="my-1 mr-2" for="distplot_bands">Band Selection</label>
+            <label class="my-1 mr-2" for="distplot_bands"><?php echo lang('gen_band_selection'); ?></label>
             <select class="custom-select my-1 mr-sm-2"  id="distplot_bands">
                 <?php if (count($sats_available) != 0) { ?>
                     <option value="sat">SAT</option>

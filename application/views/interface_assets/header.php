@@ -89,7 +89,7 @@
 
         	<!-- Notes -->
 		<?php if ($this->session->userdata('user_show_notes') == 1) { ?>
-        	<a class="nav-link" href="<?php echo site_url('notes');?>">Notes</a>
+        	<a class="nav-link" href="<?php echo site_url('notes');?>"><?php echo lang('menu_notes'); ?></a>
 		<?php } ?>
         	<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_analytics'); ?></a>

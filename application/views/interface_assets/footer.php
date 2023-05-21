@@ -1256,8 +1256,11 @@ $(document).on('keypress',function(e) {
           } else {
             $(".radio_timeout_error" ).remove();
             text = '<i class="fas fa-broadcast-tower"></i><span style="margin-left:10px;"></span><b>TX:</b> '+(Math.round(parseInt(data.frequency)/1000)/1000).toFixed(3)+' MHz';
+            if(data.mode != null) {
+               text = text+'<span style="margin-left:10px"></span>'+data.mode;
+            }
             if(data.power != null && data.power != 0) {
-               text = text+'<span style="margin-left:10px"></span>'+data.power+'W';
+               text = text+'<span style="margin-left:10px"></span>'+data.power+' W';
             }
             if(data.prop_mode != null && data.prop_mode != '') {
                text = text+'<span style="margin-left:10px"></span>('+data.prop_mode;
@@ -1408,14 +1411,14 @@ $(document).ready(function(){
 
   if (grid_four_confirmed_count > 0) {
      var span = document.getElementById('confirmed_grids');
-     span.innerText = span.textContent = '('+grid_four_confirmed_count+' grid square'+(grid_four_confirmed_count != 1 ? 's' : '')+') ';
+     span.innerText = span.textContent = '('+grid_four_confirmed_count+' <?php echo lang('gridsquares_grid_squares'); ?>'+(grid_four_confirmed_count != 1 ? 's' : '')+') ';
   }
   if ((grid_four_count-grid_four_confirmed_count) > 0) {
      var span = document.getElementById('worked_grids');
-     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' grid square'+(grid_four_count-grid_four_confirmed_count != 1 ? 's' : '')+') ';
+     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' <?php echo lang('gridsquares_grid_squares'); ?>'+(grid_four_count-grid_four_confirmed_count != 1 ? 's' : '')+') ';
   }
   var span = document.getElementById('sum_grids');
-  span.innerText = span.textContent = ' Total Count: '+grid_four_count+' grid square'+(grid_four_count != 1 ? 's' : '');
+  span.innerText = span.textContent = ' <?php echo lang('gridsquares_total_count'); ?>'+': '+grid_four_count+' <?php echo lang('gridsquares_grid_squares'); ?>'+(grid_four_count != 1 ? 's' : '');
 
   var maidenhead = L.maidenhead().addTo(map);
 
@@ -1547,14 +1550,14 @@ $(document).ready(function(){
 
   if (grid_four_confirmed_count > 0) {
      var span = document.getElementById('confirmed_grids');
-     span.innerText = span.textContent = '('+grid_four_confirmed_count+' grid square'+(grid_four_confirmed_count != 1 ? 's' : '')+') ';
+     span.innerText = span.textContent = '('+grid_four_confirmed_count+' <?php echo lang('gridsquares_grid_squares'); ?>'+(grid_four_confirmed_count != 1 ? 's' : '')+') ';
   }
   if ((grid_four_count-grid_four_confirmed_count) > 0) {
      var span = document.getElementById('activated_grids');
-     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' grid square'+(grid_four_count-grid_four_confirmed_count != 1 ? 's' : '')+') ';
+     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' <?php echo lang('gridsquares_grid_squares'); ?>'+(grid_four_count-grid_four_confirmed_count != 1 ? 's' : '')+') ';
   }
   var span = document.getElementById('sum_grids');
-  span.innerText = span.textContent = ' Total Count: '+grid_four_count+' grid square'+(grid_four_count != 1 ? 's' : '');
+  span.innerText = span.textContent = ' <?php echo lang('gridsquares_total_count'); ?>'+': '+grid_four_count+' <?php echo lang('gridsquares_grid_squares'); ?>'+(grid_four_count != 1 ? 's' : '');
 
   var maidenhead = L.maidenhead().addTo(map);
 

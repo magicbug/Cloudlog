@@ -11,6 +11,7 @@ class User extends CI_Controller {
 			'account',
 			'lotw',
 			'eqsl',
+			'admin',
 		));
 	}
 
@@ -21,7 +22,7 @@ class User extends CI_Controller {
 
 		$data['results'] = $this->user_model->users();
 
-		$data['page_title'] = "User Accounts";
+		$data['page_title'] = $this->lang->line('admin_user_accounts');
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('user/main');
