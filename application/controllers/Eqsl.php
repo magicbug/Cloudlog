@@ -566,8 +566,8 @@ class eqsl extends CI_Controller {
 		$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
 		$file = file_get_contents($image_url, true);
 		if (str_contains($file, 'Error')) {
-			$error = preg_replace('/^\s*Error: /', '', $file);
-			return $error.' (QSO ID: '.$id.')';
+			$error = rtrim(preg_replace('/^\s*Error: /', '', $file));
+			return $error;
 		}
 
 		$dom = new domDocument;
@@ -590,7 +590,6 @@ class eqsl extends CI_Controller {
 			$filename = uniqid().'.jpg';
 			if (file_put_contents('images/eqsl_card_images/' . '/'.$filename, $content) !== false) {
 				$this->Eqsl_images->save_image($id, $filename);
-				print "Image saved (QSO ID: ".$id.").<br />";
 			}
 		}
 		return $error;
@@ -616,20 +615,39 @@ class eqsl extends CI_Controller {
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		if ($this->input->post('eqsldownload') == 'download') {
+			$i = 0;
 			$this->load->model('eqslmethods_model');
 			$qslsnotdownloaded = $this->eqslmethods_model->eqsl_not_yet_downloaded();
+			$eqsl_results = array();
 			foreach ($qslsnotdownloaded->result_array() as $qsl) {
-				$error = $this->bulk_download_image($qsl['COL_PRIMARY_KEY']);
-				if ($error != '') {
-					if ($error == 'Rate Limited') {
+				$result = $this->bulk_download_image($qsl['COL_PRIMARY_KEY']);
+				if ($result != '') {
+					$errors++;
+					if ($result == 'Rate Limited') {
 						break;
 					} else {
-						print "Error: ".$error."<br />";
+						$eqsl_results[] = array(
+							'date' => $qsl['COL_TIME_ON'],
+							'call' => $qsl['COL_CALL'],
+							'mode' => $qsl['COL_MODE'],
+							'submode' => $qsl['COL_SUBMODE'],
+							'status' => $result,
+							'qsoid' => $qsl['COL_PRIMARY_KEY']
+						);
 						continue;
 					}
+				} else {
+					$i++;
 				}
 				sleep(15);
 			}
+			$data['eqsl_results'] = $eqsl_results;
+			$data['eqsl_stats'] = "Successfully downloaded: ".$i." / Errors: ".count($eqsl_results);
+			$data['page_title'] = "eQSL Download Information";
+
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('eqsl/result');
+			$this->load->view('interface_assets/footer');
 		} else {
 
 			$data['page_title'] = "eQSL Card Image Download";
