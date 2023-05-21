@@ -35,7 +35,7 @@
                     <?php echo form_open('options/email_save'); ?>
 
                         <div class="form-group">
-                            <label for="emailProtocol">Outgoing Protocol</label>
+                            <label for="emailProtocol"><?php echo lang('options_outgoing_protocol'); ?></label>
                             <select name="emailProtocol" class="form-control" id="emailProtocol">
                                 <option value="sendmail" <?php if($this->optionslib->get_option('emailProtocol')== "sendmail") { echo "selected=\"selected\""; } ?>>Sendmail</option>
                                 <option value="smtp" <?php if($this->optionslib->get_option('emailProtocol')== "smtp") { echo "selected=\"selected\""; } ?>>SMTP</option>
@@ -43,7 +43,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="smtpEncryption">SMTP Encryption</label>
+                            <label for="smtpEncryption"><?php echo lang('options_smtp_encryption'); ?></label>
                             <select name="smtpEncryption" class="form-control" id="smtpEncryption">
                                 <option value="" <?php if($this->optionslib->get_option('smtpEncryption') == "") { echo "selected=\"selected\""; } ?>>None</option>
                                 <option value="tls" <?php if($this->optionslib->get_option('smtpEncryption') == "tls") { echo "selected=\"selected\""; } ?>>TLS</option>
@@ -53,49 +53,49 @@
 
 
                         <div class="form-group row">
-                            <label for="smtpHost" class="col-sm-2 col-form-label">SMTP Host</label>
+                            <label for="smtpHost" class="col-sm-2 col-form-label"><?php echo lang('options_smtp_host'); ?></label>
                             <div class="col-sm-10">
                                 <input type="text" name="smtpHost" class="form-control" id="smtpHost" value="<?php if($this->optionslib->get_option('smtpHost') != "") { echo $this->optionslib->get_option('smtpHost'); } ?>">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="smtpPort" class="col-sm-2 col-form-label">SMTP Port</label>
+                            <label for="smtpPort" class="col-sm-2 col-form-label"><?php echo lang('options_smtp_port'); ?></label>
                             <div class="col-sm-10">
                                 <input type="number" name="smtpPort" class="form-control" id="smtpPort" value="<?php if($this->optionslib->get_option('smtpPort') != "") { echo $this->optionslib->get_option('smtpPort'); } ?>">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="smtpUsername" class="col-sm-2 col-form-label">SMTP Username</label>
+                            <label for="smtpUsername" class="col-sm-2 col-form-label"><?php echo lang('options_smtp_username'); ?></label>
                             <div class="col-sm-10">
                                 <input type="text" name="smtpUsername" class="form-control" id="smtpUsername" value="<?php if($this->optionslib->get_option('smtpUsername') != "") { echo $this->optionslib->get_option('smtpUsername'); } ?>">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="smtpPassword" class="col-sm-2 col-form-label">SMTP Password</label>
+                            <label for="smtpPassword" class="col-sm-2 col-form-label"><?php echo lang('options_smtp_password'); ?></label>
                             <div class="col-sm-10">
                                 <input type="password" name="smtpPassword" class="form-control" id="smtpPassword"  value="<?php if($this->optionslib->get_option('smtpPassword') != "") { echo $this->optionslib->get_option('smtpPassword'); } ?>">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="emailcrlf" class="col-sm-2 col-form-label">crlf</label>
+                            <label for="emailcrlf" class="col-sm-2 col-form-label"><?php echo lang('options_crlf'); ?></label>
                             <div class="col-sm-10">
                                 <input type="text" name="emailcrlf" class="form-control" id="emailcrlf" value="<?php if($this->optionslib->get_option('emailcrlf') != "") { echo $this->optionslib->get_option('emailcrlf'); } ?>">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="emailnewline" class="col-sm-2 col-form-label">newline</label>
+                            <label for="emailnewline" class="col-sm-2 col-form-label"><?php echo lang('options_newline'); ?></label>
                             <div class="col-sm-10">
                                 <input type="text" name="emailnewline" class="form-control" id="emailnewline" value="<?php if($this->optionslib->get_option('emailnewline') != "") { echo $this->optionslib->get_option('emailnewline'); } ?>">
                             </div>
                         </div>
 
                         <!-- Save the Form -->
-                        <input class="btn btn-primary" type="submit" value="Save" />
+                        <input class="btn btn-primary" type="submit" value="<?php echo lang('options_save'); ?>" />
                     </form>
                 </div>
             </div>

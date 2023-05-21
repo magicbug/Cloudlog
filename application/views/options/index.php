@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-header"><h2 class="card-title"><?php echo $page_title; ?></h2></div>
                 <div class="card-body">
-                    <p>Cloudlog Options are global settings used for all users of the installation, which are overriddden if there's a setting on a user level.</p>
+                    <p><?php echo lang('options_message1'); ?></p>
                 </div>
             </div>
 

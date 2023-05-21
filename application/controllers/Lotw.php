@@ -941,6 +941,14 @@ class Lotw extends CI_Controller {
 			'UVSQ'		=>	"UVSQ-SAT",
 			'CAS-3H'	=>	"LILACSAT-2",
 			'IO-117'	=>	"GREENCUBE",
+			"TEVEL1"	=>	"TEVEL-1",
+			"TEVEL2"	=>	"TEVEL-2",
+			"TEVEL3"	=>	"TEVEL-3",
+			"TEVEL4"	=>	"TEVEL-4",
+			"TEVEL5"	=>	"TEVEL-5",
+			"TEVEL6"	=>	"TEVEL-6",
+			"TEVEL7"	=>	"TEVEL-7",
+			"TEVEL8"	=>	"TEVEL-8",
 		);
 
 		return array_search(strtoupper($satname),$arr,true);

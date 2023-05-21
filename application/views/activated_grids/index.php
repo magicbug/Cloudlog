@@ -6,7 +6,7 @@
 
 	<?php if ($this->uri->segment(1) == "activated_grids" && $this->uri->segment(2) == "band") { ?>
 <form class="form-inline">
-	<label class="my-1 mr-2" for="gridsquare_bands">Band Selection</label>
+	<label class="my-1 mr-2" for="gridsquare_bands"><?php echo lang('gen_band_selection'); ?></label>
 	<select class="custom-select my-1 mr-sm-2"  id="gridsquare_bands"></select>
 </form>
 
@@ -25,14 +25,14 @@
 <div class="container">
 	<?php if ($this->uri->segment(2) == "satellites") { ?>
 		<div class="alert alert-success" role="alert">
-			Confirmed is Green <span id="confirmed_grids"></span>| Activated but not confirmed is Red <span id="activated_grids"></span>| <span id="sum_grids"></span>
+			<?php echo lang('gridsquares_confirmed_is_green'); ?> <span id="confirmed_grids"></span>| <?php echo lang('gridsquares_worked_but_not_confirmed_is_red'); ?> <span id="worked_grids"></span>|<span id="sum_grids"></span><br>
 		</div>
 	<?php } ?>
 
 	<?php if ($this->uri->segment(2) == "band") { ?>
 		<div class="alert alert-success" role="alert">
-			Confirmed is Green <span id="confirmed_grids"></span>| Activated but not confirmed is Red <span id="worked_grids"></span>| <span id="sum_grids"></span><br>
-			[This map does not include satellite, internet or repeater QSOs]
+			<?php echo lang('gridsquares_confirmed_is_green'); ?> <span id="confirmed_grids"></span>| <?php echo lang('gridsquares_worked_but_not_confirmed_is_red'); ?> <span id="worked_grids"></span>|<span id="sum_grids"></span><br>
+			[<?php echo lang('gridsquares_this_map_does_not_include_satellite_internet_or_repeater_qsos'); ?>]
 		</div>
 	<?php } ?>
 </div>

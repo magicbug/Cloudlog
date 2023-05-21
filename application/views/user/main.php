@@ -14,20 +14,20 @@
 
 <div class="card">
   <div class="card-header">
-    User List
+    <?php echo lang('admin_user_list'); ?>
   </div>
   <div class="card-body">
-    <p class="card-text">Cloudlog needs at least one user configured in order to operate.</p>
-    <p class="card-text">Users can be assigned roles which give them different permissions, such as adding QSOs to the logbook and accessing Cloudlog APIs.</p>
-    <p class="card-text">The currently logged-in user is displayed at the upper-right of each page.</p>
+    <p class="card-text"><?php echo lang('admin_user_line1'); ?></p>
+    <p class="card-text"><?php echo lang('admin_user_line2'); ?></p>
+    <p class="card-text"><?php echo lang('admin_user_line3'); ?></p>
     <div class="table-responsive">
 		<table class="table table-striped">
 		  <thead>
 		    <tr>
-		      <th scope="col">User</th>
-		      <th scope="col">E-mail</th>
-		      <th scope="col">Type</th>
-		      <th scope="col">Options</th>
+		      <th scope="col"><?php echo lang('admin_user'); ?></th>
+		      <th scope="col"><?php echo lang('admin_email'); ?></th>
+		      <th scope="col"><?php echo lang('admin_type'); ?></th>
+		      <th scope="col"><?php echo lang('admin_options'); ?></th>
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -41,10 +41,10 @@
 					<td><?php echo $row->user_email; ?></td>
 					<td><?php $l = $this->config->item('auth_level'); echo $l[$row->user_type]; ?></td>
 					<td>
-						<a href="<?php echo site_url('user/edit')."/".$row->user_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-user-edit"></i> Edit</a>
+						<a href="<?php echo site_url('user/edit')."/".$row->user_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-user-edit"></i> <?php echo lang('admin_edit'); ?></a>
 						<?php
 						if ($_SESSION['user_id'] != $row->user_id) {
-							echo "<a href=" . site_url('user/delete'). "/" . $row->user_id . " class=\"btn btn-danger btn-sm\"><i class=\"fas fa-user-minus\"></i> Delete</a>";
+							echo "<a href=" . site_url('user/delete'). "/" . $row->user_id . " class=\"btn btn-danger btn-sm\"><i class=\"fas fa-user-minus\"></i> ".lang('admin_delete')."</a>";
 						}
 						?>
 					</td>
@@ -54,7 +54,7 @@
 		</table>
 	</div>
 		<p>
-			<a class="btn btn-primary" href="<?php echo site_url('user/add'); ?>"><i class="fas fa-user-plus"></i> Create user</a>
+			<a class="btn btn-primary" href="<?php echo site_url('user/add'); ?>"><i class="fas fa-user-plus"></i> <?php echo lang('admin_create_user'); ?></a>
 		</p>
   </div>
 </div>
