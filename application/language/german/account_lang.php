@@ -58,3 +58,34 @@ $lang['account_amsat_status_upload'] = 'AMSAT Status Upload';
 $lang['account_upload_status_of_sat_qsos_to'] = 'Status von SAT QSOs hochladen auf';
 
 $lang['account_logbook_of_the_world'] = 'Logbook of the World';
+$lang['account_logbook_of_the_world_lotw_username'] = 'Logbook of The World (LoTW) Benutzername';
+$lang['account_logbook_of_the_world_lotw_password'] = 'Logbook of The World (LoTW) Passwort';
+$lang['account_leave_blank_to_keep_existing_password'] = 'Leer lassen um das existierende Passwort zu übernehmen';
+
+$lang['account_clublog'] = 'Club Log';
+$lang['account_clublog_email_callsign'] = 'Club Log Email/Rufzeichen';
+$lang['account_clublog_password'] = 'Club Log Passwort';
+$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Die Emailadresse oder Rufzeichen, das für den Club Log Login verwendet wird';
+
+$lang['account_eqsl'] = 'eQSL';
+$lang['account_eqsl_username'] = 'eQSL.cc Benutzername';
+$lang['account_eqsl_password'] = 'eQSL.cc Passwort';
+
+$lang['account_save_account_changes'] = 'Speichere Kontoänderungen';
+$lang['account_create_account'] = 'Konto anlegen';
+
+$lang['account_delete_user_account'] = 'Benutzerkonto löschen';
+$lang['account_are_you_sure_you_want_to_delete_the_user_account'] = 'Bist du sicher, dass du das Benutzerkonto löschen willst';
+$lang['account_yes_delete_this_user'] = 'Ja, Benutzerkonto löschen';
+$lang['account_no_do_not_delete_this_user'] = 'Nein, Benutzerkonto nicht löschen';
+
+$lang['account_forgot_password'] = 'Passwort vergessen?';
+$lang['account_you_can_reset_your_password_here'] = 'Du kannst dein Passwort hier zurücksetzen.';
+$lang['account_reset_password'] = 'Passwort zurücksetzen';
+$lang['account_the_email_field_is_required'] = 'Die Emailadresse ist erforderlich';
+$lang['account_confirm_password'] = 'Bestätige Passwort';
+
+$lang['account_forgot_your_password'] = 'Passwort vergessen?';
+
+$lang['account_login_to_cloudlog'] = 'Anmeldung bei Cloudlog';
+$lang['account_login'] = 'Anmeldung';
