@@ -46,6 +46,7 @@ $lang['general_word_qslcards'] = 'QSL Karten';
 $lang['general_word_qslcard_direct'] = 'Direkt';
 $lang['general_word_qslcard_bureau'] = 'Büro';
 $lang['general_word_qslcard_electronic'] = 'Elektronisch';
+$lang['general_word_qslcard_manager'] = 'Manager';
 $lang['general_word_qslcard_via'] = 'Via';
 $lang['general_word_eqslcard'] = 'eQSL Karte';
 $lang['general_word_eqslcards'] = 'eQSL Karten';
@@ -126,6 +127,8 @@ $lang['gen_from_date'] = 'Ab Datum';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'Dieses QSO wurde bestätigt am';
 
+$lang['error_no_logbook_found'] = 'Keine Logbücher gefunden. Du muss ein Stationslogbuch anlegen! Mach es hier:';
+
 $lang['copy_to_clipboard'] = 'In die Zwischenablage kopieren';
 
 $lang['africa'] = 'Afrika';
@@ -135,3 +138,5 @@ $lang['europe'] = 'Europa';
 $lang['northamerica'] = 'Nord-Amerika';
 $lang['oceania'] = 'Ozeanien';
 $lang['southamerica'] = 'Süd-Amerika';
+
+$lang['gen_band_selection'] = 'Bandauswahl';
