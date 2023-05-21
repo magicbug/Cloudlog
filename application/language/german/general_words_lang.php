@@ -135,3 +135,5 @@ $lang['europe'] = 'Europa';
 $lang['northamerica'] = 'Nord-Amerika';
 $lang['oceania'] = 'Ozeanien';
 $lang['southamerica'] = 'Süd-Amerika';
+
+$lang['gen_band_selection'] = 'Bandauswahl';

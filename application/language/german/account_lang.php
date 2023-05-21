@@ -8,3 +8,53 @@ $lang['account_column2_text'] = 'Wähle Spalte 2';
 $lang['account_column3_text'] = 'Wähle Spalte 3';
 $lang['account_column4_text'] = 'Wähle Spalte 4';
 $lang['account_column5_text'] = 'Wähle Spalte 5 (nur für Logbuch)';
+
+$lang['account_create_user_account'] = 'Benutzerkonto anlegen';
+$lang['account_edit_account'] = 'Benutzerkonto editieren';
+
+$lang['account_account_information'] = 'Bnutzerkonto Informationen';
+$lang['account_username'] = 'Benutzername';
+$lang['account_email_address'] = 'Emailadresse';
+$lang['account_password'] = 'Passwort';
+
+$lang['account_roles'] = 'Rollen';
+$lang['account_user_role'] = 'Benutzerrolle';
+
+$lang['account_theme'] = 'Thema';
+$lang['account_stylesheet'] = 'Stylesheet';
+
+$lang['account_personal_information'] = 'Informationen';
+$lang['account_first_name'] = 'Vorname';
+$lang['account_last_name'] = 'Nachname';
+$lang['account_callsign'] = 'Rufzeichen';
+$lang['account_gridsquare'] = 'Planquadrat';
+
+$lang['account_cloudlog_preferences'] = 'Cloudlog Einstellungen';
+$lang['account_timezone'] = 'Zeitzone';
+$lang['account_date_format'] = 'Datumsformat';
+$lang['account_measurement_preference'] = 'Entfernungsformat';
+$lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Wähle, wie Datumsfelder angezeigt werden sollen, wenn du eingeloggt bist.';
+$lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Wähle, in welcher Einheit Entfernungen angezeigt werden sollen.';
+
+$lang['account_main_menu'] = 'Hauptmenü';
+$lang['account_show_notes_in_the_main_menu'] = 'Zeige Notizen im Hauptmenü';
+
+$lang['account_gridsquare_and_location_autocomplete'] = 'Vervollständigung von Planquadrat und Lokation';
+$lang['account_location_auto_lookup'] = 'Automatische Ermittlung der Lokation.';
+$lang['account_if_set_gridsquare_is_fetched_based_on_location_name'] = 'Wenn aktiviert, wird das Planquadrat basierend auf der Lokation ermittelt.';
+$lang['account_sota_auto_lookup_gridsquare_and_name_for_summit'] = 'Automatische Ermittlung von Planquadrat und Lokation anhand des SOTA Gipfels.';
+$lang['account_wwff_auto_lookup_gridsquare_and_name_for_reference'] = 'Automatische Ermittlung von Planquadrat und Lokation andhand der WWFF Referenz.';
+$lang['account_pota_auto_lookup_gridsquare_and_name_for_park'] = 'Automatische Ermuttlung des Parknamens anhand der POTA Referenz.';
+$lang['account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'] = 'Wenn aktiviert, werden Name und Planquadrat über die API ermittelt und gesetzt.';
+
+$lang['account_previous_qsl_type'] = 'QSL Typ der vorherigen QSOs';
+$lang['account_select_the_type_of_qsl_to_show_in_the_previous_qsos_section'] = 'Wähle den QSL-Typ für die Anzeige der bereits getätigten QSOs.';
+
+$lang['account_qrzcom_hamqthcom_images'] = 'qrz.com/hamqth.com Bilder';
+$lang['account_show_profile_picture_of_qso_partner_from_qrzcom_hamqthcom_profile_in_the_log_qso_section'] = 'Zeige das Profilbild des QSO-Partners aus seinem qrz.com/hamqth.com Profil in der QSO Loggen Sektion.';
+$lang['account_please_set_your_qrzcom_hamqthcom_credentials_in_the_general_config_file'] = 'Bitte qrz.com/hamqth.com Zugangsdaten in der Basiskonfigurationsdatei ablegen.';
+
+$lang['account_amsat_status_upload'] = 'AMSAT Status Upload';
+$lang['account_upload_status_of_sat_qsos_to'] = 'Status von SAT QSOs hochladen auf';
+
+$lang['account_logbook_of_the_world'] = 'Logbook of the World';
