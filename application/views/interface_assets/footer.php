@@ -1255,7 +1255,7 @@ $(document).on('keypress',function(e) {
             }
           } else {
             $(".radio_timeout_error" ).remove();
-            text = '<i class="fas fa-broadcast-tower"></i><span style="margin-left:10px;"></span><b>TX:</b> '+(Math.round(parseInt(data.frequency)/1000)/1000).toFixed(3)+' MHz';
+            text = '<i class="fas fa-broadcast-tower"></i><span style="margin-left:10px;"></span><b>TX:</b> '+(Math.round(parseInt(data.frequency)/100)/10000).toFixed(4)+' MHz';
             if(data.mode != null) {
                text = text+'<span style="margin-left:10px"></span>'+data.mode;
             }
