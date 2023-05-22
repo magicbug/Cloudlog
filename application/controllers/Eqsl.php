@@ -565,7 +565,7 @@ class eqsl extends CI_Controller {
 
 		$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
 		$file = file_get_contents($image_url, true);
-		if (str_contains($file, 'Error')) {
+		if (strpos($file, 'Error') !== false) {
 			$error = rtrim(preg_replace('/^\s*Error: /', '', $file));
 			return $error;
 		}
@@ -639,7 +639,9 @@ class eqsl extends CI_Controller {
 				} else {
 					$i++;
 				}
-				sleep(15);
+				if ($i > 0) {
+					sleep(15);
+				}
 			}
 			$data['eqsl_results'] = $eqsl_results;
 			$data['eqsl_stats'] = "Successfully downloaded: ".$i." / Errors: ".count($eqsl_results);
