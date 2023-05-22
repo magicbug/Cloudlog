@@ -90,6 +90,7 @@ class Eqslmethods_model extends CI_Model {
         $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_RCVD', 'Y');
         $this->db->where('qso_id', NULL);
         $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
+        $this->db->order_by("COL_TIME_ON", "desc");
 
         return $this->db->get();
     }
