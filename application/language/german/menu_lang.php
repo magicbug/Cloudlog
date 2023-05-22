@@ -16,6 +16,8 @@ $lang['menu_post_contest_logging'] = 'Zeitversetztes Contest Logging';
 $lang['menu_view_qsl'] = 'QSL Ansicht';
 $lang['menu_view_eqsl'] = 'eQSL Ansicht';
 
+$lang['menu_notes'] = 'Notizen';
+
 $lang['menu_analytics'] = 'Analysen';
 $lang['menu_statistics'] = 'Statistik';
 $lang['menu_gridsquares'] = 'Planquadrate';
