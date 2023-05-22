@@ -74,7 +74,7 @@ foreach ($qslsnotdownloaded->result_array() as $qsl) {
 			  <input class="form-check-input" type="hidden" name="eqsldownload" id="download" value="download" checked />
 			  <p>Cloudlog will use the eQSL credentials from your Cloudlog user profile to connect to eQSL and download confirmations.</p>
 			</div>
-			<p><div class="alert alert-danger" role="alert">Due to a rate limit of approximately 10 seconds per eQSL picture download calling this function will take a long time to complete! Thus may have to call this function several times depending on the amount of outstanding cards.</div></p>
+			<p><div class="alert alert-danger" role="alert">Due to a rate limit of approximately 10 seconds per eQSL picture download calling this function will take a long time to complete! Thus you may have to call this function several times depending on the amount of outstanding cards. This may run into a script timeout depending on the PHP configuration.</div></p>
 
 		<input class="btn btn-primary" type="submit" value="Download un-synced eQSL cards" />
 
