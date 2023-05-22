@@ -58,16 +58,7 @@ foreach ($qslsnotdownloaded->result_array() as $qsl) {
 	echo "</tr>";
 ?>
 		</tbody></table>
-
-<?php
-	} else {
-		echo "<p>There are no QSOs whose eQSL card images have not yet been downloaded. Go log some more QSOs!</p>";
-	}
-?>
-</div>
-  <div class="card-body">
-		<?php $this->load->view('layout/messages'); ?>
-
+		<br /><br />
 		<?php echo form_open_multipart('eqsl/download');?>
 
 			<div class="form-check">
@@ -79,7 +70,13 @@ foreach ($qslsnotdownloaded->result_array() as $qsl) {
 		<input class="btn btn-primary" type="submit" value="Download un-synced eQSL cards" />
 
 		</form>
-  </div>
+
+<?php
+	} else {
+		echo "<p>There are no QSOs whose eQSL card images have not yet been downloaded. Go log some more QSOs!</p>";
+	}
+?>
+</div>
 
 </div>
 </div>
