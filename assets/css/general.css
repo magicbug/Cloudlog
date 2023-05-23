@@ -437,14 +437,3 @@ div#station_logbooks_linked_table_paginate {
     max-height: calc(100vh - 270px);
 	overflow-y: auto;
 }
-
-
-.station_logbook_decoration{
-    font-weight: bold;
-    font-size: larger;
-}
-
-.station_location_decoration{
-    font-weight: bold;
-    font-size: larger;
-}
