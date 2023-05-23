@@ -23,7 +23,7 @@ $lang['account_user_role'] = 'Роль пользователя';
 $lang['account_theme'] = 'Тема оформления';
 $lang['account_stylesheet'] = 'Шаблон';
 
-$lang['account_personal_iformation'] = 'Персональная информация';
+$lang['account_personal_information'] = 'Персональная информация';
 $lang['account_first_name'] = 'Имя';
 $lang['account_last_name'] = 'Фамилия';
 $lang['account_callsign'] = 'Позывной';
