@@ -426,9 +426,8 @@ function logQso() {
 			vuccr,
 		]];
 
-		table.rows.add(data);
-		table.draw();
-
+		table.rows.add(data).draw();
+		
 		var formdata = new FormData(document.getElementById("qso_input"));
 		$.ajax({
 			url: base_url + 'index.php/qso/saveqso',
@@ -520,6 +519,7 @@ function restoreContestSession(data) {
 							'</tr>');
 					});
 					if (!$.fn.DataTable.isDataTable('.qsotable')) {
+						$.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
 						$('.qsotable').DataTable({
 							"stateSave": true,
 							"pageLength": 25,
@@ -528,7 +528,6 @@ function restoreContestSession(data) {
 							"scrollCollapse": true,
 							"paging": false,
 							"scrollX": true,
-							columnDefs: [ { type: 'date', 'targets': [0] } ],
 							order: [0, 'desc']
 						});
 					}
