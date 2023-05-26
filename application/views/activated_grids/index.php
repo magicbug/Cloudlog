@@ -25,13 +25,13 @@
 <div class="container">
 	<?php if ($this->uri->segment(2) == "satellites") { ?>
 		<div class="alert alert-success" role="alert">
-			<?php echo lang('gridsquares_confirmed_is_green'); ?> <span id="confirmed_grids"></span>| <?php echo lang('gridsquares_worked_but_not_confirmed_is_red'); ?> <span id="worked_grids"></span>|<span id="sum_grids"></span><br>
+			<?php echo lang('gridsquares_confirmed_is_green'); ?> <span id="confirmed_grids"></span>| <?php echo lang('gridsquares_activated_but_not_confirmed_is_red'); ?> <span id="activated_grids"></span>|<span id="sum_grids"></span><br>
 		</div>
 	<?php } ?>
 
 	<?php if ($this->uri->segment(2) == "band") { ?>
 		<div class="alert alert-success" role="alert">
-			<?php echo lang('gridsquares_confirmed_is_green'); ?> <span id="confirmed_grids"></span>| <?php echo lang('gridsquares_worked_but_not_confirmed_is_red'); ?> <span id="worked_grids"></span>|<span id="sum_grids"></span><br>
+			<?php echo lang('gridsquares_confirmed_is_green'); ?> <span id="confirmed_grids"></span>| <?php echo lang('gridsquares_activated_but_not_confirmed_is_red'); ?> <span id="activated_grids"></span>|<span id="sum_grids"></span><br>
 			[<?php echo lang('gridsquares_this_map_does_not_include_satellite_internet_or_repeater_qsos'); ?>]
 		</div>
 	<?php } ?>

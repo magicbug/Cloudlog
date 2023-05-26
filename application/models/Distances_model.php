@@ -256,13 +256,13 @@ class Distances_model extends CI_Model
 
         switch ($measurement_base) {
             case 'M':
-                return round(6371*$ca/1.609344);
+                return ceil(6371*$ca/1.609344);
             case 'K':
-                return round(6371*$ca);
+                return ceil(6371*$ca);
             case 'N':
-                return round(6371*$ca/1.852);
+                return ceil(6371*$ca/1.852);
             default:
-                return round(6371*$ca);
+                return ceil(6371*$ca);
         }
     }
 }
