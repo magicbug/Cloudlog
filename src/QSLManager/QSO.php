@@ -59,6 +59,9 @@ class QSO
 	private string $qsl;
 	private string $lotw;
 	private string $eqsl;
+	/** Lotw callsign info **/
+	private string $callsign;
+	private string $lastupload;
 
 	/**
 	 * @param array $data Does no validation, it's assumed to be a row from the database in array format
@@ -191,6 +194,8 @@ class QSO
 		} else {
 			$this->end = null;
 		}
+		$this->callsign = ($data['callsign'] === null) ? '' :$data['callsign'];
+		$this->lastupload = ($data['lastupload'] === null) ? '' :$data['lastupload'];
 	}
 	
 	/**
@@ -769,6 +774,8 @@ class QSO
 			'cqzone' => $this->getCqzone(),
 			'iota' => $this->getIOTA(),
 			'end' => $this->end === null ? null : $this->end->format("Y-m-d"),
+			'callsign' => $this->callsign,
+			'lastupload' => $this->lastupload,
 		];
 	}
 
