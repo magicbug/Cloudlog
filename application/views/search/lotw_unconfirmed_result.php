@@ -38,6 +38,6 @@ if ($qsos->result() != NULL) {
 
 	<?php
 } else {
-	echo '<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>No duplicate QSO\'s were found.</div>';
+	echo '<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>No QSOs with outstanding LoTW upload were found.</div>';
 }
 ?>

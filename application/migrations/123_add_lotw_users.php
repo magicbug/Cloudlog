@@ -20,8 +20,7 @@ class Migration_add_lotw_users extends CI_Migration
                     'unsigned' => TRUE,
                 ),
                 'lastupload' => array(
-                    'type' => 'timestamp',
-                    'unsigned' => TRUE,
+                    'type' => 'datetime',
                 )
             ));
 
@@ -36,6 +35,8 @@ class Migration_add_lotw_users extends CI_Migration
 
 	public function down()
 	{
+      if ($this->db->table_exists('lotw_users')) {
         $this->dbforge->drop_table('lotw_users');
+      }
 	}
 }
