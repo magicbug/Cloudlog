@@ -9,7 +9,7 @@
 			<a class="btn btn-outline-success btn-sm float-right" href="<?php echo site_url('/lotw/cert_upload'); ?>" role="button"><i class="fas fa-cloud-upload-alt"></i> <?php echo lang('lotw_btn_upload_certificate'); ?></a><i class="fab fa-expeditedssl"></i> <?php echo lang('lotw_title_available_cert'); ?>
 		</div>
 
-		<div class="card-body">
+		<div class="lotw-cert-list">
 			<?php if(isset($error)) { ?>
 				<div class="alert alert-danger" role="alert">
 			  	<?php echo $error; ?>
