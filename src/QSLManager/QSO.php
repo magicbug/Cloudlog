@@ -194,7 +194,8 @@ class QSO
 			$this->end = null;
 		}
 		$this->callsign = ($data['callsign'] === null) ? '' :$data['callsign'];
-		$this->lastupload = ($data['lastupload'] === null) ? '' :$data['lastupload'];
+		$this->lastupload = ($data['lastupload'] === null) ? '' : date($custom_date_format . " H:i", strtotime($data['lastupload']));
+
 	}
 	
 	/**
