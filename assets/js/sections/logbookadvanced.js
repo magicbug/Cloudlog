@@ -58,6 +58,7 @@ function loadQSOTable(rows) {
 	});
 
 	uninitialized.each(function() {
+		$.fn.dataTable.moment(custom_date_format + ' HH:mm');
 		$(this).DataTable({
 			searching: false,
 			responsive: false,
@@ -66,7 +67,6 @@ function loadQSOTable(rows) {
 			"scrollCollapse": true,
 			"paging":         false,
 			"scrollX": true,
-			"order": [ 1, 'desc' ],
 		});
 	});
 
