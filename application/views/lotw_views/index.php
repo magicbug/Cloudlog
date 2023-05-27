@@ -122,7 +122,11 @@
 		</div>
 
 		<div class="card-body">
-			<p><a class="btn btn-outline-success" href="<?php echo site_url('lotw/lotw_upload'); ?>"><?php echo lang('lotw_btn_manual_sync'); ?></a></p>
+			<button class="btn btn-outline-success" hx-get="<?php echo site_url('lotw/lotw_upload'); ?>"  hx-target="#lotw_manual_results">
+				<?php echo lang('lotw_btn_manual_sync'); ?>
+			</button>
+
+			<div id="lotw_manual_results"></div>
 		</div>
 	</div>
 
