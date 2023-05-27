@@ -10,7 +10,7 @@ use DomainException;
 class QSO
 {
 	private string $qsoID;
-	private DateTime $qsoDateTime;
+	private string $qsoDateTime;
 	private string $de;
 	private string $dx;
 	private string $mode;
@@ -123,7 +123,16 @@ class QSO
 
 		$this->qsoID = $data['COL_PRIMARY_KEY'];
 
-		$this->qsoDateTime = DateTime::createFromFormat("Y-m-d H:i:s", $data['COL_TIME_ON'], new DateTimeZone("UTC"));
+		$CI =& get_instance(); 
+		// Get Date format
+		if($CI->session->userdata('user_date_format')) {
+			// If Logged in and session exists
+			$custom_date_format = $CI->session->userdata('user_date_format');
+		} else {
+			// Get Default date format from /config/cloudlog.php
+			$custom_date_format = $CI->config->item('qso_date_format');
+		}
+		$this->qsoDateTime = date($custom_date_format . " H:i", strtotime($data['COL_TIME_ON'])); 
 
 		$this->de = $data['COL_STATION_CALLSIGN'];
 		$this->dx = $data['COL_CALL'];
@@ -170,16 +179,6 @@ class QSO
 		$this->QSLSent = ($data['COL_QSL_SENT'] === null) ? '' : $data['COL_QSL_SENT'];
 		$this->QSLSentVia = ($data['COL_QSL_SENT_VIA'] === null) ? '' : $data['COL_QSL_SENT_VIA'];
 		$this->QSLVia = ($data['COL_QSL_VIA'] === null) ? '' : $data['COL_QSL_VIA'];
-
-		$CI =& get_instance(); 
-		// Get Date format
-		if($CI->session->userdata('user_date_format')) {
-			// If Logged in and session exists
-			$custom_date_format = $CI->session->userdata('user_date_format');
-		} else {
-			// Get Default date format from /config/cloudlog.php
-			$custom_date_format = $CI->config->item('qso_date_format');
-		}
 		
 		$this->qsl = $this->getQslString($data, $custom_date_format);
 		$this->lotw = $this->getLotwString($data, $custom_date_format);
@@ -187,7 +186,7 @@ class QSO
 		
 		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : $data['COL_CQZ'];
 		$this->state = ($data['COL_STATE'] === null) ? '' :$data['COL_STATE'];
-		$this->dxcc = ($data['name'] === null) ? '- NONE -' :$data['name'];
+		$this->dxcc = ($data['name'] === null) ? '- NONE -' : ucwords(strtolower($data['name']), "- (/");
 		$this->iota = ($data['COL_IOTA'] === null) ? '' :$data['COL_IOTA'];
 		if (array_key_exists('end', $data)) {
 			$this->end = ($data['end'] === null) ? null : DateTime::createFromFormat("Y-m-d", $data['end'], new DateTimeZone('UTC'));
@@ -413,7 +412,7 @@ class QSO
 	/**
 	 * @return DateTime
 	 */
-	public function getQsoDateTime(): DateTime
+	public function getQsoDateTime(): string
 	{
 		return $this->qsoDateTime;
 	}
@@ -754,7 +753,7 @@ class QSO
 	{
 		return [
 			'qsoID' => $this->qsoID,
-			'qsoDateTime' => $this->qsoDateTime->format("Y-m-d H:i"),
+			'qsoDateTime' => $this->qsoDateTime,
 			'de' => $this->de,
 			'dx' => $this->dx,
 			'mode' => $this->getFormattedMode(),
