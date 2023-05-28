@@ -11,8 +11,11 @@ class Visitor extends CI_Controller {
         if($method == "config") {
             $this->$method();
         }
-        elseif($method == "map") {
+		elseif($method == "map") {
             $this->map($method);
+        }
+        elseif($method == "radio_display_component") {
+            $this->radio_display_component($method);
         }
         elseif($method == "satellites") {
             $this->satellites($method);
@@ -74,6 +77,8 @@ class Visitor extends CI_Controller {
 
                 $this->load->model('cat');
 
+                $data['radio_status'] = $this->cat->recent_status();
+
                 // Store info
                 $data['todays_qsos'] = $this->logbook_model->todays_qsos($logbooks_locations_array);
                 $data['total_qsos'] = $this->logbook_model->total_qsos($logbooks_locations_array);
@@ -124,6 +129,13 @@ class Visitor extends CI_Controller {
         }
 	}
 	
+	public function radio_display_component() {
+		$this->load->model('cat');
+
+		$data['radio_status'] = $this->cat->recent_status();
+		$this->load->view('components/radio_display_table', $data);
+	}
+
     public function map() {
 		$this->load->model('logbook_model');
 		
@@ -439,12 +451,5 @@ class Visitor extends CI_Controller {
 		} else {
 			return false;
 		}
-	}
-
-	public function radio_display_component() {
-		$this->load->model('cat');
-
-		$data['radio_status'] = $this->cat->recent_status();
-		$this->load->view('components/radio_display_table', $data);
 	}
 }
