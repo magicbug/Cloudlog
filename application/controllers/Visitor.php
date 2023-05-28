@@ -441,7 +441,7 @@ class Visitor extends CI_Controller {
 		}
 	}
 
-	function radio_display_component() {
+	public function radio_display_component() {
 		$this->load->model('cat');
 
 		$data['radio_status'] = $this->cat->recent_status();
