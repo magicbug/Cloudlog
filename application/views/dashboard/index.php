@@ -161,7 +161,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
   	<div class="table-responsive">
 
 
-		<div id="radio_display" hx-get="<?php echo site_url('dashboard/radio_display_component'); ?>" hx-trigger="load every 5s"></div>
+		<div id="radio_display" hx-get="<?php echo site_url('dashboard/radio_display_component'); ?>" hx-trigger="load, every 5s"></div>
 
     	<table class="table table-striped">
 			<tr class="titles">
