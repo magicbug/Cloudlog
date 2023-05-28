@@ -100,6 +100,7 @@ class Logbookadvanced_model extends CI_Model {
 			FROM " . $this->config->item('table_name') . " qsos
 			INNER JOIN station_profile ON qsos.station_id=station_profile.station_id
 			LEFT OUTER JOIN dxcc_entities ON qsos.col_dxcc=dxcc_entities.adif
+			LEFT OUTER JOIN lotw_users ON qsos.col_call=lotw_users.callsign
 			WHERE station_profile.user_id =  ?
 			$where
 			ORDER BY qsos.COL_TIME_ON desc, qsos.COL_PRIMARY_KEY desc
