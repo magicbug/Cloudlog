@@ -80,6 +80,18 @@ class Search extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
+	// Searches for unconfirmed Lotw QSOs where QSO partner has uploaded to LoTW after the QSO date
+	public function lotw_unconfirmed() {
+		$this->load->model('stations');
+
+		$data['station_profile'] = $this->stations->all_of_user();
+		$data['page_title'] = "QSOs unconfirmed on LoTW, but the callsign has uploaded to LoTW after QSO date";
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('search/lotw_unconfirmed');
+		$this->load->view('interface_assets/footer');
+	}
+
     function json_result() {
           if(isset($_POST['search'])) {
 			  $result = $this->fetchQueryResult($_POST['search'], false);

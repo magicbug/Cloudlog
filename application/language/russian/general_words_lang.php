@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['error_no_active_station_profile'] = 'Внимание: вам нужно назначить активный профиль месторасположения станции.';
 
-$lang['notice_turn_the_radio_on'] = 'За сегодня ни одного QSO; время вернуться к радио!';
+$lang['notice_turn_the_radio_on'] = 'За сегодня ни одного QSO, время вернуться к радио!';
 
 $lang['general_word_important'] = 'Важно';
 $lang['general_word_info'] = 'Информация';
@@ -48,9 +48,9 @@ $lang['general_word_qslcard_direct'] = 'Напрямую';
 $lang['general_word_qslcard_bureau'] = 'Бюро';
 $lang['general_word_qslcard_electronic'] = 'Электронное';
 $lang['general_word_qslcard_manager'] = 'Менеджер';
-$lang['general_word_qslcard_via'] = 'via';
-$lang['general_word_eqslcards'] = 'eQSL Cards';
-$lang['general_word_lotw'] = 'Logbook of the World';
+$lang['general_word_qslcard_via'] = 'через';
+$lang['general_word_eqslcards'] = 'eQSL';
+$lang['general_word_lotw'] = 'LotW';
 
 
 
@@ -97,6 +97,7 @@ $lang['gen_hamradio_logbook'] = 'Журнал';
 
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
+$lang['gen_hamradio_deleted_dxcc'] = 'Удалённые DXCC';
 $lang['gen_hamradio_continent'] = 'Континент';
 $lang['gen_hamradio_usa_state'] = 'Штат США';
 $lang['gen_hamradio_county_reference'] = 'Графство США';
@@ -116,10 +117,10 @@ $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
 
 // Dashboard Words
-$lang['dashboard_you_have_had'] = 'You have had';
+$lang['dashboard_you_have_had'] = '';
 $lang['dashboard_qsos_today'] = 'QSOs сегодня!';
-$lang['dashboard_qso_breakdown'] = 'QSOs Breakdown';
-$lang['dashboard_countries_breakdown'] = 'Countries Breakdown';
+$lang['dashboard_qso_breakdown'] = 'Статистика QSO';
+$lang['dashboard_countries_breakdown'] = 'Статистика по странам';
 
 $lang['gen_from_date'] = 'Начиная с даты';
 
@@ -136,3 +137,6 @@ $lang['europe'] = 'Европа';
 $lang['northamerica'] = 'Северная Америка';
 $lang['oceania'] = 'Океания';
 $lang['southamerica'] = 'Южная Америка';
+
+
+$lang['gen_band_selection'] = 'Выбор диапазона';

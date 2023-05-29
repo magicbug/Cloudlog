@@ -46,22 +46,22 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 ?>
 <div class="container dashboard">
 <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
-
+	
 	<?php if($this->optionslib->get_option('dashboard_banner') != "false") { ?>
 	<?php if($todays_qsos >= 1) { ?>
 		<div class="alert alert-success" role="alert">
-			  <?php echo $this->lang->line('dashboard_you_have_had'); ?> <strong><?php echo $todays_qsos; ?></strong> <?php echo $this->lang->line('dashboard_qsos_today'); ?>
+			  <?php echo lang('dashboard_you_have_had'); ?> <strong><?php echo $todays_qsos; ?></strong> <?php echo lang('dashboard_qsos_today'); ?>
 		</div>
 	<?php } else { ?>
 		<div class="alert alert-warning" role="alert">
-			  <span class="badge badge-info"><?php echo $this->lang->line('general_word_important'); ?></span> <i class="fas fa-broadcast-tower"></i> <?php echo $this->lang->line('notice_turn_the_radio_on'); ?>
+			  <span class="badge badge-info"><?php echo lang('general_word_important'); ?></span> <i class="fas fa-broadcast-tower"></i> <?php echo lang('notice_turn_the_radio_on'); ?>
 		</div>
 	<?php } ?>
 	<?php } ?>
 
 	<?php if($current_active == 0) { ?>
 		<div class="alert alert-danger" role="alert">
-		  <?php echo $this->lang->line('error_no_active_station_profile'); ?>
+		  <?php echo lang('error_no_active_station_profile'); ?>
 		</div>
 	<?php } ?>
 
@@ -70,13 +70,13 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			$current_date = date('Y-m-d H:i:s');
 			if($this->LotwCert->lotw_cert_expired($this->session->userdata('user_id'), $current_date) == true) { ?>
 			<div class="alert alert-danger" role="alert">
-				<span class="badge badge-info"><?php echo $this->lang->line('general_word_important'); ?></span> <i class="fas fa-hourglass-end"></i> <?php echo $this->lang->line('lotw_cert_expired'); ?>
+				<span class="badge badge-info"><?php echo lang('general_word_important'); ?></span> <i class="fas fa-hourglass-end"></i> <?php echo lang('lotw_cert_expired'); ?>
 			</div>
 		<?php } ?>
 
 		<?php if($this->LotwCert->lotw_cert_expiring($this->session->userdata('user_id'), $current_date) == true) { ?>
 			<div class="alert alert-warning" role="alert">
-				<span class="badge badge-info"><?php echo $this->lang->line('general_word_important'); ?></span> <i class="fas fa-hourglass-half"></i> <?php echo $this->lang->line('lotw_cert_expiring'); ?>
+				<span class="badge badge-info"><?php echo lang('general_word_important'); ?></span> <i class="fas fa-hourglass-half"></i> <?php echo lang('lotw_cert_expiring'); ?>
 			</div>
 		<?php } ?>
 	<?php } ?>
@@ -99,12 +99,12 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
     		<thead>
 				<tr class="titles">
-					<th><?php echo $this->lang->line('general_word_date'); ?></th>
+					<th><?php echo lang('general_word_date'); ?></th>
 
 					<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-					<th><?php echo $this->lang->line('general_word_time'); ?></th>
+					<th><?php echo lang('general_word_time'); ?></th>
 					<?php } ?>
-					<th><?php echo $this->lang->line('gen_hamradio_call'); ?></th>
+					<th><?php echo lang('gen_hamradio_call'); ?></th>
 					<?php
 					echo_table_header_col($this, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
 					echo_table_header_col($this, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
@@ -160,47 +160,26 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 	<?php } ?>
   	<div class="table-responsive">
 
-		<?php if($radio_status->num_rows()) { ?>
 
-			<table class="table table-striped">
-					<tr class="titles">
-						<td colspan="2"><i class="fas fa-broadcast-tower"></i> Radio Status</td>
-					</tr>
-
-					<?php foreach ($radio_status->result_array() as $row) { ?>
-					<tr>
-						<td><?php echo $row['radio']; ?></td>
-						<td>
-							<?php if($row['prop_mode'] == 'SAT') { ?>
-								<?php echo $row['sat_name']; ?>
-							<?php } else { ?>
-								<?php echo $this->frequency->hz_to_mhz($row['frequency']); ?> (<?php echo $row['mode']; ?>)
-							<?php } ?>
-						</td>
-					</tr>
-					<?php } ?>
-
-				</table>
-
-		<?php } ?>
+		<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component'); ?>" hx-trigger="load, every 5s"></div>
 
     	<table class="table table-striped">
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-chart-bar"></i> <?php echo $this->lang->line('dashboard_qso_breakdown'); ?></td>
+				<td colspan="2"><i class="fas fa-chart-bar"></i> <?php echo lang('dashboard_qso_breakdown'); ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_total'); ?></td>
+				<td width="50%"><?php echo lang('general_word_total'); ?></td>
 				<td width="50%"><?php echo $total_qsos; ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_year'); ?></td>
+				<td width="50%"><?php echo lang('general_word_year'); ?></td>
 				<td width="50%"><?php echo $year_qsos; ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_month'); ?></td>
+				<td width="50%"><?php echo lang('general_word_month'); ?></td>
 				<td width="50%"><?php echo $month_qsos; ?></td>
 			</tr>
 		</table>
@@ -209,15 +188,15 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
 		<table class="table table-striped">
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-globe-europe"></i> <?php echo $this->lang->line('dashboard_countries_breakdown'); ?></td>
+				<td colspan="2"><i class="fas fa-globe-europe"></i> <?php echo lang('dashboard_countries_breakdown'); ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_worked'); ?></td>
+				<td width="50%"><?php echo lang('general_word_worked'); ?></td>
 				<td width="50%"><?php echo $total_countries; ?></td>
 			</tr>
 			<tr>
-				<td width="50%"><a href="#" onclick="return false" data-original-title="QSL Cards / eQSL / LoTW" data-toggle="tooltip"><?php echo $this->lang->line('general_word_confirmed'); ?></a></td>
+				<td width="50%"><a href="#" onclick="return false" data-original-title="QSL Cards / eQSL / LoTW" data-toggle="tooltip"><?php echo lang('general_word_confirmed'); ?></a></td>
 				<td width="50%">
 					<?php echo $total_countries_confirmed_paper; ?> /
 					<?php echo $total_countries_confirmed_eqsl; ?> /
@@ -226,7 +205,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_needed'); ?></td>
+				<td width="50%"><?php echo lang('general_word_needed'); ?></td>
 				<td width="50%"><?php echo $total_countries_needed; ?></td>
 			</tr>
 		</table>
@@ -234,21 +213,21 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_qsl_sent != 0 || $total_qsl_rcvd != 0 || $total_qsl_requested != 0)) { ?>
 		<table class="table table-striped">
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-envelope"></i> <?php echo $this->lang->line('general_word_qslcards'); ?></td>
+				<td colspan="2"><i class="fas fa-envelope"></i> <?php echo lang('general_word_qslcards'); ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_sent'); ?></td>
+				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
 				<td width="50%"><?php echo $total_qsl_sent; ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_received'); ?></td>
+				<td width="50%"><?php echo lang('general_word_received'); ?></td>
 				<td width="50%"><?php echo $total_qsl_rcvd; ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_requested'); ?></td>
+				<td width="50%"><?php echo lang('general_word_requested'); ?></td>
 				<td width="50%"><?php echo $total_qsl_requested; ?></td>
 			</tr>
 		</table>
@@ -257,16 +236,16 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_eqsl_sent != 0 || $total_eqsl_rcvd != 0)) { ?>
 		<table class="table table-striped">
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-address-card"></i> <?php echo $this->lang->line('general_word_eqslcards'); ?></td>
+				<td colspan="2"><i class="fas fa-address-card"></i> <?php echo lang('general_word_eqslcards'); ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_sent'); ?></td>
+				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
 				<td width="50%"><?php echo $total_eqsl_sent; ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_received'); ?></td>
+				<td width="50%"><?php echo lang('general_word_received'); ?></td>
 				<td width="50%"><?php echo $total_eqsl_rcvd; ?></td>
 			</tr>
 		</table>
@@ -275,16 +254,16 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_lotw_sent != 0 || $total_lotw_rcvd != 0)) { ?>
 		<table class="table table-striped">
 			<tr class="titles">
-				<td colspan="2"><i class="fas fa-list"></i> <?php echo $this->lang->line('general_word_lotw'); ?></td>
+				<td colspan="2"><i class="fas fa-list"></i> <?php echo lang('general_word_lotw'); ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_sent'); ?></td>
+				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
 				<td width="50%"><?php echo $total_lotw_sent; ?></td>
 			</tr>
 
 			<tr>
-				<td width="50%"><?php echo $this->lang->line('general_word_received'); ?></td>
+				<td width="50%"><?php echo lang('general_word_received'); ?></td>
 				<td width="50%"><?php echo $total_lotw_rcvd; ?></td>
 			</tr>
 		</table>

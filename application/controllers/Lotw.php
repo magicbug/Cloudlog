@@ -156,7 +156,7 @@ class Lotw extends CI_Controller {
         	} else {
         		// Certificate is in the system time to update
 
-				$this->LotwCert->update_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $info['dxcc-id'], $info['validFrom'], $info['validTo_Date'], $info['pem_key'], $info['general_cert']);
+				$this->LotwCert->update_certificate($this->session->userdata('user_id'), $info['issued_callsign'], $info['dxcc-id'], $info['validFrom'], $info['validTo_Date'], $info['qso-first-date'], $info['qso-end-date'], $info['pem_key'], $info['general_cert']);
 
         		// Cert success flash message
         		$this->session->set_flashdata('Success', $info['issued_callsign'].' Certificate Updated.');
@@ -941,6 +941,14 @@ class Lotw extends CI_Controller {
 			'UVSQ'		=>	"UVSQ-SAT",
 			'CAS-3H'	=>	"LILACSAT-2",
 			'IO-117'	=>	"GREENCUBE",
+			"TEVEL1"	=>	"TEVEL-1",
+			"TEVEL2"	=>	"TEVEL-2",
+			"TEVEL3"	=>	"TEVEL-3",
+			"TEVEL4"	=>	"TEVEL-4",
+			"TEVEL5"	=>	"TEVEL-5",
+			"TEVEL6"	=>	"TEVEL-6",
+			"TEVEL7"	=>	"TEVEL-7",
+			"TEVEL8"	=>	"TEVEL-8",
 		);
 
 		return array_search(strtoupper($satname),$arr,true);

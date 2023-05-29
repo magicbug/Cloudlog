@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /*
-	
+
 	Activated_grids Controller
-		
+
 */
 
 class Activated_grids extends CI_Controller {
@@ -14,6 +14,15 @@ class Activated_grids extends CI_Controller {
     *   - Band page provide a band dropdown list
     *   - Find somewhere in the main menu to add a button to it
     */
+	function __construct()
+	{
+		parent::__construct();
+
+		// Load language files
+		$this->lang->load(array(
+			'gridsquares',
+		));
+	}
 
 
 	public function index() {
@@ -77,21 +86,19 @@ class Activated_grids extends CI_Controller {
 						if ($this->config->item('map_6digit_grids')) {
 							$grid_six = strtoupper(substr($subsquare,0,6));
 						}
-		
+
 						// Check if 2 Char is in array
-						if(!in_array($grid_two, $array_grid_2char)){
-							array_push($array_grid_2char, $grid_two);	
+						if(!in_array($grid_two, $array_confirmed_grid_2char)){
+							array_push($array_confirmed_grid_2char, $grid_two);
 						}
-		
-		
-						if(!in_array($grid_four, $array_grid_4char)){
-							array_push($array_grid_4char, $grid_four);	
+
+						if(!in_array($grid_four, $array_confirmed_grid_4char)){
+							array_push($array_confirmed_grid_4char, $grid_four);
 						}
-		
-		
+
 						if ($this->config->item('map_6digit_grids')) {
-							if(!in_array($grid_six, $array_grid_6char)){
-								array_push($array_grid_6char, $grid_six);	
+							if(!in_array($grid_six, $array_confirmed_grid_6char)){
+								array_push($array_confirmed_grid_6char, $grid_six);
 							}
 						}
 					}
@@ -103,21 +110,19 @@ class Activated_grids extends CI_Controller {
 					if ($this->config->item('map_6digit_grids')) {
 						$grid_6char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,6));
 					}
-	
+
 					// Check if 2 Char is in array
 					if(!in_array($grid_2char_confirmed, $array_confirmed_grid_2char)){
-						array_push($array_confirmed_grid_2char, $grid_2char_confirmed);	
+						array_push($array_confirmed_grid_2char, $grid_2char_confirmed);
 					}
-	
-	
+
 					if(!in_array($grid_4char_confirmed, $array_confirmed_grid_4char)){
-						array_push($array_confirmed_grid_4char, $grid_4char_confirmed);	
+						array_push($array_confirmed_grid_4char, $grid_4char_confirmed);
 					}
-	
-	
+
 					if ($this->config->item('map_6digit_grids')) {
 						if(!in_array($grid_6char_confirmed, $array_confirmed_grid_6char)){
-							array_push($array_confirmed_grid_6char, $grid_6char_confirmed);	
+							array_push($array_confirmed_grid_6char, $grid_6char_confirmed);
 						}
 					}
 
@@ -144,21 +149,19 @@ class Activated_grids extends CI_Controller {
 						if ($this->config->item('map_6digit_grids')) {
 							$grid_six = strtoupper(substr($subsquare,0,6));
 						}
-		
+
 						// Check if 2 Char is in array
 						if(!in_array($grid_two, $array_grid_2char)){
-							array_push($array_grid_2char, $grid_two);	
+							array_push($array_grid_2char, $grid_two);
 						}
-		
-		
+
 						if(!in_array($grid_four, $array_grid_4char)){
-							array_push($array_grid_4char, $grid_four);	
+							array_push($array_grid_4char, $grid_four);
 						}
-		
-		
+
 						if ($this->config->item('map_6digit_grids')) {
 							if(!in_array($grid_six, $array_grid_6char)){
-								array_push($array_grid_6char, $grid_six);	
+								array_push($array_grid_6char, $grid_six);
 							}
 						}
 					}
@@ -170,21 +173,19 @@ class Activated_grids extends CI_Controller {
 					if ($this->config->item('map_6digit_grids')) {
 						$grid_six = strtoupper(substr($row->SAT_SQUARE,0,6));
 					}
-	
+
 					// Check if 2 Char is in array
 					if(!in_array($grid_two, $array_grid_2char)){
-						array_push($array_grid_2char, $grid_two);	
+						array_push($array_grid_2char, $grid_two);
 					}
-	
-	
+
 					if(!in_array($grid_four, $array_grid_4char)){
-						array_push($array_grid_4char, $grid_four);	
+						array_push($array_grid_4char, $grid_four);
 					}
-	
-	
+
 					if ($this->config->item('map_6digit_grids')) {
 						if(!in_array($grid_six, $array_grid_6char)){
-							array_push($array_grid_6char, $grid_six);	
+							array_push($array_grid_6char, $grid_six);
 						}
 					}
 
@@ -205,7 +206,6 @@ class Activated_grids extends CI_Controller {
 		    return '[' . implode(',', $temp) . ']';
 		}
 
-
 		$data['grid_2char_confirmed'] = js_array($array_confirmed_grid_2char);
 		$data['grid_4char_confirmed'] = js_array($array_confirmed_grid_4char);
 		$data['grid_6char_confirmed'] = js_array($array_confirmed_grid_6char);
@@ -219,7 +219,6 @@ class Activated_grids extends CI_Controller {
 		$this->load->view('activated_grids/index.php');
 		$this->load->view('interface_assets/footer');
 	}
-	
 
 	public function band($band)
 	{
@@ -257,16 +256,16 @@ class Activated_grids extends CI_Controller {
 
 				// Check if 2 Char is in array
 				if(!in_array($grid_2char_confirmed, $array_grid_2char_confirmed)){
-					array_push($array_grid_2char_confirmed, $grid_2char_confirmed);	
+					array_push($array_grid_2char_confirmed, $grid_2char_confirmed);
 				}
 
 				if(!in_array($grid_4char_confirmed, $array_grid_4char_confirmed)){
-					array_push($array_grid_4char_confirmed, $grid_4char_confirmed);	
+					array_push($array_grid_4char_confirmed, $grid_4char_confirmed);
 				}
 
 				if ($this->config->item('map_6digit_grids')) {
 					if(!in_array($grid_6char_confirmed, $array_grid_6char_confirmed)){
-						array_push($array_grid_6char_confirmed, $grid_6char_confirmed);	
+						array_push($array_grid_6char_confirmed, $grid_6char_confirmed);
 					}
 				}
 			}
@@ -287,18 +286,18 @@ class Activated_grids extends CI_Controller {
 
 				// Check if 2 Char is in array
 				if(!in_array($grid_two, $array_grid_2char)){
-					array_push($array_grid_2char, $grid_two);	
+					array_push($array_grid_2char, $grid_two);
 				}
 
 
 				if(!in_array($grid_four, $array_grid_4char)){
-					array_push($array_grid_4char, $grid_four);	
+					array_push($array_grid_4char, $grid_four);
 				}
 
 
 				if ($this->config->item('map_6digit_grids')) {
 					if(!in_array($grid_six, $array_grid_6char)){
-						array_push($array_grid_6char, $grid_six);	
+						array_push($array_grid_6char, $grid_six);
 					}
 				}
 

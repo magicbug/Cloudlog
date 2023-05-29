@@ -1,6 +1,6 @@
 <div class="container">
     <h3>
-        Create User Account
+	<?php echo lang('account_create_user_account'); ?>
     </h3>
     <?php if($this->session->flashdata('notice')) { ?>
     <div id="message">
@@ -16,26 +16,26 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                        Account Information
+                        <?php echo lang('account_account_information'); ?>
                     </div>
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label>Username</label>
+                            <label><?php echo lang('account_username'); ?></label>
                             <input class="form-control" type="text" name="user_name"
                                 value="<?php if(isset($user_name)) { echo $user_name; } ?>" />
                             <?php if(isset($username_error)) { echo "<div class=\"small error\">".$username_error."</div>"; } ?>
                         </div>
 
                         <div class="form-group">
-                            <label>Email Address</label>
+                            <label><?php echo lang('account_email_address'); ?></label>
                             <input class="form-control" type="text" name="user_email"
                                 value="<?php if(isset($user_email)) { echo $user_email; } ?>" />
                             <?php if(isset($email_error)) { echo "<div class=\"small error\">".$email_error."</div>"; } ?>
                         </div>
 
                         <div class="form-group">
-                            <label>Password</label>
+                            <label><?php echo lang('account_password'); ?></label>
                             <input class="form-control" type="password" name="user_password"
                                 value="<?php if(isset($user_password)) { echo $user_password; } ?>" />
                             <?php if(isset($password_error)) { echo "<div class=\"small error\">".$password_error."</div>"; } ?>
@@ -48,11 +48,11 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                        Roles
+                        <?php echo lang('account_roles'); ?>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label>User Role</label>
+                            <label><?php echo lang('account_user_role'); ?></label>
                             <select class="custom-select" name="user_type">
                                 <?php
 										$levels = $this->config->item('auth_level');
@@ -77,12 +77,12 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                        Theme
+                        <?php echo lang('account_theme'); ?>
                     </div>
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label for="user_stylesheet">Stylesheet</label>
+                            <label for="user_stylesheet"><?php echo lang('account_stylesheet'); ?></label>
                             <select class="custom-select" id="user_stylesheet" name="user_stylesheet" required>
                                 <?php
 				foreach ($themes as $theme) {
@@ -105,32 +105,32 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                        Personal Information
+                        <?php echo lang('account_personal_information'); ?>
                     </div>
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label>First Name</label>
+                            <label><?php echo lang('account_first_name'); ?></label>
                             <input class="form-control" type="text" name="user_firstname"
                                 value="<?php if(isset($user_firstname)) { echo $user_firstname; } ?>" />
                             <?php if(isset($firstname_error)) { echo "<div class=\"small error\">".$firstname_error."</div>"; } ?>
                         </div>
                         <div class="form-group">
-                            <label>Last Name</label>
+                            <label><?php echo lang('account_last_name'); ?></label>
                             <input class="form-control" type="text" name="user_lastname"
                                 value="<?php if(isset($user_lastname)) { echo $user_lastname; } ?>" />
                             <?php if(isset($lastname_error)) { echo "<div class=\"small error\">".$lastname_error."</div>"; } ?>
                         </div>
 
                         <div class="form-group">
-                            <label>Callsign</label>
+                            <label><?php echo lang('account_callsign'); ?></label>
                             <input class="form-control" type="text" name="user_callsign"
                                 value="<?php if(isset($user_callsign)) { echo $user_callsign; } ?>" />
                             <?php if(isset($callsign_error)) { echo "<div class=\"small error\">".$callsign_error."</div>"; } ?>
                         </div>
 
                         <div class="form-group">
-                            <label>Gridsquare</label>
+                            <label><?php echo lang('account_gridsquare'); ?></label>
                             <input class="form-control" type="text" name="user_locator"
                                 value="<?php if(isset($user_locator)) { echo $user_locator; } ?>" />
                             <?php if(isset($locator_error)) { echo "<div class=\"small error\">".$locator_error."</div>"; } ?>
@@ -144,12 +144,12 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                        Cloudlog Preferences
+                        <?php echo lang('account_cloudlog_preferences'); ?>
                     </div>
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label>Timezone</label>
+                            <label><?php echo lang('account_timezone'); ?></label>
                             <?php
 					if(!isset($user_timezone)) { $user_timezone = 0; }
 					echo form_dropdown('user_timezone', $timezones, $user_timezone);
@@ -157,7 +157,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="SelectDateFormat">Date Format</label>
+                            <label for="SelectDateFormat"><?php echo lang('account_date_format'); ?></label>
                             <select name="user_date_format" class="custom-select" id="SelectDateFormat"
                                 aria-describedby="SelectDateFormatHelp">
                                 <option value="">Select Format</option>
@@ -169,13 +169,12 @@
                                 <option value="Y-m-d"><?php echo date('Y-m-d'); ?></option>
                             </select>
 
-                            <small id="SelectDateFormatHelp" class="form-text text-muted">Select how you would
-                                like dates shown when logged into your account.</small>
+                            <small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_select_how_you_would_like_dates_shown_when_logged_into_your_account'); ?></small>
                         </div>
 
 
                         <div class="form-group">
-                            <label for="user_measurement_base">Measurement preference</label>
+                            <label for="user_measurement_base"><?php echo lang('account_measurement_preferences'); ?></label>
                             <select class="custom-select" id="user_measurement_base" name="user_measurement_base"
                                 required>
                                 <option value=''></option>
@@ -189,8 +188,7 @@
                                     <?php if($measurement_base == "N") { echo "selected=\"selected\""; } ?>>
                                     Nautical miles</option>
                             </select>
-                            <small id="user_measurement_base_Help" class="form-text text-muted">Choose which
-                                unit distances will be shown in.</small>
+                            <small id="user_measurement_base_Help" class="form-text text-muted"><?php echo lang('account_choose_which_unit_distances_will_be_shown_in'); ?></small>
                         </div>
 
                     </div>
@@ -203,14 +201,14 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                        Main Menu
+                	<?php echo lang('account_main_menu'); ?>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="shownotes">Show notes in the main menu.</label>
+                            <label for="shownotes"><?php echo lang('account_show_notes_in_the_main_menu'); ?></label>
                             <select class="custom-select" id="shownotes" name="user_show_notes">
-                                <option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>
-                                <option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
+                                <option value="0"><?php echo lang('general_word_no'); ?></option>
+                                <option value="1"><?php echo lang('general_word_yes'); ?></option>
                             </select>
                         </div>
                     </div>
@@ -223,62 +221,56 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                        Gridsquare and Location Autocomplete
+                        <?php echo lang('account_gridsquare_and_location_autocomplete'); ?>
                     </div>
                     <div class="card-body">
 
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label for="qthlookup">Location auto lookup.</label>
+                                <label for="qthlookup"><?php echo lang('account_location_auto_lookup'); ?></label>
                                 <select class="custom-select" id="qthlookup" name="user_qth_lookup">
-                                    <option value="0"><?php echo $this->lang->line('general_word_no'); ?>
+                                    <option value="0"><?php echo lang('general_word_no'); ?>
                                     </option>
-                                    <option value="1"><?php echo $this->lang->line('general_word_yes'); ?>
+                                    <option value="1"><?php echo lang('general_word_yes'); ?>
                                     </option>
                                 </select>
-                                <div class="small form-text text-muted">If set, gridsquare is fetched based on
-                                    location name.</div>
+                                <div class="small form-text text-muted"><?php echo lang('account_if_set_gridsquare_is_fetched_based_on_location_name'); ?></div>
                                 </td>
                             </div>
 
                             <div class="form-group col-md-12">
-                                <label for="sotalookup">SOTA auto lookup gridsquare and name for summit.</label>
+                                <label for="sotalookup"><?php echo lang('account_sota_auto_lookup_gridsquare_and_name_for_summit'); ?></label>
                                 <select class="custom-select" id="sotalookup" name="user_sota_lookup">
-                                    <option value="0"><?php echo $this->lang->line('general_word_no'); ?>
+                                    <option value="0"><?php echo lang('general_word_no'); ?>
                                     </option>
-                                    <option value="1"><?php echo $this->lang->line('general_word_yes'); ?>
+                                    <option value="1"><?php echo lang('general_word_yes'); ?>
                                     </option>
                                 </select>
-                                <div class="small form-text text-muted">If set, name and gridsquare is fetched
-                                    from the API and filled in location and locator.</div>
+                                <div class="small form-text text-muted"><?php echo lang('account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'); ?></div>
                                 </td>
                             </div>
 
                             <div class="form-group col-md-12">
-                                <label for="wwfflookup">WWFF auto lookup gridsquare and name for
-                                    reference.</label>
+                                <label for="wwfflookup"><?php echo lang('account_wwff_auto_lookup_gridsquare_and_name_for_reference'); ?></label>
                                 <select class="custom-select" id="wwfflookup" name="user_wwff_lookup">
-                                    <option value="0"><?php echo $this->lang->line('general_word_no'); ?>
+                                    <option value="0"><?php echo lang('general_word_no'); ?>
                                     </option>
-                                    <option value="1"><?php echo $this->lang->line('general_word_yes'); ?>
+                                    <option value="1"><?php echo lang('general_word_yes'); ?>
                                     </option>
                                 </select>
-                                <div class="small form-text text-muted">If set, name and gridsquare is fetched
-                                    from the API and filled in location and locator.</div>
+				<div class="small form-text text-muted"><?php echo lang('account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'); ?></div>
                                 </td>
                             </div>
 
                             <div class="form-group col-md-12">
-                                <label for="potalookup">POTA auto lookup gridsquare and name for
-                                    park.</label>
+                                <label for="potalookup"><?php echo lang('account_pota_auto_lookup_gridsquare_and_name_for_park'); ?></label>
                                 <select class="custom-select" id="potalookup" name="user_pota_lookup">
-                                    <option value="0"><?php echo $this->lang->line('general_word_no'); ?>
+                                    <option value="0"><?php echo lang('general_word_no'); ?>
                                     </option>
-                                    <option value="1"><?php echo $this->lang->line('general_word_yes'); ?>
+                                    <option value="1"><?php echo lang('general_word_yes'); ?>
                                     </option>
                                 </select>
-                                <div class="small form-text text-muted">If set, name and gridsquare is fetched
-                                    from the API and filled in location and locator.</div>
+				<div class="small form-text text-muted"><?php echo lang('account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'); ?></div>
                                 </td>
                             </div>
                         </div>
@@ -291,7 +283,7 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                        Logbook fields
+                        <?php echo lang('account_logbook_fields'); ?>
                     </div>
                     <div class="card-body">
                         <div class="form-row">
@@ -299,149 +291,149 @@
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label
-                                        for="column1"><?php echo $this->lang->line('account_column1_text'); ?></label>
+                                        for="column1"><?php echo lang('account_column1_text'); ?></label>
                                     <select class="custom-select" id="column1" name="user_column1">
-                                        <option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?>
+                                        <option value="Band"> <?php echo lang('gen_hamradio_band'); ?>
                                         </option>
                                         <option value="Frequency">
-                                            <?php echo $this->lang->line('gen_hamradio_frequency'); ?></option>
+                                            <?php echo lang('gen_hamradio_frequency'); ?></option>
                                         <option value="Mode" selected='selected'>
-                                            <?php echo $this->lang->line('gen_hamradio_mode'); ?></option>
-                                        <option value="RSTS"><?php echo $this->lang->line('gen_hamradio_rsts'); ?>
+                                            <?php echo lang('gen_hamradio_mode'); ?></option>
+                                        <option value="RSTS"><?php echo lang('gen_hamradio_rsts'); ?>
                                         </option>
-                                        <option value="RSTR"><?php echo $this->lang->line('gen_hamradio_rstr'); ?>
+                                        <option value="RSTR"><?php echo lang('gen_hamradio_rstr'); ?>
                                         </option>
                                         <option value="Country">
-                                            <?php echo $this->lang->line('general_word_country'); ?></option>
-                                        <option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?>
+                                            <?php echo lang('general_word_country'); ?></option>
+                                        <option value="IOTA"><?php echo lang('gen_hamradio_iota'); ?>
                                         </option>
-                                        <option value="SOTA"><?php echo $this->lang->line('gen_hamradio_sota'); ?>
+                                        <option value="SOTA"><?php echo lang('gen_hamradio_sota'); ?>
                                         </option>
-                                        <option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?>
+                                        <option value="State"><?php echo lang('gen_hamradio_state'); ?>
                                         </option>
                                         <option value="Grid">
-                                            <?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+                                            <?php echo lang('gen_hamradio_gridsquare'); ?></option>
                                         <option value="Operator">
-                                            <?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
+                                            <?php echo lang('gen_hamradio_operator'); ?></option>
                                     </select>
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <label
-                                        for="column2"><?php echo $this->lang->line('account_column2_text'); ?></label>
+                                        for="column2"><?php echo lang('account_column2_text'); ?></label>
                                     <select class="custom-select" id="column2" name="user_column2">
-                                        <option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?>
+                                        <option value="Band"> <?php echo lang('gen_hamradio_band'); ?>
                                         </option>
                                         <option value="Frequency">
-                                            <?php echo $this->lang->line('gen_hamradio_frequency'); ?></option>
-                                        <option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?>
+                                            <?php echo lang('gen_hamradio_frequency'); ?></option>
+                                        <option value="Mode"> <?php echo lang('gen_hamradio_mode'); ?>
                                         </option>
                                         <option value="RSTS" selected='selected'>
-                                            <?php echo $this->lang->line('gen_hamradio_rsts'); ?></option>
-                                        <option value="RSTR"><?php echo $this->lang->line('gen_hamradio_rstr'); ?>
+                                            <?php echo lang('gen_hamradio_rsts'); ?></option>
+                                        <option value="RSTR"><?php echo lang('gen_hamradio_rstr'); ?>
                                         </option>
                                         <option value="Country">
-                                            <?php echo $this->lang->line('general_word_country'); ?></option>
-                                        <option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?>
+                                            <?php echo lang('general_word_country'); ?></option>
+                                        <option value="IOTA"><?php echo lang('gen_hamradio_iota'); ?>
                                         </option>
-                                        <option value="SOTA"><?php echo $this->lang->line('gen_hamradio_sota'); ?>
+                                        <option value="SOTA"><?php echo lang('gen_hamradio_sota'); ?>
                                         </option>
-                                        <option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?>
+                                        <option value="State"><?php echo lang('gen_hamradio_state'); ?>
                                         </option>
                                         <option value="Grid">
-                                            <?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+                                            <?php echo lang('gen_hamradio_gridsquare'); ?></option>
                                         <option value="Operator">
-                                            <?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
+                                            <?php echo lang('gen_hamradio_operator'); ?></option>
                                     </select>
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <label
-                                        for="column3"><?php echo $this->lang->line('account_column3_text'); ?></label>
+                                        for="column3"><?php echo lang('account_column3_text'); ?></label>
                                     <select class="custom-select" id="column3" name="user_column3">
-                                        <option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?>
+                                        <option value="Band"> <?php echo lang('gen_hamradio_band'); ?>
                                         </option>
                                         <option value="Frequency">
-                                            <?php echo $this->lang->line('gen_hamradio_frequency'); ?></option>
-                                        <option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?>
+                                            <?php echo lang('gen_hamradio_frequency'); ?></option>
+                                        <option value="Mode"> <?php echo lang('gen_hamradio_mode'); ?>
                                         </option>
-                                        <option value="RSTS"><?php echo $this->lang->line('gen_hamradio_rsts'); ?>
+                                        <option value="RSTS"><?php echo lang('gen_hamradio_rsts'); ?>
                                         </option>
                                         <option value="RSTR" selected='selected'>
-                                            <?php echo $this->lang->line('gen_hamradio_rstr'); ?></option>
+                                            <?php echo lang('gen_hamradio_rstr'); ?></option>
                                         <option value="Country">
-                                            <?php echo $this->lang->line('general_word_country'); ?></option>
-                                        <option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?>
+                                            <?php echo lang('general_word_country'); ?></option>
+                                        <option value="IOTA"><?php echo lang('gen_hamradio_iota'); ?>
                                         </option>
-                                        <option value="SOTA"><?php echo $this->lang->line('gen_hamradio_sota'); ?>
+                                        <option value="SOTA"><?php echo lang('gen_hamradio_sota'); ?>
                                         </option>
-                                        <option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?>
+                                        <option value="State"><?php echo lang('gen_hamradio_state'); ?>
                                         </option>
                                         <option value="Grid">
-                                            <?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+                                            <?php echo lang('gen_hamradio_gridsquare'); ?></option>
                                         <option value="Operator">
-                                            <?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
+                                            <?php echo lang('gen_hamradio_operator'); ?></option>
                                     </select>
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <label
-                                        for="column4"><?php echo $this->lang->line('account_column4_text'); ?></label>
+                                        for="column4"><?php echo lang('account_column4_text'); ?></label>
                                     <select class="custom-select" id="column4" name="user_column4">
                                         <option value="Band" selected='selected'>
-                                            <?php echo $this->lang->line('gen_hamradio_band'); ?></option>
+                                            <?php echo lang('gen_hamradio_band'); ?></option>
                                         <option value="Frequency">
-                                            <?php echo $this->lang->line('gen_hamradio_frequency'); ?></option>
-                                        <option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?>
+                                            <?php echo lang('gen_hamradio_frequency'); ?></option>
+                                        <option value="Mode"> <?php echo lang('gen_hamradio_mode'); ?>
                                         </option>
-                                        <option value="RSTS"><?php echo $this->lang->line('gen_hamradio_rsts'); ?>
+                                        <option value="RSTS"><?php echo lang('gen_hamradio_rsts'); ?>
                                         </option>
-                                        <option value="RSTR"><?php echo $this->lang->line('gen_hamradio_rstr'); ?>
+                                        <option value="RSTR"><?php echo lang('gen_hamradio_rstr'); ?>
                                         </option>
                                         <option value="Country">
-                                            <?php echo $this->lang->line('general_word_country'); ?></option>
-                                        <option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?>
+                                            <?php echo lang('general_word_country'); ?></option>
+                                        <option value="IOTA"><?php echo lang('gen_hamradio_iota'); ?>
                                         </option>
-                                        <option value="SOTA"><?php echo $this->lang->line('gen_hamradio_sota'); ?>
+                                        <option value="SOTA"><?php echo lang('gen_hamradio_sota'); ?>
                                         </option>
-                                        <option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?>
+                                        <option value="State"><?php echo lang('gen_hamradio_state'); ?>
                                         </option>
                                         <option value="Grid">
-                                            <?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+                                            <?php echo lang('gen_hamradio_gridsquare'); ?></option>
                                         <option value="Operator">
-                                            <?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
+                                            <?php echo lang('gen_hamradio_operator'); ?></option>
                                     </select>
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <label
-                                        for="column5"><?php echo $this->lang->line('account_column5_text'); ?></label>
+                                        for="column5"><?php echo lang('account_column5_text'); ?></label>
                                     <select class="custom-select" id="column5" name="user_column5">
                                         <option value=""></option>
-                                        <option value="Band"> <?php echo $this->lang->line('gen_hamradio_band'); ?>
+                                        <option value="Band"> <?php echo lang('gen_hamradio_band'); ?>
                                         </option>
                                         <option value="Frequency">
-                                            <?php echo $this->lang->line('gen_hamradio_frequency'); ?></option>
-                                        <option value="Mode"> <?php echo $this->lang->line('gen_hamradio_mode'); ?>
+                                            <?php echo lang('gen_hamradio_frequency'); ?></option>
+                                        <option value="Mode"> <?php echo lang('gen_hamradio_mode'); ?>
                                         </option>
-                                        <option value="RSTS"><?php echo $this->lang->line('gen_hamradio_rsts'); ?>
+                                        <option value="RSTS"><?php echo lang('gen_hamradio_rsts'); ?>
                                         </option>
-                                        <option value="RSTR"><?php echo $this->lang->line('gen_hamradio_rstr'); ?>
+                                        <option value="RSTR"><?php echo lang('gen_hamradio_rstr'); ?>
                                         </option>
                                         <option value="Country" selected='selected'>
-                                            <?php echo $this->lang->line('general_word_country'); ?></option>
-                                        <option value="IOTA"><?php echo $this->lang->line('gen_hamradio_iota'); ?>
+                                            <?php echo lang('general_word_country'); ?></option>
+                                        <option value="IOTA"><?php echo lang('gen_hamradio_iota'); ?>
                                         </option>
-                                        <option value="SOTA"><?php echo $this->lang->line('gen_hamradio_sota'); ?>
+                                        <option value="SOTA"><?php echo lang('gen_hamradio_sota'); ?>
                                         </option>
-                                        <option value="State"><?php echo $this->lang->line('gen_hamradio_state'); ?>
+                                        <option value="State"><?php echo lang('gen_hamradio_state'); ?>
                                         </option>
                                         <option value="Grid">
-                                            <?php echo $this->lang->line('gen_hamradio_gridsquare'); ?></option>
+                                            <?php echo lang('gen_hamradio_gridsquare'); ?></option>
                                         <option value="Operator">
-                                            <?php echo $this->lang->line('gen_hamradio_operator'); ?></option>
+                                            <?php echo lang('gen_hamradio_operator'); ?></option>
                                         <option value="Location">
-                                            <?php echo $this->lang->line('cloudlog_station_profile'); ?></option>
+                                            <?php echo lang('cloudlog_station_profile'); ?></option>
                                     </select>
                                 </div>
                             </div>
@@ -456,17 +448,16 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                        Previous QSL Type
+                        <?php echo lang('account_previous_qsl_type'); ?>
                     </div>
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label for="previousqsltype">Select the type of QSL to show in the previous QSOs
-                                section.</label>
+                            <label for="previousqsltype"><?php echo lang('account_select_the_type_of_qsl_to_show_in_the_previous_qsos_section'); ?></label>
                             <select class="custom-select" id="previousqsltype" name="user_previous_qsl_type">
-                                <option value="0"><?php echo $this->lang->line('gen_hamradio_qsl'); ?></option>
-                                <option value="1"><?php echo $this->lang->line('lotw_short'); ?></option>
-                                <option value="2"><?php echo $this->lang->line('eqsl_short'); ?></option>
+                                <option value="0"><?php echo lang('gen_hamradio_qsl'); ?></option>
+                                <option value="1"><?php echo lang('lotw_short'); ?></option>
+                                <option value="2"><?php echo lang('eqsl_short'); ?></option>
                             </select>
                         </div>
                     </div>
@@ -476,19 +467,17 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                        qrz.com/hamqth.com Images
+                        <?php echo lang('account_qrzcom_hamqthcom_images'); ?>
                     </div>
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label for="profileimages">Show profile picture of QSO partner from
-                                qrz.com/hamqth.com profile in the log QSO section.</label>
+                            <label for="profileimages"><?php echo lang('account_show_profile_picture_of_qso_partner_from_qrzcom_hamqthcom_profile_in_the_log_qso_section'); ?></label>
                             <select class="custom-select" id="profileimages" name="user_show_profile_image">
-                                <option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>
-                                <option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
+                                <option value="0"><?php echo lang('general_word_no'); ?></option>
+                                <option value="1"><?php echo lang('general_word_yes'); ?></option>
                             </select>
-                            <div class="small form-text text-muted">Please set your qrz.com/hamqth.com
-                                credentials in the general config file.</div>
+                            <div class="small form-text text-muted"><?php echo lang('account_please_set_your_qrzcom_hamqthcom_credentials_in_the_general_config_file'); ?></div>
                             </td>
                         </div>
 
@@ -501,15 +490,15 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                         AMSAT Status Upload
+                         <?php echo lang('account_amsat_status_upload'); ?>
                     </div>
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label for="amsatstatusupload">Upload status of SAT QSOs to <a href="https://www.amsat.org/status/" target="_blank">https://www.amsat.org/status/</a>.</label>
+                            <label for="amsatstatusupload"><?php echo lang('account_upload_status_of_sat_qsos_to'); ?> <a href="https://www.amsat.org/status/" target="_blank">https://www.amsat.org/status/</a>.</label>
                             <select class="custom-select" id="amsatstatusupload" name="user_amsat_status_upload">
-                                <option value="0"><?php echo $this->lang->line('general_word_no'); ?></option>
-                                <option value="1"><?php echo $this->lang->line('general_word_yes'); ?></option>
+                                <option value="0"><?php echo lang('general_word_no'); ?></option>
+                                <option value="1"><?php echo lang('general_word_yes'); ?></option>
                             </select>
                         </div>
                     </div>

@@ -49,7 +49,7 @@ class Eqslmethods_model extends CI_Model {
                 array_push($logbooks_locations_array, $row->station_id);
             }
         }
-    
+
         $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE, '.$this->config->item('table_name').'.COL_QSLMSG');
         $this->db->from('station_profile');
         $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
@@ -63,7 +63,35 @@ class Eqslmethods_model extends CI_Model {
         $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'N');
         $this->db->group_end();
         $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
-    
+
+        return $this->db->get();
+    }
+
+    // Show all QSOs whose eQSL card images we did not download yet
+    function eqsl_not_yet_downloaded($userid = null) {
+        $CI =& get_instance();
+        if ($userid == null) {
+            $CI->load->model('logbooks_model');
+            $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        } else {
+            $stations = $this->get_all_user_locations($userid);
+            $logbooks_locations_array = array();
+            foreach ($stations->result() as $row) {
+                array_push($logbooks_locations_array, $row->station_id);
+            }
+        }
+
+        $this->db->select('station_profile.station_id, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE, '.$this->config->item('table_name').'.COL_QSLMSG, eQSL_images.qso_id');
+        $this->db->from('station_profile');
+        $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->join('eQSL_images','eQSL_images.qso_id = '.$this->config->item('table_name').'.COL_PRIMARY_KEY','left outer');
+        //$this->db->where("coalesce(station_profile.eqslqthnickname, '') <> ''");
+        $this->db->where($this->config->item('table_name').'.COL_CALL !=', '');
+        $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_RCVD', 'Y');
+        $this->db->where('qso_id', NULL);
+        $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
+        $this->db->order_by("COL_TIME_ON", "desc");
+
         return $this->db->get();
     }
 

@@ -2,10 +2,10 @@
 
     <br>
 
-    <h2><?php echo $this->lang->line('general_word_qslcards'); ?></h2>
+    <h2><?php echo lang('general_word_qslcards'); ?></h2>
 
     <div class="alert alert-info" role="alert">
-    <?php echo $this->lang->line('qslcard_string_your_are_using'); ?> <?php echo $storage_used; ?> <?php echo $this->lang->line('qslcard_string_disk_space'); ?>
+    <?php echo lang('qslcard_string_your_are_using'); ?> <?php echo $storage_used; ?> <?php echo lang('qslcard_string_disk_space'); ?>
     </div>
 
     <?php
@@ -22,12 +22,12 @@
         echo '<table style="width:100%" class="qsltable table table-sm table-bordered table-hover table-striped table-condensed">
         <thead>
         <tr>
-        <th style=\'text-align: center\'>'.$this->lang->line('gen_hamradio_callsign').'</th>
-        <th style=\'text-align: center\'>'.$this->lang->line('gen_hamradio_mode').'</th>
-        <th style=\'text-align: center\'>'.$this->lang->line('general_word_date').'</th>
-        <th style=\'text-align: center\'>'.$this->lang->line('general_word_time').'</th>
-        <th style=\'text-align: center\'>'.$this->lang->line('gen_hamradio_band').'</th>
-        <th style=\'text-align: center\'>'.$this->lang->line('gen_hamradio_qsl').'</th>
+        <th style=\'text-align: center\'>'.lang('gen_hamradio_callsign').'</th>
+        <th style=\'text-align: center\'>'.lang('gen_hamradio_mode').'</th>
+        <th style=\'text-align: center\'>'.lang('general_word_date').'</th>
+        <th style=\'text-align: center\'>'.lang('general_word_time').'</th>
+        <th style=\'text-align: center\'>'.lang('gen_hamradio_band').'</th>
+        <th style=\'text-align: center\'>'.lang('gen_hamradio_qsl').'</th>
         <th style=\'text-align: center\'></th>
         <th style=\'text-align: center\'></th>
         <th style=\'text-align: center\'></th>

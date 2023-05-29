@@ -17,7 +17,7 @@
 	  </div>
 		<div class="card-body">
 			<form class="form" action="<?php echo site_url('adif/import'); ?>" method="post" enctype="multipart/form-data">
-				<?php echo $this->lang->line('cloudlog_station_profile'); ?>:
+				<?php echo lang('cloudlog_station_profile'); ?>:
 				<select name="station_profile" class="station_id custom-select mb-3 mr-sm-3" style="width: 20%;">
 					<option value="All">All</option>
 					<?php foreach ($station_profile->result() as $station) { ?>

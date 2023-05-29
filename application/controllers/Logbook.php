@@ -51,7 +51,7 @@ class Logbook extends CI_Controller {
 		$data['results'] = $this->logbook_model->get_qsos($config['per_page'],$this->uri->segment(3));
 
 		if(!$data['results']) { 
-			$this->session->set_flashdata('notice', $this->lang->line('error_no_logbook_found') . ' <a href="' . site_url('logbooks') . '" title="Station Logbooks">Station Logbooks</a>');
+			$this->session->set_flashdata('notice', lang('error_no_logbook_found') . ' <a href="' . site_url('logbooks') . '" title="Station Logbooks">Station Logbooks</a>');
 		}
 
 		// Calculate Lat/Lng from Locator to use on Maps
@@ -540,16 +540,16 @@ class Logbook extends CI_Controller {
 					}
 					switch($this->session->userdata('user_previous_qsl_type')) {
 						case 0:
-							$html .= "<td>".$this->lang->line('gen_hamradio_qsl')."</td>";
+							$html .= "<td>".lang('gen_hamradio_qsl')."</td>";
 							break;
 						case 1:
-							$html .= "<td>".$this->lang->line('lotw_short')."</td>";
+							$html .= "<td>".lang('lotw_short')."</td>";
 							break;
 						case 2:
-							$html .= "<td>".$this->lang->line('eqsl_short')."</td>";
+							$html .= "<td>".lang('eqsl_short')."</td>";
 							break;
 						default:
-							$html .= "<td>".$this->lang->line('gen_hamradio_qsl')."</td>";
+							$html .= "<td>".lang('gen_hamradio_qsl')."</td>";
 							break;
 					}
 					$html .= "<td></td>";
@@ -811,6 +811,42 @@ class Logbook extends CI_Controller {
 		$data['qsos'] = $query;
 
 		$this->load->view('search/duplicates_result.php', $data);
+
+	}
+
+	function search_lotw_unconfirmed($station_id) {
+		$station_id = $this->security->xss_clean($station_id);
+
+		$this->load->model('user_model');
+
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+		
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		
+		if (!$logbooks_locations_array) {
+			return null;
+		}
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		
+		$sql = 'select COL_CALL, COL_MODE, COL_SUBMODE, station_callsign, COL_SAT_NAME, COL_BAND, COL_TIME_ON, lotw_users.lastupload from ' . $this->config->item('table_name') . 
+		' join station_profile on ' . $this->config->item('table_name') . '.station_id = station_profile.station_id 
+		join lotw_users on ' . $this->config->item('table_name') . '.col_call = lotw_users.callsign 
+		where ' . $this->config->item('table_name') .'.station_id in ('. $location_list . ')'; 
+		
+		if ($station_id != 'All') {
+			$sql .= ' and station_profile.station_id = ' . $station_id;
+		}
+		
+		$sql .= " and COL_LOTW_QSL_RCVD <> 'Y' and " . $this->config->item('table_name') . ".COL_TIME_ON < lotw_users.lastupload";
+
+		$query = $this->db->query($sql);
+
+		$data['qsos'] = $query;
+
+		$this->load->view('search/lotw_unconfirmed_result.php', $data);
 
 	}
 
