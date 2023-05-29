@@ -57,3 +57,6 @@ $lang['lotw_confirmed'] = 'Dieses QSO wurde via LoTW bestätigt am';
 // LoTW Expiry
 $lang['lotw_cert_expiring'] = 'Mindestens eines deiner LoTW Zertifikate läuft bald ab!';
 $lang['lotw_cert_expired'] = 'Mindestens eines deiner LoTW Zertifikate ist abgelaufen!';
+
+// Lotw User
+$lang['lotw_user'] = 'Diese Station nutzt LoTW. Der letzte Upload war am';

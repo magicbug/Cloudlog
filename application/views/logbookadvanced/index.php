@@ -1,3 +1,12 @@
+<script type="text/javascript">
+  /*
+  *
+  * Define custom date format
+  *
+  */
+  var custom_date_format = "<?php echo $custom_date_format ?>";
+</script>
+
 <div class="container-fluid qso_manager pt-3 pl-4 pr-4">
 	<?php if ($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->

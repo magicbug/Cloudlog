@@ -353,6 +353,9 @@
                     <?php } ?>
 
                 <?php } ?>
+                    <?php if($row->lotwuser != null) { ?>
+                    <br /><p><?php echo lang('lotw_user'); ?> <?php $timestamp = strtotime($row->lastupload); echo date($custom_date_format, $timestamp); $timestamp = strtotime($row->lastupload); echo " at ".date('H:i', $timestamp);?> UTC.</p>
+                    <?php } ?>
 
                     <?php if($row->COL_LOTW_QSL_RCVD == "Y") { ?>
                     <h3><?php echo lang('lotw_short'); ?></h3>

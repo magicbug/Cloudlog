@@ -26,7 +26,7 @@ function updateRow(qso) {
 	let c = 1;
 	cells.eq(c++).text(qso.qsoDateTime);
 	cells.eq(c++).text(qso.de);
-	cells.eq(c++).html('<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>');
+	cells.eq(c++).html('<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>' + (qso.callsign == '' ? '' : ' <small id="lotw_info" class="badge badge-success" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + '">L</small>'));
 	cells.eq(c++).text(qso.mode);
 	cells.eq(c++).text(qso.rstS);
 	cells.eq(c++).text(qso.rstR);
@@ -58,6 +58,7 @@ function loadQSOTable(rows) {
 	});
 
 	uninitialized.each(function() {
+		$.fn.dataTable.moment(custom_date_format + ' HH:mm');
 		$(this).DataTable({
 			searching: false,
 			responsive: false,
@@ -66,7 +67,6 @@ function loadQSOTable(rows) {
 			"scrollCollapse": true,
 			"paging":         false,
 			"scrollX": true,
-			"order": [ 1, 'desc' ],
 		});
 	});
 
@@ -81,7 +81,7 @@ function loadQSOTable(rows) {
 		data.push('<div class="form-check"><input class="form-check-input" type="checkbox" /></div>');
 		data.push(qso.qsoDateTime);
 		data.push(qso.de);
-		data.push('<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>');
+		data.push('<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>' + (qso.callsign == '' ? '' : ' <small id="lotw_info" class="badge badge-success" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + ' ">L</small>'));
 		data.push(qso.mode);
 		data.push(qso.rstS);
 		data.push(qso.rstR);
