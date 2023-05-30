@@ -13,8 +13,8 @@ RUN docker-php-ext-install mbstring
 RUN docker-php-ext-install xml
 #RUN docker-php-ext-install openssl
 WORKDIR /var/www/html
-COPY ../ /var/www/html
-RUN rm -rf /var/www/html/docker/ \ 
+COPY ../* /var/www/html/
+RUN ls && rm -rf /var/www/html/docker/ \ 
 && chown -R root:www-data ./application/config/ \
 && chown -R root:www-data ./application/logs/ \
 && chown -R root:www-data ./assets/qslcard/ \
