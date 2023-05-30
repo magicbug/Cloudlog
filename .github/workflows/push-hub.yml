@@ -1,11 +1,12 @@
 name: ci
 
-#on:
-#  push:
-#    branches:
-#      - "main"
+on:
+  push:
+    # Pattern matched against refs/tags
+    tags:        
+      - '*'           # Push events to every tag not containing
 
-on: workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   docker:
