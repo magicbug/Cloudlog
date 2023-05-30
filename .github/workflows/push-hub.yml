@@ -1,4 +1,4 @@
-name: ci
+name: Push Docker image to the Hub
 
 on:
   push:
