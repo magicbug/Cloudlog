@@ -13,13 +13,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Get latest tag
-        id: latesttag
-        run: |
-         echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-         echo "Tag name from github.ref_name: ${{  github.ref_name }}"
+      - uses: oprypin/find-latest-tag@v1
+        id: findtag  # The step ID to refer to later.
+        with:
+          #repository: octokit/rest.js  # The repository to scan.
+          releases-only: true  # We know that all relevant tags have a GitHub release for them.
       - name: Print latest tag
-        run: echo ${{  github.ref_name }}
+        run: echo ${{ steps.findtag.outputs.tag }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -35,4 +35,4 @@ jobs:
           context: ./docker
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ secrets.DOCKERHUB_IMAGENAME }}:${{  github.ref_name }}
+          tags: ${{ secrets.DOCKERHUB_IMAGENAME }}:${{ steps.findtag.outputs.tag }}
