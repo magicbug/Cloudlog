@@ -1,5 +1,5 @@
-FROM php:7.4-apache
-RUN touch /usr/local/etc/php/conf.d/uploads.ini \
+FROM php:7.4-apache                                                                                                                                         
+RUN touch /usr/local/etc/php/conf.d/uploads.ini \                                                                                                           
 && echo “file_uploads = On” >> /usr/local/etc/php/conf.d/uploads.ini \
 && echo “memory_limit = 64M” >> /usr/local/etc/php/conf.d/uploads.ini \
 && echo “upload_max_filesize = 64M” >> /usr/local/etc/php/conf.d/uploads.ini \
@@ -13,7 +13,7 @@ RUN docker-php-ext-install mbstring
 RUN docker-php-ext-install xml
 #RUN docker-php-ext-install openssl
 WORKDIR /var/www/html
-COPY ../* /var/www/html/
+COPY ./ /var/www/html/
 RUN ls && rm -rf /var/www/html/docker/ \ 
 && chown -R root:www-data ./application/config/ \
 && chown -R root:www-data ./application/logs/ \
