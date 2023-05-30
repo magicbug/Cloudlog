@@ -34,4 +34,4 @@ jobs:
           file: ./docker/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ secrets.DOCKERHUB_IMAGENAME }}:${{ steps.get-latest-tag.outputs.tag }}
+          tags: ${{ secrets.DOCKERHUB_IMAGENAME }}:${{ steps.get-latest-tag.outputs.tag }},${{ secrets.DOCKERHUB_IMAGENAME }}:latest
