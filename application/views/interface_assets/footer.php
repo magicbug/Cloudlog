@@ -2755,6 +2755,8 @@ function viewEqsl(picture, callsign) {
 		"scrollCollapse": true,
 		"paging": false,
 		"scrollX": true,
+		"ordering": true,
+		"order": [ 2, 'desc' ],
 	});
 	</script>
 <?php } ?>
