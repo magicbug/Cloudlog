@@ -1460,14 +1460,20 @@ $(document).ready(function(){
 
     if(map.getZoom() > 2) {
     	<?php if ($this->session->userdata('user_callsign')) { ?>
-	  var band = '';
+        spawnGridsquareModal(loc_4char);
+		  <?php } ?>
+    }
+  };
+
+  function spawnGridsquareModal(loc_4char) {
+    var band = '';
       var search_type = "<?php echo $this->uri->segment(2); ?>";
       if(search_type == "satellites") {
 		band = 'SAT';
       } else {
         band = "<?php echo $this->uri->segment(3); ?>";
       }
-		$(".modal-body").empty();
+    $(".modal-body").empty();
 		  $.ajax({
 			  url: base_url + 'index.php/awards/qso_details_ajax',
 			  type: 'post',
@@ -1497,9 +1503,7 @@ $(document).ready(function(){
 				  }
 			  }
 		  });
-		  <?php } ?>
-    }
-  };
+  }
 
 <?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
 
