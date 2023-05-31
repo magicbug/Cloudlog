@@ -2484,7 +2484,7 @@ class Logbook_model extends CI_Model {
     }
   }
 
-  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $iota, $cnty) {
+  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $iota, $cnty, $cqz, $ituz) {
 
 	$data = array(
       'COL_LOTW_QSLRDATE' => $qsl_date,
@@ -2500,6 +2500,14 @@ class Logbook_model extends CI_Model {
 
 	if($cnty != "") {
       $data['COL_CNTY'] = $cnty;
+	}
+
+	if($cqz != "") {
+      $data['COL_CQZ'] = $cqz;
+	}
+
+	if($ituz != "") {
+      $data['COL_ITUZ'] = $ituz;
 	}
 
     $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
