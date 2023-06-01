@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |--------------------------------------------------------------------------
 |
 |	'app_name'		Name of the App 'Cloudlog'
-|	'app_version'	Set by the dev team.
+|	'app_version'		Set by the dev team.
 |	'directory'		directory where cloudlog is installed eg "logger"
 |	'callbook'		Selects which Callbook lookup to use defaults "hamqth" but supports "qrz"
 */
@@ -16,9 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $config['app_name'] = "Cloudlog";
 $config['app_version'] = "2.4.3";
 $config['directory'] = "logbook";
-
 $config['callbook'] = "hamqth"; // Options are hamqth or qrz
-
 $config['datadir'] = null; // default to install directory
 
 /*
@@ -27,8 +25,8 @@ $config['datadir'] = null; // default to install directory
 |--------------------------------------------------------------------------
 |
 | 	'table_name'	SQL table where log can be found
-|	'locator'		Default locator used to calculate bearings/distance
-|	'display_freq'	Show or Hide frequnecy info 
+|	'locator'	Default locator used to calculate bearings/distance
+|	'display_freq'	Show or Hide frequnecy info
 */
 
 $config['table_name'] = "TABLE_HRD_CONTACTS_V01";
@@ -42,11 +40,12 @@ $config['display_freq'] = true;
 |
 | 	'qrz_username'	QRZ.com user login
 |	'qrz_password'	QRZ.com user password
+|	'use_fullname'  Get full names from QRZ, may not be GDPR compliant
 */
 
 $config['qrz_username'] = "";
 $config['qrz_password'] = "";
-
+$config['use_fullname'] = false;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +58,6 @@ $config['qrz_password'] = "";
 $config['hamqth_username'] = "";
 $config['hamqth_password'] = "";
 
-
 /*
 |--------------------------------------------------------------------------
 | Authentication
@@ -67,7 +65,7 @@ $config['hamqth_password'] = "";
 |
 | 'use_auth'	False turns all authentication off, best used when setting up
 | 'auth_table'	MySQL Database Table defaults "users"
-| 'auth_mode'	Minimum user level required 0 = anonymous, 1 = viewer, 
+| 'auth_mode'	Minimum user level required 0 = anonymous, 1 = viewer,
 |				2 = editor, 3 = api user, 99 = owner
 | 'auth_level[]'	Defines level titles
 */
@@ -568,6 +566,7 @@ $config['compress_output'] = FALSE;
 */
 $config['time_reference'] = 'UTC';
 date_default_timezone_set($config['time_reference']);
+
 /*
 |--------------------------------------------------------------------------
 | Rewrite PHP Short Tags
