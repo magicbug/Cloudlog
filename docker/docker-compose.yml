@@ -1,0 +1,18 @@
+version: ‘3.4’
+
+services:
+  cloudlog:
+    image: cloudlog
+    container_name: cloudlog
+    volumes:
+      - cloudlog-config:/var/www/html/application/config
+      - cloudlog-backup:/var/www/html/application/backup
+      - cloudlog-uploads:/var/www/html/application/uploads
+    ports:
+      - 8086:80
+    restart: unless-stopped
+
+volumes:
+  cloudlog-config:
+  cloudlog-backup:
+  cloudlog-uploads:
