@@ -114,6 +114,13 @@ class Dashboard extends CI_Controller {
 
 	}
 	
+	function radio_display_component() {
+		$this->load->model('cat');
+
+		$data['radio_status'] = $this->cat->recent_status();
+		$this->load->view('components/radio_display_table', $data);
+	}
+
 	function map() {
 		$this->load->model('logbook_model');
 		

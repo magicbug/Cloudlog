@@ -11,8 +11,11 @@ class Visitor extends CI_Controller {
         if($method == "config") {
             $this->$method();
         }
-        elseif($method == "map") {
+		elseif($method == "map") {
             $this->map($method);
+        }
+        elseif($method == "radio_display_component") {
+            $this->radio_display_component($method);
         }
         elseif($method == "satellites") {
             $this->satellites($method);
@@ -126,6 +129,13 @@ class Visitor extends CI_Controller {
         }
 	}
 	
+	public function radio_display_component() {
+		$this->load->model('cat');
+
+		$data['radio_status'] = $this->cat->recent_status();
+		$this->load->view('components/radio_display_table', $data);
+	}
+
     public function map() {
 		$this->load->model('logbook_model');
 		

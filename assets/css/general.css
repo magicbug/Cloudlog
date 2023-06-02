@@ -437,3 +437,7 @@ div#station_logbooks_linked_table_paginate {
     max-height: calc(100vh - 270px);
 	overflow-y: auto;
 }
+
+#lotw_manual_results {
+    padding-top: 10px;
+}

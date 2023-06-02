@@ -148,7 +148,7 @@
                 <h5>Export Satellite-Only QSOs</h5>
                 <p><a href="<?php echo site_url('adif/exportsat'); ?>" title="Export All Satellite Contacts" target="_blank" class="btn-sm btn-primary">Export All Satellite QSOs</a></p>
 
-                <p><a href="<?php echo site_url('adif/exportsatlotw'); ?>" title="Export All Satellite QSOS Confirmed on LoTW" target="_blank" class="btn-sm btn-primary">Export All Satellite QSOs Confirmed on LoTW</a></p>
+                <p><a href="<?php echo site_url('adif/exportsatlotw'); ?>" title="Export All Satellite QSOs Confirmed on LoTW" target="_blank" class="btn-sm btn-primary">Export All Satellite QSOs Confirmed on LoTW</a></p>
                 </div>
 
 
