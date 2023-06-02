@@ -252,6 +252,8 @@ $oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 
 				<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> <?php echo lang('menu_print_requested_qsls'); ?></a>
 
+				<a class="dropdown-item" href="<?php echo site_url('labels');?>" title="Label setup"><i class="fas fa-print"></i> Labels</a>
+
 				<div class="dropdown-divider"></div>
 
 				<a class="dropdown-item" href="<?php echo site_url('lotw');?>" title="Synchronise with Logbook of the World (LoTW)"><i class="fas fa-sync"></i> <?php echo lang('menu_logbook_of_the_world'); ?></a>
