@@ -39,7 +39,7 @@
 **/
 namespace Cloudlog\Label;
 
-class PDF_Label extends FPDF {
+class PDF_Label extends fpdf {
 
     // Private properties
     protected $_Margin_Left;        // Left margin of labels
