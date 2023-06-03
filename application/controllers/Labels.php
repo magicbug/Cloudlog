@@ -103,24 +103,29 @@ class Labels extends CI_Controller {
 		// Example of custom format
 		// $pdf = new PDF_Label(array('paper-size'=>'A4', 'metric'=>'mm', 'marginLeft'=>1, 'marginTop'=>1, 'NX'=>2, 'NY'=>7, 'SpaceX'=>0, 'SpaceY'=>0, 'width'=>99, 'height'=>38, 'font-size'=>14));
 
-		if ($label) {
-			$pdf = new PDF_Label(array(
-				'paper-size'	=> $label->paper_type, 
-				'metric'		=> $label->metric, 
-				'marginLeft'	=> $label->marginleft, 
-				'marginTop'		=> $label->margintop, 
-				'NX'			=> $label->nx, 
-				'NY'			=> $label->ny, 
-				'SpaceX'		=> $label->spacex, 
-				'SpaceY'		=> $label->spacey, 
-				'width'			=> $label->width, 
-				'height'		=> $label->height, 
-				'font-size'		=> $label->font_size
-				)
-			);
-		} else {
-			// Standard format
-			$pdf = new PDF_Label('3422');
+		try {
+			if ($label) {
+				$pdf = new PDF_Label(array(
+					'paper-size'	=> $label->paper_type, 
+					'metric'		=> $label->metric, 
+					'marginLeft'	=> $label->marginleft, 
+					'marginTop'		=> $label->margintop, 
+					'NX'			=> $label->nx, 
+					'NY'			=> $label->ny, 
+					'SpaceX'		=> $label->spacex, 
+					'SpaceY'		=> $label->spacey, 
+					'width'			=> $label->width, 
+					'height'		=> $label->height, 
+					'font-size'		=> $label->font_size
+					)
+				);
+			} else {
+				// Standard format
+				$pdf = new PDF_Label('3422');
+			}
+		} catch (\Throwable $th) {
+			$this->session->set_flashdata('error', 'Something went wrong! The label could not be generated. Check label size and font size.'); 
+			redirect('labels');
 		}
 
 
@@ -142,7 +147,9 @@ class Labels extends CI_Controller {
 		} else {
 			echo "0 results";
 		}
+		
 		$pdf->Output();
+	
 	}
 
 	public function edit($id) {
@@ -162,12 +169,14 @@ class Labels extends CI_Controller {
 	public function updateLabel($id) {
 		$this->load->model('labels_model');
 		$this->labels_model->updateLabel($id);
+		$this->session->set_flashdata('message', 'Label was saved.'); 
 		redirect('labels');
 	}
 
 	public function delete($id) {
 		$this->load->model('labels_model');
 		$this->labels_model->deleteLabel($id);
+		$this->session->set_flashdata('warning', 'Label was deleted.'); 
 		redirect('labels');
 	}
 

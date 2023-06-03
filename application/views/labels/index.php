@@ -3,8 +3,22 @@
 <br>
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
-		<div class="alert-message error">
-		  <p><?php echo $this->session->flashdata('message'); ?></p>
+		<div class="alert alert-success" role="alert">
+		  <?php echo $this->session->flashdata('message'); ?>
+		</div>
+	<?php } ?>
+
+	<?php if($this->session->flashdata('error')) { ?>
+		<!-- Display Message -->
+		<div class="alert alert-danger" role="alert">
+		  <?php echo $this->session->flashdata('error'); ?>
+		</div>
+	<?php } ?>
+
+	<?php if($this->session->flashdata('warning')) { ?>
+		<!-- Display Message -->
+		<div class="alert alert-warning" role="alert">
+		  <?php echo $this->session->flashdata('warning'); ?>
 		</div>
 	<?php } ?>
 
