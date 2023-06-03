@@ -101,13 +101,13 @@
   			<div class="form-group row">
     			<label class="col-sm-2 col-form-label" for="font_size">Font Size</label>
 			    <div class="col-sm-4">
-				    <input name="font_size" type="number" min="1" max="40" step="1" class="form-control" id="font_size" value="8" aria-describedby="font_sizeHelp" value="<?php if(isset($label->font_size)) { echo $label->font_size; } ?>">
+				    <input name="font_size" type="number" min="1" max="40" step="1" class="form-control" id="font_size" aria-describedby="font_sizeHelp" value="<?php if(isset($label->font_size)) { echo $label->font_size; } ?>">
 			    	<small id="font_sizeHelp" class="form-text text-muted">Font size used on the label don't go too big.</small>
 			    </div>
 
     			<label class="col-sm-2 col-form-label" for="font_size">QSOs on label</label>
 			    <div class="col-sm-4">
-				    <input name="label_qsos" type="number" min="1" max="40" step="1" class="form-control" id="label_qsos" value="5" aria-describedby="font_sizeHelp" value="<?php if(isset($label->qsos)) { echo $label->qsos; } ?>">
+				    <input name="label_qsos" type="number" min="1" max="40" step="1" class="form-control" id="label_qsos" aria-describedby="font_sizeHelp" value="<?php if(isset($label->qsos)) { echo $label->qsos; } ?>">
 			    </div>
   			</div>
 
