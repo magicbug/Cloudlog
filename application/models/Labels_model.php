@@ -18,15 +18,44 @@ class Labels_model extends CI_Model {
             'font_size' 	=> xss_clean($this->input->post('font_size', true)),
             'qsos' 		    => xss_clean($this->input->post('label_qsos', true)),
             'last_modified' => date('Y-m-d H:i:s'),
-
 		);
 
 	   $this->db->insert('label_types', $data);
 
 	}
 
-    function updateLabel() {
-        
+    function getLabel($id) {
+        $this->db->where('user_id', $this->session->userdata('user_id'));
+        $this->db->where('id', $id);
+		$query = $this->db->get('label_types');
+		
+        return $query->row();
+    }
+
+    function updateLabel($id) {
+        $data = array(
+			'user_id' 		=> $this->session->userdata('user_id'),
+            'label_name' 	=> xss_clean($this->input->post('label_name', true)),
+            'paper_type' 	=> xss_clean($this->input->post('paper_type', true)),
+            'metric' 		=> xss_clean($this->input->post('measurementType', true)),
+            'marginleft' 	=> xss_clean($this->input->post('marginLeft', true)),
+            'margintop' 	=> xss_clean($this->input->post('marginTop', true)),
+            'nx' 		    => xss_clean($this->input->post('NX', true)),
+            'ny' 		    => xss_clean($this->input->post('NY', true)),
+            'spacex' 		=> xss_clean($this->input->post('SpaceX', true)),
+            'spacey' 		=> xss_clean($this->input->post('SpaceY', true)),
+            'width' 		=> xss_clean($this->input->post('width', true)),
+            'height' 		=> xss_clean($this->input->post('height', true)),
+            'font_size' 	=> xss_clean($this->input->post('font_size', true)),
+            'qsos' 		    => xss_clean($this->input->post('label_qsos', true)),
+            'last_modified' => date('Y-m-d H:i:s'),
+		);
+
+        $cleanid = $this->security->xss_clean($id);
+
+        $this->db->where('user_id', $this->session->userdata('user_id'));
+        $this->db->where('id', $cleanid);
+        $this->db->update('label_types', $data);
     }
 
     function deleteLabel($id) {

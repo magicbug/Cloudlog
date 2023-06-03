@@ -145,8 +145,24 @@ class Labels extends CI_Controller {
 		$pdf->Output();
 	}
 
-	public function edit() {
+	public function edit($id) {
+		$this->load->model('labels_model');
 
+		$cleanid = $this->security->xss_clean($id);
+
+		$data['label'] = $this->labels_model->getLabel($cleanid);
+
+		$data['page_title'] = "Edit Label";
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('labels/edit');
+		$this->load->view('interface_assets/footer');
+	}
+
+	public function updateLabel($id) {
+		$this->load->model('labels_model');
+		$this->labels_model->updateLabel($id);
+		redirect('labels');
 	}
 
 	public function delete($id) {
