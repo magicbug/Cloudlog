@@ -112,7 +112,6 @@
   			</div>
 
   			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Save Label Type</button>
-			  <button type="button" class="btn btn-primary"><i class="fas fa-plus-square"></i> Cancel</button>
 		</div>
 	</div>
 
