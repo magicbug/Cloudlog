@@ -113,7 +113,7 @@ $ci =& get_instance();
                     $custom_date_format = $this->config->item('qso_date_format');
                 }
             ?>
-            <?php  echo '<tr class="tr'.($i & 1).'" id ="qso_'. $row->COL_PRIMARY_KEY .'">'; ?>
+            <?php  echo '<tr class="tr'.($i & 1).'" id="qso_'. $row->COL_PRIMARY_KEY .'">'; ?>
             <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); ?></td>
             <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
                 <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
@@ -207,7 +207,7 @@ $ci =& get_instance();
 				if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
 
                 <?php
-                  echo '<td style=\'text-align: center\' class="qsl">';
+                  echo '<td id="qsl_'.$row->COL_PRIMARY_KEY.'" style=\'text-align: center\' class="qsl">';
                   echo '<span ';
                   if ($row->COL_QSL_SENT != "N") {
                      if ($row->COL_QSLSDATE != null) {
