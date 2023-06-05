@@ -12,7 +12,7 @@ class eqsl extends CI_Controller {
     public function index() {
 
         $this->lang->load('qslcard');
-        $folder_name = "assets/qslcard";
+        $folder_name = "images/eqsl_card_images";
         $data['storage_used'] = $this->sizeFormat($this->folderSize($folder_name));
 
         // Render Page
