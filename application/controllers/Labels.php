@@ -117,8 +117,7 @@ class Labels extends CI_Controller {
 					'width'			=> $label->width, 
 					'height'		=> $label->height, 
 					'font-size'		=> $label->font_size
-					)
-				);
+				));
 			} else {
 				// Standard format
 				$pdf = new PDF_Label('3422');
@@ -128,28 +127,95 @@ class Labels extends CI_Controller {
 			redirect('labels');
 		}
 
-
 		$pdf->AddPage();
 
 		if ($result->num_rows() > 0) {
-			// output data of each row
-			foreach($result->result() as $qso) {
-				$time = strtotime($qso->COL_TIME_ON);
-				$myFormatForView = date("d/m/Y H:i", $time);
-					if($qso->COL_SAT_NAME != "") {
-						$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, 'on '.$qso->COL_BAND.' 2x'.$qso->COL_MODE.' RST '.$qso->COL_RST_SENT.'', 'Satellite: '.$qso->COL_SAT_NAME.' Mode: '.strtoupper($qso->COL_SAT_MODE).' ', '', 'Thanks for QSO.');
-					} else {
-						$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, 'on '.$qso->COL_BAND.' 2x'.$qso->COL_MODE.' RST '.$qso->COL_RST_SENT.'', '', '', 'Thanks for QSO.');
-					}
-
-					$pdf->Add_Label($text);
+			if ($numberofqsos == 1) {
+				$this->makeOneQsoLabel($result->result(), $pdf);
+			} else {
+				$this->makeMultiQsoLabel($result->result(), $pdf, $label->qsos);
 			}
 		} else {
-			echo "0 results";
+			$this->session->set_flashdata('message', '0 QSOs found for print!'); 
+			redirect('labels');
 		}
-		
 		$pdf->Output();
-	
+	}
+
+	function makeOneQsoLabel($qsos, $pdf) {
+		foreach($qsos as $qso) {
+			$time = strtotime($qso->COL_TIME_ON);
+			$myFormatForView = date("d/m/Y H:i", $time);
+				if($qso->COL_SAT_NAME != "") {
+					$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, 'on '.$qso->COL_BAND.' 2x'.$qso->COL_MODE.' RST '.$qso->COL_RST_SENT.'', 'Satellite: '.$qso->COL_SAT_NAME.' Mode: '.strtoupper($qso->COL_SAT_MODE).' ', '', 'Thanks for QSO.');
+				} else {
+					$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, 'on '.$qso->COL_BAND.' 2x'.$qso->COL_MODE.' RST '.$qso->COL_RST_SENT.'', '', '', 'Thanks for QSO.');
+				}
+
+				$pdf->Add_Label($text);
+		}
+	}
+
+	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos) {
+		$text = '';
+		$current_callsign = '';
+		$qso_data = [];
+		foreach($qsos as $qso) {
+			if ($qso->COL_CALL !== $current_callsign) {
+				if (!empty($qso_data)) {
+					$this->makeLabel($pdf, $current_callsign, $qso_data, $numberofqsos);
+					$qso_data = [];
+				}
+				$current_callsign = $qso->COL_CALL;
+			}
+
+			$qso_data[] = [
+				'time' => $qso->COL_TIME_ON,
+				'band' => $qso->COL_BAND,
+				'mode' => $qso->COL_MODE,
+				'rst' => $qso->COL_RST_SENT,
+				'mygrid' => $qso->station_gridsquare,
+				'sat' => $qso->COL_SAT_NAME,
+				'sat_mode' => $qso->COL_SAT_MODE,
+			];
+		}
+		if (!empty($qso_data)) {
+			$this->makeLabel($pdf, $current_callsign, $qso_data, $numberofqsos);
+		}
+	}
+
+	function makeLabel($pdf, $current_callsign, $qso_data, $numberofqsos) {
+		$text = 'To: ' . $current_callsign . "\n\n";
+		$count = 0;
+		$qsotext = '';
+		foreach ($qso_data as $key => $qso) {
+			$time = strtotime($qso['time']);
+			$myFormatForView = date("d/m/Y H:i", $time);
+
+			if($qso['sat'] != "") {
+				$qsotext .= sprintf("%s %s %s %s\n", $myFormatForView, 'on '.$qso['band'].' 2x'.$qso['mode'].' RST '.$qso['rst'].'', 'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode']).' ', '');
+			} else {
+				$qsotext .= sprintf("%s %s\n", $myFormatForView, 'on '.$qso['band'].' 2x'.$qso['mode'].' RST '.$qso['rst']);
+			}
+			$count++;
+
+			if ($count == $numberofqsos) {
+				$text .= $qsotext;
+				$text .= "\n" . 'Thanks for QSOs.';
+				$pdf->Add_Label($text);
+				$text = 'To: ' . $current_callsign . "\n\n";
+				$count = 0;
+				$qsotext = '';
+			}
+			unset($qso_data[$key]);
+		}
+
+		if ($qsotext != '') {
+			$text .= $qsotext;
+			$text .= "\n" . 'Thanks for QSOs.';
+			$pdf->Add_Label($text);
+		}
+
 	}
 
 	public function edit($id) {
