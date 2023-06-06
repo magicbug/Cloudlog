@@ -7,7 +7,7 @@ function qsl_rcvd(id, method) {
         },
         success: function(data) {
             if (data.message == 'OK') {
-                $("#qso_" + id).find("td:eq(8)").find("span:eq(1)").attr('class', 'qsl-green'); // Paints arrow green
+                $("#qsl_" + id).find("span:eq(1)").attr('class', 'qsl-green'); // Paints arrow green
                 $(".qsl_rcvd_" + id).remove(); // removes choice from menu
             }
             else {
@@ -26,7 +26,7 @@ function qsl_sent(id, method) {
         },
         success: function(data) {
             if (data.message == 'OK') {
-                $("#qso_" + id).find("td:eq(8)").find("span:eq(0)").attr('class', 'qsl-green'); // Paints arrow green
+                $("#qsl_" + id).find("span:eq(0)").attr('class', 'qsl-green'); // Paints arrow green
                 $(".qsl_sent_" + id).remove(); // removes choice from menu
             }
             else {
@@ -47,7 +47,7 @@ function qsl_requested(id, method) {
         },
         success: function(data) {
             if (data.message == 'OK') {
-                $("#qso_" + id).find("td:eq(8)").find("span:eq(0)").attr('class', 'qsl-yellow'); // Paints arrow green
+                $("#qsl_" + id).find("span:eq(0)").attr('class', 'qsl-yellow'); // Paints arrow yellow
             }
             else {
                 $(".bootstrap-dialog-message").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You are not allowed to update QSL status!</div>');
@@ -67,7 +67,7 @@ function qsl_ignore(id, method) {
         },
         success: function(data) {
             if (data.message == 'OK') {
-                $("#qso_" + id).find("td:eq(8)").find("span:eq(0)").attr('class', 'qsl-grey'); // Paints arrow grey
+                $("#qsl_" + id).find("span:eq(0)").attr('class', 'qsl-grey'); // Paints arrow grey
             }
             else {
                 $(".bootstrap-dialog-message").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You are not allowed to update QSL status!</div>');
