@@ -83,7 +83,7 @@
 						<th>Callsign</th>
 						<th>Station Location</th>
 						<th>Gridsquare</th>
-						<th>Labels Waiting</th>
+						<th>QSOs Waiting</th>
 						<th>View QSOs</th>
 						<th>Print</th>
 					</tr>

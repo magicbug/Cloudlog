@@ -130,7 +130,7 @@ class Labels extends CI_Controller {
 		$pdf->AddPage();
 
 		if ($result->num_rows() > 0) {
-			if ($numberofqsos == 1) {
+			if ($label->qsos == 1) {
 				$this->makeOneQsoLabel($result->result(), $pdf);
 			} else {
 				$this->makeMultiQsoLabel($result->result(), $pdf, $label->qsos);
