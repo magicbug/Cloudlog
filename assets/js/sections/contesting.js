@@ -528,7 +528,21 @@ function restoreContestSession(data) {
 							"scrollCollapse": true,
 							"paging": false,
 							"scrollX": true,
-							order: [0, 'desc']
+							order: [0, 'desc'],
+							"columnDefs": [
+								{
+									"render": function ( data, type, row ) {
+										return pad(row[8],3);
+									},
+									"targets" : 8
+								},
+								{
+									"render": function ( data, type, row ) {
+										return pad(row[9],3);
+									},
+									"targets" : 9
+								}
+							]
 						});
 					}
 				}
@@ -537,4 +551,9 @@ function restoreContestSession(data) {
 	} else {
 		$("#exch_serial_s").val("1");
 	}
+}
+
+function pad (str, max) {
+	str = str.toString();
+	return str.length < max ? pad("0" + str, max) : str;
 }

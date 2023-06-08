@@ -116,29 +116,8 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
   <div class="col-sm-4">
   	<div class="table-responsive">
 
-		<?php if($radio_status->num_rows()) { ?>
+	  	<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component'); ?>" hx-trigger="load, every 5s"></div>
 
-			<table class="table table-striped">
-					<tr class="titles">
-						<td colspan="2"><i class="fas fa-broadcast-tower"></i> Radio Status</td>
-					</tr>
-
-					<?php foreach ($radio_status->result_array() as $row) { ?>
-					<tr>
-						<td><?php echo $row['radio']; ?></td>
-						<td>
-							<?php if($row['radio'] == "SatPC32" || $row['radio'] == "CloudLogCATQt") { ?>
-								<?php echo $row['sat_name']; ?>
-							<?php } else { ?>
-								<?php echo $this->frequency->hz_to_mhz($row['frequency']); ?> (<?php echo $row['mode']; ?>)
-							<?php } ?>
-						</td>
-					</tr>
-					<?php } ?>
-
-				</table>
-
-		<?php } ?>
 
     	<table class="table table-striped">
 			<tr class="titles">

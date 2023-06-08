@@ -814,6 +814,42 @@ class Logbook extends CI_Controller {
 
 	}
 
+	function search_lotw_unconfirmed($station_id) {
+		$station_id = $this->security->xss_clean($station_id);
+
+		$this->load->model('user_model');
+
+		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+		
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		
+		if (!$logbooks_locations_array) {
+			return null;
+		}
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		
+		$sql = 'select COL_CALL, COL_MODE, COL_SUBMODE, station_callsign, COL_SAT_NAME, COL_BAND, COL_TIME_ON, lotw_users.lastupload from ' . $this->config->item('table_name') . 
+		' join station_profile on ' . $this->config->item('table_name') . '.station_id = station_profile.station_id 
+		join lotw_users on ' . $this->config->item('table_name') . '.col_call = lotw_users.callsign 
+		where ' . $this->config->item('table_name') .'.station_id in ('. $location_list . ')'; 
+		
+		if ($station_id != 'All') {
+			$sql .= ' and station_profile.station_id = ' . $station_id;
+		}
+		
+		$sql .= " and COL_LOTW_QSL_RCVD <> 'Y' and " . $this->config->item('table_name') . ".COL_TIME_ON < lotw_users.lastupload";
+
+		$query = $this->db->query($sql);
+
+		$data['qsos'] = $query;
+
+		$this->load->view('search/lotw_unconfirmed_result.php', $data);
+
+	}
+
 	function search_incorrect_cq_zones($station_id) {
 		$station_id = $this->security->xss_clean($station_id);
 
