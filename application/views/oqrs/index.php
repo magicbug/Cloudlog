@@ -42,7 +42,6 @@
 				</div>
                 <?php
 			} else {
-		  echo '<div class="resulttable">';
 		  if ($stations->result() != NULL) { ?>
 
                 <form class="form-inline" enctype="multipart/form-data">
@@ -55,7 +54,7 @@
                     <button id="button1id" type="button" onclick="loadStationInfo();" name="button1id" class="btn btn-sm btn-primary"> Proceed</button>
                 </form>
             </div>
-			</div>
+			<div class="resulttable"></div>
 
             <div class="searchinfo"></div>
             <?php 
@@ -69,3 +68,4 @@
 
         </div>
     </div>
+</div>

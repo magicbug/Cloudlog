@@ -2,7 +2,7 @@ let station_id;
 
 function loadStationInfo() {
 	station_id = $("#station").val();
-    // $(".stationinfo").empty();
+    $(".resulttable").empty();
     $(".searchinfo").empty();
     $.ajax({
         url: base_url+'index.php/oqrs/get_station_info',
@@ -10,8 +10,8 @@ function loadStationInfo() {
         data: {'station_id': station_id},
         success: function (data) {
             if (data.count > 0) {
-                $(".stationinfo").append('<br />' + data.count + ' Qsos logged between ' + data.mindate + ' and ' + data.maxdate + '.<br /><br />');
-                $(".stationinfo").append('<form class="form-inline" onsubmit="return false;"><label class="my-1 mr-2" for="oqrssearch">Enter your callsign: </label><input class="form-control mr-sm-2" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search" required="required"><button onclick="searchOqrs();" class="btn btn-sm btn-primary" id="stationbuttonsubmit" type="button"><i class="fas fa-search"></i> Search</button></form>');
+                $(".resulttable").append('<br />' + data.count + ' Qsos logged between ' + data.mindate + ' and ' + data.maxdate + '.<br /><br />');
+                $(".resulttable").append('<form class="form-inline" onsubmit="return false;"><label class="my-1 mr-2" for="oqrssearch">Enter your callsign: </label><input class="form-control mr-sm-2" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search" required="required"><button onclick="searchOqrs();" class="btn btn-sm btn-primary" id="stationbuttonsubmit" type="button"><i class="fas fa-search"></i> Search</button></form>');
                 // Get the input field
                 var input = document.getElementById("oqrssearch");
 
@@ -231,6 +231,7 @@ function submitOqrsRequest() {
                         'qslroute': $('input[name="qslroute"]:checked').val()
                 },
                 success: function (data) {
+                    $(".resulttable").empty();
                     $(".stationinfo").empty();
                     $(".searchinfo").empty();
                     $(".stationinfo").append('<br /><div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your QSL request has been saved!</div>');
