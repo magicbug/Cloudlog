@@ -1,10 +1,13 @@
+let station_id;
+
 function loadStationInfo() {
-    $(".stationinfo").empty();
+	station_id = $("#station").val();
+    // $(".stationinfo").empty();
     $(".searchinfo").empty();
     $.ajax({
         url: base_url+'index.php/oqrs/get_station_info',
         type: 'post',
-        data: {'station_id': $("#station").val()},
+        data: {'station_id': station_id},
         success: function (data) {
             if (data.count > 0) {
                 $(".stationinfo").append('<br />' + data.count + ' Qsos logged between ' + data.mindate + ' and ' + data.maxdate + '.<br /><br />');
@@ -34,7 +37,7 @@ function searchOqrs() {
     $.ajax({
         url: base_url+'index.php/oqrs/get_qsos',
         type: 'post',
-        data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val().toUpperCase()},
+        data: {'station_id': station_id, 'callsign': $("#oqrssearch").val().toUpperCase()},
         success: function (data) {
             $(".searchinfo").append(data);
         }
@@ -76,7 +79,7 @@ function notInLog() {
     $.ajax({
         url: base_url + 'index.php/oqrs/not_in_log',
         type: 'post',
-        data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val().toUpperCase()},
+        data: {'station_id': station_id, 'callsign': $("#oqrssearch").val().toUpperCase()},
         success: function(html) {
             $(".searchinfo").html(html);
             $('.qsotime').change(function() {
@@ -94,11 +97,11 @@ function notInLog() {
 }
 
 function saveNotInLogRequest() {
+	const qsos = [];
     $(".alertinfo").remove();
     if ($("#emailInput").val() == '') {
         $(".searchinfo").prepend('<div class="alertinfo"><br /><div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You need to fill out an email address!</div></div>');
     } else {
-        const qsos = [];
         $(".notinlog-table tbody tr").each(function(i) {
             var data = [];
             var datecell = $("#date", this).val();
@@ -119,7 +122,7 @@ function saveNotInLogRequest() {
             $.ajax({
                 url: base_url+'index.php/oqrs/save_not_in_log',
                 type: 'post',
-                data: { 'station_id': $("#station").val(), 
+                data: { 'station_id': station_id, 
                         'callsign': $("#oqrssearch").val().toUpperCase(),
                         'email': $("#emailInput").val(),
                         'message': $("#messageInput").val(),
@@ -166,7 +169,7 @@ function requestOqrs() {
     $.ajax({
         url: base_url + 'index.php/oqrs/request_form',
         type: 'post',
-        data: {'station_id': $("#station").val(), 'callsign': $("#oqrssearch").val().toUpperCase()},
+        data: {'station_id': station_id, 'callsign': $("#oqrssearch").val().toUpperCase()},
         success: function(html) {
             $(".searchinfo").html(html);
             /* time input shortcut */
@@ -194,11 +197,11 @@ function requestOqrs() {
 }
 
 function submitOqrsRequest() {
+	const qsos = [];
     $(".alertinfo").remove();
     if ($("#emailInput").val() == '') {
         $(".searchinfo").prepend('<div class="alertinfo"><br /><div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You need to fill out an email address!</div></div>');
     } else {
-        const qsos = [];
         $(".result-table tbody tr").each(function(i) {
             var data = [];
             var datecell = $("#date", this).val();
@@ -220,7 +223,7 @@ function submitOqrsRequest() {
             $.ajax({
                 url: base_url+'index.php/oqrs/save_oqrs_request',
                 type: 'post',
-                data: { 'station_id': $("#station").val(),
+                data: { 'station_id': station_id,
                         'callsign': $("#oqrssearch").val().toUpperCase(),
                         'email': $("#emailInput").val(),
                         'message': $("#messageInput").val(),
@@ -238,11 +241,11 @@ function submitOqrsRequest() {
 }
 
 function submitOqrsRequestGrouped() {
+	const qsos = [];
     $(".alertinfo").remove();
     if ($("#emailInput").val() == '') {
         $(".searchinfo").prepend('<div class="alertinfo"><br /><div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>You need to fill out an email address!</div></div>');
     } else {
-        const qsos = [];
         $(".result-table tbody tr").each(function(i) {
             var data = [];
             var stationid = this.getAttribute('stationid');;
