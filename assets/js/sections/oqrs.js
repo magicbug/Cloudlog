@@ -279,7 +279,7 @@ function submitOqrsRequestGrouped() {
                 success: function (data) {
                     $(".stationinfo").empty();
                     $(".searchinfo").empty();
-                    $(".searchinfo").append('<br /><div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your QSL request has been saved!</div>');
+                    $(".stationinfo").append('<br /><div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your QSL request has been saved!</div>');
                 }
             });
         }
