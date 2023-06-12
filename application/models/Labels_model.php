@@ -17,6 +17,7 @@ class Labels_model extends CI_Model {
             'height' 		=> xss_clean($this->input->post('height', true)),
             'font_size' 	=> xss_clean($this->input->post('font_size', true)),
             'qsos' 		    => xss_clean($this->input->post('label_qsos', true)),
+            'font' 		    => xss_clean($this->input->post('font', true)),
             'last_modified' => date('Y-m-d H:i:s'),
 		);
 
@@ -48,6 +49,7 @@ class Labels_model extends CI_Model {
             'height' 		=> xss_clean($this->input->post('height', true)),
             'font_size' 	=> xss_clean($this->input->post('font_size', true)),
             'qsos' 		    => xss_clean($this->input->post('label_qsos', true)),
+            'font' 		    => xss_clean($this->input->post('font', true)),
             'last_modified' => date('Y-m-d H:i:s'),
 		);
 

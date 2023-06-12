@@ -88,6 +88,12 @@ class Migration_create_label_types_table extends CI_Migration {
                     'null' => TRUE,
                 ),
 
+                'font' => array(
+                    'type' => 'VARCHAR',
+                    'constraint' => '250',
+                    'null' => TRUE,
+                ),
+
                 'qsos' => array(
                     'type' => 'INT',
                     'constraint' => '5',

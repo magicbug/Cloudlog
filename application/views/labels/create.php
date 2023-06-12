@@ -111,6 +111,29 @@
 			    </div>
   			</div>
 
+			  <div class="form-group row">
+    			<label class="col-sm-2 col-form-label" for="font">Font</label>
+			    <div class="col-sm-4">
+				    <select name="font" class="form-control" id="font">
+						<option value="courier">Courier</option>
+						<option value="courierb">Courierb</option>
+						<option value="courierbi">Courierbi</option>
+						<option value="courieri">Courieri</option>
+						<option value="DejaVuSans">DejaVuSans</option>
+						<option value="helvetica">Helvetica</option>
+						<option value="helveticab">Helveticab</option>
+						<option value="helveticabi">Helveticabi</option>
+						<option value="helveticai">Helveticai</option>
+						<option value="symbol">Symbol</option>
+						<option value="times">Times</option>
+						<option value="timesb">Timesb</option>
+						<option value="timesb">Timesb</option>
+						<option value="timesbi">Timesbi</option>
+						<option value="zapfdingbats">Zapfdingbats</option>
+					</select>
+			    </div>
+  			</div>
+
   			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Save Label Type</button>
 		</div>
 	</div>

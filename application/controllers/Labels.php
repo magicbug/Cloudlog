@@ -1,7 +1,8 @@
 <?php 
 
 use Cloudlog\Label\PDF_Label;
-use Cloudlog\Label\fpdf;
+use Cloudlog\Label\tfpdf;
+use Cloudlog\Label\font\unifont\ttfonts;
 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
@@ -126,8 +127,18 @@ class Labels extends CI_Controller {
 			$this->session->set_flashdata('error', 'Something went wrong! The label could not be generated. Check label size and font size.'); 
 			redirect('labels');
 		}
+		define('FPDF_FONTPATH', './src/Label/font/');
 
 		$pdf->AddPage();
+
+		if ($label->font == 'DejaVuSans') {
+			$pdf->AddFont($label->font,'','DejaVuSansMono.ttf',true);
+			$pdf->SetFont($label->font);
+		} else {
+			$pdf->AddFont($label->font);
+			$pdf->SetFont($label->font);
+		}
+
 
 		if ($result->num_rows() > 0) {
 			if ($label->qsos == 1) {
