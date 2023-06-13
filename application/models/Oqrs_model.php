@@ -144,8 +144,8 @@ class Oqrs_model extends CI_Model {
 
 			if ($qsoid > 0) {
 				$data['status'] = '2';
-				$data['qsoid'] = $qsoid;
 			}
+			$data['qsoid'] = $qsoid;
 	
 			$this->db->insert('oqrs', $data);
 			if(!in_array(xss_clean($postdata['station_id']), $station_ids)){
@@ -177,8 +177,8 @@ class Oqrs_model extends CI_Model {
 
 			if ($qsoid > 0) {
 				$data['status'] = '2';
-				$data['qsoid'] = $qsoid;
 			}
+			$data['qsoid'] = $qsoid;
 	
 			$this->db->insert('oqrs', $data);
 			
