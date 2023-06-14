@@ -128,7 +128,7 @@ L.Maidenhead = L.LayerGroup.extend({
       var marker = L.marker([lat,lon], {icon: myIcon}, clickable=false);
 	  if (zoom == 4 || zoom == 3) {
 		  marker.bindTooltip(locator);
-		  if (typeof variable !== 'undefined' && gridsquaremap == true) {
+		  if (typeof gridsquaremap !== 'undefined' && gridsquaremap == true) {
 			marker.on('click', function(event) {
 			  spawnGridsquareModal(locator);
 			});
