@@ -62,6 +62,6 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
         <small id="emailInputHelp" class="form-text text-muted">Your e-mail address where we can contact you</small>
     </div>
 
-    <button type="button" onclick="submitOqrsRequest(this.form);" class="btn btn-sm btn-primary"><i
+    <button type="button" id="requestSubmit" onclick="submitOqrsRequest(this.form);" class="btn btn-sm btn-primary"><i
             class="fas fa-plus-square"></i> Submit request</button>
 </form>
