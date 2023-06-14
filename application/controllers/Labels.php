@@ -90,10 +90,9 @@ class Labels extends CI_Controller {
 	public function print($station_id) {
 		$clean_id = xss_clean($station_id);
 
-		$this->load->model('adif_data');
-		$result = $this->adif_data->export_printrequested($clean_id);
-
 		$this->load->model('labels_model');
+		$result = $this->labels_model->export_printrequested($clean_id);
+
 		$label = $this->labels_model->getDefaultLabel();
 
 		// require_once('fpdf.php');

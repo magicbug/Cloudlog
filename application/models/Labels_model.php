@@ -104,4 +104,27 @@ class Labels_model extends CI_Model {
         $sql = 'update label_types set useforprint = 1 where user_id = ' . $this->session->userdata('user_id') . ' and id = ' . $cleanid;
         $this->db->query($sql);
     }
+
+    function export_printrequested($station_id = NULL) {
+        $this->load->model('stations');
+        $active_station_id = $this->stations->find_active();
+
+        $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.name as station_country');
+
+		if ($station_id == NULL) {
+			$this->db->where($this->config->item('table_name').'.station_id', $active_station_id);
+		} else if ($station_id != 'All') {
+			$this->db->where($this->config->item('table_name').'.station_id', $station_id);
+		}
+
+        $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
+        // always filter user. this ensures that even if the station_id is from another user no inaccesible QSOs will be returned
+        $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+        $this->db->where_in('COL_QSL_SENT', array('R', 'Q'));
+        $this->db->order_by("COL_DXCC", "ASC");
+        $query = $this->db->get($this->config->item('table_name'));
+
+        return $query;
+    }
 }
