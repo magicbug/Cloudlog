@@ -70,6 +70,7 @@ $lang['menu_sota_csv_export'] = 'SOTA CSV Export';
 $lang['menu_cabrillo_export'] = 'Cabrillo Export';
 $lang['menu_oqrs_requests'] = 'OQRS Requests';
 $lang['menu_print_requested_qsls'] = 'Print Requested QSLs';
+$lang['menu_labels'] = 'Labels';
 $lang['menu_logbook_of_the_world'] = 'Logbook of the World';
 $lang['menu_eqsl_import_export'] = 'eQSL Import / Export';
 $lang['menu_qrz_logbook'] = 'QRZ Logbook';
