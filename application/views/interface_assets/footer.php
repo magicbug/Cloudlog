@@ -1388,7 +1388,7 @@ $(document).ready(function(){
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "gridsquares" && !empty($this->uri->segment(2))) { ?>
-
+<script>var gridsquaremap = true;</script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.MaidenheadColoured.js"></script>
 
 <script>
