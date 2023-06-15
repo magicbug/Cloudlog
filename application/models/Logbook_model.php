@@ -2519,8 +2519,24 @@ class Logbook_model extends CI_Model {
 
 	if($qsl_gridsquare != "") {
       $data = array(
-        'COL_GRIDSQUARE' => $qsl_gridsquare
+        'COL_GRIDSQUARE' => $qsl_gridsquare,
+        'COL_DISTANCE' => 0
       );
+      $this->db->select('station_profile.station_gridsquare as station_gridsquare');
+      $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
+      $this->db->where('COL_CALL', $callsign);
+      $this->db->where('COL_BAND', $band);
+      $this->db->join('station_profile', $this->config->item('table_name').'.station_id = station_profile.station_id', 'left outer');
+      $this->db->limit(1);
+      $query = $this->db->get($this->config->item('table_name'));
+      $row = $query->row();
+      if (isset($row)) {
+         $station_gridsquare = $row->station_gridsquare;
+         $this->load->library('Qra');
+
+         $data['COL_DISTANCE'] = $this->qra->distance($station_gridsquare, $qsl_gridsquare, 'K');
+      }
+
       $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
       $this->db->where('COL_CALL', $callsign);
       $this->db->where('COL_BAND', $band);
