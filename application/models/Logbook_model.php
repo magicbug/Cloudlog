@@ -199,7 +199,7 @@ class Logbook_model extends CI_Model {
             'COL_QTH' => $this->input->post('qth'),
             'COL_PROP_MODE' => $prop_mode,
             'COL_IOTA' => $this->input->post('iota_ref')  == null ? '' : trim($this->input->post('iota_ref')),
-            'COL_DISTANCE' => "0",
+            'COL_DISTANCE' => $this->input->post('distance'),
             'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
             'COL_ANT_AZ' => null,
             'COL_ANT_EL' => null,

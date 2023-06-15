@@ -506,6 +506,11 @@ $("#callsign").focusout(function() {
 					$('#locator').val(result.callsign_qra);
 					$('#locator_info').html(result.bearing);
 
+					if (result.callsign_distance != "" && result.callsign_distance != 0)
+					{
+						document.getElementById("distance").value = result.callsign_distance;
+					}
+
 					if (result.callsign_qra != "")
 					{
 						if (result.workedBefore)
