@@ -952,6 +952,36 @@ class Logbook extends CI_Controller {
 			return "";
 	}
 
+	/* return distance */
+	function searchdistance($locator, $station_id = null) {
+			$this->load->library('Qra');
+
+			if($locator != null) {
+				if (isset($station_id)) {
+					// be sure that station belongs to user
+					$this->load->model('Stations');
+					if (!$this->Stations->check_station_is_accessible($station_id)) {
+						return 0;
+					}
+
+					// get station profile
+					$station_profile = $this->Stations->profile_clean($station_id);
+
+					// get locator
+					$mylocator = $station_profile->station_gridsquare;
+				} else if($this->session->userdata('user_locator') != null){
+					$mylocator = $this->session->userdata('user_locator');
+				} else {
+					$mylocator = $this->config->item('locator');
+				}
+
+				$distance = $this->qra->distance($mylocator, $locator, 'K');
+
+				echo round($distance, 0);
+			}
+			return 0;
+	}
+
 	/* return station bearing */
 	function bearing($locator, $unit = 'M', $station_id = null) {
 			$this->load->library('Qra');
