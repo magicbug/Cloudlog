@@ -977,7 +977,7 @@ class Logbook extends CI_Controller {
 
 				$distance = $this->qra->distance($mylocator, $locator, 'K');
 
-				echo round($distance, 0);
+				echo $distance;
 			}
 			return 0;
 	}
@@ -1039,7 +1039,7 @@ class Logbook extends CI_Controller {
 				$distance = $this->qra->distance($mylocator, $locator, 'K');
 
 			}
-			return round($distance, 0);
+			return $distance;
 	}
 
 	function qralatlng($qra) {
