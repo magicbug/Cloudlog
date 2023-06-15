@@ -440,7 +440,7 @@ class API extends CI_Controller {
 
 		$userid = $this->api_model->key_userid($obj['key']);
 
-		if(!isset($obj['station_profile_id']) || $this->stations->check_station_against_user($obj['station_profile_id'], $userid) == 0) {
+		if(!isset($obj['station_profile_id']) || $this->stations->check_station_against_user($obj['station_profile_id'], $userid) == false) {
 			http_response_code(401);
 			echo json_encode(['status' => 'failed', 'reason' => "station id does not belong to the API key owner."]);
 			die();
