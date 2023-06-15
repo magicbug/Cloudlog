@@ -67,7 +67,7 @@
 		  </div>
 
         <div class="form-row">
-            <div class="form-group col-sm-6">
+            <div class="form-group col-sm-6" id="us_state">
 		    <label for="stateInput">Station State</label>
 		    <select class="form-control custom-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 		    	<option value="" selected></option>
@@ -121,6 +121,27 @@
 				<option value="WI">Wisconsin</option>
 				<option value="WV">West Virginia</option>
 				<option value="WY">Wyoming</option>
+			</select>
+		    <small id="StateHelp" class="form-text text-muted">Station state. Applies to certain countries only. Leave blank if not applicable.</small>
+		  </div>
+
+		  <div class="form-group col-sm-6" id="canada_state">
+		    <label for="stateInput">Station Canadian Province</label>
+		    <select class="form-control custom-select" name="station_ca_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+		    	<option value="" selected></option>
+				<option value="AB">Alberta</option>
+				<option value="BC">British Columbia</option>
+				<option value="MB">Manitoba</option>
+				<option value="NB">New Brunswick</option>
+				<option value="NL">Newfoundland & Labrador</option>
+				<option value="NS">Nova Scotia</option>
+				<option value="NT">Northwest Territories</option>
+				<option value="NU">Nunavut</option>
+				<option value="ON">Ontario</option>
+				<option value="PE">Prince Edward Island</option>
+				<option value="QC">Quebec</option>
+				<option value="SK">Saskatchewan</option>
+				<option value="YT">Yukon</option>
 			</select>
 		    <small id="StateHelp" class="form-text text-muted">Station state. Applies to certain countries only. Leave blank if not applicable.</small>
 		  </div>

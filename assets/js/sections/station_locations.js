@@ -10,8 +10,6 @@ $(document).ready( function () {
 
     var selectedDXCCID = $('#dxcc_select').find(":selected").val();
 
-    console.log(selectedDXCCID);
-
     if(selectedDXCCID == '1'){
         $("#canada_state").show();
         $("#us_state").hide();
