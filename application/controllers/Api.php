@@ -423,6 +423,8 @@ class API extends CI_Controller {
 
 		$this->load->model('api_model');
 
+		$this->load->model('stations');
+
 		// Decode JSON and store
 		$obj = json_decode(file_get_contents("php://input"), true);
 		if ($obj === NULL) {
@@ -434,6 +436,14 @@ class API extends CI_Controller {
 		   http_response_code(401);
 		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
 		   die();
+		}
+
+		$userid = $this->api_model->key_userid($obj['key']);
+
+		if(!isset($obj['station_profile_id']) || $this->stations->check_station_against_user($obj['station_profile_id'], $userid) == false) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => "station id does not belong to the API key owner."]);
+			die();
 		}
 
 		$this->api_model->update_last_used($obj['key']);
