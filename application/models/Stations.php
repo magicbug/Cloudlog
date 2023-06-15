@@ -423,6 +423,17 @@ class Stations extends CI_Model {
 			return null;
 		}
 	}
+
+	public function check_station_against_user($stationid, $userid) {
+		$this->db->select('station_id');
+		$this->db->where('user_id', $userid);
+		$this->db->where('station_id', $stationid);
+		$query = $this->db->get('station_profile');
+		if ($query->num_rows() == 1) {
+			return true;
+		}
+		return false;
+	}
 }
 
 ?>
