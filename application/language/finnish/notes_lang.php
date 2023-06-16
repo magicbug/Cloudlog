@@ -6,7 +6,7 @@ $lang['notes_menu_notes'] = 'Muistiinpanot';
 $lang['notes_edit_note'] = 'Muokkaa muistiinpanoa';
 $lang['notes_your_notes'] = 'Muistiinpanosi';
 
-$lang['notes_welcome'] = "Näyttää siltä, ettei sinulla ole vielä yhtään muistiinpanoa. Nämä Cloudlogin muistiinpanot ovat kätevä tapa tallentaa tärkeitä tietoja, kuten ATU:n asetukset, taajuudet ja mitä tahansa mieleesi tuleekin. Muistiinpanosi säilyvät täällä tallessa, eikä sinun tarvitse etsiä niitä paperipinojesi alta. Näin aika säästyy workkimiseen  --... ...-- ";
+$lang['notes_welcome'] = "Näyttää siltä, ettei sinulla ole vielä yhtään muistiinpanoa. Tämä Cloudlogin muistio ovat kätevä tapa tallentaa vaikka ATU:n asetukset, taajuudet. Muistiinpanosi säilyvät täällä tallessa, eikä sinun tarvitse etsiä niitä paperipinojesi alta. Näin aika säästyy workkimiseen  --... ...-- ";
 
 $lang['notes_create_note'] = 'Luo uusi muistiinpano';
 

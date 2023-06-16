@@ -38,16 +38,25 @@ $lang['general_word_method'] = 'Method / tapa';
 $lang['general_word_sent'] = 'Lähetetyt';
 $lang['general_word_received'] = 'Vastaanotetut';
 $lang['general_word_requested'] = 'Pyydetyt';
-$lang['general_word_qslcard'] = 'QSL kortti';
-$lang['general_word_qslcard_management'] = 'QSL manageri';
+$lang['general_word_queued'] = 'Queued';
+$lang['general_word_invalid_ignore'] = 'Virheellinen (Ohita)';
+$lang['general_word_qslcard'] = 'QSL-kortti';
+$lang['general_word_qslcard_management'] = 'QSL-manageri';
 $lang['general_word_qslcards'] = 'QSL-kortit';
 $lang['general_word_qslcard_direct'] = 'Direct';
 $lang['general_word_qslcard_bureau'] = 'Bureau';
+$lang['general_word_qslcard_electronic'] = 'Electronic';
+$lang['general_word_qslcard_manager'] = 'Manageri';
 $lang['general_word_qslcard_via'] = 'Via';
+$lang['general_word_eqslcard'] = 'eQSL Card';
+$lang['general_word_eqslcards'] = 'eQSL Cards';
+$lang['general_word_lotw'] = 'Logbook of the World';
 
 $lang['general_edit_qso'] = 'Muokkaa QSO:a';
 $lang['general_mark_qsl_rx_bureau'] = 'Merkitse QSL vastaanotetuksi (Bureau)';
 $lang['general_mark_qsl_rx_direct'] = 'Merkitse QSL vastaanotetuksi (Direct)';
+$lang['general_mark_qsl_tx_bureau'] = 'Merkitse QSL lähetetyksi (Bureau)';
+$lang['general_mark_qsl_tx_direct'] = 'Merkitse QSL lähetetyksi (Direct)';
 
 $lang['general_delete_qso'] = 'Poista QSO';
 
@@ -86,15 +95,22 @@ $lang['gen_hamradio_logbook'] = 'Lokikirja';
 
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
+$lang['gen_hamradio_deleted_dxcc'] = 'Poistettu DXCC';
+$lang['gen_hamradio_continent'] = 'Continent';
 $lang['gen_hamradio_usa_state'] = 'USA:n osavaltio';
 $lang['gen_hamradio_county_reference'] = 'USA lääni';
-$lang['gen_hamradio_iota_reference'] = 'IOTA ref.numero';
-$lang['gen_hamradio_sota_reference'] = 'SOTA ref.numero';
+$lang['gen_hamradio_iota_reference'] = 'IOTA ref.nro';
+$lang['gen_hamradio_sota_reference'] = 'SOTA ref.nro';
 $lang['gen_hamradio_wwff_reference'] = 'WWFF ref.nro';
+$lang['gen_hamradio_pota_reference'] = 'POTA ref.nro';
 $lang['gen_hamradio_dok'] = 'DOK';
 $lang['gen_hamradio_state'] = 'osavaltio';
 $lang['gen_hamradio_iota'] = 'IOTA';
+$lang['gen_hamradio_sota'] = 'SOTA';
+$lang['gen_hamradio_wwff'] = 'WWFF';
+$lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Gridsquare';
+$lang['gen_hamradio_operator'] = 'Operator';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
@@ -108,3 +124,17 @@ $lang['dashboard_countries_breakdown'] = 'Maatilasto';
 $lang['gen_from_date'] = 'päivämäärästä';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'Tämä QSO vahvistettiin';
+
+$lang['error_no_logbook_found'] = 'No logbooks were found. You need to define a logbook under Station Logbooks! Do it here:';
+
+$lang['copy_to_clipboard'] = 'Kopioi leikepöydälle';
+
+$lang['africa'] = 'Afrikka';
+$lang['antarctica'] = 'Antarktis';
+$lang['asia'] = 'Aasia';
+$lang['europe'] = 'Eurooppa';
+$lang['northamerica'] = 'Pohjois-Amerikka';
+$lang['oceania'] = 'Oseania';
+$lang['southamerica'] = 'Etelä-Amerikka';
+
+$lang['gen_band_selection'] = 'Bandin valinta';
