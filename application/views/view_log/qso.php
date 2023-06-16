@@ -135,13 +135,13 @@
 
                                 switch ($measurement_base) {
                                     case 'M':
-                                        $distance .= "mi";
+                                        $distance .= " mi";
                                         break;
                                     case 'K':
-                                        $distance .= "km";
+                                        $distance .= " km";
                                         break;
                                     case 'N':
-                                        $distance .= "nmi";
+                                        $distance .= " nmi";
                                         break;
                                 }
                                 echo $distance;
