@@ -16,7 +16,6 @@ L.Maidenhead = L.LayerGroup.extend({
 	initialize: function (options) {
 		L.LayerGroup.prototype.initialize.call(this);
 		L.Util.setOptions(this, options);
-
 	},
 
 	onAdd: function (map) {
@@ -37,16 +36,19 @@ L.Maidenhead = L.LayerGroup.extend({
 
 	redraw: function () {
 		var d3 = new Array(20, 10, 10, 1, 1, 1, 1, 1, 1, 1, 1 / 24, 1 / 24, 1 / 24, 1 / 24, 1 / 24, 1 / 240, 1 / 240, 1 / 240, 1 / 240, 1 / 240 / 24, 1 / 240 / 24);
-		var lat_cor = new Array(0, 8, 8, 8, 8, 1.7, 6, 8, 8, 8, 1.4, 2.5, 3, 3.5, 4, 4, 3.5, 3.5, 3, 1.8, 1.6);
+		var lat_cor = new Array(0, 8, 8, 8, 2.5, 2.2, 6, 8, 8, 8, 1.4, 2.5, 3, 3.5, 4, 4, 3.5, 3.5, 3, 1.8, 1.6); // Used for gridsquare text offset
 		var bounds = map.getBounds();
 		var zoom = map.getZoom();
+		console.log(zoom);
 		var unit = d3[zoom];
 		var lcor = lat_cor[zoom];
 		var w = bounds.getWest();
 		var e = bounds.getEast();
 		var n = bounds.getNorth();
 		var s = bounds.getSouth();
-		if (zoom==1) {var c = 2;} else {var c = 0.1;}
+		var field_lat_cor = new Array(0, 8, 8, 9, 8, 7, 6, 8, 8, 8, 1.4, 2.5, 3, 3.5, 4, 4, 3.5, 3.5, 3, 1.8, 1.6); // Used for field text offset
+		var field_cor = field_lat_cor[zoom];
+		if (zoom==1) {var c = 2;} else {var c = 0.2;} // Height offset
 		if (n > 85) n = 85;
 		if (s < -85) s = -85;
 		var left = Math.floor(w/(unit*2))*(unit*2);
@@ -56,66 +58,82 @@ L.Maidenhead = L.LayerGroup.extend({
 		this.eachLayer(this.removeLayer, this);
 
 		for (var lon = left; lon < right; lon += (unit*2)) {
-			for (var lat = bottom; lat < top; lat += unit) {
-			var bounds = [[lat,lon],[lat+unit,lon+(unit*2)]];
-
-			if(grid_two.includes(this._getLocator(lon,lat)) || grid_four.includes(this._getLocator(lon,lat)) || grid_six.includes(this._getLocator(lon,lat))) {
-
-				if(grid_two_confirmed.includes(this._getLocator(lon,lat)) || grid_four_confirmed.includes(this._getLocator(lon,lat)) || grid_six_confirmed.includes(this._getLocator(lon,lat))) {
-					this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle grid-confirmed', color: 'rgba(144,238,144, 0.6)', weight: 1, fillOpacity: 1, fill:true, interactive: false}));
-				} else {
-					this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle grid-worked', color: this.options.color, weight: 1, fillOpacity: 1, fill:true, interactive: false}));
-				}
-				if (zoom < 2 || zoom > 4) {
-					this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c)));
-				}
-				if (zoom < 3 ) {
-					this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle', color: this.options.color, weight: 1, fill:false, interactive: false}));
-				}
-			} else {
-				if (zoom < 3 || zoom > 5) {
-					this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle', color: this.options.color, weight: 1, fill:false, interactive: false}));
-				}
-			}
-			//var pont = map.latLngToLayerPoint([lat,lon]);
-			//console.log(pont.x);
-				if (zoom < 3 || zoom > 5) {
-					this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c)));
+			if (lon > -180 || lon < 180) {
+				for (var lat = bottom; lat < top; lat += unit) {
+					var bounds = [[lat,lon],[lat+unit,lon+(unit*2)]];
+					var locator = this._getLocator(lon,lat);
+	
+					if(grid_two.includes(locator) || grid_four.includes(locator) || grid_six.includes(locator)) {
+	
+						if(grid_two_confirmed.includes(locator) || grid_four_confirmed.includes(locator) || grid_six_confirmed.includes(locator)) {
+							var rectConfirmed = L.rectangle(bounds, {className: 'grid-rectangle grid-confirmed', color: 'rgba(144,238,144, 0.6)', weight: 1, fillOpacity: 1, fill:true, interactive: false});
+							this.addLayer(rectConfirmed);
+						} else {
+							var rectWorked = L.rectangle(bounds, {className: 'grid-rectangle grid-worked', color: this.options.color, weight: 1, fillOpacity: 1, fill:true, interactive: false})
+							this.addLayer(rectWorked);
+						}
+						// Controls text on grid on various zoom levels
+						if (zoom < 2 || zoom > 2) {
+							this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c)));
+						}
+						if (zoom < 3 ) {
+							this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle', color: this.options.color, weight: 1, fill:false, interactive: false}));
+						}
+					} else {
+						if (zoom < 3 || zoom > 5) {
+							this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle', color: this.options.color, weight: 1, fill:false, interactive: false}));
+						}
+					}
+					if (zoom < 3 || zoom > 5) {
+						this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c)));
+					}
 				}
 			}
 		}
 		// Added this to print fields and field name, while still showing worked/confirmed gridsquares
-		if (zoom < 5 && zoom > 2) {
+		if (zoom < 6 && zoom > 2) {
 			unit = 10;
 			var left = Math.floor(w / (unit * 2)) * (unit * 2);
 			var right = Math.ceil(e / (unit * 2)) * (unit * 2);
 			var top = Math.ceil(n / unit) * unit;
 			var bottom = Math.floor(s / unit) * unit;
 			for (var lon = left; lon < right; lon += (unit * 2)) {
-				for (var lat = bottom; lat < top; lat += unit) {
-					var bounds = [[lat, lon], [lat + unit, lon + (unit * 2)]];
+					for (var lat = bottom; lat < top; lat += unit) {
+						var bounds = [[lat, lon], [lat + unit, lon + (unit * 2)]];
 
-					this.addLayer(L.rectangle(bounds, {
-						className: 'grid-rectangle',
-						color: this.options.color,
-						weight: 1,
-						fill: false,
-						interactive: false
-					}));
-					this.addLayer(this._getLabel2(lon + unit - (unit / lcor), lat + (unit / 2) + (unit / lcor * c)));
-				}
-			}
+						this.addLayer(L.rectangle(bounds, {
+							className: 'grid-rectangle',
+							color: this.options.color,
+							weight: 1,
+							fill: false,
+							interactive: false
+						}));
+						this.addLayer(this._getLabel2(lon + unit - (unit / field_cor), lat + (unit / 2) + (unit / lcor * c)));
+					}
+		}
 		}
 		return this;
 	},
 
 	_getLabel: function(lon,lat) {
-	  var title_size = new Array(0, 10, 14, 16, 6, 13, 14, 16, 24, 36, 12, 14, 20, 36, 60, 12, 20, 36, 60, 12, 24);
+	  var title_size = new Array(0, 10, 14, 16, 8.5, 13, 14, 16, 24, 36, 12, 14, 20, 36, 60, 12, 20, 36, 60, 12, 24); // Controls text size on labels
 	  var zoom = map.getZoom();
 	  var size = title_size[zoom]+'px';
-	  var title = '<span class="grid-text" style="cursor: default;"><font style="color:'+this.options.color+'; font-size:'+size+'; font-weight: 900; ">' + this._getLocator(lon,lat) + '</font></span>';
-      var myIcon = L.divIcon({className: 'my-div-icon', html: title});
+	  var title = '';
+	  var locator = this._getLocator(lon,lat);
+	  if (zoom != 4 && zoom != 3) {
+		  title = '<span class="grid-text" style="cursor: default;"><font style="color:'+this.options.color+'; font-size:'+size+'; font-weight: 900; ">' + locator + '</font></span>';
+	  }
+	  var myIcon = L.divIcon({className: 'my-div-icon', html: title});
       var marker = L.marker([lat,lon], {icon: myIcon}, clickable=false);
+	  if (zoom == 4 || zoom == 3) {
+		  marker.bindTooltip(locator);
+		  if (typeof gridsquaremap !== 'undefined' && gridsquaremap == true) {
+			marker.on('click', function(event) {
+			  spawnGridsquareModal(locator);
+			});
+			}
+	  }
       return marker;
 	},
 

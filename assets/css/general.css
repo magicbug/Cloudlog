@@ -135,7 +135,7 @@ thead > tr > td {
     text-transform: uppercase;
 }
 
-.stationinfo #oqrssearch:valid {
+#oqrssearch:valid {
     text-transform: uppercase;
 }
 
