@@ -119,8 +119,8 @@ class Labels extends CI_Controller {
 					'font-size'		=> $label->font_size
 				));
 			} else {
-				// Standard format
-				$pdf = new PDF_Label('3422');
+				$this->session->set_flashdata('error', 'You need to create a label and set it to be used for print.'); 
+				redirect('labels');
 			}
 		} catch (\Throwable $th) {
 			$this->session->set_flashdata('error', 'Something went wrong! The label could not be generated. Check label size and font size.'); 
