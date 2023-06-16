@@ -32,6 +32,7 @@ $lang['options_radio_timeout_warning_changed_to'] = 'Radio Timeout Warning chang
 $lang['options_email'] = 'Email';
 $lang['options_outgoing_protocol'] = 'Outgoing Protocol';
 $lang['options_smtp_encryption'] = 'SMTP Encryption';
+$lang['options_email_address'] = 'Email Address';
 $lang['options_smtp_host'] = 'SMTP Host';
 $lang['options_smtp_port'] = 'SMTP Port';
 $lang['options_smtp_username'] = 'SMTP Username';

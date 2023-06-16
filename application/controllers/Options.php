@@ -233,6 +233,14 @@ class Options extends CI_Controller {
 				}
 
 				// Update smtpHost choice within the options system
+				$emailAddressupdate = $this->optionslib->update('emailAddress', $this->input->post('emailAddress'), 'yes');
+
+				// If smtpHost update is complete set a flashsession with a success note
+				if($emailAddressupdate == TRUE) {
+					$this->session->set_flashdata('success', $this->lang->line('options_email_address_changed_to').$this->input->post('emailAddress'));
+				}
+
+				// Update smtpHost choice within the options system
 				$smtpHostupdate = $this->optionslib->update('smtpHost', $this->input->post('smtpHost'), 'yes');
 	
 				// If smtpHost update is complete set a flashsession with a success note
