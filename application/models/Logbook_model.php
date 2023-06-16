@@ -890,6 +890,7 @@ class Logbook_model extends CI_Model {
        'COL_RST_SENT' => $this->input->post('rst_sent'),
        'COL_GRIDSQUARE' => strtoupper(trim($this->input->post('locator'))),
        'COL_VUCC_GRIDS' => strtoupper(trim($this->input->post('vucc_grids'))),
+       'COL_DISTANCE' => $this->input->post('distance'),
        'COL_COMMENT' => $this->input->post('comment'),
        'COL_NAME' => $this->input->post('name'),
        'COL_COUNTRY' => $country,
