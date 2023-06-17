@@ -52,6 +52,13 @@
                         </div>
 
                         <div class="form-group row">
+                        <label for="emailSenderName" class="col-sm-2 col-form-label"><?php echo lang('options_email_sender_name'); ?></label>
+                            <div class="col-sm-10">
+                                <input type="text" name="emailSenderName" class="form-control" id="emailSenderName" value="<?php if($this->optionslib->get_option('emailSenderName') != "") { echo $this->optionslib->get_option('emailSenderName'); } ?>">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                         <label for="emailAddress" class="col-sm-2 col-form-label"><?php echo lang('options_email_address'); ?></label>
                             <div class="col-sm-10">
                                 <input type="text" name="emailAddress" class="form-control" id="emailAddress" value="<?php if($this->optionslib->get_option('emailAddress') != "") { echo $this->optionslib->get_option('emailAddress'); } ?>">

@@ -232,10 +232,18 @@ class Options extends CI_Controller {
 					$this->session->set_flashdata('success', $this->lang->line('options_smtp_encryption_changed_to').$this->input->post('smtpEncryption'));
 				}
 
-				// Update smtpHost choice within the options system
+				// Update email sender name within the options system
+				$emailSenderNameupdate = $this->optionslib->update('emailSenderName', $this->input->post('emailSenderName'), 'yes');
+
+				// If email address update is complete set a flashsession with a success note
+				if($emailSenderNameupdate == TRUE) {
+					$this->session->set_flashdata('success', $this->lang->line('options_email_sender_name_changed_to').$this->input->post('emailSenderName'));
+				}
+
+				// Update email address choice within the options system
 				$emailAddressupdate = $this->optionslib->update('emailAddress', $this->input->post('emailAddress'), 'yes');
 
-				// If smtpHost update is complete set a flashsession with a success note
+				// If email address update is complete set a flashsession with a success note
 				if($emailAddressupdate == TRUE) {
 					$this->session->set_flashdata('success', $this->lang->line('options_email_address_changed_to').$this->input->post('emailAddress'));
 				}

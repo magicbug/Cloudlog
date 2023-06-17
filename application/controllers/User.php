@@ -608,7 +608,7 @@ class User extends CI_Controller {
 
 				$message = $this->load->view('email/forgot_password', $this->data,  TRUE);
 
-				$this->email->from($this->optionslib->get_option('emailAddress'), 'Cloudlog');
+				$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
 				$this->email->to($this->input->post('email', true));
 
 				$this->email->subject('Cloudlog Account Password Reset');
