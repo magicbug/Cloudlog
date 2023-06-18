@@ -99,6 +99,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
             <?php } ?>
             <td>
                 <a id="edit_qso" href="javascript:displayQso(<?php echo $row->COL_PRIMARY_KEY; ?>)"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
+                <?php echo ($row->callsign == '' ? '' : ' <small id="lotw_info" class="badge badge-success" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' . $row->lastupload . '">L</small>'); ?>
             </td>
 			<?php
 
