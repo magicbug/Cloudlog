@@ -61,6 +61,13 @@ class Stations extends CI_Model {
 			$station_active = 1;
 		}
 
+		// Check if the state is Canada and get the correct state
+		if ($this->input->post('dxcc') == 1 && $this->input->post('station_ca_state') !="") {
+			$state = $this->input->post('station_ca_state');
+		} else {
+			$state = $this->input->post('station_state');
+		}
+
 		// Create data array with field values
 		$data = array(
 			'user_id' => $this->session->userdata('user_id'),
@@ -80,7 +87,7 @@ class Stations extends CI_Model {
 			'station_cnty' =>  xss_clean($this->input->post('station_cnty', true)),
 			'station_cq' =>  xss_clean($this->input->post('station_cq', true)),
 			'station_itu' =>  xss_clean($this->input->post('station_itu', true)),
-			'state' =>  xss_clean($this->input->post('station_state', true)),
+			'state' =>  $state,
             'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
             'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
             'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
@@ -97,6 +104,14 @@ class Stations extends CI_Model {
 	}
 
 	function edit() {
+
+		// Check if the state is Canada and get the correct state
+		if ($this->input->post('dxcc') == 1 && $this->input->post('station_ca_state') !="") {
+			$state = $this->input->post('station_ca_state');
+		} else {
+			$state = $this->input->post('station_state');
+		}
+
 		$data = array(
 			'station_profile_name' => xss_clean($this->input->post('station_profile_name', true)),
 			'station_gridsquare' => xss_clean($this->input->post('gridsquare', true)),
@@ -113,7 +128,7 @@ class Stations extends CI_Model {
 			'station_cnty' => xss_clean($this->input->post('station_cnty', true)),
 			'station_cq' => xss_clean($this->input->post('station_cq', true)),
 			'station_itu' => xss_clean($this->input->post('station_itu', true)),
-			'state' => xss_clean($this->input->post('station_state', true)),
+			'state' => $state,
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
             'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
             'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
