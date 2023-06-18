@@ -73,6 +73,32 @@ class Qrz {
             $xml = simplexml_load_string($xml);
             if (empty($xml)) return;
 
+			$data['callsign'] = (string)$xml->Callsign->call;
+
+            if ($data['callsign'] == "" and (substr($callsign, -2) == "/P" or substr($callsign, -2) == "/M" or substr($callsign, -3) == "/MM"))  {
+
+                // No match, so remove additional parts to get basic callsign
+                $callsign = substr($callsign,0,strrpos($callsign,"/"));
+				
+                // Try again with basic callsign
+
+                $xml_feed_url = 'http://xmldata.qrz.com/xml/current/?s=' . $key . ';callsign=' . $callsign . '';
+
+                // CURL Functions
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $xml_feed_url);
+                curl_setopt($ch, CURLOPT_HEADER, false);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $xml = curl_exec($ch);
+                curl_close($ch);
+
+                // Create XML object
+                $xml = simplexml_load_string($xml);
+
+                if (empty($xml)) return;
+
+            }
+
             // Return Required Fields
             $data['callsign'] = (string)$xml->Callsign->call;
 
@@ -98,7 +124,6 @@ class Qrz {
                 $data['us_county'] = null;
             }
         } finally {
-
             return $data;
         }
 	}
