@@ -314,7 +314,7 @@ class Logbook_model extends CI_Model {
 
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC', 'left outer');
-    $this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
+		$this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
 		switch ($type) {
 			case 'DXCC':
 				$this->db->where('COL_COUNTRY', $searchphrase);
@@ -1280,11 +1280,12 @@ class Logbook_model extends CI_Model {
       return array();
     }
 
-    $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*');
+    $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, lotw_users.callsign, lotw_users.lastupload');
     $this->db->from($this->config->item('table_name'));
 
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
     $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
+    $this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
     $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
     $this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', "desc");
     $this->db->order_by(''.$this->config->item('table_name').'.COL_PRIMARY_KEY', "desc");
