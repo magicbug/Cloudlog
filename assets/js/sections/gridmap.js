@@ -1,3 +1,12 @@
+$('#band').change(function(){
+	var band = $("#band option:selected").text();
+	if (band != "SAT") {
+		$("#sats").prop('disabled', true);
+	} else {
+		$("#sats").prop('disabled', false);
+	}
+});
+
 var map;
 var grid_two = '';
 var grid_four = '';
@@ -25,7 +34,8 @@ function gridPlot(form) {
             mode: $("#mode").val(),
             qsl:  $("#qsl").is(":checked"),
             lotw: $("#lotw").is(":checked"),
-            eqsl: $("#eqsl").is(":checked")
+            eqsl: $("#eqsl").is(":checked"),
+            sat: $("#sats").val(),
 		},
 		success: function (data) {
             $('#plot').prop("disabled", false);

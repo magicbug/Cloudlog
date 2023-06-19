@@ -2,7 +2,7 @@
 
 class Gridmap_model extends CI_Model {
 
-    function get_band_confirmed($band, $mode, $qsl, $lotw, $eqsl) {
+    function get_band_confirmed($band, $mode, $qsl, $lotw, $eqsl, $sat) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -21,6 +21,9 @@ class Gridmap_model extends CI_Model {
         if ($band != 'All') {
             if ($band == 'SAT') {
                 $sql .= " and col_prop_mode ='" . $band . "'";
+                if ($sat != 'All') {
+                    $sql .= " and col_sat_name ='" . $sat . "'";
+                }
             }
             else {
                 $sql .= " and col_prop_mode !='SAT'";
@@ -37,7 +40,7 @@ class Gridmap_model extends CI_Model {
 		return $this->db->query($sql);
 	}
 
-    function get_band($band, $mode, $qsl, $lotw, $eqsl) {
+    function get_band($band, $mode, $qsl, $lotw, $eqsl, $sat) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -56,6 +59,9 @@ class Gridmap_model extends CI_Model {
         if ($band != 'All') {
             if ($band == 'SAT') {
                 $sql .= " and col_prop_mode ='" . $band . "'";
+                if ($sat != 'All') {
+                    $sql .= " and col_sat_name ='" . $sat . "'";
+                }
             }
             else {
                 $sql .= " and col_prop_mode !='SAT'";
@@ -70,7 +76,7 @@ class Gridmap_model extends CI_Model {
         return $this->db->query($sql);
     }
 
-    function get_band_worked_vucc_squares($band, $mode, $qsl, $lotw, $eqsl) {
+    function get_band_worked_vucc_squares($band, $mode, $qsl, $lotw, $eqsl, $sat) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -89,6 +95,9 @@ class Gridmap_model extends CI_Model {
         if ($band != 'All') {
             if ($band == 'SAT') {
                 $sql .= " and col_prop_mode ='" . $band . "'";
+                if ($sat != 'All') {
+                    $sql .= " and col_sat_name ='" . $sat . "'";
+                }
             }
             else {
                 $sql .= " and col_prop_mode !='SAT'";
@@ -103,7 +112,7 @@ class Gridmap_model extends CI_Model {
         return $this->db->query($sql);
     }
 
-    function get_band_confirmed_vucc_squares($band, $mode, $qsl, $lotw, $eqsl) {
+    function get_band_confirmed_vucc_squares($band, $mode, $qsl, $lotw, $eqsl, $sat) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -119,9 +128,12 @@ class Gridmap_model extends CI_Model {
 			.' WHERE station_id in ('
 			.$location_list.') AND COL_VUCC_GRIDS != ""';
         
-            if ($band != 'All') {
+        if ($band != 'All') {
             if ($band == 'SAT') {
                 $sql .= " and col_prop_mode ='" . $band . "'";
+                if ($sat != 'All') {
+                    $sql .= " and col_sat_name ='" . $sat . "'";
+                }
             }
             else {
                 $sql .= " and col_prop_mode !='SAT'";

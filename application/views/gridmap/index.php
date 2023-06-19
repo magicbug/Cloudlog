@@ -40,16 +40,27 @@
 					echo '<option value="' . $band . '"' . '>' . $band . '</option>'."\n";
                 } ?>
             </select>
+            <?php if (count($sats_available) != 0) { ?>
+                <label class="my-1 mr-2" for="distplot_sats">Satellite</label>
+                <select class="custom-select my-1 mr-sm-2"  id="sats" disabled>
+                    <option value="All">All</option>
+                    <?php foreach($sats_available as $sat) {
+                        echo '<option value="' . $sat . '"' . '>' . $sat . '</option>'."\n";
+                    } ?>
+                </select>
+            <?php } else { ?>
+                <input id="sats" type="hidden" value="All"></input>
+            <?php } ?>
 			<label class="my-1 mr-2" for="mode">Mode selection</label>
             <select class="custom-select my-1 mr-sm-2"  id="mode">
 			<option value="All">All</option>
-                            <?php
-                            foreach($modes as $mode){
-                                if ($mode->submode == null) {
-                                    echo '<option value="' . $mode . '">' . strtoupper($mode) . '</option>'."\n";
-                                }
-                            }
-                            ?>
+                    <?php
+                    foreach($modes as $mode){
+                        if ($mode->submode == null) {
+                            echo '<option value="' . $mode . '">' . strtoupper($mode) . '</option>'."\n";
+                        }
+                    }
+                    ?>
             </select>
 			<label class="my-1 mr-2">Confirmation</label>
                 <div>
