@@ -59,6 +59,21 @@ function gridPlot(form) {
                 exportOnly: true,
                 hideControlContainer: true
             }).addTo(map);
+
+            /*Legend specific*/
+            var legend = L.control({ position: "topright" });
+
+            legend.onAdd = function(map) {
+                var div = L.DomUtil.create("div", "legend");
+                div.innerHTML += "<h4>Gridsquares</h4>";
+                div.innerHTML += '<i style="background: green"></i><span>Gridsquares confirmed ('+grid_four_confirmed.length+')</span><br>';
+                div.innerHTML += '<i style="background: red"></i><span>Gridsquares not confirmed ('+(grid_four.length - grid_four_confirmed.length)+')</span><br>';
+                div.innerHTML += '<i></i><span>Total gridsquares worked ('+grid_four.length+')</span><br>';
+                return div;
+            };
+
+            legend.addTo(map);
+
             var maidenhead = L.maidenhead().addTo(map);
 		},
 		error: function (data) {
