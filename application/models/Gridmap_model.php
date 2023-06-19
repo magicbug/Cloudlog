@@ -100,7 +100,7 @@ class Gridmap_model extends CI_Model {
 			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
         }
 
-        return $this->db->get($this->config->item('table_name'));
+        return $this->db->query($sql);
     }
 
     function get_band_confirmed_vucc_squares($band, $mode, $qsl, $lotw, $eqsl) {

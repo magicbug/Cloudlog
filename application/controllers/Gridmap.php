@@ -13,15 +13,16 @@ class Gridmap extends CI_Controller {
         $this->load->model('gridmap_model');
 
         $data['modes'] = $this->gridmap_model->get_worked_modes();
+
 		
         $data['bands'] = $this->bands->get_worked_bands();
-
+		
         $footerData = [];
 		$footerData['scripts'] = [
-            'assets/js/leaflet/L.MaidenheadColouredGridMap.js',
+			'assets/js/leaflet/L.MaidenheadColouredGridMap.js',
 			'assets/js/sections/gridmap.js?'
 		];
-
+		
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('gridmap/index');
 		$this->load->view('interface_assets/footer', $footerData);
@@ -246,7 +247,7 @@ class Gridmap extends CI_Controller {
 		}
 		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares($band, $mode, $qsl, $lotw, $eqsl);
 
-		if ($query && $query_vucc->num_rows() > 0) {
+		if ($query_vucc && $query_vucc->num_rows() > 0) {
 			foreach ($query_vucc->result() as $row) {
 
 				$grids = explode(",", $row->COL_VUCC_GRIDS);
@@ -268,10 +269,10 @@ class Gridmap extends CI_Controller {
 			}
 		}
 
-		// Confirmed Squares
+		// // Confirmed Squares
 		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($band, $mode, $qsl, $lotw, $eqsl);
 
-		if ($query && $query_vucc->num_rows() > 0) {
+		if ($query_vucc && $query_vucc->num_rows() > 0) {
 			foreach ($query_vucc->result() as $row) 			{
 
 				$grids = explode(",", $row->COL_VUCC_GRIDS);
