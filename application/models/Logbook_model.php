@@ -3618,6 +3618,36 @@ class Logbook_model extends CI_Model {
         print("$count updated\n");
     }
 
+    public function update_distances(){
+        $this->db->select("COL_PRIMARY_KEY, COL_GRIDSQUARE, station_gridsquare");
+        $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->where("COL_DISTANCE is NULL");
+        $this->db->where("COL_GRIDSQUARE is NOT NULL");
+        $this->db->where("COL_GRIDSQUARE != ''");
+        $this->db->trans_start();
+        $query = $this->db->get($this->config->item('table_name'));
+
+        $count = 0;
+        if ($query->num_rows() > 0){
+           print("Affected QSOs: ".$this->db->affected_rows()." <br />");
+           $this->load->library('Qra');
+           foreach ($query->result() as $row) {
+              $distance = $this->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, 'K');
+              $data = array(
+                 'COL_DISTANCE' => $distance,
+              );
+
+              $this->db->where(array('COL_PRIMARY_KEY' => $row->COL_PRIMARY_KEY));
+              $this->db->update($this->config->item('table_name'), $data);
+              $count++;
+           }
+           print("QSOs updated: ".$count);
+        } else {
+           print "No QSOs affected.";
+        }
+        $this->db->trans_complete();
+    }
+
     public function check_for_station_id() {
       $this->db->where('station_id =', NULL);
       $query = $this->db->get($this->config->item('table_name'));
