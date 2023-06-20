@@ -54,7 +54,8 @@
 				</div>
 				<div class="tab-pane fade" id="distance" role="tabpanel" aria-labelledby="distance-tab">
 					<p class="card-text">Here you can update QSOs with missing distance information.</p>
-					<p><a class="btn btn-primary" href="<?php echo site_url('update/update_distances');?>">Update distance data</a></p>
+					<p><a class="btn btn-primary" hx-get="<?php echo site_url('update/update_distances');?>"  hx-target="#distance_results" href="<?php echo site_url('update/update_distances');?>">Update distance data</a></p>
+					<div id="distance_results"></div>
 				</div>
 			</div>
 		</div>
