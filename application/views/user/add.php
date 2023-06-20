@@ -313,6 +313,8 @@
                                         </option>
                                         <option value="Grid">
                                             <?php echo lang('gen_hamradio_gridsquare'); ?></option>
+                                        <option value="Distance">
+                                            <?php echo lang('gen_hamradio_distance'); ?></option>
                                         <option value="Operator">
                                             <?php echo lang('gen_hamradio_operator'); ?></option>
                                     </select>
@@ -342,6 +344,8 @@
                                         </option>
                                         <option value="Grid">
                                             <?php echo lang('gen_hamradio_gridsquare'); ?></option>
+                                        <option value="Distance">
+                                            <?php echo lang('gen_hamradio_distance'); ?></option>
                                         <option value="Operator">
                                             <?php echo lang('gen_hamradio_operator'); ?></option>
                                     </select>
@@ -371,6 +375,8 @@
                                         </option>
                                         <option value="Grid">
                                             <?php echo lang('gen_hamradio_gridsquare'); ?></option>
+                                        <option value="Distance">
+                                            <?php echo lang('gen_hamradio_distance'); ?></option>
                                         <option value="Operator">
                                             <?php echo lang('gen_hamradio_operator'); ?></option>
                                     </select>
@@ -400,6 +406,8 @@
                                         </option>
                                         <option value="Grid">
                                             <?php echo lang('gen_hamradio_gridsquare'); ?></option>
+                                        <option value="Distance">
+                                            <?php echo lang('gen_hamradio_distance'); ?></option>
                                         <option value="Operator">
                                             <?php echo lang('gen_hamradio_operator'); ?></option>
                                     </select>
@@ -430,6 +438,8 @@
                                         </option>
                                         <option value="Grid">
                                             <?php echo lang('gen_hamradio_gridsquare'); ?></option>
+                                        <option value="Distance">
+                                            <?php echo lang('gen_hamradio_distance'); ?></option>
                                         <option value="Operator">
                                             <?php echo lang('gen_hamradio_operator'); ?></option>
                                         <option value="Location">
