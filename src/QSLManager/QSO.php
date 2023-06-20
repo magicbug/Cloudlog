@@ -62,6 +62,7 @@ class QSO
 	/** Lotw callsign info **/
 	private string $callsign;
 	private string $lastupload;
+	private string $lotw_hint;
 
 	/**
 	 * @param array $data Does no validation, it's assumed to be a row from the database in array format
@@ -195,6 +196,19 @@ class QSO
 		}
 		$this->callsign = ($data['callsign'] === null) ? '' :$data['callsign'];
 		$this->lastupload = ($data['lastupload'] === null) ? '' : date($custom_date_format . " H:i", strtotime($data['lastupload']));
+		$lotw_hint = '';
+		if ($data['lastupload'] !== null) {
+			$diff = time();
+			$diff = (time() - strtotime($data['lastupload'])) / 86400;
+			if ($diff > 365) {
+				$lotw_hint = ' lotw_info_red';
+			} elseif ($diff > 30) {
+				$lotw_hint = ' lotw_info_orange';
+			} elseif ($diff > 7) {
+				$lotw_hint = ' lotw_info_yellow';
+			}
+		}
+		$this->lotw_hint = $lotw_hint;
 
 	}
 	
@@ -776,6 +790,7 @@ class QSO
 			'end' => $this->end === null ? null : $this->end->format("Y-m-d"),
 			'callsign' => $this->callsign,
 			'lastupload' => $this->lastupload,
+			'lotw_hint' => $this->lotw_hint,
 		];
 	}
 
