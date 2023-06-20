@@ -281,7 +281,42 @@ $oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 				<a class="dropdown-item" href="<?php echo site_url('user/logout');?>" title="Logout"><i class="fas fa-sign-out-alt"></i> <?php echo lang('menu_logout'); ?></a>
 			</div>
         </li>
-    	</ul>
+		
+		<?php 
+			// Can add extra menu items by defining them in options. The format is json.
+			// Useful to add extra things in Cloudlog without the need for modifying files. If you add extras, these files will not be overwritten when updating.
+			//
+			// The menu items will be displayed to the top right under extras.
+			//
+			// Example:
+			// INSERT INTO options (option_name,option_value,autoload) VALUES
+			// 	('menuitems','[
+			// {
+			// 		"url":"gridmap",
+			// 		"text":"Gridmap",
+			// 		"icon":"fa-globe-europe"
+			// },
+			// {
+			// 		"url":"gallery",
+			// 		"text":"Gallery",
+			// 		"icon":"fa-globe-europe"
+			// }
+			// ]','yes');
+
+			if ($this->optionslib->get_option('menuitems')) { ?>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extras</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<?php 
+						foreach(json_decode($this->optionslib->get_option('menuitems')) as $item) {
+							echo '<a class="dropdown-item" href="' . site_url($item->url) . '" title="Gridsquares"><i class="fas '. $item->icon .'"></i> ' . $item->text . '</a>';
+						}
+					?>
+				</div>
+			</li>
+		<?php } ?>
+				
+		</ul>
 
         <?php } ?>
 
