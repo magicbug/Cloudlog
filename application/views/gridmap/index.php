@@ -1,3 +1,5 @@
+
+
 <style>
 /*Legend specific*/
 .legend {
@@ -41,7 +43,7 @@
                 } ?>
             </select>
             <?php if (count($sats_available) != 0) { ?>
-                <label class="my-1 mr-2" for="distplot_sats">Satellite</label>
+                <label class="my-1 mr-2" for="distplot_sats"><?php echo lang('general_word_satellite'); ?></label>
                 <select class="custom-select my-1 mr-sm-2"  id="sats" disabled>
                     <option value="All">All</option>
                     <?php foreach($sats_available as $sat) {
@@ -51,7 +53,7 @@
             <?php } else { ?>
                 <input id="sats" type="hidden" value="All"></input>
             <?php } ?>
-			<label class="my-1 mr-2" for="mode">Mode selection</label>
+			<label class="my-1 mr-2" for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
             <select class="custom-select my-1 mr-sm-2"  id="mode">
 			<option value="All">All</option>
                     <?php
@@ -78,7 +80,7 @@
                     </div>
                 </div>
 
-            <button id="plot" type="button" name="plot" class="btn btn-primary" onclick="gridPlot(this.form)">Plot</button>
+            <button id="plot" type="button" name="plot" class="btn btn-primary  ld-ext-right" onclick="gridPlot(this.form)">Plot<div class="ld ld-ring ld-spin"></div></button>
 </form>
 
 		<?php if($this->session->flashdata('message')) { ?>
@@ -92,4 +94,9 @@
 <div id="gridmapcontainer">
 	<div id="gridsquare_map" style="width: 100%; height: 800px"></div>
 </div>
-<script>var gridsquaremap = true;</script>
+<script>var gridsquaremap = true;
+<?php
+    echo 'var jslayer ="' . $layer .'";';
+    echo "var jsattribution ='" . $attribution . "';";
+?>
+</script>

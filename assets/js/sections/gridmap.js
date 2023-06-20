@@ -16,6 +16,8 @@ var grid_four_confirmed = '';
 var grid_six_confirmed = '';
 
 function gridPlot(form) {
+    $(".ld-ext-right").addClass('running');
+	$(".ld-ext-right").prop('disabled', true);
     $('#plot').prop("disabled", true);
     // If map is already initialized
     var container = L.DomUtil.get('gridsquare_map');
@@ -38,6 +40,8 @@ function gridPlot(form) {
             sat: $("#sats").val(),
 		},
 		success: function (data) {
+            $(".ld-ext-right").removeClass('running');
+            $(".ld-ext-right").prop('disabled', false);
             $('#plot').prop("disabled", false);
 			grid_two = data.grid_2char;
             grid_four = data.grid_4char;
@@ -45,9 +49,9 @@ function gridPlot(form) {
             grid_two_confirmed = data.grid_2char_confirmed;
             grid_four_confirmed = data.grid_4char_confirmed;
             grid_six_confirmed = data.grid_6char_confirmed;
-            var layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            var layer = L.tileLayer(jslayer, {
                 maxZoom: 9,
-                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
+                attribution: jsattribution,
                 id: 'mapbox.streets'
             });
 
