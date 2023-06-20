@@ -251,6 +251,11 @@ class Update extends CI_Controller {
 		$this->logbook_model->check_missing_continent();
 	}
 
+	public function update_distances() {
+		$this->load->model('logbook_model');
+		$this->logbook_model->update_distances();
+	}
+
 	public function check_missing_grid($all = false){
 	    $this->load->model('logbook_model');
         $this->logbook_model->check_missing_grid_id($all);

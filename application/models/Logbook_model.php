@@ -199,7 +199,7 @@ class Logbook_model extends CI_Model {
             'COL_QTH' => $this->input->post('qth'),
             'COL_PROP_MODE' => $prop_mode,
             'COL_IOTA' => $this->input->post('iota_ref')  == null ? '' : trim($this->input->post('iota_ref')),
-            'COL_DISTANCE' => "0",
+            'COL_DISTANCE' => $this->input->post('distance'),
             'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
             'COL_ANT_AZ' => null,
             'COL_ANT_EL' => null,
@@ -892,6 +892,7 @@ class Logbook_model extends CI_Model {
        'COL_RST_SENT' => $this->input->post('rst_sent'),
        'COL_GRIDSQUARE' => strtoupper(trim($this->input->post('locator'))),
        'COL_VUCC_GRIDS' => strtoupper(trim($this->input->post('vucc_grids'))),
+       'COL_DISTANCE' => $this->input->post('distance'),
        'COL_COMMENT' => $this->input->post('comment'),
        'COL_NAME' => $this->input->post('name'),
        'COL_COUNTRY' => $country,
@@ -2522,8 +2523,24 @@ class Logbook_model extends CI_Model {
 
 	if($qsl_gridsquare != "") {
       $data = array(
-        'COL_GRIDSQUARE' => $qsl_gridsquare
+        'COL_GRIDSQUARE' => $qsl_gridsquare,
+        'COL_DISTANCE' => 0
       );
+      $this->db->select('station_profile.station_gridsquare as station_gridsquare');
+      $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
+      $this->db->where('COL_CALL', $callsign);
+      $this->db->where('COL_BAND', $band);
+      $this->db->join('station_profile', $this->config->item('table_name').'.station_id = station_profile.station_id', 'left outer');
+      $this->db->limit(1);
+      $query = $this->db->get($this->config->item('table_name'));
+      $row = $query->row();
+      if (isset($row)) {
+         $station_gridsquare = $row->station_gridsquare;
+         $this->load->library('Qra');
+
+         $data['COL_DISTANCE'] = $this->qra->distance($station_gridsquare, $qsl_gridsquare, 'K');
+      }
+
       $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
       $this->db->where('COL_CALL', $callsign);
       $this->db->where('COL_BAND', $band);
@@ -3602,6 +3619,36 @@ class Logbook_model extends CI_Model {
         $this->db->trans_complete();
 
         print("$count updated\n");
+    }
+
+    public function update_distances(){
+        $this->db->select("COL_PRIMARY_KEY, COL_GRIDSQUARE, station_gridsquare");
+        $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->where("COL_DISTANCE is NULL");
+        $this->db->where("COL_GRIDSQUARE is NOT NULL");
+        $this->db->where("COL_GRIDSQUARE != ''");
+        $this->db->trans_start();
+        $query = $this->db->get($this->config->item('table_name'));
+
+        $count = 0;
+        if ($query->num_rows() > 0){
+           print("Affected QSOs: ".$this->db->affected_rows()." <br />");
+           $this->load->library('Qra');
+           foreach ($query->result() as $row) {
+              $distance = $this->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, 'K');
+              $data = array(
+                 'COL_DISTANCE' => $distance,
+              );
+
+              $this->db->where(array('COL_PRIMARY_KEY' => $row->COL_PRIMARY_KEY));
+              $this->db->update($this->config->item('table_name'), $data);
+              $count++;
+           }
+           print("QSOs updated: ".$count);
+        } else {
+           print "No QSOs affected.";
+        }
+        $this->db->trans_complete();
     }
 
     public function check_for_station_id() {
