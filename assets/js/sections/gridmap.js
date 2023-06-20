@@ -79,10 +79,10 @@ function gridPlot(form) {
 
             legend.onAdd = function(map) {
                 var div = L.DomUtil.create("div", "legend");
-                div.innerHTML += "<h4>Gridsquares</h4>";
-                div.innerHTML += '<i style="background: green"></i><span>Gridsquares confirmed ('+grid_four_confirmed.length+')</span><br>';
-                div.innerHTML += '<i style="background: red"></i><span>Gridsquares not confirmed ('+(grid_four.length - grid_four_confirmed.length)+')</span><br>';
-                div.innerHTML += '<i></i><span>Total gridsquares worked ('+grid_four.length+')</span><br>';
+                div.innerHTML += "<h4>" + gridsquares_gridsquares + "</h4>";
+                div.innerHTML += '<i style="background: green"></i><span>' + gridsquares_gridsquares_confirmed + ' ('+grid_four_confirmed.length+')</span><br>';
+                div.innerHTML += '<i style="background: red"></i><span>' + gridsquares_gridsquares_not_confirmed + ' ('+(grid_four.length - grid_four_confirmed.length)+')</span><br>';
+                div.innerHTML += '<i></i><span>' + gridsquares_gridsquares_total_worked + ' ('+grid_four.length+')</span><br>';
                 return div;
             };
 
@@ -128,6 +128,10 @@ function spawnGridsquareModal(loc_4char) {
                                 'csv'
                             ]
                         });
+                            // change color of csv-button if dark mode is chosen
+                    if (isDarkModeTheme()) {
+                        $(".buttons-csv").css("color", "white");
+                    }
                     },
                 buttons: [{
                     label: 'Close',

@@ -7,7 +7,7 @@ class Gridmap extends CI_Controller {
 	}
 
     public function index() {
-		$data['page_title'] = "Gridsquare Map";
+		$data['page_title'] = lang('gridsquares_gridsquare_map');
 
         $this->load->model('bands');
         $this->load->model('gridmap_model');
@@ -19,6 +19,11 @@ class Gridmap extends CI_Controller {
 		$data['layer'] = $this->optionslib->get_option('option_map_tile_server');
 
 		$data['attribution'] = $this->optionslib->get_option('option_map_tile_server_copyright');
+
+		$data['gridsquares_gridsquares'] 				= lang('gridsquares_gridsquares');
+		$data['gridsquares_gridsquares_confirmed'] 		= lang('gridsquares_gridsquares_confirmed');
+		$data['gridsquares_gridsquares_not_confirmed'] 	= lang('gridsquares_gridsquares_not_confirmed');
+		$data['gridsquares_gridsquares_total_worked'] 	= lang('gridsquares_gridsquares_total_worked');
 
         $footerData = [];
 		$footerData['scripts'] = [

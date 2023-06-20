@@ -35,7 +35,7 @@
 	<h2><?php echo $page_title; ?></h2>
 
 <form class="form-inline">
-            <label class="my-1 mr-2" for="band"><?php echo lang('gen_band_selection'); ?></label>
+            <label class="my-1 mr-2" for="band"><?php echo lang('gridsquares_band'); ?></label>
             <select class="custom-select my-1 mr-sm-2"  id="band">
                 <option value="All">All</option>
 				<?php foreach($bands as $band) {
@@ -43,7 +43,7 @@
                 } ?>
             </select>
             <?php if (count($sats_available) != 0) { ?>
-                <label class="my-1 mr-2" for="distplot_sats"><?php echo lang('general_word_satellite'); ?></label>
+                <label class="my-1 mr-2" for="distplot_sats"><?php echo lang('gridsquares_sat'); ?></label>
                 <select class="custom-select my-1 mr-sm-2"  id="sats" disabled>
                     <option value="All">All</option>
                     <?php foreach($sats_available as $sat) {
@@ -53,7 +53,7 @@
             <?php } else { ?>
                 <input id="sats" type="hidden" value="All"></input>
             <?php } ?>
-			<label class="my-1 mr-2" for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
+			<label class="my-1 mr-2" for="mode"><?php echo lang('gridsquares_mode'); ?></label>
             <select class="custom-select my-1 mr-sm-2"  id="mode">
 			<option value="All">All</option>
                     <?php
@@ -64,7 +64,7 @@
                     }
                     ?>
             </select>
-			<label class="my-1 mr-2">Confirmation</label>
+			<label class="my-1 mr-2"><?php echo lang('gridsquares_confirmation'); ?></label>
                 <div>
                     <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="qsl" id="qsl" checked>
@@ -80,7 +80,7 @@
                     </div>
                 </div>
 
-            <button id="plot" type="button" name="plot" class="btn btn-primary  ld-ext-right" onclick="gridPlot(this.form)">Plot<div class="ld ld-ring ld-spin"></div></button>
+            <button id="plot" type="button" name="plot" class="btn btn-primary  ld-ext-right" onclick="gridPlot(this.form)"><?php echo lang('gridsquares_button_plot'); ?><div class="ld ld-ring ld-spin"></div></button>
 </form>
 
 		<?php if($this->session->flashdata('message')) { ?>
@@ -98,5 +98,10 @@
 <?php
     echo 'var jslayer ="' . $layer .'";';
     echo "var jsattribution ='" . $attribution . "';";
+
+    echo 'var gridsquares_gridsquares = "' . $gridsquares_gridsquares . '";';
+    echo 'var gridsquares_gridsquares_confirmed = "' . $gridsquares_gridsquares_confirmed . '";';
+    echo 'var gridsquares_gridsquares_not_confirmed = "' . $gridsquares_gridsquares_not_confirmed . '";';
+    echo 'var gridsquares_gridsquares_total_worked = "' . $gridsquares_gridsquares_total_worked . '";';
 ?>
 </script>
