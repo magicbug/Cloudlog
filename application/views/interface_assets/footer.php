@@ -349,6 +349,7 @@ $(function () {
                 if (isDarkModeTheme()) {
                     $(".buttons-csv").css("color", "white");
                 }
+                $('[data-toggle="tooltip"]').tooltip();
                 $(".runbutton").removeClass('running');
                 $(".runbutton").prop('disabled', false);
             });
