@@ -21,6 +21,7 @@ $lang['menu_notes'] = 'Notizen';
 $lang['menu_analytics'] = 'Analysen';
 $lang['menu_statistics'] = 'Statistik';
 $lang['menu_gridsquares'] = 'Planquadrate';
+$lang['menu_gridmap'] = 'Planquadratkarte';
 $lang['menu_activated_gridsquares'] = 'Aktivierte Planquadrate';
 $lang['menu_gridsquare_activators'] = 'Planquadrat-Aktivierer';
 $lang['menu_distances_worked'] = 'Gearbeitete Entfernungen';
