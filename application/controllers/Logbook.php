@@ -188,7 +188,7 @@ class Logbook extends CI_Controller {
 		{
 			$return['callsign_name'] = $callbook['name'];
 			$return['callsign_qra'] = $callbook['gridsquare'];
-			$return['callsign_distance'] = $callbook['distance'];
+			$return['callsign_distance'] = $this->distance($callbook['gridsquare'], $station_id);
 			$return['callsign_qth'] = $callbook['city'];
 			$return['callsign_iota'] = $callbook['iota'];
 			$return['callsign_state'] = $callbook['state'];
