@@ -40,7 +40,7 @@ body {
                 <div>
                     <label for="floatingInput"><strong><?php echo lang('account_username'); ?></strong></label>
                     <input type="text" name="user_name" class="form-control" id="floatingInput" placeholder="<?php echo lang('account_username'); ?>"
-                        value="<?php echo $this->input->post('user_name'); ?>">
+                        value="<?php echo $this->input->post('user_name'); ?>" autofocus>
                 </div>
                 <div>
                     <label for="floatingPassword"><strong><?php echo lang('account_password'); ?></strong></label>
