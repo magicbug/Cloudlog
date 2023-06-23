@@ -102,17 +102,19 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
             <td>
                 <a id="edit_qso" href="javascript:displayQso(<?php echo $row->COL_PRIMARY_KEY; ?>)"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
                 <?php
-                   $lotw_hint = '';
-                   $diff = (time() - strtotime($row->lastupload)) / 86400;
-                   if ($diff > 365) {
-                      $lotw_hint = ' lotw_info_red';
-                   } elseif ($diff > 30) {
-                      $lotw_hint = ' lotw_info_orange';
-                   } elseif ($diff > 7) {
-                      $lotw_hint = ' lotw_info_yellow';
-                   }
-                ?>
-                <?php $timestamp = strtotime($row->lastupload); echo ($row->callsign == '' ? '' : ' <small id="lotw_info" class="badge badge-success'.$lotw_hint.'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was '.date($custom_date_format." H:i", $timestamp).'">L</small>'); ?>
+                   if ($row->lastupload) {
+                       $lotw_hint = '';
+                       $diff = (time() - strtotime($row->lastupload)) / 86400;
+                       if ($diff > 365) {
+                          $lotw_hint = ' lotw_info_red';
+                       } elseif ($diff > 30) {
+                          $lotw_hint = ' lotw_info_orange';
+                       } elseif ($diff > 7) {
+                          $lotw_hint = ' lotw_info_yellow';
+                       }
+                       $timestamp = strtotime($row->lastupload); echo ($row->callsign == '' ? '' : ' <small id="lotw_info" class="badge badge-success'.$lotw_hint.'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was '.date($custom_date_format." H:i", $timestamp).'">L</small>');
+                    }
+                 ?>
             </td>
 			<?php
 
