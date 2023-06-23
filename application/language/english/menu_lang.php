@@ -21,6 +21,7 @@ $lang['menu_notes'] = 'Notes';
 $lang['menu_analytics'] = 'Analytics';
 $lang['menu_statistics'] = 'Statistics';
 $lang['menu_gridsquares'] = 'Gridsquares';
+$lang['menu_gridmap'] = 'Gridmap';
 $lang['menu_activated_gridsquares'] = 'Activated Gridsquares';
 $lang['menu_gridsquare_activators'] = 'Gridsquare Activators';
 $lang['menu_distances_worked'] = 'Distances Worked';
