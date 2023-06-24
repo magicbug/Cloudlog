@@ -441,3 +441,15 @@ div#station_logbooks_linked_table_paginate {
 #lotw_manual_results {
     padding-top: 10px;
 }
+
+.lotw_info_yellow {
+   background-image: linear-gradient(to bottom, #3fb618, yellow);
+}
+
+.lotw_info_orange {
+   background-image: linear-gradient(to bottom, #3fb618, orange);
+}
+
+.lotw_info_red {
+   background-image: linear-gradient(to bottom, #3fb618, red);
+}

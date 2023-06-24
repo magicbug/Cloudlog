@@ -128,6 +128,7 @@ class Logbook extends CI_Controller {
 			"dxcc" => false,
 			"callsign_name" => "",
 			"callsign_qra"  => "",
+			"callsign_distance"  => 0,
 			"callsign_qth"  => "",
 			"callsign_iota" => "",
 			"callsign_state" => "",
@@ -155,6 +156,7 @@ class Logbook extends CI_Controller {
 
 			$return['callsign_name'] =  $this->logbook_model->call_name($callsign);
 			$return['callsign_qra'] = $this->logbook_model->call_qra($callsign);
+			$return['callsign_distance'] = $this->distance($return['callsign_qra'], $station_id);
 			$return['callsign_qth'] = $this->logbook_model->call_qth($callsign);
 			$return['callsign_iota'] = $this->logbook_model->call_iota($callsign);
 			$return['qsl_manager'] = $this->logbook_model->call_qslvia($callsign);
@@ -186,6 +188,7 @@ class Logbook extends CI_Controller {
 		{
 			$return['callsign_name'] = $callbook['name'];
 			$return['callsign_qra'] = $callbook['gridsquare'];
+			$return['callsign_distance'] = $this->distance($callbook['gridsquare'], $station_id);
 			$return['callsign_qth'] = $callbook['city'];
 			$return['callsign_iota'] = $callbook['iota'];
 			$return['callsign_state'] = $callbook['state'];
@@ -770,6 +773,7 @@ class Logbook extends CI_Controller {
 		$this->db->from($this->config->item('table_name'));
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC');
+		$this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
 		$this->db->group_start();
 		$this->db->like(''.$this->config->item('table_name').'.COL_CALL', $id);
 		$this->db->or_like(''.$this->config->item('table_name').'.COL_GRIDSQUARE', $id);
@@ -949,6 +953,36 @@ class Logbook extends CI_Controller {
 			return "";
 	}
 
+	/* return distance */
+	function searchdistance($locator, $station_id = null) {
+			$this->load->library('Qra');
+
+			if($locator != null) {
+				if (isset($station_id)) {
+					// be sure that station belongs to user
+					$this->load->model('Stations');
+					if (!$this->Stations->check_station_is_accessible($station_id)) {
+						return 0;
+					}
+
+					// get station profile
+					$station_profile = $this->Stations->profile_clean($station_id);
+
+					// get locator
+					$mylocator = $station_profile->station_gridsquare;
+				} else if($this->session->userdata('user_locator') != null){
+					$mylocator = $this->session->userdata('user_locator');
+				} else {
+					$mylocator = $this->config->item('locator');
+				}
+
+				$distance = $this->qra->distance($mylocator, $locator, 'K');
+
+				echo $distance;
+			}
+			return 0;
+	}
+
 	/* return station bearing */
 	function bearing($locator, $unit = 'M', $station_id = null) {
 			$this->load->library('Qra');
@@ -977,6 +1011,36 @@ class Logbook extends CI_Controller {
 				return $bearing;
 			}
 			return "";
+	}
+
+	/* return distance */
+	function distance($locator, $station_id = null) {
+			$distance = 0;
+			$this->load->library('Qra');
+
+			if($locator != null) {
+				if (isset($station_id)) {
+					// be sure that station belongs to user
+					$this->load->model('Stations');
+					if (!$this->Stations->check_station_is_accessible($station_id)) {
+						return 0;
+					}
+
+					// get station profile
+					$station_profile = $this->Stations->profile_clean($station_id);
+
+					// get locator
+					$mylocator = $station_profile->station_gridsquare;
+				} else if($this->session->userdata('user_locator') != null){
+					$mylocator = $this->session->userdata('user_locator');
+				} else {
+					$mylocator = $this->config->item('locator');
+				}
+
+				$distance = $this->qra->distance($mylocator, $locator, 'K');
+
+			}
+			return $distance;
 	}
 
 	function qralatlng($qra) {

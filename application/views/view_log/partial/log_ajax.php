@@ -11,6 +11,7 @@ function echo_table_header_col($ctx, $name) {
 		case 'POTA': echo '<th>'.$ctx->lang->line('gen_hamradio_pota').'</th>'; break;
 		case 'State': echo '<th>'.$ctx->lang->line('gen_hamradio_state').'</th>'; break;
 		case 'Grid': echo '<th>'.$ctx->lang->line('gen_hamradio_gridsquare').'</th>'; break;
+		case 'Distance': echo '<th>'.$ctx->lang->line('gen_hamradio_distance').'</th>'; break;
 		case 'Band': echo '<th>'.$ctx->lang->line('gen_hamradio_band').'</td>'; break;
 		case 'Frequency': echo '<th>'.$ctx->lang->line('gen_hamradio_frequency').'</th>'; break;
 		case 'Operator': echo '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
@@ -30,6 +31,7 @@ function echo_table_col($row, $name) {
 		case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF) . '</td>'; break;
 		case 'POTA':    echo '<td>' . ($row->COL_POTA_REF) . '</td>'; break;
 		case 'Grid':    echo '<td>'; echoQrbCalcLink($row->station_gridsquare, $row->COL_VUCC_GRIDS, $row->COL_GRIDSQUARE); echo '</td>'; break;
+		case 'Distance':echo '<td>' . ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : '') . '</td>'; break;
 		case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank"><span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$row->COL_SAT_NAME.'</span></a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'. strtolower($row->COL_BAND).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 		case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo '<span data-toggle="tooltip" data-original-title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
@@ -99,6 +101,20 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
             <?php } ?>
             <td>
                 <a id="edit_qso" href="javascript:displayQso(<?php echo $row->COL_PRIMARY_KEY; ?>)"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
+                <?php
+                   if ($row->lastupload) {
+                       $lotw_hint = '';
+                       $diff = (time() - strtotime($row->lastupload)) / 86400;
+                       if ($diff > 365) {
+                          $lotw_hint = ' lotw_info_red';
+                       } elseif ($diff > 30) {
+                          $lotw_hint = ' lotw_info_orange';
+                       } elseif ($diff > 7) {
+                          $lotw_hint = ' lotw_info_yellow';
+                       }
+                       $timestamp = strtotime($row->lastupload); echo ($row->callsign == '' ? '' : ' <small id="lotw_info" class="badge badge-success'.$lotw_hint.'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was '.date($custom_date_format." H:i", $timestamp).'">L</small>');
+                    }
+                 ?>
             </td>
 			<?php
 

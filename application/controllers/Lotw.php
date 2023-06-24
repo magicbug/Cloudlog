@@ -579,7 +579,6 @@ class Lotw extends CI_Controller {
 		unlink($filepath);
 
 		if(isset($data['lotw_table_headers'])) {
-			echo "LoTW Matches<br>";
 			if($display_view == TRUE) {
 				$data['page_title'] = "LoTW ADIF Information";
 				$this->load->view('interface_assets/header', $data);

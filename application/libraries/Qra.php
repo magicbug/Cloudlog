@@ -55,7 +55,14 @@ class Qra {
 		$stn = qra2latlong($rx);
 
 		// Feed in Lat Longs plus the unit type
-		$total_distance = distance($my[0], $my[1], $stn[0], $stn[1], $unit);
+		try
+		{
+			$total_distance = distance($my[0], $my[1], $stn[0], $stn[1], $unit);
+		}
+		catch (Exception $e)
+		{
+			$total_distance = 0;
+		}
 
 		// Return the distance
 		return $total_distance;
