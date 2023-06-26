@@ -37,7 +37,7 @@ class QSO
 	private string $dxcc;
 	private string $iota;
 	/** @var string[] */
-	private array $deVUCCGridsquares;
+	private string $deVUCCGridsquares;
 	private string $dxGridsquare;
 	private string $dxIOTA;
 	private string $dxSig;
@@ -45,7 +45,7 @@ class QSO
 	private string $dxDARCDOK;
 	private string $dxSOTAReference;
 	/** @var string[] */
-	private array $dxVUCCGridsquares;
+	private string $dxVUCCGridsquares;
 	private string $QSLMsg;
 	private ?DateTime $QSLReceivedDate;
 	private string $QSLReceived;
@@ -159,7 +159,7 @@ class QSO
 		$this->deIOTAIslandID = $data['COL_MY_IOTA_ISLAND_ID'] ?? '';
 		$this->deSOTAReference = $data['COL_MY_SOTA_REF'] ?? '';
 
-		$this->deVUCCGridsquares = ($data['COL_MY_VUCC_GRIDS'] === null) ? [] : explode(",", $data['COL_MY_VUCC_GRIDS'] ?? '');
+		$this->deVUCCGridsquares = $data['COL_MY_VUCC_GRIDS'] ?? '';
 
 		$this->dxGridsquare = $data['COL_GRIDSQUARE'] ?? '';
 		$this->dxIOTA = $data['COL_IOTA'] ?? '';
@@ -169,7 +169,7 @@ class QSO
 
 		$this->dxSOTAReference = $data['COL_SOTA_REF'] ?? '';
 
-		$this->dxVUCCGridsquares = ($data['COL_VUCC_GRIDS'] === null) ? [] : explode(",", $data['COL_VUCC_GRIDS'] ?? '');
+		$this->dxVUCCGridsquares = $data['COL_VUCC_GRIDS'] ?? '';
 
 		$this->QSLMsg = $data['COL_QSLMSG'] ?? '';
 
@@ -595,7 +595,7 @@ class QSO
 	/**
 	 * @return string[]
 	 */
-	public function getDeVUCCGridsquares(): array
+	public function getDeVUCCGridsquares(): string
 	{
 		return $this->deVUCCGridsquares;
 	}
@@ -651,7 +651,7 @@ class QSO
 	/**
 	 * @return string[]
 	 */
-	public function getDxVUCCGridsquares(): array
+	public function getDxVUCCGridsquares(): string
 	{
 		return $this->dxVUCCGridsquares;
 	}
@@ -825,8 +825,8 @@ class QSO
 	private function getFormattedDeRefs(): string
 	{
 		$refs = [];
-		if ($this->deVUCCGridsquares !== []) {
-			$refs[] = implode(",", $this->deVUCCGridsquares);
+		if ($this->deVUCCGridsquares !== '') {
+			$refs[] = $this->deVUCCGridsquares;
 		} else {
 			if ($this->deGridsquare !== '') {
 				$refs[] = $this->deGridsquare;
@@ -851,8 +851,8 @@ class QSO
 	private function getFormattedDxRefs(): string
 	{
 		$refs = [];
-		if ($this->dxVUCCGridsquares !== []) {
-			$refs[] = implode(",", $this->dxVUCCGridsquares);
+		if ($this->dxVUCCGridsquares !== '') {
+			$refs[] = $this->dxVUCCGridsquares;
 		} else if ($this->dxGridsquare !== '') {
 			$refs[] = $this->dxGridsquare;
 		}
