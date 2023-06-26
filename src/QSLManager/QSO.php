@@ -38,6 +38,7 @@ class QSO
 	private string $iota;
 	/** @var string[] */
 	private string $deVUCCGridsquares;
+	private string $stationGridsquare;
 	private string $dxGridsquare;
 	private string $dxIOTA;
 	private string $dxSig;
@@ -161,6 +162,8 @@ class QSO
 
 		$this->deVUCCGridsquares = $data['COL_MY_VUCC_GRIDS'] ?? '';
 
+		$this->stationGridsquare = $data['station_gridsquare'] ?? '';
+
 		$this->dxGridsquare = $data['COL_GRIDSQUARE'] ?? '';
 		$this->dxIOTA = $data['COL_IOTA'] ?? '';
 		$this->dxSig = $data['COL_SIG'] ?? '';
@@ -209,7 +212,6 @@ class QSO
 			}
 		}
 		$this->lotw_hint = $lotw_hint;
-
 	}
 	
 	/**
@@ -218,14 +220,6 @@ class QSO
 	function getQSLString($data, $custom_date_format): string
 	{
 		$CI =& get_instance(); 
-		// Load language files
-		$CI->lang->load(array(
-			'contesting',
-			'qslcard',
-			'lotw',
-			'eqsl',
-			'qso'
-		));
 
 		$qslstring = '<span ';
 
@@ -324,14 +318,6 @@ class QSO
 	function getLotwString($data, $custom_date_format): string
 	{
 		$CI =& get_instance(); 
-		// Load language files
-		$CI->lang->load(array(
-			'contesting',
-			'qslcard',
-			'lotw',
-			'eqsl',
-			'qso'
-		));
 
 		$lotwstring = '<span ';
 
@@ -369,14 +355,6 @@ class QSO
 	function getEqslString($data, $custom_date_format): string
 	{
 		$CI =& get_instance(); 
-		// Load language files
-		$CI->lang->load(array(
-			'contesting',
-			'qslcard',
-			'lotw',
-			'eqsl',
-			'qso'
-		));
 
 		$eqslstring = '<span ';
 
@@ -852,9 +830,9 @@ class QSO
 	{
 		$refs = [];
 		if ($this->dxVUCCGridsquares !== '') {
-			$refs[] = $this->dxVUCCGridsquares;
+			$refs[] = $this->dxVUCCGridsquares . ' ' .$this->getQrbLink($this->stationGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
 		} else if ($this->dxGridsquare !== '') {
-			$refs[] = $this->dxGridsquare;
+			$refs[] = $this->dxGridsquare . ' ' .$this->getQrbLink($this->stationGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
 		}
 		if ($this->dxSOTAReference !== '') {
 			$refs[] = "SOTA:" . $this->dxSOTAReference;
@@ -960,5 +938,15 @@ class QSO
 		}
 
 		return trim(implode(" ", $label));
+	}
+
+	private function getQrbLink($mygrid, $grid, $vucc) 
+	{
+		if (!empty($grid)) {
+			return '<a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $grid . '\')"><i class="fas fa-globe"></i></a>';
+		} else if (!empty($vucc)) {
+			return '<a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $vucc . '\')"><i class="fas fa-globe"></i></a>';
+		}
+		return '';
 	}
 }

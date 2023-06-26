@@ -32,7 +32,7 @@ function updateRow(qso) {
 	cells.eq(c++).text(qso.rstR);
 	cells.eq(c++).text(qso.band);
 	cells.eq(c++).text(qso.deRefs);
-	cells.eq(c++).text(qso.dxRefs);
+	cells.eq(c++).html(qso.dxRefs);
 	cells.eq(c++).text(qso.name);
 	cells.eq(c++).text(qso.qslVia);
 	cells.eq(c++).html(qso.qsl);
