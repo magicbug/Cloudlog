@@ -191,7 +191,7 @@ class QSO
 		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : $data['COL_CQZ'];
 		$this->state = ($data['COL_STATE'] === null) ? '' :$data['COL_STATE'];
 		$this->dxcc = ($data['name'] === null) ? '- NONE -' : ucwords(strtolower($data['name']), "- (/");
-		$this->iota = ($data['COL_IOTA'] === null) ? '' :$data['COL_IOTA'];
+		$this->iota = ($data['COL_IOTA'] === null) ? '' : $this->getIotaLink($data['COL_IOTA']);
 		if (array_key_exists('end', $data)) {
 			$this->end = ($data['end'] === null) ? null : DateTime::createFromFormat("Y-m-d", $data['end'], new DateTimeZone('UTC'));
 		} else {
@@ -199,10 +199,18 @@ class QSO
 		}
 		$this->callsign = ($data['callsign'] === null) ? '' :$data['callsign'];
 		$this->lastupload = ($data['lastupload'] === null) ? '' : date($custom_date_format . " H:i", strtotime($data['lastupload']));
+		$this->lotw_hint = $this->getLotwHint($data['lastupload']);
+	}
+
+	/**
+	 * @return string
+	 */
+	function getLotwHint($lastupload): string
+	{
 		$lotw_hint = '';
-		if ($data['lastupload'] !== null) {
+		if ($lastupload !== null) {
 			$diff = time();
-			$diff = (time() - strtotime($data['lastupload'])) / 86400;
+			$diff = (time() - strtotime($lastupload)) / 86400;
 			if ($diff > 365) {
 				$lotw_hint = ' lotw_info_red';
 			} elseif ($diff > 30) {
@@ -211,9 +219,9 @@ class QSO
 				$lotw_hint = ' lotw_info_yellow';
 			}
 		}
-		$this->lotw_hint = $lotw_hint;
+		return $lotw_hint;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -940,12 +948,20 @@ class QSO
 		return trim(implode(" ", $label));
 	}
 
-	private function getQrbLink($mygrid, $grid, $vucc) 
+	private function getQrbLink($mygrid, $grid, $vucc) : string
 	{
 		if (!empty($grid)) {
 			return '<a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $grid . '\')"><i class="fas fa-globe"></i></a>';
 		} else if (!empty($vucc)) {
 			return '<a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $vucc . '\')"><i class="fas fa-globe"></i></a>';
+		}
+		return '';
+	}
+
+	private function getIotaLink($iota) : string
+	{
+		if ($iota !== '') {
+			return '<a href="https://www.iota-world.org/iotamaps/?grpref=' .$iota . '" target="_blank">' . $iota . '</a>';
 		}
 		return '';
 	}

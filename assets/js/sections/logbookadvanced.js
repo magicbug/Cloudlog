@@ -46,7 +46,7 @@ function updateRow(qso) {
 	cells.eq(c++).text(qso.dxcc);
 	cells.eq(c++).text(qso.state);
 	cells.eq(c++).text(qso.cqzone);
-	cells.eq(c++).text(qso.iota);
+	cells.eq(c++).html(qso.iota);
 
 	$('[data-toggle="tooltip"]').tooltip();
 	return row;
