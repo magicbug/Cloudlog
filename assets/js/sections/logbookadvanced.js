@@ -383,6 +383,9 @@ $(document).ready(function () {
 					var fileURL = URL.createObjectURL(file);
 					window.open(fileURL);   
 				}
+				$.each(id_list, function(k, v) {
+					unselectQsoID(this);
+				});
 				$('#printLabel').prop("disabled", false);
 			}
 		});
