@@ -87,22 +87,27 @@ class Labels extends CI_Controller {
 	
 	}
 
+	public function printids() {
+		$ids = xss_clean(json_decode($this->input->post('id')));
+		$this->load->model('labels_model');
+		$result = $this->labels_model->export_printrequestedids($ids);
+
+		$this->prepareLabel($result);
+	}
+
 	public function print($station_id) {
 		$clean_id = xss_clean($station_id);
 
 		$this->load->model('labels_model');
 		$result = $this->labels_model->export_printrequested($clean_id);
 
+		$this->prepareLabel($result);
+	}
+	
+	function prepareLabel($qsos) {
+		$this->load->model('labels_model');
 		$label = $this->labels_model->getDefaultLabel();
-
-		// require_once('fpdf.php');
-		// require('PDF_Label.php');
-		// require_once APPPATH."/src/Label/PDF_Label.php";
-		// require_once APPPATH."/src/Label/fpdf.php";
-
-		// Example of custom format
-		// $pdf = new PDF_Label(array('paper-size'=>'A4', 'metric'=>'mm', 'marginLeft'=>1, 'marginTop'=>1, 'NX'=>2, 'NY'=>7, 'SpaceX'=>0, 'SpaceY'=>0, 'width'=>99, 'height'=>38, 'font-size'=>14));
-
+	
 		try {
 			if ($label) {
 				$pdf = new PDF_Label(array(
@@ -127,9 +132,9 @@ class Labels extends CI_Controller {
 			redirect('labels');
 		}
 		define('FPDF_FONTPATH', './src/Label/font/');
-
+	
 		$pdf->AddPage();
-
+	
 		if ($label->font == 'DejaVuSans') {
 			$pdf->AddFont($label->font,'','DejaVuSansMono.ttf',true);
 			$pdf->SetFont($label->font);
@@ -137,13 +142,12 @@ class Labels extends CI_Controller {
 			$pdf->AddFont($label->font);
 			$pdf->SetFont($label->font);
 		}
-
-
-		if ($result->num_rows() > 0) {
+	
+		if ($qsos->num_rows() > 0) {
 			if ($label->qsos == 1) {
-				$this->makeOneQsoLabel($result->result(), $pdf);
+				$this->makeOneQsoLabel($qsos->result(), $pdf);
 			} else {
-				$this->makeMultiQsoLabel($result->result(), $pdf, $label->qsos);
+				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos);
 			}
 		} else {
 			$this->session->set_flashdata('message', '0 QSOs found for print!'); 
