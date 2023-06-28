@@ -20,6 +20,9 @@ class Visitor extends CI_Controller {
         elseif($method == "satellites") {
             $this->satellites($method);
         }
+        elseif($method == "search") {
+            $this->search($method);
+        }
         else {
             $this->index($method);
         }
@@ -452,4 +455,18 @@ class Visitor extends CI_Controller {
 			return false;
 		}
 	}
+
+	public function search() {
+		$slug = $this->security->xss_clean($this->uri->segment(3));
+		$data['slug'] = $slug;
+		$callsign = $this->security->xss_clean($this->uri->segment(4));
+		$data['callsign'] = $callsign;
+		$this->search_result($data);
+	}
+
+	private function search_result($data) {
+		echo "TEST".$data['slug']."<br />";
+		echo "CALL".strtoupper($data['callsign']);
+	}
+
 }

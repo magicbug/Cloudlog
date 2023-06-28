@@ -47,12 +47,25 @@
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
-            console.log("lets go");
             initmap(grid);
 
       });
 
       </script>
+<script type="text/javascript">
+   function publicSearchButtonPress(){
+       event.preventDefault()
+       if ($('#callsign').val()) {
+         let fixedcall = $('#callsign').val();
+         $('#map').hide();
+         $('#container').hide();
+         $('#partial_view').load("search/<?php echo $slug ?>/" + fixedcall.replace('Ø', '0'), function() {
+            $('[data-toggle="tooltip"]').tooltip()
+         });
+       }
+}
+</script>
+
 
 <?php if ($this->uri->segment(2) == "satellites") { ?>
 
