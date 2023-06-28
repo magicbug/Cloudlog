@@ -389,7 +389,22 @@ $(document).ready(function () {
 					unselectQsoID(this);
 				});
 				$('#printLabel').prop("disabled", false);
-			}
+			},
+			error: function (data) {
+				BootstrapDialog.alert({
+					title: 'ERROR',
+					message: 'Something went wrong with label print. Go to labels and check if you have defined a label, and that it is set for print!',
+					type: BootstrapDialog.TYPE_DANGER,
+					closable: false,
+					draggable: false,
+					callback: function (result) {
+					}
+				});
+				$.each(id_list, function(k, v) {
+					unselectQsoID(this);
+				});
+				$('#printLabel').prop("disabled", false);
+			},
 		});
 	});
 

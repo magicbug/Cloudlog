@@ -92,7 +92,7 @@ class Labels extends CI_Controller {
 		$this->load->model('labels_model');
 		$result = $this->labels_model->export_printrequestedids($ids);
 
-		$this->prepareLabel($result);
+		$this->prepareLabel($result, true);
 	}
 
 	public function print($station_id) {
@@ -104,7 +104,7 @@ class Labels extends CI_Controller {
 		$this->prepareLabel($result);
 	}
 	
-	function prepareLabel($qsos) {
+	function prepareLabel($qsos, $jscall = false) {
 		$this->load->model('labels_model');
 		$label = $this->labels_model->getDefaultLabel();
 	
@@ -124,12 +124,24 @@ class Labels extends CI_Controller {
 					'font-size'		=> $label->font_size
 				));
 			} else {
-				$this->session->set_flashdata('error', 'You need to create a label and set it to be used for print.'); 
-				redirect('labels');
+				if ($jscall) {
+					header('Content-Type: application/json');
+					echo json_encode(array('message' => 'You need to create a label and set it to be used for print.'));
+					return;
+				} else {
+					$this->session->set_flashdata('error', 'You need to create a label and set it to be used for print.'); 
+					redirect('labels');
+				}
 			}
 		} catch (\Throwable $th) {
-			$this->session->set_flashdata('error', 'Something went wrong! The label could not be generated. Check label size and font size.'); 
-			redirect('labels');
+			if ($jscall) {
+				header('Content-Type: application/json');
+				echo json_encode(array('message' => 'Something went wrong! The label could not be generated. Check label size and font size.'));
+				return;
+			} else {
+				$this->session->set_flashdata('error', 'Something went wrong! The label could not be generated. Check label size and font size.'); 
+				redirect('labels');
+			}
 		}
 		define('FPDF_FONTPATH', './src/Label/font/');
 	
