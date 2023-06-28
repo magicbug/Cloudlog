@@ -349,8 +349,10 @@ $(document).ready(function () {
 		handleQsl('I','', 'notRequired');
 	});
 	$('#receivedBureau').click(function (event) {
+		handleQslReceived('Y','B', 'receivedBureau');
 	});
 	$('#receivedDirect').click(function (event) {
+		handleQslReceived('Y','D', 'receivedDirect');
 	});
 
 	$('#printLabel').click(function (event) {
@@ -411,6 +413,37 @@ $(document).ready(function () {
 		});
 		$.ajax({
 			url: base_url + 'index.php/logbookadvanced/update_qsl',
+			type: 'post',
+			data: {'id': JSON.stringify(id_list, null, 2),
+				'sent' : sent,
+				'method' : method
+			},
+			success: function(data) {
+				if (data !== []) {
+					$.each(data, function(k, v) {
+						updateRow(this);
+						unselectQsoID(this.qsoID);
+					});
+				}
+				$('#'+tag).prop("disabled", false);
+			}
+		});
+	}
+
+	function handleQslReceived(sent, method, tag) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements == 0) {
+			return;
+		}
+		$('#'+tag).prop("disabled", true);
+		var id_list=[];
+		elements.each(function() {
+			let id = $(this).first().closest('tr').data('qsoID')
+			id_list.push(id);
+		});
+		$.ajax({
+			url: base_url + 'index.php/logbookadvanced/update_qsl_received',
 			type: 'post',
 			data: {'id': JSON.stringify(id_list, null, 2),
 				'sent' : sent,

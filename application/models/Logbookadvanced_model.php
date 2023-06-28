@@ -136,6 +136,7 @@ class Logbookadvanced_model extends CI_Model {
 			FROM " . $this->config->item('table_name') . " qsos
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
 			LEFT OUTER JOIN dxcc_entities ON qsos.COL_MY_DXCC = dxcc_entities.adif
+			LEFT OUTER JOIN lotw_users ON qsos.col_call=lotw_users.callsign
 			WHERE station_profile.user_id =  ?
 			$where
 			$order
@@ -207,6 +208,24 @@ class Logbookadvanced_model extends CI_Model {
                 'COL_QSLSDATE' => date('Y-m-d H:i:s'),
                 'COL_QSL_SENT' => $sent,
                 'COL_QSL_SENT_VIA' => $method
+            );
+            $this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
+            $this->db->update($this->config->item('table_name'), $data);
+            
+            return array('message' => 'OK');
+        }
+    }
+
+	public function updateQslReceived($ids, $user_id, $method, $sent) {
+        $this->load->model('user_model');
+
+        if(!$this->user_model->authorize(2)) {
+            return array('message' => 'Error');
+        } else {
+            $data = array(
+                'COL_QSLRDATE' => date('Y-m-d H:i:s'),
+                'COL_QSL_RCVD' => $sent,
+                'COL_QSL_RCVD_VIA' => $method
             );
             $this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
             $this->db->update($this->config->item('table_name'), $data);
