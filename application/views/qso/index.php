@@ -142,6 +142,8 @@
                 </div>
               </div>
 
+              <input type="hidden" name="distance" id="distance" value="0">
+
               <div class="form-group row">
                   <label for="comment" class="col-sm-3 col-form-label"><?php echo lang('general_word_comment'); ?></label>
                   <div class="col-sm-9">

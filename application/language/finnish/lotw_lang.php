@@ -16,10 +16,13 @@ $lang['lotw_no_certs_uploaded'] = 'Sinun täytyy ladata ainakin yksi LoTW:n P12 
 
 $lang['lotw_date_created'] = 'Päivä jolloin luotu';
 $lang['lotw_date_expires'] = 'Päivä joloin vanhenee';
-$lang['lotw_status'] = 'Status';
+$lang['lotw_qso_start_date'] = 'QSO aloituspäivä';
+$lang['lotw_qso_end_date'] = 'QSO lopetuspäivä';
+$lang['lotw_status'] = 'Status / Last upload';
 $lang['lotw_options'] = 'Lisävaihtoehdot';
 $lang['lotw_valid'] = 'Voimassa';
 $lang['lotw_expired'] = 'Vanhentunut';
+$lang['lotw_expiring'] = 'Vanhenee';
 $lang['lotw_not_synced'] = 'Ei synkronoitu';
 
 $lang['lotw_certificate_dxcc'] = 'Kutsumerkin varmenteen DXCC';
@@ -50,3 +53,10 @@ $lang['lotw_p12_export_step_three'] = 'Klikkaa "Tallenna kutsumerkin varmenne / 
 $lang['lotw_p12_export_step_four'] = 'Lataa ja tuo äsken tallentamasi tiedosto tänne.';
 
 $lang['lotw_confirmed'] = 'Tämä QSO on kuitattu LoTW:ssa';
+
+// LoTW Expiry
+$lang['lotw_cert_expiring'] = 'Vähintään yksi LOTW:n kutsumerkin varmenteesi on vanhentumassa!';
+$lang['lotw_cert_expired'] = 'Vähintään yksi LOTW:n kutsumerkin varmenteesi on vanhentunut!!';
+
+// Lotw User
+$lang['lotw_user'] = 'Tämä asmea käyttää LoTW-palvelua. Viimeinen yhteyksien lähetys oli';

@@ -87,7 +87,7 @@
 		  			</div>
 
 					<!-- US State -->
-					<div class="form-group">
+					<div class="form-group" id="us_state">
 		    			<label for="stateInput">Station State</label>
 		    				<select class="form-control custom-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 								<option value=""></option>
@@ -142,6 +142,15 @@
 								<option value="WI" <?php if($my_station_profile->state == "WI") { echo "selected"; } ?>>Wisconsin</option>
 								<option value="WV" <?php if($my_station_profile->state == "WV") { echo "selected"; } ?>>West Virginia</option>
 								<option value="WY" <?php if($my_station_profile->state == "WY") { echo "selected"; } ?>>Wyoming</option>
+							</select>
+		    				<small id="StateHelp" class="form-text text-muted">Station state. Applies to certain countries only. Leave blank if not applicable.</small>
+		 				</div>
+
+					<!-- Canada State -->
+					<div class="form-group" id="canada_state">
+		    			<label for="stateInput">Canadian Province</label>
+		    				<select class="form-control custom-select" name="station_ca_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
 								<option value="AB" <?php if($my_station_profile->state == "AB") { echo "selected"; } ?>>Alberta</option>
 								<option value="BC" <?php if($my_station_profile->state == "BC") { echo "selected"; } ?>>British Columbia</option>
 								<option value="MB" <?php if($my_station_profile->state == "MB") { echo "selected"; } ?>>Manitoba</option>
@@ -157,7 +166,7 @@
 								<option value="YT" <?php if($my_station_profile->state == "YT") { echo "selected"; } ?>>Yukon</option>
 							</select>
 		    				<small id="StateHelp" class="form-text text-muted">Station state. Applies to certain countries only. Leave blank if not applicable.</small>
-		 				</div>
+						</div>
 
 						<!-- US County -->
 						<div class="form-group">

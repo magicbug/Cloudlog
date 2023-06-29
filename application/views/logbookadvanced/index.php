@@ -15,7 +15,9 @@
 		</div>
 	<?php } ?>
 <div class="row">
+
 	<form id="searchForm" name="searchForm" action="<?php echo base_url()."index.php/logbookadvanced/search";?>" method="post">
+	<div class="filterbody collapse">
 		<div class="form-row">
 			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="dateFrom">From</label>
@@ -164,38 +166,47 @@
 					<option value="V">Verified</option>
 				</select>
 			</div>
-			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
-				<label for="qsoResults"># Results</label>
-				<select id="qsoResults" name="qsoResults" class="form-control form-control-sm">
-					<option value="250">250</option>
-					<option value="1000">1000</option>
-					<option value="2500">2500</option>
-					<option value="5000">5000</option>
-				</select>
-			</div>
-			<div class="form-group col-lg col-md-3 col-sm-3 col-xl-1">
-				<label>&nbsp;</label><br>
-				<button type="submit" class="btn btn-sm btn-primary" id="searchButton">Search</button>
-				<button type="reset" class="btn btn-sm btn-danger" id="resetButton">Reset</button>
-			</div>
+
 		</div>
-	</form>
+	</div>
+	
+	<div class="actionbody collapse">
 	<div class="mb-2">
 		<span class="h6">With selected :</span>
-		<button type="button" class="btn btn-sm btn-primary" id="btnUpdateFromCallbook">Update from Callbook</button>
-		<button type="button" class="btn btn-sm btn-primary" id="queueBureau">Queue Bureau</button>
-		<button type="button" class="btn btn-sm btn-primary" id="queueDirect">Queue Direct</button>
-		<button type="button" class="btn btn-sm btn-primary" id="queueElectronic">Queue Electronic</button>
-		<button type="button" class="btn btn-sm btn-success" id="sentBureau">Sent Bureau</button>
-		<button type="button" class="btn btn-sm btn-success" id="sentDirect">Sent Direct</button>
-		<button type="button" class="btn btn-sm btn-success" id="sentElectronic">Sent Electronic</button>
-		<button type="button" class="btn btn-sm btn-warning" id="dontSend">Not Sent</button>
-		<button type="button" class="btn btn-sm btn-warning" id="notRequired">QSL Not Required</button>
-		<button type="button" class="btn btn-sm btn-info" id="exportAdif">Create ADIF</button>
-		<button type="button" class="btn btn-sm btn-danger" id="deleteQsos">Delete</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="btnUpdateFromCallbook">Update from Callbook</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="queueBureau">Queue Bureau</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="queueDirect">Queue Direct</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="queueElectronic">Queue Electronic</button>
+		<button type="button" class="btn btn-sm btn-success mr-1" id="sentBureau">Sent Bureau</button>
+		<button type="button" class="btn btn-sm btn-success mr-1" id="sentDirect">Sent Direct</button>
+		<button type="button" class="btn btn-sm btn-success mr-1" id="sentElectronic">Sent Electronic</button>
+		<button type="button" class="btn btn-sm btn-warning mr-1" id="dontSend">Not Sent</button>
+		<button type="button" class="btn btn-sm btn-warning mr-1" id="notRequired">QSL Not Required</button>
+		<button type="button" class="btn btn-sm btn-warning mr-1" id="receivedBureau">Received (bureau)</button>
+		<button type="button" class="btn btn-sm btn-warning mr-1" id="receivedDirect">Received (direct)</button>
+		<button type="button" class="btn btn-sm btn-info mr-1" id="exportAdif">Create ADIF</button>
+		<button type="button" class="btn btn-sm btn-info mr-1" id="printLabel">Print Label</button>
+		<button type="button" class="btn btn-sm btn-danger mr-1" id="deleteQsos">Delete</button>
 		<span id="infoBox"></span>
 	</div>
 	</div>
+</div>
+<div class="form-row pt-2">
+<div class="form-group form-inline col-lg d-flex flex-row justify-content-center align-items-center">
+	<button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="collapse" data-target=".filterbody">Filters</button>
+	<button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="collapse" data-target=".actionbody">Actions</button>
+	<label for="qsoResults" class="mr-2"># Results</label>
+	<select id="qsoResults" name="qsoResults" class="form-control form-control-sm mr-2">
+		<option value="250">250</option>
+		<option value="1000">1000</option>
+		<option value="2500">2500</option>
+		<option value="5000">5000</option>
+	</select>
+	<button type="submit" class="btn btn-sm btn-primary mr-1" id="searchButton">Search</button>
+	<button type="reset" class="btn btn-sm btn-danger mr-1" id="resetButton">Reset</button>
+</div>
+			</div>
+</form>
 	<table style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center" id="qsoList">
 		<thead>
 			<tr>
@@ -228,6 +239,4 @@
 		<tbody>
 		</tbody>
 	</table>
-
-
 </div>

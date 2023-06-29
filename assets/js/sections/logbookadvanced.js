@@ -26,13 +26,13 @@ function updateRow(qso) {
 	let c = 1;
 	cells.eq(c++).text(qso.qsoDateTime);
 	cells.eq(c++).text(qso.de);
-	cells.eq(c++).html('<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>' + (qso.callsign == '' ? '' : ' <small id="lotw_info" class="badge badge-success" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + '">L</small>'));
+	cells.eq(c++).html('<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>' + (qso.callsign == '' ? '' : ' <small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + '">L</small>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a>');
 	cells.eq(c++).text(qso.mode);
 	cells.eq(c++).text(qso.rstS);
 	cells.eq(c++).text(qso.rstR);
 	cells.eq(c++).text(qso.band);
 	cells.eq(c++).text(qso.deRefs);
-	cells.eq(c++).text(qso.dxRefs);
+	cells.eq(c++).html(qso.dxRefs);
 	cells.eq(c++).text(qso.name);
 	cells.eq(c++).text(qso.qslVia);
 	cells.eq(c++).html(qso.qsl);
@@ -46,7 +46,7 @@ function updateRow(qso) {
 	cells.eq(c++).text(qso.dxcc);
 	cells.eq(c++).text(qso.state);
 	cells.eq(c++).text(qso.cqzone);
-	cells.eq(c++).text(qso.iota);
+	cells.eq(c++).html(qso.iota);
 
 	$('[data-toggle="tooltip"]').tooltip();
 	return row;
@@ -81,7 +81,7 @@ function loadQSOTable(rows) {
 		data.push('<div class="form-check"><input class="form-check-input" type="checkbox" /></div>');
 		data.push(qso.qsoDateTime);
 		data.push(qso.de);
-		data.push('<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>' + (qso.callsign == '' ? '' : ' <small id="lotw_info" class="badge badge-success" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + ' ">L</small>'));
+		data.push('<a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a>' + (qso.callsign == '' ? '' : ' <small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + ' ">L</small>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a>');
 		data.push(qso.mode);
 		data.push(qso.rstS);
 		data.push(qso.rstR);
@@ -348,6 +348,65 @@ $(document).ready(function () {
 	$('#notRequired').click(function (event) {
 		handleQsl('I','', 'notRequired');
 	});
+	$('#receivedBureau').click(function (event) {
+		handleQslReceived('Y','B', 'receivedBureau');
+	});
+	$('#receivedDirect').click(function (event) {
+		handleQslReceived('Y','D', 'receivedDirect');
+	});
+
+	$('#printLabel').click(function (event) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements == 0) {
+			return;
+		}
+		$('#printLabel').prop("disabled", true);
+
+		var id_list=[];
+
+		elements.each(function() {
+			let id = $(this).first().closest('tr').data('qsoID')
+			id_list.push(id);
+		});
+
+		$.ajax({
+			url: base_url + 'index.php/labels/printids',
+			type: 'post',
+			data: {'id': JSON.stringify(id_list, null, 2) },
+			xhr:function(){
+				var xhr = new XMLHttpRequest();
+				xhr.responseType= 'blob'
+				return xhr;
+			},
+			success: function(data) {
+				if(data){ 
+					var file = new Blob([data], {type: 'application/pdf'});
+					var fileURL = URL.createObjectURL(file);
+					window.open(fileURL);   
+				}
+				$.each(id_list, function(k, v) {
+					unselectQsoID(this);
+				});
+				$('#printLabel').prop("disabled", false);
+			},
+			error: function (data) {
+				BootstrapDialog.alert({
+					title: 'ERROR',
+					message: 'Something went wrong with label print. Go to labels and check if you have defined a label, and that it is set for print!',
+					type: BootstrapDialog.TYPE_DANGER,
+					closable: false,
+					draggable: false,
+					callback: function (result) {
+					}
+				});
+				$.each(id_list, function(k, v) {
+					unselectQsoID(this);
+				});
+				$('#printLabel').prop("disabled", false);
+			},
+		});
+	});
 
 	$('#searchForm').on('reset', function(e) {
 		setTimeout(function() {
@@ -369,6 +428,37 @@ $(document).ready(function () {
 		});
 		$.ajax({
 			url: base_url + 'index.php/logbookadvanced/update_qsl',
+			type: 'post',
+			data: {'id': JSON.stringify(id_list, null, 2),
+				'sent' : sent,
+				'method' : method
+			},
+			success: function(data) {
+				if (data !== []) {
+					$.each(data, function(k, v) {
+						updateRow(this);
+						unselectQsoID(this.qsoID);
+					});
+				}
+				$('#'+tag).prop("disabled", false);
+			}
+		});
+	}
+
+	function handleQslReceived(sent, method, tag) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements == 0) {
+			return;
+		}
+		$('#'+tag).prop("disabled", true);
+		var id_list=[];
+		elements.each(function() {
+			let id = $(this).first().closest('tr').data('qsoID')
+			id_list.push(id);
+		});
+		$.ajax({
+			url: base_url + 'index.php/logbookadvanced/update_qsl_received',
 			type: 'post',
 			data: {'id': JSON.stringify(id_list, null, 2),
 				'sent' : sent,

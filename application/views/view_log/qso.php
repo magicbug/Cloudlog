@@ -135,13 +135,13 @@
 
                                 switch ($measurement_base) {
                                     case 'M':
-                                        $distance .= "mi";
+                                        $distance .= " mi";
                                         break;
                                     case 'K':
-                                        $distance .= "km";
+                                        $distance .= " km";
                                         break;
                                     case 'N':
-                                        $distance .= "nmi";
+                                        $distance .= " nmi";
                                         break;
                                 }
                                 echo $distance;
@@ -391,7 +391,7 @@
                             $hashtags .= " #IOTA ".$row->COL_IOTA;
                         }
                         if($row->COL_SOTA_REF != null) {
-                            $hashtags .= " #SOTA ".$row->COL_SOTA_EF;
+                            $hashtags .= " #SOTA ".$row->COL_SOTA_REF;
                         }
                         if($row->COL_POTA_REF != null) {
                             $hashtags .= " #POTA ".$row->COL_POTA_REF;
