@@ -1,4 +1,6 @@
 function qsl_rcvd(id, method) {
+    $(".ld-ext-right-r-"+method).addClass('running');
+    $(".ld-ext-right-r-"+method).prop('disabled', true);
     $.ajax({
         url: base_url + 'index.php/qso/qsl_rcvd_ajax',
         type: 'post',
@@ -6,6 +8,8 @@ function qsl_rcvd(id, method) {
             'method': method
         },
         success: function(data) {
+            $(".ld-ext-right-r-"+method).removeClass('running');
+            $(".ld-ext-right-r-"+method).prop('disabled', false);
             if (data.message == 'OK') {
                 $("#qsl_" + id).find("span:eq(1)").attr('class', 'qsl-green'); // Paints arrow green
                 $(".qsl_rcvd_" + id).remove(); // removes choice from menu
@@ -39,6 +43,8 @@ function qsl_sent(id, method) {
 // Function: qsl_requested
 // Marks QSL card requested against the QSO.
 function qsl_requested(id, method) {
+    $(".ld-ext-right-t-"+method).addClass('running');
+    $(".ld-ext-right-t-"+method).prop('disabled', true);
     $.ajax({
         url: base_url + 'index.php/qso/qsl_requested_ajax',
         type: 'post',
@@ -46,6 +52,8 @@ function qsl_requested(id, method) {
             'method': method
         },
         success: function(data) {
+            $(".ld-ext-right-t-"+method).removeClass('running');
+            $(".ld-ext-right-t-"+method).prop('disabled', false);
             if (data.message == 'OK') {
                 $("#qsl_" + id).find("span:eq(0)").attr('class', 'qsl-yellow'); // Paints arrow yellow
             }
@@ -59,6 +67,8 @@ function qsl_requested(id, method) {
 // Function: qsl_ignore
 // Marks QSL card ignore against the QSO.
 function qsl_ignore(id, method) {
+    $(".ld-ext-right-ignore").addClass('running');
+    $(".ld-ext-right-ignore").prop('disabled', true);
     $.ajax({
         url: base_url + 'index.php/qso/qsl_ignore_ajax',
         type: 'post',
@@ -66,6 +76,8 @@ function qsl_ignore(id, method) {
             'method': method
         },
         success: function(data) {
+            $(".ld-ext-right-ignore").removeClass('running');
+            $(".ld-ext-right-ignore").prop('disabled', false);
             if (data.message == 'OK') {
                 $("#qsl_" + id).find("span:eq(0)").attr('class', 'qsl-grey'); // Paints arrow grey
             }
