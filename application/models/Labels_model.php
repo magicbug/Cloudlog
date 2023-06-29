@@ -127,4 +127,16 @@ class Labels_model extends CI_Model {
 
         return $query;
     }
+
+    function export_printrequestedids($ids) {
+        $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.name as station_country');
+        $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
+        $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+        $this->db->where_in('COL_PRIMARY_KEY', $ids);
+        $this->db->order_by("COL_DXCC", "ASC");
+        $query = $this->db->get($this->config->item('table_name'));
+
+        return $query;
+    }
 }

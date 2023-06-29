@@ -348,6 +348,65 @@ $(document).ready(function () {
 	$('#notRequired').click(function (event) {
 		handleQsl('I','', 'notRequired');
 	});
+	$('#receivedBureau').click(function (event) {
+		handleQslReceived('Y','B', 'receivedBureau');
+	});
+	$('#receivedDirect').click(function (event) {
+		handleQslReceived('Y','D', 'receivedDirect');
+	});
+
+	$('#printLabel').click(function (event) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements == 0) {
+			return;
+		}
+		$('#printLabel').prop("disabled", true);
+
+		var id_list=[];
+
+		elements.each(function() {
+			let id = $(this).first().closest('tr').data('qsoID')
+			id_list.push(id);
+		});
+
+		$.ajax({
+			url: base_url + 'index.php/labels/printids',
+			type: 'post',
+			data: {'id': JSON.stringify(id_list, null, 2) },
+			xhr:function(){
+				var xhr = new XMLHttpRequest();
+				xhr.responseType= 'blob'
+				return xhr;
+			},
+			success: function(data) {
+				if(data){ 
+					var file = new Blob([data], {type: 'application/pdf'});
+					var fileURL = URL.createObjectURL(file);
+					window.open(fileURL);   
+				}
+				$.each(id_list, function(k, v) {
+					unselectQsoID(this);
+				});
+				$('#printLabel').prop("disabled", false);
+			},
+			error: function (data) {
+				BootstrapDialog.alert({
+					title: 'ERROR',
+					message: 'Something went wrong with label print. Go to labels and check if you have defined a label, and that it is set for print!',
+					type: BootstrapDialog.TYPE_DANGER,
+					closable: false,
+					draggable: false,
+					callback: function (result) {
+					}
+				});
+				$.each(id_list, function(k, v) {
+					unselectQsoID(this);
+				});
+				$('#printLabel').prop("disabled", false);
+			},
+		});
+	});
 
 	$('#searchForm').on('reset', function(e) {
 		setTimeout(function() {
@@ -369,6 +428,37 @@ $(document).ready(function () {
 		});
 		$.ajax({
 			url: base_url + 'index.php/logbookadvanced/update_qsl',
+			type: 'post',
+			data: {'id': JSON.stringify(id_list, null, 2),
+				'sent' : sent,
+				'method' : method
+			},
+			success: function(data) {
+				if (data !== []) {
+					$.each(data, function(k, v) {
+						updateRow(this);
+						unselectQsoID(this.qsoID);
+					});
+				}
+				$('#'+tag).prop("disabled", false);
+			}
+		});
+	}
+
+	function handleQslReceived(sent, method, tag) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements == 0) {
+			return;
+		}
+		$('#'+tag).prop("disabled", true);
+		var id_list=[];
+		elements.each(function() {
+			let id = $(this).first().closest('tr').data('qsoID')
+			id_list.push(id);
+		});
+		$.ajax({
+			url: base_url + 'index.php/logbookadvanced/update_qsl_received',
 			type: 'post',
 			data: {'id': JSON.stringify(id_list, null, 2),
 				'sent' : sent,
