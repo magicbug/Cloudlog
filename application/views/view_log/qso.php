@@ -529,7 +529,6 @@
                         </fieldset>
                     </form>
                 </div>
-                <?php if ($row->COL_QSL_RCVD != 'Y') { ?>
                 <div class="col-md">
                         <p><button type="button" onclick="qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B');" id="qslrxb"  name="qslrxb" class="btn btn-sm btn-success"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_bureau'); ?></button></p>
 
@@ -538,7 +537,6 @@
                         <p><button type="button" onclick="qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'E');" id="qslrxe"  name="qslrxe" class="btn btn-sm btn-success"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_electronic'); ?></button></p>
 
                 </div>
-                <?php } ?>
             </div>
         </div>
 
