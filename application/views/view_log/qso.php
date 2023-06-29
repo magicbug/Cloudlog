@@ -534,13 +534,23 @@
             <p>
             <div class="row">
                 <div class="col-md">
-                        <button type="button" onclick="qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B');" id="qslrxb"  name="qslrxb" class="btn btn-sm btn-success ld-ext-right ld-ext-right-B"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_bureau'); ?> <div class="ld ld-ring ld-spin"></div></button>
+                        <button type="button" onclick="qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B');" id="qslrxb"  name="qslrxb" class="btn btn-sm btn-success ld-ext-right ld-ext-right-r-B"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_bureau'); ?> <div class="ld ld-ring ld-spin"></div></button>
 
-                        <button type="button" onclick="qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D');" id="qslrxd"  name="qslrxd" class="btn btn-sm btn-success ld-ext-right ld-ext-right-D"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_direct'); ?> <div class="ld ld-ring ld-spin"></div></button>
+                        <button type="button" onclick="qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D');" id="qslrxd"  name="qslrxd" class="btn btn-sm btn-success ld-ext-right ld-ext-right-r-D"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_direct'); ?> <div class="ld ld-ring ld-spin"></div></button>
 
-                        <button type="button" onclick="qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'E');" id="qslrxe"  name="qslrxe" class="btn btn-sm btn-success ld-ext-right ld-ext-right-E"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_electronic'); ?> <div class="ld ld-ring ld-spin"></div></button>
+                        <button type="button" onclick="qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'E');" id="qslrxe"  name="qslrxe" class="btn btn-sm btn-success ld-ext-right ld-ext-right-r-E"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_electronic'); ?> <div class="ld ld-ring ld-spin"></div></button>
                 </div>
+            </div>
+            <p>
+            <div class="row">
+                <div class="col-md">
+                        <button type="button" onclick="qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B');" id="qsltxb"  name="qsltxb" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-t-B"><i class="fas fa-envelope"></i> Mark QSL Card Requested (Bureau) <div class="ld ld-ring ld-spin"></div></button>
 
+                        <button type="button" onclick="qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D');" id="qsltxd"  name="qsltxd" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-t-D"><i class="fas fa-envelope"></i> Mark QSL Card Requested (Direct) <div class="ld ld-ring ld-spin"></div></button>
+
+                        <button type="button" onclick="qsl_ignore(<?php echo $row->COL_PRIMARY_KEY; ?>, 'I');" id="qsltxi"  name="qsltxi" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-ignore"><i class="fas fa-envelope"></i> Mark QSL Card Not Required <div class="ld ld-ring ld-spin"></div></button>
+
+                </div>
             </div>
         </div>
 
