@@ -1,4 +1,6 @@
 function qsl_rcvd(id, method) {
+    $(".ld-ext-right-"+method).addClass('running');
+    $(".ld-ext-right-"+method).prop('disabled', true);
     $.ajax({
         url: base_url + 'index.php/qso/qsl_rcvd_ajax',
         type: 'post',
@@ -6,6 +8,8 @@ function qsl_rcvd(id, method) {
             'method': method
         },
         success: function(data) {
+            $(".ld-ext-right-"+method).removeClass('running');
+            $(".ld-ext-right-"+method).prop('disabled', false);
             if (data.message == 'OK') {
                 $("#qsl_" + id).find("span:eq(1)").attr('class', 'qsl-green'); // Paints arrow green
                 $(".qsl_rcvd_" + id).remove(); // removes choice from menu
