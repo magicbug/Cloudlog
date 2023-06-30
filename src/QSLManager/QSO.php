@@ -317,6 +317,9 @@ class QSO
 				}
 			} 
 			$qslstring .= '">&#9660;</span>';
+			if ($data['qslcount'] != null) {
+				$qslstring .= ' <a href="javascript:displayQsl('.$data['COL_PRIMARY_KEY'].');"><i class="fa fa-id-card"></i></a>';
+			}
 		return $qslstring;
 	}
 	

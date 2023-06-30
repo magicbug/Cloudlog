@@ -43,9 +43,9 @@ function updateRow(qso) {
 		cells.eq(c++).html(qso.lotw);
 	}
 	cells.eq(c++).text(qso.qslMessage);
-	cells.eq(c++).text(qso.dxcc);
+	cells.eq(c++).html(qso.dxcc);
 	cells.eq(c++).text(qso.state);
-	cells.eq(c++).text(qso.cqzone);
+	cells.eq(c++).html(qso.cqzone);
 	cells.eq(c++).html(qso.iota);
 
 	$('[data-toggle="tooltip"]').tooltip();

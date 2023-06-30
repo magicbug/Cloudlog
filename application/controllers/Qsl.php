@@ -174,6 +174,13 @@ class Qsl extends CI_Controller {
 		echo json_encode($result);
 	}
 
+    function viewQsl() {
+        $cleanid = $this->security->xss_clean($this->input->post('id'));
+        $this->load->model('Qsl_model');
+        $data['qslimages'] = $this->Qsl_model->getQslForQsoId($cleanid);
+        $this->load->view('qslcard/qslcarousel', $data);
+    }
+
 }
 
 // Functions for storage, these need shifted to a libary to use across Cloudlog
