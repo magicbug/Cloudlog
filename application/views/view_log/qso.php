@@ -507,9 +507,9 @@
 
             <p><div class="alert alert-warning" role="alert"><span class="badge badge-warning">Warning</span> Maximum file upload size is <?php echo $max_upload; ?>B.</div></p>
 
+            <form class="form" id="fileinfo" name="fileinfo" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md">
-                    <form class="form" id="fileinfo" name="fileinfo" enctype="multipart/form-data">
                         <fieldset>
 
                             <div class="form-group">
@@ -528,9 +528,9 @@
                             </div>
 
                         </fieldset>
-                    </form>
+                    </div>
                 </div>
-            </div>
+            </form>
             <p>
             <div class="row">
                 <div class="col-md">
