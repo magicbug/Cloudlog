@@ -144,7 +144,9 @@
 						<option value="TR">Tropospheric ducting</option>
 				</select>
 			</div>
-			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+		</div>
+		<div class="form-row">
+		<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label for="qslSent">QSL Sent</label>
 				<select id="qslSent" name="qslSent" class="form-control form-control-sm">
 					<option value="">All</option>
@@ -166,7 +168,50 @@
 					<option value="V">Verified</option>
 				</select>
 			</div>
-
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label for="lotwSent">LoTW Sent</label>
+				<select id="lotwSent" name="lotwSent" class="form-control form-control-sm">
+					<option value="">All</option>
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+					<option value="R">Requested</option>
+					<option value="Q">Queued</option>
+					<option value="I">Ignore/Invalid</option>
+				</select>
+			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label for="lotwReceived">LoTW Received</label>
+				<select id="lotwReceived" name="lotwReceived" class="form-control form-control-sm">
+					<option value="">All</option>
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+					<option value="R">Requested</option>
+					<option value="I">Ignore/Invalid</option>
+					<option value="V">Verified</option>
+				</select>
+			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label for="eqslSent">eQSL Sent</label>
+				<select id="eqslSent" name="eqslSent" class="form-control form-control-sm">
+					<option value="">All</option>
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+					<option value="R">Requested</option>
+					<option value="Q">Queued</option>
+					<option value="I">Ignore/Invalid</option>
+				</select>
+			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label for="eqslReceived">eQSL Received</label>
+				<select id="eqslReceived" name="eqslReceived" class="form-control form-control-sm">
+					<option value="">All</option>
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+					<option value="R">Requested</option>
+					<option value="I">Ignore/Invalid</option>
+					<option value="V">Verified</option>
+				</select>
+			</div>
 		</div>
 	</div>
 	

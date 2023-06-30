@@ -56,6 +56,24 @@ class Logbookadvanced_model extends CI_Model {
 			$binding[] = $searchCriteria['qslReceived'];
 		}
 
+		if ($searchCriteria['lotwSent'] !== '') {
+			$conditions[] = "COL_LOTW_QSL_SENT = ?";
+			$binding[] = $searchCriteria['lotwSent'];
+		}
+		if ($searchCriteria['lotwReceived'] !== '') {
+			$conditions[] = "COL_LOTW_QSL_RCVD = ?";
+			$binding[] = $searchCriteria['lotwReceived'];
+		}
+
+		if ($searchCriteria['eqslSent'] !== '') {
+			$conditions[] = "COL_EQSL_QSL_SENT = ?";
+			$binding[] = $searchCriteria['eqslSent'];
+		}
+		if ($searchCriteria['eqslReceived'] !== '') {
+			$conditions[] = "COL_EQSL_QSL_RCVD = ?";
+			$binding[] = $searchCriteria['eqslReceived'];
+		}
+
         if ($searchCriteria['iota'] !== '') {
 			$conditions[] = "COL_IOTA = ?";
 			$binding[] = $searchCriteria['iota'];

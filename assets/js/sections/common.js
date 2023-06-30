@@ -370,7 +370,7 @@ function validateLocator(locator) {
 }
 
 // This displays the dialog with the form and it's where the resulttable is displayed
-function spawnLookupModal() {
+function spawnLookupModal(searchphrase, searchtype) {
 	$.ajax({
 		url: base_url + 'index.php/lookup',
 		type: 'post',
@@ -384,38 +384,22 @@ function spawnLookupModal() {
 				onshown: function(dialog) {
 					$('#quicklookuptype').change(function(){
 						var type = $('#quicklookuptype').val();
-						if (type == "dxcc") {
-							$('#quicklookupdxcc').show();
-							$('#quicklookupiota').hide();
-							$('#quicklookupcqz').hide();
-							$('#quicklookupwas').hide();
-							$('#quicklookuptext').hide();
-						} else if (type == "iota") {
-							$('#quicklookupiota').show();
-							$('#quicklookupdxcc').hide();
-							$('#quicklookupcqz').hide();
-							$('#quicklookupwas').hide();
-							$('#quicklookuptext').hide();
-						} else if (type == "vucc" || type == "sota" || type == "wwff") {
-							$('#quicklookuptext').show();
-							$('#quicklookupiota').hide();
-							$('#quicklookupdxcc').hide();
-							$('#quicklookupcqz').hide();
-							$('#quicklookupwas').hide();
-						} else if (type == "cq") {
-							$('#quicklookupcqz').show();
-							$('#quicklookupiota').hide();
-							$('#quicklookupdxcc').hide();
-							$('#quicklookupwas').hide();
-							$('#quicklookuptext').hide();
-						} else if (type == "was") {
-							$('#quicklookupwas').show();
-							$('#quicklookupcqz').hide();
-							$('#quicklookupiota').hide();
-							$('#quicklookupdxcc').hide();
-							$('#quicklookuptext').hide();
-						}
+                        changeLookupType(type);
 					});
+                    if (searchtype !== undefined) {
+                        $('#quicklookuptype').val(searchtype);
+                        if (searchtype == 'dxcc') {
+                            $("#quicklookupdxcc").val(searchphrase);
+                        } else if (searchtype == 'iota') {
+                            $("#quicklookupiota").val(searchphrase);
+                        } else if (searchtype == 'cq') {
+                            $("#quicklookupcqz").val(searchphrase);
+                        } else {
+                            $("#quicklookuptext").val(searchphrase);
+                        }
+                        changeLookupType(searchtype);
+                        getLookupResult(this.form);
+                    }
 				},
 				buttons: [{
 					label: 'Close',
@@ -426,6 +410,40 @@ function spawnLookupModal() {
 			});
 		}
 	});
+}
+
+function changeLookupType(type) {
+    if (type == "dxcc") {
+        $('#quicklookupdxcc').show();
+        $('#quicklookupiota').hide();
+        $('#quicklookupcqz').hide();
+        $('#quicklookupwas').hide();
+        $('#quicklookuptext').hide();
+    } else if (type == "iota") {
+        $('#quicklookupiota').show();
+        $('#quicklookupdxcc').hide();
+        $('#quicklookupcqz').hide();
+        $('#quicklookupwas').hide();
+        $('#quicklookuptext').hide();
+    } else if (type == "vucc" || type == "sota" || type == "wwff") {
+        $('#quicklookuptext').show();
+        $('#quicklookupiota').hide();
+        $('#quicklookupdxcc').hide();
+        $('#quicklookupcqz').hide();
+        $('#quicklookupwas').hide();
+    } else if (type == "cq") {
+        $('#quicklookupcqz').show();
+        $('#quicklookupiota').hide();
+        $('#quicklookupdxcc').hide();
+        $('#quicklookupwas').hide();
+        $('#quicklookuptext').hide();
+    } else if (type == "was") {
+        $('#quicklookupwas').show();
+        $('#quicklookupcqz').hide();
+        $('#quicklookupiota').hide();
+        $('#quicklookupdxcc').hide();
+        $('#quicklookuptext').hide();
+    }
 }
 
 // This function executes the call to the backend for fetching queryresult and displays the table in the dialog

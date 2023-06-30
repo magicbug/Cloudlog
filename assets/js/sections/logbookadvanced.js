@@ -187,7 +187,11 @@ $(document).ready(function () {
 				gridsquare: this.gridsquare.value,
 				state: this.state.value,
 				qsoresults: this.qsoResults.value,
-				sats: this.sats.value
+				sats: this.sats.value,
+				lotwSent: this.lotwSent.value,
+				lotwReceived: this.lotwReceived.value,
+				eqslSent: this.eqslSent.value,
+				eqslReceived: this.eqslReceived.value,
 			},
 			dataType: 'json',
 			success: function (data) {
