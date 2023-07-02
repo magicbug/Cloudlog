@@ -6,9 +6,9 @@
   padding: 6px 8px;
   font: 14px Arial, Helvetica, sans-serif;
   background: white;
-  background: rgba(255, 255, 255, 0.8);
   line-height: 24px;
   color: #555;
+  border-radius: 10px;
 }
 .legend h4 {
   text-align: center;
@@ -25,7 +25,13 @@
   height: 18px;
   float: left;
   margin: 0 8px 0 0;
-  opacity: 0.7;
+}
+.coordinates {
+    justify-content: center; 
+    align-items: stretch;
+}
+.cohidden {
+    display:none;
 }
 </style>
 <div class="container">
@@ -94,10 +100,23 @@
 <div id="gridmapcontainer">
 	<div id="gridsquare_map" style="width: 100%; height: 800px"></div>
 </div>
+<div class="coordinates text-center d-flex">
+        <div class="cohidden">Latitude: </div>
+        <div class="cohidden col-auto text-success font-weight-bold" id="latDeg"></div>
+        <div class="cohidden">Longitude: </div>
+        <div class="cohidden col-auto text-success font-weight-bold" id="lngDeg"></div>
+        <div class="cohidden">Gridsquare: </div>
+        <div class="cohidden col-auto text-success font-weight-bold" id="locator"></div>
+        <div class="cohidden">Distance: </div>
+        <div class="cohidden col-auto text-success font-weight-bold" id="distance"></div>
+        <div class="cohidden">Bearing: </div>
+        <div class="cohidden col-auto text-success font-weight-bold" id="bearing"></div>
+</div>
 <script>var gridsquaremap = true;
 <?php
     echo 'var jslayer ="' . $layer .'";';
     echo "var jsattribution ='" . $attribution . "';";
+    echo "var homegrid ='" . strtoupper($homegrid[0]) . "';";
 
     echo 'var gridsquares_gridsquares = "' . $gridsquares_gridsquares . '";';
     echo 'var gridsquares_gridsquares_confirmed = "' . $gridsquares_gridsquares_confirmed . '";';

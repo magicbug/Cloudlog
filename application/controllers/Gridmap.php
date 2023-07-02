@@ -11,6 +11,9 @@ class Gridmap extends CI_Controller {
 
         $this->load->model('bands');
         $this->load->model('gridmap_model');
+		$this->load->model('stations');
+
+		$data['homegrid'] = explode(',', $this->stations->find_gridsquare());
 
         $data['modes'] = $this->gridmap_model->get_worked_modes();
 		$data['bands'] = $this->bands->get_worked_bands();
@@ -27,6 +30,7 @@ class Gridmap extends CI_Controller {
 
         $footerData = [];
 		$footerData['scripts'] = [
+			'assets/js/leaflet/geocoding.js',
 			'assets/js/leaflet/L.MaidenheadColouredGridMap.js',
 			'assets/js/sections/gridmap.js?'
 		];
