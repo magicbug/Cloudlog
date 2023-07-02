@@ -56,6 +56,24 @@ class Logbookadvanced_model extends CI_Model {
 			$binding[] = $searchCriteria['qslReceived'];
 		}
 
+		if ($searchCriteria['lotwSent'] !== '') {
+			$conditions[] = "COL_LOTW_QSL_SENT = ?";
+			$binding[] = $searchCriteria['lotwSent'];
+		}
+		if ($searchCriteria['lotwReceived'] !== '') {
+			$conditions[] = "COL_LOTW_QSL_RCVD = ?";
+			$binding[] = $searchCriteria['lotwReceived'];
+		}
+
+		if ($searchCriteria['eqslSent'] !== '') {
+			$conditions[] = "COL_EQSL_QSL_SENT = ?";
+			$binding[] = $searchCriteria['eqslSent'];
+		}
+		if ($searchCriteria['eqslReceived'] !== '') {
+			$conditions[] = "COL_EQSL_QSL_RCVD = ?";
+			$binding[] = $searchCriteria['eqslReceived'];
+		}
+
         if ($searchCriteria['iota'] !== '') {
 			$conditions[] = "COL_IOTA = ?";
 			$binding[] = $searchCriteria['iota'];
@@ -101,6 +119,11 @@ class Logbookadvanced_model extends CI_Model {
 			INNER JOIN station_profile ON qsos.station_id=station_profile.station_id
 			LEFT OUTER JOIN dxcc_entities ON qsos.col_dxcc=dxcc_entities.adif
 			LEFT OUTER JOIN lotw_users ON qsos.col_call=lotw_users.callsign
+			LEFT OUTER JOIN (
+				select count(*) as qslcount, qsoid
+				from qsl_images
+				group by qsoid
+			) x on qsos.COL_PRIMARY_KEY = x.qsoid
 			WHERE station_profile.user_id =  ?
 			$where
 			ORDER BY qsos.COL_TIME_ON desc, qsos.COL_PRIMARY_KEY desc
@@ -132,12 +155,17 @@ class Logbookadvanced_model extends CI_Model {
 		$order = $this->getSortorder($sortorder);
 
         $sql = "
-            SELECT qsos.*, d2.*, lotw_users.*, station_profile.*, dxcc_entities.name AS station_country
+            SELECT qsos.*, d2.*, lotw_users.*, station_profile.*, x.qslcount, dxcc_entities.name AS station_country
 			FROM " . $this->config->item('table_name') . " qsos
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
 			LEFT OUTER JOIN dxcc_entities ON qsos.COL_MY_DXCC = dxcc_entities.adif
 			LEFT OUTER JOIN dxcc_entities d2 ON qsos.COL_DXCC = d2.adif
 			LEFT OUTER JOIN lotw_users ON qsos.col_call=lotw_users.callsign
+			LEFT OUTER JOIN (
+				select count(*) as qslcount, qsoid
+				from qsl_images
+				group by qsoid
+			) x on qsos.COL_PRIMARY_KEY = x.qsoid
 			WHERE station_profile.user_id =  ?
 			$where
 			$order

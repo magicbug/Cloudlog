@@ -188,9 +188,9 @@ class QSO
 		$this->lotw = $this->getLotwString($data, $custom_date_format);
 		$this->eqsl = $this->getEqslString($data, $custom_date_format);
 		
-		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : $data['COL_CQZ'];
+		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : '<a href="javascript:spawnLookupModal('.$data['COL_CQZ'].',\'cq\');">'.$data['COL_CQZ'].'</a>';
 		$this->state = ($data['COL_STATE'] === null) ? '' :$data['COL_STATE'];
-		$this->dxcc = ($data['name'] === null) ? '- NONE -' : ucwords(strtolower($data['name']), "- (/");
+		$this->dxcc = ($data['name'] === null) ? '- NONE -' : '<a href="javascript:spawnLookupModal('.$data['COL_DXCC'].',\'dxcc\');">'.ucwords(strtolower($data['name']), "- (/").'</a>';
 		$this->iota = ($data['COL_IOTA'] === null) ? '' : $this->getIotaLink($data['COL_IOTA']);
 		if (array_key_exists('end', $data)) {
 			$this->end = ($data['end'] === null) ? null : DateTime::createFromFormat("Y-m-d", $data['end'], new DateTimeZone('UTC'));
@@ -317,6 +317,9 @@ class QSO
 				}
 			} 
 			$qslstring .= '">&#9660;</span>';
+			if ($data['qslcount'] != null) {
+				$qslstring .= ' <a href="javascript:displayQsl('.$data['COL_PRIMARY_KEY'].');"><i class="fa fa-id-card"></i></a>';
+			}
 		return $qslstring;
 	}
 	
@@ -961,7 +964,7 @@ class QSO
 	private function getIotaLink($iota) : string
 	{
 		if ($iota !== '') {
-			return '<a href="https://www.iota-world.org/iotamaps/?grpref=' .$iota . '" target="_blank">' . $iota . '</a>';
+			return '<a href="javascript:spawnLookupModal(\''.$iota.'\',\'iota\');">'.$iota.'</a> <a href="https://www.iota-world.org/iotamaps/?grpref=' .$iota . '" target="_blank"><i class="fas fa-globe"></i></a>';
 		}
 		return '';
 	}

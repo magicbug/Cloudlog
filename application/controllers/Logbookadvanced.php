@@ -106,6 +106,10 @@ class Logbookadvanced extends CI_Controller {
 			'state' => xss_clean($this->input->post('state')),
 			'qsoresults' => xss_clean($this->input->post('qsoresults')),
 			'sats' => xss_clean($this->input->post('sats')),
+			'lotwSent' => xss_clean($this->input->post('lotwSent')),
+			'lotwReceived' => xss_clean($this->input->post('lotwReceived')),
+			'eqslSent' => xss_clean($this->input->post('eqslSent')),
+			'eqslReceived' => xss_clean($this->input->post('eqslReceived')),
 		);
 
 		$qsos = [];

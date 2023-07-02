@@ -43,9 +43,9 @@ function updateRow(qso) {
 		cells.eq(c++).html(qso.lotw);
 	}
 	cells.eq(c++).text(qso.qslMessage);
-	cells.eq(c++).text(qso.dxcc);
+	cells.eq(c++).html(qso.dxcc);
 	cells.eq(c++).text(qso.state);
-	cells.eq(c++).text(qso.cqzone);
+	cells.eq(c++).html(qso.cqzone);
 	cells.eq(c++).html(qso.iota);
 
 	$('[data-toggle="tooltip"]').tooltip();
@@ -187,7 +187,11 @@ $(document).ready(function () {
 				gridsquare: this.gridsquare.value,
 				state: this.state.value,
 				qsoresults: this.qsoResults.value,
-				sats: this.sats.value
+				sats: this.sats.value,
+				lotwSent: this.lotwSent.value,
+				lotwReceived: this.lotwReceived.value,
+				eqslSent: this.eqslSent.value,
+				eqslReceived: this.eqslReceived.value,
 			},
 			dataType: 'json',
 			success: function (data) {

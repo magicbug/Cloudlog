@@ -2398,7 +2398,7 @@ function viewEqsl(picture, callsign) {
                         $("#qslcardfront").val(null);
                     }
 
-                } else {
+                } else if (data.status.front.status != '') {
                     $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Front QSL Card:' +
                     data.status.front.error +
                         '</div>');
@@ -2436,7 +2436,7 @@ function viewEqsl(picture, callsign) {
                         $(".carouselExampleIndicators").carousel();
                         $("#qslcardback").val(null);
                     }
-                } else {
+                } else if (data.status.back.status != '') {
                     $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\nBack QSL Card: ' +
                     data.status.back.error +
                         '</div>');

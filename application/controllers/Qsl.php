@@ -66,11 +66,15 @@ class Qsl extends CI_Controller {
         if (isset($_FILES['qslcardfront']) && $_FILES['qslcardfront']['name'] != "" && $_FILES['qslcardfront']['error'] == 0)
         {
             $result['front'] = $this->uploadQslCardFront($qsoid);
+        } else {
+            $result['front']['status'] = '';
         }
 
         if (isset($_FILES['qslcardback']) && $_FILES['qslcardback']['name'] != "" && $_FILES['qslcardback']['error'] == 0)
         {
             $result['back'] = $this->uploadQslCardBack($qsoid);
+        } else {
+            $result['back']['status'] = '';
         }
 
         header("Content-type: application/json");
@@ -169,6 +173,13 @@ class Qsl extends CI_Controller {
 		$result['filename'] = $filename;
 		echo json_encode($result);
 	}
+
+    function viewQsl() {
+        $cleanid = $this->security->xss_clean($this->input->post('id'));
+        $this->load->model('Qsl_model');
+        $data['qslimages'] = $this->Qsl_model->getQslForQsoId($cleanid);
+        $this->load->view('qslcard/qslcarousel', $data);
+    }
 
 }
 
