@@ -16,9 +16,9 @@ function ConvertDDToDMS(lat, lng) {
 		lng = lng - 360;
 	}
 	
-	LatLng['latDeg'] = (lat < 0 ? "S" : "N") + " " + (0 | (lat < 0 ? (lat = -lat) : lat)) + "° " + (0 | (((lat += 1e-9) % 1) * 60)) + "' " + ((0 | (((lat * 60) % 1) * 6000)) / 100) + "\"";
+	LatLng['latDeg'] = (lat < 0 ? "S" : "N") + " " + (0 | (lat < 0 ? (lat = -lat) : lat)).toString().padStart(3,"\u00A0") + "° " + (0 | (((lat += 1e-9) % 1) * 60)).toFixed(2).toString().padStart(5,"\u00A0") + "' " + ((0 | (((lat * 60) % 1) * 6000)) / 100).toFixed(2).toString().padStart(5,"\u00A0") + "\"";
 
-	LatLng['lngDeg'] = (lng < 0 ? "W" : "E") + " " + (0 | (lng < 0 ? (lng = -lng) : lng)) + "° " + (0 | (((lng += 1e-9) % 1) * 60)) + "' " + ((0 | (((lng * 60) % 1) * 6000)) / 100) + "\"";
+	LatLng['lngDeg'] = (lng < 0 ? "W" : "E") + " " + (0 | (lng < 0 ? (lng = -lng) : lng)).toString().padStart(3,"\u00A0") + "° " + (0 | (((lng += 1e-9) % 1) * 60)).toFixed(2).toString().padStart(5,"\u00A0") + "' " + ((0 | (((lng * 60) % 1) * 6000)) / 100).toFixed(2).toString().padStart(5,"\u00A0") + "\"";
 
 	return LatLng;
 }
@@ -60,8 +60,8 @@ function onMapMove(event) {
 	$('#locator').html(locator);
 	var distance = bearingDistance(homegrid, locator);
 
-	$('#bearing').html(distance.deg + ' deg');
-	$('#distance').html(Math.round(distance.km * 10) / 10 + ' km');
+	$('#bearing').html(distance.deg + ' °');
+	$('#distance').html((Math.round(distance.km * 10) / 10).toFixed(1).padStart(7,"\u00A0") + ' km');
 };
 
 const bearingDistance = (from, to) => {
@@ -98,7 +98,7 @@ var calcAngle = function (p1, p2) {
 	var x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(lng2-lng1);
 	var brng = (Math.atan2(y, x) * 180 / Math.PI + 360).toFixed(0);
 
-	return (brng % 360);
+	return (brng % 360).toString().padStart(3,"\u00A0");
 }
 
 const locatorToLatLng = (locatorString) => {

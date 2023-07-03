@@ -31,6 +31,7 @@
     align-items: stretch;
 }
 .cohidden {
+    font-family: monospace;
     display:none;
 }
 </style>
