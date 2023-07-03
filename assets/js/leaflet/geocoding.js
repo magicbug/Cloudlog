@@ -16,9 +16,9 @@ function ConvertDDToDMS(lat, lng) {
 		lng = lng - 360;
 	}
 
-	LatLng['latDeg'] = (lat < 0 ? "S" : "N") + " " + pad((0 |(lat < 0 ? (lat = -lat) : lat)),3) + "° " + pad(0 | (((lat += 1e-9) % 1) * 60),2) + "' " + ((0 | (((lat * 60) % 1) * 6000)) / 100) + "\"";
+	LatLng['latDeg'] = (lat < 0 ? "S" : "N") + " " + pad((0 |(lat < 0 ? (lat = -lat) : lat)), 2) + "° " + pad(0 | (((lat += 1e-9) % 1) * 60),2) + "' " + ((0 | (((lat * 60) % 1) * 6000)) / 100) + "\"";
 
-	LatLng['lngDeg'] = (lng < 0 ? "W" : "E") + " " + pad((0 | (lng < 0 ? (lng = -lng) : lng)), 2) + "° " + pad(0 | (((lng += 1e-9) % 1) * 60),2) + "' " + ((0 | (((lng * 60) % 1) * 6000)) / 100) + "\"";
+	LatLng['lngDeg'] = (lng < 0 ? "W" : "E") + " " + pad((0 | (lng < 0 ? (lng = -lng) : lng)), 3) + "° " + pad(0 | (((lng += 1e-9) % 1) * 60),2) + "' " + ((0 | (((lng * 60) % 1) * 6000)) / 100) + "\"";
 
 	return LatLng;
 }
