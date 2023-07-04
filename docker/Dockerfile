@@ -14,14 +14,14 @@ RUN rm -rf /var/www/html/docker/
 COPY ./ /var/www/html/
 WORKDIR /var/www/html
 RUN cd /var/www/html && ls \ 
-&& chown -R root:www-data ./application/config/ \
-&& chown -R root:www-data ./application/logs/ \
-&& chown -R root:www-data ./assets/qslcard/ \
-&& chown -R root:www-data ./backup/ \
-&& chown -R root:www-data ./updates/ \
-&& chown -R root:www-data ./uploads/ \
-&& chown -R root:www-data ./images/eqsl_card_images/ \
-&& chown -R root:www-data ./assets/json/ \
+&& chown -R root:root ./application/config/ \
+&& chown -R root:root ./application/logs/ \
+&& chown -R root:root ./assets/qslcard/ \
+&& chown -R root:root ./backup/ \
+&& chown -R root:root ./updates/ \
+&& chown -R root:root ./uploads/ \
+&& chown -R root:root ./images/eqsl_card_images/ \
+&& chown -R root:root ./assets/json/ \
 && chmod -R g+rw ./application/config/ \
 && chmod -R g+rw ./application/logs/ \
 && chmod -R g+rw ./assets/qslcard/ \
