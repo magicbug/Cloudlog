@@ -7,14 +7,13 @@ RUN touch /usr/local/etc/php/conf.d/uploads.ini \
 && echo "max_execution_time = 60" >> /usr/local/etc/php/conf.d/uploads.ini
 RUN apt-get update \
 && apt-get install -y git curl libxml2-dev libonig-dev
-RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install mysqli mbstring xml
 #RUN docker-php-ext-install curl
-RUN docker-php-ext-install mbstring
-RUN docker-php-ext-install xml
 #RUN docker-php-ext-install openssl
-WORKDIR /var/www/html
+RUN rm -rf /var/www/html/docker/
 COPY ./ /var/www/html/
-RUN ls && rm -rf /var/www/html/docker/ \ 
+WORKDIR /var/www/html
+RUN cd /var/www/html && ls \ 
 && chown -R root:www-data ./application/config/ \
 && chown -R root:www-data ./application/logs/ \
 && chown -R root:www-data ./assets/qslcard/ \
