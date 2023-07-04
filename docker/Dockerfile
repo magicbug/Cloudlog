@@ -29,4 +29,5 @@ RUN cd /var/www/html && ls \
 && chmod -R g+rw ./updates/ \
 && chmod -R g+rw ./uploads/ \
 && chmod -R g+rw ./images/eqsl_card_images/ \
-&& chmod -R g+rw ./assets/json/
+&& chmod -R g+rw ./assets/json/ \
+&& chmod 777 /var/www/html/install
