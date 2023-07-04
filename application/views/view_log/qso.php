@@ -508,65 +508,54 @@
             <p><div class="alert alert-warning" role="alert"><span class="badge badge-warning">Warning</span> Maximum file upload size is <?php echo $max_upload; ?>B.</div></p>
 
             <form class="form" id="fileinfo" name="fileinfo" enctype="multipart/form-data">
-                <fieldset>
+            <div class="row">
+                <div class="col-md">
+                        <fieldset>
 
-                    <div class="form-group">
-                        <label for="qslcardfront"><?php echo lang('qslcard_upload_front'); ?></label>
-                        <input class="form-control-file" type="file" id="qslcardfront" name="qslcardfront" accept="image/*" >
+                            <div class="form-group">
+                                <label for="qslcardfront"><?php echo lang('qslcard_upload_front'); ?></label>
+                                <input class="form-control-file" type="file" id="qslcardfront" name="qslcardfront" accept="image/*" >
+                            </div>
+
+                            <input type="hidden" class="form-control" id="qsoinputid" name="qsoid" value="<?php echo $row->COL_PRIMARY_KEY; ?>">
+                            <button type="button" onclick="uploadQsl();" id="button1id"  name="button1id" class="btn btn-primary"><?php echo lang('qslcard_upload_button'); ?></button>
+
+                </div>
+                <div class="col-md">
+                            <div class="form-group">
+                                <label for="qslcardback"><?php echo lang('qslcard_upload_back'); ?></label>
+                                <input class="form-control-file" type="file" id="qslcardback" name="qslcardback" accept="image/*">
+                            </div>
+
+                        </fieldset>
                     </div>
-
-                    <div class="form-group">
-                        <label for="qslcardback"><?php echo lang('qslcard_upload_back'); ?></label>
-                        <input class="form-control-file" type="file" id="qslcardback" name="qslcardback" accept="image/*">
-                    </div>
-
-                    <input type="hidden" class="form-control" id="qsoinputid" name="qsoid" value="<?php echo $row->COL_PRIMARY_KEY; ?>">
-
-                    <button type="button" onclick="uploadQsl();" id="button1id"  name="button1id" class="btn btn-primary"><?php echo lang('qslcard_upload_button'); ?></button>
-
-                </fieldset>
+                </div>
             </form>
+            <p>
+            <div class="row">
+                <div class="col-md">
+                        <button type="button" onclick="qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B');" id="qslrxb"  name="qslrxb" class="btn btn-sm btn-success ld-ext-right ld-ext-right-r-B"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_bureau'); ?> <div class="ld ld-ring ld-spin"></div></button>
+
+                        <button type="button" onclick="qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D');" id="qslrxd"  name="qslrxd" class="btn btn-sm btn-success ld-ext-right ld-ext-right-r-D"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_direct'); ?> <div class="ld ld-ring ld-spin"></div></button>
+
+                        <button type="button" onclick="qsl_rcvd(<?php echo $row->COL_PRIMARY_KEY; ?>, 'E');" id="qslrxe"  name="qslrxe" class="btn btn-sm btn-success ld-ext-right ld-ext-right-r-E"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_rx_electronic'); ?> <div class="ld ld-ring ld-spin"></div></button>
+                </div>
+            </div>
+            <p>
+            <div class="row">
+                <div class="col-md">
+                        <button type="button" onclick="qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B');" id="qsltxb"  name="qsltxb" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-t-B"><i class="fas fa-envelope"></i> Mark QSL Card Requested (Bureau) <div class="ld ld-ring ld-spin"></div></button>
+
+                        <button type="button" onclick="qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D');" id="qsltxd"  name="qsltxd" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-t-D"><i class="fas fa-envelope"></i> Mark QSL Card Requested (Direct) <div class="ld ld-ring ld-spin"></div></button>
+
+                        <button type="button" onclick="qsl_ignore(<?php echo $row->COL_PRIMARY_KEY; ?>, 'I');" id="qsltxi"  name="qsltxi" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-ignore"><i class="fas fa-envelope"></i> Mark QSL Card Not Required <div class="ld ld-ring ld-spin"></div></button>
+
+                </div>
+            </div>
         </div>
 
         <div class="tab-pane fade" id="qslcard" role="tabpanel" aria-labelledby="table-tab">
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    <?php
-                    $i = 0;
-                    foreach ($qslimages as $image) {
-                        echo '<li data-target="#carouselExampleIndicators" data-slide-to="' . $i . '"';
-                        if ($i == 0) {
-                            echo 'class="active"';
-                        }
-                        $i++;
-                        echo '></li>';
-                    }
-                    ?>
-                </ol>
-                <div class="carousel-inner">
-
-                    <?php
-                    $i = 1;
-                    foreach ($qslimages as $image) {
-                        echo '<center><div class="carousel-item carouselimageid_' . $image->id;
-                        if ($i == 1) {
-                            echo ' active';
-                        }
-                        echo '">';
-                        echo '<img class="img-fluid w-qsl" src="' . base_url() . '/assets/qslcard/' . $image->filename .'" alt="QSL picture #'. $i++.'">';
-                        echo '</div></center>';
-                    }
-                    ?>
-                </div>
-                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
+            <?php $this->load->view('qslcard/qslcarousel', $qslimages); ?>
         </div>
 
         <div class="tab-pane fade" id="eqslcard" role="tabpanel" aria-labelledby="table-tab">

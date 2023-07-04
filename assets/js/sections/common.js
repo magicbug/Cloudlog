@@ -1,4 +1,6 @@
 function qsl_rcvd(id, method) {
+    $(".ld-ext-right-r-"+method).addClass('running');
+    $(".ld-ext-right-r-"+method).prop('disabled', true);
     $.ajax({
         url: base_url + 'index.php/qso/qsl_rcvd_ajax',
         type: 'post',
@@ -6,6 +8,8 @@ function qsl_rcvd(id, method) {
             'method': method
         },
         success: function(data) {
+            $(".ld-ext-right-r-"+method).removeClass('running');
+            $(".ld-ext-right-r-"+method).prop('disabled', false);
             if (data.message == 'OK') {
                 $("#qsl_" + id).find("span:eq(1)").attr('class', 'qsl-green'); // Paints arrow green
                 $(".qsl_rcvd_" + id).remove(); // removes choice from menu
@@ -39,6 +43,8 @@ function qsl_sent(id, method) {
 // Function: qsl_requested
 // Marks QSL card requested against the QSO.
 function qsl_requested(id, method) {
+    $(".ld-ext-right-t-"+method).addClass('running');
+    $(".ld-ext-right-t-"+method).prop('disabled', true);
     $.ajax({
         url: base_url + 'index.php/qso/qsl_requested_ajax',
         type: 'post',
@@ -46,6 +52,8 @@ function qsl_requested(id, method) {
             'method': method
         },
         success: function(data) {
+            $(".ld-ext-right-t-"+method).removeClass('running');
+            $(".ld-ext-right-t-"+method).prop('disabled', false);
             if (data.message == 'OK') {
                 $("#qsl_" + id).find("span:eq(0)").attr('class', 'qsl-yellow'); // Paints arrow yellow
             }
@@ -59,6 +67,8 @@ function qsl_requested(id, method) {
 // Function: qsl_ignore
 // Marks QSL card ignore against the QSO.
 function qsl_ignore(id, method) {
+    $(".ld-ext-right-ignore").addClass('running');
+    $(".ld-ext-right-ignore").prop('disabled', true);
     $.ajax({
         url: base_url + 'index.php/qso/qsl_ignore_ajax',
         type: 'post',
@@ -66,6 +76,8 @@ function qsl_ignore(id, method) {
             'method': method
         },
         success: function(data) {
+            $(".ld-ext-right-ignore").removeClass('running');
+            $(".ld-ext-right-ignore").prop('disabled', false);
             if (data.message == 'OK') {
                 $("#qsl_" + id).find("span:eq(0)").attr('class', 'qsl-grey'); // Paints arrow grey
             }
@@ -358,7 +370,7 @@ function validateLocator(locator) {
 }
 
 // This displays the dialog with the form and it's where the resulttable is displayed
-function spawnLookupModal() {
+function spawnLookupModal(searchphrase, searchtype) {
 	$.ajax({
 		url: base_url + 'index.php/lookup',
 		type: 'post',
@@ -372,38 +384,22 @@ function spawnLookupModal() {
 				onshown: function(dialog) {
 					$('#quicklookuptype').change(function(){
 						var type = $('#quicklookuptype').val();
-						if (type == "dxcc") {
-							$('#quicklookupdxcc').show();
-							$('#quicklookupiota').hide();
-							$('#quicklookupcqz').hide();
-							$('#quicklookupwas').hide();
-							$('#quicklookuptext').hide();
-						} else if (type == "iota") {
-							$('#quicklookupiota').show();
-							$('#quicklookupdxcc').hide();
-							$('#quicklookupcqz').hide();
-							$('#quicklookupwas').hide();
-							$('#quicklookuptext').hide();
-						} else if (type == "vucc" || type == "sota" || type == "wwff") {
-							$('#quicklookuptext').show();
-							$('#quicklookupiota').hide();
-							$('#quicklookupdxcc').hide();
-							$('#quicklookupcqz').hide();
-							$('#quicklookupwas').hide();
-						} else if (type == "cq") {
-							$('#quicklookupcqz').show();
-							$('#quicklookupiota').hide();
-							$('#quicklookupdxcc').hide();
-							$('#quicklookupwas').hide();
-							$('#quicklookuptext').hide();
-						} else if (type == "was") {
-							$('#quicklookupwas').show();
-							$('#quicklookupcqz').hide();
-							$('#quicklookupiota').hide();
-							$('#quicklookupdxcc').hide();
-							$('#quicklookuptext').hide();
-						}
+                        changeLookupType(type);
 					});
+                    if (searchtype !== undefined) {
+                        $('#quicklookuptype').val(searchtype);
+                        if (searchtype == 'dxcc') {
+                            $("#quicklookupdxcc").val(searchphrase);
+                        } else if (searchtype == 'iota') {
+                            $("#quicklookupiota").val(searchphrase);
+                        } else if (searchtype == 'cq') {
+                            $("#quicklookupcqz").val(searchphrase);
+                        } else {
+                            $("#quicklookuptext").val(searchphrase);
+                        }
+                        changeLookupType(searchtype);
+                        getLookupResult(this.form);
+                    }
 				},
 				buttons: [{
 					label: 'Close',
@@ -414,6 +410,40 @@ function spawnLookupModal() {
 			});
 		}
 	});
+}
+
+function changeLookupType(type) {
+    if (type == "dxcc") {
+        $('#quicklookupdxcc').show();
+        $('#quicklookupiota').hide();
+        $('#quicklookupcqz').hide();
+        $('#quicklookupwas').hide();
+        $('#quicklookuptext').hide();
+    } else if (type == "iota") {
+        $('#quicklookupiota').show();
+        $('#quicklookupdxcc').hide();
+        $('#quicklookupcqz').hide();
+        $('#quicklookupwas').hide();
+        $('#quicklookuptext').hide();
+    } else if (type == "vucc" || type == "sota" || type == "wwff") {
+        $('#quicklookuptext').show();
+        $('#quicklookupiota').hide();
+        $('#quicklookupdxcc').hide();
+        $('#quicklookupcqz').hide();
+        $('#quicklookupwas').hide();
+    } else if (type == "cq") {
+        $('#quicklookupcqz').show();
+        $('#quicklookupiota').hide();
+        $('#quicklookupdxcc').hide();
+        $('#quicklookupwas').hide();
+        $('#quicklookuptext').hide();
+    } else if (type == "was") {
+        $('#quicklookupwas').show();
+        $('#quicklookupcqz').hide();
+        $('#quicklookupiota').hide();
+        $('#quicklookupdxcc').hide();
+        $('#quicklookuptext').hide();
+    }
 }
 
 // This function executes the call to the backend for fetching queryresult and displays the table in the dialog
@@ -454,6 +484,34 @@ function getDxccResult(dxcc, name) {
             $('.dxccsummary').remove();
             $('.qsopane').append('<div class="dxccsummary col-sm-12"><br><div class="card"><div class="card-header dxccsummaryheader" data-toggle="collapse" data-target=".dxccsummarybody">DXCC Summary for '+name+'</div><div class="card-body collapse dxccsummarybody"></div></div></div>');
             $('.dxccsummarybody').append(html);
+		}
+	});
+}
+
+function displayQsl(id) {
+    $.ajax({
+		url: base_url + 'index.php/qsl/viewQsl',
+		type: 'post',
+        data: {
+			id: id,
+		},
+		success: function (html) {
+			BootstrapDialog.show({
+				title: 'QSL Card',
+				size: BootstrapDialog.SIZE_WIDE,
+				cssClass: 'lookup-dialog',
+				nl2br: false,
+				message: html,
+				onshown: function(dialog) {
+
+				},
+				buttons: [{
+					label: 'Close',
+					action: function (dialogItself) {
+						dialogItself.close();
+					}
+				}]
+			});
 		}
 	});
 }

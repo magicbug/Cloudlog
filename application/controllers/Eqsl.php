@@ -501,7 +501,7 @@ class eqsl extends CI_Controller {
 
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
 			$q = $query->row();
-			$username = $q->user_eqsl_name;
+			$username = $qso->COL_STATION_CALLSIGN;
 			$password = $q->user_eqsl_password;
 
 			$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
@@ -559,7 +559,7 @@ class eqsl extends CI_Controller {
 
 		$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
 		$q = $query->row();
-		$username = $q->user_eqsl_name;
+		$username = $qso->COL_STATION_CALLSIGN;
 		$password = $q->user_eqsl_password;
 		$error = '';
 

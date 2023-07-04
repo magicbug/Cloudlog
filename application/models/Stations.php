@@ -372,14 +372,14 @@ class Stations extends CI_Model {
 		$sql="
 			SELECT station_profile.station_id, station_profile.station_profile_name, station_profile.station_callsign, notc.c notcount, totc.c totcount
 			FROM station_profile
-			INNER JOIN (
+			LEFT OUTER JOIN (
 				SELECT qsos.station_id, COUNT(qsos.COL_PRIMARY_KEY) c
 				FROM %s qsos
 				LEFT JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
 				WHERE webadif.qso_id IS NULL AND qsos.COL_SAT_NAME = 'QO-100'
 				GROUP BY qsos.station_id
 			) notc ON station_profile.station_id = notc.station_id
-			INNER JOIN (
+			LEFT JOIN (
 				SELECT qsos.station_id, COUNT(qsos.COL_PRIMARY_KEY) c
 				FROM %s qsos
 				WHERE qsos.COL_SAT_NAME = 'QO-100'

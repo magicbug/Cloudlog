@@ -40,6 +40,7 @@ function gridPlot(form) {
             sat: $("#sats").val(),
 		},
 		success: function (data) {
+            $('.cohidden').show();
             $(".ld-ext-right").removeClass('running');
             $(".ld-ext-right").prop('disabled', false);
             $('#plot').prop("disabled", false);
@@ -89,6 +90,7 @@ function gridPlot(form) {
             legend.addTo(map);
 
             var maidenhead = L.maidenhead().addTo(map);
+            map.on('mousemove', onMapMove);
 		},
 		error: function (data) {
 		},

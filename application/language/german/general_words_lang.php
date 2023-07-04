@@ -55,6 +55,7 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_edit_qso'] = 'QSO bearbeiten';
 $lang['general_mark_qsl_rx_bureau'] = 'Markiere QSL erhalten (Büro)';
 $lang['general_mark_qsl_rx_direct'] = 'Markiere QSL erhalten (Direkt)';
+$lang['general_mark_qsl_rx_electronic'] = 'Markiere QSL erhalten (Elektronisch)';
 $lang['general_mark_qsl_tx_bureau'] = 'Markiere QSL gesendet (Büro)';
 $lang['general_mark_qsl_tx_direct'] = 'Markiere QSL gesendet (Direkt)';
 
