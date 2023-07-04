@@ -13,21 +13,10 @@ RUN docker-php-ext-install mysqli mbstring xml
 RUN rm -rf /var/www/html/docker/
 COPY ./ /var/www/html/
 WORKDIR /var/www/html
-RUN cd /var/www/html && ls \ 
-&& chown -R root:root ./application/config/ \
-&& chown -R root:root ./application/logs/ \
-&& chown -R root:root ./assets/qslcard/ \
-&& chown -R root:root ./backup/ \
-&& chown -R root:root ./updates/ \
-&& chown -R root:root ./uploads/ \
-&& chown -R root:root ./images/eqsl_card_images/ \
-&& chown -R root:root ./assets/json/ \
-&& chmod -R g+rw ./application/config/ \
-&& chmod -R g+rw ./application/logs/ \
-&& chmod -R g+rw ./assets/qslcard/ \
-&& chmod -R g+rw ./backup/ \
-&& chmod -R g+rw ./updates/ \
-&& chmod -R g+rw ./uploads/ \
-&& chmod -R g+rw ./images/eqsl_card_images/ \
-&& chmod -R g+rw ./assets/json/ \
-&& chmod 777 /var/www/html/install
+RUN cd /var/www/html \
+&& echo "Setting root as owner of the folder..." \
+&& chown -R root:root /var/www/html \
+&& echo "Setting permissions to the install folder" \
+&& chmod 777 /var/www/html/install \
+&& echo "Make sure everything is fine" \
+&& dir -ls
