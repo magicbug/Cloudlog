@@ -33,6 +33,12 @@
 .cohidden {
     display:none;
 }
+#latDeg, #lngDeg {
+    width: 170px;
+}
+#locator, #distance, #bearing {
+    width: 120px;
+}
 </style>
 <div class="container">
 
@@ -100,7 +106,7 @@
 <div id="gridmapcontainer">
 	<div id="gridsquare_map" style="width: 100%; height: 800px"></div>
 </div>
-<div class="coordinates text-center d-flex">
+<div class="coordinates d-flex">
         <div class="cohidden">Latitude: </div>
         <div class="cohidden col-auto text-success font-weight-bold" id="latDeg"></div>
         <div class="cohidden">Longitude: </div>
