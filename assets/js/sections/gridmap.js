@@ -145,3 +145,7 @@ function spawnGridsquareModal(loc_4char) {
         }
     });
 }
+
+$(document).ready(function(){
+   gridPlot(this.form);
+}) 
