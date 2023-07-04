@@ -476,7 +476,7 @@
 			<div class="col-md-6">
 				<div class="card">
 					<div class="card-header">
-						<?php echo lang('account_previous_qsl_type'); ?>
+						<?php echo lang('account_qrzcom_hamqthcom_images'); ?>
 					</div>
 					<div class="card-body">
 						<div class="form-group">
