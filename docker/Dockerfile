@@ -17,6 +17,14 @@ RUN cd /var/www/html \
 && echo "Setting root as owner of the folder..." \
 && chown -R root:root /var/www/html \
 && echo "Setting permissions to the install folder" \
+&& chown -R root:root ./application/config/ \
+&& chown -R root:root ./application/logs/ \
+&& chown -R root:root ./assets/qslcard/ \
+&& chown -R root:root ./backup/ \
+&& chown -R root:root ./updates/ \
+&& chown -R root:root ./uploads/ \
+&& chown -R root:root ./images/eqsl_card_images/ \
+&& chown -R root:root ./assets/json/ \
 && chmod -R g+rw ./application/config/ \
 && chmod -R g+rw ./application/logs/ \
 && chmod -R g+rw ./assets/qslcard/ \
