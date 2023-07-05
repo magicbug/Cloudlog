@@ -71,9 +71,15 @@ class Qrz extends CI_Controller {
                     $result = $this->logbook_model->push_qso_to_qrz($qrz_api_key, $adif);
                 }
 
-                if ($result['status'] == 'OK') {
+		if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') && ($result['message'] == 'STATUS=FAIL&REASON=Unable to add QSO to database: duplicate&EXTENDED=')) ){
                     $this->markqso($qso->COL_PRIMARY_KEY);
                     $i++;
+		} elseif ( ($result['status']=='error') && (substr($result['message'],0,11)  == 'STATUS=AUTH')) {
+                    log_message('error', 'QRZ upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
+                    log_message('error', 'QRZ upload failed with the following message: ' .$result['message']);
+                    log_message('error', 'QRZ upload stopped for Station_ID: ' .$station_id);
+                    $errormessages[] = $result['message'] . ' Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
+		    break; /* If key is invalid, immediate stop syncing for more QSOs of this station */
                 } else {
                     log_message('error', 'QRZ upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
                     log_message('error', 'QRZ upload failed with the following message: ' .$result['message']);

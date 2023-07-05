@@ -15,7 +15,7 @@ class QSO
 	private string $dx;
 	private string $mode;
 	private string $submode;
-	private string $band;
+	private ?string $band;
 	private string $bandRX;
 	private string $rstR;
 	private string $rstS;
@@ -841,9 +841,9 @@ class QSO
 	{
 		$refs = [];
 		if ($this->dxVUCCGridsquares !== '') {
-			$refs[] = $this->dxVUCCGridsquares . ' ' .$this->getQrbLink($this->stationGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
+			$refs[] = '<span id="dxgrid">' . $this->dxVUCCGridsquares . '</span> ' .$this->getQrbLink($this->stationGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
 		} else if ($this->dxGridsquare !== '') {
-			$refs[] = $this->dxGridsquare . ' ' .$this->getQrbLink($this->stationGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
+			$refs[] = '<span id="dxgrid">' . $this->dxGridsquare . '</span> ' .$this->getQrbLink($this->stationGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
 		}
 		if ($this->dxSOTAReference !== '') {
 			$refs[] = "SOTA:" . $this->dxSOTAReference;
