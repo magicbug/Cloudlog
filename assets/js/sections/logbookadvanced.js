@@ -188,6 +188,7 @@ $(document).ready(function () {
 				state: this.state.value,
 				qsoresults: this.qsoResults.value,
 				sats: this.sats.value,
+				cqzone: this.cqzone.value,
 				lotwSent: this.lotwSent.value,
 				lotwReceived: this.lotwReceived.value,
 				eqslSent: this.eqslSent.value,
@@ -358,6 +359,68 @@ $(document).ready(function () {
 	$('#receivedDirect').click(function (event) {
 		handleQslReceived('Y','D', 'receivedDirect');
 	});
+
+	$('#searchGridsquare').click(function (event) {
+		quickSearch('gridsquare');
+	});
+
+	$('#searchState').click(function (event) {
+		quickSearch('state');
+	});
+
+	$('#searchIota').click(function (event) {
+		quickSearch('iota');
+	});
+
+	$('#searchDxcc').click(function (event) {
+		quickSearch('dxcc');
+	});
+
+	$('#searchCallsign').click(function (event) {
+		quickSearch('dx');
+	});
+
+	$('#searchCqZone').click(function (event) {
+		quickSearch('cqzone');
+	});
+
+	$('#searchMode').click(function (event) {
+		quickSearch('mode');
+	});
+
+	$('#searchBand').click(function (event) {
+		quickSearch('band');
+	});
+
+	function quickSearch(type) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements == 0) {
+			return;
+		}
+		if (nElements > 1) {
+			alert("Only 1 row can be selected");
+			//popup message that only 1 row can be selected
+		}
+		elements.each(function() {
+			var currentRow = $(this).first().closest('tr');
+			var col1 = ''; 
+			switch (type) {
+				case 'dxcc': col1 = currentRow.find("td:eq(16)").html(); col1 = col1.match(/\d/g); col1 = col1.join("");break;
+				case 'dx': col1 = currentRow.find("td:eq(3)").text(); col1 = col1.match(/^([^\s]+)/gm); break;
+				case 'iota': col1 = currentRow.find("td:eq(19)").text(); col1 = col1.trim(); break;
+				case 'state': col1 = currentRow.find("td:eq(17)").text(); break;
+				case 'cqzone': col1 = currentRow.find("td:eq(18)").text(); break;
+				case 'gridsquare': col1 = $(currentRow).find('#dxgrid').text(); col1 = col1.substring(0, 4); break;
+				case 'mode': col1 = currentRow.find("td:eq(4)").text(); break;
+				case 'band': col1 = currentRow.find("td:eq(7)").text(); col1 = col1.match(/\S\w*/); break;
+			}
+			if (col1.length == 0) return;
+			$('#searchForm').trigger("reset");
+			$("#"+type).val(col1);
+			$('#searchForm').submit();
+		});
+	}
 
 	$('#printLabel').click(function (event) {
 		var elements = $('#qsoList tbody input:checked');
