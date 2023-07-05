@@ -519,7 +519,6 @@ class Logbook_model extends CI_Model {
 
 			$adif = $CI->adifhelper->getAdifLine($qso[0]);
 			$result = $this->push_qso_to_qrz($result->qrzapikey, $adif);
-			log_message("error","Oink: ".$result['message']);
 			if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') && ($result['message'] == 'STATUS=FAIL&REASON=Unable to add QSO to database: duplicate&EXTENDED=')) ){
 				$this->mark_qrz_qsos_sent($last_id);
 			}
