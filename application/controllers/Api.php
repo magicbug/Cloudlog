@@ -127,6 +127,30 @@ class API extends CI_Controller {
 		}
 	}
 
+	function station_info($key) {
+		$this->load->model('api_model');
+		$this->load->model('stations');
+		header("Content-type: application/json");
+		if(substr($this->api_model->access($key),0,1) == 'r') { /* Checkpermission for  _r_eading */
+			$this->api_model->update_last_used($key);
+			$userid = $this->api_model->key_userid($key);
+ 			$station_ids = array();
+			$stations=$this->stations->all_of_user($userid);
+ 			foreach ($stations->result() as $row) {
+				$result['station_id']=$row->station_id;
+				$result['station_profile_name']=$row->station_profile_name;
+				$result['station_gridsquare']=$row->station_gridsquare;
+				$result['station_callsign']=$row->station_callsign;;
+				$result['station_active']=$row->station_active;
+ 				array_push($station_ids, $result);
+ 			}
+			echo json_encode($station_ids);
+		} else {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => "missing or invalid api key"]);
+		}
+	}
+
 	// FUNCTION: search()
 	// Handle search requests
 	/*
