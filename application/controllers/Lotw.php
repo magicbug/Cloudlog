@@ -497,7 +497,7 @@ class Lotw extends CI_Controller {
 					$record['qsl_rcvd'] = $config['lotw_rcvd_mark'];
 				}
 
-				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band']);
+				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band'],$record['station_callsign']);
 				$skipNewQso = $this->input->post('importMissing'); // If import missing was checked
 
 				if($status[0] == "No Match" && $skipNewQso != NULL) {
@@ -550,7 +550,12 @@ class Lotw extends CI_Controller {
 						$ituz = "";
 					}
 
-					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare, $iota, $cnty, $cqz, $ituz);
+					$station_id = $this->logbook_model->find_correct_station_id($record['station_callsign'], $record['my_gridsquare']);
+					if ($station_id != NULL) {
+						$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare, $iota, $cnty, $cqz, $ituz, $station_id);
+					} else {
+						$lotw_status = "No matching Grid/OP-Call (check Locations)";
+					}
 				}
 
 

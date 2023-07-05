@@ -2469,12 +2469,13 @@ class Logbook_model extends CI_Model {
     }
 
   /* Used to check if the qso is already in the database */
-  function import_check($datetime, $callsign, $band) {
+  function import_check($datetime, $callsign, $band,$station_callsign) {
 
     $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_BAND');
     $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
     $this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
     $this->db->where('COL_CALL', $callsign);
+    $this->db->where('COL_STATION_CALLSIGN', $station_callsign);
     $this->db->where('COL_BAND', $band);
 
     $query = $this->db->get($this->config->item('table_name'));
@@ -2488,7 +2489,7 @@ class Logbook_model extends CI_Model {
     }
   }
 
-  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $iota, $cnty, $cqz, $ituz) {
+  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $iota, $cnty, $cqz, $ituz, $station_id) {
 
 	$data = array(
       'COL_LOTW_QSLRDATE' => $qsl_date,
@@ -2517,6 +2518,7 @@ class Logbook_model extends CI_Model {
     $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
     $this->db->where('COL_CALL', $callsign);
     $this->db->where('COL_BAND', $band);
+    $this->db->where('station_id', $station_id);
 
     $this->db->update($this->config->item('table_name'), $data);
 	unset($data);
