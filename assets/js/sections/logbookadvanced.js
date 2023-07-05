@@ -188,6 +188,7 @@ $(document).ready(function () {
 				state: this.state.value,
 				qsoresults: this.qsoResults.value,
 				sats: this.sats.value,
+				cqzone: this.cqzone.value,
 				lotwSent: this.lotwSent.value,
 				lotwReceived: this.lotwReceived.value,
 				eqslSent: this.eqslSent.value,
@@ -358,6 +359,83 @@ $(document).ready(function () {
 	$('#receivedDirect').click(function (event) {
 		handleQslReceived('Y','D', 'receivedDirect');
 	});
+
+	$('#searchGridsquare').click(function (event) {
+		quickSearch('gridsquare');
+	});
+
+	$('#searchState').click(function (event) {
+		quickSearch('state');
+	});
+
+	$('#searchIota').click(function (event) {
+		quickSearch('iota');
+	});
+
+	$('#searchDxcc').click(function (event) {
+		quickSearch('dxcc');
+	});
+
+	$('#searchCallsign').click(function (event) {
+		quickSearch('dx');
+	});
+
+	$('#searchCqZone').click(function (event) {
+		quickSearch('cqzone');
+	});
+
+	$('#searchMode').click(function (event) {
+		quickSearch('mode');
+	});
+
+	$('#searchBand').click(function (event) {
+		quickSearch('band');
+	});
+
+	function quickSearch(type) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements == 0) {
+			return;
+		}
+		if (nElements > 1) {
+			BootstrapDialog.alert({
+				title: 'WARNING',
+				message: 'Only 1 row can be selected for Quickfilter!',
+				type: BootstrapDialog.TYPE_WARNING,
+				closable: false,
+				draggable: false,
+				callback: function (result) {
+				}
+			});
+		}
+		var offset = 0;
+
+		if (!$(".eqslconfirmation")[0]){
+			offset--;
+		}
+		if (!$(".lotwconfirmation")[0]){
+			offset--;
+		}
+		elements.each(function() {
+			var currentRow = $(this).first().closest('tr');
+			var col1 = ''; 
+			switch (type) {
+				case 'dxcc': 	var tdoffset = (offset + 16); col1 = currentRow.find("td:eq("+tdoffset+")").html(); col1 = col1.match(/\d/g); col1 = col1.join(""); break;
+				case 'cqzone': var tdoffset = (offset + 18); col1 = currentRow.find("td:eq("+tdoffset+")").text(); break;
+				case 'iota': var tdoffset = (offset + 19); col1 = currentRow.find("td:eq("+tdoffset+")").text(); col1 = col1.trim(); break;
+				case 'state': var tdoffset = (offset + 17); col1 = currentRow.find("td:eq("+tdoffset+")").text(); break;
+				case 'dx': col1 = currentRow.find("td:eq(3)").text(); col1 = col1.match(/^([^\s]+)/gm); break;
+				case 'gridsquare': col1 = $(currentRow).find('#dxgrid').text(); col1 = col1.substring(0, 4); break;
+				case 'mode': col1 = currentRow.find("td:eq(4)").text(); break;
+				case 'band': col1 = currentRow.find("td:eq(7)").text(); col1 = col1.match(/\S\w*/); break;
+			}
+			if (col1.length == 0) return;
+			$('#searchForm').trigger("reset");
+			$("#"+type).val(col1);
+			$('#searchForm').submit();
+		});
+	}
 
 	$('#printLabel').click(function (event) {
 		var elements = $('#qsoList tbody input:checked');

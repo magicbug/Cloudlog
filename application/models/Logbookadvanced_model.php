@@ -89,6 +89,11 @@ class Logbookadvanced_model extends CI_Model {
 			$binding[] = $searchCriteria['state'];
 		}
 
+		if ($searchCriteria['cqzone'] !== '') {
+			$conditions[] = "COL_CQZ = ?";
+			$binding[] = $searchCriteria['cqzone'];
+		}
+
         if ($searchCriteria['gridsquare'] !== '') {
                 $conditions[] = "(COL_GRIDSQUARE like ? or COL_VUCC_GRIDS like ?)";
                 $binding[] = '%' . $searchCriteria['gridsquare'] . '%';
