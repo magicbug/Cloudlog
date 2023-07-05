@@ -5,7 +5,7 @@ class API extends CI_Controller {
 	// Do absolutely nothing
 	function index()
 	{
-		echo "nothing to see"
+		echo "nothing to see";
 	}
 
 	function help()
