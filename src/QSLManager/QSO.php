@@ -15,7 +15,7 @@ class QSO
 	private string $dx;
 	private string $mode;
 	private string $submode;
-	private string $band;
+	private ?string $band;
 	private string $bandRX;
 	private string $rstR;
 	private string $rstS;

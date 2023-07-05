@@ -402,15 +402,23 @@ $(document).ready(function () {
 			alert("Only 1 row can be selected");
 			//popup message that only 1 row can be selected
 		}
+		var offset = 0;
+
+		if (!$(".eqslconfirmation")[0]){
+			offset--;
+		}
+		if (!$(".lotwconfirmation")[0]){
+			offset--;
+		}
 		elements.each(function() {
 			var currentRow = $(this).first().closest('tr');
 			var col1 = ''; 
 			switch (type) {
-				case 'dxcc': col1 = currentRow.find("td:eq(16)").html(); col1 = col1.match(/\d/g); col1 = col1.join("");break;
+				case 'dxcc': 	var tdoffset = (offset + 16); col1 = currentRow.find("td:eq("+tdoffset+")").html(); col1 = col1.match(/\d/g); col1 = col1.join(""); break;
+				case 'cqzone': var tdoffset = (offset + 18); col1 = currentRow.find("td:eq("+tdoffset+")").text(); break;
+				case 'iota': var tdoffset = (offset + 19); col1 = currentRow.find("td:eq("+tdoffset+")").text(); col1 = col1.trim(); break;
+				case 'state': var tdoffset = (offset + 17); col1 = currentRow.find("td:eq("+tdoffset+")").text(); break;
 				case 'dx': col1 = currentRow.find("td:eq(3)").text(); col1 = col1.match(/^([^\s]+)/gm); break;
-				case 'iota': col1 = currentRow.find("td:eq(19)").text(); col1 = col1.trim(); break;
-				case 'state': col1 = currentRow.find("td:eq(17)").text(); break;
-				case 'cqzone': col1 = currentRow.find("td:eq(18)").text(); break;
 				case 'gridsquare': col1 = $(currentRow).find('#dxgrid').text(); col1 = col1.substring(0, 4); break;
 				case 'mode': col1 = currentRow.find("td:eq(4)").text(); break;
 				case 'band': col1 = currentRow.find("td:eq(7)").text(); col1 = col1.match(/\S\w*/); break;
