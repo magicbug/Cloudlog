@@ -399,8 +399,15 @@ $(document).ready(function () {
 			return;
 		}
 		if (nElements > 1) {
-			alert("Only 1 row can be selected");
-			//popup message that only 1 row can be selected
+			BootstrapDialog.alert({
+				title: 'WARNING',
+				message: 'Only 1 row can be selected for Quickfilter!',
+				type: BootstrapDialog.TYPE_WARNING,
+				closable: false,
+				draggable: false,
+				callback: function (result) {
+				}
+			});
 		}
 		var offset = 0;
 
