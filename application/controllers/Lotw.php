@@ -497,7 +497,7 @@ class Lotw extends CI_Controller {
 					$record['qsl_rcvd'] = $config['lotw_rcvd_mark'];
 				}
 
-				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band'],$record['station_callsign']);
+				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band'], $record['mode'], $record['station_callsign']);
 				$skipNewQso = $this->input->post('importMissing'); // If import missing was checked
 
 				if($status[0] == "No Match" && $skipNewQso != NULL) {
