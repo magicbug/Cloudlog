@@ -89,3 +89,6 @@ $lang['account_forgot_your_password'] = 'Salasana unohtunut?';
 
 $lang['account_login_to_cloudlog'] = 'Kirjaudu Cloudlogiin';
 $lang['account_login'] = 'Kirjaudu';
+
+$lang['account_mastodon'] = 'Mastodonserver';
+$lang['account_user_mastodon'] = 'URL of Mastodonserver';
