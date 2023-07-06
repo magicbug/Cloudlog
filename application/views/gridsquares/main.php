@@ -15,6 +15,6 @@
 	  <?php if ($sat_active) { ?>
 	  <a class="nav-link" href="<?php echo site_url('gridsquares/satellites'); ?>">Satellites</a>
 	  <?php } ?>
-	  <a class="nav-link" href="<?php echo site_url('gridsquares/band/2m'); ?>">Band</a>
+	  <a class="nav-link" href="<?php echo site_url('gridsquares/band/All'); ?>">Band</a>
 	</nav>
 </div>
