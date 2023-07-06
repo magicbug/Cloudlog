@@ -514,6 +514,20 @@
                     </div>
                 </div>
             </div>
+	    <div class="col-md">
+		<div class="card">
+			<div class="card-header">
+				<?php echo lang('account_mastodon'); ?>
+			</div>
+			<div class="card-body">
+				<div class="form-group">
+					<label><?php echo lang('account_user_mastodon'); ?></label>
+					<input class="form-control" type="text" name="user_mastodon_url" value="<?php if(isset($user_mastodon_url)) { echo $user_mastodon_url; } ?>" />
+					<div class="small form-text text-muted">Main-URL of your Mastodonserver. f.ex. https://radiosocial.de</div></td>
+					</div>
+				</div>
+			</div>
+		</div>
         </div>
 
         <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />

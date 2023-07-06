@@ -89,3 +89,6 @@ $lang['account_forgot_your_password'] = 'Forgot your password?';
 
 $lang['account_login_to_cloudlog'] = 'Login to Cloudlog';
 $lang['account_login'] = 'Login';
+
+$lang['account_mastodon'] = 'Mastodonserver';
+$lang['account_user_mastodon'] = 'URL of Mastodonserver';
