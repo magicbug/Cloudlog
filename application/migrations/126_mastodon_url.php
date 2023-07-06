@@ -3,11 +3,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Class Migration_amsat_status_upload_option
+ * Class Migration_mastodon_url
  *
- * Creates a boolean column with option to allow for activating uploading
- * a status info to https://amsat.org/status
- */
+ * Creates a varchar column for the Mastodon-URL of the User
+*/
 
 class Migration_mastodon_url extends CI_Migration {
 
