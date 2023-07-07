@@ -521,7 +521,7 @@
 						<div class="form-group">
 						<label><?php echo lang('account_user_mastodon'); ?></label>
 							<input class="form-control" type="text" name="user_mastodon_url" value="<?php if(isset($user_mastodon_url)) { echo $user_mastodon_url; } ?>" />
-							<div class="small form-text text-muted">Main-URL of your Mastodonserver. f.ex. https://radiosocial.de</div></td>
+							<div class="small form-text text-muted">Main URL of your Mastodon server, e.g. <a href="https://radiosocial.de/" target="_blank">https://radiosocial.de</a></div></td>
 						</div>
 					</div>
 				</div>
