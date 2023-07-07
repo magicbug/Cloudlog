@@ -22,7 +22,7 @@
             <p>Here you can see and upload all QSOs which have not been previously uploaded to a HRDLog logbook.</p>
             <p>You need to set a HRDLog Logbook API Code in your station profile. Only station profiles with an API Key set are displayed.</p>
             <p>The Code can be demanded at <a href="http://www.hrdlog.net/EditUser.aspx" target="new" class="link">http://www.hrdlog.net/EditUser.aspx</a></p>
-            <p><span class="badge badge-warning">Warning</span>This might take a while as QSO uploads are processed sequentially.</p>
+            <p><span class="badge badge-warning">Warning</span> This might take a while as QSO uploads are processed sequentially.</p>
 
 <?php
             if ($station_profile->result()) {
