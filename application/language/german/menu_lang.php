@@ -75,6 +75,7 @@ $lang['menu_labels'] = 'Etiketten';
 $lang['menu_logbook_of_the_world'] = 'Logbook of the World';
 $lang['menu_eqsl_import_export'] = 'eQSL Import / Export';
 $lang['menu_qrz_logbook'] = 'QRZ Logbuch';
+$lang['menu_hrd_logbook'] = 'HRDLog Logbuch';
 $lang['menu_qo_100_dx_club_upload'] = 'QO-100 Dx Club Upload';
 $lang['menu_api_keys'] = 'API-Schlüssel';
 $lang['menu_hardware_interfaces'] = 'Hardware-Schnittstellen';

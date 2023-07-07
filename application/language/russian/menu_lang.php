@@ -75,6 +75,7 @@ $lang['menu_labels'] = 'Наклейки';
 $lang['menu_logbook_of_the_world'] = 'Logbook of the World';
 $lang['menu_eqsl_import_export'] = 'Импорт / экспорт eQSL';
 $lang['menu_qrz_logbook'] = 'QRZ Logbook';
+$lang['menu_hrd_logbook'] = 'HRDLog Logbook';
 $lang['menu_qo_100_dx_club_upload'] = 'Загрузка в QO-100 Dx Club';
 $lang['menu_api_keys'] = 'ключи API';
 $lang['menu_hardware_interfaces'] = 'Аппаратные интерфейсы';

@@ -91,9 +91,11 @@ class Stations extends CI_Model {
 			'station_cq' =>  xss_clean($this->input->post('station_cq', true)),
 			'station_itu' =>  xss_clean($this->input->post('station_itu', true)),
 			'state' =>  $state,
-            'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
-            'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
-            'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
+			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
+			'hrdlog_code' => xss_clean($this->input->post('hrdlog_code', true)),
+			'hrdlogrealtime' => xss_clean($this->input->post('hrdlogrealtime', true)),
+			'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
+			'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
 			'oqrs' => xss_clean($this->input->post('oqrs', true)),
 			'oqrs_email' => xss_clean($this->input->post('oqrsemail', true)),
 			'oqrs_text' => xss_clean($this->input->post('oqrstext', true)),
@@ -133,8 +135,10 @@ class Stations extends CI_Model {
 			'station_itu' => xss_clean($this->input->post('station_itu', true)),
 			'state' => $state,
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
-            'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
-            'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
+			'hrdlog_code' => xss_clean($this->input->post('hrdlog_code', true)),
+			'hrdlogrealtime' => xss_clean($this->input->post('hrdlogrealtime', true)),
+			'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
+			'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
 			'oqrs' => xss_clean($this->input->post('oqrs', true)),
 			'oqrs_email' => xss_clean($this->input->post('oqrsemail', true)),
 			'oqrs_text' => xss_clean($this->input->post('oqrstext', true)),
@@ -340,6 +344,35 @@ class Stations extends CI_Model {
 	    } else {
 	    	return 0;
 	    }
+    }
+
+    function stations_with_hrdlog_code() {
+       $sql = "select station_profile.station_id, station_profile.station_profile_name, station_profile.station_callsign, modc.modcount, notc.notcount, totc.totcount
+                from station_profile
+                left outer join (
+                            select count(*) modcount, station_id
+                    from ". $this->config->item('table_name') .
+                    " where COL_HRDLOG_QSO_UPLOAD_STATUS = 'M'
+                    group by station_id
+                ) as modc on station_profile.station_id = modc.station_id
+                left outer join (
+                            select count(*) notcount, station_id
+                    from " . $this->config->item('table_name') .
+                    " where (coalesce(COL_HRDLOG_QSO_UPLOAD_STATUS, '') = ''
+                    or COL_HRDLOG_QSO_UPLOAD_STATUS = 'N')
+                    group by station_id
+                ) as notc on station_profile.station_id = notc.station_id
+                left outer join (
+                    select count(*) totcount, station_id
+                    from " . $this->config->item('table_name') .
+                    " where COL_HRDLOG_QSO_UPLOAD_STATUS = 'Y'
+                    group by station_id
+                ) as totc on station_profile.station_id = totc.station_id
+                where coalesce(station_profile.hrdlog_code, '') <> ''
+				 and station_profile.user_id = " . $this->session->userdata('user_id');
+        $query = $this->db->query($sql);
+
+        return $query;
     }
 
     function stations_with_qrz_api_key() {
