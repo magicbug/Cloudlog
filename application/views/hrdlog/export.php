@@ -62,9 +62,9 @@
 
 				<form class="form" action="<?php echo site_url('hrdlog/mark_hrdlog'); ?>" method="post" enctype="multipart/form-data">
 					<select name="station_profile" class="custom-select mb-4 mr-sm-4" style="width: 30%;">
-						<option value="0">Select Station Location</option>
+						<option disabled value="0">Select Station Location</option>
 						<?php foreach ($station_profiles->result() as $station) { ?>
-							<option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
+							<option <?php if ($station->station_active) { echo "selected "; } ?>value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
 						<?php } ?>
 					</select>
 					<p><span class="badge badge-warning">Warning</span> If a date range is not selected then all QSOs will be marked!</p>
