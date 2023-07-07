@@ -55,7 +55,7 @@
 			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="dxcc">DXCC</label>
 				<select class="form-control form-control-sm" id="dxcc" name="dxcc">
-				<option value="">-</option>	
+				<option value="">-</option>
 				<option value="0">- NONE - (e.g. /MM, /AM)</option>
 					<?php
 					foreach($dxccarray as $dxcc){
@@ -156,6 +156,18 @@
 					?>
 				</select>
 			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label class="form-label" for="sota">SOTA</label>
+				<input type="text" name="sota" id="sota" class="form-control form-control-sm" value="">
+			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label class="form-label" for="wwff">WWFF</label>
+				<input type="text" name="wwff" id="wwff" class="form-control form-control-sm" value="">
+			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label class="form-label" for="pota">POTA</label>
+				<input type="text" name="pota" id="pota" class="form-control form-control-sm" value="">
+			</div>
 		</div>
 		<div class="form-row">
 		<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
@@ -224,9 +236,20 @@
 					<option value="V">Verified</option>
 				</select>
 			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label for="qslvia">QSL Via</label>
+				<datalist id="qslvia" name="qslvia">
+					<option value="">All</option>
+					<option value="B">Bureau</option>
+					<option value="D">Direct</option>
+					<option value="E">Electronic</option>
+					<option value="M">Manager</option>
+				</datalist>
+				<input type="search" list="qslvia" name="qslviainput" class="custom-select custom-select-sm">
+			</div>
 		</div>
 	</div>
-	
+
 	<div class="actionbody collapse">
 		<div class="mb-2">
 			<span class="h6">With selected :</span>
@@ -257,6 +280,9 @@
 		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchCqZone">Search CQ Zone</button>
 		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchMode">Search Mode</button>
 		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchBand">Search Band</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchSota">Search SOTA</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchWwff">Search WWFF</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchPota">Search POTA</button>
 	</div>
 	</div>
 </div>

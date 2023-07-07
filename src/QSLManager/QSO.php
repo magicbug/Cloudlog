@@ -45,6 +45,8 @@ class QSO
 	private string $dxSigInfo;
 	private string $dxDARCDOK;
 	private string $dxSOTAReference;
+	private string $dxPOTAReference;
+	private string $dxWWFFReference;
 	/** @var string[] */
 	private string $dxVUCCGridsquares;
 	private string $QSLMsg;
@@ -107,6 +109,8 @@ class QSO
 			'COL_MY_SOTA_REF',
 			'COL_MY_VUCC_GRIDS',
 			'COL_SOTA_REF',
+			'COL_POTA_REF',
+			'COL_WWFF_REF',
 			'COL_SUBMODE',
 			'COL_VUCC_GRIDS',
 			'COL_CQZ',
@@ -125,7 +129,7 @@ class QSO
 
 		$this->qsoID = $data['COL_PRIMARY_KEY'];
 
-		$CI =& get_instance(); 
+		$CI =& get_instance();
 		// Get Date format
 		if($CI->session->userdata('user_date_format')) {
 			// If Logged in and session exists
@@ -134,7 +138,7 @@ class QSO
 			// Get Default date format from /config/cloudlog.php
 			$custom_date_format = $CI->config->item('qso_date_format');
 		}
-		$this->qsoDateTime = date($custom_date_format . " H:i", strtotime($data['COL_TIME_ON'])); 
+		$this->qsoDateTime = date($custom_date_format . " H:i", strtotime($data['COL_TIME_ON']));
 
 		$this->de = $data['COL_STATION_CALLSIGN'];
 		$this->dx = $data['COL_CALL'];
@@ -171,6 +175,8 @@ class QSO
 		$this->dxDARCDOK = $data['COL_DARC_DOK'] ?? '';
 
 		$this->dxSOTAReference = $data['COL_SOTA_REF'] ?? '';
+		$this->dxPOTAReference = $data['COL_POTA_REF'] ?? '';
+		$this->dxWWFFReference = $data['COL_WWFF_REF'] ?? '';
 
 		$this->dxVUCCGridsquares = $data['COL_VUCC_GRIDS'] ?? '';
 
@@ -183,11 +189,11 @@ class QSO
 		$this->QSLSent = ($data['COL_QSL_SENT'] === null) ? '' : $data['COL_QSL_SENT'];
 		$this->QSLSentVia = ($data['COL_QSL_SENT_VIA'] === null) ? '' : $data['COL_QSL_SENT_VIA'];
 		$this->QSLVia = ($data['COL_QSL_VIA'] === null) ? '' : $data['COL_QSL_VIA'];
-		
+
 		$this->qsl = $this->getQslString($data, $custom_date_format);
 		$this->lotw = $this->getLotwString($data, $custom_date_format);
 		$this->eqsl = $this->getEqslString($data, $custom_date_format);
-		
+
 		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : '<a href="javascript:spawnLookupModal('.$data['COL_CQZ'].',\'cq\');">'.$data['COL_CQZ'].'</a>';
 		$this->state = ($data['COL_STATE'] === null) ? '' :$data['COL_STATE'];
 		$this->dxcc = ($data['name'] === null) ? '- NONE -' : '<a href="javascript:spawnLookupModal('.$data['COL_DXCC'].',\'dxcc\');">'.ucwords(strtolower($data['name']), "- (/").'</a>';
@@ -227,7 +233,7 @@ class QSO
 	 */
 	function getQSLString($data, $custom_date_format): string
 	{
-		$CI =& get_instance(); 
+		$CI =& get_instance();
 
 		$qslstring = '<span ';
 
@@ -250,11 +256,11 @@ class QSO
 				break;
 			}
 			if ($data['COL_QSLSDATE'] != null) {
-				$timestamp = strtotime($data['COL_QSLSDATE']); 
-				$qslstring .= " "  .($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
+				$timestamp = strtotime($data['COL_QSLSDATE']);
+				$qslstring .= " "  .($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 			}
-		} else { 
-			$qslstring .= "class=\"qsl-red"; 
+		} else {
+			$qslstring .= "class=\"qsl-red";
 		}
 
 		if ($data['COL_QSL_SENT_VIA'] != "") {
@@ -272,7 +278,7 @@ class QSO
 				$qslstring .= " (".$CI->lang->line('general_word_qslcard_electronic').")";
 					break;
 			}
-		} 
+		}
 
 			$qslstring .= '">&#9650;</span><span ';
 
@@ -295,10 +301,10 @@ class QSO
 					break;
 				}
 				if ($data['COL_QSLRDATE'] != null) {
-					$timestamp = strtotime($data['COL_QSLRDATE']); 
-					$qslstring .= " "  .($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
+					$timestamp = strtotime($data['COL_QSLRDATE']);
+					$qslstring .= " "  .($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 				}
-			} else { 
+			} else {
 			$qslstring .= "class=\"qsl-red"; }
 			if ($data['COL_QSL_RCVD_VIA'] != "") {
 				switch ($data['COL_QSL_RCVD_VIA']) {
@@ -315,45 +321,45 @@ class QSO
 					$qslstring .= " (".$CI->lang->line('general_word_qslcard_electronic').")";
 						break;
 				}
-			} 
+			}
 			$qslstring .= '">&#9660;</span>';
 			if ($data['qslcount'] != null) {
 				$qslstring .= ' <a href="javascript:displayQsl('.$data['COL_PRIMARY_KEY'].');"><i class="fa fa-id-card"></i></a>';
 			}
 		return $qslstring;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	function getLotwString($data, $custom_date_format): string
 	{
-		$CI =& get_instance(); 
+		$CI =& get_instance();
 
 		$lotwstring = '<span ';
 
-		if ($data['COL_LOTW_QSL_SENT'] == "Y") { 
-			$lotwstring .= "data-original-title=\"" . $CI->lang->line('lotw_short')." ".$CI->lang->line('general_word_sent'); 
-			if ($data['COL_LOTW_QSLSDATE'] != null) { 
-				$timestamp = strtotime($data['COL_LOTW_QSLSDATE']); 
-				$lotwstring .= " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
-			} 
-			$lotwstring .= "\" data-toggle=\"tooltip\""; 
-		} 
+		if ($data['COL_LOTW_QSL_SENT'] == "Y") {
+			$lotwstring .= "data-original-title=\"" . $CI->lang->line('lotw_short')." ".$CI->lang->line('general_word_sent');
+			if ($data['COL_LOTW_QSLSDATE'] != null) {
+				$timestamp = strtotime($data['COL_LOTW_QSLSDATE']);
+				$lotwstring .= " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : '');
+			}
+			$lotwstring .= "\" data-toggle=\"tooltip\"";
+		}
 
 		$lotwstring .= ' class="lotw-' . (($data['COL_LOTW_QSL_SENT']=='Y') ? 'green' : 'red') . '">&#9650;</span>';
 		$lotwstring .= '<span ';
 
-		if ($data['COL_LOTW_QSL_RCVD'] == "Y") { 
-			$lotwstring .= "data-original-title=\"". $CI->lang->line('lotw_short') ." ". $CI->lang->line('general_word_received'); 
-		
-			if ($data['COL_LOTW_QSLRDATE'] != null) { 
-				$timestamp = strtotime($data['COL_LOTW_QSLRDATE']); 
-				$lotwstring .=  " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
-			} 
-			
-			$lotwstring .= "\" data-toggle=\"tooltip\""; 
-		} 
+		if ($data['COL_LOTW_QSL_RCVD'] == "Y") {
+			$lotwstring .= "data-original-title=\"". $CI->lang->line('lotw_short') ." ". $CI->lang->line('general_word_received');
+
+			if ($data['COL_LOTW_QSLRDATE'] != null) {
+				$timestamp = strtotime($data['COL_LOTW_QSLRDATE']);
+				$lotwstring .=  " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : '');
+			}
+
+			$lotwstring .= "\" data-toggle=\"tooltip\"";
+		}
 
 		$lotwstring .= ' class="lotw-' . (($data['COL_LOTW_QSL_RCVD']=='Y') ? 'green':'red') . '">&#9660;</span>';
 
@@ -365,32 +371,32 @@ class QSO
 	 */
 	function getEqslString($data, $custom_date_format): string
 	{
-		$CI =& get_instance(); 
+		$CI =& get_instance();
 
 		$eqslstring = '<span ';
 
-		if ($data['COL_EQSL_QSL_SENT'] == "Y") { 
-			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_sent'); 
-			
-			if ($data['COL_EQSL_QSLSDATE'] != null) { 
-				$timestamp = strtotime($data['COL_EQSL_QSLSDATE']); 
-				$eqslstring .=  " ".($timestamp!=''?date($custom_date_format, $timestamp):''); 
-			} 
-			
-			$eqslstring .= "\" data-toggle=\"tooltip\""; 
-		} 
-		
+		if ($data['COL_EQSL_QSL_SENT'] == "Y") {
+			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_sent');
+
+			if ($data['COL_EQSL_QSLSDATE'] != null) {
+				$timestamp = strtotime($data['COL_EQSL_QSLSDATE']);
+				$eqslstring .=  " ".($timestamp!=''?date($custom_date_format, $timestamp):'');
+			}
+
+			$eqslstring .= "\" data-toggle=\"tooltip\"";
+		}
+
 		$eqslstring .= ' class="eqsl-' . (($data['COL_EQSL_QSL_SENT'] =='Y') ? 'green':'red') . '">&#9650;</span><span ';
 
-		if ($data['COL_EQSL_QSL_RCVD'] == "Y") { 
-			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_received'); 
-			
-			if ($data['COL_EQSL_QSLRDATE'] != null) { 
-				$timestamp = strtotime($data['COL_EQSL_QSLRDATE']); 
-				$eqslstring .= " ".($timestamp!=''?date($custom_date_format, $timestamp):''); 
-			} 
-			$eqslstring .= "\" data-toggle=\"tooltip\""; 
-		} 
+		if ($data['COL_EQSL_QSL_RCVD'] == "Y") {
+			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_received');
+
+			if ($data['COL_EQSL_QSLRDATE'] != null) {
+				$timestamp = strtotime($data['COL_EQSL_QSLRDATE']);
+				$eqslstring .= " ".($timestamp!=''?date($custom_date_format, $timestamp):'');
+			}
+			$eqslstring .= "\" data-toggle=\"tooltip\"";
+		}
 
 		$eqslstring .= ' class="eqsl-' . (($data['COL_EQSL_QSL_RCVD'] =='Y')?'green':'red') . '">';
 
@@ -638,6 +644,22 @@ class QSO
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getDxPOTAReference(): string
+	{
+		return $this->dxPOTAReference;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getWWFFReference(): string
+	{
+		return $this->dxWWFFReference;
+	}
+
+	/**
 	 * @return string[]
 	 */
 	public function getDxVUCCGridsquares(): string
@@ -846,7 +868,13 @@ class QSO
 			$refs[] = '<span id="dxgrid">' . $this->dxGridsquare . '</span> ' .$this->getQrbLink($this->stationGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
 		}
 		if ($this->dxSOTAReference !== '') {
-			$refs[] = "SOTA:" . $this->dxSOTAReference;
+			$refs[] = "SOTA: " . '<span id="dxsota">' . $this->dxSOTAReference. '</span>';
+		}
+		if ($this->dxPOTAReference !== '') {
+			$refs[] = "POTA: " . '<span id="dxpota">' . $this->dxPOTAReference. '</span>';
+		}
+		if ($this->dxWWFFReference !== '') {
+			$refs[] = "WWFF: " . '<span id="dxwwff">' . $this->dxWWFFReference. '</span>';
 		}
 		if ($this->dxSig !== '') {
 			$refs[] = $this->dxSig . ":" . $this->dxSigInfo;

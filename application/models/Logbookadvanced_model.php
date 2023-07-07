@@ -94,6 +94,26 @@ class Logbookadvanced_model extends CI_Model {
 			$binding[] = $searchCriteria['cqzone'];
 		}
 
+		if ($searchCriteria['qslvia'] !== '') {
+			$conditions[] = "COL_QSL_VIA like ?";
+			$binding[] = $searchCriteria['qslvia'].'%';
+		}
+
+		if ($searchCriteria['sota'] !== '') {
+			$conditions[] = "COL_SOTA_REF like ?";
+			$binding[] = $searchCriteria['sota'].'%';
+		}
+
+		if ($searchCriteria['pota'] !== '') {
+			$conditions[] = "COL_POTA_REF like ?";
+			$binding[] = $searchCriteria['pota'].'%';
+		}
+
+		if ($searchCriteria['wwff'] !== '') {
+			$conditions[] = "COL_WWFF_REF like ?";
+			$binding[] = $searchCriteria['wwff'].'%';
+		}
+
         if ($searchCriteria['gridsquare'] !== '') {
                 $conditions[] = "(COL_GRIDSQUARE like ? or COL_VUCC_GRIDS like ?)";
                 $binding[] = '%' . $searchCriteria['gridsquare'] . '%';
@@ -138,12 +158,12 @@ class Logbookadvanced_model extends CI_Model {
 		$data = $this->db->query($sql, $binding);
 
         $results = $data->result('array');
-        
+
         $qsos = [];
         foreach ($results as $data) {
             $qsos[] = new QSO($data);
         }
-		
+
 	    return $qsos;
 	}
 
@@ -245,7 +265,7 @@ class Logbookadvanced_model extends CI_Model {
             );
             $this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
             $this->db->update($this->config->item('table_name'), $data);
-            
+
             return array('message' => 'OK');
         }
     }
@@ -263,7 +283,7 @@ class Logbookadvanced_model extends CI_Model {
             );
             $this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
             $this->db->update($this->config->item('table_name'), $data);
-            
+
             return array('message' => 'OK');
         }
     }
@@ -315,19 +335,19 @@ class Logbookadvanced_model extends CI_Model {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-	
+
 		if (!$logbooks_locations_array) {
 			return null;
 		}
 
 		$modes = array();
-	
+
 		$this->db->select('distinct col_mode, coalesce(col_submode, "") col_submode', FALSE);
 		$this->db->where_in('station_id', $logbooks_locations_array);
 		$this->db->order_by('col_mode, col_submode', 'ASC');
 
 		$query = $this->db->get($this->config->item('table_name'));
-	
+
 		foreach($query->result() as $mode){
 			if ($mode->col_submode == null || $mode->col_submode == "") {
 				array_push($modes, $mode->col_mode);
