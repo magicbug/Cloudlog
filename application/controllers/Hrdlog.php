@@ -6,11 +6,6 @@
 
 class Hrdlog extends CI_Controller {
 
-    // Show frontend if there is one
-    public function index() {
-        $this->config->load('config');
-    }
-
     /*
      * Upload QSO to hrdlog.net
      * When called from the url cloudlog/hrdlog/upload, the function loops through all station_id's with a hrdlog code defined.
