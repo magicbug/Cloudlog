@@ -539,7 +539,7 @@
 							<label for="user_gridmap_default_band"><?php echo lang('account_gridmap_default_band'); ?></label>
 
 							<select id="user_gridmap_default_band" class="form-control form-control-sm" name="user_gridmap_default_band">
-								<option value="">All</option>;
+								<option value="All">All</option>;
 							<?php foreach($bands as $band) {
 								echo '<option value="'.$band.'"';
 								if ($user_gridmap_default_band == $band) {

@@ -25,6 +25,11 @@ class Migration_user_default_map_settings extends CI_Migration {
                         );
                         $this->dbforge->add_column('users', $fields);
                 }
+                $data = array(
+                   'user_gridmap_default_band' => 'All',
+                   'user_gridmap_confirmation' => 'QL',
+                );
+                $this->db->update('users', $data);
         }
 
         public function down()
