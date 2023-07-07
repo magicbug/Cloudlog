@@ -553,7 +553,7 @@
 							<label class="my-1 mr-2"><?php echo lang('gridsquares_confirmation'); ?></label>
 							<div class="form-check-inline">
 								<?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_qsl" id="user_gridmap_confirmation_qsl"';
-								if (strpos($user_gridmap_confirmation, 'Q') !== false) {
+								if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) {
 									echo ' checked';
 								}
 								echo '>'; ?>
@@ -561,7 +561,7 @@
 							</div>
 							<div class="form-check-inline">
 								<?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_lotw" id="user_gridmap_confirmation_lotw"';
-								if (strpos($user_gridmap_confirmation, 'L') !== false) {
+								if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
 									echo ' checked';
 								}
 								echo '>'; ?>
@@ -569,7 +569,7 @@
 							</div>
 							<div class="form-check-inline">
 								<?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_eqsl" id="user_gridmap_confirmation_eqsl"';
-								if (strpos($user_gridmap_confirmation, 'E') !== false) {
+								if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
 									echo ' checked';
 								}
 								echo '>'; ?>

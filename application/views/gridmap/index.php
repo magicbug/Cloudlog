@@ -84,7 +84,7 @@
                 <div>
                     <div class="form-check-inline">
                     <?php echo '<input class="form-check-input" type="checkbox" name="qsl" id="qsl"';
-                        if (strpos($user_gridmap_confirmation, 'Q') !== false) {
+                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) {
                             echo ' checked' ;
                         }
                         echo '>'; ?>
@@ -92,7 +92,7 @@
                     </div>
                     <div class="form-check-inline">
                     <?php echo '<input class="form-check-input" type="checkbox" name="lotw" id="lotw"';
-                        if (strpos($user_gridmap_confirmation, 'L') !== false) {
+                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
                             echo ' checked' ;
                         }
                         echo '>'; ?>
@@ -100,7 +100,7 @@
                     </div>
                     <div class="form-check-inline">
                     <?php echo '<input class="form-check-input" type="checkbox" name="eqsl" id="eqsl"';
-                        if (strpos($user_gridmap_confirmation, 'E') !== false) {
+                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
                             echo ' checked' ;
                         }
                         echo '>'; ?>
