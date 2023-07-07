@@ -73,7 +73,7 @@ function loadQSOTable(rows) {
 	var table = $('#qsoList').DataTable();
 
 	table.clear();
-	
+
 	for (i = 0; i < rows.length; i++) {
 		let qso = rows[i];
 
@@ -102,7 +102,7 @@ function loadQSOTable(rows) {
 		data.push(qso.state);
 		data.push(qso.cqzone);
 		data.push(qso.iota);
-		
+
 		let createdRow = table.row.add(data).index();
 		table.rows(createdRow).nodes().to$().data('qsoID', qso.qsoID);
 		table.row(createdRow).node().id = 'qsoID-' + qso.qsoID;
@@ -193,6 +193,10 @@ $(document).ready(function () {
 				lotwReceived: this.lotwReceived.value,
 				eqslSent: this.eqslSent.value,
 				eqslReceived: this.eqslReceived.value,
+				qslvia: $('[name="qslviainput"]').val(),
+				sota: this.sota.value,
+				pota: this.pota.value,
+				wwff: this.wwff.value,
 			},
 			dataType: 'json',
 			success: function (data) {
@@ -392,6 +396,18 @@ $(document).ready(function () {
 		quickSearch('band');
 	});
 
+	$('#searchSota').click(function (event) {
+		quickSearch('sota');
+	});
+
+	$('#searchWwff').click(function (event) {
+		quickSearch('wwff');
+	});
+
+	$('#searchPota').click(function (event) {
+		quickSearch('pota');
+	});
+
 	function quickSearch(type) {
 		var elements = $('#qsoList tbody input:checked');
 		var nElements = elements.length;
@@ -419,7 +435,7 @@ $(document).ready(function () {
 		}
 		elements.each(function() {
 			var currentRow = $(this).first().closest('tr');
-			var col1 = ''; 
+			var col1 = '';
 			switch (type) {
 				case 'dxcc': 	var tdoffset = (offset + 16); col1 = currentRow.find("td:eq("+tdoffset+")").html(); col1 = col1.match(/\d/g); col1 = col1.join(""); break;
 				case 'cqzone': var tdoffset = (offset + 18); col1 = currentRow.find("td:eq("+tdoffset+")").text(); break;
@@ -427,6 +443,9 @@ $(document).ready(function () {
 				case 'state': var tdoffset = (offset + 17); col1 = currentRow.find("td:eq("+tdoffset+")").text(); break;
 				case 'dx': col1 = currentRow.find("td:eq(3)").text(); col1 = col1.match(/^([^\s]+)/gm); break;
 				case 'gridsquare': col1 = $(currentRow).find('#dxgrid').text(); col1 = col1.substring(0, 4); break;
+				case 'sota': col1 = $(currentRow).find('#dxsota').text(); break;
+				case 'wwff': col1 = $(currentRow).find('#dxwwff').text(); break;
+				case 'pota': col1 = $(currentRow).find('#dxpota').text(); break;
 				case 'mode': col1 = currentRow.find("td:eq(4)").text(); break;
 				case 'band': col1 = currentRow.find("td:eq(7)").text(); col1 = col1.match(/\S\w*/); break;
 			}
@@ -462,10 +481,10 @@ $(document).ready(function () {
 				return xhr;
 			},
 			success: function(data) {
-				if(data){ 
+				if(data){
 					var file = new Blob([data], {type: 'application/pdf'});
 					var fileURL = URL.createObjectURL(file);
-					window.open(fileURL);   
+					window.open(fileURL);
 				}
 				$.each(id_list, function(k, v) {
 					unselectQsoID(this);

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Cloudlog\QSLManager\QSO;
 
@@ -47,10 +47,10 @@ class Logbookadvanced extends CI_Controller {
 		$pageData['dxccarray'] = $this->logbook_model->fetchDxcc();
 		$pageData['iotaarray'] = $this->logbook_model->fetchIota();
 		$pageData['sats'] = $this->bands->get_worked_sats();
-		
+
 		$pageData['bands'] = $this->bands->get_worked_bands();
 
-		$CI =& get_instance(); 
+		$CI =& get_instance();
 		// Get Date format
 		if($CI->session->userdata('user_date_format')) {
 			// If Logged in and session exists
@@ -111,6 +111,10 @@ class Logbookadvanced extends CI_Controller {
 			'lotwReceived' => xss_clean($this->input->post('lotwReceived')),
 			'eqslSent' => xss_clean($this->input->post('eqslSent')),
 			'eqslReceived' => xss_clean($this->input->post('eqslReceived')),
+			'qslvia' => xss_clean($this->input->post('qslvia')),
+			'sota' => xss_clean($this->input->post('sota')),
+			'pota' => xss_clean($this->input->post('pota')),
+			'wwff' => xss_clean($this->input->post('wwff')),
 		);
 
 		$qsos = [];
@@ -175,7 +179,7 @@ class Logbookadvanced extends CI_Controller {
 		$data = $this->logbookadvanced_model->getQsosForAdif($ids, $user_id);
 
 		$results = $data->result('array');
-        
+
         $qsos = [];
         foreach ($results as $data) {
             $qsos[] = new QSO($data);
@@ -203,7 +207,7 @@ class Logbookadvanced extends CI_Controller {
 		$data = $this->logbookadvanced_model->getQsosForAdif($ids, $user_id);
 
 		$results = $data->result('array');
-        
+
         $qsos = [];
         foreach ($results as $data) {
             $qsos[] = new QSO($data);
