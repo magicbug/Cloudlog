@@ -523,11 +523,64 @@
 				<div class="form-group">
 					<label><?php echo lang('account_user_mastodon'); ?></label>
 					<input class="form-control" type="text" name="user_mastodon_url" value="<?php if(isset($user_mastodon_url)) { echo $user_mastodon_url; } ?>" />
-					<div class="small form-text text-muted">Main-URL of your Mastodonserver. f.ex. https://radiosocial.de</div></td>
+					<div class="small form-text text-muted">Main URL of your Mastodonserver. e.g. https://radiosocial.de</div></td>
 					</div>
 				</div>
 			</div>
 		</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md">
+                <div class="card">
+                    <div class="card-header">
+                    <?php echo lang('account_gridmap_settings'); ?>
+                    </div>
+                    <div class="card-body">
+                            <div class="form-group">
+                                <label for="user_gridmap_default_band"><?php echo lang('account_gridmap_default_band'); ?></label>
+
+                                <select id="user_gridmap_default_band" class="form-control form-control-sm" name="user_gridmap_default_band">
+                                    <option value=""></option>;
+                                    <?php foreach($bands as $band) {
+                                        echo '<option value="'.$band.'"';
+                                        if (isset($user_gridmap_default_band) && $user_gridmap_default_band == $band) {
+                                           echo ' selected';
+                                        }
+                                        echo '>'.$band.'</option>'."\n";
+                                    } ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="my-1 mr-2"><?php echo lang('gridsquares_confirmation'); ?></label>
+                                <div class="form-check-inline">
+                                    <?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_qsl" id="user_gridmap_confirmation_qsl"';
+                                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) {
+                                           echo ' checked';
+                                        }
+                                        echo '>'; ?>
+                                    <label class="form-check-label" for="user_gridmap_confirmation_qsl">QSL</label>
+                                </div>
+                                <div class="form-check-inline">
+                                    <?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_lotw" id="user_gridmap_confirmation_lotw"';
+                                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+                                           echo ' checked';
+                                        }
+                                        echo '>'; ?>
+                                    <label class="form-check-label" for="user_gridmap_confirmation_lotw">LoTW</label>
+                                </div>
+                                <div class="form-check-inline">
+                                    <?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_eqsl" id="user_gridmap_confirmation_eqsl"';
+                                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+                                           echo ' checked';
+                                        }
+                                        echo '>'; ?>
+                                    <label class="form-check-label" for="user_gridmap_confirmation_eqsl">eQSL</label>
+                                </div>
+                             </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />

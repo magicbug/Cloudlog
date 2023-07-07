@@ -92,3 +92,6 @@ $lang['account_login'] = 'Login';
 
 $lang['account_mastodon'] = 'Mastodonserver';
 $lang['account_user_mastodon'] = 'URL of Mastodonserver';
+
+$lang['account_gridmap_settings'] = 'Settings for Gridsquare Map';
+$lang['account_gridmap_default_band'] = 'Default Band';
