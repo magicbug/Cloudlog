@@ -73,6 +73,7 @@ $lang['menu_print_requested_qsls'] = 'Tulosta pyydetyt QSL:t';
 $lang['menu_logbook_of_the_world'] = 'Logbook of the World';
 $lang['menu_eqsl_import_export'] = 'eQSL Tuonti / Vienti';
 $lang['menu_qrz_logbook'] = 'QRZ Logi';
+$lang['menu_hrd_logbook'] = 'HRDLog Logi';
 $lang['menu_qo_100_dx_club_upload'] = 'QO-100 Dx Club Lähetys';
 $lang['menu_api_keys'] = 'API Keys';
 $lang['menu_hardware_interfaces'] = 'Hardware Interfaces';

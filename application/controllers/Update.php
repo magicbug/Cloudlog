@@ -189,7 +189,7 @@ class Update extends CI_Controller {
 		gzclose($gz);
 
 		if (file_put_contents($this->make_update_path("cty.xml"), $data) === FALSE) {
-			$this->update_status("FAILED: Could not write to LoTW users file");
+			$this->update_status("FAILED: Could not write to cty.xml file");
 			return;
 		}
 	

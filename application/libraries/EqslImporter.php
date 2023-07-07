@@ -36,8 +36,9 @@ class EqslImporter
 		$this->qth_nickname = $qth;
 	}
 
-	public function from_file($adif_file) {
+	public function from_file($adif_file,$station_callsign) {
 		$this->init('ADIF upload', $adif_file);
+		$this->callsign=$station_callsign;
 	}
 
 	// generate a sanitized file name from a callsign and a QTH nickname
@@ -136,6 +137,7 @@ class EqslImporter
 		$query = $this->CI->db->query('SELECT eqsl_rcvd_mark FROM config');
 		$q = $query->row();
 		$config['eqsl_rcvd_mark'] = $q->eqsl_rcvd_mark;
+		$station_callsign=$this->callsign;
 
 		$this->CI->adif_parser->load_from_file($this->adif_file);
 		$this->CI->adif_parser->initialize();
@@ -154,14 +156,14 @@ class EqslImporter
 				$record['qsl_sent'] = $config['eqsl_rcvd_mark'];
 			}
 
-			$status = $this->CI->logbook_model->import_check($time_on, $record['call'], $record['band']);
+			$status = $this->CI->logbook_model->import_check($time_on, $record['call'], $record['band'], $record['mode'],$station_callsign);
 			$qsoid = 0;
 			if ($status[0] == "Found") {
 				$qsoid = $status[1];
-				$dupe = $this->CI->eqslmethods_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
+				$dupe = $this->CI->eqslmethods_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $record['mode'],$config['eqsl_rcvd_mark'],$station_callsign);
 				if ($dupe == false) {
 					$updated += 1;
-					$eqsl_status = $this->CI->eqslmethods_model->eqsl_update($time_on, $record['call'], $record['band'], $config['eqsl_rcvd_mark']);
+					$eqsl_status = $this->CI->eqslmethods_model->eqsl_update($time_on, $record['call'], $record['band'], $record['mode'], $config['eqsl_rcvd_mark'],$station_callsign);
 				} else {
 					$dupes += 1;
 					$eqsl_status = "Already received an eQSL for this QSO.";

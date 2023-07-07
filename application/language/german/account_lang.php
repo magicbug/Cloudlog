@@ -32,7 +32,7 @@ $lang['account_gridsquare'] = 'Planquadrat';
 $lang['account_cloudlog_preferences'] = 'Cloudlog Einstellungen';
 $lang['account_timezone'] = 'Zeitzone';
 $lang['account_date_format'] = 'Datumsformat';
-$lang['account_measurement_preference'] = 'Entfernungsformat';
+$lang['account_measurement_preferences'] = 'Entfernungsformat';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Wähle, wie Datumsfelder angezeigt werden sollen, wenn du eingeloggt bist.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Wähle, in welcher Einheit Entfernungen angezeigt werden sollen.';
 
@@ -68,8 +68,8 @@ $lang['account_clublog_password'] = 'Club Log Passwort';
 $lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Die Emailadresse oder Rufzeichen, das für den Club Log Login verwendet wird';
 
 $lang['account_eqsl'] = 'eQSL';
-$lang['account_eqsl_username'] = 'eQSL.cc Benutzername';
-$lang['account_eqsl_password'] = 'eQSL.cc Passwort';
+$lang['account_eqslcc_username'] = 'eQSL.cc Benutzername';
+$lang['account_eqslcc_password'] = 'eQSL.cc Passwort';
 
 $lang['account_save_account_changes'] = 'Speichere Kontoänderungen';
 $lang['account_create_account'] = 'Konto anlegen';
@@ -89,3 +89,6 @@ $lang['account_forgot_your_password'] = 'Passwort vergessen?';
 
 $lang['account_login_to_cloudlog'] = 'Anmeldung bei Cloudlog';
 $lang['account_login'] = 'Anmeldung';
+
+$lang['account_mastodon'] = 'Mastodonserver';
+$lang['account_user_mastodon'] = 'URL des Mastodonservers';

@@ -5,38 +5,7 @@ class API extends CI_Controller {
 	// Do absolutely nothing
 	function index()
 	{
-	}
-
-	/*
-		TODOs
-		- Search Callsign (Return Json)
-		- Add QSO return json
-	*/
-
-
-	function search_callsign($callsign) {
-		$this->db->select('COL_PRIMARY_KEY, COL_CALL, COL_MODE, COL_SUBMODE, COL_BAND, COL_COUNTRY, COL_FREQ, COL_GRIDSQUARE, COL_RST_RCVD, COL_RST_SENT, COL_SAT_MODE, COL_SAT_NAME');
-		//$this->db->select("DATE_FORMAT(COL_TIME_ON, '%H:%i') AS time_on", FALSE );
-		//$this->db->select("DATE_FORMAT(COL_TIME_ON, '%d/%c/%Y') AS date_on", FALSE );
-		$this->db->like('COL_CALL', $callsign);
-		$this->db->or_like('COL_GRIDSQUARE', $callsign);
-		$query = $this->db->get($this->config->item('table_name'));
-
-
-		$results = array();
-
-		foreach ($query->result() as $result)
-		{
-			$results[] = $result;
-		}
-
-		header('Content-type: application/json');
-
-		//$arr = array ('a'=>1,'b'=>2,'c'=>3,'d'=>4,'e'=>5);
-		echo $_GET['jsoncallback'].'('.json_encode($results).')'; //assign resulting code to $_GET['jsoncallback].
-
-		//echo json_encode($results);
-
+		echo "nothing to see";
 	}
 
 	function help()
@@ -155,6 +124,30 @@ class API extends CI_Controller {
 			echo "<status>Valid</status>";
 			echo "<rights>".$this->api_model->access($key)."</rights>";
 			echo "</auth>";
+		}
+	}
+
+	function station_info($key) {
+		$this->load->model('api_model');
+		$this->load->model('stations');
+		header("Content-type: application/json");
+		if(substr($this->api_model->access($key),0,1) == 'r') { /* Checkpermission for  _r_eading */
+			$this->api_model->update_last_used($key);
+			$userid = $this->api_model->key_userid($key);
+ 			$station_ids = array();
+			$stations=$this->stations->all_of_user($userid);
+ 			foreach ($stations->result() as $row) {
+				$result['station_id']=$row->station_id;
+				$result['station_profile_name']=$row->station_profile_name;
+				$result['station_gridsquare']=$row->station_gridsquare;
+				$result['station_callsign']=$row->station_callsign;;
+				$result['station_active']=$row->station_active;
+ 				array_push($station_ids, $result);
+ 			}
+			echo json_encode($station_ids);
+		} else {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => "missing or invalid api key"]);
 		}
 	}
 
@@ -468,9 +461,9 @@ class API extends CI_Controller {
 
 
 				if(isset($obj['station_profile_id'])) {
-					$this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL, false, false, true);
+					$this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL, NULL, false, false, true);
 				} else {
-					$this->logbook_model->import($record, 0, NULL, NULL, NULL, NULL, false, false, true);
+					$this->logbook_model->import($record, 0, NULL, NULL, NULL, NULL, NULL, false, false, true);
 				}
 
 			};

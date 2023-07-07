@@ -407,6 +407,7 @@
                     ?>
 
                     <div style="display: inline-block;"><a class="btn btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a></div>
+                    <?php if($this->session->userdata('user_mastodon_url') != null) { echo '<div style="display: inline-block;"><a class="btn btn-primary twitter-share-button" target="_blank" href="'.$this->session->userdata('user_mastodon_url').'/share?text='.$twitter_string.'"><i class="fab fa-mastodon"></i> Toot</a></div>'; } ?>
 
                 </div>
             </div>
@@ -560,7 +561,9 @@
 
         <div class="tab-pane fade" id="eqslcard" role="tabpanel" aria-labelledby="table-tab">
         <?php
-           echo '<img class="d-block" src="' . base_url() . '/images/eqsl_card_images/' . $row->eqsl_image_file .'" alt="QSL picture #'. $i++.'">';
+	if ($row->eqsl_image_file != null) {
+		echo '<img class="d-block" src="' . base_url() . '/images/eqsl_card_images/' . $row->eqsl_image_file .'" alt="QSL picture #'. $i++.'">';
+	}
         ?>
         </div>
         <?php

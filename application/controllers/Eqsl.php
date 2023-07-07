@@ -15,6 +15,7 @@ class eqsl extends CI_Controller {
         $folder_name = "images/eqsl_card_images";
         $data['storage_used'] = $this->sizeFormat($this->folderSize($folder_name));
 
+
         // Render Page
         $data['page_title'] = "eQSL Cards";
 
@@ -28,6 +29,12 @@ class eqsl extends CI_Controller {
 	public function import() {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		$this->load->model('stations');
+		$data['station_profile'] = $this->stations->all_of_user();
+        	$active_station_id = $this->stations->find_active();
+        	$station_profile = $this->stations->profile($active_station_id);
+		$data['active_station_info'] = $station_profile->row();
 
 		// Check if eQSL Nicknames have been defined
 		$this->load->model('eqslmethods_model');
@@ -71,29 +78,39 @@ class eqsl extends CI_Controller {
 
 				$eqsl_results[] = $this->eqslimporter->fetch($eqsl_password);
 			}
-		}
-		else
-		{
-			if ( ! $this->upload->do_upload())
-			{
-				$data['page_title'] = "eQSL Import";
-				$data['error'] = $this->upload->display_errors();
+		} elseif ($this->input->post('eqslimport') == 'upload') {
+			$station_id4upload=$this->input->post('station_profile');
+			if ($this->stations->check_station_is_accessible($station_id4upload)) {
+				$station_callsign=$this->stations->profile($station_id4upload)->row()->station_callsign;
+				if ( ! $this->upload->do_upload())
+				{
+					$data['page_title'] = "eQSL Import";
+					$data['error'] = $this->upload->display_errors();
 
-				$this->load->view('interface_assets/header', $data);
-				$this->load->view('eqsl/import');
-				$this->load->view('interface_assets/footer');
+					$this->load->view('interface_assets/header', $data);
+					$this->load->view('eqsl/import');
+					$this->load->view('interface_assets/footer');
 
-				return;
+					return;
+				} else {
+					$data = array('upload_data' => $this->upload->data());
+
+					$this->load->library('EqslImporter');
+					$this->eqslimporter->from_file('./uploads/'.$data['upload_data']['file_name'],$station_callsign);
+
+					$eqsl_results[] = $this->eqslimporter->import();
+				}
+			} else {
+				log_message('error',$station_id4upload." is not valid for user!");
 			}
-			else
-			{
-				$data = array('upload_data' => $this->upload->data());
+		} else {
+			$data['page_title'] = "eQSL Import";
 
-				$this->load->library('EqslImporter');
-				$this->eqslimporter->from_file('./uploads/'.$data['upload_data']['file_name']);
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('eqsl/import');
+			$this->load->view('interface_assets/footer');
 
-				$eqsl_results[] = $this->eqslimporter->import();
-			}
+			return;
 		}
 
 		$data['eqsl_results'] = $eqsl_results;
