@@ -252,6 +252,10 @@ class Logbook_model extends CI_Model {
         $data['COL_MY_GRIDSQUARE'] = strtoupper(trim($station['station_gridsquare']));
       }
 
+    if ($this->exists_hrdlog_code($station_id)) {
+        $data['COL_HRDLOG_QSO_UPLOAD_STATUS'] = 'N';
+    }
+
     if ($this->exists_qrz_api_key($station_id)) {
         $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'N';
     }
@@ -506,12 +510,26 @@ class Logbook_model extends CI_Model {
        $this->upload_amsat_status($data);
     }
 
-    // No point in fetching qrz api key and qrzrealtime setting if we're skipping the export
+    // No point in fetching hrdlog code or qrz api key and qrzrealtime setting if we're skipping the export
 	if (!$skipexport) {
 
-		$result = $this->exists_qrz_api_key($data['station_id']);
 
-		// Push qso to qrz if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
+		$result = $this->exists_hrdlog_code($data['station_id']);
+		// Push qso to hrdlog if code is set, and realtime upload is enabled, and we're not importing an adif-file
+		if (isset($result->hrdlog_code) && $result->hrdlogrealtime == 1) {
+			$CI =& get_instance();
+			$CI->load->library('AdifHelper');
+			$qso = $this->get_qso($last_id)->result();
+
+			$adif = $CI->adifhelper->getAdifLine($qso[0]);
+			$result = $this->push_qso_to_hrdlog($result->hrdlog_code, $data['COL_STATION_CALLSIGN'], $adif);
+			if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') || ($result['status'] == 'duplicate') || ($result['status'] == 'auth_error') )){
+				$this->mark_hrdlog_qsos_sent($last_id);
+			}
+		}
+		$result = ''; // Empty result from previous hrdlog-attempt for safety
+		$result = $this->exists_qrz_api_key($data['station_id']);
+// Push qso to qrz if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
 		if (isset($result->qrzapikey) && $result->qrzrealtime == 1) {
 			$CI =& get_instance();
 			$CI->load->library('AdifHelper');
@@ -543,6 +561,24 @@ class Logbook_model extends CI_Model {
 			}
 		}
 	}
+  }
+
+  /*
+   * Function checks if a HRDLog Code exists in the table with the given station id
+   */
+  function exists_hrdlog_code($station_id) {
+	  $sql = 'select hrdlog_code, hrdlogrealtime from station_profile
+		  where station_id = ' . $station_id;
+
+	  $query = $this->db->query($sql);
+
+	  $result = $query->row();
+
+	  if ($result) {
+		  return $result;
+	  } else {
+		  return false;
+	  }
   }
 
   /*
@@ -582,6 +618,59 @@ class Logbook_model extends CI_Model {
 			return false;
 		}
 	}
+
+  /*
+   * Function uploads a QSO to HRDLog with the API given.
+   * $adif contains a line with the QSO in the ADIF format. QSO ends with an <EOR>
+   */
+  function push_qso_to_hrdlog($apikey, $station_callsign, $adif, $replaceoption = false) {
+	  $url = 'https://robot.hrdlog.net/newentry.aspx';
+
+	  $post_data['Code'] = $apikey;
+	  if ($replaceoption) {
+		  $post_data['Cmd'] = 'UPDATE';
+		  $post_data['ADIFKey'] = $adif;
+	  } 
+	  $post_data['ADIFData'] = $adif;
+
+	  $post_data['Callsign'] = $station_callsign;
+
+
+	  $post_encoded=http_build_query($post_data);
+
+	  $ch = curl_init( $url );
+	  curl_setopt( $ch, CURLOPT_POST, true);
+	  curl_setopt( $ch, CURLOPT_POSTFIELDS, $post_encoded);
+	  curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
+	  curl_setopt( $ch, CURLOPT_HEADER, 0);
+	  curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
+	  curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+	  $content = curl_exec($ch);
+	  if ($content){
+		  if (stristr($content,'<insert>1')) {
+			  $result['status'] = 'OK';
+			  return $result;
+		  } elseif (stristr($content,'<insert>0')) {
+			  $result['status'] = 'duplicate';
+			  $result['message'] = $content;
+			  return $result;
+		  } elseif (stristr($content,'Unknown user</error>')) {
+			  $result['status'] = 'auth_error';
+			  $result['message'] = $content;
+			  return $result;
+		  } else {
+			  $result['status'] = 'error';
+			  $result['message'] = $content;
+			  return $result;
+		  }
+	  }
+	  if(curl_errno($ch)){
+		  $result['status'] = 'error';
+		  $result['message'] = 'Curl error: '. curl_errno($ch);
+		  return $result;
+	  }
+	  curl_close($ch);
+  }
 
   /*
    * Function uploads a QSO to QRZ with the API given.
@@ -654,6 +743,23 @@ class Logbook_model extends CI_Model {
 		curl_close($ch);
 		return $response === 200;
 	}
+
+  /*
+   * Function marks QSOs as uploaded to HRDLog.
+   * $primarykey is the unique id for that QSO in the logbook
+   */
+  function mark_hrdlog_qsos_sent($primarykey) {
+	  $data = array(
+		  'COL_HRDLOG_QSO_UPLOAD_DATE' => date("Y-m-d H:i:s", strtotime("now")),
+		  'COL_HRDLOG_QSO_UPLOAD_STATUS' => 'Y',
+	  );
+
+	  $this->db->where('COL_PRIMARY_KEY', $primarykey);
+
+	  $this->db->update($this->config->item('table_name'), $data);
+
+	  return true;
+  }
 
   /*
    * Function marks QSOs as uploaded to QRZ.
@@ -939,6 +1045,10 @@ class Logbook_model extends CI_Model {
        'COL_STATE' =>$this->input->post('usa_state'),
        'COL_CNTY' => $uscounty
     );
+
+    if ($this->exists_hrdlog_code($data['station_id'])) {
+        $data['COL_HRDLOG_QSO_UPLOAD_STATUS'] = 'M';
+    }
 
     if ($this->exists_qrz_api_key($data['station_id'])) {
         $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
@@ -1312,6 +1422,23 @@ class Logbook_model extends CI_Model {
   }
 
     /*
+     * Function returns the QSOs from the logbook, which have not been either marked as uploaded to hrdlog, or has been modified with an edit
+     */
+    function get_hrdlog_qsos($station_id){
+        $sql = 'select *, dxcc_entities.name as station_country from ' . $this->config->item('table_name') . ' thcv ' .
+            ' left join station_profile on thcv.station_id = station_profile.station_id' .
+            ' left outer join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif' .
+            ' where thcv.station_id = ' . $station_id .
+            ' and (COL_HRDLOG_QSO_UPLOAD_STATUS is NULL
+            or COL_HRDLOG_QSO_UPLOAD_STATUS = ""
+            or COL_HRDLOG_QSO_UPLOAD_STATUS = "M"
+            or COL_HRDLOG_QSO_UPLOAD_STATUS = "N")';
+
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    /*
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to qrz, or has been modified with an edit
      */
     function get_qrz_qsos($station_id){
@@ -1370,6 +1497,25 @@ class Logbook_model extends CI_Model {
 
 		return $this->db->query($sql);
 	}
+
+    /*
+     * Function returns all the station_id's with HRDLOG Code
+     */
+    function get_station_id_with_hrdlog_code() {
+        $sql = 'select station_id, hrdlog_code from station_profile
+            where coalesce(hrdlog_code, "") <> ""';
+
+        $query = $this->db->query($sql);
+
+        $result = $query->result();
+
+        if ($result) {
+            return $result;
+        }
+        else {
+            return null;
+        }
+    }
 
     /*
      * Function returns all the station_id's with QRZ API Key's
@@ -2590,9 +2736,10 @@ class Logbook_model extends CI_Model {
      * $markLoTW - used in ADIF import to mark QSOs as exported to LoTW when importing QSOs
      * $dxccAdif - used in ADIF import to determine if DXCC From ADIF is used, or if Cloudlog should try to guess
      * $markQrz - used in ADIF import to mark QSOs as exported to QRZ Logbook when importing QSOs
+     * $markHrd - used in ADIF import to mark QSOs as exported to HRDLog.net Logbook when importing QSOs
      * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
      */
-	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $skipexport = false, $operatorName = false, $apicall = false) {
+	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false) {
         // be sure that station belongs to user
         $CI =& get_instance();
         $CI->load->model('Stations');
@@ -2931,12 +3078,19 @@ class Logbook_model extends CI_Model {
 			$operatorName = (!empty($record['operator'])) ? $record['operator'] : '';
 		}
 
-        // If user checked to mark QSOs as uploaded to QRZ Logbook, or else we try to find info in ADIF import.
+        // If user checked to mark QSOs as uploaded to QRZ or HRDLog Logbook, or else we try to find info in ADIF import.
+        if ($markHrd != null) {
+            $input_hrdlog_qso_upload_status = 'Y';
+            $input_hrdlog_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
+	}
+
         if ($markQrz != null) {
             $input_qrzcom_qso_upload_status = 'Y';
             $input_qrzcom_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
         }
         else {
+            $input_hrdlog_qso_upload_date = (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null;
+            $input_hrdlog_qso_upload_status = (!empty($record['hrdlog_qso_upload_status'])) ? $record['hrdlog_qso_upload_status'] : '';
             $input_qrzcom_qso_upload_date = (!empty($record['qrzcom_qso_upload_date'])) ? $record['qrzcom_qso_upload_date'] : null;
             $input_qrzcom_qso_upload_status = (!empty($record['qrzcom_qso_upload_status'])) ? $record['qrzcom_qso_upload_status'] : '';
         }
@@ -3052,6 +3206,8 @@ class Logbook_model extends CI_Model {
                 'COL_PRECEDENCE' => (!empty($record['precedence'])) ? $record['precedence'] : '',
                 'COL_PROP_MODE' => (!empty($record['prop_mode'])) ? $record['prop_mode'] : '',
                 'COL_PUBLIC_KEY' => (!empty($record['public_key'])) ? $record['public_key'] : '',
+                'COL_HRDLOG_QSO_UPLOAD_DATE' => $input_hrdlog_qso_upload_date,
+                'COL_HRDLOG_QSO_UPLOAD_STATUS' => $input_hrdlog_qso_upload_status,
                 'COL_QRZCOM_QSO_UPLOAD_DATE' => $input_qrzcom_qso_upload_date,
                 'COL_QRZCOM_QSO_UPLOAD_STATUS' => $input_qrzcom_qso_upload_status,
                 'COL_QSL_RCVD' => $input_qsl_rcvd,
