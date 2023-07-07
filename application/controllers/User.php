@@ -33,6 +33,7 @@ class User extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
+		$this->load->model('bands');
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('user_name', 'Username', 'required');
@@ -45,6 +46,8 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_locator', 'Locator', 'required');
 		$this->form_validation->set_rules('user_locator', 'Locator', 'callback_check_locator');
 		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
+
+		$data['bands'] = $this->bands->get_user_bands();
 
 		// Get themes list
 		$data['themes'] = $this->user_model->getThemes();
@@ -69,8 +72,8 @@ class User extends CI_Controller {
 				$data['user_callsign'] = $this->input->post('user_callsign');
 				$data['user_locator'] = $this->input->post('user_locator');
 				$data['user_timezone'] = $this->input->post('user_timezone');
-                $data['user_measurement_base'] = $this->input->post('user_measurement_base');
-                $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+				$data['user_measurement_base'] = $this->input->post('user_measurement_base');
+				$data['user_stylesheet'] = $this->input->post('user_stylesheet');
 				$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 				$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 				$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
@@ -85,6 +88,8 @@ class User extends CI_Controller {
 				$data['user_previous_qsl_type'] = $this->input->post('user_previous_qsl_type');
 				$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload');
 				$data['user_mastodon_url'] = $this->input->post('user_mastodon_url');
+				$data['user_gridmap_default_band'] = $this->input->post('user_gridmap_default_band');
+				$data['user_gridmap_confirmation'] = ($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : '');
 				$this->load->view('user/add', $data);
 			} else {
 				$this->load->view('user/add', $data);
@@ -118,7 +123,9 @@ class User extends CI_Controller {
 				$this->input->post('user_show_profile_image'),
 				$this->input->post('user_previous_qsl_type'),
 				$this->input->post('user_amsat_status_upload'),
-				$this->input->post('user_mastodon_url'))) {
+				$this->input->post('user_mastodon_url'),
+				$this->input->post('user_gridmap_default_band'),
+				($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : ''))) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
 					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';
@@ -146,8 +153,8 @@ class User extends CI_Controller {
 			$data['user_lastname'] = $this->input->post('user_lastname');
 			$data['user_callsign'] = $this->input->post('user_callsign');
 			$data['user_locator'] = $this->input->post('user_locator');
-            $data['user_measurement_base'] = $this->input->post('user_measurement_base');
-            $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+			$data['user_measurement_base'] = $this->input->post('user_measurement_base');
+			$data['user_stylesheet'] = $this->input->post('user_stylesheet');
 			$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 			$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
@@ -162,6 +169,8 @@ class User extends CI_Controller {
 			$data['user_previous_qsl_type'] = $this->input->post('user_previous_qsl_type');
 			$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload');
 			$data['user_mastodon_url'] = $this->input->post('user_mastodon_url');
+			$data['user_gridmap_default_band'] = $this->input->post('user_gridmap_default_band');
+			$data['user_gridmap_confirmation'] = ($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : '');
 			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
 		}
@@ -172,6 +181,7 @@ class User extends CI_Controller {
 		if((!$this->user_model->authorize(99)) && ($this->session->userdata('user_id') != $this->uri->segment(3))) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$query = $this->user_model->get_by_id($this->uri->segment(3));
 
+		$this->load->model('bands');
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('user_name', 'Username', 'required|xss_clean');
@@ -185,6 +195,8 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_callsign', 'Callsign', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('user_locator', 'Locator', 'callback_check_locator');
 		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
+
+		$data['bands'] = $this->bands->get_user_bands();
 
 		// Get themes list
 		$data['themes'] = $this->user_model->getThemes();
@@ -303,23 +315,23 @@ class User extends CI_Controller {
 				$data['user_eqsl_password'] = $q->user_eqsl_password;
 			}
 
-            if($this->input->post('user_measurement_base')) {
-                $data['user_measurement_base'] = $this->input->post('user_measurement_base', true);
-            } else {
-                $data['user_measurement_base'] = $q->user_measurement_base;
-            }
+			if($this->input->post('user_measurement_base')) {
+				$data['user_measurement_base'] = $this->input->post('user_measurement_base', true);
+			} else {
+				$data['user_measurement_base'] = $q->user_measurement_base;
+			}
 
 			if($this->input->post('user_date_format')) {
-                $data['user_date_format'] = $this->input->post('user_date_format', true);
-            } else {
-                $data['user_date_format'] = $q->user_date_format;
-            }
+				$data['user_date_format'] = $this->input->post('user_date_format', true);
+			} else {
+				$data['user_date_format'] = $q->user_date_format;
+			}
 
-            if($this->input->post('user_stylesheet')) {
-                $data['user_stylesheet'] = $this->input->post('user_stylesheet', true);
-            } else {
-                $data['user_stylesheet'] = $q->user_stylesheet;
-            }
+			if($this->input->post('user_stylesheet')) {
+				$data['user_stylesheet'] = $this->input->post('user_stylesheet', true);
+			} else {
+				$data['user_stylesheet'] = $q->user_stylesheet;
+			}
 
 			if($this->input->post('user_qth_lookup')) {
 				$data['user_qth_lookup'] = $this->input->post('user_qth_lookup', true);
@@ -373,6 +385,18 @@ class User extends CI_Controller {
 				$data['user_mastodon_url'] = $this->input->post('user_mastodon_url', false);
 			} else {
 				$data['user_mastodon_url'] = $q->user_mastodon_url;
+			}
+
+			if($this->input->post('user_gridmap_default_band')) {
+				$data['user_gridmap_default_band'] = $this->input->post('user_gridmap_default_band', false);
+			} else {
+				$data['user_gridmap_default_band'] = $q->user_gridmap_default_band;
+			}
+
+			if($this->input->post('user_gridmap_confirmation')) {
+			   $data['user_gridmap_confirmation'] = ($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : '');
+			} else {
+				$data['user_gridmap_confirmation'] = $q->user_gridmap_confirmation;
 			}
 
 			if($this->input->post('user_column1')) {
@@ -445,7 +469,7 @@ class User extends CI_Controller {
 			$data['user_callsign'] = $this->input->post('user_callsign', true);
 			$data['user_locator'] = $this->input->post('user_locator', true);
 			$data['user_timezone'] = $this->input->post('user_timezone', true);
-            $data['user_stylesheet'] = $this->input->post('user_stylesheet');
+			$data['user_stylesheet'] = $this->input->post('user_stylesheet');
 			$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 			$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
@@ -461,6 +485,8 @@ class User extends CI_Controller {
 			$data['user_previous_qsl_type'] = $this->input->post('user_previous_qsl_type');
 			$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload');
 			$data['user_mastodon_url'] = $this->input->post('user_mastodon_url');
+			$data['user_gridmap_default_band'] = $this->input->post('user_gridmap_default_band');
+			$data['user_gridmap_confirmation'] = ($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : '');
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}

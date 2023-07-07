@@ -92,3 +92,6 @@ $lang['account_login'] = 'Anmeldung';
 
 $lang['account_mastodon'] = 'Mastodonserver';
 $lang['account_user_mastodon'] = 'URL des Mastodonservers';
+
+$lang['account_gridmap_settings'] = 'Einstellung der Planquadratkarte';
+$lang['account_gridmap_default_band'] = 'Standardband';

@@ -50,8 +50,12 @@
             <label class="my-1 mr-2" for="band"><?php echo lang('gridsquares_band'); ?></label>
             <select class="custom-select my-1 mr-sm-2"  id="band">
                 <option value="All">All</option>
-				<?php foreach($bands as $band) {
-					echo '<option value="' . $band . '"' . '>' . $band . '</option>'."\n";
+                <?php foreach($bands as $band) {
+                    echo '<option value="'.$band.'"';
+                    if ($user_gridmap_default_band == $band) {
+                        echo ' selected="selected"';
+                    }
+                    echo '>'.$band.'</option>'."\n";
                 } ?>
             </select>
             <?php if (count($sats_available) != 0) { ?>
@@ -79,15 +83,27 @@
 			<label class="my-1 mr-2"><?php echo lang('gridsquares_confirmation'); ?></label>
                 <div>
                     <div class="form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="qsl" id="qsl" checked>
+                    <?php echo '<input class="form-check-input" type="checkbox" name="qsl" id="qsl"';
+                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) {
+                            echo ' checked' ;
+                        }
+                        echo '>'; ?>
                         <label class="form-check-label" for="qsl">QSL</label>
                     </div>
                     <div class="form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="lotw" id="lotw" checked>
+                    <?php echo '<input class="form-check-input" type="checkbox" name="lotw" id="lotw"';
+                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+                            echo ' checked' ;
+                        }
+                        echo '>'; ?>
                         <label class="form-check-label" for="lotw">LoTW</label>
                     </div>
                     <div class="form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="eqsl" id="eqsl">
+                    <?php echo '<input class="form-check-input" type="checkbox" name="eqsl" id="eqsl"';
+                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+                            echo ' checked' ;
+                        }
+                        echo '>'; ?>
                         <label class="form-check-label" for="eqsl">eQSL</label>
                     </div>
                 </div>

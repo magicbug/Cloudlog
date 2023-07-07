@@ -19,6 +19,9 @@ class Gridmap extends CI_Controller {
 		$data['bands'] = $this->bands->get_worked_bands();
 		$data['sats_available'] = $this->bands->get_worked_sats();
 
+		$data['user_gridmap_default_band'] = $this->session->userdata('user_gridmap_default_band');
+		$data['user_gridmap_confirmation'] = $this->session->userdata('user_gridmap_confirmation');
+
 		$data['layer'] = $this->optionslib->get_option('option_map_tile_server');
 
 		$data['attribution'] = $this->optionslib->get_option('option_map_tile_server_copyright');
