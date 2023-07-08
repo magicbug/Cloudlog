@@ -475,6 +475,7 @@ class Lotw extends CI_Controller {
 				$tableheaders .= "<td>IOTA</td>";
 				$tableheaders .= "<td>Log Status</td>";
 				$tableheaders .= "<td>LoTW Status</td>";
+				$tableheaders .= "<td>Station ID</td>";
 			$tableheaders .= "</tr>";
 
 			$table = "";
@@ -571,6 +572,7 @@ class Lotw extends CI_Controller {
 					$table .= "<td>".$iota."</td>";
 					$table .= "<td>QSO Record: ".$status[0]."</td>";
 					$table .= "<td>LoTW Record: ".$lotw_status."</td>";
+					$table .= "<td>".$station_id."</td>
 				$table .= "</tr>";
 			}
 
