@@ -774,12 +774,19 @@ $("#callsign").on("keypress", function(e) {
 // On Key up check and suggest callsigns
 $("#callsign").keyup(function() {
 	if ($(this).val().length >= 3) {
-		$('.callsign-suggest').show();
-		$.get('lookup/scp/' + $(this).val().toUpperCase(), function(result) {
-			$('.callsign-suggestions').text(result);
-		});
+	  $('.callsign-suggest').show();
+	  $.ajax({
+		url: 'lookup/scp',
+		method: 'POST',
+		data: {
+		  callsign: $(this).val().toUpperCase()
+		},
+		success: function(result) {
+		  $('.callsign-suggestions').text(result);
+		}
+	  });
 	}
-});
+  });
 
 //Reset QSO form Fields function
 function resetDefaultQSOFields() {

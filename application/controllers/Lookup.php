@@ -53,10 +53,9 @@ class Lookup extends CI_Controller {
 		$this->load->view('lookup/result', $data);
 	}
 
-	public function scp($call) {
-
-		if($call) {
-			$uppercase_callsign = strtoupper($call);
+	public function scp() {
+		if($_POST['callsign']) {
+			$uppercase_callsign = strtoupper($_POST['callsign']);
 		}
 
 		// SCP results from logbook
