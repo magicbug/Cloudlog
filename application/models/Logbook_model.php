@@ -3930,7 +3930,7 @@ class Logbook_model extends CI_Model {
      */
     function find_correct_station_id($station_callsign, $my_gridsquare) {
         $sql = 'select station_id from station_profile
-            where station_callsign = "' . $station_callsign . '" and station_gridsquare = "' . substr($my_gridsquare,0, 4) . '"';
+            where station_callsign = "' . $station_callsign . '" and station_gridsquare = "' .$my_gridsquare. '"';
 
         $query = $this->db->query($sql);
 
