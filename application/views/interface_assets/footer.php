@@ -1235,97 +1235,110 @@ $(document).on('keypress',function(e) {
 
     <script>
     // Javascript for controlling rig frequency.
-    var updateFromCAT = function() {
-    if($('select.radios option:selected').val() != '0') {
-      radioID = $('select.radios option:selected').val();
-      $.getJSON( "radio/json/" + radioID, function( data ) {
-          /* {
-              "frequency": "2400210000",
-              "frequency_rx": "10489710000",
-              "mode": "SSB",
-              "satmode": "S/X",
-              "satname": "QO-100"
-              "power": "20"
-              "prop_mode": "SAT"
-          }  */
-          $('#frequency').val(data.frequency);
-          $("#band").val(frequencyToBand(data.frequency));
-          if (data.frequency_rx != "") {
-            $('#frequency_rx').val(data.frequency_rx);
-            $("#band_rx").val(frequencyToBand(data.frequency_rx));
-          }
+	  var updateFromCAT = function() {
+		  if($('select.radios option:selected').val() != '0') {
+			  radioID = $('select.radios option:selected').val();
+			  $.getJSON( "radio/json/" + radioID, function( data ) {
+	  /* {
+	  "frequency": "2400210000",
+	      "frequency_rx": "10489710000",
+	      "mode": "SSB",
+	      "satmode": "S/X",
+	      "satname": "QO-100"
+	      "power": "20"
+	      "prop_mode": "SAT",
+	      "error": "not_logged_id" // optional, reserved for errors
+	  }  */
+				  if (data.error) {
+					  if (data.error == 'not_logged_in') {
+						  $(".radio_cat_state" ).remove();
+						  if($('.radio_login_error').length == 0) {
+							  $('.qso_panel').prepend('<div class="alert alert-danger radio_login_error" role="alert"><i class="fas fa-broadcast-tower"></i> You\'re not logged it. Please <a href="<?php echo base_url();?>">login</a></div>');
+						  }
+					  }
+					  // Put future Errorhandling here
+				  } else {
+					  if($('.radio_login_error').length != 0) {
+						  $(".radio_login_error" ).remove();
+					  }
+					  $('#frequency').val(data.frequency);
+					  $("#band").val(frequencyToBand(data.frequency));
+					  if (data.frequency_rx != "") {
+						  $('#frequency_rx').val(data.frequency_rx);
+						  $("#band_rx").val(frequencyToBand(data.frequency_rx));
+					  }
 
-          old_mode = $(".mode").val();
-          $(".mode").val(data.mode);
+					  old_mode = $(".mode").val();
+					  $(".mode").val(data.mode);
 
-          if (old_mode !== $(".mode").val()) {
-            // Update RST on mode change via CAT
-            setRst($(".mode").val());
-          }
-          $("#sat_name").val(data.satname);
-          $("#sat_mode").val(data.satmode);
-          if(data.power != null && data.power != 0) {
-            $("#transmit_power").val(data.power);
-          }
-          $("#selectPropagation").val(data.prop_mode);
+					  if (old_mode !== $(".mode").val()) {
+						  // Update RST on mode change via CAT
+						  setRst($(".mode").val());
+					  }
+					  $("#sat_name").val(data.satname);
+					  $("#sat_mode").val(data.satmode);
+					  if(data.power != null && data.power != 0) {
+						  $("#transmit_power").val(data.power);
+					  }
+					  $("#selectPropagation").val(data.prop_mode);
 
-          // Display CAT Timeout warning based on the figure given in the config file
-          var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
+					  // Display CAT Timeout warning based on the figure given in the config file
+					  var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
 
-          if(data.updated_minutes_ago > minutes) {
-            $(".radio_cat_state" ).remove();
-            if($('.radio_timeout_error').length == 0) {
-              $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert"><i class="fas fa-broadcast-tower"></i> Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
-            } else {
-              $('.radio_timeout_error').html('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
-            }
-          } else {
-            $(".radio_timeout_error" ).remove();
-            text = '<i class="fas fa-broadcast-tower"></i><span style="margin-left:10px;"></span><b>TX:</b> '+(Math.round(parseInt(data.frequency)/100)/10000).toFixed(4)+' MHz';
-            if(data.mode != null) {
-               text = text+'<span style="margin-left:10px"></span>'+data.mode;
-            }
-            if(data.power != null && data.power != 0) {
-               text = text+'<span style="margin-left:10px"></span>'+data.power+' W';
-            }
-            if(data.prop_mode != null && data.prop_mode != '') {
-               text = text+'<span style="margin-left:10px"></span>('+data.prop_mode;
-               if (data.prop_mode == 'SAT') {
-                  text = text+' '+data.satname;
-               }
-            }
-            if(data.frequency_rx != null && data.frequency_rx != 0) {
-               text = text+'<span style="margin-left:10px"></span><b>RX:</b> '+(Math.round(parseInt(data.frequency_rx)/1000)/1000).toFixed(3)+' MHz)';
-            }
-            if (! $('#radio_cat_state').length) {
-               $('.qso_panel').prepend('<div aria-hidden="true"><div id="radio_cat_state" class="alert alert-success radio_cat_state" role="alert">'+text+'</div></div>');
-            } else {
-               $('#radio_cat_state').html(text);
-            }
-          }
+					  if(data.updated_minutes_ago > minutes) {
+						  $(".radio_cat_state" ).remove();
+						  if($('.radio_timeout_error').length == 0) {
+							  $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert"><i class="fas fa-broadcast-tower"></i> Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
+						  } else {
+							  $('.radio_timeout_error').html('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
+						  }
+					  } else {
+						  $(".radio_timeout_error" ).remove();
+						  text = '<i class="fas fa-broadcast-tower"></i><span style="margin-left:10px;"></span><b>TX:</b> '+(Math.round(parseInt(data.frequency)/100)/10000).toFixed(4)+' MHz';
+						  if(data.mode != null) {
+							  text = text+'<span style="margin-left:10px"></span>'+data.mode;
+						  }
+						  if(data.power != null && data.power != 0) {
+							  text = text+'<span style="margin-left:10px"></span>'+data.power+' W';
+						  }
+						  if(data.prop_mode != null && data.prop_mode != '') {
+							  text = text+'<span style="margin-left:10px"></span>('+data.prop_mode;
+							  if (data.prop_mode == 'SAT') {
+								  text = text+' '+data.satname;
+							  }
+						  }
+						  if(data.frequency_rx != null && data.frequency_rx != 0) {
+							  text = text+'<span style="margin-left:10px"></span><b>RX:</b> '+(Math.round(parseInt(data.frequency_rx)/1000)/1000).toFixed(3)+' MHz)';
+						  }
+						  if (! $('#radio_cat_state').length) {
+							  $('.qso_panel').prepend('<div aria-hidden="true"><div id="radio_cat_state" class="alert alert-success radio_cat_state" role="alert">'+text+'</div></div>');
+						  } else {
+							  $('#radio_cat_state').html(text);
+						  }
+					  }
+				  }
+			  });
+		  }
+	  };
 
-      });
-    }
-  };
+	  // Update frequency every three second
+	  setInterval(updateFromCAT, 3000);
 
-  // Update frequency every three second
-  setInterval(updateFromCAT, 3000);
+	  // If a radios selected from drop down select radio update.
+	  $('.radios').change(updateFromCAT);
 
-  // If a radios selected from drop down select radio update.
-  $('.radios').change(updateFromCAT);
-
-  // If no radio is selected clear data
-  $( ".radios" ).change(function() {
-      if ($(".radios option:selected").val() == 0) {
-        $("#sat_name").val("");
-        $("#sat_mode").val("");
-        $("#frequency").val("");
-        $("#frequency_rx").val("");
-        $("#band_rx").val("");
-        $("#selectPropagation").val($("#selectPropagation option:first").val());
-        $(".radio_timeout_error" ).remove();
-      }
-  });
+	  // If no radio is selected clear data
+	  $( ".radios" ).change(function() {
+		  if ($(".radios option:selected").val() == 0) {
+			  $("#sat_name").val("");
+			  $("#sat_mode").val("");
+			  $("#frequency").val("");
+			  $("#frequency_rx").val("");
+			  $("#band_rx").val("");
+			  $("#selectPropagation").val($("#selectPropagation option:first").val());
+			  $(".radio_timeout_error" ).remove();
+		  }
+	  });
   </script>
 
 <?php } ?>
