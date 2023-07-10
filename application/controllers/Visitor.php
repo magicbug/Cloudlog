@@ -456,6 +456,16 @@ class Visitor extends CI_Controller {
 		}
 	}
 
+	public function public_search_enabled($slug) {
+		$this->load->model('Logbooks_model');
+		$logbook_id = $this->Logbooks_model->public_slug_exists_logbook_id($slug);
+		if ($this->Logbooks_model->public_search_enabled($logbook_id)  == 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public function search() {
 		$slug = $this->security->xss_clean($this->uri->segment(3));
 		$callsign = $this->security->xss_clean($this->uri->segment(4));
