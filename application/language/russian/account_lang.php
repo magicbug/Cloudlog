@@ -32,7 +32,7 @@ $lang['account_gridsquare'] = 'QTH локатор';
 $lang['account_cloudlog_preferences'] = 'Настройки Cloudlog';
 $lang['account_timezone'] = 'Часовой пояс';
 $lang['account_date_format'] = 'Формат даты';
-$lang['account_measurement_preference'] = 'Единицы измерения';
+$lang['account_measurement_preferences'] = 'Единицы измерения';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Выберите представление даты для отображения в вашем аккаунте.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Выберите единицы измерения расстояния';
 
@@ -68,8 +68,8 @@ $lang['account_clublog_password'] = 'Пароль';
 $lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Емэйл или позывной, которые вы используете для логина в Club Log';
 
 $lang['account_eqsl'] = 'eQSL';
-$lang['account_eqsl_username'] = 'Логин';
-$lang['account_eqsl_password'] = 'Пароль';
+$lang['account_eqslcc_username'] = 'Логин';
+$lang['account_eqslcc_password'] = 'Пароль';
 
 $lang['account_save_account_changes'] = 'Сохранить изменения';
 $lang['account_create_account'] = 'Создать аккаунт';
@@ -89,3 +89,6 @@ $lang['account_forgot_your_password'] = 'Забыли пароль?';
 
 $lang['account_login_to_cloudlog'] = 'Вход в Cloudlog';
 $lang['account_login'] = 'Вход';
+
+$lang['account_mastodon'] = 'Mastodonserver';
+$lang['account_user_mastodon'] = 'URL of Mastodonserver';

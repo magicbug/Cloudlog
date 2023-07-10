@@ -59,6 +59,7 @@ $lang['general_mark_qsl_rx_bureau'] = 'Отметить QSL полученной
 $lang['general_mark_qsl_rx_direct'] = 'Отметить QSL полученной (напрямую)';
 $lang['general_mark_qsl_tx_bureau'] = 'Отметить QSL отправленной (через бюро)';
 $lang['general_mark_qsl_tx_direct'] = 'Отметить QSL отправленой (напрямую)';
+$lang['general_mark_qsl_rx_electronic'] = 'Отметить QSL полученной (электронно)';
 
 $lang['general_delete_qso'] = 'Удалить QSO';
 
@@ -111,6 +112,7 @@ $lang['gen_hamradio_iota'] = 'IOTA';
 $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Квадрат';
+$lang['gen_hamradio_distance'] = 'Дистанция';
 $lang['gen_hamradio_operator'] = 'Оператор';
 
 $lang['gen_hamradio_sig'] = 'Sig';

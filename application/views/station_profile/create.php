@@ -249,6 +249,20 @@
                 <small id="eqslhelp" class="form-text text-muted">eQSL QTH Nickname.</small>
             </div>
 
+
+            <div class="form-row">
+                <div class="form-group col-sm-6">                                                                                                                                                    <label for="hrdlog_code">HRDLog.net Logbook API Key</label>
+                    <input type="text" class="form-control" name="hrdlog_code" id="hrdlog_code" aria-describedby="hrdlog_codeHelp">
+                    <small id="hrdlog_codeHelp" class="form-text text-muted">Find your API key on <a href="http://www.hrdlog.net/EditUser.aspx" target="_blank">HRDLog Userprofile</a></small>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="hrdlogrealtime">HRDLog.net Logbook Realtime Upload</label>                                                                                                                 <select class="custom-select" id="hrdlogrealtime" name="hrdlogrealtime">
+                        <option value="1">Yes</option>
+                        <option value="0" selected>No</option>
+                    </select>
+                </div>
+            </div>
+
 			<div class="alert alert-warning" role="alert">
 					QRZ.com Logbook Requires Paid Subscription
 			</div>

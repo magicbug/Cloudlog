@@ -156,7 +156,7 @@ class Eqslmethods_model extends CI_Model {
     // Update a QSO with eQSL QSL info
     // We could also probably use this use this: http://eqsl.cc/qslcard/VerifyQSO.txt
     // http://www.eqsl.cc/qslcard/ImportADIF.txt
-    function eqsl_update($datetime, $callsign, $band, $qsl_status) {
+    function eqsl_update($datetime, $callsign, $band, $mode, $qsl_status,$station_callsign) {
         $data = array(
             'COL_EQSL_QSLRDATE' => date('Y-m-d H:i:s'), // eQSL doesn't give us a date, so let's use current
             'COL_EQSL_QSL_RCVD' => $qsl_status
@@ -165,7 +165,9 @@ class Eqslmethods_model extends CI_Model {
         $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
         $this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
         $this->db->where('COL_CALL', $callsign);
+	$this->db->where('COL_STATION_CALLSIGN', $station_callsign);
         $this->db->where('COL_BAND', $band);
+        $this->db->where('COL_MODE', $mode);
 
         $this->db->update($this->config->item('table_name'), $data);
 
@@ -173,12 +175,14 @@ class Eqslmethods_model extends CI_Model {
     }
 
     // Determine if we've already received an eQSL for this QSO
-    function eqsl_dupe_check($datetime, $callsign, $band, $qsl_status) {
+    function eqsl_dupe_check($datetime, $callsign, $band, $mode, $qsl_status,$station_callsign) {
         $this->db->select('COL_EQSL_QSLRDATE');
         $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
         $this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
         $this->db->where('COL_CALL', $callsign);
         $this->db->where('COL_BAND', $band);
+        $this->db->where('COL_MODE', $mode);
+	$this->db->where('COL_STATION_CALLSIGN', $station_callsign);
         $this->db->where('COL_EQSL_QSL_RCVD', $qsl_status);
         $this->db->limit(1);
     

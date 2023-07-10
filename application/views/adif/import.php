@@ -62,6 +62,16 @@
                     <div class="form-group row">
                         <div class="col-md-10">
                             <div class="form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="markHrd" value="1" id="markHrdImport">
+                                <label class="form-check-label" for="markHrdImport">Mark imported QSOs as uploaded to HRDLog.net Logbook</label>
+                            </div>
+                            <div class="small form-text text-muted">Select if ADIF being imported does not contain this information.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-10">
+                            <div class="form-check-inline">
                                 <input class="form-check-input" type="checkbox" name="markQrz" value="1" id="markQrzImport">
                                 <label class="form-check-label" for="markQrzImport">Mark imported QSOs as uploaded to QRZ Logbook</label>
                             </div>

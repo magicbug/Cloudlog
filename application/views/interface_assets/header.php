@@ -260,6 +260,7 @@ $oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 
 				<a class="dropdown-item" href="<?php echo site_url('eqsl/import');?>" title="eQSL import / export"><i class="fas fa-sync"></i> <?php echo lang('menu_eqsl_import_export'); ?></a>
 
+                <a class="dropdown-item" href="<?php echo site_url('hrdlog/export');?>" title="Upload to HRDLog.net logbook"><i class="fas fa-sync"></i> <?php echo lang('menu_hrd_logbook'); ?></a>
                 <a class="dropdown-item" href="<?php echo site_url('qrz/export');?>" title="Upload to QRZ.com logbook"><i class="fas fa-sync"></i> <?php echo lang('menu_qrz_logbook'); ?></a>
 
 				<a class="dropdown-item" href="<?php echo site_url('webadif/export');?>" title="Upload to webADIF"><i class="fas fa-sync"></i> <?php echo lang('menu_qo_100_dx_club_upload'); ?></a>

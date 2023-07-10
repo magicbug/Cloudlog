@@ -19,8 +19,9 @@
         <div class="card-body">
 			<div class="tab-content">
 				<div class="tab-pane active" id="export" role="tabpanel" aria-labelledby="export-tab">
-            <p>Here you can see and upload all QSOs which have not been previously uploaded to a QRZ logbook.</p>
-            <p>You need to set a QRZ Logbook API key in your station profile. Only station profiles with an API Key set are displayed.</p>
+            <p>Here you can see and upload all QSOs which have not been previously uploaded to a HRDLog logbook.</p>
+            <p>You need to set a HRDLog Logbook API Code in your station profile. Only station profiles with an API Key set are displayed.</p>
+            <p>The Code can be demanded at <a href="http://www.hrdlog.net/EditUser.aspx" target="new" class="link">http://www.hrdlog.net/EditUser.aspx</a></p>
             <p><span class="badge badge-warning">Warning</span> This might take a while as QSO uploads are processed sequentially.</p>
 
 <?php
@@ -45,7 +46,7 @@
                     echo '<td id ="modcount'.$station->station_id.'">' . $station->modcount . '</td>';
                     echo '<td id ="notcount'.$station->station_id.'">' . $station->notcount . '</td>';
                     echo '<td id ="totcount'.$station->station_id.'">' . $station->totcount . '</td>';
-                    echo '<td><button id="qrzUpload" type="button" name="qrzUpload" class="btn btn-primary btn-sm ld-ext-right" onclick="ExportQrz('. $station->station_id .')"><i class="fas fa-cloud-upload-alt"></i> Upload<div class="ld ld-ring ld-spin"></div></button></td>';
+                    echo '<td><button id="HrdlogUpload" type="button" name="HrdlogUpload" class="btn btn-primary btn-sm ld-ext-right" onclick="ExportHrd('. $station->station_id .')"><i class="fas fa-cloud-upload-alt"></i> Upload<div class="ld ld-ring ld-spin"></div></button></td>';
                     echo '</tr>';
                 }
                 echo '</tfoot></table>';
@@ -59,7 +60,7 @@
         </div>
 				<div class="tab-pane fade" id="mark" role="tabpanel" aria-labelledby="home-tab">
 
-				<form class="form" action="<?php echo site_url('qrz/mark_qrz'); ?>" method="post" enctype="multipart/form-data">
+				<form class="form" action="<?php echo site_url('hrdlog/mark_hrdlog'); ?>" method="post" enctype="multipart/form-data">
 					<select name="station_profile" class="custom-select mb-4 mr-sm-4" style="width: 30%;">
 						<option disabled value="0">Select Station Location</option>
 						<?php foreach ($station_profiles->result() as $station) { ?>
@@ -86,7 +87,7 @@
 						</div>
 					</div>
 					<br>
-					<button type="submit" class="btn-sm btn-primary" value="Export">Mark QSOs as exported to QRZ Logbook</button>
+					<button type="submit" class="btn-sm btn-primary" value="Export">Mark QSOs as exported to HRDLog Logbook</button>
 				</form>
 	</div>
 			</div>

@@ -43,9 +43,9 @@ function updateRow(qso) {
 		cells.eq(c++).html(qso.lotw);
 	}
 	cells.eq(c++).text(qso.qslMessage);
-	cells.eq(c++).text(qso.dxcc);
+	cells.eq(c++).html(qso.dxcc);
 	cells.eq(c++).text(qso.state);
-	cells.eq(c++).text(qso.cqzone);
+	cells.eq(c++).html(qso.cqzone);
 	cells.eq(c++).html(qso.iota);
 
 	$('[data-toggle="tooltip"]').tooltip();
@@ -73,7 +73,7 @@ function loadQSOTable(rows) {
 	var table = $('#qsoList').DataTable();
 
 	table.clear();
-	
+
 	for (i = 0; i < rows.length; i++) {
 		let qso = rows[i];
 
@@ -102,7 +102,7 @@ function loadQSOTable(rows) {
 		data.push(qso.state);
 		data.push(qso.cqzone);
 		data.push(qso.iota);
-		
+
 		let createdRow = table.row.add(data).index();
 		table.rows(createdRow).nodes().to$().data('qsoID', qso.qsoID);
 		table.row(createdRow).node().id = 'qsoID-' + qso.qsoID;
@@ -187,7 +187,16 @@ $(document).ready(function () {
 				gridsquare: this.gridsquare.value,
 				state: this.state.value,
 				qsoresults: this.qsoResults.value,
-				sats: this.sats.value
+				sats: this.sats.value,
+				cqzone: this.cqzone.value,
+				lotwSent: this.lotwSent.value,
+				lotwReceived: this.lotwReceived.value,
+				eqslSent: this.eqslSent.value,
+				eqslReceived: this.eqslReceived.value,
+				qslvia: $('[name="qslviainput"]').val(),
+				sota: this.sota.value,
+				pota: this.pota.value,
+				wwff: this.wwff.value,
 			},
 			dataType: 'json',
 			success: function (data) {
@@ -348,6 +357,157 @@ $(document).ready(function () {
 	$('#notRequired').click(function (event) {
 		handleQsl('I','', 'notRequired');
 	});
+	$('#receivedBureau').click(function (event) {
+		handleQslReceived('Y','B', 'receivedBureau');
+	});
+	$('#receivedDirect').click(function (event) {
+		handleQslReceived('Y','D', 'receivedDirect');
+	});
+
+	$('#searchGridsquare').click(function (event) {
+		quickSearch('gridsquare');
+	});
+
+	$('#searchState').click(function (event) {
+		quickSearch('state');
+	});
+
+	$('#searchIota').click(function (event) {
+		quickSearch('iota');
+	});
+
+	$('#searchDxcc').click(function (event) {
+		quickSearch('dxcc');
+	});
+
+	$('#searchCallsign').click(function (event) {
+		quickSearch('dx');
+	});
+
+	$('#searchCqZone').click(function (event) {
+		quickSearch('cqzone');
+	});
+
+	$('#searchMode').click(function (event) {
+		quickSearch('mode');
+	});
+
+	$('#searchBand').click(function (event) {
+		quickSearch('band');
+	});
+
+	$('#searchSota').click(function (event) {
+		quickSearch('sota');
+	});
+
+	$('#searchWwff').click(function (event) {
+		quickSearch('wwff');
+	});
+
+	$('#searchPota').click(function (event) {
+		quickSearch('pota');
+	});
+
+	function quickSearch(type) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements == 0) {
+			return;
+		}
+		if (nElements > 1) {
+			BootstrapDialog.alert({
+				title: 'WARNING',
+				message: 'Only 1 row can be selected for Quickfilter!',
+				type: BootstrapDialog.TYPE_WARNING,
+				closable: false,
+				draggable: false,
+				callback: function (result) {
+				}
+			});
+		}
+		var offset = 0;
+
+		if (!$(".eqslconfirmation")[0]){
+			offset--;
+		}
+		if (!$(".lotwconfirmation")[0]){
+			offset--;
+		}
+		elements.each(function() {
+			var currentRow = $(this).first().closest('tr');
+			var col1 = '';
+			switch (type) {
+				case 'dxcc': 	var tdoffset = (offset + 16); col1 = currentRow.find("td:eq("+tdoffset+")").html(); col1 = col1.match(/\d/g); col1 = col1.join(""); break;
+				case 'cqzone': var tdoffset = (offset + 18); col1 = currentRow.find("td:eq("+tdoffset+")").text(); break;
+				case 'iota': var tdoffset = (offset + 19); col1 = currentRow.find("td:eq("+tdoffset+")").text(); col1 = col1.trim(); break;
+				case 'state': var tdoffset = (offset + 17); col1 = currentRow.find("td:eq("+tdoffset+")").text(); break;
+				case 'dx': col1 = currentRow.find("td:eq(3)").text(); col1 = col1.match(/^([^\s]+)/gm); break;
+				case 'gridsquare': col1 = $(currentRow).find('#dxgrid').text(); col1 = col1.substring(0, 4); break;
+				case 'sota': col1 = $(currentRow).find('#dxsota').text(); break;
+				case 'wwff': col1 = $(currentRow).find('#dxwwff').text(); break;
+				case 'pota': col1 = $(currentRow).find('#dxpota').text(); break;
+				case 'mode': col1 = currentRow.find("td:eq(4)").text(); break;
+				case 'band': col1 = currentRow.find("td:eq(7)").text(); col1 = col1.match(/\S\w*/); break;
+			}
+			if (col1.length == 0) return;
+			$('#searchForm').trigger("reset");
+			$("#"+type).val(col1);
+			$('#searchForm').submit();
+		});
+	}
+
+	$('#printLabel').click(function (event) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements == 0) {
+			return;
+		}
+		$('#printLabel').prop("disabled", true);
+
+		var id_list=[];
+
+		elements.each(function() {
+			let id = $(this).first().closest('tr').data('qsoID')
+			id_list.push(id);
+		});
+
+		$.ajax({
+			url: base_url + 'index.php/labels/printids',
+			type: 'post',
+			data: {'id': JSON.stringify(id_list, null, 2) },
+			xhr:function(){
+				var xhr = new XMLHttpRequest();
+				xhr.responseType= 'blob'
+				return xhr;
+			},
+			success: function(data) {
+				if(data){
+					var file = new Blob([data], {type: 'application/pdf'});
+					var fileURL = URL.createObjectURL(file);
+					window.open(fileURL);
+				}
+				$.each(id_list, function(k, v) {
+					unselectQsoID(this);
+				});
+				$('#printLabel').prop("disabled", false);
+			},
+			error: function (data) {
+				BootstrapDialog.alert({
+					title: 'ERROR',
+					message: 'Something went wrong with label print. Go to labels and check if you have defined a label, and that it is set for print!',
+					type: BootstrapDialog.TYPE_DANGER,
+					closable: false,
+					draggable: false,
+					callback: function (result) {
+					}
+				});
+				$.each(id_list, function(k, v) {
+					unselectQsoID(this);
+				});
+				$('#printLabel').prop("disabled", false);
+			},
+		});
+	});
 
 	$('#searchForm').on('reset', function(e) {
 		setTimeout(function() {
@@ -369,6 +529,37 @@ $(document).ready(function () {
 		});
 		$.ajax({
 			url: base_url + 'index.php/logbookadvanced/update_qsl',
+			type: 'post',
+			data: {'id': JSON.stringify(id_list, null, 2),
+				'sent' : sent,
+				'method' : method
+			},
+			success: function(data) {
+				if (data !== []) {
+					$.each(data, function(k, v) {
+						updateRow(this);
+						unselectQsoID(this.qsoID);
+					});
+				}
+				$('#'+tag).prop("disabled", false);
+			}
+		});
+	}
+
+	function handleQslReceived(sent, method, tag) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements == 0) {
+			return;
+		}
+		$('#'+tag).prop("disabled", true);
+		var id_list=[];
+		elements.each(function() {
+			let id = $(this).first().closest('tr').data('qsoID')
+			id_list.push(id);
+		});
+		$.ajax({
+			url: base_url + 'index.php/logbookadvanced/update_qsl_received',
 			type: 'post',
 			data: {'id': JSON.stringify(id_list, null, 2),
 				'sent' : sent,
