@@ -76,7 +76,7 @@
 		<?php $this->CI =& get_instance();
 		if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
 			<form method="post" action="" class="form-inline">
-				<input class="form-control mr-sm-2" id="callsign" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
+				<input class="form-control mr-sm-2" id="callsign" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" style="text-transform: uppercase;" aria-label="Search">
 
 				<button onclick="publicSearchButtonPress()" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> <?php echo lang('menu_search_button'); ?></button>
 			</form>

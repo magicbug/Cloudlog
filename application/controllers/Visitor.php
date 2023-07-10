@@ -471,16 +471,16 @@ class Visitor extends CI_Controller {
 		$callsign = $this->security->xss_clean($this->uri->segment(4));
 		$this->load->model('publicsearch');
 		$result = $this->publicsearch->search($slug, $callsign);
-		$this->search_result($result);
+		$this->search_result($result, $callsign);
 	}
 
-	private function search_result($search_results) {
+	private function search_result($search_results, $callsign) {
+		$data['callsign'] = $callsign;
 		if ($search_results->num_rows() > 0) {
-			echo "Result found";
 			$data['results'] = $search_results;
 			$this->load->view('public_search/result.php', $data);
 		} else {
-			echo "No results found";
+			$this->load->view('public_search/empty.php', $data);
 		}
 	}
 
