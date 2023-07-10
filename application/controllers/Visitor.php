@@ -458,15 +458,20 @@ class Visitor extends CI_Controller {
 
 	public function search() {
 		$slug = $this->security->xss_clean($this->uri->segment(3));
-		$data['slug'] = $slug;
 		$callsign = $this->security->xss_clean($this->uri->segment(4));
-		$data['callsign'] = $callsign;
-		$this->search_result($data);
+		$this->load->model('publicsearch');
+		$result = $this->publicsearch->search($slug, $callsign);
+		$this->search_result($result);
 	}
 
-	private function search_result($data) {
-		echo "TEST".$data['slug']."<br />";
-		echo "CALL".strtoupper($data['callsign']);
+	private function search_result($search_results) {
+		if ($search_results->num_rows() > 0) {
+			echo "Result found";
+			$data['results'] = $search_results;
+			$this->load->view('view_log/partial/log_ajax.php', $data);
+		} else {
+			echo "No results found";
+		}
 	}
 
 }
