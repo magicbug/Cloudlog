@@ -478,7 +478,7 @@ class Visitor extends CI_Controller {
 		if ($search_results->num_rows() > 0) {
 			echo "Result found";
 			$data['results'] = $search_results;
-			$this->load->view('view_log/partial/log_ajax.php', $data);
+			$this->load->view('public_search/result.php', $data);
 		} else {
 			echo "No results found";
 		}
