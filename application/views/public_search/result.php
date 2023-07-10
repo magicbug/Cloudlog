@@ -10,6 +10,7 @@ if ($results) { ?>
                 <th><?php echo lang('gen_hamradio_call'); ?></th>
                 <th><?php echo lang('gen_hamradio_mode'); ?></th>
                 <th><?php echo lang('gen_hamradio_band'); ?></th>
+                <th>Station Callsign</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,9 @@ if ($results) { ?>
             </td>
             <td>
                 <?php if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); } ?>
+            </td>
+            <td>
+                <?php echo $row->station_callsign; ?>
             </td>
             </tr>
             <?php $i++; } ?>
