@@ -73,14 +73,16 @@
 		</ul>
 
 		<div style="paddling-left: 0.5rem; padding-right: 0.5rem"></div>
-		<?php $this->CI =& get_instance();
-		if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
-			<form method="post" action="" class="form-inline">
-				<input class="form-control mr-sm-2" id="callsign" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" style="text-transform: uppercase;" aria-label="Search">
+		<?php if (!empty($slug)) {
+			$this->CI =& get_instance();
+			if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
+				<form method="post" action="" class="form-inline">
+					<input class="form-control mr-sm-2" id="callsign" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" style="text-transform: uppercase;" aria-label="Search">
 
-				<button onclick="publicSearchButtonPress()" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> <?php echo lang('menu_search_button'); ?></button>
-			</form>
-		<?php } ?>
+					<button onclick="publicSearchButtonPress()" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> <?php echo lang('menu_search_button'); ?></button>
+				</form>
+			<?php }
+		} ?>
 	</div>
 </div>
 </nav>
