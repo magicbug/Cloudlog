@@ -31,7 +31,6 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = 'Suba el archivo ADIF export
 $lang['lotw_upload_type_must_be_adi'] = 'Los archivos de registro deben ser del tipo .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Extraer los datos LoTW por mí';
-$lang['lotw_import_missing_qsos_text'] = 'Importar los QSOs faltantes en el registro. El indicativo y el <i>gridsquare</i> serán comprobados a fin de encontrar el perfil correcto para importar el QSO. Si no fueran encontrados, el QSO será omitido.';
 
 $lang['lotw_report_download_overview_helptext'] ='Cloudlog usará el usuario y contraseña de LoTW guardado en su perfil para descargar un informe de LoTW por usted. El informe contendrá todas las confirmaciones desde la fecha elegida o desde su última confirmación LoTW hasta ahora.';
 
