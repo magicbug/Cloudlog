@@ -2700,12 +2700,13 @@ class Logbook_model extends CI_Model {
     return "Updated";
   }
 
-  function lotw_last_qsl_date() {
+  function lotw_last_qsl_date($user_id) {
+      log_message("error","last QSL for User ".$user_id);
       $this->db->select('COL_LOTW_QSLRDATE');
       $this->db->where('COL_LOTW_QSLRDATE IS NOT NULL');
       $this->db->order_by("COL_LOTW_QSLRDATE", "desc");
       $this->db->limit(1);
-
+	/* Todo: Add Join to users / station_profiles / etc, to fetch only last QSL for that user */
       $query = $this->db->get($this->config->item('table_name'));
       $row = $query->row();
 

@@ -192,6 +192,9 @@ class Lotw extends CI_Controller {
 	*/
 	public function lotw_upload() {
 
+		$this->load->model('user_model');
+		$this->user_model->authorize(2);
+
 		// Fire OpenSSL missing error if not found
 		if (!extension_loaded('openssl')) {
 			echo "You must install php OpenSSL for LoTW functions to work";
@@ -200,7 +203,13 @@ class Lotw extends CI_Controller {
 		// Get Station Profile Data
 		$this->load->model('Stations');
 
-		$station_profiles = $this->Stations->all();
+		if ($this->user_model->authorize(2)) {
+			$station_profiles = $this->Stations->all_of_user($this->session->userdata('user_id'));
+			$sync_user_id=$this->session->userdata('user_id');
+		} else {
+			$station_profiles = $this->Stations->all();
+			$sync_user_id=null;
+		}
 
 		// Array of QSO IDs being Uploaded
 
@@ -209,8 +218,7 @@ class Lotw extends CI_Controller {
 		// Build TQ8 Outputs
 			if ($station_profiles->num_rows() >= 1) {
 
-				foreach ($station_profiles->result() as $station_profile)
-				{
+				foreach ($station_profiles->result() as $station_profile) {
 
 					// Get Certificate Data
 					$this->load->model('LotwCert');
@@ -242,7 +250,9 @@ class Lotw extends CI_Controller {
 
 					// Nothing to upload
 					if(empty($data['qsos']->result())){
-						echo $station_profile->station_callsign." (".$station_profile->station_profile_name.") No QSOs to Upload <br>";
+						if ($this->user_model->authorize(2)) {	// Only be verbose if we have a session
+							echo $station_profile->station_callsign." (".$station_profile->station_profile_name.") No QSOs to Upload <br>";
+						}
 					    continue;
 					}
 
@@ -345,9 +355,10 @@ class Lotw extends CI_Controller {
 			/*
 			|	Download QSO Matches from LoTW
 			*/
-			echo "<br><br>";
-			echo $this->lotw_download();
-
+			if ($this->user_model->authorize(2)) {	// Only be verbose if we have a session
+				echo "<br><br>";
+			}
+			echo $this->lotw_download($sync_user_id);
 	}
 
 	/*
@@ -577,17 +588,20 @@ class Lotw extends CI_Controller {
 
 		unlink($filepath);
 
-		if(isset($data['lotw_table_headers'])) {
-			if($display_view == TRUE) {
-				$data['page_title'] = "LoTW ADIF Information";
-				$this->load->view('interface_assets/header', $data);
-				$this->load->view('lotw/analysis');
-				$this->load->view('interface_assets/footer');
+		$this->load->model('user_model');
+		if ($this->user_model->authorize(2)) {	// Only Output results if authorized User
+			if(isset($data['lotw_table_headers'])) {
+				if($display_view == TRUE) {
+					$data['page_title'] = "LoTW ADIF Information";
+					$this->load->view('interface_assets/header', $data);
+					$this->load->view('lotw/analysis');
+					$this->load->view('interface_assets/footer');
+				} else {
+					return $tableheaders.$table;
+				}
 			} else {
-				return $tableheaders.$table;
+				echo "Downloaded LoTW report contains no matches.";
 			}
-		} else {
-			echo "Downloaded LoTW report contains no matches.";
 		}
 	}
 
@@ -600,7 +614,7 @@ class Lotw extends CI_Controller {
 	|	downloading matching QSOs.
 	|
 	*/
-	function lotw_download() {
+	function lotw_download($sync_user_id = null) {
 		$this->load->model('user_model');
 		$this->load->model('logbook_model');
 
@@ -608,8 +622,8 @@ class Lotw extends CI_Controller {
 
 		if ($query->num_rows() >= 1) {
 
-			foreach ($query->result() as $user)
-			{
+			foreach ($query->result() as $user) {
+				if ( ($sync_user_id != null) && ($sync_user_id != $user->user_id) ) { continue; }
 
 				$config['upload_path'] = './uploads/';
 				$file = $config['upload_path'] . 'lotwreport_download.adi';
@@ -633,7 +647,7 @@ class Lotw extends CI_Controller {
 					echo "You have not defined your ARRL LoTW credentials!";
 				}
 
-		        $lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date()));
+		        $lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($user->user_id)));
 
 				// Build URL for LoTW report file
 				$lotw_url .= "?";
@@ -706,7 +720,7 @@ class Lotw extends CI_Controller {
             }
             else {
                 // Query the logbook to determine when the last LoTW confirmation was
-                $lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date()));
+                $lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($this->session->userdata['user_id'])));
             }
 
 			// Build URL for LoTW report file
