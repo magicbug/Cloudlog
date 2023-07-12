@@ -512,6 +512,12 @@ class Lotw extends CI_Controller {
 						$qsl_gridsquare = "";
 					}
 
+					if (isset($record['vucc_grids'])) {
+						$qsl_vucc_grids = $record['vucc_grids'];
+					} else {
+						$qsl_vucc_grids = "";
+					}
+
 					if (isset($record['iota'])) {
 						$iota = $record['iota'];
 					} else {
@@ -536,7 +542,7 @@ class Lotw extends CI_Controller {
 						$ituz = "";
 					}
 
-					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare, $iota, $cnty, $cqz, $ituz, $record['station_callsign']);
+					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare, $qsl_vucc_grids, $iota, $cnty, $cqz, $ituz, $record['station_callsign']);
 
 					$table .= "<tr>";
 						$table .= "<td>".$record['station_callsign']."</td>";
@@ -546,7 +552,7 @@ class Lotw extends CI_Controller {
 						$table .= "<td>".$record['qsl_rcvd']."</td>";
 						$table .= "<td>".$qsl_date."</td>";
 						$table .= "<td>".$state."</td>";
-						$table .= "<td>".$qsl_gridsquare."</td>";
+						$table .= "<td>".($qsl_gridsquare != '' ? $qsl_gridsquare : $qsl_vucc_grids)."</td>";
 						$table .= "<td>".$iota."</td>";
 						$table .= "<td>QSO Record: ".$status[0]."</td>";
 						$table .= "<td>LoTW Record: ".$lotw_status."</td>";
