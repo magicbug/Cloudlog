@@ -2636,7 +2636,7 @@ class Logbook_model extends CI_Model {
     }
   }
 
-  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $iota, $cnty, $cqz, $ituz, $station_id) {
+  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $iota, $cnty, $cqz, $ituz, $station_callsign) {
 
 	$data = array(
       'COL_LOTW_QSLRDATE' => $qsl_date,
@@ -2665,7 +2665,7 @@ class Logbook_model extends CI_Model {
     $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
     $this->db->where('COL_CALL', $callsign);
     $this->db->where('COL_BAND', $band);
-    $this->db->where('station_id', $station_id);
+    $this->db->where('COL_STATION_CALLSIGN', $station_callsign);
 
     $this->db->update($this->config->item('table_name'), $data);
 	unset($data);
@@ -3920,28 +3920,6 @@ class Logbook_model extends CI_Model {
         $query = $this->db->query($sql);
 
         return $query->result();
-    }
-
-    /*
-     * This function tries to locate the correct station_id used for importing QSOs from the downloaded LoTWreport
-     * $station_callsign is the call listed for the qso in lotwreport
-     * $my_gridsquare is the gridsquare listed for the qso in lotwreport
-     * Returns station_id if found
-     */
-    function find_correct_station_id($station_callsign, $my_gridsquare) {
-        $sql = 'select station_id from station_profile
-            where station_callsign = "' . $station_callsign . '" and station_gridsquare = "' .$my_gridsquare. '"';
-
-        $query = $this->db->query($sql);
-
-        $result = $query->row();
-
-        if ($result) {
-            return $result->station_id;
-        }
-        else {
-            return null;
-        }
     }
 
   function get_lotw_qsos_to_upload($station_id, $start_date, $end_date) {
