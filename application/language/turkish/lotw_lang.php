@@ -33,7 +33,6 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = 'LoTW\'den Dışa Aktarılan
 $lang['lotw_upload_type_must_be_adi'] = 'Günlük dosyaları .adi dosya tipine sahip olmalıdır';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Benim için LoTW verilerini çek';
-$lang['lotw_import_missing_qsos_text'] = 'Eksik QSO\'ları günlüğe aktarın. QSO\'nun içe aktarılacağı doğru profili bulmaya çalışmak için çağrı ve gridsquare kontrol edilecektir. Bulunamazsa, QSO atlanacaktır.';
 
 $lang['lotw_report_download_overview_helptext'] ='Cloudlog, sizin için LoTW\'den bir rapor indirmek için kullanıcı profilinizde kayıtlı LoTW kullanıcı adını ve şifreyi kullanacak. Cloudlog indirmeleri raporu, seçilen tarihten itibaren veya son LoTW onayınızdan (günlüğünüzden alınır) bu yana şimdiye kadarki tüm onaylara sahip olacaktır.';
 
