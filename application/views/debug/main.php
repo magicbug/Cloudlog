@@ -169,6 +169,8 @@
                $commitDate = trim(exec('git log --pretty="%ci" -n1 HEAD'));
                $line = trim(exec('git log -n 1 --pretty=%D HEAD'));
                $pieces = explode(', ', $line);
+               $lastFetch = trim(exec('stat -c %Y .git/FETCH_HEAD'));
+               $dt = new DateTime("@$lastFetch");
                if (isset($pieces[1])) {
                   $remote = substr($pieces[1], 0, strpos($pieces[1], '/'));
                   $branch = substr($pieces[1], strpos($pieces[1], '/')+1);
@@ -223,6 +225,12 @@
                             <?php } else { ?> 
                                 <span class="badge badge-danger">n/a</span>
                             <?php } ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Last Fetch</td>
+                        <td>
+                              <?php echo $dt->format(\DateTime::RFC850); ?>
                         </td>
                     </tr>
                 </table>
