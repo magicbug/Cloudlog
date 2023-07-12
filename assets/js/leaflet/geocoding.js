@@ -57,8 +57,8 @@ const latLngToLocator = (lat, lng) => {
 
 function onMapMove(event) {
 	var LatLng = event.latlng;
-	var lat = LatLng.lat; 
-	var lng = LatLng.lng; 					
+	var lat = LatLng.lat;
+	var lng = LatLng.lng;
 	var LatLng2 = ConvertDDToDMS(lat, lng);
 	$('#latDeg').html(LatLng2.latDeg);
 	$('#lngDeg').html(LatLng2.lngDeg);
@@ -70,6 +70,46 @@ function onMapMove(event) {
 	$('#distance').html(Math.round(distance.km * 10) / 10 + ' km');
 };
 
+function onMapClick(event) {
+	var LatLng = event.latlng;
+	var lat = LatLng.lat;
+	var lng = LatLng.lng;
+	var locator = latLngToLocator(lat,lng);
+	var fromCoords = locatorToLatLng(homegrid);
+
+	var marker = L.marker([fromCoords[0], fromCoords[1]], {closeOnClick: false, autoClose: false}).addTo(map).bindPopup(homegrid);
+
+	var result = bearingDistance(homegrid, locator);
+
+	var distance = Math.round(result.km * 10) / 10 + ' km';
+	var bearing = Math.round(result.deg * 10) / 10 + ' deg';
+	var popupmessage = '<div class="popup">' +
+	'From gridsquare: ' + homegrid + '<br />To gridsquare: ' + locator +'<br />Distance: ' + distance+ '<br />Bearing: ' + bearing +
+	'</div>';
+
+	const multiplelines = [];
+	multiplelines.push(
+		new L.LatLng(fromCoords[0], fromCoords[1]),
+		new L.LatLng(lat, lng)
+	)
+
+	if (lng < -170) {
+		lng = parseFloat(lng) + 360;
+	}
+
+	var marker2 = L.marker([lat, lng], {closeOnClick: false, autoClose: false}).addTo(map);
+
+	marker2.bindTooltip(popupmessage);
+
+	const geodesic = L.geodesic(multiplelines, {
+		weight: 3,
+		opacity: 1,
+		color: 'red',
+		wrap: false,
+		steps: 100
+	}).addTo(map);
+};
+
 const bearingDistance = (from, to) => {
 	const fromCoords = locatorToLatLng(from);
 	const toCoords = locatorToLatLng(to);
@@ -79,16 +119,16 @@ const bearingDistance = (from, to) => {
 	const toLat = degToRad(toCoords[0]);
 	const a = Math.pow(Math.sin(dLat / 2), 2) + Math.pow(Math.sin(dLon / 2), 2) * Math.cos(fromLat) * Math.cos(toLat);
 	const b = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-	
+
 	const y = (dLon) * Math.cos(fromLat) * Math.cos(toLat);
 	const x = Math.sin(toLat) - Math.sin(fromLat) * Math.cos(b);
-	
+
 	let az = Math.atan2(y, x);
-	
+
 	if (az < 0) {
 		az += 2 * Math.PI;
 	}
-	
+
 	return {
 		km: b * 6371,
 		deg: calcAngle(fromCoords, toCoords)
@@ -112,14 +152,14 @@ const locatorToLatLng = (locatorString) => {
 	if (!isValidLocatorString(locatorString)) {
 		throw new Error('Input is not valid locator string');
 	}
-	
+
 	const fieldLng = charToNumber(locatorString[0]) * 20;
 	const fieldLat = charToNumber(locatorString[1]) * 10;
 	const squareLng = Number.parseInt(locatorString[2]) * 2;
 	const squareLat = Number.parseInt(locatorString[3]);
 	const subsquareLng = (charToNumber(locatorString[4]) + 0.5) / 12;
 	const subsquareLat = (charToNumber(locatorString[5]) + 0.5) / 24;
-	
+
 	return [
 		fieldLat + squareLat + subsquareLat - 90,
 		fieldLng + squareLng + subsquareLng - 180
