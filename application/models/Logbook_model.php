@@ -2693,21 +2693,6 @@ class Logbook_model extends CI_Model {
       $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
       $this->db->where('COL_CALL', $callsign);
       $this->db->where('COL_BAND', $band);
-	  $this->db->group_start();
-	  $this->db->where('COL_VUCC_GRIDS');
-	  $this->db->or_where('COL_VUCC_GRIDS', '');
-	  $this->db->group_end();
-      if(strlen($qsl_gridsquare) > 4) {
-        $this->db->group_start();
-        $this->db->where('COL_GRIDSQUARE', "");
-        $this->db->or_where('COL_GRIDSQUARE', substr($qsl_gridsquare, 0, 4));
-        if(strlen($qsl_gridsquare) > 6) {
-          $this->db->or_where('COL_GRIDSQUARE', substr($qsl_gridsquare, 0, 6));
-        }
-        $this->db->group_end();
-      } else {
-        $this->db->where('COL_GRIDSQUARE', "");
-      }
 
       $this->db->update($this->config->item('table_name'), $data);
     }
