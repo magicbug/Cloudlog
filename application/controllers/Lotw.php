@@ -498,18 +498,8 @@ class Lotw extends CI_Controller {
 				}
 
 				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band'], $record['mode'], $record['station_callsign']);
-				$skipNewQso = $this->input->post('importMissing'); // If import missing was checked
 
-				if($status[0] == "No Match" && $skipNewQso != NULL) {
-
-				$result = $this->logbook_model->import($record, $station_id, NULL, TRUE, NULL, NULL, NULL, true, false);  // Create the Entry
-				if ($result == "") {
-					$lotw_status = 'QSO imported';
-				} else {
-					$lotw_status = $result;
-				}
-
-				} else {
+				if($status[0] == "Found") {
 					if (isset($record['state'])) {
 						$state = $record['state'];
 					} else {
@@ -561,7 +551,11 @@ class Lotw extends CI_Controller {
 					$table .= "<td>".$qsl_gridsquare."</td>";
 					$table .= "<td>".$iota."</td>";
 					$table .= "<td>QSO Record: ".$status[0]."</td>";
-					$table .= "<td>LoTW Record: ".$lotw_status."</td>";
+					if($status[0] == "Found") {
+						$table .= "<td>LoTW Record: ".$lotw_status."</td>";
+					} else {
+						$table .= "<td></td>";
+					}
 				$table .= "</tr>";
 			}
 
