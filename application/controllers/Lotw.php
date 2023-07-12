@@ -537,26 +537,35 @@ class Lotw extends CI_Controller {
 					}
 
 					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare, $iota, $cnty, $cqz, $ituz, $record['station_callsign']);
-				}
 
-
-				$table .= "<tr>";
-					$table .= "<td>".$record['station_callsign']."</td>";
-					$table .= "<td>".$time_on."</td>";
-					$table .= "<td>".$record['call']."</td>";
-					$table .= "<td>".$record['mode']."</td>";
-					$table .= "<td>".$record['qsl_rcvd']."</td>";
-					$table .= "<td>".$qsl_date."</td>";
-					$table .= "<td>".$state."</td>";
-					$table .= "<td>".$qsl_gridsquare."</td>";
-					$table .= "<td>".$iota."</td>";
-					$table .= "<td>QSO Record: ".$status[0]."</td>";
-					if($status[0] == "Found") {
+					$table .= "<tr>";
+						$table .= "<td>".$record['station_callsign']."</td>";
+						$table .= "<td>".$time_on."</td>";
+						$table .= "<td>".$record['call']."</td>";
+						$table .= "<td>".$record['mode']."</td>";
+						$table .= "<td>".$record['qsl_rcvd']."</td>";
+						$table .= "<td>".$qsl_date."</td>";
+						$table .= "<td>".$state."</td>";
+						$table .= "<td>".$qsl_gridsquare."</td>";
+						$table .= "<td>".$iota."</td>";
+						$table .= "<td>QSO Record: ".$status[0]."</td>";
 						$table .= "<td>LoTW Record: ".$lotw_status."</td>";
-					} else {
+					$table .= "</tr>";
+				} else {
+					$table .= "<tr>";
+						$table .= "<td>".$record['station_callsign']."</td>";
+						$table .= "<td>".$time_on."</td>";
+						$table .= "<td>".$record['call']."</td>";
+						$table .= "<td>".$record['mode']."</td>";
+						$table .= "<td>".$record['qsl_rcvd']."</td>";
 						$table .= "<td></td>";
-					}
-				$table .= "</tr>";
+						$table .= "<td></td>";
+						$table .= "<td></td>";
+						$table .= "<td></td>";
+						$table .= "<td>QSO Record: ".$status[0]."</td>";
+						$table .= "<td></td>";
+					$table .= "</tr>";
+				}
 			}
 
 			if ($table != "")
