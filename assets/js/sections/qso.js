@@ -329,6 +329,9 @@ function reset_fields() {
 	$('#country').val("");
 	$('#continent').val("");
 	$('#lotw_info').text("");
+	$('#lotw_info').removeClass("lotw_info_red");
+	$('#lotw_info').removeClass("lotw_info_yellow");
+	$('#lotw_info').removeClass("lotw_info_orange");
 	$('#qrz_info').text("");
 	$('#hamqth_info').text("");
 	$('#sota_info').text("");
@@ -457,6 +460,17 @@ $("#callsign").focusout(function() {
 
 				if(result.lotw_member == "active") {
 					$('#lotw_info').text("LoTW");
+					if (result.lotw_days > 365) {
+						$('#lotw_info').addClass('lotw_info_red');
+					} else if (result.lotw_days > 30) {
+						$('#lotw_info').addClass('lotw_info_orange');
+						$lotw_hint = ' lotw_info_orange';
+					} else if (result.lotw_days > 7) {
+						$('#lotw_info').addClass('lotw_info_yellow');
+					}
+					$('#lotw_info').attr('data-toggle',"tooltip");
+					$('#lotw_info').attr('data-original-title',"LoTW User. Last upload was "+result.lotw_days+" days ago");
+					$('[data-toggle="tooltip"]').tooltip();
 				}
 				$('#qrz_info').html('<a target="_blank" href="https://www.qrz.com/db/'+find_callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/qrz.com.png"></a>'); 
 				$('#qrz_info').attr('title', 'Lookup '+find_callsign+' info on qrz.com');
