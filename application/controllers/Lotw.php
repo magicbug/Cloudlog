@@ -674,7 +674,7 @@ class Lotw extends CI_Controller {
 				ini_set('memory_limit', '-1');
 				$results.= $this->loadFromFile($file, false);
 			}
-				return $results;
+			return $results;
 		} else {
 			return "No LOTW User details found to carry out matches.";
 		}

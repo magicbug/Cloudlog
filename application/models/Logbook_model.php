@@ -2707,8 +2707,6 @@ class Logbook_model extends CI_Model {
 	  $query = $this->db->query($sql);
 	  $row = $query->row();
 
-	  log_message("error","last QSL for User ".$user_id." was ".$row->MAXDATE);
-
 	  if (isset($row)) {
 		  return $row->MAXDATE;
 	  }
