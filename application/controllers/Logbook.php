@@ -98,30 +98,15 @@ class Logbook extends CI_Controller {
 		$callsign = str_replace("-","/",$callsign);
 
 		// Check if callsign is an LOTW User
-		$lotw_member = "";
-		$lotw_file_name = "./updates/lotw_users.csv";
-
-		if (file_exists($lotw_file_name)) {
-			$f = fopen($lotw_file_name, "r");
-			$result = false;
-			while ($row = fgetcsv($f)) {
-				if ($row[0] == strtoupper($callsign)) {
-					$result = $row[0];
-					$lotw_member = "active";
-					break;
-				}
-			}
-
-			if($lotw_member != "active") {
-				$lotw_member = "not found";
-			}
-			fclose($f);
-		} else {
-			$lotw_member = "not found";
-		}
-
 		// Check Database for all other data
 		$this->load->model('logbook_model');
+	
+		$lotw_days=$this->logbook_model->check_last_lotw($callsign);
+		if ($lotw_days != null) {
+			$lotw_member="active";
+		} else {
+			$lotw_member="not found";
+		}
 
 		$return = [
 			"callsign" => strtoupper($callsign),
@@ -137,6 +122,7 @@ class Logbook extends CI_Controller {
 			"bearing" 		=> "",
 			"workedBefore" => false,
 			"lotw_member" => $lotw_member,
+			"lotw_days" => $lotw_days,
 			"image" => "",
 		];
 

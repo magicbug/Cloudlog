@@ -296,6 +296,16 @@ class Logbook_model extends CI_Model {
     $this->add_qso($data, $skipexport = false);
   }
 
+  public function check_last_lotw($call){	// Fetch difference in days when $call has last updated LotW
+
+	  $sql="select datediff(now(),lastupload) as DAYS from lotw_users where callsign = ?";	// Use binding to prevent SQL-injection
+	  $query = $this->db->query($sql, $call);
+	  $row = $query->row();
+	  if (isset($row)) {
+		  return($row->DAYS);
+	  }
+  }
+
   public function check_station($id){
 
     $this->db->select('station_profile.*, dxcc_entities.name as station_country');
