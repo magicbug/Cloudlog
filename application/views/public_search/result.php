@@ -7,7 +7,7 @@
 if ($results) { ?>
 
 <div class="table-responsive">
-    <table style="width:100%" class="table contacttable table-striped table-hover">
+    <table style="width:100%" id="publicsearchtable" class="publicsearchtable table table-sm table-striped table-hover">
         <thead>
             <tr class="titles">
                 <th><?php echo lang('general_word_date'); ?></th>

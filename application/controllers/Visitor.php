@@ -467,20 +467,21 @@ class Visitor extends CI_Controller {
 	}
 
 	public function search() {
-		$slug = $this->security->xss_clean($this->uri->segment(3));
-		$callsign = $this->security->xss_clean($this->uri->segment(4));
+		$callsign = $this->security->xss_clean($this->input->post('callsign'));
+		$public_slug = $this->security->xss_clean($this->input->post('public_slug'));
 		$this->load->model('publicsearch');
-		$result = $this->publicsearch->search($slug, $callsign);
-		$this->search_result($result, $callsign);
-	}
-
-	private function search_result($search_results, $callsign) {
+		$result = $this->publicsearch->search($public_slug, $callsign);
 		$data['callsign'] = $callsign;
-		if ($search_results->num_rows() > 0) {
-			$data['results'] = $search_results;
+		$data['slug'] = $public_slug;
+		if (!empty($result) && $result->num_rows() > 0) {
+			$data['results'] = $result;
+			$this->load->view('visitor/layout/header', $data);
 			$this->load->view('public_search/result.php', $data);
+			$this->load->view('visitor/layout/footer');
 		} else {
+			$this->load->view('visitor/layout/header', $data);
 			$this->load->view('public_search/empty.php', $data);
+			$this->load->view('visitor/layout/footer');
 		}
 	}
 
