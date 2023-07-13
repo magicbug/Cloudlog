@@ -355,8 +355,11 @@ class Lotw extends CI_Controller {
 			/*
 			|	Download QSO Matches from LoTW
 			*/
-			if ($this->user_model->authorize(2)) {	// Only be verbose if we have a session
+			if ($this->user_model->authorize(2)) {
 				echo "<br><br>";
+				$sync_user_id=$this->session->userdata('user_id');
+			} else {
+				$sync_user_id=null;
 			}
 			echo $this->lotw_download($sync_user_id);
 	}
