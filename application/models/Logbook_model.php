@@ -2705,21 +2705,19 @@ class Logbook_model extends CI_Model {
     return "Updated";
   }
 
-  function lotw_last_qsl_date() {
-      $this->db->select('COL_LOTW_QSLRDATE');
-      $this->db->where('COL_LOTW_QSLRDATE IS NOT NULL');
-      $this->db->order_by("COL_LOTW_QSLRDATE", "desc");
-      $this->db->limit(1);
+  function lotw_last_qsl_date($user_id) {
+	  $sql="SELECT MAX(COALESCE(COL_LOTW_QSLRDATE, '1900-01-01 00:00:00')) MAXDATE
+		    FROM ".$this->config->item('table_name')." INNER JOIN station_profile ON (".$this->config->item('table_name').".station_id = station_profile.station_id)
+		    WHERE station_profile.user_id=".$user_id." and COL_LOTW_QSLRDATE is not null";
+	  $query = $this->db->query($sql);
+	  $row = $query->row();
 
-      $query = $this->db->get($this->config->item('table_name'));
-      $row = $query->row();
+	  if (isset($row)) {
+		  return $row->MAXDATE;
+	  }
 
-      if (isset($row)) {
-        return $row->COL_LOTW_QSLRDATE;
-      }
-
-      return '1900-01-01 00:00:00.000';
-    }
+	  return '1900-01-01 00:00:00.000';
+  }
 
     /*
      * $skipDuplicate - used in ADIF import to skip duplicate checking when importing QSOs
