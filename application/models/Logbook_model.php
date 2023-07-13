@@ -2701,7 +2701,7 @@ class Logbook_model extends CI_Model {
   }
 
   function lotw_last_qsl_date($user_id) {
-	  $sql="SELECT MAX(COALESCE(COL_LOTW_QSLRDATE, '1900-01-01 00:00:00')) MAXDATE, ".$this->config->item('table_name').".station_id
+	  $sql="SELECT MAX(COALESCE(COL_LOTW_QSLRDATE, '1900-01-01 00:00:00')) MAXDATE
 		    FROM ".$this->config->item('table_name')." INNER JOIN station_profile ON (".$this->config->item('table_name').".station_id = station_profile.station_id)
 		    WHERE station_profile.user_id=".$user_id." and COL_LOTW_QSLRDATE is not null";
 	  $query = $this->db->query($sql);
