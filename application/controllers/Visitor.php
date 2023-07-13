@@ -20,6 +20,9 @@ class Visitor extends CI_Controller {
         elseif($method == "satellites") {
             $this->satellites($method);
         }
+        elseif($method == "search") {
+            $this->search($method);
+        }
         else {
             $this->index($method);
         }
@@ -452,4 +455,34 @@ class Visitor extends CI_Controller {
 			return false;
 		}
 	}
+
+	public function public_search_enabled($slug) {
+		$this->load->model('Logbooks_model');
+		$logbook_id = $this->Logbooks_model->public_slug_exists_logbook_id($slug);
+		if ($this->Logbooks_model->public_search_enabled($logbook_id)  == 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function search() {
+		$callsign = $this->security->xss_clean($this->input->post('callsign'));
+		$public_slug = $this->security->xss_clean($this->input->post('public_slug'));
+		$this->load->model('publicsearch');
+		$result = $this->publicsearch->search($public_slug, $callsign);
+		$data['callsign'] = $callsign;
+		$data['slug'] = $public_slug;
+		if (!empty($result) && $result->num_rows() > 0) {
+			$data['results'] = $result;
+			$this->load->view('visitor/layout/header', $data);
+			$this->load->view('public_search/result.php', $data);
+			$this->load->view('visitor/layout/footer');
+		} else {
+			$this->load->view('visitor/layout/header', $data);
+			$this->load->view('public_search/empty.php', $data);
+			$this->load->view('visitor/layout/footer');
+		}
+	}
+
 }

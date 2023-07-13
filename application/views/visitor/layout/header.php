@@ -71,6 +71,18 @@
 		</li>
 		<?php } ?>
 		</ul>
+
+		<div style="paddling-left: 0.5rem; padding-right: 0.5rem"></div>
+		<?php if (!empty($slug)) {
+			$this->CI =& get_instance();
+			if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
+				<form method="post" action="<?php echo site_url('visitor/search'); ?>" class="form-inline">
+					<input class="form-control mr-sm-2" id="callsign" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" style="text-transform: uppercase;" aria-label="Search">
+					<input type="hidden" name="public_slug" value="<?php echo $slug; ?>">
+					<button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> <?php echo lang('menu_search_button'); ?></button>
+				</form>
+			<?php }
+		} ?>
 	</div>
 </div>
 </nav>

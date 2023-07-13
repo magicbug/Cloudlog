@@ -36,6 +36,7 @@
 					<th scope="col">Edit</th>
 					<th scope="col">Delete</th>
 					<th scope="col">Link</th>
+					<th scope="col">Public Search</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -64,6 +65,13 @@
 						<?php if($row->public_slug != '') { ?>
 							<a target="_blank" href="<?php echo site_url('visitor')."/".$row->public_slug; ?>" class="btn btn-outline-primary btn-sm" ><i class="fas fa-globe" title="View Public Page for <?php echo $row->logbook_name;?> Logbook"></i> </a>
 							<?php } ?>
+					</td>
+					<td>
+							<?php if ($row->public_search == 1) {
+							echo "<span class=\"badge badge-success\">Enabled</span>";
+							} else {
+							echo "<span class=\"badge badge-dark\">Disabled</span>";
+							} ?>
 					</td>
 				</tr>
 				<?php } ?>

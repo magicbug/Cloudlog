@@ -47,7 +47,6 @@
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
-            console.log("lets go");
             initmap(grid);
 
       });
@@ -199,5 +198,58 @@
 <?php } ?>
 <?php } ?>
     </script>
+    <?php if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
+    <script>
+            <?php switch($this->config->item('qso_date_format')) {
+               case 'd/m/y': $usethisformat = 'D/MM/YY';break;
+               case 'd/m/Y': $usethisformat = 'D/MM/YYYY';break;
+               case 'm/d/y': $usethisformat = 'MM/D/YY';break;
+               case 'm/d/Y': $usethisformat = 'MM/D/YYYY';break;
+               case 'd.m.Y': $usethisformat = 'D.MM.YYYY';break;
+               case 'y/m/d': $usethisformat = 'YY/MM/D';break;
+               case 'Y-m-d': $usethisformat = 'YYYY-MM-D';break;
+               case 'M d, Y': $usethisformat = 'MMM D, YYYY';break;
+               case 'M d, y': $usethisformat = 'MMM D, YY';break;
+               default: $usethisformat = 'YYYY-MM-D';
+            } ?>
+
+            $.fn.dataTable.moment('<?php echo $usethisformat ?>');
+            $.fn.dataTable.ext.buttons.clear = {
+                className: 'buttons-clear',
+                action: function ( e, dt, node, config ) {
+                   dt.search('').draw();
+                }
+            };
+            $('#publicsearchtable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: true,
+                "scrollY":        "500px",
+                "scrollCollapse": true,
+                "paging":         false,
+                "scrollX": true,
+                "order": [ 0, 'desc' ],
+                dom: 'Bfrtip',
+                buttons: [
+                   {
+                      extend: 'csv'
+                   },
+                   {
+                      extend: 'clear',
+                      text: 'Clear'
+                   }
+                ]
+            });
+            // change color of csv-button if dark mode is chosen
+            if (isDarkModeTheme()) {
+               $('[class*="buttons"]').css("color", "white");
+            }
+        </script>
+    <?php } ?>
+
   </body>
 </html>

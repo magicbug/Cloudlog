@@ -50,7 +50,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 <!-- Map -->
 <div id="map" style="width: 100%; height: 350px"></div>
 
-<div style="padding-top: 0px; margin-top: 5px;" class="container dashboard">
+<div id="container" style="padding-top: 0px; margin-top: 5px;" class="container dashboard">
 
 <!-- Log Data -->
 <div class="row logdata">
@@ -231,3 +231,5 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 </div>
 
 </div>
+
+<div id="partial_view"></div>
