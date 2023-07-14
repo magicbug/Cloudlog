@@ -210,6 +210,16 @@ class Logbooks_model extends CI_Model {
 		}
 	}
 
+	function save_public_search($public_search, $logbook_id) {
+		$data = array(
+			'public_search' => xss_clean($public_search),
+		);
+
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('logbook_id', xss_clean($logbook_id));
+		$this->db->update('station_logbooks', $data);
+	}
+
 	function save_public_slug($public_slug, $logbook_id) {
 		$data = array(
 			'public_slug' => xss_clean($public_slug),
@@ -321,6 +331,15 @@ class Logbooks_model extends CI_Model {
 		} else {
 			return 0;
 		}
+	}
+
+	function public_search_enabled($logbook_id) {
+		$this->db->select('public_search');
+		$this->db->where('logbook_id', $logbook_id);
+
+		$query = $this->db->get('station_logbooks');
+
+      return $query->result_array()[0]['public_search'];
 	}
 }
 ?>

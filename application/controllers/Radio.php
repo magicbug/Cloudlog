@@ -78,82 +78,95 @@
 
 	}
 
-	function json($id)
-	{
+	function json($id) {
 
-		header('Content-Type: application/json');
+		$this->load->model('user_model');
 
-		$this->load->model('cat');
+		// Check if users logged in
 
-		$query = $this->cat->radio_status($id);
+		if($this->user_model->validate_session() == 0) {
+			// user is not logged in
+			// Return Json data
+			header('Content-Type: application/json');
+			echo json_encode(array(
+				"error" => "not_logged_in"
+			), JSON_PRETTY_PRINT);
+		} else {
 
-		if ($query->num_rows() > 0)
-		{
-			foreach ($query->result() as $row)
+			header('Content-Type: application/json');
+
+			$this->load->model('cat');
+
+			$query = $this->cat->radio_status($id);
+
+			if ($query->num_rows() > 0)
 			{
+				foreach ($query->result() as $row)
+				{
 
-				$frequency = $row->frequency;
+					$frequency = $row->frequency;
 
-				$frequency_rx = $row->frequency_rx;
+					$frequency_rx = $row->frequency_rx;
 
-				$power = $row->power;
+					$power = $row->power;
 
-				$prop_mode = $row->prop_mode;
+					$prop_mode = $row->prop_mode;
 
-				// Check Mode
-				$mode = strtoupper($row->mode);
-				if ($mode == "FMN") {
-					$mode = "FM";
-				}
-
-				if ($row->prop_mode == "SAT") {
-					// Get Satellite Name
-					if ($row->sat_name == "AO-07") {
-						$sat_name = "AO-7";
-					} elseif ($row->sat_name == "LILACSAT") {
-						$sat_name = "CAS-3H";
-					} else {
-						$sat_name =  strtoupper($row->sat_name);
+					// Check Mode
+					$mode = strtoupper($row->mode);
+					if ($mode == "FMN") {
+						$mode = "FM";
 					}
 
-					// Get Satellite Mode
-					$sat_mode_uplink = $this->get_mode_designator($row->frequency);
-					$sat_mode_downlink = $this->get_mode_designator($row->frequency_rx);
+					if ($row->prop_mode == "SAT") {
+						// Get Satellite Name
+						if ($row->sat_name == "AO-07") {
+							$sat_name = "AO-7";
+						} elseif ($row->sat_name == "LILACSAT") {
+							$sat_name = "CAS-3H";
+						} else {
+							$sat_name =  strtoupper($row->sat_name);
+						}
 
-					if (empty($sat_mode_uplink)) {
+						// Get Satellite Mode
+						$sat_mode_uplink = $this->get_mode_designator($row->frequency);
+						$sat_mode_downlink = $this->get_mode_designator($row->frequency_rx);
+
+						if (empty($sat_mode_uplink)) {
+							$sat_mode = "";
+						} elseif ($sat_mode_uplink !== $sat_mode_downlink) {
+							$sat_mode = $sat_mode_uplink."/".$sat_mode_downlink;
+						} else {
+							$sat_mode = $sat_mode_uplink;
+						}
+					} else {
+						$sat_name = "";
 						$sat_mode = "";
-					} elseif ($sat_mode_uplink !== $sat_mode_downlink) {
-						$sat_mode = $sat_mode_uplink."/".$sat_mode_downlink;
-					} else {
-						$sat_mode = $sat_mode_uplink;
 					}
-				} else {
-					$sat_name = "";
-					$sat_mode = "";
+
+					// Calculate how old the data is in minutes
+					$datetime1 = new DateTime("now", new DateTimeZone('UTC')); // Today's Date/Time
+					$datetime2 = new DateTime($row->timestamp, new DateTimeZone('UTC'));
+					$interval = $datetime1->diff($datetime2);
+
+					$minutes = $interval->days * 24 * 60;
+					$minutes += $interval->h * 60;
+					$minutes += $interval->i;
+
+					$updated_at = $minutes;
+
+					// Return Json data
+					echo json_encode(array(
+						"frequency" => $frequency,
+						"frequency_rx" => $frequency_rx,
+						"mode" => $mode,
+						"satmode" => $sat_mode,
+						"satname" => $sat_name,
+						"power" => $power,
+						"prop_mode" => $prop_mode,
+						"updated_minutes_ago" => $updated_at,
+					), JSON_PRETTY_PRINT);
 				}
-
-				// Calculate how old the data is in minutes
-				$datetime1 = new DateTime("now", new DateTimeZone('UTC')); // Today's Date/Time
-				$datetime2 = new DateTime($row->timestamp, new DateTimeZone('UTC'));
-				$interval = $datetime1->diff($datetime2);
-
-				$minutes = $interval->days * 24 * 60;
-				$minutes += $interval->h * 60;
-				$minutes += $interval->i;
-
-				$updated_at = $minutes;
-
-				// Return Json data
-				echo json_encode(array(
-					"frequency" => $frequency,
-					"frequency_rx" => $frequency_rx,
-					"mode" => $mode,
-					"satmode" => $sat_mode,
-					"satname" => $sat_name,
-					"power" => $power,
-					"prop_mode" => $prop_mode,
-					"updated_minutes_ago" => $updated_at,
-				), JSON_PRETTY_PRINT);
 			}
 		}
 	}

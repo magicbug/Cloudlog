@@ -42,6 +42,11 @@ thead > tr > td {
     padding-top: 15px;
 }
 
+.publicsearch {
+	padding-top: 15px;
+	max-width: 540px;
+}
+
 .search {
 	padding-top: 15px;
 }

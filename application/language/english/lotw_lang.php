@@ -34,7 +34,6 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = 'Upload the Exported ADIF fi
 $lang['lotw_upload_type_must_be_adi'] = 'Log files must have the file type .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Pull LoTW data for me';
-$lang['lotw_import_missing_qsos_text'] = 'Import missing QSOs into the log. Call and gridsquare will be checked to try to find the correct profile to import the QSO into. If not found, the QSO will be skipped.';
 
 $lang['lotw_report_download_overview_helptext'] = 'Cloudlog will use the LoTW username and password stored in your user profile to download a report from LoTW for you. The report Cloudlog downloads will have all confirmations since chosen date, or since your last LoTW confirmation (fetched from your log), up until now.';
 

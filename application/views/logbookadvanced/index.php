@@ -55,7 +55,7 @@
 			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="dxcc">DXCC</label>
 				<select class="form-control form-control-sm" id="dxcc" name="dxcc">
-				<option value="">-</option>	
+				<option value="">-</option>
 				<option value="0">- NONE - (e.g. /MM, /AM)</option>
 					<?php
 					foreach($dxccarray as $dxcc){
@@ -145,6 +145,32 @@
 				</select>
 			</div>
 			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label class="form-label" for="cqzone">CQ Zone</label>
+				<select id="cqzone" name="cqzone" class="form-control form-control-sm">
+					<option value="">All</option>
+					<?php
+                      for ($i = 1; $i<=40; $i++) {
+                          echo '<option value="'. $i . '">'. $i .'</option>';
+                      }
+                      ?>
+					?>
+				</select>
+			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label class="form-label" for="sota">SOTA</label>
+				<input type="text" name="sota" id="sota" class="form-control form-control-sm" value="">
+			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label class="form-label" for="wwff">WWFF</label>
+				<input type="text" name="wwff" id="wwff" class="form-control form-control-sm" value="">
+			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label class="form-label" for="pota">POTA</label>
+				<input type="text" name="pota" id="pota" class="form-control form-control-sm" value="">
+			</div>
+		</div>
+		<div class="form-row">
+		<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label for="qslSent">QSL Sent</label>
 				<select id="qslSent" name="qslSent" class="form-control form-control-sm">
 					<option value="">All</option>
@@ -166,33 +192,103 @@
 					<option value="V">Verified</option>
 				</select>
 			</div>
-
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label for="lotwSent">LoTW Sent</label>
+				<select id="lotwSent" name="lotwSent" class="form-control form-control-sm">
+					<option value="">All</option>
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+					<option value="R">Requested</option>
+					<option value="Q">Queued</option>
+					<option value="I">Ignore/Invalid</option>
+				</select>
+			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label for="lotwReceived">LoTW Received</label>
+				<select id="lotwReceived" name="lotwReceived" class="form-control form-control-sm">
+					<option value="">All</option>
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+					<option value="R">Requested</option>
+					<option value="I">Ignore/Invalid</option>
+					<option value="V">Verified</option>
+				</select>
+			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label for="eqslSent">eQSL Sent</label>
+				<select id="eqslSent" name="eqslSent" class="form-control form-control-sm">
+					<option value="">All</option>
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+					<option value="R">Requested</option>
+					<option value="Q">Queued</option>
+					<option value="I">Ignore/Invalid</option>
+				</select>
+			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label for="eqslReceived">eQSL Received</label>
+				<select id="eqslReceived" name="eqslReceived" class="form-control form-control-sm">
+					<option value="">All</option>
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+					<option value="R">Requested</option>
+					<option value="I">Ignore/Invalid</option>
+					<option value="V">Verified</option>
+				</select>
+			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label for="qslvia">QSL Via</label>
+				<datalist id="qslvia" name="qslvia">
+					<option value="">All</option>
+					<option value="B">Bureau</option>
+					<option value="D">Direct</option>
+					<option value="E">Electronic</option>
+					<option value="M">Manager</option>
+				</datalist>
+				<input type="search" list="qslvia" name="qslviainput" class="custom-select custom-select-sm">
+			</div>
 		</div>
 	</div>
-	
+
 	<div class="actionbody collapse">
+		<div class="mb-2">
+			<span class="h6">With selected :</span>
+			<button type="button" class="btn btn-sm btn-primary mr-1" id="btnUpdateFromCallbook">Update from Callbook</button>
+			<button type="button" class="btn btn-sm btn-primary mr-1" id="queueBureau">Queue Bureau</button>
+			<button type="button" class="btn btn-sm btn-primary mr-1" id="queueDirect">Queue Direct</button>
+			<button type="button" class="btn btn-sm btn-primary mr-1" id="queueElectronic">Queue Electronic</button>
+			<button type="button" class="btn btn-sm btn-success mr-1" id="sentBureau">Sent Bureau</button>
+			<button type="button" class="btn btn-sm btn-success mr-1" id="sentDirect">Sent Direct</button>
+			<button type="button" class="btn btn-sm btn-success mr-1" id="sentElectronic">Sent Electronic</button>
+			<button type="button" class="btn btn-sm btn-warning mr-1" id="dontSend">Not Sent</button>
+			<button type="button" class="btn btn-sm btn-warning mr-1" id="notRequired">QSL Not Required</button>
+			<button type="button" class="btn btn-sm btn-warning mr-1" id="receivedBureau">Received (bureau)</button>
+			<button type="button" class="btn btn-sm btn-warning mr-1" id="receivedDirect">Received (direct)</button>
+			<button type="button" class="btn btn-sm btn-info mr-1" id="exportAdif">Create ADIF</button>
+			<button type="button" class="btn btn-sm btn-info mr-1" id="printLabel">Print Label</button>
+			<button type="button" class="btn btn-sm btn-danger mr-1" id="deleteQsos">Delete</button>
+		</div>
+	</div>
+	<div class="quickfilterbody collapse">
 	<div class="mb-2">
-		<span class="h6">With selected :</span>
-		<button type="button" class="btn btn-sm btn-primary mr-1" id="btnUpdateFromCallbook">Update from Callbook</button>
-		<button type="button" class="btn btn-sm btn-primary mr-1" id="queueBureau">Queue Bureau</button>
-		<button type="button" class="btn btn-sm btn-primary mr-1" id="queueDirect">Queue Direct</button>
-		<button type="button" class="btn btn-sm btn-primary mr-1" id="queueElectronic">Queue Electronic</button>
-		<button type="button" class="btn btn-sm btn-success mr-1" id="sentBureau">Sent Bureau</button>
-		<button type="button" class="btn btn-sm btn-success mr-1" id="sentDirect">Sent Direct</button>
-		<button type="button" class="btn btn-sm btn-success mr-1" id="sentElectronic">Sent Electronic</button>
-		<button type="button" class="btn btn-sm btn-warning mr-1" id="dontSend">Not Sent</button>
-		<button type="button" class="btn btn-sm btn-warning mr-1" id="notRequired">QSL Not Required</button>
-		<button type="button" class="btn btn-sm btn-warning mr-1" id="receivedBureau">Received (bureau)</button>
-		<button type="button" class="btn btn-sm btn-warning mr-1" id="receivedDirect">Received (direct)</button>
-		<button type="button" class="btn btn-sm btn-info mr-1" id="exportAdif">Create ADIF</button>
-		<button type="button" class="btn btn-sm btn-info mr-1" id="printLabel">Print Label</button>
-		<button type="button" class="btn btn-sm btn-danger mr-1" id="deleteQsos">Delete</button>
-		<span id="infoBox"></span>
+	<span class="h6">Quick search with selected :</span>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign">Search Callsign</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchDxcc">Search DXCC</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchIota">Search IOTA</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchState">Search State</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchGridsquare">Search Gridsquare</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchCqZone">Search CQ Zone</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchMode">Search Mode</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchBand">Search Band</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchSota">Search SOTA</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchWwff">Search WWFF</button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchPota">Search POTA</button>
 	</div>
 	</div>
 </div>
 <div class="form-row pt-2">
 <div class="form-group form-inline col-lg d-flex flex-row justify-content-center align-items-center">
+	<button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="collapse" data-target=".quickfilterbody">Quickfilters</button>
 	<button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="collapse" data-target=".filterbody">Filters</button>
 	<button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="collapse" data-target=".actionbody">Actions</button>
 	<label for="qsoResults" class="mr-2"># Results</label>

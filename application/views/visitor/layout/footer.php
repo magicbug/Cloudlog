@@ -23,7 +23,8 @@
 </script>
 
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
-    <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('map_tile_server');?>"></script>    <script type="text/javascript">
+    <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('map_tile_server');?>"></script>
+    <script type="text/javascript">
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
       });
@@ -35,7 +36,7 @@
         var q_lat = 40.313043;
         var q_lng = -32.695312;
         <?php } ?>
-        
+
         <?php if(isset($slug)) { ?>
         var qso_loc = '<?php echo site_url('visitor/map/'.$slug);?>';
         <?php } ?>
@@ -47,8 +48,9 @@
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
-            console.log("lets go");
+            <?php if ($this->uri->segment(2) != "search" && $this->uri->segment(2) != "satellites") { ?>
             initmap(grid);
+            <?php } ?>
 
       });
 
@@ -199,5 +201,76 @@
 <?php } ?>
 <?php } ?>
     </script>
+    <?php if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
+    <script>
+            <?php switch($this->config->item('qso_date_format')) {
+               case 'd/m/y': $usethisformat = 'D/MM/YY';break;
+               case 'd/m/Y': $usethisformat = 'D/MM/YYYY';break;
+               case 'm/d/y': $usethisformat = 'MM/D/YY';break;
+               case 'm/d/Y': $usethisformat = 'MM/D/YYYY';break;
+               case 'd.m.Y': $usethisformat = 'D.MM.YYYY';break;
+               case 'y/m/d': $usethisformat = 'YY/MM/D';break;
+               case 'Y-m-d': $usethisformat = 'YYYY-MM-D';break;
+               case 'M d, Y': $usethisformat = 'MMM D, YYYY';break;
+               case 'M d, y': $usethisformat = 'MMM D, YY';break;
+               default: $usethisformat = 'YYYY-MM-D';
+            } ?>
+
+            $.fn.dataTable.moment('<?php echo $usethisformat ?>');
+            $.fn.dataTable.ext.buttons.clear = {
+                className: 'buttons-clear',
+                action: function ( e, dt, node, config ) {
+                   dt.search('').draw();
+                }
+            };
+            $('#publicsearchtable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: true,
+                "scrollY":        "500px",
+                "scrollCollapse": true,
+                "paging":         true,
+                "scrollX": true,
+                "order": [ 0, 'desc' ],
+                dom: 'Bfrtip',
+                buttons: [
+                   {
+                      extend: 'csv',
+                      text: 'CSV'
+                   },
+                   {
+                      extend: 'clear',
+                      text: 'Clear'
+                   }
+                ]
+            });
+            // change color of csv-button if dark mode is chosen
+            if (isDarkModeTheme()) {
+               $('[class*="buttons"]').css("color", "white");
+            }
+        </script>
+        <script type="text/javascript">
+            $(function () {
+                $(document).on('shown.bs.tooltip', function (e) {
+                    setTimeout(function () {
+                        $(e.target).tooltip('hide');
+                    }, 3000);
+                });
+            });
+            function validateForm() {
+                let x = document.forms["searchForm"]["callsign"].value;
+                if (x.trim() == "") {
+                    $('#searchcall').tooltip('show')
+                    return false;
+                }
+            }
+        </script>
+    <?php } ?>
+
   </body>
 </html>

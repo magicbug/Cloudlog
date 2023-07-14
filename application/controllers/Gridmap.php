@@ -11,10 +11,16 @@ class Gridmap extends CI_Controller {
 
         $this->load->model('bands');
         $this->load->model('gridmap_model');
+		$this->load->model('stations');
+
+		$data['homegrid'] = explode(',', $this->stations->find_gridsquare());
 
         $data['modes'] = $this->gridmap_model->get_worked_modes();
 		$data['bands'] = $this->bands->get_worked_bands();
 		$data['sats_available'] = $this->bands->get_worked_sats();
+
+		$data['user_gridmap_default_band'] = $this->session->userdata('user_gridmap_default_band');
+		$data['user_gridmap_confirmation'] = $this->session->userdata('user_gridmap_confirmation');
 
 		$data['layer'] = $this->optionslib->get_option('option_map_tile_server');
 
@@ -27,6 +33,7 @@ class Gridmap extends CI_Controller {
 
         $footerData = [];
 		$footerData['scripts'] = [
+			'assets/js/leaflet/geocoding.js',
 			'assets/js/leaflet/L.MaidenheadColouredGridMap.js',
 			'assets/js/sections/gridmap.js?'
 		];

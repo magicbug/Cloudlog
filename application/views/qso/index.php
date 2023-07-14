@@ -65,7 +65,7 @@
                 <div class="form-group col-md-9">
                   <label for="callsign"><?php echo lang('gen_hamradio_callsign'); ?></label>
                   <input type="text" class="form-control" id="callsign" name="callsign" required>
-                  <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-light"></small>
+                  <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-success"></small>
                 </div>
                 <div class="form-group col-md-3 align-self-center">
                   <small id="qrz_info" class="badge badge-secondary"></small>

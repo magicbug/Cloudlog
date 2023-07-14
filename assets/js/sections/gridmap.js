@@ -40,6 +40,7 @@ function gridPlot(form) {
             sat: $("#sats").val(),
 		},
 		success: function (data) {
+            $('.cohidden').show();
             $(".ld-ext-right").removeClass('running');
             $(".ld-ext-right").prop('disabled', false);
             $('#plot').prop("disabled", false);
@@ -89,6 +90,9 @@ function gridPlot(form) {
             legend.addTo(map);
 
             var maidenhead = L.maidenhead().addTo(map);
+            map.on('mousemove', onMapMove);
+			map.on('click', onMapClick);
+
 		},
 		error: function (data) {
 		},
@@ -113,7 +117,7 @@ function spawnGridsquareModal(loc_4char) {
                 nl2br: false,
                 message: html,
                 onshown: function(dialog) {
-                    
+
                     $('[data-toggle="tooltip"]').tooltip();
                     $('.contacttable').DataTable({
                             "pageLength": 25,
@@ -143,3 +147,7 @@ function spawnGridsquareModal(loc_4char) {
         }
     });
 }
+
+$(document).ready(function(){
+   gridPlot(this.form);
+})

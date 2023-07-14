@@ -252,6 +252,10 @@ class Logbook_model extends CI_Model {
         $data['COL_MY_GRIDSQUARE'] = strtoupper(trim($station['station_gridsquare']));
       }
 
+    if ($this->exists_hrdlog_code($station_id)) {
+        $data['COL_HRDLOG_QSO_UPLOAD_STATUS'] = 'N';
+    }
+
     if ($this->exists_qrz_api_key($station_id)) {
         $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'N';
     }
@@ -290,6 +294,16 @@ class Logbook_model extends CI_Model {
     }
 
     $this->add_qso($data, $skipexport = false);
+  }
+
+  public function check_last_lotw($call){	// Fetch difference in days when $call has last updated LotW
+
+	  $sql="select datediff(now(),lastupload) as DAYS from lotw_users where callsign = ?";	// Use binding to prevent SQL-injection
+	  $query = $this->db->query($sql, $call);
+	  $row = $query->row();
+	  if (isset($row)) {
+		  return($row->DAYS);
+	  }
   }
 
   public function check_station($id){
@@ -506,12 +520,26 @@ class Logbook_model extends CI_Model {
        $this->upload_amsat_status($data);
     }
 
-    // No point in fetching qrz api key and qrzrealtime setting if we're skipping the export
+    // No point in fetching hrdlog code or qrz api key and qrzrealtime setting if we're skipping the export
 	if (!$skipexport) {
 
-		$result = $this->exists_qrz_api_key($data['station_id']);
 
-		// Push qso to qrz if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
+		$result = $this->exists_hrdlog_code($data['station_id']);
+		// Push qso to hrdlog if code is set, and realtime upload is enabled, and we're not importing an adif-file
+		if (isset($result->hrdlog_code) && $result->hrdlogrealtime == 1) {
+			$CI =& get_instance();
+			$CI->load->library('AdifHelper');
+			$qso = $this->get_qso($last_id)->result();
+
+			$adif = $CI->adifhelper->getAdifLine($qso[0]);
+			$result = $this->push_qso_to_hrdlog($result->hrdlog_code, $data['COL_STATION_CALLSIGN'], $adif);
+			if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') || ($result['status'] == 'duplicate') || ($result['status'] == 'auth_error') )){
+				$this->mark_hrdlog_qsos_sent($last_id);
+			}
+		}
+		$result = ''; // Empty result from previous hrdlog-attempt for safety
+		$result = $this->exists_qrz_api_key($data['station_id']);
+// Push qso to qrz if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
 		if (isset($result->qrzapikey) && $result->qrzrealtime == 1) {
 			$CI =& get_instance();
 			$CI->load->library('AdifHelper');
@@ -519,7 +547,7 @@ class Logbook_model extends CI_Model {
 
 			$adif = $CI->adifhelper->getAdifLine($qso[0]);
 			$result = $this->push_qso_to_qrz($result->qrzapikey, $adif);
-			if ($result['status'] == 'OK') {
+			if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') && ($result['message'] == 'STATUS=FAIL&REASON=Unable to add QSO to database: duplicate&EXTENDED=')) ){
 				$this->mark_qrz_qsos_sent($last_id);
 			}
 		}
@@ -543,6 +571,24 @@ class Logbook_model extends CI_Model {
 			}
 		}
 	}
+  }
+
+  /*
+   * Function checks if a HRDLog Code exists in the table with the given station id
+   */
+  function exists_hrdlog_code($station_id) {
+	  $sql = 'select hrdlog_code, hrdlogrealtime from station_profile
+		  where station_id = ' . $station_id;
+
+	  $query = $this->db->query($sql);
+
+	  $result = $query->row();
+
+	  if ($result) {
+		  return $result;
+	  } else {
+		  return false;
+	  }
   }
 
   /*
@@ -582,6 +628,59 @@ class Logbook_model extends CI_Model {
 			return false;
 		}
 	}
+
+  /*
+   * Function uploads a QSO to HRDLog with the API given.
+   * $adif contains a line with the QSO in the ADIF format. QSO ends with an <EOR>
+   */
+  function push_qso_to_hrdlog($apikey, $station_callsign, $adif, $replaceoption = false) {
+	  $url = 'https://robot.hrdlog.net/newentry.aspx';
+
+	  $post_data['Code'] = $apikey;
+	  if ($replaceoption) {
+		  $post_data['Cmd'] = 'UPDATE';
+		  $post_data['ADIFKey'] = $adif;
+	  } 
+	  $post_data['ADIFData'] = $adif;
+
+	  $post_data['Callsign'] = $station_callsign;
+
+
+	  $post_encoded=http_build_query($post_data);
+
+	  $ch = curl_init( $url );
+	  curl_setopt( $ch, CURLOPT_POST, true);
+	  curl_setopt( $ch, CURLOPT_POSTFIELDS, $post_encoded);
+	  curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
+	  curl_setopt( $ch, CURLOPT_HEADER, 0);
+	  curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
+	  curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+	  $content = curl_exec($ch);
+	  if ($content){
+		  if (stristr($content,'<insert>1')) {
+			  $result['status'] = 'OK';
+			  return $result;
+		  } elseif (stristr($content,'<insert>0')) {
+			  $result['status'] = 'duplicate';
+			  $result['message'] = $content;
+			  return $result;
+		  } elseif (stristr($content,'Unknown user</error>')) {
+			  $result['status'] = 'auth_error';
+			  $result['message'] = $content;
+			  return $result;
+		  } else {
+			  $result['status'] = 'error';
+			  $result['message'] = $content;
+			  return $result;
+		  }
+	  }
+	  if(curl_errno($ch)){
+		  $result['status'] = 'error';
+		  $result['message'] = 'Curl error: '. curl_errno($ch);
+		  return $result;
+	  }
+	  curl_close($ch);
+  }
 
   /*
    * Function uploads a QSO to QRZ with the API given.
@@ -656,6 +755,23 @@ class Logbook_model extends CI_Model {
 	}
 
   /*
+   * Function marks QSOs as uploaded to HRDLog.
+   * $primarykey is the unique id for that QSO in the logbook
+   */
+  function mark_hrdlog_qsos_sent($primarykey) {
+	  $data = array(
+		  'COL_HRDLOG_QSO_UPLOAD_DATE' => date("Y-m-d H:i:s", strtotime("now")),
+		  'COL_HRDLOG_QSO_UPLOAD_STATUS' => 'Y',
+	  );
+
+	  $this->db->where('COL_PRIMARY_KEY', $primarykey);
+
+	  $this->db->update($this->config->item('table_name'), $data);
+
+	  return true;
+  }
+
+  /*
    * Function marks QSOs as uploaded to QRZ.
    * $primarykey is the unique id for that QSO in the logbook
    */
@@ -694,10 +810,10 @@ class Logbook_model extends CI_Model {
       $sat_name = '';
       if ($data['COL_SAT_NAME'] == 'AO-7') {
          if ($data['COL_BAND'] == '2m' && $data['COL_BAND_RX'] == '10m') {
-            $sat_name = '[A]_AO-7';
+            $sat_name = 'AO-7[A]';
          }
          if ($data['COL_BAND'] == '70cm' && $data['COL_BAND_RX'] == '2m') {
-            $sat_name = '[B]_AO-7';
+            $sat_name = 'AO-7[B]';
          }
       } else if ($data['COL_SAT_NAME'] == 'QO-100') {
          $sat_name = 'QO-100_NB';
@@ -939,6 +1055,10 @@ class Logbook_model extends CI_Model {
        'COL_STATE' =>$this->input->post('usa_state'),
        'COL_CNTY' => $uscounty
     );
+
+    if ($this->exists_hrdlog_code($data['station_id'])) {
+        $data['COL_HRDLOG_QSO_UPLOAD_STATUS'] = 'M';
+    }
 
     if ($this->exists_qrz_api_key($data['station_id'])) {
         $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
@@ -1204,7 +1324,8 @@ class Logbook_model extends CI_Model {
 
     $data = array(
          'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-         'COL_QSL_SENT' => 'R'
+         'COL_QSL_SENT' => 'R',
+         'COL_QSL_SENT_VIA' => $method
     );
 
     $this->db->where('COL_PRIMARY_KEY', $qso_id);
@@ -1312,6 +1433,23 @@ class Logbook_model extends CI_Model {
   }
 
     /*
+     * Function returns the QSOs from the logbook, which have not been either marked as uploaded to hrdlog, or has been modified with an edit
+     */
+    function get_hrdlog_qsos($station_id){
+        $sql = 'select *, dxcc_entities.name as station_country from ' . $this->config->item('table_name') . ' thcv ' .
+            ' left join station_profile on thcv.station_id = station_profile.station_id' .
+            ' left outer join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif' .
+            ' where thcv.station_id = ' . $station_id .
+            ' and (COL_HRDLOG_QSO_UPLOAD_STATUS is NULL
+            or COL_HRDLOG_QSO_UPLOAD_STATUS = ""
+            or COL_HRDLOG_QSO_UPLOAD_STATUS = "M"
+            or COL_HRDLOG_QSO_UPLOAD_STATUS = "N")';
+
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    /*
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to qrz, or has been modified with an edit
      */
     function get_qrz_qsos($station_id){
@@ -1370,6 +1508,25 @@ class Logbook_model extends CI_Model {
 
 		return $this->db->query($sql);
 	}
+
+    /*
+     * Function returns all the station_id's with HRDLOG Code
+     */
+    function get_station_id_with_hrdlog_code() {
+        $sql = 'select station_id, hrdlog_code from station_profile
+            where coalesce(hrdlog_code, "") <> ""';
+
+        $query = $this->db->query($sql);
+
+        $result = $query->result();
+
+        if ($result) {
+            return $result;
+        }
+        else {
+            return null;
+        }
+    }
 
     /*
      * Function returns all the station_id's with QRZ API Key's
@@ -2469,13 +2626,15 @@ class Logbook_model extends CI_Model {
     }
 
   /* Used to check if the qso is already in the database */
-  function import_check($datetime, $callsign, $band) {
+  function import_check($datetime, $callsign, $band, $mode, $station_callsign) {
 
     $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_BAND');
     $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
     $this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
     $this->db->where('COL_CALL', $callsign);
+    $this->db->where('COL_STATION_CALLSIGN', $station_callsign);
     $this->db->where('COL_BAND', $band);
+    $this->db->where('COL_MODE', $mode);
 
     $query = $this->db->get($this->config->item('table_name'));
 
@@ -2488,7 +2647,7 @@ class Logbook_model extends CI_Model {
     }
   }
 
-  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $iota, $cnty, $cqz, $ituz) {
+  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $qsl_vucc_grids, $iota, $cnty, $cqz, $ituz, $station_callsign) {
 
 	$data = array(
       'COL_LOTW_QSLRDATE' => $qsl_date,
@@ -2517,48 +2676,39 @@ class Logbook_model extends CI_Model {
     $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
     $this->db->where('COL_CALL', $callsign);
     $this->db->where('COL_BAND', $band);
+    $this->db->where('COL_STATION_CALLSIGN', $station_callsign);
 
     $this->db->update($this->config->item('table_name'), $data);
 	unset($data);
 
-	if($qsl_gridsquare != "") {
+	if($qsl_gridsquare != "" || $qsl_vucc_grids != "") {
       $data = array(
-        'COL_GRIDSQUARE' => $qsl_gridsquare,
         'COL_DISTANCE' => 0
       );
-      $this->db->select('station_profile.station_gridsquare as station_gridsquare');
-      $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
-      $this->db->where('COL_CALL', $callsign);
-      $this->db->where('COL_BAND', $band);
-      $this->db->join('station_profile', $this->config->item('table_name').'.station_id = station_profile.station_id', 'left outer');
-      $this->db->limit(1);
-      $query = $this->db->get($this->config->item('table_name'));
-      $row = $query->row();
-      if (isset($row)) {
-         $station_gridsquare = $row->station_gridsquare;
+         $this->db->select('station_profile.station_gridsquare as station_gridsquare');
+         $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
+         $this->db->where('COL_CALL', $callsign);
+         $this->db->where('COL_BAND', $band);
+         $this->db->join('station_profile', $this->config->item('table_name').'.station_id = station_profile.station_id', 'left outer');
+         $this->db->limit(1);
+         $query = $this->db->get($this->config->item('table_name'));
+         $row = $query->row();
+         $station_gridsquare = '';
+         if (isset($row)) {
+            $station_gridsquare = $row->station_gridsquare;
+         }
          $this->load->library('Qra');
-
-         $data['COL_DISTANCE'] = $this->qra->distance($station_gridsquare, $qsl_gridsquare, 'K');
+         if ($qsl_gridsquare != "") {
+            $data['COL_GRIDSQUARE'] = $qsl_gridsquare;
+            $data['COL_DISTANCE'] = $this->qra->distance($station_gridsquare, $qsl_gridsquare, 'K');
+         } elseif ($qsl_vucc_grids != "") {
+            $data['COL_VUCC_GRIDS'] = $qsl_vucc_grids;
+            $data['COL_DISTANCE'] = $this->qra->distance($station_gridsquare, $qsl_vucc_grids, 'K');
       }
 
       $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
       $this->db->where('COL_CALL', $callsign);
       $this->db->where('COL_BAND', $band);
-	  $this->db->group_start();
-	  $this->db->where('COL_VUCC_GRIDS');
-	  $this->db->or_where('COL_VUCC_GRIDS', '');
-	  $this->db->group_end();
-      if(strlen($qsl_gridsquare) > 4) {
-        $this->db->group_start();
-        $this->db->where('COL_GRIDSQUARE', "");
-        $this->db->or_where('COL_GRIDSQUARE', substr($qsl_gridsquare, 0, 4));
-        if(strlen($qsl_gridsquare) > 6) {
-          $this->db->or_where('COL_GRIDSQUARE', substr($qsl_gridsquare, 0, 6));
-        }
-        $this->db->group_end();
-      } else {
-        $this->db->where('COL_GRIDSQUARE', "");
-      }
 
       $this->db->update($this->config->item('table_name'), $data);
     }
@@ -2566,36 +2716,41 @@ class Logbook_model extends CI_Model {
     return "Updated";
   }
 
-  function lotw_last_qsl_date() {
-      $this->db->select('COL_LOTW_QSLRDATE');
-      $this->db->where('COL_LOTW_QSLRDATE IS NOT NULL');
-      $this->db->order_by("COL_LOTW_QSLRDATE", "desc");
-      $this->db->limit(1);
+  function lotw_last_qsl_date($user_id) {
+	  $sql="SELECT MAX(COALESCE(COL_LOTW_QSLRDATE, '1900-01-01 00:00:00')) MAXDATE
+		    FROM ".$this->config->item('table_name')." INNER JOIN station_profile ON (".$this->config->item('table_name').".station_id = station_profile.station_id)
+		    WHERE station_profile.user_id=".$user_id." and COL_LOTW_QSLRDATE is not null";
+	  $query = $this->db->query($sql);
+	  $row = $query->row();
 
-      $query = $this->db->get($this->config->item('table_name'));
-      $row = $query->row();
+	  if (isset($row)) {
+		  return $row->MAXDATE;
+	  }
 
-      if (isset($row)) {
-        return $row->COL_LOTW_QSLRDATE;
-      }
-
-      return '1900-01-01 00:00:00.000';
-    }
+	  return '1900-01-01 00:00:00.000';
+  }
 
     /*
      * $skipDuplicate - used in ADIF import to skip duplicate checking when importing QSOs
      * $markLoTW - used in ADIF import to mark QSOs as exported to LoTW when importing QSOs
      * $dxccAdif - used in ADIF import to determine if DXCC From ADIF is used, or if Cloudlog should try to guess
      * $markQrz - used in ADIF import to mark QSOs as exported to QRZ Logbook when importing QSOs
+     * $markHrd - used in ADIF import to mark QSOs as exported to HRDLog.net Logbook when importing QSOs
      * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
      */
-	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $skipexport = false, $operatorName = false, $apicall = false) {
+	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false) {
         // be sure that station belongs to user
         $CI =& get_instance();
         $CI->load->model('Stations');
         if (!$CI->Stations->check_station_is_accessible($station_id) && $apicall == false ) {
             return 'Station not accessible<br>';
         }
+
+	$station_profile=$CI->Stations->profile_clean($station_id);
+	$station_profile_call=$station_profile->station_callsign;
+	if (($station_id != 0) && ($record['station_callsign'] != $station_profile_call)) {	// Check if station_call from import matches profile ONLY when submitting via GUI.
+		return "Wrong station_callsign ".$record['station_callsign']." while importing QSO with ".$record['call']." for ".$station_profile_call;
+	}
 
         $CI =& get_instance();
         $CI->load->library('frequency');
@@ -2928,12 +3083,19 @@ class Logbook_model extends CI_Model {
 			$operatorName = (!empty($record['operator'])) ? $record['operator'] : '';
 		}
 
-        // If user checked to mark QSOs as uploaded to QRZ Logbook, or else we try to find info in ADIF import.
+        // If user checked to mark QSOs as uploaded to QRZ or HRDLog Logbook, or else we try to find info in ADIF import.
+        if ($markHrd != null) {
+            $input_hrdlog_qso_upload_status = 'Y';
+            $input_hrdlog_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
+	}
+
         if ($markQrz != null) {
             $input_qrzcom_qso_upload_status = 'Y';
             $input_qrzcom_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
         }
         else {
+            $input_hrdlog_qso_upload_date = (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null;
+            $input_hrdlog_qso_upload_status = (!empty($record['hrdlog_qso_upload_status'])) ? $record['hrdlog_qso_upload_status'] : '';
             $input_qrzcom_qso_upload_date = (!empty($record['qrzcom_qso_upload_date'])) ? $record['qrzcom_qso_upload_date'] : null;
             $input_qrzcom_qso_upload_status = (!empty($record['qrzcom_qso_upload_status'])) ? $record['qrzcom_qso_upload_status'] : '';
         }
@@ -3049,6 +3211,8 @@ class Logbook_model extends CI_Model {
                 'COL_PRECEDENCE' => (!empty($record['precedence'])) ? $record['precedence'] : '',
                 'COL_PROP_MODE' => (!empty($record['prop_mode'])) ? $record['prop_mode'] : '',
                 'COL_PUBLIC_KEY' => (!empty($record['public_key'])) ? $record['public_key'] : '',
+                'COL_HRDLOG_QSO_UPLOAD_DATE' => $input_hrdlog_qso_upload_date,
+                'COL_HRDLOG_QSO_UPLOAD_STATUS' => $input_hrdlog_qso_upload_status,
                 'COL_QRZCOM_QSO_UPLOAD_DATE' => $input_qrzcom_qso_upload_date,
                 'COL_QRZCOM_QSO_UPLOAD_STATUS' => $input_qrzcom_qso_upload_status,
                 'COL_QSL_RCVD' => $input_qsl_rcvd,
@@ -3761,28 +3925,6 @@ class Logbook_model extends CI_Model {
         $query = $this->db->query($sql);
 
         return $query->result();
-    }
-
-    /*
-     * This function tries to locate the correct station_id used for importing QSOs from the downloaded LoTWreport
-     * $station_callsign is the call listed for the qso in lotwreport
-     * $my_gridsquare is the gridsquare listed for the qso in lotwreport
-     * Returns station_id if found
-     */
-    function find_correct_station_id($station_callsign, $my_gridsquare) {
-        $sql = 'select station_id from station_profile
-            where station_callsign = "' . $station_callsign . '" and station_gridsquare like "%' . substr($my_gridsquare,0, 4) . '%"';
-
-        $query = $this->db->query($sql);
-
-        $result = $query->row();
-
-        if ($result) {
-            return $result->station_id;
-        }
-        else {
-            return null;
-        }
     }
 
   function get_lotw_qsos_to_upload($station_id, $start_date, $end_date) {

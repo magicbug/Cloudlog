@@ -34,7 +34,6 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = 'Lade die exportierte ADIF-D
 $lang['lotw_upload_type_must_be_adi'] = 'Logdateien müssen den Dateityp .adi haben';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Lade LoTW-Daten für mich';
-$lang['lotw_import_missing_qsos_text'] = 'Importiere fehlende QSOs in das Log. Rufzeichzeichen und Locator werden geprüft, um das passende Profil zu erkennen, in das importiert werden soll. Kann das nicht gefunden werden, wird das QSO übersprungen.';
 
 $lang['lotw_report_download_overview_helptext'] = 'Cloudlog nutzt Benutzername und Passwort, welche in Deinem Benutzerprofil gespeichert sind, um einen Report vom LoTW zu laden. Der Report, den Cloudlog lädt, enthält alle Bestätigungen seit dem gewählten Datum oder seit der letzen LoTW-Bestätigung (wird aus Deinem Log extrahiert) bis jetzt.';
 

@@ -98,30 +98,15 @@ class Logbook extends CI_Controller {
 		$callsign = str_replace("-","/",$callsign);
 
 		// Check if callsign is an LOTW User
-		$lotw_member = "";
-		$lotw_file_name = "./updates/lotw_users.csv";
-
-		if (file_exists($lotw_file_name)) {
-			$f = fopen($lotw_file_name, "r");
-			$result = false;
-			while ($row = fgetcsv($f)) {
-				if ($row[0] == strtoupper($callsign)) {
-					$result = $row[0];
-					$lotw_member = "active";
-					break;
-				}
-			}
-
-			if($lotw_member != "active") {
-				$lotw_member = "not found";
-			}
-			fclose($f);
-		} else {
-			$lotw_member = "not found";
-		}
-
 		// Check Database for all other data
 		$this->load->model('logbook_model');
+	
+		$lotw_days=$this->logbook_model->check_last_lotw($callsign);
+		if ($lotw_days != null) {
+			$lotw_member="active";
+		} else {
+			$lotw_member="not found";
+		}
 
 		$return = [
 			"callsign" => strtoupper($callsign),
@@ -137,6 +122,7 @@ class Logbook extends CI_Controller {
 			"bearing" 		=> "",
 			"workedBefore" => false,
 			"lotw_member" => $lotw_member,
+			"lotw_days" => $lotw_days,
 			"image" => "",
 		];
 
@@ -772,7 +758,7 @@ class Logbook extends CI_Controller {
 	function querydb($id) {
 		$this->db->from($this->config->item('table_name'));
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-		$this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC');
+		$this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC', 'left outer');
 		$this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
 		$this->db->group_start();
 		$this->db->like(''.$this->config->item('table_name').'.COL_CALL', $id);

@@ -32,7 +32,7 @@ $lang['account_gridsquare'] = 'Gridsquare';
 $lang['account_cloudlog_preferences'] = 'Cloudlog Asetukset';
 $lang['account_timezone'] = 'Aikavyöhyke';
 $lang['account_date_format'] = 'Päivämäärämuoto';
-$lang['account_measurement_preference'] = 'Mittayksikkömuoto';
+$lang['account_measurement_preferences'] = 'Mittayksikkömuoto';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Valitse, miten haluat päivämäärät näkyvän, kun olet kirjautunut tilillesi.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Valitse, mitä mittayksikkömuotoa käytetään';
 
@@ -68,8 +68,8 @@ $lang['account_clublog_password'] = 'Club Log Salasana';
 $lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Sähköposti tai kutsu, jota käytät kirjautuessasi Club Log:iin';
 
 $lang['account_eqsl'] = 'eQSL';
-$lang['account_eqsl_username'] = 'eQSL.cc Käyttäjänimi';
-$lang['account_eqsl_password'] = 'eQSL.cc Salasana';
+$lang['account_eqslcc_username'] = 'eQSL.cc Käyttäjänimi';
+$lang['account_eqslcc_password'] = 'eQSL.cc Salasana';
 
 $lang['account_save_account_changes'] = 'Tallenna käyttäjätilin muutokset';
 $lang['account_create_account'] = 'Luo käyttäjätili';
@@ -89,3 +89,6 @@ $lang['account_forgot_your_password'] = 'Salasana unohtunut?';
 
 $lang['account_login_to_cloudlog'] = 'Kirjaudu Cloudlogiin';
 $lang['account_login'] = 'Kirjaudu';
+
+$lang['account_mastodon'] = 'Mastodonserver';
+$lang['account_user_mastodon'] = 'URL of Mastodonserver';
