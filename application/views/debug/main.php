@@ -38,6 +38,11 @@
                         <td>PHP Version</td>
                         <td><?php echo phpversion(); ?></td>
                     </tr>
+
+                    <tr>
+                        <td>MySQL Version</td>
+                        <td><?php echo $this->db->version(); ?></td>
+                    </tr>
                 </table>
             </div>
         </div>
