@@ -60,7 +60,7 @@
             </select>
             <?php if (count($sats_available) != 0) { ?>
                 <label class="my-1 mr-2" for="distplot_sats"><?php echo lang('gridsquares_sat'); ?></label>
-                <select class="custom-select my-1 mr-sm-2"  id="sats" disabled>
+                <select class="custom-select my-1 mr-sm-2"  id="sats" <?php if ($user_gridmap_default_band != "SAT") { ?>disabled<?php } ?>>
                     <option value="All">All</option>
                     <?php foreach($sats_available as $sat) {
                         echo '<option value="' . $sat . '"' . '>' . $sat . '</option>'."\n";
