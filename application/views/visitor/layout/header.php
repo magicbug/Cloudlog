@@ -9,6 +9,7 @@
     <?php if($this->optionslib->get_theme()) { ?>
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/bootstrap.min.css">
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css">
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/visitor.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/selectize.bootstrap4.css"/>
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap-dialog.css"/>
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/overrides.css">
@@ -77,7 +78,7 @@
 			$this->CI =& get_instance();
 			if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
 				<form method="post" action="<?php echo site_url('visitor/search'); ?>" class="form-inline">
-					<input class="form-control mr-sm-2" id="callsign" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" style="text-transform: uppercase;" aria-label="Search">
+					<input class="form-control mr-sm-2" id="searchcall" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
 					<input type="hidden" name="public_slug" value="<?php echo $slug; ?>">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> <?php echo lang('menu_search_button'); ?></button>
 				</form>
