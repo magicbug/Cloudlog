@@ -264,7 +264,7 @@
             });
             function validateForm() {
                 let x = document.forms["searchForm"]["callsign"].value;
-                if (x == "") {
+                if (x.trim() == "") {
                     $('#searchcall').tooltip('show')
                     return false;
                 }
