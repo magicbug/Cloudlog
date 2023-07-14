@@ -23,7 +23,8 @@
 </script>
 
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
-    <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('map_tile_server');?>"></script>    <script type="text/javascript">
+    <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('map_tile_server');?>"></script>
+    <script type="text/javascript">
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
       });
@@ -257,6 +258,7 @@
             function validateForm() {
                 let x = document.forms["searchForm"]["callsign"].value;
                 if (x == "") {
+                    $('#searchcall').tooltip('show')
                     return false;
                 }
             }
