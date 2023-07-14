@@ -253,6 +253,14 @@
                $('[class*="buttons"]').css("color", "white");
             }
         </script>
+        <script type="text/javascript">
+            function validateForm() {
+                let x = document.forms["searchForm"]["callsign"].value;
+                if (x == "") {
+                    return false;
+                }
+            }
+        </script>
     <?php } ?>
 
   </body>
