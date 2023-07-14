@@ -255,6 +255,13 @@
             }
         </script>
         <script type="text/javascript">
+            $(function () {
+                $(document).on('shown.bs.tooltip', function (e) {
+                    setTimeout(function () {
+                        $(e.target).tooltip('hide');
+                    }, 3000);
+                });
+            });
             function validateForm() {
                 let x = document.forms["searchForm"]["callsign"].value;
                 if (x == "") {
