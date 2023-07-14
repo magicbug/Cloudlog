@@ -2746,6 +2746,12 @@ class Logbook_model extends CI_Model {
             return 'Station not accessible<br>';
         }
 
+	$station_profile=$CI->Stations->profile_clean($station_id);
+	$station_profile_call=$station_profile->station_callsign;
+	if (($station_id != 0) && ($record['station_callsign'] != $station_profile_call)) {	// Check if station_call from import matches profile ONLY when submitting via GUI.
+		return "Wrong station_callsign ".$record['station_callsign']." while importing QSO with ".$record['call']." for ".$station_profile_call;
+	}
+
         $CI =& get_instance();
         $CI->load->library('frequency');
         $my_error = "";
