@@ -5,7 +5,7 @@ class Publicsearch extends CI_Model {
 	function search($slug, $callsign) {
 		if ($this->public_search_enabled($slug)) {
 			$userid = $this->get_userid_for_slug($slug);
-			$this->db->where('COL_CALL', $callsign);
+			$this->db->like('COL_CALL', $callsign);
 			$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 			$this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
 			$this->db->where('station_profile.user_id', $userid);

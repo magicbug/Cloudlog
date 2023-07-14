@@ -23,7 +23,8 @@
 </script>
 
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
-    <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('map_tile_server');?>"></script>    <script type="text/javascript">
+    <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('map_tile_server');?>"></script>
+    <script type="text/javascript">
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
       });
@@ -35,7 +36,7 @@
         var q_lat = 40.313043;
         var q_lng = -32.695312;
         <?php } ?>
-        
+
         <?php if(isset($slug)) { ?>
         var qso_loc = '<?php echo site_url('visitor/map/'.$slug);?>';
         <?php } ?>
@@ -47,7 +48,9 @@
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
+            <?php if ($this->uri->segment(2) != "search" && $this->uri->segment(2) != "satellites") { ?>
             initmap(grid);
+            <?php } ?>
 
       });
 
@@ -201,6 +204,7 @@
     <?php if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
@@ -230,13 +234,14 @@
                 ordering: true,
                 "scrollY":        "500px",
                 "scrollCollapse": true,
-                "paging":         false,
+                "paging":         true,
                 "scrollX": true,
                 "order": [ 0, 'desc' ],
                 dom: 'Bfrtip',
                 buttons: [
                    {
-                      extend: 'csv'
+                      extend: 'csv',
+                      text: 'CSV'
                    },
                    {
                       extend: 'clear',
@@ -247,6 +252,22 @@
             // change color of csv-button if dark mode is chosen
             if (isDarkModeTheme()) {
                $('[class*="buttons"]').css("color", "white");
+            }
+        </script>
+        <script type="text/javascript">
+            $(function () {
+                $(document).on('shown.bs.tooltip', function (e) {
+                    setTimeout(function () {
+                        $(e.target).tooltip('hide');
+                    }, 3000);
+                });
+            });
+            function validateForm() {
+                let x = document.forms["searchForm"]["callsign"].value;
+                if (x.trim() == "") {
+                    $('#searchcall').tooltip('show')
+                    return false;
+                }
             }
         </script>
     <?php } ?>
