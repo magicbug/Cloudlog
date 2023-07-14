@@ -47,7 +47,9 @@
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
+            <?php if ($this->uri->segment(2) != "search" && $this->uri->segment(2) != "satellites") { ?>
             initmap(grid);
+            <?php } ?>
 
       });
 
