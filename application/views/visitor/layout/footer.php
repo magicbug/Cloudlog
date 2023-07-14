@@ -35,7 +35,7 @@
         var q_lat = 40.313043;
         var q_lng = -32.695312;
         <?php } ?>
-        
+
         <?php if(isset($slug)) { ?>
         var qso_loc = '<?php echo site_url('visitor/map/'.$slug);?>';
         <?php } ?>
@@ -201,6 +201,7 @@
     <?php if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
@@ -230,13 +231,14 @@
                 ordering: true,
                 "scrollY":        "500px",
                 "scrollCollapse": true,
-                "paging":         false,
+                "paging":         true,
                 "scrollX": true,
                 "order": [ 0, 'desc' ],
                 dom: 'Bfrtip',
                 buttons: [
                    {
-                      extend: 'csv'
+                      extend: 'csv',
+                      text: 'CSV'
                    },
                    {
                       extend: 'clear',
