@@ -165,34 +165,39 @@
         </div>
         <?php if (file_exists('.git')) { ?>
         <?php
-            $commitHash = trim(exec('git log --pretty="%H" -n1 HEAD'));
-            $branch = '';
-            $remote = '';
-            $owner = '';
-            // only proceed here if git can actually be executed
-            if ($commitHash != "") {
-				$commitDate = trim(exec('git log --pretty="%ci" -n1 HEAD'));
-				$line = trim(exec('git log -n 1 --pretty=%D HEAD'));
-				$pieces = explode(', ', $line);
-				$lastFetch = trim(exec('stat -c %Y .git/FETCH_HEAD'));
-				//Below is a failsafe for systems without the stat command
-				try {
-					$dt = new DateTime("@$lastFetch");
-				} catch(Exception $e) {
-					$dt = new DateTime(date("Y-m-d H:i:s"));
-				}
-				if (isset($pieces[1])) {
-					$remote = substr($pieces[1], 0, strpos($pieces[1], '/'));
-					$branch = substr($pieces[1], strpos($pieces[1], '/')+1);
-					$url = trim(exec('git remote get-url '.$remote));
-					if (strpos($url, 'https://github.com') !== false) {
-						$owner = preg_replace('/https:\/\/github\.com\/(\w+)\/Cloudlog\.git/', '$1', $url);
-					} else if (strpos($url, 'git@github.com') !== false) {
-						$owner = preg_replace('/git@github\.com:(\w+)\/Cloudlog\.git/', '$1', $url);
+			//Below is a failsafe where git commands fail
+			try {
+				$commitHash = trim(exec('git log --pretty="%H" -n1 HEAD'));
+				$branch = '';
+				$remote = '';
+				$owner = '';
+				// only proceed here if git can actually be executed
+				if ($commitHash != "") {
+					$commitDate = trim(exec('git log --pretty="%ci" -n1 HEAD'));
+					$line = trim(exec('git log -n 1 --pretty=%D HEAD'));
+					$pieces = explode(', ', $line);
+					$lastFetch = trim(exec('stat -c %Y .git/FETCH_HEAD'));
+					//Below is a failsafe for systems without the stat command
+					try {
+						$dt = new DateTime("@$lastFetch");
+					} catch(Exception $e) {
+						$dt = new DateTime(date("Y-m-d H:i:s"));
 					}
+					if (isset($pieces[1])) {
+						$remote = substr($pieces[1], 0, strpos($pieces[1], '/'));
+						$branch = substr($pieces[1], strpos($pieces[1], '/')+1);
+						$url = trim(exec('git remote get-url '.$remote));
+						if (strpos($url, 'https://github.com') !== false) {
+							$owner = preg_replace('/https:\/\/github\.com\/(\w+)\/Cloudlog\.git/', '$1', $url);
+						} else if (strpos($url, 'git@github.com') !== false) {
+							$owner = preg_replace('/git@github\.com:(\w+)\/Cloudlog\.git/', '$1', $url);
+						}
+					}
+					$tag = trim(exec('git describe --tags '.$commitHash));
 				}
-				$tag = trim(exec('git describe --tags '.$commitHash));
-            }
+			} catch (\Throwable $th) {
+				$commitHash = "";
+			}
         ?>
 
         <?php if($commitHash != "") { ?>
