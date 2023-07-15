@@ -228,7 +228,7 @@ $(document).on('change', 'input', function(){
 						$.each( val.Modes, function( key1, val2 ) {
 							if(key1 == selected_sat_mode) {
 
-								if (val2[0].Uplink_Mode == "LSB" || val2[0].Uplink_Mode == "USB") {
+								if ( (val2[0].Downlink_Mode == "LSB" && val2[0].Uplink_Mode == "USB") || (val2[0].Downlink_Mode == "USB" && val2[0].Uplink_Mode == "LSB") )   { // inverting Transponder? set to SSB
 									$("#mode").val("SSB");
 								} else {
 									$("#mode").val(val2[0].Uplink_Mode);
