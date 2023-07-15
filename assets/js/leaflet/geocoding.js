@@ -6,6 +6,9 @@ const degToRad = deg => (deg % 360) * Math.PI / 180;
 const radToDeg = rad => (rad / Math.PI *180) % 360;
 const isValidPoint = (lat, lng) => (lat >= -90 && lat <= 90) && (lng >= -180 && lng <= 180);
 
+var clickmarkers = [];
+var clicklines = [];
+
 function ConvertDDToDMS(lat, lng) {
 	var LatLng = [];
 
@@ -79,6 +82,8 @@ function onMapClick(event) {
 
 	var marker = L.marker([fromCoords[0], fromCoords[1]], {closeOnClick: false, autoClose: false}).addTo(map).bindPopup(homegrid);
 
+	clickmarkers.push(marker);
+
 	var result = bearingDistance(homegrid, locator);
 
 	var distance = Math.round(result.km * 10) / 10 + ' km';
@@ -99,6 +104,9 @@ function onMapClick(event) {
 
 	var marker2 = L.marker([lat, lng], {closeOnClick: false, autoClose: false}).addTo(map);
 
+
+	clickmarkers.push(marker2);
+
 	marker2.bindTooltip(popupmessage);
 
 	const geodesic = L.geodesic(multiplelines, {
@@ -108,6 +116,8 @@ function onMapClick(event) {
 		wrap: false,
 		steps: 100
 	}).addTo(map);
+
+	clicklines.push(geodesic);
 };
 
 const bearingDistance = (from, to) => {
