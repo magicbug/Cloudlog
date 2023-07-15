@@ -16,8 +16,8 @@ var grid_four_confirmed = '';
 var grid_six_confirmed = '';
 
 function gridPlot(form) {
-    $(".ld-ext-right").addClass('running');
-	$(".ld-ext-right").prop('disabled', true);
+    $(".ld-ext-right-plot").addClass('running');
+	$(".ld-ext-right-plot").prop('disabled', true);
     $('#plot').prop("disabled", true);
     // If map is already initialized
     var container = L.DomUtil.get('gridsquare_map');
@@ -41,8 +41,8 @@ function gridPlot(form) {
 		},
 		success: function (data) {
             $('.cohidden').show();
-            $(".ld-ext-right").removeClass('running');
-            $(".ld-ext-right").prop('disabled', false);
+            $(".ld-ext-right-plot").removeClass('running');
+            $(".ld-ext-right-plot").prop('disabled', false);
             $('#plot').prop("disabled", false);
 			grid_two = data.grid_2char;
             grid_four = data.grid_4char;
@@ -146,6 +146,19 @@ function spawnGridsquareModal(loc_4char) {
             });
         }
     });
+}
+
+function clearMarkers() {
+	$(".ld-ext-right-clear").addClass('running');
+	$(".ld-ext-right-clear").prop('disabled', true);
+	clicklines.forEach(function (item) {
+		map.removeLayer(item)
+	});
+	clickmarkers.forEach(function (item) {
+		map.removeLayer(item)
+	});
+	$(".ld-ext-right-clear").removeClass('running');
+	$(".ld-ext-right-clear").prop('disabled', false);
 }
 
 $(document).ready(function(){

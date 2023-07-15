@@ -27,7 +27,7 @@
   margin: 0 8px 0 0;
 }
 .coordinates {
-    justify-content: center; 
+    justify-content: center;
     align-items: stretch;
 }
 .cohidden {
@@ -108,7 +108,8 @@
                     </div>
                 </div>
 
-            <button id="plot" type="button" name="plot" class="btn btn-primary  ld-ext-right" onclick="gridPlot(this.form)"><?php echo lang('gridsquares_button_plot'); ?><div class="ld ld-ring ld-spin"></div></button>
+            <button id="plot" type="button" name="plot" class="btn btn-primary mr-1 ld-ext-right ld-ext-right-plot" onclick="gridPlot(this.form)"><?php echo lang('gridsquares_button_plot'); ?><div class="ld ld-ring ld-spin"></div></button>
+			<button id="clear" type="button" name="clear" class="btn btn-primary mr-1 ld-ext-right ld-ext-right-clear" onclick="clearMarkers()">Clear markers<div class="ld ld-ring ld-spin"></div></button>
 </form>
 
 		<?php if($this->session->flashdata('message')) { ?>
