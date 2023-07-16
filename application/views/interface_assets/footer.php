@@ -943,6 +943,7 @@ $(document).on('keypress',function(e) {
 				$.ajax({ url: dxcluster_provider+"/spot/"+$("#frequency").val()/1000, cache: false, dataType: "json" }).done(
 					function(dxspot) {
 						$("#callsign").val(dxspot.spotted);
+						$("#callsign").trigger("blur");
 					}
 				);
 			});
