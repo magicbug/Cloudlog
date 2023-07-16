@@ -933,8 +933,24 @@ $(document).on('keypress',function(e) {
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
 <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
-
 <?php
+
+	if ($this->config->item('dxcluster_provider') != ''){ ?>
+	<script type="text/javascript">
+		var dxcluster_provider =' <?php echo $this->config->item('dxcluster_provider'); ?>';
+		$(document).ready(function() {
+			$("#check_cluster").on("click", function() {
+				$.ajax({ url: dxcluster_provider+"/spot/"+$("#frequency").val()/1000, cache: false, dataType: "json" }).done(
+					function(dxspot) {
+						$("#callsign").val(dxspot.spotted);
+					}
+				);
+			});
+		});
+	</script>
+<?php
+}
+
 
     $this->load->model('stations');
     $active_station_id = $this->stations->find_active();
