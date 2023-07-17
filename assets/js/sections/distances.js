@@ -94,7 +94,15 @@ function distPlot(form) {
 
 				var series = {
 					data: [],
-					showInNavigator: true
+					showInNavigator: true,
+					point: {
+						events: {
+							click: function () {
+								getDistanceQsos(this.category);
+
+							}
+						}
+					}
 				};
 
 				$.each(tmp.qsodata, function(){
@@ -120,6 +128,50 @@ function distPlot(form) {
 				}
 				$("#distances_div").append('<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + tmp.Error + '</div>');
 			}
+		}
+	});
+}
+
+function getDistanceQsos(distance) {
+	// alert('Category: ' + distance);
+	$.ajax({
+		url: base_url + 'index.php/distances/getDistanceQsos',
+		type: 'post',
+		data: {
+			'distance': distance,
+			'band': $("#distplot_bands").val(),
+			'sat' : $("#distplot_sats").val(),
+		},
+		success: function (html) {
+			BootstrapDialog.show({
+				title: 'QSO Data',
+				size: BootstrapDialog.SIZE_WIDE,
+				cssClass: 'qso-dialog',
+				nl2br: false,
+				message: html,
+				onshown: function(dialog) {
+				   $('[data-toggle="tooltip"]').tooltip();
+				   $('.contacttable').DataTable({
+						"pageLength": 25,
+						responsive: false,
+						ordering: false,
+						"scrollY":        "550px",
+						"scrollCollapse": true,
+						"paging":         false,
+						"scrollX": true,
+						dom: 'Bfrtip',
+						buttons: [
+							'csv'
+						]
+					});
+				},
+				buttons: [{
+					label: 'Close',
+					action: function (dialogItself) {
+						dialogItself.close();
+					}
+				}]
+			});
 		}
 	});
 }
