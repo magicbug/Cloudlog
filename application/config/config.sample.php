@@ -598,16 +598,3 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
-
-/*
-|--------------------------------------------------------------------------
-| DXCluster-API Base-URL
-|--------------------------------------------------------------------------
-|
-| If you have access to a DXCluster-API ( see https://github.com/int2001/DXClusterAPI for running your own )
-| put the base-URL for that API here
-|
-| Example:			'https://log.jo30.de/dxcache'
-| Leave blank to disable:	''
-*/
-$config['dxcluster_provider']='';
