@@ -60,7 +60,7 @@ $lang['options_oqrs_options_have_been_saved'] = 'OQRS options have been saved.';
 
 $lang['options_dxcluster'] = 'DXCluster';
 $lang['options_dxcluster_provider'] = 'Provider des DXClusterCache';
-$lang['options_dxcluster_longtext'] = 'Der Provider des  DXCluster-Caches. Du kannst Deinen eigenen Cache mit <a href="https://github.com/int2001/DXClusterAPI">DXClusterAPI</a> aufsetzen, oder einen &ouml;ffentlichen nutzen';
+$lang['options_dxcluster_longtext'] = 'Der Provider des DXCluster-Caches. Du kannst Deinen eigenen Cache mit <a href="https://github.com/int2001/DXClusterAPI">DXClusterAPI</a> aufsetzen, oder einen &ouml;ffentlichen nutzen';
 $lang['options_dxcluster_hint'] = 'URL des DXCluster-Caches. z.B. https://dxc.jo30.de/dxcache';
 $lang['options_dxcluster_settings'] = 'DXCluster';
 $lang['options_dxcache_url_changed_to'] = 'DXCluster Cache URL ge&auml;nder zu ';
