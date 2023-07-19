@@ -136,6 +136,43 @@ class Options extends CI_Controller {
 		}
     }
 
+	// function used to display the /dxcluster url
+	function dxcluster() {
+			$data['page_title'] = $this->lang->line('options_cloudlog_options');
+			$data['sub_heading'] = $this->lang->line('options_dxcluster_settings');
+
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('options/dxcluster');
+			$this->load->view('interface_assets/footer');
+	}
+
+	// Handles saving the DXCluster options to the options system.
+	function dxcluster_save() {
+
+		// Get Language Options
+
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_dxcluster_settings');
+
+		$this->load->helper(array('form', 'url'));
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('dxcache_url', 'URL of DXCache', 'valid_url');
+
+		if ($this->form_validation->run() == FALSE) {
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('options/dxcluster');
+			$this->load->view('interface_assets/footer');
+		} else {
+			$dxcache_url_update = $this->optionslib->update('dxcache_url', $this->input->post('dxcache_url'), 'yes');
+			if($dxcache_url_update == TRUE) {
+				$this->session->set_flashdata('success', $this->lang->line('options_dxcache_url_changed_to').$this->input->post('dxcache_url'));
+			}
+			redirect('/options/dxcluster');
+		}
+	}
+
 		// function used to display the /radio url
 		function radio() {
 
