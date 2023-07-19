@@ -180,39 +180,36 @@ class adif extends CI_Controller {
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('adif/import');
 			$this->load->view('interface_assets/footer');
-		}
-		else
-		{
-
-			$data = array('upload_data' => $this->upload->data());
-
-			ini_set('memory_limit', '-1');
-			set_time_limit(0);
-
-			$this->load->model('logbook_model');
-
-			$this->load->library('adif_parser');
-
-			$this->adif_parser->load_from_file('./uploads/'.$data['upload_data']['file_name']);
-
-			$this->adif_parser->initialize();
+		} else {
 			$custom_errors = "";
-			while($record = $this->adif_parser->get_record())
-			{
-				if(count($record) == 0)
+			if ($this->stations->check_station_is_accessible($this->input->post('station_profile'))) {
+				$data = array('upload_data' => $this->upload->data());
+
+				ini_set('memory_limit', '-1');
+				set_time_limit(0);
+
+				$this->load->model('logbook_model');
+
+				$this->load->library('adif_parser');
+
+				$this->adif_parser->load_from_file('./uploads/'.$data['upload_data']['file_name']);
+
+				$this->adif_parser->initialize();
+				while($record = $this->adif_parser->get_record())
 				{
-					break;
+					if(count($record) == 0)
+					{
+						break;
+					};
+					$bool_skip=($this->input->post('skipDuplicate') == 1);
+					$single_error = $this->logbook_model->import($record, $this->input->post('station_profile'),$bool_skip, $this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), $this->input->post('markHrd'), true, $this->input->post('operatorName'));
+					if ($single_error != '') { $custom_errors.=$single_error."<br/>"; }
 				};
-
-
-				$custom_errors .= $this->logbook_model->import($record, $this->input->post('station_profile'),
-					$this->input->post('skipDuplicate'), $this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), $this->input->post('markHrd'), true, $this->input->post('operatorName'))."<br/>";
-
-			};
-
+				unlink('./uploads/'.$data['upload_data']['file_name']);
+			} else {
+				$custom_errors="Station Location NOT valid for User";
+			}
 			$data['adif_errors'] = $custom_errors;
-
-			unlink('./uploads/'.$data['upload_data']['file_name']);
 
 			$data['page_title'] = "ADIF Imported";
 			$this->load->view('interface_assets/header', $data);

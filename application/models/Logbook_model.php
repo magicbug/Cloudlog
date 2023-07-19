@@ -3062,7 +3062,7 @@ class Logbook_model extends CI_Model {
         }
 
         // Check if QSO is already in the database
-        if ($skipDuplicate != NULL) {
+        if (!$skipDuplicate) {
             $skip = false;
         } else {
             if (isset($record['call'])){
