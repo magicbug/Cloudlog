@@ -44,7 +44,7 @@
                         <div class="col-md-10">
                             <div class="form-check-inline">
                                 <input class="form-check-input" type="checkbox" name="skipDuplicate" value="1" id="skipDuplicate">
-                                <label class="form-check-label" for="skipDuplicate">Skip duplicate QSO check</label>
+                                <label class="form-check-label" for="skipDuplicate">Import duplicate QSOs</label>
                             </div>
                         </div>
                     </div>

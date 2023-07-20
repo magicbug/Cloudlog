@@ -171,8 +171,7 @@ class adif extends CI_Controller {
 
 		$this->load->library('upload', $config);
 
-		if ( ! $this->upload->do_upload())
-		{
+		if ( ! $this->upload->do_upload()) {
 			$data['error'] = $this->upload->display_errors();
 
 			$data['max_upload'] = ini_get('upload_max_filesize');
@@ -180,39 +179,39 @@ class adif extends CI_Controller {
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('adif/import');
 			$this->load->view('interface_assets/footer');
-		}
-		else
-		{
+		} else {
+			if ($this->stations->check_station_is_accessible($this->input->post('station_profile'))) {
+				$data = array('upload_data' => $this->upload->data());
 
-			$data = array('upload_data' => $this->upload->data());
+				ini_set('memory_limit', '-1');
+				set_time_limit(0);
 
-			ini_set('memory_limit', '-1');
-			set_time_limit(0);
+				$this->load->model('logbook_model');
 
-			$this->load->model('logbook_model');
+				$this->load->library('adif_parser');
 
-			$this->load->library('adif_parser');
+				$this->adif_parser->load_from_file('./uploads/'.$data['upload_data']['file_name']);
 
-			$this->adif_parser->load_from_file('./uploads/'.$data['upload_data']['file_name']);
-
-			$this->adif_parser->initialize();
-			$custom_errors = "";
-			while($record = $this->adif_parser->get_record())
-			{
-				if(count($record) == 0)
+				$this->adif_parser->initialize();
+				$custom_errors = "";
+				while($record = $this->adif_parser->get_record())
 				{
-					break;
+					if(count($record) == 0) {
+						break;
+					};
+
+					$one_error = $this->logbook_model->import($record, $this->input->post('station_profile'), $this->input->post('skipDuplicate'), $this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), $this->input->post('markHrd'), true, $this->input->post('operatorName'));
+					if ($one_error != '') {
+						$custom_errors.=$one_error."<br/>";
+					}
 				};
-
-
-				$custom_errors .= $this->logbook_model->import($record, $this->input->post('station_profile'),
-					$this->input->post('skipDuplicate'), $this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), $this->input->post('markHrd'), true, $this->input->post('operatorName'))."<br/>";
-
-			};
+				unlink('./uploads/'.$data['upload_data']['file_name']);
+			} else {
+				$custom_errors='Station Profile not valid for User';
+			}
 
 			$data['adif_errors'] = $custom_errors;
 
-			unlink('./uploads/'.$data['upload_data']['file_name']);
 
 			$data['page_title'] = "ADIF Imported";
 			$this->load->view('interface_assets/header', $data);
