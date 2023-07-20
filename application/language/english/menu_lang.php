@@ -13,6 +13,7 @@ $lang['menu_live_qso'] = 'Live QSO';
 $lang['menu_post_qso'] = 'Post QSO';
 $lang['menu_live_contest_logging'] = 'Live Contest Logging';
 $lang['menu_post_contest_logging'] = 'Post Contest Logging';
+$lang['menu_bandmap'] = 'Bandmap';
 $lang['menu_view_qsl'] = 'View QSL';
 $lang['menu_view_eqsl'] = 'View eQSL';
 
