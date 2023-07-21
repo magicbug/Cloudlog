@@ -130,7 +130,7 @@ $(function() {
 						dataType: "json"
 					}).done(function(dxspots) {
 						spots4chart=[];
-						if (dxspots.length>1) {
+						if (dxspots.length>0) {
 							dxspots.sort(SortByQrg);
 							dxspots=reduce_spots(dxspots);
 							dxspots.forEach((single) => {
@@ -152,7 +152,7 @@ $(function() {
 						dataType: "json"
 					}).done(function(dxspots) {
 						spots4chart=[];
-						if (dxspots.length>1) {
+						if (dxspots.length>0) {
 							dxspots.sort(SortByQrg);
 							dxspots=reduce_spots(dxspots);
 							dxspots.forEach((single) => {
