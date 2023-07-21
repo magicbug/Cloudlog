@@ -3993,6 +3993,42 @@ class Logbook_model extends CI_Model {
         return false;
     }
 
+    public function dxc_qrg_lookup($qrg, $maxage = 120) {
+	    if ( ($this->optionslib->get_option('dxcache_url') != '') && (is_numeric($qrg)) ) {
+		    $dxcache_url = $this->optionslib->get_option('dxcache_url').'/spot/'.$qrg;
+
+		    // CURL Functions
+		    $ch = curl_init();
+		    curl_setopt($ch, CURLOPT_URL, $dxcache_url);
+		    curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog DXLookup');
+		    curl_setopt($ch, CURLOPT_HEADER, false);
+		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		    $jsonraw = curl_exec($ch);
+		    curl_close($ch);
+		    $json = json_decode($jsonraw);
+
+		    // Create JSON object
+		    if (strlen($jsonraw)>20) {
+			    $datetimecurrent = new DateTime("now", new DateTimeZone('UTC')); // Today's Date/Time
+			    $datetimespot = new DateTime($json->when, new DateTimeZone('UTC'));
+			    $spotage = $datetimecurrent->diff($datetimespot);
+			    $minutes = $spotage->days * 24 * 60;
+			    $minutes += $spotage->h * 60;
+			    $minutes += $spotage->i;
+			    $json->age=$minutes;
+			    if ($minutes<=$maxage) {
+				    $dxcc=$this->dxcc_lookup($json->spotted,date('Ymd', time()));
+				    $json->dxcc=$dxcc;
+				    return ($json);
+			    } else {
+				    return '';
+			    }
+		    } else {
+			    return '';
+		    }
+	    }
+    }
+	
 }
 
 function validateADIFDate($date, $format = 'Ymd')

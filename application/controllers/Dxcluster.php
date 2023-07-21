@@ -12,12 +12,12 @@ class Dxcluster extends CI_Controller {
 
 
 	function qrg_lookup($qrg) {
-		$call_found=$this->logbook_model->qrg_lookup($qrg);
+		$call_found=$this->logbook_model->dxc_qrg_lookup($this->security->xss_clean($qrg));
+        	header('Content-Type: application/json');
 		if ($call_found) {
-        		header('Content-Type: application/json');
 			echo json_encode($call_found, JSON_PRETTY_PRINT);
 		} else {
-			echo '{ error: "not found" }';
+			echo '{ "error": "not found" }';
 		}
 	}
 
@@ -30,7 +30,7 @@ class Dxcluster extends CI_Controller {
         		header('Content-Type: application/json');
 			echo json_encode($dxcc, JSON_PRETTY_PRINT);
 		} else {
-			echo '{ error: "not found" }';
+			echo '{ "error": "not found" }';
 		}
 	}
 }
