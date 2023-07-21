@@ -937,7 +937,7 @@ $(document).on('keypress',function(e) {
 
 	if ($this->optionslib->get_option('dxcache_url') != ''){ ?>
 	<script type="text/javascript">
-		var dxcluster_provider ='/index.php/dxcluster';
+		var dxcluster_provider = <?php echo base_url(); ?>'index.php/dxcluster';
 		$(document).ready(function() {
 			$("#check_cluster").on("click", function() {
 				$.ajax({ url: dxcluster_provider+"/qrg_lookup/"+$("#frequency").val()/1000, cache: false, dataType: "json" }).done(
