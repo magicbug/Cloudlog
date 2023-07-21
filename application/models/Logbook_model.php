@@ -3997,6 +3997,8 @@ class Logbook_model extends CI_Model {
 	    $CI =& get_instance();
 	    if ( ($this->optionslib->get_option('dxcache_url') != '') ) {
 		    $dxcache_url = $this->optionslib->get_option('dxcache_url').'/spots/';
+		    $CI->load->model('logbooks_model');
+		    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 		    // CURL Functions
 		    $ch = curl_init();
@@ -4010,7 +4012,7 @@ class Logbook_model extends CI_Model {
 
 		    // Create JSON object
 		    if (strlen($jsonraw)>20) {
-			$spotsout=[];
+			    $spotsout=[];
 			    foreach($json as $singlespot){
 				    $spotband = $CI->frequency->GetBand($singlespot->frequency*1000);
 				    $singlespot->band=$spotband;
@@ -4023,15 +4025,17 @@ class Logbook_model extends CI_Model {
 				    $minutes += $spotage->i;
 				    $singlespot->age=$minutes;
 				    if ($minutes<=$maxage) {
-					     $dxcc=$this->dxcc_lookup($singlespot->spotter,date('Ymd', time()));
-					     $singlespot->dxcc_spotter=$dxcc;
-						if ($de != '') {
-					     		if ($de == $dxcc['cont']) {
-								array_push($spotsout,$singlespot);
-							}
-						} else {
-					     		array_push($spotsout,$singlespot);
-						}
+					    $dxcc=$this->dxcc_lookup($singlespot->spotter,date('Ymd', time()));
+					    $singlespot->dxcc_spotter=$dxcc;
+					    if ($de != '') {
+						    if ($de == $dxcc['cont']) {
+							    $singlespot->worked_call = ($this->check_if_callsign_worked_in_logbook($singlespot->spotted, $logbooks_locations_array, $singlespot->band) == 1);
+							    array_push($spotsout,$singlespot);
+						    }
+					    } else {
+						    $singlespot->worked_call = ($this->check_if_callsign_worked_in_logbook($singlespot->spotted, $logbooks_locations_array, $singlespot->band) == 1);
+						    array_push($spotsout,$singlespot);
+					    }
 				    }
 			    }
 			    return ($spotsout);
