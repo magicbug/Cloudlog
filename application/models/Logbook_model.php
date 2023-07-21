@@ -4023,8 +4023,8 @@ class Logbook_model extends CI_Model {
 				    $minutes += $spotage->i;
 				    $singlespot->age=$minutes;
 				    if ($minutes<=$maxage) {
-					     $dxcc=$this->dxcc_lookup($singlespot->spotted,date('Ymd', time()));
-					     $singlespot->dxcc=$dxcc;
+					     $dxcc=$this->dxcc_lookup($singlespot->spotter,date('Ymd', time()));
+					     $singlespot->dxcc_spotter=$dxcc;
 					     array_push($spotsout,$singlespot);
 				    }
 			    }
@@ -4061,8 +4061,8 @@ class Logbook_model extends CI_Model {
 			    $minutes += $spotage->i;
 			    $json->age=$minutes;
 			    if ($minutes<=$maxage) {
-				    $dxcc=$this->dxcc_lookup($json->spotted,date('Ymd', time()));
-				    $json->dxcc=$dxcc;
+				    $dxcc=$this->dxcc_lookup($json->spotter,date('Ymd', time()));
+				    $json->dxcc_spotter=$dxcc;
 				    return ($json);
 			    } else {
 				    return '';
