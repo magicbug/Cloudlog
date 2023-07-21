@@ -4050,7 +4050,7 @@ class Logbook_model extends CI_Model {
 		    // CURL Functions
 		    $ch = curl_init();
 		    curl_setopt($ch, CURLOPT_URL, $dxcache_url);
-		    curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog DXLookup');
+		    curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog DXLookup by QRG');
 		    curl_setopt($ch, CURLOPT_HEADER, false);
 		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		    $jsonraw = curl_exec($ch);
