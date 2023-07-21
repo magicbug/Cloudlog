@@ -937,10 +937,10 @@ $(document).on('keypress',function(e) {
 
 	if ($this->optionslib->get_option('dxcache_url') != ''){ ?>
 	<script type="text/javascript">
-		var dxcluster_provider =' <?php echo $this->optionslib->get_option('dxcache_url'); ?>';
+		var dxcluster_provider ='/index.php/dxcluster';
 		$(document).ready(function() {
 			$("#check_cluster").on("click", function() {
-				$.ajax({ url: dxcluster_provider+"/spot/"+$("#frequency").val()/1000, cache: false, dataType: "json" }).done(
+				$.ajax({ url: dxcluster_provider+"/qrg_lookup/"+$("#frequency").val()/1000, cache: false, dataType: "json" }).done(
 					function(dxspot) {
 						$("#callsign").val(dxspot.spotted);
 						$("#callsign").trigger("blur");
