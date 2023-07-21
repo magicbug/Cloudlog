@@ -11,8 +11,14 @@ class Dxcluster extends CI_Controller {
 	}
 
 
-	function spots($band,$age = 60) {
-		$calls_found=$this->logbook_model->dxc_spotlist($band, $age);
+	function spots($band,$age = '', $de = '') {
+		if ($age == '') {
+			$age = $this->optionslib->get_option('dxcluster_maxage');
+		}
+		if ($de == '') {
+			$de = $this->optionslib->get_option('dxcluster_decont');
+		}
+		$calls_found=$this->logbook_model->dxc_spotlist($band, $age, $de);
         	header('Content-Type: application/json');
 		if ($calls_found) {
 			echo json_encode($calls_found, JSON_PRETTY_PRINT);

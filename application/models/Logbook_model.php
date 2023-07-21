@@ -3993,7 +3993,7 @@ class Logbook_model extends CI_Model {
         return false;
     }
 
-    public function dxc_spotlist($band = '20m',$maxage = 60) {
+    public function dxc_spotlist($band = '20m',$maxage = 60, $de = '') {
 	    $CI =& get_instance();
 	    if ( ($this->optionslib->get_option('dxcache_url') != '') ) {
 		    $dxcache_url = $this->optionslib->get_option('dxcache_url').'/spots/';
@@ -4025,7 +4025,13 @@ class Logbook_model extends CI_Model {
 				    if ($minutes<=$maxage) {
 					     $dxcc=$this->dxcc_lookup($singlespot->spotter,date('Ymd', time()));
 					     $singlespot->dxcc_spotter=$dxcc;
-					     array_push($spotsout,$singlespot);
+						if ($de != '') {
+					     		if ($de == $dxcc['cont']) {
+								array_push($spotsout,$singlespot);
+							}
+						} else {
+					     		array_push($spotsout,$singlespot);
+						}
 				    }
 			    }
 			    return ($spotsout);
