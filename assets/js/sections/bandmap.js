@@ -47,7 +47,6 @@ $(function() {
 		}
 	}(Highcharts));
 
-	var dxcluster_provider = 'https://dxc.jo30.de/dxcache';
 	var bandMapChart;
 	var color = ifDarkModeThemeReturn('white', 'grey');
 
@@ -123,9 +122,10 @@ $(function() {
 					return ret;
 				}
 
-				function update_chart(lowerQrg,upperQrg,maxAgeMinutes) {
+				function update_chart(band,maxAgeMinutes) {
+					let dxurl = dxcluster_provider + "/spots/" + band + "/" +maxAgeMinutes;
 					$.ajax({
-						url: dxcluster_provider + "/spots",
+						url: dxurl,
 						cache: false,
 						dataType: "json"
 					}).done(function(dxspots) {
@@ -133,9 +133,7 @@ $(function() {
 						dxspots.sort(SortByQrg);
 						dxspots=reduce_spots(dxspots);
 						dxspots.forEach((single) => {
-							if ( (single.frequency >= lowerQrg) && (single.frequency <= upperQrg) && (Date.parse(single.when)>(Date.now() - 1000 * 60 * maxAgeMinutes)) ) {
-								spots4chart.push(convert2high(single));
-							}
+							spots4chart.push(convert2high(single));
 						});
 						// console.log(spots4chart);
 						bandMapChart.series[0].setData(spots4chart);
@@ -144,9 +142,10 @@ $(function() {
 				}
 
 
-				function set_chart(lowerQrg,upperQrg,maxAgeMinutes) {
+				function set_chart(band,maxAgeMinutes) {
+					let dxurl = dxcluster_provider + "/spots/" + band + "/" +maxAgeMinutes;
 					$.ajax({
-						url: dxcluster_provider + "/spots",
+						url: dxurl, 
 						cache: false,
 						dataType: "json"
 					}).done(function(dxspots) {
@@ -154,14 +153,12 @@ $(function() {
 						dxspots.sort(SortByQrg);
 						dxspots=reduce_spots(dxspots);
 						dxspots.forEach((single) => {
-							if ( (single.frequency >= lowerQrg) && (single.frequency <= upperQrg) && (Date.parse(single.when)>(Date.now() - 1000 * 60 * maxAgeMinutes)) ) {
-								spots4chart.push(convert2high(single));
-							}
+							spots4chart.push(convert2high(single));
 						});
-						bandMapChart=render_chart('20m',spots4chart);
+						bandMapChart=render_chart(band,spots4chart);
 					});
 				}
 
-	set_chart(14000,14350,30);
-	setInterval(function () { update_chart(14000,14350,30); },60000);
+	set_chart($('#band option:selected').val(),30);
+	setInterval(function () { update_chart($('#band option:selected').val(),30); },60000);
 });
