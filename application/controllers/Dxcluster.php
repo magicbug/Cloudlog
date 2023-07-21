@@ -11,6 +11,16 @@ class Dxcluster extends CI_Controller {
 	}
 
 
+	function spots($band,$age = 60) {
+		$calls_found=$this->logbook_model->dxc_spotlist($band, $age);
+        	header('Content-Type: application/json');
+		if ($calls_found) {
+			echo json_encode($calls_found, JSON_PRETTY_PRINT);
+		} else {
+			echo '{ "error": "not found" }';
+		}
+	}
+
 	function qrg_lookup($qrg) {
 		$call_found=$this->logbook_model->dxc_qrg_lookup($this->security->xss_clean($qrg));
         	header('Content-Type: application/json');

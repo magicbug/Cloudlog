@@ -3993,6 +3993,50 @@ class Logbook_model extends CI_Model {
         return false;
     }
 
+    public function dxc_spotlist($band = '20m',$maxage = 60) {
+	    $CI =& get_instance();
+	    if ( ($this->optionslib->get_option('dxcache_url') != '') ) {
+		    $dxcache_url = $this->optionslib->get_option('dxcache_url').'/spots/';
+
+		    // CURL Functions
+		    $ch = curl_init();
+		    curl_setopt($ch, CURLOPT_URL, $dxcache_url);
+		    curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog DXLookup');
+		    curl_setopt($ch, CURLOPT_HEADER, false);
+		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		    $jsonraw = curl_exec($ch);
+		    curl_close($ch);
+		    $json = json_decode($jsonraw);
+
+		    // Create JSON object
+		    if (strlen($jsonraw)>20) {
+			$spotsout=[];
+			    foreach($json as $singlespot){
+				    $spotband = $CI->frequency->GetBand($singlespot->frequency*1000);
+				    $singlespot->band=$spotband;
+				    if ($band != $spotband) { continue; }
+				    $datetimecurrent = new DateTime("now", new DateTimeZone('UTC')); // Today's Date/Time
+				    $datetimespot = new DateTime($singlespot->when, new DateTimeZone('UTC'));
+				    $spotage = $datetimecurrent->diff($datetimespot);
+				    $minutes = $spotage->days * 24 * 60;
+				    $minutes += $spotage->h * 60;
+				    $minutes += $spotage->i;
+				    $singlespot->age=$minutes;
+				    if ($minutes<=$maxage) {
+					     $dxcc=$this->dxcc_lookup($singlespot->spotted,date('Ymd', time()));
+					     $singlespot->dxcc=$dxcc;
+					     array_push($spotsout,$singlespot);
+				    }
+			    }
+			    return ($spotsout);
+		    } else {
+			    return '';
+		    }
+	    } else {
+		    return '';
+	    }
+    }
+
     public function dxc_qrg_lookup($qrg, $maxage = 120) {
 	    if ( ($this->optionslib->get_option('dxcache_url') != '') && (is_numeric($qrg)) ) {
 		    $dxcache_url = $this->optionslib->get_option('dxcache_url').'/spot/'.$qrg;
