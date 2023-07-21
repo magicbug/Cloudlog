@@ -64,6 +64,9 @@ $lang['options_dxcluster_longtext'] = 'Der Provider des DXCluster-Caches. Du kan
 $lang['options_dxcluster_hint'] = 'URL des DXCluster-Caches. z.B. https://dxc.jo30.de/dxcache';
 $lang['options_dxcluster_settings'] = 'DXCluster';
 $lang['options_dxcache_url_changed_to'] = 'DXCluster Cache URL ge&auml;nder zu ';
-
+$lang['options_dxcluster_maxage'] = 'Maximales Alter bis zu dem Spots ber&uuml;cksichtigt werden';
+$lang['options_dxcluster_decont'] = 'Nur Spots ber&uuml;cksichtigen, die in folgendem Kontinent erfasst wurden';
+$lang['options_dxcluster_maxage_changed_to']='Maximal Spot-Alter ge&auml;nder auf ';
+$lang['options_dxcluster_decont_changed_to']='Spotterkontinent ge&auml;ndert auf ';
 
 $lang['options_save'] = 'Speichern';
