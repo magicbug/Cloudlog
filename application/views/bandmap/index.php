@@ -1,5 +1,5 @@
 <script>
-	var dxcluster_provider="/index.php/dxcluster";
+	var dxcluster_provider="<?php echo base_url(); ?>index.php/dxcluster";
 </script>
 
 <div class="container">
