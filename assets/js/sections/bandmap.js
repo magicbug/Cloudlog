@@ -130,12 +130,14 @@ $(function() {
 						dataType: "json"
 					}).done(function(dxspots) {
 						spots4chart=[];
-						dxspots.sort(SortByQrg);
-						dxspots=reduce_spots(dxspots);
-						dxspots.forEach((single) => {
-							spots4chart.push(convert2high(single));
-						});
-						// console.log(spots4chart);
+						if (dxspots.length>1) {
+							dxspots.sort(SortByQrg);
+							dxspots=reduce_spots(dxspots);
+							dxspots.forEach((single) => {
+								spots4chart.push(convert2high(single));
+							});
+						}
+						bandMapChart.title.text=band;
 						bandMapChart.series[0].setData(spots4chart);
 						bandMapChart.redraw();
 					});
@@ -150,15 +152,20 @@ $(function() {
 						dataType: "json"
 					}).done(function(dxspots) {
 						spots4chart=[];
-						dxspots.sort(SortByQrg);
-						dxspots=reduce_spots(dxspots);
-						dxspots.forEach((single) => {
-							spots4chart.push(convert2high(single));
-						});
+						if (dxspots.length>1) {
+							dxspots.sort(SortByQrg);
+							dxspots=reduce_spots(dxspots);
+							dxspots.forEach((single) => {
+								spots4chart.push(convert2high(single));
+							});
+						}
 						bandMapChart=render_chart(band,spots4chart);
 					});
 				}
 
 	set_chart($('#band option:selected').val(),30);
 	setInterval(function () { update_chart($('#band option:selected').val(),30); },60000);
+	$("#band").on("change",function() {
+		set_chart($('#band option:selected').val(),30);
+	});
 });
