@@ -73,6 +73,7 @@ $(function() {
 				}
 			},
 			xAxis: {
+				lineColor: color,
 				visible: true,
 				type: 'linear',
 				labels: {
