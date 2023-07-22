@@ -7,7 +7,7 @@ class Dxcluster extends CI_Controller {
 		parent::__construct();
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-		$this->load->model('logbook_model');
+		$this->load->model('dxcluster_model');
 	}
 
 
@@ -18,8 +18,8 @@ class Dxcluster extends CI_Controller {
 		if ($de == '') {
 			$de = $this->optionslib->get_option('dxcluster_decont');
 		}
-		$calls_found=$this->logbook_model->dxc_spotlist($band, $age, $de);
-        	header('Content-Type: application/json');
+		$calls_found=$this->dxcluster_model->dxc_spotlist($band, $age, $de);
+			header('Content-Type: application/json');
 		if ($calls_found) {
 			echo json_encode($calls_found, JSON_PRETTY_PRINT);
 		} else {
@@ -28,8 +28,8 @@ class Dxcluster extends CI_Controller {
 	}
 
 	function qrg_lookup($qrg) {
-		$call_found=$this->logbook_model->dxc_qrg_lookup($this->security->xss_clean($qrg));
-        	header('Content-Type: application/json');
+		$call_found=$this->dxcluster_model->dxc_qrg_lookup($this->security->xss_clean($qrg));
+			header('Content-Type: application/json');
 		if ($call_found) {
 			echo json_encode($call_found, JSON_PRETTY_PRINT);
 		} else {
@@ -38,12 +38,13 @@ class Dxcluster extends CI_Controller {
 	}
 
 	function call($call) {
+		$this->load->model('logbook_model');
 
 		$date = date('Ymd', time());
 		$dxcc = $this->logbook_model->dxcc_lookup($call, $date);
 
 		if ($dxcc) {
-        		header('Content-Type: application/json');
+			header('Content-Type: application/json');
 			echo json_encode($dxcc, JSON_PRETTY_PRINT);
 		} else {
 			echo '{ "error": "not found" }';
