@@ -7,7 +7,7 @@ class Dxcluster_model extends CI_Model {
 		$this->load->helper(array('psr4_autoloader'));
 	    $CI =& get_instance();
 	    if ( ($this->optionslib->get_option('dxcache_url') != '') ) {
-		    $dxcache_url = $this->optionslib->get_option('dxcache_url').'/spots/';
+		    $dxcache_url = $this->optionslib->get_option('dxcache_url').'/spots/'.$band;
 		    $CI->load->model('logbooks_model');
 			$CI->load->model('logbook_model');
 		    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
