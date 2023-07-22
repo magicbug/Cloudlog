@@ -4025,9 +4025,15 @@ class Logbook_model extends CI_Model {
 				    $minutes += $spotage->i;
 				    $singlespot->age=$minutes;
 				    if ($minutes<=$maxage) {
-					    $dxcc=$this->dxcc_lookup($singlespot->spotter,date('Ymd', time()));
-					    $singlespot->dxcc_spotter=$dxcc;
-					    if ($de != '') {
+					    if (!(property_exists($singlespot,'dxcc_spotted'))) {	// Check if we already have dxcc of spotted
+					    	$dxcc=$this->dxcc_lookup($singlespot->spotted,date('Ymd', time()));
+					    	$singlespot->dxcc_spotted=$dxcc;
+					    }
+					    if (!(property_exists($singlespot,'dxcc_spotter'))) {	// Check if we already have dxcc of spotter
+					    	$dxcc=$this->dxcc_lookup($singlespot->spotter,date('Ymd', time()));
+					    	$singlespot->dxcc_spotter=$dxcc;
+					    }
+					    if ( ($de != '') && (array_key_exists('cont',$dxcc)) ){
 						    if ($de == $dxcc['cont']) {
 							    $singlespot->worked_call = ($this->check_if_callsign_worked_in_logbook($singlespot->spotted, $logbooks_locations_array, $singlespot->band) == 1);
 							    array_push($spotsout,$singlespot);
