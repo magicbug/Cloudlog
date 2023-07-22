@@ -50,12 +50,12 @@ class Dxcluster_model extends CI_Model {
 					    	$dxcc=$dxccObj->dxcc_lookup($singlespot->spotter,date('Ymd', time()));
 					    	$singlespot->dxcc_spotter=$dxcc;
 					    }
-					    if ( ($de != '') && (array_key_exists('cont',$dxcc)) ){
-						    if ($de == $dxcc['cont']) {
+					    if ( ($de != '') && (property_exists($singlespot->dxcc_spotter,'cont')) ){	// If we have a "de continent" and a filter-wish filter on that
+						    if ($de == $singlespot->dxcc_spotter->cont) {
 							    $singlespot->worked_call = ($this->logbook_model->check_if_callsign_worked_in_logbook($singlespot->spotted, $logbooks_locations_array, $singlespot->band) == 1);
 							    array_push($spotsout,$singlespot);
 						    }
-					    } else {
+					    } else {	// No de continent? No Filter --> Just push
 						    $singlespot->worked_call = ($this->logbook_model->check_if_callsign_worked_in_logbook($singlespot->spotted, $logbooks_locations_array, $singlespot->band) == 1);
 						    array_push($spotsout,$singlespot);
 					    }
