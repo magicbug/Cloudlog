@@ -24,9 +24,10 @@ $(function() {
 					var data=[];
 					data[0]=[];
 					data[0].push(single.when_pretty);
-					data[0].push(single.frequency);
+					data[0].push(single.frequency + " kHz");
 					data[0].push((single.worked_call ?'<span class="text-success">' : '')+single.spotted+(single.worked_call ? '</span>' : ''));
 					data[0].push(single.dxcc_spotted.entity);
+					data[0].push(single.spotter);
 					if (oldtable.length > 0) {
 						let update=false;
 						oldtable.each( function (srow) {
@@ -54,7 +55,7 @@ $(function() {
 		var table=$('.spottable').DataTable();
 		table.rows().every(function() {
 			var d=this.data();
-			var distance=Math.abs(parseInt(d[1])-qrg);
+			var distance=Math.abs(parseInt(d[1].substring(0,d[1].length-4))-qrg);
 			if (distance<=20) {
 				distance++;
 				alpha=(.5/distance);
@@ -133,7 +134,7 @@ $(function() {
 				} else {
 					$(".radio_timeout_error" ).remove();
 					text = '<i class="fas fa-broadcast-tower"></i><span style="margin-left:10px;"></span><b>TX:</b> '+(Math.round(parseInt(data.frequency)/100)/10000).toFixed(4)+' MHz';
-					highlight_current_qrg((parseInt(data.frequency)/1000));
+					highlight_current_qrg((parseInt(data.frequency))/1000);
 					if(data.mode != null) {
 						text = text+'<span style="margin-left:10px"></span>'+data.mode;
 					}

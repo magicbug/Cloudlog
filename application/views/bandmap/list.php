@@ -77,6 +77,7 @@
 			    <th><?php echo lang('gen_hamradio_frequency'); ?></th>
                             <th><?php echo lang('gen_hamradio_call'); ?></th>
 			    <th>DXCC</th>
+                            <th><?php echo lang('gen_hamradio_call'); ?> Spotter</th>
                         </tr>
                     </thead>
 
