@@ -8,6 +8,17 @@
 <br>
 
 <h2><?php echo $page_title; ?></h2>
+<div class="tabs">
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link active" href="index">DXMap</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="list">DXList</a>
+			</li>
+		</ul>
+</div>
+<div class="tab-content" id="myTabContent">
 <div class="messages"></div>
 <div class="form-inline">
 		<label class="my-1 mr-2" for="radio"><?php echo lang('gen_hamradio_radio'); ?></label>
@@ -38,4 +49,5 @@
     <p class="highcharts-description">
     </p>
 </figure>
+</div>
 </div>

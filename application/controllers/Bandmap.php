@@ -21,7 +21,7 @@ class Bandmap extends CI_Controller {
 			'assets/js/sections/bandmap.js',
 		];
 
-		$data['page_title'] = "Bandmap";
+		$data['page_title'] = "DXCluster";
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('bandmap/index');
 		$this->load->view('interface_assets/footer', $footerData);
