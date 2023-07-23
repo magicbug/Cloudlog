@@ -82,6 +82,14 @@ $(function() {
 		fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),30);
 	});
 
+	$("#spottertoggle").on("click", function() {
+		if ($('.spottable').DataTable().column(4).visible()) {
+			$('.spottable').DataTable().column(4).visible(false);
+		} else {
+			$('.spottable').DataTable().column(4).visible(true);
+		}
+	});
+
 	$("#menutoggle").on("click", function() {
 		if ($('.navbar').is(":hidden")) {
 			$('.navbar').show();
