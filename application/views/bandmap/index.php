@@ -7,8 +7,8 @@
 <div class="container">
 <br>
 <center><button type="button" class="btn" id="menutoggle"><i class="fa fa-arrow-up" id="menutoggle_i"></i></button></center>
-<h2><?php echo $page_title; ?></h2>
-<div class="tabs">
+<h2 id="dxtitle"><?php echo $page_title; ?></h2>
+<div class="tabs" id="dxtabs">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 			<li class="nav-item">
 				<a class="nav-link active" href="index">DXMap</a>

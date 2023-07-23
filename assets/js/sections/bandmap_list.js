@@ -84,10 +84,14 @@ $(function() {
 	$("#menutoggle").on("click", function() {
 		if ($('.navbar').is(":hidden")) {
 			$('.navbar').show();
+			$('#dxtabs').show();
+			$('#dxtitle').show();
 			$('#menutoggle_i').removeClass('fa-arrow-down');
 			$('#menutoggle_i').addClass('fa-arrow-up');
 		} else {
 			$('.navbar').hide();
+			$('#dxtabs').hide();
+			$('#dxtitle').hide();
 			$('#menutoggle_i').removeClass('fa-arrow-up');
 			$('#menutoggle_i').addClass('fa-arrow-down');
 		}
