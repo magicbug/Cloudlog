@@ -15,29 +15,48 @@ $(function() {
 			dataType: "json"
 		}).done(function(dxspots) {
 			var table = $('.spottable').DataTable();
-			table.clear();
 			table.page.len(50);
-			table.order([1, 'asc']);
+			let oldtable=table.data();
+			table.clear();
 			if (dxspots.length>0) {
 				dxspots.sort(SortByQrg);
 				dxspots.forEach((single) => {
-					// var data = [[ single.when_pretty, single.frequency, single.spotted, single.dxcc_spotted.call ]];
 					var data=[];
 					data[0]=[];
 					data[0].push(single.when_pretty);
 					data[0].push(single.frequency);
 					data[0].push((single.worked_call ?'<span class="text-success">' : '')+single.spotted+(single.worked_call ? '</span>' : ''));
 					data[0].push(single.dxcc_spotted.entity);
-					table.rows.add(data).draw();
-					// add to datatable single
+					if (oldtable.length > 0) {
+						let update=false;
+						oldtable.each( function (srow) {
+							if (JSON.stringify(srow) === JSON.stringify(data[0])) {
+								update=true;
+							} 
+						});
+						if (!update) { 	// Sth. Fresh? So highlight
+							table.rows.add(data).draw().nodes().to$().addClass("fresh bg-info"); 
+						} else { 
+							table.rows.add(data).draw(); 
+						}
+					} else {
+						table.rows.add(data).draw();
+					}
 				});
+				setTimeout(function(){	// Remove Highlights within 15sec
+					$(".fresh").removeClass("bg-info");
+				},1000);
 			}
 		});
 	}
 
+	$('.spottable').DataTable().order([1, 'asc']);
+	$('.spottable').DataTable().clear();
 	fill_list($('#band option:selected').val(),30);
 	setInterval(function () { fill_list($('#band option:selected').val(),30); },60000);
 	$("#band").on("change",function() {
+		$('.spottable').DataTable().order([1, 'asc']);
+		$('.spottable').DataTable().clear();
 		fill_list($('#band option:selected').val(),30);
 	});
 

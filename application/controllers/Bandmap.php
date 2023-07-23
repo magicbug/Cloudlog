@@ -36,7 +36,7 @@ class Bandmap extends CI_Controller {
 		$footerData = [];
 		$footerData['scripts'] = [
 			'assets/js/moment.min.js',
-                        'assets/js/datetime-moment.js',
+			'assets/js/datetime-moment.js',
 			'assets/js/sections/bandmap_list.js'
 		];
 

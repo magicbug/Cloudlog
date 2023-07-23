@@ -4,6 +4,15 @@
 	var custom_date_format = "<?php echo $custom_date_format ?>";
 </script>
 
+<style>
+.fresh{
+    -webkit-transition: all 15s ease;
+    -moz-transition: all 15s ease;
+    -o-transition: all 15s ease;
+    transition: all 15s ease;
+}
+</style>
+
 
 <div class="container">
 <br>
