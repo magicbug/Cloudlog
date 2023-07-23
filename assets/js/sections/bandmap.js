@@ -173,7 +173,7 @@ $(function() {
 var updateFromCAT = function() {
 	if($('select.radios option:selected').val() != '0') {
 		radioID = $('select.radios option:selected').val();
-		$.getJSON( "radio/json/" + radioID, function( data ) {
+		$.getJSON( base_url + "radio/json/" + radioID, function( data ) {
 
 			if (data.error) {
 				if (data.error == 'not_logged_in') {
