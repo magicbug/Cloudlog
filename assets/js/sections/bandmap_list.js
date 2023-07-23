@@ -81,6 +81,17 @@ $(function() {
 		fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),30);
 	});
 
+	$("#menutoggle").on("click", function() {
+		if ($('.navbar').is(":hidden")) {
+			$('.navbar').show();
+			$('#menutoggle_i').removeClass('fa-arrow-down');
+			$('#menutoggle_i').addClass('fa-arrow-up');
+		} else {
+			$('.navbar').hide();
+			$('#menutoggle_i').removeClass('fa-arrow-up');
+			$('#menutoggle_i').addClass('fa-arrow-down');
+		}
+	});
 	
 	var updateFromCAT = function() {
 	if($('select.radios option:selected').val() != '0') {

@@ -16,8 +16,10 @@
 
 <div class="container">
 <br>
+<center><button type="button" class="btn" id="menutoggle"><i class="fa fa-arrow-up" id="menutoggle_i"></i></button></center>
 
 <h2><?php echo $page_title; ?></h2>
+
 <div class="tabs">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 			<li class="nav-item">
@@ -28,6 +30,7 @@
 			</li>
 		</ul>
 </div>
+
 <div class="tab-content" id="myTabContent">
 <div class="messages"></div>
 <div class="form-inline">

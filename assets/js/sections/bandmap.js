@@ -162,6 +162,17 @@ $(function() {
 						bandMapChart=render_chart(band,spots4chart);
 					});
 				}
+	$("#menutoggle").on("click", function() {
+		if ($('.navbar').is(":hidden")) {
+			$('.navbar').show();
+			$('#menutoggle_i').removeClass('fa-arrow-down');
+			$('#menutoggle_i').addClass('fa-arrow-up');
+		} else {
+			$('.navbar').hide();
+			$('#menutoggle_i').removeClass('fa-arrow-up');
+			$('#menutoggle_i').addClass('fa-arrow-down');
+		}
+	});
 
 	set_chart($('#band option:selected').val(),30);
 	setInterval(function () { update_chart($('#band option:selected').val(),30); },60000);
