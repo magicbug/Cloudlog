@@ -1,6 +1,7 @@
 <script>
 	var dxcluster_provider="<?php echo base_url(); ?>index.php/dxcluster";
 	var cat_timeout_interval="<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?>";
+	var custom_date_format = "<?php echo $custom_date_format ?>";
 </script>
 
 
@@ -37,7 +38,7 @@
                 <div class="card-header"><h5 class="card-title">DXCluster</h5></div>
                 <p>
 
-                <table style="width:100%" class="table-sm table spottable table-bordered table-hover table-striped table-condensed text-center">
+                <table style="width:100%" class="table-sm table spottable table-bordered table-hover table-striped table-condensed">
                     <thead>
                         <tr class="log_title titles">
                             <th><?php echo lang('general_word_date'); ?>/<?php echo lang('general_word_time'); ?></th>

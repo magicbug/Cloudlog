@@ -7,6 +7,12 @@ class Dxcluster_model extends CI_Model {
 		$this->load->helper(array('psr4_autoloader'));
 	    $CI =& get_instance();
 	    if ( ($this->optionslib->get_option('dxcache_url') != '') ) {
+		if($CI->session->userdata('user_date_format')) {
+                        $custom_date_format = $CI->session->userdata('user_date_format');
+                } else {
+                        $custom_date_format = $CI->config->item('qso_date_format');
+                }
+
 		    $dxcache_url = $this->optionslib->get_option('dxcache_url').'/spots/'.$band;
 		    $CI->load->model('logbooks_model');
 			$CI->load->model('logbook_model');
@@ -39,7 +45,7 @@ class Dxcluster_model extends CI_Model {
 				    $minutes += $spotage->h * 60;
 				    $minutes += $spotage->i;
 				    $singlespot->age=$minutes;
-
+				    $singlespot->when_pretty=date($custom_date_format . " H:i", strtotime($singlespot->when));
 
 				    if ($minutes<=$maxage) {
 					    if (!(property_exists($singlespot,'dxcc_spotted'))) {	// Check if we already have dxcc of spotted

@@ -21,7 +21,13 @@ $(function() {
 			if (dxspots.length>0) {
 				dxspots.sort(SortByQrg);
 				dxspots.forEach((single) => {
-					var data = [[ single.when, single.frequency, single.spotted, single.dxcc_spotted.call ]];
+					// var data = [[ single.when_pretty, single.frequency, single.spotted, single.dxcc_spotted.call ]];
+					var data=[];
+					data[0]=[];
+					data[0].push(single.when_pretty);
+					data[0].push(single.frequency);
+					data[0].push((single.worked_call ?'<span class="text-success">' : '')+single.spotted+(single.worked_call ? '</span>' : ''));
+					data[0].push(single.dxcc_spotted.entity);
 					table.rows.add(data).draw();
 					// add to datatable single
 				});
@@ -89,6 +95,7 @@ $(function() {
 	}
 };
 
+$.fn.dataTable.moment(custom_date_format + ' HH:mm');
 // Update frequency every three second
 // setInterval(updateFromCAT, 3000);
 
