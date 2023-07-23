@@ -144,8 +144,8 @@ $(function() {
 				}
 
 
-				function set_chart(band,maxAgeMinutes) {
-					let dxurl = dxcluster_provider + "/spots/" + band + "/" +maxAgeMinutes;
+				function set_chart(band, de, maxAgeMinutes) {
+					let dxurl = dxcluster_provider + "/spots/" + band + "/" +maxAgeMinutes + "/" + de;
 					$.ajax({
 						url: dxurl,
 						cache: false,
@@ -178,11 +178,15 @@ $(function() {
 			$('#menutoggle_i').addClass('fa-arrow-down');
 		}
 	});
-	
-	set_chart($('#band option:selected').val(),30);
+
+	set_chart($('#band option:selected').val(), $('#decontSelect option:selected').val(), 30);
 	setInterval(function () { update_chart($('#band option:selected').val(),30); },60000);
 	$("#band").on("change",function() {
-		set_chart($('#band option:selected').val(),30);
+		set_chart($('#band option:selected').val(), $('#decontSelect option:selected').val(), 30);
+	});
+
+	$("#decontSelect").on("change",function() {
+		set_chart($('#band option:selected').val(), $('#decontSelect option:selected').val(), 30);
 	});
 });
 

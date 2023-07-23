@@ -32,7 +32,7 @@
 </div>
 
 <div class="tab-content" id="myTabContent">
-<div class="messages"></div>
+<div class="messages my-1 mr-2"></div>
 <div class="form-inline">
 		<label class="my-1 mr-2" for="radio"><?php echo lang('gen_hamradio_radio'); ?></label>
 		<select class="form-control-sm radios my-1 mr-sm-2" id="radio" name="radio">
@@ -68,8 +68,6 @@
 		</select>
 	</div>
 
-          <div class="card log">
-                <div class="card-header"><h5 class="card-title">DXCluster</h5></div>
                 <p>
 
                 <table style="width:100%" class="table-sm table spottable table-bordered table-hover table-striped table-condensed">
@@ -86,7 +84,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
 
 </div>
 </div>
