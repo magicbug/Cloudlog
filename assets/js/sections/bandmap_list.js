@@ -50,6 +50,21 @@ $(function() {
 		});
 	}
 
+	function highlight_current_qrg(qrg) {
+		var table=$('.spottable').DataTable();
+		table.rows().every(function() {
+			var d=this.data();
+			var distance=Math.abs(parseInt(d[1])-qrg);
+			if (distance<=20) {
+				distance++;
+				alpha=(.5/distance);
+				this.nodes().to$().css('background-color', 'rgba(0,0,255,' + alpha + ')');
+			} else {
+				this.nodes().to$().css('background-color', '');
+			}
+		});
+	}
+
 	$('.spottable').DataTable().order([1, 'asc']);
 	$('.spottable').DataTable().clear();
 	fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),30);
@@ -70,7 +85,7 @@ $(function() {
 	var updateFromCAT = function() {
 	if($('select.radios option:selected').val() != '0') {
 		radioID = $('select.radios option:selected').val();
-		$.getJSON( "radio/json/" + radioID, function( data ) {
+		$.getJSON( base_url+"radio/json/" + radioID, function( data ) {
 
 			if (data.error) {
 				if (data.error == 'not_logged_in') {
@@ -103,6 +118,7 @@ $(function() {
 				} else {
 					$(".radio_timeout_error" ).remove();
 					text = '<i class="fas fa-broadcast-tower"></i><span style="margin-left:10px;"></span><b>TX:</b> '+(Math.round(parseInt(data.frequency)/100)/10000).toFixed(4)+' MHz';
+					highlight_current_qrg((parseInt(data.frequency)/1000));
 					if(data.mode != null) {
 						text = text+'<span style="margin-left:10px"></span>'+data.mode;
 					}
@@ -122,7 +138,7 @@ $(function() {
 
 $.fn.dataTable.moment(custom_date_format + ' HH:mm');
 // Update frequency every three second
-// setInterval(updateFromCAT, 3000);
+setInterval(updateFromCAT, 3000);
 
 // If a radios selected from drop down select radio update.
 $('.radios').change(updateFromCAT);
