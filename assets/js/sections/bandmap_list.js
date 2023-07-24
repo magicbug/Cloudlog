@@ -68,18 +68,18 @@ $(function() {
 
 	$('.spottable').DataTable().order([1, 'asc']);
 	$('.spottable').DataTable().clear();
-	fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),30);
-	setInterval(function () { fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),30); },60000);
+	fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),dxcluster_maxage);
+	setInterval(function () { fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),dxcluster_maxage); },60000);
 
 	$("#decontSelect").on("change",function() {
 		$('.spottable').DataTable().clear();
-		fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),30);
+		fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),dxcluster_maxage);
 	});
 
 	$("#band").on("change",function() {
 		$('.spottable').DataTable().order([1, 'asc']);
 		$('.spottable').DataTable().clear();
-		fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),30);
+		fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),dxcluster_maxage);
 	});
 
 	$("#spottertoggle").on("click", function() {

@@ -179,14 +179,14 @@ $(function() {
 		}
 	});
 
-	set_chart($('#band option:selected').val(), $('#decontSelect option:selected').val(), 30);
-	setInterval(function () { update_chart($('#band option:selected').val(),30); },60000);
+	set_chart($('#band option:selected').val(), $('#decontSelect option:selected').val(), dxcluster_maxage);
+	setInterval(function () { update_chart($('#band option:selected').val(),dxcluster_maxage); },60000);
 	$("#band").on("change",function() {
-		set_chart($('#band option:selected').val(), $('#decontSelect option:selected').val(), 30);
+		set_chart($('#band option:selected').val(), $('#decontSelect option:selected').val(), dxcluster_maxage);
 	});
 
 	$("#decontSelect").on("change",function() {
-		set_chart($('#band option:selected').val(), $('#decontSelect option:selected').val(), 30);
+		set_chart($('#band option:selected').val(), $('#decontSelect option:selected').val(), dxcluster_maxage);
 	});
 });
 
