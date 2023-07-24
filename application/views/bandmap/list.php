@@ -23,10 +23,10 @@
 <div id="dxtabs" class="tabs">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 			<li class="nav-item">
-				<a class="nav-link" href="index">DXMap</a>
+				<a class="nav-link" href="index">BandMap</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link active" href="list">DXList</a>
+				<a class="nav-link active" href="list">BandList</a>
 			</li>
 		</ul>
 </div>
