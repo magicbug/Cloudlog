@@ -172,7 +172,7 @@ class Options extends CI_Controller {
 				$this->session->set_flashdata('success', $this->lang->line('options_dxcluster_decont_changed_to').$this->input->post('dxcluster_decont'));
 			}
 
-			$dxcluster_url_update = $this->optionslib->update('dxcluster_maxage', $this->input->post('dxcluster_maxage'), 'yes');
+			$dxcluster_maxage_update = $this->optionslib->update('dxcluster_maxage', $this->input->post('dxcluster_maxage'), 'yes');
 			if($dxcluster_maxage_update == TRUE) {
 				$this->session->set_flashdata('success', $this->lang->line('options_dxcluster_maxage_changed_to').$this->input->post('dxcluster_maxage'));
 			}
