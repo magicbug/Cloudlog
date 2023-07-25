@@ -618,19 +618,6 @@ class API extends CI_Controller {
 
 	}
 
-	function country_worked($dxcc_num, $band, $mode = NULL) {
-		$this->load->model('api_model');
-
-		echo $this->api_model->country_worked($dxcc_num, $band, $mode);
-	}
-
-	function gridsquare_worked($gridsquare, $band, $mode = NULL) {
-		$this->load->model('api_model');
-
-		echo $this->api_model->gridsquare_worked($gridsquare, $band, $mode);
-	}
-
-
 	/* ENDPOINT for Rig Control */
 
 	function radio() {
