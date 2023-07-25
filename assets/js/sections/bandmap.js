@@ -123,6 +123,7 @@ $(function() {
 				}
 
 				function update_chart(band,maxAgeMinutes) {
+					if ((band != '') && (band !== undefined)) {
 					let dxurl = dxcluster_provider + "/spots/" + band + "/" +maxAgeMinutes;
 					$.ajax({
 						url: dxurl,
@@ -141,10 +142,12 @@ $(function() {
 						bandMapChart.series[0].setData(spots4chart);
 						bandMapChart.redraw();
 					});
+					}
 				}
 
 
 				function set_chart(band, de, maxAgeMinutes) {
+					if ((band != '') && (band !== undefined)) {
 					let dxurl = dxcluster_provider + "/spots/" + band + "/" +maxAgeMinutes + "/" + de;
 					$.ajax({
 						url: dxurl,
@@ -161,6 +164,7 @@ $(function() {
 						}
 						bandMapChart=render_chart(band,spots4chart);
 					});
+					}
 				}
 
 	$("#menutoggle").on("click", function() {

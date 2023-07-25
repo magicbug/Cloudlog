@@ -8,47 +8,52 @@ $(function() {
 
 
 	function fill_list(band,de,maxAgeMinutes) {
-		let dxurl = dxcluster_provider + "/spots/" + band + "/" +maxAgeMinutes + "/" + de;
-		$.ajax({
-			url: dxurl,
-			cache: false,
-			dataType: "json"
-		}).done(function(dxspots) {
-			var table = $('.spottable').DataTable();
-			table.page.len(50);
-			let oldtable=table.data();
-			table.clear();
-			if (dxspots.length>0) {
-				dxspots.sort(SortByQrg);
-				dxspots.forEach((single) => {
-					var data=[];
-					data[0]=[];
-					data[0].push(single.when_pretty);
-					data[0].push(single.frequency + " kHz");
-					data[0].push((single.worked_call ?'<span class="text-success">' : '')+single.spotted+(single.worked_call ? '</span>' : ''));
-					data[0].push(single.dxcc_spotted.entity);
-					data[0].push(single.spotter);
-					if (oldtable.length > 0) {
-						let update=false;
-						oldtable.each( function (srow) {
-							if (JSON.stringify(srow) === JSON.stringify(data[0])) {
-								update=true;
-							} 
-						});
-						if (!update) { 	// Sth. Fresh? So highlight
-							table.rows.add(data).draw().nodes().to$().addClass("fresh bg-info"); 
-						} else { 
-							table.rows.add(data).draw(); 
+		var table = $('.spottable').DataTable();
+		if ((band != '') && (band !== undefined)) {
+			let dxurl = dxcluster_provider + "/spots/" + band + "/" +maxAgeMinutes + "/" + de;
+			$.ajax({
+				url: dxurl,
+				cache: false,
+				dataType: "json"
+			}).done(function(dxspots) {
+				table.page.len(50);
+				let oldtable=table.data();
+				table.clear();
+				if (dxspots.length>0) {
+					dxspots.sort(SortByQrg);
+					dxspots.forEach((single) => {
+						var data=[];
+						data[0]=[];
+						data[0].push(single.when_pretty);
+						data[0].push(single.frequency + " kHz");
+						data[0].push((single.worked_call ?'<span class="text-success">' : '')+single.spotted+(single.worked_call ? '</span>' : ''));
+						data[0].push(single.dxcc_spotted.entity);
+						data[0].push(single.spotter);
+						if (oldtable.length > 0) {
+							let update=false;
+							oldtable.each( function (srow) {
+								if (JSON.stringify(srow) === JSON.stringify(data[0])) {
+									update=true;
+								} 
+							});
+							if (!update) { 	// Sth. Fresh? So highlight
+								table.rows.add(data).draw().nodes().to$().addClass("fresh bg-info"); 
+							} else { 
+								table.rows.add(data).draw(); 
+							}
+						} else {
+							table.rows.add(data).draw();
 						}
-					} else {
-						table.rows.add(data).draw();
-					}
-				});
-				setTimeout(function(){	// Remove Highlights within 15sec
-					$(".fresh").removeClass("bg-info");
-				},1000);
-			}
-		});
+					});
+					setTimeout(function(){	// Remove Highlights within 15sec
+						$(".fresh").removeClass("bg-info");
+					},1000);
+				}
+			});
+		} else {
+			table.clear();
+			table.draw();
+		}
 	}
 
 	function highlight_current_qrg(qrg) {
