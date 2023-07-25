@@ -13,6 +13,7 @@ $lang['menu_live_qso'] = 'Live QSO';
 $lang['menu_post_qso'] = 'Zeitversetztes QSO';
 $lang['menu_live_contest_logging'] = 'Live Contest Logging';
 $lang['menu_post_contest_logging'] = 'Zeitversetztes Contest Logging';
+$lang['menu_bandmap'] = 'Bandmap';
 $lang['menu_view_qsl'] = 'QSL Ansicht';
 $lang['menu_view_eqsl'] = 'eQSL Ansicht';
 
