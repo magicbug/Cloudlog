@@ -61,58 +61,6 @@ class API_Model extends CI_Model {
 
     }
 
-    function country_worked($dxcc_num, $band, $mode){
-
-    	if($band == "all") {
-    		if($mode != NULL) {
-	    		$query = $this->db->query('SELECT COUNT(1) as count FROM '.$this->config->item('table_name').' WHERE COL_DXCC = "'.$dxcc_num.'" AND COL_MODE = "'.$mode.'"');
-	    	} else {
-	    		$query = $this->db->query('SELECT COUNT(1) as count FROM '.$this->config->item('table_name').' WHERE COL_DXCC = "'.$dxcc_num.'"');
-	    	}
-    	} else {
-	    	if($mode != NULL) {
-	    		$query = $this->db->query('SELECT COUNT(1) as count FROM '.$this->config->item('table_name').' WHERE COL_DXCC = "'.$dxcc_num.'" AND COL_BAND = "'.$band.'" AND COL_MODE = "'.$mode.'"');
-	    	} else {
-	    		$query = $this->db->query('SELECT COUNT(1) as count FROM '.$this->config->item('table_name').' WHERE COL_DXCC = "'.$dxcc_num.'" AND COL_BAND = "'.$band.'"');
-	    	}
-    	}
-
-    	if ($query->num_rows() > 0)
-        {
-            foreach ($query->result() as $row)
-            {
-                 return $row->count;
-            }
-        }
-    }
-
-
-    function gridsquare_worked($gridsquare, $band, $mode){
-
-    	if($band == "all") {
-			if($mode != NULL) {
-	    		$query = $this->db->query('SELECT COUNT(1) as count FROM '.$this->config->item('table_name').' WHERE COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" AND COL_MODE = "'.$mode.'"');
-	    	} else {
-	    		$query = $this->db->query('SELECT COUNT(1) as count FROM '.$this->config->item('table_name').' WHERE COL_GRIDSQUARE LIKE "%'.$gridsquare.'%"');
-	    	}
-    	} else {
-			if($mode != NULL) {
-	    		$query = $this->db->query('SELECT COUNT(1) as count FROM '.$this->config->item('table_name').' WHERE COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" AND COL_BAND = "'.$band.'" AND COL_MODE = "'.$mode.'"');
-	    	} else {
-	    		$query = $this->db->query('SELECT COUNT(1) as count FROM '.$this->config->item('table_name').' WHERE COL_GRIDSQUARE LIKE "%'.$gridsquare.'%" AND COL_BAND ="'.$band.'"');
-	    	}
-    	}
-
-    	if ($query->num_rows() > 0)
-        {
-            foreach ($query->result() as $row)
-            {
-                 return $row->count;
-            }
-        }
-    }
-
-
 
     function delete_key($key) {
 		$this->db->where('user_id', $this->session->userdata('user_id'));
