@@ -3313,6 +3313,10 @@ class Logbook_model extends CI_Model {
         return $my_error;
     }
 
+    function get_main_mode_from_mode($mode) {
+	return ($this->get_main_mode_if_submode($mode) == null ? $mode : $this->get_main_mode_if_submode($mode));
+    }
+
     function get_main_mode_if_submode($mode) {
 		$this->db->select('mode');
         $this->db->where('submode', $mode);
