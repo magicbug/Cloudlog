@@ -6,9 +6,24 @@ $(function() {
 		return ((a< b) ? -1 : ((a> b) ? 1 : 0));
 	}
 
+	function get_dtable () {
+		var table = $('.spottable').DataTable({
+			"retrieve":true,
+			'columnDefs': [
+				{
+					'targets': 1, "type":"num",
+					'createdCell':  function (td, cellData, rowData, row, col) {
+						$(td).addClass("kHz"); 
+					}
+				}
+			]
+		});
+		return table;
+	}
 
 	function fill_list(band,de,maxAgeMinutes) {
-		var table = $('.spottable').DataTable();
+		// var table = $('.spottable').DataTable();
+		var table = get_dtable();
 		if ((band != '') && (band !== undefined)) {
 			let dxurl = dxcluster_provider + "/spots/" + band + "/" +maxAgeMinutes + "/" + de;
 			$.ajax({
@@ -25,7 +40,7 @@ $(function() {
 						var data=[];
 						data[0]=[];
 						data[0].push(single.when_pretty);
-						data[0].push(single.frequency + " kHz");
+						data[0].push(single.frequency*1);
 						data[0].push((single.worked_call ?'<span class="text-success">' : '')+single.spotted+(single.worked_call ? '</span>' : ''));
 						data[0].push(single.dxcc_spotted.entity);
 						data[0].push(single.spotter);
@@ -57,7 +72,8 @@ $(function() {
 	}
 
 	function highlight_current_qrg(qrg) {
-		var table=$('.spottable').DataTable();
+		var table=get_dtable();
+		// var table=$('.spottable').DataTable();
 		table.rows().every(function() {
 			var d=this.data();
 			var distance=Math.abs(parseInt(d[1].substring(0,d[1].length-4))-qrg);
@@ -71,27 +87,28 @@ $(function() {
 		});
 	}
 
-	$('.spottable').DataTable().order([1, 'asc']);
-	$('.spottable').DataTable().clear();
+	var table=get_dtable();
+	table.order([1, 'asc']);
+	table.clear();
 	fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),dxcluster_maxage);
 	setInterval(function () { fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),dxcluster_maxage); },60000);
 
 	$("#decontSelect").on("change",function() {
-		$('.spottable').DataTable().clear();
+		table.clear();
 		fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),dxcluster_maxage);
 	});
 
 	$("#band").on("change",function() {
-		$('.spottable').DataTable().order([1, 'asc']);
-		$('.spottable').DataTable().clear();
+		table.order([1, 'asc']);
+		table.clear();
 		fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),dxcluster_maxage);
 	});
 
 	$("#spottertoggle").on("click", function() {
-		if ($('.spottable').DataTable().column(4).visible()) {
-			$('.spottable').DataTable().column(4).visible(false);
+		if (table.column(4).visible()) {
+			table.column(4).visible(false);
 		} else {
-			$('.spottable').DataTable().column(4).visible(true);
+			table.column(4).visible(true);
 		}
 	});
 
