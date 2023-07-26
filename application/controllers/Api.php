@@ -635,8 +635,9 @@ class API extends CI_Controller {
 		$obj = json_decode(file_get_contents("php://input"), true);
 
 		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
-		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
-		   die();
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
+			die();
 		}
 
 		$this->api_model->update_last_used($obj['key']);
