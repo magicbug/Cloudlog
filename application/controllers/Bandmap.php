@@ -18,6 +18,10 @@ class Bandmap extends CI_Controller {
 
         $footerData = [];
 		$footerData['scripts'] = [
+			'assets/js/highcharts/highcharts.js',
+			'assets/js/highcharts/timeline.js',
+			'assets/js/highcharts/exporting.js',
+			'assets/js/highcharts/accessibility.js',
 			'assets/js/sections/bandmap.js',
 		];
 
