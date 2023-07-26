@@ -1,5 +1,8 @@
 $( document ).ready(function() {
 
+	var bc = new BroadcastChannel('qso_wish');
+	bc.onmessage = function (ev) { console.log(ev); } /* receive */
+
 	$("#locator")
 		.popover({ placement: 'top', title: 'Gridsquare Formatting', content: "Enter multiple (4-digit) grids separated with commas. For example: IO77,IO78" })
 		.focus(function () {

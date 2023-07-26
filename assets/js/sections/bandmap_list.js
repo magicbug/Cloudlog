@@ -15,6 +15,12 @@ $(function() {
 					'createdCell':  function (td, cellData, rowData, row, col) {
 						$(td).addClass("kHz"); 
 					}
+				},
+				{
+					'targets': 2,
+					'createdCell':  function (td, cellData, rowData, row, col) {
+						$(td).addClass("spotted_call"); 
+					}
 				}
 			]
 		});
@@ -110,6 +116,12 @@ $(function() {
 		} else {
 			table.column(4).visible(true);
 		}
+	});
+
+	$(document).on('click','.spotted_call', function() {
+		var bc = new BroadcastChannel('qso_wish');
+		bc.postMessage(this.innerText);
+		console.log(this.innerText);
 	});
 
 	$("#menutoggle").on("click", function() {
