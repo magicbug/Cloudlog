@@ -1,7 +1,25 @@
 $( document ).ready(function() {
 
+
+	var bc_bandmap = new BroadcastChannel('qso_window');
+	bc_bandmap.onmessage = function (ev) {
+		console.log(ev.data);
+		if (ev.data == 'ping') {
+			bc_bandmap.postMessage('pong');
+		}
+	}
+
 	var bc = new BroadcastChannel('qso_wish');
-	bc.onmessage = function (ev) { console.log(ev); } /* receive */
+	bc.onmessage = function (ev) { 
+		if (ev.data.ping) {
+			let message={};
+			message.pong=true;
+			bc.postMessage(message);	
+		} else {
+			$("#callsign").val(ev.data.call);
+			$("#callsign").blur();
+		}
+	} /* receive */
 
 	$("#locator")
 		.popover({ placement: 'top', title: 'Gridsquare Formatting', content: "Enter multiple (4-digit) grids separated with commas. For example: IO77,IO78" })

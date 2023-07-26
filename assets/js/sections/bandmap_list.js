@@ -118,10 +118,25 @@ $(function() {
 		}
 	});
 
+	var qso_window_last_seen=Date.now()-3600;
+
+	var bc_qsowin = new BroadcastChannel('qso_window');
+	bc_qsowin.onmessage = function (ev) {
+		// console.log(ev.data);
+		if (ev.data == 'pong') {
+			qso_window_last_seen=Date.now();
+		}
+	};
+
+	setInterval(function () { bc_qsowin.postMessage('ping') },500);
+	var bc2qso = new BroadcastChannel('qso_wish');
+
 	$(document).on('click','.spotted_call', function() {
-		var bc = new BroadcastChannel('qso_wish');
-		bc.postMessage(this.innerText);
-		console.log(this.innerText);
+		if (Date.now()-qso_window_last_seen < 2000) {
+			bc2qso.postMessage({ call: this.innerText });
+		} else {
+			window.open('https://log.dj7nt.de/index.php/qso?manual=0','_blank');
+		}
 	});
 
 	$("#menutoggle").on("click", function() {
