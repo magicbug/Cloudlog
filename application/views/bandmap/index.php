@@ -44,6 +44,7 @@
 
 		<label class="my-1 mr-2" for="band"><?php echo lang('gen_hamradio_band'); ?></label>
 		<select id="band" class="form-control-sm my-1 mr-sm-2" name="band">
+			<option value="All">All</option>
 			<?php foreach($bands as $key=>$bandgroup) {
 					echo '<optgroup label="' . strtoupper($key) . '">';
 					foreach($bandgroup as $band) {
