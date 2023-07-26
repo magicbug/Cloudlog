@@ -122,7 +122,6 @@ $(function() {
 
 	var bc_qsowin = new BroadcastChannel('qso_window');
 	bc_qsowin.onmessage = function (ev) {
-		// console.log(ev.data);
 		if (ev.data == 'pong') {
 			qso_window_last_seen=Date.now();
 		}
@@ -133,9 +132,15 @@ $(function() {
 
 	$(document).on('click','.spotted_call', function() {
 		if (Date.now()-qso_window_last_seen < 2000) {
-			bc2qso.postMessage({ call: this.innerText });
+			bc2qso.postMessage({ frequency: this.parentNode.cells[1].textContent*1000, call: this.innerText });
 		} else {
-			window.open('https://log.dj7nt.de/index.php/qso?manual=0','_blank');
+			let cl={};
+			cl.qrg=this.parentNode.cells[1].textContent*1000;
+			cl.call=this.innerText;
+			window.open(base_url + 'qso?manual=0','_blank');
+			setTimeout(function () { 
+				bc2qso.postMessage({ frequency: cl.qrg, call: cl.call }) 
+			},2500);	// Wait at least 2500ms for new-Window to appear, before posting data to it
 		}
 	});
 

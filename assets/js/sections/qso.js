@@ -16,6 +16,12 @@ $( document ).ready(function() {
 			message.pong=true;
 			bc.postMessage(message);	
 		} else {
+			$('#frequency').val(ev.data.frequency);
+			$("#band").val(frequencyToBand(ev.data.frequency));
+			if (ev.data.frequency_rx != "") {
+				$('#frequency_rx').val(ev.data.frequency_rx);
+				$("#band_rx").val(frequencyToBand(ev.data.frequency_rx));
+			}
 			$("#callsign").val(ev.data.call);
 			$("#callsign").blur();
 		}
