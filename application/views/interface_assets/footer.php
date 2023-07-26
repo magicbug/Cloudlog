@@ -2911,15 +2911,6 @@ function viewEqsl(picture, callsign) {
 	</script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "bandmap") { ?>
-
-	<script src="https://code.highcharts.com/highcharts.js"></script>
-	<script src="https://code.highcharts.com/modules/timeline.js"></script>
-	<script src="https://code.highcharts.com/modules/exporting.js"></script>
-	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
-
-<?php } ?>
-
 <?php if ($this->uri->segment(1) == "awards") {
 	// Get Date format
 	if($this->session->userdata('user_date_format')) {
