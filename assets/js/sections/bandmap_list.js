@@ -76,7 +76,7 @@ $(function() {
 		// var table=$('.spottable').DataTable();
 		table.rows().every(function() {
 			var d=this.data();
-			var distance=Math.abs(parseInt(d[1].substring(0,d[1].length-4))-qrg);
+			var distance=Math.abs(parseInt(d[1])-qrg);
 			if (distance<=20) {
 				distance++;
 				alpha=(.5/distance);
