@@ -97,7 +97,7 @@ class Logbook extends CI_Controller {
 		// Convert - in Callsign to / Used for URL processing
 		$callsign = str_replace("-","/",$callsign);
 
-		// Check if callsign is an LOTW User
+		// Check if callsign is an LoTW User
 		// Check Database for all other data
 		$this->load->model('logbook_model');
 	

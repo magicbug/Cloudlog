@@ -75,7 +75,7 @@
             # Upload QSOs to QRZ Logbook (ignore cron job if this integration is not required) <br>
             0 */6 * * * curl --silent <?php echo site_url();?>/qrz/upload &>/dev/null <br>
             <br>
-            # Update LOTW Users Database <br>
+            # Update LoTW Users Database <br>
             @weekly curl --silent <?php echo site_url();?>/lotw/load_users &>/dev/null <br>
             <br>
             # Update Clublog SCP Database File <br>

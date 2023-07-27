@@ -6,7 +6,7 @@ class Lotw extends CI_Controller {
 	| Controller: Lotw
 	|--------------------------------------------------------------------------
 	|
-	| This Controller handles all things LOTW, upload and download.
+	| This Controller handles all things LoTW, upload and download.
 	|
 	|
 	|	Note:
@@ -49,7 +49,7 @@ class Lotw extends CI_Controller {
 		// Load required models for page generation
 		$this->load->model('LotwCert');
 
-		// Get Array of the logged in users LOTW certs.
+		// Get Array of the logged in users LoTW certs.
 		$data['lotw_cert_results'] = $this->LotwCert->lotw_certs($this->session->userdata('user_id'));
 
 		// Set Page Title
@@ -166,7 +166,7 @@ class Lotw extends CI_Controller {
         	// p12 certificate processed time to delete the file
         	unlink($data['upload_data']['full_path']);
 
-			// Get Array of the logged in users LOTW certs.
+			// Get Array of the logged in users LoTW certs.
 			$data['lotw_cert_results'] = $this->LotwCert->lotw_certs($this->session->userdata('user_id'));
 
 	        // Set Page Title
@@ -187,7 +187,7 @@ class Lotw extends CI_Controller {
 	| Function: lotw_upload
 	|--------------------------------------------------------------------------
 	|
-	| This function Uploads to LOTW
+	| This function Uploads to LoTW
 	|
 	*/
 	public function lotw_upload() {
@@ -225,7 +225,7 @@ class Lotw extends CI_Controller {
 				$data['station_profile'] = $station_profile;
 				$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign, $station_profile->station_dxcc);
 
-				// If Station Profile has no LOTW Cert continue on.
+				// If Station Profile has no LoTW Cert continue on.
 				if(!isset($data['lotw_cert_info']->cert_dxcc_id)) {
 					continue;
 				}
@@ -349,7 +349,7 @@ class Lotw extends CI_Controller {
 				unlink(realpath($filename_for_saving));
 			}
 		} else {
-			echo "No Station Profiles found to upload to LOTW";
+			echo "No Station Profiles found to upload to LoTW";
 		}
 
 			/*
@@ -369,7 +369,7 @@ class Lotw extends CI_Controller {
 	| Function: delete_cert
 	|--------------------------------------------------------------------------
 	|
-	| Deletes LOTW certificate from the MySQL table
+	| Deletes LoTW certificate from the MySQL table
 	|
 	*/
     public function delete_cert($cert_id) {
@@ -392,7 +392,7 @@ class Lotw extends CI_Controller {
 	|--------------------------------------------------------------------------
 	|
 	| Accepts p12 file and optional password and encrypts the file returning
-	| the required fields for LOTW and the PEM Key
+	| the required fields for LoTW and the PEM Key
 	|
 	*/
 	public function decrypt_key($file, $password = "") {
@@ -420,7 +420,7 @@ class Lotw extends CI_Controller {
 				// Error Log Error Message
 			    log_message('error', openssl_error_string());
 
-			    // Set warning message redirect to LOTW main page
+			    // Set warning message redirect to LoTW main page
 			    $this->session->set_flashdata('Warning', openssl_error_string());
 				redirect('/lotw/');
 			}
@@ -428,7 +428,7 @@ class Lotw extends CI_Controller {
 			// Reading p12 failed log error message
 			log_message('error', openssl_error_string());
 
-			// Set warning message redirect to LOTW main page
+			// Set warning message redirect to LoTW main page
 			$this->session->set_flashdata('Warning', openssl_error_string());
 			redirect('/lotw/');
 		}
@@ -682,7 +682,7 @@ class Lotw extends CI_Controller {
 			}
 			return $results;
 		} else {
-			return "No LOTW User details found to carry out matches.";
+			return "No LoTW User details found to carry out matches.";
 		}
 	}
 
@@ -898,7 +898,7 @@ class Lotw extends CI_Controller {
 	}
 
 	/*
-		Load the ARRL LOTW User Activity CSV and saves into uploads/lotw_users.csv
+		Load the ARRL LoTW User Activity CSV and saves into uploads/lotw_users.csv
 	*/
 	public function load_users() {
 		$contents = file_get_contents('https://lotw.arrl.org/lotw-user-activity.csv', true);
@@ -917,7 +917,7 @@ class Lotw extends CI_Controller {
 	}
 
 	/*
-		Check if callsign is an active LOTW user and return whether its true or not
+		Check if callsign is an active LoTW user and return whether its true or not
 	*/
 	function lotw_usercheck($callsign) {
 		$f = fopen('./updates/lotw_users.csv', "r");
@@ -961,7 +961,7 @@ class Lotw extends CI_Controller {
 	|	Function: lotw_satellite_map
 	|	Requires: OSCAR Satellite name $satname
 	|
-	|	Outputs if LOTW uses a different satellite name
+	|	Outputs if LoTW uses a different satellite name
 	|
 	*/
 	function lotw_satellite_map($satname) {

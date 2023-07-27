@@ -30,7 +30,7 @@ $lang['lotw_certificate_dxcc_help_text'] = 'Πιστοποιητικό οντό�
 
 $lang['lotw_input_a_file'] = 'Ανέβασε ένα αρχείο';
 
-$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Μεταφορτώστε το εξαγόμενο αρχείο ADIF από το LoTW από την περιοχή <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a>, για να επισημάνετε τα QSO ως επιβεβαιώθηκε στο LOTW.';
+$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Μεταφορτώστε το εξαγόμενο αρχείο ADIF από το LoTW από την περιοχή <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a>, για να επισημάνετε τα QSO ως επιβεβαιώθηκε στο LoTW.';
 $lang['lotw_upload_type_must_be_adi'] = 'Τα αρχεία καταγραφής πρέπει να έχουν τον τύπο αρχείου .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Τραβήξτε δεδομένα LoTW για μένα';

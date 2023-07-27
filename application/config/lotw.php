@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 *
-* Configuration file for all things relating to LOTW
+* Configuration file for all things relating to LoTW
 *
 */
 

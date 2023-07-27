@@ -808,7 +808,7 @@ class API extends CI_Controller {
 
 		/*
 		*
-		*	Check if callsign is active on LOTW
+		*	Check if callsign is active on LoTW
 		*
 		*/
 

@@ -2994,7 +2994,7 @@ class Logbook_model extends CI_Model {
         }
 
         /*
-          Validate LOTW Fields
+          Validate LoTW Fields
         */
         if (isset($record['lotw_qsl_rcvd'])){
             $input_lotw_qsl_rcvd = mb_strimwidth($record['lotw_qsl_rcvd'], 0, 1);
