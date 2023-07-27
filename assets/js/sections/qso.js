@@ -22,7 +22,7 @@ $( document ).ready(function() {
 				$("#band_rx").val(frequencyToBand(ev.data.frequency_rx));
 			}
 			$("#callsign").val(ev.data.call);
-			$("#callsign").blur();
+			$("#callsign").focusout();
 		}
 	} /* receive */
 
