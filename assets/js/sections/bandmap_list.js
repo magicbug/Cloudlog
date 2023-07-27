@@ -15,6 +15,13 @@ $(function() {
 					'createdCell':  function (td, cellData, rowData, row, col) {
 						$(td).addClass("kHz"); 
 					}
+				},
+				{
+					'targets': 2,
+					'createdCell':  function (td, cellData, rowData, row, col) {
+						$(td).addClass("spotted_call"); 
+						$(td).attr( "title", "Click to prepare logging" );
+					}
 				}
 			]
 		});
@@ -112,6 +119,32 @@ $(function() {
 		}
 	});
 
+	var qso_window_last_seen=Date.now()-3600;
+
+	var bc_qsowin = new BroadcastChannel('qso_window');
+	bc_qsowin.onmessage = function (ev) {
+		if (ev.data == 'pong') {
+			qso_window_last_seen=Date.now();
+		}
+	};
+
+	setInterval(function () { bc_qsowin.postMessage('ping') },500);
+	var bc2qso = new BroadcastChannel('qso_wish');
+
+	$(document).on('click','.spotted_call', function() {
+		if (Date.now()-qso_window_last_seen < 2000) {
+			bc2qso.postMessage({ frequency: this.parentNode.cells[1].textContent*1000, call: this.innerText });
+		} else {
+			let cl={};
+			cl.qrg=this.parentNode.cells[1].textContent*1000;
+			cl.call=this.innerText;
+			window.open(base_url + 'index.php/qso?manual=0','_blank');
+			setTimeout(function () { 
+				bc2qso.postMessage({ frequency: cl.qrg, call: cl.call }) 
+			},2500);	// Wait at least 2500ms for new-Window to appear, before posting data to it
+		}
+	});
+
 	$("#menutoggle").on("click", function() {
 		if ($('.navbar').is(":hidden")) {
 			$('.navbar').show();
@@ -131,7 +164,7 @@ $(function() {
 	var updateFromCAT = function() {
 	if($('select.radios option:selected').val() != '0') {
 		radioID = $('select.radios option:selected').val();
-		$.getJSON( base_url+"radio/json/" + radioID, function( data ) {
+		$.getJSON( base_url+"index.php/radio/json/" + radioID, function( data ) {
 
 			if (data.error) {
 				if (data.error == 'not_logged_in') {
