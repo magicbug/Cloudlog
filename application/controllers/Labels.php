@@ -173,9 +173,9 @@ class Labels extends CI_Controller {
 			$time = strtotime($qso->COL_TIME_ON);
 			$myFormatForView = date("d/m/Y H:i", $time);
 				if($qso->COL_SAT_NAME != "") {
-					$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, 'on '.$qso->COL_BAND.' '.$qso->COL_MODE.' RST '.$qso->COL_RST_SENT.'', 'Satellite: '.$qso->COL_SAT_NAME.' Mode: '.strtoupper($qso->COL_SAT_MODE).' ', '', 'Thanks for QSO.');
+					$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, ' '.$qso->COL_BAND.' '.$qso->COL_MODE.'  '.$qso->COL_RST_SENT.'', 'Satellite: '.$qso->COL_SAT_NAME.' Mode: '.strtoupper($qso->COL_SAT_MODE).' ', '', 'Thanks for QSO.');
 				} else {
-					$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, 'on '.$qso->COL_BAND.' '.$qso->COL_MODE.' RST '.$qso->COL_RST_SENT.'', '', '', 'Thanks for QSO.');
+					$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, ' '.$qso->COL_BAND.' '.$qso->COL_MODE.'  '.$qso->COL_RST_SENT.'', '', '', 'Thanks for QSO.');
 				}
 
 				$pdf->Add_Label($text);
@@ -211,23 +211,24 @@ class Labels extends CI_Controller {
 	}
 
 	function makeLabel($pdf, $current_callsign, $qso_data, $numberofqsos) {
-		$text = 'To: ' . $current_callsign . "\n\n";
+		$text = 'To Radio: ' . $current_callsign . "\n";
+		$text .= "DD.MM.YYYY  UTC   Band Mode RST\n";
 		$count = 0;
 		$qsotext = '';
 		foreach ($qso_data as $key => $qso) {
 			$time = strtotime($qso['time']);
-			$myFormatForView = date("d/m/Y H:i", $time);
+			$myFormatForView = date("d.m.Y H:i", $time);
 
 			if($qso['sat'] != "") {
-				$qsotext .= sprintf("%s %s %s %s\n", $myFormatForView, 'on '.$qso['band'].' '.$qso['mode'].' RST '.$qso['rst'].'', 'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode']).' ', '');
+				$qsotext .= sprintf("%s %s %s %s\n", $myFormatForView, ' '.str_pad($qso['band'],4," ",STR_PAD_LEFT).' '.str_pad($qso['mode'],4," ",STR_PAD_LEFT).' '.$qso['rst'].'', 'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode']).' ', '');
 			} else {
-				$qsotext .= sprintf("%s %s\n", $myFormatForView, 'on '.$qso['band'].' '.$qso['mode'].' RST '.$qso['rst']);
+				$qsotext .= sprintf("%s %s\n", $myFormatForView, ' '.str_pad($qso['band'],4," ",STR_PAD_LEFT).' '.str_pad($qso['mode'],4," ",STR_PAD_LEFT).' '.$qso['rst']);
 			}
 			$count++;
 
 			if ($count == $numberofqsos) {
 				$text .= $qsotext;
-				$text .= "\n" . 'Thanks for QSO.';
+				$text .= "\n" . 'Thanks for QSO.'.($count>1 ? 's.' : '');;
 				$pdf->Add_Label($text);
 				$text = 'To: ' . $current_callsign . "\n\n";
 				$count = 0;
@@ -238,7 +239,7 @@ class Labels extends CI_Controller {
 
 		if ($qsotext != '') {
 			$text .= $qsotext;
-			$text .= "\n" . 'Thanks for QSO.';
+			$text .= "\n" . 'Thanks for <b>QSO</b>'.($count>1 ? 's.' : '.');;
 			$pdf->Add_Label($text);
 		}
 
