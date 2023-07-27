@@ -11,7 +11,7 @@ $lang['lotw_title_export_p12_file_instruction'] = 'Esporta Istruzioni File .p12'
 $lang['lotw_title_adif_import'] = 'Importa ADIF';
 $lang['lotw_title_adif_import_options'] = 'Importa Opzioni';
 
-$lang['lotw_beta_warning'] = 'Attenzione, la Sincronia LOTW è in BETA, guarda la documentazione per un aiuto.';
+$lang['lotw_beta_warning'] = 'Attenzione, la Sincronia LoTW è in BETA, guarda la documentazione per un aiuto.';
 $lang['lotw_no_certs_uploaded'] = 'Devi caricare dei certificati p12 LoTW per abilitare questa area.';
 
 $lang['lotw_date_created'] = 'Data di Creazione';
@@ -29,7 +29,7 @@ $lang['lotw_certificate_dxcc_help_text'] = 'Certificato entità DXCC. Per esempi
 
 $lang['lotw_input_a_file'] = 'Carica un File';
 
-$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Carica il file ADIF Esportato da LoTW dalla area <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a>, per segnare i QSO come confermati su LOTW.';
+$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Carica il file ADIF Esportato da LoTW dalla area <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a>, per segnare i QSO come confermati su LoTW.';
 $lang['lotw_upload_type_must_be_adi'] = 'I file di log devono essere di tipo .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Ottieni dati da LoTW per me';

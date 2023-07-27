@@ -68,7 +68,7 @@ class Gridsquares extends CI_Controller {
 		$grid_6char_confirmed = "";
 
 
-		// Get Confirmed LOTW & Paper Squares (non VUCC)
+		// Get Confirmed LoTW & Paper Squares (non VUCC)
 		$query = $this->gridsquares_model->get_confirmed_sat_squares();
 
 

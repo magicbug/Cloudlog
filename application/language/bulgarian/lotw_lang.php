@@ -27,7 +27,7 @@ $lang['lotw_certificate_dxcc_help_text'] = 'Certificate DXCC entity. Напри�
 
 $lang['lotw_input_a_file'] = 'Качете файл';
 
-$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Upload the Exported ADIF file from LoTW from the <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a> Area, to mark QSOs as confirmed on LOTW.';
+$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Upload the Exported ADIF file from LoTW from the <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a> Area, to mark QSOs as confirmed on LoTW.';
 $lang['lotw_upload_type_must_be_adi'] = 'Log files must have the file type .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Pull LoTW data for me';
