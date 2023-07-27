@@ -239,7 +239,7 @@ class Labels extends CI_Controller {
 
 		if ($qsotext != '') {
 			$text .= $qsotext;
-			$text .= "\n" . 'Thanks for <b>QSO</b>'.($count>1 ? 's.' : '.');;
+			$text .= "\n" . 'Thanks for QSO'.($count>1 ? 's.' : '.');;
 			$pdf->Add_Label($text);
 		}
 
