@@ -6,6 +6,10 @@
 </script>
 
 <style>
+.spotted_call {
+	cursor: alias;
+}
+
 .kHz::after {
 	content: " kHz";
 }

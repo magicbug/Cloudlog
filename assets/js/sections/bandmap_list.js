@@ -20,6 +20,7 @@ $(function() {
 					'targets': 2,
 					'createdCell':  function (td, cellData, rowData, row, col) {
 						$(td).addClass("spotted_call"); 
+						$(td).attr( "title", "Click to prepare logging" );
 					}
 				}
 			]
