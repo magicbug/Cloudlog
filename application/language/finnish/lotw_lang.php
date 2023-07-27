@@ -54,8 +54,8 @@ $lang['lotw_p12_export_step_four'] = 'Lataa ja tuo äsken tallentamasi tiedosto 
 $lang['lotw_confirmed'] = 'Tämä QSO on kuitattu LoTW:ssa';
 
 // LoTW Expiry
-$lang['lotw_cert_expiring'] = 'Vähintään yksi LOTW:n kutsumerkin varmenteesi on vanhentumassa!';
-$lang['lotw_cert_expired'] = 'Vähintään yksi LOTW:n kutsumerkin varmenteesi on vanhentunut!!';
+$lang['lotw_cert_expiring'] = 'Vähintään yksi LoTW:n kutsumerkin varmenteesi on vanhentumassa!';
+$lang['lotw_cert_expired'] = 'Vähintään yksi LoTW:n kutsumerkin varmenteesi on vanhentunut!!';
 
 // Lotw User
 $lang['lotw_user'] = 'Tämä asmea käyttää LoTW-palvelua. Viimeinen yhteyksien lähetys oli';
