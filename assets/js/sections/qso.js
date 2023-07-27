@@ -3,7 +3,6 @@ $( document ).ready(function() {
 
 	var bc_bandmap = new BroadcastChannel('qso_window');
 	bc_bandmap.onmessage = function (ev) {
-		console.log(ev.data);
 		if (ev.data == 'ping') {
 			bc_bandmap.postMessage('pong');
 		}
