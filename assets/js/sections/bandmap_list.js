@@ -138,7 +138,7 @@ $(function() {
 			let cl={};
 			cl.qrg=this.parentNode.cells[1].textContent*1000;
 			cl.call=this.innerText;
-			window.open(base_url + 'qso?manual=0','_blank');
+			window.open(base_url + 'index.php/qso?manual=0','_blank');
 			setTimeout(function () { 
 				bc2qso.postMessage({ frequency: cl.qrg, call: cl.call }) 
 			},2500);	// Wait at least 2500ms for new-Window to appear, before posting data to it
@@ -164,7 +164,7 @@ $(function() {
 	var updateFromCAT = function() {
 	if($('select.radios option:selected').val() != '0') {
 		radioID = $('select.radios option:selected').val();
-		$.getJSON( base_url+"radio/json/" + radioID, function( data ) {
+		$.getJSON( base_url+"index.php/radio/json/" + radioID, function( data ) {
 
 			if (data.error) {
 				if (data.error == 'not_logged_in') {
