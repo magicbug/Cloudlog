@@ -173,9 +173,9 @@ class Labels extends CI_Controller {
 			$time = strtotime($qso->COL_TIME_ON);
 			$myFormatForView = date("d/m/Y H:i", $time);
 				if($qso->COL_SAT_NAME != "") {
-					$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, 'on '.$qso->COL_BAND.' 2x'.$qso->COL_MODE.' RST '.$qso->COL_RST_SENT.'', 'Satellite: '.$qso->COL_SAT_NAME.' Mode: '.strtoupper($qso->COL_SAT_MODE).' ', '', 'Thanks for QSO.');
+					$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, 'on '.$qso->COL_BAND.' '.$qso->COL_MODE.' RST '.$qso->COL_RST_SENT.'', 'Satellite: '.$qso->COL_SAT_NAME.' Mode: '.strtoupper($qso->COL_SAT_MODE).' ', '', 'Thanks for QSO.');
 				} else {
-					$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, 'on '.$qso->COL_BAND.' 2x'.$qso->COL_MODE.' RST '.$qso->COL_RST_SENT.'', '', '', 'Thanks for QSO.');
+					$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, 'on '.$qso->COL_BAND.' '.$qso->COL_MODE.' RST '.$qso->COL_RST_SENT.'', '', '', 'Thanks for QSO.');
 				}
 
 				$pdf->Add_Label($text);
@@ -219,15 +219,15 @@ class Labels extends CI_Controller {
 			$myFormatForView = date("d/m/Y H:i", $time);
 
 			if($qso['sat'] != "") {
-				$qsotext .= sprintf("%s %s %s %s\n", $myFormatForView, 'on '.$qso['band'].' 2x'.$qso['mode'].' RST '.$qso['rst'].'', 'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode']).' ', '');
+				$qsotext .= sprintf("%s %s %s %s\n", $myFormatForView, 'on '.$qso['band'].' '.$qso['mode'].' RST '.$qso['rst'].'', 'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode']).' ', '');
 			} else {
-				$qsotext .= sprintf("%s %s\n", $myFormatForView, 'on '.$qso['band'].' 2x'.$qso['mode'].' RST '.$qso['rst']);
+				$qsotext .= sprintf("%s %s\n", $myFormatForView, 'on '.$qso['band'].' '.$qso['mode'].' RST '.$qso['rst']);
 			}
 			$count++;
 
 			if ($count == $numberofqsos) {
 				$text .= $qsotext;
-				$text .= "\n" . 'Thanks for QSOs.';
+				$text .= "\n" . 'Thanks for QSO.';
 				$pdf->Add_Label($text);
 				$text = 'To: ' . $current_callsign . "\n\n";
 				$count = 0;
@@ -238,7 +238,7 @@ class Labels extends CI_Controller {
 
 		if ($qsotext != '') {
 			$text .= $qsotext;
-			$text .= "\n" . 'Thanks for QSOs.';
+			$text .= "\n" . 'Thanks for QSO.';
 			$pdf->Add_Label($text);
 		}
 
