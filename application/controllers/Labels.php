@@ -212,43 +212,47 @@ class Labels extends CI_Controller {
 	}
 // New begin
 
-function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label) {
-    $tableData = [];
-    $count_qso = 0;
+	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label) {
+		$tableData = [];
+		$count_qso = 0;
+		$qso=[];
+		foreach ($preliminaryData as $key => $row) {
+			$qso=$row;
+			$rowData = [
+				'Date/UTC' => $row['time'],
+				'Band' => $row['band'],
+				'Mode' => $row['mode'],
+				'RST' => $row['rst'],
+			];
+			$tableData[] = $rowData;
+			$count_qso++;
 
-    foreach ($preliminaryData as $key => $row) {
-        $rowData = [
-            'Date/UTC' => $row['time'],
-            'Band' => $row['band'],
-            'Mode' => $row['mode'],
-            'RST' => $row['rst'],
-        ];
-        $tableData[] = $rowData;
-        $count_qso++;
+			if($count_qso == $qso_per_label){
+				generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
+				$tableData = []; // reset the data
+				$count_qso = 0;  // reset the counter
+			}
+			unset($preliminaryData[$key]);
+		}
+		// generate label for remaining QSOs
+		if($count_qso > 0){
+			$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
+			$preliminaryData = []; // reset the data
+		}
+	}
 
-        if($count_qso == $qso_per_label){
-            generateLabel($pdf, $current_callsign, $tableData,$count_qso);
-            $tableData = []; // reset the data
-            $count_qso = 0;  // reset the counter
-        }
-        unset($preliminaryData[$key]);
-    }
-    // generate label for remaining QSOs
-    if($count_qso > 0){
-        $this->generateLabel($pdf, $current_callsign, $tableData,$count_qso);
-        $preliminaryData = []; // reset the data
-    }
-}
-
-function generateLabel($pdf, $current_callsign, $tableData,$numofqsos){
-    $builder = new \AsciiTable\Builder();
-    $builder->addRows($tableData);
-    $text = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
-    $text .= $current_callsign;
-    $text .= "\n";
-    $text .= $builder->renderTable();
-    $text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
-    $pdf->Add_Label($text);
+function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso){
+	$builder = new \AsciiTable\Builder();
+	$builder->addRows($tableData);
+	$text = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
+	$text .= $current_callsign;
+	$text .= "\n";
+	$text .= $builder->renderTable();
+	if($qso['sat'] != "") {
+		$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode']);
+	}
+	$text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
+	$pdf->Add_Label($text);
 }
 
 // New End
