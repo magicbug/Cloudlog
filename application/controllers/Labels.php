@@ -210,9 +210,9 @@ class Labels extends CI_Controller {
 		foreach ($preliminaryData as $key => $row) {
 			$qso=$row;
 			$time = strtotime($qso['time']);
-			$myFormatForView = date("Y-m-d H:i", $time);
+			$myFormatForView = date("d.m.y H:i", $time);
 			$rowData = [
-				'Date/Time (UTC)' => $myFormatForView,
+				'Date/Time' => $myFormatForView,
 				'Band' => $row['band'],
 				'Mode' => $row['mode'],
 				'RST' => $row['rst'],
