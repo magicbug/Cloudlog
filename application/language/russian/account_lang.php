@@ -90,5 +90,8 @@ $lang['account_forgot_your_password'] = 'Забыли пароль?';
 $lang['account_login_to_cloudlog'] = 'Вход в Cloudlog';
 $lang['account_login'] = 'Вход';
 
-$lang['account_mastodon'] = 'Mastodonserver';
-$lang['account_user_mastodon'] = 'URL of Mastodonserver';
+$lang['account_mastodon'] = 'Сервер Mastodon';
+$lang['account_user_mastodon'] = 'URL профиля пользователя Mastodon';
+
+$lang['account_gridmap_settings'] = 'Настройки для карты квадратов';
+$lang['account_gridmap_default_band'] = 'Диапазон по умолчанию';
