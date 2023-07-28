@@ -181,30 +181,28 @@ function qra2latlong($strQRA) {
         $strQRA = $gridsquareArray[0];
     }
 
-    if (strlen($strQRA) % 2 == 1 && strlen($strQRA) <= 8) {
+    if ((strlen($strQRA) % 2 == 0) && (strlen($strQRA) <= 8)) {	// Check if QRA is EVEN (the % 2 does that) and smaller/equal 8
         $strQRA = strtoupper($strQRA);
-        if (strlen($strQRA) < 8) {
-            $strQRA .= str_repeat("MM", (8 - strlen($strQRA)) / 2);
-        }
+	if (strlen($strQRA) == 4)  $strQRA .= "MM";	// Only 4 Chars? Fill with center "MM"
+	if (strlen($strQRA) == 6)  $strQRA .= "55";	// Only 6 Chars? Fill with center "55"
 
-        if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}$/', $strQRA)) {
+        if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}$/', $strQRA)) {
             return false;
         }
 
-        list($a, $b, $c, $d, $e, $f, $g, $h) = str_split($strQRA, 1);
+        list($a, $b, $c, $d, $e, $f, $g, $h) = str_split($strQRA, 1);	// Maidenhead is always alternating. e.g. "AA00AA00AA00" - doesn't matter how deep. 2 chars, 2 numbers, etc.
         $a = ord($a) - ord('A');
         $b = ord($b) - ord('A');
         $c = ord($c) - ord('0');
         $d = ord($d) - ord('0');
         $e = ord($e) - ord('A');
         $f = ord($f) - ord('A');
-        $g = ord($g) - ord('A');
-        $h = ord($h) - ord('A');
+        $g = ord($g) - ord('0');
+        $h = ord($h) - ord('0');
 
-        $nLong = ($a * 40) + ($c * 5) + (($e + 2.5) / 60) - 180;
-        $nLat = ($b * 20) + ($d * 2) + (($f + 1) / 24) - 90;
-        $nLong += (($g + 0.5) / 120);
-        $nLat += (($h + 0.5) / 240);
+
+	$nLong = ($a*20) + ($c*2) + (($e+0.5)/12) + (($g-5)/120) - 180;	// the 4th pair is "in the middle", so we've to substract 5
+	$nLat = ($b*10) + $d + (($f+0.5)/24) + (($h-5)/240) - 90;
 
         $arLatLong = array($nLat, $nLong);
         return $arLatLong;
