@@ -243,7 +243,7 @@ class Labels extends CI_Controller {
 			$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode']);
 		}
 		$text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
-		$text .= " | ".($qso['qsl_recvd'] <> 'Y' ? 'TNX' : 'PSE')." QSL";
+		$text .= " | ".($qso['qsl_recvd'] == 'Y' ? 'TNX' : 'PSE')." QSL";
 		$pdf->Add_Label($text);
 	}
 
