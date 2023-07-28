@@ -194,6 +194,7 @@ class Labels extends CI_Controller {
 				'mygrid' => $qso->station_gridsquare,
 				'sat' => $qso->COL_SAT_NAME,
 				'sat_mode' => $qso->COL_SAT_MODE,
+				'qsl_recvd' => $qso->COL_QSL_RCVD
 			];
 		}
 		if (!empty($qso_data)) {
@@ -242,6 +243,7 @@ class Labels extends CI_Controller {
 			$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode']);
 		}
 		$text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
+		$text .= " | ".($qso['qsl_recvd'] <> 'Y' ? 'TNX' : 'PSE')." QSL";
 		$pdf->Add_Label($text);
 	}
 
