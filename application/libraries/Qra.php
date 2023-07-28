@@ -176,35 +176,43 @@ function get_bearing($lat1, $lon1, $lat2, $lon2) {
 }
 
 function qra2latlong($strQRA) {
-
-	if (strpos($strQRA, ',') !== false) {
+    if (strpos($strQRA, ',') !== false) {
         $gridsquareArray = explode(',', $strQRA);
         $strQRA = $gridsquareArray[0];
     }
 
-	if (strlen($strQRA) %2 == 0) {
-		$strQRA = strtoupper($strQRA);
-		if (strlen($strQRA) == 4)  $strQRA .= "MM";
-		if(strlen($strQRA) > 6) {
-			$strQRA = substr($strQRA, 0, 6);
-		}
+    if (strlen($strQRA) % 2 == 1 && strlen($strQRA) <= 8) {
+        $strQRA = strtoupper($strQRA);
+        if (strlen($strQRA) < 8) {
+            $strQRA .= str_repeat("MM", (8 - strlen($strQRA)) / 2);
+        }
 
-		if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}$/',$strQRA)) return false;
-		list($a,$b,$c,$d,$e,$f) = str_split($strQRA,1);
-		$a = ord($a) - ord('A');
-		$b = ord($b) - ord('A');
-		$c = ord($c) - ord('0');
-		$d = ord($d) - ord('0');
-		$e = ord($e) - ord('A');
-		$f = ord($f) - ord('A');
-		$nLong = ($a*20) + ($c*2) + (($e+0.5)/12) - 180;
-		$nLat = ($b*10) + $d + (($f+0.5)/24) - 90;
-		$arLatLong = array($nLat,$nLong);
-		return($arLatLong);
-	} else {
-		return array(0, 0);
-	}
+        if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}$/', $strQRA)) {
+            return false;
+        }
+
+        list($a, $b, $c, $d, $e, $f, $g, $h) = str_split($strQRA, 1);
+        $a = ord($a) - ord('A');
+        $b = ord($b) - ord('A');
+        $c = ord($c) - ord('0');
+        $d = ord($d) - ord('0');
+        $e = ord($e) - ord('A');
+        $f = ord($f) - ord('A');
+        $g = ord($g) - ord('A');
+        $h = ord($h) - ord('A');
+
+        $nLong = ($a * 40) + ($c * 5) + (($e + 2.5) / 60) - 180;
+        $nLat = ($b * 20) + ($d * 2) + (($f + 1) / 24) - 90;
+        $nLong += (($g + 0.5) / 120);
+        $nLat += (($h + 0.5) / 240);
+
+        $arLatLong = array($nLat, $nLong);
+        return $arLatLong;
+    } else {
+        return array(0, 0);
+    }
 }
+
 
 
 /* End of file Qra.php */
