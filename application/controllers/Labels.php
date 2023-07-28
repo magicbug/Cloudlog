@@ -174,14 +174,16 @@ class Labels extends CI_Controller {
 	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos) {
 		$text = '';
 		$current_callsign = '';
+		$current_sat = '';
 		$qso_data = [];
 		foreach($qsos as $qso) {
-			if ($qso->COL_CALL !== $current_callsign) {
+			if (($qso->COL_SAT_NAME !== $current_sat) || ($qso->COL_CALL !== $current_callsign)) {
 				if (!empty($qso_data)) {
 					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
 					$qso_data = [];
 				}
 				$current_callsign = $qso->COL_CALL;
+				$current_sat = $qso->COL_SAT_NAME;
 			}
 
 			$qso_data[] = [
