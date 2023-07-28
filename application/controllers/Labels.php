@@ -209,8 +209,10 @@ class Labels extends CI_Controller {
 		$qso=[];
 		foreach ($preliminaryData as $key => $row) {
 			$qso=$row;
+			$time = strtotime($qso['time']);
+			$myFormatForView = date("Y-m-d H:i", $time);
 			$rowData = [
-				'Date/UTC' => $row['time'],
+				'Date/Time (UTC)' => $myFormatForView,
 				'Band' => $row['band'],
 				'Mode' => $row['mode'],
 				'RST' => $row['rst'],
@@ -240,7 +242,7 @@ class Labels extends CI_Controller {
 		$text .= "\n";
 		$text .= $builder->renderTable();
 		if($qso['sat'] != "") {
-			$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode']);
+			$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode'][0]).'/'.strtoupper($qso['sat_mode'][1]);
 		}
 		$text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
 		$text .= " | ".($qso['qsl_recvd'] == 'Y' ? 'TNX' : 'PSE')." QSL";
