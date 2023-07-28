@@ -8,7 +8,7 @@ use Cloudlog\Label\font\unifont\ttfonts;
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Labels extends CI_Controller {
- 	/*
+	/*
 	|--------------------------------------------------------------------------
 	| Controller: Labels
 	|--------------------------------------------------------------------------
@@ -16,7 +16,7 @@ class Labels extends CI_Controller {
 	| This Controller handles all things Labels, creating, editing and printing
 	|
 	|
-	*/
+	 */
 
 	function __construct() {
 		parent::__construct();
@@ -35,7 +35,7 @@ class Labels extends CI_Controller {
 	| Nothing fancy just shows the main display of how many labels are waiting 
 	| to be printed per station profile.
 	|
-	*/
+	 */
 	public function index() {
 		$data['page_title'] = "QSL Card Labels";
 
@@ -53,7 +53,7 @@ class Labels extends CI_Controller {
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('labels/index');
 		$this->load->view('interface_assets/footer', $footerData);
-	
+
 	}
 
 	/*
@@ -63,9 +63,9 @@ class Labels extends CI_Controller {
 	| 
 	| Shows the form used to create a label type.
 	|
-	*/
+	 */
 	public function create() {
-		
+
 		$data['page_title'] = "Create Label Type";
 
 		$this->load->library('form_validation');
@@ -82,10 +82,10 @@ class Labels extends CI_Controller {
 		{	
 			$this->load->model('labels_model');
 			$this->labels_model->addLabel();
-			
+
 			redirect('labels');
 		}
-	
+
 	}
 
 	public function printids() {
@@ -104,11 +104,13 @@ class Labels extends CI_Controller {
 
 		$this->prepareLabel($result);
 	}
-	
+
 	function prepareLabel($qsos, $jscall = false) {
 		$this->load->model('labels_model');
 		$label = $this->labels_model->getDefaultLabel();
-	
+		$label->font='DejaVuSans'; // Fix font to DejaVuSans
+
+
 		try {
 			if ($label) {
 				$pdf = new PDF_Label(array(
@@ -145,20 +147,20 @@ class Labels extends CI_Controller {
 			}
 		}
 		define('FPDF_FONTPATH', './src/Label/font/');
-	
+
 		$pdf->AddPage();
-	
-		if ($label->font == 'DejaVuSans') {
+
+		if ($label->font == 'DejaVuSans') {	// leave this here, for future Use
 			$pdf->AddFont($label->font,'','DejaVuSansMono.ttf',true);
 			$pdf->SetFont($label->font);
 		} else {
 			$pdf->AddFont($label->font);
 			$pdf->SetFont($label->font);
 		}
-	
+
 		if ($qsos->num_rows() > 0) {
 			if ($label->qsos == 1) {
-				$this->makeOneQsoLabel($qsos->result(), $pdf);
+				$this->makeMultiQsoLabel($qsos->result(), $pdf,1);
 			} else {
 				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos);
 			}
@@ -167,20 +169,6 @@ class Labels extends CI_Controller {
 			redirect('labels');
 		}
 		$pdf->Output();
-	}
-
-	function makeOneQsoLabel($qsos, $pdf) {
-		foreach($qsos as $qso) {
-			$time = strtotime($qso->COL_TIME_ON);
-			$myFormatForView = date("d/m/Y H:i", $time);
-				if($qso->COL_SAT_NAME != "") {
-					$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, 'on '.$qso->COL_BAND.' 2x'.$qso->COL_MODE.' RST '.$qso->COL_RST_SENT.'', 'Satellite: '.$qso->COL_SAT_NAME.' Mode: '.strtoupper($qso->COL_SAT_MODE).' ', '', 'Thanks for QSO.');
-				} else {
-					$text = sprintf("%s\n\n%s %s\n%s %s \n\n%s", 'To: '.$qso->COL_CALL, $myFormatForView, 'on '.$qso->COL_BAND.' 2x'.$qso->COL_MODE.' RST '.$qso->COL_RST_SENT.'', '', '', 'Thanks for QSO.');
-				}
-
-				$pdf->Add_Label($text);
-		}
 	}
 
 	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos) {
@@ -210,7 +198,7 @@ class Labels extends CI_Controller {
 			$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
 		}
 	}
-// New begin
+	// New begin
 
 	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label) {
 		$tableData = [];
@@ -241,55 +229,21 @@ class Labels extends CI_Controller {
 		}
 	}
 
-function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso){
-	$builder = new \AsciiTable\Builder();
-	$builder->addRows($tableData);
-	$text = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
-	$text .= $current_callsign;
-	$text .= "\n";
-	$text .= $builder->renderTable();
-	if($qso['sat'] != "") {
-		$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode']);
-	}
-	$text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
-	$pdf->Add_Label($text);
-}
-
-// New End
-
-	function makeLabel($pdf, $current_callsign, $qso_data, $numberofqsos) {
-		$text = 'To: ' . $current_callsign . "\n\n";
-		$count = 0;
-		$qsotext = '';
-		foreach ($qso_data as $key => $qso) {
-			$time = strtotime($qso['time']);
-			$myFormatForView = date("d/m/Y H:i", $time);
-
-			if($qso['sat'] != "") {
-				$qsotext .= sprintf("%s %s %s %s\n", $myFormatForView, 'on '.$qso['band'].' 2x'.$qso['mode'].' RST '.$qso['rst'].'', 'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode']).' ', '');
-			} else {
-				$qsotext .= sprintf("%s %s\n", $myFormatForView, 'on '.$qso['band'].' 2x'.$qso['mode'].' RST '.$qso['rst']);
-			}
-			$count++;
-
-			if ($count == $numberofqsos) {
-				$text .= $qsotext;
-				$text .= "\n" . 'Thanks for QSOs.';
-				$pdf->Add_Label($text);
-				$text = 'To: ' . $current_callsign . "\n\n";
-				$count = 0;
-				$qsotext = '';
-			}
-			unset($qso_data[$key]);
+	function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso){
+		$builder = new \AsciiTable\Builder();
+		$builder->addRows($tableData);
+		$text = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
+		$text .= $current_callsign;
+		$text .= "\n";
+		$text .= $builder->renderTable();
+		if($qso['sat'] != "") {
+			$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.strtoupper($qso['sat_mode']);
 		}
-
-		if ($qsotext != '') {
-			$text .= $qsotext;
-			$text .= "\n" . 'Thanks for QSOs.';
-			$pdf->Add_Label($text);
-		}
-
+		$text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
+		$pdf->Add_Label($text);
 	}
+
+	// New End
 
 	public function edit($id) {
 		$this->load->model('labels_model');
