@@ -1,5 +1,6 @@
 <?php 
 
+require_once './src/Label/vendor/autoload.php';
 use Cloudlog\Label\PDF_Label;
 use Cloudlog\Label\tfpdf;
 use Cloudlog\Label\font\unifont\ttfonts;
@@ -186,10 +187,13 @@ class Labels extends CI_Controller {
 		$text = '';
 		$current_callsign = '';
 		$qso_data = [];
+		$whole_qsos=[];
 		foreach($qsos as $qso) {
 			if ($qso->COL_CALL !== $current_callsign) {
 				if (!empty($qso_data)) {
-					$this->makeLabel($pdf, $current_callsign, $qso_data, $numberofqsos);
+					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
+					// $this->makeLabel($pdf, $current_callsign, $qso_data, $numberofqsos);
+					array_push($whole_qsos,$qso_data);
 					$qso_data = [];
 				}
 				$current_callsign = $qso->COL_CALL;
@@ -207,8 +211,51 @@ class Labels extends CI_Controller {
 		}
 		if (!empty($qso_data)) {
 			$this->makeLabel($pdf, $current_callsign, $qso_data, $numberofqsos);
+			array_push($whole_qsos,$qso_data);
 		}
 	}
+// New begin
+
+function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label) {
+    $tableData = [];
+    $count_qso = 0;
+
+    foreach ($preliminaryData as $key => $row) {
+        $rowData = [
+            'Date/UTC' => $row['time'],
+            'Band' => $row['band'],
+            'Mode' => $row['mode'],
+            'RST' => $row['rst'],
+        ];
+        $tableData[] = $rowData;
+        $count_qso++;
+
+        if($count_qso == $qso_per_label){
+            generateLabel($pdf, $current_callsign, $tableData);
+            $tableData = []; // reset the data
+            $count_qso = 0;  // reset the counter
+        }
+        unset($preliminaryData[$key]);
+    }
+    // generate label for remaining QSOs
+    if($count_qso > 0){
+        $this->generateLabel($pdf, $current_callsign, $tableData);
+        $preliminaryData = []; // reset the data
+    }
+}
+
+function generateLabel($pdf, $current_callsign, $tableData){
+    $builder = new \AsciiTable\Builder();
+    $builder->addRows($tableData);
+    $text = "Confirming QSO with ";
+    $text .= $current_callsign;
+    $text .= "\n";
+    $text .= $builder->renderTable();
+    $text .= "\nThanks for the QSO";
+    $pdf->Add_Label($text);
+}
+
+// New End
 
 	function makeLabel($pdf, $current_callsign, $qso_data, $numberofqsos) {
 		$text = 'To: ' . $current_callsign . "\n\n";
