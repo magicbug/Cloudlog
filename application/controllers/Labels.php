@@ -228,7 +228,7 @@ class Labels extends CI_Controller {
 			$count_qso++;
 
 			if($count_qso == $qso_per_label){
-				generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
+				$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
 				$tableData = []; // reset the data
 				$count_qso = 0;  // reset the counter
 			}
