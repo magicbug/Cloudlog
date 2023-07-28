@@ -187,13 +187,10 @@ class Labels extends CI_Controller {
 		$text = '';
 		$current_callsign = '';
 		$qso_data = [];
-		$whole_qsos=[];
 		foreach($qsos as $qso) {
 			if ($qso->COL_CALL !== $current_callsign) {
 				if (!empty($qso_data)) {
 					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
-					// $this->makeLabel($pdf, $current_callsign, $qso_data, $numberofqsos);
-					array_push($whole_qsos,$qso_data);
 					$qso_data = [];
 				}
 				$current_callsign = $qso->COL_CALL;
@@ -210,8 +207,7 @@ class Labels extends CI_Controller {
 			];
 		}
 		if (!empty($qso_data)) {
-			$this->makeLabel($pdf, $current_callsign, $qso_data, $numberofqsos);
-			array_push($whole_qsos,$qso_data);
+			$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
 		}
 	}
 // New begin
@@ -231,7 +227,7 @@ function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label
         $count_qso++;
 
         if($count_qso == $qso_per_label){
-            generateLabel($pdf, $current_callsign, $tableData);
+            generateLabel($pdf, $current_callsign, $tableData,$count_qso);
             $tableData = []; // reset the data
             $count_qso = 0;  // reset the counter
         }
@@ -239,19 +235,19 @@ function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label
     }
     // generate label for remaining QSOs
     if($count_qso > 0){
-        $this->generateLabel($pdf, $current_callsign, $tableData);
+        $this->generateLabel($pdf, $current_callsign, $tableData,$count_qso);
         $preliminaryData = []; // reset the data
     }
 }
 
-function generateLabel($pdf, $current_callsign, $tableData){
+function generateLabel($pdf, $current_callsign, $tableData,$numofqsos){
     $builder = new \AsciiTable\Builder();
     $builder->addRows($tableData);
-    $text = "Confirming QSO with ";
+    $text = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
     $text .= $current_callsign;
     $text .= "\n";
     $text .= $builder->renderTable();
-    $text .= "\nThanks for the QSO";
+    $text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
     $pdf->Add_Label($text);
 }
 
