@@ -48,29 +48,59 @@ class Logbookadvanced_model extends CI_Model {
 			}
 		}
 		if ($searchCriteria['qslSent'] !== '') {
-			$conditions[] = "COL_QSL_SENT = ?";
+			$condition = "COL_QSL_SENT = ?";
+			if ($searchCriteria['qslSent'] == 'N') {
+				$condition = '('.$condition;
+				$condition .= " OR COL_QSL_SENT IS NULL OR COL_QSL_SENT = '')";
+			}
+			$conditions[] = $condition;
 			$binding[] = $searchCriteria['qslSent'];
 		}
 		if ($searchCriteria['qslReceived'] !== '') {
-			$conditions[] = "COL_QSL_RCVD = ?";
+			$condition = "COL_QSL_RCVD = ?";
+			if ($searchCriteria['qslReceived'] == 'N') {
+				$condition = '('.$condition;
+				$condition .= " OR COL_QSL_RCVD IS NULL OR COL_QSL_RCVD = '')";
+			}
+			$conditions[] = $condition;
 			$binding[] = $searchCriteria['qslReceived'];
 		}
 
 		if ($searchCriteria['lotwSent'] !== '') {
-			$conditions[] = "COL_LOTW_QSL_SENT = ?";
+			$condition = "COL_LOTW_QSL_SENT = ?";
+			if ($searchCriteria['lotwSent'] == 'N') {
+				$condition = '('.$condition;
+				$condition .= " OR COL_LOTW_QSL_SENT IS NULL OR COL_LOTW_QSL_SENT = '')";
+			}
+			$conditions[] = $condition;
 			$binding[] = $searchCriteria['lotwSent'];
 		}
 		if ($searchCriteria['lotwReceived'] !== '') {
-			$conditions[] = "COL_LOTW_QSL_RCVD = ?";
+			$condition = "COL_LOTW_QSL_RCVD = ?";
+			if ($searchCriteria['lotwReceived'] == 'N') {
+				$condition = '('.$condition;
+				$condition .= " OR COL_LOTW_QSL_RCVD IS NULL OR COL_LOTW_QSL_RCVD = '')";
+			}
+			$conditions[] = $condition;
 			$binding[] = $searchCriteria['lotwReceived'];
 		}
 
 		if ($searchCriteria['eqslSent'] !== '') {
-			$conditions[] = "COL_EQSL_QSL_SENT = ?";
+			$condition = "COL_EQSL_SENT = ?";
+			if ($searchCriteria['eqslSent'] == 'N') {
+				$condition = '('.$condition;
+				$condition .= " OR COL_EQSL_SENT IS NULL OR COL_EQSL_SENT = '')";
+			}
+			$conditions[] = $condition;
 			$binding[] = $searchCriteria['eqslSent'];
 		}
 		if ($searchCriteria['eqslReceived'] !== '') {
-			$conditions[] = "COL_EQSL_QSL_RCVD = ?";
+			$condition = "COL_EQSL_RCVD = ?";
+			if ($searchCriteria['eqslReceived'] == 'N') {
+				$condition = '('.$condition;
+				$condition .= " OR COL_EQSL_RCVD IS NULL OR COL_EQSL_RCVD = '')";
+			}
+			$conditions[] = $condition;
 			$binding[] = $searchCriteria['eqslReceived'];
 		}
 
