@@ -150,7 +150,7 @@ class QSO
 		$this->rstR = $data['COL_RST_RCVD'];
 		$this->rstS = $data['COL_RST_SENT'];
 		$this->propagationMode = $data['COL_PROP_MODE'] ?? '';
-		$this->satelliteMode = $data['COL_SAT_MODE'] ?? '';
+		$this->satelliteMode = $data['COL_SAT_MODE'] != '' ? (strlen($data['COL_SAT_MODE']) == 2 ? (strtoupper($data['COL_SAT_MODE'][0]).'/'.strtoupper($data['COL_SAT_MODE'][1])) : strtoupper($data['COL_SAT_MODE'])) : '';
 		$this->satelliteName = $data['COL_SAT_NAME'] ?? '';
 
 		$this->name = $data['COL_NAME'] ?? '';
