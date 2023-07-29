@@ -197,7 +197,7 @@
                     <?php if($row->COL_SAT_MODE != null) { ?>
                     <tr>
                         <td><?php echo lang('gen_hamradio_satellite_mode'); ?></td>
-                        <td><?php echo $row->COL_SAT_MODE; ?></td>
+                        <td><?php echo (strlen($row->COL_SAT_MODE) == 2 ? (strtoupper($row->COL_SAT_MODE[0]).'/'.strtoupper($row->COL_SAT_MODE[1])) : strtoupper($row->COL_SAT_MODE)); ?></td>
                     </tr>
                     <?php } ?>
                     <?php if($row->name != null) { ?>
