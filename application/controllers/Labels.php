@@ -98,14 +98,15 @@ class Labels extends CI_Controller {
 
 	public function print($station_id) {
 		$clean_id = xss_clean($station_id);
+		$offset = xss_clean($this->input->post('startat'));
 
 		$this->load->model('labels_model');
 		$result = $this->labels_model->export_printrequested($clean_id);
 
-		$this->prepareLabel($result);
+		$this->prepareLabel($result, false, $offset);
 	}
 
-	function prepareLabel($qsos, $jscall = false) {
+	function prepareLabel($qsos, $jscall = false, $offset = 1) {
 		$this->load->model('labels_model');
 		$label = $this->labels_model->getDefaultLabel();
 		$label->font='DejaVuSans'; // Fix font to DejaVuSans
@@ -160,9 +161,9 @@ class Labels extends CI_Controller {
 
 		if ($qsos->num_rows() > 0) {
 			if ($label->qsos == 1) {
-				$this->makeMultiQsoLabel($qsos->result(), $pdf,1);
+				$this->makeMultiQsoLabel($qsos->result(), $pdf, 1, $offset);
 			} else {
-				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos);
+				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos, $offset);
 			}
 		} else {
 			$this->session->set_flashdata('message', '0 QSOs found for print!');
@@ -171,7 +172,7 @@ class Labels extends CI_Controller {
 		$pdf->Output();
 	}
 
-	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos) {
+	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos, $offset) {
 		$text = '';
 		$current_callsign = '';
 		$current_sat = '';
@@ -179,7 +180,7 @@ class Labels extends CI_Controller {
 		foreach($qsos as $qso) {
 			if (($qso->COL_SAT_NAME !== $current_sat) || ($qso->COL_CALL !== $current_callsign)) {
 				if (!empty($qso_data)) {
-					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
+					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos, $offset);
 					$qso_data = [];
 				}
 				$current_callsign = $qso->COL_CALL;
@@ -198,12 +199,13 @@ class Labels extends CI_Controller {
 			];
 		}
 		if (!empty($qso_data)) {
-			$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
+			$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos, $offset);
 		}
 	}
 	// New begin
 
-	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label) {
+	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label, $offset) {
+
 		$tableData = [];
 		$count_qso = 0;
 		$qso=[];
@@ -221,7 +223,7 @@ class Labels extends CI_Controller {
 			$count_qso++;
 
 			if($count_qso == $qso_per_label){
-				$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
+				$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso, $offset);
 				$tableData = []; // reset the data
 				$count_qso = 0;  // reset the counter
 			}
@@ -229,12 +231,17 @@ class Labels extends CI_Controller {
 		}
 		// generate label for remaining QSOs
 		if($count_qso > 0){
-			$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
+			$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso, $offset);
 			$preliminaryData = []; // reset the data
 		}
 	}
 
-	function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso){
+	function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso, $offset){
+		if ($offset !== 1) {
+			for ($i = 1; $i < $offset; $i++) {
+				$pdf->Add_Label('');
+			}
+		}
 		$builder = new \AsciiTable\Builder();
 		$builder->addRows($tableData);
 		$text = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
@@ -286,7 +293,7 @@ class Labels extends CI_Controller {
 	}
 
 	public function startAtLabel() {
-		$data['stationid'] = xss_clean(json_decode($this->input->post('stationid')));
+		$data['stationid'] = xss_clean($this->input->post('stationid'));
 		$this->load->view('labels/startatform', $data);
 	}
 }
