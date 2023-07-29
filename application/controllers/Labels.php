@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once './src/Label/vendor/autoload.php';
 use Cloudlog\Label\PDF_Label;
@@ -12,7 +12,7 @@ class Labels extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Controller: Labels
 	|--------------------------------------------------------------------------
-	| 
+	|
 	| This Controller handles all things Labels, creating, editing and printing
 	|
 	|
@@ -31,8 +31,8 @@ class Labels extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Function: index
 	|--------------------------------------------------------------------------
-	| 
-	| Nothing fancy just shows the main display of how many labels are waiting 
+	|
+	| Nothing fancy just shows the main display of how many labels are waiting
 	| to be printed per station profile.
 	|
 	 */
@@ -60,7 +60,7 @@ class Labels extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Function: create
 	|--------------------------------------------------------------------------
-	| 
+	|
 	| Shows the form used to create a label type.
 	|
 	 */
@@ -79,7 +79,7 @@ class Labels extends CI_Controller {
 			$this->load->view('interface_assets/footer');
 		}
 		else
-		{	
+		{
 			$this->load->model('labels_model');
 			$this->labels_model->addLabel();
 
@@ -114,16 +114,16 @@ class Labels extends CI_Controller {
 		try {
 			if ($label) {
 				$pdf = new PDF_Label(array(
-					'paper-size'	=> $label->paper_type, 
-					'metric'		=> $label->metric, 
-					'marginLeft'	=> $label->marginleft, 
-					'marginTop'		=> $label->margintop, 
-					'NX'			=> $label->nx, 
-					'NY'			=> $label->ny, 
-					'SpaceX'		=> $label->spacex, 
-					'SpaceY'		=> $label->spacey, 
-					'width'			=> $label->width, 
-					'height'		=> $label->height, 
+					'paper-size'	=> $label->paper_type,
+					'metric'		=> $label->metric,
+					'marginLeft'	=> $label->marginleft,
+					'marginTop'		=> $label->margintop,
+					'NX'			=> $label->nx,
+					'NY'			=> $label->ny,
+					'SpaceX'		=> $label->spacex,
+					'SpaceY'		=> $label->spacey,
+					'width'			=> $label->width,
+					'height'		=> $label->height,
 					'font-size'		=> $label->font_size
 				));
 			} else {
@@ -132,7 +132,7 @@ class Labels extends CI_Controller {
 					echo json_encode(array('message' => 'You need to create a label and set it to be used for print.'));
 					return;
 				} else {
-					$this->session->set_flashdata('error', 'You need to create a label and set it to be used for print.'); 
+					$this->session->set_flashdata('error', 'You need to create a label and set it to be used for print.');
 					redirect('labels');
 				}
 			}
@@ -142,7 +142,7 @@ class Labels extends CI_Controller {
 				echo json_encode(array('message' => 'Something went wrong! The label could not be generated. Check label size and font size.'));
 				return;
 			} else {
-				$this->session->set_flashdata('error', 'Something went wrong! The label could not be generated. Check label size and font size.'); 
+				$this->session->set_flashdata('error', 'Something went wrong! The label could not be generated. Check label size and font size.');
 				redirect('labels');
 			}
 		}
@@ -165,7 +165,7 @@ class Labels extends CI_Controller {
 				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos);
 			}
 		} else {
-			$this->session->set_flashdata('message', '0 QSOs found for print!'); 
+			$this->session->set_flashdata('message', '0 QSOs found for print!');
 			redirect('labels');
 		}
 		$pdf->Output();
@@ -268,14 +268,14 @@ class Labels extends CI_Controller {
 	public function updateLabel($id) {
 		$this->load->model('labels_model');
 		$this->labels_model->updateLabel($id);
-		$this->session->set_flashdata('message', 'Label was saved.'); 
+		$this->session->set_flashdata('message', 'Label was saved.');
 		redirect('labels');
 	}
 
 	public function delete($id) {
 		$this->load->model('labels_model');
 		$this->labels_model->deleteLabel($id);
-		$this->session->set_flashdata('warning', 'Label was deleted.'); 
+		$this->session->set_flashdata('warning', 'Label was deleted.');
 		redirect('labels');
 	}
 
@@ -285,4 +285,8 @@ class Labels extends CI_Controller {
 		$this->labels_model->saveDefaultLabel($id);
 	}
 
+	public function startAtLabel() {
+		$data['stationid'] = xss_clean(json_decode($this->input->post('stationid')));
+		$this->load->view('labels/startatform', $data);
+	}
 }
