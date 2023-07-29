@@ -13,6 +13,7 @@ $lang['menu_live_qso'] = 'добавить QSO';
 $lang['menu_post_qso'] = 'добавить прошедшее QSO';
 $lang['menu_live_contest_logging'] = 'Журнал соревнований';
 $lang['menu_post_contest_logging'] = 'Журнал прошедших соревнований';
+$lang['menu_bandmap'] = 'План диапазонов';
 $lang['menu_view_qsl'] = 'Просмотр QSL';
 $lang['menu_view_eqsl'] = 'Просмотр eQSL';
 
