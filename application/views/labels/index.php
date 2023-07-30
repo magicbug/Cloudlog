@@ -27,7 +27,7 @@
 
 	<div class="card-body">
     	<a href="<?php echo site_url('labels/create'); ?>" class="btn btn-outline-primary btn-sm">Create New Label Type</a>
-	
+
 
 	<?php if ($labels) {
 		echo '<br/><br/>';?>
@@ -96,7 +96,7 @@
 						echo '<td>' . $qso->station_gridsquare . '</td>';
 						echo '<td>' . $qso->count . '</td>';
 						echo '<td><a href="'. site_url('qslprint') . '" class="btn btn-outline-info btn-sm"><i class="fas fa-search"></i></a></td>';
-						echo '<td><a href="'. site_url('labels/print/' . $qso->station_id) . '" class="btn btn-outline-success btn-sm"><i class="fas fa-print"></i></a></td>';
+						echo '<td><button class="btn btn-outline-success btn-sm printbutton" onclick="printat('.$qso->station_id.')"><i class="fas fa-print"></i></button></td>';
 						echo '</tr>';
 					} ?>
 				</tbody>
