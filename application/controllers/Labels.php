@@ -177,10 +177,15 @@ class Labels extends CI_Controller {
 		$current_callsign = '';
 		$current_sat = '';
 		$qso_data = [];
+		if ($offset !== 1) {
+			for ($i = 1; $i < $offset; $i++) {
+				$pdf->Add_Label('');
+			}
+		}
 		foreach($qsos as $qso) {
 			if (($qso->COL_SAT_NAME !== $current_sat) || ($qso->COL_CALL !== $current_callsign)) {
 				if (!empty($qso_data)) {
-					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos, $offset);
+					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
 					$qso_data = [];
 				}
 				$current_callsign = $qso->COL_CALL;
@@ -194,17 +199,17 @@ class Labels extends CI_Controller {
 				'rst' => $qso->COL_RST_SENT,
 				'mygrid' => $qso->station_gridsquare,
 				'sat' => $qso->COL_SAT_NAME,
-				'sat_mode' => $qso->COL_SAT_MODE,
+				'sat_mode' => ($qso->COL_SAT_MODE ?? ''),
 				'qsl_recvd' => $qso->COL_QSL_RCVD
 			];
 		}
 		if (!empty($qso_data)) {
-			$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos, $offset);
+			$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
 		}
 	}
 	// New begin
 
-	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label, $offset) {
+	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label) {
 
 		$tableData = [];
 		$count_qso = 0;
@@ -222,8 +227,9 @@ class Labels extends CI_Controller {
 			$tableData[] = $rowData;
 			$count_qso++;
 
+
 			if($count_qso == $qso_per_label){
-				$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso, $offset);
+				$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
 				$tableData = []; // reset the data
 				$count_qso = 0;  // reset the counter
 			}
@@ -231,17 +237,12 @@ class Labels extends CI_Controller {
 		}
 		// generate label for remaining QSOs
 		if($count_qso > 0){
-			$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso, $offset);
+			$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
 			$preliminaryData = []; // reset the data
 		}
 	}
 
-	function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso, $offset){
-		if ($offset !== 1) {
-			for ($i = 1; $i < $offset; $i++) {
-				$pdf->Add_Label('');
-			}
-		}
+	function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso){
 		$builder = new \AsciiTable\Builder();
 		$builder->addRows($tableData);
 		$text = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
