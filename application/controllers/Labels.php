@@ -193,7 +193,7 @@ class Labels extends CI_Controller {
 				$current_callsign = $qso->COL_CALL;
 				$current_sat = $qso->COL_SAT_NAME;
 				$current_sat_mode = $qso->COL_SAT_MODE;
-				$current_sat_bandrx = $qso->COL_BAND_RX;
+				$current_sat_bandrx = ($qso->COL_SAT_MODE !== '' ? $qso->COL_BAND_RX : '');	// do this only when working sat
 			}
 
 			$qso_data[] = [
