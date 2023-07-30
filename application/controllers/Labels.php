@@ -216,7 +216,7 @@ class Labels extends CI_Controller {
 	}
 	// New begin
 	function pretty_sat_mode($sat_mode) {
-		return(strlen($sat_mode) == 2 ? (strtoupper($sat_mode[0]).'/'.strtoupper($sat_mode[1])) : strtoupper($sat_mode));
+		return(strlen($sat_mode ?? '') == 2 ? (strtoupper($sat_mode[0]).'/'.strtoupper($sat_mode[1])) : strtoupper($sat_mode ?? ''));
 	}
 
 	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label) {
