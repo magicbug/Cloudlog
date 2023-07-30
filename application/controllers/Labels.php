@@ -176,6 +176,8 @@ class Labels extends CI_Controller {
 		$text = '';
 		$current_callsign = '';
 		$current_sat = '';
+		$current_sat_mode = '';
+		$current_sat_bandrx = '';
 		$qso_data = [];
 		if ($offset !== 1) {
 			for ($i = 1; $i < $offset; $i++) {
@@ -183,13 +185,15 @@ class Labels extends CI_Controller {
 			}
 		}
 		foreach($qsos as $qso) {
-			if (($qso->COL_SAT_NAME !== $current_sat) || ($qso->COL_CALL !== $current_callsign)) {
+			if (($qso->COL_SAT_MODE ?? '' !== $current_sat_mode) || ($qso->COL_SAT_NAME !== $current_sat) || ($qso->COL_CALL !== $current_callsign) || (($qso->COL_SAT_NAME !== '') && ($col->COL_BAND_RX ?? '' !== $current_sat_bandrx))) {
 				if (!empty($qso_data)) {
 					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
 					$qso_data = [];
 				}
 				$current_callsign = $qso->COL_CALL;
 				$current_sat = $qso->COL_SAT_NAME;
+				$current_sat_mode = $qso->COL_SAT_MODE;
+				$current_sat_bandrx = $qso->COL_BAND_RX;
 			}
 
 			$qso_data[] = [
@@ -200,6 +204,7 @@ class Labels extends CI_Controller {
 				'mygrid' => $qso->station_gridsquare,
 				'sat' => $qso->COL_SAT_NAME,
 				'sat_mode' => ($qso->COL_SAT_MODE ?? ''),
+				'sat_band_rx' => ($qso->COL_BAND_RX ?? ''),
 				'qsl_recvd' => $qso->COL_QSL_RCVD
 			];
 		}
@@ -250,7 +255,13 @@ class Labels extends CI_Controller {
 		$text .= "\n";
 		$text .= $builder->renderTable();
 		if($qso['sat'] != "") {
-			$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.(strlen($qso['sat_mode']) == 2 ? (strtoupper($qso['sat_mode'][0]).'/'.strtoupper($qso['sat_mode'][1])) : strtoupper($qso['sat_mode']));
+			if (($qso['sat_mode'] == '') && ($qso['sat_band_rx'] !== '')) {
+				$text .= "\n".'Satellite: '.$qso['sat'].' Band RX: '.$qso['sat_band_rx'];
+			} elseif (($qso['sat_mode'] == '') && ($qso['sat_band_rx'] == '')) {
+				$text .= "\n".'Satellite: '.$qso['sat'];
+			} else {
+				$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.(strlen($qso['sat_mode']) == 2 ? (strtoupper($qso['sat_mode'][0]).'/'.strtoupper($qso['sat_mode'][1])) : strtoupper($qso['sat_mode']));
+			}
 		}
 		$text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
 		$text .= " | ".($qso['qsl_recvd'] == 'Y' ? 'TNX' : 'PSE')." QSL";
