@@ -185,15 +185,17 @@ class Labels extends CI_Controller {
 			}
 		}
 		foreach($qsos as $qso) {
-			if (($qso->COL_SAT_MODE ?? '' !== $current_sat_mode) || ($qso->COL_SAT_NAME !== $current_sat) || ($qso->COL_CALL !== $current_callsign) || (($qso->COL_SAT_NAME !== '') && ($col->COL_BAND_RX ?? '' !== $current_sat_bandrx))) {
+			if (($this->pretty_sat_mode($qso->COL_SAT_MODE) !== $current_sat_mode) || ($qso->COL_SAT_NAME  !== $current_sat) || ($qso->COL_CALL !== $current_callsign) || // Call, SAT or SAT-Mode differs?
+			( ($qso->COL_BAND_RX !== $current_sat_bandrx) && ($this->pretty_sat_mode($qso->COL_SAT_MODE) !== '')) ) {
+			   // ((($qso->COL_SAT_NAME ?? '' !== $current_sat) || ($qso->COL_CALL !== $current_callsign)) && ($qso->COL_SAT_NAME ?? '' !== '') && ($col->COL_BAND_RX ?? '' !== $current_sat_bandrx))) {
 				if (!empty($qso_data)) {
 					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
 					$qso_data = [];
 				}
 				$current_callsign = $qso->COL_CALL;
 				$current_sat = $qso->COL_SAT_NAME;
-				$current_sat_mode = $qso->COL_SAT_MODE;
-				$current_sat_bandrx = ($qso->COL_SAT_MODE !== '' ? $qso->COL_BAND_RX : '');	// do this only when working sat
+				$current_sat_mode = $this->pretty_sat_mode($qso->COL_SAT_MODE);
+				$current_sat_bandrx = $qso->COL_BAND_RX ?? '';
 			}
 
 			$qso_data[] = [
@@ -203,7 +205,7 @@ class Labels extends CI_Controller {
 				'rst' => $qso->COL_RST_SENT,
 				'mygrid' => $qso->station_gridsquare,
 				'sat' => $qso->COL_SAT_NAME,
-				'sat_mode' => ($qso->COL_SAT_MODE ?? ''),
+				'sat_mode' => $this->pretty_sat_mode($qso->COL_SAT_MODE ?? ''),
 				'sat_band_rx' => ($qso->COL_BAND_RX ?? ''),
 				'qsl_recvd' => $qso->COL_QSL_RCVD
 			];
@@ -213,6 +215,9 @@ class Labels extends CI_Controller {
 		}
 	}
 	// New begin
+	function pretty_sat_mode($sat_mode) {
+		return(strlen($sat_mode) == 2 ? (strtoupper($sat_mode[0]).'/'.strtoupper($sat_mode[1])) : strtoupper($sat_mode));
+	}
 
 	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label) {
 
@@ -260,7 +265,7 @@ class Labels extends CI_Controller {
 			} elseif (($qso['sat_mode'] == '') && ($qso['sat_band_rx'] == '')) {
 				$text .= "\n".'Satellite: '.$qso['sat'];
 			} else {
-				$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.(strlen($qso['sat_mode']) == 2 ? (strtoupper($qso['sat_mode'][0]).'/'.strtoupper($qso['sat_mode'][1])) : strtoupper($qso['sat_mode']));
+				$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.$qso['sat_mode'];
 			}
 		}
 		$text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
