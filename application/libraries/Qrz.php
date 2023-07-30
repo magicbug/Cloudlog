@@ -82,7 +82,12 @@ class Qrz {
                 $data['name'] = (string)$xml->Callsign->fname;
             }
             $data['name'] = trim($data['name']);
-            $data['gridsquare'] = (string)$xml->Callsign->grid;
+
+            // Sanitise gridsquare to only allow up to 8 characters
+            $unclean_gridsquare = (string)$xml->Callsign->grid; // Get the gridsquare from QRZ convert to string
+            $clean_gridsquare = strlen($unclean_gridsquare) > 8 ? substr($unclean_gridsquare,0,8) : $unclean_gridsquare; // Trim gridsquare to 8 characters max
+            $data['gridsquare'] = $clean_gridsquare;
+
             $data['city'] = (string)$xml->Callsign->addr2;
             $data['lat'] = (string)$xml->Callsign->lat;
             $data['long'] = (string)$xml->Callsign->lon;
