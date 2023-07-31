@@ -237,13 +237,13 @@ class Logbook_model extends CI_Model {
 
     if($station_id == "" || $station_id == "0") {
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('stations');
+      $station_id = $CI->stations->find_active();
     }
 
 	$CI =& get_instance();
-	$CI->load->model('Stations');
-        if (!$CI->Stations->check_station_is_accessible($station_id)) {	// Hard Exit if station_profile not accessible
+	$CI->load->model('stations');
+        if (!$CI->stations->check_station_is_accessible($station_id)) {	// Hard Exit if station_profile not accessible
             return 'Station not accessible<br>';
         }
 
@@ -881,8 +881,8 @@ class Logbook_model extends CI_Model {
 
     // be sure that station belongs to user
     $CI =& get_instance();
-    $CI->load->model('Stations');
-    if (!$CI->Stations->check_station_is_accessible($stationId)) {
+    $CI->load->model('stations');
+    if (!$CI->stations->check_station_is_accessible($stationId)) {
         return;
     }
 
@@ -1376,8 +1376,8 @@ class Logbook_model extends CI_Model {
   function get_qsos_for_printing($station_id2 = null) {
 
 	$CI =& get_instance();
-    $CI->load->model('Stations');
-    $station_id = $CI->Stations->find_active();
+    $CI->load->model('stations');
+    $station_id = $CI->stations->find_active();
 
     $sql = 'SELECT
 				STATION_CALLSIGN,
@@ -1500,10 +1500,10 @@ class Logbook_model extends CI_Model {
 	/*
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to webADIF
      */
-    function get_webadif_qsos($station_id,$from = null, $to = null){
+    function get_webadif_qsos($station_id,$from = null, $to = null,$trusted = false){
 	    $CI =& get_instance();
-	    $CI->load->model('Stations');
-	    if (!$CI->Stations->check_station_is_accessible($station_id)) {
+	    $CI->load->model('stations');
+	    if ((!$trusted) && (!$CI->stations->check_station_is_accessible($station_id))) {
 		    return;
 	    }
 	    $sql = "
@@ -1968,8 +1968,8 @@ class Logbook_model extends CI_Model {
     /* Return QSOs for the year for the active profile */
     function map_all_qsos_for_active_station_profile() {
       $CI =& get_instance();
-      $CI->load->model('Stations');
-      $station_id = $CI->Stations->find_active();
+      $CI->load->model('stations');
+      $station_id = $CI->stations->find_active();
 
       $this->db->where("station_id", $station_id);
       $this->db->order_by("COL_TIME_ON", "ASC");
@@ -2762,12 +2762,12 @@ class Logbook_model extends CI_Model {
 	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false) {
         // be sure that station belongs to user
         $CI =& get_instance();
-        $CI->load->model('Stations');
-        if (!$CI->Stations->check_station_is_accessible($station_id) && $apicall == false ) {
+        $CI->load->model('stations');
+        if (!$CI->stations->check_station_is_accessible($station_id) && $apicall == false ) {
             return 'Station not accessible<br>';
         }
 
-	$station_profile=$CI->Stations->profile_clean($station_id);
+	$station_profile=$CI->stations->profile_clean($station_id);
 	$station_profile_call=$station_profile->station_callsign;
 
 	if (($station_id !=0 ) && (!(isset($record['station_callsign'])))) {
@@ -3078,8 +3078,8 @@ class Logbook_model extends CI_Model {
         // Get active station_id from station profile if one hasn't been provided
         if($station_id == "" || $station_id == "0") {
           $CI =& get_instance();
-          $CI->load->model('Stations');
-          $station_id = $CI->Stations->find_active();
+          $CI->load->model('stations');
+          $station_id = $CI->stations->find_active();
         }
 
         // Check if QSO is already in the database
