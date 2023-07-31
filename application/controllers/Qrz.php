@@ -26,7 +26,7 @@ class Qrz extends CI_Controller {
         if ($station_ids) {
             foreach ($station_ids as $station) {
                 $qrz_api_key = $station->qrzapikey;
-                if($this->mass_upload_qsos($station->station_id, $qrz_api_key)) {
+                if($this->mass_upload_qsos($station->station_id, $qrz_api_key, true)) {
                     echo "QSOs have been uploaded to QRZ.com.";
                     log_message('info', 'QSOs have been uploaded to QRZ.com.');
                 } else{
@@ -53,9 +53,9 @@ class Qrz extends CI_Controller {
      * Function gets all QSOs from given station_id, that are not previously uploaded to qrz.
      * Adif is build for each qso, and then uploaded, one at a time
      */
-    function mass_upload_qsos($station_id, $qrz_api_key) {
+    function mass_upload_qsos($station_id, $qrz_api_key, $trusted = false) {
         $i = 0;
-        $data['qsos'] = $this->logbook_model->get_qrz_qsos($station_id);
+        $data['qsos'] = $this->logbook_model->get_qrz_qsos($station_id, $trusted);
         $errormessages=array();
 
         $CI =& get_instance();
