@@ -1500,45 +1500,50 @@ class Logbook_model extends CI_Model {
 	/*
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to webADIF
      */
-	function get_webadif_qsos($station_id,$from = null, $to = null){
-		$sql = "
+    function get_webadif_qsos($station_id,$from = null, $to = null){
+	    $CI =& get_instance();
+	    $CI->load->model('Stations');
+	    if (!$CI->Stations->check_station_is_accessible($station_id)) {
+		    return;
+	    }
+	    $sql = "
 			SELECT qsos.*, station_profile.*, dxcc_entities.name as station_country
 			FROM %s qsos
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
 			LEFT JOIN dxcc_entities on qsos.col_my_dxcc = dxcc_entities.adif
 			LEFT OUTER JOIN webadif ON qsos.COL_PRIMARY_KEY = webadif.qso_id
 			WHERE qsos.station_id = %d
-        AND qsos.COL_SAT_NAME = 'QO-100'
+	AND qsos.COL_SAT_NAME = 'QO-100'
 			  AND webadif.upload_date IS NULL
 		";
-		$sql = sprintf(
-			$sql,
-			$this->config->item('table_name'),
-			$station_id
-		);
-		if ($from) {
-			$from = DateTime::createFromFormat('d/m/Y', $from);
-			$from = $from->format('Y-m-d');
+	    $sql = sprintf(
+		    $sql,
+		    $this->config->item('table_name'),
+		    $station_id
+	    );
+	    if ($from) {
+		    $from = DateTime::createFromFormat('d/m/Y', $from);
+		    $from = $from->format('Y-m-d');
 
-			$sql.="  AND qsos.COL_TIME_ON >= %s";
-			$sql=sprintf(
-				$sql,
-				$this->db->escape($from)
-			);
-		}
-		if ($to) {
-			$to = DateTime::createFromFormat('d/m/Y', $to);
-			$to = $to->format('Y-m-d');
+		    $sql.="  AND qsos.COL_TIME_ON >= %s";
+		    $sql=sprintf(
+			    $sql,
+			    $this->db->escape($from)
+		    );
+	    }
+	    if ($to) {
+		    $to = DateTime::createFromFormat('d/m/Y', $to);
+		    $to = $to->format('Y-m-d');
 
-			$sql.="  AND qsos.COL_TIME_ON <= %s";
-			$sql=sprintf(
-				$sql,
-				$this->db->escape($to)
-			);
-		}
+		    $sql.="  AND qsos.COL_TIME_ON <= %s";
+		    $sql=sprintf(
+			    $sql,
+			    $this->db->escape($to)
+		    );
+	    }
 
-		return $this->db->query($sql);
-	}
+	    return $this->db->query($sql);
+    }
 
     /*
      * Function returns all the station_id's with HRDLOG Code
@@ -1737,26 +1742,7 @@ class Logbook_model extends CI_Model {
         return $query;
     }
 
-    function get_date_qsos($date) {
-        $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME');
-        $this->db->order_by("COL_TIME_ON", "desc");
-        $start = $date." 00:00:00";
-        $end = $date." 23:59:59";
-
-        $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
-        $query = $this->db->get($this->config->item('table_name'));
-
-        return $query;
-    }
-
-  function get_todays_qsos() {
-    $morning = date('Y-m-d 00:00:00');
-    $night = date('Y-m-d 23:59:59');
-    $query = $this->db->query('SELECT * FROM '.$this->config->item('table_name').' WHERE COL_TIME_ON between \''.$morning.'\' AND \''.$night.'\'');
-    return $query;
-  }
-
-  function totals_year() {
+    function totals_year() {
 
     $CI =& get_instance();
     $CI->load->model('logbooks_model');
