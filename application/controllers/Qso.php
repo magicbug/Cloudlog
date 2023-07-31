@@ -152,11 +152,59 @@ class QSO extends CI_Controller {
 	}
 
     function winkeysettings() {
-        $this->load->view('qso/components/winkeysettings');
+
+        // Load model Winkey
+        $this->load->model('winkey');
+
+        // call settings from model winkey
+        $data['result'] = $this->winkey->settings($this->session->userdata('user_id'), $this->session->userdata('station_profile_id'));
+
+        if ($data['result'] == false) {
+            $this->load->view('qso/components/winkeysettings', $data);
+        } else {
+            $this->load->view('qso/components/winkeysettings_results', $data);
+        }
     }
 
     function cwmacrosave(){
-        echo "lets save!";
+        // Get the data from the form
+        $function1_name = xss_clean($this->input->post('function1_name'));
+        $function1_macro = xss_clean($this->input->post('function1_macro'));
+
+        $function2_name = xss_clean($this->input->post('function2_name'));
+        $function2_macro = xss_clean($this->input->post('function2_macro'));
+
+        $function3_name = xss_clean($this->input->post('function3_name'));
+        $function3_macro = xss_clean($this->input->post('function3_macro'));
+
+        $function4_name = xss_clean($this->input->post('function4_name'));
+        $function4_macro = xss_clean($this->input->post('function4_macro'));
+
+        $function5_name = xss_clean($this->input->post('function5_name'));
+        $function5_macro = xss_clean($this->input->post('function5_macro'));
+
+        $data = [
+            'user_id' => $this->session->userdata('user_id'),
+            'station_location_id' => $this->session->userdata('station_profile_id'),
+			'function1_name'  => $function1_name,
+            'function1_macro' => $function1_macro,
+            'function2_name'  => $function2_name,
+            'function2_macro' => $function2_macro,
+            'function3_name'  => $function3_name,
+            'function3_macro' => $function3_macro,
+            'function4_name'  => $function4_name,
+            'function4_macro' => $function4_macro,
+            'function5_name'  => $function5_name,
+            'function5_macro' => $function5_macro,
+		];
+
+        // Load model Winkey
+        $this->load->model('winkey');
+
+        // save the data
+        $this->winkey->save($data);
+
+        echo "Macros Saved, Press Close and lets get sending!";
     }
 
     function edit_ajax() {
