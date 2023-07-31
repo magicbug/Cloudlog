@@ -21,7 +21,7 @@ class Webadif extends CI_Controller {
 			foreach ($station_ids as $station) {
 				$webadif_api_key = $station->webadifapikey;
 				$webadif_api_url = $station->webadifapiurl;
-				if ($this->mass_upload_qsos($station->station_id, $webadif_api_key, $webadif_api_url, true)) {
+				if ($this->mass_upload_qsos($station->station_id, $webadif_api_key, $webadif_api_url, true)) {	// When called via cron it is trusted
 					echo "QSOs have been uploaded to QO-100 Dx Club.";
 					log_message('info', 'QSOs have been uploaded to QO-100 Dx Club.');
 				} else {
