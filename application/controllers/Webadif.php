@@ -49,7 +49,7 @@ class Webadif extends CI_Controller {
      */
     function mass_upload_qsos($station_id, $webadif_api_key, $webadif_api_url, $trusted = false) {
         $i = 0;
-        $data['qsos'] = $this->logbook_model->get_webadif_qsos($station_id, $trusted);
+        $data['qsos'] = $this->logbook_model->get_webadif_qsos($station_id, null, null, $trusted);
         $errormessages=array();
 
         $CI =& get_instance();
