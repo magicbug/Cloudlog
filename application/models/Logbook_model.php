@@ -1483,19 +1483,24 @@ class Logbook_model extends CI_Model {
     /*
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to qrz, or has been modified with an edit
      */
-    function get_qrz_qsos($station_id){
-        $sql = 'select *, dxcc_entities.name as station_country from ' . $this->config->item('table_name') . ' thcv ' .
-            ' left join station_profile on thcv.station_id = station_profile.station_id' .
-            ' left outer join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif' .
-            ' where thcv.station_id = ' . $station_id .
-            ' and (COL_QRZCOM_QSO_UPLOAD_STATUS is NULL
-            or COL_QRZCOM_QSO_UPLOAD_STATUS = ""
-            or COL_QRZCOM_QSO_UPLOAD_STATUS = "M"
-            or COL_QRZCOM_QSO_UPLOAD_STATUS = "N")';
+  function get_qrz_qsos($station_id, $trusted = false){
+	  $CI =& get_instance();
+	  $CI->load->model('stations');
+	  if ((!$trusted) && (!$CI->stations->check_station_is_accessible($station_id))) {
+		  return;
+	  }
+	  $sql = 'select *, dxcc_entities.name as station_country from ' . $this->config->item('table_name') . ' thcv ' .
+		  ' left join station_profile on thcv.station_id = station_profile.station_id' .
+		  ' left outer join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif' .
+		  ' where thcv.station_id = ' . $station_id .
+		  ' and (COL_QRZCOM_QSO_UPLOAD_STATUS is NULL
+		  or COL_QRZCOM_QSO_UPLOAD_STATUS = ""
+		  or COL_QRZCOM_QSO_UPLOAD_STATUS = "M"
+		  or COL_QRZCOM_QSO_UPLOAD_STATUS = "N")';
 
-        $query = $this->db->query($sql);
-        return $query;
-    }
+	  $query = $this->db->query($sql);
+	  return $query;
+  }
 
 	/*
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to webADIF
