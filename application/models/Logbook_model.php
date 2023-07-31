@@ -1289,68 +1289,88 @@ class Logbook_model extends CI_Model {
 		return $name;
 	}
   /* Return QSO Info */
-  function qso_info($id) {
-    $this->db->where('COL_PRIMARY_KEY', $id);
+	function qso_info($id) {
+		if ($this->logbook_model->check_qso_is_accessible($id)) {
+			$this->db->where('COL_PRIMARY_KEY', $id);
 
-    return $this->db->get($this->config->item('table_name'));
-  }
+			return $this->db->get($this->config->item('table_name'));
+		} else {
+			return;
+		}
+	}
 
 
   // Set Paper to received
-  function paperqsl_update($qso_id, $method) {
+	function paperqsl_update($qso_id, $method) {
+		if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
 
-      $data = array(
-          'COL_QSLRDATE' => date('Y-m-d H:i:s'),
-          'COL_QSL_RCVD' => 'Y',
-          'COL_QSL_RCVD_VIA' => $method
-      );
+			$data = array(
+				'COL_QSLRDATE' => date('Y-m-d H:i:s'),
+				'COL_QSL_RCVD' => 'Y',
+				'COL_QSL_RCVD_VIA' => $method
+			);
 
-      $this->db->where('COL_PRIMARY_KEY', $qso_id);
+			$this->db->where('COL_PRIMARY_KEY', $qso_id);
 
-      $this->db->update($this->config->item('table_name'), $data);
-  }
+			$this->db->update($this->config->item('table_name'), $data);
+		} else {
+			return;
+		}
+	}
 
 
   // Set Paper to sent
   function paperqsl_update_sent($qso_id, $method) {
+	  if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
 
-      $data = array(
-          'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-          'COL_QSL_SENT' => 'Y',
-          'COL_QSL_SENT_VIA' => $method
-      );
+		  $data = array(
+			  'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+			  'COL_QSL_SENT' => 'Y',
+			  'COL_QSL_SENT_VIA' => $method
+		  );
 
-      $this->db->where('COL_PRIMARY_KEY', $qso_id);
+		  $this->db->where('COL_PRIMARY_KEY', $qso_id);
 
-      $this->db->update($this->config->item('table_name'), $data);
+		  $this->db->update($this->config->item('table_name'), $data);
+	  } else {
+		  return;
+	  }
   }
 
 
   // Set Paper to requested
   function paperqsl_requested($qso_id, $method) {
+	  if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
 
-    $data = array(
-         'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-         'COL_QSL_SENT' => 'R',
-         'COL_QSL_SENT_VIA' => $method
-    );
+		  $data = array(
+			  'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+			  'COL_QSL_SENT' => 'R',
+			  'COL_QSL_SENT_VIA' => $method
+		  );
 
-    $this->db->where('COL_PRIMARY_KEY', $qso_id);
+		  $this->db->where('COL_PRIMARY_KEY', $qso_id);
 
-    $this->db->update($this->config->item('table_name'), $data);
+		  $this->db->update($this->config->item('table_name'), $data);
+	  } else {
+		  return;
+	  }
   }
 
 
   function paperqsl_ignore($qso_id, $method) {
+	  if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
 
-    $data = array(
-         'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-         'COL_QSL_SENT' => 'I'
-    );
+		  $data = array(
+			  'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+			  'COL_QSL_SENT' => 'I'
+		  );
 
-    $this->db->where('COL_PRIMARY_KEY', $qso_id);
+		  $this->db->where('COL_PRIMARY_KEY', $qso_id);
 
-    $this->db->update($this->config->item('table_name'), $data);
+		  $this->db->update($this->config->item('table_name'), $data);
+	  } else {
+		  return;
+	  }
   }
 
   function get_qsos_for_printing($station_id2 = null) {
@@ -1427,16 +1447,20 @@ class Logbook_model extends CI_Model {
   }
 
   function get_qso($id) {
-    $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, coalesce(dxcc_entities_2.name, "- NONE -") as station_country, dxcc_entities_2.end as station_end, eQSL_images.image_file as eqsl_image_file, lotw_users.callsign as lotwuser, lotw_users.lastupload');
-    $this->db->from($this->config->item('table_name'));
-    $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
-    $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id', 'left');
-    $this->db->join('dxcc_entities as dxcc_entities_2', 'station_profile.station_dxcc = dxcc_entities_2.adif', 'left outer');
-    $this->db->join('eQSL_images', $this->config->item('table_name').'.COL_PRIMARY_KEY = eQSL_images.qso_id', 'left outer');
-    $this->db->join('lotw_users', $this->config->item('table_name').'.COL_CALL = lotw_users.callsign', 'left outer');
-    $this->db->where('COL_PRIMARY_KEY', $id);
+	  if ($this->logbook_model->check_qso_is_accessible($id)) {
+		  $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, coalesce(dxcc_entities_2.name, "- NONE -") as station_country, dxcc_entities_2.end as station_end, eQSL_images.image_file as eqsl_image_file, lotw_users.callsign as lotwuser, lotw_users.lastupload');
+		  $this->db->from($this->config->item('table_name'));
+		  $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
+		  $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id', 'left');
+		  $this->db->join('dxcc_entities as dxcc_entities_2', 'station_profile.station_dxcc = dxcc_entities_2.adif', 'left outer');
+		  $this->db->join('eQSL_images', $this->config->item('table_name').'.COL_PRIMARY_KEY = eQSL_images.qso_id', 'left outer');
+		  $this->db->join('lotw_users', $this->config->item('table_name').'.COL_CALL = lotw_users.callsign', 'left outer');
+		  $this->db->where('COL_PRIMARY_KEY', $id);
 
-    return $this->db->get();
+		  return $this->db->get();
+	  } else {
+		  return;
+	  }
   }
 
     /*
@@ -2627,10 +2651,14 @@ class Logbook_model extends CI_Model {
   }
 
     /* Delete QSO based on the QSO ID */
-    function delete($id) {
-        $this->db->where('COL_PRIMARY_KEY', $id);
-        $this->db->delete($this->config->item('table_name'));
-    }
+  function delete($id) {
+	  if ($this->check_qso_is_accessible($id)) {
+		  $this->db->where('COL_PRIMARY_KEY', $id);
+		  $this->db->delete($this->config->item('table_name'));
+	  } else {
+		  return;
+	  }
+  }
 
   /* Used to check if the qso is already in the database */
   function import_check($datetime, $callsign, $band, $mode, $station_callsign) {
