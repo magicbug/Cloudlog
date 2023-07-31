@@ -31,14 +31,13 @@ class Station extends CI_Controller {
 		$this->load->view('interface_assets/footer');
 	}
 
-	public function create()
-	{
+	public function create() {
 		$this->load->model('stations');
 		$this->load->model('dxcc');
 		$data['dxcc_list'] = $this->dxcc->list();
 
-        $this->load->model('logbook_model');
-        $data['iota_list'] = $this->logbook_model->fetchIota();
+		$this->load->model('logbook_model');
+		$data['iota_list'] = $this->logbook_model->fetchIota();
 
 		$this->load->library('form_validation');
 
@@ -59,50 +58,57 @@ class Station extends CI_Controller {
 		}
 	}
 
-	public function edit($id)
-	{
-		$data = $this->load_station_for_editing($id);
-		$data['page_title'] = "Edit Station Location: {$data['my_station_profile']->station_profile_name}";
+	public function edit($id) {
+		$this->load->model('stations');
+		if ($this->stations->check_station_is_accessible($id)) {
+			$data = $this->load_station_for_editing($id);
+			$data['page_title'] = "Edit Station Location: {$data['my_station_profile']->station_profile_name}";
 
-		if ($this->form_validation->run() == FALSE) {
-			$this->load->view('interface_assets/header', $data);
-			$this->load->view('station_profile/edit');
-			$this->load->view('interface_assets/footer');
+			if ($this->form_validation->run() == FALSE) {
+				$this->load->view('interface_assets/header', $data);
+				$this->load->view('station_profile/edit');
+				$this->load->view('interface_assets/footer');
+			} else {
+				$this->stations->edit();
+
+				$data['notice'] = "Station Profile " . $this->security->xss_clean($this->input->post('station_profile_name', true)) . " Updated";
+
+				redirect('station');
+			}
 		} else {
-			$this->stations->edit();
-
-			$data['notice'] = "Station Profile " . $this->security->xss_clean($this->input->post('station_profile_name', true)) . " Updated";
-
 			redirect('station');
 		}
 	}
 
-	public function copy($id)
-	{
-		$data = $this->load_station_for_editing($id);
-		$data['page_title'] = "Duplicate Station Location: {$data['my_station_profile']->station_profile_name}";
+	public function copy($id) {
+		$this->load->model('stations');
+		if ($this->stations->check_station_is_accessible($id)) {
+			$data = $this->load_station_for_editing($id);
+			$data['page_title'] = "Duplicate Station Location: {$data['my_station_profile']->station_profile_name}";
 
-		// we NULLify station_id and station_profile_name to make sure we are creating a new station
-		$data['copy_from'] = $data['my_station_profile']->station_id;
-		$data['my_station_profile']->station_id = NULL;
-		$data['my_station_profile']->station_profile_name = '';
+			// we NULLify station_id and station_profile_name to make sure we are creating a new station
+			$data['copy_from'] = $data['my_station_profile']->station_id;
+			$data['my_station_profile']->station_id = NULL;
+			$data['my_station_profile']->station_profile_name = '';
 
-		if ($this->form_validation->run() == FALSE)
-		{
-			$this->load->view('interface_assets/header', $data);
-			$this->load->view('station_profile/edit');
-			$this->load->view('interface_assets/footer');
-		}
-		else
-		{
-			$this->stations->add();
+			if ($this->form_validation->run() == FALSE)
+			{
+				$this->load->view('interface_assets/header', $data);
+				$this->load->view('station_profile/edit');
+				$this->load->view('interface_assets/footer');
+			}
+			else
+			{
+				$this->stations->add();
 
+				redirect('station');
+			}
+		} else {
 			redirect('station');
 		}
 	}
 
-	function load_station_for_editing($id): array
-	{
+	function load_station_for_editing($id): array {
 		$this->load->library('form_validation');
 
 		$this->load->model('stations');
@@ -159,15 +165,17 @@ class Station extends CI_Controller {
 
 	public function delete($id) {
 		$this->load->model('stations');
-		$this->stations->delete($id);
-
+		if ($this->stations->check_station_is_accessible($id)) {
+			$this->stations->delete($id);
+		}
 		redirect('station');
 	}
 
     public function deletelog($id) {
         $this->load->model('stations');
-        $this->stations->deletelog($id);
-
+	if ($this->stations->check_station_is_accessible($id)) {
+        	$this->stations->deletelog($id);
+	}
         redirect('station');
     }
 

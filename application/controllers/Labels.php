@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once './src/Label/vendor/autoload.php';
 use Cloudlog\Label\PDF_Label;
@@ -12,7 +12,7 @@ class Labels extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Controller: Labels
 	|--------------------------------------------------------------------------
-	| 
+	|
 	| This Controller handles all things Labels, creating, editing and printing
 	|
 	|
@@ -31,8 +31,8 @@ class Labels extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Function: index
 	|--------------------------------------------------------------------------
-	| 
-	| Nothing fancy just shows the main display of how many labels are waiting 
+	|
+	| Nothing fancy just shows the main display of how many labels are waiting
 	| to be printed per station profile.
 	|
 	 */
@@ -60,7 +60,7 @@ class Labels extends CI_Controller {
 	|--------------------------------------------------------------------------
 	| Function: create
 	|--------------------------------------------------------------------------
-	| 
+	|
 	| Shows the form used to create a label type.
 	|
 	 */
@@ -79,7 +79,7 @@ class Labels extends CI_Controller {
 			$this->load->view('interface_assets/footer');
 		}
 		else
-		{	
+		{
 			$this->load->model('labels_model');
 			$this->labels_model->addLabel();
 
@@ -98,14 +98,19 @@ class Labels extends CI_Controller {
 
 	public function print($station_id) {
 		$clean_id = xss_clean($station_id);
+		$offset = xss_clean($this->input->post('startat'));
+		$this->load->model('stations');
+		if ($this->stations->check_station_is_accessible($station_id)) {
+			$this->load->model('labels_model');
+			$result = $this->labels_model->export_printrequested($clean_id);
 
-		$this->load->model('labels_model');
-		$result = $this->labels_model->export_printrequested($clean_id);
-
-		$this->prepareLabel($result);
+			$this->prepareLabel($result, false, $offset);
+		} else {
+			redirect('labels');
+		}
 	}
 
-	function prepareLabel($qsos, $jscall = false) {
+	function prepareLabel($qsos, $jscall = false, $offset = 1) {
 		$this->load->model('labels_model');
 		$label = $this->labels_model->getDefaultLabel();
 		$label->font='DejaVuSans'; // Fix font to DejaVuSans
@@ -114,16 +119,16 @@ class Labels extends CI_Controller {
 		try {
 			if ($label) {
 				$pdf = new PDF_Label(array(
-					'paper-size'	=> $label->paper_type, 
-					'metric'		=> $label->metric, 
-					'marginLeft'	=> $label->marginleft, 
-					'marginTop'		=> $label->margintop, 
-					'NX'			=> $label->nx, 
-					'NY'			=> $label->ny, 
-					'SpaceX'		=> $label->spacex, 
-					'SpaceY'		=> $label->spacey, 
-					'width'			=> $label->width, 
-					'height'		=> $label->height, 
+					'paper-size'	=> $label->paper_type,
+					'metric'		=> $label->metric,
+					'marginLeft'	=> $label->marginleft,
+					'marginTop'		=> $label->margintop,
+					'NX'			=> $label->nx,
+					'NY'			=> $label->ny,
+					'SpaceX'		=> $label->spacex,
+					'SpaceY'		=> $label->spacey,
+					'width'			=> $label->width,
+					'height'		=> $label->height,
 					'font-size'		=> $label->font_size
 				));
 			} else {
@@ -132,7 +137,7 @@ class Labels extends CI_Controller {
 					echo json_encode(array('message' => 'You need to create a label and set it to be used for print.'));
 					return;
 				} else {
-					$this->session->set_flashdata('error', 'You need to create a label and set it to be used for print.'); 
+					$this->session->set_flashdata('error', 'You need to create a label and set it to be used for print.');
 					redirect('labels');
 				}
 			}
@@ -142,7 +147,7 @@ class Labels extends CI_Controller {
 				echo json_encode(array('message' => 'Something went wrong! The label could not be generated. Check label size and font size.'));
 				return;
 			} else {
-				$this->session->set_flashdata('error', 'Something went wrong! The label could not be generated. Check label size and font size.'); 
+				$this->session->set_flashdata('error', 'Something went wrong! The label could not be generated. Check label size and font size.');
 				redirect('labels');
 			}
 		}
@@ -160,30 +165,41 @@ class Labels extends CI_Controller {
 
 		if ($qsos->num_rows() > 0) {
 			if ($label->qsos == 1) {
-				$this->makeMultiQsoLabel($qsos->result(), $pdf,1);
+				$this->makeMultiQsoLabel($qsos->result(), $pdf, 1, $offset);
 			} else {
-				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos);
+				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos, $offset);
 			}
 		} else {
-			$this->session->set_flashdata('message', '0 QSOs found for print!'); 
+			$this->session->set_flashdata('message', '0 QSOs found for print!');
 			redirect('labels');
 		}
 		$pdf->Output();
 	}
 
-	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos) {
+	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos, $offset) {
 		$text = '';
 		$current_callsign = '';
 		$current_sat = '';
+		$current_sat_mode = '';
+		$current_sat_bandrx = '';
 		$qso_data = [];
+		if ($offset !== 1) {
+			for ($i = 1; $i < $offset; $i++) {
+				$pdf->Add_Label('');
+			}
+		}
 		foreach($qsos as $qso) {
-			if (($qso->COL_SAT_NAME !== $current_sat) || ($qso->COL_CALL !== $current_callsign)) {
+			if (($this->pretty_sat_mode($qso->COL_SAT_MODE) !== $current_sat_mode) || ($qso->COL_SAT_NAME  !== $current_sat) || ($qso->COL_CALL !== $current_callsign) || // Call, SAT or SAT-Mode differs?
+			( ($qso->COL_BAND_RX !== $current_sat_bandrx) && ($this->pretty_sat_mode($qso->COL_SAT_MODE) !== '')) ) {
+			   // ((($qso->COL_SAT_NAME ?? '' !== $current_sat) || ($qso->COL_CALL !== $current_callsign)) && ($qso->COL_SAT_NAME ?? '' !== '') && ($col->COL_BAND_RX ?? '' !== $current_sat_bandrx))) {
 				if (!empty($qso_data)) {
 					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
 					$qso_data = [];
 				}
 				$current_callsign = $qso->COL_CALL;
 				$current_sat = $qso->COL_SAT_NAME;
+				$current_sat_mode = $this->pretty_sat_mode($qso->COL_SAT_MODE);
+				$current_sat_bandrx = $qso->COL_BAND_RX ?? '';
 			}
 
 			$qso_data[] = [
@@ -193,7 +209,8 @@ class Labels extends CI_Controller {
 				'rst' => $qso->COL_RST_SENT,
 				'mygrid' => $qso->station_gridsquare,
 				'sat' => $qso->COL_SAT_NAME,
-				'sat_mode' => $qso->COL_SAT_MODE,
+				'sat_mode' => $this->pretty_sat_mode($qso->COL_SAT_MODE ?? ''),
+				'sat_band_rx' => ($qso->COL_BAND_RX ?? ''),
 				'qsl_recvd' => $qso->COL_QSL_RCVD
 			];
 		}
@@ -202,8 +219,12 @@ class Labels extends CI_Controller {
 		}
 	}
 	// New begin
+	function pretty_sat_mode($sat_mode) {
+		return(strlen($sat_mode ?? '') == 2 ? (strtoupper($sat_mode[0]).'/'.strtoupper($sat_mode[1])) : strtoupper($sat_mode ?? ''));
+	}
 
 	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label) {
+
 		$tableData = [];
 		$count_qso = 0;
 		$qso=[];
@@ -219,6 +240,7 @@ class Labels extends CI_Controller {
 			];
 			$tableData[] = $rowData;
 			$count_qso++;
+
 
 			if($count_qso == $qso_per_label){
 				$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
@@ -242,7 +264,13 @@ class Labels extends CI_Controller {
 		$text .= "\n";
 		$text .= $builder->renderTable();
 		if($qso['sat'] != "") {
-			$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.(strlen($qso['sat_mode']) == 2 ? (strtoupper($qso['sat_mode'][0]).'/'.strtoupper($qso['sat_mode'][1])) : strtoupper($qso['sat_mode']));
+			if (($qso['sat_mode'] == '') && ($qso['sat_band_rx'] !== '')) {
+				$text .= "\n".'Satellite: '.$qso['sat'].' Band RX: '.$qso['sat_band_rx'];
+			} elseif (($qso['sat_mode'] == '') && ($qso['sat_band_rx'] == '')) {
+				$text .= "\n".'Satellite: '.$qso['sat'];
+			} else {
+				$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.$qso['sat_mode'];
+			}
 		}
 		$text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
 		$text .= " | ".($qso['qsl_recvd'] == 'Y' ? 'TNX' : 'PSE')." QSL";
@@ -268,14 +296,14 @@ class Labels extends CI_Controller {
 	public function updateLabel($id) {
 		$this->load->model('labels_model');
 		$this->labels_model->updateLabel($id);
-		$this->session->set_flashdata('message', 'Label was saved.'); 
+		$this->session->set_flashdata('message', 'Label was saved.');
 		redirect('labels');
 	}
 
 	public function delete($id) {
 		$this->load->model('labels_model');
 		$this->labels_model->deleteLabel($id);
-		$this->session->set_flashdata('warning', 'Label was deleted.'); 
+		$this->session->set_flashdata('warning', 'Label was deleted.');
 		redirect('labels');
 	}
 
@@ -285,4 +313,8 @@ class Labels extends CI_Controller {
 		$this->labels_model->saveDefaultLabel($id);
 	}
 
+	public function startAtLabel() {
+		$data['stationid'] = xss_clean($this->input->post('stationid'));
+		$this->load->view('labels/startatform', $data);
+	}
 }

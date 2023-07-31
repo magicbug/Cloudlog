@@ -241,6 +241,13 @@ class Logbook_model extends CI_Model {
       $station_id = $CI->Stations->find_active();
     }
 
+	$CI =& get_instance();
+	$CI->load->model('Stations');
+        if (!$CI->Stations->check_station_is_accessible($station_id)) {	// Hard Exit if station_profile not accessible
+            return 'Station not accessible<br>';
+        }
+
+
     // If station profile has been provided fill in the fields
     if($station_id != "0") {
       $station = $this->check_station($station_id);
