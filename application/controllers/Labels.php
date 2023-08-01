@@ -88,6 +88,39 @@ class Labels extends CI_Controller {
 
 	}
 
+		/*
+	|--------------------------------------------------------------------------
+	| Function: createpaper
+	|--------------------------------------------------------------------------
+	|
+	| Shows the form used to create a paper type.
+	|
+	 */
+	public function createpaper() {
+
+		$data['page_title'] = "Create Paper Type";
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('paper_name', 'Paper Name', 'required');
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('labels/createpaper');
+			$this->load->view('interface_assets/footer');
+		}
+		else
+		{
+			$this->load->model('labels_model');
+			$this->labels_model->addPaper();
+
+			redirect('labels');
+		}
+
+	}
+
+
 	public function printids() {
 		$ids = xss_clean(json_decode($this->input->post('id')));
 		$offset = xss_clean($this->input->post('startat'));
