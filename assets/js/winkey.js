@@ -1,6 +1,8 @@
 // Lets see if CW is selected
 const ModeSelected = document.getElementById('mode');
 
+$('#winkey_buttons').hide();
+
 if (location.protocol == 'http:') {
     // Do something if the page is being served over SSL
     $('#winkey').hide(); // Hide the CW buttons
@@ -132,6 +134,8 @@ async function connect() {
         writeToByte("0x00, 0x02");
         writeToByte("0x02, 0x00");
 
+        $('#winkey_buttons').show();
+
         reader = inputStream.getReader();
         readLoop();
     } catch (e) {
@@ -154,8 +158,6 @@ async function writeToStream(line) {
 }
 
 async function writeToByte(line) {
-    var enc = new TextEncoder(); // always utf-8
-    
     const writer = outputStream.getWriter();
     const data = new Uint8Array([line]);
     writer.write(line);
