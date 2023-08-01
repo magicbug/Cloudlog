@@ -17,6 +17,7 @@
 				case 'SOTA': echo lang('gen_hamradio_sota'); break;
 				case 'State': echo lang('gen_hamradio_state'); break;
 				case 'Grid': echo lang('gen_hamradio_gridsquare'); break;
+				case 'Distance': echo lang('gen_hamradio_distance'); break;
 				case 'Band': echo lang('gen_hamradio_band'); break;
 				case 'Frequency': echo lang('gen_hamradio_frequency'); break;
 				case 'Operator': echo lang('gen_hamradio_operator'); break;
@@ -32,6 +33,7 @@
 				case 'SOTA': echo lang('gen_hamradio_sota'); break;
 				case 'State': echo lang('gen_hamradio_state'); break;
 				case 'Grid': echo lang('gen_hamradio_gridsquare'); break;
+				case 'Distance': echo lang('gen_hamradio_distance'); break;
 				case 'Band': echo lang('gen_hamradio_band'); break;
 				case 'Frequency': echo lang('gen_hamradio_frequency'); break;
 				case 'Operator': echo lang('gen_hamradio_band'); break;
@@ -47,6 +49,7 @@
 				case 'SOTA': echo lang('gen_hamradio_sota'); break;
 				case 'State': echo lang('gen_hamradio_state'); break;
 				case 'Grid': echo lang('gen_hamradio_gridsquare'); break;
+				case 'Distance': echo lang('gen_hamradio_distance'); break;
 				case 'Band': echo lang('gen_hamradio_band'); break;
 				case 'Frequency': echo lang('gen_hamradio_frequency'); break;
 				case 'Operator': echo lang('gen_hamradio_operator'); break;
@@ -62,6 +65,7 @@
 				case 'SOTA': echo lang('gen_hamradio_sota'); break;
 				case 'State': echo lang('gen_hamradio_state'); break;
 				case 'Grid': echo lang('gen_hamradio_gridsquare'); break;
+				case 'Distance': echo lang('gen_hamradio_distance'); break;
 				case 'Band': echo lang('gen_hamradio_band'); break;
 				case 'Frequency': echo lang('gen_hamradio_frequency'); break;
 				case 'Operator': echo lang('gen_hamradio_operator'); break;
@@ -77,6 +81,7 @@
 				case 'SOTA': echo lang('gen_hamradio_sota'); break;
 				case 'State': echo lang('gen_hamradio_state'); break;
 				case 'Grid': echo lang('gen_hamradio_gridsquare'); break;
+				case 'Distance': echo lang('gen_hamradio_distance'); break;
 				case 'Band': echo lang('gen_hamradio_band'); break;
 				case 'Frequency': echo lang('gen_hamradio_frequency'); break;
 				case 'Operator': echo lang('gen_hamradio_operator'); break;
@@ -114,6 +119,7 @@
 				case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF); break;
 				case 'POTA':    echo '<td>' . ($row->COL_POTA_REF); break;
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
+				case 'Distance':echo '<td>' . ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : ''); break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
@@ -129,6 +135,7 @@
 				case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF); break;
 				case 'POTA':    echo '<td>' . ($row->COL_POTA_REF); break;
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
+				case 'Distance':echo '<td>' . ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : ''); break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
@@ -145,6 +152,7 @@
 				case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF); break;
 				case 'POTA':    echo '<td>' . ($row->COL_POTA_REF); break;
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
+				case 'Distance':echo '<td>' . ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : ''); break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
@@ -160,6 +168,7 @@
 				case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF); break;
 				case 'POTA':    echo '<td>' . ($row->COL_POTA_REF); break;
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
+				case 'Distance':echo '<td>' . ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : ''); break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;
@@ -175,6 +184,7 @@
 				case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF); break;
 				case 'POTA':    echo '<td>' . ($row->COL_POTA_REF); break;
 				case 'Grid':    echo '<td>'; echo strlen($row->COL_GRIDSQUARE)==0?$row->COL_VUCC_GRIDS:$row->COL_GRIDSQUARE; break;
+				case 'Distance':echo '<td>' . ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : ''); break;
 				case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo $row->COL_SAT_NAME; } else { echo strtolower($row->COL_BAND); }; break;
 				case 'State':   echo '<td>' . ($row->COL_STATE); break;
 				case 'Operator':   echo '<td>' . ($row->COL_OPERATOR); break;

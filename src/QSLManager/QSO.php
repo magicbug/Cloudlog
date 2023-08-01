@@ -10,12 +10,12 @@ use DomainException;
 class QSO
 {
 	private string $qsoID;
-	private DateTime $qsoDateTime;
+	private string $qsoDateTime;
 	private string $de;
 	private string $dx;
 	private string $mode;
 	private string $submode;
-	private string $band;
+	private ?string $band;
 	private string $bandRX;
 	private string $rstR;
 	private string $rstS;
@@ -37,15 +37,18 @@ class QSO
 	private string $dxcc;
 	private string $iota;
 	/** @var string[] */
-	private array $deVUCCGridsquares;
+	private string $deVUCCGridsquares;
+	private string $stationGridsquare;
 	private string $dxGridsquare;
 	private string $dxIOTA;
 	private string $dxSig;
 	private string $dxSigInfo;
 	private string $dxDARCDOK;
 	private string $dxSOTAReference;
+	private string $dxPOTAReference;
+	private string $dxWWFFReference;
 	/** @var string[] */
-	private array $dxVUCCGridsquares;
+	private string $dxVUCCGridsquares;
 	private string $QSLMsg;
 	private ?DateTime $QSLReceivedDate;
 	private string $QSLReceived;
@@ -59,6 +62,10 @@ class QSO
 	private string $qsl;
 	private string $lotw;
 	private string $eqsl;
+	/** Lotw callsign info **/
+	private string $callsign;
+	private string $lastupload;
+	private string $lotw_hint;
 
 	/**
 	 * @param array $data Does no validation, it's assumed to be a row from the database in array format
@@ -102,6 +109,8 @@ class QSO
 			'COL_MY_SOTA_REF',
 			'COL_MY_VUCC_GRIDS',
 			'COL_SOTA_REF',
+			'COL_POTA_REF',
+			'COL_WWFF_REF',
 			'COL_SUBMODE',
 			'COL_VUCC_GRIDS',
 			'COL_CQZ',
@@ -120,7 +129,16 @@ class QSO
 
 		$this->qsoID = $data['COL_PRIMARY_KEY'];
 
-		$this->qsoDateTime = DateTime::createFromFormat("Y-m-d H:i:s", $data['COL_TIME_ON'], new DateTimeZone("UTC"));
+		$CI =& get_instance();
+		// Get Date format
+		if($CI->session->userdata('user_date_format')) {
+			// If Logged in and session exists
+			$custom_date_format = $CI->session->userdata('user_date_format');
+		} else {
+			// Get Default date format from /config/cloudlog.php
+			$custom_date_format = $CI->config->item('qso_date_format');
+		}
+		$this->qsoDateTime = date($custom_date_format . " H:i", strtotime($data['COL_TIME_ON']));
 
 		$this->de = $data['COL_STATION_CALLSIGN'];
 		$this->dx = $data['COL_CALL'];
@@ -132,7 +150,7 @@ class QSO
 		$this->rstR = $data['COL_RST_RCVD'];
 		$this->rstS = $data['COL_RST_SENT'];
 		$this->propagationMode = $data['COL_PROP_MODE'] ?? '';
-		$this->satelliteMode = $data['COL_SAT_MODE'] ?? '';
+		$this->satelliteMode = $data['COL_SAT_MODE'] != '' ? (strlen($data['COL_SAT_MODE']) == 2 ? (strtoupper($data['COL_SAT_MODE'][0]).'/'.strtoupper($data['COL_SAT_MODE'][1])) : strtoupper($data['COL_SAT_MODE'])) : '';
 		$this->satelliteName = $data['COL_SAT_NAME'] ?? '';
 
 		$this->name = $data['COL_NAME'] ?? '';
@@ -146,7 +164,9 @@ class QSO
 		$this->deIOTAIslandID = $data['COL_MY_IOTA_ISLAND_ID'] ?? '';
 		$this->deSOTAReference = $data['COL_MY_SOTA_REF'] ?? '';
 
-		$this->deVUCCGridsquares = ($data['COL_MY_VUCC_GRIDS'] === null) ? [] : explode(",", $data['COL_MY_VUCC_GRIDS'] ?? '');
+		$this->deVUCCGridsquares = $data['COL_MY_VUCC_GRIDS'] ?? '';
+
+		$this->stationGridsquare = $data['station_gridsquare'] ?? '';
 
 		$this->dxGridsquare = $data['COL_GRIDSQUARE'] ?? '';
 		$this->dxIOTA = $data['COL_IOTA'] ?? '';
@@ -155,8 +175,10 @@ class QSO
 		$this->dxDARCDOK = $data['COL_DARC_DOK'] ?? '';
 
 		$this->dxSOTAReference = $data['COL_SOTA_REF'] ?? '';
+		$this->dxPOTAReference = $data['COL_POTA_REF'] ?? '';
+		$this->dxWWFFReference = $data['COL_WWFF_REF'] ?? '';
 
-		$this->dxVUCCGridsquares = ($data['COL_VUCC_GRIDS'] === null) ? [] : explode(",", $data['COL_VUCC_GRIDS'] ?? '');
+		$this->dxVUCCGridsquares = $data['COL_VUCC_GRIDS'] ?? '';
 
 		$this->QSLMsg = $data['COL_QSLMSG'] ?? '';
 
@@ -168,45 +190,50 @@ class QSO
 		$this->QSLSentVia = ($data['COL_QSL_SENT_VIA'] === null) ? '' : $data['COL_QSL_SENT_VIA'];
 		$this->QSLVia = ($data['COL_QSL_VIA'] === null) ? '' : $data['COL_QSL_VIA'];
 
-		$CI =& get_instance(); 
-		// Get Date format
-		if($CI->session->userdata('user_date_format')) {
-			// If Logged in and session exists
-			$custom_date_format = $CI->session->userdata('user_date_format');
-		} else {
-			// Get Default date format from /config/cloudlog.php
-			$custom_date_format = $CI->config->item('qso_date_format');
-		}
-		
 		$this->qsl = $this->getQslString($data, $custom_date_format);
 		$this->lotw = $this->getLotwString($data, $custom_date_format);
 		$this->eqsl = $this->getEqslString($data, $custom_date_format);
-		
-		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : $data['COL_CQZ'];
+
+		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : '<a href="javascript:spawnLookupModal('.$data['COL_CQZ'].',\'cq\');">'.$data['COL_CQZ'].'</a>';
 		$this->state = ($data['COL_STATE'] === null) ? '' :$data['COL_STATE'];
-		$this->dxcc = ($data['name'] === null) ? '- NONE -' :$data['name'];
-		$this->iota = ($data['COL_IOTA'] === null) ? '' :$data['COL_IOTA'];
+		$this->dxcc = ($data['name'] === null) ? '- NONE -' : '<a href="javascript:spawnLookupModal('.$data['COL_DXCC'].',\'dxcc\');">'.ucwords(strtolower($data['name']), "- (/").'</a>';
+		$this->iota = ($data['COL_IOTA'] === null) ? '' : $this->getIotaLink($data['COL_IOTA']);
 		if (array_key_exists('end', $data)) {
 			$this->end = ($data['end'] === null) ? null : DateTime::createFromFormat("Y-m-d", $data['end'], new DateTimeZone('UTC'));
 		} else {
 			$this->end = null;
 		}
+		$this->callsign = ($data['callsign'] === null) ? '' :$data['callsign'];
+		$this->lastupload = ($data['lastupload'] === null) ? '' : date($custom_date_format . " H:i", strtotime($data['lastupload']));
+		$this->lotw_hint = $this->getLotwHint($data['lastupload']);
 	}
-	
+
+	/**
+	 * @return string
+	 */
+	function getLotwHint($lastupload): string
+	{
+		$lotw_hint = '';
+		if ($lastupload !== null) {
+			$diff = time();
+			$diff = (time() - strtotime($lastupload)) / 86400;
+			if ($diff > 365) {
+				$lotw_hint = ' lotw_info_red';
+			} elseif ($diff > 30) {
+				$lotw_hint = ' lotw_info_orange';
+			} elseif ($diff > 7) {
+				$lotw_hint = ' lotw_info_yellow';
+			}
+		}
+		return $lotw_hint;
+	}
+
 	/**
 	 * @return string
 	 */
 	function getQSLString($data, $custom_date_format): string
 	{
-		$CI =& get_instance(); 
-		// Load language files
-		$CI->lang->load(array(
-			'contesting',
-			'qslcard',
-			'lotw',
-			'eqsl',
-			'qso'
-		));
+		$CI =& get_instance();
 
 		$qslstring = '<span ';
 
@@ -229,11 +256,11 @@ class QSO
 				break;
 			}
 			if ($data['COL_QSLSDATE'] != null) {
-				$timestamp = strtotime($data['COL_QSLSDATE']); 
-				$qslstring .= " "  .($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
+				$timestamp = strtotime($data['COL_QSLSDATE']);
+				$qslstring .= " "  .($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 			}
-		} else { 
-			$qslstring .= "class=\"qsl-red"; 
+		} else {
+			$qslstring .= "class=\"qsl-red";
 		}
 
 		if ($data['COL_QSL_SENT_VIA'] != "") {
@@ -251,7 +278,7 @@ class QSO
 				$qslstring .= " (".$CI->lang->line('general_word_qslcard_electronic').")";
 					break;
 			}
-		} 
+		}
 
 			$qslstring .= '">&#9650;</span><span ';
 
@@ -274,10 +301,10 @@ class QSO
 					break;
 				}
 				if ($data['COL_QSLRDATE'] != null) {
-					$timestamp = strtotime($data['COL_QSLRDATE']); 
-					$qslstring .= " "  .($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
+					$timestamp = strtotime($data['COL_QSLRDATE']);
+					$qslstring .= " "  .($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 				}
-			} else { 
+			} else {
 			$qslstring .= "class=\"qsl-red"; }
 			if ($data['COL_QSL_RCVD_VIA'] != "") {
 				switch ($data['COL_QSL_RCVD_VIA']) {
@@ -294,50 +321,45 @@ class QSO
 					$qslstring .= " (".$CI->lang->line('general_word_qslcard_electronic').")";
 						break;
 				}
-			} 
+			}
 			$qslstring .= '">&#9660;</span>';
+			if ($data['qslcount'] != null) {
+				$qslstring .= ' <a href="javascript:displayQsl('.$data['COL_PRIMARY_KEY'].');"><i class="fa fa-id-card"></i></a>';
+			}
 		return $qslstring;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	function getLotwString($data, $custom_date_format): string
 	{
-		$CI =& get_instance(); 
-		// Load language files
-		$CI->lang->load(array(
-			'contesting',
-			'qslcard',
-			'lotw',
-			'eqsl',
-			'qso'
-		));
+		$CI =& get_instance();
 
 		$lotwstring = '<span ';
 
-		if ($data['COL_LOTW_QSL_SENT'] == "Y") { 
-			$lotwstring .= "data-original-title=\"" . $CI->lang->line('lotw_short')." ".$CI->lang->line('general_word_sent'); 
-			if ($data['COL_LOTW_QSLSDATE'] != null) { 
-				$timestamp = strtotime($data['COL_LOTW_QSLSDATE']); 
-				$lotwstring .= " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
-			} 
-			$lotwstring .= "\" data-toggle=\"tooltip\""; 
-		} 
+		if ($data['COL_LOTW_QSL_SENT'] == "Y") {
+			$lotwstring .= "data-original-title=\"" . $CI->lang->line('lotw_short')." ".$CI->lang->line('general_word_sent');
+			if ($data['COL_LOTW_QSLSDATE'] != null) {
+				$timestamp = strtotime($data['COL_LOTW_QSLSDATE']);
+				$lotwstring .= " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : '');
+			}
+			$lotwstring .= "\" data-toggle=\"tooltip\"";
+		}
 
 		$lotwstring .= ' class="lotw-' . (($data['COL_LOTW_QSL_SENT']=='Y') ? 'green' : 'red') . '">&#9650;</span>';
 		$lotwstring .= '<span ';
 
-		if ($data['COL_LOTW_QSL_RCVD'] == "Y") { 
-			$lotwstring .= "data-original-title=\"". $CI->lang->line('lotw_short') ." ". $CI->lang->line('general_word_received'); 
-		
-			if ($data['COL_LOTW_QSLRDATE'] != null) { 
-				$timestamp = strtotime($data['COL_LOTW_QSLRDATE']); 
-				$lotwstring .=  " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : ''); 
-			} 
-			
-			$lotwstring .= "\" data-toggle=\"tooltip\""; 
-		} 
+		if ($data['COL_LOTW_QSL_RCVD'] == "Y") {
+			$lotwstring .= "data-original-title=\"". $CI->lang->line('lotw_short') ." ". $CI->lang->line('general_word_received');
+
+			if ($data['COL_LOTW_QSLRDATE'] != null) {
+				$timestamp = strtotime($data['COL_LOTW_QSLRDATE']);
+				$lotwstring .=  " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : '');
+			}
+
+			$lotwstring .= "\" data-toggle=\"tooltip\"";
+		}
 
 		$lotwstring .= ' class="lotw-' . (($data['COL_LOTW_QSL_RCVD']=='Y') ? 'green':'red') . '">&#9660;</span>';
 
@@ -349,40 +371,32 @@ class QSO
 	 */
 	function getEqslString($data, $custom_date_format): string
 	{
-		$CI =& get_instance(); 
-		// Load language files
-		$CI->lang->load(array(
-			'contesting',
-			'qslcard',
-			'lotw',
-			'eqsl',
-			'qso'
-		));
+		$CI =& get_instance();
 
 		$eqslstring = '<span ';
 
-		if ($data['COL_EQSL_QSL_SENT'] == "Y") { 
-			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_sent'); 
-			
-			if ($data['COL_EQSL_QSLSDATE'] != null) { 
-				$timestamp = strtotime($data['COL_EQSL_QSLSDATE']); 
-				$eqslstring .=  " ".($timestamp!=''?date($custom_date_format, $timestamp):''); 
-			} 
-			
-			$eqslstring .= "\" data-toggle=\"tooltip\""; 
-		} 
-		
+		if ($data['COL_EQSL_QSL_SENT'] == "Y") {
+			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_sent');
+
+			if ($data['COL_EQSL_QSLSDATE'] != null) {
+				$timestamp = strtotime($data['COL_EQSL_QSLSDATE']);
+				$eqslstring .=  " ".($timestamp!=''?date($custom_date_format, $timestamp):'');
+			}
+
+			$eqslstring .= "\" data-toggle=\"tooltip\"";
+		}
+
 		$eqslstring .= ' class="eqsl-' . (($data['COL_EQSL_QSL_SENT'] =='Y') ? 'green':'red') . '">&#9650;</span><span ';
 
-		if ($data['COL_EQSL_QSL_RCVD'] == "Y") { 
-			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_received'); 
-			
-			if ($data['COL_EQSL_QSLRDATE'] != null) { 
-				$timestamp = strtotime($data['COL_EQSL_QSLRDATE']); 
-				$eqslstring .= " ".($timestamp!=''?date($custom_date_format, $timestamp):''); 
-			} 
-			$eqslstring .= "\" data-toggle=\"tooltip\""; 
-		} 
+		if ($data['COL_EQSL_QSL_RCVD'] == "Y") {
+			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_received');
+
+			if ($data['COL_EQSL_QSLRDATE'] != null) {
+				$timestamp = strtotime($data['COL_EQSL_QSLRDATE']);
+				$eqslstring .= " ".($timestamp!=''?date($custom_date_format, $timestamp):'');
+			}
+			$eqslstring .= "\" data-toggle=\"tooltip\"";
+		}
 
 		$eqslstring .= ' class="eqsl-' . (($data['COL_EQSL_QSL_RCVD'] =='Y')?'green':'red') . '">';
 
@@ -408,7 +422,7 @@ class QSO
 	/**
 	 * @return DateTime
 	 */
-	public function getQsoDateTime(): DateTime
+	public function getQsoDateTime(): string
 	{
 		return $this->qsoDateTime;
 	}
@@ -576,7 +590,7 @@ class QSO
 	/**
 	 * @return string[]
 	 */
-	public function getDeVUCCGridsquares(): array
+	public function getDeVUCCGridsquares(): string
 	{
 		return $this->deVUCCGridsquares;
 	}
@@ -630,9 +644,25 @@ class QSO
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getDxPOTAReference(): string
+	{
+		return $this->dxPOTAReference;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getWWFFReference(): string
+	{
+		return $this->dxWWFFReference;
+	}
+
+	/**
 	 * @return string[]
 	 */
-	public function getDxVUCCGridsquares(): array
+	public function getDxVUCCGridsquares(): string
 	{
 		return $this->dxVUCCGridsquares;
 	}
@@ -749,7 +779,7 @@ class QSO
 	{
 		return [
 			'qsoID' => $this->qsoID,
-			'qsoDateTime' => $this->qsoDateTime->format("Y-m-d H:i"),
+			'qsoDateTime' => $this->qsoDateTime,
 			'de' => $this->de,
 			'dx' => $this->dx,
 			'mode' => $this->getFormattedMode(),
@@ -769,6 +799,9 @@ class QSO
 			'cqzone' => $this->getCqzone(),
 			'iota' => $this->getIOTA(),
 			'end' => $this->end === null ? null : $this->end->format("Y-m-d"),
+			'callsign' => $this->callsign,
+			'lastupload' => $this->lastupload,
+			'lotw_hint' => $this->lotw_hint,
 		];
 	}
 
@@ -803,8 +836,8 @@ class QSO
 	private function getFormattedDeRefs(): string
 	{
 		$refs = [];
-		if ($this->deVUCCGridsquares !== []) {
-			$refs[] = implode(",", $this->deVUCCGridsquares);
+		if ($this->deVUCCGridsquares !== '') {
+			$refs[] = $this->deVUCCGridsquares;
 		} else {
 			if ($this->deGridsquare !== '') {
 				$refs[] = $this->deGridsquare;
@@ -829,13 +862,19 @@ class QSO
 	private function getFormattedDxRefs(): string
 	{
 		$refs = [];
-		if ($this->dxVUCCGridsquares !== []) {
-			$refs[] = implode(",", $this->dxVUCCGridsquares);
+		if ($this->dxVUCCGridsquares !== '') {
+			$refs[] = '<span id="dxgrid">' . $this->dxVUCCGridsquares . '</span> ' .$this->getQrbLink($this->stationGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
 		} else if ($this->dxGridsquare !== '') {
-			$refs[] = $this->dxGridsquare;
+			$refs[] = '<span id="dxgrid">' . $this->dxGridsquare . '</span> ' .$this->getQrbLink($this->stationGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
 		}
 		if ($this->dxSOTAReference !== '') {
-			$refs[] = "SOTA:" . $this->dxSOTAReference;
+			$refs[] = "SOTA: " . '<span id="dxsota">' . $this->dxSOTAReference. '</span>';
+		}
+		if ($this->dxPOTAReference !== '') {
+			$refs[] = "POTA: " . '<span id="dxpota">' . $this->dxPOTAReference. '</span>';
+		}
+		if ($this->dxWWFFReference !== '') {
+			$refs[] = "WWFF: " . '<span id="dxwwff">' . $this->dxWWFFReference. '</span>';
 		}
 		if ($this->dxSig !== '') {
 			$refs[] = $this->dxSig . ":" . $this->dxSigInfo;
@@ -938,5 +977,23 @@ class QSO
 		}
 
 		return trim(implode(" ", $label));
+	}
+
+	private function getQrbLink($mygrid, $grid, $vucc) : string
+	{
+		if (!empty($grid)) {
+			return '<a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $grid . '\')"><i class="fas fa-globe"></i></a>';
+		} else if (!empty($vucc)) {
+			return '<a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $vucc . '\')"><i class="fas fa-globe"></i></a>';
+		}
+		return '';
+	}
+
+	private function getIotaLink($iota) : string
+	{
+		if ($iota !== '') {
+			return '<a href="javascript:spawnLookupModal(\''.$iota.'\',\'iota\');">'.$iota.'</a> <a href="https://www.iota-world.org/iotamaps/?grpref=' .$iota . '" target="_blank"><i class="fas fa-globe"></i></a>';
+		}
+		return '';
 	}
 }

@@ -12,8 +12,9 @@ class eqsl extends CI_Controller {
     public function index() {
 
         $this->lang->load('qslcard');
-        $folder_name = "assets/qslcard";
+        $folder_name = "images/eqsl_card_images";
         $data['storage_used'] = $this->sizeFormat($this->folderSize($folder_name));
+
 
         // Render Page
         $data['page_title'] = "eQSL Cards";
@@ -28,6 +29,12 @@ class eqsl extends CI_Controller {
 	public function import() {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		$this->load->model('stations');
+		$data['station_profile'] = $this->stations->all_of_user();
+        	$active_station_id = $this->stations->find_active();
+        	$station_profile = $this->stations->profile($active_station_id);
+		$data['active_station_info'] = $station_profile->row();
 
 		// Check if eQSL Nicknames have been defined
 		$this->load->model('eqslmethods_model');
@@ -71,29 +78,39 @@ class eqsl extends CI_Controller {
 
 				$eqsl_results[] = $this->eqslimporter->fetch($eqsl_password);
 			}
-		}
-		else
-		{
-			if ( ! $this->upload->do_upload())
-			{
-				$data['page_title'] = "eQSL Import";
-				$data['error'] = $this->upload->display_errors();
+		} elseif ($this->input->post('eqslimport') == 'upload') {
+			$station_id4upload=$this->input->post('station_profile');
+			if ($this->stations->check_station_is_accessible($station_id4upload)) {
+				$station_callsign=$this->stations->profile($station_id4upload)->row()->station_callsign;
+				if ( ! $this->upload->do_upload())
+				{
+					$data['page_title'] = "eQSL Import";
+					$data['error'] = $this->upload->display_errors();
 
-				$this->load->view('interface_assets/header', $data);
-				$this->load->view('eqsl/import');
-				$this->load->view('interface_assets/footer');
+					$this->load->view('interface_assets/header', $data);
+					$this->load->view('eqsl/import');
+					$this->load->view('interface_assets/footer');
 
-				return;
+					return;
+				} else {
+					$data = array('upload_data' => $this->upload->data());
+
+					$this->load->library('EqslImporter');
+					$this->eqslimporter->from_file('./uploads/'.$data['upload_data']['file_name'],$station_callsign);
+
+					$eqsl_results[] = $this->eqslimporter->import();
+				}
+			} else {
+				log_message('error',$station_id4upload." is not valid for user!");
 			}
-			else
-			{
-				$data = array('upload_data' => $this->upload->data());
+		} else {
+			$data['page_title'] = "eQSL Import";
 
-				$this->load->library('EqslImporter');
-				$this->eqslimporter->from_file('./uploads/'.$data['upload_data']['file_name']);
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('eqsl/import');
+			$this->load->view('interface_assets/footer');
 
-				$eqsl_results[] = $this->eqslimporter->import();
-			}
+			return;
 		}
 
 		$data['eqsl_results'] = $eqsl_results;
@@ -182,16 +199,16 @@ class eqsl extends CI_Controller {
 		$status = "";
 		
 		// begin script
-		$ch = curl_init(); 
+		$ch = curl_init();
 
 		// basic curl options for all requests
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_HEADER, 1);
 		
 		// use the URL we built
 		curl_setopt($ch, CURLOPT_URL, $adif);
 		
-		$result = curl_exec($ch);  
+		$result = curl_exec($ch);
 		$chi = curl_getinfo($ch);
 		curl_close($ch);
 
@@ -501,14 +518,14 @@ class eqsl extends CI_Controller {
 
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
 			$q = $query->row();
-			$username = $q->user_eqsl_name;
+			$username = $qso->COL_STATION_CALLSIGN;
 			$password = $q->user_eqsl_password;
 
 			$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
 			$file = file_get_contents($image_url, true);
 
-			$dom = new domDocument; 
-			$dom->loadHTML($file); 
+			$dom = new domDocument;
+			$dom->loadHTML($file);
 			$dom->preserveWhiteSpace = false;
 			$images = $dom->getElementsByTagName('img');
 
@@ -517,7 +534,7 @@ class eqsl extends CI_Controller {
 				exit;
 			}
 
-			foreach ($images as $image) 
+			foreach ($images as $image)
 			{
 				header('Content-Type: image/jpg');
 				$content = file_get_contents("https://www.eqsl.cc".$image->getAttribute('src'));
@@ -539,6 +556,63 @@ class eqsl extends CI_Controller {
 
 	}
 
+	function bulk_download_image($id) {
+		$this->load->library('electronicqsl');
+		$this->load->model('Eqsl_images');
+
+		$this->load->model('logbook_model');
+		$this->load->model('user_model');
+		$qso_query = $this->logbook_model->get_qso($id);
+		$qso = $qso_query->row();
+		$qso_timestamp = strtotime($qso->COL_TIME_ON);
+		$callsign = $qso->COL_CALL;
+		$band = $qso->COL_BAND;
+		$mode = $qso->COL_MODE;
+		$year = date('Y', $qso_timestamp);
+		$month = date('m', $qso_timestamp);
+		$day = date('d', $qso_timestamp);
+		$hour = date('H', $qso_timestamp);
+		$minute = date('i', $qso_timestamp);
+
+		$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
+		$q = $query->row();
+		$username = $qso->COL_STATION_CALLSIGN;
+		$password = $q->user_eqsl_password;
+		$error = '';
+
+		$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
+		$file = file_get_contents($image_url, true);
+		if (strpos($file, 'Error') !== false) {
+			$error = rtrim(preg_replace('/^\s*Error: /', '', $file));
+			return $error;
+		}
+
+		$dom = new domDocument;
+		$dom->loadHTML($file);
+		$dom->preserveWhiteSpace = false;
+		$images = $dom->getElementsByTagName('img');
+
+		if(!isset($images) || count($images) == 0) {
+			$error = "Rate Limited";
+			return $error;
+		}
+
+		foreach ($images as $image)
+		{
+			$content = file_get_contents("https://www.eqsl.cc".$image->getAttribute('src'));
+			if ($content === false) {
+				$error = "No response";
+				return $error;
+			}
+			$filename = uniqid().'.jpg';
+			if (file_put_contents('images/eqsl_card_images/' . '/'.$filename, $content) !== false) {
+				$this->Eqsl_images->save_image($id, $filename);
+			}
+		}
+		return $error;
+
+	}
+
 	public function tools() {
 		// Check logged in
 		$this->load->model('user_model');
@@ -556,16 +630,56 @@ class eqsl extends CI_Controller {
 		// Check logged in
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		$errors=0;
 
-		$data['page_title'] = "eQSL Card Image Download";
-		$this->load->model('eqslmethods_model');
+		if ($this->input->post('eqsldownload') == 'download') {
+			$i = 0;
+			$this->load->model('eqslmethods_model');
+			$qslsnotdownloaded = $this->eqslmethods_model->eqsl_not_yet_downloaded();
+			$eqsl_results = array();
+			foreach ($qslsnotdownloaded->result_array() as $qsl) {
+				$result = $this->bulk_download_image($qsl['COL_PRIMARY_KEY']);
+				if ($result != '') {
+					$errors++;
+					if ($result == 'Rate Limited') {
+						break;
+					} else {
+						$eqsl_results[] = array(
+							'date' => $qsl['COL_TIME_ON'],
+							'call' => $qsl['COL_CALL'],
+							'mode' => $qsl['COL_MODE'],
+							'submode' => $qsl['COL_SUBMODE'],
+							'status' => $result,
+							'qsoid' => $qsl['COL_PRIMARY_KEY']
+						);
+						continue;
+					}
+				} else {
+					$i++;
+				}
+				if ($i > 0) {
+					sleep(15);
+				}
+			}
+			$data['eqsl_results'] = $eqsl_results;
+			$data['eqsl_stats'] = "Successfully downloaded: ".$i." / Errors: ".count($eqsl_results);
+			$data['page_title'] = "eQSL Download Information";
 
-		$data['custom_date_format'] = $this->session->userdata('user_date_format');
-		$data['qslsnotdownloaded'] = $this->eqslmethods_model->eqsl_not_yet_downloaded();
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('eqsl/result');
+			$this->load->view('interface_assets/footer');
+		} else {
 
-		$this->load->view('interface_assets/header', $data);
-		$this->load->view('eqsl/download');
-		$this->load->view('interface_assets/footer');
+			$data['page_title'] = "eQSL Card Image Download";
+			$this->load->model('eqslmethods_model');
+
+			$data['custom_date_format'] = $this->session->userdata('user_date_format');
+			$data['qslsnotdownloaded'] = $this->eqslmethods_model->eqsl_not_yet_downloaded();
+
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('eqsl/download');
+			$this->load->view('interface_assets/footer');
+		}
 	}
 
 	public function mark_all_sent() {

@@ -11,7 +11,7 @@ class Activated_grids_model extends CI_Model {
             return null;
         }
 
-        $sql = 'SELECT DISTINCT station_gridsquare AS SAT_SQUARE, COL_SAT_NAME FROM '
+        $sql = 'SELECT DISTINCT station_gridsquare AS SAT_SQUARE FROM '
            . 'station_profile JOIN '.$this->config->item('table_name').' on '.$this->config->item('table_name').'.station_id = station_profile.station_id '
            . 'WHERE station_profile.station_gridsquare != "" AND '.$this->config->item('table_name').'.COL_SAT_NAME != ""';
 
@@ -29,7 +29,7 @@ class Activated_grids_model extends CI_Model {
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
-      $sql = 'SELECT DISTINCT station_gridsquare AS SAT_SQUARE, COL_SAT_NAME FROM '
+      $sql = 'SELECT DISTINCT station_gridsquare AS SAT_SQUARE FROM '
          . 'station_profile JOIN '.$this->config->item('table_name').' on '.$this->config->item('table_name').'.station_id = station_profile.station_id '
          . 'WHERE station_profile.station_gridsquare != "" AND '.$this->config->item('table_name').'.COL_SAT_NAME != "" '
          . 'AND (COL_LOTW_QSL_SENT = "Y" OR COL_QSL_SENT = "Y");';

@@ -35,14 +35,14 @@
                     <?php echo form_open('options/radio_save'); ?>
 
                         <div class="form-group">
-                            <label for="globalSearch">Radio Timeout Warning</label>
-                            <p>The Radio Timeout Warning is used on the QSO entry panel to alert you to radio interface disconnects.</p>
+                            <label for="globalSearch"><?php echo lang('options_radio_timeout_warning'); ?></label>
+                            <p><?php echo lang('options_the_radio_timeout_warning_is_used_on_the_qso_entry_panel_to_alert_you_to_radio_interface_disconnects'); ?></p>
                             <input type="text" name="radioTimeout" class="form-control" id="radioTimeout" aria-describedby="radioTimeoutHelp" value="<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?>">
-                            <small id="radioTimeoutHelp" class="form-text text-muted">This number is in seconds.</small>
+                            <small id="radioTimeoutHelp" class="form-text text-muted"><?php echo lang('options_this_number_is_in_seconds'); ?></small>
                         </div>
 
                         <!-- Save the Form -->
-                        <input class="btn btn-primary" type="submit" value="Save" />
+                        <input class="btn btn-primary" type="submit" value="<?php echo lang('options_save'); ?>" />
                     </form>
                 </div>
             </div>

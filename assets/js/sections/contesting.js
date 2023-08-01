@@ -211,10 +211,19 @@ $('#start_date').change(function() {
 $("#callsign").keyup(function () {
 	var call = $(this).val();
 	if (call.length >= 3) {
-		$.get('lookup/scp/' + call.toUpperCase(), function (result) {
-			$('.callsign-suggestions').text(result);
-			highlight(call.toUpperCase());
-		});
+
+		$.ajax({
+			url: 'lookup/scp',
+			method: 'POST',
+			data: {
+			  callsign: $(this).val().toUpperCase()
+			},
+			success: function(result) {
+			  $('.callsign-suggestions').text(result);
+			  highlight(call.toUpperCase());
+			}
+		  });
+
 		checkIfWorkedBefore();
 		var qTable = $('.qsotable').DataTable();
 		qTable.search(call).draw();
@@ -426,9 +435,8 @@ function logQso() {
 			vuccr,
 		]];
 
-		table.rows.add(data);
-		table.draw();
-
+		table.rows.add(data).draw();
+		
 		var formdata = new FormData(document.getElementById("qso_input"));
 		$.ajax({
 			url: base_url + 'index.php/qso/saveqso',
@@ -520,6 +528,7 @@ function restoreContestSession(data) {
 							'</tr>');
 					});
 					if (!$.fn.DataTable.isDataTable('.qsotable')) {
+						$.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
 						$('.qsotable').DataTable({
 							"stateSave": true,
 							"pageLength": 25,
@@ -528,8 +537,21 @@ function restoreContestSession(data) {
 							"scrollCollapse": true,
 							"paging": false,
 							"scrollX": true,
-							columnDefs: [ { type: 'date', 'targets': [0] } ],
-							order: [0, 'desc']
+							order: [0, 'desc'],
+							"columnDefs": [
+								{
+									"render": function ( data, type, row ) {
+										return pad(row[8],3);
+									},
+									"targets" : 8
+								},
+								{
+									"render": function ( data, type, row ) {
+										return pad(row[9],3);
+									},
+									"targets" : 9
+								}
+							]
 						});
 					}
 				}
@@ -538,4 +560,9 @@ function restoreContestSession(data) {
 	} else {
 		$("#exch_serial_s").val("1");
 	}
+}
+
+function pad (str, max) {
+	str = str.toString();
+	return str.length < max ? pad("0" + str, max) : str;
 }

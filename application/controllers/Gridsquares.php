@@ -14,6 +14,15 @@ class Gridsquares extends CI_Controller {
     *   - Band page provide a band dropdown list
     *   - Find somewhere in the main menu to add a button to it
     */
+	function __construct()
+	{
+		parent::__construct();
+
+		// Load language files
+		$this->lang->load(array(
+			'gridsquares',
+		));
+	}
 
 
 	public function index() {
@@ -59,7 +68,7 @@ class Gridsquares extends CI_Controller {
 		$grid_6char_confirmed = "";
 
 
-		// Get Confirmed LOTW & Paper Squares (non VUCC)
+		// Get Confirmed LoTW & Paper Squares (non VUCC)
 		$query = $this->gridsquares_model->get_confirmed_sat_squares();
 
 

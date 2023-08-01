@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Cloudlog\QSLManager\QSO;
 
@@ -47,13 +47,37 @@ class Logbookadvanced extends CI_Controller {
 		$pageData['dxccarray'] = $this->logbook_model->fetchDxcc();
 		$pageData['iotaarray'] = $this->logbook_model->fetchIota();
 		$pageData['sats'] = $this->bands->get_worked_sats();
-		
+
 		$pageData['bands'] = $this->bands->get_worked_bands();
-		
+
+		$CI =& get_instance();
+		// Get Date format
+		if($CI->session->userdata('user_date_format')) {
+			// If Logged in and session exists
+			$pageData['custom_date_format'] = $CI->session->userdata('user_date_format');
+		} else {
+			// Get Default date format from /config/cloudlog.php
+			$pageData['custom_date_format'] = $CI->config->item('qso_date_format');
+		}
+
+		switch ($pageData['custom_date_format']) {
+			case "d/m/y": $pageData['custom_date_format'] = 'DD/MM/YY'; break;
+			case "d/m/Y": $pageData['custom_date_format'] = 'DD/MM/YYYY'; break;
+			case "m/d/y": $pageData['custom_date_format'] = 'MM/DD/YY'; break;
+			case "m/d/Y": $pageData['custom_date_format'] = 'MM/DD/YYYY'; break;
+			case "d.m.Y": $pageData['custom_date_format'] = 'DD.MM.YYYY'; break;
+			case "y/m/d": $pageData['custom_date_format'] = 'YY/MM/DD'; break;
+			case "Y-m-d": $pageData['custom_date_format'] = 'YYYY-MM-DD'; break;
+			case "M d, Y": $pageData['custom_date_format'] = 'MMM DD, YYYY'; break;
+			case "M d, y": $pageData['custom_date_format'] = 'MMM DD, YY'; break;
+			default: $pageData['custom_date_format'] = 'DD/MM/YYYY';
+		}
+
 		$footerData = [];
 		$footerData['scripts'] = [
 			'assets/js/moment.min.js',
 			'assets/js/tempusdominus-bootstrap-4.min.js',
+			'assets/js/datetime-moment.js',
 			'assets/js/sections/logbookadvanced.js?' . filemtime(realpath(__DIR__ . "/../../assets/js/sections/logbookadvanced.js"))
 		];
 
@@ -80,8 +104,17 @@ class Logbookadvanced extends CI_Controller {
 			'propmode' => xss_clean($this->input->post('propmode')),
 			'gridsquare' => xss_clean($this->input->post('gridsquare')),
 			'state' => xss_clean($this->input->post('state')),
+			'cqzone' => xss_clean($this->input->post('cqzone')),
 			'qsoresults' => xss_clean($this->input->post('qsoresults')),
 			'sats' => xss_clean($this->input->post('sats')),
+			'lotwSent' => xss_clean($this->input->post('lotwSent')),
+			'lotwReceived' => xss_clean($this->input->post('lotwReceived')),
+			'eqslSent' => xss_clean($this->input->post('eqslSent')),
+			'eqslReceived' => xss_clean($this->input->post('eqslReceived')),
+			'qslvia' => xss_clean($this->input->post('qslvia')),
+			'sota' => xss_clean($this->input->post('sota')),
+			'pota' => xss_clean($this->input->post('pota')),
+			'wwff' => xss_clean($this->input->post('wwff')),
 		);
 
 		$qsos = [];
@@ -146,7 +179,7 @@ class Logbookadvanced extends CI_Controller {
 		$data = $this->logbookadvanced_model->getQsosForAdif($ids, $user_id);
 
 		$results = $data->result('array');
-        
+
         $qsos = [];
         foreach ($results as $data) {
             $qsos[] = new QSO($data);
@@ -159,5 +192,37 @@ class Logbookadvanced extends CI_Controller {
 
 		header("Content-Type: application/json");
 		print json_encode($q);
+	}
+
+	function update_qsl_received() {
+		$this->load->model('logbookadvanced_model');
+
+		$ids = xss_clean($this->input->post('id'));
+		$user_id = (int)$this->session->userdata('user_id');
+		$method = xss_clean($this->input->post('method'));
+		$sent = xss_clean($this->input->post('sent'));
+
+		$status = $this->logbookadvanced_model->updateQslReceived($ids, $user_id, $method, $sent);
+
+		$data = $this->logbookadvanced_model->getQsosForAdif($ids, $user_id);
+
+		$results = $data->result('array');
+
+        $qsos = [];
+        foreach ($results as $data) {
+            $qsos[] = new QSO($data);
+        }
+
+		$q = [];
+		foreach ($qsos as $qso) {
+			$q[] = $qso->toArray();
+		}
+
+		header("Content-Type: application/json");
+		print json_encode($q);
+	}
+
+	public function startAtLabel() {
+		$this->load->view('logbookadvanced/startatform');
 	}
 }

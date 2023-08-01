@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('Direkter Zugriff auf Skripte ist nicht erlaubt');
 
 $lang['contesting_page_title'] = 'Contest-Logging';
-$lang['contesting_button_reset_contest_session'] = 'Setze Contest-Sitzung zurück';
+$lang['contesting_button_reset_contest_session'] = 'Beginne neue Contest-Sitzung';
 
 $lang['contesting_exchange_type'] = 'Austauschtyp';
 $lang['contesting_exchange_type_serial'] = 'Laufende Nummer';

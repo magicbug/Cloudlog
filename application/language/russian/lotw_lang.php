@@ -6,7 +6,7 @@ $lang['lotw_short'] = 'LoTW';
 $lang['lotw_title'] = 'Logbook of the World';
 $lang['lotw_title_available_cert'] = 'Имеющиеся сертификаты';
 $lang['lotw_title_information'] = 'Информация';
-$lang['lotw_title_upload_p12_cert'] = 'Загрузка Logbook of the World .p12 сертификата';
+$lang['lotw_title_upload_p12_cert'] = 'Загрузка LotW .p12 сертификата';
 $lang['lotw_title_export_p12_file_instruction'] = 'Инструкции по экспорту .p12 файла';
 $lang['lotw_title_adif_import'] = 'Импорт ADIF';
 $lang['lotw_title_adif_import_options'] = 'Опции импорта';
@@ -34,7 +34,6 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = 'Загрузить эксп
 $lang['lotw_upload_type_must_be_adi'] = 'Файлы журнала должны быть с расширением .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Подтянуть мои данные из LoTW';
-$lang['lotw_import_missing_qsos_text'] = 'Импортировать недостаюющие QSO в журнал. Позывной и QTH-локатор будут проверены с целью определения подходящего профиля для импорта QSO. Если профиль не будет идентифицирован, QSO будет пропущено.';
 $lang['lotw_report_download_overview_helptext'] ='Cloudlog использует логин и пароль для LoTW, сохранённые в вашем профиле, для того чтобы скачивать ваши журналы с LoTW. Журнал, скачанный в Cloudlog будет содержать все подтверждения, начиная с выбранной даты, или начиная с последнего подтверждения в LoTW (загруженного из вашего журнала), до настоящего момента.';
 
 // Buttons

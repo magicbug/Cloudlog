@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['contesting_page_title'] = 'Contest Logging';
-$lang['contesting_button_reset_contest_session'] = 'Reset Contest Session';
+$lang['contesting_button_reset_contest_session'] = 'Start new Contest Session';
 
 $lang['contesting_exchange_type'] = 'Exchange Type';
 $lang['contesting_exchange_type_serial'] = 'Serial';

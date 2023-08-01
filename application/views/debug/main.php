@@ -11,7 +11,7 @@
                 <table width="100%">
                     <tr>
                         <td>Version</td>
-                        <td><?php echo $this->config->item('app_version')."\n"; ?></td>
+                        <td><?php echo $this->optionslib->get_option('version')."\n"; ?></td>
                     </tr>
                     <tr>
                         <td>Language</td>
@@ -37,6 +37,11 @@
                     <tr>
                         <td>PHP Version</td>
                         <td><?php echo phpversion(); ?></td>
+                    </tr>
+
+                    <tr>
+                        <td>MySQL Version</td>
+                        <td><?php echo $this->db->version(); ?></td>
                     </tr>
                 </table>
             </div>
@@ -106,7 +111,7 @@
                         <td>
                             <?php if(in_array  ('curl', get_loaded_extensions())) { ?>
                                 <span class="badge badge-success">Installed</span>
-                            <?php } else { ?> 
+                            <?php } else { ?>
                                 <span class="badge badge-danger">Not Installed</span>
                             <?php } ?>
                         </td>
@@ -117,7 +122,7 @@
                         <td>
                             <?php if(in_array  ('mysqli', get_loaded_extensions())) { ?>
                                 <span class="badge badge-success">Installed</span>
-                            <?php } else { ?> 
+                            <?php } else { ?>
                                 <span class="badge badge-danger">Not Installed</span>
                             <?php } ?>
                         </td>
@@ -128,7 +133,7 @@
                         <td>
                             <?php if(in_array  ('mbstring', get_loaded_extensions())) { ?>
                                 <span class="badge badge-success">Installed</span>
-                            <?php } else { ?> 
+                            <?php } else { ?>
                                 <span class="badge badge-danger">Not Installed</span>
                             <?php } ?>
                         </td>
@@ -139,7 +144,7 @@
                         <td>
                             <?php if(in_array  ('xml', get_loaded_extensions())) { ?>
                                 <span class="badge badge-success">Installed</span>
-                            <?php } else { ?> 
+                            <?php } else { ?>
                                 <span class="badge badge-danger">Not Installed</span>
                             <?php } ?>
                         </td>
@@ -150,7 +155,7 @@
                         <td>
                             <?php if(in_array  ('openssl', get_loaded_extensions())) { ?>
                                 <span class="badge badge-success">Installed</span>
-                            <?php } else { ?> 
+                            <?php } else { ?>
                                 <span class="badge badge-danger">Not Installed</span>
                             <?php } ?>
                         </td>
@@ -160,27 +165,39 @@
         </div>
         <?php if (file_exists('.git')) { ?>
         <?php
-            $commitHash = trim(exec('git log --pretty="%H" -n1 HEAD'));
-            $branch = '';
-            $remote = '';
-            $owner = '';
-            // only proceed here if git can actually be executed
-            if ($commitHash != "") {
-               $commitDate = trim(exec('git log --pretty="%ci" -n1 HEAD'));
-               $line = trim(exec('git log -n 1 --pretty=%D HEAD'));
-               $pieces = explode(', ', $line);
-               if (isset($pieces[1])) {
-                  $remote = substr($pieces[1], 0, strpos($pieces[1], '/'));
-                  $branch = substr($pieces[1], strpos($pieces[1], '/')+1);
-                  $url = trim(exec('git remote get-url '.$remote));
-                  if (strpos($url, 'https://github.com') !== false) {
-                     $owner = preg_replace('/https:\/\/github\.com\/(\w+)\/Cloudlog\.git/', '$1', $url);
-                  } else if (strpos($url, 'git@github.com') !== false) {
-                     $owner = preg_replace('/git@github\.com:(\w+)\/Cloudlog\.git/', '$1', $url);
-                  }
-               }
-               $tag = trim(exec('git describe --tags '.$commitHash));
-            }
+			//Below is a failsafe where git commands fail
+			try {
+				$commitHash = trim(exec('git log --pretty="%H" -n1 HEAD'));
+				$branch = '';
+				$remote = '';
+				$owner = '';
+				// only proceed here if git can actually be executed
+				if ($commitHash != "") {
+					$commitDate = trim(exec('git log --pretty="%ci" -n1 HEAD'));
+					$line = trim(exec('git log -n 1 --pretty=%D HEAD'));
+					$pieces = explode(', ', $line);
+					$lastFetch = trim(exec('stat -c %Y .git/FETCH_HEAD'));
+					//Below is a failsafe for systems without the stat command
+					try {
+						$dt = new DateTime("@$lastFetch");
+					} catch(Exception $e) {
+						$dt = new DateTime(date("Y-m-d H:i:s"));
+					}
+					if (isset($pieces[1])) {
+						$remote = substr($pieces[1], 0, strpos($pieces[1], '/'));
+						$branch = substr($pieces[1], strpos($pieces[1], '/')+1);
+						$url = trim(exec('git remote get-url '.$remote));
+						if (strpos($url, 'https://github.com') !== false) {
+							$owner = preg_replace('/https:\/\/github\.com\/(\w+)\/Cloudlog\.git/', '$1', $url);
+						} else if (strpos($url, 'git@github.com') !== false) {
+							$owner = preg_replace('/git@github\.com:(\w+)\/Cloudlog\.git/', '$1', $url);
+						}
+					}
+					$tag = trim(exec('git describe --tags '.$commitHash));
+				}
+			} catch (\Throwable $th) {
+				$commitHash = "";
+			}
         ?>
 
         <?php if($commitHash != "") { ?>
@@ -199,7 +216,7 @@
                                 <?php if($owner != "") { ?>
                                     </a>
                                 <?php } ?>
-                            <?php } else { ?> 
+                            <?php } else { ?>
                                 <span class="badge badge-danger">n/a</span>
                             <?php } ?>
                         </td>
@@ -210,7 +227,7 @@
                         <td>
                             <?php if($commitHash != "") { ?>
                                 <a target="_blank" href="https://github.com/magicbug/Cloudlog/commit/<?php echo $commitHash?>"><span class="badge badge-success"><?php echo substr($commitHash,0,8); ?></span></a>
-                            <?php } else { ?> 
+                            <?php } else { ?>
                                 <span class="badge badge-danger">n/a</span>
                             <?php } ?>
                         </td>
@@ -220,9 +237,15 @@
                         <td>
                             <?php if($commitHash != "") { ?>
                                 <a target="_blank" href="https://github.com/magicbug/Cloudlog/releases/tag/<?php echo substr($tag,0,strpos($tag, '-')); ?>"><span class="badge badge-success"><?php echo $tag; ?></span></a>
-                            <?php } else { ?> 
+                            <?php } else { ?>
                                 <span class="badge badge-danger">n/a</span>
                             <?php } ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Last Fetch</td>
+                        <td>
+							<?php echo ($dt == null ? '' : $dt->format(\DateTime::RFC850)); ?>
                         </td>
                     </tr>
                 </table>

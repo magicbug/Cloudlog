@@ -189,7 +189,7 @@ class Update extends CI_Controller {
 		gzclose($gz);
 
 		if (file_put_contents($this->make_update_path("cty.xml"), $data) === FALSE) {
-			$this->update_status("FAILED: Could not write to LoTW users file");
+			$this->update_status("FAILED: Could not write to cty.xml file");
 			return;
 		}
 	
@@ -251,6 +251,11 @@ class Update extends CI_Controller {
 		$this->logbook_model->check_missing_continent();
 	}
 
+	public function update_distances() {
+		$this->load->model('logbook_model');
+		$this->logbook_model->update_distances();
+	}
+
 	public function check_missing_grid($all = false){
 	    $this->load->model('logbook_model');
         $this->logbook_model->check_missing_grid_id($all);
@@ -287,9 +292,6 @@ class Update extends CI_Controller {
     }
 
     public function download_lotw_users() {
-
-
-
         $contents = file_get_contents('https://lotw.arrl.org/lotw-user-activity.csv', true);
 
         if($contents === FALSE) { 
@@ -304,6 +306,47 @@ class Update extends CI_Controller {
             }
         }
 
+    }
+
+    public function lotw_users() {
+        $mtime = microtime(); 
+        $mtime = explode(" ",$mtime); 
+        $mtime = $mtime[1] + $mtime[0]; 
+        $starttime = $mtime; 
+
+        $file = 'https://lotw.arrl.org/lotw-user-activity.csv';
+
+        $handle = fopen($file, "r");
+        if ($handle === FALSE) {
+            echo "Something went wrong with fetching the LoTW uses file";
+            return;
+        }
+        $this->db->empty_table("lotw_users"); 
+        $i = 0;
+        $data = fgetcsv($handle,1000,",");
+        do {
+            if ($data[0]) {
+                $lotwdata[$i]['callsign'] = $data[0];
+                $lotwdata[$i]['lastupload'] = $data[1] . ' ' . $data[2];
+                if (($i % 2000) == 0) {
+                    $this->db->insert_batch('lotw_users', $lotwdata); 
+                    unset($lotwdata);
+                    // echo 'Record ' . $i . '<br />';
+                }
+                $i++;
+            }
+        } while ($data = fgetcsv($handle,1000,","));
+        fclose($handle);
+
+        $this->db->insert_batch('lotw_users', $lotwdata); 
+
+        $mtime = microtime(); 
+        $mtime = explode(" ",$mtime); 
+        $mtime = $mtime[1] + $mtime[0]; 
+        $endtime = $mtime; 
+        $totaltime = ($endtime - $starttime); 
+        echo "This page was created in ".$totaltime." seconds <br />"; 
+        echo "Records inserted: " . $i . " <br/>";
     }
 
     public function lotw_check() {

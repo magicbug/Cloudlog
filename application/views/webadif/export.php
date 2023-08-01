@@ -24,6 +24,11 @@
 
 <?php
             if ($station_profile->result()) {
+               $queuedqsos = 0;
+               foreach ($station_profile->result() as $count) {      // Fills the table with the data
+                   $queuedqsos += $count->notcount;
+               }
+               if ($queuedqsos > 0) {
 				?>
 				<p>You need to set a QO-100 Dx Club API key in your station profile. Only station profiles with an API Key are displayed.</p>
 				<p><span class="badge badge-warning">Warning</span> This might take a while as QSO uploads are processed sequentially.</p>
@@ -41,15 +46,25 @@
                 </thead>
                 <tbody>';
                 foreach ($station_profile->result() as $station) {      // Fills the table with the data
-                echo '<tr>';
-                    echo '<td>' . $station->station_profile_name . '</td>';
-                    echo '<td>' . $station->station_callsign . '</td>';
-                    echo '<td id ="notcount'.$station->station_id.'">' . $station->notcount . '</td>';
-                    echo '<td id ="totcount'.$station->station_id.'">' . $station->totcount . '</td>';
-                    echo '<td><button id="webadifUpload" type="button" name="webadifUpload" class="btn btn-primary btn-sm ld-ext-right" onclick="ExportWebADIF('. $station->station_id .')"><i class="fas fa-cloud-upload-alt"></i> Upload<div class="ld ld-ring ld-spin"></div></button></td>';
-                    echo '</tr>';
+                   if ($station->notcount != null) {
+                       echo '<tr>';
+                           echo '<td>' . $station->station_profile_name . '</td>';
+                           echo '<td>' . $station->station_callsign . '</td>';
+                           echo '<td id ="notcount'.$station->station_id.'">' . $station->notcount . '</td>';
+                           echo '<td id ="totcount'.$station->station_id.'">' . $station->totcount . '</td>';
+                           echo '<td><button id="webadifUpload" type="button" name="webadifUpload" class="btn btn-primary btn-sm ld-ext-right" onclick="ExportWebADIF('. $station->station_id .')"><i class="fas fa-cloud-upload-alt"></i> Upload<div class="ld ld-ring ld-spin"></div></button></td>';
+                       echo '</tr>';
+                   }
                 }
                 echo '</tfoot></table>';
+               } else {
+                  ?>
+                  <div class="alert alert-success">
+                  There are currently no outstanding QSOs that need to be uploaded to the QO-100 Dx Club's API.<br />
+                  Go ahead and turn on your QO-100 station!
+                  </div>
+                  <?php
+               }
 
         }
         else {

@@ -7,7 +7,7 @@ if ($qsoarray) {
                     foreach($bands as $band) {
                         echo '<th>' . $band . '</th>';
                     }
-                    echo '<th>Total</th>';
+                    echo '<th>'.lang('statistics_total').'</th>';
                     echo '</tr>
             </thead>
             <tbody>';
@@ -20,7 +20,7 @@ if ($qsoarray) {
         echo '<th>' . $modetotal[$mode] . '</th>';
         echo '</tr>';
     }
-    echo '</tbody><tfoot><tr><th>Total</th>';
+    echo '</tbody><tfoot><tr><th>'.lang('statistics_total').'</th>';
 
     $grandtotal = 0;
     foreach ($bandtotal as $band => $value) {

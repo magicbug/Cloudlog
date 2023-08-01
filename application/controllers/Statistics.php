@@ -2,10 +2,22 @@
 
 class Statistics extends CI_Controller {
 
+	function __construct()
+	{
+		parent::__construct();
+
+		// Load language files
+		$this->lang->load(array(
+			'statistics',
+		));
+	}
+
+
 	public function index()
 	{
         $this->load->model('user_model');
         $this->load->model('bands');
+
         if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
             if($this->user_model->validate_session()) {
                 $this->user_model->clear_session();
@@ -17,7 +29,7 @@ class Statistics extends CI_Controller {
 		// Render User Interface
 
 		// Set Page Title
-		$data['page_title'] = "Statistics";
+		$data['page_title'] = $this->lang->line('statistics_statistics');
 		$data['sat_active'] = array_search("SAT", $this->bands->get_user_bands(), true);
 		
 		// Load Views

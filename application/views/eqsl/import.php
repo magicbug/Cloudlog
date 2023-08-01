@@ -15,7 +15,7 @@
         <a class="nav-link" href="<?php echo site_url('eqsl/tools');?>">Tools</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo site_url('eqsl/download');?>">Download eQSL Images</a>
+        <a class="nav-link" href="<?php echo site_url('eqsl/download');?>">Download eQSL cards</a>
       </li>
     </ul>
   </div>
@@ -29,10 +29,18 @@
 			  <label class="form-check-label" for="exampleRadios1">
 			    Import from file...
 			  </label>
-			  <br><br>
+ 			  <br><br>
 			  <p>Upload the Exported ADIF file from eQSL from the <a href="http://eqsl.cc/qslcard/DownloadInBox.cfm" target="_blank">Download Inbox</a> page, to mark QSOs as confirmed on eQSL.</p>
 					<p><span class="label important">Important</span> Log files must have the file type .adi</p>
 					<input type="file" name="userfile" size="20" />
+			  <br/><br/>
+			<p>Choose Station(location) eQSL File belongs to:</p>
+                    <select name="station_profile" class="custom-select mb-2 mr-sm-2" style="width: 20%;">
+                    <option value="0">Select Station Location</option>
+                    <?php foreach ($station_profile->result() as $station) { ?>
+                    <option value="<?php echo $station->station_id; ?>" <?php if ($station->station_id == $this->stations->find_active()) { echo " selected =\"selected\""; } ?>>Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name.") eQSL: ".$station->eqslqthnickname; ?></option>
+                    <?php } ?>
+                    </select>
 			</div>
 
 			<br><br>

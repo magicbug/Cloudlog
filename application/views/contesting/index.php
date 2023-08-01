@@ -180,6 +180,7 @@
             <!-- Past QSO Box -->
             <div class="card log">
                 <div class="card-header"><h5 class="card-title"><?php echo lang('contesting_title_contest_logbook'); ?></h5></div>
+                <p>
 
                 <table style="width:100%" class="table-sm table qsotable table-bordered table-hover table-striped table-condensed text-center">
                     <thead>

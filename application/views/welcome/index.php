@@ -69,10 +69,13 @@
             # Upload QSOs to LoTW if certs have been provided every hour. <br>
             0 */1 * * * curl --silent <?php echo site_url();?>/lotw/lotw_upload &>/dev/null <br>
             <br>
+            # Upload QSOs to HRDLog.net Logbook (ignore cron job if this integration is not required) <br>
+            0 */6 * * * curl --silent <?php echo site_url();?>/hrdlog/upload &>/dev/null <br>
+             <br>
             # Upload QSOs to QRZ Logbook (ignore cron job if this integration is not required) <br>
             0 */6 * * * curl --silent <?php echo site_url();?>/qrz/upload &>/dev/null <br>
             <br>
-            # Update LOTW Users Database <br>
+            # Update LoTW Users Database <br>
             @weekly curl --silent <?php echo site_url();?>/lotw/load_users &>/dev/null <br>
             <br>
             # Update Clublog SCP Database File <br>

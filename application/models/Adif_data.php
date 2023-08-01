@@ -10,8 +10,7 @@ class adif_data extends CI_Model {
             if (strpos($this->api_model->access($api_key), 'r') !== false) {
                 $this->api_model->update_last_used($api_key);
                 $user_id = $this->api_model->key_userid($api_key);
-                $active_station_logbook = $CI->logbooks_model->find_active_station_logbook_from_userid($user_id);
-                $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($active_station_logbook);
+                $logbooks_locations_array = $this->list_station_locations($user_id);
             }
         } else {
             $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -26,6 +25,22 @@ class adif_data extends CI_Model {
 
         return $query;
     }
+
+    function list_station_locations($user_id) {
+        $this->db->where('user_id', $user_id);
+		$query = $this->db->get('station_profile');
+		
+		if ($query->num_rows() == 0) {
+            return array();
+		}
+        
+        $locations_array = array();
+        foreach ($query->result() as $row) {
+            array_push($locations_array, $row->station_id);
+        }
+
+        return $locations_array;
+	}
 
     function export_printrequested($station_id = NULL) {
         $this->load->model('stations');

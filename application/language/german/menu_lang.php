@@ -13,12 +13,16 @@ $lang['menu_live_qso'] = 'Live QSO';
 $lang['menu_post_qso'] = 'Zeitversetztes QSO';
 $lang['menu_live_contest_logging'] = 'Live Contest Logging';
 $lang['menu_post_contest_logging'] = 'Zeitversetztes Contest Logging';
+$lang['menu_bandmap'] = 'Bandmap';
 $lang['menu_view_qsl'] = 'QSL Ansicht';
 $lang['menu_view_eqsl'] = 'eQSL Ansicht';
+
+$lang['menu_notes'] = 'Notizen';
 
 $lang['menu_analytics'] = 'Analysen';
 $lang['menu_statistics'] = 'Statistik';
 $lang['menu_gridsquares'] = 'Planquadrate';
+$lang['menu_gridmap'] = 'Planquadratkarte';
 $lang['menu_activated_gridsquares'] = 'Aktivierte Planquadrate';
 $lang['menu_gridsquare_activators'] = 'Planquadrat-Aktivierer';
 $lang['menu_distances_worked'] = 'Gearbeitete Entfernungen';
@@ -68,12 +72,16 @@ $lang['menu_sota_csv_export'] = 'SOTA CSV Export';
 $lang['menu_cabrillo_export'] = 'Cabrillo Export';
 $lang['menu_oqrs_requests'] = 'OQRS Anforderungen';
 $lang['menu_print_requested_qsls'] = 'Druck angeforderter QSLs';
+$lang['menu_labels'] = 'Etiketten';
 $lang['menu_logbook_of_the_world'] = 'Logbook of the World';
 $lang['menu_eqsl_import_export'] = 'eQSL Import / Export';
 $lang['menu_qrz_logbook'] = 'QRZ Logbuch';
+$lang['menu_hrd_logbook'] = 'HRDLog Logbuch';
 $lang['menu_qo_100_dx_club_upload'] = 'QO-100 Dx Club Upload';
 $lang['menu_api_keys'] = 'API-Schlüssel';
 $lang['menu_hardware_interfaces'] = 'Hardware-Schnittstellen';
 $lang['menu_help'] = 'Hilfe';
 $lang['menu_forum'] = 'Forum';
 $lang['menu_logout'] = 'Logout';
+
+$lang['menu_maintenance'] = 'Wartung';

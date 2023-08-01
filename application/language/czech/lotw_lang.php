@@ -26,11 +26,10 @@ $lang['lotw_certificate_dxcc_help_text'] = 'Certifikát zěmě DXCC. Například
 
 $lang['lotw_input_a_file'] = 'Nahraj soubor';
 
-$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Nahraj exportovaný soubor z LoTW z <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a> Area, to mark QSOs as confirmed on LOTW.';
+$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Nahraj exportovaný soubor z LoTW z <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a> Area, to mark QSOs as confirmed on LoTW.';
 $lang['lotw_upload_type_must_be_adi'] = 'Deník musí být ve formátu .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Stáhni data z LoTW';
-$lang['lotw_import_missing_qsos_text'] = 'Importovat chybějící spojení do deníku. Bude zkontrolována značka a lokátor pro nalezní správného profilu pro import. Pokud nebude nalezeno, spojení bude přeskočeno.';
 
 $lang['lotw_report_download_overview_helptext'] ='Cloudlog použije uživatelské jméno a heslo LoTW uložené ve vašem uživatelském profilu, aby vám stáhl datz LoTW.Stažen budu data od nastaveného datumu nebo od posledního stažení až do teď.';
 

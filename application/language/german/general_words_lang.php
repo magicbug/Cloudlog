@@ -46,6 +46,7 @@ $lang['general_word_qslcards'] = 'QSL Karten';
 $lang['general_word_qslcard_direct'] = 'Direkt';
 $lang['general_word_qslcard_bureau'] = 'Büro';
 $lang['general_word_qslcard_electronic'] = 'Elektronisch';
+$lang['general_word_qslcard_manager'] = 'Manager';
 $lang['general_word_qslcard_via'] = 'Via';
 $lang['general_word_eqslcard'] = 'eQSL Karte';
 $lang['general_word_eqslcards'] = 'eQSL Karten';
@@ -54,6 +55,7 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_edit_qso'] = 'QSO bearbeiten';
 $lang['general_mark_qsl_rx_bureau'] = 'Markiere QSL erhalten (Büro)';
 $lang['general_mark_qsl_rx_direct'] = 'Markiere QSL erhalten (Direkt)';
+$lang['general_mark_qsl_rx_electronic'] = 'Markiere QSL erhalten (Elektronisch)';
 $lang['general_mark_qsl_tx_bureau'] = 'Markiere QSL gesendet (Büro)';
 $lang['general_mark_qsl_tx_direct'] = 'Markiere QSL gesendet (Direkt)';
 
@@ -110,6 +112,7 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Planquadrat';
+$lang['gen_hamradio_distance'] = 'Entfernung';
 $lang['gen_hamradio_operator'] = 'Operator';
 
 $lang['gen_hamradio_sig'] = 'Sig';
@@ -126,6 +129,8 @@ $lang['gen_from_date'] = 'Ab Datum';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'Dieses QSO wurde bestätigt am';
 
+$lang['error_no_logbook_found'] = 'Keine Logbücher gefunden. Du muss ein Stationslogbuch anlegen! Mach es hier:';
+
 $lang['copy_to_clipboard'] = 'In die Zwischenablage kopieren';
 
 $lang['africa'] = 'Afrika';
@@ -135,3 +140,5 @@ $lang['europe'] = 'Europa';
 $lang['northamerica'] = 'Nord-Amerika';
 $lang['oceania'] = 'Ozeanien';
 $lang['southamerica'] = 'Süd-Amerika';
+
+$lang['gen_band_selection'] = 'Bandauswahl';

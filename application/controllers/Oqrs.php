@@ -181,8 +181,8 @@ class Oqrs extends CI_Controller {
 				$data['usermessage'] = $this->security->xss_clean($postdata['message']);
 	
 				$message = $this->load->view('email/oqrs_request', $data,  TRUE);
-	
-				$this->email->from('noreply@cloudlog.co.uk', 'Cloudlog');
+				
+				$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
 				$this->email->to($email);
 				$this->email->reply_to($this->security->xss_clean($postdata['email']), strtoupper($data['callsign']));
 	

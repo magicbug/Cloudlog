@@ -48,12 +48,60 @@ class Logbookadvanced_model extends CI_Model {
 			}
 		}
 		if ($searchCriteria['qslSent'] !== '') {
-			$conditions[] = "COL_QSL_SENT = ?";
+			$condition = "COL_QSL_SENT = ?";
+			if ($searchCriteria['qslSent'] == 'N') {
+				$condition = '('.$condition;
+				$condition .= " OR COL_QSL_SENT IS NULL OR COL_QSL_SENT = '')";
+			}
+			$conditions[] = $condition;
 			$binding[] = $searchCriteria['qslSent'];
 		}
 		if ($searchCriteria['qslReceived'] !== '') {
-			$conditions[] = "COL_QSL_RCVD = ?";
+			$condition = "COL_QSL_RCVD = ?";
+			if ($searchCriteria['qslReceived'] == 'N') {
+				$condition = '('.$condition;
+				$condition .= " OR COL_QSL_RCVD IS NULL OR COL_QSL_RCVD = '')";
+			}
+			$conditions[] = $condition;
 			$binding[] = $searchCriteria['qslReceived'];
+		}
+
+		if ($searchCriteria['lotwSent'] !== '') {
+			$condition = "COL_LOTW_QSL_SENT = ?";
+			if ($searchCriteria['lotwSent'] == 'N') {
+				$condition = '('.$condition;
+				$condition .= " OR COL_LOTW_QSL_SENT IS NULL OR COL_LOTW_QSL_SENT = '')";
+			}
+			$conditions[] = $condition;
+			$binding[] = $searchCriteria['lotwSent'];
+		}
+		if ($searchCriteria['lotwReceived'] !== '') {
+			$condition = "COL_LOTW_QSL_RCVD = ?";
+			if ($searchCriteria['lotwReceived'] == 'N') {
+				$condition = '('.$condition;
+				$condition .= " OR COL_LOTW_QSL_RCVD IS NULL OR COL_LOTW_QSL_RCVD = '')";
+			}
+			$conditions[] = $condition;
+			$binding[] = $searchCriteria['lotwReceived'];
+		}
+
+		if ($searchCriteria['eqslSent'] !== '') {
+			$condition = "COL_EQSL_SENT = ?";
+			if ($searchCriteria['eqslSent'] == 'N') {
+				$condition = '('.$condition;
+				$condition .= " OR COL_EQSL_SENT IS NULL OR COL_EQSL_SENT = '')";
+			}
+			$conditions[] = $condition;
+			$binding[] = $searchCriteria['eqslSent'];
+		}
+		if ($searchCriteria['eqslReceived'] !== '') {
+			$condition = "COL_EQSL_RCVD = ?";
+			if ($searchCriteria['eqslReceived'] == 'N') {
+				$condition = '('.$condition;
+				$condition .= " OR COL_EQSL_RCVD IS NULL OR COL_EQSL_RCVD = '')";
+			}
+			$conditions[] = $condition;
+			$binding[] = $searchCriteria['eqslReceived'];
 		}
 
         if ($searchCriteria['iota'] !== '') {
@@ -69,6 +117,31 @@ class Logbookadvanced_model extends CI_Model {
         if ($searchCriteria['state'] !== '') {
 			$conditions[] = "COL_STATE = ?";
 			$binding[] = $searchCriteria['state'];
+		}
+
+		if ($searchCriteria['cqzone'] !== '') {
+			$conditions[] = "COL_CQZ = ?";
+			$binding[] = $searchCriteria['cqzone'];
+		}
+
+		if ($searchCriteria['qslvia'] !== '') {
+			$conditions[] = "COL_QSL_VIA like ?";
+			$binding[] = $searchCriteria['qslvia'].'%';
+		}
+
+		if ($searchCriteria['sota'] !== '') {
+			$conditions[] = "COL_SOTA_REF like ?";
+			$binding[] = $searchCriteria['sota'].'%';
+		}
+
+		if ($searchCriteria['pota'] !== '') {
+			$conditions[] = "COL_POTA_REF like ?";
+			$binding[] = $searchCriteria['pota'].'%';
+		}
+
+		if ($searchCriteria['wwff'] !== '') {
+			$conditions[] = "COL_WWFF_REF like ?";
+			$binding[] = $searchCriteria['wwff'].'%';
 		}
 
         if ($searchCriteria['gridsquare'] !== '') {
@@ -100,6 +173,12 @@ class Logbookadvanced_model extends CI_Model {
 			FROM " . $this->config->item('table_name') . " qsos
 			INNER JOIN station_profile ON qsos.station_id=station_profile.station_id
 			LEFT OUTER JOIN dxcc_entities ON qsos.col_dxcc=dxcc_entities.adif
+			LEFT OUTER JOIN lotw_users ON qsos.col_call=lotw_users.callsign
+			LEFT OUTER JOIN (
+				select count(*) as qslcount, qsoid
+				from qsl_images
+				group by qsoid
+			) x on qsos.COL_PRIMARY_KEY = x.qsoid
 			WHERE station_profile.user_id =  ?
 			$where
 			ORDER BY qsos.COL_TIME_ON desc, qsos.COL_PRIMARY_KEY desc
@@ -109,12 +188,12 @@ class Logbookadvanced_model extends CI_Model {
 		$data = $this->db->query($sql, $binding);
 
         $results = $data->result('array');
-        
+
         $qsos = [];
         foreach ($results as $data) {
             $qsos[] = new QSO($data);
         }
-		
+
 	    return $qsos;
 	}
 
@@ -131,10 +210,17 @@ class Logbookadvanced_model extends CI_Model {
 		$order = $this->getSortorder($sortorder);
 
         $sql = "
-            SELECT *, dxcc_entities.name AS station_country
+            SELECT qsos.*, d2.*, lotw_users.*, station_profile.*, x.qslcount, dxcc_entities.name AS station_country
 			FROM " . $this->config->item('table_name') . " qsos
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
 			LEFT OUTER JOIN dxcc_entities ON qsos.COL_MY_DXCC = dxcc_entities.adif
+			LEFT OUTER JOIN dxcc_entities d2 ON qsos.COL_DXCC = d2.adif
+			LEFT OUTER JOIN lotw_users ON qsos.col_call=lotw_users.callsign
+			LEFT OUTER JOIN (
+				select count(*) as qslcount, qsoid
+				from qsl_images
+				group by qsoid
+			) x on qsos.COL_PRIMARY_KEY = x.qsoid
 			WHERE station_profile.user_id =  ?
 			$where
 			$order
@@ -209,7 +295,25 @@ class Logbookadvanced_model extends CI_Model {
             );
             $this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
             $this->db->update($this->config->item('table_name'), $data);
-            
+
+            return array('message' => 'OK');
+        }
+    }
+
+	public function updateQslReceived($ids, $user_id, $method, $sent) {
+        $this->load->model('user_model');
+
+        if(!$this->user_model->authorize(2)) {
+            return array('message' => 'Error');
+        } else {
+            $data = array(
+                'COL_QSLRDATE' => date('Y-m-d H:i:s'),
+                'COL_QSL_RCVD' => $sent,
+                'COL_QSL_RCVD_VIA' => $method
+            );
+            $this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
+            $this->db->update($this->config->item('table_name'), $data);
+
             return array('message' => 'OK');
         }
     }
@@ -261,19 +365,19 @@ class Logbookadvanced_model extends CI_Model {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-	
+
 		if (!$logbooks_locations_array) {
 			return null;
 		}
 
 		$modes = array();
-	
+
 		$this->db->select('distinct col_mode, coalesce(col_submode, "") col_submode', FALSE);
 		$this->db->where_in('station_id', $logbooks_locations_array);
 		$this->db->order_by('col_mode, col_submode', 'ASC');
 
 		$query = $this->db->get($this->config->item('table_name'));
-	
+
 		foreach($query->result() as $mode){
 			if ($mode->col_submode == null || $mode->col_submode == "") {
 				array_push($modes, $mode->col_mode);

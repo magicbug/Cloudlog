@@ -17,7 +17,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo site_url('eqsl/download');?>">Download eQSL Images</a>
+        <a class="nav-link" href="<?php echo site_url('eqsl/download');?>">Download eQSL cards</a>
       </li>
     </ul>
   </div>

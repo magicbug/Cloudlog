@@ -44,7 +44,7 @@
                         <div class="col-md-10">
                             <div class="form-check-inline">
                                 <input class="form-check-input" type="checkbox" name="skipDuplicate" value="1" id="skipDuplicate">
-                                <label class="form-check-label" for="skipDuplicate">Skip duplicate QSO check</label>
+                                <label class="form-check-label" for="skipDuplicate">Import duplicate QSOs</label>
                             </div>
                         </div>
                     </div>
@@ -54,6 +54,16 @@
                             <div class="form-check-inline">
                                 <input class="form-check-input" type="checkbox" name="markLotw" value="1" id="markLotwImport">
                                 <label class="form-check-label" for="markLotwImport">Mark imported QSOs as uploaded to LoTW</label>
+                            </div>
+                            <div class="small form-text text-muted">Select if ADIF being imported does not contain this information.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-10">
+                            <div class="form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="markHrd" value="1" id="markHrdImport">
+                                <label class="form-check-label" for="markHrdImport">Mark imported QSOs as uploaded to HRDLog.net Logbook</label>
                             </div>
                             <div class="small form-text text-muted">Select if ADIF being imported does not contain this information.</div>
                         </div>
@@ -148,7 +158,7 @@
                 <h5>Export Satellite-Only QSOs</h5>
                 <p><a href="<?php echo site_url('adif/exportsat'); ?>" title="Export All Satellite Contacts" target="_blank" class="btn-sm btn-primary">Export All Satellite QSOs</a></p>
 
-                <p><a href="<?php echo site_url('adif/exportsatlotw'); ?>" title="Export All Satellite QSOS Confirmed on LoTW" target="_blank" class="btn-sm btn-primary">Export All Satellite QSOs Confirmed on LoTW</a></p>
+                <p><a href="<?php echo site_url('adif/exportsatlotw'); ?>" title="Export All Satellite QSOs Confirmed on LoTW" target="_blank" class="btn-sm btn-primary">Export All Satellite QSOs Confirmed on LoTW</a></p>
                 </div>
 
 

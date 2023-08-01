@@ -73,10 +73,14 @@ function load_was_map() {
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/continents.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "webadif") { ?>
+<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "hrdlog" ||$this->uri->segment(1) == "webadif") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "maintenance" ) { ?>
+    <script src="<?php echo base_url() ;?>assets/js/sections/maintenance.js"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "adif" ) { ?>
@@ -351,6 +355,7 @@ $(function () {
                 if (isDarkModeTheme()) {
                     $(".buttons-csv").css("color", "white");
                 }
+                $('[data-toggle="tooltip"]').tooltip();
                 $(".runbutton").removeClass('running');
                 $(".runbutton").prop('disabled', false);
             });
@@ -818,6 +823,29 @@ function findduplicates(){
     });
 }
 
+function findlotwunconfirmed(){
+    event.preventDefault();
+    $('#partial_view').load(base_url+"index.php/logbook/search_lotw_unconfirmed/"+$("#station_id").val(), function() {
+        $('.qsolist').DataTable({
+            "pageLength": 25,
+            responsive: false,
+            ordering: false,
+            "scrollY":        "500px",
+            "scrollCollapse": true,
+            "paging":         false,
+            "scrollX": true,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv'
+            ]
+        });
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
+            $(".buttons-csv").css("color", "white");
+        }
+    });
+}
+
 function findincorrectcqzones() {
     event.preventDefault();
     $('#partial_view').load(base_url+"index.php/logbook/search_incorrect_cq_zones/"+$("#station_id").val(), function() {
@@ -910,9 +938,29 @@ $(document).on('keypress',function(e) {
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
-    <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
-    <script src="<?php echo base_url() ;?>assets/js/winkey.js"></script>
+
+<script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
+ <script src="<?php echo base_url() ;?>assets/js/winkey.js"></script>
 <?php
+
+	if ($this->optionslib->get_option('dxcache_url') != ''){ ?>
+	<script type="text/javascript">
+		var dxcluster_provider = '<?php echo base_url(); ?>index.php/dxcluster';
+		$(document).ready(function() {
+			$("#check_cluster").on("click", function() {
+				$.ajax({ url: dxcluster_provider+"/qrg_lookup/"+$("#frequency").val()/1000, cache: false, dataType: "json" }).done(
+					function(dxspot) {
+						$("#callsign").val(dxspot.spotted);
+						$("#callsign").trigger("blur");
+					}
+				);
+			});
+		});
+	</script>
+
+<?php
+}
+
 
     $this->load->model('stations');
     $active_station_id = $this->stations->find_active();
@@ -1191,6 +1239,8 @@ $(document).on('keypress',function(e) {
 
 <?php } ?>
 <?php if ( $this->uri->segment(1) == "qso" || ($this->uri->segment(1) == "contesting" && $this->uri->segment(2) != "add")) { ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
     function setRst(mode) {
         if(mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS'){
@@ -1211,94 +1261,110 @@ $(document).on('keypress',function(e) {
 
     <script>
     // Javascript for controlling rig frequency.
-    var updateFromCAT = function() {
-    if($('select.radios option:selected').val() != '0') {
-      radioID = $('select.radios option:selected').val();
-      $.getJSON( "radio/json/" + radioID, function( data ) {
-          /* {
-              "frequency": "2400210000",
-              "frequency_rx": "10489710000",
-              "mode": "SSB",
-              "satmode": "S/X",
-              "satname": "QO-100"
-              "power": "20"
-              "prop_mode": "SAT"
-          }  */
-          $('#frequency').val(data.frequency);
-          $("#band").val(frequencyToBand(data.frequency));
-          if (data.frequency_rx != "") {
-            $('#frequency_rx').val(data.frequency_rx);
-            $("#band_rx").val(frequencyToBand(data.frequency_rx));
-          }
+	  var updateFromCAT = function() {
+		  if($('select.radios option:selected').val() != '0') {
+			  radioID = $('select.radios option:selected').val();
+			  $.getJSON( "radio/json/" + radioID, function( data ) {
+	  /* {
+	  "frequency": "2400210000",
+	      "frequency_rx": "10489710000",
+	      "mode": "SSB",
+	      "satmode": "S/X",
+	      "satname": "QO-100"
+	      "power": "20"
+	      "prop_mode": "SAT",
+	      "error": "not_logged_id" // optional, reserved for errors
+	  }  */
+				  if (data.error) {
+					  if (data.error == 'not_logged_in') {
+						  $(".radio_cat_state" ).remove();
+						  if($('.radio_login_error').length == 0) {
+							  $('.qso_panel').prepend('<div class="alert alert-danger radio_login_error" role="alert"><i class="fas fa-broadcast-tower"></i> You\'re not logged it. Please <a href="<?php echo base_url();?>">login</a></div>');
+						  }
+					  }
+					  // Put future Errorhandling here
+				  } else {
+					  if($('.radio_login_error').length != 0) {
+						  $(".radio_login_error" ).remove();
+					  }
+					  $('#frequency').val(data.frequency);
+					  $("#band").val(frequencyToBand(data.frequency));
+					  if (data.frequency_rx != "") {
+						  $('#frequency_rx').val(data.frequency_rx);
+						  $("#band_rx").val(frequencyToBand(data.frequency_rx));
+					  }
 
-          old_mode = $(".mode").val();
-          $(".mode").val(data.mode);
+					  old_mode = $(".mode").val();
+					  $(".mode").val(data.mode);
 
-          if (old_mode !== $(".mode").val()) {
-            // Update RST on mode change via CAT
-            setRst($(".mode").val());
-          }
-          $("#sat_name").val(data.satname);
-          $("#sat_mode").val(data.satmode);
-          if(data.power != null && data.power != 0) {
-            $("#transmit_power").val(data.power);
-          }
-          $("#selectPropagation").val(data.prop_mode);
+					  if (old_mode !== $(".mode").val()) {
+						  // Update RST on mode change via CAT
+						  setRst($(".mode").val());
+					  }
+					  $("#sat_name").val(data.satname);
+					  $("#sat_mode").val(data.satmode);
+					  if(data.power != null && data.power != 0) {
+						  $("#transmit_power").val(data.power);
+					  }
+					  $("#selectPropagation").val(data.prop_mode);
 
-          // Display CAT Timeout warning based on the figure given in the config file
-          var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
+					  // Display CAT Timeout warning based on the figure given in the config file
+					  var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
 
-          if(data.updated_minutes_ago > minutes) {
-            $(".radio_cat_state" ).remove();
-            if($('.radio_timeout_error').length == 0) {
-              $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert"><i class="fas fa-broadcast-tower"></i> Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
-            } else {
-              $('.radio_timeout_error').html('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
-            }
-          } else {
-            $(".radio_timeout_error" ).remove();
-            text = '<i class="fas fa-broadcast-tower"></i><span style="margin-left:10px;"></span><b>TX:</b> '+(Math.round(parseInt(data.frequency)/1000)/1000).toFixed(3)+' MHz';
-            if(data.power != null && data.power != 0) {
-               text = text+'<span style="margin-left:10px"></span>'+data.power+'W';
-            }
-            if(data.prop_mode != null && data.prop_mode != '') {
-               text = text+'<span style="margin-left:10px"></span>('+data.prop_mode;
-               if (data.prop_mode == 'SAT') {
-                  text = text+' '+data.satname;
-               }
-            }
-            if(data.frequency_rx != null && data.frequency_rx != 0) {
-               text = text+'<span style="margin-left:10px"></span><b>RX:</b> '+(Math.round(parseInt(data.frequency_rx)/1000)/1000).toFixed(3)+' MHz)';
-            }
-            if (! $('#radio_cat_state').length) {
-               $('.qso_panel').prepend('<div aria-hidden="true"><div id="radio_cat_state" class="alert alert-success radio_cat_state" role="alert">'+text+'</div></div>');
-            } else {
-               $('#radio_cat_state').html(text);
-            }
-          }
+					  if(data.updated_minutes_ago > minutes) {
+						  $(".radio_cat_state" ).remove();
+						  if($('.radio_timeout_error').length == 0) {
+							  $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert"><i class="fas fa-broadcast-tower"></i> Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
+						  } else {
+							  $('.radio_timeout_error').html('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
+						  }
+					  } else {
+						  $(".radio_timeout_error" ).remove();
+						  text = '<i class="fas fa-broadcast-tower"></i><span style="margin-left:10px;"></span><b>TX:</b> '+(Math.round(parseInt(data.frequency)/100)/10000).toFixed(4)+' MHz';
+						  if(data.mode != null) {
+							  text = text+'<span style="margin-left:10px"></span>'+data.mode;
+						  }
+						  if(data.power != null && data.power != 0) {
+							  text = text+'<span style="margin-left:10px"></span>'+data.power+' W';
+						  }
+						  if(data.prop_mode != null && data.prop_mode != '') {
+							  text = text+'<span style="margin-left:10px"></span>('+data.prop_mode;
+							  if (data.prop_mode == 'SAT') {
+								  text = text+' '+data.satname;
+							  }
+						  }
+						  if(data.frequency_rx != null && data.frequency_rx != 0) {
+							  text = text+'<span style="margin-left:10px"></span><b>RX:</b> '+(Math.round(parseInt(data.frequency_rx)/1000)/1000).toFixed(3)+' MHz)';
+						  }
+						  if (! $('#radio_cat_state').length) {
+							  $('.qso_panel').prepend('<div aria-hidden="true"><div id="radio_cat_state" class="alert alert-success radio_cat_state" role="alert">'+text+'</div></div>');
+						  } else {
+							  $('#radio_cat_state').html(text);
+						  }
+					  }
+				  }
+			  });
+		  }
+	  };
 
-      });
-    }
-  };
+	  // Update frequency every three second
+	  setInterval(updateFromCAT, 3000);
 
-  // Update frequency every three second
-  setInterval(updateFromCAT, 3000);
+	  // If a radios selected from drop down select radio update.
+	  $('.radios').change(updateFromCAT);
 
-  // If a radios selected from drop down select radio update.
-  $('.radios').change(updateFromCAT);
-
-  // If no radio is selected clear data
-  $( ".radios" ).change(function() {
-      if ($(".radios option:selected").val() == 0) {
-        $("#sat_name").val("");
-        $("#sat_mode").val("");
-        $("#frequency").val("");
-        $("#frequency_rx").val("");
-        $("#band_rx").val("");
-        $("#selectPropagation").val($("#selectPropagation option:first").val());
-        $(".radio_timeout_error" ).remove();
-      }
-  });
+	  // If no radio is selected clear data
+	  $( ".radios" ).change(function() {
+		  if ($(".radios option:selected").val() == 0) {
+			  $("#sat_name").val("");
+			  $("#sat_mode").val("");
+			  $("#frequency").val("");
+			  $("#frequency_rx").val("");
+			  $("#band_rx").val("");
+			  $("#selectPropagation").val($("#selectPropagation option:first").val());
+			  $(".radio_timeout_error" ).remove();
+		  }
+	  });
   </script>
 
 <?php } ?>
@@ -1362,7 +1428,7 @@ $(document).ready(function(){
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "gridsquares" && !empty($this->uri->segment(2))) { ?>
-
+<script>var gridsquaremap = true;</script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.MaidenheadColoured.js"></script>
 
 <script>
@@ -1410,14 +1476,14 @@ $(document).ready(function(){
 
   if (grid_four_confirmed_count > 0) {
      var span = document.getElementById('confirmed_grids');
-     span.innerText = span.textContent = '('+grid_four_confirmed_count+' grid square'+(grid_four_confirmed_count != 1 ? 's' : '')+') ';
+     span.innerText = span.textContent = '('+grid_four_confirmed_count+' <?php echo lang('gridsquares_grid_squares'); ?>'+(grid_four_confirmed_count != 1 ? 's' : '')+') ';
   }
   if ((grid_four_count-grid_four_confirmed_count) > 0) {
      var span = document.getElementById('worked_grids');
-     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' grid square'+(grid_four_count-grid_four_confirmed_count != 1 ? 's' : '')+') ';
+     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' <?php echo lang('gridsquares_grid_squares'); ?>'+(grid_four_count-grid_four_confirmed_count != 1 ? 's' : '')+') ';
   }
   var span = document.getElementById('sum_grids');
-  span.innerText = span.textContent = ' Total Count: '+grid_four_count+' grid square'+(grid_four_count != 1 ? 's' : '');
+  span.innerText = span.textContent = ' <?php echo lang('gridsquares_total_count'); ?>'+': '+grid_four_count+' <?php echo lang('gridsquares_grid_squares'); ?>'+(grid_four_count != 1 ? 's' : '');
 
   var maidenhead = L.maidenhead().addTo(map);
 
@@ -1434,14 +1500,20 @@ $(document).ready(function(){
 
     if(map.getZoom() > 2) {
     	<?php if ($this->session->userdata('user_callsign')) { ?>
-	  var band = '';
+        spawnGridsquareModal(loc_4char);
+		  <?php } ?>
+    }
+  };
+
+  function spawnGridsquareModal(loc_4char) {
+    var band = '';
       var search_type = "<?php echo $this->uri->segment(2); ?>";
       if(search_type == "satellites") {
 		band = 'SAT';
       } else {
         band = "<?php echo $this->uri->segment(3); ?>";
       }
-		$(".modal-body").empty();
+    $(".modal-body").empty();
 		  $.ajax({
 			  url: base_url + 'index.php/awards/qso_details_ajax',
 			  type: 'post',
@@ -1471,9 +1543,7 @@ $(document).ready(function(){
 				  }
 			  }
 		  });
-		  <?php } ?>
-    }
-  };
+  }
 
 <?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
 
@@ -1549,14 +1619,14 @@ $(document).ready(function(){
 
   if (grid_four_confirmed_count > 0) {
      var span = document.getElementById('confirmed_grids');
-     span.innerText = span.textContent = '('+grid_four_confirmed_count+' grid square'+(grid_four_confirmed_count != 1 ? 's' : '')+') ';
+     span.innerText = span.textContent = '('+grid_four_confirmed_count+' <?php echo lang('gridsquares_grid_squares'); ?>'+(grid_four_confirmed_count != 1 ? 's' : '')+') ';
   }
   if ((grid_four_count-grid_four_confirmed_count) > 0) {
      var span = document.getElementById('activated_grids');
-     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' grid square'+(grid_four_count-grid_four_confirmed_count != 1 ? 's' : '')+') ';
+     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' <?php echo lang('gridsquares_grid_squares'); ?>'+(grid_four_count-grid_four_confirmed_count != 1 ? 's' : '')+') ';
   }
   var span = document.getElementById('sum_grids');
-  span.innerText = span.textContent = ' Total Count: '+grid_four_count+' grid square'+(grid_four_count != 1 ? 's' : '');
+  span.innerText = span.textContent = ' <?php echo lang('gridsquares_total_count'); ?>'+': '+grid_four_count+' <?php echo lang('gridsquares_grid_squares'); ?>'+(grid_four_count != 1 ? 's' : '');
 
   var maidenhead = L.maidenhead().addTo(map);
 
@@ -1671,6 +1741,9 @@ $(document).ready(function(){
         </script>
     <?php } ?>
 
+    <?php if ($this->uri->segment(1) == "hrdlog") { ?>
+		<script src="<?php echo base_url(); ?>assets/js/sections/hrdlog.js"></script>
+    <?php } ?>
     <?php if ($this->uri->segment(1) == "qrz") { ?>
 		<script src="<?php echo base_url(); ?>assets/js/sections/qrzlogbook.js"></script>
     <?php } ?>
@@ -1976,7 +2049,7 @@ $(document).ready(function(){
                 success: function (dataofconfirm) {
                     $(".edit-dialog").modal('hide');
                     $(".qso-dialog").modal('hide');
-                    <?php if ($this->uri->segment(1) != "search" && $this->uri->segment(2) != "filter" && $this->uri->segment(1) != "qso") { ?>location.reload();<?php } ?>
+                    <?php if ($this->uri->segment(1) != "search" && $this->uri->segment(2) != "filter" && $this->uri->segment(1) != "qso" && $this->uri->segment(1) != "logbookadvanced") { ?>location.reload();<?php } ?>
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr.responseText);
@@ -2188,7 +2261,7 @@ $(document).ready(function(){
 function viewQsl(picture, callsign) {
             var baseURL= "<?php echo base_url();?>";
             var $textAndPic = $('<div></div>');
-                $textAndPic.append('<img class="img-fluid w-qsl" style="height:auto;width:auto;"src="'+baseURL+'/assets/qslcard/'+picture+'" />');
+                $textAndPic.append('<center><img class="img-fluid w-qsl" style="height:auto;width:auto;"src="'+baseURL+'/assets/qslcard/'+picture+'" /><center>');
             var title = '';
             if (callsign == null) {
                 title = 'QSL Card';
@@ -2342,7 +2415,7 @@ function viewEqsl(picture, callsign) {
                             '</tr>');
                         var quantity = $(".carousel-indicators li").length;
                         $(".carousel-indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
-                        $(".carousel-inner").append('<div class="carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carousel-inner").append('<center><div class="carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div></center>');
                         $("#qslcardfront").val(null);
                     }
                     else {
@@ -2362,12 +2435,12 @@ function viewEqsl(picture, callsign) {
                         $('.qslcardtab').removeAttr('hidden');
                         var quantity = $(".carousel-indicators li").length;
                         $(".carousel-indicators").append('<li class="active" data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
-                        $(".carousel-inner").append('<div class="active carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carousel-inner").append('<center><div class="active carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div></center>');
                         $(".carouselExampleIndicators").carousel();
                         $("#qslcardfront").val(null);
                     }
 
-                } else {
+                } else if (data.status.front.status != '') {
                     $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Front QSL Card:' +
                     data.status.front.error +
                         '</div>');
@@ -2381,7 +2454,7 @@ function viewEqsl(picture, callsign) {
                             '</tr>');
                         var quantity = $(".carousel-indicators li").length;
                         $(".carousel-indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
-                        $(".carousel-inner").append('<div class="carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carousel-inner").append('<center><div class="carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div></center>');
                         $("#qslcardback").val(null);
                     }
                     else {
@@ -2401,11 +2474,11 @@ function viewEqsl(picture, callsign) {
                         $('.qslcardtab').removeAttr('hidden');
                         var quantity = $(".carousel-indicators li").length;
                         $(".carousel-indicators").append('<li class="active" data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
-                        $(".carousel-inner").append('<div class="active carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div>');
+                        $(".carousel-inner").append('<center><div class="active carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div></center>');
                         $(".carouselExampleIndicators").carousel();
                         $("#qslcardback").val(null);
                     }
-                } else {
+                } else if (data.status.back.status != '') {
                     $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\nBack QSL Card: ' +
                     data.status.back.error +
                         '</div>');
@@ -2729,6 +2802,8 @@ function viewEqsl(picture, callsign) {
 		"scrollCollapse": true,
 		"paging": false,
 		"scrollX": true,
+		"ordering": true,
+		"order": [ 2, 'desc' ],
 	});
 	</script>
 <?php } ?>

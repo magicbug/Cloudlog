@@ -9,7 +9,7 @@
 			<a class="btn btn-outline-success btn-sm float-right" href="<?php echo site_url('/lotw/cert_upload'); ?>" role="button"><i class="fas fa-cloud-upload-alt"></i> <?php echo lang('lotw_btn_upload_certificate'); ?></a><i class="fab fa-expeditedssl"></i> <?php echo lang('lotw_title_available_cert'); ?>
 		</div>
 
-		<div class="card-body">
+		<div class="lotw-cert-list">
 			<?php if(isset($error)) { ?>
 				<div class="alert alert-danger" role="alert">
 			  	<?php echo $error; ?>
@@ -122,7 +122,11 @@
 		</div>
 
 		<div class="card-body">
-			<p><a class="btn btn-outline-success" href="<?php echo site_url('lotw/lotw_upload'); ?>"><?php echo lang('lotw_btn_manual_sync'); ?></a></p>
+			<button class="btn btn-outline-success" hx-get="<?php echo site_url('lotw/lotw_upload'); ?>"  hx-target="#lotw_manual_results">
+				<?php echo lang('lotw_btn_manual_sync'); ?>
+			</button>
+
+			<div id="lotw_manual_results"></div>
 		</div>
 	</div>
 

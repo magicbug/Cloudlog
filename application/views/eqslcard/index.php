@@ -34,7 +34,7 @@
 
         foreach ($qslarray->result() as $qsl) {
             echo '<tr>';
-            echo '<td style=\'text-align: center\'>' . $qsl->COL_CALL . '</td>';
+            echo '<td style=\'text-align: center\'><a id="edit_qso" href="javascript:displayQso('.$qsl->COL_PRIMARY_KEY.')">' . $qsl->COL_CALL . '</a></td>';
 			echo '<td style=\'text-align: center\'>';
 			echo $qsl->COL_SUBMODE==null?$qsl->COL_MODE:$qsl->COL_SUBMODE;
 			echo '</td>';

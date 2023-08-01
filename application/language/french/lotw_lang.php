@@ -10,7 +10,7 @@ $lang['lotw_title_export_p12_file_instruction'] = 'Instruction pour l\'export de
 $lang['lotw_title_adif_import'] = 'Import ADIF';
 $lang['lotw_title_adif_import_options'] = 'Options d\'import';
 
-$lang['lotw_beta_warning'] = 'Attention la synchro LOTW est au stage BETA, voir le wiki pour l\'aide.';
+$lang['lotw_beta_warning'] = 'Attention la synchro LoTW est au stage BETA, voir le wiki pour l\'aide.';
 $lang['lotw_no_certs_uploaded'] = 'Vous devez envoyer des certificats p1 pour utiliser cette zone.';
 
 $lang['lotw_date_created'] = 'Date Création';
@@ -26,11 +26,10 @@ $lang['lotw_certificate_dxcc_help_text'] = 'Entité Certificat DXCC. Par example
 
 $lang['lotw_input_a_file'] = 'Envoyer un fichier';
 
-$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Envoyer le fichier ADIF exporté depuis la zone LoTW à l\'adresse  <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a>, pour marquer les QSO comme "confirmés" sur LOTW.';
+$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Envoyer le fichier ADIF exporté depuis la zone LoTW à l\'adresse  <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a>, pour marquer les QSO comme "confirmés" sur LoTW.';
 $lang['lotw_upload_type_must_be_adi'] = 'Les fichiers de log doivent être au format .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Récuperer mes données LoTW';
-$lang['lotw_import_missing_qsos_text'] = 'Importer les QSO manquants dans le log. Les indicatifs et gridsquare seront testés pour essayer de trouver le profil d\'importation correct. Les QSO seront ignorés si non trouvé.';
 
 $lang['lotw_report_download_overview_helptext'] ='Cloudlog utilise le nom d\'utilisateur et mot de passe enregistré dans votre profil utilisateur pour télécharger les rapport depuis LoTw. Les rapports téléchargés seront confirmés depuis la date de votre dernière confirmation (extraite de vos log) jusqu\'à aujourd\'hui';
 

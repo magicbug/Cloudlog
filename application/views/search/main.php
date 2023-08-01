@@ -20,6 +20,9 @@
 		  <li class="nav-item">
 	        <a class="nav-link" href="<?php echo site_url('search/incorrect_cq_zones'); ?>">Incorrect CQ Zones</a>
 	      </li>
+		  <li class="nav-item">
+	        <a class="nav-link" href="<?php echo site_url('search/lotw_unconfirmed'); ?>">QSOs unconfirmed on LoTW</a>
+	      </li>
 	    </ul>
 	  </div>
 	  <div class="card-body">

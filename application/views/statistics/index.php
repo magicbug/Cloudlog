@@ -11,7 +11,7 @@
 
 	<h2>
 		<?php echo $page_title; ?>
-		<small class="text-muted">Explore the logbook.</small>
+		<small class="text-muted"><?php echo lang('statistics_explore_the_logbook'); ?></small>
 	</h2>
 
 	<br>
@@ -33,19 +33,19 @@
 					<br />
 					<ul class="nav nav-pills" id="myTab2" role="tablist">
 						<li class="nav-item">
-							<a class="nav-link active" id="years-tab" data-toggle="tab" href="#yearstab" role="tab" aria-controls="yearstab" aria-selected="true">Years</a>
+							<a class="nav-link active" id="years-tab" data-toggle="tab" href="#yearstab" role="tab" aria-controls="yearstab" aria-selected="true"><?php echo lang('statistics_years'); ?></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="mode-tab" data-toggle="tab" href="#modetab" role="tab" aria-controls="modetab" aria-selected="false">Mode</a>
+							<a class="nav-link" id="mode-tab" data-toggle="tab" href="#modetab" role="tab" aria-controls="modetab" aria-selected="false"><?php echo lang('statistics_mode'); ?></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="band-tab" data-toggle="tab" href="#bandtab" role="tab" aria-controls="bandtab" aria-selected="false">Bands</a>
+							<a class="nav-link" id="band-tab" data-toggle="tab" href="#bandtab" role="tab" aria-controls="bandtab" aria-selected="false"><?php echo lang('statistics_bands'); ?></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="qso-tab" data-toggle="tab" href="#qsotab" role="tab" aria-controls="bandtab" aria-selected="false">QSOs</a>
+							<a class="nav-link" id="qso-tab" data-toggle="tab" href="#qsotab" role="tab" aria-controls="bandtab" aria-selected="false"><?php echo lang('statistics_qsos'); ?></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="unique-tab" data-toggle="tab" href="#uniquetab" role="tab" aria-controls="uniquetab" aria-selected="false">Unique callsigns</a>
+							<a class="nav-link" id="unique-tab" data-toggle="tab" href="#uniquetab" role="tab" aria-controls="uniquetab" aria-selected="false"><?php echo lang('statistics_unique_callsigns'); ?></a>
 						</li>
 					</ul>
 				<div class="tab-content">

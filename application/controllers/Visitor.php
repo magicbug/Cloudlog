@@ -11,11 +11,17 @@ class Visitor extends CI_Controller {
         if($method == "config") {
             $this->$method();
         }
-        elseif($method == "map") {
+		elseif($method == "map") {
             $this->map($method);
+        }
+        elseif($method == "radio_display_component") {
+            $this->radio_display_component($method);
         }
         elseif($method == "satellites") {
             $this->satellites($method);
+        }
+        elseif($method == "search") {
+            $this->search($method);
         }
         else {
             $this->index($method);
@@ -126,6 +132,13 @@ class Visitor extends CI_Controller {
         }
 	}
 	
+	public function radio_display_component() {
+		$this->load->model('cat');
+
+		$data['radio_status'] = $this->cat->recent_status();
+		$this->load->view('components/radio_display_table', $data);
+	}
+
     public function map() {
 		$this->load->model('logbook_model');
 		
@@ -281,7 +294,7 @@ class Visitor extends CI_Controller {
 		$grid_6char_confirmed = "";
 
 
-		// Get Confirmed LOTW & Paper Squares (non VUCC)
+		// Get Confirmed LoTW & Paper Squares (non VUCC)
 		$query = $this->gridsquares_model->get_confirmed_sat_squares($logbooks_locations_array);
 
 
@@ -442,4 +455,37 @@ class Visitor extends CI_Controller {
 			return false;
 		}
 	}
+
+	public function public_search_enabled($slug) {
+		$this->load->model('Logbooks_model');
+		$logbook_id = $this->Logbooks_model->public_slug_exists_logbook_id($slug);
+		if ($this->Logbooks_model->public_search_enabled($logbook_id)  == 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function search() {
+		$callsign = trim($this->security->xss_clean($this->input->post('callsign')));
+		$public_slug = $this->security->xss_clean($this->input->post('public_slug'));
+		$this->load->model('publicsearch');
+		$data['page_title'] = "Public Search";
+		$data['callsign'] = $callsign;
+		$data['slug'] = $public_slug;
+		if ($callsign != '') {
+			$result = $this->publicsearch->search($public_slug, $callsign);
+		}
+		if (!empty($result) && $result->num_rows() > 0) {
+			$data['results'] = $result;
+			$this->load->view('visitor/layout/header', $data);
+			$this->load->view('public_search/result.php', $data);
+			$this->load->view('visitor/layout/footer');
+		} else {
+			$this->load->view('visitor/layout/header', $data);
+			$this->load->view('public_search/empty.php', $data);
+			$this->load->view('visitor/layout/footer');
+		}
+	}
+
 }
