@@ -518,7 +518,7 @@
             <div id="qsomap" style="width: 100%; height: 200px;"></div>
     </div>
 
-    <div id="winkey" class="card winkey-settings" style="padding-bottom: 10px;">
+    <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px;">
         <div class="card-header">
           <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey 
 
