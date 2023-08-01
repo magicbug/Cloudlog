@@ -1,10 +1,3 @@
-let isWinkeyConnected = false;
-
-// if isWinkeyConnected is false
-if (!isWinkeyConnected) {
-    $('#winkey_buttons').hide();
-}
-
 // Lets see if CW is selected
 const ModeSelected = document.getElementById('mode');
 
@@ -114,7 +107,6 @@ async function connect() {
     //Try to connect to the Serial port
     try {
         isWinkeyConnected = true;
-        $('#winkey_buttons').show();
         port = await navigator.serial.requestPort(/*{ filters: [filter] }*/);
         // Continue connecting to |port|.
 
