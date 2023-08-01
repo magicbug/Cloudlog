@@ -7,6 +7,8 @@
   var base_url = "<?php echo base_url(); ?>"; // Base URL
   var site_url = "<?php echo site_url(); ?>"; // Site URL
   var icon_dot_url = "<?php echo base_url();?>assets/images/dot.png";
+  // get the user_callsign from session
+ var my_call = "<?php echo $this->session->userdata('user_callsign'); ?>".toUpperCase();
 </script>
 
 <!-- General JS Files used across Cloudlog -->
@@ -936,7 +938,9 @@ $(document).on('keypress',function(e) {
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
+
 <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
+ <script src="<?php echo base_url() ;?>assets/js/winkey.js"></script>
 <?php
 
 	if ($this->optionslib->get_option('dxcache_url') != ''){ ?>
@@ -953,6 +957,7 @@ $(document).on('keypress',function(e) {
 			});
 		});
 	</script>
+
 <?php
 }
 
