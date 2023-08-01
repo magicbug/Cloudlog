@@ -96,6 +96,11 @@ navigator.serial.addEventListener('disconnect', e => {
     connectButton.innerText = "Connect"
 });
 
+let debug              = 0;
+let speed              = 24;
+let minSpeed           = 20;
+let maxSpeed           = 40;
+
 //Connect to the serial
 async function connect() {
 
@@ -123,6 +128,9 @@ async function connect() {
         const encoder = new TextEncoderStream();
         outputDone = encoder.readable.pipeTo(port.writable);
         outputStream = encoder.writable;
+        
+        writeToByte("0x00, 0x02");
+        writeToByte("0x02, 0x00");
 
         reader = inputStream.getReader();
         readLoop();
@@ -141,6 +149,15 @@ async function writeToStream(line) {
     var enc = new TextEncoder(); // always utf-8
     
     const writer = outputStream.getWriter();
+    writer.write(line);
+    writer.releaseLock();
+}
+
+async function writeToByte(line) {
+    var enc = new TextEncoder(); // always utf-8
+    
+    const writer = outputStream.getWriter();
+    const data = new Uint8Array([line]);
     writer.write(line);
     writer.releaseLock();
 }
