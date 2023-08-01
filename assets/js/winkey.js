@@ -111,6 +111,7 @@ async function connect() {
 
         // - Wait for the port to open.
         await port.open({ baudRate: 1200 });
+        await port.setSignals({ requestToSend: true });
 
         statusBar.innerText = "Connected";
         connectButton.innerText = "Disconnect"
