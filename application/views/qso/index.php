@@ -533,7 +533,7 @@
           </h4>
         </div>
 
-        <div class="card-body">
+        <div id="winkey_buttons" class="card-body">
         <div id="modals-here"></div>
           <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
           <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>

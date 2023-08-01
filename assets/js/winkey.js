@@ -1,5 +1,11 @@
-// Lets see if CW is selected
+let isWinkeyConnected = false;
 
+// if isWinkeyConnected is false
+if (!isWinkeyConnected) {
+    $('#winkey_buttons').hide();
+}
+
+// Lets see if CW is selected
 const ModeSelected = document.getElementById('mode');
 
 if (location.protocol == 'http:') {
@@ -70,7 +76,6 @@ let statusBar = document.getElementById("statusBar");
 //Couple the elements to the Events
 connectButton.addEventListener("click", clickConnect)
 sendButton.addEventListener("click", clickSend)
-helpButton.addEventListener("click", clickHelp)
 statusButton.addEventListener("click", clickStatus)
 
 //When the connectButton is pressed
@@ -78,10 +83,11 @@ async function clickConnect() {
     if (port) {
         //if already connected, disconnect
         disconnect();
-
+        $('#winkey_buttons').hide();
     } else {
         //otherwise connect
         await connect();
+        $('#winkey_buttons').show();
     }
 }
 
@@ -107,6 +113,8 @@ async function connect() {
 
     //Try to connect to the Serial port
     try {
+        isWinkeyConnected = true;
+        $('#winkey_buttons').show();
         port = await navigator.serial.requestPort(/*{ filters: [filter] }*/);
         // Continue connecting to |port|.
 
