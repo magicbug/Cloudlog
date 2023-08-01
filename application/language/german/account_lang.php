@@ -44,7 +44,7 @@ $lang['account_location_auto_lookup'] = 'Automatische Ermittlung der Lokation.';
 $lang['account_if_set_gridsquare_is_fetched_based_on_location_name'] = 'Wenn aktiviert, wird das Planquadrat basierend auf der Lokation ermittelt.';
 $lang['account_sota_auto_lookup_gridsquare_and_name_for_summit'] = 'Automatische Ermittlung von Planquadrat und Lokation anhand des SOTA Gipfels.';
 $lang['account_wwff_auto_lookup_gridsquare_and_name_for_reference'] = 'Automatische Ermittlung von Planquadrat und Lokation andhand der WWFF Referenz.';
-$lang['account_pota_auto_lookup_gridsquare_and_name_for_park'] = 'Automatische Ermuttlung des Parknamens anhand der POTA Referenz.';
+$lang['account_pota_auto_lookup_gridsquare_and_name_for_park'] = 'Automatische Ermittlung des Parknamens anhand der POTA Referenz.';
 $lang['account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'] = 'Wenn aktiviert, werden Name und Planquadrat über die API ermittelt und gesetzt.';
 
 $lang['account_previous_qsl_type'] = 'QSL Typ der vorherigen QSOs';
