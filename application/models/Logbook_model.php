@@ -3850,6 +3850,12 @@ class Logbook_model extends CI_Model {
         $this->db->trans_complete();
     }
 
+    public function calls_without_station_id() {
+		$query=$this->db->query("select distinct COL_STATION_CALLSIGN from ".$this->config->item('table_name')." where station_id is null or station_id = ''");
+	    $result = $query->result_array();
+	    return $result;
+    }
+
     public function check_for_station_id() {
       $this->db->where('station_id =', NULL);
       $query = $this->db->get($this->config->item('table_name'));
@@ -3909,14 +3915,20 @@ class Logbook_model extends CI_Model {
         }
     }
 
-    public function update_all_station_ids() {
+    public function update_all_station_ids($station_id,$station_callsign) {
 
-      $data = array(
-        'station_id' => '1',
-      );
+	    $data = array(
+		    'station_id' => $station_id,
+	    );
 
-      $this->db->where(array('station_id' => NULL));
-      return $this->db->update($this->config->item('table_name'), $data);
+	    $this->db->where(array('station_id' => NULL));
+	    $this->db->where('col_station_callsign', $station_callsign);
+	    $this->db->update($this->config->item('table_name'), $data);
+	    if ($this->db->affected_rows() > 0) {
+		    return TRUE;
+	    } else {
+		    return FALSE;
+	    }
     }
 
     public function parse_frequency($frequency)

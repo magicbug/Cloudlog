@@ -1,0 +1,57 @@
+<div class="container">
+<br>
+	<?php if($this->session->flashdata('message')) { ?>
+		<!-- Display Message -->
+		<div class="alert-message error">
+		  <p><?php echo $this->session->flashdata('message'); ?></p>
+		</div>
+	<?php } ?>
+
+<h2><?php echo $page_title; ?></h2>
+
+<div class="card">
+  <div class="card-header">
+    Maintenance
+  </div>
+<?php if($is_there_qsos_with_no_station_id >= 1) { ?>
+                        <div class="alert alert-danger" role="alert">
+                                <span class="badge badge-pill badge-warning">Warning</span> The Database contains QSOs without a station-profile (location)<br/>
+                        </div>
+  <div class="card-body">
+    <p class="card-text">Please reassign those QSOs to an existing station location:</p>
+
+
+ <div class="table-responsive">
+                <table id="station_locations_table" class="table table-sm table-striped">
+                        <thead>
+                                <tr>
+                                        <th scope="col">Call</th>
+                                        <th scope="col">Target Location</th>
+                                        <th scope="col">Reassign</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+        <?php 
+		foreach ($calls_wo_sid as $call) {
+			echo '<tr><td>'.$call['COL_STATION_CALLSIGN'].'</td><td><select name="station_profile" id="station_profile">';
+				$options='';
+				foreach ($stations->result() as $station) {
+					$options.='<option value='.$station->station_id.'>'.$station->station_profile_name.' ('.$station->station_callsign.')</option>';
+				}
+			echo $options.'</select></td><td><button class="btn btn-warning" onClick="reassign(\''.$call['COL_STATION_CALLSIGN'].'\',$(\'#station_profile option:selected\').val());"><i class="fas fa-sync"></i>Reassign</a></button></td></tr>'; 
+		} ?>
+	</tbody></table>
+  </div>
+  </div>
+                <?php 
+	} else { ?>
+                        <div class="alert alert-secondary" role="alert">
+                                <span class="badge badge-pill badge-success">Everything ok</span> Every QSO in your Database is assigned to a station-profile (location)
+                        </div>
+		<?php } ?>
+
+  </div>
+
+
+</div>
+
