@@ -207,6 +207,16 @@ class QSO extends CI_Controller {
         echo "Macros Saved, Press Close and lets get sending!";
     }
 
+    function cwmacros_json() {
+        // Load model Winkey
+        $this->load->model('winkey');
+
+        header('Content-Type: application/json; charset=utf-8');
+
+        // Call settings_json from model winkey
+        echo $this->winkey->settings_json($this->session->userdata('user_id'), $this->session->userdata('station_profile_id'));
+    }
+
     function edit_ajax() {
 
         $this->load->model('logbook_model');
