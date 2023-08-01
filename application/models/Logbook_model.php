@@ -536,7 +536,7 @@ class Logbook_model extends CI_Model {
 		if (isset($result->hrdlog_code) && $result->hrdlogrealtime == 1) {
 			$CI =& get_instance();
 			$CI->load->library('AdifHelper');
-			$qso = $this->get_qso($last_id)->result();
+			$qso = $this->get_qso($last_id,true)->result();
 
 			$adif = $CI->adifhelper->getAdifLine($qso[0]);
 			$result = $this->push_qso_to_hrdlog($result->hrdlog_code, $data['COL_STATION_CALLSIGN'], $adif);
@@ -550,7 +550,7 @@ class Logbook_model extends CI_Model {
 		if (isset($result->qrzapikey) && $result->qrzrealtime == 1) {
 			$CI =& get_instance();
 			$CI->load->library('AdifHelper');
-			$qso = $this->get_qso($last_id)->result();
+			$qso = $this->get_qso($last_id,true)->result();
 
 			$adif = $CI->adifhelper->getAdifLine($qso[0]);
 			$result = $this->push_qso_to_qrz($result->qrzapikey, $adif);
@@ -564,7 +564,7 @@ class Logbook_model extends CI_Model {
 		if (isset($result->webadifapikey) && $result->webadifrealtime == 1) {
 			$CI =& get_instance();
 			$CI->load->library('AdifHelper');
-			$qso = $this->get_qso($last_id)->result();
+			$qso = $this->get_qso($last_id,true)->result();
 
 			$adif = $CI->adifhelper->getAdifLine($qso[0]);
 			$result = $this->push_qso_to_webadif(
@@ -1446,8 +1446,8 @@ class Logbook_model extends CI_Model {
     return $this->db->get();
   }
 
-  function get_qso($id) {
-	  if ($this->logbook_model->check_qso_is_accessible($id)) {
+  function get_qso($id, $trusted = false) {
+	  if ($trusted || ($this->logbook_model->check_qso_is_accessible($id))) {
 		  $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, coalesce(dxcc_entities_2.name, "- NONE -") as station_country, dxcc_entities_2.end as station_end, eQSL_images.image_file as eqsl_image_file, lotw_users.callsign as lotwuser, lotw_users.lastupload');
 		  $this->db->from($this->config->item('table_name'));
 		  $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
