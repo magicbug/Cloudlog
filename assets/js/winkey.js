@@ -2,6 +2,33 @@ let function1Name, function1Macro, function2Name, function2Macro, function3Name,
 
 getMacros();
 
+document.addEventListener('keydown', function(event) {
+
+    if (event.key === 'F1') {
+        event.preventDefault();
+        morsekey_func1();
+    }
+
+    if (event.key === 'F2') {
+        event.preventDefault();
+        morsekey_func2();
+    }
+
+    if (event.key === 'F3') {
+        event.preventDefault();
+        morsekey_func3();
+    }
+
+    if (event.key === 'F4') {
+        event.preventDefault();
+        morsekey_func4();
+    }
+
+    if (event.key === 'F5') {
+        event.preventDefault();
+        morsekey_func5();
+    }
+  });
 
 let sendText = document.getElementById("sendText");
 let sendButton = document.getElementById("sendButton");
