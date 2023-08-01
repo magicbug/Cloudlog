@@ -90,10 +90,11 @@ class Labels extends CI_Controller {
 
 	public function printids() {
 		$ids = xss_clean(json_decode($this->input->post('id')));
+		$offset = xss_clean($this->input->post('startat'));
 		$this->load->model('labels_model');
 		$result = $this->labels_model->export_printrequestedids($ids);
 
-		$this->prepareLabel($result, true);
+		$this->prepareLabel($result, true, $offset);
 	}
 
 	public function print($station_id) {
