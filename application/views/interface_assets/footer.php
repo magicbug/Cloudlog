@@ -77,6 +77,10 @@ function load_was_map() {
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "maintenance" ) { ?>
+    <script src="<?php echo base_url() ;?>assets/js/sections/maintenance.js"></script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "adif" ) { ?>
     <script src="<?php echo base_url() ;?>assets/js/sections/adif.js"></script>
 <?php } ?>

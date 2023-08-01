@@ -83,3 +83,5 @@ $lang['menu_hardware_interfaces'] = 'Hardware-Schnittstellen';
 $lang['menu_help'] = 'Hilfe';
 $lang['menu_forum'] = 'Forum';
 $lang['menu_logout'] = 'Logout';
+
+$lang['menu_maintenance'] = 'Wartung';
