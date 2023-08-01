@@ -533,11 +533,11 @@
 
         <div class="card-body">
         <div id="modals-here"></div>
-          <button onclick="morsekey_func1()" class="btn btn-warning">F1</button>
-          <button onclick="morsekey_func2()" class="btn btn-warning">F2</button>
-          <button onclick="morsekey_func3()" class="btn btn-warning">F3</button>
-          <button onclick="morsekey_func4()" class="btn btn-warning">F4</button>
-          <button onclick="morsekey_func5()" class="btn btn-warning">F5</button>
+          <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
+          <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>
+          <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
+          <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
+          <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
           <br><br>
           <input id="sendText" type="text"><input id="sendButton" type="button" value="Send" class="btn btn-success">
 

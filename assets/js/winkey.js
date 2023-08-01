@@ -1,3 +1,7 @@
+let function1Name, function1Macro, function2Name, function2Macro, function3Name, function3Macro, function4Name, function4Macro, function5Name, function5Macro;
+
+getMacros();
+
 let sendText = document.getElementById("sendText");
 let sendButton = document.getElementById("sendButton");
 let receiveText = document.getElementById("receiveText");
@@ -115,13 +119,40 @@ function clickSend() {
 }
 
 function morsekey_func1() {
-    console.log("send CQ");
-    writeToStream("CQ CQ 2M0SQL");
-    
+    console.log("F1: " + function1Macro);
+    writeToStream(function1Macro);
     //and clear the input field, so it's clear it has been sent
     sendText.value = "";
-
 }
+
+function morsekey_func2() {
+    console.log("F2: " + function2Macro);
+    writeToStream(function2Macro);
+    //and clear the input field, so it's clear it has been sent
+    sendText.value = "";
+}
+
+function morsekey_func3() {
+    console.log("F3: " + function3Macro);
+    writeToStream(function3Macro);
+    //and clear the input field, so it's clear it has been sent
+    sendText.value = "";
+}
+
+function morsekey_func4() {
+    console.log("F4: " + function4Macro);
+    writeToStream(function4Macro);
+    //and clear the input field, so it's clear it has been sent
+    sendText.value = "";
+}
+
+function morsekey_func5() {
+    console.log("F5: " + function5Macro);
+    writeToStream(function5Macro);
+    //and clear the input field, so it's clear it has been sent
+    sendText.value = "";
+}
+
 
 
 //Read the incoming data
@@ -148,8 +179,44 @@ function closeModal() {
 	modal.classList.remove("show")
 	backdrop.classList.remove("show")
 
+    getMacros();
+
 	setTimeout(function() {
 		container.removeChild(backdrop)
 		container.removeChild(modal)
 	}, 200)
+}
+
+// Call url and store the returned json data as variables
+function getMacros() {
+    fetch(base_url + 'index.php/qso/cwmacros_json')
+  .then(response => response.json())
+  .then(data => {
+    function1Name = data.function1_name;
+    function1Macro = data.function1_macro;
+    function2Name = data.function2_name;
+    function2Macro = data.function2_macro;
+    function3Name = data.function3_name;
+    function3Macro = data.function3_macro;
+    function4Name = data.function4_name;
+    function4Macro = data.function4_macro;
+    function5Name = data.function5_name;
+    function5Macro = data.function5_macro;
+    // Do something with the variables
+
+    const morsekey_func1_Button = document.getElementById('morsekey_func1');
+    morsekey_func1_Button.textContent = 'F1 (' + function1Name + ')';
+
+    const morsekey_func2_Button = document.getElementById('morsekey_func2');
+    morsekey_func2_Button.textContent = 'F2 (' + function2Name + ')';
+
+    const morsekey_func3_Button = document.getElementById('morsekey_func3');
+    morsekey_func3_Button.textContent = 'F3 (' + function3Name + ')';
+    
+    const morsekey_func4_Button = document.getElementById('morsekey_func4');
+    morsekey_func4_Button.textContent = 'F4 (' + function4Name + ')';
+
+    const morsekey_func5_Button = document.getElementById('morsekey_func5');
+    morsekey_func5_Button.textContent = 'F5 (' + function5Name + ')';
+  });
 }
