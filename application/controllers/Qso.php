@@ -290,13 +290,13 @@ class QSO extends CI_Controller {
 	function delete($id) {
 		$this->load->model('logbook_model');
 
-		$this->logbook_model->delete($id);
-
-		$this->session->set_flashdata('notice', 'QSO Deleted Successfully');
-		$data['message_title'] = "Deleted";
-		$data['message_contents'] = "QSO Deleted Successfully";
-		$this->load->view('messages/message', $data);
-
+		if ($this->logbook_model->check_qso_is_accessible($id)) {
+			$this->logbook_model->delete($id);
+			$this->session->set_flashdata('notice', 'QSO Deleted Successfully');
+			$data['message_title'] = "Deleted";
+			$data['message_contents'] = "QSO Deleted Successfully";
+			$this->load->view('messages/message', $data);
+		}
 
 		// If deletes from /logbook dropdown redirect
 		if (strpos($_SERVER['HTTP_REFERER'], '/logbook') !== false) {
@@ -309,10 +309,14 @@ class QSO extends CI_Controller {
         $id = str_replace('"', "", $this->input->post("id"));
 
         $this->load->model('logbook_model');
-
-        $this->logbook_model->delete($id);
-        header('Content-Type: application/json');
-        echo json_encode(array('message' => 'OK'));
+	if ($this->logbook_model->check_qso_is_accessible($id)) {
+        	$this->logbook_model->delete($id);
+        	header('Content-Type: application/json');
+        	echo json_encode(array('message' => 'OK'));
+	} else {
+        	header('Content-Type: application/json');
+        	echo json_encode(array('message' => 'not allowed'));
+	}
         return;
     }
 

@@ -99,11 +99,15 @@ class Labels extends CI_Controller {
 	public function print($station_id) {
 		$clean_id = xss_clean($station_id);
 		$offset = xss_clean($this->input->post('startat'));
+		$this->load->model('stations');
+		if ($this->stations->check_station_is_accessible($station_id)) {
+			$this->load->model('labels_model');
+			$result = $this->labels_model->export_printrequested($clean_id);
 
-		$this->load->model('labels_model');
-		$result = $this->labels_model->export_printrequested($clean_id);
-
-		$this->prepareLabel($result, false, $offset);
+			$this->prepareLabel($result, false, $offset);
+		} else {
+			redirect('labels');
+		}
 	}
 
 	function prepareLabel($qsos, $jscall = false, $offset = 1) {
