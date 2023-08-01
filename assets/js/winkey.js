@@ -1,3 +1,34 @@
+// Lets see if CW is selected
+
+const ModeSelected = document.getElementById('mode');
+
+if (location.protocol == 'http:') {
+    // Do something if the page is being served over SSL
+    $('#winkey').hide(); // Hide the CW buttons
+}
+
+if (ModeSelected.value == 'CW') {
+    // Show the CW buttons
+    $('#winkey').show();
+} else {
+    // Hide the CW buttons
+    $('#winkey').hide();
+}
+
+ModeSelected.addEventListener('change', (event) => {
+
+    if (event.target.value == 'CW') {
+        // Show the CW buttons
+        $('#winkey').show();
+
+    } else {
+        // Hide the CW buttons
+        $('#winkey').hide();
+    }
+});
+
+
+
 let function1Name, function1Macro, function2Name, function2Macro, function3Name, function3Macro, function4Name, function4Macro, function5Name, function5Macro;
 
 getMacros();
