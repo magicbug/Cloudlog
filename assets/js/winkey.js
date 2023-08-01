@@ -106,7 +106,6 @@ async function connect() {
 
     //Try to connect to the Serial port
     try {
-        isWinkeyConnected = true;
         port = await navigator.serial.requestPort(/*{ filters: [filter] }*/);
         // Continue connecting to |port|.
 
