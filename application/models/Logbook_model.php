@@ -4014,6 +4014,7 @@ class Logbook_model extends CI_Model {
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
         $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
         $this->db->where('COL_STATE', $state);
         $this->db->where('COL_CNTY', $county);
