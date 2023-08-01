@@ -19,6 +19,9 @@ class Station extends CI_Controller {
 	{
 		$this->load->model('stations');
 		$this->load->model('Logbook_model');
+		$this->load->model('user_model');
+
+		$data['is_admin'] = ($this->user_model->authorize(99));
 
 		$data['stations'] = $this->stations->all_with_count();
 		$data['current_active'] = $this->stations->find_active();
@@ -156,13 +159,6 @@ class Station extends CI_Controller {
 		redirect('station');
 	}
 
-	function assign_all() {
-		$this->load->model('Logbook_model');
-		$this->Logbook_model->update_all_station_ids();
-
-		redirect('station');
-	}
-
 	public function delete($id) {
 		$this->load->model('stations');
 		if ($this->stations->check_station_is_accessible($id)) {
@@ -171,7 +167,7 @@ class Station extends CI_Controller {
 		redirect('station');
 	}
 
-    public function deletelog($id) {
+    	public function deletelog($id) {
         $this->load->model('stations');
 	if ($this->stations->check_station_is_accessible($id)) {
         	$this->stations->deletelog($id);
