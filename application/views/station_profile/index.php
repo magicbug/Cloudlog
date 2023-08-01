@@ -33,7 +33,7 @@
 			<div class="alert alert-danger" role="alert">
 		  		<span class="badge badge-pill badge-warning">Warning</span> Due to recent changes within Cloudlog you need to reassign QSOs to your station profiles.
 				</br>
-		  		Please reassign them at <a href="<?php echo site_url('maintenance/'); ?>" class="btn btn-danger"><i class="fas fa-trash-alt"></i>Admin/Maintenance</a>
+		  		Please reassign them at <a href="<?php echo site_url('maintenance/'); ?>" class="btn btn-warning"><i class="fas fa-sync"></i>Admin/Maintenance</a>
 			</div>
 		<?php } ?>
 	  
