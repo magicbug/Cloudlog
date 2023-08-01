@@ -25,11 +25,25 @@ class Labels_model extends CI_Model {
 
 	}
 
+	function addPaper() {
+		$data = array(
+			'user_id' 		=> $this->session->userdata('user_id'),
+            'paper_name' 	=> xss_clean($this->input->post('paper_name', true)),
+            'metric' 		=> xss_clean($this->input->post('measurementType', true)),
+            'width' 		=> xss_clean($this->input->post('width', true)),
+            'height' 		=> xss_clean($this->input->post('height', true)),
+            'last_modified' => date('Y-m-d H:i:s'),
+		);
+
+	   $this->db->insert('paper_types', $data);
+
+	}
+
     function getLabel($id) {
         $this->db->where('user_id', $this->session->userdata('user_id'));
         $this->db->where('id', $id);
 		$query = $this->db->get('label_types');
-		
+
         return $query->row();
     }
 
@@ -63,26 +77,26 @@ class Labels_model extends CI_Model {
     function deleteLabel($id) {
         $cleanid = xss_clean($id);
 
-        $this->db->delete('label_types', array('id' => $cleanid, 'user_id' => $this->session->userdata('user_id'))); 
+        $this->db->delete('label_types', array('id' => $cleanid, 'user_id' => $this->session->userdata('user_id')));
     }
 
     function fetchLabels($user_id) {
         $this->db->where('user_id', $user_id);
 		$query = $this->db->get('label_types');
-		
+
         return $query->result();
 	}
 
  	function fetchQsos($user_id) {
 
 		$qsl = "select count(*) count, station_profile.station_profile_name, station_profile.station_callsign, station_profile.station_id, station_profile.station_gridsquare
-        from ". $this->config->item('table_name') . " as l 
+        from ". $this->config->item('table_name') . " as l
         join station_profile on l.station_id = station_profile.station_id
         where l.COL_QSL_SENT in ('R', 'Q')
         and station_profile.user_id = " . $user_id .
         " group by station_profile.station_profile_name, station_profile.station_callsign, station_profile.station_id, station_profile.station_gridsquare
         order by station_profile.station_callsign";
-        
+
         $query = $this->db->query($qsl);
 
 		return $query->result();
@@ -92,7 +106,7 @@ class Labels_model extends CI_Model {
         $this->db->where('user_id', $this->session->userdata('user_id'));
         $this->db->where('useforprint', '1');
 		$query = $this->db->get('label_types');
-		
+
         return $query->row();
     }
 
