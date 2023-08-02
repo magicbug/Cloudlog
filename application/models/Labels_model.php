@@ -119,7 +119,7 @@ class Labels_model extends CI_Model {
 
     function getPaperType($ptype) {
         $this->db->where('user_id', $this->session->userdata('user_id'));
-        $this->db->where('id',$ptype);
+        $this->db->where('paper_name',$ptype);
 		$query = $this->db->get('paper_types');
 
         return $query->row();

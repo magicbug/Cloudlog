@@ -72,7 +72,7 @@ class PDF_Label extends tfpdf {
     function __construct($format, $unit='mm', $posX=1, $posY=1, $pgX=0,$pgY=0) {
 	    if (is_array($format)) {
 		   // Custom format
-			var_dump("X".$pgX);
+			// var_dump("X".$pgX);
 		    $Tformat = $format;
 	    } else {
 		    // Built-in format
