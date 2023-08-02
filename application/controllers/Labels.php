@@ -118,8 +118,12 @@ class Labels extends CI_Controller {
 		else
 		{
 			$this->load->model('labels_model');
-			$this->labels_model->addPaper();
-
+			try {
+				$this->labels_model->addPaper();
+			} catch (\Throwable $th) {
+				$this->session->set_flashdata('error', 'Your paper could not be saved. Remember that it can\'t have the same name as existing paper types.');
+				redirect('labels/createpaper');
+			}
 			redirect('labels');
 		}
 
@@ -379,7 +383,13 @@ class Labels extends CI_Controller {
 
 	public function updatePaper($id) {
 		$this->load->model('labels_model');
-		$this->labels_model->updatePaper($id);
+		try {
+			$this->labels_model->updatePaper($id);
+		} catch (\Throwable $th) {
+			$this->session->set_flashdata('error', 'Your paper could not be saved. Remember that it can\'t have the same name as existing paper types.');
+			$cleanid = $this->security->xss_clean($id);
+			redirect('labels/editpaper/'.$cleanid);
+		}
 		$this->session->set_flashdata('message', 'Paper was saved.');
 		redirect('labels');
 	}
