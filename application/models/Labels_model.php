@@ -87,6 +87,13 @@ class Labels_model extends CI_Model {
         return $query->result();
 	}
 
+	function fetchPapertypes($user_id) {
+        $this->db->where('user_id', $user_id);
+		$query = $this->db->get('paper_types');
+
+        return $query->result();
+	}
+
  	function fetchQsos($user_id) {
 
 		$qsl = "select count(*) count, station_profile.station_profile_name, station_profile.station_callsign, station_profile.station_id, station_profile.station_gridsquare
@@ -158,5 +165,36 @@ class Labels_model extends CI_Model {
         $query = $this->db->get($this->config->item('table_name'));
 
         return $query;
+    }
+
+	function updatePaper($id) {
+        $data = array(
+			'user_id' 		=> $this->session->userdata('user_id'),
+            'paper_name' 	=> xss_clean($this->input->post('paper_name', true)),
+            'metric' 		=> xss_clean($this->input->post('measurementType', true)),
+            'width' 		=> xss_clean($this->input->post('width', true)),
+            'height' 		=> xss_clean($this->input->post('height', true)),
+            'last_modified' => date('Y-m-d H:i:s'),
+		);
+
+        $cleanid = $this->security->xss_clean($id);
+
+        $this->db->where('user_id', $this->session->userdata('user_id'));
+        $this->db->where('id', $cleanid);
+        $this->db->update('paper_types', $data);
+    }
+
+    function deletePaper($id) {
+        $cleanid = xss_clean($id);
+
+        $this->db->delete('paper_types', array('id' => $cleanid, 'user_id' => $this->session->userdata('user_id')));
+    }
+
+	function getPaper($id) {
+        $this->db->where('user_id', $this->session->userdata('user_id'));
+        $this->db->where('id', $id);
+		$query = $this->db->get('paper_types');
+
+        return $query->row();
     }
 }

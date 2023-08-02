@@ -28,10 +28,41 @@
 	<div class="card-body">
 	<a href="<?php echo site_url('labels/create'); ?>" class="btn btn-outline-primary btn-sm">Create New Label Type</a>
 	<a href="<?php echo site_url('labels/createpaper'); ?>" class="btn btn-outline-primary btn-sm">Create New Paper Type</a>
+<br><br>
+	<?php if ($papertypes) { ?>
+		<h4>Paper types</h4>
+						<table style="width:100%" class="table-sm labeltable table-bordered table-hover table-striped table-condensed text-center">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Measurement</th>
+								<th>Width</th>
+								<th>Height</th>
+								<th>Last Modified</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php
+		foreach($papertypes as $paper) { ?>
+			<tr class='label_<?php echo $paper->id ?>'>
+			<td><?php echo $paper->paper_name; ?></td>
+			<td><?php echo $paper->metric; ?></td>
+			<td><?php echo $paper->width; ?></td>
+			<td><?php echo $paper->height; ?></td>
+			<td><?php echo $paper->last_modified; ?></td>
+			<td><a href="<?php echo site_url('labels/editpaper/' . $paper->id); ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a></td>
+			<td><a href="<?php echo site_url('labels/deletepaper/' . $paper->id); ?>" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></a></td>
+			</tr>
 
+		<?php }
+		echo '</tbody></table>';
+	} ?>
 
-	<?php if ($labels) {
-		echo '<br/><br/>';?>
+	<?php if ($labels) { ?>
+		<br>
+		<h4>Label types</h4>
 						<table style="width:100%" class="table-sm labeltable table-bordered table-hover table-striped table-condensed text-center">
 						<thead>
 							<tr>

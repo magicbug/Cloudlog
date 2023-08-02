@@ -43,6 +43,8 @@ class Labels extends CI_Controller {
 
 		$data['labels'] = $this->labels_model->fetchLabels($this->session->userdata('user_id'));
 
+		$data['papertypes'] = $this->labels_model->fetchPapertypes($this->session->userdata('user_id'));
+
 		$data['qsos'] = $this->labels_model->fetchQsos($this->session->userdata('user_id'));
 
 		$footerData = [];
@@ -350,5 +352,33 @@ class Labels extends CI_Controller {
 	public function startAtLabel() {
 		$data['stationid'] = xss_clean($this->input->post('stationid'));
 		$this->load->view('labels/startatform', $data);
+	}
+
+	public function editPaper($id) {
+		$this->load->model('labels_model');
+
+		$cleanid = $this->security->xss_clean($id);
+
+		$data['paper'] = $this->labels_model->getPaper($cleanid);
+
+		$data['page_title'] = "Edit Paper";
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('labels/editpaper');
+		$this->load->view('interface_assets/footer');
+	}
+
+	public function updatePaper($id) {
+		$this->load->model('labels_model');
+		$this->labels_model->updatePaper($id);
+		$this->session->set_flashdata('message', 'Paper was saved.');
+		redirect('labels');
+	}
+
+	public function deletePaper($id) {
+		$this->load->model('labels_model');
+		$this->labels_model->deletePaper($id);
+		$this->session->set_flashdata('warning', 'Paper was deleted.');
+		redirect('labels');
 	}
 }
