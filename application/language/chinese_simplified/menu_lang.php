@@ -16,9 +16,9 @@ $lang['menu_post_contest_logging'] = '比赛日志（手动输入信息）';
 $lang['menu_view_qsl'] = '浏览QSL卡片';
 $lang['menu_view_eqsl'] = '浏览电子QSL卡片';
 
-$lang['menu_notes'] = 'N笔记';
+$lang['menu_notes'] = '笔记';
 
-$lang['menu_analytics'] = '=分析';
+$lang['menu_analytics'] = '分析';
 $lang['menu_statistics'] = '统计';
 $lang['menu_gridsquares'] = '网格';
 $lang['menu_gridmap'] = '网格地图';
