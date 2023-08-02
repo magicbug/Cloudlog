@@ -27,8 +27,8 @@
 					<label class="col-sm-2 col-form-label" for="measurementType">Measurement used</label>
 					<div class="col-sm-4">
 						<select name="measurementType" class="form-control" id="measurementType">
-							<option value="mm">Millimeters</option>
-							<option value="in">Inches</option>
+							<option selected value="mm">Millimeters</option>
+							<!-- <option value="in">Inches</option> -->
 						</select>
 					</div>
   			</div>
