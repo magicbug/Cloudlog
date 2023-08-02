@@ -57,6 +57,7 @@ class Migration_create_label_paper_types_table extends CI_Migration {
 			$this->dbforge->add_key('user_id', TRUE);
 
 			$this->dbforge->create_table('paper_types');
+			$this->db->query("CREATE UNIQUE INDEX idx_paper_types_user_id_paper_name ON paper_types (user_id, paper_name) ALGORITHM DEFAULT LOCK DEFAULT;");
 			$this->db->query("insert into paper_types (id,user_id,paper_name,metric,width,orientation,height) values ('1','1','A4','mm','210.000','P','297.000');");
 			$this->db->query("insert into paper_types (id,user_id,paper_name,metric,width,orientation,height) values ('2','1','A5','mm','148.000','P','210.000');");
 			$this->db->query("insert into paper_types (id,user_id,paper_name,metric,width,orientation,height) values ('3','1','letter','mm','215.900','P','279.400');");
