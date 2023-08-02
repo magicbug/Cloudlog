@@ -183,8 +183,6 @@ class User_Model extends CI_Model {
 	// Edit a user
 	function edit($fields) {
 
-		$this->load->library('languageswitch');
-
 		// Check user privileges
 		if(($this->session->userdata('user_type') == 99) || ($this->session->userdata('user_id') == $fields['id'])) {
 			if($this->exists_by_id($fields['id'])) {

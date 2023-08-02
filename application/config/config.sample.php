@@ -206,7 +206,7 @@ case 'german':
 	break;
 }
 
-$config['cl_multilang']=true;
+$config['cl_multilanguage']=true;
 /*
 |--------------------------------------------------------------------------
 | Default Character Set
