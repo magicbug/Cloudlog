@@ -132,7 +132,7 @@ class PDF_Label extends tfpdf {
     }
 
     // Print a label
-    function Add_Label($text,$orientation = 'L') {
+    function Add_Label($text,$orientation = 'P') {
         $this->_COUNTX++;
         if ($this->_COUNTX == $this->_X_Number) {
             // Row full, we start a new one
