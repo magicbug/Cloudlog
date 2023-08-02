@@ -154,8 +154,8 @@ $config['url_suffix'] = '';
  */
 $lang = 'english'; // this language will be used per default
 
-if (isset($_COOKIE["lang"])) {
-	$tmp_value = $_COOKIE["lang"];
+if (isset($_COOKIE["language"])) {
+	$tmp_value = $_COOKIE["language"];
 	if (!empty($tmp_value)) { $lang = $tmp_value; }
 }
 switch ($lang) {	// do this for security-reasons! parse only langs, which are known to us

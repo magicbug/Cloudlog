@@ -349,10 +349,19 @@ class User extends CI_Controller {
 			}
 
 			if($this->input->post('language')) {
-                $data['language'] = $this->input->post('language', true);
-            } else {
-                $data['language'] = $q->language;
-            }
+				$data['language'] = $this->input->post('language', true);
+			} else {
+				$data['language'] = $q->language;
+			}
+			$cookie= array(
+
+				'name'   => 'language',
+				'value'  => $data['language'],
+				'expire' => '9999',                                                                                   
+				'secure' => TRUE
+
+			);
+			$this->input->set_cookie($cookie);
 
 			if($this->input->post('user_stylesheet')) {
 				$data['user_stylesheet'] = $this->input->post('user_stylesheet', true);
@@ -585,19 +594,26 @@ class User extends CI_Controller {
 
 		$data['user'] = $query->row();
 
-		if ($this->form_validation->run() == FALSE)
-		{
+		
+		if ($this->form_validation->run() == FALSE) {
 			$data['page_title'] = "Login";
 			$this->load->view('interface_assets/mini_header', $data);
 			$this->load->view('user/login');
 			$this->load->view('interface_assets/footer');
 
-		}
-		else
-		{
+		} else {
 			if($this->user_model->login() == 1) {
 				$this->session->set_flashdata('notice', 'User logged in');
 				$this->user_model->update_session($data['user']->user_id);
+				$cookie= array(
+
+					'name'   => 'language',
+					'value'  => $data['user']->language,
+					'expire' => '9999',                                                                                   
+					'secure' => TRUE
+
+				);
+				$this->input->set_cookie($cookie);
 				redirect('dashboard');
 			} else {
 				$this->session->set_flashdata('error', 'Incorrect username or password!');
