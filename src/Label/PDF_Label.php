@@ -132,7 +132,7 @@ class PDF_Label extends tfpdf {
     }
 
     // Print a label
-    function Add_Label($text) {
+    function Add_Label($text,$orientation = 'L') {
         $this->_COUNTX++;
         if ($this->_COUNTX == $this->_X_Number) {
             // Row full, we start a new one
@@ -141,7 +141,7 @@ class PDF_Label extends tfpdf {
             if ($this->_COUNTY == $this->_Y_Number) {
                 // End of page reached, we start a new one
                 $this->_COUNTY=0;
-                $this->AddPage();
+                $this->AddPage($orientation);
             }
         }
 
