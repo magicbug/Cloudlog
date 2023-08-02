@@ -229,7 +229,6 @@ class User extends CI_Controller {
 		{
 			$data['page_title'] = "Edit User";
 
-			$this->load->view('interface_assets/header', $data);
 			$q = $query->row();
 
 			$data['id'] = $q->user_id;
@@ -353,16 +352,8 @@ class User extends CI_Controller {
 			} else {
 				$data['language'] = $q->language;
 			}
-			$cookie= array(
 
-				'name'   => 'language',
-				'value'  => $data['language'],
-				'expire' => '9999',                                                                                   
-				'secure' => TRUE
-
-			);
-			$this->input->set_cookie($cookie);
-
+			
 			if($this->input->post('user_stylesheet')) {
 				$data['user_stylesheet'] = $this->input->post('user_stylesheet', true);
 			} else {
@@ -465,11 +456,10 @@ class User extends CI_Controller {
 				$data['user_column5'] = $q->user_column5;
 			}
 
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('user/edit', $data);
 			$this->load->view('interface_assets/footer');
-		}
-		else
-		{
+		} else {
 			unset($data);
 			switch($this->user_model->edit($this->input->post())) {
 				// Check for errors
@@ -484,6 +474,17 @@ class User extends CI_Controller {
 					break;
 				// All okay, return to user screen
 				case OK:
+					if ($this->session->userdata('user_id') == $this->uri->segment(3)) { // Editing own User? Set cookie!
+						$cookie= array(
+
+							'name'   => 'language',
+							'value'  => $this->input->post('language', true),
+							'expire' => '9999',                                                                                   
+							'secure' => TRUE
+
+						);
+						$this->input->set_cookie($cookie);
+					}
 					if($this->session->userdata('user_id') == $this->input->post('id', true)) {
 						$this->session->set_flashdata('success', 'User '.$this->input->post('user_name', true).' edited');
 						redirect('user/edit/'.$this->uri->segment(3));
