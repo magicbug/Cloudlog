@@ -6,13 +6,12 @@ class User extends CI_Controller {
 	{
 		parent::__construct();
 
-		// Load language files
-		$this->lang->load(array(
-			'account',
-			'lotw',
-			'eqsl',
-			'admin',
-		));
+		 $this->lang->load(array(
+		 	'account',
+		 	'lotw',
+		 	'eqsl',
+		 	'admin',
+		 ));
 	}
 
 	public function index()
@@ -32,6 +31,8 @@ class User extends CI_Controller {
 	function add() {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+		$data['existing_languages'] = $this->find();
 
 		$this->load->model('bands');
 		$this->load->library('form_validation');
@@ -54,15 +55,14 @@ class User extends CI_Controller {
 
 		// Get timezones
 		$data['timezones'] = $this->user_model->timezones();
+		$data['language'] = 'english';
 
-		if ($this->form_validation->run() == FALSE)
-		{
+		if ($this->form_validation->run() == FALSE) {
 			$data['page_title'] = "Add User";
             $data['measurement_base'] = $this->config->item('measurement_base');
 
 			$this->load->view('interface_assets/header', $data);
-			if($this->input->post('user_name'))
-			{
+			if($this->input->post('user_name')) {
 				$data['user_name'] = $this->input->post('user_name');
 				$data['user_email'] = $this->input->post('user_email');
 				$data['user_password'] = $this->input->post('user_password');
@@ -90,14 +90,13 @@ class User extends CI_Controller {
 				$data['user_mastodon_url'] = $this->input->post('user_mastodon_url');
 				$data['user_gridmap_default_band'] = $this->input->post('user_gridmap_default_band');
 				$data['user_gridmap_confirmation'] = ($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : '');
+				$data['language'] = $this->input->post('language');
 				$this->load->view('user/add', $data);
 			} else {
 				$this->load->view('user/add', $data);
 			}
 			$this->load->view('interface_assets/footer');
-		}
-		else
-		{
+		} else {
 			switch($this->user_model->add($this->input->post('user_name'),
 				$this->input->post('user_password'),
 				$this->input->post('user_email'),
@@ -125,7 +124,9 @@ class User extends CI_Controller {
 				$this->input->post('user_amsat_status_upload'),
 				$this->input->post('user_mastodon_url'),
 				$this->input->post('user_gridmap_default_band'),
-				($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : ''))) {
+				($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : ''),
+				$this->input->post('language'),
+				)) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
 					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';
@@ -171,15 +172,34 @@ class User extends CI_Controller {
 			$data['user_mastodon_url'] = $this->input->post('user_mastodon_url');
 			$data['user_gridmap_default_band'] = $this->input->post('user_gridmap_default_band');
 			$data['user_gridmap_confirmation'] = ($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : '');
+			$data['language'] = $this->input->post('language');
 			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
 		}
+	}
+
+	function find() {
+		$existing_langs = array();
+		$lang_path = APPPATH.'language';
+
+		$results = scandir($lang_path);
+
+		foreach ($results as $result) {
+			if ($result === '.' or $result === '..') continue;
+
+			if (is_dir(APPPATH.'language' . '/' . $result)) {
+				$dirs[] = $result;
+			}
+		}
+		return $dirs;
 	}
 
 	function edit() {
 		$this->load->model('user_model');
 		if ( ($this->session->userdata('user_id') == '') || ((!$this->user_model->authorize(99)) && ($this->session->userdata('user_id') != $this->uri->segment(3))) ) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$query = $this->user_model->get_by_id($this->uri->segment(3));
+
+		$data['existing_languages'] = $this->find();
 
 		$this->load->model('bands');
 		$this->load->library('form_validation');
@@ -208,7 +228,6 @@ class User extends CI_Controller {
 		{
 			$data['page_title'] = "Edit User";
 
-			$this->load->view('interface_assets/header', $data);
 			$q = $query->row();
 
 			$data['id'] = $q->user_id;
@@ -327,6 +346,13 @@ class User extends CI_Controller {
 				$data['user_date_format'] = $q->user_date_format;
 			}
 
+			if($this->input->post('language')) {
+				$data['language'] = $this->input->post('language', true);
+			} else {
+				$data['language'] = $q->language;
+			}
+
+			
 			if($this->input->post('user_stylesheet')) {
 				$data['user_stylesheet'] = $this->input->post('user_stylesheet', true);
 			} else {
@@ -429,11 +455,10 @@ class User extends CI_Controller {
 				$data['user_column5'] = $q->user_column5;
 			}
 
+			$this->load->view('interface_assets/header', $data);
 			$this->load->view('user/edit', $data);
 			$this->load->view('interface_assets/footer');
-		}
-		else
-		{
+		} else {
 			unset($data);
 			switch($this->user_model->edit($this->input->post())) {
 				// Check for errors
@@ -448,6 +473,17 @@ class User extends CI_Controller {
 					break;
 				// All okay, return to user screen
 				case OK:
+					if ($this->session->userdata('user_id') == $this->uri->segment(3)) { // Editing own User? Set cookie!
+						$cookie= array(
+
+							'name'   => 'language',
+							'value'  => $this->input->post('language', true),
+							'expire' => time()+1000,
+							'secure' => FALSE
+
+						);
+						$this->input->set_cookie($cookie);
+					}
 					if($this->session->userdata('user_id') == $this->input->post('id', true)) {
 						$this->session->set_flashdata('success', 'User '.$this->input->post('user_name', true).' edited');
 						redirect('user/edit/'.$this->uri->segment(3));
@@ -487,6 +523,7 @@ class User extends CI_Controller {
 			$data['user_mastodon_url'] = $this->input->post('user_mastodon_url');
 			$data['user_gridmap_default_band'] = $this->input->post('user_gridmap_default_band');
 			$data['user_gridmap_confirmation'] = ($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : '');
+			$data['language'] = $this->input->post('language');
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}
@@ -557,19 +594,26 @@ class User extends CI_Controller {
 
 		$data['user'] = $query->row();
 
-		if ($this->form_validation->run() == FALSE)
-		{
+		
+		if ($this->form_validation->run() == FALSE) {
 			$data['page_title'] = "Login";
 			$this->load->view('interface_assets/mini_header', $data);
 			$this->load->view('user/login');
 			$this->load->view('interface_assets/footer');
 
-		}
-		else
-		{
+		} else {
 			if($this->user_model->login() == 1) {
 				$this->session->set_flashdata('notice', 'User logged in');
 				$this->user_model->update_session($data['user']->user_id);
+				$cookie= array(
+
+					'name'   => 'language',
+					'value'  => $data['user']->language,
+					'expire' => time()+1000,
+					'secure' => FALSE
+
+				);
+				$this->input->set_cookie($cookie);
 				redirect('dashboard');
 			} else {
 				$this->session->set_flashdata('error', 'Incorrect username or password!');
@@ -591,9 +635,9 @@ class User extends CI_Controller {
 
 	/**
 	 * Function: forgot_password
-	 * 
+	 *
 	 * Allows users to input an email address and a password will be sent to that address.
-	 * 
+	 *
 	 */
 	function forgot_password() {
 
@@ -614,7 +658,7 @@ class User extends CI_Controller {
 		{
 			// Check email address exists
 			$this->load->model('user_model');
-			
+
 			$check_email = $this->user_model->check_email_address($this->input->post('email', true));
 
 			if($check_email == TRUE) {
@@ -623,7 +667,7 @@ class User extends CI_Controller {
 				$reset_code = random_string('alnum', 50);
 
 				$this->user_model->set_password_reset_code($this->input->post('email', true), $reset_code);
-				
+
 				// Send email with reset code
 
 				$this->data['reset_code'] = $reset_code;
@@ -676,10 +720,10 @@ class User extends CI_Controller {
 			$this->load->helper(array('form', 'url'));
 
 			$this->load->library('form_validation');
-	
+
 			$this->form_validation->set_rules('password', 'Password', 'required');
 			$this->form_validation->set_rules('password_confirm', 'Password Confirmation', 'required|matches[password]');
-	
+
 			if ($this->form_validation->run() == FALSE)
 			{
 				$data['page_title'] = "Reset Password";
@@ -691,7 +735,7 @@ class User extends CI_Controller {
 			{
 				// Lets reset the password!
 				$this->load->model('user_model');
-			
+
 				$this->user_model->reset_password($this->input->post('password', true), $reset_code);
 				$this->session->set_flashdata('notice', 'Password Reset.');
 				redirect('user/login');
