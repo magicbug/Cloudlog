@@ -6,13 +6,12 @@ class User extends CI_Controller {
 	{
 		parent::__construct();
 
-		// Load language files
-		// $this->lang->load(array(
-		// 	'account',
-		// 	'lotw',
-		// 	'eqsl',
-		// 	'admin',
-		// ));
+		 $this->lang->load(array(
+		 	'account',
+		 	'lotw',
+		 	'eqsl',
+		 	'admin',
+		 ));
 	}
 
 	public function index()
@@ -479,8 +478,8 @@ class User extends CI_Controller {
 
 							'name'   => 'language',
 							'value'  => $this->input->post('language', true),
-							'expire' => time()+1000
-							// 'secure' => TRUE
+							'expire' => time()+1000,
+							'secure' => FALSE
 
 						);
 						$this->input->set_cookie($cookie);
@@ -610,8 +609,8 @@ class User extends CI_Controller {
 
 					'name'   => 'language',
 					'value'  => $data['user']->language,
-					'expire' => '9999',                                                                                   
-					'secure' => TRUE
+					'expire' => time()+1000,
+					'secure' => FALSE
 
 				);
 				$this->input->set_cookie($cookie);
