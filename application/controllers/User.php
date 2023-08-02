@@ -32,6 +32,8 @@ class User extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
+		$data['existing_languages'] = $this->find();
+
 		$this->load->model('bands');
 		$this->load->library('form_validation');
 
@@ -53,15 +55,14 @@ class User extends CI_Controller {
 
 		// Get timezones
 		$data['timezones'] = $this->user_model->timezones();
+		$data['language'] = 'english';
 
-		if ($this->form_validation->run() == FALSE)
-		{
+		if ($this->form_validation->run() == FALSE) {
 			$data['page_title'] = "Add User";
             $data['measurement_base'] = $this->config->item('measurement_base');
 
 			$this->load->view('interface_assets/header', $data);
-			if($this->input->post('user_name'))
-			{
+			if($this->input->post('user_name')) {
 				$data['user_name'] = $this->input->post('user_name');
 				$data['user_email'] = $this->input->post('user_email');
 				$data['user_password'] = $this->input->post('user_password');
@@ -95,9 +96,7 @@ class User extends CI_Controller {
 				$this->load->view('user/add', $data);
 			}
 			$this->load->view('interface_assets/footer');
-		}
-		else
-		{
+		} else {
 			switch($this->user_model->add($this->input->post('user_name'),
 				$this->input->post('user_password'),
 				$this->input->post('user_email'),
@@ -125,8 +124,9 @@ class User extends CI_Controller {
 				$this->input->post('user_amsat_status_upload'),
 				$this->input->post('user_mastodon_url'),
 				$this->input->post('user_gridmap_default_band'),
+				($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : ''),
 				$this->input->post('language'),
-				($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : ''))) {
+				)) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
 					$data['username_error'] = 'Username <b>'.$this->input->post('user_name').'</b> already in use!';

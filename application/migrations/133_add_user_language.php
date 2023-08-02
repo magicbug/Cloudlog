@@ -3,8 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
- *   This adds an option to enable grid and name lookup
- *   for WWFF references
+ *   This adds a field to user-table to hold/persist language-setting per user
 */
 
 class Migration_add_user_language extends CI_Migration {
