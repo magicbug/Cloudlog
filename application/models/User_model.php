@@ -172,6 +172,7 @@ class User_Model extends CI_Model {
 			$this->db->insert($this->config->item('auth_table'), $data);
 			$insert_id = $this->db->insert_id();
 			$this->db->query("insert into bandxuser (bandid, userid, active, cq, dok, dxcc, iota, pota, sig, sota, uscounties, was, wwff, vucc) select bands.id, " . $insert_id . ", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 from bands;");
+			$this->db->query("insert into paper_types (user_id,paper_name,metric,width,orientation,height) SELECT ".$insert_id.", paper_name, metric, width, orientation,height FROM paper_types where id<4;");
 			return OK;
 		} else {
 			return EUSERNAMEEXISTS;
