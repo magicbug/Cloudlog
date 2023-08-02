@@ -33,6 +33,8 @@
 					</div>
   			</div>
 
+    			
+
 			<div class="form-group row">
     			<label class="col-sm-2 col-form-label" for="width">Width of paper</label>
 			    <div class="col-sm-4">
@@ -44,6 +46,17 @@
 			    <div class="col-sm-4">
 				    <input name="height" type="text" class="form-control" id="height" aria-describedby="heightHelp">
 			    	<small id="heightHelp" class="form-text text-muted">Total height of paper</small>
+			    </div>
+			</div>
+
+			<div class="form-group row">
+    			<label class="col-sm-2 col-form-label" for="orientation">Orientation of paper</label>
+			    <div class="col-sm-4">
+				    <select name="orientation" class="form-control" id="orientation">
+					<option value="L">Landscape</option>
+					<option value="P">Portrait</option>
+				    </select>
+			    	<small id="heightHelp" class="form-text text-muted">Orientation of paper</small>
 			    </div>
   			</div>
 

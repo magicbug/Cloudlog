@@ -32,6 +32,7 @@ class Labels_model extends CI_Model {
             'metric' 		=> xss_clean($this->input->post('measurementType', true)),
             'width' 		=> xss_clean($this->input->post('width', true)),
             'height' 		=> xss_clean($this->input->post('height', true)),
+            'orientation'	=> xss_clean($this->input->post('orientation', true)),
             'last_modified' => date('Y-m-d H:i:s'),
 		);
 
@@ -182,6 +183,7 @@ class Labels_model extends CI_Model {
             'metric' 		=> xss_clean($this->input->post('measurementType', true)),
             'width' 		=> xss_clean($this->input->post('width', true)),
             'height' 		=> xss_clean($this->input->post('height', true)),
+            'orientation'	=> xss_clean($this->input->post('orientation', true)),
             'last_modified' => date('Y-m-d H:i:s'),
 		);
 

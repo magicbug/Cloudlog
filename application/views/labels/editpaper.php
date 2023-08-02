@@ -47,6 +47,17 @@
 			    </div>
   			</div>
 
+			<div class="form-group row">
+    			<label class="col-sm-2 col-form-label" for="orientation">Orientation of paper</label>
+			    <div class="col-sm-4">
+				    <select name="orientation" class="form-control" id="orientation">
+					<option value="L"<?php if($paper->orientation == 'L') { echo " selected"; } ?>>Landscape</option>
+					<option value="P"<?php if($paper->orientation == 'P') { echo " selected"; } ?>>Portrait</option>
+				    </select>
+			    	<small id="heightHelp" class="form-text text-muted">Orientation of paper</small>
+			    </div>
+  			</div>
+
  			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Save Paper Type</button>
 		</div>
 	</div>
