@@ -37,15 +37,16 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['ftp_no_connection']		= 'Unable to locate a valid connection ID. Please make sure you are connected before performing any file routines.';
-$lang['ftp_unable_to_connect']		= 'Unable to connect to your FTP server using the supplied hostname.';
-$lang['ftp_unable_to_login']		= 'Unable to login to your FTP server. Please check your username and password.';
-$lang['ftp_unable_to_mkdir']		= 'Unable to create the directory you have specified.';
-$lang['ftp_unable_to_changedir']	= 'Unable to change directories.';
-$lang['ftp_unable_to_chmod']		= 'Unable to set file permissions. Please check your path.';
-$lang['ftp_unable_to_upload']		= 'Unable to upload the specified file. Please check your path.';
-$lang['ftp_unable_to_download']		= 'Unable to download the specified file. Please check your path.';
-$lang['ftp_no_source_file']		= 'Unable to locate the source file. Please check your path.';
-$lang['ftp_unable_to_rename']		= 'Unable to rename the file.';
-$lang['ftp_unable_to_delete']		= 'Unable to delete the file.';
-$lang['ftp_unable_to_move']		= 'Unable to move the file. Please make sure the destination directory exists.';
+
+$lang['ftp_no_connection']		= 'Det gick inte att hitta ett giltigt anslutnings-ID. Se till att du är ansluten innan du startar några filrutiner.';
+$lang['ftp_unable_to_connect']		= 'Det gick ej att ansluta till FTP-servern med det givna värdnamnet.';
+$lang['ftp_unable_to_login']		= 'Det gick ej att logga in på FTP-servern. Kontrollera ditt användarnamn och lösenord.';
+$lang['ftp_unable_to_mkdir']		= 'Det gick inte att skapa mappen du valt.';
+$lang['ftp_unable_to_changedir']	= 'Det går inte att byta mappar.';
+$lang['ftp_unable_to_chmod']		= 'Det gick inte att välja tillstånd för filen. Kontrollera sökvägen.';
+$lang['ftp_unable_to_upload']		= 'Det gick inte att ladda upp filen. Kontrollera sökvägen.';
+$lang['ftp_unable_to_download']		= 'Det gick inte att ladda ner filen. Kontrollera sökvägen.';
+$lang['ftp_no_source_file']		= 'Det gick inte att hitta källfilen. Kontrollera sökvägen.';
+$lang['ftp_unable_to_rename']		= 'Det gick inte att byta namn på filen.';
+$lang['ftp_unable_to_delete']		= 'Det gick inte att ta bort filen.';
+$lang['ftp_unable_to_move']		= 'Det gick inte att flytta filen. Se till att destinationsmappen finns.';
