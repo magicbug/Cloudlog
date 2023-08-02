@@ -1,12 +1,7 @@
-let isWinkeyConnected = false;
-
-// if isWinkeyConnected is false
-if (!isWinkeyConnected) {
-    $('#winkey_buttons').hide();
-}
-
 // Lets see if CW is selected
 const ModeSelected = document.getElementById('mode');
+
+$('#winkey_buttons').hide();
 
 if (location.protocol == 'http:') {
     // Do something if the page is being served over SSL
@@ -103,6 +98,11 @@ navigator.serial.addEventListener('disconnect', e => {
     connectButton.innerText = "Connect"
 });
 
+let debug              = 0;
+let speed              = 24;
+let minSpeed           = 20;
+let maxSpeed           = 40;
+
 //Connect to the serial
 async function connect() {
 
@@ -113,13 +113,12 @@ async function connect() {
 
     //Try to connect to the Serial port
     try {
-        isWinkeyConnected = true;
-        $('#winkey_buttons').show();
         port = await navigator.serial.requestPort(/*{ filters: [filter] }*/);
         // Continue connecting to |port|.
 
         // - Wait for the port to open.
         await port.open({ baudRate: 1200 });
+        await port.setSignals({ dataTerminalReady: true });
 
         statusBar.innerText = "Connected";
         connectButton.innerText = "Disconnect"
@@ -131,6 +130,11 @@ async function connect() {
         const encoder = new TextEncoderStream();
         outputDone = encoder.readable.pipeTo(port.writable);
         outputStream = encoder.writable;
+        
+        writeToByte("0x00, 0x02");
+        writeToByte("0x02, 0x00");
+
+        $('#winkey_buttons').show();
 
         reader = inputStream.getReader();
         readLoop();
@@ -149,6 +153,13 @@ async function writeToStream(line) {
     var enc = new TextEncoder(); // always utf-8
     
     const writer = outputStream.getWriter();
+    writer.write(line);
+    writer.releaseLock();
+}
+
+async function writeToByte(line) {
+    const writer = outputStream.getWriter();
+    const data = new Uint8Array([line]);
     writer.write(line);
     writer.releaseLock();
 }
