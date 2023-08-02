@@ -479,8 +479,8 @@ class User extends CI_Controller {
 
 							'name'   => 'language',
 							'value'  => $this->input->post('language', true),
-							'expire' => '9999',                                                                                   
-							'secure' => TRUE
+							'expire' => time()+1000
+							// 'secure' => TRUE
 
 						);
 						$this->input->set_cookie($cookie);
