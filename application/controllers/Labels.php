@@ -157,8 +157,10 @@ class Labels extends CI_Controller {
 
 		try {
 			if ($label) {
+				$ptype=$this->labels_model->getPaperType($label->paper_type);	// fetch papersize out of paper-table
+				var_dump($ptype);
 				$pdf = new PDF_Label(array(
-					'paper-size'	=> $label->paper_type,
+					'paper-size'	=> 'custom', 				// $label->paper_type,	// The only Type left is "custom" because A4 and so on are also defined at paper_types
 					'metric'		=> $label->metric,
 					'marginLeft'	=> $label->marginleft,
 					'marginTop'		=> $label->margintop,
@@ -168,7 +170,9 @@ class Labels extends CI_Controller {
 					'SpaceY'		=> $label->spacey,
 					'width'			=> $label->width,
 					'height'		=> $label->height,
-					'font-size'		=> $label->font_size
+					'font-size'		=> $label->font_size,
+					'pgX'		=> $ptype->width,
+					'pgY'		=> $ptype->height
 				));
 			} else {
 				if ($jscall) {

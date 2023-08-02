@@ -117,6 +117,14 @@ class Labels_model extends CI_Model {
         return $query->row();
     }
 
+    function getPaperType($ptype) {
+        $this->db->where('user_id', $this->session->userdata('user_id'));
+        $this->db->where('id',$ptype);
+		$query = $this->db->get('paper_types');
+
+        return $query->row();
+    }
+
     function saveDefaultLabel($id) {
         $sql = 'update label_types set useforprint = 0 where user_id = ' . $this->session->userdata('user_id');
         $this->db->query($sql);
