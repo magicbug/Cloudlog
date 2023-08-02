@@ -322,6 +322,8 @@ class Labels extends CI_Controller {
 
 		$data['label'] = $this->labels_model->getLabel($cleanid);
 
+		$data['papertypes'] = $this->labels_model->fetchPapertypes($this->session->userdata('user_id'));
+
 		$data['page_title'] = "Edit Label";
 
 		$this->load->view('interface_assets/header', $data);

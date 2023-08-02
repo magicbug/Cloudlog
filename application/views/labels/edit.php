@@ -28,8 +28,16 @@
     			<label class="col-sm-2 col-form-label" for="paperType">Paper Type</label>
 			    <div class="col-sm-4">
 				    <select name="paper_type" class="form-control" id="paperType">
+						<option value="a3" <?php if($label->paper_type == "a3") { echo "selected=\"selected\""; } ?>>A3</option>
 						<option value="a4" <?php if($label->paper_type == "a4") { echo "selected=\"selected\""; } ?>>A4</option>
+						<option value="a5" <?php if($label->paper_type == "a5") { echo "selected=\"selected\""; } ?>>A5</option>
 						<option value="letter" <?php if($label->paper_type == "letter") { echo "selected=\"selected\""; } ?>>Letter</option>
+						<option value="legal" <?php if($label->paper_type == "legal") { echo "selected=\"selected\""; } ?>>Legal</option>
+						<?php
+							foreach($papertypes as $paper){
+								echo '<option value=' . $paper->paper_name . '>' . ucwords(strtolower(($paper->paper_name))) . '</option>';
+							}
+						?>
 					</select>
 			    </div>
 
