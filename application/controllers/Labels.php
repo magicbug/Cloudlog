@@ -71,6 +71,9 @@ class Labels extends CI_Controller {
 		$data['page_title'] = "Create Label Type";
 
 		$this->load->library('form_validation');
+		$this->load->model('labels_model');
+
+		$data['papertypes'] = $this->labels_model->fetchPapertypes($this->session->userdata('user_id'));
 
 		$this->form_validation->set_rules('label_name', 'Label Name', 'required');
 

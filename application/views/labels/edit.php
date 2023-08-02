@@ -35,7 +35,9 @@
 						<option value="legal" <?php if($label->paper_type == "legal") { echo "selected=\"selected\""; } ?>>Legal</option>
 						<?php
 							foreach($papertypes as $paper){
-								echo '<option value=' . $paper->paper_name . '>' . ucwords(strtolower(($paper->paper_name))) . '</option>';
+								echo '<option value="' . $paper->paper_name . '"';
+								if ($label->paper_type == $paper->paper_name) echo ' selected';
+								echo '>' . ucwords(strtolower(($paper->paper_name))) . '</option>';
 							}
 						?>
 					</select>

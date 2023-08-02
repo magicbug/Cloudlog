@@ -28,8 +28,16 @@
     			<label class="col-sm-2 col-form-label" for="paperType">Paper Type</label>
 			    <div class="col-sm-4">
 				    <select name="paper_type" class="form-control" id="paperType">
+						<option value="a3">A3</option>
+						<option value="a5">A5</option>
 						<option value="a4">A4</option>
 						<option value="letter">Letter</option>
+						<option value="legal">Legal</option>
+						<?php
+							foreach($papertypes as $paper){
+								echo '<option value=' . $paper->paper_name . '>' . ucwords(strtolower(($paper->paper_name))) . '</option>';
+							}
+						?>
 					</select>
 			    </div>
 
