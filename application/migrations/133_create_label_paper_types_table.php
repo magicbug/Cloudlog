@@ -35,6 +35,12 @@ class Migration_create_label_paper_types_table extends CI_Migration {
                     'null' => TRUE,
                 ),
 
+                'orientation' => array(
+                    'type' => 'VARCHAR',
+                    'constraint' => '1',
+                    'null' => TRUE,
+                ),
+
                 'height' => array(
                     'type' => 'DECIMAL',
                     'constraint' => '6,3',

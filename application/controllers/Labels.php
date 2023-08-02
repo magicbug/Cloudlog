@@ -196,7 +196,7 @@ class Labels extends CI_Controller {
 		}
 		define('FPDF_FONTPATH', './src/Label/font/');
 
-		$pdf->AddPage();
+		$pdf->AddPage($ptype->orientation);
 
 		if ($label->font == 'DejaVuSans') {	// leave this here, for future Use
 			$pdf->AddFont($label->font,'','DejaVuSansMono.ttf',true);
@@ -208,9 +208,9 @@ class Labels extends CI_Controller {
 
 		if ($qsos->num_rows() > 0) {
 			if ($label->qsos == 1) {
-				$this->makeMultiQsoLabel($qsos->result(), $pdf, 1, $offset);
+				$this->makeMultiQsoLabel($qsos->result(), $pdf, 1, $offset, $ptype->orientation);
 			} else {
-				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos, $offset);
+				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos, $offset, $ptype->orientation);
 			}
 		} else {
 			$this->session->set_flashdata('message', '0 QSOs found for print!');
@@ -219,7 +219,7 @@ class Labels extends CI_Controller {
 		$pdf->Output();
 	}
 
-	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos, $offset) {
+	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos, $offset, $orientation) {
 		$text = '';
 		$current_callsign = '';
 		$current_sat = '';
@@ -228,7 +228,7 @@ class Labels extends CI_Controller {
 		$qso_data = [];
 		if ($offset !== 1) {
 			for ($i = 1; $i < $offset; $i++) {
-				$pdf->Add_Label('');
+				$pdf->Add_Label('',$orientation);
 			}
 		}
 		foreach($qsos as $qso) {
@@ -236,7 +236,7 @@ class Labels extends CI_Controller {
 			( ($qso->COL_BAND_RX !== $current_sat_bandrx) && ($this->pretty_sat_mode($qso->COL_SAT_MODE) !== '')) ) {
 			   // ((($qso->COL_SAT_NAME ?? '' !== $current_sat) || ($qso->COL_CALL !== $current_callsign)) && ($qso->COL_SAT_NAME ?? '' !== '') && ($col->COL_BAND_RX ?? '' !== $current_sat_bandrx))) {
 				if (!empty($qso_data)) {
-					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
+					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos, $orientation);
 					$qso_data = [];
 				}
 				$current_callsign = $qso->COL_CALL;
@@ -258,7 +258,7 @@ class Labels extends CI_Controller {
 			];
 		}
 		if (!empty($qso_data)) {
-			$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
+			$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos, $orientation);
 		}
 	}
 	// New begin
@@ -266,7 +266,7 @@ class Labels extends CI_Controller {
 		return(strlen($sat_mode ?? '') == 2 ? (strtoupper($sat_mode[0]).'/'.strtoupper($sat_mode[1])) : strtoupper($sat_mode ?? ''));
 	}
 
-	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label) {
+	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label,$orientation) {
 
 		$tableData = [];
 		$count_qso = 0;
@@ -286,7 +286,7 @@ class Labels extends CI_Controller {
 
 
 			if($count_qso == $qso_per_label){
-				$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
+				$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso,$orientation);
 				$tableData = []; // reset the data
 				$count_qso = 0;  // reset the counter
 			}
@@ -294,12 +294,12 @@ class Labels extends CI_Controller {
 		}
 		// generate label for remaining QSOs
 		if($count_qso > 0){
-			$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
+			$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso,$orientation);
 			$preliminaryData = []; // reset the data
 		}
 	}
 
-	function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso){
+	function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso,$orientation){
 		$builder = new \AsciiTable\Builder();
 		$builder->addRows($tableData);
 		$text = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
@@ -317,7 +317,7 @@ class Labels extends CI_Controller {
 		}
 		$text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
 		$text .= " | ".($qso['qsl_recvd'] == 'Y' ? 'TNX' : 'PSE')." QSL";
-		$pdf->Add_Label($text);
+		$pdf->Add_Label($text,$orientation);
 	}
 
 	// New End
