@@ -9,12 +9,12 @@
 	
 	<h2><?php echo $page_title; ?></h2>
 	
-	<div class="card">
+	<div class="card" style="margin-bottom: 15px;">
 		  <div class="card-header">
 			QSO-DB Maintenance
 		  </div>
 		<?php if($is_there_qsos_with_no_station_id >= 1) { ?>
-					<div class="alert alert-danger" role="alert">
+					<div class="alert alert-danger" role="alert" style="margin-bottom: 0px !important;">
 						<span class="badge badge-pill badge-warning">Warning</span> The Database contains QSOs without a station-profile (location)<br/>
 					</div>
 		  <div class="card-body">
@@ -46,7 +46,7 @@
 		 </div>
 		<?php 
 			} else { ?>
-		<div class="alert alert-secondary" role="alert">
+		<div class="alert alert-secondary" role="alert" style="margin-bottom: 0px !important;">
 			<span class="badge badge-pill badge-success">Everything ok</span> Every QSO in your Database is assigned to a station-profile (location)
 		</div>
 		<?php } ?>
@@ -57,7 +57,7 @@
 			Settings Maintenance
 		  </div>
 		<?php if(!$this->config->item('cl_multilanguage')) { ?>
-					<div class="alert alert-danger" role="alert">
+					<div class="alert alert-danger" role="alert" style="margin-bottom: 0px !important;">
 						<span class="badge badge-pill badge-warning">Warning</span> You didn't enabled Multilanguage support in your config.php
 					</div>
 		  <div class="card-body">
@@ -69,7 +69,7 @@
 		
 		<?php 
 		} else { ?>
-		<div class="alert alert-secondary" role="alert">
+		<div class="alert alert-secondary" role="alert" style="margin-bottom: 0px !important;">
 			<span class="badge badge-pill badge-success">Everything ok</span> You have enabled Multuser-Language support
 		</div>
 		<?php } ?>
