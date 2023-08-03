@@ -64,6 +64,7 @@ class Migration_create_label_paper_types_table extends CI_Migration {
 			$this->db->query("insert into paper_types (paper_id,user_id,paper_name,metric,width,orientation,height) values ('3','-1','letter','mm','215.900','P','279.400');");
 			$this->db->query("insert ignore paper_types (user_id,paper_name,metric,width,orientation,height) SELECT u.user_id, pt.paper_name, pt.metric, pt.width, pt.orientation,pt.height FROM paper_types pt inner join users u where pt.user_id = -1;");
 			$this->db->query("update label_types l set l.paper_type_id=(select p.paper_id from paper_types p where upper(p.paper_name)=upper(l.paper_type) and p.user_id=l.user_id limit 1) where l.paper_type_id=0;");
+			$this->db->query("alter table label_types drop column paper_type;");
 		}
 
 	}
