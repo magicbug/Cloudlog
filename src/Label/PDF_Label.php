@@ -69,25 +69,26 @@ class PDF_Label extends tfpdf {
     );
 
     // Constructor
-    function __construct($format, $unit='mm', $posX=1, $posY=1) {
-        if (is_array($format)) {
-            // Custom format
-            $Tformat = $format;
-        } else {
-            // Built-in format
-            if (!isset($this->_Avery_Labels[$format]))
-                $this->Error('Unknown label format: '.$format);
-            $Tformat = $this->_Avery_Labels[$format];
-        }
+    function __construct($format, $unit='mm', $posX=1, $posY=1, $pgX=0,$pgY=0) {
+	    if (is_array($format)) {
+		   // Custom format
+			// var_dump("X".$pgX);
+		    $Tformat = $format;
+	    } else {
+		    // Built-in format
+		    if (!isset($this->_Avery_Labels[$format]))
+			    $this->Error('Unknown label format: '.$format);
+		    $Tformat = $this->_Avery_Labels[$format];
+	    }
 
-        parent::__construct('P', $unit, $Tformat['paper-size']);
-        $this->_Metric_Doc = $unit;
-        $this->_Set_Format($Tformat);
-        $this->SetFont('Arial');
-        $this->SetMargins(0,0); 
-        $this->SetAutoPageBreak(false); 
-        $this->_COUNTX = $posX-2;
-        $this->_COUNTY = $posY-1;
+	    parent::__construct('P', $unit, $Tformat['paper-size'],$Tformat['pgX'],$Tformat['pgY']);
+	    $this->_Metric_Doc = $unit;
+	    $this->_Set_Format($Tformat);
+	    $this->SetFont('Arial');
+	    $this->SetMargins(0,0); 
+	    $this->SetAutoPageBreak(false); 
+	    $this->_COUNTX = $posX-2;
+	    $this->_COUNTY = $posY-1;
     }
 
     function _Set_Format($format) {
@@ -132,7 +133,7 @@ class PDF_Label extends tfpdf {
     }
 
     // Print a label
-    function Add_Label($text) {
+    function Add_Label($text,$orientation = 'P') {
         $this->_COUNTX++;
         if ($this->_COUNTX == $this->_X_Number) {
             // Row full, we start a new one
@@ -141,7 +142,7 @@ class PDF_Label extends tfpdf {
             if ($this->_COUNTY == $this->_Y_Number) {
                 // End of page reached, we start a new one
                 $this->_COUNTY=0;
-                $this->AddPage();
+                $this->AddPage($orientation);
             }
         }
 

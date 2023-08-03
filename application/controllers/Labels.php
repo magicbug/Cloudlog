@@ -43,6 +43,8 @@ class Labels extends CI_Controller {
 
 		$data['labels'] = $this->labels_model->fetchLabels($this->session->userdata('user_id'));
 
+		$data['papertypes'] = $this->labels_model->fetchPapertypes($this->session->userdata('user_id'));
+
 		$data['qsos'] = $this->labels_model->fetchQsos($this->session->userdata('user_id'));
 
 		$footerData = [];
@@ -69,6 +71,9 @@ class Labels extends CI_Controller {
 		$data['page_title'] = "Create Label Type";
 
 		$this->load->library('form_validation');
+		$this->load->model('labels_model');
+
+		$data['papertypes'] = $this->labels_model->fetchPapertypes($this->session->userdata('user_id'));
 
 		$this->form_validation->set_rules('label_name', 'Label Name', 'required');
 
@@ -87,6 +92,43 @@ class Labels extends CI_Controller {
 		}
 
 	}
+
+		/*
+	|--------------------------------------------------------------------------
+	| Function: createpaper
+	|--------------------------------------------------------------------------
+	|
+	| Shows the form used to create a paper type.
+	|
+	 */
+	public function createpaper() {
+
+		$data['page_title'] = "Create Paper Type";
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('paper_name', 'Paper Name', 'required');
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('labels/createpaper');
+			$this->load->view('interface_assets/footer');
+		}
+		else
+		{
+			$this->load->model('labels_model');
+			try {
+				$this->labels_model->addPaper();
+			} catch (\Throwable $th) {
+				$this->session->set_flashdata('error', 'Your paper could not be saved. Remember that it can\'t have the same name as existing paper types.');
+				redirect('labels/createpaper');
+			}
+			redirect('labels');
+		}
+
+	}
+
 
 	public function printids() {
 		$ids = xss_clean(json_decode($this->input->post('id')));
@@ -114,24 +156,38 @@ class Labels extends CI_Controller {
 	function prepareLabel($qsos, $jscall = false, $offset = 1) {
 		$this->load->model('labels_model');
 		$label = $this->labels_model->getDefaultLabel();
-		$label->font='DejaVuSans'; // Fix font to DejaVuSans
 
 
 		try {
 			if ($label) {
-				$pdf = new PDF_Label(array(
-					'paper-size'	=> $label->paper_type,
-					'metric'		=> $label->metric,
-					'marginLeft'	=> $label->marginleft,
-					'marginTop'		=> $label->margintop,
-					'NX'			=> $label->nx,
-					'NY'			=> $label->ny,
-					'SpaceX'		=> $label->spacex,
-					'SpaceY'		=> $label->spacey,
-					'width'			=> $label->width,
-					'height'		=> $label->height,
-					'font-size'		=> $label->font_size
-				));
+				$label->font='DejaVuSans'; // Fix font to DejaVuSans
+				$ptype=$this->labels_model->getPaperType($label->paper_type_id);	// fetch papersize out of paper-table
+				if (($ptype->paper_id ?? '') != '') {
+					$pdf = new PDF_Label(array(
+						'paper-size'	=> 'custom', 				// $label->paper_type,	// The only Type left is "custom" because A4 and so on are also defined at paper_types
+						'metric'		=> $label->metric,
+						'marginLeft'	=> $label->marginleft,
+						'marginTop'		=> $label->margintop,
+						'NX'			=> $label->nx,
+						'NY'			=> $label->ny,
+						'SpaceX'		=> $label->spacex,
+						'SpaceY'		=> $label->spacey,
+						'width'			=> $label->width,
+						'height'		=> $label->height,
+						'font-size'		=> $label->font_size,
+						'pgX'		=> $ptype->width,
+						'pgY'		=> $ptype->height
+					));
+				} else {
+					if ($jscall) {
+						header('Content-Type: application/json');
+						echo json_encode(array('message' => 'You need to assign a paperType to the label before printing'));
+						return;
+					} else {
+						$this->session->set_flashdata('error', 'You need to assign a paperType to the label before printing');
+						redirect('labels');
+					}
+				}
 			} else {
 				if ($jscall) {
 					header('Content-Type: application/json');
@@ -154,11 +210,11 @@ class Labels extends CI_Controller {
 		}
 		define('FPDF_FONTPATH', './src/Label/font/');
 
-		$pdf->AddPage();
+		$pdf->AddPage($ptype->orientation);
 
 		if ($label->font == 'DejaVuSans') {	// leave this here, for future Use
 			$pdf->AddFont($label->font,'','DejaVuSansMono.ttf',true);
-			$pdf->SetFont($label->font);
+			$pdf->SetFont($label->font,'');
 		} else {
 			$pdf->AddFont($label->font);
 			$pdf->SetFont($label->font);
@@ -166,9 +222,9 @@ class Labels extends CI_Controller {
 
 		if ($qsos->num_rows() > 0) {
 			if ($label->qsos == 1) {
-				$this->makeMultiQsoLabel($qsos->result(), $pdf, 1, $offset);
+				$this->makeMultiQsoLabel($qsos->result(), $pdf, 1, $offset, $ptype->orientation);
 			} else {
-				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos, $offset);
+				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos, $offset, $ptype->orientation);
 			}
 		} else {
 			$this->session->set_flashdata('message', '0 QSOs found for print!');
@@ -177,7 +233,7 @@ class Labels extends CI_Controller {
 		$pdf->Output();
 	}
 
-	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos, $offset) {
+	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos, $offset, $orientation) {
 		$text = '';
 		$current_callsign = '';
 		$current_sat = '';
@@ -186,7 +242,7 @@ class Labels extends CI_Controller {
 		$qso_data = [];
 		if ($offset !== 1) {
 			for ($i = 1; $i < $offset; $i++) {
-				$pdf->Add_Label('');
+				$pdf->Add_Label('',$orientation);
 			}
 		}
 		foreach($qsos as $qso) {
@@ -194,7 +250,7 @@ class Labels extends CI_Controller {
 			( ($qso->COL_BAND_RX !== $current_sat_bandrx) && ($this->pretty_sat_mode($qso->COL_SAT_MODE) !== '')) ) {
 			   // ((($qso->COL_SAT_NAME ?? '' !== $current_sat) || ($qso->COL_CALL !== $current_callsign)) && ($qso->COL_SAT_NAME ?? '' !== '') && ($col->COL_BAND_RX ?? '' !== $current_sat_bandrx))) {
 				if (!empty($qso_data)) {
-					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
+					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos, $orientation);
 					$qso_data = [];
 				}
 				$current_callsign = $qso->COL_CALL;
@@ -216,7 +272,7 @@ class Labels extends CI_Controller {
 			];
 		}
 		if (!empty($qso_data)) {
-			$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos);
+			$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos, $orientation);
 		}
 	}
 	// New begin
@@ -224,7 +280,7 @@ class Labels extends CI_Controller {
 		return(strlen($sat_mode ?? '') == 2 ? (strtoupper($sat_mode[0]).'/'.strtoupper($sat_mode[1])) : strtoupper($sat_mode ?? ''));
 	}
 
-	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label) {
+	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label,$orientation) {
 
 		$tableData = [];
 		$count_qso = 0;
@@ -244,7 +300,7 @@ class Labels extends CI_Controller {
 
 
 			if($count_qso == $qso_per_label){
-				$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
+				$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso,$orientation);
 				$tableData = []; // reset the data
 				$count_qso = 0;  // reset the counter
 			}
@@ -252,12 +308,12 @@ class Labels extends CI_Controller {
 		}
 		// generate label for remaining QSOs
 		if($count_qso > 0){
-			$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso);
+			$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso,$orientation);
 			$preliminaryData = []; // reset the data
 		}
 	}
 
-	function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso){
+	function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso,$orientation){
 		$builder = new \AsciiTable\Builder();
 		$builder->addRows($tableData);
 		$text = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
@@ -275,7 +331,7 @@ class Labels extends CI_Controller {
 		}
 		$text .= "\nThanks for the QSO".($numofqsos>1 ? 's' : '');
 		$text .= " | ".($qso['qsl_recvd'] == 'Y' ? 'TNX' : 'PSE')." QSL";
-		$pdf->Add_Label($text);
+		$pdf->Add_Label($text,$orientation);
 	}
 
 	// New End
@@ -285,7 +341,9 @@ class Labels extends CI_Controller {
 
 		$cleanid = $this->security->xss_clean($id);
 
-		$data['label'] = $this->labels_model->getLabel($cleanid);
+		$data['label'] = $this->labels_model->getLabel($cleanid,$this->session->userdata('user_id'));
+
+		$data['papertypes'] = $this->labels_model->fetchPapertypes($this->session->userdata('user_id'));
 
 		$data['page_title'] = "Edit Label";
 
@@ -317,5 +375,44 @@ class Labels extends CI_Controller {
 	public function startAtLabel() {
 		$data['stationid'] = xss_clean($this->input->post('stationid'));
 		$this->load->view('labels/startatform', $data);
+	}
+
+	public function editPaper($id) {
+		$this->load->model('labels_model');
+
+		$cleanid = $this->security->xss_clean($id);
+
+		$data['paper'] = $this->labels_model->getPaper($cleanid);
+
+		$data['page_title'] = "Edit Paper";
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('labels/editpaper');
+		$this->load->view('interface_assets/footer');
+	}
+
+	public function updatePaper($id) {
+		$this->load->model('labels_model');
+		try {
+			$this->labels_model->updatePaper($id);
+		} catch (\Throwable $th) {
+			$this->session->set_flashdata('error', 'Your paper could not be saved. Remember that it can\'t have the same name as existing paper types.');
+			$cleanid = $this->security->xss_clean($id);
+			redirect('labels/editpaper/'.$cleanid);
+		}
+		$this->session->set_flashdata('message', 'Paper was saved.');
+		redirect('labels');
+	}
+
+	function label_cnt_with_paper($paper_id) {
+		$this->load->model('labels_model');
+		return $this->labels_model->label_cnt_with_paper($paper_id);
+	}
+
+	public function deletePaper($id) {
+		$this->load->model('labels_model');
+		$this->labels_model->deletePaper($id);
+		$this->session->set_flashdata('warning', 'Paper was deleted.');
+		redirect('labels');
 	}
 }

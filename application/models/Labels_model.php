@@ -5,7 +5,7 @@ class Labels_model extends CI_Model {
 		$data = array(
 			'user_id' 		=> $this->session->userdata('user_id'),
             'label_name' 	=> xss_clean($this->input->post('label_name', true)),
-            'paper_type' 	=> xss_clean($this->input->post('paper_type', true)),
+            'paper_type_id' 	=> xss_clean($this->input->post('paper_type_id', true)),
             'metric' 		=> xss_clean($this->input->post('measurementType', true)),
             'marginleft' 	=> xss_clean($this->input->post('marginLeft', true)),
             'margintop' 	=> xss_clean($this->input->post('marginTop', true)),
@@ -25,19 +25,34 @@ class Labels_model extends CI_Model {
 
 	}
 
-    function getLabel($id) {
-        $this->db->where('user_id', $this->session->userdata('user_id'));
-        $this->db->where('id', $id);
-		$query = $this->db->get('label_types');
-		
-        return $query->row();
-    }
+	function addPaper() {
+		$data = array(
+			'user_id' 		=> $this->session->userdata('user_id'),
+            'paper_name' 	=> xss_clean($this->input->post('paper_name', true)),
+            'metric' 		=> xss_clean($this->input->post('measurementType', true)),
+            'width' 		=> xss_clean($this->input->post('width', true)),
+            'height' 		=> xss_clean($this->input->post('height', true)),
+            'orientation'	=> xss_clean($this->input->post('orientation', true)),
+            'last_modified' => date('Y-m-d H:i:s'),
+		);
+
+	   $this->db->insert('paper_types', $data);
+
+	}
+
+    function getLabel($id,$user_id) {
+	$sql="SELECT l.id, l.user_id,l.label_name, p.paper_name, p.paper_id,l.paper_type_id,l.metric, l.marginleft, l.margintop, l.nx, l.ny, l.spacex, l.spacey, l.width, l.height, l.font_size, l.font, l.qsos, l.useforprint, l.last_modified FROM cloudlog.label_types l left outer join paper_types p on (p.user_id=l.user_id and p.paper_id=l.paper_type_id) where l.user_id=? and l.id=?;";
+        $query=$this->db->query($sql,array($user_id,$id));
+        $result=$query->result();
+        return $result[0];
+	}
+
 
     function updateLabel($id) {
         $data = array(
 			'user_id' 		=> $this->session->userdata('user_id'),
             'label_name' 	=> xss_clean($this->input->post('label_name', true)),
-            'paper_type' 	=> xss_clean($this->input->post('paper_type', true)),
+            'paper_type_id' 	=> xss_clean($this->input->post('paper_type_id', true)),
             'metric' 		=> xss_clean($this->input->post('measurementType', true)),
             'marginleft' 	=> xss_clean($this->input->post('marginLeft', true)),
             'margintop' 	=> xss_clean($this->input->post('marginTop', true)),
@@ -63,26 +78,31 @@ class Labels_model extends CI_Model {
     function deleteLabel($id) {
         $cleanid = xss_clean($id);
 
-        $this->db->delete('label_types', array('id' => $cleanid, 'user_id' => $this->session->userdata('user_id'))); 
+        $this->db->delete('label_types', array('id' => $cleanid, 'user_id' => $this->session->userdata('user_id')));
     }
 
     function fetchLabels($user_id) {
-        $this->db->where('user_id', $user_id);
-		$query = $this->db->get('label_types');
-		
+	$sql="SELECT l.id, l.user_id,l.label_name, p.paper_name, l.metric, l.marginleft, l.margintop, l.nx, l.ny, l.spacex, l.spacey, l.width, l.height, l.font_size, l.font, l.qsos, l.useforprint, l.last_modified FROM cloudlog.label_types l left outer join paper_types p on (p.user_id=l.user_id and p.paper_id=l.paper_type_id) where l.user_id=?;";
+        $query=$this->db->query($sql,$user_id);
         return $query->result();
+	}
+
+	function fetchPapertypes($user_id) {
+		$sql="SELECT p.paper_id,p.user_id,p.paper_name,p.metric,p.width,p.height,p.last_modified, p.orientation,COUNT(DISTINCT l.id) AS lbl_cnt FROM paper_types p  LEFT OUTER JOIN  label_types l ON (p.paper_id = l.paper_type_id and p.user_id=l.user_id) WHERE p.user_id = ? group by p.paper_id,p.user_id,p.paper_name,p.metric,p.width,p.height,p.last_modified;";
+        	$query = $this->db->query($sql, $this->session->userdata('user_id'));
+        	return $query->result();
 	}
 
  	function fetchQsos($user_id) {
 
 		$qsl = "select count(*) count, station_profile.station_profile_name, station_profile.station_callsign, station_profile.station_id, station_profile.station_gridsquare
-        from ". $this->config->item('table_name') . " as l 
+        from ". $this->config->item('table_name') . " as l
         join station_profile on l.station_id = station_profile.station_id
         where l.COL_QSL_SENT in ('R', 'Q')
         and station_profile.user_id = " . $user_id .
         " group by station_profile.station_profile_name, station_profile.station_callsign, station_profile.station_id, station_profile.station_gridsquare
         order by station_profile.station_callsign";
-        
+
         $query = $this->db->query($qsl);
 
 		return $query->result();
@@ -92,7 +112,15 @@ class Labels_model extends CI_Model {
         $this->db->where('user_id', $this->session->userdata('user_id'));
         $this->db->where('useforprint', '1');
 		$query = $this->db->get('label_types');
-		
+
+        return $query->row();
+    }
+
+    function getPaperType($ptype_id) {
+        $this->db->where('user_id', $this->session->userdata('user_id'));
+        $this->db->where('paper_id',$ptype_id);
+		$query = $this->db->get('paper_types');
+
         return $query->row();
     }
 
@@ -144,5 +172,49 @@ class Labels_model extends CI_Model {
         $query = $this->db->get($this->config->item('table_name'));
 
         return $query;
+    }
+
+	function updatePaper($id) {
+        $data = array(
+			'user_id' 		=> $this->session->userdata('user_id'),
+            'paper_name' 	=> xss_clean($this->input->post('paper_name', true)),
+            'metric' 		=> xss_clean($this->input->post('measurementType', true)),
+            'width' 		=> xss_clean($this->input->post('width', true)),
+            'height' 		=> xss_clean($this->input->post('height', true)),
+            'orientation'	=> xss_clean($this->input->post('orientation', true)),
+            'last_modified' => date('Y-m-d H:i:s'),
+		);
+
+        $cleanid = $this->security->xss_clean($id);
+
+        $this->db->where('user_id', $this->session->userdata('user_id'));
+        $this->db->where('paper_id', $cleanid);
+        $this->db->update('paper_types', $data);
+    }
+
+    function label_cnt_with_paper($paper_id) {
+	    $clean_paper_id=xss_clean($paper_id);
+	    $sql="select count(distinct l.id) as CNT from label_types l inner join paper_types p on (p.paper_id=l.paper_type_id) where l.user_id=? and p.user_id=? and l.paper_type_id=?";
+	    $query = $this->db->query($sql, array($this->session->userdata('user_id'), this->session->userdata('user_id'), $clean_paper_id));
+	    $row = $query->row();
+	    if (isset($row)) {
+		    return($row->CNT);
+	    } else {
+		    return 0;
+	    }
+    }
+
+    function deletePaper($id) {
+        $cleanid = xss_clean($id);
+
+        $this->db->delete('paper_types', array('paper_id' => $cleanid, 'user_id' => $this->session->userdata('user_id')));
+    }
+
+	function getPaper($id) {
+        $this->db->where('user_id', $this->session->userdata('user_id'));
+        $this->db->where('paper_id', $id);
+		$query = $this->db->get('paper_types');
+
+        return $query->row();
     }
 }

@@ -39,3 +39,41 @@ function printat(stationid) {
 		}
 	});
 }
+
+function deletelabel(id) {
+	BootstrapDialog.confirm({
+		title: 'DANGER',
+		message: 'Warning! Are you sure you want this label?',
+		type: BootstrapDialog.TYPE_DANGER,
+		closable: true,
+		draggable: true,
+		btnOKClass: 'btn-danger',
+		callback: function(result) {
+			if (result) {
+				window.location.replace(base_url + 'index.php/labels/delete/'+id);
+			}
+		}
+	});
+}
+
+function deletepaper(id) {
+	var message = 'Warning! Are you sure you want delete this paper type?';
+	var currentRow = $(".paper_"+id).first().closest('tr');
+	var inuse = currentRow.find("td:eq(4)").text();
+	if (inuse > 0) {
+		message = 'Warning! This paper type is in use. Are you really sure you want delete this paper type?';
+	}
+	BootstrapDialog.confirm({
+		title: 'DANGER',
+		message: message,
+		type: BootstrapDialog.TYPE_DANGER,
+		closable: true,
+		draggable: true,
+		btnOKClass: 'btn-danger',
+		callback: function(result) {
+			if (result) {
+				window.location.replace(base_url + 'index.php/labels/deletePaper/'+id);
+			}
+		}
+	});
+}
