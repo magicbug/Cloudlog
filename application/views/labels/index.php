@@ -131,7 +131,7 @@
 						echo '<td>' . $qso->station_profile_name . '</td>';
 						echo '<td>' . $qso->station_gridsquare . '</td>';
 						echo '<td>' . $qso->count . '</td>';
-						echo '<td><a href="'. site_url('qslprint') . '" class="btn btn-outline-info btn-sm"><i class="fas fa-search"></i></a></td>';
+						echo '<td><a href="'. site_url('qslprint') . '/index/'.$qso->station_id.'" class="btn btn-outline-info btn-sm"><i class="fas fa-search"></i></a></td>';
 						echo '<td><button class="btn btn-outline-success btn-sm printbutton" onclick="printat('.$qso->station_id.')"><i class="fas fa-print"></i></button></td>';
 						echo '</tr>';
 					} ?>

@@ -21,7 +21,7 @@
 				<select name="station_profile" class="station_id custom-select mb-3 mr-sm-3" style="width: 20%;">
 					<option value="All">All</option>
 					<?php foreach ($station_profile->result() as $station) { ?>
-						<option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
+						<option <?php if ($station->station_id == $station_id) { echo "selected "; } ?>value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
 					<?php } ?>
 				</select>
 			</form>
