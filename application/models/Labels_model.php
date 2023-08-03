@@ -91,10 +91,9 @@ class Labels_model extends CI_Model {
 	}
 
 	function fetchPapertypes($user_id) {
-        $this->db->where('user_id', $user_id);
-		$query = $this->db->get('paper_types');
-
-        return $query->result();
+		$sql="SELECT p.paper_id,p.user_id,p.paper_name,p.metric,p.width,p.height,p.last_modified, p.orientation,COUNT(DISTINCT l.id) AS lbl_cnt FROM paper_types p  LEFT OUTER JOIN  label_types l ON (p.paper_id = l.paper_type_id and p.user_id=l.user_id) WHERE p.user_id = ? group by p.paper_id,p.user_id,p.paper_name,p.metric,p.width,p.height,p.last_modified;";
+        	$query = $this->db->query($sql, $this->session->userdata('user_id'));
+        	return $query->result();
 	}
 
  	function fetchQsos($user_id) {
@@ -194,6 +193,18 @@ class Labels_model extends CI_Model {
         $this->db->where('user_id', $this->session->userdata('user_id'));
         $this->db->where('paper_id', $cleanid);
         $this->db->update('paper_types', $data);
+    }
+
+    function label_cnt_with_paper($paper_id) {
+	    $clean_paper_id=xss_clean($paper_id);
+	    $sql="select count(distinct l.id) as CNT from label_types l inner join paper_types p on (p.paper_id=l.paper_type_id) where l.user_id=? and p.user_id=? and l.paper_type_id=?";
+	    $query = $this->db->query($sql, array($this->session->userdata('user_id'), this->session->userdata('user_id'), $clean_paper_id));
+	    $row = $query->row();
+	    if (isset($row)) {
+		    return($row->CNT);
+	    } else {
+		    return 0;
+	    }
     }
 
     function deletePaper($id) {
