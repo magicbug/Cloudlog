@@ -91,7 +91,11 @@
 			<td><?php echo $label->height; ?></td>
 			<td><?php echo $label->font_size; ?></td>
 			<td><?php echo $label->qsos; ?></td>
+			<?php if (($label->paper_name ?? '') == '') { ?>
+			<td></td>
+			<?php } else { ?>
 			<td><input type="checkbox" <?php if ($label->useforprint == 1) {echo 'checked';}?>></td>
+			<?php } ?>
 			<td><a href="<?php echo site_url('labels/edit/' . $label->id); ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a></td>
 			<td><a href="<?php echo site_url('labels/delete/' . $label->id); ?>" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></a></td>
 			</tr>
