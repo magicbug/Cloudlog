@@ -156,11 +156,11 @@ class Labels extends CI_Controller {
 	function prepareLabel($qsos, $jscall = false, $offset = 1) {
 		$this->load->model('labels_model');
 		$label = $this->labels_model->getDefaultLabel();
-		$label->font='DejaVuSans'; // Fix font to DejaVuSans
 
 
 		try {
 			if ($label) {
+				$label->font='DejaVuSans'; // Fix font to DejaVuSans
 				$ptype=$this->labels_model->getPaperType($label->paper_type_id);	// fetch papersize out of paper-table
 				if (($ptype->paper_id ?? '') != '') {
 					$pdf = new PDF_Label(array(
