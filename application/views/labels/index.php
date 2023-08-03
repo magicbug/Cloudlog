@@ -47,7 +47,7 @@
 						<tbody>
 						<?php
 		foreach($papertypes as $paper) { ?>
-			<tr class='label_<?php echo $paper->paper_id ?>'>
+			<tr class='paper_<?php echo $paper->paper_id ?>'>
 			<td><?php echo $paper->paper_name; ?></td>
 			<td><?php echo $paper->metric; ?></td>
 			<td><?php echo $paper->width; ?></td>
@@ -55,7 +55,7 @@
 			<td><?php echo $paper->lbl_cnt ?? '0' ?></td>
 			<td><?php echo $paper->orientation == 'P' ? 'Portrait': 'Landscape'; ?></td>
 			<td><a href="<?php echo site_url('labels/editpaper/' . $paper->paper_id); ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a></td>
-			<td><a href="<?php echo site_url('labels/deletepaper/' . $paper->paper_id); ?>" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></a></td>
+			<td><a href="javascript:deletepaper(<?php echo $paper->paper_id; ?>);" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></a></td>
 			</tr>
 
 		<?php }
@@ -97,7 +97,7 @@
 			<td><input type="checkbox" <?php if ($label->useforprint == 1) {echo 'checked';}?>></td>
 			<?php } ?>
 			<td><a href="<?php echo site_url('labels/edit/' . $label->id); ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a></td>
-			<td><a href="<?php echo site_url('labels/delete/' . $label->id); ?>" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></a></td>
+			<td><a href="javascript:deletelabel(<?php echo $label->id; ?>);" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></a></td>
 			</tr>
 
 		<?php }
