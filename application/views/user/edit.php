@@ -594,6 +594,33 @@
 			</div>
 		</div>
 
+		<br>
+		
+		<div class="row">
+				<div class="col-md">
+					<div class="card">
+						<div class="card-header">
+							Winkeyer <span class="badge badge-danger">Experimental</span>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+
+							<p>Winkeyer support in Cloudlog is very experimental read the wiki first at <a href="https://github.com/magicbug/Cloudlog/wiki/Winkey" target="_blank">https://github.com/magicbug/Cloudlog/wiki/Winkey</a> before enabling.</p>
+
+							<label>Enable Winkey Features</label>
+							
+							<select class="custom-select" name="user_winkey" id="user_winkeyer">
+								<option value="0" <?php if ($user_winkey == 0) { echo 'selected="selected"'; } ?>>Disabled</option>
+								<option value="1" <?php if ($user_winkey == 1) { echo 'selected="selected"'; } ?>>Enabled</option>
+							</select>
+							
+							<div class="small form-text text-muted"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
 	<br>
 	<button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo lang('account_save_account_changes'); ?></button>
