@@ -38,7 +38,9 @@
 								<th>Measurement</th>
 								<th>Width</th>
 								<th>Height</th>
+								<th>Used by labels</th>
 								<th>Last Modified</th>
+								<th>Orientation</th>
 								<th>Edit</th>
 								<th>Delete</th>
 							</tr>
@@ -51,7 +53,9 @@
 			<td><?php echo $paper->metric; ?></td>
 			<td><?php echo $paper->width; ?></td>
 			<td><?php echo $paper->height; ?></td>
+			<td><?php echo $paper->lbl_cnt ?? '0' ?></td>
 			<td><?php echo $paper->last_modified; ?></td>
+			<td><?php echo $paper->orientation; ?></td>
 			<td><a href="<?php echo site_url('labels/editpaper/' . $paper->paper_id); ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a></td>
 			<td><a href="<?php echo site_url('labels/deletepaper/' . $paper->paper_id); ?>" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></a></td>
 			</tr>

@@ -394,6 +394,11 @@ class Labels extends CI_Controller {
 		redirect('labels');
 	}
 
+	function label_cnt_with_paper($paper_id) {
+		$this->load->model('labels_model');
+		return $this->labels_model->label_cnt_with_paper($paper_id);
+	}
+
 	public function deletePaper($id) {
 		$this->load->model('labels_model');
 		$this->labels_model->deletePaper($id);
