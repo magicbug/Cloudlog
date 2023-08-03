@@ -162,22 +162,32 @@ class Labels extends CI_Controller {
 		try {
 			if ($label) {
 				$ptype=$this->labels_model->getPaperType($label->paper_type_id);	// fetch papersize out of paper-table
-				// var_dump($ptype);
-				$pdf = new PDF_Label(array(
-					'paper-size'	=> 'custom', 				// $label->paper_type,	// The only Type left is "custom" because A4 and so on are also defined at paper_types
-					'metric'		=> $label->metric,
-					'marginLeft'	=> $label->marginleft,
-					'marginTop'		=> $label->margintop,
-					'NX'			=> $label->nx,
-					'NY'			=> $label->ny,
-					'SpaceX'		=> $label->spacex,
-					'SpaceY'		=> $label->spacey,
-					'width'			=> $label->width,
-					'height'		=> $label->height,
-					'font-size'		=> $label->font_size,
-					'pgX'		=> $ptype->width,
-					'pgY'		=> $ptype->height
-				));
+				if (($ptype->paper_id ?? '') != '') {
+					$pdf = new PDF_Label(array(
+						'paper-size'	=> 'custom', 				// $label->paper_type,	// The only Type left is "custom" because A4 and so on are also defined at paper_types
+						'metric'		=> $label->metric,
+						'marginLeft'	=> $label->marginleft,
+						'marginTop'		=> $label->margintop,
+						'NX'			=> $label->nx,
+						'NY'			=> $label->ny,
+						'SpaceX'		=> $label->spacex,
+						'SpaceY'		=> $label->spacey,
+						'width'			=> $label->width,
+						'height'		=> $label->height,
+						'font-size'		=> $label->font_size,
+						'pgX'		=> $ptype->width,
+						'pgY'		=> $ptype->height
+					));
+				} else {
+					if ($jscall) {
+						header('Content-Type: application/json');
+						echo json_encode(array('message' => 'You need to assign a paperType to the label before printing'));
+						return;
+					} else {
+						$this->session->set_flashdata('error', 'You need to assign a paperType to the label before printing');
+						redirect('labels');
+					}
+				}
 			} else {
 				if ($jscall) {
 					header('Content-Type: application/json');
@@ -204,7 +214,7 @@ class Labels extends CI_Controller {
 
 		if ($label->font == 'DejaVuSans') {	// leave this here, for future Use
 			$pdf->AddFont($label->font,'','DejaVuSansMono.ttf',true);
-			$pdf->SetFont($label->font);
+			$pdf->SetFont($label->font,'');
 		} else {
 			$pdf->AddFont($label->font);
 			$pdf->SetFont($label->font);
