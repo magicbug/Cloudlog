@@ -74,7 +74,7 @@ protected $PDFVersion;         // PDF version number
 *                               Public methods                                 *
 *******************************************************************************/
 
-function __construct($orientation='P', $unit='mm', $size='A4')
+function __construct($orientation='P', $unit='mm', $size='A4',$pgX = 0,$pgY =0)
 {
 	// Some checks
 	$this->_dochecks();
@@ -131,6 +131,9 @@ function __construct($orientation='P', $unit='mm', $size='A4')
 	// Page sizes
 	$this->StdPageSizes = array('a3'=>array(841.89,1190.55), 'a4'=>array(595.28,841.89), 'a5'=>array(420.94,595.28),
 		'letter'=>array(612,792), 'legal'=>array(612,1008));
+	if ($size == 'custom') {
+		$size=array($pgX,$pgY);
+	}
 	$size = $this->_getpagesize($size);
 	$this->DefPageSize = $size;
 	$this->CurPageSize = $size;

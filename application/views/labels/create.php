@@ -25,11 +25,14 @@
 			</div>
 
 			<div class="form-group row">
-    			<label class="col-sm-2 col-form-label" for="paperType">Paper Type</label>
+    			<label class="col-sm-2 col-form-label" for="paperType_id">Paper Type</label>
 			    <div class="col-sm-4">
-				    <select name="paper_type" class="form-control" id="paperType">
-						<option value="a4">A4</option>
-						<option value="letter">Letter</option>
+				    <select name="paper_type_id" class="form-control" id="paperType_id">
+						<?php
+							foreach($papertypes as $paper){
+								echo '<option value=' . $paper->paper_id . '>' . ucwords(strtolower(($paper->paper_name))) . '</option>';
+							}
+						?>
 					</select>
 			    </div>
 

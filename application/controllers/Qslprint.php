@@ -17,7 +17,7 @@ class QSLPrint extends CI_Controller {
 		}
 	}
 
-	public function index()
+	public function index($station_id = 'All')
 	{
 		$this->load->model('user_model');
 
@@ -28,10 +28,15 @@ class QSLPrint extends CI_Controller {
 			redirect('user/login');
 		}
 		$this->load->model('stations');
+		$data['station_id'] = $this->security->xss_clean($station_id);
 		$data['station_profile'] = $this->stations->all_of_user();
 
 		$this->load->model('qslprint_model');
-		$data['qsos'] = $this->qslprint_model->get_qsos_for_print();
+		if ( ($station_id != 'All') && ($this->stations->check_station_is_accessible($station_id)) ) {
+			$data['qsos'] = $this->qslprint_model->get_qsos_for_print($station_id);
+		} else {
+			$data['qsos'] = $this->qslprint_model->get_qsos_for_print();
+		}
 
 		$data['page_title'] = "Print Requested QSLs";
 
