@@ -41,7 +41,7 @@ class Labels_model extends CI_Model {
 	}
 
     function getLabel($id,$user_id) {
-	$sql="SELECT l.id, l.user_id,l.label_name, p.paper_name, p.paper_id,l.paper_type_id,l.metric, l.marginleft, l.margintop, l.nx, l.ny, l.spacex, l.spacey, l.width, l.height, l.font_size, l.font, l.qsos, l.useforprint, l.last_modified FROM cloudlog.label_types l left outer join paper_types p on (p.user_id=l.user_id and p.paper_id=l.paper_type_id) where l.user_id=? and l.id=?;";
+	$sql="SELECT l.id, l.user_id,l.label_name, p.paper_name, p.paper_id,l.paper_type_id,l.metric, l.marginleft, l.margintop, l.nx, l.ny, l.spacex, l.spacey, l.width, l.height, l.font_size, l.font, l.qsos, l.useforprint, l.last_modified FROM label_types l left outer join paper_types p on (p.user_id=l.user_id and p.paper_id=l.paper_type_id) where l.user_id=? and l.id=?;";
         $query=$this->db->query($sql,array($user_id,$id));
         $result=$query->result();
         return $result[0];
@@ -82,7 +82,7 @@ class Labels_model extends CI_Model {
     }
 
     function fetchLabels($user_id) {
-	$sql="SELECT l.id, l.user_id,l.label_name, p.paper_name, l.metric, l.marginleft, l.margintop, l.nx, l.ny, l.spacex, l.spacey, l.width, l.height, l.font_size, l.font, l.qsos, l.useforprint, l.last_modified FROM cloudlog.label_types l left outer join paper_types p on (p.user_id=l.user_id and p.paper_id=l.paper_type_id) where l.user_id=?;";
+	$sql="SELECT l.id, l.user_id,l.label_name, p.paper_name, l.metric, l.marginleft, l.margintop, l.nx, l.ny, l.spacex, l.spacey, l.width, l.height, l.font_size, l.font, l.qsos, l.useforprint, l.last_modified FROM label_types l left outer join paper_types p on (p.user_id=l.user_id and p.paper_id=l.paper_type_id) where l.user_id=?;";
         $query=$this->db->query($sql,$user_id);
         return $query->result();
 	}
