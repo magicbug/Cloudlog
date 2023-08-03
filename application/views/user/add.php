@@ -190,6 +190,18 @@
                             </select>
                             <small id="user_measurement_base_Help" class="form-text text-muted"><?php echo lang('account_choose_which_unit_distances_will_be_shown_in'); ?></small>
                         </div>
+				<?php if ($this->config->item('cl_multilanguage')) { ?>
+		 	    <div class="form-group">
+		                <label for="language">Cloudlog Language</label>
+						<?php
+						foreach($existing_languages as $lang){
+							$options[$lang] = ucfirst($lang);
+						}
+						echo form_dropdown('language', $options, $language);
+						?>
+		                <small id="language_Help" class="form-text text-muted">Choose Cloudlog language.</small>
+		            </div>
+				<?php } ?>
 
                     </div>
                 </div>

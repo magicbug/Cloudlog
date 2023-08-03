@@ -518,6 +518,37 @@
             <div id="qsomap" style="width: 100%; height: 200px;"></div>
     </div>
 
+    <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px;">
+        <div class="card-header">
+          <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey 
+
+          <button id="connectButton" class="btn btn-primary">Connect</button>
+
+          <button type="button" class="btn btn-light"
+          hx-get="/index.php/qso/winkeysettings" 
+          hx-target="#modals-here" 
+          hx-trigger="click"
+          class="btn btn-primary"
+          _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-cog"></i> Settings</button>
+          </h4>
+        </div>
+
+        <div id="modals-here"></div>
+
+        <div id="winkey_buttons" class="card-body">
+          <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
+          <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>
+          <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
+          <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
+          <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
+          <br><br>
+          <input id="sendText" type="text"><input id="sendButton" type="button" value="Send" class="btn btn-success">
+
+          <span id="statusBar"></span><br>
+
+        </div>
+    </div>
+
     <div class="card callsign-suggest">
         <div class="card-header"><h4 style="font-size: 16px; font-weight: bold;" class="card-title"><?php echo lang('qso_title_suggestions'); ?></h4></div>
 
