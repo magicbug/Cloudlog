@@ -24,7 +24,7 @@
 
 <?php echo validation_errors(); ?>
 
-<form method="post" action="<?php echo site_url('labels/updatePaper/' . $paper->id); ?>" name="create_label_type">
+<form method="post" action="<?php echo site_url('labels/updatePaper/' . $paper->paper_id); ?>" name="create_label_type">
 
 	<div class="card">
 		<h2 class="card-header"><?php echo $page_title; ?></h2>

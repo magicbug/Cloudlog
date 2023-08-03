@@ -46,14 +46,14 @@
 						<tbody>
 						<?php
 		foreach($papertypes as $paper) { ?>
-			<tr class='label_<?php echo $paper->id ?>'>
+			<tr class='label_<?php echo $paper->paper_id ?>'>
 			<td><?php echo $paper->paper_name; ?></td>
 			<td><?php echo $paper->metric; ?></td>
 			<td><?php echo $paper->width; ?></td>
 			<td><?php echo $paper->height; ?></td>
 			<td><?php echo $paper->last_modified; ?></td>
-			<td><a href="<?php echo site_url('labels/editpaper/' . $paper->id); ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a></td>
-			<td><a href="<?php echo site_url('labels/deletepaper/' . $paper->id); ?>" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></a></td>
+			<td><a href="<?php echo site_url('labels/editpaper/' . $paper->paper_id); ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a></td>
+			<td><a href="<?php echo site_url('labels/deletepaper/' . $paper->paper_id); ?>" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></a></td>
 			</tr>
 
 		<?php }
@@ -84,7 +84,7 @@
 		foreach($labels as $label) { ?>
 			<tr class='label_<?php echo $label->id ?>'>
 			<td><?php echo $label->label_name; ?></td>
-			<td><?php echo $label->paper_type; ?></td>
+			<td><?php echo $label->paper_name; ?></td>
 			<td><?php echo $label->metric; ?></td>
 			<td><?php echo $label->width; ?></td>
 			<td><?php echo $label->height; ?></td>

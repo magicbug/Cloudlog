@@ -161,7 +161,7 @@ class Labels extends CI_Controller {
 
 		try {
 			if ($label) {
-				$ptype=$this->labels_model->getPaperType($label->paper_type);	// fetch papersize out of paper-table
+				$ptype=$this->labels_model->getPaperType($label->paper_type_id);	// fetch papersize out of paper-table
 				// var_dump($ptype);
 				$pdf = new PDF_Label(array(
 					'paper-size'	=> 'custom', 				// $label->paper_type,	// The only Type left is "custom" because A4 and so on are also defined at paper_types

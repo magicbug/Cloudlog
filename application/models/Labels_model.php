@@ -5,7 +5,7 @@ class Labels_model extends CI_Model {
 		$data = array(
 			'user_id' 		=> $this->session->userdata('user_id'),
             'label_name' 	=> xss_clean($this->input->post('label_name', true)),
-            'paper_type' 	=> xss_clean($this->input->post('paper_type', true)),
+            'paper_type_id' 	=> xss_clean($this->input->post('paper_type_id', true)),
             'metric' 		=> xss_clean($this->input->post('measurementType', true)),
             'marginleft' 	=> xss_clean($this->input->post('marginLeft', true)),
             'margintop' 	=> xss_clean($this->input->post('marginTop', true)),
@@ -41,8 +41,9 @@ class Labels_model extends CI_Model {
 	}
 
     function getLabel($id) {
-        $this->db->where('user_id', $this->session->userdata('user_id'));
-        $this->db->where('id', $id);
+	$this->db->join('paper_types', 'paper_types.paper_id = label_types.paper_type_id');
+        $this->db->where('label_types.user_id', $this->session->userdata('user_id'));
+        $this->db->where('label_types.id', $id);
 		$query = $this->db->get('label_types');
 
         return $query->row();
@@ -52,7 +53,7 @@ class Labels_model extends CI_Model {
         $data = array(
 			'user_id' 		=> $this->session->userdata('user_id'),
             'label_name' 	=> xss_clean($this->input->post('label_name', true)),
-            'paper_type' 	=> xss_clean($this->input->post('paper_type', true)),
+            'paper_type_id' 	=> xss_clean($this->input->post('paper_type_id', true)),
             'metric' 		=> xss_clean($this->input->post('measurementType', true)),
             'marginleft' 	=> xss_clean($this->input->post('marginLeft', true)),
             'margintop' 	=> xss_clean($this->input->post('marginTop', true)),
@@ -82,7 +83,8 @@ class Labels_model extends CI_Model {
     }
 
     function fetchLabels($user_id) {
-        $this->db->where('user_id', $user_id);
+        $this->db->join('paper_types', 'paper_types.paper_id = label_types.paper_type_id');
+        $this->db->where('label_types.user_id', $user_id);
 		$query = $this->db->get('label_types');
 
         return $query->result();
@@ -118,9 +120,9 @@ class Labels_model extends CI_Model {
         return $query->row();
     }
 
-    function getPaperType($ptype) {
+    function getPaperType($ptype_id) {
         $this->db->where('user_id', $this->session->userdata('user_id'));
-        $this->db->where('paper_name',$ptype);
+        $this->db->where('paper_id',$ptype_id);
 		$query = $this->db->get('paper_types');
 
         return $query->row();
@@ -190,19 +192,19 @@ class Labels_model extends CI_Model {
         $cleanid = $this->security->xss_clean($id);
 
         $this->db->where('user_id', $this->session->userdata('user_id'));
-        $this->db->where('id', $cleanid);
+        $this->db->where('paper_id', $cleanid);
         $this->db->update('paper_types', $data);
     }
 
     function deletePaper($id) {
         $cleanid = xss_clean($id);
 
-        $this->db->delete('paper_types', array('id' => $cleanid, 'user_id' => $this->session->userdata('user_id')));
+        $this->db->delete('paper_types', array('paper_id' => $cleanid, 'user_id' => $this->session->userdata('user_id')));
     }
 
 	function getPaper($id) {
         $this->db->where('user_id', $this->session->userdata('user_id'));
-        $this->db->where('id', $id);
+        $this->db->where('paper_id', $id);
 		$query = $this->db->get('paper_types');
 
         return $query->row();
