@@ -195,7 +195,7 @@ class Labels_model extends CI_Model {
     function label_cnt_with_paper($paper_id) {
 	    $clean_paper_id=xss_clean($paper_id);
 	    $sql="select count(distinct l.id) as CNT from label_types l inner join paper_types p on (p.paper_id=l.paper_type_id) where l.user_id=? and p.user_id=? and l.paper_type_id=?";
-	    $query = $this->db->query($sql, array($this->session->userdata('user_id'), this->session->userdata('user_id'), $clean_paper_id));
+	    $query = $this->db->query($sql, array($this->session->userdata('user_id'), $this->session->userdata('user_id'), $clean_paper_id));
 	    $row = $query->row();
 	    if (isset($row)) {
 		    return($row->CNT);

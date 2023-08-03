@@ -455,6 +455,12 @@ class User extends CI_Controller {
 				$data['user_column5'] = $q->user_column5;
 			}
 
+			if($this->input->post('user_winkey')) {
+				$data['user_winkey'] = $this->input->post('user_winkey', true);
+			} else {
+				$data['user_winkey'] = $q->winkey;
+			}
+
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('user/edit', $data);
 			$this->load->view('interface_assets/footer');
@@ -524,6 +530,7 @@ class User extends CI_Controller {
 			$data['user_gridmap_default_band'] = $this->input->post('user_gridmap_default_band');
 			$data['user_gridmap_confirmation'] = ($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : '');
 			$data['language'] = $this->input->post('language');
+			$data['user_winkey'] = $this->input->post('user_winkey');
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}

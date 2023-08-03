@@ -218,6 +218,7 @@ class User_Model extends CI_Model {
 					'user_gridmap_default_band' => xss_clean($fields['user_gridmap_default_band']),
 					'user_gridmap_confirmation' => (isset($fields['user_gridmap_confirmation_qsl']) ? 'Q' : '').(isset($fields['user_gridmap_confirmation_lotw']) ? 'L' : '').(isset($fields['user_gridmap_confirmation_eqsl']) ? 'E' : ''),
 					'language' => xss_clean($fields['language']),
+					'winkey' => xss_clean($fields['user_winkey']),
 				);
 
 				// Check to see if the user is allowed to change user levels
@@ -343,6 +344,7 @@ class User_Model extends CI_Model {
 			'user_gridmap_confirmation'	 => $u->row()->user_gridmap_confirmation,
 			'active_station_logbook' => $u->row()->active_station_logbook,
 			'language' => isset($u->row()->language) ? $u->row()->language: 'english',
+			'isWinkeyEnabled' => $u->row()->winkey,
 		);
 
 		$this->session->set_userdata($userdata);
