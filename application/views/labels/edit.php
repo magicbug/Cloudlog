@@ -30,9 +30,9 @@
 				    <select name="paper_type_id" class="form-control" id="paperType_id">
 						<?php
 							foreach($papertypes as $paper){
-								echo '<option value="' . $paper->paper_id . '"';
-								if ($label->paper_type_id == $paper->paper_id) echo ' selected';
-								echo '>' . ucwords(strtolower(($paper->paper_name))) . '</option>';
+								echo '<option value="' . ($paper->paper_id ?? '') . '"';
+								if (($label->paper_type_id ?? '') == ($paper->paper_id ?? '')) echo ' selected';
+								echo '>' . ucwords(strtolower(($paper->paper_name ?? ''))) . '</option>';
 							}
 						?>
 					</select>

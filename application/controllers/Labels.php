@@ -331,7 +331,7 @@ class Labels extends CI_Controller {
 
 		$cleanid = $this->security->xss_clean($id);
 
-		$data['label'] = $this->labels_model->getLabel($cleanid);
+		$data['label'] = $this->labels_model->getLabel($cleanid,$this->session->userdata('user_id'));
 
 		$data['papertypes'] = $this->labels_model->fetchPapertypes($this->session->userdata('user_id'));
 
