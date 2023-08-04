@@ -1,6 +1,6 @@
 <div id="modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
 <div id="modal" class="modal fade show" tabindex="-1" style="display:block;">
-<form hx-post="/index.php/qso/cwmacrosave" hx-target=".modal-body">
+<form hx-post="<?php echo base_url();?>index.php/qso/cwmacrosave" hx-target=".modal-body">
 	<div class="modal-dialog modal-dialog-centered">
 	  <div class="modal-content">
 		<div class="modal-header">
