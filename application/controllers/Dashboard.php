@@ -212,42 +212,4 @@ class Dashboard extends CI_Controller {
 	}
 	
 	
-	function todays_map() {
-		$this->load->library('qra');
-		$this->load->model('logbook_model');
-		// TODO: Auth
-		$qsos = $this->logbook_model->get_todays_qsos('');
-
-	
-		echo "{\"markers\": [";
-
-		foreach ($qsos->result() as $row) {
-			//print_r($row);
-			if($row->COL_GRIDSQUARE != null) {
-				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
-				echo "{\"point\":new GLatLng(".$stn_loc[0].",".$stn_loc[1]."), \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
-				echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-				echo "\",\"label\":\"".$row->COL_CALL."\"},";
-			} else {
-				$query = $this->db->query('
-					SELECT *
-					FROM dxcc_entities
-					WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
-					ORDER BY LENGTH( prefix ) DESC
-					LIMIT 1 
-				');
-				
-				foreach ($query->result() as $dxcc) {
-					echo "{\"point\":new GLatLng(".$dxcc->lat.",".$dxcc->long."), \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
-					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-					echo "\",\"label\":\"".$row->COL_CALL."\"},";
-				}
-			}
-			
-		}
-		echo "]";
-		echo "}";
-
 	}
-	
-}

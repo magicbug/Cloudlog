@@ -95,3 +95,4 @@ $lang['account_user_mastodon'] = 'URL of Mastodonserver';
 
 $lang['account_gridmap_settings'] = 'Gridsquare -kartan asetukset';
 $lang['account_gridmap_default_band'] = 'Oletusbandi';
+

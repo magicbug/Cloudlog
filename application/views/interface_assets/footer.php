@@ -7,6 +7,8 @@
   var base_url = "<?php echo base_url(); ?>"; // Base URL
   var site_url = "<?php echo site_url(); ?>"; // Site URL
   var icon_dot_url = "<?php echo base_url();?>assets/images/dot.png";
+  // get the user_callsign from session
+ var my_call = "<?php echo $this->session->userdata('user_callsign'); ?>".toUpperCase();
 </script>
 
 <!-- General JS Files used across Cloudlog -->
@@ -71,10 +73,14 @@ function load_was_map() {
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/continents.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "webadif") { ?>
+<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "hrdlog" ||$this->uri->segment(1) == "webadif") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "maintenance" ) { ?>
+    <script src="<?php echo base_url() ;?>assets/js/sections/maintenance.js"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "adif" ) { ?>
@@ -349,6 +355,7 @@ $(function () {
                 if (isDarkModeTheme()) {
                     $(".buttons-csv").css("color", "white");
                 }
+                $('[data-toggle="tooltip"]').tooltip();
                 $(".runbutton").removeClass('running');
                 $(".runbutton").prop('disabled', false);
             });
@@ -931,9 +938,29 @@ $(document).on('keypress',function(e) {
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
+
 <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
+ <script src="<?php echo base_url() ;?>assets/js/winkey.js"></script>
+<?php
+
+	if ($this->optionslib->get_option('dxcache_url') != ''){ ?>
+	<script type="text/javascript">
+		var dxcluster_provider = '<?php echo base_url(); ?>index.php/dxcluster';
+		$(document).ready(function() {
+			$("#check_cluster").on("click", function() {
+				$.ajax({ url: dxcluster_provider+"/qrg_lookup/"+$("#frequency").val()/1000, cache: false, dataType: "json" }).done(
+					function(dxspot) {
+						$("#callsign").val(dxspot.spotted);
+						$("#callsign").trigger("blur");
+					}
+				);
+			});
+		});
+	</script>
 
 <?php
+}
+
 
     $this->load->model('stations');
     $active_station_id = $this->stations->find_active();
@@ -1234,97 +1261,110 @@ $(document).on('keypress',function(e) {
 
     <script>
     // Javascript for controlling rig frequency.
-    var updateFromCAT = function() {
-    if($('select.radios option:selected').val() != '0') {
-      radioID = $('select.radios option:selected').val();
-      $.getJSON( "radio/json/" + radioID, function( data ) {
-          /* {
-              "frequency": "2400210000",
-              "frequency_rx": "10489710000",
-              "mode": "SSB",
-              "satmode": "S/X",
-              "satname": "QO-100"
-              "power": "20"
-              "prop_mode": "SAT"
-          }  */
-          $('#frequency').val(data.frequency);
-          $("#band").val(frequencyToBand(data.frequency));
-          if (data.frequency_rx != "") {
-            $('#frequency_rx').val(data.frequency_rx);
-            $("#band_rx").val(frequencyToBand(data.frequency_rx));
-          }
+	  var updateFromCAT = function() {
+		  if($('select.radios option:selected').val() != '0') {
+			  radioID = $('select.radios option:selected').val();
+			  $.getJSON( "radio/json/" + radioID, function( data ) {
+	  /* {
+	  "frequency": "2400210000",
+	      "frequency_rx": "10489710000",
+	      "mode": "SSB",
+	      "satmode": "S/X",
+	      "satname": "QO-100"
+	      "power": "20"
+	      "prop_mode": "SAT",
+	      "error": "not_logged_id" // optional, reserved for errors
+	  }  */
+				  if (data.error) {
+					  if (data.error == 'not_logged_in') {
+						  $(".radio_cat_state" ).remove();
+						  if($('.radio_login_error').length == 0) {
+							  $('.qso_panel').prepend('<div class="alert alert-danger radio_login_error" role="alert"><i class="fas fa-broadcast-tower"></i> You\'re not logged it. Please <a href="<?php echo base_url();?>">login</a></div>');
+						  }
+					  }
+					  // Put future Errorhandling here
+				  } else {
+					  if($('.radio_login_error').length != 0) {
+						  $(".radio_login_error" ).remove();
+					  }
+					  $('#frequency').val(data.frequency);
+					  $("#band").val(frequencyToBand(data.frequency));
+					  if (data.frequency_rx != "") {
+						  $('#frequency_rx').val(data.frequency_rx);
+						  $("#band_rx").val(frequencyToBand(data.frequency_rx));
+					  }
 
-          old_mode = $(".mode").val();
-          $(".mode").val(data.mode);
+					  old_mode = $(".mode").val();
+					  $(".mode").val(data.mode);
 
-          if (old_mode !== $(".mode").val()) {
-            // Update RST on mode change via CAT
-            setRst($(".mode").val());
-          }
-          $("#sat_name").val(data.satname);
-          $("#sat_mode").val(data.satmode);
-          if(data.power != null && data.power != 0) {
-            $("#transmit_power").val(data.power);
-          }
-          $("#selectPropagation").val(data.prop_mode);
+					  if (old_mode !== $(".mode").val()) {
+						  // Update RST on mode change via CAT
+						  setRst($(".mode").val());
+					  }
+					  $("#sat_name").val(data.satname);
+					  $("#sat_mode").val(data.satmode);
+					  if(data.power != null && data.power != 0) {
+						  $("#transmit_power").val(data.power);
+					  }
+					  $("#selectPropagation").val(data.prop_mode);
 
-          // Display CAT Timeout warning based on the figure given in the config file
-          var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
+					  // Display CAT Timeout warning based on the figure given in the config file
+					  var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
 
-          if(data.updated_minutes_ago > minutes) {
-            $(".radio_cat_state" ).remove();
-            if($('.radio_timeout_error').length == 0) {
-              $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert"><i class="fas fa-broadcast-tower"></i> Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
-            } else {
-              $('.radio_timeout_error').html('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
-            }
-          } else {
-            $(".radio_timeout_error" ).remove();
-            text = '<i class="fas fa-broadcast-tower"></i><span style="margin-left:10px;"></span><b>TX:</b> '+(Math.round(parseInt(data.frequency)/100)/10000).toFixed(4)+' MHz';
-            if(data.mode != null) {
-               text = text+'<span style="margin-left:10px"></span>'+data.mode;
-            }
-            if(data.power != null && data.power != 0) {
-               text = text+'<span style="margin-left:10px"></span>'+data.power+' W';
-            }
-            if(data.prop_mode != null && data.prop_mode != '') {
-               text = text+'<span style="margin-left:10px"></span>('+data.prop_mode;
-               if (data.prop_mode == 'SAT') {
-                  text = text+' '+data.satname;
-               }
-            }
-            if(data.frequency_rx != null && data.frequency_rx != 0) {
-               text = text+'<span style="margin-left:10px"></span><b>RX:</b> '+(Math.round(parseInt(data.frequency_rx)/1000)/1000).toFixed(3)+' MHz)';
-            }
-            if (! $('#radio_cat_state').length) {
-               $('.qso_panel').prepend('<div aria-hidden="true"><div id="radio_cat_state" class="alert alert-success radio_cat_state" role="alert">'+text+'</div></div>');
-            } else {
-               $('#radio_cat_state').html(text);
-            }
-          }
+					  if(data.updated_minutes_ago > minutes) {
+						  $(".radio_cat_state" ).remove();
+						  if($('.radio_timeout_error').length == 0) {
+							  $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert"><i class="fas fa-broadcast-tower"></i> Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
+						  } else {
+							  $('.radio_timeout_error').html('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
+						  }
+					  } else {
+						  $(".radio_timeout_error" ).remove();
+						  text = '<i class="fas fa-broadcast-tower"></i><span style="margin-left:10px;"></span><b>TX:</b> '+(Math.round(parseInt(data.frequency)/100)/10000).toFixed(4)+' MHz';
+						  if(data.mode != null) {
+							  text = text+'<span style="margin-left:10px"></span>'+data.mode;
+						  }
+						  if(data.power != null && data.power != 0) {
+							  text = text+'<span style="margin-left:10px"></span>'+data.power+' W';
+						  }
+						  if(data.prop_mode != null && data.prop_mode != '') {
+							  text = text+'<span style="margin-left:10px"></span>('+data.prop_mode;
+							  if (data.prop_mode == 'SAT') {
+								  text = text+' '+data.satname;
+							  }
+						  }
+						  if(data.frequency_rx != null && data.frequency_rx != 0) {
+							  text = text+'<span style="margin-left:10px"></span><b>RX:</b> '+(Math.round(parseInt(data.frequency_rx)/1000)/1000).toFixed(3)+' MHz)';
+						  }
+						  if (! $('#radio_cat_state').length) {
+							  $('.qso_panel').prepend('<div aria-hidden="true"><div id="radio_cat_state" class="alert alert-success radio_cat_state" role="alert">'+text+'</div></div>');
+						  } else {
+							  $('#radio_cat_state').html(text);
+						  }
+					  }
+				  }
+			  });
+		  }
+	  };
 
-      });
-    }
-  };
+	  // Update frequency every three second
+	  setInterval(updateFromCAT, 3000);
 
-  // Update frequency every three second
-  setInterval(updateFromCAT, 3000);
+	  // If a radios selected from drop down select radio update.
+	  $('.radios').change(updateFromCAT);
 
-  // If a radios selected from drop down select radio update.
-  $('.radios').change(updateFromCAT);
-
-  // If no radio is selected clear data
-  $( ".radios" ).change(function() {
-      if ($(".radios option:selected").val() == 0) {
-        $("#sat_name").val("");
-        $("#sat_mode").val("");
-        $("#frequency").val("");
-        $("#frequency_rx").val("");
-        $("#band_rx").val("");
-        $("#selectPropagation").val($("#selectPropagation option:first").val());
-        $(".radio_timeout_error" ).remove();
-      }
-  });
+	  // If no radio is selected clear data
+	  $( ".radios" ).change(function() {
+		  if ($(".radios option:selected").val() == 0) {
+			  $("#sat_name").val("");
+			  $("#sat_mode").val("");
+			  $("#frequency").val("");
+			  $("#frequency_rx").val("");
+			  $("#band_rx").val("");
+			  $("#selectPropagation").val($("#selectPropagation option:first").val());
+			  $(".radio_timeout_error" ).remove();
+		  }
+	  });
   </script>
 
 <?php } ?>
@@ -1388,7 +1428,7 @@ $(document).ready(function(){
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "gridsquares" && !empty($this->uri->segment(2))) { ?>
-
+<script>var gridsquaremap = true;</script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.MaidenheadColoured.js"></script>
 
 <script>
@@ -1460,14 +1500,20 @@ $(document).ready(function(){
 
     if(map.getZoom() > 2) {
     	<?php if ($this->session->userdata('user_callsign')) { ?>
-	  var band = '';
+        spawnGridsquareModal(loc_4char);
+		  <?php } ?>
+    }
+  };
+
+  function spawnGridsquareModal(loc_4char) {
+    var band = '';
       var search_type = "<?php echo $this->uri->segment(2); ?>";
       if(search_type == "satellites") {
 		band = 'SAT';
       } else {
         band = "<?php echo $this->uri->segment(3); ?>";
       }
-		$(".modal-body").empty();
+    $(".modal-body").empty();
 		  $.ajax({
 			  url: base_url + 'index.php/awards/qso_details_ajax',
 			  type: 'post',
@@ -1497,9 +1543,7 @@ $(document).ready(function(){
 				  }
 			  }
 		  });
-		  <?php } ?>
-    }
-  };
+  }
 
 <?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
 
@@ -1697,6 +1741,9 @@ $(document).ready(function(){
         </script>
     <?php } ?>
 
+    <?php if ($this->uri->segment(1) == "hrdlog") { ?>
+		<script src="<?php echo base_url(); ?>assets/js/sections/hrdlog.js"></script>
+    <?php } ?>
     <?php if ($this->uri->segment(1) == "qrz") { ?>
 		<script src="<?php echo base_url(); ?>assets/js/sections/qrzlogbook.js"></script>
     <?php } ?>
@@ -2002,7 +2049,7 @@ $(document).ready(function(){
                 success: function (dataofconfirm) {
                     $(".edit-dialog").modal('hide');
                     $(".qso-dialog").modal('hide');
-                    <?php if ($this->uri->segment(1) != "search" && $this->uri->segment(2) != "filter" && $this->uri->segment(1) != "qso") { ?>location.reload();<?php } ?>
+                    <?php if ($this->uri->segment(1) != "search" && $this->uri->segment(2) != "filter" && $this->uri->segment(1) != "qso" && $this->uri->segment(1) != "logbookadvanced") { ?>location.reload();<?php } ?>
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr.responseText);
@@ -2393,7 +2440,7 @@ function viewEqsl(picture, callsign) {
                         $("#qslcardfront").val(null);
                     }
 
-                } else {
+                } else if (data.status.front.status != '') {
                     $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Front QSL Card:' +
                     data.status.front.error +
                         '</div>');
@@ -2431,7 +2478,7 @@ function viewEqsl(picture, callsign) {
                         $(".carouselExampleIndicators").carousel();
                         $("#qslcardback").val(null);
                     }
-                } else {
+                } else if (data.status.back.status != '') {
                     $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\nBack QSL Card: ' +
                     data.status.back.error +
                         '</div>');
@@ -2755,119 +2802,9 @@ function viewEqsl(picture, callsign) {
 		"scrollCollapse": true,
 		"paging": false,
 		"scrollX": true,
+		"ordering": true,
+		"order": [ 2, 'desc' ],
 	});
-	</script>
-<?php } ?>
-
-<?php if ($this->uri->segment(1) == "qslprint") { ?>
-	<script>
-		function deleteFromQslQueue(id) {
-			BootstrapDialog.confirm({
-				title: 'DANGER',
-				message: 'Warning! Are you sure you want to removes this QSL from the queue?',
-				type: BootstrapDialog.TYPE_DANGER,
-				closable: true,
-				draggable: true,
-				btnOKClass: 'btn-danger',
-				callback: function(result) {
-					$.ajax({
-						url: base_url + 'index.php/qslprint/delete_from_qsl_queue',
-						type: 'post',
-						data: {'id': id	},
-						success: function(html) {
-							$("#qslprint_"+id).remove();
-						}
-					});
-				}
-			});
-		}
-
-		function openQsoList(callsign) {
-			$.ajax({
-				url: base_url + 'index.php/qslprint/open_qso_list',
-				type: 'post',
-				data: {'callsign': callsign},
-				success: function(html) {
-					BootstrapDialog.show({
-						title: 'QSO List',
-						size: BootstrapDialog.SIZE_WIDE,
-						cssClass: 'qso-dialog',
-						nl2br: false,
-						message: html,
-						onshown: function(dialog) {
-							$('[data-toggle="tooltip"]').tooltip();
-						},
-						buttons: [{
-							label: 'Close',
-							action: function (dialogItself) {
-								dialogItself.close();
-							}
-						}]
-					});
-				}
-			});
-		}
-
-		function addQsoToPrintQueue(id) {
-			$.ajax({
-				url: base_url + 'index.php/qslprint/add_qso_to_print_queue',
-				type: 'post',
-				data: {'id': id},
-				success: function(html) {
-					var line = '<tr id="qslprint_'+id+'">';
-					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(0)").text()+'</td>';
-					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(1)").text()+'</td>';
-					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(2)").text()+'</td>';
-					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(3)").text()+'</td>';
-					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(4)").text()+'</td>';
-					line += '<td style=\'text-align: center\'><span class="badge badge-light">'+$("#qsolist_"+id).find("td:eq(5)").text()+'</span></td>';
-					line += '<td style=\'text-align: center\'><button onclick="deleteFromQslQueue('+id+')" class="btn btn-sm btn-danger">Delete from queue</button></td></td>';
-					line += '<td style=\'text-align: center\'><button onclick="openQsoList(\''+$("#qsolist_"+id).find("td:eq(0)").text()+'\')" class="btn btn-sm btn-success">Open QSO list</button></td>';
-					line += '</tr>';
-					$('.table tr:last').after(line);
-					$("#qsolist_"+id).remove();''
-				}
-			});
-		}
-
-		$(".station_id").change(function(){
-			var station_id = $(".station_id").val();
-			$.ajax({
-				url: base_url + 'index.php/qslprint/get_qsos_for_print_ajax',
-				type: 'post',
-				data: {'station_id': station_id},
-				success: function(html) {
-					$('.resulttable').empty();
-					$('.resulttable').append(html);
-				}
-			});
-		});
-
-        function showOqrs(id) {
-			$.ajax({
-				url: base_url + 'index.php/qslprint/show_oqrs',
-				type: 'post',
-				data: {'id': id},
-				success: function(html) {
-					BootstrapDialog.show({
-						title: 'OQRS',
-						size: BootstrapDialog.SIZE_WIDE,
-						cssClass: 'qso-dialog',
-						nl2br: false,
-						message: html,
-						onshown: function(dialog) {
-							$('[data-toggle="tooltip"]').tooltip();
-						},
-						buttons: [{
-							label: 'Close',
-							action: function (dialogItself) {
-								dialogItself.close();
-							}
-						}]
-					});
-				}
-			});
-		}
 	</script>
 <?php } ?>
 

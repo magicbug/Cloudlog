@@ -129,6 +129,12 @@ class Logbooks extends CI_Controller {
 		$this->load->view('logbooks/components/publicSlugInputValidation', $data);
 	}
 
+	public function save_publicsearch() {
+		$this->load->model('logbooks_model');
+			$returndata = $this->logbooks_model->save_public_search($this->input->post('public_search'), $this->input->post('logbook_id'));
+			echo "<div class=\"alert alert-success\" role=\"alert\">Public Search Setttings Saved</div>";
+	}
+
 	public function save_publicslug() {
 		$this->load->model('logbooks_model');
 

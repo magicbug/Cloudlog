@@ -8,9 +8,14 @@
 
 
 class Welcome extends CI_Controller {
+	function __construct() {
+		parent::__construct();
 
-	public function index()
-	{
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+	}
+
+	public function index() {
         if($this->optionslib->get_option('version2_trigger') == "false") {
             $data['page_title'] = "Welcome to Cloudlog Version 2.0";
 

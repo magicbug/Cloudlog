@@ -73,11 +73,11 @@
 							$levels = $this->config->item('auth_level');
 							foreach ($levels as $key => $value) {
 								echo '<option value="'. $key . '"';
-									if($user_type == $key) { 
-										echo "selected=\"selected\""; 
-									} 
+									if($user_type == $key) {
+										echo "selected=\"selected\"";
+									}
 								echo '>' . $value . '</option>';
-							} 
+							}
 							?>
 						</select>
 						<?php } else {
@@ -191,6 +191,19 @@
 		                </select>
 		                <small id="user_measurement_base_Help" class="form-text text-muted"><?php echo lang('account_choose_which_unit_distances_will_be_shown_in'); ?></small>
 		            </div>
+
+				<?php if ($this->config->item('cl_multilanguage')) { ?>
+		 	    <div class="form-group">
+		                <label for="language">Cloudlog Language</label>
+						<?php
+						foreach($existing_languages as $lang){
+							$options[$lang] = ucfirst($lang);
+						}
+						echo form_dropdown('language', $options, $language);
+						?>
+		                <small id="language_Help" class="form-text text-muted">Choose Cloudlog language.</small>
+		            </div>
+				<?php } ?>
 				</div>
 			</div>
 	    </div>
@@ -360,6 +373,7 @@
 								<option value="POTA" <?php if ($user_column1 == "POTA") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_pota'); ?></option>
 								<option value="State" <?php if ($user_column1 == "State") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_state'); ?></option>
 								<option value="Grid" <?php if ($user_column1 == "Grid") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_gridsquare'); ?></option>
+								<option value="Distance" <?php if ($user_column1 == "Distance") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_distance'); ?></option>
 								<option value="Operator" <?php if ($user_column1 == "Operator") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_operator'); ?></option>
 							</select>
 						</div>
@@ -379,6 +393,7 @@
 								<option value="POTA" <?php if ($user_column1 == "POTA") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_pota'); ?></option>
 								<option value="State" <?php if ($user_column2 == "State") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_state'); ?></option>
 								<option value="Grid" <?php if ($user_column2 == "Grid") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_gridsquare'); ?></option>
+								<option value="Distance" <?php if ($user_column2 == "Distance") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_distance'); ?></option>
 								<option value="Operator" <?php if ($user_column2 == "Operator") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_operator'); ?></option>
 							</select>
 							</div>
@@ -398,6 +413,7 @@
 								<option value="POTA" <?php if ($user_column1 == "POTA") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_pota'); ?></option>
 								<option value="State" <?php if ($user_column3 == "State") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_state'); ?></option>
 								<option value="Grid" <?php if ($user_column3 == "Grid") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_gridsquare'); ?></option>
+								<option value="Distance" <?php if ($user_column3 == "Distance") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_distance'); ?></option>
 								<option value="Operator" <?php if ($user_column3 == "Operator") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_operator'); ?></option>
 							</select>
 							</div>
@@ -417,6 +433,7 @@
 								<option value="POTA" <?php if ($user_column1 == "POTA") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_pota'); ?></option>
 								<option value="State" <?php if ($user_column4 == "State") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_state'); ?></option>
 								<option value="Grid" <?php if ($user_column4 == "Grid") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_gridsquare'); ?></option>
+								<option value="Distance" <?php if ($user_column4 == "Distance") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_distance'); ?></option>
 								<option value="Operator" <?php if ($user_column4 == "Operator") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_operator'); ?></option>
 							</select>
 						</div>
@@ -436,6 +453,7 @@
 									<option value="POTA" <?php if ($user_column1 == "POTA") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_pota'); ?></option>
 									<option value="State" <?php if ($user_column5 == "State") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_state'); ?></option>
 									<option value="Grid" <?php if ($user_column5 == "Grid") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_gridsquare'); ?></option>
+									<option value="Distance" <?php if ($user_column5 == "Distance") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_distance'); ?></option>
 									<option value="Operator" <?php if ($user_column5 == "Operator") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_operator'); ?></option>
 									<option value="Location" <?php if ($user_column5 == "Location") { echo " selected =\"selected\""; } ?>><?php echo lang('cloudlog_station_profile'); ?></option>
 								</select>
@@ -471,7 +489,7 @@
 			<div class="col-md-6">
 				<div class="card">
 					<div class="card-header">
-						<?php echo lang('account_previous_qsl_type'); ?>
+						<?php echo lang('account_qrzcom_hamqthcom_images'); ?>
 					</div>
 					<div class="card-body">
 						<div class="form-group">
@@ -507,7 +525,100 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-md">
+				<div class="card">
+		    			<div class="card-header">
+					   	 <?php echo lang('account_mastodon'); ?>
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+						<label><?php echo lang('account_user_mastodon'); ?></label>
+							<input class="form-control" type="text" name="user_mastodon_url" value="<?php if(isset($user_mastodon_url)) { echo $user_mastodon_url; } ?>" />
+							<div class="small form-text text-muted">Main URL of your Mastodon server, e.g. <a href="https://radiosocial.de/" target="_blank">https://radiosocial.de</a></div></td>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-md">
+				<div class="card">
+					<div class="card-header">
+						<?php echo lang('account_gridmap_settings'); ?>
+					</div>
+					<div class="card-body">
+						<div class="form-group">
+							<label for="user_gridmap_default_band"><?php echo lang('account_gridmap_default_band'); ?></label>
 
+							<select id="user_gridmap_default_band" class="form-control form-control-sm" name="user_gridmap_default_band">
+								<option value="All">All</option>;
+							<?php foreach($bands as $band) {
+								echo '<option value="'.$band.'"';
+								if ($user_gridmap_default_band == $band) {
+									echo ' selected="selected"';
+								}
+								echo '>'.$band.'</option>'."\n";
+							} ?>
+							</select>
+						</div>
+						<div class="form-group">
+							<label class="my-1 mr-2"><?php echo lang('gridsquares_confirmation'); ?></label>
+							<div class="form-check-inline">
+								<?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_qsl" id="user_gridmap_confirmation_qsl"';
+								if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) {
+									echo ' checked';
+								}
+								echo '>'; ?>
+								<label class="form-check-label" for="user_gridmap_confirmation_qsl">QSL</label>
+							</div>
+							<div class="form-check-inline">
+								<?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_lotw" id="user_gridmap_confirmation_lotw"';
+								if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+									echo ' checked';
+								}
+								echo '>'; ?>
+								<label class="form-check-label" for="user_gridmap_confirmation_lotw">LoTW</label>
+							</div>
+							<div class="form-check-inline">
+								<?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_eqsl" id="user_gridmap_confirmation_eqsl"';
+								if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+									echo ' checked';
+								}
+								echo '>'; ?>
+								<label class="form-check-label" for="user_gridmap_confirmation_eqsl">eQSL</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<br>
+		
+		<div class="row">
+				<div class="col-md">
+					<div class="card">
+						<div class="card-header">
+							Winkeyer <span class="badge badge-danger">Experimental</span>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+
+							<p>Winkeyer support in Cloudlog is very experimental read the wiki first at <a href="https://github.com/magicbug/Cloudlog/wiki/Winkey" target="_blank">https://github.com/magicbug/Cloudlog/wiki/Winkey</a> before enabling.</p>
+
+							<label>Enable Winkey Features</label>
+							
+							<select class="custom-select" name="user_winkey" id="user_winkeyer">
+								<option value="0" <?php if ($user_winkey == 0) { echo 'selected="selected"'; } ?>>Disabled</option>
+								<option value="1" <?php if ($user_winkey == 1) { echo 'selected="selected"'; } ?>>Enabled</option>
+							</select>
+							
+							<div class="small form-text text-muted"></div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 	<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />

@@ -27,13 +27,12 @@ $lang['lotw_certificate_dxcc_help_text'] = 'Podmiot DXCC dla którego wydany zos
 
 $lang['lotw_input_a_file'] = 'Prześlij plik';
 
-$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Wyślij pobrany plik ADIF z LoTW z <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Linku</a>, aby oznaczyć łączności jako potwierdzone przez LOTW.';
+$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Wyślij pobrany plik ADIF z LoTW z <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Linku</a>, aby oznaczyć łączności jako potwierdzone przez LoTW.';
 $lang['lotw_upload_type_must_be_adi'] = 'Pliki logu muszą mieć rozszerzenie .adi';
 
-$lang['lotw_pull_lotw_data_for_me'] = 'Pobierz dane z LOTW za mnie';
-$lang['lotw_import_missing_qsos_text'] = 'Wyślij brakujące łączności do logu. Znak i lokator będą sprawdzone, aby dopasować odpowiedni profil do wgrania łączności. jeśli nie zostaną znalezione, łączność będzie pominięta.';
+$lang['lotw_pull_lotw_data_for_me'] = 'Pobierz dane z LoTW za mnie';
 
-$lang['lotw_report_download_overview_helptext'] ='Cloudlog będzie używał loginu i hasła podanego w profilu, aby pobierać raporty z LOTW.Raport będzie zawierał wszystkie potwierdzenia od wybranej daty, lub ostatniej potwierdzonej łączności z LOTW (wybranej z logiu), do teraz.';
+$lang['lotw_report_download_overview_helptext'] ='Cloudlog będzie używał loginu i hasła podanego w profilu, aby pobierać raporty z LoTW.Raport będzie zawierał wszystkie potwierdzenia od wybranej daty, lub ostatniej potwierdzonej łączności z LoTW (wybranej z logiu), do teraz.';
 
 // Buttons
 $lang['lotw_btn_lotw_import'] = 'LoTW Import';

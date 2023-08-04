@@ -59,15 +59,12 @@
                                 </select>
                             <small id="themeHelp" class="form-text text-muted"><?php echo lang('options_global_theme_choice_this_is_used_when_users_arent_logged_in'); ?></small>
                         </div>
-
-                        <div class="form-group">
-                            <label for="globalSearch"><?php echo lang('options_public_search_bar'); ?></label>
-                            <select class="custom-select" id="globalSearch" name="globalSearch" aria-describedby="globalSearchHelp" required>
+                        
+                        
+                            <select class="custom-select" id="globalSearch" name="globalSearch" style="display: none;">
                                 <option value='true' <?php if($this->optionslib->get_option('global_search') == "true") { echo "selected=\"selected\""; } ?>>Enabled</option>
                                 <option value='false' <?php if($this->optionslib->get_option('global_search') == "false") { echo "selected=\"selected\""; } ?>>Disabled</option>
                             </select>
-                            <small id="globalSearchHelp" class="form-text text-muted"><?php echo lang('options_this_allows_non_logged_in_users_to_access_the_search_functions'); ?></small>
-                        </div>
 
                         <div class="form-group">
                             <label for="dashboardBanner"><?php echo lang('options_dashboard_notification_banner'); ?></label>

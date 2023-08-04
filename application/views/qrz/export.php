@@ -21,7 +21,7 @@
 				<div class="tab-pane active" id="export" role="tabpanel" aria-labelledby="export-tab">
             <p>Here you can see and upload all QSOs which have not been previously uploaded to a QRZ logbook.</p>
             <p>You need to set a QRZ Logbook API key in your station profile. Only station profiles with an API Key set are displayed.</p>
-            <p><span class="badge badge-warning">Warning</span>This might take a while as QSO uploads are processed sequentially.</p>
+            <p><span class="badge badge-warning">Warning</span> This might take a while as QSO uploads are processed sequentially.</p>
 
 <?php
             if ($station_profile->result()) {
@@ -61,9 +61,9 @@
 
 				<form class="form" action="<?php echo site_url('qrz/mark_qrz'); ?>" method="post" enctype="multipart/form-data">
 					<select name="station_profile" class="custom-select mb-4 mr-sm-4" style="width: 30%;">
-						<option value="0">Select Station Location</option>
+						<option disabled value="0">Select Station Location</option>
 						<?php foreach ($station_profiles->result() as $station) { ?>
-							<option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
+							<option <?php if ($station->station_active) { echo "selected "; } ?>value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
 						<?php } ?>
 					</select>
 					<p><span class="badge badge-warning">Warning</span> If a date range is not selected then all QSOs will be marked!</p>

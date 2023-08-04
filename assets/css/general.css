@@ -42,6 +42,11 @@ thead > tr > td {
     padding-top: 15px;
 }
 
+.publicsearch {
+	padding-top: 15px;
+	max-width: 540px;
+}
+
 .search {
 	padding-top: 15px;
 }
@@ -135,7 +140,7 @@ thead > tr > td {
     text-transform: uppercase;
 }
 
-.stationinfo #oqrssearch:valid {
+#oqrssearch:valid {
     text-transform: uppercase;
 }
 
@@ -440,4 +445,66 @@ div#station_logbooks_linked_table_paginate {
 
 #lotw_manual_results {
     padding-top: 10px;
+}
+
+.lotw_info_yellow {
+   background-image: linear-gradient(to bottom, #3fb618, yellow);
+}
+
+.lotw_info_orange {
+   background-image: linear-gradient(to bottom, #3fb618, orange);
+}
+
+.lotw_info_red {
+   background-image: linear-gradient(to bottom, #3fb618, red);
+}
+
+
+.highcharts-strong {
+    font-weight: bold;
+}
+
+.highcharts-figure,
+.highcharts-data-table table {
+    min-width: 320px;
+    max-width: 100%;
+    margin: 1em auto;
+	max-height: calc(100vh - 200px) !important;
+	overflow-y: auto;	
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
 }

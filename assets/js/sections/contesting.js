@@ -211,10 +211,19 @@ $('#start_date').change(function() {
 $("#callsign").keyup(function () {
 	var call = $(this).val();
 	if (call.length >= 3) {
-		$.get('lookup/scp/' + call.toUpperCase(), function (result) {
-			$('.callsign-suggestions').text(result);
-			highlight(call.toUpperCase());
-		});
+
+		$.ajax({
+			url: 'lookup/scp',
+			method: 'POST',
+			data: {
+			  callsign: $(this).val().toUpperCase()
+			},
+			success: function(result) {
+			  $('.callsign-suggestions').text(result);
+			  highlight(call.toUpperCase());
+			}
+		  });
+
 		checkIfWorkedBefore();
 		var qTable = $('.qsotable').DataTable();
 		qTable.search(call).draw();

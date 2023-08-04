@@ -189,7 +189,7 @@ class Update extends CI_Controller {
 		gzclose($gz);
 
 		if (file_put_contents($this->make_update_path("cty.xml"), $data) === FALSE) {
-			$this->update_status("FAILED: Could not write to LoTW users file");
+			$this->update_status("FAILED: Could not write to cty.xml file");
 			return;
 		}
 	
@@ -249,6 +249,11 @@ class Update extends CI_Controller {
 	public function check_missing_continent() {
 		$this->load->model('logbook_model');
 		$this->logbook_model->check_missing_continent();
+	}
+
+	public function update_distances() {
+		$this->load->model('logbook_model');
+		$this->logbook_model->update_distances();
 	}
 
 	public function check_missing_grid($all = false){

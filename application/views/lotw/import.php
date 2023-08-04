@@ -41,14 +41,6 @@
           </div>
       </div>
       <br/>
-      <div class="form-group row" style="display: none">
-          <div class="col-md-10">
-              <div class="form-check-inline">
-                  <input class="form-check-input" type="checkbox" name="importMissing" value="1" id="importMissing">
-                  <label class="form-check-label" for="importMissing"><?php echo lang('lotw_import_missing_qsos_text'); ?></label>
-              </div>
-          </div>
-      </div>
 
 		<p class="form-text text-muted"><?php echo lang('lotw_report_download_overview_helptext'); ?></p>
 

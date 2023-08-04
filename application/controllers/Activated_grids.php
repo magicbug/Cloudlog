@@ -68,7 +68,7 @@ class Activated_grids extends CI_Controller {
 		$grid_6char_confirmed = "";
 
 
-		// Get Confirmed LOTW & Paper Activated Squares (non VUCC)
+		// Get Confirmed LoTW & Paper Activated Squares (non VUCC)
 		$query = $this->activated_grids_model->get_activated_confirmed_sat_squares();
 
 

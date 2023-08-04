@@ -10,9 +10,9 @@
         </div>
         <div class="card-body">
 
-        <div class="stationinfo">
+            <div class="stationinfo">
 
-		<?php
+                <?php
 		if ($global_oqrs_text) {
 			echo $global_oqrs_text;
 			echo '<br /><br />';
@@ -24,37 +24,40 @@
 			</form>';
 			echo '<div class="searchinfo"></div>';
 			?>
-			<script>// Get the input field
-			var input = document.getElementById("oqrssearch");
+                <script>
+                // Get the input field
+                var input = document.getElementById("oqrssearch");
 
-			// Execute a function when the user presses a key on the keyboard
-			input.addEventListener("keypress", function(event) {
-			// If the user presses the "Enter" key on the keyboard
-			if (event.key === "Enter") {
-				// Cancel the default action, if needed
-				event.preventDefault();
-				// Trigger the button element with a click
-				document.getElementById("stationbuttonsubmit").click();
-			}
-			});</script>
-			<?php
+                // Execute a function when the user presses a key on the keyboard
+                input.addEventListener("keypress", function(event) {
+                    // If the user presses the "Enter" key on the keyboard
+                    if (event.key === "Enter") {
+                        // Cancel the default action, if needed
+                        event.preventDefault();
+                        // Trigger the button element with a click
+                        document.getElementById("stationbuttonsubmit").click();
+                    }
+                });
+                </script>
+				</div>
+                <?php
 			} else {
-		  echo '<div class="resulttable">';
 		  if ($stations->result() != NULL) { ?>
 
-            <form class="form-inline" enctype="multipart/form-data">
-			<label class="my-1 mr-2" for="station">Select station: </label>
-                        <select id="station" class="custom-select my-1 mr-sm-2" name="station">
-							<?php foreach($stations->result() as $station) {
+                <form class="form-inline" enctype="multipart/form-data">
+                    <label class="my-1 mr-2" for="station">Select station: </label>
+                    <select id="station" class="custom-select my-1 mr-sm-2" name="station">
+                        <?php foreach($stations->result() as $station) {
 									echo '<option value="' . $station->station_id . '">' . $station->station_profile_name . ' - ' . $station->station_callsign . '</option>'."\n";
 								} ?>
-						</select>
-					<button id="button1id" type="button" onclick="loadStationInfo();" name="button1id" class="btn btn-sm btn-primary"> Proceed</button>
-            </form>
-        </div>
+                    </select>
+                    <button id="button1id" type="button" onclick="loadStationInfo();" name="button1id" class="btn btn-sm btn-primary"> Proceed</button>
+                </form>
+            </div>
+			<div class="resulttable"></div>
 
-			<div class="searchinfo"></div>
-			<?php 
+            <div class="searchinfo"></div>
+            <?php 
 		}
 
 		else {

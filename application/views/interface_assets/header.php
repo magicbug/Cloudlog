@@ -80,6 +80,10 @@
 							<a class="dropdown-item" href="<?php echo site_url('contesting?manual=0');?>" title="Live contest QSOs"><i class="fas fa-list"></i> <?php echo lang('menu_live_contest_logging'); ?></a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('contesting?manual=1');?>" title="Post contest QSOs"><i class="fas fa-list"></i> <?php echo lang('menu_post_contest_logging'); ?></a>
+<?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="<?php echo site_url('bandmap/list');?>" title="Bandmap"><i class="fa fa-id-card"></i> <?php echo lang('menu_bandmap'); ?></a>
+<?php } ?>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('qsl');?>" title="QSL"><i class="fa fa-id-card"></i> <?php echo lang('menu_view_qsl'); ?></a>
 							<div class="dropdown-divider"></div>
@@ -96,7 +100,7 @@
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="<?php echo site_url('statistics');?>" title="Statistics"><i class="fas fa-chart-area"></i> <?php echo lang('menu_statistics'); ?></a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="<?php echo site_url('gridsquares');?>" title="Gridsquares"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_gridsquares'); ?></a>
+					<a class="dropdown-item" href="<?php echo site_url('gridmap');?>" title="Gridmap"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_gridmap'); ?></a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('activated_grids');?>" title="Activated Gridsquares"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_activated_gridsquares'); ?></a>
                     <div class="dropdown-divider"></div>
@@ -178,8 +182,12 @@
 
 					<div class="dropdown-divider"></div>
 
+					<a class="dropdown-item" href="<?php echo site_url('maintenance');?>" title="maintenance"><i class="fas fa-tools"></i> <?php echo lang('menu_maintenance'); ?></a>
+
+					<div class="dropdown-divider"></div>
+
 					<a class="dropdown-item" href="<?php echo site_url('debug');?>" title="Debug Information"><i class="fas fa-tools"></i> <?php echo lang('menu_debug_information'); ?></a>
-					
+
 				</div>
         	</li>
 			<?php } ?>
@@ -252,12 +260,15 @@ $oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 
 				<a class="dropdown-item" href="<?php echo site_url('qslprint');?>" title="Print Requested QSLs"><i class="fas fa-print"></i> <?php echo lang('menu_print_requested_qsls'); ?></a>
 
+				<a class="dropdown-item" href="<?php echo site_url('labels');?>" title="Label setup"><i class="fas fa-print"></i> <?php echo lang('menu_labels'); ?></a>
+
 				<div class="dropdown-divider"></div>
 
 				<a class="dropdown-item" href="<?php echo site_url('lotw');?>" title="Synchronise with Logbook of the World (LoTW)"><i class="fas fa-sync"></i> <?php echo lang('menu_logbook_of_the_world'); ?></a>
 
 				<a class="dropdown-item" href="<?php echo site_url('eqsl/import');?>" title="eQSL import / export"><i class="fas fa-sync"></i> <?php echo lang('menu_eqsl_import_export'); ?></a>
 
+                <a class="dropdown-item" href="<?php echo site_url('hrdlog/export');?>" title="Upload to HRDLog.net logbook"><i class="fas fa-sync"></i> <?php echo lang('menu_hrd_logbook'); ?></a>
                 <a class="dropdown-item" href="<?php echo site_url('qrz/export');?>" title="Upload to QRZ.com logbook"><i class="fas fa-sync"></i> <?php echo lang('menu_qrz_logbook'); ?></a>
 
 				<a class="dropdown-item" href="<?php echo site_url('webadif/export');?>" title="Upload to webADIF"><i class="fas fa-sync"></i> <?php echo lang('menu_qo_100_dx_club_upload'); ?></a>
@@ -279,7 +290,42 @@ $oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 				<a class="dropdown-item" href="<?php echo site_url('user/logout');?>" title="Logout"><i class="fas fa-sign-out-alt"></i> <?php echo lang('menu_logout'); ?></a>
 			</div>
         </li>
-    	</ul>
+
+		<?php
+			// Can add extra menu items by defining them in options. The format is json.
+			// Useful to add extra things in Cloudlog without the need for modifying files. If you add extras, these files will not be overwritten when updating.
+			//
+			// The menu items will be displayed to the top right under extras.
+			//
+			// Example:
+			// INSERT INTO options (option_name,option_value,autoload) VALUES
+			// 	('menuitems','[
+			// {
+			// 		"url":"gridmap",
+			// 		"text":"Gridmap",
+			// 		"icon":"fa-globe-europe"
+			// },
+			// {
+			// 		"url":"gallery",
+			// 		"text":"Gallery",
+			// 		"icon":"fa-globe-europe"
+			// }
+			// ]','yes');
+
+			if ($this->optionslib->get_option('menuitems')) { ?>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extras</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<?php
+						foreach(json_decode($this->optionslib->get_option('menuitems')) as $item) {
+							echo '<a class="dropdown-item" href="' . site_url($item->url) . '" title="Gridsquares"><i class="fas '. $item->icon .'"></i> ' . $item->text . '</a>';
+						}
+					?>
+				</div>
+			</li>
+		<?php } ?>
+
+		</ul>
 
         <?php } ?>
 
