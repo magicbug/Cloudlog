@@ -32,7 +32,7 @@ $lang['account_gridsquare'] = 'Gridsquare';
 $lang['account_cloudlog_preferences'] = 'Cloudlog Asetukset';
 $lang['account_timezone'] = 'Aikavyöhyke';
 $lang['account_date_format'] = 'Päivämäärämuoto';
-$lang['account_measurement_preference'] = 'Mittayksikkömuoto';
+$lang['account_measurement_preferences'] = 'Mittayksikkömuoto';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Valitse, miten haluat päivämäärät näkyvän, kun olet kirjautunut tilillesi.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Valitse, mitä mittayksikkömuotoa käytetään';
 
@@ -50,9 +50,9 @@ $lang['account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_
 $lang['account_previous_qsl_type'] = 'Previous QSL Type';
 $lang['account_select_the_type_of_qsl_to_show_in_the_previous_qsos_section'] = 'Select the type of QSL to show in the previous QSOs section.';
 
-$lang['account_qrzcom_hamqthcom_images'] = 'qrz.com/hamqth.com Images';
-$lang['account_show_profile_picture_of_qso_partner_from_qrzcom_hamqthcom_profile_in_the_log_qso_section'] = 'Show profile picture of QSO partner from qrz.com/hamqth.com profile in the log QSO section.';
-$lang['account_please_set_your_qrzcom_hamqthcom_credentials_in_the_general_config_file'] = 'Please set your qrz.com/hamqth.com credentials in the general config file.';
+$lang['account_qrzcom_hamqthcom_images'] = 'qrz.com/hamqth.com Kuvat';
+$lang['account_show_profile_picture_of_qso_partner_from_qrzcom_hamqthcom_profile_in_the_log_qso_section'] = 'Näytä kusokumppanin profiilikuva qrz.com/hamqth.com -profiilista lokin QSO:n kirjausikkunassa.';
+$lang['account_please_set_your_qrzcom_hamqthcom_credentials_in_the_general_config_file'] = 'Anna qrz.com/hamqth.com tunnustiedot in the general config file.';
 
 $lang['account_amsat_status_upload'] = 'AMSAT Status Upload';
 $lang['account_upload_status_of_sat_qsos_to'] = 'Upload status of SAT QSOs to';
@@ -68,8 +68,8 @@ $lang['account_clublog_password'] = 'Club Log Salasana';
 $lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Sähköposti tai kutsu, jota käytät kirjautuessasi Club Log:iin';
 
 $lang['account_eqsl'] = 'eQSL';
-$lang['account_eqsl_username'] = 'eQSL.cc Käyttäjänimi';
-$lang['account_eqsl_password'] = 'eQSL.cc Salasana';
+$lang['account_eqslcc_username'] = 'eQSL.cc Käyttäjänimi';
+$lang['account_eqslcc_password'] = 'eQSL.cc Salasana';
 
 $lang['account_save_account_changes'] = 'Tallenna käyttäjätilin muutokset';
 $lang['account_create_account'] = 'Luo käyttäjätili';
@@ -89,3 +89,9 @@ $lang['account_forgot_your_password'] = 'Salasana unohtunut?';
 
 $lang['account_login_to_cloudlog'] = 'Kirjaudu Cloudlogiin';
 $lang['account_login'] = 'Kirjaudu';
+
+$lang['account_mastodon'] = 'Mastodonserver';
+$lang['account_user_mastodon'] = 'URL of Mastodonserver';
+
+$lang['account_gridmap_settings'] = 'Gridsquare -kartan asetukset';
+$lang['account_gridmap_default_band'] = 'Oletusbandi';

@@ -34,7 +34,6 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = 'Lataa ADIF-tiedosto LoTW:n 
 $lang['lotw_upload_type_must_be_adi'] = 'Lokitiedoston pitää olla ADI-tiedosto --> .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Lataa ja tuo LoTW:n data';
-$lang['lotw_import_missing_qsos_text'] = 'Tuo yhteyslokistasi mahdollisesti puuttuvat yhteydet LoTW:n rekisteristä. Kutsu ja lokaattori tarkistetaan, jotta yhteydet sidotaan oikeaan asemaprofiiliin. Jos yhteyttä ei löydy, kusot jätetään tuomatta.';
 
 $lang['lotw_report_download_overview_helptext'] ='Cloudlog käyttää profiiliisi tallennettuja LoTW:n käyttäjätietoja lokikoosteen lataamiseen. Lokikooste sisältää tähän päivään asti kaikki kuitatut yhteydet, alkaen valitsemastasi päivästä tai siitä päivästä kun olet viimeksi ne palvelusta ladannut .';
 
@@ -55,8 +54,8 @@ $lang['lotw_p12_export_step_four'] = 'Lataa ja tuo äsken tallentamasi tiedosto 
 $lang['lotw_confirmed'] = 'Tämä QSO on kuitattu LoTW:ssa';
 
 // LoTW Expiry
-$lang['lotw_cert_expiring'] = 'Vähintään yksi LOTW:n kutsumerkin varmenteesi on vanhentumassa!';
-$lang['lotw_cert_expired'] = 'Vähintään yksi LOTW:n kutsumerkin varmenteesi on vanhentunut!!';
+$lang['lotw_cert_expiring'] = 'Vähintään yksi LoTW:n kutsumerkin varmenteesi on vanhentumassa!';
+$lang['lotw_cert_expired'] = 'Vähintään yksi LoTW:n kutsumerkin varmenteesi on vanhentunut!!';
 
 // Lotw User
 $lang['lotw_user'] = 'Tämä asmea käyttää LoTW-palvelua. Viimeinen yhteyksien lähetys oli';
