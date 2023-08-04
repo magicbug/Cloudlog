@@ -38,11 +38,16 @@ class QSLPrint extends CI_Controller {
 			$data['qsos'] = $this->qslprint_model->get_qsos_for_print();
 		}
 
+		$footerData = [];
+		$footerData['scripts'] = [
+			'assets/js/sections/qslprint.js',
+		];
+
 		$data['page_title'] = "Print Requested QSLs";
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('qslprint/index');
-		$this->load->view('interface_assets/footer');
+		$this->load->view('interface_assets/footer', $footerData);
 
 	}
 

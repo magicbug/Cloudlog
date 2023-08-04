@@ -24,6 +24,7 @@ if ($qsos->result() != NULL) {
 <th style=\'text-align: center\'>' . lang('gen_hamradio_qsl') . ' ' . lang('general_word_qslcard_via') . '</th>
 <th style=\'text-align: center\'>' . lang('gen_hamradio_station') . '</th>
 <th style=\'text-align: center\'>Sent method</th>
+<th style=\'text-align: center\'>Mark as sent</th>
 <th style=\'text-align: center\'>Delete</th>
 <th style=\'text-align: center\'>QSO List</th>
 </tr>
@@ -48,11 +49,11 @@ if ($qsos->result() != NULL) {
 		echo '<td style=\'text-align: center\'>' . $qsl->COL_QSL_VIA . '</td>';
 		echo '<td style=\'text-align: center\'><span class="badge badge-light">' . $qsl->station_callsign . '</span></td>';
 		echo '<td style=\'text-align: center\'>'; echo_qsl_sent_via($qsl->COL_QSL_SENT_VIA); echo '</td>';
+		echo '<td style=\'text-align: center\'><button onclick="mark_qsl_sent(\''.$qsl->COL_PRIMARY_KEY.'\', \'B\')" class="btn btn-sm btn-success"><i class="fa fa-check"></i></button></td>';
 		echo '<td style=\'text-align: center\'><button onclick="deleteFromQslQueue(\''.$qsl->COL_PRIMARY_KEY.'\')" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button></td>';
 		echo '<td style=\'text-align: center\'><button onclick="openQsoList(\''.$qsl->COL_CALL.'\')" class="btn btn-sm btn-success"><i class="fas fa-search"></i></button></td>';
 		echo '</tr>';
 	}
-
 	echo '</tbody></table>';
 	?>
 
