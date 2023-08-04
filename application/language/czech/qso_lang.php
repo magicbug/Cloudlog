@@ -23,3 +23,8 @@ $lang['qso_notes_helptext'] = 'Obsah je užíván pouze Cloudlogu a není export
 
 $lang['qso_btn_reset_qso'] = 'Vymazat';
 $lang['qso_btn_save_qso'] = 'Uložit spojení';
+$lang['qso_btn_edit_qso'] = 'Editovat spojení';
+
+// QSO Details
+
+$lang['qso_details'] = 'Detail spojení';
