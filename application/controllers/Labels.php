@@ -163,6 +163,13 @@ class Labels extends CI_Controller {
 				$label->font='DejaVuSans'; // Fix font to DejaVuSans
 				$ptype=$this->labels_model->getPaperType($label->paper_type_id);	// fetch papersize out of paper-table
 				if (($ptype->paper_id ?? '') != '') {
+					if ($ptype->metric == 'in')	{		// convert papersize to mm if given in inch
+						$paper_width=$ptype->width*25.4;
+						$paper_height=$ptype->height*25.4;
+					} else {
+						$paper_width=$ptype->width;
+						$paper_height=$ptype->height;
+					}
 					$pdf = new PDF_Label(array(
 						'paper-size'	=> 'custom', 				// $label->paper_type,	// The only Type left is "custom" because A4 and so on are also defined at paper_types
 						'metric'		=> $label->metric,
@@ -175,8 +182,8 @@ class Labels extends CI_Controller {
 						'width'			=> $label->width,
 						'height'		=> $label->height,
 						'font-size'		=> $label->font_size,
-						'pgX'		=> $ptype->width,
-						'pgY'		=> $ptype->height
+						'pgX'		=> $paper_width,
+						'pgY'		=> $paper_height
 					));
 				} else {
 					if ($jscall) {

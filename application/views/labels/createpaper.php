@@ -42,7 +42,7 @@
 					<div class="col-sm-4">
 						<select name="measurementType" class="form-control" id="measurementType">
 							<option selected value="mm">Millimeters</option>
-							<!-- <option value="in">Inches</option> -->
+							<option value="in">Inches</option>
 						</select>
 					</div>
   			</div>

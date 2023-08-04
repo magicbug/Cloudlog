@@ -42,7 +42,7 @@
 			    	<div class="col-sm-4">
 				    <select name="measurementType" class="form-control" id="measurementType">
 						<option value="mm" <?php if($paper->metric == "mm") { echo "selected=\"selected\""; } ?>>Millimeters</option>
-				<!--		<option value="in" <?php if($paper->metric == "in") { echo "selected=\"selected\""; } ?>>Inches</option> -->
+						<option value="in" <?php if($paper->metric == "in") { echo "selected=\"selected\""; } ?>>Inches</option>
 					</select>
 			    </div>
   			</div>
