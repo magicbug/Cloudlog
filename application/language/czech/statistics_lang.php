@@ -1,3 +1,7 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 $lang['statistics_statistics'] = 'Statistiky';
 
 $lang['statistics_explore_the_logbook'] = 'Prozkoumejte logbook.';
