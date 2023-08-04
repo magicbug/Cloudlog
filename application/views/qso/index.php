@@ -526,13 +526,13 @@
 
     <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px;">
         <div class="card-header">
-          <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey 
+          <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey
 
           <button id="connectButton" class="btn btn-primary">Connect</button>
 
           <button type="button" class="btn btn-light"
-          hx-get="/index.php/qso/winkeysettings" 
-          hx-target="#modals-here" 
+          hx-get="<?php echo base_url(); ?>index.php/qso/winkeysettings"
+          hx-target="#modals-here"
           hx-trigger="click"
           class="btn btn-primary"
           _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-cog"></i> Settings</button>
@@ -609,7 +609,7 @@
 			  }
 
 			  $i = 0;
-            if($query != false) {  
+            if($query != false) {
             foreach ($query->result() as $row) {
               	echo '<tr class="tr'.($i & 1).'">';
                     echo '<td>';
