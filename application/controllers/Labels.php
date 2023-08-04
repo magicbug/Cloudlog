@@ -297,7 +297,7 @@ class Labels extends CI_Controller {
 			$time = strtotime($qso['time']);
 			$myFormatForView = date("d.m.y H:i", $time);
 			$rowData = [
-				'Date/Time' => $myFormatForView,
+				'DD.MM.YY  UTC' => $myFormatForView,
 				'Band' => $row['band'],
 				'Mode' => $row['mode'],
 				'RST' => $row['rst'],
