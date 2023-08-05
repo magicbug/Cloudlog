@@ -1,6 +1,6 @@
 <form method="post" class="col-md" action="<?php echo site_url('labels/print/'.$stationid) ?>">
     <div class="form-group row">
-        <label class="my-1 mr-2 col-md-4" for="qsl">Include Grid?</label>
+        <label class="my-1 mr-2 col-md-4" for="grid">Include Grid?</label>
         <div class="form-check-inline">
             <input class="form-check-input" type="checkbox" name="grid" id="grid">
         </div>

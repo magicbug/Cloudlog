@@ -133,7 +133,7 @@ class Labels extends CI_Controller {
 	public function printids() {
 		$ids = xss_clean(json_decode($this->input->post('id')));
 		$offset = xss_clean($this->input->post('startat'));
-		$grid = xss_clean($this->input->post('grid') ?? 0);
+		$grid = $this->input->post('grid') === "true" ? 1 : 0;
 		$this->load->model('labels_model');
 		$result = $this->labels_model->export_printrequestedids($ids);
 
