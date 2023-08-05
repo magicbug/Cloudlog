@@ -585,7 +585,9 @@ function printlabel() {
 		url: base_url + 'index.php/labels/printids',
 		type: 'post',
 		data: {'id': JSON.stringify(id_list, null, 2),
-				'startat': $('#startat').val()
+				'startat': $('#startat').val(),
+				'grid': $('#gridlabel')[0].checked,
+
 			},
 		xhr:function(){
 			var xhr = new XMLHttpRequest();
