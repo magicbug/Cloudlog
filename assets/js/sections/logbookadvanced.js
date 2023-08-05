@@ -464,8 +464,6 @@ $(document).ready(function () {
 		}
 		$('#printLabel').prop("disabled", true);
 
-
-
 		$.ajax({
 			url: base_url + 'index.php/logbookadvanced/startAtLabel',
 			type: 'post',
@@ -481,6 +479,7 @@ $(document).ready(function () {
 					buttons: [{
 						label: 'Close',
 						action: function (dialogItself) {
+							$('#printLabel').prop("disabled", false);
 							dialogItself.close();
 						}
 					}]
