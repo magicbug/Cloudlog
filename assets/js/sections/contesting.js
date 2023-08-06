@@ -3,8 +3,8 @@ $("#callsign").focus();
 
 var sessiondata={};
 $(document).ready(async function () {
-	sessiondata=await getSession();
-	await restoreContestSession(sessiondata);
+	sessiondata=await getSession();			// save sessiondata global (we need it later, when adding qso)
+	await restoreContestSession(sessiondata);	// wait for restoring until finished
 	setRst($("#mode").val());
 });
 
