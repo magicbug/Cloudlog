@@ -482,7 +482,10 @@ $(document).ready(function () {
 							$('#printLabel').prop("disabled", false);
 							dialogItself.close();
 						}
-					}]
+					}],
+					onhide: function(dialogRef){
+						$('#printLabel').prop("disabled", false);
+					},
 				});
 			}
 		});
