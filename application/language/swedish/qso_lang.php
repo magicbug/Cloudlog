@@ -12,7 +12,7 @@ $lang['qso_title_image'] = 'Profilbild';
 $lang['qso_transmit_power_helptext'] = 'Ange effekt i watt, enbart med siffror.';
 
 $lang['qso_sota_ref_helptext'] = 'Exempel: GM/NS-001.';
-$lang['qso_wwff_ref_helptext'] = 'Exempel: DLFF-0069.';
+$lang['qso_wwff_ref_helptext'] = 'Exempel: SMFF-0069.';
 $lang['qso_pota_ref_helptext'] = 'Exempel: PA-0150.';
 
 $lang['qso_sig_helptext'] = 'Exempel: GMA';
@@ -20,7 +20,6 @@ $lang['qso_sig_info_helptext'] = 'Exempel: DA/NW-357';
 
 $lang['qso_dok_helptext'] = 'Exempel: Q03';
 
-$lang['qso_notes_helptext'] = 'Note content is used within Cloudlog only and is not exported to other services.';
 $lang['qso_notes_helptext'] = 'Detta innehåll används bara inom Cloudlog och kommer inte att exporteras.';
 $lang['qsl_notes_helptext'] = 'Detta innehåll exporteras till QSL-services som eqsl etc.';
 
