@@ -9,7 +9,7 @@ $lang['admin_user_line3'] = 'Der aktuell angemeldete Benutzer wird oben rechts a
 $lang['admin_user_list'] = 'User List';
 
 $lang['admin_user'] = 'Benutzer';
-$lang['admin_email'] = 'Email';
+$lang['admin_email'] = 'E-Mail';
 $lang['admin_type'] = 'Typ';
 $lang['admin_options'] = 'Optionen';
 
