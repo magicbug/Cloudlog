@@ -2711,6 +2711,14 @@ class Logbook_model extends CI_Model {
       $data['COL_ITUZ'] = $ituz;
 	}
 
+	// Check if QRZ is already uploaded. If so, set qso to reupload to qrz.com (M)
+	$qsql = "select COL_QRZCOM_QSO_UPLOAD_STATUS as QRZ_STATE from ".$this->config->item('table_name')." where COL_BAND=? and COL_CALL=? and COL_STATION_CALLSIGN=? and date_format(COL_TIME_ON, '%Y-%m-%d %H:%i') = ?";
+	$query = $this->db->query($qsql, array($band, $callsign,$station_callsign,$datetime));
+	$row = $query->row();
+	if ($row->QRZ_STATE == 'Y') {
+		$data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
+	}
+
     $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
     $this->db->where('COL_CALL', $callsign);
     $this->db->where('COL_BAND', $band);
