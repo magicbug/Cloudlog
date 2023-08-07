@@ -1150,7 +1150,9 @@ class Logbook_model extends CI_Model {
   /* Callsign QRA */
 	function call_qra($callsign) {
 		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_TIME_ON');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->where('COL_CALL', $callsign);
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$where = "COL_GRIDSQUARE != \"\"";
 
 		$this->db->where($where);
@@ -1170,7 +1172,9 @@ class Logbook_model extends CI_Model {
 
 	function call_name($callsign) {
 		$this->db->select('COL_CALL, COL_NAME, COL_TIME_ON');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->where('COL_CALL', $callsign);
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$where = "COL_NAME != \"\"";
 
 		$this->db->where($where);
@@ -1188,38 +1192,42 @@ class Logbook_model extends CI_Model {
 		return $name;
 	}
 
-  function call_qslvia($callsign) {
-    $this->db->select('COL_CALL, COL_QSL_VIA, COL_TIME_ON');
-    $this->db->where('COL_CALL', $callsign);
-    $where = "COL_NAME != \"\"";
+	function call_qslvia($callsign) {
+		$this->db->select('COL_CALL, COL_QSL_VIA, COL_TIME_ON');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->where('COL_CALL', $callsign);
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+		$where = "COL_QSL_VIA != \"\"";
 
-    $this->db->where($where);
+		$this->db->where($where);
 
-    $this->db->order_by("COL_TIME_ON", "desc");
-    $this->db->limit(1);
-    $query = $this->db->get($this->config->item('table_name'));
-    $name = "";
-    if ($query->num_rows() > 0)
-    {
-      $data = $query->row();
-      $qsl_via = $data->COL_QSL_VIA;
-    }
+		$this->db->order_by("COL_TIME_ON", "desc");
+		$this->db->limit(1);
+		$query = $this->db->get($this->config->item('table_name'));
+		$qsl_via = "";
+		if ($query->num_rows() > 0)
+		{
+			$data = $query->row();
+			$qsl_via = $data->COL_QSL_VIA;
+		}
 
-    return $qsl_via;
-  }
+		return $qsl_via;
+	}
 
     function call_state($callsign) {
         $this->db->select('COL_CALL, COL_STATE');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
         $this->db->where('COL_CALL', $callsign);
-        $where = "COL_NAME != \"\"";
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+        $where = "COL_STATE != \"\"";
 
         $this->db->where($where);
 
         $this->db->order_by("COL_TIME_ON", "desc");
         $this->db->limit(1);
         $query = $this->db->get($this->config->item('table_name'));
-        $name = "";
-        if ($query->num_rows() > 0)
+		$qsl_state = "";
+		if ($query->num_rows() > 0)
         {
             $data = $query->row();
             $qsl_state = $data->COL_STATE;
@@ -1230,7 +1238,9 @@ class Logbook_model extends CI_Model {
 
     function call_us_county($callsign) {
         $this->db->select('COL_CALL, COL_CNTY');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
         $this->db->where('COL_CALL', $callsign);
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
         $where = "COL_CNTY != \"\"";
 
         $this->db->where($where);
@@ -1245,12 +1255,13 @@ class Logbook_model extends CI_Model {
             $qsl_county = substr($qsl_county, (strpos($qsl_county, ',')+1));
             return $qsl_county;
         } else {
-          return NULL;
+			return NULL;
         }
     }
 
 	function call_qth($callsign) {
 		$this->db->select('COL_CALL, COL_QTH, COL_TIME_ON');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->where('COL_CALL', $callsign);
 		$where = "COL_QTH != \"\"";
 
@@ -1271,6 +1282,7 @@ class Logbook_model extends CI_Model {
 
 	function call_iota($callsign) {
 		$this->db->select('COL_CALL, COL_IOTA, COL_TIME_ON');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->where('COL_CALL', $callsign);
 		$where = "COL_IOTA != \"\"";
 
@@ -2699,6 +2711,14 @@ class Logbook_model extends CI_Model {
       $data['COL_ITUZ'] = $ituz;
 	}
 
+	// Check if QRZ is already uploaded. If so, set qso to reupload to qrz.com (M)
+	$qsql = "select COL_QRZCOM_QSO_UPLOAD_STATUS as QRZ_STATE from ".$this->config->item('table_name')." where COL_BAND=? and COL_CALL=? and COL_STATION_CALLSIGN=? and date_format(COL_TIME_ON, '%Y-%m-%d %H:%i') = ?";
+	$query = $this->db->query($qsql, array($band, $callsign,$station_callsign,$datetime));
+	$row = $query->row();
+	if ($row->QRZ_STATE == 'Y') {
+		$data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
+	}
+
     $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
     $this->db->where('COL_CALL', $callsign);
     $this->db->where('COL_BAND', $band);
@@ -2764,7 +2784,7 @@ class Logbook_model extends CI_Model {
      * $markHrd - used in ADIF import to mark QSOs as exported to HRDLog.net Logbook when importing QSOs
      * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
      */
-	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false) {
+	function import($record, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false) {
         // be sure that station belongs to user
         $CI =& get_instance();
         $CI->load->model('stations');
@@ -3019,6 +3039,26 @@ class Logbook_model extends CI_Model {
             $input_qsl_sent_via = "";
         }
 
+	// Validate Clublog-Fields
+	if (isset($record['clublog_qso_upload_status'])){
+		$input_clublog_qsl_sent = mb_strimwidth($record['clublog_qso_upload_status'], 0, 1);
+	} else if ($markClublog != NULL) {
+		$input_clublog_qsl_sent = "Y";
+	} else {
+		$input_clublog_qsl_sent = NULL;
+	}
+
+	if (isset($record['clublog_qso_upload_date'])){
+		if(validateADIFDate($record['clublog_qso_upload_date']) == true){
+			$input_clublog_qslsdate = $record['clublog_qso_upload_date'];
+		} else {
+			$input_clublog_qslsdate = NULL;
+			$my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the clublog_qso_upload_date is invalid (YYYYMMDD): ".$record['clublog_qso_upload_date']."<br>";
+		}
+	} else {
+		$input_clublog_qslsdate = NULL;
+	}
+
         /*
           Validate LoTW Fields
         */
@@ -3026,14 +3066,6 @@ class Logbook_model extends CI_Model {
             $input_lotw_qsl_rcvd = mb_strimwidth($record['lotw_qsl_rcvd'], 0, 1);
         } else {
             $input_lotw_qsl_rcvd = NULL;
-        }
-
-        if (isset($record['lotw_qsl_sent'])){
-            $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
-        } else if ($markLotw != NULL) {
-            $input_lotw_qsl_sent = "Y";
-        } else {
-            $input_lotw_qsl_sent = NULL;
         }
 
         if (isset($record['lotw_qslrdate'])){
@@ -3045,6 +3077,14 @@ class Logbook_model extends CI_Model {
             }
         } else {
             $input_lotw_qslrdate = NULL;
+        }
+	
+	if (isset($record['lotw_qsl_sent'])){
+            $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
+        } else if ($markLotw != NULL) {
+            $input_lotw_qsl_sent = "Y";
+        } else {
+            $input_lotw_qsl_sent = NULL;
         }
 
         if (isset($record['lotw_qslsdate'])){
@@ -3151,8 +3191,8 @@ class Logbook_model extends CI_Model {
                 'COL_CALL' => (!empty($record['call'])) ? strtoupper($record['call']) : '',
                 'COL_CHECK' => (!empty($record['check'])) ? $record['check'] : '',
                 'COL_CLASS' => (!empty($record['class'])) ? $record['class'] : '',
-                'COL_CLUBLOG_QSO_UPLOAD_DATE' => (!empty($record['clublog_qso_upload_date'])) ? $record['clublog_qso_upload_date'] : null,
-                'COL_CLUBLOG_QSO_UPLOAD_STATUS' => (!empty($record['clublog_qso_upload_status'])) ? $record['clublog_qso_upload_status'] : null,
+                'COL_CLUBLOG_QSO_UPLOAD_DATE' => $input_clublog_qslsdate,
+                'COL_CLUBLOG_QSO_UPLOAD_STATUS' => $input_clublog_qsl_sent,
                 'COL_CNTY' => (!empty($record['cnty'])) ? $record['cnty'] : '',
                 'COL_COMMENT' => (!empty($record['comment'])) ? $record['comment'] : '',
                 'COL_COMMENT_INTL' => (!empty($record['comment_intl'])) ? $record['comment_intl'] : '',
