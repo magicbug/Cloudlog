@@ -2776,7 +2776,7 @@ class Logbook_model extends CI_Model {
      * $markHrd - used in ADIF import to mark QSOs as exported to HRDLog.net Logbook when importing QSOs
      * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
      */
-	function import($record, $station_id = "0", $skipDuplicate = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false) {
+	function import($record, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false) {
         // be sure that station belongs to user
         $CI =& get_instance();
         $CI->load->model('stations');
@@ -3031,6 +3031,26 @@ class Logbook_model extends CI_Model {
             $input_qsl_sent_via = "";
         }
 
+	// Validate Clublog-Fields
+	if (isset($record['clublog_qso_upload_status'])){
+		$input_clublog_qsl_sent = mb_strimwidth($record['clublog_qso_upload_status'], 0, 1);
+	} else if ($markClublog != NULL) {
+		$input_clublog_qsl_sent = "Y";
+	} else {
+		$input_clublog_qsl_sent = NULL;
+	}
+
+	if (isset($record['clublog_qso_upload_date'])){
+		if(validateADIFDate($record['clublog_qso_upload_date']) == true){
+			$input_clublog_qslsdate = $record['clublog_qso_upload_date'];
+		} else {
+			$input_clublog_qslsdate = NULL;
+			$my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the clublog_qso_upload_date is invalid (YYYYMMDD): ".$record['clublog_qso_upload_date']."<br>";
+		}
+	} else {
+		$input_clublog_qslsdate = NULL;
+	}
+
         /*
           Validate LoTW Fields
         */
@@ -3038,14 +3058,6 @@ class Logbook_model extends CI_Model {
             $input_lotw_qsl_rcvd = mb_strimwidth($record['lotw_qsl_rcvd'], 0, 1);
         } else {
             $input_lotw_qsl_rcvd = NULL;
-        }
-
-        if (isset($record['lotw_qsl_sent'])){
-            $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
-        } else if ($markLotw != NULL) {
-            $input_lotw_qsl_sent = "Y";
-        } else {
-            $input_lotw_qsl_sent = NULL;
         }
 
         if (isset($record['lotw_qslrdate'])){
@@ -3057,6 +3069,14 @@ class Logbook_model extends CI_Model {
             }
         } else {
             $input_lotw_qslrdate = NULL;
+        }
+	
+	if (isset($record['lotw_qsl_sent'])){
+            $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
+        } else if ($markLotw != NULL) {
+            $input_lotw_qsl_sent = "Y";
+        } else {
+            $input_lotw_qsl_sent = NULL;
         }
 
         if (isset($record['lotw_qslsdate'])){
@@ -3163,8 +3183,8 @@ class Logbook_model extends CI_Model {
                 'COL_CALL' => (!empty($record['call'])) ? strtoupper($record['call']) : '',
                 'COL_CHECK' => (!empty($record['check'])) ? $record['check'] : '',
                 'COL_CLASS' => (!empty($record['class'])) ? $record['class'] : '',
-                'COL_CLUBLOG_QSO_UPLOAD_DATE' => (!empty($record['clublog_qso_upload_date'])) ? $record['clublog_qso_upload_date'] : null,
-                'COL_CLUBLOG_QSO_UPLOAD_STATUS' => (!empty($record['clublog_qso_upload_status'])) ? $record['clublog_qso_upload_status'] : null,
+                'COL_CLUBLOG_QSO_UPLOAD_DATE' => $input_clublog_qslsdate,
+                'COL_CLUBLOG_QSO_UPLOAD_STATUS' => $input_clublog_qsl_sent,
                 'COL_CNTY' => (!empty($record['cnty'])) ? $record['cnty'] : '',
                 'COL_COMMENT' => (!empty($record['comment'])) ? $record['comment'] : '',
                 'COL_COMMENT_INTL' => (!empty($record['comment_intl'])) ? $record['comment_intl'] : '',
