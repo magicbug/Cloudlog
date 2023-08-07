@@ -1150,7 +1150,9 @@ class Logbook_model extends CI_Model {
   /* Callsign QRA */
 	function call_qra($callsign) {
 		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_TIME_ON');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->where('COL_CALL', $callsign);
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$where = "COL_GRIDSQUARE != \"\"";
 
 		$this->db->where($where);
@@ -1170,7 +1172,9 @@ class Logbook_model extends CI_Model {
 
 	function call_name($callsign) {
 		$this->db->select('COL_CALL, COL_NAME, COL_TIME_ON');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->where('COL_CALL', $callsign);
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$where = "COL_NAME != \"\"";
 
 		$this->db->where($where);
@@ -1188,38 +1192,42 @@ class Logbook_model extends CI_Model {
 		return $name;
 	}
 
-  function call_qslvia($callsign) {
-    $this->db->select('COL_CALL, COL_QSL_VIA, COL_TIME_ON');
-    $this->db->where('COL_CALL', $callsign);
-    $where = "COL_NAME != \"\"";
+	function call_qslvia($callsign) {
+		$this->db->select('COL_CALL, COL_QSL_VIA, COL_TIME_ON');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->where('COL_CALL', $callsign);
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+		$where = "COL_QSL_VIA != \"\"";
 
-    $this->db->where($where);
+		$this->db->where($where);
 
-    $this->db->order_by("COL_TIME_ON", "desc");
-    $this->db->limit(1);
-    $query = $this->db->get($this->config->item('table_name'));
-    $name = "";
-    if ($query->num_rows() > 0)
-    {
-      $data = $query->row();
-      $qsl_via = $data->COL_QSL_VIA;
-    }
+		$this->db->order_by("COL_TIME_ON", "desc");
+		$this->db->limit(1);
+		$query = $this->db->get($this->config->item('table_name'));
+		$qsl_via = "";
+		if ($query->num_rows() > 0)
+		{
+			$data = $query->row();
+			$qsl_via = $data->COL_QSL_VIA;
+		}
 
-    return $qsl_via;
-  }
+		return $qsl_via;
+	}
 
     function call_state($callsign) {
         $this->db->select('COL_CALL, COL_STATE');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
         $this->db->where('COL_CALL', $callsign);
-        $where = "COL_NAME != \"\"";
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+        $where = "COL_STATE != \"\"";
 
         $this->db->where($where);
 
         $this->db->order_by("COL_TIME_ON", "desc");
         $this->db->limit(1);
         $query = $this->db->get($this->config->item('table_name'));
-        $name = "";
-        if ($query->num_rows() > 0)
+		$qsl_state = "";
+		if ($query->num_rows() > 0)
         {
             $data = $query->row();
             $qsl_state = $data->COL_STATE;
@@ -1230,7 +1238,9 @@ class Logbook_model extends CI_Model {
 
     function call_us_county($callsign) {
         $this->db->select('COL_CALL, COL_CNTY');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
         $this->db->where('COL_CALL', $callsign);
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
         $where = "COL_CNTY != \"\"";
 
         $this->db->where($where);
@@ -1245,12 +1255,13 @@ class Logbook_model extends CI_Model {
             $qsl_county = substr($qsl_county, (strpos($qsl_county, ',')+1));
             return $qsl_county;
         } else {
-          return NULL;
+			return NULL;
         }
     }
 
 	function call_qth($callsign) {
 		$this->db->select('COL_CALL, COL_QTH, COL_TIME_ON');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->where('COL_CALL', $callsign);
 		$where = "COL_QTH != \"\"";
 
@@ -1271,6 +1282,7 @@ class Logbook_model extends CI_Model {
 
 	function call_iota($callsign) {
 		$this->db->select('COL_CALL, COL_IOTA, COL_TIME_ON');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->where('COL_CALL', $callsign);
 		$where = "COL_IOTA != \"\"";
 
