@@ -82,6 +82,16 @@
                     <div class="form-group row">
                         <div class="col-md-10">
                             <div class="form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="markClublog" value="1" id="markClublogImport">
+                                <label class="form-check-label" for="markClublogImport">Mark imported QSOs as uploaded to Clublog Logbook</label>
+                            </div>
+                            <div class="small form-text text-muted">Select if ADIF being imported does not contain this information.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-10">
+                            <div class="form-check-inline">
                                 <input class="form-check-input" type="checkbox" name="dxccAdif" value="1" id="dxccAdif">
                                 <label class="form-check-label" for="dxccAdif">Use DXCC information from ADIF</label>
                             </div>
