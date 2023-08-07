@@ -13,6 +13,7 @@ $lang['menu_live_qso'] = 'Live QSO';
 $lang['menu_post_qso'] = 'Zeitversetztes QSO';
 $lang['menu_live_contest_logging'] = 'Live Contest Logging';
 $lang['menu_post_contest_logging'] = 'Zeitversetztes Contest Logging';
+$lang['menu_bandmap'] = 'Bandmap';
 $lang['menu_view_qsl'] = 'QSL Ansicht';
 $lang['menu_view_eqsl'] = 'eQSL Ansicht';
 
@@ -40,7 +41,7 @@ $lang['menu_iota'] = 'IOTA';
 $lang['menu_pota'] = 'POTA';
 $lang['menu_sig'] = 'SIG';
 $lang['menu_sota'] = 'SOTA';
-$lang['menu_us_counties'] = 'US Grafschaften';
+$lang['menu_us_counties'] = 'US Countys)';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
@@ -82,3 +83,5 @@ $lang['menu_hardware_interfaces'] = 'Hardware-Schnittstellen';
 $lang['menu_help'] = 'Hilfe';
 $lang['menu_forum'] = 'Forum';
 $lang['menu_logout'] = 'Logout';
+
+$lang['menu_maintenance'] = 'Wartung';

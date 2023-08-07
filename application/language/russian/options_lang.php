@@ -58,4 +58,18 @@ $lang['options_grouped_search'] = 'Объединённый поиск';
 $lang['options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_searched_at_once'] = 'Если включено, то поиск будет осуществляться во всех местоположениях станций, где активен OQRS.';
 $lang['options_oqrs_options_have_been_saved'] = 'Настройки OQRS сохранены.';
 
+$lang['options_dxcluster'] = 'DXCluster';
+$lang['options_dxcluster_provider'] = 'Провайдер кэша DXCluster';
+$lang['options_dxcluster_longtext'] = 'Провайдер кэша DXCluster. Вы можете настроить собственный кэш: <a href="https://github.com/int2001/DXClusterAPI">DXClusterAPI</a> или использовать публичный';
+$lang['options_dxcluster_hint'] = 'URL кэша DXCluster-Cache. К примеру, https://dxc.jo30.de/dxcache';
+$lang['options_dxcluster_settings'] = 'DXCluster';
+$lang['options_dxcache_url_changed_to'] = 'URL кэша DXCluster изменён на  ';
+$lang['options_dxcluster_maxage'] = 'Максимальный возраст спотов';
+$lang['options_dxcluster_maxage_hint'] = 'Возраст спотов, которые будут отображаться в плане диапазонов/поиске';
+$lang['options_dxcluster_decont'] = 'Отображать споты, которые присланы с континента  ';
+$lang['options_dxcluster_maxage_changed_to']='Максимальный возраст спотов изменён на ';
+$lang['options_dxcluster_decont_changed_to']='континент изменён на ';
+
+
+
 $lang['options_save'] = 'Сохранить';

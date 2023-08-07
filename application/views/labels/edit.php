@@ -25,11 +25,16 @@
 			</div>
 
 			<div class="form-group row">
-    			<label class="col-sm-2 col-form-label" for="paperType">Paper Type</label>
+    			<label class="col-sm-2 col-form-label" for="paperType_id">Paper Type</label>
 			    <div class="col-sm-4">
-				    <select name="paper_type" class="form-control" id="paperType">
-						<option value="a4" <?php if($label->paper_type == "a4") { echo "selected=\"selected\""; } ?>>A4</option>
-						<option value="letter" <?php if($label->paper_type == "letter") { echo "selected=\"selected\""; } ?>>Letter</option>
+				    <select name="paper_type_id" class="form-control" id="paperType_id">
+						<?php
+							foreach($papertypes as $paper){
+								echo '<option value="' . ($paper->paper_id ?? '') . '"';
+								if (($label->paper_type_id ?? '') == ($paper->paper_id ?? '')) echo ' selected';
+								echo '>' . ucwords(strtolower(($paper->paper_name ?? ''))) . '</option>';
+							}
+						?>
 					</select>
 			    </div>
 
@@ -110,30 +115,6 @@
 				    <input name="label_qsos" type="number" min="1" max="40" step="1" class="form-control" id="label_qsos" aria-describedby="font_sizeHelp" value="<?php if(isset($label->qsos)) { echo $label->qsos; } ?>">
 			    </div>
   			</div>
-
-			<div class="form-group row">
-    			<label class="col-sm-2 col-form-label" for="font">Font</label>
-			    <div class="col-sm-4">
-				    <select name="font" class="form-control" id="font">
-						<option value="courier" <?php if($label->font == "courier") { echo "selected=\"selected\""; } ?>>Courier</option>
-						<option value="courierb" <?php if($label->font == "courierb") { echo "selected=\"selected\""; } ?>>Courierb</option>
-						<option value="courierbi" <?php if($label->font == "courierbi") { echo "selected=\"selected\""; } ?>>Courierbi</option>
-						<option value="courieri" <?php if($label->font == "courieri") { echo "selected=\"selected\""; } ?>>Courieri</option>
-						<option value="DejaVuSans" <?php if($label->font == "DejaVuSans") { echo "selected=\"selected\""; } ?>>DejaVuSans</option>
-						<option value="helvetica" <?php if($label->font == "helvetica") { echo "selected=\"selected\""; } ?>>Helvetica</option>
-						<option value="helveticab" <?php if($label->font == "helveticab") { echo "selected=\"selected\""; } ?>>Helveticab</option>
-						<option value="helveticabi" <?php if($label->font == "helveticabi") { echo "selected=\"selected\""; } ?>>Helveticabi</option>
-						<option value="helveticai" <?php if($label->font == "helveticai") { echo "selected=\"selected\""; } ?>>Helveticai</option>
-						<option value="symbol" <?php if($label->font == "symbol") { echo "selected=\"selected\""; } ?>>Symbol</option>
-						<option value="times" <?php if($label->font == "times") { echo "selected=\"selected\""; } ?>>Times</option>
-						<option value="timesb" <?php if($label->font == "timesb") { echo "selected=\"selected\""; } ?>>Timesb</option>
-						<option value="timesb" <?php if($label->font == "timesb") { echo "selected=\"selected\""; } ?>>Timesb</option>
-						<option value="timesbi" <?php if($label->font == "timesbi") { echo "selected=\"selected\""; } ?>>Timesbi</option>
-						<option value="zapfdingbats" <?php if($label->font == "zapfdingbats") { echo "selected=\"selected\""; } ?>>Zapfdingbats</option>
-					</select>
-			    </div>
-  			</div>
-
   			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Save Label Type</button>
 		</div>
 	</div>

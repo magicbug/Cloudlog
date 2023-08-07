@@ -65,4 +65,19 @@ class Distances extends CI_Controller {
 
         return json_encode($data);
     }
+
+	public function getDistanceQsos(){
+		$this->load->model('distances_model');
+
+		$distance = $this->security->xss_clean($this->input->post('distance'));
+		$band = $this->security->xss_clean($this->input->post('band'));
+		$sat = $this->security->xss_clean($this->input->post('sat'));
+
+		$data['results'] = $this->distances_model->qso_details($distance, $band, $sat);
+
+		// Render Page
+		$data['page_title'] = "Log View - " . $distance;
+		$data['filter'] = "Filtering on QSOs with " . $distance . " and band ".$band;
+		$this->load->view('awards/details', $data);
+	}
 }

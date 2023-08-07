@@ -25,11 +25,14 @@
 			</div>
 
 			<div class="form-group row">
-    			<label class="col-sm-2 col-form-label" for="paperType">Paper Type</label>
+    			<label class="col-sm-2 col-form-label" for="paperType_id">Paper Type</label>
 			    <div class="col-sm-4">
-				    <select name="paper_type" class="form-control" id="paperType">
-						<option value="a4">A4</option>
-						<option value="letter">Letter</option>
+				    <select name="paper_type_id" class="form-control" id="paperType_id">
+						<?php
+							foreach($papertypes as $paper){
+								echo '<option value=' . $paper->paper_id . '>' . ucwords(strtolower(($paper->paper_name))) . '</option>';
+							}
+						?>
 					</select>
 			    </div>
 
@@ -108,29 +111,6 @@
     			<label class="col-sm-2 col-form-label" for="font_size">QSOs on label</label>
 			    <div class="col-sm-4">
 				    <input name="label_qsos" type="number" min="1" max="40" step="1" class="form-control" id="font_size" value="5" aria-describedby="font_sizeHelp">
-			    </div>
-  			</div>
-
-			  <div class="form-group row">
-    			<label class="col-sm-2 col-form-label" for="font">Font</label>
-			    <div class="col-sm-4">
-				    <select name="font" class="form-control" id="font">
-						<option value="courier">Courier</option>
-						<option value="courierb">Courierb</option>
-						<option value="courierbi">Courierbi</option>
-						<option value="courieri">Courieri</option>
-						<option value="DejaVuSans">DejaVuSans</option>
-						<option value="helvetica">Helvetica</option>
-						<option value="helveticab">Helveticab</option>
-						<option value="helveticabi">Helveticabi</option>
-						<option value="helveticai">Helveticai</option>
-						<option value="symbol">Symbol</option>
-						<option value="times">Times</option>
-						<option value="timesb">Timesb</option>
-						<option value="timesb">Timesb</option>
-						<option value="timesbi">Timesbi</option>
-						<option value="zapfdingbats">Zapfdingbats</option>
-					</select>
 			    </div>
   			</div>
 

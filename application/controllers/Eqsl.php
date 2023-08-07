@@ -630,6 +630,7 @@ class eqsl extends CI_Controller {
 		// Check logged in
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		$errors=0;
 
 		if ($this->input->post('eqsldownload') == 'download') {
 			$i = 0;

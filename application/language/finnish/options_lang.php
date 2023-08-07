@@ -32,6 +32,8 @@ $lang['options_radio_timeout_warning_changed_to'] = 'Radio Timeout Warning chang
 $lang['options_email'] = 'Email';
 $lang['options_outgoing_protocol'] = 'Outgoing Protocol';
 $lang['options_smtp_encryption'] = 'SMTP Encryption';
+$lang['options_email_address'] = 'Sähköpostiosoite';
+$lang['options_email_sender_name'] = 'Lähettäjän nimi';
 $lang['options_smtp_host'] = 'SMTP Host';
 $lang['options_smtp_port'] = 'SMTP Port';
 $lang['options_smtp_username'] = 'SMTP Username';
@@ -40,6 +42,8 @@ $lang['options_crlf'] = 'CRLF';
 $lang['options_newline'] = 'Newline';
 $lang['options_outgoing_email_protocol_changed_to'] = 'Outgoing Email Protocol changed to ';
 $lang['options_smtp_encryption_changed_to'] = 'SMTP Encryption changed to ';
+$lang['options_email_address_changed_to'] = 'Sähköpostiosoite vaihdettu:  ';
+$lang['options_email_sender_name_changed_to'] = 'Sähköpostin lähettäjän nimi vaihdettu: ';
 $lang['options_smtp_host_changed_to'] = 'SMTP Host changed to ';
 $lang['options_smtp_port_changed_to'] = 'SMTP Post changed to ';
 $lang['options_smtp_username_changed_to'] = 'SMTP Username changed to ';
@@ -53,5 +57,17 @@ $lang['options_this_text_is_an_optional_text_that_can_be_displayed_on_top_of_the
 $lang['options_grouped_search'] = 'Grouped search';
 $lang['options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_searched_at_once'] = 'When this is on, all station locations with OQRS active, will be searched at once.';
 $lang['options_oqrs_options_have_been_saved'] = 'OQRS options have been saved.';
+
+$lang['options_dxcluster'] = 'DXCluster';
+$lang['options_dxcluster_provider'] = 'Provider of DXClusterCache';
+$lang['options_dxcluster_longtext'] = 'The Provider of the DXCluster-Cache. You can set up your own Cache with <a href="https://github.com/int2001/DXClusterAPI">DXClusterAPI</a> or use a public one';
+$lang['options_dxcluster_hint'] = 'URL of the DXCluster-Cache. e.g. https://dxc.jo30.de/dxcache';
+$lang['options_dxcluster_settings'] = 'DXCluster';
+$lang['options_dxcache_url_changed_to'] = 'DXCluster Cache URL changed to ';
+$lang['options_dxcluster_maxage'] = 'Maximum Age of spots taken care of';
+$lang['options_dxcluster_maxage_hint'] = 'The Age in Minutes of spots, that will be taken care at bandplan/lookup';
+$lang['options_dxcluster_decont'] = 'Show spots which are spotted from following continent';
+$lang['options_dxcluster_maxage_changed_to']='Maximum age of spots changed to ';
+$lang['options_dxcluster_decont_changed_to']='de continent changed to ';
 
 $lang['options_save'] = 'Save';

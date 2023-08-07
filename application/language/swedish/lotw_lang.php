@@ -22,6 +22,7 @@ $lang['lotw_status'] = 'Status';
 $lang['lotw_options'] = 'Inställningar';
 $lang['lotw_valid'] = 'Giltig';
 $lang['lotw_expired'] = 'Utgått';
+$lang['lotw_expiring'] = 'Utgår';
 $lang['lotw_not_synced'] = 'Ej synkad';
 
 $lang['lotw_certificate_dxcc'] = 'Certifikat DXCC';
@@ -29,7 +30,7 @@ $lang['lotw_certificate_dxcc_help_text'] = 'Certifikat DXCC entity. Som exemple:
 
 $lang['lotw_input_a_file'] = 'Ladda upp en fil';
 
-$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Ladda upp exporterad ADIF fil från LoTW från <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a> area, för att markera QSOs som bekräftade på LOTW.';
+$lang['lotw_upload_exported_adif_file_from_lotw'] = 'Ladda upp exporterad ADIF fil från LoTW från <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Download Report</a> area, för att markera QSOs som bekräftade på LoTW.';
 $lang['lotw_upload_type_must_be_adi'] = 'Loggfil måste vara av format .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Hämta LoTW data';
@@ -51,3 +52,11 @@ $lang['lotw_p12_export_step_three'] = 'Klicka "Save Callsign Certificate File" m
 $lang['lotw_p12_export_step_four'] = 'Ladda upp filen nedan.';
 
 $lang['lotw_confirmed'] = 'Detta QSO är bekräftat på LoTW';
+
+
+// LoTW Expiry
+$lang['lotw_cert_expiring'] = 'Minst ett av dina LoTW-certifikat är på väg att löpa ut!';
+$lang['lotw_cert_expired'] = 'Minst ett av dina LoTW-certifikat har löpt ut!';
+
+// Lotw User
+$lang['lotw_user'] = 'Denna station använder LoTW. Den senaste uppladdningen var';

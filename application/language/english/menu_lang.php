@@ -13,6 +13,7 @@ $lang['menu_live_qso'] = 'Live QSO';
 $lang['menu_post_qso'] = 'Post QSO';
 $lang['menu_live_contest_logging'] = 'Live Contest Logging';
 $lang['menu_post_contest_logging'] = 'Post Contest Logging';
+$lang['menu_bandmap'] = 'Bandmap';
 $lang['menu_view_qsl'] = 'View QSL';
 $lang['menu_view_eqsl'] = 'View eQSL';
 
@@ -82,3 +83,5 @@ $lang['menu_hardware_interfaces'] = 'Hardware Interfaces';
 $lang['menu_help'] = 'Help';
 $lang['menu_forum'] = 'Forum';
 $lang['menu_logout'] = 'Logout';
+
+$lang['menu_maintenance']='Maintenance';

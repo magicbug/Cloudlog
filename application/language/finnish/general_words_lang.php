@@ -55,6 +55,7 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_edit_qso'] = 'Muokkaa QSO:a';
 $lang['general_mark_qsl_rx_bureau'] = 'Merkitse QSL vastaanotetuksi (Bureau)';
 $lang['general_mark_qsl_rx_direct'] = 'Merkitse QSL vastaanotetuksi (Direct)';
+$lang['general_mark_qsl_rx_electronic'] = 'Merkitse QSL vastaanotetuksi (Electronic)';
 $lang['general_mark_qsl_tx_bureau'] = 'Merkitse QSL lähetetyksi (Bureau)';
 $lang['general_mark_qsl_tx_direct'] = 'Merkitse QSL lähetetyksi (Direct)';
 
@@ -110,6 +111,7 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Gridsquare';
+$lang['gen_hamradio_distance'] = 'Etäisyys';
 $lang['gen_hamradio_operator'] = 'Operator';
 
 $lang['gen_hamradio_sig'] = 'Sig';

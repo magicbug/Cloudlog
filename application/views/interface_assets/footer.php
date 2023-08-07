@@ -7,6 +7,8 @@
   var base_url = "<?php echo base_url(); ?>"; // Base URL
   var site_url = "<?php echo site_url(); ?>"; // Site URL
   var icon_dot_url = "<?php echo base_url();?>assets/images/dot.png";
+  // get the user_callsign from session
+ var my_call = "<?php echo $this->session->userdata('user_callsign'); ?>".toUpperCase();
 </script>
 
 <!-- General JS Files used across Cloudlog -->
@@ -75,6 +77,10 @@ function load_was_map() {
     <!-- Javascript used for ADIF Import and Export Areas -->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "maintenance" ) { ?>
+    <script src="<?php echo base_url() ;?>assets/js/sections/maintenance.js"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "adif" ) { ?>
@@ -932,9 +938,29 @@ $(document).on('keypress',function(e) {
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
+
 <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
+ <script src="<?php echo base_url() ;?>assets/js/winkey.js"></script>
+<?php
+
+	if ($this->optionslib->get_option('dxcache_url') != ''){ ?>
+	<script type="text/javascript">
+		var dxcluster_provider = '<?php echo base_url(); ?>index.php/dxcluster';
+		$(document).ready(function() {
+			$("#check_cluster").on("click", function() {
+				$.ajax({ url: dxcluster_provider+"/qrg_lookup/"+$("#frequency").val()/1000, cache: false, dataType: "json" }).done(
+					function(dxspot) {
+						$("#callsign").val(dxspot.spotted);
+						$("#callsign").trigger("blur");
+					}
+				);
+			});
+		});
+	</script>
 
 <?php
+}
+
 
     $this->load->model('stations');
     $active_station_id = $this->stations->find_active();
@@ -2779,118 +2805,6 @@ function viewEqsl(picture, callsign) {
 		"ordering": true,
 		"order": [ 2, 'desc' ],
 	});
-	</script>
-<?php } ?>
-
-<?php if ($this->uri->segment(1) == "qslprint") { ?>
-	<script>
-		function deleteFromQslQueue(id) {
-			BootstrapDialog.confirm({
-				title: 'DANGER',
-				message: 'Warning! Are you sure you want to removes this QSL from the queue?',
-				type: BootstrapDialog.TYPE_DANGER,
-				closable: true,
-				draggable: true,
-				btnOKClass: 'btn-danger',
-				callback: function(result) {
-					$.ajax({
-						url: base_url + 'index.php/qslprint/delete_from_qsl_queue',
-						type: 'post',
-						data: {'id': id	},
-						success: function(html) {
-							$("#qslprint_"+id).remove();
-						}
-					});
-				}
-			});
-		}
-
-		function openQsoList(callsign) {
-			$.ajax({
-				url: base_url + 'index.php/qslprint/open_qso_list',
-				type: 'post',
-				data: {'callsign': callsign},
-				success: function(html) {
-					BootstrapDialog.show({
-						title: 'QSO List',
-						size: BootstrapDialog.SIZE_WIDE,
-						cssClass: 'qso-dialog',
-						nl2br: false,
-						message: html,
-						onshown: function(dialog) {
-							$('[data-toggle="tooltip"]').tooltip();
-						},
-						buttons: [{
-							label: 'Close',
-							action: function (dialogItself) {
-								dialogItself.close();
-							}
-						}]
-					});
-				}
-			});
-		}
-
-		function addQsoToPrintQueue(id) {
-			$.ajax({
-				url: base_url + 'index.php/qslprint/add_qso_to_print_queue',
-				type: 'post',
-				data: {'id': id},
-				success: function(html) {
-					var line = '<tr id="qslprint_'+id+'">';
-					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(0)").text()+'</td>';
-					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(1)").text()+'</td>';
-					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(2)").text()+'</td>';
-					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(3)").text()+'</td>';
-					line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(4)").text()+'</td>';
-					line += '<td style=\'text-align: center\'><span class="badge badge-light">'+$("#qsolist_"+id).find("td:eq(5)").text()+'</span></td>';
-					line += '<td style=\'text-align: center\'><button onclick="deleteFromQslQueue('+id+')" class="btn btn-sm btn-danger">Delete from queue</button></td></td>';
-					line += '<td style=\'text-align: center\'><button onclick="openQsoList(\''+$("#qsolist_"+id).find("td:eq(0)").text()+'\')" class="btn btn-sm btn-success">Open QSO list</button></td>';
-					line += '</tr>';
-					$('.table tr:last').after(line);
-					$("#qsolist_"+id).remove();''
-				}
-			});
-		}
-
-		$(".station_id").change(function(){
-			var station_id = $(".station_id").val();
-			$.ajax({
-				url: base_url + 'index.php/qslprint/get_qsos_for_print_ajax',
-				type: 'post',
-				data: {'station_id': station_id},
-				success: function(html) {
-					$('.resulttable').empty();
-					$('.resulttable').append(html);
-				}
-			});
-		});
-
-        function showOqrs(id) {
-			$.ajax({
-				url: base_url + 'index.php/qslprint/show_oqrs',
-				type: 'post',
-				data: {'id': id},
-				success: function(html) {
-					BootstrapDialog.show({
-						title: 'OQRS',
-						size: BootstrapDialog.SIZE_WIDE,
-						cssClass: 'qso-dialog',
-						nl2br: false,
-						message: html,
-						onshown: function(dialog) {
-							$('[data-toggle="tooltip"]').tooltip();
-						},
-						buttons: [{
-							label: 'Close',
-							action: function (dialogItself) {
-								dialogItself.close();
-							}
-						}]
-					});
-				}
-			});
-		}
 	</script>
 <?php } ?>
 

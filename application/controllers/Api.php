@@ -461,7 +461,7 @@ class API extends CI_Controller {
 
 
 				if(isset($obj['station_profile_id'])) {
-					$this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL, NULL, false, false, true);
+					$this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL, NULL, NULL, false, false, true);
 				}
 
 			};
@@ -618,19 +618,6 @@ class API extends CI_Controller {
 
 	}
 
-	function country_worked($dxcc_num, $band, $mode = NULL) {
-		$this->load->model('api_model');
-
-		echo $this->api_model->country_worked($dxcc_num, $band, $mode);
-	}
-
-	function gridsquare_worked($gridsquare, $band, $mode = NULL) {
-		$this->load->model('api_model');
-
-		echo $this->api_model->gridsquare_worked($gridsquare, $band, $mode);
-	}
-
-
 	/* ENDPOINT for Rig Control */
 
 	function radio() {
@@ -648,8 +635,9 @@ class API extends CI_Controller {
 		$obj = json_decode(file_get_contents("php://input"), true);
 
 		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
-		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
-		   die();
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
+			die();
 		}
 
 		$this->api_model->update_last_used($obj['key']);
@@ -820,7 +808,7 @@ class API extends CI_Controller {
 
 		/*
 		*
-		*	Check if callsign is active on LOTW
+		*	Check if callsign is active on LoTW
 		*
 		*/
 

@@ -136,6 +136,55 @@ class Options extends CI_Controller {
 		}
     }
 
+	// function used to display the /dxcluster url
+	function dxcluster() {
+			$data['page_title'] = $this->lang->line('options_cloudlog_options');
+			$data['sub_heading'] = $this->lang->line('options_dxcluster_settings');
+
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('options/dxcluster');
+			$this->load->view('interface_assets/footer');
+	}
+
+	// Handles saving the DXCluster options to the options system.
+	function dxcluster_save() {
+
+		// Get Language Options
+
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_dxcluster_settings');
+
+		$this->load->helper(array('form', 'url'));
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('dxcache_url', 'URL of DXCache', 'valid_url');
+		$this->form_validation->set_rules('dxcluster_maxage', 'Max Age of Spots', 'required');
+		$this->form_validation->set_rules('dxcluster_decont', 'de continent', 'required');
+
+		if ($this->form_validation->run() == FALSE) {
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('options/dxcluster');
+			$this->load->view('interface_assets/footer');
+		} else {
+			$dxcluster_decont_update = $this->optionslib->update('dxcluster_decont', $this->input->post('dxcluster_decont'), 'yes');
+			if($dxcluster_decont_update == TRUE) {
+				$this->session->set_flashdata('success', $this->lang->line('options_dxcluster_decont_changed_to').$this->input->post('dxcluster_decont'));
+			}
+
+			$dxcluster_maxage_update = $this->optionslib->update('dxcluster_maxage', $this->input->post('dxcluster_maxage'), 'yes');
+			if($dxcluster_maxage_update == TRUE) {
+				$this->session->set_flashdata('success', $this->lang->line('options_dxcluster_maxage_changed_to').$this->input->post('dxcluster_maxage'));
+			}
+
+			$dxcache_url_update = $this->optionslib->update('dxcache_url', $this->input->post('dxcache_url'), 'yes');
+			if($dxcache_url_update == TRUE) {
+				$this->session->set_flashdata('success', $this->lang->line('options_dxcache_url_changed_to').$this->input->post('dxcache_url'));
+			}
+			redirect('/options/dxcluster');
+		}
+	}
+
 		// function used to display the /radio url
 		function radio() {
 

@@ -48,12 +48,14 @@ $lang['general_word_qslcard_bureau'] = 'Byrå';
 $lang['general_word_qslcard_electronic'] = 'Elektronisk';
 $lang['general_word_qslcard_manager'] = 'Manager';
 $lang['general_word_qslcard_via'] = 'Via';
+$lang['general_word_eqslcard'] = 'eQSL Card';
 $lang['general_word_eqslcards'] = 'eQSL Cards';
 $lang['general_word_lotw'] = 'Logbook of the World';
 
 $lang['general_edit_qso'] = 'Redigera QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Ange QSL mottagen (Byrå)';
 $lang['general_mark_qsl_rx_direct'] = 'Ange QSL mottagen (Direkt)';
+$lang['general_mark_qsl_rx_electronic'] = 'Ange QSL mottagen (Electronic)';
 $lang['general_mark_qsl_tx_bureau'] = 'Ange QSL skickad (Byrå)';
 $lang['general_mark_qsl_tx_direct'] = 'Ange QSL skickad (Direkt)';
 
@@ -62,7 +64,7 @@ $lang['general_delete_qso'] = 'Radera QSO';
 $lang['general_total_distance'] = 'Totalt avstånd';
 
 // Cloudlog Terms
-$lang['cloudlog_station_profile'] = 'Station Location';
+$lang['cloudlog_station_profile'] = 'Stationsplats';
 
 // ham radio terms
 $lang['gen_hamradio_qso'] = 'QSO';
@@ -95,17 +97,21 @@ $lang['gen_hamradio_logbook'] = 'Loggbok';
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_deleted_dxcc'] = 'Struket DXCC';
+$lang['gen_hamradio_continent'] = 'Kontinent';
 $lang['gen_hamradio_usa_state'] = 'USA State';
 $lang['gen_hamradio_county_reference'] = 'USA County';
 $lang['gen_hamradio_iota_reference'] = 'IOTA Reference';
 $lang['gen_hamradio_sota_reference'] = 'SOTA Reference';
 $lang['gen_hamradio_wwff_reference'] = 'WWFF Reference';
+$lang['gen_hamradio_pota_reference'] = 'POTA Reference';
 $lang['gen_hamradio_dok'] = 'DOK';
 $lang['gen_hamradio_state'] = 'State';
 $lang['gen_hamradio_iota'] = 'IOTA';
 $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
-$lang['gen_hamradio_gridsquare'] = 'Lokator';
+$lang['gen_hamradio_pota'] = 'POTA';
+$lang['gen_hamradio_gridsquare'] = 'Lokator/Gridsquare';
+$lang['gen_hamradio_distance'] = 'Distance';
 $lang['gen_hamradio_operator'] = 'Operatör';
 
 $lang['gen_hamradio_sig'] = 'Sig';
@@ -124,3 +130,13 @@ $lang['gen_this_qso_was_confirmed_on'] = 'Detta QSO blev konfirmerat';
 $lang['error_no_logbook_found'] = 'Ingen loggbok hittades. Du måste konfigurera en loggbok under Station Logbooks. Gör det här:';
 
 $lang['copy_to_clipboard'] = 'Kopiera till clipboard';
+
+$lang['africa'] = 'Afrika';
+$lang['antarctica'] = 'Antarktis';
+$lang['asia'] = 'Asien';
+$lang['europe'] = 'Europa';
+$lang['northamerica'] = 'Nordamerika';
+$lang['oceania'] = 'Oceanien';
+$lang['southamerica'] = 'Sydamerika';
+
+$lang['gen_band_selection'] = 'Band val';

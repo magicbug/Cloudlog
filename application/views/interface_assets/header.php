@@ -80,6 +80,10 @@
 							<a class="dropdown-item" href="<?php echo site_url('contesting?manual=0');?>" title="Live contest QSOs"><i class="fas fa-list"></i> <?php echo lang('menu_live_contest_logging'); ?></a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('contesting?manual=1');?>" title="Post contest QSOs"><i class="fas fa-list"></i> <?php echo lang('menu_post_contest_logging'); ?></a>
+<?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="<?php echo site_url('bandmap/list');?>" title="Bandmap"><i class="fa fa-id-card"></i> <?php echo lang('menu_bandmap'); ?></a>
+<?php } ?>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('qsl');?>" title="QSL"><i class="fa fa-id-card"></i> <?php echo lang('menu_view_qsl'); ?></a>
 							<div class="dropdown-divider"></div>
@@ -178,8 +182,12 @@
 
 					<div class="dropdown-divider"></div>
 
+					<a class="dropdown-item" href="<?php echo site_url('maintenance');?>" title="maintenance"><i class="fas fa-tools"></i> <?php echo lang('menu_maintenance'); ?></a>
+
+					<div class="dropdown-divider"></div>
+
 					<a class="dropdown-item" href="<?php echo site_url('debug');?>" title="Debug Information"><i class="fas fa-tools"></i> <?php echo lang('menu_debug_information'); ?></a>
-					
+
 				</div>
         	</li>
 			<?php } ?>
@@ -282,8 +290,8 @@ $oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 				<a class="dropdown-item" href="<?php echo site_url('user/logout');?>" title="Logout"><i class="fas fa-sign-out-alt"></i> <?php echo lang('menu_logout'); ?></a>
 			</div>
         </li>
-		
-		<?php 
+
+		<?php
 			// Can add extra menu items by defining them in options. The format is json.
 			// Useful to add extra things in Cloudlog without the need for modifying files. If you add extras, these files will not be overwritten when updating.
 			//
@@ -308,7 +316,7 @@ $oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extras</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<?php 
+					<?php
 						foreach(json_decode($this->optionslib->get_option('menuitems')) as $item) {
 							echo '<a class="dropdown-item" href="' . site_url($item->url) . '" title="Gridsquares"><i class="fas '. $item->icon .'"></i> ' . $item->text . '</a>';
 						}
@@ -316,7 +324,7 @@ $oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 				</div>
 			</li>
 		<?php } ?>
-				
+
 		</ul>
 
         <?php } ?>

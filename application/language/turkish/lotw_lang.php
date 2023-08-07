@@ -29,7 +29,7 @@ $lang['lotw_certificate_dxcc_help_text'] = 'Sertifika DXCC varlığı. Örneğin
 
 $lang['lotw_input_a_file'] = 'Bir Dosya Yükle';
 
-$lang['lotw_upload_exported_adif_file_from_lotw'] = 'LoTW\'den Dışa Aktarılan ADIF dosyasını <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Raporu İndir<\'den yükleyin /a> Alan, QSO\'ları LOTW\'da onaylandı olarak işaretlemek için.';
+$lang['lotw_upload_exported_adif_file_from_lotw'] = 'LoTW\'den Dışa Aktarılan ADIF dosyasını <a href="https://p1k.arrl.org/lotwuser/qsos?qsoscmd=adif" target="_blank">Raporu İndir<\'den yükleyin /a> Alan, QSO\'ları LoTW\'da onaylandı olarak işaretlemek için.';
 $lang['lotw_upload_type_must_be_adi'] = 'Günlük dosyaları .adi dosya tipine sahip olmalıdır';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Benim için LoTW verilerini çek';

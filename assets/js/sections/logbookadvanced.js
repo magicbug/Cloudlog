@@ -464,48 +464,30 @@ $(document).ready(function () {
 		}
 		$('#printLabel').prop("disabled", true);
 
-		var id_list=[];
-
-		elements.each(function() {
-			let id = $(this).first().closest('tr').data('qsoID')
-			id_list.push(id);
-		});
-
 		$.ajax({
-			url: base_url + 'index.php/labels/printids',
+			url: base_url + 'index.php/logbookadvanced/startAtLabel',
 			type: 'post',
-			data: {'id': JSON.stringify(id_list, null, 2) },
-			xhr:function(){
-				var xhr = new XMLHttpRequest();
-				xhr.responseType= 'blob'
-				return xhr;
-			},
-			success: function(data) {
-				if(data){
-					var file = new Blob([data], {type: 'application/pdf'});
-					var fileURL = URL.createObjectURL(file);
-					window.open(fileURL);
-				}
-				$.each(id_list, function(k, v) {
-					unselectQsoID(this);
+			success: function (html) {
+				BootstrapDialog.show({
+					title: 'Start printing at which label?',
+					size: BootstrapDialog.SIZE_NORMAL,
+					cssClass: 'qso-dialog',
+					nl2br: false,
+					message: html,
+					onshown: function(dialog) {
+					},
+					buttons: [{
+						label: 'Close',
+						action: function (dialogItself) {
+							$('#printLabel').prop("disabled", false);
+							dialogItself.close();
+						}
+					}],
+					onhide: function(dialogRef){
+						$('#printLabel').prop("disabled", false);
+					},
 				});
-				$('#printLabel').prop("disabled", false);
-			},
-			error: function (data) {
-				BootstrapDialog.alert({
-					title: 'ERROR',
-					message: 'Something went wrong with label print. Go to labels and check if you have defined a label, and that it is set for print!',
-					type: BootstrapDialog.TYPE_DANGER,
-					closable: false,
-					draggable: false,
-					callback: function (result) {
-					}
-				});
-				$.each(id_list, function(k, v) {
-					unselectQsoID(this);
-				});
-				$('#printLabel').prop("disabled", false);
-			},
+			}
 		});
 	});
 
@@ -591,3 +573,58 @@ $(document).ready(function () {
 
 	$('#searchForm').submit();
 });
+
+function printlabel() {
+	var id_list=[];
+	var elements = $('#qsoList tbody input:checked');
+	var nElements = elements.length;
+
+	elements.each(function() {
+		let id = $(this).first().closest('tr').data('qsoID')
+		id_list.push(id);
+	});
+	$.ajax({
+		url: base_url + 'index.php/labels/printids',
+		type: 'post',
+		data: {'id': JSON.stringify(id_list, null, 2),
+				'startat': $('#startat').val(),
+				'grid': $('#gridlabel')[0].checked,
+
+			},
+		xhr:function(){
+			var xhr = new XMLHttpRequest();
+			xhr.responseType= 'blob'
+			return xhr;
+		},
+		success: function(data) {
+			$.each(BootstrapDialog.dialogs, function(id, dialog){
+				dialog.close();
+			});
+			if(data){
+				var file = new Blob([data], {type: 'application/pdf'});
+				var fileURL = URL.createObjectURL(file);
+				window.open(fileURL);
+			}
+			$.each(id_list, function(k, v) {
+				unselectQsoID(this);
+			});
+			$('#printLabel').prop("disabled", false);
+		},
+		error: function (data) {
+			BootstrapDialog.alert({
+				title: 'ERROR',
+				message: 'Something went wrong with label print. Go to labels and check if you have defined a label, and that it is set for print!',
+				type: BootstrapDialog.TYPE_DANGER,
+				closable: false,
+				draggable: false,
+				callback: function (result) {
+				}
+			});
+			$.each(id_list, function(k, v) {
+				unselectQsoID(this);
+			});
+			$('#printLabel').prop("disabled", false);
+		},
+	});
+}
+

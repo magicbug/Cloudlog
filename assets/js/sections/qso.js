@@ -1,5 +1,32 @@
 $( document ).ready(function() {
 
+
+	var bc_bandmap = new BroadcastChannel('qso_window');
+	bc_bandmap.onmessage = function (ev) {
+		if (ev.data == 'ping') {
+			bc_bandmap.postMessage('pong');
+		}
+	}
+
+	var bc = new BroadcastChannel('qso_wish');
+	bc.onmessage = function (ev) {
+		if (ev.data.ping) {
+			let message={};
+			message.pong=true;
+			bc.postMessage(message);
+		} else {
+			$('#frequency').val(ev.data.frequency);
+			$("#band").val(frequencyToBand(ev.data.frequency));
+			if (ev.data.frequency_rx != "") {
+				$('#frequency_rx').val(ev.data.frequency_rx);
+				$("#band_rx").val(frequencyToBand(ev.data.frequency_rx));
+			}
+			$("#callsign").val(ev.data.call);
+			$("#callsign").focusout();
+			$("#callsign").blur();
+		}
+	} /* receive */
+
 	$("#locator")
 		.popover({ placement: 'top', title: 'Gridsquare Formatting', content: "Enter multiple (4-digit) grids separated with commas. For example: IO77,IO78" })
 		.focus(function () {
@@ -89,7 +116,7 @@ $( document ).ready(function() {
 	});
 
 	$('#sota_ref').change(function(){
-		$('#sota_info').html('<a target="_blank" href="https://summits.sota.org.uk/summit/'+$('#sota_ref').val()+'"><img width="32" height="32" src="'+base_url+'images/icons/sota.org.uk.png"></a>'); 
+		$('#sota_info').html('<a target="_blank" href="https://summits.sota.org.uk/summit/'+$('#sota_ref').val()+'"><img width="32" height="32" src="'+base_url+'images/icons/sota.org.uk.png"></a>');
 		$('#sota_info').attr('title', 'Lookup '+$('#sota_ref').val()+' summit info on sota.org.uk');
 	});
 
@@ -122,7 +149,7 @@ $( document ).ready(function() {
 	});
 
 	$('#wwff_ref').change(function(){
-		$('#wwff_info').html('<a target="_blank" href="https://www.cqgma.org/zinfo.php?ref='+$('#wwff_ref').val()+'"><img width="32" height="32" src="'+base_url+'images/icons/wwff.co.png"></a>'); 
+		$('#wwff_info').html('<a target="_blank" href="https://www.cqgma.org/zinfo.php?ref='+$('#wwff_ref').val()+'"><img width="32" height="32" src="'+base_url+'images/icons/wwff.co.png"></a>');
 		$('#wwff_info').attr('title', 'Lookup '+$('#wwff_ref').val()+' reference info on cqgma.org');
 	});
 
@@ -155,7 +182,7 @@ $( document ).ready(function() {
 	});
 
 	$('#pota_ref').change(function(){
-		$('#pota_info').html('<a target="_blank" href="https://pota.app/#/park/'+$('#pota_ref').val()+'"><img width="32" height="32" src="'+base_url+'images/icons/pota.app.png"></a>'); 
+		$('#pota_info').html('<a target="_blank" href="https://pota.app/#/park/'+$('#pota_ref').val()+'"><img width="32" height="32" src="'+base_url+'images/icons/pota.app.png"></a>');
 		$('#pota_info').attr('title', 'Lookup '+$('#pota_ref').val()+' reference info on pota.co');
 	});
 
@@ -228,7 +255,7 @@ $(document).on('change', 'input', function(){
 						$.each( val.Modes, function( key1, val2 ) {
 							if(key1 == selected_sat_mode) {
 
-								if (val2[0].Uplink_Mode == "LSB" || val2[0].Uplink_Mode == "USB") {
+								if ( (val2[0].Downlink_Mode == "LSB" && val2[0].Uplink_Mode == "USB") || (val2[0].Downlink_Mode == "USB" && val2[0].Uplink_Mode == "LSB") )   { // inverting Transponder? set to SSB
 									$("#mode").val("SSB");
 								} else {
 									$("#mode").val(val2[0].Uplink_Mode);
@@ -454,7 +481,7 @@ $("#callsign").focusout(function() {
 					}
 
 					changebadge(result.dxcc.entity);
-					
+
 					getDxccResult(result.dxcc.adif, convert_case(result.dxcc.entity));
 				}
 
@@ -472,9 +499,9 @@ $("#callsign").focusout(function() {
 					$('#lotw_info').attr('data-original-title',"LoTW User. Last upload was "+result.lotw_days+" days ago");
 					$('[data-toggle="tooltip"]').tooltip();
 				}
-				$('#qrz_info').html('<a target="_blank" href="https://www.qrz.com/db/'+find_callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/qrz.com.png"></a>'); 
+				$('#qrz_info').html('<a target="_blank" href="https://www.qrz.com/db/'+find_callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/qrz.com.png"></a>');
 				$('#qrz_info').attr('title', 'Lookup '+find_callsign+' info on qrz.com');
-				$('#hamqth_info').html('<a target="_blank" href="https://www.hamqth.com/'+find_callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/hamqth.com.png"></a>'); 
+				$('#hamqth_info').html('<a target="_blank" href="https://www.hamqth.com/'+find_callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/hamqth.com.png"></a>');
 				$('#hamqth_info').attr('title', 'Lookup '+find_callsign+' info on hamqth.com');
 
 				var $dok_select = $('#darc_dok').selectize();
@@ -826,4 +853,18 @@ function resetDefaultQSOFields() {
 	$('#callsign-image').attr('style', 'display: none;');
 	$('#callsign-image-content').text("");
 	$('.dxccsummary').remove();
+}
+
+function closeModal() {
+	var container = document.getElementById("modals-here")
+	var backdrop = document.getElementById("modal-backdrop")
+	var modal = document.getElementById("modal")
+
+	modal.classList.remove("show")
+	backdrop.classList.remove("show")
+
+	setTimeout(function() {
+		container.removeChild(backdrop)
+		container.removeChild(modal)
+	}, 200)
 }

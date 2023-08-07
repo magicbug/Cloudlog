@@ -9,6 +9,8 @@ if ($qsos->result() != NULL) {
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_mode') . '</th>
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_band') . '</th>
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_station') . '</th>
+	<th style=\'text-align: center\'>' . lang('gen_hamradio_qsl') . ' ' . lang('general_word_qslcard_via') . '</th>
+	<th style=\'text-align: center\'>Sent method</th>
 	<th style=\'text-align: center\'>QSL</th>';
 	if ($this->session->userdata('user_eqsl_name') != "") {
 		echo '<th style=\'text-align: center\'>eQSL</th>';
@@ -37,6 +39,8 @@ if ($qsos->result() != NULL) {
 		echo '<td style=\'text-align: center\'>'; echo $qsl->COL_SUBMODE==null?$qsl->COL_MODE:$qsl->COL_SUBMODE; echo '</td>';
 		echo '<td style=\'text-align: center\'>'; if($qsl->COL_SAT_NAME != null) { echo $qsl->COL_SAT_NAME; } else { echo strtolower($qsl->COL_BAND); }; echo '</td>';
 		echo '<td style=\'text-align: center\'><span class="badge badge-light">' . $qsl->station_callsign . '</span></td>';
+		echo '<td style=\'text-align: center\'>' . $qsl->COL_QSL_VIA . '</td>';
+		echo '<td style=\'text-align: center\'>'; echo_qsl_sent_via($qsl->COL_QSL_SENT_VIA); echo '</td>';
 		echo '<td style=\'text-align: center\' class="qsl">';
 		echo '<span ';
 		if ($qsl->COL_QSL_SENT != "N") {
@@ -191,5 +195,13 @@ if ($qsos->result() != NULL) {
 	<?php
 } else {
 	echo '<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>No additional QSO\'s were found. That means they are probably already in the queue.</div>';
+}
+
+function echo_qsl_sent_via($method) {
+	switch($method) {
+		case 'B': echo 'Bureau'; break;
+		case 'D': echo 'Direct'; break;
+		case 'E': echo 'Electronic'; break;
+	}
 }
 ?>

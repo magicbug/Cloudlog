@@ -43,7 +43,7 @@ class Distances_model extends CI_Model
 
                 if ($queryresult->result_array()) {
                     $temp = $this->plot($queryresult->result_array(), $gridsquare, $measurement_base);
- 
+
                     $result = $this->mergeresult($result, $temp);
 
                 }
@@ -76,7 +76,7 @@ class Distances_model extends CI_Model
 			$result['qrb']['Qsos'] += $add['qrb']['Qsos'];
 
 			for ($i = 0; $i <= 399; $i++) {
-                
+
                 if(isset($result['qsodata'][$i]['count'])) {
 				    $result['qsodata'][$i]['count'] += $add['qsodata'][$i]['count'];
                 }
@@ -265,4 +265,59 @@ class Distances_model extends CI_Model
                 return ceil(6371*$ca);
         }
     }
+
+	/*
+	 * Used to fetch QSOs from the logbook in the awards
+	 */
+	public function qso_details($distance, $band, $sat){
+		$distarray = $this->getdistparams($distance);
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC', 'left outer');
+		$this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
+		$this->db->where('COL_DISTANCE >=', $distarray[0]);
+		$this->db->where('COL_DISTANCE <=', $distarray[1]);
+		$this->db->where('LENGTH(col_gridsquare) >', 0);
+
+    	$this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
+
+		if ($band != 'All') {
+			if($band != "sat") {
+				$this->db->where('COL_PROP_MODE !=', 'SAT');
+				$this->db->where('COL_BAND', $band);
+			} else {
+				$this->db->where('COL_PROP_MODE', "SAT");
+				if ($sat != 'All') {
+					$this->db->where('COL_SAT_NAME', $sat);
+				}
+			}
+		}
+		$this->db->order_by("COL_TIME_ON", "desc");
+
+		return $this->db->get($this->config->item('table_name'));
+	}
+
+	function getdistparams($distance) {
+		$temp = explode('-', $distance);
+		$regex = '[a-zA-Z]+';
+        preg_match("%{$regex}%i", $temp[0], $unit);
+
+		$result = [];
+		$result[0] = filter_var($temp[0], FILTER_SANITIZE_NUMBER_INT);
+		$result[1] = filter_var($temp[1], FILTER_SANITIZE_NUMBER_INT);
+
+		if ($unit[0] == 'mi') {
+			$result[0] *= 1.609344;
+			$result[1] *= 1.609344;
+		}
+		if ($unit[0] == 'nmi') {
+			$result[0] *= 1.852;
+			$result[1] *= 1.852;
+		}
+
+		return $result;
+	}
 }

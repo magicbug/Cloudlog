@@ -63,7 +63,7 @@
               <!-- Callsign Input -->
               <div class="form-row">
                 <div class="form-group col-md-9">
-                  <label for="callsign"><?php echo lang('gen_hamradio_callsign'); ?></label>
+                  <label for="callsign"><?php echo lang('gen_hamradio_callsign'); ?></label><?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>&nbsp;<i id="check_cluster" data-toggle="tooltip" data-original-title="Search DXCluster for latest Spot" class="fas fa-search"></i> <?php } ?>
                   <input type="text" class="form-control" id="callsign" name="callsign" required>
                   <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-success"></small>
                 </div>
@@ -518,6 +518,45 @@
             <div id="qsomap" style="width: 100%; height: 200px;"></div>
     </div>
 
+    <!-- Winkey Starts -->
+
+   <?php
+    // if isWinkeyEnabled in session data is true
+    if ($this->session->userdata('isWinkeyEnabled')) { ?>
+
+    <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px;">
+        <div class="card-header">
+          <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey
+
+          <button id="connectButton" class="btn btn-primary">Connect</button>
+
+          <button type="button" class="btn btn-light"
+          hx-get="<?php echo base_url(); ?>index.php/qso/winkeysettings"
+          hx-target="#modals-here"
+          hx-trigger="click"
+          class="btn btn-primary"
+          _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-cog"></i> Settings</button>
+          </h4>
+        </div>
+
+        <div id="modals-here"></div>
+
+        <div id="winkey_buttons" class="card-body">
+          <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
+          <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>
+          <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
+          <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
+          <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
+          <br><br>
+          <input id="sendText" type="text"><input id="sendButton" type="button" value="Send" class="btn btn-success">
+
+          <span id="statusBar"></span><br>
+
+        </div>
+    </div>
+    <?php } // end of isWinkeyEnabled if statement ?>
+    <!-- Winkey Ends -->
+
     <div class="card callsign-suggest">
         <div class="card-header"><h4 style="font-size: 16px; font-weight: bold;" class="card-title"><?php echo lang('qso_title_suggestions'); ?></h4></div>
 
@@ -570,7 +609,7 @@
 			  }
 
 			  $i = 0;
-            if($query != false) {  
+            if($query != false) {
             foreach ($query->result() as $row) {
               	echo '<tr class="tr'.($i & 1).'">';
                     echo '<td>';
