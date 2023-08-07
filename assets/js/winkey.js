@@ -160,7 +160,7 @@ async function writeToStream(line) {
 async function writeToByte(line) {
     const writer = outputStream.getWriter();
     const data = new Uint8Array([line]);
-    writer.write(line);
+    writer.write(data);
     writer.releaseLock();
 }
 
