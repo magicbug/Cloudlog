@@ -6,7 +6,7 @@ $lang['lotw_short'] = 'LoTW';
 $lang['lotw_title'] = 'Logbook of the World';
 $lang['lotw_title_available_cert'] = 'Verfügbare Zertifikate';
 $lang['lotw_title_information'] = 'Information';
-$lang['lotw_title_upload_p12_cert'] = 'Lade Logbook of the World .p12 Zertifikat hoch';
+$lang['lotw_title_upload_p12_cert'] = 'Lade Logbook of the World .p12-Zertifikat hoch';
 $lang['lotw_title_export_p12_file_instruction'] = 'Anleitung für den Export einer .p12 Datei';
 $lang['lotw_title_adif_import'] = 'ADIF-Import';
 $lang['lotw_title_adif_import_options'] = 'Importoptionen';
@@ -38,7 +38,7 @@ $lang['lotw_pull_lotw_data_for_me'] = 'Lade LoTW-Daten für mich';
 $lang['lotw_report_download_overview_helptext'] = 'Cloudlog nutzt Benutzername und Passwort, welche in Deinem Benutzerprofil gespeichert sind, um einen Report vom LoTW zu laden. Der Report, den Cloudlog lädt, enthält alle Bestätigungen seit dem gewählten Datum oder seit der letzen LoTW-Bestätigung (wird aus Deinem Log extrahiert) bis jetzt.';
 
 // Buttons
-$lang['lotw_btn_lotw_import'] = 'LoTW Import';
+$lang['lotw_btn_lotw_import'] = 'LoTW-Import';
 $lang['lotw_btn_upload_certificate'] = 'Zertifikats-Upload';
 $lang['lotw_btn_delete'] = 'Lösche';
 $lang['lotw_btn_manual_sync'] = 'Manuelle Synchronisation';
@@ -46,16 +46,16 @@ $lang['lotw_btn_upload_file'] = 'Lade Datei hoch';
 $lang['lotw_btn_import_matches'] = 'Importiere LoTW-Übereinstimmungen';
 
 // P12 Export Text
-$lang['lotw_p12_export_step_one'] = 'Öffne TQSL &amp; und gehe zum Rufzeichen Zertifikate Reiter';
-$lang['lotw_p12_export_step_two'] = 'Klicke rechts auf das gewünschte Rufzeichen';
-$lang['lotw_p12_export_step_three'] = 'Klick "Save Callsign Certificate File" und füge kein Passwort hinzu';
+$lang['lotw_p12_export_step_one'] = 'Öffne TQSL &amp; und gehe zum "Rufzeichen-Zertifikate"-Reiter';
+$lang['lotw_p12_export_step_two'] = 'Klicke links auf das gewünschte Rufzeichen';
+$lang['lotw_p12_export_step_three'] = 'Klicke links auf "Speichern Sie das Rufzeichen-Zertifikat für <RUFZEICHEN>" und füge kein Passwort hinzu';
 $lang['lotw_p12_export_step_four'] = 'Lade untenstehende Datei hoch.';
 
 $lang['lotw_confirmed'] = 'Dieses QSO wurde via LoTW bestätigt am';
 
 // LoTW Expiry
-$lang['lotw_cert_expiring'] = 'Mindestens eines deiner LoTW Zertifikate läuft bald ab!';
-$lang['lotw_cert_expired'] = 'Mindestens eines deiner LoTW Zertifikate ist abgelaufen!';
+$lang['lotw_cert_expiring'] = 'Mindestens eines deiner LoTW-Zertifikate läuft bald ab!';
+$lang['lotw_cert_expired'] = 'Mindestens eines deiner LoTW-Zertifikate ist abgelaufen!';
 
 // Lotw User
 $lang['lotw_user'] = 'Diese Station nutzt LoTW. Der letzte Upload war am';
