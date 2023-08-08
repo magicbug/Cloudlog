@@ -287,7 +287,10 @@ $(document).ready(function () {
 						$('#deleteQsos').prop("disabled", false);
 					})
 				}
-			}
+			},
+			onhide: function(dialogRef){
+				$('#deleteQsos').prop("disabled", false);
+			},
 		});
 	});
 
