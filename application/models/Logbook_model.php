@@ -2629,30 +2629,6 @@ class Logbook_model extends CI_Model {
       }
     }
 
-  function api_search_query($query) {
-    $time_start = microtime(true);
-    $results = $this->db->query($query);
-    if(!$results) {
-      return array('query' => $query, 'error' => $this->db->_error_number(), 'time' => 0);
-    }
-    $time_end = microtime(true);
-    $time = round($time_end - $time_start, 4);
-
-    return array('query' => $query, 'results' => $results, 'time' => $time);
-  }
-
-  function api_insert_query($query) {
-    $time_start = microtime(true);
-    $results = $this->db->insert($this->config->item('table_name'), $query);
-    if(!$results) {
-      return array('query' => $query, 'error' => $this->db->_error_number(), 'time' => 0);
-    }
-    $time_end = microtime(true);
-    $time = round($time_end - $time_start, 4);
-
-    return array('query' => $this->db->queries[2], 'result_string' => $results, 'time' => $time);
-  }
-
     /* Delete QSO based on the QSO ID */
   function delete($id) {
 	  if ($this->check_qso_is_accessible($id)) {
