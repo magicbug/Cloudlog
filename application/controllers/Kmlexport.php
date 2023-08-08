@@ -13,9 +13,9 @@ class Kmlexport extends CI_Controller {
         $this->load->model('user_model');
         $this->load->model('modes');
         $this->load->model('logbook_model');
-		$this->load->model('bands');
+	$this->load->model('bands');
 
-        if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+        if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
         $data['worked_bands'] = $this->bands->get_worked_bands(); // Used in the view for band select
         $data['modes'] = $this->modes->active(); // Used in the view for mode select
@@ -29,6 +29,8 @@ class Kmlexport extends CI_Controller {
     }
 
 	public function export() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		// Load Libraries
 		$this->load->library('qra');
 		$this->load->helper('file');
