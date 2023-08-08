@@ -1180,7 +1180,7 @@ $(document).on('keypress',function(e) {
 				async: false,
 				type: 'GET',
 				dataType: "json",
-				url: "https://nominatim.openstreetmap.org/search/?city=" + $(this).val() + "&format=json&addressdetails=1&limit=1",
+				url: "https://nominatim.openstreetmap.org/?city=" + $(this).val() + "&format=json&addressdetails=1&limit=1",
 				data: {},
 				success: function (data) {
 					if (typeof data[0].lat !== 'undefined') {
