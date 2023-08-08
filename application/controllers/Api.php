@@ -228,11 +228,19 @@ class API extends CI_Controller {
 		$obj = json_decode(file_get_contents("php://input"), true);
 		if ($obj === NULL) {
 		    echo json_encode(['status' => 'failed', 'reason' => "wrong JSON"]);
+			return;
 		}
 
 		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
 		   http_response_code(401);
 		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
+			return;
+		}
+
+		if(!isset($obj['logbook_public_slug']) || !isset($obj['callsign'])) {
+		   http_response_code(401);
+		   echo json_encode(['status' => 'failed', 'reason' => "missing fields"]);
+			return;
 		}
 
 		if($obj['logbook_public_slug'] != "" && $obj['callsign'] != "") {
@@ -306,6 +314,12 @@ class API extends CI_Controller {
 		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
 		   http_response_code(401);
 		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
+		}
+
+		if(!isset($obj['logbook_public_slug']) || !isset($obj['grid'])) {
+		   http_response_code(401);
+		   echo json_encode(['status' => 'failed', 'reason' => "missing fields"]);
+			return;
 		}
 
 		if($obj['logbook_public_slug'] != "" && $obj['grid'] != "") {
