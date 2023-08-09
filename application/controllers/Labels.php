@@ -134,28 +134,30 @@ class Labels extends CI_Controller {
 		$ids = xss_clean(json_decode($this->input->post('id')));
 		$offset = xss_clean($this->input->post('startat'));
 		$grid = $this->input->post('grid') === "true" ? 1 : 0;
+		$wwff = $this->input->post('wwff') === "true" ? 1 : 0;
 		$this->load->model('labels_model');
 		$result = $this->labels_model->export_printrequestedids($ids);
 
-		$this->prepareLabel($result, true, $offset, $grid);
+		$this->prepareLabel($result, true, $offset, $grid, $wwff);
 	}
 
 	public function print($station_id) {
 		$clean_id = xss_clean($station_id);
 		$offset = xss_clean($this->input->post('startat'));
 		$grid = xss_clean($this->input->post('grid') ?? 0);
+		$wwff = xss_clean($this->input->post('wwff') ?? 0);
 		$this->load->model('stations');
 		if ($this->stations->check_station_is_accessible($station_id)) {
 			$this->load->model('labels_model');
 			$result = $this->labels_model->export_printrequested($clean_id);
 
-			$this->prepareLabel($result, false, $offset, $grid);
+			$this->prepareLabel($result, false, $offset, $grid, $wwff);
 		} else {
 			redirect('labels');
 		}
 	}
 
-	function prepareLabel($qsos, $jscall = false, $offset = 1, $grid = false) {
+	function prepareLabel($qsos, $jscall = false, $offset = 1, $grid = false, $wwff = false) {
 		$this->load->model('labels_model');
 		$label = $this->labels_model->getDefaultLabel();
 
@@ -231,9 +233,9 @@ class Labels extends CI_Controller {
 
 		if ($qsos->num_rows() > 0) {
 			if ($label->qsos == 1) {
-				$this->makeMultiQsoLabel($qsos->result(), $pdf, 1, $offset, $ptype->orientation, $grid);
+				$this->makeMultiQsoLabel($qsos->result(), $pdf, 1, $offset, $ptype->orientation, $grid, $wwff);
 			} else {
-				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos, $offset, $ptype->orientation, $grid);
+				$this->makeMultiQsoLabel($qsos->result(), $pdf, $label->qsos, $offset, $ptype->orientation, $grid, $wwff);
 			}
 		} else {
 			$this->session->set_flashdata('message', '0 QSOs found for print!');
@@ -242,7 +244,7 @@ class Labels extends CI_Controller {
 		$pdf->Output();
 	}
 
-	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos, $offset, $orientation, $grid) {
+	function makeMultiQsoLabel($qsos, $pdf, $numberofqsos, $offset, $orientation, $grid, $wwff) {
 		$text = '';
 		$current_callsign = '';
 		$current_sat = '';
@@ -259,7 +261,7 @@ class Labels extends CI_Controller {
 			( ($qso->COL_BAND_RX !== $current_sat_bandrx) && ($this->pretty_sat_mode($qso->COL_SAT_MODE) !== '')) ) {
 			   // ((($qso->COL_SAT_NAME ?? '' !== $current_sat) || ($qso->COL_CALL !== $current_callsign)) && ($qso->COL_SAT_NAME ?? '' !== '') && ($col->COL_BAND_RX ?? '' !== $current_sat_bandrx))) {
 				if (!empty($qso_data)) {
-					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos, $orientation, $grid);
+					$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos, $orientation, $grid, $wwff);
 					$qso_data = [];
 				}
 				$current_callsign = $qso->COL_CALL;
@@ -274,6 +276,7 @@ class Labels extends CI_Controller {
 				'mode' => $qso->COL_MODE,
 				'rst' => $qso->COL_RST_SENT,
 				'mygrid' => $qso->station_gridsquare,
+				'mywwff' => $qso->station_wwff,
 				'sat' => $qso->COL_SAT_NAME,
 				'sat_mode' => $this->pretty_sat_mode($qso->COL_SAT_MODE ?? ''),
 				'sat_band_rx' => ($qso->COL_BAND_RX ?? ''),
@@ -282,7 +285,7 @@ class Labels extends CI_Controller {
 			];
 		}
 		if (!empty($qso_data)) {
-			$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos, $orientation, $grid);
+			$this->finalizeData($pdf, $current_callsign, $qso_data, $numberofqsos, $orientation, $grid, $wwff);
 		}
 	}
 	// New begin
@@ -290,7 +293,7 @@ class Labels extends CI_Controller {
 		return(strlen($sat_mode ?? '') == 2 ? (strtoupper($sat_mode[0]).'/'.strtoupper($sat_mode[1])) : strtoupper($sat_mode ?? ''));
 	}
 
-	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label,$orientation, $grid) {
+	function finalizeData($pdf, $current_callsign, &$preliminaryData, $qso_per_label,$orientation, $grid, $wwff) {
 
 		$tableData = [];
 		$count_qso = 0;
@@ -310,7 +313,7 @@ class Labels extends CI_Controller {
 
 
 			if($count_qso == $qso_per_label){
-				$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso,$orientation, $grid);
+				$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso,$orientation, $grid, $wwff);
 				$tableData = []; // reset the data
 				$count_qso = 0;  // reset the counter
 			}
@@ -318,15 +321,15 @@ class Labels extends CI_Controller {
 		}
 		// generate label for remaining QSOs
 		if($count_qso > 0){
-			$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso,$orientation, $grid);
+			$this->generateLabel($pdf, $current_callsign, $tableData,$count_qso,$qso,$orientation, $grid, $wwff);
 			$preliminaryData = []; // reset the data
 		}
 	}
 
-	function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso,$orientation,$grid=true){
+	function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso,$orientation,$grid=true,$wwff=true){
 		$builder = new \AsciiTable\Builder();
 		$builder->addRows($tableData);
-			$text = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
+			$text = $qso['mycall']." confirming QSO".($numofqsos>1 ? 's' : '')." with ";
 			$text .= $current_callsign."\n";
 			$text .= $builder->renderTable();
 		if($qso['sat'] != "") {
@@ -339,7 +342,9 @@ class Labels extends CI_Controller {
 			}
 		}
 		$text.="\n";
-		if ($grid) { $text .= "My call: ".$qso['mycall']." Grid: ".$qso['mygrid']."\n"; }
+		if ($grid) { $text .= "Grid: ".$qso['mygrid']; }
+		if ($wwff && $qso['mywwff'] != '') { $text .= ", WWFF: ".$qso['mywwff']; }
+		$text.="\n";
 		$text .= "Thanks for the QSO".($numofqsos>1 ? 's' : '');
 		$text .= " | ".($qso['qsl_recvd'] == 'Y' ? 'TNX' : 'PSE')." QSL";
 		$pdf->Add_Label($text,$orientation);
