@@ -140,7 +140,7 @@ class Logbookadvanced extends CI_Controller {
 
 		$callbook = $this->logbook_model->loadCallBook($qso['COL_CALL'], $this->config->item('use_fullname'));
 
-		if ($callbook['callsign'] !== "") {
+		if ($callbook['callsign'] ?? "" !== "") {
 			$this->logbookadvanced_model->updateQsoWithCallbookInfo($qsoID, $qso, $callbook);
 			$qso['COL_NAME'] = trim($callbook['name']);
 			if (isset($callbook['qslmgr'])) {
