@@ -951,6 +951,7 @@ $(document).on('keypress',function(e) {
 			$("#check_cluster").on("click", function() {
 				$.ajax({ url: dxcluster_provider+"/qrg_lookup/"+$("#frequency").val()/1000, cache: false, dataType: "json" }).done(
 					function(dxspot) {
+						reset_fields();
 						$("#callsign").val(dxspot.spotted);
 						$("#callsign").trigger("blur");
 					}
