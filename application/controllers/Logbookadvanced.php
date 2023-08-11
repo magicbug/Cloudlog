@@ -115,6 +115,7 @@ class Logbookadvanced extends CI_Controller {
 			'sota' => xss_clean($this->input->post('sota')),
 			'pota' => xss_clean($this->input->post('pota')),
 			'wwff' => xss_clean($this->input->post('wwff')),
+			'qslimages' => xss_clean($this->input->post('qslimages')),
 		);
 
 		$qsos = [];
@@ -224,5 +225,12 @@ class Logbookadvanced extends CI_Controller {
 
 	public function startAtLabel() {
 		$this->load->view('logbookadvanced/startatform');
+	}
+
+	public function qslSlideshow() {
+		$cleanids = $this->security->xss_clean($this->input->post('ids'));
+        $this->load->model('logbookadvanced_model');
+        $data['qslimages'] = $this->logbookadvanced_model->getQslsForQsoIds($cleanids);
+        $this->load->view('qslcard/qslcarousel', $data);
 	}
 }
