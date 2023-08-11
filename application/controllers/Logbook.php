@@ -127,7 +127,6 @@ class Logbook extends CI_Controller {
 			"callsign_us_county" => "",
 			"qsl_manager" => "",
 			"bearing" 		=> "",
-			"latlng" 		=> "",
 			"workedBefore" => false,
 			"lotw_member" => $lotw_member,
 			"lotw_days" => $lotw_days,
