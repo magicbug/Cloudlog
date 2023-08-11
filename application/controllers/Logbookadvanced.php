@@ -231,6 +231,6 @@ class Logbookadvanced extends CI_Controller {
 		$cleanids = $this->security->xss_clean($this->input->post('ids'));
         $this->load->model('logbookadvanced_model');
         $data['qslimages'] = $this->logbookadvanced_model->getQslsForQsoIds($cleanids);
-        $this->load->view('qslcard/qslcarousel', $data);
+        $this->load->view('logbookadvanced/qslcarousel', $data);
 	}
 }
