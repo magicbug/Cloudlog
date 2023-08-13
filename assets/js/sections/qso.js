@@ -772,7 +772,7 @@ function convert_case(str) {
 }
 
 $('#dxcc_id').on('change', function() {
-	$.getJSON('logbook/jsonentity/' + $(this).val(), function (result) {
+	$.getJSON(base_url + 'index.php/logbook/jsonentity/' + $(this).val(), function (result) {
 		if (result.dxcc.name != undefined) {
 
 			$('#country').val(convert_case(result.dxcc.name));
