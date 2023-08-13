@@ -752,7 +752,7 @@ $("#locator").keyup(function(){
 			})
 
 			$('#locator_info').load(base_url +"index.php/logbook/searchbearing/" + $(this).val() + "/" + $('#stationProfile').val()).fadeIn("slow");
-			$.get(base_url + '/index.php/logbook/searchdistance/' + $(this).val() + "/" + $('#stationProfile').val(), function(result) {
+			$.get(base_url + 'index.php/logbook/searchdistance/' + $(this).val() + "/" + $('#stationProfile').val(), function(result) {
 				document.getElementById("distance").value = result;
 			});
 		}
