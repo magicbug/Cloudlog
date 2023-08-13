@@ -23,8 +23,40 @@
         if ($i == 1) {
             echo ' active';
         }
-        echo '">';
-        echo '<img class="img-fluid w-qsl" src="' . base_url() . '/assets/qslcard/' . $image->filename .'" alt="QSL picture #'. $i++.'">';
+        echo '">';?>
+		<table style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center">
+		<thead>
+			<tr>
+				<th>Callsign</th>
+				<th>Date/Time</th>
+				<th>Mode</th>
+				<th>Band</th>
+				<th>Name</th>
+				<th>DXCC</th>
+				<th>State</th>
+				<th>CQ Zone</th>
+				<th>IOTA</th>
+				<th>Gridsquare</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php
+			echo '<tr>';
+			echo '<td>'.$image->COL_CALL.'</td>';
+			echo '<td>'.$image->COL_TIME_ON.'</td>';
+			echo '<td>'.$image->COL_MODE.'</td>';
+			echo '<td>'.$image->COL_BAND.'</td>';
+			echo '<td>'.$image->COL_NAME.'</td>';
+			echo '<td>'.$image->COL_COUNTRY.'</td>';
+			echo '<td>'.$image->COL_STATE.'</td>';
+			echo '<td>'.$image->COL_CQZ.'</td>';
+			echo '<td>'.$image->COL_IOTA.'</td>';
+			echo '<td>'.$image->COL_GRIDSQUARE.'</td>';
+			echo '</tr>';
+		?>
+		</tbody>
+</table>
+        <?php echo '<img class="img-fluid w-qsl" src="' . base_url() . '/assets/qslcard/' . $image->filename .'" alt="QSL picture #'. $i++.'">';
         echo '</div>';
     }
     ?>

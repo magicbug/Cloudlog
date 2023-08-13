@@ -247,6 +247,14 @@
 				</datalist>
 				<input type="search" list="qslvia" name="qslviainput" class="custom-select custom-select-sm">
 			</div>
+			<div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+				<label for="qslimages">QSL Images</label>
+				<select class="form-control form-control-sm" id="qslimages" name="qslimages">
+					<option value="">-</option>
+					<option value="Y">Yes</option>
+					<option value="N">No</option>
+				</select>
+			</div>
 		</div>
 	</div>
 
@@ -266,6 +274,7 @@
 			<button type="button" class="btn btn-sm btn-warning mr-1" id="receivedDirect">Received (direct)</button>
 			<button type="button" class="btn btn-sm btn-info mr-1" id="exportAdif">Create ADIF</button>
 			<button type="button" class="btn btn-sm btn-info mr-1" id="printLabel">Print Label</button>
+			<button type="button" class="btn btn-sm btn-info mr-1" id="qslSlideshow">QSL Slideshow</button>
 			<button type="button" class="btn btn-sm btn-danger mr-1" id="deleteQsos">Delete</button>
 		</div>
 	</div>
