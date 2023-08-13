@@ -692,7 +692,7 @@ $("#locator").keyup(function(){
 
 				//logbook/jsonlookupgrid/io77/SAT/0/0
 
-				$.getJSON('logbook/jsonlookupgrid/' + qra_lookup.toUpperCase() + '/SAT/0/0', function(result)
+				$.getJSON(base_url + 'index.php/logbook/jsonlookupgrid/' + qra_lookup.toUpperCase() + '/SAT/0/0', function(result)
 				{
 					// Reset CSS values before updating
 					$('#locator').removeClass("workedGrid");
@@ -711,7 +711,7 @@ $("#locator").keyup(function(){
 					}
 				})
 			} else {
-				$.getJSON('logbook/jsonlookupgrid/' + qra_lookup.toUpperCase() + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
+				$.getJSON(base_url + 'index.php/logbook/jsonlookupgrid/' + qra_lookup.toUpperCase() + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
 				{
 					// Reset CSS values before updating
 					$('#locator').removeClass("workedGrid");
@@ -733,7 +733,7 @@ $("#locator").keyup(function(){
 		}
 
 		if(qra_input.length >= 4 && $(this).val().length > 0) {
-			$.getJSON('logbook/qralatlngjson/' + $(this).val(), function(result)
+			$.getJSON(base_url + 'index.php/logbook/qralatlngjson/' + $(this).val(), function(result)
 			{
 				// Set Map to Lat/Long
 				markers.clearLayers();
