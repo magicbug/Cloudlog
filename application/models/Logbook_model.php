@@ -337,37 +337,55 @@ class Logbook_model extends CI_Model {
 		$this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC', 'left outer');
 		$this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
 		switch ($type) {
-			case 'DXCC':
-				$this->db->where('COL_COUNTRY', $searchphrase);
-				break;
-			case 'DXCC2':
-				$this->db->where('COL_DXCC', $searchphrase);
-				break;
-			case 'IOTA':
-				$this->db->where('COL_IOTA', $searchphrase);
-				break;
-			case 'VUCC':
-				$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
-				break;
-			case 'CQZone':
-				$this->db->where('COL_CQZ', $searchphrase);
-				break;
-			case 'WAS':
-				$this->db->where('COL_STATE', $searchphrase);
-				$this->db->where_in('COL_DXCC', ['291', '6', '110']);
-				break;
-			case 'SOTA':
-				$this->db->where('COL_SOTA_REF', $searchphrase);
-				break;
-			case 'WWFF':
-				$this->db->where('COL_WWFF_REF', $searchphrase);
-				break;
-			case 'POTA':
-				$this->db->where('COL_POTA_REF', $searchphrase);
-				break;
-			case 'DOK':
-				$this->db->where('COL_DARC_DOK', $searchphrase);
-				break;
+		case 'DXCC':
+			$this->db->where('COL_COUNTRY', $searchphrase);
+			break;
+		case 'DXCC2':
+			$this->db->where('COL_DXCC', $searchphrase);
+			break;
+		case 'IOTA':
+			$this->db->where('COL_IOTA', $searchphrase);
+			break;
+		case 'VUCC':
+			$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
+			break;
+		case 'CQZone':
+			$this->db->where('COL_CQZ', $searchphrase);
+			break;
+		case 'WAS':
+			$this->db->where('COL_STATE', $searchphrase);
+			$this->db->where_in('COL_DXCC', ['291', '6', '110']);
+			break;
+		case 'SOTA':
+			$this->db->where('COL_SOTA_REF', $searchphrase);
+			break;
+		case 'WWFF':
+			$this->db->where('COL_WWFF_REF', $searchphrase);
+			break;
+		case 'POTA':
+			$this->db->where('COL_POTA_REF', $searchphrase);
+			break;
+		case 'DOK':
+			$this->db->where('COL_DARC_DOK', $searchphrase);
+			break;
+		case 'QSLRDATE':
+			$this->db->where('date(COL_QSLRDATE)=date(SYSDATE())');
+			break;
+		case 'QSLSDATE':
+			$this->db->where('date(COL_QSLSDATE)=date(SYSDATE())');
+			break;
+		case 'EQSLRDATE':
+			$this->db->where('date(COL_EQSL_QSLRDATE)=date(SYSDATE())');
+			break;
+		case 'EQSLSDATE':
+			$this->db->where('date(COL_EQSL_QSLSDATE)=date(SYSDATE())');
+			break;
+		case 'LOTWRDATE':
+			$this->db->where('date(COL_LOTW_QSLRDATE)=date(SYSDATE())');
+			break;
+		case 'LOTWSDATE':
+			$this->db->where('date(COL_LOTW_QSLSDATE)=date(SYSDATE())');
+			break;
 		}
 
     $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
