@@ -1316,7 +1316,7 @@ $(document).on('keypress',function(e) {
 					  if(data.updated_minutes_ago > minutes) {
 						  $(".radio_cat_state" ).remove();
 						  if($('.radio_timeout_error').length == 0) {
-							  $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert"><i class="fas fa-broadcast-tower"></i> Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
+							  $('#radio_status').prepend('<div class="alert alert-danger radio_timeout_error" role="alert"><i class="fas fa-broadcast-tower"></i> Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
 						  } else {
 							  $('.radio_timeout_error').html('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
 						  }

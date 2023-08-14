@@ -518,6 +518,8 @@
             <div id="qsomap" style="width: 100%; height: 200px;"></div>
     </div>
 
+    <div id="radio_status"></div>
+
     <!-- Winkey Starts -->
 
    <?php
