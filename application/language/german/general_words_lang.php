@@ -142,3 +142,4 @@ $lang['oceania'] = 'Ozeanien';
 $lang['southamerica'] = 'Südamerika';
 
 $lang['gen_band_selection'] = 'Bandauswahl';
+$lang['general_word_today'] = 'Heute';
