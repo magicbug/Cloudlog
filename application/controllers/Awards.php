@@ -221,7 +221,6 @@ class Awards extends CI_Controller {
 		$mode = str_replace('"', "", $this->security->xss_clean($this->input->post("Mode")));
 		$type = $this->security->xss_clean($this->input->post('Type'));
 		$qsl = $this->input->post('QSL') == null ? '' : $this->security->xss_clean($this->input->post('QSL'));
-
 		$data['results'] = $this->logbook_model->qso_details($searchphrase, $band, $mode, $type, $qsl);
 
 		// This is done because we have two different ways to get dxcc info in Cloudlog. Once is using the name (in awards), and the other one is using the ADIF DXCC.
