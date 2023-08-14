@@ -216,21 +216,25 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<table class="table table-striped">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-envelope"></i> <?php echo lang('general_word_qslcards'); ?></td>
+				<td colspan="1"><?php echo lang('general_word_today'); ?></td>
 			</tr>
 
 			<tr>
 				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
-				<td width="50%"><?php echo $total_qsl_sent; ?></td>
+				<td width="25%"><?php echo $total_qsl_sent; ?></td>
+				<td width="25%"><?php echo $qsl_sent_today; ?></td>
 			</tr>
 
 			<tr>
 				<td width="50%"><?php echo lang('general_word_received'); ?></td>
-				<td width="50%"><?php echo $total_qsl_rcvd; ?></td>
+				<td width="25%"><?php echo $total_qsl_rcvd; ?></td>
+				<td width="25%"><?php echo $qsl_rcvd_today; ?></td>
 			</tr>
 
 			<tr>
 				<td width="50%"><?php echo lang('general_word_requested'); ?></td>
-				<td width="50%"><?php echo $total_qsl_requested; ?></td>
+				<td width="25%"><?php echo $total_qsl_requested; ?></td>
+				<td width="25%"><?php echo $qsl_requested_today; ?></td>
 			</tr>
 		</table>
 		<?php } ?>
@@ -239,16 +243,19 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<table class="table table-striped">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-address-card"></i> <?php echo lang('general_word_eqslcards'); ?></td>
+				<td colspan="1"><?php echo lang('general_word_today'); ?></td>
 			</tr>
 
 			<tr>
 				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
-				<td width="50%"><?php echo $total_eqsl_sent; ?></td>
+				<td width="25%"><?php echo $total_eqsl_sent; ?></td>
+				<td width="25%"><?php echo $eqsl_sent_today; ?></td>
 			</tr>
 
 			<tr>
 				<td width="50%"><?php echo lang('general_word_received'); ?></td>
-				<td width="50%"><?php echo $total_eqsl_rcvd; ?></td>
+				<td width="25%"><?php echo $total_eqsl_rcvd; ?></td>
+				<td width="25%"><?php echo $eqsl_rcvd_today; ?></td>
 			</tr>
 		</table>
 		<?php } ?>
@@ -257,16 +264,19 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<table class="table table-striped">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-list"></i> <?php echo lang('general_word_lotw'); ?></td>
+				<td colspan="1"><?php echo lang('general_word_today'); ?></td>
 			</tr>
 
 			<tr>
 				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
-				<td width="50%"><?php echo $total_lotw_sent; ?></td>
+				<td width="25%"><?php echo $total_lotw_sent; ?></td>
+				<td width="25%"><?php echo $lotw_sent_today; ?></td>
 			</tr>
 
 			<tr>
 				<td width="50%"><?php echo lang('general_word_received'); ?></td>
-				<td width="50%"><?php echo $total_lotw_rcvd; ?></td>
+				<td width="25%"><?php echo $total_lotw_rcvd; ?></td>
+				<td width="25%"><?php echo $lotw_rcvd_today; ?></td>
 			</tr>
 		</table>
 		<?php } ?>
