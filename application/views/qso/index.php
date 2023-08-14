@@ -502,13 +502,13 @@
   <div class="col-sm-7">
 
 <?php if($notice) { ?>
-<div class="alert alert-info" role="alert">
+<div id="notice-alerts" class="alert alert-info" role="alert">
   <?php echo $notice; ?>
 </div>
 <?php } ?>
 
 <?php if(validation_errors()) { ?>
-<div class="alert alert-warning" role="alert">
+<div id="notice-alerts" class="alert alert-warning" role="alert">
   <?php echo validation_errors(); ?>
 </div>
 <?php } ?>
