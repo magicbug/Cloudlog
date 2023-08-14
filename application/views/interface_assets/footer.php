@@ -1342,7 +1342,7 @@ $(document).on('keypress',function(e) {
 							  text = text+'<span style="margin-left:10px"></span><b>RX:</b> '+(Math.round(parseInt(data.frequency_rx)/1000)/1000).toFixed(3)+' MHz)';
 						  }
 						  if (! $('#radio_cat_state').length) {
-							  $('.radio_status').prepend('<div aria-hidden="true"><div id="radio_cat_state" class="alert alert-success radio_cat_state" role="alert">'+text+'</div></div>');
+							  $('#radio_status').prepend('<div aria-hidden="true"><div id="radio_cat_state" class="alert alert-success radio_cat_state" role="alert">'+text+'</div></div>');
 						  } else {
 							  $('#radio_cat_state').html(text);
 						  }
