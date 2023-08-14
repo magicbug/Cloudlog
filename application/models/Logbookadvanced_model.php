@@ -168,6 +168,18 @@ class Logbookadvanced_model extends CI_Model {
 
 		$limit = $searchCriteria['qsoresults'];
 
+		$where2 = '';
+
+		if ($searchCriteria['qslimages'] !== '') {
+			if ($searchCriteria['qslimages'] == 'Y') {
+				$where2 .= ' and x.qslcount > "0"';
+			}
+			if ($searchCriteria['qslimages'] == 'N') {
+				$where2 .= ' and x.qslcount is null';
+			}
+		}
+
+
 		$sql = "
 			SELECT *
 			FROM " . $this->config->item('table_name') . " qsos
@@ -181,6 +193,7 @@ class Logbookadvanced_model extends CI_Model {
 			) x on qsos.COL_PRIMARY_KEY = x.qsoid
 			WHERE station_profile.user_id =  ?
 			$where
+			$where2
 			ORDER BY qsos.COL_TIME_ON desc, qsos.COL_PRIMARY_KEY desc
 			LIMIT $limit
 		";
@@ -391,4 +404,19 @@ class Logbookadvanced_model extends CI_Model {
 
 		return $modes;
 	}
+
+	function getQslsForQsoIds($ids) {
+		$CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        $this->db->select('*');
+		$this->db->from($this->config->item('table_name'));
+        $this->db->join('qsl_images', 'qsl_images.qsoid = ' . $this->config->item('table_name') . '.col_primary_key');
+        $this->db->where_in('qsoid', $ids);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->order_by("id", "desc");
+
+        return $this->db->get()->result();
+    }
 }

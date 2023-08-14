@@ -307,7 +307,7 @@ $(document).on('change', 'input', function(){
 
 function changebadge(entityname) {
 	if($("#sat_name" ).val() != "") {
-		$.getJSON('logbook/jsonlookupdxcc/' + convert_case(entityname) + '/SAT/0/0', function(result)
+		$.getJSON(base_url + 'index.php/logbook/jsonlookupdxcc/' + convert_case(entityname) + '/SAT/0/0', function(result)
 		{
 
 			$('#callsign_info').removeClass("badge-secondary");
@@ -327,7 +327,7 @@ function changebadge(entityname) {
 			}
 		})
 	} else {
-		$.getJSON('logbook/jsonlookupdxcc/' + convert_case(entityname) + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
+		$.getJSON(base_url + 'index.php/logbook/jsonlookupdxcc/' + convert_case(entityname) + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
 		{
 			// Reset CSS values before updating
 			$('#callsign_info').removeClass("badge-secondary");
@@ -426,7 +426,7 @@ $("#callsign").focusout(function() {
 		find_callsign.replace(/\//g, "-");
 
 		// Replace / in a callsign with - to stop urls breaking
-		$.getJSON('logbook/json/' + find_callsign.replace(/\//g, "-") + '/' + sat_type + '/' + json_band + '/' + json_mode + '/' + $('#stationProfile').val(), function(result)
+		$.getJSON(base_url + 'index.php/logbook/json/' + find_callsign.replace(/\//g, "-") + '/' + sat_type + '/' + json_band + '/' + json_mode + '/' + $('#stationProfile').val(), function(result)
 		{
 
 			// Make sure the typed callsign and json result match
@@ -441,7 +441,7 @@ $("#callsign").focusout(function() {
 
 					if($("#sat_name" ).val() != "") {
 						//logbook/jsonlookupgrid/io77/SAT/0/0
-						$.getJSON('logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/SAT/0/0', function(result)
+						$.getJSON(base_url + 'index.php/logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/SAT/0/0', function(result)
 						{
 							// Reset CSS values before updating
 							$('#callsign').removeClass("workedGrid");
@@ -460,7 +460,7 @@ $("#callsign").focusout(function() {
 							}
 						})
 					} else {
-						$.getJSON('logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
+						$.getJSON(base_url + 'index.php/logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
 						{
 							// Reset CSS values before updating
 							$('#callsign').removeClass("workedGrid");
@@ -507,7 +507,7 @@ $("#callsign").focusout(function() {
 				var $dok_select = $('#darc_dok').selectize();
 				var dok_selectize = $dok_select[0].selectize;
 				if (result.dxcc.adif == '230') {
-					$.get('lookup/dok/' + $('#callsign').val().toUpperCase(), function(result) {
+					$.get(base_url + 'index.php/lookup/dok/' + $('#callsign').val().toUpperCase(), function(result) {
 						if (result) {
 							dok_selectize.addOption({name: result});
 							dok_selectize.setValue(result, false);
@@ -634,7 +634,7 @@ $("#callsign").focusout(function() {
 // Only set the frequency when not set by userdata/PHP.
 if ($('#frequency').val() == "")
 {
-	$.get('qso/band_to_freq/' + $('#band').val() + '/' + $('.mode').val(), function(result) {
+	$.get(base_url + 'index.php/qso/band_to_freq/' + $('#band').val() + '/' + $('.mode').val(), function(result) {
 		$('#frequency').val(result);
 		$('#frequency_rx').val("");
 	});
@@ -663,7 +663,7 @@ $('#start_date').change(function() {
 
 /* on mode change */
 $('.mode').change(function() {
-	$.get('qso/band_to_freq/' + $('#band').val() + '/' + $('.mode').val(), function(result) {
+	$.get(base_url + 'index.php/qso/band_to_freq/' + $('#band').val() + '/' + $('.mode').val(), function(result) {
 		$('#frequency').val(result);
 		$('#frequency_rx').val("");
 	});
@@ -672,7 +672,7 @@ $('.mode').change(function() {
 /* Calculate Frequency */
 /* on band change */
 $('#band').change(function() {
-	$.get('qso/band_to_freq/' + $(this).val() + '/' + $('.mode').val(), function(result) {
+	$.get(base_url + 'index.php/qso/band_to_freq/' + $(this).val() + '/' + $('.mode').val(), function(result) {
 		$('#frequency').val(result);
 		$('#frequency_rx').val("");
 	});
@@ -692,7 +692,7 @@ $("#locator").keyup(function(){
 
 				//logbook/jsonlookupgrid/io77/SAT/0/0
 
-				$.getJSON('logbook/jsonlookupgrid/' + qra_lookup.toUpperCase() + '/SAT/0/0', function(result)
+				$.getJSON(base_url + 'index.php/logbook/jsonlookupgrid/' + qra_lookup.toUpperCase() + '/SAT/0/0', function(result)
 				{
 					// Reset CSS values before updating
 					$('#locator').removeClass("workedGrid");
@@ -711,7 +711,7 @@ $("#locator").keyup(function(){
 					}
 				})
 			} else {
-				$.getJSON('logbook/jsonlookupgrid/' + qra_lookup.toUpperCase() + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
+				$.getJSON(base_url + 'index.php/logbook/jsonlookupgrid/' + qra_lookup.toUpperCase() + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
 				{
 					// Reset CSS values before updating
 					$('#locator').removeClass("workedGrid");
@@ -733,7 +733,7 @@ $("#locator").keyup(function(){
 		}
 
 		if(qra_input.length >= 4 && $(this).val().length > 0) {
-			$.getJSON('logbook/qralatlngjson/' + $(this).val(), function(result)
+			$.getJSON(base_url + 'index.php/logbook/qralatlngjson/' + $(this).val(), function(result)
 			{
 				// Set Map to Lat/Long
 				markers.clearLayers();
@@ -751,8 +751,8 @@ $("#locator").keyup(function(){
 				markers.addLayer(marker).addTo(mymap);
 			})
 
-			$('#locator_info').load("logbook/searchbearing/" + $(this).val() + "/" + $('#stationProfile').val()).fadeIn("slow");
-			$.get('logbook/searchdistance/' + $(this).val() + "/" + $('#stationProfile').val(), function(result) {
+			$('#locator_info').load(base_url +"index.php/logbook/searchbearing/" + $(this).val() + "/" + $('#stationProfile').val()).fadeIn("slow");
+			$.get(base_url + 'index.php/logbook/searchdistance/' + $(this).val() + "/" + $('#stationProfile').val(), function(result) {
 				document.getElementById("distance").value = result;
 			});
 		}
@@ -772,7 +772,7 @@ function convert_case(str) {
 }
 
 $('#dxcc_id').on('change', function() {
-	$.getJSON('logbook/jsonentity/' + $(this).val(), function (result) {
+	$.getJSON(base_url + 'index.php/logbook/jsonentity/' + $(this).val(), function (result) {
 		if (result.dxcc.name != undefined) {
 
 			$('#country').val(convert_case(result.dxcc.name));
