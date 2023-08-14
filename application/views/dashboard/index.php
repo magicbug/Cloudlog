@@ -222,13 +222,13 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			<tr>
 				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
 				<td width="25%"><?php echo $total_qsl_sent; ?></td>
-				<td width="25%"><?php echo $qsl_sent_today; ?></td>
+				<td width="25%"><a href="javascript:displayContacts('','All','All','QSLSDATE','');"><?php echo $qsl_sent_today; ?></a></td>
 			</tr>
 
 			<tr>
 				<td width="50%"><?php echo lang('general_word_received'); ?></td>
 				<td width="25%"><?php echo $total_qsl_rcvd; ?></td>
-				<td width="25%"><?php echo $qsl_rcvd_today; ?></td>
+				<td width="25%"><a href="javascript:displayContacts('','All','All','QSLRDATE','');"><?php echo $qsl_rcvd_today; ?></a></td>
 			</tr>
 
 			<tr>
@@ -249,13 +249,13 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			<tr>
 				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
 				<td width="25%"><?php echo $total_eqsl_sent; ?></td>
-				<td width="25%"><?php echo $eqsl_sent_today; ?></td>
+				<td width="25%"><a href="javascript:displayContacts('','All','All','EQSLSDATE','');"><?php echo $eqsl_sent_today; ?></a></td>
 			</tr>
 
 			<tr>
 				<td width="50%"><?php echo lang('general_word_received'); ?></td>
 				<td width="25%"><?php echo $total_eqsl_rcvd; ?></td>
-				<td width="25%"><?php echo $eqsl_rcvd_today; ?></td>
+				<td width="25%"><a href="javascript:displayContacts('','All','All','EQSLRDATE','');"><?php echo $eqsl_rcvd_today; ?></a></td>
 			</tr>
 		</table>
 		<?php } ?>
@@ -270,13 +270,13 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			<tr>
 				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
 				<td width="25%"><?php echo $total_lotw_sent; ?></td>
-				<td width="25%"><?php echo $lotw_sent_today; ?></td>
+				<td width="25%"><a href="javascript:displayContacts('','All','All','LOTWSDATE','');"><?php echo $lotw_sent_today; ?></a></td>
 			</tr>
 
 			<tr>
 				<td width="50%"><?php echo lang('general_word_received'); ?></td>
 				<td width="25%"><?php echo $total_lotw_rcvd; ?></td>
-				<td width="25%"><?php echo $lotw_rcvd_today; ?></td>
+				<td width="25%"><a href="javascript:displayContacts('','All','All','LOTWRDATE','');"><?php echo $lotw_rcvd_today; ?></a></td>
 			</tr>
 		</table>
 		<?php } ?>
