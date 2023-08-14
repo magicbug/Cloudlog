@@ -86,19 +86,19 @@ class Logbookadvanced_model extends CI_Model {
 		}
 
 		if ($searchCriteria['eqslSent'] !== '') {
-			$condition = "COL_EQSL_SENT = ?";
+			$condition = "COL_EQSL_QSL_SENT = ?";
 			if ($searchCriteria['eqslSent'] == 'N') {
 				$condition = '('.$condition;
-				$condition .= " OR COL_EQSL_SENT IS NULL OR COL_EQSL_SENT = '')";
+				$condition .= " OR COL_EQSL_QSL_SENT IS NULL OR COL_EQSL_QSL_SENT = '')";
 			}
 			$conditions[] = $condition;
 			$binding[] = $searchCriteria['eqslSent'];
 		}
 		if ($searchCriteria['eqslReceived'] !== '') {
-			$condition = "COL_EQSL_RCVD = ?";
+			$condition = "COL_EQSL_QSL_RCVD = ?";
 			if ($searchCriteria['eqslReceived'] == 'N') {
 				$condition = '('.$condition;
-				$condition .= " OR COL_EQSL_RCVD IS NULL OR COL_EQSL_RCVD = '')";
+				$condition .= " OR COL_EQSL_QSL_RCVD IS NULL OR COL_EQSL_QSL_RCVD = '')";
 			}
 			$conditions[] = $condition;
 			$binding[] = $searchCriteria['eqslReceived'];
