@@ -2196,7 +2196,17 @@ $(document).ready(function(){
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
         $.fn.dataTable.moment('<?php echo $usethisformat ?>');
+        $.fn.dataTable.ext.buttons.clear = {
+            className: 'buttons-clear',
+            action: function ( e, dt, node, config ) {
+               dt.search('').draw();
+            }
+        };
+<?php if ($this->uri->segment(1) == "qsl") { ?>
         $('.qsltable').DataTable({
+<?php } else if ($this->uri->segment(1) == "eqsl") { ?>
+        $('.eqsltable').DataTable({
+<?php } ?>
             "pageLength": 25,
             responsive: false,
             ordering: true,
@@ -2205,6 +2215,13 @@ $(document).ready(function(){
             "paging":         false,
             "scrollX": true,
             "order": [ 2, 'desc' ],
+            dom: 'Bfrtip',
+            buttons: [
+               {
+                  extend: 'clear',
+                  text: 'Clear'
+               }
+            ]
         });
 
 
@@ -2765,7 +2782,7 @@ function viewEqsl(picture, callsign) {
 
 <?php if ($this->uri->segment(1) == "eqsl") { ?>
 	<script>
-	$('.table').DataTable({
+	$('.qsotable').DataTable({
 		"stateSave": true,
 		"pageLength": 25,
 		responsive: false,
@@ -2774,7 +2791,7 @@ function viewEqsl(picture, callsign) {
 		"paging": false,
 		"scrollX": true,
 		"ordering": true,
-		"order": [ 2, 'desc' ],
+		"order": [ 0, 'desc' ],
 	});
 	</script>
 <?php } ?>
