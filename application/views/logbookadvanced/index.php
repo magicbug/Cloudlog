@@ -259,8 +259,8 @@
 	</div>
 
 	<div class="actionbody collapse">
-		<div class="mb-2">
-			<span class="h6">With selected :</span>
+		<div class="mb-2 btn-group">
+			<span class="h6 mr-1">With selected:</span>
 			<button type="button" class="btn btn-sm btn-primary mr-1" id="btnUpdateFromCallbook">Update from Callbook</button>
 			<button type="button" class="btn btn-sm btn-primary mr-1" id="queueBureau">Queue Bureau</button>
 			<button type="button" class="btn btn-sm btn-primary mr-1" id="queueDirect">Queue Direct</button>
@@ -279,8 +279,8 @@
 		</div>
 	</div>
 	<div class="quickfilterbody collapse">
-	<div class="mb-2">
-	<span class="h6">Quick search with selected :</span>
+	<div class="mb-2 btn-group">
+	<span class="h6 mr-1">Quick search with selected:</span>
 		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign">Search Callsign</button>
 		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchDxcc">Search DXCC</button>
 		<button type="button" class="btn btn-sm btn-primary mr-1" id="searchIota">Search IOTA</button>
