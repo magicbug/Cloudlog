@@ -463,7 +463,7 @@ class eqsl extends CI_Controller {
 	}
 
 	function writeEqslNotSent($qslsnotsent, $custom_date_format) {
-		$table = '<table = style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center">';
+		$table = '<table = style="width:100%" class="table-sm table qsotable table-bordered table-hover table-striped table-condensed text-center">';
 			$table .= "<thead><tr class=\"titles\">";
 				$table .= "<th>Date</th>";
 				$table .= "<th>Time</th>";
