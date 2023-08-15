@@ -2366,6 +2366,53 @@ function viewEqsl(picture, callsign) {
         });
     }
 
+    function displayContactsOnMap(target, searchphrase, band, mode, type, qsl) {
+	    $.ajax({
+	    url: base_url + 'index.php/awards/qso_details_ajax',
+		    type: 'post',
+		    data: {
+		    'Searchphrase': searchphrase,
+			    'Band': band,
+			    'Mode': mode,
+			    'Type': type,
+			    'QSL' : qsl
+    },
+	    success: function (html) {
+		    var dialog = new BootstrapDialog({
+		    title: 'QSO Data',
+			    size: BootstrapDialog.SIZE_WIDE,
+			    cssClass: 'qso-dialog',
+			    nl2br: false,
+			    message: html,
+			    onshown: function(dialog) {
+				    $('[data-toggle="tooltip"]').tooltip();
+				    $('.contacttable').DataTable({
+				    "pageLength": 25,
+					    responsive: false,
+					    ordering: false,
+					    "scrollY":        "550px",
+					    "scrollCollapse": true,
+					    "paging":         false,
+					    "scrollX": true,
+					    dom: 'Bfrtip',
+					    buttons: [
+						    'csv'
+					    ]
+				    });
+			    },
+			    buttons: [{
+			    label: 'Close',
+				    action: function (dialogItself) {
+					    dialogItself.close();
+				    }
+				    }]
+	    });
+		    dialog.realize();
+		    target.append(dialog.getModal());
+		    dialog.open();
+	    }
+    });
+    }
     function uploadQsl() {
         var baseURL= "<?php echo base_url();?>";
         var formdata = new FormData(document.getElementById("fileinfo"));

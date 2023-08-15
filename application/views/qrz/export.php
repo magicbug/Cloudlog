@@ -45,7 +45,7 @@
                     echo '<td id ="modcount'.$station->station_id.'">' . $station->modcount . '</td>';
                     echo '<td id ="notcount'.$station->station_id.'">' . $station->notcount . '</td>';
                     echo '<td id ="totcount'.$station->station_id.'">' . $station->totcount . '</td>';
-                    echo '<td><button id="qrzUpload" type="button" name="qrzUpload" class="btn btn-primary btn-sm ld-ext-right" onclick="ExportQrz('. $station->station_id .')"><i class="fas fa-cloud-upload-alt"></i> Upload<div class="ld ld-ring ld-spin"></div></button></td>';
+                    echo '<td><button id="qrzUpload" type="button" name="qrzUpload" class="btn btn-primary btn-sm ld-ext-right ld-ext-right-'.$station->station_id.'" onclick="ExportQrz('. $station->station_id .')"><i class="fas fa-cloud-upload-alt"></i> Upload<div class="ld ld-ring ld-spin"></div></button></td>';
                     echo '</tr>';
                 }
                 echo '</tfoot></table>';

@@ -155,5 +155,5 @@ function addMarker(L, D, mapColor, map) {
 
 function onClick(e) {
     var marker = e.target;
-    displayContacts(marker.options.adif, $('#band2').val(), $('#mode').val(), 'DXCC2');
+    displayContactsOnMap($("#dxccmap"),marker.options.adif, $('#band2').val(), $('#mode').val(), 'DXCC2');
 }
