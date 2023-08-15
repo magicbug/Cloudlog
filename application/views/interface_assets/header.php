@@ -318,7 +318,7 @@ $oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<?php
 						foreach(json_decode($this->optionslib->get_option('menuitems')) as $item) {
-							echo '<a class="dropdown-item" href="' . site_url($item->url) . '" title="Gridsquares"><i class="fas '. $item->icon .'"></i> ' . $item->text . '</a>';
+							echo '<a class="dropdown-item" href="' . site_url($item->url) . '" title="'. $item->text. '"><i class="fas '. $item->icon .'"></i> ' . $item->text . '</a>';
 						}
 					?>
 				</div>
