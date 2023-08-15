@@ -155,5 +155,54 @@ function addMarker(L, D, mapColor, map) {
 
 function onClick(e) {
     var marker = e.target;
-    displayContacts(marker.options.adif, $('#band2').val(), $('#mode').val(), 'DXCC2');
+    displayContactsOnMap(marker.options.adif, $('#band2').val(), $('#mode').val(), 'DXCC2');
 }
+
+function displayContactsOnMap(searchphrase, band, mode, type, qsl) {
+	$.ajax({
+		url: base_url + 'index.php/awards/qso_details_ajax',
+		type: 'post',
+		data: {
+			'Searchphrase': searchphrase,
+			'Band': band,
+			'Mode': mode,
+			'Type': type,
+			'QSL' : qsl
+		},
+		success: function (html) {
+			var dialog = new BootstrapDialog({
+				title: 'QSO Data',
+				size: BootstrapDialog.SIZE_WIDE,
+				cssClass: 'qso-dialog',
+				nl2br: false,
+				message: html,
+				onshown: function(dialog) {
+					$('[data-toggle="tooltip"]').tooltip();
+					$('.contacttable').DataTable({
+						"pageLength": 25,
+						responsive: false,
+						ordering: false,
+						"scrollY":        "550px",
+						"scrollCollapse": true,
+						"paging":         false,
+						"scrollX": true,
+						dom: 'Bfrtip',
+						buttons: [
+							'csv'
+						]
+					});
+				},
+				buttons: [{
+					label: 'Close',
+					action: function (dialogItself) {
+						dialogItself.close();
+					}
+				}]
+			});
+			dialog.realize();
+			$("#dxccmap").append(dialog.getModal());
+			dialog.open();
+		}
+	});
+}
+
