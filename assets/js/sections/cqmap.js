@@ -190,5 +190,5 @@ function load_cq_map2(data) {
 
 function onClick(e) {
     var marker = e.target;
-    displayContacts(marker.options.title, $('#band2').val(), $('#mode').val(), 'CQZone');
+    displayContactsOnMap($("#cqmap"),marker.options.title, $('#band2').val(), $('#mode').val(), 'CQZone');
 }
