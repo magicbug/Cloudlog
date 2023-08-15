@@ -512,3 +512,7 @@ div#station_logbooks_linked_table_paginate {
 #radio_cat_state {
     margin-bottom: 10px;
 }
+
+.previous-qsos table {
+    margin-bottom: 0px;
+}
