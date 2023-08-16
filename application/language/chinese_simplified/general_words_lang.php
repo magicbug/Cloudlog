@@ -48,6 +48,7 @@ $lang['general_word_qslcard_bureau'] = '卡片局';
 $lang['general_word_qslcard_electronic'] = '电子';
 $lang['general_word_qslcard_manager'] = '管理员';
 $lang['general_word_qslcard_via'] = '通过';
+$lang['general_word_eqslcard'] = '电子 QSL 卡片';
 $lang['general_word_eqslcards'] = 'eQSL 卡片';
 $lang['general_word_lotw'] = 'Logbook of the World';
 
@@ -55,6 +56,7 @@ $lang['general_edit_qso'] = '编辑 QSO';
 $lang['general_mark_qsl_rx_bureau'] = '标记 已收到的QSL (卡片局)';
 $lang['general_mark_qsl_rx_direct'] = '标记 已收到的QSL (直邮)';
 $lang['general_mark_qsl_tx_bureau'] = '标记 已发送的QSL (卡片局)';
+$lang['general_mark_qsl_rx_electronic'] = '标记 已收到的QSL (电子)';
 $lang['general_mark_qsl_tx_direct'] = '标记 已发送的QSL (直邮)';
 
 $lang['general_delete_qso'] = '删除 QSO';
@@ -93,13 +95,15 @@ $lang['gen_hamradio_satellite_mode'] = '卫星模式';
 $lang['gen_hamradio_logbook'] = '日志簿';
 
 $lang['gen_hamradio_cq_zone'] = 'CQ 分区';
-$lang['gen_hamradio_dxcc'] = 'DXCC';
+$lang['gen_hamradio_dxcc'] = 'DXCC实体';
+$lang['gen_hamradio_deleted_dxcc'] = '删除 DXCC实体';
+$lang['gen_hamradio_continent'] = '大陆';
 $lang['gen_hamradio_usa_state'] = '州（美国）';
 $lang['gen_hamradio_county_reference'] = '县（美国）';
-$lang['gen_hamradio_iota_reference'] = 'IOTA 参考';
-$lang['gen_hamradio_sota_reference'] = 'SOTA 参考';
-$lang['gen_hamradio_wwff_reference'] = 'WWFF 参考';
-$lang['gen_hamradio_pota_reference'] = 'POTA 参考';
+$lang['gen_hamradio_iota_reference'] = 'IOTA 编号';
+$lang['gen_hamradio_sota_reference'] = 'SOTA 编号';
+$lang['gen_hamradio_wwff_reference'] = 'WWFF 编号';
+$lang['gen_hamradio_pota_reference'] = 'POTA 编号';
 $lang['gen_hamradio_dok'] = 'DOK';
 $lang['gen_hamradio_state'] = '州';
 $lang['gen_hamradio_iota'] = 'IOTA';
@@ -107,6 +111,7 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = '网格';
+$lang['gen_hamradio_distance'] = '距离';
 $lang['gen_hamradio_operator'] = '操作员';
 
 $lang['gen_hamradio_sig'] = 'Sig';
@@ -115,8 +120,8 @@ $lang['gen_hamradio_sig_info'] = 'Sig 属性';
 // Dashboard Words
 $lang['dashboard_you_have_had'] = '今天你有';
 $lang['dashboard_qsos_today'] = '个 QSO!';
-$lang['dashboard_qso_breakdown'] = 'QSO 分解';
-$lang['dashboard_countries_breakdown'] = 'DXCC 实体分解';
+$lang['dashboard_qso_breakdown'] = 'QSO 分析';
+$lang['dashboard_countries_breakdown'] = 'DXCC 实体分析';
 
 $lang['gen_from_date'] = '起始日期';
 
@@ -125,3 +130,13 @@ $lang['gen_this_qso_was_confirmed_on'] = '该 QSO 确认于';
 $lang['error_no_logbook_found'] = '没有找到日志本。 您需要在台站日志下添加一个日志本! 在这里添加:';
 
 $lang['copy_to_clipboard'] = '复制到剪贴板';
+
+$lang['africa'] = '非洲';
+$lang['antarctica'] = '南极洲';
+$lang['asia'] = '亚洲';
+$lang['europe'] = '欧洲';
+$lang['northamerica'] = '北美洲';
+$lang['oceania'] = '大洋洲';
+$lang['southamerica'] = '南美洲';
+
+$lang['gen_band_selection'] = '波段选择';

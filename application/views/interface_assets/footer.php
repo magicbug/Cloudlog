@@ -2223,6 +2223,10 @@ $(document).ready(function(){
                }
             ]
         });
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
+            $('[class*="buttons"]').css("color", "white");
+        }
 
 
     </script>
