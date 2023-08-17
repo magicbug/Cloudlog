@@ -13,18 +13,11 @@ RUN docker-php-ext-install mysqli mbstring xml
 RUN rm -rf /var/www/html/docker/
 COPY ./ /var/www/html/
 WORKDIR /var/www/html
+# Setting permissions as: https://github.com/magicbug/Cloudlog/wiki/Installation
 RUN cd /var/www/html \
-&& echo "Setting root as owner of the folder..." \
-&& chown -R root:root /var/www/html \
-&& echo "Setting permissions to the install folder" \
-&& chown -R root:www-data ./application/config/ \
-&& chown -R root:www-data ./application/logs/ \
-&& chown -R root:www-data ./assets/qslcard/ \
-&& chown -R root:www-data ./backup/ \
-&& chown -R root:www-data ./updates/ \
-&& chown -R root:www-data ./uploads/ \
-&& chown -R root:www-data ./images/eqsl_card_images/ \
-&& chown -R root:www-data ./assets/json/ \
+&& echo "Setting root as owner of the html folder" \
+&& chown -R root:www-data /var/www/html
+RUN echo "Setting permissions to the install folder" \
 && chmod -R g+rw ./application/config/ \
 && chmod -R g+rw ./application/logs/ \
 && chmod -R g+rw ./assets/qslcard/ \
@@ -33,6 +26,4 @@ RUN cd /var/www/html \
 && chmod -R g+rw ./uploads/ \
 && chmod -R g+rw ./images/eqsl_card_images/ \
 && chmod -R g+rw ./assets/json/ \
-&& chmod 777 /var/www/html/install \
-&& echo "Make sure everything is fine" \
-&& dir -ls
+&& chmod -R 777 /var/www/html/install

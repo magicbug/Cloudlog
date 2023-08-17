@@ -940,8 +940,9 @@ $(document).on('keypress',function(e) {
 <?php if ($this->uri->segment(1) == "qso") { ?>
 
 <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
- <script src="<?php echo base_url() ;?>assets/js/winkey.js"></script>
-<?php
+<?php if ($this->config->item('winkey')) { ?>
+	<script src="<?php echo base_url() ;?>assets/js/winkey.js"></script>
+<?php }
 
 	if ($this->optionslib->get_option('dxcache_url') != ''){ ?>
 	<script type="text/javascript">
@@ -950,6 +951,7 @@ $(document).on('keypress',function(e) {
 			$("#check_cluster").on("click", function() {
 				$.ajax({ url: dxcluster_provider+"/qrg_lookup/"+$("#frequency").val()/1000, cache: false, dataType: "json" }).done(
 					function(dxspot) {
+						reset_fields();
 						$("#callsign").val(dxspot.spotted);
 						$("#callsign").trigger("blur");
 					}
@@ -1179,7 +1181,7 @@ $(document).on('keypress',function(e) {
 				async: false,
 				type: 'GET',
 				dataType: "json",
-				url: "https://nominatim.openstreetmap.org/search/?city=" + $(this).val() + "&format=json&addressdetails=1&limit=1",
+				url: "https://nominatim.openstreetmap.org/?city=" + $(this).val() + "&format=json&addressdetails=1&limit=1",
 				data: {},
 				success: function (data) {
 					if (typeof data[0].lat !== 'undefined') {
@@ -1242,6 +1244,9 @@ $(document).on('keypress',function(e) {
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
+
+    $('#notice-alerts').delay(1000).fadeOut(5000);
+
     function setRst(mode) {
         if(mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS'){
             $('#rst_sent').val('-5');
@@ -1314,7 +1319,7 @@ $(document).on('keypress',function(e) {
 					  if(data.updated_minutes_ago > minutes) {
 						  $(".radio_cat_state" ).remove();
 						  if($('.radio_timeout_error').length == 0) {
-							  $('.qso_panel').prepend('<div class="alert alert-danger radio_timeout_error" role="alert"><i class="fas fa-broadcast-tower"></i> Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
+							  $('#radio_status').prepend('<div class="alert alert-danger radio_timeout_error" role="alert"><i class="fas fa-broadcast-tower"></i> Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.</div>');
 						  } else {
 							  $('.radio_timeout_error').html('Radio connection timed-out: ' + $('select.radios option:selected').text() + ' data is ' + data.updated_minutes_ago + ' minutes old.');
 						  }
@@ -1337,7 +1342,7 @@ $(document).on('keypress',function(e) {
 							  text = text+'<span style="margin-left:10px"></span><b>RX:</b> '+(Math.round(parseInt(data.frequency_rx)/1000)/1000).toFixed(3)+' MHz)';
 						  }
 						  if (! $('#radio_cat_state').length) {
-							  $('.qso_panel').prepend('<div aria-hidden="true"><div id="radio_cat_state" class="alert alert-success radio_cat_state" role="alert">'+text+'</div></div>');
+							  $('#radio_status').prepend('<div aria-hidden="true"><div id="radio_cat_state" class="alert alert-success radio_cat_state" role="alert">'+text+'</div></div>');
 						  } else {
 							  $('#radio_cat_state').html(text);
 						  }
@@ -1860,40 +1865,6 @@ $(document).ready(function(){
     </script>
 <?php } ?>
 
-
-<?php if ($this->uri->segment(2) == "dok") { ?>
-    <script>
-        function displayDokContacts(dok, band) {
-            var baseURL= "<?php echo base_url();?>";
-            $.ajax({
-                url: baseURL + 'index.php/awards/dok_details_ajax',
-                type: 'post',
-                data: {'DOK': dok,
-                    'Band': band
-                },
-                success: function(html) {
-                    BootstrapDialog.show({
-                        title: 'QSO Data',
-                        size: BootstrapDialog.SIZE_WIDE,
-                        cssClass: 'qso-dok-dialog',
-                        nl2br: false,
-                        message: html,
-                        onshown: function(dialog) {
-                           $('[data-toggle="tooltip"]').tooltip();
-                        },
-                        buttons: [{
-                            label: 'Close',
-                            action: function (dialogItself) {
-                                dialogItself.close();
-                            }
-                        }]
-                    });
-                }
-            });
-        }
-    </script>
-<?php } ?>
-
 <?php if ($this->uri->segment(2) == "iota") { ?>
     <script>
 
@@ -2225,7 +2196,17 @@ $(document).ready(function(){
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
         $.fn.dataTable.moment('<?php echo $usethisformat ?>');
+        $.fn.dataTable.ext.buttons.clear = {
+            className: 'buttons-clear',
+            action: function ( e, dt, node, config ) {
+               dt.search('').draw();
+            }
+        };
+<?php if ($this->uri->segment(1) == "qsl") { ?>
         $('.qsltable').DataTable({
+<?php } else if ($this->uri->segment(1) == "eqsl") { ?>
+        $('.eqsltable').DataTable({
+<?php } ?>
             "pageLength": 25,
             responsive: false,
             ordering: true,
@@ -2234,7 +2215,18 @@ $(document).ready(function(){
             "paging":         false,
             "scrollX": true,
             "order": [ 2, 'desc' ],
+            dom: 'Bfrtip',
+            buttons: [
+               {
+                  extend: 'clear',
+                  text: 'Clear'
+               }
+            ]
         });
+        // change color of csv-button if dark mode is chosen
+        if (isDarkModeTheme()) {
+            $('[class*="buttons"]').css("color", "white");
+        }
 
 
     </script>
@@ -2395,6 +2387,53 @@ function viewEqsl(picture, callsign) {
         });
     }
 
+    function displayContactsOnMap(target, searchphrase, band, mode, type, qsl) {
+	    $.ajax({
+	    url: base_url + 'index.php/awards/qso_details_ajax',
+		    type: 'post',
+		    data: {
+		    'Searchphrase': searchphrase,
+			    'Band': band,
+			    'Mode': mode,
+			    'Type': type,
+			    'QSL' : qsl
+    },
+	    success: function (html) {
+		    var dialog = new BootstrapDialog({
+		    title: 'QSO Data',
+			    size: BootstrapDialog.SIZE_WIDE,
+			    cssClass: 'qso-dialog',
+			    nl2br: false,
+			    message: html,
+			    onshown: function(dialog) {
+				    $('[data-toggle="tooltip"]').tooltip();
+				    $('.contacttable').DataTable({
+				    "pageLength": 25,
+					    responsive: false,
+					    ordering: false,
+					    "scrollY":        "550px",
+					    "scrollCollapse": true,
+					    "paging":         false,
+					    "scrollX": true,
+					    dom: 'Bfrtip',
+					    buttons: [
+						    'csv'
+					    ]
+				    });
+			    },
+			    buttons: [{
+			    label: 'Close',
+				    action: function (dialogItself) {
+					    dialogItself.close();
+				    }
+				    }]
+	    });
+		    dialog.realize();
+		    target.append(dialog.getModal());
+		    dialog.open();
+	    }
+    });
+    }
     function uploadQsl() {
         var baseURL= "<?php echo base_url();?>";
         var formdata = new FormData(document.getElementById("fileinfo"));
@@ -2794,7 +2833,7 @@ function viewEqsl(picture, callsign) {
 
 <?php if ($this->uri->segment(1) == "eqsl") { ?>
 	<script>
-	$('.table').DataTable({
+	$('.qsotable').DataTable({
 		"stateSave": true,
 		"pageLength": 25,
 		responsive: false,
@@ -2803,7 +2842,7 @@ function viewEqsl(picture, callsign) {
 		"paging": false,
 		"scrollX": true,
 		"ordering": true,
-		"order": [ 2, 'desc' ],
+		"order": [ 0, 'desc' ],
 	});
 	</script>
 <?php } ?>

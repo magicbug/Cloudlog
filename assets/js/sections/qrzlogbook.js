@@ -17,16 +17,16 @@ function ExportQrz(station_id) {
 	if ($(".errormessages").length > 0) {
 		$(".errormessages").remove();
 	}
-	$(".ld-ext-right").addClass('running');
-	$(".ld-ext-right").prop('disabled', true);
+	$(".ld-ext-right-"+station_id).addClass('running');
+	$(".ld-ext-right-"+station_id).prop('disabled', true);
 
 	$.ajax({
 		url: base_url + 'index.php/qrz/upload_station',
 		type: 'post',
 		data: {'station_id': station_id},
 		success: function (data) {
-			$(".ld-ext-right").removeClass('running');
-			$(".ld-ext-right").prop('disabled', false);
+			$(".ld-ext-right-"+station_id).removeClass('running');
+			$(".ld-ext-right-"+station_id).prop('disabled', false);
 			if (data.status == 'OK') {
 				$.each(data.info, function(index, value){
 					$('#modcount'+value.station_id).html(value.modcount);

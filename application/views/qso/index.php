@@ -502,13 +502,13 @@
   <div class="col-sm-7">
 
 <?php if($notice) { ?>
-<div class="alert alert-info" role="alert">
+<div id="notice-alerts" class="alert alert-info" role="alert">
   <?php echo $notice; ?>
 </div>
 <?php } ?>
 
 <?php if(validation_errors()) { ?>
-<div class="alert alert-warning" role="alert">
+<div id="notice-alerts" class="alert alert-warning" role="alert">
   <?php echo validation_errors(); ?>
 </div>
 <?php } ?>
@@ -517,6 +517,8 @@
     <div class="card qso-map">
             <div id="qsomap" style="width: 100%; height: 200px;"></div>
     </div>
+
+    <div id="radio_status"></div>
 
     <!-- Winkey Starts -->
 
@@ -579,7 +581,7 @@
 
         <div id="partial_view" style="font-size: 0.95rem;"></div>
 
-        <div id="qso-last-table">
+        <div id="qso-last-table" hx-get="<?php echo site_url('/qso/component_past_contacts'); ?>"  hx-trigger="every 5s">
 
           <div class="table-responsive" style="font-size: 0.95rem;">
             <table class="table">

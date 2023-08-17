@@ -197,6 +197,7 @@ $(document).ready(function () {
 				sota: this.sota.value,
 				pota: this.pota.value,
 				wwff: this.wwff.value,
+				qslimages: this.qslimages.value,
 			},
 			dataType: 'json',
 			success: function (data) {
@@ -287,7 +288,10 @@ $(document).ready(function () {
 						$('#deleteQsos').prop("disabled", false);
 					})
 				}
-			}
+			},
+			onhide: function(dialogRef){
+				$('#deleteQsos').prop("disabled", false);
+			},
 		});
 	});
 
@@ -406,6 +410,49 @@ $(document).ready(function () {
 
 	$('#searchPota').click(function (event) {
 		quickSearch('pota');
+	});
+
+	$('#qslSlideshow').click(function (event) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements == 0) {
+			return;
+		}
+		$('#qslSlideshow').prop("disabled", true);
+		var id_list=[];
+		elements.each(function() {
+			let id = $(this).first().closest('tr').data('qsoID')
+			id_list.push(id);
+		});
+		$.ajax({
+			url: base_url + 'index.php/logbookadvanced/qslSlideshow',
+			type: 'post',
+			data: {
+				ids: id_list,
+			},
+			success: function (html) {
+				BootstrapDialog.show({
+					title: 'QSL Card',
+					size: BootstrapDialog.SIZE_WIDE,
+					cssClass: 'lookup-dialog',
+					nl2br: false,
+					message: html,
+					onshown: function(dialog) {
+
+					},
+					buttons: [{
+						label: 'Close',
+						action: function (dialogItself) {
+							$('#qslSlideshow').prop("disabled", false);
+							dialogItself.close();
+						}
+					}],
+					onhide: function(dialogRef){
+						$('#qslSlideshow').prop("disabled", false);
+					},
+				});
+			}
+		});
 	});
 
 	function quickSearch(type) {

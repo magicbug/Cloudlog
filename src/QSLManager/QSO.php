@@ -117,7 +117,6 @@ class QSO
 			'COL_STATE',
 			'COL_COUNTRY',
 			'COL_IOTA',
-			'name'
 		];
 
 
@@ -196,16 +195,16 @@ class QSO
 
 		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : '<a href="javascript:spawnLookupModal('.$data['COL_CQZ'].',\'cq\');">'.$data['COL_CQZ'].'</a>';
 		$this->state = ($data['COL_STATE'] === null) ? '' :$data['COL_STATE'];
-		$this->dxcc = ($data['name'] === null) ? '- NONE -' : '<a href="javascript:spawnLookupModal('.$data['COL_DXCC'].',\'dxcc\');">'.ucwords(strtolower($data['name']), "- (/").'</a>';
+		$this->dxcc = (($data['name'] ?? null) === null) ? '- NONE -' : '<a href="javascript:spawnLookupModal('.$data['COL_DXCC'].',\'dxcc\');">'.ucwords(strtolower($data['name']), "- (/").'</a>';
 		$this->iota = ($data['COL_IOTA'] === null) ? '' : $this->getIotaLink($data['COL_IOTA']);
 		if (array_key_exists('end', $data)) {
 			$this->end = ($data['end'] === null) ? null : DateTime::createFromFormat("Y-m-d", $data['end'], new DateTimeZone('UTC'));
 		} else {
 			$this->end = null;
 		}
-		$this->callsign = ($data['callsign'] === null) ? '' :$data['callsign'];
-		$this->lastupload = ($data['lastupload'] === null) ? '' : date($custom_date_format . " H:i", strtotime($data['lastupload']));
-		$this->lotw_hint = $this->getLotwHint($data['lastupload']);
+		$this->callsign = ($data['callsign'] ?? null === null) ? '' :$data['callsign'];
+		$this->lastupload = ($data['lastupload'] ?? null === null) ? '' : date($custom_date_format . " H:i", strtotime($data['lastupload'] ?? null));
+		$this->lotw_hint = $this->getLotwHint($data['lastupload'] ?? null);
 	}
 
 	/**
@@ -323,7 +322,7 @@ class QSO
 				}
 			}
 			$qslstring .= '">&#9660;</span>';
-			if ($data['qslcount'] != null) {
+			if ($data['qslcount'] ?? null != null) {
 				$qslstring .= ' <a href="javascript:displayQsl('.$data['COL_PRIMARY_KEY'].');"><i class="fa fa-id-card"></i></a>';
 			}
 		return $qslstring;

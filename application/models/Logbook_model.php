@@ -337,37 +337,55 @@ class Logbook_model extends CI_Model {
 		$this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC', 'left outer');
 		$this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
 		switch ($type) {
-			case 'DXCC':
-				$this->db->where('COL_COUNTRY', $searchphrase);
-				break;
-			case 'DXCC2':
-				$this->db->where('COL_DXCC', $searchphrase);
-				break;
-			case 'IOTA':
-				$this->db->where('COL_IOTA', $searchphrase);
-				break;
-			case 'VUCC':
-				$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
-				break;
-			case 'CQZone':
-				$this->db->where('COL_CQZ', $searchphrase);
-				break;
-			case 'WAS':
-				$this->db->where('COL_STATE', $searchphrase);
-				$this->db->where_in('COL_DXCC', ['291', '6', '110']);
-				break;
-			case 'SOTA':
-				$this->db->where('COL_SOTA_REF', $searchphrase);
-				break;
-			case 'WWFF':
-				$this->db->where('COL_WWFF_REF', $searchphrase);
-				break;
-			case 'POTA':
-				$this->db->where('COL_POTA_REF', $searchphrase);
-				break;
-			case 'DOK':
-				$this->db->where('COL_DARC_DOK', $searchphrase);
-				break;
+		case 'DXCC':
+			$this->db->where('COL_COUNTRY', $searchphrase);
+			break;
+		case 'DXCC2':
+			$this->db->where('COL_DXCC', $searchphrase);
+			break;
+		case 'IOTA':
+			$this->db->where('COL_IOTA', $searchphrase);
+			break;
+		case 'VUCC':
+			$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
+			break;
+		case 'CQZone':
+			$this->db->where('COL_CQZ', $searchphrase);
+			break;
+		case 'WAS':
+			$this->db->where('COL_STATE', $searchphrase);
+			$this->db->where_in('COL_DXCC', ['291', '6', '110']);
+			break;
+		case 'SOTA':
+			$this->db->where('COL_SOTA_REF', $searchphrase);
+			break;
+		case 'WWFF':
+			$this->db->where('COL_WWFF_REF', $searchphrase);
+			break;
+		case 'POTA':
+			$this->db->where('COL_POTA_REF', $searchphrase);
+			break;
+		case 'DOK':
+			$this->db->where('COL_DARC_DOK', $searchphrase);
+			break;
+		case 'QSLRDATE':
+			$this->db->where('date(COL_QSLRDATE)=date(SYSDATE())');
+			break;
+		case 'QSLSDATE':
+			$this->db->where('date(COL_QSLSDATE)=date(SYSDATE())');
+			break;
+		case 'EQSLRDATE':
+			$this->db->where('date(COL_EQSL_QSLRDATE)=date(SYSDATE())');
+			break;
+		case 'EQSLSDATE':
+			$this->db->where('date(COL_EQSL_QSLSDATE)=date(SYSDATE())');
+			break;
+		case 'LOTWRDATE':
+			$this->db->where('date(COL_LOTW_QSLRDATE)=date(SYSDATE())');
+			break;
+		case 'LOTWSDATE':
+			$this->db->where('date(COL_LOTW_QSLSDATE)=date(SYSDATE())');
+			break;
 		}
 
     $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
@@ -883,8 +901,11 @@ class Logbook_model extends CI_Model {
     $CI =& get_instance();
     $CI->load->model('stations');
     if (!$CI->stations->check_station_is_accessible($stationId)) {
-        return;
+	    return;
     }
+
+    $station_profile=$CI->stations->profile_clean($stationId);
+    $stationCallsign=$station_profile->station_callsign;
 
     $mode = $this->get_main_mode_if_submode($this->input->post('mode'));
     if ($mode == null) {
@@ -912,7 +933,7 @@ class Logbook_model extends CI_Model {
       $srx_string = null;
     }
 
-	if (stristr($this->input->post('usa_county'), ',')) {
+	if (stristr($this->input->post('usa_county') ?? '', ',')) {
 		$uscounty = $this->input->post('usa_county');
 	} else {
 		$uscounty = $this->input->post('usa_state') .",".$this->input->post('usa_county');
@@ -1058,6 +1079,7 @@ class Logbook_model extends CI_Model {
        'COL_CONTEST_ID' => $this->input->post('contest_name'),
        'COL_QSL_VIA' => $this->input->post('qsl_via_callsign'),
        'station_id' => $stationId,
+       'COL_STATION_CALLSIGN' => $stationCallsign,
        'COL_OPERATOR' => $this->input->post('operator_callsign'),
        'COL_STATE' =>$this->input->post('usa_state'),
        'COL_CNTY' => $uscounty
@@ -2241,64 +2263,88 @@ class Logbook_model extends CI_Model {
 
     function get_QSLStats($StationLocationsArray = null) {
 
-      if($StationLocationsArray == null) {
-        $CI =& get_instance();
-        $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-      } else {
-        $logbooks_locations_array = $StationLocationsArray;
-      }
+	    if($StationLocationsArray == null) {
+		    $CI =& get_instance();
+		    $CI->load->model('logbooks_model');
+		    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	    } else {
+		    $logbooks_locations_array = $StationLocationsArray;
+	    }
 
-      if(!empty($logbooks_locations_array)) {
-        $this->db->select('
-          COUNT(IF(COL_QSL_SENT="Y",COL_QSL_SENT,null)) as QSL_Sent,
-          COUNT(IF(COL_QSL_RCVD="Y",COL_QSL_RCVD,null)) as QSL_Received,
-          COUNT(IF(COL_QSL_SENT IN("Q", "R") ,COL_QSL_SENT,null)) as QSL_Requested,
-          COUNT(IF(COL_EQSL_QSL_SENT="Y",COL_EQSL_QSL_SENT,null)) as eQSL_Sent,
-          COUNT(IF(COL_EQSL_QSL_RCVD="Y",COL_EQSL_QSL_RCVD,null)) as eQSL_Received,
-          COUNT(IF(COL_LOTW_QSL_SENT="Y",COL_LOTW_QSL_SENT,null)) as LoTW_Sent,
-          COUNT(IF(COL_LOTW_QSL_RCVD="Y",COL_LOTW_QSL_RCVD,null)) as LoTW_Received
-        ');
-        $this->db->where_in('station_id', $logbooks_locations_array);
+	    if(!empty($logbooks_locations_array)) {
+		    $this->db->select('
+	  COUNT(IF(COL_QSL_SENT="Y",COL_QSL_SENT,null)) as QSL_Sent,
+	  COUNT(IF(COL_QSL_RCVD="Y",COL_QSL_RCVD,null)) as QSL_Received,
+	  COUNT(IF(COL_QSL_SENT IN("Q", "R") ,COL_QSL_SENT,null)) as QSL_Requested,
+	  COUNT(IF(COL_EQSL_QSL_SENT="Y",COL_EQSL_QSL_SENT,null)) as eQSL_Sent,
+	  COUNT(IF(COL_EQSL_QSL_RCVD="Y",COL_EQSL_QSL_RCVD,null)) as eQSL_Received,
+	  COUNT(IF(COL_LOTW_QSL_SENT="Y",COL_LOTW_QSL_SENT,null)) as LoTW_Sent,
+	  COUNT(IF(COL_LOTW_QSL_RCVD="Y",COL_LOTW_QSL_RCVD,null)) as LoTW_Received,
+	  COUNT(IF(COL_QSL_SENT="Y" and DATE(COL_QSLSDATE)=DATE(SYSDATE()),COL_QSL_SENT,null)) as QSL_Sent_today,
+	  COUNT(IF(COL_QSL_RCVD="Y" and DATE(COL_QSLRDATE)=DATE(SYSDATE()),COL_QSL_RCVD,null)) as QSL_Received_today,
+	  COUNT(IF(COL_QSL_SENT IN("Q", "R") and DATE(COL_QSLSDATE)=DATE(SYSDATE()) ,COL_QSL_SENT,null)) as QSL_Requested_today,
+	  COUNT(IF(COL_EQSL_QSL_SENT="Y" and DATE(COL_EQSL_QSLSDATE)=DATE(SYSDATE()),COL_EQSL_QSL_SENT,null)) as eQSL_Sent_today,
+	  COUNT(IF(COL_EQSL_QSL_RCVD="Y" and DATE(COL_EQSL_QSLRDATE)=DATE(SYSDATE()),COL_EQSL_QSL_RCVD,null)) as eQSL_Received_today,
+	  COUNT(IF(COL_LOTW_QSL_SENT="Y" and DATE(COL_LOTW_QSLSDATE)=DATE(SYSDATE()),COL_LOTW_QSL_SENT,null)) as LoTW_Sent_today,
+	  COUNT(IF(COL_LOTW_QSL_RCVD="Y" and DATE(COL_LOTW_QSLRDATE)=DATE(SYSDATE()),COL_LOTW_QSL_RCVD,null)) as LoTW_Received_today
+	');
+	$this->db->where_in('station_id', $logbooks_locations_array);
 
-        if ($query = $this->db->get($this->config->item('table_name')))
-        {
-          $this->db->last_query();
-            foreach ($query->result() as $row)
-            {
-                    $QSLBreakdown['QSL_Sent'] = $row->QSL_Sent;
-                    $QSLBreakdown['QSL_Received'] =  $row->QSL_Received;
-                    $QSLBreakdown['QSL_Requested'] =  $row->QSL_Requested;
-                    $QSLBreakdown['eQSL_Sent'] =  $row->eQSL_Sent;
-                    $QSLBreakdown['eQSL_Received'] =  $row->eQSL_Received;
-                    $QSLBreakdown['LoTW_Sent'] =  $row->LoTW_Sent;
-                    $QSLBreakdown['LoTW_Received'] =  $row->LoTW_Received;
-            }
+	if ($query = $this->db->get($this->config->item('table_name'))) {
+	  $this->db->last_query();
+	    foreach ($query->result() as $row) {
+		$QSLBreakdown['QSL_Sent'] = $row->QSL_Sent;
+		    $QSLBreakdown['QSL_Received'] =  $row->QSL_Received;
+		    $QSLBreakdown['QSL_Requested'] =  $row->QSL_Requested;
+		    $QSLBreakdown['eQSL_Sent'] =  $row->eQSL_Sent;
+		    $QSLBreakdown['eQSL_Received'] =  $row->eQSL_Received;
+		    $QSLBreakdown['LoTW_Sent'] =  $row->LoTW_Sent;
+		    $QSLBreakdown['LoTW_Received'] =  $row->LoTW_Received;
+		    $QSLBreakdown['QSL_Sent_today'] = $row->QSL_Sent_today;
+		    $QSLBreakdown['QSL_Received_today'] =  $row->QSL_Received_today;
+		    $QSLBreakdown['QSL_Requested_today'] =  $row->QSL_Requested_today;
+		    $QSLBreakdown['eQSL_Sent_today'] =  $row->eQSL_Sent_today;
+		    $QSLBreakdown['eQSL_Received_today'] =  $row->eQSL_Received_today;
+		    $QSLBreakdown['LoTW_Sent_today'] =  $row->LoTW_Sent_today;
+		    $QSLBreakdown['LoTW_Received_today'] =  $row->LoTW_Received_today;
+	    }
 
-            return $QSLBreakdown;
-        }
-        else
-        {
-            $QSLBreakdown['QSL_Sent'] = 0;
-            $QSLBreakdown['QSL_Received'] =  0;
-            $QSLBreakdown['QSL_Requested'] =  0;
-            $QSLBreakdown['eQSL_Sent'] =  0;
-            $QSLBreakdown['eQSL_Received'] =  0;
-            $QSLBreakdown['LoTW_Sent'] =  0;
-            $QSLBreakdown['LoTW_Received'] = 0;
+	    return $QSLBreakdown;
+	} else {
+	    $QSLBreakdown['QSL_Sent'] = 0;
+	    $QSLBreakdown['QSL_Received'] =  0;
+	    $QSLBreakdown['QSL_Requested'] =  0;
+	    $QSLBreakdown['eQSL_Sent'] =  0;
+	    $QSLBreakdown['eQSL_Received'] =  0;
+	    $QSLBreakdown['LoTW_Sent'] =  0;
+	    $QSLBreakdown['LoTW_Received'] = 0;
+	    $QSLBreakdown['QSL_Sent_today'] = 0;
+	    $QSLBreakdown['QSL_Received_today'] =  0;
+	    $QSLBreakdown['QSL_Requested_today'] =  0;
+	    $QSLBreakdown['eQSL_Sent_today'] =  0;
+	    $QSLBreakdown['eQSL_Received_today'] =  0;
+	    $QSLBreakdown['LoTW_Sent_today'] =  0;
+	    $QSLBreakdown['LoTW_Received_today'] = 0;
 
-            return $QSLBreakdown;
-        }
-      } else {
-            $QSLBreakdown['QSL_Sent'] = 0;
-            $QSLBreakdown['QSL_Received'] =  0;
-            $QSLBreakdown['QSL_Requested'] =  0;
-            $QSLBreakdown['eQSL_Sent'] =  0;
-            $QSLBreakdown['eQSL_Received'] =  0;
-            $QSLBreakdown['LoTW_Sent'] =  0;
-            $QSLBreakdown['LoTW_Received'] = 0;
+	    return $QSLBreakdown;
+	}
+	 } else {
+	    $QSLBreakdown['QSL_Sent'] = 0;
+	    $QSLBreakdown['QSL_Received'] =  0;
+	    $QSLBreakdown['QSL_Requested'] =  0;
+	    $QSLBreakdown['eQSL_Sent'] =  0;
+	    $QSLBreakdown['eQSL_Received'] =  0;
+	    $QSLBreakdown['LoTW_Sent'] =  0;
+	    $QSLBreakdown['LoTW_Received'] = 0;
+	    $QSLBreakdown['QSL_Sent_today'] = 0;
+	    $QSLBreakdown['QSL_Received_today'] =  0;
+	    $QSLBreakdown['QSL_Requested_today'] =  0;
+	    $QSLBreakdown['eQSL_Sent_today'] =  0;
+	    $QSLBreakdown['eQSL_Received_today'] =  0;
+	    $QSLBreakdown['LoTW_Sent_today'] =  0;
+	    $QSLBreakdown['LoTW_Received_today'] = 0;
 
-            return $QSLBreakdown;
+	    return $QSLBreakdown;
       }
     }
 
@@ -2628,30 +2674,6 @@ class Logbook_model extends CI_Model {
         return 0;
       }
     }
-
-  function api_search_query($query) {
-    $time_start = microtime(true);
-    $results = $this->db->query($query);
-    if(!$results) {
-      return array('query' => $query, 'error' => $this->db->_error_number(), 'time' => 0);
-    }
-    $time_end = microtime(true);
-    $time = round($time_end - $time_start, 4);
-
-    return array('query' => $query, 'results' => $results, 'time' => $time);
-  }
-
-  function api_insert_query($query) {
-    $time_start = microtime(true);
-    $results = $this->db->insert($this->config->item('table_name'), $query);
-    if(!$results) {
-      return array('query' => $query, 'error' => $this->db->_error_number(), 'time' => 0);
-    }
-    $time_end = microtime(true);
-    $time = round($time_end - $time_start, 4);
-
-    return array('query' => $this->db->queries[2], 'result_string' => $results, 'time' => $time);
-  }
 
     /* Delete QSO based on the QSO ID */
   function delete($id) {

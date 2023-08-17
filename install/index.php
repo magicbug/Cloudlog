@@ -7,13 +7,21 @@ $db_file_path = $db_config_path."database.php";
 
 function delDir($dir) {
 	$files = glob( $dir . '*', GLOB_MARK );
-    foreach( $files as $file ){
-        if( substr( $file, -1 ) == '/' )
-            delDir( $file );
-        else
-            unlink( $file );
+    foreach ( $files as $file ) {
+        if ( substr( $file, -1 ) == '/' ) {
+			if (file_exists($file)) {
+            	delDir( $file );
+			}
+		} else {
+			if (file_exists($file)) {
+				unlink( $file );
+			}
+		}
     }
-    rmdir( $dir );
+	// This step may be not needed
+    if (file_exists($dir)) {
+		rmdir( $dir );
+	}
 }
 
 if (file_exists($db_file_path)) {

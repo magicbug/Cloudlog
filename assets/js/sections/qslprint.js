@@ -126,3 +126,91 @@ function mark_qsl_sent(id, method) {
         }
     });
 }
+
+$('#checkBoxAll').change(function (event) {
+	if (this.checked) {
+		$('.qslprint tbody tr').each(function (i) {
+			$(this).closest('tr').addClass('activeRow');
+			$(this).closest('tr').find("input[type=checkbox]").prop("checked", true);
+		});
+	} else {
+		$('.qslprint tbody tr').each(function (i) {
+			$(this).closest('tr').removeClass('activeRow');
+			$(this).closest('tr').find("input[type=checkbox]").prop("checked", false);
+		});
+	}
+});
+
+$('.qslprint').on('click', 'input[type="checkbox"]', function() {
+	if ($(this).is(":checked")) {
+		$(this).closest('tr').addClass('activeRow');
+	} else {
+		$(this).closest('tr').removeClass('activeRow');
+	}
+});
+
+function markSelectedQsos() {
+	var elements = $('.qslprint tbody input:checked');
+	var nElements = elements.length;
+	if (nElements == 0) {
+		return;
+	}
+	$('.markallprinted').prop("disabled", true);
+	var id_list=[];
+	elements.each(function() {
+		let id = $(this).first().closest('tr').attr('id');
+		id = id.match(/\d/g);
+		id = id.join("");
+		id_list.push(id);
+	});
+	$.ajax({
+		url: base_url + 'index.php/logbookadvanced/update_qsl',
+		type: 'post',
+		data: {'id': JSON.stringify(id_list, null, 2),
+			'sent' : 'Y',
+			'method' : 'B'
+		},
+		success: function(data) {
+			if (data !== []) {
+				$.each(data, function(k, v) {
+					$("#qslprint_"+this.qsoID).remove();
+				});
+			}
+			$('.markallprinted').prop("disabled", false);
+		}
+	});
+}
+
+function removeSelectedQsos() {
+	var elements = $('.qslprint tbody input:checked');
+	var nElements = elements.length;
+	if (nElements == 0) {
+		return;
+	}
+	$('.removeall').prop("disabled", true);
+
+	var id_list=[];
+	elements.each(function() {
+		let id = $(this).first().closest('tr').attr('id');
+		id = id.match(/\d/g);
+		id = id.join("");
+		id_list.push(id);
+	});
+
+	$.ajax({
+		url: base_url + 'index.php/logbookadvanced/update_qsl',
+		type: 'post',
+		data: {'id': JSON.stringify(id_list, null, 2),
+			'sent' : 'N',
+			'method' : ''
+		},
+		success: function(data) {
+			if (data !== []) {
+				$.each(data, function(k, v) {
+					$("#qslprint_"+this.qsoID).remove();
+				});
+			}
+			$('.removeall').prop("disabled", false);
+		}
+	});
+}

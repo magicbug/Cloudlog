@@ -87,12 +87,19 @@ class Dashboard extends CI_Controller {
 			$data['total_qsl_sent'] = $QSLStatsBreakdownArray['QSL_Sent'];
 			$data['total_qsl_rcvd'] = $QSLStatsBreakdownArray['QSL_Received'];
 			$data['total_qsl_requested'] = $QSLStatsBreakdownArray['QSL_Requested'];
+			$data['qsl_sent_today'] = $QSLStatsBreakdownArray['QSL_Sent_today'];
+			$data['qsl_rcvd_today'] = $QSLStatsBreakdownArray['QSL_Received_today'];
+			$data['qsl_requested_today'] = $QSLStatsBreakdownArray['QSL_Requested_today'];
 
 			$data['total_eqsl_sent'] = $QSLStatsBreakdownArray['eQSL_Sent'];
 			$data['total_eqsl_rcvd'] = $QSLStatsBreakdownArray['eQSL_Received'];
+			$data['eqsl_sent_today'] = $QSLStatsBreakdownArray['eQSL_Sent_today'];
+			$data['eqsl_rcvd_today'] = $QSLStatsBreakdownArray['eQSL_Received_today'];
 
 			$data['total_lotw_sent'] = $QSLStatsBreakdownArray['LoTW_Sent'];
 			$data['total_lotw_rcvd'] = $QSLStatsBreakdownArray['LoTW_Received'];
+			$data['lotw_sent_today'] = $QSLStatsBreakdownArray['LoTW_Sent_today'];
+			$data['lotw_rcvd_today'] = $QSLStatsBreakdownArray['LoTW_Received_today'];
 
 			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18', $logbooks_locations_array);
 
@@ -210,6 +217,6 @@ class Dashboard extends CI_Controller {
 		echo "}";
 
 	}
-	
+
 	
 	}

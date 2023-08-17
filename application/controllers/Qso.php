@@ -571,6 +571,17 @@ class QSO extends CI_Controller {
       echo json_encode($data);
    }
 
+   // Return Previous QSOs Made in the active logbook
+   public function component_past_contacts() {
+    $this->load->model('logbook_model');
+    if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+    $data['query'] = $this->logbook_model->last_custom('5');
+
+    // Load view
+    $this->load->view('qso/components/previous_contacts', $data);
+   }
+
    function check_locator($grid) {
       $grid = $this->input->post('locator');
       // Allow empty locator

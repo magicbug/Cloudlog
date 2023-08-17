@@ -115,6 +115,7 @@ class Logbookadvanced extends CI_Controller {
 			'sota' => xss_clean($this->input->post('sota')),
 			'pota' => xss_clean($this->input->post('pota')),
 			'wwff' => xss_clean($this->input->post('wwff')),
+			'qslimages' => xss_clean($this->input->post('qslimages')),
 		);
 
 		$qsos = [];
@@ -140,7 +141,7 @@ class Logbookadvanced extends CI_Controller {
 
 		$callbook = $this->logbook_model->loadCallBook($qso['COL_CALL'], $this->config->item('use_fullname'));
 
-		if ($callbook['callsign'] !== "") {
+		if ($callbook['callsign'] ?? "" !== "") {
 			$this->logbookadvanced_model->updateQsoWithCallbookInfo($qsoID, $qso, $callbook);
 			$qso['COL_NAME'] = trim($callbook['name']);
 			if (isset($callbook['qslmgr'])) {
@@ -224,5 +225,12 @@ class Logbookadvanced extends CI_Controller {
 
 	public function startAtLabel() {
 		$this->load->view('logbookadvanced/startatform');
+	}
+
+	public function qslSlideshow() {
+		$cleanids = $this->security->xss_clean($this->input->post('ids'));
+        $this->load->model('logbookadvanced_model');
+        $data['qslimages'] = $this->logbookadvanced_model->getQslsForQsoIds($cleanids);
+        $this->load->view('logbookadvanced/qslcarousel', $data);
 	}
 }

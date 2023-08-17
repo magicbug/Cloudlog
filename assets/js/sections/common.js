@@ -152,8 +152,8 @@ function qso_edit(id) {
 
                     $('#locator').change(function(){
                         if ($(this).val().length >= 4) {
-                            $('#locator_info').load("logbook/searchbearing/" + $(this).val() + "/" + $('#stationProfile').val()).fadeIn("slow");
-                            $.get('logbook/searchdistance/' + $(this).val() + "/" + $('#stationProfile').val(), function(result) {
+                            $('#locator_info').load(base_url + "index.php/logbook/searchbearing/" + $(this).val() + "/" + $('#stationProfile').val()).fadeIn("slow");
+                            $.get(base_url + 'index.php/logbook/searchdistance/' + $(this).val() + "/" + $('#stationProfile').val(), function(result) {
                                 document.getElementById("distance").value = result;
                             });
                         }

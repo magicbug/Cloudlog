@@ -169,5 +169,5 @@ function addMarker(L, D, mapColor, map) {
 
 function onClick(e) {
     var marker = e.target;
-    displayContacts(marker.options.iota, $('#band2').val(), $('#mode').val(), 'IOTA');
+    displayContactsOnMap($("#iotamap"), marker.options.iota,$('#band2').val(), $('#mode').val(), 'IOTA');
 }
