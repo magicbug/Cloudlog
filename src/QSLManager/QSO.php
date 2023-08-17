@@ -202,8 +202,8 @@ class QSO
 		} else {
 			$this->end = null;
 		}
-		$this->callsign = ($data['callsign'] ?? null === null) ? '' :$data['callsign'];
-		$this->lastupload = ($data['lastupload'] ?? null === null) ? '' : date($custom_date_format . " H:i", strtotime($data['lastupload'] ?? null));
+		$this->callsign = (($data['callsign'] ?? null) === null) ? '' : $data['callsign'];
+		$this->lastupload = (($data['lastupload'] ?? null) === null) ? '' : date($custom_date_format . " H:i", strtotime($data['lastupload'] ?? null));
 		$this->lotw_hint = $this->getLotwHint($data['lastupload'] ?? null);
 	}
 
