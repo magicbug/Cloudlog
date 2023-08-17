@@ -581,7 +581,7 @@
 
         <div id="partial_view" style="font-size: 0.95rem;"></div>
 
-        <div id="qso-last-table">
+        <div id="qso-last-table" hx-get="<?php echo site_url('/qso/component_past_contacts'); ?>"  hx-trigger="every 5s">
 
           <div class="table-responsive" style="font-size: 0.95rem;">
             <table class="table">
