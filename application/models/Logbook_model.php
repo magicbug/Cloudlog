@@ -901,8 +901,11 @@ class Logbook_model extends CI_Model {
     $CI =& get_instance();
     $CI->load->model('stations');
     if (!$CI->stations->check_station_is_accessible($stationId)) {
-        return;
+	    return;
     }
+
+    $station_profile=$CI->stations->profile_clean($stationId);
+    $stationCallsign=$station_profile->station_callsign;
 
     $mode = $this->get_main_mode_if_submode($this->input->post('mode'));
     if ($mode == null) {
@@ -930,7 +933,7 @@ class Logbook_model extends CI_Model {
       $srx_string = null;
     }
 
-	if (stristr($this->input->post('usa_county'), ',')) {
+	if (stristr($this->input->post('usa_county') ?? '', ',')) {
 		$uscounty = $this->input->post('usa_county');
 	} else {
 		$uscounty = $this->input->post('usa_state') .",".$this->input->post('usa_county');
@@ -1076,6 +1079,7 @@ class Logbook_model extends CI_Model {
        'COL_CONTEST_ID' => $this->input->post('contest_name'),
        'COL_QSL_VIA' => $this->input->post('qsl_via_callsign'),
        'station_id' => $stationId,
+       'COL_STATION_CALLSIGN' => $stationCallsign,
        'COL_OPERATOR' => $this->input->post('operator_callsign'),
        'COL_STATE' =>$this->input->post('usa_state'),
        'COL_CNTY' => $uscounty
