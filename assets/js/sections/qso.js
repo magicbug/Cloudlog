@@ -495,8 +495,10 @@ $("#callsign").focusout(function() {
 					} else if (result.lotw_days > 7) {
 						$('#lotw_info').addClass('lotw_info_yellow');
 					}
+					$('#lotw_link').attr('href',"https://lotw.arrl.org/lotwuser/act?act="+find_callsign);
+					$('#lotw_link').attr('target',"_blank");
 					$('#lotw_info').attr('data-toggle',"tooltip");
-					$('#lotw_info').attr('data-original-title',"LoTW User. Last upload was "+result.lotw_days+" days ago");
+					$('#lotw_info').attr('data-original-title',"BLABLA LoTW User. Last upload was "+result.lotw_days+" days ago");
 					$('[data-toggle="tooltip"]').tooltip();
 				}
 				$('#qrz_info').html('<a target="_blank" href="https://www.qrz.com/db/'+find_callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/qrz.com.png"></a>');
