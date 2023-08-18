@@ -22,6 +22,12 @@ class User_options_model extends CI_Model {
 		return $this->db->query($sql, array($uid, $option_type));
 	}
 
+	public function del_option($option_type, $option_name) {
+		$uid=$this->session->userdata('user_id');
+		$sql='delete from user_options where user_id=? and option_type=? and option_name=?';
+		return $this->db->query($sql, array($uid, $option_type,$option_name));
+	}
+
 }
 
 ?>

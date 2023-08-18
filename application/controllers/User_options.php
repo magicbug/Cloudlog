@@ -11,6 +11,9 @@ class User_Options extends CI_Controller {
 
 	public function add_edit_fav() {
 		$obj = json_decode(file_get_contents("php://input"), true);
+		foreach($obj as $option_key => $option_value) {
+			$obj[$option_key]=$this->security->xss_clean($option_value);
+		}
 		if ($obj['sat_name'] ?? '' != '') {
 			$option_name=$obj['sat_name'];
 		} else {
@@ -19,13 +22,23 @@ class User_Options extends CI_Controller {
 		return $this->user_options_model->set_option('Favourite',$option_name, $obj);
 	}
 
-	public function get_favs() {
+	public function get_fav() {
 		$result=$this->user_options_model->get_options('Favourite');
 		foreach($result->result() as $options) {
 			$jsonout[$options->option_name][$options->option_key]=$options->option_value;
 		}
 		header('Content-Type: application/json');
 		echo json_encode($jsonout);
+	}
+
+	public function del_fav() {
+		$result=$this->user_options_model->get_options('Favourite');
+		$obj = json_decode(file_get_contents("php://input"), true);
+		if ($obj['option_name'] ?? '' != '') {
+			$option_name=$this->security->xss_clean($obj['option_name']);
+			$this->user_options_model->del_option('Favourite',$option_name);	
+		}
+		return;
 	}
 }
 
