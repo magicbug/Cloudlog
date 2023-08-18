@@ -1,12 +1,24 @@
 $( document ).ready(function() {
 
-	$('#start_time').click(function (event) {
+var favs={};
+	get_fav();
+
+	$('#fav_add').click(function (event) {
 		save_fav();
 	});
 
-	$('#start_date').click(function (event) {
-		get_fav();
+	$(document).on("click", "#fav_recall", function (event) {
+		console.log(favs[this.innerText]);
+		$('#sat_name').val(favs[this.innerText].sat_name);
+		$('#sat_mode').val(favs[this.innerText].sat_mode);
+		$('#band_rx').val(favs[this.innerText].band_rx);
+		$('#band').val(favs[this.innerText].band);
+		$('#frequency_rx').val(favs[this.innerText].frequency_rx);
+		$('#frequency').val(favs[this.innerText].frequency);
+		$('#selectPropagation').val(favs[this.innerText].prop_mode);
+		$('#mode').val(favs[this.innerText].mode);
 	});
+
 
 	function del_fav(name) {
 		$.ajax({
@@ -27,7 +39,11 @@ $( document ).ready(function() {
 			dataType: 'json',
 			contentType: "application/json; charset=utf-8",
 			success: function(result) {
-				console.log(result);
+				$("#fav_menu").empty();
+				for (const key in result) {
+					$("#fav_menu").append('<a class="dropdown-item" href="#" id="fav_recall">'+key+'</a>');
+				}
+				favs=result;
 			}
 		});
 	}
@@ -35,12 +51,12 @@ $( document ).ready(function() {
 	function save_fav() {
 		var payload={};
 		payload.sat_name=$('#sat_name').val();
-		payload.sat_mode=$('#sat_name').val();
+		payload.sat_mode=$('#sat_mode').val();
 		payload.band_rx=$('#band_rx').val();
 		payload.band=$('#band').val();
-		payload.frequency_tx=$('#frequency_rx').val();
+		payload.frequency_rx=$('#frequency_rx').val();
 		payload.frequency=$('#frequency').val();
-		payload.prop_mode=$('#prop_mode').val();
+		payload.prop_mode=$('#selectPropagation').val();
 		payload.mode=$('#mode').val();
 		$.ajax({
 			url: base_url+'index.php/user_options/add_edit_fav',
@@ -49,6 +65,7 @@ $( document ).ready(function() {
 			contentType: "application/json; charset=utf-8",
 			data: JSON.stringify(payload),
 			success: function(result) {
+				get_fav();
 			}
 		});
 	}

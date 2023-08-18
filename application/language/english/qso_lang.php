@@ -32,3 +32,4 @@ $lang['qso_btn_edit_qso'] = 'Edit QSO';
 // QSO Details
 
 $lang['qso_details'] = 'QSO Details';
+$lang['fav_add'] = 'Add Band/Mode to Favs';
