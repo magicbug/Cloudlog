@@ -4,6 +4,34 @@ $( document ).ready(function() {
 		save_fav();
 	});
 
+	$('#start_date').click(function (event) {
+		get_fav();
+	});
+
+	function del_fav(name) {
+		$.ajax({
+			url: base_url+'index.php/user_options/del_fav',
+			method: 'GET',
+			dataType: 'json',
+			contentType: "application/json; charset=utf-8",
+			data: { "option_name": name },
+			success: function(result) {
+			}
+		});
+	}
+
+	function get_fav() {
+		$.ajax({
+			url: base_url+'index.php/user_options/get_fav',
+			method: 'GET',
+			dataType: 'json',
+			contentType: "application/json; charset=utf-8",
+			success: function(result) {
+				console.log(result);
+			}
+		});
+	}
+
 	function save_fav() {
 		var payload={};
 		payload.sat_name=$('#sat_name').val();
