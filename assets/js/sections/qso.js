@@ -15,7 +15,7 @@ $( document ).ready(function() {
 		payload.prop_mode=$('#prop_mode').val();
 		payload.mode=$('#mode').val();
 		$.ajax({
-			url: base_url+'index.php/user_options/set_options',
+			url: base_url+'index.php/user_options/add_edit_fav',
 			method: 'POST',
 			dataType: 'json',
 			contentType: "application/json; charset=utf-8",
