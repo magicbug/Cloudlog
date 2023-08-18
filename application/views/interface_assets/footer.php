@@ -583,7 +583,7 @@ function newpath(latlng1, latlng2, locator1, locator2) {
 
     var osmUrl='<?php echo $this->optionslib->get_option('option_map_tile_server');?>';
     var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 12, attribution: osmAttrib});
 
     var redIcon = L.icon({
 					iconUrl: icon_dot_url,
@@ -637,7 +637,7 @@ function showActivatorsMap(call, count, grids) {
 
     var osmUrl='<?php echo $this->optionslib->get_option('option_map_tile_server');?>';
     var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});
+    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 12, attribution: osmAttrib});
 
     map.addLayer(osm);
 }

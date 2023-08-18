@@ -51,7 +51,7 @@ function gridPlot(form) {
             grid_four_confirmed = data.grid_4char_confirmed;
             grid_six_confirmed = data.grid_6char_confirmed;
             var layer = L.tileLayer(jslayer, {
-                maxZoom: 9,
+                maxZoom: 12,
                 attribution: jsattribution,
                 id: 'mapbox.streets'
             });
