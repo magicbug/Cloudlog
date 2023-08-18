@@ -1,5 +1,30 @@
 $( document ).ready(function() {
 
+	$('#start_time').click(function (event) {
+		save_fav();
+	});
+
+	function save_fav() {
+		var payload={};
+		payload.sat_name=$('#sat_name').val();
+		payload.sat_mode=$('#sat_name').val();
+		payload.band_rx=$('#band_rx').val();
+		payload.band=$('#band').val();
+		payload.frequency_tx=$('#frequency_rx').val();
+		payload.frequency=$('#frequency').val();
+		payload.prop_mode=$('#prop_mode').val();
+		payload.mode=$('#mode').val();
+		$.ajax({
+			url: base_url+'index.php/user_options/set_options',
+			method: 'POST',
+			dataType: 'json',
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(payload),
+			success: function(result) {
+			}
+		});
+	}
+	
 
 	var bc_bandmap = new BroadcastChannel('qso_window');
 	bc_bandmap.onmessage = function (ev) {
