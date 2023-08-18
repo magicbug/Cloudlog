@@ -495,6 +495,8 @@ $("#callsign").focusout(function() {
 					} else if (result.lotw_days > 7) {
 						$('#lotw_info').addClass('lotw_info_yellow');
 					}
+					$('#lotw_link').attr('href',"https://lotw.arrl.org/lotwuser/act?act="+find_callsign);
+					$('#lotw_link').attr('target',"_blank");
 					$('#lotw_info').attr('data-toggle',"tooltip");
 					$('#lotw_info').attr('data-original-title',"LoTW User. Last upload was "+result.lotw_days+" days ago");
 					$('[data-toggle="tooltip"]').tooltip();
