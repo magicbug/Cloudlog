@@ -16,7 +16,16 @@ class User_Options extends CI_Controller {
 		} else {
 			$option_name=$obj['band'].'/'.$obj['mode'];
 		}
-		$this->user_options_model->set_option('Favourite',$option_name, $obj);
+		return $this->user_options_model->set_option('Favourite',$option_name, $obj);
+	}
+
+	public function get_favs() {
+		$result=$this->user_options_model->get_options('Favourite');
+		foreach($result->result() as $options) {
+			$jsonout[$options->option_name][$options->option_key]=$options->option_value;
+		}
+		header('Content-Type: application/json');
+		echo json_encode($jsonout);
 	}
 }
 
