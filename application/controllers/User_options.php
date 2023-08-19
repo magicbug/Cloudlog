@@ -27,6 +27,7 @@ class User_Options extends CI_Controller {
 
 	public function get_fav() {
 		$result=$this->user_options_model->get_options('Favourite');
+		$jsonout=[];
 		foreach($result->result() as $options) {
 			$jsonout[$options->option_name][$options->option_key]=$options->option_value;
 		}
