@@ -516,3 +516,11 @@ div#station_logbooks_linked_table_paginate {
 .previous-qsos table {
     margin-bottom: 0px;
 }
+
+.lotw-cert-list table {
+    margin-bottom: 0px;
+}
+
+.qso_panel a i.fa.fa-star:hover {
+    color: #FFD700 !important;
+}
