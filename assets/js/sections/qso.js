@@ -1,5 +1,81 @@
 $( document ).ready(function() {
 
+var favs={};
+	get_fav();
+
+	$('#fav_add').click(function (event) {
+		save_fav();
+	});
+
+	$(document).on("click", "#fav_del", function (event) {
+		del_fav($(this).attr('name'));
+	});
+
+	$(document).on("click", "#fav_recall", function (event) {
+		$('#sat_name').val(favs[this.innerText].sat_name);
+		$('#sat_mode').val(favs[this.innerText].sat_mode);
+		$('#band_rx').val(favs[this.innerText].band_rx);
+		$('#band').val(favs[this.innerText].band);
+		$('#frequency_rx').val(favs[this.innerText].frequency_rx);
+		$('#frequency').val(favs[this.innerText].frequency);
+		$('#selectPropagation').val(favs[this.innerText].prop_mode);
+		$('#mode').val(favs[this.innerText].mode);
+	});
+
+
+	function del_fav(name) {
+		if (confirm("Are you sure to delete Fav?")) {
+			$.ajax({
+				url: base_url+'index.php/user_options/del_fav',
+				method: 'POST',
+				dataType: 'json',
+				contentType: "application/json; charset=utf-8",
+				data: JSON.stringify({ "option_name": name }),
+				success: function(result) {
+					get_fav();
+				}
+			});
+		}
+	}
+
+	function get_fav() {
+		$.ajax({
+			url: base_url+'index.php/user_options/get_fav',
+			method: 'GET',
+			dataType: 'json',
+			contentType: "application/json; charset=utf-8",
+			success: function(result) {
+				$("#fav_menu").empty();
+				for (const key in result) {
+					$("#fav_menu").append('<label class="dropdown-item"><span id="fav_del" name="'+key+'"><i class="fas fa-trash-alt"></i></span>&nbsp;&nbsp;<span id="fav_recall">'+key+'</span></label>');
+				}
+				favs=result;
+			}
+		});
+	}
+
+	function save_fav() {
+		var payload={};
+		payload.sat_name=$('#sat_name').val();
+		payload.sat_mode=$('#sat_mode').val();
+		payload.band_rx=$('#band_rx').val();
+		payload.band=$('#band').val();
+		payload.frequency_rx=$('#frequency_rx').val();
+		payload.frequency=$('#frequency').val();
+		payload.prop_mode=$('#selectPropagation').val();
+		payload.mode=$('#mode').val();
+		$.ajax({
+			url: base_url+'index.php/user_options/add_edit_fav',
+			method: 'POST',
+			dataType: 'json',
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(payload),
+			success: function(result) {
+				get_fav();
+			}
+		});
+	}
+	
 
 	var bc_bandmap = new BroadcastChannel('qso_window');
 	bc_bandmap.onmessage = function (ev) {
