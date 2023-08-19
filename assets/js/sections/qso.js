@@ -12,7 +12,6 @@ var favs={};
 	});
 
 	$(document).on("click", "#fav_recall", function (event) {
-		console.log(favs[this.innerText]);
 		$('#sat_name').val(favs[this.innerText].sat_name);
 		$('#sat_mode').val(favs[this.innerText].sat_mode);
 		$('#band_rx').val(favs[this.innerText].band_rx);
@@ -25,16 +24,18 @@ var favs={};
 
 
 	function del_fav(name) {
-		$.ajax({
-			url: base_url+'index.php/user_options/del_fav',
-			method: 'POST',
-			dataType: 'json',
-			contentType: "application/json; charset=utf-8",
-			data: JSON.stringify({ "option_name": name }),
-			success: function(result) {
-				get_fav();
-			}
-		});
+		if (confirm("Are you sure to delete Fav?")) {
+			$.ajax({
+				url: base_url+'index.php/user_options/del_fav',
+				method: 'POST',
+				dataType: 'json',
+				contentType: "application/json; charset=utf-8",
+				data: JSON.stringify({ "option_name": name }),
+				success: function(result) {
+					get_fav();
+				}
+			});
+		}
 	}
 
 	function get_fav() {
