@@ -7,6 +7,10 @@ var favs={};
 		save_fav();
 	});
 
+	$(document).on("click", "#fav_del", function (event) {
+		del_fav($(this).attr('name'));
+	});
+
 	$(document).on("click", "#fav_recall", function (event) {
 		console.log(favs[this.innerText]);
 		$('#sat_name').val(favs[this.innerText].sat_name);
@@ -26,7 +30,7 @@ var favs={};
 			method: 'POST',
 			dataType: 'json',
 			contentType: "application/json; charset=utf-8",
-			data: { "option_name": name },
+			data: JSON.stringify({ "option_name": name }),
 			success: function(result) {
 				get_fav();
 			}
@@ -42,7 +46,7 @@ var favs={};
 			success: function(result) {
 				$("#fav_menu").empty();
 				for (const key in result) {
-					$("#fav_menu").append('<a class="dropdown-item" href="#" id="fav_recall">'+key+'</a>');
+					$("#fav_menu").append('<label class="dropdown-item"><span id="fav_del" name="'+key+'"><i class="fas fa-trash-alt"></i></span>&nbsp;&nbsp;<span id="fav_recall">'+key+'</span></label>');
 				}
 				favs=result;
 			}
