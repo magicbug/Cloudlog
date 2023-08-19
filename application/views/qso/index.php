@@ -34,7 +34,17 @@
           <li class="nav-item">
             <a class="nav-link" id="qsl-tab" data-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false"><?php echo lang('gen_hamradio_qsl'); ?></a>
           </li>
-        </ul>
+	
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" id="fav_item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-star"></i></a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#" id="fav_add"><?php echo lang('fav_add'); ?></a>
+      <div class="dropdown-divider"></div>
+      <div id="fav_menu"></div>
+    </div>
+  </li>
+
+	        </ul>
       </div>
 
       <div class="card-body">
