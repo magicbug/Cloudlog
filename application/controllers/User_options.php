@@ -19,7 +19,10 @@ class User_Options extends CI_Controller {
 		} else {
 			$option_name=$obj['band'].'/'.$obj['mode'];
 		}
-		return $this->user_options_model->set_option('Favourite',$option_name, $obj);
+		$this->user_options_model->set_option('Favourite',$option_name, $obj);
+		$jsonout['success']=1;
+		header('Content-Type: application/json');
+		echo json_encode($jsonout);
 	}
 
 	public function get_fav() {
@@ -38,7 +41,9 @@ class User_Options extends CI_Controller {
 			$option_name=$this->security->xss_clean($obj['option_name']);
 			$this->user_options_model->del_option('Favourite',$option_name);	
 		}
-		return;
+		$jsonout['success']=1;
+		header('Content-Type: application/json');
+		echo json_encode($jsonout);
 	}
 }
 

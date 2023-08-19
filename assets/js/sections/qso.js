@@ -23,11 +23,12 @@ var favs={};
 	function del_fav(name) {
 		$.ajax({
 			url: base_url+'index.php/user_options/del_fav',
-			method: 'GET',
+			method: 'POST',
 			dataType: 'json',
 			contentType: "application/json; charset=utf-8",
 			data: { "option_name": name },
 			success: function(result) {
+				get_fav();
 			}
 		});
 	}
