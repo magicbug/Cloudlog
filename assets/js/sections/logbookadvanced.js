@@ -776,6 +776,12 @@ function loadMap(data) {
 
 	map.addLayer(osm);
 
+	var linecolor = 'blue';
+
+	if (isDarkModeTheme()) {
+		linecolor = 'red';
+	}
+
 	var redIcon = L.icon({
 		iconUrl: icon_dot_url,
 		iconSize: [10, 10], // size of the icon
@@ -815,7 +821,7 @@ function loadMap(data) {
 		const geodesic = L.geodesic(multiplelines, {
 			weight: 1,
 			opacity: 1,
-			color: 'red',
+			color: linecolor,
 			wrap: false,
 			steps: 100
 		}).addTo(map);
