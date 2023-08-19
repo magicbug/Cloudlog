@@ -520,6 +520,7 @@ div#station_logbooks_linked_table_paginate {
 #advancedmap {
 	height: calc(100vh - 280px) !important;
 	max-height: 1000px !important;
+}
 
 .lotw-cert-list table {
     margin-bottom: 0px;
