@@ -233,4 +233,133 @@ class Logbookadvanced extends CI_Controller {
         $data['qslimages'] = $this->logbookadvanced_model->getQslsForQsoIds($cleanids);
         $this->load->view('logbookadvanced/qslcarousel', $data);
 	}
+
+	public function mapQsos() {
+        $this->load->model('logbookadvanced_model');
+
+		$searchCriteria = array(
+			'user_id' => (int)$this->session->userdata('user_id'),
+			'dateFrom' => xss_clean($this->input->post('dateFrom')),
+			'dateTo' => xss_clean($this->input->post('dateTo')),
+			'de' => xss_clean($this->input->post('de')),
+			'dx' => xss_clean($this->input->post('dx')),
+			'mode' => xss_clean($this->input->post('mode')),
+			'band' => xss_clean($this->input->post('band')),
+			'qslSent' => xss_clean($this->input->post('qslSent')),
+			'qslReceived' => xss_clean($this->input->post('qslReceived')),
+			'iota' => xss_clean($this->input->post('iota')),
+			'dxcc' => xss_clean($this->input->post('dxcc')),
+			'propmode' => xss_clean($this->input->post('propmode')),
+			'gridsquare' => xss_clean($this->input->post('gridsquare')),
+			'state' => xss_clean($this->input->post('state')),
+			'cqzone' => xss_clean($this->input->post('cqzone')),
+			'qsoresults' => xss_clean($this->input->post('qsoresults')),
+			'sats' => xss_clean($this->input->post('sats')),
+			'lotwSent' => xss_clean($this->input->post('lotwSent')),
+			'lotwReceived' => xss_clean($this->input->post('lotwReceived')),
+			'eqslSent' => xss_clean($this->input->post('eqslSent')),
+			'eqslReceived' => xss_clean($this->input->post('eqslReceived')),
+			'qslvia' => xss_clean($this->input->post('qslvia')),
+			'sota' => xss_clean($this->input->post('sota')),
+			'pota' => xss_clean($this->input->post('pota')),
+			'wwff' => xss_clean($this->input->post('wwff')),
+			'qslimages' => xss_clean($this->input->post('qslimages')),
+		);
+
+		if ($this->session->userdata('user_measurement_base') == NULL) {
+			$measurement_base = $this->config->item('measurement_base');
+		}
+		else {
+			$measurement_base = $this->session->userdata('user_measurement_base');
+		}
+
+		$CI =& get_instance();
+		// Get Date format
+		if($CI->session->userdata('user_date_format')) {
+			// If Logged in and session exists
+			$custom_date_format = $CI->session->userdata('user_date_format');
+		} else {
+			// Get Default date format from /config/cloudlog.php
+			$custom_date_format = $CI->config->item('qso_date_format');
+		}
+
+		switch ($measurement_base) {
+			case 'M':
+				$var_dist = " miles";
+				break;
+			case 'N':
+				$var_dist = " nautic miles";
+				break;
+			case 'K':
+				$var_dist = " kilometers";
+				break;
+		}
+
+		$mappedcoordinates = array();
+		foreach ($this->logbookadvanced_model->searchDb($searchCriteria) as $qso) {
+			if (!empty($qso['COL_MY_GRIDSQUARE']) || !empty($qso['COL_MY_VUCC_GRIDS'])) {
+				if (!empty($qso['COL_GRIDSQUARE'])  || !empty($qso['COL_VUCC_GRIDS'])) {
+					$mappedcoordinates[] = $this->calculate($qso, ($qso['COL_MY_GRIDSQUARE'] ?? '') == '' ? $qso['COL_MY_VUCC_GRIDS'] : $qso['COL_MY_GRIDSQUARE'], ($qso['COL_GRIDSQUARE'] ?? '') == '' ? $qso['COL_VUCC_GRIDS'] : $qso['COL_GRIDSQUARE'], $measurement_base, $var_dist, $custom_date_format);
+				} else {
+					if (!empty($qso['lat'])  || !empty($qso['long'])) {
+						$mappedcoordinates[] = $this->calculateCoordinates($qso, $qso['lat'], $qso['long'], ($qso['COL_MY_GRIDSQUARE'] ?? '') == '' ? $qso['COL_MY_VUCC_GRIDS'] : $qso['COL_MY_GRIDSQUARE'], $measurement_base, $var_dist, $custom_date_format);
+					}
+				}
+			}
+		}
+
+		header("Content-Type: application/json");
+		print json_encode($mappedcoordinates);
+	}
+
+	public function calculate($qso, $locator1, $locator2, $measurement_base, $var_dist, $custom_date_format) {
+		$this->load->library('Qra');
+
+		$data['distance'] = $this->qra->distance($locator1, $locator2, $measurement_base) . $var_dist;
+		$data['bearing'] = $this->qra->get_bearing($locator1, $locator2) . "&#186;";
+		$latlng1 = $this->qra->qra2latlong($locator1);
+		$latlng2 = $this->qra->qra2latlong($locator2);
+		$latlng1[0] = number_format((float)$latlng1[0], 3, '.', '');;
+		$latlng1[1] = number_format((float)$latlng1[1], 3, '.', '');;
+		$latlng2[0] = number_format((float)$latlng2[0], 3, '.', '');;
+		$latlng2[1] = number_format((float)$latlng2[1], 3, '.', '');;
+
+		$data['latlng1'] = $latlng1;
+		$data['latlng2'] = $latlng2;
+
+		$data['callsign'] = $qso['COL_CALL'];
+		$data['band'] = $qso['COL_BAND'];
+		$data['mode'] = $qso['COL_MODE'];
+		$data['gridsquare'] = $locator2;
+		$data['mygridsquare'] = $locator1;
+		$data['mycallsign'] = $qso['station_callsign'];
+		$data['datetime'] = date($custom_date_format, strtotime($qso['COL_TIME_ON'])). date(' H:i',strtotime($qso['COL_TIME_ON']));
+		$data['satname'] = $qso['COL_SAT_NAME'];
+
+		return $data;
+	}
+
+	public function calculateCoordinates($qso, $lat, $long, $mygrid, $measurement_base, $var_dist, $custom_date_format) {
+		$this->load->library('Qra');
+
+		$latlng1 = $this->qra->qra2latlong($mygrid);
+		$latlng2[0] = $lat;
+		$latlng2[1] = $long;
+		$latlng1[0] = number_format((float)$latlng1[0], 3, '.', '');;
+		$latlng1[1] = number_format((float)$latlng1[1], 3, '.', '');;
+		$latlng2[0] = number_format((float)$latlng2[0], 3, '.', '');;
+		$latlng2[1] = number_format((float)$latlng2[1], 3, '.', '');;
+
+		$data['latlng1'] = $latlng1;
+		$data['latlng2'] = $latlng2;
+		$data['callsign'] = $qso['COL_CALL'];
+		$data['band'] = $qso['COL_BAND'];
+		$data['mode'] = $qso['COL_MODE'];
+		$data['mygridsquare'] = $mygrid;
+		$data['mycallsign'] = $qso['station_callsign'];
+		$data['datetime'] = date($custom_date_format, strtotime($qso['COL_TIME_ON'])). date(' H:i',strtotime($qso['COL_TIME_ON']));
+		$data['satname'] = $qso['COL_SAT_NAME'];
+
+		return $data;
+	}
 }

@@ -167,6 +167,17 @@ $(document).ready(function () {
 	});
 
 	$('#searchForm').submit(function (e) {
+		var container = L.DomUtil.get('advancedmap');
+
+		if(container != null){
+			container._leaflet_id = null;
+			container.remove();
+		}
+
+		$("#qsoList").attr("Hidden", false);
+		$("#qsoList_wrapper").attr("Hidden", false);
+		$("#qsoList_info").attr("Hidden", false);
+
 		$('#searchButton').prop("disabled", true);
 
 		$.ajax({
@@ -675,3 +686,212 @@ function printlabel() {
 	});
 }
 
+function mapQsos(form) {
+	$('#mapButton').prop("disabled", true);
+
+	$("#qsoList").attr("Hidden", true);
+	$("#qsoList_wrapper").attr("Hidden", true);
+	$("#qsoList_info").attr("Hidden", true);
+
+	var amap = $('#advancedmap').val();
+	if (amap == undefined) {
+		$(".qso_manager").append('<div id="advancedmap"></div>');
+	}
+
+	$.ajax({
+		url: base_url + 'index.php/logbookadvanced/mapQsos',
+		type: 'post',
+		data: {
+			dateFrom: this.dateFrom.value,
+			dateTo: this.dateTo.value,
+			de: this.de.value,
+			dx: this.dx.value,
+			mode: this.mode.value,
+			band: this.band.value,
+			qslSent: this.qslSent.value,
+			qslReceived: this.qslReceived.value,
+			iota: this.iota.value,
+			dxcc: this.dxcc.value,
+			propmode: this.selectPropagation.value,
+			gridsquare: this.gridsquare.value,
+			state: this.state.value,
+			qsoresults: this.qsoResults.value,
+			sats: this.sats.value,
+			cqzone: this.cqzone.value,
+			lotwSent: this.lotwSent.value,
+			lotwReceived: this.lotwReceived.value,
+			eqslSent: this.eqslSent.value,
+			eqslReceived: this.eqslReceived.value,
+			qslvia: $('[name="qslviainput"]').val(),
+			sota: this.sota.value,
+			pota: this.pota.value,
+			wwff: this.wwff.value,
+			qslimages: this.qslimages.value,
+		},
+		success: function(data) {
+			loadMap(data);
+		},
+		error: function() {
+			$('#mapButton').prop("disabled", false);
+		},
+	});
+
+};
+
+function loadMap(data) {
+	$('#mapButton').prop("disabled", false);
+	var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+	var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+	// If map is already initialized
+	var container = L.DomUtil.get('advancedmap');
+
+	if(container != null){
+		container._leaflet_id = null;
+		container.remove();
+		$(".qso_manager").append('<div id="advancedmap"></div>');
+	}
+
+	var map = new L.Map('advancedmap', {
+		fullscreenControl: true,
+		fullscreenControlOptions: {
+			position: 'topleft'
+		},
+	});
+
+	L.tileLayer(
+		osmUrl,
+		{
+			attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+			maxZoom: 18,
+			zoom: 3,
+            minZoom: 2,
+		}
+	).addTo(map);
+
+	map.setView([30, 0], 1.5);
+
+	var maidenhead = L.maidenheadqrb().addTo(map);
+
+	var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 9, attribution: osmAttrib});
+
+	map.addLayer(osm);
+
+	var linecolor = 'blue';
+
+	if (isDarkModeTheme()) {
+		linecolor = 'red';
+	}
+
+	var redIcon = L.icon({
+		iconUrl: icon_dot_url,
+		iconSize: [10, 10], // size of the icon
+	});
+
+	var counter = 0;
+
+	$.each(data, function(k, v) {
+		counter++;
+		// Need to fix so that marker is placed at same place as end of line, but this only needs to be done when longitude is < -170
+		if (this.latlng2[1] < -170) {
+			this.latlng2[1] =  parseFloat(this.latlng2[1])+360;
+		}
+		if (this.latlng1[1] < -170) {
+			this.latlng1[1] =  parseFloat(this.latlng1[1])+360;
+		}
+
+		var popupmessage = createContentMessage(this);
+		var popupmessage2 = createContentMessageDx(this);
+
+		var marker = L.marker([this.latlng1[0], this.latlng1[1]], {icon: redIcon}, {closeOnClick: false, autoClose: false}).addTo(map).bindPopup(popupmessage);
+		marker.on('mouseover',function(ev) {
+			ev.target.openPopup();
+		});
+
+		var marker2 = L.marker([this.latlng2[0], this.latlng2[1]], {icon: redIcon},{closeOnClick: false, autoClose: false}).addTo(map).bindPopup(popupmessage2);;
+		marker2.on('mouseover',function(ev) {
+			ev.target.openPopup();
+		});
+
+		const multiplelines = [];
+		multiplelines.push(
+			new L.LatLng(this.latlng1[0], this.latlng1[1]),
+			new L.LatLng(this.latlng2[0], this.latlng2[1])
+		)
+
+		const geodesic = L.geodesic(multiplelines, {
+			weight: 1,
+			opacity: 1,
+			color: linecolor,
+			wrap: false,
+			steps: 100
+		}).addTo(map);
+	});
+
+	/*Legend specific*/
+    var legend = L.control({ position: "topright" });
+
+    legend.onAdd = function(map) {
+        var div = L.DomUtil.create("div", "legend");
+        div.innerHTML += "<h4>" + counter + " QSOs plotted</h4>";
+        return div;
+    };
+
+    legend.addTo(map);
+}
+
+	function createContentMessage(qso) {
+		var table = '<table><tbody>' +
+		'<tr>' +
+		'<td>' +
+		'Station callsign: ' + qso.mycallsign +
+		"</td></tr>" +
+		'<tr>' +
+		'<td>' +
+		'Gridsquare: ' + qso.mygridsquare +
+		"</td></tr>";
+		return (table += "</tbody></table>");
+	}
+
+	function createContentMessageDx(qso) {
+		var table = '<table><tbody>' +
+		'<tr>' +
+		'<td>Callsign</td>' +
+		'<td>' + qso.callsign + '</td>' +
+		'</tr>' +
+		'<tr>' +
+		'<td>Date/time</td>' +
+		'<td>' + qso.datetime + '</td>' +
+		'</tr>' +
+		'<tr>';
+		if (qso.satname != "") {
+			table += '<td>Band</td>' +
+			'<td>' + qso.satname + '</td>' +
+			'</tr>' +
+			'<tr>';
+		} else {
+			table += '<td>Band</td>' +
+			'<td>' + qso.band + '</td>' +
+			'</tr>' +
+			'<tr>';
+		}
+		table += '<td>Mode</td>' +
+		'<td>' + qso.mode + '</td>' +
+		'</tr>' +
+		'<tr>';
+		if (qso.gridsquare != undefined) {
+			table += '<td>Gridsquare</td>' +
+			'<td>' + qso.gridsquare + '</td>' +
+			'</tr>';
+		}
+		if (qso.distance != undefined) {
+			table += '<td>Distance</td>' +
+			'<td>' + qso.distance + '</td>' +
+			'</tr>';
+		}
+		if (qso.bearing != undefined) {
+			table += '<td>Bearing</td>' +
+			'<td>' + qso.bearing + '</td>' +
+			'</tr>';
+		}
+		return (table += '</tbody></table>');
+	}
