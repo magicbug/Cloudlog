@@ -33,3 +33,4 @@ $lang['qso_btn_edit_qso'] = 'Edit QSO';
 
 $lang['qso_details'] = 'QSO Details';
 $lang['fav_add'] = 'Add Band/Mode to Favs';
+$lang['qso_operator_callsign'] = 'Operator Callsign';
