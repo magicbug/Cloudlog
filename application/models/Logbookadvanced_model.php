@@ -158,6 +158,10 @@ class Logbookadvanced_model extends CI_Model {
                 }
         }
 
+		if (($searchCriteria['ids'] ?? '') !== '') {
+			$conditions[] = "qsos.COL_PRIMARY_KEY in (".implode(",",$searchCriteria['ids']).")";
+		}
+
 		$where = trim(implode(" AND ", $conditions));
 		if ($where != "") {
 			$where = "AND $where";
@@ -175,7 +179,6 @@ class Logbookadvanced_model extends CI_Model {
 				$where2 .= ' and x.qslcount is null';
 			}
 		}
-
 
 		$sql = "
 			SELECT *
