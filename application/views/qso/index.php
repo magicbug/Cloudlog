@@ -221,7 +221,13 @@
               <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php if ($this->session->userdata('transmit_power')) { echo $this->session->userdata('transmit_power'); } else { echo $power; } ?>" />
               <small id="powerHelp" class="form-text text-muted"><?php echo lang('qso_transmit_power_helptext'); ?></small>
             </div>
-          </div>
+
+            <div class="form-group">
+              <label for="operator_callsign"><?php echo lang('qso_operator_callsign'); ?></label>
+              <input type="text" class="form-control" id="operator_callsign" name="operator_callsign" value="<?php if ($this->session->userdata('operator_callsign')) { echo $this->session->userdata('operator_callsign'); } ?>" />
+            </div>
+
+        </div>
 
           <!-- General Items -->
           <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
