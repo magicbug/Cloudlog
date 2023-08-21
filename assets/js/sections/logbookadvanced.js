@@ -689,6 +689,15 @@ function printlabel() {
 function mapQsos(form) {
 	$('#mapButton').prop("disabled", true);
 
+	var id_list=[];
+	var elements = $('#qsoList tbody input:checked');
+	var nElements = elements.length;
+
+	elements.each(function() {
+		let id = $(this).first().closest('tr').data('qsoID')
+		id_list.push(id);
+	});
+
 	$("#qsoList").attr("Hidden", true);
 	$("#qsoList_wrapper").attr("Hidden", true);
 	$("#qsoList_info").attr("Hidden", true);
@@ -698,44 +707,59 @@ function mapQsos(form) {
 		$(".qso_manager").append('<div id="advancedmap"></div>');
 	}
 
-	$.ajax({
-		url: base_url + 'index.php/logbookadvanced/mapQsos',
-		type: 'post',
-		data: {
-			dateFrom: form.dateFrom.value,
-			dateTo: form.dateTo.value,
-			de: form.de.value,
-			dx: form.dx.value,
-			mode: form.mode.value,
-			band: form.band.value,
-			qslSent: form.qslSent.value,
-			qslReceived: form.qslReceived.value,
-			iota: form.iota.value,
-			dxcc: form.dxcc.value,
-			propmode: form.selectPropagation.value,
-			gridsquare: form.gridsquare.value,
-			state: form.state.value,
-			qsoresults: form.qsoResults.value,
-			sats: form.sats.value,
-			cqzone: form.cqzone.value,
-			lotwSent: form.lotwSent.value,
-			lotwReceived: form.lotwReceived.value,
-			eqslSent: form.eqslSent.value,
-			eqslReceived: form.eqslReceived.value,
-			qslvia: $('[name="qslviainput"]').val(),
-			sota: form.sota.value,
-			pota: form.pota.value,
-			wwff: form.wwff.value,
-			qslimages: form.qslimages.value,
-		},
-		success: function(data) {
-			loadMap(data);
-		},
-		error: function() {
-			$('#mapButton').prop("disabled", false);
-		},
-	});
-
+	if (id_list.length > 0) {
+		$.ajax({
+			url: base_url + 'index.php/logbookadvanced/mapSelectedQsos',
+			type: 'post',
+			data: {
+				ids: id_list
+			},
+			success: function(data) {
+				loadMap(data);
+			},
+			error: function() {
+				$('#mapButton').prop("disabled", false);
+			},
+		});
+	} else {
+		$.ajax({
+			url: base_url + 'index.php/logbookadvanced/mapQsos',
+			type: 'post',
+			data: {
+				dateFrom: form.dateFrom.value,
+				dateTo: form.dateTo.value,
+				de: form.de.value,
+				dx: form.dx.value,
+				mode: form.mode.value,
+				band: form.band.value,
+				qslSent: form.qslSent.value,
+				qslReceived: form.qslReceived.value,
+				iota: form.iota.value,
+				dxcc: form.dxcc.value,
+				propmode: form.selectPropagation.value,
+				gridsquare: form.gridsquare.value,
+				state: form.state.value,
+				qsoresults: form.qsoResults.value,
+				sats: form.sats.value,
+				cqzone: form.cqzone.value,
+				lotwSent: form.lotwSent.value,
+				lotwReceived: form.lotwReceived.value,
+				eqslSent: form.eqslSent.value,
+				eqslReceived: form.eqslReceived.value,
+				qslvia: $('[name="qslviainput"]').val(),
+				sota: form.sota.value,
+				pota: form.pota.value,
+				wwff: form.wwff.value,
+				qslimages: form.qslimages.value,
+			},
+			success: function(data) {
+				loadMap(data);
+			},
+			error: function() {
+				$('#mapButton').prop("disabled", false);
+			},
+		});
+	}
 };
 
 function loadMap(data) {
