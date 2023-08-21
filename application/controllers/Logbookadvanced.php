@@ -234,6 +234,43 @@ class Logbookadvanced extends CI_Controller {
         $this->load->view('logbookadvanced/qslcarousel', $data);
 	}
 
+	public function mapSelectedQsos() {
+		$this->load->model('logbookadvanced_model');
+
+		$searchCriteria = array(
+			'user_id' => (int)$this->session->userdata('user_id'),
+			'dateFrom' => '',
+			'dateTo' => '',
+			'de' => '',
+			'dx' => '',
+			'mode' => '',
+			'band' => '',
+			'qslSent' => '',
+			'qslReceived' => '',
+			'iota' => '',
+			'dxcc' => '',
+			'propmode' => '',
+			'gridsquare' => '',
+			'state' => '',
+			'cqzone' => '',
+			'qsoresults' => count($this->input->post('ids')),
+			'sats' => '',
+			'lotwSent' => '',
+			'lotwReceived' => '',
+			'eqslSent' => '',
+			'eqslReceived' => '',
+			'qslvia' => '',
+			'sota' => '',
+			'pota' => '',
+			'wwff' => '',
+			'qslimages' => '',
+			'ids' => xss_clean($this->input->post('ids'))
+		);
+
+		$result = $this->logbookadvanced_model->searchDb($searchCriteria);
+		$this->prepareMappedQSos($result);
+	}
+
 	public function mapQsos() {
         $this->load->model('logbookadvanced_model');
 
@@ -266,6 +303,11 @@ class Logbookadvanced extends CI_Controller {
 			'qslimages' => xss_clean($this->input->post('qslimages')),
 		);
 
+		$result = $this->logbookadvanced_model->searchDb($searchCriteria);
+		$this->prepareMappedQSos($result);
+	}
+
+	public function prepareMappedQSos($qsos) {
 		if ($this->session->userdata('user_measurement_base') == NULL) {
 			$measurement_base = $this->config->item('measurement_base');
 		}
@@ -296,7 +338,7 @@ class Logbookadvanced extends CI_Controller {
 		}
 
 		$mappedcoordinates = array();
-		foreach ($this->logbookadvanced_model->searchDb($searchCriteria) as $qso) {
+		foreach ($qsos as $qso) {
 			if (!empty($qso['COL_MY_GRIDSQUARE']) || !empty($qso['COL_MY_VUCC_GRIDS'])) {
 				if (!empty($qso['COL_GRIDSQUARE'])  || !empty($qso['COL_VUCC_GRIDS'])) {
 					$mappedcoordinates[] = $this->calculate($qso, ($qso['COL_MY_GRIDSQUARE'] ?? '') == '' ? $qso['COL_MY_VUCC_GRIDS'] : $qso['COL_MY_GRIDSQUARE'], ($qso['COL_GRIDSQUARE'] ?? '') == '' ? $qso['COL_VUCC_GRIDS'] : $qso['COL_GRIDSQUARE'], $measurement_base, $var_dist, $custom_date_format);
