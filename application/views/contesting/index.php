@@ -30,6 +30,11 @@
 									} ?>
                                 </select>
                             </div>
+
+                            <label class="col-auto control-label" for="operatorcall">Operator Callsign</label>
+                            <div class="col-auto">
+                                <input type="text" class="form-control form-control-sm" id="operator_callsign" name="operator_callsign" value='<?php echo $this->session->userdata('operator_callsign'); ?>' required>
+                            </div>
                         </div>
 
                         <div class="form-row">
