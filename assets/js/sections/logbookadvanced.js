@@ -696,6 +696,7 @@ function mapQsos(form) {
 	elements.each(function() {
 		let id = $(this).first().closest('tr').data('qsoID')
 		id_list.push(id);
+		unselectQsoID(id);
 	});
 
 	$("#qsoList").attr("Hidden", true);
