@@ -132,7 +132,7 @@ class Logbooks extends CI_Controller {
 	public function save_publicsearch() {
 		$this->load->model('logbooks_model');
 			$returndata = $this->logbooks_model->save_public_search($this->input->post('public_search'), $this->input->post('logbook_id'));
-			echo "<div class=\"alert alert-success\" role=\"alert\">Public Search Setttings Saved</div>";
+			echo "<div class=\"alert alert-success\" role=\"alert\">Public Search Settings Saved</div>";
 	}
 
 	public function save_publicslug() {
