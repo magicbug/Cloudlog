@@ -23,12 +23,6 @@ class Qra {
 
 	// calculate  the bearing between two squares
 	function bearing($tx, $rx, $unit = 'M') {
-		if(strlen($tx) > 6) {
-			$tx = substr($tx, 0, 6);
-		}
-		if(strlen($rx) > 6) {
-			$rx = substr($rx, 0, 6);
-		}
 		$my = qra2latlong($tx);
 		$stn = qra2latlong($rx);
 
@@ -44,12 +38,6 @@ class Qra {
 	*
 	*/
 	function distance($tx, $rx, $unit = 'M') {
-		if(strlen($tx) > 6) {
-			$tx = substr($tx, 0, 6);
-		}
-		if(strlen($rx) > 6) {
-			$rx = substr($rx, 0, 6);
-		}
 		// Calc LatLongs
 		$my = qra2latlong($tx);
 		$stn = qra2latlong($rx);
@@ -176,9 +164,34 @@ function get_bearing($lat1, $lon1, $lat2, $lon2) {
 }
 
 function qra2latlong($strQRA) {
-    if (strpos($strQRA, ',') !== false) {
-        $gridsquareArray = explode(',', $strQRA);
-        $strQRA = $gridsquareArray[0];
+    if (substr_count($strQRA, ',') == 3) {
+       // Handle grid corners
+       $grids = explode(',', $strQRA);
+       $coords = array(0, 0);
+       for($i=0; $i<4; $i++) {
+           $cornercoords[$i] = qra2latlong($grids[$i]);
+           $coords[0] += $cornercoords[$i][0];
+           $coords[1] += $cornercoords[$i][1];
+       }
+       return array (round($coords[0]/4), round($coords[1]/4));
+    } else if (substr_count($strQRA, ',') == 1) {
+       // Handle grid lines
+       $grids = explode(',', $strQRA);
+       $coords = array(0, 0);
+       for($i=0; $i<2; $i++) {
+           $linecoords[$i] = qra2latlong($grids[$i]);
+       }
+       if ($linecoords[0][0] != $linecoords[1][0]) {
+          $coords[0] = round((($linecoords[0][0] + $linecoords[1][0]) / 2),1);
+       } else {
+          $coords[0] = round($linecoords[0][0],1);
+       }
+       if ($linecoords[0][1] != $linecoords[1][1]) {
+          $coords[1] = round(($linecoords[0][1] + $linecoords[1][1]) / 2);
+       } else {
+          $coords[1] = round($linecoords[0][1]);
+       }
+       return $coords;
     }
 
     if ((strlen($strQRA) % 2 == 0) && (strlen($strQRA) <= 8)) {	// Check if QRA is EVEN (the % 2 does that) and smaller/equal 8
@@ -199,7 +212,6 @@ function qra2latlong($strQRA) {
         $f = ord($f) - ord('A');
         $g = ord($g) - ord('0');
         $h = ord($h) - ord('0');
-
 
 	$nLong = ($a*20) + ($c*2) + (($e+0.5)/12) + (($g-5)/120) - 180;	// the 4th pair is "in the middle", so we've to substract 5
 	$nLat = ($b*10) + $d + (($f+0.5)/24) + (($h-5)/240) - 90;
