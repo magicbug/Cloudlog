@@ -362,6 +362,10 @@ function calculateQrb() {
 }
 
 function validateLocator(locator) {
+    vucc_gridno = locator.split(",").length;
+    if(vucc_gridno == 3 || vucc_gridno > 4) {
+        return false;
+    }
     if(locator.length < 4 && !(/^[a-rA-R]{2}[0-9]{2}[a-xA-X]{0,2}[0-9]{0,2}[a-xA-X]{0,2}$/.test(locator))) {
         return false;
     }
