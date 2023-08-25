@@ -235,6 +235,7 @@ class Logbook extends CI_Controller {
 		if($type == "SAT") {
 			$this->db->where('COL_PROP_MODE', 'SAT');
 		} else {
+			$CI->load->model('logbook_model');
 			$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
 			$this->db->where('COL_BAND', $band);
 			$this->db->where('COL_PROP_MODE !=','SAT');
