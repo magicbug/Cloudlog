@@ -829,7 +829,20 @@ $("#locator").keyup(function(){
 				markers.addLayer(marker).addTo(mymap);
 			})
 
-			$('#locator_info').load(base_url +"index.php/logbook/searchbearing/" + $(this).val() + "/" + $('#stationProfile').val()).fadeIn("slow");
+			$.ajax({
+				url: base_url + 'index.php/logbook/searchbearing',
+				type: 'post',
+				data: {
+					grid: $(this).val(),
+					stationProfile: $('#stationProfile').val()
+				},
+				success: function(data) {
+					$('#locator_info').html(data).fadeIn("slow");
+				},
+				error: function() {
+					$('#locator_info').text("Error loading bearing and distance").fadeIn("slow");
+				},
+			});
 			$.get(base_url + 'index.php/logbook/searchdistance/' + $(this).val() + "/" + $('#stationProfile').val(), function(result) {
 				document.getElementById("distance").value = result;
 			});

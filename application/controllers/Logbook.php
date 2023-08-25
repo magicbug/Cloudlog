@@ -878,7 +878,9 @@ class Logbook extends CI_Controller {
 
 
 	/* return station bearing */
-	function searchbearing($locator, $station_id = null) {
+	function searchbearing() {
+			$locator = xss_clean($this->input->post('grid'));
+			$station_id = xss_clean($this->input->post('stationProfile'));
 			$this->load->library('Qra');
 
 			if($locator != null) {
