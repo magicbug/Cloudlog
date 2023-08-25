@@ -10,7 +10,7 @@ thead>tr>td {
         float:right;
 }
 
-#edit_qso {
+#edit_qso:not(.btn) {
         float:left;
 }
 

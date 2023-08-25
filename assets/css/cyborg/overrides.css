@@ -123,7 +123,7 @@ path.grid-worked {
         float:right;
 }
 
-#edit_qso {                                                                                                                                                                                                                  float:left;
+#edit_qso:not(.btn) {                                                                                                                                                                                                                  float:left;
 }
 
 .qso_call {

@@ -114,7 +114,7 @@ div.alert-success a, div.alert-danger a, div.alert-danger {
         float:right;
 }
 
-#edit_qso {
+#edit_qso:not(.btn) {
         float:left;
 }
 

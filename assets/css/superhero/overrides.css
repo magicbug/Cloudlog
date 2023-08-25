@@ -133,6 +133,6 @@ th { text-align: left !important; }
         float:right;
 }
 
-#edit_qso {
+#edit_qso:not(.btn) {
         float:left;
 }
