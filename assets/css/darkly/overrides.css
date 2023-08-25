@@ -117,3 +117,18 @@ div.alert-success a, div.alert-danger a, div.alert-danger {
 #edit_qso {
         float:left;
 }
+
+.qso_call {
+        float:left;
+        width:140px;
+}
+
+.qso_icons {
+        float:right;
+}
+
+td { text-align: left !important; }
+th { text-align: left !important; }
+
+#qsoList_wrapper th { text-align: left !important; white-space: nowrap;}
+#qsoList_wrapper td { text-align: left !important; white-space: nowrap;}
