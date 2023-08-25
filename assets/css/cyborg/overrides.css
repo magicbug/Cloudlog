@@ -135,8 +135,5 @@ path.grid-worked {
         float:right;
 }
 
-td { text-align: left !important; }
-th { text-align: left !important; }
-
 #qsoList_wrapper th { text-align: left !important; white-space: nowrap;}
 #qsoList_wrapper td { text-align: left !important; white-space: nowrap;}
