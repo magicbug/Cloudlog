@@ -109,3 +109,11 @@ div.alert-success a, div.alert-danger a, div.alert-danger {
 .selectize-dropdown, .selectize-dropdown.form-control {
 	border-radius: 0;
 }
+
+#lotw_badge {
+        float:right;
+}
+
+#edit_qso {
+        float:left;
+}
