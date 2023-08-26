@@ -58,4 +58,5 @@ $lang['lotw_cert_expiring'] = 'At least one of your LoTW certificates is about t
 $lang['lotw_cert_expired'] = 'At least one of your LoTW certificates is expired!';
 
 // Lotw User
-$lang['lotw_user'] = 'This station uses LoTW. The last upload was';
+$lang['lotw_user'] = 'This station uses LoTW.';
+$lang['lotw_last_upload'] = 'Last upload';
