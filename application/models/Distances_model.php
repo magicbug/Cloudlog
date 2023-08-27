@@ -25,7 +25,7 @@ class Distances_model extends CI_Model
 			if ($station_gridsquare != null) {
 				$gridsquare = explode(',', $station_gridsquare); // We need to convert to an array, since a user can enter several gridsquares
 
-				$this->db->select('col_call callsign, col_gridsquare grid');
+				$this->db->select('COL_PRIMARY_KEY,COL_DISTANCE,col_call callsign, col_gridsquare grid');
 				$this->db->where('LENGTH(col_gridsquare) >', 0);
 
 				if ($postdata['band'] == 'sat') {
@@ -121,80 +121,82 @@ class Distances_model extends CI_Model
     // then calculates distance between homelocator and locator given in qso.
     // It builds an array, which has 50km intervals, then inputs each length into the correct spot
     // The function returns a json-encoded array.
-    function plot($qsoArray, $gridsquare, $measurement_base) {
+	function plot($qsoArray, $gridsquare, $measurement_base) {
 
-        $stationgrid = strtoupper($gridsquare[0]);              // We use only the first entered gridsquare from the active profile
-        if (strlen($stationgrid) == 4) $stationgrid .= 'MM';    // adding center of grid if only 4 digits are specified
+		$stationgrid = strtoupper($gridsquare[0]);              // We use only the first entered gridsquare from the active profile
+		if (strlen($stationgrid) == 4) $stationgrid .= 'MM';    // adding center of grid if only 4 digits are specified
 
-        switch ($measurement_base) {
-            case 'M':
-                $unit = "mi";
-                $dist = '13000';
-                break;
-            case 'K':
-                $unit = "km";
-                $dist = '20000';
-                break;
-            case 'N':
-                $unit = "nmi";
-                $dist = '11000';
-                break;
-            default:
-                $unit = "km";
-                $dist = '20000';
-        }
+		switch ($measurement_base) {
+		case 'M':
+			$unit = "mi";
+			$dist = '13000';
+			break;
+		case 'K':
+			$unit = "km";
+			$dist = '20000';
+			break;
+		case 'N':
+			$unit = "nmi";
+			$dist = '11000';
+			break;
+		default:
+			$unit = "km";
+			$dist = '20000';
+		}
 
-        if (!$this->valid_locator($stationgrid)) {
-            header('Content-Type: application/json');
-            echo json_encode(array('Error' => 'Error. There is a problem with the gridsquare set in your profile!'));
-            exit;
-        }
-        else {
-            // Making the array we will use for plotting, we save occurrences of the length of each qso in the array
-            $j = 0;
-            for ($i = 0; $j < $dist; $i++) {
-                $dataarray[$i]['dist'] =  $j . $unit . ' - ' . ($j + 50) . $unit;
-                $dataarray[$i]['count'] = 0;
-                $dataarray[$i]['calls'] = '';
-                $dataarray[$i]['callcount'] = 0;
-                $j += 50;
-            }
+		if (!$this->valid_locator($stationgrid)) {
+			header('Content-Type: application/json');
+			echo json_encode(array('Error' => 'Error. There is a problem with the gridsquare set in your profile!'));
+			exit;
+		} else {
+			// Making the array we will use for plotting, we save occurrences of the length of each qso in the array
+			$j = 0;
+			for ($i = 0; $j < $dist; $i++) {
+				$dataarray[$i]['dist'] =  $j . $unit . ' - ' . ($j + 50) . $unit;
+				$dataarray[$i]['count'] = 0;
+				$dataarray[$i]['calls'] = '';
+				$dataarray[$i]['callcount'] = 0;
+				$j += 50;
+			}
 
-            $qrb = array (					                                            // Used for storing the QSO with the longest QRB
-                'Callsign' => '',
-                'Grid' => '',
-                'Distance' => '',
-                'Qsos' => '',
-                'Grids' => ''
-            );
+			$qrb = array (					                                            // Used for storing the QSO with the longest QRB
+				'Callsign' => '',
+				'Grid' => '',
+				'Distance' => '',
+				'Qsos' => '',
+				'Grids' => ''
+			);
 
-            foreach ($qsoArray as $qso) {
-                $qrb['Qsos']++;                                                        // Counts up number of qsos
-                $bearingdistance = $this->bearing_dist($stationgrid, $qso['grid'], $measurement_base);     // Calculates distance based on grids
-                $arrayplacement = (int)($bearingdistance / 50);                                // Resolution is 50, calculates where to put result in array
-                if ($bearingdistance > $qrb['Distance']) {                              // Saves the longest QSO
-                    $qrb['Distance'] = $bearingdistance;
-                    $qrb['Callsign'] = $qso['callsign'];
-                    $qrb['Grid'] = $qso['grid'];
-                }
-                $dataarray[$arrayplacement]['count']++;                                               // Used for counting total qsos plotted
-                if ($dataarray[$arrayplacement]['callcount'] < 5) {                     // Used for tooltip in graph, set limit to 5 calls shown
-                    if ($dataarray[$arrayplacement]['callcount'] > 0) {
-                        $dataarray[$arrayplacement]['calls'] .= ', ';
-                    }
-                    $dataarray[$arrayplacement]['calls'] .= $qso['callsign'];
-                    $dataarray[$arrayplacement]['callcount']++;
-                }
-            }
+			foreach ($qsoArray as $qso) {
+				$qrb['Qsos']++;                                                        // Counts up number of qsos
+				$bearingdistance = $this->bearing_dist($stationgrid, $qso['grid'], $measurement_base);     // Calculates distance based on grids
+				if (($qso['COL_DISTANCE'] ?? -1) != $bearingdistance) {
+					log_message("error",$qso['COL_PRIMARY_KEY'].' from '.$qso['COL_DISTANCE'].' to '.$bearingdistance);
+				}
+				$arrayplacement = (int)($bearingdistance / 50);                                // Resolution is 50, calculates where to put result in array
+				if ($bearingdistance > $qrb['Distance']) {                              // Saves the longest QSO
+					$qrb['Distance'] = $bearingdistance;
+					$qrb['Callsign'] = $qso['callsign'];
+					$qrb['Grid'] = $qso['grid'];
+				}
+				$dataarray[$arrayplacement]['count']++;                                               // Used for counting total qsos plotted
+				if ($dataarray[$arrayplacement]['callcount'] < 5) {                     // Used for tooltip in graph, set limit to 5 calls shown
+					if ($dataarray[$arrayplacement]['callcount'] > 0) {
+						$dataarray[$arrayplacement]['calls'] .= ', ';
+					}
+					$dataarray[$arrayplacement]['calls'] .= $qso['callsign'];
+					$dataarray[$arrayplacement]['callcount']++;
+				}
+			}
 
 			$data['ok'] = 'OK';
 			$data['qrb'] = $qrb;
 			$data['qsodata'] = $dataarray;
 			$data['unit'] = $unit;
 
-            return $data;
-        }
-    }
+			return $data;
+		}
+	}
 
     /*
      * Checks the validity of the locator
