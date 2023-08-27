@@ -3184,15 +3184,15 @@ class Logbook_model extends CI_Model {
         if ($markHrd != null) {
             $input_hrdlog_qso_upload_status = 'Y';
             $input_hrdlog_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
+	} else {
+            $input_hrdlog_qso_upload_date = (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null;
+            $input_hrdlog_qso_upload_status = (!empty($record['hrdlog_qso_upload_status'])) ? $record['hrdlog_qso_upload_status'] : '';
 	}
 
         if ($markQrz != null) {
             $input_qrzcom_qso_upload_status = 'Y';
             $input_qrzcom_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
-        }
-        else {
-            $input_hrdlog_qso_upload_date = (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null;
-            $input_hrdlog_qso_upload_status = (!empty($record['hrdlog_qso_upload_status'])) ? $record['hrdlog_qso_upload_status'] : '';
+        } else {
             $input_qrzcom_qso_upload_date = (!empty($record['qrzcom_qso_upload_date'])) ? $record['qrzcom_qso_upload_date'] : null;
             $input_qrzcom_qso_upload_status = (!empty($record['qrzcom_qso_upload_status'])) ? $record['qrzcom_qso_upload_status'] : '';
         }
