@@ -35,10 +35,10 @@ $lang['account_timezone'] = 'Časové pásmo';
 $lang['account_date_format'] = 'Formát data';
 $lang['account_measurement_preferences'] = 'Nastavení měření';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Vyberte, jak chcete, aby byla data zobrazena při přihlášení do vašeho účtu.';
-$lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Vyberte, v jakých jednotkách se budou zobrazovat vzdálenosti.'
+$lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Vyberte, v jakých jednotkách se budou zobrazovat vzdálenosti.';
 
 $lang['account_main_menu'] = 'Hlavní menu';
-$lang['account_show_notes_in_the_main_menu'] = 'Zobrazovat poznámky v hlavním menu.'
+$lang['account_show_notes_in_the_main_menu'] = 'Zobrazovat poznámky v hlavním menu.';
 
 $lang['account_main_menu'] = 'Hlavní menu';
 $lang['account_show_notes_in_the_main_menu'] = 'Zobrazovat poznámky v hlavním menu.';
@@ -48,14 +48,14 @@ $lang['account_if_set_gridsquare_is_fetched_based_on_location_name'] = 'Pokud je
 $lang['account_sota_auto_lookup_gridsquare_and_name_for_summit'] = 'Automatické vyhledávání lokátoru a jména pro SOTA vrchol.';
 $lang['account_wwff_auto_lookup_gridsquare_and_name_for_reference'] = 'Automatické vyhledávání lokátoru a jména pro WWFF referenci.';
 $lang['account_pota_auto_lookup_gridsquare_and_name_for_park'] = 'Automatické vyhledávání lokátoru a jména pro POTA park.';
-$lang['account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'] = 'Pokud je nastaveno, jméno a lokátor jsou získány z API a vyplněny do umístění a lokátoru.'
+$lang['account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'] = 'Pokud je nastaveno, jméno a lokátor jsou získány z API a vyplněny do umístění a lokátoru.';
 
 $lang['account_previous_qsl_type'] = 'Předchozí typ QSL';
 $lang['account_select_the_type_of_qsl_to_show_in_the_previous_qsos_section'] = 'Vyberte typ QSL k zobrazení v sekci předchozích QSOs.';
 
 $lang['account_qrzcom_hamqthcom_images'] = 'Obrázky qrz.com/hamqth.com';
 $lang['account_show_profile_picture_of_qso_partner_from_qrzcom_hamqthcom_profile_in_the_log_qso_section'] = 'Zobrazit profilový obrázek partnera z QSO záznamu z profilu qrz.com/hamqth.com v sekci protokolu QSO.';
-$lang['account_please_set_your_qrzcom_hamqthcom_credentials_in_the_general_config_file'] = 'Prosím, nastavte své přihlašovací údaje pro qrz.com/hamqth.com v obecném konfiguračním souboru.'
+$lang['account_please_set_your_qrzcom_hamqthcom_credentials_in_the_general_config_file'] = 'Prosím, nastavte své přihlašovací údaje pro qrz.com/hamqth.com v obecném konfiguračním souboru.';
 
 $lang['account_amsat_status_upload'] = 'Nahrávání stavu AMSAT';
 $lang['account_upload_status_of_sat_qsos_to'] = 'Nahrávání stavu SAT QSOs na';
