@@ -4,17 +4,16 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 class Distances_model extends CI_Model
 {
 
-    function get_distances($postdata, $measurement_base)
-    {
+	function get_distances($postdata, $measurement_base) {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        if (!$logbooks_locations_array) {
-            header('Content-Type: application/json');
-            echo json_encode(array('Error' => 'No QSOs found to plot.'));
-            return;
-        }
+		if (!$logbooks_locations_array) {
+			header('Content-Type: application/json');
+			echo json_encode(array('Error' => 'No QSOs found to plot.'));
+			return;
+		}
 
 		$result = array();
 
@@ -41,12 +40,12 @@ class Distances_model extends CI_Model
 				$this->db->where('station_id', $station_id);
 				$queryresult = $this->db->get($this->config->item('table_name'));
 
-                if ($queryresult->result_array()) {
-                    $temp = $this->plot($queryresult->result_array(), $gridsquare, $measurement_base);
+				if ($queryresult->result_array()) {
+					$temp = $this->plot($queryresult->result_array(), $gridsquare, $measurement_base);
 
-                    $result = $this->mergeresult($result, $temp);
+					$result = $this->mergeresult($result, $temp);
 
-                }
+				}
 
 			}
 
@@ -61,13 +60,13 @@ class Distances_model extends CI_Model
 			echo json_encode(array('Error' => 'No QSOs found to plot.'));
 		}
 
-    }
+	}
 
     /*
      * We merge the result from several station_id's. They can have different gridsquares, so we need to use the correct gridsquare to calculate the correct distance.
      */
-    function mergeresult($result, $add) {
-    	if (sizeof($result) > 0) {
+	function mergeresult($result, $add) {
+		if (sizeof($result) > 0) {
 			if ($result['qrb']['Distance'] < $add['qrb']['Distance']) {
 				$result['qrb']['Distance'] = $add['qrb']['Distance'];
 				$result['qrb']['Grid'] 	   = $add['qrb']['Grid'];
@@ -77,29 +76,29 @@ class Distances_model extends CI_Model
 
 			for ($i = 0; $i <= 399; $i++) {
 
-                if(isset($result['qsodata'][$i]['count'])) {
-				    $result['qsodata'][$i]['count'] += $add['qsodata'][$i]['count'];
-                }
+				if(isset($result['qsodata'][$i]['count'])) {
+					$result['qsodata'][$i]['count'] += $add['qsodata'][$i]['count'];
+				}
 
-                if(isset($result['qsodata'][$i]['callcount'])) {
-                    if ($result['qsodata'][$i]['callcount'] < 5 && $add['qsodata'][$i]['callcount'] > 0) {
-                        $calls = explode(',', $add['qsodata'][$i]['calls']);
-                        foreach ($calls as $c) {
-                            if ($result['qsodata'][$i]['callcount'] < 5) {
-                                if ($result['qsodata'][$i]['callcount'] > 0) {
-                                    $result['qsodata'][$i]['calls'] .= ', ';
-                                }
-                                $result['qsodata'][$i]['calls'] .= $c;
-                                $result['qsodata'][$i]['callcount']++;
-                            }
-                        }
-                    }
-                }
+				if(isset($result['qsodata'][$i]['callcount'])) {
+					if ($result['qsodata'][$i]['callcount'] < 5 && $add['qsodata'][$i]['callcount'] > 0) {
+						$calls = explode(',', $add['qsodata'][$i]['calls']);
+						foreach ($calls as $c) {
+							if ($result['qsodata'][$i]['callcount'] < 5) {
+								if ($result['qsodata'][$i]['callcount'] > 0) {
+									$result['qsodata'][$i]['calls'] .= ', ';
+								}
+								$result['qsodata'][$i]['calls'] .= $c;
+								$result['qsodata'][$i]['callcount']++;
+							}
+						}
+					}
+				}
 			}
 			return $result;
 		}
 
-    	return $add;
+		return $add;
 	}
 
 	/*
@@ -108,11 +107,11 @@ class Distances_model extends CI_Model
 	function find_gridsquare($station_id) {
 		$this->db->where('station_id', $station_id);
 
-        $result = $this->db->get('station_profile')->row_array();
+		$result = $this->db->get('station_profile')->row_array();
 
-        if ($result) {
-            return $result['station_gridsquare'];
-        }
+		if ($result) {
+			return $result['station_gridsquare'];
+		}
 
 		return null;
 	}
@@ -122,7 +121,7 @@ class Distances_model extends CI_Model
     // It builds an array, which has 50km intervals, then inputs each length into the correct spot
     // The function returns a json-encoded array.
 	function plot($qsoArray, $gridsquare, $measurement_base) {
-
+		$this->load->library('Qra');
 		$stationgrid = strtoupper($gridsquare[0]);              // We use only the first entered gridsquare from the active profile
 		if (strlen($stationgrid) == 4) $stationgrid .= 'MM';    // adding center of grid if only 4 digits are specified
 
@@ -169,9 +168,9 @@ class Distances_model extends CI_Model
 
 			foreach ($qsoArray as $qso) {
 				$qrb['Qsos']++;                                                        // Counts up number of qsos
-				$bearingdistance = $this->bearing_dist($stationgrid, $qso['grid'], $measurement_base);     // Calculates distance based on grids
-				if (($qso['COL_DISTANCE'] ?? -1) != $bearingdistance) {
-					log_message("error",$qso['COL_PRIMARY_KEY'].' from '.$qso['COL_DISTANCE'].' to '.$bearingdistance);
+				$bearingdistance = $this->qra->distance($stationgrid, $qso['grid'], $measurement_base);
+				if ($bearingdistance != $qso['COL_DISTANCE']) {
+					log_message("error",$qso['COL_PRIMARY_KEY'].'/'.$qso['callsign'].' from '.$qso['COL_DISTANCE'].' to '.$bearingdistance);
 				}
 				$arrayplacement = (int)($bearingdistance / 50);                                // Resolution is 50, calculates where to put result in array
 				if ($bearingdistance > $qrb['Distance']) {                              // Saves the longest QSO
@@ -203,72 +202,17 @@ class Distances_model extends CI_Model
      * Input: locator
      * Returns: bool
      */
-    function valid_locator ($loc) {
-        $regex = '^[A-R]{2}[0-9]{2}[A-X]{2}$';
-        if (preg_match("%{$regex}%i", $loc)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+	function valid_locator ($loc) {
+		$regex = '^[A-R]{2}[0-9]{2}[A-X]{2}$';
+		if (preg_match("%{$regex}%i", $loc)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
-    /*
-     * Converts locator to latitude and longitude
-     * Input: locator
-     * Returns: array with longitude and latitude
-     */
-    function loc_to_latlon ($loc) {
-        /* lat */
-        $l[0] =
-            (ord(substr($loc, 1, 1))-65) * 10 - 90 +
-            (ord(substr($loc, 3, 1))-48) +
-            (ord(substr($loc, 5, 1))-65) / 24 + 1/48;
-        $l[0] = $this->deg_to_rad($l[0]);
-        /* lon */
-        $l[1] =
-            (ord(substr($loc, 0, 1))-65) * 20 - 180 +
-            (ord(substr($loc, 2, 1))-48) * 2 +
-            (ord(substr($loc, 4, 1))-65) / 12 + 1/24;
-        $l[1] = $this->deg_to_rad($l[1]);
-
-        return $l;
-    }
-
-    function deg_to_rad ($deg) {
-        return (M_PI * $deg/180);
-    }
-
-    function bearing_dist($loc1, $loc2, $measurement_base) {
-        $loc1 = strtoupper($loc1);
-        $loc2 = strtoupper($loc2);
-
-        if (strlen($loc1) == 4) $loc1 .= 'MM';
-        if (strlen($loc2) == 4) $loc2 .= 'MM';
-
-        if (!$this->valid_locator($loc1) || !$this->valid_locator($loc2)) {
-            return 0;
-        }
-
-        $l1 = $this->loc_to_latlon($loc1);
-        $l2 = $this->loc_to_latlon($loc2);
-
-        $co = cos($l1[1] - $l2[1]) * cos($l1[0]) * cos($l2[0]) + sin($l1[0]) * sin($l2[0]);
-        $ca = atan2(sqrt(1 - $co*$co), $co);
-
-        switch ($measurement_base) {
-            case 'M':
-                return ceil(6371*$ca/1.609344);
-            case 'K':
-                return ceil(6371*$ca);
-            case 'N':
-                return ceil(6371*$ca/1.852);
-            default:
-                return ceil(6371*$ca);
-        }
-    }
-
-	/*
+    	/*
 	 * Used to fetch QSOs from the logbook in the awards
 	 */
 	public function qso_details($distance, $band, $sat){
@@ -284,7 +228,7 @@ class Distances_model extends CI_Model
 		$this->db->where('COL_DISTANCE <=', $distarray[1]);
 		$this->db->where('LENGTH(col_gridsquare) >', 0);
 
-    	$this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
+		$this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
 
 		if ($band != 'All') {
 			if($band != "sat") {
@@ -305,7 +249,7 @@ class Distances_model extends CI_Model
 	function getdistparams($distance) {
 		$temp = explode('-', $distance);
 		$regex = '[a-zA-Z]+';
-        preg_match("%{$regex}%i", $temp[0], $unit);
+		preg_match("%{$regex}%i", $temp[0], $unit);
 
 		$result = [];
 		$result[0] = filter_var($temp[0], FILTER_SANITIZE_NUMBER_INT);
