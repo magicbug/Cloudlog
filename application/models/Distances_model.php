@@ -170,7 +170,9 @@ class Distances_model extends CI_Model
 				$qrb['Qsos']++;                                                        // Counts up number of qsos
 				$bearingdistance = $this->qra->distance($stationgrid, $qso['grid'], $measurement_base);
 				if ($bearingdistance != $qso['COL_DISTANCE']) {
-					log_message("error",$qso['COL_PRIMARY_KEY'].'/'.$qso['callsign'].' from '.$qso['COL_DISTANCE'].' to '.$bearingdistance);
+					$data = array('COL_DISTANCE' => $bearingdistance);
+	  				$this->db->where('COL_PRIMARY_KEY', $qso['COL_PRIMARY_KEY']);
+	  				$this->db->update($this->config->item('table_name'), $data);
 				}
 				$arrayplacement = (int)($bearingdistance / 50);                                // Resolution is 50, calculates where to put result in array
 				if ($bearingdistance > $qrb['Distance']) {                              // Saves the longest QSO
