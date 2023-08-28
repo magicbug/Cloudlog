@@ -307,7 +307,7 @@ CREATE TABLE `options` (
 
 -- 
 -- Dumping data for table `options` that stops the version2 trigger from firing
-INSERT INTO `options` (`option_id`, `option_name`, `option_value`, `autoload`) VALUES (NULL, 'version2_trigger', 'true', 'yes')
+INSERT INTO `options` (`option_id`, `option_name`, `option_value`, `autoload`) VALUES (NULL, 'version2_trigger', 'true', 'yes');
 
 -- ----------------------------
 -- Table structure for timezones
