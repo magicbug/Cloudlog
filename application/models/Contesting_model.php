@@ -217,8 +217,8 @@ class Contesting_model extends CI_Model {
 		if ($contest_session) {
 			$qsoarray = explode(',', $contest_session->qso);
 	
-			$date = DateTime::createFromFormat('d-m-Y H:i:s', $qsoarray[0]);
-			$date = $date->format('Y-m-d H:i:s');
+			$date = DateTime::createFromFormat('d-m-Y H:i', $qsoarray[0]);
+			$date = $date->format('Y-m-d H:i');
 	
 			$this->db->where('STATION_ID', $station_id);
 			$this->db->where('COL_CALL', xss_clean($call));
