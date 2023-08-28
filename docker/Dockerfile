@@ -1,4 +1,4 @@
-FROM php:7.4-apache                                                                                                                                         
+FROM php:8.0-apache                                                                                                                                         
 RUN touch /usr/local/etc/php/conf.d/uploads.ini \                                                                                                           
 && echo "file_uploads = On" >> /usr/local/etc/php/conf.d/uploads.ini \
 && echo "memory_limit = 64M" >> /usr/local/etc/php/conf.d/uploads.ini \
