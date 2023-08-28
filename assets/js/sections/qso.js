@@ -811,23 +811,32 @@ $("#locator").keyup(function(){
 		}
 
 		if(qra_input.length >= 4 && $(this).val().length > 0) {
-			$.getJSON(base_url + 'index.php/logbook/qralatlngjson/' + $(this).val(), function(result)
-			{
-				// Set Map to Lat/Long
-				markers.clearLayers();
-				if (typeof result !== "undefined") {
-					var redIcon = L.icon({
-						iconUrl: icon_dot_url,
-						iconSize:     [18, 18], // size of the icon
-					});
+			$.ajax({
+				url: base_url + 'index.php/logbook/qralatlngjson',
+				type: 'post',
+				data: {
+					qra: $(this).val(),
+				},
+				success: function(data) {
+					// Set Map to Lat/Long
+					result = JSON.parse(data);
+					markers.clearLayers();
+					if (typeof result[0] !== "undefined" && typeof result[1] !== "undefined") {
+						var redIcon = L.icon({
+							iconUrl: icon_dot_url,
+							iconSize:     [18, 18], // size of the icon
+						});
 
-					var marker = L.marker([result[0], result[1]], {icon: redIcon});
-					mymap.setZoom(8);
-					mymap.panTo([result[0], result[1]]);
-					mymap.setView([result[0], result[1]], 8);
-				}
-				markers.addLayer(marker).addTo(mymap);
-			})
+						var marker = L.marker([result[0], result[1]], {icon: redIcon});
+						mymap.setZoom(8);
+						mymap.panTo([result[0], result[1]]);
+						mymap.setView([result[0], result[1]], 8);
+					   markers.addLayer(marker).addTo(mymap);
+					}
+				},
+				error: function() {
+				},
+			});
 
 			$.ajax({
 				url: base_url + 'index.php/logbook/searchbearing',

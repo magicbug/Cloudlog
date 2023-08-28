@@ -1012,7 +1012,9 @@ class Logbook extends CI_Controller {
 		return $latlng;
 	}
 
-	function qralatlngjson($qra) {
+	function qralatlngjson() {
+		$qra = xss_clean($this->input->post('qra'));
+		log_message('debug','TEST QRA '.$qra);
 		$this->load->library('Qra');
 		$latlng = $this->qra->qra2latlong($qra);
 		print json_encode($latlng);
