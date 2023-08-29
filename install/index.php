@@ -19,9 +19,9 @@ function delDir($dir) {
 		}
     }
 	// This step may be not needed
-    if (file_exists($dir)) {
-		rmdir( $dir );
-	}
+    // if (file_exists($dir)) {
+	// 	rmdir( $dir );
+	// }
 }
 
 if (file_exists($db_file_path)) {
