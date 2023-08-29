@@ -917,7 +917,9 @@ class Logbook extends CI_Controller {
 	}
 
 	/* return distance */
-	function searchdistance($locator, $station_id = null) {
+	function searchdistance() {
+			$locator = xss_clean($this->input->post('grid'));
+			$station_id = xss_clean($this->input->post('stationProfile'));
 			$this->load->library('Qra');
 
 			if($locator != null) {
