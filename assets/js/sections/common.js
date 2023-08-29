@@ -152,7 +152,20 @@ function qso_edit(id) {
 
                     $('#locator').change(function(){
                         if ($(this).val().length >= 4) {
-                            $('#locator_info').load(base_url + "index.php/logbook/searchbearing/" + $(this).val() + "/" + $('#stationProfile').val()).fadeIn("slow");
+                            $.ajax({
+                               url: base_url + 'index.php/logbook/searchbearing',
+                               type: 'post',
+                               data: {
+                                  grid: $(this).val(),
+                                  stationProfile: $('#stationProfile').val()
+                               },
+                               success: function(data) {
+                                  $('#locator_info').html(data).fadeIn("slow");
+                               },
+                               error: function() {
+                                  $('#locator_info').text("Error loading bearing!").fadeIn("slow");
+                               },
+                            });
                             $.ajax({
                                url: base_url + 'index.php/logbook/searchdistance',
                                type: 'post',
