@@ -863,7 +863,7 @@ $("#locator").keyup(function(){
 					document.getElementById("distance").value = data;
 				},
 				error: function() {
-					document.getElementById("distance").value = 'Error calculating distance!';
+					document.getElementById("distance").value = null;
 				},
 			});
 		}
