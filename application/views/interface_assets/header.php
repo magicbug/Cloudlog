@@ -198,7 +198,7 @@
 		<form method="post" action="<?php echo site_url('search'); ?>" class="form-inline">
 		<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
 
-		<button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> <?php echo lang('menu_search_button'); ?></button>
+		<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
 		</form>
 	<?php } ?>
 
