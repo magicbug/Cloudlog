@@ -154,8 +154,8 @@ class Eqslmethods_model extends CI_Model {
     }
 
     // Update a QSO with eQSL QSL info
-    // We could also probably use this use this: http://eqsl.cc/qslcard/VerifyQSO.txt
-    // http://www.eqsl.cc/qslcard/ImportADIF.txt
+    // We could also probably use this use this: https://eqsl.cc/qslcard/VerifyQSO.txt
+    // https://www.eqsl.cc/qslcard/ImportADIF.txt
     function eqsl_update($datetime, $callsign, $band, $mode, $qsl_status,$station_callsign) {
         $data = array(
             'COL_EQSL_QSLRDATE' => date('Y-m-d H:i:s'), // eQSL doesn't give us a date, so let's use current
