@@ -42,7 +42,9 @@ class Logbookadvanced extends CI_Controller {
 		$data['hasDatePicker'] = true;
 
 		$userOptions = $this->user_options_model->get_options('LogbookAdvanced')->result();
-		$data['options'] = $userOptions[0]->option_value;
+		if (isset($userOptions[0])) {
+			$data['options'] = $userOptions[0]->option_value;
+		}
 
 		$pageData = [];
 		$pageData['datePlaceholder'] = 'DD/MM/YYYY';
@@ -412,8 +414,12 @@ class Logbookadvanced extends CI_Controller {
 	public function userOptions() {
 		$this->load->model('user_options_model');
 		$userOptions = $this->user_options_model->get_options('LogbookAdvanced')->result();
-		$data['options'] = $options = json_decode($userOptions[0]->option_value);
-        $this->load->view('logbookadvanced/useroptions', $data);
+		if (isset($userOptions[0])) {
+			$data['options'] = $options = json_decode($userOptions[0]->option_value);
+		} else {
+			$data['options'] = null;
+		}
+		$this->load->view('logbookadvanced/useroptions', $data);
 	}
 
 	public function setUserOptions() {

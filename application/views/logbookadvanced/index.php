@@ -5,7 +5,12 @@
  *
  */
 var custom_date_format = "<?php echo $custom_date_format ?>";
-<?php echo "var user_options = $options;"; ?>
+<?php
+if (!isset($options)) {
+   $options = "{\"datetime\":{\"show\":\"true\"},\"de\":{\"show\":\"true\"},\"dx\":{\"show\":\"true\"},\"mode\":{\"show\":\"true\"},\"rstr\":{\"show\":\"true\"},\"rsts\":{\"show\":\"true\"},\"band\":{\"show\":\"true\"},\"myrefs\":{\"show\":\"true\"},\"refs\":{\"show\":\"true\"},\"name\":{\"show\":\"true\"},\"qslvia\":{\"show\":\"true\"},\"qsl\":{\"show\":\"true\"},\"lotw\":{\"show\":\"true\"},\"eqsl\":{\"show\":\"true\"},\"qslmsg\":{\"show\":\"true\"},\"dxcc\":{\"show\":\"true\"},\"state\":{\"show\":\"true\"},\"cqzone\":{\"show\":\"true\"},\"iota\":{\"show\":\"true\"}}";
+}
+echo "var user_options = $options;";
+?>
 </script>
 <style>
 /*Legend specific*/
