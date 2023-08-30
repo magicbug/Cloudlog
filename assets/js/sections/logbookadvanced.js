@@ -517,6 +517,8 @@ $(document).ready(function () {
 							$('#optionButton').prop("disabled", false);
 							$('#closeButton').prop("disabled", true);
 							saveOptions();
+							dialogItself.close();
+							location.reload();
 						}
 					},
 					{
