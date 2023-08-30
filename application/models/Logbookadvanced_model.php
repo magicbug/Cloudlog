@@ -2,11 +2,8 @@
 use Cloudlog\QSLManager\QSO;
 
 class Logbookadvanced_model extends CI_Model {
-  /*
-   * @param array $searchCriteria
-   * @return array
-   */
-  public function searchQsos($searchCriteria) : array {
+
+	public function searchDb($searchCriteria) {
 		$conditions = [];
 		$binding = [$searchCriteria['user_id']];
 
@@ -161,6 +158,10 @@ class Logbookadvanced_model extends CI_Model {
                 }
         }
 
+		if (($searchCriteria['ids'] ?? '') !== '') {
+			$conditions[] = "qsos.COL_PRIMARY_KEY in (".implode(",",$searchCriteria['ids']).")";
+		}
+
 		$where = trim(implode(" AND ", $conditions));
 		if ($where != "") {
 			$where = "AND $where";
@@ -178,7 +179,6 @@ class Logbookadvanced_model extends CI_Model {
 				$where2 .= ' and x.qslcount is null';
 			}
 		}
-
 
 		$sql = "
 			SELECT *
@@ -202,12 +202,22 @@ class Logbookadvanced_model extends CI_Model {
 
         $results = $data->result('array');
 
+		return $results;
+	}
+
+  /*
+   * @param array $searchCriteria
+   * @return array
+   */
+  public function searchQsos($searchCriteria) : array {
+		$results = $this->searchDb($searchCriteria);
+
         $qsos = [];
         foreach ($results as $data) {
             $qsos[] = new QSO($data);
         }
 
-	    return $qsos;
+		return $qsos;
 	}
 
     public function getQsosForAdif($ids, $user_id, $sortorder = null) : object {

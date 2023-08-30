@@ -117,3 +117,23 @@ path.grid-worked {
 .selectize-dropdown, .selectize-dropdown.form-control {
 	border-radius: 0;
 }
+
+
+#lotw_badge {
+        float:right;
+}
+
+#edit_qso:not(.btn) {                                                                                                                                                                                                                  float:left;
+}
+
+.qso_call {
+        float:left;
+        width:140px;
+}
+
+.qso_icons {
+        float:right;
+}
+
+#qsoList_wrapper th { text-align: left !important; white-space: nowrap;}
+#qsoList_wrapper td { text-align: left !important; white-space: nowrap;}

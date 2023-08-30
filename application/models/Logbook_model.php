@@ -195,7 +195,7 @@ class Logbook_model extends CI_Model {
             'COL_QSL_RCVD_VIA' => $this->input->post('qsl_rcvd_method'),
             'COL_QSL_VIA' => $this->input->post('qsl_via'),
             'COL_QSLMSG' => $this->input->post('qslmsg'),
-            'COL_OPERATOR' => $this->session->userdata('user_callsign'),
+            'COL_OPERATOR' => $this->input->post('operator_callsign') ?? $this->session->userdata('operator_callsign'),
             'COL_QTH' => $this->input->post('qth'),
             'COL_PROP_MODE' => $prop_mode,
             'COL_IOTA' => $this->input->post('iota_ref')  == null ? '' : trim($this->input->post('iota_ref')),
@@ -3184,15 +3184,15 @@ class Logbook_model extends CI_Model {
         if ($markHrd != null) {
             $input_hrdlog_qso_upload_status = 'Y';
             $input_hrdlog_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
+	} else {
+            $input_hrdlog_qso_upload_date = (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null;
+            $input_hrdlog_qso_upload_status = (!empty($record['hrdlog_qso_upload_status'])) ? $record['hrdlog_qso_upload_status'] : '';
 	}
 
         if ($markQrz != null) {
             $input_qrzcom_qso_upload_status = 'Y';
             $input_qrzcom_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
-        }
-        else {
-            $input_hrdlog_qso_upload_date = (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null;
-            $input_hrdlog_qso_upload_status = (!empty($record['hrdlog_qso_upload_status'])) ? $record['hrdlog_qso_upload_status'] : '';
+        } else {
             $input_qrzcom_qso_upload_date = (!empty($record['qrzcom_qso_upload_date'])) ? $record['qrzcom_qso_upload_date'] : null;
             $input_qrzcom_qso_upload_status = (!empty($record['qrzcom_qso_upload_status'])) ? $record['qrzcom_qso_upload_status'] : '';
         }

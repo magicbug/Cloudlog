@@ -11,6 +11,7 @@ class Migration_add_version_two_trigger_to_options extends CI_Migration {
 
     public function up()
     {
+
         $data = array(
             array('option_name' => "version2_trigger", 'option_value' => "false", 'autoload' => "yes"),
         );
@@ -19,6 +20,7 @@ class Migration_add_version_two_trigger_to_options extends CI_Migration {
         if($query->num_rows() == 0) {
             $this->db->insert_batch('options', $data);
         }
+
     }
 
     public function down()

@@ -5,3 +5,23 @@ thead>tr>td {
 .selectize-input {
     border: 1px solid #ced4da;
 }
+
+#lotw_badge {
+        float:right;
+}
+
+#edit_qso:not(.btn) {
+        float:left;
+}
+
+.qso_call {
+        float:left;
+        width:140px;
+}
+
+.qso_icons {
+        float:right;
+}
+
+#qsoList_wrapper th { text-align: left !important; white-space: nowrap;}
+#qsoList_wrapper td { text-align: left !important; white-space: nowrap;}

@@ -277,13 +277,13 @@ class eqsl extends CI_Controller {
 		return $table;
 	}
 
-	// Build out the ADIF info string according to specs http://eqsl.cc/qslcard/ADIFContentSpecs.cfm
+	// Build out the ADIF info string according to specs https://eqsl.cc/qslcard/ADIFContentSpecs.cfm
 	function generateAdif($qsl, $data) {
 		$COL_QSO_DATE = date('Ymd',strtotime($qsl['COL_TIME_ON']));
 		$COL_TIME_ON = date('Hi',strtotime($qsl['COL_TIME_ON']));
 		
 		# Set up the single record file
-		$adif = "http://www.eqsl.cc/qslcard/importADIF.cfm?";
+		$adif = "https://www.eqsl.cc/qslcard/importADIF.cfm?";
 		$adif .= "ADIFData=CloudlogUpload%20";
 		
 		/* Handy reference of escaping chars

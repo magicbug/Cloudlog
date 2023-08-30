@@ -34,7 +34,17 @@
           <li class="nav-item">
             <a class="nav-link" id="qsl-tab" data-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false"><?php echo lang('gen_hamradio_qsl'); ?></a>
           </li>
-        </ul>
+	
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" id="fav_item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-star"></i></a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#" id="fav_add"><?php echo lang('fav_add'); ?></a>
+      <div class="dropdown-divider"></div>
+      <div id="fav_menu"></div>
+    </div>
+  </li>
+
+	        </ul>
       </div>
 
       <div class="card-body">
@@ -65,7 +75,7 @@
                 <div class="form-group col-md-9">
                   <label for="callsign"><?php echo lang('gen_hamradio_callsign'); ?></label><?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>&nbsp;<i id="check_cluster" data-toggle="tooltip" data-original-title="Search DXCluster for latest Spot" class="fas fa-search"></i> <?php } ?>
                   <input type="text" class="form-control" id="callsign" name="callsign" required>
-                  <small id="callsign_info" class="badge badge-secondary"></small> <small id="lotw_info" class="badge badge-success"></small>
+                  <small id="callsign_info" class="badge badge-secondary"></small> <a id="lotw_link"><small id="lotw_info" class="badge badge-success"></small></a>
                 </div>
                 <div class="form-group col-md-3 align-self-center">
                   <small id="qrz_info" class="badge badge-secondary"></small>
@@ -211,7 +221,13 @@
               <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php if ($this->session->userdata('transmit_power')) { echo $this->session->userdata('transmit_power'); } else { echo $power; } ?>" />
               <small id="powerHelp" class="form-text text-muted"><?php echo lang('qso_transmit_power_helptext'); ?></small>
             </div>
-          </div>
+
+            <div class="form-group">
+              <label for="operator_callsign"><?php echo lang('qso_operator_callsign'); ?></label>
+              <input type="text" class="form-control" id="operator_callsign" name="operator_callsign" value="<?php if ($this->session->userdata('operator_callsign')) { echo $this->session->userdata('operator_callsign'); } ?>" />
+            </div>
+
+        </div>
 
           <!-- General Items -->
           <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">

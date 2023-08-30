@@ -74,7 +74,7 @@
 			<option value="All">All</option>
                     <?php
                     foreach($modes as $mode){
-                        if ($mode->submode == null) {
+                        if ($mode->submode ?? '' == '') {
                             echo '<option value="' . $mode . '">' . strtoupper($mode) . '</option>'."\n";
                         }
                     }
