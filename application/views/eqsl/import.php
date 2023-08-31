@@ -30,7 +30,7 @@
 			    Import from file...
 			  </label>
  			  <br><br>
-			  <p>Upload the Exported ADIF file from eQSL from the <a href="http://eqsl.cc/qslcard/DownloadInBox.cfm" target="_blank">Download Inbox</a> page, to mark QSOs as confirmed on eQSL.</p>
+			  <p>Upload the Exported ADIF file from eQSL from the <a href="https://eqsl.cc/qslcard/DownloadInBox.cfm" target="_blank">Download Inbox</a> page, to mark QSOs as confirmed on eQSL.</p>
 					<p><span class="label important">Important</span> Log files must have the file type .adi</p>
 					<input type="file" name="userfile" size="20" />
 			  <br/><br/>

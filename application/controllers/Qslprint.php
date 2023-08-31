@@ -114,8 +114,8 @@ class QSLPrint extends CI_Controller {
 		foreach ($myData->result() as $qso) {
 			fputcsv($file,
 				array($qso->STATION_CALLSIGN,
-				str_replace("0", "Ø", $qso->COL_CALL),
-				$qso->COL_QSL_VIA!=""?"Via ".str_replace("0", "Ø", $qso->COL_QSL_VIA):"",
+				$qso->COL_CALL,
+				$qso->COL_QSL_VIA!=""?"via ".$qso->COL_QSL_VIA:"",
 				$qso->COL_TIME_ON,
 				$qso->COL_MODE,
 				$qso->COL_FREQ,

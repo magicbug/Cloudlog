@@ -296,6 +296,26 @@ CREATE TABLE `TABLE_HRD_CONTACTS_V01` (
 -- Records of TABLE_HRD_CONTACTS_V01
 -- ----------------------------
 
+
+CREATE TABLE `options` (
+  `option_id` bigint(20) UNSIGNED NOT NULL,
+  `option_name` varchar(191) DEFAULT NULL,
+  `option_value` longtext NOT NULL,
+  `autoload` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `options`
+  ADD PRIMARY KEY (`option_id`),
+  ADD UNIQUE KEY `option_name` (`option_name`);
+
+ALTER TABLE `options`
+  MODIFY `option_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+
+-- 
+-- Dumping data for table `options` that stops the version2 trigger from firing
+INSERT INTO `options` (`option_id`, `option_name`, `option_value`, `autoload`) VALUES (NULL, 'version2_trigger', 'true', 'yes');
+
 -- ----------------------------
 -- Table structure for timezones
 -- ----------------------------

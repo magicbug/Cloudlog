@@ -111,7 +111,7 @@ class EqslImporter
 							foreach ($matches[2] as $match) {
 								// Look for the link that has the .adi file, and download it to $file
 								if (substr($match, -4, 4) == ".adi") {
-									file_put_contents($this->adif_file, file_get_contents("http://eqsl.cc/qslcard/" . $match));
+									file_put_contents($this->adif_file, file_get_contents("https://eqsl.cc/qslcard/" . $match));
 									return $this->import();
 								}
 							}

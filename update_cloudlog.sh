@@ -10,7 +10,7 @@
 # The user and group that own the CLOUDLOG_SUBDIR directories. Passed to 'chown' as-is.
 DIR_OWNERSHIP="root:www-data"
 # The list of directories that need to have ownership restored after a git pull
-declare -a CLOUDLOG_SUBDIRS=("application/config" "assets" "backup" "updates" "uploads")
+declare -a CLOUDLOG_SUBDIRS=("application/config" "assets" "backup" "updates" "uploads" "images/eqsl_card_images")
 # The name of the Git remote to fetch/pull from
 GIT_REMOTE="origin"
 # If true, pull from the HEAD of the configured origin, otherwise the latest tag
