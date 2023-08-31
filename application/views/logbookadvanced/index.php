@@ -324,17 +324,35 @@ $options = json_decode($options);
     <div class="quickfilterbody collapse">
         <div class="mb-2 btn-group">
             <span class="h6 mr-1">Quick search with selected:</span>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign">Search Callsign</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchDxcc">Search DXCC</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchIota">Search IOTA</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchState">Search State</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchGridsquare">Search Gridsquare</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCqZone">Search CQ Zone</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchMode">Search Mode</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchBand">Search Band</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchSota">Search SOTA</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchWwff">Search WWFF</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchPota">Search POTA</button>
+			<?php if (($options->dx->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign">Search Callsign</button>';
+			} ?>
+			<?php if (($options->dxcc->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchDxcc">Search DXCC</button>';
+			} ?>
+			<?php if (($options->iota->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchIota">Search IOTA</button>';
+			} ?>
+			<?php if (($options->state->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchState">Search State</button>';
+			} ?>
+			<?php if (($options->refs->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchGridsquare">Search Gridsquare</button>';
+			} ?>
+			<?php if (($options->cqzone->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchCqZone">Search CQ Zone</button>';
+			} ?>
+			<?php if (($options->mode->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchMode">Search Mode</button>';
+			} ?>
+			<?php if (($options->band->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchBand">Search Band</button>';
+			} ?>
+			<?php if (($options->refs->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchSota">Search SOTA</button>';
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchWwff">Search WWFF</button>';
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchPota">Search POTA</button>';
+			} ?>
         </div>
     </div>
 <div class="form-row pt-2">
