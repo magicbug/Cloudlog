@@ -25,6 +25,7 @@ class Logbookadvanced extends CI_Controller {
 		$this->load->model('bands');
 		$this->load->model('iota');
 		$this->load->model('dxcc');
+		$this->load->model('user_options_model');
 
 		$stationIds = [];
 
@@ -39,6 +40,11 @@ class Logbookadvanced extends CI_Controller {
 		$data = [];
 		$data['page_title'] = "Advanced logbook";
 		$data['hasDatePicker'] = true;
+
+		$userOptions = $this->user_options_model->get_options('LogbookAdvanced')->result();
+		if (isset($userOptions[0])) {
+			$data['options'] = $userOptions[0]->option_value;
+		}
 
 		$pageData = [];
 		$pageData['datePlaceholder'] = 'DD/MM/YYYY';
@@ -403,5 +409,43 @@ class Logbookadvanced extends CI_Controller {
 		$data['satname'] = $qso['COL_SAT_NAME'];
 
 		return $data;
+	}
+
+	public function userOptions() {
+		$this->load->model('user_options_model');
+		$userOptions = $this->user_options_model->get_options('LogbookAdvanced')->result();
+		if (isset($userOptions[0])) {
+			$data['options'] = $options = json_decode($userOptions[0]->option_value);
+		} else {
+			$data['options'] = null;
+		}
+		$this->load->view('logbookadvanced/useroptions', $data);
+	}
+
+	public function setUserOptions() {
+		$json_string['datetime']['show'] = $this->input->post('datetime');
+		$json_string['de']['show'] = $this->input->post('de');
+		$json_string['dx']['show'] = $this->input->post('dx');
+		$json_string['mode']['show'] = $this->input->post('mode');
+		$json_string['rstr']['show'] = $this->input->post('rstr');
+		$json_string['rsts']['show'] = $this->input->post('rsts');
+		$json_string['band']['show'] = $this->input->post('band');
+		$json_string['myrefs']['show'] = $this->input->post('myrefs');
+		$json_string['refs']['show'] = $this->input->post('refs');
+		$json_string['name']['show'] = $this->input->post('name');
+		$json_string['qslvia']['show'] = $this->input->post('qslvia');
+		$json_string['qsl']['show'] = $this->input->post('qsl');
+		$json_string['lotw']['show'] = $this->input->post('lotw');
+		$json_string['eqsl']['show'] = $this->input->post('eqsl');
+		$json_string['qslmsg']['show'] = $this->input->post('qslmsg');
+		$json_string['dxcc']['show'] = $this->input->post('dxcc');
+		$json_string['state']['show'] = $this->input->post('state');
+		$json_string['cqzone']['show'] = $this->input->post('cqzone');
+		$json_string['iota']['show'] = $this->input->post('iota');
+
+		$obj['column_settings']= json_encode($json_string);
+
+		$this->load->model('user_options_model');
+		$this->user_options_model->set_option('LogbookAdvanced', 'LogbookAdvanced', $obj);
 	}
 }
