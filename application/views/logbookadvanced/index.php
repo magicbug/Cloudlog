@@ -5,6 +5,12 @@
  *
  */
 var custom_date_format = "<?php echo $custom_date_format ?>";
+<?php
+if (!isset($options)) {
+   $options = "{\"datetime\":{\"show\":\"true\"},\"de\":{\"show\":\"true\"},\"dx\":{\"show\":\"true\"},\"mode\":{\"show\":\"true\"},\"rstr\":{\"show\":\"true\"},\"rsts\":{\"show\":\"true\"},\"band\":{\"show\":\"true\"},\"myrefs\":{\"show\":\"true\"},\"refs\":{\"show\":\"true\"},\"name\":{\"show\":\"true\"},\"qslvia\":{\"show\":\"true\"},\"qsl\":{\"show\":\"true\"},\"lotw\":{\"show\":\"true\"},\"eqsl\":{\"show\":\"true\"},\"qslmsg\":{\"show\":\"true\"},\"dxcc\":{\"show\":\"true\"},\"state\":{\"show\":\"true\"},\"cqzone\":{\"show\":\"true\"},\"iota\":{\"show\":\"true\"}}";
+}
+echo "var user_options = $options;";
+?>
 </script>
 <style>
 /*Legend specific*/
@@ -33,7 +39,9 @@ var custom_date_format = "<?php echo $custom_date_format ?>";
   margin: 0 8px 0 0;
 }
 </style>
-
+<?php
+$options = json_decode($options);
+?>
 <div class="container-fluid qso_manager pt-3 pl-4 pr-4">
     <?php if ($this->session->flashdata('message')) { ?>
     <!-- Display Message -->
@@ -316,17 +324,35 @@ var custom_date_format = "<?php echo $custom_date_format ?>";
     <div class="quickfilterbody collapse">
         <div class="mb-2 btn-group">
             <span class="h6 mr-1">Quick search with selected:</span>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign">Search Callsign</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchDxcc">Search DXCC</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchIota">Search IOTA</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchState">Search State</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchGridsquare">Search Gridsquare</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCqZone">Search CQ Zone</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchMode">Search Mode</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchBand">Search Band</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchSota">Search SOTA</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchWwff">Search WWFF</button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="searchPota">Search POTA</button>
+			<?php if (($options->dx->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign">Search Callsign</button>';
+			} ?>
+			<?php if (($options->dxcc->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchDxcc">Search DXCC</button>';
+			} ?>
+			<?php if (($options->iota->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchIota">Search IOTA</button>';
+			} ?>
+			<?php if (($options->state->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchState">Search State</button>';
+			} ?>
+			<?php if (($options->refs->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchGridsquare">Search Gridsquare</button>';
+			} ?>
+			<?php if (($options->cqzone->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchCqZone">Search CQ Zone</button>';
+			} ?>
+			<?php if (($options->mode->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchMode">Search Mode</button>';
+			} ?>
+			<?php if (($options->band->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchBand">Search Band</button>';
+			} ?>
+			<?php if (($options->refs->show ?? "true") == "true") {
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchSota">Search SOTA</button>';
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchWwff">Search WWFF</button>';
+				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchPota">Search POTA</button>';
+			} ?>
         </div>
     </div>
 <div class="form-row pt-2">
@@ -347,43 +373,76 @@ var custom_date_format = "<?php echo $custom_date_format ?>";
             <option value="5000">5000</option>
         </select>
         <button type="submit" class="btn btn-sm btn-primary mr-1" id="searchButton">Search</button>
-        <button type="button" class="btn btn-sm btn-primary mr-1" id="mapButton"
-            onclick="mapQsos(this.form);">Map</button>
-        <button type="reset" class="btn btn-sm btn-danger mr-1" id="resetButton">Reset</button>
+        <button type="button" class="btn btn-sm btn-primary mr-1" id="mapButton" onclick="mapQsos(this.form);">Map</button>
+		<button type="options" class="btn btn-sm btn-primary mr-1" id="optionButton">Options</button>
+		<button type="reset" class="btn btn-sm btn-danger mr-1" id="resetButton">Reset</button>
+
     </div>
 </div>
 </form>
-<table style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center"
-    id="qsoList">
+<table style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center" id="qsoList">
     <thead>
         <tr>
             <th>
-                <div class="form-check" style="margin-top: -1.5em"><input class="form-check-input" type="checkbox"
-                        id="checkBoxAll" /></div>
+                <div class="form-check" style="margin-top: -1.5em"><input class="form-check-input" type="checkbox" id="checkBoxAll" /></div>
             </th>
-            <th>Date/Time</th>
-            <th>De</th>
-            <th>Dx</th>
-            <th>Mode</th>
-            <th>RST (S)</th>
-            <th>RST (R)</th>
-            <th>Band</th>
-            <th>My Refs</th>
-            <th>Refs</th>
-            <th>Name</th>
-            <th>QSL Via</th>
-            <th>QSL</th>
-            <?php if ($this->session->userdata('user_eqsl_name') != ""){
+			<?php if (($options->datetime->show ?? "true") == "true") {
+				echo '<th>Date/Time</th>';
+			} ?>
+			<?php if (($options->de->show ?? "true") == "true") {
+				echo '<th>De</th>';
+			} ?>
+			<?php if (($options->dx->show ?? "true") == "true") {
+				echo '<th>Dx</th>';
+			} ?>
+			<?php if (($options->mode->show ?? "true") == "true") {
+				echo '<th>Mode</th>';
+			} ?>
+			<?php if (($options->rsts->show ?? "true") == "true") {
+				echo '<th>RST (S)</th>';
+			} ?>
+			<?php if (($options->rstr->show ?? "true") == "true") {
+				echo '<th>RST (R)</th>';
+			} ?>
+            <?php if (($options->band->show ?? "true") == "true") {
+				echo '<th>Band</th>';
+			} ?>
+			<?php if (($options->myrefs->show ?? "true") == "true") {
+				echo '<th>My Refs</th>';
+			} ?>
+			<?php if (($options->refs->show ?? "true") == "true") {
+				echo '<th>Refs</th>';
+			} ?>
+			<?php if (($options->name->show ?? "true") == "true") {
+				echo '<th>Name</th>';
+			} ?>
+			<?php if (($options->qslvia->show ?? "true") == "true") {
+				echo '<th>QSL Via</th>';
+			} ?>
+			<?php if (($options->qsl->show ?? "true") == "true") {
+				echo '<th>QSL</th>';
+			} ?>
+            <?php if ($this->session->userdata('user_eqsl_name') != ""  && ($options->eqsl->show ?? "true") == "true"){
 					echo '<th class="eqslconfirmation">eQSL</th>';
 				} ?>
-            <?php if ($this->session->userdata('user_lotw_name') != ""){
+            <?php if ($this->session->userdata('user_lotw_name') != "" && ($options->lotw->show ?? "true") == "true"){
 					echo '<th class="lotwconfirmation">LoTW</th>';
 				} ?>
-            <th>QSL Msg</th>
-            <th>DXCC</th>
-            <th>State</th>
-            <th>CQ Zone</th>
-            <th>IOTA</th>
+			<?php if (($options->qslmsg->show ?? "true") == "true") {
+				echo '<th>QSL Msg</th>';
+			} ?>
+			<?php if (($options->dxcc->show ?? "true") == "true") {
+				echo '<th>DXCC</th>';
+			} ?>
+			<?php if (($options->state->show ?? "true") == "true") {
+				echo '<th>State</th>';
+			} ?>
+			<?php if (($options->cqzone->show ?? "true") == "true") {
+				echo '<th>CQ Zone</th>';
+			} ?>
+			<?php if (($options->iota->show ?? "true") == "true") {
+				echo '<th>IOTA</th>';
+			} ?>
         </tr>
     </thead>
     <tbody>
