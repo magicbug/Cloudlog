@@ -492,27 +492,27 @@ class Logbook extends CI_Controller {
 			$html .= "<div class=\"table-responsive\">";
 			$html .= "<table class=\"table\">";
 				$html .= "<tr>";
-					$html .= "<td>Date</td>";
-					$html .= "<td>Callsign</td>";
+					$html .= "<th>Date</th>";
+					$html .= "<th>Callsign</th>";
 					$html .= $this->part_table_header_col($this, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
 					$html .= $this->part_table_header_col($this, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
 					$html .= $this->part_table_header_col($this, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
 					$html .= $this->part_table_header_col($this, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
 					switch($this->session->userdata('user_previous_qsl_type')) {
 						case 0:
-							$html .= "<td>".lang('gen_hamradio_qsl')."</td>";
+							$html .= "<th>".lang('gen_hamradio_qsl')."</th>";
 							break;
 						case 1:
-							$html .= "<td>".lang('lotw_short')."</td>";
+							$html .= "<th>".lang('lotw_short')."</th>";
 							break;
 						case 2:
-							$html .= "<td>".lang('eqsl_short')."</td>";
+							$html .= "<th>".lang('eqsl_short')."</th>";
 							break;
 						default:
-							$html .= "<td>".lang('gen_hamradio_qsl')."</td>";
+							$html .= "<th>".lang('gen_hamradio_qsl')."</th>";
 							break;
 					}
-					$html .= "<td></td>";
+					$html .= "<th></th>";
 				$html .= "</tr>";
 
 			// Get Date format
