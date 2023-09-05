@@ -485,6 +485,17 @@ class Stations extends CI_Model {
 		}
 		return false;
 	}
+
+	public function check_station_against_callsign($stationid, $callsign) {
+		$this->db->select('station_id');
+		$this->db->where('station_callsign', $callsign);
+		$this->db->where('station_id', $stationid);
+		$query = $this->db->get('station_profile');
+		if ($query->num_rows() == 1) {
+			return true;
+		}
+		return false;
+	}
 }
 
 ?>
