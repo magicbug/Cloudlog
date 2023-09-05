@@ -981,18 +981,29 @@ $(document).on('keypress',function(e) {
   var markers = L.layerGroup();
   var pos = [51.505, -0.09];
   var mymap = L.map('qsomap').setView(pos, 12);
-  <?php
-  if ($active_station_info->station_gridsquare != "") { ?>
-  $.getJSON('logbook/qralatlngjson/<?php echo $user_gridsquare; ?>', function(result) {
-     mymap.panTo([result[0], result[1]]);
-     pos = result;
-  })
-  <?php } else if (null !== $this->config->item('locator')) { ?>
-  $.getJSON('logbook/qralatlngjson/<?php echo $this->config->item('locator'); ?>', function(result) {
-     mymap.panTo([result[0], result[1]]);
-     pos = result;
-  })
-  <?php } ?>
+  $.ajax({
+     url: base_url + 'index.php/logbook/qralatlngjson',
+     type: 'post',
+     data: {
+<?php if ($active_station_info->station_gridsquare != "") { ?>
+        qra: '<?php echo $user_gridsquare; ?>',
+<?php } else if (null !== $this->config->item('locator')) { ?>
+        qra: '<?php echo $this->config->item('locator'); ?>',
+<?php } else { ?>
+        // Fallback to London in case all else fails
+        qra: 'IO91WM',
+<?php } ?>
+     },
+     success: function(data) {
+        result = JSON.parse(data);
+        if (typeof result[0] !== "undefined" && typeof result[1] !== "undefined") {
+           mymap.panTo([result[0], result[1]]);
+           pos = result;
+        }
+     },
+     error: function() {
+     },
+  });
 
   L.tileLayer('<?php echo $this->optionslib->get_option('option_map_tile_server');?>', {
     maxZoom: 18,
