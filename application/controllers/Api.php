@@ -185,8 +185,6 @@ class API extends CI_Controller {
 			die();
 		}
 
-		$this->api_model->update_last_used($obj['key']);
-
 		if($obj['type'] == "adif" && $obj['string'] != "") {
 			// Load the logbook model for adding QSO records
 			$this->load->model('logbook_model');
@@ -207,6 +205,14 @@ class API extends CI_Controller {
 
 
 				if(isset($obj['station_profile_id'])) {
+					if(isset($record['station_callsign']) && $this->stations->check_station_against_callsign($obj['station_profile_id'], $record['station_callsign']) == false) {
+						http_response_code(401);
+						echo json_encode(['status' => 'failed', 'reason' => "station callsign does not match station callsign in station profile."]);
+						die();
+					}
+
+					$this->api_model->update_last_used($obj['key']);
+
 					$this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL, NULL, NULL, false, false, true);
 				}
 
