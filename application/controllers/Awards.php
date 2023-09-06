@@ -383,10 +383,17 @@ class Awards extends CI_Controller {
             }
         }
         else {
-            $bands = $data['worked_bands'];
+            $default_band = $this->session->userdata('user_gridmap_default_band');
+            if ($default_band == "All") {
+               $bands = $data['worked_bands'];
+            } else {
+               $bands[] = $default_band;
+            }
         }
 
         $data['bands'] = $bands; // Used for displaying selected band(s) in the table in the view
+        $data['user_gridmap_default_band'] = $this->session->userdata('user_gridmap_default_band');
+        $data['user_gridmap_confirmation'] = $this->session->userdata('user_gridmap_confirmation');
 
         if($this->input->method() === 'post') {
             $postdata['qsl'] = $this->security->xss_clean($this->input->post('qsl'));
@@ -396,17 +403,17 @@ class Awards extends CI_Controller {
             $postdata['confirmed'] = $this->security->xss_clean($this->input->post('confirmed'));
             $postdata['notworked'] = $this->security->xss_clean($this->input->post('notworked'));
             $postdata['band'] = $this->security->xss_clean($this->input->post('band'));
-			$postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
+            $postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
         }
         else { // Setting default values at first load of page
-            $postdata['qsl'] = 1;
-            $postdata['lotw'] = 1;
-            $postdata['eqsl'] = 0;
+            $postdata['qsl'] = strpos($this->session->userdata('user_gridmap_confirmation'), 'Q') !== false ? 1 : null;
+            $postdata['lotw'] = strpos($this->session->userdata('user_gridmap_confirmation'), 'L') !== false ? 1 : null;
+            $postdata['eqsl'] = strpos($this->session->userdata('user_gridmap_confirmation'), 'E') !== false ? 1 : null;
             $postdata['worked'] = 1;
             $postdata['confirmed'] = 1;
-            $postdata['notworked'] = 1;
-            $postdata['band'] = 'All';
-			$postdata['mode'] = 'All';
+            $postdata['notworked'] = null;
+            $postdata['band'] = $this->session->userdata('user_gridmap_default_band');
+            $postdata['mode'] = 'All';
         }
 
         $data['was_array'] = $this->was->get_was_array($bands, $postdata);

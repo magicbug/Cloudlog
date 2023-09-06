@@ -17,7 +17,7 @@
                         <label class="form-check-label" for="confirmed">Show confirmed</label>
                     </div>
                     <div class="form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="notworked" id="notworked" value="1" <?php if ($this->input->post('notworked') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
+                        <input class="form-check-input" type="checkbox" name="notworked" id="notworked" value="1" <?php if ($this->input->post('notworked')) echo ' checked="checked"'; ?> >
                         <label class="form-check-label" for="notworked">Show not worked</label>
                     </div>
                 </div>
@@ -27,15 +27,15 @@
                 <div class="col-md-2">QSL Type</div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="qsl" value="1" id="qsl" <?php if ($this->input->post('qsl') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
+                        <input class="form-check-input" type="checkbox" name="qsl" value="1" id="qsl" <?php if ($this->input->post('qsl') || ($this->input->method() !== 'post' && isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false)) echo ' checked="checked"'; ?> >
                         <label class="form-check-label" for="qsl">QSL</label>
                     </div>
                     <div class="form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="lotw" value="1" id="lotw" <?php if ($this->input->post('lotw') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
+                        <input class="form-check-input" type="checkbox" name="lotw" value="1" id="lotw" <?php if ($this->input->post('lotw') || ($this->input->method() !== 'post' && isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false)) echo ' checked="checked"'; ?> >
                         <label class="form-check-label" for="lotw">LoTW</label>
                     </div>
 <div class="form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="eqsl" value="1" id="eqsl" <?php if ($this->input->post('eqsl')) echo ' checked="checked"'; ?> >
+                        <input class="form-check-input" type="checkbox" name="eqsl" value="1" id="eqsl" <?php if ($this->input->post('eqsl') || ($this->input->method() !== 'post' && isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false)) echo ' checked="checked"'; ?> >
                         <label class="form-check-label" for="eqsl">eQSL</label>
                     </div>
                 </div>
@@ -45,10 +45,10 @@
                 <label class="col-md-2 control-label" for="band">Band</label>
                 <div class="col-md-2">
                     <select id="band2" name="band" class="form-control custom-select-sm">
-                        <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >Every band</option>
+                        <option value="All" <?php if ($this->input->post('band') == "All") echo ' selected'; ?> >Every band</option>
                         <?php foreach($worked_bands as $band) {
                             echo '<option value="' . $band . '"';
-                            if ($this->input->post('band') == $band) echo ' selected';
+                            if ($this->input->post('band') == $band || ($user_gridmap_default_band == $band && $this->input->method() !== 'post')) echo ' selected';
                             echo '>' . $band . '</option>'."\n";
                         } ?>
                     </select>
@@ -100,10 +100,14 @@
         <tr>
             <td>#</td>
             <td>State</td>';
-        foreach($bands as $band) {
-            echo '<td>' . $band . '</td>';
+        if (count($bands) > 1) {
+            foreach($bands as $band) {
+               echo '<td>' . $band . '</td>';
             }
-            echo '</tr>
+        } else {
+            echo '<td>' . $bands[0] . '</td>';
+        }
+        echo '</tr>
         </thead>
         <tbody>';
 
@@ -124,8 +128,12 @@
         <thead>
         <tr><td></td>';
 
-        foreach($bands as $band) {
-            echo '<td>' . $band . '</td>';
+        if (count($bands) > 1) {
+            foreach($bands as $band) {
+               echo '<td>' . $band . '</td>';
+            }
+        } else {
+            echo '<td>' . $bands[0] . '</td>';
         }
         echo '<td>Total</td></tr>
         </thead>
