@@ -200,9 +200,6 @@ class Logbookadvanced_model extends CI_Model {
 
 		$data = $this->db->query($sql, $binding);
 
-
-		log_message('info', $this->db->last_query());
-
         $results = $data->result('array');
 
 		return $results;
