@@ -181,7 +181,7 @@ class Logbookadvanced_model extends CI_Model {
 		}
 
 		$sql = "
-			SELECT DISTINCT *
+			SELECT *
 			FROM " . $this->config->item('table_name') . " qsos
 			INNER JOIN station_profile ON qsos.station_id=station_profile.station_id
 			LEFT OUTER JOIN dxcc_entities ON qsos.col_dxcc=dxcc_entities.adif
