@@ -235,6 +235,7 @@ class Logbookadvanced_model extends CI_Model {
         $sql = "
             SELECT qsos.*, d2.*, lotw_users.*, station_profile.*, x.qslcount, dxcc_entities.name AS station_country
 			FROM " . $this->config->item('table_name') . " qsos
+			DISTINCT qsos.COL_PRIMARY_KEY,
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
 			LEFT OUTER JOIN dxcc_entities ON qsos.COL_MY_DXCC = dxcc_entities.adif
 			LEFT OUTER JOIN dxcc_entities d2 ON qsos.COL_DXCC = d2.adif
