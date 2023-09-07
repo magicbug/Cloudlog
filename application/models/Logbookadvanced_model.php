@@ -184,6 +184,7 @@ class Logbookadvanced_model extends CI_Model {
 			SELECT *
 			FROM " . $this->config->item('table_name') . " qsos
 			INNER JOIN station_profile ON qsos.station_id=station_profile.station_id
+			LEFT OUTER JOIN dxcc_entities ON qsos.col_dxcc=dxcc_entities.adif
 			LEFT OUTER JOIN lotw_users ON qsos.col_call=lotw_users.callsign
 			LEFT OUTER JOIN (
 				select count(*) as qslcount, qsoid
