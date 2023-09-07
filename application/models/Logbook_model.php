@@ -1467,6 +1467,9 @@ class Logbook_model extends CI_Model {
     $this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.*, lotw_users.callsign, lotw_users.lastupload');
     $this->db->from($this->config->item('table_name'));
 
+    // remove anything thats duplicated based on COL_PRIMARY_KEY
+    $this->db->distinct(''.$this->config->item('table_name').'.COL_PRIMARY_KEY');
+
     $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
     $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
     $this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
