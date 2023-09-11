@@ -226,8 +226,9 @@ class Logbook extends CI_Controller {
 	function jsonlookupgrid($gridsquare, $type, $band, $mode) {
 		$return = [
 			"workedBefore" => false,
+			"confirmed" => false,
 		];
-
+		$user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
 		$CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -251,6 +252,52 @@ class Logbook extends CI_Controller {
 			$return['workedBefore'] = true;
 		}
 
+		
+		$extrawhere='';
+		if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+			$extrawhere="COL_QSL_RCVD='Y'"; 
+		}
+		if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+			if ($extrawhere!='') {
+				$extrawhere.=" OR";
+			}
+			$extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
+		}
+		if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+			if ($extrawhere!='') {
+				$extrawherei.=" OR";
+			}
+			$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
+		}
+
+		if($type == "SAT") {
+			$this->db->where('COL_PROP_MODE', 'SAT');
+			if ($extrawhere != '') {
+				$this->db->where('('.$extrawhere.')');
+			} else {
+				$this->db->where("1=0");
+			}
+		} else {
+			$CI->load->model('logbook_model');
+			$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
+			$this->db->where('COL_BAND', $band);
+			$this->db->where('COL_PROP_MODE !=','SAT');
+			if ($extrawhere != '') {
+				$this->db->where($extrawhere);
+			} else {
+				$this->db->where("1=0");
+			}
+		}
+
+		$this->db->where_in('station_id', $logbooks_locations_array);
+
+		$this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($gridsquare, 0, 4));
+		$query = $this->db->get($this->config->item('table_name'), 1, 0);
+		log_message("error",$this->db->last_query());
+		foreach ($query->result() as $workedBeforeRow) {
+			$return['confirmed']=true;
+		}
+
 		header('Content-Type: application/json');
 		echo json_encode($return, JSON_PRETTY_PRINT);
 
@@ -261,12 +308,14 @@ class Logbook extends CI_Controller {
 
 		$return = [
 			"workedBefore" => false,
+			"confirmed" => false,
 		];
 
+		$user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
 		$CI =& get_instance();
-        $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-	$CI->load->model('logbook_model');
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$CI->load->model('logbook_model');
 
 		if(!empty($logbooks_locations_array)) {
 			if($type == "SAT") {
@@ -287,12 +336,60 @@ class Logbook extends CI_Controller {
 				$return['workedBefore'] = true;
 			}
 
+			$extrawhere='';
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+				$extrawhere="COL_QSL_RCVD='Y'"; 
+			}
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+				if ($extrawhere!='') {
+					$extrawhere.=" OR";
+				}
+				$extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
+			}
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+				if ($extrawhere!='') {
+					$extrawherei.=" OR";
+				}
+				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
+			}
+
+
+			if($type == "SAT") {
+				$this->db->where('COL_PROP_MODE', 'SAT');
+				if ($extrawhere != '') {
+					$this->db->where('('.$extrawhere.')');
+				} else {
+					$this->db->where("1=0");
+				}
+			} else {
+				$CI->load->model('logbook_model');
+				$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
+				$this->db->where('COL_BAND', $band);
+				$this->db->where('COL_PROP_MODE !=','SAT');
+				if ($extrawhere != '') {
+					$this->db->where($extrawhere);
+				} else {
+					$this->db->where("1=0");
+				}
+			}
+
+			$this->db->where_in('station_id', $logbooks_locations_array);
+			$this->db->where('COL_COUNTRY', urldecode($country));
+
+			$query = $this->db->get($this->config->item('table_name'), 1, 0);
+			log_message("error",$this->db->last_query());
+			foreach ($query->result() as $workedBeforeRow) {
+				$return['confirmed']=true;
+			}
+
+
 			header('Content-Type: application/json');
 			echo json_encode($return, JSON_PRETTY_PRINT);
 
 			return;
 		} else {
 			$return['workedBefore'] = false;
+			$return['confirmed'] = false;
 
 			header('Content-Type: application/json');
 			echo json_encode($return, JSON_PRETTY_PRINT);
@@ -307,8 +404,10 @@ class Logbook extends CI_Controller {
 
 		$return = [
 			"workedBefore" => false,
+			"confirmed" => false,
 		];
 
+		$user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -338,6 +437,7 @@ class Logbook extends CI_Controller {
 			return;
 		} else {
 			$return['workedBefore'] = false;
+			$return['confirmed'] = false;
 			header('Content-Type: application/json');
 			echo json_encode($return, JSON_PRETTY_PRINT);
 			return;
