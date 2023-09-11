@@ -102,7 +102,7 @@
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="<?php echo site_url('gridmap');?>" title="Gridmap"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_gridmap'); ?></a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<?php echo site_url('activated_grids');?>" title="Activated Gridsquares"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_activated_gridsquares'); ?></a>
+                    <a class="dropdown-item" href="<?php echo site_url('activated_gridmap');?>" title="Activated Gridsquares"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_activated_gridsquares'); ?></a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<?php echo site_url('activators');?>" title="Gridsquare Activators"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_gridsquare_activators'); ?></a>
                     <div class="dropdown-divider"></div>

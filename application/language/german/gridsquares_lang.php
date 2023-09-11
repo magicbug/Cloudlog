@@ -24,3 +24,4 @@ $lang['gridsquares_gridsquares'] = 'Planquadrate';
 $lang['gridsquares_gridsquares_confirmed'] = 'Planquadrate bestätigt';
 $lang['gridsquares_gridsquares_not_confirmed'] = 'Planquadrate nicht bestätigt';
 $lang['gridsquares_gridsquares_total_worked'] = 'Summe gearbeiteter Planquadrate';
+$lang['gridsquares_gridsquares_total_activated'] = 'Summe aktivierter Planquadrate';

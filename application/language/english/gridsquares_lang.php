@@ -24,3 +24,4 @@ $lang['gridsquares_gridsquares'] = 'Gridsquares';
 $lang['gridsquares_gridsquares_confirmed'] = 'Gridsquares confirmed';
 $lang['gridsquares_gridsquares_not_confirmed'] = 'Gridsquares not confirmed';
 $lang['gridsquares_gridsquares_total_worked'] = 'Total gridsquares worked';
+$lang['gridsquares_gridsquares_total_activated'] = 'Total gridsquares activated';

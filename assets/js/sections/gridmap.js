@@ -28,8 +28,16 @@ function gridPlot(form) {
         $("#gridmapcontainer").append('<div id="gridsquare_map" style="width: 100%; height: 800px"></div>');
     }
 
+    if (type == "activated") {
+        ajax_url = site_url + '/activated_gridmap/getGridsjs';
+    } else if (type == "worked") {
+        ajax_url = site_url + '/gridmap/getGridsjs';
+    } else {
+        ajax_url = site_url + '/gridmap/getGridsjs';
+    }
+
     $.ajax({
-		url: site_url + '/gridmap/getGridsjs',
+		url: ajax_url,
 		type: 'post',
 		data: {
 			band: $("#band").val(),
