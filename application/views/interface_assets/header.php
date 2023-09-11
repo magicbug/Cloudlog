@@ -65,6 +65,10 @@
               <a class="dropdown-item" href="<?php echo site_url('logbook');?>"><i class="fas fa-book"></i> <?php echo lang('menu_overview'); ?></a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="<?php echo site_url('logbookadvanced');?>"><i class="fas fa-book-open"></i> <?php echo lang('menu_advanced'); ?></a>
+			  <div class="dropdown-divider"></div>
+			  <a class="dropdown-item" href="<?php echo site_url('qsl');?>" title="QSL"><i class="fa fa-id-card"></i> <?php echo lang('menu_view_qsl'); ?></a>
+			  <div class="dropdown-divider"></div>
+			  <a class="dropdown-item" href="<?php echo site_url('eqsl');?>" title="eQSL"><i class="fa fa-id-card"></i> <?php echo lang('menu_view_eqsl'); ?></a>
            </div>
         </li>
 
@@ -84,10 +88,6 @@
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('bandmap/list');?>" title="Bandmap"><i class="fa fa-id-card"></i> <?php echo lang('menu_bandmap'); ?></a>
 <?php } ?>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('qsl');?>" title="QSL"><i class="fa fa-id-card"></i> <?php echo lang('menu_view_qsl'); ?></a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('eqsl');?>" title="eQSL"><i class="fa fa-id-card"></i> <?php echo lang('menu_view_eqsl'); ?></a>
 						</div>
         	</li>
 

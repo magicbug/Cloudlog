@@ -14,8 +14,8 @@ $lang['menu_post_qso'] = 'Post QSO';
 $lang['menu_live_contest_logging'] = 'Live Contest Logging';
 $lang['menu_post_contest_logging'] = 'Post Contest Logging';
 $lang['menu_bandmap'] = 'Bandmap';
-$lang['menu_view_qsl'] = 'View QSL';
-$lang['menu_view_eqsl'] = 'View eQSL';
+$lang['menu_view_qsl'] = 'View QSL Cards';
+$lang['menu_view_eqsl'] = 'View eQSL Cards';
 
 $lang['menu_notes'] = 'Notes';
 
