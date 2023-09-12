@@ -293,7 +293,6 @@ class Logbook extends CI_Controller {
 
 		$this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($gridsquare, 0, 4));
 		$query = $this->db->get($this->config->item('table_name'), 1, 0);
-		log_message("error",$this->db->last_query());
 		foreach ($query->result() as $workedBeforeRow) {
 			$return['confirmed']=true;
 		}
@@ -377,7 +376,6 @@ class Logbook extends CI_Controller {
 			$this->db->where('COL_COUNTRY', urldecode($country));
 
 			$query = $this->db->get($this->config->item('table_name'), 1, 0);
-			log_message("error",$this->db->last_query());
 			foreach ($query->result() as $workedBeforeRow) {
 				$return['confirmed']=true;
 			}
