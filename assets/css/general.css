@@ -144,8 +144,12 @@ thead > tr > td {
     text-transform: uppercase;
 }
 
-.workedGrid {
+.confirmedGrid {
     border-color: green;
+}
+
+.workedGrid {
+    border-color: yellow;
 }
 
 .newGrid {
