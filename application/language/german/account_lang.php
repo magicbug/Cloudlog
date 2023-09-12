@@ -95,3 +95,4 @@ $lang['account_user_mastodon'] = 'URL des Mastodonservers';
 
 $lang['account_gridmap_settings'] = 'Einstellung der Planquadratkarte';
 $lang['account_gridmap_default_band'] = 'Standardband';
+$lang['account_qsl_settings'] = 'QSL-Methoden, die in der Planquadratkarte und beim anlegen eines QSOs angezeigt werden';
