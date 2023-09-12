@@ -386,18 +386,20 @@ function changebadge(entityname) {
 		$.getJSON(base_url + 'index.php/logbook/jsonlookupdxcc/' + convert_case(entityname) + '/SAT/0/0', function(result)
 		{
 
+			$('#callsign_info').removeClass("lotw_info_orange");
 			$('#callsign_info').removeClass("badge-secondary");
 			$('#callsign_info').removeClass("badge-success");
 			$('#callsign_info').removeClass("badge-danger");
 			$('#callsign_info').attr('title', '');
 
-			if (result.workedBefore)
-			{
+			if (result.confirmed) {
 				$('#callsign_info').addClass("badge-success");
+				$('#callsign_info').attr('title', 'DXCC was already worked and confirmed in the past on this band and mode!');
+			} else if (result.workedBefore) {
+				$('#callsign_info').addClass("badge-success");
+				$('#callsign_info').addClass("lotw_info_orange");
 				$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
-			}
-			else
-			{
+			} else {
 				$('#callsign_info').addClass("badge-danger");
 				$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
 			}
@@ -406,18 +408,20 @@ function changebadge(entityname) {
 		$.getJSON(base_url + 'index.php/logbook/jsonlookupdxcc/' + convert_case(entityname) + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
 		{
 			// Reset CSS values before updating
+			$('#callsign_info').removeClass("lotw_info_orange");
 			$('#callsign_info').removeClass("badge-secondary");
 			$('#callsign_info').removeClass("badge-success");
 			$('#callsign_info').removeClass("badge-danger");
 			$('#callsign_info').attr('title', '');
 
-			if (result.workedBefore)
-			{
+			if (result.confirmed) {
 				$('#callsign_info').addClass("badge-success");
+				$('#callsign_info').attr('title', 'DXCC was already worked and confirmed in the past on this band and mode!');
+			} else if (result.workedBefore) {
+				$('#callsign_info').addClass("badge-success");
+				$('#callsign_info').addClass("lotw_info_orange");
 				$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
-			}
-			else
-			{
+			} else {
 				$('#callsign_info').addClass("badge-danger");
 				$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
 			}
