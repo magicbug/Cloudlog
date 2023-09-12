@@ -283,7 +283,7 @@ class Logbook extends CI_Controller {
 			$this->db->where('COL_BAND', $band);
 			$this->db->where('COL_PROP_MODE !=','SAT');
 			if ($extrawhere != '') {
-				$this->db->where($extrawhere);
+				$this->db->where('('.$extrawhere.')');
 			} else {
 				$this->db->where("1=0");
 			}
@@ -367,7 +367,7 @@ class Logbook extends CI_Controller {
 				$this->db->where('COL_BAND', $band);
 				$this->db->where('COL_PROP_MODE !=','SAT');
 				if ($extrawhere != '') {
-					$this->db->where($extrawhere);
+					$this->db->where('('.$extrawhere.')');
 				} else {
 					$this->db->where("1=0");
 				}
@@ -463,7 +463,7 @@ class Logbook extends CI_Controller {
 				$this->db->where('COL_BAND', $band);
 				$this->db->where('COL_PROP_MODE !=','SAT');
 				if ($extrawhere != '') {
-					$this->db->where($extrawhere);
+					$this->db->where('('.$extrawhere.')');
 				} else {
 					$this->db->where("1=0");
 				}

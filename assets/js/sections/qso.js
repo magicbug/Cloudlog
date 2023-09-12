@@ -445,8 +445,10 @@ function reset_fields() {
 	$('#locator').val("");
 	$('#iota_ref').val("");
 	$('#sota_ref').val("");
+	$("#locator").removeClass("confirmedGrid");
 	$("#locator").removeClass("workedGrid");
 	$("#locator").removeClass("newGrid");
+	$("#callsign").removeClass("confirmedGrid");
 	$("#callsign").removeClass("workedGrid");
 	$("#callsign").removeClass("newGrid");
 	$('#callsign_info').removeClass("badge-secondary");
