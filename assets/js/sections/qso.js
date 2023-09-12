@@ -967,8 +967,10 @@ function resetDefaultQSOFields() {
 	$('#iota_ref').val("");
 	$('#sota_ref').val("");
 	$("#locator").removeClass("workedGrid");
+	$("#locator").removeClass("confirmedGrid");
 	$("#locator").removeClass("newGrid");
 	$("#callsign").removeClass("workedGrid");
+	$("#callsign").removeClass("confirmedGrid");
 	$("#callsign").removeClass("newGrid");
 	$('#callsign_info').removeClass("badge-secondary");
 	$('#callsign_info').removeClass("badge-success");
