@@ -432,6 +432,50 @@ class Logbook extends CI_Controller {
 				$return['workedBefore'] = true;
 			}
 
+			$extrawhere='';
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+				$extrawhere="COL_QSL_RCVD='Y'"; 
+			}
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+				if ($extrawhere!='') {
+					$extrawhere.=" OR";
+				}
+				$extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
+			}
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+				if ($extrawhere!='') {
+					$extrawherei.=" OR";
+				}
+				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
+			}
+
+
+			if($type == "SAT") {
+				$this->db->where('COL_PROP_MODE', 'SAT');
+				if ($extrawhere != '') {
+					$this->db->where('('.$extrawhere.')');
+				} else {
+					$this->db->where("1=0");
+				}
+			} else {
+				$CI->load->model('logbook_model');
+				$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
+				$this->db->where('COL_BAND', $band);
+				$this->db->where('COL_PROP_MODE !=','SAT');
+				if ($extrawhere != '') {
+					$this->db->where($extrawhere);
+				} else {
+					$this->db->where("1=0");
+				}
+			}
+			$this->db->where_in('station_id', $logbooks_locations_array);
+			$this->db->where('COL_CALL', strtoupper($callsign));
+
+			$query = $this->db->get($this->config->item('table_name'), 1, 0);
+			foreach ($query->result() as $workedBeforeRow) {
+				$return['confirmed'] = true;
+			}
+
 			header('Content-Type: application/json');
 			echo json_encode($return, JSON_PRETTY_PRINT);
 			return;
