@@ -9,6 +9,7 @@
                 <th>Callsign</th>
                 <th>Satellite</th>
                 <th>Gridsquare</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -54,6 +55,7 @@
 
 
                     </td>
+                    <td><a href="<?php echo $rove['track_link']; ?>" target="_blank">Track</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
