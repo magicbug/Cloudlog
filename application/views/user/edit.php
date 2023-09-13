@@ -562,6 +562,11 @@
 							} ?>
 							</select>
 						</div>
+					</div>
+					<div class="card-header">
+						<?php echo lang('account_qsl_settings'); ?>
+					</div>
+					<div class="card-body">
 						<div class="form-group">
 							<label class="my-1 mr-2"><?php echo lang('gridsquares_confirmation'); ?></label>
 							<div class="form-check-inline">

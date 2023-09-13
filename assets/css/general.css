@@ -144,8 +144,12 @@ thead > tr > td {
     text-transform: uppercase;
 }
 
-.workedGrid {
+.confirmedGrid {
     border-color: green;
+}
+
+.workedGrid {
+    border-color: yellow;
 }
 
 .newGrid {
@@ -528,4 +532,8 @@ div#station_logbooks_linked_table_paginate {
 
 .qso_panel a i.fa.fa-star:hover {
     color: #FFD700 !important;
+}
+
+#dx, #state, #gridsquare, #sota, #wwff, #pota {
+    text-transform: uppercase;
 }

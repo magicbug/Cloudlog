@@ -26,9 +26,12 @@ class Qra {
 		$my = qra2latlong($tx);
 		$stn = qra2latlong($rx);
 
-		$bearing = bearing($my[0], $my[1], $stn[0], $stn[1], $unit);
-
-		return $bearing;
+		if ($my !== false && $stn !== false ) {
+			$bearing = bearing($my[0], $my[1], $stn[0], $stn[1], $unit);
+			return $bearing;
+		} else {
+			return false;
+		}
 	}
 
 	/*
@@ -168,6 +171,11 @@ function qra2latlong($strQRA) {
        if (substr_count($strQRA, ',') == 3) {
           // Handle grid corners
           $grids = explode(',', $strQRA);
+          $gridlengths = array(strlen($grids[0]), strlen($grids[1]), strlen($grids[2]), strlen($grids[3]));
+          $same = array_count_values($gridlengths);
+          if (count($same) != 1) {
+             return false;
+          }
           $coords = array(0, 0);
           for($i=0; $i<4; $i++) {
               $cornercoords[$i] = qra2latlong($grids[$i]);
@@ -178,6 +186,9 @@ function qra2latlong($strQRA) {
        } else if (substr_count($strQRA, ',') == 1) {
           // Handle grid lines
           $grids = explode(',', $strQRA);
+          if (strlen($grids[0]) != strlen($grids[1])) {
+             return false;
+          }
           $coords = array(0, 0);
           for($i=0; $i<2; $i++) {
               $linecoords[$i] = qra2latlong($grids[$i]);

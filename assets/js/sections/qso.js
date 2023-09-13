@@ -386,18 +386,20 @@ function changebadge(entityname) {
 		$.getJSON(base_url + 'index.php/logbook/jsonlookupdxcc/' + convert_case(entityname) + '/SAT/0/0', function(result)
 		{
 
+			$('#callsign_info').removeClass("lotw_info_orange");
 			$('#callsign_info').removeClass("badge-secondary");
 			$('#callsign_info').removeClass("badge-success");
 			$('#callsign_info').removeClass("badge-danger");
 			$('#callsign_info').attr('title', '');
 
-			if (result.workedBefore)
-			{
+			if (result.confirmed) {
 				$('#callsign_info').addClass("badge-success");
+				$('#callsign_info').attr('title', 'DXCC was already worked and confirmed in the past on this band and mode!');
+			} else if (result.workedBefore) {
+				$('#callsign_info').addClass("badge-success");
+				$('#callsign_info').addClass("lotw_info_orange");
 				$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
-			}
-			else
-			{
+			} else {
 				$('#callsign_info').addClass("badge-danger");
 				$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
 			}
@@ -406,18 +408,20 @@ function changebadge(entityname) {
 		$.getJSON(base_url + 'index.php/logbook/jsonlookupdxcc/' + convert_case(entityname) + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
 		{
 			// Reset CSS values before updating
+			$('#callsign_info').removeClass("lotw_info_orange");
 			$('#callsign_info').removeClass("badge-secondary");
 			$('#callsign_info').removeClass("badge-success");
 			$('#callsign_info').removeClass("badge-danger");
 			$('#callsign_info').attr('title', '');
 
-			if (result.workedBefore)
-			{
+			if (result.confirmed) {
 				$('#callsign_info').addClass("badge-success");
+				$('#callsign_info').attr('title', 'DXCC was already worked and confirmed in the past on this band and mode!');
+			} else if (result.workedBefore) {
+				$('#callsign_info').addClass("badge-success");
+				$('#callsign_info').addClass("lotw_info_orange");
 				$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
-			}
-			else
-			{
+			} else {
 				$('#callsign_info').addClass("badge-danger");
 				$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
 			}
@@ -445,8 +449,10 @@ function reset_fields() {
 	$('#locator').val("");
 	$('#iota_ref').val("");
 	$('#sota_ref').val("");
+	$("#locator").removeClass("confirmedGrid");
 	$("#locator").removeClass("workedGrid");
 	$("#locator").removeClass("newGrid");
+	$("#callsign").removeClass("confirmedGrid");
 	$("#callsign").removeClass("workedGrid");
 	$("#callsign").removeClass("newGrid");
 	$('#callsign_info').removeClass("badge-secondary");
@@ -521,11 +527,14 @@ $("#callsign").focusout(function() {
 						{
 							// Reset CSS values before updating
 							$('#callsign').removeClass("workedGrid");
+							$('#callsign').removeClass("confirmedGrid");
 							$('#callsign').removeClass("newGrid");
 							$('#callsign').attr('title', '');
 
-							if (result.workedBefore)
-							{
+							if (result.confirmed) {
+								$('#callsign').addClass("confirmedGrid");
+								$('#callsign').attr('title', 'Callsign was already worked and confirmed in the past on this band and mode!');
+							} else if (result.workedBefore) {
 								$('#callsign').addClass("workedGrid");
 								$('#callsign').attr('title', 'Callsign was already worked in the past on this band and mode!');
 							}
@@ -539,20 +548,22 @@ $("#callsign").focusout(function() {
 						$.getJSON(base_url + 'index.php/logbook/jsonlookupcallsign/' + find_callsign.replace(/\//g, "-") + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
 						{
 							// Reset CSS values before updating
+							$('#callsign').removeClass("confirmedGrid");
 							$('#callsign').removeClass("workedGrid");
 							$('#callsign').removeClass("newGrid");
 							$('#callsign').attr('title', '');
 
-							if (result.workedBefore)
-							{
+							if (result.confirmed) {
+								$('#callsign').addClass("confirmedGrid");
+								$('#callsign').attr('title', 'Callsign was already worked and confirmed in the past on this band and mode!');
+							} else if (result.workedBefore) {
 								$('#callsign').addClass("workedGrid");
 								$('#callsign').attr('title', 'Callsign was already worked in the past on this band and mode!');
-							}
-							else
-							{
+							} else {
 								$('#callsign').addClass("newGrid");
 								$('#callsign').attr('title', 'New Callsign!');
 							}
+
 						})
 					}
 
@@ -632,20 +643,19 @@ $("#callsign").focusout(function() {
 
 					if (result.callsign_qra != "")
 					{
-						if (result.workedBefore)
-						{
+						if (result.confirmed) {
+							$('#locator').addClass("confirmedGrid");
+							$('#locator').attr('title', 'Grid was already worked and confirmed in the past');
+						} else if (result.workedBefore) {
 							$('#locator').addClass("workedGrid");
 							$('#locator').attr('title', 'Grid was already worked in the past');
-						}
-						else
-						{
+						} else {
 							$('#locator').addClass("newGrid");
 							$('#locator').attr('title', 'New grid!');
 						}
-					}
-					else
-					{
+					} else {
 						$('#locator').removeClass("workedGrid");
+						$('#locator').removeClass("confirmedGrid");
 						$('#locator').removeClass("newGrid");
 						$('#locator').attr('title', '');
 					}
@@ -773,17 +783,18 @@ $("#locator").keyup(function(){
 				$.getJSON(base_url + 'index.php/logbook/jsonlookupgrid/' + qra_lookup.toUpperCase() + '/SAT/0/0', function(result)
 				{
 					// Reset CSS values before updating
+					$('#locator').removeClass("confirmedGrid");
 					$('#locator').removeClass("workedGrid");
 					$('#locator').removeClass("newGrid");
 					$('#locator').attr('title', '');
 
-					if (result.workedBefore)
-					{
+					if (result.confirmed) {
+						$('#locator').addClass("confirmedGrid");
+						$('#locator').attr('title', 'Grid was already worked and confirmed in the past');
+					} else if (result.workedBefore) {
 						$('#locator').addClass("workedGrid");
 						$('#locator').attr('title', 'Grid was already worked in the past');
-					}
-					else
-					{
+					} else {
 						$('#locator').addClass("newGrid");
 						$('#locator').attr('title', 'New grid!');
 					}
@@ -792,46 +803,81 @@ $("#locator").keyup(function(){
 				$.getJSON(base_url + 'index.php/logbook/jsonlookupgrid/' + qra_lookup.toUpperCase() + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
 				{
 					// Reset CSS values before updating
+					$('#locator').removeClass("confirmedGrid");
 					$('#locator').removeClass("workedGrid");
 					$('#locator').removeClass("newGrid");
 					$('#locator').attr('title', '');
-
-					if (result.workedBefore)
-					{
+					
+					if (result.confirmed) {
+						$('#locator').addClass("confirmedGrid");
+						$('#locator').attr('title', 'Grid was already worked and confimred in the past');
+					} else if (result.workedBefore) {
 						$('#locator').addClass("workedGrid");
 						$('#locator').attr('title', 'Grid was already worked in the past');
-					}
-					else
-					{
+					} else {
 						$('#locator').addClass("newGrid");
 						$('#locator').attr('title', 'New grid!');
 					}
+
 				})
 			}
 		}
 
 		if(qra_input.length >= 4 && $(this).val().length > 0) {
-			$.getJSON(base_url + 'index.php/logbook/qralatlngjson/' + $(this).val(), function(result)
-			{
-				// Set Map to Lat/Long
-				markers.clearLayers();
-				if (typeof result !== "undefined") {
-					var redIcon = L.icon({
-						iconUrl: icon_dot_url,
-						iconSize:     [18, 18], // size of the icon
-					});
+			$.ajax({
+				url: base_url + 'index.php/logbook/qralatlngjson',
+				type: 'post',
+				data: {
+					qra: $(this).val(),
+				},
+				success: function(data) {
+					// Set Map to Lat/Long
+					result = JSON.parse(data);
+					markers.clearLayers();
+					if (typeof result[0] !== "undefined" && typeof result[1] !== "undefined") {
+						var redIcon = L.icon({
+							iconUrl: icon_dot_url,
+							iconSize:     [18, 18], // size of the icon
+						});
 
-					var marker = L.marker([result[0], result[1]], {icon: redIcon});
-					mymap.setZoom(8);
-					mymap.panTo([result[0], result[1]]);
-					mymap.setView([result[0], result[1]], 8);
-				}
-				markers.addLayer(marker).addTo(mymap);
-			})
+						var marker = L.marker([result[0], result[1]], {icon: redIcon});
+						mymap.setZoom(8);
+						mymap.panTo([result[0], result[1]]);
+						mymap.setView([result[0], result[1]], 8);
+					   markers.addLayer(marker).addTo(mymap);
+					}
+				},
+				error: function() {
+				},
+			});
 
-			$('#locator_info').load(base_url +"index.php/logbook/searchbearing/" + $(this).val() + "/" + $('#stationProfile').val()).fadeIn("slow");
-			$.get(base_url + 'index.php/logbook/searchdistance/' + $(this).val() + "/" + $('#stationProfile').val(), function(result) {
-				document.getElementById("distance").value = result;
+			$.ajax({
+				url: base_url + 'index.php/logbook/searchbearing',
+				type: 'post',
+				data: {
+					grid: $(this).val(),
+					stationProfile: $('#stationProfile').val()
+				},
+				success: function(data) {
+					$('#locator_info').html(data).fadeIn("slow");
+				},
+				error: function() {
+					$('#locator_info').text("Error loading bearing!").fadeIn("slow");
+				},
+			});
+			$.ajax({
+				url: base_url + 'index.php/logbook/searchdistance',
+				type: 'post',
+				data: {
+					grid: $(this).val(),
+					stationProfile: $('#stationProfile').val()
+				},
+				success: function(data) {
+					document.getElementById("distance").value = data;
+				},
+				error: function() {
+					document.getElementById("distance").value = null;
+				},
 			});
 		}
 	}
@@ -921,8 +967,10 @@ function resetDefaultQSOFields() {
 	$('#iota_ref').val("");
 	$('#sota_ref').val("");
 	$("#locator").removeClass("workedGrid");
+	$("#locator").removeClass("confirmedGrid");
 	$("#locator").removeClass("newGrid");
 	$("#callsign").removeClass("workedGrid");
+	$("#callsign").removeClass("confirmedGrid");
 	$("#callsign").removeClass("newGrid");
 	$('#callsign_info').removeClass("badge-secondary");
 	$('#callsign_info').removeClass("badge-success");

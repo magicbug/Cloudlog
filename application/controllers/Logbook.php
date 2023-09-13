@@ -153,6 +153,7 @@ class Logbook extends CI_Controller {
 		$return['callsign_state'] 		= $this->nval($callbook['state'] ?? '', $this->logbook_model->call_state($callsign));
 		$return['callsign_us_county'] 	= $this->nval($callbook['us_county'] ?? '', $this->logbook_model->call_us_county($callsign));
 		$return['workedBefore'] 		= $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
+		$return['confirmed'] 		= $this->confirmed_grid_before($return['callsign_qra'], $type, $band, $mode);
 
 		if ($this->session->userdata('user_show_profile_image')) {
 			if (isset($callbook)) {
@@ -181,7 +182,70 @@ class Logbook extends CI_Controller {
 		return (($val2 ?? "") === "" ? ($val1 ?? "") : ($val2 ?? ""));
 	}
 
-	function worked_grid_before($gridsquare, $type, $band, $mode)
+	function confirmed_grid_before($gridsquare, $type, $band, $mode) {
+		if (strlen($gridsquare) < 4)
+			return false;
+
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
+
+		if(!empty($logbooks_locations_array)) {
+			$extrawhere='';
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+				$extrawhere="COL_QSL_RCVD='Y'"; 
+			}
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+				if ($extrawhere!='') {
+					$extrawhere.=" OR";
+				}
+				$extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
+			}
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+				if ($extrawhere!='') {
+					$extrawherei.=" OR";
+				}
+				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
+			}
+
+
+			if($type == "SAT") {
+				$this->db->where('COL_PROP_MODE', 'SAT');
+				if ($extrawhere != '') {
+					$this->db->where('('.$extrawhere.')');
+				} else {
+					$this->db->where("1=0");
+				}
+			} else {
+				$CI->load->model('logbook_model');
+				$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
+				$this->db->where('COL_BAND', $band);
+				$this->db->where('COL_PROP_MODE !=','SAT');
+				if ($extrawhere != '') {
+					$this->db->where('('.$extrawhere.')');
+				} else {
+					$this->db->where("1=0");
+				}
+			}
+
+			$this->db->where_in('station_id', $logbooks_locations_array);
+			$this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($gridsquare, 0, 4));
+			$this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "desc");
+			$this->db->limit(1);
+
+
+			$query = $this->db->get($this->config->item('table_name'));
+
+
+			foreach ($query->result() as $workedBeforeRow) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+function worked_grid_before($gridsquare, $type, $band, $mode)
 	{
 		if (strlen($gridsquare) < 4)
 			return false;
@@ -226,8 +290,9 @@ class Logbook extends CI_Controller {
 	function jsonlookupgrid($gridsquare, $type, $band, $mode) {
 		$return = [
 			"workedBefore" => false,
+			"confirmed" => false,
 		];
-
+		$user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
 		$CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -251,6 +316,51 @@ class Logbook extends CI_Controller {
 			$return['workedBefore'] = true;
 		}
 
+		
+		$extrawhere='';
+		if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+			$extrawhere="COL_QSL_RCVD='Y'"; 
+		}
+		if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+			if ($extrawhere!='') {
+				$extrawhere.=" OR";
+			}
+			$extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
+		}
+		if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+			if ($extrawhere!='') {
+				$extrawherei.=" OR";
+			}
+			$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
+		}
+
+		if($type == "SAT") {
+			$this->db->where('COL_PROP_MODE', 'SAT');
+			if ($extrawhere != '') {
+				$this->db->where('('.$extrawhere.')');
+			} else {
+				$this->db->where("1=0");
+			}
+		} else {
+			$CI->load->model('logbook_model');
+			$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
+			$this->db->where('COL_BAND', $band);
+			$this->db->where('COL_PROP_MODE !=','SAT');
+			if ($extrawhere != '') {
+				$this->db->where('('.$extrawhere.')');
+			} else {
+				$this->db->where("1=0");
+			}
+		}
+
+		$this->db->where_in('station_id', $logbooks_locations_array);
+
+		$this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($gridsquare, 0, 4));
+		$query = $this->db->get($this->config->item('table_name'), 1, 0);
+		foreach ($query->result() as $workedBeforeRow) {
+			$return['confirmed']=true;
+		}
+
 		header('Content-Type: application/json');
 		echo json_encode($return, JSON_PRETTY_PRINT);
 
@@ -261,12 +371,14 @@ class Logbook extends CI_Controller {
 
 		$return = [
 			"workedBefore" => false,
+			"confirmed" => false,
 		];
 
+		$user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
 		$CI =& get_instance();
-        $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-	$CI->load->model('logbook_model');
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$CI->load->model('logbook_model');
 
 		if(!empty($logbooks_locations_array)) {
 			if($type == "SAT") {
@@ -287,12 +399,59 @@ class Logbook extends CI_Controller {
 				$return['workedBefore'] = true;
 			}
 
+			$extrawhere='';
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+				$extrawhere="COL_QSL_RCVD='Y'"; 
+			}
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+				if ($extrawhere!='') {
+					$extrawhere.=" OR";
+				}
+				$extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
+			}
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+				if ($extrawhere!='') {
+					$extrawherei.=" OR";
+				}
+				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
+			}
+
+
+			if($type == "SAT") {
+				$this->db->where('COL_PROP_MODE', 'SAT');
+				if ($extrawhere != '') {
+					$this->db->where('('.$extrawhere.')');
+				} else {
+					$this->db->where("1=0");
+				}
+			} else {
+				$CI->load->model('logbook_model');
+				$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
+				$this->db->where('COL_BAND', $band);
+				$this->db->where('COL_PROP_MODE !=','SAT');
+				if ($extrawhere != '') {
+					$this->db->where('('.$extrawhere.')');
+				} else {
+					$this->db->where("1=0");
+				}
+			}
+
+			$this->db->where_in('station_id', $logbooks_locations_array);
+			$this->db->where('COL_COUNTRY', urldecode($country));
+
+			$query = $this->db->get($this->config->item('table_name'), 1, 0);
+			foreach ($query->result() as $workedBeforeRow) {
+				$return['confirmed']=true;
+			}
+
+
 			header('Content-Type: application/json');
 			echo json_encode($return, JSON_PRETTY_PRINT);
 
 			return;
 		} else {
 			$return['workedBefore'] = false;
+			$return['confirmed'] = false;
 
 			header('Content-Type: application/json');
 			echo json_encode($return, JSON_PRETTY_PRINT);
@@ -307,8 +466,10 @@ class Logbook extends CI_Controller {
 
 		$return = [
 			"workedBefore" => false,
+			"confirmed" => false,
 		];
 
+		$user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -333,11 +494,56 @@ class Logbook extends CI_Controller {
 				$return['workedBefore'] = true;
 			}
 
+			$extrawhere='';
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+				$extrawhere="COL_QSL_RCVD='Y'"; 
+			}
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+				if ($extrawhere!='') {
+					$extrawhere.=" OR";
+				}
+				$extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
+			}
+			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+				if ($extrawhere!='') {
+					$extrawherei.=" OR";
+				}
+				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
+			}
+
+
+			if($type == "SAT") {
+				$this->db->where('COL_PROP_MODE', 'SAT');
+				if ($extrawhere != '') {
+					$this->db->where('('.$extrawhere.')');
+				} else {
+					$this->db->where("1=0");
+				}
+			} else {
+				$CI->load->model('logbook_model');
+				$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
+				$this->db->where('COL_BAND', $band);
+				$this->db->where('COL_PROP_MODE !=','SAT');
+				if ($extrawhere != '') {
+					$this->db->where('('.$extrawhere.')');
+				} else {
+					$this->db->where("1=0");
+				}
+			}
+			$this->db->where_in('station_id', $logbooks_locations_array);
+			$this->db->where('COL_CALL', strtoupper($callsign));
+
+			$query = $this->db->get($this->config->item('table_name'), 1, 0);
+			foreach ($query->result() as $workedBeforeRow) {
+				$return['confirmed'] = true;
+			}
+
 			header('Content-Type: application/json');
 			echo json_encode($return, JSON_PRETTY_PRINT);
 			return;
 		} else {
 			$return['workedBefore'] = false;
+			$return['confirmed'] = false;
 			header('Content-Type: application/json');
 			echo json_encode($return, JSON_PRETTY_PRINT);
 			return;
@@ -473,7 +679,7 @@ class Logbook extends CI_Controller {
 		$html = "";
 
 		if(!empty($logbooks_locations_array)) {
-			$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_FREQ, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, station_profile.*');
+			$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_FREQ, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, '.$this->config->item('table_name').'.COL_MY_GRIDSQUARE, '.$this->config->item('table_name').'.COL_CONTEST_ID, '.$this->config->item('table_name').'.COL_STATE, station_profile.*');
 			$this->db->from($this->config->item('table_name'));
 
 			$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
@@ -492,31 +698,27 @@ class Logbook extends CI_Controller {
 			$html .= "<div class=\"table-responsive\">";
 			$html .= "<table class=\"table\">";
 				$html .= "<tr>";
-					$html .= "<td>Date</td>";
-					$html .= "<td>Callsign</td>";
-					$html .= "<td>Mode</td>";
-					$html .= "<td>RST (S)</td>";
-					$html .= "<td>RST (R)</td>";
-					if ($this->session->userdata('user_column1')=='Frequency' || $this->session->userdata('user_column2')=='Frequency' || $this->session->userdata('user_column3')=='Frequency' || $this->session->userdata('user_column4')=='Frequency' || $this->session->userdata('user_column5')=='Frequency') {
-						$html .= "<td>Frequency</td>";
-					} else {
-						$html .= "<td>Band</td>";
-					}
+					$html .= "<th>Date</th>";
+					$html .= "<th>Callsign</th>";
+					$html .= $this->part_table_header_col($this, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
+					$html .= $this->part_table_header_col($this, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
+					$html .= $this->part_table_header_col($this, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
+					$html .= $this->part_table_header_col($this, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
 					switch($this->session->userdata('user_previous_qsl_type')) {
 						case 0:
-							$html .= "<td>".lang('gen_hamradio_qsl')."</td>";
+							$html .= "<th>".lang('gen_hamradio_qsl')."</th>";
 							break;
 						case 1:
-							$html .= "<td>".lang('lotw_short')."</td>";
+							$html .= "<th>".lang('lotw_short')."</th>";
 							break;
 						case 2:
-							$html .= "<td>".lang('eqsl_short')."</td>";
+							$html .= "<th>".lang('eqsl_short')."</th>";
 							break;
 						default:
-							$html .= "<td>".lang('gen_hamradio_qsl')."</td>";
+							$html .= "<th>".lang('gen_hamradio_qsl')."</th>";
 							break;
 					}
-					$html .= "<td></td>";
+					$html .= "<th></th>";
 				$html .= "</tr>";
 
 			// Get Date format
@@ -536,21 +738,10 @@ class Logbook extends CI_Controller {
 				$html .= "<tr>";
 					$html .= "<td>".date($custom_date_format, $timestamp). date(' H:i',strtotime($row->COL_TIME_ON)) . "</td>";
 					$html .= "<td><a id='edit_qso' href='javascript:displayQso(" . $row->COL_PRIMARY_KEY . ");'>" . str_replace('0','&Oslash;',strtoupper($row->COL_CALL)) . "</a></td>";
-					if ($row->COL_SUBMODE==null)
-						$html .= "<td>".$row->COL_MODE."</td>";
-					else
-						$html .= "<td>".$row->COL_SUBMODE."</td>";
-					$html .= "<td>".$row->COL_RST_SENT."</td>";
-					$html .= "<td>".$row->COL_RST_RCVD."</td>";
-					if($row->COL_SAT_NAME != null) {
-						$html .= "<td>".$row->COL_SAT_NAME."</td>";
-					} else {
-						if ($this->session->userdata('user_column1')=='Frequency' || $this->session->userdata('user_column2')=='Frequency' || $this->session->userdata('user_column3')=='Frequency' || $this->session->userdata('user_column4')=='Frequency' || $this->session->userdata('user_column5')=='Frequency') {
-							$html .= "<td>".$this->frequency->hz_to_mhz($row->COL_FREQ)."</td>";
-						} else {
-							$html .= "<td>".$row->COL_BAND."</td>";
-						}
-					}
+					$html .= $this->part_table_col($row, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
+					$html .= $this->part_table_col($row, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
+					$html .= $this->part_table_col($row, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
+					$html .= $this->part_table_col($row, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
 					if ($this->session->userdata('user_previous_qsl_type') == 1) {
 						$html .= "<td class=\"lotw\">";
 						$html .= "<span class=\"qsl-";
@@ -878,7 +1069,9 @@ class Logbook extends CI_Controller {
 
 
 	/* return station bearing */
-	function searchbearing($locator, $station_id = null) {
+	function searchbearing() {
+			$locator = xss_clean($this->input->post('grid'));
+			$station_id = xss_clean($this->input->post('stationProfile'));
 			$this->load->library('Qra');
 
 			if($locator != null) {
@@ -915,7 +1108,9 @@ class Logbook extends CI_Controller {
 	}
 
 	/* return distance */
-	function searchdistance($locator, $station_id = null) {
+	function searchdistance() {
+			$locator = xss_clean($this->input->post('grid'));
+			$station_id = xss_clean($this->input->post('stationProfile'));
 			$this->load->library('Qra');
 
 			if($locator != null) {
@@ -1010,7 +1205,8 @@ class Logbook extends CI_Controller {
 		return $latlng;
 	}
 
-	function qralatlngjson($qra) {
+	function qralatlngjson() {
+		$qra = xss_clean($this->input->post('qra'));
 		$this->load->library('Qra');
 		$latlng = $this->qra->qra2latlong($qra);
 		print json_encode($latlng);
@@ -1029,4 +1225,56 @@ class Logbook extends CI_Controller {
         return $this->db->get();
     }
 
+	function part_table_header_col($ctx, $name) {
+		$ret='';
+		switch($name) {
+		case 'Mode': $ret.= '<th>'.$ctx->lang->line('gen_hamradio_mode').'</th>'; break;
+		case 'RSTS': $ret.= '<th class="d-none d-sm-table-cell">'.$ctx->lang->line('gen_hamradio_rsts').'</th>'; break;
+		case 'RSTR': $ret.= '<th class="d-none d-sm-table-cell">'.$ctx->lang->line('gen_hamradio_rstr').'</th>'; break;
+		case 'Country': $ret.= '<th>'.$ctx->lang->line('general_word_country').'</th>'; break;
+		case 'IOTA': $ret.= '<th>'.$ctx->lang->line('gen_hamradio_iota').'</th>'; break;
+		case 'SOTA': $ret.= '<th>'.$ctx->lang->line('gen_hamradio_sota').'</th>'; break;
+		case 'WWFF': $ret.= '<th>'.$ctx->lang->line('gen_hamradio_wwff').'</th>'; break;
+		case 'POTA': $ret.= '<th>'.$ctx->lang->line('gen_hamradio_pota').'</th>'; break;
+		case 'State': $ret.= '<th>'.$ctx->lang->line('gen_hamradio_state').'</th>'; break;
+		case 'Grid': $ret.= '<th>'.$ctx->lang->line('gen_hamradio_gridsquare').'</th>'; break;
+		case 'Distance': $ret.= '<th>'.$ctx->lang->line('gen_hamradio_distance').'</th>'; break;
+		case 'Band': $ret.= '<th>'.$ctx->lang->line('gen_hamradio_band').'</th>'; break;
+		case 'Frequency': $ret.= '<th>'.$ctx->lang->line('gen_hamradio_frequency').'</th>'; break;
+		case 'Operator': $ret.= '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
+		}
+		return $ret;
+	}
+
+	function part_QrbCalcLink($mygrid, $grid, $vucc) {
+		$ret='';
+		if (!empty($grid)) {
+			$ret.= $grid . ' <a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $grid . '\')"><i class="fas fa-globe"></i></a>';
+		} else if (!empty($vucc)) {
+			$ret.= $vucc .' <a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $vucc . '\')"><i class="fas fa-globe"></i></a>';
+		}
+		return $ret;
+	}
+
+	function part_table_col($row, $name) {
+		$ret='';
+		$ci =& get_instance();
+		switch($name) {
+		case 'Mode':    $ret.= '<td>'; $ret.= $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE . '</td>'; break;
+		case 'RSTS':    $ret.= '<td class="d-none d-sm-table-cell">' . $row->COL_RST_SENT; if ($row->COL_STX) { $ret.= ' <span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">'; $ret.=sprintf("%03d", $row->COL_STX); $ret.= '</span>';} if ($row->COL_STX_STRING) { $ret.= ' <span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">' . $row->COL_STX_STRING . '</span>';} $ret.= '</td>'; break;
+		case 'RSTR':    $ret.= '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX) { $ret.= ' <span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">'; $ret.=sprintf("%03d", $row->COL_SRX); $ret.= '</span>';} if ($row->COL_SRX_STRING) { $ret.= ' <span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';} $ret.= '</td>'; break;
+		case 'Country': $ret.= '<td>' . ucwords(strtolower(($row->COL_COUNTRY))); if ($row->end != NULL) $ret.= ' <span class="badge badge-danger">'.$ci->lang->line('gen_hamradio_deleted_dxcc').'</span>'  . '</td>'; break;
+		case 'IOTA':    $ret.= '<td>' . ($row->COL_IOTA) . '</td>'; break;
+		case 'SOTA':    $ret.= '<td>' . ($row->COL_SOTA_REF) . '</td>'; break;
+		case 'WWFF':    $ret.= '<td>' . ($row->COL_WWFF_REF) . '</td>'; break;
+		case 'POTA':    $ret.= '<td>' . ($row->COL_POTA_REF) . '</td>'; break;
+		case 'Grid':    $ret.= '<td>' . $this->part_QrbCalcLink($row->COL_MY_GRIDSQUARE, $row->COL_VUCC_GRIDS, $row->COL_GRIDSQUARE) . '</td>'; break;
+		case 'Distance':    $ret.= '<td>' . ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : '') . '</td>'; break;
+		case 'Band':    $ret.= '<td>'; if($row->COL_SAT_NAME != null) { $ret.= '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'.$row->COL_SAT_NAME.'</a></td>'; } else { $ret.= strtolower($row->COL_BAND); } $ret.= '</td>'; break;
+		case 'Frequency':    $ret.= '<td>'; if($row->COL_SAT_NAME != null) { $ret.= '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'.$row->COL_SAT_NAME.'</a></td>'; } else { if($row->COL_FREQ != null) { $ret.= $ci->frequency->hz_to_mhz($row->COL_FREQ); } else { $ret.= strtolower($row->COL_BAND); } } $ret.= '</td>'; break;
+		case 'State':   $ret.= '<td>' . ($row->COL_STATE) . '</td>'; break;
+		case 'Operator': $ret.= '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
+		}
+		return $ret;
+	}
 }

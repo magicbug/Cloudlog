@@ -24,29 +24,63 @@ function updateRow(qso) {
 	let row = $('#qsoID-' + qso.qsoID);
 	let cells = row.find('td');
 	let c = 1;
-	cells.eq(c++).text(qso.qsoDateTime);
-	cells.eq(c++).text(qso.de);
-	cells.eq(c++).html('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + '">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
-	cells.eq(c++).text(qso.mode);
-	cells.eq(c++).text(qso.rstS);
-	cells.eq(c++).text(qso.rstR);
-	cells.eq(c++).text(qso.band);
-	cells.eq(c++).text(qso.deRefs);
-	cells.eq(c++).html(qso.dxRefs);
-	cells.eq(c++).text(qso.name);
-	cells.eq(c++).text(qso.qslVia);
-	cells.eq(c++).html(qso.qsl);
-	if ($(".eqslconfirmation")[0]){
+	if (user_options.datetime.show == "true"){
+		cells.eq(c++).text(qso.qsoDateTime);
+	}
+	if (user_options.de.show == "true"){
+		cells.eq(c++).text(qso.de);
+	}
+	if (user_options.dx.show == "true"){
+		cells.eq(c++).html('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + '">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
+	}
+	if (user_options.mode.show == "true"){
+		cells.eq(c++).text(qso.mode);
+	}
+	if (user_options.rsts.show == "true"){
+		cells.eq(c++).text(qso.rstS);
+	}
+	if (user_options.rstr.show == "true"){
+		cells.eq(c++).text(qso.rstR);
+	}
+	if (user_options.band.show == "true"){
+		cells.eq(c++).text(qso.band);
+	}
+	if (user_options.myrefs.show == "true"){
+		cells.eq(c++).text(qso.deRefs);
+	}
+	if (user_options.refs.show == "true"){
+		cells.eq(c++).html(qso.dxRefs);
+	}
+	if (user_options.name.show == "true"){
+		cells.eq(c++).text(qso.name);
+	}
+	if (user_options.qslvia.show == "true"){
+		cells.eq(c++).text(qso.qslVia);
+	}
+	if (user_options.qsl.show == "true"){
+		cells.eq(c++).html(qso.qsl);
+	}
+	if ($(".eqslconfirmation")[0] && user_options.eqsl.show == "true"){
 		cells.eq(c++).html(qso.eqsl);
 	}
-	if ($(".lotwconfirmation")[0]){
+	if ($(".lotwconfirmation")[0] && user_options.lotw.show == "true"){
 		cells.eq(c++).html(qso.lotw);
 	}
-	cells.eq(c++).text(qso.qslMessage);
-	cells.eq(c++).html(qso.dxcc);
-	cells.eq(c++).text(qso.state);
-	cells.eq(c++).html(qso.cqzone);
-	cells.eq(c++).html(qso.iota);
+	if (user_options.qslmsg.show == "true"){
+		cells.eq(c++).text(qso.qslMessage);
+	}
+	if (user_options.dxcc.show == "true"){
+		cells.eq(c++).html(qso.dxcc);
+	}
+	if (user_options.state.show == "true"){
+		cells.eq(c++).text(qso.state);
+	}
+	if (user_options.cqzone.show == "true"){
+		cells.eq(c++).html(qso.cqzone);
+	}
+	if (user_options.iota.show == "true"){
+		cells.eq(c++).html(qso.iota);
+	}
 
 	$('[data-toggle="tooltip"]').tooltip();
 	return row;
@@ -67,6 +101,10 @@ function loadQSOTable(rows) {
 			"scrollCollapse": true,
 			"paging":         false,
 			"scrollX": true,
+			// colReorder: {
+			// 	order: [0, 2,1,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18]
+			// 	// order: [0, customsortorder]
+			//   },
 		});
 	});
 
@@ -79,29 +117,63 @@ function loadQSOTable(rows) {
 
 		var data = [];
 		data.push('<div class="form-check"><input class="form-check-input" type="checkbox" /></div>');
-		data.push(qso.qsoDateTime);
-		data.push(qso.de);
-		data.push('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + ' ">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
-		data.push(qso.mode);
-		data.push(qso.rstS);
-		data.push(qso.rstR);
-		data.push(qso.band);
-		data.push(qso.deRefs);
-		data.push(qso.dxRefs);
-		data.push(qso.name);
-		data.push(qso.qslVia);
-		data.push(qso.qsl);
-		if ($(".eqslconfirmation")[0]){
+		if (user_options.datetime.show == "true"){
+			data.push(qso.qsoDateTime);
+		}
+		if (user_options.de.show == "true"){
+			data.push(qso.de);
+		}
+		if (user_options.dx.show == "true"){
+			data.push('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + ' ">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
+		}
+		if (user_options.mode.show == "true"){
+			data.push(qso.mode);
+		}
+		if (user_options.rsts.show == "true"){
+			data.push(qso.rstS);
+		}
+		if (user_options.rstr.show == "true"){
+			data.push(qso.rstR);
+		}
+		if (user_options.band.show == "true"){
+			data.push(qso.band);
+		}
+		if (user_options.myrefs.show == "true"){
+			data.push(qso.deRefs);
+		}
+		if (user_options.refs.show == "true"){
+			data.push(qso.dxRefs);
+		}
+		if (user_options.name.show == "true"){
+			data.push(qso.name);
+		}
+		if (user_options.qslvia.show == "true"){
+			data.push(qso.qslVia);
+		}
+		if (user_options.qsl.show == "true"){
+			data.push(qso.qsl);
+		}
+		if ($(".eqslconfirmation")[0] && user_options.eqsl.show == "true"){
 			data.push(qso.eqsl);
 		}
-		if ($(".lotwconfirmation")[0]){
+		if ($(".lotwconfirmation")[0] && user_options.lotw.show == "true"){
 			data.push(qso.lotw);
 		}
-		data.push(qso.qslMessage);
-		data.push(qso.dxcc+(qso.end == null ? '' : ' <span class="badge badge-danger">Deleted DXCC</span>'));
-		data.push(qso.state);
-		data.push(qso.cqzone);
-		data.push(qso.iota);
+		if (user_options.qslmsg.show == "true"){
+			data.push(qso.qslMessage);
+		}
+		if (user_options.dxcc.show == "true"){
+			data.push(qso.dxcc+(qso.end == null ? '' : ' <span class="badge badge-danger">Deleted DXCC</span>'));
+		}
+		if (user_options.state.show == "true"){
+			data.push(qso.state);
+		}
+		if (user_options.cqzone.show == "true"){
+			data.push(qso.cqzone);
+		}
+		if (user_options.iota.show == "true"){
+			data.push(qso.iota);
+		}
 
 		let createdRow = table.row.add(data).index();
 		table.rows(createdRow).nodes().to$().data('qsoID', qso.qsoID);
@@ -421,6 +493,49 @@ $(document).ready(function () {
 
 	$('#searchPota').click(function (event) {
 		quickSearch('pota');
+	});
+
+	$('#optionButton').click(function (event) {
+		$('#optionButton').prop("disabled", true);
+		$.ajax({
+			url: base_url + 'index.php/logbookadvanced/userOptions',
+			type: 'post',
+			success: function (html) {
+				BootstrapDialog.show({
+					title: 'Options for the Advanced Logbook',
+					size: BootstrapDialog.SIZE_NORMAL,
+					cssClass: 'options',
+					nl2br: false,
+					message: html,
+					onshown: function(dialog) {
+					},
+					buttons: [{
+						label: 'Save',
+						cssClass: 'btn-primary btn-sm',
+						id: 'saveButton',
+						action: function (dialogItself) {
+							$('#optionButton').prop("disabled", false);
+							$('#closeButton').prop("disabled", true);
+							saveOptions();
+							dialogItself.close();
+							location.reload();
+						}
+					},
+					{
+						label: 'Close',
+						cssClass: 'btn-sm',
+						id: 'closeButton',
+						action: function (dialogItself) {
+							$('#optionButton').prop("disabled", false);
+							dialogItself.close();
+						}
+					}],
+					onhide: function(dialogRef){
+						$('#optionButton').prop("disabled", false);
+					},
+				});
+			}
+		});
 	});
 
 	$('#qslSlideshow').click(function (event) {
@@ -919,4 +1034,41 @@ function loadMap(data) {
 			'</tr>';
 		}
 		return (table += '</tbody></table>');
+	}
+
+	function saveOptions() {
+		$('#saveButton').prop("disabled", true);
+		$('#closeButton').prop("disabled", true);
+		$.ajax({
+			url: base_url + 'index.php/logbookadvanced/setUserOptions',
+			type: 'post',
+			data: {
+				datetime: $('input[name="datetime"]').is(':checked') ? true : false,
+				de: $('input[name="de"]').is(':checked') ? true : false,
+				dx: $('input[name="dx"]').is(':checked') ? true : false,
+				mode: $('input[name="mode"]').is(':checked') ? true : false,
+				rsts: $('input[name="rsts"]').is(':checked') ? true : false,
+				rstr: $('input[name="rstr"]').is(':checked') ? true : false,
+				band: $('input[name="band"]').is(':checked') ? true : false,
+				myrefs: $('input[name="myrefs"]').is(':checked') ? true : false,
+				refs: $('input[name="refs"]').is(':checked') ? true : false,
+				name: $('input[name="name"]').is(':checked') ? true : false,
+				qslvia: $('input[name="qslvia"]').is(':checked') ? true : false,
+				qsl: $('input[name="qsl"]').is(':checked') ? true : false,
+				lotw: $('input[name="lotw"]').is(':checked') ? true : false,
+				eqsl: $('input[name="eqsl"]').is(':checked') ? true : false,
+				qslmsg: $('input[name="qslmsg"]').is(':checked') ? true : false,
+				dxcc: $('input[name="dxcc"]').is(':checked') ? true : false,
+				state: $('input[name="state"]').is(':checked') ? true : false,
+				cqzone: $('input[name="cqzone"]').is(':checked') ? true : false,
+				iota: $('input[name="iota"]').is(':checked') ? true : false,
+			},
+			success: function(data) {
+				$('#saveButton').prop("disabled", false);
+				$('#closeButton').prop("disabled", false);
+			},
+			error: function() {
+				$('#saveButton').prop("disabled", false);
+			},
+		});
 	}
