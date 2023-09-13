@@ -38,7 +38,6 @@ class QSO
 	private string $iota;
 	/** @var string[] */
 	private string $deVUCCGridsquares;
-	private string $stationGridsquare;
 	private string $dxGridsquare;
 	private string $dxIOTA;
 	private string $dxSig;
@@ -156,16 +155,14 @@ class QSO
 		$this->email = $data['COL_EMAIL'] ?? '';
 		$this->address = $data['COL_ADDRESS'] ?? '';
 
-		$this->deGridsquare = $data['COL_MY_GRIDSQUARE'] ?? '';
-		$this->deIOTA = $data['COL_MY_IOTA'] ?? '';
-		$this->deSig = $data['COL_MY_SIG'] ?? '';
-		$this->deSigInfo = $data['COL_MY_SIG_INFO'] ?? '';
+		$this->deGridsquare = $data['station_gridsquare'] ?? '';
+		$this->deIOTA = $data['station_iota'] ?? '';
+		$this->deSig = $data['station_sig'] ?? '';
+		$this->deSigInfo = $data['station_sig_info'] ?? '';
 		$this->deIOTAIslandID = $data['COL_MY_IOTA_ISLAND_ID'] ?? '';
-		$this->deSOTAReference = $data['COL_MY_SOTA_REF'] ?? '';
+		$this->deSOTAReference = $data['station_sota'] ?? '';
 
 		$this->deVUCCGridsquares = $data['COL_MY_VUCC_GRIDS'] ?? '';
-
-		$this->stationGridsquare = $data['station_gridsquare'] ?? '';
 
 		$this->dxGridsquare = $data['COL_GRIDSQUARE'] ?? '';
 		$this->dxIOTA = $data['COL_IOTA'] ?? '';
@@ -862,9 +859,9 @@ class QSO
 	{
 		$refs = [];
 		if ($this->dxVUCCGridsquares !== '') {
-			$refs[] = '<span id="dxgrid">' . $this->dxVUCCGridsquares . '</span> ' .$this->getQrbLink($this->stationGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
+			$refs[] = '<span id="dxgrid">' . $this->dxVUCCGridsquares . '</span> ' .$this->getQrbLink($this->deGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
 		} else if ($this->dxGridsquare !== '') {
-			$refs[] = '<span id="dxgrid">' . $this->dxGridsquare . '</span> ' .$this->getQrbLink($this->stationGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
+			$refs[] = '<span id="dxgrid">' . $this->dxGridsquare . '</span> ' .$this->getQrbLink($this->deGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
 		}
 		if ($this->dxSOTAReference !== '') {
 			$refs[] = "SOTA: " . '<span id="dxsota">' . $this->dxSOTAReference. '</span>';
