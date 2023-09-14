@@ -45,10 +45,17 @@ $(function() {
 					dxspots.sort(SortByQrg);
 					dxspots.forEach((single) => {
 						var data=[];
+						if (single.cnfmd_call) {
+							addon_class="text-success";
+						} else if (single.worked_call) {
+							addon_class="text-warning";
+						} else {
+							addon_class="";
+						}
 						data[0]=[];
 						data[0].push(single.when_pretty);
 						data[0].push(single.frequency*1);
-						data[0].push((single.worked_call ?'<span class="text-success">' : '')+single.spotted+(single.worked_call ? '</span>' : ''));
+						data[0].push((addon_class != '' ?'<span class="'+addon_class+'">' : '')+single.spotted+(addon_class != '' ? '</span>' : ''));
 						data[0].push(single.dxcc_spotted.entity);
 						data[0].push(single.spotter);
 						if (oldtable.length > 0) {

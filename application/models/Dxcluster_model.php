@@ -63,6 +63,7 @@ class Dxcluster_model extends CI_Model {
 						if ( ($de != '') && ($de != 'Any') && (property_exists($singlespot->dxcc_spotter,'cont')) ){	// If we have a "de continent" and a filter-wish filter on that
 							if (strtolower($de) == strtolower($singlespot->dxcc_spotter->cont ?? '')) {
 								$singlespot->worked_call = ($this->logbook_model->check_if_callsign_worked_in_logbook($singlespot->spotted, $logbooks_locations_array, $singlespot->band) >= 1);
+								$singlespot->cnfmd_call = ($this->logbook_model->check_if_callsign_cnfmd_in_logbook($singlespot->spotted, $logbooks_locations_array, $singlespot->band) >= 1);
 								array_push($spotsout,$singlespot);
 							}
 						} else {	// No de continent? No Filter --> Just push
