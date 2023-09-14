@@ -38,6 +38,8 @@
                     <td>
                         <?php
                         $CI = &get_instance();
+			$CI->load->model('logbooks_model');
+			$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
                         $CI->load->model('logbook_model');
                         $call_worked = $CI->logbook_model->check_if_callsign_worked_in_logbook($rove['callsign'], $logbooks_locations_array, "SAT");
                         echo " <span data-toggle=\"tooltip\" title=\"".$rove['comment']."\">";
