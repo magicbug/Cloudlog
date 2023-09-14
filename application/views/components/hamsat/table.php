@@ -35,7 +35,20 @@
                         - <?php echo $rove['start_time']; ?> - <?php echo $rove['end_time']; ?>
 
                     </td>
-                    <td><span data-toggle="tooltip" title="<?php echo $rove['comment']; ?>"><?php echo $rove['callsign']; ?></span></td>
+                    <td>
+                        <?php
+                        $CI = &get_instance();
+                        $CI->load->model('logbook_model');
+                        $call_worked = $CI->logbook_model->check_if_callsign_worked_in_logbook($rove['callsign'], $logbooks_locations_array, "SAT");
+                        echo " <span data-toggle=\"tooltip\" title=\"".$rove['comment']."\">";
+                        if ($call_worked != 0) {
+                            echo "<span class=\"text-success\">".$rove['callsign']."</span>";
+                        } else {
+                            echo $rove['callsign'];
+                        }
+                        echo "</span></td>";
+                        ?>
+                    </td>
                     <td><span data-toggle="tooltip" title="<?php echo $rove['frequency']; ?> - <?php echo $rove['mode']; ?>"><?= $rove['satellite'] ?></span></td>
                     <td>
 
@@ -43,8 +56,6 @@
                         <?php
 
                         // Load the logbook model and call check_if_grid_worked_in_logbook
-                        $CI = &get_instance();
-                        $CI->load->model('logbook_model');
                         $worked = $CI->logbook_model->check_if_grid_worked_in_logbook($rove['gridsquare'], null, "SAT");
                         if ($worked != 0) {
                             echo " <span data-toggle=\"tooltip\" title=\"Worked\" class=\"badge badge-success\">" . $rove['gridsquare'] . "</span>";
