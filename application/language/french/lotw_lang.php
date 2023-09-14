@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['lotw_short'] = 'LoTW';
-$lang['lotw_title'] = 'Logbook du monde';
+$lang['lotw_title'] = 'Logbook of the World';
 $lang['lotw_title_available_cert'] = 'Certificats disponibles';
 $lang['lotw_title_information'] = 'Information';
 $lang['lotw_title_upload_p12_cert'] = 'Envoyer certificat .p12 du Logbook du monde';
