@@ -36,10 +36,7 @@ class Activated_gridmap_model extends CI_Model {
 
         $sql .= $this->addQslToQuery($qsl, $lotw, $eqsl);
 
-        $result = $this->db->query($sql);
-        log_message('debug','SQL: '.$this->db->last_query());
-		return $result;
-		#return $this->db->query($sql);
+		return $this->db->query($sql);
 	}
 
     function get_band($band, $mode, $qsl, $lotw, $eqsl, $sat) {
