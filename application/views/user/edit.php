@@ -473,7 +473,7 @@
 					</div>
 					<div class="card-body">
 						<div class="form-group">
-							<label for="profileimages">Select the type of QSL to show in the previous QSOs section.</label>
+							<label for="profileimages"><?php echo lang('account_select_the_type_of_qsl_to_show_in_the_previous_qsos_section'); ?></label>
 							<select class="custom-select" id="previousqsltype" name="user_previous_qsl_type">
 								<option value="0" <?php if ($user_previous_qsl_type == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_qsl'); ?></option>
 								<option value="1" <?php if ($user_previous_qsl_type == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('lotw_short'); ?></option>
@@ -562,6 +562,11 @@
 							} ?>
 							</select>
 						</div>
+					</div>
+					<div class="card-header">
+						<?php echo lang('account_qsl_settings'); ?>
+					</div>
+					<div class="card-body">
 						<div class="form-group">
 							<label class="my-1 mr-2"><?php echo lang('gridsquares_confirmation'); ?></label>
 							<div class="form-check-inline">

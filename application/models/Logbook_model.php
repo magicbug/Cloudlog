@@ -1680,7 +1680,58 @@ class Logbook_model extends CI_Model {
 
   }
 
-  function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray = null, $band = null) {
+    function check_if_callsign_cnfmd_in_logbook($callsign, $StationLocationsArray = null, $band = null) {
+	    $user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
+
+	    if($StationLocationsArray == null) {
+		    $CI =& get_instance();
+		    $CI->load->model('logbooks_model');
+		    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	    } else {
+		    $logbooks_locations_array = $StationLocationsArray;
+	    }
+
+	    $extrawhere='';
+	    if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+		    $extrawhere="COL_QSL_RCVD='Y'"; 
+	    }
+	    if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+		    if ($extrawhere!='') {
+			    $extrawhere.=" OR";
+		    }
+		    $extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
+	    }
+	    if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+		    if ($extrawhere!='') {
+			    $extrawherei.=" OR";
+		    }
+		    $extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
+	    }
+
+
+	    $this->db->select('COL_CALL');
+	    $this->db->where_in('station_id', $logbooks_locations_array);
+	    $this->db->where('COL_CALL', $callsign);
+
+	    if($band != null && $band != 'SAT') {
+		    $this->db->where('COL_BAND', $band);
+	    } else if($band == 'SAT') {
+		    // Where col_sat_name is not empty
+		    $this->db->where('COL_SAT_NAME !=', '');
+	    }
+	    if ($extrawhere != '') {
+		    $this->db->where('('.$extrawhere.')');
+	    } else {
+		    $this->db->where("1=0");
+	    }
+	    $this->db->limit('2');
+	    $query = $this->db->get($this->config->item('table_name'));
+
+	    return $query->num_rows();
+
+    }
+
+function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray = null, $band = null) {
 
     if($StationLocationsArray == null) {
       $CI =& get_instance();
@@ -2830,10 +2881,6 @@ class Logbook_model extends CI_Model {
 
 	if (($station_id !=0 ) && (!(isset($record['station_callsign'])))) {
 		$record['station_callsign']=$station_profile_call;
-	}
-
-	if (($station_id != 0) && ($record['station_callsign'] != $station_profile_call)) {	// Check if station_call from import matches profile ONLY when submitting via GUI.
-		return "Wrong station_callsign ".$record['station_callsign']." while importing QSO with ".$record['call']." for ".$station_profile_call." : SKIPPED";
 	}
 
         $CI =& get_instance();
