@@ -2,7 +2,8 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['lotw_title'] = 'Logbook du monde';
+$lang['lotw_short'] = 'LoTW';
+$lang['lotw_title'] = 'Logbook of the World';
 $lang['lotw_title_available_cert'] = 'Certificats disponibles';
 $lang['lotw_title_information'] = 'Information';
 $lang['lotw_title_upload_p12_cert'] = 'Envoyer certificat .p12 du Logbook du monde';
@@ -15,10 +16,13 @@ $lang['lotw_no_certs_uploaded'] = 'Vous devez envoyer des certificats p1 pour ut
 
 $lang['lotw_date_created'] = 'Date Création';
 $lang['lotw_date_expires'] = 'Date Expiration';
+$lang['lotw_qso_start_date'] = 'Date de début des QSOs';
+$lang['lotw_qso_end_date'] = 'Date de fin des QSOs';
 $lang['lotw_status'] = 'Status';
 $lang['lotw_options'] = 'Options';
 $lang['lotw_valid'] = 'Valide';
 $lang['lotw_expired'] = 'Expiré';
+$lang['lotw_expiring'] = 'Expiration';
 $lang['lotw_not_synced'] = 'Non Synchronisé';
 
 $lang['lotw_certificate_dxcc'] = 'Certificat DXCC';
@@ -46,4 +50,13 @@ $lang['lotw_p12_export_step_one'] = 'Ouvrir  TQSL et aller à l\'onglet  Certifi
 $lang['lotw_p12_export_step_two'] = 'Click droit sur l\indicatif désiré';
 $lang['lotw_p12_export_step_three'] = 'Cliquer "Enregistrer le fichier des certificats d\'indicatif sans ajouter de mot de passe';
 $lang['lotw_p12_export_step_four'] = 'Envoyer le fichier ci-dessous.';
+
 $lang['lotw_confirmed'] = 'Ce QSO est confirmé sur LoTW';
+
+// LoTW Expiry
+$lang['lotw_cert_expiring'] = 'Au moins un de vos certificats LoTW est sur le point d\'expirer !';
+$lang['lotw_cert_expired'] = 'Au moins un de vos certificats LoTW est expiré !';
+
+// Lotw User
+$lang['lotw_user'] = 'Cette station utilise LoTW.';
+$lang['lotw_last_upload'] = 'Dernier upload';
