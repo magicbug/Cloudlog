@@ -108,15 +108,19 @@ function gridPlot(form) {
 }
 
 function spawnGridsquareModal(loc_4char) {
+    var ajax_data = ({
+       'Searchphrase': loc_4char,
+       'Band': $("#band").val(),
+       'Mode': $("#mode").val(),
+       'Type': 'VUCC'
+    })
+    if (type == 'activated') {
+       ajax_data.searchmode = 'activated';
+    }
     $.ajax({
         url: base_url + 'index.php/awards/qso_details_ajax',
         type: 'post',
-        data: {
-            'Searchphrase': loc_4char,
-            'Band': $("#band").val(),
-            'Mode': $("#mode").val(),
-            'Type': 'VUCC'
-        },
+        data: ajax_data,
         success: function (html) {
             BootstrapDialog.show({
                 title: 'QSO Data',
