@@ -36,7 +36,10 @@ class Activated_gridmap_model extends CI_Model {
 
         $sql .= $this->addQslToQuery($qsl, $lotw, $eqsl);
 
-		return $this->db->query($sql);
+        $result = $this->db->query($sql);
+        log_message('debug','SQL: '.$this->db->last_query());
+		return $result;
+		#return $this->db->query($sql);
 	}
 
     function get_band($band, $mode, $qsl, $lotw, $eqsl, $sat) {
@@ -154,35 +157,35 @@ class Activated_gridmap_model extends CI_Model {
 	function addQslToQuery($qsl, $lotw, $eqsl) {
 		$sql = '';
 		if ($lotw == "true" && $qsl == "false" && $eqsl == "false") {
-			$sql .= " and col_lotw_qsl_rcvd = 'Y'";
+			$sql .= " and col_lotw_qsl_sent = 'Y'";
 		}
 
 		if ($qsl == "true" && $lotw == "false" && $eqsl == "false") {
-			$sql .= " and col_qsl_rcvd = 'Y'";
+			$sql .= " and col_qsl_true = 'Y'";
 		}
 
         if ($eqsl == "true" && $lotw == "false" && $qsl == "false") {
-			$sql .= " and col_eqsl_qsl_rcvd = 'Y'";
+			$sql .= " and col_eqsl_qsl_sent = 'Y'";
 		}
 
         if ($lotw == "true" && $qsl == "true" && $eqsl == "false") {
-			$sql .= " and (col_lotw_qsl_rcvd = 'Y' or col_qsl_rcvd = 'Y')";
+			$sql .= " and (col_lotw_qsl_sent = 'Y' or col_qsl_sent = 'Y')";
 		}
 
 		if ($qsl == "true" && $lotw == "false" && $eqsl == "true") {
-			$sql .= " and (col_qsl_rcvd = 'Y' or col_eqsl_qsl_rcvd = 'Y')";
+			$sql .= " and (col_qsl_sent = 'Y' or col_eqsl_qsl_sent = 'Y')";
 		}
 
         if ($eqsl == "true" && $lotw == "true" && $qsl == "false") {
-			$sql .= " and (col_eqsl_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
+			$sql .= " and (col_eqsl_qsl_sent = 'Y' or col_lotw_qsl_sent = 'Y')";
 		}
 
 		if ($qsl == "true" && $lotw == "true" && $eqsl == "true") {
-			$sql .= " and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y' or col_eqsl_qsl_rcvd = 'Y')";
+			$sql .= " and (col_qsl_sent = 'Y' or col_lotw_qsl_sent = 'Y' or col_eqsl_qsl_sent = 'Y')";
 		}
 
         if ($qsl == "false" && $lotw == "false" && $eqsl == "false") {
-			$sql .= " and (col_qsl_rcvd != 'Y' and col_lotw_qsl_rcvd != 'Y' and col_eqsl_qsl_rcvd != 'Y')";
+			$sql .= " and (col_qsl_sent != 'Y' and col_lotw_qsl_sent != 'Y' and col_eqsl_qsl_sent != 'Y')";
 		}
 		return $sql;
 	}
