@@ -423,6 +423,8 @@ class Logbook_model extends CI_Model {
 		}
 		$this->db->order_by("COL_TIME_ON", "desc");
 
+		$this->db->limit(500);
+
 		return $this->db->get($this->config->item('table_name'));
 	}
 
