@@ -10,10 +10,11 @@ class Activated_grids_model extends CI_Model {
         if (!$logbooks_locations_array) {
             return null;
         }
-
+	$location_list = "'".implode("','",$logbooks_locations_array)."'";
         $sql = 'SELECT DISTINCT station_gridsquare AS SAT_SQUARE FROM '
            . 'station_profile JOIN '.$this->config->item('table_name').' on '.$this->config->item('table_name').'.station_id = station_profile.station_id '
-           . 'WHERE station_profile.station_gridsquare != "" AND '.$this->config->item('table_name').'.COL_SAT_NAME != ""';
+	   . 'WHERE station_profile.station_gridsquare != "" AND '.$this->config->item('table_name').'.COL_SAT_NAME != ""'
+	   . ' AND station_profile.station_id in ('.$location_list.')';
 
         return $this->db->query($sql);
 	}
@@ -32,7 +33,8 @@ class Activated_grids_model extends CI_Model {
       $sql = 'SELECT DISTINCT station_gridsquare AS SAT_SQUARE FROM '
          . 'station_profile JOIN '.$this->config->item('table_name').' on '.$this->config->item('table_name').'.station_id = station_profile.station_id '
          . 'WHERE station_profile.station_gridsquare != "" AND '.$this->config->item('table_name').'.COL_SAT_NAME != "" '
-         . 'AND (COL_LOTW_QSL_SENT = "Y" OR COL_QSL_SENT = "Y");';
+         . 'AND (COL_LOTW_QSL_SENT = "Y" OR COL_QSL_SENT = "Y")'
+	 . ' AND station_profile.station_id in ('.$location_list.')';
 
 		return $this->db->query($sql);
 	}
@@ -50,7 +52,8 @@ class Activated_grids_model extends CI_Model {
 
         $sql = 'SELECT DISTINCT station_gridsquare AS GRID_SQUARES, COL_BAND FROM '
            . 'station_profile JOIN '.$this->config->item('table_name').' on '.$this->config->item('table_name').'.station_id = station_profile.station_id '
-           . 'WHERE station_profile.station_gridsquare != "" ';
+           . 'WHERE station_profile.station_gridsquare != "" '
+	   . ' AND station_profile.station_id in ('.$location_list.')';
 
         if ($band != 'All') {
             $sql .= 'AND COL_BAND = "'.$band.'" '
@@ -77,7 +80,8 @@ class Activated_grids_model extends CI_Model {
 
         $sql = 'SELECT DISTINCT station_gridsquare AS GRID_SQUARES, COL_BAND FROM '
            . 'station_profile JOIN '.$this->config->item('table_name').' on '.$this->config->item('table_name').'.station_id = station_profile.station_id '
-           . 'WHERE station_profile.station_gridsquare != "" ';
+           . 'WHERE station_profile.station_gridsquare != "" '
+	   . ' AND station_profile.station_id in ('.$location_list.')';
 
         if ($band != 'All') {
             $sql .= 'AND COL_BAND = "'.$band.'" '
