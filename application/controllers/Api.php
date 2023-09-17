@@ -227,7 +227,7 @@ class API extends CI_Controller {
 
 			};
 			http_response_code(201);
-			echo json_encode(['status' => 'created', 'type' => $obj['type'], 'string' => $obj['string'], 'created' => $return_count, 'messages' => $return_msg ]);
+			echo json_encode(['status' => 'created', 'type' => $obj['type'], 'string' => $obj['string'], 'imported_count' => $return_count, 'messages' => $return_msg ]);
 
 		}
 
