@@ -97,7 +97,7 @@ class Lookup extends CI_Controller {
 			foreach ($result as &$value) {
 				if (in_array($value, $arCalls) == false)
 				{
-					$arCalls[] = $value;
+					$arCalls[] = str_replace('0', 'Ø', $value);
 				}
 			}
 		}
