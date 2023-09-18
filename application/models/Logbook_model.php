@@ -933,11 +933,11 @@ class Logbook_model extends CI_Model {
       $srx_string = null;
     }
 
-	if (stristr($this->input->post('usa_county') ?? '', ',')) {
-		$uscounty = $this->input->post('usa_county');
-	} else {
-		$uscounty = $this->input->post('usa_state') .",".$this->input->post('usa_county');
-	}
+    if ($this->input->post('usa_county') && $this->input->post('usa_state')) {
+      $uscounty = trim($this->input->post('usa_state') .",".$this->input->post('usa_county'));
+    } else {
+      $uscounty = null;
+    }
 
     if ($this->input->post('qsl_sent')) {
         $qsl_sent = $this->input->post('qsl_sent');
