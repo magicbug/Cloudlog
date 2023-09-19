@@ -136,7 +136,7 @@
         <div class="cohidden col-auto text-success font-weight-bold" id="bearing"></div>
 </div>
 <script>var gridsquaremap = true;
-var type = "worked";
+var type = "activated";
 <?php
     echo 'var jslayer ="' . $layer .'";';
     echo "var jsattribution ='" . $attribution . "';";
@@ -145,6 +145,6 @@ var type = "worked";
     echo 'var gridsquares_gridsquares = "' . $gridsquares_gridsquares . '";';
     echo 'var gridsquares_gridsquares_confirmed = "' . $gridsquares_gridsquares_confirmed . '";';
     echo 'var gridsquares_gridsquares_not_confirmed = "' . $gridsquares_gridsquares_not_confirmed . '";';
-    echo 'var gridsquares_gridsquares_total_worked = "' . $gridsquares_gridsquares_total_worked . '";';
+    echo 'var gridsquares_gridsquares_total_worked = "' . $gridsquares_gridsquares_total_activated . '";';
 ?>
 </script>

@@ -330,7 +330,7 @@ class Logbook_model extends CI_Model {
 	/*
 	 * Used to fetch QSOs from the logbook in the awards
 	 */
-	public function qso_details($searchphrase, $band, $mode, $type, $qsl){
+	public function qso_details($searchphrase, $band, $mode, $type, $qsl, $searchmode = null){
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -349,7 +349,11 @@ class Logbook_model extends CI_Model {
 			$this->db->where('COL_IOTA', $searchphrase);
 			break;
 		case 'VUCC':
-			$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
+			if ($searchmode == 'activated') {
+				$this->db->where("station_gridsquare like '%" . $searchphrase . "%'");
+			} else {
+				$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
+			}
 			break;
 		case 'CQZone':
 			$this->db->where('COL_CQZ', $searchphrase);
@@ -420,6 +424,8 @@ class Logbook_model extends CI_Model {
 			$this->db->where("(COL_MODE='" . $mode . "' OR COL_SUBMODE='" . $mode ."')");
 		}
 		$this->db->order_by("COL_TIME_ON", "desc");
+
+		$this->db->limit(500);
 
 		return $this->db->get($this->config->item('table_name'));
 	}
