@@ -16,7 +16,7 @@ class Sattimers extends CI_Controller {
         ];
         $url = 'https://www.df2et.de/tevel/api.php';
         $json = file_get_contents($url);
-        $data['activations'] = json_decode($json, true);
+        $data['activations'] = json_decode($json, true)['data'];
 
         $data['page_title'] = "Satellite Timers";
         $this->load->view('interface_assets/header', $data);
