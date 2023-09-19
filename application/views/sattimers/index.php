@@ -16,8 +16,6 @@
            }
            $i++;
            endforeach; ?>
-        //var tevel11Date = new Date(new Date("2023-09-19T22:00:00.000Z").getTime());
-        //dateArray.push(tevel11Date);
 
     </script>
     <table class="table table-striped table-hover">
