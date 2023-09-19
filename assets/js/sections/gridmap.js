@@ -28,8 +28,16 @@ function gridPlot(form) {
         $("#gridmapcontainer").append('<div id="gridsquare_map" style="width: 100%; height: 800px"></div>');
     }
 
+    if (type == "activated") {
+        ajax_url = site_url + '/activated_gridmap/getGridsjs';
+    } else if (type == "worked") {
+        ajax_url = site_url + '/gridmap/getGridsjs';
+    } else {
+        ajax_url = site_url + '/gridmap/getGridsjs';
+    }
+
     $.ajax({
-		url: site_url + '/gridmap/getGridsjs',
+		url: ajax_url,
 		type: 'post',
 		data: {
 			band: $("#band").val(),
@@ -100,15 +108,19 @@ function gridPlot(form) {
 }
 
 function spawnGridsquareModal(loc_4char) {
+    var ajax_data = ({
+       'Searchphrase': loc_4char,
+       'Band': $("#band").val(),
+       'Mode': $("#mode").val(),
+       'Type': 'VUCC'
+    })
+    if (type == 'activated') {
+       ajax_data.searchmode = 'activated';
+    }
     $.ajax({
         url: base_url + 'index.php/awards/qso_details_ajax',
         type: 'post',
-        data: {
-            'Searchphrase': loc_4char,
-            'Band': $("#band").val(),
-            'Mode': $("#mode").val(),
-            'Type': 'VUCC'
-        },
+        data: ajax_data,
         success: function (html) {
             BootstrapDialog.show({
                 title: 'QSO Data',

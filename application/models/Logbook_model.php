@@ -4,6 +4,8 @@ class Logbook_model extends CI_Model {
 
   /* Add QSO to Logbook */
   function create_qso() {
+
+    $callsign = str_replace('Ø', '0', $this->input->post('callsign'));
     // Join date+time
     $datetime = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('start_time');
     if ($this->input->post('prop_mode') != null) {
@@ -82,14 +84,14 @@ class Logbook_model extends CI_Model {
     }
 
     if($this->input->post('country') == "") {
-      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       $country = ucwords(strtolower($dxcc[1]), "- (/");
     } else {
       $country = $this->input->post('country');
     }
 
     if($this->input->post('cqz') == "") {
-      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       if (empty($dxcc[2])) {
         $cqz = null;
       } else {
@@ -101,7 +103,7 @@ class Logbook_model extends CI_Model {
 
     if($this->input->post('dxcc_id') == "") {
 
-      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       if (empty($dxcc[0])) {
         $dxcc_id = null;
       } else {
@@ -114,7 +116,7 @@ class Logbook_model extends CI_Model {
 
     if($this->input->post('continent') == "") {
 
-      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       if (empty($dxcc[3])) {
         $continent = null;
       } else {
@@ -173,7 +175,7 @@ class Logbook_model extends CI_Model {
     $data = array(
             'COL_TIME_ON' => $datetime,
             'COL_TIME_OFF' => $datetime,
-            'COL_CALL' => strtoupper(trim($this->input->post('callsign'))),
+            'COL_CALL' => strtoupper(trim($callsign)),
             'COL_BAND' => $this->input->post('band'),
             'COL_BAND_RX' => $this->input->post('band_rx'),
             'COL_FREQ' => $this->parse_frequency($this->input->post('freq_display')),
@@ -328,7 +330,7 @@ class Logbook_model extends CI_Model {
 	/*
 	 * Used to fetch QSOs from the logbook in the awards
 	 */
-	public function qso_details($searchphrase, $band, $mode, $type, $qsl){
+	public function qso_details($searchphrase, $band, $mode, $type, $qsl, $searchmode = null){
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -347,7 +349,11 @@ class Logbook_model extends CI_Model {
 			$this->db->where('COL_IOTA', $searchphrase);
 			break;
 		case 'VUCC':
-			$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
+			if ($searchmode == 'activated') {
+				$this->db->where("station_gridsquare like '%" . $searchphrase . "%'");
+			} else {
+				$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
+			}
 			break;
 		case 'CQZone':
 			$this->db->where('COL_CQZ', $searchphrase);
@@ -418,6 +424,8 @@ class Logbook_model extends CI_Model {
 			$this->db->where("(COL_MODE='" . $mode . "' OR COL_SUBMODE='" . $mode ."')");
 		}
 		$this->db->order_by("COL_TIME_ON", "desc");
+
+		$this->db->limit(500);
 
 		return $this->db->get($this->config->item('table_name'));
 	}
