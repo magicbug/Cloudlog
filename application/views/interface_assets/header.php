@@ -42,6 +42,10 @@
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
 	<?php } ?>
 
+	<?php if ($this->uri->segment(1) == "sattimers") { ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sattimers.css" />
+	<?php } ?>
+
 	<?php if (file_exists(APPPATH . '../assets/css/custom.css')) {
 		echo '<link rel="stylesheet" href="' . base_url() . 'assets/css/custom.css">';
 	} ?>
@@ -101,6 +105,8 @@
 									<div class="dropdown-divider"></div>
 									<a class="dropdown-item" href="<?php echo site_url('bandmap/list'); ?>" title="Bandmap"><i class="fa fa-id-card"></i> <?php echo lang('menu_bandmap'); ?></a>
 								<?php } ?>
+									<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="<?php echo site_url('sattimers'); ?>" title="SAT Timers"><i class="fas fa-satellite"></i> SAT Timers</a>
 							</div>
 						</li>
 
