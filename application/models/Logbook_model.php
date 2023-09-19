@@ -1707,7 +1707,7 @@ class Logbook_model extends CI_Model {
 	    }
 	    if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
 		    if ($extrawhere!='') {
-			    $extrawherei.=" OR";
+			    $extrawhere.=" OR";
 		    }
 		    $extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
 	    }
