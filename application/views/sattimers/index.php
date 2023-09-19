@@ -24,6 +24,7 @@
                 <th>Satellite</th>
                 <th colspan="2">Status</th>
                 <th>Time-Out</th>
+                <th></td>
             </tr>
         </thead>
         <tbody>
@@ -34,6 +35,19 @@
                 <td><span class="emoji" id="emoji<?php echo $i; ?>">n/a</span></td>
                 <td><span id="tevel<?php echo $i; ?>Timer"></span></td>
                 <td><span class="timeout" id="tevel<?php echo $i; ?>Timeout">...</span></td>
+                <td>
+                <?php
+                   if (strpos($activation['sat'], 'TEVEL') !== false) {
+                      echo "<a href=\"https://mailman.amsat.org/hyperkitty/search?q=TEVEL&page=1&mlist=amsat-bb%40amsat.org&sort=date-desc\" target=\"_blank\">Info</a>";
+                   } else if (strpos($activation['sat'], 'UVSQ') !== false) {
+                      echo "<a href=\"https://x.com/uvsqsat?s=20\" target=\"_blank\">Info</a>";
+                   } else if (strpos($activation['sat'], 'PO-101') !== false) {
+                      echo "<a href=\"https://x.com/Diwata2PH?s=20\" target=\"_blank\">Info</a>";
+                   } else if (strpos($activation['sat'], 'CAS-3H') !== false) {
+                      echo "<a href=\"https://www.amsat.org/two-way-satellites/lilacsat-2-cas-3h/\" target=\"_blank\">Info</a>";
+                   }
+                ?>
+                </td>
                 </tr>
             <?php $i++; ?>
             <?php endforeach; ?>
