@@ -4,6 +4,8 @@ class Logbook_model extends CI_Model {
 
   /* Add QSO to Logbook */
   function create_qso() {
+
+    $callsign = str_replace('Ø', '0', $this->input->post('callsign'));
     // Join date+time
     $datetime = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('start_time');
     if ($this->input->post('prop_mode') != null) {
@@ -82,14 +84,14 @@ class Logbook_model extends CI_Model {
     }
 
     if($this->input->post('country') == "") {
-      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       $country = ucwords(strtolower($dxcc[1]), "- (/");
     } else {
       $country = $this->input->post('country');
     }
 
     if($this->input->post('cqz') == "") {
-      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       if (empty($dxcc[2])) {
         $cqz = null;
       } else {
@@ -101,7 +103,7 @@ class Logbook_model extends CI_Model {
 
     if($this->input->post('dxcc_id') == "") {
 
-      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       if (empty($dxcc[0])) {
         $dxcc_id = null;
       } else {
@@ -114,7 +116,7 @@ class Logbook_model extends CI_Model {
 
     if($this->input->post('continent') == "") {
 
-      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       if (empty($dxcc[3])) {
         $continent = null;
       } else {
@@ -173,7 +175,7 @@ class Logbook_model extends CI_Model {
     $data = array(
             'COL_TIME_ON' => $datetime,
             'COL_TIME_OFF' => $datetime,
-            'COL_CALL' => strtoupper(trim($this->input->post('callsign'))),
+            'COL_CALL' => strtoupper(trim($callsign)),
             'COL_BAND' => $this->input->post('band'),
             'COL_BAND_RX' => $this->input->post('band_rx'),
             'COL_FREQ' => $this->parse_frequency($this->input->post('freq_display')),
