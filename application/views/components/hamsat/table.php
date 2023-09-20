@@ -8,7 +8,7 @@
                 <th>Date / Time</th>
                 <th>Callsign</th>
                 <th>Satellite</th>
-                <th>Gridsquare</th>
+                <th>Gridsquare(s)</th>
                 <th></th>
             </tr>
         </thead>
@@ -58,11 +58,23 @@
                         <?php
 
                         // Load the logbook model and call check_if_grid_worked_in_logbook
-                        $worked = $CI->logbook_model->check_if_grid_worked_in_logbook($rove['gridsquare'], null, "SAT");
-                        if ($worked != 0) {
-                            echo " <span data-toggle=\"tooltip\" title=\"Worked\" class=\"badge badge-success\">" . $rove['gridsquare'] . "</span>";
+                        if (strpos($rove['gridsquare'], '/') !== false) {
+                           $grids = explode('/', $rove['gridsquare']);
+                           foreach ($grids as $grid) {
+                           $worked = $CI->logbook_model->check_if_grid_worked_in_logbook($grid, null, "SAT");
+                              if ($worked != 0) {
+                                  echo " <span data-toggle=\"tooltip\" title=\"Worked\" class=\"badge badge-success\">" . $grid . "</span>";
+                              } else {
+                                  echo " <span data-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge badge-danger\">" . $grid . "</span>";
+                              }
+                           }
                         } else {
-                            echo " <span data-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge badge-danger\">" . $rove['gridsquare'] . "</span>";
+                           $worked = $CI->logbook_model->check_if_grid_worked_in_logbook($rove['gridsquare'], null, "SAT");
+                           if ($worked != 0) {
+                               echo " <span data-toggle=\"tooltip\" title=\"Worked\" class=\"badge badge-success\">" . $rove['gridsquare'] . "</span>";
+                           } else {
+                               echo " <span data-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge badge-danger\">" . $rove['gridsquare'] . "</span>";
+                           }
                         }
                         ?>
 
