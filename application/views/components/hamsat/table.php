@@ -5,7 +5,8 @@
     <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Date / Time</th>
+                <th>Date</th>
+                <th>Time</th>
                 <th>Callsign</th>
                 <th>Satellite</th>
                 <th>Gridsquare(s)</th>
@@ -30,10 +31,11 @@
                         ?>
 
                         <?php $timestamp = strtotime($rove['date']);
-                        echo date($custom_date_format, $timestamp); ?>
+                           echo date($custom_date_format, $timestamp); ?>
 
-                        - <?php echo $rove['start_time']; ?> - <?php echo $rove['end_time']; ?>
-
+                    </td>
+                    <td>
+                        <?php echo $rove['start_time']." - ".$rove['end_time']; ?>
                     </td>
                     <td>
                         <?php
