@@ -2887,7 +2887,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 		$record['station_callsign']=$station_profile_call;
 	}
 
-        if ((!$skipStationCheck) && ($station_id != 0) && ($record['station_callsign'] != $station_profile_call)) {     // Check if station_call from import matches profile ONLY when submitting via GUI.
+        if ((!$skipStationCheck) && ($station_id != 0) && (strtoupper($record['station_callsign']) != strtoupper($station_profile_call))) {     // Check if station_call from import matches profile ONLY when submitting via GUI.
                 return "Wrong station_callsign ".$record['station_callsign']." while importing QSO with ".$record['call']." for ".$station_profile_call." : SKIPPED";
         }
 
