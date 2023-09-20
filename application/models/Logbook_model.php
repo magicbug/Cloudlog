@@ -2872,7 +2872,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
      * $markHrd - used in ADIF import to mark QSOs as exported to HRDLog.net Logbook when importing QSOs
      * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
      */
-	function import($record, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false) {
+	function import($record, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false, $skipStationCheck = false) {
         // be sure that station belongs to user
         $CI =& get_instance();
         $CI->load->model('stations');
@@ -2886,6 +2886,10 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	if (($station_id !=0 ) && (!(isset($record['station_callsign'])))) {
 		$record['station_callsign']=$station_profile_call;
 	}
+
+        if ((!$skipStationCheck) && ($station_id != 0) && ($record['station_callsign'] != $station_profile_call)) {     // Check if station_call from import matches profile ONLY when submitting via GUI.
+                return "Wrong station_callsign ".$record['station_callsign']." while importing QSO with ".$record['call']." for ".$station_profile_call." : SKIPPED";
+        }
 
         $CI =& get_instance();
         $CI->load->library('frequency');

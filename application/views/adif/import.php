@@ -108,6 +108,16 @@
 						</div>
 					</div>
 
+					<div class="form-group row">
+						<div class="col-md-10">
+							<div class="form-check-inline">
+								<input class="form-check-input" type="checkbox" name="skipStationCheck" value="1" id="skipStationCheck">
+								<label class="form-check-label" for="skipStationCheck"><span class="badge badge-warning">DANGER</span> Ignore Stationcallsign on import</label>
+							</div>
+                            				<div class="small form-text text-muted">If selected, Cloudlog will try to import <b>all</b> QSOs of the ADIF, regardless if they match to the chosen station-location.</div>
+						</div>
+					</div>
+
                   <button type="submit" class="btn-sm btn-primary mb-2" value="Upload">Upload</button>
                 </form>
                 </div>
