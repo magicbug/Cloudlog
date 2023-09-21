@@ -23,7 +23,7 @@ class ADIF_Parser
     var $currentarray = 0; // current place in the array
 	var $i = 0; //the iterator
 	var $headers = array();
-	
+
 	public function initialize() //this function locates the <EOH>
 	{
 
@@ -40,7 +40,7 @@ class ADIF_Parser
 			$pos = 0;
 			goto noheaders;
 		};
-			
+
 		while($this->i < $pos)
 		{
 			//skip comments
@@ -52,7 +52,7 @@ class ADIF_Parser
 					{
 						break;
 					}
-				
+
 					$this->i++;
 				}
 			}else{
@@ -66,19 +66,19 @@ class ADIF_Parser
 						$tag = $tag.mb_substr($this->data, $this->i, 1, "UTF-8");
 						$this->i++;
 					}
-					
+
 					$this->i++; //iterate past the :
-					
+
 					//find out how long the value is
-					
+
 					while($this->i < $pos && mb_substr($this->data, $this->i, 1, "UTF-8") != '>')
 					{
 						$value_length = $value_length.mb_substr($this->data, $this->i, 1, "UTF-8");
 						$this->i++;
 					}
-					
+
 					$this->i++; //iterate past the >
-					
+
 					$len = (int)$value_length;
 					//copy the value into the buffer
 
@@ -93,15 +93,15 @@ class ADIF_Parser
 					$tag = "";
 					$value_length = "";
 					$value = "";
-					
+
 				}
 			}
 
 			$this->i++;
-			
+
 		};
 
-		
+
 		$this->i = $pos+5; //iterate past the <eoh>
 
 		// Skip to here in case we did not find headers
@@ -116,10 +116,10 @@ class ADIF_Parser
 		$this->currentarray = 0;
 		return 1;
 	}
-	
+
 	public function feed($input_data) //allows the parser to be fed a string
 	{
-		
+
 		if (strpos($input_data, "<EOH>") !== false) {
 			$arr=explode("<EOH>",$input_data);
 			$newstring = $arr[1];
@@ -130,66 +130,39 @@ class ADIF_Parser
 
         $this->datasplit = preg_split("/<eor>/i", mb_substr($this->data, $this->i, NULL, "UTF-8"));
 	}
-	
+
 	public function load_from_file($fname) //allows the user to accept a filename as input
 	{
 		$this->data = $string = mb_convert_encoding(file_get_contents($fname), "UTF-8");
 	}
-	
+
 	//the following function does the processing of the array into its key and value pairs
 	public function record_to_array($record)
 	{
 		$return = array();
-		for($a = 0; $a < mb_strlen($record, "UTF-8"); $a++)
-		{
-			if(mb_substr($record, $a, 1, "UTF-8") == '<') //find the start of the tag
-			{
-				$tag_name = "";
-				$value = "";
-				$len_str = "";
-				$len = 0;
-				$a++; //go past the <
-				while(mb_substr($record, $a, 1, "UTF-8") != ':') //get the tag
-				{
-					$tag_name = $tag_name.mb_substr($record, $a, 1, "UTF-8"); //append this char to the tag name
-					$a++;
-				};
-				$a++; //iterate past the colon
-				while(mb_substr($record, $a, 1, "UTF-8") != '>' && mb_substr($record, $a, 1, "UTF-8") != ':')
-				{
-					$len_str = $len_str.mb_substr($record, $a, 1, "UTF-8");
-					$a++;
-				};
-				if(mb_substr($record, $a, 1, "UTF-8") == ':')
-				{
-					while(mb_substr($record, $a, 1, "UTF-8") != '>')
-					{
-						$a++;
-					};
-				};
-				$len = (int)$len_str;
-				$a++;
 
-				$value = mb_substr($record, $a, $len, "UTF-8");
-				$a = $a + $len - 1;
-				$return[mb_strtolower($tag_name, "UTF-8")] = $value;
-			};
-			//skip comments
-			if(mb_substr($record, $a, 1, "UTF-8") == "#")
-			{
-				while($a < mb_strlen($record, "UTF-8"))
-				{
-					if(mb_substr($record, $a, 1, "UTF-8") == "\n")
-					{
-						break;
-					}
-					$a++;
-				}
-			}
-		};
-		return $return;
+		$record = trim($record);
+
+		$pattern = '/<eor>$/i';
+		$record = preg_replace($pattern, '', $record);
+
+        $pattern = "/(?=<[A-Za-z0-9_]+:\d+[^>]*>)/"; // Splits on ADIF tag
+
+		$recordsplit = preg_split($pattern, $record, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+
+        foreach($recordsplit as $r) {
+				$pattern = "/\d*>/";
+                $res = preg_split($pattern, $r, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+                $pattern = "/\<(.*?)\:/";
+                preg_match($pattern, $res[0], $match);
+                $tag = $match[1];
+                $value = (isset($res[1])?trim($res[1]):'');
+				$return[mb_strtolower($tag, "UTF-8")] = $value;
+        }
+
+        return $return;
 	}
-	
+
 	//finds the next record in the file
 	public function get_record()
 	{
@@ -206,7 +179,7 @@ class ADIF_Parser
             }
         }
  	}
-	
+
 	public function get_header($key)
 	{
 		if(array_key_exists(mb_strtolower($key, "UTF-8"), $this->headers))
@@ -216,6 +189,6 @@ class ADIF_Parser
 			return NULL;
 		}
 	}
-	
+
 }
 ?>
