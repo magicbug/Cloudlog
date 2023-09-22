@@ -9,7 +9,6 @@ function update(i) {
     element.innerHTML = "&#x1F480;";
   } else {
 
-     //var distance = dateArray[i] - now.getTime();
      var distance = parseInt(dateArray[i]) - new Date(now.getTime());
      var satDate = new Date(parseInt(dateArray[i]));
 
