@@ -10,8 +10,8 @@ function update(i) {
   } else {
 
      //var distance = dateArray[i] - now.getTime();
-     var distance = parseInt(dateArray[i]) - new Date(now.getTime()+now.getTimezoneOffset()*60*1000);
-     var satDate = new Date(parseInt(dateArray[i]) - now.getTimezoneOffset()*60*1000);
+     var distance = parseInt(dateArray[i]) - new Date(now.getTime());
+     var satDate = new Date(parseInt(dateArray[i]));
 
      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
