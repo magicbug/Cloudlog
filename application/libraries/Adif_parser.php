@@ -146,17 +146,17 @@ class ADIF_Parser
 		$pattern = '/<eor>$/i';
 		$record = preg_replace($pattern, '', $record);
 
-        $pattern = "/(?=<[A-Za-z0-9_]+:\d+[^>]*>)/"; // Splits on ADIF tag
+        $pattern = "/(?=<[A-Za-z0-9_]+:\d+(?::\D)?>)/"; // Splits on ADIF tag
 
 		$recordsplit = preg_split($pattern, $record, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
 
         foreach($recordsplit as $r) {
-				$pattern = "/\d+[^>]*>/";
+				$pattern = "/\d+((:\D)?)+>/";
                 $res = preg_split($pattern, $r, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
                 $pattern = "/\<(.*?)\:/";
                 preg_match($pattern, $res[0], $match);
                 $tag = $match[1];
-                $value = (isset($res[1])?trim($res[1]):'');
+				$value = (isset($res[2])?trim($res[2]):(isset($res[1])?trim($res[1]):''));
 				$return[mb_strtolower($tag, "UTF-8")] = $value;
         }
 
