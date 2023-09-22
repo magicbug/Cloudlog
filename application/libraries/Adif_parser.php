@@ -151,7 +151,7 @@ class ADIF_Parser
 		$recordsplit = preg_split($pattern, $record, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
 
         foreach($recordsplit as $r) {
-				$pattern = "/\d*>/";
+				$pattern = "/\d+[^>]*>/";
                 $res = preg_split($pattern, $r, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
                 $pattern = "/\<(.*?)\:/";
                 preg_match($pattern, $res[0], $match);
