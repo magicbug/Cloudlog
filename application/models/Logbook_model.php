@@ -1140,7 +1140,8 @@ class Logbook_model extends CI_Model {
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
     if(!empty($logbooks_locations_array)) {
-      $this->db->select('COL_CALL, COL_BAND, COL_FREQ, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_SRX, COL_SRX_STRING, COL_STX, COL_STX_STRING, COL_VUCC_GRIDS, COL_GRIDSQUARE, COL_MY_GRIDSQUARE, COL_OPERATOR, COL_IOTA, COL_WWFF_REF, COL_POTA_REF, COL_STATE, COL_CNTY, COL_DISTANCE, COL_SOTA_REF, COL_CONTEST_ID');
+      $this->db->select('COL_CALL, COL_BAND, COL_FREQ, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_DXCC, COL_PRIMARY_KEY, COL_SAT_NAME, COL_SRX, COL_SRX_STRING, COL_STX, COL_STX_STRING, COL_VUCC_GRIDS, COL_GRIDSQUARE, COL_MY_GRIDSQUARE, COL_OPERATOR, COL_IOTA, COL_WWFF_REF, COL_POTA_REF, COL_STATE, COL_CNTY, COL_DISTANCE, COL_SOTA_REF, COL_CONTEST_ID, dxcc_entities.end AS end');
+      $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left outer');
       $this->db->where_in('station_id', $logbooks_locations_array);
       $this->db->order_by("COL_TIME_ON", "desc");
       $this->db->limit($num);
@@ -3952,7 +3953,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
     public function update_distances(){
         $this->db->select("COL_PRIMARY_KEY, COL_GRIDSQUARE, station_gridsquare");
         $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
-        $this->db->where("COL_DISTANCE is NULL");
+        $this->db->where("((COL_DISTANCE is NULL) or (COL_DISTANCE = 0))");
         $this->db->where("COL_GRIDSQUARE is NOT NULL");
         $this->db->where("COL_GRIDSQUARE != ''");
         $this->db->trans_start();
