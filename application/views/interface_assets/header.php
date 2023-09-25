@@ -42,6 +42,10 @@
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
 	<?php } ?>
 
+	<?php if ($this->uri->segment(1) == "sattimers") { ?>
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sattimers.css" />
+	<?php } ?>
+
 	<?php if (file_exists(APPPATH . '../assets/css/custom.css')) {
 		echo '<link rel="stylesheet" href="' . base_url() . 'assets/css/custom.css">';
 	} ?>
@@ -101,6 +105,8 @@
 									<div class="dropdown-divider"></div>
 									<a class="dropdown-item" href="<?php echo site_url('bandmap/list'); ?>" title="Bandmap"><i class="fa fa-id-card"></i> <?php echo lang('menu_bandmap'); ?></a>
 								<?php } ?>
+									<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="<?php echo site_url('sattimers'); ?>" title="SAT Timers"><i class="fas fa-satellite"></i> SAT Timers</a>
 							</div>
 						</li>
 
@@ -117,7 +123,7 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('gridmap'); ?>" title="Gridmap"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_gridmap'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('activated_grids'); ?>" title="Activated Gridsquares"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_activated_gridsquares'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('activated_gridmap'); ?>" title="Activated Gridsquares"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_activated_gridsquares'); ?></a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('activators'); ?>" title="Gridsquare Activators"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_gridsquare_activators'); ?></a>
 								<div class="dropdown-divider"></div>

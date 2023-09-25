@@ -164,6 +164,9 @@ class API extends CI_Controller {
 
 		$this->load->model('stations');
 
+		$return_msg = array();
+		$return_count = 0;
+
 		// Decode JSON and store
 		$obj = json_decode(file_get_contents("php://input"), true);
 		if ($obj === NULL) {
@@ -213,12 +216,18 @@ class API extends CI_Controller {
 
 					$this->api_model->update_last_used($obj['key']);
 
-					$this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL, NULL, NULL, false, false, true);
+					$msg = $this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL, NULL, NULL, false, false, true);
+
+					if ( $msg == "" ) {
+						$return_count++;
+					} else {
+						$return_msg[] = $msg;
+					}
 				}
 
 			};
 			http_response_code(201);
-			echo json_encode(['status' => 'created', 'type' => $obj['type'], 'string' => $obj['string']]);
+			echo json_encode(['status' => 'created', 'type' => $obj['type'], 'string' => $obj['string'], 'imported_count' => $return_count, 'messages' => $return_msg ]);
 
 		}
 

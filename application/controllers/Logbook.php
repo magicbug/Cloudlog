@@ -103,6 +103,7 @@ class Logbook extends CI_Controller {
 
 		// Convert - in Callsign to / Used for URL processing
 		$callsign = str_replace("-","/",$callsign);
+		$callsign = str_replace("Ø","0",$callsign);
 
 		// Check if callsign is an LoTW User
 		// Check Database for all other data
@@ -329,7 +330,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 		}
 		if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
 			if ($extrawhere!='') {
-				$extrawherei.=" OR";
+				$extrawhere.=" OR";
 			}
 			$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
 		}
@@ -411,7 +412,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 			}
 			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
 				if ($extrawhere!='') {
-					$extrawherei.=" OR";
+					$extrawhere.=" OR";
 				}
 				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
 			}
@@ -506,7 +507,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 			}
 			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
 				if ($extrawhere!='') {
-					$extrawherei.=" OR";
+					$extrawhere.=" OR";
 				}
 				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
 			}

@@ -69,7 +69,7 @@ class Lookup extends CI_Controller {
 	    {
 	    	if (in_array($row->COL_CALL, $arCalls) == false)
 			{
-					$arCalls[] = $row->COL_CALL;
+					$arCalls[] = str_replace('0', 'Ø', $row->COL_CALL);
 			}
 	    }
 
@@ -83,7 +83,7 @@ class Lookup extends CI_Controller {
 			foreach ($result as &$value) {
 				if (in_array($value, $arCalls) == false)
 				{
-					$arCalls[] = $value;
+					$arCalls[] = str_replace('0', 'Ø', $value);
 				}
 			}
 		}
@@ -97,7 +97,7 @@ class Lookup extends CI_Controller {
 			foreach ($result as &$value) {
 				if (in_array($value, $arCalls) == false)
 				{
-					$arCalls[] = $value;
+					$arCalls[] = str_replace('0', 'Ø', $value);
 				}
 			}
 		}

@@ -4,6 +4,8 @@ class Logbook_model extends CI_Model {
 
   /* Add QSO to Logbook */
   function create_qso() {
+
+    $callsign = str_replace('Ø', '0', $this->input->post('callsign'));
     // Join date+time
     $datetime = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('start_time');
     if ($this->input->post('prop_mode') != null) {
@@ -82,14 +84,14 @@ class Logbook_model extends CI_Model {
     }
 
     if($this->input->post('country') == "") {
-      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       $country = ucwords(strtolower($dxcc[1]), "- (/");
     } else {
       $country = $this->input->post('country');
     }
 
     if($this->input->post('cqz') == "") {
-      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       if (empty($dxcc[2])) {
         $cqz = null;
       } else {
@@ -101,7 +103,7 @@ class Logbook_model extends CI_Model {
 
     if($this->input->post('dxcc_id') == "") {
 
-      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       if (empty($dxcc[0])) {
         $dxcc_id = null;
       } else {
@@ -114,7 +116,7 @@ class Logbook_model extends CI_Model {
 
     if($this->input->post('continent') == "") {
 
-      $dxcc = $this->check_dxcc_table(strtoupper(trim($this->input->post('callsign'))), $datetime);
+      $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       if (empty($dxcc[3])) {
         $continent = null;
       } else {
@@ -173,7 +175,7 @@ class Logbook_model extends CI_Model {
     $data = array(
             'COL_TIME_ON' => $datetime,
             'COL_TIME_OFF' => $datetime,
-            'COL_CALL' => strtoupper(trim($this->input->post('callsign'))),
+            'COL_CALL' => strtoupper(trim($callsign)),
             'COL_BAND' => $this->input->post('band'),
             'COL_BAND_RX' => $this->input->post('band_rx'),
             'COL_FREQ' => $this->parse_frequency($this->input->post('freq_display')),
@@ -328,7 +330,7 @@ class Logbook_model extends CI_Model {
 	/*
 	 * Used to fetch QSOs from the logbook in the awards
 	 */
-	public function qso_details($searchphrase, $band, $mode, $type, $qsl){
+	public function qso_details($searchphrase, $band, $mode, $type, $qsl, $searchmode = null){
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -347,7 +349,11 @@ class Logbook_model extends CI_Model {
 			$this->db->where('COL_IOTA', $searchphrase);
 			break;
 		case 'VUCC':
-			$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
+			if ($searchmode == 'activated') {
+				$this->db->where("station_gridsquare like '%" . $searchphrase . "%'");
+			} else {
+				$this->db->where("(COL_GRIDSQUARE like '%" . $searchphrase . "%' OR COL_VUCC_GRIDS like'%" . $searchphrase ."%')");
+			}
 			break;
 		case 'CQZone':
 			$this->db->where('COL_CQZ', $searchphrase);
@@ -418,6 +424,8 @@ class Logbook_model extends CI_Model {
 			$this->db->where("(COL_MODE='" . $mode . "' OR COL_SUBMODE='" . $mode ."')");
 		}
 		$this->db->order_by("COL_TIME_ON", "desc");
+
+		$this->db->limit(500);
 
 		return $this->db->get($this->config->item('table_name'));
 	}
@@ -933,11 +941,11 @@ class Logbook_model extends CI_Model {
       $srx_string = null;
     }
 
-	if (stristr($this->input->post('usa_county') ?? '', ',')) {
-		$uscounty = $this->input->post('usa_county');
-	} else {
-		$uscounty = $this->input->post('usa_state') .",".$this->input->post('usa_county');
-	}
+    if ($this->input->post('usa_county') && $this->input->post('usa_state')) {
+      $uscounty = trim($this->input->post('usa_state') . "," . $this->input->post('usa_county'));
+    } else {
+      $uscounty = null;
+    }
 
     if ($this->input->post('qsl_sent')) {
         $qsl_sent = $this->input->post('qsl_sent');
@@ -1132,7 +1140,8 @@ class Logbook_model extends CI_Model {
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
     if(!empty($logbooks_locations_array)) {
-      $this->db->select('COL_CALL, COL_BAND, COL_FREQ, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_SRX, COL_SRX_STRING, COL_STX, COL_STX_STRING, COL_VUCC_GRIDS, COL_GRIDSQUARE, COL_MY_GRIDSQUARE, COL_OPERATOR, COL_IOTA, COL_WWFF_REF, COL_POTA_REF, COL_STATE, COL_CNTY, COL_DISTANCE, COL_SOTA_REF, COL_CONTEST_ID');
+      $this->db->select('COL_CALL, COL_BAND, COL_FREQ, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_DXCC, COL_PRIMARY_KEY, COL_SAT_NAME, COL_SRX, COL_SRX_STRING, COL_STX, COL_STX_STRING, COL_VUCC_GRIDS, COL_GRIDSQUARE, COL_MY_GRIDSQUARE, COL_OPERATOR, COL_IOTA, COL_WWFF_REF, COL_POTA_REF, COL_STATE, COL_CNTY, COL_DISTANCE, COL_SOTA_REF, COL_CONTEST_ID, dxcc_entities.end AS end');
+      $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left outer');
       $this->db->where_in('station_id', $logbooks_locations_array);
       $this->db->order_by("COL_TIME_ON", "desc");
       $this->db->limit($num);
@@ -1699,7 +1708,7 @@ class Logbook_model extends CI_Model {
 	    }
 	    if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
 		    if ($extrawhere!='') {
-			    $extrawherei.=" OR";
+			    $extrawhere.=" OR";
 		    }
 		    $extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
 	    }
@@ -2864,7 +2873,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
      * $markHrd - used in ADIF import to mark QSOs as exported to HRDLog.net Logbook when importing QSOs
      * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
      */
-	function import($record, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false) {
+	function import($record, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false, $skipStationCheck = false) {
         // be sure that station belongs to user
         $CI =& get_instance();
         $CI->load->model('stations');
@@ -2879,9 +2888,10 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 		$record['station_callsign']=$station_profile_call;
 	}
 
-	if (($station_id != 0) && ($record['station_callsign'] != $station_profile_call)) {	// Check if station_call from import matches profile ONLY when submitting via GUI.
-		return "Wrong station_callsign ".$record['station_callsign']." while importing QSO with ".$record['call']." for ".$station_profile_call." : SKIPPED";
-	}
+        if ((!$skipStationCheck) && ($station_id != 0) && (strtoupper($record['station_callsign']) != strtoupper($station_profile_call))) {     // Check if station_call from import matches profile ONLY when submitting via GUI.
+           return "Wrong station callsign <b>\"".htmlentities($record['station_callsign'])."\"</b> while importing QSO with ".$record['call']." for <b>".$station_profile_call."</b> : SKIPPED" .
+              "<br>See the <a target=\"_blank\" href=\"https://github.com/magicbug/Cloudlog/wiki/ADIF-file-can't-be-imported\">Cloudlog Wiki</a> for hints about errors in ADIF files.";
+        }
 
         $CI =& get_instance();
         $CI->load->library('frequency');
