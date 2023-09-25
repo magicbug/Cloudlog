@@ -886,6 +886,8 @@ class Logbook_model extends CI_Model {
          } else if ($data['COL_MODE'] == 'PKT') {
             $sat_name = 'ISS-DATA';
          }
+      } else if ($data['COL_SAT_NAME'] == 'CAS-3H') {
+         $sat_name = 'LilacSat-2';
       } else {
          $sat_name = $data['COL_SAT_NAME'];
       }
