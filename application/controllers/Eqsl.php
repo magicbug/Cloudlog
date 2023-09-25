@@ -755,7 +755,7 @@ class eqsl extends CI_Controller {
 		foreach($dir_array as $key=>$filename){
 			if($filename!=".." && $filename!="."){
 				if(is_dir($dir."/".$filename)){
-					$new_foldersize = foldersize($dir."/".$filename);
+					$new_foldersize = $this->foldersize($dir."/".$filename);
 					$count_size = $count_size+ $new_foldersize;
 				}else if(is_file($dir."/".$filename)){
 					$count_size = $count_size + filesize($dir."/".$filename);
