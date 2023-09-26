@@ -37,9 +37,10 @@
 			<p>Choose Station(location) eQSL File belongs to:</p>
                     <select name="station_profile" class="form-select mb-2 me-sm-2" style="width: 20%;">
                     <option value="0">Select Station Location</option>
-                    <?php foreach ($station_profile->result() as $station) { ?>
+                    <?php foreach ($station_profile->result() as $station) {
+                            if($station->eqslqthnickname) { ?>
                     <option value="<?php echo $station->station_id; ?>" <?php if ($station->station_id == $this->stations->find_active()) { echo " selected =\"selected\""; } ?>>Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name.") eQSL: ".$station->eqslqthnickname; ?></option>
-                    <?php } ?>
+                    <?php } } ?>
                     </select>
 			</div>
 
