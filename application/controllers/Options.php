@@ -111,7 +111,7 @@ class Options extends CI_Controller {
 			$dashboard_map_update_status = $this->optionslib->update('dashboard_map', $this->input->post('dashboardMap'), 'yes');
 
 			// If dashboard map update is complete set a flashsession with a success note
-			if($ldashboard_map_update_status == TRUE) {
+			if($dashboard_map_update_status == TRUE) {
 				$this->session->set_flashdata('success', $this->lang->line('options_dashboard_map_changed_to').$this->input->post('dashboardMap'));
 			}
 
