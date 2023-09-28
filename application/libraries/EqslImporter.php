@@ -68,10 +68,10 @@ class EqslImporter
 
 		// Build parameters for eQSL inbox file
 		$eqsl_params = http_build_query(array(
-			'UserName' => $this->callsign,
+			'UserName' => $this->qth_nickname, //$this->callsign,
 			'Password' => $password,
 			'RcvdSince' => $eqsl_last_qsl_date,
-			'QTHNickname' => $this->qth_nickname,
+			//'QTHNickname' => $this->qth_nickname,
 			'ConfirmedOnly' => 1
 		));
 
