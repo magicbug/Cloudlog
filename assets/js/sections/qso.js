@@ -505,8 +505,8 @@ $("#callsign").focusout(function() {
 
 		var find_callsign = $(this).val().toUpperCase();
 
-		find_callsign.replace(/\//g, "-");
-		find_callsign.replace('Ø', '0');
+		find_callsign=find_callsign.replace(/\//g, "-");
+		find_callsign=find_callsign.replace('Ø', '0');
 
 		// Replace / in a callsign with - to stop urls breaking
 		$.getJSON(base_url + 'index.php/logbook/json/' + find_callsign + '/' + sat_type + '/' + json_band + '/' + json_mode + '/' + $('#stationProfile').val(), function(result)
