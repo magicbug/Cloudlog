@@ -352,7 +352,7 @@ class Logbook_model extends CI_Model {
 			if ($searchmode == 'activated') {
 				$this->db->where("station_gridsquare like '%" . $searchphrase . "%'");
 			} else {
-				$this->db->where("(COL_GRIDSQUARE like '" . $searchphrase . "%' OR COL_VUCC_GRIDS like '" . $searchphrase ."%')");
+				$this->db->where("(COL_GRIDSQUARE like '" . $searchphrase . "%' OR COL_VUCC_GRIDS like '%" . $searchphrase ."%')");
 			}
 			break;
 		case 'CQZone':
