@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Direkter Zugriff auf Skripte ist nicht erlaubt');
 
 $lang['menu_badge_developer_mode'] = 'Entwickler-Modus';
 
@@ -41,7 +41,7 @@ $lang['menu_iota'] = 'IOTA';
 $lang['menu_pota'] = 'POTA';
 $lang['menu_sig'] = 'SIG';
 $lang['menu_sota'] = 'SOTA';
-$lang['menu_us_counties'] = 'US Countys)';
+$lang['menu_us_counties'] = 'US Countys';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';

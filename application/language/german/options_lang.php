@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Direkter Zugriff auf Skripte ist nicht erlaubt');
 
 $lang['options_cloudlog_options'] = 'Cloudlog Optionen';
 $lang['options_message1'] = 'Cloudlog Optionen sind globe Einstellungen, die für alle Benutzer der Installation genutzt werden. Sie können auf Benutzerebene überschrieben werden, wenn eine entsprechende Option auf Benutzerebene vorhanden ist.';
@@ -45,7 +45,7 @@ $lang['options_smtp_encryption_changed_to'] = 'SMTP Verschlüsselung geändert z
 $lang['options_email_address_changed_to'] = 'E-Mailadresse geändert zu ';
 $lang['options_email_sender_name_changed_to'] = 'E-Mail Absendername geändert zu ';
 $lang['options_smtp_host_changed_to'] = 'SMTP Host geändert zu ';
-$lang['options_smtp_port_changed_to'] = 'SMTP Post changed to ';
+$lang['options_smtp_port_changed_to'] = 'SMTP Port geändert zu ';
 $lang['options_smtp_username_changed_to'] = 'SMTP Benutzername geändert zu ';
 $lang['options_smtp_password_changed_to'] = 'SMTP Passwort geändert zu ';
 $lang['options_email_crlf_changed_to'] = 'E-Mail CRLF geändert zu ';
@@ -56,7 +56,7 @@ $lang['options_global_text'] = 'Globaler Text';
 $lang['options_this_text_is_an_optional_text_that_can_be_displayed_on_top_of_the_oqrs_page'] = 'Dies ist ein optionaler Text, der auf oben auf der OQRS Seite angezeigt werden kann.';
 $lang['options_grouped_search'] = 'Gruppierte Suche';
 $lang['options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_searched_at_once'] = 'Wenn aktiviert, werden alle Stationsstandorte auf einmal durchsucht.';
-$lang['options_oqrs_options_have_been_saved'] = 'OQRS options have been saved.';
+$lang['options_oqrs_options_have_been_saved'] = 'OQRS Einstellungen wurden gespeichert.';
 
 $lang['options_dxcluster'] = 'DXCluster';
 $lang['options_dxcluster_provider'] = 'Provider des DXClusterCache';

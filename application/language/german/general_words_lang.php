@@ -85,6 +85,8 @@ $lang['gen_hamradio_station'] = 'Station';
 
 $lang['gen_hamradio_call'] = 'Call';
 $lang['gen_hamradio_callsign'] = 'Rufzeichen';
+$lang['gen_hamradio_de'] = 'De';
+$lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Mode';
 $lang['gen_hamradio_rst_sent'] = 'Gegeben';
 $lang['gen_hamradio_rst_rcvd'] = 'Erhalten';
@@ -95,13 +97,14 @@ $lang['gen_hamradio_frequency_rx'] = 'Frequenz (RX)';
 $lang['gen_hamradio_radio'] = 'Radio';
 $lang['gen_hamradio_rsts'] = 'RST (S)';
 $lang['gen_hamradio_rstr'] = 'RST (R)';
+$lang['gen_hamradio_refs'] = 'Refs';
+$lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Exch (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Exch (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';
 $lang['gen_hamradio_locator'] = 'Locator';
 $lang['gen_hamradio_transmit_power'] = 'Sendeleistung (W)';
 $lang['gen_hamradio_propagation_mode'] = 'Propagation';
-
 
 $lang['gen_hamradio_satellite_name'] = 'Satellit';
 $lang['gen_hamradio_satellite_mode'] = 'Satellitenmodus';
@@ -130,7 +133,6 @@ $lang['gen_hamradio_operator'] = 'Operator';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
-
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Du hattest';
