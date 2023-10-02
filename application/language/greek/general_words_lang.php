@@ -54,8 +54,13 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_edit_qso'] = 'Επεξεργασία QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Σημείωση QSL ως Ελήφθη (Bureau)';
 $lang['general_mark_qsl_rx_direct'] = 'Σημείωση QSL ως Ελήφθη (Απευθείας)';
-$lang['general_mark_qsl_tx_bureau'] = 'Σημείωση QSL ως Ελήφθη(Bureau)';
-$lang['general_mark_qsl_tx_direct'] = 'Σημείωση QSL ως Ελήφθη (Απευθείας)';
+$lang['general_mark_qsl_rx_electronic'] = 'Σημείωση QSL ως Ελήφθη (Ηλεκτρονικός)';
+$lang['general_mark_qsl_tx_bureau'] = 'Σημείωση QSL ως απεσταλμένο (Bureau)';
+$lang['general_mark_qsl_tx_direct'] = 'Σημείωση QSL ως απεσταλμένο (Απευθείας)';
+$lang['general_mark_qsl_requested'] = 'Σημείωση QSL ζητήθηκε';
+$lang['general_mark_qsl_requested_bureau'] = 'Σημείωση QSL ζητήθηκε (Bureau)';
+$lang['general_mark_qsl_requested_direct'] = 'Σημείωση QSL ζητήθηκε (Απευθείας)';
+$lang['general_mark_qsl_not_required'] = 'Σημείωση QSL μη απαραίτητο';
 
 $lang['general_delete_qso'] = 'Διαγραφή QSO';
 

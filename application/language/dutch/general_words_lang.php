@@ -38,7 +38,15 @@ $lang['general_word_qslcard_via'] = 'Via';
 
 $lang['general_edit_qso'] = 'Wijzig QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Markeer QSL ontvangen (Bureau)';
-$lang['general_mark_qsl_rx_direct'] = 'Markeer QLS ontvangen (Direct)';
+$lang['general_mark_qsl_rx_direct'] = 'Markeer QSL ontvangen (Direct)';
+$lang['general_mark_qsl_rx_electronic'] = 'Markeer QSL ontvangen (Electronic)';
+$lang['general_mark_qsl_tx_bureau'] = 'Markeer QSL udsendt (Bureau)';
+$lang['general_mark_qsl_tx_direct'] = 'Markeer QSL udsendt (Direct)';
+$lang['general_mark_qsl_requested'] = 'Markeer QSL Kort anmodet om';
+$lang['general_mark_qsl_requested_bureau'] = 'Markeer QSL Kort anmodet om (Bureau)';
+$lang['general_mark_qsl_requested_direct'] = 'Markeer QSL Kort anmodet om (Direct)';
+$lang['general_mark_qsl_not_required'] = 'Markeer QSL Kort ikke påkrævet';
+
 $lang['general_delete_qso'] = 'Wis QSO';
 
 // Cloudlog Terms

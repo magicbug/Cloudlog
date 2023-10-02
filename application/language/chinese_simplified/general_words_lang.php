@@ -55,9 +55,13 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_edit_qso'] = '编辑 QSO';
 $lang['general_mark_qsl_rx_bureau'] = '标记 已收到的QSL (卡片局)';
 $lang['general_mark_qsl_rx_direct'] = '标记 已收到的QSL (直邮)';
-$lang['general_mark_qsl_tx_bureau'] = '标记 已发送的QSL (卡片局)';
 $lang['general_mark_qsl_rx_electronic'] = '标记 已收到的QSL (电子)';
+$lang['general_mark_qsl_tx_bureau'] = '标记 已发送的QSL (卡片局)';
 $lang['general_mark_qsl_tx_direct'] = '标记 已发送的QSL (直邮)';
+$lang['general_mark_qsl_requested'] = 'Mark QSL Card Requested';
+$lang['general_mark_qsl_requested_bureau'] = 'Mark QSL Card Requested (Bureau)';
+$lang['general_mark_qsl_requested_direct'] = 'Mark QSL Card Requested (Direct)';
+$lang['general_mark_qsl_not_required'] = 'Mark QSL Card Not Required';
 
 $lang['general_delete_qso'] = '删除 QSO';
 

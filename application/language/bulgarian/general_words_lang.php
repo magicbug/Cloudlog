@@ -46,8 +46,15 @@ $lang['general_word_qslcard_bureau'] = 'Бюро';
 $lang['general_word_qslcard_via'] = 'Чрез';
 
 $lang['general_edit_qso'] = 'Редактирай QSO';
-$lang['general_mark_qsl_rx_bureau'] = 'Маркирайте получена QSL (Бюро)';
-$lang['general_mark_qsl_rx_direct'] = 'Маркирайте получена QSL (Директно)';
+$lang['general_mark_qsl_rx_bureau'] = 'Маркирайте QSL получена (Бюро)';
+$lang['general_mark_qsl_rx_direct'] = 'Маркирайте QSL получена (Директно)';
+$lang['general_mark_qsl_rx_electronic'] = 'Маркирайте получено QSL (електронно)';
+$lang['general_mark_qsl_tx_bureau'] = 'Маркирайте QSL като изпратено (Бюро)';
+$lang['general_mark_qsl_tx_direct'] = 'Маркирайте QSL като изпратено(Директно)';
+$lang['general_mark_qsl_requested'] = 'Маркирайте QSL карта като поискана';
+$lang['general_mark_qsl_requested_bureau'] = 'Маркирайте QSL карта като поискана (Бюро)';
+$lang['general_mark_qsl_requested_direct'] = 'Маркирайте QSL карта като поискана(Директно)';
+$lang['general_mark_qsl_not_required'] = 'Маркирайте QSL картата като неизискваща';
 
 $lang['general_delete_qso'] = 'Изтрий QSO';
 

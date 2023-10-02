@@ -57,9 +57,13 @@ $lang['general_word_lotw'] = 'LotW';
 $lang['general_edit_qso'] = 'Редактировать QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Отметить QSL полученной (через бюро)';
 $lang['general_mark_qsl_rx_direct'] = 'Отметить QSL полученной (напрямую)';
+$lang['general_mark_qsl_rx_electronic'] = 'Отметить QSL полученной (электронно)';
 $lang['general_mark_qsl_tx_bureau'] = 'Отметить QSL отправленной (через бюро)';
 $lang['general_mark_qsl_tx_direct'] = 'Отметить QSL отправленой (напрямую)';
-$lang['general_mark_qsl_rx_electronic'] = 'Отметить QSL полученной (электронно)';
+$lang['general_mark_qsl_requested'] = 'Отметить запрос QSL-карточки';
+$lang['general_mark_qsl_requested_bureau'] = 'Отметить запрос QSL-карточки (через бюро)';
+$lang['general_mark_qsl_requested_direct'] = 'Отметить запрос QSL-карточки (напрямую)';
+$lang['general_mark_qsl_not_required'] = 'Отметить QSL-карточка не требуется';
 
 $lang['general_delete_qso'] = 'Удалить QSO';
 

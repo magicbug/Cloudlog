@@ -46,10 +46,15 @@ $lang['general_word_qslcard_bureau'] = 'Biuro';
 $lang['general_word_qslcard_via'] = 'Via';
 
 $lang['general_edit_qso'] = 'Edytuj QSO';
-$lang['general_mark_qsl_rx_bureau'] = 'Zaznacz jako odebraną przez (Biuro)';
-$lang['general_mark_qsl_rx_direct'] = 'Zaznacz jako odebraną przez (Direct)';
-$lang['general_mark_qsl_tx_bureau'] = 'Zaznacz jako wysłaną przez (Biuro)';
-$lang['general_mark_qsl_tx_direct'] = 'Zaznacz jako wysłaną przez (Direct)';
+$lang['general_mark_qsl_rx_bureau'] = 'Zaznacz QSL jako odebraną przez (Biuro)';
+$lang['general_mark_qsl_rx_direct'] = 'Zaznacz QSL jako odebraną przez (Bezpośredni)';
+$lang['general_mark_qsl_rx_electronic'] = 'Zaznacz QSL jako odebraną przez (Elektroniczny)';
+$lang['general_mark_qsl_tx_bureau'] = 'Zaznacz QSL jako wysłaną przez (Biuro)';
+$lang['general_mark_qsl_tx_direct'] = 'Zaznacz QSL jako wysłaną przez (Bezpośredni)';
+$lang['general_mark_qsl_requested'] = 'Zaznacz QSL zgodnie z żądaniem';
+$lang['general_mark_qsl_requested_bureau'] = 'Zaznacz QSL zgodnie z żądaniem (Biuro)';
+$lang['general_mark_qsl_requested_direct'] = 'Zaznacz QSL zgodnie z żądaniem (Bezpośredni)';
+$lang['general_mark_qsl_not_required'] = 'Zaznacz QSLjako niewymagane';
 
 $lang['general_delete_qso'] = 'Usuń QSO';
 

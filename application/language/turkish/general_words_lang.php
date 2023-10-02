@@ -52,10 +52,16 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_qslcard_via'] = 'üzerinden';
 
 $lang['general_edit_qso'] = 'QSO değiştirme';
-$lang['general_mark_qsl_rx_bureau'] = 'QSL\'i alındı Olarak İşaretle (Büro)';
-$lang['general_mark_qsl_rx_direct'] = 'QSL\'i alındı Olarak İşaretle (Direkt)';
-$lang['general_mark_qsl_tx_bureau'] = 'QSL\'i Gönderildi Olarak İşaretle (Bureau)';
-$lang['general_mark_qsl_tx_direct'] = 'QSL\'i Gönderildi Olarak İşaretle (Direkt)';
+$lang['general_mark_qsl_rx_bureau'] = 'QSL\'i alındı Olarak İşaretle (Ofis)';
+$lang['general_mark_qsl_rx_direct'] = 'QSL\'i alındı Olarak İşaretle (Doğrudan)';
+$lang['general_mark_qsl_rx_electronic'] = 'QSL\'i alındı Olarak İşaretle (Elektronik)';
+$lang['general_mark_qsl_tx_bureau'] = 'QSL\'i Gönderildi Olarak İşaretle (Ofis)';
+$lang['general_mark_qsl_tx_direct'] = 'QSL\'i Gönderildi Olarak İşaretle (Doğrudan)';
+$lang['general_mark_qsl_requested'] = 'QSL\'i gerektiği gibi işaretleyin';
+$lang['general_mark_qsl_requested_bureau'] = 'QSL\'i gerektiği gibi işaretleyin';
+$lang['general_mark_qsl_requested_direct'] = 'QSL\'i gerektiği gibi işaretleyin';
+$lang['general_mark_qsl_not_required'] = 'QSL\'i gerekli değil olarak işaretleyin';
+
 $lang['general_delete_qso'] = 'QSO\'yu sil';
 
 $lang['general_total_distance'] = 'Topam mesafe';

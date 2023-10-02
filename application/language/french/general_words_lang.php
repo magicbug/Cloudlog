@@ -46,6 +46,13 @@ $lang['general_word_qslcard_via'] = 'Via';
 $lang['general_edit_qso'] = 'Editer QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Marquer QSL Reçue (Bureau)';
 $lang['general_mark_qsl_rx_direct'] = 'Marquer QSL Reçue (Direct)';
+$lang['general_mark_qsl_rx_electronic'] = 'Marquer QSL Reçue (Electronic)';
+$lang['general_mark_qsl_tx_bureau'] = 'Marquer QSL Sent (Bureau)';
+$lang['general_mark_qsl_tx_direct'] = 'Marquer QSL Sent (Direct)';
+$lang['general_mark_qsl_requested'] = 'Marquer Carte QSL comme demandé';
+$lang['general_mark_qsl_requested_bureau'] = 'Marquer Carte QSL comme demandé (Bureau)';
+$lang['general_mark_qsl_requested_direct'] = 'Marquer Carte QSL comme demandé (Direct)';
+$lang['general_mark_qsl_not_required'] = 'Marquer Carte QSL comme non requise';
 
 $lang['general_delete_qso'] = 'Effacer QSO';
 

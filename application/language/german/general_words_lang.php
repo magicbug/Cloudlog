@@ -22,6 +22,7 @@ $lang['general_word_satellite'] = 'Satellit';
 $lang['general_word_satellite_short'] = 'Sat';
 $lang['general_word_notes'] = 'Notizen';
 $lang['general_word_country'] = 'Land';
+$lang['general_word_city'] = 'Stadt';
 
 $lang['general_word_total'] = 'Gesamt';
 $lang['general_word_year'] = 'Jahr';
@@ -58,10 +59,22 @@ $lang['general_mark_qsl_rx_direct'] = 'Markiere QSL erhalten (Direkt)';
 $lang['general_mark_qsl_rx_electronic'] = 'Markiere QSL erhalten (Elektronisch)';
 $lang['general_mark_qsl_tx_bureau'] = 'Markiere QSL gesendet (Büro)';
 $lang['general_mark_qsl_tx_direct'] = 'Markiere QSL gesendet (Direkt)';
+$lang['general_mark_qsl_requested'] = 'Markiere QSL Karte als angefragt';
+$lang['general_mark_qsl_requested_bureau'] = 'Markiere QSL Karte als angefragt (Büro)';
+$lang['general_mark_qsl_requested_direct'] = 'Markiere QSL Karte als angefragt (Direkt)';
+$lang['general_mark_qsl_not_required'] = 'Markiere QSL Karte als nicht notwendig';
 
 $lang['general_delete_qso'] = 'QSO Löschen';
+$lang['general_more_qso'] = 'Mehr QSOs';
+
+$lang['general_lookup_qrz'] = 'Nachschlagen auf QRZ.com';
+$lang['general_lookup_hamqth'] = 'Nachschlagen auf HamQTH';
 
 $lang['general_total_distance'] = 'Entfernung';
+
+// PHP Upload Warning
+$lang['general_word_warning'] = 'Warnung';
+$lang['gen_max_file_upload_size'] = 'Die max. Dateigrösse für Uploads beträgt ';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Stationsprofil';

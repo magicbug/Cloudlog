@@ -58,6 +58,10 @@ $lang['general_mark_qsl_rx_direct'] = 'Označit QSL přijato (Přímá)';
 $lang['general_mark_qsl_rx_electronic'] = 'Označit QSL přijato (Elektronicky)';
 $lang['general_mark_qsl_tx_bureau'] = 'Označit QSL odesláno (Bureau)';
 $lang['general_mark_qsl_tx_direct'] = 'Označit QSL odesláno (Přímá)';
+$lang['general_mark_qsl_requested'] = 'Označit QSL kartu požadováno';
+$lang['general_mark_qsl_requested_bureau'] = 'Označit QSL kartu požadováno (Bureau)';
+$lang['general_mark_qsl_requested_direct'] = 'Označit QSL kartu požadováno (Přímá)';
+$lang['general_mark_qsl_not_required'] = 'Označit QSL lístek není vyžadován';
 
 $lang['general_delete_qso'] = 'Smazat QSO';
 

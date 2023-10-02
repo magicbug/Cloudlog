@@ -58,6 +58,10 @@ $lang['general_mark_qsl_rx_direct'] = 'Merkitse QSL vastaanotetuksi (Direct)';
 $lang['general_mark_qsl_rx_electronic'] = 'Merkitse QSL vastaanotetuksi (Electronic)';
 $lang['general_mark_qsl_tx_bureau'] = 'Merkitse QSL lähetetyksi (Bureau)';
 $lang['general_mark_qsl_tx_direct'] = 'Merkitse QSL lähetetyksi (Direct)';
+$lang['general_mark_qsl_requested'] = 'Merkitse QSL-kortti pyydetyksi';
+$lang['general_mark_qsl_requested_bureau'] = 'Merkitse QSL-kortti pyydetyksi (Bureau)';
+$lang['general_mark_qsl_requested_direct'] = 'Merkitse QSL-kortti pyydetyksi (Direct)';
+$lang['general_mark_qsl_not_required'] = 'Merkitse QSL-kortti tarpeettomaksi';
 
 $lang['general_delete_qso'] = 'Poista QSO';
 

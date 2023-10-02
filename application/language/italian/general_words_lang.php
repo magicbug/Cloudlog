@@ -54,8 +54,13 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_edit_qso'] = 'Modifica QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Segna QSL Ricevuta (Bureau)';
 $lang['general_mark_qsl_rx_direct'] = 'Segna QSL Ricevuta (Diretta)';
+$lang['general_mark_qsl_rx_electronic'] = 'Segna QSL Ricevuta (Elettronico)';
 $lang['general_mark_qsl_tx_bureau'] = 'Segna QSL Inviata (Bureau)';
 $lang['general_mark_qsl_tx_direct'] = 'Segna QSL Inviata (Direct)';
+$lang['general_mark_qsl_requested'] = 'Segna QSL come richiesto';
+$lang['general_mark_qsl_requested_bureau'] = 'Segna QSL come richiesto (Bureau)';
+$lang['general_mark_qsl_requested_direct'] = 'Segna QSL come richiesto (Diretta)';
+$lang['general_mark_qsl_not_required'] = 'Segna QSL non come richiesto';
 
 $lang['general_delete_qso'] = 'Cancella QSO';
 

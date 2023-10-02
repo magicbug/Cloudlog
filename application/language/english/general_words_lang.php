@@ -22,6 +22,7 @@ $lang['general_word_satellite'] = 'Satellite';
 $lang['general_word_satellite_short'] = 'Sat';
 $lang['general_word_notes'] = 'Notes';
 $lang['general_word_country'] = 'Country';
+$lang['general_word_city'] = 'City';
 
 $lang['general_word_total'] = 'Total';
 $lang['general_word_year'] = 'Year';
@@ -48,9 +49,11 @@ $lang['general_word_qslcard_bureau'] = 'Bureau';
 $lang['general_word_qslcard_electronic'] = 'Electronic';
 $lang['general_word_qslcard_manager'] = 'Manager';
 $lang['general_word_qslcard_via'] = 'Via';
+$lang['general_word_eqsl'] = 'eQSL';
 $lang['general_word_eqslcard'] = 'eQSL Card';
 $lang['general_word_eqslcards'] = 'eQSL Cards';
 $lang['general_word_lotw'] = 'Logbook of the World';
+$lang['general_word_lotw_short'] = 'LoTW';
 
 $lang['general_edit_qso'] = 'Edit QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Mark QSL Received (Bureau)';
@@ -58,10 +61,22 @@ $lang['general_mark_qsl_rx_direct'] = 'Mark QSL Received (Direct)';
 $lang['general_mark_qsl_rx_electronic'] = 'Mark QSL Received (Electronic)';
 $lang['general_mark_qsl_tx_bureau'] = 'Mark QSL Sent (Bureau)';
 $lang['general_mark_qsl_tx_direct'] = 'Mark QSL Sent (Direct)';
+$lang['general_mark_qsl_requested'] = 'Mark QSL Card Requested';
+$lang['general_mark_qsl_requested_bureau'] = 'Mark QSL Card Requested (Bureau)';
+$lang['general_mark_qsl_requested_direct'] = 'Mark QSL Card Requested (Direct)';
+$lang['general_mark_qsl_not_required'] = 'Mark QSL Card Not Required';
 
 $lang['general_delete_qso'] = 'Delete QSO';
+$lang['general_more_qso'] = 'More QSOs';
+
+$lang['general_lookup_qrz'] = 'Lookup on QRZ.com';
+$lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 
 $lang['general_total_distance'] = 'Total Distance';
+
+// PHP Upload Warning
+$lang['general_word_warning'] = 'Warning';
+$lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Station Location';
@@ -72,6 +87,8 @@ $lang['gen_hamradio_station'] = 'Station';
 
 $lang['gen_hamradio_call'] = 'Call';
 $lang['gen_hamradio_callsign'] = 'Callsign';
+$lang['gen_hamradio_de'] = 'De';
+$lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Mode';
 $lang['gen_hamradio_rst_sent'] = 'Sent';
 $lang['gen_hamradio_rst_rcvd'] = 'Recv\'d';
@@ -82,6 +99,8 @@ $lang['gen_hamradio_frequency_rx'] = 'Frequency (RX)';
 $lang['gen_hamradio_radio'] = 'Radio';
 $lang['gen_hamradio_rsts'] = 'RST (S)';
 $lang['gen_hamradio_rstr'] = 'RST (R)';
+$lang['gen_hamradio_refs'] = 'Refs';
+$lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Exch (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Exch (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';

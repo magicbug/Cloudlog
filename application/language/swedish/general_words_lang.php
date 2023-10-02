@@ -55,9 +55,13 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_edit_qso'] = 'Redigera QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Ange QSL mottagen (Byrå)';
 $lang['general_mark_qsl_rx_direct'] = 'Ange QSL mottagen (Direkt)';
-$lang['general_mark_qsl_rx_electronic'] = 'Ange QSL mottagen (Electronic)';
+$lang['general_mark_qsl_rx_electronic'] = 'Ange QSL mottagen (Elektronisk)';
 $lang['general_mark_qsl_tx_bureau'] = 'Ange QSL skickad (Byrå)';
 $lang['general_mark_qsl_tx_direct'] = 'Ange QSL skickad (Direkt)';
+$lang['general_mark_qsl_requested'] = 'Ange QSL Karta Begärda';
+$lang['general_mark_qsl_requested_bureau'] = 'Ange QSL Karta Begärda (Byrå)';
+$lang['general_mark_qsl_requested_direct'] = 'Ange QSL Karta Begärda (Direkt)';
+$lang['general_mark_qsl_not_required'] = 'Ange QSL Karta Inte Nödvändig';
 
 $lang['general_delete_qso'] = 'Radera QSO';
 
