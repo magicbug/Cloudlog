@@ -257,7 +257,7 @@ function checkIfWorkedBefore() {
 	}
 }
 
-function reset_log_fields() {
+async function reset_log_fields() {
 	$('#name').val("");
 	$('.callsign-suggestions').text("");
 	$('#callsign').val("");
@@ -269,6 +269,7 @@ function reset_log_fields() {
 	setRst($("#mode").val());
 	$('#callsign_info').text("");
 
+	await refresh_qso_table(sessiondata);
 	var qTable = $('.qsotable').DataTable();
 	qTable.search('').draw();
 }
