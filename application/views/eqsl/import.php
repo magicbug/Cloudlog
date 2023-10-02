@@ -52,8 +52,16 @@
 			  </label>
 			  <p>Cloudlog will use the eQSL credentials from your Cloudlog user profile to connect to eQSL and download confirmations.</p>
 			</div>
-
-		<input class="btn btn-primary" type="submit" value="Import eQSL QSO Matches" />
+			<div class="form-row">
+	        	<div class="form-group col-sm-2"><input class="btn btn-primary" type="submit" value="Import eQSL QSO Matches" /></div>
+		        	<div class="form-group col-sm-5" style="text-align:right;"><label class="form-label"><?php echo "if you want to force an import with an older date, select a date :"; //$this->lang->line(''); ?></label></div>
+		        	<div class="form-group col-sm-2">
+		          	<div class="dxatlasdatepicker input-group date" id="eqsl_force_from_date" data-target-input="nearest">
+		            	<input name="eqsl_force_from_date" type="text" placeholder="YYYY/MM/DD" class="form-control datetimepicker-input" data-target="#eqsl_force_from_date" value=""/>
+		              <div class="input-group-append"  data-target="#eqsl_force_from_date" data-toggle="datetimepicker"><div class="input-group-text"><i class="fa fa-calendar"></i></div></div>
+		          	</div>	
+	        	</div>
+			</div>
 
 		</form>
   </div>
