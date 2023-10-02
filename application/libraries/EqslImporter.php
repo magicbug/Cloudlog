@@ -53,7 +53,7 @@ class EqslImporter
 	}
 
 	// Download confirmed QSO from eQSL inbox and import them
-	public function fetch($password) {
+	public function fetch($password, $eqsl_force_from_date) {
 		if (empty($password) || empty($this->callsign)) {
 			return $this->result('Missing username and/or password');
 		}
@@ -63,15 +63,15 @@ class EqslImporter
 		$q = $query->row();
 		$eqsl_url = $q->eqsl_download_url;
 
-		// Query the logbook to determine when the last eQSL confirmation was
-		$eqsl_last_qsl_date = $this->CI->eqslmethods_model->eqsl_last_qsl_rcvd_date($this->callsign, $this->qth_nickname);
+		// Query the logbook to determine when the last eQSL confirmation was / Or use date input from form //
+		$eqsl_last_qsl_date = (strtotime($eqsl_force_from_date)!==false)?date("Ymd",strtotime($eqsl_force_from_date)):$this->CI->eqslmethods_model->eqsl_last_qsl_rcvd_date($this->callsign, $this->qth_nickname);
 
 		// Build parameters for eQSL inbox file
 		$eqsl_params = http_build_query(array(
-			'UserName' => $this->qth_nickname, //$this->callsign,
+			'UserName' => $this->callsign,
 			'Password' => $password,
 			'RcvdSince' => $eqsl_last_qsl_date,
-			//'QTHNickname' => $this->qth_nickname,
+			'QTHNickname' => $this->qth_nickname,
 			'ConfirmedOnly' => 1
 		));
 
