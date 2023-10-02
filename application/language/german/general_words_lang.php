@@ -54,7 +54,7 @@ $lang['general_word_eqslcards'] = 'eQSL Karten';
 $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
 
-$lang['general_word_details'] = 'Details'
+$lang['general_word_details'] = 'Details';
 
 $lang['general_edit_qso'] = 'QSO bearbeiten';
 $lang['general_mark_qsl_rx_bureau'] = 'Markiere QSL erhalten (Büro)';
