@@ -49,11 +49,12 @@ $lang['general_word_qslcard_bureau'] = 'Bureau';
 $lang['general_word_qslcard_electronic'] = 'Electronic';
 $lang['general_word_qslcard_manager'] = 'Manager';
 $lang['general_word_qslcard_via'] = 'Via';
-$lang['general_word_eqsl'] = 'eQSL';
 $lang['general_word_eqslcard'] = 'eQSL Card';
 $lang['general_word_eqslcards'] = 'eQSL Cards';
 $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
+
+$lang['general_word_details'] = 'Details'
 
 $lang['general_edit_qso'] = 'Edit QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Mark QSL Received (Bureau)';

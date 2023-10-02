@@ -422,7 +422,7 @@
         </div>
 
         <div class="tab-pane fade" id="stationdetails" role="tabpanel" aria-labelledby="table-tab">
-            <h3>Station Details</h3>
+            <h3><?php echo lang('gen_hamradio_station') . ' ' . lang('general_word_details'); ?></h3>
 
             <table width="100%">
                     <tr>
@@ -514,7 +514,7 @@
             }
             ?>
 
-            <p><div class="alert alert-warning" role="alert"><span class="badge badge-warning">Warning</span> Maximum file upload size is <?php echo $max_upload; ?>B.</div></p>
+            <p><div class="alert alert-warning" role="alert"><span class="badge badge-warning"><?php echo lang('general_word_warning'); ?></span> <?php echo lang('gen_max_file_upload_size'); ?> <?php echo $max_upload; ?>B.</div></p>
 
             <form class="form" id="fileinfo" name="fileinfo" enctype="multipart/form-data">
             <div class="row">
