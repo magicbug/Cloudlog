@@ -35,7 +35,7 @@ $lang['account_date_format'] = 'Format de la date';
 $lang['account_measurement_preferences'] = 'Unité de mesure';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = '(Sélectionnez le format de date à afficher)';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = '(Choisiez l\'unité de mesure à afficher)';
-$lang['account_choose_cloudlog_language'] = 'Choose Cloudlog language.'
+$lang['account_choose_cloudlog_language'] = 'Choose Cloudlog language.';
 
 $lang['account_main_menu'] = 'Menu principal';
 $lang['account_show_notes_in_the_main_menu'] = 'Voir les notes dans le main principal.';
