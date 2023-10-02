@@ -53,7 +53,7 @@ class EqslImporter
 	}
 
 	// Download confirmed QSO from eQSL inbox and import them
-	public function fetch($password, $eqsl_force_from_date) {
+	public function fetch($password, $eqsl_force_from_date="") {
 		if (empty($password) || empty($this->callsign)) {
 			return $this->result('Missing username and/or password');
 		}
