@@ -51,7 +51,7 @@
 						<label><?php echo lang('account_password'); ?></label>
 						<input class="form-control" type="password" name="user_password" />
 						<?php if(isset($password_error)) { echo "<div class=\"small error\">".$password_error."</div>"; } else { ?>
-						<div class="small form-text text-muted">Leave blank to keep existing password</div></td>
+						<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div></td>
 						<?php } ?>
 					</div>
 				</div>

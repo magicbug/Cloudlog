@@ -387,7 +387,7 @@ $options = json_decode($options);
                 <div class="form-check" style="margin-top: -1.5em"><input class="form-check-input" type="checkbox" id="checkBoxAll" /></div>
             </th>
 			<?php if (($options->datetime->show ?? "true") == "true") {
-				echo '<th>Date/Time</th>';
+				echo '<th>' . lang('general_word_datetime') . '</th>';
 			} ?>
 			<?php if (($options->de->show ?? "true") == "true") {
 				echo '<th>De</th>';

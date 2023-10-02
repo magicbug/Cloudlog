@@ -35,6 +35,7 @@ $lang['account_date_format'] = 'Datumsformat';
 $lang['account_measurement_preferences'] = 'Entfernungsformat';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Wähle, wie Datumsfelder angezeigt werden sollen, wenn du eingeloggt bist.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Wähle, in welcher Einheit Entfernungen angezeigt werden sollen.';
+$lang['account_choose_cloudlog_language'] = 'Wähle eine Sprache für Cloudlog.';
 
 $lang['account_main_menu'] = 'Hauptmenü';
 $lang['account_show_notes_in_the_main_menu'] = 'Zeige Notizen im Hauptmenü';

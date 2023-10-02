@@ -199,7 +199,7 @@
 						}
 						echo form_dropdown('language', $options, $language);
 						?>
-		                <small id="language_Help" class="form-text text-muted">Choose Cloudlog language.</small>
+		                <small id="language_Help" class="form-text text-muted"><?php echo lang('account_choose_cloudlog_language'); ?></small>
 		            </div>
 				<?php } ?>
 

@@ -17,4 +17,3 @@ $lang['admin_create_user'] = 'Create user';
 $lang['admin_delete'] = 'Delete';
 $lang['admin_edit'] = 'Edit';
 $lang['admin_user_accounts'] = 'User Accounts';
-
