@@ -553,11 +553,11 @@
             <p>
             <div class="row">
                 <div class="col-md">
-                        <button type="button" onclick="qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B');" id="qsltxb"  name="qsltxb" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-t-B"><i class="fas fa-envelope"></i> Mark QSL Card Requested (Bureau) <div class="ld ld-ring ld-spin"></div></button>
+                        <button type="button" onclick="qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B');" id="qsltxb"  name="qsltxb" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-t-B"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_requested_bureau'); ?> <div class="ld ld-ring ld-spin"></div></button>
 
-                        <button type="button" onclick="qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D');" id="qsltxd"  name="qsltxd" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-t-D"><i class="fas fa-envelope"></i> Mark QSL Card Requested (Direct) <div class="ld ld-ring ld-spin"></div></button>
+                        <button type="button" onclick="qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D');" id="qsltxd"  name="qsltxd" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-t-D"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_requested_direct'); ?> <div class="ld ld-ring ld-spin"></div></button>
 
-                        <button type="button" onclick="qsl_ignore(<?php echo $row->COL_PRIMARY_KEY; ?>, 'I');" id="qsltxi"  name="qsltxi" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-ignore"><i class="fas fa-envelope"></i> Mark QSL Card Not Required <div class="ld ld-ring ld-spin"></div></button>
+                        <button type="button" onclick="qsl_ignore(<?php echo $row->COL_PRIMARY_KEY; ?>, 'I');" id="qsltxi"  name="qsltxi" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-ignore"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_not_required'); ?> <div class="ld ld-ring ld-spin"></div></button>
 
                 </div>
             </div>
