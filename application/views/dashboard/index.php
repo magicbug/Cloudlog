@@ -288,12 +288,12 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
         </tr>
 
         <tr>
-            <td width="50%">Worked</td>
+            <td width="50%"><?php echo lang('general_word_worked'); ?></td>
             <td width="50%"><?php echo $vucc['All']['worked']; ?></td>
         </tr>
 
         <tr>
-            <td width="50%">Confirmed</td>
+            <td width="50%"><?php echo lang('general_word_confirmed'); ?></td>
             <td width="50%"><?php echo $vucc['All']['confirmed']; ?></td>
         </tr>
 
