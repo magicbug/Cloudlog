@@ -374,8 +374,8 @@
 
                     <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
                         <br>
-                            <div style="display: inline-block;"><p class="editButton"><a class="btn btn-primary" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i><?php echo lang('qso_btn_edit_qso'); ?></a></p></div>
-                            <div style="display: inline-block;"><form method="POST" action="<?php echo site_url('search'); ?>"><input type="hidden" value="<?php echo strtoupper($row->COL_CALL); ?>" name="callsign"><button class="btn btn-primary" type="submit"><i class="fas fa-eye"></i><?php echo lang('general_more_qso'); ?></button></form></div>
+                            <div style="display: inline-block;"><p class="editButton"><a class="btn btn-primary" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> <?php echo lang('qso_btn_edit_qso'); ?></a></p></div>
+                            <div style="display: inline-block;"><form method="POST" action="<?php echo site_url('search'); ?>"><input type="hidden" value="<?php echo strtoupper($row->COL_CALL); ?>" name="callsign"><button class="btn btn-primary" type="submit"><i class="fas fa-eye"></i> <?php echo lang('general_more_qso'); ?></button></form></div>
                     <?php } ?>
 
                     <?php
@@ -426,56 +426,56 @@
 
             <table width="100%">
                     <tr>
-                        <td>Station Callsign</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_callsign'); ?></td>
                         <td><?php echo $row->station_callsign; ?></td>
                     </tr>
                     <tr>
-                        <td>Station Name</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('general_word_name'); ?></td>
                         <td><?php echo $row->station_profile_name; ?></td>
                     </tr>
                     <tr>
-                        <td>Station Gridsquare</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_gridsquare'); ?></td>
                         <td><?php echo $row->station_gridsquare; ?></td>
                     </tr>
 
                     <?php if($row->station_city) { ?>
                     <tr>
-                        <td>Station City</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('general_word_city'); ?></td>
                         <td><?php echo $row->station_city; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->station_country) { ?>
                     <tr>
-                        <td>Station Country</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('general_word_country'); ?></td>
                         <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); if ($row->station_end != null) echo ' <span class="badge badge-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_OPERATOR) { ?>
                     <tr>
-                        <td>Station Operator</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_operator'); ?></td>
                         <td><?php echo $row->COL_OPERATOR; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_TX_PWR) { ?>
                     <tr>
-                        <td>Station Transmit Power</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_transmit_power'); ?></td>
                         <td><?php echo $row->COL_TX_PWR; ?> W</td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_MY_WWFF_REF) { ?>
                     <tr>
-                        <td>Station WWFF Reference</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_wwff_reference'); ?></td>
                         <td><?php echo $row->COL_MY_WWFF_REF; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_MY_POTA_REF) { ?>
                     <tr>
-                        <td>Station POTA Reference</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_pota_reference'); ?></td>
                         <td><?php echo $row->COL_MY_POTA_REF; ?></td>
                     </tr>
                     <?php } ?>
@@ -483,7 +483,7 @@
         </div>
 
         <div class="tab-pane fade" id="notesdetails" role="tabpanel" aria-labelledby="table-tab">
-            <h3>Notes</h3>
+            <h3><?php echo lang('general_word_notes'); ?></h3>
             <?php echo nl2br($row->COL_NOTES); ?>
         </div>
 
