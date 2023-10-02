@@ -22,6 +22,7 @@ $lang['general_word_satellite'] = 'Спутник';
 $lang['general_word_satellite_short'] = 'Спутн.';
 $lang['general_word_notes'] = 'Заметки';
 $lang['general_word_country'] = 'Страна';
+$lang['general_word_city'] = 'City';
 
 $lang['general_word_total'] = 'Всего';
 $lang['general_word_year'] = 'Год';
@@ -49,10 +50,12 @@ $lang['general_word_qslcard_bureau'] = 'Бюро';
 $lang['general_word_qslcard_electronic'] = 'Электронное';
 $lang['general_word_qslcard_manager'] = 'Менеджер';
 $lang['general_word_qslcard_via'] = 'через';
+$lang['general_word_eqslcard'] = 'eQSL Card';
 $lang['general_word_eqslcards'] = 'eQSL';
-$lang['general_word_lotw'] = 'LotW';
+$lang['general_word_lotw'] = 'Logbook of the World';
+$lang['general_word_lotw_short'] = 'LoTW';
 
-
+$lang['general_word_details'] = 'Details';
 
 $lang['general_edit_qso'] = 'Редактировать QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Отметить QSL полученной (через бюро)';
@@ -66,8 +69,16 @@ $lang['general_mark_qsl_requested_direct'] = 'Отметить запрос QSL-
 $lang['general_mark_qsl_not_required'] = 'Отметить QSL-карточка не требуется';
 
 $lang['general_delete_qso'] = 'Удалить QSO';
+$lang['general_more_qso'] = 'More QSOs';
+
+$lang['general_lookup_qrz'] = 'Lookup on QRZ.com';
+$lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 
 $lang['general_total_distance'] = 'Суммарная дистанция';
+
+// PHP Upload Warning
+$lang['general_word_warning'] = 'Warning';
+$lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Месторасположение станции';
@@ -78,6 +89,8 @@ $lang['gen_hamradio_station'] = 'Станция';
 
 $lang['gen_hamradio_call'] = 'Позывной';
 $lang['gen_hamradio_callsign'] = 'Позывной';
+$lang['gen_hamradio_de'] = 'De';
+$lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Вид модуляции';
 $lang['gen_hamradio_rst_sent'] = 'Отправлено';
 $lang['gen_hamradio_rst_rcvd'] = 'Получено';
@@ -88,6 +101,8 @@ $lang['gen_hamradio_frequency_rx'] = 'Частота (RX)';
 $lang['gen_hamradio_radio'] = 'Радио';
 $lang['gen_hamradio_rsts'] = 'RST (отправлено)';
 $lang['gen_hamradio_rstr'] = 'RST (принято)';
+$lang['gen_hamradio_refs'] = 'Refs';
+$lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Exch (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Exch (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';
@@ -114,6 +129,7 @@ $lang['gen_hamradio_dok'] = 'DOK';
 $lang['gen_hamradio_state'] = 'Штат';
 $lang['gen_hamradio_iota'] = 'IOTA';
 $lang['gen_hamradio_sota'] = 'SOTA';
+$lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Квадрат';
 $lang['gen_hamradio_distance'] = 'Дистанция';
@@ -144,5 +160,5 @@ $lang['northamerica'] = 'Северная Америка';
 $lang['oceania'] = 'Океания';
 $lang['southamerica'] = 'Южная Америка';
 
-
 $lang['gen_band_selection'] = 'Выбор диапазона';
+$lang['general_word_today'] = 'Today';

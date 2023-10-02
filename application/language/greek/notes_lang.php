@@ -20,4 +20,3 @@ $lang['notes_input_btn_delete_note'] = 'Διαγραφή Σημείωσης';
 $lang['notes_selection_general'] = 'Γενικα';
 $lang['notes_selection_antennas'] = 'Κεραίες';
 $lang['notes_selection_satellites'] = 'Δορυφόροι';
-

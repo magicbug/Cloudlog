@@ -65,6 +65,7 @@ $lang['options_dxcluster_hint'] = 'URL des DXCluster-Caches. z.B. https://dxc.jo
 $lang['options_dxcluster_settings'] = 'DXCluster';
 $lang['options_dxcache_url_changed_to'] = 'DXCluster Cache URL geändert zu ';
 $lang['options_dxcluster_maxage'] = 'Maximales Alter bis zu dem Spots berücksichtigt werden';
+$lang['options_dxcluster_maxage_hint'] = 'Das ALter von Spots in Minuten, welche im Bandplan/Lookup berücksichtigt werden';
 $lang['options_dxcluster_decont'] = 'Nur Spots berücksichtigen, die in folgendem Kontinent erfasst wurden';
 $lang['options_dxcluster_maxage_changed_to']='Maximales Spot-Alter geändert auf ';
 $lang['options_dxcluster_decont_changed_to']='Spotterkontinent geändert auf ';

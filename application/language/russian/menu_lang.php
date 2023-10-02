@@ -83,3 +83,5 @@ $lang['menu_hardware_interfaces'] = 'Аппаратные интерфейсы';
 $lang['menu_help'] = 'Помощь';
 $lang['menu_forum'] = 'Форум';
 $lang['menu_logout'] = 'Выход';
+
+$lang['menu_maintenance']='Maintenance';

@@ -12,6 +12,7 @@ $lang['qslcard_sent_bureau'] = 'QSL 卡片已由卡片局发出';
 $lang['qslcard_sent_direct'] = 'QSL 卡片已直邮发出';
 $lang['qslcard_sent_electronic'] = 'QSL 卡片已经发送电子版';
 $lang['qslcard_sent_manager'] = 'QSL 卡片已经由卡片管理员发出';
+$lang['qslcard_rcvd'] = 'QSL Card has been received';
 $lang['qslcard_rcvd_bureau'] = 'QSL 卡片已由卡片局接收';
 $lang['qslcard_rcvd_direct'] = 'QSL 卡片已直邮接收';
 $lang['qslcard_rcvd_electronic'] = 'QSL 卡片已经接收电子版';

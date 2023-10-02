@@ -70,6 +70,4 @@ $lang['options_dxcluster_decont'] = 'Отображать споты, котор
 $lang['options_dxcluster_maxage_changed_to']='Максимальный возраст спотов изменён на ';
 $lang['options_dxcluster_decont_changed_to']='континент изменён на ';
 
-
-
 $lang['options_save'] = 'Сохранить';

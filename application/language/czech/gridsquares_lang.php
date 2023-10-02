@@ -24,3 +24,4 @@ $lang['gridsquares_gridsquares'] = 'Lokátory';
 $lang['gridsquares_gridsquares_confirmed'] = 'Potvrzené lokátory';
 $lang['gridsquares_gridsquares_not_confirmed'] = 'Nepotvrzené lokátory';
 $lang['gridsquares_gridsquares_total_worked'] = 'Celkový počet odpracovaných lokátorů';
+$lang['gridsquares_gridsquares_total_activated'] = 'Total gridsquares activated';

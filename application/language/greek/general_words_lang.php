@@ -22,6 +22,7 @@ $lang['general_word_satellite'] = 'Δορυφόρος';
 $lang['general_word_satellite_short'] = 'Δορ';
 $lang['general_word_notes'] = 'Σημειώσεις';
 $lang['general_word_country'] = 'Χώρα';
+$lang['general_word_city'] = 'City';
 
 $lang['general_word_total'] = 'Σύνολο';
 $lang['general_word_year'] = 'Ετος';
@@ -48,8 +49,12 @@ $lang['general_word_qslcard_bureau'] = 'Bureau';
 $lang['general_word_qslcard_electronic'] = 'Ηλεκτρονική';
 $lang['general_word_qslcard_manager'] = 'Διευθυντής';
 $lang['general_word_qslcard_via'] = 'Μέσω';
+$lang['general_word_eqslcard'] = 'eQSL Card';
 $lang['general_word_eqslcards'] = 'Κάρτες eQSL';
 $lang['general_word_lotw'] = 'Logbook of the World';
+$lang['general_word_lotw_short'] = 'LoTW';
+
+$lang['general_word_details'] = 'Details';
 
 $lang['general_edit_qso'] = 'Επεξεργασία QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Σημείωση QSL ως Ελήφθη (Bureau)';
@@ -63,8 +68,16 @@ $lang['general_mark_qsl_requested_direct'] = 'Σημείωση QSL ζητήθη�
 $lang['general_mark_qsl_not_required'] = 'Σημείωση QSL μη απαραίτητο';
 
 $lang['general_delete_qso'] = 'Διαγραφή QSO';
+$lang['general_more_qso'] = 'More QSOs';
+
+$lang['general_lookup_qrz'] = 'Lookup on QRZ.com';
+$lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 
 $lang['general_total_distance'] = 'Συνολική Απόσταση';
+
+// PHP Upload Warning
+$lang['general_word_warning'] = 'Warning';
+$lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Τοποθεσία Σταθμού';
@@ -75,6 +88,8 @@ $lang['gen_hamradio_station'] = 'Σταθμός';
 
 $lang['gen_hamradio_call'] = 'Δια';
 $lang['gen_hamradio_callsign'] = 'Διακριτικό';
+$lang['gen_hamradio_de'] = 'De';
+$lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Τρόπος';
 $lang['gen_hamradio_rst_sent'] = 'Απεσταλμένα';
 $lang['gen_hamradio_rst_rcvd'] = 'Ελήφθη\'d';
@@ -85,6 +100,8 @@ $lang['gen_hamradio_frequency_rx'] = 'Συχνότητα (RX)';
 $lang['gen_hamradio_radio'] = 'Ραδιόφωνο';
 $lang['gen_hamradio_rsts'] = 'RST (S)';
 $lang['gen_hamradio_rstr'] = 'RST (R)';
+$lang['gen_hamradio_refs'] = 'Refs';
+$lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Exch (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Exch (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';
@@ -99,6 +116,8 @@ $lang['gen_hamradio_logbook'] = 'Αρχείο επαφών';
 
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
+$lang['gen_hamradio_deleted_dxcc'] = 'Deleted DXCC';
+$lang['gen_hamradio_continent'] = 'Continent';
 $lang['gen_hamradio_usa_state'] = 'Επαρχία ΗΠΑ';
 $lang['gen_hamradio_county_reference'] = 'Κομητεία ΗΠΑ ';
 $lang['gen_hamradio_iota_reference'] = 'Παραπομπή IOTA';
@@ -112,6 +131,7 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Gridsquare';
+$lang['gen_hamradio_distance'] = 'Distance';
 $lang['gen_hamradio_operator'] = 'Χειριστής';
 
 $lang['gen_hamradio_sig'] = 'Sig';
@@ -130,3 +150,14 @@ $lang['gen_this_qso_was_confirmed_on'] = 'Αυτό το QSO επιβεβαιώθ
 $lang['error_no_logbook_found'] = 'Δεν βρέθηκαν αρχεία. Πρέπει να ορίσετε ένα αρχεία στα αρχεία σταθμών! Κάντε το εδώ:';
 
 $lang['copy_to_clipboard'] = 'Αντιγραφή στο πρόχειρο';
+
+$lang['africa'] = 'Africa';
+$lang['antarctica'] = 'Antarctica';
+$lang['asia'] = 'Asia';
+$lang['europe'] = 'Europe';
+$lang['northamerica'] = 'North America';
+$lang['oceania'] = 'Oceania';
+$lang['southamerica'] = 'South America';
+
+$lang['gen_band_selection'] = 'Band selection';
+$lang['general_word_today'] = 'Today';

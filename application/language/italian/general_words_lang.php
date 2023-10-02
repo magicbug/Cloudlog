@@ -22,6 +22,7 @@ $lang['general_word_satellite'] = 'Satellite';
 $lang['general_word_satellite_short'] = 'Sat';
 $lang['general_word_notes'] = 'Note';
 $lang['general_word_country'] = 'Paese';
+$lang['general_word_city'] = 'City';
 
 $lang['general_word_total'] = 'Totale';
 $lang['general_word_year'] = 'Anno';
@@ -48,8 +49,12 @@ $lang['general_word_qslcard_bureau'] = 'Bureau';
 $lang['general_word_qslcard_electronic'] = 'Elettronica';
 $lang['general_word_qslcard_manager'] = 'Manager';
 $lang['general_word_qslcard_via'] = 'Via';
+$lang['general_word_eqslcard'] = 'eQSL Card';
 $lang['general_word_eqslcards'] = 'Cartoline eQSL';
 $lang['general_word_lotw'] = 'Logbook of the World';
+$lang['general_word_lotw_short'] = 'LoTW';
+
+$lang['general_word_details'] = 'Details';
 
 $lang['general_edit_qso'] = 'Modifica QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Segna QSL Ricevuta (Bureau)';
@@ -63,8 +68,16 @@ $lang['general_mark_qsl_requested_direct'] = 'Segna QSL come richiesto (Diretta)
 $lang['general_mark_qsl_not_required'] = 'Segna QSL non come richiesto';
 
 $lang['general_delete_qso'] = 'Cancella QSO';
+$lang['general_more_qso'] = 'More QSOs';
+
+$lang['general_lookup_qrz'] = 'Lookup on QRZ.com';
+$lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 
 $lang['general_total_distance'] = 'Distanza Totale';
+
+// PHP Upload Warning
+$lang['general_word_warning'] = 'Warning';
+$lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Luogo Stazione';
@@ -75,6 +88,8 @@ $lang['gen_hamradio_station'] = 'Stazione';
 
 $lang['gen_hamradio_call'] = 'Nominativo';
 $lang['gen_hamradio_callsign'] = 'Nominativo';
+$lang['gen_hamradio_de'] = 'De';
+$lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Modo';
 $lang['gen_hamradio_rst_sent'] = 'Inviato';
 $lang['gen_hamradio_rst_rcvd'] = 'Ricevuto';
@@ -85,6 +100,8 @@ $lang['gen_hamradio_frequency_rx'] = 'Frequenza (RX)';
 $lang['gen_hamradio_radio'] = 'Radio';
 $lang['gen_hamradio_rsts'] = 'RST (I)';
 $lang['gen_hamradio_rstr'] = 'RST (R)';
+$lang['gen_hamradio_refs'] = 'Refs';
+$lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Scambio (I)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Scambio (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';
@@ -99,17 +116,22 @@ $lang['gen_hamradio_logbook'] = 'Logbook';
 
 $lang['gen_hamradio_cq_zone'] = 'Zona CQ';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
+$lang['gen_hamradio_deleted_dxcc'] = 'Deleted DXCC';
+$lang['gen_hamradio_continent'] = 'Continent';
 $lang['gen_hamradio_usa_state'] = 'Stato USA';
 $lang['gen_hamradio_county_reference'] = 'Contea USA';
 $lang['gen_hamradio_iota_reference'] = 'Referenza IOTA';
 $lang['gen_hamradio_sota_reference'] = 'Referenza SOTA';
 $lang['gen_hamradio_wwff_reference'] = 'Referenza WWFF';
+$lang['gen_hamradio_pota_reference'] = 'Referenza POTA';
 $lang['gen_hamradio_dok'] = 'DOK';
 $lang['gen_hamradio_state'] = 'Stato';
 $lang['gen_hamradio_iota'] = 'IOTA';
 $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
+$lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Quadratone';
+$lang['gen_hamradio_distance'] = 'Distance';
 $lang['gen_hamradio_operator'] = 'Operatore';
 
 $lang['gen_hamradio_sig'] = 'Seg';
@@ -128,3 +150,14 @@ $lang['gen_this_qso_was_confirmed_on'] = 'Questo QSO è stato confermato il';
 $lang['error_no_logbook_found'] = 'Non è stato trovato nessun logbook. È necessario definire un logbook in Logbooks di Stazione! Vai qui:';
 
 $lang['copy_to_clipboard'] = 'Copia';
+
+$lang['africa'] = 'Africa';
+$lang['antarctica'] = 'Antarctica';
+$lang['asia'] = 'Asia';
+$lang['europe'] = 'Europe';
+$lang['northamerica'] = 'North America';
+$lang['oceania'] = 'Oceania';
+$lang['southamerica'] = 'South America';
+
+$lang['gen_band_selection'] = 'Band selection';
+$lang['general_word_today'] = 'Today';

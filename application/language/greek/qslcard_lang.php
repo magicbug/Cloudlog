@@ -15,6 +15,7 @@ $lang['qslcard_sent_manager'] = 'Η κάρτα QSL έχει σταλεί μέσ�
 $lang['qslcard_rcvd'] = 'Η κάρτα QSL έχει παραληφθεί';
 $lang['qslcard_rcvd_bureau'] = 'Η κάρτα QSL έχει παραληφθεί μέσω του γραφείου';
 $lang['qslcard_rcvd_direct'] = 'Η κάρτα QSL έχει παραληφθεί απευθείας';
+
 $lang['qslcard_rcvd_electronic'] = 'Η κάρτα QSL έχει παραληφθεί ηλεκτρονικά';
 $lang['qslcard_rcvd_manager'] = 'Η κάρτα QSL έχει παραληφθεί μέσω του διαχειριστή';
 

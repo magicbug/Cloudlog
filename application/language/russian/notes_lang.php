@@ -20,4 +20,3 @@ $lang['notes_input_btn_delete_note'] = 'Удалить заметку';
 $lang['notes_selection_general'] = 'Общее';
 $lang['notes_selection_antennas'] = 'Антенны';
 $lang['notes_selection_satellites'] = 'Спутники';
-

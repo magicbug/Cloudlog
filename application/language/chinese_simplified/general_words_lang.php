@@ -22,6 +22,7 @@ $lang['general_word_satellite'] = '卫星';
 $lang['general_word_satellite_short'] = '卫星';
 $lang['general_word_notes'] = '笔记';
 $lang['general_word_country'] = 'DXCC 实体';
+$lang['general_word_city'] = 'City';
 
 $lang['general_word_total'] = '总计';
 $lang['general_word_year'] = '年';
@@ -51,6 +52,9 @@ $lang['general_word_qslcard_via'] = '通过';
 $lang['general_word_eqslcard'] = '电子 QSL 卡片';
 $lang['general_word_eqslcards'] = 'eQSL 卡片';
 $lang['general_word_lotw'] = 'Logbook of the World';
+$lang['general_word_lotw_short'] = 'LoTW';
+
+$lang['general_word_details'] = 'Details';
 
 $lang['general_edit_qso'] = '编辑 QSO';
 $lang['general_mark_qsl_rx_bureau'] = '标记 已收到的QSL (卡片局)';
@@ -64,8 +68,16 @@ $lang['general_mark_qsl_requested_direct'] = 'Mark QSL Card Requested (Direct)';
 $lang['general_mark_qsl_not_required'] = 'Mark QSL Card Not Required';
 
 $lang['general_delete_qso'] = '删除 QSO';
+$lang['general_more_qso'] = 'More QSOs';
+
+$lang['general_lookup_qrz'] = 'Lookup on QRZ.com';
+$lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 
 $lang['general_total_distance'] = '总计距离';
+
+// PHP Upload Warning
+$lang['general_word_warning'] = 'Warning';
+$lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = '台站地址';
@@ -77,6 +89,8 @@ $lang['gen_hamradio_station'] = '台站';
 $lang['gen_hamradio_call'] = '呼号';
 $lang['gen_hamradio_callsign'] = '呼号';
 $lang['gen_hamradio_mode'] = '模式';
+$lang['gen_hamradio_dx'] = 'Dx';
+$lang['gen_hamradio_mode'] = 'Mode';
 $lang['gen_hamradio_rst_sent'] = '发';
 $lang['gen_hamradio_rst_rcvd'] = '收';
 $lang['gen_hamradio_band'] = '频段';
@@ -86,6 +100,8 @@ $lang['gen_hamradio_frequency_rx'] = '频率 (RX)';
 $lang['gen_hamradio_radio'] = '电台';
 $lang['gen_hamradio_rsts'] = '信号报告 (发)';
 $lang['gen_hamradio_rstr'] = '信号报告 (收)';
+$lang['gen_hamradio_refs'] = 'Refs';
+$lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = '信号交换 (发)';
 $lang['gen_hamradio_exchange_rcvd_short'] = '信号交换 (收)';
 $lang['gen_hamradio_qsl'] = 'QSL';
@@ -144,3 +160,4 @@ $lang['oceania'] = '大洋洲';
 $lang['southamerica'] = '南美洲';
 
 $lang['gen_band_selection'] = '波段选择';
+$lang['general_word_today'] = 'Today';

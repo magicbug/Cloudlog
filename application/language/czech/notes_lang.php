@@ -20,4 +20,3 @@ $lang['notes_input_btn_delete_note'] = 'Smazat poznámku';
 $lang['notes_selection_general'] = 'Obecná';
 $lang['notes_selection_antennas'] = 'Antény';
 $lang['notes_selection_satellites'] = 'Satelity';
-

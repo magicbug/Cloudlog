@@ -24,3 +24,4 @@ $lang['gridsquares_gridsquares'] = 'Квадраты';
 $lang['gridsquares_gridsquares_confirmed'] = 'Подтверждёно квадратов';
 $lang['gridsquares_gridsquares_not_confirmed'] = 'Неподтверждёно квадратов';
 $lang['gridsquares_gridsquares_total_worked'] = 'Всего сработано квадратов';
+$lang['gridsquares_gridsquares_total_activated'] = 'Total gridsquares activated';

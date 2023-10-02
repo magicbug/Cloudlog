@@ -24,3 +24,4 @@ $lang['gridsquares_gridsquares'] = '网格';
 $lang['gridsquares_gridsquares_confirmed'] = '已确认的网格';
 $lang['gridsquares_gridsquares_not_confirmed'] = '未确认的网格';
 $lang['gridsquares_gridsquares_total_worked'] = '总共工作过的网格';
+$lang['gridsquares_gridsquares_total_activated'] = 'Total gridsquares activated';

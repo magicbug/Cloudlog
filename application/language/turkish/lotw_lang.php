@@ -22,6 +22,7 @@ $lang['lotw_status'] = 'Durum';
 $lang['lotw_options'] = 'Seçenekler';
 $lang['lotw_valid'] = 'Geçerli';
 $lang['lotw_expired'] = 'Süresi doldu';
+$lang['lotw_expiring'] = 'Expiring';
 $lang['lotw_not_synced'] = 'Senkronize Edilmedi';
 
 $lang['lotw_certificate_dxcc'] = 'DXCC Sertifikası';
@@ -51,3 +52,11 @@ $lang['lotw_p12_export_step_three'] = '"Çağrı İmzası Sertifika Dosyasını 
 $lang['lotw_p12_export_step_four'] = 'Aşağıdaki Dosyayı Yükleyin.';
 
 $lang['lotw_confirmed'] = 'Bu QSO LoTW\'de onaylandı';
+
+// LoTW Expiry
+$lang['lotw_cert_expiring'] = 'At least one of your LoTW certificates is about to expire!';
+$lang['lotw_cert_expired'] = 'At least one of your LoTW certificates is expired!';
+
+// Lotw User
+$lang['lotw_user'] = 'This station uses LoTW.';
+$lang['lotw_last_upload'] = 'Last upload';
