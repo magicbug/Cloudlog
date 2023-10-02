@@ -16,3 +16,4 @@ $lang['admin_options'] = 'Optionen';
 $lang['admin_create_user'] = 'Benutzer anlegen';
 $lang['admin_delete'] = 'Löschen';
 $lang['admin_edit'] = 'Editieren';
+$lang['admin_user_accounts'] = 'Benutzerkonten';
