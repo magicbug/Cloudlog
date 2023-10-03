@@ -9,6 +9,8 @@ $lang['notice_turn_the_radio_on'] = '你今天还没有 QSO，是时候打开你
 $lang['general_word_important'] = '重要';
 $lang['general_word_info'] = '消息';
 $lang['general_word_choose_file'] = '选择文件';
+$lang['general_word_next'] = 'Next';
+$lang['general_word_previous'] = 'Previous';
 
 $lang['general_word_date'] = '日期';
 $lang['general_word_time'] = '时间';

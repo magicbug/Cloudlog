@@ -9,6 +9,8 @@ $lang['notice_turn_the_radio_on'] = 'Bu gün hiç bir QSO yapmadınız. Telsizi 
 $lang['general_word_important'] = 'Önemli';
 $lang['general_word_info'] = 'Bilgiler';
 $lang['general_word_choose_file'] = 'Dosya seç';
+$lang['general_word_next'] = 'Next';
+$lang['general_word_previous'] = 'Previous';
 
 $lang['general_word_date'] = 'Tarih';
 $lang['general_word_time'] = 'Saat';

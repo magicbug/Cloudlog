@@ -9,6 +9,8 @@ $lang['notice_turn_the_radio_on'] = 'Du hast heute noch keine QSOs gemacht; Zeit
 $lang['general_word_important'] = 'Wichtig';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Datei wählen';
+$lang['general_word_next'] = 'Weiter';
+$lang['general_word_previous'] = 'Zurück';
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Zeit';

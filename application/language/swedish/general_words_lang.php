@@ -9,6 +9,8 @@ $lang['notice_turn_the_radio_on'] = 'Inga QSOn idag - dags att slå på radion!'
 $lang['general_word_important'] = 'Viktigt';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Välj fil';
+$lang['general_word_next'] = 'Next';
+$lang['general_word_previous'] = 'Previous';
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Tid';

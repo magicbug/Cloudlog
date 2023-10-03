@@ -9,6 +9,8 @@ $lang['notice_turn_the_radio_on'] = 'Днес не сте правили QSO; в
 $lang['general_word_important'] = 'Важно';
 $lang['general_word_info'] = 'Инфо';
 $lang['general_word_choose_file'] = 'Изберете файл';
+$lang['general_word_next'] = 'Next';
+$lang['general_word_previous'] = 'Previous';
 
 $lang['general_word_date'] = 'Дата';
 $lang['general_word_time'] = 'Час';

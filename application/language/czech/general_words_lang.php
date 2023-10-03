@@ -9,6 +9,8 @@ $lang['notice_turn_the_radio_on'] = 'Dnes jste neudělali žádná QSO spojení;
 $lang['general_word_important'] = 'Důležité';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Vybrat soubor';
+$lang['general_word_next'] = 'Next';
+$lang['general_word_previous'] = 'Previous';
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Čas';
