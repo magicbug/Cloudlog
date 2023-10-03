@@ -59,3 +59,15 @@ $lang['options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_se
 $lang['options_oqrs_options_have_been_saved'] = 'OQRS选项已保存';
 
 $lang['options_save'] = '保存';
+$lang['options_dxcluster_provider'] = 'Provider of DXClusterCache';
+$lang['options_dxcluster_longtext'] = 'The Provider of the DXCluster-Cache. You can set up your own Cache with <a href="https://github.com/int2001/DXClusterAPI">DXClusterAPI</a> or use a public one';
+$lang['options_dxcluster_hint'] = 'URL of the DXCluster-Cache. e.g. https://dxc.jo30.de/dxcache';
+$lang['options_dxcluster_settings'] = 'DXCluster';
+$lang['options_dxcache_url_changed_to'] = 'DXCluster Cache URL changed to ';
+$lang['options_dxcluster_maxage'] = 'Maximum Age of spots taken care of';
+$lang['options_dxcluster_maxage_hint'] = 'The Age in Minutes of spots, that will be taken care at bandplan/lookup';
+$lang['options_dxcluster_decont'] = 'Show spots which are spotted from following continent';
+$lang['options_dxcluster_maxage_changed_to']='Maximum age of spots changed to ';
+$lang['options_dxcluster_decont_changed_to']='de continent changed to ';
+
+$lang['options_save'] = 'Save';

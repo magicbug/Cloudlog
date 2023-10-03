@@ -24,3 +24,4 @@ $lang['gridsquares_gridsquares'] = 'Locators';
 $lang['gridsquares_gridsquares_confirmed'] = 'Locators confirmés';
 $lang['gridsquares_gridsquares_not_confirmed'] = 'Locators non confirmés';
 $lang['gridsquares_gridsquares_total_worked'] = 'Total des Locators contactés';
+$lang['gridsquares_gridsquares_total_activated'] = 'Total gridsquares activated';

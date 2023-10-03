@@ -9,6 +9,8 @@ $lang['notice_turn_the_radio_on'] = 'Ei kusoja tänään - siis radio päälle j
 $lang['general_word_important'] = 'Tärkeää';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Valitse tiedosto';
+$lang['general_word_next'] = 'Next';
+$lang['general_word_previous'] = 'Previous';
 
 $lang['general_word_date'] = 'Päivä';
 $lang['general_word_time'] = 'Aika';
@@ -22,6 +24,7 @@ $lang['general_word_satellite'] = 'Satelliitti';
 $lang['general_word_satellite_short'] = 'Sat';
 $lang['general_word_notes'] = 'Muistiinpanot';
 $lang['general_word_country'] = 'Maa';
+$lang['general_word_city'] = 'City';
 
 $lang['general_word_total'] = 'Yhteensä';
 $lang['general_word_year'] = 'Vuosi';
@@ -31,6 +34,7 @@ $lang['general_word_worked'] = 'Workittu';
 $lang['general_word_confirmed'] = 'Kuitattu';
 $lang['general_word_needed'] = 'Tarvittu';
 
+$lang['general_word_all'] = 'All';
 $lang['general_word_no'] = 'Ei';
 $lang['general_word_yes'] = 'Kyllä';
 $lang['general_word_method'] = 'Method / tapa';
@@ -51,6 +55,9 @@ $lang['general_word_qslcard_via'] = 'Via';
 $lang['general_word_eqslcard'] = 'eQSL Card';
 $lang['general_word_eqslcards'] = 'eQSL Cards';
 $lang['general_word_lotw'] = 'Logbook of the World';
+$lang['general_word_lotw_short'] = 'LoTW';
+
+$lang['general_word_details'] = 'Details';
 
 $lang['general_edit_qso'] = 'Muokkaa QSO:a';
 $lang['general_mark_qsl_rx_bureau'] = 'Merkitse QSL vastaanotetuksi (Bureau)';
@@ -58,10 +65,22 @@ $lang['general_mark_qsl_rx_direct'] = 'Merkitse QSL vastaanotetuksi (Direct)';
 $lang['general_mark_qsl_rx_electronic'] = 'Merkitse QSL vastaanotetuksi (Electronic)';
 $lang['general_mark_qsl_tx_bureau'] = 'Merkitse QSL lähetetyksi (Bureau)';
 $lang['general_mark_qsl_tx_direct'] = 'Merkitse QSL lähetetyksi (Direct)';
+$lang['general_mark_qsl_requested'] = 'Merkitse QSL-kortti pyydetyksi';
+$lang['general_mark_qsl_requested_bureau'] = 'Merkitse QSL-kortti pyydetyksi (Bureau)';
+$lang['general_mark_qsl_requested_direct'] = 'Merkitse QSL-kortti pyydetyksi (Direct)';
+$lang['general_mark_qsl_not_required'] = 'Merkitse QSL-kortti tarpeettomaksi';
 
 $lang['general_delete_qso'] = 'Poista QSO';
+$lang['general_more_qso'] = 'More QSOs';
+
+$lang['general_lookup_qrz'] = 'Lookup on QRZ.com';
+$lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 
 $lang['general_total_distance'] = 'Kokonaismatka';
+
+// PHP Upload Warning
+$lang['general_word_warning'] = 'Warning';
+$lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Asemaprofiili';
@@ -72,6 +91,8 @@ $lang['gen_hamradio_station'] = 'Asema';
 
 $lang['gen_hamradio_call'] = 'Kutsu';
 $lang['gen_hamradio_callsign'] = 'Kutsumerkki';
+$lang['gen_hamradio_de'] = 'De';
+$lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Lähetelaji';
 $lang['gen_hamradio_rst_sent'] = 'Annettu raportti';
 $lang['gen_hamradio_rst_rcvd'] = 'Saatu raportti';
@@ -82,9 +103,13 @@ $lang['gen_hamradio_frequency_rx'] = 'Taajuus (RX)';
 $lang['gen_hamradio_radio'] = 'Radio';
 $lang['gen_hamradio_rsts'] = 'RST (S)';
 $lang['gen_hamradio_rstr'] = 'RST (R)';
+$lang['gen_hamradio_refs'] = 'Refs';
+$lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Exch (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Exch (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';
+$lang['gen_hamradio_qslvia'] = 'QSL via';
+$lang['gen_hamradio_qslmsg'] = 'QSL Msg';
 $lang['gen_hamradio_locator'] = 'Lokaattori';
 $lang['gen_hamradio_transmit_power'] = 'Lähetysteho (W)';
 $lang['gen_hamradio_propagation_mode'] = 'Propagaatiomuoto';
@@ -140,3 +165,4 @@ $lang['oceania'] = 'Oseania';
 $lang['southamerica'] = 'Etelä-Amerikka';
 
 $lang['gen_band_selection'] = 'Bandin valinta';
+$lang['general_word_today'] = 'Today';

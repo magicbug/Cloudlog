@@ -9,7 +9,6 @@ $lang['account_column3_text'] = 'Välj kolumn 3';
 $lang['account_column4_text'] = 'Välj kolumn 4';
 $lang['account_column5_text'] = 'Välj kolumn 5 (bara för logbok)';
 
-
 $lang['account_create_user_account'] = 'Skapa användarkonto';
 $lang['account_edit_account'] = 'Redigera användarkonto';
 
@@ -36,6 +35,7 @@ $lang['account_date_format'] = 'Datumformat';
 $lang['account_measurement_preferences'] = 'Measurement preference';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Välj hur du vill att datum ska visas när du är inloggad på ditt konto.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Välj i vilken enhetsavstånd som ska visas';
+$lang['account_choose_cloudlog_language'] = 'Choose Cloudlog language.';
 
 $lang['account_main_menu'] = 'Huvudmeny';
 $lang['account_show_notes_in_the_main_menu'] = 'Visa anteckningar i huvudmenyn.';
@@ -96,3 +96,4 @@ $lang['account_user_mastodon'] = 'URL till Mastodonserver';
 
 $lang['account_gridmap_settings'] = 'Inställningar för Gridsquare Map';
 $lang['account_gridmap_default_band'] = 'Standard Band';
+$lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';

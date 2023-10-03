@@ -35,6 +35,7 @@ $lang['account_date_format'] = '日期格式';
 $lang['account_measurement_preferences'] = '距离单位偏好';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = '选择您登录账户时要显示的日期格式';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = '选择距离单位';
+$lang['account_choose_cloudlog_language'] = 'Choose Cloudlog language.';
 
 $lang['account_main_menu'] = '主菜单';
 $lang['account_show_notes_in_the_main_menu'] = '在主菜单显示便签栏';
@@ -95,3 +96,4 @@ $lang['account_user_mastodon'] = 'Mastodon 地址';
 
 $lang['account_gridmap_settings'] = '网格地图设置';
 $lang['account_gridmap_default_band'] = '默认波段';
+$lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';

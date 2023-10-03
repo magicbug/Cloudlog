@@ -34,6 +34,7 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = 'Загрузить эксп
 $lang['lotw_upload_type_must_be_adi'] = 'Файлы журнала должны быть с расширением .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Подтянуть мои данные из LoTW';
+
 $lang['lotw_report_download_overview_helptext'] ='Cloudlog использует логин и пароль для LoTW, сохранённые в вашем профиле, для того чтобы скачивать ваши журналы с LoTW. Журнал, скачанный в Cloudlog будет содержать все подтверждения, начиная с выбранной даты, или начиная с последнего подтверждения в LoTW (загруженного из вашего журнала), до настоящего момента.';
 
 // Buttons
@@ -55,3 +56,7 @@ $lang['lotw_confirmed'] = 'Это QSO подтверждено на LoTW';
 // LoTW Expiry
 $lang['lotw_cert_expiring'] = 'Как минимум, один из ваших сертификатов LoTW скоро истечёт!';
 $lang['lotw_cert_expired'] = 'Один из ваших сертификатов LoTW истёк!';
+
+// Lotw User
+$lang['lotw_user'] = 'This station uses LoTW.';
+$lang['lotw_last_upload'] = 'Last upload';

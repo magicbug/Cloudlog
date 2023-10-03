@@ -27,16 +27,16 @@
 		<table style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center">
 		<thead>
 			<tr>
-				<th>Callsign</th>
-				<th>Date/Time</th>
-				<th>Mode</th>
-				<th>Band</th>
-				<th>Name</th>
-				<th>DXCC</th>
-				<th>State</th>
-				<th>CQ Zone</th>
-				<th>IOTA</th>
-				<th>Gridsquare</th>
+				<th><?php echo lang('gen_hamradio_callsign'); ?></th>
+				<th><?php echo lang('general_word_datetime'); ?></th>
+				<th><?php echo lang('gen_hamradio_mode'); ?></th>
+				<th><?php echo lang('gen_hamradio_band'); ?></th>
+				<th><?php echo lang('general_word_name'); ?></th>
+				<th><?php echo lang('gen_hamradio_dxcc'); ?></th>
+				<th><?php echo lang('gen_hamradio_state'); ?></th>
+				<th><?php echo lang('gen_hamradio_cq_zone'); ?></th>
+				<th><?php echo lang('gen_hamradio_iota'); ?></th>
+				<th><?php echo lang('gen_hamradio_gridsquare'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -64,11 +64,11 @@
 <?php if (count($qslimages) > 1) { ?>
 	<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
 		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		<span class="sr-only">Previous</span>
+		<span class="sr-only"><?php echo lang('general_word_previous'); ?></span>
 	</a>
 	<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
 		<span class="carousel-control-next-icon" aria-hidden="true"></span>
-		<span class="sr-only">Next</span>
+		<span class="sr-only"><?php echo lang('general_word_next'); ?></span>
 	</a>
 <?php } ?>
 </div>

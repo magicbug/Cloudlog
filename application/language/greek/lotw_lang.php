@@ -56,3 +56,7 @@ $lang['lotw_confirmed'] = 'Αυτό το QSO επιβεβαιώνεται στο
 // LoTW Expiry
 $lang['lotw_cert_expiring'] = 'Τουλάχιστον ένα από τα πιστοποιητικά LoTW πρόκειται να λήξει!';
 $lang['lotw_cert_expired'] = 'Τουλάχιστον ένα από τα πιστοποιητικά LoTW σας έχει λήξει!';
+
+// Lotw User
+$lang['lotw_user'] = 'This station uses LoTW.';
+$lang['lotw_last_upload'] = 'Last upload';

@@ -9,6 +9,8 @@ $lang['notice_turn_the_radio_on'] = 'Dnes jste neudělali žádná QSO spojení;
 $lang['general_word_important'] = 'Důležité';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Vybrat soubor';
+$lang['general_word_next'] = 'Next';
+$lang['general_word_previous'] = 'Previous';
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Čas';
@@ -22,6 +24,7 @@ $lang['general_word_satellite'] = 'Satelit';
 $lang['general_word_satellite_short'] = 'Sat';
 $lang['general_word_notes'] = 'Poznámky';
 $lang['general_word_country'] = 'Země';
+$lang['general_word_city'] = 'Město';
 
 $lang['general_word_total'] = 'Celkem';
 $lang['general_word_year'] = 'Rok';
@@ -31,6 +34,7 @@ $lang['general_word_worked'] = 'Spojeno';
 $lang['general_word_confirmed'] = 'Potvrzeno';
 $lang['general_word_needed'] = 'Potřebuje se';
 
+$lang['general_word_all'] = 'All';
 $lang['general_word_no'] = 'Ne';
 $lang['general_word_yes'] = 'Ano';
 $lang['general_word_method'] = 'Metoda';
@@ -51,6 +55,9 @@ $lang['general_word_qslcard_via'] = 'Přes';
 $lang['general_word_eqslcard'] = 'eQSL karta';
 $lang['general_word_eqslcards'] = 'eQSL karty';
 $lang['general_word_lotw'] = 'Logbook of the World';
+$lang['general_word_lotw_short'] = 'LoTW';
+
+$lang['general_word_details'] = 'Details';
 
 $lang['general_edit_qso'] = 'Upravit QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Označit QSL přijato (Bureau)';
@@ -58,10 +65,22 @@ $lang['general_mark_qsl_rx_direct'] = 'Označit QSL přijato (Přímá)';
 $lang['general_mark_qsl_rx_electronic'] = 'Označit QSL přijato (Elektronicky)';
 $lang['general_mark_qsl_tx_bureau'] = 'Označit QSL odesláno (Bureau)';
 $lang['general_mark_qsl_tx_direct'] = 'Označit QSL odesláno (Přímá)';
+$lang['general_mark_qsl_requested'] = 'Označit QSL kartu požadováno';
+$lang['general_mark_qsl_requested_bureau'] = 'Označit QSL kartu požadováno (Bureau)';
+$lang['general_mark_qsl_requested_direct'] = 'Označit QSL kartu požadováno (Přímá)';
+$lang['general_mark_qsl_not_required'] = 'Označit QSL lístek není vyžadován';
 
 $lang['general_delete_qso'] = 'Smazat QSO';
+$lang['general_more_qso'] = 'More QSOs';
+
+$lang['general_lookup_qrz'] = 'Lookup on QRZ.com';
+$lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 
 $lang['general_total_distance'] = 'Celková vzdálenost';
+
+// PHP Upload Warning
+$lang['general_word_warning'] = 'Warning';
+$lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Umístění stanice';
@@ -72,6 +91,8 @@ $lang['gen_hamradio_station'] = 'Stanice';
 
 $lang['gen_hamradio_call'] = 'Značka';
 $lang['gen_hamradio_callsign'] = 'Značka';
+$lang['gen_hamradio_de'] = 'De';
+$lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Režim';
 $lang['gen_hamradio_rst_sent'] = 'Odesláno';
 $lang['gen_hamradio_rst_rcvd'] = 'Přijato';
@@ -82,9 +103,13 @@ $lang['gen_hamradio_frequency_rx'] = 'Frekvence (RX)';
 $lang['gen_hamradio_radio'] = 'Rádio';
 $lang['gen_hamradio_rsts'] = 'RST (S)';
 $lang['gen_hamradio_rstr'] = 'RST (R)';
+$lang['gen_hamradio_refs'] = 'Refs';
+$lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Výměna (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Výměna (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';
+$lang['gen_hamradio_qslvia'] = 'QSL via';
+$lang['gen_hamradio_qslmsg'] = 'QSL Msg';
 $lang['gen_hamradio_locator'] = 'Lokátor';
 $lang['gen_hamradio_transmit_power'] = 'Vysílací výkon (W)';
 $lang['gen_hamradio_propagation_mode'] = 'Šíření signálu';
@@ -140,3 +165,4 @@ $lang['oceania'] = 'Oceánie';
 $lang['southamerica'] = 'Jižní Amerika';
 
 $lang['gen_band_selection'] = 'Výběr pásma';
+$lang['general_word_today'] = 'Dnes';

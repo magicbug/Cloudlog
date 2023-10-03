@@ -9,6 +9,8 @@ $lang['notice_turn_the_radio_on'] = 'Nie zrobiłeś dziś łączności; czas wł
 $lang['general_word_important'] = 'Ważne';
 $lang['general_word_info'] = 'Informacja';
 $lang['general_word_choose_file'] = 'Wybież plik';
+$lang['general_word_next'] = 'Next';
+$lang['general_word_previous'] = 'Previous';
 
 $lang['general_word_date'] = 'Data';
 $lang['general_word_time'] = 'Godzina';
@@ -31,6 +33,7 @@ $lang['general_word_worked'] = 'Pracowane';
 $lang['general_word_confirmed'] = 'Potwierdzone';
 $lang['general_word_needed'] = 'Wymagane';
 
+$lang['general_word_all'] = 'All';
 $lang['general_word_no'] = 'Nie';
 $lang['general_word_yes'] = 'Tak';
 $lang['general_word_method'] = 'Sposób';
@@ -46,10 +49,15 @@ $lang['general_word_qslcard_bureau'] = 'Biuro';
 $lang['general_word_qslcard_via'] = 'Via';
 
 $lang['general_edit_qso'] = 'Edytuj QSO';
-$lang['general_mark_qsl_rx_bureau'] = 'Zaznacz jako odebraną przez (Biuro)';
-$lang['general_mark_qsl_rx_direct'] = 'Zaznacz jako odebraną przez (Direct)';
-$lang['general_mark_qsl_tx_bureau'] = 'Zaznacz jako wysłaną przez (Biuro)';
-$lang['general_mark_qsl_tx_direct'] = 'Zaznacz jako wysłaną przez (Direct)';
+$lang['general_mark_qsl_rx_bureau'] = 'Zaznacz QSL jako odebraną przez (Biuro)';
+$lang['general_mark_qsl_rx_direct'] = 'Zaznacz QSL jako odebraną przez (Bezpośredni)';
+$lang['general_mark_qsl_rx_electronic'] = 'Zaznacz QSL jako odebraną przez (Elektroniczny)';
+$lang['general_mark_qsl_tx_bureau'] = 'Zaznacz QSL jako wysłaną przez (Biuro)';
+$lang['general_mark_qsl_tx_direct'] = 'Zaznacz QSL jako wysłaną przez (Bezpośredni)';
+$lang['general_mark_qsl_requested'] = 'Zaznacz QSL zgodnie z żądaniem';
+$lang['general_mark_qsl_requested_bureau'] = 'Zaznacz QSL zgodnie z żądaniem (Biuro)';
+$lang['general_mark_qsl_requested_direct'] = 'Zaznacz QSL zgodnie z żądaniem (Bezpośredni)';
+$lang['general_mark_qsl_not_required'] = 'Zaznacz QSLjako niewymagane';
 
 $lang['general_delete_qso'] = 'Usuń QSO';
 
@@ -77,6 +85,8 @@ $lang['gen_hamradio_rstr'] = 'RST (R)';
 $lang['gen_hamradio_exchange_sent_short'] = 'Wymiana (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Wymiana (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';
+$lang['gen_hamradio_qslvia'] = 'QSL via';
+$lang['gen_hamradio_qslmsg'] = 'QSL Msg';
 $lang['gen_hamradio_locator'] = 'Lokator';
 $lang['gen_hamradio_transmit_power'] = 'Moc nadajnika (W)';
 $lang['gen_hamradio_propagation_mode'] = 'Typ propagacji';

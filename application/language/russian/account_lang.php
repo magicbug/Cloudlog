@@ -35,6 +35,7 @@ $lang['account_date_format'] = 'Формат даты';
 $lang['account_measurement_preferences'] = 'Единицы измерения';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Выберите представление даты для отображения в вашем аккаунте.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Выберите единицы измерения расстояния';
+$lang['account_choose_cloudlog_language'] = 'Choose Cloudlog language.';
 
 $lang['account_main_menu'] = 'Главное меню';
 $lang['account_show_notes_in_the_main_menu'] = 'Показывать заметки в главном меню.';
@@ -95,3 +96,4 @@ $lang['account_user_mastodon'] = 'URL профиля пользователя Ma
 
 $lang['account_gridmap_settings'] = 'Настройки для карты квадратов';
 $lang['account_gridmap_default_band'] = 'Диапазон по умолчанию';
+$lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';

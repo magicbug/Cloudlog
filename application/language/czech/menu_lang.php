@@ -13,6 +13,7 @@ $lang['menu_live_qso'] = 'Živé QSO';
 $lang['menu_post_qso'] = 'Uložit QSO';
 $lang['menu_live_contest_logging'] = 'Živé závodní logování';
 $lang['menu_post_contest_logging'] = 'Uložit závodní log';
+$lang['menu_bandmap'] = 'Bandmap';
 $lang['menu_view_qsl'] = 'Zobrazit QSL';
 $lang['menu_view_eqsl'] = 'Zobrazit eQSL';
 
@@ -82,3 +83,5 @@ $lang['menu_hardware_interfaces'] = 'Hardwarové rozhraní';
 $lang['menu_help'] = 'Nápověda';
 $lang['menu_forum'] = 'Fórum';
 $lang['menu_logout'] = 'Odhlásit se';
+
+$lang['menu_maintenance']='Maintenance';
