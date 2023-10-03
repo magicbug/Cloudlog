@@ -137,8 +137,8 @@ $lang['filter_options_show'] = 'Show';
 // $lang['gen_hamradio_qsl']            --> application/language/english/general_words_lang.php
 // $lang['lotw_short']                  --> application/language/english/lotw_lang.php
 // $lang['eqsl_short']                  --> application/language/english/eqsl_lang.php
-$lang['gen_hamradio_qslmsg']
-$lang['gen_hamradio_dxcc']
+// $lang['gen_hamradio_qslmsg']         --> application/language/english/general_words_lang.php
+// $lang['gen_hamradio_dxcc']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_state']          --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_cq_zone']        --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_iota']           --> application/language/english/general_words_lang.php
