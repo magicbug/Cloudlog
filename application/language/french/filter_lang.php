@@ -17,7 +17,7 @@ $lang['filter_results'] = '# Results';
 $lang['filter_search'] = 'Search';
 $lang['filter_map'] = 'Map';
 $lang['filter_options'] = 'Options';
-$lang['filter_reset'] = 'Reset';
+$lang['filter_reset'] = 'Suche zurücksetzen';
 
 /*
 ___________________________________________________________________________________________
