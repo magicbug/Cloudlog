@@ -149,7 +149,7 @@ class Eqslmethods_model extends CI_Model {
         } else {
             // No previous date (first time import has run?), so choose UNIX EPOCH!
             // Note: date is yyyy/mm/dd format
-            return '1970/01/01';
+            return '19700101';
         }
     }
 
