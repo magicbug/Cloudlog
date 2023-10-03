@@ -390,37 +390,37 @@ $options = json_decode($options);
 				echo '<th>' . lang('general_word_datetime') . '</th>';
 			} ?>
 			<?php if (($options->de->show ?? "true") == "true") {
-				echo '<th>De</th>';
+				echo '<th>' . lang('gen_hamradio_de') . '</th>';
 			} ?>
 			<?php if (($options->dx->show ?? "true") == "true") {
-				echo '<th>Dx</th>';
+				echo '<th>' . lang('gen_hamradio_dx') . '</th>';
 			} ?>
 			<?php if (($options->mode->show ?? "true") == "true") {
-				echo '<th>Mode</th>';
+				echo '<th>' . lang('gen_hamradio_mode') . '</th>';
 			} ?>
 			<?php if (($options->rsts->show ?? "true") == "true") {
-				echo '<th>RST (S)</th>';
+				echo '<th>' . lang('gen_hamradio_rsts') . '</th>';
 			} ?>
 			<?php if (($options->rstr->show ?? "true") == "true") {
-				echo '<th>RST (R)</th>';
+				echo '<th>' . lang('gen_hamradio_rstr') . '</th>';
 			} ?>
             <?php if (($options->band->show ?? "true") == "true") {
-				echo '<th>Band</th>';
+				echo '<th>' . lang('gen_hamradio_band') . '</th>';
 			} ?>
 			<?php if (($options->myrefs->show ?? "true") == "true") {
-				echo '<th>My Refs</th>';
+				echo '<th>' . lang('gen_hamradio_myrefs') . '</th>';
 			} ?>
 			<?php if (($options->refs->show ?? "true") == "true") {
-				echo '<th>Refs</th>';
+				echo '<th>' . lang('gen_hamradio_refs') . '</th>';
 			} ?>
 			<?php if (($options->name->show ?? "true") == "true") {
-				echo '<th>Name</th>';
+				echo '<th>' . lang('general_word_name') . '</th>';
 			} ?>
 			<?php if (($options->qslvia->show ?? "true") == "true") {
-				echo '<th>QSL Via</th>';
+				echo '<th>' . lang('gen_hamradio_qslvia') . '</th>';
 			} ?>
 			<?php if (($options->qsl->show ?? "true") == "true") {
-				echo '<th>QSL</th>';
+				echo '<th>' . lang('gen_hamradio_qsl') . '</th>';
 			} ?>
             <?php if ($this->session->userdata('user_eqsl_name') != ""  && ($options->eqsl->show ?? "true") == "true"){
 					echo '<th class="eqslconfirmation">eQSL</th>';
@@ -429,19 +429,19 @@ $options = json_decode($options);
 					echo '<th class="lotwconfirmation">LoTW</th>';
 				} ?>
 			<?php if (($options->qslmsg->show ?? "true") == "true") {
-				echo '<th>QSL Msg</th>';
+				echo '<th>' . lang('gen_hamradio_qslmsg') . '</th>';
 			} ?>
 			<?php if (($options->dxcc->show ?? "true") == "true") {
-				echo '<th>DXCC</th>';
+				echo '<th>' . lang('gen_hamradio_dxcc') . '</th>';
 			} ?>
 			<?php if (($options->state->show ?? "true") == "true") {
-				echo '<th>State</th>';
+				echo '<th>' . lang('gen_hamradio_state') . '</th>';
 			} ?>
 			<?php if (($options->cqzone->show ?? "true") == "true") {
-				echo '<th>CQ Zone</th>';
+				echo '<th>' . lang('gen_hamradio_cq_zone') . '</th>';
 			} ?>
 			<?php if (($options->iota->show ?? "true") == "true") {
-				echo '<th>IOTA</th>';
+				echo '<th>' . lang('gen_hamradio_iota') . '</th>';
 			} ?>
         </tr>
     </thead>
