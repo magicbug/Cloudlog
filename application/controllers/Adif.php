@@ -200,7 +200,7 @@ class adif extends CI_Controller {
 						break;
 					};
 
-					$one_error = $this->logbook_model->import($record, $this->input->post('station_profile'), $this->input->post('skipDuplicate'), $this->input->post('markClublog'),$this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), $this->input->post('markHrd'), true, $this->input->post('operatorName'));
+					$one_error = $this->logbook_model->import($record, $this->input->post('station_profile'), $this->input->post('skipDuplicate'), $this->input->post('markClublog'),$this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), $this->input->post('markHrd'), true, $this->input->post('operatorName'), false, $this->input->post('skipStationCheck'));
 					if ($one_error != '') {
 						$custom_errors.=$one_error."<br/>";
 					}

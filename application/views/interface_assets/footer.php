@@ -1104,11 +1104,15 @@ $(document).on('keypress',function(e) {
   });
 
   $(document).keyup(function(e) {
-     if (e.key === "Escape") { // escape key maps to keycode `27`
-       reset_fields();
-	   $('#callsign').val("");
-	   $("#callsign").focus();
-    }
+	  if (e.charCode === 0) {
+		  let fixedcall = $('#callsign').val();
+		  $('#callsign').val(fixedcall.replace('Ø', '0'));
+	  }
+	  if (e.key === "Escape") { // escape key maps to keycode `27`
+		  reset_fields();
+		  $('#callsign').val("");
+		  $("#callsign").focus();
+	  }
   });
 });
 
@@ -2245,7 +2249,9 @@ $(document).ready(function(){
         if (isDarkModeTheme()) {
             $('[class*="buttons"]').css("color", "white");
         }
-
+        $('#eqsl_force_from_date').datetimepicker({
+            format: 'YYYY/MM/DD',
+        });
 
     </script>
 <?php } ?>
