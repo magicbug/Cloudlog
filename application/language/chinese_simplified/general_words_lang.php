@@ -32,6 +32,7 @@ $lang['general_word_worked'] = '已通联';
 $lang['general_word_confirmed'] = '已确认';
 $lang['general_word_needed'] = '待通联';
 
+$lang['general_word_all'] = 'All';
 $lang['general_word_no'] = '否';
 $lang['general_word_yes'] = '是';
 $lang['general_word_method'] = '方法';

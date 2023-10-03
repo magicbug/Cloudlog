@@ -32,6 +32,7 @@ $lang['general_word_worked'] = 'Worked';
 $lang['general_word_confirmed'] = 'Επιβεβαιωμένο';
 $lang['general_word_needed'] = 'Απαιτείται';
 
+$lang['general_word_all'] = 'All';
 $lang['general_word_no'] = 'Οχι';
 $lang['general_word_yes'] = 'Ναι';
 $lang['general_word_method'] = 'Μέθοδος';

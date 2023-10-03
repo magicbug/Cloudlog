@@ -31,6 +31,7 @@ $lang['general_word_worked'] = 'Pracowane';
 $lang['general_word_confirmed'] = 'Potwierdzone';
 $lang['general_word_needed'] = 'Wymagane';
 
+$lang['general_word_all'] = 'All';
 $lang['general_word_no'] = 'Nie';
 $lang['general_word_yes'] = 'Tak';
 $lang['general_word_method'] = 'Sposób';

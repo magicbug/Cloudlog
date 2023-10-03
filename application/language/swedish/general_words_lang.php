@@ -32,6 +32,7 @@ $lang['general_word_worked'] = 'Körda';
 $lang['general_word_confirmed'] = 'Bekräftade';
 $lang['general_word_needed'] = 'Behövs';
 
+$lang['general_word_all'] = 'All';
 $lang['general_word_no'] = 'Nej';
 $lang['general_word_yes'] = 'Ja';
 $lang['general_word_method'] = 'Metod';

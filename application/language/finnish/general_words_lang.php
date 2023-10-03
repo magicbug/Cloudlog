@@ -32,6 +32,7 @@ $lang['general_word_worked'] = 'Workittu';
 $lang['general_word_confirmed'] = 'Kuitattu';
 $lang['general_word_needed'] = 'Tarvittu';
 
+$lang['general_word_all'] = 'All';
 $lang['general_word_no'] = 'Ei';
 $lang['general_word_yes'] = 'Kyllä';
 $lang['general_word_method'] = 'Method / tapa';

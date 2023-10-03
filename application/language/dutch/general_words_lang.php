@@ -32,6 +32,7 @@ $lang['general_word_worked'] = 'Gewerkt';
 $lang['general_word_confirmed'] = 'Bevestigd';
 $lang['general_word_needed'] = 'Nodig';
 
+$lang['general_word_all'] = 'All';
 $lang['general_word_sent'] = 'Verzonden';
 $lang['general_word_yes'] = 'Yes';
 $lang['general_word_method'] = 'Method';

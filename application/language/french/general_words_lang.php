@@ -32,6 +32,7 @@ $lang['general_word_worked'] = 'Réalisés';
 $lang['general_word_confirmed'] = 'Confirmés';
 $lang['general_word_needed'] = 'Demandés';
 
+$lang['general_word_all'] = 'Tout';
 $lang['general_word_no'] = 'Non';
 $lang['general_word_yes'] = 'Oui';
 $lang['general_word_method'] = 'Methode';

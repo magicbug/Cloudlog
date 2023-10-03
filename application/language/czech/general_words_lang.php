@@ -32,6 +32,7 @@ $lang['general_word_worked'] = 'Spojeno';
 $lang['general_word_confirmed'] = 'Potvrzeno';
 $lang['general_word_needed'] = 'Potřebuje se';
 
+$lang['general_word_all'] = 'All';
 $lang['general_word_no'] = 'Ne';
 $lang['general_word_yes'] = 'Ano';
 $lang['general_word_method'] = 'Metoda';

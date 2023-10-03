@@ -32,6 +32,7 @@ $lang['general_word_worked'] = 'Работени';
 $lang['general_word_confirmed'] = 'Потвърдени';
 $lang['general_word_needed'] = 'Необходими';
 
+$lang['general_word_all'] = 'All';
 $lang['general_word_no'] = 'Не';
 $lang['general_word_yes'] = 'Да';
 $lang['general_word_method'] = 'Метод';

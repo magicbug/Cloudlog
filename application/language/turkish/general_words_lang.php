@@ -32,6 +32,7 @@ $lang['general_word_worked'] = 'Çalışılanlar';
 $lang['general_word_confirmed'] = 'Onaylanan';
 $lang['general_word_needed'] = 'İstenenler';
 
+$lang['general_word_all'] = 'All';
 $lang['general_word_no'] = 'Hayır';
 $lang['general_word_yes'] = 'Evet';
 $lang['general_word_method'] = 'Metod';
