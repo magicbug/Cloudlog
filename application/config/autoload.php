@@ -106,7 +106,8 @@ $autoload['language'] = array(
     'notes',
     'qslcard',
     'qso',
-    'gridsquares'
+    'gridsquares',
+    'filter'
     );
 
 /*
