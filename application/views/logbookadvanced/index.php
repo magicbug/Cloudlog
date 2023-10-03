@@ -323,35 +323,39 @@ $options = json_decode($options);
     <div class="quickfilterbody collapse">
         <div class="mb-2 btn-group">
             <span class="h6 mr-1"><?php echo lang('filter_quicksearch_w_sel'); ?></span>
-			<?php if (($options->dx->show ?? "true") == "true") {
-				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign">Search Callsign</button>';
-			} ?>
-			<?php if (($options->dxcc->show ?? "true") == "true") {
-				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchDxcc">Search DXCC</button>';
-			} ?>
-			<?php if (($options->iota->show ?? "true") == "true") {
-				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchIota">Search IOTA</button>';
-			} ?>
-			<?php if (($options->state->show ?? "true") == "true") {
-				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchState">Search State</button>';
-			} ?>
-			<?php if (($options->refs->show ?? "true") == "true") {
-				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchGridsquare">Search Gridsquare</button>';
-			} ?>
-			<?php if (($options->cqzone->show ?? "true") == "true") {
-				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchCqZone">Search CQ Zone</button>';
-			} ?>
-			<?php if (($options->mode->show ?? "true") == "true") {
-				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchMode">Search Mode</button>';
-			} ?>
-			<?php if (($options->band->show ?? "true") == "true") {
-				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchBand">Search Band</button>';
-			} ?>
-			<?php if (($options->refs->show ?? "true") == "true") {
-				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchSota">Search SOTA</button>';
-				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchWwff">Search WWFF</button>';
-				echo '<button type="button" class="btn btn-sm btn-primary mr-1" id="searchPota">Search POTA</button>';
-			} ?>
+			<?php if (($options->dx->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_callsign'); ?></button><?php 
+            } ?>
+			<?php if (($options->dx->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_dxcc'); ?></button><?php 
+            } ?>
+			<?php if (($options->dx->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_state'); ?></button><?php 
+            } ?>
+			<?php if (($options->dx->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_gridsquare'); ?></button><?php 
+            } ?>
+			<?php if (($options->dx->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_cq_zone'); ?></button><?php 
+            } ?>
+			<?php if (($options->dx->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_mode'); ?></button><?php 
+            } ?>
+			<?php if (($options->dx->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_band'); ?></button><?php 
+            } ?>
+            <?php if (($options->dx->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_iota'); ?></button><?php 
+            } ?>
+			<?php if (($options->dx->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_sota'); ?></button><?php 
+            } ?>
+            <?php if (($options->dx->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_pota'); ?></button><?php 
+            } ?>
+            <?php if (($options->dx->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_wwff'); ?></button><?php 
+            } ?>
         </div>
     </div>
 <div class="form-row pt-2">
