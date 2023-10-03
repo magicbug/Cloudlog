@@ -105,6 +105,7 @@ class Logbookadvanced extends CI_Controller {
 			'band' => xss_clean($this->input->post('band')),
 			'qslSent' => xss_clean($this->input->post('qslSent')),
 			'qslReceived' => xss_clean($this->input->post('qslReceived')),
+			'qslMethod' => xss_clean($this->input->post('qslMethod')),
 			'iota' => xss_clean($this->input->post('iota')),
 			'dxcc' => xss_clean($this->input->post('dxcc')),
 			'propmode' => xss_clean($this->input->post('propmode')),
