@@ -1,8 +1,8 @@
 <table style="width:100%" class="table-sm table table-hover table-striped table-condensed text-left" id="useroptions">
 	<thead>
 		<tr>
-			<th class="text-left">Column</th>
-			<th>Show</th>
+			<th class="text-left"><?php echo lang('filter_options_column'); ?></th>
+			<th><?php echo lang('filter_options_show'); ?></th>
 		</tr>
 	</thead>
 	<tbody>

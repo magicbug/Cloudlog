@@ -110,6 +110,10 @@ $lang['filter_actions_recv_bureau'] = 'Received (Bureau)';
 $lang['filter_actions_recv_direct'] = 'Received (Direct)';
 $lang['filter_actions_create_adif'] = 'Create ADIF';
 $lang['filter_actions_print_label'] = 'Print Label';
+$lang['filter_actions_start_print_title'] = 'Print Labels';
+$lang['filter_actions_print_include_grid'] = 'Include Grid?';
+$lang['filter_actions_start_print'] = 'Start printing at?';
+$lang['filter_actions_print'] = 'Print';
 $lang['filter_actions_qsl_slideshow'] = 'QSL Slideshow';
 $lang['filter_actions_delete'] = 'Delete';
 
