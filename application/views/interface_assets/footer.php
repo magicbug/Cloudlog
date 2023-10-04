@@ -1786,7 +1786,7 @@ $(document).ready(function(){
 				type: 'post',
 				success: function(html) {
 					BootstrapDialog.show({
-						title: 'QSO Data',
+						title: '<?php echo lang('general_word_qso_data'); ?>',
 						cssClass: 'qso-dialog',
 						size: BootstrapDialog.SIZE_WIDE,
 						nl2br: false,
@@ -2083,7 +2083,7 @@ $(document).ready(function(){
                     },
                     success: function(html) {
                         BootstrapDialog.show({
-                            title: 'QSO Data',
+                            title: '<?php echo lang('general_word_qso_data'); ?>',
                             size: BootstrapDialog.SIZE_WIDE,
                             cssClass: 'qso-was-dialog',
                             nl2br: false,
@@ -2149,7 +2149,7 @@ $(document).ready(function(){
                     },
                     success: function(html) {
                         BootstrapDialog.show({
-                            title: 'QSO Data',
+                            title: '<?php echo lang('general_word_qso_data'); ?>',
                             size: BootstrapDialog.SIZE_WIDE,
                             cssClass: 'qso-was-dialog',
                             nl2br: false,
@@ -2379,7 +2379,7 @@ function viewEqsl(picture, callsign) {
             },
             success: function (html) {
                 BootstrapDialog.show({
-                    title: 'QSO Data',
+                    title: '<?php echo lang('general_word_qso_data'); ?>',
                     size: BootstrapDialog.SIZE_WIDE,
                     cssClass: 'qso-dialog',
                     nl2br: false,
@@ -2424,7 +2424,7 @@ function viewEqsl(picture, callsign) {
     },
 	    success: function (html) {
 		    var dialog = new BootstrapDialog({
-		    title: 'QSO Data',
+		    title: '<?php echo lang('general_word_qso_data'); ?>',
 			    size: BootstrapDialog.SIZE_WIDE,
 			    cssClass: 'qso-dialog',
 			    nl2br: false,
@@ -2704,7 +2704,7 @@ function viewEqsl(picture, callsign) {
             data: {'State': state, 'County': county },
             success: function(html) {
                 BootstrapDialog.show({
-                    title: 'QSO Data',
+                    title: '<?php echo lang('general_word_qso_data'); ?>',
                     size: BootstrapDialog.SIZE_WIDE,
                     cssClass: 'qso-counties-dialog',
                     nl2br: false,

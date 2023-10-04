@@ -58,6 +58,7 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
 
 $lang['general_word_details'] = 'Details';
+$lang['general_word_qso_data'] = 'QSO Data';
 
 $lang['general_edit_qso'] = '编辑 QSO';
 $lang['general_mark_qsl_rx_bureau'] = '标记 已收到的QSL (卡片局)';
