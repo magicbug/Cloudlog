@@ -41,6 +41,9 @@ echo "var user_options = $options;";
 .btn {
     white-space: normal;
 }
+#qsoList td:nth-child(11) {
+    white-space: normal;
+}
 </style>
 <?php
 $options = json_decode($options);
