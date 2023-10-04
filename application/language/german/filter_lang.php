@@ -110,6 +110,7 @@ $lang['filter_actions_not_sent'] = 'Nicht gesendet';
 $lang['filter_actions_qsl_n_required'] = 'QSL nicht erforderlich';
 $lang['filter_actions_recv_bureau'] = 'Erhalten (Büro)';
 $lang['filter_actions_recv_direct'] = 'Erhalten (Direkt)';
+$lang['filter_actions_recv_direct'] = 'Erhalten (Elektronisch)';
 $lang['filter_actions_create_adif'] = 'Erstelle ADIF';
 $lang['filter_actions_print_label'] = 'Label drucken';
 $lang['filter_actions_start_print_title'] = 'Label Drucken';
