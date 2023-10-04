@@ -99,18 +99,18 @@ ________________________________________________________________________________
 */
 
 $lang['filter_actions_w_selected'] = 'Bei Markierten: ';
-$lang['filter_actions_update_f_callbook'] = 'Aktualisieren aus dem Callbook';
-$lang['filter_actions_queue_bureau'] = 'Angefordert (Büro)';
-$lang['filter_actions_queue_direct'] = 'Angefordert (Direkt)';
-$lang['filter_actions_queue_electronic'] = 'Angefordert (Elektronisch)';
-$lang['filter_actions_sent_bureau'] = 'Gesendet (Büro)';
-$lang['filter_actions_sent_direct'] = 'Gesendet (Direkt)';
-$lang['filter_actions_sent_electronic'] = 'Gesendet (Elektronisch)';
+$lang['filter_actions_update_f_callbook'] = 'Aktualisieren <br> aus dem Callbook';
+$lang['filter_actions_queue_bureau'] = 'Angefordert <br> (Büro)';
+$lang['filter_actions_queue_direct'] = 'Angefordert <br> (Direkt)';
+$lang['filter_actions_queue_electronic'] = 'Angefordert <br> (Elektronisch)';
+$lang['filter_actions_sent_bureau'] = 'Gesendet <br> (Büro)';
+$lang['filter_actions_sent_direct'] = 'Gesendet <br> (Direkt)';
+$lang['filter_actions_sent_electronic'] = 'Gesendet <br> (Elektronisch)';
 $lang['filter_actions_not_sent'] = 'Nicht gesendet';
 $lang['filter_actions_qsl_n_required'] = 'QSL nicht erforderlich';
-$lang['filter_actions_recv_bureau'] = 'Erhalten (Büro)';
-$lang['filter_actions_recv_direct'] = 'Erhalten (Direkt)';
-$lang['filter_actions_recv_electronic'] = 'Erhalten (Elektronisch)';
+$lang['filter_actions_recv_bureau'] = 'Erhalten <br> (Büro)';
+$lang['filter_actions_recv_direct'] = 'Erhalten <br> (Direkt)';
+$lang['filter_actions_recv_electronic'] = 'Erhalten <br> (Elektronisch)';
 $lang['filter_actions_create_adif'] = 'Erstelle ADIF';
 $lang['filter_actions_print_label'] = 'Label drucken';
 $lang['filter_actions_start_print_title'] = 'Label Drucken';
