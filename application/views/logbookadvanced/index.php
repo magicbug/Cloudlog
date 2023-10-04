@@ -235,8 +235,18 @@ $options = json_decode($options);
                 </select>
             </div>
             <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
-                <label for="qslmethod"><?php echo lang('filter_qsl_method'); ?></label>
-                <select id="qslmethod" name="qslmethod" class="form-control form-control-sm">
+                <label for="qslSentMethod"><?php echo lang('filter_qsl_sent_method'); ?></label>
+                <select id="qslSentMethod" name="qslSentMethod" class="form-control form-control-sm">
+                    <option value=""><?php echo lang('general_word_all'); ?></option>
+                    <option value="B"><?php echo lang('general_word_qslcard_bureau'); ?></option>
+                    <option value="D"><?php echo lang('general_word_qslcard_direct'); ?></option>
+                    <option value="E"><?php echo lang('general_word_qslcard_electronic'); ?></option>
+                    <option value="M"><?php echo lang('general_word_qslcard_manager'); ?></option>
+                </select>
+            </div>
+            <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                <label for="qslReceivedMethod"><?php echo lang('filter_qsl_recv_method'); ?></label>
+                <select id="qslReceivedMethod" name="qslReceivedMethod" class="form-control form-control-sm">
                     <option value=""><?php echo lang('general_word_all'); ?></option>
                     <option value="B"><?php echo lang('general_word_qslcard_bureau'); ?></option>
                     <option value="D"><?php echo lang('general_word_qslcard_direct'); ?></option>
