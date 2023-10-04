@@ -13,10 +13,10 @@
 	<div class="card">
 		<div class="card-body">
 			<p class="card-text">
-				Using the contest list, you can control which Contests are shown when logging QSOs in a contest.
+			<?php echo lang('admin_contest_menu_line_1'); ?>
 			</p>
 			<p class="card-text">
-				Active contests will be shown in the Contest Name drop-down, while inactive contests will be hidden and cannot be selected.
+			<?php echo lang('admin_contest_menu_line_2'); ?>
 			</p>
 			<div class="table-responsive">
 				<table style="width:100%" class="contesttable table table-sm table-striped">
