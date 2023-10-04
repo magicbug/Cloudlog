@@ -13,7 +13,7 @@ class Logbookadvanced_model extends CI_Model {
 			$conditions[] = "date(COL_TIME_ON) >= ?";
 			$binding[] = $from;
 		}
-		
+
         if ($searchCriteria['dateTo'] !== '') {
             $to = DateTime::createFromFormat('d/m/Y', $searchCriteria['dateTo']);
 			$to = $to->format('Y-m-d');
@@ -72,20 +72,12 @@ class Logbookadvanced_model extends CI_Model {
 
 		if ($searchCriteria['qslSentMethod'] !== '') {
 			$condition = "COL_QSL_SENT_VIA like ?";
-			/*if ($searchCriteria['qslSentMethod'] == 'N') {
-				$condition = '('.$condition;
-				$condition .= " OR COL_QSL_SENT_VIA OR COL_QSL_SENT_VIA = '')";
-			}*/
 			$conditions[] = $condition;
 			$binding[] = $searchCriteria['qslSentMethod'].'%';
 		}
 
 		if ($searchCriteria['qslReceivedMethod'] !== '') {
 			$condition = "COL_QSL_RECV_VIA like ?";
-			/*if ($searchCriteria['qslReceivedMethod'] == 'N') {
-				$condition = '('.$condition;
-				$condition .= " OR COL_QSL_RECV_VIA OR COL_QSL_RECV_VIA = '')";
-			}*/
 			$conditions[] = $condition;
 			$binding[] = $searchCriteria['qslReceivedMethod'].'%';
 		}
