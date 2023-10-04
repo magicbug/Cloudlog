@@ -12,12 +12,12 @@
 
 							<div class="col-auto">
 								<select class="form-control-sm" id="exchangetype" name="exchangetype">
-									<option value='None'>None</option>
-									<option value='Exchange'>Exchange</option>
-									<option value='Gridsquare'>Gridsquare</option>
-									<option value='Serial'>Serial</option>
-									<option value='Serialexchange'>Serial + Exchange</option>
-									<option value='Serialgridsquare'>Serial + Gridsquare</option>
+									<option value='None'><?php echo lang('contesting_exchange_type_none'); ?></option>
+									<option value='Exchange'><?php echo lang('contesting_exchange_type_exchange'); ?></option>
+									<option value='Gridsquare'><?php echo lang('contesting_exchange_type_gridsquare'); ?></option>
+									<option value='Serial'><?php echo lang('contesting_exchange_type_serial'); ?></option>
+									<option value='Serialexchange'><?php echo lang('contesting_exchange_type_serial_exchange'); ?></option>
+									<option value='Serialgridsquare'><?php echo lang('contesting_exchange_type_serial_gridsquare'); ?></option>
 								</select>
 							</div>
 
@@ -31,7 +31,7 @@
                                 </select>
                             </div>
 
-                            <label class="col-auto control-label" for="operatorcall">Operator Callsign</label>
+                            <label class="col-auto control-label" for="operatorcall"><?php echo lang('contesting_operator_callsign'); ?></label>
                             <div class="col-auto">
                                 <input type="text" class="form-control form-control-sm" id="operator_callsign" name="operator_callsign" value='<?php echo $this->session->userdata('operator_callsign'); ?>' required>
                             </div>
@@ -112,7 +112,7 @@
                             </div>
 
                             <div style="display:none" class="form-group col-md-1 serials">
-								<label for="exch_serial_s">Serial (S)</label>
+								<label for="exch_serial_s"><?php echo lang('contesting_exchange_serial_s'); ?></label>
 								<input type="number" class="form-control form-control-sm" name="exch_serial_s" id="exch_serial_s" value="">
 							</div>
                             
@@ -122,7 +122,7 @@
                             </div>
 
 							<div style="display:none" class="form-group col-md-2 gridsquares">
-								<label for="exch_gridsquare_s">Gridsquare (S)</label>
+								<label for="exch_gridsquare_s"><?php echo lang('contesting_exchange_gridsquare_s'); ?></label>
 								<input disabled type="text" class="form-control form-control-sm" name="exch_gridsquare_s" id="exch_gridsquare_s" value="<?php echo $my_gridsquare;?>">
 							</div>
 
@@ -132,7 +132,7 @@
                             </div>
 
                             <div style="display:none" class="form-group col-md-1 serialr">
-								<label for="exch_serial_r">Serial (R)</label>
+								<label for="exch_serial_r"><?php echo lang('contesting_exchange_serial_r'); ?></label>
 								<input type="number" class="form-control form-control-sm" name="exch_serial_r" id="exch_serial_r" value="">
 							</div>
 							
@@ -142,7 +142,7 @@
 							</div>
 
 							<div style="display:none" class="form-group col-md-2 gridsquarer">
-								<label for="exch_gridsquare_r">Gridsquare (R)</label>
+								<label for="exch_gridsquare_r"><?php echo lang('contesting_exchange_gridsquare_r'); ?></label>
 								<input type="text" class="form-control form-control-sm" name="locator" id="exch_gridsquare_r" value="">
 							</div>
                         </div>
@@ -165,7 +165,7 @@
                           <div class="col-md-12">
                               <div class="form-check-inline">
                                   <input class="form-check-input" type="checkbox" name="copyexchangetodok" value="1" id="copyexchangetodok">
-                                  <label class="form-check-label" for="copyexchangetodok">Copy received exchange to DOK field in the database!</label>
+                                  <label class="form-check-label" for="copyexchangetodok"><?php echo lang('contesting_copy_exch_to_dok'); ?></label>
                               </div>
                           </div>
                       </div>
@@ -198,10 +198,10 @@
                             <th><?php echo lang('gen_hamradio_rstr'); ?></th>
                             <th><?php echo lang('gen_hamradio_exchange_sent_short'); ?></th>
                             <th><?php echo lang('gen_hamradio_exchange_rcvd_short'); ?></th>
-							<th>Serial (S)</th>
-							<th>Serial (R)</th>
-							<th>Gridsquare</th>
-							<th>Vucc Gridsquare</th>
+							<th><?php echo lang('contesting_exchange_serial_s'); ?></th>
+							<th><?php echo lang('contesting_exchange_serial_r'); ?></th>
+							<th><?php echo lang('contesting_exchange_type_gridsquare'); ?></th>
+							<th><?php echo 'VUCC ' . lang('contesting_exchange_type_gridsquare'); ?></th>
                         </tr>
                     </thead>
 
