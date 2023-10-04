@@ -100,17 +100,17 @@ ________________________________________________________________________________
 
 $lang['filter_actions_w_selected'] = 'With selected: ';
 $lang['filter_actions_update_f_callbook'] = 'Update from Callbook';
-$lang['filter_actions_queue_bureau'] = 'Queue Bureau';
-$lang['filter_actions_queue_direct'] = 'Queue Direct';
-$lang['filter_actions_queue_electronic'] = 'Queue Electronic';
-$lang['filter_actions_sent_bureau'] = 'Sent Bureau';
-$lang['filter_actions_sent_direct'] = 'Sent Direct';
-$lang['filter_actions_sent_electronic'] = 'Sent Electronic';
+$lang['filter_actions_queue_bureau'] = 'Queue <br> Bureau';
+$lang['filter_actions_queue_direct'] = 'Queue <br> Direct';
+$lang['filter_actions_queue_electronic'] = 'Queue <br> Electronic';
+$lang['filter_actions_sent_bureau'] = 'QSL Sent <br> (Bureau)';
+$lang['filter_actions_sent_direct'] = 'QSL Sent <br> (Direct)';
+$lang['filter_actions_sent_electronic'] = 'Sent <br> Electronic';
 $lang['filter_actions_not_sent'] = 'Not Sent';
 $lang['filter_actions_qsl_n_required'] = 'QSL Not Required';
-$lang['filter_actions_recv_bureau'] = 'Received (Bureau)';
-$lang['filter_actions_recv_direct'] = 'Received (Direct)';
-$lang['filter_actions_recv_electronic'] = 'Received (Electronic)';
+$lang['filter_actions_recv_bureau'] = 'Received <br> (Bureau)';
+$lang['filter_actions_recv_direct'] = 'Received <br> (Direct)';
+$lang['filter_actions_recv_electronic'] = 'Received <br> (Electronic)';
 $lang['filter_actions_create_adif'] = 'Create ADIF';
 $lang['filter_actions_print_label'] = 'Print Label';
 $lang['filter_actions_start_print_title'] = 'Print Labels';
