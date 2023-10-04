@@ -236,7 +236,7 @@ $options = json_decode($options);
             </div>
             <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="qslmethod"><?php echo lang('filter_qsl_method'); ?></label>
-                <select id="qslmethod" name="qslmethod">
+                <select id="qslmethod" name="qslmethod" class="form-control form-control-sm">
                     <option value=""><?php echo lang('general_word_all'); ?></option>
                     <option value="B"><?php echo lang('general_word_qslcard_bureau'); ?></option>
                     <option value="D"><?php echo lang('general_word_qslcard_direct'); ?></option>
