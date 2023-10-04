@@ -852,6 +852,8 @@ function mapQsos(form) {
 				band: form.band.value,
 				qslSent: form.qslSent.value,
 				qslReceived: form.qslReceived.value,
+				qslSentMethod: this.qslSentMethod.value,
+				qslReceivedMethod: this.qslReceivedMethod.value,
 				iota: form.iota.value,
 				dxcc: form.dxcc.value,
 				propmode: form.selectPropagation.value,
