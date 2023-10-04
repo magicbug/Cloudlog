@@ -13,25 +13,30 @@ class Logbookadvanced_model extends CI_Model {
 			$conditions[] = "date(COL_TIME_ON) >= ?";
 			$binding[] = $from;
 		}
+		
         if ($searchCriteria['dateTo'] !== '') {
             $to = DateTime::createFromFormat('d/m/Y', $searchCriteria['dateTo']);
 			$to = $to->format('Y-m-d');
 			$conditions[] = "date(COL_TIME_ON) <= ?";
 			$binding[] = $to;
 		}
+
 		if ($searchCriteria['de'] !== '') {
 			$conditions[] = "COL_STATION_CALLSIGN = ?";
 			$binding[] = trim($searchCriteria['de']);
 		}
+
 		if ($searchCriteria['dx'] !== '') {
 			$conditions[] = "COL_CALL LIKE ?";
 			$binding[] = '%' . trim($searchCriteria['dx']) . '%';
 		}
+
 		if ($searchCriteria['mode'] !== '') {
 			$conditions[] = "(COL_MODE = ? or COL_SUBMODE = ?)";
 			$binding[] = $searchCriteria['mode'];
 			$binding[] = $searchCriteria['mode'];
 		}
+
 		if ($searchCriteria['band'] !== '') {
 			if($searchCriteria['band'] != "SAT") {
 				$conditions[] = "COL_BAND = ? and COL_PROP_MODE != 'SAT'";
@@ -44,6 +49,7 @@ class Logbookadvanced_model extends CI_Model {
 				}
 			}
 		}
+
 		if ($searchCriteria['qslSent'] !== '') {
 			$condition = "COL_QSL_SENT = ?";
 			if ($searchCriteria['qslSent'] == 'N') {
@@ -53,6 +59,7 @@ class Logbookadvanced_model extends CI_Model {
 			$conditions[] = $condition;
 			$binding[] = $searchCriteria['qslSent'];
 		}
+
 		if ($searchCriteria['qslReceived'] !== '') {
 			$condition = "COL_QSL_RCVD = ?";
 			if ($searchCriteria['qslReceived'] == 'N') {
@@ -62,24 +69,27 @@ class Logbookadvanced_model extends CI_Model {
 			$conditions[] = $condition;
 			$binding[] = $searchCriteria['qslReceived'];
 		}
+
 		if ($searchCriteria['qslSentMethod'] !== '') {
-			$condition = "COL_QSL_SENT_VIA = ?";
-			if ($searchCriteria['qslSentMethod'] == 'N') {
+			$condition = "COL_QSL_SENT_VIA like ?";
+			/*if ($searchCriteria['qslSentMethod'] == 'N') {
 				$condition = '('.$condition;
 				$condition .= " OR COL_QSL_SENT_VIA OR COL_QSL_SENT_VIA = '')";
-			}
+			}*/
 			$conditions[] = $condition;
-			$binding[] = $searchCriteria['qslSentMethod'];
+			$binding[] = $searchCriteria['qslSentMethod'].'%';
 		}
+
 		if ($searchCriteria['qslReceivedMethod'] !== '') {
-			$condition = "COL_QSL_RECV_VIA = ?";
-			if ($searchCriteria['qslReceivedMethod'] == 'N') {
+			$condition = "COL_QSL_RECV_VIA like ?";
+			/*if ($searchCriteria['qslReceivedMethod'] == 'N') {
 				$condition = '('.$condition;
 				$condition .= " OR COL_QSL_RECV_VIA OR COL_QSL_RECV_VIA = '')";
-			}
+			}*/
 			$conditions[] = $condition;
-			$binding[] = $searchCriteria['qslReceivedMethod'];
+			$binding[] = $searchCriteria['qslReceivedMethod'].'%';
 		}
+
 		if ($searchCriteria['lotwSent'] !== '') {
 			$condition = "COL_LOTW_QSL_SENT = ?";
 			if ($searchCriteria['lotwSent'] == 'N') {
