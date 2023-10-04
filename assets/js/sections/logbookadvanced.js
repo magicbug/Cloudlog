@@ -449,8 +449,13 @@ $(document).ready(function () {
 	$('#receivedBureau').click(function (event) {
 		handleQslReceived('Y','B', 'receivedBureau');
 	});
+
 	$('#receivedDirect').click(function (event) {
 		handleQslReceived('Y','D', 'receivedDirect');
+	});
+
+	$('#receivedElectronic').click(function (event) {
+		handleQslReceived('Y','E', 'receivedElectronic');
 	});
 
 	$('#searchGridsquare').click(function (event) {
