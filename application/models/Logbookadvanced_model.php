@@ -71,15 +71,15 @@ class Logbookadvanced_model extends CI_Model {
 		}
 
 		if ($searchCriteria['qslSentMethod'] !== '') {
-			$condition = "COL_QSL_SENT_VIA like ?";
+			$condition = "COL_QSL_SENT_VIA = ?";
 			$conditions[] = $condition;
-			$binding[] = $searchCriteria['qslSentMethod'].'%';
+			$binding[] = $searchCriteria['qslSentMethod'];
 		}
 
 		if ($searchCriteria['qslReceivedMethod'] !== '') {
-			$condition = "COL_QSL_RECV_VIA like ?";
+			$condition = "COL_QSL_RECV_VIA = ?";
 			$conditions[] = $condition;
-			$binding[] = $searchCriteria['qslReceivedMethod'].'%';
+			$binding[] = $searchCriteria['qslReceivedMethod'];
 		}
 
 		if ($searchCriteria['lotwSent'] !== '') {
