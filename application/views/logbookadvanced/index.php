@@ -300,7 +300,7 @@ $options = json_decode($options);
             </div>
             <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="qslvia"><?php echo lang('filter_qsl_via'); ?></label>
-                <input type="search" list="qslvia" name="qslviainput" class="custom-select custom-select-sm">
+                <input type="search" name="qslviainput" class="custom-select custom-select-sm">
             </div>
             <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="qslimages"><?php echo lang('filter_qsl_images'); ?></label>
