@@ -17,3 +17,12 @@ $lang['admin_create_user'] = 'Benutzer anlegen';
 $lang['admin_delete'] = 'Löschen';
 $lang['admin_edit'] = 'Editieren';
 $lang['admin_user_accounts'] = 'Benutzerkonten';
+
+
+
+// Contest Menu
+
+$lang['admin_contest_menu_line_1'] = 'Mit dieser Contest-Liste kannst du steuern, welche Contests im Contest-Logging Fenster angezeigt werden.';
+$lang['admin_contest_menu_line_2'] = 'Aktivierte Contests können im Contest-Logging Fenster ausgewählt werden, wohingegen deaktivierte ausgeblendet und somit auch nicht auswählbar gemacht werden.';
+
+

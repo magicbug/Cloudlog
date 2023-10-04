@@ -17,3 +17,12 @@ $lang['admin_create_user'] = 'Skapa användare';
 $lang['admin_delete'] = 'Radera';
 $lang['admin_edit'] = 'Redigera';
 $lang['admin_user_accounts'] = 'User Accounts';
+
+
+
+// Contest Menu
+
+$lang['admin_contest_menu_line_1'] = 'Using the contest list, you can control which Contests are shown when logging QSOs in a contest.';
+$lang['admin_contest_menu_line_2'] = 'Active contests will be shown in the Contest Name drop-down, while inactive contests will be hidden and cannot be selected.';
+
+
