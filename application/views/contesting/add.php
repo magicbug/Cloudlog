@@ -11,9 +11,6 @@
 	<h2><?php echo $page_title; ?></h2>
 
 	<div class="card">
-		<div class="card-header">
-			Contests
-		</div>
 		<div class="card-body">
 			<p class="card-text">
 				Using the contest list, you can control which Contests are shown when logging QSOs in a contest.
