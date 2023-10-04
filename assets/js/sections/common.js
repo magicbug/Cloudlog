@@ -124,7 +124,7 @@ function qso_edit(id) {
         },
         success: function(html) {
             BootstrapDialog.show({
-                title: 'QSO Data',
+                title: '<?php echo lang('general_word_qso_data'); ?>',
                 cssClass: 'edit-dialog',
                 size: BootstrapDialog.SIZE_WIDE,
                 nl2br: false,
