@@ -264,6 +264,8 @@ $(document).ready(function () {
 				band: this.band.value,
 				qslSent: this.qslSent.value,
 				qslReceived: this.qslReceived.value,
+				qslSentMethod: this.qslSentMethod.value,
+				qslReceivedMethod: this.qslReceivedMethod.value,
 				iota: this.iota.value,
 				dxcc: this.dxcc.value,
 				propmode: this.selectPropagation.value,
