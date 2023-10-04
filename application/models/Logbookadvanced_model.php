@@ -70,7 +70,7 @@ class Logbookadvanced_model extends CI_Model {
 		}
 
 		if ($searchCriteria['qslReceivedMethod'] !== '') {
-			$condition = "COL_QSL_RECV_VIA = ?";
+			$condition = "COL_QSL_RCVD_VIA = ?";
 			$conditions[] = $condition;
 			$binding[] = $searchCriteria['qslReceivedMethod'];
 		}
