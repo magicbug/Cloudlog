@@ -13,30 +13,25 @@ class Logbookadvanced_model extends CI_Model {
 			$conditions[] = "date(COL_TIME_ON) >= ?";
 			$binding[] = $from;
 		}
-
         if ($searchCriteria['dateTo'] !== '') {
             $to = DateTime::createFromFormat('d/m/Y', $searchCriteria['dateTo']);
 			$to = $to->format('Y-m-d');
 			$conditions[] = "date(COL_TIME_ON) <= ?";
 			$binding[] = $to;
 		}
-
 		if ($searchCriteria['de'] !== '') {
 			$conditions[] = "COL_STATION_CALLSIGN = ?";
 			$binding[] = trim($searchCriteria['de']);
 		}
-
 		if ($searchCriteria['dx'] !== '') {
 			$conditions[] = "COL_CALL LIKE ?";
 			$binding[] = '%' . trim($searchCriteria['dx']) . '%';
 		}
-
 		if ($searchCriteria['mode'] !== '') {
 			$conditions[] = "(COL_MODE = ? or COL_SUBMODE = ?)";
 			$binding[] = $searchCriteria['mode'];
 			$binding[] = $searchCriteria['mode'];
 		}
-
 		if ($searchCriteria['band'] !== '') {
 			if($searchCriteria['band'] != "SAT") {
 				$conditions[] = "COL_BAND = ? and COL_PROP_MODE != 'SAT'";
@@ -49,7 +44,6 @@ class Logbookadvanced_model extends CI_Model {
 				}
 			}
 		}
-
 		if ($searchCriteria['qslSent'] !== '') {
 			$condition = "COL_QSL_SENT = ?";
 			if ($searchCriteria['qslSent'] == 'N') {
@@ -59,7 +53,6 @@ class Logbookadvanced_model extends CI_Model {
 			$conditions[] = $condition;
 			$binding[] = $searchCriteria['qslSent'];
 		}
-
 		if ($searchCriteria['qslReceived'] !== '') {
 			$condition = "COL_QSL_RCVD = ?";
 			if ($searchCriteria['qslReceived'] == 'N') {
