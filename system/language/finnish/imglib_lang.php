@@ -44,6 +44,7 @@ $lang['imglib_unsupported_imagecreate'] = 'Palvelimesi ei tue GD-toimintoa, jota
 $lang['imglib_gif_not_supported'] = 'GIF-kuvia ei usein tueta lisenssirajoitusten takia. Saatat joutua käyttämään JPG- tai PNG-kuvia.';
 $lang['imglib_jpg_not_supported'] = 'JPG-kuvia ei tueta.';
 $lang['imglib_png_not_supported'] = 'PNG-kuvia ei tueta.';
+$lang['imglib_webp_not_supported'] = 'WEBP images are not supported.';
 $lang['imglib_jpg_or_png_required'] = 'Asetuksissasi määritetty kuvan koon muuttamisprotokolla toimii vain JPEG- tai PNG-kuvatyyppien kanssa.';
 $lang['imglib_copy_error'] = 'Tiedoston korvaamisen yhteydessä tapahtui virhe. Varmista, että tiedostohakemisto on kirjoitettavissa.';
 $lang['imglib_rotate_unsupported'] = 'Palvelimesi ei näytä tukevan kuvan kiertämistä.';
