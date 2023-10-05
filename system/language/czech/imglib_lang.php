@@ -16,6 +16,7 @@ $lang['imglib_unsupported_imagecreate'] = 'Váš server nepodporuje funkce GD kn
 $lang['imglib_gif_not_supported']       = 'GIF obrázky často nejsou z důvodu licencování podporovány. Zvažte prosím použití formátu JPG nebo PNG.';
 $lang['imglib_jpg_not_supported']       = 'JPG obrázky nejsou podporovány.';
 $lang['imglib_png_not_supported']       = 'PNG obrázky nejsou podporovány.';
+$lang['imglib_webp_not_supported'] = 'WEBP images are not supported.';
 $lang['imglib_jpg_or_png_required']     = 'Změna velikosti obrázku je možná pouze pro formáty JPG a PNG';
 $lang['imglib_copy_error']              = 'Nastal error při pokusu o přepsání souboru. Zkontrolujte prosím oprávnění souboru.';
 $lang['imglib_rotate_unsupported']      = 'Vypadá to, že otočení obrázku není serverem podporováno.';
