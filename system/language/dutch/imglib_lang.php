@@ -17,6 +17,7 @@ $lang['imglib_unsupported_imagecreate']		= 'De benodigde GD functie die nodig is
 $lang['imglib_gif_not_supported']		= 'GIF-afbeeldingen worden veelal niet ondersteund vanwege licensierestricties. U zou JPG- of PNG-afbeeldingen kunnen gebruiken.';
 $lang['imglib_jpg_not_supported']		= 'JPG-afbeeldingen worden niet ondersteund.';
 $lang['imglib_png_not_supported']		= 'PNG-afbeeldingen worden niet ondersteund.';
+$lang['imglib_webp_not_supported'] = 'WEBP images are not supported.';
 $lang['imglib_jpg_or_png_required']		= 'Het in de voorkeuren opgegeven protocol voor het schalen van afbeeldingen is alleen geschikt voor JPEG en PNG-afbeeldingen.';
 $lang['imglib_copy_error']			= 'Er is een fout opgetreden tijdens het vervangen van het bestand. Controleer de bestandsrechten voor de directory.';
 $lang['imglib_rotate_unsupported']		= 'Het roteren van afbeeldingen wordt blijkbaar niet door de server ondersteund.';
