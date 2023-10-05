@@ -68,8 +68,8 @@ function deactivateContest(contestid) {
 		type: 'post',
 		data: { 'id': contestid },
 		success: function (html) {
-			$(".contest_" + contestid).text('not active');
-			$('.btn_' + contestid).html('Activate');
+			$(`.contest_${contestid}`).text("<?php echo lang('admin_contest_menu_n_active'); ?>");
+			$('.btn_' + contestid).html("<?php echo lang('admin_contest_menu_activate'); ?>");
 			$('.btn_' + contestid).attr('onclick', 'activateContest(' + contestid + ')')
 		}
 	});
@@ -81,8 +81,8 @@ function activateContest(contestid) {
 		type: 'post',
 		data: { 'id': contestid },
 		success: function (html) {
-			$('.contest_' + contestid).text('active');
-			$('.btn_' + contestid).html('Deactivate');
+			$('.contest_' + contestid).text("<?php echo lang('admin_contest_menu_active'); ?>");
+			$('.btn_' + contestid).html("<?php echo lang('admin_contest_menu_deactivate'); ?>");
 			$('.btn_' + contestid).attr('onclick', 'deactivateContest(' + contestid + ')')
 		}
 	});
