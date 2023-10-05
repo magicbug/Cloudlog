@@ -46,6 +46,8 @@ ________________________________________________________________________________
 
 $lang['filter_qsl_sent'] = 'QSL sent';
 $lang['filter_qsl_recv'] = 'QSL received';
+$lang['filter_qsl_sent_method'] = 'QSL Sending Method';
+$lang['filter_qsl_recv_method'] = 'QSL Receiving Method';
 $lang['filter_lotw_sent'] = 'LoTW sent';
 $lang['filter_lotw_recv'] = 'LoTW received';
 $lang['filter_eqsl_sent'] = 'eQSL sent';
@@ -101,13 +103,14 @@ $lang['filter_actions_update_f_callbook'] = 'Update from Callbook';
 $lang['filter_actions_queue_bureau'] = 'Queue Bureau';
 $lang['filter_actions_queue_direct'] = 'Queue Direct';
 $lang['filter_actions_queue_electronic'] = 'Queue Electronic';
-$lang['filter_actions_sent_bureau'] = 'Sent Bureau';
-$lang['filter_actions_sent_direct'] = 'Sent Direct';
-$lang['filter_actions_sent_electronic'] = 'Sent Electronic';
+$lang['filter_actions_sent_bureau'] = 'Sent (Bureau)';
+$lang['filter_actions_sent_direct'] = 'Sent (Direct)';
+$lang['filter_actions_sent_electronic'] = 'Sent (Electronic)';
 $lang['filter_actions_not_sent'] = 'Not Sent';
 $lang['filter_actions_qsl_n_required'] = 'QSL Not Required';
 $lang['filter_actions_recv_bureau'] = 'Received (Bureau)';
 $lang['filter_actions_recv_direct'] = 'Received (Direct)';
+$lang['filter_actions_recv_electronic'] = 'Received (Electronic)';
 $lang['filter_actions_create_adif'] = 'Create ADIF';
 $lang['filter_actions_print_label'] = 'Print Label';
 $lang['filter_actions_start_print_title'] = 'Print Labels';
