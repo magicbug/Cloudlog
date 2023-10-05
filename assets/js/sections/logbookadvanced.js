@@ -264,6 +264,8 @@ $(document).ready(function () {
 				band: this.band.value,
 				qslSent: this.qslSent.value,
 				qslReceived: this.qslReceived.value,
+				qslSentMethod: this.qslSentMethod.value,
+				qslReceivedMethod: this.qslReceivedMethod.value,
 				iota: this.iota.value,
 				dxcc: this.dxcc.value,
 				propmode: this.selectPropagation.value,
@@ -447,8 +449,13 @@ $(document).ready(function () {
 	$('#receivedBureau').click(function (event) {
 		handleQslReceived('Y','B', 'receivedBureau');
 	});
+
 	$('#receivedDirect').click(function (event) {
 		handleQslReceived('Y','D', 'receivedDirect');
+	});
+
+	$('#receivedElectronic').click(function (event) {
+		handleQslReceived('Y','E', 'receivedElectronic');
 	});
 
 	$('#searchGridsquare').click(function (event) {
@@ -850,6 +857,8 @@ function mapQsos(form) {
 				band: form.band.value,
 				qslSent: form.qslSent.value,
 				qslReceived: form.qslReceived.value,
+				qslSentMethod: this.qslSentMethod.value,
+				qslReceivedMethod: this.qslReceivedMethod.value,
 				iota: form.iota.value,
 				dxcc: form.dxcc.value,
 				propmode: form.selectPropagation.value,
