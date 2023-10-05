@@ -13,10 +13,10 @@
 	<div class="card">
 		<div class="card-body">
 			<p class="card-text">
-			<?php echo lang('admin_contest_menu_line_1'); ?>
+				<?php echo lang('admin_contest_menu_line_1'); ?>
 			</p>
 			<p class="card-text">
-			<?php echo lang('admin_contest_menu_line_2'); ?>
+				<?php echo lang('admin_contest_menu_line_2'); ?>
 			</p>
 			<div class="table-responsive">
 				<table style="width:100%" class="contesttable table table-sm table-striped">
