@@ -32,6 +32,6 @@ jobs:
         with:
           context: ./
           file: ./docker/Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ secrets.DOCKERHUB_IMAGENAME }}:${{ steps.get-latest-tag.outputs.tag }},${{ secrets.DOCKERHUB_IMAGENAME }}:latest
