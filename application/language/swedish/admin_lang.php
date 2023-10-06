@@ -16,6 +16,7 @@ $lang['admin_options'] = 'Alternativ';
 $lang['admin_create_user'] = 'Skapa användare';
 $lang['admin_delete'] = 'Radera';
 $lang['admin_edit'] = 'Redigera';
+$lang['admin_save'] = 'Save';
 $lang['admin_close'] = 'Close';
 $lang['admin_user_accounts'] = 'User Accounts';
 
@@ -40,4 +41,6 @@ $lang['admin_contest_all_deactive'] = 'Deactivate All';
 $lang['admin_contest_name_adif'] = 'Contest ADIF Name';
 $lang['admin_contest_name_of_contest'] = 'Name of the Contest';
 $lang['admin_contest_name_of_adif'] = 'Name of Contest in ADIF-specification';
+$lang['admin_contest_edit_active_hint'] = 'Set to active if to be listed in Contest-list';
+$lang['admin_contest_edit_update_contest'] = 'Update Contest';
 

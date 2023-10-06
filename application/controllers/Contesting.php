@@ -114,7 +114,7 @@ class Contesting extends CI_Controller {
 
 		$data['contest'] = $this->Contesting_model->contest($item_id_clean);
 
-		$data['page_title'] = "Edit Contest";
+		$data['page_title'] = lang('admin_contest_edit_update_contest');
 
 		$this->form_validation->set_rules('name', 'Contest Name', 'required');
 		$this->form_validation->set_rules('adifname', 'Adif Contest Name', 'required');

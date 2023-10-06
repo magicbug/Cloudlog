@@ -16,6 +16,7 @@ $lang['admin_options'] = 'Опции';
 $lang['admin_create_user'] = 'Создать пользователя';
 $lang['admin_delete'] = 'Удалить';
 $lang['admin_edit'] = 'Редактировать';
+$lang['admin_save'] = 'Save';
 $lang['admin_close'] = 'Close';
 $lang['admin_user_accounts'] = 'Аккаунты пользователей';
 
@@ -40,4 +41,6 @@ $lang['admin_contest_all_deactive'] = 'Deactivate All';
 $lang['admin_contest_name_adif'] = 'Contest ADIF Name';
 $lang['admin_contest_name_of_contest'] = 'Name of the Contest';
 $lang['admin_contest_name_of_adif'] = 'Name of Contest in ADIF-specification';
+$lang['admin_contest_edit_active_hint'] = 'Set to active if to be listed in Contest-list';
+$lang['admin_contest_edit_update_contest'] = 'Update Contest';
 

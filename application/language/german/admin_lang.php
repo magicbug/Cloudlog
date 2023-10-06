@@ -16,6 +16,7 @@ $lang['admin_options'] = 'Optionen';
 $lang['admin_create_user'] = 'Benutzer anlegen';
 $lang['admin_delete'] = 'Löschen';
 $lang['admin_edit'] = 'Editieren';
+$lang['admin_save'] = 'Speichern';
 $lang['admin_close'] = 'Schliessen';
 $lang['admin_user_accounts'] = 'Benutzerkonten';
 
@@ -40,4 +41,6 @@ $lang['admin_contest_all_deactive'] = 'Deaktiviere Alle';
 $lang['admin_contest_name_adif'] = 'Contest ADIF Name';
 $lang['admin_contest_name_of_contest'] = 'Der Name des Contest';
 $lang['admin_contest_name_of_adif'] = 'Der Name des Contest in ADIF Spezifikation';
+$lang['admin_contest_edit_active_hint'] = 'Wähle "Aktiv" um den Contest in der Contest-Liste anzuzeigen';
+$lang['admin_contest_edit_update_contest'] = 'Aktualisiere Contest';
 

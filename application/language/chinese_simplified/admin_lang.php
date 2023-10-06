@@ -16,6 +16,7 @@ $lang['admin_options'] = '设置';
 $lang['admin_create_user'] = '创建用户';
 $lang['admin_delete'] = '删除用户';
 $lang['admin_edit'] = '编辑用户';
+$lang['admin_save'] = 'Save';
 $lang['admin_close'] = 'Close';
 $lang['admin_user_accounts'] = 'User Accounts';
 
@@ -40,4 +41,6 @@ $lang['admin_contest_all_deactive'] = 'Deactivate All';
 $lang['admin_contest_name_adif'] = 'Contest ADIF Name';
 $lang['admin_contest_name_of_contest'] = 'Name of the Contest';
 $lang['admin_contest_name_of_adif'] = 'Name of Contest in ADIF-specification';
+$lang['admin_contest_edit_active_hint'] = 'Set to active if to be listed in Contest-list';
+$lang['admin_contest_edit_update_contest'] = 'Update Contest';
 
