@@ -63,6 +63,10 @@
 			</div>
 			<br/>
 			<p>
+				<script>
+					var lang_admin_contest_add_contest = '<?php echo lang('admin_contest_add_contest'); ?>';
+					var lang_admin_close = '<?php echo lang('admin_close'); ?>'
+				</script>
 				<button onclick="createContestDialog();" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> <?php echo lang('admin_contest_add_contest'); ?></button>
 				<button onclick="activateAllContests();" class="btn btn-primary btn-sm"><?php echo lang('admin_contest_all_active'); ?></button>
 				<button onclick="deactivateAllContests();" class="btn btn-primary btn-sm"><?php echo lang('admin_contest_all_deactive'); ?></button>
