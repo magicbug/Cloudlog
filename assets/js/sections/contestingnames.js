@@ -30,13 +30,13 @@ function createContestDialog() {
 		type: 'post',
 		success: function (html) {
 			BootstrapDialog.show({
-				title: 'Add Contest',
+				title: lang_admin_contest_add_contest,
 				size: BootstrapDialog.SIZE_WIDE,
 				cssClass: 'create-contest-dialog',
 				nl2br: false,
 				message: html,
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}
