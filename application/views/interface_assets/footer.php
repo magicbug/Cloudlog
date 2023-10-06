@@ -1793,6 +1793,7 @@ $(document).ready(function(){
 						message: html,
 						onshown: function(dialog) {
 							var qsoid = $("#qsoid").text();
+                            var lang_general_word_qso_data = '<?php echo lang('general_word_qso_data'); ?>',
 							$(".editButton").html('<a class="btn btn-primary" id="edit_qso" href="javascript:qso_edit('+qsoid+')"><i class="fas fa-edit"></i><?php echo lang('general_edit_qso'); ?></a>');
 							var lat = $("#lat").text();
 							var long = $("#long").text();
