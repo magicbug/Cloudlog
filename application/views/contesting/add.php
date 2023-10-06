@@ -35,6 +35,12 @@
 						<tr>
 							<td><?php echo $row['name'];?></td>
 							<td><?php echo $row['adifname'];?></td>
+							<script>
+								var lang_admin_contest_menu_n_active = '<?php echo lang('admin_contest_menu_n_active'); ?>';
+								var lang_admin_contest_menu_activate = '<?php echo lang('admin_contest_menu_activate'); ?>';
+								var lang_admin_contest_menu_active = '<?php echo lang('admin_contest_menu_active'); ?>';
+								var lang_admin_contest_menu_deactivate = '<?php echo lang('admin_contest_menu_deactivate'); ?>';
+							</script>
 							<td class='contest_<?php echo $row['id'] ?>'><?php if ($row['active'] == 1) { echo lang('admin_contest_menu_active');} else { echo lang('admin_contest_menu_n_active');};?></td>
 							<td style="text-align: center">
 								<?php if ($row['active'] == 1) {
