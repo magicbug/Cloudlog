@@ -19,7 +19,7 @@ $lang['contesting_exchange_serial_r'] = 'Nummer (R)';
 $lang['contesting_exchange_gridsquare_s'] = 'Planquadrat (S)';
 $lang['contesting_exchange_gridsquare_r'] = 'Planquadrat (R)';
 
-$lang['contesting_contest_name'] = 'Contest-Name';
+$lang['contesting_contest_name'] = 'Contest Name';
 
 $lang['contesting_btn_reset_qso'] = 'Setze QSO zurück';
 $lang['contesting_btn_save_qso'] = 'Speichere QSO';
