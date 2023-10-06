@@ -50,6 +50,12 @@
 								};?>
 							</td>
 							<td>
+								<script>
+									var lang_admin_danger = '<?php echo lang('admin_danger'); ?>';
+									var lang_admin_contest_deletion_warning = '<?php echo lang('admin_contest_deletion_warning'); ?>';
+									var lang_admin_contest_active_all_warning = '<?php echo lang('admin_contest_active_all_warning'); ?>';
+									var lang_admin_contest_deactive_all_warning = '<?php echo lang('admin_contest_deactive_all_warning'); ?>';
+								</script>
 								<a href="<?php echo site_url('contesting/edit')."/".$row['id']; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> <?php echo lang('admin_edit'); ?></a>
 							</td>
 							<td>

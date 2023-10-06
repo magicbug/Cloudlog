@@ -90,8 +90,8 @@ function activateContest(contestid) {
 
 function deleteContest(id, contest) {
 	BootstrapDialog.confirm({
-		title: 'DANGER',
-		message: 'Warning! Are you sure you want to delete the following contest: ' + contest + '?',
+		title: lang_admin_danger,
+		message: lang_admin_contest_deletion_warning + contest + '?',
 		type: BootstrapDialog.TYPE_DANGER,
 		closable: true,
 		draggable: true,
@@ -115,8 +115,8 @@ function deleteContest(id, contest) {
 
 function activateAllContests() {
 	BootstrapDialog.confirm({
-		title: 'DANGER',
-		message: 'Warning! Are you sure you want to activate all contests?',
+		title: lang_admin_danger,
+		message: lang_admin_contest_active_all_warning,
 		type: BootstrapDialog.TYPE_DANGER,
 		closable: true,
 		draggable: true,
@@ -137,8 +137,8 @@ function activateAllContests() {
 
 function deactivateAllContests() {
 	BootstrapDialog.confirm({
-		title: 'DANGER',
-		message: 'Warning! Are you sure you want to deactivate all contests?',
+		title: lang_admin_danger,
+		message: lang_admin_contest_deactive_all_warning,
 		type: BootstrapDialog.TYPE_DANGER,
 		closable: true,
 		draggable: true,

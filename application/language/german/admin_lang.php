@@ -19,6 +19,7 @@ $lang['admin_edit'] = 'Editieren';
 $lang['admin_save'] = 'Speichern';
 $lang['admin_close'] = 'Schliessen';
 $lang['admin_user_accounts'] = 'Benutzerkonten';
+$lang['admin_danger'] = 'ACHTUNG!';
 
 
 
@@ -43,4 +44,7 @@ $lang['admin_contest_name_of_contest'] = 'Der Name des Contest';
 $lang['admin_contest_name_of_adif'] = 'Der Name des Contest in ADIF Spezifikation';
 $lang['admin_contest_edit_active_hint'] = 'Wähle "Aktiv" um den Contest in der Contest-Liste anzuzeigen';
 $lang['admin_contest_edit_update_contest'] = 'Aktualisiere Contest';
+$lang['admin_contest_deletion_warning'] = 'Warnung! Bist du sicher den folgenden Contest zu löschen: ';
+$lang['admin_contest_active_all_warning'] = 'Warnung! Bist du sicher, dass du ALLE Contests aktivieren willst?';
+$lang['admin_contest_deactive_all_warning'] = 'Warnung! Bist du sicher, dass du ALLE Contests deaktivieren willst?';
 
