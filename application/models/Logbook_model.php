@@ -1777,7 +1777,10 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 
     $this->db->select('COL_GRIDSQUARE');
     $this->db->where_in('station_id', $logbooks_locations_array);
+    $this->db->group_start();
     $this->db->like('COL_GRIDSQUARE', $grid);
+    $this->db->or_like('COL_VUCC_GRIDS', $grid);
+    $this->db->group_end();
 
     if($band != null && $band != 'SAT') {
       $this->db->where('COL_BAND', $band);
