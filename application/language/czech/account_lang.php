@@ -35,6 +35,7 @@ $lang['account_date_format'] = 'Formát data';
 $lang['account_measurement_preferences'] = 'Nastavení měření';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Vyberte, jak chcete, aby byla data zobrazena při přihlášení do vašeho účtu.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Vyberte, v jakých jednotkách se budou zobrazovat vzdálenosti.';
+$lang['account_cloudlog_language'] = 'Cloudlog Language';
 $lang['account_choose_cloudlog_language'] = 'Choose Cloudlog language.';
 
 $lang['account_main_menu'] = 'Hlavní menu';
