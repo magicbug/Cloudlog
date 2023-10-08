@@ -11,6 +11,12 @@
  var my_call = "<?php echo $this->session->userdata('user_callsign'); ?>".toUpperCase();
 </script>
 
+<script>
+    /* 
+    General Language
+    */
+    var lang_general_word_qso_data = "<?php echo lang('general_word_qso_data'); ?>";
+</script>
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
@@ -1786,14 +1792,13 @@ $(document).ready(function(){
 				type: 'post',
 				success: function(html) {
 					BootstrapDialog.show({
-						title: '<?php echo lang('general_word_qso_data'); ?>',
+						title: lang_general_word_qso_data,
 						cssClass: 'qso-dialog',
 						size: BootstrapDialog.SIZE_WIDE,
 						nl2br: false,
 						message: html,
 						onshown: function(dialog) {
 							var qsoid = $("#qsoid").text();
-                            var lang_general_word_qso_data = '<?php echo lang('general_word_qso_data'); ?>',
 							$(".editButton").html('<a class="btn btn-primary" id="edit_qso" href="javascript:qso_edit('+qsoid+')"><i class="fas fa-edit"></i><?php echo lang('general_edit_qso'); ?></a>');
 							var lat = $("#lat").text();
 							var long = $("#long").text();
@@ -2084,7 +2089,7 @@ $(document).ready(function(){
                     },
                     success: function(html) {
                         BootstrapDialog.show({
-                            title: '<?php echo lang('general_word_qso_data'); ?>',
+                            title: lang_general_word_qso_data,
                             size: BootstrapDialog.SIZE_WIDE,
                             cssClass: 'qso-was-dialog',
                             nl2br: false,
@@ -2150,7 +2155,7 @@ $(document).ready(function(){
                     },
                     success: function(html) {
                         BootstrapDialog.show({
-                            title: '<?php echo lang('general_word_qso_data'); ?>',
+                            title: lang_general_word_qso_data,
                             size: BootstrapDialog.SIZE_WIDE,
                             cssClass: 'qso-was-dialog',
                             nl2br: false,
@@ -2380,7 +2385,7 @@ function viewEqsl(picture, callsign) {
             },
             success: function (html) {
                 BootstrapDialog.show({
-                    title: '<?php echo lang('general_word_qso_data'); ?>',
+                    title: lang_general_word_qso_data,
                     size: BootstrapDialog.SIZE_WIDE,
                     cssClass: 'qso-dialog',
                     nl2br: false,
@@ -2425,7 +2430,7 @@ function viewEqsl(picture, callsign) {
     },
 	    success: function (html) {
 		    var dialog = new BootstrapDialog({
-		    title: '<?php echo lang('general_word_qso_data'); ?>',
+		    title: lang_general_word_qso_data,
 			    size: BootstrapDialog.SIZE_WIDE,
 			    cssClass: 'qso-dialog',
 			    nl2br: false,
@@ -2705,7 +2710,7 @@ function viewEqsl(picture, callsign) {
             data: {'State': state, 'County': county },
             success: function(html) {
                 BootstrapDialog.show({
-                    title: '<?php echo lang('general_word_qso_data'); ?>',
+                    title: lang_general_word_qso_data,
                     size: BootstrapDialog.SIZE_WIDE,
                     cssClass: 'qso-counties-dialog',
                     nl2br: false,
