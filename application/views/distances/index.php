@@ -3,7 +3,9 @@
     <br>
 
     <h2><?php echo $page_title; ?></h2>
-
+    <script>
+        var lang_general_word_qso_data = '<?php echo lang('general_word_qso_data'); ?>';
+    </script>
     <div id="distances_div">
         <form class="form-inline">
             <label class="my-1 mr-2" for="distplot_bands"><?php echo lang('gen_band_selection'); ?></label>

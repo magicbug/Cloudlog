@@ -144,7 +144,7 @@ function getDistanceQsos(distance) {
 		},
 		success: function (html) {
 			BootstrapDialog.show({
-				title: '<?php echo lang('general_word_qso_data'); ?>',
+				title: lang_general_word_qso_data,
 				size: BootstrapDialog.SIZE_WIDE,
 				cssClass: 'qso-dialog',
 				nl2br: false,
