@@ -8,6 +8,9 @@ $lang['qso_title_suggestions'] = 'Εισήγησης';
 $lang['qso_title_previous_contacts'] = 'Προηγούμενες Επαφές';
 $lang['qso_title_image'] = 'Εικόνα προφίλ';
 
+// Quicklog on Dashboard
+$lang['qso_quicklog_enter_callsign'] = 'QUICKLOG Enter Callsign';
+
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Δώστε τιμή ισχύος σε Watts. Συμπεριλάβετε μόνο αριθμούς στην εισαγωγή.';
 
