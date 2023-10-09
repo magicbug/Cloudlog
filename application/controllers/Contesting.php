@@ -80,7 +80,7 @@ class Contesting extends CI_Controller {
 		$this->load->library('form_validation');
 
 		$this->form_validation->set_rules('name', 'Contest Name', 'required');
-		$this->form_validation->set_rules('adifname', 'Contest Adif Name', 'required');
+		$this->form_validation->set_rules('adifname', 'Adif Contest Name', 'required');
 
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -106,15 +106,14 @@ class Contesting extends CI_Controller {
 	}
 
 	public function edit($id) {
-		$this->load->library('form_validation');
-
 		$this->load->model('Contesting_model');
+		$this->load->library('form_validation');
 
 		$item_id_clean = $this->security->xss_clean($id);
 
 		$data['contest'] = $this->Contesting_model->contest($item_id_clean);
 
-		$data['page_title'] = "Edit Contest";
+		$data['page_title'] = lang('admin_contest_edit_update_contest');
 
 		$this->form_validation->set_rules('name', 'Contest Name', 'required');
 		$this->form_validation->set_rules('adifname', 'Adif Contest Name', 'required');

@@ -124,7 +124,7 @@ function qso_edit(id) {
         },
         success: function(html) {
             BootstrapDialog.show({
-                title: 'QSO Data',
+                title: lang_general_word_qso_data,
                 cssClass: 'edit-dialog',
                 size: BootstrapDialog.SIZE_WIDE,
                 nl2br: false,
@@ -148,7 +148,7 @@ function qso_edit(id) {
                             //$('#stationCntyInput')[0].selectize.destroy();
                             $("#stationCntyInputEdit").val("");
                         }
-                    });
+            });
 
                     $('#locator').change(function(){
                         if ($(this).val().length >= 4) {

@@ -58,6 +58,7 @@ $lang['general_mark_qsl_requested'] = 'Zaznacz QSL zgodnie z żądaniem';
 $lang['general_mark_qsl_requested_bureau'] = 'Zaznacz QSL zgodnie z żądaniem (Biuro)';
 $lang['general_mark_qsl_requested_direct'] = 'Zaznacz QSL zgodnie z żądaniem (Bezpośredni)';
 $lang['general_mark_qsl_not_required'] = 'Zaznacz QSLjako niewymagane';
+$lang['general_word_qso_data'] = 'QSO Data';
 
 $lang['general_delete_qso'] = 'Usuń QSO';
 

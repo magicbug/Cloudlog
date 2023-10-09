@@ -4,15 +4,29 @@ defined('BASEPATH') OR exit('Direkter Zugriff auf Skripte ist nicht erlaubt');
 
 $lang['contesting_page_title'] = 'Contest-Logging';
 $lang['contesting_button_reset_contest_session'] = 'Beginne neue Contest-Sitzung';
+$lang['contesting_operator_callsign'] = 'Operator Rufzeichen';
 
 $lang['contesting_exchange_type'] = 'Austauschtyp';
-$lang['contesting_exchange_type_serial'] = 'Laufende Nummer';
+$lang['contesting_exchange_type_serial'] = '(Lauf)-Nummer';
+$lang['contesting_exchange_type_none'] = 'Nichts';
+$lang['contesting_exchange_type_exchange'] = 'Exchange';
+$lang['contesting_exchange_type_gridsquare'] = 'Planquadrat';
 $lang['contesting_exchange_type_other'] = 'Andere';
+$lang['contesting_exchange_type_serial_exchange'] = 'Serial + Exchange';
+$lang['contesting_exchange_type_serial_gridsquare'] = 'Serial + Planquadrat';
+$lang['contesting_exchange_serial_s'] = 'Nummer (S)';
+$lang['contesting_exchange_serial_r'] = 'Nummer (R)';
+$lang['contesting_exchange_gridsquare_s'] = 'Planquadrat (S)';
+$lang['contesting_exchange_gridsquare_r'] = 'Planquadrat (R)';
 
-$lang['contesting_contest_name'] = 'Contest-Name';
+$lang['contesting_contest_name'] = 'Contest Name';
 
 $lang['contesting_btn_reset_qso'] = 'Setze QSO zurück';
 $lang['contesting_btn_save_qso'] = 'Speichere QSO';
 
 $lang['contesting_title_callsign_suggestions'] = 'Rufzeichenvorschläge';
 $lang['contesting_title_contest_logbook'] = 'Contest-Logbuch';
+
+$lang['contesting_copy_exch_to_dok'] = 'Kopiere den erhaltenen Exchange in das DOK Feld der Datenbank!';
+
+

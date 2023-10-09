@@ -16,4 +16,35 @@ $lang['admin_options'] = 'Optionen';
 $lang['admin_create_user'] = 'Benutzer anlegen';
 $lang['admin_delete'] = 'Löschen';
 $lang['admin_edit'] = 'Editieren';
+$lang['admin_save'] = 'Speichern';
+$lang['admin_close'] = 'Schliessen';
 $lang['admin_user_accounts'] = 'Benutzerkonten';
+$lang['admin_danger'] = 'ACHTUNG!';
+
+
+
+// Contest Menu
+
+$lang['admin_contest_menu_line_1'] = 'Mit dieser Contest-Liste kannst du steuern, welche Contests im Contest-Logging Fenster angezeigt werden.';
+$lang['admin_contest_menu_line_2'] = 'Aktivierte Contests können im Contest-Logging Fenster ausgewählt werden, wohingegen deaktivierte ausgeblendet und somit auch nicht auswählbar gemacht werden.';
+$lang['admin_contest_menu_name'] = 'Name';
+$lang['admin_contest_menu_adif'] = 'ADIF Name';
+$lang['admin_contest_menu_active'] = 'Aktiv';
+$lang['admin_contest_menu_n_active'] = 'Nicht Aktiv';
+$lang['admin_contest_menu_activate'] = 'Aktiviere';
+$lang['admin_contest_menu_deactivate'] = 'Deaktiviere';
+
+$lang['admin_contest_add_contest'] = 'Erstelle einen Contest';
+$lang["admin_contest_create"] = "Erstellen";
+$lang['admin_contest_all_active'] = 'Aktiviere Alle';
+$lang['admin_contest_all_deactive'] = 'Deaktiviere Alle';
+
+$lang['admin_contest_name_adif'] = 'Contest ADIF Name';
+$lang['admin_contest_name_of_contest'] = 'Der Name des Contest';
+$lang['admin_contest_name_of_adif'] = 'Der Name des Contest in ADIF Spezifikation';
+$lang['admin_contest_edit_active_hint'] = 'Wähle "Aktiv" um den Contest in der Contest-Liste anzuzeigen';
+$lang['admin_contest_edit_update_contest'] = 'Aktualisiere Contest';
+$lang['admin_contest_deletion_warning'] = 'Warnung! Bist du sicher den folgenden Contest zu löschen: ';
+$lang['admin_contest_active_all_warning'] = 'Warnung! Bist du sicher, dass du ALLE Contests aktivieren willst?';
+$lang['admin_contest_deactive_all_warning'] = 'Warnung! Bist du sicher, dass du ALLE Contests deaktivieren willst?';
+
