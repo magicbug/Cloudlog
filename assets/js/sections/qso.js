@@ -504,6 +504,7 @@ $("#callsign").focusout(function() {
 		}
 
 		var find_callsign = $(this).val().toUpperCase();
+		var callsign = find_callsign;
 
 		find_callsign=find_callsign.replace(/\//g, "-");
 		find_callsign=find_callsign.replace('Ø', '0');
@@ -521,9 +522,6 @@ $("#callsign").focusout(function() {
 				if(result.dxcc.entity != undefined) {
 					$('#country').val(convert_case(result.dxcc.entity));
 					$('#callsign_info').text(convert_case(result.dxcc.entity));
-
-					var callsign = find_callsign.replace(/\//g, "-");
-					callsign = callsign.replace('Ø', '0');
 
 					if($("#sat_name" ).val() != "") {
 						//logbook/jsonlookupgrid/io77/SAT/0/0
@@ -586,16 +584,16 @@ $("#callsign").focusout(function() {
 					} else if (result.lotw_days > 7) {
 						$('#lotw_info').addClass('lotw_info_yellow');
 					}
-					$('#lotw_link').attr('href',"https://lotw.arrl.org/lotwuser/act?act="+find_callsign);
+					$('#lotw_link').attr('href',"https://lotw.arrl.org/lotwuser/act?act="+callsign);
 					$('#lotw_link').attr('target',"_blank");
 					$('#lotw_info').attr('data-toggle',"tooltip");
 					$('#lotw_info').attr('data-original-title',"LoTW User. Last upload was "+result.lotw_days+" days ago");
 					$('[data-toggle="tooltip"]').tooltip();
 				}
-				$('#qrz_info').html('<a target="_blank" href="https://www.qrz.com/db/'+find_callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/qrz.com.png"></a>');
-				$('#qrz_info').attr('title', 'Lookup '+find_callsign+' info on qrz.com');
-				$('#hamqth_info').html('<a target="_blank" href="https://www.hamqth.com/'+find_callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/hamqth.com.png"></a>');
-				$('#hamqth_info').attr('title', 'Lookup '+find_callsign+' info on hamqth.com');
+				$('#qrz_info').html('<a target="_blank" href="https://www.qrz.com/db/'+callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/qrz.com.png"></a>');
+				$('#qrz_info').attr('title', 'Lookup '+callsign+' info on qrz.com');
+				$('#hamqth_info').html('<a target="_blank" href="https://www.hamqth.com/'+callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/hamqth.com.png"></a>');
+				$('#hamqth_info').attr('title', 'Lookup '+callsign+' info on hamqth.com');
 
 				var $dok_select = $('#darc_dok').selectize();
 				var dok_selectize = $dok_select[0].selectize;
