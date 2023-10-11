@@ -355,7 +355,7 @@
 				<div class="card-body">
 					<div class="form-group">
 						<label for="qrzApiKey">QRZ.com Logbook API Key</label>
-						<input type="text" class="form-control" name="qrzapikey" id="qrzApiKey" aria-describedby="qrzApiKeyHelp" value="<?php if(set_value('qrzapikey') != "") { echo set_value('qrzapikey'); } else { echo $my_station_profile->qrzapikey; } ?>">
+						<input type="text" class="form-control" name="qrzapikey" pattern="^([A-F0-9]{4}-){3}[A-F0-9]{4}$" id="qrzApiKey" aria-describedby="qrzApiKeyHelp" value="<?php if(set_value('qrzapikey') != "") { echo set_value('qrzapikey'); } else { echo $my_station_profile->qrzapikey; } ?>">
 						<small id="qrzApiKeyHelp" class="form-text text-muted">Find your API key on <a href="https://logbook.qrz.com/logbook" target="_blank">QRZ.com's settings page</a></small>
 					</div>
 
