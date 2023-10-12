@@ -7,6 +7,7 @@ $lang['error_no_active_station_profile'] = 'Varoitus: sinun täytyy valita aktii
 $lang['notice_turn_the_radio_on'] = 'Ei kusoja tänään - siis radio päälle ja bandeille!';
 
 $lang['general_word_important'] = 'Tärkeää';
+$lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Valitse tiedosto';
 $lang['general_word_next'] = 'Next';

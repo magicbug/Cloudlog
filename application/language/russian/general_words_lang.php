@@ -7,6 +7,7 @@ $lang['error_no_active_station_profile'] = 'Внимание: вам нужно 
 $lang['notice_turn_the_radio_on'] = 'За сегодня ни одного QSO, время вернуться к радио!';
 
 $lang['general_word_important'] = 'Важно';
+$lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Информация';
 $lang['general_word_choose_file'] = 'Выберите файл';
 $lang['general_word_next'] = 'Next';

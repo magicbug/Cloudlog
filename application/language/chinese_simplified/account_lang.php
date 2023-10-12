@@ -19,6 +19,7 @@ $lang['account_password'] = '密码';
 
 $lang['account_roles'] = '角色';
 $lang['account_user_role'] = '用户角色';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = '主题';
 $lang['account_stylesheet'] = '样式表';
@@ -98,3 +99,23 @@ $lang['account_user_mastodon'] = 'Mastodon 地址';
 $lang['account_gridmap_settings'] = '网格地图设置';
 $lang['account_gridmap_default_band'] = '默认波段';
 $lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';
+
+// Station Location
+$lang['account_stationlocation_header_ln1'] = 'Station Locations define operating locations, such as your QTH, a friends QTH, or a portable station.';
+$lang['account_stationlocation_header_ln2'] = 'Similar to logbooks, a station profile keeps a set of QSOs together.';
+$lang['account_stationlocation_header_ln3'] = 'Only one station may be active at a time. In the table below this is shown with the -Active Station- badge.';
+$lang['account_stationlocation_create'] = 'Create a Station Location';
+$lang['account_stationlocation_warning'] = 'Attention: You need to set an active station location. Go to Callsign->Station Location to select one.';
+$lang['account_stationlocation_reassign_at'] = 'Please reassign them at ';
+$lang['account_stationlocation_warning_reassign'] = 'Due to recent changes within Cloudlog you need to reassign QSOs to your station profiles.';
+$lang['account_stationlocation_name'] = 'Profile Name';
+$lang['account_stationlocation_callsign'] = 'Station Callsign';
+$lang['account_stationlocation_emptylog'] = 'Empty Log';
+$lang['account_stationlocation_confirm_active'] = 'Are you sure you want to make the following station the active station: ';
+$lang['account_stationlocation_set_active'] = 'Set Active';
+$lang['account_stationlocation_active'] = 'Active Station';
+$lang['account_stationlocation_claim_ownership'] = 'Claim Ownership';
+$lang['account_stationlocation_confirm_del_qso'] = 'Are you sure you want to delete all QSOs within this station profile?';
+$lang['account_stationlocation_confirm_del_stationlocation'] = 'Are you sure you want delete station profile  ';
+$lang['account_stationlocation_confirm_del_stationlocation_qso'] = 'This will delete all QSOs within this station profile?';
+

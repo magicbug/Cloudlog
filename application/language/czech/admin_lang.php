@@ -16,6 +16,7 @@ $lang['admin_options'] = 'Možnosti';
 $lang['admin_create_user'] = 'Vytvořit uživatele';
 $lang['admin_delete'] = 'Smazat';
 $lang['admin_edit'] = 'Upravit';
+$lang['admin_copy'] = 'Copy';
 $lang['admin_save'] = 'Save';
 $lang['admin_close'] = 'Close';
 $lang['admin_user_accounts'] = 'User Accounts';

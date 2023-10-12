@@ -16,6 +16,7 @@ $lang['admin_options'] = 'Опции';
 $lang['admin_create_user'] = 'Создать пользователя';
 $lang['admin_delete'] = 'Удалить';
 $lang['admin_edit'] = 'Редактировать';
+$lang['admin_copy'] = 'Copy';
 $lang['admin_save'] = 'Save';
 $lang['admin_close'] = 'Close';
 $lang['admin_user_accounts'] = 'Аккаунты пользователей';

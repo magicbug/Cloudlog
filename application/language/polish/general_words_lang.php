@@ -7,6 +7,7 @@ $lang['error_no_active_station_profile'] = 'Uwaga: musisz ustawić aktywną loka
 $lang['notice_turn_the_radio_on'] = 'Nie zrobiłeś dziś łączności; czas włączyć radio!';
 
 $lang['general_word_important'] = 'Ważne';
+$lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Informacja';
 $lang['general_word_choose_file'] = 'Wybież plik';
 $lang['general_word_next'] = 'Next';

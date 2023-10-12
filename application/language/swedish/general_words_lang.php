@@ -7,6 +7,7 @@ $lang['error_no_active_station_profile'] = 'OBS! Du behöver ange en aktiv stati
 $lang['notice_turn_the_radio_on'] = 'Inga QSOn idag - dags att slå på radion!';
 
 $lang['general_word_important'] = 'Viktigt';
+$lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Välj fil';
 $lang['general_word_next'] = 'Next';

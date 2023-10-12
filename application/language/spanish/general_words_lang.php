@@ -7,6 +7,7 @@ $lang['error_no_active_station_profile'] = 'Attention: you need to set an active
 $lang['notice_turn_the_radio_on'] = 'No has realizado ninguna QSO hoy...¡Hora de encender la radio!';
 
 $lang['general_word_important'] = 'Importante';
+$lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Información';
 $lang['general_word_choose_file'] = 'Elegir archivo';
 $lang['general_word_next'] = 'Next';

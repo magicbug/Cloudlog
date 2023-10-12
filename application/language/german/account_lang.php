@@ -19,6 +19,7 @@ $lang['account_password'] = 'Passwort';
 
 $lang['account_roles'] = 'Rollen';
 $lang['account_user_role'] = 'Benutzerrolle';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Thema';
 $lang['account_stylesheet'] = 'Stylesheet';
@@ -98,3 +99,23 @@ $lang['account_user_mastodon'] = 'URL des Mastodonservers';
 $lang['account_gridmap_settings'] = 'Einstellung der Planquadratkarte';
 $lang['account_gridmap_default_band'] = 'Standardband';
 $lang['account_qsl_settings'] = 'QSL-Methoden, die in der Planquadratkarte und beim anlegen eines QSOs angezeigt werden';
+
+// Station Location
+$lang['account_stationlocation_header_ln1'] = 'Stationsstandorte definieren die Orte, von denen aus du QRV bist. Dein Zuhause, Bei Freunden oder Unterwegs';
+$lang['account_stationlocation_header_ln2'] = 'Ähnlich wie Logbücher trennen die Stationsstandorte die entsprechenden QSO voneinander ab.';
+$lang['account_stationlocation_header_ln3'] = 'Es kann immer nur ein Stationsstandort aktiv sein. Welches das aktuell ist siehst du in der Liste an dem "Aktive Station" Symbol';
+$lang['account_stationlocation_create'] = 'Erstelle einen neuen Stationsstandort';
+$lang['account_stationlocation_warning'] = 'Achtung: Du musst einen aktiven Stationsstandort auswählen. Gehe zu Rufzeichen -> Stationsstandorte um einen zu aktivieren.';
+$lang['account_stationlocation_reassign_at'] = 'Bitte mache die Zuordnung in ';
+$lang['account_stationlocation_warning_reassign'] = 'Aufgrund von Änderungen in Cloudlog musst du QSOs wieder einem Stationsstandort zuordnen.';
+$lang['account_stationlocation_name'] = 'Station Name';
+$lang['account_stationlocation_callsign'] = 'Station Rufzeichen';
+$lang['account_stationlocation_emptylog'] = 'Lösche Log';
+$lang['account_stationlocation_confirm_active'] = 'Bist du sicher, dass du den folgenden Stationsstandort zum aktiven Standort machen möchtest?: ';
+$lang['account_stationlocation_set_active'] = 'Aktiviere';
+$lang['account_stationlocation_active'] = 'Aktive Station';
+$lang['account_stationlocation_claim_ownership'] = 'Claim Ownership';
+$lang['account_stationlocation_confirm_del_qso'] = 'Bist du sicher, dass du alle QSO an diesem Stationsstandort löschen möchtest?';
+$lang['account_stationlocation_confirm_del_stationlocation'] = 'Are you sure you want delete station profile  ';
+$lang['account_stationlocation_confirm_del_stationlocation_qso'] = 'This will delete all QSOs within this station profile?';
+

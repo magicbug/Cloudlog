@@ -16,6 +16,7 @@ $lang['admin_options'] = 'Alternativ';
 $lang['admin_create_user'] = 'Skapa användare';
 $lang['admin_delete'] = 'Radera';
 $lang['admin_edit'] = 'Redigera';
+$lang['admin_copy'] = 'Copy';
 $lang['admin_save'] = 'Save';
 $lang['admin_close'] = 'Close';
 $lang['admin_user_accounts'] = 'User Accounts';

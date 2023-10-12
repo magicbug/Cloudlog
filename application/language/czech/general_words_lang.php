@@ -7,6 +7,7 @@ $lang['error_no_active_station_profile'] = 'Pozor: musíte nastavit aktivní um�
 $lang['notice_turn_the_radio_on'] = 'Dnes jste neudělali žádná QSO spojení; je čas zapnout rádio!';
 
 $lang['general_word_important'] = 'Důležité';
+$lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Vybrat soubor';
 $lang['general_word_next'] = 'Next';
