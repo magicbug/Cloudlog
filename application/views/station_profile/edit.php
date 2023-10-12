@@ -69,7 +69,7 @@
 						<label for="stationDXCCInput"><?php echo lang("station_location_dxcc"); ?></label>
 							<?php if ($dxcc_list->num_rows() > 0) { ?>
 							<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
-							<option value="0" <?php if($my_station_profile->station_dxcc == "0") { ?>selected<?php } ?>>- NONE -</option>
+							<option value="0" <?php if($my_station_profile->station_dxcc == "0") { ?>selected<?php } ?>><?php echo "- " . lang('general_word_none') . " -"; ?></option>
 							<?php foreach ($dxcc_list->result() as $dxcc) { ?>
 							<option value="<?php echo $dxcc->adif; ?>" <?php if($my_station_profile->station_dxcc == $dxcc->adif) { ?>selected<?php } ?>><?php echo ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix; if ($dxcc->end != NULL) echo ' ('.lang('gen_hamradio_deleted_dxcc').')';?>
 							</option>
@@ -227,20 +227,20 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header"><?php echo lang("gen_hamradio_gridsquare"); ?></h5>
+				<h5 class="card-header"><?php echo lang("station_location_gridsquare"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-		    			<label for="stationGridsquareInput"><?php echo lang("gen_hamradio_gridsquare"); ?></label>
+		    			<label for="stationGridsquareInput"><?php echo lang("station_location_gridsquare"); ?></label>
 
 						<div class="input-group mb-3">
 						<input type="text" class="form-control" name="gridsquare" id="stationGridsquareInput" aria-describedby="stationGridInputHelp" value="<?php if(set_value('gridsquare') != "") { echo set_value('gridsquare'); } else { echo $my_station_profile->station_gridsquare; } ?>" required>
 							<div class="input-group-append">
-								<button type="button" class="btn btn-outline-secondary" onclick="getLocation()"><i class="fas fa-compass"></i> Get Gridsquare</button>
+								<button type="button" class="btn btn-outline-secondary" onclick="getLocation()"><i class="fas fa-compass"></i> <?php echo lang("gen_hamradio_get_gridsquare"); ?></button>
 							</div>
 						</div>
 
-		    			<small id="stationGridInputHelp" class="form-text text-muted">Station grid square. For example: IO87IP. If you don't know your grid square then <a href="https://zone-check.eu/?m=loc" target="_blank">click here</a>!</small>
-		    			<small id="stationGridInputHelp" class="form-text text-muted">If you are located on a grid line, enter multiple grid squares separated with commas. For example: IO77,IO78,IO87,IO88.</small>
+		    			<small id="stationGridInputHelp" class="form-text text-muted"><?php echo lang("station_location_gridsquare_hint_ln1"); ?></small>
+		    			<small id="stationGridInputHelp" class="form-text text-muted"><?php echo lang("station_location_gridsquare_hint_ln2"); ?></small>
 		  			</div>
 				</div>
 			</div>
@@ -248,10 +248,10 @@
 
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">IOTA Reference</h5>
+				<h5 class="card-header"><?php echo lang("gen_hamradio_iota"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-                		<label for="stationIOTAInput">IOTA Reference</label>
+                		<label for="stationIOTAInput"><?php echo lang("gen_hamradio_iota_reference"); ?></label>
                 		<select class="custom-select" name="iota" id="stationIOTAInput" aria-describedby="stationIOTAInputHelp" placeholder="EU-005">
                     		<option value =""></option>
                     		<?php
@@ -265,8 +265,8 @@
                     		?>
                 		</select>
 
-						<small id="stationIOTAInputHelp" class="form-text text-muted">Station IOTA reference. For example: EU-005</small>
-                		<small id="stationIOTAInputHelp" class="form-text text-muted">You can look up IOTA references at the <a target="_blank" href="https://www.iota-world.org/iota-directory/annex-f-short-title-iota-reference-number-list.html">IOTA World</a> website.</small>
+						<small id="stationIOTAInputHelp" class="form-text text-muted"><?php echo lang("station_location_iota_hint_ln1"); ?></small>
+                		<small id="stationIOTAInputHelp" class="form-text text-muted"><?php echo lang("station_location_iota_hint_ln2"); ?></small>
             		</div>
 				</div>
 			</div>
@@ -276,12 +276,12 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">SOTA</h5>
+				<h5 class="card-header"><?php echo lang("gen_hamradio_sota"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-		    			<label for="stationSOTAInput">SOTA Reference</label>
+		    			<label for="stationSOTAInput"><?php echo lang("gen_hamradio_sota_reference"); ?></label>
 		    			<input type="text" class="form-control" name="sota" id="stationSOTAInput" aria-describedby="stationSOTAInputHelp" value="<?php if(set_value('sota') != "") { echo set_value('sota'); } else { echo $my_station_profile->station_sota; } ?>">
-		    			<small id="stationSOTAInputHelp" class="form-text text-muted">Station SOTA reference. You can look up SOTA references at the <a target="_blank" href="https://www.sotamaps.org/">SOTA Maps</a> website.</small>
+		    			<small id="stationSOTAInputHelp" class="form-text text-muted"><?php echo lang("station_location_sota_hint_ln1"); ?></small>
 		  			</div>
 				</div>
 			</div>
@@ -289,12 +289,12 @@
 
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">WWFF</h5>
+				<h5 class="card-header"><?php echo lang("gen_hamradio_wwff"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-						<label for="stationWWFFInput">WWFF Reference</label>
+						<label for="stationWWFFInput"><?php echo lang("gen_hamradio_wwff_reference"); ?></label>
 						<input type="text" class="form-control" name="wwff" id="stationWWFFInput" aria-describedby="stationWWFFInputHelp" value="<?php if(set_value('wwff') != "") { echo set_value('wwff'); } else { echo $my_station_profile->station_wwff; } ?>">
-						<small id="stationWWFFInputHelp" class="form-text text-muted">Station WWFF reference. You can look up WWFF references at the <a target="_blank" href="https://www.cqgma.org/mvs/">GMA Map</a> website.</small>
+						<small id="stationWWFFInputHelp" class="form-text text-muted"><?php echo lang("station_location_wwff_hint_ln1"); ?></small>
 					</div>
 				</div>
 			</div>
@@ -302,12 +302,12 @@
 
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">POTA</h5>
+				<h5 class="card-header"><?php echo lang("gen_hamradio_pota"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-						<label for="stationPOTAInput">POTA Reference</label>
+						<label for="stationPOTAInput"><?php echo lang("gen_hamradio_pota_reference"); ?></label>
 						<input type="text" class="form-control" name="pota" id="stationPOTAInput" aria-describedby="stationPOTAInputHelp" value="<?php if(set_value('pota') != "") { echo set_value('pota'); } else { echo $my_station_profile->station_pota; } ?>">
-						<small id="stationPOTAInputHelp" class="form-text text-muted">Station POTA reference. You can look up POTA references at the <a target="_blank" href="https://pota.app/#/map/">POTA Map</a> website.</small>
+						<small id="stationPOTAInputHelp" class="form-text text-muted"><?php echo lang("station_location_pota_hint_ln1"); ?></small>
 					</div>
 				</div>
 			</div>
@@ -317,18 +317,18 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">Signature</h5>
+				<h5 class="card-header"><?php echo lang("station_location_signature"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-		    			<label for="stationSigInput">Signature</label>
+		    			<label for="stationSigInput"><?php echo lang("station_location_signature_name"); ?></label>
 		    			<input type="text" class="form-control" name="sig" id="stationSigInput" aria-describedby="stationSigInputHelp" value="<?php if(set_value('sig') != "") { echo set_value('sig'); } else { echo $my_station_profile->station_sig; } ?>">
-		    			<small id="stationSigInputHelp" class="form-text text-muted">Station Signature (e.g. GMA)..</small>
+		    			<small id="stationSigInputHelp" class="form-text text-muted"><?php echo lang("station_location_signature_name_hint"); ?></small>
 					</div>
 
 					<div class="form-group">
-		    			<label for="stationSigInfoInput">Signature Information</label>
+		    			<label for="stationSigInfoInput"><?php echo lang("station_location_signature_info"); ?></label>
 		    			<input type="text" class="form-control" name="sig_info" id="stationSigInfoInput" aria-describedby="stationSigInfoInputHelp" value="<?php if(set_value('sig_info') != "") { echo set_value('sig_info'); } else { echo $my_station_profile->station_sig_info; } ?>">
-		    			<small id="stationSigInfoInputHelp" class="form-text text-muted">Station Signature Info (e.g. DA/NW-357).</small>
+		    			<small id="stationSigInfoInputHelp" class="form-text text-muted"><?php echo lang("station_location_signature_info_hint"); ?></small>
 					</div>
 				</div>
 			</div>

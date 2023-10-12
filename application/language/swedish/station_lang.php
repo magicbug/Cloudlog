@@ -37,3 +37,19 @@ $lang['station_location_state'] = 'Station State';
 $lang['station_location_state_hint'] = 'Station state. Applies to certain countries only. Leave blank if not applicable.';
 $lang['station_location_county'] = 'Station County';
 $lang['station_location_county_hint'] = 'Station County (Only used for USA/Alaska/Hawaii).';
+$lang['station_location_gridsquare'] = 'Station Gridsquare';
+$lang['station_location_gridsquare_hint_ln1'] = "Station gridsquare. For example: IO87IP. If you don't know your grid square then <a href='https://zone-check.eu/?m=loc' target='_blank'>click here</a>!";
+$lang['station_location_gridsquare_hint_ln2'] = "If you are located on a grid line, enter multiple grid squares separated with commas. For example: IO77,IO78,IO87,IO88.";
+$lang['station_location_iota_hint_ln1'] = "Station IOTA reference. For example: EU-005";
+$lang['station_location_iota_hint_ln2'] = "You can look up IOTA references at the <a target='_blank' href='https://www.iota-world.org/iota-directory/annex-f-short-title-iota-reference-number-list.html'>IOTA World</a> website.";
+$lang['station_location_sota_hint_ln1'] = "Station SOTA reference. You can look up SOTA references at the <a target='_blank' href='https://www.sotamaps.org/'>SOTA Maps</a> website.";
+$lang['station_location_wwff_hint_ln1'] = "Station WWFF reference. You can look up WWFF references at the <a target='_blank' href='https://www.cqgma.org/mvs/'>GMA Map</a> website.";
+$lang['station_location_pota_hint_ln1'] = "Station POTA reference. You can look up POTA references at the <a target='_blank' href='https://pota.app/#/map/'>POTA Map</a> website.";
+$lang['station_location_signature'] = "Signature";
+$lang['station_location_signature_name'] = "Signature Name";
+$lang['station_location_signature_name_hint'] = "Station Signature (e.g. GMA)..";
+$lang['station_location_signature_info'] = "Signature Information";
+$lang['station_location_signature_info_hint'] = "Station Signature Info (e.g. DA/NW-357).";
+
+
+

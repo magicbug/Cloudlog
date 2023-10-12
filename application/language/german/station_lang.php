@@ -37,3 +37,19 @@ $lang['station_location_state'] = 'Station Staat';
 $lang['station_location_state_hint'] = 'Station Staat. Nur verfügbar für einige Länder. Leer lassen falls nicht verfügbar.';
 $lang['station_location_county'] = 'Station County';
 $lang['station_location_county_hint'] = 'Station County (Nur für USA/Alaska/Hawaii).';
+$lang['station_location_gridsquare'] = 'Station Planquadrat';
+$lang['station_location_gridsquare_hint_ln1'] = "Station Planquadrat. Zum Beispiel: JO40IC. Wenn du dein Planquadrat nicht kennst <a href='https://zone-check.eu/?m=loc' target='_blank'>klicke hier</a>!";
+$lang['station_location_gridsquare_hint_ln2'] = "Wenn du genau auf der Linie eines Planquadrates bist kannst du mehrere Planquadrate mit Kommas getrennt eingeben. Zum Beispiel: IO77,IO78,IO87,IO88.";
+$lang['station_location_iota_hint_ln1'] = "IOTA Referenznummer der Station. Zum Beispiel: EU-005";
+$lang['station_location_iota_hint_ln2'] = "Du kannst IOTA Referenznummern auf der <a target='_blank' href='https://www.iota-world.org/iota-directory/annex-f-short-title-iota-reference-number-list.html'>IOTA World Website</a> nachschlagen.";
+$lang['station_location_sota_hint_ln1'] = "SOTA Referenznummer der Station. Du kannst SOTA Referenznummern auf der <a target='_blank' href='https://www.sotamaps.org/'>SOTA Maps Webseite</a> nachschlagen.";
+$lang['station_location_wwff_hint_ln1'] = "WWFF Referenznummer der Station. Du kannst WWFF Referenznummern auf der <a target='_blank' href='https://www.cqgma.org/mvs/'>GMA Map Webseite</a> nachschlagen.";
+$lang['station_location_pota_hint_ln1'] = "POTA Referenznummer der Station. Du kannst POTA Referenznummern auf der <a target='_blank' href='https://pota.app/#/map/'>POTA Map Webseite</a> nachschlagen.";
+$lang['station_location_signature'] = "Signaturen";
+$lang['station_location_signature_name'] = "Signatur Bezeichnung";
+$lang['station_location_signature_name_hint'] = "Signatur/Referenz der Station (z.B. GMA)..";
+$lang['station_location_signature_info'] = "Signatur Information";
+$lang['station_location_signature_info_hint'] = "Signatur/Referenz Information der Station (z.B. DA/NW-357).";
+
+
+

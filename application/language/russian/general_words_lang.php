@@ -140,6 +140,7 @@ $lang['gen_hamradio_iota'] = 'IOTA';
 $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
+$lang['gen_hamradio_get_gridsquare'] = 'Get Gridsquare';
 $lang['gen_hamradio_gridsquare'] = 'Квадрат';
 $lang['gen_hamradio_distance'] = 'Дистанция';
 $lang['gen_hamradio_operator'] = 'Оператор';
