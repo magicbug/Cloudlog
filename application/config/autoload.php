@@ -110,6 +110,7 @@ $autoload['language'] = array(
     'options',
     'qslcard',
     'qso',
+    'station',
     'statistics'
     );
 

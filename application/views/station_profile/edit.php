@@ -37,21 +37,21 @@
 				<div class="card-body">
 
 					<div class="form-group">
-						<label for="stationNameInput"><?php echo lang("account_stationlocation_name"); ?></label>
+						<label for="stationNameInput"><?php echo lang("station_location_name"); ?></label>
 						<input type="text" class="form-control" name="station_profile_name" id="stationNameInput" aria-describedby="stationNameInputHelp" value="<?php if(set_value('station_profile_name') != "") { echo set_value('station_profile_name'); } else { echo $my_station_profile->station_profile_name; } ?>" required>
-						<small id="stationNameInputHelp" class="form-text text-muted"><?php echo lang("account_stationlocation_name_hint"); ?></small>
+						<small id="stationNameInputHelp" class="form-text text-muted"><?php echo lang("station_location_name_hint"); ?></small>
 					</div>
 
 					<div class="form-group">
-						<label for="stationCallsignInput"><?php echo lang("account_stationlocation_callsign"); ?></label>
+						<label for="stationCallsignInput"><?php echo lang("station_location_callsign"); ?></label>
 						<input type="text" class="form-control" name="station_callsign" id="stationCallsignInput" aria-describedby="stationCallsignInputHelp" value="<?php if(set_value('station_callsign') != "") { echo set_value('station_callsign'); } else { echo $my_station_profile->station_callsign; } ?>" required>
-						<small id="stationCallsignInputHelp" class="form-text text-muted"><?php echo lang("account_stationlocation_callsign_hint"); ?></small>
+						<small id="stationCallsignInputHelp" class="form-text text-muted"><?php echo lang("station_location_callsign_hint"); ?></small>
 					</div>
 
 					<div class="form-group">
-						<label for="stationPowerInput"><?php echo lang("account_stationlocation_power"); ?></label>
+						<label for="stationPowerInput"><?php echo lang("station_location_power"); ?></label>
 						<input type="number" class="form-control" name="station_power" step="1" id="stationPowerInput" aria-describedby="stationPowerInputHelp" value="<?php if(set_value('station_power') != "") { echo set_value('station_power'); } else { echo $my_station_profile->station_power; } ?>">
-						<small id="stationPowerInputHelp" class="form-text text-muted"><?php echo lang("account_stationlocation_power_hint"); ?></small>
+						<small id="stationPowerInputHelp" class="form-text text-muted"><?php echo lang("station_location_power_hint"); ?></small>
 					</div>
 				</div>
 			</div>
@@ -66,7 +66,7 @@
 				<div class="card-body">
 					<!-- DXCC -->
 					<div class="form-group">
-						<label for="stationDXCCInput"><?php echo lang("account_stationlocation_dxcc"); ?></label>
+						<label for="stationDXCCInput"><?php echo lang("station_location_dxcc"); ?></label>
 							<?php if ($dxcc_list->num_rows() > 0) { ?>
 							<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
 							<option value="0" <?php if($my_station_profile->station_dxcc == "0") { ?>selected<?php } ?>>- NONE -</option>
@@ -76,19 +76,19 @@
 							<?php } ?>
 							</select>
 							<?php } ?>
-						<small id="stationDXCCInputHelp" class="form-text text-muted"><?php echo lang("account_stationlocation_dxcc_hint"); ?></small>
+						<small id="stationDXCCInputHelp" class="form-text text-muted"><?php echo lang("station_location_dxcc_hint"); ?></small>
 					</div>
 
 					<!-- City -->
 					<div class="form-group">
-						<label for="stationCityInput"><?php echo lang("account_stationlocation_city"); ?></label>
+						<label for="stationCityInput"><?php echo lang("station_location_city"); ?></label>
 						<input type="text" class="form-control" name="city" id="stationCityInput" aria-describedby="stationCityInputHelp" value="<?php if(set_value('city') != "") { echo set_value('city'); } else { echo $my_station_profile->station_city; } ?>">
-		    			<small id="stationCityInputHelp" class="form-text text-muted"><?php echo lang("account_stationlocation_city_hint"); ?></small>
+		    			<small id="stationCityInputHelp" class="form-text text-muted"><?php echo lang("station_location_city_hint"); ?></small>
 		  			</div>
 
 					<!-- US State -->
 					<div class="form-group" id="us_state">
-		    			<label for="stateInput"><?php echo lang("account_stationlocation_state"); ?></label>
+		    			<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
 		    				<select class="form-control custom-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 								<option value=""></option>
 								<option value="AK" <?php if($my_station_profile->state == "AK") { echo "selected"; } ?>>Alaska</option>
@@ -143,12 +143,12 @@
 								<option value="WV" <?php if($my_station_profile->state == "WV") { echo "selected"; } ?>>West Virginia</option>
 								<option value="WY" <?php if($my_station_profile->state == "WY") { echo "selected"; } ?>>Wyoming</option>
 							</select>
-		    				<small id="StateHelp" class="form-text text-muted"><?php echo lang("account_stationlocation_state_hint"); ?></small>
+		    				<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 		 				</div>
 
 					<!-- Canada State -->
 					<div class="form-group" id="canada_state">
-		    			<label for="stateInput"><?php echo lang("account_stationlocation_state"); ?></label>
+		    			<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
 		    				<select class="form-control custom-select" name="station_ca_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 								<option value=""></option>
 								<option value="AB" <?php if($my_station_profile->state == "AB") { echo "selected"; } ?>>Alberta</option>
@@ -165,14 +165,14 @@
 								<option value="SK" <?php if($my_station_profile->state == "SK") { echo "selected"; } ?>>Saskatchewan</option>
 								<option value="YT" <?php if($my_station_profile->state == "YT") { echo "selected"; } ?>>Yukon</option>
 							</select>
-		    				<small id="StateHelp" class="form-text text-muted"><?php echo lang("account_stationlocation_state_hint"); ?></small>
+		    				<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
 						<!-- US County -->
 						<div class="form-group">
-							<label for="stationCntyInput"><?php echo lang("account_stationlocation_county"); ?></label>
+							<label for="stationCntyInput"><?php echo lang("station_location_county"); ?></label>
 							<input disabled="disabled" type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp" value="<?php if(set_value('station_cnty') != "") { echo set_value('station_cnty'); } else { echo $my_station_profile->station_cnty; } ?>">
-							<small id="stationCntyInputHelp" class="form-text text-muted"><?php echo lang("account_stationlocation_county_hint"); ?></small>
+							<small id="stationCntyInputHelp" class="form-text text-muted"><?php echo lang("station_location_county_hint"); ?></small>
 		  				</div>
 				</div>
 			</div>

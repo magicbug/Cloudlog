@@ -12,25 +12,25 @@
 
 <div class="card">
   <div class="card-body">
-    <p class="card-text"><?php echo lang('account_stationlocation_header_ln1'); ?></p>
-	<p class="card-text"><?php echo lang('account_stationlocation_header_ln2'); ?></p>
-	<p class="card-text"><?php echo lang('account_stationlocation_header_ln3'); ?></p>
+    <p class="card-text"><?php echo lang('station_location_header_ln1'); ?></p>
+	<p class="card-text"><?php echo lang('station_location_header_ln2'); ?></p>
+	<p class="card-text"><?php echo lang('station_location_header_ln3'); ?></p>
 
-	  <p><a href="<?php echo site_url('station/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> <?php echo lang('account_stationlocation_create'); ?></a></p>
+	  <p><a href="<?php echo site_url('station/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> <?php echo lang('station_location_create'); ?></a></p>
 	  
 		<?php if ($stations->num_rows() > 0) { ?>
 
 		<?php if($current_active == 0) { ?>
 		<div class="alert alert-danger" role="alert">
-		<?php echo lang('account_stationlocation_warning'); ?>
+		<?php echo lang('station_location_warning'); ?>
 		</div>
 		<?php } ?>
 
 		<?php if (($is_there_qsos_with_no_station_id >= 1) && ($is_admin)) { ?>
 			<div class="alert alert-danger" role="alert">
-		  		<span class="badge badge-pill badge-warning"><?php echo lang('general_word_warning'); ?></span> <?php echo lang('account_stationlocation_warning_reassign'); ?>
+		  		<span class="badge badge-pill badge-warning"><?php echo lang('general_word_warning'); ?></span> <?php echo lang('station_location_warning_reassign'); ?>
 				</br>
-				<?php echo lang('account_stationlocation_reassign_at'); ?> <a href="<?php echo site_url('maintenance/'); ?>" class="btn btn-warning"><i class="fas fa-sync"></i><?php echo lang('account_word_admin') . "/" . lang('general_word_maintenance'); ?></a>
+				<?php echo lang('station_location_reassign_at'); ?> <a href="<?php echo site_url('maintenance/'); ?>" class="btn btn-warning"><i class="fas fa-sync"></i><?php echo lang('account_word_admin') . "/" . lang('general_word_maintenance'); ?></a>
 			</div>
 		<?php } ?>
 	  
@@ -38,14 +38,14 @@
 		<table id="station_locations_table" class="table table-sm table-striped">
 			<thead>
 				<tr>
-					<th scope="col"><?php echo lang('account_stationlocation_name'); ?></th>
-					<th scope="col"><?php echo lang('account_stationlocation_callsign'); ?></th>
+					<th scope="col"><?php echo lang('station_location_name'); ?></th>
+					<th scope="col"><?php echo lang('station_location_callsign'); ?></th>
 					<th scope="col"><?php echo lang('general_word_country'); ?></th>
 					<th scope="col"><?php echo lang('gen_hamradio_gridsquare'); ?></th>
 					<th></th>
 					<th scope="col"><?php echo lang('admin_edit'); ?></th>
 					<th scope="col"><?php echo lang('admin_copy'); ?></th>
-					<th scope="col"><?php echo lang('account_stationlocation_emptylog'); ?></th>
+					<th scope="col"><?php echo lang('station_location_emptylog'); ?></th>
                     <th scope="col"><?php echo lang('admin_delete'); ?></th>
 				</tr>
 			</thead>
@@ -60,9 +60,9 @@
 					<td><?php echo $row->station_gridsquare;?></td>
 					<td style="text-align: center" data-order="<?php echo $row->station_id;?>">
 						<?php if($row->station_active != 1) { ?>
-							<a href="<?php echo site_url('station/set_active/').$current_active."/".$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('<?php echo lang('account_stationlocation_confirm_active'); ?> <?php echo $row->station_profile_name; ?>');"><?php echo lang('account_stationlocation_set_active'); ?></a>
+							<a href="<?php echo site_url('station/set_active/').$current_active."/".$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('<?php echo lang('station_location_confirm_active'); ?> <?php echo $row->station_profile_name; ?>');"><?php echo lang('station_location_set_active'); ?></a>
 						<?php } else { ?>
-							<span class="badge badge-success"><?php echo lang('account_stationlocation_active'); ?></span>
+							<span class="badge badge-success"><?php echo lang('station_location_active'); ?></span>
 						<?php } ?>
 
 						<br>
@@ -71,7 +71,7 @@
 					</td>
 					<td>
 						<?php if($row->user_id == "") { ?>
-							<a href="<?php echo site_url('station/claim_user')."/".$row->station_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-user-plus"></i> <?php echo lang('account_stationlocation_claim_ownership'); ?></a>
+							<a href="<?php echo site_url('station/claim_user')."/".$row->station_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-user-plus"></i> <?php echo lang('station_location_claim_ownership'); ?></a>
 						<?php } ?>
 						<a href="<?php echo site_url('station/edit')."/".$row->station_id; ?>" title=<?php echo lang('admin_edit'); ?> class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
 						</td>
@@ -79,11 +79,11 @@
 						<a href="<?php echo site_url('station/copy')."/".$row->station_id; ?>" title=<?php echo lang('admin_copy'); ?> class="btn btn-outline-primary btn-sm"><i class="fas fa-copy"></i></a>
 					</td>
                     <td>
-                        <a href="<?php echo site_url('station/deletelog')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" title=<?php echo lang('account_stationlocation_emptylog'); ?> onclick="return confirm('<?php echo lang('account_stationlocation_confirm_del_qso'); ?>');"><i class="fas fa-trash-alt"></i></a></td>
+                        <a href="<?php echo site_url('station/deletelog')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" title=<?php echo lang('station_location_emptylog'); ?> onclick="return confirm('<?php echo lang('station_location_confirm_del_qso'); ?>');"><i class="fas fa-trash-alt"></i></a></td>
                     </td>
 					<td>
 						<?php if($row->station_active != 1) { ?>
-							<a href="<?php echo site_url('station/delete')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" title=<?php echo lang('admin_delete'); ?> onclick="return confirm('<?php echo lang('account_stationlocation_confirm_del_stationlocation'); ?> <?php echo $row->station_profile_name; ?> <?php echo lang('account_stationlocation_confirm_del_stationlocation_qso'); ?>');"><i class="fas fa-trash-alt"></i></a>
+							<a href="<?php echo site_url('station/delete')."/".$row->station_id; ?>" class="btn btn-danger btn-sm" title=<?php echo lang('admin_delete'); ?> onclick="return confirm('<?php echo lang('station_location_confirm_del_stationlocation'); ?> <?php echo $row->station_profile_name; ?> <?php echo lang('station_location_confirm_del_stationlocation_qso'); ?>');"><i class="fas fa-trash-alt"></i></a>
 						<?php } ?>
 					</td>
 				</tr>
