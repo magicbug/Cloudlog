@@ -444,7 +444,7 @@
 		</div>
 	</div>
 
-	<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> <?php echo $form_action; ?> Station Location</button>
+	<button type="submit" class="btn btn-primary" style="margin-bottom: 30px;"><i class="fas fa-plus-square"></i> <?php echo $form_action; ?> Station Location</button>
 
 	</form>
 
