@@ -121,7 +121,9 @@ $lang['gen_hamradio_satellite_mode'] = 'Mode du Satellite';
 
 $lang['gen_hamradio_logbook'] = 'Logbook';
 
+$lang['gen_hamradio_zones'] = 'Zones';
 $lang['gen_hamradio_cq_zone'] = 'Zone CQ ';
+$lang['gen_hamradio_itu_zone'] = 'ITU Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_deleted_dxcc'] = 'Deleted DXCC';
 $lang['gen_hamradio_continent'] = 'Continent';
@@ -129,8 +131,8 @@ $lang['gen_hamradio_usa_state'] = 'Etat USA';
 $lang['gen_hamradio_county_reference'] = 'USA County';
 $lang['gen_hamradio_iota_reference'] = 'Référence IOTA';
 $lang['gen_hamradio_sota_reference'] = 'Référence SOTA';
-$lang['gen_hamradio_wwff_reference'] = 'WWFF Reference';
-$lang['gen_hamradio_pota_reference'] = 'POTA Reference';
+$lang['gen_hamradio_wwff_reference'] = 'Référence WWFF';
+$lang['gen_hamradio_pota_reference'] = 'Référence POTA';
 $lang['gen_hamradio_dok'] = 'DOK';
 $lang['gen_hamradio_state'] = 'State';
 $lang['gen_hamradio_iota'] = 'IOTA';
@@ -143,6 +145,12 @@ $lang['gen_hamradio_operator'] = 'Operateur';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
+
+// Find your CQ/ITU Zone
+$lang['gen_find_zone_cq_part1'] = "If you don't know your CQ Zone then ";
+$lang['gen_find_zone_itu_part1'] = "If you don't know your ITU Zone then ";
+$lang['gen_find_zone_part2'] = 'click here';
+$lang['gen_find_zone_part3'] = ' to find it!';
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Vous avez eu';

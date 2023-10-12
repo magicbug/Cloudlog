@@ -121,7 +121,9 @@ $lang['gen_hamradio_satellite_mode'] = 'Uydu Modu';
 
 $lang['gen_hamradio_logbook'] = 'Kayıt defteri';
 
+$lang['gen_hamradio_zones'] = 'Zones';
 $lang['gen_hamradio_cq_zone'] = 'CQ Alanı';
+$lang['gen_hamradio_itu_zone'] = 'ITU Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_deleted_dxcc'] = 'Deleted DXCC';
 $lang['gen_hamradio_continent'] = 'Continent';
@@ -143,6 +145,12 @@ $lang['gen_hamradio_operator'] = 'Operatör';
 
 $lang['gen_hamradio_sig'] = 'İmza';
 $lang['gen_hamradio_sig_info'] = 'İmza bilgisi';
+
+// Find your CQ/ITU Zone
+$lang['gen_find_zone_cq_part1'] = "If you don't know your CQ Zone then ";
+$lang['gen_find_zone_itu_part1'] = "If you don't know your ITU Zone then ";
+$lang['gen_find_zone_part2'] = 'click here';
+$lang['gen_find_zone_part3'] = ' to find it!';
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Bu gün';

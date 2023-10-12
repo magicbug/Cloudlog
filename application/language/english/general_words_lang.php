@@ -121,7 +121,9 @@ $lang['gen_hamradio_satellite_mode'] = 'Satellite Mode';
 
 $lang['gen_hamradio_logbook'] = 'Logbook';
 
+$lang['gen_hamradio_zones'] = 'Zones';
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
+$lang['gen_hamradio_itu_zone'] = 'ITU Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_deleted_dxcc'] = 'Deleted DXCC';
 $lang['gen_hamradio_continent'] = 'Continent';
@@ -143,6 +145,10 @@ $lang['gen_hamradio_operator'] = 'Operator';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
+
+// Find your CQ/ITU Zone
+$lang['gen_find_zone_cq'] = "If you don't know your CQ Zone then <a href='https://zone-check.eu/?m=cq' target='_blank'>click here</a> to find it";
+$lang['gen_find_zone_itu'] = "If you don't know your ITU Zone then <a href='https://zone-check.eu/?m=itu' target='_blank'>click here</a> to find it";
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'You have had';
