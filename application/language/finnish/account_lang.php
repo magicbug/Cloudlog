@@ -101,9 +101,11 @@ $lang['account_gridmap_default_band'] = 'Oletusbandi';
 $lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';
 
 // Station Location
+$lang['account_stationlocation'] = 'Station Location';
 $lang['account_stationlocation_header_ln1'] = 'Station Locations define operating locations, such as your QTH, a friends QTH, or a portable station.';
 $lang['account_stationlocation_header_ln2'] = 'Similar to logbooks, a station profile keeps a set of QSOs together.';
 $lang['account_stationlocation_header_ln3'] = 'Only one station may be active at a time. In the table below this is shown with the -Active Station- badge.';
+$lang['account_stationlocation_create_header'] = 'Create Station Location';
 $lang['account_stationlocation_create'] = 'Create a Station Location';
 $lang['account_stationlocation_warning'] = 'Attention: You need to set an active station location. Go to Callsign->Station Location to select one.';
 $lang['account_stationlocation_reassign_at'] = 'Please reassign them at ';

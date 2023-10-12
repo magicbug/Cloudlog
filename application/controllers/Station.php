@@ -28,7 +28,7 @@ class Station extends CI_Controller {
 		$data['is_there_qsos_with_no_station_id'] = $this->Logbook_model->check_for_station_id();
 
 		// Render Page
-		$data['page_title'] = "Station Location";
+		$data['page_title'] = lang('account_stationlocation');
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('station_profile/index');
 		$this->load->view('interface_assets/footer');
@@ -48,7 +48,7 @@ class Station extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$data['page_title'] = "Create Station Location";
+			$data['page_title'] = lang('account_stationlocation_create_header');
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('station_profile/create');
 			$this->load->view('interface_assets/footer');
