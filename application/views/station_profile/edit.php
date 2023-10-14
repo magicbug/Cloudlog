@@ -64,20 +64,46 @@
 			<div class="card">
 				<div class="card-header"><?php echo lang("general_word_location"); ?></div>
 				<div class="card-body">
+					
 					<!-- DXCC -->
 					<div class="form-group">
-						<label for="stationDXCCInput"><?php echo lang("station_location_dxcc"); ?></label>
-							<?php if ($dxcc_list->num_rows() > 0) { ?>
-							<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
-							<option value="0" <?php if($my_station_profile->station_dxcc == "0") { ?>selected<?php } ?>><?php echo "- " . lang('general_word_none') . " -"; ?></option>
-							<?php foreach ($dxcc_list->result() as $dxcc) { ?>
-							<option value="<?php echo $dxcc->adif; ?>" <?php if($my_station_profile->station_dxcc == $dxcc->adif) { ?>selected<?php } ?>><?php echo ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix; if ($dxcc->end != NULL) echo ' ('.lang('gen_hamradio_deleted_dxcc').')';?>
-							</option>
-							<?php } ?>
-							</select>
-							<?php } ?>
-						<small id="stationDXCCInputHelp" class="form-text text-muted"><?php echo lang("station_location_dxcc_hint"); ?></small>
+					    <label for="stationDXCCInput"><?php echo lang("station_location_dxcc"); ?></label>
+					    <?php if ($dxcc_list->num_rows() > 0) { ?>
+					        <select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
+					            <option value="0" <?php if($my_station_profile->station_dxcc == "0") { ?>selected<?php } ?>><?php echo "- " . lang('general_word_none') . " -"; ?></option>
+					            <?php foreach ($dxcc_list->result() as $dxcc) { ?>
+					                <?php $isDeleted = $dxcc->end !== NULL; ?>
+					                <option value="<?php echo $dxcc->adif; ?>" <?php if($my_station_profile->station_dxcc == $dxcc->adif) { ?>selected<?php } ?>>
+					                    <?php echo ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix;
+					                    if ($isDeleted) {
+					                        echo ' (' . lang('gen_hamradio_deleted_dxcc') . ')';
+					                    }
+					                    ?>
+					                </option>
+					            <?php } ?>
+					        </select>
+					        <?php } ?>
+					    <small id="stationDXCCInputHelp" class="form-text text-muted"><?php echo lang("station_location_dxcc_hint"); ?></small>
+						<div id="warningMessage" style="color: red;"></div>
 					</div>
+					<!-- DXCC Deleted Warning -->
+					<script>
+						var lang_station_location_dxcc_warning = '<?php echo lang('station_location_dxcc_warning'); ?>';
+					</script>
+					<script>
+						document.getElementById('dxcc_select').addEventListener('change', function() {
+						    var selectedOption = this.options[this.selectedIndex];
+						    var isDeleted = selectedOption.textContent.includes('<?php echo lang('gen_hamradio_deleted_dxcc'); ?>');
+					
+						    if (isDeleted) {
+						        this.style.border = '2px solid red';
+								warningMessage.innerText = lang_station_location_dxcc_warning;
+						    } else {
+						        this.style.border = '';
+								warningMessage.innerText = "";
+						    }
+					});
+					</script>
 
 					<!-- City -->
 					<div class="form-group">
