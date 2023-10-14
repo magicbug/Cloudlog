@@ -338,12 +338,12 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">eQSL</h5>
+				<h5 class="card-header"><?php echo lang("eqsl_short"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-		    			<label for="eqslNickname">eQSL QTH Nickname</label>
+		    			<label for="eqslNickname">eQSL QTH Nickname</label> <!-- This does not need Multilanguage Support -->
 		    			<input type="text" class="form-control" name="eqslnickname" id="eqslNickname" aria-describedby="eqslhelp" value="<?php if(set_value('eqslnickname') != "") { echo set_value('eqslnickname'); } else { echo $my_station_profile->eqslqthnickname; } ?>">
-		    			<small id="eqslhelp" class="form-text text-muted">eQSL QTH Nickname.</small>
+		    			<small id="eqslhelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_hint"); ?></small>
 		  			</div>
 				</div>
 			</div>
@@ -351,19 +351,19 @@
 
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">QRZ <span class="badge badge-warning">Subscription Required</span></h5>
+				<h5 class="card-header">QRZ.com <span class="badge badge-warning"> <?php echo lang("station_location_qrz_subscription"); ?></span></h5> <!-- "QRZ.com" does not need Multilanguage Support -->
 				<div class="card-body">
 					<div class="form-group">
-						<label for="qrzApiKey">QRZ.com Logbook API Key</label>
+						<label for="qrzApiKey">QRZ Logbook API Key</label> <!-- This does not need Multilanguage Support -->
 						<input type="text" class="form-control" name="qrzapikey" pattern="^([A-F0-9]{4}-){3}[A-F0-9]{4}$" id="qrzApiKey" aria-describedby="qrzApiKeyHelp" value="<?php if(set_value('qrzapikey') != "") { echo set_value('qrzapikey'); } else { echo $my_station_profile->qrzapikey; } ?>">
-						<small id="qrzApiKeyHelp" class="form-text text-muted">Find your API key on <a href="https://logbook.qrz.com/logbook" target="_blank">QRZ.com's settings page</a></small>
+						<small id="qrzApiKeyHelp" class="form-text text-muted"><?php echo lang("station_location_qrz_hint"); ?></a></small>
 					</div>
 
 					<div class="form-group">
-						<label for="qrzrealtime">QRZ.com Logbook Realtime Upload</label>
+						<label for="qrzrealtime"><?php echo lang("station_location_qrz_realtime_upload"); ?></label>
 						<select class="custom-select" id="qrzrealtime" name="qrzrealtime">
-							<option value="1" <?php if ($my_station_profile->qrzrealtime == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
-							<option value="0" <?php if ($my_station_profile->qrzrealtime == 0) { echo " selected =\"selected\""; } ?>>No</option>
+							<option value="1" <?php if ($my_station_profile->qrzrealtime == 1) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" <?php if ($my_station_profile->qrzrealtime == 0) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_no"); ?></option>
 						</select>
 					</div>
 				</div>
@@ -374,18 +374,18 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">HRDLog.net</h5>
+				<h5 class="card-header">HRDLog.net</h5> <!-- This does not need Multilanguage Support -->
 				<div class="card-body">
 					<div class="form-group">
-						<label for="webadifApiKey">HRDLog.net API Code</label>
+						<label for="webadifApiKey">HRDLog.net API Code</label> <!-- This does not need Multilanguage Support -->
 						<input type="text" class="form-control" name="hrdlog_code" id="hrdlog_code" aria-describedby="hrdlog_codeHelp" value="<?php if(set_value('hrdlog_code') != "") { echo set_value('hrdlog_code'); } else { echo $my_station_profile->hrdlog_code; } ?>">
-						<small id="hrdlog_codeHelp" class="form-text text-muted">Create your API Code on <a href="http://www.hrdlog.net/EditUser.aspx" target="_blank">HRDLog.net Userprofile page</a></small>
+						<small id="hrdlog_codeHelp" class="form-text text-muted"><?php echo lang("station_location_hrdlog_hint"); ?></a></small>
 					</div>
 					<div class="form-group">
-						<label for="hrdlogrealtime">HRDLog.net Realtime Upload</label>
+						<label for="hrdlogrealtime"><?php echo lang("station_location_hrdlog_realtime_upload"); ?></label>
 						<select class="custom-select" id="hrdlogrealtime" name="hrdlogrealtime">
-							<option value="1" <?php if ($my_station_profile->hrdlogrealtime == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
-							<option value="0" <?php if ($my_station_profile->hrdlogrealtime == 0) { echo " selected =\"selected\""; } ?>>No</option>
+							<option value="1" <?php if ($my_station_profile->hrdlogrealtime == 1) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" <?php if ($my_station_profile->hrdlogrealtime == 0) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_no"); ?></option>
 						</select>
 					</div>
 				</div>
@@ -395,18 +395,18 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">QO-100 Dx Club</h5>
+				<h5 class="card-header">QO-100 Dx Club</h5> <!-- This does not need Multilanguage Support -->
 				<div class="card-body">
 					<div class="form-group">
-						<label for="webadifApiKey">QO-100 Dx Club API Key</label>
+						<label for="webadifApiKey">QO-100 Dx Club API Key</label> <!-- This does not need Multilanguage Support -->
 						<input type="text" class="form-control" name="webadifapikey" id="webadifApiKey" aria-describedby="webadifApiKeyHelp" value="<?php if(set_value('webadifapikey') != "") { echo set_value('webadifapikey'); } else { echo $my_station_profile->webadifapikey; } ?>">
-						<small id="webadifApiKeyHelp" class="form-text text-muted">Create your API key on <a href="https://qo100dx.club" target="_blank">your QO-100 Dx Club's profile page</a></small>
+						<small id="webadifApiKeyHelp" class="form-text text-muted"><?php echo lang("station_location_qo100_hint"); ?></a></small>
 					</div>
 					<div class="form-group">
-						<label for="webadifrealtime">QO-100 Dx Club Realtime Upload</label>
+						<label for="webadifrealtime"><?php echo lang("station_location_qo100_realtime_upload"); ?></label>
 						<select class="custom-select" id="webadifrealtime" name="webadifrealtime">
-							<option value="1" <?php if ($my_station_profile->webadifrealtime == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
-							<option value="0" <?php if ($my_station_profile->webadifrealtime == 0) { echo " selected =\"selected\""; } ?>>No</option>
+							<option value="1" <?php if ($my_station_profile->webadifrealtime == 1) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" <?php if ($my_station_profile->webadifrealtime == 0) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_no"); ?></option>
 						</select>
 					</div>
 				</div>
@@ -416,27 +416,27 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">OQRS</h5>
+				<h5 class="card-header">OQRS</h5> <!-- This does not need Multilanguage Support -->
 				<div class="card-body">
 					<div class="form-group">
-						<label for="oqrs">OQRS Enabled</label>
+						<label for="oqrs"><?php echo lang("station_location_oqrs_enabled"); ?></label>
 						<select class="custom-select" id="oqrs" name="oqrs">
-							<option value="1" <?php if ($my_station_profile->oqrs == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
-							<option value="0" <?php if ($my_station_profile->oqrs == 0) { echo " selected =\"selected\""; } ?>>No</option>
+							<option value="1" <?php if ($my_station_profile->oqrs == 1) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" <?php if ($my_station_profile->oqrs == 0) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_no"); ?></option>
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="oqrs">OQRS Email alert</label>
+						<label for="oqrs"><?php echo lang("station_location_oqrs_email_alert"); ?></label>
 						<select class="custom-select" id="oqrsemail" name="oqrsemail">
-							<option value="1" <?php if ($my_station_profile->oqrs_email == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
-							<option value="0" <?php if ($my_station_profile->oqrs_email == 0) { echo " selected =\"selected\""; } ?>>No</option>
+							<option value="1" <?php if ($my_station_profile->oqrs_email == 1) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" <?php if ($my_station_profile->oqrs_email == 0) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_no"); ?></option>
 						</select>
-						<small id="oqrsemailHelp" class="form-text text-muted">Make sure email is set up under admin and global options.</small>
+						<small id="oqrsemailHelp" class="form-text text-muted"><?php echo lang("station_location_oqrs_email_hint"); ?></small>
 					</div>
 					<div class="form-group">
-						<label for="oqrstext">OQRS Text</label>
+						<label for="oqrstext"><?php echo lang("station_location_oqrs_text"); ?></label>
 						<input type="text" class="form-control" name="oqrstext" id="oqrstext" aria-describedby="oqrstextHelp" value="<?php if(set_value('oqrs_text') != "") { echo set_value('oqrs_text'); } else { echo $my_station_profile->oqrs_text; } ?>">
-						<small id="oqrstextHelp" class="form-text text-muted">Some info you want to add regarding QSL'ing.</small>
+						<small id="oqrstextHelp" class="form-text text-muted"><?php echo lang("station_location_oqrs_text_hint"); ?></small>
 					</div>
 
 				</div>
