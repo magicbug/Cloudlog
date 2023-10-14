@@ -542,6 +542,21 @@ $(document).ready(function() {
 </script>
 
 <script>
+document.getElementById('dxcc_select').addEventListener('change', function() {
+    var selectedOption = this.options[this.selectedIndex];
+    var isDeleted = selectedOption.textContent.includes("<?php echo lang('gen_hamradio_deleted_dxcc'); ?>");
+
+    if (isDeleted) {
+        this.style.border = '2px solid red';
+        warningMessage.innerText = lang_station_location_dxcc_warning;
+    } else {
+        this.style.border = '';
+        warningMessage.innerText = "";
+    }
+});
+</script>
+
+<script>
 var $= jQuery.noConflict();
 $('[data-fancybox]').fancybox({
     toolbar  : false,

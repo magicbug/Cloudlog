@@ -64,7 +64,11 @@
 			<div class="card">
 				<div class="card-header"><?php echo lang("general_word_location"); ?></div>
 				<div class="card-body">
-					
+					<!-- Loading Warning Text for Deleted DXCC -->
+					<script>
+						var lang_station_location_dxcc_warning = '<?php echo lang('station_location_dxcc_warning'); ?>';
+						var isDeleted = selectedOption.textContent.includes("<?php echo lang('gen_hamradio_deleted_dxcc'); ?>");
+					</script>					
 					<!-- DXCC -->
 					<div class="form-group">
 					    <label for="stationDXCCInput"><?php echo lang("station_location_dxcc"); ?></label>
@@ -86,24 +90,6 @@
 					    <small id="stationDXCCInputHelp" class="form-text text-muted"><?php echo lang("station_location_dxcc_hint"); ?></small>
 						<div id="warningMessage" style="color: red;"></div>
 					</div>
-					<!-- DXCC Deleted Warning -->
-					<script>
-						var lang_station_location_dxcc_warning = '<?php echo lang('station_location_dxcc_warning'); ?>';
-					</script>
-					<script>
-						document.getElementById('dxcc_select').addEventListener('change', function() {
-						    var selectedOption = this.options[this.selectedIndex];
-						    var isDeleted = selectedOption.textContent.includes('<?php echo lang('gen_hamradio_deleted_dxcc'); ?>');
-					
-						    if (isDeleted) {
-						        this.style.border = '2px solid red';
-								warningMessage.innerText = lang_station_location_dxcc_warning;
-						    } else {
-						        this.style.border = '';
-								warningMessage.innerText = "";
-						    }
-					});
-					</script>
 
 					<!-- City -->
 					<div class="form-group">
