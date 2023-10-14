@@ -15,7 +15,10 @@ $lang['admin_options'] = 'Optionen';
 
 $lang['admin_create_user'] = 'Benutzer anlegen';
 $lang['admin_delete'] = 'Löschen';
-$lang['admin_edit'] = 'Editieren';
+$lang['admin_edit'] = 'Bearbeiten';
+$lang['admin_create'] = 'Erstelle';
+$lang['admin_update'] = 'Aktualisiere';
+$lang['admin_copy'] = 'Kopieren';
 $lang['admin_save'] = 'Speichern';
 $lang['admin_close'] = 'Schliessen';
 $lang['admin_user_accounts'] = 'Benutzerkonten';

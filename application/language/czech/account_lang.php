@@ -19,6 +19,7 @@ $lang['account_password'] = 'Heslo';
 
 $lang['account_roles'] = 'Role';
 $lang['account_user_role'] = 'Uživatelská role';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Motiv';
 $lang['account_stylesheet'] = 'Styl';
@@ -98,3 +99,5 @@ $lang['account_user_mastodon'] = 'URL Mastodon serveru';
 $lang['account_gridmap_settings'] = 'Nastavení pro Mapu lokátorů';
 $lang['account_gridmap_default_band'] = 'Výchozí pásma';
 $lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';
+
+

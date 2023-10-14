@@ -19,6 +19,7 @@ $lang['account_password'] = 'Password';
 
 $lang['account_roles'] = 'Roles';
 $lang['account_user_role'] = 'User Role';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Theme';
 $lang['account_stylesheet'] = 'Stylesheet';
@@ -98,3 +99,5 @@ $lang['account_user_mastodon'] = 'URL of Mastodonserver';
 $lang['account_gridmap_settings'] = 'Settings for Gridsquare Map';
 $lang['account_gridmap_default_band'] = 'Default Band';
 $lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';
+
+

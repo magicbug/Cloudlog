@@ -7,6 +7,7 @@ $lang['error_no_active_station_profile'] = 'Attenzione: devi impostare un luogo 
 $lang['notice_turn_the_radio_on'] = 'Non hai fatto QSO oggi; è ora di accendere la radio!';
 
 $lang['general_word_important'] = 'Importante';
+$lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Scegli file';
 $lang['general_word_next'] = 'Next';
@@ -120,7 +121,9 @@ $lang['gen_hamradio_satellite_mode'] = 'Modo Satellite';
 
 $lang['gen_hamradio_logbook'] = 'Logbook';
 
+$lang['gen_hamradio_zones'] = 'Zones';
 $lang['gen_hamradio_cq_zone'] = 'Zona CQ';
+$lang['gen_hamradio_itu_zone'] = 'ITU Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_deleted_dxcc'] = 'Deleted DXCC';
 $lang['gen_hamradio_continent'] = 'Continent';
@@ -137,11 +140,18 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Quadratone';
+$lang['gen_hamradio_get_gridsquare'] = 'Get Gridsquare';
 $lang['gen_hamradio_distance'] = 'Distance';
 $lang['gen_hamradio_operator'] = 'Operatore';
 
 $lang['gen_hamradio_sig'] = 'Seg';
 $lang['gen_hamradio_sig_info'] = 'Info Seg';
+
+// Find your CQ/ITU Zone
+$lang['gen_find_zone_cq_part1'] = "If you don't know your CQ Zone then ";
+$lang['gen_find_zone_itu_part1'] = "If you don't know your ITU Zone then ";
+$lang['gen_find_zone_part2'] = 'click here';
+$lang['gen_find_zone_part3'] = ' to find it!';
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Hai fatto';

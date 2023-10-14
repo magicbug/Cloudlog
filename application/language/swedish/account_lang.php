@@ -19,6 +19,7 @@ $lang['account_password'] = 'Lösenord';
 
 $lang['account_roles'] = 'Roller';
 $lang['account_user_role'] = 'Användarroll';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Tema';
 $lang['account_stylesheet'] = 'Stilmall';
@@ -98,3 +99,5 @@ $lang['account_user_mastodon'] = 'URL till Mastodonserver';
 $lang['account_gridmap_settings'] = 'Inställningar för Gridsquare Map';
 $lang['account_gridmap_default_band'] = 'Standard Band';
 $lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';
+
+

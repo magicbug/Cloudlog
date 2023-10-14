@@ -19,6 +19,7 @@ $lang['account_password'] = 'Passwort';
 
 $lang['account_roles'] = 'Rollen';
 $lang['account_user_role'] = 'Benutzerrolle';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Thema';
 $lang['account_stylesheet'] = 'Stylesheet';
@@ -98,3 +99,5 @@ $lang['account_user_mastodon'] = 'URL des Mastodonservers';
 $lang['account_gridmap_settings'] = 'Einstellung der Planquadratkarte';
 $lang['account_gridmap_default_band'] = 'Standardband';
 $lang['account_qsl_settings'] = 'QSL-Methoden, die in der Planquadratkarte und beim anlegen eines QSOs angezeigt werden';
+
+

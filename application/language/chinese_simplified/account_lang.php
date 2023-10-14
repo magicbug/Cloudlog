@@ -19,6 +19,7 @@ $lang['account_password'] = '密码';
 
 $lang['account_roles'] = '角色';
 $lang['account_user_role'] = '用户角色';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = '主题';
 $lang['account_stylesheet'] = '样式表';
@@ -98,3 +99,5 @@ $lang['account_user_mastodon'] = 'Mastodon 地址';
 $lang['account_gridmap_settings'] = '网格地图设置';
 $lang['account_gridmap_default_band'] = '默认波段';
 $lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';
+
+
