@@ -96,8 +96,6 @@ $lang['account_login'] = 'Anmeldung';
 $lang['account_mastodon'] = 'Mastodonserver';
 $lang['account_user_mastodon'] = 'URL des Mastodonservers';
 
-$lang['account_gridmap_settings'] = 'Einstellung der Planquadratkarte';
+$lang['account_default_band_settings'] = 'Einstellung für Standardband und -bestätigungsmethode';
 $lang['account_gridmap_default_band'] = 'Standardband';
-$lang['account_qsl_settings'] = 'QSL-Methoden, die in der Planquadratkarte und beim anlegen eines QSOs angezeigt werden';
-
-
+$lang['account_qsl_settings'] = 'Standard QSL-Methoden';

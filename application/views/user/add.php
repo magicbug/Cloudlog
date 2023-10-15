@@ -546,7 +546,7 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                    <?php echo lang('account_gridmap_settings'); ?>
+                    <?php echo lang('account_default_band_settings'); ?>
                     </div>
                     <div class="card-body">
                             <div class="form-group">
@@ -564,7 +564,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="my-1 mr-2"><?php echo lang('gridsquares_confirmation'); ?></label>
+                                <label class="my-1 mr-2"><?php echo lang('account_qsl_settings'); ?></label>
                                 <div class="form-check-inline">
                                     <?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_qsl" id="user_gridmap_confirmation_qsl"';
                                         if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) {
