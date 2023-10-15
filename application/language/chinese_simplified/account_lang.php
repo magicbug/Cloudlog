@@ -96,8 +96,6 @@ $lang['account_login'] = '登录';
 $lang['account_mastodon'] = 'Mastodon服务器';
 $lang['account_user_mastodon'] = 'Mastodon 地址';
 
-$lang['account_gridmap_settings'] = '网格地图设置';
+$lang['account_default_band_settings'] = 'Settings for Default Band and Confirmation';
 $lang['account_gridmap_default_band'] = '默认波段';
-$lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';
-
-
+$lang['account_qsl_settings'] = 'Default QSL-Methods';

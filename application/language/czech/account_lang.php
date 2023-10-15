@@ -96,8 +96,6 @@ $lang['account_login'] = 'Přihlásit se';
 $lang['account_mastodon'] = 'Mastodon server';
 $lang['account_user_mastodon'] = 'URL Mastodon serveru';
 
-$lang['account_gridmap_settings'] = 'Nastavení pro Mapu lokátorů';
+$lang['account_default_band_settings'] = 'Settings for Default Band and Confirmation';
 $lang['account_gridmap_default_band'] = 'Výchozí pásma';
-$lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';
-
-
+$lang['account_qsl_settings'] = 'Default QSL-Methods';

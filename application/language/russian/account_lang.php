@@ -96,8 +96,6 @@ $lang['account_login'] = 'Вход';
 $lang['account_mastodon'] = 'Сервер Mastodon';
 $lang['account_user_mastodon'] = 'URL профиля пользователя Mastodon';
 
-$lang['account_gridmap_settings'] = 'Настройки для карты квадратов';
+$lang['account_default_band_settings'] = 'Settings for Default Band and Confirmation';
 $lang['account_gridmap_default_band'] = 'Диапазон по умолчанию';
-$lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';
-
-
+$lang['account_qsl_settings'] = 'Default QSL-Methods';
