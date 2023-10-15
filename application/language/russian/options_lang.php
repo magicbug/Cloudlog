@@ -69,5 +69,6 @@ $lang['options_dxcluster_maxage_hint'] = 'Возраст спотов, кото�
 $lang['options_dxcluster_decont'] = 'Отображать споты, которые присланы с континента  ';
 $lang['options_dxcluster_maxage_changed_to']='Максимальный возраст спотов изменён на ';
 $lang['options_dxcluster_decont_changed_to']='континент изменён на ';
+$lang['options_dxcluster_decont_hint']='Only spots by spotters from this continent are shown';
 
 $lang['options_save'] = 'Сохранить';
