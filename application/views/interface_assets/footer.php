@@ -547,7 +547,7 @@ document.getElementById('dxcc_select').addEventListener('change', function() {
     var isDeleted = selectedOption.textContent.includes("<?php echo lang('gen_hamradio_deleted_dxcc'); ?>");
 
     if (isDeleted) {
-        this.style.border = '2px solid red';
+        this.style.border = '2px solid rgb(217, 83, 79)';
         warningMessage.innerText = lang_station_location_dxcc_warning;
     } else {
         this.style.border = '';

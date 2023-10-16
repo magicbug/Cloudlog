@@ -62,7 +62,7 @@
 				</select>
 				<?php } ?>
 		    <small id="stationDXCCInputHelp" class="form-text text-muted"><?php echo lang("station_location_dxcc_hint"); ?></small>
-			<div id="warningMessage" style="color: red;"></div>
+			<div id="warningMessage" style="color: rgb(217, 83, 79);"></div>
 		  </div>
 
 		  <div class="form-group">
