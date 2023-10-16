@@ -211,6 +211,7 @@ class adif extends CI_Controller {
 			}
 
 			$data['adif_errors'] = $custom_errors;
+			$data['skip_dupes'] = $this->input->post('skipDuplicate');
 
 
 			$data['page_title'] = "ADIF Imported";
