@@ -21,13 +21,13 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<div class="card-header"><?php echo $page_title; ?>: <?php echo $station_logbook_details->logbook_name; ?></div>
+				<div class="card-header"><?php echo lang('station_logbooks_edit_logbook'); ?>: <?php echo $station_logbook_details->logbook_name; ?></div>
 				<div class="card-body">
 					<form method="post" action="<?php echo site_url('logbooks/edit/'); ?><?php echo $station_logbook_details->logbook_id; ?>" name="create_profile">
 						<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
 
 						<div class="form-group">
-							<label for="stationLogbookNameInput">Station Logbook Name</label>
+							<label for="stationLogbookNameInput"><?php echo lang('station_logbooks_create_name'); ?></label>
 							<input type="text" class="form-control" name="station_logbook_name" id="stationLogbookNameInput" aria-describedby="stationLogbookNameInputHelp" value="<?php if(set_value('station_logbook_name') != "") { echo set_value('station_logbook_name'); } else { echo $station_logbook_details->logbook_name; } ?>" required>
 							<small id="stationLogbookNameInputHelp" class="form-text text-muted">Shortname for the station location. For example: Home (IO87IP)</small>
 						</div>

@@ -54,7 +54,7 @@
 							}?>
 					</td>
 					<td>
-						<a href="<?php echo site_url('logbooks/edit')."/".$row->logbook_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit" title="<?php echo lang('station_logbooks_edit_logbook') . $row->logbook_name;?>"></i> </a>
+						<a href="<?php echo site_url('logbooks/edit')."/".$row->logbook_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit" title="<?php echo lang('station_logbooks_edit_logbook') . ': ' . $row->logbook_name;?>"></i> </a>
 					</td>
 					<td>
 						<?php if($this->session->userdata('active_station_logbook') != $row->logbook_id) { ?>
