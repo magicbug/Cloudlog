@@ -542,17 +542,22 @@ $(document).ready(function() {
 </script>
 
 <script>
-document.getElementById('dxcc_select').addEventListener('change', function() {
-    var selectedOption = this.options[this.selectedIndex];
-    var isDeleted = selectedOption.textContent.includes("<?php echo lang('gen_hamradio_deleted_dxcc'); ?>");
-
-    if (isDeleted) {
-        this.style.border = '2px solid rgb(217, 83, 79)';
-        warningMessage.innerText = lang_station_location_dxcc_warning;
+function printWarning() {
+    if ($("#dxcc_select option:selected").text().includes("<?php echo lang('gen_hamradio_deleted_dxcc'); ?>")) {
+        $('#warningMessageDXCC').show();
+        $('#dxcc_select').css('border', '2px solid rgb(217, 83, 79)');
+        $('#warningMessageDXCC').text("<?php echo lang('station_location_dxcc_warning'); ?>");
     } else {
-        this.style.border = '';
-        warningMessage.innerText = "";
+        $('#dxcc_select').css('border', '');
+        $('#warningMessageDXCC').hide();
     }
+}
+$('#dxcc_select').ready(function() {
+    printWarning();
+});
+
+$('#dxcc_select').on('change', function() {
+    printWarning();
 });
 </script>
 

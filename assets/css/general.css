@@ -537,8 +537,3 @@ div#station_logbooks_linked_table_paginate {
 #dx, #state, #gridsquare, #sota, #wwff, #pota {
     text-transform: uppercase;
 }
-
-#warningMessage {
-	color: white !Important;
-	background-color: rgb(217, 83, 79) !Important;
-}
