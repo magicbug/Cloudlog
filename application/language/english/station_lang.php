@@ -2,7 +2,21 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-// Station Location
+/*
+___________________________________________________________________________________________
+Station Logbooks
+___________________________________________________________________________________________
+*/
+
+
+
+
+
+/*
+___________________________________________________________________________________________
+Station Locations
+___________________________________________________________________________________________
+*/
 
 $lang['station_location'] = 'Station Location';
 $lang['station_location_header_ln1'] = 'Station Locations define operating locations, such as your QTH, a friends QTH, or a portable station.';

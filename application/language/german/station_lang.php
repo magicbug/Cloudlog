@@ -2,7 +2,21 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-// Station Location
+/*
+___________________________________________________________________________________________
+Station Logbooks
+___________________________________________________________________________________________
+*/
+
+
+
+
+
+/*
+___________________________________________________________________________________________
+Station Locations
+___________________________________________________________________________________________
+*/
 
 $lang['station_location'] = 'Stationsstandort';
 $lang['station_location_header_ln1'] = 'Stationsstandorte definieren die Orte, von denen aus du QRV bist. Dein Zuhause, Bei Freunden oder Unterwegs';

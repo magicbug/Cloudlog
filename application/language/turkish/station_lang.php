@@ -2,7 +2,21 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-// Station Location
+/*
+___________________________________________________________________________________________
+Station Logbooks
+___________________________________________________________________________________________
+*/
+
+
+
+
+
+/*
+___________________________________________________________________________________________
+Station Locations
+___________________________________________________________________________________________
+*/
 
 $lang['station_location'] = 'Station Location';
 $lang['station_location_header_ln1'] = 'Station Locations define operating locations, such as your QTH, a friends QTH, or a portable station.';
@@ -63,6 +77,5 @@ $lang['station_location_oqrs_email_alert'] = "OQRS Email alert";
 $lang['station_location_oqrs_email_hint'] = "Make sure email is set up under admin and global options.";
 $lang['station_location_oqrs_text'] = "OQRS Text";
 $lang['station_location_oqrs_text_hint'] = "Some info you want to add regarding QSL'ing.";
-
 
 
