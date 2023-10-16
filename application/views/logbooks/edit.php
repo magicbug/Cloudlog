@@ -70,7 +70,7 @@
 					<?php } ?>
 					<form style="display: inline;">
 					<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
-					<p>Enabling public search function offers a search input box on the public logbook page accessed via public slug. Search only covers this logbook.</p>
+					<p style="margin-top: 15px;">Enabling public search function offers a search input box on the public logbook page accessed via public slug. Search only covers this logbook.</p>
 					<label for="public_search">Public search enabled</label>
 					<select class="custom-select" id="public_search" name="public_search" hx-post="<?php echo site_url('logbooks/save_publicsearch/'); ?>" hx-target="#publicSearchForm" hx-trigger="change">
 						<option value="1" <?php if ($station_logbook_details->public_search == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
