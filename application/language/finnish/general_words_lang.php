@@ -159,6 +159,7 @@ $lang['dashboard_you_have_had'] = 'Olet pitänyt';
 $lang['dashboard_qsos_today'] = 'yhteyttä tänään!';
 $lang['dashboard_qso_breakdown'] = 'Yhteystilasto';
 $lang['dashboard_countries_breakdown'] = 'Maatilasto';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = 'päivämäärästä';
 

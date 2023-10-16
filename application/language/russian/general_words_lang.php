@@ -159,6 +159,7 @@ $lang['gen_find_zone_part3'] = ' to find it!';
 $lang['dashboard_you_have_had'] = '';
 $lang['dashboard_qsos_today'] = 'QSOs сегодня!';
 $lang['dashboard_qso_breakdown'] = 'Статистика QSO';
+$lang['gen_to_date'] = 'To date';
 $lang['dashboard_countries_breakdown'] = 'Статистика по странам';
 
 $lang['gen_from_date'] = 'Начиная с даты';

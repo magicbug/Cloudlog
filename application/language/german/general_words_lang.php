@@ -159,6 +159,7 @@ $lang['dashboard_qso_breakdown'] = 'QSO-Übersicht';
 $lang['dashboard_countries_breakdown'] = 'Länderübersicht';
 
 $lang['gen_from_date'] = 'Ab Datum';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'Dieses QSO wurde bestätigt am';
 

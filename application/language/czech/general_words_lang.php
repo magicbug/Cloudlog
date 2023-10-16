@@ -159,6 +159,7 @@ $lang['dashboard_you_have_had'] = 'Máte';
 $lang['dashboard_qsos_today'] = 'QSO spojení dnes!';
 $lang['dashboard_qso_breakdown'] = 'Počet QSO spojení';
 $lang['dashboard_countries_breakdown'] = 'Počet zemí';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = 'Od data';
 

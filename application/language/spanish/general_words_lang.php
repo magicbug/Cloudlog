@@ -159,6 +159,7 @@ $lang['dashboard_you_have_had'] = 'Has tenido';
 $lang['dashboard_qsos_today'] = 'QSOs hoy!';
 $lang['dashboard_qso_breakdown'] = 'Desglose de QSO';
 $lang['dashboard_countries_breakdown'] = 'Desglose por Países';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = 'Desde la fecha:';
 

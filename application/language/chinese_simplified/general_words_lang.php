@@ -159,6 +159,7 @@ $lang['dashboard_you_have_had'] = '今天你有';
 $lang['dashboard_qsos_today'] = '个 QSO!';
 $lang['dashboard_qso_breakdown'] = 'QSO 分析';
 $lang['dashboard_countries_breakdown'] = 'DXCC 实体分析';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = '起始日期';
 

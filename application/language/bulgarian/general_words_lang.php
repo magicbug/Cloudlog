@@ -159,6 +159,7 @@ $lang['dashboard_you_have_had'] = 'Вие сте имали';
 $lang['dashboard_qsos_today'] = 'QSO-та днес!';
 $lang['dashboard_qso_breakdown'] = 'Разбивка на QSO-тата';
 $lang['dashboard_countries_breakdown'] = 'Разбивка по държави';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = 'От дата';
 

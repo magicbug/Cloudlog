@@ -159,6 +159,7 @@ $lang['dashboard_you_have_had'] = 'Bu gün';
 $lang['dashboard_qsos_today'] = 'QSO Yaptınız!';
 $lang['dashboard_qso_breakdown'] = 'QSO\'ların Analizi';
 $lang['dashboard_countries_breakdown'] = 'Ülke Analizi';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = 'Tarihten itibaren';
 
