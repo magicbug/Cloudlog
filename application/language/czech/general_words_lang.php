@@ -7,6 +7,8 @@ $lang['error_no_active_station_profile'] = 'Pozor: musíte nastavit aktivní um�
 $lang['notice_turn_the_radio_on'] = 'Dnes jste neudělali žádná QSO spojení; je čas zapnout rádio!';
 
 $lang['general_word_important'] = 'Důležité';
+$lang['general_word_warning'] = 'Warning';
+$lang['general_word_danger'] = 'DANGER';
 $lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Vybrat soubor';
@@ -81,7 +83,6 @@ $lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 $lang['general_total_distance'] = 'Celková vzdálenost';
 
 // PHP Upload Warning
-$lang['general_word_warning'] = 'Warning';
 $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
@@ -158,6 +159,7 @@ $lang['dashboard_you_have_had'] = 'Máte';
 $lang['dashboard_qsos_today'] = 'QSO spojení dnes!';
 $lang['dashboard_qso_breakdown'] = 'Počet QSO spojení';
 $lang['dashboard_countries_breakdown'] = 'Počet zemí';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = 'Od data';
 

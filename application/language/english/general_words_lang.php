@@ -7,6 +7,8 @@ $lang['error_no_active_station_profile'] = 'Attention: you need to set an active
 $lang['notice_turn_the_radio_on'] = 'You have made no QSOs today; time to turn on the radio!';
 
 $lang['general_word_important'] = 'Important';
+$lang['general_word_warning'] = 'Warning';
+$lang['general_word_danger'] = 'DANGER';
 $lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Choose file';
@@ -81,7 +83,6 @@ $lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 $lang['general_total_distance'] = 'Total Distance';
 
 // PHP Upload Warning
-$lang['general_word_warning'] = 'Warning';
 $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
@@ -158,6 +159,7 @@ $lang['dashboard_qso_breakdown'] = 'QSOs Breakdown';
 $lang['dashboard_countries_breakdown'] = 'Countries Breakdown';
 
 $lang['gen_from_date'] = 'From date';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'This QSO was confirmed on';
 

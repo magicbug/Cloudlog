@@ -7,6 +7,8 @@ $lang['error_no_active_station_profile'] = 'OBS! Du behöver ange en aktiv stati
 $lang['notice_turn_the_radio_on'] = 'Inga QSOn idag - dags att slå på radion!';
 
 $lang['general_word_important'] = 'Viktigt';
+$lang['general_word_warning'] = 'Warning';
+$lang['general_word_danger'] = 'DANGER';
 $lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Välj fil';
@@ -81,7 +83,6 @@ $lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 $lang['general_total_distance'] = 'Totalt avstånd';
 
 // PHP Upload Warning
-$lang['general_word_warning'] = 'Warning';
 $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
@@ -158,6 +159,7 @@ $lang['dashboard_you_have_had'] = 'Du har kört';
 $lang['dashboard_qsos_today'] = 'QSOs idag!';
 $lang['dashboard_qso_breakdown'] = 'QSOs Breakdown';
 $lang['dashboard_countries_breakdown'] = 'Länder Breakdown';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = 'Från datum';
 

@@ -7,6 +7,8 @@ $lang['error_no_active_station_profile'] = 'Varoitus: sinun täytyy valita aktii
 $lang['notice_turn_the_radio_on'] = 'Ei kusoja tänään - siis radio päälle ja bandeille!';
 
 $lang['general_word_important'] = 'Tärkeää';
+$lang['general_word_warning'] = 'Warning';
+$lang['general_word_danger'] = 'DANGER';
 $lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Valitse tiedosto';
@@ -81,7 +83,6 @@ $lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 $lang['general_total_distance'] = 'Kokonaismatka';
 
 // PHP Upload Warning
-$lang['general_word_warning'] = 'Warning';
 $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
@@ -158,6 +159,7 @@ $lang['dashboard_you_have_had'] = 'Olet pitänyt';
 $lang['dashboard_qsos_today'] = 'yhteyttä tänään!';
 $lang['dashboard_qso_breakdown'] = 'Yhteystilasto';
 $lang['dashboard_countries_breakdown'] = 'Maatilasto';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = 'päivämäärästä';
 
