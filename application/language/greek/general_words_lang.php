@@ -7,6 +7,8 @@ $lang['error_no_active_station_profile'] = 'Προσοχή: πρέπει να ο
 $lang['notice_turn_the_radio_on'] = 'Δεν έχετε κάνει κανένα QSO σήμερα. ώρα να ανοίξετε τον ασύρματο!';
 
 $lang['general_word_important'] = 'Σημαντικό';
+$lang['general_word_warning'] = 'Warning';
+$lang['general_word_danger'] = 'DANGER';
 $lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Πληροφορίες';
 $lang['general_word_choose_file'] = 'Επιλογή αρχείου';
@@ -81,7 +83,6 @@ $lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 $lang['general_total_distance'] = 'Συνολική Απόσταση';
 
 // PHP Upload Warning
-$lang['general_word_warning'] = 'Warning';
 $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms

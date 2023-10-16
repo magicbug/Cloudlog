@@ -7,6 +7,8 @@ $lang['error_no_active_station_profile'] = 'Внимание: трябва да 
 $lang['notice_turn_the_radio_on'] = 'Днес не сте правили QSO; време е да включите радиото!';
 
 $lang['general_word_important'] = 'Важно';
+$lang['general_word_warning'] = 'Warning';
+$lang['general_word_danger'] = 'DANGER';
 $lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Инфо';
 $lang['general_word_choose_file'] = 'Изберете файл';
@@ -81,7 +83,6 @@ $lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 $lang['general_total_distance'] = 'Общо разстояние';
 
 // PHP Upload Warning
-$lang['general_word_warning'] = 'Warning';
 $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
