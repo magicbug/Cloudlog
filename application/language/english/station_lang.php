@@ -11,7 +11,7 @@ ________________________________________________________________________________
 $lang['station_logbooks'] = "Station Logbooks";
 $lang['station_logbooks_description_header'] = "What are Station Logbooks";
 $lang['station_logbooks_description_text'] = "Station Logbooks allow you to group Station Locations, this allows you to see all the locations across one session from the logbook areas to the analytics. Great for when your operating in multiple locations but they are part of the same DXCC or VUCC Circle.";
-$lang['station_logbooks_create'] = "Create a Station Logbook";
+$lang['station_logbooks_create'] = "Create Station Logbook";
 $lang['station_logbooks_status'] = "Status";
 $lang['station_logbooks_link'] = "Link";
 $lang['station_logbooks_public_search'] = "Public Search";
@@ -20,6 +20,8 @@ $lang['station_logbooks_active_logbook'] = "Active Logbook";
 $lang['station_logbooks_edit_logbook'] = "Edit ";    // Full sentence will be generated 'Edit [Logbook Name]'
 $lang['station_logbooks_confirm_delete'] = "Are you sure you want to delete the following station logbook? You must re-link any locations linked here to another logbook.: ";
 $lang['station_logbooks_view_public'] = "View Public Page for Logbook: ";
+$lang['station_logbooks_create_name'] = "Station Logbook Name";
+$lang['station_logbooks_create_name_hint'] = "You can call a station logbook anything.";
 
 
 

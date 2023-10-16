@@ -11,7 +11,7 @@ ________________________________________________________________________________
 $lang['station_logbooks'] = "Stationslogbücher";
 $lang['station_logbooks_description_header'] = "Was sind Stationslogbücher";
 $lang['station_logbooks_description_text'] = "Stationslogbücher ermöglichen es dir, Stationsstandorte zu gruppieren. Dadurch können Sie alle Standorte innerhalb einer Sitzung von den Logbuchbereichen bis zur Analyse sehen. Das ist besonders nützlich, wenn Sie an verschiedenen Standorten arbeiten, die jedoch zu derselben DXCC- oder VUCC-Zone gehören.";
-$lang['station_logbooks_create'] = "Erstelle ein Stationslogbuch";
+$lang['station_logbooks_create'] = "Erstelle Stationslogbuch";
 $lang['station_logbooks_status'] = "Status";
 $lang['station_logbooks_link'] = "Verknüpfung";
 $lang['station_logbooks_public_search'] = "Öffentl. Suche";
@@ -20,6 +20,8 @@ $lang['station_logbooks_active_logbook'] = "Aktives Logbuch";
 $lang['station_logbooks_edit_logbook'] = "Bearbeite ";    // Full sentence will be generated 'Edit [Logbook Name]'
 $lang['station_logbooks_confirm_delete'] = "Bist du sicher, dass du das folgende Logbuch löschen willst? Du wirst alle Standorte, welche hier verknüpft sind mit einem anderen Logbuch verknüpfen müssen.: ";
 $lang['station_logbooks_view_public'] = "Zeige die öffentl. Seite für das Logbuch: ";
+$lang['station_logbooks_create_name'] = "Stationslogbuch Name";
+$lang['station_logbooks_create_name_hint'] = "Du kannst das Stationslogbuch völlig frei benennen.";
 
 
 
