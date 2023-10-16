@@ -69,5 +69,6 @@ $lang['options_dxcluster_maxage_hint'] = 'The Age in Minutes of spots, that will
 $lang['options_dxcluster_decont'] = 'Show spots which are spotted from following continent';
 $lang['options_dxcluster_maxage_changed_to']='Maximum age of spots changed to ';
 $lang['options_dxcluster_decont_changed_to']='de continent changed to ';
+$lang['options_dxcluster_decont_hint']='Only spots by spotters from this continent are shown';
 
 $lang['options_save'] = 'Uložit';

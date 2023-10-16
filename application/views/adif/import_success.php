@@ -13,7 +13,13 @@
   </div>
   <div class="card-body">
     <h3 class="card-title">Yay, its imported!</h3>
-    <p class="card-text">The ADIF File has been imported, and any dupes skipped.</p>
+    <p class="card-text">The ADIF File has been imported.
+    <?php if(isset($skip_dupes)) {
+             echo ' <b>Dupes were inserted!</b>';
+          } else {
+             echo ' Dupes were skipped.';
+          } ?>
+    </p>
     <?php if($adif_errors) { ?>
       <h3>ADIF Errors</h3>
       <p>You have ADIF errors, the QSOs have still been added but these fields have not been populated.</p>
