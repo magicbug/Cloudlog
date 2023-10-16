@@ -64,8 +64,6 @@
 			<div class="card">
 				<div class="card-header"><?php echo lang("general_word_location"); ?></div>
 				<div class="card-body">
-					<!-- Loading Warning Text for Deleted DXCC -->
-										
 					<!-- DXCC -->
 					<div class="form-group">
 					    <label for="stationDXCCInput"><?php echo lang("station_location_dxcc"); ?></label>

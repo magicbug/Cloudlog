@@ -45,8 +45,6 @@
 		    <input type="number" class="form-control" name="station_power" id="stationPowerInput" step="1" aria-describedby="stationPowerInputHelp" placeholder="10">
 		    <small id="stationPowerInputHelp" class="form-text text-muted"><?php echo lang("station_location_power_hint"); ?></small>
 		  </div>
-			<!-- Loading Warning Text for Deleted DXCC -->
-
 		  <div class="form-group">
 		    <label for="stationDXCCInput"><?php echo lang("station_location_dxcc"); ?></label>
 				<?php if ($dxcc_list->num_rows() > 0) { ?>
