@@ -14,6 +14,8 @@ $lang['general_word_info'] = 'Bilgiler';
 $lang['general_word_choose_file'] = 'Dosya seç';
 $lang['general_word_next'] = 'Next';
 $lang['general_word_previous'] = 'Previous';
+$lang['general_word_enabled'] = "Enabled";
+$lang['general_word_disabled'] = "Disabled";
 
 $lang['general_word_date'] = 'Tarih';
 $lang['general_word_time'] = 'Saat';
