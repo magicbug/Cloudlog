@@ -19,6 +19,7 @@ $lang['account_password'] = 'Salasana';
 
 $lang['account_roles'] = 'Roolit';
 $lang['account_user_role'] = 'Käyttäjän rooli';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Teema';
 $lang['account_stylesheet'] = 'Tyylisivu';
@@ -98,3 +99,5 @@ $lang['account_user_mastodon'] = 'URL of Mastodonserver';
 $lang['account_gridmap_settings'] = 'Gridsquare -kartan asetukset';
 $lang['account_gridmap_default_band'] = 'Oletusbandi';
 $lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';
+
+

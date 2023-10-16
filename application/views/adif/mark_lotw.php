@@ -9,11 +9,11 @@
 
     <div class="card">
         <div class="card-header">
-            QSOs marked
+            <?php echo lang('adif_qso_marked')?>
         </div>
         <div class="card-body">
-            <h3 class="card-title">Yay, it's done!</h3>
-            <p class="card-text">The QSOs are marked as exported to LoTW.</p>
+            <h3 class="card-title"><?php echo lang('adif_yay_its_done')?></h3>
+            <p class="card-text"><?php echo lang('adif_qso_lotw_marked_confirm')?></p>
         </div>
     </div>
 

@@ -7,6 +7,9 @@ $lang['error_no_active_station_profile'] = 'Προσοχή: πρέπει να ο
 $lang['notice_turn_the_radio_on'] = 'Δεν έχετε κάνει κανένα QSO σήμερα. ώρα να ανοίξετε τον ασύρματο!';
 
 $lang['general_word_important'] = 'Σημαντικό';
+$lang['general_word_warning'] = 'Warning';
+$lang['general_word_danger'] = 'DANGER';
+$lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Πληροφορίες';
 $lang['general_word_choose_file'] = 'Επιλογή αρχείου';
 $lang['general_word_next'] = 'Next';
@@ -58,6 +61,7 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
 
 $lang['general_word_details'] = 'Details';
+$lang['general_word_qso_data'] = 'QSO Data';
 
 $lang['general_edit_qso'] = 'Επεξεργασία QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Σημείωση QSL ως Ελήφθη (Bureau)';
@@ -79,7 +83,6 @@ $lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 $lang['general_total_distance'] = 'Συνολική Απόσταση';
 
 // PHP Upload Warning
-$lang['general_word_warning'] = 'Warning';
 $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
@@ -119,7 +122,9 @@ $lang['gen_hamradio_satellite_mode'] = 'Λειτουργία δορυφόρου'
 
 $lang['gen_hamradio_logbook'] = 'Αρχείο επαφών';
 
+$lang['gen_hamradio_zones'] = 'Zones';
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
+$lang['gen_hamradio_itu_zone'] = 'ITU Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_deleted_dxcc'] = 'Deleted DXCC';
 $lang['gen_hamradio_continent'] = 'Continent';
@@ -136,17 +141,25 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Gridsquare';
+$lang['gen_hamradio_get_gridsquare'] = 'Get Gridsquare';
 $lang['gen_hamradio_distance'] = 'Distance';
 $lang['gen_hamradio_operator'] = 'Χειριστής';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
 
+// Find your CQ/ITU Zone
+$lang['gen_find_zone_cq_part1'] = "If you don't know your CQ Zone then ";
+$lang['gen_find_zone_itu_part1'] = "If you don't know your ITU Zone then ";
+$lang['gen_find_zone_part2'] = 'click here';
+$lang['gen_find_zone_part3'] = ' to find it!';
+
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Έχετε';
 $lang['dashboard_qsos_today'] = 'Σημερινά QSOs ';
 $lang['dashboard_qso_breakdown'] = 'QSOs Αναλυτικά';
 $lang['dashboard_countries_breakdown'] = 'Χώρες Αναλυτικά';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = 'Από την ημερομηνία';
 

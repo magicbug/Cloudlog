@@ -69,5 +69,6 @@ $lang['options_dxcluster_maxage_hint'] = 'Åldern i minuter av fläckar, som kom
 $lang['options_dxcluster_decont'] = 'Visa fläckar som ses från följande kontinent';
 $lang['options_dxcluster_maxage_changed_to']='Maximal ålder för fläckar ändrad till ';
 $lang['options_dxcluster_decont_changed_to']='kontinenten ändrats till ';
+$lang['options_dxcluster_decont_hint']='Only spots by spotters from this continent are shown';
 
 $lang['options_save'] = 'Spara';

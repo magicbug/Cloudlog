@@ -7,6 +7,9 @@ $lang['error_no_active_station_profile'] = '注意：你需要设置一个活动
 $lang['notice_turn_the_radio_on'] = '你今天还没有 QSO，是时候打开你的电台了！';
 
 $lang['general_word_important'] = '重要';
+$lang['general_word_warning'] = 'Warning';
+$lang['general_word_danger'] = 'DANGER';
+$lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = '消息';
 $lang['general_word_choose_file'] = '选择文件';
 $lang['general_word_next'] = 'Next';
@@ -58,6 +61,7 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
 
 $lang['general_word_details'] = 'Details';
+$lang['general_word_qso_data'] = 'QSO Data';
 
 $lang['general_edit_qso'] = '编辑 QSO';
 $lang['general_mark_qsl_rx_bureau'] = '标记 已收到的QSL (卡片局)';
@@ -79,7 +83,6 @@ $lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 $lang['general_total_distance'] = '总计距离';
 
 // PHP Upload Warning
-$lang['general_word_warning'] = 'Warning';
 $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
@@ -119,7 +122,9 @@ $lang['gen_hamradio_satellite_mode'] = '卫星模式';
 
 $lang['gen_hamradio_logbook'] = '日志簿';
 
+$lang['gen_hamradio_zones'] = 'Zones';
 $lang['gen_hamradio_cq_zone'] = 'CQ 分区';
+$lang['gen_hamradio_itu_zone'] = 'ITU Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC实体';
 $lang['gen_hamradio_deleted_dxcc'] = '删除 DXCC实体';
 $lang['gen_hamradio_continent'] = '大陆';
@@ -136,17 +141,25 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = '网格';
+$lang['gen_hamradio_get_gridsquare'] = 'Get Gridsquare';
 $lang['gen_hamradio_distance'] = '距离';
 $lang['gen_hamradio_operator'] = '操作员';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig 属性';
 
+// Find your CQ/ITU Zone
+$lang['gen_find_zone_cq_part1'] = "If you don't know your CQ Zone then ";
+$lang['gen_find_zone_itu_part1'] = "If you don't know your ITU Zone then ";
+$lang['gen_find_zone_part2'] = 'click here';
+$lang['gen_find_zone_part3'] = ' to find it!';
+
 // Dashboard Words
 $lang['dashboard_you_have_had'] = '今天你有';
 $lang['dashboard_qsos_today'] = '个 QSO!';
 $lang['dashboard_qso_breakdown'] = 'QSO 分析';
 $lang['dashboard_countries_breakdown'] = 'DXCC 实体分析';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = '起始日期';
 

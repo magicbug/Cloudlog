@@ -7,6 +7,9 @@ $lang['error_no_active_station_profile'] = 'OBS! Du behöver ange en aktiv stati
 $lang['notice_turn_the_radio_on'] = 'Inga QSOn idag - dags att slå på radion!';
 
 $lang['general_word_important'] = 'Viktigt';
+$lang['general_word_warning'] = 'Warning';
+$lang['general_word_danger'] = 'DANGER';
+$lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Välj fil';
 $lang['general_word_next'] = 'Next';
@@ -58,6 +61,7 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
 
 $lang['general_word_details'] = 'Details';
+$lang['general_word_qso_data'] = 'QSO Data';
 
 $lang['general_edit_qso'] = 'Redigera QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Ange QSL mottagen (Byrå)';
@@ -79,7 +83,6 @@ $lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 $lang['general_total_distance'] = 'Totalt avstånd';
 
 // PHP Upload Warning
-$lang['general_word_warning'] = 'Warning';
 $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
@@ -119,7 +122,9 @@ $lang['gen_hamradio_satellite_mode'] = 'Satellite-mode';
 
 $lang['gen_hamradio_logbook'] = 'Loggbok';
 
+$lang['gen_hamradio_zones'] = 'Zones';
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
+$lang['gen_hamradio_itu_zone'] = 'ITU Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_deleted_dxcc'] = 'Struket DXCC';
 $lang['gen_hamradio_continent'] = 'Kontinent';
@@ -136,17 +141,25 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Lokator/Gridsquare';
+$lang['gen_hamradio_get_gridsquare'] = 'Get Gridsquare';
 $lang['gen_hamradio_distance'] = 'Distance';
 $lang['gen_hamradio_operator'] = 'Operatör';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
 
+// Find your CQ/ITU Zone
+$lang['gen_find_zone_cq_part1'] = "If you don't know your CQ Zone then ";
+$lang['gen_find_zone_itu_part1'] = "If you don't know your ITU Zone then ";
+$lang['gen_find_zone_part2'] = 'click here';
+$lang['gen_find_zone_part3'] = ' to find it!';
+
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Du har kört';
 $lang['dashboard_qsos_today'] = 'QSOs idag!';
 $lang['dashboard_qso_breakdown'] = 'QSOs Breakdown';
 $lang['dashboard_countries_breakdown'] = 'Länder Breakdown';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = 'Från datum';
 

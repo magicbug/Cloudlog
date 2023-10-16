@@ -7,6 +7,9 @@ $lang['error_no_active_station_profile'] = 'Dikkat: aktif bir istasyon konumu ay
 $lang['notice_turn_the_radio_on'] = 'Bu gün hiç bir QSO yapmadınız. Telsizi açmanın zamanı geldi!';
 
 $lang['general_word_important'] = 'Önemli';
+$lang['general_word_warning'] = 'Warning';
+$lang['general_word_danger'] = 'DANGER';
+$lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Bilgiler';
 $lang['general_word_choose_file'] = 'Dosya seç';
 $lang['general_word_next'] = 'Next';
@@ -58,6 +61,7 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
 
 $lang['general_word_details'] = 'Details';
+$lang['general_word_qso_data'] = 'QSO Data';
 
 $lang['general_edit_qso'] = 'QSO değiştirme';
 $lang['general_mark_qsl_rx_bureau'] = 'QSL\'i alındı Olarak İşaretle (Ofis)';
@@ -79,7 +83,6 @@ $lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 $lang['general_total_distance'] = 'Topam mesafe';
 
 // PHP Upload Warning
-$lang['general_word_warning'] = 'Warning';
 $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
@@ -119,7 +122,9 @@ $lang['gen_hamradio_satellite_mode'] = 'Uydu Modu';
 
 $lang['gen_hamradio_logbook'] = 'Kayıt defteri';
 
+$lang['gen_hamradio_zones'] = 'Zones';
 $lang['gen_hamradio_cq_zone'] = 'CQ Alanı';
+$lang['gen_hamradio_itu_zone'] = 'ITU Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_deleted_dxcc'] = 'Deleted DXCC';
 $lang['gen_hamradio_continent'] = 'Continent';
@@ -136,17 +141,25 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Pafta';
+$lang['gen_hamradio_get_gridsquare'] = 'Get Gridsquare';
 $lang['gen_hamradio_distance'] = 'Distance';
 $lang['gen_hamradio_operator'] = 'Operatör';
 
 $lang['gen_hamradio_sig'] = 'İmza';
 $lang['gen_hamradio_sig_info'] = 'İmza bilgisi';
 
+// Find your CQ/ITU Zone
+$lang['gen_find_zone_cq_part1'] = "If you don't know your CQ Zone then ";
+$lang['gen_find_zone_itu_part1'] = "If you don't know your ITU Zone then ";
+$lang['gen_find_zone_part2'] = 'click here';
+$lang['gen_find_zone_part3'] = ' to find it!';
+
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Bu gün';
 $lang['dashboard_qsos_today'] = 'QSO Yaptınız!';
 $lang['dashboard_qso_breakdown'] = 'QSO\'ların Analizi';
 $lang['dashboard_countries_breakdown'] = 'Ülke Analizi';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = 'Tarihten itibaren';
 

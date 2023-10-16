@@ -3229,7 +3229,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
             if (isset($record['call'])){
                 $this->db->where('COL_CALL', $record['call']);
             }
-            $this->db->where('COL_TIME_ON', $time_on);
+            $this->db->where("DATE_FORMAT(COL_TIME_ON, '%Y-%m-%d %H:%i') = DATE_FORMAT(\"".$time_on."\", '%Y-%m-%d %H:%i')");
             $this->db->where('COL_BAND', $band);
             $this->db->where('COL_MODE', $input_mode);
             $this->db->where('station_id', $station_id);

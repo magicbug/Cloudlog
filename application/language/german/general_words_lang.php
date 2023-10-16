@@ -7,6 +7,9 @@ $lang['error_no_active_station_profile'] = 'Achtung: Du musst ein aktives Statio
 $lang['notice_turn_the_radio_on'] = 'Du hast heute noch keine QSOs gemacht; Zeit, das Funkgerät einzuschalten!';
 
 $lang['general_word_important'] = 'Wichtig';
+$lang['general_word_warning'] = 'Warnung';
+$lang['general_word_danger'] = 'GEFAHR';
+$lang['general_word_maintenance'] = 'Wartung';
 $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Datei wählen';
 $lang['general_word_next'] = 'Weiter';
@@ -58,6 +61,7 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
 
 $lang['general_word_details'] = 'Details';
+$lang['general_word_qso_data'] = 'QSO Daten';
 
 $lang['general_edit_qso'] = 'QSO bearbeiten';
 $lang['general_mark_qsl_rx_bureau'] = 'Markiere QSL erhalten (Büro)';
@@ -79,7 +83,6 @@ $lang['general_lookup_hamqth'] = 'Nachschlagen auf HamQTH';
 $lang['general_total_distance'] = 'Entfernung';
 
 // PHP Upload Warning
-$lang['general_word_warning'] = 'Warnung';
 $lang['gen_max_file_upload_size'] = 'Die max. Dateigrösse für Uploads beträgt ';
 
 // Cloudlog Terms
@@ -119,7 +122,9 @@ $lang['gen_hamradio_satellite_mode'] = 'Satellitenmodus';
 
 $lang['gen_hamradio_logbook'] = 'Logbuch';
 
+$lang['gen_hamradio_zones'] = 'Zonen';
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
+$lang['gen_hamradio_itu_zone'] = 'ITU Zone';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_deleted_dxcc'] = 'Gelöschtes DXCC';
 $lang['gen_hamradio_continent'] = 'Kontinent';
@@ -136,11 +141,16 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Planquadrat';
+$lang['gen_hamradio_get_gridsquare'] = 'Orte mein Planquadrat';
 $lang['gen_hamradio_distance'] = 'Entfernung';
 $lang['gen_hamradio_operator'] = 'Operator';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
+
+// Find your CQ/ITU Zone
+$lang['gen_find_zone_cq'] = "Wenn du deine CQ Zone nicht kennst <a href='https://zone-check.eu/?m=cq' target='_blank'>klicke hier</a> um sie herauszufinden!";
+$lang['gen_find_zone_itu'] = "Wenn du deine ITU Zone nicht kennst <a href='https://zone-check.eu/?m=itu' target='_blank'>klicke hier</a> um sie herauszufinden!";
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Du hattest';
@@ -149,6 +159,7 @@ $lang['dashboard_qso_breakdown'] = 'QSO-Übersicht';
 $lang['dashboard_countries_breakdown'] = 'Länderübersicht';
 
 $lang['gen_from_date'] = 'Ab Datum';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'Dieses QSO wurde bestätigt am';
 
