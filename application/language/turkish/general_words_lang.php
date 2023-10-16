@@ -7,6 +7,8 @@ $lang['error_no_active_station_profile'] = 'Dikkat: aktif bir istasyon konumu ay
 $lang['notice_turn_the_radio_on'] = 'Bu gün hiç bir QSO yapmadınız. Telsizi açmanın zamanı geldi!';
 
 $lang['general_word_important'] = 'Önemli';
+$lang['general_word_warning'] = 'Warning';
+$lang['general_word_danger'] = 'DANGER';
 $lang['general_word_maintenance'] = 'Maintenance';
 $lang['general_word_info'] = 'Bilgiler';
 $lang['general_word_choose_file'] = 'Dosya seç';
@@ -81,7 +83,6 @@ $lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
 $lang['general_total_distance'] = 'Topam mesafe';
 
 // PHP Upload Warning
-$lang['general_word_warning'] = 'Warning';
 $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 
 // Cloudlog Terms
@@ -158,6 +159,7 @@ $lang['dashboard_you_have_had'] = 'Bu gün';
 $lang['dashboard_qsos_today'] = 'QSO Yaptınız!';
 $lang['dashboard_qso_breakdown'] = 'QSO\'ların Analizi';
 $lang['dashboard_countries_breakdown'] = 'Ülke Analizi';
+$lang['gen_to_date'] = 'To date';
 
 $lang['gen_from_date'] = 'Tarihten itibaren';
 

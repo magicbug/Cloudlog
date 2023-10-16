@@ -98,6 +98,7 @@ $autoload['config'] = array('cloudlog', 'bands', 'lotw');
 
 $autoload['language'] = array(
     'account',
+    'adif',
     'admin',
     'contesting',
     'eqsl',
