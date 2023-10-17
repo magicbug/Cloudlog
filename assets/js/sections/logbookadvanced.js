@@ -283,6 +283,7 @@ $(document).ready(function () {
 				pota: this.pota.value,
 				wwff: this.wwff.value,
 				qslimages: this.qslimages.value,
+				dupes: this.dupes.value,
 			},
 			dataType: 'json',
 			success: function (data) {
@@ -502,6 +503,10 @@ $(document).ready(function () {
 		quickSearch('pota');
 	});
 
+	$('#dupeButton').click(function (event) {
+		dupeSearch();
+	});
+
 	$('#optionButton').click(function (event) {
 		$('#optionButton').prop("disabled", true);
 		$.ajax({
@@ -588,6 +593,12 @@ $(document).ready(function () {
 		});
 	});
 
+	function dupeSearch() {
+		$('#searchForm').trigger("reset");
+		$("#dupes").val("Y");
+		$('#searchForm').submit();
+	}
+
 	function quickSearch(type) {
 		var elements = $('#qsoList tbody input:checked');
 		var nElements = elements.length;
@@ -672,6 +683,7 @@ $(document).ready(function () {
 	});
 
 	$('#searchForm').on('reset', function(e) {
+		$("#dupes").val("");
 		setTimeout(function() {
 			$('#searchForm').submit();
 		});
