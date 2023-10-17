@@ -9,26 +9,26 @@ ________________________________________________________________________________
 */
 
 $lang['station_logbooks'] = "Station Logbooks";
-$lang['station_logbooks_description_header'] = "What are Station Logbooks";
-$lang['station_logbooks_description_text'] = "Station Logbooks allow you to group Station Locations, this allows you to see all the locations across one session from the logbook areas to the analytics. Great for when your operating in multiple locations but they are part of the same DXCC or VUCC Circle.";
-$lang['station_logbooks_create'] = "Create Station Logbook";
-$lang['station_logbooks_status'] = "Status";
-$lang['station_logbooks_link'] = "Link";
-$lang['station_logbooks_public_search'] = "Public Search";
-$lang['station_logbooks_set_active'] = "Set as Active Logbook";
-$lang['station_logbooks_active_logbook'] = "Active Logbook";
-$lang['station_logbooks_edit_logbook'] = "Edit Station Logbook";    // Full sentence will be generated 'Edit Station Logbook: [Logbook Name]'
-$lang['station_logbooks_confirm_delete'] = "Are you sure you want to delete the following station logbook? You must re-link any locations linked here to another logbook.: ";
-$lang['station_logbooks_view_public'] = "View Public Page for Logbook: ";
-$lang['station_logbooks_create_name'] = "Station Logbook Name";
-$lang['station_logbooks_create_name_hint'] = "You can call a station logbook anything.";
-$lang['station_logbooks_edit_name_hint'] = "Shortname for the station logbook. For example: Home Log (IO87IP)";
-$lang['station_logbooks_edit_name_update'] = "Update Station Logbook Name";
-$lang['station_logbooks_public_slug'] = "Public Slug";
-$lang['station_logbooks_public_slug_hint'] = "Setting a public slug allows you to share your logbook with anyone via a custom website address, this slug can contain letters & numbers only.";
-$lang['station_logbooks_public_slug_format1'] = "Later it looks like this:";
-$lang['station_logbooks_public_slug_format2'] = "[your slug]";
-$lang['station_logbooks_public_slug_input'] = "Type in Public Slug choice";
+$lang['station_log_description_header'] = "What are Station Logbooks";
+$lang['station_log_description_text'] = "Station Logbooks allow you to group Station Locations, this allows you to see all the locations across one session from the logbook areas to the analytics. Great for when your operating in multiple locations but they are part of the same DXCC or VUCC Circle.";
+$lang['station_log_create'] = "Create Station Logbook";
+$lang['station_log_status'] = "Status";
+$lang['station_log_link'] = "Link";
+$lang['station_log_public_search'] = "Public Search";
+$lang['station_log_set_active'] = "Set as Active Logbook";
+$lang['station_log_active_logbook'] = "Active Logbook";
+$lang['station_log_edit_logbook'] = "Edit Station Logbook";    // Full sentence will be generated 'Edit Station Logbook: [Logbook Name]'
+$lang['station_log_confirm_delete'] = "Are you sure you want to delete the following station logbook? You must re-link any locations linked here to another logbook.: ";
+$lang['station_log_view_public'] = "View Public Page for Logbook: ";
+$lang['station_log_create_name'] = "Station Logbook Name";
+$lang['station_log_create_name_hint'] = "You can call a station logbook anything.";
+$lang['station_log_edit_name_hint'] = "Shortname for the station logbook. For example: Home Log (IO87IP)";
+$lang['station_log_edit_name_update'] = "Update Station Logbook Name";
+$lang['station_log_public_slug'] = "Public Slug";
+$lang['station_log_public_slug_hint'] = "Setting a public slug allows you to share your logbook with anyone via a custom website address, this slug can contain letters & numbers only.";
+$lang['station_log_public_slug_format1'] = "Later it looks like this:";
+$lang['station_log_public_slug_format2'] = "[your slug]";
+$lang['station_log_public_slug_input'] = "Type in Public Slug choice";
 
 
 

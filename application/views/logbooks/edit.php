@@ -21,20 +21,20 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<div class="card-header"><?php echo lang('station_logbooks_edit_logbook'); ?>: <?php echo $station_logbook_details->logbook_name; ?></div>
+				<div class="card-header"><?php echo lang('station_log_edit_logbook'); ?>: <?php echo $station_logbook_details->logbook_name; ?></div>
 				<div class="card-body">
 					<form method="post" action="<?php echo site_url('logbooks/edit/'); ?><?php echo $station_logbook_details->logbook_id; ?>" name="create_profile">
 						<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
 
 						<div class="form-group">
-							<label for="stationLogbookNameInput"><?php echo lang('station_logbooks_create_name'); ?></label>
+							<label for="stationLogbookNameInput"><?php echo lang('station_log_create_name'); ?></label>
 							<input type="text" class="form-control" name="station_logbook_name" id="stationLogbookNameInput" aria-describedby="stationLogbookNameInputHelp" value="<?php if(set_value('station_logbook_name') != "") { echo set_value('station_logbook_name'); } else { echo $station_logbook_details->logbook_name; } ?>" required>
-							<small id="stationLogbookNameInputHelp" class="form-text text-muted"><?php echo lang('station_logbooks_edit_name_hint'); ?></small>
+							<small id="stationLogbookNameInputHelp" class="form-text text-muted"><?php echo lang('station_log_edit_name_hint'); ?></small>
 						</div>
 
 						<input type="hidden" class="form-control" name="station_logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>" required>	
 
-						<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> <?php echo lang('station_logbooks_edit_name_update'); ?></button>
+						<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> <?php echo lang('station_log_edit_name_update'); ?></button>
 					</form>
 				</div>
 			</div>
@@ -42,17 +42,17 @@
 
 		<div class="col-md">
 			<div class="card">
-				<div class="card-header"><?php echo lang('station_logbooks_public_slug'); ?></div>
+				<div class="card-header"><?php echo lang('station_log_public_slug'); ?></div>
 				<div class="card-body">
-					<p><?php echo lang('station_logbooks_public_slug_hint'); ?></p>
-					<p><?php echo lang('station_logbooks_public_slug_format1')?></p>
-					<p><?php echo site_url('visitor'); ?>/<?php echo lang('station_logbooks_public_slug_format2'); ?></p>
+					<p><?php echo lang('station_log_public_slug_hint'); ?></p>
+					<p><?php echo lang('station_log_public_slug_format1')?></p>
+					<p><?php echo site_url('visitor'); ?>/<?php echo lang('station_log_public_slug_format2'); ?></p>
 					<form hx-post="<?php echo site_url('logbooks/save_publicslug/'); ?>" hx-target="#publicSlugForm" style="display: inline;">
 					<div id="publicSlugForm">
 					</div>
 					<div class="form-group">
 						<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
-						<label for="publicSlugInput"><?php echo lang('station_logbooks_public_slug_input'); ?></label>
+						<label for="publicSlugInput"><?php echo lang('station_log_public_slug_input'); ?></label>
 						<div hx-target="this" hx-swap="outerHTML">
 							<input class="form-control" name="public_slug" id="publicSlugInput" pattern="[a-zA-Z0-9-]+" value="<?php echo $station_logbook_details->public_slug; ?>" hx-post="<?php echo site_url('logbooks/publicslug_validate/'); ?>"  hx-trigger="keyup changed delay:500ms" required>
 						</div>

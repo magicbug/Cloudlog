@@ -25,12 +25,12 @@
 
 		<form method="post" action="<?php echo site_url('logbooks/create'); ?>" name="create_profile">
 		  <div class="form-group">
-		    <label for="stationLogbookNameInput"><?php echo lang('station_logbooks_create_name');?></label>
+		    <label for="stationLogbookNameInput"><?php echo lang('station_log_create_name');?></label>
 		    <input type="text" class="form-control" name="stationLogbook_Name" id="stationLogbookNameInput" aria-describedby="stationLogbookNameHelp" placeholder="Home QTH" required>
-		    <small id="stationLogbookNameHelp" class="form-text text-muted"><?php echo lang('station_logbooks_create_name_hint');?></small>
+		    <small id="stationLogbookNameHelp" class="form-text text-muted"><?php echo lang('station_log_create_name_hint');?></small>
 		  </div>
 
-			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> <?php echo lang('station_logbooks_create');?></button>
+			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> <?php echo lang('station_log_create');?></button>
 
 		</form>
   </div>
