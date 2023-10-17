@@ -16,8 +16,10 @@ class Logbookadvanced_model extends CI_Model {
 			foreach ($id_query->result() as $id) {
 				$ids2fetch=$id->QSO_IDs;
 			}
-			if ($ids2fetch !== '') {
+			if ($ids2fetch ?? '' !== '') {
 				$conditions[] = "qsos.COL_PRIMARY_KEY in (".$ids2fetch.")";
+			} else {
+				$conditions[] = "1=0";
 			}
 		}
 
