@@ -342,34 +342,34 @@ $options = json_decode($options);
                 <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_callsign'); ?></button><?php 
             } ?>
 			<?php if (($options->dx->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_dxcc'); ?></button><?php 
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchDxcc"><?php echo lang('filter_search_dxcc'); ?></button><?php 
             } ?>
 			<?php if (($options->dx->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_state'); ?></button><?php 
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchState"><?php echo lang('filter_search_state'); ?></button><?php 
             } ?>
 			<?php if (($options->dx->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_gridsquare'); ?></button><?php 
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchGridsquare"><?php echo lang('filter_search_gridsquare'); ?></button><?php 
             } ?>
 			<?php if (($options->dx->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_cq_zone'); ?></button><?php 
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCqZone"><?php echo lang('filter_search_cq_zone'); ?></button><?php 
             } ?>
 			<?php if (($options->dx->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_mode'); ?></button><?php 
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchMode"><?php echo lang('filter_search_mode'); ?></button><?php 
             } ?>
 			<?php if (($options->dx->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_band'); ?></button><?php 
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchBand"><?php echo lang('filter_search_band'); ?></button><?php 
             } ?>
             <?php if (($options->dx->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_iota'); ?></button><?php 
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchIota"><?php echo lang('filter_search_iota'); ?></button><?php 
             } ?>
 			<?php if (($options->dx->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_sota'); ?></button><?php 
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchSota"><?php echo lang('filter_search_sota'); ?></button><?php 
             } ?>
             <?php if (($options->dx->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_pota'); ?></button><?php 
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchPota"><?php echo lang('filter_search_pota'); ?></button><?php 
             } ?>
             <?php if (($options->dx->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_wwff'); ?></button><?php 
+                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchWwff"><?php echo lang('filter_search_wwff'); ?></button><?php 
             } ?>
         </div>
     </div>
