@@ -26,8 +26,8 @@
 	<h2 class="card-header">QSL Card Labels</h2>
 
 	<div class="card-body">
-	<a href="<?php echo site_url('labels/create'); ?>" class="btn btn-outline-primary btn-sm">Create New Label Type</a>
-	<a href="<?php echo site_url('labels/createpaper'); ?>" class="btn btn-outline-primary btn-sm">Create New Paper Type</a>
+	<a href="<?php echo site_url('labels/create'); ?>" class="btn btn-primary btn-sm"><i class="fas fa-plus"> </i> Create New Label Type</a>
+	<a href="<?php echo site_url('labels/createpaper'); ?>" class="btn btn-primary btn-sm"><i class="fas fa-plus"> </i> Create New Paper Type</a>
 <br><br>
 	<?php if ($papertypes) { ?>
 		<h4>Paper types</h4>
