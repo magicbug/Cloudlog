@@ -7,6 +7,20 @@ class Logbookadvanced_model extends CI_Model {
 		$conditions = [];
 		$binding = [$searchCriteria['user_id']];
 
+		if ($searchCriteria['dupes'] !== '') {
+			$id_sql="select group_concat(x.qsoids separator ',') as QSO_IDs from (
+				select GROUP_CONCAT(col_primary_key separator ',') as qsoids, COL_CALL, COL_MODE, COL_SUBMODE, station_callsign, COL_SAT_NAME, COL_BAND,  min(col_time_on) Mintime, max(col_time_on) Maxtime from " . $this->config->item('table_name') . "
+				 join station_profile on " . $this->config->item('table_name') . ".station_id = station_profile.station_id where station_profile.user_id=?
+				group by col_call, col_mode, COL_SUBMODE, STATION_CALLSIGN, col_band, COL_SAT_NAME having count(*) > 1 and timediff(maxtime, mintime) < 3000) x";
+			$id_query = $this->db->query($id_sql, $searchCriteria['user_id']);
+			foreach ($id_query->result() as $id) {
+				$ids2fetch=$id->QSO_IDs;
+			}
+			if ($ids2fetch !== '') {
+				$conditions[] = "qsos.COL_PRIMARY_KEY in (".$ids2fetch.")";
+			}
+		}
+
         if ($searchCriteria['dateFrom'] !== '') {
             $from = DateTime::createFromFormat('d/m/Y', $searchCriteria['dateFrom']);
 			$from = $from->format('Y-m-d');
