@@ -29,25 +29,25 @@
 
 		<form method="post" action="<?php echo site_url('station/create'); ?>" name="create_profile">
 		  <div class="form-group">
-		    <label for="stationNameInput"><?php echo lang("station_location_name"); ?></label>
+		    <label for="stationNameInput"><?php echo lang("station_loc_name"); ?></label>
 		    <input type="text" class="form-control" name="station_profile_name" id="stationNameInput" aria-describedby="stationNameInputHelp" placeholder="Home QTH" required>
-		    <small id="stationNameInputHelp" class="form-text text-muted"><?php echo lang("station_location_name_hint"); ?></small>
+		    <small id="stationNameInputHelp" class="form-text text-muted"><?php echo lang("station_loc_name_hint"); ?></small>
 		  </div>
 
 			<div class="form-group">
-		    <label for="stationCallsignInput"><?php echo lang("station_location_callsign"); ?></label>
+		    <label for="stationCallsignInput"><?php echo lang("station_loc_callsign"); ?></label>
 		    <input type="text" class="form-control" name="station_callsign" id="stationCallsignInput" aria-describedby="stationCallsignInputHelp" placeholder="2M0SQL" required>
-		    <small id="stationCallsignInputHelp" class="form-text text-muted"><?php echo lang("station_location_callsign_hint"); ?></small>
+		    <small id="stationCallsignInputHelp" class="form-text text-muted"><?php echo lang("station_loc_callsign_hint"); ?></small>
 		  </div>
 
 			<div class="form-group">
-		    <label for="stationPowerInput"><?php echo lang("station_location_power"); ?></label>
+		    <label for="stationPowerInput"><?php echo lang("station_loc_power"); ?></label>
 		    <input type="number" class="form-control" name="station_power" id="stationPowerInput" step="1" aria-describedby="stationPowerInputHelp" placeholder="10">
-		    <small id="stationPowerInputHelp" class="form-text text-muted"><?php echo lang("station_location_power_hint"); ?></small>
+		    <small id="stationPowerInputHelp" class="form-text text-muted"><?php echo lang("station_loc_power_hint"); ?></small>
 		  </div>
 
 		  <div class="form-group">
-		    <label for="stationDXCCInput"><?php echo lang("station_location_dxcc"); ?></label>
+		    <label for="stationDXCCInput"><?php echo lang("station_loc_dxcc"); ?></label>
 				<?php if ($dxcc_list->num_rows() > 0) { ?>
 				<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
 				<option value="0" selected><?php echo "- " . lang('general_word_none') . " -"; ?></option>
@@ -57,18 +57,18 @@
 				<?php } ?>
 				</select>
 				<?php } ?>
-		    <small id="stationDXCCInputHelp" class="form-text text-muted"><?php echo lang("station_location_dxcc_hint"); ?></small>
+		    <small id="stationDXCCInputHelp" class="form-text text-muted"><?php echo lang("station_loc_dxcc_hint"); ?></small>
 		  </div>
 
 		  <div class="form-group">
-		    <label for="stationCityInput"><?php echo lang("station_location_city"); ?></label>
+		    <label for="stationCityInput"><?php echo lang("station_loc_city"); ?></label>
 		    <input type="text" class="form-control" name="city" id="stationCityInput" aria-describedby="stationCityInputHelp">
-		    <small id="stationCityInputHelp" class="form-text text-muted"><?php echo lang("station_location_city_hint"); ?></small>
+		    <small id="stationCityInputHelp" class="form-text text-muted"><?php echo lang("station_loc_city_hint"); ?></small>
 		  </div>
 
         <div class="form-row">
             <div class="form-group col-sm-6" id="us_state">
-		    <label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+		    <label for="stateInput"><?php echo lang("station_loc_state"); ?></label>
 		    <select class="form-control custom-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 		    	<option value="" selected></option>
 				<option value="AK">Alaska</option>
@@ -122,11 +122,11 @@
 				<option value="WV">West Virginia</option>
 				<option value="WY">Wyoming</option>
 			</select>
-		    <small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+		    <small id="StateHelp" class="form-text text-muted"><?php echo lang("station_loc_state_hint"); ?></small>
 		  </div>
 
 		  <div class="form-group col-sm-6" id="canada_state">
-		    <label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+		    <label for="stateInput"><?php echo lang("station_loc_state"); ?></label>
 		    <select class="form-control custom-select" name="station_ca_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 		    	<option value="" selected></option>
 				<option value="AB">Alberta</option>
@@ -143,13 +143,13 @@
 				<option value="SK">Saskatchewan</option>
 				<option value="YT">Yukon</option>
 			</select>
-		    <small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+		    <small id="StateHelp" class="form-text text-muted"><?php echo lang("station_loc_state_hint"); ?></small>
 		  </div>
 
 		  <div class="form-group col-sm-6">
-		    <label for="stationCntyInput"><?php echo lang("station_location_county"); ?></label>
+		    <label for="stationCntyInput"><?php echo lang("station_loc_county"); ?></label>
 		    <input disabled="disabled" type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp">
-		    <small id="stationCntyInputHelp" class="form-text text-muted"><?php echo lang("station_location_county_hint"); ?></small>
+		    <small id="stationCntyInputHelp" class="form-text text-muted"><?php echo lang("station_loc_county_hint"); ?></small>
 		  </div>
         </div>
 
@@ -184,7 +184,7 @@
             </div>
 
 		  <div class="form-group">
-		    <label for="stationGridsquareInput"><?php echo lang("station_location_gridsquare"); ?></label>
+		    <label for="stationGridsquareInput"><?php echo lang("station_loc_gridsquare"); ?></label>
 
 			<div class="input-group mb-3">
 			<input type="text" class="form-control" name="gridsquare" id="stationGridsquareInput" aria-describedby="stationGridInputHelp" required>
@@ -193,8 +193,8 @@
 			</div>
 			</div>
 
-		    <small id="stationGridInputHelp" class="form-text text-muted"><?php echo lang("station_location_gridsquare_hint_ln1"); ?></small>
-		    <small id="stationGridInputHelp" class="form-text text-muted"><?php echo lang("station_location_gridsquare_hint_ln2"); ?></small>
+		    <small id="stationGridInputHelp" class="form-text text-muted"><?php echo lang("station_loc_gridsquare_hint_ln1"); ?></small>
+		    <small id="stationGridInputHelp" class="form-text text-muted"><?php echo lang("station_loc_gridsquare_hint_ln2"); ?></small>
 		  </div>
 
             <div class="form-group">
@@ -209,44 +209,44 @@
                     ?>
 
                 </select>
-                <small id="stationIOTAInputHelp" class="form-text text-muted"><?php echo lang("station_location_iota_hint_ln1"); ?></small>
-                <small id="stationIOTAInputHelp" class="form-text text-muted"><?php echo lang("station_location_iota_hint_ln2"); ?></small>
+                <small id="stationIOTAInputHelp" class="form-text text-muted"><?php echo lang("station_loc_iota_hint_ln1"); ?></small>
+                <small id="stationIOTAInputHelp" class="form-text text-muted"><?php echo lang("station_loc_iota_hint_ln2"); ?></small>
             </div>
 
 		  <div class="form-group">
 		    <label for="stationSOTAInput"><?php echo lang("gen_hamradio_sota_reference"); ?></label>
 		    <input type="text" class="form-control" name="sota" id="stationSOTAInput" aria-describedby="stationSOTAInputHelp">
-		    <small id="stationSOTAInputHelp" class="form-text text-muted"><?php echo lang("station_location_sota_hint_ln1"); ?></small>
+		    <small id="stationSOTAInputHelp" class="form-text text-muted"><?php echo lang("station_loc_sota_hint_ln1"); ?></small>
 		  </div>
 
 		  <div class="form-group">
 		    <label for="stationWWFFInput"><?php echo lang("gen_hamradio_wwff_reference"); ?></label>
 		    <input type="text" class="form-control" name="wwff" id="stationWWFFInput" aria-describedby="stationWWFFInputHelp">
-		    <small id="stationWWFFInputHelp" class="form-text text-muted"><?php echo lang("station_location_wwff_hint_ln1"); ?></small>
+		    <small id="stationWWFFInputHelp" class="form-text text-muted"><?php echo lang("station_loc_wwff_hint_ln1"); ?></small>
 		  </div>
 
 		  <div class="form-group">
 		    <label for="stationPOTAInput"><?php echo lang("gen_hamradio_pota_reference"); ?></label>
 		    <input type="text" class="form-control" name="pota" id="stationPOTAInput" aria-describedby="stationPOTAInputHelp">
-		    <small id="stationPOTAInputHelp" class="form-text text-muted"><?php echo lang("station_location_pota_hint_ln1"); ?></small>
+		    <small id="stationPOTAInputHelp" class="form-text text-muted"><?php echo lang("station_loc_pota_hint_ln1"); ?></small>
 		  </div>
 
 		  <div class="form-group">
-		    <label for="stationSigInput"><?php echo lang("station_location_signature"); ?></label>
+		    <label for="stationSigInput"><?php echo lang("station_loc_signature"); ?></label>
 		    <input type="text" class="form-control" name="sig" id="stationSigInput" aria-describedby="stationSigInputHelp">
-		    <small id="stationSigInputHelp" class="form-text text-muted"><?php echo lang("station_location_signature_name_hint"); ?></small>
+		    <small id="stationSigInputHelp" class="form-text text-muted"><?php echo lang("station_loc_signature_name_hint"); ?></small>
 		  </div>
 
 		  <div class="form-group">
-		    <label for="stationSigInfoInput"><?php echo lang("station_location_signature_info"); ?></label>
+		    <label for="stationSigInfoInput"><?php echo lang("station_loc_signature_info"); ?></label>
 		    <input type="text" class="form-control" name="sig_info" id="stationSigInfoInput" aria-describedby="stationSigInfoInputHelp">
-		    <small id="stationSigInfoInput" class="form-text text-muted"><?php echo lang("station_location_signature_info_hint"); ?></small>
+		    <small id="stationSigInfoInput" class="form-text text-muted"><?php echo lang("station_loc_signature_info_hint"); ?></small>
 		  </div>
 
             <div class="form-group">
                 <label for="eqslNickname">eQSL QTH Nickname</label> <!-- This does not need Multilanguage Support -->
                 <input type="text" class="form-control" name="eqslnickname" id="eqslNickname" aria-describedby="eqslhelp">
-                <small id="eqslhelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_hint"); ?></small>
+                <small id="eqslhelp" class="form-text text-muted"><?php echo lang("station_loc_eqsl_hint"); ?></small>
             </div>
 
 
@@ -254,10 +254,10 @@
                 <div class="form-group col-sm-6">                                                                                                                                                    
 					<label for="hrdlog_code">HRDLog.net API Code</label> <!-- This does not need Multilanguage Support -->
                     <input type="text" class="form-control" name="hrdlog_code" id="hrdlog_code" aria-describedby="hrdlog_codeHelp">
-                    <small id="hrdlog_codeHelp" class="form-text text-muted"><?php echo lang("station_location_hrdlog_hint"); ?></a></small>
+                    <small id="hrdlog_codeHelp" class="form-text text-muted"><?php echo lang("station_loc_hrdlog_hint"); ?></a></small>
                 </div>
                 <div class="form-group col-sm-6">
-                    <label for="hrdlogrealtime"><?php echo lang("station_location_hrdlog_realtime_upload"); ?></label>                                                                                                                 
+                    <label for="hrdlogrealtime"><?php echo lang("station_loc_hrdlog_realtime_upload"); ?></label>                                                                                                                 
 					<select class="custom-select" id="hrdlogrealtime" name="hrdlogrealtime">
                         <option value="1"><?php echo lang("general_word_yes"); ?></option>
                         <option value="0" selected><?php echo lang("general_word_no"); ?></option>
@@ -266,17 +266,17 @@
             </div>
 
 			<div class="alert alert-warning" role="alert">
-				<?php echo "QRZ.com - " . lang("station_location_qrz_subscription"); ?>
+				<?php echo "QRZ.com - " . lang("station_loc_qrz_subscription"); ?>
 			</div>
 
             <div class="form-row">
                 <div class="form-group col-sm-6">
                     <label for="qrzApiKey">QRZ.com Logbook API Key</label>  <!-- This does not need Multilanguage Support -->
                     <input type="text" class="form-control" name="qrzapikey" pattern="^([A-F0-9]{4}-){3}[A-F0-9]{4}$" id="qrzApiKey" aria-describedby="qrzApiKeyHelp">
-                    <small id="qrzApiKeyHelp" class="form-text text-muted"><?php echo lang("station_location_qrz_hint"); ?></a></small>
+                    <small id="qrzApiKeyHelp" class="form-text text-muted"><?php echo lang("station_loc_qrz_hint"); ?></a></small>
                 </div>
                 <div class="form-group col-sm-6">
-                    <label for="qrzrealtime"><?php echo lang("station_location_qrz_realtime_upload"); ?></label>
+                    <label for="qrzrealtime"><?php echo lang("station_loc_qrz_realtime_upload"); ?></label>
                     <select class="custom-select" id="qrzrealtime" name="qrzrealtime">
                         <option value="1"><?php echo lang("general_word_yes"); ?></option>
                         <option value="0" selected><?php echo lang("general_word_no"); ?></option>
@@ -288,10 +288,10 @@
 				<div class="form-group col-sm-6">
 					<label for="webadifApiKey"> QO-100 Dx Club API Key </label> <!-- This does not need Multilanguage Support -->
 					<input type="text" class="form-control" name="webadifapikey" id="webadifApiKey" aria-describedby="webadifApiKeyHelp">
-					<small id="webadifApiKeyHelp" class="form-text text-muted"><?php echo lang("station_location_qo100_hint"); ?></a></small>
+					<small id="webadifApiKeyHelp" class="form-text text-muted"><?php echo lang("station_loc_qo100_hint"); ?></a></small>
 				</div>
 				<div class="form-group col-sm-6">
-					<label for="webadifrealtime"><?php echo lang("station_location_qo100_realtime_upload"); ?></label>
+					<label for="webadifrealtime"><?php echo lang("station_loc_qo100_realtime_upload"); ?></label>
 					<select class="custom-select" id="webadifrealtime" name="webadifrealtime">
 						<option value="1"><?php echo lang("general_word_yes"); ?></option>
 						<option value="0" selected><?php echo lang("general_word_no"); ?></option>
@@ -300,27 +300,27 @@
 			</div>
 
 			<div class="form-group">
-				<label for="oqrs"><?php echo lang("station_location_oqrs_enabled"); ?></label>
+				<label for="oqrs"><?php echo lang("station_loc_oqrs_enabled"); ?></label>
 				<select class="custom-select" id="oqrs" name="oqrs">
 					<option value="0"><?php echo lang("general_word_no"); ?></option>
 					<option value="1"><?php echo lang("general_word_yes"); ?></option>
 				</select>
 			</div>
 			<div class="form-group">
-						<label for="oqrs"><?php echo lang("station_location_oqrs_email_alert"); ?></label>
+						<label for="oqrs"><?php echo lang("station_loc_oqrs_email_alert"); ?></label>
 						<select class="custom-select" id="oqrsemail" name="oqrsemail">
 						<option value="0"><?php echo lang("general_word_no"); ?></option>
 						<option value="1"><?php echo lang("general_word_yes"); ?></option>
 						</select>
-						<small id="oqrsemailHelp" class="form-text text-muted"><?php echo lang("station_location_oqrs_email_hint"); ?></small>
+						<small id="oqrsemailHelp" class="form-text text-muted"><?php echo lang("station_loc_oqrs_email_hint"); ?></small>
 					</div>
 			<div class="form-group">
-				<label for="oqrstext"><?php echo lang("station_location_oqrs_text"); ?></label>
+				<label for="oqrstext"><?php echo lang("station_loc_oqrs_text"); ?></label>
 				<input type="text" class="form-control" name="oqrstext" id="oqrstext" aria-describedby="oqrstextHelp">
-				<small id="oqrstextHelp" class="form-text text-muted"><?php echo lang("station_location_oqrs_text_hint"); ?></small>
+				<small id="oqrstextHelp" class="form-text text-muted"><?php echo lang("station_loc_oqrs_text_hint"); ?></small>
 			</div>
 
-			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> <?php echo lang("admin_create"); ?> <?php echo lang("station_location"); ?></button>
+			<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> <?php echo lang("admin_create"); ?> <?php echo lang("station_loc"); ?></button>
 
 		</form>
   </div>
