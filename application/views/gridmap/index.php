@@ -52,7 +52,7 @@
                 <option value="All">All</option>
                 <?php foreach($bands as $band) {
                     echo '<option value="'.$band.'"';
-                    if ($user_gridmap_default_band == $band) {
+                    if ($user_default_band == $band) {
                         echo ' selected="selected"';
                     }
                     echo '>'.$band.'</option>'."\n";
@@ -60,7 +60,7 @@
             </select>
             <?php if (count($sats_available) != 0) { ?>
                 <label class="my-1 mr-2" for="distplot_sats"><?php echo lang('gridsquares_sat'); ?></label>
-                <select class="custom-select my-1 mr-sm-2"  id="sats" <?php if ($user_gridmap_default_band != "SAT") { ?>disabled<?php } ?>>
+                <select class="custom-select my-1 mr-sm-2"  id="sats" <?php if ($user_default_band != "SAT") { ?>disabled<?php } ?>>
                     <option value="All">All</option>
                     <?php foreach($sats_available as $sat) {
                         echo '<option value="' . $sat . '"' . '>' . $sat . '</option>'."\n";
@@ -84,7 +84,7 @@
                 <div>
                     <div class="form-check-inline">
                     <?php echo '<input class="form-check-input" type="checkbox" name="qsl" id="qsl"';
-                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) {
+                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
                             echo ' checked' ;
                         }
                         echo '>'; ?>
@@ -92,7 +92,7 @@
                     </div>
                     <div class="form-check-inline">
                     <?php echo '<input class="form-check-input" type="checkbox" name="lotw" id="lotw"';
-                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
                             echo ' checked' ;
                         }
                         echo '>'; ?>
@@ -100,7 +100,7 @@
                     </div>
                     <div class="form-check-inline">
                     <?php echo '<input class="form-check-input" type="checkbox" name="eqsl" id="eqsl"';
-                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'E') !== false) {
                             echo ' checked' ;
                         }
                         echo '>'; ?>

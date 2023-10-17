@@ -1688,7 +1688,7 @@ class Logbook_model extends CI_Model {
   }
 
     function check_if_callsign_cnfmd_in_logbook($callsign, $StationLocationsArray = null, $band = null) {
-	    $user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
+	    $user_default_confirmation = $this->session->userdata('user_default_confirmation');
 
 	    if($StationLocationsArray == null) {
 		    $CI =& get_instance();
@@ -1699,16 +1699,16 @@ class Logbook_model extends CI_Model {
 	    }
 
 	    $extrawhere='';
-	    if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+	    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
 		    $extrawhere="COL_QSL_RCVD='Y'"; 
 	    }
-	    if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+	    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 		    if ($extrawhere!='') {
 			    $extrawhere.=" OR";
 		    }
 		    $extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
 	    }
-	    if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+	    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'E') !== false) {
 		    if ($extrawhere!='') {
 			    $extrawhere.=" OR";
 		    }

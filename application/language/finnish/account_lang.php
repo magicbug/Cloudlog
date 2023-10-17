@@ -96,8 +96,6 @@ $lang['account_login'] = 'Kirjaudu';
 $lang['account_mastodon'] = 'Mastodonserver';
 $lang['account_user_mastodon'] = 'URL of Mastodonserver';
 
-$lang['account_gridmap_settings'] = 'Gridsquare -kartan asetukset';
+$lang['account_default_band_settings'] = 'Settings for Default Band and Confirmation';
 $lang['account_gridmap_default_band'] = 'Oletusbandi';
-$lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';
-
-
+$lang['account_qsl_settings'] = 'Default QSL-Methods';

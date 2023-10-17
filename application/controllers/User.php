@@ -88,8 +88,8 @@ class User extends CI_Controller {
 				$data['user_previous_qsl_type'] = $this->input->post('user_previous_qsl_type');
 				$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload');
 				$data['user_mastodon_url'] = $this->input->post('user_mastodon_url');
-				$data['user_gridmap_default_band'] = $this->input->post('user_gridmap_default_band');
-				$data['user_gridmap_confirmation'] = ($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : '');
+				$data['user_default_band'] = $this->input->post('user_default_band');
+				$data['user_default_confirmation'] = ($this->input->post('user_default_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_default_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_default_confirmation_eqsl') !== null ? 'E' : '');
 				$data['language'] = $this->input->post('language');
 				$this->load->view('user/add', $data);
 			} else {
@@ -123,8 +123,8 @@ class User extends CI_Controller {
 				$this->input->post('user_previous_qsl_type'),
 				$this->input->post('user_amsat_status_upload'),
 				$this->input->post('user_mastodon_url'),
-				$this->input->post('user_gridmap_default_band'),
-				($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : ''),
+				$this->input->post('user_default_band'),
+				($this->input->post('user_default_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_default_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_default_confirmation_eqsl') !== null ? 'E' : ''),
 				$this->input->post('language'),
 				)) {
 				// Check for errors
@@ -170,8 +170,8 @@ class User extends CI_Controller {
 			$data['user_previous_qsl_type'] = $this->input->post('user_previous_qsl_type');
 			$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload');
 			$data['user_mastodon_url'] = $this->input->post('user_mastodon_url');
-			$data['user_gridmap_default_band'] = $this->input->post('user_gridmap_default_band');
-			$data['user_gridmap_confirmation'] = ($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : '');
+			$data['user_default_band'] = $this->input->post('user_default_band');
+			$data['user_default_confirmation'] = ($this->input->post('user_default_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_default_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_default_confirmation_eqsl') !== null ? 'E' : '');
 			$data['language'] = $this->input->post('language');
 			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
@@ -413,16 +413,16 @@ class User extends CI_Controller {
 				$data['user_mastodon_url'] = $q->user_mastodon_url;
 			}
 
-			if($this->input->post('user_gridmap_default_band')) {
-				$data['user_gridmap_default_band'] = $this->input->post('user_gridmap_default_band', false);
+			if($this->input->post('user_default_band')) {
+				$data['user_default_band'] = $this->input->post('user_default_band', false);
 			} else {
-				$data['user_gridmap_default_band'] = $q->user_gridmap_default_band;
+				$data['user_default_band'] = $q->user_default_band;
 			}
 
-			if($this->input->post('user_gridmap_confirmation')) {
-			   $data['user_gridmap_confirmation'] = ($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : '');
+			if($this->input->post('user_default_confirmation')) {
+			   $data['user_default_confirmation'] = ($this->input->post('user_default_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_default_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_default_confirmation_eqsl') !== null ? 'E' : '');
 			} else {
-				$data['user_gridmap_confirmation'] = $q->user_gridmap_confirmation;
+				$data['user_default_confirmation'] = $q->user_default_confirmation;
 			}
 
 			if($this->input->post('user_column1')) {
@@ -527,8 +527,8 @@ class User extends CI_Controller {
 			$data['user_previous_qsl_type'] = $this->input->post('user_previous_qsl_type');
 			$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload');
 			$data['user_mastodon_url'] = $this->input->post('user_mastodon_url');
-			$data['user_gridmap_default_band'] = $this->input->post('user_gridmap_default_band');
-			$data['user_gridmap_confirmation'] = ($this->input->post('user_gridmap_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_gridmap_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_gridmap_confirmation_eqsl') !== null ? 'E' : '');
+			$data['user_default_band'] = $this->input->post('user_default_band');
+			$data['user_default_confirmation'] = ($this->input->post('user_default_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_default_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_default_confirmation_eqsl') !== null ? 'E' : '');
 			$data['language'] = $this->input->post('language');
 			$data['user_winkey'] = $this->input->post('user_winkey');
 			$this->load->view('user/edit');
