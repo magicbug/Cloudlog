@@ -14,6 +14,8 @@ $lang['general_word_info'] = 'Informacja';
 $lang['general_word_choose_file'] = 'Wybież plik';
 $lang['general_word_next'] = 'Next';
 $lang['general_word_previous'] = 'Previous';
+$lang['general_word_enabled'] = "Enabled";
+$lang['general_word_disabled'] = "Disabled";
 
 $lang['general_word_date'] = 'Data';
 $lang['general_word_time'] = 'Godzina';

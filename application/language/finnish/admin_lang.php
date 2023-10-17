@@ -15,6 +15,7 @@ $lang['admin_options'] = 'Valinnat';
 
 $lang['admin_create_user'] = 'Luo käyttäjä';
 $lang['admin_delete'] = 'Poista';
+$lang['admin_remove'] = "Remove";
 $lang['admin_edit'] = 'Muokkaa';
 $lang['admin_create'] = 'Create';
 $lang['admin_update'] = 'Update';
