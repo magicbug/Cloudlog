@@ -45,8 +45,8 @@
 				<div class="card-header"><?php echo lang('station_log_public_slug'); ?></div>
 				<div class="card-body">
 					<p><?php echo lang('station_log_public_slug_hint'); ?></p>
-					<p><?php echo lang('station_log_public_slug_format1')?></p>
-					<p><?php echo site_url('visitor'); ?>/<?php echo lang('station_log_public_slug_format2'); ?></p>
+					<p><?php echo lang('station_log_public_slug_format1')?><br>
+					<?php echo site_url('visitor'); ?>/<?php echo lang('station_log_public_slug_format2'); ?></p>
 					<form hx-post="<?php echo site_url('logbooks/save_publicslug/'); ?>" hx-target="#publicSlugForm" style="display: inline;">
 					<div id="publicSlugForm">
 					</div>
@@ -66,13 +66,14 @@
 
 					<?php if($station_logbook_details->public_slug != "") { ?>
 					<div id="slugLink" class="alert alert-info" role="alert" style="margin-top: 20px;">
-						Visit Public Page <a href="<?php echo site_url('visitor'); ?>/<?php echo $station_logbook_details->public_slug; ?>" target="_blank"><?php echo site_url('visitor'); ?>/<?php echo $station_logbook_details->public_slug; ?></a>
+						<p><?php echo lang('station_log_public_slug_visit') . " "; ?></p>
+						<p><a href="<?php echo site_url('visitor'); ?>/<?php echo $station_logbook_details->public_slug; ?>" target="_blank"><?php echo site_url('visitor'); ?>/<?php echo $station_logbook_details->public_slug; ?></a></p>
 					</div>
 					<?php } ?>
 					<form style="display: inline;">
 					<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
-					<p style="margin-top: 15px;">Enabling public search function offers a search input box on the public logbook page accessed via public slug. Search only covers this logbook.</p>
-					<label for="public_search">Public search enabled</label>
+					<p style="margin-top: 15px;"><?php echo lang('station_log_public_search_hint'); ?></p>
+					<label for="public_search"><?php echo lang('station_log_public_search_enabled'); ?></label>
 					<select class="custom-select" id="public_search" name="public_search" hx-post="<?php echo site_url('logbooks/save_publicsearch/'); ?>" hx-target="#publicSearchForm" hx-trigger="change">
 						<option value="1" <?php if ($station_logbook_details->public_search == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 						<option value="0" <?php if ($station_logbook_details->public_search == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
