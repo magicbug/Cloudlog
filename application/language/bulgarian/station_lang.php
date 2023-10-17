@@ -32,6 +32,10 @@ $lang['station_log_public_slug_input'] = "Type in Public Slug choice";
 $lang['station_log_public_slug_visit'] = "Visit Public Page";
 $lang['station_log_public_search_hint'] = "Enabling public search function offers a search input box on the public logbook page accessed via public slug. Search only covers this logbook.";
 $lang['station_log_public_search_enabled'] = "Public search enabled";
+$lang['station_log_select_avail_loc'] = "Select Available Station Locations";
+$lang['station_log_link_loc'] = "Link Location";
+$lang['station_log_linked_loc'] = "Linked Locations";
+$lang['station_log_no_linked_loc'] = "No Linked Locations";
 
 
 
@@ -43,6 +47,7 @@ ________________________________________________________________________________
 
 $lang['station_loc'] = 'Station Location';
 $lang['station_loc_header_ln1'] = 'Station Locations define operating locations, such as your QTH, a friends QTH, or a portable station.';
+$lang['station_loc_plural'] = "Station Locations";
 $lang['station_loc_header_ln2'] = 'Similar to logbooks, a station profile keeps a set of QSOs together.';
 $lang['station_loc_header_ln3'] = 'Only one station may be active at a time. In the table below this is shown with the -Active Station- badge.';
 $lang['station_loc_create_header'] = 'Create Station Location';

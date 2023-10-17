@@ -90,7 +90,7 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<div class="card-header">Station Locations</div>
+				<div class="card-header"><?php echo lang('station_loc_plural'); ?></div>
 				<div class="card-body">
 					<form method="post" action="<?php echo site_url('logbooks/edit/'); ?><?php echo $station_logbook_details->logbook_id; ?>" name="create_profile">
 					<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
@@ -105,11 +105,11 @@
 					?>
 
 					<div class="form-group">
-						<label for="StationLocationsSelect">Select Available Station Locations</label>
+						<label for="StationLocationsSelect"><?php echo lang('station_log_select_avail_loc'); ?></label>
 						<select name="SelectedStationLocation" class="form-control" id="StationLocationSelect" aria-describedby="StationLocationSelectHelp">
 							<?php foreach ($station_locations_list->result() as $row) {
 								if (!in_array($row->station_id, $linked_stations)) { ?>
-								<option value="<?php echo $row->station_id;?>"><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country; if ($row->dxcc_end != NULL) { echo ' ('.lang('gen_hamradio_deleted_dxcc').')'; } ?>)</option>
+								<option value="<?php echo $row->station_id;?>"><?php echo $row->station_profile_name;?> (<?php echo lang('gen_hamradio_callsign'); ?>: <?php echo $row->station_callsign;?> <?php echo lang('gen_hamradio_dxcc'); ?>: <?php echo $row->station_country; if ($row->dxcc_end != NULL) { echo ' ('.lang('gen_hamradio_deleted_dxcc').')'; } ?>)</option>
 								<?php } ?>
 							<?php } ?>
 						</select>
@@ -117,7 +117,7 @@
 
 					<input type="hidden" class="form-control" name="station_logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>" required>	
 
-					<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Link Location</button>
+					<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> <?php echo lang('station_log_link_loc'); ?></button>
 					</form>
 				</div>
 			</div>
@@ -126,14 +126,14 @@
 
 	<div class="card">
 		<div class="card-header">
-			Linked Locations
+			<?php echo lang('station_log_linked_loc'); ?>
 		</div>
 
 	    <div class="table-responsive">
 			<table id="station_logbooks_linked_table" class="table table-hover">
 				<thead class="thead-light">
 					<tr>
-						<th scope="col">Location Name</th>
+						<th scope="col"><?php echo lang('station_loc_name'); ?></th>
 						<th scope="col"></th>
 					</tr>
 				</thead>
@@ -143,7 +143,7 @@
 							foreach ($station_locations_linked->result() as $row) {
 					?>
 					<tr>
-						<td><?php echo $row->station_profile_name;?> (Callsign: <?php echo $row->station_callsign;?> DXCC: <?php echo $row->station_country; if ($row->end != NULL) { echo ' <span class="badge badge-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?>)</td>
+						<td><?php echo $row->station_profile_name;?> (<?php echo lang('gen_hamradio_callsign'); ?>: <?php echo $row->station_callsign;?> <?php echo lang('gen_hamradio_dxcc'); ?>: <?php echo $row->station_country; if ($row->end != NULL) { echo ' <span class="badge badge-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?>)</td>
 						<td><a href="<?php echo site_url('logbooks/delete_relationship/'); ?><?php echo $station_logbook_details->logbook_id; ?>/<?php echo $row->station_id;?>" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a></td>
 					</tr>
 					<?php
@@ -151,7 +151,7 @@
 						} else {
 					?>
 					<tr>
-						<td colspan="2">No linked locations</td>
+						<td colspan="2"><?php echo lang('station_log_no_linked_loc'); ?></td>
 					</tr>
 					<?php } ?>
 				</tbody>

@@ -32,6 +32,10 @@ $lang['station_log_public_slug_input'] = "Gib ein, wie der öffentliche Link lau
 $lang['station_log_public_slug_visit'] = "Besuche die öffentl. Seite";
 $lang['station_log_public_search_hint'] = "Einschalten der Suchfunktion gibt Besuchern deiner öffentlichen Logbuch Seite die Möglichkeit über ein Suchfeld Einträge zu suchen. Die Suche deckt dabei nur dieses Logbuch ab.";
 $lang['station_log_public_search_enabled'] = "Öffentliche Suche eingeschaltet";
+$lang['station_log_select_avail_loc'] = "Wähle verfügbare Stationsstandorte";
+$lang['station_log_link_loc'] = "Verknüpfe Standort";
+$lang['station_log_linked_loc'] = "Verknüpfte Standorte";
+$lang['station_log_no_linked_loc'] = "Keine verknüpften Standorte";
 
 
 
@@ -43,6 +47,7 @@ ________________________________________________________________________________
 */
 
 $lang['station_loc'] = 'Stationsstandort';
+$lang['station_loc_plural'] = "Stationsstandorte";
 $lang['station_loc_header_ln1'] = 'Stationsstandorte definieren die Orte, von denen aus du QRV bist. Dein Zuhause, Bei Freunden oder Unterwegs';
 $lang['station_loc_header_ln2'] = 'Ähnlich wie Logbücher trennen die Stationsstandorte die entsprechenden QSO voneinander ab.';
 $lang['station_loc_header_ln3'] = 'Es kann immer nur ein Stationsstandort aktiv sein. Welches das aktuell ist siehst du in der Liste an dem "Aktive Station" Symbol';
