@@ -12,6 +12,7 @@ ________________________________________________________________________________
 $lang['adif_import'] = "ADIF Import";
 $lang['adif_export'] = "ADIF Export";
 // $lang['lotw_title']                      --> application/language/english/lotw_lang.php
+$lang['darc_dcl'] = "DARC DCL";
 
 
 /*
@@ -81,6 +82,22 @@ $lang['adif_qso_marked'] = "QSOs marked";
 $lang['adif_yay_its_done'] = "Yay, its done!";
 $lang['adif_qso_lotw_marked_confirm'] = "The QSOs are marked as exported to LoTW.";
 
+/*
+___________________________________________________________________________________________
+DARC DCL
+___________________________________________________________________________________________
+*/
+$lang['adif_dcl_text_pre'] = "Go to";
+$lang['adif_dcl_text_post'] = "and export your logbook with confirmed DOKs. To speed up the process you can select only DL QSOs to download (i.e. put \"DL\" into Prefix List). The downloaded ADIF file can be uploaded here in order to update QSOs with DOK info.";
+
+$lang['only_confirmed_qsos'] = "Only import DOK data from QSOs confirmed on DCL.";
+$lang['only_confirmed_qsos_hint'] = "Uncheck if you also want to update DOK with data from unconfirmed QSOs in DCL.";
+
+$lang['overwrite_by_dcl'] = "Overwrite exisiting DOK in log by DCL (if different)";
+$lang['overwrite_by_dcl_hint'] = "If checked Cloudlog will forcibly overwrite existing DOK with DOK from DCL log.";
+
+$lang['ignore_ambiguous'] = "Ignore QSOs that cannot be matched";
+$lang['ignore_ambiguous_hint'] = "If unchecked information about QSO which could not be found in Cloudlog will be displayed.";
 
 /*
 ___________________________________________________________________________________________
@@ -97,3 +114,17 @@ $lang['adif_import_dupes_skipped'] = " Dupes were skipped.";
 
 $lang['adif_import_errors'] = "ADIF Errors";
 $lang['adif_import_errors_hint'] = "You have ADIF errors, the QSOs have still been added but these fields have not been populated.";
+
+/*
+___________________________________________________________________________________________
+DCL Success
+___________________________________________________________________________________________
+*/
+
+$lang['dcl_results'] = "Results of DCL DOK Update";
+$lang['dcl_info_updated'] = "DCL information for DOKs has been updated.";
+$lang['dcl_qsos_updated'] = "QSOs updated:";
+$lang['dcl_qsos_ignored'] = "QSOs ignored:";
+$lang['dcl_no_qsos_updated'] = "No QSOs updated.";
+$lang['dcl_dok_errors'] = "DOK Errors";
+$lang['dcl_dok_errors_details'] = "There is different data for DOK in your log compared to DCL:";

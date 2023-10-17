@@ -3474,6 +3474,97 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
         return $my_error;
     }
 
+    function update_dok($record, $ignoreAmbiguous, $onlyConfirmed, $overwriteDok) {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if(isset($record['call'])) {
+                $call = strtoupper($record['call']);
+        } else {
+                return array(3, 'Callsign not found');
+        }
+
+        // Join date+time
+        $time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
+
+        // Store Band
+        if(isset($record['band'])) {
+                $band = strtolower($record['band']);
+        } else {
+            if (isset($record['freq'])){
+              if($freq != "0") {
+                $band = $CI->frequency->GetBand($freq);
+              }
+            }
+        }
+
+        if (isset($record['mode'])) {
+            $mode = $record['mode'];
+        } else {
+            $mode = '';
+        }
+
+        if (isset($record['darc_dok'])) {
+            $darc_dok = $record['darc_dok'];
+        } else {
+            $darc_dok = '';
+        }
+
+        if ($darc_dok != '') {
+            $this->db->select('COL_PRIMARY_KEY, COL_DARC_DOK');
+            $this->db->where('COL_CALL', $call);
+            $this->db->like('COL_TIME_ON', $time_on, 'after');
+            $this->db->where('COL_BAND', $band);
+            $this->db->where('COL_MODE', $mode);
+            $this->db->where_in('station_id', $logbooks_locations_array);
+            $check = $this->db->get($this->config->item('table_name'));
+            if ($check->num_rows() != 1) {
+               if ($ignoreAmbiguous == '1') {
+                  return array();
+               } else {
+                  return array(2, $result['message'] = $time_on." ".$call." ".$band." ".$mode." QSO could not be matched.");
+               }
+            } else {
+               if ($check->row()->COL_DARC_DOK != $darc_dok) {
+                  $dcl_cnfm = array('c', 'm', 'n', 'o', 'i');
+                  // Ref https://confluence.darc.de/pages/viewpage.action?pageId=21037270
+                  if ($onlyConfirmed == '1') {
+                     if (in_array($record['app_dcl_status'], $dcl_cnfm)) {
+                        if ($check->row()->COL_DARC_DOK == '' || $overwriteDok == '1') {
+                           $this->set_dok($check->row()->COL_PRIMARY_KEY, $darc_dok);
+                           return array(0, '');
+                        } else {
+                           return array(1, $result['message'] = $time_on." ".$call." ".$band." ".$mode.": Log -> ".($check->row()->COL_DARC_DOK == '' ? 'n/a' : $check->row()->COL_DARC_DOK)." DCL -> ".$darc_dok.". DCL QSL Status: ".$record['app_dcl_status'].".");
+                        }
+
+                     } else {
+                        return array(1, $result['message'] = $time_on." ".$call." ".$band." ".$mode.": Log -> ".($check->row()->COL_DARC_DOK == '' ? 'n/a' : $check->row()->COL_DARC_DOK)." DCL -> ".$darc_dok.". DCL QSL Status: ".$record['app_dcl_status'].".");
+                     }
+                  } else {
+                     if ($check->row()->COL_DARC_DOK == '' || $overwriteDok == '1') {
+                        $this->set_dok($check->row()->COL_PRIMARY_KEY, $darc_dok);
+                        return array(0, '');
+                     } else {
+                        return array(1, $result['message'] = $time_on." ".$call." ".$band." ".$mode.": Log -> ".($check->row()->COL_DARC_DOK == '' ? 'n/a' : $check->row()->COL_DARC_DOK)." DCL -> ".$darc_dok.". DCL QSL Status: ".$record['app_dcl_status'].".");
+                     }
+                  }
+               }
+            }
+        }
+
+    }
+
+    function set_dok($key, $dok) {
+      $data = array(
+         'COL_DARC_DOK' => $dok,
+      );
+
+      $this->db->where(array('COL_PRIMARY_KEY' => $key));
+      $this->db->update($this->config->item('table_name'), $data);
+      return;
+    }
+
     function get_main_mode_from_mode($mode) {
 	return ($this->get_main_mode_if_submode($mode) == null ? $mode : $this->get_main_mode_if_submode($mode));
     }
