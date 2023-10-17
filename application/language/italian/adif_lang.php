@@ -29,7 +29,7 @@ $lang['adif_select_stationlocation'] = "Select Station Location";
 // $lang['gen_hamradio_callsign']           --> application/language/english/general_words_lang.php
 
 // The File Input is translated by the Browser
-$lang['aif_file_label'] = "ADIF File";
+$lang['adif_file_label'] = "ADIF File";
 
 $lang['adif_hint_no_info_in_file'] ="Select if ADIF being imported does not contain this information.";
 

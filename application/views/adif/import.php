@@ -37,7 +37,7 @@
                     <option value="<?php echo $station->station_id; ?>" <?php if ($station->station_id == $this->stations->find_active()) { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_callsign') . ": "?><?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
                     <?php } ?>
                     </select>
-                  <label class="sr-only" for="inlineFormInputName2"><?php echo lang('aif_file_label')?></label>
+                  <label class="sr-only" for="inlineFormInputName2"><?php echo lang('adif_file_label')?></label>
                   <input class="file-input mb-2 mr-sm-2" type="file" name="userfile" size="20" />
 
                     <div class="form-group row">
