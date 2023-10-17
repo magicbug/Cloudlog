@@ -133,7 +133,7 @@
 			<table id="station_logbooks_linked_table" class="table table-hover">
 				<thead class="thead-light">
 					<tr>
-						<th scope="col"><?php echo lang('station_loc_name'); ?></th>
+						<th scope="col"><?php echo lang('station_location_name'); ?></th>
 						<th scope="col"></th>
 					</tr>
 				</thead>
