@@ -4148,7 +4148,11 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	    );
 
 	    $this->db->where(array('station_id' => NULL));
-	    $this->db->where('col_station_callsign', $station_callsign);
+	    if ($station_callsign == '') {
+	    	$this->db->where(array('col_station_callsign' => NULL));
+	    } else {
+	    	$this->db->where('col_station_callsign', $station_callsign);
+	    }
 	    $this->db->update($this->config->item('table_name'), $data);
 	    if ($this->db->affected_rows() > 0) {
 		    return TRUE;
