@@ -542,6 +542,26 @@ $(document).ready(function() {
 </script>
 
 <script>
+function printWarning() {
+    if ($("#dxcc_select option:selected").text().includes("<?php echo lang('gen_hamradio_deleted_dxcc'); ?>")) {
+        $('#warningMessageDXCC').show();
+        $('#dxcc_select').css('border', '2px solid rgb(217, 83, 79)');
+        $('#warningMessageDXCC').text("<?php echo lang('station_location_dxcc_warning'); ?>");
+    } else {
+        $('#dxcc_select').css('border', '');
+        $('#warningMessageDXCC').hide();
+    }
+}
+$('#dxcc_select').ready(function() {
+    printWarning();
+});
+
+$('#dxcc_select').on('change', function() {
+    printWarning();
+});
+</script>
+
+<script>
 var $= jQuery.noConflict();
 $('[data-fancybox]').fancybox({
     toolbar  : false,

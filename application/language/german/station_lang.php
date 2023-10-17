@@ -31,6 +31,7 @@ $lang['station_location_confirm_del_stationlocation'] = 'Bist du sicher, dass du
 $lang['station_location_confirm_del_stationlocation_qso'] = 'Es werden alle QSO an diesem Stationsstandort gelöscht!';
 $lang['station_location_dxcc'] = 'Station DXCC';
 $lang['station_location_dxcc_hint'] = "Station DXCC Einteilung. Zum Beispiel: 'Federal Republic of Germany'";
+$lang['station_location_dxcc_warning'] = "Stoppe hier für einen Moment. Das von dir gewählte DXCC ist abgelaufen und nicht mehr gültig. Überprüfe, welches das richtige DXCC für den Standort der Station ist. Als Beispiel: Deutschland ist nicht mehr \'Germany\' sondern \'Federal Republic of Germany\'. Wenn du dir sicher bist, ignoriere diese Warnung.";
 $lang['station_location_city'] = 'Station Stadt';
 $lang['station_location_city_hint'] = 'Station Stadt. Zum Beispiel: Berlin';
 $lang['station_location_state'] = 'Station Staat';

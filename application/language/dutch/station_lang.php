@@ -31,6 +31,7 @@ $lang['station_location_confirm_del_stationlocation'] = 'Are you sure you want d
 $lang['station_location_confirm_del_stationlocation_qso'] = 'This will delete all QSOs within this station profile?';
 $lang['station_location_dxcc'] = 'Station DXCC';
 $lang['station_location_dxcc_hint'] = 'Station DXCC entity. For example: Scotland';
+$lang['station_location_dxcc_warning'] = "Stop here for a Moment. Your chosen DXCC is outdated and not valid anymore. Check which DXCC for this particular location is the correct one. If you are sure, ignore this warning.";
 $lang['station_location_city'] = 'Station City';
 $lang['station_location_city_hint'] = 'Station city. For example: Inverness';
 $lang['station_location_state'] = 'Station State';
