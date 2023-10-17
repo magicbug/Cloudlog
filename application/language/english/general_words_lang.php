@@ -14,6 +14,8 @@ $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Choose file';
 $lang['general_word_next'] = 'Next';
 $lang['general_word_previous'] = 'Previous';
+$lang['general_word_enabled'] = "Enabled";
+$lang['general_word_disabled'] = "Disabled";
 
 $lang['general_word_date'] = 'Date';
 $lang['general_word_time'] = 'Time';

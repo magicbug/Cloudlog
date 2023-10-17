@@ -2,9 +2,51 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-// Station Location
+/*
+___________________________________________________________________________________________
+Station Logbooks
+___________________________________________________________________________________________
+*/
+
+$lang['station_logbooks'] = "Stationslogbücher";
+$lang['station_logbooks_description_header'] = "Was sind Stationslogbücher";
+$lang['station_logbooks_description_text'] = "Stationslogbücher ermöglichen es dir, Stationsstandorte zu gruppieren. Dadurch können Sie alle Standorte innerhalb einer Sitzung von den Logbuchbereichen bis zur Analyse sehen. Das ist besonders nützlich, wenn Sie an verschiedenen Standorten arbeiten, die jedoch zu derselben DXCC- oder VUCC-Zone gehören.";
+$lang['station_logbooks_create'] = "Erstelle Stationslogbuch";
+$lang['station_logbooks_status'] = "Status";
+$lang['station_logbooks_link'] = "Verknüpfung";
+$lang['station_logbooks_public_search'] = "Öffentl. Suche";
+$lang['station_logbooks_set_active'] = "Setze als aktives Logbuch";
+$lang['station_logbooks_active_logbook'] = "Aktives Logbuch";
+$lang['station_logbooks_edit_logbook'] = "Bearbeite Stationslogbuch";    // Full sentence will be generated 'Edit Station Logbook: [Logbook Name]'
+$lang['station_logbooks_confirm_delete'] = "Bist du sicher, dass du das folgende Logbuch löschen willst? Du wirst alle Standorte, welche hier verknüpft sind mit einem anderen Logbuch verknüpfen müssen.: ";
+$lang['station_logbooks_view_public'] = "Zeige die öffentl. Seite für das Logbuch: ";
+$lang['station_logbooks_create_name'] = "Stationslogbuch Name";
+$lang['station_logbooks_create_name_hint'] = "Du kannst das Stationslogbuch völlig frei benennen.";
+$lang['station_logbooks_edit_name_hint'] = "Kurzname für das Stationslogbuch. Zum Beispiel: Home Log (IO87IP)";
+$lang['station_logbooks_edit_name_update'] = "Aktualisiere Stationslogbuch Name";
+$lang['station_logbooks_public_slug'] = "Öffentlicher Link";
+$lang['station_logbooks_public_slug_hint'] = "Mit einem öffentlichen Link kannst du dieses Logbuch mit jedem über eine eigene Seite teilen. Dieser Linkzusatz darf jedoch nur Buchstaben & Zahlen enthalten.";
+$lang['station_logbooks_public_slug_format1'] = "So wird der Link aussehen:";
+$lang['station_logbooks_public_slug_format2'] = "[dein Link]";
+$lang['station_logbooks_public_slug_input'] = "Gib ein, wie der öffentliche Link lauten soll:";
+$lang['station_logbooks_public_slug_visit'] = "Besuche die öffentl. Seite";
+$lang['station_logbooks_public_search_hint'] = "Einschalten der Suchfunktion gibt Besuchern deiner öffentlichen Logbuch Seite die Möglichkeit über ein Suchfeld Einträge zu suchen. Die Suche deckt dabei nur dieses Logbuch ab.";
+$lang['station_logbooks_public_search_enabled'] = "Öffentliche Suche eingeschaltet";
+$lang['station_logbooks_select_avail_loc'] = "Wähle verfügbare Stationsstandorte";
+$lang['station_logbooks_link_loc'] = "Verknüpfe Standort";
+$lang['station_logbooks_linked_loc'] = "Verknüpfte Standorte";
+$lang['station_logbooks_no_linked_loc'] = "Keine verknüpften Standorte";
+
+
+
+/*
+___________________________________________________________________________________________
+Station Locations
+___________________________________________________________________________________________
+*/
 
 $lang['station_location'] = 'Stationsstandort';
+$lang['station_location_plural'] = "Stationsstandorte";
 $lang['station_location_header_ln1'] = 'Stationsstandorte definieren die Orte, von denen aus du QRV bist. Dein Zuhause, Bei Freunden oder Unterwegs';
 $lang['station_location_header_ln2'] = 'Ähnlich wie Logbücher trennen die Stationsstandorte die entsprechenden QSO voneinander ab.';
 $lang['station_location_header_ln3'] = 'Es kann immer nur ein Stationsstandort aktiv sein. Welches das aktuell ist siehst du in der Liste an dem "Aktive Station" Symbol';
