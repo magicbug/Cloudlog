@@ -28,7 +28,7 @@ class Migration_rename_gridmap_variables extends CI_Migration {
                         $this->db->query("ALTER TABLE `users` CHANGE `user_default_band` `user_gridmap_default_band` VARCHAR(10) DEFAULT NULL;");
                 }
                 if ($this->db->field_exists('user_default_confirmation', 'users')) {
-                        $this->db->query("ALTER TABLE `users` CHANGE `user_default_confirmation` `user_default_confirmation` VARCHAR(3) DEFAULT NULL;");
+                        $this->db->query("ALTER TABLE `users` CHANGE `user_default_confirmation` `user_gridmap_confirmation` VARCHAR(3) DEFAULT NULL;");
                 }
         }
 }
