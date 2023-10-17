@@ -53,6 +53,7 @@ $options = json_decode($options);
 
         <form id="searchForm" name="searchForm" action="<?php echo base_url()."index.php/logbookadvanced/search";?>"
             method="post">
+            <input type="hidden" id="dupes" name="dupes" value="">
             <div class="filterbody collapse">
                 <div class="form-row">
                     <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
@@ -390,6 +391,7 @@ $options = json_decode($options);
             <option value="5000">5000</option>
         </select>
         <button type="submit" class="btn btn-sm btn-primary mr-1" id="searchButton"><?php echo lang('filter_search'); ?></button>
+        <button type="button" class="btn btn-sm btn-primary mr-1" id="dupeButton"><?php echo lang('filter_dupes'); ?></button>
         <button type="button" class="btn btn-sm btn-primary mr-1" id="mapButton" onclick="mapQsos(this.form);"><?php echo lang('filter_map'); ?></button>
 		<button type="options" class="btn btn-sm btn-primary mr-1" id="optionButton"><?php echo lang('filter_options'); ?></button>
 		<button type="reset" class="btn btn-sm btn-danger mr-1" id="resetButton"><?php echo lang('filter_reset'); ?></button>
