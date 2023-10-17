@@ -90,7 +90,7 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<div class="card-header"><?php echo lang('station_loc_plural'); ?></div>
+				<div class="card-header"><?php echo lang('station_location_plural'); ?></div>
 				<div class="card-body">
 					<form method="post" action="<?php echo site_url('logbooks/edit/'); ?><?php echo $station_logbook_details->logbook_id; ?>" name="create_profile">
 					<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">

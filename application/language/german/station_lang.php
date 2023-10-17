@@ -39,14 +39,13 @@ $lang['station_logbooks_no_linked_loc'] = "Keine verknüpften Standorte";
 
 
 
-
 /*
 ___________________________________________________________________________________________
 Station Locations
 ___________________________________________________________________________________________
 */
 
-$lang['station_loc'] = 'Stationsstandort';
+$lang['station_location'] = 'Stationsstandort';
 $lang['station_location_plural'] = "Stationsstandorte";
 $lang['station_location_header_ln1'] = 'Stationsstandorte definieren die Orte, von denen aus du QRV bist. Dein Zuhause, Bei Freunden oder Unterwegs';
 $lang['station_location_header_ln2'] = 'Ähnlich wie Logbücher trennen die Stationsstandorte die entsprechenden QSO voneinander ab.';
