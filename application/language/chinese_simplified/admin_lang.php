@@ -15,6 +15,7 @@ $lang['admin_options'] = '设置';
 
 $lang['admin_create_user'] = '创建用户';
 $lang['admin_delete'] = '删除用户';
+$lang['admin_remove'] = "Remove";
 $lang['admin_edit'] = '编辑用户';
 $lang['admin_create'] = 'Create';
 $lang['admin_update'] = 'Update';

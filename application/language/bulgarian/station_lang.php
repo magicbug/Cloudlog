@@ -22,6 +22,13 @@ $lang['station_logbooks_confirm_delete'] = "Are you sure you want to delete the 
 $lang['station_logbooks_view_public'] = "View Public Page for Logbook: ";
 $lang['station_logbooks_create_name'] = "Station Logbook Name";
 $lang['station_logbooks_create_name_hint'] = "You can call a station logbook anything.";
+$lang['station_logbooks_edit_name_hint'] = "Shortname for the station logbook. For example: Home Log (IO87IP)";
+$lang['station_logbooks_edit_name_update'] = "Update Station Logbook Name";
+$lang['station_logbooks_public_slug'] = "Public Slug";
+$lang['station_logbooks_public_slug_hint'] = "Setting a public slug allows you to share your logbook with anyone via a custom website address, this slug can contain letters & numbers only.";
+$lang['station_logbooks_public_slug_format1'] = "Later it looks like this:";
+$lang['station_logbooks_public_slug_format2'] = "[your slug]";
+$lang['station_logbooks_public_slug_input'] = "Type in Public Slug choice";
 
 
 

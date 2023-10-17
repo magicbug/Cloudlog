@@ -22,6 +22,13 @@ $lang['station_logbooks_confirm_delete'] = "Bist du sicher, dass du das folgende
 $lang['station_logbooks_view_public'] = "Zeige die öffentl. Seite für das Logbuch: ";
 $lang['station_logbooks_create_name'] = "Stationslogbuch Name";
 $lang['station_logbooks_create_name_hint'] = "Du kannst das Stationslogbuch völlig frei benennen.";
+$lang['station_logbooks_edit_name_hint'] = "Kurzname für das Stationslogbuch. Zum Beispiel: Home Log (IO87IP)";
+$lang['station_logbooks_edit_name_update'] = "Aktualisiere Stationslogbuch Name";
+$lang['station_logbooks_public_slug'] = "Öffentlicher Link";
+$lang['station_logbooks_public_slug_hint'] = "Mit einem öffentlichen Link kannst du dieses Logbuch mit jedem über eine eigene Seite teilen. Dieser Linkzusatz darf jedoch nur Buchstaben & Zahlen enthalten.";
+$lang['station_logbooks_public_slug_format1'] = "So wird der Link aussehen:";
+$lang['station_logbooks_public_slug_format2'] = "[dein Link]";
+$lang['station_logbooks_public_slug_input'] = "Gib ein, wie der öffentliche Link lauten soll:";
 
 
 
