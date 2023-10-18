@@ -124,6 +124,9 @@ $wwff = 0;
 			var lang_options_bands_edit = '<?php echo lang('options_bands_edit'); ?>';
 			var lang_options_bands_create = '<?php echo lang('options_bands_create'); ?>';
 			var lang_admin_close = '<?php echo lang('admin_close'); ?>';
+			var lang_options_bands_delete_warning = '<?php echo lang('options_bands_delete_warning'); ?>';
+			var lang_options_bands_activateall_warning = '<?php echo lang('options_bands_activateall_warning'); ?>';
+			var lang_options_bands_deactivateall_warning = '<?php echo lang('options_bands_deactivateall_warning'); ?>';
 		</script>
 	  	<button onclick="createBandDialog();" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> <?php echo lang('options_bands_create'); ?></button>
   		<button onclick="activateAllBands();" class="btn btn-primary btn-sm"><?php echo lang('options_bands_activate_all'); ?></button>

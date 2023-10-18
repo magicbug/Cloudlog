@@ -131,8 +131,8 @@ function saveUpdatedBand(form) {
 
 function deleteBand(id, band) {
 	BootstrapDialog.confirm({
-		title: 'DANGER',
-		message: 'Warning! Are you sure you want to delete the following band: ' + band + '?',
+		title: lang_general_word_danger,
+		message: lang_options_bands_delete_warning + band + '?',
 		type: BootstrapDialog.TYPE_DANGER,
 		closable: true,
 		draggable: true,
@@ -156,8 +156,8 @@ function deleteBand(id, band) {
 
 function activateAllBands() {
 	BootstrapDialog.confirm({
-		title: 'DANGER',
-		message: 'Warning! Are you sure you want to activate all bands?',
+		title: lang_general_word_danger,
+		message: lang_options_bands_activateall_warning,
 		type: BootstrapDialog.TYPE_DANGER,
 		closable: true,
 		draggable: true,
@@ -178,8 +178,8 @@ function activateAllBands() {
 
 function deactivateAllBands() {
 	BootstrapDialog.confirm({
-		title: 'DANGER',
-		message: 'Warning! Are you sure you want to deactivate all bands?',
+		title: lang_general_word_danger,
+		message: lang_options_bands_deactivateall_warning,
 		type: BootstrapDialog.TYPE_DANGER,
 		closable: true,
 		draggable: true,
