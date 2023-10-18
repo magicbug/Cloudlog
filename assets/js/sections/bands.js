@@ -42,13 +42,13 @@ function createBandDialog() {
 		type: 'post',
 		success: function (html) {
 			BootstrapDialog.show({
-				title: 'Create band',
+				title: lang_options_bands_create,
 				size: BootstrapDialog.SIZE_NORMAL,
 				cssClass: 'create-band-dialog',
 				nl2br: false,
 				message: html,
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}
@@ -90,13 +90,13 @@ function editBandDialog(id) {
 		},
 		success: function (html) {
 			BootstrapDialog.show({
-				title: 'Edit band',
+				title: lang_options_bands_edit,
 				size: BootstrapDialog.SIZE_NORMAL,
 				cssClass: 'edit-band-dialog',
 				nl2br: false,
 				message: html,
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}

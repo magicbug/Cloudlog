@@ -120,6 +120,11 @@ $wwff = 0;
   <br/>
   <p>
 		<?php if($this->session->userdata('user_type') == '99') { ?>
+		<script>
+			var lang_options_bands_edit = '<?php echo lang('options_bands_edit'); ?>';
+			var lang_options_bands_create = '<?php echo lang('options_bands_create'); ?>';
+			var lang_admin_close = '<?php echo lang('admin_close'); ?>';
+		</script>
 	  	<button onclick="createBandDialog();" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> <?php echo lang('options_bands_create'); ?></button>
   		<button onclick="activateAllBands();" class="btn btn-primary btn-sm"><?php echo lang('options_bands_activate_all'); ?></button>
 		<button onclick="deactivateAllBands();" class="btn btn-primary btn-sm"><?php echo lang('options_bands_deactivate_all'); ?></button>
