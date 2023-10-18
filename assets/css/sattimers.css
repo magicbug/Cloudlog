@@ -1,32 +1,26 @@
 .title {
    text-align: center;
-   font-family: sans-serif;
    color: #bbb;
 }
 
 .active {
-   font-family: sans-serif;
    color: #3fb618;
    margin-bottom: 10px;
 }
 
 .timedout {
-   font-family: sans-serif;
    color: #f00;
 }
 
 .nonfunctional {
-   font-family: sans-serif;
    color: #555;
 }
 
 .timeout {
-   font-family: sans-serif;
    color: #bbb;
 }
 
 .expired {
-   font-family: sans-serif;
    color: #555;
 }
 
