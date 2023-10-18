@@ -91,6 +91,7 @@ $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 $lang['cloudlog_station_profile'] = 'Τοποθεσία Σταθμού';
 
 // ham radio terms
+$lang['gen_hamradio_cq'] = "CQ";
 $lang['gen_hamradio_qso'] = 'QSO';
 $lang['gen_hamradio_station'] = 'Σταθμός';
 
@@ -102,6 +103,7 @@ $lang['gen_hamradio_mode'] = 'Τρόπος';
 $lang['gen_hamradio_rst_sent'] = 'Απεσταλμένα';
 $lang['gen_hamradio_rst_rcvd'] = 'Ελήφθη\'d';
 $lang['gen_hamradio_band'] = 'Ζώνη';
+$lang['gen_hamradio_bandgroup'] = "Bandgroup";
 $lang['gen_hamradio_band_rx'] = 'Ζώνη (RX)';
 $lang['gen_hamradio_frequency'] = 'Συχνότητα';
 $lang['gen_hamradio_frequency_rx'] = 'Συχνότητα (RX)';

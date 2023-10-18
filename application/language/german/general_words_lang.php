@@ -91,6 +91,7 @@ $lang['gen_max_file_upload_size'] = 'Die max. Dateigrösse für Uploads beträgt
 $lang['cloudlog_station_profile'] = 'Stationsprofil';
 
 // ham radio terms
+$lang['gen_hamradio_cq'] = "CQ";
 $lang['gen_hamradio_qso'] = 'QSO';
 $lang['gen_hamradio_station'] = 'Station';
 
@@ -102,6 +103,7 @@ $lang['gen_hamradio_mode'] = 'Mode';
 $lang['gen_hamradio_rst_sent'] = 'Gegeben';
 $lang['gen_hamradio_rst_rcvd'] = 'Erhalten';
 $lang['gen_hamradio_band'] = 'Band';
+$lang['gen_hamradio_bandgroup'] = "Bandgruppe";
 $lang['gen_hamradio_band_rx'] = 'Band (RX)';
 $lang['gen_hamradio_frequency'] = 'Frequenz';
 $lang['gen_hamradio_frequency_rx'] = 'Frequenz (RX)';

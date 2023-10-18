@@ -72,3 +72,13 @@ $lang['options_dxcluster_decont_changed_to']='континент изменён 
 $lang['options_dxcluster_decont_hint']='Only spots by spotters from this continent are shown';
 
 $lang['options_save'] = 'Сохранить';
+
+// Bands
+
+$lang['options_bands'] = "Bands";
+$lang['options_bands_text_ln1'] = "Using the band list you can control which bands are shown when creating a new QSO.";
+$lang['options_bands_text_ln2'] = "Active bands will be shown in the QSO 'Band' drop-down, while inactive bands will be hidden and cannot be selected.";
+$lang['options_bands_create'] = "Create a band";
+$lang['options_bands_activate_all'] = "Activate All";
+$lang['options_bands_deactivate_all'] = "Deactivate All";
+
