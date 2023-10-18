@@ -123,8 +123,17 @@ ________________________________________________________________________________
 
 $lang['dcl_results'] = "Ergebnisse des DCL DOK Updates";
 $lang['dcl_info_updated'] = "QSOs wurden mit der DOK Information aus dem DCL aktualisiert.";
-$lang['dcl_qsos_updated'] = "Aktualisierte QSOs:";
-$lang['dcl_qsos_ignored'] = "Ignorierte QSOs:";
-$lang['dcl_no_qsos_updated'] = "Keine QSOs aktualisiert.";
+$lang['dcl_qsos_updated'] = "Aktualisierte QSOs";
+$lang['dcl_qsos_ignored'] = "Ignorierte QSOs";
+$lang['dcl_qsos_unmatched'] = "Nicht gefundene QSOs";
+$lang['dcl_no_qsos_updated'] = "Keine QSOs gefunden, die aktualisiert werden konnten.";
 $lang['dcl_dok_errors'] = "DOK Fehler";
-$lang['dcl_dok_errors_details'] = "Die DOK Informationen im Logbuch weichen von denen im DCL ab:";
+$lang['dcl_dok_errors_details'] = "Die DOK Informationen im Logbuch weichen von denen im DCL ab";
+$lang['dcl_qsl_status'] = "DCL QSL Status";
+$lang['dcl_qsl_status_c'] = "bestätigt durch LoTW/Clublog/eQSL/Contest";
+$lang['dcl_qsl_status_mno'] = "bestätigt durch Diplommananger";
+$lang['dcl_qsl_status_i'] = "bestätigt durch Cross-Check von DCL-Daten";
+$lang['dcl_qsl_status_w'] = "Bestätigung ausstehend";
+$lang['dcl_qsl_status_x'] = "nicht bestätigt";
+$lang['dcl_qsl_status_unknown'] = "unbekannt";
+$lang['dcl_no_match'] = "QSO konnte nicht gefunden werden";

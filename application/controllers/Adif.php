@@ -256,7 +256,7 @@ class adif extends CI_Controller {
 			$this->adif_parser->load_from_file('./uploads/'.$data['upload_data']['file_name']);
 
 			$this->adif_parser->initialize();
-			$error_count = array(0, 0);
+			$error_count = array(0, 0, 0);
 			$custom_errors = "";
 			while($record = $this->adif_parser->get_record())
 			{
@@ -266,11 +266,17 @@ class adif extends CI_Controller {
 
 				$dok_result = $this->logbook_model->update_dok($record, $this->input->post('ignoreAmbiguous'), $this->input->post('onlyConfirmed'), $this->input->post('overwriteDok'));
 				if (!empty($dok_result)) {
-					if ($dok_result[0] != 0) {
-						$custom_errors .= $dok_result[1]."<br/>";
-						$error_count[1]++;
-					} else {
+					switch ($dok_result[0]) {
+					case 0:
 						$error_count[0]++;
+						break;
+					case 1:
+						$custom_errors .= $dok_result[1];
+						$error_count[1]++;
+						break;
+					case 2:
+						$custom_errors .= $dok_result[1];
+						$error_count[2]++;
 					}
 				}
 			};

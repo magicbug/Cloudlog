@@ -123,8 +123,16 @@ ________________________________________________________________________________
 
 $lang['dcl_results'] = "Results of DCL DOK Update";
 $lang['dcl_info_updated'] = "DCL information for DOKs has been updated.";
-$lang['dcl_qsos_updated'] = "QSOs updated:";
-$lang['dcl_qsos_ignored'] = "QSOs ignored:";
-$lang['dcl_no_qsos_updated'] = "No QSOs updated.";
+$lang['dcl_qsos_updated'] = "QSOs updated";
+$lang['dcl_qsos_ignored'] = "QSOs ignored";
+$lang['dcl_no_qsos_updated'] = "No QSOs found which could be updated.";
 $lang['dcl_dok_errors'] = "DOK Errors";
-$lang['dcl_dok_errors_details'] = "There is different data for DOK in your log compared to DCL:";
+$lang['dcl_dok_errors_details'] = "There is different data for DOK in your log compared to DCL";
+$lang['dcl_qsl_status'] = "DCL QSL Status";
+$lang['dcl_qsl_status_c'] = "confirmed by LoTW/Clublog/eQSL/Contest";
+$lang['dcl_qsl_status_mno'] = "confirmed by award manager";
+$lang['dcl_qsl_status_i'] = "confirmed by cross-check of DCL data";
+$lang['dcl_qsl_status_w'] = "confirmation pending";
+$lang['dcl_qsl_status_x'] = "unconfirmed";
+$lang['dcl_qsl_status_unknown'] = "unknown";
+$lang['dcl_no_qsos_updated'] = "No QSOs found which could be updated.";
