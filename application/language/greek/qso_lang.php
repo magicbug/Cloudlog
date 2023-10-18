@@ -28,6 +28,7 @@ $lang['qsl_notes_helptext'] = 'Αυτό το περιεχόμενο σημείω
 $lang['qso_btn_reset_qso'] = 'Επαναφορά';
 $lang['qso_btn_save_qso'] = 'Αποθήκευση QSO';
 $lang['qso_btn_edit_qso'] = 'Επεξεργασία QSO';
+$lang['qso_delete_warning'] = "Warning! Are you sure you want delete QSO with ";
 
 // QSO Details
 

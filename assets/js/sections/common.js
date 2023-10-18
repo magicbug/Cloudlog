@@ -90,8 +90,8 @@ function qsl_ignore(id, method) {
 
 function qso_delete(id, call) {
     BootstrapDialog.confirm({
-        title: 'DANGER',
-        message: 'Warning! Are you sure you want delete QSO with ' + call + '?' ,
+        title: lang_general_word_danger,
+        message: lang_qso_delete_warning + call + '?' ,
         type: BootstrapDialog.TYPE_DANGER,
         closable: true,
         draggable: true,

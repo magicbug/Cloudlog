@@ -28,6 +28,7 @@ $lang['qsl_notes_helptext'] = 'Detta innehåll exporteras till QSL-services som 
 $lang['qso_btn_reset_qso'] = 'Reset';
 $lang['qso_btn_save_qso'] = 'Spara QSO';
 $lang['qso_btn_edit_qso'] = 'Redigera QSO';
+$lang['qso_delete_warning'] = "Warning! Are you sure you want delete QSO with ";
 
 // QSO Details
 

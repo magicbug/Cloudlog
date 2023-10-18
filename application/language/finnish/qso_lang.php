@@ -28,6 +28,7 @@ $lang['qsl_notes_helptext'] = 'Tämä viestisi siirtyy myös QSL-palveluihin, ku
 $lang['qso_btn_reset_qso'] = 'Tyhjennä';
 $lang['qso_btn_save_qso'] = 'TALLENNA QSO';
 $lang['qso_btn_edit_qso'] = 'muokkaa QSO:a';
+$lang['qso_delete_warning'] = "Warning! Are you sure you want delete QSO with ";
 
 // QSO Details
 
