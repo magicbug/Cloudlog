@@ -48,7 +48,7 @@ class Migration_add_band_bandxuser extends CI_Migration {
 
             $this->dbforge->create_table('bands');
 
-            $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('160m', 'mf', '1900000', '1838000', '1830000');");
+            $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('160m', 'hf', '1900000', '1838000', '1830000');");
             $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('80m', 'hf', '3700000', '3583000', '3550000');");
             $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('60m', 'hf', '5330000', '5330000', '5260000');");
             $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('40m', 'hf', '7100000', '7040000', '7020000');");
@@ -64,8 +64,8 @@ class Migration_add_band_bandxuser extends CI_Migration {
             $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('1.25m', 'vhf', '222100000', '222100000', '222100000');");
             $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('70cm', 'uhf', '432200000', '432088000', '432050000');");
             $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('33cm', 'uhf', '902100000', '902100000', '902100000');");
-            $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('23cm', 'uhf', '1296000000', '1296138000', '129600000');");
-            $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('13cm', 'uhf', '2320800000', '2320800000', '2320800000');");
+            $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('23cm', 'shf', '1296000000', '1296138000', '129600000');");
+            $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('13cm', 'shf', '2320800000', '2320800000', '2320800000');");
             $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('9cm', 'shf', '3410000000', '3410000000', '3400000000');");
             $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('6cm', 'shf', '5670000000', '5670000000', '5670000000');");
             $this->db->query("INSERT INTO bands (band, bandgroup, ssb, data, cw) values ('3cm', 'shf', '10225000000', '10225000000', '10225000000');");
