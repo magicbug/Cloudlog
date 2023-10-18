@@ -24,6 +24,7 @@ $lang['admin_save'] = 'Save';
 $lang['admin_close'] = 'Close';
 $lang['admin_user_accounts'] = 'User Accounts';
 $lang['admin_danger'] = 'DANGER!';
+$lang['admin_experimental'] = "Experimental";
 
 
 

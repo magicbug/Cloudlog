@@ -95,7 +95,13 @@ $lang['account_login'] = '登录';
 
 $lang['account_mastodon'] = 'Mastodon服务器';
 $lang['account_user_mastodon'] = 'Mastodon 地址';
+$lang['account_user_mastodon_hint'] = "Main URL of your Mastodon server, e.g. <a href='https://radiosocial.de/' target='_blank'>https://radiosocial.de";
 
 $lang['account_default_band_settings'] = 'Settings for Default Band and Confirmation';
 $lang['account_gridmap_default_band'] = '默认波段';
 $lang['account_qsl_settings'] = 'Default QSL-Methods';
+
+$lang['account_winkeyer'] = 'Winkeyer';
+$lang['account_winkeyer_hint'] = "Winkeyer support in Cloudlog is very experimental read the wiki first at <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a> before enabling.";
+$lang['account_winkeyer_enabled'] = "Winkeyer Features Enabled";
+

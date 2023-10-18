@@ -534,7 +534,7 @@
 						<div class="form-group">
 						<label><?php echo lang('account_user_mastodon'); ?></label>
 							<input class="form-control" type="text" name="user_mastodon_url" value="<?php if(isset($user_mastodon_url)) { echo $user_mastodon_url; } ?>" />
-							<div class="small form-text text-muted">Main URL of your Mastodon server, e.g. <a href="https://radiosocial.de/" target="_blank">https://radiosocial.de</a></div></td>
+							<div class="small form-text text-muted"><?php echo lang('account_user_mastodon_hint'); ?></a></div></td>
 						</div>
 					</div>
 				</div>
@@ -570,7 +570,7 @@
 									echo ' checked';
 								}
 								echo '>'; ?>
-								<label class="form-check-label" for="user_default_confirmation_qsl">QSL</label>
+								<label class="form-check-label" for="user_default_confirmation_qsl"><?php echo lang('gen_hamradio_qsl'); ?></label>
 							</div>
 							<div class="form-check-inline">
 								<?php echo '<input class="form-check-input" type="checkbox" name="user_default_confirmation_lotw" id="user_default_confirmation_lotw"';
@@ -578,7 +578,7 @@
 									echo ' checked';
 								}
 								echo '>'; ?>
-								<label class="form-check-label" for="user_default_confirmation_lotw">LoTW</label>
+								<label class="form-check-label" for="user_default_confirmation_lotw"><?php echo lang('lotw_short'); ?></label>
 							</div>
 							<div class="form-check-inline">
 								<?php echo '<input class="form-check-input" type="checkbox" name="user_default_confirmation_eqsl" id="user_default_confirmation_eqsl"';
@@ -586,7 +586,7 @@
 									echo ' checked';
 								}
 								echo '>'; ?>
-								<label class="form-check-label" for="user_default_confirmation_eqsl">eQSL</label>
+								<label class="form-check-label" for="user_default_confirmation_eqsl"><?php echo lang('account_eqsl'); ?></label>
 							</div>
 						</div>
 					</div>
@@ -600,18 +600,18 @@
 				<div class="col-md">
 					<div class="card">
 						<div class="card-header">
-							Winkeyer <span class="badge badge-danger">Experimental</span>
+							<?php echo lang('account_winkeyer'); ?> <span class="badge badge-danger"><?php echo lang('admin_experimental'); ?></span>
 						</div>
 						<div class="card-body">
 							<div class="form-group">
 
-							<p>Winkeyer support in Cloudlog is very experimental read the wiki first at <a href="https://github.com/magicbug/Cloudlog/wiki/Winkey" target="_blank">https://github.com/magicbug/Cloudlog/wiki/Winkey</a> before enabling.</p>
+							<p><?php echo lang('account_winkeyer_hint'); ?></p>
 
-							<label>Enable Winkey Features</label>
+							<label><?php echo lang('account_winkeyer_enabled'); ?></label>
 							
 							<select class="custom-select" name="user_winkey" id="user_winkeyer">
-								<option value="0" <?php if ($user_winkey == 0) { echo 'selected="selected"'; } ?>>Disabled</option>
-								<option value="1" <?php if ($user_winkey == 1) { echo 'selected="selected"'; } ?>>Enabled</option>
+								<option value="0" <?php if ($user_winkey == 0) { echo 'selected="selected"'; } ?>><?php echo lang('general_word_no'); ?></option>
+								<option value="1" <?php if ($user_winkey == 1) { echo 'selected="selected"'; } ?>><?php echo lang('general_word_yes'); ?></option>
 							</select>
 							
 							<div class="small form-text text-muted"></div>
