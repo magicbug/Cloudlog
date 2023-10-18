@@ -81,4 +81,7 @@ $lang['options_bands_text_ln2'] = "Active bands will be shown in the QSO 'Band' 
 $lang['options_bands_create'] = "Create a band";
 $lang['options_bands_activate_all'] = "Activate All";
 $lang['options_bands_deactivate_all'] = "Deactivate All";
+$lang['options_bands_ssb_qrg'] = "SSB QRG";
+$lang['options_bands_data_qrg'] = "DATA QRG";
+$lang['options_bands_cw_qrg'] = "CW QRG";
 

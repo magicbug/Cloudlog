@@ -53,9 +53,9 @@ $wwff = 0;
                     <th><?php echo lang('menu_was'); ?></th>
 					<th><?php echo lang('gen_hamradio_wwff'); ?></th>
 					<th><?php echo lang('gen_hamradio_bandgroup'); ?></th>
-					<th>SSB QRG</th> 
-					<th>DATA QRG</th>
-					<th>CW QRG</th>
+					<th><?php echo lang('options_bands_ssb_qrg'); ?></th> 
+					<th><?php echo lang('options_bands_data_qrg'); ?></th>
+					<th><?php echo lang('options_bands_cw_qrg'); ?></th>
 					<?php if($this->session->userdata('user_type') == '99') { ?>
                     <th></th>
                     <th></th>
