@@ -79,9 +79,16 @@ $lang['options_bands'] = "Bands";
 $lang['options_bands_text_ln1'] = "Using the band list you can control which bands are shown when creating a new QSO.";
 $lang['options_bands_text_ln2'] = "Active bands will be shown in the QSO 'Band' drop-down, while inactive bands will be hidden and cannot be selected.";
 $lang['options_bands_create'] = "Create a band";
+$lang['options_bands_edit'] = "Edit Band";
 $lang['options_bands_activate_all'] = "Activate All";
 $lang['options_bands_deactivate_all'] = "Deactivate All";
 $lang['options_bands_ssb_qrg'] = "SSB QRG";
+$lang['options_bands_ssb_qrg_hint'] = "Frequency for SSB QRG in band (must be in Hz)";
 $lang['options_bands_data_qrg'] = "DATA QRG";
+$lang['options_bands_data_qrg_hint'] = "Frequency for DATA QRG in band (must be in Hz)";
 $lang['options_bands_cw_qrg'] = "CW QRG";
+$lang['options_bands_cw_qrg_hint'] = "Frequency for CW QRG in band (must be in Hz)";
+
+$lang['options_bands_name_band'] = "Name of Band (E.g. 20m)";
+$lang['options_bands_name_bandgroup'] = "Name of bandgroup (E.g. hf, vhf, uhf, shf)";
 
