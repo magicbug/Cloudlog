@@ -2,11 +2,18 @@
 <div class="container adif">
 
 	<h2><?php echo $page_title; ?></h2>
+   <?php
+        $showtab = '';
+        if(isset($tab)) {
+           $showtab = $tab;
+        }
+    ?>
+
     <div class="card">
     <div class="card-header">
     <ul class="nav nav-tabs card-header-tabs pull-right" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="import-tab" data-toggle="tab" href="#import" role="tab" aria-controls="import" aria-selected="true"><?php echo lang('adif_import')?></a>
+            <a class="nav-link <?php if($showtab == '' || $showtab == 'adif') { echo 'active'; } ?>" id="import-tab" data-toggle="tab" href="#import" role="tab" aria-controls="import" aria-selected="<?php if ($showtab == '' || $showtab == 'adif') { echo 'true'; } else { echo 'false'; } ?>"><?php echo lang('adif_import')?></a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="export-tab" data-toggle="tab" href="#export" role="tab" aria-controls="export" aria-selected="false"><?php echo lang('adif_export')?></a>
@@ -14,14 +21,17 @@
         <li class="nav-item">
             <a class="nav-link" id="lotw-tab" data-toggle="tab" href="#lotw" role="tab" aria-controls="lotw" aria-selected="false"><?php echo lang('lotw_title')?></a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link <?php if ($showtab == 'dcl') { echo 'active'; } ?>" id="dcl-tab" data-toggle="tab" href="#dcl" role="tab" aria-controls="dcl" aria-selected="<?php if ($showtab == 'dcl') { echo 'true'; } else { echo 'false'; } ?>"><?php echo lang('darc_dcl')?></a>
+        </li>
     </ul>
     </div>
 
     <div class="card-body">
         <div class="tab-content">
-            <div class="tab-pane  active" id="import" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane <?php if($showtab == '' || $showtab == 'adif') { echo 'active'; } else { echo 'fade'; } ?>" id="import" role="tabpanel" aria-labelledby="home-tab">
 
-                <?php if(isset($error)) { ?>
+                <?php if(isset($error) && ($showtab == '' || $showtab == 'adif')) { ?>
                     <div class="alert alert-danger" role="alert">
                       <?php echo $error; ?>
                     </div>
@@ -37,7 +47,7 @@
                     <option value="<?php echo $station->station_id; ?>" <?php if ($station->station_id == $this->stations->find_active()) { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_callsign') . ": "?><?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
                     <?php } ?>
                     </select>
-                  <label class="sr-only" for="inlineFormInputName2"><?php echo lang('aif_file_label')?></label>
+                  <label class="sr-only" for="inlineFormInputName2"><?php echo lang('adif_file_label')?></label>
                   <input class="file-input mb-2 mr-sm-2" type="file" name="userfile" size="20" />
 
                     <div class="form-group row">
@@ -213,6 +223,47 @@
                 <button type="submit" class="btn-sm btn-primary" value="Export"><?php echo lang('adif_mark_qso_as_exported_to_lotw')?></button>
             </form>
             </div>
+        <div class="tab-pane <?php if ($showtab == 'dcl') { echo 'active'; } else { echo 'fade'; } ?>" id="dcl" role="tabpanel" aria-labelledby="home-tab">
+                <?php if(isset($error) && $showtab == 'dcl') { ?>
+                    <div class="alert alert-danger" role="alert">
+                      <?php echo $error; ?>
+                    </div>
+                <?php } ?>
+
+                <p class="card-text"><?php echo lang('adif_dcl_text_pre')?> <a href="http://dcl.darc.de/dml/export_adif_form.php" target="_blank"><?php echo lang('darc_dcl')?></a> <?php echo lang('adif_dcl_text_post')?></p>
+                <form class="form" action="<?php echo site_url('adif/dcl'); ?>" method="post" enctype="multipart/form-data">
+
+                    <div class="form-group row">
+                        <div class="col-md-10">
+                            <div class="form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="onlyConfirmed" value="1" id="onlyConfirmed" checked>
+                                <label class="form-check-label" for="onlyConfirmed"><?php echo lang('only_confirmed_qsos')?></label>
+                            </div>
+                            <div class="small form-text text-muted"><?php echo lang('only_confirmed_qsos_hint')?></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-10">
+                            <div class="form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="overwriteDok" value="1" id="overwriteDok">
+                                <label class="form-check-label" for="overwriteDok"><span class="badge badge-warning"><?php echo lang('general_word_warning')?></span> <?php echo lang('overwrite_by_dcl')?></label>
+                            </div>
+                            <div class="small form-text text-muted"><?php echo lang('overwrite_by_dcl_hint')?></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-10">
+                            <div class="form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="ignoreAmbiguous" value="1" id="ignoreAmbiguous" checked>
+                                <label class="form-check-label" for="ignoreAmbiguous"><?php echo lang('ignore_ambiguous')?></label>
+                            </div>
+                            <div class="small form-text text-muted"><?php echo lang('ignore_ambiguous_hint')?></div>
+                        </div>
+                    </div>
+                  <input class="file-input mb-2 mr-sm-2" type="file" name="userfile" size="20" />
+                  <button type="submit" class="btn-sm btn-primary mb-2" value="Upload"><?php echo lang('adif_upload')?></button>
+                </form>
+        </div>
     </div>
     </div>
     </div>

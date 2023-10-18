@@ -66,17 +66,24 @@
 				<div class="card-body">
 					<!-- DXCC -->
 					<div class="form-group">
-						<label for="stationDXCCInput"><?php echo lang("station_location_dxcc"); ?></label>
-							<?php if ($dxcc_list->num_rows() > 0) { ?>
-							<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
-							<option value="0" <?php if($my_station_profile->station_dxcc == "0") { ?>selected<?php } ?>><?php echo "- " . lang('general_word_none') . " -"; ?></option>
-							<?php foreach ($dxcc_list->result() as $dxcc) { ?>
-							<option value="<?php echo $dxcc->adif; ?>" <?php if($my_station_profile->station_dxcc == $dxcc->adif) { ?>selected<?php } ?>><?php echo ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix; if ($dxcc->end != NULL) echo ' ('.lang('gen_hamradio_deleted_dxcc').')';?>
-							</option>
-							<?php } ?>
-							</select>
-							<?php } ?>
-						<small id="stationDXCCInputHelp" class="form-text text-muted"><?php echo lang("station_location_dxcc_hint"); ?></small>
+					    <label for="stationDXCCInput"><?php echo lang("station_location_dxcc"); ?></label>
+					    <?php if ($dxcc_list->num_rows() > 0) { ?>
+					        <select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
+					            <option value="0" <?php if($my_station_profile->station_dxcc == "0") { ?>selected<?php } ?>><?php echo "- " . lang('general_word_none') . " -"; ?></option>
+					            <?php foreach ($dxcc_list->result() as $dxcc) { ?>
+					                <?php $isDeleted = $dxcc->end !== NULL; ?>
+					                <option value="<?php echo $dxcc->adif; ?>" <?php if($my_station_profile->station_dxcc == $dxcc->adif) { ?>selected<?php } ?>>
+					                    <?php echo ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix;
+					                    if ($isDeleted) {
+					                        echo ' (' . lang('gen_hamradio_deleted_dxcc') . ')';
+					                    }
+					                    ?>
+					                </option>
+					            <?php } ?>
+					        </select>
+					        <?php } ?>
+					    <small id="stationDXCCInputHelp" class="form-text text-muted"><?php echo lang("station_location_dxcc_hint"); ?></small>
+						<div class="alert alert-danger" role="alert" id="warningMessageDXCC" style="display: none"></div>
 					</div>
 
 					<!-- City -->

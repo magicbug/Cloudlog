@@ -14,6 +14,8 @@ $lang['general_word_info'] = '消息';
 $lang['general_word_choose_file'] = '选择文件';
 $lang['general_word_next'] = 'Next';
 $lang['general_word_previous'] = 'Previous';
+$lang['general_word_enabled'] = "Enabled";
+$lang['general_word_disabled'] = "Disabled";
 
 $lang['general_word_date'] = '日期';
 $lang['general_word_time'] = '时间';

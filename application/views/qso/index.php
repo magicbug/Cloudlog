@@ -107,8 +107,10 @@
                           echo '<optgroup label="' . strtoupper($key) . '">';
                           foreach($bandgroup as $band) {
                             echo '<option value="' . $band . '"';
-                              if ($this->session->userdata('band') == $band) echo ' selected';
-                              echo '>' . $band . '</option>'."\n";
+                            if ($this->session->userdata('band') == $band || $user_default_band == $band) {
+                              echo ' selected';
+                            }
+                            echo '>' . $band . '</option>'."\n";
                           }
                           echo '</optgroup>';
                         }

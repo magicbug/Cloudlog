@@ -15,6 +15,7 @@ $lang['admin_options'] = 'Options';
 
 $lang['admin_create_user'] = 'Create user';
 $lang['admin_delete'] = 'Delete';
+$lang['admin_remove'] = "Remove";
 $lang['admin_edit'] = 'Edit';
 $lang['admin_create'] = 'Create';
 $lang['admin_update'] = 'Update';
@@ -23,6 +24,7 @@ $lang['admin_save'] = 'Save';
 $lang['admin_close'] = 'Close';
 $lang['admin_user_accounts'] = 'User Accounts';
 $lang['admin_danger'] = 'DANGER!';
+$lang['admin_experimental'] = "Experimental";
 
 
 

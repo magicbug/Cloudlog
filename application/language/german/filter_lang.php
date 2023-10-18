@@ -15,6 +15,7 @@ $lang['filter_filters'] = 'Filter';
 $lang['filter_actions'] = 'Aktionen';
 $lang['filter_results'] = '# Resultate';
 $lang['filter_search'] = 'Suche';
+$lang['filter_dupes'] = "Dupes";
 $lang['filter_map'] = 'Karte';
 $lang['filter_options'] = 'Optionen';
 $lang['filter_reset'] = 'Reset';

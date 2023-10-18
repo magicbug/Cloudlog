@@ -14,6 +14,8 @@ $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Datei wählen';
 $lang['general_word_next'] = 'Weiter';
 $lang['general_word_previous'] = 'Zurück';
+$lang['general_word_enabled'] = "Eingeschaltet";
+$lang['general_word_disabled'] = "Ausgeschaltet";
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Zeit';

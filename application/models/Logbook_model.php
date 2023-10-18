@@ -1688,7 +1688,7 @@ class Logbook_model extends CI_Model {
   }
 
     function check_if_callsign_cnfmd_in_logbook($callsign, $StationLocationsArray = null, $band = null) {
-	    $user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
+	    $user_default_confirmation = $this->session->userdata('user_default_confirmation');
 
 	    if($StationLocationsArray == null) {
 		    $CI =& get_instance();
@@ -1699,16 +1699,16 @@ class Logbook_model extends CI_Model {
 	    }
 
 	    $extrawhere='';
-	    if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+	    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
 		    $extrawhere="COL_QSL_RCVD='Y'"; 
 	    }
-	    if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+	    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 		    if ($extrawhere!='') {
 			    $extrawhere.=" OR";
 		    }
 		    $extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
 	    }
-	    if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+	    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'E') !== false) {
 		    if ($extrawhere!='') {
 			    $extrawhere.=" OR";
 		    }
@@ -3474,6 +3474,120 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
         return $my_error;
     }
 
+    function update_dok($record, $ignoreAmbiguous, $onlyConfirmed, $overwriteDok) {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $custom_date_format = $this->session->userdata('user_date_format');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if(isset($record['call'])) {
+                $call = strtoupper($record['call']);
+        } else {
+                return array(3, 'Callsign not found');
+        }
+
+        // Join date+time
+        $time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
+
+        // Store Band
+        if(isset($record['band'])) {
+                $band = strtolower($record['band']);
+        } else {
+            if (isset($record['freq'])){
+              if($freq != "0") {
+                $band = $CI->frequency->GetBand($freq);
+              }
+            }
+        }
+
+        if (isset($record['mode'])) {
+            $mode = $record['mode'];
+        } else {
+            $mode = '';
+        }
+
+        if (isset($record['darc_dok'])) {
+            $darc_dok = $record['darc_dok'];
+        } else {
+            $darc_dok = '';
+        }
+
+        if ($darc_dok != '') {
+            $this->db->select('COL_PRIMARY_KEY, COL_DARC_DOK');
+            $this->db->where('COL_CALL', $call);
+            $this->db->like('COL_TIME_ON', $time_on, 'after');
+            $this->db->where('COL_BAND', $band);
+            $this->db->where('COL_MODE', $mode);
+            $this->db->where_in('station_id', $logbooks_locations_array);
+            $check = $this->db->get($this->config->item('table_name'));
+            if ($check->num_rows() != 1) {
+               if ($ignoreAmbiguous == '1') {
+                  return array();
+               } else {
+                  return array(2, $result['message'] = "<tr><td>".date($custom_date_format, strtotime($record['qso_date']))."</td><td>".date('H:i', strtotime($record['time_on']))."</td><td>".str_replace('0', 'Ø', $call)."</td><td>".$band."</td><td>".$mode."</td><td></td><td>".(preg_match('/^[A-Y]\d{2}$/', $darc_dok) ? '<a href="https://www.darc.de/'.$darc_dok.'" target="_blank">'.$darc_dok.'</a>' : (preg_match('/^Z\d{2}$/', $darc_dok) ? '<a href="https://'.$darc_dok.'.vfdb.org" target="_blank">'.$darc_dok.'</a>' : $darc_dok))."</td><td>".lang('dcl_no_match')."</td></tr>");
+               }
+            } else {
+               $dcl_qsl_status = '';
+               switch($record['app_dcl_status']) {
+               case 'c':
+                  $dcl_qsl_status = lang('dcl_qsl_status_c');
+                  break;
+               case 'm':
+               case 'n':
+               case 'o':
+                  $dcl_qsl_status = lang('dcl_qsl_status_mno');
+                  break;
+               case 'i':
+                  $dcl_qsl_status = lang('dcl_qsl_status_i');
+                  break;
+               case 'w':
+                  $dcl_qsl_status = lang('dcl_qsl_status_w');
+                  break;
+               case 'x':
+                  $dcl_qsl_status = lang('dcl_qsl_status_x');
+                  break;
+               default:
+                  $dcl_qsl_status = lang('dcl_qsl_status_unknown');
+               }
+               if ($check->row()->COL_DARC_DOK != $darc_dok) {
+                  $dcl_cnfm = array('c', 'm', 'n', 'o', 'i');
+                  // Ref https://confluence.darc.de/pages/viewpage.action?pageId=21037270
+                  if ($onlyConfirmed == '1') {
+                     if (in_array($record['app_dcl_status'], $dcl_cnfm)) {
+                        if ($check->row()->COL_DARC_DOK == '' || $overwriteDok == '1') {
+                           $this->set_dok($check->row()->COL_PRIMARY_KEY, $darc_dok);
+                           return array(0, '');
+                        } else {
+                           return array(1, $result['message'] = "<tr><td>".date($custom_date_format, strtotime($record['qso_date']))."</td><td>".date('H:i', strtotime($record['time_on']))."</td><td><a id=\"edit_qso\" href=\"javascript:displayQso(".$check->row()->COL_PRIMARY_KEY.")\">".str_replace('0', 'Ø', $call)."</a></td><td>".$band."</td><td>".$mode."</td><td>".($check->row()->COL_DARC_DOK == '' ? 'n/a' : (preg_match('/^[A-Y]\d{2}$/', $check->row()->COL_DARC_DOK) ? '<a href="https://www.darc.de/'.$check->row()->COL_DARC_DOK.'" target="_blank">'.$check->row()->COL_DARC_DOK.'</a>' : (preg_match('/^Z\d{2}$/', $check->row()->COL_DARC_DOK) ? '<a href="https://'.$check->row()->COL_DARC_DOK.'.vfdb.org" target="_blank">'.$check->row()->COL_DARC_DOK.'</a>' : $check->row()->COL_DARC_DOK)))."</td><td>".(preg_match('/^[A-Y]\d{2}$/', $darc_dok) ? '<a href="https://www.darc.de/'.$darc_dok.'" target="_blank">'.$darc_dok.'</a>' : (preg_match('/^Z\d{2}$/', $darc_dok) ? '<a href="https://'.$darc_dok.'.vfdb.org" target="_blank">'.$darc_dok.'</a>' : $darc_dok))."</td><td>".$dcl_qsl_status."</td></tr>");
+                        }
+
+                     } else {
+                        return array(1, $result['message'] = "<tr><td>".date($custom_date_format, strtotime($record['qso_date']))."</td><td>".date('H:i', strtotime($record['time_on']))."</td><td><a id=\"edit_qso\" href=\"javascript:displayQso(".$check->row()->COL_PRIMARY_KEY.")\">".str_replace('0', 'Ø', $call)."</a></td><td>".$band."</td><td>".$mode."</td><td>".($check->row()->COL_DARC_DOK == '' ? 'n/a' : (preg_match('/^[A-Y]\d{2}$/', $check->row()->COL_DARC_DOK) ? '<a href="https://www.darc.de/'.$check->row()->COL_DARC_DOK.'" target="_blank">'.$check->row()->COL_DARC_DOK.'</a>' : (preg_match('/^Z\d{2}$/', $check->row()->COL_DARC_DOK) ? '<a href="https://'.$check->row()->COL_DARC_DOK.'.vfdb.org" target="_blank">'.$check->row()->COL_DARC_DOK.'</a>' : $check->row()->COL_DARC_DOK)))."</td><td>".(preg_match('/^[A-Y]\d{2}$/', $darc_dok) ? '<a href="https://www.darc.de/'.$darc_dok.'" target="_blank">'.$darc_dok.'</a>' : (preg_match('/^Z\d{2}$/', $darc_dok) ? '<a href="https://'.$darc_dok.'.vfdb.org" target="_blank">'.$darc_dok.'</a>' : $darc_dok))."</td><td>".$dcl_qsl_status."</td></tr>");
+                     }
+                  } else {
+                     if ($check->row()->COL_DARC_DOK == '' || $overwriteDok == '1') {
+                        $this->set_dok($check->row()->COL_PRIMARY_KEY, $darc_dok);
+                        return array(0, '');
+                     } else {
+                        return array(1, $result['message'] = "<tr><td>".date($custom_date_format, strtotime($record['qso_date']))."</td><td>".date('H:i', strtotime($record['time_on']))."</td><td><a id=\"edit_qso\" href=\"javascript:displayQso(".$check->row()->COL_PRIMARY_KEY.")\">".str_replace('0', 'Ø', $call)."</a></td><td>".$band."</td><td>".$mode."</td><td>".($check->row()->COL_DARC_DOK == '' ? 'n/a' : (preg_match('/^[A-Y]\d{2}$/', $check->row()->COL_DARC_DOK) ? '<a href="https://www.darc.de/'.$check->row()->COL_DARC_DOK.'" target="_blank">'.$check->row()->COL_DARC_DOK.'</a>' : (preg_match('/^Z\d{2}$/', $check->row()->COL_DARC_DOK) ? '<a href="https://'.$check->row()->COL_DARC_DOK.'.vfdb.org" target="_blank">'.$check->row()->COL_DARC_DOK.'</a>' : $check->row()->COL_DARC_DOK)))."</td><td>".(preg_match('/^[A-Y]\d{2}$/', $darc_dok) ? '<a href="https://www.darc.de/'.$darc_dok.'" target="_blank">'.$darc_dok.'</a>' : (preg_match('/^Z\d{2}$/', $darc_dok) ? '<a href="https://'.$darc_dok.'.vfdb.org" target="_blank">'.$darc_dok.'</a>' : $darc_dok))."</td><td>".$dcl_qsl_status."</td></tr>");
+                     }
+                  }
+               }
+            }
+        }
+
+    }
+
+    function set_dok($key, $dok) {
+      $data = array(
+         'COL_DARC_DOK' => $dok,
+      );
+
+      $this->db->where(array('COL_PRIMARY_KEY' => $key));
+      $this->db->update($this->config->item('table_name'), $data);
+      return;
+    }
+
     function get_main_mode_from_mode($mode) {
 	return ($this->get_main_mode_if_submode($mode) == null ? $mode : $this->get_main_mode_if_submode($mode));
     }
@@ -4057,7 +4171,11 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	    );
 
 	    $this->db->where(array('station_id' => NULL));
-	    $this->db->where('col_station_callsign', $station_callsign);
+	    if ($station_callsign == '') {
+	    	$this->db->where(array('col_station_callsign' => NULL));
+	    } else {
+	    	$this->db->where('col_station_callsign', $station_callsign);
+	    }
 	    $this->db->update($this->config->item('table_name'), $data);
 	    if ($this->db->affected_rows() > 0) {
 		    return TRUE;

@@ -45,7 +45,6 @@
 		    <input type="number" class="form-control" name="station_power" id="stationPowerInput" step="1" aria-describedby="stationPowerInputHelp" placeholder="10">
 		    <small id="stationPowerInputHelp" class="form-text text-muted"><?php echo lang("station_location_power_hint"); ?></small>
 		  </div>
-
 		  <div class="form-group">
 		    <label for="stationDXCCInput"><?php echo lang("station_location_dxcc"); ?></label>
 				<?php if ($dxcc_list->num_rows() > 0) { ?>
@@ -58,6 +57,7 @@
 				</select>
 				<?php } ?>
 		    <small id="stationDXCCInputHelp" class="form-text text-muted"><?php echo lang("station_location_dxcc_hint"); ?></small>
+			<div class="alert alert-danger" role="alert" id="warningMessageDXCC" style="display: none"> </div>
 		  </div>
 
 		  <div class="form-group">
