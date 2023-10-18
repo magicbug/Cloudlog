@@ -28,6 +28,7 @@ $lang['qsl_notes_helptext'] = 'Dieser Notizeninhalt wird an QSL Services wie eqs
 $lang['qso_btn_reset_qso'] = 'Zurücksetzen';
 $lang['qso_btn_save_qso'] = 'Speichere QSO';
 $lang['qso_btn_edit_qso'] = 'Editiere QSO';
+$lang['qso_delete_warning'] = "Warnung! Bist du sicher, dass du dieses QSO löschen willst mit ";
 
 // QSO Details
 

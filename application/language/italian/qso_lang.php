@@ -28,6 +28,7 @@ $lang['qsl_notes_helptext'] = 'Il contenuto di questa nota è esportato a serviz
 $lang['qso_btn_reset_qso'] = 'Reset';
 $lang['qso_btn_save_qso'] = 'Salva QSO';
 $lang['qso_btn_edit_qso'] = 'Modifica QSO';
+$lang['qso_delete_warning'] = "Warning! Are you sure you want delete QSO with ";
 
 // QSO Details
 

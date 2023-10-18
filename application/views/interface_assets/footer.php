@@ -16,6 +16,8 @@
     General Language
     */
     var lang_general_word_qso_data = "<?php echo lang('general_word_qso_data'); ?>";
+    var lang_general_word_danger = "<?php echo lang('general_word_danger'); ?>";
+    var lang_qso_delete_warning = "<?php echo lang('qso_delete_warning'); ?>";
 </script>
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>

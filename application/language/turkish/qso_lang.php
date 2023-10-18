@@ -28,6 +28,7 @@ $lang['qsl_notes_helptext'] = 'Bu not içeriği eqsl.cc gibi QSL servislere akta
 $lang['qso_btn_reset_qso'] = 'Baştan başla';
 $lang['qso_btn_save_qso'] = 'QSO\'yu kaydet';
 $lang['qso_btn_edit_qso'] = 'QSO\'yu düzenle';
+$lang['qso_delete_warning'] = "Warning! Are you sure you want delete QSO with ";
 
 // QSO Details
 
