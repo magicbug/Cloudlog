@@ -102,6 +102,7 @@ $autoload['language'] = array(
     'admin',
     'contesting',
     'eqsl',
+    'export',
     'filter',
     'general_words',
     'gridsquares',
