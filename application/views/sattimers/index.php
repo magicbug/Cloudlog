@@ -49,7 +49,7 @@ var custom_date_format = "<?php echo $custom_date_format ?>";
                 <td><span id="tevel<?php echo $i; ?>Aos"><?php echo $activation['aos']; ?>°</span></td>
                 <td><span id="tevel<?php echo $i; ?>Los"><?php echo $activation['los']; ?>°</span></td>
                 <td><span id="tevel<?php echo $i; ?>MaxEl"><?php echo $activation['max_elev']; ?>°</span></td>
-                <td><span id="tevel<?php echo $i; ?>Duration"><?php echo $activation['duration_min']; ?>°</span></td>
+                <td><span id="tevel<?php echo $i; ?>Duration"><?php echo $activation['duration_min']; ?> min</span></td>
                 <td>
                 <?php
                    if (strpos($activation['sat'], 'TEVEL') !== false) {
