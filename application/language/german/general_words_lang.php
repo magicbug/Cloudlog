@@ -16,6 +16,8 @@ $lang['general_word_next'] = 'Weiter';
 $lang['general_word_previous'] = 'Zurück';
 $lang['general_word_enabled'] = "Eingeschaltet";
 $lang['general_word_disabled'] = "Ausgeschaltet";
+$lang['general_word_export'] = "Exportieren";
+$lang['general_word_import'] = "Importieren";
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Zeit';
@@ -163,7 +165,7 @@ $lang['dashboard_qso_breakdown'] = 'QSO-Übersicht';
 $lang['dashboard_countries_breakdown'] = 'Länderübersicht';
 
 $lang['gen_from_date'] = 'Ab Datum';
-$lang['gen_to_date'] = 'To date';
+$lang['gen_to_date'] = 'Bis Datum';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'Dieses QSO wurde bestätigt am';
 
