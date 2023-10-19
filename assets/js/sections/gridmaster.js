@@ -29,6 +29,12 @@ function gridPlot(form) {
             grid_four = data.grid_4char;
             grid_four_lotw = data.grid_4char_lotw;
             grid_four_paper = data.grid_4char_paper;
+            paper_count = 0;
+            grid_four_paper.forEach((element) => {
+               if (!grid_four_lotw.includes(element)) {
+                  paper_count++;
+               }
+            });
             var layer = L.tileLayer(jslayer, {
                 maxZoom: 12,
                 attribution: jsattribution,
@@ -62,7 +68,7 @@ function gridPlot(form) {
                 var div = L.DomUtil.create("div", "legend");
                 div.innerHTML += "<h4>" + gridsquares_gridsquares + "</h4>";
                 div.innerHTML += '<i style="background: #90ee90"></i><span>' + gridsquares_gridsquares_lotw + ' ('+grid_four_lotw.length+')</span><br>';
-                div.innerHTML += '<i style="background: #00b0f0"></i><span>' + gridsquares_gridsquares_paper + ' ('+grid_four_paper.length+')</span><br>';
+                div.innerHTML += '<i style="background: #00b0f0"></i><span>' + gridsquares_gridsquares_paper + ' ('+paper_count+')</span><br>';
                 div.innerHTML += '<i style="background: #ffd757"></i><span>' + gridsquares_gridsquares_worked + ' ('+(grid_four.length)+')</span><br>';
                 return div;
             };
