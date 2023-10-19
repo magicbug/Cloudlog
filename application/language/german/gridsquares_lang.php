@@ -21,6 +21,7 @@ $lang['gridsquares_confirmation'] = 'Bestätigung';
 $lang['gridsquares_button_plot'] = 'Kartieren';
 
 $lang['gridsquares_gridsquares'] = 'Planquadrate';
+$lang['gridsquares_gridsquares_worked'] = 'Gearbeitete Planquadrate';
 $lang['gridsquares_gridsquares_confirmed'] = 'Planquadrate bestätigt';
 $lang['gridsquares_gridsquares_lotw'] = 'Auf LoTW bestätigte Planquadrate';
 $lang['gridsquares_gridsquares_paper'] = 'Per Papier QSL bestätigte Planquadrate';
