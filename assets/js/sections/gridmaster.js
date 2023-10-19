@@ -37,7 +37,7 @@ function gridPlot(form) {
 
             map = L.map('gridsquare_map', {
             layers: [layer],
-            center: [38, -95],
+            center: [38, -91],
             zoom: 5,
             minZoom: 4,
             maxZoom: 12,

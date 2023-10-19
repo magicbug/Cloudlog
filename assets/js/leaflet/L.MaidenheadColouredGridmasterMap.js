@@ -35,8 +35,8 @@ L.Maidenhead = L.LayerGroup.extend({
 	},
 
 	redraw: function () {
-		var d3 = new Array(20, 10, 10, 1, 1, 1, 1, 1, 1, 1, 1 / 24, 1 / 24, 1 / 24, 1 / 24, 1 / 24, 1 / 240, 1 / 240, 1 / 240, 1 / 240, 1 / 240 / 24, 1 / 240 / 24);
-		var lat_cor = new Array(0, 8, 8, 8, 2.5, 2.2, 6, 8, 8, 8, 1.4, 2.5, 3, 3.5, 4, 4, 3.5, 3.5, 3, 1.8, 1.6); // Used for gridsquare text offset
+		var d3 = new Array(20, 10, 10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+		var lat_cor = new Array(0, 8, 8, 8, 2.5, 2.2, 6, 8, 8, 8, 8, 8, 8); // Used for gridsquare text offset
 		var bounds = map.getBounds();
 		var zoom = map.getZoom();
 		var unit = d3[zoom];
@@ -137,7 +137,7 @@ L.Maidenhead = L.LayerGroup.extend({
 	},
 
 	_getLabel: function(lon,lat) {
-	  var title_size = new Array(0, 10, 14, 16, 8.5, 13, 14, 16, 24, 36, 12, 14, 20, 36, 60, 12, 20, 36, 60, 12, 24); // Controls text size on labels
+	  var title_size = new Array(0, 10, 14, 16, 8.5, 13, 14, 16, 24, 36, 36, 64, 128); // Controls text size on labels
 		var zoom = map.getZoom();
 		var size = title_size[zoom]+'px';
 		var title = '';
@@ -156,7 +156,6 @@ L.Maidenhead = L.LayerGroup.extend({
 	_getLocator: function(lon,lat) {
 	  var ydiv_arr=new Array(10, 1, 1/24, 1/240, 1/240/24);
 	  var d1 = "ABCDEFGHIJKLMNOPQR".split("");
-	  var d2 = "ABCDEFGHIJKLMNOPQRSTUVWX".split("");
 	  var d4 = new Array(0, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5);
       var locator = "";
       var x = lon;
@@ -173,8 +172,6 @@ L.Maidenhead = L.LayerGroup.extend({
         rlat = y%(ydiv_arr[i]);
 			if ((i%2)==0) {
 				locator += Math.floor(rlon/(ydiv_arr[i+1]*2)) +""+ Math.floor(rlat/(ydiv_arr[i+1]));
-			} else {
-				locator += d2[Math.floor(rlon/(ydiv_arr[i+1]*2))] +""+ d2[Math.floor(rlat/(ydiv_arr[i+1]))];
 			}
 		}
 	  }
