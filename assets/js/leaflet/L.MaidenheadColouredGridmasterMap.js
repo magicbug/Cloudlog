@@ -69,7 +69,7 @@ L.Maidenhead = L.LayerGroup.extend({
 							var rectConfirmed = L.rectangle(bounds, {className: 'grid-rectangle grid-confirmed', color: 'rgba(144,238,144, 0.6)', weight: 1, fillOpacity: 1, fill:true, interactive: false});
 							this.addLayer(rectConfirmed);
 						} else {
-							var rectWorked = L.rectangle(bounds, {className: 'grid-rectangle grid-worked', color: this.options.color, weight: 1, fillOpacity: 1, fill:true, interactive: false})
+							var rectWorked = L.rectangle(bounds, {className: 'grid-rectangle grid-worked', color: 'rgba(255,215,87, 0.6)', weight: 1, fillOpacity: 1, fill:true, interactive: false})
 							this.addLayer(rectWorked);
 						}
 						// Controls text on grid on various zoom levels

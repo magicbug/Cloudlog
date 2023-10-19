@@ -64,8 +64,8 @@ function gridPlot(form) {
             legend.onAdd = function(map) {
                 var div = L.DomUtil.create("div", "legend");
                 div.innerHTML += "<h4>" + gridsquares_gridsquares + "</h4>";
-                div.innerHTML += '<i style="background: red"></i><span>' + gridsquares_gridsquares_worked + ' ('+(grid_four.length)+')</span><br>';
-                div.innerHTML += '<i style="background: green"></i><span>' + gridsquares_gridsquares_confirmed + ' ('+grid_four_confirmed.length+')</span><br>';
+                div.innerHTML += '<i style="background: #ffd757"></i><span>' + gridsquares_gridsquares_worked + ' ('+(grid_four.length)+')</span><br>';
+                div.innerHTML += '<i style="background: #90ee90"></i><span>' + gridsquares_gridsquares_confirmed + ' ('+grid_four_confirmed.length+')</span><br>';
                 return div;
             };
 
