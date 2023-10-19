@@ -523,6 +523,104 @@ class Awards extends CI_Controller {
         $this->load->view('awards/details', $data);
     }
 
+    public function gridmaster() {
+      $data['page_title']= lang('menu_us_gridmaster');
+
+      $this->load->model('bands');
+      $this->load->model('gridmap_model');
+      $this->load->model('stations');
+
+      $data['homegrid']= explode(',', $this->stations->find_gridsquare());
+
+      $data['modes'] = $this->gridmap_model->get_worked_modes();
+      $data['bands']= $this->bands->get_worked_bands();
+      $data['sats_available']= $this->bands->get_worked_sats();
+
+      $data['layer']= $this->optionslib->get_option('option_map_tile_server');
+
+      $data['attribution']= $this->optionslib->get_option('option_map_tile_server_copyright');
+
+      $data['gridsquares_gridsquares']= lang('gridsquares_gridsquares');
+      $data['gridsquares_gridsquares_worked']= lang('gridsquares_gridsquares_worked');
+      $data['gridsquares_gridsquares_confirmed']= lang('gridsquares_gridsquares_confirmed');
+
+      $footerData = [];
+      $footerData['scripts']= [
+         'assets/js/leaflet/geocoding.js',
+         'assets/js/leaflet/L.MaidenheadColouredGridmasterMap.js',
+         'assets/js/sections/gridmaster.js?'
+      ];
+
+      $this->load->view('interface_assets/header',$data);
+      $this->load->view('awards/gridmaster/index');
+      $this->load->view('interface_assets/footer',$footerData);
+    }
+
+	public function getGridmasterGridsjs() {
+		$this->load->model('gridmaster_model');
+
+		$array_grid_4char = array();
+
+		$array_grid_4char_confirmed = array();
+
+		$grid_4char = "";
+
+		$grid_4char_confirmed = "";
+
+		$query = $this->gridmaster_model->get_confirmed();
+
+		if ($query && $query->num_rows() > 0) {
+			foreach ($query->result() as $row) 	{
+				$grid_4char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,4));
+
+				if(!in_array($grid_4char_confirmed, $array_grid_4char_confirmed)){
+					array_push($array_grid_4char_confirmed, $grid_4char_confirmed);	
+				}
+
+			}
+		}
+
+		$query = $this->gridmaster_model->get_worked();
+
+		if ($query && $query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+
+				$grid_four = strtoupper(substr($row->GRID_SQUARES,0,4));
+
+				if(!in_array($grid_four, $array_grid_4char)){
+					array_push($array_grid_4char, $grid_four);	
+				}
+
+			}
+		}
+
+		$vucc_grids = $this->gridmaster_model->get_vucc_confirmed();
+
+		foreach($vucc_grids as $key) {
+			$grid_four_confirmed = strtoupper(substr($key,0,4));
+
+			if(!in_array($grid_four_confirmed, $array_grid_4char_confirmed)){
+				array_push($array_grid_4char_confirmed, $grid_four_confirmed);
+			}
+		}
+
+		$vucc_grids = $this->gridmaster_model->get_vucc_worked();
+
+		foreach($vucc_grids as $key) {
+			$grid_four = strtoupper(substr($key,0,4));
+
+			if(!in_array($grid_four, $array_grid_4char)){
+				array_push($array_grid_4char, $grid_four);
+			}
+		}
+
+		$data['grid_4char_confirmed'] = ($array_grid_4char_confirmed);
+		$data['grid_4char'] = ($array_grid_4char);
+
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
+
 	/*
 		Handles showing worked Sigs
 		Adif fields: my_sig

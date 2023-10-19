@@ -420,14 +420,17 @@ class Logbook_model extends CI_Model {
 			$this->db->where($sql);
 		}
 
-		if ($mode != 'All') {
+		if ($mode != 'All' && $mode != '') {
 			$this->db->where("(COL_MODE='" . $mode . "' OR COL_SUBMODE='" . $mode ."')");
 		}
 		$this->db->order_by("COL_TIME_ON", "desc");
 
 		$this->db->limit(500);
 
-		return $this->db->get($this->config->item('table_name'));
+		$result =  $this->db->get($this->config->item('table_name'));
+      log_message('debug', 'SQL: '.$this->db->last_query());
+      return $result;
+		//return $this->db->get($this->config->item('table_name'));
 	}
 
 	public function activated_grids_qso_details($searchphrase, $band, $mode){

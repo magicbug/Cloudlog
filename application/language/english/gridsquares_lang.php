@@ -21,6 +21,7 @@ $lang['gridsquares_confirmation'] = 'Confirmation';
 $lang['gridsquares_button_plot'] = 'Plot';
 
 $lang['gridsquares_gridsquares'] = 'Gridsquares';
+$lang['gridsquares_gridsquares_worked'] = 'Gridsquares worked';
 $lang['gridsquares_gridsquares_confirmed'] = 'Gridsquares confirmed';
 $lang['gridsquares_gridsquares_not_confirmed'] = 'Gridsquares not confirmed';
 $lang['gridsquares_gridsquares_total_worked'] = 'Total gridsquares worked';
