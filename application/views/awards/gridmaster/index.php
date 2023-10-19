@@ -78,6 +78,7 @@ var type = "worked";
 
     echo 'var gridsquares_gridsquares = "' . $gridsquares_gridsquares . '";';
     echo 'var gridsquares_gridsquares_worked = "' . $gridsquares_gridsquares_worked . '";';
-    echo 'var gridsquares_gridsquares_confirmed = "' . $gridsquares_gridsquares_confirmed . '";';
+    echo 'var gridsquares_gridsquares_lotw = "' . $gridsquares_gridsquares_lotw . '";';
+    echo 'var gridsquares_gridsquares_paper = "' . $gridsquares_gridsquares_paper . '";';
 ?>
 </script>

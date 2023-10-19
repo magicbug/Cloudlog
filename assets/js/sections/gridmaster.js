@@ -1,14 +1,11 @@
 var map;
-var grid_two = '';
 var grid_four = '';
-var grid_six = '';
-var grid_two_confirmed = '';
-var grid_four_confirmed = '';
-var grid_six_confirmed = '';
+var grid_four_lotw = '';
+var grid_four_paper = '';
 
 function gridPlot(form) {
     $(".ld-ext-right-plot").addClass('running');
-	$(".ld-ext-right-plot").prop('disabled', true);
+    $(".ld-ext-right-plot").prop('disabled', true);
     $('#plot').prop("disabled", true);
     // If map is already initialized
     var container = L.DomUtil.get('gridsquare_map');
@@ -22,15 +19,16 @@ function gridPlot(form) {
     ajax_url = site_url + '/awards/getGridmasterGridsjs';
 
     $.ajax({
-		url: ajax_url,
-		type: 'get',
-		success: function (data) {
+      url: ajax_url,
+      type: 'get',
+      success: function (data) {
             $('.cohidden').show();
             $(".ld-ext-right-plot").removeClass('running');
             $(".ld-ext-right-plot").prop('disabled', false);
             $('#plot').prop("disabled", false);
             grid_four = data.grid_4char;
-            grid_four_confirmed = data.grid_4char_confirmed;
+            grid_four_lotw = data.grid_4char_lotw;
+            grid_four_paper = data.grid_4char_paper;
             var layer = L.tileLayer(jslayer, {
                 maxZoom: 12,
                 attribution: jsattribution,
@@ -41,9 +39,8 @@ function gridPlot(form) {
             layers: [layer],
             center: [38, -95],
             zoom: 5,
-            minZoom: 5,
-            maxZoom: 5,
-            dragging: false,
+            minZoom: 4,
+            maxZoom: 12,
             fullscreenControl: true,
                 fullscreenControlOptions: {
                     position: 'topleft'
@@ -64,8 +61,9 @@ function gridPlot(form) {
             legend.onAdd = function(map) {
                 var div = L.DomUtil.create("div", "legend");
                 div.innerHTML += "<h4>" + gridsquares_gridsquares + "</h4>";
+                div.innerHTML += '<i style="background: #90ee90"></i><span>' + gridsquares_gridsquares_lotw + ' ('+grid_four_lotw.length+')</span><br>';
+                div.innerHTML += '<i style="background: #00b0f0"></i><span>' + gridsquares_gridsquares_paper + ' ('+grid_four_paper.length+')</span><br>';
                 div.innerHTML += '<i style="background: #ffd757"></i><span>' + gridsquares_gridsquares_worked + ' ('+(grid_four.length)+')</span><br>';
-                div.innerHTML += '<i style="background: #90ee90"></i><span>' + gridsquares_gridsquares_confirmed + ' ('+grid_four_confirmed.length+')</span><br>';
                 return div;
             };
 
@@ -74,10 +72,10 @@ function gridPlot(form) {
             var maidenhead = L.maidenhead().addTo(map);
             map.on('mousemove', onMapMove);
 
-		},
-		error: function (data) {
-		},
-	});
+      },
+      error: function (data) {
+      },
+   });
 }
 
 function spawnGridsquareModal(loc_4char) {

@@ -39,7 +39,6 @@ L.Maidenhead = L.LayerGroup.extend({
 		var lat_cor = new Array(0, 8, 8, 8, 2.5, 2.2, 6, 8, 8, 8, 1.4, 2.5, 3, 3.5, 4, 4, 3.5, 3.5, 3, 1.8, 1.6); // Used for gridsquare text offset
 		var bounds = map.getBounds();
 		var zoom = map.getZoom();
-		console.log(zoom);
 		var unit = d3[zoom];
 		var lcor = lat_cor[zoom];
 		var w = bounds.getWest();
@@ -48,7 +47,7 @@ L.Maidenhead = L.LayerGroup.extend({
 		var s = bounds.getSouth();
 		var field_lat_cor = new Array(0, 8, 8, 9, 8, 7, 6, 8, 8, 8, 1.4, 2.5, 3, 3.5, 4, 4, 3.5, 3.5, 3, 1.8, 1.6); // Used for field text offset
 		var field_cor = field_lat_cor[zoom];
-		if (zoom==1) {var c = 2;} else {var c = 0.2;} // Height offset
+		var c = 0.2;
 		if (n > 85) n = 85;
 		if (s < -85) s = -85;
 		var left = Math.floor(w/(unit*2))*(unit*2);
@@ -97,9 +96,12 @@ L.Maidenhead = L.LayerGroup.extend({
 	
 					if(grid_four.includes(locator)) {
 	
-						if(grid_four_confirmed.includes(locator)) {
+						if(grid_four_lotw.includes(locator)) {
 							var rectConfirmed = L.rectangle(bounds, {className: 'grid-rectangle grid-confirmed', color: 'rgba(144,238,144, 0.6)', weight: 1, fillOpacity: 1, fill:true, interactive: false});
 							this.addLayer(rectConfirmed);
+						} else if (grid_four_paper.includes(locator)) {
+							var rectPaper = L.rectangle(bounds, {className: 'grid-rectangle grid-confirmed', color: 'rgba(0,176,240, 0.6)', weight: 1, fillOpacity: 1, fill:true, interactive: false});
+							this.addLayer(rectPaper);
 						} else {
 							var rectWorked = L.rectangle(bounds, {className: 'grid-rectangle grid-worked', color: 'rgba(255,215,87, 0.6)', weight: 1, fillOpacity: 1, fill:true, interactive: false})
 							this.addLayer(rectWorked);
@@ -115,7 +117,7 @@ L.Maidenhead = L.LayerGroup.extend({
 			}
 		}
 		// Added this to print fields and field name, while still showing worked/confirmed gridsquares
-		unit = 10;
+		unit = 1;
 		var left = Math.floor(w / (unit * 2)) * (unit * 2);
 		var right = Math.ceil(e / (unit * 2)) * (unit * 2);
 		var top = Math.ceil(n / unit) * unit;
@@ -179,50 +181,6 @@ L.Maidenhead = L.LayerGroup.extend({
 		}
 	  }
       return locator;
-	},
-
-	/*
-	Need this for the field printing, while showing worked/confirmed grids
-	 */
-	_getLabel2: function(lon,lat) {
-		var title_size = new Array(0, 10, 12, 16, 20, 26, 26, 16, 24, 36, 12, 14, 20, 36, 60, 12, 20, 36, 60, 12, 24);
-		var zoom = map.getZoom();
-		var size = title_size[zoom]+'px';
-		var title = '<span class="grid-text" style="cursor: default;"><font style="color:'+this.options.color+'; font-size:'+size+'; font-weight: 900; ">' + this._getLocator2(lon,lat) + '</font></span>';
-		var myIcon = L.divIcon({className: 'my-div-icon', html: title});
-		var marker = L.marker([lat,lon], {icon: myIcon}, clickable=false);
-		return marker;
-	},
-
-	/*
-	Need this for the field printing, while showing worked/confirmed grids
- 	*/
-	_getLocator2: function(lon,lat) {
-		var ydiv_arr=new Array(10, 1, 1/24, 1/240, 1/240/24);
-		var d1 = "ABCDEFGHIJKLMNOPQR".split("");
-		var d2 = "ABCDEFGHIJKLMNOPQRSTUVWX".split("");
-		var d4 = new Array(0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5);
-		var locator = "";
-		var x = lon;
-		var y = lat;
-		var precision = d4[map.getZoom()];
-		while (x < -180) {x += 360;}
-		while (x > 180) {x -=360;}
-		x = x + 180;
-		y = y + 90;
-		locator = locator + d1[Math.floor(x/20)] + d1[Math.floor(y/10)];
-		for (var i=0; i<4; i=i+1) {
-			if (precision > i+1) {
-				rlon = x%(ydiv_arr[i]*2);
-				rlat = y%(ydiv_arr[i]);
-				if ((i%2)==0) {
-					locator += Math.floor(rlon/(ydiv_arr[i+1]*2)) +""+ Math.floor(rlat/(ydiv_arr[i+1]));
-				} else {
-					locator += d2[Math.floor(rlon/(ydiv_arr[i+1]*2))] +""+ d2[Math.floor(rlat/(ydiv_arr[i+1]))];
-				}
-			}
-		}
-		return locator;
 	},
 
 });

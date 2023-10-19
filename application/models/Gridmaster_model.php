@@ -35,7 +35,7 @@ class Gridmaster_model extends CI_Model {
        'EL87', 'EL97', 'EL06', 'EL16', 'EL86', 'EL96', 'EL15', 'EL95', 'EL84', 'EL94'
     ];
 
-    function get_confirmed() {
+    function get_lotw() {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -49,6 +49,25 @@ class Gridmaster_model extends CI_Model {
            .$this->config->item('table_name')
            .' WHERE station_id in ('.$location_list.')'
            ." and COL_LOTW_QSL_RCVD = 'Y'"
+           ." and COL_PROP_MODE = 'SAT'"
+           .' AND substring(COL_GRIDSQUARE,1,4) in (\''.implode('\',\'', $this->us_grids).'\')';
+        return $this->db->query($sql);
+    }
+
+    function get_paper() {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+        $location_list = "'".implode("','",$logbooks_locations_array)."'";
+
+        $sql = 'SELECT distinct substring(COL_GRIDSQUARE,1,4) as GRID_SQUARES FROM '
+           .$this->config->item('table_name')
+           .' WHERE station_id in ('.$location_list.')'
+           ." and COL_QSL_RCVD = 'Y'"
            ." and COL_PROP_MODE = 'SAT'"
            .' AND substring(COL_GRIDSQUARE,1,4) in (\''.implode('\',\'', $this->us_grids).'\')';
         return $this->db->query($sql);
@@ -72,7 +91,7 @@ class Gridmaster_model extends CI_Model {
         return $this->db->query($sql);
     }
 
-    function get_vucc_confirmed() {
+    function get_vucc_lotw() {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -86,6 +105,38 @@ class Gridmaster_model extends CI_Model {
            .$this->config->item('table_name')
            .' WHERE station_id in ('.$location_list.')'
            ." and COL_LOTW_QSL_RCVD = 'Y'"
+           ." and COL_VUCC_GRIDS != ''"
+           ." and COL_VUCC_GRIDS IS NOT NULL"
+           ." and COL_PROP_MODE = 'SAT'";
+        $query = $this->db->query($sql);
+        $vucc_grids = [];
+        foreach ($query->result() as $row) {
+           $grids = explode(',', $row->VUCC_GRIDS);
+           foreach ($grids as $grid) {
+              if (in_array(substr($grid, 0, 4), $this->us_grids)) {
+                 if (!in_array(substr($grid, 0, 4), $vucc_grids)) {
+                    $vucc_grids[] = substr($grid, 0, 4);
+                 }
+              }
+           }
+        }
+        return $vucc_grids;
+    }
+
+    function get_vucc_paper() {
+        $CI =& get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+        $location_list = "'".implode("','",$logbooks_locations_array)."'";
+
+        $sql = 'SELECT distinct COL_VUCC_GRIDS as VUCC_GRIDS FROM '
+           .$this->config->item('table_name')
+           .' WHERE station_id in ('.$location_list.')'
+           ." and COL_QSL_RCVD = 'Y'"
            ." and COL_VUCC_GRIDS != ''"
            ." and COL_VUCC_GRIDS IS NOT NULL"
            ." and COL_PROP_MODE = 'SAT'";

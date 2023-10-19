@@ -542,7 +542,8 @@ class Awards extends CI_Controller {
 
       $data['gridsquares_gridsquares']= lang('gridsquares_gridsquares');
       $data['gridsquares_gridsquares_worked']= lang('gridsquares_gridsquares_worked');
-      $data['gridsquares_gridsquares_confirmed']= lang('gridsquares_gridsquares_confirmed');
+      $data['gridsquares_gridsquares_lotw']= lang('gridsquares_gridsquares_lotw');
+      $data['gridsquares_gridsquares_paper']= lang('gridsquares_gridsquares_paper');
 
       $footerData = [];
       $footerData['scripts']= [
@@ -560,61 +561,68 @@ class Awards extends CI_Controller {
 		$this->load->model('gridmaster_model');
 
 		$array_grid_4char = array();
-
-		$array_grid_4char_confirmed = array();
+		$array_grid_4char_lotw = array();
+		$array_grid_4char_paper = array();
 
 		$grid_4char = "";
+		$grid_4char_lotw = "";
 
-		$grid_4char_confirmed = "";
-
-		$query = $this->gridmaster_model->get_confirmed();
-
+		$query = $this->gridmaster_model->get_lotw();
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) 	{
-				$grid_4char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,4));
-
-				if(!in_array($grid_4char_confirmed, $array_grid_4char_confirmed)){
-					array_push($array_grid_4char_confirmed, $grid_4char_confirmed);	
+				$grid_4char_lotw = strtoupper(substr($row->GRID_SQUARES,0,4));
+				if(!in_array($grid_4char_lotw, $array_grid_4char_lotw)){
+					array_push($array_grid_4char_lotw, $grid_4char_lotw);
 				}
+			}
+		}
 
+		$query = $this->gridmaster_model->get_paper();
+		if ($query && $query->num_rows() > 0) {
+			foreach ($query->result() as $row) 	{
+				$grid_4char_paper = strtoupper(substr($row->GRID_SQUARES,0,4));
+				if(!in_array($grid_4char_paper, $array_grid_4char_paper)){
+					array_push($array_grid_4char_paper, $grid_4char_paper);
+				}
 			}
 		}
 
 		$query = $this->gridmaster_model->get_worked();
-
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
-
 				$grid_four = strtoupper(substr($row->GRID_SQUARES,0,4));
-
 				if(!in_array($grid_four, $array_grid_4char)){
 					array_push($array_grid_4char, $grid_four);	
 				}
-
 			}
 		}
 
-		$vucc_grids = $this->gridmaster_model->get_vucc_confirmed();
-
+		$vucc_grids = $this->gridmaster_model->get_vucc_lotw();
 		foreach($vucc_grids as $key) {
-			$grid_four_confirmed = strtoupper(substr($key,0,4));
+			$grid_four_lotw = strtoupper(substr($key,0,4));
+			if(!in_array($grid_four_lotw, $array_grid_4char_lotw)){
+				array_push($array_grid_4char_lotw, $grid_four_lotw);
+			}
+		}
 
-			if(!in_array($grid_four_confirmed, $array_grid_4char_confirmed)){
-				array_push($array_grid_4char_confirmed, $grid_four_confirmed);
+		$vucc_grids = $this->gridmaster_model->get_vucc_paper();
+		foreach($vucc_grids as $key) {
+			$grid_four_paper = strtoupper(substr($key,0,4));
+			if(!in_array($grid_four_paper, $array_grid_4char_paper)){
+				array_push($array_grid_4char_paper, $grid_four_paper);
 			}
 		}
 
 		$vucc_grids = $this->gridmaster_model->get_vucc_worked();
-
 		foreach($vucc_grids as $key) {
 			$grid_four = strtoupper(substr($key,0,4));
-
 			if(!in_array($grid_four, $array_grid_4char)){
 				array_push($array_grid_4char, $grid_four);
 			}
 		}
 
-		$data['grid_4char_confirmed'] = ($array_grid_4char_confirmed);
+		$data['grid_4char_lotw'] = ($array_grid_4char_lotw);
+		$data['grid_4char_paper'] = ($array_grid_4char_paper);
 		$data['grid_4char'] = ($array_grid_4char);
 
 		header('Content-Type: application/json');
