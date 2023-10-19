@@ -115,7 +115,7 @@ L.Maidenhead = L.LayerGroup.extend({
 			}
 		}
 		// Added this to print fields and field name, while still showing worked/confirmed gridsquares
-		unit = 1;
+		unit = 10;
 		var left = Math.floor(w / (unit * 2)) * (unit * 2);
 		var right = Math.ceil(e / (unit * 2)) * (unit * 2);
 		var top = Math.ceil(n / unit) * unit;
