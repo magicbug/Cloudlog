@@ -72,3 +72,26 @@ $lang['options_dxcluster_decont_changed_to']='Spotterkontinent geändert auf ';
 $lang['options_dxcluster_decont_hint']='Nur Spots von Spottern dieses Kontinents werden angezeigt';
 
 $lang['options_save'] = 'Speichern';
+
+// Bands
+
+$lang['options_bands'] = "Bänder";
+$lang['options_bands_text_ln1'] = "Mit dieser Bänder-Liste kannst du steuern, welche Bänder beim Erstellen eines neuen QSO angezeigt werden.";
+$lang['options_bands_text_ln2'] = "Aktive Bänder werden im QSO Band Auswahlfeld angezeigt, während inaktive Bänder ausgeblendet werden und nicht ausgewählt werden können.";
+$lang['options_bands_create'] = "Erstelle ein neues Band";
+$lang['options_bands_edit'] = "Bearbeite Band";
+$lang['options_bands_activate_all'] = "Aktiviere Alle";
+$lang['options_bands_activateall_warning'] = "Warnung! Bist du sicher, dass du alle Bänder aktivieren willst?";
+$lang['options_bands_deactivate_all'] = "Deaktiviere Alle";
+$lang['options_bands_deactivateall_warning'] = "Warnung! Bist du sicher, dass du alle Bänder deaktivieren willst?";
+$lang['options_bands_ssb_qrg'] = "SSB QRG";
+$lang['options_bands_ssb_qrg_hint'] = "Frequenz für die SSB QRG auf dem Band (Muss in Hz angegeben werden)";
+$lang['options_bands_data_qrg'] = "DATA QRG";
+$lang['options_bands_data_qrg_hint'] = "Frequenz für die DATA QRG auf dem Band (Muss in Hz angegeben werden";
+$lang['options_bands_cw_qrg'] = "CW QRG";
+$lang['options_bands_cw_qrg_hint'] = "Frequenz für die CW QRG auf dem Band (Muss in Hz angegeben werden";
+
+$lang['options_bands_name_band'] = "Name des Bandes (z.B. 20m)";
+$lang['options_bands_name_bandgroup'] = "Name der Bandgruppe (z.B. hf, vhf, uhf, shf)";
+$lang['options_bands_delete_warning'] = "Warnung! Bist du dir sicher, dass du das folgende Band löschen willst: ";
+
