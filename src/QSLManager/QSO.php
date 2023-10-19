@@ -138,7 +138,7 @@ class QSO
 		}
 		$this->qsoDateTime = date($custom_date_format . " H:i", strtotime($data['COL_TIME_ON']));
 
-		$this->de = $data['COL_STATION_CALLSIGN'];
+		$this->de = $data['station_callsign'];
 		$this->dx = $data['COL_CALL'];
 
 		$this->mode = $data['COL_MODE'] ?? '';
