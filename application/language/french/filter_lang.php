@@ -120,6 +120,7 @@ $lang['filter_actions_start_print'] = 'Start printing at?';
 $lang['filter_actions_print'] = 'Print';
 $lang['filter_actions_qsl_slideshow'] = 'QSL Slideshow';
 $lang['filter_actions_delete'] = 'Delete';
+$lang['filter_actions_delete_warning'] = "Warning! Are you sure you want to delete the marked QSO(s)?";
 
 
 /*

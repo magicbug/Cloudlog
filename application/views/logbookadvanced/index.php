@@ -315,6 +315,9 @@ $options = json_decode($options);
     </div>
 
     <div class="actionbody collapse">
+        <script>
+            var lang_filter_actions_delete_warning = '<?php echo lang('filter_actions_delete_warning'); ?>';
+        </script>
         <div class="mb-2 btn-group">
             <span class="h6 mr-1"><?php echo lang('filter_actions_w_selected'); ?></span>
             <button type="button" class="btn btn-sm btn-primary mr-1" id="btnUpdateFromCallbook"><?php echo lang('filter_actions_update_f_callbook'); ?></button>
