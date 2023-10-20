@@ -31,7 +31,7 @@ function updateRow(qso) {
 		cells.eq(c++).text(qso.de);
 	}
 	if (user_options.dx.show == "true"){
-		cells.eq(c++).html('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + '">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
+		cells.eq(c++).html('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')"><span id="dx">'+qso.dx+'</span></a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + '">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
 	}
 	if (user_options.mode.show == "true"){
 		cells.eq(c++).text(qso.mode);
@@ -124,7 +124,7 @@ function loadQSOTable(rows) {
 			data.push(qso.de);
 		}
 		if (user_options.dx.show == "true"){
-			data.push('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + ' ">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
+			data.push('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')"><span id="dx">'+qso.dx+'</span></a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + ' ">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
 		}
 		if (user_options.mode.show == "true"){
 			data.push(qso.mode);
@@ -616,29 +616,22 @@ $(document).ready(function () {
 				}
 			});
 		}
-		var offset = 0;
 
-		if (!$(".eqslconfirmation")[0]){
-			offset--;
-		}
-		if (!$(".lotwconfirmation")[0]){
-			offset--;
-		}
 		elements.each(function() {
 			var currentRow = $(this).first().closest('tr');
 			var col1 = '';
 			switch (type) {
-				case 'dxcc': 	var tdoffset = (offset + 16); col1 = currentRow.find("td:eq("+tdoffset+")").html(); col1 = col1.match(/\d/g); col1 = col1.join(""); break;
-				case 'cqzone': var tdoffset = (offset + 18); col1 = currentRow.find("td:eq("+tdoffset+")").text(); break;
-				case 'iota': var tdoffset = (offset + 19); col1 = currentRow.find("td:eq("+tdoffset+")").text(); col1 = col1.trim(); break;
-				case 'state': var tdoffset = (offset + 17); col1 = currentRow.find("td:eq("+tdoffset+")").text(); break;
-				case 'dx': col1 = currentRow.find("td:eq(3)").text(); col1 = col1.match(/^([^\s]+)/gm); break;
-				case 'gridsquare': col1 = $(currentRow).find('#dxgrid').text(); col1 = col1.substring(0, 4); break;
-				case 'sota': col1 = $(currentRow).find('#dxsota').text(); break;
-				case 'wwff': col1 = $(currentRow).find('#dxwwff').text(); break;
-				case 'pota': col1 = $(currentRow).find('#dxpota').text(); break;
-				case 'mode': col1 = currentRow.find("td:eq(4)").text(); break;
-				case 'band': col1 = currentRow.find("td:eq(7)").text(); col1 = col1.match(/\S\w*/); break;
+				case 'dxcc': 		col1 = currentRow.find('#dxcc').html(); col1 = col1.match(/\d/g); col1 = col1.join(""); break;
+				case 'cqzone': 		col1 = currentRow.find('#cqzone').text(); break;
+				case 'iota': 		col1 = currentRow.find('#iota').text(); col1 = col1.trim(); break;
+				case 'state': 		col1 = currentRow.find('#state').text(); break;
+				case 'dx': 			col1 = currentRow.find('#dx').text(); col1 = col1.match(/^([^\s]+)/gm); break;
+				case 'gridsquare': 	col1 = $(currentRow).find('#dxgrid').text(); col1 = col1.substring(0, 4); break;
+				case 'sota': 		col1 = $(currentRow).find('#dxsota').text(); break;
+				case 'wwff': 		col1 = $(currentRow).find('#dxwwff').text(); break;
+				case 'pota': 		col1 = $(currentRow).find('#dxpota').text(); break;
+				case 'mode': 		col1 = currentRow.find("td:eq(4)").text(); break;
+				case 'band': 		col1 = currentRow.find("td:eq(7)").text(); col1 = col1.match(/\S\w*/); break;
 			}
 			if (col1.length == 0) return;
 			$('#searchForm').trigger("reset");
