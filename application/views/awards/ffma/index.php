@@ -3,7 +3,7 @@
 <style>
 /*Legend specific*/
 .legend {
-  padding: 6px 8px;
+  padding: 10px 10px 10px 10px;
   font: 14px Arial, Helvetica, sans-serif;
   background: white;
   line-height: 24px;
