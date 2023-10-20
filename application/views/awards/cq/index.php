@@ -128,7 +128,7 @@
             <a class="nav-link active" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="true">Table</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="map-tab" data-toggle="tab" href="#cqmaptab" role="tab" aria-controls="home" aria-selected="false">Map</a>
+            <a class="nav-link" onclick="load_cq_map();" id="map-tab" data-toggle="tab" href="#cqmaptab" role="tab" aria-controls="home" aria-selected="false">Map</a>
         </li>
     </ul>
     <br />
