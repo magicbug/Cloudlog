@@ -141,7 +141,7 @@ class Logbookadvanced extends CI_Controller {
 		$this->load->model('logbookadvanced_model');
 
 		$qsoID = xss_clean($this->input->post('qsoID'));
-		$qso = $this->logbook_model->qso_info($qsoID)->row_array();
+		$qso = $this->qso_info($qsoID)->row_array();
 		if ($qso === null) {
 			header("Content-Type: application/json");
 			echo json_encode([]);
@@ -152,16 +152,28 @@ class Logbookadvanced extends CI_Controller {
 
 		if ($callbook['callsign'] ?? "" !== "") {
 			$this->logbookadvanced_model->updateQsoWithCallbookInfo($qsoID, $qso, $callbook);
-			$qso['COL_NAME'] = trim($callbook['name']);
-			if (isset($callbook['qslmgr'])) {
-				$qso['COL_QSL_VIA'] = trim($callbook['qslmgr']);
-			}
+			$qso = $this->qso_info($qsoID)->row_array();
 		}
 
 		$qsoObj = new QSO($qso);
 
 		header("Content-Type: application/json");
 		echo json_encode($qsoObj->toArray());
+	}
+
+	  /* Return QSO Info */
+	  function qso_info($id) {
+		$this->load->model('logbook_model');
+		if ($this->logbook_model->check_qso_is_accessible($id)) {
+			$this->db->where('COL_PRIMARY_KEY', $id);
+			$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+    		$this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
+    		$this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
+
+			return $this->db->get($this->config->item('table_name'));
+		} else {
+			return;
+		}
 	}
 
 	function export_to_adif() {
