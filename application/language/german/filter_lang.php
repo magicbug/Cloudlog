@@ -120,6 +120,7 @@ $lang['filter_actions_start_print'] = 'Druck starten bei?';
 $lang['filter_actions_print'] = 'Drucken';
 $lang['filter_actions_qsl_slideshow'] = 'QSL Präsentation';
 $lang['filter_actions_delete'] = 'Löschen';
+$lang['filter_actions_delete_warning'] = "Warnung! Bist du sicher, dass du die markierten QSO löschen willst?";
 
 
 /*
