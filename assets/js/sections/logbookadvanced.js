@@ -73,7 +73,7 @@ function updateRow(qso) {
 		cells.eq(c++).html(qso.dxcc);
 	}
 	if (user_options.state.show == "true"){
-		cells.eq(c++).text(qso.state);
+		cells.eq(c++).html(qso.state);
 	}
 	if (user_options.cqzone.show == "true"){
 		cells.eq(c++).html(qso.cqzone);
