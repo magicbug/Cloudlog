@@ -26,6 +26,7 @@ function gridPlot(form) {
             $(".ld-ext-right-plot").removeClass('running');
             $(".ld-ext-right-plot").prop('disabled', false);
             $('#plot').prop("disabled", false);
+            grid_max = 488;
             grid_four = data.grid_4char;
             grid_four_lotw = data.grid_4char_lotw;
             grid_four_paper = data.grid_4char_paper;
@@ -66,10 +67,13 @@ function gridPlot(form) {
 
             legend.onAdd = function(map) {
                 var div = L.DomUtil.create("div", "legend");
-                div.innerHTML += "<h4>" + gridsquares_gridsquares + "</h4>";
-                div.innerHTML += '<i style="background: #90ee90"></i><span>' + gridsquares_gridsquares_lotw + ' ('+grid_four_lotw.length+')</span><br>';
-                div.innerHTML += '<i style="background: #00b0f0"></i><span>' + gridsquares_gridsquares_paper + ' ('+paper_count+')</span><br>';
-                div.innerHTML += '<i style="background: #ffd757"></i><span>' + gridsquares_gridsquares_worked + ' ('+(grid_four.length)+')</span><br>';
+                //div.innerHTML += "<h4>" + gridsquares_gridsquares + "</h4>";
+                html = "<table border=\"0\">";
+                html += '<tr><td><i style="background: #90ee90"></i><span>' + gridsquares_gridsquares_lotw + ':</span></td><td style=\"padding-left: 1em; text-align: right;\"><span>'+grid_four_lotw.length+' / '+grid_max+'</span></td></tr>';
+                html += '<tr><td><i style="background: #00b0f0"></i><span>' + gridsquares_gridsquares_paper + ':</span></td><td style=\"padding-left: 1em; text-align: right;\"><span>'+paper_count+' / '+grid_max+'</span></td></tr>';
+                html += '<tr><td><i style="background: #ffd757"></i><span>' + gridsquares_gridsquares_worked + ' ('+(Math.round((grid_four.length / grid_max) * 10000) / 100)+'%):</span></td><td style=\"padding-left: 1em; text-align: right;\"><span>'+(grid_four.length)+' / '+grid_max+'</span></td></tr>';
+                html += "</table>";
+                div.innerHTML = html;
                 return div;
             };
 
