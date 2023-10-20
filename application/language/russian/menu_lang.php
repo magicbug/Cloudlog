@@ -85,4 +85,5 @@ $lang['menu_help'] = 'Помощь';
 $lang['menu_forum'] = 'Форум';
 $lang['menu_logout'] = 'Выход';
 
+$lang['menu_ffma'] = "Fred Fish Memorial Award";
 $lang['menu_maintenance']='Maintenance';
