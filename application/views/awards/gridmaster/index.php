@@ -54,6 +54,17 @@
 		<?php } ?>
 </div>
 
+<div class="card">
+      <div class="card-header">
+        <p><?php echo lang('awards_gridmaster_what_is'); ?></p>
+      </div>
+      <div class="card-body">
+        <p><?php echo lang('awards_gridmaster_description_ln1'); ?></p>
+        <p><?php echo lang('awards_gridmaster_description_ln2'); ?></p>
+        <span class="badge badge-warning"> <?php echo lang('awards_gridmaster_warning_hint'); ?></span>
+      </div>
+</div>
+
 <div id="gridmapcontainer">
 	<div id="gridsquare_map" style="width: 100%; height: 800px"></div>
 </div>
