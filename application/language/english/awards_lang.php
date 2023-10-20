@@ -26,3 +26,14 @@ $lang['awards_vucc_description_ln1'] = "VHF/UHF Century Club Award";
 $lang['awards_vucc_description_ln2'] = "The VHF/UHF Century Club Award will be given for a minimum number of worked and confirmed gridsquares on a desired band.";
 $lang['awards_vucc_description_ln3'] = "Offical Information and the Rules you can find in this document: <a href='https://www.amsat.org/gridmaster/' target='_blank'>Click me!</a>";
 $lang['awards_vucc_description_ln4'] = "Only VHF/UHF Bands are relevant.";
+
+/*
+___________________________________________________________________________________________
+FFMA -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_ffma_description_ln1'] = "Fred Fish Memorial Award";
+$lang['awards_ffma_description_ln2'] = "The Fred Fish Memorial Award was created in honor of Fred Fish, W5FF (SK), who is the first amateur to have worked and confirmed all 488 Maidenhead grid squares in the 48 contiguous United States on 6 Meters. ";
+$lang['awards_ffma_description_ln3'] = "The award will be given to any amateur who can duplicate W5FF's accomplishment.";
+$lang['awards_ffma_description_ln4'] = "More Information you can find here: <a href='https://www.arrl.org/ffma' target='_blank'>https://www.arrl.org/ffma</a>";
