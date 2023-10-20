@@ -2391,7 +2391,6 @@ function viewEqsl(picture, callsign) {
 <script>
     $('#displayAwardInfo').click(function (event) {
         var awardInfoLines = [
-            lang_award_info_ln1,
             lang_award_info_ln2,
             lang_award_info_ln3,
             lang_award_info_ln4
@@ -2401,7 +2400,7 @@ function viewEqsl(picture, callsign) {
             awardInfoContent += line + "<br><br>";
         });
         BootstrapDialog.alert({
-            title: lang_awards_info_title,
+            title: "<h4>"+lang_award_info_ln1+"</h4>",
             message: awardInfoContent,
         });
     });

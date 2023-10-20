@@ -4,8 +4,6 @@
   <div id="awardInfoButton">
     <script>
       var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
-      var lang_awards_info_title = "<?php echo lang('awards_info_title'); ?>";
-      var lang_awards_info_title = "<?php echo lang('awards_info_title'); ?>";
       var lang_award_info_ln1 = "<?php echo lang('awards_vucc_description_ln1'); ?>";
       var lang_award_info_ln2 = "<?php echo lang('awards_vucc_description_ln2'); ?>";
       var lang_award_info_ln3 = "<?php echo lang('awards_vucc_description_ln3'); ?>";
