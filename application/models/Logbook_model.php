@@ -1703,7 +1703,7 @@ class Logbook_model extends CI_Model {
 
 	    $extrawhere='';
 	    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
-		    $extrawhere="COL_QSL_RCVD='Y'"; 
+		    $extrawhere="COL_QSL_RCVD='Y'";
 	    }
 	    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 		    if ($extrawhere!='') {
@@ -3176,7 +3176,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
         } else {
             $input_lotw_qslrdate = NULL;
         }
-	
+
 	if (isset($record['lotw_qsl_sent'])){
             $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
         } else if ($markLotw != NULL) {
@@ -4131,12 +4131,10 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
                     $this->session->set_userdata('qrz_session_key', $qrz_session_key);
                 }
 
-
-
                 $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
 
                 // if we got nothing, it's probably because our session key is invalid, try again
-                if (!isset($callbook['callsign']))
+                if (($callbook['callsign'] ?? '') == '')
                 {
                     $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
                     $this->session->set_userdata('qrz_session_key', $qrz_session_key);
