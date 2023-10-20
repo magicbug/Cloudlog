@@ -351,8 +351,8 @@ $(document).ready(function () {
 		var table = $('#qsoList').DataTable();
 
 		BootstrapDialog.confirm({
-			title: 'DANGER',
-			message: 'Warning! Are you sure you want to delete the marked QSO(s)?' ,
+			title: lang_general_word_danger,
+			message: lang_filter_actions_delete_warning,
 			type: BootstrapDialog.TYPE_DANGER,
 			closable: true,
 			draggable: true,
