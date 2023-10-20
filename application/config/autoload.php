@@ -100,6 +100,7 @@ $autoload['language'] = array(
     'account',
     'adif',
     'admin',
+    'awards',
     'contesting',
     'eqsl',
     'export',
