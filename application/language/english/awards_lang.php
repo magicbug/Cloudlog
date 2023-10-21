@@ -57,7 +57,7 @@ IOTA -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_iota_description_ln1'] = "IOTA - Islands On The Air";
+$lang['awards_iota_description_ln1'] = "IOTA Awards";
 $lang['awards_iota_description_ln2'] = "IOTA is an exciting and innovative activity programme that has caught the interest of thousands of radio amateurs worldwide. Established in 1964, it promotes radio contacts with stations located on islands around the world to enrich the experience of all active on the amateur bands and, to do this, it draws on the widespread mystique surrounding islands.";
 $lang['awards_iota_description_ln3'] = "It is administered by Islands On The Air (IOTA) Ltd (called here IOTA Management) in partnership with the Radio Society of Great Britain (RSGB). IOTA Management has grouped the oceans' islands into some 1200 'IOTA groups' with, for reasons of geography, varying numbers of 'counters', i.e. qualifying islands, in each group and has published the listings in the IOTA Directory and on the IOTA website. The objective, for the IOTA Island Chaser, is to make radio contact with at least one counter in as many of these groups as possible and, for the IOTA Island Activator, to provide such island contacts. The programme has a strong rule structure. IOTA Management encourages friendly competition among chasers by publishing details of participants' performance in an Honour Roll and annual listings, as well as by recognising it with certificates and prestige awards.";
 $lang['awards_iota_description_ln4'] = "This Information you can also find on the Website of <a href='https://www.iota-world.org/' target='_blank'>IOTA WORLD</a>";
@@ -69,7 +69,7 @@ POTA -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_pota_description_ln1'] = "POTA";
+$lang['awards_pota_description_ln1'] = "POTA Awards";
 $lang['awards_pota_description_ln2'] = "Parks on the Air® (POTA) started in early 2017 when the ARRL's National Parks on the Air special event ended. A group of volunteers wanted to continue the fun beyond the one-year event, and thus, POTA was born.";
 $lang['awards_pota_description_ln3'] = "POTA just works like SOTA with Activators and Hunters. For the awards there are several categories based on number of parks, geographic area, and so on.";
 $lang['awards_pota_description_ln4'] = "For more Information about the available awards and categories visit the <a href='https://parksontheair.com/pota-awards/' target='_blank'>Website of Parks on the Air®</a>";
@@ -81,7 +81,7 @@ SIG -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_sig_description_ln1'] = "SIG";
+$lang['awards_sig_description_ln1'] = "SIG Information";
 $lang['awards_sig_description_ln2'] = "The SIG or Signature Category is the possibility to use any kind of 'Award Signature' for awards which are not implemented in Cloudlog.";
 $lang['awards_sig_description_ln3'] = "The reason for this is that in the common ADIF format provides only a few dedicated fields for certain awards. SIG still makes it possible to use and evaluate all other types of brands.";
 $lang['awards_sig_description_ln4'] = "In the QSO processing you will find two fields. 'SIG' contains the actual marker, which is also visible in the award evaluation, and 'SIG INFO' which contains a description of the signature. Both fields are freely choosable.";
@@ -93,7 +93,7 @@ SOTA -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_sota_description_ln1'] = "SOTA";
+$lang['awards_sota_description_ln1'] = "SOTA Awards";
 $lang['awards_sota_description_ln2'] = "SOTA (Summits On The Air) is an award scheme for radio amateurs that encourages portable operation in mountainous areas.";
 $lang['awards_sota_description_ln3'] = "It's is fully operational in nearly a hundred countries across the world. Each country has its own Association which defines the recognised SOTA summits within that Association. Each summit earns the activators and chasers a score which is related to the height of the summit. Certificates are available for various scores, leading to the prestigious 'Mountain Goat' and 'Shack Sloth' trophies. An Honour Roll for Activators and Chasers is maintained at the SOTA online database.";
 $lang['awards_sota_description_ln4'] = "More Information you can find here: <a href='https://www.sota.org.uk/' target='_blank'>https://www.sota.org.uk/</a>.";
@@ -140,7 +140,7 @@ WAS -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_was_description_ln1'] = "WAS - Worked All States";
+$lang['awards_was_description_ln1'] = "WAS Award";
 $lang['awards_was_description_ln2'] = "ARRL's most popular award is the Worked All States Award.  Thousands upon thousands of awards have been issued to hams around the world.  In ARRL's 101st year, we have redesigned the certificates and the program in hopes of streamlining and improving the award program.  ";
 $lang['awards_was_description_ln3'] = "The WAS (Worked All States) Award is available to all amateurs worldwide who submit proof with written confirmation of contacts with each of the 50 states of the United States of America. Amateurs in the U.S. and possessions must be members of ARRL to apply for a WAS.  Applicants from outside the U.S. are exempt from this requirement.";
 $lang['awards_was_description_ln4'] = "All Information and Rules for the ARRL WAS Award you can find <a href='https://www.arrl.org/was' target='_blank'>here</a>.";
@@ -152,7 +152,7 @@ WWFF -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_wwff_description_ln1'] = "WWFF";
+$lang['awards_wwff_description_ln1'] = "WWFF Award";
 $lang['awards_wwff_description_ln2'] = "WWFF, World Wide Flora and Fauna in Amateur Radio, is encouraging licensed ham radio operators to leave their shacks and go outside operating portable in Protected Flora@Fauna areas (PFF) all over the world.";
 $lang['awards_wwff_description_ln3'] = "More than 26.000 Protected Flora@Fauna (PFF) areas, world wide are already registered in our WWFF Directory. Hunters and Activators can apply for colorful awards, globally and national.";
 $lang['awards_wwff_description_ln4'] = "More Information you can find here: <a href='https://wwff.co/awards/' target='_blank'>https://wwff.co/awards/</a>.";
