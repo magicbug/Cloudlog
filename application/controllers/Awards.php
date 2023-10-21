@@ -90,7 +90,7 @@ class Awards extends CI_Controller {
 		}
 
 		// Render Page
-		$data['page_title'] = "DOK Award";
+		$data['page_title'] = "DOK Awards";
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/dok/index');
 		$this->load->view('interface_assets/footer');
