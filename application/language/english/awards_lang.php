@@ -24,9 +24,9 @@ ________________________________________________________________________________
 */
 
 $lang['awards_dok_description_ln1'] = "DOK Award";
-$lang['awards_dok_description_ln2'] = "DOK is a German system for providing individual local associations with an identifier and means 'Deutscher Ortsverband Kenner' which means 'German Local-Association Identifier'.";
-$lang['awards_dok_description_ln3'] = "...";
-$lang['awards_dok_description_ln4'] = "more is pending";   // PENDING
+$lang['awards_dok_description_ln2'] = "Germany extends over 630 km from East to West and over nearly 900 km from North to South. It is quite common that the more southern parts experience at least slightly better condx on Hf. Around 70 000 of Germany's 82 million inhabitants are licenced hams. More than 40 000 of them are members of DARC. It has 24 districts with more than 1000 local chapters ('Ortsverbände'). DOK is a system for providing individual local chapters with an identifier and means 'Deutscher Ortsverband Kenner' (engl. 'German Local-Association Identifier').";
+$lang['awards_dok_description_ln3'] = "Their abbreviation (DOK) consists of a letter for the district and a two digit number for the local chapter, like P03 Friedrichshafen (city of the 'Hamradio exhibition') or F41 Baunatal (location of the DARC-headquarter). Note: A zero in a DOK is a common trap often being logged as the letter O.";
+$lang['awards_dok_description_ln4'] = "This Information was provided by the <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/districtsdoks/' target='_blank'>Website of the DARC</a>. Information about the DOK Awards and it's rules you can find <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/award-check/' target='_blank'>here</a>.";
 
 
 /*
