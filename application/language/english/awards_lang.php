@@ -83,9 +83,9 @@ ________________________________________________________________________________
 */
 
 $lang['awards_sig_description_ln1'] = "SIG";
-$lang['awards_sig_description_ln2'] = "xxx";
-$lang['awards_sig_description_ln3'] = "xxx";
-$lang['awards_sig_description_ln4'] = "xxx";
+$lang['awards_sig_description_ln2'] = "The SIG or Signature Category is the possibility to use any kind of 'Award Signature' for awards which are not implemented in Cloudlog.";
+$lang['awards_sig_description_ln3'] = "The reason for this is that in the common ADIF format provides only a few dedicated fields for certain awards. SIG still makes it possible to use and evaluate all other types of brands.";
+$lang['awards_sig_description_ln4'] = "In the QSO processing you will find two fields. 'SIG' contains the actual marker, which is also visible in the award evaluation, and 'SIG INFO' which contains a description of the signature. Both fields are freely choosable.";
 
 
 /*
