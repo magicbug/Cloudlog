@@ -71,9 +71,9 @@ ________________________________________________________________________________
 */
 
 $lang['awards_pota_description_ln1'] = "POTA";
-$lang['awards_pota_description_ln2'] = "xxx";
-$lang['awards_pota_description_ln3'] = "xxx";
-$lang['awards_pota_description_ln4'] = "xxx";
+$lang['awards_pota_description_ln2'] = "Parks on the Air® (POTA) started in early 2017 when the ARRL's National Parks on the Air special event ended. A group of volunteers wanted to continue the fun beyond the one-year event, and thus, POTA was born.";
+$lang['awards_pota_description_ln3'] = "POTA just works like SOTA with Activators and Hunters. For the awards there are several categories based on number of parks, geographic area, and so on.";
+$lang['awards_pota_description_ln4'] = "For more Information about the available awards and categories visit the <a href='https://parksontheair.com/pota-awards/' target='_blank'>Website of Parks on the Air®</a>";
 
 
 /*
