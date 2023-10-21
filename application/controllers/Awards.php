@@ -90,7 +90,7 @@ class Awards extends CI_Controller {
 		}
 
 		// Render Page
-		$data['page_title'] = "DOK Awards";
+		$data['page_title'] = "Awards - DOK";
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/dok/index');
 		$this->load->view('interface_assets/footer');
@@ -161,7 +161,7 @@ class Awards extends CI_Controller {
         $data['dxcc_summary'] = $this->dxcc->get_dxcc_summary($bands, $postdata);
 
 		// Render Page
-		$data['page_title'] = "DXCC Award";
+		$data['page_title'] = "Awards - DXCC";
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/dxcc/index');
 		$this->load->view('interface_assets/footer');
@@ -361,7 +361,7 @@ class Awards extends CI_Controller {
         }
 
         // Render page
-        $data['page_title'] = "CQ Magazine WAZ Award";
+        $data['page_title'] = "Awards - CQ Magazine WAZ";
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/cq/index');
 		$this->load->view('interface_assets/footer');
@@ -524,7 +524,7 @@ class Awards extends CI_Controller {
     }
 
     public function gridmaster() {
-      $data['page_title']= lang('menu_us_gridmaster');
+      $data['page_title'] = "Awards - US Gridmaster";
 
       $this->load->model('bands');
       $this->load->model('gridmap_model');
@@ -558,7 +558,7 @@ class Awards extends CI_Controller {
     }
 
 	public function ffma() {
-		$data['page_title']= lang('menu_ffma');
+		$data['page_title'] = "Awards - Fred Fish Memorial Award (FFMA)";
 
 		$this->load->model('bands');
 		$this->load->model('ffma_model');
