@@ -131,7 +131,7 @@ ________________________________________________________________________________
 
 $lang['awards_vucc_description_ln1'] = "VHF/UHF Century Club Award";
 $lang['awards_vucc_description_ln2'] = "The VHF/UHF Century Club Award will be given for a minimum number of worked and confirmed gridsquares on a desired band.";
-$lang['awards_vucc_description_ln3'] = "Offical Information and the Rules you can find in this document: <a href='https://www.amsat.org/gridmaster/' target='_blank'>Click me!</a>";
+$lang['awards_vucc_description_ln3'] = "Offical Information and the Rules you can find in this document: <a href='https://www.amsat.org/gridmaster/' target='_blank'>Click me!</a>.";
 $lang['awards_vucc_description_ln4'] = "Only VHF/UHF Bands are relevant.";
 
 
@@ -141,10 +141,10 @@ WAS -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_was_description_ln1'] = "WAS";
-$lang['awards_was_description_ln2'] = "xxx";
-$lang['awards_was_description_ln3'] = "xxx";
-$lang['awards_was_description_ln4'] = "xxx";
+$lang['awards_was_description_ln1'] = "WAS - Worked All States";
+$lang['awards_was_description_ln2'] = "ARRL's most popular award is the Worked All States Award.  Thousands upon thousands of awards have been issued to hams around the world.  In ARRL's 101st year, we have redesigned the certificates and the program in hopes of streamlining and improving the award program.  ";
+$lang['awards_was_description_ln3'] = "The WAS (Worked All States) Award is available to all amateurs worldwide who submit proof with written confirmation of contacts with each of the 50 states of the United States of America. Amateurs in the U.S. and possessions must be members of ARRL to apply for a WAS.  Applicants from outside the U.S. are exempt from this requirement.";
+$lang['awards_was_description_ln4'] = "All Information and Rules for the ARRL WAS Award you can find <a href='https://www.arrl.org/was' target='_blank'>here</a>.";
 
 
 /*
