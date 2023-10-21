@@ -106,10 +106,10 @@ US Counties -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_counties_description_ln1'] = "US Counties";
-$lang['awards_counties_description_ln2'] = "xxx";
-$lang['awards_counties_description_ln3'] = "xxx";
-$lang['awards_counties_description_ln4'] = "xxx";
+$lang['awards_counties_description_ln1'] = "US County Award";
+$lang['awards_counties_description_ln2'] = "The United States of America Counties Award (USA-CA), sponsored by CQ magazine, is issued for confirmed two-way radio contacts with specified numbers of U.S. counties under rules and conditions you can find <a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>here</a>..";
+$lang['awards_counties_description_ln3'] = "USA-CA is available to all licensed amateurs everywhere in the world and is issued to them as individuals for all county contacts made, regardless of calls held, operating QTHs, or dates.";
+$lang['awards_counties_description_ln4'] = "Special USA-CA awards are also available to SWLs on a heard basis.";
 
 
 /*
