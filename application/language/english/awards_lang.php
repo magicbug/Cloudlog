@@ -7,8 +7,115 @@ $lang['awards_info_title'] = "Informationen about this award";
 
 /*
 ___________________________________________________________________________________________
-US Gridmaster -- Use all 4 Lines of Text
+CQ -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
+*/
+
+$lang['awards_cq_description_ln1'] = "CQ Magazine WAZ Award";
+$lang['awards_cq_description_ln2'] = "The CQ Magazine is one of the most popular amateur radio magazines in the world and located in the US. The magazine first appeared in January 1945 and focuses on diplomas and the practical aspects of amateur radio.";
+$lang['awards_cq_description_ln3'] = "The WAZ Award stands for 'Worked All Zones' and requires to had radio contacts to all 40 CQ Zones with the with the corresponding confirmation";
+$lang['awards_cq_description_ln4'] = "All Information and Rules you can find on <a href='https://cq-amateur-radio.com/cq_awards/cq_waz_awards/index_cq_waz_award.html' target='_blank'>https://cq-amateur-radio.com/cq_awards/cq_waz_awards/index_cq_waz_award.html</a>";
+
+
+/*
+___________________________________________________________________________________________
+DOK -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_dok_description_ln1'] = "DOK Award";
+$lang['awards_dok_description_ln2'] = "DOK is a German system for providing individual local associations with an identifier and means 'Deutscher Ortsverband Kenner' which means 'German Local-Association Identifier'.";
+$lang['awards_dok_description_ln3'] = "...";
+$lang['awards_dok_description_ln4'] = "more is pending";   // PENDING
+
+
+/*
+___________________________________________________________________________________________
+DXCC -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_dxcc_description_ln1'] = "DXCC Award";
+$lang['awards_dxcc_description_ln2'] = "DXCC stands for 'DX Century Club' which is an award based on worked countries. The List of DXCC is based on an article created 1935 by Clinton B. DeSoto, W1CBD, landmark 1935 QST article, <a href='http://www.arrl.org/desoto' target='_blank'>'How to Count Countries Worked, A New DX Scoring System'</a>.";
+$lang['awards_dxcc_description_ln3'] = "All Information about the DXCC Award you can find on the <a href='https://www.arrl.org/dxcc-rules' target='_blank'>Website of the ARRL</a>";
+$lang['awards_dxcc_description_ln4'] = "Important Note: Over time, criteria for the DXCC List has changed. The List remains unchanged until an entity no longer satisfies the criteria under which it was added, at which time it is moved to the Deleted List. You will find the Deleted DXCC also in the lists of Cloudlog. Be aware that this DXCC are outdated not longer valid.";
+
+
+/*
+___________________________________________________________________________________________
+FFMA -- Use all 4 Lines of Text
+___________________________________________________________________________________________ DONE
+*/
+
+$lang['awards_ffma_description_ln1'] = "Fred Fish Memorial Award";
+$lang['awards_ffma_description_ln2'] = "The Fred Fish Memorial Award was created in honor of Fred Fish, W5FF (SK), who is the first amateur to have worked and confirmed all 488 Maidenhead grid squares in the 48 contiguous United States on 6 Meters. ";
+$lang['awards_ffma_description_ln3'] = "The award will be given to any amateur who can duplicate W5FF's accomplishment.";
+$lang['awards_ffma_description_ln4'] = "More Information you can find here: <a href='https://www.arrl.org/ffma' target='_blank'>https://www.arrl.org/ffma</a>";
+
+/*
+___________________________________________________________________________________________
+IOTA -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_iota_description_ln1'] = "IOTA - Islands On The Air";
+$lang['awards_iota_description_ln2'] = "IOTA is an exciting and innovative activity programme that has caught the interest of thousands of radio amateurs worldwide. Established in 1964, it promotes radio contacts with stations located on islands around the world to enrich the experience of all active on the amateur bands and, to do this, it draws on the widespread mystique surrounding islands.";
+$lang['awards_iota_description_ln3'] = "It is administered by Islands On The Air (IOTA) Ltd (called here IOTA Management) in partnership with the Radio Society of Great Britain (RSGB). IOTA Management has grouped the oceans' islands into some 1200 'IOTA groups' with, for reasons of geography, varying numbers of 'counters', i.e. qualifying islands, in each group and has published the listings in the IOTA Directory and on the IOTA website. The objective, for the IOTA Island Chaser, is to make radio contact with at least one counter in as many of these groups as possible and, for the IOTA Island Activator, to provide such island contacts. The programme has a strong rule structure. IOTA Management encourages friendly competition among chasers by publishing details of participants' performance in an Honour Roll and annual listings, as well as by recognising it with certificates and prestige awards.";
+$lang['awards_iota_description_ln4'] = "This Information you can also find on the Website of <a href='https://www.iota-world.org/' target='_blank'>IOTA WORLD</a>";
+
+
+/*
+___________________________________________________________________________________________
+POTA -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_pota_description_ln1'] = "POTA";
+$lang['awards_pota_description_ln2'] = "xxx";
+$lang['awards_pota_description_ln3'] = "xxx";
+$lang['awards_pota_description_ln4'] = "xxx";
+
+
+/*
+___________________________________________________________________________________________
+SIG -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_sig_description_ln1'] = "SIG";
+$lang['awards_sig_description_ln2'] = "xxx";
+$lang['awards_sig_description_ln3'] = "xxx";
+$lang['awards_sig_description_ln4'] = "xxx";
+
+
+/*
+___________________________________________________________________________________________
+SOTA -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_sota_description_ln1'] = "SOTA";
+$lang['awards_sota_description_ln2'] = "xxx";
+$lang['awards_sota_description_ln3'] = "xxx";
+$lang['awards_sota_description_ln4'] = "xxx";
+
+
+/*
+___________________________________________________________________________________________
+US Counties -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_counties_description_ln1'] = "US Counties";
+$lang['awards_counties_description_ln2'] = "xxx";
+$lang['awards_counties_description_ln3'] = "xxx";
+$lang['awards_counties_description_ln4'] = "xxx";
+
+
+/*
+___________________________________________________________________________________________
+US Gridmaster -- Use all 4 Lines of Text
+___________________________________________________________________________________________ DONE
 */
 
 $lang['awards_gridmaster_description_ln1'] = "US Gridmaster Award";
@@ -19,7 +126,7 @@ $lang['awards_gridmaster_description_ln4'] = "This map shows only QSO worked on 
 /*
 ___________________________________________________________________________________________
 VUCC -- Use all 4 Lines of Text
-___________________________________________________________________________________________
+___________________________________________________________________________________________ DONE
 */
 
 $lang['awards_vucc_description_ln1'] = "VHF/UHF Century Club Award";
@@ -27,13 +134,28 @@ $lang['awards_vucc_description_ln2'] = "The VHF/UHF Century Club Award will be g
 $lang['awards_vucc_description_ln3'] = "Offical Information and the Rules you can find in this document: <a href='https://www.amsat.org/gridmaster/' target='_blank'>Click me!</a>";
 $lang['awards_vucc_description_ln4'] = "Only VHF/UHF Bands are relevant.";
 
+
 /*
 ___________________________________________________________________________________________
-FFMA -- Use all 4 Lines of Text
+WAS -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_ffma_description_ln1'] = "Fred Fish Memorial Award";
-$lang['awards_ffma_description_ln2'] = "The Fred Fish Memorial Award was created in honor of Fred Fish, W5FF (SK), who is the first amateur to have worked and confirmed all 488 Maidenhead grid squares in the 48 contiguous United States on 6 Meters. ";
-$lang['awards_ffma_description_ln3'] = "The award will be given to any amateur who can duplicate W5FF's accomplishment.";
-$lang['awards_ffma_description_ln4'] = "More Information you can find here: <a href='https://www.arrl.org/ffma' target='_blank'>https://www.arrl.org/ffma</a>";
+$lang['awards_was_description_ln1'] = "WAS";
+$lang['awards_was_description_ln2'] = "xxx";
+$lang['awards_was_description_ln3'] = "xxx";
+$lang['awards_was_description_ln4'] = "xxx";
+
+
+/*
+___________________________________________________________________________________________
+WWFF -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_wwff_description_ln1'] = "WWFF";
+$lang['awards_wwff_description_ln2'] = "xxx";
+$lang['awards_wwff_description_ln3'] = "xxx";
+$lang['awards_wwff_description_ln4'] = "xxx";
+
+
