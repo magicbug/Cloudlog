@@ -3,7 +3,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['awards_info_button'] = "Award Info";
-$lang['awards_info_title'] = "Informationen about this award";
 
 /*
 ___________________________________________________________________________________________
