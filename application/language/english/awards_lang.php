@@ -50,7 +50,7 @@ ________________________________________________________________________________
 $lang['awards_ffma_description_ln1'] = "Fred Fish Memorial Award";
 $lang['awards_ffma_description_ln2'] = "The Fred Fish Memorial Award was created in honor of Fred Fish, W5FF (SK), who is the first amateur to have worked and confirmed all 488 Maidenhead grid squares in the 48 contiguous United States on 6 Meters. ";
 $lang['awards_ffma_description_ln3'] = "The award will be given to any amateur who can duplicate W5FF's accomplishment.";
-$lang['awards_ffma_description_ln4'] = "More Information you can find here: <a href='https://www.arrl.org/ffma' target='_blank'>https://www.arrl.org/ffma</a>";
+$lang['awards_ffma_description_ln4'] = "More Information you can find here: <a href='https://www.arrl.org/ffma' target='_blank'>https://www.arrl.org/ffma</a>.";
 
 /*
 ___________________________________________________________________________________________
@@ -95,9 +95,9 @@ ________________________________________________________________________________
 */
 
 $lang['awards_sota_description_ln1'] = "SOTA";
-$lang['awards_sota_description_ln2'] = "xxx";
-$lang['awards_sota_description_ln3'] = "xxx";
-$lang['awards_sota_description_ln4'] = "xxx";
+$lang['awards_sota_description_ln2'] = "SOTA (Summits On The Air) is an award scheme for radio amateurs that encourages portable operation in mountainous areas.";
+$lang['awards_sota_description_ln3'] = "It's is fully operational in nearly a hundred countries across the world. Each country has its own Association which defines the recognised SOTA summits within that Association. Each summit earns the activators and chasers a score which is related to the height of the summit. Certificates are available for various scores, leading to the prestigious 'Mountain Goat' and 'Shack Sloth' trophies. An Honour Roll for Activators and Chasers is maintained at the SOTA online database.";
+$lang['awards_sota_description_ln4'] = "More Information you can find here: <a href='https://www.sota.org.uk/' target='_blank'>https://www.sota.org.uk/</a>.";
 
 
 /*
