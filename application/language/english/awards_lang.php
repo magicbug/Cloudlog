@@ -44,7 +44,7 @@ $lang['awards_dxcc_description_ln4'] = "Important Note: Over time, criteria for 
 /*
 ___________________________________________________________________________________________
 FFMA -- Use all 4 Lines of Text
-___________________________________________________________________________________________ DONE
+___________________________________________________________________________________________
 */
 
 $lang['awards_ffma_description_ln1'] = "Fred Fish Memorial Award";
@@ -115,7 +115,7 @@ $lang['awards_counties_description_ln4'] = "xxx";
 /*
 ___________________________________________________________________________________________
 US Gridmaster -- Use all 4 Lines of Text
-___________________________________________________________________________________________ DONE
+___________________________________________________________________________________________
 */
 
 $lang['awards_gridmaster_description_ln1'] = "US Gridmaster Award";
@@ -126,7 +126,7 @@ $lang['awards_gridmaster_description_ln4'] = "This map shows only QSO worked on 
 /*
 ___________________________________________________________________________________________
 VUCC -- Use all 4 Lines of Text
-___________________________________________________________________________________________ DONE
+___________________________________________________________________________________________
 */
 
 $lang['awards_vucc_description_ln1'] = "VHF/UHF Century Club Award";
@@ -154,8 +154,8 @@ ________________________________________________________________________________
 */
 
 $lang['awards_wwff_description_ln1'] = "WWFF";
-$lang['awards_wwff_description_ln2'] = "xxx";
-$lang['awards_wwff_description_ln3'] = "xxx";
-$lang['awards_wwff_description_ln4'] = "xxx";
+$lang['awards_wwff_description_ln2'] = "WWFF, World Wide Flora and Fauna in Amateur Radio, is encouraging licensed ham radio operators to leave their shacks and go outside operating portable in Protected Flora@Fauna areas (PFF) all over the world.";
+$lang['awards_wwff_description_ln3'] = "More than 26.000 Protected Flora@Fauna (PFF) areas, world wide are already registered in our WWFF Directory. Hunters and Activators can apply for colorful awards, globally and national.";
+$lang['awards_wwff_description_ln4'] = "More Information you can find here: <a href='https://wwff.co/awards/' target='_blank'>https://wwff.co/awards/</a>.";
 
 
