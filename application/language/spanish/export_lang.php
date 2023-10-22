@@ -8,9 +8,9 @@ KML Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_kml_header'] = "KML Export";
-$lang['export_kml_description'] = "Export your logbook to a KML file for use in Google Earth.";
-$lang['export_kml_grisquare_warning'] = "Only QSOs with a gridsquare defined will be exported!";
+$lang['export_kml_header'] = "Exportación KML";
+$lang['export_kml_description'] = "Exporte su libro de guardias a un archivo KML para su uso en Google Earth.";
+$lang['export_kml_grisquare_warning'] = "¡Solo se exportarán QSOs con un gridsquare definido!";
 
 
 

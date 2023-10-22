@@ -6,7 +6,7 @@ $lang['notes_menu_notes'] = 'Notas';
 $lang['notes_edit_note'] = 'Editar nota';
 $lang['notes_your_notes'] = 'Sus notas';
 
-$lang['notes_welcome'] = 'Actualmente no tiene notas, las cuales son un buen recurso para guardar datos e información general. Además, son mejores que el papel ya no las perderá con facilidad :)';
+$lang['notes_welcome'] = 'Actualmente no tiene notas, las cuales son un buen recurso para guardar datos e información general. Además, son mejores que el papel pues ya no las perderá con facilidad :)';
 
 $lang['notes_create_note'] = 'Crear nota';
 
