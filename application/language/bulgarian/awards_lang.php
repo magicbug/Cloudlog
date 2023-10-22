@@ -156,5 +156,5 @@ ________________________________________________________________________________
 
 $lang['awards_wwff_description_ln1'] = "WWFF - World Wide Flora and Fauna Award";
 $lang['awards_wwff_description_ln2'] = "WWFF, World Wide Flora and Fauna in Amateur Radio, encourages licensed ham radio operators to leave their shacks and operate portable in Protected Flora & Fauna areas (PFF) worldwide.";
-$lang['awards_wwff_description_ln3'] = "More than 26,000 Protected Flora & Fauna (PFF) areas worldwide are already registered in our WWFF Directory. Hunters and Activators can apply for colorful awards, both globally and nationally.";
+$lang['awards_wwff_description_ln3'] = "More than 26,000 Protected Flora & Fauna (PFF) areas worldwide are already registered in the WWFF Directory. Hunters and Activators can apply for colorful awards, both globally and nationally.";
 $lang['awards_wwff_description_ln4'] = "For more information, please visit: <a href='https://wwff.co/awards/' target='_blank'>https://wwff.co/awards/</a>.";
