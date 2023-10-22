@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('Direkter Skriptzugriff nicht erlaubt');
 
-$lang['awards_info_button'] = "Diplom-Informationen";
+$lang['awards_info_button'] = "Diplom Info";
 
 /*
 ___________________________________________________________________________________________
