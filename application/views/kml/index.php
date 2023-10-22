@@ -97,8 +97,8 @@
                     </select>
                 </div>
 
-                <p class="card-text"><?php echo lang('gen_from_date') . ':'; ?></p>
-                <div class="row">
+                <div class="form-group">
+                    <label for="datetimepicker1"><?php echo lang('gen_from_date') . ':'; ?></label>
                     <div class="input-group date col-md-3" id="datetimepicker1" data-target-input="nearest">
                         <input name="fromdate" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
                         <div class="input-group-append"  data-target="#datetimepicker1" data-toggle="datetimepicker">
@@ -107,8 +107,8 @@
                     </div>
                 </div>
 
-                <p class="card-text"><?php echo lang('gen_to_date') . ':'; ?></p>
-                <div class="row">
+                <div class="form-group">
+                    <label for="datetimepicker2"><?php echo lang('gen_to_date') . ':'; ?></label>
                     <div class="input-group date col-md-3" id="datetimepicker2" data-target-input="nearest">
                         <input name="todate" "totype="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
                         <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
