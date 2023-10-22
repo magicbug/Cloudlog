@@ -165,6 +165,7 @@ class adif extends CI_Controller {
 		$data['active_station_info'] = $station_profile->row();
 
 		$data['page_title'] = "ADIF Import";
+		$data['tab'] = "adif";
 
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'adi|ADI|adif|ADIF';
@@ -177,7 +178,7 @@ class adif extends CI_Controller {
 			$data['max_upload'] = ini_get('upload_max_filesize');
 
 			$this->load->view('interface_assets/header', $data);
-			$this->load->view('adif/import');
+			$this->load->view('adif/import', $data);
 			$this->load->view('interface_assets/footer');
 		} else {
 			if ($this->stations->check_station_is_accessible($this->input->post('station_profile'))) {
@@ -211,6 +212,7 @@ class adif extends CI_Controller {
 			}
 
 			$data['adif_errors'] = $custom_errors;
+			$data['skip_dupes'] = $this->input->post('skipDuplicate');
 
 
 			$data['page_title'] = "ADIF Imported";
@@ -220,6 +222,73 @@ class adif extends CI_Controller {
 
 		}
 	}
+
+	public function dcl() {
+		$this->load->model('stations');
+		$data['station_profile'] = $this->stations->all_of_user();
+
+		$data['page_title'] = "DCL Import";
+		$data['tab'] = "dcl";
+
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'adi|ADI|adif|ADIF';
+
+		$this->load->library('upload', $config);
+
+		if ( ! $this->upload->do_upload()) {
+			$data['error'] = $this->upload->display_errors();
+
+			$data['max_upload'] = ini_get('upload_max_filesize');
+
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('adif/import', $data);
+			$this->load->view('interface_assets/footer');
+		} else {
+			$data = array('upload_data' => $this->upload->data());
+
+			ini_set('memory_limit', '-1');
+			set_time_limit(0);
+
+			$this->load->model('logbook_model');
+
+			$this->load->library('adif_parser');
+
+			$this->adif_parser->load_from_file('./uploads/'.$data['upload_data']['file_name']);
+
+			$this->adif_parser->initialize();
+			$error_count = array(0, 0, 0);
+			$custom_errors = "";
+			while($record = $this->adif_parser->get_record())
+			{
+				if(count($record) == 0) {
+					break;
+				};
+
+				$dok_result = $this->logbook_model->update_dok($record, $this->input->post('ignoreAmbiguous'), $this->input->post('onlyConfirmed'), $this->input->post('overwriteDok'));
+				if (!empty($dok_result)) {
+					switch ($dok_result[0]) {
+					case 0:
+						$error_count[0]++;
+						break;
+					case 1:
+						$custom_errors .= $dok_result[1];
+						$error_count[1]++;
+						break;
+					case 2:
+						$custom_errors .= $dok_result[1];
+						$error_count[2]++;
+					}
+				}
+			};
+			unlink('./uploads/'.$data['upload_data']['file_name']);
+			$data['dcl_error_count'] = $error_count;
+			$data['dcl_errors'] = $custom_errors;
+			$data['page_title'] = "DCL Data Imported";
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('adif/dcl_success');
+			$this->load->view('interface_assets/footer');
+		}
+   }
 }
 
 /* End of file adif.php */

@@ -51,7 +51,7 @@
 						<label><?php echo lang('account_password'); ?></label>
 						<input class="form-control" type="password" name="user_password" />
 						<?php if(isset($password_error)) { echo "<div class=\"small error\">".$password_error."</div>"; } else { ?>
-						<div class="small form-text text-muted">Leave blank to keep existing password</div></td>
+						<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div></td>
 						<?php } ?>
 					</div>
 				</div>
@@ -194,14 +194,14 @@
 
 				<?php if ($this->config->item('cl_multilanguage')) { ?>
 		 	    <div class="form-group">
-		                <label for="language">Cloudlog Language</label>
+		                <label for="language"><?php echo lang('account_cloudlog_language'); ?></label>
 						<?php
 						foreach($existing_languages as $lang){
 							$options[$lang] = ucfirst($lang);
 						}
 						echo form_dropdown('language', $options, $language);
 						?>
-		                <small id="language_Help" class="form-text text-muted">Choose Cloudlog language.</small>
+		                <small id="language_Help" class="form-text text-muted"><?php echo lang('account_choose_cloudlog_language'); ?></small>
 		            </div>
 				<?php } ?>
 				</div>
@@ -534,7 +534,7 @@
 						<div class="form-group">
 						<label><?php echo lang('account_user_mastodon'); ?></label>
 							<input class="form-control" type="text" name="user_mastodon_url" value="<?php if(isset($user_mastodon_url)) { echo $user_mastodon_url; } ?>" />
-							<div class="small form-text text-muted">Main URL of your Mastodon server, e.g. <a href="https://radiosocial.de/" target="_blank">https://radiosocial.de</a></div></td>
+							<div class="small form-text text-muted"><?php echo lang('account_user_mastodon_hint'); ?></a></div></td>
 						</div>
 					</div>
 				</div>
@@ -545,53 +545,48 @@
 			<div class="col-md">
 				<div class="card">
 					<div class="card-header">
-						<?php echo lang('account_gridmap_settings'); ?>
+						<?php echo lang('account_default_band_settings'); ?>
 					</div>
 					<div class="card-body">
 						<div class="form-group">
-							<label for="user_gridmap_default_band"><?php echo lang('account_gridmap_default_band'); ?></label>
+							<label for="user_default_band"><?php echo lang('account_gridmap_default_band'); ?></label>
 
-							<select id="user_gridmap_default_band" class="form-control form-control-sm" name="user_gridmap_default_band">
+							<select id="user_default_band" class="form-control form-control-sm" name="user_default_band">
 								<option value="All">All</option>;
 							<?php foreach($bands as $band) {
 								echo '<option value="'.$band.'"';
-								if ($user_gridmap_default_band == $band) {
+								if ($user_default_band == $band) {
 									echo ' selected="selected"';
 								}
 								echo '>'.$band.'</option>'."\n";
 							} ?>
 							</select>
 						</div>
-					</div>
-					<div class="card-header">
-						<?php echo lang('account_qsl_settings'); ?>
-					</div>
-					<div class="card-body">
 						<div class="form-group">
-							<label class="my-1 mr-2"><?php echo lang('gridsquares_confirmation'); ?></label>
+							<label class="my-1 mr-2"><?php echo lang('account_qsl_settings'); ?></label>
 							<div class="form-check-inline">
-								<?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_qsl" id="user_gridmap_confirmation_qsl"';
-								if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) {
+								<?php echo '<input class="form-check-input" type="checkbox" name="user_default_confirmation_qsl" id="user_default_confirmation_qsl"';
+								if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
 									echo ' checked';
 								}
 								echo '>'; ?>
-								<label class="form-check-label" for="user_gridmap_confirmation_qsl">QSL</label>
+								<label class="form-check-label" for="user_default_confirmation_qsl"><?php echo lang('gen_hamradio_qsl'); ?></label>
 							</div>
 							<div class="form-check-inline">
-								<?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_lotw" id="user_gridmap_confirmation_lotw"';
-								if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+								<?php echo '<input class="form-check-input" type="checkbox" name="user_default_confirmation_lotw" id="user_default_confirmation_lotw"';
+								if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 									echo ' checked';
 								}
 								echo '>'; ?>
-								<label class="form-check-label" for="user_gridmap_confirmation_lotw">LoTW</label>
+								<label class="form-check-label" for="user_default_confirmation_lotw"><?php echo lang('lotw_short'); ?></label>
 							</div>
 							<div class="form-check-inline">
-								<?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_eqsl" id="user_gridmap_confirmation_eqsl"';
-								if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+								<?php echo '<input class="form-check-input" type="checkbox" name="user_default_confirmation_eqsl" id="user_default_confirmation_eqsl"';
+								if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'E') !== false) {
 									echo ' checked';
 								}
 								echo '>'; ?>
-								<label class="form-check-label" for="user_gridmap_confirmation_eqsl">eQSL</label>
+								<label class="form-check-label" for="user_default_confirmation_eqsl"><?php echo lang('account_eqsl'); ?></label>
 							</div>
 						</div>
 					</div>
@@ -605,18 +600,18 @@
 				<div class="col-md">
 					<div class="card">
 						<div class="card-header">
-							Winkeyer <span class="badge badge-danger">Experimental</span>
+							<?php echo lang('account_winkeyer'); ?> <span class="badge badge-danger"><?php echo lang('admin_experimental'); ?></span>
 						</div>
 						<div class="card-body">
 							<div class="form-group">
 
-							<p>Winkeyer support in Cloudlog is very experimental read the wiki first at <a href="https://github.com/magicbug/Cloudlog/wiki/Winkey" target="_blank">https://github.com/magicbug/Cloudlog/wiki/Winkey</a> before enabling.</p>
+							<p><?php echo lang('account_winkeyer_hint'); ?></p>
 
-							<label>Enable Winkey Features</label>
+							<label><?php echo lang('account_winkeyer_enabled'); ?></label>
 							
 							<select class="custom-select" name="user_winkey" id="user_winkeyer">
-								<option value="0" <?php if ($user_winkey == 0) { echo 'selected="selected"'; } ?>>Disabled</option>
-								<option value="1" <?php if ($user_winkey == 1) { echo 'selected="selected"'; } ?>>Enabled</option>
+								<option value="0" <?php if ($user_winkey == 0) { echo 'selected="selected"'; } ?>><?php echo lang('general_word_no'); ?></option>
+								<option value="1" <?php if ($user_winkey == 1) { echo 'selected="selected"'; } ?>><?php echo lang('general_word_yes'); ?></option>
 							</select>
 							
 							<div class="small form-text text-muted"></div>

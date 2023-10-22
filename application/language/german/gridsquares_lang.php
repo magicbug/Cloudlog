@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Direkter Zugriff auf Skripte ist nicht erlaubt');
 
 $lang['gridsquares_gridsquare_map'] = 'Planquadratkarte';
 
@@ -21,7 +21,10 @@ $lang['gridsquares_confirmation'] = 'Bestätigung';
 $lang['gridsquares_button_plot'] = 'Kartieren';
 
 $lang['gridsquares_gridsquares'] = 'Planquadrate';
+$lang['gridsquares_gridsquares_worked'] = 'Gearbeitete Planquadrate';
 $lang['gridsquares_gridsquares_confirmed'] = 'Planquadrate bestätigt';
-$lang['gridsquares_gridsquares_not_confirmed'] = 'Planquadrate nicht bestätigt';
+$lang['gridsquares_gridsquares_lotw'] = 'Auf LoTW bestätigte Planquadrate';
+$lang['gridsquares_gridsquares_paper'] = 'Per Papier QSL bestätigte Planquadrate';
+$lang['gridsquares_gridsquares_not_confirmed'] = 'Unbestätigte Planquadrate';
 $lang['gridsquares_gridsquares_total_worked'] = 'Summe gearbeiteter Planquadrate';
 $lang['gridsquares_gridsquares_total_activated'] = 'Summe aktivierter Planquadrate';

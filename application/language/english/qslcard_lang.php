@@ -15,6 +15,7 @@ $lang['qslcard_sent_manager'] = 'QSL Card has been sent via manager';
 $lang['qslcard_rcvd'] = 'QSL Card has been received';
 $lang['qslcard_rcvd_bureau'] = 'QSL Card has been received via the bureau';
 $lang['qslcard_rcvd_direct'] = 'QSL Card has been received via direct';
+
 $lang['qslcard_rcvd_electronic'] = 'QSL Card has been received electronically';
 $lang['qslcard_rcvd_manager'] = 'QSL Card has been received via manager';
 

@@ -97,21 +97,6 @@
 							</div>
 						</li>
 
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">QRV</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="<?php echo site_url('hamsat'); ?>" title="Hams.at"><i class="fas fa-list"></i> Hams.at</a>
-								<?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="<?php echo site_url('bandmap/list'); ?>" title="Bandmap"><i class="fa fa-id-card"></i> <?php echo lang('menu_bandmap'); ?></a>
-								<?php } ?>
-									<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('sattimers'); ?>" title="SAT Timers"><i class="fas fa-satellite"></i> SAT Timers</a>
-							</div>
-						</li>
-
-
-
 						<!-- Notes -->
 						<?php if ($this->session->userdata('user_show_notes') == 1) { ?>
 							<a class="nav-link" href="<?php echo site_url('notes'); ?>"><?php echo lang('menu_notes'); ?></a>
@@ -152,6 +137,8 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('awards/dxcc'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_dxcc'); ?></a>
 								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="<?php echo site_url('awards/ffma'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_ffma'); ?></a>
+								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('awards/iota'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_iota'); ?></a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('awards/pota'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_pota'); ?></a>
@@ -162,6 +149,8 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('awards/counties'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_us_counties'); ?></a>
 								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="<?php echo site_url('awards/gridmaster'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_us_gridmaster'); ?></a>
+								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('awards/vucc'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_vucc'); ?></a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('awards/was'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_was'); ?></a>
@@ -170,9 +159,22 @@
 							</div>
 						</li>
 
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Tools"><i class="fas fa-tools"></i><div class="d-inline d-lg-none" style="padding-left: 10px">Tools</div></a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="<?php echo site_url('hamsat'); ?>" title="Hams.at"><i class="fas fa-list"></i> Hams.at</a>
+								<?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item" href="<?php echo site_url('bandmap/list'); ?>" title="Bandmap"><i class="fa fa-id-card"></i> <?php echo lang('menu_bandmap'); ?></a>
+								<?php } ?>
+									<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="<?php echo site_url('sattimers'); ?>" title="SAT Timers"><i class="fas fa-satellite"></i> SAT Timers</a>
+							</div>
+						</li>
+
 						<?php if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') == 99)) { ?>
 							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_admin'); ?></a>
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="<?php echo lang('menu_admin'); ?>"><i class="fas fa-users-cog"></i><div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_admin'); ?></div></a>
 
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 									<a class="dropdown-item" href="<?php echo site_url('user'); ?>" title="Manage user accounts"><i class="fas fa-user"></i> <?php echo lang('menu_user_account'); ?></a>
@@ -218,8 +220,7 @@
 				<?php if ($this->optionslib->get_option('global_search') != "false" || $this->session->userdata('user_type') >= 2) { ?>
 					<form method="post" action="<?php echo site_url('search'); ?>" class="form-inline">
 						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
-
-						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i><div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button'); ?></div></button>
 					</form>
 				<?php } ?>
 

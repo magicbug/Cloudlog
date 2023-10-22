@@ -16,10 +16,13 @@ $lang['lotw_no_certs_uploaded'] = 'Es necesario subir algunos certificatos LoTW 
 
 $lang['lotw_date_created'] = 'Fecha de creación';
 $lang['lotw_date_expires'] = 'Fecha de caducidad';
+$lang['lotw_qso_start_date'] = 'QSO Start Date';
+$lang['lotw_qso_end_date'] = 'QSO End Date';
 $lang['lotw_status'] = 'Estado';
 $lang['lotw_options'] = 'Opciones';
 $lang['lotw_valid'] = 'Válido';
 $lang['lotw_expired'] = 'Caducado';
+$lang['lotw_expiring'] = 'Expiring';
 $lang['lotw_not_synced'] = 'No sincronizado';
 
 $lang['lotw_certificate_dxcc'] = 'Certificado DXCC';
@@ -49,3 +52,11 @@ $lang['lotw_p12_export_step_three'] = 'Clic en "Save Callsign Certificate File" 
 $lang['lotw_p12_export_step_four'] = 'Subir aquí el archivo descargado.';
 
 $lang['lotw_confirmed'] = 'Este QSO está confirmado en LoTW';
+
+// LoTW Expiry
+$lang['lotw_cert_expiring'] = 'At least one of your LoTW certificates is about to expire!';
+$lang['lotw_cert_expired'] = 'At least one of your LoTW certificates is expired!';
+
+// Lotw User
+$lang['lotw_user'] = 'This station uses LoTW.';
+$lang['lotw_last_upload'] = 'Last upload';

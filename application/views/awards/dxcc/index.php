@@ -173,7 +173,7 @@
             <a class="nav-link active" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="true">Table</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="map-tab" data-toggle="tab" href="#dxccmaptab" role="tab" aria-controls="home" aria-selected="false">Map</a>
+            <a class="nav-link" id="map-tab" onclick="load_dxcc_map();" data-toggle="tab" href="#dxccmaptab" role="tab" aria-controls="home" aria-selected="false">Map</a>
         </li>
     </ul>
     <br />

@@ -28,9 +28,11 @@ $lang['qsl_notes_helptext'] = 'This note content is exported to QSL services lik
 $lang['qso_btn_reset_qso'] = 'Reset';
 $lang['qso_btn_save_qso'] = 'Save QSO';
 $lang['qso_btn_edit_qso'] = 'Edit QSO';
+$lang['qso_delete_warning'] = "Warning! Are you sure you want delete QSO with ";
 
 // QSO Details
 
 $lang['qso_details'] = 'QSO Details';
+
 $lang['fav_add'] = 'Add Band/Mode to Favs';
 $lang['qso_operator_callsign'] = 'Operator Callsign';

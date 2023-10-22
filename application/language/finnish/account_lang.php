@@ -19,6 +19,7 @@ $lang['account_password'] = 'Salasana';
 
 $lang['account_roles'] = 'Roolit';
 $lang['account_user_role'] = 'Käyttäjän rooli';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Teema';
 $lang['account_stylesheet'] = 'Tyylisivu';
@@ -35,6 +36,8 @@ $lang['account_date_format'] = 'Päivämäärämuoto';
 $lang['account_measurement_preferences'] = 'Mittayksikkömuoto';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Valitse, miten haluat päivämäärät näkyvän, kun olet kirjautunut tilillesi.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Valitse, mitä mittayksikkömuotoa käytetään';
+$lang['account_cloudlog_language'] = 'Cloudlog Language';
+$lang['account_choose_cloudlog_language'] = 'Choose Cloudlog language.';
 
 $lang['account_main_menu'] = 'Main Menu';
 $lang['account_show_notes_in_the_main_menu'] = 'Näytä "Muistio" päävalikossa.';
@@ -92,7 +95,13 @@ $lang['account_login'] = 'Kirjaudu';
 
 $lang['account_mastodon'] = 'Mastodonserver';
 $lang['account_user_mastodon'] = 'URL of Mastodonserver';
+$lang['account_user_mastodon_hint'] = "Main URL of your Mastodon server, e.g. <a href='https://radiosocial.de/' target='_blank'>https://radiosocial.de";
 
-$lang['account_gridmap_settings'] = 'Gridsquare -kartan asetukset';
+$lang['account_default_band_settings'] = 'Settings for Default Band and Confirmation';
 $lang['account_gridmap_default_band'] = 'Oletusbandi';
+$lang['account_qsl_settings'] = 'Default QSL-Methods';
+
+$lang['account_winkeyer'] = 'Winkeyer';
+$lang['account_winkeyer_hint'] = "Winkeyer support in Cloudlog is very experimental read the wiki first at <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a> before enabling.";
+$lang['account_winkeyer_enabled'] = "Winkeyer Features Enabled";
 

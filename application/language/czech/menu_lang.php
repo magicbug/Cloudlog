@@ -13,6 +13,7 @@ $lang['menu_live_qso'] = 'Živé QSO';
 $lang['menu_post_qso'] = 'Uložit QSO';
 $lang['menu_live_contest_logging'] = 'Živé závodní logování';
 $lang['menu_post_contest_logging'] = 'Uložit závodní log';
+$lang['menu_bandmap'] = 'Bandmap';
 $lang['menu_view_qsl'] = 'Zobrazit QSL';
 $lang['menu_view_eqsl'] = 'Zobrazit eQSL';
 
@@ -41,6 +42,7 @@ $lang['menu_pota'] = 'POTA';
 $lang['menu_sig'] = 'SIG';
 $lang['menu_sota'] = 'SOTA';
 $lang['menu_us_counties'] = 'US okresy';
+$lang['menu_us_gridmaster'] = 'US Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
@@ -82,3 +84,6 @@ $lang['menu_hardware_interfaces'] = 'Hardwarové rozhraní';
 $lang['menu_help'] = 'Nápověda';
 $lang['menu_forum'] = 'Fórum';
 $lang['menu_logout'] = 'Odhlásit se';
+
+$lang['menu_ffma'] = "Fred Fish Memorial Award";
+$lang['menu_maintenance']='Maintenance';

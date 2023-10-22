@@ -20,4 +20,3 @@ $lang['notes_input_btn_delete_note'] = 'Notu sil';
 $lang['notes_selection_general'] = 'Genel';
 $lang['notes_selection_antennas'] = 'Antenler';
 $lang['notes_selection_satellites'] = 'Uydular';
-

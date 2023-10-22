@@ -12,7 +12,6 @@ $lang['qso_title_image'] = 'Profil Resmi';
 $lang['qso_transmit_power_helptext'] = 'Gücü Watt olarak veriniz. Sadece rakamları giriniz.';
 
 $lang['qso_sota_ref_helptext'] = 'Örnek: GM/NS-001.';
-
 $lang['qso_wwff_ref_helptext'] = 'Örnek: DLFF-0069.';
 $lang['qso_pota_ref_helptext'] = 'Örnek: PA-0150.';
 
@@ -29,7 +28,11 @@ $lang['qsl_notes_helptext'] = 'Bu not içeriği eqsl.cc gibi QSL servislere akta
 $lang['qso_btn_reset_qso'] = 'Baştan başla';
 $lang['qso_btn_save_qso'] = 'QSO\'yu kaydet';
 $lang['qso_btn_edit_qso'] = 'QSO\'yu düzenle';
+$lang['qso_delete_warning'] = "Warning! Are you sure you want delete QSO with ";
 
 // QSO Details
 
 $lang['qso_details'] = 'QSO detayları';
+
+$lang['fav_add'] = 'Add Band/Mode to Favs';
+$lang['qso_operator_callsign'] = 'Operator Callsign';

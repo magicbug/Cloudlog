@@ -20,4 +20,3 @@ $lang['notes_input_btn_delete_note'] = '删除笔记';
 $lang['notes_selection_general'] = '通用';
 $lang['notes_selection_antennas'] = '天线';
 $lang['notes_selection_satellites'] = '卫星';
-

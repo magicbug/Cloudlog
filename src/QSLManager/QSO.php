@@ -138,7 +138,7 @@ class QSO
 		}
 		$this->qsoDateTime = date($custom_date_format . " H:i", strtotime($data['COL_TIME_ON']));
 
-		$this->de = $data['COL_STATION_CALLSIGN'];
+		$this->de = $data['station_callsign'];
 		$this->dx = $data['COL_CALL'];
 
 		$this->mode = $data['COL_MODE'] ?? '';
@@ -753,22 +753,22 @@ class QSO
 
 	public function getDXCC(): string
 	{
-		return $this->dxcc;
+		return '<span id="dxcc">' . $this->dxcc . '</span>';
 	}
 
 	public function getCqzone(): string
 	{
-		return $this->cqzone;
+		return '<span id="cqzone">' . $this->cqzone . '</span>';
 	}
 
 	public function getState(): string
 	{
-		return $this->state;
+		return '<span id="state">' . $this->state . '</span>';
 	}
 
 	public function getIOTA(): string
 	{
-		return $this->iota;
+		return '<span id="iota">' . $this->iota . '</span>';
 	}
 
 	public function toArray(): array
@@ -777,7 +777,7 @@ class QSO
 			'qsoID' => $this->qsoID,
 			'qsoDateTime' => $this->qsoDateTime,
 			'de' => $this->de,
-			'dx' => $this->dx,
+			'dx' => $this->getDx(),
 			'mode' => $this->getFormattedMode(),
 			'rstS' => $this->rstS,
 			'rstR' => $this->rstR,

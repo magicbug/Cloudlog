@@ -28,7 +28,7 @@ class Station extends CI_Controller {
 		$data['is_there_qsos_with_no_station_id'] = $this->Logbook_model->check_for_station_id();
 
 		// Render Page
-		$data['page_title'] = "Station Location";
+		$data['page_title'] = lang('station_location');
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('station_profile/index');
 		$this->load->view('interface_assets/footer');
@@ -48,7 +48,7 @@ class Station extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$data['page_title'] = "Create Station Location";
+			$data['page_title'] = lang('station_location_create_header');
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('station_profile/create');
 			$this->load->view('interface_assets/footer');
@@ -65,7 +65,7 @@ class Station extends CI_Controller {
 		$this->load->model('stations');
 		if ($this->stations->check_station_is_accessible($id)) {
 			$data = $this->load_station_for_editing($id);
-			$data['page_title'] = "Edit Station Location: {$data['my_station_profile']->station_profile_name}";
+			$data['page_title'] = lang('station_location_edit') . $data['my_station_profile']->station_profile_name;
 
 			if ($this->form_validation->run() == FALSE) {
 				$this->load->view('interface_assets/header', $data);
@@ -74,7 +74,7 @@ class Station extends CI_Controller {
 			} else {
 				$this->stations->edit();
 
-				$data['notice'] = "Station Profile " . $this->security->xss_clean($this->input->post('station_profile_name', true)) . " Updated";
+				$data['notice'] = lang('station_location') . $this->security->xss_clean($this->input->post('station_profile_name', true)) . " Updated";
 
 				redirect('station');
 			}

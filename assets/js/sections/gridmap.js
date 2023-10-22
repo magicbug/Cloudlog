@@ -123,7 +123,7 @@ function spawnGridsquareModal(loc_4char) {
         data: ajax_data,
         success: function (html) {
             BootstrapDialog.show({
-                title: 'QSO Data',
+                title: lang_general_word_qso_data,
                 cssClass: 'qso-dialog',
                 size: BootstrapDialog.SIZE_WIDE,
                 nl2br: false,

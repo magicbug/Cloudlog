@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+$lang['lotw_short'] = 'LoTW';
 $lang['lotw_title'] = 'Logbook of the World';
 $lang['lotw_title_available_cert'] = 'Dostupné certifikáty';
 $lang['lotw_title_information'] = 'Informace';
@@ -15,10 +16,13 @@ $lang['lotw_no_certs_uploaded'] = 'Musíte nahrát nějké LoTW certifikáty ve 
 
 $lang['lotw_date_created'] = 'Datum vytvoření';
 $lang['lotw_date_expires'] = 'Datum vypršení';
+$lang['lotw_qso_start_date'] = 'QSO Start Date';
+$lang['lotw_qso_end_date'] = 'QSO End Date';
 $lang['lotw_status'] = 'Stav';
 $lang['lotw_options'] = 'Možnosti';
 $lang['lotw_valid'] = 'Platný';
 $lang['lotw_expired'] = 'Vypršel';
+$lang['lotw_expiring'] = 'Expiring';
 $lang['lotw_not_synced'] = 'Není synchronizováno';
 
 $lang['lotw_certificate_dxcc'] = 'Certifikát DXCC';
@@ -46,3 +50,13 @@ $lang['lotw_p12_export_step_one'] = 'Otevři TQSL &amp; bež do záložky Callsi
 $lang['lotw_p12_export_step_two'] = 'pravé tlačítko myši na vyprané značce';
 $lang['lotw_p12_export_step_three'] = 'Klikni "Save Callsign Certificate File" a nezadavej heslo';
 $lang['lotw_p12_export_step_four'] = 'Nahraj soubor níže.';
+
+$lang['lotw_confirmed'] = 'This QSO is confirmed on LoTW';
+
+// LoTW Expiry
+$lang['lotw_cert_expiring'] = 'At least one of your LoTW certificates is about to expire!';
+$lang['lotw_cert_expired'] = 'At least one of your LoTW certificates is expired!';
+
+// Lotw User
+$lang['lotw_user'] = 'This station uses LoTW.';
+$lang['lotw_last_upload'] = 'Last upload';

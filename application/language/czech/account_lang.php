@@ -19,6 +19,7 @@ $lang['account_password'] = 'Heslo';
 
 $lang['account_roles'] = 'Role';
 $lang['account_user_role'] = 'Uživatelská role';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Motiv';
 $lang['account_stylesheet'] = 'Styl';
@@ -29,19 +30,18 @@ $lang['account_last_name'] = 'Příjmení';
 $lang['account_callsign'] = 'Značka';
 $lang['account_gridsquare'] = 'Locátor';
 
-
 $lang['account_cloudlog_preferences'] = 'Nastavení Cloudlogu';
 $lang['account_timezone'] = 'Časové pásmo';
 $lang['account_date_format'] = 'Formát data';
 $lang['account_measurement_preferences'] = 'Nastavení měření';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Vyberte, jak chcete, aby byla data zobrazena při přihlášení do vašeho účtu.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Vyberte, v jakých jednotkách se budou zobrazovat vzdálenosti.';
+$lang['account_cloudlog_language'] = 'Cloudlog Language';
+$lang['account_choose_cloudlog_language'] = 'Choose Cloudlog language.';
 
 $lang['account_main_menu'] = 'Hlavní menu';
 $lang['account_show_notes_in_the_main_menu'] = 'Zobrazovat poznámky v hlavním menu.';
 
-$lang['account_main_menu'] = 'Hlavní menu';
-$lang['account_show_notes_in_the_main_menu'] = 'Zobrazovat poznámky v hlavním menu.';
 $lang['account_gridsquare_and_location_autocomplete'] = 'Automatické doplňování lokátoru a umístění';
 $lang['account_location_auto_lookup'] = 'Automatické vyhledávání umístění.';
 $lang['account_if_set_gridsquare_is_fetched_based_on_location_name'] = 'Pokud je nastaveno, lokátor je získán na základě názvu umístění.';
@@ -95,6 +95,13 @@ $lang['account_login'] = 'Přihlásit se';
 
 $lang['account_mastodon'] = 'Mastodon server';
 $lang['account_user_mastodon'] = 'URL Mastodon serveru';
+$lang['account_user_mastodon_hint'] = "Main URL of your Mastodon server, e.g. <a href='https://radiosocial.de/' target='_blank'>https://radiosocial.de";
 
-$lang['account_gridmap_settings'] = 'Nastavení pro Mapu lokátorů';
+$lang['account_default_band_settings'] = 'Settings for Default Band and Confirmation';
 $lang['account_gridmap_default_band'] = 'Výchozí pásma';
+$lang['account_qsl_settings'] = 'Default QSL-Methods';
+
+$lang['account_winkeyer'] = 'Winkeyer';
+$lang['account_winkeyer_hint'] = "Winkeyer support in Cloudlog is very experimental read the wiki first at <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a> before enabling.";
+$lang['account_winkeyer_enabled'] = "Winkeyer Features Enabled";
+

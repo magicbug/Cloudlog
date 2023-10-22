@@ -9,7 +9,6 @@ $lang['account_column3_text'] = 'Välj kolumn 3';
 $lang['account_column4_text'] = 'Välj kolumn 4';
 $lang['account_column5_text'] = 'Välj kolumn 5 (bara för logbok)';
 
-
 $lang['account_create_user_account'] = 'Skapa användarkonto';
 $lang['account_edit_account'] = 'Redigera användarkonto';
 
@@ -20,6 +19,7 @@ $lang['account_password'] = 'Lösenord';
 
 $lang['account_roles'] = 'Roller';
 $lang['account_user_role'] = 'Användarroll';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Tema';
 $lang['account_stylesheet'] = 'Stilmall';
@@ -36,6 +36,8 @@ $lang['account_date_format'] = 'Datumformat';
 $lang['account_measurement_preferences'] = 'Measurement preference';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Välj hur du vill att datum ska visas när du är inloggad på ditt konto.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Välj i vilken enhetsavstånd som ska visas';
+$lang['account_cloudlog_language'] = 'Cloudlog Language';
+$lang['account_choose_cloudlog_language'] = 'Choose Cloudlog language.';
 
 $lang['account_main_menu'] = 'Huvudmeny';
 $lang['account_show_notes_in_the_main_menu'] = 'Visa anteckningar i huvudmenyn.';
@@ -93,6 +95,13 @@ $lang['account_login'] = 'Login';
 
 $lang['account_mastodon'] = 'Mastodonserver';
 $lang['account_user_mastodon'] = 'URL till Mastodonserver';
+$lang['account_user_mastodon_hint'] = "Main URL of your Mastodon server, e.g. <a href='https://radiosocial.de/' target='_blank'>https://radiosocial.de";
 
-$lang['account_gridmap_settings'] = 'Inställningar för Gridsquare Map';
+$lang['account_default_band_settings'] = 'Settings for Default Band and Confirmation';
 $lang['account_gridmap_default_band'] = 'Standard Band';
+$lang['account_qsl_settings'] = 'Default QSL-Methods';
+
+$lang['account_winkeyer'] = 'Winkeyer';
+$lang['account_winkeyer_hint'] = "Winkeyer support in Cloudlog is very experimental read the wiki first at <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a> before enabling.";
+$lang['account_winkeyer_enabled'] = "Winkeyer Features Enabled";
+

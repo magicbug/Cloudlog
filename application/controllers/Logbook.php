@@ -135,7 +135,18 @@ class Logbook extends CI_Controller {
 		];
 
 		$return['dxcc'] = $this->dxcheck($callsign);
-		$return['partial'] = $this->partial($callsign);
+		$split_callsign=explode('/',$callsign);
+		if (isset($split_callsign[1]) && ($split_callsign[1] != "")) {	// Do we have "/" in Call?
+			if (strlen($split_callsign[1])>3) {			// Last Element longer than 3 chars? Take that as call
+				$lookupcall = $split_callsign[1];
+			} else {						// Last Element up to 3 Chars? Take first element as Call
+				$lookupcall = $split_callsign[0];
+			}
+		} else {
+			$lookupcall=$callsign;
+		}
+
+		$return['partial'] = $this->partial($lookupcall);
 
 		$callbook = $this->logbook_model->loadCallBook($callsign, $this->config->item('use_fullname'));
 
@@ -190,20 +201,20 @@ class Logbook extends CI_Controller {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-		$user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
+		$user_default_confirmation = $this->session->userdata('user_default_confirmation');
 
 		if(!empty($logbooks_locations_array)) {
 			$extrawhere='';
-			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
 				$extrawhere="COL_QSL_RCVD='Y'"; 
 			}
-			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 				if ($extrawhere!='') {
 					$extrawhere.=" OR";
 				}
 				$extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
 			}
-			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'E') !== false) {
 				if ($extrawhere!='') {
 					$extrawhere.=" OR";
 				}
@@ -293,7 +304,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 			"workedBefore" => false,
 			"confirmed" => false,
 		];
-		$user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
+		$user_default_confirmation = $this->session->userdata('user_default_confirmation');
 		$CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -319,16 +330,16 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 
 		
 		$extrawhere='';
-		if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+		if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
 			$extrawhere="COL_QSL_RCVD='Y'"; 
 		}
-		if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+		if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 			if ($extrawhere!='') {
 				$extrawhere.=" OR";
 			}
 			$extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
 		}
-		if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+		if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'E') !== false) {
 			if ($extrawhere!='') {
 				$extrawhere.=" OR";
 			}
@@ -375,7 +386,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 			"confirmed" => false,
 		];
 
-		$user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
+		$user_default_confirmation = $this->session->userdata('user_default_confirmation');
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -401,16 +412,16 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 			}
 
 			$extrawhere='';
-			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
 				$extrawhere="COL_QSL_RCVD='Y'"; 
 			}
-			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 				if ($extrawhere!='') {
 					$extrawhere.=" OR";
 				}
 				$extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
 			}
-			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'E') !== false) {
 				if ($extrawhere!='') {
 					$extrawhere.=" OR";
 				}
@@ -470,7 +481,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 			"confirmed" => false,
 		];
 
-		$user_gridmap_confirmation = $this->session->userdata('user_gridmap_confirmation');
+		$user_default_confirmation = $this->session->userdata('user_default_confirmation');
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -496,16 +507,16 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 			}
 
 			$extrawhere='';
-			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) { 
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
 				$extrawhere="COL_QSL_RCVD='Y'"; 
 			}
-			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 				if ($extrawhere!='') {
 					$extrawhere.=" OR";
 				}
 				$extrawhere.=" COL_LOTW_QSL_RCVD='Y'";
 			}
-			if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'E') !== false) {
 				if ($extrawhere!='') {
 					$extrawhere.=" OR";
 				}
@@ -872,7 +883,11 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 		$fixedid = $id;
 
 		if ($id2 != "") {
-			$fixedid = $id . '/' . $id2;
+			if (strlen($id2)>3) {	// Last Element longer than 3 chars? Take that as call
+				$fixedid = $id2;
+			} else {		// Last Element up to 3 Chars? Take first element as Call
+				$fixedid = $id;
+			}
 		}
 
 		$query = $this->querydb($fixedid);

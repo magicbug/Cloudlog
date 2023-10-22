@@ -13,6 +13,7 @@ $lang['menu_live_qso'] = '添加QSO（从电台获取信息）';
 $lang['menu_post_qso'] = '添加QSO（手动输入信息）';
 $lang['menu_live_contest_logging'] = '比赛日志（从电台获取信息）';
 $lang['menu_post_contest_logging'] = '比赛日志（手动输入信息）';
+$lang['menu_bandmap'] = 'Bandmap';
 $lang['menu_view_qsl'] = '浏览QSL卡片';
 $lang['menu_view_eqsl'] = '浏览电子QSL卡片';
 
@@ -41,6 +42,7 @@ $lang['menu_pota'] = 'POTA';
 $lang['menu_sig'] = 'SIG';
 $lang['menu_sota'] = 'SOTA';
 $lang['menu_us_counties'] = 'US Counties';
+$lang['menu_us_gridmaster'] = 'US Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
@@ -82,3 +84,6 @@ $lang['menu_hardware_interfaces'] = '硬件接口';
 $lang['menu_help'] = '帮助';
 $lang['menu_forum'] = '论坛';
 $lang['menu_logout'] = '注销';
+
+$lang['menu_ffma'] = "Fred Fish Memorial Award";
+$lang['menu_maintenance']='Maintenance';

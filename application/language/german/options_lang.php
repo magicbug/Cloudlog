@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Direkter Zugriff auf Skripte ist nicht erlaubt');
 
 $lang['options_cloudlog_options'] = 'Cloudlog Optionen';
 $lang['options_message1'] = 'Cloudlog Optionen sind globe Einstellungen, die für alle Benutzer der Installation genutzt werden. Sie können auf Benutzerebene überschrieben werden, wenn eine entsprechende Option auf Benutzerebene vorhanden ist.';
@@ -16,7 +16,7 @@ $lang['options_dashboard_map'] = 'Dashboard Karte';
 $lang['options_this_allows_the_map_on_the_dashboard_to_be_disabled_or_placed_on_the_right'] = 'Dies erlaubt es, die Karte auf dem Dashboard rechts anzuzeigen oder zu deaktivieren.';
 $lang['options_logbook_map'] = 'Logbook Karte';
 $lang['options_this_allows_to_disable_the_map_in_the_logbook'] = 'Dies erlaubt, die Karte im Logbuch zu deaktivieren.';
-$lang['options_theme_changed_to'] = 'Thema geänder zu ';
+$lang['options_theme_changed_to'] = 'Thema geändert zu ';
 $lang['options_global_search_changed_to'] = 'Globale Suche geändert zu ';
 $lang['options_dashboard_banner_changed_to'] = 'Dashboard Benachrichtigungsbanner geändert zu ';
 $lang['options_dashboard_map_changed_to'] = 'Dashboard Karte geändert zu ';
@@ -39,13 +39,13 @@ $lang['options_smtp_port'] = 'SMTP Port';
 $lang['options_smtp_username'] = 'SMTP Benutzername';
 $lang['options_smtp_password'] = 'SMTP Passwort';
 $lang['options_crlf'] = 'CRLF';
-$lang['options_newline'] = 'Zeilenvorschub';
+$lang['options_newline'] = 'Zeilenvorschub (Newline)';
 $lang['options_outgoing_email_protocol_changed_to'] = 'Protokoll für ausgehende E-Mails geändert zu ';
 $lang['options_smtp_encryption_changed_to'] = 'SMTP Verschlüsselung geändert zu ';
 $lang['options_email_address_changed_to'] = 'E-Mailadresse geändert zu ';
 $lang['options_email_sender_name_changed_to'] = 'E-Mail Absendername geändert zu ';
 $lang['options_smtp_host_changed_to'] = 'SMTP Host geändert zu ';
-$lang['options_smtp_port_changed_to'] = 'SMTP Post changed to ';
+$lang['options_smtp_port_changed_to'] = 'SMTP Port geändert zu ';
 $lang['options_smtp_username_changed_to'] = 'SMTP Benutzername geändert zu ';
 $lang['options_smtp_password_changed_to'] = 'SMTP Passwort geändert zu ';
 $lang['options_email_crlf_changed_to'] = 'E-Mail CRLF geändert zu ';
@@ -56,7 +56,7 @@ $lang['options_global_text'] = 'Globaler Text';
 $lang['options_this_text_is_an_optional_text_that_can_be_displayed_on_top_of_the_oqrs_page'] = 'Dies ist ein optionaler Text, der auf oben auf der OQRS Seite angezeigt werden kann.';
 $lang['options_grouped_search'] = 'Gruppierte Suche';
 $lang['options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_searched_at_once'] = 'Wenn aktiviert, werden alle Stationsstandorte auf einmal durchsucht.';
-$lang['options_oqrs_options_have_been_saved'] = 'OQRS options have been saved.';
+$lang['options_oqrs_options_have_been_saved'] = 'OQRS Einstellungen wurden gespeichert.';
 
 $lang['options_dxcluster'] = 'DXCluster';
 $lang['options_dxcluster_provider'] = 'Provider des DXClusterCache';
@@ -65,8 +65,33 @@ $lang['options_dxcluster_hint'] = 'URL des DXCluster-Caches. z.B. https://dxc.jo
 $lang['options_dxcluster_settings'] = 'DXCluster';
 $lang['options_dxcache_url_changed_to'] = 'DXCluster Cache URL geändert zu ';
 $lang['options_dxcluster_maxage'] = 'Maximales Alter bis zu dem Spots berücksichtigt werden';
+$lang['options_dxcluster_maxage_hint'] = 'Das Alter von Spots in Minuten, welche im Bandplan/Lookup berücksichtigt werden';
 $lang['options_dxcluster_decont'] = 'Nur Spots berücksichtigen, die in folgendem Kontinent erfasst wurden';
 $lang['options_dxcluster_maxage_changed_to']='Maximales Spot-Alter geändert auf ';
 $lang['options_dxcluster_decont_changed_to']='Spotterkontinent geändert auf ';
+$lang['options_dxcluster_decont_hint']='Nur Spots von Spottern dieses Kontinents werden angezeigt';
 
 $lang['options_save'] = 'Speichern';
+
+// Bands
+
+$lang['options_bands'] = "Bänder";
+$lang['options_bands_text_ln1'] = "Mit dieser Bänder-Liste kannst du steuern, welche Bänder beim Erstellen eines neuen QSO angezeigt werden.";
+$lang['options_bands_text_ln2'] = "Aktive Bänder werden im QSO Band Auswahlfeld angezeigt, während inaktive Bänder ausgeblendet werden und nicht ausgewählt werden können.";
+$lang['options_bands_create'] = "Erstelle ein neues Band";
+$lang['options_bands_edit'] = "Bearbeite Band";
+$lang['options_bands_activate_all'] = "Aktiviere Alle";
+$lang['options_bands_activateall_warning'] = "Warnung! Bist du sicher, dass du alle Bänder aktivieren willst?";
+$lang['options_bands_deactivate_all'] = "Deaktiviere Alle";
+$lang['options_bands_deactivateall_warning'] = "Warnung! Bist du sicher, dass du alle Bänder deaktivieren willst?";
+$lang['options_bands_ssb_qrg'] = "SSB QRG";
+$lang['options_bands_ssb_qrg_hint'] = "Frequenz für die SSB QRG auf dem Band (Muss in Hz angegeben werden)";
+$lang['options_bands_data_qrg'] = "DATA QRG";
+$lang['options_bands_data_qrg_hint'] = "Frequenz für die DATA QRG auf dem Band (Muss in Hz angegeben werden";
+$lang['options_bands_cw_qrg'] = "CW QRG";
+$lang['options_bands_cw_qrg_hint'] = "Frequenz für die CW QRG auf dem Band (Muss in Hz angegeben werden";
+
+$lang['options_bands_name_band'] = "Name des Bandes (z.B. 20m)";
+$lang['options_bands_name_bandgroup'] = "Name der Bandgruppe (z.B. hf, vhf, uhf, shf)";
+$lang['options_bands_delete_warning'] = "Warnung! Bist du dir sicher, dass du das folgende Band löschen willst: ";
+

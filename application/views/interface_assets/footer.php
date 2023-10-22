@@ -11,6 +11,14 @@
  var my_call = "<?php echo $this->session->userdata('user_callsign'); ?>".toUpperCase();
 </script>
 
+<script>
+    /* 
+    General Language
+    */
+    var lang_general_word_qso_data = "<?php echo lang('general_word_qso_data'); ?>";
+    var lang_general_word_danger = "<?php echo lang('general_word_danger'); ?>";
+    var lang_qso_delete_warning = "<?php echo lang('qso_delete_warning'); ?>";
+</script>
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
@@ -79,7 +87,7 @@ function load_was_map() {
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/continents.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "hrdlog" ||$this->uri->segment(1) == "webadif") { ?>
+<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "hrdlog" || $this->uri->segment(1) == "webadif" || $this->uri->segment(1) == "sattimers") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
@@ -536,6 +544,26 @@ $(document).ready(function() {
 </script>
 
 <script>
+function printWarning() {
+    if ($("#dxcc_select option:selected").text().includes("<?php echo lang('gen_hamradio_deleted_dxcc'); ?>")) {
+        $('#warningMessageDXCC').show();
+        $('#dxcc_select').css('border', '2px solid rgb(217, 83, 79)');
+        $('#warningMessageDXCC').text("<?php echo lang('station_location_dxcc_warning'); ?>");
+    } else {
+        $('#dxcc_select').css('border', '');
+        $('#warningMessageDXCC').hide();
+    }
+}
+$('#dxcc_select').ready(function() {
+    printWarning();
+});
+
+$('#dxcc_select').on('change', function() {
+    printWarning();
+});
+</script>
+
+<script>
 var $= jQuery.noConflict();
 $('[data-fancybox]').fancybox({
     toolbar  : false,
@@ -947,7 +975,7 @@ $(document).on('keypress',function(e) {
 <?php if ($this->uri->segment(1) == "qso") { ?>
 
 <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
-<?php if ($this->config->item('winkey')) { ?>
+<?php if ($this->session->userdata('isWinkeyEnabled')) { ?>
 	<script src="<?php echo base_url() ;?>assets/js/winkey.js"></script>
 <?php }
 
@@ -1786,14 +1814,14 @@ $(document).ready(function(){
 				type: 'post',
 				success: function(html) {
 					BootstrapDialog.show({
-						title: 'QSO Data',
+						title: lang_general_word_qso_data,
 						cssClass: 'qso-dialog',
 						size: BootstrapDialog.SIZE_WIDE,
 						nl2br: false,
 						message: html,
 						onshown: function(dialog) {
 							var qsoid = $("#qsoid").text();
-							$(".editButton").html('<a class="btn btn-primary" id="edit_qso" href="javascript:qso_edit('+qsoid+')"><i class="fas fa-edit"></i> Edit QSO</a>');
+							$(".editButton").html('<a class="btn btn-primary" id="edit_qso" href="javascript:qso_edit('+qsoid+')"><i class="fas fa-edit"></i><?php echo lang('general_edit_qso'); ?></a>');
 							var lat = $("#lat").text();
 							var long = $("#long").text();
 							var callsign = $("#callsign").text();
@@ -2083,7 +2111,7 @@ $(document).ready(function(){
                     },
                     success: function(html) {
                         BootstrapDialog.show({
-                            title: 'QSO Data',
+                            title: lang_general_word_qso_data,
                             size: BootstrapDialog.SIZE_WIDE,
                             cssClass: 'qso-was-dialog',
                             nl2br: false,
@@ -2149,7 +2177,7 @@ $(document).ready(function(){
                     },
                     success: function(html) {
                         BootstrapDialog.show({
-                            title: 'QSO Data',
+                            title: lang_general_word_qso_data,
                             size: BootstrapDialog.SIZE_WIDE,
                             cssClass: 'qso-was-dialog',
                             nl2br: false,
@@ -2379,7 +2407,7 @@ function viewEqsl(picture, callsign) {
             },
             success: function (html) {
                 BootstrapDialog.show({
-                    title: 'QSO Data',
+                    title: lang_general_word_qso_data,
                     size: BootstrapDialog.SIZE_WIDE,
                     cssClass: 'qso-dialog',
                     nl2br: false,
@@ -2424,7 +2452,7 @@ function viewEqsl(picture, callsign) {
     },
 	    success: function (html) {
 		    var dialog = new BootstrapDialog({
-		    title: 'QSO Data',
+		    title: lang_general_word_qso_data,
 			    size: BootstrapDialog.SIZE_WIDE,
 			    cssClass: 'qso-dialog',
 			    nl2br: false,
@@ -2704,7 +2732,7 @@ function viewEqsl(picture, callsign) {
             data: {'State': state, 'County': county },
             success: function(html) {
                 BootstrapDialog.show({
-                    title: 'QSO Data',
+                    title: lang_general_word_qso_data,
                     size: BootstrapDialog.SIZE_WIDE,
                     cssClass: 'qso-counties-dialog',
                     nl2br: false,

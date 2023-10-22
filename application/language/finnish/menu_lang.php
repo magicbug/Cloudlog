@@ -42,6 +42,7 @@ $lang['menu_pota'] = 'POTA';
 $lang['menu_sig'] = 'SIG';
 $lang['menu_sota'] = 'SOTA';
 $lang['menu_us_counties'] = 'USA Osavaltiot';
+$lang['menu_us_gridmaster'] = 'US Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
@@ -84,4 +85,5 @@ $lang['menu_help'] = 'Help';
 $lang['menu_forum'] = 'Foorumi';
 $lang['menu_logout'] = 'Kirjaudu ulos';
 
+$lang['menu_ffma'] = "Fred Fish Memorial Award";
 $lang['menu_maintenance']='Maintenance';

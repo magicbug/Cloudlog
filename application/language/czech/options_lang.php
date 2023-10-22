@@ -2,7 +2,6 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-```php
 $lang['options_cloudlog_options'] = 'Možnosti Cloudlogu';
 $lang['options_message1'] = 'Možnosti Cloudlogu jsou globální nastavení používaná pro všechny uživatele instalace, která jsou přepsána, pokud je nastavení na úrovni uživatele.';
 
@@ -59,4 +58,40 @@ $lang['options_grouped_search'] = 'Seskupené vyhledávání';
 $lang['options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_searched_at_once'] = 'Když je tato možnost zapnutá, budou všechny stanice s aktivním OQRS vyhledávány najednou.';
 $lang['options_oqrs_options_have_been_saved'] = 'Možnosti OQRS byly uloženy.';
 
+$lang['options_dxcluster'] = 'DXCluster';
+$lang['options_dxcluster_provider'] = 'Provider of DXClusterCache';
+$lang['options_dxcluster_longtext'] = 'The Provider of the DXCluster-Cache. You can set up your own Cache with <a href="https://github.com/int2001/DXClusterAPI">DXClusterAPI</a> or use a public one';
+$lang['options_dxcluster_hint'] = 'URL of the DXCluster-Cache. e.g. https://dxc.jo30.de/dxcache';
+$lang['options_dxcluster_settings'] = 'DXCluster';
+$lang['options_dxcache_url_changed_to'] = 'DXCluster Cache URL changed to ';
+$lang['options_dxcluster_maxage'] = 'Maximum Age of spots taken care of';
+$lang['options_dxcluster_maxage_hint'] = 'The Age in Minutes of spots, that will be taken care at bandplan/lookup';
+$lang['options_dxcluster_decont'] = 'Show spots which are spotted from following continent';
+$lang['options_dxcluster_maxage_changed_to']='Maximum age of spots changed to ';
+$lang['options_dxcluster_decont_changed_to']='de continent changed to ';
+$lang['options_dxcluster_decont_hint']='Only spots by spotters from this continent are shown';
+
 $lang['options_save'] = 'Uložit';
+
+// Bands
+
+$lang['options_bands'] = "Bands";
+$lang['options_bands_text_ln1'] = "Using the band list you can control which bands are shown when creating a new QSO.";
+$lang['options_bands_text_ln2'] = "Active bands will be shown in the QSO 'Band' drop-down, while inactive bands will be hidden and cannot be selected.";
+$lang['options_bands_create'] = "Create a band";
+$lang['options_bands_edit'] = "Edit Band";
+$lang['options_bands_activate_all'] = "Activate All";
+$lang['options_bands_activateall_warning'] = "Warning! Are you sure you want to activate all bands?";
+$lang['options_bands_deactivate_all'] = "Deactivate All";
+$lang['options_bands_deactivateall_warning'] = "Warning! Are you sure you want to deactivate all bands?";
+$lang['options_bands_ssb_qrg'] = "SSB QRG";
+$lang['options_bands_ssb_qrg_hint'] = "Frequency for SSB QRG in band (must be in Hz)";
+$lang['options_bands_data_qrg'] = "DATA QRG";
+$lang['options_bands_data_qrg_hint'] = "Frequency for DATA QRG in band (must be in Hz)";
+$lang['options_bands_cw_qrg'] = "CW QRG";
+$lang['options_bands_cw_qrg_hint'] = "Frequency for CW QRG in band (must be in Hz)";
+
+$lang['options_bands_name_band'] = "Name of Band (E.g. 20m)";
+$lang['options_bands_name_bandgroup'] = "Name of bandgroup (E.g. hf, vhf, uhf, shf)";
+$lang['options_bands_delete_warning'] = "Warning! Are you sure you want to delete the following band: ";
+

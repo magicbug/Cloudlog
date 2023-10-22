@@ -28,7 +28,11 @@ $lang['qsl_notes_helptext'] = '此笔记内容被导出到QSL服务，如 eqsl.c
 $lang['qso_btn_reset_qso'] = '重置';
 $lang['qso_btn_save_qso'] = '保存 QSO';
 $lang['qso_btn_edit_qso'] = '编辑 QSO';
+$lang['qso_delete_warning'] = "Warning! Are you sure you want delete QSO with ";
 
 // QSO Details
 
 $lang['qso_details'] = 'QSO 详情';
+
+$lang['fav_add'] = 'Add Band/Mode to Favs';
+$lang['qso_operator_callsign'] = 'Operator Callsign';

@@ -22,5 +22,8 @@ $lang['gridsquares_button_plot'] = 'Отобразить';
 
 $lang['gridsquares_gridsquares'] = 'Квадраты';
 $lang['gridsquares_gridsquares_confirmed'] = 'Подтверждёно квадратов';
+$lang['gridsquares_gridsquares_lotw'] = 'Gridsquares confirmed on LoTW';
+$lang['gridsquares_gridsquares_paper'] = 'Gridsquares confirmed by paper QSL';
 $lang['gridsquares_gridsquares_not_confirmed'] = 'Неподтверждёно квадратов';
 $lang['gridsquares_gridsquares_total_worked'] = 'Всего сработано квадратов';
+$lang['gridsquares_gridsquares_total_activated'] = 'Total gridsquares activated';

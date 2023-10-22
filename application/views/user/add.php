@@ -199,7 +199,7 @@
 						}
 						echo form_dropdown('language', $options, $language);
 						?>
-		                <small id="language_Help" class="form-text text-muted">Choose Cloudlog language.</small>
+		                <small id="language_Help" class="form-text text-muted"><?php echo lang('account_choose_cloudlog_language'); ?></small>
 		            </div>
 				<?php } ?>
 
@@ -546,17 +546,17 @@
             <div class="col-md">
                 <div class="card">
                     <div class="card-header">
-                    <?php echo lang('account_gridmap_settings'); ?>
+                    <?php echo lang('account_default_band_settings'); ?>
                     </div>
                     <div class="card-body">
                             <div class="form-group">
-                                <label for="user_gridmap_default_band"><?php echo lang('account_gridmap_default_band'); ?></label>
+                                <label for="user_default_band"><?php echo lang('account_gridmap_default_band'); ?></label>
 
-                                <select id="user_gridmap_default_band" class="form-control form-control-sm" name="user_gridmap_default_band">
+                                <select id="user_default_band" class="form-control form-control-sm" name="user_default_band">
                                     <option value="All">All</option>;
                                     <?php foreach($bands as $band) {
                                         echo '<option value="'.$band.'"';
-                                        if (isset($user_gridmap_default_band) && $user_gridmap_default_band == $band) {
+                                        if (isset($user_default_band) && $user_default_band == $band) {
                                            echo ' selected';
                                         }
                                         echo '>'.$band.'</option>'."\n";
@@ -564,30 +564,30 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="my-1 mr-2"><?php echo lang('gridsquares_confirmation'); ?></label>
+                                <label class="my-1 mr-2"><?php echo lang('account_qsl_settings'); ?></label>
                                 <div class="form-check-inline">
-                                    <?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_qsl" id="user_gridmap_confirmation_qsl"';
-                                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'Q') !== false) {
+                                    <?php echo '<input class="form-check-input" type="checkbox" name="user_default_confirmation_qsl" id="user_default_confirmation_qsl"';
+                                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
                                            echo ' checked';
                                         }
                                         echo '>'; ?>
-                                    <label class="form-check-label" for="user_gridmap_confirmation_qsl">QSL</label>
+                                    <label class="form-check-label" for="user_default_confirmation_qsl">QSL</label>
                                 </div>
                                 <div class="form-check-inline">
-                                    <?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_lotw" id="user_gridmap_confirmation_lotw"';
-                                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'L') !== false) {
+                                    <?php echo '<input class="form-check-input" type="checkbox" name="user_default_confirmation_lotw" id="user_default_confirmation_lotw"';
+                                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
                                            echo ' checked';
                                         }
                                         echo '>'; ?>
-                                    <label class="form-check-label" for="user_gridmap_confirmation_lotw">LoTW</label>
+                                    <label class="form-check-label" for="user_default_confirmation_lotw">LoTW</label>
                                 </div>
                                 <div class="form-check-inline">
-                                    <?php echo '<input class="form-check-input" type="checkbox" name="user_gridmap_confirmation_eqsl" id="user_gridmap_confirmation_eqsl"';
-                                        if (isset($user_gridmap_confirmation) && strpos($user_gridmap_confirmation, 'E') !== false) {
+                                    <?php echo '<input class="form-check-input" type="checkbox" name="user_default_confirmation_eqsl" id="user_default_confirmation_eqsl"';
+                                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'E') !== false) {
                                            echo ' checked';
                                         }
                                         echo '>'; ?>
-                                    <label class="form-check-label" for="user_gridmap_confirmation_eqsl">eQSL</label>
+                                    <label class="form-check-label" for="user_default_confirmation_eqsl">eQSL</label>
                                 </div>
                              </div>
                     </div>

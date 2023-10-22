@@ -71,7 +71,7 @@ let statusBar = document.getElementById("statusBar");
 //Couple the elements to the Events
 connectButton.addEventListener("click", clickConnect)
 sendButton.addEventListener("click", clickSend)
-statusButton.addEventListener("click", clickStatus)
+// statusButton.addEventListener("click", clickStatus)
 
 //When the connectButton is pressed
 async function clickConnect() {

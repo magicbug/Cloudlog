@@ -19,13 +19,13 @@
 	<?php echo validation_errors(); ?>
 
 	<?php if($my_station_profile->station_id != NULL) {
-		$form_action = "Update";
+		$form_action = lang("admin_update");
 	?>
 		<form method="post" action="<?php echo site_url('station/edit/'); ?><?php echo $my_station_profile->station_id; ?>" name="create_profile">
 			<input type="hidden" name="station_id" value="<?php echo $my_station_profile->station_id; ?>">
 
 	<?php } else {
-		$form_action = "Create";
+		$form_action = lang("admin_create");
 	?>
 		<form method="post" action="<?php echo site_url('station/copy/'); ?><?php echo $copy_from; ?>" name="create_profile">
 	<?php } ?>
@@ -33,25 +33,25 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<div class="card-header"><?php echo $page_title; ?> (Callsign: <?php echo $my_station_profile->station_callsign; ?>)</div>
+				<div class="card-header"><?php echo $page_title; ?> <?php echo "(" . lang("gen_hamradio_callsign") . ": "; ?> <?php echo $my_station_profile->station_callsign; ?>)</div>
 				<div class="card-body">
 
 					<div class="form-group">
-						<label for="stationNameInput">Station Name</label>
+						<label for="stationNameInput"><?php echo lang("station_location_name"); ?></label>
 						<input type="text" class="form-control" name="station_profile_name" id="stationNameInput" aria-describedby="stationNameInputHelp" value="<?php if(set_value('station_profile_name') != "") { echo set_value('station_profile_name'); } else { echo $my_station_profile->station_profile_name; } ?>" required>
-						<small id="stationNameInputHelp" class="form-text text-muted">Shortname for the station location. For example: Home (IO87IP)</small>
+						<small id="stationNameInputHelp" class="form-text text-muted"><?php echo lang("station_location_name_hint"); ?></small>
 					</div>
 
 					<div class="form-group">
-						<label for="stationCallsignInput">Station Callsign</label>
+						<label for="stationCallsignInput"><?php echo lang("station_location_callsign"); ?></label>
 						<input type="text" class="form-control" name="station_callsign" id="stationCallsignInput" aria-describedby="stationCallsignInputHelp" value="<?php if(set_value('station_callsign') != "") { echo set_value('station_callsign'); } else { echo $my_station_profile->station_callsign; } ?>" required>
-						<small id="stationCallsignInputHelp" class="form-text text-muted">Station callsign. For example: 2M0SQL/P</small>
+						<small id="stationCallsignInputHelp" class="form-text text-muted"><?php echo lang("station_location_callsign_hint"); ?></small>
 					</div>
 
 					<div class="form-group">
-						<label for="stationPowerInput">Station Power</label>
+						<label for="stationPowerInput"><?php echo lang("station_location_power"); ?></label>
 						<input type="number" class="form-control" name="station_power" step="1" id="stationPowerInput" aria-describedby="stationPowerInputHelp" value="<?php if(set_value('station_power') != "") { echo set_value('station_power'); } else { echo $my_station_profile->station_power; } ?>">
-						<small id="stationPowerInputHelp" class="form-text text-muted">Default station power. Overwritten by CAT.</small>
+						<small id="stationPowerInputHelp" class="form-text text-muted"><?php echo lang("station_location_power_hint"); ?></small>
 					</div>
 				</div>
 			</div>
@@ -62,33 +62,40 @@
 		<!-- Location Ends -->
 		<div class="col-md">
 			<div class="card">
-				<div class="card-header">Location</div>
+				<div class="card-header"><?php echo lang("general_word_location"); ?></div>
 				<div class="card-body">
 					<!-- DXCC -->
 					<div class="form-group">
-						<label for="stationDXCCInput">Station DXCC</label>
-							<?php if ($dxcc_list->num_rows() > 0) { ?>
-							<select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
-							<option value="0" <?php if($my_station_profile->station_dxcc == "0") { ?>selected<?php } ?>>- NONE -</option>
-							<?php foreach ($dxcc_list->result() as $dxcc) { ?>
-							<option value="<?php echo $dxcc->adif; ?>" <?php if($my_station_profile->station_dxcc == $dxcc->adif) { ?>selected<?php } ?>><?php echo ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix; if ($dxcc->end != NULL) echo ' ('.lang('gen_hamradio_deleted_dxcc').')';?>
-							</option>
-							<?php } ?>
-							</select>
-							<?php } ?>
-						<small id="stationDXCCInputHelp" class="form-text text-muted">Station DXCC entity. For example: Scotland</small>
+					    <label for="stationDXCCInput"><?php echo lang("station_location_dxcc"); ?></label>
+					    <?php if ($dxcc_list->num_rows() > 0) { ?>
+					        <select class="form-control" id="dxcc_select" name="dxcc" aria-describedby="stationCallsignInputHelp">
+					            <option value="0" <?php if($my_station_profile->station_dxcc == "0") { ?>selected<?php } ?>><?php echo "- " . lang('general_word_none') . " -"; ?></option>
+					            <?php foreach ($dxcc_list->result() as $dxcc) { ?>
+					                <?php $isDeleted = $dxcc->end !== NULL; ?>
+					                <option value="<?php echo $dxcc->adif; ?>" <?php if($my_station_profile->station_dxcc == $dxcc->adif) { ?>selected<?php } ?>>
+					                    <?php echo ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix;
+					                    if ($isDeleted) {
+					                        echo ' (' . lang('gen_hamradio_deleted_dxcc') . ')';
+					                    }
+					                    ?>
+					                </option>
+					            <?php } ?>
+					        </select>
+					        <?php } ?>
+					    <small id="stationDXCCInputHelp" class="form-text text-muted"><?php echo lang("station_location_dxcc_hint"); ?></small>
+						<div class="alert alert-danger" role="alert" id="warningMessageDXCC" style="display: none"></div>
 					</div>
 
 					<!-- City -->
 					<div class="form-group">
-						<label for="stationCityInput">Station City</label>
+						<label for="stationCityInput"><?php echo lang("station_location_city"); ?></label>
 						<input type="text" class="form-control" name="city" id="stationCityInput" aria-describedby="stationCityInputHelp" value="<?php if(set_value('city') != "") { echo set_value('city'); } else { echo $my_station_profile->station_city; } ?>">
-		    			<small id="stationCityInputHelp" class="form-text text-muted">Station city. For example: Inverness</small>
+		    			<small id="stationCityInputHelp" class="form-text text-muted"><?php echo lang("station_location_city_hint"); ?></small>
 		  			</div>
 
 					<!-- US State -->
 					<div class="form-group" id="us_state">
-		    			<label for="stateInput">Station State</label>
+		    			<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
 		    				<select class="form-control custom-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 								<option value=""></option>
 								<option value="AK" <?php if($my_station_profile->state == "AK") { echo "selected"; } ?>>Alaska</option>
@@ -143,12 +150,12 @@
 								<option value="WV" <?php if($my_station_profile->state == "WV") { echo "selected"; } ?>>West Virginia</option>
 								<option value="WY" <?php if($my_station_profile->state == "WY") { echo "selected"; } ?>>Wyoming</option>
 							</select>
-		    				<small id="StateHelp" class="form-text text-muted">Station state. Applies to certain countries only. Leave blank if not applicable.</small>
+		    				<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 		 				</div>
 
 					<!-- Canada State -->
 					<div class="form-group" id="canada_state">
-		    			<label for="stateInput">Canadian Province</label>
+		    			<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
 		    				<select class="form-control custom-select" name="station_ca_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 								<option value=""></option>
 								<option value="AB" <?php if($my_station_profile->state == "AB") { echo "selected"; } ?>>Alberta</option>
@@ -165,14 +172,14 @@
 								<option value="SK" <?php if($my_station_profile->state == "SK") { echo "selected"; } ?>>Saskatchewan</option>
 								<option value="YT" <?php if($my_station_profile->state == "YT") { echo "selected"; } ?>>Yukon</option>
 							</select>
-		    				<small id="StateHelp" class="form-text text-muted">Station state. Applies to certain countries only. Leave blank if not applicable.</small>
+		    				<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
 						<!-- US County -->
 						<div class="form-group">
-							<label for="stationCntyInput">Station County</label>
+							<label for="stationCntyInput"><?php echo lang("station_location_county"); ?></label>
 							<input disabled="disabled" type="text" class="form-control" name="station_cnty" id="stationCntyInput" aria-describedby="stationCntyInputHelp" value="<?php if(set_value('station_cnty') != "") { echo set_value('station_cnty'); } else { echo $my_station_profile->station_cnty; } ?>">
-							<small id="stationCntyInputHelp" class="form-text text-muted">Station County (Only used for USA/Alaska/Hawaii)</small>
+							<small id="stationCntyInputHelp" class="form-text text-muted"><?php echo lang("station_location_county_hint"); ?></small>
 		  				</div>
 				</div>
 			</div>
@@ -182,11 +189,11 @@
 		<!-- Zones -->
 		<div class="col-md">
 			<div class="card">
-				<div class="card-header">Zones</div>
+				<div class="card-header"><?php echo lang("gen_hamradio_zones"); ?></div>
 				<div class="card-body">
 					<!-- CQ Zone -->
 					<div class="form-group">
-						<label for="stationCQZoneInput">CQ Zone</label>
+						<label for="stationCQZoneInput"><?php echo lang("gen_hamradio_cq_zone"); ?></label>
 						<select class="custom-select" id="stationCQZoneInput" name="station_cq" required>
 							<?php
 							for ($i = 1; $i<=40; $i++) {
@@ -198,12 +205,12 @@
 							}
 							?>
 						</select>
-						<small id="stationCQInputHelp" class="form-text text-muted">If you don't know your CQ Zone then <a href="https://zone-check.eu/?m=cq" target="_blank">click here</a> to find it!</small>
+						<small id="stationCQInputHelp" class="form-text text-muted"><?php echo lang("gen_find_zone_cq"); ?></small>
 					</div>
 
 					<!-- ITU Zone -->
 					<div class="form-group">
-                    	<label for="stationITUZoneInput">ITU Zone</label>
+                    	<label for="stationITUZoneInput"><?php echo lang("gen_hamradio_itu_zone"); ?></label>
                     	<select class="custom-select" id="stationITUZoneInput" name="station_itu" required>
 							<?php
 							for ($i = 1; $i<=90; $i++) {
@@ -215,7 +222,7 @@
 							}
 							?>
                     	</select>
-                    	<small id="stationITUInputHelp" class="form-text text-muted">If you don't know your ITU Zone then <a href="https://zone-check.eu/?m=itu" target="_blank">click here</a> to find it!</small>
+                    	<small id="stationITUInputHelp" class="form-text text-muted"><?php echo lang("gen_find_zone_itu"); ?></small>
                 	</div>
 
 				</div>
@@ -227,20 +234,20 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">Gridsquare</h5>
+				<h5 class="card-header"><?php echo lang("station_location_gridsquare"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-		    			<label for="stationGridsquareInput">Gridsquare</label>
+		    			<label for="stationGridsquareInput"><?php echo lang("station_location_gridsquare"); ?></label>
 
 						<div class="input-group mb-3">
 						<input type="text" class="form-control" name="gridsquare" id="stationGridsquareInput" aria-describedby="stationGridInputHelp" value="<?php if(set_value('gridsquare') != "") { echo set_value('gridsquare'); } else { echo $my_station_profile->station_gridsquare; } ?>" required>
 							<div class="input-group-append">
-								<button type="button" class="btn btn-outline-secondary" onclick="getLocation()"><i class="fas fa-compass"></i> Get Gridsquare</button>
+								<button type="button" class="btn btn-outline-secondary" onclick="getLocation()"><i class="fas fa-compass"></i> <?php echo lang("gen_hamradio_get_gridsquare"); ?></button>
 							</div>
 						</div>
 
-		    			<small id="stationGridInputHelp" class="form-text text-muted">Station grid square. For example: IO87IP. If you don't know your grid square then <a href="https://zone-check.eu/?m=loc" target="_blank">click here</a>!</small>
-		    			<small id="stationGridInputHelp" class="form-text text-muted">If you are located on a grid line, enter multiple grid squares separated with commas. For example: IO77,IO78,IO87,IO88.</small>
+		    			<small id="stationGridInputHelp" class="form-text text-muted"><?php echo lang("station_location_gridsquare_hint_ln1"); ?></small>
+		    			<small id="stationGridInputHelp" class="form-text text-muted"><?php echo lang("station_location_gridsquare_hint_ln2"); ?></small>
 		  			</div>
 				</div>
 			</div>
@@ -248,10 +255,10 @@
 
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">IOTA Reference</h5>
+				<h5 class="card-header"><?php echo lang("gen_hamradio_iota"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-                		<label for="stationIOTAInput">IOTA Reference</label>
+                		<label for="stationIOTAInput"><?php echo lang("gen_hamradio_iota_reference"); ?></label>
                 		<select class="custom-select" name="iota" id="stationIOTAInput" aria-describedby="stationIOTAInputHelp" placeholder="EU-005">
                     		<option value =""></option>
                     		<?php
@@ -265,8 +272,8 @@
                     		?>
                 		</select>
 
-						<small id="stationIOTAInputHelp" class="form-text text-muted">Station IOTA reference. For example: EU-005</small>
-                		<small id="stationIOTAInputHelp" class="form-text text-muted">You can look up IOTA references at the <a target="_blank" href="https://www.iota-world.org/iota-directory/annex-f-short-title-iota-reference-number-list.html">IOTA World</a> website.</small>
+						<small id="stationIOTAInputHelp" class="form-text text-muted"><?php echo lang("station_location_iota_hint_ln1"); ?></small>
+                		<small id="stationIOTAInputHelp" class="form-text text-muted"><?php echo lang("station_location_iota_hint_ln2"); ?></small>
             		</div>
 				</div>
 			</div>
@@ -276,12 +283,12 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">SOTA</h5>
+				<h5 class="card-header"><?php echo lang("gen_hamradio_sota"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-		    			<label for="stationSOTAInput">SOTA Reference</label>
+		    			<label for="stationSOTAInput"><?php echo lang("gen_hamradio_sota_reference"); ?></label>
 		    			<input type="text" class="form-control" name="sota" id="stationSOTAInput" aria-describedby="stationSOTAInputHelp" value="<?php if(set_value('sota') != "") { echo set_value('sota'); } else { echo $my_station_profile->station_sota; } ?>">
-		    			<small id="stationSOTAInputHelp" class="form-text text-muted">Station SOTA reference. You can look up SOTA references at the <a target="_blank" href="https://www.sotamaps.org/">SOTA Maps</a> website.</small>
+		    			<small id="stationSOTAInputHelp" class="form-text text-muted"><?php echo lang("station_location_sota_hint_ln1"); ?></small>
 		  			</div>
 				</div>
 			</div>
@@ -289,12 +296,12 @@
 
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">WWFF</h5>
+				<h5 class="card-header"><?php echo lang("gen_hamradio_wwff"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-						<label for="stationWWFFInput">WWFF Reference</label>
+						<label for="stationWWFFInput"><?php echo lang("gen_hamradio_wwff_reference"); ?></label>
 						<input type="text" class="form-control" name="wwff" id="stationWWFFInput" aria-describedby="stationWWFFInputHelp" value="<?php if(set_value('wwff') != "") { echo set_value('wwff'); } else { echo $my_station_profile->station_wwff; } ?>">
-						<small id="stationWWFFInputHelp" class="form-text text-muted">Station WWFF reference. You can look up WWFF references at the <a target="_blank" href="https://www.cqgma.org/mvs/">GMA Map</a> website.</small>
+						<small id="stationWWFFInputHelp" class="form-text text-muted"><?php echo lang("station_location_wwff_hint_ln1"); ?></small>
 					</div>
 				</div>
 			</div>
@@ -302,12 +309,12 @@
 
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">POTA</h5>
+				<h5 class="card-header"><?php echo lang("gen_hamradio_pota"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-						<label for="stationPOTAInput">POTA Reference</label>
+						<label for="stationPOTAInput"><?php echo lang("gen_hamradio_pota_reference"); ?></label>
 						<input type="text" class="form-control" name="pota" id="stationPOTAInput" aria-describedby="stationPOTAInputHelp" value="<?php if(set_value('pota') != "") { echo set_value('pota'); } else { echo $my_station_profile->station_pota; } ?>">
-						<small id="stationPOTAInputHelp" class="form-text text-muted">Station POTA reference. You can look up POTA references at the <a target="_blank" href="https://pota.app/#/map/">POTA Map</a> website.</small>
+						<small id="stationPOTAInputHelp" class="form-text text-muted"><?php echo lang("station_location_pota_hint_ln1"); ?></small>
 					</div>
 				</div>
 			</div>
@@ -317,18 +324,18 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">Signature</h5>
+				<h5 class="card-header"><?php echo lang("station_location_signature"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-		    			<label for="stationSigInput">Signature</label>
+		    			<label for="stationSigInput"><?php echo lang("station_location_signature_name"); ?></label>
 		    			<input type="text" class="form-control" name="sig" id="stationSigInput" aria-describedby="stationSigInputHelp" value="<?php if(set_value('sig') != "") { echo set_value('sig'); } else { echo $my_station_profile->station_sig; } ?>">
-		    			<small id="stationSigInputHelp" class="form-text text-muted">Station Signature (e.g. GMA)..</small>
+		    			<small id="stationSigInputHelp" class="form-text text-muted"><?php echo lang("station_location_signature_name_hint"); ?></small>
 					</div>
 
 					<div class="form-group">
-		    			<label for="stationSigInfoInput">Signature Information</label>
+		    			<label for="stationSigInfoInput"><?php echo lang("station_location_signature_info"); ?></label>
 		    			<input type="text" class="form-control" name="sig_info" id="stationSigInfoInput" aria-describedby="stationSigInfoInputHelp" value="<?php if(set_value('sig_info') != "") { echo set_value('sig_info'); } else { echo $my_station_profile->station_sig_info; } ?>">
-		    			<small id="stationSigInfoInputHelp" class="form-text text-muted">Station Signature Info (e.g. DA/NW-357).</small>
+		    			<small id="stationSigInfoInputHelp" class="form-text text-muted"><?php echo lang("station_location_signature_info_hint"); ?></small>
 					</div>
 				</div>
 			</div>
@@ -338,12 +345,12 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">eQSL</h5>
+				<h5 class="card-header"><?php echo lang("eqsl_short"); ?></h5>
 				<div class="card-body">
 					<div class="form-group">
-		    			<label for="eqslNickname">eQSL QTH Nickname</label>
+		    			<label for="eqslNickname">eQSL QTH Nickname</label> <!-- This does not need Multilanguage Support -->
 		    			<input type="text" class="form-control" name="eqslnickname" id="eqslNickname" aria-describedby="eqslhelp" value="<?php if(set_value('eqslnickname') != "") { echo set_value('eqslnickname'); } else { echo $my_station_profile->eqslqthnickname; } ?>">
-		    			<small id="eqslhelp" class="form-text text-muted">eQSL QTH Nickname.</small>
+		    			<small id="eqslhelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_hint"); ?></small>
 		  			</div>
 				</div>
 			</div>
@@ -351,19 +358,19 @@
 
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">QRZ <span class="badge badge-warning">Subscription Required</span></h5>
+				<h5 class="card-header">QRZ.com <span class="badge badge-warning"> <?php echo lang("station_location_qrz_subscription"); ?></span></h5> <!-- "QRZ.com" does not need Multilanguage Support -->
 				<div class="card-body">
 					<div class="form-group">
-						<label for="qrzApiKey">QRZ.com Logbook API Key</label>
-						<input type="text" class="form-control" name="qrzapikey" id="qrzApiKey" aria-describedby="qrzApiKeyHelp" value="<?php if(set_value('qrzapikey') != "") { echo set_value('qrzapikey'); } else { echo $my_station_profile->qrzapikey; } ?>">
-						<small id="qrzApiKeyHelp" class="form-text text-muted">Find your API key on <a href="https://logbook.qrz.com/logbook" target="_blank">QRZ.com's settings page</a></small>
+						<label for="qrzApiKey">QRZ.com Logbook API Key</label> <!-- This does not need Multilanguage Support -->
+						<input type="text" class="form-control" name="qrzapikey" pattern="^([A-F0-9]{4}-){3}[A-F0-9]{4}$" id="qrzApiKey" aria-describedby="qrzApiKeyHelp" value="<?php if(set_value('qrzapikey') != "") { echo set_value('qrzapikey'); } else { echo $my_station_profile->qrzapikey; } ?>">
+						<small id="qrzApiKeyHelp" class="form-text text-muted"><?php echo lang("station_location_qrz_hint"); ?></a></small>
 					</div>
 
 					<div class="form-group">
-						<label for="qrzrealtime">QRZ.com Logbook Realtime Upload</label>
+						<label for="qrzrealtime"><?php echo lang("station_location_qrz_realtime_upload"); ?></label>
 						<select class="custom-select" id="qrzrealtime" name="qrzrealtime">
-							<option value="1" <?php if ($my_station_profile->qrzrealtime == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
-							<option value="0" <?php if ($my_station_profile->qrzrealtime == 0) { echo " selected =\"selected\""; } ?>>No</option>
+							<option value="1" <?php if ($my_station_profile->qrzrealtime == 1) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" <?php if ($my_station_profile->qrzrealtime == 0) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_no"); ?></option>
 						</select>
 					</div>
 				</div>
@@ -374,18 +381,18 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">HRDLog.net</h5>
+				<h5 class="card-header">HRDLog.net</h5> <!-- This does not need Multilanguage Support -->
 				<div class="card-body">
 					<div class="form-group">
-						<label for="webadifApiKey">HRDLog.net API Code</label>
+						<label for="webadifApiKey">HRDLog.net API Code</label> <!-- This does not need Multilanguage Support -->
 						<input type="text" class="form-control" name="hrdlog_code" id="hrdlog_code" aria-describedby="hrdlog_codeHelp" value="<?php if(set_value('hrdlog_code') != "") { echo set_value('hrdlog_code'); } else { echo $my_station_profile->hrdlog_code; } ?>">
-						<small id="hrdlog_codeHelp" class="form-text text-muted">Create your API Code on <a href="http://www.hrdlog.net/EditUser.aspx" target="_blank">HRDLog.net Userprofile page</a></small>
+						<small id="hrdlog_codeHelp" class="form-text text-muted"><?php echo lang("station_location_hrdlog_hint"); ?></a></small>
 					</div>
 					<div class="form-group">
-						<label for="hrdlogrealtime">HRDLog.net Realtime Upload</label>
+						<label for="hrdlogrealtime"><?php echo lang("station_location_hrdlog_realtime_upload"); ?></label>
 						<select class="custom-select" id="hrdlogrealtime" name="hrdlogrealtime">
-							<option value="1" <?php if ($my_station_profile->hrdlogrealtime == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
-							<option value="0" <?php if ($my_station_profile->hrdlogrealtime == 0) { echo " selected =\"selected\""; } ?>>No</option>
+							<option value="1" <?php if ($my_station_profile->hrdlogrealtime == 1) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" <?php if ($my_station_profile->hrdlogrealtime == 0) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_no"); ?></option>
 						</select>
 					</div>
 				</div>
@@ -395,18 +402,18 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">QO-100 Dx Club</h5>
+				<h5 class="card-header">QO-100 Dx Club</h5> <!-- This does not need Multilanguage Support -->
 				<div class="card-body">
 					<div class="form-group">
-						<label for="webadifApiKey">QO-100 Dx Club API Key</label>
+						<label for="webadifApiKey">QO-100 Dx Club API Key</label> <!-- This does not need Multilanguage Support -->
 						<input type="text" class="form-control" name="webadifapikey" id="webadifApiKey" aria-describedby="webadifApiKeyHelp" value="<?php if(set_value('webadifapikey') != "") { echo set_value('webadifapikey'); } else { echo $my_station_profile->webadifapikey; } ?>">
-						<small id="webadifApiKeyHelp" class="form-text text-muted">Create your API key on <a href="https://qo100dx.club" target="_blank">your QO-100 Dx Club's profile page</a></small>
+						<small id="webadifApiKeyHelp" class="form-text text-muted"><?php echo lang("station_location_qo100_hint"); ?></a></small>
 					</div>
 					<div class="form-group">
-						<label for="webadifrealtime">QO-100 Dx Club Realtime Upload</label>
+						<label for="webadifrealtime"><?php echo lang("station_location_qo100_realtime_upload"); ?></label>
 						<select class="custom-select" id="webadifrealtime" name="webadifrealtime">
-							<option value="1" <?php if ($my_station_profile->webadifrealtime == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
-							<option value="0" <?php if ($my_station_profile->webadifrealtime == 0) { echo " selected =\"selected\""; } ?>>No</option>
+							<option value="1" <?php if ($my_station_profile->webadifrealtime == 1) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" <?php if ($my_station_profile->webadifrealtime == 0) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_no"); ?></option>
 						</select>
 					</div>
 				</div>
@@ -416,27 +423,27 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
-				<h5 class="card-header">OQRS</h5>
+				<h5 class="card-header">OQRS</h5> <!-- This does not need Multilanguage Support -->
 				<div class="card-body">
 					<div class="form-group">
-						<label for="oqrs">OQRS Enabled</label>
+						<label for="oqrs"><?php echo lang("station_location_oqrs_enabled"); ?></label>
 						<select class="custom-select" id="oqrs" name="oqrs">
-							<option value="1" <?php if ($my_station_profile->oqrs == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
-							<option value="0" <?php if ($my_station_profile->oqrs == 0) { echo " selected =\"selected\""; } ?>>No</option>
+							<option value="1" <?php if ($my_station_profile->oqrs == 1) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" <?php if ($my_station_profile->oqrs == 0) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_no"); ?></option>
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="oqrs">OQRS Email alert</label>
+						<label for="oqrs"><?php echo lang("station_location_oqrs_email_alert"); ?></label>
 						<select class="custom-select" id="oqrsemail" name="oqrsemail">
-							<option value="1" <?php if ($my_station_profile->oqrs_email == 1) { echo " selected =\"selected\""; } ?>>Yes</option>
-							<option value="0" <?php if ($my_station_profile->oqrs_email == 0) { echo " selected =\"selected\""; } ?>>No</option>
+							<option value="1" <?php if ($my_station_profile->oqrs_email == 1) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" <?php if ($my_station_profile->oqrs_email == 0) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_no"); ?></option>
 						</select>
-						<small id="oqrsemailHelp" class="form-text text-muted">Make sure email is set up under admin and global options.</small>
+						<small id="oqrsemailHelp" class="form-text text-muted"><?php echo lang("station_location_oqrs_email_hint"); ?></small>
 					</div>
 					<div class="form-group">
-						<label for="oqrstext">OQRS Text</label>
+						<label for="oqrstext"><?php echo lang("station_location_oqrs_text"); ?></label>
 						<input type="text" class="form-control" name="oqrstext" id="oqrstext" aria-describedby="oqrstextHelp" value="<?php if(set_value('oqrs_text') != "") { echo set_value('oqrs_text'); } else { echo $my_station_profile->oqrs_text; } ?>">
-						<small id="oqrstextHelp" class="form-text text-muted">Some info you want to add regarding QSL'ing.</small>
+						<small id="oqrstextHelp" class="form-text text-muted"><?php echo lang("station_location_oqrs_text_hint"); ?></small>
 					</div>
 
 				</div>
@@ -444,7 +451,7 @@
 		</div>
 	</div>
 
-	<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> <?php echo $form_action; ?> Station Location</button>
+	<button type="submit" class="btn btn-primary" style="margin-bottom: 30px;"><i class="fas fa-plus-square"></i> <?php echo $form_action; ?> <?php echo lang("station_location"); ?></button>
 
 	</form>
 

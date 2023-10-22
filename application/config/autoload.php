@@ -98,15 +98,22 @@ $autoload['config'] = array('cloudlog', 'bands', 'lotw');
 
 $autoload['language'] = array(
     'account',
+    'adif',
+    'admin',
     'contesting',
     'eqsl',
+    'export',
+    'filter',
     'general_words',
+    'gridsquares',
     'lotw',
     'menu',
     'notes',
+    'options',
     'qslcard',
     'qso',
-    'gridsquares'
+    'station',
+    'statistics'
     );
 
 /*

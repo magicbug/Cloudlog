@@ -42,6 +42,7 @@ $lang['menu_pota'] = 'POTA';
 $lang['menu_sig'] = 'SIG';
 $lang['menu_sota'] = 'SOTA';
 $lang['menu_us_counties'] = 'US Counties';
+$lang['menu_us_gridmaster'] = 'US Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
@@ -83,3 +84,6 @@ $lang['menu_hardware_interfaces'] = 'Аппаратные интерфейсы';
 $lang['menu_help'] = 'Помощь';
 $lang['menu_forum'] = 'Форум';
 $lang['menu_logout'] = 'Выход';
+
+$lang['menu_ffma'] = "Fred Fish Memorial Award";
+$lang['menu_maintenance']='Maintenance';

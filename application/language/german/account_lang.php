@@ -19,6 +19,7 @@ $lang['account_password'] = 'Passwort';
 
 $lang['account_roles'] = 'Rollen';
 $lang['account_user_role'] = 'Benutzerrolle';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Thema';
 $lang['account_stylesheet'] = 'Stylesheet';
@@ -35,6 +36,8 @@ $lang['account_date_format'] = 'Datumsformat';
 $lang['account_measurement_preferences'] = 'Entfernungsformat';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Wähle, wie Datumsfelder angezeigt werden sollen, wenn du eingeloggt bist.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Wähle, in welcher Einheit Entfernungen angezeigt werden sollen.';
+$lang['account_cloudlog_language'] = 'Cloudlog Sprache';
+$lang['account_choose_cloudlog_language'] = 'Wähle eine Sprache für Cloudlog.';
 
 $lang['account_main_menu'] = 'Hauptmenü';
 $lang['account_show_notes_in_the_main_menu'] = 'Zeige Notizen im Hauptmenü';
@@ -92,7 +95,13 @@ $lang['account_login'] = 'Anmeldung';
 
 $lang['account_mastodon'] = 'Mastodonserver';
 $lang['account_user_mastodon'] = 'URL des Mastodonservers';
+$lang['account_user_mastodon_hint'] = "Haupt-URL des Mastodonservers, z.B. <a href='https://radiosocial.de/' target='_blank'>https://radiosocial.de";
 
-$lang['account_gridmap_settings'] = 'Einstellung der Planquadratkarte';
+$lang['account_default_band_settings'] = 'Einstellung für Standardband und -bestätigungsmethode';
 $lang['account_gridmap_default_band'] = 'Standardband';
-$lang['account_qsl_settings'] = 'QSL-Methoden, die in der Planquadratkarte und beim anlegen eines QSOs angezeigt werden';
+$lang['account_qsl_settings'] = 'Standard QSL-Methoden';
+
+$lang['account_winkeyer'] = 'Winkeyer';
+$lang['account_winkeyer_hint'] = "Die Winkeyer Unterstützung in Cloudlog ist sehr experimentell. Lese zuerst den Wikieintrag auf <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a> bevor du ihn einschaltest.";
+$lang['account_winkeyer_enabled'] = "Winkeyer Features Eingeschaltet";
+
