@@ -126,7 +126,7 @@ $lang['awards_us_gridmaster_description_ln4'] = "Diese Karte zeigt nur QSOs, die
 
 /*
 ___________________________________________________________________________________________
-JA Gridmaster -- Use all 4 Lines of Text
+JA Gridmaster -- Verwenden Sie alle 4 Textzeilen
 ___________________________________________________________________________________________
 */
 
