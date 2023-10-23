@@ -27,6 +27,22 @@
                             </select>
                     </div>
 
+                    <div class="form-group col-md-3">
+                    <label for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
+                        <select id="mode" name="mode" class="form-control custom-select">
+                            <option value="All"><?php echo lang('general_word_all'); ?></option>
+                            <?php
+                            foreach($modes->result() as $mode){
+                                if ($mode->submode == null) {
+                                    echo '<option value="' . $mode->mode . '">'. $mode->mode . '</option>'."\n";
+                                } else {
+                                    echo '<option value="' . $mode->submode . '">' . $mode->submode . '</option>'."\n";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+
                     <div class="form-group col-md-4">
                         <label for="dxcc_id"><?php echo lang('gen_hamradio_dxcc'); ?></label>
                         <select class="custom-select" id="dxcc_id" name="dxcc_id">
@@ -41,22 +57,6 @@
                                 }
                             ?>
 
-                        </select>
-                    </div>
-
-                    <div class="form-group col-md-3">
-                    <label for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
-                        <select id="mode" name="mode" class="form-control custom-select">
-                            <option value="All"><?php echo lang('general_word_all'); ?></option>
-                            <?php
-                            foreach($modes->result() as $mode){
-                                if ($mode->submode == null) {
-                                    echo '<option value="' . $mode->mode . '">'. $mode->mode . '</option>'."\n";
-                                } else {
-                                    echo '<option value="' . $mode->submode . '">' . $mode->submode . '</option>'."\n";
-                                }
-                            }
-                            ?>
                         </select>
                     </div>
                 </div>
