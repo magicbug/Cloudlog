@@ -118,10 +118,22 @@ US Gridmaster -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_gridmaster_description_ln1'] = "US Gridmaster Award";
-$lang['awards_gridmaster_description_ln2'] = "The GridMaster Award is the most prestigious AMSAT award, first introduced in 2014 by the Star Comm Group. It is available to all amateur radio operators worldwide who manage to work all 488 grid squares in the USA via satellite and can provide QSL confirmations for each contact.";
-$lang['awards_gridmaster_description_ln3'] = "Official information from the <a href='https://www.amsat.org/gridmaster/' target='_blank'>website</a>: Two-way communication must be established via amateur satellite with each grid. There is no minimum signal report required. Contacts must be made from the same location or from locations no two of which are more than 200 kilometers apart. The applicant's attestation in the award application serves as affirmation of abidance by the distance rule. Individuals may apply for and be granted multiple GridMaster awards when achieved from another location, which is in a different 200-kilometer circle.";
-$lang['awards_gridmaster_description_ln4'] = "This map shows only QSOs worked on SAT.";
+$lang['awards_us_gridmaster_description_ln1'] = "US Gridmaster Award";
+$lang['awards_us_gridmaster_description_ln2'] = "The GridMaster Award is the most prestigious AMSAT award, first introduced in 2014 by the Star Comm Group. It is available to all amateur radio operators worldwide who manage to work all 488 grid squares in the USA via satellite and can provide QSL confirmations for each contact.";
+$lang['awards_us_gridmaster_description_ln3'] = "Official information from the <a href='https://www.amsat.org/gridmaster/' target='_blank'>website</a>: Two-way communication must be established via amateur satellite with each grid. There is no minimum signal report required. Contacts must be made from the same location or from locations no two of which are more than 200 kilometers apart. The applicant's attestation in the award application serves as affirmation of abidance by the distance rule. Individuals may apply for and be granted multiple GridMaster awards when achieved from another location, which is in a different 200-kilometer circle.";
+$lang['awards_us_gridmaster_description_ln4'] = "This map shows only QSOs worked on SAT.";
+
+
+/*
+___________________________________________________________________________________________
+JA Gridmaster -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_ja_gridmaster_description_ln1'] = "JA Gridmaster Award";
+$lang['awards_ja_gridmaster_description_ln2'] = "Just as the US Gridmaster this Award is based on working all gridsquares of Japan.";
+$lang['awards_ja_gridmaster_description_ln3'] = "Additional Information and the rules about this award are still pending.";
+$lang['awards_ja_gridmaster_description_ln4'] = "";
 
 
 /*

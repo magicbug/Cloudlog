@@ -118,10 +118,22 @@ US Gridmaster -- Verwenden Sie alle 4 Textzeilen
 ___________________________________________________________________________________________
 */
 
-$lang['awards_gridmaster_description_ln1'] = "US Gridmaster Diplom";
-$lang['awards_gridmaster_description_ln2'] = "Der GridMaster Award ist die renommierteste AMSAT-Auszeichnung, die erstmals 2014 von der Star Comm Group eingeführt wurde. Sie steht allen Funkamateuren weltweit zur Verfügung, die es schaffen, alle 488 Planquadrate in den USA via Satellit zu arbeiten und für jeden Kontakt QSL-Bestätigungen vorlegen können.";
-$lang['awards_gridmaster_description_ln3'] = "Offizielle Informationen von der <a href='https://www.amsat.org/gridmaster/' target='_blank'>Website</a>: Es muss eine Zweiwegekommunikation über Amateurfunksatellit mit jedem Gitter hergestellt werden. Es ist keine Mindest-Signalreport erforderlich. Die Kontakte müssen vom selben Standort aus erfolgen oder von Standorten aus, die nicht mehr als 200 Kilometer voneinander entfernt sind. Die Aussage des Antragstellers in der Auszeichnungsanwendung dient als Bestätigung der Einhaltung der Abstandsregel. Personen können mehrere GridMaster-Auszeichnungen beantragen und erhalten, wenn sie von einem anderen Standort aus erreicht werden, der sich in einem anderen 200-Kilometer-Kreis befindet.";
-$lang['awards_gridmaster_description_ln4'] = "Diese Karte zeigt nur QSOs, die über SAT gearbeitet wurden.";
+$lang['awards_us_gridmaster_description_ln1'] = "US Gridmaster Diplom";
+$lang['awards_us_gridmaster_description_ln2'] = "Der GridMaster Award ist die renommierteste AMSAT-Auszeichnung, die erstmals 2014 von der Star Comm Group eingeführt wurde. Sie steht allen Funkamateuren weltweit zur Verfügung, die es schaffen, alle 488 Planquadrate in den USA via Satellit zu arbeiten und für jeden Kontakt QSL-Bestätigungen vorlegen können.";
+$lang['awards_us_gridmaster_description_ln3'] = "Offizielle Informationen von der <a href='https://www.amsat.org/gridmaster/' target='_blank'>Website</a>: Es muss eine Zweiwegekommunikation über Amateurfunksatellit mit jedem Gitter hergestellt werden. Es ist keine Mindest-Signalreport erforderlich. Die Kontakte müssen vom selben Standort aus erfolgen oder von Standorten aus, die nicht mehr als 200 Kilometer voneinander entfernt sind. Die Aussage des Antragstellers in der Auszeichnungsanwendung dient als Bestätigung der Einhaltung der Abstandsregel. Personen können mehrere GridMaster-Auszeichnungen beantragen und erhalten, wenn sie von einem anderen Standort aus erreicht werden, der sich in einem anderen 200-Kilometer-Kreis befindet.";
+$lang['awards_us_gridmaster_description_ln4'] = "Diese Karte zeigt nur QSOs, die über SAT gearbeitet wurden.";
+
+
+/*
+___________________________________________________________________________________________
+JA Gridmaster -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_ja_gridmaster_description_ln1'] = "JA Gridmaster Diplom";
+$lang['awards_ja_gridmaster_description_ln2'] = "Genau wie das US Gridmaster Diplom basiert dieses Diplom auf dem Arbeiten alle Planquadrate in Japan.";
+$lang['awards_ja_gridmaster_description_ln3'] = "Genaue Information und Regeln zu diesem Diplom sind noch offen, bzw. werden noch hinzugefügt.";
+$lang['awards_ja_gridmaster_description_ln4'] = "";
 
 
 /*
