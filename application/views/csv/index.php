@@ -112,7 +112,7 @@
 				<div class="form-row">
 					<div class="form-group col-md-3">
 						<label for="datetimepicker1">From date:</label>
-						<div class="csvdatepicker input-group date col-md-12" id="datetimepicker1" data-target-input="nearest">
+						<div class="exportdatepicker input-group date col-md-12" id="datetimepicker1" data-target-input="nearest">
 							<input name="fromdate" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
 							<div class="input-group-append"  data-target="#datetimepicker1" data-toggle="datetimepicker">
 								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -122,8 +122,8 @@
 
 					<div class="form-group col-md-3">
 						<label for="datetimepicker2">To date:</label>
-						<div class="csvdatepicker input-group date col-md-12" id="datetimepicker2" data-target-input="nearest">
-							<input name="todate" "totype="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+						<div class="exportdatepicker input-group date col-md-12" id="datetimepicker2" data-target-input="nearest">
+							<input name="todate" totype="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
 							<div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
 								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 							</div>
