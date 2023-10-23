@@ -38,6 +38,7 @@ $lang['menu_cq'] = 'CQ';
 $lang['menu_dok'] = 'DOK';
 $lang['menu_dxcc'] = 'DXCC';
 $lang['menu_ffma'] = 'Fred Fish Memorial Award';
+$lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_iota'] = 'IOTA';
 $lang['menu_pota'] = 'POTA';
 $lang['menu_sig'] = 'SIG';

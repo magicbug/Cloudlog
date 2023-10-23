@@ -86,4 +86,5 @@ $lang['menu_forum'] = '论坛';
 $lang['menu_logout'] = '注销';
 
 $lang['menu_ffma'] = "Fred Fish Memorial Award";
+$lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_maintenance']='Maintenance';
