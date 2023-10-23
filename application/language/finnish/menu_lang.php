@@ -86,4 +86,5 @@ $lang['menu_forum'] = 'Foorumi';
 $lang['menu_logout'] = 'Kirjaudu ulos';
 
 $lang['menu_ffma'] = "Fred Fish Memorial Award";
+$lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_maintenance']='Maintenance';
