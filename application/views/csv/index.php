@@ -60,7 +60,11 @@
 						<option value="All"><?php echo lang('general_word_all'); ?></option>
 						<?php
 						foreach($dxcc as $d){
-							echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name))) . '</option>';
+							echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower($d->name), "- (/");
+							if ($d->Enddate != null) {
+								echo ' ('.lang('gen_hamradio_deleted_dxcc').')';
+							}
+							echo '</option>';
 						}
 						?>
 
