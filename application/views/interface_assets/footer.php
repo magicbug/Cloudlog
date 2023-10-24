@@ -2284,7 +2284,7 @@ $(document).ready(function(){
     </script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "kml") { ?>
+<?php if ($this->uri->segment(1) == "kmlexport") { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
     <script type="text/javascript">

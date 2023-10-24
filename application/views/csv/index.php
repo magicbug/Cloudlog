@@ -1,14 +1,14 @@
 <div class="container">
 	<br>
-	<h2><?php echo $page_title; ?></h2>
+	<h2><?php echo lang('export_sota_header'); ?></h2>
 
 	<div class="card">
 		<div class="card-header">
-			Export your logbook for SOTA uploads.
+			<?php echo lang('export_sota_description'); ?>
 		</div>
 
 		<div class="alert alert-warning" role="alert">
-			Only QSOs with SOTA information will be exported!
+			<?php echo lang('export_sota_info_warning'); ?>
 		</div>
 
 		<div class="card-body">
@@ -18,9 +18,9 @@
 					<div class="form-group col-md-3">
 						<label for="station_profile"><?php echo lang('cloudlog_station_profile'); ?></label>
 						<select name="station_profile" class="station_id custom-select">
-							<option value="All">All</option>
+							<option value="All"><?php echo lang('general_word_all'); ?></option>
 							<?php foreach ($station_profile->result() as $station) { ?>
-								<option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
+								<option value="<?php echo $station->station_id; ?>"><?php echo lang('gen_hamradio_callsign') . ": "; ?><?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
 							<?php } ?>
 						</select>
 					</div>
@@ -28,9 +28,9 @@
 
 				<div class="form-row">
 				<div class="form-group col-md-3">
-					<label for="band">Band</label>
+					<label for="band"><?php echo lang('gen_hamradio_band'); ?></label>
 					<select id="band" name="band" class="custom-select">
-						<option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >Every band</option>
+						<option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> ><?php echo lang('general_word_all'); ?></option>
 						<?php foreach($worked_bands as $band) {
 							echo '<option value="' . $band . '"';
 							if ($this->input->post('band') == $band) echo ' selected';
@@ -39,9 +39,9 @@
 					</select>
 				</div>
 					<div class="form-group col-md-3">
-						<label for="mode">Mode</label>
+						<label for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
 						<select id="mode" name="mode" class="form-control custom-select">
-							<option value="All">All</option>
+							<option value="All"><?php echo lang('general_word_all'); ?></option>
 							<?php
 							foreach($modes->result() as $mode){
 								if ($mode->submode == null) {
@@ -55,12 +55,16 @@
 					</div>
 
 				<div class="form-group col-md-4">
-					<label for="dxcc_id">DXCC</label>
+					<label for="dxcc_id"><?php echo lang('gen_hamradio_dxcc'); ?></label>
 					<select class="custom-select" id="dxcc_id" name="dxcc_id">
-						<option value="All">All</option>
+						<option value="All"><?php echo lang('general_word_all'); ?></option>
 						<?php
 						foreach($dxcc as $d){
-							echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name))) . '</option>';
+							echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower($d->name), "- (/");
+							if ($d->Enddate != null) {
+								echo ' ('.lang('gen_hamradio_deleted_dxcc').')';
+							}
+							echo '</option>';
 						}
 						?>
 
@@ -73,9 +77,9 @@
 
 				<div class="form-row">
 					<div class="form-group col-md-3">
-					<label for="cqz">CQ Zone</label>
+					<label for="cqz"><?php echo lang('gen_hamradio_cq_zone'); ?></label>
 					<select class="custom-select" id="cqz" name="cqz">
-						<option value="All">All</option>
+						<option value="All"><?php echo lang('general_word_all'); ?></option>
 						<?php
 						for ($i = 1; $i<=40; $i++) {
 							echo '<option value="'. $i . '">'. $i .'</option>';
@@ -85,9 +89,9 @@
 				</div>
 
 				<div class="form-group col-md-5">
-					<label for="selectPropagation">Propagation Mode</label>
+					<label for="selectPropagation"><?php echo lang('gen_hamradio_propagation_mode'); ?></label>
 					<select class="custom-select" id="selectPropagation" name="prop_mode">
-						<option value="All">All</option>
+						<option value="All"><?php echo lang('general_word_all'); ?></option>
 						<option value="AS">Aircraft Scatter</option>
 						<option value="AUR">Aurora</option>
 						<option value="AUE">Aurora-E</option>
@@ -111,8 +115,8 @@
 				</div>
 				<div class="form-row">
 					<div class="form-group col-md-3">
-						<label for="datetimepicker1">From date:</label>
-						<div class="csvdatepicker input-group date col-md-12" id="datetimepicker1" data-target-input="nearest">
+						<label for="datetimepicker1"><?php echo lang('gen_from_date') . ':'; ?></label>
+						<div class="exportdatepicker input-group date col-md-12" id="datetimepicker1" data-target-input="nearest">
 							<input name="fromdate" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
 							<div class="input-group-append"  data-target="#datetimepicker1" data-toggle="datetimepicker">
 								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -121,9 +125,9 @@
 					</div>
 
 					<div class="form-group col-md-3">
-						<label for="datetimepicker2">To date:</label>
-						<div class="csvdatepicker input-group date col-md-12" id="datetimepicker2" data-target-input="nearest">
-							<input name="todate" "totype="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+						<label for="datetimepicker2"><?php echo lang('gen_to_date') . ':'; ?></label>
+						<div class="exportdatepicker input-group date col-md-12" id="datetimepicker2" data-target-input="nearest">
+							<input name="todate" totype="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
 							<div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
 								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 							</div>
@@ -131,7 +135,7 @@
 					</div>
 				</div>
 				<br>
-				<button type="submit" class="btn btn-primary mb-2" value="Export">Export</button>
+				<button type="submit" class="btn btn-primary mb-2" value="Export"><?php echo lang('general_word_export'); ?></button>
 			</form>
 		</div>
 	</div>
