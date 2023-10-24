@@ -37,7 +37,10 @@ $lang['general_word_total'] = 'Всего';
 $lang['general_word_year'] = 'Год';
 $lang['general_word_month'] = 'Месяц';
 
+$lang['general_word_colors'] = "Colors";
 $lang['general_word_worked'] = 'Сработано';
+$lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
+$lang['general_word_not_worked'] = "Not worked";
 $lang['general_word_confirmed'] = 'Подтверждено';
 $lang['general_word_needed'] = 'Необходимо';
 
@@ -50,6 +53,7 @@ $lang['general_word_sent'] = 'Отправлено';
 $lang['general_word_received'] = 'Принято';
 $lang['general_word_requested'] = 'Запрошено';
 $lang['general_word_queued'] = 'В очереди';
+$lang['general_word_table'] = "Table";
 $lang['general_word_invalid_ignore'] = 'Некорректно (Игнорировать)';
 
 $lang['general_word_qslcard'] = 'QSL карточка';
@@ -117,6 +121,7 @@ $lang['gen_hamradio_refs'] = 'Refs';
 $lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Exch (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Exch (R)';
+$lang['gen_hamradio_qsltype'] = "QSL Type";
 $lang['gen_hamradio_qsl'] = 'QSL';
 $lang['gen_hamradio_qslvia'] = 'QSL via';
 $lang['gen_hamradio_qslmsg'] = 'QSL Msg';
