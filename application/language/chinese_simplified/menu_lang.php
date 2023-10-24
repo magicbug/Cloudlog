@@ -11,6 +11,7 @@ $lang['menu_advanced'] = '详细信息';
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = '添加QSO（从电台获取信息）';
 $lang['menu_post_qso'] = '添加QSO（手动输入信息）';
+$lang['menu_fast_log_entry'] = "Simple Fast Log Entry";
 $lang['menu_live_contest_logging'] = '比赛日志（从电台获取信息）';
 $lang['menu_post_contest_logging'] = '比赛日志（手动输入信息）';
 $lang['menu_bandmap'] = 'Bandmap';

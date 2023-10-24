@@ -11,6 +11,7 @@ $lang['menu_advanced'] = 'Pokročilé zobrazení';
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = 'Živé QSO';
 $lang['menu_post_qso'] = 'Uložit QSO';
+$lang['menu_fast_log_entry'] = "Simple Fast Log Entry";
 $lang['menu_live_contest_logging'] = 'Živé závodní logování';
 $lang['menu_post_contest_logging'] = 'Uložit závodní log';
 $lang['menu_bandmap'] = 'Bandmap';
