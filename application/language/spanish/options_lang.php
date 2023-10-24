@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['options_cloudlog_options'] = 'Opciones de Cloudlog';
-$lang['options_message1'] = 'las Opciones de Cloudlog son configuraciones globales, configuradas para todos los usuarios de la instalación, que se sobreescribirán si alguna configuración se activa a nivel de usuario.';
+$lang['options_message1'] = 'Las Opciones de Cloudlog son configuraciones globales, configuradas para todos los usuarios de la instalación, que se sobreescribirán si alguna configuración se activa a nivel de usuario.';
 
 $lang['options_appearance'] = 'Apariencia';
 $lang['options_theme'] = 'Tema';

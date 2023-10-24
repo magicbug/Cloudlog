@@ -51,7 +51,7 @@ class Logbook extends CI_Controller {
 		$data['results'] = $this->logbook_model->get_qsos($config['per_page'],$this->uri->segment(3));
 
 		if(!$data['results']) {
-			$this->session->set_flashdata('notice', lang('error_no_logbook_found') . ' <a href="' . site_url('logbooks') . '" title="Station Logbooks">Station Logbooks</a>');
+			$this->session->set_flashdata('notice', lang('error_no_logbook_found') . ' <a href="' . site_url('logbooks') . '" title="' . lang('station_logbooks') . '">' . lang('station_logbooks') . '</a>');
 		}
 
 		// Calculate Lat/Lng from Locator to use on Maps
@@ -111,9 +111,9 @@ class Logbook extends CI_Controller {
 
 		$lotw_days=$this->logbook_model->check_last_lotw($callsign);
 		if ($lotw_days != null) {
-			$lotw_member="active";
+			$lotw_member=lang('lotw_active');
 		} else {
-			$lotw_member="not found";
+			$lotw_member=lang('lotw_not_found');
 		}
 
 		$return = [

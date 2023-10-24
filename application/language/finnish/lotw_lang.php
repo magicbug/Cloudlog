@@ -60,3 +60,6 @@ $lang['lotw_cert_expired'] = 'Vähintään yksi LoTW:n kutsumerkin varmenteesi o
 // Lotw User
 $lang['lotw_user'] = 'Tämä asmea käyttää LoTW-palvelua. Viimeinen yhteyksien lähetys oli';
 $lang['lotw_last_upload'] = 'Last upload';
+
+$lang['lotw_active'] = 'active';
+$lang['lotw_not_found'] = 'not found';

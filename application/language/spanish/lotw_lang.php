@@ -60,3 +60,6 @@ $lang['lotw_cert_expired'] = '¡Al menos uno de sus certificados de LoTW ya ha e
 // Lotw User
 $lang['lotw_user'] = 'Esta estacion usa LoTW.';
 $lang['lotw_last_upload'] = 'Última subida';
+
+$lang['lotw_active'] = 'active';
+$lang['lotw_not_found'] = 'not found';

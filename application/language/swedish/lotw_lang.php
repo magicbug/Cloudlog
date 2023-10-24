@@ -60,3 +60,6 @@ $lang['lotw_cert_expired'] = 'Minst ett av dina LoTW-certifikat har löpt ut!';
 // Lotw User
 $lang['lotw_user'] = 'Denna station använder LoTW. Den senaste uppladdningen var';
 $lang['lotw_last_upload'] = 'Last upload';
+
+$lang['lotw_active'] = 'active';
+$lang['lotw_not_found'] = 'not found';
