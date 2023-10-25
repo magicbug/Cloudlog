@@ -8,6 +8,9 @@ class SimpleFLE extends CI_Controller {
 
 		
 		$this->load->model('stations');
+		$this->load->model('logbook_model');
+		$this->load->model('modes');
+		$this->load->model('bands');
 
 		$data['station_profile'] = $this->stations->all_of_user();			// Used in the view for station location select
 
