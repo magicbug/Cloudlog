@@ -544,3 +544,7 @@ div#station_logbooks_linked_table_paginate {
 #awardInfoButton h2 {
     margin-right: 30px; 
 }
+
+input:invalid {
+   border-color: red;
+}
