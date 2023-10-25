@@ -76,7 +76,7 @@ var callsign = "";
 var errors = [];
 var qsoList = [];
 
-$('#simpleFleInfo').click(function (event) {
+$('#simpleFleInfoButton').click(function (event) {
     var awardInfoLines = [
         lang_simplefle_info_ln2,
         lang_simplefle_info_ln3,
@@ -89,6 +89,22 @@ $('#simpleFleInfo').click(function (event) {
     BootstrapDialog.alert({
         title: "<h4>"+lang_simplefle_info_ln1+"</h4>",
         message: simpleFleInfo,
+    });
+});
+
+$('#js-syntax').click(function (event) {
+    var awardInfoLines = [
+        lang_simplefle_syntax_help_ln2,
+        lang_simplefle_syntax_help_ln3,
+        lang_simplefle_syntax_help_ln4
+    ];
+    var simpleFleSyntaxHelp = "";
+    awardInfoLines.forEach(function (line) {
+        simpleFleSyntaxHelp += line + "<br><br>";
+    });
+    BootstrapDialog.alert({
+        title: "<h4>"+lang_simplefle_syntax_help_ln1+"</h4>",
+        message: simpleFleSyntaxHelp,
     });
 });
 
@@ -334,42 +350,6 @@ $(".js-download-qso").click(function () {
 	handleInput();
 });
 
-$(".js-load-sample-log").click(function () {
-	if ($textarea.val()) {
-		if (
-			false ===
-			confirm(
-				"Do you really want to replace the entered data with the sample log?"
-			)
-		) {
-			return false;
-		}
-	}
-	const logData = `
-  80m cw
-  1212 ok1uu okff-1234
-  3 ok1rr
-  4 ok1tn
-  20 dl6kva 7 8
-  5 dl5cw 
-  ssb
-  32 ok7wa ol/zl-071 5 8
-  33 ok1xxx  4 3
-    `;
-
-	$textarea.val(logData.trim());
-	if ($("#my-call").val() === "") {
-		$("#my-call").val("OK2CQR/P");
-	}
-	if ($("#operator").val() === "") {
-		$("#operator").val("OK2CQR");
-	}
-	if ($("#my-sota-wwff").val() === "") {
-		$("#my-sota-wwff").val("OKFF-2068");
-	}
-
-	handleInput();
-});
 
 function getBandFromFreq(freq) {
 	if (freq > 1.7 && freq < 2) {
