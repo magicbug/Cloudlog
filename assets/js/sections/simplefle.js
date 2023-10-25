@@ -118,7 +118,7 @@ function handleInput() {
 
 	var operator = $("#operator").val();
 	operator = operator.toUpperCase();
-	var ownCallsign = $("#my-call").val().toUpperCase();
+	var ownCallsign = $("#station-call").val().toUpperCase();
 	ownCallsign = ownCallsign.toUpperCase();
 
 	var extraQsoDate = qsodate;
@@ -251,7 +251,7 @@ function handleInput() {
 			$("#qsoTable > tbody:last-child").append(tableRow);
 
 			localStorage.setItem("tabledata", $("#qsoTable").html());
-			localStorage.setItem("my-call", $("#my-call").val());
+			localStorage.setItem("my-call", $("#station-call").val());
 			localStorage.setItem("operator", $("#operator").val());
 			localStorage.setItem("my-sota-wwff", $("#my-sota-wwff").val());
 			localStorage.setItem("qso-area", $(".qso-area").val());
@@ -282,8 +282,8 @@ function handleInput() {
 }
 
 function checkMainFieldsErrors() {
-	if ($("#my-call").val() === "") {
-		addErrorMessage("'My call' field is empty!");
+	if ($("#station-call").val() === '-') {
+		addErrorMessage("'Station Call' is not selected!");
 	}
 
 	if ($("#operator").val() === "") {
@@ -331,7 +331,7 @@ $(".js-empty-qso").click(function () {
 		$("#qsodate").val("");
 		$("#qsoTable tbody").empty();
 		$("#my-sota-wwff").val("");
-		$("#my-call").val("");
+		$("#station-call").val("");
 		$("#operator").val("");
 		$(".qso-area").val("");
 		$("#my-grid").val("");
@@ -444,7 +444,7 @@ $(".js-band-settings").html(htmlSettings);
 $(".js-download-adif").click(function () {
 	var operator = $("#operator").val();
 	operator = operator.toUpperCase();
-	var ownCallsign = $("#my-call").val().toUpperCase();
+	var ownCallsign = $("#station-call").val().toUpperCase();
 	ownCallsign = ownCallsign.toUpperCase();
 	var mySotaWwff = $("#my-sota-wwff").val().toUpperCase();
 
@@ -620,7 +620,7 @@ $(document).ready(function () {
 	var myGrid = localStorage.getItem("my-grid");
 
 	if (mycall != null) {
-		$("#my-call").val(mycall);
+		$("#station-call").val(mycall);
 	}
 
 	if (operator != null) {

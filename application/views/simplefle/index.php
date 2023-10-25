@@ -61,16 +61,22 @@
 						<div class="row">
 							<div class="col-xs-12 col-lg-6">
 								<div class="form-group">
-									<label for="my-call">My call <span class="text-muted input-example">e.g.
-											OK2CQR/P</span></label>
-									<input type="text" class="form-control text-uppercase" id="my-call">
+									<!-- <label for="my-call">My Station Callsign </label>
+									<input type="text" class="form-control text-uppercase" id="my-call"> -->
+									<label for="station_profile">Station Call</label>
+										<select name="station_profile" class="station_id custom-select" id="station-call">
+											<option value="-">-</option>
+											<?php foreach ($station_profile->result() as $station) { ?>
+												<option value="<?php echo $station->station_id; ?>"><?php echo lang('gen_hamradio_callsign') . ": "; ?><?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
+											<?php } ?>
+										</select>
 								</div>
 							</div>
 							<div class="col-xs-12 col-lg-6">
 								<div class="form-group">
 									<label for="operator">Operator <span class="text-muted input-example">e.g.
 											OK2CQR</span></label>
-									<input type="text" class="form-control text-uppercase" id="operator">
+									<input type="text" class="form-control text-uppercase" id="operator" value="<?php echo $this->session->userdata('operator_callsign'); ?>">
 								</div>
 							</div>
 						</div>
