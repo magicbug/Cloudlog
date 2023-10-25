@@ -104,7 +104,7 @@
 								<button class="btn btn-primary js-reload-qso">Reload QSO list</button>
 							</div>
 							<div class="col-3 col-sm-3">
-								<button class="btn btn-warning js-download-adif">Download ADIF</button>
+								<button class="btn btn-warning js-download-adif">Save in Cloudlog</button>
 							</div>
 							<div class="col-3 col-sm-3">
 								<button class="btn btn-danger js-empty-qso">Clear logging session</button>
