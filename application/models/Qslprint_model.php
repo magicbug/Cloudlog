@@ -79,7 +79,13 @@ class Qslprint_model extends CI_Model {
 		// always filter user. this ensures that even if the station_id is from another user no inaccesible QSOs will be returned
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$this->db->where_in('COL_QSL_SENT', array('R', 'Q'));
-		$this->db->order_by("COL_TIME_ON", "DESC");
+		$this->db->order_by("COL_DXCC", "ASC");
+        	$this->db->order_by("COL_CALL", "ASC");
+        	$this->db->order_by("COL_SAT_NAME", "ASC");
+        	$this->db->order_by("COL_SAT_MODE", "ASC");
+        	$this->db->order_by("COL_BAND_RX", "ASC");
+        	$this->db->order_by("COL_TIME_ON", "ASC");
+        	$this->db->order_by("COL_MODE", "ASC");
 		$query = $this->db->get($this->config->item('table_name'));
 
 		return $query;
@@ -133,7 +139,13 @@ class Qslprint_model extends CI_Model {
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$this->db->where('COL_CALL like "%'.$callsign.'%"');
 		$this->db->where('coalesce(COL_QSL_SENT, "") not in ("R", "Q")');
-		$this->db->order_by("COL_TIME_ON", "DESC");
+		$this->db->order_by("COL_DXCC", "ASC");
+        	$this->db->order_by("COL_CALL", "ASC");
+        	$this->db->order_by("COL_SAT_NAME", "ASC");
+        	$this->db->order_by("COL_SAT_MODE", "ASC");
+        	$this->db->order_by("COL_BAND_RX", "ASC");
+        	$this->db->order_by("COL_TIME_ON", "ASC");
+        	$this->db->order_by("COL_MODE", "ASC");
 		$query = $this->db->get($this->config->item('table_name'));
 
 		return $query;
