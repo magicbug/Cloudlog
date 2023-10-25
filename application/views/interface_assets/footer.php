@@ -2406,6 +2406,23 @@ function viewEqsl(picture, callsign) {
     });
 </script>
 <script>
+    $('#simpleFleInfo').click(function (event) {
+        var awardInfoLines = [
+            lang_simplefle_info_ln2,
+            lang_simplefle_info_ln3,
+            lang_simplefle_info_ln4
+        ];
+        var simpleFleInfo = "";
+        awardInfoLines.forEach(function (line) {
+            simpleFleInfo += line + "<br><br>";
+        });
+        BootstrapDialog.alert({
+            title: "<h4>"+lang_simplefle_info_ln1+"</h4>",
+            message: simpleFleInfo,
+        });
+    });
+</script>
+<script>
   /*
    * Used to fetch QSOs from the logbook in the awards
    */
