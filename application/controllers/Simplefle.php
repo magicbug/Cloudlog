@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class SimpleFastLogEntry extends CI_Controller {
+class SimpleFLE extends CI_Controller {
 
     public function index() {
         $this->load->model('user_model');
@@ -16,7 +16,7 @@ class SimpleFastLogEntry extends CI_Controller {
 		$data['page_title'] = "Simple Fast Log Entry";
 
 		$this->load->view('interface_assets/header', $data);
-		$this->load->view('simplefastlogentry/index');
+		$this->load->view('simplefle/index');
 		$this->load->view('interface_assets/footer');
         
 
