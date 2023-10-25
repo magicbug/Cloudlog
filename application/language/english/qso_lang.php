@@ -36,3 +36,18 @@ $lang['qso_details'] = 'QSO Details';
 
 $lang['fav_add'] = 'Add Band/Mode to Favs';
 $lang['qso_operator_callsign'] = 'Operator Callsign';
+
+// Simple FLE (FastLogEntry)
+
+$lang['simplefle_info'] = "What is that?";
+$lang['simplefle_info_ln1'] = "Simple Fast Log Entry (FLE)";
+$lang['simplefle_info_ln2'] = "'Fast Log Entry', or simply 'FLE' is a system to log QSOs very quickly and efficiently. Due to its syntax, only a minimum of input is required to log many QSOs with as little effort as possible.";
+$lang['simplefle_info_ln3'] = "FLE was originally written by DF3CB. He offers a program for Windows on his website. Simple FLE was written by OK2CQR based on DF3CB's FLE and provides a web interface to log QSOs.";
+$lang['simplefle_info_ln4'] = "A common use-case is if you have to import your paperlogs from a outdoor session and now SimpleFLE is also available in Cloudlog. Information about the syntax and how FLE works can be found <a href='https://df3cb.com/fle/documentation/' target='_blank'>here</a>.";
+
+$lang['simplefle_syntax_help_button'] = "Syntax Help";
+$lang['simplefle_syntax_help_ln1'] = "Syntax for FLE";
+$lang['simplefle_syntax_help_ln2'] = "...";
+$lang['simplefle_syntax_help_ln3'] = "...";
+$lang['simplefle_syntax_help_ln4'] = "pending";
+    
