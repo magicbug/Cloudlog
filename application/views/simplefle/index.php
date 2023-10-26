@@ -176,37 +176,5 @@
 					</div>
 				</div>
 			</div>
-			<div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
-				<div class="row mt-4">
-					<div class="col">
-						<p>
-							Simple fast log entry written in HTML/Javascript by <a href="https://www.ok2cqr.com">Petr,
-								OK2CQR</a>.
-							Heavily inspired by <a href="https://df3cb.com/fle/">FLE</a> from <a
-								href="https://df3cb.com/">Bernd, DF3CB</a>.
-							Unfortunately, the FLE works only on Windows and Linux using Wine, but I needed something
-							working on macOS and/or
-							Android tablet. I&nbsp;didn't need all the features, just wanted to log QSO from my
-							WFF/SOTA/GMA activation.
-						</p>
-
-						<p>
-							The SFLE (Simple fast log entry) is a tool created by GDD (Google Driven Development) using
-							Bootstrap 4 and jQuery (I'm a backend developer). Data is stored only in your browser.
-							The website does not collect any data about you.
-						</p>
-
-						<p>
-							If you find any bug or have a suggestion on how to improve the website, please let me know
-							at <a href="mailto:petr@ok2cqr.com">petr@ok2cqr.com</a>.
-							I&nbsp;get many emails every day, if you don't get a reply in a few days, don't hesitate to
-							send your email again.
-						</p>
-						<p>
-							Source code is available on <a href="https://github.com/ok2cqr/sfle">GitHub</a>.
-						</p>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
