@@ -18,6 +18,10 @@
     var lang_general_word_qso_data = "<?php echo lang('general_word_qso_data'); ?>";
     var lang_general_word_danger = "<?php echo lang('general_word_danger'); ?>";
     var lang_qso_delete_warning = "<?php echo lang('qso_delete_warning'); ?>";
+    var lang_general_word_colors = "<?php echo lang('general_word_colors'); ?>";
+    var lang_general_word_confirmed = "<?php echo lang('general_word_confirmed'); ?>";
+    var lang_general_word_worked_not_confirmed = "<?php echo lang('general_word_worked_not_confirmed'); ?>";
+    var lang_general_word_not_worked = "<?php echo lang('general_word_not_worked'); ?>";
 </script>
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>

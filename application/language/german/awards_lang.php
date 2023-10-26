@@ -3,6 +3,18 @@
 defined('BASEPATH') OR exit('Direkter Skriptzugriff nicht erlaubt');
 
 $lang['awards_info_button'] = "Diplom Info";
+$lang['awards_show_worked'] = "Zeige gearbeitete";
+$lang['awards_show_confirmed'] = "Zeige bestätigte";
+$lang['awards_show_not_worked'] = "Zeige nicht gearbeitete";
+$lang['awards_show_cq_map'] = "Zeige CQ Zonen Karte";
+$lang['awards_summary'] = "Zusammenfassung";
+$lang['awards_total'] = "Gesamt";
+$lang['awards_total_worked'] = "Gesamt gearbeitet";
+$lang['awards_total_confirmed'] = "Gesamt bestätigt";
+
+
+$lang['awards_cq_page_title'] = "Diplome - CQ Magazin WAZ";
+
 
 /*
 ___________________________________________________________________________________________
@@ -11,7 +23,7 @@ ________________________________________________________________________________
 */
 
 $lang['awards_cq_description_ln1'] = "CQ Magazine WAZ Diplom";
-$lang['awards_cq_description_ln2'] = "Das CQ Magazine befindet sich in den USA und ist eines der beliebtesten Amateurfunkmagazine der Welt. Das Magazin erschien erstmals im Januar 1945 und konzentriert sich auf Auszeichnungen und die praktischen Aspekte des Amateurfunks.";
+$lang['awards_cq_description_ln2'] = "Das CQ Magazine befindet sich in den USA und ist eines der beliebtesten Amateurfunkmagazine der Welt. Das Magazin erschien erstmals im Januar 1945 und konzentriert sich auf Diplome und die praktischen Aspekte des Amateurfunks.";
 $lang['awards_cq_description_ln3'] = "Der WAZ Award steht für 'Worked All Zones' und erfordert Kontakte zu allen 40 CQ-Zonen sowie die entsprechende QSL Bestätigung.";
 $lang['awards_cq_description_ln4'] = "Sie finden alle Informationen und Regeln auf der Website des <a href='https://cq-amateur-radio.com/cq_awards/cq_waz_awards/index_cq_waz_award.html' target='_blank'>CQ Magazine</a>.";
 
@@ -72,8 +84,8 @@ ________________________________________________________________________________
 
 $lang['awards_pota_description_ln1'] = "POTA Diplome";
 $lang['awards_pota_description_ln2'] = "Parks on the Air® (POTA) startete Anfang 2017, als das 'National Parks on the Air' - Special Event des ARRL endete. Eine Gruppe von Freiwilligen wollte den Spaß über das einjährige Ereignis hinaus fortsetzen, und so wurde POTA geboren.";
-$lang['awards_pota_description_ln3'] = "POTA funktioniert ähnlich wie SOTA, mit Aktivatoren und Jägern. Für die Auszeichnungen gibt es verschiedene Kategorien, die auf der Anzahl der Parks, geografischen Gebieten und mehr basieren.";
-$lang['awards_pota_description_ln4'] = "Für weitere Informationen zu den verfügbaren Auszeichnungen und Kategorien besuchen Sie bitte die <a href='https://parksontheair.com/pota-awards/' target='_blank'>Parks on the Air®-Website</a>.";
+$lang['awards_pota_description_ln3'] = "POTA funktioniert ähnlich wie SOTA, mit Aktivatoren und Jägern. Für die Diplome gibt es verschiedene Kategorien, die auf der Anzahl der Parks, geografischen Gebieten und mehr basieren.";
+$lang['awards_pota_description_ln4'] = "Für weitere Informationen zu den verfügbaren Diplome und Kategorien besuchen Sie bitte die <a href='https://parksontheair.com/pota-awards/' target='_blank'>Parks on the Air®-Website</a>.";
 
 
 /*
@@ -83,8 +95,8 @@ ________________________________________________________________________________
 */
 
 $lang['awards_sig_description_ln1'] = "SIG-Information";
-$lang['awards_sig_description_ln2'] = "Die SIG- oder Signature-Kategorie ermöglicht die Verwendung beliebiger 'Diplom-Identifikationen' für Auszeichnungen, die nicht in Cloudlog implementiert sind.";
-$lang['awards_sig_description_ln3'] = "Der Grund dafür ist, dass das gängige ADIF-Format nur wenige dedizierte Felder für bestimmte Auszeichnungen bietet. SIG ermöglicht es dennoch, alle anderen Arten von Signaturmarkierungen zu verwenden und auszuwerten.";
+$lang['awards_sig_description_ln2'] = "Die SIG- oder Signature-Kategorie ermöglicht die Verwendung beliebiger 'Diplom-Identifikationen' für Diplome, die nicht in Cloudlog implementiert sind.";
+$lang['awards_sig_description_ln3'] = "Der Grund dafür ist, dass das gängige ADIF-Format nur wenige dedizierte Felder für bestimmte Diplome bietet. SIG ermöglicht es dennoch, alle anderen Arten von Signaturmarkierungen zu verwenden und auszuwerten.";
 $lang['awards_sig_description_ln4'] = "Im QSO-Verarbeitung finden Sie zwei Felder: 'SIG' enthält die tatsächliche Markierung, die auch in der Auswertung der Auszeichnung sichtbar ist, und 'SIG INFO', das eine Beschreibung der Signatur enthält. Beide Felder sind frei anpassbar.";
 
 
@@ -109,7 +121,7 @@ ________________________________________________________________________________
 $lang['awards_counties_description_ln1'] = "US County Diplom";
 $lang['awards_counties_description_ln2'] = "Das US Counties Diplom (USA-CA) der Vereinigten Staaten von Amerika, gesponsert von CQ Magazine, wird für bestätigte Funkkontakte mit einer festgelegten Anzahl von US-Counties unter Regeln und Bedingungen verliehen, die Sie <a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>hier</a> finden können.";
 $lang['awards_counties_description_ln3'] = "USA-CA steht allen lizenzierten Funkamateuren weltweit zur Verfügung und wird an Einzelpersonen für alle gemachten County-Kontakte verliehen, unabhängig von den verwendeten Rufzeichen, Stationsorten oder Daten.";
-$lang['awards_counties_description_ln4'] = "Spezielle USA-CA-Auszeichnungen stehen auch für SWLs auf der Grundlage des Gehörten zur Verfügung.";
+$lang['awards_counties_description_ln4'] = "Spezielle USA-CA-Diplome stehen auch für SWLs auf der Grundlage des Gehörten zur Verfügung.";
 
 
 /*
@@ -120,7 +132,7 @@ ________________________________________________________________________________
 
 $lang['awards_us_gridmaster_description_ln1'] = "US Gridmaster Diplom";
 $lang['awards_us_gridmaster_description_ln2'] = "Der GridMaster Award ist die renommierteste AMSAT-Auszeichnung, die erstmals 2014 von der Star Comm Group eingeführt wurde. Sie steht allen Funkamateuren weltweit zur Verfügung, die es schaffen, alle 488 Planquadrate in den USA via Satellit zu arbeiten und für jeden Kontakt QSL-Bestätigungen vorlegen können.";
-$lang['awards_us_gridmaster_description_ln3'] = "Offizielle Informationen von der <a href='https://www.amsat.org/gridmaster/' target='_blank'>Website</a>: Es muss eine Zweiwegekommunikation über Amateurfunksatellit mit jedem Gitter hergestellt werden. Es ist keine Mindest-Signalreport erforderlich. Die Kontakte müssen vom selben Standort aus erfolgen oder von Standorten aus, die nicht mehr als 200 Kilometer voneinander entfernt sind. Die Aussage des Antragstellers in der Auszeichnungsanwendung dient als Bestätigung der Einhaltung der Abstandsregel. Personen können mehrere GridMaster-Auszeichnungen beantragen und erhalten, wenn sie von einem anderen Standort aus erreicht werden, der sich in einem anderen 200-Kilometer-Kreis befindet.";
+$lang['awards_us_gridmaster_description_ln3'] = "Offizielle Informationen von der <a href='https://www.amsat.org/gridmaster/' target='_blank'>Website</a>: Es muss eine Zweiwegekommunikation über Amateurfunksatellit mit jedem Gitter hergestellt werden. Es ist keine Mindest-Signalreport erforderlich. Die Kontakte müssen vom selben Standort aus erfolgen oder von Standorten aus, die nicht mehr als 200 Kilometer voneinander entfernt sind. Die Aussage des Antragstellers in der Auszeichnungsanwendung dient als Bestätigung der Einhaltung der Abstandsregel. Personen können mehrere GridMaster-Diplome beantragen und erhalten, wenn sie von einem anderen Standort aus erreicht werden, der sich in einem anderen 200-Kilometer-Kreis befindet.";
 $lang['awards_us_gridmaster_description_ln4'] = "Diese Karte zeigt nur QSOs, die über SAT gearbeitet wurden.";
 
 
