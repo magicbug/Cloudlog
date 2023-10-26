@@ -34,7 +34,7 @@ $lang['menu_timeplotter'] = 'Zeitplotter';
 $lang['menu_custom_maps'] = 'Benutzerdefinierte Karte';
 $lang['menu_continents'] = 'Kontinente';
 
-$lang['menu_awards'] = 'Auszeichnungen';
+$lang['menu_awards'] = 'Diplome';
 $lang['menu_cq'] = 'CQ';
 $lang['menu_dok'] = 'DOK';
 $lang['menu_dxcc'] = 'DXCC';

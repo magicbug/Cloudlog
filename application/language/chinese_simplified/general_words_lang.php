@@ -37,7 +37,10 @@ $lang['general_word_total'] = '总计';
 $lang['general_word_year'] = '年';
 $lang['general_word_month'] = '月';
 
+$lang['general_word_colors'] = "Colors";
 $lang['general_word_worked'] = '已通联';
+$lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
+$lang['general_word_not_worked'] = "Not worked";
 $lang['general_word_confirmed'] = '已确认';
 $lang['general_word_needed'] = '待通联';
 
@@ -50,6 +53,7 @@ $lang['general_word_sent'] = '已发送';
 $lang['general_word_received'] = '已收到';
 $lang['general_word_requested'] = '已请求';
 $lang['general_word_queued'] = '已排队';
+$lang['general_word_table'] = "Table";
 $lang['general_word_invalid_ignore'] = '无效(忽略)';
 $lang['general_word_qslcard'] = 'QSL 卡片';
 $lang['general_word_qslcard_management'] = 'QSL 管理';
@@ -117,6 +121,7 @@ $lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = '信号交换 (发)';
 $lang['gen_hamradio_exchange_rcvd_short'] = '信号交换 (收)';
 $lang['gen_hamradio_qsl'] = 'QSL';
+$lang['gen_hamradio_qsltype'] = "QSL Type";
 $lang['gen_hamradio_qslvia'] = 'QSL via';
 $lang['gen_hamradio_qslmsg'] = 'QSL Msg';
 $lang['gen_hamradio_locator'] = '定位器';

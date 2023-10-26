@@ -3,6 +3,18 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['awards_info_button'] = "Award Info";
+$lang['awards_show_worked'] = "Show worked";
+$lang['awards_show_confirmed'] = "Show confirmed";
+$lang['awards_show_not_worked'] = "Show not worked";
+$lang['awards_show_cq_map'] = "Show CQ Zone Map";
+$lang['awards_summary'] = "Summary";
+$lang['awards_total'] = "Total";
+$lang['awards_total_worked'] = "Total worked";
+$lang['awards_total_confirmed'] = "Total confirmed";
+
+
+$lang['awards_cq_page_title'] = "Awards - CQ Magazine WAZ";
+
 
 /*
 ___________________________________________________________________________________________
