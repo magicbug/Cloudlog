@@ -46,8 +46,5 @@ $lang['simplefle_info_ln3'] = "FLE was originally written by DF3CB. He offers a 
 $lang['simplefle_info_ln4'] = "A common use-case is if you have to import your paperlogs from a outdoor session and now SimpleFLE is also available in Cloudlog. Information about the syntax and how FLE works can be found <a href='https://df3cb.com/fle/documentation/' target='_blank'>here</a>.";
 
 $lang['simplefle_syntax_help_button'] = "Syntax Help";
-$lang['simplefle_syntax_help_ln1'] = "Syntax for FLE";
-$lang['simplefle_syntax_help_ln2'] = "...";
-$lang['simplefle_syntax_help_ln3'] = "...";
-$lang['simplefle_syntax_help_ln4'] = "pending";
+$lang['simplefle_syntax_help_title'] = "Syntax for FLE";
     
