@@ -332,7 +332,7 @@ class Labels extends CI_Controller {
 			$text = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
 			$text .= $current_callsign;
 			if (($via) && ($qso['via'] ?? '' != '')) {
-				$text.=' via '.substr($qso['via'],0,8);
+				$text.='   | send via '.substr($qso['via'],0,8);
 			}
 			$text .= "\n";
 			$text .= $builder->renderTable();
