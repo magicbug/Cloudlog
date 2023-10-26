@@ -215,12 +215,30 @@ function handleInput() {
 
 function checkMainFieldsErrors() {
 	if ($("#station-call").val() === '-') {
-		addErrorMessage("'Station Call' is not selected!");
-	}
+		$('#warningStationCall').show();
+        $('#station-call').css('border', '2px solid rgb(217, 83, 79)');
+        $('#warningStationCall').text("Station Call is not selected");
+	} else {
+        $('#station-call').css('border', '');
+        $('#warningStationCall').hide();
+    }
 
 	if ($("#operator").val() === "") {
-		addErrorMessage("'Operator' field is empty!");
-	}
+		$('#warningOperatorField').show();
+        $('#operator').css('border', '2px solid rgb(217, 83, 79)');
+        $('#warningOperatorField').text("'Operator' Field is empty");
+	}else {
+        $('#operator').css('border', '');
+        $('#warningOperatorField').hide();
+    }
+	if ($("textarea").val() === "") {
+        $('#textarea').css('border', '2px solid rgb(217, 83, 79)');
+		setTimeout(function() {
+			$('#textarea').css('border', '');
+		  }, 2000);
+	}else {
+        $('#textarea').css('border', '');
+    }
 }
 
 $textarea.keydown(function (event) {
@@ -251,26 +269,39 @@ $(".js-reload-qso").click(function () {
 });
 
 $(".js-empty-qso").click(function () {
-	var result = confirm("Do you really want to reset everything?");
-	if (result == true) {
-		localStorage.removeItem("tabledata");
-		localStorage.removeItem("my-call");
-		localStorage.removeItem("operator");
-		localStorage.removeItem("my-sota-wwff");
-		localStorage.removeItem("qso-area");
-		localStorage.removeItem("qsodate");
-		localStorage.removeItem("my-grid");
-		$("#qsodate").val("");
-		$("#qsoTable tbody").empty();
-		$("#my-sota-wwff").val("");
-		$("#station-call").val("");
-		$("#operator").val("");
-		$(".qso-area").val("");
-		$("#my-grid").val("");
-		qsoList = [];
-		$(".js-qso-count").html("");
-	}
+	BootstrapDialog.confirm({
+		title: "WARNING",
+		message: "Warning! Do you really want to reset everything?",
+		type: BootstrapDialog.TYPE_DANGER,
+		btnCancelLabel: "Cancel",
+		btnOKLabel: "OK!",
+		btnOKClass: "btn-warning",
+		callback: function (result) {
+			if (result) {
+				clearSession();
+			}
+		},
+	});
 });
+
+function clearSession() {
+	localStorage.removeItem("tabledata");
+	localStorage.removeItem("my-call");
+	localStorage.removeItem("operator");
+	localStorage.removeItem("my-sota-wwff");
+	localStorage.removeItem("qso-area");
+	localStorage.removeItem("qsodate");
+	localStorage.removeItem("my-grid");
+	$("#qsodate").val("");
+	$("#qsoTable tbody").empty();
+	$("#my-sota-wwff").val("");
+	// $("#station-call").val("");        	Do not clear that?
+	// $("#operator").val("");				Do not clear that?
+	$(".qso-area").val("");
+	$("#my-grid").val("");
+	qsoList = [];
+	$(".js-qso-count").html("");
+}
 
 function showErrors() {
 	if (errors) {
@@ -598,44 +629,73 @@ $(document).ready(function () {
 });
 
 $(".js-save-to-log").click(function () {
-	if (false === isBandModeEntered()) {
-		alert("Some QSO do not have band and/or mode defined!");
-
-		return false;
-	}
-
-	var operator = $("#operator").val();
-	operator = operator.toUpperCase();
-	var ownCallsign = $("#station-call").val().toUpperCase();
-	ownCallsign = ownCallsign.toUpperCase();
-	var mySotaWwff = $("#my-sota-wwff").val().toUpperCase();
-
-	var myPower = $("#my-power").val();
-	var myGrid = $("#my-grid").val().toUpperCase();
-
-	qsoList.forEach((item) => {
-		var callsign = item[2];
-		var rst_rcvd = item[7];
-		var rst_sent = item[6];
-		var start_date = (item[0].replace("-", "").replace("-", "")) + " " + (item[1].replace(":", ""));
-		var band = item[4];
-		var mode = item[5];
-		var freq_display = item[3];
-
-		$.ajax({
-			url: base_url + 'index.php/qso/saveqso',
-			type: 'post',
-			data: { callsign: callsign,
-					rst_rcvd: rst_rcvd,
-					rst_sent: rst_sent,
-					start_date: start_date,
-					band: band,
-					mode: mode,
-					freq_display: freq_display,
-			},
-			success: function (result) {
-			}
+	if ($("textarea").val() === "") {
+		BootstrapDialog.alert({
+			type: BootstrapDialog.TYPE_DANGER,
+			title: "QSO List empty!",
+			message: "You first have to enter some QSO!",
 		});
-	});
+	} else {
+		handleInput();
+		BootstrapDialog.confirm({
+			title: "ATTENTION",
+			message:
+				"Are you sure that you want to add these QSO to the Log and clear the session?",
+			type: BootstrapDialog.TYPE_INFO,
+			btnCancelLabel: "Cancel",
+			btnOKLabel: "Log it!",
+			btnOKClass: "btn-info",
+			callback: function (result) {
+				if (result) {
+					if (false === isBandModeEntered()) {
+						alert("Some QSO do not have band and/or mode defined!");
 
+						return false;
+					}
+					var operator = $("#operator").val();
+					operator = operator.toUpperCase();
+					var ownCallsign = $("#station-call").val().toUpperCase();
+					ownCallsign = ownCallsign.toUpperCase();
+					var mySotaWwff = $("#my-sota-wwff").val().toUpperCase();
+
+					var myPower = $("#my-power").val();
+					var myGrid = $("#my-grid").val().toUpperCase();
+
+					qsoList.forEach((item) => {
+						var callsign = item[2];
+						var rst_rcvd = item[7];
+						var rst_sent = item[6];
+						var start_date =
+							item[0].replace("-", "").replace("-", "") +
+							" " +
+							item[1].replace(":", "");
+						var band = item[4];
+						var mode = item[5];
+						var freq_display = item[3];
+
+						$.ajax({
+							url: base_url + "index.php/qso/saveqso",
+							type: "post",
+							data: {
+								callsign: callsign,
+								rst_rcvd: rst_rcvd,
+								rst_sent: rst_sent,
+								start_date: start_date,
+								band: band,
+								mode: mode,
+								freq_display: freq_display,
+							},
+							success: function (result) {},
+						});
+					});
+					clearSession();
+					BootstrapDialog.alert({
+						title: "QSO logged",
+						message:
+							"The QSO were successfully logged in the logbook!",
+					});
+				}
+			},
+		});
+	}
 });

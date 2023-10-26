@@ -73,7 +73,7 @@ var Bands = <?php echo json_encode($bands);?>;
 												</option>
 											<?php } ?>
 										</select>
-
+									<div class="alert alert-danger" role="alert" id="warningStationCall" style="display: none"> </div>
 								</div>
 							</div>
 							<div class="col-xs-12 col-lg-6">
@@ -81,13 +81,14 @@ var Bands = <?php echo json_encode($bands);?>;
 									<label for="operator">Operator <span class="text-muted input-example">e.g.
 											OK2CQR</span></label>
 									<input type="text" class="form-control text-uppercase" id="operator" value="<?php echo $this->session->userdata('operator_callsign'); ?>">
+									<div class="alert alert-danger" role="alert" id="warningOperatorField" style="display: none"> </div>
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col">
 								<p>Enter the data</p>
-								<textarea name="qso" class="form-control qso-area" cols="auto" rows="11"></textarea>
+								<textarea name="qso" class="form-control qso-area" cols="auto" rows="11" id="textarea"></textarea>
 							</div>
 						</div>
 					</div>
@@ -128,16 +129,6 @@ var Bands = <?php echo json_encode($bands);?>;
 								<button class="btn btn-success" id="js-syntax"><?php echo lang('simplefle_syntax_help_button'); ?></button>
 							</div>
 						</div>
-					</div>
-				</div>
-				<div class="row mt-4">
-					<div class="col">
-						Status:
-					</div>
-				</div>
-				<div class="row">
-					<div class="col">
-						<p class="js-status"></p>
 					</div>
 				</div>
 			</div>
