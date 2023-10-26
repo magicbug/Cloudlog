@@ -13,6 +13,8 @@ class SimpleFLE extends CI_Controller {
 		$this->load->model('bands');
 
 		$data['station_profile'] = $this->stations->all_of_user();			// Used in the view for station location select
+		$data['bands'] = $this->bands->get_all_bands_for_user();			// Fetching Bands for FLE 
+
 
 		$data['page_title'] = "Simple Fast Log Entry";
         
@@ -25,7 +27,7 @@ class SimpleFLE extends CI_Controller {
 		];
 
 		$this->load->view('interface_assets/header', $data);
-		$this->load->view('simplefle/index');
+		$this->load->view('simplefle/index', $data);
 		$this->load->view('interface_assets/footer', $footerData);
 
     }
