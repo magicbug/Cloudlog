@@ -630,12 +630,11 @@ $(document).ready(function () {
 
 $(".js-save-to-log").click(function () {
 	if ($("textarea").val() === "") {
-		BootstrapDialog.alert({
-			type: BootstrapDialog.TYPE_DANGER,
-			title: "QSO List empty!",
-			message: "You first have to enter some QSO!",
-		});
-	} else {
+        $('#textarea').css('border', '2px solid rgb(217, 83, 79)');
+		setTimeout(function() {
+			$('#textarea').css('border', '');
+		  }, 2000);
+	}else {
 		handleInput();
 		BootstrapDialog.confirm({
 			title: "ATTENTION",
