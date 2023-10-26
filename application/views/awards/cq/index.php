@@ -1,8 +1,7 @@
 <style>
     #cqmap {
-	height: calc(100vh - 430px) !important;
+	height: calc(100vh - 480px) !important;
 	max-height: 900px !important;
-    margin-bottom: 30px !important;
 }
 /*Legend specific*/
 .legend {
