@@ -37,7 +37,10 @@ $lang['general_word_total'] = 'Totalt';
 $lang['general_word_year'] = 'I år';
 $lang['general_word_month'] = 'Denna månad';
 
+$lang['general_word_colors'] = "Colors";
 $lang['general_word_worked'] = 'Körda';
+$lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
+$lang['general_word_not_worked'] = "Not worked";
 $lang['general_word_confirmed'] = 'Bekräftade';
 $lang['general_word_needed'] = 'Behövs';
 
@@ -50,6 +53,7 @@ $lang['general_word_sent'] = 'Skickad';
 $lang['general_word_received'] = 'Mottagen';
 $lang['general_word_requested'] = 'Begärd';
 $lang['general_word_queued'] = 'Köad';
+$lang['general_word_table'] = "Table";
 $lang['general_word_invalid_ignore'] = 'Invalid (Ignore)';
 $lang['general_word_qslcard'] = 'QSL-kort';
 $lang['general_word_qslcard_management'] = 'QSL Management';
@@ -117,6 +121,7 @@ $lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Exch (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Exch (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';
+$lang['gen_hamradio_qsltype'] = "QSL Type";
 $lang['gen_hamradio_qslvia'] = 'QSL via';
 $lang['gen_hamradio_qslmsg'] = 'QSL Msg';
 $lang['gen_hamradio_locator'] = 'Lokator';

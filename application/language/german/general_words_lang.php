@@ -37,7 +37,10 @@ $lang['general_word_total'] = 'Gesamt';
 $lang['general_word_year'] = 'Jahr';
 $lang['general_word_month'] = 'Monat';
 
+$lang['general_word_colors'] = "Farben";
 $lang['general_word_worked'] = 'Gearbeitet';
+$lang['general_word_worked_not_confirmed'] = "Gearbeitet, nicht bestätigt";
+$lang['general_word_not_worked'] = "Nicht gearbeitet";
 $lang['general_word_confirmed'] = 'Bestätigt';
 $lang['general_word_needed'] = 'Benötigt';
 
@@ -50,6 +53,7 @@ $lang['general_word_sent'] = 'Gesendet';
 $lang['general_word_received'] = 'Erhalten';
 $lang['general_word_requested'] = 'Angefordert';
 $lang['general_word_queued'] = 'In Warteschlange';
+$lang['general_word_table'] = "Tabelle";
 $lang['general_word_invalid_ignore'] = 'Ungültig (Ignorieren)';
 $lang['general_word_qslcard'] = 'QSL Karte';
 $lang['general_word_qslcard_management'] = 'QSL Verwaltung';
@@ -117,6 +121,7 @@ $lang['gen_hamradio_myrefs'] = 'Mein Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Exch (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Exch (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';
+$lang['gen_hamradio_qsltype'] = "QSL Typ";
 $lang['gen_hamradio_qslvia'] = 'QSL via';
 $lang['gen_hamradio_qslmsg'] = 'QSL Msg';
 $lang['gen_hamradio_locator'] = 'Locator';
