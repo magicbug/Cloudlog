@@ -478,17 +478,6 @@ $(".js-download-adif").click(function () {
 	download(filename, adif);
 });
 
-
-
-
-
-
-
-
-
-
-
-
 function isBandModeEntered() {
 	let isBandModeOK = true;
 	qsoList.forEach((item) => {
@@ -606,4 +595,47 @@ $(document).ready(function () {
 		$("#qsoTable").html(tabledata);
 		handleInput();
 	}
+});
+
+$(".js-save-to-log").click(function () {
+	if (false === isBandModeEntered()) {
+		alert("Some QSO do not have band and/or mode defined!");
+
+		return false;
+	}
+
+	var operator = $("#operator").val();
+	operator = operator.toUpperCase();
+	var ownCallsign = $("#station-call").val().toUpperCase();
+	ownCallsign = ownCallsign.toUpperCase();
+	var mySotaWwff = $("#my-sota-wwff").val().toUpperCase();
+
+	var myPower = $("#my-power").val();
+	var myGrid = $("#my-grid").val().toUpperCase();
+
+	qsoList.forEach((item) => {
+		var callsign = item[2];
+		var rst_rcvd = item[7];
+		var rst_sent = item[6];
+		var start_date = (item[0].replace("-", "").replace("-", "")) + " " + (item[1].replace(":", ""));
+		var band = item[4];
+		var mode = item[5];
+		var freq_display = item[3];
+
+		$.ajax({
+			url: base_url + 'index.php/qso/saveqso',
+			type: 'post',
+			data: { callsign: callsign,
+					rst_rcvd: rst_rcvd,
+					rst_sent: rst_sent,
+					start_date: start_date,
+					band: band,
+					mode: mode,
+					freq_display: freq_display,
+			},
+			success: function (result) {
+			}
+		});
+	});
+
 });
