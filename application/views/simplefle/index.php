@@ -1,5 +1,9 @@
+<script type="text/javascript">
+var Bands = <?php echo json_encode($bands);?>;
+</script>
+
 <div class="container">
-         
+
         <br>
         <div id="simpleFleInfo">
             <script>
@@ -13,7 +17,7 @@
             </script>
             <h2><?php echo $page_title; ?></h2>
                 <button type="button" class="btn btn-sm btn-primary mr-1" id="simpleFleInfoButton"><?php echo lang('simplefle_info'); ?></button>
-        </div> 
+        </div>
 
 		<?php if($this->session->flashdata('message')) { ?>
 			<!-- Display Message -->
@@ -26,13 +30,13 @@
 		<header
 			class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
 			<div class="col-md-3 mb-2 mb-md-0">
-				
+
 			</div>
 
 			<div class="col-md-3 justify-content-end d-flex">
-				
-             
-			
+
+
+
             </div>
 		</header>
 
