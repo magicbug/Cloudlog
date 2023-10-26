@@ -115,6 +115,7 @@ $lang['filter_actions_recv_electronic'] = 'Erhalten (Elektronisch)';
 $lang['filter_actions_create_adif'] = 'Erstelle ADIF';
 $lang['filter_actions_print_label'] = 'Label drucken';
 $lang['filter_actions_start_print_title'] = 'Label Drucken';
+$lang['filter_actions_print_include_via'] = "Include Via";
 $lang['filter_actions_print_include_grid'] = 'Mit Planquadrat?';
 $lang['filter_actions_start_print'] = 'Druck starten bei?';
 $lang['filter_actions_print'] = 'Drucken';
