@@ -153,8 +153,8 @@ function handleInput() {
 			} else if (item.match(/^CW$|^SSB$|^FM$|^AM$|^PSK$|^FT8$/i)) {
 				mode = item.toUpperCase();
 			} else if (
-				item.match(/^[1-9]?\d\d[Mm]$/) ||
-				item.toUpperCase() === "70CM"
+				item.match(/^[0-9]{1,4}(?:m|cm|mm)$/) ||
+				item.match(/^(sat)$/)
 			) {
 				band = item.toUpperCase();
 				freq = 0;
@@ -417,7 +417,7 @@ for (const [key, value] of Object.entries(Bands)) {
             <input type="text" class="form-control text-uppercase" id="${key.slice(
 				1
 			)}CW" value="${value.cw}">
-          </div>							
+          </div>
         </div>
         <div class="col-3">
           <div class="form-group">
@@ -425,7 +425,7 @@ for (const [key, value] of Object.entries(Bands)) {
             <input type="text" class="form-control text-uppercase" id="${key.slice(
 				1
 			)}SSB" value="${value.ssb}">
-          </div>							
+          </div>
         </div>
         <div class="col-3">
           <div class="form-group">
@@ -433,9 +433,9 @@ for (const [key, value] of Object.entries(Bands)) {
             <input type="text" class="form-control text-uppercase" id="${key.slice(
 				1
 			)}DIGI" value="${value.digi}">
-          </div>							
+          </div>
         </div>
-  
+
       </div>
     `;
 }
@@ -453,14 +453,14 @@ $(".js-download-adif").click(function () {
 
 	const adifHeader = `
   ADIF export from Simple fast log entry by Petr, OK2CQR
-  
+
   Internet: https://sfle.ok2cqr.com
-  
+
   <ADIF_VER:5>2.2.1
   <PROGRAMID:4>SFLE
   <PROGRAMVERSION:5>0.0.1
   <EOH>
-  
+
   `;
 
 	if (false === isBandModeEntered()) {
