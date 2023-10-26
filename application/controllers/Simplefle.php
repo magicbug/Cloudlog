@@ -6,19 +6,19 @@ class SimpleFLE extends CI_Controller {
         $this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
-		
+
 		$this->load->model('stations');
 		$this->load->model('logbook_model');
 		$this->load->model('modes');
 		$this->load->model('bands');
 
 		$data['station_profile'] = $this->stations->all_of_user();			// Used in the view for station location select
-		$data['bands'] = $this->bands->get_all_bands_for_user();			// Fetching Bands for FLE 
+		$data['bands'] = $this->bands->get_all_bands();						// Fetching Bands for FLE
 		$data['active_station_profile'] = $this->stations->find_active();	// Prepopulate active Station in Station Location Selector
 
 
 		$data['page_title'] = "Simple Fast Log Entry";
-        
+
 		$footerData = [];
 		$footerData['scripts'] = [
 			'assets/js/moment.min.js',
