@@ -99,7 +99,7 @@ $('#js-syntax').click(function (event) {
         type: 'post',
         success: function (html) {
             BootstrapDialog.alert({
-                title: "<h4>"+lang_simplefle_syntax_help_ln1+"</h4>",
+                title: "<h4>"+lang_simplefle_syntax_help_title+"</h4>",
                 size: BootstrapDialog.SIZE_WIDE,
                 nl2br: false,
                 message: html,
@@ -441,6 +441,18 @@ for (const [key, value] of Object.entries(Bands)) {
 }
 $(".js-band-settings").html(htmlSettings);
 
+
+
+
+
+
+
+
+
+
+
+
+
 $(".js-download-adif").click(function () {
 	var operator = $("#operator").val();
 	operator = operator.toUpperCase();
@@ -533,6 +545,17 @@ $(".js-download-adif").click(function () {
 		".adi";
 	download(filename, adif);
 });
+
+
+
+
+
+
+
+
+
+
+
 
 function isBandModeEntered() {
 	let isBandModeOK = true;

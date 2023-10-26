@@ -9,10 +9,7 @@
             var lang_simplefle_info_ln3 = "<?php echo lang('simplefle_info_ln3'); ?>";
             var lang_simplefle_info_ln4 = "<?php echo lang('simplefle_info_ln4'); ?>";
             var lang_simplefle_syntax_help = "<?php echo lang('simplefle_syntax_help_button'); ?>";
-            var lang_simplefle_syntax_help_ln1 = "<?php echo lang('simplefle_syntax_help_ln1'); ?>";
-            var lang_simplefle_syntax_help_ln2 = "<?php echo lang('simplefle_syntax_help_ln2'); ?>";
-            var lang_simplefle_syntax_help_ln3 = "<?php echo lang('simplefle_syntax_help_ln3'); ?>";
-            var lang_simplefle_syntax_help_ln4 = "<?php echo lang('simplefle_syntax_help_ln4'); ?>";
+            var lang_simplefle_syntax_help_title = "<?php echo lang('simplefle_syntax_help_title'); ?>";
             </script>
             <h2><?php echo $page_title; ?></h2>
                 <button type="button" class="btn btn-sm btn-primary mr-1" id="simpleFleInfoButton"><?php echo lang('simplefle_info'); ?></button>
@@ -63,13 +60,16 @@
 								<div class="form-group">
 									<!-- <label for="my-call">My Station Callsign </label>
 									<input type="text" class="form-control text-uppercase" id="my-call"> -->
-									<label for="station_profile">Station Call</label>
+									<label for="station-call">Station Call</label>
 										<select name="station_profile" class="station_id custom-select" id="station-call">
 											<option value="-">-</option>
 											<?php foreach ($station_profile->result() as $station) { ?>
-												<option value="<?php echo $station->station_id; ?>"><?php echo lang('gen_hamradio_callsign') . ": "; ?><?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
+												<option value="<?php echo $station->station_id; ?>" <?php if ($station->station_id == $this->stations->find_active()) { echo 'selected'; } ?>>
+													<?php echo lang('gen_hamradio_callsign') . ": " . $station->station_callsign . " (" . $station->station_profile_name . ")"; ?>
+												</option>
 											<?php } ?>
 										</select>
+
 								</div>
 							</div>
 							<div class="col-xs-12 col-lg-6">
@@ -121,7 +121,7 @@
 								<button class="btn btn-danger js-empty-qso">Clear logging session</button>
 							</div>
 							<div class="col-3 col-sm-3">
-								<button class="btn btn-success" id="js-syntax">Syntax Help</button>
+								<button class="btn btn-success" id="js-syntax"><?php echo lang('simplefle_syntax_help_button'); ?></button>
 							</div>
 						</div>
 					</div>
