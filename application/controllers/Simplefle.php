@@ -29,4 +29,8 @@ class SimpleFLE extends CI_Controller {
 		$this->load->view('interface_assets/footer', $footerData);
 
     }
+
+	public function displaySyntax() {
+		$this->load->view('simplefle/syntax_help');
+	}
 }

@@ -93,18 +93,18 @@ $('#simpleFleInfoButton').click(function (event) {
 });
 
 $('#js-syntax').click(function (event) {
-    var awardInfoLines = [
-        lang_simplefle_syntax_help_ln2,
-        lang_simplefle_syntax_help_ln3,
-        lang_simplefle_syntax_help_ln4
-    ];
-    var simpleFleSyntaxHelp = "";
-    awardInfoLines.forEach(function (line) {
-        simpleFleSyntaxHelp += line + "<br><br>";
-    });
-    BootstrapDialog.alert({
-        title: "<h4>"+lang_simplefle_syntax_help_ln1+"</h4>",
-        message: simpleFleSyntaxHelp,
+    $('#js-syntax').prop("disabled", false);
+    $.ajax({
+        url: base_url + 'index.php/simplefle/displaySyntax',
+        type: 'post',
+        success: function (html) {
+            BootstrapDialog.alert({
+                title: "<h4>"+lang_simplefle_syntax_help_ln1+"</h4>",
+                // // size: BootstrapDialog.SIZE_NORMAL,
+                nl2br: false,
+                message: html,
+            });
+        }
     });
 });
 
