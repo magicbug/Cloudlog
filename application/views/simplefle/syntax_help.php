@@ -1,8 +1,6 @@
-<h5>The basic syntax of FastLogEntry</h5>
 <p>Before start logging a qso to notice to basic rules:</p>
 <p>- Every new QSO get its own new line</p>
 <p>- At every new line only write data, which changed to the last qso</p>
-<br>
 <p>We start with the first data, you already filled the form on the left with the date, wwff/sota info, stationcall and operator call. The main data contains the <em>band, mode and time</em>. After time you provide the first qso (basically the callsign)</p>
 <pre>
     20m ssb

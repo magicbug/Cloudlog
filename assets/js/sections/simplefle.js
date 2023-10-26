@@ -100,7 +100,7 @@ $('#js-syntax').click(function (event) {
         success: function (html) {
             BootstrapDialog.alert({
                 title: "<h4>"+lang_simplefle_syntax_help_ln1+"</h4>",
-                // // size: BootstrapDialog.SIZE_NORMAL,
+                size: BootstrapDialog.SIZE_WIDE,
                 nl2br: false,
                 message: html,
             });
