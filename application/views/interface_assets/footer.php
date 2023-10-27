@@ -28,7 +28,6 @@
 <script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/Control.FullScreen.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.qrb.js"></script>
@@ -1106,24 +1105,22 @@ $(document).on('keypress',function(e) {
 
       if ( ! manual ) {
         $(function($) {
-          var options = {
-            utc: true,
-            format: '%H:%M:%S'
-          }
-          $('.input_time').jclock(options);
+          handleStart = setInterval(function() { getUTCTimeStamp($('.input_start_time')); }, 500);
+          handleEnd = setInterval(function() { getUTCTimeStamp($('.input_end_time')); }, 500);
         });
 
         $(function($) {
-          var options = {
-            utc: true,
-            format: '%d-%m-%Y'
-          }
-          $('.input_date').jclock(options);
+          handleDate = setInterval(function() { getUTCDateStamp($('.input_date')); }, 1000);
         });
       }
     });
 
-
+    $('#callsign').focusout(function() {
+      if (! manual && $('#callsign').val() != '') {
+        clearInterval(handleStart);
+        clearInterval(handleDate);
+      }
+    });
 
   jQuery(function($) {
   var input = $('#callsign');
@@ -1142,6 +1139,11 @@ $(document).on('keypress',function(e) {
 	  }
 	  if (e.key === "Escape") { // escape key maps to keycode `27`
 		  reset_fields();
+		  if ( ! manual ) {
+		     handleStart = setInterval(function() { getUTCTimeStamp($('.input_start_time')); }, 500);
+		     handleEnd = setInterval(function() { getUTCTimeStamp($('.input_end_time')); }, 500);
+		     handleDate = setInterval(function() { getUTCDateStamp($('.input_date')); }, 1000);
+		  }
 		  $('#callsign').val("");
 		  $("#callsign").focus();
 	  }
@@ -1316,6 +1318,21 @@ $(document).on('keypress',function(e) {
             $('#rst_rcvd').val('59');
         }
     }
+
+    function getUTCTimeStamp(el) {
+       var now = new Date();
+       var localTime = now.getTime();
+       var utc = localTime + (now.getTimezoneOffset() * 60000);
+       $(el).attr('value', ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+    }
+
+    function getUTCDateStamp(el) {
+       var now = new Date();
+       var localTime = now.getTime();
+       var utc = localTime + (now.getTimezoneOffset() * 60000);
+       $(el).attr('value', ("0" + now.getUTCDate()).slice(-2)+'-'+("0" + (now.getUTCMonth()+1)).slice(-2)+'-'+now.getUTCFullYear());
+    }
+
     </script>
 
     <script>

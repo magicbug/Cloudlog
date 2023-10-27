@@ -70,7 +70,9 @@
 
                         <td><?php echo lang('general_word_datetime'); ?></td>
                         <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-                        <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></td>
+                        <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?>
+                        <?php if ($row->COL_TIME_ON != $row->COL_TIME_OFF) { $timestamp = strtotime($row->COL_TIME_OFF); echo " - ".date('H:i', $timestamp); } ?>
+                        </td>
                         <?php } else { ?>
                         <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); ?></td>
                         <?php } ?>

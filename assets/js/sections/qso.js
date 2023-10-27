@@ -743,6 +743,16 @@ $('#start_time').change(function() {
 		$('#start_time').val(raw_time);
 	}
 });
+$('#end_time').change(function() {
+	var raw_time = $(this).val();
+	if(raw_time.match(/^\d\[0-6]d$/)) {
+		raw_time = "0"+raw_time;
+	}
+	if(raw_time.match(/^[012]\d[0-5]\d$/)) {
+		raw_time = raw_time.substring(0,2)+":"+raw_time.substring(2,4);
+		$('#end_time').val(raw_time);
+	}
+});
 
 /* date input shortcut */
 $('#start_date').change(function() {
