@@ -655,26 +655,27 @@ $(".js-save-to-log").click(function () {
 						var timeString = item[1]; // Example: "123000"
 						// Formatting time in "12:30:00"
 						var formattedTime = timeString.substring(0, 2) + ":" + timeString.substring(2, 4) + ":" + "00";
-					
+
 						var start_date = item[0] + " " + formattedTime;
 						var band = item[4];
 						var mode = item[5];
 						var freq_display = item[3];
-					
-						$.ajax({
-							url: base_url + "index.php/qso/saveqso",
-							type: "post",
-							data: {
-								callsign: callsign,
-								rst_rcvd: rst_rcvd,
-								rst_sent: rst_sent,
-								start_date: start_date,
-								band: band,
-								mode: mode,
-								freq_display: freq_display,
-							},
-							success: function (debugCreateQSO) {
-								console.log("QSO Data:", {
+
+						qsoList.forEach((item) => {
+							var callsign = item[2];
+							var rst_rcvd = item[7];
+							var rst_sent = item[6];
+							var start_date = item[0];
+							var start_time = item[1][0] +item[1][1] + ":" + item[1][2] + item[1][3];
+							var band = item[4];
+							var mode = item[5];
+							var freq_display = item[3];
+							var station_profile = $(".station_id").val();
+
+							$.ajax({
+								url: base_url + "index.php/qso/saveqso",
+								type: "post",
+								data: {
 									callsign: callsign,
 									rst_rcvd: rst_rcvd,
 									rst_sent: rst_sent,
@@ -682,11 +683,14 @@ $(".js-save-to-log").click(function () {
 									band: band,
 									mode: mode,
 									freq_display: freq_display,
-								});
-							}
+									start_time: start_time,
+									station_profile: station_profile,
+								},
+								success: function (result) {},
+							});
 						});
 					});
-					
+
 					clearSession();
 					BootstrapDialog.alert({
 						title: "QSO logged",
