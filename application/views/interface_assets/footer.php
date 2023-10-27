@@ -1121,6 +1121,12 @@ $(document).on('keypress',function(e) {
         clearInterval(handleDate);
       }
     });
+    $('#start_time').focusout(function() {
+       if (manual && $('#start_time').val() != '') {
+          $('#end_time').val($('#start_time').val());
+          console.log("HERE!");
+       }
+    });
 
   jQuery(function($) {
   var input = $('#callsign');
