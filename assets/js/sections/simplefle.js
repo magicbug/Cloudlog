@@ -622,7 +622,19 @@ $(".js-save-to-log").click(function () {
 		setTimeout(function() {
 			$('#textarea').css('border', '');
 		  }, 2000);
-	}else {
+	}
+	if (false === isBandModeEntered()) {
+		BootstrapDialog.alert({
+			title: "WARNING",
+			message: "Warning! You can't log the QSO list because some QSO do not have band and/or mode defined!?",
+			type: BootstrapDialog.TYPE_DANGER,
+			btnCancelLabel: "Cancel",
+			btnOKLabel: "OK!",
+			btnOKClass: "btn-warning",
+		});
+		return false;
+	}
+	else {
 		handleInput();
 		BootstrapDialog.confirm({
 			title: "ATTENTION",
@@ -634,11 +646,6 @@ $(".js-save-to-log").click(function () {
 			btnOKClass: "btn-info",
 			callback: function (result) {
 				if (result) {
-					if (false === isBandModeEntered()) {
-						alert("Some QSO do not have band and/or mode defined!");
-
-						return false;
-					}
 					var operator = $("#operator").val();
 					operator = operator.toUpperCase();
 					var ownCallsign = $("#station-call").val().toUpperCase();
