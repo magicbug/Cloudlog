@@ -15,7 +15,7 @@
 		  </div>
 		<?php if($is_there_qsos_with_no_station_id >= 1) { ?>
 					<div class="alert alert-danger" role="alert" style="margin-bottom: 0px !important;">
-						<span class="badge badge-pill badge-warning">Warning</span> The Database contains QSOs without a station-profile (location)<br/>
+						<span class="badge badge-pill badge-warning">Warning</span> The Database contains <?php echo $is_there_qsos_with_no_station_id; ?> QSO<?php echo $is_there_qsos_with_no_station_id > 1 ? 's' : '' ?> without a station-profile (location)<br/>
 					</div>
 		  <div class="card-body">
 		  	<p class="card-text">Please reassign those QSOs to an existing station location:</p>
