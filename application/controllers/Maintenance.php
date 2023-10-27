@@ -14,8 +14,8 @@ class Maintenance extends CI_Controller {
 		$this->load->model('Stations');
 		$data['stations']=$this->Stations->all();
 		$data['page_title'] = "Maintenance";
-		$data['is_there_qsos_with_no_station_id'] = $this->Logbook_model->check_for_station_id();
-		if ($data['is_there_qsos_with_no_station_id']) {
+		$data['qsos_with_no_station_id'] = $this->Logbook_model->check_for_station_id();
+		if ($data['qsos_with_no_station_id']) {
 			$data['calls_wo_sid']=$this->Logbook_model->calls_without_station_id();
 		}
 		$this->load->view('interface_assets/header', $data);

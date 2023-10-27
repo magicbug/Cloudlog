@@ -13,11 +13,42 @@
 		  <div class="card-header">
 			QSO-DB Maintenance
 		  </div>
-		<?php if($is_there_qsos_with_no_station_id >= 1) { ?>
+		<?php if(!empty($qsos_with_no_station_id)) { ?>
 					<div class="alert alert-danger" role="alert" style="margin-bottom: 0px !important;">
-						<span class="badge badge-pill badge-warning">Warning</span> The Database contains <?php echo $is_there_qsos_with_no_station_id; ?> QSO<?php echo $is_there_qsos_with_no_station_id > 1 ? 's' : '' ?> without a station-profile (location)<br/>
+						<span class="badge badge-pill badge-warning">Warning</span> The Database contains <?php echo count($qsos_with_no_station_id); ?> QSO<?php echo count($qsos_with_no_station_id) > 1 ? 's' : '' ?> without a station-profile (location)<br/>
 					</div>
 		  <div class="card-body">
+		  <div class?"table-responsive">
+				<table id="unasigned_qsos_table" class="table table-sm table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Date</th>
+							<th scope="col">Time</th>
+							<th scope="col">Call</th>
+							<th scope="col">Mode</th>
+							<th scope="col">Band</th>
+						</tr>
+						<?php if($this->session->userdata('user_date_format')) {
+									$custom_date_format = $this->session->userdata('user_date_format');
+								} else {
+									$custom_date_format = 'd.m.Y';
+								}
+								foreach ($qsos_with_no_station_id as $qso) {
+									echo '<tr>';
+									$timestamp = strtotime($qso->COL_TIME_ON);
+									echo '<td>'.date($custom_date_format, $timestamp).'</td>';
+									$timestamp = strtotime($qso->COL_TIME_ON);
+									echo '<td>'.date('H:i', $timestamp).'</td>';
+									echo '<td>'.$qso->COL_CALL.'</td>';
+									echo '<td>'.$qso->COL_MODE.'</td>';
+									echo '<td>'.$qso->COL_BAND.'</td>';
+									echo '</tr>';
+								} ?>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+		  </div>
 		  	<p class="card-text">Please reassign those QSOs to an existing station location:</p>
 		
 		
