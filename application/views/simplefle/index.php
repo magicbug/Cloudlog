@@ -1,5 +1,6 @@
 <script type="text/javascript">
-var Bands = <?php echo json_encode($bands);?>;
+	var Bands = <?php echo json_encode($bands);?>;
+	var user_id = <?php echo $this->session->userdata('user_id'); ?>;
 </script>
 
 <div class="container">

@@ -182,14 +182,14 @@ function handleInput() {
 
 			$("#qsoTable > tbody:last-child").append(tableRow);
 
-			localStorage.setItem("tabledata", $("#qsoTable").html());
-			localStorage.setItem("my-call", $("#station-call").val());
-			localStorage.setItem("operator", $("#operator").val());
-			localStorage.setItem("my-sota-wwff", $("#my-sota-wwff").val());
-			localStorage.setItem("qso-area", $(".qso-area").val());
-			localStorage.setItem("qsodate", $("#qsodate").val());
-			localStorage.setItem("my-power", $("#my-power").val());
-			localStorage.setItem("my-grid", $("#my-grid").val());
+			localStorage.setItem(`user_${user_id}_tabledata`, $("#qsoTable").html());
+			localStorage.setItem(`user_${user_id}_my-call`, $("#station-call").val());
+			localStorage.setItem(`user_${user_id}_operator`, $("#operator").val());
+			localStorage.setItem(`user_${user_id}_my-sota-wwff`, $("#my-sota-wwff").val());
+			localStorage.setItem(`user_${user_id}_qso-area`, $(".qso-area").val());
+			localStorage.setItem(`user_${user_id}_qsodate`, $("#qsodate").val());
+			localStorage.setItem(`user_${user_id}_my-power`, $("#my-power").val());
+			localStorage.setItem(`user_${user_id}_my-grid`, $("#my-grid").val());
 
 			callsign = "";
 			sotaWff = "";
@@ -285,13 +285,13 @@ $(".js-empty-qso").click(function () {
 });
 
 function clearSession() {
-	localStorage.removeItem("tabledata");
-	localStorage.removeItem("my-call");
-	localStorage.removeItem("operator");
-	localStorage.removeItem("my-sota-wwff");
-	localStorage.removeItem("qso-area");
-	localStorage.removeItem("qsodate");
-	localStorage.removeItem("my-grid");
+	localStorage.removeItem(`user_${user_id}_tabledata`);
+	localStorage.removeItem(`user_${user_id}_my-call`);
+	localStorage.removeItem(`user_${user_id}_operator`);
+	localStorage.removeItem(`user_${user_id}_my-sota-wwff`);
+	localStorage.removeItem(`user_${user_id}_qso-area`);
+	localStorage.removeItem(`user_${user_id}_qsodate`);
+	localStorage.removeItem(`user_${user_id}_my-grid`);
 	$("#qsodate").val("");
 	$("#qsoTable tbody").empty();
 	$("#my-sota-wwff").val("");
@@ -573,14 +573,14 @@ function download(filename, text) {
 }
 
 $(document).ready(function () {
-	var tabledata = localStorage.getItem("tabledata");
-	var mycall = localStorage.getItem("my-call");
-	var operator = localStorage.getItem("operator");
-	var mysotawwff = localStorage.getItem("my-sota-wwff");
-	var qsoarea = localStorage.getItem("qso-area");
-	var qsodate = localStorage.getItem("qsodate");
-	var myPower = localStorage.getItem("my-power");
-	var myGrid = localStorage.getItem("my-grid");
+	var tabledata = localStorage.getItem(`user_${user_id}_tabledata`);
+	var mycall = localStorage.getItem(`user_${user_id}_my-call`);
+	var operator = localStorage.getItem(`user_${user_id}_operator`);
+	var mysotawwff = localStorage.getItem(`user_${user_id}_my-sota-wwff`);
+	var qsoarea = localStorage.getItem(`user_${user_id}_qso-area`);
+	var qsodate = localStorage.getItem(`user_${user_id}_qsodate`);
+	var myPower = localStorage.getItem(`user_${user_id}_my-power`);
+	var myGrid = localStorage.getItem(`user_${user_id}_my-grid`);
 
 	if (mycall != null) {
 		$("#station-call").val(mycall);
