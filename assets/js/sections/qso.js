@@ -571,7 +571,6 @@ $("#callsign").focusout(function() {
 
 					changebadge(result.dxcc.entity);
 
-					getDxccResult(result.dxcc.adif, convert_case(result.dxcc.entity));
 				}
 
 				if(result.lotw_member == "active") {
@@ -713,6 +712,9 @@ $("#callsign").focusout(function() {
 				$('#partial_view').show();
 				/* display past QSOs */
 				$('#partial_view').html(result.partial);
+
+				// Get DXX Summary
+				getDxccResult(result.dxcc.adif, convert_case(result.dxcc.entity));
 			}
 		});
 	} else {

@@ -115,11 +115,13 @@ $lang['filter_actions_recv_electronic'] = 'Received (Electronic)';
 $lang['filter_actions_create_adif'] = 'Create ADIF';
 $lang['filter_actions_print_label'] = 'Print Label';
 $lang['filter_actions_start_print_title'] = 'Print Labels';
+$lang['filter_actions_print_include_via'] = "Include Via";
 $lang['filter_actions_print_include_grid'] = 'Include Grid?';
 $lang['filter_actions_start_print'] = 'Start printing at?';
 $lang['filter_actions_print'] = 'Print';
 $lang['filter_actions_qsl_slideshow'] = 'QSL Slideshow';
 $lang['filter_actions_delete'] = 'Delete';
+$lang['filter_actions_delete_warning'] = "Warning! Are you sure you want to delete the marked QSO(s)?";
 
 
 /*

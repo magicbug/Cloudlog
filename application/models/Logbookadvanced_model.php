@@ -7,7 +7,7 @@ class Logbookadvanced_model extends CI_Model {
 		$conditions = [];
 		$binding = [$searchCriteria['user_id']];
 
-		if ($searchCriteria['dupes'] !== '') {
+		if ((isset($searchCriteria['dupes'])) && ($searchCriteria['dupes'] !== '')) {
 			$id_sql="select group_concat(x.qsoids separator ',') as QSO_IDs from (
 				select GROUP_CONCAT(col_primary_key separator ',') as qsoids, COL_CALL, COL_MODE, COL_SUBMODE, station_callsign, COL_SAT_NAME, COL_BAND,  min(col_time_on) Mintime, max(col_time_on) Maxtime from " . $this->config->item('table_name') . "
 				 join station_profile on " . $this->config->item('table_name') . ".station_id = station_profile.station_id where station_profile.user_id=?
@@ -225,11 +225,9 @@ class Logbookadvanced_model extends CI_Model {
 			ORDER BY qsos.COL_TIME_ON desc, qsos.COL_PRIMARY_KEY desc
 			LIMIT $limit
 		";
-
 		$data = $this->db->query($sql, $binding);
 
         $results = $data->result('array');
-
 		return $results;
 	}
 

@@ -420,14 +420,17 @@ class Logbook_model extends CI_Model {
 			$this->db->where($sql);
 		}
 
-		if ($mode != 'All') {
+		if ($mode != 'All' && $mode != '') {
 			$this->db->where("(COL_MODE='" . $mode . "' OR COL_SUBMODE='" . $mode ."')");
 		}
 		$this->db->order_by("COL_TIME_ON", "desc");
 
 		$this->db->limit(500);
 
-		return $this->db->get($this->config->item('table_name'));
+		$result =  $this->db->get($this->config->item('table_name'));
+      log_message('debug', 'SQL: '.$this->db->last_query());
+      return $result;
+		//return $this->db->get($this->config->item('table_name'));
 	}
 
 	public function activated_grids_qso_details($searchphrase, $band, $mode){
@@ -1700,7 +1703,7 @@ class Logbook_model extends CI_Model {
 
 	    $extrawhere='';
 	    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
-		    $extrawhere="COL_QSL_RCVD='Y'"; 
+		    $extrawhere="COL_QSL_RCVD='Y'";
 	    }
 	    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 		    if ($extrawhere!='') {
@@ -3173,7 +3176,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
         } else {
             $input_lotw_qslrdate = NULL;
         }
-	
+
 	if (isset($record['lotw_qsl_sent'])){
             $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
         } else if ($markLotw != NULL) {
@@ -4128,12 +4131,10 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
                     $this->session->set_userdata('qrz_session_key', $qrz_session_key);
                 }
 
-
-
                 $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
 
                 // if we got nothing, it's probably because our session key is invalid, try again
-                if (!isset($callbook['callsign']))
+                if (($callbook['callsign'] ?? '') == '')
                 {
                     $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
                     $this->session->set_userdata('qrz_session_key', $qrz_session_key);

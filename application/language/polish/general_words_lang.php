@@ -16,6 +16,8 @@ $lang['general_word_next'] = 'Next';
 $lang['general_word_previous'] = 'Previous';
 $lang['general_word_enabled'] = "Enabled";
 $lang['general_word_disabled'] = "Disabled";
+$lang['general_word_export'] = "Export";
+$lang['general_word_import'] = "Import";
 
 $lang['general_word_date'] = 'Data';
 $lang['general_word_time'] = 'Godzina';
@@ -35,7 +37,10 @@ $lang['general_word_total'] = 'Suma';
 $lang['general_word_year'] = 'Rok';
 $lang['general_word_month'] = 'Miesiąc';
 
+$lang['general_word_colors'] = "Colors";
 $lang['general_word_worked'] = 'Pracowane';
+$lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
+$lang['general_word_not_worked'] = "Not worked";
 $lang['general_word_confirmed'] = 'Potwierdzone';
 $lang['general_word_needed'] = 'Wymagane';
 
@@ -48,6 +53,7 @@ $lang['general_word_sent'] = 'Wysłane';
 $lang['general_word_received'] = 'Odebrane';
 $lang['general_word_requested'] = 'Poproszone';
 $lang['general_word_queued'] = 'Queued';
+$lang['general_word_table'] = "Table";
 $lang['general_word_invalid_ignore'] = 'Invalid (Ignore)';
 $lang['general_word_qslcard'] = 'Karta QSL';
 $lang['general_word_qslcard_management'] = 'Zarządzanie kartami';
@@ -91,6 +97,7 @@ $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 $lang['cloudlog_station_profile'] = 'Lokalizacja stacji';
 
 // ham radio terms
+$lang['gen_hamradio_cq'] = "CQ";
 $lang['gen_hamradio_qso'] = 'QSO';
 $lang['gen_hamradio_station'] = 'Stacja';
 
@@ -102,6 +109,7 @@ $lang['gen_hamradio_mode'] = 'Modulacja';
 $lang['gen_hamradio_rst_sent'] = 'Wysłany';
 $lang['gen_hamradio_rst_rcvd'] = 'Odebrany\'d';
 $lang['gen_hamradio_band'] = 'Pasmo';
+$lang['gen_hamradio_bandgroup'] = "Bandgroup";
 $lang['gen_hamradio_band_rx'] = 'Pasmo (RX)';
 $lang['gen_hamradio_frequency'] = 'Częstotliwość';
 $lang['gen_hamradio_frequency_rx'] = 'Częstotliwość (RX)';
@@ -113,6 +121,7 @@ $lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Wymiana (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Wymiana (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';
+$lang['gen_hamradio_qsltype'] = "QSL Type";
 $lang['gen_hamradio_qslvia'] = 'QSL via';
 $lang['gen_hamradio_qslmsg'] = 'QSL Msg';
 $lang['gen_hamradio_locator'] = 'Lokator';

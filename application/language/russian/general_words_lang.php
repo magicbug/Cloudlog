@@ -16,6 +16,8 @@ $lang['general_word_next'] = 'Next';
 $lang['general_word_previous'] = 'Previous';
 $lang['general_word_enabled'] = "Enabled";
 $lang['general_word_disabled'] = "Disabled";
+$lang['general_word_export'] = "Export";
+$lang['general_word_import'] = "Import";
 
 $lang['general_word_date'] = 'Дата';
 $lang['general_word_time'] = 'Время';
@@ -35,7 +37,10 @@ $lang['general_word_total'] = 'Всего';
 $lang['general_word_year'] = 'Год';
 $lang['general_word_month'] = 'Месяц';
 
+$lang['general_word_colors'] = "Colors";
 $lang['general_word_worked'] = 'Сработано';
+$lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
+$lang['general_word_not_worked'] = "Not worked";
 $lang['general_word_confirmed'] = 'Подтверждено';
 $lang['general_word_needed'] = 'Необходимо';
 
@@ -48,6 +53,7 @@ $lang['general_word_sent'] = 'Отправлено';
 $lang['general_word_received'] = 'Принято';
 $lang['general_word_requested'] = 'Запрошено';
 $lang['general_word_queued'] = 'В очереди';
+$lang['general_word_table'] = "Table";
 $lang['general_word_invalid_ignore'] = 'Некорректно (Игнорировать)';
 
 $lang['general_word_qslcard'] = 'QSL карточка';
@@ -91,6 +97,7 @@ $lang['gen_max_file_upload_size'] = 'Maximum file upload size is ';
 // Cloudlog Terms
 $lang['cloudlog_station_profile'] = 'Месторасположение станции';
 
+$lang['gen_hamradio_cq'] = "CQ";
 // ham radio terms
 $lang['gen_hamradio_qso'] = 'QSO';
 $lang['gen_hamradio_station'] = 'Станция';
@@ -102,6 +109,7 @@ $lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Вид модуляции';
 $lang['gen_hamradio_rst_sent'] = 'Отправлено';
 $lang['gen_hamradio_rst_rcvd'] = 'Получено';
+$lang['gen_hamradio_bandgroup'] = "Bandgroup";
 $lang['gen_hamradio_band'] = 'Диапазон';
 $lang['gen_hamradio_band_rx'] = 'Диапазон (RX)';
 $lang['gen_hamradio_frequency'] = 'Частота';
@@ -113,6 +121,7 @@ $lang['gen_hamradio_refs'] = 'Refs';
 $lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Exch (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Exch (R)';
+$lang['gen_hamradio_qsltype'] = "QSL Type";
 $lang['gen_hamradio_qsl'] = 'QSL';
 $lang['gen_hamradio_qslvia'] = 'QSL via';
 $lang['gen_hamradio_qslmsg'] = 'QSL Msg';

@@ -18,6 +18,10 @@
     var lang_general_word_qso_data = "<?php echo lang('general_word_qso_data'); ?>";
     var lang_general_word_danger = "<?php echo lang('general_word_danger'); ?>";
     var lang_qso_delete_warning = "<?php echo lang('qso_delete_warning'); ?>";
+    var lang_general_word_colors = "<?php echo lang('general_word_colors'); ?>";
+    var lang_general_word_confirmed = "<?php echo lang('general_word_confirmed'); ?>";
+    var lang_general_word_worked_not_confirmed = "<?php echo lang('general_word_worked_not_confirmed'); ?>";
+    var lang_general_word_not_worked = "<?php echo lang('general_word_not_worked'); ?>";
 </script>
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
@@ -87,7 +91,7 @@ function load_was_map() {
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/continents.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "hrdlog" ||$this->uri->segment(1) == "webadif") { ?>
+<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "hrdlog" || $this->uri->segment(1) == "webadif" || $this->uri->segment(1) == "sattimers") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
@@ -2284,7 +2288,7 @@ $(document).ready(function(){
     </script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "kml") { ?>
+<?php if ($this->uri->segment(1) == "kmlexport") { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
     <script type="text/javascript">
@@ -2388,7 +2392,23 @@ function viewEqsl(picture, callsign) {
             });
         }
 </script>
-
+<script>
+    $('#displayAwardInfo').click(function (event) {
+        var awardInfoLines = [
+            lang_award_info_ln2,
+            lang_award_info_ln3,
+            lang_award_info_ln4
+        ];
+        var awardInfoContent = "";
+        awardInfoLines.forEach(function (line) {
+            awardInfoContent += line + "<br><br>";
+        });
+        BootstrapDialog.alert({
+            title: "<h4>"+lang_award_info_ln1+"</h4>",
+            message: awardInfoContent,
+        });
+    });
+</script>
 <script>
   /*
    * Used to fetch QSOs from the logbook in the awards

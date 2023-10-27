@@ -16,6 +16,8 @@ $lang['general_word_next'] = 'Weiter';
 $lang['general_word_previous'] = 'Zurück';
 $lang['general_word_enabled'] = "Eingeschaltet";
 $lang['general_word_disabled'] = "Ausgeschaltet";
+$lang['general_word_export'] = "Exportieren";
+$lang['general_word_import'] = "Importieren";
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Zeit';
@@ -35,7 +37,10 @@ $lang['general_word_total'] = 'Gesamt';
 $lang['general_word_year'] = 'Jahr';
 $lang['general_word_month'] = 'Monat';
 
+$lang['general_word_colors'] = "Farben";
 $lang['general_word_worked'] = 'Gearbeitet';
+$lang['general_word_worked_not_confirmed'] = "Gearbeitet, nicht bestätigt";
+$lang['general_word_not_worked'] = "Nicht gearbeitet";
 $lang['general_word_confirmed'] = 'Bestätigt';
 $lang['general_word_needed'] = 'Benötigt';
 
@@ -48,6 +53,7 @@ $lang['general_word_sent'] = 'Gesendet';
 $lang['general_word_received'] = 'Erhalten';
 $lang['general_word_requested'] = 'Angefordert';
 $lang['general_word_queued'] = 'In Warteschlange';
+$lang['general_word_table'] = "Tabelle";
 $lang['general_word_invalid_ignore'] = 'Ungültig (Ignorieren)';
 $lang['general_word_qslcard'] = 'QSL Karte';
 $lang['general_word_qslcard_management'] = 'QSL Verwaltung';
@@ -91,6 +97,7 @@ $lang['gen_max_file_upload_size'] = 'Die max. Dateigrösse für Uploads beträgt
 $lang['cloudlog_station_profile'] = 'Stationsprofil';
 
 // ham radio terms
+$lang['gen_hamradio_cq'] = "CQ";
 $lang['gen_hamradio_qso'] = 'QSO';
 $lang['gen_hamradio_station'] = 'Station';
 
@@ -102,6 +109,7 @@ $lang['gen_hamradio_mode'] = 'Mode';
 $lang['gen_hamradio_rst_sent'] = 'Gegeben';
 $lang['gen_hamradio_rst_rcvd'] = 'Erhalten';
 $lang['gen_hamradio_band'] = 'Band';
+$lang['gen_hamradio_bandgroup'] = "Bandgruppe";
 $lang['gen_hamradio_band_rx'] = 'Band (RX)';
 $lang['gen_hamradio_frequency'] = 'Frequenz';
 $lang['gen_hamradio_frequency_rx'] = 'Frequenz (RX)';
@@ -113,6 +121,7 @@ $lang['gen_hamradio_myrefs'] = 'Mein Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Exch (S)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Exch (R)';
 $lang['gen_hamradio_qsl'] = 'QSL';
+$lang['gen_hamradio_qsltype'] = "QSL Typ";
 $lang['gen_hamradio_qslvia'] = 'QSL via';
 $lang['gen_hamradio_qslmsg'] = 'QSL Msg';
 $lang['gen_hamradio_locator'] = 'Locator';
@@ -161,7 +170,7 @@ $lang['dashboard_qso_breakdown'] = 'QSO-Übersicht';
 $lang['dashboard_countries_breakdown'] = 'Länderübersicht';
 
 $lang['gen_from_date'] = 'Ab Datum';
-$lang['gen_to_date'] = 'To date';
+$lang['gen_to_date'] = 'Bis Datum';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'Dieses QSO wurde bestätigt am';
 
