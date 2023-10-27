@@ -404,18 +404,6 @@ for (const [key, value] of Object.entries(Bands)) {
 }
 $(".js-band-settings").html(htmlSettings);
 
-
-
-
-
-
-
-
-
-
-
-
-
 $(".js-download-adif").click(function () {
 	var operator = $("#operator").val();
 	operator = operator.toUpperCase();
