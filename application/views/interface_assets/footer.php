@@ -1111,12 +1111,7 @@ $(document).on('keypress',function(e) {
 
       if ( ! manual ) {
         $(function($) {
-          handleStart = setInterval(function() { getUTCTimeStamp($('.input_start_time')); }, 500);
-          handleEnd = setInterval(function() { getUTCTimeStamp($('.input_end_time')); }, 500);
-        });
-
-        $(function($) {
-          handleDate = setInterval(function() { getUTCDateStamp($('.input_date')); }, 1000);
+           resetTimers();
         });
       }
     });
@@ -1151,9 +1146,7 @@ $(document).on('keypress',function(e) {
 	  if (e.key === "Escape") { // escape key maps to keycode `27`
 		  reset_fields();
 		  if ( ! manual ) {
-		     handleStart = setInterval(function() { getUTCTimeStamp($('.input_start_time')); }, 500);
-		     handleEnd = setInterval(function() { getUTCTimeStamp($('.input_end_time')); }, 500);
-		     handleDate = setInterval(function() { getUTCDateStamp($('.input_date')); }, 1000);
+		     resetTimers()
 		  }
 		  $('#callsign').val("");
 		  $("#callsign").focus();
