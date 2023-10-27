@@ -125,28 +125,32 @@
 			</div>
 		</div>
 		<div class="col-xs-12 col-md-8">
-			QSO list
-			<div class="qsoList">
-				<table class="table table-condensed table-striped table-sm" id="qsoTable">
-					<thead>
-						<tr>
-							<th>Date</th>
-							<th>Time</th>
-							<th>Callsign</th>
-							<th>Band</th>
-							<th>Mode</th>
-							<th>RS</th>
-							<th>RR</th>
-							<th>Op.</th>
-							<th>SOTA/WFF</th>
-						</tr>
-					</thead>
-					<tbody id="qsoTableBody">
-
-					</tbody>
-				</table>
+			<div class="card-header">
+				QSO list
 			</div>
-			<span class="js-qso-count"></span>
+			<div class="card-body">
+				<div class="qsoList">
+					<table class="table table-condensed table-striped table-sm" id="qsoTable">
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Time</th>
+								<th>Callsign</th>
+								<th>Band</th>
+								<th>Mode</th>
+								<th>RS</th>
+								<th>RR</th>
+								<th>Op.</th>
+								<th>SOTA/WFF</th>
+							</tr>
+						</thead>
+						<tbody id="qsoTableBody">
+
+						</tbody>
+					</table>
+				</div>
+				<span class="js-qso-count"></span>
+			</div>
 			<div class="row mt-2">
 				<div class="col-3 col-sm-3">
 					<button class="btn btn-primary js-reload-qso">Reload QSO list</button>
