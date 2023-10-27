@@ -15,6 +15,7 @@ class SimpleFLE extends CI_Controller {
 		$data['station_profile'] = $this->stations->all_of_user();			// Used in the view for station location select
 		$data['bands'] = $this->bands->get_all_bands();						// Fetching Bands for FLE
 		$data['active_station_profile'] = $this->stations->find_active();	// Prepopulate active Station in Station Location Selector
+		$data['sat_active'] = array_search("SAT", $this->bands->get_user_bands(), true);
 
 
 		$data['page_title'] = "Simple Fast Log Entry";
