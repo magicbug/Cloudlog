@@ -8,7 +8,11 @@ class Logbook_model extends CI_Model {
     $callsign = str_replace('Ø', '0', $this->input->post('callsign'));
     // Join date+time
     $datetime = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('start_time');
-    $datetime_off = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('end_time');
+    if ($this->input->post('end_time') != null) {
+       $datetime_off = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('end_time');
+    } else {
+       $datetime_off = $datetime;
+    }
     if ($this->input->post('prop_mode') != null) {
             $prop_mode = $this->input->post('prop_mode');
     } else {
