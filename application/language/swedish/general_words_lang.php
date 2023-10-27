@@ -21,6 +21,8 @@ $lang['general_word_import'] = "Import";
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Tid';
+$lang['general_word_time_on'] = 'Time on';
+$lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Datum/Tid';
 $lang['general_word_none'] = 'Ingen';
 $lang['general_word_name'] = 'Namn';
