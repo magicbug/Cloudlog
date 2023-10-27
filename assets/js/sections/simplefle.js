@@ -88,7 +88,7 @@ function handleInput() {
 				item.match(/^[0-9]{1,4}(?:m|cm|mm)$/) ||
 				item.match(/^(sat)$/)
 			) {
-				band = item.toUpperCase();
+				band = item;
 				freq = 0;
 			} else if (item.match(/^\d+\.\d+$/)) {
 				freq = item;
@@ -316,31 +316,31 @@ $(".js-download-qso").click(function () {
 
 function getBandFromFreq(freq) {
 	if (freq > 1.7 && freq < 2) {
-		return "160M";
+		return "160m";
 	} else if (freq > 3.4 && freq < 4) {
-		return "80M";
+		return "80m";
 	} else if (freq > 6.9 && freq < 7.3) {
-		return "40M";
+		return "40m";
 	} else if (freq > 5 && freq < 6) {
-		return "60M";
+		return "60m";
 	} else if (freq > 10 && freq < 11) {
-		return "30M";
+		return "30m";
 	} else if (freq > 13 && freq < 15) {
-		return "20M";
+		return "20m";
 	} else if (freq > 18 && freq < 19) {
-		return "17M";
+		return "17m";
 	} else if (freq > 20 && freq < 22) {
-		return "15M";
+		return "15m";
 	} else if (freq > 24 && freq < 25) {
-		return "12M";
+		return "12m";
 	} else if (freq > 27 && freq < 30) {
-		return "10M";
+		return "10m";
 	} else if (freq > 50 && freq < 55) {
-		return "6M";
+		return "6m";
 	} else if (freq > 144 && freq < 149) {
-		return "2M";
+		return "2m";
 	} else if (freq > 430 && freq < 460) {
-		return "70CM";
+		return "70cm";
 	}
 
 	return "";
@@ -348,7 +348,7 @@ function getBandFromFreq(freq) {
 
 function getFreqFromBand(band, mode) {
 	const settingsMode = getSettingsMode(mode.toUpperCase());
-	const id = "#" + band.toUpperCase() + settingsMode;
+	const id = "#" + band + settingsMode;
 	if ($(id).length) {
 		return $(id).val();
 	}
