@@ -995,6 +995,12 @@ $(document).on('keypress',function(e) {
 					}
 				);
 			});
+			$('#reset_time').click(function() {
+				var now = new Date();
+				var localTime = now.getTime();
+				var utc = localTime + (now.getTimezoneOffset() * 60000);
+				$('#start_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+			});
 		});
 	</script>
 
@@ -1124,7 +1130,6 @@ $(document).on('keypress',function(e) {
     $('#start_time').focusout(function() {
        if (manual && $('#start_time').val() != '') {
           $('#end_time').val($('#start_time').val());
-          console.log("HERE!");
        }
     });
 
