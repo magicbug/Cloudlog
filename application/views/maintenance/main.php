@@ -22,6 +22,7 @@
 				<table id="unasigned_qsos_table" class="table table-sm table-striped">
 					<thead>
 						<tr>
+							<th scope="col"><input type="checkbox" onClick="toggleAll(this)"></th>
 							<th scope="col">Date</th>
 							<th scope="col">Time</th>
 							<th scope="col">Call</th>
@@ -35,6 +36,7 @@
 								}
 								foreach ($qsos_with_no_station_id as $qso) {
 									echo '<tr>';
+									echo '<td><input type="checkbox" id="'.$qso->COL_PRIMARY_KEY.'" name="cBox[]" value="'.$qso->COL_PRIMARY_KEY.'"></td>';
 									$timestamp = strtotime($qso->COL_TIME_ON);
 									echo '<td>'.date($custom_date_format, $timestamp).'</td>';
 									$timestamp = strtotime($qso->COL_TIME_ON);
@@ -69,7 +71,7 @@
 			foreach ($stations->result() as $station) {
 				$options.='<option value='.$station->station_id.'>'.$station->station_profile_name.' ('.$station->station_callsign.')</option>';
 			}
-			echo $options.'</select></td><td><button class="btn btn-warning" onClick="reassign(\''.$call['COL_STATION_CALLSIGN'].'\',$(\'#station_profile option:selected\').val());"><i class="fas fa-sync"></i>Reassign</a></button></td></tr>'; 
+			echo $options.'</select></td><td><button class="btn btn-warning" onClick="reassign(\''.$call['COL_STATION_CALLSIGN'].'\',$(\'#station_profile option:selected\').val());"><i class="fas fa-sync"></i> Reassign</a></button></td></tr>';
 		} ?>
 					</tbody>
 				</table>
