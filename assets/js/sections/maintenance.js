@@ -35,3 +35,9 @@ function toggleAll(source) {
 		source.checked = false;
 	}
 }
+
+function updateCallsign(item) {
+	let text = item.options[item.selectedIndex].text
+	let call = text.substr(text.lastIndexOf('(')+1,(text.lastIndexOf(')')-text.lastIndexOf('(')-1));
+	document.getElementById("station_call").innerHTML = call;
+}

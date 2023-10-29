@@ -66,7 +66,7 @@
 					<tbody>
 		<?php 
 		foreach ($calls_wo_sid as $call) {
-			echo '<tr><td>'.$call['COL_STATION_CALLSIGN'].'</td><td><select name="station_profile" id="station_profile">';
+			echo '<tr><td><div id="station_call">'.$call['COL_STATION_CALLSIGN'].'</div></td><td><select name="station_profile" id="station_profile" onChange="updateCallsign(this)">';
 			$options='';
 			foreach ($stations->result() as $station) {
 				$options.='<option value='.$station->station_id.'>'.$station->station_profile_name.' ('.$station->station_callsign.')</option>';
