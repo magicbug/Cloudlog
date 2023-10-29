@@ -29,6 +29,8 @@
 							<th scope="col">Mode</th>
 							<th scope="col">Band</th>
 						</tr>
+					</thead>
+					<tbody>
 						<?php if($this->session->userdata('user_date_format')) {
 									$custom_date_format = $this->session->userdata('user_date_format');
 								} else {
@@ -46,8 +48,6 @@
 									echo '<td>'.$qso->COL_BAND.'</td>';
 									echo '</tr>';
 								} ?>
-					</thead>
-					<tbody>
 					</tbody>
 				</table>
 		  </div>
