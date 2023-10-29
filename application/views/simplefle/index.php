@@ -44,73 +44,44 @@
 		<div class="col-xs-12 col-md-4">
 
 			<div class="card-header">
-				<ul style="font-size: 15px;" class="nav nav-tabs card-header-tabs pull-right" id="myTab" role="tablist">
-					<li class="nav-item">
-						<a class="nav-link active" id="qso-tab" data-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true">Main Data</a>
-					</li>
-
-					<li class="nav-item">
-						<a class="nav-link" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false"><?php echo lang('general_word_general'); ?></a>
-					</li>
-
-					<?php if ($sat_active) { ?>
-						<li class="nav-item">
-							<a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false"><?php echo lang('general_word_satellite_short'); ?></a>
-						</li>
-					<?php } ?>
-				</ul>
+				QSO Data
 			</div>
 			<div class="card-body">
-				<div class="tab-content" id="myTabContent">
-					<div class="tab-pane fade show active" id="qso" role="tabpanel" aria-labelledby="qso-tab">
-						<div class="row">
-							<div class="col-xs-12 col-lg-12 col-xl-6">
-								<div class="form-group">
-									<label for="qsodate">QSO date</label>
-									<input type="date" class="form-control" id="qsodate">
-								</div>
-							</div>
-
-						</div>
-						<div class="row">
-							<div class="col-xs-12 col-lg-6">
-								<div class="form-group">
-									<label for="station-call">Station Call</label>
-									<select name="station_profile" class="station_id custom-select" id="station-call">
-										<option value="-">-</option>
-										<?php foreach ($station_profile->result() as $station) { ?>
-											<option value="<?php echo $station->station_id; ?>" <?php if ($station->station_id == $this->stations->find_active()) {
-																									echo 'selected';
-																								} ?>>
-												<?php echo lang('gen_hamradio_callsign') . ": " . $station->station_callsign . " (" . $station->station_profile_name . ")"; ?>
-											</option>
-										<?php } ?>
-									</select>
-									<div class="alert alert-danger" role="alert" id="warningStationCall" style="display: none"> </div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-lg-6">
-								<div class="form-group">
-									<label for="operator">Operator <span class="text-muted input-example">e.g. OK2CQR</span></label>
-									<input type="text" class="form-control text-uppercase" id="operator" value="<?php echo $this->session->userdata('operator_callsign'); ?>">
-									<div class="alert alert-danger" role="alert" id="warningOperatorField" style="display: none"> </div>
-								</div>
-							</div>
+				<div class="row">
+					<div class="col-xs-12 col-lg-12 col-xl-6">
+						<div class="form-group">
+							<label for="qsodate">QSO date</label>
+							<input type="date" class="form-control" id="qsodate">
 						</div>
 					</div>
-					<div class="tab-pane" id="general" role="tabpanel" aria-labelledby="general-tab">
-						<div class="col-xs-12 col-lg-12 col-xl-6">
-							<div class="form-group">
-								<label for="wwff">WWFF/SOTA <span class="text-muted input-example">e.g. OKFF-2068</span></label>
-								<input type="text" class="form-control text-uppercase" id="my-sota-wwff" autofocus>
-							</div>
+					<div class="col-xs-12 col-lg-6">
+						<div class="form-group">
+							<label for="operator">Operator <span class="text-muted input-example">e.g. OK2CQR</span></label>
+							<input type="text" class="form-control text-uppercase" id="operator" value="<?php echo $this->session->userdata('operator_callsign'); ?>">
+							<div class="alert alert-danger" role="alert" id="warningOperatorField" style="display: none"> </div>
 						</div>
 					</div>
-					<?php if ($sat_active) { ?>
-						<div class="tab-pane" id="satellite" role="tabpanel" aria-labelledby="satellite-tab">
-							Test Satellite
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-lg-6">
+						<div class="form-group">
+							<label for="station-call">
+								Station Call
+							</label>
+							<select name="station_profile" class="station_id custom-select" id="station-call">
+								<option value="-">-</option>
+								<?php foreach ($station_profile->result() as $station) { ?>
+									<option value="<?php echo $station->station_id; ?>" <?php if ($station->station_id == $this->stations->find_active()) {
+																							echo 'selected';
+																						} ?>>
+										<?php echo lang('gen_hamradio_callsign') . ": " . $station->station_callsign . " (" . $station->station_profile_name . ")"; ?>
+									</option>
+								<?php } ?>
+							</select>
+							<div class="alert alert-danger" role="alert" id="warningStationCall" style="display: none"> </div>
+							<small class="form-text text-muted">If you did operate from a new location, first create a new <a href='<?php echo site_url('station'); ?>'>Station Location</a></small>
 						</div>
-					<?php } ?>
+					</div>
 				</div>
 			</div>
 
