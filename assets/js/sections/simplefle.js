@@ -10,16 +10,16 @@ var qsoList = [];
 
 $('#simpleFleInfoButton').click(function (event) {
     var awardInfoLines = [
-        lang_simplefle_info_ln2,
-        lang_simplefle_info_ln3,
-        lang_simplefle_info_ln4
+        lang_qso_simplefle_info_ln2,
+        lang_qso_simplefle_info_ln3,
+        lang_qso_simplefle_info_ln4
     ];
     var simpleFleInfo = "";
     awardInfoLines.forEach(function (line) {
         simpleFleInfo += line + "<br><br>";
     });
     BootstrapDialog.alert({
-        title: "<h4>"+lang_simplefle_info_ln1+"</h4>",
+        title: "<h4>"+lang_qso_simplefle_info_ln1+"</h4>",
         message: simpleFleInfo,
     });
 });
@@ -31,7 +31,7 @@ $('#js-syntax').click(function (event) {
         type: 'post',
         success: function (html) {
             BootstrapDialog.alert({
-                title: "<h4>"+lang_simplefle_syntax_help_title+"</h4>",
+                title: "<h4>"+lang_qso_simplefle_syntax_help_title+"</h4>",
                 size: BootstrapDialog.SIZE_WIDE,
                 nl2br: false,
                 message: html,
@@ -139,17 +139,17 @@ function handleInput() {
 			}
 
 			if (band === "") {
-				addErrorMessage("Band is missing!");
+				addErrorMessage(lang_qso_simplefle_error_band);
 			}
 			if (mode === "") {
-				addErrorMessage("Mode is missing");
+				addErrorMessage(lang_qso_simplefle_error_mode);
 			}
 			if (qsotime === "") {
-				addErrorMessage("Time is not set!");
+				addErrorMessage(lang_qso_simplefle_error_time);
 			}
 
 			if (isValidDate(extraQsoDate) === false) {
-				addErrorMessage("Invalid date " + extraQsoDate);
+				addErrorMessage(lang_qso_simplefle_error_date + " " + extraQsoDate);
 				extraQsoDate = qsodate;
 			}
 
@@ -203,7 +203,7 @@ function handleInput() {
 
 	var qsoCount = qsoList.length;
 	if (qsoCount) {
-		$(".js-qso-count").html("<strong>Total:</strong> " + qsoCount + " QSO");
+		$(".js-qso-count").html("<strong>" + lang_qso_simplefle_qso_list_total + ":</strong> " + qsoCount + " " + lang_gen_hamradio_qso);
 	} else {
 		$(".js-qso-count").html("");
 	}
@@ -217,7 +217,7 @@ function checkMainFieldsErrors() {
 	if ($("#station-call").val() === '-') {
 		$('#warningStationCall').show();
         $('#station-call').css('border', '2px solid rgb(217, 83, 79)');
-        $('#warningStationCall').text("Station Call is not selected");
+        $('#warningStationCall').text(lang_qso_simplefle_error_stationcall);
 	} else {
         $('#station-call').css('border', '');
         $('#warningStationCall').hide();
@@ -226,7 +226,7 @@ function checkMainFieldsErrors() {
 	if ($("#operator").val() === "") {
 		$('#warningOperatorField').show();
         $('#operator').css('border', '2px solid rgb(217, 83, 79)');
-        $('#warningOperatorField').text("'Operator' Field is empty");
+        $('#warningOperatorField').text(lang_qso_simplefle_error_operator);
 	}else {
         $('#operator').css('border', '');
         $('#warningOperatorField').hide();
@@ -270,11 +270,11 @@ $(".js-reload-qso").click(function () {
 
 $(".js-empty-qso").click(function () {
 	BootstrapDialog.confirm({
-		title: "WARNING",
-		message: "Warning! Do you really want to reset everything?",
+		title: lang_general_word_warning,
+		message: lang_qso_simplefle_warning_reset,
 		type: BootstrapDialog.TYPE_DANGER,
-		btnCancelLabel: "Cancel",
-		btnOKLabel: "OK!",
+		btnCancelLabel: lang_general_word_cancel,
+		btnOKLabel: lang_general_word_ok,
 		btnOKClass: "btn-warning",
 		callback: function (result) {
 			if (result) {
@@ -625,11 +625,11 @@ $(".js-save-to-log").click(function () {
 	}
 	if (false === isBandModeEntered()) {
 		BootstrapDialog.alert({
-			title: "WARNING",
-			message: "Warning! You can't log the QSO list because some QSO do not have band and/or mode defined!?",
+			title: lang_general_word_warning,
+			message: lang_qso_simplefle_warning_missing_band_mode,
 			type: BootstrapDialog.TYPE_DANGER,
-			btnCancelLabel: "Cancel",
-			btnOKLabel: "OK!",
+			btnCancelLabel: lang_general_word_cancel,
+			btnOKLabel: lang_general_word_ok,
 			btnOKClass: "btn-warning",
 		});
 		return false;
@@ -637,12 +637,12 @@ $(".js-save-to-log").click(function () {
 	else {
 		handleInput();
 		BootstrapDialog.confirm({
-			title: "ATTENTION",
+			title: lang_general_word_attention,
 			message:
-				"Are you sure that you want to add these QSO to the Log and clear the session?",
+				lang_qso_simplefle_confirm_save_to_log,
 			type: BootstrapDialog.TYPE_INFO,
-			btnCancelLabel: "Cancel",
-			btnOKLabel: "Log it!",
+			btnCancelLabel: lang_general_word_cancel,
+			btnOKLabel: lang_general_word_ok,
 			btnOKClass: "btn-info",
 			callback: function (result) {
 				if (result) {
@@ -686,9 +686,9 @@ $(".js-save-to-log").click(function () {
 
 					clearSession();
 					BootstrapDialog.alert({
-						title: "QSO logged",
+						title: lang_qso_simplefle_success_save_to_log_header,
 						message:
-							"The QSO were successfully logged in the logbook!",
+							lang_qso_simplefle_success_save_to_log,
 					});
 				}
 			},

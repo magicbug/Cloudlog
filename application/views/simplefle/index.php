@@ -8,16 +8,29 @@
 	<br>
 	<div id="simpleFleInfo">
 		<script>
-			var lang_simplefle_info_button = "<?php echo lang('simplefle_info_button'); ?>";
-			var lang_simplefle_info_ln1 = "<?php echo lang('simplefle_info_ln1'); ?>";
-			var lang_simplefle_info_ln2 = "<?php echo lang('simplefle_info_ln2'); ?>";
-			var lang_simplefle_info_ln3 = "<?php echo lang('simplefle_info_ln3'); ?>";
-			var lang_simplefle_info_ln4 = "<?php echo lang('simplefle_info_ln4'); ?>";
-			var lang_simplefle_syntax_help = "<?php echo lang('simplefle_syntax_help_button'); ?>";
-			var lang_simplefle_syntax_help_title = "<?php echo lang('simplefle_syntax_help_title'); ?>";
+			var lang_qso_simplefle_info_button = "<?php echo lang('qso_simplefle_info_button'); ?>";
+			var lang_qso_simplefle_info_ln1 = "<?php echo lang('qso_simplefle_info_ln1'); ?>";
+			var lang_qso_simplefle_info_ln2 = "<?php echo lang('qso_simplefle_info_ln2'); ?>";
+			var lang_qso_simplefle_info_ln3 = "<?php echo lang('qso_simplefle_info_ln3'); ?>";
+			var lang_qso_simplefle_info_ln4 = "<?php echo lang('qso_simplefle_info_ln4'); ?>";
+			var lang_qso_simplefle_syntax_help = "<?php echo lang('qso_simplefle_syntax_help_button'); ?>";
+			var lang_qso_simplefle_syntax_help_title = "<?php echo lang('qso_simplefle_syntax_help_title'); ?>";
+			var lang_qso_simplefle_error_band = "<?php echo lang('qso_simplefle_error_band'); ?>";
+			var lang_qso_simplefle_error_mode = "<?php echo lang('qso_simplefle_error_mode'); ?>";
+			var lang_qso_simplefle_error_time = "<?php echo lang('qso_simplefle_error_time'); ?>";
+			var lang_qso_simplefle_error_date = "<?php echo lang('qso_simplefle_error_date'); ?>";
+			var lang_qso_simplefle_qso_list_total = "<?php echo lang('qso_simplefle_qso_list_total'); ?>";
+			var lang_gen_hamradio_qso = "<?php echo lang('gen_hamradio_qso'); ?>";
+			var lang_qso_simplefle_error_stationcall = "<?php echo lang('qso_simplefle_error_stationcall'); ?>";
+			var lang_qso_simplefle_error_operator = "<?php echo lang('qso_simplefle_error_operator'); ?>";
+			var lang_qso_simplefle_warning_reset = "<?php echo lang('qso_simplefle_warning_reset'); ?>";
+			var lang_qso_simplefle_warning_missing_band_mode = "<?php echo lang('qso_simplefle_warning_missing_band_mode'); ?>";
+			var lang_qso_simplefle_confirm_save_to_log = "<?php echo lang('qso_simplefle_confirm_save_to_log'); ?>";
+			var lang_qso_simplefle_success_save_to_log_header = "<?php echo lang('qso_simplefle_success_save_to_log_header'); ?>";
+			var lang_qso_simplefle_success_save_to_log = "<?php echo lang('qso_simplefle_success_save_to_log'); ?>";
 		</script>
 		<h2><?php echo $page_title; ?></h2>
-		<button type="button" class="btn btn-sm btn-primary mr-1" id="simpleFleInfoButton"><?php echo lang('simplefle_info'); ?></button>
+		<button type="button" class="btn btn-sm btn-primary mr-1" id="simpleFleInfoButton"><?php echo lang('qso_simplefle_info'); ?></button>
 	</div>
 
 	<?php if ($this->session->flashdata('message')) { ?>
@@ -44,19 +57,19 @@
 		<div class="col-xs-12 col-md-4">
 
 			<div class="card-header">
-				QSO Data
+				<?php echo lang('qso_simplefle_qso_data'); ?>
 			</div>
 			<div class="card-body">
 				<div class="row">
 					<div class="col-xs-12 col-lg-12 col-xl-6">
 						<div class="form-group">
-							<label for="qsodate">QSO date</label>
+							<label for="qsodate"><?php echo lang('qso_simplefle_qso_date'); ?></label>
 							<input type="date" class="form-control" id="qsodate">
 						</div>
 					</div>
 					<div class="col-xs-12 col-lg-6">
 						<div class="form-group">
-							<label for="operator">Operator <span class="text-muted input-example">e.g. OK2CQR</span></label>
+							<label for="operator"><?php echo lang('qso_simplefle_operator'); ?> <span class="text-muted input-example"><?php echo lang('qso_simplefle_operator_hint'); ?></span></label>
 							<input type="text" class="form-control text-uppercase" id="operator" value="<?php echo $this->session->userdata('operator_callsign'); ?>">
 							<div class="alert alert-danger" role="alert" id="warningOperatorField" style="display: none"> </div>
 						</div>
@@ -66,7 +79,7 @@
 					<div class="col-xs-12 col-lg-6">
 						<div class="form-group">
 							<label for="station-call">
-								Station Call
+								<?php echo lang('qso_simplefle_station_call_location'); ?>
 							</label>
 							<select name="station_profile" class="station_id custom-select" id="station-call">
 								<option value="-">-</option>
@@ -79,7 +92,7 @@
 								<?php } ?>
 							</select>
 							<div class="alert alert-danger" role="alert" id="warningStationCall" style="display: none"> </div>
-							<small class="form-text text-muted">If you did operate from a new location, first create a new <a href='<?php echo site_url('station'); ?>'>Station Location</a></small>
+							<small class="form-text text-muted"><?php echo lang('qso_simplefle_station_call_location_hint'); ?></small>
 						</div>
 					</div>
 				</div>
@@ -89,7 +102,7 @@
 			<div class="card-body">
 				<div class="row">
 					<div class="col">
-						<p>Enter the data</p>
+						<p><?php echo lang('qso_simplefle_enter_the_data'); ?></p>
 						<textarea name="qso" class="form-control qso-area" cols="auto" rows="11" id="textarea"></textarea>
 					</div>
 				</div>
@@ -97,22 +110,22 @@
 		</div>
 		<div class="col-xs-12 col-md-8">
 			<div class="card-header">
-				QSO list
+				<?php echo lang('qso_simplefle_qso_list'); ?>
 			</div>
 			<div class="card-body">
 				<div class="qsoList">
 					<table class="table table-condensed table-striped table-sm" id="qsoTable">
 						<thead>
 							<tr>
-								<th>Date</th>
-								<th>Time</th>
-								<th>Callsign</th>
-								<th>Band</th>
-								<th>Mode</th>
-								<th>RS</th>
-								<th>RR</th>
-								<th>Op.</th>
-								<th>SOTA/WFF</th>
+								<th><?php echo lang('general_word_date'); ?></th>
+								<th><?php echo lang('general_word_time'); ?></th>
+								<th><?php echo lang('gen_hamradio_callsign'); ?></th>
+								<th><?php echo lang('gen_hamradio_band'); ?></th>
+								<th><?php echo lang('gen_hamradio_mode'); ?></th>
+								<th><?php echo lang('gen_hamradio_rsts'); ?></th>
+								<th><?php echo lang('gen_hamradio_rstr'); ?></th>
+								<th><?php echo lang('gen_hamradio_operator'); ?></th>
+								<th>SOTA/WWFF</th>
 							</tr>
 						</thead>
 						<tbody id="qsoTableBody">
@@ -124,16 +137,16 @@
 			</div>
 			<div class="row mt-2">
 				<div class="col-3 col-sm-3">
-					<button class="btn btn-primary js-reload-qso">Reload QSO list</button>
+					<button class="btn btn-primary js-reload-qso"><?php echo lang('qso_simplefle_reload'); ?></button>
 				</div>
 				<div class="col-3 col-sm-3">
-					<button class="btn btn-warning js-save-to-log">Save in Cloudlog</button>
+					<button class="btn btn-warning js-save-to-log"><?php echo lang('qso_simplefle_save'); ?></button>
 				</div>
 				<div class="col-3 col-sm-3">
-					<button class="btn btn-danger js-empty-qso">Clear logging session</button>
+					<button class="btn btn-danger js-empty-qso"><?php echo lang('qso_simplefle_clear'); ?></button>
 				</div>
 				<div class="col-3 col-sm-3">
-					<button class="btn btn-success" id="js-syntax"><?php echo lang('simplefle_syntax_help_button'); ?></button>
+					<button class="btn btn-success" id="js-syntax"><?php echo lang('qso_simplefle_syntax_help_button'); ?></button>
 				</div>
 			</div>
 		</div>
