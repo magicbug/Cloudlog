@@ -34,3 +34,14 @@ $lang['export_sota_header'] = "SOTA CSV Export";
 $lang['export_sota_description'] = "Export your logbook for SOTA uploads.";
 $lang['export_sota_info_warning'] = "Only QSOs with SOTA information will be exported!";
 
+/*
+___________________________________________________________________________________________
+Cabrillo Export
+___________________________________________________________________________________________
+*/
+
+$lang['export_cabrillo_header'] = "Cabrillo Export";
+$lang['export_cabrillo_description'] = "Export a contest to a Cabrillo log";
+$lang['export_cabrillo_select_station'] = "Select Station Location:";
+
+
