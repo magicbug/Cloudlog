@@ -38,6 +38,7 @@ $lang['general_word_year'] = '年';
 $lang['general_word_month'] = '月';
 
 $lang['general_word_colors'] = "Colors";
+$lang['general_word_light'] = "Light";
 $lang['general_word_worked'] = '已通联';
 $lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
 $lang['general_word_not_worked'] = "Not worked";
