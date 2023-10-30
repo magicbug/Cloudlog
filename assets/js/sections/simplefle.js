@@ -650,10 +650,10 @@ $(".js-save-to-log").click(function () {
 					operator = operator.toUpperCase();
 					var ownCallsign = $("#station-call").val().toUpperCase();
 					ownCallsign = ownCallsign.toUpperCase();
-					var mySotaWwff = $("#my-sota-wwff").val().toUpperCase();
+					// var mySotaWwff = $("#my-sota-wwff").val().toUpperCase();
 
-					var myPower = $("#my-power").val();
-					//var myGrid = $("#my-grid").val().toUpperCase();
+					// var myPower = $("#my-power").val();
+					// var myGrid = $("#my-grid").val().toUpperCase();
 
 					qsoList.forEach((item) => {
 						var callsign = item[2];
