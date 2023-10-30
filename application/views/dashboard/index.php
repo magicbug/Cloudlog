@@ -51,25 +51,25 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
 	<?php if (version_compare(PHP_VERSION, '7.4.0') <= 0) { ?>
 		<div class="alert alert-danger" role="alert">
-		You need to upgrade your PHP version. Minimum version is 7.4. Your version is <?php echo PHP_VERSION;?>
+		<?php echo lang('dashboard_php_version_warning') . ' ' . PHP_VERSION . '.';?>
 		</div>
 	<?php } ?>
 
 	<?php if ($countryCount == 0) { ?>
 		<div class="alert alert-danger" role="alert">
-		You need to update country files! Go <a href="<?php echo site_url('update'); ?>">here to do it!</a>
+		<?php echo lang('dashboard_country_files_warning'); ?>
 		</div>
 	<?php } ?>
 
 	<?php if ($locationCount == 0) { ?>
 		<div class="alert alert-danger" role="alert">
-		You have no station locations. Go <a href="<?php echo site_url('station'); ?>">here to create it!</a>
+		<?php echo lang('dashboard_locations_warning'); ?>
 		</div>
 	<?php } ?>
 
 	<?php if ($logbookCount == 0) { ?>
 		<div class="alert alert-danger" role="alert">
-		You have no station logbook. Go <a href="<?php echo site_url('logbooks'); ?>">here to create it!</a>
+		<?php echo lang('dashboard_logbooks_warning'); ?>
 		</div>
 	<?php } ?>
 
