@@ -38,7 +38,7 @@ $lang['general_word_year'] = 'Година';
 $lang['general_word_month'] = 'Месец';
 
 $lang['general_word_colors'] = "Colors";
-$lang['general_word_light'] = "Light";
+$lang['general_word_light'] = "Light/Laser";
 $lang['general_word_worked'] = 'Работени';
 $lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
 $lang['general_word_not_worked'] = "Not worked";
