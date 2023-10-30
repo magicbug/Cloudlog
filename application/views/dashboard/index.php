@@ -48,7 +48,31 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 ?>
 <div class="container dashboard">
 <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
-	
+
+	<?php if (version_compare(PHP_VERSION, '7.4.0') <= 0) { ?>
+		<div class="alert alert-danger" role="alert">
+		You need to upgrade your PHP version. Minimum version is 7.4. Your version is <?php echo PHP_VERSION;?>
+		</div>
+	<?php } ?>
+
+	<?php if ($countryCount == 0) { ?>
+		<div class="alert alert-danger" role="alert">
+		You need to update country files! Go <a href="<?php echo site_url('update'); ?>">here to do it!</a>
+		</div>
+	<?php } ?>
+
+	<?php if ($locationCount == 0) { ?>
+		<div class="alert alert-danger" role="alert">
+		You have no station locations. Go <a href="<?php echo site_url('station'); ?>">here to create it!</a>
+		</div>
+	<?php } ?>
+
+	<?php if ($logbookCount == 0) { ?>
+		<div class="alert alert-danger" role="alert">
+		You have no station logbook. Go <a href="<?php echo site_url('logbooks'); ?>">here to create it!</a>
+		</div>
+	<?php } ?>
+
 	<?php if($this->optionslib->get_option('dashboard_banner') != "false") { ?>
 	<?php if($todays_qsos >= 1) { ?>
 		<div class="alert alert-success" role="alert">
