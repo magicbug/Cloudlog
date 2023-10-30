@@ -17,6 +17,10 @@
     */
     var lang_general_word_qso_data = "<?php echo lang('general_word_qso_data'); ?>";
     var lang_general_word_danger = "<?php echo lang('general_word_danger'); ?>";
+    var lang_general_word_attention = "<?php echo lang('general_word_attention'); ?>";
+    var lang_general_word_warning = "<?php echo lang('general_word_warning'); ?>";
+    var lang_general_word_cancel = "<?php echo lang('general_word_cancel'); ?>";
+    var lang_general_word_ok = "<?php echo lang('general_word_ok'); ?>";
     var lang_qso_delete_warning = "<?php echo lang('qso_delete_warning'); ?>";
     var lang_general_word_colors = "<?php echo lang('general_word_colors'); ?>";
     var lang_general_word_confirmed = "<?php echo lang('general_word_confirmed'); ?>";
