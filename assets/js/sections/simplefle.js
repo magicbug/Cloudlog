@@ -117,7 +117,7 @@ function handleInput() {
 				)
 			) {
 				callsign = item.toUpperCase();
-			} else if (itemNumber > 0 && item.match(/^\d{1,2}$/)) {
+			} else if (itemNumber > 0 && item.match(/^\d{1,3}$/)) {
 				if (rst_s === null) {
 					rst_s = item;
 				} else {
@@ -526,6 +526,9 @@ function getReportByMode(rst, mode) {
 	if (settingsMode === "SSB") {
 		if (rst.length === 1) {
 			return "5" + rst;
+		}
+		if (rst.length === 3) {
+			return rst.slice(0, 2);
 		}
 
 		return rst;
