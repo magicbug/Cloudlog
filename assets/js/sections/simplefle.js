@@ -67,15 +67,19 @@ function handleInput() {
 	lines.forEach((row) => {
 		var rst_s = null;
 		var rst_r = null;
-		items = row.split(" ");
+		items = row.startsWith("day ") ? [row] : row.split(" ");
 		var itemNumber = 0;
 		items.forEach((item) => {
 			if (item === "") {
 				return;
 			}
-			if (
-				item.match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)
-			) {
+			if (item.trim().match(/^day (\+)+$/)) {
+				var plusCount = item.match(/\+/g).length;
+				var originalDate = new Date(extraQsoDate);;
+				console.log(plusCount)
+				originalDate.setDate(originalDate.getDate() + plusCount);
+				extraQsoDate = originalDate.toISOString().split("T")[0];
+			} else if (item.match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)) {
 				extraQsoDate = item;
 			} else if (
 				item.match(/^[0-2][0-9][0-5][0-9]$/)
