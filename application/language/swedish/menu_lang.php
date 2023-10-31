@@ -11,6 +11,7 @@ $lang['menu_advanced'] = 'Avancerad';
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = 'Live QSO';
 $lang['menu_post_qso'] = 'Post QSO';
+$lang['menu_fast_log_entry'] = "Simple Fast Log Entry";
 $lang['menu_live_contest_logging'] = 'Live Tävlingsloggning';
 $lang['menu_post_contest_logging'] = 'Post Tävlingsloggning';
 $lang['menu_bandmap'] = 'Bandkarta';

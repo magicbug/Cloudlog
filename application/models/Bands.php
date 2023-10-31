@@ -37,13 +37,27 @@ class Bands extends CI_Model {
 		if ($award != 'None') {
 			$this->db->where('bandxuser.'.$award, 1);
 		}
-		
+
 		$result = $this->db->get()->result();
 
 		$results = array();
 
 		foreach($result as $band) {
 			array_push($results, $band->band);
+		}
+
+		return $results;
+	}
+
+	function get_all_bands() {
+		$this->db->from('bands');
+
+		$result = $this->db->get()->result();
+
+		$results = array();
+
+		foreach($result as $band) {
+			$results['b'.strtoupper($band->band)] = array('cw' => $band->cw, 'ssb' => $band->ssb, 'digi' => $band->data);
 		}
 
 		return $results;
@@ -82,7 +96,7 @@ class Bands extends CI_Model {
 	}
 
 	function get_worked_bands($award = 'None') {
-		
+
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -237,7 +251,7 @@ class Bands extends CI_Model {
 		$clean_id = $this->security->xss_clean($id);
 
 		// Delete Mode
-		$this->db->delete('bandxuser', array('id' => $clean_id)); 
+		$this->db->delete('bandxuser', array('id' => $clean_id));
 	}
 
 	function saveBand($id, $band) {
@@ -287,12 +301,12 @@ class Bands extends CI_Model {
 
 		$this->db->where('band', xss_clean($this->input->post('band', true)));
 		$result = $this->db->get('bands');
-	 
+
 		if ($result->num_rows() == 0) {
 		   $this->db->insert('bands', $data);
 		}
 
-		$this->db->query("insert into bandxuser (bandid, userid, active, cq, dok, dxcc, iota, pota, sig, sota, uscounties, was, wwff, vucc) 
+		$this->db->query("insert into bandxuser (bandid, userid, active, cq, dok, dxcc, iota, pota, sig, sota, uscounties, was, wwff, vucc)
 		select bands.id, " . $this->session->userdata('user_id') . ", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 from bands where band ='".$data['band']."' and not exists (select 1 from bandxuser where userid = " . $this->session->userdata('user_id') . " and bandid = bands.id);");
 	}
 
