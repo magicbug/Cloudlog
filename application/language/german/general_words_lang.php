@@ -38,6 +38,7 @@ $lang['general_word_year'] = 'Jahr';
 $lang['general_word_month'] = 'Monat';
 
 $lang['general_word_colors'] = "Farben";
+$lang['general_word_light'] = "Licht/Laser";
 $lang['general_word_worked'] = 'Gearbeitet';
 $lang['general_word_worked_not_confirmed'] = "Gearbeitet, nicht bestätigt";
 $lang['general_word_not_worked'] = "Nicht gearbeitet";
