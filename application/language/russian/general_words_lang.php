@@ -41,6 +41,7 @@ $lang['general_word_year'] = 'Год';
 $lang['general_word_month'] = 'Месяц';
 
 $lang['general_word_colors'] = "Colors";
+$lang['general_word_light'] = "Light/Laser";
 $lang['general_word_worked'] = 'Сработано';
 $lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
 $lang['general_word_not_worked'] = "Not worked";
@@ -194,3 +195,8 @@ $lang['southamerica'] = 'Южная Америка';
 
 $lang['gen_band_selection'] = 'Выбор диапазона';
 $lang['general_word_today'] = 'Today';
+
+$lang['dashboard_php_version_warning'] = 'You need to upgrade your PHP version. Minimum version is 7.4. Your version is';
+$lang['dashboard_country_files_warning'] = 'You need to update country files! Go <a href="'.site_url('update').'">here</a> to do it!';
+$lang['dashboard_locations_warning'] = 'You have no station locations. Go <a href="'. site_url('station') . '">here</a> to create it!';
+$lang['dashboard_logbooks_warning'] = 'You have no station logbook. Go <a href="'. site_url('logbooks') . '">here</a> to create it!';

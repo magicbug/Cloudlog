@@ -484,7 +484,7 @@
 
         <div class="tab-pane fade" id="notesdetails" role="tabpanel" aria-labelledby="table-tab">
             <h3><?php echo lang('general_word_notes'); ?></h3>
-            <?php echo nl2br($row->COL_NOTES); ?>
+            <?php if (isset($row->COL_NOTES)) { echo nl2br($row->COL_NOTES); } ?>
         </div>
 
         <?php

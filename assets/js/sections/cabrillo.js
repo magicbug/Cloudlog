@@ -12,7 +12,7 @@ function loadYears() {
                 $(".contestyear").append('<div class="col-md-3 control-label" for="year">Select year: </div>' +
                 '<select id="year" class="custom-select my-1 mr-sm-2 col-md-2" name="year">' +
                 '</select>' +
-                '  <button onclick="loadContests();" class="btn btn-sm btn-primary" type="button">Proceed</button>'); 
+                '  <button onclick="loadContests();" class="btn btn-sm btn-primary" type="button">' + lang_export_cabrillo_proceed + '</button>'); 
 
                 $.each(data, function(key, value) {
                     $('#year')
@@ -21,7 +21,7 @@ function loadYears() {
                         .text(value.year));
                 });
             } else {
-                $(".contestyear").append("No contests were found for this station location!");
+                $(".contestyear").append(lang_export_cabrillo_no_contests_for_stationlocation);
             }
         }
     });
@@ -40,7 +40,7 @@ function loadContests() {
                 $(".contestname").append('<div class="col-md-3 control-label" for="contestid">Select contest: </div>' +
                 '<select class="custom-select my-1 mr-sm-2 col-md-4" id="contestid" name="contestid">' +
                 '</select>' +
-                '  <button onclick="loadContestDates();" class="btn btn-sm btn-primary" type="button">Proceed</button>'); 
+                '  <button onclick="loadContestDates();" class="btn btn-sm btn-primary" type="button">' + lang_export_cabrillo_proceed + '</button>'); 
 
                 $.each(data, function(key, value) {
                     $('#contestid')
@@ -66,7 +66,7 @@ function loadContestDates() {
                 '</select>' +
                 '<select class="custom-select my-1 mr-sm-2 col-md-2" id="contestdatesto" name="contestdatesto">' +
                 '</select>' +
-                '  <button class="btn btn-sm btn-primary" onclick="addAdditionalInfo();" type="button">Proceed</button>'); 
+                '  <button class="btn btn-sm btn-primary" onclick="addAdditionalInfo();" type="button">' + lang_export_cabrillo_proceed + '</button>'); 
 
                 $.each(data, function(key, value) {
                     $('#contestdatesfrom')
