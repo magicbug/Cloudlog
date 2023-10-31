@@ -671,6 +671,15 @@ $(".js-save-to-log").click(function () {
 						var mode = item[5];
 						var freq_display = item[3];
 						var station_profile = $(".station_id").val();
+						var sota_ref = '';
+						var sig = '';
+						var sig_info = '';
+						if (isSOTA(item[8])) {
+							sota_ref = item[8];
+						} else if (isWWFF(item[8])) {
+							sig = "WWFF";
+							sig_info = item[8];
+						}
 
 						$.ajax({
 							url: base_url + "index.php/qso/saveqso",
@@ -685,6 +694,9 @@ $(".js-save-to-log").click(function () {
 								freq_display: freq_display,
 								start_time: start_time,
 								station_profile: station_profile,
+								sota_ref: sota_ref,
+								sig: sig,
+								sig_info: sig_info
 							},
 							success: function (result) {},
 						});
