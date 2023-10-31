@@ -110,7 +110,7 @@ function handleInput() {
 				qsotime = qsotime.slice(0, -2) + item;
 			} else if (
 				item.match(
-					/^([A-Z]*[F]{2}-\d{4})|([A-Z]*[A-Z]\/[A-Z]{2}-\d{3})$/i
+					/^[A-Z0-9]{1,3}\/[A-Z]{2}-\d{3}|[AENOS]*[FNSUACA]-\d{3}|(?!.*FF)[A-Z0-9]{1,3}-\d{4}|[A-Z0-9]{1,3}[F]{2}-\d{4}$/i
 				)
 			) {
 				sotaWff = item.toUpperCase();
@@ -407,99 +407,6 @@ for (const [key, value] of Object.entries(Bands)) {
 }
 $(".js-band-settings").html(htmlSettings);
 
-$(".js-download-adif").click(function () {
-	var operator = $("#operator").val();
-	operator = operator.toUpperCase();
-	var ownCallsign = $("#station-call").val().toUpperCase();
-	ownCallsign = ownCallsign.toUpperCase();
-	var mySotaWwff = $("#my-sota-wwff").val().toUpperCase();
-
-	var myPower = $("#my-power").val();
-	var myGrid = $("#my-grid").val().toUpperCase();
-
-	const adifHeader = `
-  ADIF export from Simple fast log entry by Petr, OK2CQR
-
-  Internet: https://sfle.ok2cqr.com
-
-  <ADIF_VER:5>2.2.1
-  <PROGRAMID:4>SFLE
-  <PROGRAMVERSION:5>0.0.1
-  <EOH>
-
-  `;
-
-	if (false === isBandModeEntered()) {
-		alert("Some QSO do not have band and/or mode defined!");
-
-		return false;
-	}
-
-	var adif = adifHeader;
-	qsoList.forEach((item) => {
-		const qsodate = item[0].replace("-", "").replace("-", "");
-		qso = getAdifTag("QSO_DATE", qsodate);
-		qso = qso + getAdifTag("TIME_ON", item[1].replace(":", ""));
-		qso = qso + getAdifTag("CALL", item[2]);
-		qso = qso + getAdifTag("FREQ", item[3]);
-		qso = qso + getAdifTag("BAND", item[4]);
-		qso = qso + getAdifTag("MODE", item[5]);
-
-		var rst = item[6];
-		settingsMode = getSettingsMode(rst);
-		if (settingsMode === "SSB") {
-			rst = "59";
-		}
-		qso = qso + getAdifTag("RST_SENT", rst);
-
-		var rst = item[7];
-		settingsMode = getSettingsMode(rst);
-		if (settingsMode === "SSB") {
-			rst = "59";
-		}
-		qso = qso + getAdifTag("RST_RCVD", rst);
-
-		qso = qso + getAdifTag("OPERATOR", operator);
-		qso = qso + getAdifTag("STATION_CALLSIGN", ownCallsign);
-
-		if (isSOTA(mySotaWwff)) {
-			qso = qso + getAdifTag("MY_SOTA_REF", mySotaWwff);
-		} else if (isWWFF(mySotaWwff)) {
-			qso = qso + getAdifTag("MY_SIG", "WWFF");
-			qso = qso + getAdifTag("MY_SIG_INFO", mySotaWwff);
-		}
-
-		if (isSOTA(item[8])) {
-			qso = qso + getAdifTag("SOTA_REF", item[8]);
-		} else if (isWWFF(item[8])) {
-			qso = qso + getAdifTag("SIG", "WWFF");
-			qso = qso + getAdifTag("SIG_INFO", item[8]);
-		}
-
-		if (myPower) {
-			qso = qso + getAdifTag("TX_PWR", myPower);
-		}
-
-		if (myGrid) {
-			qso = qso + getAdifTag("MY_GRIDSQUARE", myGrid);
-		}
-
-		qso = qso + "<EOR>";
-
-		adif = adif + qso + "\n";
-	});
-
-	qsodate = qsoList[0][0].replace("-", "").replace("-", "");
-	const filename =
-		operator.replace("/", "-") +
-		"_" +
-		mySotaWwff.replace("/", "-") +
-		"_" +
-		qsodate +
-		".adi";
-	download(filename, adif);
-});
-
 function isBandModeEntered() {
 	let isBandModeOK = true;
 	qsoList.forEach((item) => {
@@ -547,15 +454,27 @@ function getReportByMode(rst, mode) {
 }
 
 function isSOTA(value) {
-	if (value.match(/^[A-Z]*[A-Z]\/[A-Z]{2}-\d{3}$/)) {
+	if (value.match(/^[A-Z0-9]{1,3}\/[A-Z]{2}-\d{3}$/)) {
 		return true;
 	}
 
 	return false;
 }
 
+function isIOTA(value) {
+	if (value.match(/^[AENOS]*[FNSUACA]-\d{3}$/)) {
+		return true;
+	}
+}
+
+function isPOTA(value) {
+	if (value.match(/^(?!.*FF)[A-Z0-9]{1,3}-\d{4}$/)) {
+		return true;
+	}
+}
+
 function isWWFF(value) {
-	if (value.match(/^[A-Z]*[F]{2}-\d{4}$/)) {
+	if (value.match(/^[A-Z0-9]{1,3}[F]{2}-\d{4}$/)) {
 		return true;
 	}
 
@@ -672,13 +591,17 @@ $(".js-save-to-log").click(function () {
 						var freq_display = item[3];
 						var station_profile = $(".station_id").val();
 						var sota_ref = '';
-						var sig = '';
-						var sig_info = '';
+						var iota_ref = '';
+						var pota_ref = '';
+						var wwff_ref = '';
 						if (isSOTA(item[8])) {
 							sota_ref = item[8];
+						} else if (isIOTA(item[8])) {
+							iota_ref = item[8];
+						} else if (isPOTA(item[8])) {
+							pota_ref = item[8];
 						} else if (isWWFF(item[8])) {
-							sig = "WWFF";
-							sig_info = item[8];
+							wwff_ref = item[8];
 						}
 
 						$.ajax({
@@ -695,8 +618,9 @@ $(".js-save-to-log").click(function () {
 								start_time: start_time,
 								station_profile: station_profile,
 								sota_ref: sota_ref,
-								sig: sig,
-								sig_info: sig_info
+								iota_ref: iota_ref,
+								pota_ref: pota_ref,
+								wwff_ref: wwff_ref,
 							},
 							success: function (result) {},
 						});
