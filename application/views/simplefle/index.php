@@ -125,7 +125,7 @@
 								<th><?php echo lang('gen_hamradio_rsts'); ?></th>
 								<th><?php echo lang('gen_hamradio_rstr'); ?></th>
 								<th><?php echo lang('gen_hamradio_operator'); ?></th>
-								<th>SOTA/WWFF</th>
+								<th>SOTA | IOTA | POTA | WWFF</th>
 							</tr>
 						</thead>
 						<tbody id="qsoTableBody">
