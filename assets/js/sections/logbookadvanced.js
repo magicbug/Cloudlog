@@ -774,7 +774,7 @@ function printlabel() {
 		data: {'id': JSON.stringify(id_list, null, 2),
 				'startat': $('#startat').val(),
 				'grid': $('#gridlabel')[0].checked,
-
+				'via': $('#via')[0].checked,
 			},
 		xhr:function(){
 			var xhr = new XMLHttpRequest();
