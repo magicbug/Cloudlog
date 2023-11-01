@@ -9,7 +9,7 @@ function loadYears() {
         data: {'station_id': $("#station_id").val()},
         success: function (data) {
             if (data.length > 0) {
-                $(".contestyear").append('<div class="col-md-3 control-label" for="year">Select year: </div>' +
+                $(".contestyear").append('<div class="col-md-3 control-label" for="year">' + lang_export_cabrillo_select_year + '</div>' +
                 '<select id="year" class="custom-select my-1 mr-sm-2 col-md-2" name="year">' +
                 '</select>' +
                 '  <button onclick="loadContests();" class="btn btn-sm btn-primary" type="button">' + lang_export_cabrillo_proceed + '</button>'); 
@@ -37,7 +37,7 @@ function loadContests() {
                 'station_id': $("#station_id").val()
         },
         success: function (data) {
-                $(".contestname").append('<div class="col-md-3 control-label" for="contestid">Select contest: </div>' +
+                $(".contestname").append('<div class="col-md-3 control-label" for="contestid">' + lang_export_cabrillo_select_contest + '</div>' +
                 '<select class="custom-select my-1 mr-sm-2 col-md-4" id="contestid" name="contestid">' +
                 '</select>' +
                 '  <button onclick="loadContestDates();" class="btn btn-sm btn-primary" type="button">' + lang_export_cabrillo_proceed + '</button>'); 
@@ -61,7 +61,7 @@ function loadContestDates() {
                 'contestid': $("#contestid").val(),
                 'station_id': $("#station_id").val()},
         success: function (data) {
-                $(".contestdates").append('<div class="col-md-3 control-label" for="contestdates">Select date range: </div>' +
+                $(".contestdates").append('<div class="col-md-3 control-label" for="contestdates">' + lang_export_cabrillo_select_date_range + '</div>' +
                 '<select class="custom-select my-1 mr-sm-2 col-md-2" id="contestdatesfrom" name="contestdatesfrom">' +
                 '</select>' +
                 '<select class="custom-select my-1 mr-sm-2 col-md-2" id="contestdatesto" name="contestdatesto">' +
