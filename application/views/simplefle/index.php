@@ -116,7 +116,7 @@
 			</div>
 			<div class="card-body">
 				<div class="qsoList">
-					<table class="table table-condensed table-striped table-sm" id="qsoTable">
+					<table class="table table-condensed table-striped table-sm sfletable" id="qsoTable">
 						<thead>
 							<tr>
 								<th><?php echo lang('general_word_date'); ?></th>
