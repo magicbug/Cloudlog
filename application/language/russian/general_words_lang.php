@@ -24,6 +24,8 @@ $lang['general_word_import'] = "Import";
 
 $lang['general_word_date'] = 'Дата';
 $lang['general_word_time'] = 'Время';
+$lang['general_word_time_on'] = 'Time on';
+$lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Дата/Время';
 $lang['general_word_none'] = '-';
 $lang['general_word_name'] = 'Имя';

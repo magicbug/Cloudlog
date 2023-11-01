@@ -24,6 +24,8 @@ $lang['general_word_import'] = "Import";
 
 $lang['general_word_date'] = 'Fecha';
 $lang['general_word_time'] = 'Hora';
+$lang['general_word_time_on'] = 'Time on';
+$lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Fecha/Hora';
 $lang['general_word_none'] = 'Ninguno';
 $lang['general_word_name'] = 'Nombre';

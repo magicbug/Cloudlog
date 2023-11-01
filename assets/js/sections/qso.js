@@ -484,6 +484,12 @@ function reset_fields() {
 	$('.dxccsummary').remove();
 }
 
+function resetTimers() {
+	handleStart = setInterval(function() { getUTCTimeStamp($('.input_start_time')); }, 500);
+	handleEnd = setInterval(function() { getUTCTimeStamp($('.input_end_time')); }, 500);
+	handleDate = setInterval(function() { getUTCDateStamp($('.input_date')); }, 1000);
+}
+
 $("#callsign").focusout(function() {
 	if ($(this).val().length >= 3) {
 
@@ -741,6 +747,16 @@ $('#start_time').change(function() {
 	if(raw_time.match(/^[012]\d[0-5]\d$/)) {
 		raw_time = raw_time.substring(0,2)+":"+raw_time.substring(2,4);
 		$('#start_time').val(raw_time);
+	}
+});
+$('#end_time').change(function() {
+	var raw_time = $(this).val();
+	if(raw_time.match(/^\d\[0-6]d$/)) {
+		raw_time = "0"+raw_time;
+	}
+	if(raw_time.match(/^[012]\d[0-5]\d$/)) {
+		raw_time = raw_time.substring(0,2)+":"+raw_time.substring(2,4);
+		$('#end_time').val(raw_time);
 	}
 });
 

@@ -24,6 +24,8 @@ $lang['general_word_import'] = "Import";
 
 $lang['general_word_date'] = 'Ημερομηνία';
 $lang['general_word_time'] = 'Ωρα';
+$lang['general_word_time_on'] = 'Time on';
+$lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Ημερομηνία/Ωρα';
 $lang['general_word_none'] = 'None';
 $lang['general_word_name'] = 'όνομα';
