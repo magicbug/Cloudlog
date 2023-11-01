@@ -8,7 +8,6 @@
 	<br>
 	<div id="simpleFleInfo">
 		<script>
-			var lang_qso_simplefle_info_button = "<?php echo lang('qso_simplefle_info_button'); ?>";
 			var lang_qso_simplefle_info_ln1 = "<?php echo lang('qso_simplefle_info_ln1'); ?>";
 			var lang_qso_simplefle_info_ln2 = "<?php echo lang('qso_simplefle_info_ln2'); ?>";
 			var lang_qso_simplefle_info_ln3 = "<?php echo lang('qso_simplefle_info_ln3'); ?>";
