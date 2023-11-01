@@ -30,11 +30,24 @@ $('#js-syntax').click(function (event) {
         url: base_url + 'index.php/simplefle/displaySyntax',
         type: 'post',
         success: function (html) {
-            BootstrapDialog.alert({
+            BootstrapDialog.show({
                 title: "<h4>"+lang_qso_simplefle_syntax_help_title+"</h4>",
-                size: BootstrapDialog.SIZE_WIDE,
+				type: BootstrapDialog.TYPE_INFO,
+				size: BootstrapDialog.SIZE_WIDE,
                 nl2br: false,
                 message: html,
+				buttons: [{
+					label: lang_qso_simplefle_syntax_help_close_w_sample,
+					action: function(){
+						alert('Hi Orange!');
+					}
+				}, {
+					label: lang_admin_close,
+					cssClass: 'btn-primary',
+					action: function(dialogItself){
+						dialogItself.close();
+					}
+				}]
             });
         }
     });
@@ -481,21 +494,6 @@ function isWWFF(value) {
 	return false;
 }
 
-function download(filename, text) {
-	var element = document.createElement("a");
-	element.setAttribute(
-		"href",
-		"data:text/plain;charset=utf-8," + encodeURIComponent(text)
-	);
-	element.setAttribute("download", filename);
-
-	element.style.display = "none";
-	document.body.appendChild(element);
-
-	element.click();
-
-	document.body.removeChild(element);
-}
 
 $(document).ready(function () {
 	var tabledata = localStorage.getItem(`user_${user_id}_tabledata`);

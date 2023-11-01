@@ -14,6 +14,8 @@
 			var lang_qso_simplefle_info_ln4 = "<?php echo lang('qso_simplefle_info_ln4'); ?>";
 			var lang_qso_simplefle_syntax_help = "<?php echo lang('qso_simplefle_syntax_help_button'); ?>";
 			var lang_qso_simplefle_syntax_help_title = "<?php echo lang('qso_simplefle_syntax_help_title'); ?>";
+			var lang_qso_simplefle_syntax_help_close_w_sample = "<?php echo lang('qso_simplefle_syntax_help_close_w_sample'); ?>";
+			var lang_admin_close = "<?php echo lang('admin_close'); ?>";
 			var lang_qso_simplefle_error_band = "<?php echo lang('qso_simplefle_error_band'); ?>";
 			var lang_qso_simplefle_error_mode = "<?php echo lang('qso_simplefle_error_mode'); ?>";
 			var lang_qso_simplefle_error_time = "<?php echo lang('qso_simplefle_error_time'); ?>";
@@ -27,6 +29,7 @@
 			var lang_qso_simplefle_confirm_save_to_log = "<?php echo lang('qso_simplefle_confirm_save_to_log'); ?>";
 			var lang_qso_simplefle_success_save_to_log_header = "<?php echo lang('qso_simplefle_success_save_to_log_header'); ?>";
 			var lang_qso_simplefle_success_save_to_log = "<?php echo lang('qso_simplefle_success_save_to_log'); ?>";
+			var lang_qso_simplefle_sample_data = "<?php echo lang('qso_simplefle_sample_data'); ?>";
 		</script>
 		<h2><?php echo $page_title; ?></h2>
 		<button type="button" class="btn btn-sm btn-primary mr-1" id="simpleFleInfoButton"><?php echo lang('qso_simplefle_info'); ?></button>
