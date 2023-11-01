@@ -157,6 +157,15 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="logendtime"><?php echo lang('account_log_end_time'); ?></label>
+                            <select class="custom-select" id="logendtime" name="user_qso_end_times">
+                                <option value="0"><?php echo lang('general_word_no'); ?></option>
+                                <option value="1"><?php echo lang('general_word_yes'); ?></option>
+                            </select>
+                            <small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_log_end_time_hint'); ?></small>
+                        </div>
+
+                        <div class="form-group">
                             <label for="SelectDateFormat"><?php echo lang('account_date_format'); ?></label>
                             <select name="user_date_format" class="custom-select" id="SelectDateFormat"
                                 aria-describedby="SelectDateFormatHelp">

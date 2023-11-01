@@ -1116,6 +1116,7 @@ $(document).on('keypress',function(e) {
       }
     });
 
+<?php if ($this->session->userdata('user_qso_end_times')  == 1) { ?>
     $('#callsign').focusout(function() {
       if (! manual && $('#callsign').val() != '') {
         clearInterval(handleStart);
@@ -1127,6 +1128,7 @@ $(document).on('keypress',function(e) {
           $('#end_time').val($('#start_time').val());
        }
     });
+<?php } ?>
 
   jQuery(function($) {
   var input = $('#callsign');
