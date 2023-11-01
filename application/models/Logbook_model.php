@@ -8,6 +8,11 @@ class Logbook_model extends CI_Model {
     $callsign = str_replace('Ø', '0', $this->input->post('callsign'));
     // Join date+time
     $datetime = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('start_time');
+    if ($this->input->post('end_time') != null) {
+       $datetime_off = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('end_time');
+    } else {
+       $datetime_off = $datetime;
+    }
     if ($this->input->post('prop_mode') != null) {
             $prop_mode = $this->input->post('prop_mode');
     } else {
@@ -174,7 +179,7 @@ class Logbook_model extends CI_Model {
     // Create array with QSO Data
     $data = array(
             'COL_TIME_ON' => $datetime,
-            'COL_TIME_OFF' => $datetime,
+            'COL_TIME_OFF' => $datetime_off,
             'COL_CALL' => strtoupper(trim($callsign)),
             'COL_BAND' => $this->input->post('band'),
             'COL_BAND_RX' => $this->input->post('band_rx'),

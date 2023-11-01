@@ -24,6 +24,8 @@ $lang['general_word_import'] = "Import";
 
 $lang['general_word_date'] = 'Tarih';
 $lang['general_word_time'] = 'Saat';
+$lang['general_word_time_on'] = 'Time on';
+$lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Tarih/Saat';
 $lang['general_word_none'] = 'Hiçbiri';
 $lang['general_word_name'] = 'İsim';

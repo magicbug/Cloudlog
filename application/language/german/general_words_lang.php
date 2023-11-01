@@ -24,6 +24,8 @@ $lang['general_word_import'] = "Importieren";
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Zeit';
+$lang['general_word_time_on'] = 'Startzeit';
+$lang['general_word_time_off'] = 'Endzeit';
 $lang['general_word_datetime'] = 'Datum/Uhrzeit';
 $lang['general_word_none'] = 'Nichts/Keine';
 $lang['general_word_name'] = 'Name';

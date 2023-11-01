@@ -24,6 +24,8 @@ $lang['general_word_import'] = "Import";
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Čas';
+$lang['general_word_time_on'] = 'Time on';
+$lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Datum/čas';
 $lang['general_word_none'] = 'Žádné';
 $lang['general_word_name'] = 'Jméno';

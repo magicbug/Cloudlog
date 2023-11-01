@@ -24,6 +24,8 @@ $lang['general_word_import'] = "Import";
 
 $lang['general_word_date'] = '日期';
 $lang['general_word_time'] = '时间';
+$lang['general_word_time_on'] = 'Time on';
+$lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = '日期/时间';
 $lang['general_word_none'] = '无';
 $lang['general_word_name'] = '名称';

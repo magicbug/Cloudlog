@@ -24,6 +24,8 @@ $lang['general_word_import'] = "Import";
 
 $lang['general_word_date'] = 'Päivä';
 $lang['general_word_time'] = 'Aika';
+$lang['general_word_time_on'] = 'Time on';
+$lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Päivä/Aika';
 $lang['general_word_none'] = 'None';
 $lang['general_word_name'] = 'Nimi';
