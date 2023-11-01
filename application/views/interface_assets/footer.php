@@ -2335,7 +2335,7 @@ function viewQsl(picture, callsign) {
             if (callsign == null) {
                 title = 'QSL Card';
             } else {
-                title = 'QSL Card for ' + callsign;
+                title = 'QSL Card for ' + callsign.replace('0', '&Oslash;');
             }
 
             BootstrapDialog.show({
@@ -2397,7 +2397,7 @@ function viewEqsl(picture, callsign) {
             if (callsign == null) {
                 title = 'eQSL Card';
             } else {
-                title = 'eQSL Card for ' + callsign;
+                title = 'eQSL Card for ' + callsign.replace('0', '&Oslash;');
             }
 
             BootstrapDialog.show({
