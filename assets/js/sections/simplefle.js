@@ -27,30 +27,60 @@ $('#simpleFleInfoButton').click(function (event) {
 $('#js-syntax').click(function (event) {
     $('#js-syntax').prop("disabled", false);
     $.ajax({
-        url: base_url + 'index.php/simplefle/displaySyntax',
-        type: 'post',
-        success: function (html) {
-            BootstrapDialog.show({
-                title: "<h4>"+lang_qso_simplefle_syntax_help_title+"</h4>",
+		url: base_url + "index.php/simplefle/displaySyntax",
+		type: "post",
+		success: function (html) {
+			BootstrapDialog.show({
+				title: "<h4>" + lang_qso_simplefle_syntax_help_title + "</h4>",
 				type: BootstrapDialog.TYPE_INFO,
 				size: BootstrapDialog.SIZE_WIDE,
-                nl2br: false,
-                message: html,
-				buttons: [{
-					label: lang_qso_simplefle_syntax_help_close_w_sample,
-					action: function(){
-						alert('Hi Orange!');
-					}
-				}, {
-					label: lang_admin_close,
-					cssClass: 'btn-primary',
-					action: function(dialogItself){
-						dialogItself.close();
-					}
-				}]
-            });
-        }
-    });
+				nl2br: false,
+				message: html,
+				buttons: [
+					{
+						label: lang_qso_simplefle_syntax_help_close_w_sample,
+						action: function () {
+							BootstrapDialog.confirm({
+								title: lang_general_word_warning,
+								message: lang_qso_simplefle_warning_reset,
+								type: BootstrapDialog.TYPE_DANGER,
+								btnCancelLabel: lang_general_word_cancel,
+								btnOKLabel: lang_general_word_ok,
+								btnOKClass: "btn-warning",
+								callback: function (result) {
+									if (result) {
+										clearSession();
+
+										const logData = `
+80m cw
+1212 m0abc okff-1234
+3 hb9hil
+4 ok1tn
+20 dl6kva 7 8
+5 dl5cw 
+ssb
+32 ok7wa ol/zl-071 5 8
+33 ok1xxx  4 3
+									`;
+
+										$textarea.val(logData.trim());
+										handleInput();
+									}
+								},
+							});
+						},
+					},
+					{
+						label: lang_admin_close,
+						cssClass: "btn-primary",
+						action: function (dialogItself) {
+							dialogItself.close();
+						},
+					},
+				],
+			});
+		},
+	});
 });
 
 function handleInput() {
