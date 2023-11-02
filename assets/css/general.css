@@ -572,7 +572,8 @@ input:invalid {
 }
 
 .sfletable.table tbody {
+    width: 95%;
 	overflow-y: scroll;
-	max-height: 380px;
+	max-height: 410px;
 	position: absolute;
 }
