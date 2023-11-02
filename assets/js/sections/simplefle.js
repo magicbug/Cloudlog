@@ -52,6 +52,7 @@ $('#js-syntax').click(function (event) {
 										clearSession();
 
 										const logData = `
+*example-data*
 80m cw
 1212 m0abc okff-1234
 3 hb9hil
@@ -65,6 +66,7 @@ ssb
 
 										$textarea.val(logData.trim());
 										handleInput();
+										BootstrapDialog.closeAll();
 									}
 								},
 							});
@@ -461,6 +463,16 @@ function isBandModeEntered() {
 	return isBandModeOK;
 }
 
+function isExampleDataEntered() {
+	let isExampleData = false;
+	if (textarea.value.startsWith("*example-data*")) {
+		isExampleData = true;
+		
+	};
+	return isExampleData;
+
+}
+
 function getAdifTag(tagName, value) {
 	return "<" + tagName + ":" + value.length + ">" + value + " ";
 }
@@ -575,11 +587,23 @@ $(".js-save-to-log").click(function () {
 		setTimeout(function() {
 			$('#textarea').css('border', '');
 		  }, 2000);
+		return false;
 	}
 	if (false === isBandModeEntered()) {
 		BootstrapDialog.alert({
 			title: lang_general_word_warning,
 			message: lang_qso_simplefle_warning_missing_band_mode,
+			type: BootstrapDialog.TYPE_DANGER,
+			btnCancelLabel: lang_general_word_cancel,
+			btnOKLabel: lang_general_word_ok,
+			btnOKClass: "btn-warning",
+		});
+		return false;
+	}
+	if (true === isExampleDataEntered()) {
+		BootstrapDialog.alert({
+			title: lang_general_word_warning,
+			message: lang_qso_simplefle_warning_example_data,
 			type: BootstrapDialog.TYPE_DANGER,
 			btnCancelLabel: lang_general_word_cancel,
 			btnOKLabel: lang_general_word_ok,
