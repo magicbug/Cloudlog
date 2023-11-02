@@ -1,0 +1,17 @@
+{
+    "name": "Cloudlog",
+    "short_name": "Cloudlog",
+    "theme_color": "#2571fb",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "orientation": "portrait",
+    "scope": ".",
+    "start_url": "/",
+    "icons": [
+        {
+          "src": "CloudLog_logo.png",
+          "type": "image/png",
+          "sizes": "144x144"
+        }
+    ]
+  }
