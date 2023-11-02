@@ -103,7 +103,7 @@ function handleInput() {
 	var mode = "";
 	var freq = "";
 	var callsign = "";
-	var sotaWff = "";
+	var sotaWwff = "";
 	qsoList = [];
 	$("#qsoTable tbody").empty();
 
@@ -158,7 +158,7 @@ function handleInput() {
 					/^[A-Z0-9]{1,3}\/[A-Z]{2}-\d{3}|[AENOS]*[FNSUACA]-\d{3}|(?!.*FF)[A-Z0-9]{1,3}-\d{4}|[A-Z0-9]{1,3}[F]{2}-\d{4}$/i
 				)
 			) {
-				sotaWff = item.toUpperCase();
+				sotaWwff = item.toUpperCase();
 			} else if (
 				item.match(
 					/([a-zA-Z0-9]{1,3}[0123456789][a-zA-Z0-9]{0,3}[a-zA-Z])|.*\/([a-zA-Z0-9]{1,3}[0123456789][a-zA-Z0-9]{0,3}[a-zA-Z])|([a-zA-Z0-9]{1,3}[0123456789][a-zA-Z0-9]{0,3}[a-zA-Z])\/.*/
@@ -213,7 +213,7 @@ function handleInput() {
 				mode,
 				rst_s,
 				rst_r,
-				sotaWff,
+				sotaWwff,
 			]);
 
 			const tableRow = $(`<tr>
@@ -225,7 +225,7 @@ function handleInput() {
           <td>${rst_s}</td>
           <td>${rst_r}</td>
           <td>${operator}</td>
-          <td>${sotaWff}</td>
+          <td>${sotaWwff}</td>
         </tr>`);
 
 			$("#qsoTable > tbody:last-child").append(tableRow);
@@ -240,7 +240,7 @@ function handleInput() {
 			localStorage.setItem(`user_${user_id}_my-grid`, $("#my-grid").val());
 
 			callsign = "";
-			sotaWff = "";
+			sotaWwff = "";
 		}
 
 		showErrors();
