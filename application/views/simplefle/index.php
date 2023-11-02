@@ -117,7 +117,6 @@
 			</div>
 			<div class="card-body">
 				<div class="qsoList">
-				<div class="text-right">* The refs can be either SOTA, IOTA, POTA or WWFF</div>
 					<table class="table table-condensed table-striped table-sm sfletable" id="qsoTable">
 						<thead>
 							<tr>
@@ -129,7 +128,8 @@
 								<th><?php echo lang('gen_hamradio_rsts'); ?></th>
 								<th><?php echo lang('gen_hamradio_rstr'); ?></th>
 								<th><?php echo lang('gen_hamradio_operator'); ?></th>
-								<th>Refs*</th></th>
+								<th><?php echo lang('gen_hamradio_refs'); ?>*</th>
+								</th>
 							</tr>
 						</thead>
 						<tbody id="qsoTableBody">
@@ -137,7 +137,14 @@
 						</tbody>
 					</table>
 				</div>
-				<span class="js-qso-count"></span>
+				<div class="row mt-2">
+					<div class="col-6 col-sm-6">
+						<span class="js-qso-count"></span>
+					</div>
+					<div class="col-6 col-sm-6 text-right">
+						<?php echo lang('qso_simplefle_refs_hint'); ?>
+					</div>
+				</div>
 			</div>
 			<div class="row mt-2">
 				<div class="col-3 col-sm-3">
