@@ -216,17 +216,29 @@ function handleInput() {
 				sotaWwff,
 			]);
 
+			let sotaWwffText = "";
+
+			if (isSOTA(sotaWwff)) {
+				sotaWwffText = `S: ${sotaWwff}`;
+			} else if (isPOTA(sotaWwff)) {
+				sotaWwffText = `P: ${sotaWwff}`;
+			} else if (isIOTA(sotaWwff)) {
+				sotaWwffText = `I: ${sotaWwff}`;
+			} else if (isWWFF(sotaWwff)) {
+				sotaWwffText = `W: ${sotaWwff}`;
+			}
+
 			const tableRow = $(`<tr>
-          <td>${extraQsoDate}</td>
-          <td>${qsotime}</td>
-          <td>${callsign}</td>
-          <td><span data-toggle="tooltip" data-placement="left" title="${freq}">${band}</span></td>
-          <td>${mode}</td>
-          <td>${rst_s}</td>
-          <td>${rst_r}</td>
-          <td>${operator}</td>
-          <td>${sotaWwff}</td>
-        </tr>`);
+			<td>${extraQsoDate}</td>
+			<td>${qsotime}</td>
+			<td>${callsign}</td>
+			<td><span data-toggle="tooltip" data-placement="left" title="${freq}">${band}</span></td>
+			<td>${mode}</td>
+			<td>${rst_s}</td>
+			<td>${rst_r}</td>
+			<td>${operator}</td>
+			<td>${sotaWwffText}</td>
+			</tr>`);
 
 			$("#qsoTable > tbody:last-child").append(tableRow);
 
