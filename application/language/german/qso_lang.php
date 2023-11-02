@@ -57,6 +57,7 @@ $lang['qso_simplefle_syntax_help_close_w_sample'] = "Schliesse und Lade Beispiel
 $lang['qso_simplefle_reload'] = "Aktualisiere QSO Liste";
 $lang['qso_simplefle_save'] = "Speichere in Cloudlog";
 $lang['qso_simplefle_clear'] = "Lösche QSO Daten";
+$lang['qso_simplefle_refs_hint'] = "Die Ref. kann entweder <u>S</u>OTA, <u>I</u>OTA, <u>P</u>OTA oder <u>W</u>WFF sein.";
 
 $lang['qso_simplefle_error_band'] = "Band fehlt!";
 $lang['qso_simplefle_error_mode'] = "Mode fehlt!";

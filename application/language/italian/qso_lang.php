@@ -57,6 +57,7 @@ $lang['qso_simplefle_syntax_help_close_w_sample'] = "Close and Load Sample Data"
 $lang['qso_simplefle_reload'] = "Reload QSO List";
 $lang['qso_simplefle_save'] = "Save in Cloudlog";
 $lang['qso_simplefle_clear'] = "Clear Logging Session";
+$lang['qso_simplefle_refs_hint'] = "The Refs can be either <u>S</u>OTA, <u>I</u>OTA, <u>P</u>OTA or <u>W</u>WFF";
 
 $lang['qso_simplefle_error_band'] = "Band is missing!";
 $lang['qso_simplefle_error_mode'] = "Mode is missing!";
