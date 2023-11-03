@@ -27,17 +27,62 @@ $('#simpleFleInfoButton').click(function (event) {
 $('#js-syntax').click(function (event) {
     $('#js-syntax').prop("disabled", false);
     $.ajax({
-        url: base_url + 'index.php/simplefle/displaySyntax',
-        type: 'post',
-        success: function (html) {
-            BootstrapDialog.alert({
-                title: "<h4>"+lang_qso_simplefle_syntax_help_title+"</h4>",
-                size: BootstrapDialog.SIZE_WIDE,
-                nl2br: false,
-                message: html,
-            });
-        }
-    });
+		url: base_url + "index.php/simplefle/displaySyntax",
+		type: "post",
+		success: function (html) {
+			BootstrapDialog.show({
+				title: "<h4>" + lang_qso_simplefle_syntax_help_title + "</h4>",
+				type: BootstrapDialog.TYPE_INFO,
+				size: BootstrapDialog.SIZE_WIDE,
+				nl2br: false,
+				message: html,
+				buttons: [
+					{
+						label: lang_qso_simplefle_syntax_help_close_w_sample,
+						action: function () {
+							BootstrapDialog.confirm({
+								title: lang_general_word_warning,
+								message: lang_qso_simplefle_warning_reset,
+								type: BootstrapDialog.TYPE_DANGER,
+								btnCancelLabel: lang_general_word_cancel,
+								btnOKLabel: lang_general_word_ok,
+								btnOKClass: "btn-warning",
+								callback: function (result) {
+									if (result) {
+										clearSession();
+
+										const logData = `
+*example-data*
+80m cw
+1212 m0abc okff-1234
+3 hb9hil
+4 ok1tn
+20 dl6kva 7 8
+5 dl5cw 
+ssb
+32 ok7wa ol/zl-071 5 8
+33 ok1xxx  4 3
+									`;
+
+										$textarea.val(logData.trim());
+										handleInput();
+										BootstrapDialog.closeAll();
+									}
+								},
+							});
+						},
+					},
+					{
+						label: lang_admin_close,
+						cssClass: "btn-primary",
+						action: function (dialogItself) {
+							dialogItself.close();
+						},
+					},
+				],
+			});
+		},
+	});
 });
 
 function handleInput() {
@@ -58,7 +103,7 @@ function handleInput() {
 	var mode = "";
 	var freq = "";
 	var callsign = "";
-	var sotaWff = "";
+	var sotaWwff = "";
 	qsoList = [];
 	$("#qsoTable tbody").empty();
 
@@ -113,7 +158,7 @@ function handleInput() {
 					/^[A-Z0-9]{1,3}\/[A-Z]{2}-\d{3}|[AENOS]*[FNSUACA]-\d{3}|(?!.*FF)[A-Z0-9]{1,3}-\d{4}|[A-Z0-9]{1,3}[F]{2}-\d{4}$/i
 				)
 			) {
-				sotaWff = item.toUpperCase();
+				sotaWwff = item.toUpperCase();
 			} else if (
 				item.match(
 					/([a-zA-Z0-9]{1,3}[0123456789][a-zA-Z0-9]{0,3}[a-zA-Z])|.*\/([a-zA-Z0-9]{1,3}[0123456789][a-zA-Z0-9]{0,3}[a-zA-Z])|([a-zA-Z0-9]{1,3}[0123456789][a-zA-Z0-9]{0,3}[a-zA-Z])\/.*/
@@ -168,20 +213,32 @@ function handleInput() {
 				mode,
 				rst_s,
 				rst_r,
-				sotaWff,
+				sotaWwff,
 			]);
 
+			let sotaWwffText = "";
+
+			if (isSOTA(sotaWwff)) {
+				sotaWwffText = `S: ${sotaWwff}`;
+			} else if (isPOTA(sotaWwff)) {
+				sotaWwffText = `P: ${sotaWwff}`;
+			} else if (isIOTA(sotaWwff)) {
+				sotaWwffText = `I: ${sotaWwff}`;
+			} else if (isWWFF(sotaWwff)) {
+				sotaWwffText = `W: ${sotaWwff}`;
+			}
+
 			const tableRow = $(`<tr>
-          <td>${extraQsoDate}</td>
-          <td>${qsotime}</td>
-          <td>${callsign}</td>
-          <td><span data-toggle="tooltip" data-placement="left" title="${freq}">${band}</span></td>
-          <td>${mode}</td>
-          <td>${rst_s}</td>
-          <td>${rst_r}</td>
-          <td>${operator}</td>
-          <td>${sotaWff}</td>
-        </tr>`);
+			<td>${extraQsoDate}</td>
+			<td>${qsotime}</td>
+			<td>${callsign}</td>
+			<td><span data-toggle="tooltip" data-placement="left" title="${freq}">${band}</span></td>
+			<td>${mode}</td>
+			<td>${rst_s}</td>
+			<td>${rst_r}</td>
+			<td>${operator}</td>
+			<td>${sotaWwffText}</td>
+			</tr>`);
 
 			$("#qsoTable > tbody:last-child").append(tableRow);
 
@@ -195,7 +252,7 @@ function handleInput() {
 			localStorage.setItem(`user_${user_id}_my-grid`, $("#my-grid").val());
 
 			callsign = "";
-			sotaWff = "";
+			sotaWwff = "";
 		}
 
 		showErrors();
@@ -418,6 +475,16 @@ function isBandModeEntered() {
 	return isBandModeOK;
 }
 
+function isExampleDataEntered() {
+	let isExampleData = false;
+	if (textarea.value.startsWith("*example-data*")) {
+		isExampleData = true;
+		
+	};
+	return isExampleData;
+
+}
+
 function getAdifTag(tagName, value) {
 	return "<" + tagName + ":" + value.length + ">" + value + " ";
 }
@@ -481,21 +548,6 @@ function isWWFF(value) {
 	return false;
 }
 
-function download(filename, text) {
-	var element = document.createElement("a");
-	element.setAttribute(
-		"href",
-		"data:text/plain;charset=utf-8," + encodeURIComponent(text)
-	);
-	element.setAttribute("download", filename);
-
-	element.style.display = "none";
-	document.body.appendChild(element);
-
-	element.click();
-
-	document.body.removeChild(element);
-}
 
 $(document).ready(function () {
 	var tabledata = localStorage.getItem(`user_${user_id}_tabledata`);
@@ -547,11 +599,23 @@ $(".js-save-to-log").click(function () {
 		setTimeout(function() {
 			$('#textarea').css('border', '');
 		  }, 2000);
+		return false;
 	}
 	if (false === isBandModeEntered()) {
 		BootstrapDialog.alert({
 			title: lang_general_word_warning,
 			message: lang_qso_simplefle_warning_missing_band_mode,
+			type: BootstrapDialog.TYPE_DANGER,
+			btnCancelLabel: lang_general_word_cancel,
+			btnOKLabel: lang_general_word_ok,
+			btnOKClass: "btn-warning",
+		});
+		return false;
+	}
+	if (true === isExampleDataEntered()) {
+		BootstrapDialog.alert({
+			title: lang_general_word_warning,
+			message: lang_qso_simplefle_warning_example_data,
 			type: BootstrapDialog.TYPE_DANGER,
 			btnCancelLabel: lang_general_word_cancel,
 			btnOKLabel: lang_general_word_ok,
