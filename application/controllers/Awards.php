@@ -361,7 +361,7 @@ class Awards extends CI_Controller {
         }
 
         // Render page
-        $data['page_title'] = "Awards - CQ Magazine";
+        $data['page_title'] = "Awards - CQ Magazine WAZ";
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/cq/index');
 		$this->load->view('interface_assets/footer');
@@ -524,7 +524,7 @@ class Awards extends CI_Controller {
     }
 
     public function gridmaster() {
-      $data['page_title']= lang('menu_us_gridmaster');
+      $data['page_title'] = "Awards - US Gridmaster";
 
       $this->load->model('bands');
       $this->load->model('gridmap_model');
@@ -558,7 +558,7 @@ class Awards extends CI_Controller {
     }
 
 	public function ffma() {
-		$data['page_title']= lang('menu_ffma');
+		$data['page_title'] = "Awards - Fred Fish Memorial Award (FFMA)";
 
 		$this->load->model('bands');
 		$this->load->model('ffma_model');
@@ -587,7 +587,111 @@ class Awards extends CI_Controller {
 		$this->load->view('interface_assets/footer',$footerData);
 	  }
 
-	  public function getFfmaGridsjs() {
+	public function ja_gridmaster() {
+		$data['page_title']= lang('menu_ja_gridmaster');
+
+		$this->load->model('bands');
+		$this->load->model('ja_gridmaster_model');
+		$this->load->model('stations');
+
+		$data['homegrid']= explode(',', $this->stations->find_gridsquare());
+
+		$data['layer']= $this->optionslib->get_option('option_map_tile_server');
+
+		$data['attribution']= $this->optionslib->get_option('option_map_tile_server_copyright');
+
+		$data['gridsquares_gridsquares']= lang('gridsquares_gridsquares');
+		$data['gridsquares_gridsquares_worked']= lang('gridsquares_gridsquares_worked');
+		$data['gridsquares_gridsquares_lotw']= lang('gridsquares_gridsquares_lotw');
+		$data['gridsquares_gridsquares_paper']= lang('gridsquares_gridsquares_paper');
+
+		$footerData = [];
+		$footerData['scripts']= [
+		   'assets/js/leaflet/geocoding.js',
+		   'assets/js/leaflet/L.MaidenheadColouredJaGridmasterMap.js',
+		   'assets/js/sections/ja_gridmaster.js?'
+		];
+
+		$this->load->view('interface_assets/header',$data);
+		$this->load->view('awards/ja_gridmaster/index');
+		$this->load->view('interface_assets/footer',$footerData);
+	}
+
+	public function getJaGridmasterGridsjs() {
+		$this->load->model('ja_gridmaster_model');
+
+		$array_grid_4char = array();
+		$array_grid_4char_lotw = array();
+		$array_grid_4char_paper = array();
+
+		$grid_4char = "";
+		$grid_4char_lotw = "";
+
+		$query = $this->ja_gridmaster_model->get_lotw();
+		if ($query && $query->num_rows() > 0) {
+			foreach ($query->result() as $row) 	{
+				$grid_4char_lotw = strtoupper(substr($row->GRID_SQUARES,0,4));
+				if(!in_array($grid_4char_lotw, $array_grid_4char_lotw)){
+					array_push($array_grid_4char_lotw, $grid_4char_lotw);
+				}
+			}
+		}
+
+		$query = $this->ja_gridmaster_model->get_paper();
+		if ($query && $query->num_rows() > 0) {
+			foreach ($query->result() as $row) 	{
+				$grid_4char_paper = strtoupper(substr($row->GRID_SQUARES,0,4));
+				if(!in_array($grid_4char_paper, $array_grid_4char_paper)){
+					array_push($array_grid_4char_paper, $grid_4char_paper);
+				}
+			}
+		}
+
+		$query = $this->ja_gridmaster_model->get_worked();
+		if ($query && $query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$grid_four = strtoupper(substr($row->GRID_SQUARES,0,4));
+				if(!in_array($grid_four, $array_grid_4char)){
+					array_push($array_grid_4char, $grid_four);
+				}
+			}
+		}
+
+		$vucc_grids = $this->ja_gridmaster_model->get_vucc_lotw();
+		foreach($vucc_grids as $key) {
+			$grid_four_lotw = strtoupper(substr($key,0,4));
+			if(!in_array($grid_four_lotw, $array_grid_4char_lotw)){
+				array_push($array_grid_4char_lotw, $grid_four_lotw);
+			}
+		}
+
+		$vucc_grids = $this->ja_gridmaster_model->get_vucc_paper();
+		foreach($vucc_grids as $key) {
+			$grid_four_paper = strtoupper(substr($key,0,4));
+			if(!in_array($grid_four_paper, $array_grid_4char_paper)){
+				array_push($array_grid_4char_paper, $grid_four_paper);
+			}
+		}
+
+		$vucc_grids = $this->ja_gridmaster_model->get_vucc_worked();
+		foreach($vucc_grids as $key) {
+			$grid_four = strtoupper(substr($key,0,4));
+			if(!in_array($grid_four, $array_grid_4char)){
+				array_push($array_grid_4char, $grid_four);
+			}
+		}
+
+		$data['grid_4char_lotw'] = ($array_grid_4char_lotw);
+		$data['grid_4char_paper'] = ($array_grid_4char_paper);
+		$data['grid_4char'] = ($array_grid_4char);
+		$data['grid_count'] = $this->ja_gridmaster_model->get_grid_count();
+		$data['grids'] = $this->ja_gridmaster_model->get_grids();
+
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
+
+	public function getFfmaGridsjs() {
 		$this->load->model('ffma_model');
 
 		$array_grid_4char = array();

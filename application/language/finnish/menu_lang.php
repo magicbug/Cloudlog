@@ -11,6 +11,7 @@ $lang['menu_advanced'] = 'Advanced';
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = 'Live QSO';
 $lang['menu_post_qso'] = 'Post QSO';
+$lang['menu_fast_log_entry'] = "Simple Fast Log Entry";
 $lang['menu_live_contest_logging'] = 'Live Contest Logging';
 $lang['menu_post_contest_logging'] = 'Post Contest Logging';
 $lang['menu_bandmap'] = 'Bandikartta';
@@ -86,4 +87,5 @@ $lang['menu_forum'] = 'Foorumi';
 $lang['menu_logout'] = 'Kirjaudu ulos';
 
 $lang['menu_ffma'] = "Fred Fish Memorial Award";
+$lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_maintenance']='Maintenance';

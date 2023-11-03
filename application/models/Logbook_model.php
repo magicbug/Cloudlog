@@ -8,6 +8,11 @@ class Logbook_model extends CI_Model {
     $callsign = str_replace('Ø', '0', $this->input->post('callsign'));
     // Join date+time
     $datetime = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('start_time');
+    if ($this->input->post('end_time') != null) {
+       $datetime_off = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('end_time');
+    } else {
+       $datetime_off = $datetime;
+    }
     if ($this->input->post('prop_mode') != null) {
             $prop_mode = $this->input->post('prop_mode');
     } else {
@@ -174,7 +179,7 @@ class Logbook_model extends CI_Model {
     // Create array with QSO Data
     $data = array(
             'COL_TIME_ON' => $datetime,
-            'COL_TIME_OFF' => $datetime,
+            'COL_TIME_OFF' => $datetime_off,
             'COL_CALL' => strtoupper(trim($callsign)),
             'COL_BAND' => $this->input->post('band'),
             'COL_BAND_RX' => $this->input->post('band_rx'),
@@ -4109,10 +4114,12 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
     }
 
     public function check_for_station_id() {
+      $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_MODE, COL_BAND');
       $this->db->where('station_id =', NULL);
       $query = $this->db->get($this->config->item('table_name'));
+      log_message('debug','SQL: '.$this->db->last_query());
       if($query->num_rows() >= 1) {
-        return 1;
+        return $query->result();
       } else {
         return 0;
       }
@@ -4165,24 +4172,29 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
         }
     }
 
-    public function update_all_station_ids($station_id,$station_callsign) {
+    public function update_station_ids($station_id,$station_callsign,$qsoids) {
 
-	    $data = array(
-		    'station_id' => $station_id,
-	    );
+	    if (! empty($qsoids)) {
+			 $data = array(
+				 'station_id' => $station_id,
+			 );
 
-	    $this->db->where(array('station_id' => NULL));
-	    if ($station_callsign == '') {
-	    	$this->db->where(array('col_station_callsign' => NULL));
-	    } else {
-	    	$this->db->where('col_station_callsign', $station_callsign);
-	    }
-	    $this->db->update($this->config->item('table_name'), $data);
-	    if ($this->db->affected_rows() > 0) {
-		    return TRUE;
-	    } else {
-		    return FALSE;
-	    }
+			 $this->db->where_in('COL_PRIMARY_KEY', $qsoids);
+			 $this->db->where(array('station_id' => NULL));
+			 if ($station_callsign == '') {
+				$this->db->where(array('col_station_callsign' => NULL));
+			 } else {
+				$this->db->where('col_station_callsign', $station_callsign);
+			 }
+			 $this->db->update($this->config->item('table_name'), $data);
+			 if ($this->db->affected_rows() > 0) {
+				 return TRUE;
+			 } else {
+				 return FALSE;
+			 }
+		 } else {
+			 return FALSE;
+		 }
     }
 
     public function parse_frequency($frequency)

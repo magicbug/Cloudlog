@@ -150,6 +150,12 @@ abstract class CI_Session_driver implements SessionHandlerInterface {
 			return;
 		}
 
+		if (isset($this->_config['cookie_samesite'])) {
+			$css=$this->_config['cookie_samesite'];
+		} else {
+			$css=TRUE;
+		}
+
 		return setcookie(
 			$this->_config['cookie_name'],
 			'',
@@ -159,7 +165,7 @@ abstract class CI_Session_driver implements SessionHandlerInterface {
 				'domain' => $this->_config['cookie_domain'],
 				'secure' => $this->_config['cookie_secure'],
 				'httponly' => TRUE,
-				'samesite' => $this->_config['cookie_samesite']
+				'samesite' => $css
 			)
 		);
 	}

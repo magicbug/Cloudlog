@@ -115,6 +115,7 @@ $lang['filter_actions_recv_electronic'] = 'Received (Electronic)';
 $lang['filter_actions_create_adif'] = 'Create ADIF';
 $lang['filter_actions_print_label'] = 'Print Label';
 $lang['filter_actions_start_print_title'] = 'Print Labels';
+$lang['filter_actions_print_include_via'] = "Include Via";
 $lang['filter_actions_print_include_grid'] = 'Include Grid?';
 $lang['filter_actions_start_print'] = 'Start printing at?';
 $lang['filter_actions_print'] = 'Print';

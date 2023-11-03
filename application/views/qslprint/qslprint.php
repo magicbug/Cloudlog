@@ -13,6 +13,7 @@ if (empty($station_id)) {
 }
 
 if ($qsos->result() != NULL) {
+        echo '<div style="padding-top: 10px; margin-top: 0px;" class="container logbook">';
 	echo '<table style="width:100%" class="table table-sm table-bordered table-hover table-striped table-condensed qslprint">
 <thead>
 <tr>
@@ -43,7 +44,7 @@ if ($qsos->result() != NULL) {
 	foreach ($qsos->result() as $qsl) {
 		echo '<tr id="qslprint_'.$qsl->COL_PRIMARY_KEY.'">';
 		echo '<td style=\'text-align: center\'><div class="form-check"><input class="form-check-input" type="checkbox" /></div></td>';
-		echo '<td style=\'text-align: center\'>' . $qsl->COL_CALL . '</td>';
+                ?><td style='text-align: center'><span class="qso_call"><a id="edit_qso" href="javascript:displayQso(<?php echo $qsl->COL_PRIMARY_KEY; ?>);"><?php echo str_replace("0","&Oslash;",strtoupper($qsl->COL_CALL)); ?></a><a target="_blank" href="https://www.qrz.com/db/<?php echo strtoupper($qsl->COL_CALL); ?>"><img width="16" height="16" src="<?php echo base_url(); ?>images/icons/qrz.png" alt="Lookup <?php echo strtoupper($qsl->COL_CALL); ?> on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/<?php echo strtoupper($qsl->COL_CALL); ?>"><img width="16" height="16" src="<?php echo base_url(); ?>images/icons/hamqth.png" alt="Lookup <?php echo strtoupper($qsl->COL_CALL); ?> on HamQTH"></a> <a target="_blank" href="http://www.eqsl.cc/Member.cfm?<?php echo strtoupper($qsl->COL_CALL); ?>"><img width="16" height="16" src="<?php echo base_url(); ?>images/icons/eqsl.png" alt="Lookup <?php echo strtoupper($qsl->COL_CALL); ?> on eQSL.cc"></a></td><?php 
 		echo '<td style=\'text-align: center\'>'; $timestamp = strtotime($qsl->COL_TIME_ON); echo date($custom_date_format, $timestamp); echo '</td>';
 		echo '<td style=\'text-align: center\'>'; $timestamp = strtotime($qsl->COL_TIME_ON); echo date('H:i', $timestamp); echo '</td>';
 		echo '<td style=\'text-align: center\'>'; echo $qsl->COL_SUBMODE==null?$qsl->COL_MODE:$qsl->COL_SUBMODE; echo '</td>';
@@ -56,7 +57,7 @@ if ($qsos->result() != NULL) {
 		echo '<td style=\'text-align: center\'><button onclick="openQsoList(\''.$qsl->COL_CALL.'\')" class="btn btn-sm btn-success"><i class="fas fa-search"></i></button></td>';
 		echo '</tr>';
 	}
-	echo '</tbody></table>';
+	echo '</tbody></table></div>';
 	?>
 
 	<p><button onclick="markSelectedQsos();" title="Mark selected QSOs as printed" class="btn btn-success markallprinted">Mark selected QSOs as printed</button>

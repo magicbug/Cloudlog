@@ -1,6 +1,18 @@
 <div class="container">
-
-  <h2><?php echo $page_title?></h2>
+        <!-- Award Info Box -->
+        <br>
+        <div id="awardInfoButton">
+            <script>
+            var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
+            var lang_award_info_ln1 = "<?php echo lang('awards_dok_description_ln1'); ?>";
+            var lang_award_info_ln2 = "<?php echo lang('awards_dok_description_ln2'); ?>";
+            var lang_award_info_ln3 = "<?php echo lang('awards_dok_description_ln3'); ?>";
+            var lang_award_info_ln4 = "<?php echo lang('awards_dok_description_ln4'); ?>";
+            </script>
+            <h2><?php echo $page_title; ?></h2>
+            <button type="button" class="btn btn-sm btn-primary mr-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
+        </div>
+        <!-- End of Award Info Box -->
             <form class="form" action="<?php echo site_url('awards/dok'); ?>" method="post" enctype="multipart/form-data">
             <fieldset>
 
@@ -105,7 +117,7 @@
                 <div class="col-md-10">
                     <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning">Reset</button>
                     <button id="button1id" type="submit" name="button1id" class="btn btn-sm btn-primary">Show</button>
-                    <button id="button3id" type="button" name="button3id" class="btn btn-sm btn-info" onclick=" window.open('https://dd3ah.de/dokmap/dokonly.html?zoom=9&dokonly=<?php print implode(',', $doks); ?>','_blank')"><i class="fas fa-globe-americas"></i> Map</button>
+                    <button id="button3id" type="button" name="button3id" class="btn btn-sm btn-info" onclick=" window.open('https://dd3ah.de/dokmap/?lat=51.3035&lng=11.1475&zoom=7<?php print implode(',', $doks); ?>','_blank')"><i class="fas fa-globe-americas"></i> Map</button>
                 </div>
             </div>
         </fieldset>

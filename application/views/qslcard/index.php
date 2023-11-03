@@ -36,7 +36,7 @@
 
         foreach ($qslarray->result() as $qsl) {
             echo '<tr>';
-            echo '<td style=\'text-align: center\'>' . $qsl->COL_CALL . '</td>';
+            echo '<td style=\'text-align: center\'>' . str_replace("0","&Oslash;",$qsl->COL_CALL) . '</td>';
 			echo '<td style=\'text-align: center\'>';
 			echo $qsl->COL_SUBMODE==null?$qsl->COL_MODE:$qsl->COL_SUBMODE;
 			echo '</td>';

@@ -13,6 +13,8 @@ $lang['account_create_user_account'] = 'Benutzerkonto anlegen';
 $lang['account_edit_account'] = 'Benutzerkonto editieren';
 
 $lang['account_account_information'] = 'Bnutzerkonto Informationen';
+$lang['account_user'] = "Benutzer";
+$lang['account_word_edited'] = "bearbeitet";
 $lang['account_username'] = 'Benutzername';
 $lang['account_email_address'] = 'Emailadresse';
 $lang['account_password'] = 'Passwort';
@@ -33,6 +35,8 @@ $lang['account_gridsquare'] = 'Planquadrat';
 $lang['account_cloudlog_preferences'] = 'Cloudlog Einstellungen';
 $lang['account_timezone'] = 'Zeitzone';
 $lang['account_date_format'] = 'Datumsformat';
+$lang['account_log_end_time'] = 'Logge Endzeiten für QSOs separat';
+$lang['account_log_end_time_hint'] = 'Wenn aktiviert, werden QSO Endzeiten separat erfasst. Falls nicht, ist die QSO Endzeit gleich der Startzeit.';
 $lang['account_measurement_preferences'] = 'Entfernungsformat';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Wähle, wie Datumsfelder angezeigt werden sollen, wenn du eingeloggt bist.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Wähle, in welcher Einheit Entfernungen angezeigt werden sollen.';

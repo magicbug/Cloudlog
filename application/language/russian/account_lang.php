@@ -13,6 +13,8 @@ $lang['account_create_user_account'] = ' Создать аккаунт поль�
 $lang['account_edit_account'] = 'Редактировать аккаунт';
 
 $lang['account_account_information'] = 'Информация об аккаунте';
+$lang['account_user'] = "User";
+$lang['account_word_edited'] = "edited";
 $lang['account_username'] = 'Имя пользователя';
 $lang['account_email_address'] = 'Адрес электронной почты';
 $lang['account_password'] = 'Пароль';
@@ -33,6 +35,8 @@ $lang['account_gridsquare'] = 'QTH локатор';
 $lang['account_cloudlog_preferences'] = 'Настройки Cloudlog';
 $lang['account_timezone'] = 'Часовой пояс';
 $lang['account_date_format'] = 'Формат даты';
+$lang['account_log_end_time'] = 'Log End Times for QSOs Separately';
+$lang['account_log_end_time_hint'] = 'Choose yes here if you want to log QSO start and end times separately. If set to \'No\' the end time will be the same as start time.';
 $lang['account_measurement_preferences'] = 'Единицы измерения';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Выберите представление даты для отображения в вашем аккаунте.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Выберите единицы измерения расстояния';

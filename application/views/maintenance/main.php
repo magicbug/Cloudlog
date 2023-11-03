@@ -13,11 +13,44 @@
 		  <div class="card-header">
 			QSO-DB Maintenance
 		  </div>
-		<?php if($is_there_qsos_with_no_station_id >= 1) { ?>
+		<?php if(!empty($qsos_with_no_station_id)) { ?>
 					<div class="alert alert-danger" role="alert" style="margin-bottom: 0px !important;">
-						<span class="badge badge-pill badge-warning">Warning</span> The Database contains QSOs without a station-profile (location)<br/>
+						<span class="badge badge-pill badge-warning">Warning</span> The Database contains <?php echo count($qsos_with_no_station_id); ?> QSO<?php echo count($qsos_with_no_station_id) > 1 ? 's' : '' ?> without a station-profile (location)<br/>
 					</div>
 		  <div class="card-body">
+		  <div class?"table-responsive">
+				<table id="unasigned_qsos_table" class="table table-sm table-striped">
+					<thead>
+						<tr>
+							<th scope="col"><input type="checkbox" onClick="toggleAll(this)"></th>
+							<th scope="col">Date</th>
+							<th scope="col">Time</th>
+							<th scope="col">Call</th>
+							<th scope="col">Mode</th>
+							<th scope="col">Band</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php if($this->session->userdata('user_date_format')) {
+									$custom_date_format = $this->session->userdata('user_date_format');
+								} else {
+									$custom_date_format = 'd.m.Y';
+								}
+								foreach ($qsos_with_no_station_id as $qso) {
+									echo '<tr>';
+									echo '<td><input type="checkbox" id="'.$qso->COL_PRIMARY_KEY.'" name="cBox[]" value="'.$qso->COL_PRIMARY_KEY.'"></td>';
+									$timestamp = strtotime($qso->COL_TIME_ON);
+									echo '<td>'.date($custom_date_format, $timestamp).'</td>';
+									$timestamp = strtotime($qso->COL_TIME_ON);
+									echo '<td>'.date('H:i', $timestamp).'</td>';
+									echo '<td>'.$qso->COL_CALL.'</td>';
+									echo '<td>'.$qso->COL_MODE.'</td>';
+									echo '<td>'.$qso->COL_BAND.'</td>';
+									echo '</tr>';
+								} ?>
+					</tbody>
+				</table>
+		  </div>
 		  	<p class="card-text">Please reassign those QSOs to an existing station location:</p>
 		
 		
@@ -33,12 +66,12 @@
 					<tbody>
 		<?php 
 		foreach ($calls_wo_sid as $call) {
-			echo '<tr><td>'.$call['COL_STATION_CALLSIGN'].'</td><td><select name="station_profile" id="station_profile">';
+			echo '<tr><td><div id="station_call">'.$call['COL_STATION_CALLSIGN'].'</div></td><td><select name="station_profile" id="station_profile" onChange="updateCallsign(this)">';
 			$options='';
 			foreach ($stations->result() as $station) {
 				$options.='<option value='.$station->station_id.'>'.$station->station_profile_name.' ('.$station->station_callsign.')</option>';
 			}
-			echo $options.'</select></td><td><button class="btn btn-warning" onClick="reassign(\''.$call['COL_STATION_CALLSIGN'].'\',$(\'#station_profile option:selected\').val());"><i class="fas fa-sync"></i>Reassign</a></button></td></tr>'; 
+			echo $options.'</select></td><td><button class="btn btn-warning" onClick="reassign(\''.$call['COL_STATION_CALLSIGN'].'\',$(\'#station_profile option:selected\').val());"><i class="fas fa-sync"></i> Reassign</a></button></td></tr>';
 		} ?>
 					</tbody>
 				</table>

@@ -13,6 +13,8 @@ $lang['account_create_user_account'] = 'Skapa användarkonto';
 $lang['account_edit_account'] = 'Redigera användarkonto';
 
 $lang['account_account_information'] = 'Användarkontoinformation';
+$lang['account_user'] = "User";
+$lang['account_word_edited'] = "edited";
 $lang['account_username'] = 'Användarnamn';
 $lang['account_email_address'] = 'E-postadress';
 $lang['account_password'] = 'Lösenord';
@@ -33,6 +35,8 @@ $lang['account_gridsquare'] = 'Gridsquare';
 $lang['account_cloudlog_preferences'] = 'Cloudlog Preferences';
 $lang['account_timezone'] = 'Tidszon';
 $lang['account_date_format'] = 'Datumformat';
+$lang['account_log_end_time'] = 'Log End Times for QSOs Separately';
+$lang['account_log_end_time_hint'] = 'Choose yes here if you want to log QSO start and end times separately. If set to \'No\' the end time will be the same as start time.';
 $lang['account_measurement_preferences'] = 'Measurement preference';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Välj hur du vill att datum ska visas när du är inloggad på ditt konto.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Välj i vilken enhetsavstånd som ska visas';

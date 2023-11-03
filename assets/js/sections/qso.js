@@ -484,6 +484,12 @@ function reset_fields() {
 	$('.dxccsummary').remove();
 }
 
+function resetTimers() {
+	handleStart = setInterval(function() { getUTCTimeStamp($('.input_start_time')); }, 500);
+	handleEnd = setInterval(function() { getUTCTimeStamp($('.input_end_time')); }, 500);
+	handleDate = setInterval(function() { getUTCDateStamp($('.input_date')); }, 1000);
+}
+
 $("#callsign").focusout(function() {
 	if ($(this).val().length >= 3) {
 
@@ -571,7 +577,6 @@ $("#callsign").focusout(function() {
 
 					changebadge(result.dxcc.entity);
 
-					getDxccResult(result.dxcc.adif, convert_case(result.dxcc.entity));
 				}
 
 				if(result.lotw_member == "active") {
@@ -713,6 +718,9 @@ $("#callsign").focusout(function() {
 				$('#partial_view').show();
 				/* display past QSOs */
 				$('#partial_view').html(result.partial);
+
+				// Get DXX Summary
+				getDxccResult(result.dxcc.adif, convert_case(result.dxcc.entity));
 			}
 		});
 	} else {
@@ -739,6 +747,16 @@ $('#start_time').change(function() {
 	if(raw_time.match(/^[012]\d[0-5]\d$/)) {
 		raw_time = raw_time.substring(0,2)+":"+raw_time.substring(2,4);
 		$('#start_time').val(raw_time);
+	}
+});
+$('#end_time').change(function() {
+	var raw_time = $(this).val();
+	if(raw_time.match(/^\d\[0-6]d$/)) {
+		raw_time = "0"+raw_time;
+	}
+	if(raw_time.match(/^[012]\d[0-5]\d$/)) {
+		raw_time = raw_time.substring(0,2)+":"+raw_time.substring(2,4);
+		$('#end_time').val(raw_time);
 	}
 });
 

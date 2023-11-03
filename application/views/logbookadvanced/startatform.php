@@ -6,6 +6,12 @@
         </div>
     </div>
     <div class="form-group row">
+        <label class="my-1 mr-2 col-md-4" for="via"><?php echo lang('filter_actions_print_include_via'); ?></label>
+        <div class="form-check-inline">
+            <input class="form-check-input" type="checkbox" name="via" id="via">
+        </div>
+    </div>
+    <div class="form-group row">
         <label class="my-1 mr-2 col-md-4" for="startat"><?php echo lang('filter_actions_start_print'); ?></label>
         <div class="form-inline">
             <input class="form-control input-group-sm" type="number" id="startat" name="startat" value="1">

@@ -11,6 +11,7 @@ $lang['menu_advanced'] = 'Расширенный вид';
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = 'добавить QSO';
 $lang['menu_post_qso'] = 'добавить прошедшее QSO';
+$lang['menu_fast_log_entry'] = "Simple Fast Log Entry";
 $lang['menu_live_contest_logging'] = 'Журнал соревнований';
 $lang['menu_post_contest_logging'] = 'Журнал прошедших соревнований';
 $lang['menu_bandmap'] = 'План диапазонов';
@@ -86,4 +87,5 @@ $lang['menu_forum'] = 'Форум';
 $lang['menu_logout'] = 'Выход';
 
 $lang['menu_ffma'] = "Fred Fish Memorial Award";
+$lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_maintenance']='Maintenance';

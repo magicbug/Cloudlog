@@ -13,6 +13,8 @@ $lang['account_create_user_account'] = '创建用户账户i';
 $lang['account_edit_account'] = '编辑账户';
 
 $lang['account_account_information'] = '账户信息';
+$lang['account_user'] = "User";
+$lang['account_word_edited'] = "edited";
 $lang['account_username'] = '用户名';
 $lang['account_email_address'] = '电子邮件';
 $lang['account_password'] = '密码';
@@ -33,6 +35,8 @@ $lang['account_gridsquare'] = '梅登海德网格';
 $lang['account_cloudlog_preferences'] = '偏好选项';
 $lang['account_timezone'] = '时区';
 $lang['account_date_format'] = '日期格式';
+$lang['account_log_end_time'] = 'Log End Times for QSOs Separately';
+$lang['account_log_end_time_hint'] = 'Choose yes here if you want to log QSO start and end times separately. If set to \'No\' the end time will be the same as start time.';
 $lang['account_measurement_preferences'] = '距离单位偏好';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = '选择您登录账户时要显示的日期格式';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = '选择距离单位';

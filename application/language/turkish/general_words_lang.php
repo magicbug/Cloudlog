@@ -14,6 +14,9 @@ $lang['general_word_info'] = 'Bilgiler';
 $lang['general_word_choose_file'] = 'Dosya seç';
 $lang['general_word_next'] = 'Next';
 $lang['general_word_previous'] = 'Previous';
+$lang['general_word_cancel'] = "Cancel";
+$lang['general_word_ok'] = "OK";
+$lang['general_word_attention'] = "Attention";
 $lang['general_word_enabled'] = "Enabled";
 $lang['general_word_disabled'] = "Disabled";
 $lang['general_word_export'] = "Export";
@@ -21,6 +24,8 @@ $lang['general_word_import'] = "Import";
 
 $lang['general_word_date'] = 'Tarih';
 $lang['general_word_time'] = 'Saat';
+$lang['general_word_time_on'] = 'Time on';
+$lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Tarih/Saat';
 $lang['general_word_none'] = 'Hiçbiri';
 $lang['general_word_name'] = 'İsim';
@@ -37,7 +42,11 @@ $lang['general_word_total'] = 'Toplam';
 $lang['general_word_year'] = 'Yıl';
 $lang['general_word_month'] = 'Ay';
 
+$lang['general_word_colors'] = "Colors";
+$lang['general_word_light'] = "Light/Laser";
 $lang['general_word_worked'] = 'Çalışılanlar';
+$lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
+$lang['general_word_not_worked'] = "Not worked";
 $lang['general_word_confirmed'] = 'Onaylanan';
 $lang['general_word_needed'] = 'İstenenler';
 
@@ -50,6 +59,7 @@ $lang['general_word_sent'] = 'Gönderilen';
 $lang['general_word_received'] = 'Gelen';
 $lang['general_word_requested'] = 'İstenen';
 $lang['general_word_queued'] = 'Sıralanan';
+$lang['general_word_table'] = "Table";
 $lang['general_word_invalid_ignore'] = 'Geçersiz (Yok say)';
 $lang['general_word_qslcard'] = 'QSL Kartı';
 $lang['general_word_qslcard_management'] = 'QSL Yönetimi';
@@ -117,6 +127,7 @@ $lang['gen_hamradio_myrefs'] = 'My Refs';
 $lang['gen_hamradio_exchange_sent_short'] = 'Exch (G)';
 $lang['gen_hamradio_exchange_rcvd_short'] = 'Exch (A)';
 $lang['gen_hamradio_qsl'] = 'QSL';
+$lang['gen_hamradio_qsltype'] = "QSL Type";
 $lang['gen_hamradio_qslvia'] = 'QSL via';
 $lang['gen_hamradio_qslmsg'] = 'QSL Msg';
 $lang['gen_hamradio_locator'] = 'Konum kodu';
@@ -185,3 +196,8 @@ $lang['southamerica'] = 'South America';
 
 $lang['gen_band_selection'] = 'Band selection';
 $lang['general_word_today'] = 'Today';
+
+$lang['dashboard_php_version_warning'] = 'You need to upgrade your PHP version. Minimum version is 7.4. Your version is';
+$lang['dashboard_country_files_warning'] = 'You need to update country files! Go <a href="'.site_url('update').'">here</a> to do it!';
+$lang['dashboard_locations_warning'] = 'You have no station locations. Go <a href="'. site_url('station') . '">here</a> to create it!';
+$lang['dashboard_logbooks_warning'] = 'You have no station logbook. Go <a href="'. site_url('logbooks') . '">here</a> to create it!';

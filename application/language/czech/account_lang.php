@@ -13,6 +13,8 @@ $lang['account_create_user_account'] = 'Vytvořit uživatelský účet';
 $lang['account_edit_account'] = 'Upravit účet';
 
 $lang['account_account_information'] = 'Informace o účtu';
+$lang['account_user'] = "User";
+$lang['account_word_edited'] = "edited";
 $lang['account_username'] = 'Uživatelské jméno';
 $lang['account_email_address'] = 'Emailová adresa';
 $lang['account_password'] = 'Heslo';
@@ -33,6 +35,8 @@ $lang['account_gridsquare'] = 'Locátor';
 $lang['account_cloudlog_preferences'] = 'Nastavení Cloudlogu';
 $lang['account_timezone'] = 'Časové pásmo';
 $lang['account_date_format'] = 'Formát data';
+$lang['account_log_end_time'] = 'Log End Times for QSOs Separately';
+$lang['account_log_end_time_hint'] = 'Choose yes here if you want to log QSO start and end times separately. If set to \'No\' the end time will be the same as start time.';
 $lang['account_measurement_preferences'] = 'Nastavení měření';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Vyberte, jak chcete, aby byla data zobrazena při přihlášení do vašeho účtu.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Vyberte, v jakých jednotkách se budou zobrazovat vzdálenosti.';

@@ -13,6 +13,8 @@ $lang['account_create_user_account'] = 'Luo käyttäjätili';
 $lang['account_edit_account'] = 'Muokkaa käyttäjätiliä';
 
 $lang['account_account_information'] = 'Account Information';
+$lang['account_user'] = "User";
+$lang['account_word_edited'] = "edited";
 $lang['account_username'] = 'käyttäjänimi';
 $lang['account_email_address'] = 'Email';
 $lang['account_password'] = 'Salasana';
@@ -33,6 +35,8 @@ $lang['account_gridsquare'] = 'Gridsquare';
 $lang['account_cloudlog_preferences'] = 'Cloudlog Asetukset';
 $lang['account_timezone'] = 'Aikavyöhyke';
 $lang['account_date_format'] = 'Päivämäärämuoto';
+$lang['account_log_end_time'] = 'Log End Times for QSOs Separately';
+$lang['account_log_end_time_hint'] = 'Choose yes here if you want to log QSO start and end times separately. If set to \'No\' the end time will be the same as start time.';
 $lang['account_measurement_preferences'] = 'Mittayksikkömuoto';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Valitse, miten haluat päivämäärät näkyvän, kun olet kirjautunut tilillesi.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Valitse, mitä mittayksikkömuotoa käytetään';

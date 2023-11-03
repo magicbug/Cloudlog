@@ -70,7 +70,9 @@
 
                         <td><?php echo lang('general_word_datetime'); ?></td>
                         <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-                        <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></td>
+                        <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); $timestamp = strtotime($row->COL_TIME_ON); $time_on = date('H:i', $timestamp); echo " at ".$time_on; ?>
+                        <?php $timestamp = strtotime($row->COL_TIME_OFF); $time_off = date('H:i', $timestamp); if ($time_on != $time_off) { echo " - ".$time_off; } ?>
+                        </td>
                         <?php } else { ?>
                         <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); ?></td>
                         <?php } ?>
@@ -484,7 +486,7 @@
 
         <div class="tab-pane fade" id="notesdetails" role="tabpanel" aria-labelledby="table-tab">
             <h3><?php echo lang('general_word_notes'); ?></h3>
-            <?php echo nl2br($row->COL_NOTES); ?>
+            <?php if (isset($row->COL_NOTES)) { echo nl2br($row->COL_NOTES); } ?>
         </div>
 
         <?php
