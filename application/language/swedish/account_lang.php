@@ -13,6 +13,8 @@ $lang['account_create_user_account'] = 'Skapa användarkonto';
 $lang['account_edit_account'] = 'Redigera användarkonto';
 
 $lang['account_account_information'] = 'Användarkontoinformation';
+$lang['account_user'] = "User";
+$lang['account_word_edited'] = "edited";
 $lang['account_username'] = 'Användarnamn';
 $lang['account_email_address'] = 'E-postadress';
 $lang['account_password'] = 'Lösenord';

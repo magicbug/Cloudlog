@@ -13,6 +13,8 @@ $lang['account_create_user_account'] = 'Create User Account';
 $lang['account_edit_account'] = 'Edit Account';
 
 $lang['account_account_information'] = 'Account Information';
+$lang['account_user'] = "User";
+$lang['account_word_edited'] = "edited";
 $lang['account_username'] = 'Username';
 $lang['account_email_address'] = 'Email Address';
 $lang['account_password'] = 'Password';
