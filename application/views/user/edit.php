@@ -175,12 +175,12 @@
 					</div>
 
 					<div class="form-group">
-						<label for="quicklog">Quicklog Feature</label>
+						<label for="quicklog"><?php echo lang('account_quicklog_feature'); ?></label>
 						<select class="custom-select" id="quicklog" name="user_quicklog">
 							<option value="1" <?php if ($user_quicklog == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 							<option value="0" <?php if ($user_quicklog == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 						</select>
-						<small id="SelectDateFormatHelp" class="form-text text-muted">Quicklog Feature Description</small>
+						<small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_quicklog_feature_hint'); ?></small>
 					</div>
 
 					<div class="form-group">
