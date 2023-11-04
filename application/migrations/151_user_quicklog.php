@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *   QUICKLOG Feature
 */
 
-class Migration_quicklog extends CI_Migration {
+class Migration_user_quicklog extends CI_Migration {
 
 	public function up()
 	{
