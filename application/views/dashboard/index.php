@@ -48,7 +48,31 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 ?>
 <div class="container dashboard">
 <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
-	
+
+	<?php if (version_compare(PHP_VERSION, '7.4.0') <= 0) { ?>
+		<div class="alert alert-danger" role="alert">
+		<?php echo lang('dashboard_php_version_warning') . ' ' . PHP_VERSION . '.';?>
+		</div>
+	<?php } ?>
+
+	<?php if ($countryCount == 0) { ?>
+		<div class="alert alert-danger" role="alert">
+		<?php echo lang('dashboard_country_files_warning'); ?>
+		</div>
+	<?php } ?>
+
+	<?php if ($locationCount == 0) { ?>
+		<div class="alert alert-danger" role="alert">
+		<?php echo lang('dashboard_locations_warning'); ?>
+		</div>
+	<?php } ?>
+
+	<?php if ($logbookCount == 0) { ?>
+		<div class="alert alert-danger" role="alert">
+		<?php echo lang('dashboard_logbooks_warning'); ?>
+		</div>
+	<?php } ?>
+
 	<?php if($this->optionslib->get_option('dashboard_banner') != "false") { ?>
 	<?php if($todays_qsos >= 1) { ?>
 		<div class="alert alert-success" role="alert">

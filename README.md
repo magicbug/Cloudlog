@@ -40,7 +40,7 @@ When submitting PRs please make sure code is commented and includes one feature 
 
 ## Credits
 
-Thanks to Andy (VE7CXZ), Gavin (M1BXF), Graham (W5ISP), Robert (M0VFC), Corby (K0SKW), Andy (GI0VGV), Tobias (DL4TMA), Tony (G0WFV), Kim (DG9VH), Michael (G7VJR), Andreas (LA8AJA), Matthias (DL9MJ), Thomas (DO2TWE), Pat (KT3PJ), Flo (DF2ET) and Joerg (DJ7NT) for contributing code or help to Cloudlog.
+Thanks to Andy (VE7CXZ), Gavin (M1BXF), Graham (W5ISP), Robert (M0VFC), Corby (K0SKW), Andy (GI0VGV), Tobias (DL4TMA), Tony (G0WFV), Kim (DG9VH), Michael (G7VJR), Andreas (LA8AJA), Matthias (DL9MJ), Thomas (DO2TWE), Pat (KT3PJ), Flo (DF2ET), Joerg (DJ7NT) and Fabian (HB9HIL) for contributing code or help to Cloudlog.
 
 ## Patreons & Donors
 

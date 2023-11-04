@@ -17,6 +17,10 @@
     */
     var lang_general_word_qso_data = "<?php echo lang('general_word_qso_data'); ?>";
     var lang_general_word_danger = "<?php echo lang('general_word_danger'); ?>";
+    var lang_general_word_attention = "<?php echo lang('general_word_attention'); ?>";
+    var lang_general_word_warning = "<?php echo lang('general_word_warning'); ?>";
+    var lang_general_word_cancel = "<?php echo lang('general_word_cancel'); ?>";
+    var lang_general_word_ok = "<?php echo lang('general_word_ok'); ?>";
     var lang_qso_delete_warning = "<?php echo lang('qso_delete_warning'); ?>";
     var lang_general_word_colors = "<?php echo lang('general_word_colors'); ?>";
     var lang_general_word_confirmed = "<?php echo lang('general_word_confirmed'); ?>";
@@ -28,7 +32,6 @@
 <script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/Control.FullScreen.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.qrb.js"></script>
@@ -996,6 +999,12 @@ $(document).on('keypress',function(e) {
 					}
 				);
 			});
+			$('#reset_time').click(function() {
+				var now = new Date();
+				var localTime = now.getTime();
+				var utc = localTime + (now.getTimezoneOffset() * 60000);
+				$('#start_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+			});
 		});
 	</script>
 
@@ -1106,24 +1115,24 @@ $(document).on('keypress',function(e) {
 
       if ( ! manual ) {
         $(function($) {
-          var options = {
-            utc: true,
-            format: '%H:%M:%S'
-          }
-          $('.input_time').jclock(options);
-        });
-
-        $(function($) {
-          var options = {
-            utc: true,
-            format: '%d-%m-%Y'
-          }
-          $('.input_date').jclock(options);
+           resetTimers();
         });
       }
     });
 
-
+<?php if ($this->session->userdata('user_qso_end_times')  == 1) { ?>
+    $('#callsign').focusout(function() {
+      if (! manual && $('#callsign').val() != '') {
+        clearInterval(handleStart);
+        clearInterval(handleDate);
+      }
+    });
+    $('#start_time').focusout(function() {
+       if (manual && $('#start_time').val() != '') {
+          $('#end_time').val($('#start_time').val());
+       }
+    });
+<?php } ?>
 
   jQuery(function($) {
   var input = $('#callsign');
@@ -1142,6 +1151,9 @@ $(document).on('keypress',function(e) {
 	  }
 	  if (e.key === "Escape") { // escape key maps to keycode `27`
 		  reset_fields();
+		  if ( ! manual ) {
+		     resetTimers()
+		  }
 		  $('#callsign').val("");
 		  $("#callsign").focus();
 	  }
@@ -1316,6 +1328,21 @@ $(document).on('keypress',function(e) {
             $('#rst_rcvd').val('59');
         }
     }
+
+    function getUTCTimeStamp(el) {
+       var now = new Date();
+       var localTime = now.getTime();
+       var utc = localTime + (now.getTimezoneOffset() * 60000);
+       $(el).attr('value', ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+    }
+
+    function getUTCDateStamp(el) {
+       var now = new Date();
+       var localTime = now.getTime();
+       var utc = localTime + (now.getTimezoneOffset() * 60000);
+       $(el).attr('value', ("0" + now.getUTCDate()).slice(-2)+'-'+("0" + (now.getUTCMonth()+1)).slice(-2)+'-'+now.getUTCFullYear());
+    }
+
     </script>
 
     <script>
@@ -2314,7 +2341,7 @@ function viewQsl(picture, callsign) {
             if (callsign == null) {
                 title = 'QSL Card';
             } else {
-                title = 'QSL Card for ' + callsign;
+                title = 'QSL Card for ' + callsign.replace('0', '&Oslash;');
             }
 
             BootstrapDialog.show({
@@ -2376,7 +2403,7 @@ function viewEqsl(picture, callsign) {
             if (callsign == null) {
                 title = 'eQSL Card';
             } else {
-                title = 'eQSL Card for ' + callsign;
+                title = 'eQSL Card for ' + callsign.replace('0', '&Oslash;');
             }
 
             BootstrapDialog.show({

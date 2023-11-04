@@ -14,6 +14,9 @@ $lang['general_word_info'] = 'Informacja';
 $lang['general_word_choose_file'] = 'Wybież plik';
 $lang['general_word_next'] = 'Next';
 $lang['general_word_previous'] = 'Previous';
+$lang['general_word_cancel'] = "Cancel";
+$lang['general_word_ok'] = "OK";
+$lang['general_word_attention'] = "Attention";
 $lang['general_word_enabled'] = "Enabled";
 $lang['general_word_disabled'] = "Disabled";
 $lang['general_word_export'] = "Export";
@@ -21,6 +24,8 @@ $lang['general_word_import'] = "Import";
 
 $lang['general_word_date'] = 'Data';
 $lang['general_word_time'] = 'Godzina';
+$lang['general_word_time_on'] = 'Time on';
+$lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Data/Godzina';
 $lang['general_word_none'] = 'Nic';
 $lang['general_word_name'] = 'Imie';
@@ -38,6 +43,7 @@ $lang['general_word_year'] = 'Rok';
 $lang['general_word_month'] = 'Miesiąc';
 
 $lang['general_word_colors'] = "Colors";
+$lang['general_word_light'] = "Light/Laser";
 $lang['general_word_worked'] = 'Pracowane';
 $lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
 $lang['general_word_not_worked'] = "Not worked";

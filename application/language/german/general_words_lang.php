@@ -14,6 +14,9 @@ $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Datei wählen';
 $lang['general_word_next'] = 'Weiter';
 $lang['general_word_previous'] = 'Zurück';
+$lang['general_word_cancel'] = "Abbrechen";
+$lang['general_word_ok'] = "OK";
+$lang['general_word_attention'] = "Achtung";
 $lang['general_word_enabled'] = "Eingeschaltet";
 $lang['general_word_disabled'] = "Ausgeschaltet";
 $lang['general_word_export'] = "Exportieren";
@@ -21,6 +24,8 @@ $lang['general_word_import'] = "Importieren";
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Zeit';
+$lang['general_word_time_on'] = 'Startzeit';
+$lang['general_word_time_off'] = 'Endzeit';
 $lang['general_word_datetime'] = 'Datum/Uhrzeit';
 $lang['general_word_none'] = 'Nichts/Keine';
 $lang['general_word_name'] = 'Name';
@@ -38,6 +43,7 @@ $lang['general_word_year'] = 'Jahr';
 $lang['general_word_month'] = 'Monat';
 
 $lang['general_word_colors'] = "Farben";
+$lang['general_word_light'] = "Licht/Laser";
 $lang['general_word_worked'] = 'Gearbeitet';
 $lang['general_word_worked_not_confirmed'] = "Gearbeitet, nicht bestätigt";
 $lang['general_word_not_worked'] = "Nicht gearbeitet";
@@ -188,3 +194,8 @@ $lang['southamerica'] = 'Südamerika';
 
 $lang['gen_band_selection'] = 'Bandauswahl';
 $lang['general_word_today'] = 'Heute';
+
+$lang['dashboard_php_version_warning'] = 'Die PHP Version is zu alt. Benötigt wird mindestens die Version 7.4. Die installierte Version ist';
+$lang['dashboard_country_files_warning'] = 'Die Länderlisten müssen aktualisiert werden! Klicke <a href="'.site_url('update').'">hier</a>, um das zu tun!';
+$lang['dashboard_locations_warning'] = 'Ea wurde kein Stationsstandort angelegt! Klicke <a href="'. site_url('station') . '">hier</a>, um das zu tun!';
+$lang['dashboard_logbooks_warning'] = 'Es wurde kein Stationslogbuch angelegt. Klicke <a href="'. site_url('logbooks') . '">hier</a>, um das zu tun!';
