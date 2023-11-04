@@ -85,6 +85,13 @@ ssb
 	});
 });
 
+function updateUTCTime() {
+	const utcTimeElement = document.getElementById("utc-time");
+	const now = new Date();
+	const utcTimeString = now.toISOString().split("T")[1].split(".")[0];
+	utcTimeElement.textContent = utcTimeString;
+}
+
 function handleInput() {
 	var qsodate = "";
 	if ($("#qsodate").val()) {
@@ -550,6 +557,8 @@ function isWWFF(value) {
 
 
 $(document).ready(function () {
+	setInterval(updateUTCTime, 1000);
+	updateUTCTime();
 	var tabledata = localStorage.getItem(`user_${user_id}_tabledata`);
 	var mycall = localStorage.getItem(`user_${user_id}_my-call`);
 	var operator = localStorage.getItem(`user_${user_id}_operator`);
