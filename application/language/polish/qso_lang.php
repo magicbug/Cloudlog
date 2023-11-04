@@ -45,6 +45,7 @@ $lang['qso_simplefle_info_ln2'] = "'Fast Log Entry', or simply 'FLE' is a system
 $lang['qso_simplefle_info_ln3'] = "FLE was originally written by DF3CB. He offers a program for Windows on his website. Simple FLE was written by OK2CQR based on DF3CB's FLE and provides a web interface to log QSOs.";
 $lang['qso_simplefle_info_ln4'] = "A common use-case is if you have to import your paperlogs from a outdoor session and now SimpleFLE is also available in Cloudlog. Information about the syntax and how FLE works can be found <a href='https://df3cb.com/fle/documentation/' target='_blank'>here</a>.";
 $lang['qso_simplefle_qso_data'] = "QSO Data";
+$lang['qso_simplefle_qso_date_hint'] = "If you don't choose a date, today's date will be used.";
 $lang['qso_simplefle_qso_list'] = "QSO List";
 $lang['qso_simplefle_qso_list_total'] = "Total";
 $lang['qso_simplefle_qso_date'] = "QSO Date";
