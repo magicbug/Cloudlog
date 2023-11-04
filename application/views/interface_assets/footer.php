@@ -2308,9 +2308,7 @@ $(document).ready(function(){
         if (isDarkModeTheme()) {
             $('[class*="buttons"]').css("color", "white");
         }
-        $('#eqsl_force_from_date').datetimepicker({
-            format: 'YYYY/MM/DD',
-        });
+		if ($('#eqsl_force_from_date').length>0) { $('#eqsl_force_from_date').datetimepicker({ format: 'YYYY/MM/DD' }); }
 
     </script>
 <?php } ?>
