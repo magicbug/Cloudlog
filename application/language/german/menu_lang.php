@@ -59,8 +59,10 @@ $lang['menu_update_country_files'] = 'Update Länderinformationen';
 $lang['menu_debug_information'] = 'Debug Informationen';
 
 $lang['menu_search_text'] = 'Rufzeichensuche';
+$lang['menu_search_text_quicklog'] = "Logge/Suche Call";   //"Rufzeichen" wäre zu lang, daher nur "Call". Das wird verstanden.
 
 $lang['menu_search_button'] = 'Suche';
+$lang['menu_search_button_qicksearch_log'] = "Logge";
 $lang['menu_login_button'] = 'Login';
 
 $lang['menu_account'] = 'Konto';
