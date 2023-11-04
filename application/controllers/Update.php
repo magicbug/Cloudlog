@@ -10,11 +10,25 @@ class Update extends CI_Controller {
 
 	public function index()
 	{
+        // for Update path EQSL & QSL //
+        $this->load->model('Eqsl_images');
+        $this->load->model('Qsl_model');
+        if (!$this->config->item('centralized_data_folder') || ($this->config->item('centralized_data_folder')=='')) {
+            $data['update_mig2datafolder_centralized_data_folder_not_exist'] = true;
+            $data['update_mig2datafolder_eqsl_newfolder'] = 'ERROR';
+            $data['update_mig2datafolder_qsl_newfolder'] = 'ERROR';
+        } else {
+            $data['update_mig2datafolder_centralized_data_folder_not_exist'] = false;
+            $data['update_mig2datafolder_eqsl_newfolder'] = $this->Eqsl_images->getEqslPath('p');
+            $data['update_mig2datafolder_qsl_newfolder'] = $this->Qsl_model->getQslPath('p');
+        }
+        $data['update_mig2datafolder_eqsl_oldfolder'] = $this->Eqsl_images->getEqslPath('p',true);
+        $data['update_mig2datafolder_qsl_oldfolder'] = $this->Qsl_model->getQslPath('p',true);
+		
 	    $data['page_title'] = "Updates";
 	    $this->load->view('interface_assets/header', $data);
 	    $this->load->view('update/index');
 	    $this->load->view('interface_assets/footer');
-
 	}
 
     /*
@@ -529,6 +543,65 @@ class Update extends CI_Controller {
             echo"FAILED: Empty file";
         }
     }
+	
+	// function for migrate between old/new folder for eqsl //
+    public function update_datafolder_eqsl() {
+        print('[eQSL|'.date('H:i:s').'] Move starting ...<br/>');
+        $this->load->model('Eqsl_images');
 
+        $update_mig2datafolder_eqsl_oldfolder = $this->Eqsl_images->getEqslPath('p',true);
+        $update_mig2datafolder_eqsl_newfolder = $this->Eqsl_images->getEqslPath('p');
+        if (!is_dir($update_mig2datafolder_eqsl_oldfolder)) { 
+            log_message('error','Update eqsl folder : "'.$update_mig2datafolder_eqsl_oldfolder.'" not a directory.');
+            print('[eQSL|ERROR] "'.$update_mig2datafolder_eqsl_oldfolder.'" not a directory !'); return false;
+        }
+        $dir_array = scandir($update_mig2datafolder_eqsl_oldfolder);
+        print('[eQSL|'.date('H:i:s').'] '.count($dir_array).' files found <br/>');
+        if (!is_dir($update_mig2datafolder_eqsl_newfolder)) { 
+            log_message('info','Update eqsl folder : "'.$update_mig2datafolder_eqsl_newfolder.'" NOT exist, create it.');
+            print('[eQSL|'.date('H:i:s').'] "'.$update_mig2datafolder_eqsl_newfolder.'" NOT exist, create it ! <br/>');
+            mkdir($update_mig2datafolder_eqsl_newfolder, 0775, true); 
+        }
+        $count=0;
+        foreach($dir_array as $k=>$fn){
+            if($fn!=".." && $fn!="."){
+                if(is_file($update_mig2datafolder_eqsl_oldfolder."/".$fn)) {
+                    if (rename($update_mig2datafolder_eqsl_oldfolder."/".$fn, $update_mig2datafolder_eqsl_newfolder."/".$fn)) { $count++; }
+                }
+            }
+        }
+        print('[eQSL|'.date('H:i:s').'] --> Move is finished ('.$count.' files was moved). <br/>You can delete older folder ('.$update_mig2datafolder_eqsl_oldfolder.')');
+        log_message('info','Update eqsl folder : move finished for '.$count.' files.');
+    }
+
+   	// function for migrate between old/new folder for sql //
+    public function update_datafolder_qsl() {
+        print('[QSL|'.date('H:i:s').'] Move starting ...<br/>');
+        $this->load->model('Qsl_model');
+
+        $update_mig2datafolder_qsl_oldfolder = $this->Qsl_model->getQslPath('p',true);
+        $update_mig2datafolder_qsl_newfolder = $this->Qsl_model->getQslPath('p');
+        if (!is_dir($update_mig2datafolder_qsl_oldfolder)) { 
+            log_message('error','Update qsl folder : "'.$update_mig2datafolder_qsl_oldfolder.'" not a directory.');
+            print('[QSL|ERROR] "'.$update_mig2datafolder_qsl_oldfolder.'" not a directory !'); return false;
+        }
+        $dir_array = scandir($update_mig2datafolder_qsl_oldfolder);
+        print('[QSL|'.date('H:i:s').'] '.count($dir_array).' files found <br/>');
+        if (!is_dir($update_mig2datafolder_qsl_newfolder)) { 
+            log_message('info','Update qsl folder : "'.$update_mig2datafolder_qsl_newfolder.'" NOT exist, create it.');
+            print('[QSL|'.date('H:i:s').'] "'.$update_mig2datafolder_qsl_newfolder.'" NOT exist, create it ! <br/>');
+            mkdir($update_mig2datafolder_qsl_newfolder, 0775, true); 
+        }
+        $count=0;
+        foreach($dir_array as $k=>$fn){
+            if($fn!=".." && $fn!="."){
+                if(is_file($update_mig2datafolder_qsl_oldfolder."/".$fn)) {
+                    if (rename($update_mig2datafolder_qsl_oldfolder."/".$fn, $update_mig2datafolder_qsl_newfolder."/".$fn)) { $count++; }
+                }
+            }
+        }
+        print('[QSL|'.date('H:i:s').'] --> Move is finished ('.$count.' files was moved). <br/>You can delete older folder ('.$update_mig2datafolder_qsl_oldfolder.')');
+        log_message('info','Update qsl folder : move finished for '.$count.' files.');
+    }
 }
 ?>
