@@ -188,15 +188,6 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
 
 		<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component'); ?>" hx-trigger="load, every 5s"></div>
-
-		<form method="get" action="<?php echo site_url('qso'); ?>" class="form-inline" style="margin-bottom: 30px;">
-    		<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" style="width: 70%;" placeholder="<?php echo lang('qso_quicklog_enter_callsign'); ?>" aria-label="Quicklog">
-    		<input type="hidden" name="manual" value="0">
-    		<button title="Add QSO" class="btn btn-outline-success my-2 my-sm-0" type="submit">
-        		<i class="fas fa-plus"></i>
-    		</button>
-		</form>
-
 		
     	<table class="table table-striped">
 			<tr class="titles">
