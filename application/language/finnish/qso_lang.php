@@ -52,6 +52,7 @@ $lang['qso_simplefle_operator'] = "Operator";
 $lang['qso_simplefle_operator_hint'] = "e.g. OK2CQR";
 $lang['qso_simplefle_station_call_location'] = "Station Call/Location";
 $lang['qso_simplefle_station_call_location_hint'] = "If you did operate from a new location, first create a new <a href=". site_url('station') . ">Station Location</a>";
+$lang['qso_simplefle_utc_time'] = "Current UTC Time";
 $lang['qso_simplefle_enter_the_data'] = "Enter the Data";
 $lang['qso_simplefle_syntax_help_close_w_sample'] = "Close and Load Sample Data";
 $lang['qso_simplefle_reload'] = "Reload QSO List";
