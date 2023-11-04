@@ -70,12 +70,9 @@
 							<input type="date" class="form-control" id="qsodate">
 						</div>
 					</div>
-					<div class="col-xs-12 col-lg-6">
-						<div class="form-group">
-							<label for="operator"><?php echo lang('qso_simplefle_operator'); ?> <span class="text-muted input-example"><?php echo lang('qso_simplefle_operator_hint'); ?></span></label>
-							<input type="text" class="form-control text-uppercase" id="operator" value="<?php echo $this->session->userdata('operator_callsign'); ?>">
-							<div class="alert alert-danger" role="alert" id="warningOperatorField" style="display: none"> </div>
-						</div>
+					<div class="col-xs-12 col-lg-12 col-xl-6">
+						<label for="utc-time"><?php echo lang('qso_simplefle_utc_time'); ?></label>
+						<h4 class="font-weight-bold" id="utc-time"></h4>
 					</div>
 				</div>
 				<div class="row">
@@ -96,6 +93,13 @@
 							</select>
 							<div class="alert alert-danger" role="alert" id="warningStationCall" style="display: none"> </div>
 							<small class="form-text text-muted"><?php echo lang('qso_simplefle_station_call_location_hint'); ?></small>
+						</div>
+					</div>
+					<div class="col-xs-12 col-lg-6">
+						<div class="form-group">
+							<label for="operator"><?php echo lang('qso_simplefle_operator'); ?> <span class="text-muted input-example"><?php echo lang('qso_simplefle_operator_hint'); ?></span></label>
+							<input type="text" class="form-control text-uppercase" id="operator" value="<?php echo $this->session->userdata('operator_callsign'); ?>">
+							<div class="alert alert-danger" role="alert" id="warningOperatorField" style="display: none"> </div>
 						</div>
 					</div>
 				</div>
