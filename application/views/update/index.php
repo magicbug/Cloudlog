@@ -62,40 +62,21 @@
 				</div>
 				
 				<div class="tab-pane fade" id="mig2datafolder" role="tabpanel" aria-labelledby="mig2datafolder-tab">
-					<?php if ($update_mig2datafolder_centralized_data_folder_not_exist) {
+					<?php if ($update_centralized_folder_current_not_exist) {
 						echo "<div class=\"alert alert-danger\">WARNING : You config value 'centralized_data_folder' was not create on config.php file !</div>";
 					} ?>
-					<p class="card-text">Here you can migrate (move) oldest folder to a centralized data folder.</p>
+					<p class="card-text">Here you can migrate/move centralized folder to an other folder.<br/> -- The root directory is : "<?php echo realpath(APPPATH.'../').'/'; ?>"</p>
 					<div class="form-row">
-                    	<div class="col-sm-1"><b>EQSL :</b>
+                    	<div class="col-sm-4">
+                    		<label class="form-label">Current folder : </label><input name="update_centralized_folder_current" type="text" class="form-control" value="<?php echo $update_centralized_folder_current;?>" disabled />
                     	</div>
-                    	<div class="col-sm-5">
-                    		<label class="form-label">Original folder : </label><input name="update_mg2datafolder_eqsl_oldfolder" type="text" class="form-control" value="<?php echo $update_mig2datafolder_eqsl_oldfolder;?>" disabled />
-                    	</div>
-                    	<div class="col-sm-5">
+                    	<div class="col-sm-4">
                     		<label class="form-label">New folder : </label>
-                    		<input name="update_mg2datafolder_eqsl_newfolder" type="text" class="form-control" value="<?php echo $update_mig2datafolder_eqsl_newfolder;?>" disabled />
+                    		<input name="update_centralized_folder_new" type="text" class="form-control" value="" />
                     	</div>
-						<div class="col-sm-1">
-							<?php if (!$update_mig2datafolder_centralized_data_folder_not_exist) { ?>
-							<a class="btn btn-primary" hx-get="<?php echo site_url('update/update_datafolder_eqsl');?>" hx-target="#data_move2_results" style="padding:8px;margin-top:25px;" href="<?php echo site_url('update/update_datafolder_eqsl');?>">Move To</a>
-							<?php } ?>
-						</div>
-                    </div>
-                    <br/>
-					<div class="form-row">
-                    	<div class="col-sm-1"><b>QSL Card:</b>
-                    	</div>
-                    	<div class="col-sm-5">
-                    		<label class="form-label">Original folder : </label><input name="update_mg2datafolder_eqsl_oldfolder" type="text" class="form-control" value="<?php echo $update_mig2datafolder_qsl_oldfolder;?>" disabled />
-                    	</div>
-                    	<div class="col-sm-5">
-                    		<label class="form-label">New folder : </label>
-                    		<input name="update_mg2datafolder_eqsl_newfolder" type="text" class="form-control" value="<?php echo $update_mig2datafolder_qsl_newfolder;?>" disabled />
-                    	</div>
-						<div class="col-sm-1">
-							<?php if (!$update_mig2datafolder_centralized_data_folder_not_exist) { ?>
-							<a class="btn btn-primary" hx-get="<?php echo site_url('update/update_datafolder_qsl');?>" hx-target="#data_move2_results" style="padding:8px;margin-top:25px;" href="<?php echo site_url('update/update_datafolder_qsl');?>">Move To</a>
+						<div class="col-sm-2">
+							<?php if (!$update_centralized_folder_current_not_exist) { ?>
+							<a class="btn btn-primary" hx-post="<?php echo site_url('update/update_centralized_folder_move');?>" hx-vals="js:{update_centralized_folder_new:document.getElementsByName('update_centralized_folder_new')[0].value}" hx-target="#data_move2_results" style="margin-top:30px;" >Move To</a>
 							<?php } ?>
 						</div>
                     </div>
