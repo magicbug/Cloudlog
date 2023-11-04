@@ -45,6 +45,7 @@ $lang['qso_simplefle_info_ln2'] = "'Fast Log Entry', or simply 'FLE' is a system
 $lang['qso_simplefle_info_ln3'] = "FLE was originally written by DF3CB. He offers a program for Windows on his website. Simple FLE was written by OK2CQR based on DF3CB's FLE and provides a web interface to log QSOs.";
 $lang['qso_simplefle_info_ln4'] = "A common use-case is if you have to import your paperlogs from a outdoor session and now SimpleFLE is also available in Cloudlog. Information about the syntax and how FLE works can be found <a href='https://df3cb.com/fle/documentation/' target='_blank'>here</a>.";
 $lang['qso_simplefle_qso_data'] = "QSO Data";
+$lang['qso_simplefle_qso_date_hint'] = "If you don't choose a date, today's date will be used.";
 $lang['qso_simplefle_qso_list'] = "QSO List";
 $lang['qso_simplefle_qso_list_total'] = "Total";
 $lang['qso_simplefle_qso_date'] = "QSO Date";
@@ -52,6 +53,7 @@ $lang['qso_simplefle_operator'] = "Operator";
 $lang['qso_simplefle_operator_hint'] = "e.g. OK2CQR";
 $lang['qso_simplefle_station_call_location'] = "Station Call/Location";
 $lang['qso_simplefle_station_call_location_hint'] = "If you did operate from a new location, first create a new <a href=". site_url('station') . ">Station Location</a>";
+$lang['qso_simplefle_utc_time'] = "Current UTC Time";
 $lang['qso_simplefle_enter_the_data'] = "Enter the Data";
 $lang['qso_simplefle_syntax_help_close_w_sample'] = "Close and Load Sample Data";
 $lang['qso_simplefle_reload'] = "Reload QSO List";

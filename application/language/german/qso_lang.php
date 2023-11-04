@@ -45,6 +45,7 @@ $lang['qso_simplefle_info_ln2'] = "'Fast Log Entry' oder einfach 'FLE' ist ein S
 $lang['qso_simplefle_info_ln3'] = "FLE wurde ursprünglich von DF3CB geschrieben. Auf seiner Website bietet er ein Programm für Windows an. Simple FLE wurde von OK2CQR auf Basis des FLE von DF3CB geschrieben und bietet eine Webapplikation zum Erfassen von QSOs.";
 $lang['qso_simplefle_info_ln4'] = "Ein üblicher Anwendungsfall ist, wenn Sie Ihre Papier-Logbücher von einer Outdoor-Aktion erfassen müssen und SimpleFLE nun auch in Cloudlog verfügbar. Informationen über die allgemeine Syntax und Handhabung gibt es <a href='https://df3cb.com/fle/documentation/' target='_blank'>hier</a>.";
 $lang['qso_simplefle_qso_data'] = "QSO Daten";
+$lang['qso_simplefle_qso_date_hint'] = "Wenn du kein Datum auswählst, wird das heutige Datum verwendet.";
 $lang['qso_simplefle_qso_list'] = "QSO Liste";
 $lang['qso_simplefle_qso_list_total'] = "Total";
 $lang['qso_simplefle_qso_date'] = "QSO Datum";
@@ -52,6 +53,7 @@ $lang['qso_simplefle_operator'] = "Operator";
 $lang['qso_simplefle_operator_hint'] = "z.B. OK2CQR";
 $lang['qso_simplefle_station_call_location'] = "Stationsstandort";
 $lang['qso_simplefle_station_call_location_hint'] = "Falls du von einem neuen Standort oder mit einem neuen Rufzeichen gefunkt hast, erstelle erst einen neuen <a href=". site_url('station') . ">Stationsstandort</a>";
+$lang['qso_simplefle_utc_time'] = "Aktuelle UTC Zeit";
 $lang['qso_simplefle_enter_the_data'] = "Gibt hier die Daten ein";
 $lang['qso_simplefle_syntax_help_close_w_sample'] = "Schliesse und Lade Beispiel Daten";
 $lang['qso_simplefle_reload'] = "Aktualisiere QSO Liste";
