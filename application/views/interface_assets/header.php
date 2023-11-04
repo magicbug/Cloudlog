@@ -221,7 +221,14 @@
 					<?php } ?>
 				</ul>
 
-				<?php if ($this->optionslib->get_option('global_search') != "false" || $this->session->userdata('user_type') >= 2) { ?>
+				
+				<?php if ($this->session->userdata('user_quicklog')  == 1) { ?>
+					<form method="post" action="<?php echo site_url('search'); ?>" class="form-inline">
+						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="Add/Search Callsign" aria-label="Search">
+						<button title="Log Callsign" class="btn btn-outline-success my-2 my-sm-0" type="submit" style="margin-right: 5px"><i class="fas fa-plus"></i><div class="d-inline d-lg-none" style="padding-left: 10px">Log Callsign</div></button>
+						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i><div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button'); ?></div></button>
+					</form>
+				<?php } else {?>
 					<form method="post" action="<?php echo site_url('search'); ?>" class="form-inline">
 						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
 						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i><div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button'); ?></div></button>
