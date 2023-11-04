@@ -164,7 +164,9 @@
 						</li>
 
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Tools"><i class="fas fa-tools"></i><div class="d-inline d-lg-none" style="padding-left: 10px">Tools</div></a>
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Tools"><i class="fas fa-tools"></i>
+								<div class="d-inline d-lg-none" style="padding-left: 10px">Tools</div>
+							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="<?php echo site_url('hamsat'); ?>" title="Hams.at"><i class="fas fa-list"></i> Hams.at</a>
 								<?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>
@@ -178,7 +180,9 @@
 
 						<?php if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') == 99)) { ?>
 							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="<?php echo lang('menu_admin'); ?>"><i class="fas fa-users-cog"></i><div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_admin'); ?></div></a>
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="<?php echo lang('menu_admin'); ?>"><i class="fas fa-users-cog"></i>
+									<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_admin'); ?></div>
+								</a>
 
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 									<a class="dropdown-item" href="<?php echo site_url('user'); ?>" title="Manage user accounts"><i class="fas fa-user"></i> <?php echo lang('menu_user_account'); ?></a>
@@ -221,24 +225,23 @@
 					<?php } ?>
 				</ul>
 
-				<script>
-					function submitForm(action) {
-						var form = document.getElementById('quicklog-form');
-						var input = document.getElementById('quicklog-input');
-						if (action === 'search') {
-							form.action = "<?php echo site_url('search'); ?>";
-							form.method = "post";
-						} else if (action === 'qso') {
-							form.action = "<?php echo site_url('qso'); ?>";
-							form.method = "get";
-							input.name = "manual";
-							input.value = "1";
-						}
-						form.submit();
-					}
-				</script>
-
 				<?php if ($this->session->userdata('user_quicklog')  == 1) { ?>
+					<script>
+						function submitForm(action) {
+							var form = document.getElementById('quicklog-form');
+							var input = document.getElementById('quicklog-input');
+							if (action === 'search') {
+								form.action = "<?php echo site_url('search'); ?>";
+								form.method = "post";
+							} else if (action === 'qso') {
+								form.action = "<?php echo site_url('qso'); ?>";
+								form.method = "get";
+								input.name = "manual";
+								input.value = "1";
+							}
+							form.submit();
+						}
+					</script>
 					<form id="quicklog-form" class="form-inline">
 						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Search">
 
