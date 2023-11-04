@@ -237,7 +237,7 @@
 								form.action = "<?php echo site_url('qso'); ?>";
 								form.method = "get";
 								input.name = "manual";
-								input.value = "1";
+								input.value = "0";  // Set to 1 if go to "Post-QSO" logging
 							}
 							form.submit();
 						}
