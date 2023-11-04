@@ -59,12 +59,20 @@
                 </div>
 
                 <div class="form-group col-md-3">
-                <label for="start_time"><?php echo lang('general_word_time_on'); ?></label> <?php if ($_GET['manual'] != 1) { ?><i id="reset_time" data-toggle="tooltip" data-original-title="Reset start time" class="fas fa-stopwatch"></i><?php } ?>
+                <label for="start_time"><?php echo lang('general_word_time_on'); ?></label>
+                <?php if ($_GET['manual'] != 1) { ?>
+                   <i id="reset_time" data-toggle="tooltip" data-original-title="Reset start time" class="fas fa-stopwatch"></i>
+                <?php } else { ?>
+                   <i id="reset_start_time" data-toggle="tooltip" data-original-title="Reset start time" class="fas fa-stopwatch"></i>
+                <?php } ?>
                   <input type="text" class="form-control form-control-sm input_start_time" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo substr($this->session->userdata('start_time'),0,5); } else { echo $_GET['manual'] == 0 ? date('H:i:s') : date('H:i'); } ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> required pattern="[0-2][0-9]:[0-5][0-9]">
                 </div>
 
                 <div class="form-group col-md-3">
                   <label for="end_time"><?php echo lang('general_word_time_off'); ?></label>
+                <?php if ($_GET['manual'] == 1) { ?>
+                   <i id="reset_end_time" data-toggle="tooltip" data-original-title="Reset end time" class="fas fa-stopwatch"></i>
+                <?php } ?>
                   <input type="text" class="form-control form-control-sm input_end_time" name="end_time" id="end_time" value="<?php if (($this->session->userdata('end_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo substr($this->session->userdata('end_time'),0,5); } else { echo $_GET['manual'] == 0 ? date('H:i:s') : date('H:i'); } ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> required pattern="[0-2][0-9]:[0-5][0-9]">
                 </div>
 
@@ -84,6 +92,9 @@
 
                 <div class="form-group col-md-6">
                   <label for="start_time"><?php echo lang('general_word_time'); ?></label>
+                <?php if ($_GET['manual'] == 1) { ?>
+                   <i id="reset_start_time" data-toggle="tooltip" data-original-title="Reset start time" class="fas fa-stopwatch"></i>
+                <?php } ?>
                   <input type="text" class="form-control form-control-sm input_start_time" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo substr($this->session->userdata('start_time'),0,5); } else { echo $_GET['manual'] == 0 ? date('H:i:s') : date('H:i'); } ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> required pattern="[0-2][0-9]:[0-5][0-9]">
                 </div>
 
