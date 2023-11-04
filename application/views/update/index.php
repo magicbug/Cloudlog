@@ -68,7 +68,7 @@
 					<p class="card-text">Here you can migrate/move centralized folder to an other folder.<br/> -- The root directory is : "<?php echo realpath(APPPATH.'../').'/'; ?>"</p>
 					<div class="form-row">
                     	<div class="col-sm-4">
-                    		<label class="form-label">Current folder : </label><input name="update_centralized_folder_current" type="text" class="form-control" value="<?php echo $update_centralized_folder_current;?>" disabled />
+                    		<label class="form-label">Current folder (value in config.php): </label><input name="update_centralized_folder_current" type="text" class="form-control" value="<?php echo $update_centralized_folder_current;?>" disabled />
                     	</div>
                     	<div class="col-sm-4">
                     		<label class="form-label">New folder : </label>
