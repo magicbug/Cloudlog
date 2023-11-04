@@ -4,12 +4,8 @@
     <?php
     $i = 0;
     foreach ($qslimages as $image) {
-        echo '<li data-target="#carouselExampleIndicators" data-slide-to="' . $i . '"';
-        if ($i == 0) {
-            echo 'class="active"';
-        }
+        echo '<li data-target="#carouselExampleIndicators" data-slide-to="'.$i.'" '.(($i == 0)?'class="active"':'').'></li>';
         $i++;
-        echo '></li>';
     }
     ?>
 </ol>
@@ -18,13 +14,10 @@
 
     <?php
     $i = 1;
+    $this->load->model('Qsl_model');
     foreach ($qslimages as $image) {
-        echo '<div class="text-center carousel-item carouselimageid_' . $image->id;
-        if ($i == 1) {
-            echo ' active';
-        }
-        echo '">';
-        echo '<img class="img-fluid w-qsl" src="' . base_url() . '/assets/qslcard/' . $image->filename .'" alt="QSL picture #'. $i++.'">';
+        echo '<div class="text-center carousel-item carouselimageid_'.$image->id.(($i == 1)?' active':'').'">';
+        echo '<img class="img-fluid w-qsl" src="' . base_url() . $this->Qsl_model->getQslPath() . $image->filename .'" alt="QSL picture #'. $i++.'">';
         echo '</div>';
     }
     ?>
