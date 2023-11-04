@@ -220,7 +220,7 @@ class User_Model extends CI_Model {
 					'user_default_band' => xss_clean($fields['user_default_band']),
 					'user_default_confirmation' => (isset($fields['user_default_confirmation_qsl']) ? 'Q' : '').(isset($fields['user_default_confirmation_lotw']) ? 'L' : '').(isset($fields['user_default_confirmation_eqsl']) ? 'E' : ''),
 					'user_qso_end_times' => xss_clean($fields['user_qso_end_times']),
-					'user_quicklog' => xss_clean($field['user_quicklog']),
+					'user_quicklog' => xss_clean($fields['user_quicklog']),
 					'language' => xss_clean($fields['language']),
 					'winkey' => xss_clean($fields['user_winkey']),
 				);
