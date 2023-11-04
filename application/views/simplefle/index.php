@@ -68,6 +68,7 @@
 						<div class="form-group">
 							<label for="qsodate"><?php echo lang('qso_simplefle_qso_date'); ?></label>
 							<input type="date" class="form-control" id="qsodate">
+							<small class="form-text text-muted"><?php echo lang('qso_simplefle_qso_date_hint'); ?></small>
 						</div>
 					</div>
 					<div class="col-xs-12 col-lg-12 col-xl-6">
