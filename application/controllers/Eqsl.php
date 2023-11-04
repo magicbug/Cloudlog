@@ -748,8 +748,8 @@ class eqsl extends CI_Controller {
 	function folderSize($dir){
 		$count_size = 0;
 		$count = 0;
-		$dir_array = scandir($dir);
 		if (is_dir($dir)) {
+			$dir_array = scandir($dir);
 			foreach($dir_array as $key=>$filename){
 				if($filename!=".." && $filename!="."){
 					if(is_dir($dir."/".$filename)){
