@@ -26,6 +26,7 @@
     var lang_general_word_confirmed = "<?php echo lang('general_word_confirmed'); ?>";
     var lang_general_word_worked_not_confirmed = "<?php echo lang('general_word_worked_not_confirmed'); ?>";
     var lang_general_word_not_worked = "<?php echo lang('general_word_not_worked'); ?>";
+    var lang_admin_close = "<?php echo lang('admin_close'); ?>";
 </script>
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
