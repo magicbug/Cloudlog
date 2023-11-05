@@ -317,6 +317,14 @@
 							</select>
 							<small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_quicklog_feature_hint'); ?></small>
 						</div>
+						<div class="form-group">
+							<label for="quicklog"><?php echo lang('account_quicklog_enter'); ?></label>
+							<select class="custom-select" id="quicklog" name="user_quicklog_enter">
+								<option value="0" <?php if ($user_quicklog_enter == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('account_quicklog_enter_log'); ?></option>
+								<option value="1" <?php if ($user_quicklog_enter == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('account_quicklog_enter_search'); ?></option>
+							</select>
+							<small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_quicklog_enter_hint'); ?></small>
+						</div>
 					</div>
 				</div>
 			</div>
