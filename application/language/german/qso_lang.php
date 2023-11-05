@@ -8,6 +8,9 @@ $lang['qso_title_suggestions'] = 'Vorschläge';
 $lang['qso_title_previous_contacts'] = 'Vorherige Kontakte';
 $lang['qso_title_image'] = 'Profilbild';
 
+// Quicklog on Dashboard
+$lang['qso_quicklog_enter_callsign'] = 'QUICKLOG Rufzeichen';
+
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Gib die Ausgangsleistung in Watt an. Erfasse nur Zahlen bei der Eingabe.';
 

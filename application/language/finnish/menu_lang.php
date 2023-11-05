@@ -59,8 +59,10 @@ $lang['menu_update_country_files'] = 'Päivitä Country Files';
 $lang['menu_debug_information'] = 'Debug Information';
 
 $lang['menu_search_text'] = 'Etsi kutsulla';
+$lang['menu_search_text_quicklog'] = "Add/Search Callsign";
 
 $lang['menu_search_button'] = 'Etsi';
+$lang['menu_search_button_qicksearch_log'] = "Log";
 $lang['menu_login_button'] = 'Kirjaudu';
 
 $lang['menu_account'] = 'Käyttäjätili';
