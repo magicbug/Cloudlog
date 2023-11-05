@@ -127,7 +127,7 @@ function spawnGridsquareModal(loc_4char) {
                     }
                     },
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogItself) {
                         dialogItself.close();
                     }

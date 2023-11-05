@@ -35,7 +35,7 @@ function openQsoList(callsign) {
 					$('[data-toggle="tooltip"]').tooltip();
 				},
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}
@@ -99,7 +99,7 @@ function showOqrs(id) {
 					$('[data-toggle="tooltip"]').tooltip();
 				},
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}

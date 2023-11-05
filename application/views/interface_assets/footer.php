@@ -336,7 +336,7 @@ $(function () {
                 nl2br: false,
                 message: 'You need to make a query before you search!',
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogItself) {
                         dialogItself.close();
                     }
@@ -457,7 +457,7 @@ $(function () {
                     nl2br: false,
                     message: html,
                     buttons: [{
-                        label: 'Close',
+                        label: lang_admin_close,
                         action: function(dialogItself) {
                             dialogItself.close();
                         }
@@ -516,7 +516,7 @@ $(function () {
                 nl2br: false,
                 message: 'You need to make a query before you search!',
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogItself) {
                         dialogItself.close();
                     }
@@ -2165,7 +2165,7 @@ $(document).ready(function(){
                                $('[data-toggle="tooltip"]').tooltip();
                             },
                             buttons: [{
-                                label: 'Close',
+                                label: lang_admin_close,
                                 action: function (dialogItself) {
                                     dialogItself.close();
                                 }
@@ -2231,7 +2231,7 @@ $(document).ready(function(){
                                $('[data-toggle="tooltip"]').tooltip();
                             },
                             buttons: [{
-                                label: 'Close',
+                                label: lang_admin_close,
                                 action: function (dialogItself) {
                                     dialogItself.close();
                                 }
@@ -2363,7 +2363,7 @@ function viewQsl(picture, callsign) {
                 size: BootstrapDialog.SIZE_WIDE,
                 message: $textAndPic,
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogRef){
                         dialogRef.close();
                     }
@@ -2425,7 +2425,7 @@ function viewEqsl(picture, callsign) {
                 size: BootstrapDialog.SIZE_WIDE,
                 message: $textAndPic,
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogRef){
                         dialogRef.close();
                     }
@@ -2490,7 +2490,7 @@ function viewEqsl(picture, callsign) {
                         });
                     },
                     buttons: [{
-                        label: 'Close',
+                        label: lang_admin_close,
                         action: function (dialogItself) {
                             dialogItself.close();
                         }
@@ -2535,7 +2535,7 @@ function viewEqsl(picture, callsign) {
 				    });
 			    },
 			    buttons: [{
-			    label: 'Close',
+			    label: lang_admin_close,
 				    action: function (dialogItself) {
 					    dialogItself.close();
 				    }
@@ -2657,7 +2657,7 @@ function viewEqsl(picture, callsign) {
 					nl2br: false,
 					message: html,
 					buttons: [{
-						label: 'Close',
+						label: lang_admin_close,
 						action: function (dialogItself) {
 							dialogItself.close();
 						}
@@ -2802,7 +2802,7 @@ function viewEqsl(picture, callsign) {
                        $('[data-toggle="tooltip"]').tooltip();
                     },
                     buttons: [{
-                        label: 'Close',
+                        label: lang_admin_close,
                         action: function (dialogItself) {
                             dialogItself.close();
                         }
@@ -2879,7 +2879,7 @@ function viewEqsl(picture, callsign) {
 					nl2br: false,
 					message: html,
 					buttons: [{
-						label: 'Close',
+						label: lang_admin_close,
 						action: function (dialogItself) {
 							dialogItself.close();
 						}
