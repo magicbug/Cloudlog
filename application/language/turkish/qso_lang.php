@@ -8,6 +8,9 @@ $lang['qso_title_suggestions'] = 'Öneriler';
 $lang['qso_title_previous_contacts'] = 'Önceki Görüşmeler';
 $lang['qso_title_image'] = 'Profil Resmi';
 
+// Quicklog on Dashboard
+$lang['qso_quicklog_enter_callsign'] = 'QUICKLOG Enter Callsign';
+
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Gücü Watt olarak veriniz. Sadece rakamları giriniz.';
 
