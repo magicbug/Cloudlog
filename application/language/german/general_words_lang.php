@@ -159,6 +159,9 @@ $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Planquadrat';
 $lang['gen_hamradio_get_gridsquare'] = 'Orte mein Planquadrat';
+$lang['gen_hamradio_latitude'] = "Breitengrad";
+$lang['gen_hamradio_longitude'] = "Längengrad";
+$lang['gen_hamradio_bearing'] = "Peilung";
 $lang['gen_hamradio_distance'] = 'Entfernung';
 $lang['gen_hamradio_operator'] = 'Operator';
 
