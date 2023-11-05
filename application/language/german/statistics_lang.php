@@ -7,7 +7,7 @@ $lang['statistics_statistics'] = 'Statistiken';
 $lang['statistics_explore_the_logbook'] = 'Logbuch untersuchen.';
 
 $lang['statistics_years'] = 'Jahre';
-$lang['statistics_mode'] = 'Modi';
+$lang['statistics_modes'] = 'Modi';
 $lang['statistics_bands'] = 'Bänder';
 $lang['statistics_qsos'] = 'QSOs';
 $lang['statistics_unique_callsigns'] = 'Eindeutige Rufzeichen';
@@ -15,3 +15,8 @@ $lang['statistics_unique_callsigns'] = 'Eindeutige Rufzeichen';
 $lang['statistics_total'] = 'Gesamt';
 
 $lang['statistics_year'] = 'Jahr';
+
+$lang['statistics_number_of_qso_worked_each_year'] = "Anzahl der QSOs gearbeitet pro Jahr";
+$lang['statistics_number_of_qso_worked'] = "# gearbeitete QSOs";
+
+
