@@ -166,15 +166,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="quicklog"><?php echo lang('account_quicklog_feature'); ?></label>
-                            <select class="custom-select" id="quicklog" name="user_quicklog">
-                                <option value="0"><?php echo lang('general_word_no'); ?></option>
-                                <option value="1"><?php echo lang('general_word_yes'); ?></option>
-                            </select>
-                            <small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_quicklog_feature_hint'); ?></small>
-                        </div>
-
-                        <div class="form-group">
                             <label for="SelectDateFormat"><?php echo lang('account_date_format'); ?></label>
                             <select name="user_date_format" class="custom-select" id="SelectDateFormat"
                                 aria-describedby="SelectDateFormatHelp">
@@ -240,6 +231,15 @@
                                 <option value="0"><?php echo lang('general_word_no'); ?></option>
                                 <option value="1"><?php echo lang('general_word_yes'); ?></option>
                             </select>
+                            <small> </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="quicklog"><?php echo lang('account_quicklog_feature'); ?></label>
+                            <select class="custom-select" id="quicklog" name="user_quicklog">
+                                <option value="0"><?php echo lang('general_word_no'); ?></option>
+                                <option value="1"><?php echo lang('general_word_yes'); ?></option>
+                            </select>
+                            <small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_quicklog_feature_hint'); ?></small>
                         </div>
                     </div>
                 </div>
