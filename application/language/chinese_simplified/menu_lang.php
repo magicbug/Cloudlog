@@ -59,8 +59,10 @@ $lang['menu_update_country_files'] = '更新国家文件';
 $lang['menu_debug_information'] = '调试信息';
 
 $lang['menu_search_text'] = '搜索呼号';
+$lang['menu_search_text_quicklog'] = "Add/Search Callsign";
 
 $lang['menu_search_button'] = '搜索';
+$lang['menu_search_button_qicksearch_log'] = "Log";
 $lang['menu_login_button'] = '登录';
 
 $lang['menu_account'] = '账户';
