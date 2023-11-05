@@ -59,8 +59,10 @@ $lang['menu_themes'] = 'Themes';
 $lang['menu_backup'] = 'Backup';
 $lang['menu_update_country_files'] = 'Update Country Files';
 $lang['menu_debug_information'] = 'Debug Information';
+$lang['menu_search_text_quicklog'] = "Add/Search Callsign";
 
 $lang['menu_search_text'] = 'Search Callsign';
+$lang['menu_search_button_qicksearch_log'] = "Log";
 
 $lang['menu_search_button'] = 'Search';
 $lang['menu_login_button'] = 'Login';

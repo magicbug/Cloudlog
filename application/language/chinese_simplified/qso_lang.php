@@ -8,6 +8,9 @@ $lang['qso_title_suggestions'] = '建议';
 $lang['qso_title_previous_contacts'] = '先前通联';
 $lang['qso_title_image'] = '操作员照片';
 
+// Quicklog on Dashboard
+$lang['qso_quicklog_enter_callsign'] = 'QUICKLOG Enter Callsign';
+
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = '以瓦特为单位设置功率值。在输入中仅填写数值。';
 
