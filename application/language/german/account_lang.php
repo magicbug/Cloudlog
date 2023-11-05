@@ -45,7 +45,7 @@ $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Wähle, in welc
 $lang['account_cloudlog_language'] = 'Cloudlog Sprache';
 $lang['account_choose_cloudlog_language'] = 'Wähle eine Sprache für Cloudlog.';
 
-$lang['account_main_menu'] = 'Hauptmenü';
+$lang['account_main_menu'] = 'Menü Optionen';
 $lang['account_show_notes_in_the_main_menu'] = 'Zeige Notizen im Hauptmenü';
 
 $lang['account_gridsquare_and_location_autocomplete'] = 'Vervollständigung von Planquadrat und Lokation';

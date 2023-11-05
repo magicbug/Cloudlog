@@ -45,7 +45,7 @@ $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Valitse, mitä 
 $lang['account_cloudlog_language'] = 'Cloudlog Language';
 $lang['account_choose_cloudlog_language'] = 'Choose Cloudlog language.';
 
-$lang['account_main_menu'] = 'Main Menu';
+$lang['account_main_menu'] = 'Menu Options';
 $lang['account_show_notes_in_the_main_menu'] = 'Näytä "Muistio" päävalikossa.';
 
 $lang['account_gridsquare_and_location_autocomplete'] = 'Gridsquare and Location Autocomplete';
