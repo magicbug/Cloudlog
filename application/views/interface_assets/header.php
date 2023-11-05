@@ -241,12 +241,24 @@
 							}
 							form.submit();
 						}
-						function handleKeyPress(event) {
-							if (event.key === 'Enter') {
-								submitForm('qso'); // Treat Enter key press as clicking the 'quicksearch-log' button
-							}
-						}
 					</script>
+					<?php if ($this->session->userdata('user_quicklog_enter')  == 1) { ?>
+						<script>
+							function handleKeyPress(event) {
+								if (event.key === 'Enter') {
+									submitForm('search'); // Treat Enter key press as clicking the 'quicksearch-search' button
+								}
+							}
+						</script>
+					<?php } else { ?>
+						<script>
+							function handleKeyPress(event) {
+								if (event.key === 'Enter') {
+									submitForm('qso'); // Treat Enter key press as clicking the 'quicksearch-log' button
+								}
+							}
+						</script>
+					<?php } ?>
 					<form id="quicklog-form" class="form-inline">
 						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Search" onkeypress="handleKeyPress(event)">
 
