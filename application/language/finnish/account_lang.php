@@ -13,6 +13,8 @@ $lang['account_create_user_account'] = 'Luo käyttäjätili';
 $lang['account_edit_account'] = 'Muokkaa käyttäjätiliä';
 
 $lang['account_account_information'] = 'Account Information';
+$lang['account_user'] = "User";
+$lang['account_word_edited'] = "edited";
 $lang['account_username'] = 'käyttäjänimi';
 $lang['account_email_address'] = 'Email';
 $lang['account_password'] = 'Salasana';

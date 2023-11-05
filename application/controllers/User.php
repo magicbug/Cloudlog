@@ -500,10 +500,10 @@ class User extends CI_Controller {
 						$this->input->set_cookie($cookie);
 					}
 					if($this->session->userdata('user_id') == $this->input->post('id', true)) {
-						$this->session->set_flashdata('success', 'User '.$this->input->post('user_name', true).' edited');
+						$this->session->set_flashdata('success', lang('account_user').' '.$this->input->post('user_name', true).' '.lang('account_word_edited'));
 						redirect('user/edit/'.$this->uri->segment(3));
 					} else {
-						$this->session->set_flashdata('success', 'User '.$this->input->post('user_name', true).' edited');
+						$this->session->set_flashdata('success', lang('account_user').' '.$this->input->post('user_name', true).' '.lang('account_word_edited'));
 						redirect('user');
 					}
 					return;

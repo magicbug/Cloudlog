@@ -13,6 +13,8 @@ $lang['account_create_user_account'] = ' Создать аккаунт поль�
 $lang['account_edit_account'] = 'Редактировать аккаунт';
 
 $lang['account_account_information'] = 'Информация об аккаунте';
+$lang['account_user'] = "User";
+$lang['account_word_edited'] = "edited";
 $lang['account_username'] = 'Имя пользователя';
 $lang['account_email_address'] = 'Адрес электронной почты';
 $lang['account_password'] = 'Пароль';

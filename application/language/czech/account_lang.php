@@ -13,6 +13,8 @@ $lang['account_create_user_account'] = 'Vytvořit uživatelský účet';
 $lang['account_edit_account'] = 'Upravit účet';
 
 $lang['account_account_information'] = 'Informace o účtu';
+$lang['account_user'] = "User";
+$lang['account_word_edited'] = "edited";
 $lang['account_username'] = 'Uživatelské jméno';
 $lang['account_email_address'] = 'Emailová adresa';
 $lang['account_password'] = 'Heslo';
