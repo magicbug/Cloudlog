@@ -265,7 +265,7 @@
 							}
 						</script>
 					<?php } ?>
-					<form id="quicklog-form" class="form-inline">
+					<form id="quicklog-form" class="form-inline" onsubmit="return false;">
 						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="text" name="searchBar" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Quicklog" onkeypress="handleKeyPress(event)">
 
 						<button title="<?php echo lang('menu_search_button_qicksearch_log'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="logQuicklog()"><i class="fas fa-plus"></i>
