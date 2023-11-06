@@ -86,6 +86,6 @@ $lang['qso_simplefle_syntax_help_ln4'] = "To begin, ensure you have already fill
 $lang['qso_simplefle_syntax_help_ln5'] = "For example, a QSO that started at 21:34 (UTC) with 2M0SQL on 20m SSB.";
 $lang['qso_simplefle_syntax_help_ln6'] = "If you don't provide any RST information, the syntax will use 59 (599 for data). Our next QSO wasn't 59 on both sides, so we provide the information with the sent RST first. It was 2 minutes later than the first QSO.";
 $lang['qso_simplefle_syntax_help_ln7'] = "The first QSO was at 21:34, and the second one 2 minutes later at 21:36. We write down 6 because this is the only data that changed here. The information about band and mode didn't change, so this data is omitted.";
-$lang['qso_simplefle_syntax_help_ln8'] = "For our next QSO at 21:40, we changed the band to 40m but still on SSB. If no RST information is given, the syntax will use 59 for every new QSO. So, we can add another one at 21:42.";
+$lang['qso_simplefle_syntax_help_ln8'] = "For our next QSO at 21:40 on 14th May, 2021, we changed the band to 40m but still on SSB. If no RST information is given, the syntax will use 59 for every new QSO. Therefore we can add another QSO which took place at the exact same time two days later. The date must be in format YYYY-MM-DD.";
 $lang['qso_simplefle_syntax_help_ln9'] = "For further information about the syntax, please check the website of DF3CB <a href='https://df3cb.com/fle/documentation/' target='_blank'>here.</a>";
     
