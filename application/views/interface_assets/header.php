@@ -260,7 +260,7 @@
 						<script>
 							function handleKeyPress(event) {
 								if (event.key === 'Enter') {
-									submitForm('qso'); // Treat Enter key press as clicking the 'quicksearch-log' button
+									logQuicklog(); // Treat Enter key press as clicking the 'quicksearch-log' button
 								}
 							}
 						</script>
