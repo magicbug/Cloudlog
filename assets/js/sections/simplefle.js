@@ -53,12 +53,14 @@ $('#js-syntax').click(function (event) {
 
 										const logData = `
 *example-data*
+date 2023-05-14
 80m cw
 1212 m0abc okff-1234
 3 hb9hil
 4 ok1tn
 20 dl6kva 7 8
-5 dl5cw 
+5 dl5cw
+day ++
 ssb
 32 ok7wa ol/zl-071 5 8
 33 ok1xxx  4 3
