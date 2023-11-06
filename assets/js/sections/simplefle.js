@@ -661,7 +661,7 @@ $(".js-save-to-log").click(function () {
 						var start_time = item[1][0] +item[1][1] + ":" + item[1][2] + item[1][3];
 						var band = item[4];
 						var mode = item[5];
-						var freq_display = item[3];
+						var freq_display = item[3] * 1000000;
 						var station_profile = $(".station_id").val();
 						var sota_ref = '';
 						var iota_ref = '';
