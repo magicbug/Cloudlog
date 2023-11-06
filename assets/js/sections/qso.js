@@ -1,7 +1,10 @@
 $( document ).ready(function() {
-	if ($('#callsign').text() !== '') {
-        $('#callsign').blur();
-      }
+	setTimeout(function() {
+		var callsignValue = $("#callsign").val();
+		if (callsignValue != "") {
+			$("#mode").focus();
+		}
+	}, 100);
 var favs={};
 	get_fav();
 
