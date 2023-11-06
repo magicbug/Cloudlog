@@ -577,3 +577,9 @@ input:invalid {
 	max-height: 440px;
 	position: absolute;
 }
+
+.red { color:var(--red); }
+.green { color:var(--green); }
+.blue { color:var(--indigo); }
+.gray { color:var(--gray); }
+.orange { color:var(--orange); }
