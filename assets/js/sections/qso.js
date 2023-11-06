@@ -1,10 +1,12 @@
 $( document ).ready(function() {
 	setTimeout(function() {
-		var callsignValue = $("#callsign").val();
-		if (callsignValue != "") {
-			$("#mode").focus();
+		var callsignValue = localStorage.getItem("quicklogCallsign");
+		if (callsignValue !== "") {
+			console.log("wir sind in der Funktion");
+		  $("#callsign").val(callsignValue);
+		  $("#mode").focus();
 		}
-	}, 100);
+	  }, 100);
 var favs={};
 	get_fav();
 
