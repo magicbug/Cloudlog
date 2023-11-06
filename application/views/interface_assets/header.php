@@ -238,10 +238,8 @@
 								form.action = "<?php echo site_url('search'); ?>";
 								form.method = "post";
 							} else if (action === 'qso') {
-								form.action = "<?php echo site_url('qso'); ?>";
-								form.method = "get";
-								input.name = "manual";
-								input.value = "0";  // Set to 1 if go to "Post-QSO" logging
+								form.action = "<?php echo site_url('qso?manual=0'); ?>"; // Set ?manual=0 to 1 if go to "Post-QSO" logging
+								form.method = "post";
 							}
 							form.submit();
 						}
