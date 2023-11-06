@@ -159,6 +159,9 @@ $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = '网格';
 $lang['gen_hamradio_get_gridsquare'] = 'Get Gridsquare';
+$lang['gen_hamradio_latitude'] = "Latitude";
+$lang['gen_hamradio_longitude'] = "Longitude";
+$lang['gen_hamradio_bearing'] = "Bearing";
 $lang['gen_hamradio_distance'] = '距离';
 $lang['gen_hamradio_operator'] = '操作员';
 
