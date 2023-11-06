@@ -66,7 +66,7 @@ function askForPlots(_url_qso, options={}) {
 function createPlots(_plot) {
 	var plotll = new L.LatLng(_plot.lat,_plot.lng, true);
 	if (typeof _plot.icon==="undefined") { _plot.icon = redIcon; } //redIconImg
-	var plotmark = new L.Marker(plotll, {icon: _plot.icon});
+	eval('var plotmark = new L.Marker(plotll, {icon: '+_plot.icon+'})');
 	plotmark.data=_plot;
 	map.addLayer(plotmark);
 	if ((typeof _plot.label!=="undefined")&&(typeof _plot.html!=="undefined")) {
