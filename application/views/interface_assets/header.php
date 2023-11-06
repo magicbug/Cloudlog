@@ -264,7 +264,7 @@
 						</script>
 					<?php } ?>
 					<form id="quicklog-form" class="form-inline">
-						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Search" onkeypress="handleKeyPress(event)">
+						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="text" name="callsign" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Search" onkeypress="handleKeyPress(event)">
 
 						<button title="<?php echo lang('menu_search_button_qicksearch_log'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="submitForm('qso')"><i class="fas fa-plus"></i>
 							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button_qicksearch_log'); ?></div>
