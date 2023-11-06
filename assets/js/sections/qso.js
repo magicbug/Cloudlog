@@ -1,5 +1,7 @@
 $( document ).ready(function() {
-
+	if ($('#callsign').text() !== '') {
+        $('#callsign').blur();
+      }
 var favs={};
 	get_fav();
 
