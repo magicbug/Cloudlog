@@ -321,7 +321,7 @@ function spawnQrbCalculator(locator1, locator2) {
                     }
 				},
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}
@@ -346,7 +346,7 @@ function spawnActivatorsMap(call, count, grids) {
 					showActivatorsMap(call, count, grids);
 				},
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}
@@ -430,7 +430,7 @@ function spawnLookupModal(searchphrase, searchtype) {
                     }
 				},
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}
@@ -534,7 +534,7 @@ function displayQsl(id) {
 
 				},
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}

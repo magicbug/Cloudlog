@@ -21,6 +21,8 @@ $lang['general_word_enabled'] = "Eingeschaltet";
 $lang['general_word_disabled'] = "Ausgeschaltet";
 $lang['general_word_export'] = "Exportieren";
 $lang['general_word_import'] = "Importieren";
+$lang['general_word_count'] = "Zähler";
+$lang['general_word_filtering_on'] = "Filtern auf";
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Zeit';

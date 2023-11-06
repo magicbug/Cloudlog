@@ -7,6 +7,20 @@
 		margin: 0 auto;
 	}
 </style>
+
+
+<script>
+		// General Language
+		var lang_statistics_years = "<?php echo lang('statistics_years')?>";
+		var lang_statistics_modes = "<?php echo lang('statistics_modes')?>";
+		var lang_statistics_bands = "<?php echo lang('statistics_bands')?>";
+		var lang_statistics_number_of_qso_worked_each_year = "<?php echo lang('statistics_number_of_qso_worked_each_year')?>";
+		var lang_statistics_year = "<?php echo lang('statistics_year')?>";
+		var lang_statistics_number_of_qso_worked = "<?php echo lang('statistics_number_of_qso_worked')?>";
+		var lang_gen_hamradio_mode = "<?php echo lang('gen_hamradio_mode')?>";
+		var lang_gen_hamradio_band = "<?php echo lang('gen_hamradio_band')?>";
+</script>
+
 <div class="container statistics">
 
 	<h2>
@@ -36,7 +50,7 @@
 							<a class="nav-link active" id="years-tab" data-toggle="tab" href="#yearstab" role="tab" aria-controls="yearstab" aria-selected="true"><?php echo lang('statistics_years'); ?></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="mode-tab" data-toggle="tab" href="#modetab" role="tab" aria-controls="modetab" aria-selected="false"><?php echo lang('statistics_mode'); ?></a>
+							<a class="nav-link" id="mode-tab" data-toggle="tab" href="#modetab" role="tab" aria-controls="modetab" aria-selected="false"><?php echo lang('statistics_modes'); ?></a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" id="band-tab" data-toggle="tab" href="#bandtab" role="tab" aria-controls="bandtab" aria-selected="false"><?php echo lang('statistics_bands'); ?></a>
@@ -50,7 +64,7 @@
 					</ul>
 				<div class="tab-content">
 					<div class="tab-pane fade show active" id="yearstab" role="tabpanel" aria-labelledby="years-tab">
-						<div class="years">
+						<div class="years" style="margin-top: 20px;">
 						</div>
 					</div>
 					<div class="tab-pane fade" id="modetab" role="tabpanel" aria-labelledby="mode-tab">
