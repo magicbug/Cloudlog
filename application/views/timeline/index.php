@@ -133,7 +133,7 @@ function write_dxcc_timeline($timeline_array, $custom_date_format, $bandselect, 
         if (!empty($line->end)) echo '<span class="badge badge-danger">'.$ci->lang->line('gen_hamradio_deleted_dxcc').'</span>';
         echo '</td>
                 <td>' . $line->end . '</td>
-                <td><a href=javascript:displayTimelineContacts("' . $line->adif . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>Show</a></td>
+                <td><a href=javascript:displayTimelineContacts("' . $line->adif . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>'.$ci->lang->line('filter_options_show').'</a></td>
                </tr>';
     }
     echo '</tfoot></table></div>';
@@ -189,7 +189,7 @@ function write_iota_timeline($timeline_array, $custom_date_format, $bandselect, 
                 <td>' . $line->col_iota . '</td>
                 <td>' . $line->name . '</td>
                 <td>' . $line->prefix . '</td>
-                <td><a href=javascript:displayTimelineContacts("' . $line->col_iota . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>Show</a></td>
+                <td><a href=javascript:displayTimelineContacts("' . $line->col_iota . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>'.$ci->lang->line('filter_options_show').'</a></td>
                </tr>';
     }
     echo '</tfoot></table></div>';
@@ -215,7 +215,7 @@ function write_waz_timeline($timeline_array, $custom_date_format, $bandselect, $
                 <td>' . $i-- . '</td>
                 <td>' . date($custom_date_format, $date_as_timestamp) . '</td>
                 <td>' . $line->col_cqz . '</td>
-                <td><a href=javascript:displayTimelineContacts("' . $line->col_cqz . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>Show</a></td>
+                <td><a href=javascript:displayTimelineContacts("' . $line->col_cqz . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>'.$ci->lang->line('filter_options_show').'</a></td>
                </tr>';
     }
     echo '</tfoot></table></div>';
@@ -241,7 +241,7 @@ function write_vucc_timeline($timeline_array, $custom_date_format, $bandselect, 
                 <td>' . $i-- . '</td>
                 <td>' . date($custom_date_format, $date_as_timestamp) . '</td>
                 <td>' . $line['gridsquare'] . '</td>
-                <td><a href=javascript:displayTimelineContacts("' . $line['gridsquare'] . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>Show</a></td>
+                <td><a href=javascript:displayTimelineContacts("' . $line['gridsquare'] . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>'.$ci->lang->line('filter_options_show').'</a></td>
                </tr>';
     }
     echo '</tfoot></table></div>';
