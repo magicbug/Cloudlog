@@ -924,8 +924,8 @@ function searchButtonPress(){
 
 $(document).ready(function(){
 
-  <?php if($this->input->post('callsign') != "") { ?>
-        $('#partial_view').load("logbook/search_result/<?php echo str_replace("Ø","0",$this->input->post('callsign')); ?>", function() {
+  <?php if($this->input->post('searchBar') != "") { ?>
+        $('#partial_view').load("logbook/search_result/<?php echo str_replace("Ø","0",$this->input->post('searchBar')); ?>", function() {
            $('[data-toggle="tooltip"]').tooltip()
     });
   <?php } ?>
