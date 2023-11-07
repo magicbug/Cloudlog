@@ -25,6 +25,8 @@ $lang['general_word_count'] = "Count";
 $lang['general_word_filtering_on'] = "Filtering on";
 $lang['general_word_export'] = "Export";
 $lang['general_word_import'] = "Import";
+$lang['general_word_startdate'] = "Start Date";
+$lang['general_word_enddate'] = "End Date";
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Tid';
@@ -50,6 +52,7 @@ $lang['general_word_colors'] = "Colors";
 $lang['general_word_light'] = "Light/Laser";
 $lang['general_word_worked'] = 'Körda';
 $lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
+$lang['general_word_confirmation'] = "Confirmation";
 $lang['general_word_not_worked'] = "Not worked";
 $lang['general_word_confirmed'] = 'Bekräftade';
 $lang['general_word_needed'] = 'Behövs';
@@ -111,6 +114,8 @@ $lang['gen_hamradio_qso'] = 'QSO';
 $lang['gen_hamradio_station'] = 'Station';
 
 $lang['gen_hamradio_call'] = 'Signal';
+$lang['gen_hamradio_prefix'] = "Prefix";
+$lang['gen_hamradio_suffix'] = "Suffix";
 $lang['gen_hamradio_callsign'] = 'Signal';
 $lang['gen_hamradio_de'] = 'De';
 $lang['gen_hamradio_dx'] = 'Dx';
@@ -140,6 +145,7 @@ $lang['gen_hamradio_propagation_mode'] = 'Propagation Mode';
 $lang['gen_hamradio_satellite_name'] = 'Satellitnamn';
 $lang['gen_hamradio_satellite_mode'] = 'Satellite-mode';
 
+$lang['gen_hamradio_award'] = "Award";
 $lang['gen_hamradio_logbook'] = 'Loggbok';
 
 $lang['gen_hamradio_zones'] = 'Zones';

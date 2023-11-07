@@ -25,6 +25,8 @@ $lang['general_word_count'] = "Count";
 $lang['general_word_filtering_on'] = "Filtering on";
 
 $lang['general_word_date'] = 'Datum';
+$lang['general_word_startdate'] = "Start Date";
+$lang['general_word_enddate'] = "End Date";
 $lang['general_word_time'] = 'Čas';
 $lang['general_word_time_on'] = 'Time on';
 $lang['general_word_time_off'] = 'Time off';
@@ -50,6 +52,7 @@ $lang['general_word_worked'] = 'Spojeno';
 $lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
 $lang['general_word_not_worked'] = "Not worked";
 $lang['general_word_confirmed'] = 'Potvrzeno';
+$lang['general_word_confirmation'] = "Confirmation";
 $lang['general_word_needed'] = 'Potřebuje se';
 
 $lang['general_word_all'] = 'All';
@@ -111,6 +114,8 @@ $lang['gen_hamradio_station'] = 'Stanice';
 
 $lang['gen_hamradio_call'] = 'Značka';
 $lang['gen_hamradio_callsign'] = 'Značka';
+$lang['gen_hamradio_prefix'] = "Prefix";
+$lang['gen_hamradio_suffix'] = "Suffix";
 $lang['gen_hamradio_de'] = 'De';
 $lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Režim';
@@ -140,6 +145,7 @@ $lang['gen_hamradio_satellite_name'] = 'Název satelitu';
 $lang['gen_hamradio_satellite_mode'] = 'Režim satelitu';
 
 $lang['gen_hamradio_logbook'] = 'Logbook';
+$lang['gen_hamradio_award'] = "Award";
 
 $lang['gen_hamradio_zones'] = 'Zones';
 $lang['gen_hamradio_cq_zone'] = 'CQ zóna';

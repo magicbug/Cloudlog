@@ -25,6 +25,8 @@ $lang['general_word_count'] = "Count";
 $lang['general_word_filtering_on'] = "Filtering on";
 
 $lang['general_word_date'] = 'Päivä';
+$lang['general_word_startdate'] = "Start Date";
+$lang['general_word_enddate'] = "End Date";
 $lang['general_word_time'] = 'Aika';
 $lang['general_word_time_on'] = 'Time on';
 $lang['general_word_time_off'] = 'Time off';
@@ -50,6 +52,7 @@ $lang['general_word_worked'] = 'Workittu';
 $lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
 $lang['general_word_not_worked'] = "Not worked";
 $lang['general_word_confirmed'] = 'Kuitattu';
+$lang['general_word_confirmation'] = "Confirmation";
 $lang['general_word_needed'] = 'Tarvittu';
 
 $lang['general_word_all'] = 'All';
@@ -111,6 +114,8 @@ $lang['gen_hamradio_station'] = 'Asema';
 
 $lang['gen_hamradio_call'] = 'Kutsu';
 $lang['gen_hamradio_callsign'] = 'Kutsumerkki';
+$lang['gen_hamradio_prefix'] = "Prefix";
+$lang['gen_hamradio_suffix'] = "Suffix";
 $lang['gen_hamradio_de'] = 'De';
 $lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Lähetelaji';
@@ -140,6 +145,7 @@ $lang['gen_hamradio_satellite_name'] = 'Satelliitti';
 $lang['gen_hamradio_satellite_mode'] = 'Satelliitin Mode';
 
 $lang['gen_hamradio_logbook'] = 'Lokikirja';
+$lang['gen_hamradio_award'] = "Award";
 
 $lang['gen_hamradio_zones'] = 'Zones';
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
