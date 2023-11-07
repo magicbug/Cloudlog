@@ -25,6 +25,8 @@ $lang['general_word_count'] = "Zähler";
 $lang['general_word_filtering_on'] = "Filtern auf";
 
 $lang['general_word_date'] = 'Datum';
+$lang['general_word_startdate'] = "Start Datum";
+$lang['general_word_enddate'] = "End Datum";
 $lang['general_word_time'] = 'Zeit';
 $lang['general_word_time_on'] = 'Startzeit';
 $lang['general_word_time_off'] = 'Endzeit';
@@ -50,6 +52,7 @@ $lang['general_word_worked'] = 'Gearbeitet';
 $lang['general_word_worked_not_confirmed'] = "Gearbeitet, nicht bestätigt";
 $lang['general_word_not_worked'] = "Nicht gearbeitet";
 $lang['general_word_confirmed'] = 'Bestätigt';
+$lang['general_word_confirmation'] = "Bestätigung";
 $lang['general_word_needed'] = 'Benötigt';
 
 $lang['general_word_all'] = 'Alle';
@@ -111,6 +114,8 @@ $lang['gen_hamradio_station'] = 'Station';
 
 $lang['gen_hamradio_call'] = 'Call';
 $lang['gen_hamradio_callsign'] = 'Rufzeichen';
+$lang['gen_hamradio_prefix'] = "Prefix";
+$lang['gen_hamradio_suffix'] = "Suffix";
 $lang['gen_hamradio_de'] = 'De';
 $lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Mode';
@@ -140,6 +145,7 @@ $lang['gen_hamradio_satellite_name'] = 'Satellit';
 $lang['gen_hamradio_satellite_mode'] = 'Satellitenmodus';
 
 $lang['gen_hamradio_logbook'] = 'Logbuch';
+$lang['gen_hamradio_award'] = "Diplom";
 
 $lang['gen_hamradio_zones'] = 'Zonen';
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';

@@ -25,6 +25,8 @@ $lang['general_word_count'] = "Count";
 $lang['general_word_filtering_on'] = "Filtering on";
 
 $lang['general_word_date'] = 'Дата';
+$lang['general_word_startdate'] = "Start Date";
+$lang['general_word_enddate'] = "End Date";
 $lang['general_word_time'] = 'Время';
 $lang['general_word_time_on'] = 'Time on';
 $lang['general_word_time_off'] = 'Time off';
@@ -50,6 +52,7 @@ $lang['general_word_worked'] = 'Сработано';
 $lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
 $lang['general_word_not_worked'] = "Not worked";
 $lang['general_word_confirmed'] = 'Подтверждено';
+$lang['general_word_confirmation'] = "Confirmation";
 $lang['general_word_needed'] = 'Необходимо';
 
 $lang['general_word_all'] = 'All';
@@ -111,6 +114,8 @@ $lang['gen_hamradio_qso'] = 'QSO';
 $lang['gen_hamradio_station'] = 'Станция';
 
 $lang['gen_hamradio_call'] = 'Позывной';
+$lang['gen_hamradio_prefix'] = "Prefix";
+$lang['gen_hamradio_suffix'] = "Suffix";
 $lang['gen_hamradio_callsign'] = 'Позывной';
 $lang['gen_hamradio_de'] = 'De';
 $lang['gen_hamradio_dx'] = 'Dx';
@@ -140,6 +145,7 @@ $lang['gen_hamradio_propagation_mode'] = 'Тип прохождения';
 $lang['gen_hamradio_satellite_name'] = 'Название спутника';
 $lang['gen_hamradio_satellite_mode'] = 'Режим работы спутника';
 
+$lang['gen_hamradio_award'] = "Award";
 $lang['gen_hamradio_logbook'] = 'Журнал';
 $lang['gen_hamradio_zones'] = 'Zones';
 
