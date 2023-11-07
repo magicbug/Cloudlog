@@ -36,6 +36,7 @@ function initmap(ShowGrid='No', MapTag='map', options={}) {
 	if(ShowGrid == "Yes") { maidenhead.addTo(map); }
 
 	// set data //
+	console.log(_url_qso);
 	askForPlots(_url_qso, options);
 	if ((typeof options.home!=="undefined")&&(typeof options.home.show!=="undefined")&&(options.home.show==true)) {
 		if (typeof options.home.lat==="undefined") { options.home.lat = _q_lat; }
@@ -56,9 +57,9 @@ function askForPlots(_url_qso, options={}) {
         	if ((typeof plotjson['markers'] !== "undefined")&&(plotjson['markers'].length>0)) {
 				for (i=0;i<plotjson['markers'].length;i++) { createPlots(plotjson['markers'][i]); }
         	}
-        	if ((typeof plotjson['home']!=="undefined")&&(typeof plotjson['home'].show!=="undefined")&&(plotjson['home'].show==true)) {
-				createPlots(plotjson['home']);
-        	}        	
+        	if ((typeof plotjson['home']!=="undefined")&&(typeof plotjson['home']['show']!=="undefined")&&(plotjson['home'].show==true)) {
+        		createPlots(plotjson['home']);
+        	}
         }
     });
 }
@@ -70,7 +71,8 @@ function createPlots(_plot) {
 	plotmark.data=_plot;
 	map.addLayer(plotmark);
 	if ((typeof _plot.label!=="undefined")&&(typeof _plot.html!=="undefined")) {
-		plotmark.bindPopup(((_plot.label!="")?("<h3>"+_plot.label+"</h3>"):"")+_plot.html);
+		_plot.label = (_plot.label!="")?("<h3>"+_plot.label+"</h3>"):"";
+		if ((_plot.label+_plot.html)!="") { plotmark.bindPopup(_plot.label+_plot.html); }
 	}
 	plotlayers.push(plotmark);
 }
@@ -110,6 +112,12 @@ function stateChanged() {
 		}
 	}
 } */
+
+/*function getXmlHttpObject() {
+	if (window.XMLHttpRequest) { return new XMLHttpRequest(); }
+	if (window.ActiveXObject)  { return new ActiveXObject("Microsoft.XMLHTTP"); }
+	return null;
+}*/
 
 /*function onMapMove(e) {
     askForPlots();
