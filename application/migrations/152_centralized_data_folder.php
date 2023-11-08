@@ -17,8 +17,6 @@ class Migration_centralized_data_folder extends CI_Migration {
         $qsl_images_folder = "qsl_card";
 
         log_message('info','[centralized_data_folder][UP] Starting...');
-        $this->load->model('Eqsl_images');
-        $this->load->model('Qsl_model');
 
         $_centralized_data_path = realpath(APPPATH.'../').'/'.$_centralized_folder_data;
         $_centralized_folder_eqsl = $_centralized_data_path.'/'.$eqsl_images_folder;
@@ -76,7 +74,72 @@ $config[\'centralized_data_folder\'] = "'.$_centralized_folder_data.'";
 
     public function down()
     {
+        // Rmq : same name, but reverse action //
         log_message('debug','[centralized_data_folder][DOWN]');
+        $_deprecied_path_eqsl = realpath(APPPATH.'../').'/images/eqsl_card_images';
+        $_deprecied_path_qslcard = realpath(APPPATH.'../').'/assets/qslcard';
+        $_centralized_folder_data = "storage";
+        $eqsl_images_folder = "eqsl_card";
+        $qsl_images_folder = "qsl_card";
+
+        log_message('info','[centralized_data_folder][DOWN] Rollback Starting...');
+
+        $_centralized_data_path = realpath(APPPATH.'../').'/'.$_centralized_folder_data;
+        $_centralized_folder_eqsl = $_centralized_data_path.'/'.$eqsl_images_folder;
+        $_centralized_folder_qslcard = $_centralized_data_path.'/'.$qsl_images_folder;
+        $_configphp_file = realpath(APPPATH).'/config/config.php';
+
+
+        if (!is_dir($_deprecied_path_eqsl)) { 
+            mkdir($_deprecied_path_eqsl, 0775, true); 
+            log_message('debug','[centralized_data_folder] older eQsl folder "'.$_deprecied_path_eqsl.'" created.');
+        } else log_message('debug','[centralized_data_folder] "'.$_deprecied_path_eqsl.'" exist.');
+        if (!is_dir($_deprecied_path_qslcard)) { 
+            mkdir($_deprecied_path_qslcard, 0775, true); 
+            log_message('debug','[centralized_data_folder] older Qsl Card folder "'.$_deprecied_path_qslcard.'" created.');
+        } else log_message('debug','[centralized_data_folder] "'.$_deprecied_path_qslcard.'" exist.');
+
+        // -------------------------- move data to deprecied folder (eqsl/qsl) //
+        $_data = array(
+            'eQsl'=>array( 'k'=>'eQsl', 'path_new'=>$_centralized_folder_eqsl, 'path_deprecied'=>$_deprecied_path_eqsl ),
+            'qslc'=>array( 'k'=>'qslc', 'path_new'=>$_centralized_folder_qslcard, 'path_deprecied'=>$_deprecied_path_qslcard )
+        );
+        foreach($_data as $k=>$_what) {
+            log_message('debug','[centralized_data_folder]['.$_what['k'].'] Move starting ...');
+            $count=0;
+            if (is_dir($_what['path_new'])) {
+                $dir_array = array_diff(scandir($_what['path_new']), array('..', '.'));
+                log_message('debug','[centralized_data_folder]['.$_what['k'].'] '.count($dir_array).' files found in "'.$_what['path_new'].'"');
+                if (!rename($_what['path_new'], $_what['path_deprecied'])) { 
+                    log_message('error','[centralized_data_folder]['.$_what['k'].'] ERROR during moving files between "'.$_what['path_new'].'" and "'.$_what['path_deprecied'].'"');
+                } else {
+                    $dir_array = array_diff(scandir($_what['path_deprecied']), array('..', '.'));
+                    log_message('debug','[centralized_data_folder]['.$_what['k'].'] --> Move is finished. '.count($dir_array).' files was moved in "'.$_what['path_deprecied'].'"');
+                }
+            } else log_message('error','[centralized_data_folder]['.$_what['k'].'] ERROR folder "'.$_what['path_new'].'" NOT exist');
+        }
+
+
+        $_configphp_content_centralizedfolder = '/*
+|--------------------------------------------------------------------------
+| Centralized data folder 
+|--------------------------------------------------------------------------
+|
+| Define the data folder for save eqsl, card image ...  
+| Root is $config[\'directory\']
+*/
+$config[\'centralized_data_folder\'] = "'.$_centralized_folder_data.'";';
+        // check config file //
+        $_configphp_content = file_get_contents($_configphp_file);
+        $_configphp_content_centralizedfolder_pos = strpos($_configphp_content, $_configphp_content_centralizedfolder);
+        if ($_configphp_content_centralizedfolder_pos>0) {
+            log_message('info','[centralized_data_folder] config.php, session "Centralized data folder" found at :'.$_configphp_content_centralizedfolder_pos);
+            $_configphp_content = substr($_configphp_content,0, $_configphp_content_centralizedfolder_pos);
+            if (!file_put_contents($_configphp_file, $_configphp_content)===false) {
+                log_message('debug','[centralized_data_folder] The session "Centralized data folder" in config.php file was deleted.');
+            } else log_message('error','[centralized_data_folder] Error during update the config.php (Session "Centralized data folder" NOT deleted)');
+        } else log_message('error','[centralized_data_folder] Session "Centralized data folder" NOT found in config.php.');
+        log_message('info','[centralized_data_folder][DOWN] End');
     }
 
 
