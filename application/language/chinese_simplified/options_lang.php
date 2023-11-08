@@ -71,27 +71,27 @@ $lang['options_dxcluster_maxage_changed_to']='Maximum age of spots changed to ';
 $lang['options_dxcluster_decont_changed_to']='de continent changed to ';
 $lang['options_dxcluster_decont_hint']='Only spots by spotters from this continent are shown';
 
-$lang['options_save'] = 'Save';
+$lang['options_save'] = '保存';
 
 // Bands
 
-$lang['options_bands'] = "Bands";
-$lang['options_bands_text_ln1'] = "Using the band list you can control which bands are shown when creating a new QSO.";
-$lang['options_bands_text_ln2'] = "Active bands will be shown in the QSO 'Band' drop-down, while inactive bands will be hidden and cannot be selected.";
-$lang['options_bands_create'] = "Create a band";
-$lang['options_bands_edit'] = "Edit Band";
-$lang['options_bands_activate_all'] = "Activate All";
-$lang['options_bands_activateall_warning'] = "Warning! Are you sure you want to activate all bands?";
-$lang['options_bands_deactivate_all'] = "Deactivate All";
-$lang['options_bands_deactivateall_warning'] = "Warning! Are you sure you want to deactivate all bands?";
-$lang['options_bands_ssb_qrg'] = "SSB QRG";
-$lang['options_bands_ssb_qrg_hint'] = "Frequency for SSB QRG in band (must be in Hz)";
-$lang['options_bands_data_qrg'] = "DATA QRG";
-$lang['options_bands_data_qrg_hint'] = "Frequency for DATA QRG in band (must be in Hz)";
-$lang['options_bands_cw_qrg'] = "CW QRG";
-$lang['options_bands_cw_qrg_hint'] = "Frequency for CW QRG in band (must be in Hz)";
+$lang['options_bands'] = "波段";
+$lang['options_bands_text_ln1'] = "使用波段列表，您可以控制创建新 QSO 时显示哪些波段。";
+$lang['options_bands_text_ln2'] = "启用的波段将显示在 QSO“波段”下拉列表中，而停用的频段将被隐藏且无法选择。";
+$lang['options_bands_create'] = "创建波段";
+$lang['options_bands_edit'] = "编辑波段";
+$lang['options_bands_activate_all'] = "启用所有";
+$lang['options_bands_activateall_warning'] = "警告！你要启用所有波段吗？";
+$lang['options_bands_deactivate_all'] = "停用所有";
+$lang['options_bands_deactivateall_warning'] = "警告！你要停用所有波段吗？";
+$lang['options_bands_ssb_qrg'] = "SSB 频率";
+$lang['options_bands_ssb_qrg_hint'] = "波段中 SSB 的频率（以Hz为单位）";
+$lang['options_bands_data_qrg'] = "DATA 频率";
+$lang['options_bands_data_qrg_hint'] = "波段中 DATA 的频率（以Hz为单位）";
+$lang['options_bands_cw_qrg'] = "CW 频率";
+$lang['options_bands_cw_qrg_hint'] = "波段中 CW 的频率（以Hz为单位）";
 
-$lang['options_bands_name_band'] = "Name of Band (E.g. 20m)";
-$lang['options_bands_name_bandgroup'] = "Name of bandgroup (E.g. hf, vhf, uhf, shf)";
-$lang['options_bands_delete_warning'] = "Warning! Are you sure you want to delete the following band: ";
+$lang['options_bands_name_band'] = "波段名称（例如：20m）";
+$lang['options_bands_name_bandgroup'] = "频段名称（例如：HF、VHF、UHF、SHF）";
+$lang['options_bands_delete_warning'] = "警告！ 您确定要删除以下波段：";
 
