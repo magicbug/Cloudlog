@@ -139,7 +139,7 @@ function handleInput() {
 				item.match(/^[0-2][0-9][0-5][0-9]$/)
 			) {
 				qsotime = item;
-			} else if (item.match(/^CW$|^SSB$|^FM$|^AM$|^PSK$|^FT8$/i)) {
+			} else if (item.match(/^CW$|^SSB$|^LSB$|^USB$|^FM$|^AM$|^PSK$|^FT8$/i)) {
 				mode = item.toUpperCase();
 			} else if (
 				item.match(/^[0-9]{1,4}(?:m|cm|mm)$/) ||
@@ -424,7 +424,7 @@ function getFreqFromBand(band, mode) {
 }
 
 function getSettingsMode(mode) {
-	if (mode === "AM" || mode === "FM" || mode === "SSB") {
+	if (mode === "AM" || mode === "FM" || mode === "SSB" || mode === "LSB" || mode === "USB") {
 		return "SSB";
 	}
 
