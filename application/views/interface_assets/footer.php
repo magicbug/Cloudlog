@@ -1421,8 +1421,9 @@ $(document).on('keypress',function(e) {
 					  $("#selectPropagation").val(data.prop_mode);
 
 					  // Display CAT Timeout warning based on the figure given in the config file
-					  var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
-
+					  var cat_timeout_interval = "<?php echo (!empty($this->optionslib->get_option('cat_timeout_interval')))?$this->optionslib->get_option('cat_timeout_interval'):0; ?>";
+                      var minutes = Math.floor(cat_timeout_interval / 60);
+					  
 					  if(data.updated_minutes_ago > minutes) {
 						  $(".radio_cat_state" ).remove();
 						  if($('.radio_timeout_error').length == 0) {
