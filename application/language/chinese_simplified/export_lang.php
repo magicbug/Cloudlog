@@ -8,7 +8,7 @@ KML Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_kml_header'] = "KML Export";
+$lang['export_kml_header'] = "KML 导出";
 $lang['export_kml_description'] = "Export your logbook to a KML file for use in Google Earth.";
 $lang['export_kml_grisquare_warning'] = "Only QSOs with a gridsquare defined will be exported!";
 
@@ -19,7 +19,7 @@ DX Atlas Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_dxatlas_header'] = "DX Atlas Export";
+$lang['export_dxatlas_header'] = "DX Atlas 导出";
 $lang['export_dxatlas_description'] = "Export your logbook for use in DX Atlas to display worked / confirmed gridsquares.";
 $lang['export_dxatlas_gridsquare_warning'] = "Only QSOs with a gridsquare defined will be exported!";
 
@@ -30,7 +30,7 @@ SOTA Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_sota_header'] = "SOTA CSV Export";
+$lang['export_sota_header'] = "SOTA CSV 导出";
 $lang['export_sota_description'] = "Export your logbook for SOTA uploads.";
 $lang['export_sota_info_warning'] = "Only QSOs with SOTA information will be exported!";
 
@@ -40,7 +40,7 @@ Cabrillo Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_cabrillo_header'] = "Cabrillo Export";
+$lang['export_cabrillo_header'] = "Cabrillo 导出";
 $lang['export_cabrillo_description'] = "Export a contest to a Cabrillo log";
 $lang['export_cabrillo_select_station'] = "Select Station Location:";
 $lang['export_cabrillo_proceed'] = "Proceed";
