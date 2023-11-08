@@ -91,6 +91,8 @@ class User extends CI_Controller {
 				$data['user_default_band'] = $this->input->post('user_default_band');
 				$data['user_default_confirmation'] = ($this->input->post('user_default_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_default_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_default_confirmation_eqsl') !== null ? 'E' : '');
 				$data['user_qso_end_times'] = $this->input->post('user_qso_end_times');
+				$data['user_quicklog'] = $this->input->post('user_quicklog');
+				$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
 				$data['language'] = $this->input->post('language');
 				$this->load->view('user/add', $data);
 			} else {
@@ -127,6 +129,8 @@ class User extends CI_Controller {
 				$this->input->post('user_default_band'),
 				($this->input->post('user_default_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_default_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_default_confirmation_eqsl') !== null ? 'E' : ''),
 				$this->input->post('user_qso_end_times'),
+				$this->input->post('user_quicklog'),
+				$this->input->post('user_quicklog_enter'),
 				$this->input->post('language'),
 				)) {
 				// Check for errors
@@ -175,6 +179,8 @@ class User extends CI_Controller {
 			$data['user_default_band'] = $this->input->post('user_default_band');
 			$data['user_default_confirmation'] = ($this->input->post('user_default_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_default_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_default_confirmation_eqsl') !== null ? 'E' : '');
 			$data['user_qso_end_times'] = $this->input->post('user_qso_end_times');
+			$data['user_quicklog'] = $this->input->post('user_quicklog');
+			$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
 			$data['language'] = $this->input->post('language');
 			$this->load->view('user/add', $data);
 			$this->load->view('interface_assets/footer');
@@ -398,6 +404,18 @@ class User extends CI_Controller {
 				$data['user_qso_end_times'] = $q->user_qso_end_times;
 			}
 
+			if($this->input->post('user_quicklog')) {
+				$data['user_quicklog'] = $this->input->post('user_quicklog', true);
+			} else {
+				$data['user_quicklog'] = $q->user_quicklog;
+			}
+
+			if($this->input->post('user_quicklog_enter')) {
+				$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter', true);
+			} else {
+				$data['user_quicklog_enter'] = $q->user_quicklog_enter;
+			}
+
 			if($this->input->post('user_show_profile_image')) {
 				$data['user_show_profile_image'] = $this->input->post('user_show_profile_image', false);
 			} else {
@@ -539,6 +557,8 @@ class User extends CI_Controller {
 			$data['user_default_band'] = $this->input->post('user_default_band');
 			$data['user_default_confirmation'] = ($this->input->post('user_default_confirmation_qsl') !== null ? 'Q' : '').($this->input->post('user_default_confirmation_lotw') !== null ? 'L' : '').($this->input->post('user_default_confirmation_eqsl') !== null ? 'E' : '');
 			$data['user_qso_end_times'] = $this->input->post('user_qso_end_times');
+			$data['user_quicklog'] = $this->input->post('user_quicklog');
+			$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
 			$data['language'] = $this->input->post('language');
 			$data['user_winkey'] = $this->input->post('user_winkey');
 			$this->load->view('user/edit');

@@ -53,12 +53,14 @@ $('#js-syntax').click(function (event) {
 
 										const logData = `
 *example-data*
+date 2023-05-14
 80m cw
 1212 m0abc okff-1234
 3 hb9hil
 4 ok1tn
 20 dl6kva 7 8
-5 dl5cw 
+5 dl5cw
+day ++
 ssb
 32 ok7wa ol/zl-071 5 8
 33 ok1xxx  4 3
@@ -84,6 +86,13 @@ ssb
 		},
 	});
 });
+
+function updateUTCTime() {
+	const utcTimeElement = document.getElementById("utc-time");
+	const now = new Date();
+	const utcTimeString = now.toISOString().split("T")[1].split(".")[0];
+	utcTimeElement.textContent = utcTimeString;
+}
 
 function handleInput() {
 	var qsodate = "";
@@ -550,6 +559,8 @@ function isWWFF(value) {
 
 
 $(document).ready(function () {
+	setInterval(updateUTCTime, 1000);
+	updateUTCTime();
 	var tabledata = localStorage.getItem(`user_${user_id}_tabledata`);
 	var mycall = localStorage.getItem(`user_${user_id}_my-call`);
 	var operator = localStorage.getItem(`user_${user_id}_operator`);
@@ -652,7 +663,7 @@ $(".js-save-to-log").click(function () {
 						var start_time = item[1][0] +item[1][1] + ":" + item[1][2] + item[1][3];
 						var band = item[4];
 						var mode = item[5];
-						var freq_display = item[3];
+						var freq_display = item[3] * 1000000;
 						var station_profile = $(".station_id").val();
 						var sota_ref = '';
 						var iota_ref = '';

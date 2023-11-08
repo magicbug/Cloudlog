@@ -59,8 +59,10 @@ $lang['menu_update_country_files'] = 'Обновить файлы стран';
 $lang['menu_debug_information'] = 'Отладочная информация';
 
 $lang['menu_search_text'] = 'Поиск позывного';
+$lang['menu_search_text_quicklog'] = "Add/Search Callsign";
 
 $lang['menu_search_button'] = 'Поиск';
+$lang['menu_search_button_qicksearch_log'] = "Log";
 $lang['menu_login_button'] = 'Вход';
 
 $lang['menu_account'] = 'Аккаунт';

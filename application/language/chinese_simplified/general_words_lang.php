@@ -21,8 +21,12 @@ $lang['general_word_enabled'] = "已启用";
 $lang['general_word_disabled'] = "已禁用";
 $lang['general_word_export'] = "导出";
 $lang['general_word_import'] = "导入";
+$lang['general_word_count'] = "数量";
+$lang['general_word_filtering_on'] = "筛选打开";
 
 $lang['general_word_date'] = '日期';
+$lang['general_word_startdate'] = "Start Date";
+$lang['general_word_enddate'] = "End Date";
 $lang['general_word_time'] = '时间';
 $lang['general_word_time_on'] = 'Time on';
 $lang['general_word_time_off'] = 'Time off';
@@ -48,6 +52,7 @@ $lang['general_word_worked'] = '已通联';
 $lang['general_word_worked_not_confirmed'] = "已通联未确认";
 $lang['general_word_not_worked'] = "未通联";
 $lang['general_word_confirmed'] = '已确认';
+$lang['general_word_confirmation'] = "Confirmation";
 $lang['general_word_needed'] = '待通联';
 
 $lang['general_word_all'] = '所有';
@@ -109,6 +114,8 @@ $lang['gen_hamradio_station'] = '台站';
 
 $lang['gen_hamradio_call'] = '呼号';
 $lang['gen_hamradio_callsign'] = '呼号';
+$lang['gen_hamradio_prefix'] = "Prefix";
+$lang['gen_hamradio_suffix'] = "Suffix";
 $lang['gen_hamradio_mode'] = '模式';
 $lang['gen_hamradio_dx'] = 'DX';
 $lang['gen_hamradio_rst_sent'] = '发';
@@ -137,6 +144,7 @@ $lang['gen_hamradio_satellite_name'] = '卫星名称';
 $lang['gen_hamradio_satellite_mode'] = '卫星模式';
 
 $lang['gen_hamradio_logbook'] = '日志簿';
+$lang['gen_hamradio_award'] = "Award";
 
 $lang['gen_hamradio_zones'] = '分区';
 $lang['gen_hamradio_cq_zone'] = 'CQ 分区';
@@ -158,6 +166,9 @@ $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = '网格';
 $lang['gen_hamradio_get_gridsquare'] = '获取网格座标';
+$lang['gen_hamradio_latitude'] = "纬度";
+$lang['gen_hamradio_longitude'] = "经度";
+$lang['gen_hamradio_bearing'] = "方位角";
 $lang['gen_hamradio_distance'] = '距离';
 $lang['gen_hamradio_operator'] = '操作员';
 

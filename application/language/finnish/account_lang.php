@@ -37,13 +37,19 @@ $lang['account_timezone'] = 'Aikavyöhyke';
 $lang['account_date_format'] = 'Päivämäärämuoto';
 $lang['account_log_end_time'] = 'Log End Times for QSOs Separately';
 $lang['account_log_end_time_hint'] = 'Choose yes here if you want to log QSO start and end times separately. If set to \'No\' the end time will be the same as start time.';
+$lang['account_quicklog_feature'] = "Quicklog Field";
+$lang['account_quicklog_feature_hint'] = "With this feature, you can log callsigns using the search field in the header.";
+$lang['account_quicklog_enter'] = "Quicklog - Action on press Enter";
+$lang['account_quicklog_enter_hint'] = "What action should be performed when Enter is pressed in the quicklog field?";
+$lang['account_quicklog_enter_log'] = "Log Callsign";
+$lang['account_quicklog_enter_search'] = "Search Callsign";
 $lang['account_measurement_preferences'] = 'Mittayksikkömuoto';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Valitse, miten haluat päivämäärät näkyvän, kun olet kirjautunut tilillesi.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Valitse, mitä mittayksikkömuotoa käytetään';
 $lang['account_cloudlog_language'] = 'Cloudlog Language';
 $lang['account_choose_cloudlog_language'] = 'Choose Cloudlog language.';
 
-$lang['account_main_menu'] = 'Main Menu';
+$lang['account_main_menu'] = 'Menu Options';
 $lang['account_show_notes_in_the_main_menu'] = 'Näytä "Muistio" päävalikossa.';
 
 $lang['account_gridsquare_and_location_autocomplete'] = 'Gridsquare and Location Autocomplete';

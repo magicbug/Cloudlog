@@ -53,14 +53,16 @@ $lang['menu_user_account'] = 'Benutzerkonten';
 $lang['menu_global_options'] = 'Globale Optionen';
 $lang['menu_modes'] = 'Modi';
 $lang['menu_contests'] = 'Conteste';
-$lang['menu_themes'] = 'Layouts';
+$lang['menu_themes'] = 'Themes';
 $lang['menu_backup'] = 'Backup';
 $lang['menu_update_country_files'] = 'Update Länderinformationen';
 $lang['menu_debug_information'] = 'Debug Informationen';
 
 $lang['menu_search_text'] = 'Rufzeichensuche';
+$lang['menu_search_text_quicklog'] = "Logge/Suche Call";   //"Rufzeichen" wäre zu lang, daher nur "Call". Das wird verstanden.
 
 $lang['menu_search_button'] = 'Suche';
+$lang['menu_search_button_qicksearch_log'] = "Logge";
 $lang['menu_login_button'] = 'Login';
 
 $lang['menu_account'] = 'Konto';
