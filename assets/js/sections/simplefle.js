@@ -484,6 +484,17 @@ function isBandModeEntered() {
 	return isBandModeOK;
 }
 
+function isTimeEntered() {
+	let isTimeOK = true;
+	qsoList.forEach((item) => {
+		if (item[1] === "") {
+			isTimeOK = false;
+		}
+	});
+
+	return isTimeOK;
+}
+
 function isExampleDataEntered() {
 	let isExampleData = false;
 	if (textarea.value.startsWith("*example-data*")) {
@@ -623,6 +634,17 @@ $(".js-save-to-log").click(function () {
 		});
 		return false;
 	}
+	if (false === isTimeEntered()) {
+		BootstrapDialog.alert({
+			title: lang_general_word_warning,
+			message: lang_qso_simplefle_warning_missing_time,
+			type: BootstrapDialog.TYPE_DANGER,
+			btnCancelLabel: lang_general_word_cancel,
+			btnOKLabel: lang_general_word_ok,
+			btnOKClass: "btn-warning",
+		});
+		return false;
+	}
 	if (true === isExampleDataEntered()) {
 		BootstrapDialog.alert({
 			title: lang_general_word_warning,
@@ -660,7 +682,7 @@ $(".js-save-to-log").click(function () {
 						var rst_rcvd = item[7];
 						var rst_sent = item[6];
 						var start_date = item[0];
-						var start_time = item[1][0] +item[1][1] + ":" + item[1][2] + item[1][3];
+						var start_time = item[1][0] + item[1][1] + ":" + item[1][2] + item[1][3];
 						var band = item[4];
 						var mode = item[5];
 						var freq_display = item[3] * 1000000;
