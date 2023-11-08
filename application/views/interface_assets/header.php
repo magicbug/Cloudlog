@@ -237,13 +237,15 @@
 							if (action === 'search') {
 								form.action = "<?php echo site_url('search'); ?>";
 								form.method = "post";
-							} else if (action === 'qso') {
-								form.action = "<?php echo site_url('qso'); ?>";
-								form.method = "get";
-								input.name = "manual";
-								input.value = "0";  // Set to 1 if go to "Post-QSO" logging
 							}
 							form.submit();
+						}
+						function logQuicklog() {
+							if (localStorage.getItem("quicklogCallsign") !== "") {
+  								localStorage.removeItem("quicklogCallsign");
+							}
+							localStorage.setItem("quicklogCallsign", $("input[name='searchBar']").val());
+							window.open("<?php echo site_url('qso?manual=0'); ?>", "_self");
 						}
 					</script>
 					<?php if ($this->session->userdata('user_quicklog_enter')  == 1) { ?>
@@ -258,18 +260,17 @@
 						<script>
 							function handleKeyPress(event) {
 								if (event.key === 'Enter') {
-									submitForm('qso'); // Treat Enter key press as clicking the 'quicksearch-log' button
+									logQuicklog(); // Treat Enter key press as clicking the 'quicksearch-log' button
 								}
 							}
 						</script>
 					<?php } ?>
-					<form id="quicklog-form" class="form-inline">
-						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Search" onkeypress="handleKeyPress(event)">
+					<form id="quicklog-form" class="form-inline" onsubmit="return false;">
+						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="text" name="searchBar" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Quicklog" onkeypress="handleKeyPress(event)">
 
-						<button title="<?php echo lang('menu_search_button_qicksearch_log'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="submitForm('qso')"><i class="fas fa-plus"></i>
+						<button title="<?php echo lang('menu_search_button_qicksearch_log'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="logQuicklog()"><i class="fas fa-plus"></i>
 							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button_qicksearch_log'); ?></div>
 						</button>
-						<input type="hidden" id="quicklog-input">
 
 						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="submitForm('search')" style="margin-left: 5px"><i class="fas fa-search"></i>
 							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button'); ?></div>
@@ -277,7 +278,7 @@
 					</form>
 				<?php } else { ?>
 					<form method="post" action="<?php echo site_url('search'); ?>" class="form-inline">
-						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
+						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="searchBar" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
 						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i>
 							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button'); ?></div>
 						</button>
