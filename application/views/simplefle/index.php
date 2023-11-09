@@ -1,7 +1,6 @@
 <script type="text/javascript">
 	var Bands = <?php echo json_encode($bands); ?>;
 	var user_id = <?php echo $this->session->userdata('user_id'); ?>;
-	console.log("Bands Data:", Bands);
 </script>
 
 <div class="container">
