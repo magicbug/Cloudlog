@@ -64,9 +64,9 @@ $lang['qso_simplefle_save'] = "Save in Cloudlog";
 $lang['qso_simplefle_clear'] = "Clear Logging Session";
 $lang['qso_simplefle_refs_hint'] = "The Refs can be either <u>S</u>OTA, <u>I</u>OTA, <u>P</u>OTA or <u>W</u>WFF";
 
-$lang['qso_simplefle_error_band'] = "Band is missing!";
-$lang['qso_simplefle_error_mode'] = "Mode is missing!";
-$lang['qso_simplefle_error_time'] = "Time is not set!";
+$lang['qso_simplefle_error_band'] = "找不到波段！";
+$lang['qso_simplefle_error_mode'] = "找不到模式！";
+$lang['qso_simplefle_error_time'] = "时间未设定！";
 $lang['qso_simplefle_error_stationcall'] = "Station Call is not selected";
 $lang['qso_simplefle_error_operator'] = "'Operator' Field is empty";
 $lang['qso_simplefle_warning_reset'] = "Warning! Do you really want to reset everything?";
