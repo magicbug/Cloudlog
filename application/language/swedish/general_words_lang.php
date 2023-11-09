@@ -213,3 +213,5 @@ $lang['dashboard_php_version_warning'] = 'You need to upgrade your PHP version. 
 $lang['dashboard_country_files_warning'] = 'You need to update country files! Go <a href="'.site_url('update').'">here</a> to do it!';
 $lang['dashboard_locations_warning'] = 'You have no station locations. Go <a href="'. site_url('station') . '">here</a> to create it!';
 $lang['dashboard_logbooks_warning'] = 'You have no station logbook. Go <a href="'. site_url('logbooks') . '">here</a> to create it!';
+
+$lang['hams_at_no_activations_found'] = 'No upcoming activations found. Please check back later.';

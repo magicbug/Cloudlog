@@ -207,3 +207,5 @@ $lang['southamerica'] = 'South America';
 
 $lang['gen_band_selection'] = 'Band selection';
 $lang['general_word_today'] = 'Today';
+
+$lang['hams_at_no_activations_found'] = 'No upcoming activations found. Please check back later.';
