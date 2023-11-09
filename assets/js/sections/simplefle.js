@@ -123,6 +123,7 @@ function handleInput() {
 		var rst_r = null;
 		items = row.startsWith("day ") ? [row] : row.split(" ");
 		var itemNumber = 0;
+		var freq = 0;
 		items.forEach((item) => {
 			if (item === "") {
 				return;
@@ -415,11 +416,15 @@ function getBandFromFreq(freq) {
 }
 
 function getFreqFromBand(band, mode) {
-	const settingsMode = getSettingsMode(mode.toUpperCase());
-	const id = "#" + band + settingsMode;
-	if ($(id).length) {
-		return $(id).val();
-	}
+	var settingsMode = getSettingsMode(mode.toUpperCase());
+	var settingsBand = "b" + band.toUpperCase();
+	var bandData = Bands[settingsBand];
+
+	if (bandData) {
+        return bandData[settingsMode] / 1000000;
+    }
+	
+
 }
 
 function getSettingsMode(mode) {

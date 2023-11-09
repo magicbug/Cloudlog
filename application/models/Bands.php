@@ -57,7 +57,7 @@ class Bands extends CI_Model {
 		$results = array();
 
 		foreach($result as $band) {
-			$results['b'.strtoupper($band->band)] = array('cw' => $band->cw, 'ssb' => $band->ssb, 'digi' => $band->data);
+			$results['b'.strtoupper($band->band)] = array('CW' => $band->cw, 'SSB' => $band->ssb, 'DIGI' => $band->data);
 		}
 
 		return $results;
