@@ -59,7 +59,7 @@
                     </td>
                     <td>
                         <?php
-                        echo $rove['comment'];
+                        echo xss_clean($rove['comment']);
                         ?>
                     </td>
                     <td><span data-toggle="tooltip" title="<?php echo $rove['frequency']; ?> - <?php echo $rove['mode']; ?>"><?= $rove['satellite'] ?></span></td>
