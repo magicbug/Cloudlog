@@ -73,7 +73,7 @@
 						</div>
 					</div>
 					<div class="col-xs-12 col-lg-12 col-xl-6">
-						<label for="utc-time"><?php echo lang('qso_simplefle_utc_time'); ?></label>
+						<p><?php echo lang('qso_simplefle_utc_time'); ?></p>
 						<h4 class="font-weight-bold" id="utc-time"></h4>
 					</div>
 				</div>
