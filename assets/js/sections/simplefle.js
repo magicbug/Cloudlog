@@ -123,14 +123,14 @@ function handleInput() {
 		var rst_r = null;
 		items = row.startsWith("day ") ? [row] : row.split(" ");
 		var itemNumber = 0;
+		var freq = 0;
 		items.forEach((item) => {
 			if (item === "") {
 				return;
 			}
 			if (item.trim().match(/^day (\+)+$/)) {
 				var plusCount = item.match(/\+/g).length;
-				var originalDate = new Date(extraQsoDate);;
-				console.log(plusCount)
+				var originalDate = new Date(extraQsoDate);
 				originalDate.setDate(originalDate.getDate() + plusCount);
 				extraQsoDate = originalDate.toISOString().split("T")[0];
 			} else if (item.match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)) {
@@ -139,7 +139,7 @@ function handleInput() {
 				item.match(/^[0-2][0-9][0-5][0-9]$/)
 			) {
 				qsotime = item;
-			} else if (item.match(/^CW$|^SSB$|^FM$|^AM$|^PSK$|^FT8$/i)) {
+			} else if (item.match(/^CW$|^SSB$|^LSB$|^USB$|^FM$|^AM$|^PSK$|^FT8$/i)) {
 				mode = item.toUpperCase();
 			} else if (
 				item.match(/^[0-9]{1,4}(?:m|cm|mm)$/) ||
@@ -416,15 +416,19 @@ function getBandFromFreq(freq) {
 }
 
 function getFreqFromBand(band, mode) {
-	const settingsMode = getSettingsMode(mode.toUpperCase());
-	const id = "#" + band + settingsMode;
-	if ($(id).length) {
-		return $(id).val();
-	}
+	var settingsMode = getSettingsMode(mode.toUpperCase());
+	var settingsBand = "b" + band.toUpperCase();
+	var bandData = Bands[settingsBand];
+
+	if (bandData) {
+        return bandData[settingsMode] / 1000000;
+    }
+	
+
 }
 
 function getSettingsMode(mode) {
-	if (mode === "AM" || mode === "FM" || mode === "SSB") {
+	if (mode === "AM" || mode === "FM" || mode === "SSB" || mode === "LSB" || mode === "USB") {
 		return "SSB";
 	}
 
@@ -482,6 +486,17 @@ function isBandModeEntered() {
 	});
 
 	return isBandModeOK;
+}
+
+function isTimeEntered() {
+	let isTimeOK = true;
+	qsoList.forEach((item) => {
+		if (item[1] === "") {
+			isTimeOK = false;
+		}
+	});
+
+	return isTimeOK;
 }
 
 function isExampleDataEntered() {
@@ -623,6 +638,17 @@ $(".js-save-to-log").click(function () {
 		});
 		return false;
 	}
+	if (false === isTimeEntered()) {
+		BootstrapDialog.alert({
+			title: lang_general_word_warning,
+			message: lang_qso_simplefle_warning_missing_time,
+			type: BootstrapDialog.TYPE_DANGER,
+			btnCancelLabel: lang_general_word_cancel,
+			btnOKLabel: lang_general_word_ok,
+			btnOKClass: "btn-warning",
+		});
+		return false;
+	}
 	if (true === isExampleDataEntered()) {
 		BootstrapDialog.alert({
 			title: lang_general_word_warning,
@@ -660,7 +686,7 @@ $(".js-save-to-log").click(function () {
 						var rst_rcvd = item[7];
 						var rst_sent = item[6];
 						var start_date = item[0];
-						var start_time = item[1][0] +item[1][1] + ":" + item[1][2] + item[1][3];
+						var start_time = item[1][0] + item[1][1] + ":" + item[1][2] + item[1][3];
 						var band = item[4];
 						var mode = item[5];
 						var freq_display = item[3] * 1000000;
