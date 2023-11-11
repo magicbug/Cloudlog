@@ -927,6 +927,8 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 						if (isset($data['callsign']['error'])) {
 							$data['error'] = $data['callsign']['error'];
 						}
+					} else {
+						$data['error'] = 'No result (qrz not configured)';
 					} /*else {
 						// Lookup using hamli
 						$this->load->library('hamli');
