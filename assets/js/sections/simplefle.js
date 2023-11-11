@@ -164,13 +164,13 @@ function handleInput() {
 				qsotime = qsotime.slice(0, -2) + item;
 			} else if (
 				item.match(
-					/^[A-Z0-9]{1,3}\/[A-Z]{2}-\d{3}|[AENOS]*[FNSUACA]-\d{3}|(?!.*FF)[A-Z0-9]{1,3}-\d{4}|[A-Z0-9]{1,3}[F]{2}-\d{4}$/i
+					/^[A-Z0-9]{1,3}\/[A-Z]{2}-\d{3}|[AENOS]*[FNSUACA]-\d{3}|(?!.*FF)[A-Z0-9]{1,3}-\d{4,5}|[A-Z0-9]{1,3}[F]{2}-\d{4}$/i
 				)
 			) {
 				sotaWwff = item.toUpperCase();
 			} else if (
 				item.match(
-					/([a-zA-Z0-9]{1,3}[0123456789][a-zA-Z0-9]{0,3}[a-zA-Z])|.*\/([a-zA-Z0-9]{1,3}[0123456789][a-zA-Z0-9]{0,3}[a-zA-Z])|([a-zA-Z0-9]{1,3}[0123456789][a-zA-Z0-9]{0,3}[a-zA-Z])\/.*/
+					/([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])|.*\/([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])|([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])\/.*/
 				)
 			) {
 				callsign = item.toUpperCase();
@@ -423,7 +423,7 @@ function getFreqFromBand(band, mode) {
 	if (bandData) {
         return bandData[settingsMode] / 1000000;
     }
-	
+
 
 }
 
@@ -503,7 +503,7 @@ function isExampleDataEntered() {
 	let isExampleData = false;
 	if (textarea.value.startsWith("*example-data*")) {
 		isExampleData = true;
-		
+
 	};
 	return isExampleData;
 
@@ -559,7 +559,7 @@ function isIOTA(value) {
 }
 
 function isPOTA(value) {
-	if (value.match(/^(?!.*FF)[A-Z0-9]{1,3}-\d{4}$/)) {
+	if (value.match(/^(?!.*FF)[A-Z0-9]{1,3}-\d{4,5}$/)) {
 		return true;
 	}
 }
