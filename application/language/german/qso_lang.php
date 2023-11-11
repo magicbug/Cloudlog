@@ -71,6 +71,7 @@ $lang['qso_simplefle_error_stationcall'] = "Stationsstandort nicht ausgewählt";
 $lang['qso_simplefle_error_operator'] = "'Operator' Feld ist leer";
 $lang['qso_simplefle_warning_reset'] = "Warnung! Willst du wirklich alles zurücksetzen?";
 $lang['qso_simplefle_warning_missing_band_mode'] = "Warnung! Du kannst die QSO Liste nicht loggen, da bei manchen QSO das Band und/oder der Mode fehlt!";
+$lang['qso_simplefle_warning_missing_time'] = "Warnung! Du kannst die QSO Liste nicht loggen, da bei manchen QSO die Zeit fehlt!";
 $lang['qso_simplefle_warning_example_data'] = "Achtung! Das Daten Feld enthält Beispiel Daten. Lösche zuerst die QSO Daten!";
 $lang['qso_simplefle_confirm_save_to_log'] = "Bist du dir sicher, dass du diese QSO loggen und die Eingabe zurücksetzen willst?";
 $lang['qso_simplefle_success_save_to_log_header'] = "QSO geloggt!";

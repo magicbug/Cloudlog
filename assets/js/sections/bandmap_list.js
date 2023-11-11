@@ -113,7 +113,6 @@ $(function() {
 	});
 
 	$("#band").on("change",function() {
-		table.order([1, 'asc']);
 		table.clear();
 		fill_list($('#band option:selected').val(), $('#decontSelect option:selected').val(),dxcluster_maxage);
 	});

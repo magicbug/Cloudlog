@@ -207,3 +207,5 @@ $lang['southamerica'] = 'Jižní Amerika';
 
 $lang['gen_band_selection'] = 'Výběr pásma';
 $lang['general_word_today'] = 'Dnes';
+
+$lang['hams_at_no_activations_found'] = 'No upcoming activations found. Please check back later.';

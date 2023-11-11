@@ -26,6 +26,7 @@
 			var lang_qso_simplefle_error_operator = "<?php echo lang('qso_simplefle_error_operator'); ?>";
 			var lang_qso_simplefle_warning_reset = "<?php echo lang('qso_simplefle_warning_reset'); ?>";
 			var lang_qso_simplefle_warning_missing_band_mode = "<?php echo lang('qso_simplefle_warning_missing_band_mode'); ?>";
+			var lang_qso_simplefle_warning_missing_time = "<?php echo lang('qso_simplefle_warning_missing_time'); ?>";
 			var lang_qso_simplefle_warning_example_data = "<?php echo lang('qso_simplefle_warning_example_data'); ?>";
 			var lang_qso_simplefle_confirm_save_to_log = "<?php echo lang('qso_simplefle_confirm_save_to_log'); ?>";
 			var lang_qso_simplefle_success_save_to_log_header = "<?php echo lang('qso_simplefle_success_save_to_log_header'); ?>";
@@ -72,7 +73,7 @@
 						</div>
 					</div>
 					<div class="col-xs-12 col-lg-12 col-xl-6">
-						<label for="utc-time"><?php echo lang('qso_simplefle_utc_time'); ?></label>
+						<p><?php echo lang('qso_simplefle_utc_time'); ?></p>
 						<h4 class="font-weight-bold" id="utc-time"></h4>
 					</div>
 				</div>

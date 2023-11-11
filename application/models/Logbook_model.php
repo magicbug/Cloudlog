@@ -289,10 +289,10 @@ class Logbook_model extends CI_Model {
     }
 
     // Decide whether its single gridsquare or a multi which makes it vucc_grids
-    if (strpos(trim($this->input->post('locator')), ',') !== false) {
-      $data['COL_VUCC_GRIDS'] = strtoupper(trim($this->input->post('locator')));
+    if (strpos(trim(xss_clean($this->input->post('locator')) ?? ''), ',') !== false) {
+      $data['COL_VUCC_GRIDS'] = strtoupper(trim(xss_clean($this->input->post('locator')) ?? ''));
     } else {
-      $data['COL_GRIDSQUARE'] = strtoupper(trim($this->input->post('locator')));
+      $data['COL_GRIDSQUARE'] = strtoupper(trim(xss_clean($this->input->post('locator')) ?? ''));
     }
 
     // if eQSL username set, default SENT & RCVD to 'N' else leave as null

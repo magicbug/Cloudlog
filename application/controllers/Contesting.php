@@ -188,7 +188,7 @@ class Contesting extends CI_Controller {
 		$result = $this->Contesting_model->checkIfWorkedBefore($call, $band, $mode, $contest);
 		
 		header('Content-Type: application/json');
-		if ($result->num_rows()) {
+		if ($result && $result->num_rows()) {
 			echo json_encode(array('message' => 'Worked before'));
 		}
 		return;
