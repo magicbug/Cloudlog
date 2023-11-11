@@ -578,7 +578,7 @@
                             <div class="form-group">
                                 <label for="user_default_band"><?php echo lang('account_gridmap_default_band'); ?></label>
 
-                                <select id="user_default_band" class="form-control form-control-sm" name="user_default_band">
+                                <select id="user_default_band" class="form-control" name="user_default_band">
                                     <option value="All">All</option>;
                                     <?php foreach($bands as $band) {
                                         echo '<option value="'.$band.'"';

@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['error_no_active_station_profile'] = 'Attention: vous devez activer le profil d\'une station.';
 
-$lang['notice_turn_the_radio_on'] = 'Vous n\'avez fait aucun QSOs aujourd\'hui. Il est temps d\'allumer la radio!';
+$lang['notice_turn_the_radio_on'] = 'Vous n\'avez réalisé aucun QSO aujourd\'hui. Il est temps d\'allumer la radio !';
 
 $lang['general_word_important'] = 'Important';
 $lang['general_word_warning'] = 'Warning';
@@ -94,7 +94,7 @@ $lang['general_mark_qsl_requested_direct'] = 'Marquer Carte QSL comme demandé (
 $lang['general_mark_qsl_not_required'] = 'Marquer Carte QSL comme non requise';
 
 $lang['general_delete_qso'] = 'Effacer QSO';
-$lang['general_more_qso'] = 'More QSOs';
+$lang['general_more_qso'] = 'Autres QSO';
 
 $lang['general_lookup_qrz'] = 'Lookup on QRZ.com';
 $lang['general_lookup_hamqth'] = 'Lookup on HamQTH';
@@ -171,7 +171,7 @@ $lang['gen_hamradio_latitude'] = "Latitude";
 $lang['gen_hamradio_longitude'] = "Longitude";
 $lang['gen_hamradio_bearing'] = "Bearing";
 $lang['gen_hamradio_distance'] = 'Distance';
-$lang['gen_hamradio_operator'] = 'Operateur';
+$lang['gen_hamradio_operator'] = 'Opérateur';
 
 $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
@@ -184,33 +184,33 @@ $lang['gen_find_zone_part3'] = ' to find it!';
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Vous avez eu';
-$lang['dashboard_qsos_today'] = 'QSOs aujourd\'hui!';
-$lang['dashboard_qso_breakdown'] = 'QSOs Breakdown';
+$lang['dashboard_qsos_today'] = 'QSO aujourd\'hui !';
+$lang['dashboard_qso_breakdown'] = 'QSO Breakdown';
 $lang['dashboard_countries_breakdown'] = 'Pays Breakdown';
-$lang['gen_to_date'] = 'To date';
+$lang['gen_to_date'] = 'au ';
 
-$lang['gen_from_date'] = 'depuis la date';
+$lang['gen_from_date'] = 'Date, du ';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'Ce QSO est confirmé depuis le';
 
-$lang['error_no_logbook_found'] = 'No logbooks were found. You need to define a logbook under Station Logbooks! Do it here:';
+$lang['error_no_logbook_found'] = 'Aucun journal de trafic n\'a été trouvé. Vous devez en définir un via le menu \'Station Logbooks\' ! Faites-le ici :';
 
-$lang['copy_to_clipboard'] = 'Copy to clipboard';
+$lang['copy_to_clipboard'] = 'Copier dans le presse-papier';
 
-$lang['africa'] = 'Africa';
+$lang['africa'] = 'Afrique';
 $lang['antarctica'] = 'Antarctica';
-$lang['asia'] = 'Asia';
+$lang['asia'] = 'Asie';
 $lang['europe'] = 'Europe';
-$lang['northamerica'] = 'North America';
-$lang['oceania'] = 'Oceania';
-$lang['southamerica'] = 'South America';
+$lang['northamerica'] = 'Amérique du Nord';
+$lang['oceania'] = 'Océanie';
+$lang['southamerica'] = 'Amérique du Sud';
 
 $lang['gen_band_selection'] = 'Band selection';
-$lang['general_word_today'] = 'Today';
+$lang['general_word_today'] = 'Aujourd\'hui';
 
 $lang['dashboard_php_version_warning'] = 'You need to upgrade your PHP version. Minimum version is 7.4. Your version is';
 $lang['dashboard_country_files_warning'] = 'You need to update country files! Go <a href="'.site_url('update').'">here</a> to do it!';
 $lang['dashboard_locations_warning'] = 'You have no station locations. Go <a href="'. site_url('station') . '">here</a> to create it!';
-$lang['dashboard_logbooks_warning'] = 'You have no station logbook. Go <a href="'. site_url('logbooks') . '">here</a> to create it!';
+$lang['dashboard_logbooks_warning'] = 'Vous n\'avez pas de journal de travail pour la station. Aller sur cette <a href="'. site_url('logbooks') . '">page</a> pour en créer un !';
 
-$lang['hams_at_no_activations_found'] = 'No upcoming activations found. Please check back later.';
+$lang['hams_at_no_activations_found'] = 'Aucune activation à venir trouvée. Veuillez revenir plus tard.';
