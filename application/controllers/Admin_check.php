@@ -70,7 +70,7 @@ class Admin_check extends CI_Controller {
 		$_result = array();
         $_language_file = APPPATH.'language/'.$_post['admin_language_lang'].'/'.$_post['admin_language_file'];
         if ((!empty($_post['admin_language_tag'])) && (!empty($_post['admin_language_value']))) {
-        	$_post['admin_language_value'] = xss_clean(addslashes(stripslashes($_post['admin_language_value'])));
+        	$_post['admin_language_value'] = stripslashes($_post['admin_language_value']);
 	        if (file_exists($_language_file)) {
 		        $_file_content = file_get_contents($_language_file);
 		        if ($_post['admin_language_iscreate']==="1") {
@@ -79,7 +79,7 @@ class Admin_check extends CI_Controller {
 						$_result['error'] = 'Tag "'.$_post['admin_language_tag'].'" not created, already exist ?!';
 			    		log_message('error', 'Admin Check - Language : TTag "'.$_post['admin_language_tag'].'" not updaged, error during writing file "'.$_language_file.'"');	
 			        } else {
-						$_tag_new = '$lang[\''.$_post['admin_language_tag'].'\'] = "'.$_post['admin_language_value'].'";'.chr(13);
+						$_tag_new = '$lang[\''.$_post['admin_language_tag'].'\'] = \''.$_post['admin_language_value'].'\';'.PHP_EOL;
 						if (file_put_contents($_language_file, $_tag_new, FILE_APPEND)===false) { 
 				    		$_result['error'] = 'Tag "'.$_post['admin_language_tag'].'" not created, error during writing file !';
 			    			log_message('error', 'Admin Check - Language : TTag "'.$_post['admin_language_tag'].'" not created, error during writing file "'.$_language_file.'"');		
@@ -91,7 +91,7 @@ class Admin_check extends CI_Controller {
 			        preg_match('/\$lang\[\''.$_post['admin_language_tag'].'\'] = ([)\'|"])(.*)[\'|"];/', $_file_content, $output_array);
 			        if (isset($output_array[2])) {
 			        	$_tag_exist = '$lang[\''.$_post['admin_language_tag'].'\'] = '.$output_array[1].$output_array[2].$output_array[1].';';
-			        	$_tag_new = '$lang[\''.$_post['admin_language_tag'].'\'] = '.$output_array[1].$_post['admin_language_value'].$output_array[1].';';
+			        	$_tag_new = '$lang[\''.$_post['admin_language_tag'].'\'] = \''.str_replace("'","\'",$_post['admin_language_value']).'\';';
 			        	$_file_content = str_replace($_tag_exist, $_tag_new, $_file_content);
 				        if (file_put_contents($_language_file, $_file_content)===false) { 
 				    		$_result['error'] = 'Tag "'.$_post['admin_language_tag'].'" not updaged, error during writing file !';

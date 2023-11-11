@@ -1,5 +1,4 @@
 <?php $width_td = 300; ?>
-<?php $width_reduc = 35; ?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light main-nav"><h2>Cloudlog - Admin/Dev Tools : <?php echo $page_title; ?></h2></nav>
 
@@ -43,7 +42,7 @@
                     $_tag_value = "-";
                     $_tag_notexist = "1";
                 }
-                echo "<td class=\"tag\" style=\"width:".$width_td."px;display:none;\" data-file=\"".$filename."\" data-lang=\"".$lang."\" data-tag=\"".$tag."\" data-tagnotexist=\"".$_tag_notexist."\" data-value=\"".stripslashes($_tag_value)."\" >".stripslashes($_tag_value)."</td>"; 
+                echo "<td class=\"tag\" style=\"width:".$width_td."px;display:none;\" data-file=\"".$filename."\" data-lang=\"".$lang."\" data-tag=\"".$tag."\" data-tagnotexist=\"".$_tag_notexist."\" >".stripslashes($_tag_value)."</td>"; 
             } ?>
         </tr>
         <?php } ?>
@@ -57,7 +56,7 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
 
 <script language="javascript">
-    //var json_tags = <?php //echo json_encode($language_full_array); ?>;
+    var json_tags = <?php echo json_encode($language_full_array); ?>;
 
     function file_elapse_zone(_this) {
         var _fn = _this.attr('data-file');
@@ -71,14 +70,10 @@
     }
     function lang_showhide_td(_fn,_showhide) {
         if (_showhide==1) {
-            //var _width_table = $('.table').width() + <?php echo $width_td; ?>;
-            //$('.table').width(_width_table);
             $('.lang[data-lang="'+_fn+'"]').show();
             $('.file[data-lang="'+_fn+'"]').show();
             $('.tag[data-lang="'+_fn+'"]').show();
         } else {
-            //var _width_table = $('.table').width() - <?php echo $width_td; ?>;
-            //$('.table').width(_width_table);
             $('.lang[data-lang="'+_fn+'"]').hide();
             $('.file[data-lang="'+_fn+'"]').hide();
             $('.tag[data-lang="'+_fn+'"]').hide();
@@ -90,8 +85,8 @@
         _html += "<b>File :</b> <span class='adim_field' data-type='file'>"+_this.attr('data-file')+"</span><br/>";
         _html += "<b>Tag :</b> <span class='adim_field' data-type='tag'>"+_this.attr('data-tag')+"</span> &nbsp;";
         _html += ((_this.attr('data-tagnotexist')=="1")?"<span style='color:var(--red);' class='adim_field' data-type='tagnotexist'>[NOT EXIST]</span>":"")+"<br/>";
-        _html += "<b>Value (actual) :</b> <span class='adim_field' data-type='value_old'>"+_this.attr('data-value')+"</span><br/>";
-        _html += "<b>Value (update) :</b><br/><textarea class='adim_field' data-type='value_new' rows='4' style='width:100%;''>"+_this.attr('data-value')+"</textarea><br/>";
+        _html += "<b>Value (actual) :</b> <span class='adim_field' data-type='value_old'>"+_this.html()+"</span><br/>";
+        _html += "<b>Value (update) :</b><br/><textarea class='adim_field' data-type='value_new' rows='4' style='width:100%;''>"+_this.html()+"</textarea><br/>";
 
         _html += "<br/><button type='submit' class='btn btn-primary btn-save'><i class='fas fa-save'></i> Save</button>&nbsp;&nbsp;";
         _html += "<a href='javascript:admin_close();' class='btn btn-danger'><i class='far fa-times-circle'></i> Cancel</a>&nbsp;&nbsp;";
@@ -116,7 +111,7 @@
             error: function() { console.log('[Cloudlog][ERROR] ajax show_file_content() function return error.'); },
             success: function(_html) {
                 BootstrapDialog.show({
-                    title: _file_name, //Update tag's value",
+                    title: _file_name,
                     cssClass: 'language-dialog',
                     size: BootstrapDialog.SIZE_WIDE,
                     nl2br: false,
@@ -149,7 +144,7 @@
                 error: function() { console.log('[Cloudlog][ERROR] ajax admin_update() function return error.'); },
                 success: function(res) {
                     if (typeof res.ok !== "undefined") {
-                        $('.tag[data-file="'+_language_file+'"][data-lang="'+_language_lang+'"][data-tag="'+_language_tag+'"]').css('color','var(--success)').attr('data-value',_language_value);
+                        $('.tag[data-file="'+_language_file+'"][data-lang="'+_language_lang+'"][data-tag="'+_language_tag+'"]').css('color','var(--success)').attr('data-tagnotexist',0);
                         $('.tag[data-file="'+_language_file+'"][data-lang="'+_language_lang+'"][data-tag="'+_language_tag+'"]').empty().html(_language_value);
                         admin_close();
                     } else {
