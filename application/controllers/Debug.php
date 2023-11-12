@@ -14,6 +14,10 @@ class Debug extends CI_Controller {
     {
         $this->load->helper('file');
 
+        $this->load->model('MigrationVersion');
+
+        $data['migration_version'] = $this->MigrationVersion->getMigrationVersion();
+
         // Test writing to backup folder
         $backup_folder = $this->is_really_writable('backup');
         $data['backup_folder'] = $backup_folder;
