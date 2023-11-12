@@ -33,7 +33,7 @@ class Debug extends CI_Controller {
         $data['page_title'] = "Debug";
 
         $this->load->view('interface_assets/header', $data);
-        $this->load->view('debug/main', $data);
+        $this->load->view('debug/main');
         $this->load->view('interface_assets/footer');
     }
 
