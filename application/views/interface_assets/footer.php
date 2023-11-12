@@ -2335,7 +2335,7 @@ $(document).ready(function(){
             $('[class*="buttons"]').css("color", "white");
         }
         $('#eqsl_force_from_date').datetimepicker({
-            format: 'YYYY/MM/DD',
+            format: 'YYYY/MM/DD'
         });
 
     </script>
