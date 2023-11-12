@@ -205,12 +205,12 @@
 							}
 							?>
 						</select>
-						<small id="stationCQInputHelp" class="form-text text-muted"><?php echo lang("gen_find_zone_cq"); ?></small>
+						<small id="stationCQInputHelp" class="form-text text-muted"><?php echo lang("gen_find_zone_cq_part1")." <a href='https://zone-check.eu/?m=cq' target='_blank'>".lang("gen_find_zone_part2")."</a> ".lang("gen_find_zone_part3"); ?></small>
 					</div>
 
 					<!-- ITU Zone -->
 					<div class="form-group">
-                    	<label for="stationITUZoneInput"><?php echo lang("gen_hamradio_itu_zone"); ?></label>
+                    	<label for="stationITUZoneInput"><?php echo lang("gen_hamradio_itu_zone_part1"); ?></label>
                     	<select class="custom-select" id="stationITUZoneInput" name="station_itu" required>
 							<?php
 							for ($i = 1; $i<=90; $i++) {
@@ -222,7 +222,7 @@
 							}
 							?>
                     	</select>
-                    	<small id="stationITUInputHelp" class="form-text text-muted"><?php echo lang("gen_find_zone_itu"); ?></small>
+                    	<small id="stationITUInputHelp" class="form-text text-muted"><?php echo lang("gen_find_zone_itu_part1")." <a href='https://zone-check.eu/?m=itu' target='_blank'>".lang("gen_find_zone_part2")."</a> ".lang("gen_find_zone_part3"); ?></small>
                 	</div>
 
 				</div>

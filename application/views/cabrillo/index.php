@@ -1,6 +1,6 @@
 <script>
 	var lang_export_cabrillo_proceed = '<?php echo lang('export_cabrillo_proceed') ?>';
-	var lang_export_cabrillo_select_year = '<?php echo lang('export_cabrillo_select_year') ?>';
+	var lang_export_cabrillo_select_year = "<?php echo lang('export_cabrillo_select_year') ?>";
 	var lang_export_cabrillo_select_contest = '<?php echo lang ('export_cabrillo_select_contest') ?>';
 	var lang_export_cabrillo_select_date_range = '<?php echo lang ('export_cabrillo_select_date_range') ?>'; 
 	var lang_export_cabrillo_no_contests_for_stationlocation = '<?php echo lang('export_cabrillo_no_contests_for_stationlocation') ?>';

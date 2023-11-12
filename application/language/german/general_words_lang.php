@@ -177,8 +177,10 @@ $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
 
 // Find your CQ/ITU Zone
-$lang['gen_find_zone_cq'] = "Wenn du deine CQ Zone nicht kennst <a href='https://zone-check.eu/?m=cq' target='_blank'>klicke hier</a> um sie herauszufinden!";
-$lang['gen_find_zone_itu'] = "Wenn du deine ITU Zone nicht kennst <a href='https://zone-check.eu/?m=itu' target='_blank'>klicke hier</a> um sie herauszufinden!";
+$lang['gen_find_zone_cq_part1'] = "Wenn du deine CQ Zone nicht kennst";
+$lang['gen_find_zone_itu_part1'] = "Wenn du deine ITU Zone nicht kennst";
+$lang['gen_find_zone_part2'] = "klicke hier";
+$lang['gen_find_zone_part3'] = "um sie herauszufinden!";
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Du hattest';
