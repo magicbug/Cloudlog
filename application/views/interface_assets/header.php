@@ -163,16 +163,16 @@
 							</ul>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Tools"><i class="fas fa-tools"></i><div class="d-inline d-lg-none" style="padding-left: 10px">Tools</div></a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="<?php echo site_url('hamsat'); ?>" title="Hams.at"><i class="fas fa-list"></i> Hams.at</a>
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Tools"><i class="fas fa-tools"></i><div class="d-inline d-lg-none" style="padding-left: 10px">Tools</div></a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+								<li><a class="dropdown-item" href="<?php echo site_url('hamsat'); ?>" title?"Hams.at"><i class="fas fa-list"></i> Hams.at</a></li>
 								<?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>
 									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="<?php echo site_url('bandmap/list'); ?>" title="Bandmap"><i class="fa fa-id-card"></i> <?php echo lang('menu_bandmap'); ?></a>
+									<li><a class="dropdown-item" href="<?php echo site_url('bandmap/list'); ?>" title?"Bandmap"><i class="fas fa-id-card"></i> <?php echo lang('menu_bandmap'); ?></a></li>
 								<?php } ?>
 									<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('sattimers'); ?>" title="SAT Timers"><i class="fas fa-satellite"></i> SAT Timers</a>
-							</div>
+								<li><a class="dropdown-item" href="<?php echo site_url('sattimers'); ?>" title?"SAT Timers"><i class="fas fa-satellite"></i> SAT Timers</a></li>
+							</ul>
 						</li>
 
 						<?php if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') == 99)) { ?>
