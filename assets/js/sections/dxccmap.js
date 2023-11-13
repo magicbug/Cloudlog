@@ -136,8 +136,10 @@ function addMarker(L, D, mapColor, map) {
         html: `<span style="${markerHtmlStyles}" />`
     })
 
+    var rndoff=(Math.floor(Math.random() * 10)/250);
+
     L.marker(
-    [D['lat'], D['long']], {
+    [+D['lat'] + rndoff, D['long']], {
         icon: myIcon,
         adif: D['adif'],
         title: D['prefix'] + ' - ' + D['name'],
@@ -145,7 +147,7 @@ function addMarker(L, D, mapColor, map) {
     ).addTo(map).on('click', onClick);
 
     L.marker(
-        [D['lat'], D['long']], {
+        [+D['lat'] + rndoff, D['long']], {
             icon: icon,
             adif: D['adif'],
             title: D['prefix'] + ' - ' + D['name'],
