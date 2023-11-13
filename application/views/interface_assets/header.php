@@ -244,7 +244,7 @@
 							if (localStorage.getItem("quicklogCallsign") !== "") {
   								localStorage.removeItem("quicklogCallsign");
 							}
-							localStorage.setItem("quicklogCallsign", $("input[name='searchBar']").val());
+							localStorage.setItem("quicklogCallsign", $("input[name='callsign']").val());
 							window.open("<?php echo site_url('qso?manual=0'); ?>", "_self");
 						}
 					</script>
@@ -266,7 +266,7 @@
 						</script>
 					<?php } ?>
 					<form id="quicklog-form" class="form-inline" onsubmit="return false;">
-						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="text" name="searchBar" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Quicklog" onkeypress="handleKeyPress(event)">
+						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="text" name="callsign" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Quicklog" onkeypress="handleKeyPress(event)">
 
 						<button title="<?php echo lang('menu_search_button_qicksearch_log'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="logQuicklog()"><i class="fas fa-plus"></i>
 							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button_qicksearch_log'); ?></div>
@@ -278,7 +278,7 @@
 					</form>
 				<?php } else { ?>
 					<form method="post" action="<?php echo site_url('search'); ?>" class="form-inline">
-						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="searchBar" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
+						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
 						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i>
 							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button'); ?></div>
 						</button>

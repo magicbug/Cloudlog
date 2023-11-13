@@ -71,6 +71,7 @@ $lang['qso_simplefle_error_stationcall'] = "Station Call is not selected";
 $lang['qso_simplefle_error_operator'] = "'Operator' Field is empty";
 $lang['qso_simplefle_warning_reset'] = "Warning! Do you really want to reset everything?";
 $lang['qso_simplefle_warning_missing_band_mode'] = "Warning! You can't log the QSO List, because some QSO don't have band and/or mode defined!";
+$lang['qso_simplefle_warning_missing_time'] = "Warning! You can't log the QSO List, because some QSO don't have a time defined!";
 $lang['qso_simplefle_warning_example_data'] = "Attention! The Data Field containes example data. First Clear Logging Session!";
 $lang['qso_simplefle_confirm_save_to_log'] = "Are you sure that you want to add these QSO to the Log and clear the session?";
 $lang['qso_simplefle_success_save_to_log_header'] = "QSO Logged!";
