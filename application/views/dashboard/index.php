@@ -188,7 +188,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
 
 		<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component'); ?>" hx-trigger="load, every 5s"></div>
-
+		
     	<table class="table table-striped">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-chart-bar"></i> <?php echo lang('dashboard_qso_breakdown'); ?></td>

@@ -21,6 +21,11 @@
                         <td>Base URL</td>
                         <td><span id="baseUrl"><a href="<?php echo $this->config->item('base_url')?>" target="_blank"><?php echo $this->config->item('base_url'); ?></a></span> <span data-toggle="tooltip" data-original-title="<?php echo lang('copy_to_clipboard'); ?>" onclick='copyURL("<?php echo $this->config->item('base_url'); ?>")'><i class="copy-icon fas fa-copy"></span></td>
                     </tr>
+                    <tr>
+                        <td>Migration</td>
+                        <td><?php echo (isset($migration_version) ? $migration_version : "<span class='badge badge-danger'>There is something wrong with your Migration in Database!</span>"); ?></td>
+                    </tr>
+
                 </table>
             </div>
         </div>

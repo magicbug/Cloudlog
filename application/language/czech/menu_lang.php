@@ -11,6 +11,7 @@ $lang['menu_advanced'] = 'Pokročilé zobrazení';
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = 'Živé QSO';
 $lang['menu_post_qso'] = 'Uložit QSO';
+$lang['menu_fast_log_entry'] = "Simple Fast Log Entry";
 $lang['menu_live_contest_logging'] = 'Živé závodní logování';
 $lang['menu_post_contest_logging'] = 'Uložit závodní log';
 $lang['menu_bandmap'] = 'Bandmap';
@@ -58,8 +59,10 @@ $lang['menu_update_country_files'] = 'Aktualizace souborů';
 $lang['menu_debug_information'] = 'Informace pro ladění';
 
 $lang['menu_search_text'] = 'Hledat značku';
+$lang['menu_search_text_quicklog'] = "Add/Search Callsign";
 
 $lang['menu_search_button'] = 'Hledat';
+$lang['menu_search_button_qicksearch_log'] = "Log";
 $lang['menu_login_button'] = 'Přihlásit se';
 
 $lang['menu_account'] = 'Účet';

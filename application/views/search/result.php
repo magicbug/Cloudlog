@@ -3,8 +3,8 @@
 
 <p>Sorry, but we didn't find any past QSOs with <?php echo $id; ?></p>
 
-<?php if(isset($callsign['callsign'])) { ?>
 <h3>Callbook Search for <?php echo $id; ?></h3>
+<?php if(isset($callsign['callsign'])) { ?>
 <table>
 
 <tr>
@@ -36,6 +36,10 @@
 </tr>
 
 </table>
+
+<?php } else { ?>
+
+<p><?php echo $error; ?></p>
 
 <?php } ?>
 </div>

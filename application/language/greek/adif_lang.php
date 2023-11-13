@@ -32,7 +32,7 @@ $lang['adif_select_stationlocation'] = "Select Station Location";
 // The File Input is translated by the Browser
 $lang['adif_file_label'] = "ADIF File";
 
-$lang['adif_hint_no_info_in_file'] ="Select if ADIF being imported does not contain this information.";
+$lang['adif_hint_no_info_in_file'] = "Select if ADIF being imported does not contain this information.";
 
 $lang['adif_import_dup'] = "Import duplicate QSOs";
 $lang['adif_mark_imported_lotw'] = "Mark imported QSOs as uploaded to LoTW";

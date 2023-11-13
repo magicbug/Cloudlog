@@ -2,12 +2,18 @@
 
     <h2>Hamsat - Satellite Rovers</h2>
     <p>This data is from <a target="_blank" href="https://hams.at/">https://hams.at/</a></p>
+    <?php if ($rovedata == []) { ?>
+     <div class="alert alert-warning" role="warning">
+       <?php echo lang('hams_at_no_activations_found');?>
+    </div>
+    <?php } else { ?>
     <table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th>Date</th>
                 <th>Time</th>
                 <th>Callsign</th>
+                <th>Comment</th>
                 <th>Satellite</th>
                 <th>Gridsquare(s)</th>
                 <th></th>
@@ -44,13 +50,16 @@
 			$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
                         $CI->load->model('logbook_model');
                         $call_worked = $CI->logbook_model->check_if_callsign_worked_in_logbook($rove['callsign'], $logbooks_locations_array, "SAT");
-                        echo " <span data-toggle=\"tooltip\" title=\"".$rove['comment']."\">";
                         if ($call_worked != 0) {
                             echo "<span class=\"text-success\">".$rove['callsign']."</span>";
                         } else {
                             echo $rove['callsign'];
                         }
-                        echo "</span></td>";
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        echo xss_clean($rove['comment']);
                         ?>
                     </td>
                     <td><span data-toggle="tooltip" title="<?php echo $rove['frequency']; ?> - <?php echo $rove['mode']; ?>"><?= $rove['satellite'] ?></span></td>
@@ -87,4 +96,5 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    <?php } ?>
 </div>

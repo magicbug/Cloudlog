@@ -11,6 +11,7 @@ $lang['menu_advanced'] = 'Advanced';
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = 'Live QSO';
 $lang['menu_post_qso'] = 'Post QSO';
+$lang['menu_fast_log_entry'] = "Simple Fast Log Entry";
 $lang['menu_live_contest_logging'] = 'Live Contest Logging';
 $lang['menu_post_contest_logging'] = 'Post Contest Logging';
 $lang['menu_bandmap'] = 'Bandikartta';
@@ -58,8 +59,10 @@ $lang['menu_update_country_files'] = 'Päivitä Country Files';
 $lang['menu_debug_information'] = 'Debug Information';
 
 $lang['menu_search_text'] = 'Etsi kutsulla';
+$lang['menu_search_text_quicklog'] = "Add/Search Callsign";
 
 $lang['menu_search_button'] = 'Etsi';
+$lang['menu_search_button_qicksearch_log'] = "Log";
 $lang['menu_login_button'] = 'Kirjaudu';
 
 $lang['menu_account'] = 'Käyttäjätili';

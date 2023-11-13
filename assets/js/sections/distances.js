@@ -28,7 +28,7 @@ function distPlot(form) {
 						backgroundColor: getBodyBackground()
 					},
 					title: {
-						text: 'Distance Distribution',
+						text: lang_statistics_distances_worked,
 						style: {
 							color: color
 						}
@@ -47,7 +47,7 @@ function distPlot(form) {
 					},
 					yAxis: {
 						title: {
-							text: '# QSOs',
+							text: lang_statistics_distances_number_of_qsos,
 							style: {
 								color: color
 							}
@@ -77,9 +77,9 @@ function distPlot(form) {
 					tooltip: {
 						formatter: function () {
 							if(this.point) {
-								return "Distance: " + options.xAxis.categories[this.point.x] +
-									"<br />Callsign(s) worked (max 5 shown): " + myComments[this.point.x] +
-									"<br />Number of QSOs: <strong>" + series.data[this.point.x] + "</strong>";
+								return lang_gen_hamradio_distance + ": " + options.xAxis.categories[this.point.x] +
+									"<br />" + lang_statistics_distances_callsigns_worked + ": " + myComments[this.point.x] +
+									"<br />" + lang_statistics_distances_number_of_qsos + ": <strong>" + series.data[this.point.x] + "</strong>";
 							}
 						}
 					},
@@ -108,16 +108,16 @@ function distPlot(form) {
 				$.each(tmp.qsodata, function(){
 					myComments.push(this.calls);
 					options.xAxis.categories.push(this.dist);
-					series.name = 'Number of QSOs';
+					series.name = lang_statistics_distances_number_of_qsos;
 					series.data.push(this.count);
 				});
 
 				options.series.push(series);
 
-				$('#information').html(tmp.qrb.Qsos + " contacts were plotted.<br /> Your furthest contact was with " + tmp.qrb.Callsign
-					+ " in gridsquare "+ tmp.qrb.Grid
-					+"; the distance was "
-					+tmp.qrb.Distance + tmp.unit +".");
+				$('#information').html(tmp.qrb.Qsos + " " + lang_statistics_distances_part1_contacts_were_plotted_furthest + " " + tmp.qrb.Callsign
+					+ " " + lang_statistics_distances_part2_contacts_were_plotted_furthest + " " + tmp.qrb.Grid
+					+". " + lang_statistics_distances_part3_contacts_were_plotted_furthest + " "
+					+ tmp.qrb.Distance + tmp.unit + ".");
 
 				var chart = new Highcharts.Chart(options);
 			}
@@ -166,7 +166,7 @@ function getDistanceQsos(distance) {
 					});
 				},
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}

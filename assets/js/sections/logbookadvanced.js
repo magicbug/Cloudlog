@@ -534,7 +534,7 @@ $(document).ready(function () {
 						}
 					},
 					{
-						label: 'Close',
+						label: lang_admin_close,
 						cssClass: 'btn-sm',
 						id: 'closeButton',
 						action: function (dialogItself) {
@@ -579,7 +579,7 @@ $(document).ready(function () {
 
 					},
 					buttons: [{
-						label: 'Close',
+						label: lang_admin_close,
 						action: function (dialogItself) {
 							$('#qslSlideshow').prop("disabled", false);
 							dialogItself.close();
@@ -661,7 +661,7 @@ $(document).ready(function () {
 					onshown: function(dialog) {
 					},
 					buttons: [{
-						label: 'Close',
+						label: lang_admin_close,
 						action: function (dialogItself) {
 							$('#printLabel').prop("disabled", false);
 							dialogItself.close();

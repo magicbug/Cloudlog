@@ -331,7 +331,7 @@ function searchLog(callsign) {
                     $('[data-toggle="tooltip"]').tooltip();
                 },
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function (dialogItself) {
                         dialogItself.close();
                     }
@@ -361,7 +361,7 @@ function searchLogTimeDate(id) {
                     $('[data-toggle="tooltip"]').tooltip();
                 },
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function (dialogItself) {
                         dialogItself.close();
                     }

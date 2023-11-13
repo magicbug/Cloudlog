@@ -2,15 +2,15 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['awards_info_button'] = "Award Info";
-$lang['awards_show_worked'] = "Show worked";
-$lang['awards_show_confirmed'] = "Show confirmed";
-$lang['awards_show_not_worked'] = "Show not worked";
-$lang['awards_show_cq_map'] = "Show CQ Zone Map";
-$lang['awards_summary'] = "Summary";
+$lang['awards_info_button'] = "Informations complémentaires";
+$lang['awards_show_worked'] = "Voir les \"réalisés\"";
+$lang['awards_show_confirmed'] = "Voir les \"confirmés\"";
+$lang['awards_show_not_worked'] = "Voir les \"non réalisés\"";
+$lang['awards_show_cq_map'] = "Voir la carte";
+$lang['awards_summary'] = "Résumé";
 $lang['awards_total'] = "Total";
-$lang['awards_total_worked'] = "Total worked";
-$lang['awards_total_confirmed'] = "Total confirmed";
+$lang['awards_total_worked'] = "Total \"réalisés\"";
+$lang['awards_total_confirmed'] = "Total \"confirmés\"";
 
 
 $lang['awards_cq_page_title'] = "Awards - CQ Magazine WAZ";

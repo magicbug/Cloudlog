@@ -17,18 +17,22 @@
     */
     var lang_general_word_qso_data = "<?php echo lang('general_word_qso_data'); ?>";
     var lang_general_word_danger = "<?php echo lang('general_word_danger'); ?>";
+    var lang_general_word_attention = "<?php echo lang('general_word_attention'); ?>";
+    var lang_general_word_warning = "<?php echo lang('general_word_warning'); ?>";
+    var lang_general_word_cancel = "<?php echo lang('general_word_cancel'); ?>";
+    var lang_general_word_ok = "<?php echo lang('general_word_ok'); ?>";
     var lang_qso_delete_warning = "<?php echo lang('qso_delete_warning'); ?>";
     var lang_general_word_colors = "<?php echo lang('general_word_colors'); ?>";
     var lang_general_word_confirmed = "<?php echo lang('general_word_confirmed'); ?>";
     var lang_general_word_worked_not_confirmed = "<?php echo lang('general_word_worked_not_confirmed'); ?>";
     var lang_general_word_not_worked = "<?php echo lang('general_word_not_worked'); ?>";
+    var lang_admin_close = "<?php echo lang('admin_close'); ?>";
 </script>
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/Control.FullScreen.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.qrb.js"></script>
@@ -332,7 +336,7 @@ $(function () {
                 nl2br: false,
                 message: 'You need to make a query before you search!',
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogItself) {
                         dialogItself.close();
                     }
@@ -453,7 +457,7 @@ $(function () {
                     nl2br: false,
                     message: html,
                     buttons: [{
-                        label: 'Close',
+                        label: lang_admin_close,
                         action: function(dialogItself) {
                             dialogItself.close();
                         }
@@ -512,7 +516,7 @@ $(function () {
                 nl2br: false,
                 message: 'You need to make a query before you search!',
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogItself) {
                         dialogItself.close();
                     }
@@ -996,6 +1000,37 @@ $(document).on('keypress',function(e) {
 					}
 				);
 			});
+			$('#reset_time').click(function() {
+				var now = new Date();
+				var localTime = now.getTime();
+				var utc = localTime + (now.getTimezoneOffset() * 60000);
+				$('#start_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+				$("[id='start_time']").each(function() {
+					$(this).attr("value", ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+				});
+			});
+			$('#reset_start_time').click(function() {
+				var now = new Date();
+				var localTime = now.getTime();
+				var utc = localTime + (now.getTimezoneOffset() * 60000);
+				$('#start_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2));
+				$("[id='start_time']").each(function() {
+					$(this).attr("value", ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+				});
+				$('#end_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2));
+				$("[id='end_time']").each(function() {
+					$(this).attr("value", ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+				});
+			});
+			$('#reset_end_time').click(function() {
+				var now = new Date();
+				var localTime = now.getTime();
+				var utc = localTime + (now.getTimezoneOffset() * 60000);
+				$('#end_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2));
+				$("[id='end_time']").each(function() {
+					$(this).attr("value", ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+				});
+			});
 		});
 	</script>
 
@@ -1106,24 +1141,24 @@ $(document).on('keypress',function(e) {
 
       if ( ! manual ) {
         $(function($) {
-          var options = {
-            utc: true,
-            format: '%H:%M:%S'
-          }
-          $('.input_time').jclock(options);
-        });
-
-        $(function($) {
-          var options = {
-            utc: true,
-            format: '%d-%m-%Y'
-          }
-          $('.input_date').jclock(options);
+           resetTimers();
         });
       }
     });
 
-
+<?php if ($this->session->userdata('user_qso_end_times')  == 1) { ?>
+    $('#callsign').focusout(function() {
+      if (! manual && $('#callsign').val() != '') {
+        clearInterval(handleStart);
+        clearInterval(handleDate);
+      }
+    });
+    $('#start_time').focusout(function() {
+       if (manual && $('#start_time').val() != '') {
+          $('#end_time').val($('#start_time').val());
+       }
+    });
+<?php } ?>
 
   jQuery(function($) {
   var input = $('#callsign');
@@ -1142,6 +1177,9 @@ $(document).on('keypress',function(e) {
 	  }
 	  if (e.key === "Escape") { // escape key maps to keycode `27`
 		  reset_fields();
+		  if ( ! manual ) {
+		     resetTimers()
+		  }
 		  $('#callsign').val("");
 		  $("#callsign").focus();
 	  }
@@ -1316,6 +1354,21 @@ $(document).on('keypress',function(e) {
             $('#rst_rcvd').val('59');
         }
     }
+
+    function getUTCTimeStamp(el) {
+       var now = new Date();
+       var localTime = now.getTime();
+       var utc = localTime + (now.getTimezoneOffset() * 60000);
+       $(el).attr('value', ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+    }
+
+    function getUTCDateStamp(el) {
+       var now = new Date();
+       var localTime = now.getTime();
+       var utc = localTime + (now.getTimezoneOffset() * 60000);
+       $(el).attr('value', ("0" + now.getUTCDate()).slice(-2)+'-'+("0" + (now.getUTCMonth()+1)).slice(-2)+'-'+now.getUTCFullYear());
+    }
+
     </script>
 
     <script>
@@ -2124,7 +2177,7 @@ $(document).ready(function(){
                                $('[data-toggle="tooltip"]').tooltip();
                             },
                             buttons: [{
-                                label: 'Close',
+                                label: lang_admin_close,
                                 action: function (dialogItself) {
                                     dialogItself.close();
                                 }
@@ -2190,7 +2243,7 @@ $(document).ready(function(){
                                $('[data-toggle="tooltip"]').tooltip();
                             },
                             buttons: [{
-                                label: 'Close',
+                                label: lang_admin_close,
                                 action: function (dialogItself) {
                                     dialogItself.close();
                                 }
@@ -2247,6 +2300,7 @@ $(document).ready(function(){
 
     ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
         $.fn.dataTable.moment('<?php echo $usethisformat ?>');
@@ -2282,7 +2336,7 @@ $(document).ready(function(){
             $('[class*="buttons"]').css("color", "white");
         }
         $('#eqsl_force_from_date').datetimepicker({
-            format: 'YYYY/MM/DD',
+            format: 'YYYY/MM/DD'
         });
 
     </script>
@@ -2322,7 +2376,7 @@ function viewQsl(picture, callsign) {
                 size: BootstrapDialog.SIZE_WIDE,
                 message: $textAndPic,
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogRef){
                         dialogRef.close();
                     }
@@ -2384,7 +2438,7 @@ function viewEqsl(picture, callsign) {
                 size: BootstrapDialog.SIZE_WIDE,
                 message: $textAndPic,
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogRef){
                         dialogRef.close();
                     }
@@ -2449,7 +2503,7 @@ function viewEqsl(picture, callsign) {
                         });
                     },
                     buttons: [{
-                        label: 'Close',
+                        label: lang_admin_close,
                         action: function (dialogItself) {
                             dialogItself.close();
                         }
@@ -2494,7 +2548,7 @@ function viewEqsl(picture, callsign) {
 				    });
 			    },
 			    buttons: [{
-			    label: 'Close',
+			    label: lang_admin_close,
 				    action: function (dialogItself) {
 					    dialogItself.close();
 				    }
@@ -2616,7 +2670,7 @@ function viewEqsl(picture, callsign) {
 					nl2br: false,
 					message: html,
 					buttons: [{
-						label: 'Close',
+						label: lang_admin_close,
 						action: function (dialogItself) {
 							dialogItself.close();
 						}
@@ -2761,7 +2815,7 @@ function viewEqsl(picture, callsign) {
                        $('[data-toggle="tooltip"]').tooltip();
                     },
                     buttons: [{
-                        label: 'Close',
+                        label: lang_admin_close,
                         action: function (dialogItself) {
                             dialogItself.close();
                         }
@@ -2838,7 +2892,7 @@ function viewEqsl(picture, callsign) {
 					nl2br: false,
 					message: html,
 					buttons: [{
-						label: 'Close',
+						label: lang_admin_close,
 						action: function (dialogItself) {
 							dialogItself.close();
 						}

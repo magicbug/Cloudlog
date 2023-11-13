@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -14,13 +15,23 @@ $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Välj fil';
 $lang['general_word_next'] = 'Next';
 $lang['general_word_previous'] = 'Previous';
+
+$lang['general_word_cancel'] = "Cancel";
+$lang['general_word_ok'] = "OK";
+$lang['general_word_attention'] = "Attention";
 $lang['general_word_enabled'] = "Enabled";
 $lang['general_word_disabled'] = "Disabled";
+$lang['general_word_count'] = "Count";
+$lang['general_word_filtering_on'] = "Filtering on";
 $lang['general_word_export'] = "Export";
 $lang['general_word_import'] = "Import";
+$lang['general_word_startdate'] = "Start Date";
+$lang['general_word_enddate'] = "End Date";
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_time'] = 'Tid';
+$lang['general_word_time_on'] = 'Time on';
+$lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Datum/Tid';
 $lang['general_word_none'] = 'Ingen';
 $lang['general_word_name'] = 'Namn';
@@ -38,12 +49,13 @@ $lang['general_word_year'] = 'I år';
 $lang['general_word_month'] = 'Denna månad';
 
 $lang['general_word_colors'] = "Colors";
+$lang['general_word_light'] = "Light/Laser";
 $lang['general_word_worked'] = 'Körda';
 $lang['general_word_worked_not_confirmed'] = "Worked not confirmed";
+$lang['general_word_confirmation'] = "Confirmation";
 $lang['general_word_not_worked'] = "Not worked";
 $lang['general_word_confirmed'] = 'Bekräftade';
 $lang['general_word_needed'] = 'Behövs';
-
 $lang['general_word_all'] = 'All';
 $lang['general_word_no'] = 'Nej';
 $lang['general_word_yes'] = 'Ja';
@@ -102,6 +114,8 @@ $lang['gen_hamradio_qso'] = 'QSO';
 $lang['gen_hamradio_station'] = 'Station';
 
 $lang['gen_hamradio_call'] = 'Signal';
+$lang['gen_hamradio_prefix'] = "Prefix";
+$lang['gen_hamradio_suffix'] = "Suffix";
 $lang['gen_hamradio_callsign'] = 'Signal';
 $lang['gen_hamradio_de'] = 'De';
 $lang['gen_hamradio_dx'] = 'Dx';
@@ -131,6 +145,7 @@ $lang['gen_hamradio_propagation_mode'] = 'Propagation Mode';
 $lang['gen_hamradio_satellite_name'] = 'Satellitnamn';
 $lang['gen_hamradio_satellite_mode'] = 'Satellite-mode';
 
+$lang['gen_hamradio_award'] = "Award";
 $lang['gen_hamradio_logbook'] = 'Loggbok';
 
 $lang['gen_hamradio_zones'] = 'Zones';
@@ -152,6 +167,9 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Lokator/Gridsquare';
+$lang['gen_hamradio_latitude'] = "Latitude";
+$lang['gen_hamradio_longitude'] = "Longitude";
+$lang['gen_hamradio_bearing'] = "Bearing";
 $lang['gen_hamradio_get_gridsquare'] = 'Get Gridsquare';
 $lang['gen_hamradio_distance'] = 'Distance';
 $lang['gen_hamradio_operator'] = 'Operatör';
@@ -160,10 +178,10 @@ $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
 
 // Find your CQ/ITU Zone
-$lang['gen_find_zone_cq_part1'] = "If you don't know your CQ Zone then ";
-$lang['gen_find_zone_itu_part1'] = "If you don't know your ITU Zone then ";
-$lang['gen_find_zone_part2'] = 'click here';
-$lang['gen_find_zone_part3'] = ' to find it!';
+$lang['gen_find_zone_cq_part1'] = "If you don't know your CQ Zone then";
+$lang['gen_find_zone_itu_part1'] = "If you don't know your ITU Zone then";
+$lang['gen_find_zone_part2'] = "click here";
+$lang['gen_find_zone_part3'] = "to find it!";
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Du har kört';
@@ -190,8 +208,10 @@ $lang['southamerica'] = 'Sydamerika';
 
 $lang['gen_band_selection'] = 'Band val';
 $lang['general_word_today'] = 'Today';
-
+                             
 $lang['dashboard_php_version_warning'] = 'You need to upgrade your PHP version. Minimum version is 7.4. Your version is';
 $lang['dashboard_country_files_warning'] = 'You need to update country files! Go <a href="'.site_url('update').'">here</a> to do it!';
 $lang['dashboard_locations_warning'] = 'You have no station locations. Go <a href="'. site_url('station') . '">here</a> to create it!';
 $lang['dashboard_logbooks_warning'] = 'You have no station logbook. Go <a href="'. site_url('logbooks') . '">here</a> to create it!';
+
+$lang['hams_at_no_activations_found'] = 'No upcoming activations found. Please check back later.';

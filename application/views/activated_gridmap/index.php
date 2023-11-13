@@ -44,12 +44,12 @@
 
 	<br>
 
-	<h2><?php echo $page_title; ?></h2>
+	<h2><?php echo lang('gridsquares_activated_gridsquare_map'); ?></h2>
 
 <form class="form-inline">
             <label class="my-1 mr-2" for="band"><?php echo lang('gridsquares_band'); ?></label>
             <select class="custom-select my-1 mr-sm-2"  id="band">
-                <option value="All">All</option>
+                <option value="All"><?php echo lang('general_word_all')?></option>
                 <?php foreach($bands as $band) {
                     echo '<option value="'.$band.'"';
                     if ($user_default_band == $band) {
@@ -61,7 +61,7 @@
             <?php if (count($sats_available) != 0) { ?>
                 <label class="my-1 mr-2" for="distplot_sats"><?php echo lang('gridsquares_sat'); ?></label>
                 <select class="custom-select my-1 mr-sm-2"  id="sats" <?php if ($user_default_band != "SAT") { ?>disabled<?php } ?>>
-                    <option value="All">All</option>
+                    <option value="All"><?php echo lang('general_word_all')?></option>
                     <?php foreach($sats_available as $sat) {
                         echo '<option value="' . $sat . '"' . '>' . $sat . '</option>'."\n";
                     } ?>
@@ -71,7 +71,7 @@
             <?php } ?>
 			<label class="my-1 mr-2" for="mode"><?php echo lang('gridsquares_mode'); ?></label>
             <select class="custom-select my-1 mr-sm-2"  id="mode">
-			<option value="All">All</option>
+			<option value="All"><?php echo lang('general_word_all')?></option>
                     <?php
                     foreach($modes as $mode){
                         if ($mode->submode ?? '' == '') {
@@ -109,7 +109,7 @@
                 </div>
 
             <button id="plot" type="button" name="plot" class="btn btn-primary mr-1 ld-ext-right ld-ext-right-plot" onclick="gridPlot(this.form)"><?php echo lang('gridsquares_button_plot'); ?><div class="ld ld-ring ld-spin"></div></button>
-			<button id="clear" type="button" name="clear" class="btn btn-primary mr-1 ld-ext-right ld-ext-right-clear" onclick="clearMarkers()">Clear markers<div class="ld ld-ring ld-spin"></div></button>
+			<button id="clear" type="button" name="clear" class="btn btn-primary mr-1 ld-ext-right ld-ext-right-clear" onclick="clearMarkers()"><?php echo lang('gridsquares_button_clear_markers'); ?><div class="ld ld-ring ld-spin"></div></button>
 </form>
 
 		<?php if($this->session->flashdata('message')) { ?>
@@ -124,15 +124,15 @@
 	<div id="gridsquare_map" style="width: 100%; height: 800px"></div>
 </div>
 <div class="coordinates d-flex">
-        <div class="cohidden">Latitude: </div>
+        <div class="cohidden"><?php echo lang('gen_hamradio_latitude')?>: </div>
         <div class="cohidden col-auto text-success font-weight-bold" id="latDeg"></div>
-        <div class="cohidden">Longitude: </div>
+        <div class="cohidden"><?php echo lang('gen_hamradio_longitude')?>: </div>
         <div class="cohidden col-auto text-success font-weight-bold" id="lngDeg"></div>
-        <div class="cohidden">Gridsquare: </div>
+        <div class="cohidden"><?php echo lang('gen_hamradio_gridsquare')?>: </div>
         <div class="cohidden col-auto text-success font-weight-bold" id="locator"></div>
-        <div class="cohidden">Distance: </div>
+        <div class="cohidden"><?php echo lang('gen_hamradio_distance')?>: </div>
         <div class="cohidden col-auto text-success font-weight-bold" id="distance"></div>
-        <div class="cohidden">Bearing: </div>
+        <div class="cohidden"><?php echo lang('gen_hamradio_bearing')?>: </div>
         <div class="cohidden col-auto text-success font-weight-bold" id="bearing"></div>
 </div>
 <script>var gridsquaremap = true;
