@@ -58,5 +58,5 @@ $lang['lotw_cert_expiring'] = '至少有一个LoTW证书即将过期!';
 $lang['lotw_cert_expired'] = '至少有一个LoTW证书已经过期!';
 
 // Lotw User
-$lang['lotw_user'] = '这个电台使用 LOTW。最后一次上传是';
-$lang['lotw_last_upload'] = 'Last upload';
+$lang['lotw_user'] = '这个电台使用 LOTW。';
+$lang['lotw_last_upload'] = '最后一次上传是';

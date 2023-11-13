@@ -9,16 +9,16 @@ Topbar
 ___________________________________________________________________________________________
 */
 
-$lang['filter_quickfilters'] = 'Quickfilters';
-$lang['filter_qsl_filters'] = 'QSL Filters';
-$lang['filter_filters'] = 'Filters';
-$lang['filter_actions'] = 'Actions';
-$lang['filter_results'] = '# Results';
-$lang['filter_search'] = 'Search';
-$lang['filter_dupes'] = "Dupes";
-$lang['filter_map'] = 'Map';
-$lang['filter_options'] = 'Options';
-$lang['filter_reset'] = 'Reset';
+$lang['filter_quickfilters'] = '快速过滤';
+$lang['filter_qsl_filters'] = 'QSL 过滤';
+$lang['filter_filters'] = '过滤器';
+$lang['filter_actions'] = '操作';
+$lang['filter_results'] = '每页结果数';
+$lang['filter_search'] = '搜索';
+$lang['filter_dupes'] = "重复QSO";
+$lang['filter_map'] = '地图';
+$lang['filter_options'] = '显示列';
+$lang['filter_reset'] = '重置筛选条件';
 
 /*
 ___________________________________________________________________________________________
@@ -26,18 +26,18 @@ Quickilters
 ___________________________________________________________________________________________
 */
 
-$lang['filter_quicksearch_w_sel'] = 'Quicksearch with selected: ';
-$lang['filter_search_callsign'] = 'Search Callsign';
-$lang['filter_search_dxcc'] = 'Search DXCC';
-$lang['filter_search_state'] = 'Search State';
-$lang['filter_search_gridsquare'] = 'Search Gridsquare';
-$lang['filter_search_cq_zone'] = 'Search CQ Zone';
-$lang['filter_search_mode'] = 'Search Mode';
-$lang['filter_search_band'] = 'Search Band';
-$lang['filter_search_iota'] = 'Search IOTA';
-$lang['filter_search_sota'] = 'Search SOTA';
-$lang['filter_search_wwff'] = 'Search WWFF';
-$lang['filter_search_pota'] = 'Search POTA';
+$lang['filter_quicksearch_w_sel'] = '用选中行的条件进行快速搜索：';
+$lang['filter_search_callsign'] = '搜索 呼号';
+$lang['filter_search_dxcc'] = '搜索 DXCC';
+$lang['filter_search_state'] = '搜索 州/省';
+$lang['filter_search_gridsquare'] = '搜索 网格';
+$lang['filter_search_cq_zone'] = '搜索 CQ 分区';
+$lang['filter_search_mode'] = '搜索 模式';
+$lang['filter_search_band'] = '搜索 频段';
+$lang['filter_search_iota'] = '搜索 IOTA';
+$lang['filter_search_sota'] = '搜索 SOTA';
+$lang['filter_search_wwff'] = '搜索 WWFF';
+$lang['filter_search_pota'] = '搜索 POTA';
 
 /*
 ___________________________________________________________________________________________
@@ -45,16 +45,16 @@ QSL Filters
 ___________________________________________________________________________________________
 */
 
-$lang['filter_qsl_sent'] = 'QSL sent';
-$lang['filter_qsl_recv'] = 'QSL received';
-$lang['filter_qsl_sent_method'] = 'QSL Sending Method';
-$lang['filter_qsl_recv_method'] = 'QSL Receiving Method';
-$lang['filter_lotw_sent'] = 'LoTW sent';
-$lang['filter_lotw_recv'] = 'LoTW received';
-$lang['filter_eqsl_sent'] = 'eQSL sent';
-$lang['filter_eqsl_recv'] = 'eQSL received';
-$lang['filter_qsl_via'] = 'QSL via';
-$lang['filter_qsl_images'] = 'QSL Images';
+$lang['filter_qsl_sent'] = 'QSL 发送';
+$lang['filter_qsl_recv'] = 'QSL 接收';
+$lang['filter_qsl_sent_method'] = 'QSL 发送方式';
+$lang['filter_qsl_recv_method'] = 'QSL 接收方式';
+$lang['filter_lotw_sent'] = 'LoTW 发送';
+$lang['filter_lotw_recv'] = 'LoTW 接收';
+$lang['filter_eqsl_sent'] = 'eQSL 发送';
+$lang['filter_eqsl_recv'] = 'eQSL 接收';
+$lang['filter_qsl_via'] = 'QSL 通过';
+$lang['filter_qsl_images'] = 'QSL 图片';
 
 // $lang['general_word_all']                --> application/language/english/general_words_lang.php
 // $lang['general_word_yes']                --> application/language/english/general_words_lang.php
@@ -62,7 +62,7 @@ $lang['filter_qsl_images'] = 'QSL Images';
 // $lang['general_word_requested']          --> application/language/english/general_words_lang.php
 // $lang['general_word_queued']             --> application/language/english/general_words_lang.php
 // $lang['general_word_invalid_ignore']     --> application/language/english/general_words_lang.php
-$lang['filter_qsl_verified'] = 'Verified';
+$lang['filter_qsl_verified'] = '已验证';
 
 // $lang['general_word_qslcard_bureau']     --> application/language/english/general_words_lang.php
 // $lang['general_word_qslcard_direct']     --> application/language/english/general_words_lang.php
@@ -75,18 +75,18 @@ General Filters
 ___________________________________________________________________________________________
 */
 
-$lang['filter_general_from'] = 'From';
-$lang['filter_general_to'] = 'to';
+$lang['filter_general_from'] = '开始日期';
+$lang['filter_general_to'] = '截止日期';
 // $lang['gen_hamradio_de']             --> application/language/english/general_words_lang.php 
 // $lang['gen_hamradio_dx']             --> application/language/english/general_words_lang.php 
 // $lang['gen_hamradio_dxcc']           --> application/language/english/general_words_lang.php
-$lang['filter_general_none'] = '- NONE - (e.g. /MM, /AM)';
+$lang['filter_general_none'] = '- 无 - (例如 /MM, /AM)';
 // $lang['gen_hamradio_state']          --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_gridsquare']     --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_mode']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_band']           --> application/language/english/general_words_lang.php
 
-$lang['filter_general_propagation'] = 'Propagation';
+$lang['filter_general_propagation'] = '传播方式';
 // $lang['gen_hamradio_cq_zone']        --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_iota']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_sota']           --> application/language/english/general_words_lang.php
@@ -99,29 +99,29 @@ Actions
 ___________________________________________________________________________________________
 */
 
-$lang['filter_actions_w_selected'] = 'With selected: ';
+$lang['filter_actions_w_selected'] = '用选中行进行：';
 $lang['filter_actions_update_f_callbook'] = 'Update from Callbook';
 $lang['filter_actions_queue_bureau'] = 'Queue Bureau';
 $lang['filter_actions_queue_direct'] = 'Queue Direct';
 $lang['filter_actions_queue_electronic'] = 'Queue Electronic';
-$lang['filter_actions_sent_bureau'] = 'Sent (Bureau)';
-$lang['filter_actions_sent_direct'] = 'Sent (Direct)';
-$lang['filter_actions_sent_electronic'] = 'Sent (Electronic)';
-$lang['filter_actions_not_sent'] = 'Not Sent';
-$lang['filter_actions_qsl_n_required'] = 'QSL Not Required';
-$lang['filter_actions_recv_bureau'] = 'Received (Bureau)';
-$lang['filter_actions_recv_direct'] = 'Received (Direct)';
-$lang['filter_actions_recv_electronic'] = 'Received (Electronic)';
-$lang['filter_actions_create_adif'] = 'Create ADIF';
-$lang['filter_actions_print_label'] = 'Print Label';
-$lang['filter_actions_start_print_title'] = 'Print Labels';
-$lang['filter_actions_print_include_via'] = "Include Via";
-$lang['filter_actions_print_include_grid'] = 'Include Grid?';
-$lang['filter_actions_start_print'] = 'Start printing at?';
-$lang['filter_actions_print'] = 'Print';
-$lang['filter_actions_qsl_slideshow'] = 'QSL Slideshow';
-$lang['filter_actions_delete'] = 'Delete';
-$lang['filter_actions_delete_warning'] = "Warning! Are you sure you want to delete the marked QSO(s)?";
+$lang['filter_actions_sent_bureau'] = '已发送 (卡片局)';
+$lang['filter_actions_sent_direct'] = '已发送 (直邮)';
+$lang['filter_actions_sent_electronic'] = '已发送 (电子)';
+$lang['filter_actions_not_sent'] = '未发送';
+$lang['filter_actions_qsl_n_required'] = '未获取 QSL';
+$lang['filter_actions_recv_bureau'] = '已接收 (卡片局)';
+$lang['filter_actions_recv_direct'] = '已接收 (直邮)';
+$lang['filter_actions_recv_electronic'] = '已接收 (电子)';
+$lang['filter_actions_create_adif'] = '创建 ADIF';
+$lang['filter_actions_print_label'] = '打印标签';
+$lang['filter_actions_start_print_title'] = '打印标签';
+$lang['filter_actions_print_include_via'] = "包含通过";
+$lang['filter_actions_print_include_grid'] = '包含网格？';
+$lang['filter_actions_start_print'] = '开始打印编号';
+$lang['filter_actions_print'] = '打印';
+$lang['filter_actions_qsl_slideshow'] = 'QSL 展示窗';
+$lang['filter_actions_delete'] = '删除';
+$lang['filter_actions_delete_warning'] = "警告！确定要删除选中的QSO吗？";
 
 
 /*

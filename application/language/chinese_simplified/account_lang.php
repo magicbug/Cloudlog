@@ -37,10 +37,10 @@ $lang['account_timezone'] = '时区';
 $lang['account_date_format'] = '日期格式';
 $lang['account_log_end_time'] = '单独记录QSO结束时间';
 $lang['account_log_end_time_hint'] = '如果想分别记录QSO的开始和结束时间，选择\'是\'，若选择\'否\'则QSO开始与结束时间相同。';
-$lang['account_quicklog_feature'] = "Quicklog Field";
-$lang['account_quicklog_feature_hint'] = "With this feature, you can log callsigns using the search field in the header.";
-$lang['account_quicklog_enter'] = "Quicklog - Action on press Enter";
-$lang['account_quicklog_enter_hint'] = "What action should be performed when Enter is pressed in the quicklog field?";
+$lang['account_quicklog_feature'] = "快速日志功能";
+$lang['account_quicklog_feature_hint'] = "快速日志功能可以使用标题栏中的搜索字段来记录呼号。";
+$lang['account_quicklog_enter'] = "快速日志 - 回车键行为";
+$lang['account_quicklog_enter_hint'] = "在快速日志字段中按 回车键 后应执行什么操作？";
 $lang['account_quicklog_enter_log'] = "记录呼号";
 $lang['account_quicklog_enter_search'] = "查询呼号";
 $lang['account_measurement_preferences'] = '距离单位偏好';
@@ -55,9 +55,9 @@ $lang['account_show_notes_in_the_main_menu'] = '在主菜单显示便签栏';
 $lang['account_gridsquare_and_location_autocomplete'] = '自动填写梅登海德网格和位置';
 $lang['account_location_auto_lookup'] = '自动查找位置';
 $lang['account_if_set_gridsquare_is_fetched_based_on_location_name'] = '如果开启本选项，将根据位置名称获取梅登海德网格。';
-$lang['account_sota_auto_lookup_gridsquare_and_name_for_summit'] = '根据SOTA编号自动查找梅登海德网格和峰名。';
-$lang['account_wwff_auto_lookup_gridsquare_and_name_for_reference'] = '根据WWFF编号自动查找梅登海德网格和名称。';
-$lang['account_pota_auto_lookup_gridsquare_and_name_for_park'] = '根据POTA编号自动查找梅登海德网格和名称。';
+$lang['account_sota_auto_lookup_gridsquare_and_name_for_summit'] = '根据 SOTA 编号自动查找梅登海德网格和峰名。';
+$lang['account_wwff_auto_lookup_gridsquare_and_name_for_reference'] = '根据 WWFF 编号自动查找梅登海德网格和名称。';
+$lang['account_pota_auto_lookup_gridsquare_and_name_for_park'] = '根据 POTA 编号自动查找梅登海德网格和名称。';
 $lang['account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'] = '如果开启此项设置，将从API获取名称和梅登海德网格，并填写位置和定位器。';
 
 $lang['account_previous_qsl_type'] = '上一个QSL类型';
@@ -113,5 +113,5 @@ $lang['account_qsl_settings'] = '默认QSL方式';
 
 $lang['account_winkeyer'] = 'Winkeyer';
 $lang['account_winkeyer_hint'] = "Cloudlog 中对 Winkeyer 的支持是实验性的，请在开启前先阅读 <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a>。";
-$lang['account_winkeyer_enabled'] = "启用Winkeyer功能";
+$lang['account_winkeyer_enabled'] = "启用 Winkeyer 功能";
 
