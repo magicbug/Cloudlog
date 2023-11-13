@@ -34,7 +34,11 @@
 			if (isset($result['mode']) && $result['mode'] != "NULL") {
 				$data['mode'] = $result['mode'];
 			} else {
-				$data['mode'] = $result['uplink_mode'];
+				if (isset($result['uplink_mode']) && $result['uplink_mode'] != "NULL") {
+					$data['mode'] = $result['uplink_mode'];
+				} else {
+					$data['mode'] = NULL;
+				}
 			}
 			if (isset($result['frequency_rx'])) {
 				$data['frequency_rx'] = $result['frequency_rx'];
