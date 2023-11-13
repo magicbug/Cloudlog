@@ -1406,8 +1406,12 @@ $(document).on('keypress',function(e) {
 						  $("#band_rx").val(frequencyToBand(data.frequency_rx));
 					  }
 
-					  old_mode = $(".mode").val();
-					  $(".mode").val(data.mode);
+					  if ((data.mode != "") && (data.mode != null)) {
+					  	old_mode = $(".mode").val();
+					  	$(".mode").val(data.mode);
+					  } else {
+					  	old_mode = $(".mode").val();
+					  }
 
 					  if (old_mode !== $(".mode").val()) {
 						  // Update RST on mode change via CAT

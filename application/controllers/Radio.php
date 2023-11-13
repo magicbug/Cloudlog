@@ -113,9 +113,13 @@
 					$prop_mode = $row->prop_mode;
 
 					// Check Mode
-					$mode = strtoupper($row->mode);
-					if ($mode == "FMN") {
-						$mode = "FM";
+					if (isset($row->mode) && ($row->mode != null)) {
+						$mode = strtoupper($row->mode);
+						if ($mode == "FMN") {
+							$mode = "FM";
+						}
+					} else {
+						$mode=null;
 					}
 
 					if ($row->prop_mode == "SAT") {
@@ -156,16 +160,15 @@
 					$updated_at = $minutes;
 
 					// Return Json data
-					echo json_encode(array(
-						"frequency" => $frequency,
-						"frequency_rx" => $frequency_rx,
-						"mode" => $mode,
-						"satmode" => $sat_mode,
-						"satname" => $sat_name,
-						"power" => $power,
-						"prop_mode" => $prop_mode,
-						"updated_minutes_ago" => $updated_at,
-					), JSON_PRETTY_PRINT);
+					$a_ret['frequency']=$frequency;
+					if (isset($frequency_rx) && ($frequency_rx != null)) { $a_ret['frequency_rx']=$frequency_rx; }
+ 					if (isset($mode) && ($mode != null)) { $a_ret['mode']=$mode; }
+					if (isset($sat_mode) && ($sat_mode != null)) { $a_ret['satmode']=$sat_mode; }
+					if (isset($sat_name) && ($sat_name != null)) { $a_ret['satname']=$sat_name; }
+					if (isset($power) && ($power != null)) { $a_ret['power']=$power; }
+					if (isset($prop_mode) && ($prop_mode != null)) { $a_ret['prop_mode']=$prop_mode; }
+					$a_ret['update_minutes_ago']=$updated_at;
+					echo json_encode($a_ret, JSON_PRETTY_PRINT);
 				}
 			}
 		}
