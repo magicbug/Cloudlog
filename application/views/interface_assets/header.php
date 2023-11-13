@@ -129,7 +129,7 @@
 						</li>
 
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_awards'); ?></a>
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_awards'); ?></a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 								<li><a class="dropdown-item" href="<?php echo site_url('awards/cq'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_cq'); ?></a></li>
 								<div class="dropdown-divider"></div>

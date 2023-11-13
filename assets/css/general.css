@@ -558,12 +558,11 @@ input:invalid {
 .dropdown-submenu>.dropdown-menu {
     top:0;
     left:100%;
-    margin-top:-6px;
+    margin-top:-10px;
 }
 
 /* rotate caret on hover */
 .dropdown-menu > li > a:hover:after {
-    text-decoration: underline;
     transform: rotate(-90deg);
 } 
 
