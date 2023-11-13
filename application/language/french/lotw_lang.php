@@ -35,7 +35,7 @@ $lang['lotw_upload_type_must_be_adi'] = "Les fichiers de log doivent être au fo
 
 $lang['lotw_pull_lotw_data_for_me'] = "Récuperer mes données LoTW";
 
-$lang['lotw_report_download_overview_helptext'] ='Cloudlog utilise le nom d\'utilisateur et mot de passe enregistré dans votre profil utilisateur pour télécharger les rapport depuis LoTw. Les rapports téléchargés seront confirmés depuis la date de votre dernière confirmation (extraite de vos log) jusqu\'à aujourd\'hui';
+$lang['lotw_report_download_overview_helptext'] = "Cloudlog utilisera le nom d'utilisateur et le mot de passe LoTW stockés dans votre profil utilisateur pour télécharger le journal vers LoTW.<br/> Les téléchargements du journal Cloudlog auront toutes les confirmations depuis la date choisie, ou depuis votre dernière confirmation LoTW (récupérée de votre journal), jusqu'à présent.";
 
 // Buttons
 $lang['lotw_btn_lotw_import'] = "Import LoTW";
@@ -60,4 +60,3 @@ $lang['lotw_cert_expired'] = "Au moins un de vos certificats LoTW est expiré !"
 // Lotw User
 $lang['lotw_user'] = "Cette station utilise LoTW";
 $lang['lotw_last_upload'] = "Dernier téléchargement";
-$lang['lotw_report_download_overview_helptext'] = "Cloudlog utilisera le nom d'utilisateur et le mot de passe LoTW stockés dans votre profil utilisateur pour télécharger le journal vers LoTW.<br/> Les téléchargements du journal Cloudlog auront toutes les confirmations depuis la date choisie, ou depuis votre dernière confirmation LoTW (récupérée de votre journal), jusqu'à présent.";
