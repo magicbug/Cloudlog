@@ -104,7 +104,7 @@
 					<p class="card-text">To date:</p>
 					<div class="row">
 						<div class="input-group date col-md-3" id="datetimepicker6" data-target-input="nearest">
-							<input name="to" "totype="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
+							<input name="to" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
 							<div class="input-group-append" data-target="#datetimepicker6" data-toggle="datetimepicker">
 								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 							</div>

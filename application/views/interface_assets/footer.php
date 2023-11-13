@@ -2300,6 +2300,7 @@ $(document).ready(function(){
 
     ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
         $.fn.dataTable.moment('<?php echo $usethisformat ?>');
@@ -2335,7 +2336,7 @@ $(document).ready(function(){
             $('[class*="buttons"]').css("color", "white");
         }
         $('#eqsl_force_from_date').datetimepicker({
-            format: 'YYYY/MM/DD',
+            format: 'YYYY/MM/DD'
         });
 
     </script>
