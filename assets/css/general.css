@@ -552,6 +552,7 @@ input:invalid {
 .navbar-nav li:hover > ul.dropdown-menu {
     display: block;
 }
+
 .dropdown-submenu {
     position:relative;
 }
@@ -561,8 +562,6 @@ input:invalid {
     margin-top:-10px;
 }
 
-/* rotate caret on hover */
 .dropdown-menu > li > a:hover:after {
     transform: rotate(-90deg);
-} 
-
+}
