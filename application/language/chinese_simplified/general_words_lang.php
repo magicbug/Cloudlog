@@ -193,7 +193,7 @@ $lang['gen_from_date'] = '起始日期';
 
 $lang['gen_this_qso_was_confirmed_on'] = '该 QSO 确认于';
 
-$lang['error_no_logbook_found'] = '没有找到日志本。 您需要在台站日志下添加一个日志本! 在这里添加:';
+$lang['error_no_logbook_found'] = '没有找到日志本。您需要在台站日志下添加一个日志本! 在这里添加：';
 
 $lang['copy_to_clipboard'] = '复制到剪贴板';
 
