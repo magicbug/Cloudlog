@@ -32,7 +32,7 @@ $lang['adif_select_stationlocation'] = "选择站点位置";
 // The File Input is translated by the Browser
 $lang['adif_file_label'] = "ADIF 文件";
 
-$lang['adif_hint_no_info_in_file'] ="如果导入的ADIF文件不包含此信息，选择此项。";
+$lang['adif_hint_no_info_in_file'] = "如果导入的ADIF文件不包含此信息，选择此项。";
 
 $lang['adif_import_dup'] = "导入重复的QSO";
 $lang['adif_mark_imported_lotw'] = "标记导入的QSO为已上传至 LoTW";

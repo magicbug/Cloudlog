@@ -27,6 +27,7 @@ $lang['gridsquares_button_plot'] = 'Отобразить';
 $lang['gridsquares_button_clear_markers'] = "Clear Markers";
 
 $lang['gridsquares_gridsquares'] = 'Квадраты';
+$lang['gridsquares_gridsquares_worked'] = 'Gridsquares worked';
 $lang['gridsquares_gridsquares_confirmed'] = 'Подтверждёно квадратов';
 $lang['gridsquares_gridsquares_lotw'] = 'Gridsquares confirmed on LoTW';
 $lang['gridsquares_gridsquares_paper'] = 'Gridsquares confirmed by paper QSL';

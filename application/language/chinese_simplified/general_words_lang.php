@@ -178,8 +178,8 @@ $lang['gen_hamradio_sig_info'] = 'Sig 属性';
 // Find your CQ/ITU Zone
 $lang['gen_find_zone_cq_part1'] = "如果您不知道自己的 CQ 分区";
 $lang['gen_find_zone_itu_part1'] = "如果您不知道自己的 ITU 分区";
-$lang['gen_find_zone_part2'] = '点击此处';
-$lang['gen_find_zone_part3'] = '来查询！';
+$lang['gen_find_zone_part2'] = "点击此处";
+$lang['gen_find_zone_part3'] = "来查询！";
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = '今天你有';
