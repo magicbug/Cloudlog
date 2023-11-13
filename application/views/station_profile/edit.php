@@ -210,7 +210,7 @@
 
 					<!-- ITU Zone -->
 					<div class="form-group">
-                    	<label for="stationITUZoneInput"><?php echo lang("gen_hamradio_itu_zone_part1"); ?></label>
+                    	<label for="stationITUZoneInput"><?php echo lang("gen_hamradio_itu_zone"); ?></label>
                     	<select class="custom-select" id="stationITUZoneInput" name="station_itu" required>
 							<?php
 							for ($i = 1; $i<=90; $i++) {
