@@ -18,16 +18,16 @@
 		<div class="card-body">
 
 			<!-- Label Name Input -->
-	    	<div class="form-group">
+	    	<div class="mb-3">
 			    <label for="LabelName">Label Name</label>
 			    <input name="label_name" type="text" class="form-control" id="LabelName" aria-describedby="label_nameHelp" placeholder="Code 925041 6x3 Generic Label Sheet">
 			    <small id="label_nameHelp" class="form-text text-muted">Label name used for display purposes, so pick something meaningful, perhaps the label style.</small>
 			</div>
 
-			<div class="form-group row">
+			<div class="mb-3 row">
     			<label class="col-sm-2 col-form-label" for="paperType_id">Paper Type</label>
 			    <div class="col-sm-4">
-				    <select name="paper_type_id" class="form-control" id="paperType_id">
+				    <select name="paper_type_id" class="form-select" id="paperType_id">
 						<?php
 							foreach($papertypes as $paper){
 								echo '<option value=' . $paper->paper_id . '>' . ucwords(strtolower(($paper->paper_name))) . '</option>';
@@ -38,14 +38,14 @@
 
     			<label class="col-sm-2 col-form-label" for="measurementType">Measurement used</label>
 			    <div class="col-sm-4">
-				    <select name="measurementType" class="form-control" id="measurementType">
+				    <select name="measurementType" class="form-select" id="measurementType">
 						<option value="mm">Millimeters</option>
 						<option value="in">Inches</option>
 					</select>
 			    </div>
   			</div>
 
-			<div class="form-group row">
+			<div class="mb-3 row">
     			<label class="col-sm-2 col-form-label" for="marginTop">Margin Top</label>
 			    <div class="col-sm-4">
 				    <input name="marginTop" type="text" class="form-control" id="marginTop" aria-describedby="marginTopHelp">
@@ -59,7 +59,7 @@
 			    </div>
   			</div>
 
-  			<div class="form-group row">
+  			<div class="mb-3 row">
     			<label class="col-sm-2 col-form-label" for="NX">Labels horizontally</label>
 			    <div class="col-sm-4">
 				    <input name="NX" type="number" min="1" max="40" step="1" class="form-control" id="NX" aria-describedby="NXHelp">
@@ -73,7 +73,7 @@
 			    </div>
   			</div>
 
-  			<div class="form-group row">
+  			<div class="mb-3 row">
     			<label class="col-sm-2 col-form-label" for="SpaceX">Horizontal space</label>
 			    <div class="col-sm-4">
 				    <input name="SpaceX" type="text" class="form-control" id="SpaceX">
@@ -87,7 +87,7 @@
 			    </div>
   			</div>
 
-			<div class="form-group row">
+			<div class="mb-3 row">
     			<label class="col-sm-2 col-form-label" for="width">Width of label</label>
 			    <div class="col-sm-4">
 				    <input name="width" type="text" class="form-control" id="width" aria-describedby="widthHelp">
@@ -101,7 +101,7 @@
 			    </div>
   			</div>
 
-  			<div class="form-group row">
+  			<div class="mb-3 row">
     			<label class="col-sm-2 col-form-label" for="font_size">Font Size</label>
 			    <div class="col-sm-4">
 				    <input name="font_size" type="number" min="1" max="40" step="1" class="form-control" id="font_size" value="8" aria-describedby="font_sizeHelp">

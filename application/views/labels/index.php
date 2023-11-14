@@ -85,7 +85,7 @@
 		foreach($labels as $label) { ?>
 			<tr class='label_<?php echo $label->id ?>'>
 			<td><?php echo $label->label_name; ?></td>
-			<td><?php echo $label->paper_name ?? '<span class="badge badge-danger">No paper assigned</span>' ?></td>
+			<td><?php echo $label->paper_name ?? '<span class="badge text-bg-danger">No paper assigned</span>' ?></td>
 			<td><?php echo $label->metric; ?></td>
 			<td><?php echo $label->width; ?></td>
 			<td><?php echo $label->height; ?></td>

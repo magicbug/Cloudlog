@@ -5,9 +5,9 @@
 	<h2><?php echo $page_title; ?></h2>
 
 	<?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
-<form class="form-inline">
-	<label class="my-1 mr-2" for="gridsquare_bands"><?php echo lang('gen_band_selection'); ?></label>
-	<select class="custom-select my-1 mr-sm-2"  id="gridsquare_bands"></select>
+<form class="d-flex align-items-center">
+	<label class="my-1 me-2" for="gridsquare_bands"><?php echo lang('gen_band_selection'); ?></label>
+	<select class="form-select my-1 me-sm-2"  id="gridsquare_bands"></select>
 </form>
 
 <?php } ?>
@@ -42,8 +42,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel"><span id="qso_count"></span> QSO<span id="gt1_qso"></span> in Square: <span id="square_number"></span></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          
         </button>
       </div>
       <div class="modal-body">
@@ -62,7 +62,7 @@
 		</table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

@@ -29,7 +29,7 @@
 ?>
     	<p>Below is a table of QSOs that have not yet been sent to eQSL.</p>
 
-    	<p><span class="badge badge-info">Info</span> Please make sure the "eQSL QTH Nickname" field is set in your station profile and that the value matches the QTH Nickname you set within eQSL.</p>
+    	<p><span class="badge text-bg-info">Info</span> Please make sure the "eQSL QTH Nickname" field is set in your station profile and that the value matches the QTH Nickname you set within eQSL.</p>
  <?php
 
     	echo $eqsl_table;

@@ -59,7 +59,7 @@ if ($results) { ?>
         $config['last_tag_open'] = '<li class="page-item">';
         $config['last_tag_close'] = '</li>';
         $config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
-        $config['cur_tag_close'] = '<span class="sr-only">(current)</span></a></li>';
+        $config['cur_tag_close'] = '<span class="visually-hidden">(current)</span></a></li>';
         $config['num_tag_open'] = '<li class="page-item">';
         $config['num_tag_close'] = '</li>';
         $this->pagination->initialize($config);

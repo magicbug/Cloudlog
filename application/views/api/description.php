@@ -22,7 +22,7 @@
 
 
 	<form method="post" action="<?php echo site_url('api/edit'); ?>/<?php echo $api_info['key']; ?>" name="APIDescription">
-	  <div class="form-group">
+	  <div class="mb-3">
 	    <label for="APIDescription">API Description</label>
 	    <input type="text" class="form-control" name="api_desc" id="APIDescription" aria-describedby="APIDescriptionHelp" value="<?php echo $api_info['description']; ?>">
 	    <small id="APIDescriptionHelp" class="form-text text-muted">Simple name to describe what you use this API for.</small>

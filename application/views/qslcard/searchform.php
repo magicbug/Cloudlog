@@ -1,5 +1,5 @@
 		<form method="post" onsubmit="return false;" action="" id="search_box" name="test">
-			<div class="form-group row col-sm-12">
+			<div class="mb-3 row col-sm-12">
 				<label for="callsign" class="col-sm-2 col-form-label">Callsign</label>
 				<div class="col-sm-8">
 					<input type="text" class="form-control" id="callsign" value="">

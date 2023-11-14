@@ -36,7 +36,7 @@ if ($qsos->result() != NULL) {
 		echo '<td style=\'text-align: center\'>'; $timestamp = strtotime($qsl->COL_TIME_ON); echo date('H:i', $timestamp); echo '</td>';
 		echo '<td style=\'text-align: center\'>'; echo $qsl->COL_SUBMODE==null?$qsl->COL_MODE:$qsl->COL_SUBMODE; echo '</td>';
 		echo '<td style=\'text-align: center\'>'; if($qsl->COL_SAT_NAME != null) { echo $qsl->COL_SAT_NAME; } else { echo strtolower($qsl->COL_BAND); }; echo '</td>';
-		echo '<td style=\'text-align: center\'><span class="badge badge-light">' . $qsl->station_callsign . '</span></td>';
+		echo '<td style=\'text-align: center\'><span class="badge text-bg-light">' . $qsl->station_callsign . '</span></td>';
 		echo '<td style=\'text-align: center\' class="qsl">';
 		echo '<span ';
 		if ($qsl->COL_QSL_SENT != "N") {
@@ -47,16 +47,16 @@ if ($qsos->result() != NULL) {
 			}
 			switch ($qsl->COL_QSL_SENT) {
 			case "Y":
-				echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_sent').$timestamp;
+				echo "class=\"qsl-green\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_sent').$timestamp;
 				break;
 			case "Q":
-				echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_queued').$timestamp;
+				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_queued').$timestamp;
 				break;
 			case "R":
-				echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_requested').$timestamp;
+				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_requested').$timestamp;
 				break;
 			case "I":
-				echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_invalid_ignore').$timestamp;
+				echo "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_invalid_ignore').$timestamp;
 				break;
 			default:
 				echo "class=\"qsl-red";
@@ -89,16 +89,16 @@ if ($qsos->result() != NULL) {
 			}
 			switch ($qsl->COL_QSL_RCVD) {
 			case "Y":
-				echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_received').$timestamp;
+				echo "class=\"qsl-green\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_received').$timestamp;
 				break;
 			case "Q":
-				echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_queued').$timestamp;
+				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_queued').$timestamp;
 				break;
 			case "R":
-				echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_requested').$timestamp;
+				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_requested').$timestamp;
 				break;
 			case "I":
-				echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_invalid_ignore').$timestamp;
+				echo "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_invalid_ignore').$timestamp;
 				break;
 			default:
 				echo "class=\"qsl-red";
@@ -132,7 +132,7 @@ if ($qsos->result() != NULL) {
 					$timestamp = strtotime($qsl->COL_EQSL_QSLSDATE);
 					echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 				}
-				echo "\" data-toggle=\"tooltip\"";
+				echo "\" data-bs-toggle=\"tooltip\"";
 			}
 			echo ' class="eqsl-';
 			echo ($qsl->COL_EQSL_QSL_SENT=='Y')?'green':'red';
@@ -145,7 +145,7 @@ if ($qsos->result() != NULL) {
 					$timestamp = strtotime($qsl->COL_EQSL_QSLRDATE);
 					echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 				}
-				echo "\" data-toggle=\"tooltip\"";
+				echo "\" data-bs-toggle=\"tooltip\"";
 			}
 			echo ' class="eqsl-';
 			echo ($qsl->COL_EQSL_QSL_RCVD=='Y')?'green':'red';
@@ -161,7 +161,7 @@ if ($qsos->result() != NULL) {
 					$timestamp = strtotime($qsl->COL_LOTW_QSLSDATE);
 					echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 				}
-				echo "\" data-toggle=\"tooltip\"";
+				echo "\" data-bs-toggle=\"tooltip\"";
 			}
 			echo ' class="lotw-';
 			echo ($qsl->COL_LOTW_QSL_SENT=='Y')?'green':'red';
@@ -174,7 +174,7 @@ if ($qsos->result() != NULL) {
 					$timestamp = strtotime($qsl->COL_LOTW_QSLRDATE);
 					echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 				}
-				echo "\" data-toggle=\"tooltip\"";
+				echo "\" data-bs-toggle=\"tooltip\"";
 			}
 			echo ' class="lotw-';
 			echo ($qsl->COL_LOTW_QSL_RCVD=='Y')?'green':'red';
@@ -190,6 +190,6 @@ if ($qsos->result() != NULL) {
 
 	<?php
 } else {
-	echo '<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>No QSO\'s were found. It seems you were not active at this time.</div>';
+	echo '<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>No QSO\'s were found. It seems you were not active at this time.</div>';
 }
 ?>

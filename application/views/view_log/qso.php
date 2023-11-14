@@ -3,15 +3,15 @@
 
     <ul style="margin-bottom: 10px;" class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="table-tab" data-toggle="tab" href="#qsodetails" role="tab" aria-controls="table" aria-selected="true"><?php echo lang('qso_details'); ?></a>
+            <a class="nav-link active" id="table-tab" data-bs-toggle="tab" href="#qsodetails" role="tab" aria-controls="table" aria-selected="true"><?php echo lang('qso_details'); ?></a>
         </li>
         <li class="nav-item">
-            <a id="station-tab" class="nav-link" data-toggle="tab" href="#stationdetails" role="tab" aria-controls="table" aria-selected="true"><?php echo lang('cloudlog_station_profile'); ?></a>
+            <a id="station-tab" class="nav-link" data-bs-toggle="tab" href="#stationdetails" role="tab" aria-controls="table" aria-selected="true"><?php echo lang('cloudlog_station_profile'); ?></a>
         </li>
         <?php
         if ($row->COL_NOTES != null) {?>
         <li class="nav-item">
-            <a id="notes-tab" class="nav-link" data-toggle="tab" href="#notesdetails" role="tab" aria-controls="table" aria-selected="true"><?php echo "Notes"; ?></a>
+            <a id="notes-tab" class="nav-link" data-bs-toggle="tab" href="#notesdetails" role="tab" aria-controls="table" aria-selected="true"><?php echo "Notes"; ?></a>
         </li>
         <?php }?>
         <?php
@@ -22,11 +22,11 @@
                 echo 'hidden ';
             }
                 echo 'class="qslcardtab nav-item">
-                <a class="nav-link" id="qsltab" data-toggle="tab" href="#qslcard" role="tab" aria-controls="home" aria-selected="false">'. lang('general_word_qslcard') .'</a>
+                <a class="nav-link" id="qsltab" data-bs-toggle="tab" href="#qslcard" role="tab" aria-controls="home" aria-selected="false">'. lang('general_word_qslcard') .'</a>
                 </li>';
 
             echo '<li class="nav-item">
-            <a class="nav-link" id="qslmanagementtab" data-toggle="tab" href="#qslupload" role="tab" aria-controls="home" aria-selected="false">'. lang('general_word_qslcard_management') .'</a>
+            <a class="nav-link" id="qslmanagementtab" data-bs-toggle="tab" href="#qslupload" role="tab" aria-controls="home" aria-selected="false">'. lang('general_word_qslcard_management') .'</a>
             </li>';
         }
 
@@ -39,7 +39,7 @@
                 echo 'hidden ';
             }
                 echo 'class="eqslcardtab nav-item">
-                <a class="nav-link" id="eqsltab" data-toggle="tab" href="#eqslcard" role="tab" aria-controls="home" aria-selected="false">'. $this->lang->line('general_word_eqslcard') .'</a>
+                <a class="nav-link" id="eqsltab" data-bs-toggle="tab" href="#eqslcard" role="tab" aria-controls="home" aria-selected="false">'. $this->lang->line('general_word_eqslcard') .'</a>
                 </li>';
         }
 
@@ -205,7 +205,7 @@
                     <?php if($row->name != null) { ?>
                     <tr>
                         <td><?php echo lang('general_word_country'); ?></td>
-                        <td><?php echo ucwords(strtolower(($row->name)), "- (/"); if ($row->end != null) { echo ' <span class="badge badge-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
+                        <td><?php echo ucwords(strtolower(($row->name)), "- (/"); if ($row->end != null) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
                     </tr>
                     <?php } ?>
 
@@ -450,7 +450,7 @@
                     <?php if($row->station_country) { ?>
                     <tr>
                         <td><?php echo lang('gen_hamradio_station') . ' ' . lang('general_word_country'); ?></td>
-                        <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); if ($row->station_end != null) echo ' <span class="badge badge-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; ?></td>
+                        <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); if ($row->station_end != null) echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; ?></td>
                     </tr>
                     <?php } ?>
 
@@ -516,16 +516,16 @@
             }
             ?>
 
-            <p><div class="alert alert-warning" role="alert"><span class="badge badge-warning"><?php echo lang('general_word_warning'); ?></span> <?php echo lang('gen_max_file_upload_size'); ?> <?php echo $max_upload; ?>B.</div></p>
+            <p><div class="alert alert-warning" role="alert"><span class="badge text-bg-warning"><?php echo lang('general_word_warning'); ?></span> <?php echo lang('gen_max_file_upload_size'); ?> <?php echo $max_upload; ?>B.</div></p>
 
             <form class="form" id="fileinfo" name="fileinfo" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md">
                         <fieldset>
 
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="qslcardfront"><?php echo lang('qslcard_upload_front'); ?></label>
-                                <input class="form-control-file" type="file" id="qslcardfront" name="qslcardfront" accept="image/*" >
+                                <input class="form-control" type="file" id="qslcardfront" name="qslcardfront" accept="image/*" >
                             </div>
 
                             <input type="hidden" class="form-control" id="qsoinputid" name="qsoid" value="<?php echo $row->COL_PRIMARY_KEY; ?>">
@@ -533,9 +533,9 @@
 
                 </div>
                 <div class="col-md">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="qslcardback"><?php echo lang('qslcard_upload_back'); ?></label>
-                                <input class="form-control-file" type="file" id="qslcardback" name="qslcardback" accept="image/*">
+                                <input class="form-control" type="file" id="qslcardback" name="qslcardback" accept="image/*">
                             </div>
 
                         </fieldset>

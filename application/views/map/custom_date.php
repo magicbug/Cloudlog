@@ -12,8 +12,8 @@
     <div class="row">
         <label class="col-md-2 control-label" for="from">Start Date/Time</label>
         <div class="input-group date col-md-3" id="datetimepicker1" data-target-input="nearest">
-            <input name="from" type="text" placeholder="DD/MM/YYYY" class="form-control form-control-sm datetimepicker-input" data-target="#datetimepicker1" <?php if ($this->input->post('from') != "" || $this->input->method() !== 'post') echo 'value="'.$this->input->post('from').'"'; ?>/>
-                <div class="input-group-append"  data-target="#datetimepicker1" data-toggle="datetimepicker">
+            <input name="from" type="text" placeholder="DD/MM/YYYY" class="form-control form-control-sm datetimepicker-input" data-bs-target="#datetimepicker1" <?php if ($this->input->post('from') != "" || $this->input->method() !== 'post') echo 'value="'.$this->input->post('from').'"'; ?>/>
+                <div class="input-group-append"  data-bs-target="#datetimepicker1" data-bs-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
             </div>
@@ -24,8 +24,8 @@
         <label class="col-md-2 control-label" for="to">End Date/Time</label>
 
         <div class="input-group date col-md-3" id="datetimepicker2" data-target-input="nearest">
-                <input name="to" type="text" placeholder="DD/MM/YYYY" class="form-control form-control-sm datetimepicker-input" data-target="#datetimepicker2" <?php if ($this->input->post('to') != "" || $this->input->method() !== 'post') echo 'value="'.$this->input->post('to').'"'; ?>/>
-                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                <input name="to" type="text" placeholder="DD/MM/YYYY" class="form-control form-control-sm datetimepicker-input" data-bs-target="#datetimepicker2" <?php if ($this->input->post('to') != "" || $this->input->method() !== 'post') echo 'value="'.$this->input->post('to').'"'; ?>/>
+                <div class="input-group-append" data-bs-target="#datetimepicker2" data-bs-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
         </div>
@@ -35,7 +35,7 @@
         <label class="col-md-2 control-label" for="band">Band</label>
 
         <div class="col-md-3">
-            <select id="band2" name="band" class="form-control custom-select-sm">
+            <select id="band2" name="band" class="form-select form-select-sm">
                 <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >Every band</option>
                 <?php foreach($worked_bands as $band) {
                     echo '<option value="' . $band . '"';
@@ -49,7 +49,7 @@
     <div class="row">
         <label class="col-md-2 control-label" for="mode">Mode</label>
         <div class="col-md-3">
-        <select id="mode" name="mode" class="form-control custom-select-sm">
+        <select id="mode" name="mode" class="form-select form-select-sm">
         <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>>All</option>
             <?php
             foreach($modes->result() as $mode){
@@ -70,7 +70,7 @@
     <div class="row">
         <label class="col-md-2 control-label"for="selectPropagation">Propagation Mode</label>
         <div class="col-md-3">
-            <select class="form-control custom-select-sm" id="selectPropagation" name="prop_mode">
+            <select class="form-select form-select-sm" id="selectPropagation" name="prop_mode">
                 <option value="All" <?php if ($this->input->post('prop_mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>>All</option>
                 <option value="AS" <?php if ($this->input->post('prop_mode') == "AS") echo ' selected';?>>Aircraft Scatter</option>
                 <option value="AUR" <?php if ($this->input->post('prop_mode') == "AUR") echo ' selected';?>>Aurora</option>

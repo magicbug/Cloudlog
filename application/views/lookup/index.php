@@ -1,5 +1,5 @@
-	<form method="post" class="form-inline">
-		<select id="quicklookuptype" name="type" class="form-control custom-select">
+	<form method="post" class="d-flex align-items-center">
+		<select id="quicklookuptype" name="type" class="form-select form-select">
 			<option value="cq">CQ Zone</option>
 			<option value="dxcc">DXCC</option>
 			<option value="vucc">Gridsquare</option>
@@ -10,7 +10,7 @@
 		</select>
 		<div>&nbsp;</div>
 		<input style="display:none" class="form-control input-group-sm" id="quicklookuptext" type="text" name="searchfield" placeholder="" aria-label="Search">
-		<select style="display:none" class="form-control custom-select" id="quicklookupdxcc" name="dxcc" required>
+		<select style="display:none" class="form-select form-select" id="quicklookupdxcc" name="dxcc" required>
 
 			<?php
 			foreach($dxcc as $d){
@@ -24,7 +24,7 @@
 
 		</select>
 
-		<select class="form-control custom-select" id="quicklookupcqz" name="cqz" required>
+		<select class="form-select form-select" id="quicklookupcqz" name="cqz" required>
 			<?php
 			for ($i = 1; $i<=40; $i++) {
 				echo '<option value="'. $i . '">'. $i .'</option>';
@@ -32,7 +32,7 @@
 			?>
 		</select>
 
-		<select style="display:none" class="form-control custom-select" id="quicklookupwas" name="was">
+		<select style="display:none" class="form-select form-select" id="quicklookupwas" name="was">
 			<option value="AL">Alabama (AL)</option>
 			<option value="AK">Alaska (AK)</option>
 			<option value="AZ">Arizona (AZ)</option>
@@ -86,7 +86,7 @@
 			<option value="WY">Wyoming (WY)</option>
 		</select>
 
-		<select style="display:none" class="form-control custom-select" id="quicklookupiota" name="iota_ref">
+		<select style="display:none" class="form-select form-select" id="quicklookupiota" name="iota_ref">
 
 			<?php
 			foreach($iota as $i){

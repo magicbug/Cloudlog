@@ -18,12 +18,12 @@
     <?php if(ENVIRONMENT != "production") { ?>
     <div class="card">
 	  <div class="card-header">
-      <span class="badge badge-danger">File Change</span> /index.php - Turn off debugging messages
+      <span class="badge text-bg-danger">File Change</span> /index.php - Turn off debugging messages
 	  </div>
 	  <div class="card-body">
         <p class="card-text">While some users love seeing errors even the development messages most don't so we recommend turning it off..</p>
         
-        <p class="card-text">Edit <span class="badge badge-dark">/index.php</span> and find <code>define('ENVIRONMENT', 'development');</code> and replace with</p>
+        <p class="card-text">Edit <span class="badge text-bg-dark">/index.php</span> and find <code>define('ENVIRONMENT', 'development');</code> and replace with</p>
         
         <code>
             define('ENVIRONMENT', 'production');
@@ -37,12 +37,12 @@
     <?php if($this->config->item('auth_level')[3] != "Operator") { ?>
 	<div class="card">
 	  <div class="card-header">
-      <span class="badge badge-danger">File Change</span> /application/config/config.php - Changes
+      <span class="badge text-bg-danger">File Change</span> /application/config/config.php - Changes
 	  </div>
 	  <div class="card-body">
         <p class="card-text">As part of fully supporting multi-user, we recommend making some changes to the role names as shown below, "Operators" do not have the admin features.</p>
         
-        <p class="card-text">Edit <span class="badge badge-dark">/application/config/config.php</span> and find $config['auth_level'] and replace the options with only the ones below.</p>
+        <p class="card-text">Edit <span class="badge text-bg-dark">/application/config/config.php</span> and find $config['auth_level'] and replace the options with only the ones below.</p>
         
         <code>
             $config['auth_level'][3] = "Operator";<br>
