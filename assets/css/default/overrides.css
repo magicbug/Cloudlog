@@ -6,6 +6,10 @@ thead>tr>td {
         border: 1px solid #ced4da;
     }
     
+    .selectize-input {
+        border: 1px solid #ced4da;
+    }
+    
     #lotw_badge {
         float:right;
     }
