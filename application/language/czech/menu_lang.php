@@ -59,8 +59,10 @@ $lang['menu_update_country_files'] = 'Aktualizace souborů';
 $lang['menu_debug_information'] = 'Informace pro ladění';
 
 $lang['menu_search_text'] = 'Hledat značku';
+$lang['menu_search_text_quicklog'] = "Add/Search Callsign";
 
 $lang['menu_search_button'] = 'Hledat';
+$lang['menu_search_button_qicksearch_log'] = "Log";
 $lang['menu_login_button'] = 'Přihlásit se';
 
 $lang['menu_account'] = 'Účet';

@@ -11,7 +11,7 @@ $lang['menu_advanced'] = '详细信息';
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = '添加QSO（从电台获取信息）';
 $lang['menu_post_qso'] = '添加QSO（手动输入信息）';
-$lang['menu_fast_log_entry'] = "Simple Fast Log Entry";
+$lang['menu_fast_log_entry'] = "简单快速记录Log";
 $lang['menu_live_contest_logging'] = '比赛日志（从电台获取信息）';
 $lang['menu_post_contest_logging'] = '比赛日志（手动输入信息）';
 $lang['menu_bandmap'] = 'Bandmap';
@@ -59,8 +59,10 @@ $lang['menu_update_country_files'] = '更新国家文件';
 $lang['menu_debug_information'] = '调试信息';
 
 $lang['menu_search_text'] = '搜索呼号';
+$lang['menu_search_text_quicklog'] = "添加/搜索 呼号";
 
 $lang['menu_search_button'] = '搜索';
+$lang['menu_search_button_qicksearch_log'] = "日志";
 $lang['menu_login_button'] = '登录';
 
 $lang['menu_account'] = '账户';
@@ -88,4 +90,4 @@ $lang['menu_logout'] = '注销';
 
 $lang['menu_ffma'] = "Fred Fish Memorial Award";
 $lang['menu_ja_gridmaster'] = 'JA Gridmaster';
-$lang['menu_maintenance']='Maintenance';
+$lang['menu_maintenance']='维护';

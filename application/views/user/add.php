@@ -231,6 +231,23 @@
                                 <option value="0"><?php echo lang('general_word_no'); ?></option>
                                 <option value="1"><?php echo lang('general_word_yes'); ?></option>
                             </select>
+                            <small> </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="quicklog"><?php echo lang('account_quicklog_feature'); ?></label>
+                            <select class="custom-select" id="quicklog" name="user_quicklog">
+                                <option value="0"><?php echo lang('general_word_no'); ?></option>
+                                <option value="1"><?php echo lang('general_word_yes'); ?></option>
+                            </select>
+                            <small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_quicklog_feature_hint'); ?></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="quicklog_enter"><?php echo lang('account_quicklog_enter'); ?></label>
+                            <select class="custom-select" id="quicklog_enter" name="user_quicklog_enter">
+                                <option value="0"><?php echo lang('account_quicklog_enter_log'); ?></option>
+                                <option value="1"><?php echo lang('account_quicklog_enter_search'); ?></option>
+                            </select>
+                            <small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_quicklog_enter_hint'); ?></small>
                         </div>
                     </div>
                 </div>
@@ -544,7 +561,7 @@
 				<div class="form-group">
 					<label><?php echo lang('account_user_mastodon'); ?></label>
 					<input class="form-control" type="text" name="user_mastodon_url" value="<?php if(isset($user_mastodon_url)) { echo $user_mastodon_url; } ?>" />
-					<div class="small form-text text-muted">Main URL of your Mastodon server, e.g. <a href="https://radiosocial.de/" target="_blank">https://radiosocial.de</a></div></td>
+                    <div class="small form-text text-muted"><?php echo lang('account_user_mastodon_hint'); ?></a></div></td>
 					</div>
 				</div>
 			</div>
@@ -561,7 +578,7 @@
                             <div class="form-group">
                                 <label for="user_default_band"><?php echo lang('account_gridmap_default_band'); ?></label>
 
-                                <select id="user_default_band" class="form-control form-control-sm" name="user_default_band">
+                                <select id="user_default_band" class="form-control" name="user_default_band">
                                     <option value="All">All</option>;
                                     <?php foreach($bands as $band) {
                                         echo '<option value="'.$band.'"';

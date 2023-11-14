@@ -8,25 +8,25 @@ var callsign = "";
 var errors = [];
 var qsoList = [];
 
-$('#simpleFleInfoButton').click(function (event) {
-    var awardInfoLines = [
-        lang_qso_simplefle_info_ln2,
-        lang_qso_simplefle_info_ln3,
-        lang_qso_simplefle_info_ln4
-    ];
-    var simpleFleInfo = "";
-    awardInfoLines.forEach(function (line) {
-        simpleFleInfo += line + "<br><br>";
-    });
-    BootstrapDialog.alert({
-        title: "<h4>"+lang_qso_simplefle_info_ln1+"</h4>",
-        message: simpleFleInfo,
-    });
+$("#simpleFleInfoButton").click(function (event) {
+	var awardInfoLines = [
+		lang_qso_simplefle_info_ln2,
+		lang_qso_simplefle_info_ln3,
+		lang_qso_simplefle_info_ln4,
+	];
+	var simpleFleInfo = "";
+	awardInfoLines.forEach(function (line) {
+		simpleFleInfo += line + "<br><br>";
+	});
+	BootstrapDialog.alert({
+		title: "<h4>" + lang_qso_simplefle_info_ln1 + "</h4>",
+		message: simpleFleInfo,
+	});
 });
 
-$('#js-syntax').click(function (event) {
-    $('#js-syntax').prop("disabled", false);
-    $.ajax({
+$("#js-syntax").click(function (event) {
+	$("#js-syntax").prop("disabled", false);
+	$.ajax({
 		url: base_url + "index.php/simplefle/displaySyntax",
 		type: "post",
 		success: function (html) {
@@ -53,12 +53,14 @@ $('#js-syntax').click(function (event) {
 
 										const logData = `
 *example-data*
+date 2023-05-14
 80m cw
 1212 m0abc okff-1234
 3 hb9hil
 4 ok1tn
 20 dl6kva 7 8
-5 dl5cw 
+5 dl5cw
+day ++
 ssb
 32 ok7wa ol/zl-071 5 8
 33 ok1xxx  4 3
@@ -84,6 +86,13 @@ ssb
 		},
 	});
 });
+
+function updateUTCTime() {
+	const utcTimeElement = document.getElementById("utc-time");
+	const now = new Date();
+	const utcTimeString = now.toISOString().split("T")[1].split(".")[0];
+	utcTimeElement.textContent = utcTimeString;
+}
 
 function handleInput() {
 	var qsodate = "";
@@ -114,23 +123,25 @@ function handleInput() {
 		var rst_r = null;
 		items = row.startsWith("day ") ? [row] : row.split(" ");
 		var itemNumber = 0;
+		var freq = 0;
 		items.forEach((item) => {
 			if (item === "") {
 				return;
 			}
 			if (item.trim().match(/^day (\+)+$/)) {
 				var plusCount = item.match(/\+/g).length;
-				var originalDate = new Date(extraQsoDate);;
-				console.log(plusCount)
+				var originalDate = new Date(extraQsoDate);
 				originalDate.setDate(originalDate.getDate() + plusCount);
 				extraQsoDate = originalDate.toISOString().split("T")[0];
-			} else if (item.match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)) {
-				extraQsoDate = item;
 			} else if (
-				item.match(/^[0-2][0-9][0-5][0-9]$/)
+				item.match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)
 			) {
+				extraQsoDate = item;
+			} else if (item.match(/^[0-2][0-9][0-5][0-9]$/)) {
 				qsotime = item;
-			} else if (item.match(/^CW$|^SSB$|^FM$|^AM$|^PSK$|^FT8$/i)) {
+			} else if (
+				item.match(/^CW$|^SSB$|^LSB$|^USB$|^FM$|^AM$|^PSK$|^FT8$/i)
+			) {
 				mode = item.toUpperCase();
 			} else if (
 				item.match(/^[0-9]{1,4}(?:m|cm|mm)$/) ||
@@ -155,13 +166,13 @@ function handleInput() {
 				qsotime = qsotime.slice(0, -2) + item;
 			} else if (
 				item.match(
-					/^[A-Z0-9]{1,3}\/[A-Z]{2}-\d{3}|[AENOS]*[FNSUACA]-\d{3}|(?!.*FF)[A-Z0-9]{1,3}-\d{4}|[A-Z0-9]{1,3}[F]{2}-\d{4}$/i
+					/^[A-Z0-9]{1,3}\/[A-Z]{2}-\d{3}|[AENOS]*[FNSUACA]-\d{3}|(?!.*FF)[A-Z0-9]{1,3}-\d{4,5}|[A-Z0-9]{1,3}[F]{2}-\d{4}$/i,
 				)
 			) {
 				sotaWwff = item.toUpperCase();
 			} else if (
 				item.match(
-					/([a-zA-Z0-9]{1,3}[0123456789][a-zA-Z0-9]{0,3}[a-zA-Z])|.*\/([a-zA-Z0-9]{1,3}[0123456789][a-zA-Z0-9]{0,3}[a-zA-Z])|([a-zA-Z0-9]{1,3}[0123456789][a-zA-Z0-9]{0,3}[a-zA-Z])\/.*/
+					/([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])|.*\/([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])|([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])\/.*/,
 				)
 			) {
 				callsign = item.toUpperCase();
@@ -197,7 +208,9 @@ function handleInput() {
 			}
 
 			if (isValidDate(extraQsoDate) === false) {
-				addErrorMessage(lang_qso_simplefle_error_date + " " + extraQsoDate);
+				addErrorMessage(
+					lang_qso_simplefle_error_date + " " + extraQsoDate,
+				);
 				extraQsoDate = qsodate;
 			}
 
@@ -242,14 +255,38 @@ function handleInput() {
 
 			$("#qsoTable > tbody:last-child").append(tableRow);
 
-			localStorage.setItem(`user_${user_id}_tabledata`, $("#qsoTable").html());
-			localStorage.setItem(`user_${user_id}_my-call`, $("#station-call").val());
-			localStorage.setItem(`user_${user_id}_operator`, $("#operator").val());
-			localStorage.setItem(`user_${user_id}_my-sota-wwff`, $("#my-sota-wwff").val());
-			localStorage.setItem(`user_${user_id}_qso-area`, $(".qso-area").val());
-			localStorage.setItem(`user_${user_id}_qsodate`, $("#qsodate").val());
-			localStorage.setItem(`user_${user_id}_my-power`, $("#my-power").val());
-			localStorage.setItem(`user_${user_id}_my-grid`, $("#my-grid").val());
+			localStorage.setItem(
+				`user_${user_id}_tabledata`,
+				$("#qsoTable").html(),
+			);
+			localStorage.setItem(
+				`user_${user_id}_my-call`,
+				$("#station-call").val(),
+			);
+			localStorage.setItem(
+				`user_${user_id}_operator`,
+				$("#operator").val(),
+			);
+			localStorage.setItem(
+				`user_${user_id}_my-sota-wwff`,
+				$("#my-sota-wwff").val(),
+			);
+			localStorage.setItem(
+				`user_${user_id}_qso-area`,
+				$(".qso-area").val(),
+			);
+			localStorage.setItem(
+				`user_${user_id}_qsodate`,
+				$("#qsodate").val(),
+			);
+			localStorage.setItem(
+				`user_${user_id}_my-power`,
+				$("#my-power").val(),
+			);
+			localStorage.setItem(
+				`user_${user_id}_my-grid`,
+				$("#my-grid").val(),
+			);
 
 			callsign = "";
 			sotaWwff = "";
@@ -263,7 +300,14 @@ function handleInput() {
 
 	var qsoCount = qsoList.length;
 	if (qsoCount) {
-		$(".js-qso-count").html("<strong>" + lang_qso_simplefle_qso_list_total + ":</strong> " + qsoCount + " " + lang_gen_hamradio_qso);
+		$(".js-qso-count").html(
+			"<strong>" +
+				lang_qso_simplefle_qso_list_total +
+				":</strong> " +
+				qsoCount +
+				" " +
+				lang_gen_hamradio_qso,
+		);
 	} else {
 		$(".js-qso-count").html("");
 	}
@@ -274,31 +318,31 @@ function handleInput() {
 }
 
 function checkMainFieldsErrors() {
-	if ($("#station-call").val() === '-') {
-		$('#warningStationCall').show();
-        $('#station-call').css('border', '2px solid rgb(217, 83, 79)');
-        $('#warningStationCall').text(lang_qso_simplefle_error_stationcall);
+	if ($("#station-call").val() === "-") {
+		$("#warningStationCall").show();
+		$("#station-call").css("border", "2px solid rgb(217, 83, 79)");
+		$("#warningStationCall").text(lang_qso_simplefle_error_stationcall);
 	} else {
-        $('#station-call').css('border', '');
-        $('#warningStationCall').hide();
-    }
+		$("#station-call").css("border", "");
+		$("#warningStationCall").hide();
+	}
 
 	if ($("#operator").val() === "") {
-		$('#warningOperatorField').show();
-        $('#operator').css('border', '2px solid rgb(217, 83, 79)');
-        $('#warningOperatorField').text(lang_qso_simplefle_error_operator);
-	}else {
-        $('#operator').css('border', '');
-        $('#warningOperatorField').hide();
-    }
+		$("#warningOperatorField").show();
+		$("#operator").css("border", "2px solid rgb(217, 83, 79)");
+		$("#warningOperatorField").text(lang_qso_simplefle_error_operator);
+	} else {
+		$("#operator").css("border", "");
+		$("#warningOperatorField").hide();
+	}
 	if ($("textarea").val() === "") {
-        $('#textarea').css('border', '2px solid rgb(217, 83, 79)');
-		setTimeout(function() {
-			$('#textarea').css('border', '');
-		  }, 2000);
-	}else {
-        $('#textarea').css('border', '');
-    }
+		$("#textarea").css("border", "2px solid rgb(217, 83, 79)");
+		setTimeout(function () {
+			$("#textarea").css("border", "");
+		}, 2000);
+	} else {
+		$("#textarea").css("border", "");
+	}
 }
 
 $textarea.keydown(function (event) {
@@ -373,7 +417,6 @@ $(".js-download-qso").click(function () {
 	handleInput();
 });
 
-
 function getBandFromFreq(freq) {
 	if (freq > 1.7 && freq < 2) {
 		return "160m";
@@ -407,15 +450,23 @@ function getBandFromFreq(freq) {
 }
 
 function getFreqFromBand(band, mode) {
-	const settingsMode = getSettingsMode(mode.toUpperCase());
-	const id = "#" + band + settingsMode;
-	if ($(id).length) {
-		return $(id).val();
+	var settingsMode = getSettingsMode(mode.toUpperCase());
+	var settingsBand = "b" + band.toUpperCase();
+	var bandData = Bands[settingsBand];
+
+	if (bandData) {
+		return bandData[settingsMode] / 1000000;
 	}
 }
 
 function getSettingsMode(mode) {
-	if (mode === "AM" || mode === "FM" || mode === "SSB") {
+	if (
+		mode === "AM" ||
+		mode === "FM" ||
+		mode === "SSB" ||
+		mode === "LSB" ||
+		mode === "USB"
+	) {
 		return "SSB";
 	}
 
@@ -438,7 +489,7 @@ for (const [key, value] of Object.entries(Bands)) {
           <div class="form-group">
             <label for="${key.slice(1)}CW">CW</label>
             <input type="text" class="form-control text-uppercase" id="${key.slice(
-				1
+				1,
 			)}CW" value="${value.cw}">
           </div>
         </div>
@@ -446,7 +497,7 @@ for (const [key, value] of Object.entries(Bands)) {
           <div class="form-group">
             <label for="${key.slice(1)}SSB">SSB</label>
             <input type="text" class="form-control text-uppercase" id="${key.slice(
-				1
+				1,
 			)}SSB" value="${value.ssb}">
           </div>
         </div>
@@ -454,7 +505,7 @@ for (const [key, value] of Object.entries(Bands)) {
           <div class="form-group">
             <label for="${key.slice(1)}DIGI">DIGI</label>
             <input type="text" class="form-control text-uppercase" id="${key.slice(
-				1
+				1,
 			)}DIGI" value="${value.digi}">
           </div>
         </div>
@@ -475,14 +526,23 @@ function isBandModeEntered() {
 	return isBandModeOK;
 }
 
+function isTimeEntered() {
+	let isTimeOK = true;
+	qsoList.forEach((item) => {
+		if (item[1] === "") {
+			isTimeOK = false;
+		}
+	});
+
+	return isTimeOK;
+}
+
 function isExampleDataEntered() {
 	let isExampleData = false;
 	if (textarea.value.startsWith("*example-data*")) {
 		isExampleData = true;
-		
-	};
+	}
 	return isExampleData;
-
 }
 
 function getAdifTag(tagName, value) {
@@ -535,7 +595,7 @@ function isIOTA(value) {
 }
 
 function isPOTA(value) {
-	if (value.match(/^(?!.*FF)[A-Z0-9]{1,3}-\d{4}$/)) {
+	if (value.match(/^(?!.*FF)[A-Z0-9]{1,3}-\d{4,5}$/)) {
 		return true;
 	}
 }
@@ -548,8 +608,9 @@ function isWWFF(value) {
 	return false;
 }
 
-
 $(document).ready(function () {
+	setInterval(updateUTCTime, 1000);
+	updateUTCTime();
 	var tabledata = localStorage.getItem(`user_${user_id}_tabledata`);
 	var mycall = localStorage.getItem(`user_${user_id}_my-call`);
 	var operator = localStorage.getItem(`user_${user_id}_operator`);
@@ -595,16 +656,27 @@ $(document).ready(function () {
 
 $(".js-save-to-log").click(function () {
 	if ($("textarea").val() === "") {
-        $('#textarea').css('border', '2px solid rgb(217, 83, 79)');
-		setTimeout(function() {
-			$('#textarea').css('border', '');
-		  }, 2000);
+		$("#textarea").css("border", "2px solid rgb(217, 83, 79)");
+		setTimeout(function () {
+			$("#textarea").css("border", "");
+		}, 2000);
 		return false;
 	}
 	if (false === isBandModeEntered()) {
 		BootstrapDialog.alert({
 			title: lang_general_word_warning,
 			message: lang_qso_simplefle_warning_missing_band_mode,
+			type: BootstrapDialog.TYPE_DANGER,
+			btnCancelLabel: lang_general_word_cancel,
+			btnOKLabel: lang_general_word_ok,
+			btnOKClass: "btn-warning",
+		});
+		return false;
+	}
+	if (false === isTimeEntered()) {
+		BootstrapDialog.alert({
+			title: lang_general_word_warning,
+			message: lang_qso_simplefle_warning_missing_time,
 			type: BootstrapDialog.TYPE_DANGER,
 			btnCancelLabel: lang_general_word_cancel,
 			btnOKLabel: lang_general_word_ok,
@@ -622,13 +694,11 @@ $(".js-save-to-log").click(function () {
 			btnOKClass: "btn-warning",
 		});
 		return false;
-	}
-	else {
+	} else {
 		handleInput();
 		BootstrapDialog.confirm({
 			title: lang_general_word_attention,
-			message:
-				lang_qso_simplefle_confirm_save_to_log,
+			message: lang_qso_simplefle_confirm_save_to_log,
 			type: BootstrapDialog.TYPE_INFO,
 			btnCancelLabel: lang_general_word_cancel,
 			btnOKLabel: lang_general_word_ok,
@@ -649,15 +719,20 @@ $(".js-save-to-log").click(function () {
 						var rst_rcvd = item[7];
 						var rst_sent = item[6];
 						var start_date = item[0];
-						var start_time = item[1][0] +item[1][1] + ":" + item[1][2] + item[1][3];
+						var start_time =
+							item[1][0] +
+							item[1][1] +
+							":" +
+							item[1][2] +
+							item[1][3];
 						var band = item[4];
 						var mode = item[5];
-						var freq_display = item[3];
+						var freq_display = item[3] * 1000000;
 						var station_profile = $(".station_id").val();
-						var sota_ref = '';
-						var iota_ref = '';
-						var pota_ref = '';
-						var wwff_ref = '';
+						var sota_ref = "";
+						var iota_ref = "";
+						var pota_ref = "";
+						var wwff_ref = "";
 						if (isSOTA(item[8])) {
 							sota_ref = item[8];
 						} else if (isIOTA(item[8])) {
@@ -693,8 +768,7 @@ $(".js-save-to-log").click(function () {
 					clearSession();
 					BootstrapDialog.alert({
 						title: lang_qso_simplefle_success_save_to_log_header,
-						message:
-							lang_qso_simplefle_success_save_to_log,
+						message: lang_qso_simplefle_success_save_to_log,
 					});
 				}
 			},

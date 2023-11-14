@@ -19,9 +19,11 @@
     20m ssb
     2134 2m0sql
     6 la8aja 47 46
+    date 2021-05-14
     40m 
     40 dj7nt
-    2 df3et
+    day ++
+    df3et
 </pre>
 <p><?php echo lang('qso_simplefle_syntax_help_ln9') ?></p>
 

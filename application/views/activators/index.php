@@ -1,13 +1,13 @@
 <div class="container">
-    <h1><?php echo $page_title; ?></h1>
+    <h1><?php echo lang('gridsquares_gridsquare_activators'); ?></h1>
 
     <form class="form" action="<?php echo site_url('activators'); ?>" method="post" enctype="multipart/form-data">
         <!-- Select Basic -->
                 <div class="form-group row">
-                    <label class="col-md-1 control-label" for="band">Band</label>
+                    <label class="col-md-1 control-label" for="band"><?php echo lang('gen_hamradio_band'); ?></label>
                     <div class="col-md-3">
                         <select id="band" name="band" class="form-control custom-select">
-                            <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >All</option>
+                            <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> ><?php echo lang('general_word_all'); ?></option>
                             <?php foreach($worked_bands as $band) {
                                 echo '<option value="' . $band . '"';
                                 if ($this->input->post('band') == $band) echo ' selected';
@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-md-1 control-label" for="mincount">Minimum Count</label>
+                    <label class="col-md-1 control-label" for="mincount"><?php echo lang('gridsquares_minimum_count'); ?></label>
                     <div class="col-md-3">
                         <select id="mincount" name="mincount" class="form-control custom-select">
                             <?php
@@ -47,7 +47,7 @@
             <div class="form-group row">
                 <label class="col-md-1 control-label" for="button1id"></label>
                 <div class="col-md-10">
-                    <button id="button1id" type="submit" name="button1id" class="btn btn-primary">Show</button>
+                    <button id="button1id" type="submit" name="button1id" class="btn btn-primary"><?php echo lang('filter_options_show'); ?></button>
                 </div>
             </div>
 
@@ -98,11 +98,11 @@ function write_activators($activators_array, $vucc_grids, $custom_date_format, $
               <thead>
                     <tr>
                         <td>#</td>
-                        <td>Callsign</td>
-                        <td>Count</td>
-                        <td>Gridsquares</td>
-                        <td>Show QSOs</td>
-                        <td>Show Map</td>
+                        <td>' . lang('gen_hamradio_callsign') . '</td>
+                        <td>' . lang('general_word_count') . '</td>
+                        <td>' . lang('gridsquares_gridsquares') . '</td>
+                        <td>' . lang('gridsquares_show_qsos') . '</td>
+                        <td>' . lang('gridsquares_show_map') . '</td>
                     </tr>
                 </thead>
                 <tbody>';

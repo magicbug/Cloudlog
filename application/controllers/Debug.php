@@ -1,69 +1,65 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Debug extends CI_Controller {
-	function __construct()
-	{
-		parent::__construct();
+    function __construct()
+    {
+        parent::__construct();
 
         $this->load->model('user_model');
-		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-	}
-	
-	/* User Facing Links to Backup URLs */
-	public function index()
-	{
+        if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+    }
+
+    /* User Facing Links to Backup URLs */
+    public function index()
+    {
         $this->load->helper('file');
 
+        $this->load->model('MigrationVersion');
+
+        $data['migration_version'] = $this->MigrationVersion->getMigrationVersion();
+
         // Test writing to backup folder
-        if ( ! write_file('backup/myfile.txt', "dummydata"))
-        {
-            $data['backup_folder'] = false;
-        }
-        else
-        {
-            if(unlink(realpath('backup/myfile.txt'))) {
-                $data['backup_folder'] = true;
-            } else {
-                $data['backup_folder'] = false;
-            }
-        }
+        $backup_folder = $this->is_really_writable('backup');
+        $data['backup_folder'] = $backup_folder;
 
         // Test writing to updates folder
-        if ( ! write_file('updates/myfile.txt', "dummydata"))
-        {
-            $data['updates_folder'] = false;
-        }
-        else
-        {
-            if(unlink(realpath('updates/myfile.txt'))) {
-                $data['updates_folder'] = true;
-            } else {
-                $data['updates_folder'] = false;
-            }
-        }
+        $updates_folder = $this->is_really_writable('updates');
+        $data['updates_folder'] = $updates_folder;
 
         // Test writing to uploads folder
-        if ( ! write_file('uploads/myfile.txt', "dummydata"))
-        {
-            $data['uploads_folder'] = false;
+        $uploads_folder = $this->is_really_writable('uploads');
+        $data['uploads_folder'] = $uploads_folder;
+
+        $data['page_title'] = "Debug";
+
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('debug/main');
+        $this->load->view('interface_assets/footer');
+    }
+
+    private function is_really_writable($folder)
+    {
+        // Get the absolute path to the folder
+        $path = FCPATH . $folder;
+
+        // Check if the folder exists
+        if (!file_exists($path)) {
+            return false;
         }
-        else
-        {
-            if(unlink(realpath('uploads/myfile.txt'))) {
-                $data['uploads_folder'] = true;
-            } else {
-                $data['uploads_folder'] = false;
+
+        // Check if the folder is writable
+        if (is_writable($path)) {
+            // Check if the subdirectories are writable (recursive check)
+            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
+            foreach ($iterator as $item) {
+                if (!is_writable($item->getPathname())) {
+                    return false;
+                }
             }
+
+            return true;
         }
 
-
-
-		$data['page_title'] = "Debug";
-
-		$this->load->view('interface_assets/header', $data);
-		$this->load->view('debug/main');
-		$this->load->view('interface_assets/footer');
-	}
-
-
+        return false;
+    }
 }

@@ -21,8 +21,12 @@ $lang['general_word_enabled'] = "Eingeschaltet";
 $lang['general_word_disabled'] = "Ausgeschaltet";
 $lang['general_word_export'] = "Exportieren";
 $lang['general_word_import'] = "Importieren";
+$lang['general_word_count'] = "Zähler";
+$lang['general_word_filtering_on'] = "Filtern auf";
 
 $lang['general_word_date'] = 'Datum';
+$lang['general_word_startdate'] = "Start Datum";
+$lang['general_word_enddate'] = "End Datum";
 $lang['general_word_time'] = 'Zeit';
 $lang['general_word_time_on'] = 'Startzeit';
 $lang['general_word_time_off'] = 'Endzeit';
@@ -48,6 +52,7 @@ $lang['general_word_worked'] = 'Gearbeitet';
 $lang['general_word_worked_not_confirmed'] = "Gearbeitet, nicht bestätigt";
 $lang['general_word_not_worked'] = "Nicht gearbeitet";
 $lang['general_word_confirmed'] = 'Bestätigt';
+$lang['general_word_confirmation'] = "Bestätigung";
 $lang['general_word_needed'] = 'Benötigt';
 
 $lang['general_word_all'] = 'Alle';
@@ -109,6 +114,8 @@ $lang['gen_hamradio_station'] = 'Station';
 
 $lang['gen_hamradio_call'] = 'Call';
 $lang['gen_hamradio_callsign'] = 'Rufzeichen';
+$lang['gen_hamradio_prefix'] = "Prefix";
+$lang['gen_hamradio_suffix'] = "Suffix";
 $lang['gen_hamradio_de'] = 'De';
 $lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Mode';
@@ -138,6 +145,7 @@ $lang['gen_hamradio_satellite_name'] = 'Satellit';
 $lang['gen_hamradio_satellite_mode'] = 'Satellitenmodus';
 
 $lang['gen_hamradio_logbook'] = 'Logbuch';
+$lang['gen_hamradio_award'] = "Diplom";
 
 $lang['gen_hamradio_zones'] = 'Zonen';
 $lang['gen_hamradio_cq_zone'] = 'CQ Zone';
@@ -159,6 +167,9 @@ $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Planquadrat';
 $lang['gen_hamradio_get_gridsquare'] = 'Orte mein Planquadrat';
+$lang['gen_hamradio_latitude'] = "Breitengrad";
+$lang['gen_hamradio_longitude'] = "Längengrad";
+$lang['gen_hamradio_bearing'] = "Peilung";
 $lang['gen_hamradio_distance'] = 'Entfernung';
 $lang['gen_hamradio_operator'] = 'Operator';
 
@@ -166,8 +177,10 @@ $lang['gen_hamradio_sig'] = 'Sig';
 $lang['gen_hamradio_sig_info'] = 'Sig Info';
 
 // Find your CQ/ITU Zone
-$lang['gen_find_zone_cq'] = "Wenn du deine CQ Zone nicht kennst <a href='https://zone-check.eu/?m=cq' target='_blank'>klicke hier</a> um sie herauszufinden!";
-$lang['gen_find_zone_itu'] = "Wenn du deine ITU Zone nicht kennst <a href='https://zone-check.eu/?m=itu' target='_blank'>klicke hier</a> um sie herauszufinden!";
+$lang['gen_find_zone_cq_part1'] = "Wenn du deine CQ Zone nicht kennst";
+$lang['gen_find_zone_itu_part1'] = "Wenn du deine ITU Zone nicht kennst";
+$lang['gen_find_zone_part2'] = "klicke hier";
+$lang['gen_find_zone_part3'] = "um sie herauszufinden!";
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = 'Du hattest';
@@ -194,3 +207,10 @@ $lang['southamerica'] = 'Südamerika';
 
 $lang['gen_band_selection'] = 'Bandauswahl';
 $lang['general_word_today'] = 'Heute';
+
+$lang['dashboard_php_version_warning'] = 'Die PHP Version is zu alt. Benötigt wird mindestens die Version 7.4. Die installierte Version ist';
+$lang['dashboard_country_files_warning'] = 'Die Länderlisten müssen aktualisiert werden! Klicke <a href="'.site_url('update').'">hier</a>, um das zu tun!';
+$lang['dashboard_locations_warning'] = 'Ea wurde kein Stationsstandort angelegt! Klicke <a href="'. site_url('station') . '">hier</a>, um das zu tun!';
+$lang['dashboard_logbooks_warning'] = 'Es wurde kein Stationslogbuch angelegt. Klicke <a href="'. site_url('logbooks') . '">hier</a>, um das zu tun!';
+
+$lang['hams_at_no_activations_found'] = 'Keine bevorstehenden Aktivierungen gefunden. Bitte später noch einmal vorbeischauen.';

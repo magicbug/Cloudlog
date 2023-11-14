@@ -8,16 +8,16 @@ Station Logbooks
 ___________________________________________________________________________________________
 */
 
-$lang['station_logbooks'] = "Station Logbooks";
-$lang['station_logbooks_description_header'] = "What are Station Logbooks";
-$lang['station_logbooks_description_text'] = "Station Logbooks allow you to group Station Locations, this allows you to see all the locations across one session from the logbook areas to the analytics. Great for when your operating in multiple locations but they are part of the same DXCC or VUCC Circle.";
-$lang['station_logbooks_create'] = "Create Station Logbook";
-$lang['station_logbooks_status'] = "Status";
-$lang['station_logbooks_link'] = "Link";
-$lang['station_logbooks_public_search'] = "Public Search";
-$lang['station_logbooks_set_active'] = "Set as Active Logbook";
-$lang['station_logbooks_active_logbook'] = "Active Logbook";
-$lang['station_logbooks_edit_logbook'] = "Edit Station Logbook";    // Full sentence will be generated 'Edit Station Logbook: [Logbook Name]'
+$lang['station_logbooks'] = "Journal de trafic des stations";
+$lang['station_logbooks_description_header'] = "Présentation du journal de trafic des stations";
+$lang['station_logbooks_description_text'] = "Les \"journaux de trafic\" des stations vous permettent de regrouper les emplacements des stations.<br>Cela vous permet d'avoir tous les emplacements au sein d'une même session ; visible dans le journal de trafic,  jusqu'aux statistiques. <br>Idéal lorsque vous travaillez sur plusieurs sites, mais qu'ils font partie du même cercle DXCC ou VUCC.";
+$lang['station_logbooks_create'] = "Ajouter un nouveau";
+$lang['station_logbooks_status'] = "Statut";
+$lang['station_logbooks_link'] = "Lien";
+$lang['station_logbooks_public_search'] = "Recherche publique";
+$lang['station_logbooks_set_active'] = "Activer ce journal";
+$lang['station_logbooks_active_logbook'] = "Activé";
+$lang['station_logbooks_edit_logbook'] = "Editer ce journal";    // Full sentence will be generated 'Edit Station Logbook: [Logbook Name]'
 $lang['station_logbooks_confirm_delete'] = "Are you sure you want to delete the following station logbook? You must re-link any locations linked here to another logbook.: ";
 $lang['station_logbooks_view_public'] = "View Public Page for Logbook: ";
 $lang['station_logbooks_create_name'] = "Station Logbook Name";
@@ -53,7 +53,7 @@ $lang['station_location_header_ln3'] = 'Only one station may be active at a time
 $lang['station_location_create_header'] = 'Create Station Location';
 $lang['station_location_create'] = 'Create a Station Location';
 $lang['station_location_edit'] = 'Edit Station Location: ';
-$lang['station_location_updated_suff'] = ' Updated.';
+$lang['station_location_updated_suff'] = "mis à jour.";
 $lang['station_location_warning'] = 'Attention: You need to set an active station location. Go to Callsign->Station Location to select one.';
 $lang['station_location_reassign_at'] = 'Please reassign them at ';
 $lang['station_location_warning_reassign'] = 'Due to recent changes within Cloudlog you need to reassign QSOs to your station profiles.';

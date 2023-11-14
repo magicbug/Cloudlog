@@ -214,7 +214,7 @@ class Contesting_model extends CI_Model {
 
 		$contest_session = $this->getSession();
 		
-		if ($contest_session) {
+		if ($contest_session && $contest_session->qso != "") {
 			$qsoarray = explode(',', $contest_session->qso);
 	
 			$date = DateTime::createFromFormat('d-m-Y H:i:s', $qsoarray[0]);

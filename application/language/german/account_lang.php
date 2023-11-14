@@ -12,7 +12,7 @@ $lang['account_column5_text'] = 'Wähle Spalte 5 (nur für Logbuch)';
 $lang['account_create_user_account'] = 'Benutzerkonto anlegen';
 $lang['account_edit_account'] = 'Benutzerkonto editieren';
 
-$lang['account_account_information'] = 'Bnutzerkonto Informationen';
+$lang['account_account_information'] = 'Benutzerkonto Informationen';
 $lang['account_user'] = "Benutzer";
 $lang['account_word_edited'] = "bearbeitet";
 $lang['account_username'] = 'Benutzername';
@@ -37,13 +37,19 @@ $lang['account_timezone'] = 'Zeitzone';
 $lang['account_date_format'] = 'Datumsformat';
 $lang['account_log_end_time'] = 'Logge Endzeiten für QSOs separat';
 $lang['account_log_end_time_hint'] = 'Wenn aktiviert, werden QSO Endzeiten separat erfasst. Falls nicht, ist die QSO Endzeit gleich der Startzeit.';
+$lang['account_quicklog_feature'] = "Quicklog Feld";
+$lang['account_quicklog_feature_hint'] = "Mit dieser Option kannst du Rufzeichen auch direkt aus dem Suchfeld in der Menüleiste heraus loggen.";
+$lang['account_quicklog_enter'] = "Quicklog - Aktion mit Enter Taste";
+$lang['account_quicklog_enter_hint'] = "Welche Aktion soll ausgeführt werden, wenn Enter gedrückt wird?";
+$lang['account_quicklog_enter_log'] = "Logge Rufzeichen";
+$lang['account_quicklog_enter_search'] = "Suche Rufzeichen";
 $lang['account_measurement_preferences'] = 'Entfernungsformat';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Wähle, wie Datumsfelder angezeigt werden sollen, wenn du eingeloggt bist.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Wähle, in welcher Einheit Entfernungen angezeigt werden sollen.';
 $lang['account_cloudlog_language'] = 'Cloudlog Sprache';
 $lang['account_choose_cloudlog_language'] = 'Wähle eine Sprache für Cloudlog.';
 
-$lang['account_main_menu'] = 'Hauptmenü';
+$lang['account_main_menu'] = 'Menü Optionen';
 $lang['account_show_notes_in_the_main_menu'] = 'Zeige Notizen im Hauptmenü';
 
 $lang['account_gridsquare_and_location_autocomplete'] = 'Vervollständigung von Planquadrat und Lokation';

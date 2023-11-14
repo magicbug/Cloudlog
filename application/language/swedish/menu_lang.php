@@ -59,8 +59,10 @@ $lang['menu_update_country_files'] = 'Uppdatera landsfiler';
 $lang['menu_debug_information'] = 'Debug Info';
 
 $lang['menu_search_text'] = 'Sök Callsign';
+$lang['menu_search_text_quicklog'] = "Add/Search Callsign";
 
 $lang['menu_search_button'] = 'Sök';
+$lang['menu_search_button_qicksearch_log'] = "Log";
 $lang['menu_login_button'] = 'Logga in';
 
 $lang['menu_account'] = 'Konto';

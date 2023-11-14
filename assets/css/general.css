@@ -557,7 +557,7 @@ input:invalid {
 }
 
 .sfletable{
-    height: 440px;
+    height: 470px;
   }
 
 .sfletable.table {
@@ -574,6 +574,12 @@ input:invalid {
 .sfletable.table tbody {
     width: 95%;
 	overflow-y: scroll;
-	max-height: 410px;
+	max-height: 440px;
 	position: absolute;
 }
+
+.red { color:var(--red); }
+.green { color:var(--green); }
+.blue { color:var(--indigo); }
+.gray { color:var(--gray); }
+.orange { color:var(--orange); }
