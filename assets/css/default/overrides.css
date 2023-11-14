@@ -1,31 +1,39 @@
 thead>tr>td {
-    background-color: aliceblue !important;
-}
-
-.selectize-input {
-    border: 1px solid #ced4da;
-}
-
-#lotw_badge {
+        background-color: aliceblue !important;
+    }
+    
+    .form-select {
+        border: 1px solid #ced4da;
+    }
+    
+    #lotw_badge {
         float:right;
-}
-
-#edit_qso:not(.btn) {
+    }
+    
+    #edit_qso:not(.btn) {
         float:left;
-}
-
-.qso_call {
+    }
+    
+    .qso_call {
         float:left;
         width:140px;
-}
-
-.qso_icons {
+    }
+    
+    .qso_icons {
         float:right;
-}
-
-.btn { 
-        white-space: normal; 
-}
-
-#qsoList_wrapper th { text-align: left !important; white-space: nowrap;}
-#qsoList_wrapper td { text-align: left !important; white-space: nowrap;}
+    }
+    
+    .btn {
+        white-space: normal;
+    }
+    
+    #qsoList_wrapper th {
+        text-align: left !important;
+        white-space: nowrap;
+    }
+    
+    #qsoList_wrapper td {
+        text-align: left !important;
+        white-space: nowrap;
+    }
+    
