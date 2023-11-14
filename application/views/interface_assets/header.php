@@ -340,7 +340,7 @@
 								$oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 								?>
 								<a class="dropdown-item" href="<?php echo site_url('oqrs/requests'); ?>" title="OQRS Requests"><i class="fa fa-id-card"></i> <?php echo lang('menu_oqrs_requests'); ?> <?php if ($oqrs_requests > 0) {
-																																																			echo "<span class=\"badge badge-light\">" . $oqrs_requests . "</span>";
+																																																			echo "<span class=\"badge text-bg-light\">" . $oqrs_requests . "</span>";
 																																																		} ?></a>
 
 								<a class="dropdown-item" href="<?php echo site_url('qslprint'); ?>" title="Print Requested QSLs"><i class="fas fa-print"></i> <?php echo lang('menu_print_requested_qsls'); ?></a>
