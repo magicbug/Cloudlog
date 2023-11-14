@@ -39,7 +39,7 @@
 
 	<?php if ($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
-		<div class="alert-message error">
+		<div class="alert alert-danger">
 			<p><?php echo $this->session->flashdata('message'); ?></p>
 		</div>
 	<?php } ?>
@@ -51,9 +51,6 @@
 		</div>
 
 		<div class="col-md-3 justify-content-end d-flex">
-
-
-
 		</div>
 	</header>
 	<div class="row mt-4">
@@ -123,7 +120,7 @@
 			</div>
 			<div class="card-body">
 				<div class="qsoList">
-					<table class="table table-condensed table-striped table-sm sfletable" id="qsoTable">
+					<table class="table table-striped table-bordered table-sm sfletable" id="qsoTable">
 						<thead>
 							<tr>
 								<th><?php echo lang('general_word_date'); ?></th>
@@ -135,11 +132,9 @@
 								<th><?php echo lang('gen_hamradio_rstr'); ?></th>
 								<th><?php echo lang('gen_hamradio_operator'); ?></th>
 								<th><?php echo lang('gen_hamradio_refs'); ?>*</th>
-								</th>
 							</tr>
 						</thead>
 						<tbody id="qsoTableBody">
-
 						</tbody>
 					</table>
 				</div>
