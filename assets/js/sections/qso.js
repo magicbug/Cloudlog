@@ -1,7 +1,7 @@
 $( document ).ready(function() {
 	setTimeout(function() {
 		var callsignValue = localStorage.getItem("quicklogCallsign");
-		if (callsignValue !== "") {
+		if (callsignValue !== null && callsignValue !== undefined) {
 		  $("#callsign").val(callsignValue);
 		  $("#mode").focus();
 		  localStorage.removeItem("quicklogCallsign");
