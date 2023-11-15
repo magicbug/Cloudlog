@@ -937,8 +937,33 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 						if (isset($data['callsign']['error'])) {
 							$data['error'] = $data['callsign']['error'];
 						}
+					} else if ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
+						// Load the HamQTH library
+						$this->load->library('hamqth');
+
+						if(!$this->session->userdata('hamqth_session_key')) {
+							$hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+							$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+						}
+
+						$data['callsign'] = $this->hamqth->search($id, $this->session->userdata('hamqth_session_key'));
+
+						// If HamQTH session has expired, start a new session and retry the search.
+						if($data['callsign']['error'] == "Session does not exist or expired") {
+							$hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+							$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+							$data['callsign'] = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+						}
+						if (isset($data['callsign']['gridsquare'])) {
+							$CI = &get_instance();
+							$CI->load->model('logbook_model');
+							$data['grid_worked'] = $CI->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
+						}
+						if (isset($data['callsign']['error'])) {
+							$data['error'] = $data['callsign']['error'];
+						}
 					} else {
-						$data['error'] = 'Lookup not configured or set to hamqth. Currently only qrz is supported.';
+						$data['error'] = 'Lookup not configured. Please review configuration.';
 					} /*else {
 						// Lookup using hamli
 						$this->load->library('hamli');
