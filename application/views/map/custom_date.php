@@ -11,7 +11,7 @@
 <form method="post" action="<?php echo site_url('map/custom');?>">
     <div class="row">
         <label class="col-md-2 control-label" for="from">Start Date/Time</label>
-        <div class="input-group date col-md-3" id="datetimepicker1" data-target-input="nearest">
+        <div class="input-group date col-md-3 w-auto" id="datetimepicker1" data-target-input="nearest">
             <input name="from" type="text" placeholder="DD/MM/YYYY" class="form-control form-control-sm datetimepicker-input" data-bs-target="#datetimepicker1" <?php if ($this->input->post('from') != "" || $this->input->method() !== 'post') echo 'value="'.$this->input->post('from').'"'; ?>/>
                 <div class="input-group-append"  data-bs-target="#datetimepicker1" data-bs-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -23,7 +23,7 @@
     <div class="row">
         <label class="col-md-2 control-label" for="to">End Date/Time</label>
 
-        <div class="input-group date col-md-3" id="datetimepicker2" data-target-input="nearest">
+        <div class="input-group date col-md-3 w-auto" id="datetimepicker2" data-target-input="nearest">
                 <input name="to" type="text" placeholder="DD/MM/YYYY" class="form-control form-control-sm datetimepicker-input" data-bs-target="#datetimepicker2" <?php if ($this->input->post('to') != "" || $this->input->method() !== 'post') echo 'value="'.$this->input->post('to').'"'; ?>/>
                 <div class="input-group-append" data-bs-target="#datetimepicker2" data-bs-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
