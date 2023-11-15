@@ -168,7 +168,7 @@ class Logbook extends CI_Controller {
 		$return['confirmed'] 		= $this->confirmed_grid_before($return['callsign_qra'], $type, $band, $mode);
 
 		if ($this->session->userdata('user_show_profile_image')) {
-			if (isset($callbook)) {
+			if (isset($callbook) && isset($callbook['image'])) {
 				if ($callbook['image'] == "") {
 					$return['image'] = "n/a";
 				} else {
@@ -851,14 +851,16 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 						$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
 						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
 					}
-                    $data= $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+                    $callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
 
-                    if (empty($data['callsign']))
+                    if (empty($callsign['callsign']['callsign']))
                     {
                         $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
                         $this->session->set_userdata('qrz_session_key', $qrz_session_key);
-                        $data = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+                        $callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
                     }
+				} else {
+					$callsign['error'] = 'Lookup not configured or set to hamqth. Currently only qrz is supported.';
 				}
 
 				// There's no hamli integration? Disabled for now.
@@ -866,12 +868,20 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 					// Lookup using hamli
 					$this->load->library('hamli');
 
-					$data['callsign'] = $this->hamli->callsign($id);
+					$callsign['callsign'] = $this->hamli->callsign($id);
 				}*/
 
-				$data['id'] = strtoupper($id);
+				if (isset($callsign['callsign']['gridsquare'])) {
+					$CI = &get_instance();
+					$CI->load->model('logbook_model');
+					$callsign['grid_worked'] = $CI->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($callsign['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
+				}
+				if (isset($callsign['callsign']['error'])) {
+					$callsign['error'] = $callsign['callsign']['error'];
+				}
+				$callsign['id'] = strtoupper($id);
 
-				return $this->load->view('search/result', $data, true);
+				return $this->load->view('search/result', $callsign, true);
 		}
 	}
 
@@ -928,7 +938,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 							$data['error'] = $data['callsign']['error'];
 						}
 					} else {
-						$data['error'] = 'No result (qrz not configured)';
+						$data['error'] = 'Lookup not configured or set to hamqth. Currently only qrz is supported.';
 					} /*else {
 						// Lookup using hamli
 						$this->load->library('hamli');
