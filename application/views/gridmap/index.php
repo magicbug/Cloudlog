@@ -48,7 +48,7 @@
 
 <form class="d-flex align-items-center">
             <label class="my-1 me-2" for="band"><?php echo lang('gridsquares_band'); ?></label>
-            <select class="form-select my-1 me-sm-2"  id="band">
+            <select class="form-select my-1 me-sm-2 w-auto"  id="band">
                 <option value="All"><?php echo lang('general_word_all')?></option>
                 <?php foreach($bands as $band) {
                     echo '<option value="'.$band.'"';
@@ -60,7 +60,7 @@
             </select>
             <?php if (count($sats_available) != 0) { ?>
                 <label class="my-1 me-2" for="distplot_sats"><?php echo lang('gridsquares_sat'); ?></label>
-                <select class="form-select my-1 me-sm-2"  id="sats" <?php if ($user_default_band != "SAT") { ?>disabled<?php } ?>>
+                <select class="form-select my-1 me-sm-2 w-auto"  id="sats" <?php if ($user_default_band != "SAT") { ?>disabled<?php } ?>>
                     <option value="All"><?php echo lang('general_word_all')?></option>
                     <?php foreach($sats_available as $sat) {
                         echo '<option value="' . $sat . '"' . '>' . $sat . '</option>'."\n";
@@ -70,7 +70,7 @@
                 <input id="sats" type="hidden" value="All"></input>
             <?php } ?>
 			<label class="my-1 me-2" for="mode"><?php echo lang('gridsquares_mode'); ?></label>
-            <select class="form-select my-1 me-sm-2"  id="mode">
+            <select class="form-select my-1 me-sm-2 w-auto"  id="mode">
 			<option value="All"><?php echo lang('general_word_all')?></option>
                     <?php
                     foreach($modes as $mode){
