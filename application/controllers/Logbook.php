@@ -168,7 +168,7 @@ class Logbook extends CI_Controller {
 		$return['confirmed'] 		= $this->confirmed_grid_before($return['callsign_qra'], $type, $band, $mode);
 
 		if ($this->session->userdata('user_show_profile_image')) {
-			if (isset($callbook)) {
+			if (isset($callbook) && isset($callbook['image'])) {
 				if ($callbook['image'] == "") {
 					$return['image'] = "n/a";
 				} else {
