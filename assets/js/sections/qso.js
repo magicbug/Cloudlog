@@ -6,7 +6,38 @@ $( document ).ready(function() {
 		  $("#mode").focus();
 		  localStorage.removeItem("quicklogCallsign");
 		}
-	  }, 100);
+	}, 100);
+	$('#reset_time').click(function() {
+		var now = new Date();
+		var localTime = now.getTime();
+		var utc = localTime + (now.getTimezoneOffset() * 60000);
+		$('#start_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+		$("[id='start_time']").each(function() {
+			$(this).attr("value", ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+		});
+	});
+	$('#reset_start_time').click(function() {
+		var now = new Date();
+		var localTime = now.getTime();
+		var utc = localTime + (now.getTimezoneOffset() * 60000);
+		$('#start_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2));
+		$("[id='start_time']").each(function() {
+			$(this).attr("value", ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+		});
+		$('#end_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2));
+		$("[id='end_time']").each(function() {
+			$(this).attr("value", ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+		});
+	});
+	$('#reset_end_time').click(function() {
+		var now = new Date();
+		var localTime = now.getTime();
+		var utc = localTime + (now.getTimezoneOffset() * 60000);
+		$('#end_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2));
+		$("[id='end_time']").each(function() {
+			$(this).attr("value", ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+		});
+	});
 var favs={};
 	get_fav();
 
