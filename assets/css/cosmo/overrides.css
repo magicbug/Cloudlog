@@ -3,17 +3,18 @@
 */
 
 .selectize-input {
-    border-radius: 0
+	border-radius: 0;
 }
 
 .selectize-input {
-    border: 1px solid #ced4da;
+	border: 1px solid #ced4da;
 }
 
 .selectize-input.dropdown-active {
-    border-radius: 0;
+	border-radius: 0;
 }
 
-.selectize-dropdown, .selectize-dropdown.form-control {
-    border-radius: 0;
+.selectize-dropdown,
+.selectize-dropdown.form-control {
+	border-radius: 0;
 }

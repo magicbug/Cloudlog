@@ -1,88 +1,92 @@
-thead>tr>td {
-    position: sticky;
-    top: 45px;
-    background-color: aliceblue;
+thead > tr > td {
+	position: sticky;
+	top: 45px;
+	background-color: aliceblue;
 }
 
 .workedGrid {
-    border-color: green;
+	border-color: green;
 }
 
 .newGrid {
-    border-color: red;
-    border-width: 2px;
+	border-color: red;
+	border-width: 2px;
 }
 
 .settings-nav {
-    margin-bottom: 15px;
-    list-style: none;
-    background-color: #fff;
-    border: 1px solid #d1d5da;
-    border-radius: 3px;
+	margin-bottom: 15px;
+	list-style: none;
+	background-color: #fff;
+	border: 1px solid #d1d5da;
+	border-radius: 3px;
 }
 
 .settings-nav .nav-link {
-    list-style: none;
-    background-color: #fff;
-    border: 1px solid #d1d5da;
+	list-style: none;
+	background-color: #fff;
+	border: 1px solid #d1d5da;
 }
 
 .settings-nav .nav-link:hover {
-    background-color: #e1e4e8;
+	background-color: #e1e4e8;
 }
 
 /* QSL Card Management CSS */
 
 .qso-map-new .card-header {
-    background: #0F2027;
-    /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #2C5364, #203A43, #0F2027);
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    color: #ffffff;
+	background: #0f2027;
+	/* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #2c5364, #203a43, #0f2027);
+	/* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+	/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	color: #ffffff;
 }
 
 div.alert-danger {
-    color: #ffffff;
+	color: #ffffff;
 }
 
 .bootstrap-dialog.type-primary .modal-header {
-    background-color: #2B3E50;
+	background-color: #2b3e50;
 }
 
-.selectize-dropdown, .selectize-input, .selectize-input input {
-    color: #495057;
+.selectize-dropdown,
+.selectize-input,
+.selectize-input input {
+	color: #495057;
 }
 
-.selectize-input, .selectize-control.single .selectize-input.input-active {
-    color: #495057;
+.selectize-input,
+.selectize-control.single .selectize-input.input-active {
+	color: #495057;
 }
 
 .selectize-input {
-    border-radius: 0;
+	border-radius: 0;
 }
 
 .selectize-input.focus {
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .15);
-    border-radius: 0;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+	border-radius: 0;
 }
 
 .selectize-dropdown .optgroup-header {
-    color: #495057;
+	color: #495057;
 }
 
 .selectize-input.focus {
-    color: #495057;
-    background-color: #fff;
-    border-color: #f1b287;
-    box-shadow: 0 0 0 .2rem rgba(223, 105, 26, .25)
+	color: #495057;
+	background-color: #fff;
+	border-color: #f1b287;
+	box-shadow: 0 0 0 0.2rem rgba(223, 105, 26, 0.25);
 }
 
 .selectize-input.dropdown-active {
-    border-radius: 0;
+	border-radius: 0;
 }
 
-.selectize-dropdown, .selectize-dropdown.form-control {
-    border-radius: 0;
+.selectize-dropdown,
+.selectize-dropdown.form-control {
+	border-radius: 0;
 }
