@@ -26,6 +26,8 @@ $lang['qso_dok_helptext'] = 'Για παράδειγμα: Q03';
 $lang['qso_notes_helptext'] = 'Το περιεχόμενο σημείωσης χρησιμοποιείται μόνο στο Cloudlog και δεν εξάγεται σε άλλες υπηρεσίες.';
 $lang['qsl_notes_helptext'] = 'Αυτό το περιεχόμενο σημείωσης εξάγεται σε υπηρεσίες QSL όπως το eqsl.cc.';
 
+$lang['qso_eqsl_qslmsg_helptext'] = "Get the default message for eQSL, for this station.";
+
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = 'Επαναφορά';

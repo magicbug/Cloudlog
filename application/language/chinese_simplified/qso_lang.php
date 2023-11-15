@@ -26,6 +26,8 @@ $lang['qso_dok_helptext'] = '例如: Q03';
 $lang['qso_notes_helptext'] = '仅在 Cloudlog 使用而不上传到其他的服务的笔记。';
 $lang['qsl_notes_helptext'] = '此笔记内容被导出到QSL服务，如 eqsl.cc。';
 
+$lang['qso_eqsl_qslmsg_helptext'] = "Get the default message for eQSL, for this station.";
+
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = '重置';

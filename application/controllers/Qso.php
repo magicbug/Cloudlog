@@ -29,7 +29,8 @@ class QSO extends CI_Controller {
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		$data['active_station_profile'] = $this->stations->find_active();
-        
+		$data['qslmsg'] = $this->stations->get_station_info($data['active_station_profile'],'eqsl_defaultqslmsg', '');
+
 		$data['notice'] = false;
 		$data['stations'] = $this->stations->all_of_user();
 		$data['radios'] = $this->cat->radios();
@@ -119,6 +120,14 @@ class QSO extends CI_Controller {
 	 * This is used for contest-logging and the ajax-call
 	 */
 	public function saveqso() {
+		// search qslmsg by default for this station (when contest or SFL) overload qslmsg post value if empty //
+		if (trim($this->input->post('qslmsg'))=='') {
+			$this->load->model('stations');
+			if (!(intval($this->input->post('station_profile'))>0)) {
+				$_POST['station_profile'] = $this->stations->find_active();
+			}
+			$_POST['qslmsg'] = $this->stations->get_station_info($_POST['station_profile'],'eqsl_defaultqslmsg', '');
+		}
         $this->load->model('logbook_model');
         $this->logbook_model->create_qso();
     }

@@ -583,3 +583,8 @@ input:invalid {
 .blue { color:var(--indigo); }
 .gray { color:var(--gray); }
 .orange { color:var(--orange); }
+
+.qso_eqsl_qslmsg_update {
+    cursor: pointer;
+    margin-left: 10px;
+}

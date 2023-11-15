@@ -92,6 +92,7 @@ class Stations extends CI_Model {
 			'station_itu' =>  xss_clean($this->input->post('station_itu', true)),
 			'state' =>  $state,
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
+			'eqsl_defaultqslmsg' => xss_clean($this->input->post('eqsl_defaultqslmsg', true)),
 			'hrdlog_code' => xss_clean($this->input->post('hrdlog_code', true)),
 			'hrdlogrealtime' => xss_clean($this->input->post('hrdlogrealtime', true)),
 			'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
@@ -135,6 +136,7 @@ class Stations extends CI_Model {
 			'station_itu' => xss_clean($this->input->post('station_itu', true)),
 			'state' => $state,
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
+			'eqsl_defaultqslmsg' => xss_clean($this->input->post('eqsl_defaultqslmsg', true)),
 			'hrdlog_code' => xss_clean($this->input->post('hrdlog_code', true)),
 			'hrdlogrealtime' => xss_clean($this->input->post('hrdlogrealtime', true)),
 			'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
@@ -495,6 +497,19 @@ class Stations extends CI_Model {
 			return true;
 		}
 		return false;
+	}
+
+	// Function return db value from station_profil field //
+	public function get_station_info($id,$field=null,$default_return=false) {
+		$fields_allow = array('eqsl_defaultqslmsg');
+		if (!is_null($field) && in_array($field, $fields_allow)) {
+			$this->db->select($field);
+			$this->db->where('user_id', $this->session->userdata('user_id'));
+			$this->db->where('station_id', $id);
+			$query = $this->db->get('station_profile');
+			if($query->num_rows() >= 1) { return $query->row()->$field; }
+		}
+		return $default_return;
 	}
 }
 

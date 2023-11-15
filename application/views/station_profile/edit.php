@@ -352,6 +352,12 @@
 		    			<input type="text" class="form-control" name="eqslnickname" id="eqslNickname" aria-describedby="eqslhelp" value="<?php if(set_value('eqslnickname') != "") { echo set_value('eqslnickname'); } else { echo $my_station_profile->eqslqthnickname; } ?>">
 		    			<small id="eqslhelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_hint"); ?></small>
 		  			</div>
+					<div class="form-group">
+		    			<label for="eqslDefaultQSLMsg"><?php echo lang("station_location_eqsl_defaultqslmsg"); ?></label>
+		    			<?php $eqsl_defaultqslmsg = (set_value('eqsl_defaultqslmsg') != "")?set_value('eqsl_defaultqslmsg'):$my_station_profile->eqsl_defaultqslmsg; ?>
+		    			<textarea class="form-control" name="eqsl_defaultqslmsg" id="eqslDefaultQSLMsg" aria-describedby="eqsldefaultqslmsghelp" maxlength="240" rows="2" style="width:100%;" value="<?php echo $eqsl_defaultqslmsg; ?>"><?php echo $eqsl_defaultqslmsg; ?></textarea>
+		    			<small id="eqsldefaultqslmsghelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_defaultqslmsg_hint"); ?> 240.</small>
+		  			</div>
 				</div>
 			</div>
 		</div>
@@ -398,8 +404,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row">
+
 		<div class="col-md">
 			<div class="card">
 				<h5 class="card-header">QO-100 Dx Club</h5> <!-- This does not need Multilanguage Support -->

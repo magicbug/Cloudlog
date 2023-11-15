@@ -249,6 +249,11 @@
                 <small id="eqslhelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_hint"); ?></small>
             </div>
 
+			<div class="form-group">
+				<label for="eqslDefaultQSLMsg"><?php echo lang("station_location_eqsl_defaultqslmsg"); ?></label>
+		    	<textarea class="form-control" name="eqsl_defaultqslmsg" id="eqslDefaultQSLMsg" aria-describedby="eqsldefaultqslmsghelp" maxlength="240" rows="2" style="width:100%;"></textarea>
+		    	<small id="eqsldefaultqslmsghelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_defaultqslmsg_hint"); ?> 240.</small>
+		  	</div>
 
             <div class="form-row">
                 <div class="form-group col-sm-6">                                                                                                                                                    

@@ -148,7 +148,7 @@ function qso_edit(id) {
                             //$('#stationCntyInput')[0].selectize.destroy();
                             $("#stationCntyInputEdit").val("");
                         }
-            });
+                    });
 
                     $('#locator').change(function(){
                         if ($(this).val().length >= 4) {
@@ -294,6 +294,9 @@ function qso_edit(id) {
                             });
                         }
                     });
+
+                    $('.modal-content #stationProfile').change(function() { qso_set_eqsl_qslmsg($('.modal-content #stationProfile').val(),false,'.modal-content'); });
+                    $('.modal-content .qso_eqsl_qslmsg_update').off('click').on('click',function() { qso_set_eqsl_qslmsg($('.modal-content #stationProfile').val(),true,'.modal-content'); });
                 },
             });
         }
@@ -542,4 +545,22 @@ function displayQsl(id) {
 			});
 		}
 	});
+}
+
+// function to load default qslmsg to qslmsg field on qso add/edit //
+function qso_set_eqsl_qslmsg(station_id, force_diff_to_origin=false, object='') {
+    $.ajax({
+        url: base_url+'index.php/station/get_json_info',
+        type: 'post', data: {'station_id':station_id, 'field':'eqsl_defaultqslmsg' },
+        success: function(res) {
+            if (typeof res.eqsl_defaultqslmsg !== "undefined") { 
+                object = (object!='')?(object+' '):'';
+                if ((force_diff_to_origin) || ($(object+'#qslmsg').val()==$(object+'#qslmsg_hide').val())) {
+                    $(object+'#qslmsg').val(res.eqsl_defaultqslmsg); 
+                    $(object+'#qslmsg_hide').val(res.eqsl_defaultqslmsg);
+                }
+            }
+        },
+        error: function() { },
+    });
 }

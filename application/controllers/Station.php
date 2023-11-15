@@ -208,4 +208,17 @@ class Station extends CI_Controller {
         echo json_encode($json);
     }
 
+    // Function return db value from station_profil field //
+	public function get_json_info() {
+		$return_json = array();
+		$this->load->model('stations');
+		$station_id = $this->input->post('station_id'); 
+		$field = $this->input->post('field');
+		if (($station_id>0) && (!empty($field))) {
+			$return_json[$field] = $this->stations->get_station_info($station_id,$field,"");
+		}
+        header('Content-Type: application/json');
+        echo json_encode($return_json);
+    }
+
 }
