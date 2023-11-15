@@ -387,7 +387,7 @@ $options = json_decode($options);
         <button type="button" class="btn btn-sm btn-primary me-1" data-bs-toggle="collapse"
             data-bs-target=".actionbody"><?php echo lang('filter_actions'); ?></button>
         <label for="qsoResults" class="me-2"><?php echo lang('filter_results'); ?></label>
-        <select id="qsoResults" name="qsoResults" class="form-select form-select-sm me-2">
+        <select id="qsoResults" name="qsoResults" class="form-select form-select-sm me-2 w-auto">
             <option value="250">250</option>
             <option value="1000">1000</option>
             <option value="2500">2500</option>
