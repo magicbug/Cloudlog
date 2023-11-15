@@ -869,6 +869,11 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 					$callsign['callsign'] = $this->hamli->callsign($id);
 				}*/
 
+				if (isset($callsign['callsign']['gridsquare'])) {
+					$CI = &get_instance();
+					$CI->load->model('logbook_model');
+					$callsign['grid_worked'] = $CI->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($callsign['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
+				}
 				$callsign['id'] = strtoupper($id);
 
 				return $this->load->view('search/result', $callsign, true);
