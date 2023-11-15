@@ -851,13 +851,13 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 						$qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
 						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
 					}
-                    $data= $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+                    $callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
 
-                    if (empty($data['callsign']))
+                    if (empty($callsign['callsign']['callsign']))
                     {
                         $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
                         $this->session->set_userdata('qrz_session_key', $qrz_session_key);
-                        $data = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+                        $callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
                     }
 				}
 
@@ -866,12 +866,12 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 					// Lookup using hamli
 					$this->load->library('hamli');
 
-					$data['callsign'] = $this->hamli->callsign($id);
+					$callsign['callsign'] = $this->hamli->callsign($id);
 				}*/
 
-				$data['id'] = strtoupper($id);
+				$callsign['id'] = strtoupper($id);
 
-				return $this->load->view('search/result', $data, true);
+				return $this->load->view('search/result', $callsign, true);
 		}
 	}
 
