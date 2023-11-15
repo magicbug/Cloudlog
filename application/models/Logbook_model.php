@@ -4083,6 +4083,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
         $this->db->where("((COL_DISTANCE is NULL) or (COL_DISTANCE = 0))");
         $this->db->where("COL_GRIDSQUARE is NOT NULL");
         $this->db->where("COL_GRIDSQUARE != ''");
+        $this->db->where("COL_GRIDSQUARE != station_gridsquare");
         $this->db->trans_start();
         $query = $this->db->get($this->config->item('table_name'));
 
