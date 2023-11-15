@@ -433,8 +433,7 @@ class Logbook_model extends CI_Model {
 		$this->db->limit(500);
 
 		$result =  $this->db->get($this->config->item('table_name'));
-      log_message('debug', 'SQL: '.$this->db->last_query());
-      return $result;
+		return $result;
 		//return $this->db->get($this->config->item('table_name'));
 	}
 
@@ -4118,7 +4117,6 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
       $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_MODE, COL_BAND');
       $this->db->where('station_id =', NULL);
       $query = $this->db->get($this->config->item('table_name'));
-      log_message('debug','SQL: '.$this->db->last_query());
       if($query->num_rows() >= 1) {
         return $query->result();
       } else {
