@@ -38,6 +38,10 @@ echo "var user_options = $options;";
   float: left;
   margin: 0 8px 0 0;
 }
+.row>[class*="col-"] {
+    padding-right: 5px;
+    padding-left: 5px;
+}
 </style>
 <?php
 $options = json_decode($options);
@@ -67,7 +71,7 @@ $options = json_decode($options);
                         </div>
                     </div>
                     <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
-                        <label for="dateTo"><?php echo lang('filter_general_to'); ?></label>
+                        <label class="form-label" for="dateTo"><?php echo lang('filter_general_to'); ?></label>
                         <div class="input-group input-group-sm date" id="dateTo" data-target-input="nearest">
                             <input name="dateTo" type="text" placeholder="<?php echo $datePlaceholder;?>"
                                 class="form-control" data-bs-target="#dateTo" />
