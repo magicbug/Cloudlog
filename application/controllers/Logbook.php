@@ -874,6 +874,9 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 					$CI->load->model('logbook_model');
 					$callsign['grid_worked'] = $CI->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($callsign['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
 				}
+				if (isset($callsign['callsign']['error'])) {
+					$callsign['error'] = $callsign['callsign']['error'];
+				}
 				$callsign['id'] = strtoupper($id);
 
 				return $this->load->view('search/result', $callsign, true);
