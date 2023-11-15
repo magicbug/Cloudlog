@@ -55,8 +55,8 @@
 	</header>
 	<div class="row mt-4">
 		<!-- START BASIC QSO DATA -->
-		<div class="col-xs-12 col-md-4">
-
+		<div class="card col-xs-12 col-md-4">
+			
 			<div class="card-header">
 				<?php echo lang('qso_simplefle_qso_data'); ?>
 			</div>
@@ -114,7 +114,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-12 col-md-8">
+		<div class="card col-xs-12 col-md-8">
 			<div class="card-header">
 				<?php echo lang('qso_simplefle_qso_list'); ?>
 			</div>
