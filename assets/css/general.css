@@ -575,20 +575,20 @@ input:invalid {
 	height: 470px;
 }
 
-.sfletable.table {
+.sfletable table {
 	width: 100%;
 }
 
-.sfletable.table thead,
-.sfletable.table tbody tr {
+.sfletable table thead,
+.sfletable table tbody tr {
 	display: block;
 	width: 100%;
 	table-layout: fixed;
 	display: inline-table;
 }
 
-.sfletable.table tbody {
-	width: 95%;
+.sfletable table tbody {
+	width: 100%;
 	overflow-y: scroll;
 	max-height: 440px;
 	position: absolute;
