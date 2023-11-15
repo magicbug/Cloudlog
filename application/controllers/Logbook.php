@@ -859,6 +859,8 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
                         $this->session->set_userdata('qrz_session_key', $qrz_session_key);
                         $callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
                     }
+				} else {
+					$callsign['error'] = 'Lookup not configured or set to hamqth. Currently only qrz is supported.';
 				}
 
 				// There's no hamli integration? Disabled for now.
@@ -936,7 +938,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 							$data['error'] = $data['callsign']['error'];
 						}
 					} else {
-						$data['error'] = 'No result (qrz not configured)';
+						$data['error'] = 'Lookup not configured or set to hamqth. Currently only qrz is supported.';
 					} /*else {
 						// Lookup using hamli
 						$this->load->library('hamli');
