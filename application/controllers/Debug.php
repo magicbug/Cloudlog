@@ -52,9 +52,11 @@ class Debug extends CI_Controller {
             // Check if the subdirectories are writable (recursive check)
             $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
             foreach ($iterator as $item) {
-                if (!is_writable($item->getPathname())) {
-                    return false;
-                }
+               if ($item->isDir() && basename($item->getPathName()) != '..') {
+                  if (!is_writable($item->getRealPath())) {
+                     return false;
+                  }
+               }
             }
 
             return true;

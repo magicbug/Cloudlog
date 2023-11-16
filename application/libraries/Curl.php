@@ -27,7 +27,6 @@ class Curl {
 	function __construct($url = '')
 	{
 		$this->_ci = & get_instance();
-		log_message('debug', 'cURL Class Initialized');
 
 		if ( ! $this->is_enabled())
 		{
