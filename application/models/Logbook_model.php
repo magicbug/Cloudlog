@@ -1840,20 +1840,15 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
             $this->db->where('COL_PROP_MODE = ' . $propagation);
         }
 
-        // If date is set, we format the date and add it to the where-statement
+        // If date is set, we add it to the where-statement
         if ($fromdate != "") {
-            $from = DateTime::createFromFormat('d/m/Y', $fromdate);
-            $from = $from->format('Y-m-d');
-            $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) >= '".$from."'");
+            $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) >= '".$fromdate."'");
         }
         if ($todate != "") {
-            $to = DateTime::createFromFormat('d/m/Y', $todate);
-            $to = $to->format('Y-m-d');
-            $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) <= '".$to."'");
+            $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) <= '".$todate."'");
         }
 
         $query = $this->db->get($this->config->item('table_name'));
-
         return $query;
     }
 
