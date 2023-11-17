@@ -17,6 +17,7 @@
                 <th>Satellite</th>
                 <th>Gridsquare(s)</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -92,6 +93,15 @@
 
                     </td>
                     <td><a href="<?php echo $rove['track_link']; ?>" target="_blank">Track</a></td>
+                    <?php
+                        $sat = $rove['satellite'];
+                        switch (strtoupper($rove['satellite'])) {
+                        case "GREENCUBE":
+                           $sat = 'IO-117';
+                           break;
+                        }
+                    ?>
+                    <td><a href="https://sat.fg8oj.com/sked.php?s%5B%5D=<?php echo $sat; ?>&l=<?php echo strtoupper($gridsquare); ?>&el1=0&l2=<?php echo $rove['gridsquare']; ?>&el2=0&duration=1&start=0&OK=Search" target="_blank">Sked</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

@@ -567,9 +567,9 @@ div#station_logbooks_linked_table_paginate {
 	margin-right: 30px;
 }
 
-.sfletable {
-	height: 470px;
-}
+.sfletable{
+    height: 470px;
+  }
 
 .sfletable table {
 	width: 100%;
