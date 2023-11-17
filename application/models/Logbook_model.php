@@ -500,6 +500,7 @@ class Logbook_model extends CI_Model {
 
       $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
       $this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC', 'left outer');
+      $this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
         $this->db->where('COL_CALL', $call);
         if ($band != 'All') {
             if ($band == 'SAT') {
