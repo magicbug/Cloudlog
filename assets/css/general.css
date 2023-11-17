@@ -5,6 +5,10 @@
 	}
 }
 
+[hidden] {
+	display: none !important;
+}
+
 .main-nav .container {
 	margin-top: 0px !important;
 }
