@@ -110,13 +110,7 @@
                     </div>
                 </div>    
                 <br>
-                <button type="submit" class="btn btn-primary mb-2" onclick="displayDateInConsole()" value="Export"><?php echo lang('general_word_export'); ?></button>
-                <script>
-                    function displayDateInConsole() {
-                        console.log('Date from: ', "'", $('#from').val(), "'");
-                        console.log('Date to: ', "'", $('#to').val(), "'");
-                    }
-                </script>
+                <button type="submit" class="btn btn-primary mb-2" value="Export"><?php echo lang('general_word_export'); ?></button>
             </form>
         </div>
     </div>
