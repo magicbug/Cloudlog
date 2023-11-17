@@ -61,12 +61,12 @@ $options = json_decode($options);
             <div class="filterbody collapse">
                 <div class="row">
                     <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
-                        <label for="dateFrom"><?php echo lang('filter_general_from') . ": " ?></label>
-                        <input name="dateFrom" id="dateFrom" type="date" class="form-control w-auto">
+                        <label class="form-label" for="dateFrom"><?php echo lang('filter_general_from') . ": " ?></label>
+                        <input name="dateFrom" id="dateFrom" type="date" class="form-control form-control-sm w-auto">
                     </div>
                     <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
-                        <label for="dateTo"><?php echo lang('filter_general_to') . ": " ?></label>
-                        <input name="dateTo" id="dateTo" type="date" class="form-control w-auto">
+                        <label class="form-label" for="dateTo"><?php echo lang('filter_general_to') . ": " ?></label>
+                        <input name="dateTo" id="dateTo" type="date" class="form-control form-control-sm w-auto">
                     </div>
                     <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="de"><?php echo lang('gen_hamradio_de'); ?></label>
