@@ -1,5 +1,5 @@
 <div class="table-responsive">
-
+    <br>
     <h2>Hamsat - Satellite Rovers</h2>
     <p>This data is from <a target="_blank" href="https://hams.at/">https://hams.at/</a></p>
     <?php if ($rovedata == []) { ?>
