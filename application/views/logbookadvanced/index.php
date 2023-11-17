@@ -61,24 +61,12 @@ $options = json_decode($options);
             <div class="filterbody collapse">
                 <div class="row">
                     <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
-                        <label class="form-label" for="dateFrom"><?php echo lang('filter_general_from'); ?></label>
-                        <div class="input-group input-group-sm date" id="dateFrom" data-target-input="nearest">
-                            <input name="dateFrom" type="text" placeholder="<?php echo $datePlaceholder;?>"
-                                class="form-control" data-bs-target="#dateFrom" />
-                            <div class="input-group-append" data-bs-target="#dateFrom" data-bs-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </div>
+                        <label for="dateFrom"><?php echo lang('filter_general_from') . ": " ?></label>
+                        <input name="dateFrom" id="dateFrom" type="date" class="form-control w-auto">
                     </div>
                     <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
-                        <label class="form-label" for="dateTo"><?php echo lang('filter_general_to'); ?></label>
-                        <div class="input-group input-group-sm date" id="dateTo" data-target-input="nearest">
-                            <input name="dateTo" type="text" placeholder="<?php echo $datePlaceholder;?>"
-                                class="form-control" data-bs-target="#dateTo" />
-                            <div class="input-group-append" data-bs-target="#dateTo" data-bs-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </div>
+                        <label for="dateTo"><?php echo lang('filter_general_to') . ": " ?></label>
+                        <input name="dateTo" id="dateTo" type="date" class="form-control w-auto">
                     </div>
                     <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="de"><?php echo lang('gen_hamradio_de'); ?></label>

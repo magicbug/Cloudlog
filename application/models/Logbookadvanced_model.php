@@ -24,14 +24,12 @@ class Logbookadvanced_model extends CI_Model {
 		}
 
         if ($searchCriteria['dateFrom'] !== '') {
-            $from = DateTime::createFromFormat('d/m/Y', $searchCriteria['dateFrom']);
-			$from = $from->format('Y-m-d');
+            $from = $searchCriteria['dateFrom'];
 			$conditions[] = "date(COL_TIME_ON) >= ?";
 			$binding[] = $from;
 		}
         if ($searchCriteria['dateTo'] !== '') {
-            $to = DateTime::createFromFormat('d/m/Y', $searchCriteria['dateTo']);
-			$to = $to->format('Y-m-d');
+            $to = $searchCriteria['dateTo'];
 			$conditions[] = "date(COL_TIME_ON) <= ?";
 			$binding[] = $to;
 		}
