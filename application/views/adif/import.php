@@ -145,7 +145,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn-sm btn-primary mb-2" value="Upload"><?php echo lang('adif_upload') ?></button>
+                        <button type="submit" class="btn btn-sm btn-primary mb-2" value="Upload"><?php echo lang('adif_upload') ?></button>
                     </form>
                 </div>
 
@@ -187,15 +187,15 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn-sm btn-primary" value="Export"><?php echo lang('adif_export_qso') ?></button>
+                        <button type="submit" class="btn btn-sm btn-primary" value="Export"><?php echo lang('adif_export_qso') ?></button>
                     </form>
 
                     <br><br>
 
                     <h5><?php echo lang('adif_export_sat_only_qso') ?></h5>
-                    <p><a href="<?php echo site_url('adif/exportsat'); ?>" title="Export All Satellite Contacts" target="_blank" class="btn-sm btn-primary"><?php echo lang('adif_export_sat_only_qso_all') ?></a></p>
+                    <p><a href="<?php echo site_url('adif/exportsat'); ?>" title="Export All Satellite Contacts" target="_blank" class="btn btn-sm btn-primary"><?php echo lang('adif_export_sat_only_qso_all') ?></a></p>
 
-                    <p><a href="<?php echo site_url('adif/exportsatlotw'); ?>" title="Export All Satellite QSOs Confirmed on LoTW" target="_blank" class="btn-sm btn-primary"><?php echo lang('adif_export_sat_only_qso_lotw') ?></a></p>
+                    <p><a href="<?php echo site_url('adif/exportsatlotw'); ?>" title="Export All Satellite QSOs Confirmed on LoTW" target="_blank" class="btn btn-sm btn-primary"><?php echo lang('adif_export_sat_only_qso_lotw') ?></a></p>
                 </div>
 
 
@@ -227,7 +227,7 @@
                             </div>
                         </div>
                         <br>
-                        <button type="submit" class="btn-sm btn-primary" value="Export"><?php echo lang('adif_mark_qso_as_exported_to_lotw') ?></button>
+                        <button type="submit" class="btn btn-sm btn-primary" value="Export"><?php echo lang('adif_mark_qso_as_exported_to_lotw') ?></button>
                     </form>
                 </div>
                 <div class="tab-pane <?php if ($showtab == 'dcl') {
@@ -272,7 +272,7 @@
                             </div>
                         </div>
                         <input class="file-input mb-2 me-sm-2" type="file" name="userfile" size="20" />
-                        <button type="submit" class="btn-sm btn-primary mb-2" value="Upload"><?php echo lang('adif_upload') ?></button>
+                        <button type="submit" class="btn btn-sm btn-primary mb-2" value="Upload"><?php echo lang('adif_upload') ?></button>
                     </form>
                 </div>
             </div>
