@@ -1814,17 +1814,6 @@ $(document).ready(function(){
 	<script src="<?php echo base_url(); ?>assets/js/sections/distances.js"></script>
 <?php } ?>
 
-    <?php if ($this->uri->segment(2) == "import") { ?>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
-        <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker1').datetimepicker({
-                    format: 'DD/MM/YYYY',
-                });
-            });
-        </script>
-    <?php } ?>
 
     <?php if ($this->uri->segment(1) == "hrdlog") { ?>
 		<script src="<?php echo base_url(); ?>assets/js/sections/hrdlog.js"></script>
@@ -2315,22 +2304,6 @@ $(document).ready(function(){
     </script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "kmlexport") { ?>
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker1').datetimepicker({
-                format: 'DD/MM/YYYY',
-            });
-        });
-        $(function () {
-            $('#datetimepicker2').datetimepicker({
-                format: 'DD/MM/YYYY',
-            });
-        });
-    </script>
-<?php } ?>
 
 <script>
 function viewQsl(picture, callsign) {
