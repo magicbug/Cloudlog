@@ -836,7 +836,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 						$html .= "\">&#9660;</span>";
 						$html .= "</td>";
 					}
-					$html .= "<td><span class=\"badge badge-info\">".$row->station_callsign."</span></td>";
+					$html .= "<td><span class=\"badge bg-info\">".$row->station_callsign."</span></td>";
 				$html .= "</tr>";
 			}
 			$html .= "</table>";

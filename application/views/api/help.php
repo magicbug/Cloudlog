@@ -42,11 +42,11 @@
 						<?php
 							
 							if($row->rights == "rw") {
-								echo "<span class=\"badge badge-warning\">Read & Write</span>";
+								echo "<span class=\"badge bg-warning\">Read & Write</span>";
 							} elseif($row->rights == "r") {
-								echo "<span class=\"badge badge-success\">Read-Only</span>";
+								echo "<span class=\"badge bg-success\">Read-Only</span>";
 							} else {
-								echo "<span class=\"badge badge-dark\">Unknown</span>";
+								echo "<span class=\"badge bg-dark\">Unknown</span>";
 							}
 			
 						?>
