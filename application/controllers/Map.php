@@ -81,17 +81,13 @@ class Map extends CI_Controller {
 
         if ($this->input->post('from')) {
             $from = $this->input->post('from');
-            $from = DateTime::createFromFormat('m/d/Y g:i A', $from);
-            $from = $from->format('Y-m-d H:i');
-
             $footer_data['date_from'] = $from;
         } else {
             $footer_data['date_from'] = date('Y-m-d H:i:00');
         }
         if ($this->input->post('to')) {
-            $to = DateTime::createFromFormat('m/d/Y g:i A', $this->input->post('to'));
-            $to = $to->modify('+1 day')->format('Y-m-d H:i:00');
-            $footer_data['date_to'] = $to;
+			$to = $this->input->post('to');
+			$footer_data['date_to'] = $to;
         } else {
             $temp_to = new DateTime('tomorrow');
             $footer_data['date_to'] = $temp_to->format('Y-m-d H:i:00');
