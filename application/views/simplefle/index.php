@@ -120,7 +120,7 @@
 			</div>
 			<div class="card-body">
 				<div class="qsoList">
-					<table class="table table-striped table-bordered table-sm sfletable" id="qsoTable">
+					<table class="table contacttable table-striped table-hover sfletable" id="qsoTable">
 						<thead>
 							<tr>
 								<th><?php echo lang('general_word_date'); ?></th>
