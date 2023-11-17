@@ -100,17 +100,23 @@
                 </div>
                 <div class="row">
                     <div class="mb-3 col-md-3">
-                        <label for="datetimepicker1"><?php echo lang('gen_from_date') . ':'; ?></label>
-                        <input name="fromdate" type="date" id="datetimepicker1" class="form-control"/>
+                        <label for="from"><?php echo lang('gen_from_date') . ": " ?></label>
+                        <input name="from" id="from" type="date" class="form-control w-auto">
                     </div>
 
                     <div class="mb-3 col-md-3">
-                        <label for="datetimepicker2"><?php echo lang('gen_to_date') . ':'; ?></label>
-                        <input name="todate" type="date" id="datetimepicker2" class="form-control"/>
+                        <label for="to"><?php echo lang('gen_to_date') . ": " ?></label>
+                        <input name="to" id="to" type="date" class="form-control w-auto">
                     </div>
                 </div>    
                 <br>
-                <button type="submit" class="btn btn-primary mb-2" value="Export"><?php echo lang('general_word_export'); ?></button>
+                <button type="submit" class="btn btn-primary mb-2" onclick="displayDateInConsole()" value="Export"><?php echo lang('general_word_export'); ?></button>
+                <script>
+                    function displayDateInConsole() {
+                        console.log('Date from: ', "'", $('#from').val(), "'");
+                        console.log('Date to: ', "'", $('#to').val(), "'");
+                    }
+                </script>
             </form>
         </div>
     </div>
