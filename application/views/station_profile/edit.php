@@ -354,8 +354,8 @@
 		  			</div>
 					<div class="form-group">
 		    			<label for="eqslDefaultQSLMsg"><?php echo lang("station_location_eqsl_defaultqslmsg"); ?></label>
-		    			<?php $eqsl_defaultqslmsg = (set_value('eqsl_defaultqslmsg') != "")?set_value('eqsl_defaultqslmsg'):$my_station_profile->eqsl_defaultqslmsg; ?>
-		    			<textarea class="form-control" name="eqsl_defaultqslmsg" id="eqslDefaultQSLMsg" aria-describedby="eqsldefaultqslmsghelp" maxlength="240" rows="2" style="width:100%;" value="<?php echo $eqsl_defaultqslmsg; ?>"><?php echo $eqsl_defaultqslmsg; ?></textarea>
+		    			<?php $eqsl_default_qslmsg = (set_value('eqsl_default_qslmsg') != "")?set_value('eqsl_default_qslmsg'):$eqsl_default_qslmsg; ?>
+		    			<textarea class="form-control" name="eqsl_default_qslmsg" id="eqslDefaultQSLMsg" aria-describedby="eqsldefaultqslmsghelp" maxlength="240" rows="2" style="width:100%;" value="<?php echo $eqsl_default_qslmsg; ?>"><?php echo $eqsl_default_qslmsg; ?></textarea>
 		    			<small id="eqsldefaultqslmsghelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_defaultqslmsg_hint"); ?> 240.</small>
 		  			</div>
 				</div>

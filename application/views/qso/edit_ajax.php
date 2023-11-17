@@ -518,7 +518,7 @@
                                              </div>
                                              <div class="col-sm-9">
                                                  <textarea  type="text" class="form-control" id="qslmsg" name="qslmsg" rows="5" maxlength="240"><?php echo $qso->COL_QSLMSG; ?></textarea>
-                                                 <div id="qslmsg_hide" style="display:none;"><?php echo $qslmsg; ?></div>
+                                                 <div id="qslmsg_hide" style="display:none;"><?php echo $qso->COL_QSLMSG; ?></div>
                                              </div>
                                         </div>
 

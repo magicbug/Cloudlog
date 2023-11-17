@@ -30,6 +30,7 @@ class Stations extends CI_Model {
 		$this->db->select('station_profile.*, dxcc_entities.name as station_country, dxcc_entities.end as dxcc_end');
 		$this->db->where('user_id', $userid);
 		$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
+		$this->db->order_by('station_id','asc');
 		return $this->db->get('station_profile');
 	}
 
@@ -92,7 +93,6 @@ class Stations extends CI_Model {
 			'station_itu' =>  xss_clean($this->input->post('station_itu', true)),
 			'state' =>  $state,
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
-			'eqsl_defaultqslmsg' => xss_clean($this->input->post('eqsl_defaultqslmsg', true)),
 			'hrdlog_code' => xss_clean($this->input->post('hrdlog_code', true)),
 			'hrdlogrealtime' => xss_clean($this->input->post('hrdlogrealtime', true)),
 			'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
@@ -106,7 +106,13 @@ class Stations extends CI_Model {
 		);
 
 		// Insert Records
-		$this->db->insert('station_profile', $data);
+		if ($this->db->insert('station_profile', $data)===true) {
+			$station_user_list = $this->all_of_user()->result();
+			if ((count($station_user_list)>0) && (isset($station_user_list[intval(count($station_user_list)-1)]->station_id))) {
+				return $station_user_list[intval(count($station_user_list)-1)]->station_id;
+			}
+		}
+		return false;
 	}
 
 	function edit() {
@@ -136,7 +142,6 @@ class Stations extends CI_Model {
 			'station_itu' => xss_clean($this->input->post('station_itu', true)),
 			'state' => $state,
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
-			'eqsl_defaultqslmsg' => xss_clean($this->input->post('eqsl_defaultqslmsg', true)),
 			'hrdlog_code' => xss_clean($this->input->post('hrdlog_code', true)),
 			'hrdlogrealtime' => xss_clean($this->input->post('hrdlogrealtime', true)),
 			'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
@@ -151,7 +156,7 @@ class Stations extends CI_Model {
 
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('station_id', xss_clean($this->input->post('station_id', true)));
-		$this->db->update('station_profile', $data);
+		return $this->db->update('station_profile', $data);
 	}
 
 	function delete($id) {

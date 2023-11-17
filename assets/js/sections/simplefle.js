@@ -760,6 +760,7 @@ $(".js-save-to-log").click(function () {
 								iota_ref: iota_ref,
 								pota_ref: pota_ref,
 								wwff_ref: wwff_ref,
+								isSFL: true
 							},
 							success: function (result) {},
 						});

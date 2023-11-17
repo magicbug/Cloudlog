@@ -550,14 +550,14 @@ function displayQsl(id) {
 // function to load default qslmsg to qslmsg field on qso add/edit //
 function qso_set_eqsl_qslmsg(station_id, force_diff_to_origin=false, object='') {
     $.ajax({
-        url: base_url+'index.php/station/get_json_info',
-        type: 'post', data: {'station_id':station_id, 'field':'eqsl_defaultqslmsg' },
+        url: base_url+'index.php/station/get_options',
+        type: 'post', data: {'option_type':'eqsl_default_qslmsg','option_name':'key_station_id','option_key':station_id },
         success: function(res) {
-            if (typeof res.eqsl_defaultqslmsg !== "undefined") { 
+            if (typeof res.eqsl_default_qslmsg !== "undefined") { 
                 object = (object!='')?(object+' '):'';
-                if ((force_diff_to_origin) || ($(object+'#qslmsg').val()==$(object+'#qslmsg_hide').val())) {
-                    $(object+'#qslmsg').val(res.eqsl_defaultqslmsg); 
-                    $(object+'#qslmsg_hide').val(res.eqsl_defaultqslmsg);
+                if ((force_diff_to_origin) || ($(object+'#qslmsg').val()==$(object+'#qslmsg_hide').html())) {
+                    $(object+'#qslmsg').val(res.eqsl_default_qslmsg); 
+                    $(object+'#qslmsg_hide').html(res.eqsl_default_qslmsg);
                 }
             }
         },

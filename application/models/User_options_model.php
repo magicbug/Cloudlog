@@ -16,16 +16,32 @@ class User_options_model extends CI_Model {
 		}
 	}
 
-	public function get_options($option_type) {
+	public function get_options($option_type, $option_array=null) {
 		$uid=$this->session->userdata('user_id');
-		$sql='select option_name,option_key,option_value from user_options where user_id=? and option_type=?';
-		return $this->db->query($sql, array($uid, $option_type));
+		$sql_more = "";
+		$array_sql_value = array($uid, $option_type);
+		if (is_array($option_array)) {
+			foreach ($option_array as $key => $value) {
+				$sql_more .= ' and '.$key.'=?';
+				$array_sql_value[] = $value;
+			}
+		}
+		$sql='select option_name,option_key,option_value from user_options where user_id=? and option_type=?'.$sql_more;
+		return $this->db->query($sql, $array_sql_value);
 	}
 
-	public function del_option($option_type, $option_name) {
+	public function del_option($option_type, $option_name, $option_array=null) {
 		$uid=$this->session->userdata('user_id');
-		$sql='delete from user_options where user_id=? and option_type=? and option_name=?';
-		return $this->db->query($sql, array($uid, $option_type,$option_name));
+		$sql_more = "";
+		$array_sql_value = array($uid, $option_type, $option_name);
+		if (is_array($option_array)) {
+			foreach ($option_array as $key => $value) {
+				$sql_more .= ' and '.$key.'=?';
+				$array_sql_value[] = $value;
+			}
+		}		
+		$sql='delete from user_options where user_id=? and option_type=? and option_name=?'.$sql_more;
+		return $this->db->query($sql, $array_sql_value);
 	}
 
 }
