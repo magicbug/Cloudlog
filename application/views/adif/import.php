@@ -208,24 +208,12 @@
                             <?php } ?>
                         </select>
                         <p><span class="badge text-bg-warning"><?php echo lang('general_word_warning') ?></span> <?php echo lang('adif_lotw_export_if_selected') ?></p>
-                        <p class="card-text"><?php echo lang('gen_from_date') . ": " ?></p>
-                        <div class="row">
-                            <div class="input-group date col-md-3" id="datetimepicker3" data-target-input="nearest">
-                                <input name="from" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-bs-target="#datetimepicker1" />
-                                <div class="input-group-append" data-bs-target="#datetimepicker3" data-bs-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="card-text"><?php echo lang('gen_to_date') . ": " ?></p>
-                        <div class="row">
-                            <div class="input-group date col-md-3" id="datetimepicker4" data-target-input="nearest">
-                                <input name="to" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-bs-target="#datetimepicker2" />
-                                <div class="input-group-append" data-bs-target="#datetimepicker4" data-bs-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
-                            </div>
-                        </div>
+                        <br>                                                            
+                        <label for="from"><?php echo lang('gen_from_date') . ": " ?></label>
+                        <input name="from" id="from" type="date" class="form-control w-auto">
+                        <br>
+                        <label for="to"><?php echo lang('gen_to_date') . ": " ?></label>
+                        <input name="to" id="to" type="date" class="form-control w-auto">
                         <br>
                         <button type="submit" class="btn btn-sm btn-primary" value="Export"><?php echo lang('adif_mark_qso_as_exported_to_lotw') ?></button>
                     </form>
