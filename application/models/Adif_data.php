@@ -117,13 +117,9 @@ class adif_data extends CI_Model {
 
         // If date is set, we format the date and add it to the where-statement
         if ($from) {
-            $from = DateTime::createFromFormat('d/m/Y', $from);
-            $from = $from->format('Y-m-d');
             $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) >= '".$from."'");
         }
         if ($to) {
-            $to = DateTime::createFromFormat('d/m/Y', $to);
-            $to = $to->format('Y-m-d');
             $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) <= '".$to."'");
         }
         if ($exportLotw) {
