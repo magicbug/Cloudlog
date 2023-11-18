@@ -31,7 +31,7 @@
 <br><br>
 	<?php if ($papertypes) { ?>
 		<h4>Paper types</h4>
-						<table style="width:100%" class="table-sm labeltable table-bordered table-hover table-striped table-condensed text-center">
+						<table style="width:100%" class="table-sm table labeltable table-bordered table-hover table-striped table-condensed text-center">
 						<thead>
 							<tr>
 								<th>Name</th>
@@ -65,7 +65,7 @@
 	<?php if ($labels) { ?>
 		<br>
 		<h4>Label types</h4>
-						<table style="width:100%" class="table-sm labeltable table-bordered table-hover table-striped table-condensed text-center">
+						<table style="width:100%" class="table-sm table labeltable table-bordered table-hover table-striped table-condensed text-center">
 						<thead>
 							<tr>
 								<th>Name</th>
