@@ -311,6 +311,10 @@ TD.lotw {
 	margin-bottom: 10px;
 }
 
+.modal-backdrop{
+	z-index: 1000 !important;
+}
+
 .was-map-dialog .modal-dialog {
 	width: 100%;
 }
