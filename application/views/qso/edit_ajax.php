@@ -187,7 +187,7 @@
 
                                 <div class="form-group">
                                     <label for="comment">Comment</label>
-                                    <input type="text" class="form-control" id="comment" name="comment" value="<?php echo $qso->COL_COMMENT; ?>">
+                                    <input type="text" class="form-control" id="comment" name="comment" value="<?php echo htmlspecialchars($qso->COL_COMMENT ? $qso->COL_COMMENT : '', ENT_QUOTES, 'UTF-8'); ?>">
                                 </div>
 
                                 <div class="form-row">
