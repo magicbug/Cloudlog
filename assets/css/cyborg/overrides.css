@@ -79,7 +79,7 @@ path.grid-worked {
 .form-control-sm,
 .form-control:focus,
 .form-control:disabled,
-.custom-select {
+.form-select {
 	background-color: #151515;
 	color: #eeeeee;
 	border: 1px solid #333;
