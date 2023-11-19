@@ -16,7 +16,7 @@
     <div class="mb-3 row">
         <label class="col-md-2 control-label" for="button1id"></label>
         <div class="col-md-4">
-            <button id="button2id" type="reset" name="button2id" class="btn-sm btn-warning">Reset</button>
+            <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning">Reset</button>
             <button id="button1id" type="button" onclick="calculateQrb();" name="button1id" class="btn btn-sm btn-primary">Calculate</button>
         </div>
     </div>
