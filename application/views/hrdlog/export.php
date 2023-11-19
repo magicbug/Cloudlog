@@ -80,7 +80,7 @@
 						</div>
 					</div>
 					<br>
-					<button type="submit" class="btn-sm btn-primary" value="Export">Mark QSOs as exported to HRDLog Logbook</button>
+					<button type="submit" class="btn btn-sm btn-primary" value="Export">Mark QSOs as exported to HRDLog Logbook</button>
 				</form>
 	</div>
 			</div>

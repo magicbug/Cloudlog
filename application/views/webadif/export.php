@@ -111,7 +111,7 @@
 						</div>
 					</div>
 					<br>
-					<button type="button" id="markWebAdifAsExported" class="btn-sm btn-primary" value="Export">Mark QSOs as exported to QO-100 Dx Club</button>
+					<button type="button" id="markWebAdifAsExported" class="btn btn-sm btn-primary" value="Export">Mark QSOs as exported to QO-100 Dx Club</button>
 				</form>
 				<?php
 				}else{

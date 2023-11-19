@@ -79,7 +79,7 @@
 						</div>
 					</div>
 					<br>
-					<button type="submit" class="btn-sm btn-primary" value="Export">Mark QSOs as exported to QRZ Logbook</button>
+					<button type="submit" class="btn btn-sm btn-primary" value="Export">Mark QSOs as exported to QRZ Logbook</button>
 				</form>
 	</div>
 			</div>
