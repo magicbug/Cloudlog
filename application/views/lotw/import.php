@@ -33,11 +33,8 @@
 		</div>
       <p class="card-text"><?php echo lang('gen_from_date'); ?>:</p>
       <div class="row">
-          <div class="input-group date col-md-3" id="datetimepicker1" data-target-input="nearest">
-              <input name="from" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-bs-target="#datetimepicker1"/>
-              <div class="input-group-append"  data-bs-target="#datetimepicker1" data-bs-toggle="datetimepicker">
-                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-              </div>
+          <div class="col-md-3">
+            <input name="from" id="from" type="date" class="form-control w-auto">
           </div>
       </div>
       <br/>

@@ -68,22 +68,15 @@
 						<?php } ?>
 					</select>
 					<p><span class="badge text-bg-warning">Warning</span> If a date range is not selected then all QSOs will be marked!</p>
-					<p class="card-text">From date:</p>
 					<div class="row">
-						<div class="input-group date col-md-3" id="datetimepicker5" data-target-input="nearest">
-							<input name="from" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-bs-target="#datetimepicker1"/>
-							<div class="input-group-append"  data-bs-target="#datetimepicker5" data-bs-toggle="datetimepicker">
-								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-							</div>
+						<div class="col-md-2">
+							<label for="from"><?php echo lang('gen_from_date') . ": " ?></label>
+							<input name="from" id="from" type="date" class="form-control w-auto">
 						</div>
-					</div>
-					<p class="card-text">To date:</p>
-					<div class="row">
-						<div class="input-group date col-md-3" id="datetimepicker6" data-target-input="nearest">
-							<input name="to" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-bs-target="#datetimepicker2"/>
-							<div class="input-group-append" data-bs-target="#datetimepicker6" data-bs-toggle="datetimepicker">
-								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-							</div>
+
+						<div class="col-md-2">
+							<label for="to"><?php echo lang('gen_to_date') . ": " ?></label>
+							<input name="to" id="to" type="date" class="form-control w-auto">
 						</div>
 					</div>
 					<br>

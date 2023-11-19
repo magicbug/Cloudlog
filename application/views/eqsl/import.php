@@ -52,8 +52,7 @@
 				<div class="row">
 		        	<div class="mb-3 col-sm-2">
 			          	<div class="dxatlasdatepicker input-group date" id="eqsl_force_from_date" data-target-input="nearest">
-			            	<input name="eqsl_force_from_date" type="text" placeholder="YYYY/MM/DD" class="form-control datetimepicker-input" data-bs-target="#eqsl_force_from_date" value=""/>
-			              	<div class="input-group-append"  data-bs-target="#eqsl_force_from_date" data-bs-toggle="datetimepicker"><div class="input-group-text"><i class="fa fa-calendar"></i></div></div>
+                        	<input name="eqsl_force_from_date" id="eqsl_force_from_date" type="date" class="form-control w-auto">
 			          	</div>
 		        	</div>
 		         	<div class="mb-3 col-sm-5" style="vertical-align:middle;"><label class="form-label"><?php echo "(Select a date, only if you want to force an import with an older date)"; //$this->lang->line(''); ?></label></div>
