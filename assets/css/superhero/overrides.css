@@ -6,6 +6,13 @@ body {
 	background-color: #2b3e50;
 }
 
+.table {
+	--bs-table-color: #fff;
+	--bs-table-striped-color: #fff;
+	--bs-table-active-color: #fff;
+	--bs-table-hover-color: #fff;
+}
+
 /*
 *	 Maps
 */
