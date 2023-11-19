@@ -2,6 +2,10 @@
  * No overrides for the default theme as it aligns with general.css
 */
 
+body {
+	background-color: #2b3e50;
+}
+
 /*
 *	 Maps
 */
