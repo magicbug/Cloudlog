@@ -82,7 +82,6 @@ class Logbookadvanced extends CI_Controller {
 		$footerData = [];
 		$footerData['scripts'] = [
 			'assets/js/moment.min.js',
-			'assets/js/tempusdominus-bootstrap-4.min.js',
 			'assets/js/datetime-moment.js',
 			'assets/js/sections/logbookadvanced.js?' . filemtime(realpath(__DIR__ . "/../../assets/js/sections/logbookadvanced.js"))
 		];

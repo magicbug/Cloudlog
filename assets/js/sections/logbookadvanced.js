@@ -231,12 +231,6 @@ function unselectQsoID(qsoID) {
 }
 
 $(document).ready(function () {
-	$('#dateFrom').datetimepicker({
-		format: 'DD/MM/YYYY',
-	});
-	$('#dateTo').datetimepicker({
-		format: 'DD/MM/YYYY',
-	});
 
 	$('#searchForm').submit(function (e) {
 		var container = L.DomUtil.get('advancedmap');

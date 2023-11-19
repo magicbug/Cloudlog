@@ -42,10 +42,6 @@
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datatables.min.css" />
 
-	<?php if ($this->uri->segment(1) == "adif" || (isset($hasDatePicker) && $hasDatePicker)) { ?>
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
-	<?php } ?>
-
 	<?php if ($this->uri->segment(1) == "sattimers") { ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sattimers.css" />
 	<?php } ?>
