@@ -5,6 +5,10 @@
 .table {
 	--bs-table-border-color: grey;
 	--bs-table-striped-bg: #303030;
+	--bs-table-color: #fff;
+	--bs-table-striped-color: #fff;
+	--bs-table-active-color: #fff;
+	--bs-table-hover-color: #fff;
 }
 
 /*
