@@ -2,6 +2,11 @@
  * No overrides for the default theme as it aligns with general.css
 */
 
+.table {
+	--bs-table-border-color: grey;
+	--bs-table-striped-bg: #303030;
+}
+
 /*
 *	Dark Maps
 */
