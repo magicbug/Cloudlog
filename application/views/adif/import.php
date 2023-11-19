@@ -215,7 +215,7 @@
                         <label for="to"><?php echo lang('gen_to_date') . ": " ?></label>
                         <input name="to" id="to" type="date" class="form-control w-auto">
                         <br>
-                        <button type="submit" class="btn btn-sm btn-primary" value="Export"><?php echo lang('adif_mark_qso_as_exported_to_lotw') ?></button>
+                        <button type="button" class="btn btn-sm btn-primary" id="markExportedToLotw" value="Export"><?php echo lang('adif_mark_qso_as_exported_to_lotw') ?></button>
                     </form>
                 </div>
                 <div class="tab-pane <?php if ($showtab == 'dcl') {
