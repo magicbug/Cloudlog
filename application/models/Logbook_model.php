@@ -440,8 +440,7 @@ class Logbook_model extends CI_Model {
 		$this->db->limit(500);
 
 		$result =  $this->db->get($this->config->item('table_name'));
-      log_message('debug', 'SQL: '.$this->db->last_query());
-      return $result;
+		return $result;
 		//return $this->db->get($this->config->item('table_name'));
 	}
 
@@ -508,6 +507,7 @@ class Logbook_model extends CI_Model {
 
       $this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
       $this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC', 'left outer');
+      $this->db->join('lotw_users', 'lotw_users.callsign = '.$this->config->item('table_name').'.col_call', 'left outer');
         $this->db->where('COL_CALL', $call);
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -4090,6 +4090,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
         $this->db->where("((COL_DISTANCE is NULL) or (COL_DISTANCE = 0))");
         $this->db->where("COL_GRIDSQUARE is NOT NULL");
         $this->db->where("COL_GRIDSQUARE != ''");
+        $this->db->where("COL_GRIDSQUARE != station_gridsquare");
         $this->db->trans_start();
         $query = $this->db->get($this->config->item('table_name'));
 
@@ -4124,7 +4125,6 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
       $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_MODE, COL_BAND');
       $this->db->where('station_id =', NULL);
       $query = $this->db->get($this->config->item('table_name'));
-      log_message('debug','SQL: '.$this->db->last_query());
       if($query->num_rows() >= 1) {
         return $query->result();
       } else {
