@@ -107,7 +107,7 @@ function notInLog() {
                 }
             });
         }
-    }); 
+    });
 }
 
 function saveNotInLogRequest() {
@@ -136,7 +136,7 @@ function saveNotInLogRequest() {
             $.ajax({
                 url: base_url+'index.php/oqrs/save_not_in_log',
                 type: 'post',
-                data: { 'station_id': station_id, 
+                data: { 'station_id': station_id,
                         'callsign': $("#oqrssearch").val().toUpperCase(),
                         'email': $("#emailInput").val(),
                         'message': $("#messageInput").val(),
@@ -220,7 +220,7 @@ function requestOqrs() {
             }
             });
         }
-    }); 
+    });
 }
 
 function submitOqrsRequest() {
@@ -393,10 +393,10 @@ function loadOqrsTable(rows) {
 	var table = $('.oqrstable').DataTable();
 
 	table.clear();
-	
+
 	for (i = 0; i < rows.length; i++) {
 		let qso = rows[i];
-		
+
 		var data = [
 			'<div class="form-check"><input class="form-check-input" type="checkbox" /></div>',
 			qso.requesttime,
@@ -412,7 +412,7 @@ function loadOqrsTable(rows) {
 			echo_searchlog_button(qso.requestcallsign, qso.id),
             echo_status(qso.status),
 		];
-		
+
 		let createdRow = table.row.add(data).index();
 		table.rows(createdRow).nodes().to$().data('oqrsID', qso.id);
 		table.row(createdRow).node().id = 'oqrsID_' + qso.id;
@@ -598,3 +598,13 @@ function unselectQsoID(qsoID) {
 	$('#checkBoxAll').prop("checked", false);
 }
 
+function addQsoToPrintQueue(id) {
+	$.ajax({
+		url: base_url + 'index.php/qslprint/add_qso_to_print_queue',
+		type: 'post',
+		data: {'id': id},
+		success: function(html) {
+			$("#qsolist_"+id).remove();''
+		}
+	});
+}
