@@ -12,7 +12,7 @@ $lang['account_column5_text'] = 'Wähle Spalte 5 (nur für Logbuch)';
 $lang['account_create_user_account'] = 'Benutzerkonto anlegen';
 $lang['account_edit_account'] = 'Benutzerkonto editieren';
 
-$lang['account_account_information'] = 'Bnutzerkonto Informationen';
+$lang['account_account_information'] = 'Benutzerkonto Informationen';
 $lang['account_user'] = "Benutzer";
 $lang['account_word_edited'] = "bearbeitet";
 $lang['account_username'] = 'Benutzername';

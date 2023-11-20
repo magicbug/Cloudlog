@@ -924,8 +924,8 @@ function searchButtonPress(){
 
 $(document).ready(function(){
 
-  <?php if($this->input->post('searchBar') != "") { ?>
-        $('#partial_view').load("logbook/search_result/<?php echo str_replace("Ø","0",$this->input->post('searchBar')); ?>", function() {
+  <?php if($this->input->post('callsign') != "") { ?>
+        $('#partial_view').load("logbook/search_result/<?php echo str_replace("Ø","0",$this->input->post('callsign')); ?>", function() {
            $('[data-toggle="tooltip"]').tooltip()
     });
   <?php } ?>
@@ -999,37 +999,6 @@ $(document).on('keypress',function(e) {
 						$("#callsign").trigger("blur");
 					}
 				);
-			});
-			$('#reset_time').click(function() {
-				var now = new Date();
-				var localTime = now.getTime();
-				var utc = localTime + (now.getTimezoneOffset() * 60000);
-				$('#start_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
-				$("[id='start_time']").each(function() {
-					$(this).attr("value", ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
-				});
-			});
-			$('#reset_start_time').click(function() {
-				var now = new Date();
-				var localTime = now.getTime();
-				var utc = localTime + (now.getTimezoneOffset() * 60000);
-				$('#start_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2));
-				$("[id='start_time']").each(function() {
-					$(this).attr("value", ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
-				});
-				$('#end_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2));
-				$("[id='end_time']").each(function() {
-					$(this).attr("value", ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
-				});
-			});
-			$('#reset_end_time').click(function() {
-				var now = new Date();
-				var localTime = now.getTime();
-				var utc = localTime + (now.getTimezoneOffset() * 60000);
-				$('#end_time').val(("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2));
-				$("[id='end_time']").each(function() {
-					$(this).attr("value", ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
-				});
 			});
 		});
 	</script>
@@ -1406,8 +1375,12 @@ $(document).on('keypress',function(e) {
 						  $("#band_rx").val(frequencyToBand(data.frequency_rx));
 					  }
 
-					  old_mode = $(".mode").val();
-					  $(".mode").val(data.mode);
+					  if ((data.mode != "") && (data.mode != null)) {
+					  	old_mode = $(".mode").val();
+					  	$(".mode").val(data.mode);
+					  } else {
+					  	old_mode = $(".mode").val();
+					  }
 
 					  if (old_mode !== $(".mode").val()) {
 						  // Update RST on mode change via CAT
@@ -2300,6 +2273,7 @@ $(document).ready(function(){
 
     ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
         $.fn.dataTable.moment('<?php echo $usethisformat ?>');
@@ -2334,7 +2308,9 @@ $(document).ready(function(){
         if (isDarkModeTheme()) {
             $('[class*="buttons"]').css("color", "white");
         }
-		if ($('#eqsl_force_from_date').length>0) { $('#eqsl_force_from_date').datetimepicker({ format: 'YYYY/MM/DD' }); }
+        $('#eqsl_force_from_date').datetimepicker({
+            format: 'YYYY/MM/DD'
+        });
 
     </script>
 <?php } ?>

@@ -102,7 +102,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
             <td>
                 <a id="edit_qso" href="javascript:displayQso(<?php echo $row->COL_PRIMARY_KEY; ?>)"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
                 <?php
-                   if ($row->lastupload) {
+                   if (isset($row->lastupload) && ($row->lastupload)) {
                        $lotw_hint = '';
                        $diff = (time() - strtotime($row->lastupload)) / 86400;
                        if ($diff > 365) {

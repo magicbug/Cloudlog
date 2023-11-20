@@ -165,7 +165,7 @@
                         }
                         ?>
                     </select>
-                    <small id="stationCQInputHelp" class="form-text text-muted"><?php echo lang("gen_find_zone_cq"); ?></small>
+                    <small id="stationCQInputHelp" class="form-text text-muted"><?php echo lang("gen_find_zone_cq_part1")." <a href='https://zone-check.eu/?m=cq' target='_blank'>".lang("gen_find_zone_part2")."</a> ".lang("gen_find_zone_part3"); ?></small>
                 </div>
 
                 <div class="form-group col-sm-6">
@@ -179,7 +179,7 @@
                         }
                         ?>
                     </select>
-                    <small id="stationITUInputHelp" class="form-text text-muted"><?php echo lang("gen_find_zone_itu"); ?></small>
+                    <small id="stationITUInputHelp" class="form-text text-muted"><?php echo lang("gen_find_zone_itu_part1")." <a href='https://zone-check.eu/?m=itu' target='_blank'>".lang("gen_find_zone_part2")."</a> ".lang("gen_find_zone_part3"); ?></small>
                 </div>
             </div>
 

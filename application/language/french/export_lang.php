@@ -8,9 +8,9 @@ KML Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_kml_header'] = "KML Export";
-$lang['export_kml_description'] = "Export your logbook to a KML file for use in Google Earth.";
-$lang['export_kml_grisquare_warning'] = "Only QSOs with a gridsquare defined will be exported!";
+$lang['export_kml_header'] = "KML - Export";
+$lang['export_kml_description'] = "Exportez votre journal de trafic vers un fichier KML pour l'utiliser dans Google Earth.";
+$lang['export_kml_grisquare_warning'] = "Seuls les QSO avec un Locator défini seront exportés !";
 
 
 /*
@@ -19,9 +19,9 @@ DX Atlas Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_dxatlas_header'] = "DX Atlas Export";
-$lang['export_dxatlas_description'] = "Export your logbook for use in DX Atlas to display worked / confirmed gridsquares.";
-$lang['export_dxatlas_gridsquare_warning'] = "Only QSOs with a gridsquare defined will be exported!";
+$lang['export_dxatlas_header'] = "DX Atlas - Export";
+$lang['export_dxatlas_description'] = "Exportez votre journal de trafic pour l'utiliser dans DX Atlas et afficher les Locator réalisés/confirmés.";
+$lang['export_dxatlas_gridsquare_warning'] = "Seuls les QSO avec un Locator défini seront exportés !";
 
 
 /*
@@ -30,9 +30,9 @@ SOTA Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_sota_header'] = "SOTA CSV Export";
-$lang['export_sota_description'] = "Export your logbook for SOTA uploads.";
-$lang['export_sota_info_warning'] = "Only QSOs with SOTA information will be exported!";
+$lang['export_sota_header'] = "SOTA - Export CSV";
+$lang['export_sota_description'] = "Exporter votre journal de trafic pour le télécharger sur le site SOTA.";
+$lang['export_sota_info_warning'] = "Seuls les QSO avec un Locator défini seront exportés !";
 
 /*
 ___________________________________________________________________________________________
@@ -40,36 +40,36 @@ Cabrillo Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_cabrillo_header'] = "Cabrillo Export";
-$lang['export_cabrillo_description'] = "Export a contest to a Cabrillo log";
-$lang['export_cabrillo_select_station'] = "Select Station Location:";
-$lang['export_cabrillo_proceed'] = "Proceed";
-$lang['export_cabrillo_select_year'] = "Select Year";
-$lang['export_cabrillo_select_contest'] = "Select Contest";
-$lang['export_cabrillo_select_date_range'] = "Select Date Range";
+$lang['export_cabrillo_header'] = "Cabrillo - Export";
+$lang['export_cabrillo_description'] = "Exporter un concours au format de fichier \"Cabrillo\"";
+$lang['export_cabrillo_select_station'] = "Sélectionner le lieu de la Station :";
+$lang['export_cabrillo_proceed'] = "Démarrer";
+$lang['export_cabrillo_select_year'] = "Sélectionner l'année";
+$lang['export_cabrillo_select_contest'] = "Sélectionner le concours";
+$lang['export_cabrillo_select_date_range'] = "Sélectionner la période (date début/fin)";
 $lang['export_cabrillo_club'] = "Club";
-$lang['export_cabrillo_cat_operator'] = "Category Operator";
-$lang['export_cabrillo_cat_operator_single_op'] = "Single Operator";
-$lang['export_cabrillo_cat_operator_multi_op'] = "Multi Operator";
+$lang['export_cabrillo_cat_operator'] = "Catégorie - Opérateur";
+$lang['export_cabrillo_cat_operator_single_op'] = "Mono-Opérateur (SINGLE)";
+$lang['export_cabrillo_cat_operator_multi_op'] = "Multi-Opérateur (MULTI)";
 $lang['export_cabrillo_cat_operator_checklog'] = "Checklog";
-$lang['export_cabrillo_cat_assisted'] = "Category Assisted";
-$lang['export_cabrillo_cat_assisted_not_ass'] = "Not Assisted";
-$lang['export_cabrillo_cat_assisted_ass'] = "Assisted";
-$lang['export_cabrillo_cat_band'] = "Category Band";
-$lang['export_cabrillo_cat_band_arrl_vhf'] = "VHF-3-BAND and VHF-FM-ONLY (ARRL VHF Contests only)";
-$lang['export_cabrillo_cat_mode'] = "Category Mode";
-$lang['export_cabrillo_cat_power'] = "Category Power";
-$lang['export_cabrillo_cat_station'] = "Category Station";
-$lang['export_cabrillo_cat_transmitter'] = "Category Transmitter";
-$lang['export_cabrillo_cat_overlay'] = "Category Overlay";
-$lang['export_cabrillo_operators'] = "Operators";
-$lang['export_cabrillo_soapbox'] = "Soapbox";
-$lang['export_cabrillo_address'] = "Address";
-$lang['export_cabrillo_address_city'] = "Address City";
-$lang['export_cabrillo_address_state_province'] = "Address State/Province";
-$lang['export_cabrillo_address_postalcode'] = "Address Postalcode";
-$lang['export_cabrillo_address_country'] = "Address Country";
-$lang['export_cabrillo_no_contests_in_log'] = "No contests were found in your log.";
-$lang['export_cabrillo_no_contests_for_stationlocation'] = "No contests were found for this station location!";
+$lang['export_cabrillo_cat_assisted'] = "Catégorie - Assistance";
+$lang['export_cabrillo_cat_assisted_not_ass'] = "Non Assisté";
+$lang['export_cabrillo_cat_assisted_ass'] = "Assisté";
+$lang['export_cabrillo_cat_band'] = "Bandes";
+$lang['export_cabrillo_cat_band_arrl_vhf'] = "VHF-3-BAND et VHF-FM-ONLY (Concours ARRL VHF seulement)";
+$lang['export_cabrillo_cat_mode'] = "Catégorie - Mode";
+$lang['export_cabrillo_cat_power'] = "Catégorie - Puissance";
+$lang['export_cabrillo_cat_station'] = "Catégorie - Station";
+$lang['export_cabrillo_cat_transmitter'] = "Catégorie - Emetteur";
+$lang['export_cabrillo_cat_overlay'] = "Catégorie - Overlay";
+$lang['export_cabrillo_operators'] = "Operateurs";
+$lang['export_cabrillo_soapbox'] = "Message";
+$lang['export_cabrillo_address'] = "Adresse";
+$lang['export_cabrillo_address_city'] = "Adresse - Ville";
+$lang['export_cabrillo_address_state_province'] = "Adresse - State/Province";
+$lang['export_cabrillo_address_postalcode'] = "Adresse - Code Postal";
+$lang['export_cabrillo_address_country'] = "Adresse - Pays";
+$lang['export_cabrillo_no_contests_in_log'] = "Aucun concours trouvé dans votre journal de trafic";
+$lang['export_cabrillo_no_contests_for_stationlocation'] = "Aucun concours trouvé pour cet emplacement de station!";
 
 

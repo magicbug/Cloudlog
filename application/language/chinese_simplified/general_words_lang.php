@@ -117,11 +117,12 @@ $lang['gen_hamradio_callsign'] = '呼号';
 $lang['gen_hamradio_prefix'] = "Prefix";
 $lang['gen_hamradio_suffix'] = "Suffix";
 $lang['gen_hamradio_mode'] = '模式';
-$lang['gen_hamradio_dx'] = 'DX';
+$lang['gen_hamradio_de'] = '本台呼号(De)';
+$lang['gen_hamradio_dx'] = '对方呼号(Dx)';
 $lang['gen_hamradio_rst_sent'] = '发';
 $lang['gen_hamradio_rst_rcvd'] = '收';
 $lang['gen_hamradio_band'] = '频段';
-$lang['gen_hamradio_bandgroup'] = "Bandgroup";
+$lang['gen_hamradio_bandgroup'] = "波段";
 $lang['gen_hamradio_band_rx'] = '频段 (RX)';
 $lang['gen_hamradio_frequency'] = '频率';
 $lang['gen_hamradio_frequency_rx'] = '频率 (RX)';
@@ -178,8 +179,8 @@ $lang['gen_hamradio_sig_info'] = 'Sig 属性';
 // Find your CQ/ITU Zone
 $lang['gen_find_zone_cq_part1'] = "如果您不知道自己的 CQ 分区";
 $lang['gen_find_zone_itu_part1'] = "如果您不知道自己的 ITU 分区";
-$lang['gen_find_zone_part2'] = '点击此处';
-$lang['gen_find_zone_part3'] = '来查询！';
+$lang['gen_find_zone_part2'] = "点击此处";
+$lang['gen_find_zone_part3'] = "来查询！";
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = '今天你有';
@@ -192,7 +193,7 @@ $lang['gen_from_date'] = '起始日期';
 
 $lang['gen_this_qso_was_confirmed_on'] = '该 QSO 确认于';
 
-$lang['error_no_logbook_found'] = '没有找到日志本。 您需要在台站日志下添加一个日志本! 在这里添加:';
+$lang['error_no_logbook_found'] = '没有找到日志本。您需要在台站日志下添加一个日志本! 在这里添加：';
 
 $lang['copy_to_clipboard'] = '复制到剪贴板';
 

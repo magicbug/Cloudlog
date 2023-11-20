@@ -9,7 +9,7 @@ $lang['account_column3_text'] = 'Επιλογή στήλης  3';
 $lang['account_column4_text'] = 'Επιλογή στήλης  4';
 $lang['account_column5_text'] = 'Επιλογή στήλης  5 (Μόνο για αρχείο)';
 
-$lang['account_create_user_account'] = 'Create User Account';
+$lang['account_create_user_account'] = "Create User Account";
 $lang['account_edit_account'] = 'Edit Account';
 
 $lang['account_account_information'] = 'Account Information';

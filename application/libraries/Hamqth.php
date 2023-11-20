@@ -71,7 +71,7 @@ class Hamqth {
 
             // Create XML object
             $xml = simplexml_load_string($xml);
-            if (empty($xml)) return;
+            if (!empty($xml->session->error)) return $data['error'] = $xml->session->error;
 
             // Return Required Fields
             $data['callsign'] = (string)$xml->search->callsign;
