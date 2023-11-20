@@ -552,10 +552,6 @@ div#station_logbooks_linked_table_paginate {
     margin-right: 30px; 
 }
 
-input:invalid {
-    border-color: red;
-}
-
 .sfletable{
     height: 470px;
   }

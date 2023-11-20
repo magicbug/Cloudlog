@@ -55,12 +55,12 @@
                                 <div class="form-row">
                                     <div class="form-group col-sm-6">
                                         <label for="start_date">Start Date/Time</label>
-                                        <input type="text" class="form-control form-control-sm input_date" name="time_on" id="time_on" value="<?php echo $qso->COL_TIME_ON; ?>">
+                                        <input type="text" class="form-control form-control-sm" name="time_on" id="time_on" value="<?php echo $qso->COL_TIME_ON; ?>">
                                     </div>
 
                                     <div class="form-group col-sm-6">
                                         <label for="start_time">End Date/Time</label>
-                                        <input type="text" class="form-control form-control-sm input_time" name="time_off" id="time_off" value="<?php echo $qso->COL_TIME_OFF; ?>">
+                                        <input type="text" class="form-control form-control-sm" name="time_off" id="time_off" value="<?php echo $qso->COL_TIME_OFF; ?>">
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -187,7 +187,7 @@
 
                                 <div class="form-group">
                                     <label for="comment">Comment</label>
-                                    <input type="text" class="form-control" id="comment" name="comment" value="<?php echo $qso->COL_COMMENT; ?>">
+                                    <input type="text" class="form-control" id="comment" name="comment" value="<?php echo htmlspecialchars($qso->COL_COMMENT ? $qso->COL_COMMENT : '', ENT_QUOTES, 'UTF-8'); ?>">
                                 </div>
 
                                 <div class="form-row">
