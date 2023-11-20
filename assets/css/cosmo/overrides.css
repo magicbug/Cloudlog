@@ -18,3 +18,11 @@
 .selectize-dropdown.form-control {
 	border-radius: 0;
 }
+
+.dxccBgDanger {
+	background-color: #f8d7db !important;
+}
+
+.dxccBgSuccess {
+	background-color: #d4edda !important;
+}

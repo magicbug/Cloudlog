@@ -11,6 +11,14 @@
 	--bs-table-hover-color: #fff;
 }
 
+.dxccBgDanger a {
+	color: white;
+}
+
+.dxccBgSuccess a{
+	color: white;
+}
+
 /*
 *	Dark Maps
 */
@@ -162,3 +170,4 @@ div.alert-danger {
 	text-align: left !important;
 	white-space: nowrap;
 }
+

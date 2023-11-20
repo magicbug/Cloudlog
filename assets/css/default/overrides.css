@@ -10,6 +10,14 @@ thead > tr > td {
 	border: 1px solid #ced4da;
 }
 
+.dxccBgDanger {
+	background-color: #f8d7db !important;
+}
+
+.dxccBgSuccess {
+	background-color: #d4edda !important;
+}
+
 #lotw_badge {
 	float: right;
 }
