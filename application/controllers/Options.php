@@ -326,10 +326,10 @@ class Options extends CI_Controller {
 	
 				// If smtpPassword update is complete set a flashsession with a success note
 				if($smtpPasswordupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_smtp_password_changed'));
+					$this->session->set_flashdata('success', $this->lang->line('options_smtp_password_saved'));
 				}
 	
-				// Redirect back to /appearance
+				// Redirect back to /email
 				redirect('/options/email');
 			}
 		}
@@ -364,7 +364,7 @@ class Options extends CI_Controller {
 		redirect('/options/oqrs');
     }
 
-	public function sendTestMail() {
+	function sendTestMail() {
 		$this->load->model('user_model');
 
 		$id = $this->session->userdata('user_id');
@@ -396,13 +396,15 @@ class Options extends CI_Controller {
 			$this->email->message($message);
 
 			if (! $this->email->send()){
-				return FALSE;
-				$this->session->set_flashdata('success', 'Something went wrong.');
+				$this->session->set_flashdata('testmailFailed', $this->lang->line('options_send_testmail_failed'));
 			} else {
-				return TRUE;
-				$this->session->set_flashdata('message', 'Email settings seem to be correct');
+				$this->session->set_flashdata('testmailSuccess', $this->lang->line('options_send_testmail_success'));
 			}
+		} else {
+			$this->session->set_flashdata('testmailFailed', $this->lang->line('options_send_testmail_failed'));
 		}
+		
+		redirect('/options/email');
 	}
 
 }
