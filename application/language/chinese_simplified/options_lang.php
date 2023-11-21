@@ -50,6 +50,7 @@ $lang['options_smtp_username_changed_to'] = 'SMTP 用户名更改为';
 $lang['options_smtp_password_changed_to'] = 'SMTP 密码更改为';
 $lang['options_email_crlf_changed_to'] = '电子邮件 CRLF 更改为';
 $lang['options_email_newline_changed_to'] = '电子邮件新行更改为';
+$lang['options_send_testmail'] = "Send a Test-Mail";
 
 $lang['options_oqrs'] = 'OQRS设置';
 $lang['options_global_text'] = '全局文本';

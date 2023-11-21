@@ -50,6 +50,7 @@ $lang['options_smtp_username_changed_to'] = 'SMTP uživatelské jméno změněno
 $lang['options_smtp_password_changed_to'] = 'SMTP heslo změněno na ';
 $lang['options_email_crlf_changed_to'] = 'CRLF e-mail změněn na ';
 $lang['options_email_newline_changed_to'] = 'Nový řádek e-mailu změněn na ';
+$lang['options_send_testmail'] = "Send a Test-Mail";
 
 $lang['options_oqrs'] = 'OQRS možnosti';
 $lang['options_global_text'] = 'Globální text';

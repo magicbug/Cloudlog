@@ -50,6 +50,7 @@ $lang['options_smtp_username_changed_to'] = 'SMTP логин изменён на
 $lang['options_smtp_password_changed_to'] = 'SMTP пароль изменён на ';
 $lang['options_email_crlf_changed_to'] = 'Email CRLF changed to ';
 $lang['options_email_newline_changed_to'] = 'Email Newline changed to ';
+$lang['options_send_testmail'] = "Send a Test-Mail";
 
 $lang['options_oqrs'] = 'OQRS';
 $lang['options_global_text'] = 'Сообщение на странице OQRS';
