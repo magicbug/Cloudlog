@@ -267,66 +267,43 @@ class Options extends CI_Controller {
 
 				// Update emailProtocol choice within the options system
 				$emailProtocolupdate = $this->optionslib->update('emailProtocol', $this->input->post('emailProtocol'), 'yes');
-	
-				// If emailProtocolupdate update is complete set a flashsession with a success note
-				if($emailProtocolupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_outgoing_email_protocol_changed_to').$this->input->post('emailProtocol'));
-				}
 
 				// Update smtpEncryption choice within the options system
 				$smtpEncryptionupdate = $this->optionslib->update('smtpEncryption', $this->input->post('smtpEncryption'), 'yes');
-	
-				// If smtpEncryption update is complete set a flashsession with a success note
-				if($smtpEncryptionupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_smtp_encryption_changed_to').$this->input->post('smtpEncryption'));
-				}
 
 				// Update email sender name within the options system
 				$emailSenderNameupdate = $this->optionslib->update('emailSenderName', $this->input->post('emailSenderName'), 'yes');
 
-				// If email address update is complete set a flashsession with a success note
-				if($emailSenderNameupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_email_sender_name_changed_to').$this->input->post('emailSenderName'));
-				}
-
 				// Update email address choice within the options system
 				$emailAddressupdate = $this->optionslib->update('emailAddress', $this->input->post('emailAddress'), 'yes');
 
-				// If email address update is complete set a flashsession with a success note
-				if($emailAddressupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_email_address_changed_to').$this->input->post('emailAddress'));
-				}
-
 				// Update smtpHost choice within the options system
 				$smtpHostupdate = $this->optionslib->update('smtpHost', $this->input->post('smtpHost'), 'yes');
-	
-				// If smtpHost update is complete set a flashsession with a success note
-				if($smtpHostupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_smtp_host_changed_to').$this->input->post('smtpHost'));
-				}
 
 				// Update smtpPort choice within the options system
 				$smtpPortupdate = $this->optionslib->update('smtpPort', $this->input->post('smtpPort'), 'yes');
 	
-				// If smtpPort update is complete set a flashsession with a success note
-				if($smtpPortupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_smtp_port_changed_to').$this->input->post('smtpPort'));
-				}
-	
 				// Update smtpUsername choice within the options system
 				$smtpUsernameupdate = $this->optionslib->update('smtpUsername', $this->input->post('smtpUsername'), 'yes');
-	
-				// If smtpUsername update is complete set a flashsession with a success note
-				if($smtpUsernameupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_smtp_username_changed_to').$this->input->post('smtpUsername'));
-				}
 
 				// Update smtpPassword choice within the options system
 				$smtpPasswordupdate = $this->optionslib->update('smtpPassword', $this->input->post('smtpPassword'), 'yes');
 	
-				// If smtpPassword update is complete set a flashsession with a success note
-				if($smtpPasswordupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_smtp_password_saved'));
+				// Check if all updates are successful
+				$updateSuccessful = $emailProtocolupdate &&
+									$smtpEncryptionupdate &&
+									$emailSenderNameupdate &&
+									$emailAddressupdate &&
+									$smtpHostupdate &&
+									$smtpPortupdate &&
+									$smtpUsernameupdate &&
+									$smtpPasswordupdate;
+
+				// Set flash session based on update success
+				if ($updateSuccessful) {
+					$this->session->set_flashdata('success', $this->lang->line('options_mail_settings_saved'));
+				} else {
+					$this->session->set_flashdata('saveFailed', $this->lang->line('options_mail_settings_failed'));
 				}
 	
 				// Redirect back to /email
