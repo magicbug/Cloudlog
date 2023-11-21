@@ -76,6 +76,17 @@ class User_Model extends CI_Model {
 		}
 	}
 
+	function get_user_email_by_id($id) {
+
+		$clean_id = $this->security->xss_clean($id);
+
+		$this->db->where('user_id', $clean_id);
+		$query = $this->db->get($this->config->item('auth_table'));
+
+		$r = $query->row();
+		return $r->user_email;
+	}
+
 	function get_email_address($station_id) {
 		$this->db->where('station_id', $station_id);
 		$this->db->join('station_profile', 'station_profile.user_id = '.$this->config->item('auth_table').'.user_id');
