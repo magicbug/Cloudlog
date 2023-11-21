@@ -47,6 +47,7 @@
                                 <option value="sendmail" <?php if($this->optionslib->get_option('emailProtocol')== "sendmail") { echo "selected=\"selected\""; } ?>>Sendmail</option>
                                 <option value="smtp" <?php if($this->optionslib->get_option('emailProtocol')== "smtp") { echo "selected=\"selected\""; } ?>>SMTP</option>
                             </select>
+                            <small class="form-text text-muted"><?php echo lang('options_outgoing_protocol_hint'); ?></small>
                         </div>
 
                         <div class="form-group">
@@ -56,19 +57,22 @@
                                 <option value="tls" <?php if($this->optionslib->get_option('smtpEncryption') == "tls") { echo "selected=\"selected\""; } ?>>TLS</option>
                                 <option value="ssl" <?php if($this->optionslib->get_option('smtpEncryption') == "ssl") { echo "selected=\"selected\""; } ?>>SSL</option>
                             </select>
+                            <small class="form-text text-muted"><?php echo lang('options_smtp_encryption_hint'); ?></small>
                         </div>
 
                         <div class="form-group row">
-                        <label for="emailSenderName" class="col-sm-2 col-form-label"><?php echo lang('options_email_sender_name'); ?></label>
+                            <label for="emailSenderName" class="col-sm-2 col-form-label"><?php echo lang('options_email_sender_name'); ?></label>
                             <div class="col-sm-10">
                                 <input type="text" name="emailSenderName" class="form-control" id="emailSenderName" value="<?php echo ($this->optionslib->get_option('emailSenderName') == "" ? 'Cloudlog' : $this->optionslib->get_option('emailSenderName'));?>">
+                                <small class="form-text text-muted"><?php echo lang('options_email_sender_name_hint'); ?></small>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                        <label for="emailAddress" class="col-sm-2 col-form-label"><?php echo lang('options_email_address'); ?></label>
+                            <label for="emailAddress" class="col-sm-2 col-form-label"><?php echo lang('options_email_address'); ?></label>
                             <div class="col-sm-10">
                                 <input type="text" name="emailAddress" class="form-control" id="emailAddress" value="<?php if($this->optionslib->get_option('emailAddress') != "") { echo $this->optionslib->get_option('emailAddress'); } ?>">
+                                <small class="form-text text-muted"><?php echo lang('options_email_address_hint'); ?></small>
                             </div>
                         </div>
 
@@ -76,6 +80,7 @@
                             <label for="smtpHost" class="col-sm-2 col-form-label"><?php echo lang('options_smtp_host'); ?></label>
                             <div class="col-sm-10">
                                 <input type="text" name="smtpHost" class="form-control" id="smtpHost" value="<?php if($this->optionslib->get_option('smtpHost') != "") { echo $this->optionslib->get_option('smtpHost'); } ?>">
+                                <small class="form-text text-muted"><?php echo lang('options_smtp_host_hint'); ?></small>
                             </div>
                         </div>
 
@@ -83,6 +88,7 @@
                             <label for="smtpPort" class="col-sm-2 col-form-label"><?php echo lang('options_smtp_port'); ?></label>
                             <div class="col-sm-10">
                                 <input type="number" name="smtpPort" class="form-control" id="smtpPort" value="<?php if($this->optionslib->get_option('smtpPort') != "") { echo $this->optionslib->get_option('smtpPort'); } ?>">
+                                <small class="form-text text-muted"><?php echo lang('options_smtp_port_hint'); ?></small>
                             </div>
                         </div>
 
@@ -90,6 +96,7 @@
                             <label for="smtpUsername" class="col-sm-2 col-form-label"><?php echo lang('options_smtp_username'); ?></label>
                             <div class="col-sm-10">
                                 <input type="text" name="smtpUsername" class="form-control" id="smtpUsername" value="<?php if($this->optionslib->get_option('smtpUsername') != "") { echo $this->optionslib->get_option('smtpUsername'); } ?>">
+                                <small class="form-text text-muted"><?php echo lang('options_smtp_username_hint'); ?></small>
                             </div>
                         </div>
 
@@ -97,6 +104,7 @@
                             <label for="smtpPassword" class="col-sm-2 col-form-label"><?php echo lang('options_smtp_password'); ?></label>
                             <div class="col-sm-10">
                                 <input type="password" name="smtpPassword" class="form-control" id="smtpPassword"  value="<?php if($this->optionslib->get_option('smtpPassword') != "") { echo $this->optionslib->get_option('smtpPassword'); } ?>">
+                                <small class="form-text text-muted"><?php echo lang('options_smtp_password_hint'); ?></small>
                             </div>
                         </div>
 
@@ -106,7 +114,7 @@
                     <br>
                     <?php echo form_open('options/sendTestMail'); ?>
                         <input class="btn btn-primary" type="submit" value="<?php echo lang('options_send_testmail'); ?>" />
-                        <small id="themeHelp" class="form-text text-muted"><?php echo lang('options_send_testmail_hint'); ?></small>
+                        <small class="form-text text-muted"><?php echo lang('options_send_testmail_hint'); ?></small>
                     </form>
                 </div>
             </div>
