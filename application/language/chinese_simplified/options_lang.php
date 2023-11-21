@@ -48,7 +48,7 @@ $lang['options_smtp_host_changed_to'] = 'SMTP 主机更改为 ';
 $lang['options_smtp_port_changed_to'] = 'SMTP 端口更改为 ';
 $lang['options_smtp_username_changed_to'] = 'SMTP 用户名更改为';
 $lang['options_smtp_password_changed'] = 'SMTP Password changed';
-$lang['options_send_testmail'] = "Send a Test-Mail";
+$lang['options_send_testmail'] = "Save and Send a Test-Mail";
 
 $lang['options_oqrs'] = 'OQRS设置';
 $lang['options_global_text'] = '全局文本';

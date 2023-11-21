@@ -48,7 +48,7 @@ $lang['options_smtp_host_changed_to'] = 'SMTP hostitel změněn na ';
 $lang['options_smtp_port_changed_to'] = 'SMTP port změněn na ';
 $lang['options_smtp_username_changed_to'] = 'SMTP uživatelské jméno změněno na ';
 $lang['options_smtp_password_changed'] = 'SMTP Password changed';
-$lang['options_send_testmail'] = "Send a Test-Mail";
+$lang['options_send_testmail'] = "Save and Send a Test-Mail";
 
 $lang['options_oqrs'] = 'OQRS možnosti';
 $lang['options_global_text'] = 'Globální text';

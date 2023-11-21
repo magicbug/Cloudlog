@@ -396,12 +396,12 @@ class Options extends CI_Controller {
 			$this->email->message($message);
 
 			if (! $this->email->send()){
-				$this->session->set_flashdata('success', 'Email settings are incorrect.');
+				return FALSE;
+				$this->session->set_flashdata('success', 'Something went wrong.');
 			} else {
+				return TRUE;
 				$this->session->set_flashdata('message', 'Email settings seem to be correct');
 			}
-		} else {
-			$this->session->set_flashdata('error', 'You have no email address in your account settings!');
 		}
 	}
 
