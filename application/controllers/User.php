@@ -713,6 +713,7 @@ class User extends CI_Controller {
 				if($this->optionslib->get_option('emailProtocol') == "smtp") {
 					$config = Array(
 						'protocol' => $this->optionslib->get_option('emailProtocol'),
+						'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
 						'smtp_host' => $this->optionslib->get_option('smtpHost'),
 						'smtp_port' => $this->optionslib->get_option('smtpPort'),
 						'smtp_user' => $this->optionslib->get_option('smtpUsername'),
