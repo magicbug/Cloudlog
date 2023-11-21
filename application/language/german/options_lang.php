@@ -47,9 +47,7 @@ $lang['options_email_sender_name_changed_to'] = 'E-Mail Absendername geändert z
 $lang['options_smtp_host_changed_to'] = 'SMTP Host geändert zu ';
 $lang['options_smtp_port_changed_to'] = 'SMTP Port geändert zu ';
 $lang['options_smtp_username_changed_to'] = 'SMTP Benutzername geändert zu ';
-$lang['options_smtp_password_changed_to'] = 'SMTP Passwort geändert zu ';
-$lang['options_email_crlf_changed_to'] = 'E-Mail CRLF geändert zu ';
-$lang['options_email_newline_changed_to'] = 'E-Mail Zeilenvorschub geändert zu ';
+$lang['options_smtp_password_changed'] = 'SMTP Passwort geändert';
 $lang['options_send_testmail'] = "Sende eine Test-Mail";
 
 $lang['options_oqrs'] = 'OQRS Optionen';

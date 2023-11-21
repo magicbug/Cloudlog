@@ -47,9 +47,7 @@ $lang['options_email_sender_name_changed_to'] = '发件人姓名更改为 ';
 $lang['options_smtp_host_changed_to'] = 'SMTP 主机更改为 ';
 $lang['options_smtp_port_changed_to'] = 'SMTP 端口更改为 ';
 $lang['options_smtp_username_changed_to'] = 'SMTP 用户名更改为';
-$lang['options_smtp_password_changed_to'] = 'SMTP 密码更改为';
-$lang['options_email_crlf_changed_to'] = '电子邮件 CRLF 更改为';
-$lang['options_email_newline_changed_to'] = '电子邮件新行更改为';
+$lang['options_smtp_password_changed'] = 'SMTP Password changed';
 $lang['options_send_testmail'] = "Send a Test-Mail";
 
 $lang['options_oqrs'] = 'OQRS设置';

@@ -326,7 +326,7 @@ class Options extends CI_Controller {
 	
 				// If smtpPassword update is complete set a flashsession with a success note
 				if($smtpPasswordupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_smtp_password_changed_to').$this->input->post('smtpPassword'));
+					$this->session->set_flashdata('success', $this->lang->line('options_smtp_password_changed'));
 				}
 	
 				// Redirect back to /appearance
