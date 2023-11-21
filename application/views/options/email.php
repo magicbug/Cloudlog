@@ -20,8 +20,15 @@
 
                     <?php if($this->session->flashdata('message')) { ?>
                         <!-- Display Message -->
-                        <div class="alert-message error">
+                        <div class="alert alert-info">
                         <?php echo $this->session->flashdata('message'); ?>
+                        </div>
+                    <?php } ?>
+
+                    <?php if($this->session->flashdata('error')) { ?>
+                        <!-- Display Message -->
+                        <div class="alert alert-danger">
+                        <?php echo $this->session->flashdata('error'); ?>
                         </div>
                     <?php } ?>
 
@@ -31,7 +38,7 @@
                         <?php echo validation_errors(); ?>
                     </div>
                     <?php } ?>
-
+                        
                     <?php echo form_open('options/email_save'); ?>
 
                         <div class="form-group">
@@ -109,6 +116,7 @@
 
                         <!-- Save the Form -->
                         <input class="btn btn-primary" type="submit" value="<?php echo lang('options_save'); ?>" />
+                        <button class="btn btn-secondary" id="sendTestMailButton"><?php echo lang('options_send_testmail'); ?></button>
                     </form>
                 </div>
             </div>
