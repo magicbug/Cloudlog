@@ -100,20 +100,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="emailcrlf" class="col-sm-2 col-form-label"><?php echo lang('options_crlf'); ?></label>
-                            <div class="col-sm-10">
-                                <input type="text" name="emailcrlf" class="form-control" id="emailcrlf" value="<?php if($this->optionslib->get_option('emailcrlf') != "") { echo $this->optionslib->get_option('emailcrlf'); } ?>">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="emailnewline" class="col-sm-2 col-form-label"><?php echo lang('options_newline'); ?></label>
-                            <div class="col-sm-10">
-                                <input type="text" name="emailnewline" class="form-control" id="emailnewline" value="<?php if($this->optionslib->get_option('emailnewline') != "") { echo $this->optionslib->get_option('emailnewline'); } ?>">
-                            </div>
-                        </div>
-
                         <!-- Save the Form -->
                         <input class="btn btn-primary" type="submit" value="<?php echo lang('options_save'); ?>" />
                         <button class="btn btn-secondary" id="sendTestMailButton"><?php echo lang('options_send_testmail'); ?></button>

@@ -328,22 +328,6 @@ class Options extends CI_Controller {
 				if($smtpPasswordupdate == TRUE) {
 					$this->session->set_flashdata('success', $this->lang->line('options_smtp_password_changed_to').$this->input->post('smtpPassword'));
 				}
-
-				// Update emailcrlf choice within the options system
-				$emailcrlfupdate = $this->optionslib->update('emailcrlf', $this->input->post('emailcrlf'), 'yes');
-	
-				// If emailcrlf update is complete set a flashsession with a success note
-				if($emailcrlfupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_email_crlf_changed_to').$this->input->post('emailcrlf'));
-				}
-
-				// Update emailnewline choice within the options system
-				$emailnewlineupdate = $this->optionslib->update('emailnewline', $this->input->post('emailnewline'), 'yes');
-	
-				// If emailnewline update is complete set a flashsession with a success note
-				if($emailnewlineupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_email_newline_changed_to').$this->input->post('emailnewline'));
-				}
 	
 				// Redirect back to /appearance
 				redirect('/options/email');
