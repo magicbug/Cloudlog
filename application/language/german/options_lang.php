@@ -47,8 +47,11 @@ $lang['options_email_sender_name_changed_to'] = 'E-Mail Absendername geändert z
 $lang['options_smtp_host_changed_to'] = 'SMTP Host geändert zu ';
 $lang['options_smtp_port_changed_to'] = 'SMTP Port geändert zu ';
 $lang['options_smtp_username_changed_to'] = 'SMTP Benutzername geändert zu ';
-$lang['options_smtp_password_changed'] = 'SMTP Passwort geändert';
+$lang['options_smtp_password_saved'] = 'SMTP Passwort gespeichert';
 $lang['options_send_testmail'] = "Sende eine Test-Mail";
+$lang['options_send_testmail_hint'] = "Die E-Mail wird an die Adresse versandt, welche in den Account-Einstellungen hinterlegt ist.";
+$lang['options_send_testmail_failed'] = "Die Testmail wurde nicht versandt. Da ist was schief gelaufen.";
+$lang['options_send_testmail_success'] = "Testmail gesendet. E-Mail Einstellungen scheinen korrekt zu sein.";
 
 $lang['options_oqrs'] = 'OQRS Optionen';
 $lang['options_global_text'] = 'Globaler Text';

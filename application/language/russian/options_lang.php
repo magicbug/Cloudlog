@@ -47,8 +47,11 @@ $lang['options_email_sender_name_changed_to'] = 'Имя отправителя �
 $lang['options_smtp_host_changed_to'] = 'SMTP хост изменён на ';
 $lang['options_smtp_port_changed_to'] = 'SMTP порт изменён на ';
 $lang['options_smtp_username_changed_to'] = 'SMTP логин изменён на ';
-$lang['options_smtp_password_changed'] = 'SMTP Password changed';
-$lang['options_send_testmail'] = "Save and Send a Test-Mail";
+$lang['options_smtp_password_saved'] = 'SMTP Password saved';
+$lang['options_send_testmail'] = "Send Test-Mail";
+$lang['options_send_testmail_hint'] = "The email will be sent to the address defined in your account settings.";
+$lang['options_send_testmail_failed'] = "Testmail failed. Something went wrong.";
+$lang['options_send_testmail_success'] = "Testmail sent. Email settings seem to be correct.";
 
 $lang['options_oqrs'] = 'OQRS';
 $lang['options_global_text'] = 'Сообщение на странице OQRS';
