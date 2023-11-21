@@ -25,18 +25,18 @@
                         </div>
                     <?php } ?>
 
-                    <?php if($this->session->flashdata('error')) { ?>
-                        <!-- Display Message -->
+                    <?php if($this->session->flashdata('testmailFailed')) { ?>
+                        <!-- Display testmailFailed Message -->
                         <div class="alert alert-danger">
-                        <?php echo $this->session->flashdata('error'); ?>
+                            <?php echo $this->session->flashdata('testmailFailed'); ?>
                         </div>
                     <?php } ?>
 
-                    <?php if(validation_errors()) { ?>
-                    <div class="alert alert-danger">
-                        <a class="close" data-dismiss="alert">x</a>
-                        <?php echo validation_errors(); ?>
-                    </div>
+                    <?php if($this->session->flashdata('testmailSuccess')) { ?>
+                        <!-- Display testmailSuccess Message -->
+                        <div class="alert alert-success">
+                            <?php echo $this->session->flashdata('testmailSuccess'); ?>
+                        </div>
                     <?php } ?>
                         
                     <?php echo form_open('options/email_save'); ?>
@@ -102,7 +102,11 @@
 
                         <!-- Save the Form -->
                         <input class="btn btn-primary" type="submit" value="<?php echo lang('options_save'); ?>" />
-                        <button class="btn btn-secondary" id="sendTestMailButton"><?php echo lang('options_send_testmail'); ?></button>
+                    </form>
+                    <br>
+                    <?php echo form_open('options/sendTestMail'); ?>
+                        <input class="btn btn-primary" type="submit" value="<?php echo lang('options_send_testmail'); ?>" />
+                        <small id="themeHelp" class="form-text text-muted"><?php echo lang('options_send_testmail_hint'); ?></small>
                     </form>
                 </div>
             </div>
