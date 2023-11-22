@@ -156,7 +156,7 @@ ________________________________________________________________________________
 
 $lang['awards_vucc_description_ln1'] = "VUCC - VHF/UHF Century Club Award";
 $lang['awards_vucc_description_ln2'] = "The VHF/UHF Century Club Award is given for a minimum number of worked and confirmed gridsquares on a desired band.";
-$lang['awards_vucc_description_ln3'] = "Official information and the rules can be found in this document: <a href='https://www.amsat.org/gridmaster/' target='_blank'>Click here</a>.";
+$lang['awards_vucc_description_ln3'] = "Official information and the rules can be found in this document: <a href='https://www.arrl.org/vucc' target='_blank'>Click here</a>.";
 $lang['awards_vucc_description_ln4'] = "Only VHF/UHF bands are relevant.";
 
 
