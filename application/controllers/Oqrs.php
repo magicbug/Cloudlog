@@ -174,6 +174,8 @@ class Oqrs extends CI_Controller {
 						'smtp_port' => $this->optionslib->get_option('smtpPort'),
 						'smtp_user' => $this->optionslib->get_option('smtpUsername'),
 						'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
+						'crlf' => "\r\n",
+						'newline' => "\r\n"
 					);
 
 					$this->email->initialize($config);
