@@ -76,7 +76,7 @@
 				</tr>
 				<?php } ?>
 			</tbody>
-		<table>
+			</table>
 		</div>
 		<?php } ?>
   </div>

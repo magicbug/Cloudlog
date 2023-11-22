@@ -17,7 +17,7 @@
 	<p class="card-text"><?php echo lang('station_location_header_ln3'); ?></p>
 
 	  <p><a href="<?php echo site_url('station/create'); ?>" class="btn btn-primary"><i class="fas fa-plus"></i> <?php echo lang('station_location_create'); ?></a></p>
-	  
+
 		<?php if ($stations->num_rows() > 0) { ?>
 
 		<?php if($current_active == 0) { ?>
@@ -33,7 +33,7 @@
 				<?php echo lang('station_location_reassign_at'); ?> <a href="<?php echo site_url('maintenance/'); ?>" class="btn btn-warning"><i class="fas fa-sync"></i><?php echo lang('account_word_admin') . "/" . lang('general_word_maintenance'); ?></a>
 			</div>
 		<?php } ?>
-	  
+
 		<div class="table-responsive">
 		<table id="station_locations_table" class="table table-sm table-striped">
 			<thead>
@@ -90,7 +90,7 @@
 
 				<?php } ?>
 			</tbody>
-		<table>
+		</table>
 		</div>
 		<?php } ?>
   </div>

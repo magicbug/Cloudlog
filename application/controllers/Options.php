@@ -272,7 +272,11 @@ class Options extends CI_Controller {
 				$smtpEncryptionupdate = $this->optionslib->update('smtpEncryption', $this->input->post('smtpEncryption'), 'yes');
 
 				// Update email sender name within the options system
-				$emailSenderNameupdate = $this->optionslib->update('emailSenderName', $this->input->post('emailSenderName'), 'yes');
+				$emailSenderName_value = $this->input->post('emailSenderName');
+				if (empty($emailSenderName_value)) {
+					$emailSenderName_value = 'Cloudlog';
+				}
+				$emailSenderNameupdate = $this->optionslib->update('emailSenderName', $emailSenderName_value, 'yes');
 
 				// Update email address choice within the options system
 				$emailAddressupdate = $this->optionslib->update('emailAddress', $this->input->post('emailAddress'), 'yes');
@@ -360,6 +364,8 @@ class Options extends CI_Controller {
 					'smtp_port' => $this->optionslib->get_option('smtpPort'),
 					'smtp_user' => $this->optionslib->get_option('smtpUsername'),
 					'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
+					'crlf' => "\r\n",
+					'newline' => "\r\n"
 				);
 
 				$this->email->initialize($config);
