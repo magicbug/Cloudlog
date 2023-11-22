@@ -110,6 +110,7 @@ class Dashboard extends CI_Controller {
 			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18', $logbooks_locations_array);
 
 			$data['vucc'] = $this->vucc->fetchVuccSummary();
+			$data['vuccSAT'] = $this->vucc->fetchVuccSummary('SAT');
 
 			$data['page_title'] = "Dashboard";
 

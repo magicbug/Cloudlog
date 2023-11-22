@@ -308,17 +308,20 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE)) { ?>
     	 <table class="table table-striped">
         <tr class="titles">
-            <td colspan="2"><i class="fas fa-globe-europe"></i> VHF/UHF Century Club (VUCC)</td>
+            <td colspan="2"><i class="fas fa-globe-europe"></i> VUCC-Grids</td>
+            <td colspan="1">SAT</td>
         </tr>
 
         <tr>
             <td width="50%"><?php echo lang('general_word_worked'); ?></td>
-            <td width="50%"><?php echo $vucc['All']['worked']; ?></td>
+            <td width="25%"><?php echo $vucc['All']['worked']; ?></td>
+            <td width="25%"><?php echo $vuccSAT['SAT']['worked'] ?? '0'; ?></td>
         </tr>
 
         <tr>
             <td width="50%"><?php echo lang('general_word_confirmed'); ?></td>
-            <td width="50%"><?php echo $vucc['All']['confirmed']; ?></td>
+            <td width="25%"><?php echo $vucc['All']['confirmed']; ?></td>
+            <td width="25%"><?php echo $vuccSAT['SAT']['confirmed'] ?? '0'; ?></td>
         </tr>
 
     </table>
