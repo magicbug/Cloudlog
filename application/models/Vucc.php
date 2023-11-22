@@ -158,8 +158,11 @@ class VUCC extends CI_Model
 		    from " . $this->config->item('table_name') . " log".
 		    " inner join bands b on (b.band = log.col_band) ".
 		    " where log.station_id in (" . $location_list . ")" .
-		    " and log.col_gridsquare <> ''".
-		    " and b.bandgroup in ('vhf','uhf','shf','sat')";
+		    " and log.col_gridsquare <> ''";
+		    
+	    if (($band == 'SAT') || ($band == 'All')) {
+		$sql.=" and b.bandgroup in ('vhf','uhf','shf','sat')";
+	    }
 
 	    if ($confirmationMethod == 'both') {
 		    $sql .= " and (log.col_qsl_rcvd='Y' or log.col_lotw_qsl_rcvd='Y')";

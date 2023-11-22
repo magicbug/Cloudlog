@@ -25,13 +25,11 @@
             </thead>
             <tbody>
                 <?php foreach($vucc_array as $band => $vucc) {
-			if ($vucc['worked'] > 0) {
 				echo '<tr>';
 				echo '<td><a href=\'vucc_band?Band="'. $band . '"\'>'. $band .'</td>';
 				echo '<td><a href=\'vucc_band?Band="'. $band . '"&Type="worked"\'>'. $vucc['worked'] .'</td>';
 				echo '<td><a href=\'vucc_band?Band="'. $band . '"&Type="confirmed"\'>'. $vucc['confirmed'] .'</td>';
 				echo '</tr>';
-			}
                 }
                 ?>
             </tbody>
