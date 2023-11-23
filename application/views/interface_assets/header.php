@@ -9,7 +9,7 @@
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="default">
 	<link rel="manifest" href="<?php echo base_url(); ?>manifest.json"/>
-	
+
 	<!-- Bootstrap CSS -->
 	<?php if ($this->optionslib->get_theme()) { ?>
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme(); ?>/bootstrap.min.css">
@@ -52,6 +52,10 @@
 
 	<?php if (file_exists(APPPATH . '../assets/css/custom.css')) {
 		echo '<link rel="stylesheet" href="' . base_url() . 'assets/css/custom.css">';
+	} ?>
+
+	<?php if (file_exists(APPPATH . '../assets/js/sections/custom.js')) {
+		echo '<script src="' . base_url() . 'assets/js/sections/custom.js"></script>';
 	} ?>
 
 	<link rel="icon" href="<?php echo base_url(); ?>favicon.ico">

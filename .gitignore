@@ -11,6 +11,7 @@
 /images/eqsl_card_images/*.jpg
 /updates/clublog_scp.txt
 /assets/qslcard/*
+/assets/js/sections/custom.js
 .idea/*
 .DS_Store
 sync.sh
