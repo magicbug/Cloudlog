@@ -10,11 +10,18 @@ class Update extends CI_Controller {
 
 	public function index()
 	{
+        if (!$this->config->item('centralized_data_folder') || ($this->config->item('centralized_data_folder')=='')) {
+            $data['update_centralized_folder_current_not_exist'] = true;
+            $data['update_centralized_folder_current'] = 'ERROR';
+        } else {
+            $data['update_centralized_folder_current_not_exist'] = false;
+            $data['update_centralized_folder_current'] = $this->config->item('centralized_data_folder').'/';
+        }
+		
 	    $data['page_title'] = "Updates";
 	    $this->load->view('interface_assets/header', $data);
 	    $this->load->view('update/index');
 	    $this->load->view('interface_assets/footer');
-
 	}
 
     /*
@@ -529,6 +536,59 @@ class Update extends CI_Controller {
             echo"FAILED: Empty file";
         }
     }
+	
+	// function for migrate between old/new folder //
+    public function update_centralized_folder_move() {
+        print('['.date('H:i:s').'] Move starting ... <br/>');
+        $_centralized_current_path = realpath(APPPATH.'../').'/'.$this->config->item('centralized_data_folder');
+        $_centralized_new_folder = preg_replace('/[^A-Za-z0-9\-]/', '', $_POST['update_centralized_folder_new']);
+        $_centralized_new_path = realpath(APPPATH.'../').'/'.$_centralized_new_folder;
+        $_configphp_file = realpath(APPPATH).'/config/config.php';
+        $_configphp_item = '$config[\'centralized_data_folder\'] = "'.$this->config->item('centralized_data_folder').'";';
 
+        if (empty($_centralized_new_folder)) {
+            $_msg = 'new folder value "'.$_centralized_new_folder.'" can NOT be empty.';
+            log_message('error','[update_centralized_data_folder] '.$_msg);
+            print('[ERROR] '.$_msg.' /!\\ <br/>'); return false;            
+        }
+        if ($_centralized_new_path==$_centralized_current_path) {
+            $_msg = 'current and new folder must be different';
+            log_message('error','[update_centralized_data_folder] '.$_msg);
+            print('[ERROR] '.$_msg.' /!\\ <br/>'); return false;            
+        }
+        if (!is_dir($_centralized_current_path)) {
+            $_msg = 'current folder : "'.$_centralized_current_path.'" not a directory.';
+            log_message('error','[update_centralized_data_folder] '.$_msg);
+            print('[ERROR] '.$_msg.' /!\\ <br/>'); return false;     
+        }
+        if (!is_dir($_centralized_new_path)) {
+            mkdir($_centralized_new_path, 0775, true); 
+            $_msg = 'new folder : "'.$_centralized_new_path.'" not exist, is created.';
+            log_message('debug','[update_centralized_data_folder] '.$_msg);
+            print('['.date('H:i:s').'] '.$_msg.' <br/>');          
+        }
+        $dir_array = array_diff(scandir($_centralized_current_path), array('..', '.'));
+
+        $_msg = count($dir_array).' files found in current folder "'.$_centralized_current_path.'"';
+        log_message('debug','[centralized_data_folder] '.$_msg);
+        print('['.date('H:i:s').'] '.$_msg.' <br/>');
+        if (!rename($_centralized_current_path, $_centralized_new_path)) {
+            $_msg = 'ERROR during moving files between "'.$_centralized_current_path.'" and "'.$_centralized_new_path.'"';  
+            log_message('error','[centralized_data_folder] '.$_msg);
+            print('['.date('H:i:s').'] '.$_msg.' /!\\ <br/>'); return false;
+        } else {
+            $dir_array = array_diff(scandir($_centralized_new_path), array('..', '.'));
+            $_msg = '--> Move action is finished. '.count($dir_array).' files was moved in new folder "'.$_centralized_new_path.'"';
+            log_message('debug','[centralized_data_folder] '.$_msg);
+            print('['.date('H:i:s').'] '.$_msg.'<br/>');
+            // check config file //
+            $_configphp_content = file_get_contents($_configphp_file);
+            $_configphp_content = str_replace($_configphp_item, '$config[\'centralized_data_folder\'] = "'.$_centralized_new_folder.'";', $_configphp_content);
+            file_put_contents($_configphp_file, $_configphp_content);
+            $_msg = 'The item $config[\'centralized_data_folder\'] in config.php file was updated with value "'.$_centralized_new_folder.'"';
+            log_message('debug','[centralized_data_folder] '.$_msg);
+            print('['.date('H:i:s').'] '.$_msg.'<br/>');
+        }
+    }
 }
 ?>

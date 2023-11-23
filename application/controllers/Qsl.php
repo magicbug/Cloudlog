@@ -15,15 +15,12 @@ class Qsl extends CI_Controller {
 
     // Default view when loading controller.
     public function index() {
-
-        $folder_name = "assets/qslcard";
-        $data['storage_used'] = sizeFormat(folderSize($folder_name));
+        $this->load->model('Qsl_model');
 
         // Render Page
         $data['page_title'] = "QSL Cards";
-
-        $this->load->model('qsl_model');
-        $data['qslarray'] = $this->qsl_model->getQsoWithQslList();
+        $data['storage_used'] = sizeFormat(folderSize($this->Qsl_model->getQslPath('p')));
+        $data['qslarray'] = $this->Qsl_model->getQsoWithQslList();
 
         $this->load->view('interface_assets/header', $data);
         $this->load->view('qslcard/index');
@@ -46,7 +43,7 @@ class Qsl extends CI_Controller {
         $id = $this->input->post('id');
         $this->load->model('Qsl_model');
 
-        $path = './assets/qslcard/';
+        $path = $this->Qsl_model->getQslPath('p');
         $file = $this->Qsl_model->getFilename($id)->row();
         $filename = $file->filename;
         unlink($path.$filename);
@@ -56,10 +53,11 @@ class Qsl extends CI_Controller {
 
     public function uploadqsl() {
         $this->load->model('user_model');
+		$this->load->model('Qsl_model');
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
-        if (!file_exists('./assets/qslcard')) {
-            mkdir('./assets/qslcard', 0755, true);
+        if (!file_exists($this->Qsl_model->getQslPath('p'))) {
+            mkdir($this->Qsl_model->getQslPath('p'), 0755, true);
         }
         $qsoid = $this->input->post('qsoid');
 
@@ -82,7 +80,7 @@ class Qsl extends CI_Controller {
     }
 
     function uploadQslCardFront($qsoid) {
-        $config['upload_path']          = './assets/qslcard';
+        $config['upload_path']          = $this->Qsl_model->getQslPath('p');
         $config['allowed_types']        = 'jpg|gif|png|jpeg|JPG|PNG';
         $array = explode(".", $_FILES['qslcardfront']['name']);
         $ext = end($array);
@@ -115,7 +113,7 @@ class Qsl extends CI_Controller {
     }
 
     function uploadQslCardBack($qsoid) {
-        $config['upload_path']          = './assets/qslcard';
+        $config['upload_path']          = $this->Qsl_model->getQslPath('p');
         $config['allowed_types']        = 'jpg|gif|png|jpeg|JPG|PNG';
         $array = explode(".", $_FILES['qslcardback']['name']);
         $ext = end($array);
@@ -187,18 +185,20 @@ class Qsl extends CI_Controller {
 function folderSize($dir){
     $count_size = 0;
     $count = 0;
-    $dir_array = scandir($dir);
-      foreach($dir_array as $key=>$filename){
-        if($filename!=".." && $filename!="."){
-           if(is_dir($dir."/".$filename)){
-              $new_foldersize = foldersize($dir."/".$filename);
-              $count_size = $count_size+ $new_foldersize;
-            }else if(is_file($dir."/".$filename)){
-              $count_size = $count_size + filesize($dir."/".$filename);
-              $count++;
+    if (is_dir($dir)) { // aba 
+        $dir_array = scandir($dir);
+        foreach($dir_array as $key=>$filename){
+            if($filename!=".." && $filename!="."){
+               if(is_dir($dir."/".$filename)){
+                  $new_foldersize = foldersize($dir."/".$filename);
+                  $count_size = $count_size+ $new_foldersize;
+                }else if(is_file($dir."/".$filename)){
+                  $count_size = $count_size + filesize($dir."/".$filename);
+                  $count++;
+                }
             }
-       }
-     }
+        }
+    } else log_message('error','QSL folder not exist ('.$dir.')');
     return $count_size;
 }
 

@@ -18,12 +18,11 @@
 
     <?php
     $i = 1;
+    $CI =& get_instance();
+    $CI->load->model('Qsl_model');
     foreach ($qslimages as $image) {
-        echo '<div class="text-center carousel-item carouselimageid_' . $image->id;
-        if ($i == 1) {
-            echo ' active';
-        }
-        echo '">';?>
+        echo '<div class="text-center carousel-item carouselimageid_'.$image->id.(($i == 1)?' active':'').'" >';
+		?>
 		<table style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center">
 		<thead>
 			<tr>
@@ -56,7 +55,7 @@
 		?>
 		</tbody>
 </table>
-        <?php echo '<img class="img-fluid w-qsl" src="' . base_url() . '/assets/qslcard/' . $image->filename .'" alt="QSL picture #'. $i++.'">';
+        <?php echo '<img class="img-fluid w-qsl" src="' . base_url() . $CI->Qsl_model->getQslPath() . $image->filename .'" alt="QSL picture #'. $i++.'">';
         echo '</div>';
     }
     ?>

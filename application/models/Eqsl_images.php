@@ -1,7 +1,8 @@
 <?php
 
 class Eqsl_images extends CI_Model {
-
+	private $eqsl_images_folder = "eqsl_card"; // WARNING : only the folder for eqsl ; data storage is defined in config file //
+	
 	function get_image($qso_id) {
 		$this->db->where('qso_id', $qso_id);
 		$query = $this->db->get('eQSL_images'); 
@@ -35,6 +36,11 @@ class Eqsl_images extends CI_Model {
 		return $this->db->get('eQSL_images');
 	}
 
+	// $pathorurl= u:url / p:path
+	public function getEqslPath($pathorurl='u') {
+		if ($pathorurl=='u') return $this->config->item('centralized_data_folder')."/".$this->eqsl_images_folder.'/';
+			else return realpath(APPPATH.'../').'/'.$this->config->item('centralized_data_folder')."/".$this->eqsl_images_folder.'/';
+	}
 }
 
 ?>

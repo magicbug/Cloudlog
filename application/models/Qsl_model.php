@@ -1,5 +1,8 @@
 <?php
 class Qsl_model extends CI_Model {
+
+    private $qsl_images_folder = "qsl_card"; // WARNING : only the folder for qsl ; data storage is defined in config file //
+	
     function getQsoWithQslList() {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
@@ -127,4 +130,10 @@ class Qsl_model extends CI_Model {
 
 		return $this->db->insert_id();
 	}
+
+	// $pathorurl= u:url (without baseurl) / p:path (full)
+    public function getQslPath($pathorurl='u'){
+        if ($pathorurl=='u') return $this->config->item('centralized_data_folder')."/".$this->qsl_images_folder.'/';
+            else return realpath(APPPATH.'../').'/'.$this->config->item('centralized_data_folder')."/".$this->qsl_images_folder.'/';
+    }
 }

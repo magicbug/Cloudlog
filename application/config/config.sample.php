@@ -652,3 +652,13 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Centralized data folder 
+|--------------------------------------------------------------------------
+|
+| Define the data folder for save eqsl, card image ...  
+| Root is $config['directory']
+*/
+$config['centralized_data_folder'] = "storage";

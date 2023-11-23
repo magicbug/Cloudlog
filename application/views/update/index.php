@@ -7,9 +7,11 @@
 				<li class="nav-item">
 					<a class="nav-link active" id="dxcc-tab" data-toggle="tab" href="#dxcc" role="tab" aria-controls="update" aria-selected="true">DXCC Lookup Data</a>
 				</li>
-
 				<li class="nav-item">
 					<a class="nav-link" id="distance-tab" data-toggle="tab" href="#distance" role="tab" aria-controls="update" aria-selected="false">Distance Data</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="mig2datafolder-tab" data-toggle="tab" href="#mig2datafolder" role="tab" aria-controls="update" aria-selected="false">Data folder migration</a>
 				</li>
 			</ul>
 		</div>
@@ -52,10 +54,33 @@
 						</style>
 					<?php } ?>
 				</div>
+				
 				<div class="tab-pane fade" id="distance" role="tabpanel" aria-labelledby="distance-tab">
 					<p class="card-text">Here you can update QSOs with missing distance information.</p>
 					<p><a class="btn btn-primary" hx-get="<?php echo site_url('update/update_distances');?>"  hx-target="#distance_results" href="<?php echo site_url('update/update_distances');?>">Update distance data</a></p>
 					<div id="distance_results"></div>
+				</div>
+				
+				<div class="tab-pane fade" id="mig2datafolder" role="tabpanel" aria-labelledby="mig2datafolder-tab">
+					<?php if ($update_centralized_folder_current_not_exist) {
+						echo "<div class=\"alert alert-danger\">WARNING : You config value 'centralized_data_folder' was not create on config.php file !</div>";
+					} ?>
+					<p class="card-text">Here you can migrate/move centralized folder to an other folder.<br/> -- The root directory is : "<?php echo realpath(APPPATH.'../').'/'; ?>"</p>
+					<div class="form-row">
+                    	<div class="col-sm-4">
+                    		<label class="form-label">Current folder (value in config.php): </label><input name="update_centralized_folder_current" type="text" class="form-control" value="<?php echo $update_centralized_folder_current;?>" disabled />
+                    	</div>
+                    	<div class="col-sm-4">
+                    		<label class="form-label">New folder : </label>
+                    		<input name="update_centralized_folder_new" type="text" class="form-control" value="" />
+                    	</div>
+						<div class="col-sm-2">
+							<?php if (!$update_centralized_folder_current_not_exist) { ?>
+							<a class="btn btn-primary" hx-post="<?php echo site_url('update/update_centralized_folder_move');?>" hx-vals="js:{update_centralized_folder_new:document.getElementsByName('update_centralized_folder_new')[0].value}" hx-target="#data_move2_results" style="margin-top:30px;" >Move To</a>
+							<?php } ?>
+						</div>
+                    </div>
+					<div id="data_move2_results" style="margin:10px 20px 10px 10px;"></div>
 				</div>
 			</div>
 		</div>

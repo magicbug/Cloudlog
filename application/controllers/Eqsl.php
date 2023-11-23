@@ -10,17 +10,13 @@ class eqsl extends CI_Controller {
 
     // Default view when loading controller.
     public function index() {
-
+		$this->load->model('Eqsl_images');
         $this->lang->load('qslcard');
-        $folder_name = "images/eqsl_card_images";
-        $data['storage_used'] = $this->sizeFormat($this->folderSize($folder_name));
-
 
         // Render Page
         $data['page_title'] = "eQSL Cards";
-
-        $this->load->model('eqsl_images');
-        $data['qslarray'] = $this->eqsl_images->eqsl_qso_list();
+        $data['storage_used'] = $this->sizeFormat($this->folderSize($this->Eqsl_images->getEqslPath('p')));
+        $data['qslarray'] = $this->Eqsl_images->eqsl_qso_list();
 
         $this->load->view('interface_assets/header', $data);
         $this->load->view('eqslcard/index');
@@ -545,13 +541,13 @@ class eqsl extends CI_Controller {
 				}
 				echo $content;
 				$filename = uniqid().'.jpg';
-				if (file_put_contents('images/eqsl_card_images/' . '/'.$filename, $content) !== false) {
+				if (file_put_contents($this->Eqsl_images->getEqslPath('p').$filename, $content) !== false) {
 					$this->Eqsl_images->save_image($id, $filename);
 				}
 			}
 		} else {
 			header('Content-Type: image/jpg');
-			$image_url = base_url('images/eqsl_card_images/'.$this->Eqsl_images->get_image($id));
+			$image_url = base_url($this->Eqsl_images->getEqslPath().$this->Eqsl_images->get_image($id));
 			header('Location: ' . $image_url);
 		}
 
@@ -606,7 +602,7 @@ class eqsl extends CI_Controller {
 				return $error;
 			}
 			$filename = uniqid().'.jpg';
-			if (file_put_contents('images/eqsl_card_images/' . '/'.$filename, $content) !== false) {
+			if (file_put_contents($this->Eqsl_images->getEqslPath('p').$filename, $content) !== false) {
 				$this->Eqsl_images->save_image($id, $filename);
 			}
 		}
@@ -752,18 +748,20 @@ class eqsl extends CI_Controller {
 	function folderSize($dir){
 		$count_size = 0;
 		$count = 0;
-		$dir_array = scandir($dir);
-		foreach($dir_array as $key=>$filename){
-			if($filename!=".." && $filename!="."){
-				if(is_dir($dir."/".$filename)){
-					$new_foldersize = $this->foldersize($dir."/".$filename);
-					$count_size = $count_size+ $new_foldersize;
-				}else if(is_file($dir."/".$filename)){
-					$count_size = $count_size + filesize($dir."/".$filename);
-					$count++;
+		if (is_dir($dir)) {
+			$dir_array = scandir($dir);
+			foreach($dir_array as $key=>$filename){
+				if($filename!=".." && $filename!="."){
+					if(is_dir($dir."/".$filename)){
+						$new_foldersize = $this->foldersize($dir."/".$filename);
+						$count_size = $count_size+ $new_foldersize;
+					}else if(is_file($dir."/".$filename)){
+						$count_size = $count_size + filesize($dir."/".$filename);
+						$count++;
+					}
 				}
 			}
-		}
+		} else log_message('error','EQSL folder not exist ('.$dir.')');
 		return $count_size;
 	}
 
