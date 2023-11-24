@@ -746,9 +746,9 @@ class Lotw extends CI_Controller {
 			$lotw_url .= "&qso_qslsince=";
 			$lotw_url .= "$lotw_last_qsl_date";
 
-			// Only pull back entries that belong to this callsign
-			$lotw_call = $this->session->userdata('user_callsign');
-			$lotw_url .= "&qso_owncall=$lotw_call";
+			if ($this->input->post('callsign') != '0') {
+				$lotw_url .= "&qso_owncall=".$this->input->post('callsign');
+			}
 
 			file_put_contents($file, file_get_contents($lotw_url));
 
@@ -761,9 +761,11 @@ class Lotw extends CI_Controller {
 			{
 
 				$data['error'] = $this->upload->display_errors();
+				$this->load->model('Stations');
+				$data['callsigns'] = $this->Stations->callsigns_of_user($this->session->userdata('user_id'));
 
 				$this->load->view('interface_assets/header', $data);
-				$this->load->view('lotw/import');
+				$this->load->view('lotw/import', $data);
 				$this->load->view('interface_assets/footer');
 			}
 			else

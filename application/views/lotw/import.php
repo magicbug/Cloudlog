@@ -36,6 +36,21 @@
           </div>
       </div>
       <br/>
+      <div class="row">
+        <div class="col-md-4">
+          <label class="form-check-label" for="callsign"><?php echo lang('lotw_select_callsign'); ?></label>
+          <?php
+            $options = [];
+            foreach ($callsigns->result() as $call) {
+               $options[$call->callsign] = $call->callsign;
+            }
+            ksort($options);
+            array_unshift($options, 'All');
+            echo form_dropdown('callsign', $options, 'All');
+          ?>
+        </div>
+      </div>
+      <br />
 
       <p class="form-text text-muted"><?php echo lang('lotw_report_download_overview_helptext'); ?></p>
     </div>
