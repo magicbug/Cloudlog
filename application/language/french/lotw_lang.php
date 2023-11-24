@@ -34,6 +34,7 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = "Envoyer le fichier ADIF exp
 $lang['lotw_upload_type_must_be_adi'] = "Les fichiers de log doivent être au format .adi";
 
 $lang['lotw_pull_lotw_data_for_me'] = "Récuperer mes données LoTW";
+$lang['lotw_select_callsign'] = 'Select callsign to pull LoTW confirmations for';
 
 $lang['lotw_report_download_overview_helptext'] = "Cloudlog utilisera le nom d'utilisateur et le mot de passe LoTW stockés dans votre profil utilisateur pour télécharger le journal vers LoTW.<br/> Les téléchargements du journal Cloudlog auront toutes les confirmations depuis la date choisie, ou depuis votre dernière confirmation LoTW (récupérée de votre journal), jusqu'à présent.";
 
