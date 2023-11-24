@@ -630,14 +630,22 @@ class Lotw extends CI_Controller {
 		$query = $this->user_model->get_all_lotw_users();
 
 		if ($query->num_rows() >= 1) {
-			$results='';
+			$result = '';
 			foreach ($query->result() as $user) {
 				if ( ($sync_user_id != null) && ($sync_user_id != $user->user_id) ) { continue; }
+
+				// Validate that LoTW credentials are not empty
+				// TODO: We don't actually see the error message
+				if ($user->user_lotw_password == '') {
+					$result = "You have not defined your ARRL LoTW credentials!";
+					continue;
+				}
 
 				$config['upload_path'] = './uploads/';
 				$file = $config['upload_path'] . 'lotwreport_download.adi';
 				if (file_exists($file) && ! is_writable($file)) {
-					$results .= "Temporary download file ".$file." is not writable. Aborting!";
+					$result = "Temporary download file ".$file." is not writable. Aborting!";
+					continue;
 				}
 
 				// Get credentials for LoTW
@@ -649,14 +657,7 @@ class Lotw extends CI_Controller {
 				$q = $query->row();
 				$lotw_url = $q->lotw_download_url;
 
-				// Validate that LoTW credentials are not empty
-				// TODO: We don't actually see the error message
-				if ($data['user_lotw_name'] == '' || $data['user_lotw_password'] == '')
-				{
-					echo "You have not defined your ARRL LoTW credentials!";
-				}
-
-		        $lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($user->user_id)));
+				$lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($user->user_id)));
 
 				// Build URL for LoTW report file
 				$lotw_url .= "?";
@@ -668,19 +669,22 @@ class Lotw extends CI_Controller {
 				$lotw_url .= "$lotw_last_qsl_date";
 
 				if (! is_writable(dirname($file))) {
-					$results.= "Temporary download directory ".dirname($file)." is not writable. Aborting!";
+					$result = "Temporary download directory ".dirname($file)." is not writable. Aborting!";
 					continue;
 				}
 				file_put_contents($file, file_get_contents($lotw_url));
 				if (file_get_contents($file, false, null, 0, 39) != "ARRL Logbook of the World Status Report") {
-					$results.= "LoTW downloading failed for User ".$data['user_lotw_name']." either due to it being down or incorrect logins.";
+					$result = "LoTW downloading failed for User ".$data['user_lotw_name']." either due to it being down or incorrect logins.";
 					continue;
 				}
 
 				ini_set('memory_limit', '-1');
-				$results.= $this->loadFromFile($file, false);
+				$result = $this->loadFromFile($file, false);
 			}
-			return $results;
+			if ($result == '') {
+				$result = "You have not defined your ARRL LoTW credentials!";
+			}
+			return $result;
 		} else {
 			return "No LoTW User details found to carry out matches.";
 		}
