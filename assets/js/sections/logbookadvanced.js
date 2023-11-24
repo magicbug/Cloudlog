@@ -588,7 +588,6 @@ $(document).ready(function () {
 	});
 
 	function dupeSearch() {
-		$('#searchForm').trigger("reset");
 		$("#dupes").val("Y");
 		$('#searchForm').submit();
 	}

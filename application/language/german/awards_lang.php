@@ -156,7 +156,7 @@ ________________________________________________________________________________
 
 $lang['awards_vucc_description_ln1'] = "VUCC - VHF/UHF Century Club Award";
 $lang['awards_vucc_description_ln2'] = "Der VHF/UHF Century Club Award wird für eine Mindestanzahl von gearbeiteten und bestätigten Gitterquadraten auf einem gewünschten Band verliehen.";
-$lang['awards_vucc_description_ln3'] = "Offizielle Informationen und Regeln finden Sie in diesem Dokument: <a href='https://www.amsat.org/gridmaster/' target='_blank'>Klick hier.</a>.";
+$lang['awards_vucc_description_ln3'] = "Offizielle Informationen und Regeln finden Sie in diesem Dokument: <a href='https://www.arrl.org/vucc' target='_blank'>Klick hier.</a>.";
 $lang['awards_vucc_description_ln4'] = "Nur VHF/UHF-Bänder sind relevant.";
 
 
