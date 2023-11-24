@@ -435,7 +435,7 @@ class Lotw extends CI_Controller {
 
 		// Read Cert Data
 		$certdata= openssl_x509_parse($results['cert'],0);
-		
+
 		// Store Variables
 		$data['issued_callsign'] = $certdata['subject']['undefined'];
 		$data['issued_name'] = $certdata['subject']['commonName'];
@@ -637,7 +637,7 @@ class Lotw extends CI_Controller {
 				$config['upload_path'] = './uploads/';
 				$file = $config['upload_path'] . 'lotwreport_download.adi';
 				if (file_exists($file) && ! is_writable($file)) {
-					$result.= "Temporary download file ".$file." is not writable. Aborting!";
+					$results .= "Temporary download file ".$file." is not writable. Aborting!";
 				}
 
 				// Get credentials for LoTW
