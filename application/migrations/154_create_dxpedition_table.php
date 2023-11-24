@@ -19,7 +19,8 @@ class Migration_create_dxpedition_table extends CI_Migration
                     'type' => 'INT',
                     'constraint' => 6,
                     'unsigned' => TRUE,
-                    'auto_increment' => TRUE
+                    'auto_increment' => TRUE,
+                    'null' => FALSE
                 ),
                 'start_date' => array(
                     'type' => 'DATE',
@@ -32,7 +33,7 @@ class Migration_create_dxpedition_table extends CI_Migration
                 'callsign' => array(
                     'type' => 'VARCHAR',
                     'constraint' => '255',
-                    'null' => TRUE,
+                    'null' => FALSE,
                 ),
                 'country' => array(
                     'type' => 'VARCHAR',
