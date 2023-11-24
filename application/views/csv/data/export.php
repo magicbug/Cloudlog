@@ -1,6 +1,6 @@
 <?php
 	header('Content-Type: text/plain; charset=utf-8');
-	header('Content-Disposition: attachment; filename="'.$this->session->userdata('user_callsign').'-SOTA-'.date('dmY-Hi').'.csv"');
+	header('Content-Disposition: attachment; filename="'.$this->session->userdata('user_callsign').'-SOTA-'.date('Ymd-Hi').'.csv"');
 $CI =& get_instance();
 $bands = array(
    "2190m"  => "VLF",
