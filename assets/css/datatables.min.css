@@ -1365,11 +1365,11 @@ div.dataTables_scroll.dtfc-has-left table.table-bordered {
 	border-left: none;
 }
 div.dataTables_scrollBody {
-	border-left: 1px solid #ddd !important;
+	border-left: none;
 }
 div.dataTables_scrollFootInner table.table-bordered tr th:first-child,
 div.dataTables_scrollHeadInner table.table-bordered tr th:first-child {
-	border-left: 1px solid #ddd !important;
+	border-left: none;
 }
 html[data-bs-theme="dark"] table.dataTable thead tr > .dtfc-fixed-left,
 html[data-bs-theme="dark"] table.dataTable thead tr > .dtfc-fixed-right,
