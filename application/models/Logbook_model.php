@@ -2808,10 +2808,10 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	$qsql = "select COL_CLUBLOG_QSO_UPLOAD_STATUS as CL_STATE, COL_QRZCOM_QSO_UPLOAD_STATUS as QRZ_STATE from ".$this->config->item('table_name')." where COL_BAND=? and COL_CALL=? and COL_STATION_CALLSIGN=? and date_format(COL_TIME_ON, '%Y-%m-%d %H:%i') = ?";
 	$query = $this->db->query($qsql, array($band, $callsign,$station_callsign,$datetime));
 	$row = $query->row();
-	if ($row->QRZ_STATE == 'Y') {
+	if (($row->QRZ_STATE ?? '') == 'Y') {
 		$data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
 	}
-	if ($row->CL_STATE == 'Y') {
+	if (($row->CL_STATE ?? '') == 'Y') {
 		$data['COL_CLUBLOG_QSO_UPLOAD_STATUS'] = 'M';
 	}
 
