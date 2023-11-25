@@ -544,7 +544,7 @@
           <input size="20" id="country" type="hidden" name="country" value="" />
         </div>
 
-        <button type="reset" class="btn btn-light" onclick="reset_fields()"><?php echo lang('qso_btn_reset_qso'); ?></button>
+        <button type="reset" class="btn btn-secondary" onclick="reset_fields()"><?php echo lang('qso_btn_reset_qso'); ?></button>
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo lang('qso_btn_save_qso'); ?></button>
       </div>
     </form>
@@ -585,7 +585,7 @@
 
           <button id="connectButton" class="btn btn-primary">Connect</button>
 
-          <button type="button" class="btn btn-light"
+          <button type="button" class="btn btn-secondary"
           hx-get="<?php echo base_url(); ?>index.php/qso/winkeysettings"
           hx-target="#modals-here"
           hx-trigger="click"

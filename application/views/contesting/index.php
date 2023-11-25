@@ -159,7 +159,7 @@
                             </div>
                         </div>
 
-                        <button type="button" class="btn btn-sm btn-light" onclick="reset_log_fields()"><i class="fas fa-sync-alt"></i> <?php echo lang('contesting_btn_reset_qso'); ?></button>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="reset_log_fields()"><i class="fas fa-sync-alt"></i> <?php echo lang('contesting_btn_reset_qso'); ?></button>
                         <button type="button" class="btn btn-sm btn-primary" onclick="logQso();"><i class="fas fa-save"></i> <?php echo lang('contesting_btn_save_qso'); ?></button>
                         <div class="mb-3 row">
                           <div class="col-md-12">
