@@ -41,23 +41,29 @@ class Qra {
 	*
 	*/
 	function distance($tx, $rx, $unit = 'M') {
-		// Calc LatLongs
-		$my = qra2latlong($tx);
-		$stn = qra2latlong($rx);
-
-		// Feed in Lat Longs plus the unit type
-		try
-		{
-			$total_distance = distance($my[0], $my[1], $stn[0], $stn[1], $unit);
-		}
-		catch (Exception $e)
-		{
-			$total_distance = 0;
-		}
-
-		// Return the distance
-		return $total_distance;
-	}
+      // Calc LatLongs
+      $my = qra2latlong($tx);
+      $stn = qra2latlong($rx);
+  
+      // Check if qra2latlong returned valid values
+      if ($my && $stn) {
+         // Feed in Lat Longs plus the unit type
+         try
+		   {
+            $total_distance = distance($my[0], $my[1], $stn[0], $stn[1], $unit);
+         } 
+          catch (Exception $e)
+		   {
+            $total_distance = 0;
+         }
+  
+          // Return the distance
+          return $total_distance;
+      } else {
+          // Handle the case where qra2latlong did not return valid values
+          return 0;
+      }
+   }
 
 	/*
 	* Function returns just the bearing

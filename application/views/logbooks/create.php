@@ -24,7 +24,7 @@
 		<?php echo validation_errors(); ?>
 
 		<form method="post" action="<?php echo site_url('logbooks/create'); ?>" name="create_profile">
-		  <div class="form-group">
+		  <div class="mb-3">
 		    <label for="stationLogbookNameInput"><?php echo lang('station_logbooks_create_name');?></label>
 		    <input type="text" class="form-control" name="stationLogbook_Name" id="stationLogbookNameInput" aria-describedby="stationLogbookNameHelp" placeholder="Home QTH" required>
 		    <small id="stationLogbookNameHelp" class="form-text text-muted"><?php echo lang('station_logbooks_create_name_hint');?></small>

@@ -47,8 +47,8 @@ ________________________________________________________________________________
 
 $lang['filter_qsl_sent'] = 'QSL gesendet';
 $lang['filter_qsl_recv'] = 'QSL erhalten';
-$lang['filter_qsl_sent_method'] = 'QSL-Sende Methode';
-$lang['filter_qsl_recv_method'] = 'QSL-Empfangs Methode';
+$lang['filter_qsl_sent_method'] = 'QSL-Send. Methode';
+$lang['filter_qsl_recv_method'] = 'QSL-Empf. Methode';
 $lang['filter_lotw_sent'] = 'LoTW gesendet';
 $lang['filter_lotw_recv'] = 'LoTW erhalten';
 $lang['filter_eqsl_sent'] = 'eQSL gesendet';

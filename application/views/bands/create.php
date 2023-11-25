@@ -20,27 +20,27 @@
 		<?php echo validation_errors(); ?>
 
 		<form>
-		<div class="form-group">
+		<div class="mb-3">
 		    <label for="bandInput"><?php echo lang('gen_hamradio_band'); ?></label>
 		    <input type="text" class="form-control" name="band" id="bandInput" aria-describedby="bandInputHelp" required>
 		    <small id="bandInputHelp" class="form-text text-muted"><?php echo lang('options_bands_name_band'); ?></small>
 		  </div>
-		  <div class="form-group">
+		  <div class="mb-3">
 			<label for="bandGroup"><?php echo lang('gen_hamradio_bandgroup'); ?></label>
 			<input type="text" class="form-control" name="bandgroup" id="bandGroup" aria-describedby="bandgroupInputHelp" required>
 			<small id="bandgroupInputHelp" class="form-text text-muted"><?php echo lang('options_bands_name_bandgroup'); ?></small>
 		</div>
-		<div class="form-group">
+		<div class="mb-3">
 			<label for="ssbqrg"><?php echo lang('options_bands_ssb_qrg'); ?></label>
 			<input type="text" class="form-control" name="ssbqrg" id="ssbqrg" aria-describedby="ssbqrgInputHelp" required>
 			<small id="ssbqrgInputHelp" class="form-text text-muted"><?php echo lang('options_bands_ssb_qrg_hint'); ?></small>
 		</div>
-		<div class="form-group">
+		<div class="mb-3">
 			<label for="dataqrg"><?php echo lang('options_bands_data_qrg'); ?></label>
 			<input type="text" class="form-control" name="dataqrg" id="dataqrg" aria-describedby="dataqrgInputHelp" required>
 			<small id="dataqrgInputHelp" class="form-text text-muted"><?php echo lang('options_bands_data_qrg_hint'); ?></small>
 		</div>
-		<div class="form-group">
+		<div class="mb-3">
 			<label for="cwqrg"><?php echo lang('options_bands_cw_qrg'); ?></label>
 			<input type="text" class="form-control" name="cwqrg" id="cwqrg" aria-describedby="cwqrgInputHelp" required>
 			<small id="cwqrgInputHelp" class="form-text text-muted"><?php echo lang('options_bands_cw_qrg_hint'); ?></small>

@@ -44,14 +44,14 @@
       var lang_award_info_ln4 = "<?php echo lang('awards_cq_description_ln4'); ?>";
     </script>
     <h2><?php echo lang('awards_cq_page_title'); ?></h2>
-    <button type="button" class="btn btn-sm btn-primary mr-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
+    <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
   </div>
   <!-- End of Award Info Box -->
             <form class="form" action="<?php echo site_url('awards/cq'); ?>" method="post" enctype="multipart/form-data">
             <fieldset>
 
             <!-- Multiple Checkboxes (inline) -->
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-md-2" for="checkboxes"><?php echo lang('general_word_worked') . ' / ' . lang('general_word_confirmed')?></div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
@@ -69,7 +69,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-md-2"><?php echo lang('gen_hamradio_qsltype'); ?></div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
@@ -87,10 +87,10 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-md-2 control-label" for="band"><?php echo lang('gen_hamradio_band'); ?></label>
                 <div class="col-md-2">
-                    <select id="band2" name="band" class="form-control custom-select-sm">
+                    <select id="band2" name="band" class="form-select form-select-sm">
                         <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> ><?php echo lang('general_word_all'); ?></option>
                         <?php foreach($worked_bands as $band) {
                             echo '<option value="' . $band . '"';
@@ -101,10 +101,10 @@
                 </div>
             </div>
 
-			<div class="form-group row">
+			<div class="mb-3 row">
 				<label class="col-md-2 control-label" for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
 				<div class="col-md-2">
-					<select id="mode" name="mode" class="form-control custom-select-sm">
+					<select id="mode" name="mode" class="form-select form-select-sm">
 						<option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'mode') echo ' selected'; ?>><?php echo lang('general_word_all'); ?></option>
 						<?php
 						foreach($modes->result() as $mode){
@@ -123,7 +123,7 @@
 				</div>
 			</div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-md-2 control-label" for="button1id"></label>
                 <div class="col-md-10">
                     <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning"><?php echo lang('filter_reset'); ?></button>
@@ -138,10 +138,10 @@
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="table-tab" data-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="true"><?php echo lang('general_word_table'); ?></a>
+            <a class="nav-link active" id="table-tab" data-bs-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="true"><?php echo lang('general_word_table'); ?></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" onclick="load_cq_map();" id="map-tab" data-toggle="tab" href="#cqmaptab" role="tab" aria-controls="home" aria-selected="false"><?php echo lang('filter_map'); ?></a>
+            <a class="nav-link" onclick="load_cq_map();" id="map-tab" data-bs-toggle="tab" href="#cqmaptab" role="tab" aria-controls="home" aria-selected="false"><?php echo lang('filter_map'); ?></a>
         </li>
     </ul>
     <br />
@@ -212,7 +212,7 @@
 
     }
     else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+        echo '<div class="alert alert-danger" role="alert"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
     }
     ?>
 

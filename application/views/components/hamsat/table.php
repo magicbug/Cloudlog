@@ -1,5 +1,5 @@
 <div class="table-responsive">
-
+    <br>
     <h2>Hamsat - Satellite Rovers</h2>
     <p>This data is from <a target="_blank" href="https://hams.at/">https://hams.at/</a></p>
     <?php if ($rovedata == []) { ?>
@@ -63,7 +63,7 @@
                         echo xss_clean($rove['comment']);
                         ?>
                     </td>
-                    <td><span data-toggle="tooltip" title="<?php echo $rove['frequency']; ?> - <?php echo $rove['mode']; ?>"><?= $rove['satellite'] ?></span></td>
+                    <td><span data-bs-toggle="tooltip" title="<?php echo $rove['frequency']; ?> - <?php echo $rove['mode']; ?>"><?= $rove['satellite'] ?></span></td>
                     <td>
 
 
@@ -75,17 +75,17 @@
                            foreach ($grids as $grid) {
                            $worked = $CI->logbook_model->check_if_grid_worked_in_logbook($grid, null, "SAT");
                               if ($worked != 0) {
-                                  echo " <span data-toggle=\"tooltip\" title=\"Worked\" class=\"badge badge-success\">" . $grid . "</span>";
+                                  echo " <span data-bs-toggle=\"tooltip\" title=\"Worked\" class=\"badge bg-success\">" . $grid . "</span>";
                               } else {
-                                  echo " <span data-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge badge-danger\">" . $grid . "</span>";
+                                  echo " <span data-bs-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge bg-danger\">" . $grid . "</span>";
                               }
                            }
                         } else {
                            $worked = $CI->logbook_model->check_if_grid_worked_in_logbook($rove['gridsquare'], null, "SAT");
                            if ($worked != 0) {
-                               echo " <span data-toggle=\"tooltip\" title=\"Worked\" class=\"badge badge-success\">" . $rove['gridsquare'] . "</span>";
+                               echo " <span data-bs-toggle=\"tooltip\" title=\"Worked\" class=\"badge bg-success\">" . $rove['gridsquare'] . "</span>";
                            } else {
-                               echo " <span data-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge badge-danger\">" . $rove['gridsquare'] . "</span>";
+                               echo " <span data-bs-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge bg-danger\">" . $rove['gridsquare'] . "</span>";
                            }
                         }
                         ?>

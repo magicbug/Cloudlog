@@ -2,6 +2,23 @@
  * No overrides for the default theme as it aligns with general.css
 */
 
+body {
+	background-color: #2b3e50;
+}
+
+.table {
+	--bs-table-color: #fff;
+	--bs-table-striped-color: #fff;
+	--bs-table-active-color: #fff;
+	--bs-table-hover-color: #fff;
+	--bs-table-bg: #3d4e5e;
+	--bs-table-accent-bg: #2b3e50;
+}
+
+.border-top {
+	--bs-border-color: #253544;
+}
+
 /*
 *	 Maps
 */
@@ -14,7 +31,7 @@ path.grid-rectangle {
 	stroke: rgba(200, 200, 200, 0.5);
 }
 
-span.grid-text>font {
+span.grid-text > font {
 	color: rgba(220, 220, 220, 1) !important;
 	-webkit-text-stroke: 0.6px black !important;
 }
@@ -29,8 +46,9 @@ path.grid-worked {
 	stroke: rgba(220, 50, 50, 0.4) !important;
 }
 
-#map, #qsomap {
-	background-color: #2E3E50;
+#map,
+#qsomap {
+	background-color: #2e3e50;
 }
 
 /* 
@@ -46,26 +64,35 @@ path.grid-worked {
 /* Inactive Links */
 
 .navbar-light .navbar-nav .nav-link {
-	color: rgba(255, 255, 255, .6);
+	color: rgba(255, 255, 255, 0.6);
 }
 
 /* Active Links and Logo */
 
-.navbar-light .navbar-brand, .navbar-light .navbar-brand:focus, .navbar-light .navbar-brand:hover, .navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+.navbar-light .navbar-brand,
+.navbar-light .navbar-brand:focus,
+.navbar-light .navbar-brand:hover,
+.navbar-light .navbar-nav .active > .nav-link,
+.navbar-light .navbar-nav .nav-link:focus,
+.navbar-light .navbar-nav .nav-link:hover {
 	color: #fff;
 }
 
 /* Hamburger Menu */
 
 .navbar-light .navbar-toggler-icon {
-	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.6%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.6%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 /* 
 *	Dark inputs 
 */
 
-.form-control, .form-control-sm, .form-control:focus, .form-control:disabled, .custom-select {
+.form-control,
+.form-control-sm,
+.form-control:focus,
+.form-control:disabled,
+.form-select {
 	background-color: rgba(20, 41, 62, 0.6);
 	color: #fff;
 }
@@ -75,15 +102,18 @@ div.alert-danger {
 }
 
 .bootstrap-dialog.type-primary .modal-header {
-	background-color: #2B3E50;
+	background-color: #2b3e50;
 }
 
-.selectize-dropdown, .selectize-input, .selectize-input input {
+.selectize-dropdown,
+.selectize-input,
+.selectize-input input {
 	color: #fff;
 }
 
-.selectize-input, .selectize-control.single .selectize-input.input-active {
-	background: #2B3D51;
+.selectize-input,
+.selectize-control.single .selectize-input.input-active {
+	background: #2b3d51;
 	color: #fff;
 }
 
@@ -92,44 +122,52 @@ div.alert-danger {
 }
 
 .selectize-input.full {
-	background-color: #2B3D51;
+	background-color: #2b3d51;
 }
 
-.selectize-dropdown, .selectize-dropdown.form-control {
-	background: #737F8B;
+.selectize-dropdown,
+.selectize-dropdown.form-control {
+	background: #737f8b;
 }
 
 .selectize-input.focus {
 	color: #495057;
 	background-color: #fff;
 	border-color: #f1b287;
-	box-shadow: 0 0 0 .2rem rgba(223, 105, 26, .25)
+	box-shadow: 0 0 0 0.2rem rgba(223, 105, 26, 0.25);
 }
 
 .selectize-input.dropdown-active {
 	border-radius: 0;
 }
 
-.selectize-dropdown, .selectize-dropdown.form-control {
+.selectize-dropdown,
+.selectize-dropdown.form-control {
 	border-radius: 0;
 }
 
 .qso_call {
-        float:left;
-        width:140px;
+	float: left;
+	width: 140px;
 }
 
 .qso_icons {
-        float:right;
+	float: right;
 }
 
-#qsoList_wrapper th { text-align: left !important; white-space: nowrap;}
-#qsoList_wrapper td { text-align: left !important; white-space: nowrap;}
+#qsoList_wrapper th {
+	text-align: left !important;
+	white-space: nowrap;
+}
+#qsoList_wrapper td {
+	text-align: left !important;
+	white-space: nowrap;
+}
 
 #lotw_badge {
-        float:right;
+	float: right;
 }
 
 #edit_qso:not(.btn) {
-        float:left;
+	float: left;
 }

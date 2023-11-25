@@ -35,7 +35,7 @@
 	  </div>
 	  <div class="card-body main">
 
-		<div class="card-text" id="builder"></div>
+		<div class="card-text col-md-4" id="builder"></div>
 
 		<p class="card-text">
 		<button class="btn btn-sm btn-primary ld-ext-right searchbutton" id="btn-get">Search<div class="ld ld-ring ld-spin"></div></button>
@@ -49,10 +49,10 @@
 			<button class="btn btn-sm btn-primary" onclick="edit_stored_query_dialog()" id="btn-edit">Edit queries</button></p>
 
 
-		  <div class="form-group row querydropdownform">
+		  <div class="mb-3 row querydropdownform">
 			  <label class="col-md-2 control-label" for="querydropdown">  Stored queries:</label>
-			  <div class="col-md-3">
-				  <select id="querydropdown" name="querydropdown" class="form-control custom-select-sm">
+			  <div class="col-md-2">
+				  <select id="querydropdown" name="querydropdown" class="form-select form-select-sm">
 					  <?php
 					  foreach($stored_queries as $q){
 						  echo '<option value="' . $q->id . '">'. $q->description . '</option>'."\n";
@@ -60,7 +60,7 @@
 					  ?>
 				  </select>
 			  </div>
-			  <button class="btn btn-sm btn-primary ld-ext-right runbutton" onclick="run_query()">Run Query<div class="ld ld-ring ld-spin"></div></button>
+			  <button class="btn btn-sm btn-primary ld-ext-right runbutton col-md-1" onclick="run_query()">Run Query<div class="ld ld-ring ld-spin"></div></button>
 		  </div>
 
 			<?php
@@ -69,8 +69,7 @@
 		  }
 		  ?>
 
-	    	<div style="display:none;"><span  class="badge badge-info">Info</span> You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Search----Filter" target="_blank">search filter functions</a> in the wiki.</a></div>
-	    
+	    	<div style="display:none;"><span  class="badge text-bg-info">Info</span> You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Search----Filter" target="_blank">search filter functions</a> in the wiki.</a></div>
 
 	  </div>
 	</div>

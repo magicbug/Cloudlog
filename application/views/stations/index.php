@@ -31,7 +31,7 @@
 
 		<?php if($is_there_qsos_with_no_station_id >= 1) { ?>
 			<div class="alert alert-danger" role="alert">
-		  		<span class="badge badge-pill badge-warning">Warning</span> Due to recent changes within Cloudlog you need to reassign QSOs to your station profiles.
+		  		<span class="badge rounded-pill text-bg-warning">Warning</span> Due to recent changes within Cloudlog you need to reassign QSOs to your station profiles.
 
 		  		Create a station profile, if you haven't already, then <a href="<?php echo site_url('station/assign_all/'); ?>" class="btn btn-danger" onclick="return confirm('Assign All QSOs to Default Station ID"><i class="fas fa-trash-alt"></i> press this button to assign all QSOs to the first Station Profile.</a>
 			</div>
@@ -59,21 +59,21 @@
 						<?php echo $row->station_profile_name;?><br>
 					</td>
 					<td><?php echo $row->station_callsign;?></td>
-					<td><?php echo $row->station_country == '' ? '- NONE -' : $row->station_country; if ($row->dxcc_end != NULL) { echo ' <span class="badge badge-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
+					<td><?php echo $row->station_country == '' ? '- NONE -' : $row->station_country; if ($row->dxcc_end != NULL) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
 					<td><?php echo $row->station_gridsquare;?></td>
 					<td style="text-align: center" data-order="<?php echo $row->station_id;?>">
 						<?php if($row->station_active != 1) { ?>
 							<a href="<?php echo site_url('station/set_active/').$current_active."/".$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('Are you sure you want to make station <?php echo $row->station_profile_name; ?> the active station?');">Set Active</a>
 						<?php } else { ?>
-							<span class="badge badge-success">Active Station</span>
+							<span class="badge text-bg-success">Active Station</span>
 						<?php } ?>
 
 						<?php if($is_there_qsos_with_no_station_id >= 1) { ?>
 							<a href="<?php echo site_url('station/reassign_profile/').$row->station_id; ?>" class="btn btn-outline-secondary btn-sm" onclick="return confirm('Are you sure you want to reassign QSOs to the <?php echo $row->station_profile_name; ?> profile?');">Reassign</a>
 						<?php } ?>
 						<br>
-						<span class="badge badge-info">ID: <?php echo $row->station_id;?></span>
-						<span class="badge badge-light"><?php echo $row->qso_total;?> QSOs</span>
+						<span class="badge text-bg-info">ID: <?php echo $row->station_id;?></span>
+						<span class="badge text-bg-light"><?php echo $row->qso_total;?> QSOs</span>
 					</td>
 					<td>
 						<?php if($row->user_id == "") { ?>

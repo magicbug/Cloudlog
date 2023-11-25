@@ -1,23 +1,11 @@
-$(function () {
-    $('#datetimepicker1').datetimepicker({
-        format: 'DD/MM/YYYY',
-    });
-});
-
-$(function () {
-    $('#datetimepicker2').datetimepicker({
-        format: 'DD/MM/YYYY',
-    });
-});
-
-$(function () {
-    $('#datetimepicker3').datetimepicker({
-        format: 'DD/MM/YYYY',
-    });
-});
-
-$(function () {
-    $('#datetimepicker4').datetimepicker({
-        format: 'DD/MM/YYYY',
-    });
+$(document).ready(function(){
+	$('#markExportedToLotw').click(function(e){
+		let form = $(this).closest('form');
+		let station = form.find('select[name=station_profile]');
+		if (station.val() == 0) {
+			station.addClass('is-invalid');
+		}else{
+			form.submit();
+		}
+	})
 });

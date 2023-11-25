@@ -15,9 +15,9 @@
         var lang_statistics_distances_qsos_with = '<?php echo lang('lang_statistics_distances_qsos_with'); ?>';
     </script>
     <div id="distances_div">
-        <form class="form-inline">
-            <label class="my-1 mr-2" for="distplot_bands"><?php echo lang('gen_band_selection'); ?></label>
-            <select class="custom-select my-1 mr-sm-2"  id="distplot_bands">
+        <form class="d-flex align-items-center">
+            <label class="my-1 me-2" for="distplot_bands"><?php echo lang('gen_band_selection'); ?></label>
+            <select class="form-select my-1 me-sm-2 w-auto"  id="distplot_bands">
                 <?php if (count($sats_available) != 0) { ?>
                     <option value="sat">SAT</option>
                 <?php } ?>
@@ -26,8 +26,8 @@
                 } ?>
             </select>
             <?php if (count($sats_available) != 0) { ?>
-                <label class="my-1 mr-2" for="distplot_sats"><?php echo lang('general_word_satellite')?></label>
-                <select class="custom-select my-1 mr-sm-2"  id="distplot_sats">
+                <label class="my-1 me-2" for="distplot_sats"><?php echo lang('general_word_satellite')?></label>
+                <select class="form-select my-1 me-sm-2 w-auto"  id="distplot_sats">
                     <option value="All"><?php echo lang('general_word_all')?></option>
                     <?php foreach($sats_available as $sat) {
                         echo '<option value="' . $sat . '"' . '>' . $sat . '</option>'."\n";

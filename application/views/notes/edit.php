@@ -19,28 +19,28 @@
 
   	<?php if (!empty(validation_errors())): ?>
     <div class="alert alert-danger">
-        <a class="close" data-dismiss="alert" title="close">x</a>
+        <a class="btn-close" data-bs-dismiss="alert" title="close">x</a>
         <ul><?php echo (validation_errors('<li>', '</li>')); ?></ul>
     </div>
 	<?php endif; ?>
 
 	<form method="post" action="<?php echo site_url('notes/edit'); ?>/<?php echo $id; ?>" name="notes_add" id="notes_add">
 
-	<div class="form-group">
+	<div class="mb-3">
 		<label for="inputTitle"><?php echo lang('notes_input_title'); ?></label>
 		<input type="text" name="title" class="form-control" value="<?php echo $row->title; ?>" id="inputTitle">
 	</div>
 
-	<div class="form-group">
+	<div class="mb-3">
 	   <label for="catSelect"><?php echo lang('notes_input_category'); ?></label>
-	   <select name="category" class="form-control" id="catSelect">
+	   <select name="category" class="form-select" id="catSelect">
 	    <option value="General" selected="selected"><?php echo lang('notes_selection_general'); ?></option>
 		<option value="Antennas"><?php echo lang('notes_selection_antennas'); ?></option>
 		<option value="Satellites"><?php echo lang('notes_selection_satellites'); ?></option>
 	   </select>
 	</div>
 
-	<div class="form-group">
+	<div class="mb-3">
 		<label for="inputTitle"><?php echo lang('notes_input_notes_content'); ?></label>
 		<div id="quillArea"><?php echo $row->note; ?></div>
 		<textarea name="content" style="display:none" id="hiddenArea"></textarea>

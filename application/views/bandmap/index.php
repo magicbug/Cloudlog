@@ -20,18 +20,18 @@
 		</ul>
 </div>
 <div class="tab-content" id="myTabContent">
-<div class="messages my-1 mr-2"></div>
-<div class="form-inline">
-		<label class="my-1 mr-2" for="radio"><?php echo lang('gen_hamradio_radio'); ?></label>
-		<select class="form-control-sm radios my-1 mr-sm-2" id="radio" name="radio">
+<div class="messages my-1 me-2"></div>
+<div class="d-flex align-items-center">
+		<label class="my-1 me-2" for="radio"><?php echo lang('gen_hamradio_radio'); ?></label>
+		<select class="form-select form-select-sm radios my-1 me-sm-2 w-auto" id="radio" name="radio">
 			<option value="0" selected="selected"><?php echo lang('general_word_none'); ?></option>
 			<?php foreach ($radios->result() as $row) { ?>
 			<option value="<?php echo $row->id; ?>" <?php if($this->session->userdata('radio') == $row->id) { echo "selected=\"selected\""; } ?>><?php echo $row->radio; ?></option>
 			<?php } ?>
 		</select>
 
-		<label class="my-1 mr-2" for="decontSelect">Spots de</label>
-		<select class="form-control-sm my-1 mr-sm-2" id="decontSelect" name="dxcluster_decont" aria-describedby="dxcluster_decontHelp" required>
+		<label class="my-1 me-2" for="decontSelect">Spots de</label>
+		<select class="form-select form-select-sm my-1 me-sm-2 w-auto" id="decontSelect" name="dxcluster_decont" aria-describedby="dxcluster_decontHelp" required>
 				<option value="Any">*</option>
 				<option value="AF"<?php if ($this->optionslib->get_option('dxcluster_decont') == 'AF') { echo " selected"; } ?>>Africa</option>
 				<option value="AN"<?php if ($this->optionslib->get_option('dxcluster_decont') == 'AN') { echo " selected"; } ?>>Antarctica</option>
@@ -42,8 +42,8 @@
 				<option value="SA"<?php if ($this->optionslib->get_option('dxcluster_decont') == 'SA') { echo " selected"; } ?>>South America</option>
                 </select>
 
-		<label class="my-1 mr-2" for="band"><?php echo lang('gen_hamradio_band'); ?></label>
-		<select id="band" class="form-control-sm my-1 mr-sm-2" name="band">
+		<label class="my-1 me-2" for="band"><?php echo lang('gen_hamradio_band'); ?></label>
+		<select id="band" class="form-select form-select-sm my-1 me-sm-2 w-auto" name="band">
 			<?php foreach($bands as $key=>$bandgroup) {
 					echo '<optgroup label="' . strtoupper($key) . '">';
 					foreach($bandgroup as $band) {

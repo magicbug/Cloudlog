@@ -41,13 +41,13 @@ input[type="email"] {
                     <?php endif; ?>
 
                     <form id="register-form" role="form" autocomplete="off" class="form" method="post" action="<?php echo site_url('user/forgot_password'); ?>">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
                                 <input id="email" name="email" placeholder="<?php echo lang('account_email_address'); ?>" class="form-control" type="email" autofocus>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <input name="recover-submit" class="w-100 btn btn-primary btn-block" value="<?php echo lang('account_reset_password'); ?>" type="submit">
                         </div>
                         <input type="hidden" class="hide" name="token" id="token" value="">

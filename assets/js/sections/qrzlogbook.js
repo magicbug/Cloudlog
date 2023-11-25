@@ -1,15 +1,3 @@
-$(function () {
-    $('#datetimepicker5').datetimepicker({
-        format: 'DD/MM/YYYY',
-    });
-});
-
-$(function () {
-    $('#datetimepicker6').datetimepicker({
-        format: 'DD/MM/YYYY',
-    });
-});
-
 function ExportQrz(station_id) {
 	if ($(".alert").length > 0) {
 		$(".alert").remove();

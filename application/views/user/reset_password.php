@@ -17,21 +17,21 @@
 
                     <form role="form" autocomplete="off" class="form" method="post" action="<?php echo site_url('user/reset_password'); ?>/<?php echo $reset_code; ?>">
 
-                        <div class="form-group row">
+                        <div class="mb-3 row">
                             <label for="inputPassword" class="col-sm-2 col-form-label"><?php echo lang('account_password'); ?></label>
                             <div class="col-sm-10">
                                 <input type="password" name="password" class="form-control" id="inputPassword" placeholder="<?php echo lang('account_password'); ?>">
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="mb-3 row">
                             <label for="inputPassword" class="col-sm-2 col-form-label"><?php echo lang('account_confirm_password'); ?></label>
                             <div class="col-sm-10">
                                 <input type="password" name="password_confirm" class="form-control" id="inputPassword" placeholder="<?php echo lang('account_password'); ?>">
                             </div>
                         </div>
 
-                      <div class="form-group">
+                      <div class="mb-3">
                         <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="<?php echo lang('account_reset_password'); ?>" type="submit">
                       </div>
                       

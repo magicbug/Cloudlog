@@ -3,7 +3,7 @@ var custom_date_format = "<?php echo $custom_date_format ?>";
 </script>
 <div class="container">
 <div class="table-responsive">
-
+   <br>
     <h2>Satellite Timers</h2>
     <p>This data is from <a target="_blank" href="https://www.df2et.de/tevel/">https://www.df2et.de/tevel/</a> calculated for current station location grid <?php echo strtoupper($gridsquare);?>.</p>
     <script type="text/javascript">

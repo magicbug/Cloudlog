@@ -236,16 +236,16 @@ class QSO
 		if ($data['COL_QSL_SENT'] != "N") {
 			switch ($data['COL_QSL_SENT']) {
 			case "Y":
-				$qslstring .= "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_sent');
+				$qslstring .= "class=\"qsl-green\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_sent');
 				break;
 			case "Q":
-				$qslstring .= "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_queued');
+				$qslstring .= "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_queued');
 				break;
 			case "R":
-				$qslstring .= "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_requested');
+				$qslstring .= "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_requested');
 				break;
 			case "I":
-				$qslstring .= "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_invalid_ignore');
+				$qslstring .= "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_invalid_ignore');
 				break;
 			default:
 			$qslstring .= "class=\"qsl-red";
@@ -281,16 +281,16 @@ class QSO
 			if ($data['COL_QSL_RCVD'] != "N") {
 				switch ($data['COL_QSL_RCVD']) {
 					case "Y":
-						$qslstring .= "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_received');
+						$qslstring .= "class=\"qsl-green\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_received');
 					break;
 					case "Q":
-						$qslstring .= "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_queued');
+						$qslstring .= "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_queued');
 					break;
 					case "R":
-						$qslstring .= "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_requested');
+						$qslstring .= "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_requested');
 					break;
 					case "I":
-						$qslstring .= "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_invalid_ignore');
+						$qslstring .= "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_invalid_ignore');
 					break;
 					default:
 					$qslstring .= "class=\"qsl-red";
@@ -340,7 +340,7 @@ class QSO
 				$timestamp = strtotime($data['COL_LOTW_QSLSDATE']);
 				$lotwstring .= " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 			}
-			$lotwstring .= "\" data-toggle=\"tooltip\"";
+			$lotwstring .= "\" data-bs-toggle=\"tooltip\"";
 		}
 
 		$lotwstring .= ' class="lotw-' . (($data['COL_LOTW_QSL_SENT']=='Y') ? 'green' : 'red') . '">&#9650;</span>';
@@ -354,7 +354,7 @@ class QSO
 				$lotwstring .=  " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 			}
 
-			$lotwstring .= "\" data-toggle=\"tooltip\"";
+			$lotwstring .= "\" data-bs-toggle=\"tooltip\"";
 		}
 
 		$lotwstring .= ' class="lotw-' . (($data['COL_LOTW_QSL_RCVD']=='Y') ? 'green':'red') . '">&#9660;</span>';
@@ -379,7 +379,7 @@ class QSO
 				$eqslstring .=  " ".($timestamp!=''?date($custom_date_format, $timestamp):'');
 			}
 
-			$eqslstring .= "\" data-toggle=\"tooltip\"";
+			$eqslstring .= "\" data-bs-toggle=\"tooltip\"";
 		}
 
 		$eqslstring .= ' class="eqsl-' . (($data['COL_EQSL_QSL_SENT'] =='Y') ? 'green':'red') . '">&#9650;</span><span ';
@@ -391,7 +391,7 @@ class QSO
 				$timestamp = strtotime($data['COL_EQSL_QSLRDATE']);
 				$eqslstring .= " ".($timestamp!=''?date($custom_date_format, $timestamp):'');
 			}
-			$eqslstring .= "\" data-toggle=\"tooltip\"";
+			$eqslstring .= "\" data-bs-toggle=\"tooltip\"";
 		}
 
 		$eqslstring .= ' class="eqsl-' . (($data['COL_EQSL_QSL_RCVD'] =='Y')?'green':'red') . '">';

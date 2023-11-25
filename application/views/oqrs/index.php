@@ -18,8 +18,8 @@
 			echo '<br /><br />';
 		}
 		if ($groupedSearch == 'on') {
-			echo 'This search will search in all station locations where OQRS is active.<br /><br /><form class="form-inline" onsubmit="return false;"><label class="my-1 mr-2" for="oqrssearch">Enter your callsign: </label>
-			<input class="form-control mr-sm-2" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search" required="required">
+			echo 'This search will search in all station locations where OQRS is active.<br /><br /><form class="d-flex align-items-center" onsubmit="return false;"><label class="my-1 me-2" for="oqrssearch">Enter your callsign: </label>
+			<input class="form-control me-sm-2" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search" required="required">
 			<button onclick="searchOqrsGrouped();" class="btn btn-sm btn-primary" id="stationbuttonsubmit" type="button"><i class="fas fa-search"></i> Search</button>
 			</form>';
 			echo '<div class="searchinfo"></div>';
@@ -44,9 +44,9 @@
 			} else {
 		  if ($stations->result() != NULL) { ?>
 
-                <form class="form-inline" enctype="multipart/form-data">
-                    <label class="my-1 mr-2" for="station">Select station: </label>
-                    <select id="station" class="custom-select my-1 mr-sm-2" name="station">
+                <form class="d-flex align-items-center" enctype="multipart/form-data">
+                    <label class="my-1 me-2" for="station">Select station: </label>
+                    <select id="station" class="form-select my-1 me-sm-2" name="station">
                         <?php foreach($stations->result() as $station) {
 									echo '<option value="' . $station->station_id . '">' . $station->station_profile_name . ' - ' . $station->station_callsign . '</option>'."\n";
 								} ?>

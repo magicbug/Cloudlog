@@ -728,8 +728,6 @@ class Lotw extends CI_Controller {
             $customDate = $this->input->post('from');
 
 			if ($customDate != NULL) {
-                $customDate = DateTime::createFromFormat('d/m/Y', $customDate);
-                $customDate = $customDate->format('Y-m-d');
                 $lotw_last_qsl_date = date($customDate);
             }
             else {

@@ -18,7 +18,7 @@
 		<div class="card-body">
 			<form class="form" action="<?php echo site_url('adif/import'); ?>" method="post" enctype="multipart/form-data">
 				<?php echo lang('cloudlog_station_profile'); ?>:
-				<select name="station_profile" class="station_id custom-select mb-3 mr-sm-3" style="width: 20%;">
+				<select name="station_profile" class="station_id form-select mb-3 me-sm-3" style="width: 20%;">
 					<option value="All">All</option>
 					<?php foreach ($station_profile->result() as $station) { ?>
 						<option <?php if ($station->station_id == $station_id) { echo "selected "; } ?>value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>

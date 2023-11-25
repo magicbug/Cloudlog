@@ -1,11 +1,20 @@
 @media (min-width: 992px) {
-    .modal-lg, .modal-xl {
-        max-width: 900px;
-    }
+	.modal-lg,
+	.modal-xl {
+		max-width: 900px;
+	}
+}
+
+[hidden] {
+	display: none !important;
+}
+
+a {
+	text-decoration: none !important;
 }
 
 .main-nav .container {
-    margin-top: 0px !important;
+	margin-top: 0px !important;
 }
 
 #nav-container {
@@ -39,7 +48,7 @@ thead > tr > td {
 }
 
 .eqsl {
-    padding-top: 15px;
+	padding-top: 15px;
 }
 
 .publicsearch {
@@ -56,213 +65,208 @@ thead > tr > td {
 }
 
 .adif {
-    padding-top: 15px;
+	padding-top: 15px;
 }
 
 .adif .alert p {
-    margin-bottom: 0rem;
+	margin-bottom: 0rem;
 }
 
 .api .alert p {
-    margin-bottom: 0rem;
+	margin-bottom: 0rem;
 }
 
-
 .qso_panel {
-    padding-top: 25px;
+	padding-top: 25px;
 }
 
 .qso_panel #callsign {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .qso_panel #locator {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .qso_panel .iota_ref {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .qso_panel #sota_ref-selectized {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .qso_panel #wwff_ref-selectized {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .qso_panel #pota_ref-selectized {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .qso_panel #darc_dok-selectized {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .card-body #callsign {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .card-body #locator {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .card-body #vucc_grids {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .card-body #sota_ref_edit-selectized {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .card-body #wwff_ref_edit-selectized {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .card-body #pota_ref_edit-selectized {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .card-body #darc_dok_edit-selectized {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .card-body #exch_rcvd {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .card-body #exch_sent {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .card-body #exch_gridsquare_r {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 #oqrssearch:valid {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .confirmedGrid {
-    border-color: green;
+	border-color: green;
 }
 
 .workedGrid {
-    border-color: yellow;
+	border-color: yellow;
 }
 
 .newGrid {
-    border-color: red;
-    border-width: 2px;
+	border-color: red;
+	border-width: 2px;
 }
 
 #country {
-    border: none;
+	border: none;
 }
 
-
-TD.eqsl{
-    width: 33px;
+TD.eqsl {
+	width: 33px;
 }
 
-.eqsl-green{
-    color: #00A000 !important;
-    font-size: 1.1em;
-    text-decoration: none !important;
+.eqsl-green {
+	color: #00a000 !important;
+	font-size: 1.1em;
 }
-.eqsl-red{
-    color: #F00 !important;
-    font-size: 1.1em;
+.eqsl-red {
+	color: #f00 !important;
+	font-size: 1.1em;
 }
-.qsl-green{
-    color: #00A000 !important;
-    font-size: 1.1em;
+.qsl-green {
+	color: #00a000 !important;
+	font-size: 1.1em;
 }
-.qsl-red{
-    color: #F00 !important;
-    font-size: 1.1em;
+.qsl-red {
+	color: #f00 !important;
+	font-size: 1.1em;
 }
-.qsl-yellow{
-    color: #d39e00 !important;
-    font-size: 1.1em;
+.qsl-yellow {
+	color: #d39e00 !important;
+	font-size: 1.1em;
 }
-.qsl-grey{
-    color: #dddddd !important;
-    font-size: 1.1em;
+.qsl-grey {
+	color: #dddddd !important;
+	font-size: 1.1em;
 }
-TD.lotw{
-    width: 33px;
+TD.lotw {
+	width: 33px;
 }
-.lotw-green{
-    color: #00A000 !important;
-    font-size: 1.1em;
+.lotw-green {
+	color: #00a000 !important;
+	font-size: 1.1em;
 }
-.lotw-red{
-    color: #F00 !important;
-    font-size: 1.1em;
+.lotw-red {
+	color: #f00 !important;
+	font-size: 1.1em;
 }
 
 .qso-edit-box {
-    padding: 10px;
+	padding: 10px;
 }
 
 .previous-qsos .card-title {
-    margin-bottom: 0px;
+	margin-bottom: 0px;
 }
 
 .qso-map .card-title {
-    margin-bottom: 0px;
+	margin-bottom: 0px;
 }
 
 .qso-map {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .callsign-suggest {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .callsign-suggest .card-title {
-    margin-bottom: 0px;
+	margin-bottom: 0px;
 }
 
-
 #search_box #callsign {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 #nav-bar-search-input:focus {
-    text-transform: uppercase;
+	text-transform: uppercase;
 }
 
 .settings {
-    padding-top: 15px;
+	padding-top: 15px;
 }
 
 .settings-nav {
-    margin-bottom: 15px;
-    list-style: none;
-    background-color: #fff;
-    border: 1px solid #d1d5da;
-    border-radius: 3px;
+	margin-bottom: 15px;
+	list-style: none;
+	background-color: #fff;
+	border: 1px solid #d1d5da;
+	border-radius: 3px;
 }
 
 .settings-nav .nav-link {
-    list-style: none;
-    background-color: #fff;
-    border: 1px solid #d1d5da;
+	list-style: none;
+	background-color: #fff;
+	border: 1px solid #d1d5da;
 }
 
 .settings-nav .nav-link:hover {
-    background-color: #e1e4e8;
-
+	background-color: #e1e4e8;
 }
 
 /* QSL Card Management CSS */
 
 .qsl_management {
-    padding-top: 15px;
+	padding-top: 15px;
 }
 
 /*
@@ -270,45 +274,64 @@ TD.lotw{
 *
 */
 .qso-map-new .card-header {
-background: #0F2027;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-color: #ffffff;
+	background: #0f2027; /* fallback for old browsers */
+	background: -webkit-linear-gradient(
+		to right,
+		#2c5364,
+		#203a43,
+		#0f2027
+	); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(
+		to right,
+		#2c5364,
+		#203a43,
+		#0f2027
+	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	color: #ffffff;
 }
 
 #myTab .nav-link {
-    padding: 8px !important;
+	padding: 8px !important;
 }
 
 #map {
-    z-index: 1;
+	z-index: 1;
 }
 
 #qsomap {
-    z-index: 1;
+	z-index: 1;
 }
 
 #create_station_profile .row {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 /*
 *   Debug CSS
 */
 
-    .debug_main .card {
-        margin-bottom: 10px;
-    }
+.debug_main .card {
+	margin-bottom: 10px;
+}
 
-    .was-map-dialog .modal-dialog {
-        width: 100%;
-    }
+.modal-backdrop{
+	z-index: 1000 !important;
+}
 
-    @media (min-width: 576px) {
-        .was-map-dialog .modal-dialog {
-            max-width: 73% !important;
-        }
-    }
+.dropdown-menu {
+	z-index: 2000 !important;
+	position: absolute !important; 
+}
+
+.was-map-dialog .modal-dialog {
+	width: 100%;
+}
+
+@media (min-width: 576px) {
+	.was-map-dialog .modal-dialog {
+		max-width: 73% !important;
+	}
+}
 
 /*
  * Timepicker alignment
@@ -326,199 +349,199 @@ color: #ffffff;
 /* Station Logbooks Styles */
 
 div#station_logbooks_table_length {
-    padding-top: 12px;
-    padding-left: 12px;
-    padding-bottom: 0px;
+	padding-top: 12px;
+	padding-left: 12px;
+	padding-bottom: 0px;
 }
 
 div#station_logbooks_table_filter {
-    padding-top: 12px;
-    padding-right: 12px;
-    padding-bottom: 0px;
+	padding-top: 12px;
+	padding-right: 12px;
+	padding-bottom: 0px;
 }
 
 div#station_logbooks_table_info {
-    padding-left: 12px;
+	padding-left: 12px;
 }
 
 div#station_logbooks_table_paginate {
-    padding-right: 12px;
-    padding-bottom: 12px;
+	padding-right: 12px;
+	padding-bottom: 12px;
 }
 
-div#station_logbooks_linked_table_length  {
-    padding-top: 12px;
-    padding-left: 12px;
-    padding-bottom: 0px;
+div#station_logbooks_linked_table_length {
+	padding-top: 12px;
+	padding-left: 12px;
+	padding-bottom: 0px;
 }
 
 div#station_logbooks_linked_table_filter {
-    padding-top: 12px;
-    padding-left: 12px;
-    padding-bottom: 0px;
+	padding-top: 12px;
+	padding-left: 12px;
+	padding-bottom: 0px;
 }
 
 div#station_logbooks_linked_table_info {
-    padding-left: 12px;
+	padding-left: 12px;
 }
 
 div#station_logbooks_linked_table_paginate {
-    padding-right: 12px;
-    padding-bottom: 12px;
+	padding-right: 12px;
+	padding-bottom: 12px;
 }
 
 /* qrz.com profile picture Styles */
 
 .card-title {
-    margin-bottom: 0px;
- }
+	margin-bottom: 0px;
+}
 
 .callsign-image {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .callsign-image-content {
-    display: block;
-    max-height: 300px;
-    text-align: center;
+	display: block;
+	max-height: 300px;
+	text-align: center;
 }
 
 .callsign-image-pic {
-    max-height: 250px;
-    max-width: 100%;
+	max-height: 250px;
+	max-width: 100%;
 }
 
 #mapactivators {
-    height: calc(100vh - 380px) !important;
-    max-height: 900px !important;
+	height: calc(100vh - 380px) !important;
+	max-height: 900px !important;
 }
 
 .copy-icon {
-   display: block;
-   cursor: pointer;
-   padding-left: 0.5em;
+	display: block;
+	cursor: pointer;
+	padding-left: 0.5em;
 }
 
 .flash-copy {
-   animation-name: flash;
-   animation-timing-function: ease-out;
-   animation-duration: 1s;
+	animation-name: flash;
+	animation-timing-function: ease-out;
+	animation-duration: 1s;
 }
 
 @keyframes flash {
-   0% {
-      background: #28a745;
-   }
-   100% {
-      background: transparent;
-   }
+	0% {
+		background: #28a745;
+	}
+	100% {
+		background: transparent;
+	}
 }
 
 .api-url {
-   font-family: Monospace;
+	font-family: Monospace;
 }
 
 .api-key {
-   font-family: Monospace;
-}
-
-.dropdown-menu {
-    z-index: 2000;
+	font-family: Monospace;
 }
 
 .qso_panel .dxccsummary {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .qso_panel .dxccsummaryheader {
-    cursor: pointer;
+	cursor: pointer;
 }
 
-.table-striped>tbody>tr.activeRow {
-    background-color: #5cb85c;
+.table-striped tbody > tr.activeRow {
+    background-color: #5cb85c !important;
+	--bs-table-bg: none;
+}
+
+.border-top {
+	--bs-border-color: #dee2e6;
 }
 
 .activeRow a {
-    color: #fff !important;
+	color: #fff !important;
 }
 
-.w-qsl{
-    max-height: calc(100vh - 270px);
+.w-qsl {
+	max-height: calc(100vh - 270px);
 	overflow-y: auto;
 }
 
 #lotw_manual_results {
-    padding-top: 10px;
+	padding-top: 10px;
 }
 
 .lotw_info_yellow {
-   background-image: linear-gradient(to bottom, #3fb618, yellow);
+	background-image: linear-gradient(to bottom, #3fb618, yellow);
 }
 
 .lotw_info_orange {
-   background-image: linear-gradient(to bottom, #3fb618, orange);
+	background-image: linear-gradient(to bottom, #3fb618, orange);
 }
 
 .lotw_info_red {
-   background-image: linear-gradient(to bottom, #3fb618, red);
+	background-image: linear-gradient(to bottom, #3fb618, red);
 }
 
-
 .highcharts-strong {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .highcharts-figure,
 .highcharts-data-table table {
-    min-width: 320px;
-    max-width: 100%;
-    margin: 1em auto;
+	min-width: 320px;
+	max-width: 100%;
+	margin: 1em auto;
 	max-height: calc(100vh - 200px) !important;
-	overflow-y: auto;	
+	overflow-y: auto;
 }
 
 .highcharts-data-table table {
-    font-family: Verdana, sans-serif;
-    border-collapse: collapse;
-    border: 1px solid #ebebeb;
-    margin: 10px auto;
-    text-align: center;
-    width: 100%;
-    max-width: 500px;
+	font-family: Verdana, sans-serif;
+	border-collapse: collapse;
+	border: 1px solid #ebebeb;
+	margin: 10px auto;
+	text-align: center;
+	width: 100%;
+	max-width: 500px;
 }
 
 .highcharts-data-table caption {
-    padding: 1em 0;
-    font-size: 1.2em;
-    color: #555;
+	padding: 1em 0;
+	font-size: 1.2em;
+	color: #555;
 }
 
 .highcharts-data-table th {
-    font-weight: 600;
-    padding: 0.5em;
+	font-weight: 600;
+	padding: 0.5em;
 }
 
 .highcharts-data-table td,
 .highcharts-data-table th,
 .highcharts-data-table caption {
-    padding: 0.5em;
+	padding: 0.5em;
 }
 
 .highcharts-data-table thead tr,
 .highcharts-data-table tr:nth-child(even) {
-    background: #f8f8f8;
+	background: #f8f8f8;
 }
 
 .highcharts-data-table tr:hover {
-    background: #f1f7ff;
+	background: #f1f7ff;
 }
 
 #radio_cat_state {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .previous-qsos table {
-    margin-bottom: 0px;
+	margin-bottom: 0px;
 }
 
 #advancedmap {
@@ -527,29 +550,34 @@ div#station_logbooks_linked_table_paginate {
 }
 
 .lotw-cert-list table {
-    margin-bottom: 0px;
+	margin-bottom: 0px;
 }
 
 .qso_panel a i.fa.fa-star:hover {
-    color: #FFD700 !important;
+	color: #ffd700 !important;
 }
 
-#dx, #state, #gridsquare, #sota, #wwff, #pota {
-    text-transform: uppercase;
+#dx,
+#state,
+#gridsquare,
+#sota,
+#wwff,
+#pota {
+	text-transform: uppercase;
 }
 #awardInfoButton {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 #awardInfoButton h2 {
-    margin-right: 30px; 
+	margin-right: 30px;
 }
 #simpleFleInfo {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 #simpleFleInfo h2 {
-    margin-right: 30px; 
+	margin-right: 30px;
 }
 
 .sfletable{
@@ -574,8 +602,25 @@ div#station_logbooks_linked_table_paginate {
 	position: absolute;
 }
 
-.red { color:var(--red); }
-.green { color:var(--green); }
-.blue { color:var(--indigo); }
-.gray { color:var(--gray); }
-.orange { color:var(--orange); }
+table.dataTable thead th,
+table.dataTable thead td,
+table.dataTable tfoot th,
+table.dataTable tfoot td {
+	text-align: center !important;
+}
+
+.red {
+	color: var(--red);
+}
+.green {
+	color: var(--green);
+}
+.blue {
+	color: var(--indigo);
+}
+.gray {
+	color: var(--gray);
+}
+.orange {
+	color: var(--orange);
+}
