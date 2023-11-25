@@ -11,6 +11,12 @@ body {
 	--bs-table-striped-color: #fff;
 	--bs-table-active-color: #fff;
 	--bs-table-hover-color: #fff;
+	--bs-table-bg: #3d4e5e;
+	--bs-table-accent-bg: #2b3e50;
+}
+
+.border-top {
+	--bs-border-color: #253544;
 }
 
 /*
