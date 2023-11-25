@@ -10,6 +10,9 @@
 	color: white;
 }
 
+.border-top {
+	--bs-border-color: #282828;
+}
 /*
 *	Dark Maps
 */

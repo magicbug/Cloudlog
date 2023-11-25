@@ -9,6 +9,10 @@
 	display: none !important;
 }
 
+a {
+	text-decoration: none !important;
+}
+
 .main-nav .container {
 	margin-top: 0px !important;
 }
@@ -172,7 +176,6 @@ TD.eqsl {
 .eqsl-green {
 	color: #00a000 !important;
 	font-size: 1.1em;
-	text-decoration: none !important;
 }
 .eqsl-red {
 	color: #f00 !important;
@@ -453,6 +456,10 @@ div#station_logbooks_linked_table_paginate {
 .table-striped tbody > tr.activeRow {
     background-color: #5cb85c !important;
 	--bs-table-bg: none;
+}
+
+.border-top {
+	--bs-border-color: #dee2e6;
 }
 
 .activeRow a {

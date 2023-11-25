@@ -3,12 +3,24 @@
 */
 
 .table {
-	--bs-table-border-color: grey;
+	--bs-table-border-color: #444444;
 	--bs-table-striped-bg: #303030;
 	--bs-table-color: #fff;
 	--bs-table-striped-color: #fff;
 	--bs-table-active-color: #fff;
 	--bs-table-hover-color: #fff;
+}
+
+.table > tbody > odd {
+	--bs-table-accent-bg: #303030;
+}
+
+.border-top {
+	--bs-border-color: #444444;
+}
+
+.text-bg-light {
+	color: black !important;
 }
 
 .dxccBgDanger a {

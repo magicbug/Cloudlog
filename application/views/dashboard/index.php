@@ -121,7 +121,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
   <div class="col-sm-8">
 
   	<div class="table-responsive">
-    	<table class="table table-striped table-hover">
+    	<table class="table table-striped table-hover border-top">
 
     		<thead>
 				<tr class="titles">
@@ -189,7 +189,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
 		<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component'); ?>" hx-trigger="load, every 5s"></div>
 		
-    	<table class="table table-striped">
+    	<table class="table table-striped border-top">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-chart-bar"></i> <?php echo lang('dashboard_qso_breakdown'); ?></td>
 			</tr>
@@ -212,7 +212,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
 
 
-		<table class="table table-striped">
+		<table class="table table-striped border-top">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-globe-europe"></i> <?php echo lang('dashboard_countries_breakdown'); ?></td>
 			</tr>
@@ -237,7 +237,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		</table>
 
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_qsl_sent != 0 || $total_qsl_rcvd != 0 || $total_qsl_requested != 0)) { ?>
-		<table class="table table-striped">
+		<table class="table table-striped border-top">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-envelope"></i> <?php echo lang('general_word_qslcards'); ?></td>
 				<td colspan="1"><?php echo lang('general_word_today'); ?></td>
@@ -264,7 +264,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<?php } ?>
 
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_eqsl_sent != 0 || $total_eqsl_rcvd != 0)) { ?>
-		<table class="table table-striped">
+		<table class="table table-striped border-top">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-address-card"></i> <?php echo lang('general_word_eqslcards'); ?></td>
 				<td colspan="1"><?php echo lang('general_word_today'); ?></td>
@@ -285,7 +285,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<?php } ?>
 
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_lotw_sent != 0 || $total_lotw_rcvd != 0)) { ?>
-		<table class="table table-striped">
+		<table class="table table-striped border-top">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-list"></i> <?php echo lang('general_word_lotw'); ?></td>
 				<td colspan="1"><?php echo lang('general_word_today'); ?></td>
@@ -306,7 +306,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<?php } ?>
 
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE)) { ?>
-    	 <table class="table table-striped">
+    	 <table class="table table-striped border-top">
         <tr class="titles">
             <td colspan="2"><i class="fas fa-globe-europe"></i> VUCC-Grids</td>
             <td colspan="1">SAT</td>

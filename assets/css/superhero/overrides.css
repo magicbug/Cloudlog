@@ -15,6 +15,10 @@ body {
 	--bs-table-accent-bg: #2b3e50;
 }
 
+.border-top {
+	--bs-border-color: #253544;
+}
+
 /*
 *	 Maps
 */
