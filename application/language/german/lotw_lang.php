@@ -34,6 +34,7 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = 'Lade die exportierte ADIF-D
 $lang['lotw_upload_type_must_be_adi'] = 'Logdateien müssen den Dateityp .adi haben';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Lade LoTW-Daten für mich';
+$lang['lotw_select_callsign'] = 'Rufzeichen, für das LoTW Bestätigungen geladen werden sollen';
 
 $lang['lotw_report_download_overview_helptext'] = 'Cloudlog nutzt Benutzername und Passwort, welche in Deinem Benutzerprofil gespeichert sind, um einen Report vom LoTW zu laden. Der Report, den Cloudlog lädt, enthält alle Bestätigungen seit dem gewählten Datum oder seit der letzen LoTW-Bestätigung (wird aus Deinem Log extrahiert) bis jetzt.';
 

@@ -34,6 +34,7 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = 'Wyślij pobrany plik ADIF z
 $lang['lotw_upload_type_must_be_adi'] = 'Pliki logu muszą mieć rozszerzenie .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Pobierz dane z LoTW za mnie';
+$lang['lotw_select_callsign'] = 'Select callsign to pull LoTW confirmations for';
 
 $lang['lotw_report_download_overview_helptext'] ='Cloudlog będzie używał loginu i hasła podanego w profilu, aby pobierać raporty z LoTW.Raport będzie zawierał wszystkie potwierdzenia od wybranej daty, lub ostatniej potwierdzonej łączności z LoTW (wybranej z logiu), do teraz.';
 

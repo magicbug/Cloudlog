@@ -24,12 +24,21 @@ class Stations extends CI_Model {
 	}
 
 	function all_of_user($userid = null) {
-		if ($userid == null) { 
+		if ($userid == null) {
 			$userid=$this->session->userdata('user_id'); // Fallback to session-uid, if userid is omitted
 		}
 		$this->db->select('station_profile.*, dxcc_entities.name as station_country, dxcc_entities.end as dxcc_end');
 		$this->db->where('user_id', $userid);
 		$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
+		return $this->db->get('station_profile');
+	}
+
+	function callsigns_of_user($userid = null) {
+		if ($userid == null) {
+			$userid=$this->session->userdata('user_id'); // Fallback to session-uid, if userid is omitted
+		}
+		$this->db->select('distinct(station_profile.station_callsign) as callsign');
+		$this->db->where('user_id', $userid);
 		return $this->db->get('station_profile');
 	}
 

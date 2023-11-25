@@ -34,6 +34,7 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = '下载从 LoTW <a href="htt
 $lang['lotw_upload_type_must_be_adi'] = '日志文件的类型必须为 .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = '为我拉取 LoTW 数据';
+$lang['lotw_select_callsign'] = 'Select callsign to pull LoTW confirmations for';
 
 $lang['lotw_report_download_overview_helptext'] ='Cloudlog 将会使用储存在你个人用户信息当中的 LoTW 用户名和密码从 LoTW 上为你下载报告。Cloudlog 下载的这份报告将会包括自你所选之日以来的或者你最后的 LoTW 确认信息（目前日志当中）以来的所有确认。';
 
