@@ -81,7 +81,7 @@
                         <label class="form-check-label" for="lotw"><?php echo lang('lotw_short'); ?></label>
                     </div>
                    <div class="form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="eqsl" value="1" id="eqsl" <?php if ($this->input->post('eqsl')) echo ' checked="checked"'; ?> >
+                        <input class="form-check-input" type="checkbox" name="eqsl" value="1" id="eqsl" <?php if ($this->input->post('eqsl') || $this->input->method() !== 'post') echo ' checked="checked"'; ?> >
                         <label class="form-check-label" for="eqsl"><?php echo lang('eqsl_short'); ?></label>
                     </div>
                 </div>
