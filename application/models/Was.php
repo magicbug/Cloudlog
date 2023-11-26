@@ -45,14 +45,14 @@ class was extends CI_Model {
             if ($postdata['worked'] != NULL) {
                 $wasBand = $this->getWasWorked($location_list, $band, $postdata);
                 foreach ($wasBand as $line) {
-                    $bandWas[$line->col_state][$band] = '<div class="alert-danger"><a href=\'javascript:displayContacts("' . $line->col_state . '","' . $band . '","'. $postdata['mode'] . '","WAS", "")\'>W</a></div>';
+                    $bandWas[$line->col_state][$band] = '<div class="bg-danger awardsBgDanger"><a href=\'javascript:displayContacts("' . $line->col_state . '","' . $band . '","'. $postdata['mode'] . '","WAS", "")\'>W</a></div>';
                     $states[$line->col_state]['count']++;
                 }
             }
             if ($postdata['confirmed'] != NULL) {
                 $wasBand = $this->getWasConfirmed($location_list, $band, $postdata);
                 foreach ($wasBand as $line) {
-                    $bandWas[$line->col_state][$band] = '<div class="alert-success"><a href=\'javascript:displayContacts("' . $line->col_state . '","' . $band . '","'. $postdata['mode'] . '","WAS", "'.$qsl.'")\'>C</a></div>';
+                    $bandWas[$line->col_state][$band] = '<div class="bg-success awardsBgSuccess"><a href=\'javascript:displayContacts("' . $line->col_state . '","' . $band . '","'. $postdata['mode'] . '","WAS", "'.$qsl.'")\'>C</a></div>';
                     $states[$line->col_state]['count']++;
                 }
             }
