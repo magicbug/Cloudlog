@@ -425,20 +425,20 @@ function changebadge(entityname) {
 		{
 
 			$('#callsign_info').removeClass("lotw_info_orange");
-			$('#callsign_info').removeClass("badge-secondary");
-			$('#callsign_info').removeClass("badge-success");
-			$('#callsign_info').removeClass("badge-danger");
+			$('#callsign_info').removeClass("text-bg-secondary");
+			$('#callsign_info').removeClass("text-bg-success");
+			$('#callsign_info').removeClass("text-bg-danger");
 			$('#callsign_info').attr('title', '');
 
 			if (result.confirmed) {
-				$('#callsign_info').addClass("badge-success");
+				$('#callsign_info').addClass("text-bg-success");
 				$('#callsign_info').attr('title', 'DXCC was already worked and confirmed in the past on this band and mode!');
 			} else if (result.workedBefore) {
-				$('#callsign_info').addClass("badge-success");
+				$('#callsign_info').addClass("text-bg-success");
 				$('#callsign_info').addClass("lotw_info_orange");
 				$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
 			} else {
-				$('#callsign_info').addClass("badge-danger");
+				$('#callsign_info').addClass("text-bg-danger");
 				$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
 			}
 		})
@@ -447,20 +447,20 @@ function changebadge(entityname) {
 		{
 			// Reset CSS values before updating
 			$('#callsign_info').removeClass("lotw_info_orange");
-			$('#callsign_info').removeClass("badge-secondary");
-			$('#callsign_info').removeClass("badge-success");
-			$('#callsign_info').removeClass("badge-danger");
+			$('#callsign_info').removeClass("text-bg-secondary");
+			$('#callsign_info').removeClass("text-bg-success");
+			$('#callsign_info').removeClass("text-bg-danger");
 			$('#callsign_info').attr('title', '');
 
 			if (result.confirmed) {
-				$('#callsign_info').addClass("badge-success");
+				$('#callsign_info').addClass("text-bg-success");
 				$('#callsign_info').attr('title', 'DXCC was already worked and confirmed in the past on this band and mode!');
 			} else if (result.workedBefore) {
-				$('#callsign_info').addClass("badge-success");
+				$('#callsign_info').addClass("text-bg-success");
 				$('#callsign_info').addClass("lotw_info_orange");
 				$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
 			} else {
-				$('#callsign_info').addClass("badge-danger");
+				$('#callsign_info').addClass("text-bg-danger");
 				$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
 			}
 		})
@@ -493,9 +493,9 @@ function reset_fields() {
 	$("#callsign").removeClass("confirmedGrid");
 	$("#callsign").removeClass("workedGrid");
 	$("#callsign").removeClass("newGrid");
-	$('#callsign_info').removeClass("badge-secondary");
-	$('#callsign_info').removeClass("badge-success");
-	$('#callsign_info').removeClass("badge-danger");
+	$('#callsign_info').removeClass("text-bg-secondary");
+	$('#callsign_info').removeClass("text-bg-success");
+	$('#callsign_info').removeClass("text-bg-danger");
 	$('#callsign-image').attr('style', 'display: none;');
 	$('#callsign-image-content').text("");
 	$('#qsl_via').val("");
@@ -960,9 +960,9 @@ $('#dxcc_id').on('change', function() {
 			$('#country').val(convert_case(result.dxcc.name));
 			$('#cqz').val(convert_case(result.dxcc.cqz));
 
-			$('#callsign_info').removeClass("badge-secondary");
-			$('#callsign_info').removeClass("badge-success");
-			$('#callsign_info').removeClass("badge-danger");
+			$('#callsign_info').removeClass("text-bg-secondary");
+			$('#callsign_info').removeClass("text-bg-success");
+			$('#callsign_info').removeClass("text-bg-danger");
 			$('#callsign_info').attr('title', '');
 			$('#callsign_info').text(convert_case(result.dxcc.name));
 
@@ -1031,9 +1031,9 @@ function resetDefaultQSOFields() {
 	$("#callsign").removeClass("workedGrid");
 	$("#callsign").removeClass("confirmedGrid");
 	$("#callsign").removeClass("newGrid");
-	$('#callsign_info').removeClass("badge-secondary");
-	$('#callsign_info').removeClass("badge-success");
-	$('#callsign_info').removeClass("badge-danger");
+	$('#callsign_info').removeClass("text-bg-secondary");
+	$('#callsign_info').removeClass("text-bg-success");
+	$('#callsign_info').removeClass("text-bg-danger");
 	$('#input_usa_state').val("");
 	$('#callsign-image').attr('style', 'display: none;');
 	$('#callsign-image-content').text("");

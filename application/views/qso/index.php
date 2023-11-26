@@ -110,7 +110,7 @@
                 <div class="mb-3 col-md-9">
                   <label for="callsign"><?php echo lang('gen_hamradio_callsign'); ?></label><?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>&nbsp;<i id="check_cluster" data-bs-toggle="tooltip" title="Search DXCluster for latest Spot" class="fas fa-search"></i> <?php } ?>
                   <input type="text" class="form-control" id="callsign" name="callsign" required>
-                  <small id="callsign_info" class="badge text-bg-danger"></small> <a id="lotw_link"><small id="lotw_info" class="badge text-bg-success"></small></a>
+                  <small id="callsign_info" class="badge text-bg-secondary"></small> <a id="lotw_link"><small id="lotw_info" class="badge text-bg-success"></small></a>
                 </div>
                 <div class="mb-3 col-md-3 align-self-center">
                   <small id="qrz_info" class="badge text-bg-secondary"></small>
