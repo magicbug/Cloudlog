@@ -236,16 +236,16 @@ class QSO
 		if ($data['COL_QSL_SENT'] != "N") {
 			switch ($data['COL_QSL_SENT']) {
 			case "Y":
-				$qslstring .= "class=\"qsl-green\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_sent');
+				$qslstring .= "class=\"qsl-green\" data-bs-toggle=\"tooltip\" title=\"".$CI->lang->line('general_word_sent');
 				break;
 			case "Q":
-				$qslstring .= "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_queued');
+				$qslstring .= "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" title=\"".$CI->lang->line('general_word_queued');
 				break;
 			case "R":
-				$qslstring .= "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_requested');
+				$qslstring .= "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" title=\"".$CI->lang->line('general_word_requested');
 				break;
 			case "I":
-				$qslstring .= "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_invalid_ignore');
+				$qslstring .= "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" title=\"".$CI->lang->line('general_word_invalid_ignore');
 				break;
 			default:
 			$qslstring .= "class=\"qsl-red";
@@ -281,16 +281,16 @@ class QSO
 			if ($data['COL_QSL_RCVD'] != "N") {
 				switch ($data['COL_QSL_RCVD']) {
 					case "Y":
-						$qslstring .= "class=\"qsl-green\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_received');
+						$qslstring .= "class=\"qsl-green\" data-bs-toggle=\"tooltip\" title=\"".$CI->lang->line('general_word_received');
 					break;
 					case "Q":
-						$qslstring .= "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_queued');
+						$qslstring .= "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" title=\"".$CI->lang->line('general_word_queued');
 					break;
 					case "R":
-						$qslstring .= "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_requested');
+						$qslstring .= "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" title=\"".$CI->lang->line('general_word_requested');
 					break;
 					case "I":
-						$qslstring .= "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" data-original-title=\"".$CI->lang->line('general_word_invalid_ignore');
+						$qslstring .= "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" title=\"".$CI->lang->line('general_word_invalid_ignore');
 					break;
 					default:
 					$qslstring .= "class=\"qsl-red";
@@ -335,7 +335,7 @@ class QSO
 		$lotwstring = '<span ';
 
 		if ($data['COL_LOTW_QSL_SENT'] == "Y") {
-			$lotwstring .= "data-original-title=\"" . $CI->lang->line('lotw_short')." ".$CI->lang->line('general_word_sent');
+			$lotwstring .= "title=\"" . $CI->lang->line('lotw_short')." ".$CI->lang->line('general_word_sent');
 			if ($data['COL_LOTW_QSLSDATE'] != null) {
 				$timestamp = strtotime($data['COL_LOTW_QSLSDATE']);
 				$lotwstring .= " ". ($timestamp != '' ? date($custom_date_format, $timestamp) : '');
@@ -347,7 +347,7 @@ class QSO
 		$lotwstring .= '<span ';
 
 		if ($data['COL_LOTW_QSL_RCVD'] == "Y") {
-			$lotwstring .= "data-original-title=\"". $CI->lang->line('lotw_short') ." ". $CI->lang->line('general_word_received');
+			$lotwstring .= "title=\"". $CI->lang->line('lotw_short') ." ". $CI->lang->line('general_word_received');
 
 			if ($data['COL_LOTW_QSLRDATE'] != null) {
 				$timestamp = strtotime($data['COL_LOTW_QSLRDATE']);
@@ -372,7 +372,7 @@ class QSO
 		$eqslstring = '<span ';
 
 		if ($data['COL_EQSL_QSL_SENT'] == "Y") {
-			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_sent');
+			$eqslstring .= "title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_sent');
 
 			if ($data['COL_EQSL_QSLSDATE'] != null) {
 				$timestamp = strtotime($data['COL_EQSL_QSLSDATE']);
@@ -385,7 +385,7 @@ class QSO
 		$eqslstring .= ' class="eqsl-' . (($data['COL_EQSL_QSL_SENT'] =='Y') ? 'green':'red') . '">&#9650;</span><span ';
 
 		if ($data['COL_EQSL_QSL_RCVD'] == "Y") {
-			$eqslstring .= "data-original-title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_received');
+			$eqslstring .= "title=\"".$CI->lang->line('eqsl_short')." ".$CI->lang->line('general_word_received');
 
 			if ($data['COL_EQSL_QSLRDATE'] != null) {
 				$timestamp = strtotime($data['COL_EQSL_QSLRDATE']);

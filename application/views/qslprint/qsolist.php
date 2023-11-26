@@ -51,16 +51,16 @@ if ($qsos->result() != NULL) {
 			}
 			switch ($qsl->COL_QSL_SENT) {
 			case "Y":
-				echo "class=\"qsl-green\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_sent').$timestamp;
+				echo "class=\"qsl-green\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_sent').$timestamp;
 				break;
 			case "Q":
-				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_queued').$timestamp;
+				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_queued').$timestamp;
 				break;
 			case "R":
-				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_requested').$timestamp;
+				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_requested').$timestamp;
 				break;
 			case "I":
-				echo "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_invalid_ignore').$timestamp;
+				echo "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_invalid_ignore').$timestamp;
 				break;
 			default:
 				echo "class=\"qsl-red";
@@ -93,16 +93,16 @@ if ($qsos->result() != NULL) {
 			}
 			switch ($qsl->COL_QSL_RCVD) {
 			case "Y":
-				echo "class=\"qsl-green\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_received').$timestamp;
+				echo "class=\"qsl-green\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_received').$timestamp;
 				break;
 			case "Q":
-				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_queued').$timestamp;
+				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_queued').$timestamp;
 				break;
 			case "R":
-				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_requested').$timestamp;
+				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_requested').$timestamp;
 				break;
 			case "I":
-				echo "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" data-original-title=\"".lang('general_word_invalid_ignore').$timestamp;
+				echo "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_invalid_ignore').$timestamp;
 				break;
 			default:
 				echo "class=\"qsl-red";
@@ -131,7 +131,7 @@ if ($qsos->result() != NULL) {
 			echo '<td style=\'text-align: center\' class="eqsl">';
 			echo '<span ';
 			if ($qsl->COL_EQSL_QSL_SENT == "Y") {
-				echo "data-original-title=\"".lang('eqsl_short')." ".lang('general_word_sent');
+				echo "title=\"".lang('eqsl_short')." ".lang('general_word_sent');
 				if ($qsl->COL_EQSL_QSLSDATE != null) {
 					$timestamp = strtotime($qsl->COL_EQSL_QSLSDATE);
 					echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
@@ -144,7 +144,7 @@ if ($qsos->result() != NULL) {
 
 			echo '<span ';
 			if ($qsl->COL_EQSL_QSL_RCVD == "Y") {
-				echo "data-original-title=\"".lang('eqsl_short')." ".lang('general_word_received');
+				echo "title=\"".lang('eqsl_short')." ".lang('general_word_received');
 				if ($qsl->COL_EQSL_QSLRDATE != null) {
 					$timestamp = strtotime($qsl->COL_EQSL_QSLRDATE);
 					echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
@@ -160,7 +160,7 @@ if ($qsos->result() != NULL) {
 			echo '<td style=\'text-align: center\' class="lotw">';
 			echo '<span ';
 			if ($qsl->COL_LOTW_QSL_SENT == "Y") {
-				echo "data-original-title=\"".lang('lotw_short')." ".lang('general_word_sent');
+				echo "title=\"".lang('lotw_short')." ".lang('general_word_sent');
 				if ($qsl->COL_LOTW_QSLSDATE != null) {
 					$timestamp = strtotime($qsl->COL_LOTW_QSLSDATE);
 					echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
@@ -173,7 +173,7 @@ if ($qsos->result() != NULL) {
 
 			echo '<span ';
 			if ($qsl->COL_LOTW_QSL_RCVD == "Y") {
-				echo "data-original-title=\"".lang('lotw_short')." ".lang('general_word_received');
+				echo "title=\"".lang('lotw_short')." ".lang('general_word_received');
 				if ($qsl->COL_LOTW_QSLRDATE) {
 					$timestamp = strtotime($qsl->COL_LOTW_QSLRDATE);
 					echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
