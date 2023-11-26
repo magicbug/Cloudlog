@@ -42,7 +42,7 @@ if ($qsos->result() != NULL) {
 		echo '<td style=\'text-align: center\'>'; if($qsl->COL_SAT_NAME != null) { echo $qsl->COL_SAT_NAME; } else { echo strtolower($qsl->COL_BAND ?? ""); }; echo '</td>';
 		echo '<td style=\'text-align: center\'>' . $qsl->COL_RST_SENT . '</td>';
 		echo '<td style=\'text-align: center\'>' . $qsl->COL_RST_RCVD . '</td>';
-		echo '<td style=\'text-align: center\'><span class="badge badge-light">' . $qsl->station_callsign . '</span></td>';
+		echo '<td style=\'text-align: center\'><span class="badge text-bg-light">' . $qsl->station_callsign . '</span></td>';
 		echo '<td style=\'text-align: center\'>' . $qsl->COL_QSL_VIA . '</td>';
 		echo '<td style=\'text-align: center\'>'; echo_qsl_sent_via($qsl->COL_QSL_SENT_VIA); echo '</td>';
 		echo '<td style=\'text-align: center\' class="qsl">';
