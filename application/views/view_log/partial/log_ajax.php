@@ -16,6 +16,7 @@ function echo_table_header_col($ctx, $name) {
 		case 'Frequency': echo '<th>'.$ctx->lang->line('gen_hamradio_frequency').'</th>'; break;
 		case 'Operator': echo '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
 		case 'Location': echo '<th>'.$ctx->lang->line('cloudlog_station_profile').'</th>'; break;
+		case 'Name': echo '<th>'.$ctx->lang->line('general_word_name').'</th>'; break;
 	}
 }
 
@@ -37,6 +38,7 @@ function echo_table_col($row, $name) {
 		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
 		case 'Operator':echo '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
 		case 'Location':echo '<td>' . ($row->station_profile_name) . '</td>'; break;
+		case 'Name':echo '<td>' . ($row->COL_NAME) . '</td>'; break;
 	}
 }
 

@@ -399,6 +399,7 @@
 								<option value="Grid" <?php if ($user_column1 == "Grid") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_gridsquare'); ?></option>
 								<option value="Distance" <?php if ($user_column1 == "Distance") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_distance'); ?></option>
 								<option value="Operator" <?php if ($user_column1 == "Operator") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_operator'); ?></option>
+								<option value="Name" <?php if ($user_column1 == "Name") { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_name'); ?></option>
 							</select>
 						</div>
 
@@ -419,6 +420,7 @@
 								<option value="Grid" <?php if ($user_column2 == "Grid") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_gridsquare'); ?></option>
 								<option value="Distance" <?php if ($user_column2 == "Distance") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_distance'); ?></option>
 								<option value="Operator" <?php if ($user_column2 == "Operator") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_operator'); ?></option>
+								<option value="Name" <?php if ($user_column2 == "Name") { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_name'); ?></option>
 							</select>
 							</div>
 
@@ -439,6 +441,7 @@
 								<option value="Grid" <?php if ($user_column3 == "Grid") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_gridsquare'); ?></option>
 								<option value="Distance" <?php if ($user_column3 == "Distance") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_distance'); ?></option>
 								<option value="Operator" <?php if ($user_column3 == "Operator") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_operator'); ?></option>
+								<option value="Name" <?php if ($user_column3 == "Name") { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_name'); ?></option>
 							</select>
 							</div>
 
@@ -459,6 +462,7 @@
 								<option value="Grid" <?php if ($user_column4 == "Grid") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_gridsquare'); ?></option>
 								<option value="Distance" <?php if ($user_column4 == "Distance") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_distance'); ?></option>
 								<option value="Operator" <?php if ($user_column4 == "Operator") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_operator'); ?></option>
+								<option value="Name" <?php if ($user_column4 == "Name") { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_name'); ?></option>
 							</select>
 						</div>
 							<div class="mb-3 col-md-12">
@@ -479,6 +483,7 @@
 									<option value="Grid" <?php if ($user_column5 == "Grid") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_gridsquare'); ?></option>
 									<option value="Distance" <?php if ($user_column5 == "Distance") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_distance'); ?></option>
 									<option value="Operator" <?php if ($user_column5 == "Operator") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_operator'); ?></option>
+									<option value="Name" <?php if ($user_column5 == "Name") { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_name'); ?></option>
 									<option value="Location" <?php if ($user_column5 == "Location") { echo " selected =\"selected\""; } ?>><?php echo lang('cloudlog_station_profile'); ?></option>
 								</select>
 							</div>
