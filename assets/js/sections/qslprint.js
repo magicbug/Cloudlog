@@ -32,7 +32,7 @@ function openQsoList(callsign) {
 				nl2br: false,
 				message: html,
 				onshown: function(dialog) {
-					$('[data-toggle="tooltip"]').tooltip();
+					$('[data-bs-toggle="tooltip"]').tooltip();
 				},
 				buttons: [{
 					label: lang_admin_close,
@@ -96,7 +96,7 @@ function showOqrs(id) {
 				nl2br: false,
 				message: html,
 				onshown: function(dialog) {
-					$('[data-toggle="tooltip"]').tooltip();
+					$('[data-bs-toggle="tooltip"]').tooltip();
 				},
 				buttons: [{
 					label: lang_admin_close,
