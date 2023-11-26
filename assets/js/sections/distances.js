@@ -150,7 +150,7 @@ function getDistanceQsos(distance) {
 				nl2br: false,
 				message: html,
 				onshown: function(dialog) {
-				   $('[data-toggle="tooltip"]').tooltip();
+				   $('[data-bs-toggle="tooltip"]').tooltip();
 				   $('.contacttable').DataTable({
 						"pageLength": 25,
 						responsive: false,
