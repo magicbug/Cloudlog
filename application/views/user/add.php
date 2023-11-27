@@ -355,6 +355,8 @@
                                             <?php echo lang('gen_hamradio_distance'); ?></option>
                                         <option value="Operator">
                                             <?php echo lang('gen_hamradio_operator'); ?></option>
+                                        <option value="Name">
+                                            <?php echo lang('general_word_name'); ?></option>
                                     </select>
                                 </div>
 
@@ -386,6 +388,8 @@
                                             <?php echo lang('gen_hamradio_distance'); ?></option>
                                         <option value="Operator">
                                             <?php echo lang('gen_hamradio_operator'); ?></option>
+                                        <option value="Name">
+                                            <?php echo lang('general_word_name'); ?></option>
                                     </select>
                                 </div>
 
@@ -417,6 +421,8 @@
                                             <?php echo lang('gen_hamradio_distance'); ?></option>
                                         <option value="Operator">
                                             <?php echo lang('gen_hamradio_operator'); ?></option>
+                                        <option value="Name">
+                                            <?php echo lang('general_word_name'); ?></option>
                                     </select>
                                 </div>
 
@@ -448,6 +454,8 @@
                                             <?php echo lang('gen_hamradio_distance'); ?></option>
                                         <option value="Operator">
                                             <?php echo lang('gen_hamradio_operator'); ?></option>
+                                        <option value="Name">
+                                            <?php echo lang('general_word_name'); ?></option>
                                     </select>
                                 </div>
 
@@ -480,6 +488,8 @@
                                             <?php echo lang('gen_hamradio_distance'); ?></option>
                                         <option value="Operator">
                                             <?php echo lang('gen_hamradio_operator'); ?></option>
+                                        <option value="Name">
+                                            <?php echo lang('general_word_name'); ?></option>
                                         <option value="Location">
                                             <?php echo lang('cloudlog_station_profile'); ?></option>
                                     </select>

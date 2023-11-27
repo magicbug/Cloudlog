@@ -15,6 +15,7 @@ function echo_table_header_col($ctx, $name) {
 		case 'Band': echo '<th>'.$ctx->lang->line('gen_hamradio_band').'</th>'; break;
 		case 'Frequency': echo '<th>'.$ctx->lang->line('gen_hamradio_frequency').'</th>'; break;
 		case 'Operator': echo '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
+		case 'Name': echo '<th>'.$ctx->lang->line('general_word_name').'</th>'; break;
 	}
 }
 
@@ -35,6 +36,7 @@ function echo_table_col($row, $name) {
 		case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'.$row->COL_SAT_NAME.'</a></td>'; } else { if($row->COL_FREQ != null) { echo $ci->frequency->hz_to_mhz($row->COL_FREQ); } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
 		case 'Operator': echo '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
+		case 'Name': echo '<td>' . ($row->COL_NAME) . '</td>'; break;
 	}
 }
 
