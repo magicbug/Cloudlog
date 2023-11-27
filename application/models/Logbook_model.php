@@ -566,15 +566,15 @@ class Logbook_model extends CI_Model {
 
 
 		$result = $this->exists_clublog_credentials($data['station_id']);
-		if (isset($result->user_clublog_password) && isset($result->user_clublog_name)) { //  && $result->hrdlogrealtime == 1) {
+		if (isset($result->ucp) && isset($result->ucn) && (($result->ucp ?? '') != '') && (($result->ucn ?? '') != '')) { //  && $result->hrdlogrealtime == 1) {
 			$CI =& get_instance();
 			$CI->load->library('AdifHelper');
 			$qso = $this->get_qso($last_id,true)->result();
 
 			$adif = $CI->adifhelper->getAdifLine($qso[0]);
-			$result = $this->push_qso_to_clublog($result->user_clublog_name, $result->user_clublog_password, $data['COL_STATION_CALLSIGN'], $adif);
+			$result = $this->push_qso_to_clublog($result->ucn, $result->ucp, $data['COL_STATION_CALLSIGN'], $adif);
 			if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') || ($result['status'] == 'duplicate') || ($result['status'] == 'auth_error') )){
-		  		$this->mark_clublog_qso_sent($last_id);
+		  		$this->mark_clublog_qsos_sent($last_id);
 			}
 		}
 	
@@ -647,20 +647,18 @@ class Logbook_model extends CI_Model {
   }
 
   /*
-   * Function checks if a Cloudlog Credebtials exists in the table with the given station id
+   * Function checks if a Clublog Credebtials exists in the table with the given station id
   */
   function exists_clublog_credentials($station_id) {
-      $sql = 'select auth.user_clublog_name, auth.user_clublog_password from '.$this->config->item('auth_table').' auth inner join station_profile prof on (auth.user_id=prof.user_id) where prof.station_id = ' . $station_id;
+      $sql = 'select auth.user_clublog_name ucn, auth.user_clublog_password ucp from '.$this->config->item('auth_table').' auth inner join station_profile prof on (auth.user_id=prof.user_id) where prof.station_id = ' . $station_id;
 
-	log_message("Error",$sql);
       $query = $this->db->query($sql);
 
       $result = $query->row();
 
       if ($result) {
           return $result;
-      }
-      else {
+      } else {
           return false;
       }
   }
@@ -734,7 +732,6 @@ class Logbook_model extends CI_Model {
 		  $returner['status']=$response;
 	  }
 	  curl_close ($request); 
-	log_message("Error","Req: ".$adif." /// Resp: ".$response);
 	  return ($returner);
   }
 
