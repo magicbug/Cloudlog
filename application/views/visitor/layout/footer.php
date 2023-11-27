@@ -105,14 +105,14 @@
 
   if (grid_four_confirmed_count > 0) {
      var span = document.getElementById('confirmed_grids');
-     span.innerText = span.textContent = '('+grid_four_confirmed_count+' grid squares) ';
+     //span.innerText = span.textContent = '('+grid_four_confirmed_count+' grid squares) ';
   }
   if ((grid_four_count-grid_four_confirmed_count) > 0) {
      var span = document.getElementById('worked_grids');
-     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' grid squares) ';
+     //span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' grid squares) ';
   }
   var span = document.getElementById('sum_grids');
-  span.innerText = span.textContent = ' Total Count: '+grid_four_count+' grid squares';
+  //span.innerText = span.textContent = ' Total Count: '+grid_four_count+' grid squares';
 
   var maidenhead = L.maidenhead().addTo(map);
 
@@ -201,6 +201,7 @@
 <?php } ?>
 <?php } ?>
     </script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/js/sections/gridmap.js?"></script>
     <?php if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
