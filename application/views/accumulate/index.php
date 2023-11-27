@@ -7,7 +7,7 @@
                 <div class="mb-3 row">
                     <label class="col-md-1 control-label" for="band">Band</label>
                     <div class="col-md-3">
-                        <select id="band" name="band" class="form-select form-select">
+                        <select id="band" name="band" class="form-select">
                             <option value="All">All</option>
                             <?php foreach($worked_bands as $band) {
                                 echo '<option value="' . $band . '">' . $band . '</option>'."\n";
@@ -17,7 +17,7 @@
 
                     <label class="col-md-1 control-label" for="mode">Mode</label>
                     <div class="col-md-3">
-                        <select id="mode" name="mode" class="form-select form-select">
+                        <select id="mode" name="mode" class="form-select">
                             <option value="All">All</option>
                             <?php
                             foreach($modes->result() as $mode){

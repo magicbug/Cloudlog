@@ -69,7 +69,7 @@
         <div class="row">
             <div class="mb-3 col-sm-6" id="us_state">
 		    <label for="stateInput"><?php echo lang("station_location_state"); ?></label>
-		    <select class="form-select form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+		    <select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 		    	<option value="" selected></option>
 				<option value="AK">Alaska</option>
 				<option value="AL">Alabama</option>
@@ -127,7 +127,7 @@
 
 		  <div class="mb-3 col-sm-6" id="canada_state">
 		    <label for="stateInput"><?php echo lang("station_location_state"); ?></label>
-		    <select class="form-select form-select" name="station_ca_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+		    <select class="form-select" name="station_ca_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 		    	<option value="" selected></option>
 				<option value="AB">Alberta</option>
 				<option value="BC">British Columbia</option>
