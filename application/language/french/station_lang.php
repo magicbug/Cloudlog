@@ -106,5 +106,6 @@ $lang['station_location_oqrs_email_alert'] = "OQRS Email alert";
 $lang['station_location_oqrs_email_hint'] = "Make sure email is set up under admin and global options.";
 $lang['station_location_oqrs_text'] = "OQRS Text";
 $lang['station_location_oqrs_text_hint'] = "Some info you want to add regarding QSL'ing.";
+$lang['station_location_clublog_realtime_upload']='ClubLog Realtime Upload';
 
 
