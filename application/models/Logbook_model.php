@@ -633,9 +633,9 @@ class Logbook_model extends CI_Model {
    */
   function exists_hrdlog_code($station_id) {
 	  $sql = 'select hrdlog_code, hrdlogrealtime from station_profile
-		  where station_id = ' . $station_id;
+		  where station_id = ?';
 
-	  $query = $this->db->query($sql);
+	  $query = $this->db->query($sql,$station_id);
 
 	  $result = $query->row();
 
@@ -650,9 +650,9 @@ class Logbook_model extends CI_Model {
    * Function checks if a Clublog Credebtials exists in the table with the given station id
   */
   function exists_clublog_credentials($station_id) {
-      $sql = 'select auth.user_clublog_name ucn, auth.user_clublog_password ucp from '.$this->config->item('auth_table').' auth inner join station_profile prof on (auth.user_id=prof.user_id) where prof.station_id = ' . $station_id;
+      $sql = 'select auth.user_clublog_name ucn, auth.user_clublog_password ucp from '.$this->config->item('auth_table').' auth inner join station_profile prof on (auth.user_id=prof.user_id) where prof.station_id = ?';
 
-      $query = $this->db->query($sql);
+      $query = $this->db->query($sql, $station_id);
 
       $result = $query->row();
 
@@ -669,9 +669,9 @@ class Logbook_model extends CI_Model {
   */
   function exists_qrz_api_key($station_id) {
       $sql = 'select qrzapikey, qrzrealtime from station_profile
-            where station_id = ' . $station_id;
+            where station_id = ?';
 
-      $query = $this->db->query($sql);
+      $query = $this->db->query($sql, $station_id);
 
       $result = $query->row();
 
@@ -688,9 +688,9 @@ class Logbook_model extends CI_Model {
 	*/
   function exists_webadif_api_key($station_id) {
 	  $sql = 'select webadifapikey, webadifapiurl, webadifrealtime from station_profile
-		  where station_id = ' . $station_id;
+		  where station_id = ?';
 
-	  $query = $this->db->query($sql);
+	  $query = $this->db->query($sql, $station_id);
 
 	  $result = $query->row();
 
