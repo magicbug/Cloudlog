@@ -1,5 +1,5 @@
 	<form method="post" class="d-flex align-items-center">
-		<select id="quicklookuptype" name="type" class="form-select w-auto">
+		<select id="quicklookuptype" name="type" class="form-select w-auto me-2">
 			<option value="cq">CQ Zone</option>
 			<option value="dxcc">DXCC</option>
 			<option value="vucc">Gridsquare</option>
@@ -98,7 +98,7 @@
 			?>
 
 		</select>
-		<div>&nbsp;</div><button id="button1id" type="button" name="button1id" class="btn btn-primary ld-ext-right" onclick="getLookupResult(this.form)">Show<div class="ld ld-ring ld-spin"></div></button>
+		<div>&nbsp;</div><button id="button1id" type="button" name="button1id" class="btn btn-primary ld-ext-right ms-5" onclick="getLookupResult(this.form)">Show<div class="ld ld-ring ld-spin"></div></button>
 	</form>
 	<br />
 	<div class="table-responsive" id="lookupresulttable">
