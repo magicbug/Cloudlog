@@ -566,7 +566,7 @@ class Logbook_model extends CI_Model {
 
 
 		$result = $this->exists_clublog_credentials($data['station_id']);
-		if (isset($result->ucp) && isset($result->ucn) && (($result->ucp ?? '') != '') && (($result->ucn ?? '') != '')) { //  && $result->hrdlogrealtime == 1) {
+		if (isset($result->ucp) && isset($result->ucn) && (($result->ucp ?? '') != '') && (($result->ucn ?? '') != '') && ($result->clublogrealtime == 1)) {
 			$CI =& get_instance();
 			$CI->load->library('AdifHelper');
 			$qso = $this->get_qso($last_id,true)->result();
@@ -650,7 +650,7 @@ class Logbook_model extends CI_Model {
    * Function checks if a Clublog Credebtials exists in the table with the given station id
   */
   function exists_clublog_credentials($station_id) {
-      $sql = 'select auth.user_clublog_name ucn, auth.user_clublog_password ucp from '.$this->config->item('auth_table').' auth inner join station_profile prof on (auth.user_id=prof.user_id) where prof.station_id = ?';
+      $sql = 'select auth.user_clublog_name ucn, auth.user_clublog_password ucp, prof.clublogrealtime from '.$this->config->item('auth_table').' auth inner join station_profile prof on (auth.user_id=prof.user_id) where prof.station_id = ? and prof.clublogrealtime=1';
 
       $query = $this->db->query($sql, $station_id);
 
