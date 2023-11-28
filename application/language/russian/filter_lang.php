@@ -86,7 +86,7 @@ $lang['filter_general_none'] = '- без - (т.е. /MM, /AM)';
 // $lang['gen_hamradio_mode']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_band']           --> application/language/english/general_words_lang.php
 
-$lang['filter_general_propagation'] = 'Прохождение';
+$lang['filter_general_propagation'] = 'Распространение';
 // $lang['gen_hamradio_cq_zone']        --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_iota']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_sota']           --> application/language/english/general_words_lang.php
