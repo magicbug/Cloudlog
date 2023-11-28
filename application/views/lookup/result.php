@@ -27,10 +27,10 @@ foreach ($result as $mode => $value) {
 		$info = '<td>';
 
 		if ($val == 'W') {
-			$info .= '<div class=\'awardsBgDanger\'>' . $linkinfo . '</div>';
+			$info .= '<div class=\'bg-danger awardsBgDanger\'>' . $linkinfo . '</div>';
 		}
 		else if ($val == 'C') {
-			$info .= '<div class=\'awardsBgSuccess\'>' . $linkinfo . '</div>';
+			$info .= '<div class=\'bg-success awardsBgSuccess\'>' . $linkinfo . '</div>';
 		}
 		else {
 			$info .= $val;
