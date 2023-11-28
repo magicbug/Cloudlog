@@ -27,31 +27,31 @@
 
                     <?php if(validation_errors()) { ?>
                     <div class="alert alert-danger">
-                        <a class="close" data-dismiss="alert">x</a>
+                        <a class="btn-close" data-bs-dismiss="alert">x</a>
                         <?php echo validation_errors(); ?>
                     </div>
                     <?php } ?>
 
                     <?php echo form_open('options/dxcluster_save'); ?>
 
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="globalSearch"><?php echo lang('options_dxcluster_provider'); ?></label>
                             <p><?php echo lang('options_dxcluster_longtext'); ?></p>
                             <input type="text" name="dxcache_url" class="form-control" id="dxcache_url" aria-describedby="dxcache_urlHelp" value="<?php echo $this->optionslib->get_option('dxcache_url'); ?>">
                             <small id="dxcache_urlHelp" class="form-text text-muted"><?php echo lang('options_dxcluster_hint'); ?></small>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="maxAgeSelect"><?php echo lang('options_dxcluster_maxage'); ?></label>
-                            <select class="custom-select" id="maxAgeSelect" name="dxcluster_maxage" aria-describedby="dxcluster_maxageHelp" required>
+                            <select class="form-select" id="maxAgeSelect" name="dxcluster_maxage" aria-describedby="dxcluster_maxageHelp" required>
 				<option value="120"<?php if ($this->optionslib->get_option('dxcluster_maxage') == '120') { echo " selected"; } ?>>2 Hours</option>
 				<option value="60"<?php if ($this->optionslib->get_option('dxcluster_maxage') == '60') { echo " selected"; } ?>>60 Minutes</option>
 				<option value="30"<?php if ($this->optionslib->get_option('dxcluster_maxage') == '30') { echo " selected"; } ?>>30 Minutes</option>
                                 </select>
                             <small id="dxcluster_maxageHelp" class="form-text text-muted"><?php echo lang('options_dxcluster_maxage_hint'); ?></small>
                         </div>
-			<div class="form-group">
+			<div class="mb-3">
                             <label for="decontSelect"><?php echo lang('options_dxcluster_decont'); ?></label>
-                            <select class="custom-select" id="decontSelect" name="dxcluster_decont" aria-describedby="dxcluster_decontHelp" required>
+                            <select class="form-select" id="decontSelect" name="dxcluster_decont" aria-describedby="dxcluster_decontHelp" required>
 				<option value="AF"<?php if ($this->optionslib->get_option('dxcluster_decont') == 'AF') { echo " selected"; } ?>>Africa</option>
 				<option value="AN"<?php if ($this->optionslib->get_option('dxcluster_decont') == 'AN') { echo " selected"; } ?>>Antarctica</option>
 				<option value="AS"<?php if ($this->optionslib->get_option('dxcluster_decont') == 'AS') { echo " selected"; } ?>>Asia</option>

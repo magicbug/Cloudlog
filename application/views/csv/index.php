@@ -14,10 +14,10 @@
 		<div class="card-body">
 
 			<form class="form" action="<?php echo site_url('csv/export'); ?>" method="post" enctype="multipart/form-data">
-				<div class="form-row">
-					<div class="form-group col-md-3">
+				<div class="row">
+					<div class="mb-3 col-md-3">
 						<label for="station_profile"><?php echo lang('cloudlog_station_profile'); ?></label>
-						<select name="station_profile" class="station_id custom-select">
+						<select name="station_profile" class="station_id form-select">
 							<option value="All"><?php echo lang('general_word_all'); ?></option>
 							<?php foreach ($station_profile->result() as $station) { ?>
 								<option value="<?php echo $station->station_id; ?>"><?php echo lang('gen_hamradio_callsign') . ": "; ?><?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
@@ -26,10 +26,10 @@
 					</div>
 				</div>
 
-				<div class="form-row">
-				<div class="form-group col-md-3">
+				<div class="row">
+				<div class="mb-3 col-md-3">
 					<label for="band"><?php echo lang('gen_hamradio_band'); ?></label>
-					<select id="band" name="band" class="custom-select">
+					<select id="band" name="band" class="form-select">
 						<option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> ><?php echo lang('general_word_all'); ?></option>
 						<?php foreach($worked_bands as $band) {
 							echo '<option value="' . $band . '"';
@@ -38,9 +38,9 @@
 						} ?>
 					</select>
 				</div>
-					<div class="form-group col-md-3">
+					<div class="mb-3 col-md-3">
 						<label for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
-						<select id="mode" name="mode" class="form-control custom-select">
+						<select id="mode" name="mode" class="form-select">
 							<option value="All"><?php echo lang('general_word_all'); ?></option>
 							<?php
 							foreach($modes->result() as $mode){
@@ -54,9 +54,9 @@
 						</select>
 					</div>
 
-				<div class="form-group col-md-4">
+				<div class="mb-3 col-md-4">
 					<label for="dxcc_id"><?php echo lang('gen_hamradio_dxcc'); ?></label>
-					<select class="custom-select" id="dxcc_id" name="dxcc_id">
+					<select class="form-select" id="dxcc_id" name="dxcc_id">
 						<option value="All"><?php echo lang('general_word_all'); ?></option>
 						<?php
 						foreach($dxcc as $d){
@@ -75,10 +75,10 @@
 
 
 
-				<div class="form-row">
-					<div class="form-group col-md-3">
+				<div class="row">
+					<div class="mb-3 col-md-3">
 					<label for="cqz"><?php echo lang('gen_hamradio_cq_zone'); ?></label>
-					<select class="custom-select" id="cqz" name="cqz">
+					<select class="form-select" id="cqz" name="cqz">
 						<option value="All"><?php echo lang('general_word_all'); ?></option>
 						<?php
 						for ($i = 1; $i<=40; $i++) {
@@ -88,9 +88,9 @@
 					</select>
 				</div>
 
-				<div class="form-group col-md-5">
+				<div class="mb-3 col-md-5">
 					<label for="selectPropagation"><?php echo lang('gen_hamradio_propagation_mode'); ?></label>
-					<select class="custom-select" id="selectPropagation" name="prop_mode">
+					<select class="form-select" id="selectPropagation" name="prop_mode">
 						<option value="All"><?php echo lang('general_word_all'); ?></option>
 						<option value="AS">Aircraft Scatter</option>
 						<option value="AUR">Aurora</option>
@@ -113,27 +113,17 @@
 					</select>
 				</div>
 				</div>
-				<div class="form-row">
-					<div class="form-group col-md-3">
-						<label for="datetimepicker1"><?php echo lang('gen_from_date') . ':'; ?></label>
-						<div class="exportdatepicker input-group date col-md-12" id="datetimepicker1" data-target-input="nearest">
-							<input name="fromdate" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
-							<div class="input-group-append"  data-target="#datetimepicker1" data-toggle="datetimepicker">
-								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-							</div>
-						</div>
-					</div>
+				<div class="row">
+                    <div class="mb-3 col-md-3">
+                        <label for="fromdate"><?php echo lang('gen_from_date') . ": " ?></label>
+                        <input name="fromdate" id="fromdate" type="date" class="form-control w-auto">
+                    </div>
 
-					<div class="form-group col-md-3">
-						<label for="datetimepicker2"><?php echo lang('gen_to_date') . ':'; ?></label>
-						<div class="exportdatepicker input-group date col-md-12" id="datetimepicker2" data-target-input="nearest">
-							<input name="todate" totype="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
-							<div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-							</div>
-						</div>
-					</div>
-				</div>
+                    <div class="mb-3 col-md-3">
+                        <label for="todate"><?php echo lang('gen_to_date') . ": " ?></label>
+                        <input name="todate" id="todate" type="date" class="form-control w-auto">
+                    </div>
+                </div>
 				<br>
 				<button type="submit" class="btn btn-primary mb-2" value="Export"><?php echo lang('general_word_export'); ?></button>
 			</form>

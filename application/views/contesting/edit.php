@@ -27,21 +27,21 @@
 			<?php echo validation_errors(); ?>
 
 			<form method="post" action="<?php echo site_url('contesting/edit/'); ?><?php echo $contest->id; ?>" name="edit_contest">
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="contestnameInput"><?php echo lang('contesting_contest_name'); ?></label>
 					<input type="text" class="form-control" name="name" id="nameInput" aria-describedby="contestnameInputHelp" value="<?php if(set_value('name') != "") { echo set_value('name'); } else { echo $contest->name; } ?>" required>
 					<small id="contestnameInputHelp" class="form-text text-muted"><?php echo lang('admin_contest_name_of_contest'); ?></small>
 				</div>
 
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="adifnameInput"><?php echo lang('admin_contest_name_adif'); ?></label>
 					<input type="text" class="form-control" name="adifname" id="adifnameInput" aria-describedby="adifnameInputHelp" value="<?php if(set_value('adifname') != "") { echo set_value('adifname'); } else { echo $contest->adifname; } ?>">
 					<small id="adifnameInputHelp" class="form-text text-muted"><?php echo lang('admin_contest_name_of_adif'); ?></small>
 				</div>
 
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="activeInput"><?php echo lang('admin_contest_menu_active'); ?></label>
-					<select id="activeInput" class="form-control mode form-control-sm" name="active">
+					<select id="activeInput" class="form-select mode form-select-sm" name="active">
         				<option value="1" <?php echo $contest->active == 1 ? "selected=\"selected\"" : ""; ?>>
             				<?php echo lang('admin_contest_menu_active'); ?>
         				</option>

@@ -67,7 +67,7 @@
             echo '</table></div>';
     }
     else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>No streak found!</div>';
+        echo '<div class="alert alert-danger" role="alert"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>No streak found!</div>';
     }
     ?>
 
@@ -115,7 +115,7 @@
         echo '</table></div>';
     }
     else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>No current streak found!</div>';
+        echo '<div class="alert alert-danger" role="alert"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>No current streak found!</div>';
     }
     ?>
 </div>

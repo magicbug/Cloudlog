@@ -32,7 +32,7 @@ function openQsoList(callsign) {
 				nl2br: false,
 				message: html,
 				onshown: function(dialog) {
-					$('[data-toggle="tooltip"]').tooltip();
+					$('[data-bs-toggle="tooltip"]').tooltip();
 				},
 				buttons: [{
 					label: lang_admin_close,
@@ -58,7 +58,7 @@ function addQsoToPrintQueue(id) {
 			line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(3)").text()+'</td>';
 			line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(4)").text()+'</td>';
 			line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(6)").text()+'</td>';
-			line += '<td style=\'text-align: center\'><span class="badge badge-light">'+$("#qsolist_"+id).find("td:eq(5)").text()+'</span></td>';
+			line += '<td style=\'text-align: center\'><span class="badge text-bg-light">'+$("#qsolist_"+id).find("td:eq(5)").text()+'</span></td>';
 			line += '<td style=\'text-align: center\'>'+$("#qsolist_"+id).find("td:eq(7)").text()+'</td>';
 			line += '<td style=\'text-align: center\'><button onclick="mark_qsl_sent('+id+', \'B\')" class="btn btn-sm btn-success"><i class="fa fa-check"></i></button></td>';
 			line += '<td style=\'text-align: center\'><button onclick="deleteFromQslQueue('+id+')" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button></td></td>';
@@ -96,7 +96,7 @@ function showOqrs(id) {
 				nl2br: false,
 				message: html,
 				onshown: function(dialog) {
-					$('[data-toggle="tooltip"]').tooltip();
+					$('[data-bs-toggle="tooltip"]').tooltip();
 				},
 				buttons: [{
 					label: lang_admin_close,

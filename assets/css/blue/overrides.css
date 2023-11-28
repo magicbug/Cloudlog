@@ -1,88 +1,173 @@
-thead>tr>td {
-    position: sticky;
-    top: 45px;
-    background-color: aliceblue;
+/*!
+ * No overrides for the default theme as it aligns with general.css
+*/
+
+body {
+	background-color: #2b3e50;
 }
 
-.workedGrid {
-    border-color: green;
+.table {
+	--bs-table-color: #fff;
+	--bs-table-striped-color: #fff;
+	--bs-table-active-color: #fff;
+	--bs-table-hover-color: #fff;
+	--bs-table-bg: #3d4e5e;
+	--bs-table-accent-bg: #2b3e50;
 }
 
-.newGrid {
-    border-color: red;
-    border-width: 2px;
+.border-top {
+	--bs-border-color: #253544;
 }
 
-.settings-nav {
-    margin-bottom: 15px;
-    list-style: none;
-    background-color: #fff;
-    border: 1px solid #d1d5da;
-    border-radius: 3px;
+/*
+*	 Maps
+*/
+
+.leaflet-tile {
+	filter: invert() hue-rotate(180deg) sepia(100%) hue-rotate(180deg) !important;
 }
 
-.settings-nav .nav-link {
-    list-style: none;
-    background-color: #fff;
-    border: 1px solid #d1d5da;
+path.grid-rectangle {
+	stroke: rgba(200, 200, 200, 0.5);
 }
 
-.settings-nav .nav-link:hover {
-    background-color: #e1e4e8;
+span.grid-text > font {
+	color: rgba(220, 220, 220, 1) !important;
+	-webkit-text-stroke: 0.6px black !important;
 }
 
-/* QSL Card Management CSS */
+path.grid-confirmed {
+	fill: rgba(144, 238, 144, 0.4) !important;
+	stroke: rgba(144, 238, 144, 0.4) !important;
+}
 
-.qso-map-new .card-header {
-    background: #0F2027;
-    /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #2C5364, #203A43, #0F2027);
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    color: #ffffff;
+path.grid-worked {
+	fill: rgba(220, 50, 50, 0.4) !important;
+	stroke: rgba(220, 50, 50, 0.4) !important;
+}
+
+#map,
+#qsomap {
+	background-color: #2e3e50;
+}
+
+/* 
+*	Dark Navigation 
+*/
+
+/* Navigation background */
+
+.bg-light {
+	background-color: #4e5d6c !important;
+}
+
+/* Inactive Links */
+
+.navbar-light .navbar-nav .nav-link {
+	color: rgba(255, 255, 255, 0.6);
+}
+
+/* Active Links and Logo */
+
+.navbar-light .navbar-brand,
+.navbar-light .navbar-brand:focus,
+.navbar-light .navbar-brand:hover,
+.navbar-light .navbar-nav .active > .nav-link,
+.navbar-light .navbar-nav .nav-link:focus,
+.navbar-light .navbar-nav .nav-link:hover {
+	color: #fff;
+}
+
+/* Hamburger Menu */
+
+.navbar-light .navbar-toggler-icon {
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.6%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* 
+*	Dark inputs 
+*/
+
+.form-control,
+.form-control-sm,
+.form-control:focus,
+.form-control:disabled,
+.form-select {
+	background-color: rgba(20, 41, 62, 0.6);
+	color: #fff;
 }
 
 div.alert-danger {
-    color: #ffffff;
+	color: #ffffff;
 }
 
 .bootstrap-dialog.type-primary .modal-header {
-    background-color: #2B3E50;
+	background-color: #2b3e50;
 }
 
-.selectize-dropdown, .selectize-input, .selectize-input input {
-    color: #495057;
+.selectize-dropdown,
+.selectize-input,
+.selectize-input input {
+	color: #fff;
 }
 
-.selectize-input, .selectize-control.single .selectize-input.input-active {
-    color: #495057;
+.selectize-input,
+.selectize-control.single .selectize-input.input-active {
+	background: #2b3d51;
+	color: #fff;
 }
 
 .selectize-input {
-    border-radius: 0;
+	border-radius: 0;
+}
+
+.selectize-input.full {
+	background-color: #2b3d51;
+}
+
+.selectize-dropdown,
+.selectize-dropdown.form-control {
+	background: #737f8b;
 }
 
 .selectize-input.focus {
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .15);
-    border-radius: 0;
-}
-
-.selectize-dropdown .optgroup-header {
-    color: #495057;
-}
-
-.selectize-input.focus {
-    color: #495057;
-    background-color: #fff;
-    border-color: #f1b287;
-    box-shadow: 0 0 0 .2rem rgba(223, 105, 26, .25)
+	color: #495057;
+	background-color: #fff;
+	border-color: #f1b287;
+	box-shadow: 0 0 0 0.2rem rgba(223, 105, 26, 0.25);
 }
 
 .selectize-input.dropdown-active {
-    border-radius: 0;
+	border-radius: 0;
 }
 
-.selectize-dropdown, .selectize-dropdown.form-control {
-    border-radius: 0;
+.selectize-dropdown,
+.selectize-dropdown.form-control {
+	border-radius: 0;
+}
+
+.qso_call {
+	float: left;
+	width: 140px;
+}
+
+.qso_icons {
+	float: right;
+}
+
+#qsoList_wrapper th {
+	text-align: left !important;
+	white-space: nowrap;
+}
+#qsoList_wrapper td {
+	text-align: left !important;
+	white-space: nowrap;
+}
+
+#lotw_badge {
+	float: right;
+}
+
+#edit_qso:not(.btn) {
+	float: left;
 }

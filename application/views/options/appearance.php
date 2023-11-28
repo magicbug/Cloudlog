@@ -27,15 +27,15 @@
 
                     <?php if(validation_errors()) { ?>
                     <div class="alert alert-danger">
-                        <a class="close" data-dismiss="alert">x</a>
+                        <a class="btn-close" data-bs-dismiss="alert">x</a>
                         <?php echo validation_errors(); ?>
                     </div>
                     <?php } ?>
 
                     <?php echo form_open('options/appearance_save'); ?>
-                        <!-- <div class="form-group">
+                        <!-- <div class="mb-3">
                             <label for="themeSelect">Language</label>
-                            <select class="custom-select" id="langSelect" name="language" aria-describedby="langHelp" required>
+                            <select class="form-select" id="langSelect" name="language" aria-describedby="langHelp" required>
                                 <?php foreach ($language_options as &$lang_opt) { ?>
                                     <option value='<?php echo $lang_opt; ?>' <?php if($this->optionslib->get_option('language')== $lang_opt) { echo "selected=\"selected\""; } ?>><?php echo ucfirst($lang_opt); ?></option>
                                 <?php } ?>
@@ -44,9 +44,9 @@
                         </div> -->
 
                         <!-- Form options for selecting global theme choice -->
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="themeSelect"><?php echo lang('options_theme'); ?></label>
-                            <select class="custom-select" id="themeSelect" name="theme" aria-describedby="themeHelp" required>
+                            <select class="form-select" id="themeSelect" name="theme" aria-describedby="themeHelp" required>
 								<?php
 								foreach ($themes as $theme) {
 									echo '<option value="' . $theme->foldername . '"';
@@ -61,23 +61,23 @@
                         </div>
                         
                         
-                            <select class="custom-select" id="globalSearch" name="globalSearch" style="display: none;">
+                            <select class="form-select" id="globalSearch" name="globalSearch" style="display: none;">
                                 <option value='true' <?php if($this->optionslib->get_option('global_search') == "true") { echo "selected=\"selected\""; } ?>>Enabled</option>
                                 <option value='false' <?php if($this->optionslib->get_option('global_search') == "false") { echo "selected=\"selected\""; } ?>>Disabled</option>
                             </select>
 
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="dashboardBanner"><?php echo lang('options_dashboard_notification_banner'); ?></label>
-                            <select class="custom-select" id="dashboardBanner" name="dashboardBanner" aria-describedby="dashboardBannerHelp" required>
+                            <select class="form-select" id="dashboardBanner" name="dashboardBanner" aria-describedby="dashboardBannerHelp" required>
                                 <option value='true' <?php if($this->optionslib->get_option('dashboard_banner') == "true") { echo "selected=\"selected\""; } ?>>Enabled</option>
                                 <option value='false' <?php if($this->optionslib->get_option('dashboard_banner') == "false") { echo "selected=\"selected\""; } ?>>Disabled</option>
                             </select>
                             <small id="dashboardBannerHelp" class="form-text text-muted"><?php echo lang('options_this_allows_to_disable_the_global_notification_banner_on_the_dashboard'); ?></small>
                         </div>
 
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="dashboardMap"><?php echo lang('options_dashboard_map'); ?></label>
-                            <select class="custom-select" id="dashboardMap" name="dashboardMap" aria-describedby="dashboardMapHelp" required>
+                            <select class="form-select" id="dashboardMap" name="dashboardMap" aria-describedby="dashboardMapHelp" required>
                                 <option value='true' <?php if($this->optionslib->get_option('dashboard_map') == "true") { echo "selected=\"selected\""; } ?>>Enabled</option>
                                 <option value='false' <?php if($this->optionslib->get_option('dashboard_map') == "false") { echo "selected=\"selected\""; } ?>>Disabled</option>
                                 <option value='map_at_right' <?php if($this->optionslib->get_option('dashboard_map') == "map_at_right") { echo "selected=\"selected\""; } ?>>Map at right</option>
@@ -85,9 +85,9 @@
                             <small id="dashboardMapHelp" class="form-text text-muted"><?php echo lang('options_this_allows_the_map_on_the_dashboard_to_be_disabled_or_placed_on_the_right'); ?></small>
                         </div>
 
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="logbookMap"><?php echo lang('options_logbook_map'); ?></label>
-                            <select class="custom-select" id="logbookMap" name="logbookMap" aria-describedby="logbookMapHelp" required>
+                            <select class="form-select" id="logbookMap" name="logbookMap" aria-describedby="logbookMapHelp" required>
                                 <option value='true' <?php if($this->optionslib->get_option('logbook_map') == "true") { echo "selected=\"selected\""; } ?>>Enabled</option>
                                 <option value='false' <?php if($this->optionslib->get_option('logbook_map') == "false") { echo "selected=\"selected\""; } ?>>Disabled</option>
                             </select>

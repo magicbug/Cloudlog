@@ -19,7 +19,6 @@ $lang['filter_dupes'] = "Дубликаты";
 $lang['filter_map'] = 'Карта';
 $lang['filter_options'] = 'Опции';
 $lang['filter_reset'] = 'Сброс';
-
 /*
 ___________________________________________________________________________________________
 Quickilters
@@ -122,8 +121,6 @@ $lang['filter_actions_print'] = 'Печать';
 $lang['filter_actions_qsl_slideshow'] = 'Слайдшоу QSL';
 $lang['filter_actions_delete'] = 'Удалить';
 $lang['filter_actions_delete_warning'] = "Предупреждение! Вы уверены, что хотите удалить отмеченные QSO?";
-
-
 /*
 ___________________________________________________________________________________________
 Options
@@ -146,7 +143,7 @@ $lang['filter_options_show'] = 'Показать';
 // $lang['filter_qsl_via']              --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_qsl']            --> application/language/english/general_words_lang.php
 // $lang['lotw_short']                  --> application/language/english/lotw_lang.php
-// $lang['eqsl_short']                  --> application/language/english/eqsl_lang.php
+// $lang['eqsl_short']                  --> application/language/english/eqsl_lang.phpназвания
 // $lang['gen_hamradio_qslmsg']         --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_dxcc']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_state']          --> application/language/english/general_words_lang.php

@@ -20,13 +20,13 @@
 		<?php echo validation_errors(); ?>
 
 		<form>
-		<div class="form-group">
+		<div class="mb-3">
 		    <label for="contestInput"><?php echo lang('admin_contest_menu_name'); ?></label>
 		    <input type="text" class="form-control" name="contestname" id="contestInput" aria-describedby="contestInputHelp" required>
 		    <small id="contestInputHelp" class="form-text text-muted"><?php echo lang('admin_contest_name_of_contest'); ?></small>
 		  </div>
 
-		  <div class="form-group">
+		  <div class="mb-3">
 		    <label for="adifcontestInput"><?php echo lang('admin_contest_menu_adif'); ?></label>
 		    <input type="text" class="form-control" name="adifcontestname" id="adifcontestInput" aria-describedby="adifcontestInputHelp">
 		    <small id="adifcontestInputHelp" class="form-text text-muted"><?php echo lang('admin_contest_name_of_adif'); ?></small>

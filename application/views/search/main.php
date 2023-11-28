@@ -27,7 +27,7 @@
 	  </div>
 	  <div class="card-body">
 	  	<form method="post" action="" id="search_box" name="test">
-		  <div class="form-group row">
+		  <div class="mb-3 row">
 		    <label for="callsign" class="col-sm-2 col-form-label">Callsign / Gridsquare</label>
 		    <div class="col-sm-8">
 		      <input type="text" class="form-control" id="callsign" value="<?php if ($this->input->post('callsign') !== null) { echo htmlspecialchars($this->input->post('callsign')); }; ?>">

@@ -51,7 +51,7 @@
 <script>
     // Reinitialize tooltips after new content has been loaded
     document.addEventListener('htmx:afterSwap', function(event) {
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-bs-toggle="tooltip"]').tooltip();
     });
     </script>
 <?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "was") ) { ?>
@@ -110,7 +110,6 @@ function load_was_map() {
 <?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "hrdlog" || $this->uri->segment(1) == "webadif" || $this->uri->segment(1) == "sattimers") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "maintenance" ) { ?>
@@ -182,7 +181,7 @@ function copyURL(url) {
 }
 
 $(function () {
-   $('[data-toggle="tooltip"]').tooltip({'delay': { show: 500, hide: 0 }, 'placement': 'right'});
+   $('[data-bs-toggle="tooltip"]').tooltip({'delay': { show: 500, hide: 0 }, 'placement': 'right'});
 });
 </script>
 <?php } ?>
@@ -210,7 +209,7 @@ function copyApiUrl() {
 }
 
 $(function () {
-   $('[data-toggle="tooltip"]').tooltip({'delay': { show: 500, hide: 0 }, 'placement': 'right'});
+   $('[data-bs-toggle="tooltip"]').tooltip({'delay': { show: 500, hide: 0 }, 'placement': 'right'});
 });
 </script>
 <?php } ?>
@@ -320,13 +319,13 @@ $(function () {
                             })
                             .done(function(data) {
                                 $(".alert").remove();
-                                $(".card-body.main").append('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your query has been saved!</div>');
+                                $(".card-body.main").append('<div class="alert alert-success"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Your query has been saved!</div>');
                                 if ($("#querydropdown option").length == 0) {
                                     var dropdowninfo = ' <button class="btn btn-sm btn-primary" onclick="edit_stored_query_dialog()" id="btn-edit">Edit queries</button></p>' +
-                                    '<div class="form-group row querydropdownform">' +
+                                    '<div class="mb-3 row querydropdownform">' +
                                         '<label class="col-md-2 control-label" for="querydropdown">  Stored queries:</label>' +
                                         '<div class="col-md-3">' +
-                                            '<select id="querydropdown" name="querydropdown" class="form-control custom-select-sm">' +
+                                            '<select id="querydropdown" name="querydropdown" class="form-select form-select-sm">' +
                                             '</select>' +
                                         '</div>' +
                                         '<button class="btn btn-sm btn-primary ld-ext-right runbutton" onclick="run_query()">Run Query<div class="ld ld-ring ld-spin"></div></button>' +
@@ -389,7 +388,7 @@ $(function () {
                 if (isDarkModeTheme()) {
                     $(".buttons-csv").css("color", "white");
                 }
-                $('[data-toggle="tooltip"]').tooltip();
+                $('[data-bs-toggle="tooltip"]').tooltip();
                 $(".runbutton").removeClass('running');
                 $(".runbutton").prop('disabled', false);
             });
@@ -412,7 +411,7 @@ $(function () {
                             'id': id
                         },
                         success: function(data) {
-                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
+                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
                             $("#query_" + id).remove(); // removes query from table in dialog
                             $("#querydropdown option[value='" + id + "']").remove(); // removes query from dropdown
                             if ($("#querydropdown option").length == 0) {
@@ -421,7 +420,7 @@ $(function () {
                             };
                         },
                         error: function() {
-                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query could not be deleted. Please try again!</div>');
+                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>The stored query could not be deleted. Please try again!</div>');
                         },
                     });
                 }
@@ -447,11 +446,11 @@ $(function () {
             },
             success: function(html) {
                 $('#edit_' + id).html('<a class="btn btn-outline-primary btn-sm" href="javascript:edit_stored_query(' + id + ');">Edit</a>'); // Change to edit button
-                $(".bootstrap-dialog-message").prepend('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The query description has been updated!</div>');
+                $(".bootstrap-dialog-message").prepend('<div class="alert alert-success"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>The query description has been updated!</div>');
                 $("#querydropdown option[value='" + id + "']").text($('#description_' + id).html()); // Change text in dropdown
             },
             error: function() {
-                $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Something went wrong with the save. Please try again!</div>');
+                $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Something went wrong with the save. Please try again!</div>');
             },
         });
     }
@@ -514,7 +513,7 @@ $(function () {
                     if (isDarkModeTheme()) {
                         $(".buttons-csv").css("color", "white");
                     }
-                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-bs-toggle="tooltip"]').tooltip();
                     $(".searchbutton").removeClass('running');
                     $(".searchbutton").prop('disabled', false);
                     $("#btn-save").show();
@@ -699,14 +698,11 @@ function showActivatorsMap(call, count, grids) {
 </script>
 
 <?php if ($this->uri->segment(1) == "map" && $this->uri->segment(2) == "custom") { ?>
-<!-- Javascript used for ADIF Import and Export Areas -->
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
     <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
     <script type="text/javascript">
       $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-bs-toggle="tooltip"]').tooltip()
       });
 
         <?php if($qra == "set") { ?>
@@ -737,7 +733,7 @@ function showActivatorsMap(call, count, grids) {
     <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
     <script type="text/javascript">
       $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-bs-toggle="tooltip"]').tooltip()
       });
 
         <?php if($qra == "set") { ?>
@@ -769,7 +765,7 @@ function showActivatorsMap(call, count, grids) {
     
     <script type="text/javascript">
       $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-bs-toggle="tooltip"]').tooltip()
       });
 
         <?php if($qra == "set") { ?>
@@ -816,7 +812,7 @@ function showActivatorsMap(call, count, grids) {
 
 <script type="text/javascript">
   $(function () {
-     $('[data-toggle="tooltip"]').tooltip()
+     $('[data-bs-toggle="tooltip"]').tooltip()
   });
 
   $(function () {
@@ -929,7 +925,7 @@ function searchButtonPress(){
     if ($('#callsign').val()) {
       let fixedcall = $('#callsign').val();
       $('#partial_view').load("logbook/search_result/" + fixedcall.replace('Ø', '0'), function() {
-         $('[data-toggle="tooltip"]').tooltip()
+         $('[data-bs-toggle="tooltip"]').tooltip()
       });
     }
 }
@@ -938,7 +934,7 @@ $(document).ready(function(){
 
   <?php if($this->input->post('callsign') != "") { ?>
         $('#partial_view').load("logbook/search_result/<?php echo str_replace("Ø","0",$this->input->post('callsign')); ?>", function() {
-           $('[data-toggle="tooltip"]').tooltip()
+           $('[data-bs-toggle="tooltip"]').tooltip()
     });
   <?php } ?>
 
@@ -948,7 +944,7 @@ $(document).on('keypress',function(e) {
     if ($('#callsign').val()) {
         let fixedcall = $('#callsign').val();
         $('#partial_view').load("logbook/search_result/" + fixedcall.replace('Ø', '0'), function() {
-           $('[data-toggle="tooltip"]').tooltip()
+           $('[data-bs-toggle="tooltip"]').tooltip()
         });
     }
 
@@ -967,7 +963,7 @@ $(document).on('keypress',function(e) {
     <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
     <script type="text/javascript">
       $(function () {
-         $('[data-toggle="tooltip"]').tooltip()
+         $('[data-bs-toggle="tooltip"]').tooltip()
       });
     </script>
     <script type="text/javascript">
@@ -1636,7 +1632,7 @@ $(document).ready(function(){
 				  if (count > 0) {
 					  $('#square_number').text(loc_4char);
 					  $('#exampleModal').modal('show');
-					  $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
+					  $('[data-bs-toggle="tooltip"]').tooltip({ boundary: 'window' });
 				  }
 			  }
 		  });
@@ -1772,7 +1768,7 @@ $(document).ready(function(){
 				  if (count > 0) {
 					  $('#square_number').text(loc_4char);
 					  $('#exampleModal').modal('show');
-					  $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
+					  $('[data-bs-toggle="tooltip"]').tooltip({ boundary: 'window' });
 				  }
 			  }
 		  });
@@ -1826,17 +1822,6 @@ $(document).ready(function(){
 	<script src="<?php echo base_url(); ?>assets/js/sections/distances.js"></script>
 <?php } ?>
 
-    <?php if ($this->uri->segment(2) == "import") { ?>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
-        <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker1').datetimepicker({
-                    format: 'DD/MM/YYYY',
-                });
-            });
-        </script>
-    <?php } ?>
 
     <?php if ($this->uri->segment(1) == "hrdlog") { ?>
 		<script src="<?php echo base_url(); ?>assets/js/sections/hrdlog.js"></script>
@@ -2159,7 +2144,7 @@ $(document).ready(function(){
                             nl2br: false,
                             message: html,
                             onshown: function(dialog) {
-                               $('[data-toggle="tooltip"]').tooltip();
+                               $('[data-bs-toggle="tooltip"]').tooltip();
                             },
                             buttons: [{
                                 label: lang_admin_close,
@@ -2225,7 +2210,7 @@ $(document).ready(function(){
                             nl2br: false,
                             message: html,
                             onshown: function(dialog) {
-                               $('[data-toggle="tooltip"]').tooltip();
+                               $('[data-bs-toggle="tooltip"]').tooltip();
                             },
                             buttons: [{
                                 label: lang_admin_close,
@@ -2284,8 +2269,7 @@ $(document).ready(function(){
     }
 
     ?>
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
         $.fn.dataTable.moment('<?php echo $usethisformat ?>');
@@ -2320,29 +2304,10 @@ $(document).ready(function(){
         if (isDarkModeTheme()) {
             $('[class*="buttons"]').css("color", "white");
         }
-        $('#eqsl_force_from_date').datetimepicker({
-            format: 'YYYY/MM/DD'
-        });
 
     </script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "kmlexport") { ?>
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker1').datetimepicker({
-                format: 'DD/MM/YYYY',
-            });
-        });
-        $(function () {
-            $('#datetimepicker2').datetimepicker({
-                format: 'DD/MM/YYYY',
-            });
-        });
-    </script>
-<?php } ?>
 
 <script>
 function viewQsl(picture, callsign) {
@@ -2472,7 +2437,7 @@ function viewEqsl(picture, callsign) {
                     nl2br: false,
                     message: html,
                     onshown: function(dialog) {
-                       $('[data-toggle="tooltip"]').tooltip();
+                       $('[data-bs-toggle="tooltip"]').tooltip();
                        $('.contacttable').DataTable({
                             "pageLength": 25,
                             responsive: false,
@@ -2517,7 +2482,7 @@ function viewEqsl(picture, callsign) {
 			    nl2br: false,
 			    message: html,
 			    onshown: function(dialog) {
-				    $('[data-toggle="tooltip"]').tooltip();
+				    $('[data-bs-toggle="tooltip"]').tooltip();
 				    $('.contacttable').DataTable({
 				    "pageLength": 25,
 					    responsive: false,
@@ -2564,7 +2529,7 @@ function viewEqsl(picture, callsign) {
                             '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.front.filename + '\')" class="btn btn-sm btn-success">View</button></td>'+
                             '</tr>');
                         var quantity = $(".carousel-indicators li").length;
-                        $(".carousel-indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
+                        $(".carousel-indicators").append('<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="'+quantity+'"></li>');
                         $(".carousel-inner").append('<center><div class="carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div></center>');
                         $("#qslcardfront").val(null);
                     }
@@ -2584,14 +2549,14 @@ function viewEqsl(picture, callsign) {
                         '</tbody></table>');
                         $('.qslcardtab').removeAttr('hidden');
                         var quantity = $(".carousel-indicators li").length;
-                        $(".carousel-indicators").append('<li class="active" data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
+                        $(".carousel-indicators").append('<li class="active" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="'+quantity+'"></li>');
                         $(".carousel-inner").append('<center><div class="active carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div></center>');
                         $(".carouselExampleIndicators").carousel();
                         $("#qslcardfront").val(null);
                     }
 
                 } else if (data.status.front.status != '') {
-                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Front QSL Card:' +
+                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Front QSL Card:' +
                     data.status.front.error +
                         '</div>');
                 }
@@ -2603,7 +2568,7 @@ function viewEqsl(picture, callsign) {
                             '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.back.filename + '\')" class="btn btn-sm btn-success">View</button></td>'+
                             '</tr>');
                         var quantity = $(".carousel-indicators li").length;
-                        $(".carousel-indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
+                        $(".carousel-indicators").append('<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="'+quantity+'"></li>');
                         $(".carousel-inner").append('<center><div class="carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div></center>');
                         $("#qslcardback").val(null);
                     }
@@ -2623,13 +2588,13 @@ function viewEqsl(picture, callsign) {
                             '</tbody></table>');
                         $('.qslcardtab').removeAttr('hidden');
                         var quantity = $(".carousel-indicators li").length;
-                        $(".carousel-indicators").append('<li class="active" data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
+                        $(".carousel-indicators").append('<li class="active" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="'+quantity+'"></li>');
                         $(".carousel-inner").append('<center><div class="active carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div></center>');
                         $(".carouselExampleIndicators").carousel();
                         $("#qslcardback").val(null);
                     }
                 } else if (data.status.back.status != '') {
-                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\nBack QSL Card: ' +
+                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>\nBack QSL Card: ' +
                     data.status.back.error +
                         '</div>');
                 }
@@ -2678,7 +2643,7 @@ function viewEqsl(picture, callsign) {
 					location.reload();
 				} else {
 					$(".alert").remove();
-					$('#searchresult').prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Something went wrong. Please try again!</div>');
+					$('#searchresult').prepend('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Something went wrong. Please try again!</div>');
 				}
 			}
 		});
@@ -2797,7 +2762,7 @@ function viewEqsl(picture, callsign) {
                     nl2br: false,
                     message: html,
                     onshown: function(dialog) {
-                       $('[data-toggle="tooltip"]').tooltip();
+                       $('[data-bs-toggle="tooltip"]').tooltip();
                     },
                     buttons: [{
                         label: lang_admin_close,
@@ -2903,42 +2868,6 @@ function viewEqsl(picture, callsign) {
 		}
 	}
     </script>
-<?php } ?>
-
-<?php if ($this->uri->segment(1) == "dxatlas") { ?>
-	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
-	<script>
-		$(function () {
-			$('#datetimepicker1').datetimepicker({
-				format: 'DD/MM/YYYY',
-			});
-		});
-
-		$(function () {
-			$('#datetimepicker2').datetimepicker({
-				format: 'DD/MM/YYYY',
-			});
-		});
-	</script>
-<?php } ?>
-
-<?php if ($this->uri->segment(1) == "csv") { ?>
-	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
-	<script>
-		$(function () {
-			$('#datetimepicker1').datetimepicker({
-				format: 'DD/MM/YYYY',
-			});
-		});
-
-		$(function () {
-			$('#datetimepicker2').datetimepicker({
-				format: 'DD/MM/YYYY',
-			});
-		});
-	</script>
 <?php } ?>
 
 

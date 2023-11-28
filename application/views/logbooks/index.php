@@ -21,7 +21,7 @@
 
 <div class="card" style="margin-top: 20px;">
   <div class="card-header">
-  <?php echo lang('station_logbooks')?> <a class="btn btn-primary float-right" href="<?php echo site_url('logbooks/create'); ?>"><i class="fas fa-plus"></i> <?php echo lang('station_logbooks_create')?></a>
+  <?php echo lang('station_logbooks')?> <a class="btn btn-primary float-end" href="<?php echo site_url('logbooks/create'); ?>"><i class="fas fa-plus"></i> <?php echo lang('station_logbooks_create')?></a>
   </div>
   <div class="card-body">
   <div id="station_logbooks">
@@ -50,7 +50,7 @@
 						<?php if($this->session->userdata('active_station_logbook') != $row->logbook_id) { ?>
 						<a href="<?php echo site_url('logbooks/set_active')."/".$row->logbook_id; ?>" class="btn btn-outline-primary btn-sm"><?php echo lang('station_logbooks_set_active')?></a>
 						<?php } else {
-							echo "<span class='badge badge-success'>" . lang('station_logbooks_active_logbook') . "</span>";
+							echo "<span class='badge text-bg-success'>" . lang('station_logbooks_active_logbook') . "</span>";
 							}?>
 					</td>
 					<td>
@@ -68,9 +68,9 @@
 					</td>
 					<td>
 							<?php if ($row->public_search == 1) {
-							echo "<span class='badge badge-success'>" . lang('general_word_enabled') . "</span>";
+							echo "<span class='badge text-bg-success'>" . lang('general_word_enabled') . "</span>";
 							} else {
-							echo "<span class='badge badge-dark'>" . lang('general_word_disabled') . "</span>";
+							echo "<span class='badge text-bg-dark'>" . lang('general_word_disabled') . "</span>";
 							} ?>
 					</td>
 				</tr>

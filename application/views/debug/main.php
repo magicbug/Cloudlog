@@ -19,11 +19,11 @@
                     </tr>
                     <tr>
                         <td>Base URL</td>
-                        <td><span id="baseUrl"><a href="<?php echo $this->config->item('base_url')?>" target="_blank"><?php echo $this->config->item('base_url'); ?></a></span> <span data-toggle="tooltip" data-original-title="<?php echo lang('copy_to_clipboard'); ?>" onclick='copyURL("<?php echo $this->config->item('base_url'); ?>")'><i class="copy-icon fas fa-copy"></span></td>
+                        <td><span id="baseUrl"><a href="<?php echo $this->config->item('base_url')?>" target="_blank"><?php echo $this->config->item('base_url'); ?></a></span> <span data-bs-toggle="tooltip" title="<?php echo lang('copy_to_clipboard'); ?>" onclick='copyURL("<?php echo $this->config->item('base_url'); ?>")'><i class="copy-icon fas fa-copy"></span></td>
                     </tr>
                     <tr>
                         <td>Migration</td>
-                        <td><?php echo (isset($migration_version) ? $migration_version : "<span class='badge badge-danger'>There is something wrong with your Migration in Database!</span>"); ?></td>
+                        <td><?php echo (isset($migration_version) ? $migration_version : "<span class='badge text-bg-danger'>There is something wrong with your Migration in Database!</span>"); ?></td>
                     </tr>
 
                 </table>
@@ -73,9 +73,9 @@
                         <td>/backup</td>
                         <td>
                             <?php if($backup_folder == true) { ?>
-                                <span class="badge badge-success">Success</span>
+                                <span class="badge text-bg-success">Success</span>
                             <?php } else { ?>
-                                <span class="badge badge-danger">Failed</span>
+                                <span class="badge text-bg-danger">Failed</span>
                             <?php } ?>
                         </td>
                     </tr>
@@ -84,9 +84,9 @@
                         <td>/updates</td>
                         <td>
                             <?php if($updates_folder == true) { ?>
-                                <span class="badge badge-success">Success</span>
+                                <span class="badge text-bg-success">Success</span>
                             <?php } else { ?>
-                                <span class="badge badge-danger">Failed</span>
+                                <span class="badge text-bg-danger">Failed</span>
                             <?php } ?>
                         </td>
                     </tr>
@@ -95,9 +95,9 @@
                         <td>/uploads</td>
                         <td>
                             <?php if($uploads_folder == true) { ?>
-                                <span class="badge badge-success">Success</span>
+                                <span class="badge text-bg-success">Success</span>
                             <?php } else { ?>
-                                <span class="badge badge-danger">Failed</span>
+                                <span class="badge text-bg-danger">Failed</span>
                             <?php } ?>
                         </td>
                     </tr>
@@ -115,9 +115,9 @@
                         <td>curl</td>
                         <td>
                             <?php if(in_array  ('curl', get_loaded_extensions())) { ?>
-                                <span class="badge badge-success">Installed</span>
+                                <span class="badge text-bg-success">Installed</span>
                             <?php } else { ?>
-                                <span class="badge badge-danger">Not Installed</span>
+                                <span class="badge text-bg-danger">Not Installed</span>
                             <?php } ?>
                         </td>
                     </tr>
@@ -126,9 +126,9 @@
                         <td>MySQL</td>
                         <td>
                             <?php if(in_array  ('mysqli', get_loaded_extensions())) { ?>
-                                <span class="badge badge-success">Installed</span>
+                                <span class="badge text-bg-success">Installed</span>
                             <?php } else { ?>
-                                <span class="badge badge-danger">Not Installed</span>
+                                <span class="badge text-bg-danger">Not Installed</span>
                             <?php } ?>
                         </td>
                     </tr>
@@ -137,9 +137,9 @@
                         <td>mbstring</td>
                         <td>
                             <?php if(in_array  ('mbstring', get_loaded_extensions())) { ?>
-                                <span class="badge badge-success">Installed</span>
+                                <span class="badge text-bg-success">Installed</span>
                             <?php } else { ?>
-                                <span class="badge badge-danger">Not Installed</span>
+                                <span class="badge text-bg-danger">Not Installed</span>
                             <?php } ?>
                         </td>
                     </tr>
@@ -148,9 +148,9 @@
                         <td>xml</td>
                         <td>
                             <?php if(in_array  ('xml', get_loaded_extensions())) { ?>
-                                <span class="badge badge-success">Installed</span>
+                                <span class="badge text-bg-success">Installed</span>
                             <?php } else { ?>
-                                <span class="badge badge-danger">Not Installed</span>
+                                <span class="badge text-bg-danger">Not Installed</span>
                             <?php } ?>
                         </td>
                     </tr>
@@ -159,9 +159,9 @@
                         <td>openssl</td>
                         <td>
                             <?php if(in_array  ('openssl', get_loaded_extensions())) { ?>
-                                <span class="badge badge-success">Installed</span>
+                                <span class="badge text-bg-success">Installed</span>
                             <?php } else { ?>
-                                <span class="badge badge-danger">Not Installed</span>
+                                <span class="badge text-bg-danger">Not Installed</span>
                             <?php } ?>
                         </td>
                     </tr>
@@ -217,12 +217,12 @@
                                 <?php if($owner != "") { ?>
                                     <a target="_blank" href="https://github.com/<?php echo $owner; ?>/Cloudlog/tree/<?php echo $branch?>">
                                 <?php } ?>
-                                    <span class="badge badge-success"><?php echo $branch; ?></span>
+                                    <span class="badge text-bg-success"><?php echo $branch; ?></span>
                                 <?php if($owner != "") { ?>
                                     </a>
                                 <?php } ?>
                             <?php } else { ?>
-                                <span class="badge badge-danger">n/a</span>
+                                <span class="badge text-bg-danger">n/a</span>
                             <?php } ?>
                         </td>
                     </tr>
@@ -231,9 +231,9 @@
                         <td>Commit</td>
                         <td>
                             <?php if($commitHash != "") { ?>
-                                <a target="_blank" href="https://github.com/magicbug/Cloudlog/commit/<?php echo $commitHash?>"><span class="badge badge-success"><?php echo substr($commitHash,0,8); ?></span></a>
+                                <a target="_blank" href="https://github.com/magicbug/Cloudlog/commit/<?php echo $commitHash?>"><span class="badge text-bg-success"><?php echo substr($commitHash,0,8); ?></span></a>
                             <?php } else { ?>
-                                <span class="badge badge-danger">n/a</span>
+                                <span class="badge text-bg-danger">n/a</span>
                             <?php } ?>
                         </td>
                     </tr>
@@ -241,9 +241,9 @@
                         <td>Tag</td>
                         <td>
                             <?php if($commitHash != "") { ?>
-                                <a target="_blank" href="https://github.com/magicbug/Cloudlog/releases/tag/<?php echo substr($tag,0,strpos($tag, '-')); ?>"><span class="badge badge-success"><?php echo $tag; ?></span></a>
+                                <a target="_blank" href="https://github.com/magicbug/Cloudlog/releases/tag/<?php echo substr($tag,0,strpos($tag, '-')); ?>"><span class="badge text-bg-success"><?php echo $tag; ?></span></a>
                             <?php } else { ?>
-                                <span class="badge badge-danger">n/a</span>
+                                <span class="badge text-bg-danger">n/a</span>
                             <?php } ?>
                         </td>
                     </tr>

@@ -34,12 +34,12 @@
 			var lang_qso_simplefle_sample_data = "<?php echo lang('qso_simplefle_sample_data'); ?>";
 		</script>
 		<h2><?php echo $page_title; ?></h2>
-		<button type="button" class="btn btn-sm btn-primary mr-1" id="simpleFleInfoButton"><?php echo lang('qso_simplefle_info'); ?></button>
+		<button type="button" class="btn btn-sm btn-primary me-1" id="simpleFleInfoButton"><?php echo lang('qso_simplefle_info'); ?></button>
 	</div>
 
 	<?php if ($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
-		<div class="alert-message error">
+		<div class="alert alert-danger">
 			<p><?php echo $this->session->flashdata('message'); ?></p>
 		</div>
 	<?php } ?>
@@ -51,22 +51,19 @@
 		</div>
 
 		<div class="col-md-3 justify-content-end d-flex">
-
-
-
 		</div>
 	</header>
 	<div class="row mt-4">
 		<!-- START BASIC QSO DATA -->
-		<div class="col-xs-12 col-md-4">
-
+		<div class="card col-xs-12 col-md-4" style="border: none">
+			
 			<div class="card-header">
 				<?php echo lang('qso_simplefle_qso_data'); ?>
 			</div>
 			<div class="card-body">
 				<div class="row">
 					<div class="col-xs-12 col-lg-12 col-xl-6">
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="qsodate"><?php echo lang('qso_simplefle_qso_date'); ?></label>
 							<input type="date" class="form-control" id="qsodate">
 							<small class="form-text text-muted"><?php echo lang('qso_simplefle_qso_date_hint'); ?></small>
@@ -74,16 +71,16 @@
 					</div>
 					<div class="col-xs-12 col-lg-12 col-xl-6">
 						<p><?php echo lang('qso_simplefle_utc_time'); ?></p>
-						<h4 class="font-weight-bold" id="utc-time"></h4>
+						<h4 class="fw-bold" id="utc-time"></h4>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-12 col-lg-6">
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="station-call">
 								<?php echo lang('qso_simplefle_station_call_location'); ?>
 							</label>
-							<select name="station_profile" class="station_id custom-select" id="station-call">
+							<select name="station_profile" class="station_id form-select" id="station-call">
 								<option value="-">-</option>
 								<?php foreach ($station_profile->result() as $station) { ?>
 									<option value="<?php echo $station->station_id; ?>" <?php if ($station->station_id == $this->stations->find_active()) {
@@ -98,7 +95,7 @@
 						</div>
 					</div>
 					<div class="col-xs-12 col-lg-6">
-						<div class="form-group">
+						<div class="mb-3">
 							<label for="operator"><?php echo lang('qso_simplefle_operator'); ?> <span class="text-muted input-example"><?php echo lang('qso_simplefle_operator_hint'); ?></span></label>
 							<input type="text" class="form-control text-uppercase" id="operator" value="<?php echo $this->session->userdata('operator_callsign'); ?>">
 							<div class="alert alert-danger" role="alert" id="warningOperatorField" style="display: none"> </div>
@@ -117,13 +114,13 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-12 col-md-8">
+		<div class="card col-xs-12 col-md-8" style="border: none">
 			<div class="card-header">
 				<?php echo lang('qso_simplefle_qso_list'); ?>
 			</div>
 			<div class="card-body">
 				<div class="qsoList">
-					<table class="table table-condensed table-striped table-sm sfletable" id="qsoTable">
+					<table class="table contacttable table-striped table-hover sfletable" id="qsoTable">
 						<thead>
 							<tr>
 								<th><?php echo lang('general_word_date'); ?></th>
@@ -135,11 +132,9 @@
 								<th><?php echo lang('gen_hamradio_rstr'); ?></th>
 								<th><?php echo lang('gen_hamradio_operator'); ?></th>
 								<th><?php echo lang('gen_hamradio_refs'); ?>*</th>
-								</th>
 							</tr>
 						</thead>
 						<tbody id="qsoTableBody">
-
 						</tbody>
 					</table>
 				</div>
@@ -147,7 +142,7 @@
 					<div class="col-6 col-sm-6">
 						<span class="js-qso-count"></span>
 					</div>
-					<div class="col-6 col-sm-6 text-right">
+					<div class="col-6 col-sm-6 text-end">
 						<?php echo lang('qso_simplefle_refs_hint'); ?>
 					</div>
 				</div>

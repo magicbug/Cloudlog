@@ -20,13 +20,13 @@
 	<?php echo validation_errors(); ?>
 
 	<form>
-		<div class="form-group">
+		<div class="mb-3">
 			<label for="nameInput">Theme Name</label>
 			<input type="text" class="form-control" name="name" id="nameInput" aria-describedby="nameInputHelp" required>
 			<small id="nameInputHelp" class="form-text text-muted">This is the name that is used to display the theme in the theme list.</small>
 		</div>
 
-		<div class="form-group">
+		<div class="mb-3">
 			<label for="foldernameInput">Folder Name</label>
 			<input type="text" class="form-control" name="foldername" id="foldernameInput" aria-describedby="foldernameInputHelp">
 			<small id="foldernameInputHelp" class="form-text text-muted">This is the name of the folder where your CSS-files are placed under assets/css.</small>

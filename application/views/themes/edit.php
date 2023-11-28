@@ -27,13 +27,13 @@
 			<?php echo validation_errors(); ?>
 
 			<form method="post" action="<?php echo site_url('themes/edit/'); ?><?php echo $theme->id; ?>" name="edit_theme">
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="themenameInput">Theme Name</label>
 					<input type="text" class="form-control" name="name" id="nameInput" aria-describedby="themenameInputHelp" value="<?php if(set_value('name') != "") { echo set_value('name'); } else { echo $theme->name; } ?>" required>
 					<small id="themenameInputHelp" class="form-text text-muted">This is the name that is used to display the theme in the theme list.</small>
 				</div>
 
-				<div class="form-group">
+				<div class="mb-3">
 					<label for="foldernameInput">Folder Name</label>
 					<input type="text" class="form-control" name="foldername" id="foldernameInput" aria-describedby="foldernameInputHelp" value="<?php if(set_value('foldername') != "") { echo set_value('foldername'); } else { echo $theme->foldername; } ?>">
 					<small id="foldernameInputHelp" class="form-text text-muted">This is the name of the folder where your CSS-files are placed under assets/css.</small>

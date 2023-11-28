@@ -26,7 +26,7 @@
     <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('map_tile_server');?>"></script>
     <script type="text/javascript">
       $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-bs-toggle="tooltip"]').tooltip()
       });
 
         <?php if(isset($qra) && $qra == "set") { ?>
@@ -162,7 +162,7 @@
 				  if (count > 0) {
 					  $('#square_number').text(loc_4char);
 					  $('#exampleModal').modal('show');
-					  $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
+					  $('[data-bs-toggle="tooltip"]').tooltip({ boundary: 'window' });
 				  }
 			  }
 		  });

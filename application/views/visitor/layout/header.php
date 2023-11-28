@@ -47,7 +47,7 @@
 			echo '<a class="navbar-brand" href="' . site_url() .'">Cloudlog</a>';
 		}
 		?>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
 	<div class="collapse navbar-collapse" id="navbarNav">
 
@@ -78,7 +78,7 @@
 			$this->CI =& get_instance();
 			if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
 				<form method="post" name="searchForm" action="<?php echo site_url('visitor/search'); ?>" onsubmit="return validateForm()" class="form-inline">
-            <input class="form-control mr-sm-2" id="searchcall" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" <?php if (isset($callsign) && $callsign != '') { echo 'value="'.strtoupper($callsign).'"'; } ?> aria-label="Search" data-toogle="tooltip" data-placement="bottom" data-original-title="Please enter a callsign!">
+            <input class="form-control me-sm-2" id="searchcall" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" <?php if (isset($callsign) && $callsign != '') { echo 'value="'.strtoupper($callsign).'"'; } ?> aria-label="Search" data-toogle="tooltip" data-bs-placement="bottom" title="Please enter a callsign!">
 					<input type="hidden" name="public_slug" value="<?php echo $slug; ?>">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> <?php echo lang('menu_search_button'); ?></button>
 				</form>

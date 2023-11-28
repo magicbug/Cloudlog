@@ -7,10 +7,10 @@
         <div class="card-header">
 			<ul class="nav nav-tabs card-header-tabs pull-right" role="tablist">
 				<li class="nav-item">
-					<a class="nav-link active" id="export-tab" data-toggle="tab" href="#export" role="tab" aria-controls="import" aria-selected="true">Upload Logbook</a>
+					<a class="nav-link active" id="export-tab" data-bs-toggle="tab" href="#export" role="tab" aria-controls="import" aria-selected="true">Upload Logbook</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" id="mark-tab" data-toggle="tab" href="#mark" role="tab" aria-controls="export" aria-selected="false">Mark QSOs</a>
+					<a class="nav-link" id="mark-tab" data-bs-toggle="tab" href="#mark" role="tab" aria-controls="export" aria-selected="false">Mark QSOs</a>
 				</li>
 			</ul>
 
@@ -21,7 +21,7 @@
 				<div class="tab-pane active" id="export" role="tabpanel" aria-labelledby="export-tab">
             <p>Here you can see and upload all QSOs which have not been previously uploaded to a QRZ logbook.</p>
             <p>You need to set a QRZ Logbook API key in your station profile. Only station profiles with an API Key set are displayed.</p>
-            <p><span class="badge badge-warning">Warning</span> This might take a while as QSO uploads are processed sequentially.</p>
+            <p><span class="badge text-bg-warning">Warning</span> This might take a while as QSO uploads are processed sequentially.</p>
 
 <?php
             if ($station_profile->result()) {
@@ -52,7 +52,7 @@
 
         }
         else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+        echo '<div class="alert alert-danger" role="alert"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
         }
         ?>
 
@@ -60,33 +60,26 @@
 				<div class="tab-pane fade" id="mark" role="tabpanel" aria-labelledby="home-tab">
 
 				<form class="form" action="<?php echo site_url('qrz/mark_qrz'); ?>" method="post" enctype="multipart/form-data">
-					<select name="station_profile" class="custom-select mb-4 mr-sm-4" style="width: 30%;">
+					<select name="station_profile" class="form-select mb-4 me-sm-4" style="width: 30%;">
 						<option disabled value="0">Select Station Location</option>
 						<?php foreach ($station_profiles->result() as $station) { ?>
 							<option <?php if ($station->station_active) { echo "selected "; } ?>value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>
 						<?php } ?>
 					</select>
-					<p><span class="badge badge-warning">Warning</span> If a date range is not selected then all QSOs will be marked!</p>
-					<p class="card-text">From date:</p>
+					<p><span class="badge text-bg-warning">Warning</span> If a date range is not selected then all QSOs will be marked!</p>
 					<div class="row">
-						<div class="input-group date col-md-3" id="datetimepicker5" data-target-input="nearest">
-							<input name="from" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
-							<div class="input-group-append"  data-target="#datetimepicker5" data-toggle="datetimepicker">
-								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-							</div>
+						<div class="col-md-2">
+							<label for="from"><?php echo lang('gen_from_date') . ": " ?></label>
+							<input name="from" id="from" type="date" class="form-control w-auto">
 						</div>
-					</div>
-					<p class="card-text">To date:</p>
-					<div class="row">
-						<div class="input-group date col-md-3" id="datetimepicker6" data-target-input="nearest">
-							<input name="to" type="text" placeholder="DD/MM/YYYY" class="form-control datetimepicker-input" data-target="#datetimepicker2"/>
-							<div class="input-group-append" data-target="#datetimepicker6" data-toggle="datetimepicker">
-								<div class="input-group-text"><i class="fa fa-calendar"></i></div>
-							</div>
+
+						<div class="col-md-2">
+							<label for="to"><?php echo lang('gen_to_date') . ": " ?></label>
+							<input name="to" id="to" type="date" class="form-control w-auto">
 						</div>
 					</div>
 					<br>
-					<button type="submit" class="btn-sm btn-primary" value="Export">Mark QSOs as exported to QRZ Logbook</button>
+					<button type="submit" class="btn btn-sm btn-primary" value="Export">Mark QSOs as exported to QRZ Logbook</button>
 				</form>
 	</div>
 			</div>
