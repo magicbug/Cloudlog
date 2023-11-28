@@ -46,7 +46,7 @@
 
                 <form class="d-flex align-items-center" enctype="multipart/form-data">
                     <label class="my-1 me-2" for="station">Select station: </label>
-                    <select id="station" class="form-select my-1 me-sm-2" name="station">
+                    <select id="station" class="form-select w-auto my-1 me-sm-2" name="station">
                         <?php foreach($stations->result() as $station) {
 									echo '<option value="' . $station->station_id . '">' . $station->station_profile_name . ' - ' . $station->station_callsign . '</option>'."\n";
 								} ?>
@@ -57,7 +57,7 @@
 			<div class="resulttable"></div>
 
             <div class="searchinfo"></div>
-            <?php 
+            <?php
 		}
 
 		else {
