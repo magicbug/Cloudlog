@@ -90,13 +90,15 @@ function plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_f
                 },
             });
 
-            var printer = L.easyPrint({
-                tileLayer: layer,
-                sizeModes: ['Current'],
-                filename: 'myMap',
-                exportOnly: true,
-                hideControlContainer: true
-            }).addTo(map);
+            if (visitor != true) {
+               var printer = L.easyPrint({
+                   tileLayer: layer,
+                   sizeModes: ['Current'],
+                   filename: 'myMap',
+                   exportOnly: true,
+                   hideControlContainer: true
+               }).addTo(map);
+            }
 
             /*Legend specific*/
             var legend = L.control({ position: "topright" });
