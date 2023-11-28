@@ -149,7 +149,6 @@ function load_was_map() {
     <script>
         var position;
         function getLocation() {
-            console.log("'clicked");
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
             } else {
@@ -1588,8 +1587,6 @@ $(document).ready(function(){
     var lng = LatLng.lng;
     var locator = LatLng2Loc(lat,lng, 10);
     var loc_4char = locator.substring(0, 4);
-    console.log(loc_4char);
-    console.log(map.getZoom());
 
     if(map.getZoom() > 2) {
     	<?php if ($this->session->userdata('user_callsign')) { ?>
@@ -1731,8 +1728,6 @@ $(document).ready(function(){
     var lng = LatLng.lng;
     var locator = LatLng2Loc(lat,lng, 10);
     var loc_4char = locator.substring(0, 4);
-    console.log(loc_4char);
-    console.log(map.getZoom());
 
     if(map.getZoom() > 2) {
     	<?php if ($this->session->userdata('user_callsign')) { ?>

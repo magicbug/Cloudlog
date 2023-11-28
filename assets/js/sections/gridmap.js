@@ -61,18 +61,18 @@ function gridPlot(form, visitor) {
             grid_two_confirmed = data.grid_2char_confirmed;
             grid_four_confirmed = data.grid_4char_confirmed;
             grid_six_confirmed = data.grid_6char_confirmed;
-            plot(grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed);
+            plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed);
 
 		},
 		error: function (data) {
 		},
 	});
    } else {
-      plot(grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed);
+      plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed);
    };
 }
 
-function plot(grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed) {
+function plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed) {
             var layer = L.tileLayer(jslayer, {
                 maxZoom: 12,
                 attribution: jsattribution,
@@ -113,8 +113,10 @@ function plot(grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confi
             legend.addTo(map);
 
             var maidenhead = L.maidenhead().addTo(map);
-            map.on('mousemove', onMapMove);
-			map.on('click', onMapClick);
+            if (visitor != true) {
+               map.on('mousemove', onMapMove);
+               map.on('click', onMapClick);
+            }
 }
 
 function spawnGridsquareModal(loc_4char) {
