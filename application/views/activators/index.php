@@ -6,7 +6,7 @@
                 <div class="mb-3 row">
                     <label class="col-md-1 control-label" for="band"><?php echo lang('gen_hamradio_band'); ?></label>
                     <div class="col-md-3">
-                        <select id="band" name="band" class="form-select form-select">
+                        <select id="band" name="band" class="form-select">
                             <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> ><?php echo lang('general_word_all'); ?></option>
                             <?php foreach($worked_bands as $band) {
                                 echo '<option value="' . $band . '"';
@@ -19,7 +19,7 @@
                 <div class="mb-3 row" id="leogeo">
                     <label class="col-md-1 control-label" for="leogeo">LEO/GEO</label>
                     <div class="col-md-3">
-                        <select id="leogeo" name="leogeo" class="form-select form-select">
+                        <select id="leogeo" name="leogeo" class="form-select">
                             <option value="both" <?php if ($this->input->post('leogeo') == "both" || $this->input->method() !== 'post') echo ' selected'; ?> >Both</option>
                             <option value="leo" <?php if ($this->input->post('leogeo') == "leo") echo ' selected'; ?>>LEO</option>
                             <option value="geo" <?php if ($this->input->post('leogeo') == "geo") echo ' selected'; ?>>GEO</option>
@@ -29,7 +29,7 @@
                 <div class="mb-3 row">
                     <label class="col-md-1 control-label" for="mincount"><?php echo lang('gridsquares_minimum_count'); ?></label>
                     <div class="col-md-3">
-                        <select id="mincount" name="mincount" class="form-select form-select">
+                        <select id="mincount" name="mincount" class="form-select">
                             <?php
                                 $i = 1;
                                 do {

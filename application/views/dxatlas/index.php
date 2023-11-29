@@ -40,7 +40,7 @@
 				</div>
 					<div class="mb-3 col-md-3">
 						<label for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
-						<select id="mode" name="mode" class="form-select form-select">
+						<select id="mode" name="mode" class="form-select">
 							<option value="All"><?php echo lang('general_word_all'); ?></option>
 							<?php
 							foreach($modes->result() as $mode){

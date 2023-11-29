@@ -96,7 +96,7 @@
 					<!-- US State -->
 					<div class="mb-3" id="us_state">
 		    			<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
-		    				<select class="form-select form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+		    				<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 								<option value=""></option>
 								<option value="AK" <?php if($my_station_profile->state == "AK") { echo "selected"; } ?>>Alaska</option>
 								<option value="AL" <?php if($my_station_profile->state == "AL") { echo "selected"; } ?>>Alabama</option>
@@ -156,7 +156,7 @@
 					<!-- Canada State -->
 					<div class="mb-3" id="canada_state">
 		    			<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
-		    				<select class="form-select form-select" name="station_ca_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+		    				<select class="form-select" name="station_ca_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 								<option value=""></option>
 								<option value="AB" <?php if($my_station_profile->state == "AB") { echo "selected"; } ?>>Alberta</option>
 								<option value="BC" <?php if($my_station_profile->state == "BC") { echo "selected"; } ?>>British Columbia</option>

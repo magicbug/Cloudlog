@@ -6,7 +6,7 @@
                 <div class="mb-3 row">
                     <label class="col-md-1 control-label" for="band"><?php echo lang('gen_hamradio_band') ?></label>
                     <div class="col-md-3">
-                        <select id="band" name="band" class="form-select form-select">
+                        <select id="band" name="band" class="form-select">
                             <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> ><?php echo lang('general_word_all') ?></option>
                             <?php foreach($worked_bands as $band) {
                                 echo '<option value="' . $band . '"';
@@ -18,7 +18,7 @@
 
                     <label class="col-md-1 control-label" for="mode"><?php echo lang('gen_hamradio_mode') ?></label>
                     <div class="col-md-3">
-                        <select id="mode" name="mode" class="form-select form-select">
+                        <select id="mode" name="mode" class="form-select">
                             <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> ><?php echo lang('general_word_all') ?></option>
                             <?php
                             foreach($modes->result() as $mode){
@@ -40,7 +40,7 @@
         <div class="mb-3 row">
             <label class="col-md-1 control-label" for="award"><?php echo lang('gen_hamradio_award') ?></label>
                 <div class="col-md-3">
-                    <select id="award" name="award" class="form-select form-select">
+                    <select id="award" name="award" class="form-select">
                         <option value="dxcc" <?php if ($this->input->post('award') == "dxcc") echo ' selected'; ?> >DX Century Club (DXCC)</option>
                         <option value="was" <?php if ($this->input->post('award') == "was") echo ' selected'; ?> >Worked All States (WAS)</option>
                         <option value="iota" <?php if ($this->input->post('award') == "iota") echo ' selected'; ?> >Islands On The Air (IOTA)</option>
