@@ -46,6 +46,8 @@ class QSO extends CI_Controller {
 		$this->form_validation->set_rules('start_date', 'Date', 'required');
 		$this->form_validation->set_rules('start_time', 'Time', 'required');
 		$this->form_validation->set_rules('callsign', 'Callsign', 'required');
+		$this->form_validation->set_rules('band', 'Band', 'required');
+		$this->form_validation->set_rules('mode', 'Mode', 'required');
 		$this->form_validation->set_rules('locator', 'Locator', 'callback_check_locator');
 
 		if ($this->form_validation->run() == FALSE)
