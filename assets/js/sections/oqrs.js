@@ -11,7 +11,7 @@ function loadStationInfo() {
         success: function (data) {
             if (data.count > 0) {
                 $(".resulttable").append('<br />' + data.count + ' Qsos logged between ' + data.mindate + ' and ' + data.maxdate + '.<br /><br />');
-                $(".resulttable").append('<form class="form-inline" onsubmit="return false;"><label class="my-1 mr-2" for="oqrssearch">Enter your callsign: </label><input class="form-control mr-sm-2" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search" required="required"><button onclick="searchOqrs();" class="btn btn-sm btn-primary" id="stationbuttonsubmit" type="button"><i class="fas fa-search"></i> Search</button></form>');
+                $(".resulttable").append('<form class="d-flex align-items-center" onsubmit="return false;"><label for="oqrssearch">Enter your callsign: </label><input class="form-control m-2 w-auto" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search" required="required"><button onclick="searchOqrs();" class="btn btn-sm btn-primary" id="stationbuttonsubmit" type="button"><i class="fas fa-search"></i> Search</button></form>');
                 // Get the input field
                 var input = document.getElementById("oqrssearch");
 
@@ -160,7 +160,7 @@ function oqrsAddLine() {
 
     var $iterator = $('<td></td>').html(rowCount);
     var $date = $('<td></td>').html('<input class="form-control" type="date" name="date" value="" id="date" placeholder="YYYY-MM-DD">');
-    var $time = $('<td></td>').html('<input class="form-control qsotime" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM">');
+    var $time = $('<td></td>').html('<input class="form-control qsotime" type="text" name="time" value="" id="time" maxlength="5" placeholder="hh:mm">');
     var $band = $('<td></td>').html('<input class="form-control" type="text" name="band" value="" id="band">');
     var $mode = $('<td></td>').html('<input class="form-control" type="text" name="mode" value="" id="mode">');
 
