@@ -4094,11 +4094,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
         // get all records with no COL_GRIDSQUARE
         $this->db->select("COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_TIME_OFF");
 
-        // check which to update - records with no Gridsquare or all records
-        $this->db->where("COL_GRIDSQUARE is NULL or COL_GRIDSQUARE = ''");
-
-        $where = "(COL_GRIDSQUARE is NULL or COL_GRIDSQUARE = '') AND (COL_VUCC_GRIDS is NULL or COL_VUCC_GRIDS = '')";
-        $this->db->where($where);
+        $this->db->where("(COL_GRIDSQUARE is NULL or COL_GRIDSQUARE = '') AND (COL_VUCC_GRIDS is NULL or COL_VUCC_GRIDS = '')");
 
         $r = $this->db->get($this->config->item('table_name'));
 
@@ -4106,11 +4102,13 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
         $this->db->trans_start();
         if ($r->num_rows() > 0){
             foreach($r->result_array() as $row){
-		          $callsign = $row['COL_CALL'];
+              $callsign = $row['COL_CALL'];
               if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null)
               {
                   // Lookup using QRZ
-                  $this->load->library('qrz');
+                  if(!$this->load->is_loaded('qrz')) {
+                     $this->load->library('qrz');
+                  }
 
                   if(!$this->session->userdata('qrz_session_key')) {
                       $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
@@ -4123,7 +4121,9 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
               if ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null)
               {
                   // Load the HamQTH library
-                  $this->load->library('hamqth');
+                  if(!$this->load->is_loaded('hamqth')) {
+                     $this->load->library('hamqth');
+                  }
 
                   if(!$this->session->userdata('hamqth_session_key')) {
                       $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
@@ -4141,14 +4141,18 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
               }
               if (isset($callbook))
               {
-                  $return['callsign_qra'] = $callbook['gridsquare'];
-              }
-              if ($return['callsign_qra'] != ''){
-                  $sql = sprintf("update %s set COL_GRIDSQUARE = '%s' where COL_PRIMARY_KEY=%d",
-                                  $this->config->item('table_name'), $return['callsign_qra'], $row['COL_PRIMARY_KEY']);
-                  $this->db->query($sql);
-                  printf("Updating %s to %s\n<br/>", $row['COL_PRIMARY_KEY'], $return['callsign_qra']);
-                  $count++;
+                  if (isset($callbook['error'])) {
+                     printf("Error: ".$callbook['error']."<br />");
+                  } else {
+                     $return['callsign_qra'] = $callbook['gridsquare'];
+                     if ($return['callsign_qra'] != ''){
+                         $sql = sprintf("update %s set COL_GRIDSQUARE = '%s' where COL_PRIMARY_KEY=%d",
+                                         $this->config->item('table_name'), $return['callsign_qra'], $row['COL_PRIMARY_KEY']);
+                         $this->db->query($sql);
+                         printf("Updating %s to %s\n<br/>", $row['COL_PRIMARY_KEY'], $return['callsign_qra']);
+                         $count++;
+                     }
+                  }
               }
             }
         }
