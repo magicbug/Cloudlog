@@ -647,3 +647,7 @@ table.dataTable tfoot td {
 .icon_selectBox_data label:hover { 
 	background-color:var(--bs-primary); 
 }
+.qso_eqsl_qslmsg_update {
+    cursor: pointer;
+    margin-left: 10px;
+}
