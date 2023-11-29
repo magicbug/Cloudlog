@@ -106,5 +106,4 @@ $lang['station_location_oqrs_email_alert'] = "Оповещение о OQRS о е
 $lang['station_location_oqrs_email_hint'] = "Убедитесь, что емэйл сконфигурирован администратором в общих настройках.";
 $lang['station_location_oqrs_text'] = "Текст OQRS";
 $lang['station_location_oqrs_text_hint'] = "Информация, которую вы хотите добавить, касающаяся QSL.";
-
-
+$lang['station_location_clublog_realtime_upload']='ClubLog Realtime Upload';

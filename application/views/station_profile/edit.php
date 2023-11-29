@@ -381,6 +381,22 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
+				<h5 class="card-header">ClubLog</h5> <!-- This does not need Multilanguage Support -->
+				<div class="card-body">
+					<div class="mb-3">
+						<label for="clublogrealtime"><?php echo lang("station_location_clublog_realtime_upload"); ?></label>
+						<select class="form-select" id="clublogrealtime" name="clublogrealtime">
+							<option value="1" <?php if ($my_station_profile->clublogrealtime == 1) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" <?php if ($my_station_profile->clublogrealtime == 0) { echo " selected =\"selected\""; } ?>><?php echo lang("general_word_no"); ?></option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="row">
+		<div class="col-md">
+			<div class="card">
 				<h5 class="card-header">HRDLog.net</h5> <!-- This does not need Multilanguage Support -->
 				<div class="card-body">
 					<div class="mb-3">

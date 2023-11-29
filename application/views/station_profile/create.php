@@ -249,6 +249,13 @@
                 <small id="eqslhelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_hint"); ?></small>
             </div>
 
+                <div class="mb-3">
+			<label for="clublogrealtime"><?php echo lang("station_location_clublog_realtime_upload"); ?></label>
+			<select class="form-select" id="clublogrealtime" name="clublogrealtime">
+				<option value="1"><?php echo lang("general_word_yes"); ?></option>
+				<option value="0" selected><?php echo lang("general_word_no"); ?></option>
+			</select>
+		</div>
 
             <div class="row">
                 <div class="mb-3 col-sm-6">                                                                                                                                                    
