@@ -511,13 +511,14 @@
                                         </div>
                                         <div class="mb-3 row">
                                              <div class="col-sm-9">
-                                                 <label for="qslmsg"><?php echo lang('general_word_notes'); ?></label>
+                                                 <label for="qslmsg"><?php echo lang('general_word_notes'); ?><span class="qso_eqsl_qslmsg_update" title="<?php echo lang('qso_eqsl_qslmsg_helptext'); ?>"><i class="fas fa-redo-alt"></i></span></label>
                                                  <div class="alert alert-info" role="alert">
                                                      <span class="badge text-bg-info"><?php echo lang('general_word_info'); ?></span> <?php echo lang('qsl_notes_helptext'); ?>
                                                  </div>
                                              </div>
                                              <div class="col-sm-9">
-                                                 <textarea  type="text" class="form-control" id="qslmsg" name="qslmsg" rows="5"><?php echo $qso->COL_QSLMSG; ?></textarea>
+                                                <textarea  type="text" class="form-control" id="qslmsg" name="qslmsg" rows="5" maxlength="240"><?php echo $qso->COL_QSLMSG; ?></textarea>
+                                                <div id="qslmsg_hide" style="display:none;"><?php echo $qso->COL_QSLMSG; ?></div>
                                              </div>
                                         </div>
 
