@@ -44,6 +44,7 @@ ________________________________________________________________________________
 Station Locations
 ___________________________________________________________________________________________
 */
+
 $lang['station_location'] = 'Расположение станции';
 $lang['station_location_plural'] = "Расположения станции";
 $lang['station_location_header_ln1'] = 'Расположения станции определяют места работы, например, ваш QTH, QTH друзей или портативная станция.';
@@ -106,5 +107,3 @@ $lang['station_location_oqrs_email_hint'] = "Убедитесь, что емэй
 $lang['station_location_oqrs_text'] = "Текст OQRS";
 $lang['station_location_oqrs_text_hint'] = "Информация, которую вы хотите добавить, касающаяся QSL.";
 $lang['station_location_clublog_realtime_upload']='ClubLog Realtime Upload';
-
-
