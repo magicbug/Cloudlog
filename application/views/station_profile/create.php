@@ -249,6 +249,12 @@
                 <small id="eqslhelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_hint"); ?></small>
             </div>
 
+			<div class="mb-3">
+				<label for="eqslDefaultQSLMsg"><?php echo lang("station_location_eqsl_defaultqslmsg"); ?></label>
+		    	<textarea class="form-control" name="eqsl_default_qslmsg" id="eqslDefaultQSLMsg" aria-describedby="eqsldefaultqslmsghelp" maxlength="240" rows="2" style="width:100%;"></textarea>
+		    	<small id="eqsldefaultqslmsghelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_defaultqslmsg_hint"); ?> 240.</small>
+		  	</div>
+
                 <div class="mb-3">
 			<label for="clublogrealtime"><?php echo lang("station_location_clublog_realtime_upload"); ?></label>
 			<select class="form-select" id="clublogrealtime" name="clublogrealtime">

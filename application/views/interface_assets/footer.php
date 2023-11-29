@@ -1238,7 +1238,11 @@ $(document).on('keypress',function(e) {
 				$('#transmit_power').val('');
 			},
 		});
+        // [eQSL default msg] change value on change station profle //
+        qso_set_eqsl_qslmsg(stationProfile,false,'.qso_panel');
 	});
+    // [eQSL default msg] change value on clic //
+    $('.qso_panel .qso_eqsl_qslmsg_update').off('click').on('click',function() { qso_set_eqsl_qslmsg($('.qso_panel #stationProfile').val(),true,'.qso_panel'); });
 
 <?php if ($this->session->userdata('user_qth_lookup') == 1) { ?>
     $('#qth').focusout(function() {

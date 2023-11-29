@@ -26,6 +26,8 @@ $lang['qso_dok_helptext'] = 'Esimerkiksi: Q03';
 $lang['qso_notes_helptext'] = 'Muistio tallentuu vain logiin, tähän yhteydeen, eikä siirry eteenpäin muihin palveluihin.';
 $lang['qsl_notes_helptext'] = 'Tämä viestisi siirtyy myös QSL-palveluihin, kuten eqsl.cc.';
 
+$lang['qso_eqsl_qslmsg_helptext'] = "Get the default message for eQSL, for this station.";
+
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = 'Tyhjennä';

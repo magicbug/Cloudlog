@@ -114,8 +114,13 @@ class Stations extends CI_Model {
 			'webadifrealtime' => xss_clean($this->input->post('webadifrealtime', true)),
 		);
 
-		// Insert Records
-		$this->db->insert('station_profile', $data);
+		// Insert Records & return insert id //
+		if ($this->db->insert('station_profile', $data)===true) {
+			$station_user_list = $this->all_of_user()->result();
+			if ((count($station_user_list)>0) && (isset($station_user_list[intval(count($station_user_list)-1)]->station_id))) {
+				return $station_user_list[intval(count($station_user_list)-1)]->station_id;
+			}
+		}
 	}
 
 	function edit() {

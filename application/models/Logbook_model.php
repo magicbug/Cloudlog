@@ -260,6 +260,13 @@ class Logbook_model extends CI_Model {
       $station = $this->check_station($station_id);
         $data['station_id'] = $station_id;
 
+        // [eQSL default msg] add info to QSO for Contest or SFLE //
+        if (empty($data['COL_QSLMSG']) && (($this->input->post('isSFLE')==true) || (!empty($data['COL_CONTEST_ID'])))) {
+          $this->load->model('user_options_model');
+          $options_object = $this->user_options_model->get_options('eqsl_default_qslmsg',array('option_name'=>'key_station_id','option_key'=>$station_id))->result();
+          $data['COL_QSLMSG'] = (isset($options_object[0]->option_value))?$options_object[0]->option_value:'';
+        }
+
       if (strpos(trim($station['station_gridsquare']), ',') !== false) {
         $data['COL_MY_VUCC_GRIDS'] = strtoupper(trim($station['station_gridsquare']));
       } else {

@@ -624,3 +624,8 @@ table.dataTable tfoot td {
 .orange {
 	color: var(--orange);
 }
+
+.qso_eqsl_qslmsg_update {
+    cursor: pointer;
+    margin-left: 10px;
+}

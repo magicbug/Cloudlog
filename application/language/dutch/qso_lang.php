@@ -26,6 +26,8 @@ $lang['qso_dok_helptext'] = 'Bijvoorbeeld: Q03';
 $lang['qso_notes_helptext'] = 'Notities worden alleen in Cloudlog gebruikt en worden niet geexporteerd naar andere diensten.';
 $lang['qsl_notes_helptext'] = 'This note content is exported to QSL services like eqsl.cc.';
 
+$lang['qso_eqsl_qslmsg_helptext'] = "Get the default message for eQSL, for this station.";
+
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = 'Wis QSO';

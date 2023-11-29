@@ -26,6 +26,8 @@ $lang['qso_dok_helptext'] = 'Zum Beispiel: Q03';
 $lang['qso_notes_helptext'] = 'Notizeninhalt wird nur innerhalb von Cloudlog genutzt und nicht an andere Dienste weitergegeben.';
 $lang['qsl_notes_helptext'] = 'Dieser Notizeninhalt wird an QSL Services wie eqsl.cc exportiert.';
 
+$lang['qso_eqsl_qslmsg_helptext'] = "Get the default message for eQSL, for this station.";
+
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = 'Zurücksetzen';

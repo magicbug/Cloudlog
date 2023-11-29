@@ -94,6 +94,8 @@ $lang['station_location_signature_name_hint'] = "Подпись станции (
 $lang['station_location_signature_info'] = "Информация о подписи";
 $lang['station_location_signature_info_hint'] = "Информация о подписис станции (т.е. DA/NW-357).";
 $lang['station_location_eqsl_hint'] = 'Название профиля, который сконфигурирован в eQSL для данного QTH';
+$lang['station_location_eqsl_defaultqslmsg'] = "Default QSLMSG";
+$lang['station_location_eqsl_defaultqslmsg_hint'] = "You can define a default message that will be populated and sent for each QSO for this station location. Max length:";
 $lang['station_location_qrz_subscription'] = 'Требуется подписка';
 $lang['station_location_qrz_hint'] = "Ваш ключ API находится на  <a href='https://logbook.qrz.com/logbook' target='_blank'>странице настроек журнала QRZ.com";
 $lang['station_location_qrz_realtime_upload'] = 'Загрузка в журнал QRZ.com в реальном времени';
