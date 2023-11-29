@@ -114,3 +114,8 @@ $lang['account_qsl_settings'] = "Méthode QSL";
 $lang['account_winkeyer'] = "Winkeyer";
 $lang['account_winkeyer_hint'] = "REMARQUE : La prise en charge de Winkeyer dans Cloudlog est très expérimentale, lisez d'abord le wiki avant de l'activer  <a href=\"https://github.com/magicbug/Cloudlog/wiki/Winkey\" target=\"_blank\">https://github.com/magicbug/Cloudlog/wiki/Winkey</a>";
 $lang['account_winkeyer_enabled'] = "Activer Winkeyer";
+
+$lang['account_map_params'] = "Paramètre de la carte";
+$lang['account_map_qso_by_default'] = "QSO (par défaut)";
+$lang['account_map_qso_confirm'] = "QSO (confirmé)";
+$lang['account_map_qso_confirm_same_qso'] = "(Si 'Non', sera affiché comme ".$lang['account_map_qso_by_default'].")";
