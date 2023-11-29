@@ -46,6 +46,7 @@
 
 	<h2><?php echo $page_title; ?></h2>
 
+<?php if ($visitor == false) { ?>
 <form class="d-flex align-items-center">
             <label class="my-1 me-2" for="band"><?php echo lang('gridsquares_band'); ?></label>
             <select class="form-select my-1 me-sm-2 w-auto"  id="band">
@@ -111,6 +112,7 @@
             <button id="plot" type="button" name="plot" class="btn btn-primary me-1 ld-ext-right ld-ext-right-plot" onclick="gridPlot(this.form)"><?php echo lang('gridsquares_button_plot'); ?><div class="ld ld-ring ld-spin"></div></button>
 			<button id="clear" type="button" name="clear" class="btn btn-primary me-1 ld-ext-right ld-ext-right-clear" onclick="clearMarkers()"><?php echo lang('gridsquares_button_clear_markers'); ?><div class="ld ld-ring ld-spin"></div></button>
 </form>
+<?php } ?>
 
 		<?php if($this->session->flashdata('message')) { ?>
 			<!-- Display Message -->
@@ -135,16 +137,22 @@
         <div class="cohidden"><?php echo lang('gen_hamradio_bearing')?>: </div>
         <div class="cohidden col-auto text-success fw-bold" id="bearing"></div>
 </div>
-<script>var gridsquaremap = true;
+<script>
+var gridsquaremap = true;
 var type = "worked";
+<?php if ($visitor == true) { ?>
+var visitor = true;
+<?php } else { ?>
+var visitor = false;
+<?php } ?>
 <?php
-    echo 'var jslayer ="' . $layer .'";';
+    echo "var jslayer = \"" . $layer ."\";\n";
     echo "var jsattribution ='" . $attribution . "';";
-    echo "var homegrid ='" . strtoupper($homegrid[0]) . "';";
+    echo "var homegrid = \"" . strtoupper($homegrid[0]) . "\";\n";
 
-    echo 'var gridsquares_gridsquares = "' . $gridsquares_gridsquares . '";';
-    echo 'var gridsquares_gridsquares_confirmed = "' . $gridsquares_gridsquares_confirmed . '";';
-    echo 'var gridsquares_gridsquares_not_confirmed = "' . $gridsquares_gridsquares_not_confirmed . '";';
-    echo 'var gridsquares_gridsquares_total_worked = "' . $gridsquares_gridsquares_total_worked . '";';
+    echo "var gridsquares_gridsquares = \"" . $gridsquares_gridsquares . "\";\n";
+    echo "var gridsquares_gridsquares_confirmed = \"" . $gridsquares_gridsquares_confirmed . "\";\n";
+    echo "var gridsquares_gridsquares_not_confirmed = \"" . $gridsquares_gridsquares_not_confirmed . "\";\n";
+    echo "var gridsquares_gridsquares_total_worked = \"" . $gridsquares_gridsquares_total_worked . "\";\n";
 ?>
 </script>

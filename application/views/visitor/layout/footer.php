@@ -103,72 +103,7 @@
   var grid_four_confirmed_count = grid_four_confirmed.length;
   var grid_six_confirmed_count = grid_six_confirmed.length;
 
-  if (grid_four_confirmed_count > 0) {
-     var span = document.getElementById('confirmed_grids');
-     span.innerText = span.textContent = '('+grid_four_confirmed_count+' grid squares) ';
-  }
-  if ((grid_four_count-grid_four_confirmed_count) > 0) {
-     var span = document.getElementById('worked_grids');
-     span.innerText = span.textContent = '('+(grid_four_count-grid_four_confirmed_count)+' grid squares) ';
-  }
-  var span = document.getElementById('sum_grids');
-  span.innerText = span.textContent = ' Total Count: '+grid_four_count+' grid squares';
-
   var maidenhead = L.maidenhead().addTo(map);
-
-  map.on('click', onMapClick);
-
-  function onMapClick(event) {
-    var LatLng = event.latlng;
-    var lat = LatLng.lat;
-    var lng = LatLng.lng;
-    var locator = LatLng2Loc(lat,lng, 10);
-    var loc_4char = locator.substring(0, 4);
-    console.log(loc_4char);
-    console.log(map.getZoom());
-
-    if(map.getZoom() > 2) {
-    	<?php if ($this->session->userdata('user_callsign')) { ?>
-	  var band = '';
-      var search_type = "<?php echo $this->uri->segment(2); ?>";
-      if(search_type == "satellites") {
-		band = 'SAT';
-      } else {
-        band = "<?php echo $this->uri->segment(3); ?>";
-      }
-		$(".modal-body").empty();
-		  $.ajax({
-			  url: base_url + 'index.php/awards/qso_details_ajax',
-			  type: 'post',
-			  data: {
-				  'Searchphrase': loc_4char,
-				  'Band': band,
-				  'Mode': 'All',
-				  'Type': 'VUCC'
-			  },
-			  success: function (html) {
-				$(".modal-body").html(html);
-				  $(".modal-body table").addClass('table-sm');
-				  $(".modal-body h5").empty();
-				  var count = $('.table tr').length;
-				  count = count - 1;
-				  $('#qso_count').text(count);
-				  if (count > 1) {
-					  $('#gt1_qso').text("s");
-				  } else {
-					  $('#gt1_qso').text("");
-				  }
-
-				  if (count > 0) {
-					  $('#square_number').text(loc_4char);
-					  $('#exampleModal').modal('show');
-					  $('[data-bs-toggle="tooltip"]').tooltip({ boundary: 'window' });
-				  }
-			  }
-		  });
-		  <?php } ?>
-    }
-  };
 
 <?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
 
@@ -201,6 +136,7 @@
 <?php } ?>
 <?php } ?>
     </script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/js/sections/gridmap.js?"></script>
     <?php if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
