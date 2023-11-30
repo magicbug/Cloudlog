@@ -621,6 +621,88 @@
 					</div>
 				</div>
 			</div>
+
+			<?php if ($this->session->userdata('user_id') == $this->uri->segment(3)) { ?>
+			<!-- [MAP Custom] -->
+			<div class="col-md">
+				<div class="card">
+		    		<div class="card-header">
+					   	 <?php echo $this->lang->line('account_map_params'); ?>
+					</div>
+					<div class="card-body">
+				        <div class="row"> <!-- Station -->
+				        	<div class="mb-3 col-md-4">
+				        		<label>&nbsp;</label><br/><label><?php echo $this->lang->line('gen_hamradio_station'); ?></label>
+				        	</div>
+							<div class="mb-3 col-md-3">
+								<label><?php echo $this->lang->line('general_word_icon'); ?></label><br/>
+	                            <div class="icon_selectBox" data-boxcontent="station">
+    	                            <input type="hidden" name="user_map_station_icon" value="<?php echo $user_map_station_icon; ?>">
+        	                        <div class="form-select icon_overSelect"><?php echo (($user_map_station_icon=="0")?substr($this->lang->line('general_word_not_display'),0,10).'.':("<i class='".$user_map_station_icon."'></i>")); ?></div>
+            	                </div>
+                	            <div class="col-md-3 icon_selectBox_data" data-boxcontent="station"> 
+				    	            <?php foreach($map_icon_select['station'] as $val) {
+				        	        	echo "<label data-value='".$val."'>".(($val=="0")?$this->lang->line('general_word_not_display'):("<i class='".$val."'></i>"))."</label>";
+				            	   	} ?>
+                            	</div>
+				            </div>
+							<div class="mb-3 col-md-2">
+								<label><?php echo $this->lang->line('general_word_colors'); ?></label><br/><input type="color" class="form-control user_icon_color" name="user_map_station_color" id="user_map_station_color" value="<?php echo $user_map_station_color; ?>" style="padding:initial;<?php echo ($user_map_station_icon=="0")?'display:none;':''; ?>" data-icon="station" /></div>
+						</div>
+						<div class="row"> <!-- QSO (default) -->
+				        	<div class="mb-3 col-md-4">
+				        		<label><?php echo $this->lang->line('account_map_qso_by_default'); ?></label>
+				        	</div>
+							<div class="mb-3 col-md-3">
+	                            <div class="icon_selectBox" data-boxcontent="qso">
+    	                            <input type="hidden" name="user_map_qso_icon" value="<?php echo $user_map_qso_icon; ?>">
+        	                        <div class="form-select icon_overSelect"><?php echo "<i class='".$user_map_qso_icon."'></i>"; ?></div>
+            	                </div>
+                	            <div class="col-md-3 icon_selectBox_data" data-boxcontent="qso"> 
+				    	            <?php foreach($map_icon_select['qso'] as $val) {
+				        	        	echo "<label data-value='".$val."'><i class='".$val."'></i></label>";
+				            	   	} ?>
+                            	</div>
+				            </div>
+							<div class="mb-3 col-md-2">
+								<input type="color" class="form-control user_icon_color" name="user_map_qso_color" id="user_map_qso_color" value="<?php echo $user_map_qso_color; ?>" style="padding:initial;" data-icon="qso" />
+							</div>
+						</div>
+						<div class="row"> <!-- QSO (confirmed) -->
+				        	<div class="mb-3 col-md-4">
+				        		<label><?php echo $this->lang->line('account_map_qso_confirm'); ?></label>
+				        		<div class="small form-text text-muted"><?php echo lang('account_map_qso_confirm_same_qso'); ?></div>
+				        	</div>
+							<div class="mb-3 col-md-3">
+	                            <div class="icon_selectBox" data-boxcontent="qsoconfirm">
+    	                            <input type="hidden" name="user_map_qsoconfirm_icon" value="<?php echo $user_map_qsoconfirm_icon; ?>">
+        	                        <div class="form-select icon_overSelect"><?php echo (($user_map_qsoconfirm_icon=="0")?$this->lang->line('general_word_no'):("<i class='".$user_map_qsoconfirm_icon."'></i>")); ?></div>
+            	                </div>
+                	            <div class="col-md-3 icon_selectBox_data" data-boxcontent="qsoconfirm"> 
+				    	            <?php foreach($map_icon_select['qsoconfirm'] as $val) {
+				        	        	echo "<label data-value='".$val."'>".(($val=="0")?$this->lang->line('general_word_no'):("<i class='".$val."'></i>"))."</label>";
+				            	   	} ?>
+                            	</div>
+				            </div>
+							<div class="md-3 col-md-2">
+								<input type="color" class="form-control user_icon_color" name="user_map_qsoconfirm_color" id="user_map_qsoconfirm_color" value="<?php echo $user_map_qsoconfirm_color; ?>" style="padding:initial;<?php echo ($user_map_qsoconfirm_icon=="0")?'display:none;':''; ?>" data-icon="qsoconfirm" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="md-3 col-md-4">
+								<label><?php echo $this->lang->line('gen_hamradio_gridsquare_show'); ?></label>
+							</div>
+							<div class="md-3 col-md-3">
+								<select class="form-select" id="user_map_gridsquare_show" name="user_map_gridsquare_show">
+									<option value="1" <?php if ($user_map_gridsquare_show == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
+									<option value="0" <?php if ($user_map_gridsquare_show == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php } ?>
 		</div>
 
 		<br>
