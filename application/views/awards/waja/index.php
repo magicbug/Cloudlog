@@ -32,18 +32,10 @@
 }
 </style>
 <div class="container">
-        <!-- Award Info Box -->
-        <br>
+	        <!-- Award Info Box -->
+			<br>
         <div id="awardInfoButton">
-            <script>
-            var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
-            var lang_award_info_ln1 = "<?php echo lang('awards_dxcc_description_ln1'); ?>";
-            var lang_award_info_ln2 = "<?php echo lang('awards_dxcc_description_ln2'); ?>";
-            var lang_award_info_ln3 = "<?php echo lang('awards_dxcc_description_ln3'); ?>";
-            var lang_award_info_ln4 = "<?php echo lang('awards_dxcc_description_ln4'); ?>";
-            </script>
             <h2><?php echo $page_title; ?></h2>
-            <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
         </div>
         <!-- End of Award Info Box -->
 
@@ -127,9 +119,6 @@
                 <div class="col-md-10">
                     <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning">Reset</button>
                     <button id="button1id" type="submit" name="button1id" class="btn btn-sm btn-primary">Show</button>
-                    <?php if ($waja_array) {
-                        ?><button type="button" onclick="load_dxcc_map();" class="btn btn-info btn-sm"><i class="fas fa-globe-americas"></i> Show WAJA Map</button>
-                    <?php }?>
                 </div>
             </div>
 
@@ -139,9 +128,6 @@
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="table-tab" data-bs-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="true">Table</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="map-tab" onclick="load_dxcc_map();" data-bs-toggle="tab" href="#dxccmaptab" role="tab" aria-controls="home" aria-selected="false">Map</a>
         </li>
     </ul>
     <br />

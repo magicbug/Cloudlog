@@ -9,7 +9,7 @@ class Migration_add_waja_bandxuser extends CI_Migration
 			'waja TINYINT NOT NULL DEFAULT 1',
 		);
 
-		if (!$this->db->field_exists('clublogrealtime', 'bandxuser')) {
+		if (!$this->db->field_exists('waja', 'bandxuser')) {
 			$this->dbforge->add_column('bandxuser', $fields);
 		}
 	}
