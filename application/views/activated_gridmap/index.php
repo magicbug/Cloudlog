@@ -124,19 +124,25 @@
 	<div id="gridsquare_map" style="width: 100%; height: 800px"></div>
 </div>
 <div class="coordinates d-flex">
-        <div class="cohidden"><?php echo lang('gen_hamradio_latitude')?>: </div>
+        <div class="cohidden"><?php echo lang('gen_hamradio_latitude')?>:&nbsp;</div>
         <div class="cohidden col-auto text-success fw-bold" id="latDeg"></div>
-        <div class="cohidden"><?php echo lang('gen_hamradio_longitude')?>: </div>
+        <div class="cohidden"><?php echo lang('gen_hamradio_longitude')?>:&nbsp;</div>
         <div class="cohidden col-auto text-success fw-bold" id="lngDeg"></div>
-        <div class="cohidden"><?php echo lang('gen_hamradio_gridsquare')?>: </div>
+        <div class="cohidden"><?php echo lang('gen_hamradio_gridsquare')?>:&nbsp;</div>
         <div class="cohidden col-auto text-success fw-bold" id="locator"></div>
-        <div class="cohidden"><?php echo lang('gen_hamradio_distance')?>: </div>
+        <div class="cohidden"><?php echo lang('gen_hamradio_distance')?>:&nbsp;</div>
         <div class="cohidden col-auto text-success fw-bold" id="distance"></div>
-        <div class="cohidden"><?php echo lang('gen_hamradio_bearing')?>: </div>
+        <div class="cohidden"><?php echo lang('gen_hamradio_bearing')?>:&nbsp;</div>
         <div class="cohidden col-auto text-success fw-bold" id="bearing"></div>
 </div>
-<script>var gridsquaremap = true;
+<script>
+var gridsquaremap = true;
 var type = "activated";
+<?php if ($visitor == true) { ?>
+var visitor = true;
+<?php } else { ?>
+var visitor = false;
+<?php } ?>
 <?php
     echo 'var jslayer ="' . $layer .'";';
     echo "var jsattribution ='" . $attribution . "';";

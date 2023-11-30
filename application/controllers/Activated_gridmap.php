@@ -13,6 +13,7 @@ class Activated_gridmap extends CI_Controller {
         $this->load->model('activated_gridmap_model');
 		$this->load->model('stations');
 
+		$data['visitor'] = false;
 		$data['homegrid'] = explode(',', $this->stations->find_gridsquare());
 
 		$data['modes'] = $this->activated_gridmap_model->get_worked_modes();
