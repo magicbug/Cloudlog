@@ -635,7 +635,7 @@ class Lotw extends CI_Controller {
 			// Get URL for downloading LoTW
 			$url_query = $this->db->query('SELECT lotw_download_url FROM config');
 			$q = $url_query->row();
-			$lotw_url = $q->lotw_download_url;
+			$lotw_base_url = $q->lotw_download_url;
 
 			foreach ($query->result() as $user) {
 				if ( ($sync_user_id != null) && ($sync_user_id != $user->user_id) ) { continue; }
@@ -661,7 +661,7 @@ class Lotw extends CI_Controller {
 				$lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($user->user_id)));
 
 				// Build URL for LoTW report file
-				$lotw_url .= "?";
+				$lotw_url = $lotw_base_url."?";
 				$lotw_url .= "login=" . $data['user_lotw_name'];
 				$lotw_url .= "&password=" . $data['user_lotw_password'];
 				$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
