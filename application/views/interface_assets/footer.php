@@ -12,7 +12,7 @@
 </script>
 
 <script>
-    /* 
+    /*
     General Language
     */
     var lang_general_word_qso_data = "<?php echo lang('general_word_qso_data'); ?>";
@@ -78,7 +78,7 @@ function load_was_map() {
                 type: 'POST',
             });
         });
-        
+
     </script>
 <?php } ?>
 
@@ -761,7 +761,7 @@ function showActivatorsMap(call, count, grids) {
 <?php if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "dashboard" ) { ?>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
     <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
-    
+
     <script type="text/javascript">
       $(function () {
         $('[data-bs-toggle="tooltip"]').tooltip()
@@ -1887,6 +1887,40 @@ $(document).ready(function(){
 <?php if ($this->uri->segment(2) == "dxcc") { ?>
 <script>
     $('.tabledxcc').DataTable({
+        "pageLength": 25,
+        responsive: false,
+        ordering: false,
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "scrollX": true,
+        dom: 'Bfrtip',
+        buttons: [
+            'csv'
+        ]
+    });
+
+    $('.tablesummary').DataTable({
+        info: false,
+        searching: false,
+        ordering: false,
+        "paging":         false,
+        dom: 'Bfrtip',
+        buttons: [
+            'csv'
+        ]
+    });
+
+    // change color of csv-button if dark mode is chosen
+    if (isDarkModeTheme()) {
+        $(".buttons-csv").css("color", "white");
+    }
+ </script>
+    <?php } ?>
+
+<?php if ($this->uri->segment(2) == "waja") { ?>
+<script>
+    $('.tablewaja').DataTable({
         "pageLength": 25,
         responsive: false,
         ordering: false,

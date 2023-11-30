@@ -386,6 +386,10 @@ class Logbook_model extends CI_Model {
 		case 'DOK':
 			$this->db->where('COL_DARC_DOK', $searchphrase);
 			break;
+		case 'WAJA':
+			$this->db->where('COL_STATE', $searchphrase);
+			$this->db->where_in('COL_DXCC', ['339']);
+			break;
 		case 'QSLRDATE':
 			$this->db->where('date(COL_QSLRDATE)=date(SYSDATE())');
 			break;
@@ -584,7 +588,7 @@ class Logbook_model extends CI_Model {
 		  		$this->mark_clublog_qsos_sent($last_id);
 			}
 		}
-	
+
 		$result = '';
 		$result = $this->exists_hrdlog_code($data['station_id']);
 		// Push qso to hrdlog if code is set, and realtime upload is enabled, and we're not importing an adif-file
@@ -738,7 +742,7 @@ class Logbook_model extends CI_Model {
 	  } else {
 		  $returner['status']=$response;
 	  }
-	  curl_close ($request); 
+	  curl_close ($request);
 	  return ($returner);
   }
 
