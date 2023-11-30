@@ -439,7 +439,6 @@ class Visitor extends CI_Controller {
 		$data['grid_4char'] = js_array($array_grid_4char);
 		$data['grid_6char'] = js_array($array_grid_6char);
 
-		$data['homegrid'] = 'JO31OL';
 		$data['layer'] = $this->optionslib->get_option('option_map_tile_server');
 		$data['attribution'] = $this->optionslib->get_option('option_map_tile_server_copyright');
 
