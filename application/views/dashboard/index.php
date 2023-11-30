@@ -146,7 +146,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			$i = 0;
 			if(!empty($last_five_qsos) > 0) {
 			foreach ($last_five_qsos->result() as $row) { ?>
-				<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
+				<?php  echo '<tr id="qso_'.$row->COL_PRIMARY_KEY.'" class="tr'.($i & 1).'">'; ?>
 
 					<?php
 
