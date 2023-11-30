@@ -15,7 +15,8 @@ class Activated_gridmap_model extends CI_Model {
 
         $sql = 'SELECT DISTINCT station_gridsquare AS GRID_SQUARES, COL_BAND FROM '
            . 'station_profile JOIN '.$this->config->item('table_name').' on '.$this->config->item('table_name').'.station_id = station_profile.station_id '
-           . 'WHERE station_profile.station_gridsquare != "" ';
+           . 'WHERE station_profile.station_gridsquare != "" '
+	   . 'AND station_profile.station_id in ('.$location_list.')';
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -35,7 +36,6 @@ class Activated_gridmap_model extends CI_Model {
         }
 
         $sql .= $this->addQslToQuery($qsl, $lotw, $eqsl);
-
 		return $this->db->query($sql);
 	}
 
@@ -52,7 +52,8 @@ class Activated_gridmap_model extends CI_Model {
 
         $sql = 'SELECT DISTINCT station_gridsquare AS GRID_SQUARES, COL_BAND FROM '
            . 'station_profile JOIN '.$this->config->item('table_name').' on '.$this->config->item('table_name').'.station_id = station_profile.station_id '
-           . 'WHERE station_profile.station_gridsquare != "" ';
+           . 'WHERE station_profile.station_gridsquare != "" '
+	   . 'AND station_profile.station_id in ('.$location_list.')';
 
         if ($band != 'All') {
             if ($band == 'SAT') {
