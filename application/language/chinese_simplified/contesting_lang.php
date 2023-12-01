@@ -6,7 +6,7 @@ $lang['contesting_page_title'] = '竞赛日志';
 $lang['contesting_button_reset_contest_session'] = '重置竞赛会话';
 $lang['contesting_operator_callsign'] = '操作员呼号';
 
-$lang['contesting_exchange_type'] = '信号交换类型';
+$lang['contesting_exchange_type'] = '信息交换类型';
 $lang['contesting_exchange_type_serial'] = '序列编号';
 $lang['contesting_exchange_type_none'] = '无';
 $lang['contesting_exchange_type_exchange'] = '交换信息';

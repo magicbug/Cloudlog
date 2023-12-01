@@ -100,10 +100,10 @@ ________________________________________________________________________________
 */
 
 $lang['filter_actions_w_selected'] = '用选中行进行：';
-$lang['filter_actions_update_f_callbook'] = 'Update from Callbook';
-$lang['filter_actions_queue_bureau'] = 'Queue Bureau';
-$lang['filter_actions_queue_direct'] = 'Queue Direct';
-$lang['filter_actions_queue_electronic'] = 'Queue Electronic';
+$lang['filter_actions_update_f_callbook'] = '从 Callbook 更新';
+$lang['filter_actions_queue_bureau'] = '卡片局队列';
+$lang['filter_actions_queue_direct'] = '直邮卡片队列';
+$lang['filter_actions_queue_electronic'] = '电子卡片队列';
 $lang['filter_actions_sent_bureau'] = '已发送 (卡片局)';
 $lang['filter_actions_sent_direct'] = '已发送 (直邮)';
 $lang['filter_actions_sent_electronic'] = '已发送 (电子)';
@@ -130,9 +130,9 @@ Options
 ___________________________________________________________________________________________
 */
 
-$lang['filter_options_title'] = 'Options for the Advanced Logbook';
-$lang['filter_options_column'] = 'Column';
-$lang['filter_options_show'] = 'Show';
+$lang['filter_options_title'] = '高级日志选项';
+$lang['filter_options_column'] = '列';
+$lang['filter_options_show'] = '显示';
 // $lang['general_word_datetime']       --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_de']             --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_dx']             --> application/language/english/general_words_lang.php
@@ -156,4 +156,4 @@ $lang['filter_options_show'] = 'Show';
 // $lang['gen_hamradio_wwff']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_pota']           --> application/language/english/general_words_lang.php
 // $lang['options_save']                --> application/language/english/options_lang.php
-$lang['filter_options_close'] = 'Close';
+$lang['filter_options_close'] = '关闭';
