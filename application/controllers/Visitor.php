@@ -122,6 +122,7 @@ class Visitor extends CI_Controller {
                 $current = $this->logbook_model->total_countries_current($logbooks_locations_array);
 
                 $data['total_countries_needed'] = count($dxcc->result()) - $current;
+		$data['layer'] = $this->optionslib->get_option('option_map_tile_server');
 
                 $this->load->view('visitor/layout/header', $data);
                 $this->load->view('visitor/index');
