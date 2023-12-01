@@ -38,17 +38,23 @@ function initmap(ShowGrid='No', MapTag='map', options={}) {
 	var layerControl = new L.Control.Layers(null, { 'Gridsquares': maidenhead = L.maidenhead() }).addTo(map);
 	if(ShowGrid == "Yes") { maidenhead.addTo(map); }
 
+	//console.log(_url_qso);
 	// get map custon infos //
-    $.ajax({
-        url: base_url+'index.php/user_options/get_map_custom', type: 'GET', dataType: 'json',
-        error: function() { console.log('[ERROR] ajax get_map_custom() function return error.'); },
-        success: function(json_mapinfo) {
-        	if (typeof json_mapinfo.qso !== "undefined") { iconsList = json_mapinfo; }
-			if(json_mapinfo.gridsquare_show == "1") { maidenhead.addTo(map); }
-			//console.log(_url_qso);
-			askForPlots(_url_qso, options);
-        }
-    });
+	var _visitor = (typeof visitor==="undefined")?false:visitor;
+	if (_visitor) {
+		askForPlots(_url_qso, options);
+	} else {
+		$.ajax({
+			url: base_url+'index.php/user_options/get_map_custom', type: 'GET', dataType: 'json',
+			error: function() { askForPlots(_url_qso, options); console.log('[ERROR] ajax get_map_custom() function return error.'); },
+			success: function(json_mapinfo) {
+				if (typeof json_mapinfo.qso !== "undefined") { iconsList = json_mapinfo; }
+				if(json_mapinfo.gridsquare_show == "1") { maidenhead.addTo(map); }
+				askForPlots(_url_qso, options);
+			}
+		});
+	}
+
 }
 
 function askForPlots(_url_qso, options={}) {
