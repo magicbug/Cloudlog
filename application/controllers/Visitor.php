@@ -37,12 +37,15 @@ class Visitor extends CI_Controller {
         $this->load->model('user_model');
 
 		// Check if users logged in
-		if($this->user_model->validate_session() != 0) {
-            // If environment is set to development then show the debug toolbar
-		    if(ENVIRONMENT == 'development') {
-                $this->output->enable_profiler(TRUE);
-            }
+	if($this->user_model->validate_session() != 0) {
+		// If environment is set to development then show the debug toolbar
+		if(ENVIRONMENT == 'development') {
+			$this->output->enable_profiler(TRUE);
+			$data['visitor'] = false;;
 		}
+	} else {
+		$data['visitor'] = true;
+	}
 
         // Check slug passed and is valid
         if ($this->security->xss_clean($public_slug, TRUE) === FALSE)

@@ -20,6 +20,11 @@
   var base_url = "<?php echo base_url(); ?>"; // Base URL
   var site_url = "<?php echo site_url(); ?>"; // Site URL
   var icon_dot_url = "<?php echo base_url();?>assets/images/dot.png";
+  <?php if ($visitor == true) { ?>
+	  var visitor = true;
+  <?php } else { ?>
+  	var visitor = false;
+  <?php } ?>
 </script>
 
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
@@ -51,7 +56,7 @@
             <?php if ($this->uri->segment(2) != "search" && $this->uri->segment(2) != "satellites") { ?>
             initmap(grid);
             <?php } ?>
-
+	    
       });
 
       </script>
