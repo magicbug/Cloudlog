@@ -17,7 +17,7 @@ if (typeof(visitor) !== 'undefined' && visitor != true) {
    var grid_six_confirmed = '';
 }
 
-function gridPlot(form, visitor) {
+function gridPlot(form, visitor=true) {
     $(".ld-ext-right-plot").addClass('running');
     $(".ld-ext-right-plot").prop('disabled', true);
     $('#plot').prop("disabled", true);
@@ -30,6 +30,7 @@ function gridPlot(form, visitor) {
         $("#gridmapcontainer").append('<div id="gridsquare_map" style="width: 100%; height: 800px"></div>');
     }
 
+    if (typeof type == 'undefined') { type=''; }
     if (type == "activated") {
         ajax_url = site_url + '/activated_gridmap/getGridsjs';
     } else if (type == "worked") {
