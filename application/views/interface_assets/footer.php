@@ -45,6 +45,7 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/easyprint.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/common.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/eqslcharcounter.js"></script>
 
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
 
@@ -80,20 +81,6 @@ function load_was_map() {
         });
 
     </script>
-<?php } ?>
-
-<?php if ($this->uri->segment(1) == "station") { ?>
-<script>
-	$("#eqslDefaultQSLMsg").keyup(function() {
-		var remainingChars = 240 - $(this).val().length;
-		$('#charsLeft').text(remainingChars + "/240");
-        if (remainingChars < 5) {
-        $('#charsLeft').css('color', 'red');
-        } else {
-            $('#charsLeft').css('color', '');
-        }
-	});
-</script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "cq") ) { ?>
