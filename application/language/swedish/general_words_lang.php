@@ -15,6 +15,8 @@ $lang['general_word_info'] = 'Info';
 $lang['general_word_choose_file'] = 'Välj fil';
 $lang['general_word_next'] = 'Next';
 $lang['general_word_previous'] = 'Previous';
+$lang['general_word_not_display'] = "Not display";
+$lang['general_word_icon'] = "Icon";
 
 $lang['general_word_cancel'] = "Cancel";
 $lang['general_word_ok'] = "OK";
@@ -171,6 +173,7 @@ $lang['gen_hamradio_latitude'] = "Latitude";
 $lang['gen_hamradio_longitude'] = "Longitude";
 $lang['gen_hamradio_bearing'] = "Bearing";
 $lang['gen_hamradio_get_gridsquare'] = 'Get Gridsquare';
+$lang['gen_hamradio_gridsquare_show'] = "Show Locator";
 $lang['gen_hamradio_distance'] = 'Distance';
 $lang['gen_hamradio_operator'] = 'Operatör';
 

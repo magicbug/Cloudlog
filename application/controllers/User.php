@@ -488,6 +488,38 @@ class User extends CI_Controller {
 				$data['user_winkey'] = $q->winkey;
 			}
 
+			// [MAP Custom] GET user options //
+			$this->load->model('user_options_model');
+			$options_object = $this->user_options_model->get_options('map_custom')->result();
+			if (count($options_object)>0) {
+				foreach ($options_object as $row) {
+					if ($row->option_name=='icon') {
+						$option_value = json_decode($row->option_value,true);
+						foreach ($option_value as $ktype => $vtype) {
+							if($this->input->post('user_map_'.$row->option_key.'_icon')) {
+								$data['user_map_'.$row->option_key.'_'.$ktype] = $this->input->post('user_map_'.$row->option_key.'_'.$ktype, true);
+							} else {
+								$data['user_map_'.$row->option_key.'_'.$ktype] = $vtype;
+							}					
+						}
+					} else {
+						$data['user_map_'.$row->option_name.'_'.$row->option_key] = $row->option_value;
+					}
+				}				
+			} else {
+				$data['user_map_qso_icon'] = "fas fa-dot-circle";
+				$data['user_map_qso_color'] = "#FF0000";
+				$data['user_map_station_icon'] = "0";
+				$data['user_map_station_color'] = "#0000FF";
+				$data['user_map_qsoconfirm_icon'] = "0";
+				$data['user_map_qsoconfirm_color'] = "#00AA00";
+				$data['user_map_gridsquare_show'] = "0";
+			}
+			$data['map_icon_select'] = array(
+				'station'=>array('0', 'fas fa-home', 'fas fa-broadcast-tower', 'fas fa-user', 'fas fa-dot-circle' ),
+				'qso'=>array('fas fa-broadcast-tower', 'fas fa-user', 'fas fa-dot-circle' ),
+				'qsoconfirm'=>array('0', 'fas fa-broadcast-tower', 'fas fa-user', 'fas fa-dot-circle', 'fas fa-check-circle' ));
+							
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('user/edit', $data);
 			$this->load->view('interface_assets/footer');
@@ -518,6 +550,24 @@ class User extends CI_Controller {
 						$this->input->set_cookie($cookie);
 					}
 					if($this->session->userdata('user_id') == $this->input->post('id', true)) {
+						// [MAP Custom] ADD to user options //
+						$array_icon = array('station','qso','qsoconfirm');
+						foreach ($array_icon as $icon) {
+							$data_options['user_map_'.$icon.'_icon'] = xss_clean($this->input->post('user_map_'.$icon.'_icon', true));
+							$data_options['user_map_'.$icon.'_color'] = xss_clean($this->input->post('user_map_'.$icon.'_color', true));
+						}
+						$this->load->model('user_options_model');
+						if (!empty($data_options['user_map_qso_icon'])) {
+							foreach ($array_icon as $icon) { 
+								$json = json_encode(array('icon'=>$data_options['user_map_'.$icon.'_icon'], 'color'=>$data_options['user_map_'.$icon.'_color']));
+								$this->user_options_model->set_option('map_custom','icon',array($icon=>$json));
+							}
+							$this->user_options_model->set_option('map_custom','gridsquare',array('show'=>xss_clean($this->input->post('user_map_gridsquare_show', true))));
+						} else {
+							$this->user_options_model->del_option('map_custom','icon');
+							$this->user_options_model->del_option('map_custom','gridsquare');
+						}
+
 						$this->session->set_flashdata('success', lang('account_user').' '.$this->input->post('user_name', true).' '.lang('account_word_edited'));
 						redirect('user/edit/'.$this->uri->segment(3));
 					} else {

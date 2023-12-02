@@ -23,6 +23,8 @@ $lang['general_word_export'] = "导出";
 $lang['general_word_import'] = "导入";
 $lang['general_word_count'] = "数量";
 $lang['general_word_filtering_on'] = "筛选打开";
+$lang['general_word_not_display'] = "Not display";
+$lang['general_word_icon'] = "Icon";
 
 $lang['general_word_date'] = '日期';
 $lang['general_word_startdate'] = "开始时间";
@@ -167,6 +169,7 @@ $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = '网格';
 $lang['gen_hamradio_get_gridsquare'] = '获取网格座标';
+$lang['gen_hamradio_gridsquare_show'] = "Show Locator";
 $lang['gen_hamradio_latitude'] = "纬度";
 $lang['gen_hamradio_longitude'] = "经度";
 $lang['gen_hamradio_bearing'] = "方位角";

@@ -23,6 +23,8 @@ $lang['general_word_export'] = "Экспорт";
 $lang['general_word_import'] = "Импорт";
 $lang['general_word_count'] = "Счётчик";
 $lang['general_word_filtering_on'] = "Отфильтровано по";
+$lang['general_word_not_display'] = "Not display";
+$lang['general_word_icon'] = "Icon";
 
 $lang['general_word_date'] = 'Дата';
 $lang['general_word_startdate'] = "Дата начала";
@@ -167,6 +169,7 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_get_gridsquare'] = 'Получить квадрат';
+$lang['gen_hamradio_gridsquare_show'] = "Show Locator";
 $lang['gen_hamradio_latitude'] = "Широта";
 $lang['gen_hamradio_longitude'] = "Долгота";
 $lang['gen_hamradio_bearing'] = "Направление";

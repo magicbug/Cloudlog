@@ -3048,6 +3048,31 @@ function viewEqsl(picture, callsign) {
     <?php } ?>
 <?php } ?>
 
+<?php if (($this->uri->segment(1) == "user") && ($this->uri->segment(2) == "edit")) { ?>
+    <!-- [MAP Custom] select list with icons -->
+    <script>
+        $(document).ready(function(){
+            $('.icon_selectBox').off('click').on('click', function(){
+                var boxcontent = $(this).attr('data-boxcontent');
+                if ($('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').is(":hidden")) { $('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').show(); } else { $('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').hide(); }
+            });
+            $('.icon_selectBox_data').off('mouseleave').on('mouseleave', function(){ if ($(this).is(":visible")) { $(this).hide(); } });
+            $('.icon_selectBox_data label').off('click').on('click', function(){ 
+                var boxcontent = $(this).closest('.icon_selectBox_data').attr('data-boxcontent');
+                $('input[name="user_map_'+boxcontent+'_icon"]').attr('value',$(this).attr('data-value'));
+                if ($(this).attr('data-value') != "0") { 
+                    $('.user_icon_color[data-icon="'+boxcontent+'"]').show();
+                    $('.icon_selectBox[data-boxcontent="'+boxcontent+'"] .icon_overSelect').html($(this).html());
+                } else {
+                    $('.user_icon_color[data-icon="'+boxcontent+'"]').hide();
+                    $('.icon_selectBox[data-boxcontent="'+boxcontent+'"] .icon_overSelect').html($(this).html().substring(0,10)+'.');
+                }
+                $('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').hide();
+            }); 
+        });
+    </script>
+<?php } ?> 
+
 <?php
 if (isset($scripts) && is_array($scripts)){
 	foreach($scripts as $script){

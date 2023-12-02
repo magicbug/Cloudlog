@@ -115,3 +115,7 @@ $lang['account_winkeyer'] = 'Winkeyer';
 $lang['account_winkeyer_hint'] = "Cloudlog 中对 Winkeyer 的支持是实验性的，请在开启前先阅读 <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a>。";
 $lang['account_winkeyer_enabled'] = "启用 Winkeyer 功能";
 
+$lang['account_map_params'] = "Settings for map";
+$lang['account_map_qso_by_default'] = "QSO (by default)";
+$lang['account_map_qso_confirm'] = "QSO (confirmed)";
+$lang['account_map_qso_confirm_same_qso'] = "(If 'No', displayed as ".$lang['account_map_qso_by_default'].")";

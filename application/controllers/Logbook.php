@@ -575,6 +575,9 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 		echo "{\"markers\": [";
 		$count = 1;
 		foreach ($data['qsos']->result() as $row) {
+			// check if qso is confirmed //
+			if (($row->COL_EQSL_QSL_RCVD=='Y') || ($row->COL_LOTW_QSL_RCVD=='Y') || ($row->COL_QSL_RCVD=='Y')) { $row->_is_confirmed = 'Y'; } else { $row->_is_confirmed = 'N'; }
+
 			if($row->COL_GRIDSQUARE != null) {
 				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
 				if($count != 1) {
@@ -584,11 +587,11 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 				if($row->COL_SAT_NAME != null) {
 						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
 						echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-						echo "\",\"label\":\"".$row->COL_CALL."\"}";
+						echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				} else {
 						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 						echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-						echo "\",\"label\":\"".$row->COL_CALL."\"}";
+						echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				}
 
 				$count++;
@@ -625,11 +628,11 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 				if($row->COL_SAT_NAME != null) {
 					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-					echo "\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				} else {
 					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-					echo "\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				}
 
 				$count++;
@@ -647,12 +650,18 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 				}
 				echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 				echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-				echo "\",\"label\":\"".$row->COL_CALL."\"}";
+				echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				$count++;
 			}
 
 		}
 		echo "]";
+		
+		// [MAP Custom] ADD Station //
+		$this->load->model('Stations');
+		$station_json = $this->Stations->get_station_json_for_map();
+		echo (!empty($station_json))?', '.$station_json:'';
+
 		echo "}";
 	}
 
