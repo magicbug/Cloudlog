@@ -251,7 +251,7 @@
 
 			<div class="mb-3">
 				<label for="eqslDefaultQSLMsg"><?php echo lang("station_location_eqsl_defaultqslmsg"); ?></label>
-				<label class="position-absolute end-0 mb-2 me-3" for="eqslDefaultQSLMsg" id="charsLeft">240/240</label>
+				<label class="position-absolute end-0 mb-2 me-3" for="eqslDefaultQSLMsg" id="charsLeft"> </label>
 				<textarea class="form-control" name="eqsl_default_qslmsg" id="eqslDefaultQSLMsg" aria-describedby="eqsldefaultqslmsghelp" maxlength="240" rows="2" style="width:100%;"></textarea>
 				<small id="eqsldefaultqslmsghelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_defaultqslmsg_hint"); ?></small>
 			</div>
