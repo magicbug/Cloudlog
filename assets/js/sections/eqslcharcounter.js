@@ -2,17 +2,17 @@ $('#eqslDefaultQSLMsg').keyup(function(event) {
     calcRemainingChars(event);
 });
 
-$('#qslmsg').keyup(function(event) {
-    calcRemainingChars(event);
+$('.qso_panel #qslmsg').keyup(function(event) {
+    calcRemainingChars(event, '.qso_panel');
 });
 
-function calcRemainingChars(event) {
+function calcRemainingChars(event, object = '') {
     var remainingChars = 240 - $(event.target).val().length;
-    $('#charsLeft').text(remainingChars + "/240");
+    $(object + ' #charsLeft').text(remainingChars + "/240");
 
     if (remainingChars < 5) {
-        $('#charsLeft').css('color', 'red');
+        $(object + ' #charsLeft').css('color', 'red');
     } else {
-        $('#charsLeft').css('color', '');
+        $(object + ' #charsLeft').css('color', '');
     }
 }

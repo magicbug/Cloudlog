@@ -297,6 +297,9 @@ function qso_edit(id) {
                     // [eQSL default msg] change value (for qso edit page) //
                     $('.modal-content #stationProfile').change(function() { qso_set_eqsl_qslmsg($('.modal-content #stationProfile').val(),false,'.modal-content'); });
                     $('.modal-content .qso_eqsl_qslmsg_update').off('click').on('click',function() { qso_set_eqsl_qslmsg($('.modal-content #stationProfile').val(),true,'.modal-content'); });
+                    $('.modal-content #qslmsg').keyup(function(event) {
+                        calcRemainingChars(event, '.modal-content');
+                    });
                 },
             });
         }
