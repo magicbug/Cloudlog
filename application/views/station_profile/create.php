@@ -251,17 +251,18 @@
 
 			<div class="mb-3">
 				<label for="eqslDefaultQSLMsg"><?php echo lang("station_location_eqsl_defaultqslmsg"); ?></label>
-		    	<textarea class="form-control" name="eqsl_default_qslmsg" id="eqslDefaultQSLMsg" aria-describedby="eqsldefaultqslmsghelp" maxlength="240" rows="2" style="width:100%;"></textarea>
-		    	<small id="eqsldefaultqslmsghelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_defaultqslmsg_hint"); ?> 240.</small>
-		  	</div>
+				<label class="position-absolute end-0 mb-2 me-3" for="eqslDefaultQSLMsg" id="charsLeft"> </label>
+				<textarea class="form-control" name="eqsl_default_qslmsg" id="eqslDefaultQSLMsg" aria-describedby="eqsldefaultqslmsghelp" maxlength="240" rows="2" style="width:100%;"></textarea>
+				<small id="eqsldefaultqslmsghelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_defaultqslmsg_hint"); ?></small>
+			</div>
 
-                <div class="mb-3">
-			<label for="clublogrealtime"><?php echo lang("station_location_clublog_realtime_upload"); ?></label>
-			<select class="form-select" id="clublogrealtime" name="clublogrealtime">
-				<option value="1"><?php echo lang("general_word_yes"); ?></option>
-				<option value="0" selected><?php echo lang("general_word_no"); ?></option>
-			</select>
-		</div>
+            <div class="mb-3">
+				<label for="clublogrealtime"><?php echo lang("station_location_clublog_realtime_upload"); ?></label>
+				<select class="form-select" id="clublogrealtime" name="clublogrealtime">
+					<option value="1"><?php echo lang("general_word_yes"); ?></option>
+					<option value="0" selected><?php echo lang("general_word_no"); ?></option>
+				</select>
+			</div>
 
             <div class="row">
                 <div class="mb-3 col-sm-6">                                                                                                                                                    
