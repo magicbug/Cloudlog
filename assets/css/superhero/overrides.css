@@ -47,8 +47,11 @@ path.grid-worked {
 }
 
 #map,
-#qsomap {
-	background-color: #2e3e50;
+#qsomap,
+#mapqso,
+#gridsquare_map,
+#custommap {
+	background-color: #353c4a;
 }
 
 /* 
