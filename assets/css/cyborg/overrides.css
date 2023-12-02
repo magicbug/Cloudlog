@@ -41,8 +41,11 @@ path.grid-worked {
 }
 
 #map,
-#qsomap {
-	background-color: #000;
+#qsomap,
+#mapqso,
+#gridsquare_map,
+#custommap {
+	background-color: #2d3537;
 }
 
 .leaflet-popup-content h3 {
