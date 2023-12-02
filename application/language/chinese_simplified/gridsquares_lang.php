@@ -27,7 +27,7 @@ $lang['gridsquares_button_plot'] = '绘制';
 $lang['gridsquares_button_clear_markers'] = "清除标记";
 
 $lang['gridsquares_gridsquares'] = '网格';
-$lang['gridsquares_gridsquares_worked'] = 'Gridsquares worked';
+$lang['gridsquares_gridsquares_worked'] = '已通联的网格';
 $lang['gridsquares_gridsquares_confirmed'] = '已确认的网格';
 $lang['gridsquares_gridsquares_not_confirmed'] = '未确认的网格';
 $lang['gridsquares_gridsquares_lotw'] = '在 LoTW 上确认的网格';
