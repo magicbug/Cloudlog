@@ -82,6 +82,20 @@ function load_was_map() {
     </script>
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "station") { ?>
+<script>
+	$("#eqslDefaultQSLMsg").keyup(function() {
+		var remainingChars = 240 - $(this).val().length;
+		$('#charsLeft').text(remainingChars + "/240");
+        if (remainingChars < 5) {
+        $('#charsLeft').css('color', 'red');
+        } else {
+            $('#charsLeft').css('color', '');
+        }
+	});
+</script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "cq") ) { ?>
     <script src="<?php echo base_url(); ?>assets/js/Polyline.encoded.js"></script>
     <script id="cqmapjs" type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/cqmap.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
