@@ -387,8 +387,9 @@ class Logbook_model extends CI_Model {
 			$this->db->where('COL_DARC_DOK', $searchphrase);
 			break;
 		case 'WAJA':
-			$this->db->where('COL_STATE', $searchphrase);
-			$this->db->where_in('COL_DXCC', ['339']);
+			$state = str_pad($searchphrase, 2, '0', STR_PAD_LEFT);
+			$this->db->where('COL_STATE', $state);
+			$this->db->where('COL_DXCC', '339');
 			break;
 		case 'QSLRDATE':
 			$this->db->where('date(COL_QSLRDATE)=date(SYSDATE())');
