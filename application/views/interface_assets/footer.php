@@ -71,7 +71,25 @@ function load_was_map() {
 <?php
 $versionDialog = $this->optionslib->get_option('version_dialog');
 if($versionDialog != "disabled") {
-    // Here will be the Version Dialog Part
+    $confirmed = $this->user_options_model->get_options('version_dialog', array('option_name'=>'confirmed'))->result();
+    $confirmation_value = (isset($confirmed[0]->option_value))?$confirmed[0]->option_value:'false';
+	if ($confirmation_value == 'true') {
+		?><script>
+            console.log('VD confirmed');
+            var confirmed_vd = 'true';
+            console.log('confirmed_vd = ' + confirmed_vd);
+        </script><?php
+	} else {
+        $this->user_options_model->set_option('version_dialog', 'confirmed', array('boolean' => $confirmation_value));
+		?><script>
+            console.log('VD NOT confirmed or not Data');
+            var confirmed_vd = 'false';
+            console.log('confirmed_vd = ' + confirmed_vd);
+            var base_url = "<?php echo base_url(); ?>"; // Base URL
+            displayVersionDialog();
+        </script><?php
+	}
+
 }
 ?>
 
