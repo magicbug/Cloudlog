@@ -172,7 +172,7 @@ for (var i = 0; i < prefectures.length; i++) {
 			  color: mapColor,
 			  strokeOpacity: 0.3,
 			  strokeWeight: 2,
-			  title: i,
+			  title: i+1,
 	  }).addTo(map).on('click', onClick);
 		// }).bindLabel(prefectureinfo[i]).addTo(map).on('click', onClick);
 
