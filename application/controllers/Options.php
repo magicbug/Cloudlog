@@ -390,4 +390,40 @@ class Options extends CI_Controller {
 		redirect('/options/email');
 	}
 
+	// function used to display the /version_dialog url
+	function version_dialog() {
+
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_version_dialog_settings');
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('options/version_dialog');
+		$this->load->view('interface_assets/footer');
+    }
+
+	function version_dialog_save() {
+
+		// Get Language Options
+
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_version_dialog_settings');
+
+		$this->load->helper(array('form', 'url'));
+
+		
+		$version_dialog_mode = $this->optionslib->update('version_dialog', $this->input->post('version_dialog_mode'), 'yes');
+		if($version_dialog_mode == TRUE) {
+			$this->session->set_flashdata('success', $this->lang->line('options_version_dialog_mode_changed_to')." "."'".$this->input->post('version_dialog_mode')."'");
+		}
+		if ($this->input->post('version_dialog_mode') == "both" || $this->input->post('version_dialog_mode') == "custom_text" ) { 
+			$version_dialog_custom_text = $this->optionslib->update('version_dialog_text', $this->input->post('version_dialog_custom_text'), 'yes');
+			if($version_dialog_custom_text == TRUE) {
+				$this->session->set_flashdata('success2', $this->lang->line('options_version_dialog_custom_text_saved'));
+			}
+		}
+
+		redirect('/options/version_dialog');
+		
+	}
+
 }

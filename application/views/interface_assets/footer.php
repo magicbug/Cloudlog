@@ -45,6 +45,7 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/easyprint.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/common.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/version_dialog.js"></script>
 
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
 
@@ -65,6 +66,16 @@ function load_was_map() {
 }
 </script>
 <?php } ?>
+
+<!-- Version Dialog START -->
+<?php
+$versionDialog = $this->optionslib->get_option('version_dialog');
+if($versionDialog != "disabled") {
+    // Here will be the Version Dialog Part
+}
+?>
+
+<!-- Version Dialog END -->
 
 <?php if ($this->uri->segment(1) == "oqrs") { ?>
     <script src="<?php echo base_url() ;?>assets/js/sections/oqrs.js"></script>
