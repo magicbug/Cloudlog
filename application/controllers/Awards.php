@@ -238,7 +238,7 @@ class Awards extends CI_Controller {
 		$data['page_title'] = "Awards - WAJA";
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('awards/waja/index');
-		$this->load->view('interface_assets/footer');
+		$this->load->view('interface_assets/footer', $footerData);
 	}
 
     public function vucc()	{
@@ -1018,6 +1018,8 @@ class Awards extends CI_Controller {
             $cq_array = null;
         }
 
+		$zones = array();
+
         foreach ($cq_array as $cq => $value) {
             foreach ($value  as $key) {
                 if($key != "") {
@@ -1039,6 +1041,52 @@ class Awards extends CI_Controller {
 
         header('Content-Type: application/json');
         echo json_encode($zones);
+    }
+
+	/*
+        function waja_map
+    */
+    public function waja_map() {
+        $this->load->model('waja');
+        $this->load->model('bands');
+
+        $bands[] = $this->security->xss_clean($this->input->post('band'));
+
+        $postdata['qsl'] = $this->input->post('qsl') == 0 ? NULL: 1;
+        $postdata['lotw'] = $this->input->post('lotw') == 0 ? NULL: 1;
+        $postdata['eqsl'] = $this->input->post('eqsl') == 0 ? NULL: 1;
+        $postdata['worked'] = $this->input->post('worked') == 0 ? NULL: 1;
+        $postdata['confirmed'] = $this->input->post('confirmed')  == 0 ? NULL: 1;
+        $postdata['notworked'] = $this->input->post('notworked')  == 0 ? NULL: 1;
+        $postdata['band'] = $this->security->xss_clean($this->input->post('band'));
+        $postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
+
+
+		$waja_array = $this->waja->get_waja_array($bands, $postdata);
+
+		$prefectures = array();
+
+        foreach ($waja_array as $waja => $value) {
+            foreach ($value  as $key) {
+                if($key != "") {
+                    if (strpos($key, '>W<') !== false) {
+                        $prefectures[] = 'W';
+                        break;
+                    }
+                    if (strpos($key, '>C<') !== false) {
+                        $prefectures[] = 'C';
+                        break;
+                    }
+                    if (strpos($key, '-') !== false) {
+                        $prefectures[] = '-';
+                        break;
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($prefectures);
     }
 
     /*
