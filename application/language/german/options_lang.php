@@ -73,6 +73,19 @@ $lang['options_dxcluster_maxage_changed_to']='Maximales Spot-Alter geändert auf
 $lang['options_dxcluster_decont_changed_to']='Spotterkontinent geändert auf ';
 $lang['options_dxcluster_decont_hint']='Nur Spots von Spottern dieses Kontinents werden angezeigt';
 
+$lang['options_version_dialog'] = "Versionsdialog";
+$lang['options_version_dialog_settings'] = "Versionsdialog Einstellungen";
+$lang['options_version_dialog_mode'] = "Versionsdialog Modus";
+$lang['options_version_dialog_mode_release_notes'] = "Nur Versionshinweise";
+$lang['options_version_dialog_mode_custom_text'] = "Nur benutzerdefinierter Text";
+$lang['options_version_dialog_mode_both'] = "Versionshinweise und benutzerdefinierter Text";
+$lang['options_version_dialog_mode_disabled'] = "Ausgeschaltet";
+$lang['options_version_dialog_mode_hint'] = "Der Versionsdialog wird jedem Benutzer angezeigt. Der Benutzer hat die Möglichkeit, den Dialog zu schließen, nachdem er ihn gelesen hat. Wählen Sie aus, ob Sie nur Versionshinweise (von GitHub abgerufen), nur benutzerdefinierten Text oder beides anzeigen möchten.";
+$lang['options_version_dialog_custom_text'] = "Versionsdialog - benutzerdefinierter Text";
+$lang['options_version_dialog_custom_text_hint'] = "Dies ist der benutzerdefinierte Text, welcher im Versionsdialog angezeigt wird. ";
+$lang['options_version_dialog_mode_changed_to'] = "Versionsdialog Modus geändert zu";
+$lang['options_version_dialog_custom_text_saved'] = "Versionsdialog benutzerdefinierter Text gespeichert!";
+
 $lang['options_save'] = 'Speichern';
 
 // Bands

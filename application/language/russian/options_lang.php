@@ -73,6 +73,19 @@ $lang['options_dxcluster_maxage_changed_to']='Максимальный возр�
 $lang['options_dxcluster_decont_changed_to']='континент изменён на ';
 $lang['options_dxcluster_decont_hint']='Бубт показаны споты только от споттеров с указанного континента';
 
+$lang['options_version_dialog'] = "Version Dialog";
+$lang['options_version_dialog_settings'] = "Version Dialog Settings";
+$lang['options_version_dialog_mode'] = "Version Dialog Mode";
+$lang['options_version_dialog_mode_release_notes'] = "Only Release Notes";
+$lang['options_version_dialog_mode_custom_text'] = "Only Custom Text";
+$lang['options_version_dialog_mode_both'] = "Release Notes and Custom Text";
+$lang['options_version_dialog_mode_disabled'] = "Disabled";
+$lang['options_version_dialog_mode_hint'] = "The Version Dialog is shown to every user. The user has the option to dismiss the dialog after he read it. Select if you want to show only release notes (fetched from github), only custom text or both.";
+$lang['options_version_dialog_custom_text'] = "Version Dialog Custom Text";
+$lang['options_version_dialog_custom_text_hint'] = "This is the custom text which is shown in the dialog.";
+$lang['options_version_dialog_mode_changed_to'] = "Version Dialog Mode changed to";
+$lang['options_version_dialog_custom_text_saved'] = "Version Dialog Custom Text saved!";
+
 $lang['options_save'] = 'Сохранить';
 
 // Bands
