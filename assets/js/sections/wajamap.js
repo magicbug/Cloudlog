@@ -2,6 +2,7 @@ var osmUrl = tileUrl;
 var prefectures;
 var geojson;
 var map;
+var info;
 
 function load_waja_map() {
     $('.nav-tabs a[href="#wajamaptab"]').tab('show');
@@ -138,6 +139,22 @@ function load_waja_map2(data) {
 
   legend.addTo(map);
 
+  info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>Prefecture</h4>' +  (props ?
+        '<b>' + props.name + '</b><br />' : 'Hover over a prefecture');
+};
+
+info.addTo(map);
+
   geojson = L.geoJson(mapcoordinates, {style: style, onEachFeature: onEachFeature}).addTo(map);
 
   map.setView([35, 140], 5);
@@ -161,6 +178,7 @@ function highlightFeature(e) {
     });
 
     layer.bringToFront();
+	info.update(layer.feature.properties);
 }
 
 function onEachFeature(feature, layer) {
@@ -177,6 +195,7 @@ function zoomToFeature(e) {
 
 function resetHighlight(e) {
     geojson.resetStyle(e.target);
+	info.update();
 }
 
 function style(feature) {
