@@ -1068,9 +1068,11 @@ function testTimeOffConsistency() {
 	var _end_time = $('#qso_input input[name="end_time"]').val();
 	$('#qso_input input[name="end_time"]').removeClass('inputError');
 	$('#qso_input .warningOnSubmit').hide();
+	$('#qso_input .warningOnSubmit_txt').empty();
 	if ( !( (parseInt(_start_time.replaceAll(':','')) <= parseInt(_end_time.replaceAll(':',''))) 
 			|| ((_start_time.substring(0,2)=="23")&&(_end_time.substring(0,2)=="00")) ) ) {
 		$('#qso_input input[name="end_time"]').addClass('inputError');
+		$('#qso_input .warningOnSubmit_txt').html(text_error_timeoff_less_timeon);
 		$('#qso_input .warningOnSubmit').show();
 		$('#qso_input input[name="end_time"]').off('change').on('change',function(){ testTimeOffConsistency(); });
 		return false;

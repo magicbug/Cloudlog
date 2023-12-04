@@ -28,6 +28,9 @@ $lang['qsl_notes_helptext'] = 'This note content is exported to QSL services lik
 
 $lang['qso_eqsl_qslmsg_helptext'] = "Get the default message for eQSL, for this station.";
 
+// error text //
+$lang['qso_error_timeoff_less_timeon'] = "TimeOff is less than TimeOn";
+
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = 'Resetuj';

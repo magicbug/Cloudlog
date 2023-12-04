@@ -28,6 +28,9 @@ $lang['qsl_notes_helptext'] = 'This note content is exported to QSL services lik
 
 $lang['qso_eqsl_qslmsg_helptext'] = "Récupérer le message par défaut pour ce lieu de station.";
 
+// error text //
+$lang['qso_error_timeoff_less_timeon'] = "Heure de fin inférieure à celle de début";
+
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = 'Réinitialiser';
