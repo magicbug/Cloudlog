@@ -532,9 +532,10 @@
               <span class="badge text-bg-info"><?php echo lang('general_word_info'); ?></span> <?php echo lang('qsl_notes_helptext'); ?>
             </div>
            <div class="mb-3">
-           <label for="qslmsg"><?php echo lang('general_word_notes'); ?><span class="qso_eqsl_qslmsg_update" title="<?php echo lang('qso_eqsl_qslmsg_helptext'); ?>"><i class="fas fa-redo-alt"></i></span></label>
-              <textarea  type="text" class="form-control" id="qslmsg" name="qslmsg" rows="5" maxlength="240"><?php echo $qslmsg; ?></textarea>
-              <div id="qslmsg_hide" style="display:none;"><?php echo $qslmsg; ?></div>
+            <label for="qslmsg"><?php echo lang('general_word_notes'); ?><span class="qso_eqsl_qslmsg_update" title="<?php echo lang('qso_eqsl_qslmsg_helptext'); ?>"><i class="fas fa-redo-alt"></i></span></label>
+						<label class="position-absolute end-0 mb-2 me-3" for="qslmsg" id="charsLeft"> </label>
+            <textarea  type="text" class="form-control" id="qslmsg" name="qslmsg" rows="5" maxlength="240"><?php echo $qslmsg; ?></textarea>
+            <div id="qslmsg_hide" style="display:none;"><?php echo $qslmsg; ?></div>
             </div>
           </div>
         </div>

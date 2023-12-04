@@ -65,6 +65,7 @@ class QSO
 	private string $callsign;
 	private string $lastupload;
 	private string $lotw_hint;
+	private string $operator;
 
 	/**
 	 * @param array $data Does no validation, it's assumed to be a row from the database in array format
@@ -116,6 +117,7 @@ class QSO
 			'COL_STATE',
 			'COL_COUNTRY',
 			'COL_IOTA',
+			'COL_OPERATOR',
 		];
 
 
@@ -202,6 +204,7 @@ class QSO
 		$this->callsign = (($data['callsign'] ?? null) === null) ? '' : $data['callsign'];
 		$this->lastupload = (($data['lastupload'] ?? null) === null) ? '' : date($custom_date_format . " H:i", strtotime($data['lastupload'] ?? null));
 		$this->lotw_hint = $this->getLotwHint($data['lastupload'] ?? null);
+		$this->operator = ($data['COL_OPERATOR'] === null) ? '' :$data['COL_OPERATOR'];
 	}
 
 	/**
@@ -771,6 +774,11 @@ class QSO
 		return '<span id="iota">' . $this->iota . '</span>';
 	}
 
+	public function getOperator(): string
+	{
+		return '<span id="operator">' . $this->operator . '</span>';
+	}
+
 	public function toArray(): array
 	{
 		return [
@@ -792,6 +800,8 @@ class QSO
 			'name' => $this->getName(),
 			'dxcc' => $this->getDXCC(),
 			'state' => $this->getState(),
+			'pota' => $this->dxPOTAReference,
+			'operator' => $this->getOperator(),
 			'cqzone' => $this->getCqzone(),
 			'iota' => $this->getIOTA(),
 			'end' => $this->end === null ? null : $this->end->format("Y-m-d"),

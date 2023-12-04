@@ -156,4 +156,5 @@ $lang['filter_options_show'] = "Afficher";
 // $lang['gen_hamradio_wwff']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_pota']           --> application/language/english/general_words_lang.php
 // $lang['options_save']                --> application/language/english/options_lang.php
+$lang['filter_search_operator']='Search Operator';
 $lang['filter_options_close'] = "Fermer";
