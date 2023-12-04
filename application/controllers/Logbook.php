@@ -670,6 +670,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
 		$this->load->library('qra');
+		$this->load->library('subdivisions');
 
 		$this->load->model('logbook_model');
 		$data['query'] = $this->logbook_model->get_qso($id);
@@ -683,6 +684,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 
         $this->load->model('Qsl_model');
         $data['qslimages'] = $this->Qsl_model->getQslForQsoId($id);
+        $data['primary_subdivision'] = $this->subdivisions->get_primary_subdivision_name($data['query']->result()[0]->COL_DXCC);
 		$data['max_upload'] = ini_get('upload_max_filesize');
 		$this->load->view('interface_assets/mini_header', $data);
 		$this->load->view('view_log/qso');

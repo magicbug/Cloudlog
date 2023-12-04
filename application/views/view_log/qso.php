@@ -161,7 +161,7 @@
 
                     <?php if($row->COL_STATE != null) { ?>
                     <tr>
-                        <td>USA State:</td>
+                        <td><?php echo $primary_subdivision ?>:</td>
                         <td><?php echo $row->COL_STATE; ?></td>
                     </tr>
                     <?php } ?>
