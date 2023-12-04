@@ -1,4 +1,5 @@
 <div class="container qso_panel">
+<script language="javascript">var qso_manual  = "<?php echo $_GET['manual']; ?>";</script>
 
 <div class="row qsopane">
 
@@ -547,6 +548,7 @@
 
         <button type="reset" class="btn btn-secondary" onclick="reset_fields()"><?php echo lang('qso_btn_reset_qso'); ?></button>
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo lang('qso_btn_save_qso'); ?></button>
+        <div class="alert alert-danger warningOnSubmit" style="display:none;"><span><i class="fas fa-times-circle"></i></span> <span class="warningOnSubmit_txt">TimeOff lest than TimeOn</span></div>
       </div>
     </form>
     </div>

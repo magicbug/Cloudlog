@@ -652,3 +652,13 @@ table.dataTable tfoot td {
 .icon_selectBox_data label:hover { 
 	background-color:var(--bs-primary); 
 }
+
+.inputError {
+	border: 1px var(--bs-danger) solid;
+}
+.warningOnSubmit {
+	margin-top:15px;
+}
+.warningOnSubmit_txt {
+	margin-left:10px;
+}
