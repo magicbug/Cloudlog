@@ -1047,6 +1047,9 @@ class Awards extends CI_Controller {
         function waja_map
     */
     public function waja_map() {
+		$prefectureString = '01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47';
+		$wajaArray = explode(',', $prefectureString);
+
         $this->load->model('waja');
         $this->load->model('bands');
 
@@ -1066,19 +1069,24 @@ class Awards extends CI_Controller {
 
 		$prefectures = array();
 
+		foreach ($wajaArray as $state) {                  	 // Generating array for use in the table
+            $prefectures[$state] = '-';                   // Inits each state's count
+        }
+
+
         foreach ($waja_array as $waja => $value) {
             foreach ($value  as $key) {
                 if($key != "") {
                     if (strpos($key, '>W<') !== false) {
-                        $prefectures[] = 'W';
+                        $prefectures[$waja] = 'W';
                         break;
                     }
                     if (strpos($key, '>C<') !== false) {
-                        $prefectures[] = 'C';
+                        $prefectures[$waja] = 'C';
                         break;
                     }
                     if (strpos($key, '-') !== false) {
-                        $prefectures[] = '-';
+                        $prefectures[$waja] = '-';
                         break;
                     }
                 }
