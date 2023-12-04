@@ -90,6 +90,13 @@ $lang['options_version_dialog_custom_text'] = "Version Info Custom Text";
 $lang['options_version_dialog_custom_text_hint'] = "This is the custom text which is shown in the dialog.";
 $lang['options_version_dialog_mode_changed_to'] = "Version Info Mode changed to";
 $lang['options_version_dialog_custom_text_saved'] = "Version Info Custom Text saved!";
+$lang['options_version_dialog_success_show_all'] = "Version Info will be shown to all users again";
+$lang['options_version_dialog_success_hide_all'] = "Version Info will not be shown to any user";
+$lang['options_version_dialog_show_hide'] = "Show/Hide Version Info Dialog for all Users";
+$lang['options_version_dialog_show_all'] = "Show for all Users";
+$lang['options_version_dialog_hide_all'] = "Hide for all Users";
+$lang['options_version_dialog_show_all_hint'] = "This will show the version dialog automatically to all users on their next page reload.";
+$lang['options_version_dialog_hide_all_hint'] = "This will deactivate the automatic popup of the version dialog for all users.";
 
 $lang['options_save'] = 'Сохранить';
 
