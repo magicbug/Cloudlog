@@ -79,7 +79,7 @@
                     </form>
                 </div>
             </div>
-            <div class="card mt-4">
+            <div class="card mt-4 mb-4">
                 <div class="card-header">
                     <h5><?php echo lang('options_version_dialog_show_hide'); ?></h5>
                 </div>
