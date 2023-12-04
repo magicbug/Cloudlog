@@ -429,4 +429,20 @@ class Options extends CI_Controller {
 		
 	}
 
+	function version_dialog_show_to_all() {
+		$update_vd_confirmation_to_false = $this->user_options_model->set_option_at_all_users('version_dialog', 'confirmed', array('boolean' => 'false'));
+		if($update_vd_confirmation_to_false == TRUE) {
+			$this->session->set_flashdata('success_trigger', $this->lang->line('options_version_dialog_success_show_all'));
+		}
+		redirect('/options/version_dialog');
+	}
+
+	function version_dialog_show_to_none() {
+		$update_vd_confirmation_to_true = $this->user_options_model->set_option_at_all_users('version_dialog', 'confirmed', array('boolean' => 'true'));
+		if($update_vd_confirmation_to_true == TRUE) {
+			$this->session->set_flashdata('success_trigger', $this->lang->line('options_version_dialog_success_hide_all'));
+		}
+		redirect('/options/version_dialog');
+	}
+
 }
