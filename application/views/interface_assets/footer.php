@@ -72,6 +72,9 @@ function load_was_map() {
 <?php
 if($this->session->userdata('user_id') != null) {
     $versionDialog = $this->optionslib->get_option('version_dialog');
+    if (empty($versionDialog)) {
+        $this->optionslib->update('version_dialog', 'release_notes', 'yes');
+    }
     $versionDialogHeader = $this->optionslib->get_option('version_dialog_header');
     if (empty($versionDialogHeader)) {
         $this->optionslib->update('version_dialog_header', $this->lang->line('options_version_dialog'), 'yes');
