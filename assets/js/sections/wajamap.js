@@ -104,7 +104,7 @@ function load_waja_map2(data) {
 	  }
   ).addTo(map);
 
-  var notworked = prefectures.length;
+  var notworked = mapcoordinates.features.length;
   var confirmed = 0;
   var workednotconfirmed = 0;
 
