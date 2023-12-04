@@ -1062,7 +1062,7 @@ function closeModal() {
 	}, 200)
 }
 
-// [TimeOff] test Consistency timeOff value //
+// [TimeOff] test Consistency timeOff value (concidering start and end are between 23:00 and 00:59) //
 function testTimeOffConsistency() {
 	var _start_time = $('#qso_input input[name="start_time"]').val();
 	var _end_time = $('#qso_input input[name="end_time"]').val();
