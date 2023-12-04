@@ -1,6 +1,9 @@
+<script>
+	var tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"
+</script>
 
 <style>
-    #dxccmap {
+    #wajamap {
 	height: calc(100vh - 500px) !important;
 	max-height: 900px !important;
 }
@@ -17,11 +20,12 @@
   text-align: center;
   font-size: 16px;
   margin: 2px 12px 8px;
-  color: #777;
+  color: #555;
 }
 .legend span {
   position: relative;
   bottom: 3px;
+  color: #555;
 }
 .legend i {
   width: 18px;
@@ -29,13 +33,36 @@
   float: left;
   margin: 0 8px 0 0;
   opacity: 0.7;
+  color: #555;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+	color: #555;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #555;
 }
 </style>
 <div class="container">
-	        <!-- Award Info Box -->
-			<br>
+        <!-- Award Info Box -->
+        <br>
         <div id="awardInfoButton">
+            <script>
+            var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
+            var lang_award_info_ln1 = "<?php echo lang('awards_waja_description_ln1'); ?>";
+            var lang_award_info_ln2 = "<?php echo lang('awards_waja_description_ln2'); ?>";
+            var lang_award_info_ln3 = "<?php echo lang('awards_waja_description_ln3'); ?>";
+            var lang_award_info_ln4 = "<?php echo lang('awards_waja_description_ln4'); ?>";
+            </script>
             <h2><?php echo $page_title; ?></h2>
+            <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
         </div>
         <!-- End of Award Info Box -->
 
@@ -119,6 +146,9 @@
                 <div class="col-md-10">
                     <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning">Reset</button>
                     <button id="button1id" type="submit" name="button1id" class="btn btn-sm btn-primary">Show</button>
+                    <?php if ($waja_array) {
+                        ?><button type="button" onclick="load_waja_map();" class="btn btn-info btn-sm"><i class="fas fa-globe-americas"></i> Show WAJA Map</button>
+                    <?php }?>
                 </div>
             </div>
 
@@ -129,14 +159,17 @@
         <li class="nav-item">
             <a class="nav-link active" id="table-tab" data-bs-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="true">Table</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" id="map-tab" onclick="load_waja_map();" data-bs-toggle="tab" href="#wajamaptab" role="tab" aria-controls="home" aria-selected="false">Map</a>
+        </li>
     </ul>
     <br />
 
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade" id="dxccmaptab" role="tabpanel" aria-labelledby="home-tab">
+        <div class="tab-pane fade" id="wajamaptab" role="tabpanel" aria-labelledby="home-tab">
     <br />
 
-    <div id="dxccmap"></div>
+    <div id="wajamap"></div>
 
     </div>
 
@@ -158,7 +191,7 @@
         echo '</tr>
                     </thead>
                     <tbody>';
-        foreach ($waja_array as $dxcc => $value) {      // Fills the table with the data
+        foreach ($waja_array as $waja => $value) {      // Fills the table with the data
             echo '<tr>';
             foreach ($value as $name => $key) {
 				echo '<td style="text-align: center">' . $key . '</td>';
@@ -182,14 +215,14 @@
 
         <tr><td>Total worked</td>';
 
-        foreach ($waja_summary['worked'] as $dxcc) {      // Fills the table with the data
-            echo '<td style="text-align: center">' . $dxcc . '</td>';
+        foreach ($waja_summary['worked'] as $waja) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $waja . '</td>';
         }
 
         echo '</tr><tr>
         <td>Total confirmed</td>';
-        foreach ($waja_summary['confirmed'] as $dxcc) {      // Fills the table with the data
-            echo '<td style="text-align: center">' . $dxcc . '</td>';
+        foreach ($waja_summary['confirmed'] as $waja) {      // Fills the table with the data
+            echo '<td style="text-align: center">' . $waja . '</td>';
         }
 
         echo '</tr>

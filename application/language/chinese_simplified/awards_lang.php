@@ -182,3 +182,14 @@ $lang['awards_wwff_description_ln1'] = "WWFF - 世界动植物奖";
 $lang['awards_wwff_description_ln2'] = "WWFF，即“业余无线电世界动植物群”，鼓励获得许可的业余无线电操作员离开棚屋，在全球动植物保护区 (PFF) 进行便携式操作。";
 $lang['awards_wwff_description_ln3'] = "全球已有超过 26,000 个动植物保护区 (PFF) 已在 WWFF 名录中注册。 猎人和激活者可以申请全球和国内的丰富多彩的奖项。";
 $lang['awards_wwff_description_ln4'] = "如需了解更多信息，请访问：<a href='https://wwff.co/awards/' target='_blank'>https://wwff.co/awards/</a>。";
+
+/*
+___________________________________________________________________________________________
+WAJA -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_waja_description_ln1'] = "WAJA - Worked All Japan prefectures Award";
+$lang['awards_waja_description_ln2'] = "WAJA, Worked All Japan prefectures in Amateur Radio, encourages licensed ham radio operators to work all the prefectures in Japan.";
+$lang['awards_waja_description_ln3'] = "May be claimed for having contacted (heard) and received a QSL card from an amateur station located in each of the 47 prefectures of Japan. A list of QSL cards should be arranged in order of WAJA (HAJA) reference number, however names of prefectures may be omitted.";
+$lang['awards_waja_description_ln4'] = "For more information, please visit: <a href='https://www.jarl.org/English/4_Library/A-4-2_Awards/Award_Main.htm' target='_blank'>https://www.jarl.org/English/4_Library/A-4-2_Awards/Award_Main.htm</a>.";
