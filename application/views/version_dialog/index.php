@@ -1,22 +1,30 @@
-<div class="modal fade" id="versionDialogModal" tabindex="-1" aria-labelledby="versionDialogLabel" aria-hidden="true">
+<div class="modal fade" id="versionDialogModal" tabindex="-1" aria-labelledby="versionDialogLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="versionDialogLabel">Version Information</h5>
+                <h5 class="modal-title" id="versionDialogLabel"><?php echo $this->optionslib->get_option('version_dialog_header'); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="border-bottom pb-4 mb-4">
-                    <?php
-                    $versionDialogText = isset($this->optionslib) ? $this->optionslib->get_option('version_dialog_text') : null;
-                    if ($versionDialogText !== null) {
-                        $versionDialogTextWithLinks = preg_replace('/(https?:\/\/[^\s<]+)/', '<a href="$1" target="_blank">$1</a>', $versionDialogText);
-                        echo nl2br($versionDialogTextWithLinks);
-                    } else {
-                        echo 'No Version Dialog text set. Go to the Admin Menu and set one.';
-                    }
-                    ?>
-                </div>
+                <?php
+                $versionDialogMode = isset($this->optionslib) ? $this->optionslib->get_option('version_dialog') : 'release_notes';
+                if ($versionDialogMode == 'custom_text' || $versionDialogMode == 'both') {
+                ?>
+                    <div class="border-bottom border-top p-4 m-4">
+                        <?php
+                        $versionDialogText = isset($this->optionslib) ? $this->optionslib->get_option('version_dialog_text') : null;
+                        if ($versionDialogText !== null) {
+                            $versionDialogTextWithLinks = preg_replace('/(https?:\/\/[^\s<]+)/', '<a href="$1" target="_blank">$1</a>', $versionDialogText);
+                            echo nl2br($versionDialogTextWithLinks);
+                        } else {
+                            echo 'No Version Dialog text set. Go to the Admin Menu and set one.';
+                        }
+                        ?>
+                    </div>
+                <?php
+                }
+                if ($versionDialogMode == 'release_notes' || $versionDialogMode == 'both' || $versionDialogMode == 'disabled') {
+                ?>
                 <div>
                     <?php
                     $url = 'https://api.github.com/repos/magicbug/Cloudlog/releases';
@@ -46,9 +54,18 @@
                     }
                     ?>
                 </div>
+                <?php
+                }
+                ?>
             </div>
             <div class="modal-footer">
+                <?php
+                if ($versionDialogMode !== 'disabled') {
+                ?>
                 <button class="btn btn-secondary" onclick="dismissVersionDialog()" data-bs-dismiss="modal"><?php echo lang('options_version_dialog_dismiss'); ?></button>
+                <?php
+                }
+                ?>
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo lang('options_version_dialog_close'); ?></button>
             </div>
         </div>
