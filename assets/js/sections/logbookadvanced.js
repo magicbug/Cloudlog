@@ -84,7 +84,7 @@ function updateRow(qso) {
 	if (user_options.pota.show == "true"){
 		cells.eq(c++).html(qso.pota);
 	}
-	if (user_options.operator.show == "true"){
+	if ( (user_options.operator) && (user_options.operator.show == "true")){
 		cells.eq(c++).html(qso.operator);
 	}
 
