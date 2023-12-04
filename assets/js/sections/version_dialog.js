@@ -19,19 +19,30 @@ $('#version_dialog_mode').on('change', function () {
     showCustomTextarea();
 });
 
+// JavaScript-Funktion displayVersionDialog für Bootstrap 5
 function displayVersionDialog() {
-    BootstrapDialog.show({
-		title: 'Stored Queries',
-		type: BootstrapDialog.TYPE_WARNING,
-		size: BootstrapDialog.SIZE_NORMAL,
-		cssClass: 'queries-dialog',
-		nl2br: false,
-		message: 'You need to make a query before you search!',
-		buttons: [{
-			label: lang_admin_close,
-			action: function(dialogItself) {
-				dialogItself.close();
-			}
-		}]
+
+	$.ajax({
+		url: base_url + "index.php/Version_Dialog/displayVersionDialog",
+		type: 'GET',
+		dataType: 'html',
+		success: function(data) {
+			$('body').append(data);
+
+			// Aktiviere das Bootstrap-Modal
+			var versionDialogModal = new bootstrap.Modal(document.getElementById('versionDialogModal'));
+			versionDialogModal.show();
+		},
+		error: function() {
+			// Behandlung von Fehlern
+			console.log('Fehler beim Laden der PHP-Datei.');
+		}
+	});
+}
+
+function dismissVersionDialog() {
+	$.ajax({
+		url: base_url + 'index.php/user_options/dismissVersionDialog',
+		method: 'POST',
 	});
 }
