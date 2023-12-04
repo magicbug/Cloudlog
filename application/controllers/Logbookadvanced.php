@@ -467,7 +467,6 @@ class Logbookadvanced extends CI_Controller {
 		$json_string['operator']['show'] = $this->input->post('operator');
 
 		$obj['column_settings']= json_encode($json_string);
-		log_message("Error",json_encode($json_string));
 
 		$this->load->model('user_options_model');
 		$this->user_options_model->set_option('LogbookAdvanced', 'LogbookAdvanced', $obj);
