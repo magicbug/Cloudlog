@@ -57,23 +57,11 @@ class User_Options extends CI_Controller {
 		}
 		header('Content-Type: application/json');
 		echo json_encode($jsonout);
-	}
+	}	
 
-	public function get_vd_confirmation() {
-		$confirmed = $this->user_options_model->get_options('confirmation_version_dialog')->result();
-	
-		if ($confirmed->num_rows() > 0) {
-			$confirmation_value = $confirmed[0]->option_value;
-			if ($confirmation_value == 'true') {
-				log_message('error', 'VD confirmed');
-			} else {
-				log_message('error', 'VD NOT confirmed');
-			}
-		} else {
-			log_message('error', 'No Data in User Options');
-		}
+	public function dismissVersionDialog() {
+		$this->user_options_model->set_option('version_dialog', 'confirmed', array('boolean' => 'true'));
 	}
-	
 }
 
 
