@@ -354,9 +354,10 @@
 		  			</div>
 					<div class="mb-3">
 		    			<label for="eqslDefaultQSLMsg"><?php echo lang("station_location_eqsl_defaultqslmsg"); ?></label>
+						<label class="position-absolute end-0 mb-2 me-3" for="eqslDefaultQSLMsg" id="charsLeft"> </label>
 		    			<?php $eqsl_default_qslmsg = (set_value('eqsl_default_qslmsg') != "")?set_value('eqsl_default_qslmsg'):$eqsl_default_qslmsg; ?>
 		    			<textarea class="form-control" name="eqsl_default_qslmsg" id="eqslDefaultQSLMsg" aria-describedby="eqsldefaultqslmsghelp" maxlength="240" rows="2" style="width:100%;" value="<?php echo $eqsl_default_qslmsg; ?>"><?php echo $eqsl_default_qslmsg; ?></textarea>
-		    			<small id="eqsldefaultqslmsghelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_defaultqslmsg_hint"); ?> 240.</small>
+		    			<small id="eqsldefaultqslmsghelp" class="form-text text-muted"><?php echo lang("station_location_eqsl_defaultqslmsg_hint"); ?></small>
 		  			</div>
 				</div>
 			</div>
