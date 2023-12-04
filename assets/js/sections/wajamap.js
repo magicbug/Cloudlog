@@ -154,10 +154,10 @@ function highlightFeature(e) {
     var layer = e.target;
 
     layer.setStyle({
-        weight: 5,
-        color: '#666',
+        weight: 3,
+        color: 'white',
         dashArray: '',
-        fillOpacity: 0.7
+        fillOpacity: 0.8
     });
 
     layer.bringToFront();
