@@ -90,5 +90,9 @@
 			<td><?php echo lang('gen_hamradio_pota'); ?></td>
 			<td><div class="form-check"><input class="form-check-input" name="pota" type="checkbox" <?php if (($options->pota->show ?? "true") == "true") { echo 'checked'; } ?>></div></td>
 		</tr>
+		<tr>
+			<td><?php echo lang('gen_hamradio_operator'); ?></td>
+			<td><div class="form-check"><input class="form-check-input" name="operator" type="checkbox" <?php if (($options->operator->show ?? "true") == "true") { echo 'checked'; } ?>></div></td>
+		</tr>
 	</tbody>
 </table>
