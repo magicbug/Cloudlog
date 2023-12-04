@@ -72,6 +72,10 @@ function load_was_map() {
 <?php
 if($this->session->userdata('user_id') != null) {
     $versionDialog = $this->optionslib->get_option('version_dialog');
+    $versionDialogHeader = $this->optionslib->get_option('version_dialog_header');
+    if (empty($versionDialogHeader)) {
+        $this->optionslib->update('version_dialog_header', $this->lang->line('options_version_dialog'), 'yes');
+    }
     if($versionDialog != "disabled") {
         $confirmed = $this->user_options_model->get_options('version_dialog', array('option_name'=>'confirmed'))->result();
         $confirmation_value = (isset($confirmed[0]->option_value))?$confirmed[0]->option_value:'false';

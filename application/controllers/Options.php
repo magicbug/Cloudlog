@@ -410,14 +410,17 @@ class Options extends CI_Controller {
 
 		$this->load->helper(array('form', 'url'));
 
-		
-		$version_dialog_mode = $this->optionslib->update('version_dialog', $this->input->post('version_dialog_mode'), 'yes');
-		if($version_dialog_mode == TRUE) {
-			$this->session->set_flashdata('success', $this->lang->line('options_version_dialog_mode_changed_to')." "."'".$this->input->post('version_dialog_mode')."'");
+		$version_dialog_header_update = $this->optionslib->update('version_dialog_header', $this->input->post('version_dialog_header'), 'yes');
+		if($version_dialog_header_update == TRUE) {
+			$this->session->set_flashdata('success0', $this->lang->line('options_version_dialog_header_changed_to')." "."'".$this->input->post('version_dialog_header')."'");
+		}
+		$version_dialog_mode_update = $this->optionslib->update('version_dialog', $this->input->post('version_dialog_mode'), 'yes');
+		if($version_dialog_mode_update == TRUE) {
+			$this->session->set_flashdata('success1', $this->lang->line('options_version_dialog_mode_changed_to')." "."'".$this->input->post('version_dialog_mode')."'");
 		}
 		if ($this->input->post('version_dialog_mode') == "both" || $this->input->post('version_dialog_mode') == "custom_text" ) { 
-			$version_dialog_custom_text = $this->optionslib->update('version_dialog_text', $this->input->post('version_dialog_custom_text'), 'yes');
-			if($version_dialog_custom_text == TRUE) {
+			$version_dialog_custom_text_update = $this->optionslib->update('version_dialog_text', $this->input->post('version_dialog_custom_text'), 'yes');
+			if($version_dialog_custom_text_update == TRUE) {
 				$this->session->set_flashdata('success2', $this->lang->line('options_version_dialog_custom_text_saved'));
 			}
 		}
