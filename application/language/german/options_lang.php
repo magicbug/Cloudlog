@@ -74,6 +74,8 @@ $lang['options_dxcluster_decont_changed_to']='Spotterkontinent geändert auf ';
 $lang['options_dxcluster_decont_hint']='Nur Spots von Spottern dieses Kontinents werden angezeigt';
 
 $lang['options_version_dialog'] = "Versions Info";
+$lang['options_version_dialog_close'] = "Schliessen";
+$lang['options_version_dialog_dismiss'] = "Nicht mehr anzeigen";
 $lang['options_version_dialog_settings'] = "Versions Info Einstellungen";
 $lang['options_version_dialog_mode'] = "Versions Info Modus";
 $lang['options_version_dialog_mode_release_notes'] = "Nur Versionshinweise";

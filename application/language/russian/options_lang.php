@@ -74,6 +74,8 @@ $lang['options_dxcluster_decont_changed_to']='континент изменён 
 $lang['options_dxcluster_decont_hint']='Бубт показаны споты только от споттеров с указанного континента';
 
 $lang['options_version_dialog'] = "Version Info";
+$lang['options_version_dialog_close'] = "Close";
+$lang['options_version_dialog_dismiss'] = "Don't show again";
 $lang['options_version_dialog_settings'] = "Version Info Settings";
 $lang['options_version_dialog_mode'] = "Version Info Mode";
 $lang['options_version_dialog_mode_release_notes'] = "Only Release Notes";

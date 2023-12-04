@@ -48,8 +48,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo lang('admin_close'); ?></button>
-                <button class="btn btn-secondary" onclick="dismissVersionDialog()" data-bs-dismiss="modal">Dismiss</button>
+                <button class="btn btn-secondary" onclick="dismissVersionDialog()" data-bs-dismiss="modal"><?php echo lang('options_version_dialog_dismiss'); ?></button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"><?php echo lang('options_version_dialog_close'); ?></button>
             </div>
         </div>
     </div>
