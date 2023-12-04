@@ -70,16 +70,18 @@ function load_was_map() {
 <!-- Version Dialog START -->
 
 <?php
-$versionDialog = $this->optionslib->get_option('version_dialog');
-if($versionDialog != "disabled") {
-    $confirmed = $this->user_options_model->get_options('version_dialog', array('option_name'=>'confirmed'))->result();
-    $confirmation_value = (isset($confirmed[0]->option_value))?$confirmed[0]->option_value:'false';
-	if ($confirmation_value != 'true') {
-        $this->user_options_model->set_option('version_dialog', 'confirmed', array('boolean' => $confirmation_value));
-		?><script>
-            displayVersionDialog();
-        </script><?php
-	}
+if($this->session->userdata('user_id') != null) {
+    $versionDialog = $this->optionslib->get_option('version_dialog');
+    if($versionDialog != "disabled") {
+        $confirmed = $this->user_options_model->get_options('version_dialog', array('option_name'=>'confirmed'))->result();
+        $confirmation_value = (isset($confirmed[0]->option_value))?$confirmed[0]->option_value:'false';
+        if ($confirmation_value != 'true') {
+            $this->user_options_model->set_option('version_dialog', 'confirmed', array('boolean' => $confirmation_value));
+            ?><script>
+                displayVersionDialog();
+            </script><?php
+        }
+    }
 }
 ?>
 
