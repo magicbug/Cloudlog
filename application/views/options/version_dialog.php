@@ -47,7 +47,7 @@
 
                         <div class="mb-3" id="version_dialog_custom_textarea" style="display: none" role="alert">
                             <label for="version_dialog_custom_text"><?php echo lang('options_version_dialog_custom_text'); ?></label>
-                            <textarea type="text" rows="6" name="version_dialog_custom_text" class="form-control" id="version_dialog_custom_text" aria-describedby="version_dialog_custom_text"><?php echo htmlspecialchars($this->optionslib->get_option('version_dialog_text')); ?></textarea>
+                            <textarea type="text" rows="6" name="version_dialog_custom_text" class="form-control" id="version_dialog_custom_text" aria-describedby="version_dialog_custom_text"><?php echo htmlspecialchars($this->optionslib->get_option('version_dialog_text') ?? ''); ?></textarea>
                             <small id="version_dialog_custom_text" class="form-text text-muted"><?php echo lang('options_version_dialog_custom_text_hint'); ?></small>
                         </div>
 
