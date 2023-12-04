@@ -168,6 +168,11 @@ class Logbookadvanced_model extends CI_Model {
 			$binding[] = $searchCriteria['wwff'].'%';
 		}
 
+		if ($searchCriteria['operator'] !== '') {
+			$conditions[] = "COL_OPERATOR like ?";
+			$binding[] = $searchCriteria['operator'].'%';
+		}
+
         if ($searchCriteria['gridsquare'] !== '') {
                 $conditions[] = "(COL_GRIDSQUARE like ? or COL_VUCC_GRIDS like ?)";
                 $binding[] = '%' . $searchCriteria['gridsquare'] . '%';

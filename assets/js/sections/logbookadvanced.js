@@ -81,6 +81,12 @@ function updateRow(qso) {
 	if (user_options.iota.show == "true"){
 		cells.eq(c++).html(qso.iota);
 	}
+	if (user_options.pota.show == "true"){
+		cells.eq(c++).html(qso.pota);
+	}
+	if ( (user_options.operator) && (user_options.operator.show == "true")){
+		cells.eq(c++).html(qso.operator);
+	}
 
 	$('[data-bs-toggle="tooltip"]').tooltip();
 	return row;
@@ -174,6 +180,12 @@ function loadQSOTable(rows) {
 		if (user_options.iota.show == "true"){
 			data.push(qso.iota);
 		}
+		if (user_options.pota.show == "true"){
+			data.push(qso.pota);
+		}
+		if (user_options.operator.show == "true"){
+			data.push(qso.operator);
+		}
 
 		let createdRow = table.row.add(data).index();
 		table.rows(createdRow).nodes().to$().data('qsoID', qso.qsoID);
@@ -261,6 +273,7 @@ $(document).ready(function () {
 				qslSentMethod: this.qslSentMethod.value,
 				qslReceivedMethod: this.qslReceivedMethod.value,
 				iota: this.iota.value,
+				operator: this.operator.value,
 				dxcc: this.dxcc.value,
 				propmode: this.selectPropagation.value,
 				gridsquare: this.gridsquare.value,
@@ -497,6 +510,10 @@ $(document).ready(function () {
 		quickSearch('pota');
 	});
 
+	$('#searchOperator').click(function (event) {
+		quickSearch('operator');
+	});
+
 	$('#dupeButton').click(function (event) {
 		dupeSearch();
 	});
@@ -623,6 +640,7 @@ $(document).ready(function () {
 				case 'sota': 		col1 = $(currentRow).find('#dxsota').text(); break;
 				case 'wwff': 		col1 = $(currentRow).find('#dxwwff').text(); break;
 				case 'pota': 		col1 = $(currentRow).find('#dxpota').text(); break;
+				case 'operator': 	col1 = $(currentRow).find('#operator').text(); break;
 				case 'mode': 		col1 = currentRow.find("td:eq(4)").text(); break;
 				case 'band': 		col1 = currentRow.find("td:eq(7)").text(); col1 = col1.match(/\S\w*/); break;
 			}
@@ -872,6 +890,7 @@ function mapQsos(form) {
 				qslvia: $('[name="qslviainput"]').val(),
 				sota: form.sota.value,
 				pota: form.pota.value,
+				operator: form.operator.value,
 				wwff: form.wwff.value,
 				qslimages: form.qslimages.value,
 			},
@@ -1069,6 +1088,8 @@ function loadMap(data) {
 				state: $('input[name="state"]').is(':checked') ? true : false,
 				cqzone: $('input[name="cqzone"]').is(':checked') ? true : false,
 				iota: $('input[name="iota"]').is(':checked') ? true : false,
+				pota: $('input[name="pota"]').is(':checked') ? true : false,
+				operator: $('input[name="operator"]').is(':checked') ? true : false,
 			},
 			success: function(data) {
 				$('#saveButton').prop("disabled", false);
