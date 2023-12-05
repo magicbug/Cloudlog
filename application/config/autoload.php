@@ -127,7 +127,7 @@ $autoload['language'] = array(
 |
 */
 
-$autoload['model'] = array();
+$autoload['model'] = array('user_options_model');
 
 
 /* End of file autoload.php */

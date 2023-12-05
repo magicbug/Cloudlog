@@ -46,6 +46,7 @@
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/easyprint.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/common.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/eqslcharcounter.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/version_dialog.js"></script>
 
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
 
@@ -66,6 +67,33 @@ function load_was_map() {
 }
 </script>
 <?php } ?>
+
+<!-- Version Dialog START -->
+
+<?php
+if($this->session->userdata('user_id') != null) {
+    $versionDialog = $this->optionslib->get_option('version_dialog');
+    if (empty($versionDialog)) {
+        $this->optionslib->update('version_dialog', 'release_notes', 'yes');
+    }
+    $versionDialogHeader = $this->optionslib->get_option('version_dialog_header');
+    if (empty($versionDialogHeader)) {
+        $this->optionslib->update('version_dialog_header', $this->lang->line('options_version_dialog'), 'yes');
+    }
+    if($versionDialog != "disabled") {
+        $confirmed = $this->user_options_model->get_options('version_dialog', array('option_name'=>'confirmed'))->result();
+        $confirmation_value = (isset($confirmed[0]->option_value))?$confirmed[0]->option_value:'false';
+        if ($confirmation_value != 'true') {
+            $this->user_options_model->set_option('version_dialog', 'confirmed', array('boolean' => $confirmation_value));
+            ?><script>
+                displayVersionDialog();
+            </script><?php
+        }
+    }
+}
+?>
+
+<!-- Version Dialog END -->
 
 <?php if ($this->uri->segment(1) == "oqrs") { ?>
     <script src="<?php echo base_url() ;?>assets/js/sections/oqrs.js"></script>
