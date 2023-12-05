@@ -81,9 +81,9 @@ function updateRow(qso) {
 	if (user_options.iota.show == "true"){
 		cells.eq(c++).html(qso.iota);
 	}
-	// if (user_options.pota.show == "true"){
-	// 	cells.eq(c++).html(qso.pota);
-	// }
+	if (user_options.pota.show == "true"){
+		cells.eq(c++).html(qso.pota);
+	}
 	if ( (user_options.operator) && (user_options.operator.show == "true")){
 		cells.eq(c++).html(qso.operator);
 	}
@@ -180,9 +180,9 @@ function loadQSOTable(rows) {
 		if (user_options.iota.show == "true"){
 			data.push(qso.iota);
 		}
-		// if (user_options.pota.show == "true"){
-		// 	data.push(qso.pota);
-		// }
+		if (user_options.pota.show == "true"){
+			data.push(qso.pota);
+		}
 		if (user_options.operator.show == "true"){
 			data.push(qso.operator);
 		}

@@ -468,6 +468,9 @@ $options = json_decode($options);
 			<?php if (($options->iota->show ?? "true") == "true") {
 				echo '<th>' . lang('gen_hamradio_iota') . '</th>';
 			} ?>
+			<?php if (($options->pota->show ?? "true") == "true") {
+				echo '<th>' . lang('gen_hamradio_pota') . '</th>';
+			} ?>
 			<?php if (($options->operator->show ?? "true") == "true") {
 				echo '<th>' . lang('gen_hamradio_operator') . '</th>';
 			} ?>
