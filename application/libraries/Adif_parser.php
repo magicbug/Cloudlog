@@ -153,6 +153,10 @@ class ADIF_Parser
 				{
 					$tag_name = $tag_name.mb_substr($record, $a, 1, "UTF-8"); //append this char to the tag name
 					$a++;
+					// Prevent iterating $a past record length
+					if ($a == mb_strlen($record, "UTF-8")) {
+						return;
+					}
 				};
 				$a++; //iterate past the colon
 				while(mb_substr($record, $a, 1, "UTF-8") != '>' && mb_substr($record, $a, 1, "UTF-8") != ':')
