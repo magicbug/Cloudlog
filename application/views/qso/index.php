@@ -117,8 +117,8 @@
                   <small id="callsign_info" class="badge text-bg-secondary"></small> <a id="lotw_link"><small id="lotw_info" class="badge text-bg-success"></small></a>
                 </div>
                 <div class="mb-3 col-md-3 align-self-center">
-                  <small id="qrz_info" class="badge text-bg-secondary"></small>
-                  <small id="hamqth_info" class="badge text-bg-secondary"></small>
+                  <small id="qrz_info" class="text-bg-secondary qso-icon-info"></small>
+                  <small id="hamqth_info" class="text-bg-secondary qso-icon-info"></small>
                 </div>
               </div>
 

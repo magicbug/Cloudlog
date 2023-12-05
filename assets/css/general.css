@@ -662,3 +662,7 @@ table.dataTable tfoot td {
 .warningOnSubmit_txt {
 	margin-left:10px;
 }
+
+.qso-icon-info {
+	margin-right:5px;
+}
