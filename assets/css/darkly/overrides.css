@@ -11,7 +11,7 @@
 	--bs-table-hover-color: #fff;
 }
 
-.table > tbody > odd {
+.table > tbody > odd, .tabledxcc > tbody, .tablecq > tbody, #doktable > tbody, .tableiota > tbody, .tablewas > tbody, #qsoList > tbody {
 	--bs-table-accent-bg: #303030;
 }
 
