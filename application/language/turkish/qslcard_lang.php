@@ -15,7 +15,6 @@ $lang['qslcard_sent_manager'] = 'QSL Card has been sent via manager';
 $lang['qslcard_rcvd'] = 'QSL Card has been received';
 $lang['qslcard_rcvd_bureau'] = 'QSL kartı büro üzerinden alındı';
 $lang['qslcard_rcvd_direct'] = 'QSL kartı direkt alındı';
-
 $lang['qslcard_rcvd_electronic'] = 'QSL Card has been received electronically';
 $lang['qslcard_rcvd_manager'] = 'QSL Card has been received via manager';
 
@@ -23,3 +22,7 @@ $lang['qslcard_upload_front'] = 'Yüklenen QSL kartının ön resmi';
 $lang['qslcard_upload_back'] = 'Yüklenen QSL kartının arka resmi';
 
 $lang['qslcard_upload_button'] = 'QSL kardını yükle';
+
+$lang['qslcard_qslprint_text_line1'] = "Here you can export requested QSLs as CSV or ADIF files for printing and, optionally, mark them as sent via bureau.";
+$lang['qslcard_qslprint_text_line2'] = "Requested QSLs are any QSOs with a value of 'Requested' or 'Queued' in their 'QSL Sent' field.";
+

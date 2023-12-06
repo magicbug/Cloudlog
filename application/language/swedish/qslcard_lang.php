@@ -15,7 +15,6 @@ $lang['qslcard_sent_manager'] = 'QSL-kort har skickats via manager';
 $lang['qslcard_rcvd'] = 'QSL-kort har mottagits';
 $lang['qslcard_rcvd_bureau'] = 'QSL-kort har mottagits via byrå';
 $lang['qslcard_rcvd_direct'] = 'QSL-kort har mottagits direkt';
-
 $lang['qslcard_rcvd_electronic'] = 'QSL-kort har tagits emot elektroniskt';
 $lang['qslcard_rcvd_manager'] = 'QSL-kort har tagits emot via manager';
 
@@ -23,3 +22,7 @@ $lang['qslcard_upload_front'] = 'Uppladdat QSL-kort bild framsida';
 $lang['qslcard_upload_back'] = 'Uppladdat QSL-kort bild baksida';
 
 $lang['qslcard_upload_button'] = 'Uppladdat QSL-kort bild';
+
+$lang['qslcard_qslprint_text_line1'] = "Here you can export requested QSLs as CSV or ADIF files for printing and, optionally, mark them as sent via bureau.";
+$lang['qslcard_qslprint_text_line2'] = "Requested QSLs are any QSOs with a value of 'Requested' or 'Queued' in their 'QSL Sent' field.";
+

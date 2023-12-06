@@ -15,7 +15,6 @@ $lang['qslcard_sent_manager'] = 'Η κάρτα QSL έχει σταλεί μέσ�
 $lang['qslcard_rcvd'] = 'Η κάρτα QSL έχει παραληφθεί';
 $lang['qslcard_rcvd_bureau'] = 'Η κάρτα QSL έχει παραληφθεί μέσω του γραφείου';
 $lang['qslcard_rcvd_direct'] = 'Η κάρτα QSL έχει παραληφθεί απευθείας';
-
 $lang['qslcard_rcvd_electronic'] = 'Η κάρτα QSL έχει παραληφθεί ηλεκτρονικά';
 $lang['qslcard_rcvd_manager'] = 'Η κάρτα QSL έχει παραληφθεί μέσω του διαχειριστή';
 
@@ -23,3 +22,7 @@ $lang['qslcard_upload_front'] = 'Μεταφορτώθηκε η μπροστιν�
 $lang['qslcard_upload_back'] = 'Μεταφορτώθηκε η πίσω εικόνα της κάρτας QSL';
 
 $lang['qslcard_upload_button'] = 'Μεταφόρτωση εικόνας κάρτας QSL';
+
+$lang['qslcard_qslprint_text_line1'] = "Here you can export requested QSLs as CSV or ADIF files for printing and, optionally, mark them as sent via bureau.";
+$lang['qslcard_qslprint_text_line2'] = "Requested QSLs are any QSOs with a value of 'Requested' or 'Queued' in their 'QSL Sent' field.";
+

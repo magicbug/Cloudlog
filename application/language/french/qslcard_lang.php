@@ -23,3 +23,6 @@ $lang['qslcard_upload_back'] = "Sélectionner l'image \"verso\" de la QSL";
 
 $lang['qslcard_upload_button'] = "Télécharger le(s) image(s) de la QSL";
 
+$lang['qslcard_qslprint_text_line1'] = "Here you can export requested QSLs as CSV or ADIF files for printing and, optionally, mark them as sent via bureau.";
+$lang['qslcard_qslprint_text_line2'] = "Requested QSLs are any QSOs with a value of 'Requested' or 'Queued' in their 'QSL Sent' field.";
+
