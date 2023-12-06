@@ -73,6 +73,31 @@ $lang['options_dxcluster_maxage_changed_to']='Maximales Spot-Alter geändert auf
 $lang['options_dxcluster_decont_changed_to']='Spotterkontinent geändert auf ';
 $lang['options_dxcluster_decont_hint']='Nur Spots von Spottern dieses Kontinents werden angezeigt';
 
+$lang['options_version_dialog'] = "Versionsinfo";
+$lang['options_version_dialog_close'] = "Schliessen";
+$lang['options_version_dialog_dismiss'] = "Nicht mehr anzeigen";
+$lang['options_version_dialog_settings'] = "Versionsinfo Einstellungen";
+$lang['options_version_dialog_header'] = "Überschrift der Versionsinfo";
+$lang['options_version_dialog_header_hint'] = "Du kannst die Überschrift des Versionsinfo-Fensters verändern.";
+$lang['options_version_dialog_header_changed_to'] = "Überschrift der Versionsinfo geändert zu";
+$lang['options_version_dialog_mode'] = "Versionsinfo-Modus";
+$lang['options_version_dialog_mode_release_notes'] = "Nur Versionshinweise";
+$lang['options_version_dialog_mode_custom_text'] = "Nur benutzerdefinierter Text";
+$lang['options_version_dialog_mode_both'] = "Versionshinweise und benutzerdefinierter Text";
+$lang['options_version_dialog_mode_disabled'] = "Deaktiviert";
+$lang['options_version_dialog_mode_hint'] = "Die Versionsinfo wird jedem Benutzer angezeigt. Der Benutzer hat die Möglichkeit, den Dialog zu schließen, nachdem er ihn gelesen hat. Wähle aus, ob nur Versionshinweise (von GitHub abgerufen), nur benutzerdefinierter Text oder beides angezeigt werden soll.";
+$lang['options_version_dialog_custom_text'] = "Versionsinfo - Benutzerdefinierter Text";
+$lang['options_version_dialog_custom_text_hint'] = "Dies ist der benutzerdefinierte Text, der im Versionsinfo-Fenster angezeigt wird.";
+$lang['options_version_dialog_mode_changed_to'] = "Versionsinfo-Modus geändert zu";
+$lang['options_version_dialog_custom_text_saved'] = "Benutzerdefinierter Text der Versionsinfo gespeichert!";
+$lang['options_version_dialog_success_show_all'] = "Versionsinfo wird wieder allen Benutzern angezeigt";
+$lang['options_version_dialog_success_hide_all'] = "Versionsinfo wird keinem Benutzer angezeigt";
+$lang['options_version_dialog_show_hide'] = "Versionsinfo-Dialog für alle Benutzer ein-/ausblenden";
+$lang['options_version_dialog_show_all'] = "Allen Benutzern anzeigen";
+$lang['options_version_dialog_hide_all'] = "Allen Benutzern ausblenden";
+$lang['options_version_dialog_show_all_hint'] = "Dies zeigt den Versionsdialog automatisch allen Benutzern bei der nächsten Seiten-Aktualisierung an.";
+$lang['options_version_dialog_hide_all_hint'] = "Dies deaktiviert das automatische Einblenden des Versionsdialogs für alle Benutzer.";
+
 $lang['options_save'] = 'Speichern';
 
 // Bands
