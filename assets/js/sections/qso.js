@@ -522,10 +522,12 @@ function reset_fields() {
 	$('.dxccsummary').remove();
 }
 
-function resetTimers() {
-	handleStart = setInterval(function() { getUTCTimeStamp($('.input_start_time')); }, 500);
-	handleEnd = setInterval(function() { getUTCTimeStamp($('.input_end_time')); }, 500);
-	handleDate = setInterval(function() { getUTCDateStamp($('.input_date')); }, 1000);
+function resetTimers(manual) {
+	if (typeof manual !== 'undefined' && manual != 1) {
+		handleStart = setInterval(function() { getUTCTimeStamp($('.input_start_time')); }, 500);
+		handleEnd = setInterval(function() { getUTCTimeStamp($('.input_end_time')); }, 500);
+		handleDate = setInterval(function() { getUTCDateStamp($('.input_date')); }, 1000);
+	}
 }
 
 $("#callsign").focusout(function() {
