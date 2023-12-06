@@ -654,5 +654,5 @@ table.dataTable tfoot td {
 }
 
 .inputError {
-	border: 1px var(--bs-danger) solid;
+	border: 2px solid rgb(217, 83, 79);
 }
