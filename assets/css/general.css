@@ -656,13 +656,3 @@ table.dataTable tfoot td {
 .inputError {
 	border: 1px var(--bs-danger) solid;
 }
-.warningOnSubmit {
-	margin-top:15px;
-}
-.warningOnSubmit_txt {
-	margin-left:10px;
-}
-
-.qso-icon-info {
-	margin-right:5px;
-}

@@ -117,8 +117,8 @@
                   <small id="callsign_info" class="badge text-bg-secondary"></small> <a id="lotw_link"><small id="lotw_info" class="badge text-bg-success"></small></a>
                 </div>
                 <div class="mb-3 col-md-3 align-self-center">
-                  <small id="qrz_info" class="text-bg-secondary qso-icon-info"></small>
-                  <small id="hamqth_info" class="text-bg-secondary qso-icon-info"></small>
+                  <small id="qrz_info" class="text-bg-secondary me-1"></small>
+                  <small id="hamqth_info" class="text-bg-secondary me-1"></small>
                 </div>
               </div>
 
@@ -552,7 +552,7 @@
 
         <button type="reset" class="btn btn-secondary" onclick="reset_fields()"><?php echo lang('qso_btn_reset_qso'); ?></button>
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo lang('qso_btn_save_qso'); ?></button>
-        <div class="alert alert-danger warningOnSubmit" style="display:none;"><span><i class="fas fa-times-circle"></i></span> <span class="warningOnSubmit_txt">Error</span></div>
+        <div class="alert alert-danger warningOnSubmit mt-3" style="display:none;"><span><i class="fas fa-times-circle"></i></span> <span class="warningOnSubmit_txt ms-1">Error</span></div>
       </div>
     </form>
     </div>
