@@ -25,9 +25,9 @@ class User_options_model extends CI_Model {
 						ON DUPLICATE KEY UPDATE option_value = ?';
 				foreach ($option_array as $option_key => $option_value) {
 					$this->db->query($sql, array($user_id, $option_type, $option_name, $option_key, $option_value, $option_value));
-					return true;
 				}
 			}
+			return true;
 		} else {
 			log_message('error','set_option_at_all_users() failed because users table is empty');
 		}
