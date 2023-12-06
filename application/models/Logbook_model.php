@@ -9,7 +9,12 @@ class Logbook_model extends CI_Model {
     // Join date+time
     $datetime = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('start_time');
     if ($this->input->post('end_time') != null) {
-       $datetime_off = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('end_time');
+        $datetime_off = date("Y-m-d",strtotime($this->input->post('start_date')))." ". $this->input->post('end_time');
+        // if time off < time on, and time off is on 00:xx >> add 1 day (concidering start and end are between 23:00 and 00:59) //
+        $_tmp_datetime_off = strtotime($datetime_off);
+        if (($_tmp_datetime_off < strtotime($datetime)) && (substr($this->input->post('end_time'),0,2)=="00")) {
+          $datetime_off = date("Y-m-d H:i:s", ($_tmp_datetime_off + 60*60*24));
+        }
     } else {
        $datetime_off = $datetime;
     }

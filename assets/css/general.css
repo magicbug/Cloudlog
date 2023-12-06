@@ -645,3 +645,7 @@ div#station_logbooks_linked_table_paginate {
 .icon_selectBox_data label:hover { 
 	background-color:var(--bs-primary); 
 }
+
+.inputError {
+	border: 2px solid rgb(217, 83, 79);
+}
