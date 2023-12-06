@@ -1145,7 +1145,7 @@ $(document).on('keypress',function(e) {
 
       if ( ! manual ) {
         $(function($) {
-           resetTimers();
+           resetTimers(0);
         });
       }
     });
@@ -1182,7 +1182,7 @@ $(document).on('keypress',function(e) {
 	  if (e.key === "Escape") { // escape key maps to keycode `27`
 		  reset_fields();
 		  if ( ! manual ) {
-		     resetTimers()
+		     resetTimers(0)
 		  }
 		  $('#callsign').val("");
 		  $("#callsign").focus();
