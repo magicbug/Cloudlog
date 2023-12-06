@@ -602,13 +602,6 @@ div#station_logbooks_linked_table_paginate {
 	position: absolute;
 }
 
-table.dataTable thead th,
-table.dataTable thead td,
-table.dataTable tfoot th,
-table.dataTable tfoot td {
-	text-align: center !important;
-}
-
 .red {
 	color: var(--red);
 }

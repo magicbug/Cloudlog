@@ -30,7 +30,6 @@
 </script>
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
@@ -1146,7 +1145,7 @@ $(document).on('keypress',function(e) {
 
       if ( ! manual ) {
         $(function($) {
-           resetTimers();
+           resetTimers(0);
         });
       }
     });
@@ -1183,7 +1182,7 @@ $(document).on('keypress',function(e) {
 	  if (e.key === "Escape") { // escape key maps to keycode `27`
 		  reset_fields();
 		  if ( ! manual ) {
-		     resetTimers()
+		     resetTimers(0)
 		  }
 		  $('#callsign').val("");
 		  $("#callsign").focus();
