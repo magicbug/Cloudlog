@@ -136,12 +136,14 @@ class Logbook extends CI_Controller {
 
 		$return['dxcc'] = $this->dxcheck($callsign);
 		$split_callsign=explode('/',$callsign);
-		if (count($split_callsign)==1) {				// case F4ANS --> return cel 0 //
+		if (count($split_callsign)==1) {				// case F0ABC --> return cel 0 //
 			$lookupcall = $split_callsign[0];
-		} else if (count($split_callsign)==3) {			// case EA/F4ANS/P --> return cel 1 //
+		} else if (count($split_callsign)==3) {			// case EA/F0ABC/P --> return cel 1 //
 			$lookupcall = $split_callsign[1];
-		} else {										// case F4ANS/P --> return cel 0 OR  case EA/F4ANS --> retunr 1  (normaly not exist) //
-			if (strlen($split_callsign[1])>3) {			// Last Element longer than 3 chars? Take that as call
+		} else {										// case F0ABC/P --> return cel 0 OR  case EA/FOABC --> retunr 1  (normaly not exist) //
+			if (in_array(strtoupper($split_callsign[1]), array('P','M','MM','QRP','0','1','2','3','4','5','6','7','8','9'))) {
+				$lookupcall = $split_callsign[0];
+			} else if (strlen($split_callsign[1])>3) {	// Last Element longer than 3 chars? Take that as call
 				$lookupcall = $split_callsign[1];
 			} else {									// Last Element up to 3 Chars? Take first element as Call
 				$lookupcall = $split_callsign[0];
