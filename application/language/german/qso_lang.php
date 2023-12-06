@@ -28,6 +28,9 @@ $lang['qsl_notes_helptext'] = 'Dieser Notizeninhalt wird an QSL Services wie eqs
 
 $lang['qso_eqsl_qslmsg_helptext'] = "Setze die eQSL Nachricht auf den Standardtext zurück.";
 
+// error text //
+$lang['qso_error_timeoff_less_timeon'] = "TimeOff is less than TimeOn";
+
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = 'Zurücksetzen';

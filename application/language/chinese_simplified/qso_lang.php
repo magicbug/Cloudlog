@@ -28,6 +28,9 @@ $lang['qsl_notes_helptext'] = '此笔记内容被导出到QSL服务，如 eqsl.c
 
 $lang['qso_eqsl_qslmsg_helptext'] = "获取该站的 eQSL 默认消息。";
 
+// error text //
+$lang['qso_error_timeoff_less_timeon'] = "TimeOff is less than TimeOn";
+
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = '重置';
