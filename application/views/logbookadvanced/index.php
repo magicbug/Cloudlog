@@ -10,6 +10,10 @@ if (!isset($options)) {
    $options = "{\"datetime\":{\"show\":\"true\"},\"de\":{\"show\":\"true\"},\"dx\":{\"show\":\"true\"},\"mode\":{\"show\":\"true\"},\"rstr\":{\"show\":\"true\"},\"rsts\":{\"show\":\"true\"},\"band\":{\"show\":\"true\"},\"myrefs\":{\"show\":\"true\"},\"refs\":{\"show\":\"true\"},\"name\":{\"show\":\"true\"},\"qslvia\":{\"show\":\"true\"},\"qsl\":{\"show\":\"true\"},\"lotw\":{\"show\":\"true\"},\"eqsl\":{\"show\":\"true\"},\"qslmsg\":{\"show\":\"true\"},\"dxcc\":{\"show\":\"true\"},\"state\":{\"show\":\"true\"},\"cqzone\":{\"show\":\"true\"},\"iota\":{\"show\":\"true\"},\"pota\":{\"show\":\"true\"},\"operator\":{\"show\":\"true\"}}";
 }
 echo "var user_options = $options;";
+if (!isset($options->pota)) {
+        echo "\nvar o_template = { pota: {show: 'true'}};";
+        echo "\nuser_options={...user_options, ...o_template}";
+}
 if (!isset($options->operator)) {
 	echo "\nvar o_template = { operator: {show: 'true'}};";
 	echo "\nuser_options={...user_options, ...o_template}";
