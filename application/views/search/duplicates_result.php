@@ -45,6 +45,6 @@ if ($qsos->result() != NULL) {
 
 	<?php
 } else {
-	echo '<div class="alert alert-success"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>No duplicate QSO\'s were found.</div>';
+	echo '<div class="alert alert-success">No duplicate QSO\'s were found.</div>';
 }
 ?>
