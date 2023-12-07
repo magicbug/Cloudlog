@@ -13,7 +13,7 @@
 
 	<div class="card">
 	  <div class="card-header">
-	    Export Requested QSLs for Printing
+	    <?php echo lang('qslcard_qslprint_header'); ?>
 	  </div>
 		<div class="card-body">
 			<form class="form" action="<?php echo site_url('adif/import'); ?>" method="post" enctype="multipart/form-data">
