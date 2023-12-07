@@ -160,7 +160,7 @@ div.alert-danger {
 
 #qsoList_wrapper th {
 	text-align: left !important;
-	white-space: pre-wrap;
+	white-space: nowrap;
 }
 #qsoList_wrapper td {
 	text-align: left !important;
