@@ -408,17 +408,23 @@ class Logbook_model extends CI_Model {
 		case 'EQSLSDATE':
 			$this->db->where('date(COL_EQSL_QSLSDATE)=date(SYSDATE())');
 			break;
-		case 'LOTWRDATE':
+		case 'lotwrdate':
 			$this->db->where('date(COL_LOTW_QSLRDATE)=date(SYSDATE())');
 			break;
-		case 'LOTWSDATE':
+		case 'lotwsdate':
 			$this->db->where('date(COL_LOTW_QSLSDATE)=date(SYSDATE())');
+			break;
+		case 'qrzrdate':
+			$this->db->where('date(COL_QRZCOM_QSO_DOWNLOAD_DATE)=date(SYSDATE())');
+			break;
+		case 'qrzsdate':
+			$this->db->where('date(COL_QRZCOM_QSO_UPLOAD_DATE)=date(SYSDATE())');
 			break;
 		}
 
     $this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
 
-		if ($band != 'All') {
+		if (strtolower($band) != 'all') {
 			if($band != "SAT") {
 				$this->db->where('COL_PROP_MODE !=', 'SAT');
 				$this->db->where('COL_BAND', $band);
@@ -442,7 +448,7 @@ class Logbook_model extends CI_Model {
 			$this->db->where($sql);
 		}
 
-		if ($mode != 'All' && $mode != '') {
+		if (strtolower($mode) != 'all' && $mode != '') {
 			$this->db->where("(COL_MODE='" . $mode . "' OR COL_SUBMODE='" . $mode ."')");
 		}
 		$this->db->order_by("COL_TIME_ON", "desc");
@@ -1728,9 +1734,9 @@ class Logbook_model extends CI_Model {
     /*
      * Function returns all the station_id's with QRZ API Key's
      */
-    function get_station_id_with_qrz_api() {
-        $sql = 'select station_id, qrzapikey from station_profile
-            where coalesce(qrzapikey, "") <> ""';
+    function get_qrz_apikeys() {
+        $sql = 'select distinct qrzapikey, station_callsign,user_id from station_profile
+            where coalesce(qrzapikey, "") <> "" order by qrzapikey, station_callsign';
 
         $query = $this->db->query($sql);
 
@@ -2451,13 +2457,17 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	  COUNT(IF(COL_EQSL_QSL_RCVD="Y",COL_EQSL_QSL_RCVD,null)) as eQSL_Received,
 	  COUNT(IF(COL_LOTW_QSL_SENT="Y",COL_LOTW_QSL_SENT,null)) as LoTW_Sent,
 	  COUNT(IF(COL_LOTW_QSL_RCVD="Y",COL_LOTW_QSL_RCVD,null)) as LoTW_Received,
+	  COUNT(IF(COL_QRZCOM_QSO_UPLOAD_STATUS="Y",COL_QRZCOM_QSO_UPLOAD_STATUS,null)) as QRZ_Sent,
+	  COUNT(IF(COL_QRZCOM_QSO_DOWNLOAD_STATUS="Y",COL_QRZCOM_QSO_DOWNLOAD_STATUS,null)) as QRZ_Received,
 	  COUNT(IF(COL_QSL_SENT="Y" and DATE(COL_QSLSDATE)=DATE(SYSDATE()),COL_QSL_SENT,null)) as QSL_Sent_today,
 	  COUNT(IF(COL_QSL_RCVD="Y" and DATE(COL_QSLRDATE)=DATE(SYSDATE()),COL_QSL_RCVD,null)) as QSL_Received_today,
 	  COUNT(IF(COL_QSL_SENT IN("Q", "R") and DATE(COL_QSLSDATE)=DATE(SYSDATE()) ,COL_QSL_SENT,null)) as QSL_Requested_today,
 	  COUNT(IF(COL_EQSL_QSL_SENT="Y" and DATE(COL_EQSL_QSLSDATE)=DATE(SYSDATE()),COL_EQSL_QSL_SENT,null)) as eQSL_Sent_today,
 	  COUNT(IF(COL_EQSL_QSL_RCVD="Y" and DATE(COL_EQSL_QSLRDATE)=DATE(SYSDATE()),COL_EQSL_QSL_RCVD,null)) as eQSL_Received_today,
 	  COUNT(IF(COL_LOTW_QSL_SENT="Y" and DATE(COL_LOTW_QSLSDATE)=DATE(SYSDATE()),COL_LOTW_QSL_SENT,null)) as LoTW_Sent_today,
-	  COUNT(IF(COL_LOTW_QSL_RCVD="Y" and DATE(COL_LOTW_QSLRDATE)=DATE(SYSDATE()),COL_LOTW_QSL_RCVD,null)) as LoTW_Received_today
+	  COUNT(IF(COL_LOTW_QSL_RCVD="Y" and DATE(COL_LOTW_QSLRDATE)=DATE(SYSDATE()),COL_LOTW_QSL_RCVD,null)) as LoTW_Received_today,
+	  COUNT(IF(COL_QRZCOM_QSO_UPLOAD_STATUS="Y" and DATE(COL_QRZCOM_QSO_UPLOAD_DATE)=DATE(SYSDATE()),COL_QRZCOM_QSO_UPLOAD_STATUS,null)) as QRZ_Sent_today,
+	  COUNT(IF(COL_QRZCOM_QSO_DOWNLOAD_STATUS="Y" and DATE(COL_QRZCOM_QSO_DOWNLOAD_DATE)=DATE(SYSDATE()),COL_QRZCOM_QSO_DOWNLOAD_STATUS,null)) as QRZ_Received_today
 	');
 	$this->db->where_in('station_id', $logbooks_locations_array);
 
@@ -2471,6 +2481,8 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 		    $QSLBreakdown['eQSL_Received'] =  $row->eQSL_Received;
 		    $QSLBreakdown['LoTW_Sent'] =  $row->LoTW_Sent;
 		    $QSLBreakdown['LoTW_Received'] =  $row->LoTW_Received;
+		    $QSLBreakdown['QRZ_Sent'] =  $row->QRZ_Sent;
+		    $QSLBreakdown['QRZ_Received'] =  $row->QRZ_Received;
 		    $QSLBreakdown['QSL_Sent_today'] = $row->QSL_Sent_today;
 		    $QSLBreakdown['QSL_Received_today'] =  $row->QSL_Received_today;
 		    $QSLBreakdown['QSL_Requested_today'] =  $row->QSL_Requested_today;
@@ -2478,6 +2490,8 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 		    $QSLBreakdown['eQSL_Received_today'] =  $row->eQSL_Received_today;
 		    $QSLBreakdown['LoTW_Sent_today'] =  $row->LoTW_Sent_today;
 		    $QSLBreakdown['LoTW_Received_today'] =  $row->LoTW_Received_today;
+		    $QSLBreakdown['QRZ_Sent_today'] =  $row->QRZ_Sent_today;
+		    $QSLBreakdown['QRZ_Received_today'] =  $row->QRZ_Received_today;
 	    }
 
 	    return $QSLBreakdown;
@@ -2878,7 +2892,31 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
     }
   }
 
-  function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $qsl_vucc_grids, $iota, $cnty, $cqz, $ituz, $station_callsign) {
+  function qrz_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $station_callsign) {
+
+	  $data = array(
+		  'COL_QRZCOM_QSO_DOWNLOAD_DATE' => $qsl_date,
+		  'COL_QRZCOM_QSO_DOWNLOAD_STATUS' => $qsl_status,
+	  );
+	
+
+	  $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
+	  $this->db->where('COL_CALL', $callsign);
+	  $this->db->where('COL_BAND', $band);
+	  $this->db->where('COL_STATION_CALLSIGN', $station_callsign);
+
+	  if ($this->db->update($this->config->item('table_name'), $data)) {
+		  unset($data);
+		  return "Updated";
+	  } else {
+		  unset($data);
+		  return "Not updated";
+	  }
+
+
+  }
+
+function lotw_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $state, $qsl_gridsquare, $qsl_vucc_grids, $iota, $cnty, $cqz, $ituz, $station_callsign) {
 
 	$data = array(
       'COL_LOTW_QSLRDATE' => $qsl_date,
@@ -2961,7 +2999,20 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
     return "Updated";
   }
 
-  function lotw_last_qsl_date($user_id) {
+  function qrz_last_qsl_date($user_id) {
+	  $sql="SELECT date_format(MAX(COALESCE(COL_QRZCOM_QSO_DOWNLOAD_DATE, str_to_date('1900-01-01','%Y-%m-%d'))),'%Y-%m-%d') MAXDATE
+		    FROM ".$this->config->item('table_name')." INNER JOIN station_profile ON (".$this->config->item('table_name').".station_id = station_profile.station_id)
+		    WHERE station_profile.user_id=? and station_profile.qrzapikey is not null and COL_QRZCOM_QSO_DOWNLOAD_DATE is not null";
+	  $query = $this->db->query($sql,$user_id);
+	  $row = $query->row();
+	  if (isset($row) && ($row->MAXDATE ?? '' != '')) {
+		  return $row->MAXDATE;
+	  } else {
+	  	return '1900-01-01';
+	  }
+  }
+
+function lotw_last_qsl_date($user_id) {
 	  $sql="SELECT MAX(COALESCE(COL_LOTW_QSLRDATE, '1900-01-01 00:00:00')) MAXDATE
 		    FROM ".$this->config->item('table_name')." INNER JOIN station_profile ON (".$this->config->item('table_name').".station_id = station_profile.station_id)
 		    WHERE station_profile.user_id=".$user_id." and COL_LOTW_QSLRDATE is not null";

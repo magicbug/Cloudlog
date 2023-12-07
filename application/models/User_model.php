@@ -87,6 +87,15 @@ class User_Model extends CI_Model {
 		return $r->user_email;
 	}
 
+	function hasQrzKey($user_id) {
+		$this->db->where('station_profile.qrzapikey is not null');
+		$this->db->join('station_profile', 'station_profile.user_id = '.$user_id);
+		$query = $this->db->get($this->config->item('auth_table'));
+
+		$ret = $query->row();
+		return $ret->user_email;
+	}
+
 	function get_email_address($station_id) {
 		$this->db->where('station_id', $station_id);
 		$this->db->join('station_profile', 'station_profile.user_id = '.$this->config->item('auth_table').'.user_id');
@@ -366,6 +375,7 @@ class User_Model extends CI_Model {
 			'active_station_logbook' => $u->row()->active_station_logbook,
 			'language' => isset($u->row()->language) ? $u->row()->language: 'english',
 			'isWinkeyEnabled' => $u->row()->winkey,
+			'hasQrzKey' => $this->hasQrzKey($u->row()->user_id),
 		);
 
 		$this->session->set_userdata($userdata);

@@ -98,6 +98,9 @@ $ci =& get_instance();
                 <?php if($this->session->userdata('user_lotw_name') != "") { ?>
                     <th>LoTW</th>
                 <?php } ?>
+		<?php if($this->session->userdata('hasQrzKey') != "") { ?>
+                    <th>QRZ</th>
+                <?php } ?>
             <?php } ?>
                 <th><?php echo lang('gen_hamradio_station'); ?></th>
             <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
@@ -367,6 +370,36 @@ $ci =& get_instance();
                 }
                 echo ' class="lotw-';
                 echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red';
+                echo '">&#9660;</span>';
+                echo '</td>';
+                } ?>
+
+                <?php if($this->session->userdata('hasQrzKey') != "") {
+                echo '<td style=\'text-align: center\' class="qrz">';
+                echo '<span ';
+                if ($row->COL_QRZCOM_QSO_UPLOAD_STATUS == "Y") {
+                   echo "title=\"QRZ ".lang('general_word_sent');
+                   if ($row->COL_QRZCOM_QSO_UPLOAD_DATE != null) {
+                     $timestamp = strtotime($row->COL_QRZCOM_QSO_UPLOAD_DATE);
+                     echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
+                   }
+                   echo "\" data-bs-toggle=\"tooltip\"";
+                }
+                echo ' class="qrz-';
+                echo ($row->COL_QRZCOM_QSO_UPLOAD_STATUS=='Y')?'green':'red';
+                echo '">&#9650;</span>';
+
+                echo '<span ';
+                if ($row->COL_QRZCOM_QSO_DOWNLOAD_STATUS == "Y") {
+                   echo "title=\"QRZ ".lang('general_word_received');
+                   if ($row->COL_QRZCOM_QSO_DOWNLOAD_DATE != null) {
+                      $timestamp = strtotime($row->COL_QRZCOM_QSO_DOWNLOAD_DATE);
+                      echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
+                   }
+                   echo "\" data-bs-toggle=\"tooltip\"";
+                }
+                echo ' class="qrz-';
+                echo ($row->COL_QRZCOM_QSO_DOWNLOAD_STATUS=='Y')?'green':'red';
                 echo '">&#9660;</span>';
                 echo '</td>';
                 } ?>
