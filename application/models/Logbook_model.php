@@ -408,16 +408,16 @@ class Logbook_model extends CI_Model {
 		case 'EQSLSDATE':
 			$this->db->where('date(COL_EQSL_QSLSDATE)=date(SYSDATE())');
 			break;
-		case 'lotwrdate':
+		case 'LOTWRDATE':
 			$this->db->where('date(COL_LOTW_QSLRDATE)=date(SYSDATE())');
 			break;
-		case 'lotwsdate':
+		case 'LOTWSDATE':
 			$this->db->where('date(COL_LOTW_QSLSDATE)=date(SYSDATE())');
 			break;
-		case 'qrzrdate':
+		case 'QRZRDATE':
 			$this->db->where('date(COL_QRZCOM_QSO_DOWNLOAD_DATE)=date(SYSDATE())');
 			break;
-		case 'qrzsdate':
+		case 'QRZSDATE':
 			$this->db->where('date(COL_QRZCOM_QSO_UPLOAD_DATE)=date(SYSDATE())');
 			break;
 		}
