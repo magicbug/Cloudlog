@@ -346,7 +346,7 @@ $(function () {
                             })
                             .done(function(data) {
                                 $(".alert").remove();
-                                $(".card-body.main").append('<div class="alert alert-success"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Your query has been saved!</div>');
+                                $(".card-body.main").append('<div class="alert alert-success">Your query has been saved!</div>');
                                 if ($("#querydropdown option").length == 0) {
                                     var dropdowninfo = ' <button class="btn btn-sm btn-primary" onclick="edit_stored_query_dialog()" id="btn-edit">Edit queries</button></p>' +
                                     '<div class="mb-3 row querydropdownform">' +
@@ -438,7 +438,7 @@ $(function () {
                             'id': id
                         },
                         success: function(data) {
-                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
+                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger">The stored query has been deleted!</div>');
                             $("#query_" + id).remove(); // removes query from table in dialog
                             $("#querydropdown option[value='" + id + "']").remove(); // removes query from dropdown
                             if ($("#querydropdown option").length == 0) {
@@ -447,7 +447,7 @@ $(function () {
                             };
                         },
                         error: function() {
-                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>The stored query could not be deleted. Please try again!</div>');
+                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger">The stored query could not be deleted. Please try again!</div>');
                         },
                     });
                 }
@@ -473,11 +473,11 @@ $(function () {
             },
             success: function(html) {
                 $('#edit_' + id).html('<a class="btn btn-outline-primary btn-sm" href="javascript:edit_stored_query(' + id + ');">Edit</a>'); // Change to edit button
-                $(".bootstrap-dialog-message").prepend('<div class="alert alert-success"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>The query description has been updated!</div>');
+                $(".bootstrap-dialog-message").prepend('<div class="alert alert-success">The query description has been updated!</div>');
                 $("#querydropdown option[value='" + id + "']").text($('#description_' + id).html()); // Change text in dropdown
             },
             error: function() {
-                $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Something went wrong with the save. Please try again!</div>');
+                $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger">Something went wrong with the save. Please try again!</div>');
             },
         });
     }
@@ -2620,7 +2620,7 @@ function viewEqsl(picture, callsign) {
                     }
 
                 } else if (data.status.front.status != '') {
-                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Front QSL Card:' +
+                    $("#qslupload").append('<div class="alert alert-danger">Front QSL Card:' +
                     data.status.front.error +
                         '</div>');
                 }
@@ -2658,7 +2658,7 @@ function viewEqsl(picture, callsign) {
                         $("#qslcardback").val(null);
                     }
                 } else if (data.status.back.status != '') {
-                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>\nBack QSL Card: ' +
+                    $("#qslupload").append('<div class="alert alert-danger">\nBack QSL Card: ' +
                     data.status.back.error +
                         '</div>');
                 }
@@ -2707,7 +2707,7 @@ function viewEqsl(picture, callsign) {
 					location.reload();
 				} else {
 					$(".alert").remove();
-					$('#searchresult').prepend('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Something went wrong. Please try again!</div>');
+					$('#searchresult').prepend('<div class="alert alert-danger">Something went wrong. Please try again!</div>');
 				}
 			}
 		});

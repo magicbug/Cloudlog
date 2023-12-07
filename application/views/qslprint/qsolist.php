@@ -12,13 +12,13 @@ if ($qsos->result() != NULL) {
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_rstr') . '</th>
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_station') . '</th>
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_qsl') . ' ' . lang('general_word_qslcard_via') . '</th>
-	<th style=\'text-align: center\'>Sent method</th>
-	<th style=\'text-align: center\'>QSL</th>';
+	<th style=\'text-align: center\'>' . lang('qslcard_qslprint_send_method') . '</th>
+	<th style=\'text-align: center\'>' . lang('gen_hamradio_qsl') . '</th>';
 	if ($this->session->userdata('user_eqsl_name') != "") {
-		echo '<th style=\'text-align: center\'>eQSL</th>';
+		echo '<th style=\'text-align: center\'>' . lang('eqsl_short') . '</th>';
 	}
 	if($this->session->userdata('user_lotw_name') != "") {
-		echo '<th style=\'text-align: center\'>LoTW</th>';
+		echo '<th style=\'text-align: center\'>' . lang('lotw_short') . '</th>';
 	}
 	echo '<th style=\'text-align: center\'></th>
 	</tr>
@@ -122,7 +122,7 @@ if ($qsos->result() != NULL) {
 				echo " (".lang('general_word_qslcard_direct').")";
 				break;
 			case "M":
-				echo " (Manager)";
+				echo " (".lang('general_word_qslcard_manager').")";
 				break;
 			case "E":
 				echo " (".lang('general_word_qslcard_electronic').")";
@@ -189,7 +189,7 @@ if ($qsos->result() != NULL) {
 			echo '">&#9660;</span>';
 			echo '</td>';
 		}
-		echo '<td id="'.$qsl->COL_PRIMARY_KEY.'" style=\'text-align: center\'><button onclick="addQsoToPrintQueue(\''.$qsl->COL_PRIMARY_KEY.'\')" class="btn btn-sm btn-success">Add to print queue</button></td>';
+		echo '<td id="'.$qsl->COL_PRIMARY_KEY.'" style=\'text-align: center\'><button onclick="addQsoToPrintQueue(\''.$qsl->COL_PRIMARY_KEY.'\')" class="btn btn-sm btn-success">' . lang('qslcard_qslprint_add_to_queue') . '</button></td>';
 		echo '</tr>';
 	}
 
@@ -198,14 +198,14 @@ if ($qsos->result() != NULL) {
 
 	<?php
 } else {
-	echo '<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>No additional QSO\'s were found. That means they are probably already in the queue.</div>';
+	echo '<div class="alert alert-danger">' . lang('qslcard_qslprint_no_additional_qso_found') . '</div>';
 }
 
 function echo_qsl_sent_via($method) {
 	switch($method) {
-		case 'B': echo 'Bureau'; break;
-		case 'D': echo 'Direct'; break;
-		case 'E': echo 'Electronic'; break;
+		case 'B': echo lang('general_word_qslcard_bureau'); break;
+		case 'D': echo lang('general_word_qslcard_direct'); break;
+		case 'E': echo lang('general_word_qslcard_electronic'); break;
 	}
 }
 ?>

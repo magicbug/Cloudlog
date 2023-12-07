@@ -137,7 +137,7 @@ class Qslprint_model extends CI_Model {
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		// always filter user. this ensures that no inaccesible QSOs will be returned
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
-		$this->db->where('COL_CALL like "%'.$callsign.'%"');
+		$this->db->where('COL_CALL like "%/'.$callsign.'/%" OR COL_CALL like "%/'.$callsign.'" OR COL_CALL like "'.$callsign.'/%" OR COL_CALL = "'.$callsign.'"');
 		$this->db->where('coalesce(COL_QSL_SENT, "") not in ("R", "Q")');
 		$this->db->order_by("COL_DXCC", "ASC");
         	$this->db->order_by("COL_CALL", "ASC");
