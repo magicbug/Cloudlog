@@ -10,12 +10,12 @@ class Migration_wide_themes extends CI_Migration
 {
     public function up()
     {
-		$this->db->query("INSERT IGNORE INTO themes (name, foldername) values ('Blue wide','blue_wide');");
-		$this->db->query("INSERT IGNORE INTO themes (name, foldername) values ('Cosmo wide','cosmo_wide');");
-		$this->db->query("INSERT IGNORE INTO themes (name, foldername) values ('Cyborg wide (Dark)','cyborg_wide');");
-		$this->db->query("INSERT IGNORE INTO themes (name, foldername) values ('Darkly wide (Dark)','darkly_wide');");
-		$this->db->query("INSERT IGNORE INTO themes (name, foldername) values ('Default wide','default_wide');");
-		$this->db->query("INSERT IGNORE INTO themes (name, foldername) values ('Superhero wide (Dark)','superhero_wide');");
+		$this->db->query("INSERT INTO themes (name, foldername) SELECT 'Blue wide','blue_wide' WHERE NOT EXISTS (SELECT 1 FROM themes WHERE foldername = 'blue_wide');");
+		$this->db->query("INSERT INTO themes (name, foldername) SELECT 'Cosmo wide','cosmo_wide' WHERE NOT EXISTS (SELECT 1 FROM themes WHERE foldername = 'cosmo_wide');");
+		$this->db->query("INSERT INTO themes (name, foldername) SELECT 'Cyborg wide (Dark)','cyborg_wide' WHERE NOT EXISTS (SELECT 1 FROM themes WHERE foldername = 'cyborg_wide');");
+		$this->db->query("INSERT INTO themes (name, foldername) SELECT 'Darkly wide (Dark)','darkly_wide' WHERE NOT EXISTS (SELECT 1 FROM themes WHERE foldername = 'darkly_wide');");
+		$this->db->query("INSERT INTO themes (name, foldername) SELECT 'Default wide','default_wide' WHERE NOT EXISTS (SELECT 1 FROM themes WHERE foldername = 'default_wide');");
+		$this->db->query("INSERT INTO themes (name, foldername) SELECT 'Superhero wide (Dark)','superhero_wide' WHERE NOT EXISTS (SELECT 1 FROM themes WHERE foldername = 'superhero_wide');");
     }
 
     public function down()
