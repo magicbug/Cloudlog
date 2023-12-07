@@ -20,11 +20,11 @@ class Migration_wide_themes extends CI_Migration
 
     public function down()
     {
-		$this->db->query("delete from themes where foldername = 'blue_wide';");
-		$this->db->query("delete from themes where foldername = 'cosmo_wide';");
-		$this->db->query("delete from themes where foldername = 'cyborg_wide';");
-		$this->db->query("delete from themes where foldername = 'darkly_wide';");
-		$this->db->query("delete from themes where foldername = 'default_wide';");
-		$this->db->query("delete from themes where foldername = 'superhero_wide';");
+		$this->db->query("DELETE FROM themes WHERE foldername = 'blue_wide';");
+		$this->db->query("DELETE FROM themes WHERE foldername = 'cosmo_wide';");
+		$this->db->query("DELETE FROM themes WHERE foldername = 'cyborg_wide';");
+		$this->db->query("DELETE FROM themes WHERE foldername = 'darkly_wide';");
+		$this->db->query("DELETE FROM themes WHERE foldername = 'default_wide';");
+		$this->db->query("DELETE FROM themes WHERE foldername = 'superhero_wide';");
     }
 }
