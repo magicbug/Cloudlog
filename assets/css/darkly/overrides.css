@@ -9,10 +9,16 @@
 	--bs-table-striped-color: #fff;
 	--bs-table-active-color: #fff;
 	--bs-table-hover-color: #fff;
+	--bs-table-accent-bg: #303030;
 }
 
-.table > tbody > odd, .tabledxcc > tbody, .tablecq > tbody, #doktable > tbody, .tableiota > tbody, .tablewas > tbody, #qsoList > tbody {
-	--bs-table-accent-bg: #303030;
+.qslprint {
+	--bs-table-striped-bg: none;
+}
+
+.table-striped tbody > tr.activeRow {
+    background-color: #5cb85c !important;
+	--bs-table-accent-bg: none;
 }
 
 .border-top {
