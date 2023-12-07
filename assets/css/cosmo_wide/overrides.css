@@ -80,3 +80,12 @@
 #qsomap {
 	height: 400px !important;
 }
+
+#qsoList_wrapper th {
+	text-align: left !important;
+	white-space: pre-wrap;
+}
+#qsoList_wrapper td {
+	text-align: left !important;
+	white-space: pre-wrap;
+}

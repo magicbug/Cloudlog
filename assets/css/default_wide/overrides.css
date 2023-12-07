@@ -41,12 +41,12 @@ thead > tr > td {
 
 #qsoList_wrapper th {
 	text-align: left !important;
-	white-space: nowrap;
+	white-space: pre-wrap;
 }
 
 #qsoList_wrapper td {
 	text-align: left !important;
-	white-space: nowrap;
+	white-space: pre-wrap;
 }
 
 @media (min-width: 1500px) {
