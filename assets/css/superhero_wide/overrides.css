@@ -202,11 +202,11 @@ div.alert-danger {
 
 #qsoList_wrapper th {
 	text-align: left !important;
-	white-space: nowrap;
+	white-space: pre-wrap;
 }
 #qsoList_wrapper td {
 	text-align: left !important;
-	white-space: nowrap;
+	white-space: pre-wrap;
 }
 
 #lotw_badge {

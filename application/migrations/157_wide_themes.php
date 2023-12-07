@@ -20,11 +20,17 @@ class Migration_wide_themes extends CI_Migration
 
     public function down()
     {
-		$this->db->query("delete from themes where foldername = 'blue_wide';");
-		$this->db->query("delete from themes where foldername = 'cosmo_wide';");
-		$this->db->query("delete from themes where foldername = 'cyborg_wide';");
-		$this->db->query("delete from themes where foldername = 'darkly_wide';");
-		$this->db->query("delete from themes where foldername = 'default_wide';");
-		$this->db->query("delete from themes where foldername = 'superhero_wide';");
+		$this->db->query("DELETE FROM themes WHERE foldername = 'blue_wide';");
+		$this->db->query("UPDATE users SET user_stylesheet = 'blue' WHERE user_stylesheet = 'blue_wide'");
+		$this->db->query("DELETE FROM themes WHERE foldername = 'cosmo_wide';");
+		$this->db->query("UPDATE users SET user_stylesheet = 'cosmo' WHERE user_stylesheet = 'cosmo_wide'");
+		$this->db->query("DELETE FROM themes WHERE foldername = 'cyborg_wide';");
+		$this->db->query("UPDATE users SET user_stylesheet = 'cyborg' WHERE user_stylesheet = 'cyborg_wide'");
+		$this->db->query("DELETE FROM themes WHERE foldername = 'darkly_wide';");
+		$this->db->query("UPDATE users SET user_stylesheet = 'darkly' WHERE user_stylesheet = 'darkly_wide'");
+		$this->db->query("DELETE FROM themes WHERE foldername = 'default_wide';");
+		$this->db->query("UPDATE users SET user_stylesheet = 'default' WHERE user_stylesheet = 'default_wide'");
+		$this->db->query("DELETE FROM themes WHERE foldername = 'superhero_wide';");
+		$this->db->query("UPDATE users SET user_stylesheet = 'superhero' WHERE user_stylesheet = 'default_wide'");
     }
 }
