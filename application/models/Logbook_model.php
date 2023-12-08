@@ -1754,7 +1754,7 @@ class Logbook_model extends CI_Model {
      * Function returns all the station_id's with QRZ API Key's
      */
     function get_qrz_apikeys() {
-        $sql = 'select distinct qrzapikey, station_callsign,user_id from station_profile
+        $sql = 'select distinct qrzapikey, user_id from station_profile
             where coalesce(qrzapikey, "") <> "" order by qrzapikey, station_callsign';
 
         $query = $this->db->query($sql);

@@ -203,22 +203,49 @@ class Qrz extends CI_Controller {
 
 		if ($api_keys) {
 			foreach ($api_keys as $station) {
-				if (($user_id_to_load != null) && ($user_id_to_load != $station->user_id)) {	// Skip User if we're called with a specific user_id
+				if ((($user_id_to_load != null) && ($user_id_to_load != $station->user_id))) {	// Skip User if we're called with a specific user_id
 					continue;
-				}
+				} 
 				if ($lastqrz == null) {
 					$lastqrz = $this->logbook_model->qrz_last_qsl_date($station->user_id);
 				}
 				$qrz_api_key = $station->qrzapikey;
-				$result=($this->mass_download_qsos($station->station_callsign, $qrz_api_key, $lastqrz, true, $show_views));
+				$result=($this->mass_download_qsos($qrz_api_key, $lastqrz));
+				if (isset($result['tableheaders'])) {
+					$data['tableheaders']=$result['tableheaders'];
+					if (isset($data['table'])) {
+						$data['table'].=$result['table'];
+					} else {
+						$data['table']=$result['table'];
+					}
+				}
 			}
 		} else {
 			echo "No station profiles with a QRZ API Key found.";
 			log_message('error', "No station profiles with a QRZ API Key found.");
 		}
+
+		$this->load->model('user_model');
+		if ($this->user_model->authorize(2)) {	// Only Output results if authorized User
+			if(isset($data['tableheaders'])) {
+				if ($data['table'] != '') {
+					$data['table'].='</table>';
+				}
+				if($show_views == TRUE) {
+					$data['page_title'] = "QRZ ADIF Information";
+					$this->load->view('interface_assets/header', $data);
+					$this->load->view('qrz/analysis');
+					$this->load->view('interface_assets/footer');
+				} else {
+					return '';
+				}
+			} else {
+				echo "Downloaded QRZ report contains no matches.";
+			}
+		}	
 	}
 
-	function mass_download_qsos($call = null,$qrz_api_key = '', $lastqrz = '1900-01-01', $trusted = false, $show_views = true) {
+	function mass_download_qsos($qrz_api_key = '', $lastqrz = '1900-01-01', $trusted = false) {
 		$config['upload_path'] = './uploads/';
 		$file = $config['upload_path'] . 'qrzcom_download_report.adi';
 		if (file_exists($file) && ! is_writable($file)) {
@@ -229,7 +256,7 @@ class Qrz extends CI_Controller {
 
 		$post_data['KEY'] = $qrz_api_key;
 		$post_data['ACTION'] = 'FETCH';
-		$post_data['OPTION'] = 'MODSINCE:'.$lastqrz.', CALL:'.$call.', STATUS:CONFIRMED, TYPE:ADIF';
+		$post_data['OPTION'] = 'MODSINCE:'.$lastqrz.';STATUS:CONFIRMED;TYPE:ADIF';
 
 		$ch = curl_init( $url );
 		curl_setopt( $ch, CURLOPT_POST, true);
@@ -241,12 +268,12 @@ class Qrz extends CI_Controller {
 		$content = htmlspecialchars_decode(curl_exec($ch));
 		file_put_contents($file, $content);
 		if (strlen(file_get_contents($file, false, null, 0, 100))!=100) {
-			$result = "QRZ downloading failed for  ".$call." either due to it being down or incorrect logins.";
+			$result = "QRZ downloading failed, either due to it being down or incorrect logins.";
 			return "false";
 		}
 
 		ini_set('memory_limit', '-1');
-		$result = $this->loadFromFile($file, $show_views);
+		$result = $this->loadFromFile($file);
 
 		return $result;
 	}
@@ -256,12 +283,12 @@ class Qrz extends CI_Controller {
 	| Function: loadFromFile
 	|--------------------------------------------------------------------------
 	|
-	|	$filepath is the ADIF file, $display_view is used to hide the output if its internal script
+	|	$filepath is the ADIF file
 	|
 	|	Internal function that takes the QRZ ADIF and imports into the log
 	|
  */
-	private function loadFromFile($filepath, $display_view = "TRUE") {
+	private function loadFromFile($filepath) {
 
 		// Figure out how we should be marking QSLs confirmed via LoTW
 		$config['qrz_rcvd_mark'] = 'Y';
@@ -333,28 +360,13 @@ class Qrz extends CI_Controller {
 
 		if ($table != "")
 		{
-			$table .= "</table>";
 			$data['tableheaders'] = $tableheaders;
 			$data['table'] = $table;
 		}
 
 		unlink($filepath);
+		return $data;
 
-		$this->load->model('user_model');
-		if ($this->user_model->authorize(2)) {	// Only Output results if authorized User
-			if(isset($tableheaders)) {
-				if($display_view == TRUE) {
-					$data['page_title'] = "QRZ ADIF Information";
-					$this->load->view('interface_assets/header', $data);
-					$this->load->view('qrz/analysis');
-					$this->load->view('interface_assets/footer');
-				} else {
-					return $tableheaders.$table;
-				}
-			} else {
-				echo "Downloaded QRZ report contains no matches.";
-			}
-		}
 	}
 
 }
