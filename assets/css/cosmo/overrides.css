@@ -26,3 +26,7 @@
 .awardsBgSuccess {
 	background-color: #d4edda !important;
 }
+
+TD.qrz {
+	white-space: nowrap;
+}

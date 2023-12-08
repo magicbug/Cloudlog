@@ -89,3 +89,7 @@
 	text-align: left !important;
 	white-space: pre-wrap;
 }
+
+TD.qrz {
+	white-space: nowrap;
+}
