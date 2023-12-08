@@ -653,3 +653,10 @@ div#station_logbooks_linked_table_paginate {
 .inputError {
 	border: 2px solid rgb(217, 83, 79);
 }
+
+table.dataTable thead th,
+table.dataTable thead td,
+table.dataTable tfoot th,
+table.dataTable tfoot td {
+	text-align: center !important;
+}
