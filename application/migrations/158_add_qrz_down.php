@@ -9,7 +9,7 @@ class Migration_add_qrz_down extends CI_Migration
                                 'COL_QRZCOM_QSO_DOWNLOAD_DATE DATETIME NULL DEFAULT NULL',
                                 'COL_QRZCOM_QSO_DOWNLOAD_STATUS VARCHAR(10) DEFAULT NULL',
                         );
-                        $this->dbforge->add_column($this->config->item('table_name'), $fields, 'COL_VUCC_GRIDS');
+                        $this->dbforge->add_column($this->config->item('table_name'), $fields);
 		}
 	}
 
