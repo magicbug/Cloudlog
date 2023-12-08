@@ -6,10 +6,10 @@ class Migration_add_qrz_down extends CI_Migration
 	public function up() {
                 if (!$this->db->field_exists('COL_QRZCOM_QSO_DOWNLOAD_STATUS', $this->config->item('table_name'))) {
                         $fields = array(
-                                'COL_QRZCOM_QSO_DOWNLOAD_DATE DATETIME NULL DEFAULT NULL',
-                                'COL_QRZCOM_QSO_DOWNLOAD_STATUS VARCHAR(10) DEFAULT NULL',
+                                'COLUMN COL_QRZCOM_QSO_DOWNLOAD_DATE DATETIME NULL DEFAULT NULL',
+                                'COLUMN COL_QRZCOM_QSO_DOWNLOAD_STATUS VARCHAR(10) DEFAULT NULL',
                         );
-                        $this->dbforge->add_column($this->config->item('table_name'), $fields, 'COL_VUCC_GRIDS');
+                        $this->dbforge->add_column($this->config->item('table_name'), $fields);
 		}
 	}
 
