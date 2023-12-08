@@ -626,6 +626,14 @@
                                         echo '>'; ?>
                                     <label class="form-check-label" for="user_default_confirmation_eqsl">eQSL</label>
                                 </div>
+                                 <div class="form-check-inline">
+                                    <?php echo '<input class="form-check-input" type="checkbox" name="user_default_confirmation_qrz" id="user_default_confirmation_qrz"';
+                                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+                                           echo ' checked';
+                                        }
+                                        echo '>'; ?>
+                                    <label class="form-check-label" for="user_default_confirmation_qrz">QRZ.com</label>
+                                </div>
                              </div>
                     </div>
                 </div>

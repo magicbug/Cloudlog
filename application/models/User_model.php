@@ -239,7 +239,7 @@ class User_Model extends CI_Model {
 					'user_amsat_status_upload' => xss_clean($fields['user_amsat_status_upload']),
 					'user_mastodon_url' => xss_clean($fields['user_mastodon_url']),
 					'user_default_band' => xss_clean($fields['user_default_band']),
-					'user_default_confirmation' => (isset($fields['user_default_confirmation_qsl']) ? 'Q' : '').(isset($fields['user_default_confirmation_lotw']) ? 'L' : '').(isset($fields['user_default_confirmation_eqsl']) ? 'E' : ''),
+					'user_default_confirmation' => (isset($fields['user_default_confirmation_qsl']) ? 'Q' : '').(isset($fields['user_default_confirmation_lotw']) ? 'L' : '').(isset($fields['user_default_confirmation_eqsl']) ? 'E' : '').(isset($fields['user_default_confirmation_qrz']) ? 'Z' : ''),
 					'user_qso_end_times' => xss_clean($fields['user_qso_end_times']),
 					'user_quicklog' => xss_clean($fields['user_quicklog']),
 					'user_quicklog_enter' => xss_clean($fields['user_quicklog_enter']),

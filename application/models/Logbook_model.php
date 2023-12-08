@@ -1848,6 +1848,13 @@ class Logbook_model extends CI_Model {
 		    $extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
 	    }
 
+	    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+		    if ($extrawhere!='') {
+			    $extrawhere.=" OR";
+		    }
+		    $extrawhere.=" COL_QRZCOM_QSO_DOWNLOAD_STATUS='Y'";
+	    }
+
 
 	    $this->db->select('COL_CALL');
 	    $this->db->where_in('station_id', $logbooks_locations_array);
