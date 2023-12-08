@@ -507,6 +507,7 @@
 								<option value="0" <?php if ($user_previous_qsl_type == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_qsl'); ?></option>
 								<option value="1" <?php if ($user_previous_qsl_type == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('lotw_short'); ?></option>
 								<option value="2" <?php if ($user_previous_qsl_type == 2) { echo " selected =\"selected\""; } ?>><?php echo lang('eqsl_short'); ?></option>
+								<option value="4" <?php if ($user_previous_qsl_type == 4) { echo " selected =\"selected\""; } ?>>QRZ</option>
 							</select>
 						</div>
 

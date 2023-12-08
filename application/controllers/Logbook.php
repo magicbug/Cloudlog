@@ -704,7 +704,7 @@ class Logbook extends CI_Controller {
 		$html = "";
 
 		if(!empty($logbooks_locations_array)) {
-			$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_FREQ, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, '.$this->config->item('table_name').'.COL_MY_GRIDSQUARE, '.$this->config->item('table_name').'.COL_CONTEST_ID, '.$this->config->item('table_name').'.COL_STATE, station_profile.*');
+			$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_FREQ, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, '.$this->config->item('table_name').'.COL_MY_GRIDSQUARE, '.$this->config->item('table_name').'.COL_CONTEST_ID, '.$this->config->item('table_name').'.COL_STATE, '.$this->config->item('table_name').'.COL_QRZCOM_QSO_UPLOAD_STATUS, '.$this->config->item('table_name').'.COL_QRZCOM_QSO_DOWNLOAD_STATUS, station_profile.*');
 			$this->db->from($this->config->item('table_name'));
 
 			$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
@@ -742,6 +742,9 @@ class Logbook extends CI_Controller {
 							break;
 						case 2:
 							$html .= "<th>".lang('eqsl_short')."</th>";
+							break;
+						case 4:
+							$html .= "<th>QRZ</th>";
 							break;
 						default:
 							$html .= "<th>".lang('gen_hamradio_qsl')."</th>";
@@ -805,6 +808,27 @@ class Logbook extends CI_Controller {
 						$html .= "\">&#9650;</span>";
 						$html .= "<span class=\"qsl-";
 						switch ($row->COL_EQSL_QSL_RCVD) {
+							case "Y":
+								$html .= "green";
+								break;
+							default:
+								$html .= "red";
+						}
+						$html .= "\">&#9660;</span>";
+						$html .= "</td>";
+					} else if ($this->session->userdata('user_previous_qsl_type') == 4) {
+						$html .= "<td class=\"qrz\">";
+						$html .= "<span class=\"qsl-";
+						switch ($row->COL_QRZCOM_QSO_UPLOAD_STATUS) {
+							case "Y":
+								$html .= "green";
+								break;
+							default:
+								$html .= "red";
+						}
+						$html .= "\">&#9650;</span>";
+						$html .= "<span class=\"qsl-";
+						switch ($row->COL_QRZCOM_QSO_DOWNLOAD_STATUS) {
 							case "Y":
 								$html .= "green";
 								break;

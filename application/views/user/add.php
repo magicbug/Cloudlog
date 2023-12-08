@@ -516,6 +516,7 @@
                                 <option value="0"><?php echo lang('gen_hamradio_qsl'); ?></option>
                                 <option value="1"><?php echo lang('lotw_short'); ?></option>
                                 <option value="2"><?php echo lang('eqsl_short'); ?></option>
+                                <option value="4">QRZ</option>
                             </select>
                         </div>
                     </div>
