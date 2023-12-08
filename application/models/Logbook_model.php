@@ -1755,7 +1755,7 @@ class Logbook_model extends CI_Model {
      */
     function get_qrz_apikeys() {
         $sql = 'select distinct qrzapikey, user_id from station_profile
-            where coalesce(qrzapikey, "") <> "" order by qrzapikey, station_callsign';
+            where coalesce(qrzapikey, "") <> "" order by qrzapikey';
 
         $query = $this->db->query($sql);
 
