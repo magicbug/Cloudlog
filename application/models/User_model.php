@@ -87,6 +87,15 @@ class User_Model extends CI_Model {
 		return $r->user_email;
 	}
 
+	function hasQrzKey($user_id) {
+		$this->db->where('station_profile.qrzapikey is not null');
+		$this->db->join('station_profile', 'station_profile.user_id = '.$user_id);
+		$query = $this->db->get($this->config->item('auth_table'));
+
+		$ret = $query->row();
+		return $ret->user_email;
+	}
+
 	function get_email_address($station_id) {
 		$this->db->where('station_id', $station_id);
 		$this->db->join('station_profile', 'station_profile.user_id = '.$this->config->item('auth_table').'.user_id');
@@ -230,7 +239,7 @@ class User_Model extends CI_Model {
 					'user_amsat_status_upload' => xss_clean($fields['user_amsat_status_upload']),
 					'user_mastodon_url' => xss_clean($fields['user_mastodon_url']),
 					'user_default_band' => xss_clean($fields['user_default_band']),
-					'user_default_confirmation' => (isset($fields['user_default_confirmation_qsl']) ? 'Q' : '').(isset($fields['user_default_confirmation_lotw']) ? 'L' : '').(isset($fields['user_default_confirmation_eqsl']) ? 'E' : ''),
+					'user_default_confirmation' => (isset($fields['user_default_confirmation_qsl']) ? 'Q' : '').(isset($fields['user_default_confirmation_lotw']) ? 'L' : '').(isset($fields['user_default_confirmation_eqsl']) ? 'E' : '').(isset($fields['user_default_confirmation_qrz']) ? 'Z' : ''),
 					'user_qso_end_times' => xss_clean($fields['user_qso_end_times']),
 					'user_quicklog' => xss_clean($fields['user_quicklog']),
 					'user_quicklog_enter' => xss_clean($fields['user_quicklog_enter']),
@@ -366,6 +375,7 @@ class User_Model extends CI_Model {
 			'active_station_logbook' => $u->row()->active_station_logbook,
 			'language' => isset($u->row()->language) ? $u->row()->language: 'english',
 			'isWinkeyEnabled' => $u->row()->winkey,
+			'hasQrzKey' => $this->hasQrzKey($u->row()->user_id),
 		);
 
 		$this->session->set_userdata($userdata);

@@ -107,6 +107,11 @@ class Dashboard extends CI_Controller {
 			$data['lotw_sent_today'] = $QSLStatsBreakdownArray['LoTW_Sent_today'];
 			$data['lotw_rcvd_today'] = $QSLStatsBreakdownArray['LoTW_Received_today'];
 
+			$data['total_qrz_sent'] = $QSLStatsBreakdownArray['QRZ_Sent'];
+			$data['total_qrz_rcvd'] = $QSLStatsBreakdownArray['QRZ_Received'];
+			$data['qrz_sent_today'] = $QSLStatsBreakdownArray['QRZ_Sent_today'];
+			$data['qrz_rcvd_today'] = $QSLStatsBreakdownArray['QRZ_Received_today'];
+
 			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18', $logbooks_locations_array);
 
 			$data['vucc'] = $this->vucc->fetchVuccSummary();

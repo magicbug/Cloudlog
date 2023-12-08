@@ -197,6 +197,18 @@ TD.eqsl {
 	color: #dddddd !important;
 	font-size: 1.1em;
 }
+TD.qrz {
+	width: 33px;
+}
+.qrz-green {
+	color: #00a000 !important;
+	font-size: 1.1em;
+}
+.qrz-red {
+	color: #f00 !important;
+	font-size: 1.1em;
+}
+
 TD.lotw {
 	width: 33px;
 }

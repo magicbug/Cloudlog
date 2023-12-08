@@ -516,6 +516,7 @@
                                 <option value="0"><?php echo lang('gen_hamradio_qsl'); ?></option>
                                 <option value="1"><?php echo lang('lotw_short'); ?></option>
                                 <option value="2"><?php echo lang('eqsl_short'); ?></option>
+                                <option value="4">QRZ</option>
                             </select>
                         </div>
                     </div>
@@ -624,6 +625,14 @@
                                         }
                                         echo '>'; ?>
                                     <label class="form-check-label" for="user_default_confirmation_eqsl">eQSL</label>
+                                </div>
+                                 <div class="form-check-inline">
+                                    <?php echo '<input class="form-check-input" type="checkbox" name="user_default_confirmation_qrz" id="user_default_confirmation_qrz"';
+                                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+                                           echo ' checked';
+                                        }
+                                        echo '>'; ?>
+                                    <label class="form-check-label" for="user_default_confirmation_qrz">QRZ.com</label>
                                 </div>
                              </div>
                     </div>

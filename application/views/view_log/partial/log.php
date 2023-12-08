@@ -112,6 +112,13 @@
 			</td>
 			<?php } ?>
 
+			<?php if($this->session->userdata('hasQrzKey') != "") { ?>
+			<td class="lotw">
+			    <span class="lotw-<?php echo ($row->COL_QRZCOM_QSO_UPLOAD_STATUS=='Y')?'green':'red'?>">&#9650;</span>
+			    <span class="lotw-<?php echo ($row->COL_QRZCOM_QSO_DOWNLOAD_STATUS=='Y')?'green':'red'?>">&#9660;</span>
+			</td>
+			<?php } ?>
+
 				<?php if(isset($row->station_callsign)) { ?>
 				<td>
 					<span class="badge text-bg-light"><?php echo $row->station_callsign; ?></span>
