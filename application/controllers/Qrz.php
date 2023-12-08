@@ -334,8 +334,8 @@ class Qrz extends CI_Controller {
 		if ($table != "")
 		{
 			$table .= "</table>";
-			$data['qrz_table_headers'] = $tableheaders;
-			$data['qrz_table'] = $table;
+			$data['tableheaders'] = $tableheaders;
+			$data['table'] = $table;
 		}
 
 		unlink($filepath);
