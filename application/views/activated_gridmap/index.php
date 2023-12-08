@@ -106,6 +106,14 @@
                         echo '>'; ?>
                         <label class="form-check-label" for="eqsl">eQSL</label>
                     </div>
+                    <div class="form-check-inline">
+                    <?php echo '<input class="form-check-input" type="checkbox" name="qrz" id="qrz"';
+                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+                            echo ' checked' ;
+                        }
+                        echo '>'; ?>
+                        <label class="form-check-label" for="qrz">QRZ.com</label>
+                    </div>
                 </div>
 
             <button id="plot" type="button" name="plot" class="btn btn-primary me-1 ld-ext-right ld-ext-right-plot" onclick="gridPlot(this.form,<?php echo $visitor == true ? "true" : "false"; ?>)"><?php echo lang('gridsquares_button_plot'); ?><div class="ld ld-ring ld-spin"></div></button>

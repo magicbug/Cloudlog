@@ -77,6 +77,9 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                     <?php if($this->session->userdata('user_lotw_name') != "") { ?>
                         <th>LoTW</th>
                     <?php } ?>
+    		    <?php if($this->session->userdata('hasQrzKey') != "") { ?>
+                        <th>QRZ</th>
+                    <?php } ?>
                 <?php } ?>
                     <th><?php echo lang('gen_hamradio_station'); ?></th>
                 <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
@@ -223,6 +226,13 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                     <td class="lotw">
                         <span <?php if ($row->COL_LOTW_QSL_SENT == "Y") { echo "title=\"".lang('lotw_short')." ".lang('general_word_sent'); if ($row->COL_LOTW_QSLSDATE != null) { $timestamp = strtotime($row->COL_LOTW_QSLSDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-bs-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
                         <span <?php if ($row->COL_LOTW_QSL_RCVD == "Y") { echo "title=\"".lang('lotw_short')." ".lang('general_word_received'); if ($row->COL_LOTW_QSLRDATE != null) { $timestamp = strtotime($row->COL_LOTW_QSLRDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-bs-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
+                    </td>
+                <?php } ?>
+
+		<?php if($this->session->userdata('hasQrzKey') != "") { ?>
+                    <td class="qrz">
+                        <span <?php if ($row->COL_QRZCOM_QSO_UPLOAD_STATUS == "Y") { echo "title=\"QRZ ".lang('general_word_sent'); if ($row->COL_QRZCOM_QSO_UPLOAD_DATE != null) { $timestamp = strtotime($row->COL_QRZCOM_QSO_UPLOAD_DATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-bs-toggle=\"tooltip\""; } ?> class="qrz-<?php echo ($row->COL_QRZCOM_QSO_UPLOAD_STATUS=='Y')?'green':'red'?>">&#9650;</span>
+                        <span <?php if ($row->COL_QRZCOM_QSO_DOWNLOAD_STATUS == "Y") { echo "title=\"QRZ ".lang('general_word_received'); if ($row->COL_QRZCOM_QSO_DOWNLOAD_DATE != null) { $timestamp = strtotime($row->COL_QRZCOM_QSO_DOWNLOAD_DATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-bs-toggle=\"tooltip\""; } ?> class="qrz-<?php echo ($row->COL_QRZCOM_QSO_DOWNLOAD_STATUS=='Y')?'green':'red'?>">&#9660;</span>
                     </td>
                 <?php } ?>
 
