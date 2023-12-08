@@ -49,6 +49,7 @@ function gridPlot(form, visitor=true) {
             qsl:  $("#qsl").is(":checked"),
             lotw: $("#lotw").is(":checked"),
             eqsl: $("#eqsl").is(":checked"),
+            qrz: $("#qrz").is(":checked"),
             sat: $("#sats").val(),
 		},
 		success: function (data) {
