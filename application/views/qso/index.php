@@ -575,7 +575,7 @@
 
     <!-- QSO Map -->
     <div class="card qso-map">
-            <div id="qsomap" style="width: 100%; height: 200px;"></div>
+            <div id="qsomap" class="map-leaflet" style="width: 100%; height: 200px;"></div>
     </div>
 
     <div id="radio_status"></div>

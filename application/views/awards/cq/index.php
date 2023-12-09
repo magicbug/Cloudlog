@@ -150,7 +150,7 @@
         <div class="tab-pane fade" id="cqmaptab" role="tabpanel" aria-labelledby="home-tab">
     <br />
 
-    <div id="cqmap"></div>
+    <div id="cqmap" class="map-leaflet" ></div>
 
     </div>
 

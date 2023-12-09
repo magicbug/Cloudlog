@@ -114,7 +114,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
 <?php if($this->optionslib->get_option('dashboard_map') != "false" && $this->optionslib->get_option('dashboard_map') != "map_at_right") { ?>
 <!-- Map -->
-<div id="map" style="width: 100%; height: 350px"></div>
+<div id="map" class="map-leaflet" style="width: 100%; height: 350px"></div>
 <?php } ?>
 <div style="padding-top: 0px; margin-top: 5px;" class="container dashboard">
 
@@ -184,7 +184,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
   <div class="col-sm-4">
   	<?php if($this->optionslib->get_option('dashboard_map') == "map_at_right") { ?>
 	<!-- Map -->
-	<div id="map" style="width: 100%; height: 350px;  margin-bottom: 15px;"></div>
+	<div id="map" class="map-leaflet" style="width: 100%; height: 350px;  margin-bottom: 15px;"></div>
 	<?php } ?>
   	<div class="table-responsive">
 

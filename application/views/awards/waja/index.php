@@ -169,7 +169,7 @@
         <div class="tab-pane fade" id="wajamaptab" role="tabpanel" aria-labelledby="home-tab">
     <br />
 
-    <div id="wajamap"></div>
+    <div id="wajamap" class="map-leaflet" ></div>
 
     </div>
 

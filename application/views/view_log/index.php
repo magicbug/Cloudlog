@@ -18,7 +18,7 @@
 	
 <?php if($this->optionslib->get_option('logbook_map') != "false") { ?>
 	<!-- Map -->
-	<div id="map" style="width: 100%; height: 350px"></div>
+	<div id="map" class="map-leaflet" style="width: 100%; height: 350px"></div>
 <?php } ?>
 
 <div style="padding-top: 10px; margin-top: 0px;" class="container logbook">

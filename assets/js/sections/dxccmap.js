@@ -39,7 +39,7 @@ function load_dxcc_map2(data, worked, confirmed, notworked) {
     if(container != null){
         container._leaflet_id = null;
         container.remove();
-        $("#dxccmaptab").append('<div id="dxccmap"></div>');
+        $("#dxccmaptab").append('<div id="dxccmap" class="map-leaflet" ></div>');
     }
 
     var map = new L.Map('dxccmap', {
