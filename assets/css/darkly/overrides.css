@@ -63,12 +63,8 @@ path.grid-worked {
 	stroke: rgba(220, 50, 50, 0.25) !important;
 }
 
-#map,
-#qsomap,
-#mapqso,
-#gridsquare_map,
-#custommap {
-	background-color: #343d3f;
+.map-leaflet {
+	background-color: #343d3f!important;
 }
 
 /* 
