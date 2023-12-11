@@ -2,9 +2,16 @@
 
   <h2><?php echo lang('lotw_title'); ?> - <?php echo lang('lotw_title_adif_import'); ?></h2>
 
+  <?php if (isset($errormsg)) { ?>
+    <div class="alert alert-danger" role="alert">
+    <?php echo $errormsg; ?>
+    </div>
+  <?php } ?>
+
   <div class="card">
     <div class="card-header"><?php echo lang('lotw_title_adif_import_options'); ?></div>
     <div class="card-body">
+
 
       <?php $this->load->view('layout/messages'); ?>
 

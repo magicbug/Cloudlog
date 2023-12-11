@@ -746,10 +746,24 @@ class Lotw extends CI_Controller {
 				$lotw_url .= "&qso_owncall=".$this->input->post('callsign');
 			}
 
-			file_put_contents($file, file_get_contents($lotw_url));
+			if (is_writable(dirname($file)) && (!file_exists($file) || is_writable($file))) {
+				file_put_contents($file, file_get_contents($lotw_url));
 
-			ini_set('memory_limit', '-1');
-			$this->loadFromFile($file);
+				ini_set('memory_limit', '-1');
+				$this->loadFromFile($file);
+			} else {
+				if (!is_writable(dirname($file))) {
+					$data['errormsg'] = 'Directory '.dirname($file).' is not writable!';
+				} else if (!is_writable($file)) {
+					$data['errormsg'] = 'File '.$file.' is not writable!';
+				}
+				$this->load->model('Stations');
+				$data['callsigns'] = $this->Stations->callsigns_of_user($this->session->userdata('user_id'));
+
+				$this->load->view('interface_assets/header', $data);
+				$this->load->view('lotw/import', $data);
+				$this->load->view('interface_assets/footer');
+			}
 		}
 		else
 		{
