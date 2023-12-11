@@ -248,14 +248,16 @@ class Logbook_model extends CI_Model {
     $station_id = $this->input->post('station_profile');
 
     if($station_id == "" || $station_id == "0") {
-      $CI =& get_instance();
-      $CI->load->model('stations');
-      $station_id = $CI->stations->find_active();
+	    if (!( class_exists("stations") )) {
+		    $this->load->model('stations');
+	    }
+	    $station_id = $this->stations->find_active();
     }
 
-	$CI =& get_instance();
-	$CI->load->model('stations');
-        if (!$CI->stations->check_station_is_accessible($station_id)) {	// Hard Exit if station_profile not accessible
+	if (!( class_exists("stations") )) {
+        	$this->load->model('stations');
+	}
+        if (!$this->stations->check_station_is_accessible($station_id)) {	// Hard Exit if station_profile not accessible
             return 'Station not accessible<br>';
         }
 
@@ -567,88 +569,83 @@ class Logbook_model extends CI_Model {
 
   function add_qso($data, $skipexport = false) {
 
-    if ($data['COL_DXCC'] == "Not Found"){
-      $data['COL_DXCC'] = NULL;
-    }
+	  if ($data['COL_DXCC'] == "Not Found"){
+		  $data['COL_DXCC'] = NULL;
+	  }
 
-    if (!is_null($data['COL_RX_PWR'])) {
-      $data['COL_RX_PWR'] = str_replace("W", "", $data['COL_RX_PWR']);
-    }
+	  if (!is_null($data['COL_RX_PWR'])) {
+		  $data['COL_RX_PWR'] = str_replace("W", "", $data['COL_RX_PWR']);
+	  }
 
-    // Add QSO to database
-    $this->db->insert($this->config->item('table_name'), $data);
+	  // Add QSO to database
+	  $this->db->insert($this->config->item('table_name'), $data);
 
-    $last_id = $this->db->insert_id();
+	  $last_id = $this->db->insert_id();
 
-    if ($this->session->userdata('user_amsat_status_upload') && $data['COL_PROP_MODE'] == "SAT") {
-       $this->upload_amsat_status($data);
-    }
+	  if ($this->session->userdata('user_amsat_status_upload') && $data['COL_PROP_MODE'] == "SAT") {
+		  $this->upload_amsat_status($data);
+	  }
 
-    // No point in fetching hrdlog code or qrz api key and qrzrealtime setting if we're skipping the export
-	if (!$skipexport) {
+	  // No point in fetching hrdlog code or qrz api key and qrzrealtime setting if we're skipping the export
+	  if (!$skipexport) {
 
+		  if(!$this->load->is_loaded('AdifHelper')) {
+			  $this->load->library('AdifHelper');
+		  }
 
-		$result = $this->exists_clublog_credentials($data['station_id']);
-		if (isset($result->ucp) && isset($result->ucn) && (($result->ucp ?? '') != '') && (($result->ucn ?? '') != '') && ($result->clublogrealtime == 1)) {
-			$CI =& get_instance();
-			$CI->load->library('AdifHelper');
-			$qso = $this->get_qso($last_id,true)->result();
+		  $result = $this->exists_clublog_credentials($data['station_id']);
+		  if (isset($result->ucp) && isset($result->ucn) && (($result->ucp ?? '') != '') && (($result->ucn ?? '') != '') && ($result->clublogrealtime == 1)) {
+			  $qso = $this->get_qso($last_id,true)->result();
 
-			$adif = $CI->adifhelper->getAdifLine($qso[0]);
-			$result = $this->push_qso_to_clublog($result->ucn, $result->ucp, $data['COL_STATION_CALLSIGN'], $adif);
-			if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') || ($result['status'] == 'duplicate') || ($result['status'] == 'auth_error') )){
-		  		$this->mark_clublog_qsos_sent($last_id);
-			}
-		}
+			  $adif = $this->adifhelper->getAdifLine($qso[0]);
+			  $result = $this->push_qso_to_clublog($result->ucn, $result->ucp, $data['COL_STATION_CALLSIGN'], $adif);
+			  if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') || ($result['status'] == 'duplicate') || ($result['status'] == 'auth_error') )){
+				  $this->mark_clublog_qsos_sent($last_id);
+			  }
+		  }
 
-		$result = '';
-		$result = $this->exists_hrdlog_code($data['station_id']);
-		// Push qso to hrdlog if code is set, and realtime upload is enabled, and we're not importing an adif-file
-		if (isset($result->hrdlog_code) && $result->hrdlogrealtime == 1) {
-			$CI =& get_instance();
-			$CI->load->library('AdifHelper');
-			$qso = $this->get_qso($last_id,true)->result();
+		  $result = '';
+		  $result = $this->exists_hrdlog_code($data['station_id']);
+		  // Push qso to hrdlog if code is set, and realtime upload is enabled, and we're not importing an adif-file
+		  if (isset($result->hrdlog_code) && $result->hrdlogrealtime == 1) {
+			  $qso = $this->get_qso($last_id,true)->result();
 
-			$adif = $CI->adifhelper->getAdifLine($qso[0]);
-			$result = $this->push_qso_to_hrdlog($result->hrdlog_code, $data['COL_STATION_CALLSIGN'], $adif);
-			if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') || ($result['status'] == 'duplicate') || ($result['status'] == 'auth_error') )){
-				$this->mark_hrdlog_qsos_sent($last_id);
-			}
-		}
-		$result = ''; // Empty result from previous hrdlog-attempt for safety
-		$result = $this->exists_qrz_api_key($data['station_id']);
-// Push qso to qrz if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
-		if (isset($result->qrzapikey) && $result->qrzrealtime == 1) {
-			$CI =& get_instance();
-			$CI->load->library('AdifHelper');
-			$qso = $this->get_qso($last_id,true)->result();
+			  $adif = $this->adifhelper->getAdifLine($qso[0]);
+			  $result = $this->push_qso_to_hrdlog($result->hrdlog_code, $data['COL_STATION_CALLSIGN'], $adif);
+			  if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') || ($result['status'] == 'duplicate') || ($result['status'] == 'auth_error') )){
+				  $this->mark_hrdlog_qsos_sent($last_id);
+			  }
+		  }
+		  $result = ''; // Empty result from previous hrdlog-attempt for safety
+		  $result = $this->exists_qrz_api_key($data['station_id']);
+		  // Push qso to qrz if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
+		  if (isset($result->qrzapikey) && $result->qrzrealtime == 1) {
+			  $qso = $this->get_qso($last_id,true)->result();
 
-			$adif = $CI->adifhelper->getAdifLine($qso[0]);
-			$result = $this->push_qso_to_qrz($result->qrzapikey, $adif);
-			if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') && ($result['message'] == 'STATUS=FAIL&REASON=Unable to add QSO to database: duplicate&EXTENDED=')) ){
-				$this->mark_qrz_qsos_sent($last_id);
-			}
-		}
+			  $adif = $this->adifhelper->getAdifLine($qso[0]);
+			  $result = $this->push_qso_to_qrz($result->qrzapikey, $adif);
+			  if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') && ($result['message'] == 'STATUS=FAIL&REASON=Unable to add QSO to database: duplicate&EXTENDED=')) ){
+				  $this->mark_qrz_qsos_sent($last_id);
+			  }
+		  }
 
-		$result = $this->exists_webadif_api_key($data['station_id']);
-		// Push qso to webadif if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
-		if (isset($result->webadifapikey) && $result->webadifrealtime == 1) {
-			$CI =& get_instance();
-			$CI->load->library('AdifHelper');
-			$qso = $this->get_qso($last_id,true)->result();
+		  $result = $this->exists_webadif_api_key($data['station_id']);
+		  // Push qso to webadif if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
+		  if (isset($result->webadifapikey) && $result->webadifrealtime == 1) {
+			  $qso = $this->get_qso($last_id,true)->result();
 
-			$adif = $CI->adifhelper->getAdifLine($qso[0]);
-			$result = $this->push_qso_to_webadif(
-				$result->webadifapiurl,
-				$result->webadifapikey,
-				$adif
-			);
+			  $adif = $this->adifhelper->getAdifLine($qso[0]);
+			  $result = $this->push_qso_to_webadif(
+				  $result->webadifapiurl,
+				  $result->webadifapikey,
+				  $adif
+			  );
 
-			if ($result) {
-				$this->mark_webadif_qsos_sent([$last_id]);
-			}
-		}
-	}
+			  if ($result) {
+				  $this->mark_webadif_qsos_sent([$last_id]);
+			  }
+		  }
+	  }
   }
 
   /*
@@ -3052,6 +3049,15 @@ function lotw_last_qsl_date($user_id) {
 	  return '1900-01-01 00:00:00.000';
   }
 
+
+  function import_bulk($recordset) {
+	  $one_error='';
+	  foreach ($recordset as $record) {
+		  $one_error .= $this->import($record, $this->input->post('station_profile'), $this->input->post('skipDuplicate'), $this->input->post('markClublog'),$this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), $this->input->post('markHrd'), true, $this->input->post('operatorName'), false, $this->input->post('skipStationCheck'));
+	  }
+	  log_message("Error","Finished Import ".$one_error);
+  }
+
     /*
      * $skipDuplicate - used in ADIF import to skip duplicate checking when importing QSOs
      * $markLoTW - used in ADIF import to mark QSOs as exported to LoTW when importing QSOs
@@ -3062,13 +3068,14 @@ function lotw_last_qsl_date($user_id) {
      */
 	function import($record, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false, $skipStationCheck = false) {
         // be sure that station belongs to user
-        $CI =& get_instance();
-        $CI->load->model('stations');
-        if (!$CI->stations->check_station_is_accessible($station_id) && $apicall == false ) {
+	if (!( class_exists("stations") )) {
+        	$this->load->model('stations');
+	}
+        if (!$this->stations->check_station_is_accessible($station_id) && $apicall == false ) {
             return 'Station not accessible<br>';
         }
 
-	$station_profile=$CI->stations->profile_clean($station_id);
+	$station_profile=$this->stations->profile_clean($station_id);
 	$station_profile_call=$station_profile->station_callsign;
 
 	if (($station_id !=0 ) && (!(isset($record['station_callsign'])))) {
@@ -3080,8 +3087,9 @@ function lotw_last_qsl_date($user_id) {
               "<br>See the <a target=\"_blank\" href=\"https://github.com/magicbug/Cloudlog/wiki/ADIF-file-can't-be-imported\">Cloudlog Wiki</a> for hints about errors in ADIF files.";
         }
 
-        $CI =& get_instance();
-        $CI->load->library('frequency');
+	if(!$this->load->is_loaded('frequency')) {
+		$this->load->library('frequency');
+	}
         $my_error = "";
 
         // Join date+time
@@ -3163,7 +3171,7 @@ function lotw_last_qsl_date($user_id) {
         } else {
             if (isset($record['freq'])){
               if($freq != "0") {
-                $band = $CI->frequency->GetBand($freq);
+                $band = $this->frequency->GetBand($freq);
               }
             }
         }
@@ -3173,7 +3181,7 @@ function lotw_last_qsl_date($user_id) {
         } else {
                 if (isset($record['freq_rx'])){
                   if($freq != "0") {
-                    $band_rx = $CI->frequency->GetBand($freqRX);
+                    $band_rx = $this->frequency->GetBand($freqRX);
                   }
                 } else {
                   $band_rx = "";
@@ -3399,9 +3407,7 @@ function lotw_last_qsl_date($user_id) {
 
         // Get active station_id from station profile if one hasn't been provided
         if($station_id == "" || $station_id == "0") {
-          $CI =& get_instance();
-          $CI->load->model('stations');
-          $station_id = $CI->stations->find_active();
+          $station_id = $this->stations->find_active();
         }
 
         // Check if QSO is already in the database
