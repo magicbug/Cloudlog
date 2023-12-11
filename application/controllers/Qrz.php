@@ -358,10 +358,11 @@ class Qrz extends CI_Controller {
 			}
 		}
 
-		if ($table != "")
-		{
+		if ($table != "") {
 			$data['tableheaders'] = $tableheaders;
 			$data['table'] = $table;
+		} else {
+			$data['table'] = '';
 		}
 
 		unlink($filepath);
