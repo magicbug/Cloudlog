@@ -39,7 +39,7 @@ function load_iota_map2(data, worked, confirmed, notworked) {
     if(container != null){
         container._leaflet_id = null;
         container.remove();
-        $("#iotamaptab").append('<div id="iotamap"></div>');
+        $("#iotamaptab").append('<div id="iotamap" class="map-leaflet" ></div>');
     }
 
     var map = new L.Map('iotamap', {

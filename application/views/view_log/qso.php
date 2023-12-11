@@ -372,7 +372,7 @@
 
                 <div class="col-md">
 
-                    <div id="mapqso" style="width: 100%; height: 250px"></div>
+                    <div id="mapqso" class="map-leaflet" style="width: 100%; height: 250px"></div>
 
                     <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
                         <br>

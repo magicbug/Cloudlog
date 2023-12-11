@@ -177,7 +177,7 @@
         <div class="tab-pane fade" id="iotamaptab" role="tabpanel" aria-labelledby="home-tab">
     <br />
 
-    <div id="iotamap"></div>
+    <div id="iotamap" class="map-leaflet" ></div>
 
     </div>
 

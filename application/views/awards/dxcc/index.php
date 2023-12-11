@@ -195,7 +195,7 @@
         <div class="tab-pane fade" id="dxccmaptab" role="tabpanel" aria-labelledby="home-tab">
     <br />
 
-    <div id="dxccmap"></div>
+    <div id="dxccmap" class="map-leaflet" ></div>
 
     </div>
 

@@ -27,7 +27,7 @@ function gridPlot(form, visitor=true) {
     if(container != null){
         container._leaflet_id = null;
         container.remove();
-        $("#gridmapcontainer").append('<div id="gridsquare_map" style="width: 100%; height: 800px"></div>');
+        $("#gridmapcontainer").append('<div id="gridsquare_map" class="map-leaflet" style="width: 100%; height: 800px"></div>');
     }
 
     if (typeof type == 'undefined') { type=''; }

@@ -40,12 +40,8 @@ path.grid-worked {
 	stroke: rgba(220, 50, 50, 0.25) !important;
 }
 
-#map,
-#qsomap,
-#mapqso,
-#gridsquare_map,
-#custommap {
-	background-color: #2d3537;
+.map-leaflet {
+	background-color: #2d3537!important;
 }
 
 .leaflet-popup-content h3 {

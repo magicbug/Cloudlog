@@ -87,7 +87,7 @@ function load_waja_map2(data) {
   if(container != null){
 	  container._leaflet_id = null;
 	  container.remove();
-	  $("#wajamaptab").append('<div id="wajamap"></div>');
+	  $("#wajamaptab").append('<div id="wajamap" class="map-leaflet"></div>');
   }
 
   map = new L.Map('wajamap', {

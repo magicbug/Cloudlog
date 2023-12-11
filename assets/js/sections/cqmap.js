@@ -116,7 +116,7 @@ function load_cq_map2(data) {
     if(container != null){
         container._leaflet_id = null;
         container.remove();
-        $("#cqmaptab").append('<div id="cqmap"></div>');
+        $("#cqmaptab").append('<div id="cqmap" class="map-leaflet" ></div>');
     }
 
     var map = new L.Map('cqmap', {
