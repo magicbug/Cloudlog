@@ -99,7 +99,7 @@ class Map extends CI_Controller {
     }
 
 	// Generic fonction for return Json for MAP //
-	function map_plot_json() {
+	public function map_plot_json() {
 		$this->load->model('Stations');
 		$this->load->model('logbook_model');
 		

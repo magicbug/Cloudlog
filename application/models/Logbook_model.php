@@ -4481,7 +4481,7 @@ function lotw_last_qsl_date($user_id) {
     }
 
     // [JSON PLOT] return array for plot qso for map //
-    public function get_plot_array_for_map($qsos_result) {
+    public function get_plot_array_for_map($qsos_result, $isVisitor=false) {
       $this->load->library('qra');
 
       $json["markers"] = array();
@@ -4495,8 +4495,10 @@ function lotw_last_qsl_date($user_id) {
         $plot['html'] .= "Mode: ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)."<br />";
 
         // check if qso is confirmed //
-        if (($row->COL_EQSL_QSL_RCVD=='Y') || ($row->COL_LOTW_QSL_RCVD=='Y') || ($row->COL_QSL_RCVD=='Y')) {
-          $plot['confirmed'] = "Y";
+        if (!$isVisitor) {
+          if (($row->COL_EQSL_QSL_RCVD=='Y') || ($row->COL_LOTW_QSL_RCVD=='Y') || ($row->COL_QSL_RCVD=='Y')) {
+            $plot['confirmed'] = "Y";
+          }
         }
         // check lat / lng (depend info source) //
         if ($row->COL_GRIDSQUARE != null) {
