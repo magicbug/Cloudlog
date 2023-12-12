@@ -740,7 +740,7 @@ function showActivatorsMap(call, count, grids) {
         var q_lng = -32.695312;
         <?php } ?>
 
-        var qso_loc = '<?php echo site_url('map/map_data_custom/');?><?php echo rawurlencode($date_from); ?>/<?php echo rawurlencode($date_to); ?>/<?php echo rawurlencode($this->input->post('band')); ?>/<?php echo rawurlencode($this->input->post('mode')); ?>/<?php echo rawurlencode($this->input->post('prop_mode')); ?>';
+        var qso_loc = '<?php echo site_url('map/map_plot_json/');?>';
         var q_zoom = 3;
 
       $(document).ready(function(){
@@ -749,7 +749,10 @@ function showActivatorsMap(call, count, grids) {
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
-            initmap(grid, 'custommap');
+            var customdata = {'dataPost':{'date_from':'<?php echo $date_from; ?>', 'date_to':'<?php echo $date_to; ?>', 
+                                        'band':'<?php echo $this->input->post('band'); ?>', 'mode':'<?php echo $this->input->post('mode'); ?>',
+                                        'prop_mode':'<?php echo $this->input->post('prop_mode'); ?>', 'isCustom':true }}
+            initmap(grid, 'custommap', customdata);
 
       });
     </script>
@@ -771,7 +774,7 @@ function showActivatorsMap(call, count, grids) {
         var q_lng = -32.695312;
         <?php } ?>
 
-        var qso_loc = '<?php echo site_url('map/map_data');?>';
+        var qso_loc = '<?php echo site_url('map/map_plot_json');?>';
         var q_zoom = 2;
 
       $(document).ready(function(){
@@ -780,7 +783,7 @@ function showActivatorsMap(call, count, grids) {
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
-            initmap(grid);
+            initmap(grid,'map',{'dataPost':{'isFull':true}});
 
       });
     </script>
@@ -803,7 +806,7 @@ function showActivatorsMap(call, count, grids) {
         var q_lng = -32.695312;
         <?php } ?>
 
-        var qso_loc = '<?php echo site_url('dashboard/map');?>';
+        var qso_loc = '<?php echo site_url('map/map_plot_json');?>';
         var q_zoom = 3;
 
       $(document).ready(function(){
@@ -812,7 +815,7 @@ function showActivatorsMap(call, count, grids) {
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
-            initmap(grid);
+            initmap(grid,'map',{'dataPost':{'nb_qso':'18'}});
 
       });
     </script>
@@ -1002,7 +1005,7 @@ $(document).on('keypress',function(e) {
         var q_lng = -32.695312;
         <?php } ?>
 
-        var qso_loc = '<?php echo site_url('logbook/qso_map/25/'.$this->uri->segment(3)); ?>';
+        var qso_loc = '<?php echo site_url('map/map_plot_json'); ?>';
         var q_zoom = 3;
 
         <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
@@ -1010,7 +1013,7 @@ $(document).on('keypress',function(e) {
         <?php } else { ?>
               var grid = "No";
         <?php } ?>
-            initmap(grid);
+            initmap(grid,'map',{'dataPost':{'nb_qso':'25','offset':'<?php echo $this->uri->segment(3); ?>'}});
 
     </script>
 <?php } ?>
