@@ -8,6 +8,7 @@
 class Subdivisions {
 
 	public function get_primary_subdivision_name($dxcc) {
+		// ref. http://adif.org.uk/314/ADIF_314_annotated.htm#Primary_Administrative_Subdivision
 		switch($dxcc) {
 			case '1':
 			case '29':
@@ -68,4 +69,28 @@ class Subdivisions {
 		return 'State';
 	}
 	
+	public function get_secondary_subdivision_name($dxcc) {
+		// ref. http://adif.org.uk/314/ADIF_314_annotated.htm#Secondary_Administrative_Subdivision
+		switch($dxcc) {
+			case '6':
+			case '110':
+			case '291':
+				return 'US County';
+			case '15':
+			case '54':
+			case '61':
+			case '126':
+			case '151':
+			case '288':
+				return 'District';
+			case '21':
+			case '29':
+			case '32':
+			case '281':
+				return 'DME';
+			case '339':
+				return 'City / Ku / Gun';
+		}
+		return 'County';
+	}
 }
