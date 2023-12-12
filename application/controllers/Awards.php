@@ -597,8 +597,9 @@ class Awards extends CI_Controller {
         $this->load->view('awards/details', $data);
     }
 
-    public function gridmaster() {
-      $data['page_title'] = "Awards - US Gridmaster";
+    public function gridmaster($dxcc) {
+      $dxcc = $this->security->xss_clean($dxcc);
+      $data['page_title'] = "Awards - ".strtoupper($dxcc)." Gridmaster";
 
       $this->load->model('bands');
       $this->load->model('gridmap_model');
@@ -619,15 +620,17 @@ class Awards extends CI_Controller {
       $data['gridsquares_gridsquares_lotw']= lang('gridsquares_gridsquares_lotw');
       $data['gridsquares_gridsquares_paper']= lang('gridsquares_gridsquares_paper');
 
+      $indexData['dxcc'] = $dxcc;
+
       $footerData = [];
       $footerData['scripts']= [
          'assets/js/leaflet/geocoding.js',
          'assets/js/leaflet/L.MaidenheadColouredGridmasterMap.js',
-         'assets/js/sections/gridmaster.js?'
+         'assets/js/sections/gridmaster.js'
       ];
 
       $this->load->view('interface_assets/header',$data);
-      $this->load->view('awards/gridmaster/index');
+      $this->load->view('awards/gridmaster/index',$indexData);
       $this->load->view('interface_assets/footer',$footerData);
     }
 
@@ -837,8 +840,10 @@ class Awards extends CI_Controller {
 		echo json_encode($data);
 	}
 
-	public function getGridmasterGridsjs() {
+	public function getGridmasterGridsjs($dxcc) {
 		$this->load->model('gridmaster_model');
+
+		$dxcc = $this->security->xss_clean($dxcc);
 
 		$array_grid_4char = array();
 		$array_grid_4char_lotw = array();
@@ -847,7 +852,7 @@ class Awards extends CI_Controller {
 		$grid_4char = "";
 		$grid_4char_lotw = "";
 
-		$query = $this->gridmaster_model->get_lotw();
+		$query = $this->gridmaster_model->get_lotw($dxcc);
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) 	{
 				$grid_4char_lotw = strtoupper(substr($row->GRID_SQUARES,0,4));
@@ -857,7 +862,7 @@ class Awards extends CI_Controller {
 			}
 		}
 
-		$query = $this->gridmaster_model->get_paper();
+		$query = $this->gridmaster_model->get_paper($dxcc);
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) 	{
 				$grid_4char_paper = strtoupper(substr($row->GRID_SQUARES,0,4));
@@ -867,7 +872,7 @@ class Awards extends CI_Controller {
 			}
 		}
 
-		$query = $this->gridmaster_model->get_worked();
+		$query = $this->gridmaster_model->get_worked($dxcc);
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
 				$grid_four = strtoupper(substr($row->GRID_SQUARES,0,4));
@@ -877,7 +882,7 @@ class Awards extends CI_Controller {
 			}
 		}
 
-		$vucc_grids = $this->gridmaster_model->get_vucc_lotw();
+		$vucc_grids = $this->gridmaster_model->get_vucc_lotw($dxcc);
 		foreach($vucc_grids as $key) {
 			$grid_four_lotw = strtoupper(substr($key,0,4));
 			if(!in_array($grid_four_lotw, $array_grid_4char_lotw)){
@@ -885,7 +890,7 @@ class Awards extends CI_Controller {
 			}
 		}
 
-		$vucc_grids = $this->gridmaster_model->get_vucc_paper();
+		$vucc_grids = $this->gridmaster_model->get_vucc_paper($dxcc);
 		foreach($vucc_grids as $key) {
 			$grid_four_paper = strtoupper(substr($key,0,4));
 			if(!in_array($grid_four_paper, $array_grid_4char_paper)){
@@ -893,7 +898,7 @@ class Awards extends CI_Controller {
 			}
 		}
 
-		$vucc_grids = $this->gridmaster_model->get_vucc_worked();
+		$vucc_grids = $this->gridmaster_model->get_vucc_worked($dxcc);
 		foreach($vucc_grids as $key) {
 			$grid_four = strtoupper(substr($key,0,4));
 			if(!in_array($grid_four, $array_grid_4char)){
@@ -904,6 +909,11 @@ class Awards extends CI_Controller {
 		$data['grid_4char_lotw'] = ($array_grid_4char_lotw);
 		$data['grid_4char_paper'] = ($array_grid_4char_paper);
 		$data['grid_4char'] = ($array_grid_4char);
+		$data['grid_count'] = $this->gridmaster_model->get_grid_count($dxcc);
+		$data['grids'] = $this->gridmaster_model->get_grids($dxcc);
+		$data['lat'] = $this->gridmaster_model->get_lat($dxcc);
+		$data['lon'] = $this->gridmaster_model->get_lon($dxcc);
+		$data['zoom'] = $this->gridmaster_model->get_zoom($dxcc);
 
 		header('Content-Type: application/json');
 		echo json_encode($data);
