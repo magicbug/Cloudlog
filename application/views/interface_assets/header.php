@@ -149,6 +149,8 @@
 								<div class="dropdown-divider"></div>
 								<div class="nav-item dropdown dropdown-submenu" aria-labelledby="navbarDropdown"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-trophy"></i> Gridmaster</a>
 									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/dl'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_dl_gridmaster'); ?></a></li>
+										<div class="dropdown-divider"></div>
 										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/ja'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_ja_gridmaster'); ?></a></li>
 										<div class="dropdown-divider"></div>
 										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/us'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_us_gridmaster'); ?></a></li>

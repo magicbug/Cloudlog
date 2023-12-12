@@ -36,6 +36,7 @@ $lang['menu_continents'] = '大陆';
 
 $lang['menu_awards'] = '奖项';
 $lang['menu_cq'] = 'CQ';
+$lang['menu_dl_gridmaster'] = 'DL Gridmaster';
 $lang['menu_dok'] = 'DOK';
 $lang['menu_dxcc'] = 'DXCC';
 $lang['menu_iota'] = 'IOTA';
