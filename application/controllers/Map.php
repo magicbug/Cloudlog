@@ -105,18 +105,18 @@ class Map extends CI_Controller {
 		
 		// set informations //
 		if ($this->input->post('isCustom') == true) {
-			$date_from = $this->input->post('date_from');
-			$date_to = $this->input->post('date_to');
-			$band = $this->input->post('band');
-			$mode = $this->input->post('mode');
-			$prop_mode = $this->input->post('prop_mode');
+			$date_from = xss_clean($this->input->post('date_from'));
+			$date_to = xss_clean($this->input->post('date_to'));
+			$band = xss_clean($this->input->post('band'));
+			$mode = xss_clean($this->input->post('mode'));
+			$prop_mode = xss_clean($this->input->post('prop_mode'));
 			$qsos = $this->logbook_model->map_custom_qsos($date_from, $date_to, $band, $mode, $prop_mode);
 		} else if ($this->input->post('isFull') == true) {
             $station_id = $this->Stations->find_active();
 			$qsos = $this->logbook_model->get_qsos(null,null,array($station_id)); // no limit for full //
 		} else {
-			$nb_qso = (intval($this->input->post('nb_qso'))>0)?$this->input->post('nb_qso'):25;
-			$offset = (intval($this->input->post('offset'))>0)?$this->input->post('offset'):0;
+			$nb_qso = (intval($this->input->post('nb_qso'))>0)?xss_clean($this->input->post('nb_qso')):18;
+			$offset = (intval($this->input->post('offset'))>0)?xss_clean($this->input->post('offset')):null;
 			$qsos = $this->logbook_model->get_qsos($nb_qso, $offset);
 		}
 		// [PLOT] ADD plot //
