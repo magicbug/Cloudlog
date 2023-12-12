@@ -112,7 +112,8 @@ class Map extends CI_Controller {
 			$prop_mode = $this->input->post('prop_mode');
 			$qsos = $this->logbook_model->map_custom_qsos($date_from, $date_to, $band, $mode, $prop_mode);
 		} else if ($this->input->post('isFull') == true) {
-			$qsos = $this->logbook_model->get_qsos(100000,0); // limited at 100000 (perhaps is too big for list of plot on map ?) //
+            $station_id = $this->Stations->find_active();
+			$qsos = $this->logbook_model->get_qsos(null,null,array($station_id)); // no limit for full //
 		} else {
 			$nb_qso = (intval($this->input->post('nb_qso'))>0)?$this->input->post('nb_qso'):25;
 			$offset = (intval($this->input->post('offset'))>0)?$this->input->post('offset'):0;
