@@ -30,7 +30,6 @@
 </script>
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
@@ -45,6 +44,8 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/easyprint.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/common.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/eqslcharcounter.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/version_dialog.js"></script>
 
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
 
@@ -65,6 +66,33 @@ function load_was_map() {
 }
 </script>
 <?php } ?>
+
+<!-- Version Dialog START -->
+
+<?php
+if($this->session->userdata('user_id') != null) {
+    $versionDialog = $this->optionslib->get_option('version_dialog');
+    if (empty($versionDialog)) {
+        $this->optionslib->update('version_dialog', 'release_notes', 'yes');
+    }
+    $versionDialogHeader = $this->optionslib->get_option('version_dialog_header');
+    if (empty($versionDialogHeader)) {
+        $this->optionslib->update('version_dialog_header', $this->lang->line('options_version_dialog'), 'yes');
+    }
+    if($versionDialog != "disabled") {
+        $confirmed = $this->user_options_model->get_options('version_dialog', array('option_name'=>'confirmed'))->result();
+        $confirmation_value = (isset($confirmed[0]->option_value))?$confirmed[0]->option_value:'false';
+        if ($confirmation_value != 'true') {
+            $this->user_options_model->set_option('version_dialog', 'confirmed', array('boolean' => $confirmation_value));
+            ?><script>
+                displayVersionDialog();
+            </script><?php
+        }
+    }
+}
+?>
+
+<!-- Version Dialog END -->
 
 <?php if ($this->uri->segment(1) == "oqrs") { ?>
     <script src="<?php echo base_url() ;?>assets/js/sections/oqrs.js"></script>
@@ -318,7 +346,7 @@ $(function () {
                             })
                             .done(function(data) {
                                 $(".alert").remove();
-                                $(".card-body.main").append('<div class="alert alert-success"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Your query has been saved!</div>');
+                                $(".card-body.main").append('<div class="alert alert-success">Your query has been saved!</div>');
                                 if ($("#querydropdown option").length == 0) {
                                     var dropdowninfo = ' <button class="btn btn-sm btn-primary" onclick="edit_stored_query_dialog()" id="btn-edit">Edit queries</button></p>' +
                                     '<div class="mb-3 row querydropdownform">' +
@@ -410,7 +438,7 @@ $(function () {
                             'id': id
                         },
                         success: function(data) {
-                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
+                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger">The stored query has been deleted!</div>');
                             $("#query_" + id).remove(); // removes query from table in dialog
                             $("#querydropdown option[value='" + id + "']").remove(); // removes query from dropdown
                             if ($("#querydropdown option").length == 0) {
@@ -419,7 +447,7 @@ $(function () {
                             };
                         },
                         error: function() {
-                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>The stored query could not be deleted. Please try again!</div>');
+                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger">The stored query could not be deleted. Please try again!</div>');
                         },
                     });
                 }
@@ -445,11 +473,11 @@ $(function () {
             },
             success: function(html) {
                 $('#edit_' + id).html('<a class="btn btn-outline-primary btn-sm" href="javascript:edit_stored_query(' + id + ');">Edit</a>'); // Change to edit button
-                $(".bootstrap-dialog-message").prepend('<div class="alert alert-success"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>The query description has been updated!</div>');
+                $(".bootstrap-dialog-message").prepend('<div class="alert alert-success">The query description has been updated!</div>');
                 $("#querydropdown option[value='" + id + "']").text($('#description_' + id).html()); // Change text in dropdown
             },
             error: function() {
-                $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Something went wrong with the save. Please try again!</div>');
+                $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger">Something went wrong with the save. Please try again!</div>');
             },
         });
     }
@@ -1117,7 +1145,7 @@ $(document).on('keypress',function(e) {
 
       if ( ! manual ) {
         $(function($) {
-           resetTimers();
+           resetTimers(0);
         });
       }
     });
@@ -1154,7 +1182,7 @@ $(document).on('keypress',function(e) {
 	  if (e.key === "Escape") { // escape key maps to keycode `27`
 		  reset_fields();
 		  if ( ! manual ) {
-		     resetTimers()
+		     resetTimers(0)
 		  }
 		  $('#callsign').val("");
 		  $("#callsign").focus();
@@ -1242,7 +1270,10 @@ $(document).on('keypress',function(e) {
         qso_set_eqsl_qslmsg(stationProfile,false,'.qso_panel');
 	});
     // [eQSL default msg] change value on clic //
-    $('.qso_panel .qso_eqsl_qslmsg_update').off('click').on('click',function() { qso_set_eqsl_qslmsg($('.qso_panel #stationProfile').val(),true,'.qso_panel'); });
+    $('.qso_panel .qso_eqsl_qslmsg_update').off('click').on('click',function() { 
+        qso_set_eqsl_qslmsg($('.qso_panel #stationProfile').val(),true,'.qso_panel');
+        $('#charsLeft').text(" ");
+    });
 
 <?php if ($this->session->userdata('user_qth_lookup') == 1) { ?>
     $('#qth').focusout(function() {
@@ -2589,7 +2620,7 @@ function viewEqsl(picture, callsign) {
                     }
 
                 } else if (data.status.front.status != '') {
-                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Front QSL Card:' +
+                    $("#qslupload").append('<div class="alert alert-danger">Front QSL Card:' +
                     data.status.front.error +
                         '</div>');
                 }
@@ -2627,7 +2658,7 @@ function viewEqsl(picture, callsign) {
                         $("#qslcardback").val(null);
                     }
                 } else if (data.status.back.status != '') {
-                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>\nBack QSL Card: ' +
+                    $("#qslupload").append('<div class="alert alert-danger">\nBack QSL Card: ' +
                     data.status.back.error +
                         '</div>');
                 }
@@ -2676,7 +2707,7 @@ function viewEqsl(picture, callsign) {
 					location.reload();
 				} else {
 					$(".alert").remove();
-					$('#searchresult').prepend('<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Something went wrong. Please try again!</div>');
+					$('#searchresult').prepend('<div class="alert alert-danger">Something went wrong. Please try again!</div>');
 				}
 			}
 		});

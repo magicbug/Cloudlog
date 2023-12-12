@@ -190,6 +190,6 @@ if ($qsos->result() != NULL) {
 
 	<?php
 } else {
-	echo '<div class="alert alert-danger"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>No QSO\'s were found. It seems you were not active at this time.</div>';
+	echo '<div class="alert alert-danger">No QSO\'s were found. It seems you were not active at this time.</div>';
 }
 ?>

@@ -114,7 +114,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
 <?php if($this->optionslib->get_option('dashboard_map') != "false" && $this->optionslib->get_option('dashboard_map') != "map_at_right") { ?>
 <!-- Map -->
-<div id="map" style="width: 100%; height: 350px"></div>
+<div id="map" class="map-leaflet" style="width: 100%; height: 350px"></div>
 <?php } ?>
 <div style="padding-top: 0px; margin-top: 5px;" class="container dashboard">
 
@@ -184,7 +184,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
   <div class="col-sm-4">
   	<?php if($this->optionslib->get_option('dashboard_map') == "map_at_right") { ?>
 	<!-- Map -->
-	<div id="map" style="width: 100%; height: 350px;  margin-bottom: 15px;"></div>
+	<div id="map" class="map-leaflet" style="width: 100%; height: 350px;  margin-bottom: 15px;"></div>
 	<?php } ?>
   	<div class="table-responsive">
 
@@ -286,7 +286,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		</table>
 		<?php } ?>
 
-		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_lotw_sent != 0 || $total_lotw_rcvd != 0)) { ?>
+		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === false) && ($total_lotw_sent != 0 || $total_lotw_rcvd != 0)) { ?>
 		<table class="table table-striped border-top">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-list"></i> <?php echo lang('general_word_lotw'); ?></td>
@@ -296,13 +296,34 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			<tr>
 				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
 				<td width="25%"><?php echo $total_lotw_sent; ?></td>
-				<td width="25%"><a href="javascript:displayContacts('','All','All','LOTWSDATE','');"><?php echo $lotw_sent_today; ?></a></td>
+				<td width="25%"><a href="javascript:displayContacts('','all','all','LOTWSDATE','');"><?php echo $lotw_sent_today; ?></a></td>
 			</tr>
 
 			<tr>
 				<td width="50%"><?php echo lang('general_word_received'); ?></td>
 				<td width="25%"><?php echo $total_lotw_rcvd; ?></td>
-				<td width="25%"><a href="javascript:displayContacts('','All','All','LOTWRDATE','');"><?php echo $lotw_rcvd_today; ?></a></td>
+				<td width="25%"><a href="javascript:displayContacts('','all','all','LOTWRDATE','');"><?php echo $lotw_rcvd_today; ?></a></td>
+			</tr>
+		</table>
+		<?php } ?>
+
+		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === false) && ($total_qrz_sent != 0 || $total_qrz_rcvd != 0)) { ?>
+		<table class="table table-striped border-top">
+			<tr class="titles">
+				<td colspan="2"><i class="fas fa-list"></i> QRZ.com</td>
+				<td colspan="1"><?php echo lang('general_word_today'); ?></td>
+			</tr>
+
+			<tr>
+				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
+				<td width="25%"><?php echo $total_qrz_sent; ?></td>
+				<td width="25%"><a href="javascript:displayContacts('','all','all','QRZSDATE','');"><?php echo $qrz_sent_today; ?></a></td>
+			</tr>
+
+			<tr>
+				<td width="50%"><?php echo lang('general_word_received'); ?></td>
+				<td width="25%"><?php echo $total_qrz_rcvd; ?></td>
+				<td width="25%"><a href="javascript:displayContacts('','all','all','QRZRDATE','');"><?php echo $qrz_rcvd_today; ?></a></td>
 			</tr>
 		</table>
 		<?php } ?>

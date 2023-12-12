@@ -390,4 +390,59 @@ class Options extends CI_Controller {
 		redirect('/options/email');
 	}
 
+	// function used to display the /version_dialog url
+	function version_dialog() {
+
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_version_dialog_settings');
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('options/version_dialog');
+		$this->load->view('interface_assets/footer');
+    }
+
+	function version_dialog_save() {
+
+		// Get Language Options
+
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_version_dialog_settings');
+
+		$this->load->helper(array('form', 'url'));
+
+		$version_dialog_header_update = $this->optionslib->update('version_dialog_header', $this->input->post('version_dialog_header'), 'yes');
+		if($version_dialog_header_update == TRUE) {
+			$this->session->set_flashdata('success0', $this->lang->line('options_version_dialog_header_changed_to')." "."'".$this->input->post('version_dialog_header')."'");
+		}
+		$version_dialog_mode_update = $this->optionslib->update('version_dialog', $this->input->post('version_dialog_mode'), 'yes');
+		if($version_dialog_mode_update == TRUE) {
+			$this->session->set_flashdata('success1', $this->lang->line('options_version_dialog_mode_changed_to')." "."'".$this->input->post('version_dialog_mode')."'");
+		}
+		if ($this->input->post('version_dialog_mode') == "both" || $this->input->post('version_dialog_mode') == "custom_text" ) { 
+			$version_dialog_custom_text_update = $this->optionslib->update('version_dialog_text', $this->input->post('version_dialog_custom_text'), 'yes');
+			if($version_dialog_custom_text_update == TRUE) {
+				$this->session->set_flashdata('success2', $this->lang->line('options_version_dialog_custom_text_saved'));
+			}
+		}
+
+		redirect('/options/version_dialog');
+		
+	}
+
+	function version_dialog_show_to_all() {
+		$update_vd_confirmation_to_false = $this->user_options_model->set_option_at_all_users('version_dialog', 'confirmed', array('boolean' => 'false'));
+		if($update_vd_confirmation_to_false == TRUE) {
+			$this->session->set_flashdata('success_trigger', $this->lang->line('options_version_dialog_success_show_all'));
+		}
+		redirect('/options/version_dialog');
+	}
+
+	function version_dialog_show_to_none() {
+		$update_vd_confirmation_to_true = $this->user_options_model->set_option_at_all_users('version_dialog', 'confirmed', array('boolean' => 'true'));
+		if($update_vd_confirmation_to_true == TRUE) {
+			$this->session->set_flashdata('success_trigger', $this->lang->line('options_version_dialog_success_hide_all'));
+		}
+		redirect('/options/version_dialog');
+	}
+
 }

@@ -73,6 +73,31 @@ $lang['options_dxcluster_maxage_changed_to']='Maximum age of spots changed to ';
 $lang['options_dxcluster_decont_changed_to']='de continent changed to ';
 $lang['options_dxcluster_decont_hint']='Only spots by spotters from this continent are shown';
 
+$lang['options_version_dialog'] = "Version Info";
+$lang['options_version_dialog_close'] = "Close";
+$lang['options_version_dialog_dismiss'] = "Don't show again";
+$lang['options_version_dialog_settings'] = "Version Info Settings";
+$lang['options_version_dialog_header'] = "Version Info Header";
+$lang['options_version_dialog_header_hint'] = "You can change the header of the version info dialog.";
+$lang['options_version_dialog_header_changed_to'] = "Version Info Header changed to";
+$lang['options_version_dialog_mode'] = "Version Info Mode";
+$lang['options_version_dialog_mode_release_notes'] = "Only Release Notes";
+$lang['options_version_dialog_mode_custom_text'] = "Only Custom Text";
+$lang['options_version_dialog_mode_both'] = "Release Notes and Custom Text";
+$lang['options_version_dialog_mode_disabled'] = "Disabled";
+$lang['options_version_dialog_mode_hint'] = "The Version Info is shown to every user. The user has the option to dismiss the dialog after he read it. Select if you want to show only release notes (fetched from github), only custom text or both.";
+$lang['options_version_dialog_custom_text'] = "Version Info Custom Text";
+$lang['options_version_dialog_custom_text_hint'] = "This is the custom text which is shown in the dialog.";
+$lang['options_version_dialog_mode_changed_to'] = "Version Info Mode changed to";
+$lang['options_version_dialog_custom_text_saved'] = "Version Info Custom Text saved!";
+$lang['options_version_dialog_success_show_all'] = "Version Info will be shown to all users again";
+$lang['options_version_dialog_success_hide_all'] = "Version Info will not be shown to any user";
+$lang['options_version_dialog_show_hide'] = "Show/Hide Version Info Dialog for all Users";
+$lang['options_version_dialog_show_all'] = "Show for all Users";
+$lang['options_version_dialog_hide_all'] = "Hide for all Users";
+$lang['options_version_dialog_show_all_hint'] = "This will show the version dialog automatically to all users on their next page reload.";
+$lang['options_version_dialog_hide_all_hint'] = "This will deactivate the automatic popup of the version dialog for all users.";
+
 $lang['options_save'] = 'Save';
 
 // Bands

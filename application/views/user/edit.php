@@ -507,6 +507,7 @@
 								<option value="0" <?php if ($user_previous_qsl_type == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_qsl'); ?></option>
 								<option value="1" <?php if ($user_previous_qsl_type == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('lotw_short'); ?></option>
 								<option value="2" <?php if ($user_previous_qsl_type == 2) { echo " selected =\"selected\""; } ?>><?php echo lang('eqsl_short'); ?></option>
+								<option value="4" <?php if ($user_previous_qsl_type == 4) { echo " selected =\"selected\""; } ?>>QRZ</option>
 							</select>
 						</div>
 
@@ -617,6 +618,14 @@
 								echo '>'; ?>
 								<label class="form-check-label" for="user_default_confirmation_eqsl"><?php echo lang('account_eqsl'); ?></label>
 							</div>
+			                                 <div class="form-check-inline">
+                       						<?php echo '<input class="form-check-input" type="checkbox" name="user_default_confirmation_qrz" id="user_default_confirmation_qrz"';
+                                        			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+                                           				echo ' checked';
+                                        			}
+                                        			echo '>'; ?>
+                                    				<label class="form-check-label" for="user_default_confirmation_qrz">QRZ.com</label>
+                                			</div>
 						</div>
 					</div>
 				</div>

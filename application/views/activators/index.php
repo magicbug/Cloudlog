@@ -76,7 +76,7 @@
             $result = write_activators($activators_array, $vucc_grids, $custom_date_format, $this->input->post('band'), $this->input->post('leogeo'));
         }
         else {
-            echo '<div class="alert alert-danger" role="alert"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+            echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
         }
     }
     ?>

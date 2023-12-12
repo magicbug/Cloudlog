@@ -106,9 +106,17 @@
                         echo '>'; ?>
                         <label class="form-check-label" for="eqsl">eQSL</label>
                     </div>
+                    <div class="form-check-inline">
+                    <?php echo '<input class="form-check-input" type="checkbox" name="qrz" id="qrz"';
+                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+                            echo ' checked' ;
+                        }
+                        echo '>'; ?>
+                        <label class="form-check-label" for="qrz">QRZ.com</label>
+                    </div>
                 </div>
 
-            <button id="plot" type="button" name="plot" class="btn btn-primary me-1 ld-ext-right ld-ext-right-plot" onclick="gridPlot(this.form)"><?php echo lang('gridsquares_button_plot'); ?><div class="ld ld-ring ld-spin"></div></button>
+            <button id="plot" type="button" name="plot" class="btn btn-primary me-1 ld-ext-right ld-ext-right-plot" onclick="gridPlot(this.form,<?php echo $visitor == true ? "true" : "false"; ?>)"><?php echo lang('gridsquares_button_plot'); ?><div class="ld ld-ring ld-spin"></div></button>
 			<button id="clear" type="button" name="clear" class="btn btn-primary me-1 ld-ext-right ld-ext-right-clear" onclick="clearMarkers()"><?php echo lang('gridsquares_button_clear_markers'); ?><div class="ld ld-ring ld-spin"></div></button>
 </form>
 
@@ -121,7 +129,7 @@
 </div>
 
 <div id="gridmapcontainer">
-	<div id="gridsquare_map" style="width: 100%; height: 800px"></div>
+	<div id="gridsquare_map" class="map-leaflet" style="width: 100%; height: 800px"></div>
 </div>
 <div class="coordinates d-flex">
         <div class="cohidden"><?php echo lang('gen_hamradio_latitude')?>:&nbsp;</div>

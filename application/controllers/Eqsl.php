@@ -295,6 +295,7 @@ class eqsl extends CI_Controller {
 			"_" = 5F
 			"-" = 2D
 			"." = 2E
+			"&" = 26
 		*/
 		
 		$adif .= "%3C";
@@ -422,12 +423,13 @@ class eqsl extends CI_Controller {
 
 		// adding qslmsg if it isn't blank
 		if ($qsl['COL_QSLMSG'] != ''){
+			$qsl['COL_QSLMSG'] = str_replace(array(chr(10),chr(13)),array(' ',' '),$qsl['COL_QSLMSG']);
 			$adif .= "%3C";
 			$adif .= "QSLMSG";
 			$adif .= "%3A";
 			$adif .= strlen($qsl['COL_QSLMSG']);
 			$adif .= "%3E";
-			$adif .= $qsl['COL_QSLMSG'];
+			$adif .= str_replace('&','%26',$qsl['COL_QSLMSG']);
 			$adif .= "%20";
 		}
 

@@ -136,14 +136,18 @@ class Logbook extends CI_Controller {
 
 		$return['dxcc'] = $this->dxcheck($callsign);
 		$split_callsign=explode('/',$callsign);
-		if (isset($split_callsign[1]) && ($split_callsign[1] != "")) {	// Do we have "/" in Call?
-			if (strlen($split_callsign[1])>3) {			// Last Element longer than 3 chars? Take that as call
+		if (count($split_callsign)==1) {				// case F0ABC --> return cel 0 //
+			$lookupcall = $split_callsign[0];
+		} else if (count($split_callsign)==3) {			// case EA/F0ABC/P --> return cel 1 //
+			$lookupcall = $split_callsign[1];
+		} else {										// case F0ABC/P --> return cel 0 OR  case EA/FOABC --> retunr 1  (normaly not exist) //
+			if (in_array(strtoupper($split_callsign[1]), array('P','M','MM','QRP','0','1','2','3','4','5','6','7','8','9'))) {
+				$lookupcall = $split_callsign[0];
+			} else if (strlen($split_callsign[1])>3) {	// Last Element longer than 3 chars? Take that as call
 				$lookupcall = $split_callsign[1];
-			} else {						// Last Element up to 3 Chars? Take first element as Call
+			} else {									// Last Element up to 3 Chars? Take first element as Call
 				$lookupcall = $split_callsign[0];
 			}
-		} else {
-			$lookupcall=$callsign;
 		}
 
 		$return['partial'] = $this->partial($lookupcall);
@@ -221,6 +225,13 @@ class Logbook extends CI_Controller {
 				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
 			}
 
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+				if ($extrawhere!='') {
+					$extrawhere.=" OR";
+				}
+				$extrawhere.=" COL_QRZCOM_QSO_DOWNLOAD_STATUS='Y'";
+			}
+
 
 			if($type == "SAT") {
 				$this->db->where('COL_PROP_MODE', 'SAT');
@@ -257,7 +268,7 @@ class Logbook extends CI_Controller {
 		return false;
 	}
 
-function worked_grid_before($gridsquare, $type, $band, $mode)
+	function worked_grid_before($gridsquare, $type, $band, $mode)
 	{
 		if (strlen($gridsquare) < 4)
 			return false;
@@ -346,6 +357,13 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 			$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
 		}
 
+		if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+			if ($extrawhere!='') {
+				$extrawhere.=" OR";
+			}
+			$extrawhere.=" COL_QRZCOM_QSO_DOWNLOAD_STATUS='Y'";
+		}
+
 		if($type == "SAT") {
 			$this->db->where('COL_PROP_MODE', 'SAT');
 			if ($extrawhere != '') {
@@ -426,6 +444,13 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 					$extrawhere.=" OR";
 				}
 				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
+			}
+
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+				if ($extrawhere!='') {
+					$extrawhere.=" OR";
+				}
+				$extrawhere.=" COL_QRZCOM_QSO_DOWNLOAD_STATUS='Y'";
 			}
 
 
@@ -522,6 +547,13 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 				}
 				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
 			}
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+				if ($extrawhere!='') {
+					$extrawhere.=" OR";
+				}
+				$extrawhere.=" COL_QRZCOM_QSO_DOWNLOAD_STATUS='Y'";
+			}
+
 
 
 			if($type == "SAT") {
@@ -702,14 +734,18 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 		$html = "";
 
 		if(!empty($logbooks_locations_array)) {
-			$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_FREQ, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, '.$this->config->item('table_name').'.COL_MY_GRIDSQUARE, '.$this->config->item('table_name').'.COL_CONTEST_ID, '.$this->config->item('table_name').'.COL_STATE, station_profile.*');
+			$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_FREQ, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, '.$this->config->item('table_name').'.COL_MY_GRIDSQUARE, '.$this->config->item('table_name').'.COL_CONTEST_ID, '.$this->config->item('table_name').'.COL_STATE, '.$this->config->item('table_name').'.COL_QRZCOM_QSO_UPLOAD_STATUS, '.$this->config->item('table_name').'.COL_QRZCOM_QSO_DOWNLOAD_STATUS, station_profile.*');
 			$this->db->from($this->config->item('table_name'));
 
 			$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 			$this->db->where_in('station_profile.station_id', $logbooks_locations_array);
 			$this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', "desc");
 
-			$this->db->like($this->config->item('table_name').'.COL_CALL', $id);
+			$this->db->where($this->config->item('table_name').'.COL_CALL', $id);
+			$this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$id,'before');
+			$this->db->or_like($this->config->item('table_name').'.COL_CALL', $id.'/','after');
+			$this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$id.'/');
+
 			$this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "desc");
 			$this->db->limit(5);
 
@@ -736,6 +772,9 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 							break;
 						case 2:
 							$html .= "<th>".lang('eqsl_short')."</th>";
+							break;
+						case 4:
+							$html .= "<th>QRZ</th>";
 							break;
 						default:
 							$html .= "<th>".lang('gen_hamradio_qsl')."</th>";
@@ -799,6 +838,27 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 						$html .= "\">&#9650;</span>";
 						$html .= "<span class=\"qsl-";
 						switch ($row->COL_EQSL_QSL_RCVD) {
+							case "Y":
+								$html .= "green";
+								break;
+							default:
+								$html .= "red";
+						}
+						$html .= "\">&#9660;</span>";
+						$html .= "</td>";
+					} else if ($this->session->userdata('user_previous_qsl_type') == 4) {
+						$html .= "<td class=\"qrz\">";
+						$html .= "<span class=\"qsl-";
+						switch ($row->COL_QRZCOM_QSO_UPLOAD_STATUS) {
+							case "Y":
+								$html .= "green";
+								break;
+							default:
+								$html .= "red";
+						}
+						$html .= "\">&#9650;</span>";
+						$html .= "<span class=\"qsl-";
+						switch ($row->COL_QRZCOM_QSO_DOWNLOAD_STATUS) {
 							case "Y":
 								$html .= "green";
 								break;
@@ -987,7 +1047,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 						if($data['callsign']['error'] == "Session does not exist or expired") {
 							$hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
 							$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-							$data['callsign'] = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+							$data['callsign'] = $this->hamqth->search($id, $this->session->userdata('hamqth_session_key'));
 						}
 						if (isset($data['callsign']['gridsquare'])) {
 							$CI = &get_instance();

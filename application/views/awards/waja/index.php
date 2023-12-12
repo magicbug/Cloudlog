@@ -169,7 +169,7 @@
         <div class="tab-pane fade" id="wajamaptab" role="tabpanel" aria-labelledby="home-tab">
     <br />
 
-    <div id="wajamap"></div>
+    <div id="wajamap" class="map-leaflet" ></div>
 
     </div>
 
@@ -231,7 +231,7 @@
 
     }
     else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+        echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
     }
     ?>
                 </div>

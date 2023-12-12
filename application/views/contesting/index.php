@@ -11,7 +11,7 @@
 							<label class="col-auto control-label" for="radio"><?php echo lang('contesting_exchange_type'); ?></label>
 
 							<div class="col-auto">
-								<select class="form-select-sm" id="exchangetype" name="exchangetype">
+								<select class="form-select form-select-sm" id="exchangetype" name="exchangetype">
 									<option value='None'><?php echo lang('contesting_exchange_type_none'); ?></option>
 									<option value='Exchange'><?php echo lang('contesting_exchange_type_exchange'); ?></option>
 									<option value='Gridsquare'><?php echo lang('contesting_exchange_type_gridsquare'); ?></option>
@@ -24,7 +24,7 @@
                             <label class="col-auto control-label" for="contestname"><?php echo lang('contesting_contest_name'); ?></label>
 
                             <div class="col-auto">
-                                <select class="form-select-sm" id="contestname" name="contestname">
+                                <select class="form-select form-select-sm" id="contestname" name="contestname">
 									<?php foreach($contestnames as $contest) {
 										echo "<option value='" . $contest['adifname'] . "'>" . $contest['name'] . "</option>";
 									} ?>

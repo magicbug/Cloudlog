@@ -7,9 +7,17 @@
 var custom_date_format = "<?php echo $custom_date_format ?>";
 <?php
 if (!isset($options)) {
-   $options = "{\"datetime\":{\"show\":\"true\"},\"de\":{\"show\":\"true\"},\"dx\":{\"show\":\"true\"},\"mode\":{\"show\":\"true\"},\"rstr\":{\"show\":\"true\"},\"rsts\":{\"show\":\"true\"},\"band\":{\"show\":\"true\"},\"myrefs\":{\"show\":\"true\"},\"refs\":{\"show\":\"true\"},\"name\":{\"show\":\"true\"},\"qslvia\":{\"show\":\"true\"},\"qsl\":{\"show\":\"true\"},\"lotw\":{\"show\":\"true\"},\"eqsl\":{\"show\":\"true\"},\"qslmsg\":{\"show\":\"true\"},\"dxcc\":{\"show\":\"true\"},\"state\":{\"show\":\"true\"},\"cqzone\":{\"show\":\"true\"},\"iota\":{\"show\":\"true\"}}";
+   $options = "{\"datetime\":{\"show\":\"true\"},\"de\":{\"show\":\"true\"},\"dx\":{\"show\":\"true\"},\"mode\":{\"show\":\"true\"},\"rstr\":{\"show\":\"true\"},\"rsts\":{\"show\":\"true\"},\"band\":{\"show\":\"true\"},\"myrefs\":{\"show\":\"true\"},\"refs\":{\"show\":\"true\"},\"name\":{\"show\":\"true\"},\"qslvia\":{\"show\":\"true\"},\"qsl\":{\"show\":\"true\"},\"lotw\":{\"show\":\"true\"},\"eqsl\":{\"show\":\"true\"},\"qslmsg\":{\"show\":\"true\"},\"dxcc\":{\"show\":\"true\"},\"state\":{\"show\":\"true\"},\"cqzone\":{\"show\":\"true\"},\"iota\":{\"show\":\"true\"},\"pota\":{\"show\":\"true\"},\"operator\":{\"show\":\"true\"}}";
 }
 echo "var user_options = $options;";
+if (!isset($options->pota)) {
+        echo "\nvar o_template = { pota: {show: 'true'}};";
+        echo "\nuser_options={...user_options, ...o_template}";
+}
+if (!isset($options->operator)) {
+	echo "\nvar o_template = { operator: {show: 'true'}};";
+	echo "\nuser_options={...user_options, ...o_template}";
+}
 ?>
 </script>
 <style>
@@ -200,6 +208,10 @@ $options = json_decode($options);
                         <label class="form-label" for="pota"><?php echo lang('gen_hamradio_pota'); ?></label>
                         <input type="text" name="pota" id="pota" class="form-control form-control-sm" value="">
                     </div>
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
+                        <label class="form-label" for="operator"><?php echo lang('gen_hamradio_operator'); ?></label>
+                        <input type="text" name="operator" id="operator" class="form-control form-control-sm" value="">
+                    </div>
                 </div>
             </div>
     </div>
@@ -366,6 +378,9 @@ $options = json_decode($options);
             <?php if (($options->refs->show ?? "true") == "true") { ?>
                 <button type="button" class="btn btn-sm btn-primary me-1" id="searchWwff"><?php echo lang('filter_search_wwff'); ?></button><?php
             } ?>
+            <?php if (($options->operator->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchOperator"><?php echo lang('filter_search_operator'); ?></button><?php
+            } ?>
         </div>
     </div>
 <div class="row pt-2">
@@ -456,6 +471,12 @@ $options = json_decode($options);
 			} ?>
 			<?php if (($options->iota->show ?? "true") == "true") {
 				echo '<th>' . lang('gen_hamradio_iota') . '</th>';
+			} ?>
+			<?php if (($options->pota->show ?? "true") == "true") {
+				echo '<th>' . lang('gen_hamradio_pota') . '</th>';
+			} ?>
+			<?php if (($options->operator->show ?? "true") == "true") {
+				echo '<th>' . lang('gen_hamradio_operator') . '</th>';
 			} ?>
         </tr>
     </thead>

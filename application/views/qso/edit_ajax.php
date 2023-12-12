@@ -19,10 +19,8 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery.fancybox.min.css" />
 
     <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
-
 </head>
 
 <body class="container-fluid qso-edit-box">
@@ -510,16 +508,17 @@
                                                 </select></div>
                                         </div>
                                         <div class="mb-3 row">
-                                             <div class="col-sm-9">
-                                                 <label for="qslmsg"><?php echo lang('general_word_notes'); ?><span class="qso_eqsl_qslmsg_update" title="<?php echo lang('qso_eqsl_qslmsg_helptext'); ?>"><i class="fas fa-redo-alt"></i></span></label>
-                                                 <div class="alert alert-info" role="alert">
-                                                     <span class="badge text-bg-info"><?php echo lang('general_word_info'); ?></span> <?php echo lang('qsl_notes_helptext'); ?>
-                                                 </div>
-                                             </div>
-                                             <div class="col-sm-9">
+                                            <div>
+                                                <div class="alert alert-info" role="alert">
+                                                    <span class="badge text-bg-info"><?php echo lang('general_word_info'); ?></span> <?php echo lang('qsl_notes_helptext'); ?>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label for="qslmsg"><?php echo lang('general_word_notes'); ?><span class="qso_eqsl_qslmsg_update" title="<?php echo lang('qso_eqsl_qslmsg_helptext'); ?>"><i class="fas fa-redo-alt"></i></span></label>
+						                        <label class="position-absolute end-0 mb-2 me-3" for="qslmsg" id="charsLeft"> </label>
                                                 <textarea  type="text" class="form-control" id="qslmsg" name="qslmsg" rows="5" maxlength="240"><?php echo $qso->COL_QSLMSG; ?></textarea>
                                                 <div id="qslmsg_hide" style="display:none;"><?php echo $qso->COL_QSLMSG; ?></div>
-                                             </div>
+                                            </div>
                                         </div>
 
                                     </div>

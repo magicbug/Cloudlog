@@ -150,7 +150,7 @@
         <div class="tab-pane fade" id="cqmaptab" role="tabpanel" aria-labelledby="home-tab">
     <br />
 
-    <div id="cqmap"></div>
+    <div id="cqmap" class="map-leaflet" ></div>
 
     </div>
 
@@ -212,7 +212,7 @@
 
     }
     else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+        echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
     }
     ?>
 

@@ -15,7 +15,7 @@
         <!-- End of Award Info Box -->
 
 <?php if ($sig_types) { ?>
-    <table style="width:100%" class="table-sm table tabledxcc table-bordered table-hover table-striped table-condensed text-center">
+    <table style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center">
 
 	<tr>
 		<td>Award Type</td>
@@ -42,7 +42,7 @@
 	</table>
 <?php }
 else {
-    echo '<div class="alert alert-danger" role="alert"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+    echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
 }
 ?>
 </div>

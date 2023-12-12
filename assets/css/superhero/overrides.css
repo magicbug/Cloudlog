@@ -15,6 +15,11 @@ body {
 	--bs-table-accent-bg: #2b3e50;
 }
 
+.table-striped tbody > tr.activeRow {
+    background-color: #5cb85c !important;
+	--bs-table-accent-bg: none;
+}
+
 .border-top {
 	--bs-border-color: #253544;
 }
@@ -46,12 +51,8 @@ path.grid-worked {
 	stroke: rgba(220, 50, 50, 0.4) !important;
 }
 
-#map,
-#qsomap,
-#mapqso,
-#gridsquare_map,
-#custommap {
-	background-color: #353c4a;
+.map-leaflet {
+	background-color: #353c4a!important;
 }
 
 /* 

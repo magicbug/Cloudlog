@@ -124,6 +124,7 @@ class Logbookadvanced extends CI_Controller {
 			'wwff' => xss_clean($this->input->post('wwff')),
 			'qslimages' => xss_clean($this->input->post('qslimages')),
 			'dupes' => xss_clean($this->input->post('dupes')),
+			'operator' => xss_clean($this->input->post('operator')),
 		);
 
 		$qsos = [];
@@ -286,6 +287,7 @@ class Logbookadvanced extends CI_Controller {
 			'pota' => '',
 			'wwff' => '',
 			'qslimages' => '',
+			'operator' => '',
 			'ids' => xss_clean($this->input->post('ids'))
 		);
 
@@ -324,6 +326,7 @@ class Logbookadvanced extends CI_Controller {
 			'sota' => xss_clean($this->input->post('sota')),
 			'pota' => xss_clean($this->input->post('pota')),
 			'wwff' => xss_clean($this->input->post('wwff')),
+			'operator' => xss_clean($this->input->post('operator')),
 			'qslimages' => xss_clean($this->input->post('qslimages')),
 		);
 
@@ -460,6 +463,8 @@ class Logbookadvanced extends CI_Controller {
 		$json_string['state']['show'] = $this->input->post('state');
 		$json_string['cqzone']['show'] = $this->input->post('cqzone');
 		$json_string['iota']['show'] = $this->input->post('iota');
+		$json_string['pota']['show'] = $this->input->post('pota');
+		$json_string['operator']['show'] = $this->input->post('operator');
 
 		$obj['column_settings']= json_encode($json_string);
 

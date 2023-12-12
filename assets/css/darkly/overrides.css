@@ -4,15 +4,20 @@
 
 .table {
 	--bs-table-border-color: #444444;
-	--bs-table-striped-bg: #303030;
 	--bs-table-color: #fff;
 	--bs-table-striped-color: #fff;
 	--bs-table-active-color: #fff;
 	--bs-table-hover-color: #fff;
+	--bs-table-accent-bg: #303030;
 }
 
-.table > tbody > odd {
-	--bs-table-accent-bg: #303030;
+.qslprint {
+	--bs-table-striped-bg: none;
+}
+
+.table-striped tbody > tr.activeRow {
+    background-color: #5cb85c !important;
+	--bs-table-accent-bg: none;
 }
 
 .border-top {
@@ -58,12 +63,8 @@ path.grid-worked {
 	stroke: rgba(220, 50, 50, 0.25) !important;
 }
 
-#map,
-#qsomap,
-#mapqso,
-#gridsquare_map,
-#custommap {
-	background-color: #343d3f;
+.map-leaflet {
+	background-color: #343d3f!important;
 }
 
 /* 

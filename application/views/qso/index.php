@@ -1,11 +1,15 @@
 <div class="container qso_panel">
+<script language="javascript">
+  var qso_manual  = "<?php echo $_GET['manual']; ?>";
+  var text_error_timeoff_less_timeon = "<?php echo lang('qso_error_timeoff_less_timeon'); ?>";
+</script>
 
 <div class="row qsopane">
 
   <div class="col-sm-5">
     <div class="card">
 
-    <form id="qso_input" method="post" action="<?php echo site_url('qso') . "?manual=" . $_GET['manual']; ?>" name="qsos" autocomplete="off" onReset="resetTimers();">
+    <form id="qso_input" method="post" action="<?php echo site_url('qso') . "?manual=" . $_GET['manual']; ?>" name="qsos" autocomplete="off" onReset="resetTimers(<?php echo $_GET['manual']; ?>);">
 
       <div class="card-header">
         <ul style="font-size: 15px;" class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
@@ -113,8 +117,8 @@
                   <small id="callsign_info" class="badge text-bg-secondary"></small> <a id="lotw_link"><small id="lotw_info" class="badge text-bg-success"></small></a>
                 </div>
                 <div class="mb-3 col-md-3 align-self-center">
-                  <small id="qrz_info" class="badge text-bg-secondary"></small>
-                  <small id="hamqth_info" class="badge text-bg-secondary"></small>
+                  <small id="qrz_info" class="text-bg-secondary me-1"></small>
+                  <small id="hamqth_info" class="text-bg-secondary me-1"></small>
                 </div>
               </div>
 
@@ -532,9 +536,10 @@
               <span class="badge text-bg-info"><?php echo lang('general_word_info'); ?></span> <?php echo lang('qsl_notes_helptext'); ?>
             </div>
            <div class="mb-3">
-           <label for="qslmsg"><?php echo lang('general_word_notes'); ?><span class="qso_eqsl_qslmsg_update" title="<?php echo lang('qso_eqsl_qslmsg_helptext'); ?>"><i class="fas fa-redo-alt"></i></span></label>
-              <textarea  type="text" class="form-control" id="qslmsg" name="qslmsg" rows="5" maxlength="240"><?php echo $qslmsg; ?></textarea>
-              <div id="qslmsg_hide" style="display:none;"><?php echo $qslmsg; ?></div>
+            <label for="qslmsg"><?php echo lang('general_word_notes'); ?><span class="qso_eqsl_qslmsg_update" title="<?php echo lang('qso_eqsl_qslmsg_helptext'); ?>"><i class="fas fa-redo-alt"></i></span></label>
+						<label class="position-absolute end-0 mb-2 me-3" for="qslmsg" id="charsLeft"> </label>
+            <textarea  type="text" class="form-control" id="qslmsg" name="qslmsg" rows="5" maxlength="240"><?php echo $qslmsg; ?></textarea>
+            <div id="qslmsg_hide" style="display:none;"><?php echo $qslmsg; ?></div>
             </div>
           </div>
         </div>
@@ -547,6 +552,7 @@
 
         <button type="reset" class="btn btn-secondary" onclick="reset_fields()"><?php echo lang('qso_btn_reset_qso'); ?></button>
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo lang('qso_btn_save_qso'); ?></button>
+        <div class="alert alert-danger warningOnSubmit mt-3" style="display:none;"><span><i class="fas fa-times-circle"></i></span> <span class="warningOnSubmit_txt ms-1">Error</span></div>
       </div>
     </form>
     </div>
@@ -569,7 +575,7 @@
 
     <!-- QSO Map -->
     <div class="card qso-map">
-            <div id="qsomap" style="width: 100%; height: 200px;"></div>
+            <div id="qsomap" class="map-leaflet" style="width: 100%; height: 200px;"></div>
     </div>
 
     <div id="radio_status"></div>

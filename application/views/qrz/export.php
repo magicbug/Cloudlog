@@ -10,6 +10,9 @@
 					<a class="nav-link active" id="export-tab" data-bs-toggle="tab" href="#export" role="tab" aria-controls="import" aria-selected="true">Upload Logbook</a>
 				</li>
 				<li class="nav-item">
+					<a class="nav-link" id="mark-tab" data-bs-toggle="tab" href="#import" role="tab" aria-controls="import" aria-selected="false">Download QSOs</a>
+				</li>
+				<li class="nav-item">
 					<a class="nav-link" id="mark-tab" data-bs-toggle="tab" href="#mark" role="tab" aria-controls="export" aria-selected="false">Mark QSOs</a>
 				</li>
 			</ul>
@@ -52,12 +55,27 @@
 
         }
         else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+        echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
         }
         ?>
 
         </div>
-				<div class="tab-pane fade" id="mark" role="tabpanel" aria-labelledby="home-tab">
+			<div class="tab-pane fade" id="import" role="tabpanel" aria-labelledby="home-tab">
+
+				<form class="form" action="<?php echo site_url('qrz/import_qrz'); ?>" method="post" enctype="multipart/form-data">
+					<p><span class="badge text-bg-warning">Warning</span> If no startdate is given then all QSOs after last confirmation will be downloaded/updated!</p>
+					<div class="row">
+						<div class="col-md-2">
+							<label for="from"><?php echo lang('gen_from_date') . ": " ?></label>
+							<input name="from" id="from" type="date" class="form-control w-auto">
+						</div>
+					</div>
+					<br>
+					<button type="submit" class="btn btn-sm btn-primary" value="Export">Download from QRZ  Logbook</button>
+				</form>
+			</div>
+
+		<div class="tab-pane fade" id="mark" role="tabpanel" aria-labelledby="home-tab">
 
 				<form class="form" action="<?php echo site_url('qrz/mark_qrz'); ?>" method="post" enctype="multipart/form-data">
 					<select name="station_profile" class="form-select mb-4 me-sm-4" style="width: 30%;">
