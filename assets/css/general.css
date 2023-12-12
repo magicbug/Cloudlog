@@ -744,15 +744,3 @@ table.dataTable tfoot td {
 #partial_view .table-responsive {
 	overflow-x: unset;
 }
-
-.qso-dialog .modal-body {
-	overflow: unset !important;
-}
-
-.qso-dialog .table-responsive {
-	overflow: unset !important;
-}
-
-.qso-dialog .dataTables_scrollBody {
-	overflow: unset !important;
-}
