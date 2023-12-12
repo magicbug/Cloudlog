@@ -59,8 +59,9 @@ function initmap(ShowGrid='No', MapTag='map', options={}) {
 
 function askForPlots(_url_qso, options={}) {
 	removeMarkers();
+	if (typeof options.dataPost !== "undefined") { _dataPost = options.dataPost; } else { _dataPost = {}; }
     $.ajax({
-        url: _url_qso, type: 'GET', dataType: 'json',
+        url: _url_qso, type: 'POST', dataType: 'json', data: _dataPost,
         error: function() { console.log('[ERROR] ajax askForPlots() function return error.'); },
         success: function(plotjson) {
         	if ((typeof plotjson['markers'] !== "undefined")&&(plotjson['markers'].length>0)) {
