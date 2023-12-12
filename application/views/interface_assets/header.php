@@ -270,21 +270,18 @@
 						</script>
 					<?php } ?>
 					<form id="quicklog-form" class="d-flex align-items-center" onsubmit="return false;">
-						<input class="form-control me-sm-2" id="nav-bar-search-input" type="text" name="callsign" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Quicklog" onkeypress="handleKeyPress(event)">
+						<input class="form-control me-2" id="nav-bar-search-input" type="text" name="callsign" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Quicklog" onkeypress="handleKeyPress(event)">
 
 						<button title="<?php echo lang('menu_search_button_qicksearch_log'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="logQuicklog()"><i class="fas fa-plus"></i>
-							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button_qicksearch_log'); ?></div>
 						</button>
 
 						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="submitForm('search')" style="margin-left: 5px"><i class="fas fa-search"></i>
-							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button'); ?></div>
 						</button>
 					</form>
 				<?php } else { ?>
 					<form method="post" class="d-flex align-items-center" action="<?php echo site_url('search'); ?>">
-						<input class="form-control me-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
+						<input class="form-control me-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
 						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i>
-							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button'); ?></div>
 						</button>
 					</form>
 				<?php } ?>
