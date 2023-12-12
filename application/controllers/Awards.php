@@ -969,35 +969,6 @@ class Awards extends CI_Controller {
 
         This displays the WAS map and requires the $band_type and $mode_type
     */
-    public function was_map2($band_type, $mode_type) {
-
-        $this->load->model('was');
-
-		$data['mode'] = $mode_type;
-
-        $bands[] = $band_type;
-
-        $postdata['qsl'] = 1;
-        $postdata['lotw'] = 1;
-        $postdata['eqsl'] = 0;
-        $postdata['worked'] = 1;
-        $postdata['confirmed'] = 1;
-        $postdata['notworked'] = 1;
-        $postdata['band'] = $band_type;
-		$postdata['mode'] = $mode_type;
-
-        $data['was_array'] = $this->was->get_was_array($bands, $postdata);
-
-        $data['page_title'] = "";
-
-        $this->load->view('awards/was/map', $data);
-    }
-
-    /*
-        function was_map
-
-        This displays the WAS map and requires the $band_type and $mode_type
-    */
     public function was_map() {
 		$stateString = 'AK,AL,AR,AZ,CA,CO,CT,DE,FL,GA,HI,IA,ID,IL,IN,KS,KY,LA,MA,MD,ME,MI,MN,MO,MS,MT,NC,ND,NE,NH,NJ,NM,NV,NY,OH,OK,OR,PA,RI,SC,SD,TN,TX,UT,VA,VT,WA,WI,WV,WY';
 		$wasArray = explode(',', $stateString);
