@@ -26,7 +26,8 @@ function gridPlot(form) {
             $(".ld-ext-right-plot").removeClass('running');
             $(".ld-ext-right-plot").prop('disabled', false);
             $('#plot').prop("disabled", false);
-            grid_max = 488;
+            grids = data.grids;
+            grid_max = data.grid_count;
             grid_four = data.grid_4char;
             grid_four_lotw = data.grid_4char_lotw;
             grid_four_paper = data.grid_4char_paper;

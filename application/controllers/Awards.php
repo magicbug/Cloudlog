@@ -651,12 +651,14 @@ class Awards extends CI_Controller {
 		$data['gridsquares_gridsquares_worked']= lang('gridsquares_gridsquares_worked');
 		$data['gridsquares_gridsquares_lotw']= lang('gridsquares_gridsquares_lotw');
 		$data['gridsquares_gridsquares_paper']= lang('gridsquares_gridsquares_paper');
+		$data['grid_count'] = $this->ffma_model->get_grid_count();
+		$data['grids'] = $this->ffma_model->get_grids();
 
 		$footerData = [];
 		$footerData['scripts']= [
 		   'assets/js/leaflet/geocoding.js',
 		   'assets/js/leaflet/L.MaidenheadColouredGridmasterMap.js',
-		   'assets/js/sections/ffma.js?'
+		   'assets/js/sections/ffma.js'
 		];
 
 		$this->load->view('interface_assets/header',$data);
@@ -731,6 +733,8 @@ class Awards extends CI_Controller {
 		$data['grid_4char_lotw'] = ($array_grid_4char_lotw);
 		$data['grid_4char_paper'] = ($array_grid_4char_paper);
 		$data['grid_4char'] = ($array_grid_4char);
+		$data['grid_count'] = $this->ffma_model->get_grid_count();
+		$data['grids'] = $this->ffma_model->get_grids();
 
 		header('Content-Type: application/json');
 		echo json_encode($data);
