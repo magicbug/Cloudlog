@@ -359,12 +359,12 @@
                     <br /><p><?php echo lang('lotw_user'); ?> <a href="https://lotw.arrl.org/lotwuser/act?act=<?php echo $row->COL_CALL;?>" target="_blank"><?php echo lang('lotw_last_upload').'</a>: '; ?><?php $timestamp = strtotime($row->lastupload); echo date($custom_date_format, $timestamp); $timestamp = strtotime($row->lastupload); echo " ".date('H:i', $timestamp);?> UTC.</p>
                     <?php } ?>
 
-                    <?php if($row->COL_LOTW_QSL_RCVD == "Y") { ?>
+                    <?php if($row->COL_LOTW_QSL_RCVD == "Y" && $row->COL_LOTW_QSLRDATE != null) { ?>
                     <h3><?php echo lang('lotw_short'); ?></h3>
                     <p><?php echo lang('gen_this_qso_was_confirmed_on'); ?> <?php $timestamp = strtotime($row->COL_LOTW_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
 
-                    <?php if($row->COL_EQSL_QSL_RCVD == "Y") { ?>
+                    <?php if($row->COL_EQSL_QSL_RCVD == "Y" && $row->COL_EQSL_QSLRDATE != null) { ?>
                     <h3>eQSL</h3>
                         <p><?php echo lang('gen_this_qso_was_confirmed_on'); ?> <?php $timestamp = strtotime($row->COL_EQSL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
