@@ -22,6 +22,11 @@ class Subdivisions {
 			case '248':
 			case '263':
 			case '269':
+			case '281':
+			case '284':
+			case '318':
+			case '375':
+			case '386':
 				return 'Province';
 			case '27':
 			case '15':
@@ -29,6 +34,7 @@ class Subdivisions {
 			case '61':
 			case '126':
 			case '151':
+			case '288':
 				return 'Oblast';
 			case '112':
 				return 'Region';
@@ -44,7 +50,15 @@ class Subdivisions {
 				return 'Federal State';
 			case '239':
 			case '245':
+			case '275':
+			case '497':
 				return 'County';
+			case '272':
+			case '503':
+			case '504':
+				return 'District';
+			case '287':
+				return 'Canton';
 			case '291':
 				return 'US State';
 			case '318':
