@@ -214,6 +214,12 @@ class API extends CI_Controller {
 						die();
 					}
 
+					if(!(isset($record['call'])) || (trim($record['call']) == '')) {
+						http_response_code(401);
+						echo json_encode(['status' => 'failed', 'reason' => "QSO Call is empty."]);
+						die();
+					}
+
 					$this->api_model->update_last_used($obj['key']);
 
 					$msg = $this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL, NULL, NULL, false, false, true);

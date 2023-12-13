@@ -1015,210 +1015,214 @@ class Logbook_model extends CI_Model {
 
   /* Edit QSO */
   function edit() {
-    $qso = $this->get_qso($this->input->post('id'))->row();
+	  $qso = $this->get_qso($this->input->post('id'))->row();
 
-    $entity = $this->get_entity($this->input->post('dxcc_id'));
-    $stationId = $this->input->post('station_profile');
-    $country = ucwords(strtolower($entity['name']), "- (/");
+	  $entity = $this->get_entity($this->input->post('dxcc_id'));
+	  $stationId = $this->input->post('station_profile');
+	  $country = ucwords(strtolower($entity['name']), "- (/");
 
-    // be sure that station belongs to user
-    $CI =& get_instance();
-    $CI->load->model('stations');
-    if (!$CI->stations->check_station_is_accessible($stationId)) {
-	    return;
-    }
+	  // be sure that station belongs to user
+	  $CI =& get_instance();
+	  $CI->load->model('stations');
+	  if (!$CI->stations->check_station_is_accessible($stationId)) {
+		  return;
+	  }
 
-    $station_profile=$CI->stations->profile_clean($stationId);
-    $stationCallsign=$station_profile->station_callsign;
+	  if (trim($this->input->post('callsign')) == '') {
+		  return;
+	  }
 
-    $mode = $this->get_main_mode_if_submode($this->input->post('mode'));
-    if ($mode == null) {
-        $mode = $this->input->post('mode');
-        $submode = null;
-    } else {
-        $submode = $this->input->post('mode');
-    }
+	  $station_profile=$CI->stations->profile_clean($stationId);
+	  $stationCallsign=$station_profile->station_callsign;
 
-    if($this->input->post('transmit_power')) {
-      $txpower = $this->input->post('transmit_power');
-    } else {
-      $txpower = null;
-    }
+	  $mode = $this->get_main_mode_if_submode($this->input->post('mode'));
+	  if ($mode == null) {
+		  $mode = $this->input->post('mode');
+		  $submode = null;
+	  } else {
+		  $submode = $this->input->post('mode');
+	  }
 
-    if($this->input->post('stx')) {
-      $stx_string = $this->input->post('stx');
-    } else {
-      $stx_string = null;
-    }
+	  if($this->input->post('transmit_power')) {
+		  $txpower = $this->input->post('transmit_power');
+	  } else {
+		  $txpower = null;
+	  }
 
-    if($this->input->post('srx')) {
-      $srx_string = $this->input->post('srx');
-    } else {
-      $srx_string = null;
-    }
+	  if($this->input->post('stx')) {
+		  $stx_string = $this->input->post('stx');
+	  } else {
+		  $stx_string = null;
+	  }
 
-    if ($this->input->post('usa_county') && $this->input->post('usa_state')) {
-      $uscounty = trim($this->input->post('usa_state') . "," . $this->input->post('usa_county'));
-    } else {
-      $uscounty = null;
-    }
+	  if($this->input->post('srx')) {
+		  $srx_string = $this->input->post('srx');
+	  } else {
+		  $srx_string = null;
+	  }
 
-    if ($this->input->post('qsl_sent')) {
-        $qsl_sent = $this->input->post('qsl_sent');
-    } else {
-        $qsl_sent = 'N';
-    }
+	  if ($this->input->post('usa_county') && $this->input->post('usa_state')) {
+		  $uscounty = trim($this->input->post('usa_state') . "," . $this->input->post('usa_county'));
+	  } else {
+		  $uscounty = null;
+	  }
 
-    if ($this->input->post('qsl_rcvd')) {
-        $qsl_rcvd = $this->input->post('qsl_rcvd');
-    } else {
-        $qsl_rcvd = 'N';
-    }
+	  if ($this->input->post('qsl_sent')) {
+		  $qsl_sent = $this->input->post('qsl_sent');
+	  } else {
+		  $qsl_sent = 'N';
+	  }
 
-    if ($this->input->post('eqsl_sent')) {
-        $eqsl_sent = $this->input->post('eqsl_sent');
-    } else {
-        $eqsl_sent = 'N';
-    }
+	  if ($this->input->post('qsl_rcvd')) {
+		  $qsl_rcvd = $this->input->post('qsl_rcvd');
+	  } else {
+		  $qsl_rcvd = 'N';
+	  }
 
-    if ($this->input->post('eqsl_rcvd')) {
-        $eqsl_rcvd = $this->input->post('eqsl_rcvd');
-    } else {
-        $eqsl_rcvd = 'N';
-    }
+	  if ($this->input->post('eqsl_sent')) {
+		  $eqsl_sent = $this->input->post('eqsl_sent');
+	  } else {
+		  $eqsl_sent = 'N';
+	  }
 
-    if ($this->input->post('lotw_sent')) {
-        $lotw_sent = $this->input->post('lotw_sent');
-    } else {
-        $lotw_sent = 'N';
-    }
+	  if ($this->input->post('eqsl_rcvd')) {
+		  $eqsl_rcvd = $this->input->post('eqsl_rcvd');
+	  } else {
+		  $eqsl_rcvd = 'N';
+	  }
 
-    if ($this->input->post('lotw_rcvd')) {
-        $lotw_rcvd = $this->input->post('lotw_rcvd');
-    } else {
-        $lotw_rcvd = 'N';
-    }
+	  if ($this->input->post('lotw_sent')) {
+		  $lotw_sent = $this->input->post('lotw_sent');
+	  } else {
+		  $lotw_sent = 'N';
+	  }
 
-    if ($qsl_sent == 'N') {
-        $qslsdate = null;
-    } elseif (!$qso->COL_QSLSDATE || $qso->COL_QSL_SENT != $qsl_sent) {
-        $qslsdate = date('Y-m-d H:i:s');
-    } else {
-        $qslsdate = $qso->COL_QSLSDATE;
-    }
+	  if ($this->input->post('lotw_rcvd')) {
+		  $lotw_rcvd = $this->input->post('lotw_rcvd');
+	  } else {
+		  $lotw_rcvd = 'N';
+	  }
 
-    if ($qsl_rcvd == 'N') {
-        $qslrdate = null;
-    } elseif (!$qso->COL_QSLRDATE || $qso->COL_QSL_RCVD != $qsl_rcvd) {
-        $qslrdate = date('Y-m-d H:i:s');
-    } else {
-        $qslrdate = $qso->COL_QSLRDATE;
-    }
+	  if ($qsl_sent == 'N') {
+		  $qslsdate = null;
+	  } elseif (!$qso->COL_QSLSDATE || $qso->COL_QSL_SENT != $qsl_sent) {
+		  $qslsdate = date('Y-m-d H:i:s');
+	  } else {
+		  $qslsdate = $qso->COL_QSLSDATE;
+	  }
 
-    if ($eqsl_sent == 'N') {
-        $eqslsdate = null;
-    } elseif (!$qso->COL_EQSL_QSLSDATE || $qso->COL_EQSL_QSL_SENT != $eqsl_sent) {
-        $eqslsdate = date('Y-m-d H:i:s');
-    } else {
-        $eqslsdate = $qso->COL_EQSL_QSLSDATE;
-    }
+	  if ($qsl_rcvd == 'N') {
+		  $qslrdate = null;
+	  } elseif (!$qso->COL_QSLRDATE || $qso->COL_QSL_RCVD != $qsl_rcvd) {
+		  $qslrdate = date('Y-m-d H:i:s');
+	  } else {
+		  $qslrdate = $qso->COL_QSLRDATE;
+	  }
 
-    if ($eqsl_rcvd == 'N') {
-        $eqslrdate = null;
-    } elseif (!$qso->COL_EQSL_QSLRDATE || $qso->COL_EQSL_QSL_RCVD != $eqsl_rcvd) {
-        $eqslrdate = date('Y-m-d H:i:s');
-    } else {
-        $eqslrdate = $qso->COL_EQSL_QSLRDATE;
-    }
+	  if ($eqsl_sent == 'N') {
+		  $eqslsdate = null;
+	  } elseif (!$qso->COL_EQSL_QSLSDATE || $qso->COL_EQSL_QSL_SENT != $eqsl_sent) {
+		  $eqslsdate = date('Y-m-d H:i:s');
+	  } else {
+		  $eqslsdate = $qso->COL_EQSL_QSLSDATE;
+	  }
 
-    if ($lotw_sent == 'N') {
-        $lotwsdate = null;
-    } elseif (!$qso->COL_LOTW_QSLSDATE || $qso->COL_LOTW_QSL_SENT != $lotw_sent) {
-        $lotwsdate = date('Y-m-d H:i:s');
-    } else {
-        $lotwsdate = $qso->COL_LOTW_QSLSDATE;
-    }
+	  if ($eqsl_rcvd == 'N') {
+		  $eqslrdate = null;
+	  } elseif (!$qso->COL_EQSL_QSLRDATE || $qso->COL_EQSL_QSL_RCVD != $eqsl_rcvd) {
+		  $eqslrdate = date('Y-m-d H:i:s');
+	  } else {
+		  $eqslrdate = $qso->COL_EQSL_QSLRDATE;
+	  }
 
-    if ($lotw_rcvd == 'N') {
-        $lotwrdate = null;
-    } elseif (!$qso->COL_LOTW_QSLRDATE || $qso->COL_LOTW_QSL_RCVD != $lotw_rcvd) {
-        $lotwrdate = date('Y-m-d H:i:s');
-    } else {
-        $lotwrdate = $qso->COL_LOTW_QSLRDATE;
-    }
+	  if ($lotw_sent == 'N') {
+		  $lotwsdate = null;
+	  } elseif (!$qso->COL_LOTW_QSLSDATE || $qso->COL_LOTW_QSL_SENT != $lotw_sent) {
+		  $lotwsdate = date('Y-m-d H:i:s');
+	  } else {
+		  $lotwsdate = $qso->COL_LOTW_QSLSDATE;
+	  }
 
-    $data = array(
-       'COL_TIME_ON' => $this->input->post('time_on'),
-       'COL_TIME_OFF' => $this->input->post('time_off'),
-       'COL_CALL' => strtoupper(trim($this->input->post('callsign'))),
-       'COL_BAND' => $this->input->post('band'),
-       'COL_BAND_RX' => $this->input->post('band_rx'),
-       'COL_FREQ' => $this->parse_frequency($this->input->post('freq')),
-       'COL_MODE' => $mode,
-       'COL_SUBMODE' => $submode,
-       'COL_RST_RCVD' => $this->input->post('rst_rcvd'),
-       'COL_RST_SENT' => $this->input->post('rst_sent'),
-       'COL_GRIDSQUARE' => strtoupper(trim($this->input->post('locator'))),
-       'COL_VUCC_GRIDS' => strtoupper(trim($this->input->post('vucc_grids'))),
-       'COL_DISTANCE' => $this->input->post('distance'),
-       'COL_COMMENT' => $this->input->post('comment'),
-       'COL_NAME' => $this->input->post('name'),
-       'COL_COUNTRY' => $country,
-       'COL_CONT' => $this->input->post('continent'),
-       'COL_DXCC'=> $this->input->post('dxcc_id'),
-       'COL_CQZ' => $this->input->post('cqz'),
-       'COL_SAT_NAME' => $this->input->post('sat_name'),
-       'COL_SAT_MODE' => $this->input->post('sat_mode'),
-       'COL_NOTES' => $this->input->post('notes'),
-       'COL_QSLSDATE' => $qslsdate,
-       'COL_QSLRDATE' => $qslrdate,
-       'COL_QSL_SENT' => $qsl_sent,
-       'COL_QSL_RCVD' => $qsl_rcvd,
-       'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
-       'COL_QSL_RCVD_VIA' => $this->input->post('qsl_rcvd_method'),
-       'COL_EQSL_QSLSDATE' => $eqslsdate,
-       'COL_EQSL_QSLRDATE' => $eqslrdate,
-       'COL_EQSL_QSL_SENT' => $this->input->post('eqsl_sent'),
-       'COL_EQSL_QSL_RCVD' => $this->input->post('eqsl_rcvd'),
-       'COL_QSLMSG' => $this->input->post('qslmsg'),
-       'COL_LOTW_QSLSDATE' => $lotwsdate,
-       'COL_LOTW_QSLRDATE' => $lotwrdate,
-       'COL_LOTW_QSL_SENT' => $this->input->post('lotw_sent'),
-       'COL_LOTW_QSL_RCVD' => $this->input->post('lotw_rcvd'),
-       'COL_IOTA' => $this->input->post('iota_ref'),
-       'COL_SOTA_REF' => $this->input->post('sota_ref'),
-       'COL_WWFF_REF' => $this->input->post('wwff_ref'),
-       'COL_POTA_REF' => $this->input->post('pota_ref'),
-       'COL_TX_PWR' => $txpower,
-       'COL_SIG' => $this->input->post('sig'),
-       'COL_SIG_INFO' => $this->input->post('sig_info'),
-       'COL_DARC_DOK' => strtoupper($this->input->post('darc_dok')),
-       'COL_QTH' => $this->input->post('qth'),
-       'COL_PROP_MODE' => $this->input->post('prop_mode'),
-       'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
-       'COL_STX_STRING' => strtoupper(trim($this->input->post('stx_string'))),
-       'COL_SRX_STRING' => strtoupper(trim($this->input->post('srx_string'))),
-       'COL_STX' => $stx_string,
-       'COL_SRX' => $srx_string,
-       'COL_CONTEST_ID' => $this->input->post('contest_name'),
-       'COL_QSL_VIA' => $this->input->post('qsl_via_callsign'),
-       'station_id' => $stationId,
-       'COL_STATION_CALLSIGN' => $stationCallsign,
-       'COL_OPERATOR' => $this->input->post('operator_callsign'),
-       'COL_STATE' =>$this->input->post('usa_state'),
-       'COL_CNTY' => $uscounty
-    );
+	  if ($lotw_rcvd == 'N') {
+		  $lotwrdate = null;
+	  } elseif (!$qso->COL_LOTW_QSLRDATE || $qso->COL_LOTW_QSL_RCVD != $lotw_rcvd) {
+		  $lotwrdate = date('Y-m-d H:i:s');
+	  } else {
+		  $lotwrdate = $qso->COL_LOTW_QSLRDATE;
+	  }
 
-    if ($this->exists_hrdlog_code($data['station_id'])) {
-        $data['COL_HRDLOG_QSO_UPLOAD_STATUS'] = 'M';
-    }
+	  $data = array(
+		  'COL_TIME_ON' => $this->input->post('time_on'),
+		  'COL_TIME_OFF' => $this->input->post('time_off'),
+		  'COL_CALL' => strtoupper(trim($this->input->post('callsign'))),
+		  'COL_BAND' => $this->input->post('band'),
+		  'COL_BAND_RX' => $this->input->post('band_rx'),
+		  'COL_FREQ' => $this->parse_frequency($this->input->post('freq')),
+		  'COL_MODE' => $mode,
+		  'COL_SUBMODE' => $submode,
+		  'COL_RST_RCVD' => $this->input->post('rst_rcvd'),
+		  'COL_RST_SENT' => $this->input->post('rst_sent'),
+		  'COL_GRIDSQUARE' => strtoupper(trim($this->input->post('locator'))),
+		  'COL_VUCC_GRIDS' => strtoupper(trim($this->input->post('vucc_grids'))),
+		  'COL_DISTANCE' => $this->input->post('distance'),
+		  'COL_COMMENT' => $this->input->post('comment'),
+		  'COL_NAME' => $this->input->post('name'),
+		  'COL_COUNTRY' => $country,
+		  'COL_CONT' => $this->input->post('continent'),
+		  'COL_DXCC'=> $this->input->post('dxcc_id'),
+		  'COL_CQZ' => $this->input->post('cqz'),
+		  'COL_SAT_NAME' => $this->input->post('sat_name'),
+		  'COL_SAT_MODE' => $this->input->post('sat_mode'),
+		  'COL_NOTES' => $this->input->post('notes'),
+		  'COL_QSLSDATE' => $qslsdate,
+		  'COL_QSLRDATE' => $qslrdate,
+		  'COL_QSL_SENT' => $qsl_sent,
+		  'COL_QSL_RCVD' => $qsl_rcvd,
+		  'COL_QSL_SENT_VIA' => $this->input->post('qsl_sent_method'),
+		  'COL_QSL_RCVD_VIA' => $this->input->post('qsl_rcvd_method'),
+		  'COL_EQSL_QSLSDATE' => $eqslsdate,
+		  'COL_EQSL_QSLRDATE' => $eqslrdate,
+		  'COL_EQSL_QSL_SENT' => $this->input->post('eqsl_sent'),
+		  'COL_EQSL_QSL_RCVD' => $this->input->post('eqsl_rcvd'),
+		  'COL_QSLMSG' => $this->input->post('qslmsg'),
+		  'COL_LOTW_QSLSDATE' => $lotwsdate,
+		  'COL_LOTW_QSLRDATE' => $lotwrdate,
+		  'COL_LOTW_QSL_SENT' => $this->input->post('lotw_sent'),
+		  'COL_LOTW_QSL_RCVD' => $this->input->post('lotw_rcvd'),
+		  'COL_IOTA' => $this->input->post('iota_ref'),
+		  'COL_SOTA_REF' => $this->input->post('sota_ref'),
+		  'COL_WWFF_REF' => $this->input->post('wwff_ref'),
+		  'COL_POTA_REF' => $this->input->post('pota_ref'),
+		  'COL_TX_PWR' => $txpower,
+		  'COL_SIG' => $this->input->post('sig'),
+		  'COL_SIG_INFO' => $this->input->post('sig_info'),
+		  'COL_DARC_DOK' => strtoupper($this->input->post('darc_dok')),
+		  'COL_QTH' => $this->input->post('qth'),
+		  'COL_PROP_MODE' => $this->input->post('prop_mode'),
+		  'COL_FREQ_RX' => $this->parse_frequency($this->input->post('freq_display_rx')),
+		  'COL_STX_STRING' => strtoupper(trim($this->input->post('stx_string'))),
+		  'COL_SRX_STRING' => strtoupper(trim($this->input->post('srx_string'))),
+		  'COL_STX' => $stx_string,
+		  'COL_SRX' => $srx_string,
+		  'COL_CONTEST_ID' => $this->input->post('contest_name'),
+		  'COL_QSL_VIA' => $this->input->post('qsl_via_callsign'),
+		  'station_id' => $stationId,
+		  'COL_STATION_CALLSIGN' => $stationCallsign,
+		  'COL_OPERATOR' => $this->input->post('operator_callsign'),
+		  'COL_STATE' =>$this->input->post('usa_state'),
+		  'COL_CNTY' => $uscounty
+	  );
 
-    if ($this->exists_qrz_api_key($data['station_id'])) {
-        $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
-    }
+	  if ($this->exists_hrdlog_code($data['station_id'])) {
+		  $data['COL_HRDLOG_QSO_UPLOAD_STATUS'] = 'M';
+	  }
 
-    $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
-    $this->db->update($this->config->item('table_name'), $data);
+	  if ($this->exists_qrz_api_key($data['station_id'])) {
+		  $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
+	  }
+
+	  $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
+	  $this->db->update($this->config->item('table_name'), $data);
 
   }
 
