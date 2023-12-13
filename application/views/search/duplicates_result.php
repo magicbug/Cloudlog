@@ -36,7 +36,7 @@ if ($qsos->result() != NULL) {
 		echo '<td style=\'text-align: center\'>'; $timestamp = strtotime($qso->Maxtime); echo date('H:i', $timestamp); echo '</td>';
 		echo '<td style=\'text-align: center\'>'; echo $qso->COL_SUBMODE==null?$qso->COL_MODE:$qso->COL_SUBMODE; echo '</td>';
 		echo '<td style=\'text-align: center\'>'; if($qso->COL_SAT_NAME != null) { echo $qso->COL_SAT_NAME; } else { echo strtolower($qso->COL_BAND); }; echo '</td>';
-		echo '<td style=\'text-align: center\'><span class="badge badge-light">' . $qso->station_callsign . '</span></td>';
+		echo '<td style=\'text-align: center\'><span class="badge text-bg-light">' . $qso->station_callsign . '</span></td>';
 		echo '</tr>';
 	}
 
@@ -45,6 +45,6 @@ if ($qsos->result() != NULL) {
 
 	<?php
 } else {
-	echo '<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>No duplicate QSO\'s were found.</div>';
+	echo '<div class="alert alert-success">No duplicate QSO\'s were found.</div>';
 }
 ?>

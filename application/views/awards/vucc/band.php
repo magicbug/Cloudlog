@@ -1,7 +1,7 @@
 <div class="container">
     <h2><?php echo $page_title; ?></h2>
 
-    <h3>Filtering on <?php echo $filter ?></h3>
+    <h3><?php echo lang('general_word_filtering_on'); ?> <?php echo $filter ?></h3>
     <?php
     $i = 1;
     if ($vucc_array) {
@@ -38,6 +38,6 @@
 
     }
     else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+        echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
     }
     ?>

@@ -68,19 +68,11 @@ function setSession(formdata) {
 // realtime clock
 if ( ! manual ) {
 	$(function ($) {
-		var options = {
-			utc: true,
-			format: '%H:%M:%S'
-		}
-		$('.input_time').jclock(options);
+		handleStart = setInterval(function() { getUTCTimeStamp($('.input_time')); }, 500);
 	});
 
 	$(function ($) {
-		var options = {
-			utc: true,
-			format: '%d-%m-%Y'
-		}
-		$('.input_date').jclock(options);
+		          handleDate = setInterval(function() { getUTCDateStamp($('.input_date')); }, 1000);
 	});
 }
 
@@ -257,7 +249,7 @@ function checkIfWorkedBefore() {
 	}
 }
 
-function reset_log_fields() {
+async function reset_log_fields() {
 	$('#name').val("");
 	$('.callsign-suggestions').text("");
 	$('#callsign').val("");
@@ -269,6 +261,7 @@ function reset_log_fields() {
 	setRst($("#mode").val());
 	$('#callsign_info').text("");
 
+	await refresh_qso_table(sessiondata);
 	var qTable = $('.qsotable').DataTable();
 	qTable.search('').draw();
 }
@@ -570,4 +563,18 @@ async function refresh_qso_table(data) {
 function pad (str, max) {
 	str = str.toString();
 	return str.length < max ? pad("0" + str, max) : str;
+}
+
+function getUTCTimeStamp(el) {
+	var now = new Date();
+	var localTime = now.getTime();
+	var utc = localTime + (now.getTimezoneOffset() * 60000);
+	$(el).attr('value', ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+}
+
+function getUTCDateStamp(el) {
+	var now = new Date();
+	var localTime = now.getTime();
+	var utc = localTime + (now.getTimezoneOffset() * 60000);
+	$(el).attr('value', ("0" + now.getUTCDate()).slice(-2)+'-'+("0" + (now.getUTCMonth()+1)).slice(-2)+'-'+now.getUTCFullYear());
 }

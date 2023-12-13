@@ -90,8 +90,8 @@ function qsl_ignore(id, method) {
 
 function qso_delete(id, call) {
     BootstrapDialog.confirm({
-        title: 'DANGER',
-        message: 'Warning! Are you sure you want delete QSO with ' + call + '?' ,
+        title: lang_general_word_danger,
+        message: lang_qso_delete_warning + call + '?' ,
         type: BootstrapDialog.TYPE_DANGER,
         closable: true,
         draggable: true,
@@ -124,7 +124,7 @@ function qso_edit(id) {
         },
         success: function(html) {
             BootstrapDialog.show({
-                title: 'QSO Data',
+                title: lang_general_word_qso_data,
                 cssClass: 'edit-dialog',
                 size: BootstrapDialog.SIZE_WIDE,
                 nl2br: false,
@@ -148,7 +148,7 @@ function qso_edit(id) {
                             //$('#stationCntyInput')[0].selectize.destroy();
                             $("#stationCntyInputEdit").val("");
                         }
-                    });
+            });
 
                     $('#locator').change(function(){
                         if ($(this).val().length >= 4) {
@@ -294,6 +294,17 @@ function qso_edit(id) {
                             });
                         }
                     });
+                    // [eQSL default msg] change value (for qso edit page) //
+                    $('.modal-content #stationProfile').change(function() { 
+                        qso_set_eqsl_qslmsg($('.modal-content #stationProfile').val(),false,'.modal-content'); 
+                    });
+                    $('.modal-content .qso_eqsl_qslmsg_update').off('click').on('click',function() { 
+                        qso_set_eqsl_qslmsg($('.modal-content #stationProfile').val(),true,'.modal-content');
+                        $('.modal-content #charsLeft').text(" ");
+                    });
+                    $('.modal-content #qslmsg').keyup(function(event) {
+                        calcRemainingChars(event, '.modal-content');
+                    });
                 },
             });
         }
@@ -321,7 +332,7 @@ function spawnQrbCalculator(locator1, locator2) {
                     }
 				},
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}
@@ -346,7 +357,7 @@ function spawnActivatorsMap(call, count, grids) {
 					showActivatorsMap(call, count, grids);
 				},
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}
@@ -430,7 +441,7 @@ function spawnLookupModal(searchphrase, searchtype) {
                     }
 				},
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}
@@ -510,7 +521,7 @@ function getDxccResult(dxcc, name) {
 		},
 		success: function (html) {
             $('.dxccsummary').remove();
-            $('.qsopane').append('<div class="dxccsummary col-sm-12"><br><div class="card"><div class="card-header dxccsummaryheader" data-toggle="collapse" data-target=".dxccsummarybody">DXCC Summary for '+name+'</div><div class="card-body collapse dxccsummarybody"></div></div></div>');
+            $('.qsopane').append('<div class="dxccsummary col-sm-12"><br><div class="card"><div class="card-header dxccsummaryheader" data-bs-toggle="collapse" data-bs-target=".dxccsummarybody">DXCC Summary for '+name+'</div><div class="card-body collapse dxccsummarybody"></div></div></div>');
             $('.dxccsummarybody').append(html);
 		}
 	});
@@ -534,7 +545,7 @@ function displayQsl(id) {
 
 				},
 				buttons: [{
-					label: 'Close',
+					label: lang_admin_close,
 					action: function (dialogItself) {
 						dialogItself.close();
 					}
@@ -542,4 +553,23 @@ function displayQsl(id) {
 			});
 		}
 	});
+}
+
+
+// [eQSL default msg] function to load default qslmsg to qslmsg field on qso add/edit //
+function qso_set_eqsl_qslmsg(station_id, force_diff_to_origin=false, object='') {
+    $.ajax({
+        url: base_url+'index.php/station/get_options',
+        type: 'post', data: {'option_type':'eqsl_default_qslmsg','option_name':'key_station_id','option_key':station_id },
+        success: function(res) {
+            if (typeof res.eqsl_default_qslmsg !== "undefined") { 
+                object = (object!='')?(object+' '):'';
+                if ((force_diff_to_origin) || ($(object+'#qslmsg').val()==$(object+'#qslmsg_hide').html())) {
+                    $(object+'#qslmsg').val(res.eqsl_default_qslmsg); 
+                    $(object+'#qslmsg_hide').html(res.eqsl_default_qslmsg);
+                }
+            }
+        },
+        error: function() { },
+    });
 }

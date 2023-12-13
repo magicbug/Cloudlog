@@ -24,8 +24,8 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
             foreach ($result as $qso) {
                 echo '<tr>';
                     echo '<td>'. $i++ .'</td>';
-                    echo '<td><input class="form-control" type="date" name="date" value="" id="date" placeholder="YYYY-MM-DD"></td>';
-                    echo '<td><input class="form-control qsotime" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM"></td>';
+                    echo '<td><input class="form-control" type="date" name="date" value="" id="date"></td>';
+                    echo '<td><input class="form-control qsotime" type="text" name="time" value="" id="time" maxlength="5" placeholder="hh:mm"></td>';
                     echo '<td id="band">'. $qso->col_band .'</td>';
                     echo '<td id="mode">'; echo $qso->col_submode == null ? strtoupper($qso->col_mode) : strtoupper($qso->col_submode);  echo '</td>';
                 echo '</tr>';
@@ -50,13 +50,13 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
         <label class="form-check-label" for="direct">Direct (write address in message below)</label>
     </div>
     <br /><br />
-    <div class="form-group">
+    <div class="mb-3">
         <label for="message">Message</label>
         <textarea name="message" class="form-control" id="messageInput" rows="3" aria-describedby="messageHelp"></textarea>
         <small id="messageHelp" class="form-text text-muted">Any extra information we need to know about?</small>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
         <label for="emailInput">E-mail</label>
         <input type="text" class="form-control" name="mode" id="emailInput" aria-describedby="emailInputHelp" required>
         <small id="emailInputHelp" class="form-text text-muted">Your e-mail address where we can contact you</small>

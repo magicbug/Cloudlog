@@ -40,7 +40,7 @@ class Oqrs extends CI_Controller {
 	public function get_qsos() {
 		$this->load->model('bands');
 		$data['bands'] = $this->bands->get_worked_bands_oqrs($this->security->xss_clean($this->input->post('station_id')));
-		
+
 		$this->load->model('oqrs_model');
 		$result = $this->oqrs_model->get_qsos($this->input->post('station_id'), $this->input->post('callsign'), $data['bands']);
 		$data['callsign'] = $this->security->xss_clean($this->input->post('callsign'));
@@ -60,7 +60,7 @@ class Oqrs extends CI_Controller {
 
 	public function not_in_log() {
 		$data['page_title'] = "Log Search & OQRS";
-		
+
 		$this->load->model('bands');
 		// $data['bands'] = $this->bands->get_worked_bands_oqrs($this->security->xss_clean($this->input->post('station_id')));
 
@@ -68,10 +68,13 @@ class Oqrs extends CI_Controller {
 	}
 
 	public function save_not_in_log() {
+		$station_ids = array();
+
 		$postdata = $this->input->post();
 		$this->load->model('oqrs_model');
 		$this->oqrs_model->save_not_in_log($postdata);
-		$this->alert_oqrs_request($postdata);
+		array_push($station_ids, xss_clean($this->input->post('station_id')));
+		$this->alert_oqrs_request($postdata, $station_ids);
 	}
 
 	/*
@@ -152,20 +155,21 @@ class Oqrs extends CI_Controller {
 	public function alert_oqrs_request($postdata, $station_ids) {
 		foreach ($station_ids as $id) {
 			$this->load->model('user_model');
-			
+
 			$email = $this->user_model->get_email_address($id);
-	
+
 			$this->load->model('oqrs_model');
-						
+
 			$sendEmail = $this->oqrs_model->getOqrsEmailSetting($id);
-	
+
 			if($email != "" && $sendEmail == "1") {
-							
+
 				$this->load->library('email');
-	
+
 				if($this->optionslib->get_option('emailProtocol') == "smtp") {
 					$config = Array(
 						'protocol' => $this->optionslib->get_option('emailProtocol'),
+						'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
 						'smtp_host' => $this->optionslib->get_option('smtpHost'),
 						'smtp_port' => $this->optionslib->get_option('smtpPort'),
 						'smtp_user' => $this->optionslib->get_option('smtpUsername'),
@@ -173,26 +177,26 @@ class Oqrs extends CI_Controller {
 						'crlf' => "\r\n",
 						'newline' => "\r\n"
 					);
-	
+
 					$this->email->initialize($config);
 				}
-	
+
 				$data['callsign'] = $this->security->xss_clean($postdata['callsign']);
 				$data['usermessage'] = $this->security->xss_clean($postdata['message']);
-	
+
 				$message = $this->load->view('email/oqrs_request', $data,  TRUE);
-				
+
 				$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
 				$this->email->to($email);
 				$this->email->reply_to($this->security->xss_clean($postdata['email']), strtoupper($data['callsign']));
-	
+
 				$this->email->subject('Cloudlog OQRS from ' . strtoupper($data['callsign']));
 				$this->email->message($message);
-	
+
 				if (! $this->email->send()) {
-					$this->session->set_flashdata('warning', 'Email settings are incorrect.');
+					log_message('error', 'OQRS Alert! Email settings are incorrect.');
 				} else {
-					$this->session->set_flashdata('notice', 'Password Reset Processed.');
+					log_message('info', 'An OQRS request is made.');
 				}
 			}
 		}

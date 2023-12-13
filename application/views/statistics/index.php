@@ -7,6 +7,20 @@
 		margin: 0 auto;
 	}
 </style>
+
+
+<script>
+		// General Language
+		var lang_statistics_years = "<?php echo lang('statistics_years')?>";
+		var lang_statistics_modes = "<?php echo lang('statistics_modes')?>";
+		var lang_statistics_bands = "<?php echo lang('statistics_bands')?>";
+		var lang_statistics_number_of_qso_worked_each_year = "<?php echo lang('statistics_number_of_qso_worked_each_year')?>";
+		var lang_statistics_year = "<?php echo lang('statistics_year')?>";
+		var lang_statistics_number_of_qso_worked = "<?php echo lang('statistics_number_of_qso_worked')?>";
+		var lang_gen_hamradio_mode = "<?php echo lang('gen_hamradio_mode')?>";
+		var lang_gen_hamradio_band = "<?php echo lang('gen_hamradio_band')?>";
+</script>
+
 <div class="container statistics">
 
 	<h2>
@@ -18,11 +32,11 @@
 	<div hidden class="tabs">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 			<li class="nav-item">
-				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">General</a>
+				<a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">General</a>
 			</li>
 			<?php if ($sat_active) { ?>
 			<li class="nav-item">
-				<a class="nav-link" id="satellite-tab" data-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Satellites</a>
+				<a class="nav-link" id="satellite-tab" data-bs-toggle="tab" href="#satellite" role="tab" aria-controls="satellite" aria-selected="false">Satellites</a>
 			</li>
 			<?php } ?>
 		</ul>
@@ -33,24 +47,24 @@
 					<br />
 					<ul class="nav nav-pills" id="myTab2" role="tablist">
 						<li class="nav-item">
-							<a class="nav-link active" id="years-tab" data-toggle="tab" href="#yearstab" role="tab" aria-controls="yearstab" aria-selected="true"><?php echo lang('statistics_years'); ?></a>
+							<a class="nav-link active" id="years-tab" data-bs-toggle="tab" href="#yearstab" role="tab" aria-controls="yearstab" aria-selected="true"><?php echo lang('statistics_years'); ?></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="mode-tab" data-toggle="tab" href="#modetab" role="tab" aria-controls="modetab" aria-selected="false"><?php echo lang('statistics_mode'); ?></a>
+							<a class="nav-link" id="mode-tab" data-bs-toggle="tab" href="#modetab" role="tab" aria-controls="modetab" aria-selected="false"><?php echo lang('statistics_modes'); ?></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="band-tab" data-toggle="tab" href="#bandtab" role="tab" aria-controls="bandtab" aria-selected="false"><?php echo lang('statistics_bands'); ?></a>
+							<a class="nav-link" id="band-tab" data-bs-toggle="tab" href="#bandtab" role="tab" aria-controls="bandtab" aria-selected="false"><?php echo lang('statistics_bands'); ?></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="qso-tab" data-toggle="tab" href="#qsotab" role="tab" aria-controls="bandtab" aria-selected="false"><?php echo lang('statistics_qsos'); ?></a>
+							<a class="nav-link" id="qso-tab" data-bs-toggle="tab" href="#qsotab" role="tab" aria-controls="bandtab" aria-selected="false"><?php echo lang('statistics_qsos'); ?></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" id="unique-tab" data-toggle="tab" href="#uniquetab" role="tab" aria-controls="uniquetab" aria-selected="false"><?php echo lang('statistics_unique_callsigns'); ?></a>
+							<a class="nav-link" id="unique-tab" data-bs-toggle="tab" href="#uniquetab" role="tab" aria-controls="uniquetab" aria-selected="false"><?php echo lang('statistics_unique_callsigns'); ?></a>
 						</li>
 					</ul>
 				<div class="tab-content">
 					<div class="tab-pane fade show active" id="yearstab" role="tabpanel" aria-labelledby="years-tab">
-						<div class="years">
+						<div class="years" style="margin-top: 20px;">
 						</div>
 					</div>
 					<div class="tab-pane fade" id="modetab" role="tabpanel" aria-labelledby="mode-tab">

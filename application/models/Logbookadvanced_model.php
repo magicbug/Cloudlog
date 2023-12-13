@@ -7,15 +7,30 @@ class Logbookadvanced_model extends CI_Model {
 		$conditions = [];
 		$binding = [$searchCriteria['user_id']];
 
+		if ((isset($searchCriteria['dupes'])) && ($searchCriteria['dupes'] !== '')) {
+			$id_sql="select GROUP_CONCAT(col_primary_key separator ',') as qsoids, COL_CALL, COL_MODE, COL_SUBMODE, station_callsign, COL_SAT_NAME, COL_BAND,  min(col_time_on) Mintime, max(col_time_on) Maxtime from " . $this->config->item('table_name') . "
+				 join station_profile on " . $this->config->item('table_name') . ".station_id = station_profile.station_id where station_profile.user_id=?
+				group by col_call, col_mode, COL_SUBMODE, STATION_CALLSIGN, col_band, COL_SAT_NAME having count(*) > 1 and timediff(maxtime, mintime) < 3000";
+			$id_query = $this->db->query($id_sql, $searchCriteria['user_id']);
+			$ids2fetch = '';
+			foreach ($id_query->result() as $id) {
+				$ids2fetch .= ','.$id->qsoids;
+			}
+			$ids2fetch = ltrim($ids2fetch, ',');
+			if ($ids2fetch ?? '' !== '') {
+				$conditions[] = "qsos.COL_PRIMARY_KEY in (".$ids2fetch.")";
+			} else {
+				$conditions[] = "1=0";
+			}
+		}
+
         if ($searchCriteria['dateFrom'] !== '') {
-            $from = DateTime::createFromFormat('d/m/Y', $searchCriteria['dateFrom']);
-			$from = $from->format('Y-m-d');
+            $from = $searchCriteria['dateFrom'];
 			$conditions[] = "date(COL_TIME_ON) >= ?";
 			$binding[] = $from;
 		}
         if ($searchCriteria['dateTo'] !== '') {
-            $to = DateTime::createFromFormat('d/m/Y', $searchCriteria['dateTo']);
-			$to = $to->format('Y-m-d');
+            $to = $searchCriteria['dateTo'];
 			$conditions[] = "date(COL_TIME_ON) <= ?";
 			$binding[] = $to;
 		}
@@ -61,6 +76,18 @@ class Logbookadvanced_model extends CI_Model {
 			}
 			$conditions[] = $condition;
 			$binding[] = $searchCriteria['qslReceived'];
+		}
+
+		if ($searchCriteria['qslSentMethod'] !== '') {
+			$condition = "COL_QSL_SENT_VIA = ?";
+			$conditions[] = $condition;
+			$binding[] = $searchCriteria['qslSentMethod'];
+		}
+
+		if ($searchCriteria['qslReceivedMethod'] !== '') {
+			$condition = "COL_QSL_RCVD_VIA = ?";
+			$conditions[] = $condition;
+			$binding[] = $searchCriteria['qslReceivedMethod'];
 		}
 
 		if ($searchCriteria['lotwSent'] !== '') {
@@ -141,6 +168,11 @@ class Logbookadvanced_model extends CI_Model {
 			$binding[] = $searchCriteria['wwff'].'%';
 		}
 
+		if ($searchCriteria['operator'] !== '') {
+			$conditions[] = "COL_OPERATOR like ?";
+			$binding[] = $searchCriteria['operator'].'%';
+		}
+
         if ($searchCriteria['gridsquare'] !== '') {
                 $conditions[] = "(COL_GRIDSQUARE like ? or COL_VUCC_GRIDS like ?)";
                 $binding[] = '%' . $searchCriteria['gridsquare'] . '%';
@@ -197,11 +229,9 @@ class Logbookadvanced_model extends CI_Model {
 			ORDER BY qsos.COL_TIME_ON desc, qsos.COL_PRIMARY_KEY desc
 			LIMIT $limit
 		";
-
 		$data = $this->db->query($sql, $binding);
 
         $results = $data->result('array');
-
 		return $results;
 	}
 

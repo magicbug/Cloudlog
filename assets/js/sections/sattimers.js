@@ -7,11 +7,24 @@ function update(i) {
     element.classList.add("nonfunctional");
     element = document.getElementById("emoji"+i);
     element.innerHTML = "&#x1F480;";
-  } else {
+    element = document.getElementById("tevel"+i+"Timeout");
+    element.className = "expired";
+    element = document.getElementById("tevel"+i+"AosTime");
+    element.className = "expired";
+    element = document.getElementById("tevel"+i+"LosTime");
+    element.className = "expired";
+    element = document.getElementById("tevel"+i+"Aos");
+    element.className = "expired";
+    element = document.getElementById("tevel"+i+"Los");
+    element.className = "expired";
+    element = document.getElementById("tevel"+i+"MaxEl");
+    element.className = "expired";
+    element = document.getElementById("tevel"+i+"Duration");
+    element.className = "expired";
+} else {
 
-     //var distance = dateArray[i] - now.getTime();
-     var distance = parseInt(dateArray[i]) - new Date(now.getTime()+now.getTimezoneOffset()*60*1000);
-     var satDate = new Date(parseInt(dateArray[i]) - now.getTimezoneOffset()*60*1000);
+     var distance = parseInt(dateArray[i]) - new Date(now.getTime());
+     var satDate = new Date(parseInt(dateArray[i]));
 
      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -27,7 +40,19 @@ function update(i) {
        element.innerHTML = "&#x274C;";
        element = document.getElementById("tevel"+i+"Timeout");
        element.className = "expired";
-       element.innerHTML = "(timed-out: "+satDate.toLocaleDateString()+" "+satDate.toLocaleTimeString()+")";
+       element.innerHTML = moment(satDate).format(custom_date_format)+" "+satDate.getUTCHours().toString().padStart(2, '0')+":"+satDate.getUTCMinutes().toString().padStart(2, '0');
+       element = document.getElementById("tevel"+i+"AosTime");
+       element.className = "expired";
+       element = document.getElementById("tevel"+i+"LosTime");
+       element.className = "expired";
+       element = document.getElementById("tevel"+i+"Aos");
+       element.className = "expired";
+       element = document.getElementById("tevel"+i+"Los");
+       element.className = "expired";
+       element = document.getElementById("tevel"+i+"MaxEl");
+       element.className = "expired";
+       element = document.getElementById("tevel"+i+"Duration");
+       element.className = "expired";
      } else {
        var element = document.getElementById("tevel"+i+"Timer");
        element.innerHTML = days + "d " + hours + "h " + minutes.toString().padStart(2, '0') + "m " + seconds.toString().padStart(2, '0') + "s";
@@ -35,12 +60,12 @@ function update(i) {
        element = document.getElementById("emoji"+i);
        element.innerHTML = "&#x2705;";
        element = document.getElementById("tevel"+i+"Timeout");
-       element.innerHTML = "(until: "+satDate.toLocaleDateString()+" "+satDate.toLocaleTimeString()+")";
+       element.innerHTML = moment(satDate).format(custom_date_format)+" "+satDate.getUTCHours().toString().padStart(2, '0')+":"+satDate.getUTCMinutes().toString().padStart(2, '0');
      }
   }
 }
 
-for (let i=1; i<=12; i++) {
+for (let i=1; i<=13; i++) {
       var x = setInterval(function() {
                update(i);
             }, 1000);

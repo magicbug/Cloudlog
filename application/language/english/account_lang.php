@@ -13,12 +13,15 @@ $lang['account_create_user_account'] = 'Create User Account';
 $lang['account_edit_account'] = 'Edit Account';
 
 $lang['account_account_information'] = 'Account Information';
+$lang['account_user'] = "User";
+$lang['account_word_edited'] = "edited";
 $lang['account_username'] = 'Username';
 $lang['account_email_address'] = 'Email Address';
 $lang['account_password'] = 'Password';
 
 $lang['account_roles'] = 'Roles';
 $lang['account_user_role'] = 'User Role';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Theme';
 $lang['account_stylesheet'] = 'Stylesheet';
@@ -32,11 +35,21 @@ $lang['account_gridsquare'] = 'Gridsquare';
 $lang['account_cloudlog_preferences'] = 'Cloudlog Preferences';
 $lang['account_timezone'] = 'Timezone';
 $lang['account_date_format'] = 'Date Format';
+$lang['account_log_end_time'] = 'Log End Times for QSOs Separately';
+$lang['account_log_end_time_hint'] = 'Choose yes here if you want to log QSO start and end times separately. If set to \'No\' the end time will be the same as start time.';
+$lang['account_quicklog_feature'] = "Quicklog Field";
+$lang['account_quicklog_feature_hint'] = "With this feature, you can log callsigns using the search field in the header.";
+$lang['account_quicklog_enter'] = "Quicklog - Action on press Enter";
+$lang['account_quicklog_enter_hint'] = "What action should be performed when Enter is pressed in the quicklog field?";
+$lang['account_quicklog_enter_log'] = "Log Callsign";
+$lang['account_quicklog_enter_search'] = "Search Callsign";
 $lang['account_measurement_preferences'] = 'Measurement preference';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Select how you would like dates shown when logged into your account.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Choose which unit distances will be shown in';
+$lang['account_cloudlog_language'] = 'Cloudlog Language';
+$lang['account_choose_cloudlog_language'] = 'Choose Cloudlog language.';
 
-$lang['account_main_menu'] = 'Main Menu';
+$lang['account_main_menu'] = 'Menu Options';
 $lang['account_show_notes_in_the_main_menu'] = 'Show notes in the main menu.';
 
 $lang['account_gridsquare_and_location_autocomplete'] = 'Gridsquare and Location Autocomplete';
@@ -92,7 +105,18 @@ $lang['account_login'] = 'Login';
 
 $lang['account_mastodon'] = 'Mastodonserver';
 $lang['account_user_mastodon'] = 'URL of Mastodonserver';
+$lang['account_user_mastodon_hint'] = "Main URL of your Mastodon server, e.g. <a href='https://radiosocial.de/' target='_blank'>https://radiosocial.de";
 
-$lang['account_gridmap_settings'] = 'Settings for Gridsquare Map';
+$lang['account_default_band_settings'] = 'Settings for Default Band and Confirmation';
 $lang['account_gridmap_default_band'] = 'Default Band';
-$lang['account_qsl_settings'] = 'Default QSL-Method shown in views (Gridsquare and Add-QSO)';
+$lang['account_qsl_settings'] = 'Default QSL-Methods';
+
+$lang['account_winkeyer'] = 'Winkeyer';
+$lang['account_winkeyer_hint'] = "Winkeyer support in Cloudlog is very experimental read the wiki first at <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a> before enabling.";
+$lang['account_winkeyer_enabled'] = "Winkeyer Features Enabled";
+
+$lang['account_map_params'] = "Settings for map";
+$lang['account_map_qso_by_default'] = "QSO (by default)";
+$lang['account_map_qso_confirm'] = "QSO (confirmed)";
+$lang['account_map_qso_confirm_same_qso'] = "(If 'No', displayed as ".$lang['account_map_qso_by_default'].")";
+

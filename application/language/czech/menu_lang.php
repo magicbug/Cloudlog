@@ -11,8 +11,10 @@ $lang['menu_advanced'] = 'Pokročilé zobrazení';
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = 'Živé QSO';
 $lang['menu_post_qso'] = 'Uložit QSO';
+$lang['menu_fast_log_entry'] = "Simple Fast Log Entry";
 $lang['menu_live_contest_logging'] = 'Živé závodní logování';
 $lang['menu_post_contest_logging'] = 'Uložit závodní log';
+$lang['menu_bandmap'] = 'Bandmap';
 $lang['menu_view_qsl'] = 'Zobrazit QSL';
 $lang['menu_view_eqsl'] = 'Zobrazit eQSL';
 
@@ -34,14 +36,18 @@ $lang['menu_continents'] = 'Kontinenty';
 
 $lang['menu_awards'] = 'Diplomy';
 $lang['menu_cq'] = 'CQ';
+$lang['menu_dl_gridmaster'] = 'DL Gridmaster';
 $lang['menu_dok'] = 'DOK';
 $lang['menu_dxcc'] = 'DXCC';
 $lang['menu_iota'] = 'IOTA';
+$lang['menu_lx_gridmaster'] = 'LX Gridmaster';
 $lang['menu_pota'] = 'POTA';
 $lang['menu_sig'] = 'SIG';
 $lang['menu_sota'] = 'SOTA';
 $lang['menu_us_counties'] = 'US okresy';
+$lang['menu_us_gridmaster'] = 'US Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
+$lang['menu_waja'] = 'WAJA';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
 
@@ -56,8 +62,10 @@ $lang['menu_update_country_files'] = 'Aktualizace souborů';
 $lang['menu_debug_information'] = 'Informace pro ladění';
 
 $lang['menu_search_text'] = 'Hledat značku';
+$lang['menu_search_text_quicklog'] = "Add/Search Callsign";
 
 $lang['menu_search_button'] = 'Hledat';
+$lang['menu_search_button_qicksearch_log'] = "Log";
 $lang['menu_login_button'] = 'Přihlásit se';
 
 $lang['menu_account'] = 'Účet';
@@ -82,3 +90,7 @@ $lang['menu_hardware_interfaces'] = 'Hardwarové rozhraní';
 $lang['menu_help'] = 'Nápověda';
 $lang['menu_forum'] = 'Fórum';
 $lang['menu_logout'] = 'Odhlásit se';
+
+$lang['menu_ffma'] = "Fred Fish Memorial Award";
+$lang['menu_ja_gridmaster'] = 'JA Gridmaster';
+$lang['menu_maintenance']='Maintenance';

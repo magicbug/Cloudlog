@@ -15,7 +15,41 @@ $lang['admin_options'] = 'Опции';
 
 $lang['admin_create_user'] = 'Создать пользователя';
 $lang['admin_delete'] = 'Удалить';
+$lang['admin_remove'] = "Remove";
 $lang['admin_edit'] = 'Редактировать';
-
+$lang['admin_create'] = 'Create';
+$lang['admin_update'] = 'Update';
+$lang['admin_copy'] = 'Copy';
+$lang['admin_save'] = 'Save';
+$lang['admin_close'] = 'Close';
 $lang['admin_user_accounts'] = 'Аккаунты пользователей';
+$lang['admin_danger'] = 'ОПАСНО!';
+$lang['admin_experimental'] = "Экспериментально";
+
+
+
+// Contest Menu
+
+$lang['admin_contest_menu_line_1'] = 'Используя список контестов, вы можете котролировать, которые контесты будут показаны при записи QSO в контесте.';
+$lang['admin_contest_menu_line_2'] = 'Активные контесты будут показаны в выпадающем списке \'Название контеста\', неактивные будут скрыты, и их будет невозможно выбрать.';
+$lang['admin_contest_menu_name'] = 'Название';
+$lang['admin_contest_menu_adif'] = 'название для ADIF';
+$lang['admin_contest_menu_active'] = 'Активный';
+$lang['admin_contest_menu_n_active'] = 'Не активный';
+$lang['admin_contest_menu_activate'] = 'Активировать';
+$lang['admin_contest_menu_deactivate'] = 'Деактивировать';
+
+$lang['admin_contest_add_contest'] = 'Добавить контест';
+$lang["admin_contest_create"] = "Создать";
+$lang['admin_contest_all_active'] = 'Активировать все';
+$lang['admin_contest_all_deactive'] = 'Деактивировать все';
+
+$lang['admin_contest_name_adif'] = 'Название контеста для ADIF';
+$lang['admin_contest_name_of_contest'] = 'Название контеста';
+$lang['admin_contest_name_of_adif'] = 'Название контеста в спецификации ADIF';
+$lang['admin_contest_edit_active_hint'] = 'Активируйте для отображения в списке контестов';
+$lang['admin_contest_edit_update_contest'] = 'Обновить контест';
+$lang['admin_contest_deletion_warning'] = 'Предупреждение! Вы уверены в том, что хотите удалить следующий контест: ';
+$lang['admin_contest_active_all_warning'] = 'Предупреждение! Вы уверены в том, что хотите активировать все контесты?';
+$lang['admin_contest_deactive_all_warning'] = 'Предупреждение! Вы уверены в том, что хотите деактивировать все контесты?';
 

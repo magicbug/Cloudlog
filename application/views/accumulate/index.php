@@ -4,10 +4,10 @@
         <form class="form">
 
                 <!-- Select Basic -->
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label class="col-md-1 control-label" for="band">Band</label>
                     <div class="col-md-3">
-                        <select id="band" name="band" class="form-control custom-select">
+                        <select id="band" name="band" class="form-select">
                             <option value="All">All</option>
                             <?php foreach($worked_bands as $band) {
                                 echo '<option value="' . $band . '">' . $band . '</option>'."\n";
@@ -17,7 +17,7 @@
 
                     <label class="col-md-1 control-label" for="mode">Mode</label>
                     <div class="col-md-3">
-                        <select id="mode" name="mode" class="form-control custom-select">
+                        <select id="mode" name="mode" class="form-select">
                             <option value="All">All</option>
                             <?php
                             foreach($modes->result() as $mode){
@@ -32,7 +32,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="mb-3 row">
 
                         <label class="col-md-1 control-label" for="radio">Award</label>
                         <div class="col-md-3">
@@ -81,7 +81,7 @@
 
 
                 <!-- Button (Double) -->
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <div class="col-md-10">
                         <button id="button1id" type="button" name="button1id" class="btn btn-primary ld-ext-right" onclick="accumulatePlot(this.form)">Show<div class="ld ld-ring ld-spin"></div></button>
                     </div>

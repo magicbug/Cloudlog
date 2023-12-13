@@ -15,10 +15,10 @@
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="/index.php/statistics" role="tab" aria-controls="home" aria-selected="true">General</a>
+    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="/index.php/statistics" role="tab" aria-controls="home" aria-selected="true">General</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="satellite-tab" data-toggle="tab" href="/index.php/statistics#space" role="tab" aria-controls="satellite" aria-selected="false">Satellites</a>
+    <a class="nav-link" id="satellite-tab" data-bs-toggle="tab" href="/index.php/statistics#space" role="tab" aria-controls="satellite" aria-selected="false">Satellites</a>
   </li>
   <li class="nav-item">
     <a href="/index.php/statistics/custom" class="nav-link" role="tab">Custom</a>

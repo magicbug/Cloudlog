@@ -2,7 +2,7 @@
 
 class Activated_gridmap_model extends CI_Model {
 
-    function get_band_confirmed($band, $mode, $qsl, $lotw, $eqsl, $sat) {
+    function get_band_confirmed($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -15,7 +15,8 @@ class Activated_gridmap_model extends CI_Model {
 
         $sql = 'SELECT DISTINCT station_gridsquare AS GRID_SQUARES, COL_BAND FROM '
            . 'station_profile JOIN '.$this->config->item('table_name').' on '.$this->config->item('table_name').'.station_id = station_profile.station_id '
-           . 'WHERE station_profile.station_gridsquare != "" ';
+           . 'WHERE station_profile.station_gridsquare != "" '
+	   . 'AND station_profile.station_id in ('.$location_list.')';
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -34,12 +35,11 @@ class Activated_gridmap_model extends CI_Model {
 			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
         }
 
-        $sql .= $this->addQslToQuery($qsl, $lotw, $eqsl);
-
+        $sql .= $this->addQslToQuery($qsl, $lotw, $eqsl, $qrz);
 		return $this->db->query($sql);
 	}
 
-    function get_band($band, $mode, $qsl, $lotw, $eqsl, $sat) {
+    function get_band($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -52,7 +52,8 @@ class Activated_gridmap_model extends CI_Model {
 
         $sql = 'SELECT DISTINCT station_gridsquare AS GRID_SQUARES, COL_BAND FROM '
            . 'station_profile JOIN '.$this->config->item('table_name').' on '.$this->config->item('table_name').'.station_id = station_profile.station_id '
-           . 'WHERE station_profile.station_gridsquare != "" ';
+           . 'WHERE station_profile.station_gridsquare != "" '
+	   . 'AND station_profile.station_id in ('.$location_list.')';
 
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -74,7 +75,7 @@ class Activated_gridmap_model extends CI_Model {
         return $this->db->query($sql);
     }
 
-    function get_band_worked_vucc_squares($band, $mode, $qsl, $lotw, $eqsl, $sat) {
+    function get_band_worked_vucc_squares($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -111,7 +112,7 @@ class Activated_gridmap_model extends CI_Model {
         return $this->db->query($sql);
     }
 
-    function get_band_confirmed_vucc_squares($band, $mode, $qsl, $lotw, $eqsl, $sat) {
+    function get_band_confirmed_vucc_squares($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -144,48 +145,36 @@ class Activated_gridmap_model extends CI_Model {
 			$sql .= " and (col_mode ='" . $mode . "' or col_submode ='" . $mode . "')";
         }
 
-		$sql .= $this->addQslToQuery($qsl, $lotw, $eqsl);
+		$sql .= $this->addQslToQuery($qsl, $lotw, $eqsl, $qrz);
 
         return null;
 		return $this->db->query($sql);
 	}
 
-    	// Adds confirmation to query
-	function addQslToQuery($qsl, $lotw, $eqsl) {
-		$sql = '';
-		if ($lotw == "true" && $qsl == "false" && $eqsl == "false") {
-			$sql .= " and col_lotw_qsl_sent = 'Y'";
-		}
+// Adds confirmation to query
+    function addQslToQuery($qsl, $lotw, $eqsl, $qrz) {
+	    $sql = '';
+	    if ($lotw == "true") {
+		    $sql .= " or col_lotw_qsl_sent = 'Y'";
+	    }
 
-		if ($qsl == "true" && $lotw == "false" && $eqsl == "false") {
-			$sql .= " and col_qsl_true = 'Y'";
-		}
+	    if ($qsl == "true") {
+		    $sql .= " or col_qsl_sent = 'Y'";
+	    }
 
-        if ($eqsl == "true" && $lotw == "false" && $qsl == "false") {
-			$sql .= " and col_eqsl_qsl_sent = 'Y'";
-		}
+	    if ($eqsl == "true") {
+		    $sql .= " or col_eqsl_qsl_sent = 'Y'";
+	    }
 
-        if ($lotw == "true" && $qsl == "true" && $eqsl == "false") {
-			$sql .= " and (col_lotw_qsl_sent = 'Y' or col_qsl_sent = 'Y')";
-		}
+	    if ($qrz == "true") {
+		    $sql .= " or col_qrzcom_qso_upload_status = 'Y'";
+	    }
+	    if ($sql != '') {
+		    $sql='and (1=0 '.$sql.')';
+	    }
+	    return $sql;
+    }
 
-		if ($qsl == "true" && $lotw == "false" && $eqsl == "true") {
-			$sql .= " and (col_qsl_sent = 'Y' or col_eqsl_qsl_sent = 'Y')";
-		}
-
-        if ($eqsl == "true" && $lotw == "true" && $qsl == "false") {
-			$sql .= " and (col_eqsl_qsl_sent = 'Y' or col_lotw_qsl_sent = 'Y')";
-		}
-
-		if ($qsl == "true" && $lotw == "true" && $eqsl == "true") {
-			$sql .= " and (col_qsl_sent = 'Y' or col_lotw_qsl_sent = 'Y' or col_eqsl_qsl_sent = 'Y')";
-		}
-
-        if ($qsl == "false" && $lotw == "false" && $eqsl == "false") {
-			$sql .= " and (col_qsl_sent != 'Y' and col_lotw_qsl_sent != 'Y' and col_eqsl_qsl_sent != 'Y')";
-		}
-		return $sql;
-	}
 
     /*
 	 * Get's the worked modes from the log

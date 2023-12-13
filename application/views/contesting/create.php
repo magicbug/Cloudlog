@@ -20,19 +20,19 @@
 		<?php echo validation_errors(); ?>
 
 		<form>
-		<div class="form-group">
-		    <label for="contestInput">Contest Name</label>
+		<div class="mb-3">
+		    <label for="contestInput"><?php echo lang('admin_contest_menu_name'); ?></label>
 		    <input type="text" class="form-control" name="contestname" id="contestInput" aria-describedby="contestInputHelp" required>
-		    <small id="contestInputHelp" class="form-text text-muted">Name of Contest</small>
+		    <small id="contestInputHelp" class="form-text text-muted"><?php echo lang('admin_contest_name_of_contest'); ?></small>
 		  </div>
 
-		  <div class="form-group">
-		    <label for="adifcontestInput">Contest ADIF Name</label>
+		  <div class="mb-3">
+		    <label for="adifcontestInput"><?php echo lang('admin_contest_menu_adif'); ?></label>
 		    <input type="text" class="form-control" name="adifcontestname" id="adifcontestInput" aria-describedby="adifcontestInputHelp">
-		    <small id="adifcontestInputHelp" class="form-text text-muted">Name of Contest in ADIF-specification</small>
+		    <small id="adifcontestInputHelp" class="form-text text-muted"><?php echo lang('admin_contest_name_of_adif'); ?></small>
 		  </div>
 
-			<button type="button" onclick="createContest(this.form);" class="btn btn-primary btn-sm"><i class="fas fa-plus-square"></i> Create Contest</button>
+			<button type="button" onclick="createContest(this.form);" class="btn btn-primary btn-sm"><i class="fas fa-plus-square"></i> <?php echo lang('admin_contest_create'); ?></button>
 
 		</form>
 </div>

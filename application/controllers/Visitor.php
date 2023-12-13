@@ -115,11 +115,11 @@ class Visitor extends CI_Controller {
 
                 $this->load->model('dxcc');
                 $dxcc = $this->dxcc->list_current();
-    
+
                 $current = $this->logbook_model->total_countries_current($logbooks_locations_array);
-    
+
                 $data['total_countries_needed'] = count($dxcc->result()) - $current;
-    
+
                 $this->load->view('visitor/layout/header', $data);
                 $this->load->view('visitor/index');
                 $this->load->view('visitor/layout/footer');
@@ -128,10 +128,10 @@ class Visitor extends CI_Controller {
                 log_message('error', '[Visitor] XSS Attack detected on public_slug '. $public_slug);
                 show_404('Unknown Public Page.');
             }
-            
+
         }
 	}
-	
+
 	public function radio_display_component() {
 		$this->load->model('cat');
 
@@ -141,7 +141,7 @@ class Visitor extends CI_Controller {
 
     public function map() {
 		$this->load->model('logbook_model');
-		
+
 		$this->load->library('qra');
 
         $slug = $this->security->xss_clean($this->uri->segment(3));
@@ -167,18 +167,19 @@ class Visitor extends CI_Controller {
 		$count = 1;
 		foreach ($qsos->result() as $row) {
 			//print_r($row);
+			$begindate=date('d/m/y', strtotime($row->COL_TIME_ON));
 			if($row->COL_GRIDSQUARE != null) {
 				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
 				if($count != 1) {
 					echo ",";
 				}
 
-				if($row->COL_SAT_NAME != null) { 
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
+				if($row->COL_SAT_NAME != null) {
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date: ".$begindate."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
 					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				} else {
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date: ".$begindate."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
 					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				}
@@ -190,10 +191,10 @@ class Visitor extends CI_Controller {
 				if (count($grids) == 2) {
 					$grid1 = $this->qra->qra2latlong(trim($grids[0]));
 					$grid2 = $this->qra->qra2latlong(trim($grids[1]));
-		
+
 					$coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
-					$coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);    
-		
+					$coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);
+
 					$stn_loc = $this->qra->get_midpoint($coords);
 				}
 				if (count($grids) == 4) {
@@ -201,31 +202,31 @@ class Visitor extends CI_Controller {
 					$grid2 = $this->qra->qra2latlong(trim($grids[1]));
 					$grid3 = $this->qra->qra2latlong(trim($grids[2]));
 					$grid4 = $this->qra->qra2latlong(trim($grids[3]));
-		
+
 					$coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
-					$coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);    
-					$coords[]=array('lat' => $grid3[0],'lng'=> $grid3[1]);    
-					$coords[]=array('lat' => $grid4[0],'lng'=> $grid4[1]);    
-		
+					$coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);
+					$coords[]=array('lat' => $grid3[0],'lng'=> $grid3[1]);
+					$coords[]=array('lat' => $grid4[0],'lng'=> $grid4[1]);
+
 					$stn_loc = $this->qra->get_midpoint($coords);
 				}
 
 				if($count != 1) {
 					echo ",";
 				}
-	
-				if($row->COL_SAT_NAME != null) { 
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
+
+				if($row->COL_SAT_NAME != null) {
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date: ".$begindate."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
 					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				} else {
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date: ".$begindate."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
 					echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				}
-	
+
 				$count++;
-		
+
 			} else {
 				if($count != 1) {
 					echo ",";
@@ -236,7 +237,7 @@ class Visitor extends CI_Controller {
 					$lng = $row->long;
 				}
 
-				echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
+				echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date: ".$begindate."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 				echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
 				echo "\",\"label\":\"".$row->COL_CALL."\"}";
 				$count++;
@@ -261,7 +262,7 @@ class Visitor extends CI_Controller {
 			{
 				// Get associated station locations for mysql queries
 				$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
-	
+
 				if (!$logbooks_locations_array) {
 					show_404('Empty Logbook');
 				}
@@ -271,7 +272,7 @@ class Visitor extends CI_Controller {
 			}
         }
 
-		$this->load->model('gridsquares_model');
+		$this->load->model('gridmap_model');
 
 		$data['page_title'] = "Satellite Gridsquare Map";
 
@@ -295,7 +296,7 @@ class Visitor extends CI_Controller {
 
 
 		// Get Confirmed LoTW & Paper Squares (non VUCC)
-		$query = $this->gridsquares_model->get_confirmed_sat_squares($logbooks_locations_array);
+		$query = $this->gridmap_model->get_band_confirmed('SAT', 'All', 'false', 'true', 'false', 'All', $logbooks_locations_array);
 
 
 		if ($query && $query->num_rows() > 0)
@@ -303,26 +304,26 @@ class Visitor extends CI_Controller {
 			foreach ($query->result() as $row)
 			{
 
-				$grid_2char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,2));
-				$grid_4char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,4));
+				$grid_2char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,2));
+				$grid_4char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,4));
 				if ($this->config->item('map_6digit_grids')) {
-					$grid_6char_confirmed = strtoupper(substr($row->SAT_SQUARE,0,6));
+					$grid_6char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,6));
 				}
 
 				// Check if 2 Char is in array
 				if(!in_array($grid_2char_confirmed, $array_confirmed_grid_2char)){
-					array_push($array_confirmed_grid_2char, $grid_2char_confirmed);	
+					array_push($array_confirmed_grid_2char, $grid_2char_confirmed);
 				}
 
 
 				if(!in_array($grid_4char_confirmed, $array_confirmed_grid_4char)){
-					array_push($array_confirmed_grid_4char, $grid_4char_confirmed);	
+					array_push($array_confirmed_grid_4char, $grid_4char_confirmed);
 				}
 
 
 				if ($this->config->item('map_6digit_grids')) {
 					if(!in_array($grid_6char_confirmed, $array_confirmed_grid_6char)){
-						array_push($array_confirmed_grid_6char, $grid_6char_confirmed);	
+						array_push($array_confirmed_grid_6char, $grid_6char_confirmed);
 					}
 				}
 
@@ -331,33 +332,33 @@ class Visitor extends CI_Controller {
 		}
 
 		// Get worked squares
-		$query = $this->gridsquares_model->get_worked_sat_squares($logbooks_locations_array);
+		$query = $this->gridmap_model->get_band('SAT', 'All', 'false', 'true', 'false', 'All', $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0)
 		{
 			foreach ($query->result() as $row)
 			{
 
-				$grid_two = strtoupper(substr($row->SAT_SQUARE,0,2));
-				$grid_four = strtoupper(substr($row->SAT_SQUARE,0,4));
+				$grid_two = strtoupper(substr($row->GRID_SQUARES,0,2));
+				$grid_four = strtoupper(substr($row->GRID_SQUARES,0,4));
 				if ($this->config->item('map_6digit_grids')) {
-					$grid_six = strtoupper(substr($row->SAT_SQUARE,0,6));
+					$grid_six = strtoupper(substr($row->GRID_SQUARES,0,6));
 				}
 
 				// Check if 2 Char is in array
 				if(!in_array($grid_two, $array_grid_2char)){
-					array_push($array_grid_2char, $grid_two);	
+					array_push($array_grid_2char, $grid_two);
 				}
 
 
 				if(!in_array($grid_four, $array_grid_4char)){
-					array_push($array_grid_4char, $grid_four);	
+					array_push($array_grid_4char, $grid_four);
 				}
 
 
 				if ($this->config->item('map_6digit_grids')) {
 					if(!in_array($grid_six, $array_grid_6char)){
-						array_push($array_grid_6char, $grid_six);	
+						array_push($array_grid_6char, $grid_six);
 					}
 				}
 
@@ -365,7 +366,7 @@ class Visitor extends CI_Controller {
 			}
 		}
 
-		$query_vucc = $this->gridsquares_model->get_worked_sat_vucc_squares($logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares('SAT', 'All', 'false', 'true', 'false', 'All', $logbooks_locations_array);
 
 		if ($query && $query_vucc->num_rows() > 0)
 		{
@@ -374,25 +375,25 @@ class Visitor extends CI_Controller {
 
 				$grids = explode(",", $row->COL_VUCC_GRIDS);
 
-				foreach($grids as $key) {    
+				foreach($grids as $key) {
 					$grid_two = strtoupper(substr($key,0,2));
 					$grid_four = strtoupper(substr($key,0,4));
 
 					// Check if 2 Char is in array
 					if(!in_array($grid_two, $array_grid_2char)){
-						array_push($array_grid_2char, $grid_two);	
+						array_push($array_grid_2char, $grid_two);
 					}
 
 
 					if(!in_array($grid_four, $array_grid_4char)){
-						array_push($array_grid_4char, $grid_four);	
+						array_push($array_grid_4char, $grid_four);
 					}
 				}
 			}
 		}
 
 		// Confirmed Squares
-		$query_vucc = $this->gridsquares_model->get_confirmed_sat_vucc_squares($logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares('SAT', 'All', 'false', 'true', 'false', 'All', $logbooks_locations_array);
 
 		if ($query && $query_vucc->num_rows() > 0)
 		{
@@ -401,18 +402,18 @@ class Visitor extends CI_Controller {
 
 				$grids = explode(",", $row->COL_VUCC_GRIDS);
 
-				foreach($grids as $key) {    
+				foreach($grids as $key) {
 					$grid_2char_confirmed = strtoupper(substr($key,0,2));
 					$grid_4char_confirmed = strtoupper(substr($key,0,4));
 
 					// Check if 2 Char is in array
 					if(!in_array($grid_2char_confirmed, $array_confirmed_grid_2char)){
-						array_push($array_confirmed_grid_2char, $grid_2char_confirmed);	
+						array_push($array_confirmed_grid_2char, $grid_2char_confirmed);
 					}
 
 
 					if(!in_array($grid_4char_confirmed, $array_confirmed_grid_4char)){
-						array_push($array_confirmed_grid_4char, $grid_4char_confirmed);	
+						array_push($array_confirmed_grid_4char, $grid_4char_confirmed);
 					}
 				}
 			}
@@ -439,9 +440,18 @@ class Visitor extends CI_Controller {
 		$data['grid_4char'] = js_array($array_grid_4char);
 		$data['grid_6char'] = js_array($array_grid_6char);
 
+		$data['layer'] = $this->optionslib->get_option('option_map_tile_server');
+		$data['attribution'] = $this->optionslib->get_option('option_map_tile_server_copyright');
+
+		$data['gridsquares_gridsquares'] = lang('gridsquares_gridsquares');
+		$data['gridsquares_gridsquares_confirmed'] = lang('gridsquares_gridsquares_confirmed');
+		$data['gridsquares_gridsquares_not_confirmed'] = lang('gridsquares_gridsquares_not_confirmed');
+		$data['gridsquares_gridsquares_total_worked'] = lang('gridsquares_gridsquares_total_worked');
+
+		$data['visitor'] = true;
 
 		$this->load->view('visitor/layout/header', $data);
-		$this->load->view('gridsquares/index');
+		$this->load->view('gridmap/index', $data);
 		$this->load->view('visitor/layout/footer');
 	}
 

@@ -198,7 +198,13 @@ class AdifHelper {
 
         $line .= $this->getAdifFieldLine("MY_ITU_ZONE", $qso->station_itu);
 
-        $line .= $this->getAdifFieldLine("MY_CNTY", $qso->station_cnty);
+		if($qso->state) {
+			$county = trim($qso->state) . "," . trim($qso->station_cnty);
+		} else {
+			$county = trim($qso->station_cnty);
+		}
+
+        $line .= $this->getAdifFieldLine("MY_CNTY", $county);
 
         $line .= $this->getAdifFieldLine("MY_SIG", $qso->station_sig);
 

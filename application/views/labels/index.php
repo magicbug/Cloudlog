@@ -26,12 +26,12 @@
 	<h2 class="card-header">QSL Card Labels</h2>
 
 	<div class="card-body">
-	<a href="<?php echo site_url('labels/create'); ?>" class="btn btn-outline-primary btn-sm">Create New Label Type</a>
-	<a href="<?php echo site_url('labels/createpaper'); ?>" class="btn btn-outline-primary btn-sm">Create New Paper Type</a>
+	<a href="<?php echo site_url('labels/create'); ?>" class="btn btn-primary btn-sm"><i class="fas fa-plus"> </i> Create New Label Type</a>
+	<a href="<?php echo site_url('labels/createpaper'); ?>" class="btn btn-primary btn-sm"><i class="fas fa-plus"> </i> Create New Paper Type</a>
 <br><br>
 	<?php if ($papertypes) { ?>
 		<h4>Paper types</h4>
-						<table style="width:100%" class="table-sm labeltable table-bordered table-hover table-striped table-condensed text-center">
+						<table style="width:100%" class="table-sm table labeltable table-bordered table-hover table-striped table-condensed text-center">
 						<thead>
 							<tr>
 								<th>Name</th>
@@ -65,7 +65,7 @@
 	<?php if ($labels) { ?>
 		<br>
 		<h4>Label types</h4>
-						<table style="width:100%" class="table-sm labeltable table-bordered table-hover table-striped table-condensed text-center">
+						<table style="width:100%" class="table-sm table labeltable table-bordered table-hover table-striped table-condensed text-center">
 						<thead>
 							<tr>
 								<th>Name</th>
@@ -85,7 +85,7 @@
 		foreach($labels as $label) { ?>
 			<tr class='label_<?php echo $label->id ?>'>
 			<td><?php echo $label->label_name; ?></td>
-			<td><?php echo $label->paper_name ?? '<span class="badge badge-danger">No paper assigned</span>' ?></td>
+			<td><?php echo $label->paper_name ?? '<span class="badge text-bg-danger">No paper assigned</span>' ?></td>
 			<td><?php echo $label->metric; ?></td>
 			<td><?php echo $label->width; ?></td>
 			<td><?php echo $label->height; ?></td>

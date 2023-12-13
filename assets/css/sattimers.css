@@ -1,36 +1,30 @@
 .title {
-   text-align: center;
-   font-family: sans-serif;
-   color: #bbb;
+	text-align: center;
+	color: #bbb;
 }
 
 .active {
-   font-family: sans-serif;
-   color: #3fb618;
-   margin-bottom: 10px;
+	color: #3fb618;
+	margin-bottom: 10px;
 }
 
 .timedout {
-   font-family: sans-serif;
-   color: #f00;
+	color: #f00;
 }
 
 .nonfunctional {
-   font-family: sans-serif;
-   color: #555;
+	color: #555;
 }
 
 .timeout {
-   font-family: sans-serif;
-   color: #bbb;
+	color: #bbb;
 }
 
 .expired {
-   font-family: sans-serif;
-   color: #555;
+	color: #555;
 }
 
 .emoji {
-  font-size: 1.2em;
-  margin: 0;
+	font-size: 1.2em;
+	margin: 0;
 }

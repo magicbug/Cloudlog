@@ -11,8 +11,10 @@ $lang['menu_advanced'] = '详细信息';
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = '添加QSO（从电台获取信息）';
 $lang['menu_post_qso'] = '添加QSO（手动输入信息）';
+$lang['menu_fast_log_entry'] = "简单快速记录Log";
 $lang['menu_live_contest_logging'] = '比赛日志（从电台获取信息）';
 $lang['menu_post_contest_logging'] = '比赛日志（手动输入信息）';
+$lang['menu_bandmap'] = 'Bandmap';
 $lang['menu_view_qsl'] = '浏览QSL卡片';
 $lang['menu_view_eqsl'] = '浏览电子QSL卡片';
 
@@ -34,14 +36,18 @@ $lang['menu_continents'] = '大陆';
 
 $lang['menu_awards'] = '奖项';
 $lang['menu_cq'] = 'CQ';
+$lang['menu_dl_gridmaster'] = 'DL Gridmaster';
 $lang['menu_dok'] = 'DOK';
 $lang['menu_dxcc'] = 'DXCC';
 $lang['menu_iota'] = 'IOTA';
+$lang['menu_lx_gridmaster'] = 'LX Gridmaster';
 $lang['menu_pota'] = 'POTA';
 $lang['menu_sig'] = 'SIG';
 $lang['menu_sota'] = 'SOTA';
 $lang['menu_us_counties'] = 'US Counties';
+$lang['menu_us_gridmaster'] = 'US Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
+$lang['menu_waja'] = 'WAJA';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
 
@@ -56,8 +62,10 @@ $lang['menu_update_country_files'] = '更新国家文件';
 $lang['menu_debug_information'] = '调试信息';
 
 $lang['menu_search_text'] = '搜索呼号';
+$lang['menu_search_text_quicklog'] = "添加/搜索 呼号";
 
 $lang['menu_search_button'] = '搜索';
+$lang['menu_search_button_qicksearch_log'] = "日志";
 $lang['menu_login_button'] = '登录';
 
 $lang['menu_account'] = '账户';
@@ -82,3 +90,7 @@ $lang['menu_hardware_interfaces'] = '硬件接口';
 $lang['menu_help'] = '帮助';
 $lang['menu_forum'] = '论坛';
 $lang['menu_logout'] = '注销';
+
+$lang['menu_ffma'] = "弗雷德·菲什纪念奖";
+$lang['menu_ja_gridmaster'] = 'JA Gridmaster';
+$lang['menu_maintenance']='维护';

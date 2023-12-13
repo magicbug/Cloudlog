@@ -3,9 +3,8 @@
 
 <p>Sorry, but we didn't find any past QSOs with <?php echo $id; ?></p>
 
-<?php if(isset($callsign['callsign'])) { ?>
 <h3>Callbook Search for <?php echo $id; ?></h3>
-
+<?php if(isset($callsign['callsign'])) { ?>
 <table>
 
 <tr>
@@ -25,10 +24,22 @@
 
 <tr>
 	<td style="padding: 0 0.3em 0 0;" align="left">Gridsquare</td>
-   <td style="padding: 0.3em 0 0.3em 0.5em;" align="left"><?php echo strtoupper($callsign['gridsquare']); ?></td>
+	<td style="padding: 0.3em 0 0.3em 0.5em;" align="left">
+	<?php
+		if ($grid_worked != 0) {
+			echo " <span data-bs-toggle=\"tooltip\" title=\"Worked\" class=\"badge text-bg-success\" style=\"padding-left: 0.2em; padding-right: 0.2em;\">".strtoupper($callsign['gridsquare'])."</span>";
+		} else {
+			echo " <span data-bs-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge text-bg-danger\" style=\"padding-left: 0.2em; padding-right: 0.2em;\">".strtoupper($callsign['gridsquare'])."</span>";
+		}
+	?>
+	</td>
 </tr>
 
 </table>
+
+<?php } else { ?>
+
+<p><?php echo $error; ?></p>
 
 <?php } ?>
 </div>

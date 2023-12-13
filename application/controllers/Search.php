@@ -306,12 +306,15 @@ class Search extends CI_Controller {
 	function fetchQueryResult($json, $returnquery) {
 		$search_items = json_decode($json, true);
 
+		$this->db->select($this->config->item('table_name').'.*, station_profile.*, dxcc_entities.name as station_country');
+
 		$this->db->group_start();
 		$this->buildWhere($search_items);
 		$this->db->group_end();
 
 		$this->db->order_by('COL_TIME_ON', 'DESC');
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 
 		if ($returnquery) {

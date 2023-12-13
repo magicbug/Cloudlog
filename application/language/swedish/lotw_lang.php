@@ -34,6 +34,7 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = 'Ladda upp exporterad ADIF f
 $lang['lotw_upload_type_must_be_adi'] = 'Loggfil måste vara av format .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Hämta LoTW data';
+$lang['lotw_select_callsign'] = 'Select callsign to pull LoTW confirmations for';
 
 $lang['lotw_report_download_overview_helptext'] = 'Cloudlog använder LoTW användarnamn och lösenord som är sparat i din användarprofil för att ladda ner repport från LoTW. Rapporten Cloudlog kommer att ladda ner kommer att ha alla bekräftelser sedan valt datum, eller sedan din senaste LoTW-bekräftelse (hämtad från din logg), fram till nu.';
 
@@ -53,10 +54,10 @@ $lang['lotw_p12_export_step_four'] = 'Ladda upp filen nedan.';
 
 $lang['lotw_confirmed'] = 'Detta QSO är bekräftat på LoTW';
 
-
 // LoTW Expiry
 $lang['lotw_cert_expiring'] = 'Minst ett av dina LoTW-certifikat är på väg att löpa ut!';
 $lang['lotw_cert_expired'] = 'Minst ett av dina LoTW-certifikat har löpt ut!';
 
 // Lotw User
 $lang['lotw_user'] = 'Denna station använder LoTW. Den senaste uppladdningen var';
+$lang['lotw_last_upload'] = 'Last upload';

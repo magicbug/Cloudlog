@@ -41,23 +41,29 @@ class Qra {
 	*
 	*/
 	function distance($tx, $rx, $unit = 'M') {
-		// Calc LatLongs
-		$my = qra2latlong($tx);
-		$stn = qra2latlong($rx);
-
-		// Feed in Lat Longs plus the unit type
-		try
-		{
-			$total_distance = distance($my[0], $my[1], $stn[0], $stn[1], $unit);
-		}
-		catch (Exception $e)
-		{
-			$total_distance = 0;
-		}
-
-		// Return the distance
-		return $total_distance;
-	}
+      // Calc LatLongs
+      $my = qra2latlong($tx);
+      $stn = qra2latlong($rx);
+  
+      // Check if qra2latlong returned valid values
+      if ($my && $stn) {
+         // Feed in Lat Longs plus the unit type
+         try
+		   {
+            $total_distance = distance($my[0], $my[1], $stn[0], $stn[1], $unit);
+         } 
+          catch (Exception $e)
+		   {
+            $total_distance = 0;
+         }
+  
+          // Return the distance
+          return $total_distance;
+      } else {
+          // Handle the case where qra2latlong did not return valid values
+          return 0;
+      }
+   }
 
 	/*
 	* Function returns just the bearing
@@ -209,16 +215,17 @@ function qra2latlong($strQRA) {
        }
     }
 
-    if ((strlen($strQRA) % 2 == 0) && (strlen($strQRA) <= 8)) {	// Check if QRA is EVEN (the % 2 does that) and smaller/equal 8
+    if ((strlen($strQRA) % 2 == 0) && (strlen($strQRA) <= 10)) {	// Check if QRA is EVEN (the % 2 does that) and smaller/equal 8
         $strQRA = strtoupper($strQRA);
-	if (strlen($strQRA) == 4)  $strQRA .= "MM";	// Only 4 Chars? Fill with center "MM"
+	if (strlen($strQRA) == 4)  $strQRA .= "LL";	// Only 4 Chars? Fill with center "LL" as only A-R allowed
 	if (strlen($strQRA) == 6)  $strQRA .= "55";	// Only 6 Chars? Fill with center "55"
+	if (strlen($strQRA) == 8)  $strQRA .= "LL";	// Only 8 Chars? Fill with center "LL" as only A-R allowed
 
-        if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}$/', $strQRA)) {
+        if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}$/', $strQRA)) {
             return false;
         }
 
-        list($a, $b, $c, $d, $e, $f, $g, $h) = str_split($strQRA, 1);	// Maidenhead is always alternating. e.g. "AA00AA00AA00" - doesn't matter how deep. 2 chars, 2 numbers, etc.
+        list($a, $b, $c, $d, $e, $f, $g, $h, $i, $j) = str_split($strQRA, 1);	// Maidenhead is always alternating. e.g. "AA00AA00AA00" - doesn't matter how deep. 2 chars, 2 numbers, etc.
         $a = ord($a) - ord('A');
         $b = ord($b) - ord('A');
         $c = ord($c) - ord('0');
@@ -227,9 +234,11 @@ function qra2latlong($strQRA) {
         $f = ord($f) - ord('A');
         $g = ord($g) - ord('0');
         $h = ord($h) - ord('0');
+        $i = ord($i) - ord('A');
+        $j = ord($j) - ord('A');
 
-	$nLong = ($a*20) + ($c*2) + (($e+0.5)/12) + (($g-5)/120) - 180;	// the 4th pair is "in the middle", so we've to substract 5
-	$nLat = ($b*10) + $d + (($f+0.5)/24) + (($h-5)/240) - 90;
+        $nLong = ($a*20) + ($c*2) + ($e/12) + ($g/120) + ($i/2880) - 180;
+        $nLat = ($b*10) + $d + ($f/24) + ($h/240) + ($j/5760) - 90;
 
         $arLatLong = array($nLat, $nLong);
         return $arLatLong;

@@ -20,4 +20,3 @@ $lang['notes_input_btn_delete_note'] = 'Radera anteckning';
 $lang['notes_selection_general'] = 'Allmännt';
 $lang['notes_selection_antennas'] = 'Antenner';
 $lang['notes_selection_satellites'] = 'Satelliter';
-

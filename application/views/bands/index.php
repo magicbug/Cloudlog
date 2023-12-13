@@ -21,18 +21,18 @@ $wwff = 0;
 		</div>
 	<?php } ?>
 
-<h2><?php echo $page_title; ?></h2>
+<h2><?php echo lang('options_bands'); ?></h2>
 
 <div class="card">
-  <div class="card-header">
-    Bands
+<div class="card-header">
+	<?php echo lang('options_bands'); ?>
   </div>
   <div class="card-body">
     <p class="card-text">
-		Using the band list you can control which bands are shown when creating a new QSO.
+		<?php echo lang('options_bands_text_ln1'); ?>
 	</p>
     <p class="card-text">
-		Active bands will be shown in the QSO "Band" drop-down, while inactive bands will be hidden and cannot be selected.
+		<?php echo lang('options_bands_text_ln2'); ?>
 	</p>
     <div class="table-responsive">
 		
@@ -40,22 +40,22 @@ $wwff = 0;
 			<thead>
 				<tr>
 					<th></th>
-					<th>Band</th>
-					<th>CQ</th>
-                    <th>DOK</th>
-                    <th>DXCC</th>
-                    <th>IOTA</th>
-					<th>POTA</th>
-					<th>SIG</th>
-                    <th>SOTA</th>
-                    <th>US Counties</th>
-                    <th>VUCC</th>
-                    <th>WAS</th>
-					<th>WWFF</th>
-					<th>Bandgroup</th>
-					<th>SSB QRG</th>
-					<th>DATA QRG</th>
-					<th>CW QRG</th>
+					<th><?php echo lang('gen_hamradio_band'); ?></th>
+					<th><?php echo lang('gen_hamradio_cq'); ?></th>
+                    <th><?php echo lang('gen_hamradio_dok'); ?></th>
+                    <th><?php echo lang('gen_hamradio_dxcc'); ?></th>
+                    <th><?php echo lang('gen_hamradio_iota'); ?></th>
+					<th><?php echo lang('gen_hamradio_pota'); ?></th>
+					<th><?php echo lang('gen_hamradio_sig'); ?></th>
+                    <th><?php echo lang('gen_hamradio_sota'); ?></th>
+                    <th><?php echo lang('gen_hamradio_county_reference'); ?></th>
+                    <th><?php echo lang('menu_vucc'); ?></th>
+                    <th><?php echo lang('menu_was'); ?></th>
+					<th><?php echo lang('gen_hamradio_wwff'); ?></th>
+					<th><?php echo lang('gen_hamradio_bandgroup'); ?></th>
+					<th><?php echo lang('options_bands_ssb_qrg'); ?></th> 
+					<th><?php echo lang('options_bands_data_qrg'); ?></th>
+					<th><?php echo lang('options_bands_cw_qrg'); ?></th>
 					<?php if($this->session->userdata('user_type') == '99') { ?>
                     <th></th>
                     <th></th>
@@ -65,28 +65,28 @@ $wwff = 0;
 			<tbody>
 				<?php foreach ($bands as $band) { ?>
 				<tr>
-                    <td class='band_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->active == 1) {echo 'checked';}?>></td>
-					<td><?php echo $band->band;?></td>
-					<td class='cq_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->cq == 1) {echo 'checked'; $cq++;}?>></td>
-                    <td class='dok_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dok == 1) {echo 'checked'; $dok++;}?>></td>
-                    <td class='dxcc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dxcc == 1) {echo 'checked'; $dxcc++;}?>></td>
-                    <td class='iota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->iota == 1) {echo 'checked'; $iota++;}?>></td>
-                    <td class='pota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->iota == 1) {echo 'checked'; $pota++;}?>></td>
-                    <td class='sig_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sig == 1) {echo 'checked'; $sig++;}?>></td>
-                    <td class='sota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sota == 1) {echo 'checked'; $sota++;}?>></td>
-                    <td class='uscounties_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->uscounties == 1) {echo 'checked'; $uscounties++;}?>></td>
-                    <td class='vucc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->vucc == 1) {echo 'checked'; $vucc++;}?>></td>
-                    <td class='was_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->was == 1) {echo 'checked'; $was++;}?>></td>
-					<td class='wwff_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->wwff == 1) {echo 'checked'; $wwff++;}?>></td>
-					<td><?php echo $band->bandgroup;?></td>
-					<td><?php echo $band->ssb;?></td>
-					<td><?php echo $band->data;?></td>
-					<td><?php echo $band->cw;?></td>
+                    <td style="text-align: center; vertical-align: middle;" class='band_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->active == 1) {echo 'checked';}?>></td>
+					<td style="text-align: center; vertical-align: middle;" ><?php echo $band->band;?></td>
+					<td style="text-align: center; vertical-align: middle;" class='cq_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->cq == 1) {echo 'checked'; $cq++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='dok_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dok == 1) {echo 'checked'; $dok++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='dxcc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dxcc == 1) {echo 'checked'; $dxcc++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='iota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->iota == 1) {echo 'checked'; $iota++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='pota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->iota == 1) {echo 'checked'; $pota++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='sig_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sig == 1) {echo 'checked'; $sig++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='sota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sota == 1) {echo 'checked'; $sota++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='uscounties_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->uscounties == 1) {echo 'checked'; $uscounties++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='vucc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->vucc == 1) {echo 'checked'; $vucc++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='was_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->was == 1) {echo 'checked'; $was++;}?>></td>
+					<td style="text-align: center; vertical-align: middle;" class='wwff_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->wwff == 1) {echo 'checked'; $wwff++;}?>></td>
+					<td style="text-align: center; vertical-align: middle;" ><?php echo $band->bandgroup;?></td>
+					<td style="text-align: center; vertical-align: middle;" ><?php echo $band->ssb;?></td>
+					<td style="text-align: center; vertical-align: middle;" ><?php echo $band->data;?></td>
+					<td style="text-align: center; vertical-align: middle;" ><?php echo $band->cw;?></td>
 					<?php if($this->session->userdata('user_type') == '99') { ?>
-					<td>
+					<td style="text-align: center; vertical-align: middle;" >
 						<a href="javascript:editBandDialog('<?php echo $band->bandid ?>');" class="btn btn-outline-primary btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
 					</td>
-					<td>
+					<td style="text-align: center; vertical-align: middle;" >
 						<a href="javascript:deleteBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash-alt"></i></a>
                     </td>
 					<?php } ?>
@@ -95,7 +95,7 @@ $wwff = 0;
 				<?php } ?>
 			</tbody>
 			<tfoot>
-					<th></th>
+					<th><?php echo lang('general_word_all'); ?></th>
 					<th></th>
 					<th class="master_cq"><input type="checkbox" <?php if ($cq > 0) echo 'checked';?>></th>
 					<th class="master_dok"><input type="checkbox" <?php if ($dok > 0) echo 'checked';?>></th>
@@ -120,9 +120,17 @@ $wwff = 0;
   <br/>
   <p>
 		<?php if($this->session->userdata('user_type') == '99') { ?>
-	  	<button onclick="createBandDialog();" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Create a Band</button>
-  		<button onclick="activateAllBands();" class="btn btn-primary btn-sm">Activate All</button>
-		<button onclick="deactivateAllBands();" class="btn btn-primary btn-sm">Deactivate All </button>
+		<script>
+			var lang_options_bands_edit = '<?php echo lang('options_bands_edit'); ?>';
+			var lang_options_bands_create = '<?php echo lang('options_bands_create'); ?>';
+			var lang_admin_close = '<?php echo lang('admin_close'); ?>';
+			var lang_options_bands_delete_warning = '<?php echo lang('options_bands_delete_warning'); ?>';
+			var lang_options_bands_activateall_warning = '<?php echo lang('options_bands_activateall_warning'); ?>';
+			var lang_options_bands_deactivateall_warning = '<?php echo lang('options_bands_deactivateall_warning'); ?>';
+		</script>
+	  	<button onclick="createBandDialog();" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> <?php echo lang('options_bands_create'); ?></button>
+  		<button onclick="activateAllBands();" class="btn btn-primary btn-sm"><?php echo lang('options_bands_activate_all'); ?></button>
+		<button onclick="deactivateAllBands();" class="btn btn-primary btn-sm"><?php echo lang('options_bands_deactivate_all'); ?></button>
 		<?php } ?>
 	</p>
 </div>

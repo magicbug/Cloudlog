@@ -69,6 +69,7 @@ class eqsl extends CI_Controller {
 				redirect('eqsl/import');
 			}
 
+			$eqsl_force_from_date = (!$this->input->post('eqsl_force_from_date')=="")?$this->input->post('eqsl_force_from_date'):"";
 			foreach ($eqsl_locations->result_array() as $eqsl_location) {
 				$this->eqslimporter->from_callsign_and_QTH(
 					$eqsl_location['station_callsign'],
@@ -76,7 +77,7 @@ class eqsl extends CI_Controller {
 					$config['upload_path']
 				);
 
-				$eqsl_results[] = $this->eqslimporter->fetch($eqsl_password);
+				$eqsl_results[] = $this->eqslimporter->fetch($eqsl_password,$eqsl_force_from_date);
 			}
 		} elseif ($this->input->post('eqslimport') == 'upload') {
 			$station_id4upload=$this->input->post('station_profile');
@@ -294,6 +295,7 @@ class eqsl extends CI_Controller {
 			"_" = 5F
 			"-" = 2D
 			"." = 2E
+			"&" = 26
 		*/
 		
 		$adif .= "%3C";
@@ -421,12 +423,13 @@ class eqsl extends CI_Controller {
 
 		// adding qslmsg if it isn't blank
 		if ($qsl['COL_QSLMSG'] != ''){
+			$qsl['COL_QSLMSG'] = str_replace(array(chr(10),chr(13)),array(' ',' '),$qsl['COL_QSLMSG']);
 			$adif .= "%3C";
 			$adif .= "QSLMSG";
 			$adif .= "%3A";
 			$adif .= strlen($qsl['COL_QSLMSG']);
 			$adif .= "%3E";
-			$adif .= $qsl['COL_QSLMSG'];
+			$adif .= str_replace('&','%26',$qsl['COL_QSLMSG']);
 			$adif .= "%20";
 		}
 
@@ -755,7 +758,7 @@ class eqsl extends CI_Controller {
 		foreach($dir_array as $key=>$filename){
 			if($filename!=".." && $filename!="."){
 				if(is_dir($dir."/".$filename)){
-					$new_foldersize = foldersize($dir."/".$filename);
+					$new_foldersize = $this->foldersize($dir."/".$filename);
 					$count_size = $count_size+ $new_foldersize;
 				}else if(is_file($dir."/".$filename)){
 					$count_size = $count_size + filesize($dir."/".$filename);

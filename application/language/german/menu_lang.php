@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Direkter Zugriff auf Skripte ist nicht erlaubt');
 
 $lang['menu_badge_developer_mode'] = 'Entwickler-Modus';
 
@@ -11,6 +11,7 @@ $lang['menu_advanced'] = 'Erweitert';
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = 'Live QSO';
 $lang['menu_post_qso'] = 'Zeitversetztes QSO';
+$lang['menu_fast_log_entry'] = "Simple Fast Log Entry";
 $lang['menu_live_contest_logging'] = 'Live Contest Logging';
 $lang['menu_post_contest_logging'] = 'Zeitversetztes Contest Logging';
 $lang['menu_bandmap'] = 'Bandmap';
@@ -33,16 +34,20 @@ $lang['menu_timeplotter'] = 'Zeitplotter';
 $lang['menu_custom_maps'] = 'Benutzerdefinierte Karte';
 $lang['menu_continents'] = 'Kontinente';
 
-$lang['menu_awards'] = 'Auszeichnungen';
+$lang['menu_awards'] = 'Diplome';
 $lang['menu_cq'] = 'CQ';
+$lang['menu_dl_gridmaster'] = 'DL Gridmaster';
 $lang['menu_dok'] = 'DOK';
 $lang['menu_dxcc'] = 'DXCC';
 $lang['menu_iota'] = 'IOTA';
+$lang['menu_lx_gridmaster'] = 'LX Gridmaster';
 $lang['menu_pota'] = 'POTA';
 $lang['menu_sig'] = 'SIG';
 $lang['menu_sota'] = 'SOTA';
-$lang['menu_us_counties'] = 'US Countys)';
+$lang['menu_us_counties'] = 'US Counties';
+$lang['menu_us_gridmaster'] = 'US Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
+$lang['menu_waja'] = 'WAJA';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
 
@@ -51,14 +56,16 @@ $lang['menu_user_account'] = 'Benutzerkonten';
 $lang['menu_global_options'] = 'Globale Optionen';
 $lang['menu_modes'] = 'Modi';
 $lang['menu_contests'] = 'Conteste';
-$lang['menu_themes'] = 'Layouts';
+$lang['menu_themes'] = 'Themes';
 $lang['menu_backup'] = 'Backup';
 $lang['menu_update_country_files'] = 'Update Länderinformationen';
 $lang['menu_debug_information'] = 'Debug Informationen';
 
 $lang['menu_search_text'] = 'Rufzeichensuche';
+$lang['menu_search_text_quicklog'] = "Logge/Suche Call";   //"Rufzeichen" wäre zu lang, daher nur "Call". Das wird verstanden.
 
 $lang['menu_search_button'] = 'Suche';
+$lang['menu_search_button_qicksearch_log'] = "Logge";
 $lang['menu_login_button'] = 'Login';
 
 $lang['menu_account'] = 'Konto';
@@ -84,4 +91,6 @@ $lang['menu_help'] = 'Hilfe';
 $lang['menu_forum'] = 'Forum';
 $lang['menu_logout'] = 'Logout';
 
+$lang['menu_ffma'] = "Fred Fish Memorial Award";
+$lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_maintenance'] = 'Wartung';

@@ -3,15 +3,15 @@
 
     <ul style="margin-bottom: 10px;" class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="table-tab" data-toggle="tab" href="#qsodetails" role="tab" aria-controls="table" aria-selected="true"><?php echo lang('qso_details'); ?></a>
+            <a class="nav-link active" id="table-tab" data-bs-toggle="tab" href="#qsodetails" role="tab" aria-controls="table" aria-selected="true"><?php echo lang('qso_details'); ?></a>
         </li>
         <li class="nav-item">
-            <a id="station-tab" class="nav-link" data-toggle="tab" href="#stationdetails" role="tab" aria-controls="table" aria-selected="true"><?php echo lang('cloudlog_station_profile'); ?></a>
+            <a id="station-tab" class="nav-link" data-bs-toggle="tab" href="#stationdetails" role="tab" aria-controls="table" aria-selected="true"><?php echo lang('cloudlog_station_profile'); ?></a>
         </li>
         <?php
         if ($row->COL_NOTES != null) {?>
         <li class="nav-item">
-            <a id="notes-tab" class="nav-link" data-toggle="tab" href="#notesdetails" role="tab" aria-controls="table" aria-selected="true"><?php echo "Notes"; ?></a>
+            <a id="notes-tab" class="nav-link" data-bs-toggle="tab" href="#notesdetails" role="tab" aria-controls="table" aria-selected="true"><?php echo "Notes"; ?></a>
         </li>
         <?php }?>
         <?php
@@ -22,11 +22,11 @@
                 echo 'hidden ';
             }
                 echo 'class="qslcardtab nav-item">
-                <a class="nav-link" id="qsltab" data-toggle="tab" href="#qslcard" role="tab" aria-controls="home" aria-selected="false">'. lang('general_word_qslcard') .'</a>
+                <a class="nav-link" id="qsltab" data-bs-toggle="tab" href="#qslcard" role="tab" aria-controls="home" aria-selected="false">'. lang('general_word_qslcard') .'</a>
                 </li>';
 
             echo '<li class="nav-item">
-            <a class="nav-link" id="qslmanagementtab" data-toggle="tab" href="#qslupload" role="tab" aria-controls="home" aria-selected="false">'. lang('general_word_qslcard_management') .'</a>
+            <a class="nav-link" id="qslmanagementtab" data-bs-toggle="tab" href="#qslupload" role="tab" aria-controls="home" aria-selected="false">'. lang('general_word_qslcard_management') .'</a>
             </li>';
         }
 
@@ -39,7 +39,7 @@
                 echo 'hidden ';
             }
                 echo 'class="eqslcardtab nav-item">
-                <a class="nav-link" id="eqsltab" data-toggle="tab" href="#eqslcard" role="tab" aria-controls="home" aria-selected="false">'. $this->lang->line('general_word_eqslcard') .'</a>
+                <a class="nav-link" id="eqsltab" data-bs-toggle="tab" href="#eqslcard" role="tab" aria-controls="home" aria-selected="false">'. $this->lang->line('general_word_eqslcard') .'</a>
                 </li>';
         }
 
@@ -70,7 +70,9 @@
 
                         <td><?php echo lang('general_word_datetime'); ?></td>
                         <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-                        <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); $timestamp = strtotime($row->COL_TIME_ON); echo " at ".date('H:i', $timestamp); ?></td>
+                        <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); $timestamp = strtotime($row->COL_TIME_ON); $time_on = date('H:i', $timestamp); echo " at ".$time_on; ?>
+                        <?php $timestamp = strtotime($row->COL_TIME_OFF); $time_off = date('H:i', $timestamp); if ($time_on != $time_off) { echo " - ".$time_off; } ?>
+                        </td>
                         <?php } else { ?>
                         <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); ?></td>
                         <?php } ?>
@@ -78,7 +80,7 @@
 
                     <tr>
                         <td><?php echo lang('gen_hamradio_callsign'); ?></td>
-                        <td><b><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></b> <a target="_blank" href="https://www.qrz.com/db/<?php echo strtoupper($row->COL_CALL); ?>"><img width="16" height="16" src="<?php echo base_url(); ?>images/icons/qrz.png" alt="Lookup <?php echo strtoupper($row->COL_CALL); ?> on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/<?php echo strtoupper($row->COL_CALL); ?>"><img width="16" height="16" src="<?php echo base_url(); ?>images/icons/hamqth.png" alt="Lookup <?php echo strtoupper($row->COL_CALL); ?> on HamQTH"></a></td>
+                        <td><b><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></b> <a target="_blank" href="https://www.qrz.com/db/<?php echo strtoupper($row->COL_CALL); ?>"><img width="16" height="16" src="<?php echo base_url(); ?>images/icons/qrz.png" alt="Lookup <?php echo strtoupper($row->COL_CALL); ?> on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/<?php echo strtoupper($row->COL_CALL); ?>"><img width="16" height="16" src="<?php echo base_url(); ?>images/icons/hamqth.png" alt="Lookup <?php echo strtoupper($row->COL_CALL); ?> on HamQTH"></a> <a target="_blank" href="http://www.eqsl.cc/Member.cfm?<?php echo strtoupper($row->COL_CALL); ?>"><img width="16" height="16" src="<?php echo base_url(); ?>images/icons/eqsl.png" alt="Lookup <?php echo strtoupper($row->COL_CALL); ?> on eQSL.cc"></a></td>
                     </tr>
 
                     <tr>
@@ -126,12 +128,8 @@
                         <td><?php echo lang('general_total_distance'); //Total distance ?></td>
                         <td>
                             <?php
-                                // Load the QRA Library
-                                $CI =& get_instance();
-                                $CI->load->library('qra');
-
                                 // Cacluate Distance
-                                $distance = $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
+                                $distance = $this->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
 
                                 switch ($measurement_base) {
                                     case 'M':
@@ -159,16 +157,16 @@
 
                     <?php if($row->COL_STATE != null) { ?>
                     <tr>
-                        <td>USA State:</td>
+                        <td><?php echo $primary_subdivision ?>:</td>
                         <td><?php echo $row->COL_STATE; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_CNTY != null && $row->COL_CNTY != ",") { ?>
-                        <tr>
-                            <td>USA County:</td>
-                            <td><?php echo $row->COL_CNTY; ?></td>
-                        </tr>
+                    <tr>
+                        <td><?php echo $secondary_subdivision ?>:</td>
+                        <td><?php echo $row->COL_CNTY; ?></td>
+                    </tr>
                     <?php } ?>
 
                     <?php if($row->COL_NAME != null) { ?>
@@ -203,7 +201,7 @@
                     <?php if($row->name != null) { ?>
                     <tr>
                         <td><?php echo lang('general_word_country'); ?></td>
-                        <td><?php echo ucwords(strtolower(($row->name)), "- (/"); if ($row->end != null) { echo ' <span class="badge badge-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
+                        <td><?php echo ucwords(strtolower(($row->name)), "- (/"); if ($row->end != null) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
                     </tr>
                     <?php } ?>
 
@@ -357,12 +355,12 @@
                     <br /><p><?php echo lang('lotw_user'); ?> <a href="https://lotw.arrl.org/lotwuser/act?act=<?php echo $row->COL_CALL;?>" target="_blank"><?php echo lang('lotw_last_upload').'</a>: '; ?><?php $timestamp = strtotime($row->lastupload); echo date($custom_date_format, $timestamp); $timestamp = strtotime($row->lastupload); echo " ".date('H:i', $timestamp);?> UTC.</p>
                     <?php } ?>
 
-                    <?php if($row->COL_LOTW_QSL_RCVD == "Y") { ?>
+                    <?php if($row->COL_LOTW_QSL_RCVD == "Y" && $row->COL_LOTW_QSLRDATE != null) { ?>
                     <h3><?php echo lang('lotw_short'); ?></h3>
                     <p><?php echo lang('gen_this_qso_was_confirmed_on'); ?> <?php $timestamp = strtotime($row->COL_LOTW_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
 
-                    <?php if($row->COL_EQSL_QSL_RCVD == "Y") { ?>
+                    <?php if($row->COL_EQSL_QSL_RCVD == "Y" && $row->COL_EQSL_QSLRDATE != null) { ?>
                     <h3>eQSL</h3>
                         <p><?php echo lang('gen_this_qso_was_confirmed_on'); ?> <?php $timestamp = strtotime($row->COL_EQSL_QSLRDATE); echo date($custom_date_format, $timestamp); ?>.</p>
                     <?php } ?>
@@ -370,12 +368,12 @@
 
                 <div class="col-md">
 
-                    <div id="mapqso" style="width: 100%; height: 250px"></div>
+                    <div id="mapqso" class="map-leaflet" style="width: 100%; height: 250px"></div>
 
                     <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
                         <br>
-                            <div style="display: inline-block;"><p class="editButton"><a class="btn btn-primary" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i><?php echo lang('qso_btn_edit_qso'); ?></a></p></div>
-                            <div style="display: inline-block;"><form method="POST" action="<?php echo site_url('search'); ?>"><input type="hidden" value="<?php echo strtoupper($row->COL_CALL); ?>" name="callsign"><button class="btn btn-primary" type="submit"><i class="fas fa-eye"></i> More QSOs</button></form></div>
+                            <div style="display: inline-block;"><p class="editButton"><a class="btn btn-primary" href="<?php echo site_url('qso/edit'); ?>/<?php echo $row->COL_PRIMARY_KEY; ?>" href="javascript:;"><i class="fas fa-edit"></i> <?php echo lang('qso_btn_edit_qso'); ?></a></p></div>
+                            <div style="display: inline-block;"><form method="POST" action="<?php echo site_url('search'); ?>"><input type="hidden" value="<?php echo strtoupper($row->COL_CALL); ?>" name="callsign"><button class="btn btn-primary" type="submit"><i class="fas fa-eye"></i> <?php echo lang('general_more_qso'); ?></button></form></div>
                     <?php } ?>
 
                     <?php
@@ -422,60 +420,60 @@
         </div>
 
         <div class="tab-pane fade" id="stationdetails" role="tabpanel" aria-labelledby="table-tab">
-            <h3>Station Details</h3>
+            <h3><?php echo lang('gen_hamradio_station') . ' ' . lang('general_word_details'); ?></h3>
 
             <table width="100%">
                     <tr>
-                        <td>Station Callsign</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_callsign'); ?></td>
                         <td><?php echo $row->station_callsign; ?></td>
                     </tr>
                     <tr>
-                        <td>Station Name</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('general_word_name'); ?></td>
                         <td><?php echo $row->station_profile_name; ?></td>
                     </tr>
                     <tr>
-                        <td>Station Gridsquare</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_gridsquare'); ?></td>
                         <td><?php echo $row->station_gridsquare; ?></td>
                     </tr>
 
                     <?php if($row->station_city) { ?>
                     <tr>
-                        <td>Station City</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('general_word_city'); ?></td>
                         <td><?php echo $row->station_city; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->station_country) { ?>
                     <tr>
-                        <td>Station Country</td>
-                        <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); if ($row->station_end != null) echo ' <span class="badge badge-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; ?></td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('general_word_country'); ?></td>
+                        <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); if ($row->station_end != null) echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_OPERATOR) { ?>
                     <tr>
-                        <td>Station Operator</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_operator'); ?></td>
                         <td><?php echo $row->COL_OPERATOR; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_TX_PWR) { ?>
                     <tr>
-                        <td>Station Transmit Power</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_transmit_power'); ?></td>
                         <td><?php echo $row->COL_TX_PWR; ?> W</td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_MY_WWFF_REF) { ?>
                     <tr>
-                        <td>Station WWFF Reference</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_wwff_reference'); ?></td>
                         <td><?php echo $row->COL_MY_WWFF_REF; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_MY_POTA_REF) { ?>
                     <tr>
-                        <td>Station POTA Reference</td>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_pota_reference'); ?></td>
                         <td><?php echo $row->COL_MY_POTA_REF; ?></td>
                     </tr>
                     <?php } ?>
@@ -483,8 +481,8 @@
         </div>
 
         <div class="tab-pane fade" id="notesdetails" role="tabpanel" aria-labelledby="table-tab">
-            <h3>Notes</h3>
-            <?php echo nl2br($row->COL_NOTES); ?>
+            <h3><?php echo lang('general_word_notes'); ?></h3>
+            <?php if (isset($row->COL_NOTES)) { echo nl2br($row->COL_NOTES); } ?>
         </div>
 
         <?php
@@ -514,16 +512,16 @@
             }
             ?>
 
-            <p><div class="alert alert-warning" role="alert"><span class="badge badge-warning">Warning</span> Maximum file upload size is <?php echo $max_upload; ?>B.</div></p>
+            <p><div class="alert alert-warning" role="alert"><span class="badge text-bg-warning"><?php echo lang('general_word_warning'); ?></span> <?php echo lang('gen_max_file_upload_size'); ?> <?php echo $max_upload; ?>B.</div></p>
 
             <form class="form" id="fileinfo" name="fileinfo" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md">
                         <fieldset>
 
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="qslcardfront"><?php echo lang('qslcard_upload_front'); ?></label>
-                                <input class="form-control-file" type="file" id="qslcardfront" name="qslcardfront" accept="image/*" >
+                                <input class="form-control" type="file" id="qslcardfront" name="qslcardfront" accept="image/*" >
                             </div>
 
                             <input type="hidden" class="form-control" id="qsoinputid" name="qsoid" value="<?php echo $row->COL_PRIMARY_KEY; ?>">
@@ -531,9 +529,9 @@
 
                 </div>
                 <div class="col-md">
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label for="qslcardback"><?php echo lang('qslcard_upload_back'); ?></label>
-                                <input class="form-control-file" type="file" id="qslcardback" name="qslcardback" accept="image/*">
+                                <input class="form-control" type="file" id="qslcardback" name="qslcardback" accept="image/*">
                             </div>
 
                         </fieldset>
@@ -553,11 +551,11 @@
             <p>
             <div class="row">
                 <div class="col-md">
-                        <button type="button" onclick="qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B');" id="qsltxb"  name="qsltxb" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-t-B"><i class="fas fa-envelope"></i> Mark QSL Card Requested (Bureau) <div class="ld ld-ring ld-spin"></div></button>
+                        <button type="button" onclick="qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'B');" id="qsltxb"  name="qsltxb" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-t-B"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_requested_bureau'); ?> <div class="ld ld-ring ld-spin"></div></button>
 
-                        <button type="button" onclick="qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D');" id="qsltxd"  name="qsltxd" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-t-D"><i class="fas fa-envelope"></i> Mark QSL Card Requested (Direct) <div class="ld ld-ring ld-spin"></div></button>
+                        <button type="button" onclick="qsl_requested(<?php echo $row->COL_PRIMARY_KEY; ?>, 'D');" id="qsltxd"  name="qsltxd" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-t-D"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_requested_direct'); ?> <div class="ld ld-ring ld-spin"></div></button>
 
-                        <button type="button" onclick="qsl_ignore(<?php echo $row->COL_PRIMARY_KEY; ?>, 'I');" id="qsltxi"  name="qsltxi" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-ignore"><i class="fas fa-envelope"></i> Mark QSL Card Not Required <div class="ld ld-ring ld-spin"></div></button>
+                        <button type="button" onclick="qsl_ignore(<?php echo $row->COL_PRIMARY_KEY; ?>, 'I');" id="qsltxi"  name="qsltxi" class="btn btn-sm btn-warning ld-ext-right ld-ext-right-ignore"><i class="fas fa-envelope"></i> <?php echo lang('general_mark_qsl_not_required'); ?> <div class="ld ld-ring ld-spin"></div></button>
 
                 </div>
             </div>

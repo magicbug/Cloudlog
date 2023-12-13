@@ -116,7 +116,7 @@ function load_cq_map2(data) {
     if(container != null){
         container._leaflet_id = null;
         container.remove();
-        $("#cqmaptab").append('<div id="cqmap"></div>');
+        $("#cqmaptab").append('<div id="cqmap" class="map-leaflet" ></div>');
     }
 
     var map = new L.Map('cqmap', {
@@ -176,10 +176,10 @@ function load_cq_map2(data) {
 
     legend.onAdd = function(map) {
         var div = L.DomUtil.create("div", "legend");
-        div.innerHTML += "<h4>Colors</h4>";
-        div.innerHTML += '<i style="background: green"></i><span>Confirmed ('+confirmed+')</span><br>';
-        div.innerHTML += '<i style="background: orange"></i><span>Worked not confirmed ('+workednotconfirmed+')</span><br>';
-        div.innerHTML += '<i style="background: red"></i><span>Not worked ('+notworked+')</span><br>';
+        div.innerHTML += "<h4>" + lang_general_word_colors + "</h4>";
+        div.innerHTML += "<i style='background: green'></i><span>" + lang_general_word_confirmed + " (" + confirmed + ")</span><br>";
+        div.innerHTML += "<i style='background: orange'></i><span>" + lang_general_word_worked_not_confirmed + " (" + workednotconfirmed + ")</span><br>";
+        div.innerHTML += "<i style='background: red'></i><span>" + lang_general_word_not_worked + " (" + notworked + ")</span><br>";
         return div;
     };
 

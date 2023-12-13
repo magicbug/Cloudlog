@@ -11,12 +11,27 @@
  var my_call = "<?php echo $this->session->userdata('user_callsign'); ?>".toUpperCase();
 </script>
 
+<script>
+    /*
+    General Language
+    */
+    var lang_general_word_qso_data = "<?php echo lang('general_word_qso_data'); ?>";
+    var lang_general_word_danger = "<?php echo lang('general_word_danger'); ?>";
+    var lang_general_word_attention = "<?php echo lang('general_word_attention'); ?>";
+    var lang_general_word_warning = "<?php echo lang('general_word_warning'); ?>";
+    var lang_general_word_cancel = "<?php echo lang('general_word_cancel'); ?>";
+    var lang_general_word_ok = "<?php echo lang('general_word_ok'); ?>";
+    var lang_qso_delete_warning = "<?php echo lang('qso_delete_warning'); ?>";
+    var lang_general_word_colors = "<?php echo lang('general_word_colors'); ?>";
+    var lang_general_word_confirmed = "<?php echo lang('general_word_confirmed'); ?>";
+    var lang_general_word_worked_not_confirmed = "<?php echo lang('general_word_worked_not_confirmed'); ?>";
+    var lang_general_word_not_worked = "<?php echo lang('general_word_not_worked'); ?>";
+    var lang_admin_close = "<?php echo lang('admin_close'); ?>";
+</script>
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/popper.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
-<script src="<?php echo base_url(); ?>assets/js/jquery.jclock.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/Control.FullScreen.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.qrb.js"></script>
@@ -29,29 +44,58 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/easyprint.js"></script>
 <script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/common.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/eqslcharcounter.js"></script>
+<script type="text/javascript" src="<?php echo base_url() ;?>assets/js/sections/version_dialog.js"></script>
 
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
 
 <script>
     // Reinitialize tooltips after new content has been loaded
     document.addEventListener('htmx:afterSwap', function(event) {
-        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-bs-toggle="tooltip"]').tooltip();
     });
     </script>
-<?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "was") ) { ?>
-<script>
-function load_was_map() {
-    BootstrapDialog.show({
-            title: 'Worked All States Map ('+$('#band2').val()+' '+$('#mode').val()+')',
-            cssClass: 'was-map-dialog',
-            message: $('<div></div>').load(site_url + '/awards/was_map/' + $('#band2').val() + '/' + $('#mode').val())
-    });
+<!-- Version Dialog START -->
+
+<?php
+if($this->session->userdata('user_id') != null) {
+    $versionDialog = $this->optionslib->get_option('version_dialog');
+    if (empty($versionDialog)) {
+        $this->optionslib->update('version_dialog', 'release_notes', 'yes');
+    }
+    $versionDialogHeader = $this->optionslib->get_option('version_dialog_header');
+    if (empty($versionDialogHeader)) {
+        $this->optionslib->update('version_dialog_header', $this->lang->line('options_version_dialog'), 'yes');
+    }
+    if($versionDialog != "disabled") {
+        $confirmed = $this->user_options_model->get_options('version_dialog', array('option_name'=>'confirmed'))->result();
+        $confirmation_value = (isset($confirmed[0]->option_value))?$confirmed[0]->option_value:'false';
+        if ($confirmation_value != 'true') {
+            $this->user_options_model->set_option('version_dialog', 'confirmed', array('boolean' => $confirmation_value));
+            ?><script>
+                displayVersionDialog();
+            </script><?php
+        }
+    }
 }
-</script>
-<?php } ?>
+?>
+
+<!-- Version Dialog END -->
 
 <?php if ($this->uri->segment(1) == "oqrs") { ?>
     <script src="<?php echo base_url() ;?>assets/js/sections/oqrs.js"></script>
+<?php } ?>
+
+<?php if ($this->uri->segment(1) == "options") { ?>
+    <script>
+        $('#sendTestMailButton').click(function() {
+            $.ajax({
+                url: base_url + 'index.php/options/sendTestMail',
+                type: 'POST',
+            });
+        });
+
+    </script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "cq") ) { ?>
@@ -79,10 +123,9 @@ function load_was_map() {
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/continents.js"></script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "hrdlog" ||$this->uri->segment(1) == "webadif") { ?>
+<?php if ($this->uri->segment(1) == "adif" || $this->uri->segment(1) == "qrz" || $this->uri->segment(1) == "hrdlog" || $this->uri->segment(1) == "webadif" || $this->uri->segment(1) == "sattimers") { ?>
     <!-- Javascript used for ADIF Import and Export Areas -->
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "maintenance" ) { ?>
@@ -122,7 +165,6 @@ function load_was_map() {
     <script>
         var position;
         function getLocation() {
-            console.log("'clicked");
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
             } else {
@@ -154,7 +196,7 @@ function copyURL(url) {
 }
 
 $(function () {
-   $('[data-toggle="tooltip"]').tooltip({'delay': { show: 500, hide: 0 }, 'placement': 'right'});
+   $('[data-bs-toggle="tooltip"]').tooltip({'delay': { show: 500, hide: 0 }, 'placement': 'right'});
 });
 </script>
 <?php } ?>
@@ -182,7 +224,7 @@ function copyApiUrl() {
 }
 
 $(function () {
-   $('[data-toggle="tooltip"]').tooltip({'delay': { show: 500, hide: 0 }, 'placement': 'right'});
+   $('[data-bs-toggle="tooltip"]').tooltip({'delay': { show: 500, hide: 0 }, 'placement': 'right'});
 });
 </script>
 <?php } ?>
@@ -292,13 +334,13 @@ $(function () {
                             })
                             .done(function(data) {
                                 $(".alert").remove();
-                                $(".card-body.main").append('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Your query has been saved!</div>');
+                                $(".card-body.main").append('<div class="alert alert-success">Your query has been saved!</div>');
                                 if ($("#querydropdown option").length == 0) {
                                     var dropdowninfo = ' <button class="btn btn-sm btn-primary" onclick="edit_stored_query_dialog()" id="btn-edit">Edit queries</button></p>' +
-                                    '<div class="form-group row querydropdownform">' +
+                                    '<div class="mb-3 row querydropdownform">' +
                                         '<label class="col-md-2 control-label" for="querydropdown">  Stored queries:</label>' +
                                         '<div class="col-md-3">' +
-                                            '<select id="querydropdown" name="querydropdown" class="form-control custom-select-sm">' +
+                                            '<select id="querydropdown" name="querydropdown" class="form-select form-select-sm">' +
                                             '</select>' +
                                         '</div>' +
                                         '<button class="btn btn-sm btn-primary ld-ext-right runbutton" onclick="run_query()">Run Query<div class="ld ld-ring ld-spin"></div></button>' +
@@ -320,7 +362,7 @@ $(function () {
                 nl2br: false,
                 message: 'You need to make a query before you search!',
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogItself) {
                         dialogItself.close();
                     }
@@ -361,7 +403,7 @@ $(function () {
                 if (isDarkModeTheme()) {
                     $(".buttons-csv").css("color", "white");
                 }
-                $('[data-toggle="tooltip"]').tooltip();
+                $('[data-bs-toggle="tooltip"]').tooltip();
                 $(".runbutton").removeClass('running');
                 $(".runbutton").prop('disabled', false);
             });
@@ -384,7 +426,7 @@ $(function () {
                             'id': id
                         },
                         success: function(data) {
-                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query has been deleted!</div>');
+                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger">The stored query has been deleted!</div>');
                             $("#query_" + id).remove(); // removes query from table in dialog
                             $("#querydropdown option[value='" + id + "']").remove(); // removes query from dropdown
                             if ($("#querydropdown option").length == 0) {
@@ -393,7 +435,7 @@ $(function () {
                             };
                         },
                         error: function() {
-                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The stored query could not be deleted. Please try again!</div>');
+                            $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger">The stored query could not be deleted. Please try again!</div>');
                         },
                     });
                 }
@@ -419,11 +461,11 @@ $(function () {
             },
             success: function(html) {
                 $('#edit_' + id).html('<a class="btn btn-outline-primary btn-sm" href="javascript:edit_stored_query(' + id + ');">Edit</a>'); // Change to edit button
-                $(".bootstrap-dialog-message").prepend('<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>The query description has been updated!</div>');
+                $(".bootstrap-dialog-message").prepend('<div class="alert alert-success">The query description has been updated!</div>');
                 $("#querydropdown option[value='" + id + "']").text($('#description_' + id).html()); // Change text in dropdown
             },
             error: function() {
-                $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Something went wrong with the save. Please try again!</div>');
+                $(".bootstrap-dialog-message").prepend('<div class="alert alert-danger">Something went wrong with the save. Please try again!</div>');
             },
         });
     }
@@ -441,7 +483,7 @@ $(function () {
                     nl2br: false,
                     message: html,
                     buttons: [{
-                        label: 'Close',
+                        label: lang_admin_close,
                         action: function(dialogItself) {
                             dialogItself.close();
                         }
@@ -486,7 +528,7 @@ $(function () {
                     if (isDarkModeTheme()) {
                         $(".buttons-csv").css("color", "white");
                     }
-                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-bs-toggle="tooltip"]').tooltip();
                     $(".searchbutton").removeClass('running');
                     $(".searchbutton").prop('disabled', false);
                     $("#btn-save").show();
@@ -500,7 +542,7 @@ $(function () {
                 nl2br: false,
                 message: 'You need to make a query before you search!',
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogItself) {
                         dialogItself.close();
                     }
@@ -532,6 +574,26 @@ $(document).ready(function() {
 	$('#country').val($("#dxcc_select option:selected").text());
 
 	});
+});
+</script>
+
+<script>
+function printWarning() {
+    if ($("#dxcc_select option:selected").text().includes("<?php echo lang('gen_hamradio_deleted_dxcc'); ?>")) {
+        $('#warningMessageDXCC').show();
+        $('#dxcc_select').css('border', '2px solid rgb(217, 83, 79)');
+        $('#warningMessageDXCC').text("<?php echo lang('station_location_dxcc_warning'); ?>");
+    } else {
+        $('#dxcc_select').css('border', '');
+        $('#warningMessageDXCC').hide();
+    }
+}
+$('#dxcc_select').ready(function() {
+    printWarning();
+});
+
+$('#dxcc_select').on('change', function() {
+    printWarning();
 });
 </script>
 
@@ -651,14 +713,11 @@ function showActivatorsMap(call, count, grids) {
 </script>
 
 <?php if ($this->uri->segment(1) == "map" && $this->uri->segment(2) == "custom") { ?>
-<!-- Javascript used for ADIF Import and Export Areas -->
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
     <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
     <script type="text/javascript">
       $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-bs-toggle="tooltip"]').tooltip()
       });
 
         <?php if($qra == "set") { ?>
@@ -689,7 +748,7 @@ function showActivatorsMap(call, count, grids) {
     <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
     <script type="text/javascript">
       $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-bs-toggle="tooltip"]').tooltip()
       });
 
         <?php if($qra == "set") { ?>
@@ -718,10 +777,10 @@ function showActivatorsMap(call, count, grids) {
 <?php if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "dashboard" ) { ?>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
     <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
-    
+
     <script type="text/javascript">
       $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-bs-toggle="tooltip"]').tooltip()
       });
 
         <?php if($qra == "set") { ?>
@@ -768,7 +827,7 @@ function showActivatorsMap(call, count, grids) {
 
 <script type="text/javascript">
   $(function () {
-     $('[data-toggle="tooltip"]').tooltip()
+     $('[data-bs-toggle="tooltip"]').tooltip()
   });
 
   $(function () {
@@ -881,7 +940,7 @@ function searchButtonPress(){
     if ($('#callsign').val()) {
       let fixedcall = $('#callsign').val();
       $('#partial_view').load("logbook/search_result/" + fixedcall.replace('Ø', '0'), function() {
-         $('[data-toggle="tooltip"]').tooltip()
+         $('[data-bs-toggle="tooltip"]').tooltip()
       });
     }
 }
@@ -890,7 +949,7 @@ $(document).ready(function(){
 
   <?php if($this->input->post('callsign') != "") { ?>
         $('#partial_view').load("logbook/search_result/<?php echo str_replace("Ø","0",$this->input->post('callsign')); ?>", function() {
-           $('[data-toggle="tooltip"]').tooltip()
+           $('[data-bs-toggle="tooltip"]').tooltip()
     });
   <?php } ?>
 
@@ -900,7 +959,7 @@ $(document).on('keypress',function(e) {
     if ($('#callsign').val()) {
         let fixedcall = $('#callsign').val();
         $('#partial_view').load("logbook/search_result/" + fixedcall.replace('Ø', '0'), function() {
-           $('[data-toggle="tooltip"]').tooltip()
+           $('[data-bs-toggle="tooltip"]').tooltip()
         });
     }
 
@@ -919,7 +978,7 @@ $(document).on('keypress',function(e) {
     <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
     <script type="text/javascript">
       $(function () {
-         $('[data-toggle="tooltip"]').tooltip()
+         $('[data-bs-toggle="tooltip"]').tooltip()
       });
     </script>
     <script type="text/javascript">
@@ -947,7 +1006,7 @@ $(document).on('keypress',function(e) {
 <?php if ($this->uri->segment(1) == "qso") { ?>
 
 <script src="<?php echo base_url() ;?>assets/js/sections/qso.js"></script>
-<?php if ($this->config->item('winkey')) { ?>
+<?php if ($this->session->userdata('isWinkeyEnabled')) { ?>
 	<script src="<?php echo base_url() ;?>assets/js/winkey.js"></script>
 <?php }
 
@@ -1074,24 +1133,24 @@ $(document).on('keypress',function(e) {
 
       if ( ! manual ) {
         $(function($) {
-          var options = {
-            utc: true,
-            format: '%H:%M:%S'
-          }
-          $('.input_time').jclock(options);
-        });
-
-        $(function($) {
-          var options = {
-            utc: true,
-            format: '%d-%m-%Y'
-          }
-          $('.input_date').jclock(options);
+           resetTimers(0);
         });
       }
     });
 
-
+<?php if ($this->session->userdata('user_qso_end_times')  == 1) { ?>
+    $('#callsign').focusout(function() {
+      if (! manual && $('#callsign').val() != '') {
+        clearInterval(handleStart);
+        clearInterval(handleDate);
+      }
+    });
+    $('#start_time').focusout(function() {
+       if (manual && $('#start_time').val() != '') {
+          $('#end_time').val($('#start_time').val());
+       }
+    });
+<?php } ?>
 
   jQuery(function($) {
   var input = $('#callsign');
@@ -1110,6 +1169,9 @@ $(document).on('keypress',function(e) {
 	  }
 	  if (e.key === "Escape") { // escape key maps to keycode `27`
 		  reset_fields();
+		  if ( ! manual ) {
+		     resetTimers(0)
+		  }
 		  $('#callsign').val("");
 		  $("#callsign").focus();
 	  }
@@ -1192,7 +1254,14 @@ $(document).on('keypress',function(e) {
 				$('#transmit_power').val('');
 			},
 		});
+        // [eQSL default msg] change value on change station profle //
+        qso_set_eqsl_qslmsg(stationProfile,false,'.qso_panel');
 	});
+    // [eQSL default msg] change value on clic //
+    $('.qso_panel .qso_eqsl_qslmsg_update').off('click').on('click',function() {
+        qso_set_eqsl_qslmsg($('.qso_panel #stationProfile').val(),true,'.qso_panel');
+        $('#charsLeft').text(" ");
+    });
 
 <?php if ($this->session->userdata('user_qth_lookup') == 1) { ?>
     $('#qth').focusout(function() {
@@ -1284,6 +1353,21 @@ $(document).on('keypress',function(e) {
             $('#rst_rcvd').val('59');
         }
     }
+
+    function getUTCTimeStamp(el) {
+       var now = new Date();
+       var localTime = now.getTime();
+       var utc = localTime + (now.getTimezoneOffset() * 60000);
+       $(el).attr('value', ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+    }
+
+    function getUTCDateStamp(el) {
+       var now = new Date();
+       var localTime = now.getTime();
+       var utc = localTime + (now.getTimezoneOffset() * 60000);
+       $(el).attr('value', ("0" + now.getUTCDate()).slice(-2)+'-'+("0" + (now.getUTCMonth()+1)).slice(-2)+'-'+now.getUTCFullYear());
+    }
+
     </script>
 
     <script>
@@ -1321,8 +1405,12 @@ $(document).on('keypress',function(e) {
 						  $("#band_rx").val(frequencyToBand(data.frequency_rx));
 					  }
 
-					  old_mode = $(".mode").val();
-					  $(".mode").val(data.mode);
+					  if ((data.mode != "") && (data.mode != null)) {
+					  	old_mode = $(".mode").val();
+					  	$(".mode").val(data.mode);
+					  } else {
+					  	old_mode = $(".mode").val();
+					  }
 
 					  if (old_mode !== $(".mode").val()) {
 						  // Update RST on mode change via CAT
@@ -1522,8 +1610,6 @@ $(document).ready(function(){
     var lng = LatLng.lng;
     var locator = LatLng2Loc(lat,lng, 10);
     var loc_4char = locator.substring(0, 4);
-    console.log(loc_4char);
-    console.log(map.getZoom());
 
     if(map.getZoom() > 2) {
     	<?php if ($this->session->userdata('user_callsign')) { ?>
@@ -1566,7 +1652,7 @@ $(document).ready(function(){
 				  if (count > 0) {
 					  $('#square_number').text(loc_4char);
 					  $('#exampleModal').modal('show');
-					  $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
+					  $('[data-bs-toggle="tooltip"]').tooltip({ boundary: 'window' });
 				  }
 			  }
 		  });
@@ -1665,8 +1751,6 @@ $(document).ready(function(){
     var lng = LatLng.lng;
     var locator = LatLng2Loc(lat,lng, 10);
     var loc_4char = locator.substring(0, 4);
-    console.log(loc_4char);
-    console.log(map.getZoom());
 
     if(map.getZoom() > 2) {
     	<?php if ($this->session->userdata('user_callsign')) { ?>
@@ -1702,7 +1786,7 @@ $(document).ready(function(){
 				  if (count > 0) {
 					  $('#square_number').text(loc_4char);
 					  $('#exampleModal').modal('show');
-					  $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
+					  $('[data-bs-toggle="tooltip"]').tooltip({ boundary: 'window' });
 				  }
 			  }
 		  });
@@ -1756,17 +1840,6 @@ $(document).ready(function(){
 	<script src="<?php echo base_url(); ?>assets/js/sections/distances.js"></script>
 <?php } ?>
 
-    <?php if ($this->uri->segment(2) == "import") { ?>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
-        <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker1').datetimepicker({
-                    format: 'DD/MM/YYYY',
-                });
-            });
-        </script>
-    <?php } ?>
 
     <?php if ($this->uri->segment(1) == "hrdlog") { ?>
 		<script src="<?php echo base_url(); ?>assets/js/sections/hrdlog.js"></script>
@@ -1786,14 +1859,14 @@ $(document).ready(function(){
 				type: 'post',
 				success: function(html) {
 					BootstrapDialog.show({
-						title: 'QSO Data',
+						title: lang_general_word_qso_data,
 						cssClass: 'qso-dialog',
 						size: BootstrapDialog.SIZE_WIDE,
 						nl2br: false,
 						message: html,
 						onshown: function(dialog) {
 							var qsoid = $("#qsoid").text();
-							$(".editButton").html('<a class="btn btn-primary" id="edit_qso" href="javascript:qso_edit('+qsoid+')"><i class="fas fa-edit"></i> Edit QSO</a>');
+							$(".editButton").html('<a class="btn btn-primary" id="edit_qso" href="javascript:qso_edit('+qsoid+')"><i class="fas fa-edit"></i><?php echo lang('general_edit_qso'); ?></a>');
 							var lat = $("#lat").text();
 							var long = $("#long").text();
 							var callsign = $("#callsign").text();
@@ -1833,6 +1906,40 @@ $(document).ready(function(){
 <?php if ($this->uri->segment(2) == "dxcc") { ?>
 <script>
     $('.tabledxcc').DataTable({
+        "pageLength": 25,
+        responsive: false,
+        ordering: false,
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "scrollX": true,
+        dom: 'Bfrtip',
+        buttons: [
+            'csv'
+        ]
+    });
+
+    $('.tablesummary').DataTable({
+        info: false,
+        searching: false,
+        ordering: false,
+        "paging":         false,
+        dom: 'Bfrtip',
+        buttons: [
+            'csv'
+        ]
+    });
+
+    // change color of csv-button if dark mode is chosen
+    if (isDarkModeTheme()) {
+        $(".buttons-csv").css("color", "white");
+    }
+ </script>
+    <?php } ?>
+
+<?php if ($this->uri->segment(2) == "waja") { ?>
+<script>
+    $('.tablewaja').DataTable({
         "pageLength": 25,
         responsive: false,
         ordering: false,
@@ -2083,16 +2190,16 @@ $(document).ready(function(){
                     },
                     success: function(html) {
                         BootstrapDialog.show({
-                            title: 'QSO Data',
+                            title: lang_general_word_qso_data,
                             size: BootstrapDialog.SIZE_WIDE,
                             cssClass: 'qso-was-dialog',
                             nl2br: false,
                             message: html,
                             onshown: function(dialog) {
-                               $('[data-toggle="tooltip"]').tooltip();
+                               $('[data-bs-toggle="tooltip"]').tooltip();
                             },
                             buttons: [{
-                                label: 'Close',
+                                label: lang_admin_close,
                                 action: function (dialogItself) {
                                     dialogItself.close();
                                 }
@@ -2149,16 +2256,16 @@ $(document).ready(function(){
                     },
                     success: function(html) {
                         BootstrapDialog.show({
-                            title: 'QSO Data',
+                            title: lang_general_word_qso_data,
                             size: BootstrapDialog.SIZE_WIDE,
                             cssClass: 'qso-was-dialog',
                             nl2br: false,
                             message: html,
                             onshown: function(dialog) {
-                               $('[data-toggle="tooltip"]').tooltip();
+                               $('[data-bs-toggle="tooltip"]').tooltip();
                             },
                             buttons: [{
-                                label: 'Close',
+                                label: lang_admin_close,
                                 action: function (dialogItself) {
                                     dialogItself.close();
                                 }
@@ -2214,7 +2321,7 @@ $(document).ready(function(){
     }
 
     ?>
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datetime-moment.js"></script>
     <script>
         $.fn.dataTable.moment('<?php echo $usethisformat ?>');
@@ -2250,26 +2357,9 @@ $(document).ready(function(){
             $('[class*="buttons"]').css("color", "white");
         }
 
-
     </script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "kml") { ?>
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker1').datetimepicker({
-                format: 'DD/MM/YYYY',
-            });
-        });
-        $(function () {
-            $('#datetimepicker2').datetimepicker({
-                format: 'DD/MM/YYYY',
-            });
-        });
-    </script>
-<?php } ?>
 
 <script>
 function viewQsl(picture, callsign) {
@@ -2280,7 +2370,7 @@ function viewQsl(picture, callsign) {
             if (callsign == null) {
                 title = 'QSL Card';
             } else {
-                title = 'QSL Card for ' + callsign;
+                title = 'QSL Card for ' + callsign.replace('0', '&Oslash;');
             }
 
             BootstrapDialog.show({
@@ -2288,7 +2378,7 @@ function viewQsl(picture, callsign) {
                 size: BootstrapDialog.SIZE_WIDE,
                 message: $textAndPic,
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogRef){
                         dialogRef.close();
                     }
@@ -2342,7 +2432,7 @@ function viewEqsl(picture, callsign) {
             if (callsign == null) {
                 title = 'eQSL Card';
             } else {
-                title = 'eQSL Card for ' + callsign;
+                title = 'eQSL Card for ' + callsign.replace('0', '&Oslash;');
             }
 
             BootstrapDialog.show({
@@ -2350,7 +2440,7 @@ function viewEqsl(picture, callsign) {
                 size: BootstrapDialog.SIZE_WIDE,
                 message: $textAndPic,
                 buttons: [{
-                    label: 'Close',
+                    label: lang_admin_close,
                     action: function(dialogRef){
                         dialogRef.close();
                     }
@@ -2358,7 +2448,23 @@ function viewEqsl(picture, callsign) {
             });
         }
 </script>
-
+<script>
+    $('#displayAwardInfo').click(function (event) {
+        var awardInfoLines = [
+            lang_award_info_ln2,
+            lang_award_info_ln3,
+            lang_award_info_ln4
+        ];
+        var awardInfoContent = "";
+        awardInfoLines.forEach(function (line) {
+            awardInfoContent += line + "<br><br>";
+        });
+        BootstrapDialog.alert({
+            title: "<h4>"+lang_award_info_ln1+"</h4>",
+            message: awardInfoContent,
+        });
+    });
+</script>
 <script>
   /*
    * Used to fetch QSOs from the logbook in the awards
@@ -2377,20 +2483,20 @@ function viewEqsl(picture, callsign) {
             },
             success: function (html) {
                 BootstrapDialog.show({
-                    title: 'QSO Data',
+                    title: lang_general_word_qso_data,
                     size: BootstrapDialog.SIZE_WIDE,
                     cssClass: 'qso-dialog',
                     nl2br: false,
                     message: html,
                     onshown: function(dialog) {
-                       $('[data-toggle="tooltip"]').tooltip();
+                       $('[data-bs-toggle="tooltip"]').tooltip();
                        $('.contacttable').DataTable({
-                            "pageLength": 25,
+                            "pageLength": 7,
                             responsive: false,
                             ordering: false,
                             "scrollY":        "550px",
                             "scrollCollapse": true,
-                            "paging":         false,
+                            "paging":         true,
                             "scrollX": true,
                             dom: 'Bfrtip',
                             buttons: [
@@ -2399,7 +2505,7 @@ function viewEqsl(picture, callsign) {
                         });
                     },
                     buttons: [{
-                        label: 'Close',
+                        label: lang_admin_close,
                         action: function (dialogItself) {
                             dialogItself.close();
                         }
@@ -2422,13 +2528,13 @@ function viewEqsl(picture, callsign) {
     },
 	    success: function (html) {
 		    var dialog = new BootstrapDialog({
-		    title: 'QSO Data',
+		    title: lang_general_word_qso_data,
 			    size: BootstrapDialog.SIZE_WIDE,
 			    cssClass: 'qso-dialog',
 			    nl2br: false,
 			    message: html,
 			    onshown: function(dialog) {
-				    $('[data-toggle="tooltip"]').tooltip();
+				    $('[data-bs-toggle="tooltip"]').tooltip();
 				    $('.contacttable').DataTable({
 				    "pageLength": 25,
 					    responsive: false,
@@ -2444,7 +2550,7 @@ function viewEqsl(picture, callsign) {
 				    });
 			    },
 			    buttons: [{
-			    label: 'Close',
+			    label: lang_admin_close,
 				    action: function (dialogItself) {
 					    dialogItself.close();
 				    }
@@ -2475,7 +2581,7 @@ function viewEqsl(picture, callsign) {
                             '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.front.filename + '\')" class="btn btn-sm btn-success">View</button></td>'+
                             '</tr>');
                         var quantity = $(".carousel-indicators li").length;
-                        $(".carousel-indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
+                        $(".carousel-indicators").append('<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="'+quantity+'"></li>');
                         $(".carousel-inner").append('<center><div class="carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div></center>');
                         $("#qslcardfront").val(null);
                     }
@@ -2495,14 +2601,14 @@ function viewEqsl(picture, callsign) {
                         '</tbody></table>');
                         $('.qslcardtab').removeAttr('hidden');
                         var quantity = $(".carousel-indicators li").length;
-                        $(".carousel-indicators").append('<li class="active" data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
+                        $(".carousel-indicators").append('<li class="active" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="'+quantity+'"></li>');
                         $(".carousel-inner").append('<center><div class="active carousel-item carouselimageid_'+data.status.front.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.front.filename+'" alt="QSL picture #'+(quantity+1)+'"></div></center>');
                         $(".carouselExampleIndicators").carousel();
                         $("#qslcardfront").val(null);
                     }
 
                 } else if (data.status.front.status != '') {
-                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Front QSL Card:' +
+                    $("#qslupload").append('<div class="alert alert-danger">Front QSL Card:' +
                     data.status.front.error +
                         '</div>');
                 }
@@ -2514,7 +2620,7 @@ function viewEqsl(picture, callsign) {
                             '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.back.filename + '\')" class="btn btn-sm btn-success">View</button></td>'+
                             '</tr>');
                         var quantity = $(".carousel-indicators li").length;
-                        $(".carousel-indicators").append('<li data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
+                        $(".carousel-indicators").append('<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="'+quantity+'"></li>');
                         $(".carousel-inner").append('<center><div class="carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div></center>');
                         $("#qslcardback").val(null);
                     }
@@ -2534,13 +2640,13 @@ function viewEqsl(picture, callsign) {
                             '</tbody></table>');
                         $('.qslcardtab').removeAttr('hidden');
                         var quantity = $(".carousel-indicators li").length;
-                        $(".carousel-indicators").append('<li class="active" data-target="#carouselExampleIndicators" data-slide-to="'+quantity+'"></li>');
+                        $(".carousel-indicators").append('<li class="active" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="'+quantity+'"></li>');
                         $(".carousel-inner").append('<center><div class="active carousel-item carouselimageid_'+data.status.back.insertid+'"><img class="img-fluid w-qsl" src="'+baseURL+'/assets/qslcard/'+data.status.back.filename+'" alt="QSL picture #'+(quantity+1)+'"></div></center>');
                         $(".carouselExampleIndicators").carousel();
                         $("#qslcardback").val(null);
                     }
                 } else if (data.status.back.status != '') {
-                    $("#qslupload").append('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\nBack QSL Card: ' +
+                    $("#qslupload").append('<div class="alert alert-danger">\nBack QSL Card: ' +
                     data.status.back.error +
                         '</div>');
                 }
@@ -2566,7 +2672,7 @@ function viewEqsl(picture, callsign) {
 					nl2br: false,
 					message: html,
 					buttons: [{
-						label: 'Close',
+						label: lang_admin_close,
 						action: function (dialogItself) {
 							dialogItself.close();
 						}
@@ -2589,7 +2695,7 @@ function viewEqsl(picture, callsign) {
 					location.reload();
 				} else {
 					$(".alert").remove();
-					$('#searchresult').prepend('<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Something went wrong. Please try again!</div>');
+					$('#searchresult').prepend('<div class="alert alert-danger">Something went wrong. Please try again!</div>');
 				}
 			}
 		});
@@ -2702,16 +2808,16 @@ function viewEqsl(picture, callsign) {
             data: {'State': state, 'County': county },
             success: function(html) {
                 BootstrapDialog.show({
-                    title: 'QSO Data',
+                    title: lang_general_word_qso_data,
                     size: BootstrapDialog.SIZE_WIDE,
                     cssClass: 'qso-counties-dialog',
                     nl2br: false,
                     message: html,
                     onshown: function(dialog) {
-                       $('[data-toggle="tooltip"]').tooltip();
+                       $('[data-bs-toggle="tooltip"]').tooltip();
                     },
                     buttons: [{
-                        label: 'Close',
+                        label: lang_admin_close,
                         action: function (dialogItself) {
                             dialogItself.close();
                         }
@@ -2788,7 +2894,7 @@ function viewEqsl(picture, callsign) {
 					nl2br: false,
 					message: html,
 					buttons: [{
-						label: 'Close',
+						label: lang_admin_close,
 						action: function (dialogItself) {
 							dialogItself.close();
 						}
@@ -2814,42 +2920,6 @@ function viewEqsl(picture, callsign) {
 		}
 	}
     </script>
-<?php } ?>
-
-<?php if ($this->uri->segment(1) == "dxatlas") { ?>
-	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
-	<script>
-		$(function () {
-			$('#datetimepicker1').datetimepicker({
-				format: 'DD/MM/YYYY',
-			});
-		});
-
-		$(function () {
-			$('#datetimepicker2').datetimepicker({
-				format: 'DD/MM/YYYY',
-			});
-		});
-	</script>
-<?php } ?>
-
-<?php if ($this->uri->segment(1) == "csv") { ?>
-	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/moment.min.js"></script>
-	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/tempusdominus-bootstrap-4.min.js"></script>
-	<script>
-		$(function () {
-			$('#datetimepicker1').datetimepicker({
-				format: 'DD/MM/YYYY',
-			});
-		});
-
-		$(function () {
-			$('#datetimepicker2').datetimepicker({
-				format: 'DD/MM/YYYY',
-			});
-		});
-	</script>
 <?php } ?>
 
 
@@ -2995,6 +3065,31 @@ function viewEqsl(picture, callsign) {
             }
         </script>
     <?php } ?>
+<?php } ?>
+
+<?php if (($this->uri->segment(1) == "user") && ($this->uri->segment(2) == "edit")) { ?>
+    <!-- [MAP Custom] select list with icons -->
+    <script>
+        $(document).ready(function(){
+            $('.icon_selectBox').off('click').on('click', function(){
+                var boxcontent = $(this).attr('data-boxcontent');
+                if ($('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').is(":hidden")) { $('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').show(); } else { $('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').hide(); }
+            });
+            $('.icon_selectBox_data').off('mouseleave').on('mouseleave', function(){ if ($(this).is(":visible")) { $(this).hide(); } });
+            $('.icon_selectBox_data label').off('click').on('click', function(){
+                var boxcontent = $(this).closest('.icon_selectBox_data').attr('data-boxcontent');
+                $('input[name="user_map_'+boxcontent+'_icon"]').attr('value',$(this).attr('data-value'));
+                if ($(this).attr('data-value') != "0") {
+                    $('.user_icon_color[data-icon="'+boxcontent+'"]').show();
+                    $('.icon_selectBox[data-boxcontent="'+boxcontent+'"] .icon_overSelect').html($(this).html());
+                } else {
+                    $('.user_icon_color[data-icon="'+boxcontent+'"]').hide();
+                    $('.icon_selectBox[data-boxcontent="'+boxcontent+'"] .icon_overSelect').html($(this).html().substring(0,10)+'.');
+                }
+                $('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').hide();
+            });
+        });
+    </script>
 <?php } ?>
 
 <?php

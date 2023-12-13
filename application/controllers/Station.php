@@ -28,7 +28,7 @@ class Station extends CI_Controller {
 		$data['is_there_qsos_with_no_station_id'] = $this->Logbook_model->check_for_station_id();
 
 		// Render Page
-		$data['page_title'] = "Station Location";
+		$data['page_title'] = lang('station_location');
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('station_profile/index');
 		$this->load->view('interface_assets/footer');
@@ -48,15 +48,21 @@ class Station extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$data['page_title'] = "Create Station Location";
+			$data['page_title'] = lang('station_location_create_header');
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('station_profile/create');
 			$this->load->view('interface_assets/footer');
 		}
 		else
 		{
-			$this->stations->add();
-
+			if (($station_id = $this->stations->add()) !== false) {
+				// [eQSL default msg] ADD to user options (option_type='eqsl_default_qslmsg'; option_name='key_station_id'; option_key=station_id; option_value=value) //
+				$eqsl_default_qslmsg = xss_clean($this->input->post('eqsl_default_qslmsg', true));
+				if (!empty(trim($eqsl_default_qslmsg))) {
+					$this->load->model('user_options_model');
+					$this->user_options_model->set_option('eqsl_default_qslmsg','key_station_id',array($station_id=>$eqsl_default_qslmsg));
+				}
+			}
 			redirect('station');
 		}
 	}
@@ -65,16 +71,30 @@ class Station extends CI_Controller {
 		$this->load->model('stations');
 		if ($this->stations->check_station_is_accessible($id)) {
 			$data = $this->load_station_for_editing($id);
-			$data['page_title'] = "Edit Station Location: {$data['my_station_profile']->station_profile_name}";
+			$data['page_title'] = lang('station_location_edit') . $data['my_station_profile']->station_profile_name;
 
 			if ($this->form_validation->run() == FALSE) {
+				// [eQSL default msg] GET from user options (option_type='eqsl_default_qslmsg'; option_name='key_station_id'; option_key=station_id) //
+				$this->load->model('user_options_model');
+				$options_object = $this->user_options_model->get_options('eqsl_default_qslmsg',array('option_name'=>'key_station_id','option_key'=>$id))->result();
+				$data['eqsl_default_qslmsg'] = (isset($options_object[0]->option_value))?$options_object[0]->option_value:'';
+
 				$this->load->view('interface_assets/header', $data);
 				$this->load->view('station_profile/edit');
 				$this->load->view('interface_assets/footer');
 			} else {
-				$this->stations->edit();
+				if ($this->stations->edit() !== false) {
+					// [eQSL default msg] ADD to user options (option_type='eqsl_default_qslmsg'; option_name='key_station_id'; option_key=station_id; option_value=value) //
+					$eqsl_default_qslmsg = xss_clean($this->input->post('eqsl_default_qslmsg', true));
+					$this->load->model('user_options_model');
+					if (!empty(trim($eqsl_default_qslmsg))) {
+						$this->user_options_model->set_option('eqsl_default_qslmsg','key_station_id',array($id=>$eqsl_default_qslmsg));
+					} else {
+						$this->user_options_model->del_option('eqsl_default_qslmsg','key_station_id',array('option_key'=>$id));
+					}			
+				}
 
-				$data['notice'] = "Station Profile " . $this->security->xss_clean($this->input->post('station_profile_name', true)) . " Updated";
+				$data['notice'] = lang('station_location') . $this->security->xss_clean($this->input->post('station_profile_name', true)) . " Updated";
 
 				redirect('station');
 			}
@@ -163,6 +183,9 @@ class Station extends CI_Controller {
 		$this->load->model('stations');
 		if ($this->stations->check_station_is_accessible($id)) {
 			$this->stations->delete($id);
+			// [eQSL default msg] DELETE user options //
+			$this->load->model('user_options_model');
+			$this->user_options_model->del_option('eqsl_default_qslmsg','key_station_id',array('option_key'=>$id));
 		}
 		redirect('station');
 	}
@@ -208,4 +231,18 @@ class Station extends CI_Controller {
         echo json_encode($json);
     }
 
+    // [eQSL default msg] Function return options from this station (but can be general use) //
+	public function get_options() {
+		$return_json = array();
+		$option_type = $this->input->post('option_type');
+		$option_name = $this->input->post('option_name');
+		$option_key = $this->input->post('option_key');
+		if (!empty($option_type) && !empty($option_name) && ($option_key>0)) {
+			$this->load->model('user_options_model');
+			$options_object = $this->user_options_model->get_options($option_type,array('option_name'=>$option_name,'option_key'=>$option_key))->result();
+			$return_json[$option_type] = (isset($options_object[0]->option_value))?$options_object[0]->option_value:'';
+		}
+        header('Content-Type: application/json');
+        echo json_encode($return_json);
+    }
 }

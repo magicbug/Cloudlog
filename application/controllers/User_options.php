@@ -46,6 +46,22 @@ class User_Options extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($jsonout);
 	}
+
+	// [MAP Custom] //
+	public function get_map_custom() {
+		$result=$this->user_options_model->get_options('map_custom');
+		$jsonout=[];
+		foreach($result->result() as $options) {
+			if ($options->option_name=='icon') $jsonout[$options->option_key]=json_decode($options->option_value,true);
+				else $jsonout[$options->option_name.'_'.$options->option_key]=$options->option_value;
+		}
+		header('Content-Type: application/json');
+		echo json_encode($jsonout);
+	}	
+
+	public function dismissVersionDialog() {
+		$this->user_options_model->set_option('version_dialog', 'confirmed', array('boolean' => 'true'));
+	}
 }
 
 

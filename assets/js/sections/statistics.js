@@ -64,15 +64,15 @@ function totalQsosPerYear() {
             success: function (data) {
                 if (data.length > 0) {
                    
-                    $(".years").append('<h2>Years</h2><div id="yearContainer"></div><div id="yearTable"></div>');
+                    $(".years").append('<h2>' + lang_statistics_years + '</h2><div id="yearContainer"></div><div id="yearTable"></div>');
                     $("#yearContainer").append("<canvas id=\"yearChart\" width=\"400\" height=\"100\"></canvas>");
     
                     // appending table to hold the data
                     $("#yearTable").append('<table style="width:100%" class="yeartable table table-sm table-bordered table-hover table-striped table-condensed text-center"><thead>' +
                         '<tr>' +
                         '<td>#</td>' +
-                        '<td>Year</td>' +
-                        '<td># of QSO\'s worked </td>' +
+                        '<td>' + lang_statistics_year +'</td>' +
+                        '<td>' + lang_statistics_number_of_qso_worked + ' </td>' +
                         '</tr>' +
                         '</thead>' +
                         '<tbody></tbody></table>');
@@ -114,7 +114,7 @@ function totalQsosPerYear() {
                         data: {
                             labels: labels,
                             datasets: [{
-                                label: 'Number of QSO\'s worked each year',
+                                label: lang_statistics_number_of_qso_worked_each_year,
                                 data: dataQso,
                                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                                 borderColor: 'rgba(54, 162, 235, 1)',
@@ -187,14 +187,14 @@ function totalModeQsos() {
 
                 if (dataQso[0] === null && dataQso[1] === null && dataQso[2] === null && dataQso[3] === null) return;
                
-                $(".mode").append('<br /><div style="display: flex;" id="modeContainer"><h2>Modes</h2><div style="flex: 1;"><canvas id="modeChart" width="500" height="500"></canvas></div><div style="flex: 1;" id="modeTable"></div></div><br />');
+                $(".mode").append('<br /><div style="display: flex;" id="modeContainer"><h2>' + lang_statistics_modes + '</h2><div style="flex: 1;"><canvas id="modeChart" width="500" height="500"></canvas></div><div style="flex: 1;" id="modeTable"></div></div><br />');
                 
                 // appending table to hold the data
                 $("#modeTable").append('<table style="width:100%" class=\"modetable table table-sm table-bordered table-hover table-striped table-condensed text-center"><thead>' +
                     '<tr>' +
                     '<td>#</td>' +
-                    '<td>Mode</td>' +
-                    '<td># of QSO\'s worked </td>' +
+                    '<td>' + lang_gen_hamradio_mode + ' </td>' +
+                    '<td>' + lang_statistics_number_of_qso_worked + ' </td>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody></tbody></table>');
@@ -307,14 +307,14 @@ function totalBandQsos() {
         success: function (data) {
             if (data.length > 0) {
                
-                $(".band").append('<br /><div style="display: flex;" id="bandContainer"><h2>Bands</h2><div style="flex: 1;"><canvas id="bandChart" width="500" height="500"></canvas></div><div style="flex: 1;" id="bandTable"></div></div><br />');
+                $(".band").append('<br /><div style="display: flex;" id="bandContainer"><h2>' + lang_statistics_bands + '</h2><div style="flex: 1;"><canvas id="bandChart" width="500" height="500"></canvas></div><div style="flex: 1;" id="bandTable"></div></div><br />');
 
                 // appending table to hold the data
                 $("#bandTable").append('<table style="width:100%" class="bandtable table table-sm table-bordered table-hover table-striped table-condensed text-center"><thead>' +
                     '<tr>' +
                     '<td>#</td>' +
-                    '<td>Band</td>' +
-                    '<td># of QSO\'s worked </td>' +
+                    '<td>' + lang_gen_hamradio_band + '</td>' +
+                    '<td>' + lang_statistics_number_of_qso_worked + ' </td>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody></tbody></table>');

@@ -11,6 +11,7 @@ $lang['menu_advanced'] = 'Advanced';
 $lang['menu_qso'] = 'QSO';
 $lang['menu_live_qso'] = 'Live QSO';
 $lang['menu_post_qso'] = 'Post QSO';
+$lang['menu_fast_log_entry'] = "Simple Fast Log Entry";
 $lang['menu_live_contest_logging'] = 'Live Contest Logging';
 $lang['menu_post_contest_logging'] = 'Post Contest Logging';
 $lang['menu_bandmap'] = 'Bandikartta';
@@ -35,14 +36,18 @@ $lang['menu_continents'] = 'Mantereet';
 
 $lang['menu_awards'] = 'Awardit';
 $lang['menu_cq'] = 'CQ';
+$lang['menu_dl_gridmaster'] = 'DL Gridmaster';
 $lang['menu_dok'] = 'DOK';
 $lang['menu_dxcc'] = 'DXCC';
 $lang['menu_iota'] = 'IOTA';
+$lang['menu_lx_gridmaster'] = 'LX Gridmaster';
 $lang['menu_pota'] = 'POTA';
 $lang['menu_sig'] = 'SIG';
 $lang['menu_sota'] = 'SOTA';
 $lang['menu_us_counties'] = 'USA Osavaltiot';
+$lang['menu_us_gridmaster'] = 'US Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
+$lang['menu_waja'] = 'WAJA';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
 
@@ -57,8 +62,10 @@ $lang['menu_update_country_files'] = 'Päivitä Country Files';
 $lang['menu_debug_information'] = 'Debug Information';
 
 $lang['menu_search_text'] = 'Etsi kutsulla';
+$lang['menu_search_text_quicklog'] = "Add/Search Callsign";
 
 $lang['menu_search_button'] = 'Etsi';
+$lang['menu_search_button_qicksearch_log'] = "Log";
 $lang['menu_login_button'] = 'Kirjaudu';
 
 $lang['menu_account'] = 'Käyttäjätili';
@@ -84,4 +91,6 @@ $lang['menu_help'] = 'Help';
 $lang['menu_forum'] = 'Foorumi';
 $lang['menu_logout'] = 'Kirjaudu ulos';
 
+$lang['menu_ffma'] = "Fred Fish Memorial Award";
+$lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_maintenance']='Maintenance';

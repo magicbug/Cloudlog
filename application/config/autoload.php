@@ -98,15 +98,23 @@ $autoload['config'] = array('cloudlog', 'bands', 'lotw');
 
 $autoload['language'] = array(
     'account',
+    'adif',
+    'admin',
+    'awards',
     'contesting',
     'eqsl',
+    'export',
+    'filter',
     'general_words',
+    'gridsquares',
     'lotw',
     'menu',
     'notes',
+    'options',
     'qslcard',
     'qso',
-    'gridsquares'
+    'station',
+    'statistics'
     );
 
 /*
@@ -119,7 +127,7 @@ $autoload['language'] = array(
 |
 */
 
-$autoload['model'] = array();
+$autoload['model'] = array('user_options_model');
 
 
 /* End of file autoload.php */

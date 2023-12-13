@@ -44,8 +44,8 @@ class Kmlexport extends CI_Controller {
         $dxcc = $this->input->post('dxcc_id');
         $cqz = $this->input->post('cqz');
         $propagation = $this->input->post('prop_mode');
-        $fromdate = $this->input->post('fromdate');
-        $todate = $this->input->post('todate');
+        $fromdate = $this->input->post('from');
+        $todate = $this->input->post('to');
 
 		// Get QSOs with Valid QRAs
 		$qsos = $this->logbook_model->kml_get_all_qsos($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate);

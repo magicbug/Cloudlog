@@ -24,12 +24,21 @@ class Stations extends CI_Model {
 	}
 
 	function all_of_user($userid = null) {
-		if ($userid == null) { 
+		if ($userid == null) {
 			$userid=$this->session->userdata('user_id'); // Fallback to session-uid, if userid is omitted
 		}
 		$this->db->select('station_profile.*, dxcc_entities.name as station_country, dxcc_entities.end as dxcc_end');
 		$this->db->where('user_id', $userid);
 		$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
+		return $this->db->get('station_profile');
+	}
+
+	function callsigns_of_user($userid = null) {
+		if ($userid == null) {
+			$userid=$this->session->userdata('user_id'); // Fallback to session-uid, if userid is omitted
+		}
+		$this->db->select('distinct(station_profile.station_callsign) as callsign');
+		$this->db->where('user_id', $userid);
 		return $this->db->get('station_profile');
 	}
 
@@ -94,6 +103,7 @@ class Stations extends CI_Model {
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
 			'hrdlog_code' => xss_clean($this->input->post('hrdlog_code', true)),
 			'hrdlogrealtime' => xss_clean($this->input->post('hrdlogrealtime', true)),
+			'clublogrealtime' => xss_clean($this->input->post('clublogrealtime', true)),
 			'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
 			'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
 			'oqrs' => xss_clean($this->input->post('oqrs', true)),
@@ -104,8 +114,13 @@ class Stations extends CI_Model {
 			'webadifrealtime' => xss_clean($this->input->post('webadifrealtime', true)),
 		);
 
-		// Insert Records
-		$this->db->insert('station_profile', $data);
+		// Insert Records & return insert id //
+		if ($this->db->insert('station_profile', $data)===true) {
+			$station_user_list = $this->all_of_user()->result();
+			if ((count($station_user_list)>0) && (isset($station_user_list[intval(count($station_user_list)-1)]->station_id))) {
+				return $station_user_list[intval(count($station_user_list)-1)]->station_id;
+			}
+		}
 	}
 
 	function edit() {
@@ -137,6 +152,7 @@ class Stations extends CI_Model {
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
 			'hrdlog_code' => xss_clean($this->input->post('hrdlog_code', true)),
 			'hrdlogrealtime' => xss_clean($this->input->post('hrdlogrealtime', true)),
+			'clublogrealtime' => xss_clean($this->input->post('clublogrealtime', true)),
 			'qrzapikey' => xss_clean($this->input->post('qrzapikey', true)),
 			'qrzrealtime' => xss_clean($this->input->post('qrzrealtime', true)),
 			'oqrs' => xss_clean($this->input->post('oqrs', true)),
@@ -495,6 +511,16 @@ class Stations extends CI_Model {
 			return true;
 		}
 		return false;
+	}
+
+	// [MAP Custom] get json structure (for map) about info's station  //
+	public function get_station_json_for_map() {
+		$_jsonresult = array();
+		list($station_lat, $station_lng) = array(0,0);
+		$station_active = $this->profile($this->find_active())->row();
+		if (!empty($station_active)) { list($station_lat, $station_lng) = $this->qra->qra2latlong($station_active->station_gridsquare); }
+		if (($station_lat!=0)&&($station_lng!=0)) { $_jsonresult = array('lat'=>$station_lat,'lng'=>$station_lng,'html'=>$station_active->station_gridsquare,'label'=>$station_active->station_profile_name,'icon'=>'stationIcon'); }
+		return (count($_jsonresult)>0)?("\"station\":".json_encode($_jsonresult)):'';
 	}
 }
 

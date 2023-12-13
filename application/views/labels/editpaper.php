@@ -32,7 +32,7 @@
 		<div class="card-body">
 
 			<!-- Label Name Input -->
-	    	<div class="form-group row">
+	    	<div class="mb-3 row">
 			<label class= "col-sm-2 col-form-label" for="PaperName">Paper Type Name</label>
 				<div class="col-sm-4">
 			    	<input name="paper_name" type="text" class="form-control" id="PaperName" aria-describedby="paper_nameHelp" value="<?php if(isset($paper->paper_name)) { echo $paper->paper_name; } ?>">
@@ -40,14 +40,14 @@
 				</div>
     				<label class="col-sm-2 col-form-label" for="measurementType">Measurement used</label>
 			    	<div class="col-sm-4">
-				    <select name="measurementType" class="form-control" id="measurementType">
+				    <select name="measurementType" class="form-select" id="measurementType">
 						<option value="mm" <?php if($paper->metric == "mm") { echo "selected=\"selected\""; } ?>>Millimeters</option>
 						<option value="in" <?php if($paper->metric == "in") { echo "selected=\"selected\""; } ?>>Inches</option>
 					</select>
 			    </div>
   			</div>
 
-			<div class="form-group row">
+			<div class="mb-3 row">
     			<label class="col-sm-2 col-form-label" for="width">Width of paper</label>
 			    <div class="col-sm-4">
 				    <input name="width" type="text" class="form-control" id="width" aria-describedby="widthHelp" value="<?php if(isset($paper->width)) { echo $paper->width; } ?>">
@@ -61,10 +61,10 @@
 			    </div>
   			</div>
 
-			<div class="form-group row">
+			<div class="mb-3 row">
     			<label class="col-sm-2 col-form-label" for="orientation">Orientation of paper</label>
 			    <div class="col-sm-4">
-				    <select name="orientation" class="form-control" id="orientation">
+				    <select name="orientation" class="form-select" id="orientation">
 					<option value="L"<?php if($paper->orientation == 'L') { echo " selected"; } ?>>Landscape</option>
 					<option value="P"<?php if($paper->orientation == 'P') { echo " selected"; } ?>>Portrait</option>
 				    </select>

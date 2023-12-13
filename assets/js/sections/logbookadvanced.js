@@ -31,7 +31,7 @@ function updateRow(qso) {
 		cells.eq(c++).text(qso.de);
 	}
 	if (user_options.dx.show == "true"){
-		cells.eq(c++).html('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + '">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
+		cells.eq(c++).html('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')"><span id="dx">'+qso.dx+'</span></a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge bg-success'+qso.lotw_hint+'" data-bs-toggle="tooltip" title="LoTW User. Last upload was ' + qso.lastupload + '">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
 	}
 	if (user_options.mode.show == "true"){
 		cells.eq(c++).text(qso.mode);
@@ -73,7 +73,7 @@ function updateRow(qso) {
 		cells.eq(c++).html(qso.dxcc);
 	}
 	if (user_options.state.show == "true"){
-		cells.eq(c++).text(qso.state);
+		cells.eq(c++).html(qso.state);
 	}
 	if (user_options.cqzone.show == "true"){
 		cells.eq(c++).html(qso.cqzone);
@@ -81,8 +81,14 @@ function updateRow(qso) {
 	if (user_options.iota.show == "true"){
 		cells.eq(c++).html(qso.iota);
 	}
+	if (user_options.pota.show == "true"){
+		cells.eq(c++).html(qso.pota);
+	}
+	if ( (user_options.operator) && (user_options.operator.show == "true")){
+		cells.eq(c++).html(qso.operator);
+	}
 
-	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-bs-toggle="tooltip"]').tooltip();
 	return row;
 }
 
@@ -124,7 +130,7 @@ function loadQSOTable(rows) {
 			data.push(qso.de);
 		}
 		if (user_options.dx.show == "true"){
-			data.push('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')">'+qso.dx+'</a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + ' ">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
+			data.push('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')"><span id="dx">'+qso.dx+'</span></a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge bg-success'+qso.lotw_hint+'" data-bs-toggle="tooltip" title="LoTW User. Last upload was ' + qso.lastupload + ' ">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
 		}
 		if (user_options.mode.show == "true"){
 			data.push(qso.mode);
@@ -163,7 +169,7 @@ function loadQSOTable(rows) {
 			data.push(qso.qslMessage);
 		}
 		if (user_options.dxcc.show == "true"){
-			data.push(qso.dxcc+(qso.end == null ? '' : ' <span class="badge badge-danger">Deleted DXCC</span>'));
+			data.push(qso.dxcc+(qso.end == null ? '' : ' <span class="badge bg-danger">Deleted DXCC</span>'));
 		}
 		if (user_options.state.show == "true"){
 			data.push(qso.state);
@@ -174,13 +180,19 @@ function loadQSOTable(rows) {
 		if (user_options.iota.show == "true"){
 			data.push(qso.iota);
 		}
+		if (user_options.pota.show == "true"){
+			data.push(qso.pota);
+		}
+		if (user_options.operator.show == "true"){
+			data.push(qso.operator);
+		}
 
 		let createdRow = table.row.add(data).index();
 		table.rows(createdRow).nodes().to$().data('qsoID', qso.qsoID);
 		table.row(createdRow).node().id = 'qsoID-' + qso.qsoID;
 	}
 	table.draw();
-	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-bs-toggle="tooltip"]').tooltip();
 }
 
 function processNextCallbookItem() {
@@ -231,12 +243,6 @@ function unselectQsoID(qsoID) {
 }
 
 $(document).ready(function () {
-	$('#dateFrom').datetimepicker({
-		format: 'DD/MM/YYYY',
-	});
-	$('#dateTo').datetimepicker({
-		format: 'DD/MM/YYYY',
-	});
 
 	$('#searchForm').submit(function (e) {
 		var container = L.DomUtil.get('advancedmap');
@@ -264,7 +270,10 @@ $(document).ready(function () {
 				band: this.band.value,
 				qslSent: this.qslSent.value,
 				qslReceived: this.qslReceived.value,
+				qslSentMethod: this.qslSentMethod.value,
+				qslReceivedMethod: this.qslReceivedMethod.value,
 				iota: this.iota.value,
+				operator: this.operator.value,
 				dxcc: this.dxcc.value,
 				propmode: this.selectPropagation.value,
 				gridsquare: this.gridsquare.value,
@@ -281,6 +290,7 @@ $(document).ready(function () {
 				pota: this.pota.value,
 				wwff: this.wwff.value,
 				qslimages: this.qslimages.value,
+				dupes: this.dupes.value,
 			},
 			dataType: 'json',
 			success: function (data) {
@@ -348,8 +358,8 @@ $(document).ready(function () {
 		var table = $('#qsoList').DataTable();
 
 		BootstrapDialog.confirm({
-			title: 'DANGER',
-			message: 'Warning! Are you sure you want to delete the marked QSO(s)?' ,
+			title: lang_general_word_danger,
+			message: lang_filter_actions_delete_warning,
 			type: BootstrapDialog.TYPE_DANGER,
 			closable: true,
 			draggable: true,
@@ -447,8 +457,13 @@ $(document).ready(function () {
 	$('#receivedBureau').click(function (event) {
 		handleQslReceived('Y','B', 'receivedBureau');
 	});
+
 	$('#receivedDirect').click(function (event) {
 		handleQslReceived('Y','D', 'receivedDirect');
+	});
+
+	$('#receivedElectronic').click(function (event) {
+		handleQslReceived('Y','E', 'receivedElectronic');
 	});
 
 	$('#searchGridsquare').click(function (event) {
@@ -495,6 +510,14 @@ $(document).ready(function () {
 		quickSearch('pota');
 	});
 
+	$('#searchOperator').click(function (event) {
+		quickSearch('operator');
+	});
+
+	$('#dupeButton').click(function (event) {
+		dupeSearch();
+	});
+
 	$('#optionButton').click(function (event) {
 		$('#optionButton').prop("disabled", true);
 		$.ajax({
@@ -522,7 +545,7 @@ $(document).ready(function () {
 						}
 					},
 					{
-						label: 'Close',
+						label: lang_admin_close,
 						cssClass: 'btn-sm',
 						id: 'closeButton',
 						action: function (dialogItself) {
@@ -567,7 +590,7 @@ $(document).ready(function () {
 
 					},
 					buttons: [{
-						label: 'Close',
+						label: lang_admin_close,
 						action: function (dialogItself) {
 							$('#qslSlideshow').prop("disabled", false);
 							dialogItself.close();
@@ -580,6 +603,11 @@ $(document).ready(function () {
 			}
 		});
 	});
+
+	function dupeSearch() {
+		$("#dupes").val("Y");
+		$('#searchForm').submit();
+	}
 
 	function quickSearch(type) {
 		var elements = $('#qsoList tbody input:checked');
@@ -598,29 +626,23 @@ $(document).ready(function () {
 				}
 			});
 		}
-		var offset = 0;
 
-		if (!$(".eqslconfirmation")[0]){
-			offset--;
-		}
-		if (!$(".lotwconfirmation")[0]){
-			offset--;
-		}
 		elements.each(function() {
 			var currentRow = $(this).first().closest('tr');
 			var col1 = '';
 			switch (type) {
-				case 'dxcc': 	var tdoffset = (offset + 16); col1 = currentRow.find("td:eq("+tdoffset+")").html(); col1 = col1.match(/\d/g); col1 = col1.join(""); break;
-				case 'cqzone': var tdoffset = (offset + 18); col1 = currentRow.find("td:eq("+tdoffset+")").text(); break;
-				case 'iota': var tdoffset = (offset + 19); col1 = currentRow.find("td:eq("+tdoffset+")").text(); col1 = col1.trim(); break;
-				case 'state': var tdoffset = (offset + 17); col1 = currentRow.find("td:eq("+tdoffset+")").text(); break;
-				case 'dx': col1 = currentRow.find("td:eq(3)").text(); col1 = col1.match(/^([^\s]+)/gm); break;
-				case 'gridsquare': col1 = $(currentRow).find('#dxgrid').text(); col1 = col1.substring(0, 4); break;
-				case 'sota': col1 = $(currentRow).find('#dxsota').text(); break;
-				case 'wwff': col1 = $(currentRow).find('#dxwwff').text(); break;
-				case 'pota': col1 = $(currentRow).find('#dxpota').text(); break;
-				case 'mode': col1 = currentRow.find("td:eq(4)").text(); break;
-				case 'band': col1 = currentRow.find("td:eq(7)").text(); col1 = col1.match(/\S\w*/); break;
+				case 'dxcc': 		col1 = currentRow.find('#dxcc').html(); col1 = col1.match(/\d/g); col1 = col1.join(""); break;
+				case 'cqzone': 		col1 = currentRow.find('#cqzone').text(); break;
+				case 'iota': 		col1 = currentRow.find('#iota').text(); col1 = col1.trim(); break;
+				case 'state': 		col1 = currentRow.find('#state').text(); break;
+				case 'dx': 			col1 = currentRow.find('#dx').text(); col1 = col1.match(/^([^\s]+)/gm); break;
+				case 'gridsquare': 	col1 = $(currentRow).find('#dxgrid').text(); col1 = col1.substring(0, 4); break;
+				case 'sota': 		col1 = $(currentRow).find('#dxsota').text(); break;
+				case 'wwff': 		col1 = $(currentRow).find('#dxwwff').text(); break;
+				case 'pota': 		col1 = $(currentRow).find('#dxpota').text(); break;
+				case 'operator': 	col1 = $(currentRow).find('#operator').text(); break;
+				case 'mode': 		col1 = currentRow.find("td:eq(4)").text(); break;
+				case 'band': 		col1 = currentRow.find("td:eq(7)").text(); col1 = col1.match(/\S\w*/); break;
 			}
 			if (col1.length == 0) return;
 			$('#searchForm').trigger("reset");
@@ -650,7 +672,7 @@ $(document).ready(function () {
 					onshown: function(dialog) {
 					},
 					buttons: [{
-						label: 'Close',
+						label: lang_admin_close,
 						action: function (dialogItself) {
 							$('#printLabel').prop("disabled", false);
 							dialogItself.close();
@@ -665,6 +687,7 @@ $(document).ready(function () {
 	});
 
 	$('#searchForm').on('reset', function(e) {
+		$("#dupes").val("");
 		setTimeout(function() {
 			$('#searchForm').submit();
 		});
@@ -762,7 +785,7 @@ function printlabel() {
 		data: {'id': JSON.stringify(id_list, null, 2),
 				'startat': $('#startat').val(),
 				'grid': $('#gridlabel')[0].checked,
-
+				'via': $('#via')[0].checked,
 			},
 		xhr:function(){
 			var xhr = new XMLHttpRequest();
@@ -850,6 +873,8 @@ function mapQsos(form) {
 				band: form.band.value,
 				qslSent: form.qslSent.value,
 				qslReceived: form.qslReceived.value,
+				qslSentMethod: this.qslSentMethod.value,
+				qslReceivedMethod: this.qslReceivedMethod.value,
 				iota: form.iota.value,
 				dxcc: form.dxcc.value,
 				propmode: form.selectPropagation.value,
@@ -865,6 +890,7 @@ function mapQsos(form) {
 				qslvia: $('[name="qslviainput"]').val(),
 				sota: form.sota.value,
 				pota: form.pota.value,
+				operator: form.operator.value,
 				wwff: form.wwff.value,
 				qslimages: form.qslimages.value,
 			},
@@ -1062,6 +1088,8 @@ function loadMap(data) {
 				state: $('input[name="state"]').is(':checked') ? true : false,
 				cqzone: $('input[name="cqzone"]').is(':checked') ? true : false,
 				iota: $('input[name="iota"]').is(':checked') ? true : false,
+				pota: $('input[name="pota"]').is(':checked') ? true : false,
+				operator: $('input[name="operator"]').is(':checked') ? true : false,
 			},
 			success: function(data) {
 				$('#saveButton').prop("disabled", false);

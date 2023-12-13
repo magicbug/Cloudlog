@@ -9,14 +9,20 @@
 
 <div class="card">
   <div class="card-header">
-    ADIF Imported
+    <?php echo lang('adif_imported')?>
   </div>
   <div class="card-body">
-    <h3 class="card-title">Yay, its imported!</h3>
-    <p class="card-text">The ADIF File has been imported, and any dupes skipped.</p>
+    <h3 class="card-title"><?php echo lang('adif_yay_its_imported')?></h3>
+    <p class="card-text"><?php echo lang('adif_import_confirm')?>
+    <?php if(isset($skip_dupes)) {
+             echo lang('adif_import_dupes_inserted');
+          } else {
+             echo lang('adif_import_dupes_skipped');
+          } ?>
+    </p>
     <?php if($adif_errors) { ?>
-      <h3>ADIF Errors</h3>
-      <p>You have ADIF errors, the QSOs have still been added but these fields have not been populated.</p>
+      <h3><?php echo lang('adif_import_errors')?></h3>
+      <p><?php echo lang('adif_import_errors_hint')?></p>
       <p class="card-text"><?php echo $adif_errors; ?></p>
     <?php } ?>
   </div>

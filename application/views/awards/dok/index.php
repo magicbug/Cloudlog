@@ -1,13 +1,25 @@
 <div class="container">
-
-  <h2><?php echo $page_title?></h2>
+        <!-- Award Info Box -->
+        <br>
+        <div id="awardInfoButton">
+            <script>
+            var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
+            var lang_award_info_ln1 = "<?php echo lang('awards_dok_description_ln1'); ?>";
+            var lang_award_info_ln2 = "<?php echo lang('awards_dok_description_ln2'); ?>";
+            var lang_award_info_ln3 = "<?php echo lang('awards_dok_description_ln3'); ?>";
+            var lang_award_info_ln4 = "<?php echo lang('awards_dok_description_ln4'); ?>";
+            </script>
+            <h2><?php echo $page_title; ?></h2>
+            <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
+        </div>
+        <!-- End of Award Info Box -->
             <form class="form" action="<?php echo site_url('awards/dok'); ?>" method="post" enctype="multipart/form-data">
             <fieldset>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-md-2 control-label" for="band">DOK / SDOK</label>
                 <div class="col-md-2">
-                    <select id="doks" name="doks" class="form-control custom-select-sm">
+                    <select id="doks" name="doks" class="form-select form-select-sm">
                         <option value="both" <?php if ($this->input->post('doks') == "both" || $this->input->method() !== 'post') echo ' selected'; ?> >DOK + SDOK</option>
                         <?php echo '<option value="dok"';
                             if ($this->input->post('doks') == 'dok') echo ' selected';
@@ -21,7 +33,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-md-2" for="checkboxes">Worked / Confirmed</div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
@@ -35,7 +47,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-md-2">QSL Type</div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
@@ -53,10 +65,10 @@
                 </div>
             </div>
 
-           <div class="form-group row">
+           <div class="mb-3 row">
                <label class="col-md-2 control-label" for="band">Band</label>
                <div class="col-md-2">
-                   <select id="band2" name="band" class="form-control custom-select-sm">
+                   <select id="band2" name="band" class="form-select form-select-sm">
                        <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >Every band</option>
                        <?php foreach($worked_bands as $band) {
                            echo '<option value="' . $band . '"';
@@ -67,10 +79,10 @@
                </div>
            </div>
 
-           <div class="form-group row">
+           <div class="mb-3 row">
                <label class="col-md-2 control-label" for="mode">Mode</label>
                <div class="col-md-2">
-                  <select id="mode" name="mode" class="form-control custom-select-sm">
+                  <select id="mode" name="mode" class="form-select form-select-sm">
                      <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'mode') echo ' selected'; ?>>All</option>
                      <?php
                         foreach($modes->result() as $mode){
@@ -100,12 +112,12 @@
    }
 ?>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-md-2 control-label" for="button1id"></label>
                 <div class="col-md-10">
                     <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning">Reset</button>
                     <button id="button1id" type="submit" name="button1id" class="btn btn-sm btn-primary">Show</button>
-                    <button id="button3id" type="button" name="button3id" class="btn btn-sm btn-info" onclick=" window.open('https://dd3ah.de/dokmap/dokonly.html?zoom=9&dokonly=<?php print implode(',', $doks); ?>','_blank')"><i class="fas fa-globe-americas"></i> Map</button>
+                    <button id="button3id" type="button" name="button3id" class="btn btn-sm btn-info" onclick=" window.open('https://dd3ah.de/dokmap/?lat=51.3035&lng=11.1475&zoom=7<?php print implode(',', $doks); ?>','_blank')"><i class="fas fa-globe-americas"></i> Map</button>
                 </div>
             </div>
         </fieldset>
@@ -173,7 +185,7 @@
 
     }
     else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+        echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
     }
     ?>
 

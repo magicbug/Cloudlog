@@ -76,6 +76,26 @@ class User_Model extends CI_Model {
 		}
 	}
 
+	function get_user_email_by_id($id) {
+
+		$clean_id = $this->security->xss_clean($id);
+
+		$this->db->where('user_id', $clean_id);
+		$query = $this->db->get($this->config->item('auth_table'));
+
+		$r = $query->row();
+		return $r->user_email;
+	}
+
+	function hasQrzKey($user_id) {
+		$this->db->where('station_profile.qrzapikey is not null');
+		$this->db->join('station_profile', 'station_profile.user_id = '.$user_id);
+		$query = $this->db->get($this->config->item('auth_table'));
+
+		$ret = $query->row();
+		return $ret->user_email;
+	}
+
 	function get_email_address($station_id) {
 		$this->db->where('station_id', $station_id);
 		$this->db->join('station_profile', 'station_profile.user_id = '.$this->config->item('auth_table').'.user_id');
@@ -124,7 +144,7 @@ class User_Model extends CI_Model {
 		$measurement, $user_date_format, $user_stylesheet, $user_qth_lookup, $user_sota_lookup, $user_wwff_lookup,
 		$user_pota_lookup, $user_show_notes, $user_column1, $user_column2, $user_column3, $user_column4, $user_column5,
 		$user_show_profile_image, $user_previous_qsl_type, $user_amsat_status_upload, $user_mastodon_url,
-		$user_gridmap_default_band, $user_gridmap_confirmation, $language) {
+		$user_default_band, $user_default_confirmation, $user_qso_end_times, $user_quicklog, $user_quicklog_enter, $language) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -154,8 +174,11 @@ class User_Model extends CI_Model {
 				'user_previous_qsl_type' => xss_clean($user_previous_qsl_type),
 				'user_amsat_status_upload' => xss_clean($user_amsat_status_upload),
 				'user_mastodon_url' => xss_clean($user_mastodon_url),
-				'user_gridmap_default_band' => xss_clean($user_gridmap_default_band),
-				'user_gridmap_confirmation' => xss_clean($user_gridmap_confirmation),
+				'user_default_band' => xss_clean($user_default_band),
+				'user_default_confirmation' => xss_clean($user_default_confirmation),
+				'user_qso_end_times' => xss_clean($user_qso_end_times),
+				'user_quicklog' => xss_clean($user_quicklog),
+				'user_quicklog_enter' => xss_clean($user_quicklog_enter),
 				'language' => xss_clean($language),
 			);
 
@@ -215,8 +238,11 @@ class User_Model extends CI_Model {
 					'user_previous_qsl_type' => xss_clean($fields['user_previous_qsl_type']),
 					'user_amsat_status_upload' => xss_clean($fields['user_amsat_status_upload']),
 					'user_mastodon_url' => xss_clean($fields['user_mastodon_url']),
-					'user_gridmap_default_band' => xss_clean($fields['user_gridmap_default_band']),
-					'user_gridmap_confirmation' => (isset($fields['user_gridmap_confirmation_qsl']) ? 'Q' : '').(isset($fields['user_gridmap_confirmation_lotw']) ? 'L' : '').(isset($fields['user_gridmap_confirmation_eqsl']) ? 'E' : ''),
+					'user_default_band' => xss_clean($fields['user_default_band']),
+					'user_default_confirmation' => (isset($fields['user_default_confirmation_qsl']) ? 'Q' : '').(isset($fields['user_default_confirmation_lotw']) ? 'L' : '').(isset($fields['user_default_confirmation_eqsl']) ? 'E' : '').(isset($fields['user_default_confirmation_qrz']) ? 'Z' : ''),
+					'user_qso_end_times' => xss_clean($fields['user_qso_end_times']),
+					'user_quicklog' => xss_clean($fields['user_quicklog']),
+					'user_quicklog_enter' => xss_clean($fields['user_quicklog_enter']),
 					'language' => xss_clean($fields['language']),
 					'winkey' => xss_clean($fields['user_winkey']),
 				);
@@ -341,11 +367,15 @@ class User_Model extends CI_Model {
 			'user_previous_qsl_type' => isset($u->row()->user_previous_qsl_type) ? $u->row()->user_previous_qsl_type: 0,
 			'user_amsat_status_upload' => isset($u->row()->user_amsat_status_upload) ? $u->row()->user_amsat_status_upload: 0,
 			'user_mastodon_url'	 => $u->row()->user_mastodon_url,
-			'user_gridmap_default_band'	 => $u->row()->user_gridmap_default_band,
-			'user_gridmap_confirmation'	 => $u->row()->user_gridmap_confirmation,
+			'user_default_band'	 => $u->row()->user_default_band,
+			'user_default_confirmation'	 => $u->row()->user_default_confirmation,
+			'user_qso_end_times' => isset($u->row()->user_qso_end_times) ? $u->row()->user_qso_end_times : 1,
+			'user_quicklog' => isset($u->row()->user_quicklog) ? $u->row()->user_quicklog : 1,
+			'user_quicklog_enter' => isset($u->row()->user_quicklog_enter) ? $u->row()->user_quicklog_enter : 1,
 			'active_station_logbook' => $u->row()->active_station_logbook,
 			'language' => isset($u->row()->language) ? $u->row()->language: 'english',
 			'isWinkeyEnabled' => $u->row()->winkey,
+			'hasQrzKey' => $this->hasQrzKey($u->row()->user_id),
 		);
 
 		$this->session->set_userdata($userdata);

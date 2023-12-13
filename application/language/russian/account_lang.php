@@ -13,12 +13,15 @@ $lang['account_create_user_account'] = ' Создать аккаунт поль�
 $lang['account_edit_account'] = 'Редактировать аккаунт';
 
 $lang['account_account_information'] = 'Информация об аккаунте';
+$lang['account_user'] = "User";
+$lang['account_word_edited'] = "edited";
 $lang['account_username'] = 'Имя пользователя';
 $lang['account_email_address'] = 'Адрес электронной почты';
 $lang['account_password'] = 'Пароль';
 
 $lang['account_roles'] = 'Роли';
 $lang['account_user_role'] = 'Роль пользователя';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Тема оформления';
 $lang['account_stylesheet'] = 'Шаблон';
@@ -32,9 +35,19 @@ $lang['account_gridsquare'] = 'QTH локатор';
 $lang['account_cloudlog_preferences'] = 'Настройки Cloudlog';
 $lang['account_timezone'] = 'Часовой пояс';
 $lang['account_date_format'] = 'Формат даты';
+$lang['account_log_end_time'] = 'Записывать время завершения QSO отдельно';
+$lang['account_log_end_time_hint'] = 'Отметьте, если вы хотите записывать время начала и завершения QSO раздельно. Если будет выбрано \'Нет\' то время завершения QSO будет совпадать с временм начала.';
+$lang['account_quicklog_feature'] = "Быстрая запись";
+$lang['account_quicklog_feature_hint'] = "С этой функцией вы можете записывать позывные, используя строку поиска в заголовке.";
+$lang['account_quicklog_enter'] = "Быстрая запись - действие по нажатию Ввод";
+$lang['account_quicklog_enter_hint'] = "Какое действие должно выполняться при нажатии Ввод в поле быстрой записи?";
+$lang['account_quicklog_enter_log'] = "Запись позывного в журнал";
+$lang['account_quicklog_enter_search'] = "Поиск позывного";
 $lang['account_measurement_preferences'] = 'Единицы измерения';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Выберите представление даты для отображения в вашем аккаунте.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Выберите единицы измерения расстояния';
+$lang['account_cloudlog_language'] = 'Язык Cloudlog';
+$lang['account_choose_cloudlog_language'] = 'Выберите язык Cloudlog.';
 
 $lang['account_main_menu'] = 'Главное меню';
 $lang['account_show_notes_in_the_main_menu'] = 'Показывать заметки в главном меню.';
@@ -92,6 +105,17 @@ $lang['account_login'] = 'Вход';
 
 $lang['account_mastodon'] = 'Сервер Mastodon';
 $lang['account_user_mastodon'] = 'URL профиля пользователя Mastodon';
+$lang['account_user_mastodon_hint'] = "Главный URL вашего сервера Mastodon, к примеру, <a href='https://radiosocial.de/' target='_blank'>https://radiosocial.de";
 
-$lang['account_gridmap_settings'] = 'Настройки для карты квадратов';
+$lang['account_default_band_settings'] = 'Настройки для диапазона и способ подтверждения (QSL) по умолчанию';
 $lang['account_gridmap_default_band'] = 'Диапазон по умолчанию';
+$lang['account_qsl_settings'] = 'Способы подтверждения (QSL) по умолчанию';
+
+$lang['account_winkeyer'] = 'Winkeyer';
+$lang['account_winkeyer_hint'] = "Поддержка Winkeyer в Cloudlog в стадии эксперимента, прочитайте сначала вики (<a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a>) перед включением.";
+$lang['account_winkeyer_enabled'] = "Функционал Winkeyer включен";
+
+$lang['account_map_params'] = "Settings for map";
+$lang['account_map_qso_by_default'] = "QSO (by default)";
+$lang['account_map_qso_confirm'] = "QSO (confirmed)";
+$lang['account_map_qso_confirm_same_qso'] = "(If 'No', displayed as ".$lang['account_map_qso_by_default'].")";

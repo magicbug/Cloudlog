@@ -12,13 +12,16 @@ $lang['account_column5_text'] = 'Wähle Spalte 5 (nur für Logbuch)';
 $lang['account_create_user_account'] = 'Benutzerkonto anlegen';
 $lang['account_edit_account'] = 'Benutzerkonto editieren';
 
-$lang['account_account_information'] = 'Bnutzerkonto Informationen';
+$lang['account_account_information'] = 'Benutzerkonto Informationen';
+$lang['account_user'] = "Benutzer";
+$lang['account_word_edited'] = "bearbeitet";
 $lang['account_username'] = 'Benutzername';
 $lang['account_email_address'] = 'Emailadresse';
 $lang['account_password'] = 'Passwort';
 
 $lang['account_roles'] = 'Rollen';
 $lang['account_user_role'] = 'Benutzerrolle';
+$lang['account_word_admin'] = 'Admin';
 
 $lang['account_theme'] = 'Thema';
 $lang['account_stylesheet'] = 'Stylesheet';
@@ -32,11 +35,21 @@ $lang['account_gridsquare'] = 'Planquadrat';
 $lang['account_cloudlog_preferences'] = 'Cloudlog Einstellungen';
 $lang['account_timezone'] = 'Zeitzone';
 $lang['account_date_format'] = 'Datumsformat';
+$lang['account_log_end_time'] = 'Logge Endzeiten für QSOs separat';
+$lang['account_log_end_time_hint'] = 'Wenn aktiviert, werden QSO Endzeiten separat erfasst. Falls nicht, ist die QSO Endzeit gleich der Startzeit.';
+$lang['account_quicklog_feature'] = "Quicklog Feld";
+$lang['account_quicklog_feature_hint'] = "Mit dieser Option kannst du Rufzeichen auch direkt aus dem Suchfeld in der Menüleiste heraus loggen.";
+$lang['account_quicklog_enter'] = "Quicklog - Aktion mit Enter Taste";
+$lang['account_quicklog_enter_hint'] = "Welche Aktion soll ausgeführt werden, wenn Enter gedrückt wird?";
+$lang['account_quicklog_enter_log'] = "Logge Rufzeichen";
+$lang['account_quicklog_enter_search'] = "Suche Rufzeichen";
 $lang['account_measurement_preferences'] = 'Entfernungsformat';
 $lang['account_select_how_you_would_like_dates_shown_when_logged_into_your_account'] = 'Wähle, wie Datumsfelder angezeigt werden sollen, wenn du eingeloggt bist.';
 $lang['account_choose_which_unit_distances_will_be_shown_in'] = 'Wähle, in welcher Einheit Entfernungen angezeigt werden sollen.';
+$lang['account_cloudlog_language'] = 'Cloudlog Sprache';
+$lang['account_choose_cloudlog_language'] = 'Wähle eine Sprache für Cloudlog.';
 
-$lang['account_main_menu'] = 'Hauptmenü';
+$lang['account_main_menu'] = 'Menü Optionen';
 $lang['account_show_notes_in_the_main_menu'] = 'Zeige Notizen im Hauptmenü';
 
 $lang['account_gridsquare_and_location_autocomplete'] = 'Vervollständigung von Planquadrat und Lokation';
@@ -92,7 +105,17 @@ $lang['account_login'] = 'Anmeldung';
 
 $lang['account_mastodon'] = 'Mastodonserver';
 $lang['account_user_mastodon'] = 'URL des Mastodonservers';
+$lang['account_user_mastodon_hint'] = "Haupt-URL des Mastodonservers, z.B. <a href='https://radiosocial.de/' target='_blank'>https://radiosocial.de";
 
-$lang['account_gridmap_settings'] = 'Einstellung der Planquadratkarte';
+$lang['account_default_band_settings'] = 'Einstellung für Standardband und -bestätigungsmethode';
 $lang['account_gridmap_default_band'] = 'Standardband';
-$lang['account_qsl_settings'] = 'QSL-Methoden, die in der Planquadratkarte und beim anlegen eines QSOs angezeigt werden';
+$lang['account_qsl_settings'] = 'Standard QSL-Methoden';
+
+$lang['account_winkeyer'] = 'Winkeyer';
+$lang['account_winkeyer_hint'] = "Die Winkeyer Unterstützung in Cloudlog ist sehr experimentell. Lese zuerst den Wikieintrag auf <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a> bevor du ihn einschaltest.";
+$lang['account_winkeyer_enabled'] = "Winkeyer Features Eingeschaltet";
+
+$lang['account_map_params'] = "Settings for map";
+$lang['account_map_qso_by_default'] = "QSO (by default)";
+$lang['account_map_qso_confirm'] = "QSO (confirmed)";
+$lang['account_map_qso_confirm_same_qso'] = "(If 'No', displayed as ".$lang['account_map_qso_by_default'].")";

@@ -39,7 +39,7 @@ if ($qsos->result() != NULL) {
 		echo '<td style=\'text-align: center\'>' . $qso->COL_CQZ . '</td>';
 		echo '<td style=\'text-align: center\'>' . $qso->correctcqzone . '</td>';
 		echo '<td style=\'text-align: center\'>' . ucwords(strtolower($qso->COL_COUNTRY), "- (/") . '</td>';
-		echo '<td style=\'text-align: center\'><span class="badge badge-light">' . $qso->station_callsign . '</span></td>';
+		echo '<td style=\'text-align: center\'><span class="badge text-bg-light">' . $qso->station_callsign . '</span></td>';
 		echo '</tr>';
 	}
 
@@ -48,6 +48,6 @@ if ($qsos->result() != NULL) {
 
 	<?php
 } else {
-	echo '<div class="alert alert-success"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>No incorrect CQ Zones were found.</div>';
+	echo '<div class="alert alert-success">No incorrect CQ Zones were found.</div>';
 }
 ?>

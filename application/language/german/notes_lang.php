@@ -20,4 +20,3 @@ $lang['notes_input_btn_delete_note'] = 'Lösche Notiz';
 $lang['notes_selection_general'] = 'Allgemein';
 $lang['notes_selection_antennas'] = 'Antennen';
 $lang['notes_selection_satellites'] = 'Satelliten';
-
