@@ -749,10 +749,19 @@ function showActivatorsMap(call, count, grids) {
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
-            var customdata = {'dataPost':{'date_from':'<?php echo $date_from; ?>', 'date_to':'<?php echo $date_to; ?>', 
-                                        'band':'<?php echo $this->input->post('band'); ?>', 'mode':'<?php echo $this->input->post('mode'); ?>',
-                                        'prop_mode':'<?php echo $this->input->post('prop_mode'); ?>', 'isCustom':true }}
-            initmap(grid, 'custommap', customdata);
+            initmap(grid, 'custommap', {'initmap_only':true});
+            // Form "submit" //
+            $('.custom-map-QSOs .btn_submit_map_custom').off('click').on('click',function() {
+                if ($('.custom-map-QSOs input[name="from"]').val().replaceAll('-','') <= $('.custom-map-QSOs input[name="to"]').val().replaceAll('-','')) { 
+                    var customdata = {'dataPost':{'date_from': $('.custom-map-QSOs input[name="from"]').val(), 'date_to': $('.custom-map-QSOs input[name="to"]').val(), 
+                                                'band': $('.custom-map-QSOs select[name="band"]').val(), 'mode': $('.custom-map-QSOs select[name="mode"]').val(),
+                                                'prop_mode': $('.custom-map-QSOs select[name="prop_mode"]').val(), 'isCustom':true }, 'map_id':'#custommap'};
+                    initplot(qso_loc, customdata);
+                } else {
+                    // TODO
+                }
+            })
+
 
       });
     </script>

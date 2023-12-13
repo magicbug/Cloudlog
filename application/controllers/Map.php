@@ -79,23 +79,12 @@ class Map extends CI_Controller {
         $data['logbook_name'] = $logbook_name;
 		$data['page_title'] = "Map QSOs";
 
-        if ($this->input->post('from')) {
-            $from = $this->input->post('from');
-            $footer_data['date_from'] = $from;
-        } else {
-            $footer_data['date_from'] = date('Y-m-d H:i:00');
-        }
-        if ($this->input->post('to')) {
-			$to = $this->input->post('to');
-			$footer_data['date_to'] = $to;
-        } else {
-            $temp_to = new DateTime('tomorrow');
-            $footer_data['date_to'] = $temp_to->format('Y-m-d H:i:00');
-        }
+        $data['date_from'] = date('Y-m-d');
+        $data['date_to'] = date('Y-m-d', strtotime($data['date_from'].' +1days'));
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('map/custom_date');
-		$this->load->view('interface_assets/footer',$footer_data);
+		$this->load->view('interface_assets/footer');
     }
 
 	// Generic fonction for return Json for MAP //
