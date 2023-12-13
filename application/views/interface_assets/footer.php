@@ -55,18 +55,6 @@
         $('[data-bs-toggle="tooltip"]').tooltip();
     });
     </script>
-<?php if ($this->uri->segment(1) == "awards" && ($this->uri->segment(2) == "was") ) { ?>
-<script>
-function load_was_map() {
-    BootstrapDialog.show({
-            title: 'Worked All States Map ('+$('#band2').val()+' '+$('#mode').val()+')',
-            cssClass: 'was-map-dialog',
-            message: $('<div></div>').load(site_url + '/awards/was_map/' + $('#band2').val() + '/' + $('#mode').val())
-    });
-}
-</script>
-<?php } ?>
-
 <!-- Version Dialog START -->
 
 <?php
@@ -1270,7 +1258,7 @@ $(document).on('keypress',function(e) {
         qso_set_eqsl_qslmsg(stationProfile,false,'.qso_panel');
 	});
     // [eQSL default msg] change value on clic //
-    $('.qso_panel .qso_eqsl_qslmsg_update').off('click').on('click',function() { 
+    $('.qso_panel .qso_eqsl_qslmsg_update').off('click').on('click',function() {
         qso_set_eqsl_qslmsg($('.qso_panel #stationProfile').val(),true,'.qso_panel');
         $('#charsLeft').text(" ");
     });
@@ -3088,10 +3076,10 @@ function viewEqsl(picture, callsign) {
                 if ($('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').is(":hidden")) { $('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').show(); } else { $('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').hide(); }
             });
             $('.icon_selectBox_data').off('mouseleave').on('mouseleave', function(){ if ($(this).is(":visible")) { $(this).hide(); } });
-            $('.icon_selectBox_data label').off('click').on('click', function(){ 
+            $('.icon_selectBox_data label').off('click').on('click', function(){
                 var boxcontent = $(this).closest('.icon_selectBox_data').attr('data-boxcontent');
                 $('input[name="user_map_'+boxcontent+'_icon"]').attr('value',$(this).attr('data-value'));
-                if ($(this).attr('data-value') != "0") { 
+                if ($(this).attr('data-value') != "0") {
                     $('.user_icon_color[data-icon="'+boxcontent+'"]').show();
                     $('.icon_selectBox[data-boxcontent="'+boxcontent+'"] .icon_overSelect').html($(this).html());
                 } else {
@@ -3099,10 +3087,10 @@ function viewEqsl(picture, callsign) {
                     $('.icon_selectBox[data-boxcontent="'+boxcontent+'"] .icon_overSelect').html($(this).html().substring(0,10)+'.');
                 }
                 $('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').hide();
-            }); 
+            });
         });
     </script>
-<?php } ?> 
+<?php } ?>
 
 <?php
 if (isset($scripts) && is_array($scripts)){
