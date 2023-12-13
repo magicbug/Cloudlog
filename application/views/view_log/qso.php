@@ -161,16 +161,16 @@
 
                     <?php if($row->COL_STATE != null) { ?>
                     <tr>
-                        <td>USA State:</td>
+                        <td><?php echo $primary_subdivision ?>:</td>
                         <td><?php echo $row->COL_STATE; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_CNTY != null && $row->COL_CNTY != ",") { ?>
-                        <tr>
-                            <td>USA County:</td>
-                            <td><?php echo $row->COL_CNTY; ?></td>
-                        </tr>
+                    <tr>
+                        <td><?php echo $secondary_subdivision ?>:</td>
+                        <td><?php echo $row->COL_CNTY; ?></td>
+                    </tr>
                     <?php } ?>
 
                     <?php if($row->COL_NAME != null) { ?>
