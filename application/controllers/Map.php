@@ -79,8 +79,7 @@ class Map extends CI_Controller {
         $data['logbook_name'] = $logbook_name;
 		$data['page_title'] = "Map QSOs";
 
-        $data['date_from'] = date('Y-m-d');
-        $data['date_to'] = date('Y-m-d', strtotime($data['date_from'].' +1days'));
+        $data['date_from'] = $data['date_to'] = date('Y-m-d');
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('map/custom_date');

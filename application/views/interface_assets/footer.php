@@ -750,16 +750,23 @@ function showActivatorsMap(call, count, grids) {
               var grid = "No";
             <?php } ?>
             initmap(grid, 'custommap', {'initmap_only':true});
+            // Check and change date if to < from //
+            $('.custom-map-QSOs input[name="to"]').off('change').on('change', function() {
+                if ($('.custom-map-QSOs input[name="to"]').val().replaceAll('-','') < $('.custom-map-QSOs input[name="from"]').val().replaceAll('-','')) {
+                    $('.custom-map-QSOs input[name="from"]').val($('.custom-map-QSOs input[name="to"]').val());
+                }
+            });
+            $('.custom-map-QSOs input[name="from"]').off('change').on('change', function() {
+                if ($('.custom-map-QSOs input[name="from"]').val().replaceAll('-','') > $('.custom-map-QSOs input[name="to"]').val().replaceAll('-','')) {
+                    $('.custom-map-QSOs input[name="to"]').val($('.custom-map-QSOs input[name="from"]').val());
+                }
+            });
             // Form "submit" //
             $('.custom-map-QSOs .btn_submit_map_custom').off('click').on('click',function() {
-                if ($('.custom-map-QSOs input[name="from"]').val().replaceAll('-','') <= $('.custom-map-QSOs input[name="to"]').val().replaceAll('-','')) { 
-                    var customdata = {'dataPost':{'date_from': $('.custom-map-QSOs input[name="from"]').val(), 'date_to': $('.custom-map-QSOs input[name="to"]').val(), 
-                                                'band': $('.custom-map-QSOs select[name="band"]').val(), 'mode': $('.custom-map-QSOs select[name="mode"]').val(),
-                                                'prop_mode': $('.custom-map-QSOs select[name="prop_mode"]').val(), 'isCustom':true }, 'map_id':'#custommap'};
-                    initplot(qso_loc, customdata);
-                } else {
-                    // TODO
-                }
+                var customdata = {'dataPost':{'date_from': $('.custom-map-QSOs input[name="from"]').val(), 'date_to': $('.custom-map-QSOs input[name="to"]').val(), 
+                                            'band': $('.custom-map-QSOs select[name="band"]').val(), 'mode': $('.custom-map-QSOs select[name="mode"]').val(),
+                                            'prop_mode': $('.custom-map-QSOs select[name="prop_mode"]').val(), 'isCustom':true }, 'map_id':'#custommap'};
+                initplot(qso_loc, customdata);
             })
 
 

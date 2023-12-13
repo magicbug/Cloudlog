@@ -2113,7 +2113,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
     }
 
       $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
-      $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
+      $this->db->where("COL_TIME_ON BETWEEN '".$start." 00:00:00' AND '".$end." 23:59:59'");
       $this->db->where_in("station_id", $logbooks_locations_array);
 
       if($band != "All" && $band != "SAT") {

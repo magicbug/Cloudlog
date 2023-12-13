@@ -17,7 +17,7 @@
 
             <div class="mb-3 col-md-3">
                 <label for="to"><?php echo lang('gen_to_date') . ": " ?></label>
-                <input name="to" id="to" type="date" class="form-control w-auto" value="<?php echo $date_to; ?>">
+                <input name="to" id="to" type="date" class="form-control w-auto" value="<?php echo $date_to; ?>" max="<?php echo $date_to; ?>">
             </div>
         </div>
 
