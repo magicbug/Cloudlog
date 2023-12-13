@@ -49,6 +49,14 @@ class Gridmaster_model extends CI_Model {
     private $ja_lon  = 140;
     private $ja_zoom = 5;
 
+    private $dl_grids = ['JO45', 'JO34', 'JO44', 'JO54', 'JO64', 'JO74', 'JO33', 'JO43', 'JO53', 'JO63', 'JO73', 'JO32', 'JO42', 'JO52', 'JO62', 'JO72',
+        'JO21', 'JO31', 'JO41', 'JO51', 'JO61', 'JO71', 'JO20', 'JO30', 'JO40', 'JO50', 'JO60', 'JO70', 'JN39', 'JN49', 'JN59', 'JN69',
+        'JN38', 'JN48', 'JN58', 'JN68', 'JN37', 'JN47', 'JN57', 'JN67'
+    ];
+    private $dl_lat  = 52;
+    private $dl_lon  = 11;
+    private $dl_zoom = 6;
+
     function get_lotw($dxcc) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');

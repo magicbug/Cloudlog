@@ -36,6 +36,7 @@ $lang['menu_continents'] = 'Continents';
 
 $lang['menu_awards'] = 'Awards';
 $lang['menu_cq'] = 'CQ';
+$lang['menu_dl_gridmaster'] = 'DL Gridmaster';
 $lang['menu_dok'] = 'DOK';
 $lang['menu_dxcc'] = 'DXCC';
 $lang['menu_ffma'] = 'Fred Fish Memorial Award';
