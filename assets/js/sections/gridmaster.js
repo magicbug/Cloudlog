@@ -3,7 +3,7 @@ var grid_four = '';
 var grid_four_lotw = '';
 var grid_four_paper = '';
 
-function gridPlot(form) {
+function gridPlot(form, dxcc) {
     $(".ld-ext-right-plot").addClass('running');
     $(".ld-ext-right-plot").prop('disabled', true);
     $('#plot').prop("disabled", true);
@@ -16,20 +16,28 @@ function gridPlot(form) {
         $("#gridmapcontainer").append('<div id="gridsquare_map" class="map-leaflet" style="width: 100%; height: 800px"></div>');
     }
 
-    ajax_url = site_url + '/awards/getGridmasterGridsjs';
+    ajax_url = site_url + '/awards/getGridmasterGridsjs/'+dxcc;
 
     $.ajax({
       url: ajax_url,
-      type: 'get',
+      type: 'post',
+      data: {
+         dxcc: 'us'
+      },
+
       success: function (data) {
             $('.cohidden').show();
             $(".ld-ext-right-plot").removeClass('running');
             $(".ld-ext-right-plot").prop('disabled', false);
             $('#plot').prop("disabled", false);
-            grid_max = 488;
+            grids = data.grids;
+            grid_max = data.grid_count;
             grid_four = data.grid_4char;
             grid_four_lotw = data.grid_4char_lotw;
             grid_four_paper = data.grid_4char_paper;
+            lat = data.lat;
+            lon = data.lon;
+            zoom = data.zoom;
             paper_count = 0;
             grid_four_paper.forEach((element) => {
                if (!grid_four_lotw.includes(element)) {
@@ -44,8 +52,8 @@ function gridPlot(form) {
 
             map = L.map('gridsquare_map', {
             layers: [layer],
-            center: [38, -91],
-            zoom: 5,
+            center: [lat, lon],
+            zoom: zoom,
             minZoom: 4,
             maxZoom: 12,
             fullscreenControl: true,
@@ -67,7 +75,6 @@ function gridPlot(form) {
 
             legend.onAdd = function(map) {
                 var div = L.DomUtil.create("div", "legend");
-                //div.innerHTML += "<h4>" + gridsquares_gridsquares + "</h4>";
                 html = "<table border=\"0\">";
                 html += '<tr><td><i style="background: #90ee90"></i><span>' + gridsquares_gridsquares_lotw + ':</span></td><td style=\"padding-left: 1em; text-align: right;\"><span>'+grid_four_lotw.length+' / '+grid_max+'</span></td></tr>';
                 html += '<tr><td><i style="background: #00b0f0"></i><span>' + gridsquares_gridsquares_paper + ':</span></td><td style=\"padding-left: 1em; text-align: right;\"><span>'+paper_count+' / '+grid_max+'</span></td></tr>';
@@ -138,5 +145,5 @@ function spawnGridsquareModal(loc_4char) {
 }
 
 $(document).ready(function(){
-   gridPlot(this.form);
+   gridPlot(this.form, dxcc);
 })

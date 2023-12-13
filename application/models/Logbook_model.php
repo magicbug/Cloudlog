@@ -2921,7 +2921,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 		  'COL_QRZCOM_QSO_DOWNLOAD_DATE' => $qsl_date,
 		  'COL_QRZCOM_QSO_DOWNLOAD_STATUS' => $qsl_status,
 	  );
-	
+
 
 	  $this->db->where('date_format(COL_TIME_ON, \'%Y-%m-%d %H:%i\') = "'.$datetime.'"');
 	  $this->db->where('COL_CALL', $callsign);
@@ -3682,8 +3682,8 @@ function lotw_last_qsl_date($user_id) {
                 $band = strtolower($record['band']);
         } else {
             if (isset($record['freq'])){
-              if($freq != "0") {
-                $band = $CI->frequency->GetBand($freq);
+              if($record['freq'] != "0") {
+                $band = $CI->frequency->GetBand($record['freq']);
               }
             }
         }

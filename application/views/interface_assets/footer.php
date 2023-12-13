@@ -2503,12 +2503,12 @@ function viewEqsl(picture, callsign) {
                     onshown: function(dialog) {
                        $('[data-bs-toggle="tooltip"]').tooltip();
                        $('.contacttable').DataTable({
-                            "pageLength": 25,
+                            "pageLength": 7,
                             responsive: false,
                             ordering: false,
                             "scrollY":        "550px",
                             "scrollCollapse": true,
-                            "paging":         false,
+                            "paging":         true,
                             "scrollX": true,
                             dom: 'Bfrtip',
                             buttons: [

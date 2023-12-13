@@ -740,3 +740,7 @@ table.dataTable tfoot td {
 .dropdown-menu > li > a:hover:after {
     transform: rotate(-90deg);
 }
+
+#partial_view .table-responsive {
+	overflow-x: unset;
+}
