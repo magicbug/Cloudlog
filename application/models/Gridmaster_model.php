@@ -57,6 +57,11 @@ class Gridmaster_model extends CI_Model {
     private $dl_lon  = 11;
     private $dl_zoom = 6;
 
+    private $lx_grids = ['JO20', 'JO30', 'JN29', 'JN39' ];
+    private $lx_lat  = 50;
+    private $lx_lon  = 6;
+    private $lx_zoom = 8;
+
     function get_lotw($dxcc) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
