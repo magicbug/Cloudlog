@@ -3054,15 +3054,7 @@ function lotw_last_qsl_date($user_id) {
   }
 
 
-  function import_bulk($recordset) {
-	  $one_error='';
-	  foreach ($recordset as $record) {
-		  $one_error .= $this->import($record, $this->input->post('station_profile'), $this->input->post('skipDuplicate'), $this->input->post('markClublog'),$this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), $this->input->post('markHrd'), true, $this->input->post('operatorName'), false, $this->input->post('skipStationCheck'));
-	  }
-	  log_message("Error","Finished Import ".$one_error);
-  }
-
-    /*
+      /*
      * $skipDuplicate - used in ADIF import to skip duplicate checking when importing QSOs
      * $markLoTW - used in ADIF import to mark QSOs as exported to LoTW when importing QSOs
      * $dxccAdif - used in ADIF import to determine if DXCC From ADIF is used, or if Cloudlog should try to guess
