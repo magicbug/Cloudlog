@@ -442,6 +442,11 @@ class Awards extends CI_Controller {
 	}
 
     public function was() {
+		$footerData = [];
+		$footerData['scripts'] = [
+			'assets/js/sections/wasmap.js?' . filemtime(realpath(__DIR__ . "/../../assets/js/sections/wasmap.js"))
+		];
+
         $this->load->model('was');
 		$this->load->model('modes');
         $this->load->model('bands');
@@ -491,7 +496,7 @@ class Awards extends CI_Controller {
         $data['page_title'] = "Awards - WAS (Worked All States)";
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/was/index');
-        $this->load->view('interface_assets/footer');
+        $this->load->view('interface_assets/footer', $footerData);
     }
 
     public function iota ()	{
@@ -874,28 +879,53 @@ class Awards extends CI_Controller {
 
         This displays the WAS map and requires the $band_type and $mode_type
     */
-    public function was_map($band_type, $mode_type) {
+    public function was_map() {
+		$stateString = 'AK,AL,AR,AZ,CA,CO,CT,DE,FL,GA,HI,IA,ID,IL,IN,KS,KY,LA,MA,MD,ME,MI,MN,MO,MS,MT,NC,ND,NE,NH,NJ,NM,NV,NY,OH,OK,OR,PA,RI,SC,SD,TN,TX,UT,VA,VT,WA,WI,WV,WY';
+		$wasArray = explode(',', $stateString);
 
         $this->load->model('was');
 
-		$data['mode'] = $mode_type;
+		$bands[] = $this->security->xss_clean($this->input->post('band'));
 
-        $bands[] = $band_type;
+        $postdata['qsl'] = $this->input->post('qsl') == 0 ? NULL: 1;
+        $postdata['lotw'] = $this->input->post('lotw') == 0 ? NULL: 1;
+        $postdata['eqsl'] = $this->input->post('eqsl') == 0 ? NULL: 1;
+        $postdata['worked'] = $this->input->post('worked') == 0 ? NULL: 1;
+        $postdata['confirmed'] = $this->input->post('confirmed')  == 0 ? NULL: 1;
+        $postdata['notworked'] = $this->input->post('notworked')  == 0 ? NULL: 1;
+        $postdata['band'] = $this->security->xss_clean($this->input->post('band'));
+        $postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
 
-        $postdata['qsl'] = 1;
-        $postdata['lotw'] = 1;
-        $postdata['eqsl'] = 0;
-        $postdata['worked'] = 1;
-        $postdata['confirmed'] = 1;
-        $postdata['notworked'] = 1;
-        $postdata['band'] = $band_type;
-		$postdata['mode'] = $mode_type;
+        $was_array = $this->was->get_was_array($bands, $postdata);
 
-        $data['was_array'] = $this->was->get_was_array($bands, $postdata);
+        $states = array();
 
-        $data['page_title'] = "";
+		foreach ($wasArray as $state) {                  	 // Generating array for use in the table
+            $states[$state] = '-';                   // Inits each state's count
+        }
 
-        $this->load->view('awards/was/map', $data);
+
+        foreach ($was_array as $was => $value) {
+            foreach ($value  as $key) {
+                if($key != "") {
+                    if (strpos($key, '>W<') !== false) {
+                        $states[$was] = 'W';
+                        break;
+                    }
+                    if (strpos($key, '>C<') !== false) {
+                        $states[$was] = 'C';
+                        break;
+                    }
+                    if (strpos($key, '-') !== false) {
+                        $states[$was] = '-';
+                        break;
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($states);
     }
 
     /*

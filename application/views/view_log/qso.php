@@ -128,12 +128,8 @@
                         <td><?php echo lang('general_total_distance'); //Total distance ?></td>
                         <td>
                             <?php
-                                // Load the QRA Library
-                                $CI =& get_instance();
-                                $CI->load->library('qra');
-
                                 // Cacluate Distance
-                                $distance = $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
+                                $distance = $this->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
 
                                 switch ($measurement_base) {
                                     case 'M':
@@ -161,16 +157,16 @@
 
                     <?php if($row->COL_STATE != null) { ?>
                     <tr>
-                        <td>USA State:</td>
+                        <td><?php echo $primary_subdivision ?>:</td>
                         <td><?php echo $row->COL_STATE; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_CNTY != null && $row->COL_CNTY != ",") { ?>
-                        <tr>
-                            <td>USA County:</td>
-                            <td><?php echo $row->COL_CNTY; ?></td>
-                        </tr>
+                    <tr>
+                        <td><?php echo $secondary_subdivision ?>:</td>
+                        <td><?php echo $row->COL_CNTY; ?></td>
+                    </tr>
                     <?php } ?>
 
                     <?php if($row->COL_NAME != null) { ?>
