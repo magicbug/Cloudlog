@@ -128,12 +128,8 @@
                         <td><?php echo lang('general_total_distance'); //Total distance ?></td>
                         <td>
                             <?php
-                                // Load the QRA Library
-                                $CI =& get_instance();
-                                $CI->load->library('qra');
-
                                 // Cacluate Distance
-                                $distance = $CI->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
+                                $distance = $this->qra->distance($row->station_gridsquare, $row->COL_GRIDSQUARE, $measurement_base);
 
                                 switch ($measurement_base) {
                                     case 'M':
