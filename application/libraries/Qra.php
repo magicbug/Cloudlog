@@ -217,9 +217,9 @@ function qra2latlong($strQRA) {
 
     if ((strlen($strQRA) % 2 == 0) && (strlen($strQRA) <= 10)) {	// Check if QRA is EVEN (the % 2 does that) and smaller/equal 8
         $strQRA = strtoupper($strQRA);
-	if (strlen($strQRA) == 4)  $strQRA .= "MM";	// Only 4 Chars? Fill with center "MM"
+	if (strlen($strQRA) == 4)  $strQRA .= "LL";	// Only 4 Chars? Fill with center "LL" as only A-R allowed
 	if (strlen($strQRA) == 6)  $strQRA .= "55";	// Only 6 Chars? Fill with center "55"
-	if (strlen($strQRA) == 8)  $strQRA .= "MM";	// Only 6 Chars? Fill with center "MM"
+	if (strlen($strQRA) == 8)  $strQRA .= "LL";	// Only 8 Chars? Fill with center "LL" as only A-R allowed
 
         if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}$/', $strQRA)) {
             return false;
@@ -237,8 +237,8 @@ function qra2latlong($strQRA) {
         $i = ord($i) - ord('A');
         $j = ord($j) - ord('A');
 
-	$nLong = ($a*20) + ($c*2) + (($e+0.5)/12) + (($g-5)/120) - 180;	// the 4th pair is "in the middle", so we've to substract 5
-	$nLat = ($b*10) + $d + (($f+0.5)/24) + (($h-5)/240) - 90;
+        $nLong = ($a*20) + ($c*2) + ($e/12) + ($g/120) + ($i/2880) - 180;
+        $nLat = ($b*10) + $d + ($f/24) + ($h/240) + ($j/5760) - 90;
 
         $arLatLong = array($nLat, $nLong);
         return $arLatLong;
