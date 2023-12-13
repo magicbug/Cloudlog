@@ -195,23 +195,21 @@ class adif extends CI_Controller {
 
 				$this->adif_parser->initialize();
 				$custom_errors = "";
-				$recordset=[];
-				log_message("Error","starting import");
 				while($record = $this->adif_parser->get_record())
 				{
 					if(count($record) == 0) {
 						break;
 					};
 
-					array_push($recordset,$record);
-					// $one_error = $this->logbook_model->import($record, $this->input->post('station_profile'), $this->input->post('skipDuplicate'), $this->input->post('markClublog'),$this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), $this->input->post('markHrd'), true, $this->input->post('operatorName'), false, $this->input->post('skipStationCheck'));
+					$one_error = $this->logbook_model->import($record, $this->input->post('station_profile'), $this->input->post('skipDuplicate'), $this->input->post('markClublog'),$this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), $this->input->post('markHrd'), true, $this->input->post('operatorName'), false, $this->input->post('skipStationCheck'));
+					if ($one_error != '') {
+						$custom_errors.=$one_error."<br/>";
+					}
 				};
 				unlink('./uploads/'.$data['upload_data']['file_name']);
 			} else {
 				$custom_errors='Station Profile not valid for User';
 			}
-
-			$one_error=$this->logbook_model->import_bulk($recordset);
 
 			$data['adif_errors'] = $custom_errors;
 			$data['skip_dupes'] = $this->input->post('skipDuplicate');
