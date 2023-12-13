@@ -34,8 +34,35 @@ class Gridmaster_model extends CI_Model {
        'EL39', 'EL49', 'EL59', 'EL79', 'EL89', 'EL99', 'DL88', 'DL98', 'EL08', 'EL18', 'EL28', 'EL58', 'EL88', 'EL98', 'EL07', 'EL17',
        'EL87', 'EL97', 'EL06', 'EL16', 'EL86', 'EL96', 'EL15', 'EL95', 'EL84', 'EL94'
     ];
+    private $us_lat  = 38;
+    private $us_lon  = -91;
+    private $us_zoom = 5;
 
-    function get_lotw() {
+    private $ja_grids = ['PL14', 'PL24', 'PL36', 'PL37', 'PL46', 'PL47', 'PL48', 'PL49', 'PL55', 'PL58', 'PM40', 'PM41', 'PM42', 'PM43',
+        'PM44', 'PM50', 'PM51', 'PM52', 'PM53', 'PM54', 'PM62', 'PM63', 'PM64', 'PM65', 'PM66', 'PM73', 'PM74', 'PM75', 'PM76', 'PM83',
+        'PM84', 'PM85', 'PM86', 'PM87', 'PM92', 'PM93', 'PM94', 'PM95', 'PM96', 'PM97', 'PM98', 'PM99', 'PN90', 'PN91', 'PN92', 'QL16',
+        'QL17', 'QM05', 'QM06', 'QM07', 'QM08', 'QM09', 'QM19', 'QN00', 'QN01', 'QN02', 'QN03', 'QN04', 'QN05', 'QN11', 'QN12', 'QN13',
+        'QN14', 'QN15', 'QN22', 'QN23', 'QN24', 'PL80', 'PM91', 'QL04', 'QL05', 'QL07', 'QL09', 'QL64', 'QM00', 'QM01', 'PL15', 'PL25',
+        'PL54', 'PM57', 'QN33', 'QN34', 'QN35', 'QN45'
+    ];
+    private $ja_lat  = 35;
+    private $ja_lon  = 140;
+    private $ja_zoom = 5;
+
+    private $dl_grids = ['JO45', 'JO34', 'JO44', 'JO54', 'JO64', 'JO74', 'JO33', 'JO43', 'JO53', 'JO63', 'JO73', 'JO32', 'JO42', 'JO52', 'JO62', 'JO72',
+        'JO21', 'JO31', 'JO41', 'JO51', 'JO61', 'JO71', 'JO20', 'JO30', 'JO40', 'JO50', 'JO60', 'JO70', 'JN39', 'JN49', 'JN59', 'JN69',
+        'JN38', 'JN48', 'JN58', 'JN68', 'JN37', 'JN47', 'JN57', 'JN67'
+    ];
+    private $dl_lat  = 52;
+    private $dl_lon  = 11;
+    private $dl_zoom = 6;
+
+    private $lx_grids = ['JO20', 'JO30', 'JN29', 'JN39' ];
+    private $lx_lat  = 50;
+    private $lx_lon  = 6;
+    private $lx_zoom = 8;
+
+    function get_lotw($dxcc) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -50,11 +77,11 @@ class Gridmaster_model extends CI_Model {
            .' WHERE station_id in ('.$location_list.')'
            ." and COL_LOTW_QSL_RCVD = 'Y'"
            ." and COL_PROP_MODE = 'SAT'"
-           .' AND substring(COL_GRIDSQUARE,1,4) in (\''.implode('\',\'', $this->us_grids).'\')';
+           .' AND substring(COL_GRIDSQUARE,1,4) in (\''.implode('\',\'', $this->{$dxcc.'_grids'}).'\')';
         return $this->db->query($sql);
     }
 
-    function get_paper() {
+    function get_paper($dxcc) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -69,11 +96,11 @@ class Gridmaster_model extends CI_Model {
            .' WHERE station_id in ('.$location_list.')'
            ." and COL_QSL_RCVD = 'Y'"
            ." and COL_PROP_MODE = 'SAT'"
-           .' AND substring(COL_GRIDSQUARE,1,4) in (\''.implode('\',\'', $this->us_grids).'\')';
+           .' AND substring(COL_GRIDSQUARE,1,4) in (\''.implode('\',\'', $this->{$dxcc.'_grids'}).'\')';
         return $this->db->query($sql);
     }
 
-    function get_worked() {
+    function get_worked($dxcc) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -87,11 +114,11 @@ class Gridmaster_model extends CI_Model {
            .$this->config->item('table_name')
            .' WHERE station_id in ('.$location_list.')'
            ." and COL_PROP_MODE = 'SAT'"
-           .' AND substring(COL_GRIDSQUARE,1,4) in (\''.implode('\',\'', $this->us_grids).'\')';
+           .' AND substring(COL_GRIDSQUARE,1,4) in (\''.implode('\',\'', $this->{$dxcc.'_grids'}).'\')';
         return $this->db->query($sql);
     }
 
-    function get_vucc_lotw() {
+    function get_vucc_lotw($dxcc) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -113,7 +140,7 @@ class Gridmaster_model extends CI_Model {
         foreach ($query->result() as $row) {
            $grids = explode(',', $row->VUCC_GRIDS);
            foreach ($grids as $grid) {
-              if (in_array(substr($grid, 0, 4), $this->us_grids)) {
+              if (in_array(substr($grid, 0, 4), $this->{$dxcc.'_grids'})) {
                  if (!in_array(substr($grid, 0, 4), $vucc_grids)) {
                     $vucc_grids[] = substr($grid, 0, 4);
                  }
@@ -123,7 +150,7 @@ class Gridmaster_model extends CI_Model {
         return $vucc_grids;
     }
 
-    function get_vucc_paper() {
+    function get_vucc_paper($dxcc) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -145,7 +172,7 @@ class Gridmaster_model extends CI_Model {
         foreach ($query->result() as $row) {
            $grids = explode(',', $row->VUCC_GRIDS);
            foreach ($grids as $grid) {
-              if (in_array(substr($grid, 0, 4), $this->us_grids)) {
+              if (in_array(substr($grid, 0, 4), $this->{$dxcc.'_grids'})) {
                  if (!in_array(substr($grid, 0, 4), $vucc_grids)) {
                     $vucc_grids[] = substr($grid, 0, 4);
                  }
@@ -155,7 +182,7 @@ class Gridmaster_model extends CI_Model {
         return $vucc_grids;
     }
 
-    function get_vucc_worked() {
+    function get_vucc_worked($dxcc) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -176,7 +203,7 @@ class Gridmaster_model extends CI_Model {
         foreach ($query->result() as $row) {
            $grids = explode(',', $row->VUCC_GRIDS);
            foreach ($grids as $grid) {
-              if (in_array(substr($grid, 0, 4), $this->us_grids)) {
+              if (in_array(substr($grid, 0, 4), $this->{$dxcc.'_grids'})) {
                  if (!in_array(substr($grid, 0, 4), $vucc_grids)) {
                     $vucc_grids[] = substr($grid, 0, 4);
                  }
@@ -184,6 +211,26 @@ class Gridmaster_model extends CI_Model {
            }
         }
         return $vucc_grids;
+    }
+
+    function get_grid_count($dxcc) {
+       return count($this->{$dxcc.'_grids'});
+    }
+
+    function get_grids($dxcc) {
+       return $this->{$dxcc.'_grids'};
+    }
+
+    function get_lat($dxcc) {
+       return $this->{$dxcc.'_lat'};
+    }
+
+    function get_lon($dxcc) {
+       return $this->{$dxcc.'_lon'};
+    }
+
+    function get_zoom($dxcc) {
+       return $this->{$dxcc.'_zoom'};
     }
 
 }

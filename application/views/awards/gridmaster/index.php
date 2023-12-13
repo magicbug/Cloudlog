@@ -81,6 +81,7 @@
 </div>
 <script>var gridsquaremap = true;
 var type = "worked";
+var dxcc = '<?php echo $dxcc; ?>';
 <?php
     echo 'var jslayer ="' . $layer .'";';
     echo "var jsattribution ='" . $attribution . "';";
