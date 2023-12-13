@@ -597,7 +597,7 @@ class QSO extends CI_Controller {
       // Allow empty locator
       if (preg_match('/^$/', $grid)) return true;
       // Allow 6-digit locator
-      if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Za-z]{2}$/', $grid)) return true;
+      if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Xa-x]{2}$/', $grid)) return true;
       // Allow 4-digit locator
       else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}$/', $grid)) return true;
       // Allow 4-digit grid line
@@ -607,7 +607,9 @@ class QSO extends CI_Controller {
       // Allow 2-digit locator
       else if (preg_match('/^[A-Ra-r]{2}$/', $grid)) return true;
       // Allow 8-digit locator
-      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Za-z]{2}[0-9]{2}$/', $grid)) return true;
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Xa-x]{2}[0-9]{2}$/', $grid)) return true;
+      // Allow 10-digit locator
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Xa-x]{2}[0-9]{2}[A-Xa-x]{2}$/', $grid)) return true;
       else {
          $this->form_validation->set_message('check_locator', 'Please check value for grid locator ('.strtoupper($grid).').');
          return false;
