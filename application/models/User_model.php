@@ -93,7 +93,11 @@ class User_Model extends CI_Model {
 		$query = $this->db->get($this->config->item('auth_table'));
 
 		$ret = $query->row();
-		return $ret->user_email;
+		if ($ret->user_email ?? '' != '') {
+			return $ret->user_email;
+		} else {
+			return '';
+		}
 	}
 
 	function get_email_address($station_id) {
