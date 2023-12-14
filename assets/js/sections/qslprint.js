@@ -114,7 +114,7 @@ function mark_qsl_sent(id, method) {
         url: base_url + 'index.php/qso/qsl_sent_ajax',
         type: 'post',
         data: {'id': id,
-            'method': method
+            'method': 'B'
         },
         success: function(data) {
             if (data.message == 'OK') {
