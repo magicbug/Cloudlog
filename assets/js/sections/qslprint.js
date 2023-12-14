@@ -168,7 +168,7 @@ function markSelectedQsos() {
 		type: 'post',
 		data: {'id': JSON.stringify(id_list, null, 2),
 			'sent' : 'Y',
-			'method' : 'B'
+			'method' : ''
 		},
 		success: function(data) {
 			if (data !== []) {
