@@ -2901,26 +2901,27 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
   }
 
   /* Used to check if the qso is already in the database */
-  function import_check($datetime, $callsign, $band, $mode, $station_callsign) {
+    function import_check($datetime, $callsign, $band, $mode, $station_callsign) {
+	    $mode=$this->get_main_mode_from_mode($mode);
 
-    $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_BAND');
-    $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
-    $this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
-    $this->db->where('COL_CALL', $callsign);
-    $this->db->where('COL_STATION_CALLSIGN', $station_callsign);
-    $this->db->where('COL_BAND', $band);
-    $this->db->where('COL_MODE', $mode);
+	    $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_BAND');
+	    $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
+	    $this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("'.$datetime.'", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
+	    $this->db->where('COL_CALL', $callsign);
+	    $this->db->where('COL_STATION_CALLSIGN', $station_callsign);
+	    $this->db->where('COL_BAND', $band);
+	    $this->db->where('COL_MODE', $mode);
 
-    $query = $this->db->get($this->config->item('table_name'));
+	    $query = $this->db->get($this->config->item('table_name'));
 
-    if ($query->num_rows() > 0)
-    {
-      $ret = $query->row();
-      return ["Found", $ret->COL_PRIMARY_KEY];
-    } else {
-      return ["No Match", 0];
+	    if ($query->num_rows() > 0)
+	    {
+		    $ret = $query->row();
+		    return ["Found", $ret->COL_PRIMARY_KEY];
+	    } else {
+		    return ["No Match", 0];
+	    }
     }
-  }
 
   function qrz_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $station_callsign) {
 
