@@ -29,8 +29,10 @@ echo '</tbody></table>';
 echo strtoupper($callsign) . ' has ' . $count . ' band slot(s) and has ' . $qsocount . ' QSO(s) in the log.<br /><br />';
 ?>
 <button onclick="requestOqrs();" class="btn btn-primary btn-sm" type="button"> Request QSL</button>
+<br>
 <?php } else {
 	echo '<br />No QSOs found in the log.<br />';
 }
 	?>
+<br>
 <button onclick="notInLog();" class="btn btn-primary btn-sm" type="button"> Not in log?</button>

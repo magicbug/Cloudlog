@@ -27,9 +27,9 @@
 	    	</div>
 
 			<?php echo form_open_multipart('lotw/do_cert_upload');?>
-				<div class="form-group">
+				<div class="mb-3">
 				    <label for="exampleFormControlFile1"><?php echo lang('lotw_title_upload_p12_cert'); ?></label>
-				    <input type="file" name="userfile" class="form-control-file" id="exampleFormControlFile1">
+				    <input type="file" name="userfile" class="form-control" id="exampleFormControlFile1">
 				 </div>
 
 				<button type="submit" value="upload" class="btn btn-primary"><?php echo lang('lotw_btn_upload_file'); ?></button>

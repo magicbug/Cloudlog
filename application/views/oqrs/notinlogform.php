@@ -15,8 +15,8 @@ checked.<br />
     <tbody>
         <tr>
             <td>1</td>
-            <td><input class="form-control" type="date" name="date" value="" id="date" placeholder="YYYY-MM-DD"></td>
-            <td><input class="form-control qsotime" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM"></td>
+            <td><input class="form-control" type="date" name="date" value="" id="date"></td>
+            <td><input class="form-control qsotime" type="text" name="time" value="" id="time" maxlength="5" placeholder="hh:mm"></td>
 			<td><input class="form-control" type="text" name="band" value="" id="band"></td>
             <td><input class="form-control" type="text" name="mode" value="" id="mode"></td>
         </tr>
@@ -25,13 +25,13 @@ checked.<br />
 <button type="button" onclick="oqrsAddLine(this.form);" class="btn btn-sm btn-primary"><i class="fas fa-plus-square"></i> Add line</button>
 <br />
 <form>
-    <div class="form-group">
+    <div class="mb-3">
         <label for="message">Message</label>
         <textarea name="message" class="form-control" id="messageInput" rows="3" aria-describedby="messageHelp"></textarea>
         <small id="messageHelp" class="form-text text-muted">Any extra information we need to know about?</small>
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
         <label for="emailInput">E-mail</label>
         <input type="text" class="form-control" name="email" id="emailInput" aria-describedby="emailInputHelp" required>
         <small id="emailInputHelp" class="form-text text-muted">Your e-mail address where we can contact you</small>

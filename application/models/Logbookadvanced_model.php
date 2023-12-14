@@ -8,14 +8,15 @@ class Logbookadvanced_model extends CI_Model {
 		$binding = [$searchCriteria['user_id']];
 
 		if ((isset($searchCriteria['dupes'])) && ($searchCriteria['dupes'] !== '')) {
-			$id_sql="select group_concat(x.qsoids separator ',') as QSO_IDs from (
-				select GROUP_CONCAT(col_primary_key separator ',') as qsoids, COL_CALL, COL_MODE, COL_SUBMODE, station_callsign, COL_SAT_NAME, COL_BAND,  min(col_time_on) Mintime, max(col_time_on) Maxtime from " . $this->config->item('table_name') . "
+			$id_sql="select GROUP_CONCAT(col_primary_key separator ',') as qsoids, COL_CALL, COL_MODE, COL_SUBMODE, station_callsign, COL_SAT_NAME, COL_BAND,  min(col_time_on) Mintime, max(col_time_on) Maxtime from " . $this->config->item('table_name') . "
 				 join station_profile on " . $this->config->item('table_name') . ".station_id = station_profile.station_id where station_profile.user_id=?
-				group by col_call, col_mode, COL_SUBMODE, STATION_CALLSIGN, col_band, COL_SAT_NAME having count(*) > 1 and timediff(maxtime, mintime) < 3000) x";
+				group by col_call, col_mode, COL_SUBMODE, STATION_CALLSIGN, col_band, COL_SAT_NAME having count(*) > 1 and timediff(maxtime, mintime) < 3000";
 			$id_query = $this->db->query($id_sql, $searchCriteria['user_id']);
+			$ids2fetch = '';
 			foreach ($id_query->result() as $id) {
-				$ids2fetch=$id->QSO_IDs;
+				$ids2fetch .= ','.$id->qsoids;
 			}
+			$ids2fetch = ltrim($ids2fetch, ',');
 			if ($ids2fetch ?? '' !== '') {
 				$conditions[] = "qsos.COL_PRIMARY_KEY in (".$ids2fetch.")";
 			} else {
@@ -24,14 +25,12 @@ class Logbookadvanced_model extends CI_Model {
 		}
 
         if ($searchCriteria['dateFrom'] !== '') {
-            $from = DateTime::createFromFormat('d/m/Y', $searchCriteria['dateFrom']);
-			$from = $from->format('Y-m-d');
+            $from = $searchCriteria['dateFrom'];
 			$conditions[] = "date(COL_TIME_ON) >= ?";
 			$binding[] = $from;
 		}
         if ($searchCriteria['dateTo'] !== '') {
-            $to = DateTime::createFromFormat('d/m/Y', $searchCriteria['dateTo']);
-			$to = $to->format('Y-m-d');
+            $to = $searchCriteria['dateTo'];
 			$conditions[] = "date(COL_TIME_ON) <= ?";
 			$binding[] = $to;
 		}
@@ -167,6 +166,11 @@ class Logbookadvanced_model extends CI_Model {
 		if ($searchCriteria['wwff'] !== '') {
 			$conditions[] = "COL_WWFF_REF like ?";
 			$binding[] = $searchCriteria['wwff'].'%';
+		}
+
+		if ($searchCriteria['operator'] !== '') {
+			$conditions[] = "COL_OPERATOR like ?";
+			$binding[] = $searchCriteria['operator'].'%';
 		}
 
         if ($searchCriteria['gridsquare'] !== '') {
@@ -331,23 +335,30 @@ class Logbookadvanced_model extends CI_Model {
 		}
 	}
 
-    public function updateQsl($ids, $user_id, $method, $sent) {
-        $this->load->model('user_model');
+	public function updateQsl($ids, $user_id, $method, $sent) {
+		$this->load->model('user_model');
 
-        if(!$this->user_model->authorize(2)) {
-            return array('message' => 'Error');
-        } else {
-            $data = array(
-                'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-                'COL_QSL_SENT' => $sent,
-                'COL_QSL_SENT_VIA' => $method
-            );
-            $this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
-            $this->db->update($this->config->item('table_name'), $data);
+		if(!$this->user_model->authorize(2)) {
+			return array('message' => 'Error');
+		} else {
+			if ($method != '') {
+				$data = array(
+					'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+					'COL_QSL_SENT' => $sent,
+					'COL_QSL_SENT_VIA' => $method
+				);
+			} else {
+				$data = array(
+					'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+					'COL_QSL_SENT' => $sent,
+				);
+			}
+			$this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
+			$this->db->update($this->config->item('table_name'), $data);
 
-            return array('message' => 'OK');
-        }
-    }
+			return array('message' => 'OK');
+		}
+	}
 
 	public function updateQslReceived($ids, $user_id, $method, $sent) {
         $this->load->model('user_model');

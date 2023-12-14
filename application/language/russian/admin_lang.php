@@ -23,33 +23,33 @@ $lang['admin_copy'] = 'Copy';
 $lang['admin_save'] = 'Save';
 $lang['admin_close'] = 'Close';
 $lang['admin_user_accounts'] = 'Аккаунты пользователей';
-$lang['admin_danger'] = 'DANGER!';
-$lang['admin_experimental'] = "Experimental";
+$lang['admin_danger'] = 'ОПАСНО!';
+$lang['admin_experimental'] = "Экспериментально";
 
 
 
 // Contest Menu
 
-$lang['admin_contest_menu_line_1'] = 'Using the contest list, you can control which Contests are shown when logging QSOs in a contest.';
-$lang['admin_contest_menu_line_2'] = 'Active contests will be shown in the Contest Name drop-down, while inactive contests will be hidden and cannot be selected.';
-$lang['admin_contest_menu_name'] = 'Name';
-$lang['admin_contest_menu_adif'] = 'ADIF Name';
-$lang['admin_contest_menu_active'] = 'Active';
-$lang['admin_contest_menu_n_active'] = 'Not Active';
-$lang['admin_contest_menu_activate'] = 'Activate';
-$lang['admin_contest_menu_deactivate'] = 'Deactivate';
+$lang['admin_contest_menu_line_1'] = 'Используя список контестов, вы можете котролировать, которые контесты будут показаны при записи QSO в контесте.';
+$lang['admin_contest_menu_line_2'] = 'Активные контесты будут показаны в выпадающем списке \'Название контеста\', неактивные будут скрыты, и их будет невозможно выбрать.';
+$lang['admin_contest_menu_name'] = 'Название';
+$lang['admin_contest_menu_adif'] = 'название для ADIF';
+$lang['admin_contest_menu_active'] = 'Активный';
+$lang['admin_contest_menu_n_active'] = 'Не активный';
+$lang['admin_contest_menu_activate'] = 'Активировать';
+$lang['admin_contest_menu_deactivate'] = 'Деактивировать';
 
-$lang['admin_contest_add_contest'] = 'Add a Contest';
-$lang["admin_contest_create"] = "Create";
-$lang['admin_contest_all_active'] = 'Activate All';
-$lang['admin_contest_all_deactive'] = 'Deactivate All';
+$lang['admin_contest_add_contest'] = 'Добавить контест';
+$lang["admin_contest_create"] = "Создать";
+$lang['admin_contest_all_active'] = 'Активировать все';
+$lang['admin_contest_all_deactive'] = 'Деактивировать все';
 
-$lang['admin_contest_name_adif'] = 'Contest ADIF Name';
-$lang['admin_contest_name_of_contest'] = 'Name of the Contest';
-$lang['admin_contest_name_of_adif'] = 'Name of Contest in ADIF-specification';
-$lang['admin_contest_edit_active_hint'] = 'Set to active if to be listed in Contest-list';
-$lang['admin_contest_edit_update_contest'] = 'Update Contest';
-$lang['admin_contest_deletion_warning'] = 'Warning! Are you sure you want to delete the following contest: ';
-$lang['admin_contest_active_all_warning'] = 'Warning! Are you sure you want to activate all contests?';
-$lang['admin_contest_deactive_all_warning'] = 'Warning! Are you sure you want to deactivate all contests?';
+$lang['admin_contest_name_adif'] = 'Название контеста для ADIF';
+$lang['admin_contest_name_of_contest'] = 'Название контеста';
+$lang['admin_contest_name_of_adif'] = 'Название контеста в спецификации ADIF';
+$lang['admin_contest_edit_active_hint'] = 'Активируйте для отображения в списке контестов';
+$lang['admin_contest_edit_update_contest'] = 'Обновить контест';
+$lang['admin_contest_deletion_warning'] = 'Предупреждение! Вы уверены в том, что хотите удалить следующий контест: ';
+$lang['admin_contest_active_all_warning'] = 'Предупреждение! Вы уверены в том, что хотите активировать все контесты?';
+$lang['admin_contest_deactive_all_warning'] = 'Предупреждение! Вы уверены в том, что хотите деактивировать все контесты?';
 

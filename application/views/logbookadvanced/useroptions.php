@@ -1,7 +1,7 @@
-<table style="width:100%" class="table-sm table table-hover table-striped table-condensed text-left" id="useroptions">
+<table style="width:100%" class="table-sm table table-hover table-striped table-condensed text-start" id="useroptions">
 	<thead>
 		<tr>
-			<th class="text-left"><?php echo lang('filter_options_column'); ?></th>
+			<th class="text-start"><?php echo lang('filter_options_column'); ?></th>
 			<th><?php echo lang('filter_options_show'); ?></th>
 		</tr>
 	</thead>
@@ -89,6 +89,10 @@
 		<tr>
 			<td><?php echo lang('gen_hamradio_pota'); ?></td>
 			<td><div class="form-check"><input class="form-check-input" name="pota" type="checkbox" <?php if (($options->pota->show ?? "true") == "true") { echo 'checked'; } ?>></div></td>
+		</tr>
+		<tr>
+			<td><?php echo lang('gen_hamradio_operator'); ?></td>
+			<td><div class="form-check"><input class="form-check-input" name="operator" type="checkbox" <?php if (($options->operator->show ?? "true") == "true") { echo 'checked'; } ?>></div></td>
 		</tr>
 	</tbody>
 </table>

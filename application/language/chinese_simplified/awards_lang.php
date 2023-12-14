@@ -2,18 +2,18 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['awards_info_button'] = "Award Info";
-$lang['awards_show_worked'] = "Show worked";
-$lang['awards_show_confirmed'] = "Show confirmed";
-$lang['awards_show_not_worked'] = "Show not worked";
-$lang['awards_show_cq_map'] = "Show CQ Zone Map";
-$lang['awards_summary'] = "Summary";
-$lang['awards_total'] = "Total";
-$lang['awards_total_worked'] = "Total worked";
-$lang['awards_total_confirmed'] = "Total confirmed";
+$lang['awards_info_button'] = "奖状详情";
+$lang['awards_show_worked'] = "显示已通联";
+$lang['awards_show_confirmed'] = "显示已确认";
+$lang['awards_show_not_worked'] = "显示未通联";
+$lang['awards_show_cq_map'] = "查看CQ分区地图";
+$lang['awards_summary'] = "概览";
+$lang['awards_total'] = "总计";
+$lang['awards_total_worked'] = "共通联";
+$lang['awards_total_confirmed'] = "共确认";
 
 
-$lang['awards_cq_page_title'] = "Awards - CQ Magazine WAZ";
+$lang['awards_cq_page_title'] = "CQ 杂志 WAZ 奖状";
 
 
 /*
@@ -22,10 +22,10 @@ CQ -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_cq_description_ln1'] = "CQ Magazine WAZ Award";
-$lang['awards_cq_description_ln2'] = "The CQ Magazine is located in the US and one of the most popular amateur radio magazines in the world. The magazine first appeared in January 1945 and focuses on awards and the practical aspects of amateur radio.";
-$lang['awards_cq_description_ln3'] = "The WAZ Award stands for 'Worked All Zones' and requires radio contacts to all 40 CQ Zones along with the corresponding confirmation.";
-$lang['awards_cq_description_ln4'] = "You can find all the information and rules on the Website of the <a href='https://cq-amateur-radio.com/cq_awards/cq_waz_awards/index_cq_waz_award.html' target='_blank'>CQ Magazine</a>.";
+$lang['awards_cq_description_ln1'] = "CQ 杂志 WAZ 奖状";
+$lang['awards_cq_description_ln2'] = "CQ 杂志位于美国，是世界上最受欢迎的业余无线电杂志之一。 该杂志于 1945 年 1 月首次出版，重点关注业余无线电的奖项和实用方面。";
+$lang['awards_cq_description_ln3'] = "WAZ 奖代表“Worked All Zones”，需要与所有 40 个 CQ 区域进行QSO并提供相应的确认。";
+$lang['awards_cq_description_ln4'] = "您可以在<a href='https://cq-amateur-radio.com/cq_awards/cq_waz_awards/index_cq_waz_award.html' target='_blank'>CQ杂志</a>网站上，或查看童效勇和陈方老师编纂的《业余无线电通信》了解更多相关信息。";
 
 
 /*
@@ -34,10 +34,10 @@ DOK -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_dok_description_ln1'] = "DOK Award";
-$lang['awards_dok_description_ln2'] = "Germany extends over 630 km from East to West and nearly 900 km from North to South. Around 70,000 of Germany's 82 million inhabitants are licensed hams, with more than 40,000 of them being members of DARC. DOK is a system that provides individual local chapters with an identifier and means 'Deutscher Ortsverband Kenner' (English: 'German Local Association Identifier').";
-$lang['awards_dok_description_ln3'] = "The DOK consists of a letter for the district and a two-digit number for the local chapter, like P03 Friedrichshafen (city of the 'Hamradio exhibition') or F41 Baunatal (location of the DARC headquarters). Note: A zero in a DOK is a common mistake, often being logged as the letter O.";
-$lang['awards_dok_description_ln4'] = "This information is provided by the <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/districtsdoks/' target='_blank'>DARC website</a>. Information about the DOK Awards and its rules can be found <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/award-check/' target='_blank'>here</a>.";
+$lang['awards_dok_description_ln1'] = "DOK 奖状";
+$lang['awards_dok_description_ln2'] = "德国从东到西绵延 630 多公里，从北到南绵延近 900 公里。 德国 8200 万居民中约有 70,000 人是有执照的HAM，其中 40,000 多人是 DARC 的成员。 DOK 是一个为各个地方分会提供标识符的系统，其意思是“Deutscher Ortsverband Kenner”（英语：“德国地方协会标识符”）。";
+$lang['awards_dok_description_ln3'] = "DOK 由代表地区的字母和代表地方分会的两位数字组成，例如 P03 Friedrichshafen（“Hamradio 展览”所在城市）或 F41 Baunatal（DARC 总部所在地）。 注意：DOK 中的零是一个常见错误，通常被记录为字母 O。";
+$lang['awards_dok_description_ln4'] = "此信息来自于<a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/districtsdoks/' target='_blank'>DARC 网站</ a>. 有关 DOK 奖项及其规则的信息，请参见 <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/award-check/' target=' _blank'>此处</a>。";
 
 
 /*
@@ -46,10 +46,10 @@ DXCC -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_dxcc_description_ln1'] = "DXCC Award";
-$lang['awards_dxcc_description_ln2'] = "DXCC stands for 'DX Century Club,' an award based on worked countries. The DXCC List is based on an article created in 1935 by Clinton B. DeSoto, W1CBD, titled <a href='http://www.arrl.org/desoto' target='_blank'>'How to Count Countries Worked, A New DX Scoring System'</a>.";
-$lang['awards_dxcc_description_ln3'] = "You can find all information about the DXCC Award on the <a href='https://www.arrl.org/dxcc-rules' target='_blank'>ARRL website</a>.";
-$lang['awards_dxcc_description_ln4'] = "Important Note: Over time, the criteria for the DXCC List have changed. The List remains unchanged until an entity no longer satisfies the criteria under which it was added, at which time it is moved to the Deleted List. You will find Deleted DXCC entities also in the lists on Cloudlog. Be aware that these DXCC entities are outdated and no longer valid.";
+$lang['awards_dxcc_description_ln1'] = "DXCC 奖状";
+$lang['awards_dxcc_description_ln2'] = "DXCC 代表“DX Century Club”，这是一个基于通联国家/地区的奖项。 DXCC 列表基于 W1CBD 的 Clinton B. DeSoto 于 1935 年创建的一篇文章，标题为<a href='http://www.arrl.org/desoto' target='_blank'>“如何计算通联过的国家/地区， 新的 DX 评分系统'</a>。";
+$lang['awards_dxcc_description_ln3'] = "您可以在 <a href='https://www.arrl.org/dxcc-rules' target='_blank'>ARRL 网站</a>上找到有关 DXCC 奖的所有信息。";
+$lang['awards_dxcc_description_ln4'] = "重要提示：随着时间的推移，DXCC 列表的标准已经发生变化。 该列表将保持不变，直到实体不再满足添加该实体时所依据的标准，此时该实体将被移至“已删除列表”。 您还会在 Cloudlog 的列表中找到已删除的 DXCC 实体。 请注意，这些 DXCC 实体已过时且不再有效。（如 伪满洲国曾经也是一个合法的DXCC实体）";
 
 
 /*
@@ -58,10 +58,10 @@ FFMA -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_ffma_description_ln1'] = "Fred Fish Memorial Award";
-$lang['awards_ffma_description_ln2'] = "The Fred Fish Memorial Award was created in honor of Fred Fish, W5FF (SK), who was the first amateur to have worked and confirmed all 488 Maidenhead grid squares in the 48 contiguous United States on 6 Meters.";
-$lang['awards_ffma_description_ln3'] = "The award will be given to any amateur who can duplicate W5FF's accomplishment.";
-$lang['awards_ffma_description_ln4'] = "For more information, you can visit this link: <a href='https://www.arrl.org/ffma' target='_blank'>https://www.arrl.org/ffma</a>.";
+$lang['awards_ffma_description_ln1'] = "弗雷德·菲什纪念奖";
+$lang['awards_ffma_description_ln2'] = "Fred Fish 纪念奖是为了纪念 Fred Fish, W5FF (SK) 而设立，他是第一个在 6 米波段上通联并确认了美国 48 个邻近地区的所有 488 个梅登黑德网格方格的业余爱好者。";
+$lang['awards_ffma_description_ln3'] = "该奖项将颁发给任何能够复制 W5FF 成就的业余爱好者。";
+$lang['awards_ffma_description_ln4'] = "如需了解更多信息，您可以访问此链接：<a href='https://www.arrl.org/ffma' target='_blank'>https://www.arrl.org/ffma</a>。";
 
 
 /*
@@ -70,10 +70,10 @@ IOTA -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_iota_description_ln1'] = "IOTA Awards";
-$lang['awards_iota_description_ln2'] = "IOTA is an exciting and innovative activity program that has captured the interest of thousands of radio amateurs worldwide. Established in 1964, it promotes radio contacts with stations located on islands around the world to enhance the experience of all those active on the amateur bands. To achieve this, it draws on the widespread mystique surrounding islands.";
-$lang['awards_iota_description_ln3'] = "It is administered by Islands On The Air (IOTA) Ltd (referred to as IOTA Management) in partnership with the Radio Society of Great Britain (RSGB). IOTA Management has grouped the world's islands into approximately 1200 'IOTA groups,' each having varying numbers of 'counters,' which are qualifying islands. These listings are published in the IOTA Directory and on the IOTA website. The objective for the IOTA Island Chaser is to make radio contact with at least one counter in as many of these groups as possible. The program has a well-defined set of rules and encourages friendly competition among chasers by publishing participant performance in an Honor Roll and annual listings, as well as recognizing it with certificates and prestigious awards.";
-$lang['awards_iota_description_ln4'] = "You can also find this information on the <a href='https://www.iota-world.org/' target='_blank'>IOTA WORLD website</a>.";
+$lang['awards_iota_description_ln1'] = "IOTA 奖状";
+$lang['awards_iota_description_ln2'] = "IOTA 是一项令人兴奋且创新的活动，吸引了全球数千名无线电爱好者的兴趣。 它成立于 1964 年，致力于促进与世界各地岛屿电台的无线电联系，以增强所有活跃在业余频段的用户的体验。 为了实现这一目标，它利用了岛屿周围普遍存在的神秘感。";
+$lang['awards_iota_description_ln3'] = "它由Islands On The Air (IOTA) Ltd（简称IOTA Management）与英国无线电协会（RSGB）合作管理。 IOTA管理层将世界上的岛屿分为大约1200个“IOTA组”，每个组都有不同数量的“counters”，这些“counters”都是合格的岛屿。 这些列表发布在 IOTA 目录和 IOTA 网站上。 IOTA Island Chaser 的目标是与尽可能多的这些组中的至少一个进行无线电通联。 该计划有一套明确的规则，通过在荣誉榜和年度名单中公布参与者的表现，并通过证书和享有盛誉的奖项来认可，鼓励追逐者之间的友好竞争。";
+$lang['awards_iota_description_ln4'] = "您还可以在 <a href='https://www.iota-world.org/' target='_blank'>IOTA WORLD 网站</a>上找到此信息。";
 
 
 /*
@@ -82,10 +82,10 @@ POTA -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_pota_description_ln1'] = "POTA Awards";
-$lang['awards_pota_description_ln2'] = "Parks on the Air® (POTA) started in early 2017 when the ARRL's National Parks on the Air special event ended. A group of volunteers wanted to continue the fun beyond the one-year event, and thus, POTA was born.";
-$lang['awards_pota_description_ln3'] = "POTA works similarly to SOTA, with Activators and Hunters. For the awards, there are several categories based on the number of parks, geographic areas, and more.";
-$lang['awards_pota_description_ln4'] = "For more information about the available awards and categories, please visit the <a href='https://parksontheair.com/pota-awards/' target='_blank'>Parks on the Air® website</a>.";
+$lang['awards_pota_description_ln1'] = "POTA 奖状";
+$lang['awards_pota_description_ln2'] = "Parks on the Air® (POTA 中文又名 空中花园) 于 2017 年初启动，当时 ARRL 的 National Parks on the Air 特别活动结束后。 一群爱好者希望在一年的活动之后继续享受乐趣，因此，POTA 诞生了。";
+$lang['awards_pota_description_ln3'] = "POTA 的工作原理与 SOTA 类似，都有激活者和猎人。 奖项根据公园数量、地理区域等分为多个类别。";
+$lang['awards_pota_description_ln4'] = "有关可用奖项和类别的更多信息，请访问<a href='https://parksontheair.com/pota-awards/' target='_blank'>Parks on the Air® 网站</a>。（译者注：目前POTA中国由BH3XZT负责维护，POTA中国群聊：837917197）";
 
 
 /*
@@ -94,10 +94,10 @@ SIG -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_sig_description_ln1'] = "SIG Information";
-$lang['awards_sig_description_ln2'] = "The SIG or Signature Category provides the possibility to use any kind of 'Award Signature' for awards that are not implemented in Cloudlog.";
-$lang['awards_sig_description_ln3'] = "The reason for this is that the common ADIF format provides only a few dedicated fields for certain awards. SIG still makes it possible to use and evaluate all other types of signature markers.";
-$lang['awards_sig_description_ln4'] = "In the QSO processing, you will find two fields: 'SIG' contains the actual marker, which is also visible in the award evaluation, and 'SIG INFO,' which contains a description of the signature. Both fields are freely customizable.";
+$lang['awards_sig_description_ln1'] = "SIG 信息";
+$lang['awards_sig_description_ln2'] = "SIG 或签名类别提供了对 Cloudlog 中未实施的奖励使用任何类型的“奖励签名”的可能。";
+$lang['awards_sig_description_ln3'] = "其原因是常见的 ADIF 格式仅为某些奖项提供了几个专用字段。 SIG 仍然可以使用和评估所有其他类型的签名标记。";
+$lang['awards_sig_description_ln4'] = "在 QSO 处理中，您会发现两个字段：“SIG”包含实际标记，在奖励评估中也可见，“SIG INFO”包含签名的描述。 这两个字段都可以自由定制。";
 
 
 /*
@@ -106,10 +106,10 @@ SOTA -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_sota_description_ln1'] = "SOTA Awards";
-$lang['awards_sota_description_ln2'] = "SOTA (Summits On The Air) is an award scheme for radio amateurs that encourages portable operation in mountainous areas.";
-$lang['awards_sota_description_ln3'] = "It is fully operational in nearly a hundred countries worldwide. Each country has its own Association that defines the recognized SOTA summits within that Association. Each summit earns the activators and chasers a score related to the height of the summit. Certificates are available for various scores, leading to the prestigious 'Mountain Goat' and 'Shack Sloth' trophies. An Honor Roll for Activators and Chasers is maintained in the SOTA online database.";
-$lang['awards_sota_description_ln4'] = "For more information, please visit: <a href='https://www.sota.org.uk/' target='_blank'>https://www.sota.org.uk/</a>.";
+$lang['awards_sota_description_ln1'] = "SOTA 奖状";
+$lang['awards_sota_description_ln2'] = "SOTA（空中山峰）是一项针对无线电业余爱好者的奖励计划，鼓励在山区进行便携式操作。";
+$lang['awards_sota_description_ln3'] = "它在全球近百个国家全面运营。 每个国家/地区都有自己的协会，该协会定义了该协会内公认的 SOTA 峰会。 每次登顶都会为激活者和追逐者赢得与峰顶高度相关的分数。 各种分数均可获得证书，最终获得著名的“山羊”和“棚屋树懒”奖杯。 激活者和追赶者的荣誉榜保存在 SOTA 在线数据库中。";
+$lang['awards_sota_description_ln4'] = "如需了解更多信息，请访问：<a href='https://www.sota.org.uk/' target='_blank'>https://www.sota.org.uk/</a>.";
 
 
 /*
@@ -118,10 +118,10 @@ US Counties -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_counties_description_ln1'] = "US County Award";
-$lang['awards_counties_description_ln2'] = "The United States of America Counties Award (USA-CA), sponsored by CQ magazine, is issued for confirmed two-way radio contacts with specified numbers of U.S. counties under rules and conditions you can find <a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>here</a>.";
-$lang['awards_counties_description_ln3'] = "USA-CA is available to all licensed amateurs worldwide and is issued to individuals for all county contacts made, regardless of callsigns used, operating locations, or dates.";
-$lang['awards_counties_description_ln4'] = "Special USA-CA awards are also available to SWLs on a heard basis.";
+$lang['awards_counties_description_ln1'] = "US County 奖状";
+$lang['awards_counties_description_ln2'] = "美国县奖 (USA-CA) 由 CQ 杂志赞助，颁发给与指定数量的美国县进行确认的双向无线电联络，其规则和条件可参见 <a href='https://cq -amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>此处</a>。";
+$lang['awards_counties_description_ln3'] = "USA-CA 可供全世界所有获得许可的业余爱好者使用，并颁发给所有县联络人的个人，无论使用的呼号、操作地点或日期如何。";
+$lang['awards_counties_description_ln4'] = "美国-加拿大还可以获得 SWL 奖项。";
 
 
 /*
@@ -130,10 +130,10 @@ US Gridmaster -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_us_gridmaster_description_ln1'] = "US Gridmaster Award";
-$lang['awards_us_gridmaster_description_ln2'] = "The GridMaster Award is the most prestigious AMSAT award, first introduced in 2014 by the Star Comm Group. It is available to all amateur radio operators worldwide who manage to work all 488 grid squares in the USA via satellite and can provide QSL confirmations for each contact.";
-$lang['awards_us_gridmaster_description_ln3'] = "Official information from the <a href='https://www.amsat.org/gridmaster/' target='_blank'>website</a>: Two-way communication must be established via amateur satellite with each grid. There is no minimum signal report required. Contacts must be made from the same location or from locations no two of which are more than 200 kilometers apart. The applicant's attestation in the award application serves as affirmation of abidance by the distance rule. Individuals may apply for and be granted multiple GridMaster awards when achieved from another location, which is in a different 200-kilometer circle.";
-$lang['awards_us_gridmaster_description_ln4'] = "This map shows only QSOs worked on SAT.";
+$lang['awards_us_gridmaster_description_ln1'] = "美国网格大师奖状";
+$lang['awards_us_gridmaster_description_ln2'] = "GridMaster 奖是最负盛名的 AMSAT 奖项，由 Star Comm Group 于 2014 年首次推出。 全球所有业余无线电操作员都可以使用它，他们可以通过卫星在美国所有 488 个网格方格通联，并且可以为每个通联到的人提供 QSL 确认。";
+$lang['awards_us_gridmaster_description_ln3'] = "来自<a href='https://www.amsat.org/gridmaster/' target='_blank'>网站</a>的官方信息：必须通过业余卫星与每个网格建立双向通信。 没有最低信号报告要求。 联系必须在同一地点或两个地点相距不超过 200 公里。 申请人在奖励申请中的证明作为对遵守距离规则的确认。 当个人在另一个 200 公里圈内的另一个地点获得奖项时，可以申请并获得多个 GridMaster 奖项。";
+$lang['awards_us_gridmaster_description_ln4'] = "该地图仅显示了 SAT 上有效的 QSO。";
 
 
 /*
@@ -142,9 +142,9 @@ JA Gridmaster -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_ja_gridmaster_description_ln1'] = "JA Gridmaster Award";
-$lang['awards_ja_gridmaster_description_ln2'] = "Just as the US Gridmaster this Award is based on working all gridsquares of Japan.";
-$lang['awards_ja_gridmaster_description_ln3'] = "Additional Information and the rules about this award are still pending.";
+$lang['awards_ja_gridmaster_description_ln1'] = "日本网格大师奖";
+$lang['awards_ja_gridmaster_description_ln2'] = "正如美国网格大师一样，该奖项是基于日本所有网格通联的奖项。";
+$lang['awards_ja_gridmaster_description_ln3'] = "有关该奖项的更多信息和规则仍有待确定。";
 $lang['awards_ja_gridmaster_description_ln4'] = "";
 
 
@@ -154,10 +154,10 @@ VUCC -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_vucc_description_ln1'] = "VUCC - VHF/UHF Century Club Award";
-$lang['awards_vucc_description_ln2'] = "The VHF/UHF Century Club Award is given for a minimum number of worked and confirmed gridsquares on a desired band.";
-$lang['awards_vucc_description_ln3'] = "Official information and the rules can be found in this document: <a href='https://www.amsat.org/gridmaster/' target='_blank'>Click here</a>.";
-$lang['awards_vucc_description_ln4'] = "Only VHF/UHF bands are relevant.";
+$lang['awards_vucc_description_ln1'] = "VUCC - VHF/UHF 世纪俱乐部奖";
+$lang['awards_vucc_description_ln2'] = "VHF/UHF 世纪俱乐部奖颁发给在所需频段上工作和确认的最小数量的网格。";
+$lang['awards_vucc_description_ln3'] = "官方信息和规则可以在本文档中找到：<a href='https://www.amsat.org/gridmaster/' target='_blank'>点击此处</a>。";
+$lang['awards_vucc_description_ln4'] = "仅 VHF/UHF 频段。";
 
 
 /*
@@ -166,10 +166,10 @@ WAS -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_was_description_ln1'] = "WAS Award";
-$lang['awards_was_description_ln2'] = "ARRL's most popular award is the Worked All States Award. Thousands upon thousands of awards have been issued to hams around the world. In ARRL's 101st year, they have redesigned the certificates and the program in hopes of streamlining and improving the award program.";
-$lang['awards_was_description_ln3'] = "The WAS (Worked All States) Award is available to all amateurs worldwide who submit proof with written confirmation of contacts with each of the 50 states of the United States of America. Amateurs in the U.S. and its possessions must be members of ARRL to apply for a WAS. Applicants from outside the U.S. are exempt from this requirement.";
-$lang['awards_was_description_ln4'] = "All information and rules for the ARRL WAS Award can be found <a href='https://www.arrl.org/was' target='_blank'>here</a>.";
+$lang['awards_was_description_ln1'] = "WAS 奖状";
+$lang['awards_was_description_ln2'] = "ARRL 最受欢迎的奖项是“Worked All States Award”。 已向世界各地的HAM颁发了数以千计的奖项。 在ARRL成立101周年之际，他们重新设计了证书和项目，希望能够精简和完善奖励项目。";
+$lang['awards_was_description_ln3'] = "WAS（在所有州通联过）奖面向全世界所有提交证明并书面确认与美利坚合众国 50 个州联系的业余爱好者。 美国及其属地的业余爱好者必须是 ARRL 的成员才能申请 WAS。 来自美国境外的申请人不受此要求的约束。";
+$lang['awards_was_description_ln4'] = "ARRL WAS 奖的所有信息和规则均可在<a href='https://www.arrl.org/was' target='_blank'>此处</a>找到。";
 
 
 /*
@@ -178,7 +178,18 @@ WWFF -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_wwff_description_ln1'] = "WWFF - World Wide Flora and Fauna Award";
-$lang['awards_wwff_description_ln2'] = "WWFF, World Wide Flora and Fauna in Amateur Radio, encourages licensed ham radio operators to leave their shacks and operate portable in Protected Flora & Fauna areas (PFF) worldwide.";
-$lang['awards_wwff_description_ln3'] = "More than 26,000 Protected Flora & Fauna (PFF) areas worldwide are already registered in the WWFF Directory. Hunters and Activators can apply for colorful awards, both globally and nationally.";
-$lang['awards_wwff_description_ln4'] = "For more information, please visit: <a href='https://wwff.co/awards/' target='_blank'>https://wwff.co/awards/</a>.";
+$lang['awards_wwff_description_ln1'] = "WWFF - 世界动植物奖";
+$lang['awards_wwff_description_ln2'] = "WWFF，即“业余无线电世界动植物群”，鼓励获得许可的业余无线电操作员离开棚屋，在全球动植物保护区 (PFF) 进行便携式操作。";
+$lang['awards_wwff_description_ln3'] = "全球已有超过 26,000 个动植物保护区 (PFF) 已在 WWFF 名录中注册。 猎人和激活者可以申请全球和国内的丰富多彩的奖项。";
+$lang['awards_wwff_description_ln4'] = "如需了解更多信息，请访问：<a href='https://wwff.co/awards/' target='_blank'>https://wwff.co/awards/</a>。";
+
+/*
+___________________________________________________________________________________________
+WAJA -- Use all 4 Lines of Text
+___________________________________________________________________________________________
+*/
+
+$lang['awards_waja_description_ln1'] = "WAJA - Worked All Japan prefectures Award";
+$lang['awards_waja_description_ln2'] = "WAJA, Worked All Japan prefectures in Amateur Radio, encourages licensed ham radio operators to work all the prefectures in Japan.";
+$lang['awards_waja_description_ln3'] = "May be claimed for having contacted (heard) and received a QSL card from an amateur station located in each of the 47 prefectures of Japan. A list of QSL cards should be arranged in order of WAJA (HAJA) reference number, however names of prefectures may be omitted.";
+$lang['awards_waja_description_ln4'] = "For more information, please visit: <a href='https://www.jarl.org/English/4_Library/A-4-2_Awards/Award_Main.htm' target='_blank'>https://www.jarl.org/English/4_Library/A-4-2_Awards/Award_Main.htm</a>.";

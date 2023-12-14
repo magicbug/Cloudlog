@@ -8,16 +8,18 @@ $('#band').change(function(){
 });
 
 var map;
-var grid_two = '';
-var grid_four = '';
-var grid_six = '';
-var grid_two_confirmed = '';
-var grid_four_confirmed = '';
-var grid_six_confirmed = '';
+if (typeof(visitor) !== 'undefined' && visitor != true) {
+   var grid_two = '';
+   var grid_four = '';
+   var grid_six = '';
+   var grid_two_confirmed = '';
+   var grid_four_confirmed = '';
+   var grid_six_confirmed = '';
+}
 
-function gridPlot(form) {
+function gridPlot(form, visitor=true) {
     $(".ld-ext-right-plot").addClass('running');
-	$(".ld-ext-right-plot").prop('disabled', true);
+    $(".ld-ext-right-plot").prop('disabled', true);
     $('#plot').prop("disabled", true);
     // If map is already initialized
     var container = L.DomUtil.get('gridsquare_map');
@@ -25,9 +27,10 @@ function gridPlot(form) {
     if(container != null){
         container._leaflet_id = null;
         container.remove();
-        $("#gridmapcontainer").append('<div id="gridsquare_map" style="width: 100%; height: 800px"></div>');
+        $("#gridmapcontainer").append('<div id="gridsquare_map" class="map-leaflet" style="width: 100%; height: 800px"></div>');
     }
 
+    if (typeof type == 'undefined') { type=''; }
     if (type == "activated") {
         ajax_url = site_url + '/activated_gridmap/getGridsjs';
     } else if (type == "worked") {
@@ -36,6 +39,7 @@ function gridPlot(form) {
         ajax_url = site_url + '/gridmap/getGridsjs';
     }
 
+    if (visitor != true) {
     $.ajax({
 		url: ajax_url,
 		type: 'post',
@@ -45,6 +49,7 @@ function gridPlot(form) {
             qsl:  $("#qsl").is(":checked"),
             lotw: $("#lotw").is(":checked"),
             eqsl: $("#eqsl").is(":checked"),
+            qrz: $("#qrz").is(":checked"),
             sat: $("#sats").val(),
 		},
 		success: function (data) {
@@ -52,12 +57,24 @@ function gridPlot(form) {
             $(".ld-ext-right-plot").removeClass('running');
             $(".ld-ext-right-plot").prop('disabled', false);
             $('#plot').prop("disabled", false);
-			grid_two = data.grid_2char;
+            grid_two = data.grid_2char;
             grid_four = data.grid_4char;
             grid_six = data.grid_6char;
             grid_two_confirmed = data.grid_2char_confirmed;
             grid_four_confirmed = data.grid_4char_confirmed;
             grid_six_confirmed = data.grid_6char_confirmed;
+            plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed);
+
+		},
+		error: function (data) {
+		},
+	});
+   } else {
+      plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed);
+   };
+}
+
+function plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed) {
             var layer = L.tileLayer(jslayer, {
                 maxZoom: 12,
                 attribution: jsattribution,
@@ -75,13 +92,15 @@ function gridPlot(form) {
                 },
             });
 
-            var printer = L.easyPrint({
-                tileLayer: layer,
-                sizeModes: ['Current'],
-                filename: 'myMap',
-                exportOnly: true,
-                hideControlContainer: true
-            }).addTo(map);
+            if (visitor != true) {
+               var printer = L.easyPrint({
+                   tileLayer: layer,
+                   sizeModes: ['Current'],
+                   filename: 'myMap',
+                   exportOnly: true,
+                   hideControlContainer: true
+               }).addTo(map);
+            }
 
             /*Legend specific*/
             var legend = L.control({ position: "topright" });
@@ -98,13 +117,10 @@ function gridPlot(form) {
             legend.addTo(map);
 
             var maidenhead = L.maidenhead().addTo(map);
-            map.on('mousemove', onMapMove);
-			map.on('click', onMapClick);
-
-		},
-		error: function (data) {
-		},
-	});
+            if (visitor != true) {
+               map.on('mousemove', onMapMove);
+               map.on('click', onMapClick);
+            }
 }
 
 function spawnGridsquareModal(loc_4char) {
@@ -130,7 +146,7 @@ function spawnGridsquareModal(loc_4char) {
                 message: html,
                 onshown: function(dialog) {
 
-                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-bs-toggle="tooltip"]').tooltip();
                     $('.contacttable').DataTable({
                             "pageLength": 25,
                             responsive: false,
@@ -174,5 +190,5 @@ function clearMarkers() {
 }
 
 $(document).ready(function(){
-   gridPlot(this.form);
+   gridPlot(this.form, visitor);
 })

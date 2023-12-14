@@ -26,6 +26,11 @@ $lang['qso_dok_helptext'] = 'Per esempio: Q03';
 $lang['qso_notes_helptext'] = 'Il contenuto della nota viene utilizzato solo all interno di Cloudlog e non viene esportato in altri servizi.';
 $lang['qsl_notes_helptext'] = 'Il contenuto di questa nota è esportato a servizi QSL come eqsl.cc.';
 
+$lang['qso_eqsl_qslmsg_helptext'] = "Get the default message for eQSL, for this station.";
+
+// error text //
+$lang['qso_error_timeoff_less_timeon'] = "TimeOff is less than TimeOn";
+
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = 'Reset';

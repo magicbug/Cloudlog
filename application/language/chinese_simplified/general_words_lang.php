@@ -2,9 +2,9 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['error_no_active_station_profile'] = '注意：你需要设置一个活动的台站地址。';
+$lang['error_no_active_station_profile'] = '注意：你需要设置一个活动的电台站地址。';
 
-$lang['notice_turn_the_radio_on'] = '你今天还没有 QSO，是时候打开你的电台了！';
+$lang['notice_turn_the_radio_on'] = '你今天还没进行QSO，是时候打开你的电台开始通联了！';
 
 $lang['general_word_important'] = '重要';
 $lang['general_word_warning'] = '注意';
@@ -23,13 +23,15 @@ $lang['general_word_export'] = "导出";
 $lang['general_word_import'] = "导入";
 $lang['general_word_count'] = "数量";
 $lang['general_word_filtering_on'] = "筛选打开";
+$lang['general_word_not_display'] = "Not display";
+$lang['general_word_icon'] = "Icon";
 
 $lang['general_word_date'] = '日期';
-$lang['general_word_startdate'] = "Start Date";
-$lang['general_word_enddate'] = "End Date";
+$lang['general_word_startdate'] = "开始时间";
+$lang['general_word_enddate'] = "结束时间";
 $lang['general_word_time'] = '时间';
-$lang['general_word_time_on'] = 'Time on';
-$lang['general_word_time_off'] = 'Time off';
+$lang['general_word_time_on'] = '打开时间';
+$lang['general_word_time_off'] = '关闭时间';
 $lang['general_word_datetime'] = '日期/时间';
 $lang['general_word_none'] = '无';
 $lang['general_word_name'] = '名称';
@@ -52,7 +54,7 @@ $lang['general_word_worked'] = '已通联';
 $lang['general_word_worked_not_confirmed'] = "已通联未确认";
 $lang['general_word_not_worked'] = "未通联";
 $lang['general_word_confirmed'] = '已确认';
-$lang['general_word_confirmation'] = "Confirmation";
+$lang['general_word_confirmation'] = "确认";
 $lang['general_word_needed'] = '待通联';
 
 $lang['general_word_all'] = '所有';
@@ -105,17 +107,17 @@ $lang['general_total_distance'] = '总计距离';
 $lang['gen_max_file_upload_size'] = '最大上传文件大小是';
 
 // Cloudlog Terms
-$lang['cloudlog_station_profile'] = '台站地址';
+$lang['cloudlog_station_profile'] = '电台站地址';
 
 // ham radio terms
 $lang['gen_hamradio_cq'] = "CQ";
 $lang['gen_hamradio_qso'] = 'QSO';
-$lang['gen_hamradio_station'] = '台站';
+$lang['gen_hamradio_station'] = '电台站';
 
 $lang['gen_hamradio_call'] = '呼号';
 $lang['gen_hamradio_callsign'] = '呼号';
-$lang['gen_hamradio_prefix'] = "Prefix";
-$lang['gen_hamradio_suffix'] = "Suffix";
+$lang['gen_hamradio_prefix'] = "前缀";
+$lang['gen_hamradio_suffix'] = "后缀";
 $lang['gen_hamradio_mode'] = '模式';
 $lang['gen_hamradio_de'] = '本台呼号(De)';
 $lang['gen_hamradio_dx'] = '对方呼号(Dx)';
@@ -145,7 +147,7 @@ $lang['gen_hamradio_satellite_name'] = '卫星名称';
 $lang['gen_hamradio_satellite_mode'] = '卫星模式';
 
 $lang['gen_hamradio_logbook'] = '日志簿';
-$lang['gen_hamradio_award'] = "Award";
+$lang['gen_hamradio_award'] = "奖项";
 
 $lang['gen_hamradio_zones'] = '分区';
 $lang['gen_hamradio_cq_zone'] = 'CQ 分区';
@@ -167,6 +169,7 @@ $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = '网格';
 $lang['gen_hamradio_get_gridsquare'] = '获取网格座标';
+$lang['gen_hamradio_gridsquare_show'] = "Show Locator";
 $lang['gen_hamradio_latitude'] = "纬度";
 $lang['gen_hamradio_longitude'] = "经度";
 $lang['gen_hamradio_bearing'] = "方位角";
@@ -193,7 +196,7 @@ $lang['gen_from_date'] = '起始日期';
 
 $lang['gen_this_qso_was_confirmed_on'] = '该 QSO 确认于';
 
-$lang['error_no_logbook_found'] = '没有找到日志本。您需要在台站日志下添加一个日志本! 在这里添加：';
+$lang['error_no_logbook_found'] = '没有找到日志本。您需要在电台站日志下添加一个日志本! 在这里添加：';
 
 $lang['copy_to_clipboard'] = '复制到剪贴板';
 
@@ -208,9 +211,9 @@ $lang['southamerica'] = '南美洲';
 $lang['gen_band_selection'] = '波段选择';
 $lang['general_word_today'] = '今天';
 
-$lang['dashboard_php_version_warning'] = 'You need to upgrade your PHP version. Minimum version is 7.4. Your version is';
-$lang['dashboard_country_files_warning'] = 'You need to update country files! Go <a href="'.site_url('update').'">here</a> to do it!';
-$lang['dashboard_locations_warning'] = 'You have no station locations. Go <a href="'. site_url('station') . '">here</a> to create it!';
-$lang['dashboard_logbooks_warning'] = 'You have no station logbook. Go <a href="'. site_url('logbooks') . '">here</a> to create it!';
+$lang['dashboard_php_version_warning'] = '您需要升级您的 PHP 版本。 最低版本为 7.4。 你的版本是';
+$lang['dashboard_country_files_warning'] = '您需要更新国家/地区文件！ 请前往<a href="'.site_url('update').'">此处</a>执行此操作！';
+$lang['dashboard_locations_warning'] = '您没有电台站位置。 前往<a href="'.site_url('station') .'">此处</a>创建它！';
+$lang['dashboard_logbooks_warning'] = '你没有电台日志。 请前往<a href="'.site_url('logbooks') .'">此处</a>创建它！';
 
-$lang['hams_at_no_activations_found'] = 'No upcoming activations found. Please check back later.';
+$lang['hams_at_no_activations_found'] = '未找到即将进行的激活。 请稍后再回来查看。';

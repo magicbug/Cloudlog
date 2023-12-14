@@ -34,6 +34,7 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = 'Μεταφορτώστε τ
 $lang['lotw_upload_type_must_be_adi'] = 'Τα αρχεία καταγραφής πρέπει να έχουν τον τύπο αρχείου .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Τραβήξτε δεδομένα LoTW για μένα';
+$lang['lotw_select_callsign'] = 'Select callsign to pull LoTW confirmations for';
 
 $lang['lotw_report_download_overview_helptext'] = 'Το Cloudlog θα χρησιμοποιήσει το όνομα χρήστη και τον κωδικό πρόσβασης LoTW που είναι αποθηκευμένα στο προφίλ χρήστη σας για να πραγματοποιήσει λήψη μιας αναφοράς από το LoTW για εσάς. Οι λήψεις αναφοράς Cloudlog θα έχουν όλες τις επιβεβαιώσεις από την επιλεγμένη ημερομηνία ή από την τελευταία επιβεβαίωση LoTW (που ελήφθη από το αρχείο καταγραφής σας), μέχρι τώρα.';
 

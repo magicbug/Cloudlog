@@ -16,7 +16,7 @@ function echo_qsl_method($method) {
 }
 
 ?>
-<div class="container-fluid oqrs pt-3 pl-4 pr-4">
+<div class="container-fluid oqrs pt-3 ps-4 pe-4">
 	<h2><?php echo $page_title; ?></h2>
 	<?php if ($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
@@ -26,10 +26,10 @@ function echo_qsl_method($method) {
 	<?php } ?>
 <div class="row">
 	<form id="searchForm" name="searchForm" action="<?php echo base_url()."index.php/oqrs/search";?>" method="post">
-		<div class="form-row">
+		<div class="row">
 			<div class="forn-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label class="form-label" for="de">De</label>
-				<select id="de" name="de" class="form-control form-control-sm">
+				<select id="de" name="de" class="form-select form-select-sm">
 					<option value="">All</option>
 					<?php
 					foreach($stations->result() as $station){
@@ -45,7 +45,7 @@ function echo_qsl_method($method) {
 			
 			<div class="forn-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label for="status">OQRS Status</label>
-				<select id="status" name="status" class="form-control form-control-sm">
+				<select id="status" name="status" class="form-select form-select-sm">
 					<option value="">All</option>
 					<option value="0">Open request</option>
 					<option value="1">Not in log request</option>
@@ -54,7 +54,7 @@ function echo_qsl_method($method) {
 			</div>
 			<div class="forn-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label for="oqrsResults"># Results</label>
-				<select id="oqrsResults" name="oqrsResults" class="form-control form-control-sm">
+				<select id="oqrsResults" name="oqrsResults" class="form-select form-select-sm">
 					<option value="50">50</option>
 					<option value="200">200</option>
 					<option value="500">500</option>
@@ -62,7 +62,7 @@ function echo_qsl_method($method) {
 					<option value="All">All</option>
 				</select>
 			</div>
-			<div class="form-group">
+			<div class="mb-3">
 				<label>&nbsp;</label><br>
 				<button type="submit" class="btn btn-sm btn-primary" id="searchButton">Search</button>
 				<button type="reset" class="btn btn-sm btn-danger" id="resetButton">Reset</button>

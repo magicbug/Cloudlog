@@ -7,9 +7,17 @@
 var custom_date_format = "<?php echo $custom_date_format ?>";
 <?php
 if (!isset($options)) {
-   $options = "{\"datetime\":{\"show\":\"true\"},\"de\":{\"show\":\"true\"},\"dx\":{\"show\":\"true\"},\"mode\":{\"show\":\"true\"},\"rstr\":{\"show\":\"true\"},\"rsts\":{\"show\":\"true\"},\"band\":{\"show\":\"true\"},\"myrefs\":{\"show\":\"true\"},\"refs\":{\"show\":\"true\"},\"name\":{\"show\":\"true\"},\"qslvia\":{\"show\":\"true\"},\"qsl\":{\"show\":\"true\"},\"lotw\":{\"show\":\"true\"},\"eqsl\":{\"show\":\"true\"},\"qslmsg\":{\"show\":\"true\"},\"dxcc\":{\"show\":\"true\"},\"state\":{\"show\":\"true\"},\"cqzone\":{\"show\":\"true\"},\"iota\":{\"show\":\"true\"}}";
+   $options = "{\"datetime\":{\"show\":\"true\"},\"de\":{\"show\":\"true\"},\"dx\":{\"show\":\"true\"},\"mode\":{\"show\":\"true\"},\"rstr\":{\"show\":\"true\"},\"rsts\":{\"show\":\"true\"},\"band\":{\"show\":\"true\"},\"myrefs\":{\"show\":\"true\"},\"refs\":{\"show\":\"true\"},\"name\":{\"show\":\"true\"},\"qslvia\":{\"show\":\"true\"},\"qsl\":{\"show\":\"true\"},\"lotw\":{\"show\":\"true\"},\"eqsl\":{\"show\":\"true\"},\"qslmsg\":{\"show\":\"true\"},\"dxcc\":{\"show\":\"true\"},\"state\":{\"show\":\"true\"},\"cqzone\":{\"show\":\"true\"},\"iota\":{\"show\":\"true\"},\"pota\":{\"show\":\"true\"},\"operator\":{\"show\":\"true\"}}";
 }
 echo "var user_options = $options;";
+if (!isset($options->pota)) {
+        echo "\nvar o_template = { pota: {show: 'true'}};";
+        echo "\nuser_options={...user_options, ...o_template}";
+}
+if (!isset($options->operator)) {
+	echo "\nvar o_template = { operator: {show: 'true'}};";
+	echo "\nuser_options={...user_options, ...o_template}";
+}
 ?>
 </script>
 <style>
@@ -38,11 +46,15 @@ echo "var user_options = $options;";
   float: left;
   margin: 0 8px 0 0;
 }
+.row>[class*="col-"] {
+    padding-right: 5px;
+    padding-left: 5px;
+}
 </style>
 <?php
 $options = json_decode($options);
 ?>
-<div class="container-fluid qso_manager pt-3 pl-4 pr-4">
+<div class="container-fluid qso_manager pt-3 ps-4 pe-4">
     <?php if ($this->session->flashdata('message')) { ?>
     <!-- Display Message -->
     <div class="alert-message error">
@@ -55,30 +67,18 @@ $options = json_decode($options);
             method="post">
             <input type="hidden" id="dupes" name="dupes" value="">
             <div class="filterbody collapse">
-                <div class="form-row">
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
-                        <label class="form-label" for="dateFrom"><?php echo lang('filter_general_from'); ?></label>
-                        <div class="input-group input-group-sm date" id="dateFrom" data-target-input="nearest">
-                            <input name="dateFrom" type="text" placeholder="<?php echo $datePlaceholder;?>"
-                                class="form-control" data-target="#dateFrom" />
-                            <div class="input-group-append" data-target="#dateFrom" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </div>
+                <div class="row">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
+                        <label class="form-label" for="dateFrom"><?php echo lang('filter_general_from') . ": " ?></label>
+                        <input name="dateFrom" id="dateFrom" type="date" class="form-control form-control-sm w-auto">
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
-                        <label for="dateTo"><?php echo lang('filter_general_to'); ?></label>
-                        <div class="input-group input-group-sm date" id="dateTo" data-target-input="nearest">
-                            <input name="dateTo" type="text" placeholder="<?php echo $datePlaceholder;?>"
-                                class="form-control" data-target="#dateTo" />
-                            <div class="input-group-append" data-target="#dateTo" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </div>
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
+                        <label class="form-label" for="dateTo"><?php echo lang('filter_general_to') . ": " ?></label>
+                        <input name="dateTo" id="dateTo" type="date" class="form-control form-control-sm w-auto">
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="de"><?php echo lang('gen_hamradio_de'); ?></label>
-                        <select id="de" name="de" class="form-control form-control-sm">
+                        <select id="de" name="de" class="form-select form-select-sm">
                             <option value=""><?php echo lang('general_word_all'); ?></option>
                             <?php
 					foreach($deOptions as $deOption){
@@ -87,13 +87,13 @@ $options = json_decode($options);
 					?>
                         </select>
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="dx"><?php echo lang('gen_hamradio_dx'); ?></label>
                         <input type="text" name="dx" id="dx" class="form-control form-control-sm" value="">
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="dxcc"><?php echo lang('gen_hamradio_dxcc'); ?></label>
-                        <select class="form-control form-control-sm" id="dxcc" name="dxcc">
+                        <select class="form-select form-select-sm" id="dxcc" name="dxcc">
                             <option value="">-</option>
                             <option value="0"><?php echo lang('filter_general_none'); ?></option>
                             <?php
@@ -108,9 +108,9 @@ $options = json_decode($options);
 					?>
                         </select>
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="iota"><?php echo lang('gen_hamradio_iota'); ?></label>
-                        <select class="form-control form-control-sm" id="iota" name="iota">
+                        <select class="form-select form-select-sm" id="iota" name="iota">
                             <option value="">-</option>
                             <?php
 					foreach($iotaarray as $iota){
@@ -120,18 +120,18 @@ $options = json_decode($options);
 					?>
                         </select>
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="state"><?php echo lang('gen_hamradio_state'); ?></label>
                         <input type="text" name="state" id="state" class="form-control form-control-sm" value="">
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="gridsquare"><?php echo lang('gen_hamradio_gridsquare'); ?></label>
                         <input type="text" name="gridsquare" id="gridsquare" class="form-control form-control-sm"
                             value="">
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
-                        <select id="mode" name="mode" class="form-control form-control-sm">
+                        <select id="mode" name="mode" class="form-select form-select-sm">
                             <option value=""><?php echo lang('general_word_all'); ?></option>
                             <?php
 					foreach($modes as $modeId => $mode){
@@ -140,9 +140,9 @@ $options = json_decode($options);
 					?>
                         </select>
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="band"><?php echo lang('gen_hamradio_band'); ?></label>
-                        <select id="band" name="band" class="form-control form-control-sm">
+                        <select id="band" name="band" class="form-select form-select-sm">
                             <option value=""><?php echo lang('general_word_all'); ?></option>
                             <?php
 					foreach($bands as $band){
@@ -151,18 +151,18 @@ $options = json_decode($options);
 					?>
                         </select>
                     </div>
-                    <div hidden class="sats_dropdown form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div hidden class="sats_dropdown mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="sats"><?php echo lang('general_word_satellite'); ?></label>
-                        <select class="form-control form-control-sm" id="sats">
+                        <select class="form-select form-select-sm" id="sats">
                             <option value="All"><?php echo lang('general_word_all'); ?></option>
                             <?php foreach($sats as $sat) {
 					echo '<option value="' . htmlentities($sat) . '"' . '>' . htmlentities($sat) . '</option>'."\n";
 				} ?>
                         </select>
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="selectPropagation"><?php echo lang('filter_general_propagation'); ?></label>
-                        <select id="selectPropagation" name="selectPropagation" class="form-control form-control-sm">
+                        <select id="selectPropagation" name="selectPropagation" class="form-select form-select-sm">
                             <option value=""><?php echo lang('general_word_all'); ?></option>
                             <option value="AS">Aircraft Scatter</option>
                             <option value="AUR">Aurora</option>
@@ -184,9 +184,9 @@ $options = json_decode($options);
                             <option value="TR">Tropospheric ducting</option>
                         </select>
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="cqzone">CQ Zone</label>
-                        <select id="cqzone" name="cqzone" class="form-control form-control-sm">
+                        <select id="cqzone" name="cqzone" class="form-select form-select-sm">
                             <option value=""><?php echo lang('general_word_all'); ?></option>
                             <?php
                       for ($i = 1; $i<=40; $i++) {
@@ -196,26 +196,30 @@ $options = json_decode($options);
                             ?>
                         </select>
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="sota"><?php echo lang('gen_hamradio_sota'); ?></label>
                         <input type="text" name="sota" id="sota" class="form-control form-control-sm" value="">
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="wwff"><?php echo lang('gen_hamradio_wwff'); ?></label>
                         <input type="text" name="wwff" id="wwff" class="form-control form-control-sm" value="">
                     </div>
-                    <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                         <label class="form-label" for="pota"><?php echo lang('gen_hamradio_pota'); ?></label>
                         <input type="text" name="pota" id="pota" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
+                        <label class="form-label" for="operator"><?php echo lang('gen_hamradio_operator'); ?></label>
+                        <input type="text" name="operator" id="operator" class="form-control form-control-sm" value="">
                     </div>
                 </div>
             </div>
     </div>
     <div class="qslfilterbody collapse">
-        <div class="form-row">
-            <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+        <div class="row">
+            <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="qslSent"><?php echo lang('filter_qsl_sent'); ?></label>
-                <select id="qslSent" name="qslSent" class="form-control form-control-sm">
+                <select id="qslSent" name="qslSent" class="form-select form-select-sm">
                     <option value=""><?php echo lang('general_word_all'); ?></option>
                     <option value="Y"><?php echo lang('general_word_yes'); ?></option>
                     <option value="N"><?php echo lang('general_word_no'); ?></option>
@@ -224,9 +228,9 @@ $options = json_decode($options);
                     <option value="I"><?php echo lang('general_word_invalid_ignore'); ?></option>
                 </select>
             </div>
-            <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+            <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="qslReceived"><?php echo lang('filter_qsl_recv'); ?></label>
-                <select id="qslReceived" name="qslReceived" class="form-control form-control-sm">
+                <select id="qslReceived" name="qslReceived" class="form-select form-select-sm">
                     <option value=""><?php echo lang('general_word_all'); ?></option>
                     <option value="Y"><?php echo lang('general_word_yes'); ?></option>
                     <option value="N"><?php echo lang('general_word_no'); ?></option>
@@ -235,9 +239,9 @@ $options = json_decode($options);
                     <option value="V"><?php echo lang('filter_qsl_verified'); ?></option>
                 </select>
             </div>
-            <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+            <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="qslSentMethod"><?php echo lang('filter_qsl_sent_method'); ?></label>
-                <select id="qslSentMethod" name="qslSentMethod" class="form-control form-control-sm">
+                <select id="qslSentMethod" name="qslSentMethod" class="form-select form-select-sm">
                     <option value=""><?php echo lang('general_word_all'); ?></option>
                     <option value="B"><?php echo lang('general_word_qslcard_bureau'); ?></option>
                     <option value="D"><?php echo lang('general_word_qslcard_direct'); ?></option>
@@ -245,9 +249,9 @@ $options = json_decode($options);
                     <option value="M"><?php echo lang('general_word_qslcard_manager'); ?></option>
                 </select>
             </div>
-            <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+            <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="qslReceivedMethod"><?php echo lang('filter_qsl_recv_method'); ?></label>
-                <select id="qslReceivedMethod" name="qslReceivedMethod" class="form-control form-control-sm">
+                <select id="qslReceivedMethod" name="qslReceivedMethod" class="form-select form-select-sm">
                     <option value=""><?php echo lang('general_word_all'); ?></option>
                     <option value="B"><?php echo lang('general_word_qslcard_bureau'); ?></option>
                     <option value="D"><?php echo lang('general_word_qslcard_direct'); ?></option>
@@ -255,9 +259,9 @@ $options = json_decode($options);
                     <option value="M"><?php echo lang('general_word_qslcard_manager'); ?></option>
                 </select>
             </div>
-            <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+            <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="lotwSent"><?php echo lang('filter_lotw_sent'); ?></label>
-                <select id="lotwSent" name="lotwSent" class="form-control form-control-sm">
+                <select id="lotwSent" name="lotwSent" class="form-select form-select-sm">
                     <option value=""><?php echo lang('general_word_all'); ?></option>
                     <option value="Y"><?php echo lang('general_word_yes'); ?></option>
                     <option value="N"><?php echo lang('general_word_no'); ?></option>
@@ -266,9 +270,9 @@ $options = json_decode($options);
                     <option value="I"><?php echo lang('general_word_invalid_ignore'); ?></option>
                 </select>
             </div>
-            <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+            <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="lotwReceived"><?php echo lang('filter_lotw_recv'); ?></label>
-                <select id="lotwReceived" name="lotwReceived" class="form-control form-control-sm">
+                <select id="lotwReceived" name="lotwReceived" class="form-select form-select-sm">
                     <option value=""><?php echo lang('general_word_all'); ?></option>
                     <option value="Y"><?php echo lang('general_word_yes'); ?></option>
                     <option value="N"><?php echo lang('general_word_no'); ?></option>
@@ -277,9 +281,9 @@ $options = json_decode($options);
                     <option value="V"><?php echo lang('filter_qsl_verified'); ?></option>
                 </select>
             </div>
-            <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+            <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="eqslSent"><?php echo lang('filter_eqsl_sent'); ?></label>
-                <select id="eqslSent" name="eqslSent" class="form-control form-control-sm">
+                <select id="eqslSent" name="eqslSent" class="form-select form-select-sm">
                     <option value=""><?php echo lang('general_word_all'); ?></option>
                     <option value="Y"><?php echo lang('general_word_yes'); ?></option>
                     <option value="N"><?php echo lang('general_word_no'); ?></option>
@@ -288,9 +292,9 @@ $options = json_decode($options);
                     <option value="I"><?php echo lang('general_word_invalid_ignore'); ?></option>
                 </select>
             </div>
-            <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+            <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="eqslReceived"><?php echo lang('filter_eqsl_recv'); ?></label>
-                <select id="eqslReceived" name="eqslReceived" class="form-control form-control-sm">
+                <select id="eqslReceived" name="eqslReceived" class="form-select form-select-sm">
                     <option value=""><?php echo lang('general_word_all'); ?></option>
                     <option value="Y"><?php echo lang('general_word_yes'); ?></option>
                     <option value="N"><?php echo lang('general_word_no'); ?></option>
@@ -299,13 +303,13 @@ $options = json_decode($options);
                     <option value="V"><?php echo lang('filter_qsl_verified'); ?></option>
                 </select>
             </div>
-            <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+            <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="qslvia"><?php echo lang('filter_qsl_via'); ?></label>
                 <input type="search" name="qslviainput" class="form-control form-control-sm">
             </div>
-            <div class="form-group col-lg-2 col-md-2 col-sm-3 col-xl">
+            <div class="mb-3 col-lg-2 col-md-2 col-sm-3 col-xl">
                 <label for="qslimages"><?php echo lang('filter_qsl_images'); ?></label>
-                <select class="form-control form-control-sm" id="qslimages" name="qslimages">
+                <select class="form-select form-select-sm" id="qslimages" name="qslimages">
                     <option value="">-</option>
                     <option value="Y"><?php echo lang('general_word_yes'); ?></option>
                     <option value="N"><?php echo lang('general_word_no'); ?></option>
@@ -319,85 +323,88 @@ $options = json_decode($options);
             var lang_filter_actions_delete_warning = '<?php echo lang('filter_actions_delete_warning'); ?>';
         </script>
         <div class="mb-2 btn-group">
-            <span class="h6 mr-1"><?php echo lang('filter_actions_w_selected'); ?></span>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="btnUpdateFromCallbook"><?php echo lang('filter_actions_update_f_callbook'); ?></button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="queueBureau"><?php echo lang('filter_actions_queue_bureau'); ?></button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="queueDirect"><?php echo lang('filter_actions_queue_direct'); ?></button>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="queueElectronic"><?php echo lang('filter_actions_queue_electronic'); ?></button>
-            <button type="button" class="btn btn-sm btn-success mr-1" id="sentBureau"><?php echo lang('filter_actions_sent_bureau'); ?></button>
-            <button type="button" class="btn btn-sm btn-success mr-1" id="sentDirect"><?php echo lang('filter_actions_sent_direct'); ?></button>
-            <button type="button" class="btn btn-sm btn-success mr-1" id="sentElectronic"><?php echo lang('filter_actions_sent_electronic'); ?></button>
-            <button type="button" class="btn btn-sm btn-warning mr-1" id="dontSend"><?php echo lang('filter_actions_not_sent'); ?></button>
-            <button type="button" class="btn btn-sm btn-warning mr-1" id="notRequired"><?php echo lang('filter_actions_qsl_n_required'); ?></button>
-            <button type="button" class="btn btn-sm btn-warning mr-1" id="receivedBureau"><?php echo lang('filter_actions_recv_bureau'); ?></button>
-            <button type="button" class="btn btn-sm btn-warning mr-1" id="receivedDirect"><?php echo lang('filter_actions_recv_direct'); ?></button>
-            <button type="button" class="btn btn-sm btn-warning mr-1" id="receivedElectronic"><?php echo lang('filter_actions_recv_electronic'); ?></button>
-            <button type="button" class="btn btn-sm btn-info mr-1" id="exportAdif"><?php echo lang('filter_actions_create_adif'); ?></button>
-            <button type="button" class="btn btn-sm btn-info mr-1" id="printLabel"><?php echo lang('filter_actions_print_label'); ?></button>
-            <button type="button" class="btn btn-sm btn-info mr-1" id="qslSlideshow"><?php echo lang('filter_actions_qsl_slideshow'); ?></button>
-            <button type="button" class="btn btn-sm btn-danger mr-1" id="deleteQsos"><?php echo lang('filter_actions_delete'); ?></button>
+            <span class="h6 me-1"><?php echo lang('filter_actions_w_selected'); ?></span>
+            <button type="button" class="btn btn-sm btn-primary me-1" id="btnUpdateFromCallbook"><?php echo lang('filter_actions_update_f_callbook'); ?></button>
+            <button type="button" class="btn btn-sm btn-primary me-1" id="queueBureau"><?php echo lang('filter_actions_queue_bureau'); ?></button>
+            <button type="button" class="btn btn-sm btn-primary me-1" id="queueDirect"><?php echo lang('filter_actions_queue_direct'); ?></button>
+            <button type="button" class="btn btn-sm btn-primary me-1" id="queueElectronic"><?php echo lang('filter_actions_queue_electronic'); ?></button>
+            <button type="button" class="btn btn-sm btn-success me-1" id="sentBureau"><?php echo lang('filter_actions_sent_bureau'); ?></button>
+            <button type="button" class="btn btn-sm btn-success me-1" id="sentDirect"><?php echo lang('filter_actions_sent_direct'); ?></button>
+            <button type="button" class="btn btn-sm btn-success me-1" id="sentElectronic"><?php echo lang('filter_actions_sent_electronic'); ?></button>
+            <button type="button" class="btn btn-sm btn-warning me-1" id="dontSend"><?php echo lang('filter_actions_not_sent'); ?></button>
+            <button type="button" class="btn btn-sm btn-warning me-1" id="notRequired"><?php echo lang('filter_actions_qsl_n_required'); ?></button>
+            <button type="button" class="btn btn-sm btn-warning me-1" id="receivedBureau"><?php echo lang('filter_actions_recv_bureau'); ?></button>
+            <button type="button" class="btn btn-sm btn-warning me-1" id="receivedDirect"><?php echo lang('filter_actions_recv_direct'); ?></button>
+            <button type="button" class="btn btn-sm btn-warning me-1" id="receivedElectronic"><?php echo lang('filter_actions_recv_electronic'); ?></button>
+            <button type="button" class="btn btn-sm btn-info me-1" id="exportAdif"><?php echo lang('filter_actions_create_adif'); ?></button>
+            <button type="button" class="btn btn-sm btn-info me-1" id="printLabel"><?php echo lang('filter_actions_print_label'); ?></button>
+            <button type="button" class="btn btn-sm btn-info me-1" id="qslSlideshow"><?php echo lang('filter_actions_qsl_slideshow'); ?></button>
+            <button type="button" class="btn btn-sm btn-danger me-1" id="deleteQsos"><?php echo lang('filter_actions_delete'); ?></button>
         </div>
     </div>
     <div class="quickfilterbody collapse">
         <div class="mb-2 btn-group">
-            <span class="h6 mr-1"><?php echo lang('filter_quicksearch_w_sel'); ?></span>
+            <span class="h6 me-1"><?php echo lang('filter_quicksearch_w_sel'); ?></span>
 			<?php if (($options->dx->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCallsign"><?php echo lang('filter_search_callsign'); ?></button><?php
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchCallsign"><?php echo lang('filter_search_callsign'); ?></button><?php
             } ?>
 			<?php if (($options->dxcc->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchDxcc"><?php echo lang('filter_search_dxcc'); ?></button><?php
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchDxcc"><?php echo lang('filter_search_dxcc'); ?></button><?php
             } ?>
 			<?php if (($options->state->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchState"><?php echo lang('filter_search_state'); ?></button><?php
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchState"><?php echo lang('filter_search_state'); ?></button><?php
             } ?>
 			<?php if (($options->refs->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchGridsquare"><?php echo lang('filter_search_gridsquare'); ?></button><?php
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchGridsquare"><?php echo lang('filter_search_gridsquare'); ?></button><?php
             } ?>
 			<?php if (($options->cqzone->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchCqZone"><?php echo lang('filter_search_cq_zone'); ?></button><?php
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchCqZone"><?php echo lang('filter_search_cq_zone'); ?></button><?php
             } ?>
 			<?php if (($options->mode->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchMode"><?php echo lang('filter_search_mode'); ?></button><?php
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchMode"><?php echo lang('filter_search_mode'); ?></button><?php
             } ?>
 			<?php if (($options->band->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchBand"><?php echo lang('filter_search_band'); ?></button><?php
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchBand"><?php echo lang('filter_search_band'); ?></button><?php
             } ?>
             <?php if (($options->iota->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchIota"><?php echo lang('filter_search_iota'); ?></button><?php
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchIota"><?php echo lang('filter_search_iota'); ?></button><?php
             } ?>
 			<?php if (($options->refs->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchSota"><?php echo lang('filter_search_sota'); ?></button><?php
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchSota"><?php echo lang('filter_search_sota'); ?></button><?php
             } ?>
             <?php if (($options->refs->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchPota"><?php echo lang('filter_search_pota'); ?></button><?php
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchPota"><?php echo lang('filter_search_pota'); ?></button><?php
             } ?>
             <?php if (($options->refs->show ?? "true") == "true") { ?>
-                <button type="button" class="btn btn-sm btn-primary mr-1" id="searchWwff"><?php echo lang('filter_search_wwff'); ?></button><?php
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchWwff"><?php echo lang('filter_search_wwff'); ?></button><?php
+            } ?>
+            <?php if (($options->operator->show ?? "true") == "true") { ?>
+                <button type="button" class="btn btn-sm btn-primary me-1" id="searchOperator"><?php echo lang('filter_search_operator'); ?></button><?php
             } ?>
         </div>
     </div>
-<div class="form-row pt-2">
-    <div class="form-group form-inline col-lg d-flex flex-row justify-content-center align-items-center">
-        <button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="collapse"
-            data-target=".quickfilterbody"><?php echo lang('filter_quickfilters'); ?></button>
-        <button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="collapse"
-            data-target=".qslfilterbody"><?php echo lang('filter_qsl_filters'); ?></button>
-        <button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="collapse"
-            data-target=".filterbody"><?php echo lang('filter_filters'); ?></button>
-        <button type="button" class="btn btn-sm btn-primary mr-1" data-toggle="collapse"
-            data-target=".actionbody"><?php echo lang('filter_actions'); ?></button>
-        <label for="qsoResults" class="mr-2"><?php echo lang('filter_results'); ?></label>
-        <select id="qsoResults" name="qsoResults" class="form-control form-control-sm mr-2">
+<div class="row pt-2">
+    <div class="mb-3 d-flex align-items-center col-lg d-flex flex-row justify-content-center align-items-center">
+        <button type="button" class="btn btn-sm btn-primary me-1" data-bs-toggle="collapse"
+            data-bs-target=".quickfilterbody"><?php echo lang('filter_quickfilters'); ?></button>
+        <button type="button" class="btn btn-sm btn-primary me-1" data-bs-toggle="collapse"
+            data-bs-target=".qslfilterbody"><?php echo lang('filter_qsl_filters'); ?></button>
+        <button type="button" class="btn btn-sm btn-primary me-1" data-bs-toggle="collapse"
+            data-bs-target=".filterbody"><?php echo lang('filter_filters'); ?></button>
+        <button type="button" class="btn btn-sm btn-primary me-1" data-bs-toggle="collapse"
+            data-bs-target=".actionbody"><?php echo lang('filter_actions'); ?></button>
+        <label for="qsoResults" class="me-2"><?php echo lang('filter_results'); ?></label>
+        <select id="qsoResults" name="qsoResults" class="form-select form-select-sm me-2 w-auto">
             <option value="250">250</option>
             <option value="1000">1000</option>
             <option value="2500">2500</option>
             <option value="5000">5000</option>
         </select>
-        <button type="submit" class="btn btn-sm btn-primary mr-1" id="searchButton"><?php echo lang('filter_search'); ?></button>
-        <button type="button" class="btn btn-sm btn-primary mr-1" id="dupeButton"><?php echo lang('filter_dupes'); ?></button>
-        <button type="button" class="btn btn-sm btn-primary mr-1" id="mapButton" onclick="mapQsos(this.form);"><?php echo lang('filter_map'); ?></button>
-		<button type="options" class="btn btn-sm btn-primary mr-1" id="optionButton"><?php echo lang('filter_options'); ?></button>
-		<button type="reset" class="btn btn-sm btn-danger mr-1" id="resetButton"><?php echo lang('filter_reset'); ?></button>
+        <button type="submit" class="btn btn-sm btn-primary me-1" id="searchButton"><?php echo lang('filter_search'); ?></button>
+        <button type="button" class="btn btn-sm btn-primary me-1" id="dupeButton"><?php echo lang('filter_dupes'); ?></button>
+        <button type="button" class="btn btn-sm btn-primary me-1" id="mapButton" onclick="mapQsos(this.form);"><?php echo lang('filter_map'); ?></button>
+		<button type="options" class="btn btn-sm btn-primary me-1" id="optionButton"><?php echo lang('filter_options'); ?></button>
+		<button type="reset" class="btn btn-sm btn-danger me-1" id="resetButton"><?php echo lang('filter_reset'); ?></button>
 
     </div>
 </div>
@@ -464,6 +471,12 @@ $options = json_decode($options);
 			} ?>
 			<?php if (($options->iota->show ?? "true") == "true") {
 				echo '<th>' . lang('gen_hamradio_iota') . '</th>';
+			} ?>
+			<?php if (($options->pota->show ?? "true") == "true") {
+				echo '<th>' . lang('gen_hamradio_pota') . '</th>';
+			} ?>
+			<?php if (($options->operator->show ?? "true") == "true") {
+				echo '<th>' . lang('gen_hamradio_operator') . '</th>';
 			} ?>
         </tr>
     </thead>

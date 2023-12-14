@@ -9,7 +9,7 @@
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="default">
 	<link rel="manifest" href="<?php echo base_url(); ?>manifest.json"/>
-	
+
 	<!-- Bootstrap CSS -->
 	<?php if ($this->optionslib->get_theme()) { ?>
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme(); ?>/bootstrap.min.css">
@@ -42,16 +42,16 @@
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datatables.min.css" />
 
-	<?php if ($this->uri->segment(1) == "adif" || (isset($hasDatePicker) && $hasDatePicker)) { ?>
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
-	<?php } ?>
-
 	<?php if ($this->uri->segment(1) == "sattimers") { ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sattimers.css" />
 	<?php } ?>
 
 	<?php if (file_exists(APPPATH . '../assets/css/custom.css')) {
 		echo '<link rel="stylesheet" href="' . base_url() . 'assets/css/custom.css">';
+	} ?>
+
+	<?php if (file_exists(APPPATH . '../assets/js/sections/custom.js')) {
+		echo '<script src="' . base_url() . 'assets/js/sections/custom.js"></script>';
 	} ?>
 
 	<link rel="icon" href="<?php echo base_url(); ?>favicon.ico">
@@ -65,16 +65,16 @@
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light main-nav">
 		<div class="container">
-			<a class="navbar-brand" href="<?php echo site_url(); ?>">Cloudlog</a> <?php if (ENVIRONMENT == "development") { ?><span class="badge badge-danger"><?php echo lang('menu_badge_developer_mode'); ?></span><?php } ?>
+			<a class="navbar-brand" href="<?php echo site_url(); ?>">Cloudlog</a> <?php if (ENVIRONMENT == "development") { ?><span class="badge text-bg-danger"><?php echo lang('menu_badge_developer_mode'); ?></span><?php } ?>
 
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
 			<div class="collapse navbar-collapse" id="navbarNav">
 
 				<ul class="navbar-nav">
 					<li class="nav-item active">
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo lang('menu_logbook'); ?></a>
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo lang('menu_logbook'); ?></a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="<?php echo site_url('logbook'); ?>"><i class="fas fa-book"></i> <?php echo lang('menu_overview'); ?></a>
 							<div class="dropdown-divider"></div>
@@ -89,7 +89,7 @@
 					<?php if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
 						<!-- QSO Menu Dropdown -->
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_qso'); ?></a>
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_qso'); ?></a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="<?php echo site_url('qso?manual=0'); ?>" title="Log Live QSOs"><i class="fas fa-list"></i> <?php echo lang('menu_live_qso'); ?></a>
 								<div class="dropdown-divider"></div>
@@ -108,7 +108,7 @@
 							<a class="nav-link" href="<?php echo site_url('notes'); ?>"><?php echo lang('menu_notes'); ?></a>
 						<?php } ?>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_analytics'); ?></a>
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_analytics'); ?></a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="<?php echo site_url('statistics'); ?>" title="Statistics"><i class="fas fa-chart-area"></i> <?php echo lang('menu_statistics'); ?></a>
 								<div class="dropdown-divider"></div>
@@ -135,7 +135,7 @@
 						</li>
 
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_awards'); ?></a>
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_awards'); ?></a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="<?php echo site_url('awards/cq'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_cq'); ?></a>
 								<div class="dropdown-divider"></div>
@@ -147,9 +147,17 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('awards/iota'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_iota'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('awards/ja_gridmaster'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_ja_gridmaster'); ?></a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('awards/pota'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_pota'); ?></a>
+								<div class="nav-item dropdown dropdown-submenu" aria-labelledby="navbarDropdown"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-trophy"></i> Gridmaster</a>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/dl'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_dl_gridmaster'); ?></a></li>
+										<div class="dropdown-divider"></div>
+										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/lx'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_lx_gridmaster'); ?></a></li>
+										<div class="dropdown-divider"></div>
+										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/ja'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_ja_gridmaster'); ?></a></li>
+										<div class="dropdown-divider"></div>
+										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/us'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_us_gridmaster'); ?></a></li>
+									</ul>
+								</div>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('awards/sig'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_sig'); ?></a>
 								<div class="dropdown-divider"></div>
@@ -157,9 +165,9 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('awards/counties'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_us_counties'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('awards/gridmaster'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_us_gridmaster'); ?></a>
-								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('awards/vucc'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_vucc'); ?></a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="<?php echo site_url('awards/waja'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_waja'); ?></a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('awards/was'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_was'); ?></a>
 								<div class="dropdown-divider"></div>
@@ -168,7 +176,7 @@
 						</li>
 
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Tools"><i class="fas fa-tools"></i>
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Tools"><i class="fas fa-tools"></i>
 								<div class="d-inline d-lg-none" style="padding-left: 10px">Tools</div>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -184,7 +192,7 @@
 
 						<?php if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') == 99)) { ?>
 							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="<?php echo lang('menu_admin'); ?>"><i class="fas fa-users-cog"></i>
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="<?php echo lang('menu_admin'); ?>"><i class="fas fa-users-cog"></i>
 									<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_admin'); ?></div>
 								</a>
 
@@ -265,22 +273,19 @@
 							}
 						</script>
 					<?php } ?>
-					<form id="quicklog-form" class="form-inline" onsubmit="return false;">
-						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="text" name="callsign" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Quicklog" onkeypress="handleKeyPress(event)">
+					<form id="quicklog-form" class="d-flex align-items-center" onsubmit="return false;">
+						<input class="form-control me-2" id="nav-bar-search-input" type="text" name="callsign" placeholder="<?php echo lang('menu_search_text_quicklog'); ?>" aria-label="Quicklog" onkeypress="handleKeyPress(event)">
 
 						<button title="<?php echo lang('menu_search_button_qicksearch_log'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="logQuicklog()"><i class="fas fa-plus"></i>
-							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button_qicksearch_log'); ?></div>
 						</button>
 
 						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="submitForm('search')" style="margin-left: 5px"><i class="fas fa-search"></i>
-							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button'); ?></div>
 						</button>
 					</form>
 				<?php } else { ?>
-					<form method="post" action="<?php echo site_url('search'); ?>" class="form-inline">
-						<input class="form-control mr-sm-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
+					<form method="post" class="d-flex align-items-center" action="<?php echo site_url('search'); ?>">
+						<input class="form-control me-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
 						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i>
-							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button'); ?></div>
 						</button>
 					</form>
 				<?php } ?>
@@ -290,10 +295,10 @@
 				<?php } else { ?>
 					<!-- Not Logged In-->
 					<form method="post" action="<?php echo site_url('user/login'); ?>" style="padding-left: 5px;" class="form-inline">
-						<input class="form-control mr-sm-2" type="text" name="user_name" placeholder="Username" aria-label="Username">
-						<input class="form-control mr-sm-2" type="password" name="user_password" placeholder="Password" aria-label="Password">
+						<input class="form-control me-sm-2" type="text" name="user_name" placeholder="Username" aria-label="Username">
+						<input class="form-control me-sm-2" type="password" name="user_password" placeholder="Password" aria-label="Password">
 						<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
-						<button class="btn btn-outline-success mr-sm-2" type="submit"><?php echo lang('menu_login_button'); ?></button>
+						<button class="btn btn-outline-success me-sm-2" type="submit"><?php echo lang('menu_login_button'); ?></button>
 					</form>
 				<?php } ?>
 
@@ -301,7 +306,7 @@
 					<ul class="navbar-nav">
 						<!-- Logged in As -->
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i> <?php echo $this->session->userdata('user_callsign'); ?></a>
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i> <?php echo $this->session->userdata('user_callsign'); ?></a>
 
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="<?php echo site_url('user/edit') . "/" . $this->session->userdata('user_id'); ?>" title="Account"><i class="fas fa-user"></i> <?php echo lang('menu_account'); ?></a>
@@ -316,13 +321,17 @@
 
 								<a class="dropdown-item" href="<?php echo site_url('adif'); ?>" title="Amateur Data Interchange Format (ADIF) import / export"><i class="fas fa-sync"></i> <?php echo lang('menu_adif_import_export'); ?></a>
 
-								<a class="dropdown-item" href="<?php echo site_url('kmlexport'); ?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> <?php echo lang('menu_kml_export'); ?></a>
+								<div class="nav-item dropdown dropdown-submenu" aria-labelledby="navbarDropdown"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-sync"></i> Other Export Options</a>
+									<ul class="dropdown-menu">
+										<a class="dropdown-item" href="<?php echo site_url('kmlexport'); ?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> <?php echo lang('menu_kml_export'); ?></a>
 
-								<a class="dropdown-item" href="<?php echo site_url('dxatlas'); ?>" title="DX Atlas Gridsquare Export"><i class="fas fa-sync"></i> <?php echo lang('menu_dx_atlas_gridsquare_export'); ?></a>
+										<a class="dropdown-item" href="<?php echo site_url('dxatlas'); ?>" title="DX Atlas Gridsquare Export"><i class="fas fa-sync"></i> <?php echo lang('menu_dx_atlas_gridsquare_export'); ?></a>
 
-								<a class="dropdown-item" href="<?php echo site_url('csv'); ?>" title="SOTA CSV Export"><i class="fas fa-sync"></i> <?php echo lang('menu_sota_csv_export'); ?></a>
+										<a class="dropdown-item" href="<?php echo site_url('csv'); ?>" title="SOTA CSV Export"><i class="fas fa-sync"></i> <?php echo lang('menu_sota_csv_export'); ?></a>
 
-								<a class="dropdown-item" href="<?php echo site_url('cabrillo'); ?>" title="Cabrillo Export"><i class="fas fa-sync"></i> <?php echo lang('menu_cabrillo_export'); ?></a>
+										<a class="dropdown-item" href="<?php echo site_url('cabrillo'); ?>" title="Cabrillo Export"><i class="fas fa-sync"></i> <?php echo lang('menu_cabrillo_export'); ?></a>
+									</ul>
+								</div>
 
 								<div class="dropdown-divider"></div>
 
@@ -340,7 +349,7 @@
 								$oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 								?>
 								<a class="dropdown-item" href="<?php echo site_url('oqrs/requests'); ?>" title="OQRS Requests"><i class="fa fa-id-card"></i> <?php echo lang('menu_oqrs_requests'); ?> <?php if ($oqrs_requests > 0) {
-																																																			echo "<span class=\"badge badge-light\">" . $oqrs_requests . "</span>";
+																																																			echo "<span class=\"badge text-bg-light\">" . $oqrs_requests . "</span>";
 																																																		} ?></a>
 
 								<a class="dropdown-item" href="<?php echo site_url('qslprint'); ?>" title="Print Requested QSLs"><i class="fas fa-print"></i> <?php echo lang('menu_print_requested_qsls'); ?></a>
@@ -365,6 +374,8 @@
 								<a class="dropdown-item" href="<?php echo site_url('radio'); ?>" title="Interface with one or more radios"><i class="fas fa-broadcast-tower"></i> <?php echo lang('menu_hardware_interfaces'); ?></a>
 
 								<div class="dropdown-divider"></div>
+
+								<a class="dropdown-item" href="javascript:displayVersionDialog();" title="Version Information"><i class="fas fa-star"></i> <?php echo lang('options_version_dialog'); ?></a>
 
 								<a class="dropdown-item" target="_blank" href="https://github.com/magicbug/Cloudlog/wiki" title="Help"><i class="fas fa-question"></i> <?php echo lang('menu_help'); ?></a>
 
@@ -399,7 +410,7 @@
 
 						if ($this->optionslib->get_option('menuitems')) { ?>
 							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extras</a>
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extras</a>
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 									<?php
 									foreach (json_decode($this->optionslib->get_option('menuitems')) as $item) {

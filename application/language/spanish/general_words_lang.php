@@ -23,6 +23,8 @@ $lang['general_word_export'] = "Export";
 $lang['general_word_import'] = "Import";
 $lang['general_word_count'] = "Count";
 $lang['general_word_filtering_on'] = "Filtering on";
+$lang['general_word_not_display'] = "Not display";
+$lang['general_word_icon'] = "Icon";
 
 $lang['general_word_date'] = 'Fecha';
 $lang['general_word_startdate'] = "Start Date";
@@ -167,6 +169,7 @@ $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = 'Gridsquare';
 $lang['gen_hamradio_get_gridsquare'] = 'Get Gridsquare';
+$lang['gen_hamradio_gridsquare_show'] = "Show Locator";
 $lang['gen_hamradio_latitude'] = "Latitude";
 $lang['gen_hamradio_longitude'] = "Longitude";
 $lang['gen_hamradio_bearing'] = "Bearing";

@@ -10,7 +10,7 @@
             var lang_award_info_ln4 = "<?php echo lang('awards_sota_description_ln4'); ?>";
             </script>
             <h2><?php echo $page_title; ?></h2>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
+            <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
         </div>
         <!-- End of Award Info Box -->
 	<?php
@@ -50,6 +50,6 @@
 	
 	</table>
 	<?php } else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+        echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
     }?>
 </div>

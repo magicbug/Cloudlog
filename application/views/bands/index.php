@@ -65,28 +65,28 @@ $wwff = 0;
 			<tbody>
 				<?php foreach ($bands as $band) { ?>
 				<tr>
-                    <td class='band_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->active == 1) {echo 'checked';}?>></td>
-					<td><?php echo $band->band;?></td>
-					<td class='cq_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->cq == 1) {echo 'checked'; $cq++;}?>></td>
-                    <td class='dok_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dok == 1) {echo 'checked'; $dok++;}?>></td>
-                    <td class='dxcc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dxcc == 1) {echo 'checked'; $dxcc++;}?>></td>
-                    <td class='iota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->iota == 1) {echo 'checked'; $iota++;}?>></td>
-                    <td class='pota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->iota == 1) {echo 'checked'; $pota++;}?>></td>
-                    <td class='sig_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sig == 1) {echo 'checked'; $sig++;}?>></td>
-                    <td class='sota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sota == 1) {echo 'checked'; $sota++;}?>></td>
-                    <td class='uscounties_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->uscounties == 1) {echo 'checked'; $uscounties++;}?>></td>
-                    <td class='vucc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->vucc == 1) {echo 'checked'; $vucc++;}?>></td>
-                    <td class='was_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->was == 1) {echo 'checked'; $was++;}?>></td>
-					<td class='wwff_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->wwff == 1) {echo 'checked'; $wwff++;}?>></td>
-					<td><?php echo $band->bandgroup;?></td>
-					<td><?php echo $band->ssb;?></td>
-					<td><?php echo $band->data;?></td>
-					<td><?php echo $band->cw;?></td>
+                    <td style="text-align: center; vertical-align: middle;" class='band_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->active == 1) {echo 'checked';}?>></td>
+					<td style="text-align: center; vertical-align: middle;" ><?php echo $band->band;?></td>
+					<td style="text-align: center; vertical-align: middle;" class='cq_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->cq == 1) {echo 'checked'; $cq++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='dok_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dok == 1) {echo 'checked'; $dok++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='dxcc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->dxcc == 1) {echo 'checked'; $dxcc++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='iota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->iota == 1) {echo 'checked'; $iota++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='pota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->iota == 1) {echo 'checked'; $pota++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='sig_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sig == 1) {echo 'checked'; $sig++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='sota_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->sota == 1) {echo 'checked'; $sota++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='uscounties_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->uscounties == 1) {echo 'checked'; $uscounties++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='vucc_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->vucc == 1) {echo 'checked'; $vucc++;}?>></td>
+                    <td style="text-align: center; vertical-align: middle;" class='was_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->was == 1) {echo 'checked'; $was++;}?>></td>
+					<td style="text-align: center; vertical-align: middle;" class='wwff_<?php echo $band->id ?>'><input type="checkbox" <?php if ($band->wwff == 1) {echo 'checked'; $wwff++;}?>></td>
+					<td style="text-align: center; vertical-align: middle;" ><?php echo $band->bandgroup;?></td>
+					<td style="text-align: center; vertical-align: middle;" ><?php echo $band->ssb;?></td>
+					<td style="text-align: center; vertical-align: middle;" ><?php echo $band->data;?></td>
+					<td style="text-align: center; vertical-align: middle;" ><?php echo $band->cw;?></td>
 					<?php if($this->session->userdata('user_type') == '99') { ?>
-					<td>
+					<td style="text-align: center; vertical-align: middle;" >
 						<a href="javascript:editBandDialog('<?php echo $band->bandid ?>');" class="btn btn-outline-primary btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
 					</td>
-					<td>
+					<td style="text-align: center; vertical-align: middle;" >
 						<a href="javascript:deleteBand('<?php echo $band->id . '\',\'' . $band->band ?>');" class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash-alt"></i></a>
                     </td>
 					<?php } ?>

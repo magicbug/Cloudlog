@@ -1,12 +1,12 @@
 <div class="container lotw">
 <br>
-	<a class="btn btn-outline-primary btn-sm float-right" href="<?php echo site_url('/lotw/import'); ?>" role="button"><i class="fas fa-cloud-download-alt"></i> <?php echo lang('lotw_btn_lotw_import'); ?></a>
+	<a class="btn btn-outline-primary btn-sm float-end" href="<?php echo site_url('/lotw/import'); ?>" role="button"><i class="fas fa-cloud-download-alt"></i> <?php echo lang('lotw_btn_lotw_import'); ?></a>
 	<h2><?php echo lang('lotw_title'); ?></h2>
 
 	<!-- Card Starts -->
 	<div class="card">
 		<div class="card-header">
-			<a class="btn btn-outline-success btn-sm float-right" href="<?php echo site_url('/lotw/cert_upload'); ?>" role="button"><i class="fas fa-cloud-upload-alt"></i> <?php echo lang('lotw_btn_upload_certificate'); ?></a><i class="fab fa-expeditedssl"></i> <?php echo lang('lotw_title_available_cert'); ?>
+			<a class="btn btn-outline-success btn-sm float-end" href="<?php echo site_url('/lotw/cert_upload'); ?>" role="button"><i class="fas fa-cloud-upload-alt"></i> <?php echo lang('lotw_btn_upload_certificate'); ?></a><i class="fab fa-expeditedssl"></i> <?php echo lang('lotw_title_available_cert'); ?>
 		</div>
 
 		<div class="lotw-cert-list">
@@ -44,7 +44,7 @@
 						<?php foreach ($lotw_cert_results->result() as $row) { ?>
 							<tr>
 					      		<td><?php echo $row->callsign; ?></td>
-                           <td><?php echo $row->cert_dxcc == '' ? '- NONE -' : ucfirst($row->cert_dxcc); if ($row->cert_dxcc_end != NULL) { echo ' <span class="badge badge-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
+                           <td><?php echo $row->cert_dxcc == '' ? '- NONE -' : ucfirst($row->cert_dxcc); if ($row->cert_dxcc_end != NULL) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
 								<td><?php
 									if (isset($row->qso_start_date)) {
 										$valid_qso_start = strtotime( $row->qso_start_date );
@@ -79,18 +79,18 @@
 									<?php $warning_date = date('Y-m-d H:i:s', strtotime($row->date_expires.'-30 days')); ?>
 
 									<?php if ($current_date > $row->date_expires) { ?>
-										<span class="badge badge-danger"><?php echo lang('lotw_expired'); ?></span>
+										<span class="badge text-bg-danger"><?php echo lang('lotw_expired'); ?></span>
 									<?php } else if ($current_date <= $row->date_expires && $current_date > $warning_date) { ?>
-										<span class="badge badge-warning"><?php echo lang('lotw_expiring'); ?></span>
+										<span class="badge text-bg-warning"><?php echo lang('lotw_expiring'); ?></span>
 									<?php } else { ?>
-										<span class="badge badge-success"><?php echo lang('lotw_valid'); ?></span>
+										<span class="badge text-bg-success"><?php echo lang('lotw_valid'); ?></span>
 									<?php } ?>
 
 									<?php if ($row->last_upload) {
 										$last_upload = date($this->config->item('qso_date_format').' H:i:s', strtotime( $row->last_upload )); ?>
-										<span class="badge badge-success"><?php echo $last_upload; ?></span>
+										<span class="badge text-bg-success"><?php echo $last_upload; ?></span>
 									<?php } else { ?>
-										<span class="badge badge-warning"><?php echo lang('lotw_not_synced'); ?></span>
+										<span class="badge text-bg-warning"><?php echo lang('lotw_not_synced'); ?></span>
 									<?php } ?>
 								</td>
 								<td>

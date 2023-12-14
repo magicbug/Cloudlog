@@ -27,14 +27,14 @@
 
                     <?php if(validation_errors()) { ?>
                     <div class="alert alert-danger">
-                        <a class="close" data-dismiss="alert">x</a>
+                        <a class="btn-close" data-bs-dismiss="alert">x</a>
                         <?php echo validation_errors(); ?>
                     </div>
                     <?php } ?>
 
                     <?php echo form_open('options/radio_save'); ?>
 
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label for="globalSearch"><?php echo lang('options_radio_timeout_warning'); ?></label>
                             <p><?php echo lang('options_the_radio_timeout_warning_is_used_on_the_qso_entry_panel_to_alert_you_to_radio_interface_disconnects'); ?></p>
                             <input type="text" name="radioTimeout" class="form-control" id="radioTimeout" aria-describedby="radioTimeoutHelp" value="<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?>">

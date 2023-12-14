@@ -1,15 +1,3 @@
-$(function () {
-    $('#datetimepicker5').datetimepicker({
-        format: 'DD/MM/YYYY',
-    });
-});
-
-$(function () {
-    $('#datetimepicker6').datetimepicker({
-        format: 'DD/MM/YYYY',
-    });
-});
-
 $(document).ready(function(){
 	$('#markWebAdifAsExported').click(function(e){
 		let form = $(this).closest('form');

@@ -8,15 +8,17 @@ if ($qsos->result() != NULL) {
 	<th style=\'text-align: center\'>'. lang('general_word_time') .'</th>
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_mode') . '</th>
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_band') . '</th>
+	<th style=\'text-align: center\'>' . lang('gen_hamradio_rsts') . '</th>
+	<th style=\'text-align: center\'>' . lang('gen_hamradio_rstr') . '</th>
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_station') . '</th>
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_qsl') . ' ' . lang('general_word_qslcard_via') . '</th>
-	<th style=\'text-align: center\'>Sent method</th>
-	<th style=\'text-align: center\'>QSL</th>';
+	<th style=\'text-align: center\'>' . lang('qslcard_qslprint_send_method') . '</th>
+	<th style=\'text-align: center\'>' . lang('gen_hamradio_qsl') . '</th>';
 	if ($this->session->userdata('user_eqsl_name') != "") {
-		echo '<th style=\'text-align: center\'>eQSL</th>';
+		echo '<th style=\'text-align: center\'>' . lang('eqsl_short') . '</th>';
 	}
 	if($this->session->userdata('user_lotw_name') != "") {
-		echo '<th style=\'text-align: center\'>LoTW</th>';
+		echo '<th style=\'text-align: center\'>' . lang('lotw_short') . '</th>';
 	}
 	echo '<th style=\'text-align: center\'></th>
 	</tr>
@@ -38,7 +40,9 @@ if ($qsos->result() != NULL) {
 		echo '<td style=\'text-align: center\'>'; $timestamp = strtotime($qsl->COL_TIME_ON); echo date('H:i', $timestamp); echo '</td>';
 		echo '<td style=\'text-align: center\'>'; echo $qsl->COL_SUBMODE==null?$qsl->COL_MODE:$qsl->COL_SUBMODE; echo '</td>';
 		echo '<td style=\'text-align: center\'>'; if($qsl->COL_SAT_NAME != null) { echo $qsl->COL_SAT_NAME; } else { echo strtolower($qsl->COL_BAND ?? ""); }; echo '</td>';
-		echo '<td style=\'text-align: center\'><span class="badge badge-light">' . $qsl->station_callsign . '</span></td>';
+		echo '<td style=\'text-align: center\'>' . $qsl->COL_RST_SENT . '</td>';
+		echo '<td style=\'text-align: center\'>' . $qsl->COL_RST_RCVD . '</td>';
+		echo '<td style=\'text-align: center\'><span class="badge text-bg-light">' . $qsl->station_callsign . '</span></td>';
 		echo '<td style=\'text-align: center\'>' . $qsl->COL_QSL_VIA . '</td>';
 		echo '<td style=\'text-align: center\'>'; echo_qsl_sent_via($qsl->COL_QSL_SENT_VIA); echo '</td>';
 		echo '<td style=\'text-align: center\' class="qsl">';
@@ -51,16 +55,16 @@ if ($qsos->result() != NULL) {
 			}
 			switch ($qsl->COL_QSL_SENT) {
 			case "Y":
-				echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_sent').$timestamp;
+				echo "class=\"qsl-green\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_sent').$timestamp;
 				break;
 			case "Q":
-				echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_queued').$timestamp;
+				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_queued').$timestamp;
 				break;
 			case "R":
-				echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_requested').$timestamp;
+				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_requested').$timestamp;
 				break;
 			case "I":
-				echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_invalid_ignore').$timestamp;
+				echo "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_invalid_ignore').$timestamp;
 				break;
 			default:
 				echo "class=\"qsl-red";
@@ -93,16 +97,16 @@ if ($qsos->result() != NULL) {
 			}
 			switch ($qsl->COL_QSL_RCVD) {
 			case "Y":
-				echo "class=\"qsl-green\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_received').$timestamp;
+				echo "class=\"qsl-green\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_received').$timestamp;
 				break;
 			case "Q":
-				echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_queued').$timestamp;
+				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_queued').$timestamp;
 				break;
 			case "R":
-				echo "class=\"qsl-yellow\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_requested').$timestamp;
+				echo "class=\"qsl-yellow\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_requested').$timestamp;
 				break;
 			case "I":
-				echo "class=\"qsl-grey\" data-toggle=\"tooltip\" data-original-title=\"".lang('general_word_invalid_ignore').$timestamp;
+				echo "class=\"qsl-grey\" data-bs-toggle=\"tooltip\" title=\"".lang('general_word_invalid_ignore').$timestamp;
 				break;
 			default:
 				echo "class=\"qsl-red";
@@ -118,7 +122,7 @@ if ($qsos->result() != NULL) {
 				echo " (".lang('general_word_qslcard_direct').")";
 				break;
 			case "M":
-				echo " (Manager)";
+				echo " (".lang('general_word_qslcard_manager').")";
 				break;
 			case "E":
 				echo " (".lang('general_word_qslcard_electronic').")";
@@ -131,12 +135,12 @@ if ($qsos->result() != NULL) {
 			echo '<td style=\'text-align: center\' class="eqsl">';
 			echo '<span ';
 			if ($qsl->COL_EQSL_QSL_SENT == "Y") {
-				echo "data-original-title=\"".lang('eqsl_short')." ".lang('general_word_sent');
+				echo "title=\"".lang('eqsl_short')." ".lang('general_word_sent');
 				if ($qsl->COL_EQSL_QSLSDATE != null) {
 					$timestamp = strtotime($qsl->COL_EQSL_QSLSDATE);
 					echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 				}
-				echo "\" data-toggle=\"tooltip\"";
+				echo "\" data-bs-toggle=\"tooltip\"";
 			}
 			echo ' class="eqsl-';
 			echo ($qsl->COL_EQSL_QSL_SENT=='Y')?'green':'red';
@@ -144,12 +148,12 @@ if ($qsos->result() != NULL) {
 
 			echo '<span ';
 			if ($qsl->COL_EQSL_QSL_RCVD == "Y") {
-				echo "data-original-title=\"".lang('eqsl_short')." ".lang('general_word_received');
+				echo "title=\"".lang('eqsl_short')." ".lang('general_word_received');
 				if ($qsl->COL_EQSL_QSLRDATE != null) {
 					$timestamp = strtotime($qsl->COL_EQSL_QSLRDATE);
 					echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 				}
-				echo "\" data-toggle=\"tooltip\"";
+				echo "\" data-bs-toggle=\"tooltip\"";
 			}
 			echo ' class="eqsl-';
 			echo ($qsl->COL_EQSL_QSL_RCVD=='Y')?'green':'red';
@@ -160,12 +164,12 @@ if ($qsos->result() != NULL) {
 			echo '<td style=\'text-align: center\' class="lotw">';
 			echo '<span ';
 			if ($qsl->COL_LOTW_QSL_SENT == "Y") {
-				echo "data-original-title=\"".lang('lotw_short')." ".lang('general_word_sent');
+				echo "title=\"".lang('lotw_short')." ".lang('general_word_sent');
 				if ($qsl->COL_LOTW_QSLSDATE != null) {
 					$timestamp = strtotime($qsl->COL_LOTW_QSLSDATE);
 					echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 				}
-				echo "\" data-toggle=\"tooltip\"";
+				echo "\" data-bs-toggle=\"tooltip\"";
 			}
 			echo ' class="lotw-';
 			echo ($qsl->COL_LOTW_QSL_SENT=='Y')?'green':'red';
@@ -173,19 +177,19 @@ if ($qsos->result() != NULL) {
 
 			echo '<span ';
 			if ($qsl->COL_LOTW_QSL_RCVD == "Y") {
-				echo "data-original-title=\"".lang('lotw_short')." ".lang('general_word_received');
+				echo "title=\"".lang('lotw_short')." ".lang('general_word_received');
 				if ($qsl->COL_LOTW_QSLRDATE) {
 					$timestamp = strtotime($qsl->COL_LOTW_QSLRDATE);
 					echo " ".($timestamp != '' ? date($custom_date_format, $timestamp) : '');
 				}
-				echo "\" data-toggle=\"tooltip\"";
+				echo "\" data-bs-toggle=\"tooltip\"";
 			}
 			echo ' class="lotw-';
 			echo ($qsl->COL_LOTW_QSL_RCVD=='Y')?'green':'red';
 			echo '">&#9660;</span>';
 			echo '</td>';
 		}
-		echo '<td id="'.$qsl->COL_PRIMARY_KEY.'" style=\'text-align: center\'><button onclick="addQsoToPrintQueue(\''.$qsl->COL_PRIMARY_KEY.'\')" class="btn btn-sm btn-success">Add to print queue</button></td>';
+		echo '<td id="'.$qsl->COL_PRIMARY_KEY.'" style=\'text-align: center\'><button onclick="addQsoToPrintQueue(\''.$qsl->COL_PRIMARY_KEY.'\')" class="btn btn-sm btn-success">' . lang('qslcard_qslprint_add_to_queue') . '</button></td>';
 		echo '</tr>';
 	}
 
@@ -194,14 +198,14 @@ if ($qsos->result() != NULL) {
 
 	<?php
 } else {
-	echo '<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>No additional QSO\'s were found. That means they are probably already in the queue.</div>';
+	echo '<div class="alert alert-danger">' . lang('qslcard_qslprint_no_additional_qso_found') . '</div>';
 }
 
 function echo_qsl_sent_via($method) {
 	switch($method) {
-		case 'B': echo 'Bureau'; break;
-		case 'D': echo 'Direct'; break;
-		case 'E': echo 'Electronic'; break;
+		case 'B': echo lang('general_word_qslcard_bureau'); break;
+		case 'D': echo lang('general_word_qslcard_direct'); break;
+		case 'E': echo lang('general_word_qslcard_electronic'); break;
 	}
 }
 ?>

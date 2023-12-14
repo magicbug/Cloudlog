@@ -46,7 +46,14 @@ class QSO extends CI_Controller {
 		$this->form_validation->set_rules('start_date', 'Date', 'required');
 		$this->form_validation->set_rules('start_time', 'Time', 'required');
 		$this->form_validation->set_rules('callsign', 'Callsign', 'required');
+		$this->form_validation->set_rules('band', 'Band', 'required');
+		$this->form_validation->set_rules('mode', 'Mode', 'required');
 		$this->form_validation->set_rules('locator', 'Locator', 'callback_check_locator');
+
+        // [eQSL default msg] GET user options (option_type='eqsl_default_qslmsg'; option_name='key_station_id'; option_key=station_id) //
+		$this->load->model('user_options_model');
+		$options_object = $this->user_options_model->get_options('eqsl_default_qslmsg',array('option_name'=>'key_station_id','option_key'=>$data['active_station_profile']))->result();
+		$data['qslmsg'] = (isset($options_object[0]->option_value))?$options_object[0]->option_value:'';
 
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -590,7 +597,7 @@ class QSO extends CI_Controller {
       // Allow empty locator
       if (preg_match('/^$/', $grid)) return true;
       // Allow 6-digit locator
-      if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Za-z]{2}$/', $grid)) return true;
+      if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Xa-x]{2}$/', $grid)) return true;
       // Allow 4-digit locator
       else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}$/', $grid)) return true;
       // Allow 4-digit grid line
@@ -600,7 +607,9 @@ class QSO extends CI_Controller {
       // Allow 2-digit locator
       else if (preg_match('/^[A-Ra-r]{2}$/', $grid)) return true;
       // Allow 8-digit locator
-      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Za-z]{2}[0-9]{2}$/', $grid)) return true;
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Xa-x]{2}[0-9]{2}$/', $grid)) return true;
+      // Allow 10-digit locator
+      else if (preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Xa-x]{2}[0-9]{2}[A-Xa-x]{2}$/', $grid)) return true;
       else {
          $this->form_validation->set_message('check_locator', 'Please check value for grid locator ('.strtoupper($grid).').');
          return false;

@@ -559,6 +559,18 @@
          ]
       }
    },
+   "HADES-D":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145875000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"436666000"
+            }
+         ]
+      }
+   },
    "INSPIRE-SAT 7":{
       "Modes":{
          "V/U":[

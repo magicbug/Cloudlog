@@ -3,10 +3,10 @@
 
     <form class="form" action="<?php echo site_url('timeline'); ?>" method="post" enctype="multipart/form-data">
         <!-- Select Basic -->
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label class="col-md-1 control-label" for="band"><?php echo lang('gen_hamradio_band') ?></label>
                     <div class="col-md-3">
-                        <select id="band" name="band" class="form-control custom-select">
+                        <select id="band" name="band" class="form-select">
                             <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> ><?php echo lang('general_word_all') ?></option>
                             <?php foreach($worked_bands as $band) {
                                 echo '<option value="' . $band . '"';
@@ -18,7 +18,7 @@
 
                     <label class="col-md-1 control-label" for="mode"><?php echo lang('gen_hamradio_mode') ?></label>
                     <div class="col-md-3">
-                        <select id="mode" name="mode" class="form-control custom-select">
+                        <select id="mode" name="mode" class="form-select">
                             <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> ><?php echo lang('general_word_all') ?></option>
                             <?php
                             foreach($modes->result() as $mode){
@@ -37,10 +37,10 @@
                     </div>
                 </div>
 
-        <div class="form-group row">
+        <div class="mb-3 row">
             <label class="col-md-1 control-label" for="award"><?php echo lang('gen_hamradio_award') ?></label>
                 <div class="col-md-3">
-                    <select id="award" name="award" class="form-control custom-select">
+                    <select id="award" name="award" class="form-select">
                         <option value="dxcc" <?php if ($this->input->post('award') == "dxcc") echo ' selected'; ?> >DX Century Club (DXCC)</option>
                         <option value="was" <?php if ($this->input->post('award') == "was") echo ' selected'; ?> >Worked All States (WAS)</option>
                         <option value="iota" <?php if ($this->input->post('award') == "iota") echo ' selected'; ?> >Islands On The Air (IOTA)</option>
@@ -65,7 +65,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-md-1 control-label" for="button1id"></label>
                 <div class="col-md-10">
                     <button id="button1id" type="submit" name="button1id" class="btn btn-primary"><?php echo lang('filter_options_show') ?></button>
@@ -97,7 +97,7 @@
         }
     }
     else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+        echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
     }
     ?>
 
@@ -130,7 +130,7 @@ function write_dxcc_timeline($timeline_array, $custom_date_format, $bandselect, 
                 <td>' . $line->prefix . '</td>
                 <td>' . $line->col_country . '</td>
                 <td>';
-        if (!empty($line->end)) echo '<span class="badge badge-danger">'.$ci->lang->line('gen_hamradio_deleted_dxcc').'</span>';
+        if (!empty($line->end)) echo '<span class="badge text-bg-danger">'.$ci->lang->line('gen_hamradio_deleted_dxcc').'</span>';
         echo '</td>
                 <td>' . $line->end . '</td>
                 <td><a href=javascript:displayTimelineContacts("' . $line->adif . '","'. $bandselect . '","'. $modeselect . '","' . $award .'")>'.$ci->lang->line('filter_options_show').'</a></td>

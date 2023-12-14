@@ -245,7 +245,7 @@ function handleInput() {
 			<td>${extraQsoDate}</td>
 			<td>${qsotime}</td>
 			<td>${callsign}</td>
-			<td><span data-toggle="tooltip" data-placement="left" title="${freq}">${band}</span></td>
+			<td><span data-bs-toggle="tooltip" data-placement="left" title="${freq}">${band}</span></td>
 			<td>${mode}</td>
 			<td>${rst_s}</td>
 			<td>${rst_r}</td>
@@ -760,6 +760,7 @@ $(".js-save-to-log").click(function () {
 								iota_ref: iota_ref,
 								pota_ref: pota_ref,
 								wwff_ref: wwff_ref,
+								isSFLE: true
 							},
 							success: function (result) {},
 						});

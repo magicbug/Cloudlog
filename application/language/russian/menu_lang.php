@@ -36,15 +36,18 @@ $lang['menu_continents'] = 'Континенты';
 
 $lang['menu_awards'] = 'Дипломы';
 $lang['menu_cq'] = 'CQ';
+$lang['menu_dl_gridmaster'] = 'DL Gridmaster';
 $lang['menu_dok'] = 'DOK';
 $lang['menu_dxcc'] = 'DXCC';
 $lang['menu_iota'] = 'IOTA';
+$lang['menu_lx_gridmaster'] = 'LX Gridmaster';
 $lang['menu_pota'] = 'POTA';
 $lang['menu_sig'] = 'SIG';
 $lang['menu_sota'] = 'SOTA';
 $lang['menu_us_counties'] = 'US Counties';
 $lang['menu_us_gridmaster'] = 'US Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
+$lang['menu_waja'] = 'WAJA';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
 
@@ -90,4 +93,4 @@ $lang['menu_logout'] = 'Выход';
 
 $lang['menu_ffma'] = "Fred Fish Memorial Award";
 $lang['menu_ja_gridmaster'] = 'JA Gridmaster';
-$lang['menu_maintenance']='Maintenance';
+$lang['menu_maintenance']='Обслуживание';

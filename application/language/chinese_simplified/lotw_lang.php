@@ -34,6 +34,7 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = '下载从 LoTW <a href="htt
 $lang['lotw_upload_type_must_be_adi'] = '日志文件的类型必须为 .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = '为我拉取 LoTW 数据';
+$lang['lotw_select_callsign'] = '选择呼号以获取 LoTW 确认';
 
 $lang['lotw_report_download_overview_helptext'] ='Cloudlog 将会使用储存在你个人用户信息当中的 LoTW 用户名和密码从 LoTW 上为你下载报告。Cloudlog 下载的这份报告将会包括自你所选之日以来的或者你最后的 LoTW 确认信息（目前日志当中）以来的所有确认。';
 
@@ -46,9 +47,9 @@ $lang['lotw_btn_upload_file'] = '上传文件';
 $lang['lotw_btn_import_matches'] = '导入 LoTW 匹配';
 
 // P12 Export Text
-$lang['lotw_p12_export_step_one'] = '打开 TQSL &amp; 选择 Callsign Certificates 标签';
+$lang['lotw_p12_export_step_one'] = '打开 TQSL &amp; 选择 呼号证书 选项';
 $lang['lotw_p12_export_step_two'] = '右键选择目标呼号';
-$lang['lotw_p12_export_step_three'] = '单击 "Save Callsign Certificate File" 并不要指定密码';
+$lang['lotw_p12_export_step_three'] = '单击 "保存呼号证书文件" 并不要指定密码';
 $lang['lotw_p12_export_step_four'] = '在下方上传文件。';
 
 $lang['lotw_confirmed'] = '该 QSO 已在 LoTW 确认';

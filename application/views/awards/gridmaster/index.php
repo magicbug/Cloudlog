@@ -52,7 +52,7 @@
             var lang_award_info_ln4 = "<?php echo lang('awards_us_gridmaster_description_ln4'); ?>";
             </script>
             <h2><?php echo $page_title; ?></h2>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
+            <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
         </div>
         <!-- End of Award Info Box -->
 		<?php if($this->session->flashdata('message')) { ?>
@@ -65,22 +65,23 @@
 
 
 <div id="gridmapcontainer">
-	<div id="gridsquare_map" style="width: 100%; height: 800px"></div>
+	<div id="gridsquare_map" class="map-leaflet" style="width: 100%; height: 800px"></div>
 </div>
 <div class="coordinates d-flex">
         <div class="cohidden"><?php echo lang('gen_hamradio_latitude')?>: </div>
-        <div class="cohidden col-auto text-success font-weight-bold" id="latDeg"></div>
+        <div class="cohidden col-auto text-success fw-bold" id="latDeg"></div>
         <div class="cohidden"><?php echo lang('gen_hamradio_longitude')?>: </div>
-        <div class="cohidden col-auto text-success font-weight-bold" id="lngDeg"></div>
+        <div class="cohidden col-auto text-success fw-bold" id="lngDeg"></div>
         <div class="cohidden"><?php echo lang('gen_hamradio_gridsquare')?>: </div>
-        <div class="cohidden col-auto text-success font-weight-bold" id="locator"></div>
+        <div class="cohidden col-auto text-success fw-bold" id="locator"></div>
         <div class="cohidden"><?php echo lang('gen_hamradio_distance')?>: </div>
-        <div class="cohidden col-auto text-success font-weight-bold" id="distance"></div>
+        <div class="cohidden col-auto text-success fw-bold" id="distance"></div>
         <div class="cohidden"><?php echo lang('gen_hamradio_bearing')?>: </div>
-        <div class="cohidden col-auto text-success font-weight-bold" id="bearing"></div>
+        <div class="cohidden col-auto text-success fw-bold" id="bearing"></div>
 </div>
 <script>var gridsquaremap = true;
 var type = "worked";
+var dxcc = '<?php echo $dxcc; ?>';
 <?php
     echo 'var jslayer ="' . $layer .'";';
     echo "var jsattribution ='" . $attribution . "';";

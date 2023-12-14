@@ -27,9 +27,9 @@
 	  </div>
 	  <div class="card-body">
 	  	<form method="post" action="" id="search_box" name="test">
-		  <div class="form-group row">
+		  <div class="mb-3 row">
 		    <label for="callsign" class="col-sm-2 col-form-label">Station location:</label>
-		    <select id="station_id" name="station_profile" class="custom-select col-sm-3 mb-3 mr-sm-3">
+		    <select id="station_id" name="station_profile" class="form-select col-sm-3 mb-3 me-sm-3 w-auto">
 					<option value="All">All</option>
                     <?php foreach ($station_profile->result() as $station) { ?>
                     <option value="<?php echo $station->station_id; ?>">Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name; ?>)</option>

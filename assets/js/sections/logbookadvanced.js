@@ -31,7 +31,7 @@ function updateRow(qso) {
 		cells.eq(c++).text(qso.de);
 	}
 	if (user_options.dx.show == "true"){
-		cells.eq(c++).html('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')"><span id="dx">'+qso.dx+'</span></a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + '">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
+		cells.eq(c++).html('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')"><span id="dx">'+qso.dx+'</span></a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge bg-success'+qso.lotw_hint+'" data-bs-toggle="tooltip" title="LoTW User. Last upload was ' + qso.lastupload + '">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
 	}
 	if (user_options.mode.show == "true"){
 		cells.eq(c++).text(qso.mode);
@@ -81,8 +81,14 @@ function updateRow(qso) {
 	if (user_options.iota.show == "true"){
 		cells.eq(c++).html(qso.iota);
 	}
+	if (user_options.pota.show == "true"){
+		cells.eq(c++).html(qso.pota);
+	}
+	if ( (user_options.operator) && (user_options.operator.show == "true")){
+		cells.eq(c++).html(qso.operator);
+	}
 
-	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-bs-toggle="tooltip"]').tooltip();
 	return row;
 }
 
@@ -124,7 +130,7 @@ function loadQSOTable(rows) {
 			data.push(qso.de);
 		}
 		if (user_options.dx.show == "true"){
-			data.push('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')"><span id="dx">'+qso.dx+'</span></a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge badge-success'+qso.lotw_hint+'" data-toggle="tooltip" data-original-title="LoTW User. Last upload was ' + qso.lastupload + ' ">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
+			data.push('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')"><span id="dx">'+qso.dx+'</span></a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge bg-success'+qso.lotw_hint+'" data-bs-toggle="tooltip" title="LoTW User. Last upload was ' + qso.lastupload + ' ">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
 		}
 		if (user_options.mode.show == "true"){
 			data.push(qso.mode);
@@ -163,7 +169,7 @@ function loadQSOTable(rows) {
 			data.push(qso.qslMessage);
 		}
 		if (user_options.dxcc.show == "true"){
-			data.push(qso.dxcc+(qso.end == null ? '' : ' <span class="badge badge-danger">Deleted DXCC</span>'));
+			data.push(qso.dxcc+(qso.end == null ? '' : ' <span class="badge bg-danger">Deleted DXCC</span>'));
 		}
 		if (user_options.state.show == "true"){
 			data.push(qso.state);
@@ -174,13 +180,19 @@ function loadQSOTable(rows) {
 		if (user_options.iota.show == "true"){
 			data.push(qso.iota);
 		}
+		if (user_options.pota.show == "true"){
+			data.push(qso.pota);
+		}
+		if (user_options.operator.show == "true"){
+			data.push(qso.operator);
+		}
 
 		let createdRow = table.row.add(data).index();
 		table.rows(createdRow).nodes().to$().data('qsoID', qso.qsoID);
 		table.row(createdRow).node().id = 'qsoID-' + qso.qsoID;
 	}
 	table.draw();
-	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-bs-toggle="tooltip"]').tooltip();
 }
 
 function processNextCallbookItem() {
@@ -231,12 +243,6 @@ function unselectQsoID(qsoID) {
 }
 
 $(document).ready(function () {
-	$('#dateFrom').datetimepicker({
-		format: 'DD/MM/YYYY',
-	});
-	$('#dateTo').datetimepicker({
-		format: 'DD/MM/YYYY',
-	});
 
 	$('#searchForm').submit(function (e) {
 		var container = L.DomUtil.get('advancedmap');
@@ -267,6 +273,7 @@ $(document).ready(function () {
 				qslSentMethod: this.qslSentMethod.value,
 				qslReceivedMethod: this.qslReceivedMethod.value,
 				iota: this.iota.value,
+				operator: this.operator.value,
 				dxcc: this.dxcc.value,
 				propmode: this.selectPropagation.value,
 				gridsquare: this.gridsquare.value,
@@ -503,6 +510,10 @@ $(document).ready(function () {
 		quickSearch('pota');
 	});
 
+	$('#searchOperator').click(function (event) {
+		quickSearch('operator');
+	});
+
 	$('#dupeButton').click(function (event) {
 		dupeSearch();
 	});
@@ -594,7 +605,6 @@ $(document).ready(function () {
 	});
 
 	function dupeSearch() {
-		$('#searchForm').trigger("reset");
 		$("#dupes").val("Y");
 		$('#searchForm').submit();
 	}
@@ -630,6 +640,7 @@ $(document).ready(function () {
 				case 'sota': 		col1 = $(currentRow).find('#dxsota').text(); break;
 				case 'wwff': 		col1 = $(currentRow).find('#dxwwff').text(); break;
 				case 'pota': 		col1 = $(currentRow).find('#dxpota').text(); break;
+				case 'operator': 	col1 = $(currentRow).find('#operator').text(); break;
 				case 'mode': 		col1 = currentRow.find("td:eq(4)").text(); break;
 				case 'band': 		col1 = currentRow.find("td:eq(7)").text(); col1 = col1.match(/\S\w*/); break;
 			}
@@ -879,6 +890,7 @@ function mapQsos(form) {
 				qslvia: $('[name="qslviainput"]').val(),
 				sota: form.sota.value,
 				pota: form.pota.value,
+				operator: form.operator.value,
 				wwff: form.wwff.value,
 				qslimages: form.qslimages.value,
 			},
@@ -1076,6 +1088,8 @@ function loadMap(data) {
 				state: $('input[name="state"]').is(':checked') ? true : false,
 				cqzone: $('input[name="cqzone"]').is(':checked') ? true : false,
 				iota: $('input[name="iota"]').is(':checked') ? true : false,
+				pota: $('input[name="pota"]').is(':checked') ? true : false,
+				operator: $('input[name="operator"]').is(':checked') ? true : false,
 			},
 			success: function(data) {
 				$('#saveButton').prop("disabled", false);

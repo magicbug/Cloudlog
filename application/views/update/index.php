@@ -5,11 +5,11 @@
 		<div class="card-header">
 			<ul style="font-size: 15px;" class="nav nav-tabs card-header-tabs pull-right"  id="myTab" role="tablist">
 				<li class="nav-item">
-					<a class="nav-link active" id="dxcc-tab" data-toggle="tab" href="#dxcc" role="tab" aria-controls="update" aria-selected="true">DXCC Lookup Data</a>
+					<a class="nav-link active" id="dxcc-tab" data-bs-toggle="tab" href="#dxcc" role="tab" aria-controls="update" aria-selected="true">DXCC Lookup Data</a>
 				</li>
 
 				<li class="nav-item">
-					<a class="nav-link" id="distance-tab" data-toggle="tab" href="#distance" role="tab" aria-controls="update" aria-selected="false">Distance Data</a>
+					<a class="nav-link" id="distance-tab" data-bs-toggle="tab" href="#distance" role="tab" aria-controls="update" aria-selected="false">Distance Data</a>
 				</li>
 			</ul>
 		</div>

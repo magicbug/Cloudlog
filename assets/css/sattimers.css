@@ -1,30 +1,30 @@
 .title {
-   text-align: center;
-   color: #bbb;
+	text-align: center;
+	color: #bbb;
 }
 
 .active {
-   color: #3fb618;
-   margin-bottom: 10px;
+	color: #3fb618;
+	margin-bottom: 10px;
 }
 
 .timedout {
-   color: #f00;
+	color: #f00;
 }
 
 .nonfunctional {
-   color: #555;
+	color: #555;
 }
 
 .timeout {
-   color: #bbb;
+	color: #bbb;
 }
 
 .expired {
-   color: #555;
+	color: #555;
 }
 
 .emoji {
-  font-size: 1.2em;
-  margin: 0;
+	font-size: 1.2em;
+	margin: 0;
 }

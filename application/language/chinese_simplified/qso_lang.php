@@ -26,6 +26,11 @@ $lang['qso_dok_helptext'] = '例如: Q03';
 $lang['qso_notes_helptext'] = '仅在 Cloudlog 使用而不上传到其他的服务的笔记。';
 $lang['qsl_notes_helptext'] = '此笔记内容被导出到QSL服务，如 eqsl.cc。';
 
+$lang['qso_eqsl_qslmsg_helptext'] = "获取该站的 eQSL 默认消息。";
+
+// error text //
+$lang['qso_error_timeoff_less_timeon'] = "TimeOff is less than TimeOn";
+
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = '重置';
@@ -42,51 +47,51 @@ $lang['qso_operator_callsign'] = '操作员呼号';
 
 // Simple FLE (FastLogEntry)
 
-$lang['qso_simplefle_info'] = "What is that?";
-$lang['qso_simplefle_info_ln1'] = "Simple Fast Log Entry (FLE)";
-$lang['qso_simplefle_info_ln2'] = "'Fast Log Entry', or simply 'FLE' is a system to log QSOs very quickly and efficiently. Due to its syntax, only a minimum of input is required to log many QSOs with as little effort as possible.";
-$lang['qso_simplefle_info_ln3'] = "FLE was originally written by DF3CB. He offers a program for Windows on his website. Simple FLE was written by OK2CQR based on DF3CB's FLE and provides a web interface to log QSOs.";
-$lang['qso_simplefle_info_ln4'] = "A common use-case is if you have to import your paperlogs from a outdoor session and now SimpleFLE is also available in Cloudlog. Information about the syntax and how FLE works can be found <a href='https://df3cb.com/fle/documentation/' target='_blank'>here</a>.";
-$lang['qso_simplefle_qso_data'] = "QSO Data";
-$lang['qso_simplefle_qso_date_hint'] = "If you don't choose a date, today's date will be used.";
-$lang['qso_simplefle_qso_list'] = "QSO List";
-$lang['qso_simplefle_qso_list_total'] = "Total";
-$lang['qso_simplefle_qso_date'] = "QSO Date";
-$lang['qso_simplefle_operator'] = "Operator";
-$lang['qso_simplefle_operator_hint'] = "e.g. OK2CQR";
-$lang['qso_simplefle_station_call_location'] = "Station Call/Location";
-$lang['qso_simplefle_station_call_location_hint'] = "If you did operate from a new location, first create a new <a href=". site_url('station') . ">Station Location</a>";
-$lang['qso_simplefle_utc_time'] = "Current UTC Time";
-$lang['qso_simplefle_enter_the_data'] = "Enter the Data";
-$lang['qso_simplefle_syntax_help_close_w_sample'] = "Close and Load Sample Data";
-$lang['qso_simplefle_reload'] = "Reload QSO List";
-$lang['qso_simplefle_save'] = "Save in Cloudlog";
-$lang['qso_simplefle_clear'] = "Clear Logging Session";
-$lang['qso_simplefle_refs_hint'] = "The Refs can be either <u>S</u>OTA, <u>I</u>OTA, <u>P</u>OTA or <u>W</u>WFF";
+$lang['qso_simplefle_info'] = "这是什么?";
+$lang['qso_simplefle_info_ln1'] = "简单快速日志输入 (FLE)";
+$lang['qso_simplefle_info_ln2'] = "“快速日志输入”，或简称“FLE”，是一个非常快速、高效地记录 QSO 的系统。 由于其语法，只需最少的输入即可以尽可能少的努力记录许多 QSO。";
+$lang['qso_simplefle_info_ln3'] = "FLE 最初由 DF3CB 编写。 他在他的网站上提供了一个适用于 Windows 的程序。 Simple FLE 是 OK2CQR 基于 DF3CB 的 FLE 编写的，并提供了一个 Web 界面来记录 QSO。";
+$lang['qso_simplefle_info_ln4'] = "一个常见的用例是，如果您必须野架之后将纸质日志导入电脑，现在 Cloudlog 中也提供了 SimpleFLE。 有关语法和 FLE 工作原理的信息可以在<a href='https://df3cb.com/fle/documentation/' target='_blank'>此处</a>找到。";
+$lang['qso_simplefle_qso_data'] = "QSO 数据";
+$lang['qso_simplefle_qso_date_hint'] = "如果您不选择日期，则将使用今天的日期。";
+$lang['qso_simplefle_qso_list'] = "QSO 列表";
+$lang['qso_simplefle_qso_list_total'] = "QSO 总数";
+$lang['qso_simplefle_qso_date'] = "QSO 日期";
+$lang['qso_simplefle_operator'] = "操作员";
+$lang['qso_simplefle_operator_hint'] = "例如 BA1AA";
+$lang['qso_simplefle_station_call_location'] = "位置";
+$lang['qso_simplefle_station_call_location_hint'] = "如果您确实在新位置进行操作，请首先创建一个新的<a href=".site_url('station') .">电台站位置</a>";
+$lang['qso_simplefle_utc_time'] = "当前UTC时间";
+$lang['qso_simplefle_enter_the_data'] = "输入信息";
+$lang['qso_simplefle_syntax_help_close_w_sample'] = "关闭并加载示例数据";
+$lang['qso_simplefle_reload'] = "重新加载QSO列表";
+$lang['qso_simplefle_save'] = "保存QSO列表";
+$lang['qso_simplefle_clear'] = "清除记录会话";
+$lang['qso_simplefle_refs_hint'] = "Refs 可以是 <u>S</u>OTA、<u>I</u>OTA、<u>P</u>OTA 或 <u>W</u>WFF";
 
 $lang['qso_simplefle_error_band'] = "找不到波段！";
 $lang['qso_simplefle_error_mode'] = "找不到模式！";
 $lang['qso_simplefle_error_time'] = "时间未设定！";
-$lang['qso_simplefle_error_stationcall'] = "Station Call is not selected";
-$lang['qso_simplefle_error_operator'] = "'Operator' Field is empty";
-$lang['qso_simplefle_warning_reset'] = "Warning! Do you really want to reset everything?";
-$lang['qso_simplefle_warning_missing_band_mode'] = "Warning! You can't log the QSO List, because some QSO don't have band and/or mode defined!";
-$lang['qso_simplefle_warning_missing_time'] = "Warning! You can't log the QSO List, because some QSO don't have a time defined!";
-$lang['qso_simplefle_warning_example_data'] = "Attention! The Data Field containes example data. First Clear Logging Session!";
-$lang['qso_simplefle_confirm_save_to_log'] = "Are you sure that you want to add these QSO to the Log and clear the session?";
-$lang['qso_simplefle_success_save_to_log_header'] = "QSO Logged!";
-$lang['qso_simplefle_success_save_to_log'] = "The QSO were successfully logged in the logbook!";
-$lang['qso_simplefle_error_date'] = "Invalid date";
+$lang['qso_simplefle_error_stationcall'] = "未选择呼叫的电台站！";
+$lang['qso_simplefle_error_operator'] = "未输入操作员呼号！";
+$lang['qso_simplefle_warning_reset'] = "警告！您确定要重置日志会话吗？";
+$lang['qso_simplefle_warning_missing_band_mode'] = "警告！您不能记录 QSO 列表，因为某些 QSO 没有定义波段和模式！";
+$lang['qso_simplefle_warning_missing_time'] = "警告！您不能记录 QSO 列表，因为某些 QSO 没有定义时间！";
+$lang['qso_simplefle_warning_example_data'] = "警告！您不能记录 QSO 列表，因为您正在使用示例数据！";
+$lang['qso_simplefle_confirm_save_to_log'] = "确认保存 QSO 到日志";
+$lang['qso_simplefle_success_save_to_log_header'] = "QSO 已记录!";
+$lang['qso_simplefle_success_save_to_log'] = "QSO 已成功记录到日志。";
+$lang['qso_simplefle_error_date'] = "日期格式错误！";
 
-$lang['qso_simplefle_syntax_help_button'] = "Syntax Help";
-$lang['qso_simplefle_syntax_help_title'] = "Syntax for FLE";
-$lang['qso_simplefle_syntax_help_ln1'] = "Before starting to log a QSO, please note the basic rules.";
-$lang['qso_simplefle_syntax_help_ln2'] = "- Each new QSO should be on a new line.";
-$lang['qso_simplefle_syntax_help_ln3'] = "- On each new line, only write data that has changed from the previous QSO.";
-$lang['qso_simplefle_syntax_help_ln4'] = "To begin, ensure you have already filled in the form on the left with the date, station call, and operator's call. The main data includes the band (or QRG in MHz, e.g., '7.145'), mode, and time. After the time, you provide the first QSO, which is essentially the callsign.";
-$lang['qso_simplefle_syntax_help_ln5'] = "For example, a QSO that started at 21:34 (UTC) with 2M0SQL on 20m SSB.";
-$lang['qso_simplefle_syntax_help_ln6'] = "If you don't provide any RST information, the syntax will use 59 (599 for data). Our next QSO wasn't 59 on both sides, so we provide the information with the sent RST first. It was 2 minutes later than the first QSO.";
-$lang['qso_simplefle_syntax_help_ln7'] = "The first QSO was at 21:34, and the second one 2 minutes later at 21:36. We write down 6 because this is the only data that changed here. The information about band and mode didn't change, so this data is omitted.";
-$lang['qso_simplefle_syntax_help_ln8'] = "For our next QSO at 21:40 on 14th May, 2021, we changed the band to 40m but still on SSB. If no RST information is given, the syntax will use 59 for every new QSO. Therefore we can add another QSO which took place at the exact same time two days later. The date must be in format YYYY-MM-DD.";
-$lang['qso_simplefle_syntax_help_ln9'] = "For further information about the syntax, please check the website of DF3CB <a href='https://df3cb.com/fle/documentation/' target='_blank'>here.</a>";
+$lang['qso_simplefle_syntax_help_button'] = "FLE 语法帮助";
+$lang['qso_simplefle_syntax_help_title'] = "FLE 语法帮助";
+$lang['qso_simplefle_syntax_help_ln1'] = "FLE 语法是一种简单的语法，用于快速记录 QSO。它的工作原理是，您只需输入每个 QSO 的更改部分。";
+$lang['qso_simplefle_syntax_help_ln2'] = "在每一行上，只写与上一个 QSO 不同的数据。";
+$lang['qso_simplefle_syntax_help_ln3'] = "例如，如果您在 20m 上与 DF3CB 进行了两次 QSO，您可以这样写：";
+$lang['qso_simplefle_syntax_help_ln4'] = "如果您不提供任何 RST 信息，语法将使用 59 (599 用于数据)。我们的下一个 QSO 不是双方都是 59，所以我们首先提供发送的 RST 信息。它比第一个 QSO 晚了 2 分钟。";
+$lang['qso_simplefle_syntax_help_ln5'] = "第一个 QSO 是在 21:34，第二个 QSO 在 21:36，比第一个 QSO 晚了 2 分钟。我们写下 6，因为这是这里唯一改变的数据。关于波段和模式的信息没有改变，因此省略了这些数据。";
+$lang['qso_simplefle_syntax_help_ln6'] = "我们的下一个 QSO 是在 2021 年 5 月 14 日的 21:40，我们将波段更改为 40m，但仍然在 SSB 上。如果没有给出 RST 信息，语法将为每个新的 QSO 使用 59。因此，我们可以添加另一个 QSO，它在两天后的同一时间发生。日期必须是 YYYY-MM-DD 格式。";
+$lang['qso_simplefle_syntax_help_ln7'] = "有关语法的更多信息，请查看 DF3CB 的网站<a href='https://df3cb.com/fle/documentation/' target='_blank'>此处</a>。";
+$lang['qso_simplefle_syntax_help_ln8'] = "";
+$lang['qso_simplefle_syntax_help_ln9'] = "";
     

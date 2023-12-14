@@ -2,18 +2,18 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['account_logbook_fields'] = '日志簿字段';
-$lang['account_column1_text'] = '选择第1列';
-$lang['account_column2_text'] = '选择第2列';
-$lang['account_column3_text'] = '选择第3列';
-$lang['account_column4_text'] = '选择第4列';
-$lang['account_column5_text'] = '选择第5列（仅日志簿）';
+$lang['account_logbook_fields'] = '日志簿显示内容';
+$lang['account_column1_text'] = '第1列';
+$lang['account_column2_text'] = '第2列';
+$lang['account_column3_text'] = '第3列';
+$lang['account_column4_text'] = '第4列';
+$lang['account_column5_text'] = '第5列（仅日志簿页面展示）';
 
 $lang['account_create_user_account'] = '创建用户账户';
 $lang['account_edit_account'] = '编辑账户';
 
 $lang['account_account_information'] = '账户信息';
-$lang['account_user'] = "用户"; 
+$lang['account_user'] = "用户";
 $lang['account_word_edited'] = "已编辑";
 $lang['account_username'] = '用户名';
 $lang['account_email_address'] = '电子邮件';
@@ -115,3 +115,7 @@ $lang['account_winkeyer'] = 'Winkeyer';
 $lang['account_winkeyer_hint'] = "Cloudlog 中对 Winkeyer 的支持是实验性的，请在开启前先阅读 <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a>。";
 $lang['account_winkeyer_enabled'] = "启用 Winkeyer 功能";
 
+$lang['account_map_params'] = "Settings for map";
+$lang['account_map_qso_by_default'] = "QSO (by default)";
+$lang['account_map_qso_confirm'] = "QSO (confirmed)";
+$lang['account_map_qso_confirm_same_qso'] = "(If 'No', displayed as ".$lang['account_map_qso_by_default'].")";

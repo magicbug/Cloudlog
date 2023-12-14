@@ -1,3 +1,55 @@
+<script>
+	var tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"
+</script>
+
+<style>
+    #wasmap {
+	height: calc(100vh - 500px) !important;
+	max-height: 900px !important;
+}
+/*Legend specific*/
+.legend {
+  padding: 6px 8px;
+  font: 14px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  line-height: 24px;
+  color: #555;
+}
+.legend h4 {
+  text-align: center;
+  font-size: 16px;
+  margin: 2px 12px 8px;
+  color: #555;
+}
+.legend span {
+  position: relative;
+  bottom: 3px;
+  color: #555;
+}
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin: 0 8px 0 0;
+  opacity: 0.7;
+  color: #555;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+	color: #555;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #555;
+}
+</style>
 
 <div class="container">
         <!-- Award Info Box -->
@@ -11,13 +63,13 @@
             var lang_award_info_ln4 = "<?php echo lang('awards_was_description_ln4'); ?>";
             </script>
             <h2><?php echo $page_title; ?></h2>
-            <button type="button" class="btn btn-sm btn-primary mr-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
+            <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
         </div>
         <!-- End of Award Info Box -->
     <form class="form" action="<?php echo site_url('awards/was'); ?>" method="post" enctype="multipart/form-data">
         <fieldset>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-md-2" for="checkboxes">Worked / Confirmed</div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
@@ -35,7 +87,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <div class="col-md-2">QSL Type</div>
                 <div class="col-md-10">
                     <div class="form-check-inline">
@@ -53,10 +105,10 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-md-2 control-label" for="band">Band</label>
                 <div class="col-md-2">
-                    <select id="band2" name="band" class="form-control custom-select-sm">
+                    <select id="band2" name="band" class="form-select form-select-sm">
                         <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >Every band</option>
                         <?php foreach($worked_bands as $band) {
                             echo '<option value="' . $band . '"';
@@ -67,10 +119,10 @@
                 </div>
             </div>
 
-			<div class="form-group row">
+			<div class="mb-3 row">
 				<label class="col-md-2 control-label" for="mode">Mode</label>
 				<div class="col-md-2">
-					<select id="mode" name="mode" class="form-control custom-select-sm">
+					<select id="mode" name="mode" class="form-select form-select-sm">
 						<option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'mode') echo ' selected'; ?>>All</option>
 						<?php
 						foreach($modes->result() as $mode){
@@ -89,7 +141,7 @@
 				</div>
 			</div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-md-2 control-label" for="button1id"></label>
                 <div class="col-md-10">
                     <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning">Reset</button>
@@ -102,6 +154,27 @@
 
         </fieldset>
     </form>
+
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="table-tab" data-bs-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="true">Table</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="map-tab" onclick="load_was_map();" data-bs-toggle="tab" href="#wasmaptab" role="tab" aria-controls="home" aria-selected="false">Map</a>
+        </li>
+    </ul>
+    <br />
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade" id="wasmaptab" role="tabpanel" aria-labelledby="home-tab">
+    <br />
+
+    <div id="wasmap" class="map-leaflet" ></div>
+
+    </div>
+
+        <div class="tab-pane fade show active" id="table" role="tabpanel" aria-labelledby="table-tab">
+
 
 <?php
     if ($was_array) {
@@ -160,5 +233,9 @@
         </div>';
     }
     else {
-        echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+        echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
     }
+	?>
+	</div>
+	</div>
+</div>

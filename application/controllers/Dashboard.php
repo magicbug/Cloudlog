@@ -107,9 +107,15 @@ class Dashboard extends CI_Controller {
 			$data['lotw_sent_today'] = $QSLStatsBreakdownArray['LoTW_Sent_today'];
 			$data['lotw_rcvd_today'] = $QSLStatsBreakdownArray['LoTW_Received_today'];
 
+			$data['total_qrz_sent'] = $QSLStatsBreakdownArray['QRZ_Sent'];
+			$data['total_qrz_rcvd'] = $QSLStatsBreakdownArray['QRZ_Received'];
+			$data['qrz_sent_today'] = $QSLStatsBreakdownArray['QRZ_Sent_today'];
+			$data['qrz_rcvd_today'] = $QSLStatsBreakdownArray['QRZ_Received_today'];
+
 			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18', $logbooks_locations_array);
 
 			$data['vucc'] = $this->vucc->fetchVuccSummary();
+			$data['vuccSAT'] = $this->vucc->fetchVuccSummary('SAT');
 
 			$data['page_title'] = "Dashboard";
 
@@ -144,6 +150,8 @@ class Dashboard extends CI_Controller {
 		echo "{\"markers\": [";
 		$count = 1;
 		foreach ($qsos->result() as $row) {
+			// check if qso is confirmed //
+			if (($row->COL_EQSL_QSL_RCVD=='Y') || ($row->COL_LOTW_QSL_RCVD=='Y') || ($row->COL_QSL_RCVD=='Y')) { $row->_is_confirmed = 'Y'; } else { $row->_is_confirmed = 'N'; }
 			//print_r($row);
 			if($row->COL_GRIDSQUARE != null) {
 				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
@@ -154,11 +162,11 @@ class Dashboard extends CI_Controller {
 				if($row->COL_SAT_NAME != null) {
 					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-					echo "\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				} else {
 					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-					echo "\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				}
 
 				$count++;
@@ -195,11 +203,11 @@ class Dashboard extends CI_Controller {
 				if($row->COL_SAT_NAME != null) {
 					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-					echo "\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				} else {
 					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-					echo "\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				}
 
 				$count++;
@@ -214,12 +222,18 @@ class Dashboard extends CI_Controller {
 				}
 				echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 				echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-				echo "\",\"label\":\"".$row->COL_CALL."\"}";
+				echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				$count++;
 			}
 
 		}
 		echo "]";
+		
+		// [MAP Custom] ADD Station //
+		$this->load->model('Stations');
+		$station_json = $this->Stations->get_station_json_for_map();
+		echo (!empty($station_json))?', '.$station_json:'';
+
 		echo "}";
 
 	}

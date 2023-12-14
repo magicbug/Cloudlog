@@ -267,85 +267,50 @@ class Options extends CI_Controller {
 
 				// Update emailProtocol choice within the options system
 				$emailProtocolupdate = $this->optionslib->update('emailProtocol', $this->input->post('emailProtocol'), 'yes');
-	
-				// If emailProtocolupdate update is complete set a flashsession with a success note
-				if($emailProtocolupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_outgoing_email_protocol_changed_to').$this->input->post('emailProtocol'));
-				}
 
 				// Update smtpEncryption choice within the options system
 				$smtpEncryptionupdate = $this->optionslib->update('smtpEncryption', $this->input->post('smtpEncryption'), 'yes');
-	
-				// If smtpEncryption update is complete set a flashsession with a success note
-				if($smtpEncryptionupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_smtp_encryption_changed_to').$this->input->post('smtpEncryption'));
-				}
 
 				// Update email sender name within the options system
-				$emailSenderNameupdate = $this->optionslib->update('emailSenderName', $this->input->post('emailSenderName'), 'yes');
-
-				// If email address update is complete set a flashsession with a success note
-				if($emailSenderNameupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_email_sender_name_changed_to').$this->input->post('emailSenderName'));
+				$emailSenderName_value = $this->input->post('emailSenderName');
+				if (empty($emailSenderName_value)) {
+					$emailSenderName_value = 'Cloudlog';
 				}
+				$emailSenderNameupdate = $this->optionslib->update('emailSenderName', $emailSenderName_value, 'yes');
 
 				// Update email address choice within the options system
 				$emailAddressupdate = $this->optionslib->update('emailAddress', $this->input->post('emailAddress'), 'yes');
 
-				// If email address update is complete set a flashsession with a success note
-				if($emailAddressupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_email_address_changed_to').$this->input->post('emailAddress'));
-				}
-
 				// Update smtpHost choice within the options system
 				$smtpHostupdate = $this->optionslib->update('smtpHost', $this->input->post('smtpHost'), 'yes');
-	
-				// If smtpHost update is complete set a flashsession with a success note
-				if($smtpHostupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_smtp_host_changed_to').$this->input->post('smtpHost'));
-				}
 
 				// Update smtpPort choice within the options system
 				$smtpPortupdate = $this->optionslib->update('smtpPort', $this->input->post('smtpPort'), 'yes');
 	
-				// If smtpPort update is complete set a flashsession with a success note
-				if($smtpPortupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_smtp_port_changed_to').$this->input->post('smtpPort'));
-				}
-	
 				// Update smtpUsername choice within the options system
 				$smtpUsernameupdate = $this->optionslib->update('smtpUsername', $this->input->post('smtpUsername'), 'yes');
-	
-				// If smtpUsername update is complete set a flashsession with a success note
-				if($smtpUsernameupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_smtp_username_changed_to').$this->input->post('smtpUsername'));
-				}
 
 				// Update smtpPassword choice within the options system
 				$smtpPasswordupdate = $this->optionslib->update('smtpPassword', $this->input->post('smtpPassword'), 'yes');
 	
-				// If smtpPassword update is complete set a flashsession with a success note
-				if($smtpPasswordupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_smtp_password_changed_to').$this->input->post('smtpPassword'));
-				}
+				// Check if all updates are successful
+				$updateSuccessful = $emailProtocolupdate &&
+									$smtpEncryptionupdate &&
+									$emailSenderNameupdate &&
+									$emailAddressupdate &&
+									$smtpHostupdate &&
+									$smtpPortupdate &&
+									$smtpUsernameupdate &&
+									$smtpPasswordupdate;
 
-				// Update emailcrlf choice within the options system
-				$emailcrlfupdate = $this->optionslib->update('emailcrlf', $this->input->post('emailcrlf'), 'yes');
-	
-				// If emailcrlf update is complete set a flashsession with a success note
-				if($emailcrlfupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_email_crlf_changed_to').$this->input->post('emailcrlf'));
-				}
-
-				// Update emailnewline choice within the options system
-				$emailnewlineupdate = $this->optionslib->update('emailnewline', $this->input->post('emailnewline'), 'yes');
-	
-				// If emailnewline update is complete set a flashsession with a success note
-				if($emailnewlineupdate == TRUE) {
-					$this->session->set_flashdata('success', $this->lang->line('options_email_newline_changed_to').$this->input->post('emailnewline'));
+				// Set flash session based on update success
+				if ($updateSuccessful) {
+					$this->session->set_flashdata('success', $this->lang->line('options_mail_settings_saved'));
+				} else {
+					$this->session->set_flashdata('saveFailed', $this->lang->line('options_mail_settings_failed'));
 				}
 	
-				// Redirect back to /appearance
+				// Redirect back to /email
 				redirect('/options/email');
 			}
 		}
@@ -379,5 +344,105 @@ class Options extends CI_Controller {
 
 		redirect('/options/oqrs');
     }
+
+	function sendTestMail() {
+		$this->load->model('user_model');
+
+		$id = $this->session->userdata('user_id');
+
+		$email = $this->user_model->get_user_email_by_id($id);
+
+		if($email != "") {
+
+			$this->load->library('email');
+
+			if($this->optionslib->get_option('emailProtocol') == "smtp") {
+				$config = Array(
+					'protocol' => $this->optionslib->get_option('emailProtocol'),
+					'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
+					'smtp_host' => $this->optionslib->get_option('smtpHost'),
+					'smtp_port' => $this->optionslib->get_option('smtpPort'),
+					'smtp_user' => $this->optionslib->get_option('smtpUsername'),
+					'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
+					'crlf' => "\r\n",
+					'newline' => "\r\n"
+				);
+
+				$this->email->initialize($config);
+			}
+
+			$message = $this->load->view('email/testmail.php', NULL, TRUE);
+
+			$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
+			$this->email->to($email);
+			$this->email->subject('Cloudlog Test-Mail');
+			$this->email->message($message);
+
+			if (! $this->email->send()){
+				$this->session->set_flashdata('testmailFailed', $this->lang->line('options_send_testmail_failed'));
+			} else {
+				$this->session->set_flashdata('testmailSuccess', $this->lang->line('options_send_testmail_success'));
+			}
+		} else {
+			$this->session->set_flashdata('testmailFailed', $this->lang->line('options_send_testmail_failed'));
+		}
+		
+		redirect('/options/email');
+	}
+
+	// function used to display the /version_dialog url
+	function version_dialog() {
+
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_version_dialog_settings');
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('options/version_dialog');
+		$this->load->view('interface_assets/footer');
+    }
+
+	function version_dialog_save() {
+
+		// Get Language Options
+
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_version_dialog_settings');
+
+		$this->load->helper(array('form', 'url'));
+
+		$version_dialog_header_update = $this->optionslib->update('version_dialog_header', $this->input->post('version_dialog_header'), 'yes');
+		if($version_dialog_header_update == TRUE) {
+			$this->session->set_flashdata('success0', $this->lang->line('options_version_dialog_header_changed_to')." "."'".$this->input->post('version_dialog_header')."'");
+		}
+		$version_dialog_mode_update = $this->optionslib->update('version_dialog', $this->input->post('version_dialog_mode'), 'yes');
+		if($version_dialog_mode_update == TRUE) {
+			$this->session->set_flashdata('success1', $this->lang->line('options_version_dialog_mode_changed_to')." "."'".$this->input->post('version_dialog_mode')."'");
+		}
+		if ($this->input->post('version_dialog_mode') == "both" || $this->input->post('version_dialog_mode') == "custom_text" ) { 
+			$version_dialog_custom_text_update = $this->optionslib->update('version_dialog_text', $this->input->post('version_dialog_custom_text'), 'yes');
+			if($version_dialog_custom_text_update == TRUE) {
+				$this->session->set_flashdata('success2', $this->lang->line('options_version_dialog_custom_text_saved'));
+			}
+		}
+
+		redirect('/options/version_dialog');
+		
+	}
+
+	function version_dialog_show_to_all() {
+		$update_vd_confirmation_to_false = $this->user_options_model->set_option_at_all_users('version_dialog', 'confirmed', array('boolean' => 'false'));
+		if($update_vd_confirmation_to_false == TRUE) {
+			$this->session->set_flashdata('success_trigger', $this->lang->line('options_version_dialog_success_show_all'));
+		}
+		redirect('/options/version_dialog');
+	}
+
+	function version_dialog_show_to_none() {
+		$update_vd_confirmation_to_true = $this->user_options_model->set_option_at_all_users('version_dialog', 'confirmed', array('boolean' => 'true'));
+		if($update_vd_confirmation_to_true == TRUE) {
+			$this->session->set_flashdata('success_trigger', $this->lang->line('options_version_dialog_success_hide_all'));
+		}
+		redirect('/options/version_dialog');
+	}
 
 }

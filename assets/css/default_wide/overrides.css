@@ -1,0 +1,90 @@
+thead > tr > td {
+	background-color: aliceblue !important;
+}
+
+.form-select {
+	border: 1px solid #ced4da;
+}
+
+.selectize-input {
+	border: 1px solid #ced4da;
+}
+
+.awardsBgDanger {
+	background-color: #f8d7db !important;
+}
+
+.awardsBgSuccess {
+	background-color: #d4edda !important;
+}
+
+#lotw_badge {
+	float: right;
+}
+
+#edit_qso:not(.btn) {
+	float: left;
+}
+
+.qso_call {
+	float: left;
+	width: 140px;
+}
+
+.qso_icons {
+	float: right;
+}
+
+.btn {
+	white-space: normal;
+}
+
+#qsoList_wrapper th {
+	text-align: left !important;
+	white-space: nowrap;
+}
+
+#qsoList_wrapper td {
+	text-align: left !important;
+	white-space: pre-wrap;
+}
+
+@media (min-width: 1500px) {
+	.container, .container-lg, .container-md, .container-sm, .container-xl {
+		max-width: 1400px
+	}
+}
+
+@media (min-width: 1920px) {
+	.container, .container-lg, .container-md, .container-sm, .container-xl {
+		max-width: 1800px
+	}
+}
+
+#map {
+	height: 500px !important;
+}
+
+#gridsquare_map {
+	height: calc(100vh - 380px) !important;
+	max-height: 900px !important;
+}
+
+@media (min-width: 992px) {
+	.modal-lg, .modal-xl {
+		max-width: 1300px;
+	}
+}
+
+.modal-body {
+	max-height: calc(100vh - 200px);
+	overflow-y: auto;
+}
+
+#mapqso {
+	height: 400px !important;
+}
+
+#qsomap {
+	height: 400px !important;
+}

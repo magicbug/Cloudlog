@@ -44,8 +44,8 @@
 			<td><a data-fancybox data-type="iframe" data-width="750" data-height="520" data-src="<?php echo site_url('logbook/view')."/".$row->COL_PRIMARY_KEY; ?>" href="javascript:;"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
 			</td>
 			<td><?php echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE; ?></td>
-			<td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX) { ?><span class="badge badge-light"><?php printf("%03d", $row->COL_STX);?></span><?php } ?><?php if ($row->COL_STX_STRING) { ?><span class="badge badge-light"><?php echo $row->COL_STX_STRING;?></span><?php } ?></td>
-			<td><?php echo $row->COL_RST_RCVD; ?> <?php if ($row->COL_SRX) { ?><span class="badge badge-light"><?php printf("%03d", $row->COL_SRX);?></span><?php } ?><?php if ($row->COL_SRX_STRING) { ?><span class="badge badge-light"><?php echo $row->COL_SRX_STRING;?></span><?php } ?></td>
+			<td><?php echo $row->COL_RST_SENT; ?> <?php if ($row->COL_STX) { ?><span class="badge text-bg-light"><?php printf("%03d", $row->COL_STX);?></span><?php } ?><?php if ($row->COL_STX_STRING) { ?><span class="badge text-bg-light"><?php echo $row->COL_STX_STRING;?></span><?php } ?></td>
+			<td><?php echo $row->COL_RST_RCVD; ?> <?php if ($row->COL_SRX) { ?><span class="badge text-bg-light"><?php printf("%03d", $row->COL_SRX);?></span><?php } ?><?php if ($row->COL_SRX_STRING) { ?><span class="badge text-bg-light"><?php echo $row->COL_SRX_STRING;?></span><?php } ?></td>
 			<?php if($row->COL_SAT_NAME != null) { ?>
 			<td><?php echo $row->COL_SAT_NAME; ?></td>
 			<?php } else { ?>
@@ -112,15 +112,22 @@
 			</td>
 			<?php } ?>
 
+			<?php if($this->session->userdata('hasQrzKey') != "") { ?>
+			<td class="lotw">
+			    <span class="lotw-<?php echo ($row->COL_QRZCOM_QSO_UPLOAD_STATUS=='Y')?'green':'red'?>">&#9650;</span>
+			    <span class="lotw-<?php echo ($row->COL_QRZCOM_QSO_DOWNLOAD_STATUS=='Y')?'green':'red'?>">&#9660;</span>
+			</td>
+			<?php } ?>
+
 				<?php if(isset($row->station_callsign)) { ?>
 				<td>
-					<span class="badge badge-light"><?php echo $row->station_callsign; ?></span>
+					<span class="badge text-bg-light"><?php echo $row->station_callsign; ?></span>
 				</td>
 				<?php } ?>
 
 			<td>
 				<div class="dropdown">
-                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-cog"></i>
                     </a>
 
@@ -173,7 +180,7 @@ $config['next_tag_close'] = '</li>';
 $config['last_tag_open'] = '<li class="page-item">';
 $config['last_tag_close'] = '</li>';
 $config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
-$config['cur_tag_close'] = '<span class="sr-only">(current)</span></a></li>';
+$config['cur_tag_close'] = '<span class="visually-hidden">(current)</span></a></li>';
 $config['num_tag_open'] = '<li class="page-item">';
 $config['num_tag_close'] = '</li>';
     	$this->pagination->initialize($config);

@@ -13,7 +13,7 @@ function gridPlot(form) {
     if(container != null){
         container._leaflet_id = null;
         container.remove();
-        $("#gridmapcontainer").append('<div id="gridsquare_map" style="width: 100%; height: 800px"></div>');
+        $("#gridmapcontainer").append('<div id="gridsquare_map" class="map-leaflet" style="width: 100%; height: 800px"></div>');
     }
 
     ajax_url = site_url + '/awards/getFfmaGridsjs';
@@ -26,7 +26,8 @@ function gridPlot(form) {
             $(".ld-ext-right-plot").removeClass('running');
             $(".ld-ext-right-plot").prop('disabled', false);
             $('#plot').prop("disabled", false);
-            grid_max = 488;
+            grids = data.grids;
+            grid_max = data.grid_count;
             grid_four = data.grid_4char;
             grid_four_lotw = data.grid_4char_lotw;
             grid_four_paper = data.grid_4char_paper;
@@ -107,7 +108,7 @@ function spawnGridsquareModal(loc_4char) {
                 message: html,
                 onshown: function(dialog) {
 
-                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-bs-toggle="tooltip"]').tooltip();
                     $('.contacttable').DataTable({
                             "pageLength": 25,
                             responsive: false,

@@ -136,14 +136,18 @@ class Logbook extends CI_Controller {
 
 		$return['dxcc'] = $this->dxcheck($callsign);
 		$split_callsign=explode('/',$callsign);
-		if (isset($split_callsign[1]) && ($split_callsign[1] != "")) {	// Do we have "/" in Call?
-			if (strlen($split_callsign[1])>3) {			// Last Element longer than 3 chars? Take that as call
+		if (count($split_callsign)==1) {				// case F0ABC --> return cel 0 //
+			$lookupcall = $split_callsign[0];
+		} else if (count($split_callsign)==3) {			// case EA/F0ABC/P --> return cel 1 //
+			$lookupcall = $split_callsign[1];
+		} else {										// case F0ABC/P --> return cel 0 OR  case EA/FOABC --> retunr 1  (normaly not exist) //
+			if (in_array(strtoupper($split_callsign[1]), array('P','M','MM','QRP','0','1','2','3','4','5','6','7','8','9'))) {
+				$lookupcall = $split_callsign[0];
+			} else if (strlen($split_callsign[1])>3) {	// Last Element longer than 3 chars? Take that as call
 				$lookupcall = $split_callsign[1];
-			} else {						// Last Element up to 3 Chars? Take first element as Call
+			} else {									// Last Element up to 3 Chars? Take first element as Call
 				$lookupcall = $split_callsign[0];
 			}
-		} else {
-			$lookupcall=$callsign;
 		}
 
 		$return['partial'] = $this->partial($lookupcall);
@@ -221,6 +225,13 @@ class Logbook extends CI_Controller {
 				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
 			}
 
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+				if ($extrawhere!='') {
+					$extrawhere.=" OR";
+				}
+				$extrawhere.=" COL_QRZCOM_QSO_DOWNLOAD_STATUS='Y'";
+			}
+
 
 			if($type == "SAT") {
 				$this->db->where('COL_PROP_MODE', 'SAT');
@@ -257,7 +268,7 @@ class Logbook extends CI_Controller {
 		return false;
 	}
 
-function worked_grid_before($gridsquare, $type, $band, $mode)
+	function worked_grid_before($gridsquare, $type, $band, $mode)
 	{
 		if (strlen($gridsquare) < 4)
 			return false;
@@ -346,6 +357,13 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 			$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
 		}
 
+		if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+			if ($extrawhere!='') {
+				$extrawhere.=" OR";
+			}
+			$extrawhere.=" COL_QRZCOM_QSO_DOWNLOAD_STATUS='Y'";
+		}
+
 		if($type == "SAT") {
 			$this->db->where('COL_PROP_MODE', 'SAT');
 			if ($extrawhere != '') {
@@ -426,6 +444,13 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 					$extrawhere.=" OR";
 				}
 				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
+			}
+
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+				if ($extrawhere!='') {
+					$extrawhere.=" OR";
+				}
+				$extrawhere.=" COL_QRZCOM_QSO_DOWNLOAD_STATUS='Y'";
 			}
 
 
@@ -522,6 +547,13 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 				}
 				$extrawhere.=" COL_EQSL_QSL_RCVD='Y'";
 			}
+			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+				if ($extrawhere!='') {
+					$extrawhere.=" OR";
+				}
+				$extrawhere.=" COL_QRZCOM_QSO_DOWNLOAD_STATUS='Y'";
+			}
+
 
 
 			if($type == "SAT") {
@@ -575,6 +607,9 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 		echo "{\"markers\": [";
 		$count = 1;
 		foreach ($data['qsos']->result() as $row) {
+			// check if qso is confirmed //
+			if (($row->COL_EQSL_QSL_RCVD=='Y') || ($row->COL_LOTW_QSL_RCVD=='Y') || ($row->COL_QSL_RCVD=='Y')) { $row->_is_confirmed = 'Y'; } else { $row->_is_confirmed = 'N'; }
+
 			if($row->COL_GRIDSQUARE != null) {
 				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
 				if($count != 1) {
@@ -584,11 +619,11 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 				if($row->COL_SAT_NAME != null) {
 						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
 						echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-						echo "\",\"label\":\"".$row->COL_CALL."\"}";
+						echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				} else {
 						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 						echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-						echo "\",\"label\":\"".$row->COL_CALL."\"}";
+						echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				}
 
 				$count++;
@@ -625,11 +660,11 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 				if($row->COL_SAT_NAME != null) {
 					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-					echo "\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				} else {
 					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 					echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-					echo "\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				}
 
 				$count++;
@@ -647,12 +682,18 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 				}
 				echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ";
 				echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE;
-				echo "\",\"label\":\"".$row->COL_CALL."\"}";
+				echo "\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				$count++;
 			}
 
 		}
 		echo "]";
+		
+		// [MAP Custom] ADD Station //
+		$this->load->model('Stations');
+		$station_json = $this->Stations->get_station_json_for_map();
+		echo (!empty($station_json))?', '.$station_json:'';
+
 		echo "}";
 	}
 
@@ -661,6 +702,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
 		$this->load->library('qra');
+		$this->load->library('subdivisions');
 
 		$this->load->model('logbook_model');
 		$data['query'] = $this->logbook_model->get_qso($id);
@@ -674,6 +716,8 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 
         $this->load->model('Qsl_model');
         $data['qslimages'] = $this->Qsl_model->getQslForQsoId($id);
+        $data['primary_subdivision'] = $this->subdivisions->get_primary_subdivision_name($data['query']->result()[0]->COL_DXCC);
+        $data['secondary_subdivision'] = $this->subdivisions->get_secondary_subdivision_name($data['query']->result()[0]->COL_DXCC);
 		$data['max_upload'] = ini_get('upload_max_filesize');
 		$this->load->view('interface_assets/mini_header', $data);
 		$this->load->view('view_log/qso');
@@ -691,14 +735,18 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 		$html = "";
 
 		if(!empty($logbooks_locations_array)) {
-			$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_FREQ, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, '.$this->config->item('table_name').'.COL_MY_GRIDSQUARE, '.$this->config->item('table_name').'.COL_CONTEST_ID, '.$this->config->item('table_name').'.COL_STATE, station_profile.*');
+			$this->db->select(''.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_FREQ, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_RST_RCVD, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_GRIDSQUARE, '.$this->config->item('table_name').'.COL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_RCVD, '.$this->config->item('table_name').'.COL_EQSL_QSL_SENT, '.$this->config->item('table_name').'.COL_QSL_SENT, '.$this->config->item('table_name').'.COL_STX, '.$this->config->item('table_name').'.COL_STX_STRING, '.$this->config->item('table_name').'.COL_SRX, '.$this->config->item('table_name').'.COL_SRX_STRING, '.$this->config->item('table_name').'.COL_LOTW_QSL_SENT, '.$this->config->item('table_name').'.COL_LOTW_QSL_RCVD, '.$this->config->item('table_name').'.COL_VUCC_GRIDS, '.$this->config->item('table_name').'.COL_MY_GRIDSQUARE, '.$this->config->item('table_name').'.COL_CONTEST_ID, '.$this->config->item('table_name').'.COL_STATE, '.$this->config->item('table_name').'.COL_QRZCOM_QSO_UPLOAD_STATUS, '.$this->config->item('table_name').'.COL_QRZCOM_QSO_DOWNLOAD_STATUS, station_profile.*');
 			$this->db->from($this->config->item('table_name'));
 
 			$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 			$this->db->where_in('station_profile.station_id', $logbooks_locations_array);
 			$this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', "desc");
 
-			$this->db->like($this->config->item('table_name').'.COL_CALL', $id);
+			$this->db->where($this->config->item('table_name').'.COL_CALL', $id);
+			$this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$id,'before');
+			$this->db->or_like($this->config->item('table_name').'.COL_CALL', $id.'/','after');
+			$this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$id.'/');
+
 			$this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "desc");
 			$this->db->limit(5);
 
@@ -725,6 +773,9 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 							break;
 						case 2:
 							$html .= "<th>".lang('eqsl_short')."</th>";
+							break;
+						case 4:
+							$html .= "<th>QRZ</th>";
 							break;
 						default:
 							$html .= "<th>".lang('gen_hamradio_qsl')."</th>";
@@ -796,6 +847,27 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 						}
 						$html .= "\">&#9660;</span>";
 						$html .= "</td>";
+					} else if ($this->session->userdata('user_previous_qsl_type') == 4) {
+						$html .= "<td class=\"qrz\">";
+						$html .= "<span class=\"qsl-";
+						switch ($row->COL_QRZCOM_QSO_UPLOAD_STATUS) {
+							case "Y":
+								$html .= "green";
+								break;
+							default:
+								$html .= "red";
+						}
+						$html .= "\">&#9650;</span>";
+						$html .= "<span class=\"qsl-";
+						switch ($row->COL_QRZCOM_QSO_DOWNLOAD_STATUS) {
+							case "Y":
+								$html .= "green";
+								break;
+							default:
+								$html .= "red";
+						}
+						$html .= "\">&#9660;</span>";
+						$html .= "</td>";
 					} else {
 						$html .= "<td class=\"qsl\">";
 						$html .= "<span class=\"qsl-";
@@ -836,7 +908,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 						$html .= "\">&#9660;</span>";
 						$html .= "</td>";
 					}
-					$html .= "<td><span class=\"badge badge-info\">".$row->station_callsign."</span></td>";
+					$html .= "<td><span class=\"badge bg-info\">".$row->station_callsign."</span></td>";
 				$html .= "</tr>";
 			}
 			$html .= "</table>";
@@ -976,7 +1048,7 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 						if($data['callsign']['error'] == "Session does not exist or expired") {
 							$hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
 							$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-							$data['callsign'] = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+							$data['callsign'] = $this->hamqth->search($id, $this->session->userdata('hamqth_session_key'));
 						}
 						if (isset($data['callsign']['gridsquare'])) {
 							$CI = &get_instance();
@@ -1346,9 +1418,9 @@ function worked_grid_before($gridsquare, $type, $band, $mode)
 		$ci =& get_instance();
 		switch($name) {
 		case 'Mode':    $ret.= '<td>'; $ret.= $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE . '</td>'; break;
-		case 'RSTS':    $ret.= '<td class="d-none d-sm-table-cell">' . $row->COL_RST_SENT; if ($row->COL_STX) { $ret.= ' <span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">'; $ret.=sprintf("%03d", $row->COL_STX); $ret.= '</span>';} if ($row->COL_STX_STRING) { $ret.= ' <span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">' . $row->COL_STX_STRING . '</span>';} $ret.= '</td>'; break;
-		case 'RSTR':    $ret.= '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX) { $ret.= ' <span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">'; $ret.=sprintf("%03d", $row->COL_SRX); $ret.= '</span>';} if ($row->COL_SRX_STRING) { $ret.= ' <span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';} $ret.= '</td>'; break;
-		case 'Country': $ret.= '<td>' . ucwords(strtolower(($row->COL_COUNTRY))); if ($row->end != NULL) $ret.= ' <span class="badge badge-danger">'.$ci->lang->line('gen_hamradio_deleted_dxcc').'</span>'  . '</td>'; break;
+		case 'RSTS':    $ret.= '<td class="d-none d-sm-table-cell">' . $row->COL_RST_SENT; if ($row->COL_STX) { $ret.= ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">'; $ret.=sprintf("%03d", $row->COL_STX); $ret.= '</span>';} if ($row->COL_STX_STRING) { $ret.= ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">' . $row->COL_STX_STRING . '</span>';} $ret.= '</td>'; break;
+		case 'RSTR':    $ret.= '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX) { $ret.= ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">'; $ret.=sprintf("%03d", $row->COL_SRX); $ret.= '</span>';} if ($row->COL_SRX_STRING) { $ret.= ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">' . $row->COL_SRX_STRING . '</span>';} $ret.= '</td>'; break;
+		case 'Country': $ret.= '<td>' . ucwords(strtolower(($row->COL_COUNTRY))); if ($row->end != NULL) $ret.= ' <span class="badge text-bg-danger">'.$ci->lang->line('gen_hamradio_deleted_dxcc').'</span>'  . '</td>'; break;
 		case 'IOTA':    $ret.= '<td>' . ($row->COL_IOTA) . '</td>'; break;
 		case 'SOTA':    $ret.= '<td>' . ($row->COL_SOTA_REF) . '</td>'; break;
 		case 'WWFF':    $ret.= '<td>' . ($row->COL_WWFF_REF) . '</td>'; break;

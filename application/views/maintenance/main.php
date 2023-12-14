@@ -15,7 +15,7 @@
 		  </div>
 		<?php if(!empty($qsos_with_no_station_id)) { ?>
 					<div class="alert alert-danger" role="alert" style="margin-bottom: 0px !important;">
-						<span class="badge badge-pill badge-warning">Warning</span> The Database contains <?php echo count($qsos_with_no_station_id); ?> QSO<?php echo count($qsos_with_no_station_id) > 1 ? 's' : '' ?> without a station-profile (location)<br/>
+						<span class="badge rounded-pill text-bg-warning">Warning</span> The Database contains <?php echo count($qsos_with_no_station_id); ?> QSO<?php echo count($qsos_with_no_station_id) > 1 ? 's' : '' ?> without a station-profile (location)<br/>
 					</div>
 		  <div class="card-body">
 		  <div class?"table-responsive">
@@ -80,7 +80,7 @@
 		<?php 
 			} else { ?>
 		<div class="alert alert-secondary" role="alert" style="margin-bottom: 0px !important;">
-			<span class="badge badge-pill badge-success">Everything ok</span> Every QSO in your Database is assigned to a station-profile (location)
+			<span class="badge rounded-pill text-bg-success">Everything ok</span> Every QSO in your Database is assigned to a station-profile (location)
 		</div>
 		<?php } ?>
 	  </div>
@@ -91,7 +91,7 @@
 		  </div>
 		<?php if(!$this->config->item('cl_multilanguage')) { ?>
 					<div class="alert alert-danger" role="alert" style="margin-bottom: 0px !important;">
-						<span class="badge badge-pill badge-warning">Warning</span> You didn't enabled Multilanguage support in your config.php
+						<span class="badge rounded-pill text-bg-warning">Warning</span> You didn't enabled Multilanguage support in your config.php
 					</div>
 		  <div class="card-body">
 		  	<p class="card-text">Please edit your ./application/config/config.php File and add some rows to it:</br></br>
@@ -103,7 +103,7 @@
 		<?php 
 		} else { ?>
 		<div class="alert alert-secondary" role="alert" style="margin-bottom: 0px !important;">
-			<span class="badge badge-pill badge-success">Everything ok</span> You have enabled Multuser-Language support
+			<span class="badge rounded-pill text-bg-success">Everything ok</span> You have enabled Multuser-Language support
 		</div>
 		<?php } ?>
 	  </div>

@@ -29,9 +29,9 @@ $lang['admin_experimental'] = "实验性功能";
 
 
 // Contest Menu
-
-$lang['admin_contest_menu_line_1'] = '使用 Contest 列表，您可以控制在比赛中记录 QSO 时显示哪些 Contest。';
-$lang['admin_contest_menu_line_2'] = '启用的 Contest 将显示在竞赛名称下拉列表中，而停用的 Contest 将被隐藏且无法选择。';
+// 将Conetest统一翻译为竞赛，去除中英文混用
+$lang['admin_contest_menu_line_1'] = '使用竞赛列表，您可以控制在比赛中记录 QSO 时显示哪些竞赛。';
+$lang['admin_contest_menu_line_2'] = '启用的竞赛将显示在竞赛名称下拉列表中，而停用的竞赛将被隐藏且无法选择。';
 $lang['admin_contest_menu_name'] = '名称';
 $lang['admin_contest_menu_adif'] = 'ADIF 名称';
 $lang['admin_contest_menu_active'] = '启用';
@@ -44,12 +44,12 @@ $lang["admin_contest_create"] = "创建";
 $lang['admin_contest_all_active'] = '启用所有';
 $lang['admin_contest_all_deactive'] = '停用所有';
 
-$lang['admin_contest_name_adif'] = 'Contest ADIF 名称';
-$lang['admin_contest_name_of_contest'] = 'Contest 名称';
-$lang['admin_contest_name_of_adif'] = 'Contest 在 ADIF 中的名称';
-$lang['admin_contest_edit_active_hint'] = '如果要列在 Contest 列表中，则设置为启用';
-$lang['admin_contest_edit_update_contest'] = '更新 Contest';
-$lang['admin_contest_deletion_warning'] = '注意！您确定要删除以下 Contest 吗：';
+$lang['admin_contest_name_adif'] = '竞赛 ADIF 名称';
+$lang['admin_contest_name_of_contest'] = '竞赛 名称';
+$lang['admin_contest_name_of_adif'] = '竞赛 在 ADIF 中的名称';
+$lang['admin_contest_edit_active_hint'] = '如果要列在竞赛列表中，则设置为启用';
+$lang['admin_contest_edit_update_contest'] = '更新竞赛';
+$lang['admin_contest_deletion_warning'] = '注意！您确定要删除以下竞赛吗：';
 $lang['admin_contest_active_all_warning'] = '注意！您确定要启用所有竞赛吗？';
 $lang['admin_contest_deactive_all_warning'] = '注意！您确定要停用所有竞赛吗？';
 

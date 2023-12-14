@@ -3,10 +3,10 @@
 
     <form class="form" action="<?php echo site_url('activators'); ?>" method="post" enctype="multipart/form-data">
         <!-- Select Basic -->
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label class="col-md-1 control-label" for="band"><?php echo lang('gen_hamradio_band'); ?></label>
                     <div class="col-md-3">
-                        <select id="band" name="band" class="form-control custom-select">
+                        <select id="band" name="band" class="form-select">
                             <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> ><?php echo lang('general_word_all'); ?></option>
                             <?php foreach($worked_bands as $band) {
                                 echo '<option value="' . $band . '"';
@@ -16,20 +16,20 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group row" id="leogeo">
+                <div class="mb-3 row" id="leogeo">
                     <label class="col-md-1 control-label" for="leogeo">LEO/GEO</label>
                     <div class="col-md-3">
-                        <select id="leogeo" name="leogeo" class="form-control custom-select">
+                        <select id="leogeo" name="leogeo" class="form-select">
                             <option value="both" <?php if ($this->input->post('leogeo') == "both" || $this->input->method() !== 'post') echo ' selected'; ?> >Both</option>
                             <option value="leo" <?php if ($this->input->post('leogeo') == "leo") echo ' selected'; ?>>LEO</option>
                             <option value="geo" <?php if ($this->input->post('leogeo') == "geo") echo ' selected'; ?>>GEO</option>
                         </select>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label class="col-md-1 control-label" for="mincount"><?php echo lang('gridsquares_minimum_count'); ?></label>
                     <div class="col-md-3">
-                        <select id="mincount" name="mincount" class="form-control custom-select">
+                        <select id="mincount" name="mincount" class="form-select">
                             <?php
                                 $i = 1;
                                 do {
@@ -44,7 +44,7 @@
 
                 </div>
 
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-md-1 control-label" for="button1id"></label>
                 <div class="col-md-10">
                     <button id="button1id" type="submit" name="button1id" class="btn btn-primary"><?php echo lang('filter_options_show'); ?></button>
@@ -76,7 +76,7 @@
             $result = write_activators($activators_array, $vucc_grids, $custom_date_format, $this->input->post('band'), $this->input->post('leogeo'));
         }
         else {
-            echo '<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>Nothing found!</div>';
+            echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
         }
     }
     ?>

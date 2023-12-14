@@ -186,4 +186,12 @@ class Ffma_model extends CI_Model {
         return $vucc_grids;
     }
 
+    function get_grid_count() {
+       return count($this->us_grids);
+    }
+
+    function get_grids() {
+       return $this->us_grids;
+    }
+
 }

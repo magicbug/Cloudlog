@@ -27,9 +27,9 @@
 	<td style="padding: 0.3em 0 0.3em 0.5em;" align="left">
 	<?php
 		if ($grid_worked != 0) {
-			echo " <span data-toggle=\"tooltip\" title=\"Worked\" class=\"badge-success\" style=\"padding-left: 0.2em; padding-right: 0.2em;\">".strtoupper($callsign['gridsquare'])."</span>";
+			echo " <span data-bs-toggle=\"tooltip\" title=\"Worked\" class=\"badge text-bg-success\" style=\"padding-left: 0.2em; padding-right: 0.2em;\">".strtoupper($callsign['gridsquare'])."</span>";
 		} else {
-			echo " <span data-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge-danger\" style=\"padding-left: 0.2em; padding-right: 0.2em;\">".strtoupper($callsign['gridsquare'])."</span>";
+			echo " <span data-bs-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge text-bg-danger\" style=\"padding-left: 0.2em; padding-right: 0.2em;\">".strtoupper($callsign['gridsquare'])."</span>";
 		}
 	?>
 	</td>

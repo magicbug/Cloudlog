@@ -15,6 +15,7 @@ function echo_table_header_col($ctx, $name) {
 		case 'Band': echo '<th>'.$ctx->lang->line('gen_hamradio_band').'</th>'; break;
 		case 'Frequency': echo '<th>'.$ctx->lang->line('gen_hamradio_frequency').'</th>'; break;
 		case 'Operator': echo '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
+		case 'Name': echo '<th>'.$ctx->lang->line('general_word_name').'</th>'; break;
 	}
 }
 
@@ -22,9 +23,9 @@ function echo_table_col($row, $name) {
 	$ci =& get_instance();
 	switch($name) {
 		case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE . '</td>'; break;
-      case 'RSTS':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_SENT; if ($row->COL_STX) { echo ' <span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">'; printf("%03d", $row->COL_STX); echo '</span>';} if ($row->COL_STX_STRING) { echo ' <span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">' . $row->COL_STX_STRING . '</span>';} echo '</td>'; break;
-      case 'RSTR':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo ' <span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">'; printf("%03d", $row->COL_SRX); echo '</span>';} if ($row->COL_SRX_STRING) { echo ' <span data-toggle="tooltip" data-original-title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge badge-light">' . $row->COL_SRX_STRING . '</span>';} echo '</td>'; break;
-		case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY))); if ($row->end != NULL) echo ' <span class="badge badge-danger">'.$ci->lang->line('gen_hamradio_deleted_dxcc').'</span>'  . '</td>'; break;
+      case 'RSTS':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_SENT; if ($row->COL_STX) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">'; printf("%03d", $row->COL_STX); echo '</span>';} if ($row->COL_STX_STRING) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">' . $row->COL_STX_STRING . '</span>';} echo '</td>'; break;
+      case 'RSTR':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">'; printf("%03d", $row->COL_SRX); echo '</span>';} if ($row->COL_SRX_STRING) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">' . $row->COL_SRX_STRING . '</span>';} echo '</td>'; break;
+		case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY))); if ($row->end != NULL) echo ' <span class="badge text-bg-danger">'.$ci->lang->line('gen_hamradio_deleted_dxcc').'</span>'  . '</td>'; break;
 		case 'IOTA':    echo '<td>' . ($row->COL_IOTA) . '</td>'; break;
 		case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF) . '</td>'; break;
 		case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF) . '</td>'; break;
@@ -35,6 +36,7 @@ function echo_table_col($row, $name) {
 		case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'.$row->COL_SAT_NAME.'</a></td>'; } else { if($row->COL_FREQ != null) { echo $ci->frequency->hz_to_mhz($row->COL_FREQ); } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
 		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
 		case 'Operator': echo '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
+		case 'Name': echo '<td>' . ($row->COL_NAME) . '</td>'; break;
 	}
 }
 
@@ -80,7 +82,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		</div>
 	<?php } else { ?>
 		<div class="alert alert-warning" role="alert">
-			  <span class="badge badge-info"><?php echo lang('general_word_important'); ?></span> <i class="fas fa-broadcast-tower"></i> <?php echo lang('notice_turn_the_radio_on'); ?>
+			  <span class="badge text-bg-info"><?php echo lang('general_word_important'); ?></span> <i class="fas fa-broadcast-tower"></i> <?php echo lang('notice_turn_the_radio_on'); ?>
 		</div>
 	<?php } ?>
 	<?php } ?>
@@ -96,13 +98,13 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			$current_date = date('Y-m-d H:i:s');
 			if($this->LotwCert->lotw_cert_expired($this->session->userdata('user_id'), $current_date) == true) { ?>
 			<div class="alert alert-danger" role="alert">
-				<span class="badge badge-info"><?php echo lang('general_word_important'); ?></span> <i class="fas fa-hourglass-end"></i> <?php echo lang('lotw_cert_expired'); ?>
+				<span class="badge text-bg-info"><?php echo lang('general_word_important'); ?></span> <i class="fas fa-hourglass-end"></i> <?php echo lang('lotw_cert_expired'); ?>
 			</div>
 		<?php } ?>
 
 		<?php if($this->LotwCert->lotw_cert_expiring($this->session->userdata('user_id'), $current_date) == true) { ?>
 			<div class="alert alert-warning" role="alert">
-				<span class="badge badge-info"><?php echo lang('general_word_important'); ?></span> <i class="fas fa-hourglass-half"></i> <?php echo lang('lotw_cert_expiring'); ?>
+				<span class="badge text-bg-info"><?php echo lang('general_word_important'); ?></span> <i class="fas fa-hourglass-half"></i> <?php echo lang('lotw_cert_expiring'); ?>
 			</div>
 		<?php } ?>
 	<?php } ?>
@@ -112,7 +114,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
 <?php if($this->optionslib->get_option('dashboard_map') != "false" && $this->optionslib->get_option('dashboard_map') != "map_at_right") { ?>
 <!-- Map -->
-<div id="map" style="width: 100%; height: 350px"></div>
+<div id="map" class="map-leaflet" style="width: 100%; height: 350px"></div>
 <?php } ?>
 <div style="padding-top: 0px; margin-top: 5px;" class="container dashboard">
 
@@ -121,7 +123,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
   <div class="col-sm-8">
 
   	<div class="table-responsive">
-    	<table class="table table-striped table-hover">
+    	<table class="table table-striped table-hover border-top">
 
     		<thead>
 				<tr class="titles">
@@ -144,7 +146,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			$i = 0;
 			if(!empty($last_five_qsos) > 0) {
 			foreach ($last_five_qsos->result() as $row) { ?>
-				<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
+				<?php  echo '<tr id="qso_'.$row->COL_PRIMARY_KEY.'" class="tr'.($i & 1).'">'; ?>
 
 					<?php
 
@@ -182,14 +184,14 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
   <div class="col-sm-4">
   	<?php if($this->optionslib->get_option('dashboard_map') == "map_at_right") { ?>
 	<!-- Map -->
-	<div id="map" style="width: 100%; height: 350px;  margin-bottom: 15px;"></div>
+	<div id="map" class="map-leaflet" style="width: 100%; height: 350px;  margin-bottom: 15px;"></div>
 	<?php } ?>
   	<div class="table-responsive">
 
 
 		<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component'); ?>" hx-trigger="load, every 5s"></div>
 		
-    	<table class="table table-striped">
+    	<table class="table table-striped border-top">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-chart-bar"></i> <?php echo lang('dashboard_qso_breakdown'); ?></td>
 			</tr>
@@ -212,7 +214,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 
 
 
-		<table class="table table-striped">
+		<table class="table table-striped border-top">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-globe-europe"></i> <?php echo lang('dashboard_countries_breakdown'); ?></td>
 			</tr>
@@ -222,7 +224,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 				<td width="50%"><?php echo $total_countries; ?></td>
 			</tr>
 			<tr>
-				<td width="50%"><a href="#" onclick="return false" data-original-title="QSL Cards / eQSL / LoTW" data-toggle="tooltip"><?php echo lang('general_word_confirmed'); ?></a></td>
+				<td width="50%"><a href="#" onclick="return false" title="QSL Cards / eQSL / LoTW" data-bs-toggle="tooltip"><?php echo lang('general_word_confirmed'); ?></a></td>
 				<td width="50%">
 					<?php echo $total_countries_confirmed_paper; ?> /
 					<?php echo $total_countries_confirmed_eqsl; ?> /
@@ -237,7 +239,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		</table>
 
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_qsl_sent != 0 || $total_qsl_rcvd != 0 || $total_qsl_requested != 0)) { ?>
-		<table class="table table-striped">
+		<table class="table table-striped border-top">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-envelope"></i> <?php echo lang('general_word_qslcards'); ?></td>
 				<td colspan="1"><?php echo lang('general_word_today'); ?></td>
@@ -264,7 +266,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		<?php } ?>
 
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_eqsl_sent != 0 || $total_eqsl_rcvd != 0)) { ?>
-		<table class="table table-striped">
+		<table class="table table-striped border-top">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-address-card"></i> <?php echo lang('general_word_eqslcards'); ?></td>
 				<td colspan="1"><?php echo lang('general_word_today'); ?></td>
@@ -284,8 +286,8 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 		</table>
 		<?php } ?>
 
-		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_lotw_sent != 0 || $total_lotw_rcvd != 0)) { ?>
-		<table class="table table-striped">
+		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === false) && ($total_lotw_sent != 0 || $total_lotw_rcvd != 0)) { ?>
+		<table class="table table-striped border-top">
 			<tr class="titles">
 				<td colspan="2"><i class="fas fa-list"></i> <?php echo lang('general_word_lotw'); ?></td>
 				<td colspan="1"><?php echo lang('general_word_today'); ?></td>
@@ -294,31 +296,55 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			<tr>
 				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
 				<td width="25%"><?php echo $total_lotw_sent; ?></td>
-				<td width="25%"><a href="javascript:displayContacts('','All','All','LOTWSDATE','');"><?php echo $lotw_sent_today; ?></a></td>
+				<td width="25%"><a href="javascript:displayContacts('','all','all','LOTWSDATE','');"><?php echo $lotw_sent_today; ?></a></td>
 			</tr>
 
 			<tr>
 				<td width="50%"><?php echo lang('general_word_received'); ?></td>
 				<td width="25%"><?php echo $total_lotw_rcvd; ?></td>
-				<td width="25%"><a href="javascript:displayContacts('','All','All','LOTWRDATE','');"><?php echo $lotw_rcvd_today; ?></a></td>
+				<td width="25%"><a href="javascript:displayContacts('','all','all','LOTWRDATE','');"><?php echo $lotw_rcvd_today; ?></a></td>
+			</tr>
+		</table>
+		<?php } ?>
+
+		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === false) && ($total_qrz_sent != 0 || $total_qrz_rcvd != 0)) { ?>
+		<table class="table table-striped border-top">
+			<tr class="titles">
+				<td colspan="2"><i class="fas fa-list"></i> QRZ.com</td>
+				<td colspan="1"><?php echo lang('general_word_today'); ?></td>
+			</tr>
+
+			<tr>
+				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
+				<td width="25%"><?php echo $total_qrz_sent; ?></td>
+				<td width="25%"><a href="javascript:displayContacts('','all','all','QRZSDATE','');"><?php echo $qrz_sent_today; ?></a></td>
+			</tr>
+
+			<tr>
+				<td width="50%"><?php echo lang('general_word_received'); ?></td>
+				<td width="25%"><?php echo $total_qrz_rcvd; ?></td>
+				<td width="25%"><a href="javascript:displayContacts('','all','all','QRZRDATE','');"><?php echo $qrz_rcvd_today; ?></a></td>
 			</tr>
 		</table>
 		<?php } ?>
 
 		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE)) { ?>
-    	 <table class="table table-striped">
+    	 <table class="table table-striped border-top">
         <tr class="titles">
-            <td colspan="2"><i class="fas fa-globe-europe"></i> VHF/UHF Century Club (VUCC)</td>
+            <td colspan="2"><i class="fas fa-globe-europe"></i> VUCC-Grids</td>
+            <td colspan="1">SAT</td>
         </tr>
 
         <tr>
             <td width="50%"><?php echo lang('general_word_worked'); ?></td>
-            <td width="50%"><?php echo $vucc['All']['worked']; ?></td>
+            <td width="25%"><?php echo $vucc['All']['worked']; ?></td>
+            <td width="25%"><?php echo $vuccSAT['SAT']['worked'] ?? '0'; ?></td>
         </tr>
 
         <tr>
             <td width="50%"><?php echo lang('general_word_confirmed'); ?></td>
-            <td width="50%"><?php echo $vucc['All']['confirmed']; ?></td>
+            <td width="25%"><?php echo $vucc['All']['confirmed']; ?></td>
+            <td width="25%"><?php echo $vuccSAT['SAT']['confirmed'] ?? '0'; ?></td>
         </tr>
 
     </table>

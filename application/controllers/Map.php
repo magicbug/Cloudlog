@@ -81,17 +81,13 @@ class Map extends CI_Controller {
 
         if ($this->input->post('from')) {
             $from = $this->input->post('from');
-            $from = DateTime::createFromFormat('m/d/Y g:i A', $from);
-            $from = $from->format('Y-m-d H:i');
-
             $footer_data['date_from'] = $from;
         } else {
             $footer_data['date_from'] = date('Y-m-d H:i:00');
         }
         if ($this->input->post('to')) {
-            $to = DateTime::createFromFormat('m/d/Y g:i A', $this->input->post('to'));
-            $to = $to->modify('+1 day')->format('Y-m-d H:i:00');
-            $footer_data['date_to'] = $to;
+			$to = $this->input->post('to');
+			$footer_data['date_to'] = $to;
         } else {
             $temp_to = new DateTime('tomorrow');
             $footer_data['date_to'] = $temp_to->format('Y-m-d H:i:00');
@@ -119,6 +115,9 @@ class Map extends CI_Controller {
 		$count = 1;
 		if ($qsos) {
 			foreach ($qsos->result() as $row) {
+				// check if qso is confirmed //
+				if (($row->COL_EQSL_QSL_RCVD=='Y') || ($row->COL_LOTW_QSL_RCVD=='Y') || ($row->COL_QSL_RCVD=='Y')) { $row->_is_confirmed = 'Y'; } else { $row->_is_confirmed = 'N'; }
+
 				//print_r($row);
 				if($row->COL_GRIDSQUARE != null) {
 					$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
@@ -127,9 +126,9 @@ class Map extends CI_Controller {
 					}
 	
 					if($row->COL_SAT_NAME != null) {
-							echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+							echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 					} else {
-							echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+							echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 					}
 	
 					$count++;
@@ -164,9 +163,9 @@ class Map extends CI_Controller {
 					}
 		
 					if($row->COL_SAT_NAME != null) { 
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 					} else {
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 					}
 		
 					$count++;
@@ -180,13 +179,19 @@ class Map extends CI_Controller {
 						$lng = $row->long;
 					}
 					
-					echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 					$count++;
 				}
 		}
 
 		}
 		echo "]";
+
+		// [MAP Custom] ADD Station //
+		$this->load->model('Stations');
+		$station_json = $this->Stations->get_station_json_for_map();
+		echo (!empty($station_json))?', '.$station_json:'';
+
 		echo "}";
 
 	}
@@ -207,6 +212,9 @@ class Map extends CI_Controller {
 		echo "{\"markers\": [";
 		$count = 1;
 		foreach ($qsos->result() as $row) {
+			// check if qso is confirmed //
+			if (($row->COL_EQSL_QSL_RCVD=='Y') || ($row->COL_LOTW_QSL_RCVD=='Y') || ($row->COL_QSL_RCVD=='Y')) { $row->_is_confirmed = 'Y'; } else { $row->_is_confirmed = 'N'; }
+
 			//print_r($row);
 			if($row->COL_GRIDSQUARE != null) {
 				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
@@ -215,9 +223,9 @@ class Map extends CI_Controller {
 				} 
 
 				if($row->COL_SAT_NAME != null) {
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				} else {
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				}
 
 				$count++;
@@ -253,9 +261,9 @@ class Map extends CI_Controller {
 				}
 	
 				if($row->COL_SAT_NAME != null) { 
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				} else {
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 				}
 	
 				$count++;
@@ -272,13 +280,19 @@ class Map extends CI_Controller {
 					if($count != 1) {
 					echo ",";
 						}
-					echo "{\"lat\":\"".$dxcc->lat."\",\"lng\":\"".$dxcc->long."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\"}";
+					echo "{\"lat\":\"".$dxcc->lat."\",\"lng\":\"".$dxcc->long."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
 					$count++;
 				}
 			}
 
 		}
 		echo "]";
+
+		// [MAP Custom] ADD Station //
+		$this->load->model('Stations');
+		$station_json = $this->Stations->get_station_json_for_map();
+		echo (!empty($station_json))?', '.$station_json:'';
+
 		echo "}";
 
 	}

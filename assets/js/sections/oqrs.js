@@ -11,7 +11,7 @@ function loadStationInfo() {
         success: function (data) {
             if (data.count > 0) {
                 $(".resulttable").append('<br />' + data.count + ' Qsos logged between ' + data.mindate + ' and ' + data.maxdate + '.<br /><br />');
-                $(".resulttable").append('<form class="form-inline" onsubmit="return false;"><label class="my-1 mr-2" for="oqrssearch">Enter your callsign: </label><input class="form-control mr-sm-2" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search" required="required"><button onclick="searchOqrs();" class="btn btn-sm btn-primary" id="stationbuttonsubmit" type="button"><i class="fas fa-search"></i> Search</button></form>');
+                $(".resulttable").append('<form class="d-flex align-items-center" onsubmit="return false;"><label for="oqrssearch">Enter your callsign: </label><input class="form-control m-2 w-auto" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search" required="required"><button onclick="searchOqrs();" class="btn btn-sm btn-primary" id="stationbuttonsubmit" type="button"><i class="fas fa-search"></i> Search</button></form>');
                 // Get the input field
                 var input = document.getElementById("oqrssearch");
 
@@ -107,7 +107,7 @@ function notInLog() {
                 }
             });
         }
-    }); 
+    });
 }
 
 function saveNotInLogRequest() {
@@ -136,7 +136,7 @@ function saveNotInLogRequest() {
             $.ajax({
                 url: base_url+'index.php/oqrs/save_not_in_log',
                 type: 'post',
-                data: { 'station_id': station_id, 
+                data: { 'station_id': station_id,
                         'callsign': $("#oqrssearch").val().toUpperCase(),
                         'email': $("#emailInput").val(),
                         'message': $("#messageInput").val(),
@@ -160,7 +160,7 @@ function oqrsAddLine() {
 
     var $iterator = $('<td></td>').html(rowCount);
     var $date = $('<td></td>').html('<input class="form-control" type="date" name="date" value="" id="date" placeholder="YYYY-MM-DD">');
-    var $time = $('<td></td>').html('<input class="form-control qsotime" type="text" name="time" value="" id="time" maxlength="5" placeholder="HH:MM">');
+    var $time = $('<td></td>').html('<input class="form-control qsotime" type="text" name="time" value="" id="time" maxlength="5" placeholder="hh:mm">');
     var $band = $('<td></td>').html('<input class="form-control" type="text" name="band" value="" id="band">');
     var $mode = $('<td></td>').html('<input class="form-control" type="text" name="mode" value="" id="mode">');
 
@@ -220,7 +220,7 @@ function requestOqrs() {
             }
             });
         }
-    }); 
+    });
 }
 
 function submitOqrsRequest() {
@@ -328,7 +328,7 @@ function searchLog(callsign) {
                 nl2br: false,
                 message: html,
                 onshown: function(dialog) {
-                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-bs-toggle="tooltip"]').tooltip();
                 },
                 buttons: [{
                     label: lang_admin_close,
@@ -358,7 +358,7 @@ function searchLogTimeDate(id) {
                 nl2br: false,
                 message: html,
                 onshown: function(dialog) {
-                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-bs-toggle="tooltip"]').tooltip();
                 },
                 buttons: [{
                     label: lang_admin_close,
@@ -393,10 +393,10 @@ function loadOqrsTable(rows) {
 	var table = $('.oqrstable').DataTable();
 
 	table.clear();
-	
+
 	for (i = 0; i < rows.length; i++) {
 		let qso = rows[i];
-		
+
 		var data = [
 			'<div class="form-check"><input class="form-check-input" type="checkbox" /></div>',
 			qso.requesttime,
@@ -412,7 +412,7 @@ function loadOqrsTable(rows) {
 			echo_searchlog_button(qso.requestcallsign, qso.id),
             echo_status(qso.status),
 		];
-		
+
 		let createdRow = table.row.add(data).index();
 		table.rows(createdRow).nodes().to$().data('oqrsID', qso.id);
 		table.row(createdRow).node().id = 'oqrsID_' + qso.id;
@@ -598,3 +598,13 @@ function unselectQsoID(qsoID) {
 	$('#checkBoxAll').prop("checked", false);
 }
 
+function addQsoToPrintQueue(id) {
+	$.ajax({
+		url: base_url + 'index.php/qslprint/add_qso_to_print_queue',
+		type: 'post',
+		data: {'id': id},
+		success: function(html) {
+			$("#qsolist_"+id).remove();''
+		}
+	});
+}

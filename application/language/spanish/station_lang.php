@@ -94,6 +94,8 @@ $lang['station_location_signature_name_hint'] = "Station Signature (e.g. GMA).."
 $lang['station_location_signature_info'] = "Signature Information";
 $lang['station_location_signature_info_hint'] = "Station Signature Info (e.g. DA/NW-357).";
 $lang['station_location_eqsl_hint'] = 'The QTH Nickname which is configured in your eQSL Profile';
+$lang['station_location_eqsl_defaultqslmsg'] = "Default QSLMSG";
+$lang['station_location_eqsl_defaultqslmsg_hint'] = "Define a default message that will be populated and sent for each QSO for this station location.";
 $lang['station_location_qrz_subscription'] = 'Subscription Required';
 $lang['station_location_qrz_hint'] = "Find your API key on <a href='https://logbook.qrz.com/logbook' target='_blank'>the QRZ.com Logbook settings page";
 $lang['station_location_qrz_realtime_upload'] = 'QRZ.com Logbook Realtime Upload';
@@ -106,5 +108,6 @@ $lang['station_location_oqrs_email_alert'] = "OQRS Email alert";
 $lang['station_location_oqrs_email_hint'] = "Make sure email is set up under admin and global options.";
 $lang['station_location_oqrs_text'] = "OQRS Text";
 $lang['station_location_oqrs_text_hint'] = "Some info you want to add regarding QSL'ing.";
+$lang['station_location_clublog_realtime_upload']='ClubLog Realtime Upload';
 
 

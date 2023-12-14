@@ -435,7 +435,7 @@ class Lotw extends CI_Controller {
 
 		// Read Cert Data
 		$certdata= openssl_x509_parse($results['cert'],0);
-		
+
 		// Store Variables
 		$data['issued_callsign'] = $certdata['subject']['undefined'];
 		$data['issued_name'] = $certdata['subject']['commonName'];
@@ -630,36 +630,38 @@ class Lotw extends CI_Controller {
 		$query = $this->user_model->get_all_lotw_users();
 
 		if ($query->num_rows() >= 1) {
-			$results='';
+			$result = '';
+
+			// Get URL for downloading LoTW
+			$url_query = $this->db->query('SELECT lotw_download_url FROM config');
+			$q = $url_query->row();
+			$lotw_base_url = $q->lotw_download_url;
+
 			foreach ($query->result() as $user) {
 				if ( ($sync_user_id != null) && ($sync_user_id != $user->user_id) ) { continue; }
+
+				// Validate that LoTW credentials are not empty
+				// TODO: We don't actually see the error message
+				if ($user->user_lotw_password == '') {
+					$result = "You have not defined your ARRL LoTW credentials!";
+					continue;
+				}
 
 				$config['upload_path'] = './uploads/';
 				$file = $config['upload_path'] . 'lotwreport_download.adi';
 				if (file_exists($file) && ! is_writable($file)) {
-					$result.= "Temporary download file ".$file." is not writable. Aborting!";
+					$result = "Temporary download file ".$file." is not writable. Aborting!";
+					continue;
 				}
 
 				// Get credentials for LoTW
 		    	$data['user_lotw_name'] = urlencode($user->user_lotw_name);
 				$data['user_lotw_password'] = urlencode($user->user_lotw_password);
 
-				// Get URL for downloading LoTW
-				$query = $query = $this->db->query('SELECT lotw_download_url FROM config');
-				$q = $query->row();
-				$lotw_url = $q->lotw_download_url;
-
-				// Validate that LoTW credentials are not empty
-				// TODO: We don't actually see the error message
-				if ($data['user_lotw_name'] == '' || $data['user_lotw_password'] == '')
-				{
-					echo "You have not defined your ARRL LoTW credentials!";
-				}
-
-		        $lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($user->user_id)));
+				$lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($user->user_id)));
 
 				// Build URL for LoTW report file
-				$lotw_url .= "?";
+				$lotw_url = $lotw_base_url."?";
 				$lotw_url .= "login=" . $data['user_lotw_name'];
 				$lotw_url .= "&password=" . $data['user_lotw_password'];
 				$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
@@ -668,19 +670,19 @@ class Lotw extends CI_Controller {
 				$lotw_url .= "$lotw_last_qsl_date";
 
 				if (! is_writable(dirname($file))) {
-					$results.= "Temporary download directory ".dirname($file)." is not writable. Aborting!";
+					$result = "Temporary download directory ".dirname($file)." is not writable. Aborting!";
 					continue;
 				}
 				file_put_contents($file, file_get_contents($lotw_url));
 				if (file_get_contents($file, false, null, 0, 39) != "ARRL Logbook of the World Status Report") {
-					$results.= "LoTW downloading failed for User ".$data['user_lotw_name']." either due to it being down or incorrect logins.";
+					$result = "LoTW downloading failed for User ".$data['user_lotw_name']." either due to it being down or incorrect logins.";
 					continue;
 				}
 
 				ini_set('memory_limit', '-1');
-				$results.= $this->loadFromFile($file, false);
+				$result = $this->loadFromFile($file, false);
 			}
-			return $results;
+			return $result;
 		} else {
 			return "No LoTW User details found to carry out matches.";
 		}
@@ -724,8 +726,6 @@ class Lotw extends CI_Controller {
             $customDate = $this->input->post('from');
 
 			if ($customDate != NULL) {
-                $customDate = DateTime::createFromFormat('d/m/Y', $customDate);
-                $customDate = $customDate->format('Y-m-d');
                 $lotw_last_qsl_date = date($customDate);
             }
             else {
@@ -742,14 +742,28 @@ class Lotw extends CI_Controller {
 			$lotw_url .= "&qso_qslsince=";
 			$lotw_url .= "$lotw_last_qsl_date";
 
-			// Only pull back entries that belong to this callsign
-			$lotw_call = $this->session->userdata('user_callsign');
-			$lotw_url .= "&qso_owncall=$lotw_call";
+			if ($this->input->post('callsign') != '0') {
+				$lotw_url .= "&qso_owncall=".$this->input->post('callsign');
+			}
 
-			file_put_contents($file, file_get_contents($lotw_url));
+			if (is_writable(dirname($file)) && (!file_exists($file) || is_writable($file))) {
+				file_put_contents($file, file_get_contents($lotw_url));
 
-			ini_set('memory_limit', '-1');
-			$this->loadFromFile($file);
+				ini_set('memory_limit', '-1');
+				$this->loadFromFile($file);
+			} else {
+				if (!is_writable(dirname($file))) {
+					$data['errormsg'] = 'Directory '.dirname($file).' is not writable!';
+				} else if (!is_writable($file)) {
+					$data['errormsg'] = 'File '.$file.' is not writable!';
+				}
+				$this->load->model('Stations');
+				$data['callsigns'] = $this->Stations->callsigns_of_user($this->session->userdata('user_id'));
+
+				$this->load->view('interface_assets/header', $data);
+				$this->load->view('lotw/import', $data);
+				$this->load->view('interface_assets/footer');
+			}
 		}
 		else
 		{
@@ -757,9 +771,11 @@ class Lotw extends CI_Controller {
 			{
 
 				$data['error'] = $this->upload->display_errors();
+				$this->load->model('Stations');
+				$data['callsigns'] = $this->Stations->callsigns_of_user($this->session->userdata('user_id'));
 
 				$this->load->view('interface_assets/header', $data);
-				$this->load->view('lotw/import');
+				$this->load->view('lotw/import', $data);
 				$this->load->view('interface_assets/footer');
 			}
 			else
