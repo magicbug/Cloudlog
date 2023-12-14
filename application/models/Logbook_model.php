@@ -1483,22 +1483,28 @@ class Logbook_model extends CI_Model {
 
 
   // Set Paper to sent
-  function paperqsl_update_sent($qso_id, $method) {
-	  if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
+	function paperqsl_update_sent($qso_id, $method) {
+		if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
+			if ($method != '') {
+				$data = array(
+					'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+					'COL_QSL_SENT' => 'Y',
+					'COL_QSL_SENT_VIA' => $method
+				);
+			} else {
+				$data = array(
+					'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+					'COL_QSL_SENT' => 'Y'
+				);
+			}
 
-		  $data = array(
-			  'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-			  'COL_QSL_SENT' => 'Y',
-			  'COL_QSL_SENT_VIA' => $method
-		  );
+			$this->db->where('COL_PRIMARY_KEY', $qso_id);
 
-		  $this->db->where('COL_PRIMARY_KEY', $qso_id);
-
-		  $this->db->update($this->config->item('table_name'), $data);
-	  } else {
-		  return;
-	  }
-  }
+			$this->db->update($this->config->item('table_name'), $data);
+		} else {
+			return;
+		}
+	}
 
 
   // Set Paper to requested
