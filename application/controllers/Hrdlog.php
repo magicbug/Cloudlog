@@ -20,8 +20,9 @@ class Hrdlog extends CI_Controller {
 
         if ($station_ids) {
             foreach ($station_ids as $station) {
+                $hrdlog_username = $station->hrdlog_username;
                 $hrdlog_code = $station->hrdlog_code;
-                if($this->mass_upload_qsos($station->station_id, $hrdlog_code)) {
+                if($this->mass_upload_qsos($station->station_id, $hrdlog_username, $hrdlog_code)) {
                     echo "QSOs have been uploaded to hrdlog.net.";
                     log_message('info', 'QSOs have been uploaded to hrdlog.net.');
                 } else{
@@ -48,7 +49,7 @@ class Hrdlog extends CI_Controller {
      * Function gets all QSOs from given station_id, that are not previously uploaded to hrdlog.
      * Adif is build for each qso, and then uploaded, one at a time
      */
-    function mass_upload_qsos($station_id, $hrdlog_code) {
+    function mass_upload_qsos($station_id, $hrdlog_username, $hrdlog_code) {
         $i = 0;
         $data['qsos'] = $this->logbook_model->get_hrdlog_qsos($station_id);
         $errormessages=array();
@@ -61,9 +62,9 @@ class Hrdlog extends CI_Controller {
                 $adif = $CI->adifhelper->getAdifLine($qso);
 
                 if ($qso->COL_HRDLOG_QSO_UPLOAD_STATUS == 'M') {
-                    $result = $this->logbook_model->push_qso_to_hrdlog($hrdlog_code, $qso->COL_STATION_CALLSIGN,$adif, true);
+                    $result = $this->logbook_model->push_qso_to_hrdlog($hrdlog_username, $hrdlog_code, $adif, true);
                 } else {
-                    $result = $this->logbook_model->push_qso_to_hrdlog($hrdlog_code, $qso->COL_STATION_CALLSIGN,$adif);
+                    $result = $this->logbook_model->push_qso_to_hrdlog($hrdlog_username, $hrdlog_code, $adif);
                 }
 
 		if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') || ($result['status'] == 'duplicate')) ){
@@ -126,10 +127,11 @@ class Hrdlog extends CI_Controller {
         $postData = $this->input->post();
 
         $this->load->model('logbook_model');
-        $result = $this->logbook_model->exists_hrdlog_code($postData['station_id']);
+        $result = $this->logbook_model->exists_hrdlog_credentials($postData['station_id']);
+        $hrdlog_username = $result->hrdlog_username;
         $hrdlog_code = $result->hrdlog_code;
         header('Content-type: application/json');
-        $result = $this->mass_upload_qsos($postData['station_id'], $hrdlog_code);
+        $result = $this->mass_upload_qsos($postData['station_id'], $hrdlog_username, $hrdlog_code);
         if ($result['status'] == 'OK') {
             $stationinfo = $this->stations->stations_with_hrdlog_code();
             $info = $stationinfo->result();
