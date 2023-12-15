@@ -266,14 +266,14 @@
 
             <div class="row">
 				<div class="mb-3 col-sm-3">                                                                                                                                                    
-					<label for="hrdlog_username">HRDLog.net Username</label> 
+					<label for="hrdlog_username"><?php echo lang("station_location_hrdlog_username"); ?></label> 
                     <input type="text" class="form-control" name="hrdlog_username" id="hrdlog_username" aria-describedby="hrdlog_usernameHelp">
-                    <small id="hrdlog_usernameHelp" class="form-text text-muted">Your HRDlog Username</a></small>
+                    <small id="hrdlog_usernameHelp" class="form-text text-muted"><?php echo lang("station_location_hrdlog_username_hint"); ?></a></small>
                 </div>
                 <div class="mb-3 col-sm-3">                                                                                                                                                    
-					<label for="hrdlog_code">HRDLog.net API Code</label> <!-- This does not need Multilanguage Support -->
+					<label for="hrdlog_code"><?php echo lang("station_location_hrdlog_code"); ?></label>
                     <input type="text" class="form-control" name="hrdlog_code" id="hrdlog_code" aria-describedby="hrdlog_codeHelp">
-                    <small id="hrdlog_codeHelp" class="form-text text-muted"><?php echo lang("station_location_hrdlog_hint"); ?></a></small>
+                    <small id="hrdlog_codeHelp" class="form-text text-muted"><?php echo lang("station_location_hrdlog_code_hint"); ?></a></small>
                 </div>
                 <div class="mb-3 col-sm-3">
                     <label for="hrdlogrealtime"><?php echo lang("station_location_hrdlog_realtime_upload"); ?></label>                                                                                                                 

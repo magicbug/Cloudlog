@@ -99,8 +99,11 @@ $lang['station_location_eqsl_defaultqslmsg_hint'] = "Define a default message th
 $lang['station_location_qrz_subscription'] = 'Требуется подписка';
 $lang['station_location_qrz_hint'] = "Ваш ключ API находится на  <a href='https://logbook.qrz.com/logbook' target='_blank'>странице настроек журнала QRZ.com";
 $lang['station_location_qrz_realtime_upload'] = 'Загрузка в журнал QRZ.com в реальном времени';
+$lang['station_location_hrdlog_username'] = "HRDLog.net Username";
+$lang['station_location_hrdlog_username_hint'] = "The username you are registered with at HRDlog.net (usually your callsign).";
+$lang['station_location_hrdlog_code'] = "HRDLog.net API Key";
 $lang['station_location_hrdlog_realtime_upload'] = "Загрузка в журнал HRDLog.net в реальном времени";
-$lang['station_location_hrdlog_hint'] = "Создайте свой код к API наn <a href='http://www.hrdlog.net/EditUser.aspx' target='_blank'>странице профиля пользователя HRDLog.net";
+$lang['station_location_hrdlog_code_hint'] = "Создайте свой код к API наn <a href='http://www.hrdlog.net/EditUser.aspx' target='_blank'>странице профиля пользователя HRDLog.net";
 $lang['station_location_qo100_hint'] = "Создайте свой ключ API на <a href='https://qo100dx.club' target='_blank'>странице вашего профиля в QO-100 Dx Club";
 $lang['station_location_qo100_realtime_upload'] = "Загрузка QO-100 Dx Club в реальном времени";
 $lang['station_location_oqrs_enabled'] = "OQRS включен";
