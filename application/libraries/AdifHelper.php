@@ -12,7 +12,7 @@ class AdifHelper {
             'ANT_PATH',
             'ARRL_SECT',
             'AWARD_GRANTED',
-            'AWARD_SUMMITED', // Typo in DB!
+            'AWARD_SUBMITTED',
             'BAND',
             'BAND_RX',
             'BIOGRAPHY',

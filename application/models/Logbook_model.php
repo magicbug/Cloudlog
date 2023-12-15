@@ -3472,7 +3472,7 @@ function lotw_last_qsl_date($user_id) {
                 'COL_ANT_PATH' => $input_ant_path,
                 'COL_ARRL_SECT' => (!empty($record['arrl_sect'])) ? $record['arrl_sect'] : '',
                 'COL_AWARD_GRANTED' => (!empty($record['award_granted'])) ? $record['award_granted'] : '',
-                'COL_AWARD_SUMMITED' => (!empty($record['award_submitted'])) ? $record['award_submitted'] : '',
+                'COL_AWARD_SUBMITTED' => (!empty($record['award_submitted'])) ? $record['award_submitted'] : '',
                 'COL_BAND' => $band,
                 'COL_BAND_RX' => $band_rx,
                 'COL_BIOGRAPHY' => (!empty($record['biography'])) ? $record['biography'] : '',
