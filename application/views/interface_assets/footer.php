@@ -3088,6 +3088,9 @@ function viewEqsl(picture, callsign) {
                 }
                 $('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').hide();
             });
+            $('.elapse-zone-header-icon').off('click').on('click', elapse_zone_header );
+            $('.help-tooltip').off('click').on('click', help_tooltip ); //.off('mouseleave').on('mouseleave', help_tooltip ) // .off('mouseenter').on('mouseenter', help_tooltip ) 
+            $('.elapse-zone-body div.small.text-muted').off('click').on('click', help_tooltip );
         });
     </script>
 <?php } ?>
