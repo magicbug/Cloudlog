@@ -1,3 +1,5 @@
+var modalloading=false;
+
 $('#band').change(function(){
 	var band = $("#band option:selected").text();
 	if (band != "SAT") {
@@ -124,56 +126,62 @@ function plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_f
 }
 
 function spawnGridsquareModal(loc_4char) {
-    var ajax_data = ({
-       'Searchphrase': loc_4char,
-       'Band': $("#band").val(),
-       'Mode': $("#mode").val(),
-       'Type': 'VUCC'
-    })
-    if (type == 'activated') {
-       ajax_data.searchmode = 'activated';
-    }
-    $.ajax({
-        url: base_url + 'index.php/awards/qso_details_ajax',
-        type: 'post',
-        data: ajax_data,
-        success: function (html) {
-            BootstrapDialog.show({
-                title: lang_general_word_qso_data,
-                cssClass: 'qso-dialog',
-                size: BootstrapDialog.SIZE_WIDE,
-                nl2br: false,
-                message: html,
-                onshown: function(dialog) {
-
-                    $('[data-bs-toggle="tooltip"]').tooltip();
-                    $('.contacttable').DataTable({
-                            "pageLength": 25,
-                            responsive: false,
-                            ordering: false,
-                            "scrollY":        "550px",
-                            "scrollCollapse": true,
-                            "paging":         false,
-                            "scrollX": true,
-                            dom: 'Bfrtip',
-                            buttons: [
-                                'csv'
-                            ]
-                        });
-                            // change color of csv-button if dark mode is chosen
-                    if (isDarkModeTheme()) {
-                        $(".buttons-csv").css("color", "white");
-                    }
-                    },
-                buttons: [{
-                    label: lang_admin_close,
-                    action: function(dialogItself) {
-                        dialogItself.close();
-                    }
-                }]
-            });
-        }
-    });
+	if (!(modalloading)) {
+		var ajax_data = ({
+			'Searchphrase': loc_4char,
+			'Band': $("#band").val(),
+			'Mode': $("#mode").val(),
+			'Type': 'VUCC'
+		})
+		if (type == 'activated') {
+			ajax_data.searchmode = 'activated';
+		}
+		modalloading=true;
+		$.ajax({
+			url: base_url + 'index.php/awards/qso_details_ajax',
+			type: 'post',
+			data: ajax_data,
+			success: function (html) {
+				BootstrapDialog.show({
+					title: lang_general_word_qso_data,
+					cssClass: 'qso-dialog',
+					size: BootstrapDialog.SIZE_WIDE,
+					nl2br: false,
+					message: html,
+					onshown: function(dialog) {
+						modalloading=false;
+						$('[data-bs-toggle="tooltip"]').tooltip();
+						$('.contacttable').DataTable({
+							"pageLength": 25,
+							responsive: false,
+							ordering: false,
+							"scrollY":        "550px",
+							"scrollCollapse": true,
+							"paging":         false,
+							"scrollX": true,
+							dom: 'Bfrtip',
+							buttons: [
+								'csv'
+							]
+						});
+						// change color of csv-button if dark mode is chosen
+						if (isDarkModeTheme()) {
+							$(".buttons-csv").css("color", "white");
+						}
+					},
+					buttons: [{
+						label: lang_admin_close,
+						action: function(dialogItself) {
+							dialogItself.close();
+						}
+					}]
+				});
+			},
+			error: function(e) {
+				modalloading=false;
+			}
+		});
+	}
 }
 
 function clearMarkers() {
