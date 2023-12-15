@@ -4,7 +4,6 @@
 
 L.Maidenhead = L.LayerGroup.extend({
 
-
 	options: {
 		// Line and label color
 		color: 'rgba(255, 0, 0, 0.4)',
@@ -131,7 +130,10 @@ L.Maidenhead = L.LayerGroup.extend({
 		}
 		if (typeof gridsquaremap !== 'undefined' && gridsquaremap == true) {
 			marker.on('click', function(event) {
+				if (!(modalloading)) {
+				modalloading=true;
 				spawnGridsquareModal(locator);
+				}
 			});
 		}
 		return marker;

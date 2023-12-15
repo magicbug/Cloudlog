@@ -145,7 +145,7 @@ function spawnGridsquareModal(loc_4char) {
                 nl2br: false,
                 message: html,
                 onshown: function(dialog) {
-
+		    modalloading=false;
                     $('[data-bs-toggle="tooltip"]').tooltip();
                     $('.contacttable').DataTable({
                             "pageLength": 25,
@@ -172,7 +172,10 @@ function spawnGridsquareModal(loc_4char) {
                     }
                 }]
             });
-        }
+        },
+	error: function(e) {
+		modalloading=false;
+	}
     });
 }
 
