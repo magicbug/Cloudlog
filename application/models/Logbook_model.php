@@ -2539,6 +2539,8 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	    $QSLBreakdown['eQSL_Received'] =  0;
 	    $QSLBreakdown['LoTW_Sent'] =  0;
 	    $QSLBreakdown['LoTW_Received'] = 0;
+	    $QSLBreakdown['QRZ_Sent'] = 0;
+	    $QSLBreakdown['QRZ_Received'] = 0;
 	    $QSLBreakdown['QSL_Sent_today'] = 0;
 	    $QSLBreakdown['QSL_Received_today'] =  0;
 	    $QSLBreakdown['QSL_Requested_today'] =  0;
@@ -2546,6 +2548,8 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	    $QSLBreakdown['eQSL_Received_today'] =  0;
 	    $QSLBreakdown['LoTW_Sent_today'] =  0;
 	    $QSLBreakdown['LoTW_Received_today'] = 0;
+	    $QSLBreakdown['QRZ_Sent_today'] = 0;
+	    $QSLBreakdown['QRZ_Received_today'] = 0;
 
 	    return $QSLBreakdown;
 	}
@@ -2557,6 +2561,8 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	    $QSLBreakdown['eQSL_Received'] =  0;
 	    $QSLBreakdown['LoTW_Sent'] =  0;
 	    $QSLBreakdown['LoTW_Received'] = 0;
+	    $QSLBreakdown['QRZ_Sent'] = 0;
+	    $QSLBreakdown['QRZ_Received'] = 0;
 	    $QSLBreakdown['QSL_Sent_today'] = 0;
 	    $QSLBreakdown['QSL_Received_today'] =  0;
 	    $QSLBreakdown['QSL_Requested_today'] =  0;
@@ -2564,6 +2570,8 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	    $QSLBreakdown['eQSL_Received_today'] =  0;
 	    $QSLBreakdown['LoTW_Sent_today'] =  0;
 	    $QSLBreakdown['LoTW_Received_today'] = 0;
+	    $QSLBreakdown['QRZ_Sent_today'] = 0;
+	    $QSLBreakdown['QRZ_Received_today'] = 0;
 
 	    return $QSLBreakdown;
       }
@@ -3472,7 +3480,7 @@ function lotw_last_qsl_date($user_id) {
                 'COL_ANT_PATH' => $input_ant_path,
                 'COL_ARRL_SECT' => (!empty($record['arrl_sect'])) ? $record['arrl_sect'] : '',
                 'COL_AWARD_GRANTED' => (!empty($record['award_granted'])) ? $record['award_granted'] : '',
-                'COL_AWARD_SUMMITED' => (!empty($record['award_submitted'])) ? $record['award_submitted'] : '',
+                'COL_AWARD_SUBMITTED' => (!empty($record['award_submitted'])) ? $record['award_submitted'] : '',
                 'COL_BAND' => $band,
                 'COL_BAND_RX' => $band_rx,
                 'COL_BIOGRAPHY' => (!empty($record['biography'])) ? $record['biography'] : '',
