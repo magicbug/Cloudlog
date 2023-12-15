@@ -147,7 +147,6 @@
 </div>
 <script>
 var gridsquaremap = true;
-var modalloading = false;
 var type = "worked";
 <?php if ($visitor == true) { ?>
 var visitor = true;

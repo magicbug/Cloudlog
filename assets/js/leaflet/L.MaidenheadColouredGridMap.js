@@ -130,10 +130,7 @@ L.Maidenhead = L.LayerGroup.extend({
 		}
 		if (typeof gridsquaremap !== 'undefined' && gridsquaremap == true) {
 			marker.on('click', function(event) {
-				if (!(modalloading)) {
-				modalloading=true;
 				spawnGridsquareModal(locator);
-				}
 			});
 		}
 		return marker;
