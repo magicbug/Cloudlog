@@ -15,7 +15,7 @@ class Migration_award_submitted_typo extends CI_Migration {
                 $this->db->query(
                         'ALTER TABLE ' .
                         $this->db->escape_identifiers($this->config->item('table_name')) .
-                        ' RENAME COLUMN COL_AWARD_SUMMITED TO COL_AWARD_SUBMITTED'
+                        ' CHANGE COL_AWARD_SUMMITED COL_AWARD_SUBMITTED VARCHAR(255)'
                 );
         }
 
@@ -24,7 +24,7 @@ class Migration_award_submitted_typo extends CI_Migration {
                 $this->db->query(
                         'ALTER TABLE ' .
                         $this->db->escape_identifiers($this->config->item('table_name')) .
-                        ' RENAME COLUMN COL_AWARD_SUBMITTED TO COL_AWARD_SUMMITED'
+                        ' CHANGE COL_AWARD_SUBMITTED COL_AWARD_SUMMITED VARCHAR(255)'
                 );
         }
 }
