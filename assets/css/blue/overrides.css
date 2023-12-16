@@ -1,6 +1,9 @@
 /*!
  * No overrides for the default theme as it aligns with general.css
 */
+:root {
+	--cl-bg: #2b3e50;
+}
 
 body {
 	background-color: #2b3e50;
