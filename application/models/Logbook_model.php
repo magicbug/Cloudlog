@@ -797,6 +797,10 @@ class Logbook_model extends CI_Model {
 			  $result['status'] = 'auth_error';
 			  $result['message'] = $content;
 			  return $result;
+		  } elseif (stristr($content,'Invalid token</error>')) {
+			  $result['status'] = 'auth_error';
+			  $result['message'] = $content;
+			  return $result;
 		  } else {
 			  $result['status'] = 'error';
 			  $result['message'] = $content;
