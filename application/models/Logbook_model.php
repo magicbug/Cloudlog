@@ -2541,6 +2541,8 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	    $QSLBreakdown['eQSL_Received'] =  0;
 	    $QSLBreakdown['LoTW_Sent'] =  0;
 	    $QSLBreakdown['LoTW_Received'] = 0;
+	    $QSLBreakdown['QRZ_Sent'] = 0;
+	    $QSLBreakdown['QRZ_Received'] = 0;
 	    $QSLBreakdown['QSL_Sent_today'] = 0;
 	    $QSLBreakdown['QSL_Received_today'] =  0;
 	    $QSLBreakdown['QSL_Requested_today'] =  0;
@@ -2548,6 +2550,8 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	    $QSLBreakdown['eQSL_Received_today'] =  0;
 	    $QSLBreakdown['LoTW_Sent_today'] =  0;
 	    $QSLBreakdown['LoTW_Received_today'] = 0;
+	    $QSLBreakdown['QRZ_Sent_today'] = 0;
+	    $QSLBreakdown['QRZ_Received_today'] = 0;
 
 	    return $QSLBreakdown;
 	}
@@ -2559,6 +2563,8 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	    $QSLBreakdown['eQSL_Received'] =  0;
 	    $QSLBreakdown['LoTW_Sent'] =  0;
 	    $QSLBreakdown['LoTW_Received'] = 0;
+	    $QSLBreakdown['QRZ_Sent'] = 0;
+	    $QSLBreakdown['QRZ_Received'] = 0;
 	    $QSLBreakdown['QSL_Sent_today'] = 0;
 	    $QSLBreakdown['QSL_Received_today'] =  0;
 	    $QSLBreakdown['QSL_Requested_today'] =  0;
@@ -2566,6 +2572,8 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
 	    $QSLBreakdown['eQSL_Received_today'] =  0;
 	    $QSLBreakdown['LoTW_Sent_today'] =  0;
 	    $QSLBreakdown['LoTW_Received_today'] = 0;
+	    $QSLBreakdown['QRZ_Sent_today'] = 0;
+	    $QSLBreakdown['QRZ_Received_today'] = 0;
 
 	    return $QSLBreakdown;
       }
