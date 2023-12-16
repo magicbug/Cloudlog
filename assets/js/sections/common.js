@@ -574,17 +574,6 @@ function qso_set_eqsl_qslmsg(station_id, force_diff_to_origin=false, object='') 
     });
 }
 
-// [ELAPSE HEADER] function show/hide //
-function elapse_zone_header() {
-	if ($(this).find('i').hasClass('fa-caret-down')) {
-		$('.elapse-zone-body[data-zone="'+ $(this).closest('.elapse-zone-header').attr('data-zone') +'"]').hide();
-		$(this).find('i').removeClass('fa-caret-down').addClass('fa-caret-left');
-	} else {
-        $('.elapse-zone-body[data-zone="'+ $(this).closest('.elapse-zone-header').attr('data-zone') +'"]').show();
-		$(this).find('i').removeClass('fa-caret-left').addClass('fa-caret-down');
-	}
-}
-
 // [HELP ICON] function show/hide //
 function help_tooltip() {
 	if ($(this).closest('div').find('div.small.text-muted').is(":hidden")) {

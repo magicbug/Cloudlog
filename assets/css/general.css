@@ -745,21 +745,13 @@ table.dataTable tfoot td {
 	overflow-x: unset;
 }
 
-/* Header zone (elapsable) */
-.elapse-zone-header {
-	margin-top:1rem;
-	padding:0.5rem 1rem !important;
+/* Header zone (accordion) */
+.user_edit .accordion-button:not(.collapsed) {
 	background-color: rgba(255, 255, 255, 0.075)!important;
 	color: var(--bs-card-cap-color);
-	padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
-	border-radius: var(--bs-card-border-radius);
 }
-.elapse-zone-header i {
-	cursor: pointer;
-}
-.elapse-zone-body {
-	border: 1px solid rgba(255, 255, 255, 0.075)!important;
-	padding: 0.5rem !important;
+.user_edit .accordion-body {
+	background-color: transparent;
 }
 .elapse-zone-body div.small.text-muted {
 	display:none;
