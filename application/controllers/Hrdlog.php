@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /*
 	Controller to interact with the hrdlog.net API
@@ -22,10 +22,10 @@ class Hrdlog extends CI_Controller {
             foreach ($station_ids as $station) {
                 $hrdlog_username = $station->hrdlog_username;
                 $hrdlog_code = $station->hrdlog_code;
-                if($this->mass_upload_qsos($station->station_id, $hrdlog_username, $hrdlog_code)) {
+                if ($this->mass_upload_qsos($station->station_id, $hrdlog_username, $hrdlog_code)) {
                     echo "QSOs have been uploaded to hrdlog.net.";
                     log_message('info', 'QSOs have been uploaded to hrdlog.net.');
-                } else{
+                } else {
                     echo "No QSOs found for upload.";
                     log_message('info', 'No QSOs found for upload.');
                 }
@@ -52,9 +52,9 @@ class Hrdlog extends CI_Controller {
     function mass_upload_qsos($station_id, $hrdlog_username, $hrdlog_code) {
         $i = 0;
         $data['qsos'] = $this->logbook_model->get_hrdlog_qsos($station_id);
-        $errormessages=array();
+        $errormessages = array();
 
-        $CI =& get_instance();
+        $CI = &get_instance();
         $CI->load->library('AdifHelper');
 
         if ($data['qsos']) {
@@ -67,25 +67,27 @@ class Hrdlog extends CI_Controller {
                     $result = $this->logbook_model->push_qso_to_hrdlog($hrdlog_username, $hrdlog_code, $adif);
                 }
 
-		if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') || ($result['status'] == 'duplicate')) ){
+                if (($result['status'] == 'OK') || (($result['status'] == 'error') || ($result['status'] == 'duplicate'))) {
                     $this->markqso($qso->COL_PRIMARY_KEY);
                     $i++;
-		} elseif ((substr($result['status'],0,11)  == 'auth_error')) {
+                    $result['status'] = 'OK';
+                } elseif ((substr($result['status'], 0, 11)  == 'auth_error')) {
                     log_message('error', 'hrdlog upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
-                    log_message('error', 'hrdlog upload failed with the following message: ' .$result['message']);
-                    log_message('error', 'hrdlog upload stopped for Station_ID: ' .$station_id);
+                    log_message('error', 'hrdlog upload failed with the following message: ' . $result['message']);
+                    log_message('error', 'hrdlog upload stopped for Station_ID: ' . $station_id);
                     $errormessages[] = $result['message'] . 'Invalid HRDLog-Code, stopped at Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
-		    break; /* If key is invalid, immediate stop syncing for more QSOs of this station */
+                    $result['status'] = 'Error';
+                    break; /* If key is invalid, immediate stop syncing for more QSOs of this station */
                 } else {
                     log_message('error', 'hrdlog upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
-                    log_message('error', 'hrdlog upload failed with the following message: ' .$result['message']);
+                    log_message('error', 'hrdlog upload failed with the following message: ' . $result['message']);
+                    $result['status'] = 'Error';
                     $errormessages[] = $result['message'] . ' Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
                 }
             }
-            $result['status'] = 'OK';
             $result['count'] = $i;
             $result['errormessages'] = $errormessages;
-        return $result;
+            return $result;
         } else {
             $result['status'] = 'Error';
             $result['count'] = $i;
@@ -109,7 +111,7 @@ class Hrdlog extends CI_Controller {
 
         $data['page_title'] = "HRDlog.net Logbook";
 
-		$data['station_profiles'] = $this->stations->all_of_user();
+        $data['station_profiles'] = $this->stations->all_of_user();
         $data['station_profile'] = $this->stations->stations_with_hrdlog_code();
 
         $this->load->view('interface_assets/header', $data);
@@ -149,25 +151,25 @@ class Hrdlog extends CI_Controller {
         }
     }
 
-	public function mark_hrdlog() {
-		// Set memory limit to unlimited to allow heavy usage
-		ini_set('memory_limit', '-1');
+    public function mark_hrdlog() {
+        // Set memory limit to unlimited to allow heavy usage
+        ini_set('memory_limit', '-1');
 
-		$station_id = $this->security->xss_clean($this->input->post('station_profile'));
+        $station_id = $this->security->xss_clean($this->input->post('station_profile'));
 
-		$this->load->model('adif_data');
+        $this->load->model('adif_data');
 
-		$data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'), $station_id);
+        $data['qsos'] = $this->adif_data->export_custom($this->input->post('from'), $this->input->post('to'), $station_id);
 
-		$this->load->model('logbook_model');
+        $this->load->model('logbook_model');
 
-		foreach ($data['qsos']->result() as $qso)
+        foreach ($data['qsos']->result() as $qso)
 		{
-			$this->logbook_model->mark_hrdlog_qsos_sent($qso->COL_PRIMARY_KEY);
-		}
+            $this->logbook_model->mark_hrdlog_qsos_sent($qso->COL_PRIMARY_KEY);
+        }
 
-		$this->load->view('interface_assets/header', $data);
-		$this->load->view('hrdlog/mark_hrdlog', $data);
-		$this->load->view('interface_assets/footer');
-	}
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('hrdlog/mark_hrdlog', $data);
+        $this->load->view('interface_assets/footer');
+    }
 }
