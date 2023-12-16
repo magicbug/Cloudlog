@@ -85,7 +85,7 @@ class Hrdlog extends CI_Controller {
 			    }
 		    }
 		    if ($i == 0) {
-			    $result['status']='OK';
+			    $result['status']='Error';
 		    }
 		    $result['count'] = $i;
 		    $result['errormessages'] = $errormessages;
@@ -147,7 +147,7 @@ class Hrdlog extends CI_Controller {
             echo json_encode($data);
         } else {
             $data['status'] = 'Error';
-            $data['info'] = 'Error: No QSOs found to upload.';
+            $data['info'] = 'No QSOs found to upload.';
             $data['errormessages'] = $result['errormessages'];
             echo json_encode($data);
         }

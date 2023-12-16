@@ -24,7 +24,7 @@ function ExportHrd(station_id) {
 				$(".card-body").append('<div class="alert alert-success" role="alert">' + data.infomessage + '</div>');
 			}
 			else {
-				$(".card-body").append('<div class="alert alert-danger" role="alert">' + data.info + '</div>');
+				$(".card-body").append('<div class="alert alert-info" role="alert">' + data.info + '</div>');
 			}
 
 			if (data.errormessages.length > 0) {
