@@ -278,7 +278,7 @@ class Logbook_model extends CI_Model {
         $data['COL_MY_GRIDSQUARE'] = strtoupper(trim($station['station_gridsquare']));
       }
 
-    if ($this->exists_hrdlog_code($station_id)) {
+    if ($this->exists_hrdlog_credentials($station_id)) {
         $data['COL_HRDLOG_QSO_UPLOAD_STATUS'] = 'N';
     }
 
@@ -602,15 +602,15 @@ class Logbook_model extends CI_Model {
 		}
 
 		$result = '';
-		$result = $this->exists_hrdlog_code($data['station_id']);
+		$result = $this->exists_hrdlog_credentials($data['station_id']);
 		// Push qso to hrdlog if code is set, and realtime upload is enabled, and we're not importing an adif-file
-		if (isset($result->hrdlog_code) && $result->hrdlogrealtime == 1) {
+		if (isset($result->hrdlog_code) && isset($result->hrdlog_username) && $result->hrdlogrealtime == 1) {
 			$CI =& get_instance();
 			$CI->load->library('AdifHelper');
 			$qso = $this->get_qso($last_id,true)->result();
 
 			$adif = $CI->adifhelper->getAdifLine($qso[0]);
-			$result = $this->push_qso_to_hrdlog($result->hrdlog_code, $data['COL_STATION_CALLSIGN'], $adif);
+			$result = $this->push_qso_to_hrdlog($result->hrdlog_username, $result->hrdlog_code, $adif);
 			if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') || ($result['status'] == 'duplicate') || ($result['status'] == 'auth_error') )){
 				$this->mark_hrdlog_qsos_sent($last_id);
 			}
@@ -652,10 +652,10 @@ class Logbook_model extends CI_Model {
   }
 
   /*
-   * Function checks if a HRDLog Code exists in the table with the given station id
+   * Function checks if a HRDLog Code and Username exists in the table with the given station id
    */
-  function exists_hrdlog_code($station_id) {
-	  $sql = 'select hrdlog_code, hrdlogrealtime from station_profile
+  function exists_hrdlog_credentials($station_id) {
+	  $sql = 'select hrdlog_username, hrdlog_code, hrdlogrealtime from station_profile
 		  where station_id = ?';
 
 	  $query = $this->db->query($sql,$station_id);
@@ -762,7 +762,7 @@ class Logbook_model extends CI_Model {
    * Function uploads a QSO to HRDLog with the API given.
    * $adif contains a line with the QSO in the ADIF format. QSO ends with an <EOR>
    */
-  function push_qso_to_hrdlog($apikey, $station_callsign, $adif, $replaceoption = false) {
+  function push_qso_to_hrdlog($hrdlog_username, $apikey, $adif, $replaceoption = false) {
 	  $url = 'https://robot.hrdlog.net/newentry.aspx';
 
 	  $post_data['Code'] = $apikey;
@@ -772,7 +772,7 @@ class Logbook_model extends CI_Model {
 	  }
 	  $post_data['ADIFData'] = $adif;
 
-	  $post_data['Callsign'] = $station_callsign;
+	  $post_data['Callsign'] = $hrdlog_username;
 
 
 	  $post_encoded=http_build_query($post_data);
@@ -794,6 +794,10 @@ class Logbook_model extends CI_Model {
 			  $result['message'] = $content;
 			  return $result;
 		  } elseif (stristr($content,'Unknown user</error>')) {
+			  $result['status'] = 'auth_error';
+			  $result['message'] = $content;
+			  return $result;
+		  } elseif (stristr($content,'Invalid token</error>')) {
 			  $result['status'] = 'auth_error';
 			  $result['message'] = $content;
 			  return $result;
@@ -1213,7 +1217,7 @@ class Logbook_model extends CI_Model {
 		  'COL_CNTY' => $uscounty
 	  );
 
-	  if ($this->exists_hrdlog_code($data['station_id'])) {
+	  if ($this->exists_hrdlog_credentials($data['station_id'])) {
 		  $data['COL_HRDLOG_QSO_UPLOAD_STATUS'] = 'M';
 	  }
 
@@ -1745,9 +1749,11 @@ class Logbook_model extends CI_Model {
      * Function returns all the station_id's with HRDLOG Code
      */
     function get_station_id_with_hrdlog_code() {
-        $sql = 'select station_id, hrdlog_code from station_profile
-            where coalesce(hrdlog_code, "") <> ""';
-
+        $sql = 'SELECT station_id, hrdlog_username, hrdlog_code 
+                FROM station_profile
+                WHERE coalesce(hrdlog_username, "") <> "" 
+                AND coalesce(hrdlog_code, "") <> ""';
+        
         $query = $this->db->query($sql);
 
         $result = $query->result();

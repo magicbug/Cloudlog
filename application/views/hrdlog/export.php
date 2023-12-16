@@ -1,5 +1,5 @@
 
-<div class="container adif">
+<div class="container adif" id="hrdlog_export">
 
     <h2><?php echo $page_title; ?></h2>
 
@@ -53,7 +53,7 @@
 
         }
         else {
-        echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
+        echo '<div class="alert alert-danger" role="alert">No Station Locations with valid HRDlog-Settings found. Check the HRDlog Credentials in the Station Location Settings!</div>';
         }
         ?>
 
