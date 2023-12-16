@@ -32,7 +32,7 @@ class Migration_create_dxpedition_table extends CI_Migration
                 ),
                 'callsign' => array(
                     'type' => 'VARCHAR',
-                    'constraint' => '255',
+                    'constraint' => '50',
                     'null' => FALSE,
                 ),
                 'country' => array(

@@ -101,6 +101,7 @@ class Stations extends CI_Model {
 			'station_itu' =>  xss_clean($this->input->post('station_itu', true)),
 			'state' =>  $state,
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
+			'hrdlog_username' => xss_clean($this->input->post('hrdlog_username', true)),
 			'hrdlog_code' => xss_clean($this->input->post('hrdlog_code', true)),
 			'hrdlogrealtime' => xss_clean($this->input->post('hrdlogrealtime', true)),
 			'clublogrealtime' => xss_clean($this->input->post('clublogrealtime', true)),
@@ -150,6 +151,7 @@ class Stations extends CI_Model {
 			'station_itu' => xss_clean($this->input->post('station_itu', true)),
 			'state' => $state,
 			'eqslqthnickname' => xss_clean($this->input->post('eqslnickname', true)),
+			'hrdlog_username' => xss_clean($this->input->post('hrdlog_username', true)),
 			'hrdlog_code' => xss_clean($this->input->post('hrdlog_code', true)),
 			'hrdlogrealtime' => xss_clean($this->input->post('hrdlogrealtime', true)),
 			'clublogrealtime' => xss_clean($this->input->post('clublogrealtime', true)),
@@ -363,58 +365,58 @@ class Stations extends CI_Model {
     }
 
     function stations_with_hrdlog_code() {
-       $sql = "select station_profile.station_id, station_profile.station_profile_name, station_profile.station_callsign, modc.modcount, notc.notcount, totc.totcount
-                from station_profile
-                left outer join (
-                            select count(*) modcount, station_id
-                    from ". $this->config->item('table_name') .
-                    " where COL_HRDLOG_QSO_UPLOAD_STATUS = 'M'
+       $sql = "SELECT station_profile.station_id, station_profile.station_profile_name, station_profile.station_callsign, modc.modcount, notc.notcount, totc.totcount
+                FROM station_profile
+                LEFT OUTER JOIN (
+                            SELECT count(*) modcount, station_id
+                    FROM ". $this->config->item('table_name') .
+                    " WHERE COL_HRDLOG_QSO_UPLOAD_STATUS = 'M'
                     group by station_id
                 ) as modc on station_profile.station_id = modc.station_id
-                left outer join (
-                            select count(*) notcount, station_id
-                    from " . $this->config->item('table_name') .
-                    " where (coalesce(COL_HRDLOG_QSO_UPLOAD_STATUS, '') = ''
+                LEFT OUTER JOIN (
+                            SELECT count(*) notcount, station_id
+                    FROM " . $this->config->item('table_name') .
+                    " WHERE (coalesce(COL_HRDLOG_QSO_UPLOAD_STATUS, '') = ''
                     or COL_HRDLOG_QSO_UPLOAD_STATUS = 'N')
                     group by station_id
                 ) as notc on station_profile.station_id = notc.station_id
-                left outer join (
-                    select count(*) totcount, station_id
-                    from " . $this->config->item('table_name') .
-                    " where COL_HRDLOG_QSO_UPLOAD_STATUS = 'Y'
+                LEFT OUTER JOIN (
+                    SELECT count(*) totcount, station_id
+                    FROM " . $this->config->item('table_name') .
+                    " WHERE COL_HRDLOG_QSO_UPLOAD_STATUS = 'Y'
                     group by station_id
                 ) as totc on station_profile.station_id = totc.station_id
-                where coalesce(station_profile.hrdlog_code, '') <> ''
-				 and station_profile.user_id = " . $this->session->userdata('user_id');
+                WHERE coalesce(station_profile.hrdlog_code, '') <> '' AND coalesce(station_profile.hrdlog_username, '') <> ''
+				 AND station_profile.user_id = " . $this->session->userdata('user_id');
         $query = $this->db->query($sql);
 
         return $query;
     }
 
     function stations_with_qrz_api_key() {
-       $sql = "select station_profile.station_id, station_profile.station_profile_name, station_profile.station_callsign, modc.modcount, notc.notcount, totc.totcount
-                from station_profile
-                left outer join (
-                            select count(*) modcount, station_id
-                    from ". $this->config->item('table_name') .
-                    " where COL_QRZCOM_QSO_UPLOAD_STATUS = 'M'
+       $sql = "SELECT station_profile.station_id, station_profile.station_profile_name, station_profile.station_callsign, modc.modcount, notc.notcount, totc.totcount
+                FROM station_profile
+                LEFT OUTER JOIN (
+                            SELECT count(*) modcount, station_id
+                    FROM ". $this->config->item('table_name') .
+                    " WHERE COL_QRZCOM_QSO_UPLOAD_STATUS = 'M'
                     group by station_id
                 ) as modc on station_profile.station_id = modc.station_id
-                left outer join (
-                            select count(*) notcount, station_id
-                    from " . $this->config->item('table_name') .
-                    " where (coalesce(COL_QRZCOM_QSO_UPLOAD_STATUS, '') = ''
+                LEFT OUTER JOIN (
+                            SELECT count(*) notcount, station_id
+                    FROM " . $this->config->item('table_name') .
+                    " WHERE (coalesce(COL_QRZCOM_QSO_UPLOAD_STATUS, '') = ''
                     or COL_QRZCOM_QSO_UPLOAD_STATUS = 'N')
                     group by station_id
                 ) as notc on station_profile.station_id = notc.station_id
-                left outer join (
-                    select count(*) totcount, station_id
-                    from " . $this->config->item('table_name') .
-                    " where COL_QRZCOM_QSO_UPLOAD_STATUS = 'Y'
+                LEFT OUTER JOIN (
+                    SELECT count(*) totcount, station_id
+                    FROM " . $this->config->item('table_name') .
+                    " WHERE COL_QRZCOM_QSO_UPLOAD_STATUS = 'Y'
                     group by station_id
                 ) as totc on station_profile.station_id = totc.station_id
-                where coalesce(station_profile.qrzapikey, '') <> ''
-				 and station_profile.user_id = " . $this->session->userdata('user_id');
+                WHERE coalesce(station_profile.qrzapikey, '') <> ''
+				 AND station_profile.user_id = " . $this->session->userdata('user_id');
         $query = $this->db->query($sql);
 
         return $query;
