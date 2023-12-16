@@ -1,6 +1,3 @@
-<?php
-	$icon_help = "<i class='fa fa-question-circle help-tooltip'></i>";
-?>
 <div class="container">
 	<h3>
 	  <?php echo lang('account_edit_account'); ?>
@@ -59,7 +56,7 @@
 									</div>
 									
 									<div class="mb-3">
-										<label><?php echo lang('account_password'); ?><?php echo $icon_help; ?></label>
+										<label><?php echo lang('account_password'); ?></label>
 										<input class="form-control" type="password" name="user_password" />
 										<?php if(isset($password_error)) { echo "<div class=\"small error\">".$password_error."</div>"; } else { ?>
 										<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div>
@@ -148,7 +145,7 @@
 								<div class="card-body">
 									<?php if ($this->config->item('cl_multilanguage')) { ?>
 										<div class="mb-3">
-											<label for="language"><?php echo lang('account_cloudlog_language'); ?><?php echo $icon_help; ?></label>
+											<label for="language"><?php echo lang('account_cloudlog_language'); ?></label>
 											<?php
 											foreach($existing_languages as $lang){
 												$options[$lang] = ucfirst($lang);
@@ -165,7 +162,7 @@
 									</div>
 
 									<div class="mb-3">
-										<label for="SelectDateFormat"><?php echo lang('account_date_format'); ?><?php echo $icon_help; ?></label>
+										<label for="SelectDateFormat"><?php echo lang('account_date_format'); ?></label>
 										<select name="user_date_format" class="form-select" id="SelectDateFormat" aria-describedby="SelectDateFormatHelp">
 											<option value="d/m/y" <?php if($user_date_format == "d/m/y") { echo "selected=\"selected\""; } ?>><?php echo date('d/m/y'); ?></option>
 											<option value="d/m/Y" <?php if($user_date_format == "d/m/Y") { echo "selected=\"selected\""; } ?>><?php echo date('d/m/Y'); ?></option>
@@ -181,7 +178,7 @@
 									</div>
 
 									<div class="mb-3">
-										<label for="user_measurement_base"><?php echo lang('account_measurement_preferences'); ?><?php echo $icon_help; ?></label>
+										<label for="user_measurement_base"><?php echo lang('account_measurement_preferences'); ?></label>
 										<select class="form-select" id="user_measurement_base" name="user_measurement_base" aria-describedby="user_measurement_base_Help" required>
 											<option value ''></option>
 											<option value='K' <?php if($user_measurement_base == "K") { echo "selected=\"selected\""; } ?>>Kilometers</option>
@@ -331,7 +328,7 @@
 								<div class="card-header">QSO Page Settings</div>
 								<div class="card-body">
 									<div class="mb-3">
-										<label for="logendtime"><?php echo lang('account_log_end_time'); ?><?php echo $icon_help; ?></label>
+										<label for="logendtime"><?php echo lang('account_log_end_time'); ?></label>
 										<select class="form-select" id="logendtimes" name="user_qso_end_times">
 											<option value="1" <?php if ($user_qso_end_times == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_qso_end_times == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -351,7 +348,7 @@
 
 									<hr />
 									<div class="mb-3">
-										<label for="qthlookup"><?php echo lang('account_location_auto_lookup'); ?><?php echo $icon_help; ?></label>
+										<label for="qthlookup"><?php echo lang('account_location_auto_lookup'); ?></label>
 										<select class="form-select" id="qthlookup" name="user_qth_lookup">
 											<option value="1" <?php if ($user_qth_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_qth_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -360,7 +357,7 @@
 									</div>
 
 									<div class="mb-3">
-										<label for="sotalookup"><?php echo lang('account_sota_auto_lookup_gridsquare_and_name_for_summit'); ?><?php echo $icon_help; ?></label>
+										<label for="sotalookup"><?php echo lang('account_sota_auto_lookup_gridsquare_and_name_for_summit'); ?></label>
 										<select class="form-select" id="sotalookup" name="user_sota_lookup">
 											<option value="1" <?php if ($user_sota_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_sota_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -369,7 +366,7 @@
 									</div>
 
 									<div class="mb-3">
-										<label for="wwfflookup"><?php echo lang('account_wwff_auto_lookup_gridsquare_and_name_for_reference'); ?><?php echo $icon_help; ?></label>
+										<label for="wwfflookup"><?php echo lang('account_wwff_auto_lookup_gridsquare_and_name_for_reference'); ?></label>
 										<select class="form-select" id="wwfflookup" name="user_wwff_lookup">
 											<option value="1" <?php if ($user_wwff_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_wwff_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -378,7 +375,7 @@
 									</div>
 
 									<div class="mb-3">
-										<label for="potalookup"><?php echo lang('account_pota_auto_lookup_gridsquare_and_name_for_park'); ?><?php echo $icon_help; ?></label>
+										<label for="potalookup"><?php echo lang('account_pota_auto_lookup_gridsquare_and_name_for_park'); ?></label>
 										<select class="form-select" id="potalookup" name="user_pota_lookup">
 											<option value="1" <?php if ($user_pota_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_pota_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -405,7 +402,7 @@
 									</div>
 
 									<div class="mb-3">
-										<label for="quicklog"><?php echo lang('account_quicklog_feature'); ?><?php echo $icon_help; ?></label>
+										<label for="quicklog"><?php echo lang('account_quicklog_feature'); ?></label>
 										<select class="form-select" id="quicklog" name="user_quicklog">
 											<option value="1" <?php if ($user_quicklog == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_quicklog == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -414,7 +411,7 @@
 									</div>
 
 									<div class="mb-3">
-										<label for="quicklog_enter"><?php echo lang('account_quicklog_enter'); ?><?php echo $icon_help; ?></label>
+										<label for="quicklog_enter"><?php echo lang('account_quicklog_enter'); ?></label>
 										<select class="form-select" id="quicklog_enter" name="user_quicklog_enter">
 											<option value="0" <?php if ($user_quicklog_enter == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('account_quicklog_enter_log'); ?></option>
 											<option value="1" <?php if ($user_quicklog_enter == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('account_quicklog_enter_search'); ?></option>
@@ -619,7 +616,7 @@
 									</div>
 
 									<div class="mb-3">
-										<label><?php echo lang('account_logbook_of_the_world_lotw_password'); ?><?php echo $icon_help; ?></label>
+										<label><?php echo lang('account_logbook_of_the_world_lotw_password'); ?></label>
 										<input class="form-control" type="password" name="user_lotw_password" />
 											<?php if(isset($lotwpassword_error)) { echo "<div class=\"small error\">".$lotwpassword_error."</div>"; } else { ?>
 											<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div>
@@ -641,7 +638,7 @@
 									</div>
 
 									<div class="mb-3">
-										<label><?php echo lang('account_eqslcc_password'); ?><?php echo $icon_help; ?></label>
+										<label><?php echo lang('account_eqslcc_password'); ?></label>
 										<input class="form-control" type="password" name="user_eqsl_password" />
 											<?php if(isset($eqslpassword_error)) { echo "<div class=\"small error\">".$eqslpassword_error."</div>"; } else { ?>
 											<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div>
@@ -657,14 +654,14 @@
 								<div class="card-header"><?php echo lang('account_clublog'); ?></div>
 								<div class="card-body">
 									<div class="mb-3">
-										<label><?php echo lang('account_clublog_email_callsign'); ?><?php echo $icon_help; ?></label>
+										<label><?php echo lang('account_clublog_email_callsign'); ?></label>
 										<input class="form-control" type="text" name="user_clublog_name" value="<?php if(isset($user_clublog_name)) { echo $user_clublog_name; } ?>" />
 										<div class="small form-text text-muted"><?php echo lang('account_the_email_or_callsign_you_use_to_login_to_club_log'); ?></div>
 										<?php if(isset($userclublogname_error)) { echo "<div class=\"small error\">".$userclublogname_error."</div>"; } ?>
 									</div>
 
 									<div class="mb-3">
-										<label><?php echo lang('account_clublog_password'); ?><?php echo $icon_help; ?></label>
+										<label><?php echo lang('account_clublog_password'); ?></label>
 										<input class="form-control" type="password" name="user_clublog_password" />
 											<?php if(isset($clublogpassword_error)) { echo "<div class=\"small error\">".$clublogpassword_error."</div>"; } else { ?>
 											<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div></td>
@@ -708,7 +705,7 @@
 								<div class="card-header"><?php echo lang('account_mastodon'); ?></div>
 								<div class="card-body">
 									<div class="mb-3">
-									<label><?php echo lang('account_user_mastodon'); ?><?php echo $icon_help; ?></label>
+									<label><?php echo lang('account_user_mastodon'); ?></label>
 										<input class="form-control" type="text" name="user_mastodon_url" value="<?php if(isset($user_mastodon_url)) { echo $user_mastodon_url; } ?>" />
 										<div class="small form-text text-muted"><?php echo lang('account_user_mastodon_hint'); ?></a></div></td>
 									</div>
@@ -722,7 +719,7 @@
 								<div class="card-header"><?php echo lang('account_winkeyer'); ?> <span class="badge text-bg-danger float-end"><?php echo lang('admin_experimental'); ?></span></div>
 								<div class="card-body">
 									<div class="mb-3">
-										<label><?php echo lang('account_winkeyer_enabled'); ?><?php echo $icon_help; ?></label>
+										<label><?php echo lang('account_winkeyer_enabled'); ?></label>
 										<select class="form-select" name="user_winkey" id="user_winkeyer">
 											<option value="0" <?php if ($user_winkey == 0) { echo 'selected="selected"'; } ?>><?php echo lang('general_word_no'); ?></option>
 											<option value="1" <?php if ($user_winkey == 1) { echo 'selected="selected"'; } ?>><?php echo lang('general_word_yes'); ?></option>
