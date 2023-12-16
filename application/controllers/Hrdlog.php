@@ -50,50 +50,52 @@ class Hrdlog extends CI_Controller {
      * Adif is build for each qso, and then uploaded, one at a time
      */
     function mass_upload_qsos($station_id, $hrdlog_username, $hrdlog_code) {
-        $i = 0;
-        $data['qsos'] = $this->logbook_model->get_hrdlog_qsos($station_id);
-        $errormessages = array();
+	    $i = 0;
+	    $data['qsos'] = $this->logbook_model->get_hrdlog_qsos($station_id);
+	    $errormessages = array();
 
-        $CI = &get_instance();
-        $CI->load->library('AdifHelper');
+	    $this->load->library('AdifHelper');
 
-        if ($data['qsos']) {
-            foreach ($data['qsos']->result() as $qso) {
-                $adif = $CI->adifhelper->getAdifLine($qso);
+	    if ($data['qsos']) {
+		    foreach ($data['qsos']->result() as $qso) {
+			    $adif = $this->adifhelper->getAdifLine($qso);
 
-                if ($qso->COL_HRDLOG_QSO_UPLOAD_STATUS == 'M') {
-                    $result = $this->logbook_model->push_qso_to_hrdlog($hrdlog_username, $hrdlog_code, $adif, true);
-                } else {
-                    $result = $this->logbook_model->push_qso_to_hrdlog($hrdlog_username, $hrdlog_code, $adif);
-                }
+			    if ($qso->COL_HRDLOG_QSO_UPLOAD_STATUS == 'M') {
+				    $result = $this->logbook_model->push_qso_to_hrdlog($hrdlog_username, $hrdlog_code, $adif, true);
+			    } else {
+				    $result = $this->logbook_model->push_qso_to_hrdlog($hrdlog_username, $hrdlog_code, $adif);
+			    }
 
-                if (($result['status'] == 'OK') || (($result['status'] == 'error') || ($result['status'] == 'duplicate'))) {
-                    $this->markqso($qso->COL_PRIMARY_KEY);
-                    $i++;
-                    $result['status'] = 'OK';
-                } elseif ((substr($result['status'], 0, 11)  == 'auth_error')) {
-                    log_message('error', 'hrdlog upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
-                    log_message('error', 'hrdlog upload failed with the following message: ' . $result['message']);
-                    log_message('error', 'hrdlog upload stopped for Station_ID: ' . $station_id);
-                    $errormessages[] = $result['message'] . 'Invalid HRDLog-Code, stopped at Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
-                    $result['status'] = 'Error';
-                    break; /* If key is invalid, immediate stop syncing for more QSOs of this station */
-                } else {
-                    log_message('error', 'hrdlog upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
-                    log_message('error', 'hrdlog upload failed with the following message: ' . $result['message']);
-                    $result['status'] = 'Error';
-                    $errormessages[] = $result['message'] . ' Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
-                }
-            }
-            $result['count'] = $i;
-            $result['errormessages'] = $errormessages;
-            return $result;
-        } else {
-            $result['status'] = 'Error';
-            $result['count'] = $i;
-            $result['errormessages'] = $errormessages;
-            return $result;
-        }
+			    if (($result['status'] == 'OK') || (($result['status'] == 'error') || ($result['status'] == 'duplicate'))) {
+				    $this->markqso($qso->COL_PRIMARY_KEY);
+				    $i++;
+				    $result['status'] = 'OK';
+			    } elseif ((substr($result['status'], 0, 11)  == 'auth_error')) {
+				    log_message('error', 'hrdlog upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
+				    log_message('error', 'hrdlog upload failed with the following message: ' . $result['message']);
+				    log_message('error', 'hrdlog upload stopped for Station_ID: ' . $station_id);
+				    $errormessages[] = $result['message'] . 'Invalid HRDLog-Code, stopped at Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
+				    $result['status'] = 'Error';
+				    break; /* If key is invalid, immediate stop syncing for more QSOs of this station */
+			    } else {
+				    log_message('error', 'hrdlog upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
+				    log_message('error', 'hrdlog upload failed with the following message: ' . $result['message']);
+				    $result['status'] = 'Error';
+				    $errormessages[] = $result['message'] . ' Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
+			    }
+		    }
+		    if ($i == 0) {
+			    $result['status']='OK';
+		    }
+		    $result['count'] = $i;
+		    $result['errormessages'] = $errormessages;
+		    return $result;
+	    } else {
+		    $result['status'] = 'Error';
+		    $result['count'] = $i;
+		    $result['errormessages'] = $errormessages;
+		    return $result;
+	    }
     }
 
     /*
