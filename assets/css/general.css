@@ -745,16 +745,6 @@ table.dataTable tfoot td {
 	overflow-x: unset;
 }
 
-/* Header zone (accordion) */
-.user_edit .accordion-button {
-	border-top: 5px solid var(--cl-bg);
-	background-color: rgba(var(--bs-body-color-rgb), 0.03);
-}
-.user_edit .accordion-button:not(.collapsed) {
-	background-color: rgba(var(--bs-body-color-rgb), 0.05);
-	color: var(--bs-card-cap-color);
-}
-.user_edit .accordion-body {
-	background-color: var(--cl-bg);
-	border: 1px solid var(--bs-accordion-bg);
+.btn-pwd-showhide, .btn-pwd-showhide:hover {
+	border: 1px solid var(--cl-border-btn-pwd);
 }

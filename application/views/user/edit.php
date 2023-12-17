@@ -57,7 +57,10 @@
 									
 									<div class="mb-3">
 										<label><?php echo lang('account_password'); ?></label>
-										<input class="form-control" type="password" name="user_password" />
+										<div class="input-group">
+											<input class="form-control" type="password" name="user_password" />
+											<span class="input-group-btn"><button class="btn btn-default btn-pwd-showhide" type="button"><i class="fa fa-eye-slash"></i></button></span>
+										</div>
 										<?php if(isset($password_error)) { echo "<small class=\"error\">".$password_error."</small>"; } else { ?>
 										<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
 										<?php } ?>
@@ -322,10 +325,10 @@
 							</div>
 						</div>
 
-						<!-- QSO Page Settings -->
+						<!-- QSO Page Options -->
 						<div class="col-md">
 							<div class="card">
-								<div class="card-header">QSO Page Settings</div>
+								<div class="card-header">QSO Page Options</div>
 								<div class="card-body">
 									<div class="mb-3">
 										<label for="logendtime"><?php echo lang('account_log_end_time'); ?></label>
@@ -400,7 +403,8 @@
 											<option value="0" <?php if ($user_show_notes == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 										</select>
 									</div>
-
+									
+									<hr/>
 									<div class="mb-3">
 										<label for="quicklog"><?php echo lang('account_quicklog_feature'); ?></label>
 										<select class="form-select" id="quicklog" name="user_quicklog">
@@ -595,11 +599,11 @@
 				</div>
 			</div>
 		</div>
-		<!-- ZONE 4 / Validation Synchro -->
+		<!-- ZONE 4 / Confirmation Account -->
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_confirmation_account">
 				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_confirmation_account" aria-expanded="true" aria-controls="panelsStayOpen-B_confirmation_account">
-				Miscellaneous</button>
+				Confirmation Account</button>
 			</h2>
 			<div id="panelsStayOpen-B_confirmation_account" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_confirmation_account">
 				<div class="accordion-body">
@@ -617,10 +621,13 @@
 
 									<div class="mb-3">
 										<label><?php echo lang('account_logbook_of_the_world_lotw_password'); ?></label>
-										<input class="form-control" type="password" name="user_lotw_password" />
-											<?php if(isset($lotwpassword_error)) { echo "<small class=\"error\">".$lotwpassword_error."</small>"; } else { ?>
-											<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
-											<?php } ?>
+										<div class="input-group">
+											<input class="form-control" type="password" name="user_lotw_password" />
+											<span class="input-group-btn"><button class="btn btn-default btn-pwd-showhide" type="button"><i class="fa fa-eye-slash"></i></button></span>
+										</div>
+										<?php if(isset($lotwpassword_error)) { echo "<small class=\"error\">".$lotwpassword_error."</small>"; } else { ?>
+										<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
+										<?php } ?>
 									</div>
 								</div>
 							</div>
@@ -639,10 +646,13 @@
 
 									<div class="mb-3">
 										<label><?php echo lang('account_eqslcc_password'); ?></label>
-										<input class="form-control" type="password" name="user_eqsl_password" />
-											<?php if(isset($eqslpassword_error)) { echo "<small class=\"error\">".$eqslpassword_error."</small>"; } else { ?>
-											<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
-											<?php } ?>
+										<div class="input-group">
+											<input class="form-control" type="password" name="user_eqsl_password" />
+											<span class="input-group-btn"><button class="btn btn-default btn-pwd-showhide" type="button"><i class="fa fa-eye-slash"></i></button></span>
+										</div>
+										<?php if(isset($eqslpassword_error)) { echo "<small class=\"error\">".$eqslpassword_error."</small>"; } else { ?>
+										<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
+										<?php } ?>
 									</div>
 								</div>
 							</div>
@@ -662,10 +672,13 @@
 
 									<div class="mb-3">
 										<label><?php echo lang('account_clublog_password'); ?></label>
-										<input class="form-control" type="password" name="user_clublog_password" />
-											<?php if(isset($clublogpassword_error)) { echo "<small class=\"error\">".$clublogpassword_error."</small>"; } else { ?>
-											<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
-											<?php } ?>
+										<div class="input-group">
+											<input class="form-control" type="password" name="user_clublog_password" />
+											<span class="input-group-btn"><button class="btn btn-default btn-pwd-showhide" type="button"><i class="fa fa-eye-slash"></i></button></span>
+										</div>
+										<?php if(isset($clublogpassword_error)) { echo "<small class=\"error\">".$clublogpassword_error."</small>"; } else { ?>
+										<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
+										<?php } ?>
 									</div>
 								</div>
 							</div>
