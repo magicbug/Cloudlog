@@ -29,6 +29,8 @@ $lang['account_stylesheet'] = 'Stylesheet';
 $lang['account_personal_information'] = 'Informationen';
 $lang['account_first_name'] = 'Vorname';
 $lang['account_last_name'] = 'Nachname';
+
+$lang['account_hamradio_information'] = "Ham Radio";
 $lang['account_callsign'] = 'Rufzeichen';
 $lang['account_gridsquare'] = 'Planquadrat';
 
@@ -115,7 +117,13 @@ $lang['account_winkeyer'] = 'Winkeyer';
 $lang['account_winkeyer_hint'] = "Die Winkeyer Unterstützung in Cloudlog ist sehr experimentell. Lese zuerst den Wikieintrag auf <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a> bevor du ihn einschaltest.";
 $lang['account_winkeyer_enabled'] = "Winkeyer Features Eingeschaltet";
 
-$lang['account_map_params'] = "Settings for map";
+$lang['account_map_params'] = "Map Settings";
 $lang['account_map_qso_by_default'] = "QSO (by default)";
 $lang['account_map_qso_confirm'] = "QSO (confirmed)";
 $lang['account_map_qso_confirm_same_qso'] = "(If 'No', displayed as ".$lang['account_map_qso_by_default'].")";
+
+$lang['account_general_information'] = "General Information";
+$lang['account_qso_page_options'] = "QSO Page Options";
+$lang['account_website_confirmation_account'] = "WebSite Confirmation Account";
+$lang['account_default_values'] = "Default Values";
+$lang['account_miscellaneous'] = "Miscellaneous";

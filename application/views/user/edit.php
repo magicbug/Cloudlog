@@ -33,7 +33,7 @@
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_user_general">
 				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_user_general" aria-expanded="true" aria-controls="panelsStayOpen-B_user_general">
-				General Information</button>
+				<?php echo lang('account_general_information'); ?></button>
 			</h2>
 			<div id="panelsStayOpen-B_user_general" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_user_general">
 				<div class="accordion-body">
@@ -110,7 +110,7 @@
 						<!-- Ham Radio Information -->
 						<div class="col-md">
 							<div class="card">
-								<div class="card-header"><?php echo lang('account_personal_information'); ?></div>
+								<div class="card-header"><?php echo lang('account_hamradio_information'); ?></div>
 								<div class="card-body">
 									<div class="mb-3">
 										<label><?php echo lang('account_callsign'); ?></label>
@@ -136,7 +136,7 @@
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_cloudlog_general">
 				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_cloudlog_general" aria-expanded="true" aria-controls="panelsStayOpen-B_cloudlog_general">
-				Cloudlog Settings</button>
+				<?php echo lang('account_cloudlog_preferences'); ?></button>
 			</h2>
 			<div id="panelsStayOpen-B_cloudlog_general" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_cloudlog_general">
 				<div class="accordion-body">
@@ -144,7 +144,7 @@
 						<!-- Cloudlog Preferences -->
 						<div class="col-md">
 							<div class="card">
-								<div class="card-header"><?php echo lang('account_cloudlog_preferences'); ?></div>
+								<div class="card-header"><?php echo lang('general_word_general'); ?></div>
 								<div class="card-body">
 									<?php if ($this->config->item('cl_multilanguage')) { ?>
 										<div class="mb-3">
@@ -328,7 +328,7 @@
 						<!-- QSO Page Options -->
 						<div class="col-md">
 							<div class="card">
-								<div class="card-header">QSO Page Options</div>
+								<div class="card-header"><?php echo lang('account_qso_page_options'); ?></div>
 								<div class="card-body">
 									<div class="mb-3">
 										<label for="logendtime"><?php echo lang('account_log_end_time'); ?></label>
@@ -534,7 +534,7 @@
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_default_value">
 				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_default_value" aria-expanded="true" aria-controls="panelsStayOpen-B_default_value">
-					Default Value</button>
+					<?php echo lang('account_default_values');?></button>
 			</h2>
 			<div id="panelsStayOpen-B_default_value" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_default_value">
 				<div class="accordion-body">
@@ -603,7 +603,7 @@
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_confirmation_account">
 				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_confirmation_account" aria-expanded="true" aria-controls="panelsStayOpen-B_confirmation_account">
-				Confirmation Account</button>
+				<?php echo lang('account_website_confirmation_account'); ?></button>
 			</h2>
 			<div id="panelsStayOpen-B_confirmation_account" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_confirmation_account">
 				<div class="accordion-body">
@@ -691,7 +691,7 @@
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_miscellaneous">
 				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_miscellaneous" aria-expanded="true" aria-controls="panelsStayOpen-B_miscellaneous">
-				Miscellaneous</button>
+				<?php echo lang('account_miscellaneous');?></button>
 			</h2>
 			<div id="panelsStayOpen-B_miscellaneous" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_miscellaneous">
 				<div class="accordion-body">
