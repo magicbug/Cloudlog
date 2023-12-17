@@ -83,6 +83,11 @@ $(".station_id").change(function(){
 	});
 });
 
+$('#qslprint_table').DataTable({
+	"stateSave": true,
+	paging: false
+});
+
 function showOqrs(id) {
 	$.ajax({
 		url: base_url + 'index.php/qslprint/show_oqrs',
