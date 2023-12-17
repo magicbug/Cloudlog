@@ -86,7 +86,7 @@ $lang['account_eqsl'] = 'eQSL';
 $lang['account_eqslcc_username'] = 'eQSL.cc Username';
 $lang['account_eqslcc_password'] = 'eQSL.cc Password';
 
-$lang['account_save_account_changes'] = 'Save Account Changes';
+$lang['account_save_account_changes'] = "Save Account";
 $lang['account_create_account'] = 'Create Account';
 
 $lang['account_delete_user_account'] = 'Delete User Account';

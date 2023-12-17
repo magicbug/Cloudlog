@@ -1,7 +1,12 @@
 <div class="container">
 	<h3>
-	  <?php echo lang('account_edit_account'); ?>
-	  <small class="text-muted"><?php echo $user_name; ?></small>
+	  <?php if (isset($user_add)) { 
+		echo lang('account_create_user_account');
+	  } else {
+		echo lang('account_edit_account')." <small class=\"text-muted\">".$user_name."</small>";
+	  }  
+	  ?>
+	  
 	</h3>
 
 	<?php if($this->session->flashdata('success')) { ?>
@@ -27,7 +32,7 @@
 
 	<?php $this->load->helper('form'); ?>
 
-	<form method="post" action="<?php echo site_url('user/edit')."/".$this->uri->segment(3); ?>" name="users" autocomplete="off">
+	<form method="post" action="<?php echo $user_form_action; ?>" name="users" autocomplete="off">
 	<div class="accordion user_edit">
 		<!-- ZONE 1 / USER -->
 		<div class="accordion-item">
@@ -65,6 +70,7 @@
 										<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
 										<?php } ?>
 									</div>
+
 									<hr/>
 									<div class="mb-3">
 										<label><?php echo lang('account_user_role'); ?></label>
@@ -161,11 +167,15 @@
 
 									<div class="mb-3">
 										<label><?php echo lang('account_timezone'); ?></label>
-										<?php echo form_dropdown('user_timezone', $timezones, $user_timezone); ?>
+										<?php 
+										if(!isset($user_timezone)) { $user_timezone='151'; }
+										echo form_dropdown('user_timezone', $timezones, $user_timezone); 
+										?>
 									</div>
 
 									<div class="mb-3">
 										<label for="SelectDateFormat"><?php echo lang('account_date_format'); ?></label>
+										<?php if(!isset($user_date_format)) { $user_date_format='d/m/y'; }?>
 										<select name="user_date_format" class="form-select" id="SelectDateFormat" aria-describedby="SelectDateFormatHelp">
 											<option value="d/m/y" <?php if($user_date_format == "d/m/y") { echo "selected=\"selected\""; } ?>><?php echo date('d/m/y'); ?></option>
 											<option value="d/m/Y" <?php if($user_date_format == "d/m/Y") { echo "selected=\"selected\""; } ?>><?php echo date('d/m/Y'); ?></option>
@@ -182,6 +192,7 @@
 
 									<div class="mb-3">
 										<label for="user_measurement_base"><?php echo lang('account_measurement_preferences'); ?></label>
+										<?php if(!isset($user_measurement_base)) { $user_measurement_base='M'; }?>
 										<select class="form-select" id="user_measurement_base" name="user_measurement_base" aria-describedby="user_measurement_base_Help" required>
 											<option value ''></option>
 											<option value='K' <?php if($user_measurement_base == "K") { echo "selected=\"selected\""; } ?>>Kilometers</option>
@@ -194,14 +205,11 @@
 									<hr/>
 									<div class="mb-3">
 										<label><?php echo lang('account_theme').' / '.lang('account_stylesheet'); ?></label>
+										<?php if(!isset($user_stylesheet)) { $user_stylesheet='default'; }?>
 										<select class="form-select" id="user_stylesheet" name="user_stylesheet" required>
 											<?php
 											foreach ($themes as $theme) {
-												echo '<option value="' . $theme->foldername . '"';
-												if( $user_stylesheet == $theme->foldername) {
-													echo 'selected="selected"';
-												}
-												echo '>' . $theme->name . '</option>';
+												echo '<option value="' . $theme->foldername . '" ' . (( $user_stylesheet == $theme->foldername)?'selected="selected"':"") . '>' . $theme->name . '</option>';
 											}
 											?>
 										</select>
@@ -217,6 +225,7 @@
 								<div class="card-body">
 									<div class="mb-3">
 										<label for="column1"><?php echo lang('account_column1_text'); ?></label>
+										<?php if(!isset($user_column1)) { $user_column1='Mode'; }?>
 										<select class="form-select" id="column1" name="user_column1">
 											<option value="Band" <?php if ($user_column1 == "Band") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_band'); ?></option>
 											<option value="Frequency" <?php if ($user_column1 == "Frequency") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_frequency'); ?></option>
@@ -238,6 +247,7 @@
 
 									<div class="mb-3">
 										<label for="column2"><?php echo lang('account_column2_text'); ?></label>
+										<?php if(!isset($user_column2)) { $user_column2='RSTS'; }?>
 										<select class="form-select" id="column2" name="user_column2">
 											<option value="Band" <?php if ($user_column2 == "Band") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_band'); ?></option>
 											<option value="Frequency" <?php if ($user_column2 == "Frequency") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_frequency'); ?></option>
@@ -259,6 +269,7 @@
 
 									<div class="mb-3">
 										<label for="column3"><?php echo lang('account_column3_text'); ?></label>
+										<?php if(!isset($user_column3)) { $user_column3='RSTR'; }?>
 										<select class="form-select" id="column3" name="user_column3">
 											<option value="Band" <?php if ($user_column3 == "Band") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_band'); ?></option>
 											<option value="Frequency" <?php if ($user_column3 == "Frequency") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_frequency'); ?></option>
@@ -280,6 +291,7 @@
 
 									<div class="mb-3">
 										<label for="column4"><?php echo lang('account_column4_text'); ?></label>
+										<?php if(!isset($user_column4)) { $user_column4='Band'; }?>
 										<select class="form-select" id="column4" name="user_column4">
 											<option value="Band" <?php if ($user_column4 == "Band") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_band'); ?></option>
 											<option value="Frequency" <?php if ($user_column4 == "Frequency") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_frequency'); ?></option>
@@ -301,6 +313,7 @@
 
 									<div class="mb-3">
 										<label for="column5"><?php echo lang('account_column5_text'); ?></label>
+										<?php if(!isset($user_column5)) { $user_column5='Country'; }?>
 										<select class="form-select" id="column5" name="user_column5">
 											<option value="" <?php if ($user_column5 == "") { echo " selected =\"selected\""; } ?>></option>
 											<option value="Band" <?php if ($user_column5 == "Band") { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_band'); ?></option>
@@ -332,6 +345,7 @@
 								<div class="card-body">
 									<div class="mb-3">
 										<label for="logendtime"><?php echo lang('account_log_end_time'); ?></label>
+										<?php if(!isset($user_qso_end_times)) { $user_qso_end_times='0'; }?>
 										<select class="form-select" id="logendtimes" name="user_qso_end_times">
 											<option value="1" <?php if ($user_qso_end_times == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_qso_end_times == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -342,6 +356,7 @@
 									<hr />
 									<div class="mb-3">
 										<label for="profileimages"><?php echo lang('account_show_profile_picture_of_qso_partner_from_qrzcom_hamqthcom_profile_in_the_log_qso_section'); ?></label>
+										<?php if(!isset($user_show_profile_image)) { $user_show_profile_image='0'; }?>
 										<select class="form-select" id="profileimages" name="user_show_profile_image">
 											<option value="1" <?php if ($user_show_profile_image == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_show_profile_image == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -352,6 +367,7 @@
 									<hr />
 									<div class="mb-3">
 										<label for="qthlookup"><?php echo lang('account_location_auto_lookup'); ?></label>
+										<?php if(!isset($user_qth_lookup)) { $user_qth_lookup='0'; }?>
 										<select class="form-select" id="qthlookup" name="user_qth_lookup">
 											<option value="1" <?php if ($user_qth_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_qth_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -361,6 +377,7 @@
 
 									<div class="mb-3">
 										<label for="sotalookup"><?php echo lang('account_sota_auto_lookup_gridsquare_and_name_for_summit'); ?></label>
+										<?php if(!isset($user_sota_lookup)) { $user_sota_lookup='0'; }?>
 										<select class="form-select" id="sotalookup" name="user_sota_lookup">
 											<option value="1" <?php if ($user_sota_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_sota_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -370,6 +387,7 @@
 
 									<div class="mb-3">
 										<label for="wwfflookup"><?php echo lang('account_wwff_auto_lookup_gridsquare_and_name_for_reference'); ?></label>
+										<?php if(!isset($user_wwff_lookup)) { $user_wwff_lookup='0'; }?>
 										<select class="form-select" id="wwfflookup" name="user_wwff_lookup">
 											<option value="1" <?php if ($user_wwff_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_wwff_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -379,6 +397,7 @@
 
 									<div class="mb-3">
 										<label for="potalookup"><?php echo lang('account_pota_auto_lookup_gridsquare_and_name_for_park'); ?></label>
+										<?php if(!isset($user_pota_lookup)) { $user_pota_lookup='0'; }?>
 										<select class="form-select" id="potalookup" name="user_pota_lookup">
 											<option value="1" <?php if ($user_pota_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_pota_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -398,6 +417,7 @@
 								<div class="card-body">
 									<div class="mb-3">
 										<label for="shownotes"><?php echo lang('account_show_notes_in_the_main_menu'); ?></label>
+										<?php if(!isset($user_show_notes)) { $user_show_notes='0'; }?>
 										<select class="form-select" id="shownotes" name="user_show_notes">
 											<option value="1" <?php if ($user_show_notes == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_show_notes == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -407,6 +427,7 @@
 									<hr/>
 									<div class="mb-3">
 										<label for="quicklog"><?php echo lang('account_quicklog_feature'); ?></label>
+										<?php if(!isset($user_quicklog)) { $user_quicklog='0'; }?>
 										<select class="form-select" id="quicklog" name="user_quicklog">
 											<option value="1" <?php if ($user_quicklog == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_quicklog == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -416,6 +437,7 @@
 
 									<div class="mb-3">
 										<label for="quicklog_enter"><?php echo lang('account_quicklog_enter'); ?></label>
+										<?php if(!isset($user_quicklog_enter)) { $user_quicklog_enter='0'; }?>
 										<select class="form-select" id="quicklog_enter" name="user_quicklog_enter">
 											<option value="0" <?php if ($user_quicklog_enter == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('account_quicklog_enter_log'); ?></option>
 											<option value="1" <?php if ($user_quicklog_enter == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('account_quicklog_enter_search'); ?></option>
@@ -515,6 +537,7 @@
 								<div class="card-body">
 									<div class="mb-3">
 										<label for="profileimages"><?php echo lang('account_select_the_type_of_qsl_to_show_in_the_previous_qsos_section'); ?></label>
+										<?php if(!isset($user_previous_qsl_type)) { $user_previous_qsl_type='0'; }?>
 										<select class="form-select" id="previousqsltype" name="user_previous_qsl_type">
 											<option value="0" <?php if ($user_previous_qsl_type == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('gen_hamradio_qsl'); ?></option>
 											<option value="1" <?php if ($user_previous_qsl_type == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('lotw_short'); ?></option>
@@ -546,14 +569,11 @@
 								<div class="card-body">
 									<div class="mb-3">
 										<label for="user_default_band"><?php echo lang('account_gridmap_default_band'); ?></label>
+										<?php if(!isset($user_default_band)) { $user_default_band='All'; }?>
 										<select id="user_default_band" class="form-select" name="user_default_band">
 											<option value="All">All</option>;
 											<?php foreach($bands as $band) {
-												echo '<option value="'.$band.'"';
-												if ($user_default_band == $band) {
-													echo ' selected="selected"';
-												}
-												echo '>'.$band.'</option>'."\n";
+												echo '<option value="'.$band.'" '.(($user_default_band == $band)?' selected="selected"':'').'>'.$band.'</option>'."\n";
 											} ?>
 										</select>
 									</div>
@@ -703,6 +723,7 @@
 								<div class="card-body">
 									<div class="mb-3">
 										<label for="amsatsatatusupload"><?php echo lang('account_upload_status_of_sat_qsos_to'); ?> <a href="https://www.amsat.org/status/" target="_blank">https://www.amsat.org/status/</a>.</label>
+										<?php if(!isset($user_amsat_status_upload)) { $user_amsat_status_upload='0'; }?>
 										<select class="form-select" id="amsatstatusupload" name="user_amsat_status_upload">
 											<option value="1" <?php if ($user_amsat_status_upload == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_amsat_status_upload == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
@@ -733,6 +754,7 @@
 								<div class="card-body">
 									<div class="mb-3">
 										<label><?php echo lang('account_winkeyer_enabled'); ?></label>
+										<?php if(!isset($user_winkey)) { $user_winkey='0'; }?>
 										<select class="form-select" name="user_winkey" id="user_winkeyer">
 											<option value="0" <?php if ($user_winkey == 0) { echo 'selected="selected"'; } ?>><?php echo lang('general_word_no'); ?></option>
 											<option value="1" <?php if ($user_winkey == 1) { echo 'selected="selected"'; } ?>><?php echo lang('general_word_yes'); ?></option>

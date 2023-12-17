@@ -584,3 +584,4 @@ function btn_pwd_showhide() {
         $(this).closest('div').find('.fa-eye').removeClass('Òfa-eye').addClass('fa-eye-slash');
 	}
 }
+$('.user_edit .btn-pwd-showhide').off('click').on('click', btn_pwd_showhide );

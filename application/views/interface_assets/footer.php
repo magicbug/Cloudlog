@@ -3088,7 +3088,6 @@ function viewEqsl(picture, callsign) {
                 }
                 $('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').hide();
             });
-            $('.btn-pwd-showhide').off('click').on('click', btn_pwd_showhide );
         });
     </script>
 <?php } ?>
