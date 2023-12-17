@@ -46,20 +46,20 @@
 									<div class="mb-3">
 										<label><?php echo lang('account_username'); ?></label>
 										<input class="form-control" type="text" name="user_name" value="<?php if(isset($user_name)) { echo $user_name; } ?>" />
-										<?php if(isset($username_error)) { echo "<div class=\"small error\">".$username_error."</div>"; } ?>
+										<?php if(isset($username_error)) { echo "<small class=\"error\">".$username_error."</small>"; } ?>
 									</div>
 
 									<div class="mb-3">
 										<label><?php echo lang('account_email_address'); ?></label>
 										<input class="form-control" type="text" name="user_email" value="<?php if(isset($user_email)) { echo $user_email; } ?>" />
-										<?php if(isset($email_error)) { echo "<div class=\"small error\">".$email_error."</div>"; } ?>
+										<?php if(isset($email_error)) { echo "<small class=\"error\">".$email_error."</small>"; } ?>
 									</div>
 									
 									<div class="mb-3">
 										<label><?php echo lang('account_password'); ?></label>
 										<input class="form-control" type="password" name="user_password" />
-										<?php if(isset($password_error)) { echo "<div class=\"small error\">".$password_error."</div>"; } else { ?>
-										<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div>
+										<?php if(isset($password_error)) { echo "<small class=\"error\">".$password_error."</small>"; } else { ?>
+										<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
 										<?php } ?>
 									</div>
 									<hr/>
@@ -91,14 +91,14 @@
 									<div class="mb-3">
 										<label><?php echo lang('account_first_name'); ?></label>
 										<input class="form-control" type="text" name="user_firstname" value="<?php if(isset($user_firstname)) { echo $user_firstname; } ?>" />
-											<?php if(isset($firstname_error)) { echo "<div class=\"small error\">".$firstname_error."</div>"; } else { ?>
+											<?php if(isset($firstname_error)) { echo "<small class=\"error\">".$firstname_error."</small>"; } else { ?>
 											<?php } ?>
 									</div>
 
 									<div class="mb-3">
 										<label><?php echo lang('account_last_name'); ?></label>
 										<input class="form-control" type="text" name="user_lastname" value="<?php if(isset($user_lastname)) { echo $user_lastname; } ?>" />
-											<?php if(isset($lastname_error)) { echo "<div class=\"small error\">".$lastname_error."</div>"; } else { ?>
+											<?php if(isset($lastname_error)) { echo "<small class=\"error\">".$lastname_error."</small>"; } else { ?>
 											<?php } ?>
 									</div>
 								</div>
@@ -112,14 +112,14 @@
 									<div class="mb-3">
 										<label><?php echo lang('account_callsign'); ?></label>
 										<input class="form-control" type="text" name="user_callsign" value="<?php if(isset($user_callsign)) { echo $user_callsign; } ?>" />
-											<?php if(isset($callsign_error)) { echo "<div class=\"small error\">".$callsign_error."</div>"; } else { ?>
+											<?php if(isset($callsign_error)) { echo "<small class=\"error\">".$callsign_error."</small>"; } else { ?>
 											<?php } ?>
 									</div>
 
 									<div class="mb-3">
 										<label><?php echo lang('account_gridsquare'); ?></label>
 										<input class="form-control" type="text" name="user_locator" value="<?php if(isset($user_locator)) { echo $user_locator; } ?>" />
-											<?php if(isset($locator_error)) { echo "<div class=\"small error\">".$locator_error."</div>"; } else { ?>
+											<?php if(isset($locator_error)) { echo "<small class=\"error\">".$locator_error."</small>"; } else { ?>
 											<?php } ?>
 									</div>
 								</div>
@@ -152,7 +152,7 @@
 											}
 											echo form_dropdown('language', $options, $language);
 											?>
-											<div id="language_Help" class="small form-text text-muted"><?php echo lang('account_choose_cloudlog_language'); ?></div>
+											<small id="language_Help" class="form-text text-muted"><?php echo lang('account_choose_cloudlog_language'); ?></small>
 										</div>
 									<?php } ?>
 
@@ -174,7 +174,7 @@
 											<option value="M d, Y" <?php if($user_date_format == "M d, Y") { echo "selected=\"selected\""; } ?>><?php echo date('M d, Y'); ?></option>
 											<option value="M d, y" <?php if($user_date_format == "M d, y") { echo "selected=\"selected\""; } ?>><?php echo date('M d, y'); ?></option>
 										</select>
-										<div id="SelectDateFormatHelp" class="small form-text text-muted"><?php echo lang('account_select_how_you_would_like_dates_shown_when_logged_into_your_account'); ?></div>
+										<small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_select_how_you_would_like_dates_shown_when_logged_into_your_account'); ?></small>
 									</div>
 
 									<div class="mb-3">
@@ -185,7 +185,7 @@
 											<option value='M' <?php if($user_measurement_base == "M") { echo "selected=\"selected\""; } ?>>Miles</option>
 											<option value='N' <?php if($user_measurement_base == "N") { echo "selected=\"selected\""; } ?>>Nautical miles</option>
 										</select>
-										<div id="user_measurement_base_Help" class="small form-text text-muted"><?php echo lang('account_choose_which_unit_distances_will_be_shown_in'); ?></div>
+										<small id="user_measurement_base_Help" class="form-text text-muted"><?php echo lang('account_choose_which_unit_distances_will_be_shown_in'); ?></small>
 									</div>
 									
 									<hr/>
@@ -333,7 +333,7 @@
 											<option value="1" <?php if ($user_qso_end_times == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_qso_end_times == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 										</select>
-										<div id="SelectDateFormatHelp" class="small form-text text-muted"><?php echo lang('account_log_end_time_hint'); ?></div>
+										<small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_log_end_time_hint'); ?></small>
 									</div>
 
 									<hr />
@@ -343,7 +343,7 @@
 											<option value="1" <?php if ($user_show_profile_image == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_show_profile_image == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 										</select>
-										<div class="small form-text text-muted"><?php echo lang('account_please_set_your_qrzcom_hamqthcom_credentials_in_the_general_config_file'); ?></div></td>
+										<small class="form-text text-muted"><?php echo lang('account_please_set_your_qrzcom_hamqthcom_credentials_in_the_general_config_file'); ?></small>
 									</div>
 
 									<hr />
@@ -353,7 +353,7 @@
 											<option value="1" <?php if ($user_qth_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_qth_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 										</select>
-										<div class="small form-text text-muted"><?php echo lang('account_if_set_gridsquare_is_fetched_based_on_location_name'); ?></div></td>
+										<small class="form-text text-muted"><?php echo lang('account_if_set_gridsquare_is_fetched_based_on_location_name'); ?></small>
 									</div>
 
 									<div class="mb-3">
@@ -362,7 +362,7 @@
 											<option value="1" <?php if ($user_sota_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_sota_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 										</select>
-										<div class="small form-text text-muted"><?php echo lang('account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'); ?></div></td>
+										<small class="form-text text-muted"><?php echo lang('account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'); ?></small>
 									</div>
 
 									<div class="mb-3">
@@ -371,7 +371,7 @@
 											<option value="1" <?php if ($user_wwff_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_wwff_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 										</select>
-										<div class="small form-text text-muted"><?php echo lang('account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'); ?></div></td>
+										<small class="form-text text-muted"><?php echo lang('account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'); ?></small>
 									</div>
 
 									<div class="mb-3">
@@ -380,7 +380,7 @@
 											<option value="1" <?php if ($user_pota_lookup == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_pota_lookup == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 										</select>
-										<div class="small form-text text-muted"><?php echo lang('account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'); ?></div></td>
+										<small class="form-text text-muted"><?php echo lang('account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'); ?></small>
 									</div>
 								</div>
 							</div>
@@ -407,7 +407,7 @@
 											<option value="1" <?php if ($user_quicklog == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
 											<option value="0" <?php if ($user_quicklog == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
 										</select>
-										<div id="SelectDateFormatHelp" class="small form-text text-muted"><?php echo lang('account_quicklog_feature_hint'); ?></div>
+										<small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_quicklog_feature_hint'); ?></small>
 									</div>
 
 									<div class="mb-3">
@@ -416,7 +416,7 @@
 											<option value="0" <?php if ($user_quicklog_enter == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('account_quicklog_enter_log'); ?></option>
 											<option value="1" <?php if ($user_quicklog_enter == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('account_quicklog_enter_search'); ?></option>
 										</select>
-										<div id="SelectDateFormatHelp" class="small form-text text-muted"><?php echo lang('account_quicklog_enter_hint'); ?></div>
+										<small id="SelectDateFormatHelp" class="form-text text-muted"><?php echo lang('account_quicklog_enter_hint'); ?></small>
 									</div>
 								</div>
 							</div>
@@ -469,7 +469,7 @@
 									<div class="row"> <!-- QSO (confirmed) -->
 										<div class="mb-3 col-md-4">
 											<label><?php echo $this->lang->line('account_map_qso_confirm'); ?></label>
-											<div class="small form-text text-muted"><?php echo lang('account_map_qso_confirm_same_qso'); ?></div>
+											<small class="form-text text-muted"><?php echo lang('account_map_qso_confirm_same_qso'); ?></small>
 										</div>
 										<div class="mb-3 col-md-3">
 											<div class="icon_selectBox" data-boxcontent="qsoconfirm">
@@ -612,14 +612,14 @@
 									<div class="mb-3">
 										<label><?php echo lang('account_logbook_of_the_world_lotw_username'); ?></label>
 										<input class="form-control" type="text" name="user_lotw_name" value="<?php if(isset($user_lotw_name)) { echo $user_lotw_name; } ?>" />
-										<?php if(isset($userlotwname_error)) { echo "<div class=\"small error\">".$userlotwname_error."</div>"; } ?>
+										<?php if(isset($userlotwname_error)) { echo "<small class=\"error\">".$userlotwname_error."</small>"; } ?>
 									</div>
 
 									<div class="mb-3">
 										<label><?php echo lang('account_logbook_of_the_world_lotw_password'); ?></label>
 										<input class="form-control" type="password" name="user_lotw_password" />
-											<?php if(isset($lotwpassword_error)) { echo "<div class=\"small error\">".$lotwpassword_error."</div>"; } else { ?>
-											<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div>
+											<?php if(isset($lotwpassword_error)) { echo "<small class=\"error\">".$lotwpassword_error."</small>"; } else { ?>
+											<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
 											<?php } ?>
 									</div>
 								</div>
@@ -634,14 +634,14 @@
 									<div class="mb-3">
 										<label><?php echo lang('account_eqslcc_username'); ?></label>
 										<input class="form-control" type="text" name="user_eqsl_name" value="<?php if(isset($user_eqsl_name)) { echo $user_eqsl_name; } ?>" />
-											<?php if(isset($eqslusername_error)) { echo "<div class=\"small error\">".$eqslusername_error."</div>"; } ?>
+											<?php if(isset($eqslusername_error)) { echo "<small class=\"error\">".$eqslusername_error."</small>"; } ?>
 									</div>
 
 									<div class="mb-3">
 										<label><?php echo lang('account_eqslcc_password'); ?></label>
 										<input class="form-control" type="password" name="user_eqsl_password" />
-											<?php if(isset($eqslpassword_error)) { echo "<div class=\"small error\">".$eqslpassword_error."</div>"; } else { ?>
-											<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div>
+											<?php if(isset($eqslpassword_error)) { echo "<small class=\"error\">".$eqslpassword_error."</small>"; } else { ?>
+											<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
 											<?php } ?>
 									</div>
 								</div>
@@ -656,15 +656,15 @@
 									<div class="mb-3">
 										<label><?php echo lang('account_clublog_email_callsign'); ?></label>
 										<input class="form-control" type="text" name="user_clublog_name" value="<?php if(isset($user_clublog_name)) { echo $user_clublog_name; } ?>" />
-										<div class="small form-text text-muted"><?php echo lang('account_the_email_or_callsign_you_use_to_login_to_club_log'); ?></div>
-										<?php if(isset($userclublogname_error)) { echo "<div class=\"small error\">".$userclublogname_error."</div>"; } ?>
+										<small class="form-text text-muted"><?php echo lang('account_the_email_or_callsign_you_use_to_login_to_club_log'); ?></small>
+										<?php if(isset($userclublogname_error)) { echo "<small class=\"error\">".$userclublogname_error."</small>"; } ?>
 									</div>
 
 									<div class="mb-3">
 										<label><?php echo lang('account_clublog_password'); ?></label>
 										<input class="form-control" type="password" name="user_clublog_password" />
-											<?php if(isset($clublogpassword_error)) { echo "<div class=\"small error\">".$clublogpassword_error."</div>"; } else { ?>
-											<div class="small form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></div></td>
+											<?php if(isset($clublogpassword_error)) { echo "<small class=\"error\">".$clublogpassword_error."</small>"; } else { ?>
+											<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
 											<?php } ?>
 									</div>
 								</div>
@@ -707,7 +707,7 @@
 									<div class="mb-3">
 									<label><?php echo lang('account_user_mastodon'); ?></label>
 										<input class="form-control" type="text" name="user_mastodon_url" value="<?php if(isset($user_mastodon_url)) { echo $user_mastodon_url; } ?>" />
-										<div class="small form-text text-muted"><?php echo lang('account_user_mastodon_hint'); ?></a></div></td>
+										<small class="form-text text-muted"><?php echo lang('account_user_mastodon_hint'); ?></a></small>
 									</div>
 								</div>
 							</div>
@@ -724,7 +724,7 @@
 											<option value="0" <?php if ($user_winkey == 0) { echo 'selected="selected"'; } ?>><?php echo lang('general_word_no'); ?></option>
 											<option value="1" <?php if ($user_winkey == 1) { echo 'selected="selected"'; } ?>><?php echo lang('general_word_yes'); ?></option>
 										</select>
-										<div class="small form-text text-muted"><?php echo lang('account_winkeyer_hint'); ?></div>
+										<small class="form-text text-muted"><?php echo lang('account_winkeyer_hint'); ?></small>
 									</div>
 								</div>
 							</div>
