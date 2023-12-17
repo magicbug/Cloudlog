@@ -745,6 +745,10 @@ table.dataTable tfoot td {
 	overflow-x: unset;
 }
 
+label {
+	margin-bottom: 0.25rem;
+}
+
 .btn-pwd-showhide, .btn-pwd-showhide:hover {
 	border: 1px solid var(--cl-border-btn-pwd);
 }
