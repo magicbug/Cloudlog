@@ -152,6 +152,7 @@
 					?>
 					<tr>
 						<td colspan="2"><?php echo lang('station_logbooks_no_linked_loc'); ?></td>
+						<td></td>
 					</tr>
 					<?php } ?>
 				</tbody>
