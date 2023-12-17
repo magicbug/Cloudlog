@@ -36,6 +36,7 @@ $lang['station_logbooks_select_avail_loc'] = "Выберите доступно�
 $lang['station_logbooks_link_loc'] = "Привяжите расположение";
 $lang['station_logbooks_linked_loc'] = "Привязанные расположения";
 $lang['station_logbooks_no_linked_loc'] = "Нет привязанных расположений";
+$lang['station_logbooks_unlink_station_location'] = "Unlink Station Location";
 
 
 

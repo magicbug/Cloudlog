@@ -136,7 +136,7 @@
 						<th scope="col"><?php echo lang('station_location_name'); ?></th>
 						<th scope="col"><?php echo lang('station_location_callsign'); ?></th>
 						<th scope="col"><?php echo lang('gen_hamradio_dxcc'); ?></th>
-						<th scope="col">Unlink Station Location</th>
+						<th scope="col"><?php echo lang('station_logbooks_unlink_station_location'); ?></th>
 					</tr>
 				</thead>
 				<tbody>

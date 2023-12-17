@@ -36,6 +36,7 @@ $lang['station_logbooks_select_avail_loc'] = "Select Available Station Locations
 $lang['station_logbooks_link_loc'] = "Link Location";
 $lang['station_logbooks_linked_loc'] = "Linked Locations";
 $lang['station_logbooks_no_linked_loc'] = "No Linked Locations";
+$lang['station_logbooks_unlink_station_location'] = "Unlink Station Location";
 
 
 
