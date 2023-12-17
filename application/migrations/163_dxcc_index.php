@@ -11,6 +11,6 @@ class Migration_dxcc_index extends CI_Migration {
 
 	public function down(){
 		$this->db->query("ALTER TABLE dxcc_prefixes DROP INDEX idx_dxcc_prefixes_logic");
-		$this->db->query("ALTER TABLE dxcc_exceptions DROP INDEX idx_dxcc_eceptions_logic");
+		$this->db->query("ALTER TABLE dxcc_exceptions DROP INDEX idx_dxcc_exceptions_logic");
 	}
 }
