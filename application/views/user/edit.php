@@ -141,10 +141,10 @@
 		<!-- ZONE 2 / Cloudlog -->
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_cloudlog_general">
-				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_cloudlog_general" aria-expanded="true" aria-controls="panelsStayOpen-B_cloudlog_general">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_cloudlog_general" aria-expanded="false" aria-controls="panelsStayOpen-B_cloudlog_general">
 				<?php echo lang('account_cloudlog_preferences'); ?></button>
 			</h2>
-			<div id="panelsStayOpen-B_cloudlog_general" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_cloudlog_general">
+			<div id="panelsStayOpen-B_cloudlog_general" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-H_cloudlog_general">
 				<div class="accordion-body">
 					<div class="row mb-3">
 						<!-- Cloudlog Preferences -->
@@ -556,10 +556,10 @@
 		<!-- ZONE 3 / Default Value -->
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_default_value">
-				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_default_value" aria-expanded="true" aria-controls="panelsStayOpen-B_default_value">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_default_value" aria-expanded="false" aria-controls="panelsStayOpen-B_default_value">
 					<?php echo lang('account_default_values');?></button>
 			</h2>
-			<div id="panelsStayOpen-B_default_value" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_default_value">
+			<div id="panelsStayOpen-B_default_value" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-H_default_value">
 				<div class="accordion-body">
 					<div class="row">
 						<!-- Default -->
@@ -622,10 +622,10 @@
 		<!-- ZONE 4 / Confirmation Account -->
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_confirmation_account">
-				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_confirmation_account" aria-expanded="true" aria-controls="panelsStayOpen-B_confirmation_account">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_confirmation_account" aria-expanded="false" aria-controls="panelsStayOpen-B_confirmation_account">
 				<?php echo lang('account_website_confirmation_account'); ?></button>
 			</h2>
-			<div id="panelsStayOpen-B_confirmation_account" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_confirmation_account">
+			<div id="panelsStayOpen-B_confirmation_account" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-H_confirmation_account">
 				<div class="accordion-body">
 					<div class="row">
 						<!-- Logbook of the World -->
@@ -710,10 +710,10 @@
 		<!-- ZONE 5 / Miscellaneous -->
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_miscellaneous">
-				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_miscellaneous" aria-expanded="true" aria-controls="panelsStayOpen-B_miscellaneous">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_miscellaneous" aria-expanded="false" aria-controls="panelsStayOpen-B_miscellaneous">
 				<?php echo lang('account_miscellaneous');?></button>
 			</h2>
-			<div id="panelsStayOpen-B_miscellaneous" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_miscellaneous">
+			<div id="panelsStayOpen-B_miscellaneous" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-H_miscellaneous">
 				<div class="accordion-body">
 					<div class="row">
 						<!-- AMSAT Upload -->
