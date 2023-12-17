@@ -3077,6 +3077,16 @@ function lotw_last_qsl_date($user_id) {
 	  return '1900-01-01 00:00:00.000';
   }
 
+  function import_bulk($records, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false, $skipStationCheck = false) {
+	  $custom_errors='';
+	  foreach ($records as $record) {
+		  $one_error = $this->logbook_model->import($record, $station_id, $skipDuplicate, $markClublog, $markLotw,$dxccAdif, $markQrz, $markHrd, $skipexport, $operatorName, $apicall, $skipStationCheck);
+		  if ($one_error != '') {
+			  $custom_errors.=$one_error."<br/>";
+		  }
+	  }
+	  return $custom_errors;
+  }
     /*
      * $skipDuplicate - used in ADIF import to skip duplicate checking when importing QSOs
      * $markLoTW - used in ADIF import to mark QSOs as exported to LoTW when importing QSOs
@@ -3087,13 +3097,12 @@ function lotw_last_qsl_date($user_id) {
      */
 	function import($record, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false, $skipStationCheck = false) {
         // be sure that station belongs to user
-        $CI =& get_instance();
-        $CI->load->model('stations');
-        if (!$CI->stations->check_station_is_accessible($station_id) && $apicall == false ) {
+        $this->load->model('stations');
+        if (!$this->stations->check_station_is_accessible($station_id) && $apicall == false ) {
             return 'Station not accessible<br>';
         }
 
-	$station_profile=$CI->stations->profile_clean($station_id);
+	$station_profile=$this->stations->profile_clean($station_id);
 	$station_profile_call=$station_profile->station_callsign;
 
 	if (($station_id !=0 ) && (!(isset($record['station_callsign'])))) {
@@ -3105,8 +3114,7 @@ function lotw_last_qsl_date($user_id) {
               "<br>See the <a target=\"_blank\" href=\"https://github.com/magicbug/Cloudlog/wiki/ADIF-file-can't-be-imported\">Cloudlog Wiki</a> for hints about errors in ADIF files.";
         }
 
-        $CI =& get_instance();
-        $CI->load->library('frequency');
+        $this->load->library('frequency');
         $my_error = "";
 
         // Join date+time
@@ -3188,7 +3196,7 @@ function lotw_last_qsl_date($user_id) {
         } else {
             if (isset($record['freq'])){
               if($freq != "0") {
-                $band = $CI->frequency->GetBand($freq);
+                $band = $this->frequency->GetBand($freq);
               }
             }
         }
@@ -3198,7 +3206,7 @@ function lotw_last_qsl_date($user_id) {
         } else {
                 if (isset($record['freq_rx'])){
                   if($freq != "0") {
-                    $band_rx = $CI->frequency->GetBand($freqRX);
+                    $band_rx = $this->frequency->GetBand($freqRX);
                   }
                 } else {
                   $band_rx = "";
@@ -3424,9 +3432,8 @@ function lotw_last_qsl_date($user_id) {
 
         // Get active station_id from station profile if one hasn't been provided
         if($station_id == "" || $station_id == "0") {
-          $CI =& get_instance();
-          $CI->load->model('stations');
-          $station_id = $CI->stations->find_active();
+          $this->load->model('stations');
+          $station_id = $this->stations->find_active();
         }
 
         // Check if QSO is already in the database
@@ -3682,10 +3689,9 @@ function lotw_last_qsl_date($user_id) {
     }
 
     function update_dok($record, $ignoreAmbiguous, $onlyConfirmed, $overwriteDok) {
-        $CI =& get_instance();
-        $CI->load->model('logbooks_model');
+        $this->load->model('logbooks_model');
         $custom_date_format = $this->session->userdata('user_date_format');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
         if(isset($record['call'])) {
                 $call = strtoupper($record['call']);
@@ -3702,7 +3708,7 @@ function lotw_last_qsl_date($user_id) {
         } else {
             if (isset($record['freq'])){
               if($record['freq'] != "0") {
-                $band = $CI->frequency->GetBand($record['freq']);
+                $band = $this->frequency->GetBand($record['freq']);
               }
             }
         }
