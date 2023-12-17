@@ -3077,6 +3077,16 @@ function lotw_last_qsl_date($user_id) {
 	  return '1900-01-01 00:00:00.000';
   }
 
+  function import_bulk($records, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false, $skipStationCheck = false) {
+	  $custom_errors='';
+	  foreach ($records as $record) {
+		  $one_error = $this->logbook_model->import($record, $station_id, $skipDuplicate, $markClublog, $markLotw,$dxccadif, $markQrz, $markHrd, $skipexport, $operatorName, $apicall, $skipStationCheck);
+		  if ($one_error != '') {
+			  $custom_errors.=$one_error."<br/>";
+		  }
+	  }
+	  return $custom_errors;
+  }
     /*
      * $skipDuplicate - used in ADIF import to skip duplicate checking when importing QSOs
      * $markLoTW - used in ADIF import to mark QSOs as exported to LoTW when importing QSOs
