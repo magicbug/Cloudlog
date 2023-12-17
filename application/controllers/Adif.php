@@ -183,7 +183,6 @@ class adif extends CI_Controller {
 		} else {
 			if ($this->stations->check_station_is_accessible($this->input->post('station_profile'))) {
 				$data = array('upload_data' => $this->upload->data());
-
 				ini_set('memory_limit', '-1');
 				set_time_limit(0);
 
@@ -192,6 +191,8 @@ class adif extends CI_Controller {
 				$this->load->library('adif_parser');
 
 				$this->adif_parser->load_from_file('./uploads/'.$data['upload_data']['file_name']);
+				unlink('./uploads/'.$data['upload_data']['file_name']);
+				$data['upload_data']='';	// free memory
 
 				$this->adif_parser->initialize();
 				$custom_errors = "";
@@ -202,14 +203,8 @@ class adif extends CI_Controller {
 						break;
 					};
 					array_push($alladif,$record);
-					// $one_error = $this->logbook_model->import($record, $this->input->post('station_profile'), $this->input->post('skipDuplicate'), $this->input->post('markClublog'),$this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), $this->input->post('markHrd'), true, $this->input->post('operatorName'), false, $this->input->post('skipStationCheck'));
-					// if ($one_error != '') {
-					// 	$custom_errors.=$one_error."<br/>";
-					// }
 				};
-				unlink('./uploads/'.$data['upload_data']['file_name']);
-				$record='';
-				$data='';
+				$record='';	// free memory
 				$custom_errors = $this->logbook_model->import_bulk($alladif, $this->input->post('station_profile'), $this->input->post('skipDuplicate'), $this->input->post('markClublog'),$this->input->post('markLotw'), $this->input->post('dxccAdif'), $this->input->post('markQrz'), $this->input->post('markHrd'), true, $this->input->post('operatorName'), false, $this->input->post('skipStationCheck'));
 			} else {
 				$custom_errors='Station Profile not valid for User';
@@ -218,7 +213,7 @@ class adif extends CI_Controller {
 			$data['adif_errors'] = $custom_errors;
 			$data['skip_dupes'] = $this->input->post('skipDuplicate');
 
-
+			log_message("Error","Finished ADIF Import");
 			$data['page_title'] = "ADIF Imported";
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('adif/import_success');
