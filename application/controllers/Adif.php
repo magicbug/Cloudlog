@@ -158,9 +158,10 @@ class adif extends CI_Controller {
 	public function import() {
 		$this->load->model('stations');
 		$data['station_profile'] = $this->stations->all_of_user();
+		log_message("debug","Started ADIF Import");
 
-        $active_station_id = $this->stations->find_active();
-        $station_profile = $this->stations->profile($active_station_id);
+        	$active_station_id = $this->stations->find_active();
+        	$station_profile = $this->stations->profile($active_station_id);
 
 		$data['active_station_info'] = $station_profile->row();
 
@@ -213,7 +214,7 @@ class adif extends CI_Controller {
 			$data['adif_errors'] = $custom_errors;
 			$data['skip_dupes'] = $this->input->post('skipDuplicate');
 
-			log_message("Error","Finished ADIF Import");
+			log_message("debug","Finished ADIF Import");
 			$data['page_title'] = "ADIF Imported";
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('adif/import_success');
